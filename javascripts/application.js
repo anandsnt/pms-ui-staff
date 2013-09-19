@@ -12,4 +12,13 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.resizable
+//= require jquery.ui.tabs
+//= require jquery.ui.effect
+//= require jquery.ui.effect-slide
+//= require jquery.ui.touch-punch
 //= require_tree .
+
+
+
+
