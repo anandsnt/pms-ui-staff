@@ -1,0 +1,57 @@
+/* 1. ROOT
+==========================================================*/
+/* 2. TYPOGRAPHY
+==========================================================*/
+/* 3. GRAPHICAL ELEMENTS
+==========================================================*/
+/* 4. LAYOUT
+==========================================================*/
+/* 5. COMPONENTS
+==========================================================*/
+
+
+	/* Loading				==============================*/
+	#loading {
+		position: absolute;
+		bottom: 20px;
+		right: 20px;
+		border: 5px solid;
+		border-color: @logoPrimary rgba(255,255,255,.4);
+		z-index: 9999;
+		.square(32px);
+		#border-radius > .rounded(64px);
+		#rotate > .infinite(rotation, .8s, linear, infinite);
+	}
+
+	/* No content			==============================*/
+	.no-content {
+		padding: 25% 0;
+		text-align: center;
+		color: @grey3;
+		.show;
+
+		h1 { 
+			font-size: 36px;
+			line-height: 45px;
+			font-weight: 700;
+		}
+
+		h2 {
+			font-size: 24px;
+			line-height: 45px;
+			font-weight: 300;
+
+			strong { font-weight: 600; }
+		}
+
+		&#no-results {
+			background: red;
+			.calc-height(100%, 120px);
+		}
+	}
+
+
+/* 6. IE
+==========================================================*/
+/* 7. RESPONSIVE
+==========================================================*/
