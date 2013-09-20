@@ -14,9 +14,9 @@ jQuery(function($){
 	}
 	
 	//Display current date
-	var monthNames = [ "January", "February", "March", "April", "May", "June",
+	/*var monthNames = [ "January", "February", "March", "April", "May", "June",
 	                   "July", "August", "September", "October", "November", "December" ];
 	var fullDate = monthNames[d.getMonth()] + " " + d.getDate() +", "+ d.getFullYear();
-	$('date').html(fullDate);
+	$('date').html(fullDate);*/
 	
 });
