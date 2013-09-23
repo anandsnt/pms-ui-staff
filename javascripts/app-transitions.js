@@ -61,6 +61,7 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage){
     var $transition = 'move-from-right',
         $newScreen = new chainedAnimation(),
         $delay = 150;
+    
 
     // Start transitioning when new page is ready
     $('#loading').fadeOut(function(){
@@ -117,6 +118,10 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage){
             contentScroll.refresh();
         }, 0);
     }).remove();
+    
+    if($menuActiveItem === "dashboard" ){
+    	showGreetings();
+    }
 }
 
 // Change inner page view 
@@ -270,7 +275,6 @@ $(function($){
             $prevNestedView = $('.nested-view.view-current').attr('id'),
             $nextNestedView = $('.nested-view:not(.view-current)').attr('id'),
             $backButtonView = $(this).closest('.view-current').attr('id');
-
         // Main page transitions
         if ($pageType.indexOf('main-page') >= 0)
         {

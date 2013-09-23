@@ -1,4 +1,8 @@
 jQuery(function($){
+	showGreetings();
+});
+
+function showGreetings(){
 	var d = new Date();
 	var time = d.getHours();
 	
@@ -12,5 +16,4 @@ jQuery(function($){
 	else{
 		$('#greetings').html('Good Evening');
 	}
-	
-});
+}
