@@ -255,6 +255,7 @@ $(function($){
 
     // All other screens - loaded dynamicilly
     $(document).on('click','a[data-transition]',function(e) {
+    	/*
         e.preventDefault();
 
         var $loader = '<div id="loading" />',
@@ -358,7 +359,7 @@ $(function($){
         {
             alert("Sorry, not there yet!");
         }
-    });
+    */});
 
 /*  Sign In / Sign Out ************************/
 
