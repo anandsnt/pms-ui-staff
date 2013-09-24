@@ -1,0 +1,226 @@
+/* 1. ROOT
+==========================================================*/
+	.float:before, 
+	.float:after { 
+		content: " "; 
+		display: table;
+	}
+
+	.float:after { 
+		clear: both; 
+	}
+
+	.pull-left  { float: left; }
+	.pull-right { float: right; }
+
+	.hide { display: none; }
+	.show { display: block; }
+
+	.hide-text {
+		text-indent: -9999px;
+		&:focus { overflow: hidden; }
+	}
+
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+	#font {
+		#family {
+			.sans-serif() {
+				font-family: "source_sans_pro", Helvetica, Arial, sans-serif;
+				text-rendering: optimizeLegibility;
+				-webkit-font-smoothing: antialiased;
+			}
+			.monospace() {
+				font-family: "Courier New", Courier, monospace;
+			}
+		}
+
+		.shorthand(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
+			font-size: @size;
+			font-weight: @weight;
+			line-height: @lineHeight;
+		}
+
+		.sans-serif(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
+			#font > #family > .sans-serif;
+			#font > .shorthand(@size, @weight, @lineHeight);
+		}
+
+		.monospace(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
+			#font > #family > .monospace;
+			#font > .shorthand(@size, @weight, @lineHeight);
+		}
+	}
+
+	.nowrap {
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+
+	.text-shadow {
+		text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+	}
+
+	.no-text-shadow {
+		text-shadow: none;
+	}
+
+
+/* 3. GRAPHICAL ELEMENTS
+==========================================================*/
+
+	/* Rounded corners			==============================*/
+	#border-radius {
+		.rounded(@radius: 2px) {
+			-webkit-border-radius: @radius;
+			-moz-border-radius: @radius;
+			border-radius: @radius;
+		}
+		
+		.left(@radius: 2px) {
+			-webkit-border-top-left-radius: @radius;
+			-webkit-border-bottom-left-radius: @radius;
+			-moz-border-radius-topleft: @radius;
+			-moz-border-radius-bottomleft: @radius;
+			border-top-left-radius: @radius;
+			border-bottom-left-radius: @radius;
+		}
+		
+		.right(@radius: 2px) {
+			-webkit-border-top-right-radius: @radius;
+			-webkit-border-bottom-right-radius: @radius;
+			-moz-border-radius-topright: @radius;
+			-moz-border-radius-bottomright: @radius;
+			border-top-right-radius: @radius;
+			border-bottom-right-radius: @radius;
+		}
+		
+		.top(@radius: 2px) {
+			-webkit-border-top-left-radius: @radius;
+			-webkit-border-top-right-radius: @radius;
+			-moz-border-radius-topleft: @radius;
+			-moz-border-radius-topright: @radius;
+			border-top-left-radius: @radius;
+			border-top-right-radius: @radius;
+		}
+		
+		.bottom(@radius: 2px) {
+			-webkit-border-bottom-right-radius: ;
+			-webkit-border-bottom-left-radius: @radius;
+			-moz-border-radius-bottomright: @radius;
+			-moz-border-radius-bottomleft: @radius;
+			border-bottom-right-radius: @radius;
+			border-bottom-left-radius: @radius;
+		}
+		
+		.left-bottom(@radius: 2px) {
+			-webkit-border-bottom-left-radius: @radius;
+			-moz-border-radius-bottomleft: @radius;
+			border-bottom-left-radius: @radius;
+		}
+		
+		.left-top(@radius: 2px) {
+			-webkit-border-top-left-radius: @radius;
+			-moz-border-radius-topleft: @radius;
+			border-top-left-radius: @radius;
+		}
+		
+		.right-bottom(@radius: 2px) {
+			-webkit-border-bottom-right-radius: @radius;
+			-moz-border-radius-bottomright: @radius;
+			border-bottom-right-radius: @radius;
+		}
+		
+		.right-top(@radius: 2px) {
+			-webkit-border-top-right-radius: @radius;
+			-moz-border-radius-topright: @radius;
+			border-top-right-radius: @radius;
+		}
+	}
+
+	/* Gradient					==============================*/
+	.gradient(@startColor, @endColor) {
+		background-image: -moz-linear-gradient(top, @startColor, @endColor);
+		background-image: -ms-linear-gradient(top, @startColor, @endColor);
+		background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), to(@endColor));
+		background-image: -webkit-linear-gradient(top, @startColor, @endColor);
+		background-image: -o-linear-gradient(top, @startColor, @endColor);
+		background-image: linear-gradient(top, @startColor, @endColor);
+		background-color: mix(@startColor, @endColor, 60%);
+		background-repeat: repeat;
+	}
+
+	.gradient-with-image(@image, @startColor, @endColor) {
+		background-image: @image, -moz-linear-gradient(top, @startColor, @endColor);
+		background-image: @image, -ms-linear-gradient(top, @startColor, @endColor);
+		background-image: @image, -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), to(@endColor));
+		background-image: @image, -webkit-linear-gradient(top, @startColor, @endColor);
+		background-image: @image, -o-linear-gradient(top, @startColor, @endColor);
+		background-image: @image, linear-gradient(top, @startColor, @endColor);
+		background-color: mix(@startColor, @endColor, 60%);
+		background-repeat: repeat;
+	}
+
+	/* Opacity			======================================*/
+	.opacity(@opacity: 100) {
+		opacity: @opacity / 100;
+		filter: e(%("alpha(opacity=%d)", @opacity));
+	}
+
+	/* Box box-shadow: 	======================================*/
+	.box-shadow(@shadow: 0 1px 0 rgba(0,0,0,.15)) {
+		-webkit-box-shadow: @shadow;
+		-moz-box-shadow: @shadow;
+		box-shadow: @shadow;
+	}
+
+/* 4. LAYOUT
+==========================================================*/
+	.size(@height: 5px, @width: 5px) {
+		width: @width;
+		height: @height;
+	}
+	
+	.square(@size: 5px) {
+		.size(@size, @size);
+	}
+
+	.calc-height(@percentage, @pixels) {
+		height: ~"calc(@{percentage}% - @{pixels}px)";
+		height: ~'-webkit-calc(@{percentage}% - @{pixels}px)';
+		height: ~'-moz-calc(@{percentage}% - @{pixels}px)';
+	}
+
+	.calc-width(@percentage, @pixels) {
+		width: ~"calc(@{percentage}% - @{pixels}px)";
+		width: ~'-webkit-calc(@{percentage}% - @{pixels}px)';
+		width: ~'-moz-calc(@{percentage}% - @{pixels}px)';
+	}
+
+	#pixel-to-percent {
+
+		.height(@target, @context) {
+	    	height: (@target / @context) * 100%;
+	  	}
+
+		.width(@target, @context) {
+	    	width: (@target / @context) * 100%;
+	  	}
+
+	  	.side-padding(@target, @context) {
+	    	padding: 0 (@target / @context) * 100%;
+	  	}
+
+	  	.side-margin(@target, @context) {
+	    	margin: 0 (@target / @context) * 100%;
+	  	}
+  	}
+
+/* 5. COMPONENTS
+==========================================================*/
+/* 6. IE
+==========================================================*/
+/* 7. RESPONSIVE
+==========================================================*/
