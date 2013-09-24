@@ -16,6 +16,7 @@ textarea {
 	padding: 0 10px;
 	background: @white;
 	border: 0;
+	.placeholder(18px, 40px, 400);
 	.transition;
 	.box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
 	#border-radius > .rounded();
@@ -24,24 +25,27 @@ textarea {
 	&:active {
 		.box-shadow(inset 1px 1px 1px rgba(0,0,0,.5));
 	}
+
+	&.masked-input {
+		line-height: 30px;
+		min-height: 30px;
+		display: inline;
+		background: transparent;
+		border: 0;
+		padding: 0;
+		.box-shadow(none);
+		#border-radius > .rounded(0);
+
+		&:focus,
+		&:active {
+			.box-shadow(none);
+		}
+	}
 }
 
 label {
 	cursor: pointer;
 	margin-bottom: 5px;
-}
-
-button,
-input[type="submit"],
-.button {
-	
-	/*background: transparent;
-	border: 0;
-	cursor: pointer;*/
-}
-
-.button {
-	/*.global-button;*/
 }
 
 /* 2. TYPOGRAPHY
@@ -124,24 +128,57 @@ input[type="submit"],
 		}
 	}
 
-/* Login form			==================================*/
+	/* On/off switch checkbox	==========================*/
+	.switch-button {
+		background: rgba(0,0,0,.1);
+		display: inline-block;
+		padding: 5px;
+		cursor: pointer;
+		position: relative;
+		#border-radius > .rounded(20px);
+		.size(30px,70px);
 
-/*#login-form {
-		height: 100%;
-		text-align: center;
+		.switch-icon {
+			position: absolute;
+			top: 5px;
+			left: 5px;
+			z-index: 9;
+			.show;
+			.square(20px);
+			.transition();
+			#border-radius > .rounded(20px);
+		}
 
-		.button {
-			margin-top: 10%;
-			border: 0;
-			background: transparent;
+		.value{ 
+			position: absolute;
+			top: 0;
+			right: 10px;
 			color: @white;
-			cursor: pointer;
-			font-size: 4em;
-			text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+			font-weight: 700;
+			text-transform: uppercase;
+			line-height: 30px;
+			vertical-align: middle;
+			z-index: 1;
 			.show;
 		}
-	}*/
 
+		input[type="checkbox"] { 
+			cursor: pointer;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 20;
+			.opacity(0);
+			.show;
+		}
+
+		&.on {
+			.switch-icon { left: 40px; }
+			.value { right: 35px; }
+		}
+	}
 
 /* 6. IE
 ==========================================================*/
