@@ -1,0 +1,313 @@
+/* 1. ROOT
+==========================================================*/
+/* 2. TYPOGRAPHY
+==========================================================*/
+/* 3. GRAPHICAL ELEMENTS
+==========================================================*/
+
+/* Menu icons			==================================*/
+	.icon-menu {
+		background-image: @icon-menu;
+		background-repeat: no-repeat;
+		overflow: hidden;
+		.hide-text;
+		.square(60px);
+		.show;
+		.no-transition;
+
+		&.icon-dashboard { 
+			background-position: 0 -60px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -60px;}
+		}
+
+		&.icon-search { 
+			background-position: 0 -120px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -120px;}
+		}
+
+		&.icon-social-lobby {
+			background-position: 0 -180px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -180px;}
+		}
+
+		&.icon-messages {
+			background-position: 0 -240px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -240px;}
+		}
+
+		&.icon-reviews {
+			background-position: 0 -300px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -300px;}
+		}
+
+		&.icon-settings {
+			background-position: 0 -360px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -360px;}
+		}
+
+		&.icon-sign-out {
+			background-position: 0 -420px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -420px;}
+		}
+
+		@media @highdpi {
+			background-image: @icon-menu2x;
+			background-size: 120px;
+		}
+	}
+
+/* No content icons		==================================*/
+	.icon-no-content {
+		background-image: @icon-no-content;
+		background-repeat: no-repeat;
+		.size(120px, 125px);
+		margin: 0 auto;
+		.show;
+
+		&.icon-search { 
+			background-position: 0 0; 
+		}
+
+		&.icon-room {
+			background-position: 0 -120px; 
+		}
+
+		@media @highdpi {
+			background-image: @icon-no-content2x;
+			background-size: 120px, 125px;
+		}
+	}
+
+/* Global icons			==================================*/
+	.icons,
+	.guest-status {
+		background-image: @icons;
+		background-repeat: no-repeat;
+		border: 0;
+		.show;
+
+		&.icon-search {
+			background-color: transparent;
+			background-position: 0 3px;
+			.square(20px);
+			.hide-text;
+		}
+
+		&.icon-clear-search {
+			background-color: transparent;
+			background-position: 4px -936px;
+			.square(15px);
+			.hide-text;
+		}
+
+		&.icon-location {  background-position: 5px -23px; background-size: 80px; }
+		&.icon-group { background-position: 5px -50px; background-size: 80px; }
+		&.check-in { background-position: 8px -112px; }
+		&.check-out { background-position: 8px -152px; }
+		&.inhouse { background-position: 8px -192px; }
+		&.cancel { background-position: 8px -232px; }
+
+		&.icon-gc-location { background-position: 0 -277px; }
+		&.icon-gc-phone { background-position: 0 -314px; }
+		&.icon-gc-email {background-position: 0 -353px; }
+
+		&.small-icon {
+			background-size: 80px;
+
+			&.check-in { background-position: 6px -75px; }
+			&.check-out { background-position: 6px -101px; }
+			&.inhouse { background-position:  5px -128px; }
+			&.cancel { background-position: 5px -155px; }
+		}
+
+		@media @highdpi {
+			background-image: @icons2x;
+			background-size: 120px;
+
+			&.icon-location,
+			&.icon-group {
+				background-size: 80px;
+			}
+		}
+	}
+
+/* Tabs icons			==================================*/
+	.icons-tabs {
+		background-image: @icons-tabs;
+		background-repeat: no-repeat;
+		border: 0;
+		.show;
+
+		&.icon-reservation {
+			background-position: 50% 0;
+
+			&.ui-tabs-active,
+			&.active {
+				background-position: 50% -80px;
+			}
+		}
+
+		@media @highdpi {
+			background-image: @icons-tabs2x;
+			background-size: 30px;
+		}
+	}
+
+/* Menu toggle / back button icon	======================*/
+	.icon-toggle,
+	.icon-back {
+		background-color: @logoGradientStart;
+		background-image: @icon-menu, @darkTexture;
+		background-repeat: no-repeat, repeat;
+		overflow: hidden;
+		.hide-text;
+		.show;
+		.square(40px);
+		.box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
+		#border-radius > .right();
+		.no-transition;
+		.pull-left;
+
+		@media @highdpi {
+			background-image: @icon-menu2x, @darkTexture;
+			background-size: 120px, 60px;
+		}
+	}
+
+	.icon-toggle {
+		background-position: -10px -10px, 0 0;
+
+		&:hover,
+		&.active { background-position: -70px -10px, 0 0; }
+	}
+
+	&.icon-back {
+		background-position: -12px -490px, 0 0;	
+
+		&:hover,
+		&.active { background-position: -12px -550px, 0 0; }
+
+	}
+
+/* Buttons				==================================*/
+	.button {
+		display: inline-block;
+		font-weight: 600;
+		line-height: 40px;
+		vertical-align: middle;
+		text-transform: uppercase;
+		text-align: center;
+		color: @white;
+		border: 0;
+		padding: 0 20px;
+		cursor: pointer;
+		text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+		#border-radius > .rounded(3px);
+		.box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
+		.transition;
+		
+
+		&:hover,
+		&:active { 
+			color: @white;
+			.box-shadow(~"inset 1px 1px 2px rgba(0,0,0,.2)");
+		}
+
+		/* Button styles ***/
+		&.blank {
+			color: @grey4;
+			background: transparent;
+			text-shadow: none;
+			#border-radius > .rounded(0);
+			.box-shadow(none);
+
+			&:hover,
+			&:active { color: @logoPrimary; }
+		}
+
+		/* Button colors ***/
+		&.green { 
+			.gradient (@greenStart, @greenEnd);
+
+			&:hover,
+			&:active { .gradient (@greenEnd, @greenStart); }
+		}
+
+		&.red { 
+			.gradient (@redStart, @redEnd);
+
+			&:hover,
+			&:active { .gradient (@redEnd, @redStart); }
+		}
+
+		&.blue { 
+			.gradient (@blueStart, @blueEnd);
+
+			&:hover,
+			&:active { .gradient (@blueEnd, @blueStart); }
+		}
+	}
+
+	.add-new-button {
+		display: inline-block;
+		font-size: 14px;
+		font-weight: 600;
+		line-height: 50px;
+		vertical-align: middle;
+		text-transform: uppercase;
+		text-align: center;
+		color: @green;
+		padding: 0 10px;
+		border: 1px dashed rgba(0,0,0,.2);
+		#border-radius > .rounded(3px);
+
+		&:hover,
+		&:active {
+			color: @green;
+			border-color: @green;
+		}
+	}
+
+/* Misc					==================================*/
+	.vip {
+		font-size: 10px;
+		font-weight: 700;
+		line-height: 20px;
+		text-transform: uppercase;
+		text-align: center;
+		vertical-align: middle;
+		color: #9f8606;
+		background: @yellow;
+		.square(20px);
+		#border-radius > .rounded(20px);
+	}
+
+/* 4. LAYOUT
+==========================================================*/
+/* 5. COMPONENTS
+==========================================================*/
+/* 6. IE
+==========================================================*/
+/* 7. RESPONSIVE
+==========================================================*/

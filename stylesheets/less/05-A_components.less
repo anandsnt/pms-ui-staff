@@ -1,0 +1,126 @@
+/* 1. ROOT
+==========================================================*/
+/* 2. TYPOGRAPHY
+==========================================================*/
+/* 3. GRAPHICAL ELEMENTS
+==========================================================*/
+/* 4. LAYOUT
+==========================================================*/
+/* 5. COMPONENTS
+==========================================================*/
+
+	/* Loading				==============================*/
+	#loading {
+		position: absolute;
+		bottom: 20px;
+		right: 20px;
+		border: 5px solid;
+		border-color: @logoPrimary rgba(255,255,255,.4);
+		z-index: 9999;
+		.square(32px);
+		#border-radius > .rounded(64px);
+		#rotate > .infinite(rotation, .8s, linear, infinite);
+	}
+
+	/* Link items			==============================*/
+	.link-item {
+		background: @white;
+		.box-shadow();
+		.show;
+
+		&:hover,
+		&:active { 
+			.box-shadow(0 1px 0 rgba(0,0,0,.2));
+		}
+	}
+
+	/* Guest image 			==============================*/
+	.guest-image {
+		position: relative;
+		background: @grey1;
+		#border-radius > .rounded();
+		.square(50px);
+		.pull-left;
+
+		.vip {
+			position: absolute;
+			bottom: -5px;
+			left: -5px;
+		}
+
+		img {
+			width: 100%;
+			height: auto;
+			
+			#border-radius > .rounded();
+		}
+	}
+
+	/* Guest status 		==============================*/
+	.guest-status {
+		.hide-text;
+		.show;
+		.pull-left;
+
+
+		&.check-in { background-color: @green; }
+		&.check-out { background-color: @red; }
+		&.inhouse { background-color: @blue; }
+		&.cancel { background-color: @grey3; }
+		&.no-show { background: @grey2; }
+	}
+
+	/* No content			==============================*/
+	.no-content {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		text-align: center;
+		color: @grey3;
+		.show;
+		#pixel-to-percent > .side-padding(400, 2048);
+		#pixel-to-percent > .top-padding(200, 1536);
+
+		h1 { 
+			font-size: 36px;
+			line-height: 36px;
+			font-weight: 700;
+			margin: 18px 0;
+		}
+
+		h2 {
+			font-size: 24px;
+			line-height: 30px;
+			font-weight: 300;
+
+			strong { font-weight: 600; }
+
+			a { 
+				color: @green;
+				font-weight: 600;
+			}
+		}
+
+		&#no-results {
+			visibility: visible;
+			.transition;
+			.opacity(100); 
+			#fade > .in();
+
+			&.hidden { 
+				visibility: hidden;
+				.opacity(0);
+				#fade > .out();  
+			}
+		}
+
+		&.reservation-content {
+			/*#pixel-to-percent > .top-padding( 370, 1536 );*/
+		}
+	}
+
+
+/* 6. IE
+==========================================================*/
+/* 7. RESPONSIVE
+==========================================================*/
