@@ -49,7 +49,7 @@ var chainedAnimation = function(){
 // Content scroll
 var contentScroll;
 function createIScroll($target){
-    contentScroll = new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: 'custom' });
+    contentScroll = new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' });
 }
 function destroyIScroll(){
     contentScroll.destroy();
@@ -113,7 +113,7 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage){
         $('#main-menu a[data-page="' + $menuActiveItem + '"]').addClass('active');
 
         // Set scroller on the new page
-        createIScroll('#' + $nextPage + ' .content');
+        createIScroll('#' + $nextPage + ' .scrollable');
         setTimeout(function () {
             contentScroll.refresh();
         }, 0);
@@ -152,7 +152,7 @@ function changeView($type, $menuActiveItem, $prevView, $nextView){
         $newView.start();
 
         // Set scroller on the new page
-        createIScroll('#' + $nextView + ' .content');
+        createIScroll('#' + $nextView + ' .scrollable');
         setTimeout(function () {
             contentScroll.refresh();
         }, 0);
@@ -255,7 +255,7 @@ $(function($){
         $showMaster.add(function(){ $('#main-menu').show(); }, $delay);
         $showMaster.start();
 
-        createIScroll('.page-current > .content');
+        createIScroll('.page-current > .scrollable');
     });
 
     // All other screens - loaded dynamicilly
@@ -304,6 +304,7 @@ $(function($){
             }
         }
         
+        // Inner page transitions
         else if ($pageType.indexOf('inner-page') >= 0)
         {
             // Skip loading for back buttons
@@ -332,6 +333,7 @@ $(function($){
             }
         }
 
+        // Nested view transitions
         else if ($pageType.indexOf('nested-view') >= 0)
         {
             // Skip loading for back buttons
@@ -365,7 +367,7 @@ $(function($){
         }
     });
 
-/*  Sign In / Sign Out ************************/
+/*  Sign In / Sign Out        *************************************************/
 
     // Sign in page loaded
     $('#login-page').on('ready', function(){

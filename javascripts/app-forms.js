@@ -1,5 +1,10 @@
+// Disable cache busting as we load this file via $.getScript function on different screens. Set false during development
+$.ajaxSetup({
+    cache: false
+});
+
 // Custom checkbox and radios
-function setupLabel() {
+function styleCheckboxRadio() {
     var checkBox = '.checkbox',
         checkBoxInput = checkBox + ' input[type="checkbox"]',
         checkBoxChecked = 'checked',
@@ -53,6 +58,37 @@ function setupLabel() {
         });
     };
 };
+
+// Custom on-off checkbox
+function onOffSwitch() {
+    var onOff = '.switch-button',
+        onOffChecked = 'on',
+        onOffDisabled = 'disabled',
+        onOffInput = onOff + ' input[type="checkbox"]',
+        text = onOff + ' .value',
+        textOn = $(onOff).attr('data-on'),
+        textOff = $(onOff).attr('data-off');
+
+    if ($(onOffInput).length) { 
+        $(onOff).removeClass(onOffChecked);
+        $(text).text(textOff);
+
+        $(onOffInput + ':checked').each(function(){
+            $(this).parent(onOff).addClass(onOffChecked)
+            $(text).text(textOn);
+        });
+
+        $(onOffInput + ':disabled').each(function(){
+            $(this).parent(onOff).addClass(onOffDisabled);
+            $(text).text('');
+        });
+    }
+};
+
+// Resize masked inputs
+function resizeInput() {
+    $(this).attr('size', $(this).val().length);
+}
 
 // Modal window
 function modalInit(content) {
@@ -116,11 +152,31 @@ window.addEventListener('load', function() {
 
 $(function($){ 
 
-    // Custom checkbox and radios
-    setupLabel();
-    $(document).on('click', '.checkbox, .radio', function(){
-         setupLabel();
+    // Styled form elements - on load
+    styleCheckboxRadio();
+    onOffSwitch();   
+
+    // Styled form elements - on click
+    $(document).on('click', '.checkbox, .radio', function(e){
+        e.stopPropagation();
+        styleCheckboxRadio();
     });
+
+    $(document).on('click', '.switch-button', function(e){
+        e.stopPropagation();
+        onOffSwitch();
+    });
+
+    // Resize masked inputs to match content width
+    $(document).on('focus', '.masked-input', function(){
+        $('.masked-input').addClass('active');
+    }).on('focusout', '.masked-input', function(){
+        $('.masked-input').removeClass('active');
+    }).on('change', '.masked-input', function(){
+        alert("Changes are saved!");
+    });
+
+    $('.masked-input').keyup(resizeInput).each(resizeInput);
 
     // Dialog window
     $(document).on('click', '.open-modal', function(e){
@@ -128,6 +184,6 @@ $(function($){
 
         var $href = $(this).attr('href');
         modalInit($href);
-    });
+    }); 
 
 });
