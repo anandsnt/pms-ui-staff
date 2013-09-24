@@ -1,5 +1,8 @@
 /* 1. ROOT
 ==========================================================*/
+
+body { background-size: 40px, 100%, 100%; }
+
 /* 2. TYPOGRAPHY
 ==========================================================*/
 /* 3. GRAPHICAL ELEMENTS
@@ -7,11 +10,23 @@
 /* 4. LAYOUT
 ==========================================================*/
 
-/* Navbar	 			==============================*/
-	.nav-bar {
-		.nav-toggle {
-			background-image: @icon-menu2x, asset-url("dark-texture.png");
-			background-size: 120px, 60px;
+/* App screens				==============================*/
+	.container .page,
+	.container .page-locked .nested-view,
+	.nav-bar,
+	#login,
+	#reservation-card .reservation-list { background-size: 40px; }
+
+/* Search page 				==============================*/
+	.search-results {
+		.link-item {
+			.data {
+				span,
+				em {
+					&.icon-location { padding-left: 15px; }
+					&.icon-group { padding-left: 20px; }
+				}
+			}
 		}
 	}
 
@@ -22,4 +37,3 @@
 /* 7. RESPONSIVE
 ==========================================================*/
 
-.container .content { background-size: 60px; }
