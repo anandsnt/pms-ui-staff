@@ -65,35 +65,30 @@
 	h2, .h2, 
 	h3, .h3, 
 	h4, .h4 {
+		line-height: 1em;
+		margin: 0;
 		clear: both;
 		.show; 
-
-		&:first-child {
-			margin-top: 0;
-		}
 	}
 
 	h1,
 	.h1 {
-		font-size: 24px;
-		line-height: 24px;
-		margin-bottom: 0;
+		font-size: 30px;
 	}
 
 	h2,
 	.h2 {
-		
+		font-size: 24px;
 	}
 
 	h3,
 	.h3 {
-		font-size: 24px;
-		font-weight: 700;
+		font-size: 20px;
 	}
 
 	h4,
 	.h4 {
-		
+		font-size: 18px;
 	}
 
 /* Paragraphs & lists 		==============================*/
@@ -108,6 +103,8 @@ li {
 
 /* Inline elements	======================================*/
 
+em { font-style: italic; }
+strong { font-weight: 700; }
 
 /* Links			======================================*/
 a {
