@@ -57,7 +57,7 @@ function destroyIScroll(){
 }
 
 // Change main or inner page
-function changePage($type, $menuActiveItem, $prevPage, $nextPage){
+function changePage($type, $menuActiveItem, $prevPage, $nextPage, $searchStatus){
     var $transition = 'move-from-right',
         $newScreen = new chainedAnimation(),
         $delay = 150;
@@ -121,6 +121,8 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage){
     
     if($menuActiveItem === "dashboard" ){
     	showGreetings();
+    }else if($menuActiveItem === "search"){
+    	initializeSearch($searchStatus);
     }
 }
 
@@ -274,6 +276,7 @@ $(function($){
             $backButtonPage = $(this).closest('.page-current').attr('id'),
             $prevNestedView = $('.nested-view.view-current').attr('id'),
             $nextNestedView = $('.nested-view:not(.view-current)').attr('id'),
+            $searchStatus = $(this).attr('search-status'), 
             $backButtonView = $(this).closest('.view-current').attr('id');
         // Main page transitions
         if ($pageType.indexOf('main-page') >= 0)
@@ -294,7 +297,7 @@ $(function($){
                             $('#loading').remove();
                             alert("Sorry, not there yet!");
                         }
-                    }).done(function(){ changePage($pageType, $menuPage, $prevMainPage, $nextMainPage); });
+                    }).done(function(){ changePage($pageType, $menuPage, $prevMainPage, $nextMainPage, $searchStatus); });
                 });   
             }
             // Back buttons
@@ -323,7 +326,7 @@ $(function($){
                             $('#loading').remove();
                             alert("Sorry, not there yet!");
                         }
-                    }).done(function(){ changePage($pageType, $menuPage, $prevInnerPage, $nextInnerPage); });
+                    }).done(function(){ changePage($pageType, $menuPage, $prevInnerPage, $nextInnerPage, $searchStatus); });
                 });   
             }
             // Back buttons
