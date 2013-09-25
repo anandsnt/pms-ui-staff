@@ -16,14 +16,14 @@ jQuery.fn.capitalize = function() {
 
 // Search result markup
 function writeSearchResult(id, firstname, lastname, image, confirmation, status, room, roomstatus, roomstatusextra, roomstatusexplained, location, group, vip){
-    
+
     var $location = (location != '') ? '<span class="icons icon-location">' + location + '</span>' : '',
         $group = (group != '') ? '<em class="icons icon-group">' + group + '</em>' : '',
         $vip = vip ? '<span class="vip">VIP</span>' : '',
         $image = (image != '') ? '<figure><img src="/assets/' + image + '" />' + $vip +'</figure>' : '<figure><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = roomstatusextra ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
-        $output = 
-        '<a href="stay-card/?guest=' + status + '" class="guest-' + status + ' link-item float" data-transition="inner-page has-card" data-page="search">' + 
+        $output =
+        '<a href="stay-card/?guest=' + status + '" class="guest-' + status + ' link-item float" data-transition="inner-page has-card" data-page="search">' +
             $image +
             '<div class="data">' +
                 '<h2>' + lastname + ', ' + firstname + '</h2>' +
@@ -35,7 +35,7 @@ function writeSearchResult(id, firstname, lastname, image, confirmation, status,
     return $output;
 }
 
-$(function($){ 
+$(function($){
 
     // Capitalize first letter + search
     $(document).on('focus', '#query', function(){
@@ -51,83 +51,13 @@ $(function($){
         }
 
         if($query.length >= 3){
-            $.ajax({ 
-                type:           "POST",
-               // contentType:    "application/json; charset=utf-8",
-                url:            "/dashboard/search_api.json",
-                data:           { $match: $query, fakeDataToAvoidCache: new Date()}, // fakeDataToAvoidCache is iOS Safari fix
-                dataType:       "json",
-                success: function (response) {
-                    $("#search-results").empty().removeClass('hidden');
-                    $('#preloaded-results').addClass('hidden');
-                    $('#no-results').addClass('hidden');
-
-                    if(response.guests.length>0)
-                    {
-                        try
-                        {
-                            var items=[];
-                            $.each(response.guests, function(i,value){
-
-                                // Search by name
-                                if ($query.match(/^([a-zA-Z]+)$/) && (value.firstname.indexOf($query) >= 0 || value.lastname.indexOf($query) >= 0 || value.group.indexOf($query) >= 0))
-                                {
-                                    items.push($('<li />').html( 
-                                        writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip)
-                                    ));
-
-                                    $('#search-results').append.apply($('#search-results'),items)//.highlight($query);
-                                }
-                                // Search by number 
-                                else if ($query.match(/^([0-9]+)$/) && $query.length <= 5 && (value.room.indexOf($query) >= 0 || value.confirmation.indexOf($query) >= 0))
-                                {
-                                    items.push($('<li />').html(
-                                        writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip))
-                                    );
-                                    $('#search-results').append.apply($('#search-results'),items)//.highlight($query);
-                                }
-                                // Search by number 
-                                else if ($query.length > 6 && (value.confirmation.indexOf($query) >= 0))
-                                {
-                                    items.push($('<li />').html( 
-                                        writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip))
-                                    );
-                                    $('#search-results').append.apply($('#search-results'),items)//.highlight($query);
-                                }
-
-                                // Reset scroller
-                                setTimeout(function () {
-                                    contentScroll.refresh();
-                                }, 0);
-                            });
-                        }
-                        catch(e)
-                        {
-                        	console.log(e);
-                            $('#search-results').html('<li class="notice">Error occured</li>');
-                        }
-
-                        // As this search filters JSON content, we need temp custom handling for no results scenario
-                        if ($('#search-results').is(':empty'))
-                        {
-                            $('#search-results').html('<li class="notice">Found nothing</li>');
-                        }
-                    }
-                    // No data in JSON file
-                    else
-                    {
-                        $('#search-results').html('<li class="notice">No data</li>');
-                    }
-                },
-                error: function (result) {
-                   console.log(JSON.stringify(result));
-                }
-            });
-        }
+            $search_url = '/search.json?';
+        	load_search_data($search_url,$query);
+          }
         else
         {
             $('#search-results').empty().addClass('hidden');
-            
+
             if ($('#preloaded-results.hidden').length)
             {
                 $('#preloaded-results').removeClass('hidden');
@@ -143,11 +73,11 @@ $(function($){
     // Clear search input
     $(document).on('click', '#clear-query.visible', function(e){
         e.preventDefault();
-        
+
         $(this).removeClass('visible');
         $('#query').val('');
         $('#search-results').empty().addClass('hidden');
-        
+
         if ($('#preloaded-results.hidden').length)
         {
             $('#preloaded-results').removeClass('hidden');
@@ -156,12 +86,12 @@ $(function($){
         {
             $('#no-results.hidden').removeClass('hidden');
         }
-        
+
         // Reset scroller
         setTimeout(function () {
             contentScroll.refresh();
         }, 0);
     });
-    
+
 
 });
