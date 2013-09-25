@@ -4,11 +4,11 @@ function initializeSearch(searchStatus){
 		return false;
 	}else{
 		callSearchAPI(stayStatus, "");
-	}	
+	}
 }
 function callSearchAPI($status, $query){
 	alert("call api");
-    $.ajax({ 
+    $.ajax({
         type:           "POST",
        // contentType:    "application/json; charset=utf-8",
         url:            "/search.json?status="+ $status+"&&query=" +$query,
@@ -17,7 +17,7 @@ function callSearchAPI($status, $query){
         success: function (response) {
             $("#search-results").empty().removeClass('hidden');
             $('#preloaded-results').addClass('hidden');
-            $('#no-results').addClass('hidden');           
+            $('#no-results').addClass('hidden');
             if(response.guests.length>0)
             {
                 try
@@ -27,13 +27,13 @@ function callSearchAPI($status, $query){
                         // Search by name
                         if ($query.match(/^([a-zA-Z]+)$/) && (value.firstname.indexOf($query) >= 0 || value.lastname.indexOf($query) >= 0 || value.group.indexOf($query) >= 0))
                         {
-                            items.push($('<li />').html( 
+                            items.push($('<li />').html(
                                 writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip)
                             ));
 
                             $('#search-results').append.apply($('#search-results'),items)//.highlight($query);
                         }
-                        // Search by number 
+                        // Search by number
                         else if ($query.match(/^([0-9]+)$/) && $query.length <= 5 && (value.room.indexOf($query) >= 0 || value.confirmation.indexOf($query) >= 0))
                         {
                             items.push($('<li />').html(
@@ -41,10 +41,10 @@ function callSearchAPI($status, $query){
                             );
                             $('#search-results').append.apply($('#search-results'),items)//.highlight($query);
                         }
-                        // Search by number 
+                        // Search by number
                         else if ($query.length > 6 && (value.confirmation.indexOf($query) >= 0))
                         {
-                            items.push($('<li />').html( 
+                            items.push($('<li />').html(
                                 writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip))
                             );
                             $('#search-results').append.apply($('#search-results'),items)//.highlight($query);
@@ -79,5 +79,5 @@ function callSearchAPI($status, $query){
         }
     });
 
-	
+
 }
