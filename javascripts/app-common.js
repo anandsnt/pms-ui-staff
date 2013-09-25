@@ -10,7 +10,6 @@
                     $('#no-results').addClass('hidden');
                     if(response.guests.length>0)
                     {
-                    	alert(JSON.stringify(response.guests));
                         try
                         {
                             var items=[];

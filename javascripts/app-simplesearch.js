@@ -16,14 +16,14 @@ jQuery.fn.capitalize = function() {
 
 // Search result markup
 function writeSearchResult(id, firstname, lastname, image, confirmation, status, room, roomstatus, roomstatusextra, roomstatusexplained, location, group, vip){
-
+    
     var $location = (location != '') ? '<span class="icons icon-location">' + location + '</span>' : '',
         $group = (group != '') ? '<em class="icons icon-group">' + group + '</em>' : '',
         $vip = vip ? '<span class="vip">VIP</span>' : '',
         $image = (image != '') ? '<figure><img src="/assets/' + image + '" />' + $vip +'</figure>' : '<figure><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = roomstatusextra ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
-        $output =
-        '<a href="stay-card/?guest=' + status + '" class="guest-' + status + ' link-item float" data-transition="inner-page has-card" data-page="search">' +
+        $output = 
+        '<a href="stay-card/?guest=' + status + '" class="guest-' + status + ' link-item float" data-transition="inner-page has-card" data-page="search">' + 
             $image +
             '<div class="data">' +
                 '<h2>' + lastname + ', ' + firstname + '</h2>' +
@@ -35,7 +35,7 @@ function writeSearchResult(id, firstname, lastname, image, confirmation, status,
     return $output;
 }
 
-$(function($){
+$(function($){ 
 
     // Capitalize first letter + search
     $(document).on('focus', '#query', function(){
@@ -57,7 +57,7 @@ $(function($){
         else
         {
             $('#search-results').empty().addClass('hidden');
-
+            
             if ($('#preloaded-results.hidden').length)
             {
                 $('#preloaded-results').removeClass('hidden');
@@ -73,11 +73,11 @@ $(function($){
     // Clear search input
     $(document).on('click', '#clear-query.visible', function(e){
         e.preventDefault();
-
+        
         $(this).removeClass('visible');
         $('#query').val('');
         $('#search-results').empty().addClass('hidden');
-
+        
         if ($('#preloaded-results.hidden').length)
         {
             $('#preloaded-results').removeClass('hidden');
@@ -86,12 +86,12 @@ $(function($){
         {
             $('#no-results.hidden').removeClass('hidden');
         }
-
+        
         // Reset scroller
         setTimeout(function () {
             contentScroll.refresh();
         }, 0);
     });
-
+    
 
 });
