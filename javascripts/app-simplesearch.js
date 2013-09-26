@@ -23,7 +23,7 @@ function writeSearchResult(id, firstname, lastname, image, confirmation, status,
     var $location = (location != '') ? '<span class="icons icon-location">' + location + '</span>' : '',
         $group = (group != '') ? '<em class="icons icon-group">' + group + '</em>' : '',
         $vip = vip ? '<span class="vip">VIP</span>' : '',
-        $image = (image != '') ? '<figure><img src="/assets/' + image + '" />' + $vip +'</figure>' : '<figure><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
+        $image = (image != '') ? '<figure class="guest-image"><img src="/assets/' + image + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = roomstatusextra ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
         $output = 
         '<a href="stay-card/?guest=' + status + '" class="guest-' + status + ' link-item float" data-transition="inner-page has-card" data-page="search">' + 
@@ -59,7 +59,6 @@ $(function($){
         }
 
         if($query.length >= 3){
-        	console.log(searchResults);
         	if(searchResults.guests.length > 0){
         		getFilteredResults($query);
         		return false;
@@ -129,7 +128,7 @@ function displaySearchResults(response, $query){
                     writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip)
                 ));
 
-                $('#search-results').append.apply($('#search-results'),items)//.highlight($query);
+                $('#search-results').append.apply($('#search-results'),items).highlight($query);
             }
             // Search by number 
             else if ($query.match(/^([0-9]+)$/) && $query.length <= 5 && (value.room.indexOf($query) >= 0 || value.confirmation.indexOf($query) >= 0))
@@ -137,7 +136,7 @@ function displaySearchResults(response, $query){
                 items.push($('<li />').html(
                     writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip))
                 );
-                $('#search-results').append.apply($('#search-results'),items)//.highlight($query);
+                $('#search-results').append.apply($('#search-results'),items).highlight($query);
             }
             // Search by number 
             else if ($query.length > 6 && (value.confirmation.indexOf($query) >= 0))
@@ -145,7 +144,8 @@ function displaySearchResults(response, $query){
                 items.push($('<li />').html( 
                     writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip))
                 );
-                $('#search-results').append.apply($('#search-results'),items)//.highlight($query);
+                $('#search-results').append.apply($('#search-results'),items).highlight($query);
+                
             }
 
             // Reset scroller

@@ -1,7 +1,7 @@
  function load_search_data(url,$query){
   	$.ajax({
-                type:           "GET",
-                url:            url + "&query=" + $query,
+                type:           "POST",
+                url:            "/dashboard/search_api.json",
                 data:           { $match: $query, fakeDataToAvoidCache: new Date()}, // fakeDataToAvoidCache is iOS Safari fix
                 dataType:       "json",
                 success: function (response) {
