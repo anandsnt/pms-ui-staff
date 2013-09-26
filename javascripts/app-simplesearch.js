@@ -1,3 +1,6 @@
+searchResults = {};
+searchResults.guests = [];
+
 // Capitalize first letter
 jQuery.fn.capitalize = function() {
     $(this[0]).keyup(function(event) {
@@ -40,7 +43,7 @@ $(function($){
     // Capitalize first letter + search
     $(document).on('focus', '#query', function(){
         $(this).capitalize();
-    }).on('keyup', '#query', function(){
+    }).on('keyup', '#query', function(event){
         var $query = $(this).val();
 
         // Clear button visibility toggle
@@ -49,11 +52,22 @@ $(function($){
         } else {
             $('#clear-query.visible').removeClass('visible');
         }
+        //Keyboard backspace pressed 
+        if(event.keyCode == 8){
+        	searchResults = {};
+        	searchResults.guests = [];
+        }
 
         if($query.length >= 3){
-            $search_url = '/search.json?';
+        	console.log(searchResults);
+        	if(searchResults.guests.length > 0){
+        		getFilteredResults($query);
+        		return false;
+        	}
+        	
+        	$search_url = '/search.json?';
         	load_search_data($search_url,$query);
-          }
+        }
         else
         {
             $('#search-results').empty().addClass('hidden');
@@ -73,6 +87,9 @@ $(function($){
     // Clear search input
     $(document).on('click', '#clear-query.visible', function(e){
         e.preventDefault();
+        
+        searchResults = {};
+        searchResults.guests = [];
         
         $(this).removeClass('visible');
         $('#query').val('');
@@ -95,3 +112,58 @@ $(function($){
     
 
 });
+
+function getFilteredResults($query){
+	displaySearchResults(searchResults, $query);
+}
+
+function displaySearchResults(response, $query){
+    try
+    {
+        var items=[];
+        $.each(response.guests, function(i,value){
+            // Search by name
+            if ($query.match(/^([a-zA-Z]+)$/) && (value.firstname.indexOf($query) >= 0 || value.lastname.indexOf($query) >= 0 || value.group.indexOf($query) >= 0))
+            {
+                items.push($('<li />').html( 
+                    writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip)
+                ));
+
+                $('#search-results').append.apply($('#search-results'),items)//.highlight($query);
+            }
+            // Search by number 
+            else if ($query.match(/^([0-9]+)$/) && $query.length <= 5 && (value.room.indexOf($query) >= 0 || value.confirmation.indexOf($query) >= 0))
+            {
+                items.push($('<li />').html(
+                    writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip))
+                );
+                $('#search-results').append.apply($('#search-results'),items)//.highlight($query);
+            }
+            // Search by number 
+            else if ($query.length > 6 && (value.confirmation.indexOf($query) >= 0))
+            {
+                items.push($('<li />').html( 
+                    writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip))
+                );
+                $('#search-results').append.apply($('#search-results'),items)//.highlight($query);
+            }
+
+            // Reset scroller
+            setTimeout(function () {
+                contentScroll.refresh();
+            }, 0);
+        });
+    }
+    catch(e)
+    {
+    	console.log(e);
+        $('#search-results').html('<li class="notice">Error occured</li>');
+    }
+
+    // As this search filters JSON content, we need temp custom handling for no results scenario
+    if ($('#search-results').is(':empty'))
+    {
+        $('#search-results').html('<li class="notice">Found nothing</li>');
+    }
+}
+
