@@ -67,6 +67,9 @@ $(function($){
         	$search_url = '/search.json?';
         	load_search_data($search_url,$query);
         }
+        else if(searchResults.guests.length > 0){
+        	getFilteredResults($query);
+        }
         else
         {
             $('#search-results').empty().addClass('hidden');
