@@ -171,7 +171,7 @@ function displayFilteredResults(searchResults, $query){
                 $('#search-results').append.apply($('#search-results'),items).highlight($query);
             }
             // Search by number 
-            else if ($query.length > 6 && (value.confirmation.indexOf($query) >= 0))
+            else if ($query.length > 6 && (value.confirmation.toString().indexOf($query) >= 0))
             {
                 items.push($('<li />').html( 
                     writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip))
