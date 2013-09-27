@@ -9,8 +9,7 @@
 //
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
-//
-//= require jquery
+//= require jquery.min
 //= require jquery_ujs
 //= require jquery.ui.resizable
 //= require jquery.ui.tabs
@@ -18,7 +17,3 @@
 //= require jquery.ui.effect-slide
 //= require jquery.ui.touch-punch
 //= require_tree .
-
-
-
-

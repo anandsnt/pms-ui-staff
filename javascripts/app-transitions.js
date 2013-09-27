@@ -265,6 +265,9 @@ $(function($){
 
         var $loader = '<div id="loading" />',
             $href = $(this).attr('href'),
+            $search_status = $(this).attr('search-status'),
+            $trigger_search = $(this).attr('trigger-search'),
+            $hotel_code = $(this).attr('hotel-code'),
             $pageType = $(this).attr('data-transition'),
             $menuPage = $(this).attr('data-page'),
             $prevMainPage = $('.main-page.page-current').attr('id'),
@@ -289,6 +292,10 @@ $(function($){
                         timeout:    5000,
                         success: function(data){
                             $('#' + $nextMainPage).html(data);
+                            if($trigger_search=='TRUE'){
+								$url = '/search.json?status='+$search_status;
+                                load_search_data($url,'');
+                            }
                         },
                         error: function(){
                             $('#loading').remove();
