@@ -1,0 +1,53 @@
+/* StayNTouch | Master LESS file */
+
+/* 1. ROOT
+==========================================================*/
+@import "01-A_reset.less";
+@import "01-B_variables.less";
+@import "01-C_mixins.less"; 
+@import "01-D_mixins-animations.less"; 
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+@import "02_typography.less"; 
+
+/* 3. GRAPHICAL ELEMENTS
+==========================================================*/
+@import "03_graphics.less"; 
+
+/* 4. LAYOUT
+==========================================================*/
+@import "04_layout.less";
+
+/* 5. COMPONENTS
+==========================================================*/
+@import "05-A_components.less";
+@import "05-B_forms.less";
+@import "05-C_plugins.less"; 
+
+/* 6. IE
+==========================================================*/
+@import "06_ie.less"; 
+
+/* 7. MEDIA QUERIES
+==========================================================*/
+
+/* iPads (landscape)		 			  ================*/
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
+	@import "07-A_ipad-landscape.less";
+}
+
+/* iPads (portrait)		 				  ================*/
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
+	@import "07-B_ipad-portrait.less";
+}
+
+/* 2x				======================================*/
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+	@import "07-C_2x.less";
+}
+
+/* Desktop			======================================*/
+@media only screen and (min-width : 1224px) {
+	@import "07-D_desktop.less";
+}

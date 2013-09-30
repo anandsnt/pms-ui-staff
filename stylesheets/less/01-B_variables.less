@@ -1,10 +1,12 @@
 /* 1. ROOT
 ==========================================================*/
-@background:		@white @texture repeat;
+@background:		@white @textureImage repeat;
 @textColor:			@black;
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
+@type: 				"../type";
+
 @baseFontSize:		16px;
 @baseLineHeight:	1.5em;
 
@@ -15,19 +17,34 @@
 
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/
-@icon-menu: 		asset-url("main-navigation.png");
-@icon-menu2x: 		asset-url("main-navigation@2x.png");
+@images: 			"../cssimg";
 
-@icon-no-content: 	asset-url("no-content.png");
-@icon-no-content2x: asset-url("no-content@2x.png");
+@iconMenu: 			asset-url("main-navigation.png");
+@iconMenu2x: 		asset-url("main-navigation@2x.png");
+
+@iconNoContent: 	asset-url("no-content.png");
+@iconNoContent2x: 	asset-url("no-content@2x.png");
 
 @icons: 			asset-url("icons.png");
 @icons2x: 			asset-url("icons@2x.png");
 
-@icons-tabs: 		asset-url("tabs-nav.png");
-@icons-tabs2x: 		asset-url("tabs-nav@2x.png");
+@iconsTabs: 		asset-url("tabs-nav.png");
+@iconsTabs2x: 		asset-url("tabs-nav@2x.png");
 
-@texture: 			asset-url("texture.png");
+@arrowsTabs: 		asset-url("tabs-arrows.png");
+@arrowsTabs2x: 		asset-url("tabs-arrows@2x.png");
+
+@arrowRight: 		asset-url("arrow-right.png");
+@arrowRight2x: 		asset-url("arrow-right@2x.png");
+@arrowLeft: 		asset-url("arrow-left.png");
+@arrowLeft2x: 		asset-url("arrow-left@2x.png");
+@arrowUp: 			asset-url("arrow-up.png");
+@arrowUp2x: 		asset-url("arrow-up@2x.png");
+@arrowDown: 		asset-url("arrow-down.png");
+@arrowDown2x: 		asset-url("arrow-down@2x.png");
+
+@selectArrow: 		asset-url("select-arrow.png");
+@textureImage:		asset-url("texture.png");
 @darkTexture: 		asset-url("texture-dark.png");
 @gcardTexture: 		asset-url("texture-guest-card.png");
 @rcardTexture1: 	asset-url("texture-res-card-1.png");

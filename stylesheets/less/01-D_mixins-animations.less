@@ -121,6 +121,24 @@
 				-o-animation: @animation @duration @easing @direction;
 				animation: @animation @duration @easing @direction;
 			}
+
+			.top(@animation: movePageToTop, @duration: .3s, @easing: ease, @direction: both) {
+				-webkit-animation: @animation @duration @easing @direction;
+				-moz-animation: @animation @duration @easing @direction;
+				-ms-animation: @animation @duration @easing @direction;
+				-o-animation: @animation @duration @easing @direction;
+				animation: @animation @duration @easing @direction;
+			}
+
+
+			.bottom(@animation: movePageToBottom, @duration: .3s, @easing: ease, @direction: both) {
+				-webkit-animation: @animation @duration @easing @direction;
+				-moz-animation: @animation @duration @easing @direction;
+				-ms-animation: @animation @duration @easing @direction;
+				-o-animation: @animation @duration @easing @direction;
+				animation: @animation @duration @easing @direction;
+			}
+
 		}
 	}
 
@@ -315,6 +333,41 @@
 			from { transform: translate3d(70px, 0, 0); }
 		}
 
+	/* movePageToTop ***/
+		@-webkit-keyframes movePageToTop {
+			from { -webkit-transform: translate3d(0, 60px, 0); }
+		}
+		@-moz-keyframes movePageToTop {
+			from { -moz-transform: translate3d(0, 60px, 0); }
+		}
+		@-ms-keyframes movePageToTop {
+			from { -ms-transform: translate3d(0, 60px, 0); }
+		}
+		@-o-keyframes movePageToTop {
+			from { -o-transform: translate3d(0, 60px, 0); }
+		}
+		@keyframes movePageToTop {
+			from { transform: translate3d(0, 60px, 0); }
+		}
+
+	/* movePageToBottom ***/
+		@-webkit-keyframes movePageToBottom {
+			to { -webkit-transform: translate3d(0, 60px, 0); }
+		}
+		@-moz-keyframes movePageToBottom {
+			to { -moz-transform: translate3d(0, 60px, 0); }
+		}
+		@-ms-keyframes movePageToBottom {
+			to { -ms-transform: translate3d(0, 60px, 0); }
+		}
+		@-o-keyframes movePageToBottom {
+			to { -o-transform: translate3d(0, 60px, 0); }
+		}
+		@keyframes movePageToBottom {
+			to { transform: translate3d(0, 60px, 0); }
+		}
+		
+		
 
 	/* fadeIn ***/
 		@-webkit-keyframes fadeIn {

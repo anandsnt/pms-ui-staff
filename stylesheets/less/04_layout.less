@@ -48,7 +48,7 @@ body {
 			visibility: hidden;
 			overflow: hidden;
 			z-index: 9;
-			background: @background;
+			.background(@white);
 			
 			/* Page inner container ***/
 			.content {
@@ -57,13 +57,8 @@ body {
 				left: 0;
 				width: 100%;
 				overflow: hidden;
-				.calc-height(100, 60); /* %, px */
+				.calc-height(100, 80); /* %, px */
 				.show;
-
-				.wrapper {
-					position: absolute;
-					width: 100%;
-				}
 			}
 
 			/* Page types ***/
@@ -109,10 +104,10 @@ body {
 					left: 0;
 					width: 100%;
 					height: 100%;
-					background: @background;
 					z-index: 10;
 					visibility: hidden;
 					.show;
+					.background(@white);
 					
 					&.view-current {
 						z-index: 30;
@@ -139,7 +134,7 @@ body {
 			}
 		}
 
-		/* Page transitions ***/
+		/* Page transitions - opening left side navigation ***/
 		&.menu-open {
 			.page-current {
 				#border-radius > .left(5px);
@@ -153,6 +148,36 @@ body {
 			}
 		}
 
+		/* Page transitions - opening advanced search options ***/
+		&.advanced-search-open {
+			#search {
+				#move > #page > .bottom();
+				.calc-height(100, 200); /* %, px */
+			}
+		}
+
+		&.advanced-search-closing {
+			#search {
+				#move > #page > .top();
+				.calc-height(100, 120); /* %, px */
+			}
+		}  
+
+		/* Page transitions - opening guest details on stay card 
+		&.reservation-3265971523-guests-open {
+			.reservation-guests {
+				#move > #page > .bottom();
+				background: red;
+			}
+		}
+
+		&.reservation-3265971523-guests-closing {
+			.reservation-guests {
+				#move > #page > .top();
+			}
+		} ***/
+
+		/* Page transitions - loading, signing in and out ***/
 		&.loading {
 			.page-current { #move > #from > .top(); }
 			#login { #move > #from > .top(); }
@@ -205,10 +230,10 @@ body {
 		width: 100%;
 		height: 60px;
 		padding: 10px 0;
-		background: @background;
 		text-align: center;
 		z-index: 99;
 		.show;
+		.background(@white);
 		.box-shadow(0 1px 2px rgba(0,0,0,.1));
 
 		.nav-toggle { .icon-toggle; }
@@ -243,563 +268,163 @@ body {
 /* 5. COMPONENTS
 ==========================================================*/
 
-/* Login page 				==============================*/
-	#login {
+/* Loading					==============================*/
+	#loading {
 		position: absolute;
-		top: 50%;
-		left: 50%;
-		margin: -230px 0 0 -270px;
-		padding: 40px;
-		width: 540px;
-		height: 460px;
-		background: @background;
-		.box-shadow(0 0 5px rgba(0,0,0,.2));
-		#border-radius > .rounded();
-
-		.logo {
-			margin: 0 auto;
-			.size(28px,125px);
-			.show;
-		}
-
-		.notice {
-			.hide;
-		}
-
-		.form {
-			border-bottom: 2px solid rgba(0,0,0,.1);
-			margin: 20px 0;
-
-			.entry { 
-				margin-bottom: 20px;
-
-				label:not(.inline),
-				input {
-					width: 100%;
-					.show; 
-				}
-
-				.inline {
-					line-height: 50px;
-
-					.icon-form { top: 15px; }
-				}
-
-				.button { 
-					font-size: 18px;
-					line-height: 50px;
-					padding: 0 40px;
-					.pull-right; 
-				}	
-			}		
-		}
-
-		a {
-			color: @textColor;
-			.show;
-
-			&:hover,
-			&:active { color: @logoPrimary; }
-		}
+		bottom: 20px;
+		right: 20px;
+		border: 5px solid;
+		border-color: @logoPrimary rgba(255,255,255,.4);
+		z-index: 9999;
+		.square(32px);
+		#border-radius > .rounded(64px);
+		#rotate > .infinite(rotation, .8s, linear, infinite);
 	}
 
-/* Dashboard page 			==============================*/
-	#dashboard {
-		.wrapper {
-			#pixel-to-percent > .side-padding( 256, 2048 );
-
-			h2 {
-				text-align: center;
-				font-size: 48px;
-				line-height: 48px;
-				font-weight: 300;
-				padding: 60px 0 20px 0;
-				margin-bottom: 40px;
-				border-bottom: 1px solid rgba(0,0,0,.1);
-
-				.date { 
-					font-size: 30px;
-					color: #6b6c6e; 
-					.show;
-				}
-			}
-
-			#guests-today {
-				text-align: center;
-				padding-bottom: 20px;
-				margin-bottom: 40px;
-				border-bottom: 1px solid rgba(0,0,0,.1);
-
-				li {
-					display: inline-block;
-					margin-right: 6.25%;
-					.square(25%);
-					max-width: 175px;
-					max-height: 175px;
-
-					&:first-child { margin: 0 6.25%; }
-					&:last-child { margin: 0; }
-
-					.button {
-						padding: 20px;
-						line-height: 1em;
-						.square(100%);
-						.show;
-
-						strong {
-							font-size: 110px;
-							line-height: 110px;
-							font-weight: 700;
-							.show;
-						}
-					}
-				}
-			}
-
-			#stats-today {
-				li {
-					width: 33%;
-					color: @grey3;
-					text-align: center;
-					text-transform: uppercase;
-					padding-bottom: 40px;
-					margin: 0;
-					.pull-left;
-
-					&:nth-child(1n+4) { padding-bottom: 0; }
-
-					span {
-						font-size: 48px;
-						line-height: 1em;
-						font-weight: 300;
-						color: @textColor;
-						.show;
-
-						&.blue { color: @blue; }
-						&.green { color: @green; }
-						&.red { color: @red; }
-						&.orange { color: @orange; }
-					}
-				}
-			}
-		}
-	}
-
-/* Search page 				==============================*/
-	#search-form {
-		text-align: center;
-		height: 60px;
-		padding: 10px;
-		background: rgba(0,0,0,.1);
-
-		.entry {
-			position: relative;
-			height: 40px;
-			width: 80%;
-			.show;
-			.pull-left;
-
-			.icon-search {
-				position: absolute;
-				top: 10px;
-				left: 10px;
-				z-index: 99;
-			}
-
-			#query {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				padding-left: 30px;
-				font-size: 24px;
-				font-weight: 700;
-				color: @logoPrimary; 
-				z-index: 9;
-				.box-shadow();
-				#border-radius > .rounded(5px);
-			}
-
-			#clear-query {
-				position: absolute;
-				top: 12.5px;
-				right: 12.5px;
-				z-index: 99;
-				background-color: @grey2; 
-				.hide-text;
-				.square(15px);
-				.opacity(0);
-				.show;
-				#fade > .out(); 
-				#border-radius > .rounded(15px);
-
-				&.visible { 
-					.opacity(100); 
-					#fade > .in(); 
-				}
-
-				&:hover,
-				&.active { background-color: @logoPrimary; }
-			}
-		}
-
-		.button { padding: 0; }
-	}
-
-	.search-results {
-		position: relative;
-		padding: 20px;
-
-		.link-item {
-			color: @textColor;
-			line-height: 1em;
-			padding: 15px;
-
-			.data {
-				margin: 0 40px 0 20px;
-				overflow: hidden;
-				.calc-width(65, 40); /* %, px */
-				.pull-left;
-
-				h2 {
-					font-size: 24px;
-					line-height: 24px;
-					font-weight: 700;
-					margin-bottom: 10px;
-					white-space: nowrap;
-				}
-
-				span:not(.highlight),
-				em {
-					display: inline;
-					height: 20px;
-					margin-right: 30px;
-					overflow: hidden;
-
-					&.confirmation { font-weight: 600; }
-
-					&.icon-location,
-					&.icon-group {
-						color: @grey3;
-						padding-left: 25px; 
-						&.icon-group  { padding-left: 30px; }
-					}
-				}
-
-				.highlight { color: @logoPrimary; }
-			}
-
-			.guest-status {
-				margin-top: 10px;
-				.square(30px);
-			}
-
-			.room-number {
-				margin: 7px 30px 7px 50px;
-				font-size: 36px;
-				line-height: 36px;
-				vertical-align: middle;
-				font-weight: 700;
-				.pull-left;
-
-				.highlight { 
-					display: inline-block;
-					margin-left: -10px;
-					padding-left: 10px;
-					border-left: 4px solid @logoPrimary;
-				}
-			}
-
-			.room-status {
-				line-height: 50px;
-				vertical-align: middle;
-				font-weight: 600;
-				text-transform: uppercase;
-				.pull-left;
-			}
-
-			&.guest-check-in {
-				.room-number {
-					&.ready { color: @green; }
-					&.not-ready { color: @red; }
-				}
-			}
-		}
-
-		&.hidden { .hide; }
-	}
-
-/* Guest Card				==============================*/
-	#guest-card {
-		position: absolute;
-		top: 60px;
-		left: 0;
+/* Scrollable content 		==============================*/
+	.scrollable {
 		width: 100%;
-		height: 90px;
-		z-index: 999;
-		.show;
+		overflow: hidden;
 
-		#card-wrapper {
-			width: 100%;
-			height: 100%;
-			padding: 20px;
-			color: @white;
-			background: @gcard @gcardTexture;
-			text-align: left;
-			overflow: hidden;
-			.show;
-		}
+		/* Prevent native touch events on Windows */
+		-ms-touch-action: none;
 
-		#guest-card-header {
-			position: relative;
-			height: 50px;
+		/* Prevent the callout on tap-hold and text selection */
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
 
-			.form,
-			.data {
-				margin-left: 20px;
-				overflow: hidden;
-				.calc-width(65, 40); /* %, px */
-				.pull-left;
-			}
+		/* Prevent text resize on orientation change, useful for web-apps */
+		-webkit-text-size-adjust: none;
+		-moz-text-size-adjust: none;
+		-ms-text-size-adjust: none;
+		-o-text-size-adjust: none;
+		text-size-adjust: none;
+			
+		.wrapper {
+			/* Prevent elements to be highlighted on tap */
+			-webkit-tap-highlight-color: rgba(0,0,0,0);
 
-			.form {
-				clear: right;
-				.show;
-
-				.entry {
-					.pull-left;
-
-					.masked-input {
-						font-size: 30px;
-						font-weight: 700;		
-						vertical-align: top;
-						color: @white;
-						cursor: pointer;
-						margin-top: -7px;
-						
-						&.active {
-							margin-top: 0;
-							padding: 0 10px;
-							background: rgba(0,0,0,.1);
-
-							&:focus { color: @logoPrimary; }
-						}
-					}
-				}
-
-				.switch-button,
-				.status { 
-					line-height: 30px;
-					vertical-align: middle;
-					text-transform: uppercase;
-					margin-left: 20px; 
-					.pull-left;
-				}
-			}
-
-			.data {
-
-				span,
-				a {
-					display: inline;
-					height: 20px;
-					margin-right: 30px;
-					padding-left: 20px; 
-					overflow: hidden;
-					color: @white;
-
-					&:hover,
-					&:active { color: @white; }
-				}
-			}
-
-			.add-new-button {
-				position: absolute;
-				top: 20px;
-				right: 193px;
-				font-size: 16px;
-				color: @black;
-				padding: 0 20px;
-				border-color: rgba(0,0,0,.4);
-
-				&:hover,
-				&:active {
-					color: @green;
-					border-color: @green;
-				}
-
-				&:last-child { right: 20px; }
-			}
-		}
-
-		#guest-card-content {
-			margin-top: 20px;
-			.calc-height(100, 70); /* %, px */
-			.show;
-
-			#guest-card-tabs-nav {
-				width: 100%;
-				height: 60px;
-
-				li {
-					display: inline-block;
-				}
-			}
-
-			.card-content {
-				color: @textColor;
-				background: @background;
-				padding: 20px;
-				.calc-height(100, 60); /* %, px */
-			}
-
+			/* Put the scroller into the HW Compositing layer right from the start */
+			-webkit-transform: translateZ(0);
+			-moz-transform: translateZ(0);
+			-ms-transform: translateZ(0);
+			-o-transform: translateZ(0);
+			transform: translateZ(0);
 		}
 	}
 
-/* Reservation Card			==============================*/
-	#reservation-card {
+/* Guest image 				==============================*/
+	.guest-image {
+		position: relative;
+		background: @grey1;
+		#border-radius > .rounded();
+		.square(50px);
+		.pull-left;
+
+		.vip {
+			position: absolute;
+			bottom: -5px;
+			left: -5px;
+		}
+
+		img {
+			width: 100%;
+			height: auto;
+			
+			#border-radius > .rounded();
+		}
+	}
+
+/* Guest status 			==============================*/
+	.guest-status {
+		.hide-text;
+		.show;
+		.pull-left;
+
+
+		&.check-in { background-color: @green; }
+		&.check-out { background-color: @red; }
+		&.inhouse { background-color: @blue; }
+		&.cancel { background-color: @grey3; }
+		&.no-show { background: @grey2; }
+	}
+
+/* Room number & status		==============================*/
+	.room-number {
+		font-size: 36px;
+		line-height: 36px;
+		vertical-align: middle;
+		font-weight: 700;
+	}
+
+	.room-status {
+		font-weight: 600;
+		text-transform: uppercase;
+	}
+
+/* No content				==============================*/
+	.no-content {
 		position: absolute;
 		width: 100%;
 		height: 100%;
+		text-align: center;
+		color: @grey3;
+		.show;
+		#pixel-to-percent > .side-padding(400, 2048);
+		#pixel-to-percent > .top-padding(200, 1536);
 
-		/* Upcoming / Current / History tabs nav ***/
-		#reservation-timeline {
-			position: absolute;
-			top: 0;
-			left: 0;
-			height: 100%;
-			z-index: 111;
-			background: @rcardTexture1;
-			#pixel-to-percent > .width(180, 2048);
-			.box-shadow(inset -1px 0 2px rgba(0,0,0,.1));
+		.h1 { 
+			font-size: 36px;
+			line-height: 36px;
+			font-weight: 700;
+			margin: 18px 0;
+		}
 
-			li {
-				position: relative;
-				font-size: 12px;
-				text-align: center;
-				margin: 20px 10px;
+		.h2 {
+			font-size: 24px;
+			line-height: 30px;
+			font-weight: 300;
 
-				a {
-					
-					font-weight: 600;
-					text-transform: uppercase;
-					color: @grey3;
-					padding-top: 30px;
-					.show;
+			strong { font-weight: 600; }
 
-					span {
-						position: absolute;
-						top: -5px;
-						right: 5px;
-						font-size: 12px;
-						line-height: 14px;
-						font-weight: 700;
-						color: rgba(0,0,0,.2);
-						background: rgba(0,0,0,.15);
-						.square(14px);
-						#border-radius > .rounded(14px);
-
-						&.highlight {
-							color: @textColor;
-							background: @white;
-						}
-					}
-
-					&:hover { color: @textColor; }
-				}
-
-				&.ui-tabs-active {
-					a { color: @textColor; }
-				}
+			a { 
+				color: @green;
+				font-weight: 600;
 			}
 		}
 
-		/* Upcoming / Current / History tabs ***/
-		.reservation-list {
-			position: absolute;
-			top: 0;
-			height: 100%;
-			background: @background;
-			z-index: 99;
-			#pixel-to-percent > .left(180, 2048);
-			#pixel-to-percent > .width(1868, 2048);
+		&#no-results {
+			visibility: visible;
+			.transition;
+			.opacity(100); 
+			#fade > .in();
 
-			&.reservation-tabs {
-				#pixel-to-percent > .left-padding(320, 2048);
-
-				/* Reservation tabs nav ***/
-				#reservation-listing {
-					position: absolute;
-					top: 0;
-					left: 0;
-					height: 100%;
-					background: @rcardTexture2;
-					z-index: 99;
-					#pixel-to-percent > .width(320, 2048);
-					.box-shadow(inset -1px 0 2px rgba(0,0,0,.1));
-
-					li {
-						position: relative;
-						text-align: left;
-						margin: 0 10px;
-						line-height: 40px;
-						vertical-align: middle;
-						border-bottom: 1px solid rgba(0,0,0,.1);
-
-						a {
-							font-weight: 600;
-							text-transform: uppercase;
-							color: @grey3;
-							.show;
-
-							.guest-status {
-								background-color: rgba(0,0,0,.1);
-								margin: 10px 10px 0 0;
-								.square(20px);
-							}
-
-							&:hover { color: @textColor;  }
-						}
-			
-						&.ui-tabs-active {
-							a {
-								color: @textColor;
-
-								.guest-status {
-									&.check-in { background-color: @green; }
-									&.check-out { background-color: @red; }
-									&.inhouse { background-color: @blue; }
-									&.cancel { background-color: @grey3; }
-									&.no-show { background: @grey2; }
-								}
-							}
-						}
-					}
-				}
-			}
-
-			.reservation-content {
-				z-index: 90;
+			&.hidden { 
+				visibility: hidden;
+				.opacity(0);
+				#fade > .out();  
 			}
 		}
 
-
-		/* Panel animations ***/
-		.ui-tabs-panel {
-			z-index: 10;
-
-			&.set-back {
-				z-index: 20;
-				#move > #to > .left();
-			}
-
-			&.loading {
-				z-index: 99;
-				#move > #from > .right();
-			}
+		&.reservation-content {
+			/*#pixel-to-percent > .top-padding( 370, 1536 );*/
 		}
 	}
 
+/* Grey label				==============================*/
+	.label,
+	.block-title {
+		text-transform: uppercase;
+		color: @grey3;
+		font-size: 14px;
+		margin-right: 10px;
+		vertical-align: middle;
+		.show;
+		.pull-left;
+	}
 
 
 /* 6. IE

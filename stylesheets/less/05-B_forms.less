@@ -7,8 +7,7 @@ textarea {
 	color: @textColor;
 } 
 
-input[type="text"],
-input[type="password"],
+input,
 textarea {
 	line-height: 40px;
 	min-height: 40px;
@@ -43,6 +42,34 @@ textarea {
 	}
 }
 
+select {
+	width: 100%;
+	min-height: 40px;
+	vertical-align: middle;
+	padding: 10px;
+	border: 0;
+	outline: 0;
+    background: @white;
+    cursor:pointer;
+    white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+	.box-shadow();
+	#border-radius > .rounded();
+
+	&:focus,
+	&:active {
+		.box-shadow(inset 1px 1px 1px rgba(0,0,0,.5));
+	}
+}
+
+textarea {
+  resize: none;
+}
+
 label {
 	cursor: pointer;
 	margin-bottom: 5px;
@@ -57,24 +84,24 @@ label {
 /* 5. COMPONENTS
 ==========================================================*/
 
-	/* Check & radio box 		==========================*/
+/* Check & radio box 		==========================*/
 	.checkbox,
 	.radio {
 		position: relative;
 		padding-left: 40px;
 		line-height: 40px;
 		vertical-align: middle;
-		background: @white;
-		cursor: pointer;
-		#border-radius > .rounded();
-		.box-shadow(1px 1px 0 rgba(0,0,0,.15));
-		.show;
+		.clickable;
 
 		input {
 			position: absolute;
 			top: 0;
 			left: 0;
+			width: 100%;
+			height: 100%;
 			outline: none;
+			cursor: pointer;
+			z-index: 1;
 			.opacity(0);
 		}
 
@@ -128,7 +155,7 @@ label {
 		}
 	}
 
-	/* On/off switch checkbox	==========================*/
+/* On/off switch checkbox	==========================*/
 	.switch-button {
 		background: rgba(0,0,0,.1);
 		display: inline-block;
@@ -179,6 +206,59 @@ label {
 			.value { right: 35px; }
 		}
 	}
+
+/* Styled selectboxes		==========================*/
+	.select-item {
+		position: relative;
+		height: 40px;
+		padding: 0 10px;
+		background: @selectArrow no-repeat 95% 50%;
+		background-size: 6px 4px;
+		.clickable;
+
+		.selected {
+			line-height: 40px;
+			vertical-align: middle;
+			white-space: nowrap;
+  			overflow: hidden;
+  			text-overflow: ellipsis;
+
+			> * {
+				line-height: 40px;
+				vertical-align: middle;
+			}
+		}
+
+		select {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			outline: none;
+			cursor: pointer;
+			z-index: 1;
+			.opacity(0);
+		}
+	}
+
+	.select {
+		position: relative;
+
+		&:after {
+			content: "";
+			position: absolute;
+			top: 5px;
+			right: 5px;
+			background: @white @selectArrow no-repeat 50% 50%;
+    		background-size: 6px 4px;
+			pointer-events: none;
+			width: 25px;
+			.calc-height(100, 10);
+		}
+	}
+
+
 
 /* 6. IE
 ==========================================================*/

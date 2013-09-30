@@ -1,6 +1,3 @@
-// Disable touchmove events
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-
 // Chaining with intervals
 var chainedAnimation = function(){
     var This = this;
@@ -46,23 +43,12 @@ var chainedAnimation = function(){
     }
 };
 
-// Content scroll
-var contentScroll;
-function createIScroll($target){
-    contentScroll = new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' });
-}
-function destroyIScroll(){
-    contentScroll.destroy();
-    contentScroll = null;
-}
-
 // Change main or inner page
 function changePage($type, $menuActiveItem, $prevPage, $nextPage){
     var $transition = 'move-from-right',
         $newScreen = new chainedAnimation(),
         $delay = 150;
     
-
     // Start transitioning when new page is ready
     $('#loading').fadeOut(function(){
         
@@ -111,16 +97,10 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage){
         // Set active class in the menu
         $('#main-menu a.active').removeClass('active');
         $('#main-menu a[data-page="' + $menuActiveItem + '"]').addClass('active');
-
-        // Set scroller on the new page
-        createIScroll('#' + $nextPage + ' .scrollable');
-        setTimeout(function () {
-            contentScroll.refresh();
-        }, 0);
     }).remove();
     
     if($menuActiveItem === "dashboard" ){
-    	showGreetings();
+        showGreetings();
     }
 }
 
@@ -150,13 +130,6 @@ function changeView($type, $menuActiveItem, $prevView, $nextView){
         }, $delay);
 
         $newView.start();
-
-        // Set scroller on the new page
-        createIScroll('#' + $nextView + ' .scrollable');
-        setTimeout(function () {
-            contentScroll.refresh();
-        }, 0);
-
     }).remove();
 }
 
@@ -212,7 +185,6 @@ function goBackToView($type, $menuActiveItem, $prevView){
     $('#main-menu a[data-page="' + $menuActiveItem + '"]').addClass('active');
 }
 
-
 $(function($){ 
 
     // Menu display toggle
@@ -237,7 +209,6 @@ $(function($){
                 $toggleNavigation.add(function(){ $('.container').addClass($menuClosing); } );
                 $toggleNavigation.add(function(){ $('.container').removeClass($menuOpen).removeClass($menuClosing); }, $delay);
                 break;
-
         }
         
         $toggleNavigation.start();
@@ -254,19 +225,16 @@ $(function($){
         $showMaster.add(function(){ $('.container').removeClass('loading'); }, $delay);
         $showMaster.add(function(){ $('#main-menu').show(); }, $delay);
         $showMaster.start();
-
-        createIScroll('.page-current > .scrollable');
     });
 
     // All other screens - loaded dynamicilly
     $(document).on('click','a[data-transition]',function(e) {
-    	
         e.preventDefault();
 
         var $loader = '<div id="loading" />',
             $href = $(this).attr('href'),
-            $search_status = $(this).attr('search-status'),
-            $trigger_search = $(this).attr('trigger-search'),
+            $search_status = $(this).attr('search-status'),	 	
+            $trigger_search = $(this).attr('trigger-search'),	 	
             $hotel_code = $(this).attr('hotel-code'),
             $pageType = $(this).attr('data-transition'),
             $menuPage = $(this).attr('data-page'),
@@ -292,14 +260,15 @@ $(function($){
                         timeout:    5000,
                         success: function(data){
                             $('#' + $nextMainPage).html(data);
-                            if($trigger_search=='TRUE'){
-								$url = '/search.json?status='+$search_status;
-                                load_search_data($url,'');
+                            if($trigger_search=='TRUE'){	 	
+                            	$url = '/search.json?status='+$search_status;	 	
+                            	load_search_data($url,'');	 	
                             }
                         },
                         error: function(){
                             $('#loading').remove();
-                            alert("Sorry, not there yet!");
+                            modalInit('modals/alerts/not-there-yet/');
+                            //alert("Sorry, not there yet!");
                         }
                     }).done(function(){ changePage($pageType, $menuPage, $prevMainPage, $nextMainPage); });
                 });   
@@ -328,7 +297,8 @@ $(function($){
                         },
                         error: function(){
                             $('#loading').remove();
-                            alert("Sorry, not there yet!");
+                            modalInit('modals/alerts/not-there-yet/');
+                            //alert("Sorry, not there yet!");
                         }
                     }).done(function(){ changePage($pageType, $menuPage, $prevInnerPage, $nextInnerPage); });
                 });   
@@ -357,7 +327,8 @@ $(function($){
                         },
                         error: function(){
                             $('#loading').remove();
-                            alert("Sorry, not there yet!");
+                            modalInit('modals/alerts/not-there-yet/');
+                            //alert("Sorry, not there yet!");
                         }
                     }).done(function(){ changeView($pageType, $menuPage, $prevNestedView, $nextNestedView); });
                 });   
@@ -370,7 +341,8 @@ $(function($){
         }
         else 
         {
-            alert("Sorry, not there yet!");
+            modalInit('modals/alerts/not-there-yet/');
+            //alert("Sorry, not there yet!");
         }
     });
 

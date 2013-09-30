@@ -192,12 +192,39 @@
 		filter: e(%("alpha(opacity=%d)", @opacity));
 	}
 
-	/* Box box-shadow: 	======================================*/
-	.box-shadow(@shadow: 0 1px 0 rgba(0,0,0,.15)) {
+	/* Box box-shadow 	======================================*/
+	.box-shadow(@shadow: 1px 1px 0 rgba(0,0,0,.15)) {
 		-webkit-box-shadow: @shadow;
 		-moz-box-shadow: @shadow;
 		box-shadow: @shadow;
 	}
+
+	/* Clickable item 	======================================*/
+	.clickable {
+		background-color: @white;
+		cursor: pointer;
+		white-space: nowrap;
+  		overflow: hidden;
+  		text-overflow: ellipsis;
+		#border-radius > .rounded();
+		.box-shadow();
+		.show;
+
+		&:hover,
+		&:active { 
+			.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)");
+		}
+	}
+
+	/* Content background 		=============================*/
+	.background(@color: @white) {
+		background: @color @textureImage repeat;
+
+		@media @highdpi {
+			background-size: 40px;
+		}
+	}
+
 
 /* 4. LAYOUT
 ==========================================================*/
@@ -258,6 +285,10 @@
 
 	  	.left-margin(@target, @context) {
 	    	margin-left: (@target / @context) * 100%;
+	  	}
+
+	  	.right-margin(@target, @context) {
+	    	margin-right: (@target / @context) * 100%;
 	  	}
   	}
 
