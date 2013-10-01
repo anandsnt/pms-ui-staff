@@ -113,4 +113,5 @@ $(function($){
 			}
 		}).addClass('ui-tabs-vertical ui-helper-clearfix');
 	});
+	
 });

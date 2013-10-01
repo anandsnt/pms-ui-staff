@@ -167,6 +167,11 @@ $(function($){
         onOffSwitch();
     });
 
+    $(document).on('change', 'select.styled', function(e){
+        e.stopImmediatePropagation();
+        $(this).updateStyledSelect();
+    });
+    
     // Resize masked inputs to match content width
     $(document).on('focus', '.masked-input', function(){
         $('.masked-input').addClass('active');
@@ -187,3 +192,39 @@ $(function($){
     }); 
 
 });
+
+//Update data for custom selects
+$.fn.updateStyledSelect = function() {
+    var i,j,
+        select = this,
+        selectedOption = select.find('option:selected')
+,
+        selectDisabled = 'disabled',
+        attrArray = $(selectedOption).map(function() {
+            return [
+                $.map($(this).data(), function(value, index) {
+                    return index + '=' + value;
+                })
+            ];
+        }).get(),
+        attrString = attrArray.toString(),
+        attributes = attrString.split(','),
+        image = $.inArray('image', attributes) > -1;;
+        
+    // Loop trough all attributes and update mathching data
+    for (i = 0, l = attributes.length; i < l; i++) 
+    {
+        var attrSplitted = attributes[i].split('='),
+            attrIndex = attrSplitted[0],
+            attrValue = attrSplitted[1];
+
+        // Update all textual data that matches the selected option's data-* array
+        this.next('.selected').find('.value.' + attrIndex).text(attrValue);
+    }
+
+    // Check if image data exists and update
+    if (selectedOption.data('image'))
+    {
+        this.next('.selected').find('img').attr({'src': 'assets/' + selectedOption.data('image')});
+    }
+};
