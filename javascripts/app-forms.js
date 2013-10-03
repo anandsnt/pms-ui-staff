@@ -228,3 +228,60 @@ $.fn.updateStyledSelect = function() {
         this.next('.selected').find('img').attr({'src': 'assets/' + selectedOption.data('image')});
     }
 };
+
+//Toggle hidden content
+$(document).on('click', '.toggle', function(e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    var $toggleContent = new chainedAnimation(),
+        $delay = 300,
+        $target = $(this).attr('href'),
+        $targetClass = $target.split('#'),
+        $openClass = $targetClass[1] + '-open',
+        $closingClass = $targetClass[1] + '-closing';
+
+
+    // Open
+    if (!$(this).hasClass('active'))
+    {
+        // Simple Open - show this target
+        if (!$(this).hasClass('dual-toggle'))
+        {
+            $(this).addClass('active');
+            $toggleContent.add(function(){ $('.container').addClass($openClass); });
+        }
+        // Complex Open - close previous target, then open this target
+        else
+        {
+            var $itemsClass = $($target).attr('class').split(' '),
+                $prevItemClass = $itemsClass[0],
+                $prevItem = $('.' + $prevItemClass + ':not(.hidden)').attr('id');
+
+            // Close prev
+            $(this).parent().siblings().find('.dual-toggle.active').removeClass('active');
+            $('#' + $prevItem).addClass('hidden');
+
+            // Open this
+            $(this).addClass('active');
+            $('.container').addClass($openClass); 
+        }
+    }
+    // Close
+    else
+    {
+        $(this).removeClass('active');
+        $toggleContent.add(function(){ $('.container').addClass($closingClass); } );
+        $toggleContent.add(function(){ $('.container').removeClass($openClass).removeClass($closingClass); }, $delay);
+    }
+
+    $($target).toggleClass('hidden');
+    $toggleContent.start();
+
+    // Refresh scrolls
+    if (pageScroll) { refreshPageScroll(); }
+    if (viewScroll) { refreshViewScroll(); }
+    if (guestCardScroll) { refreshGuestCardScroll(); }
+    if (registrationScroll) { refreshRegistrationScroll(); }
+    if (horizontalScroll) { refreshHorizontalScroll(); }
+});
