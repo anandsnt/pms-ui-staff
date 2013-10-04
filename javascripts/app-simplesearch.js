@@ -26,7 +26,7 @@ function writeSearchResult(id, firstname, lastname, image, confirmation, status,
         $image = (image != '') ? '<figure class="guest-image"><img src="/assets/' + image + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = roomstatusextra ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
         $output = 
-        '<a href="/dashboard/staycard/?confirmation=' + confirmation + '" class="guest-' + status + ' link-item float" data-transition="inner-page has-card" data-page="search">' + 
+        '<a href="/dashboard/staycard?confirmation=' + confirmation + '" class="guest-' + status + ' link-item float" data-transition="inner-page has-card" data-page="search">' + 
             $image +
             '<div class="data">' +
                 '<h2>' + lastname + ', ' + firstname + '</h2>' +
@@ -36,6 +36,28 @@ function writeSearchResult(id, firstname, lastname, image, confirmation, status,
             '<strong class="room-number ' + roomstatus + '">' + room + '</strong>' + $roomAdditional +
         '</a>';
     return $output;
+}
+
+//Update view
+function updateView(){
+    
+    // Content update
+    if ($('#search-results').is(':empty'))
+    {
+        if ($('#preloaded-results').length)
+        {
+            $('#no-results').addClass('hidden');
+            $('#preloaded-results').removeClass('hidden');
+        }
+        else
+        {
+            $('#no-results').removeClass('hidden');
+        }
+    }
+
+    // Set pageScroll
+    if (pageScroll) { destroyPageScroll(); }
+    createPageScroll('#search');
 }
 
 $(function($){ 
@@ -73,15 +95,7 @@ $(function($){
         else
         {
             $('#search-results').empty().addClass('hidden');
-            
-            if ($('#preloaded-results.hidden').length)
-            {
-                $('#preloaded-results').removeClass('hidden');
-            }
-            else
-            {
-                $('#no-results.hidden').removeClass('hidden');
-            }
+            updateView();            
         }
     });
 
@@ -96,20 +110,7 @@ $(function($){
         $(this).removeClass('visible');
         $('#query').val('');
         $('#search-results').empty().addClass('hidden');
-        
-        if ($('#preloaded-results.hidden').length)
-        {
-            $('#preloaded-results').removeClass('hidden');
-        }
-        else
-        {
-            $('#no-results.hidden').removeClass('hidden');
-        }
-        
-        // Reset scroller
-        setTimeout(function () {
-            contentScroll.refresh();
-        }, 0);
+        updateView();
     });
     
 
@@ -133,8 +134,9 @@ function load_search_data(url,$query){
                     // No data in JSON file
                     else
                     {
-                        $('#search-results').html('<li class="notice">No data</li>');
+                    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number</span></li>');
                     }
+                    updateView();
                 },
                 error: function (result) {
                    console.log(JSON.stringify(result));
@@ -181,21 +183,21 @@ function displayFilteredResults(searchResults, $query){
             }
 
             // Reset scroller
-            setTimeout(function () {
+            /*setTimeout(function () {
                 contentScroll.refresh();
-            }, 0);
+            }, 0);*/
         });
     }
     catch(e)
     {
     	console.log(e);
-        $('#search-results').html('<li class="notice">Error occured</li>');
+    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
     }
 
     // As this search filters JSON content, we need temp custom handling for no results scenario
     if ($('#search-results').is(':empty'))
     {
-        $('#search-results').html('<li class="notice">Found nothing</li>');
+    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number</span></li>');
     }
 
 }
@@ -214,20 +216,20 @@ function displaySearchResults(response, $query){
         });
         
      // Reset scroller
-        setTimeout(function () {
+        /*setTimeout(function () {
             contentScroll.refresh();
-        }, 0);
+        }, 0);*/
     }
     catch(e)
     {
     	console.log(e);
-        $('#search-results').html('<li class="notice">Error occured</li>');
+    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
     }
 
     // As this search filters JSON content, we need temp custom handling for no results scenario
     if ($('#search-results').is(':empty'))
     {
-        $('#search-results').html('<li class="notice">Found nothing</li>');
+    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number</span></li>');
     }
 }
 

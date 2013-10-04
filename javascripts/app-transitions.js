@@ -288,7 +288,7 @@ $(function($){
                         type:       'GET',
                         url:        $href,
                         dataType:   'html',
-                        timeout:    5000,
+                        //timeout:    5000,
                         success: function(data){
                             $('#' + $nextInnerPage).html(data);
                         },
