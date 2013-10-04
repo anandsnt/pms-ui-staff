@@ -183,9 +183,9 @@ function displayFilteredResults(searchResults, $query){
             }
 
             // Reset scroller
-            setTimeout(function () {
+            /*setTimeout(function () {
                 contentScroll.refresh();
-            }, 0);
+            }, 0);*/
         });
     }
     catch(e)
@@ -216,9 +216,9 @@ function displaySearchResults(response, $query){
         });
         
      // Reset scroller
-        setTimeout(function () {
+        /*setTimeout(function () {
             contentScroll.refresh();
-        }, 0);
+        }, 0);*/
     }
     catch(e)
     {
