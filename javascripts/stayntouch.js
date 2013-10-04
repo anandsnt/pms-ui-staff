@@ -1,13 +1,13 @@
 /* Styled checkbox & radio ***/
-function styleCheckboxRadio() {
-	if($('.checkbox input').length) {
-		$('.checkbox').removeClass('c-on');
-		$('.checkbox input:checked').closest('label').addClass('c-on');
+function styleCheckboxRadioAdminScreen() {
+	if(jQuery('.checkbox input').length) {
+		jQuery('.checkbox').removeClass('c-on');
+		jQuery('.checkbox input:checked').closest('label').addClass('c-on');
 	};
 
-	if($('.radio input').length) {
-		$('.radio').removeClass('r-on').addClass('inactive');
-		$('.radio input:checked').closest('label').removeClass('inactive').addClass('r-on');
+	if(jQuery('.radio input').length) {
+		jQuery('.radio').removeClass('r-on').addClass('inactive');
+		jQuery('.radio input:checked').closest('label').removeClass('inactive').addClass('r-on');
 	};
 };
 
@@ -218,7 +218,7 @@ jQuery(function($) {
 
 	// Fancy form elements - on click
 	$('.checkbox input, .radio input').click(function() {
-		styleCheckboxRadio();
+		styleCheckboxRadioAdminScreen();
 	});
 	// Toggle active/inactive
 	$('.switcher input').click(function(e) {

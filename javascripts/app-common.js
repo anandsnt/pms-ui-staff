@@ -1,6 +1,6 @@
-jQuery(function($){
+/*jQuery(function($){
 	showGreetings();
-});
+});*/
 
 function showGreetings(){
 	var d = new Date();
@@ -10,7 +10,7 @@ function showGreetings(){
 	if (time < 12){
 		$('#greetings').html('Good Morning');
 	}
-	else if (time > 12 && time < 16){
+	else if (time >= 12 && time < 16){
 		$('#greetings').html('Good Afternoon');
 	}
 	else{

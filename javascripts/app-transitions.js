@@ -99,9 +99,6 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage){
         $('#main-menu a[data-page="' + $menuActiveItem + '"]').addClass('active');
     }).remove();
     
-    if($menuActiveItem === "dashboard" ){
-        showGreetings();
-    }
 }
 
 // Change inner page view 
