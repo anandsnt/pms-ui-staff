@@ -27,6 +27,13 @@ $(function($){
 	    	refreshGuestCardScroll();
 	    }, 300);
     });
+    $(document).on('click', '#guest-contact, #guest-like, #guest-credit, #guest-loyalty', function(event){
+	    if($("#current_tab").val() == "guest-contact"){
+	    	saveContactInfo();	    	
+	    }
+	    $("#current_tab").val(event.target.id);
+    });
+
 
 	// Resize guest card
 	$('#guest-card').resizable({
@@ -57,38 +64,71 @@ function callFunctions(){
 }
 //Function to render the contact information values in the contact form of guest card from API.
 function renderContactInformation(){
-		if($guestCardClickTime){
-			$.ajax({
-				type: "GET",
-	            url: '/dashboard/guestcard.json',
-	            data: {fakeDataToAvoidCache: new Date()}, // fakeDataToAvoidCache is iOS Safari fix
-	            async: false,
-	            success: function(data) {              
-	               $("#guest_firstname").val(data.first_name);
-	               $("#guest_lastname").val(data.last_name);
-	               $("#title").val(data.title);
-	               $("#language").val(data.language);
-	               $("#birthday-month").val(data.birth_month);
-	               $("#birthday-day").val(data.birth_date);
-	               $("#birthday-year").val(data.birth_year);
-	               $("#passport-number").val(data.passport_number);
-	               $("#passport-month").val(data.passport_expiry_month);
-	               $("#passport-year").val(data.passport_expiry_year);
-	               $("#nationality").val(data.nationality);
-	               $("#email").val(data.email_address);
-	               $("#streetname").val(data.address);
-	               $("#city").val(data.city);
-	               $("#postalcode").val(data.postal_code);
-	               $("#state").val(data.state);
-	               $("#country").val(data.country);
-	               $("#phone").val(data.phone);
-	               $("#mobile").val(data.mobile);
-	               $guestCardClickTime = false;
-	            },
-	            error: function(){
-	                console.log("There is an error!!");
-	                $guestCardClickTime = true;
-	            }
-	        });
-	       }
+	if($guestCardClickTime){
+		$.ajax({
+			type: "GET",
+            url: '/dashboard/guestcard.json',
+            data: {fakeDataToAvoidCache: new Date()}, // fakeDataToAvoidCache is iOS Safari fix
+            async: false,
+            success: function(data) {              
+               $("#guest_firstname").val(data.first_name);
+               $("#guest_lastname").val(data.last_name);
+               $("#title").val(data.title);
+               $("#language").val(data.language);
+               $("#birthday-month").val(data.birth_month);
+               $("#birthday-day").val(data.birth_date);
+               $("#birthday-year").val(data.birth_year);
+               $("#passport-number").val(data.passport_number);
+               $("#passport-month").val(data.passport_expiry_month);
+               $("#passport-year").val(data.passport_expiry_year);
+               $("#nationality").val(data.nationality);
+               $("#email").val(data.email_address);
+               $("#streetname").val(data.address);
+               $("#city").val(data.city);
+               $("#postalcode").val(data.postal_code);
+               $("#state").val(data.state);
+               $("#country").val(data.country);
+               $("#phone").val(data.phone);
+               $("#mobile").val(data.mobile);
+               $guestCardClickTime = false;
+            },
+            error: function(){
+                console.log("There is an error!!");
+                $guestCardClickTime = true;
+            }
+        });
+       }
 	}
+//Function to save contact information
+function saveContactInfo(){
+		$.ajax({
+			type: "POST",
+            url: '/dashboard/saveContactInfo',
+            data: {
+            	firstname: $("#guest_firstname").val(),
+            	lastname: $("#guest_lastname").val(),
+            	title: $("#title").val(),
+            	language: $("#language").val(),
+            	birth_date: $("#birthday-year").val()+"-"+$("#birthday-month").val()+"-"+$("#birthday-day").val(),
+            	passport_number: $("#passport-number").val(),
+            	passport_month: $("#passport-month").val(),
+            	passport_year: $("#passport-year").val(),
+            	nationality: $("#nationality").val(),
+            	email: $("#email").val(),
+            	streetname: $("#streetname").val(),
+            	city: $("#city").val(),
+            	postalcode: $("#postalcode").val(),
+            	state: $("#state").val(),
+            	country: $("#country").val(),
+            	phone: $("#phone").val(),
+            	mobile: $("#mobile").val()
+            }, 
+            async: false,
+            dataType: 'json',
+            success: function() {   
+            },
+            error: function(){
+                console.log("There is an error!!");
+            }
+       });
+}
