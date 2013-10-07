@@ -6,7 +6,9 @@ $(function($){
 		$cardHeight = '90px';
 		// Variable used to handle call API only for the first time of click or resize event of guest card window
 		$guestCardClickTime = true;
-	
+		$currentTab = "guest-contact";
+		$contactInfoChange = false;
+
 	// Show/hide guest card on click
 	$(document).on('click', '#guest-card .ui-resizable-handle', function(){
 	     renderContactInformation();
@@ -28,11 +30,18 @@ $(function($){
 	    }, 300);
     });
     $(document).on('click', '#guest-contact, #guest-like, #guest-credit, #guest-loyalty', function(event){
-	    if($("#current_tab").val() == "guest-contact"){
-	    	saveContactInfo();	    	
+	    if($currentTab == "guest-contact"){
+	    	if($contactInfoChange){
+	    		saveContactInfo();
+	    	} else {
+	    		console.log("no save")
+	    	}
+	    	  	
 	    }
-	    $("#current_tab").val(event.target.id);
+	    // $("#current_tab").val(event.target.id);
+	    $currentTab = event.target.id;
     });
+   
 
 
 	// Resize guest card
@@ -90,7 +99,13 @@ function renderContactInformation(){
                $("#country").val(data.country);
                $("#phone").val(data.phone);
                $("#mobile").val(data.mobile);
-               $guestCardClickTime = false;
+               $guestCardClickTime = false;        
+               
+               // to change flag - to save contact info only if any change happens.
+               $(document).on('change', '#guest_firstname, #guest_lastname, #title, #language, #birthday-month,#birthday-year, #birthday-day, #passport-number,#passport-month, #passport-year, #nationality,#email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event){
+	    	        $contactInfoChange = true;
+    		   });     
+               
             },
             error: function(){
                 console.log("There is an error!!");
@@ -103,7 +118,7 @@ function renderContactInformation(){
 function saveContactInfo(){
 		$.ajax({
 			type: "POST",
-            url: '/dashboard/saveContactInfo',
+            url: '/dashboard/guestcard.json',
             data: {
             	firstname: $("#guest_firstname").val(),
             	lastname: $("#guest_lastname").val(),
@@ -126,6 +141,7 @@ function saveContactInfo(){
             async: false,
             dataType: 'json',
             success: function() {   
+            	$contactInfoChange = false;
             },
             error: function(){
                 console.log("There is an error!!");
