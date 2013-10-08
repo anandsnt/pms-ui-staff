@@ -99,8 +99,9 @@ function renderContactInformation(){
                $("#country").val(data.country);
                $("#phone").val(data.phone);
                $("#mobile").val(data.mobile);
-               $guestCardClickTime = false;        
-               
+               $guestCardClickTime = false;     
+                  
+               renderGuestCardLike();
                // to change flag - to save contact info only if any change happens.
                $(document).on('change', '#guest_firstname, #guest_lastname, #title, #language, #birthday-month,#birthday-year, #birthday-day, #passport-number,#passport-month, #passport-year, #nationality,#email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event){
 	    	        $contactInfoChange = true;
@@ -142,6 +143,42 @@ function saveContactInfo(){
             dataType: 'json',
             success: function() {   
             	$contactInfoChange = false;
+            },
+            error: function(){
+                console.log("There is an error!!");
+            }
+       });
+}
+
+//Function to save contact information
+function renderGuestCardLike(){
+		$.ajax({
+			type: "GET",
+            // url: '/data/guest_likes.json',
+            url: '/dashboard/likes',
+            // data: {
+            	// firstname: $("#guest_firstname").val(),
+            	// lastname: $("#guest_lastname").val(),
+            	// title: $("#title").val(),
+            	// language: $("#language").val(),
+            	// birth_date: $("#birthday-year").val()+"-"+$("#birthday-month").val()+"-"+$("#birthday-day").val(),
+            	// passport_number: $("#passport-number").val(),
+            	// passport_month: $("#passport-month").val(),
+            	// passport_year: $("#passport-year").val(),
+            	// nationality: $("#nationality").val(),
+            	// email: $("#email").val(),
+            	// streetname: $("#streetname").val(),
+            	// city: $("#city").val(),
+            	// postalcode: $("#postalcode").val(),
+            	// state: $("#state").val(),
+            	// country: $("#country").val(),
+            	// phone: $("#phone").val(),
+            	// mobile: $("#mobile").val()
+            // }, 
+            async: false,
+            success: function(data) {    
+            	$("#content").html(data);           	
+            	// console.log(data);
             },
             error: function(){
                 console.log("There is an error!!");
