@@ -8,6 +8,7 @@ $(function($){
 		$guestCardClickTime = true;
 		$currentTab = "guest-contact";
 		$contactInfoChange = false;
+		$focusInGuestCardContent = false;
 
 	// Show/hide guest card on click
 	$(document).on('click', '#guest-card .ui-resizable-handle', function(){
@@ -29,12 +30,28 @@ $(function($){
 	    	refreshGuestCardScroll();
 	    }, 300);
     });
+    // to save the modified contact info while click anywhere in the page outside guest-card-content.
+    $("#guest-card-content").click(function (e){
+    	$focusInGuestCardContent = true;
+    });
+    $("html").click(function (e){
+    	if(!$focusInGuestCardContent){
+    		if($contactInfoChange){
+	    		saveContactInfo();
+	    	} else {
+	    		console.log("no save");
+	    	}
+    	}
+		else{
+    		$focusInGuestCardContent = false;
+    	}
+	});
     $(document).on('click', '#guest-contact, #guest-like, #guest-credit, #guest-loyalty', function(event){
 	    if($currentTab == "guest-contact"){
 	    	if($contactInfoChange){
 	    		saveContactInfo();
 	    	} else {
-	    		console.log("no save")
+	    		console.log("no save");
 	    	}
 	    	  	
 	    }
