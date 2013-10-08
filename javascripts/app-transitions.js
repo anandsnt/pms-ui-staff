@@ -336,6 +336,23 @@ $(function($){
                 goBackToView($pageType, $menuPage, $backButtonView);
             }
         }
+        else if ($pageType.indexOf('reservation-list') >= 0){
+        	var reservation = $href.split("-")[1];
+            $.ajax({
+                type:       'GET',
+                url:        "/dashboard/reservation_details?reservation=" + reservation,
+                dataType:   'html',
+                timeout:    5000,
+                success: function(data){
+                	displayReservationDetails($href, data);
+                },
+                error: function(){
+//                    $('#loading').remove();
+//                    modalInit('modals/alerts/not-there-yet/');
+                    //alert("Sorry, not there yet!");
+                }
+            }).done(function(){});
+        }
         else 
         {
             modalInit('modals/alerts/not-there-yet/');

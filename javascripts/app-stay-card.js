@@ -94,3 +94,16 @@ $(function($){
 	});
 	
 });
+
+
+function displayReservationDetails(divId , html){
+	console.log(divId);
+	var parentDiv = $('#current');
+	if (!($(divId).length > 0)){
+		$('#current').append(html);
+	}
+	
+	
+}
+
+
