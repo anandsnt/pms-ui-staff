@@ -55,7 +55,6 @@ $(function($){
 	    	}
 	    	  	
 	    }
-	    // $("#current_tab").val(event.target.id);
 	    $currentTab = event.target.id;
     });
    
