@@ -89,7 +89,9 @@ function callFunctions(){
 }
 //Function to render the contact information values in the contact form of guest card from API.
 function renderContactInformation(){
+	var $loader = '<div id="loading" />';
 	if($guestCardClickTime){
+		$($loader).prependTo('body').show(function(){
 		$.ajax({
 			type: "GET",
             url: '/dashboard/guestcard.json',
@@ -127,6 +129,9 @@ function renderContactInformation(){
                 console.log("There is an error!!");
                 $guestCardClickTime = true;
             }
+            }).done (function() { 
+        		$('#loading').remove();
+        	});
         });
        }
 	}
