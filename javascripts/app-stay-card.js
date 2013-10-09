@@ -60,7 +60,7 @@ $(function($){
 		var $activeTab = $(this).attr('id') == 'reservation-card' ? 1 : 0;
 
 		$(this).tabs({ 
-			active: $activeTab,
+			//active: $activeTab,
 			beforeActivate: function( event, ui ) {
 				var $prevTab = ui.oldPanel.attr('id'),
 					$nextTab = ui.newPanel.attr('id'),
@@ -108,9 +108,11 @@ $(function($){
 //Add the reservation details to the DOM.
 function displayReservationDetails(divId , html){
 	var currentTimeline = $('#reservation-timeline').find('.ui-state-active').attr('aria-controls');
-	if (!($(divId).length > 0)){
+	//console.log($('#' +currentTimeline+' > div').length);
+	
+	//if (!($(divId).length > 0)){
 		$("#" + currentTimeline).append(html);
-	}
+	//}
 }
 
 

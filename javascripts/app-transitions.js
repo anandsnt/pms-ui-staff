@@ -337,21 +337,31 @@ $(function($){
             }
         }
         else if ($pageType.indexOf('reservation-list') >= 0){
+        	var currentTimeline = $('#reservation-timeline').find('.ui-state-active').attr('aria-controls');
+        	
+        	if($('#' +currentTimeline+' > div').length > 6 && !($($href).length > 0)){
+        		$("#" + currentTimeline).find('div:nth-child(2)').remove();
+        	}
+        	
         	var reservation = $href.split("-")[1];
-            $.ajax({
-                type:       'GET',
-                url:        "/dashboard/reservation_details?reservation=" + reservation,
-                dataType:   'html',
-                timeout:    5000,
-                success: function(data){
-                	displayReservationDetails($href, data);
-                },
-                error: function(){
-//                    $('#loading').remove();
-//                    modalInit('modals/alerts/not-there-yet/');
-                    //alert("Sorry, not there yet!");
-                }
-            }).done(function(){});
+        	//div not present in DOM
+        	if (!($($href).length > 0)){
+	        	$.ajax({
+	                type:       'GET',
+	                url:        "/dashboard/reservation_details?reservation=" + reservation,
+	                dataType:   'html',
+	                timeout:    5000,
+	                success: function(data){
+	                	displayReservationDetails($href, data);
+	                },
+	                error: function(){
+	//                    $('#loading').remove();
+	//                    modalInit('modals/alerts/not-there-yet/');
+	                    //alert("Sorry, not there yet!");
+	                }
+	            }).done(function(){});
+        	}
+            
         }
         else 
         {
