@@ -9,6 +9,8 @@ $(function($){
 		$currentTab = "guest-contact";
 		$contactInfoChange = false;
 		$likeInfoChange = false;
+		$focusInGuestCardContent = false;
+
 
 	// Show/hide guest card on click
 	$(document).on('click', '#guest-card .ui-resizable-handle', function(){
@@ -31,19 +33,35 @@ $(function($){
 	    	refreshGuestCardScroll();
 	    }, 300);
     });
+    // to save the modified contact info while click anywhere in the page outside guest-card-content.
+    $("#guest-card-content").click(function (e){
+    	$focusInGuestCardContent = true;
+    });
+    $("html").click(function (e){
+    	if(!$focusInGuestCardContent){
+    		if($contactInfoChange){
+	    		saveContactInfo();
+	    	} else {
+	    		console.log("no save");
+	    	}
+    	}
+		else{
+    		$focusInGuestCardContent = false;
+    	}
+	});
     $(document).on('click', '#guest-contact, #guest-like, #guest-credit, #guest-loyalty', function(event){
 	    if($currentTab == "guest-contact"){
 	    	if($contactInfoChange){
 	    		saveContactInfo();
 	    	} else {
-	    		console.log("no save")
+	    		console.log("no save");
 	    	}
 	    	  	
 	    }
 	    else if($currentTab == "guest-like"){
 	    	saveLikes();
 	    }
-	    
+
 	    $currentTab = event.target.id;
 	    
     });
@@ -79,7 +97,9 @@ function callFunctions(){
 }
 //Function to render the contact information values in the contact form of guest card from API.
 function renderContactInformation(){
+	var $loader = '<div id="loading" />';
 	if($guestCardClickTime){
+		$($loader).prependTo('body').show(function(){
 		$.ajax({
 			type: "GET",
             url: '/dashboard/guestcard.json',
@@ -118,7 +138,11 @@ function renderContactInformation(){
                 console.log("There is an error!!");
                 $guestCardClickTime = true;
             }
-        });        
+            }).done (function() { 
+        		$('#loading').remove();
+        	});
+        });
+
        }
 	}
 //Function to save contact information
