@@ -8,10 +8,11 @@ $(function($){
 		$guestCardClickTime = true;
 		$currentTab = "guest-contact";
 		$contactInfoChange = false;
+		$likeInfoChange = false;
 
 	// Show/hide guest card on click
 	$(document).on('click', '#guest-card .ui-resizable-handle', function(){
-	     renderContactInformation();
+	     
 		// Show if hidden or open in less than 50% of screen height
 		if ($('#guest-card').height() == '90' || $('#guest-card').height() < $breakpoint)
 		{
@@ -24,6 +25,7 @@ $(function($){
 			$('#guest-card').animate({height: '90px'}, 300);
 			$('#guest-card-header .switch-button, #guest-card-content').hide();
 		}
+		renderContactInformation();
 		// Refresh scrollers
 	    setTimeout(function(){
 	    	refreshGuestCardScroll();
@@ -72,7 +74,7 @@ $(function($){
 });
 //Functions to be called after resize window complete event
 function callFunctions(){	
-	renderContactInformation();
+	renderContactInformation();	
 	refreshGuestCardScroll();	
 }
 //Function to render the contact information values in the contact form of guest card from API.
@@ -103,9 +105,9 @@ function renderContactInformation(){
                $("#country").val(data.country);
                $("#phone").val(data.phone);
                $("#mobile").val(data.mobile);
-               $guestCardClickTime = false;     
+               $guestCardClickTime = false;   
                   
-               
+               renderGuestCardLike();
                // to change flag - to save contact info only if any change happens.
                $(document).on('change', '#guest_firstname, #guest_lastname, #title, #language, #birthday-month,#birthday-year, #birthday-day, #passport-number,#passport-month, #passport-year, #nationality,#email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event){
 	    	        $contactInfoChange = true;
@@ -116,8 +118,7 @@ function renderContactInformation(){
                 console.log("There is an error!!");
                 $guestCardClickTime = true;
             }
-        });
-        renderGuestCardLike();
+        });        
        }
 	}
 //Function to save contact information
@@ -162,8 +163,8 @@ function renderGuestCardLike(){
             url: '/dashboard/likes',
             async: false,
             success: function(data) {    
-            	$("#likes").html(data);               	
-    	
+            	$("#likes").html(data);
+            	handleLikeValueChanged();    	
             },
             error: function(){
                 console.log("There is an error!!");
@@ -172,37 +173,58 @@ function renderGuestCardLike(){
 }
 //function to save likes
 function saveLikes(){
-	//var data = document.forms["likes"].getElementsByTagName("input");
+	if($likeInfoChange){
+		var $totalPreferences = $("#totalpreference").val();
+		    $totalFeatures = $("#totalfeatures").val();    
+		jsonObj = {};
+		jsonObj['preference'] = [];
+		jsonObj['room_feature'] = [];
+		for(i=0; i<$totalPreferences; i++){
+			$preference = {};
+			$preference["name"] = $("#pref_"+i).attr('prefname');
+			$preference["value"] = $('input[name="pref_'+i+'"]:checked').val();
+			jsonObj['preference'].push($preference);
+		}	
+		for(j=0; j<$totalFeatures; j++){
+			$feature = {};
+			if($('#feat_'+j).is(':checked')){
+				jsonObj['room_feature'].push($('#feat_'+j).val());
+			}		
+		}	
+		console.log(JSON.stringify(jsonObj));
+		//To save like values - uncomment after API ready
+		/*$.ajax({
+				type: "POST",
+	            url: '/dashboard/saveGuestLike',
+	            data: jsonObj,
+	            dataType: 'json',
+	            success: function(data) {    
+	            	$likeInfoChange = false;
+	            	  	console.log("Saved successfully");
+	            },
+	            error: function(){
+	                console.log("There is an error!!");
+	            }
+	       });
+		*/
+	}
+}
+//To handle if any change happened in dynamic like fields
+function handleLikeValueChanged(){
+	$(document).on('change', "#newspaper,#roomtype", function(event){
+    	$likeInfoChange = true;
+    });     
 	var $totalPreferences = $("#totalpreference").val();
-	    $totalFeatures = $("#totalfeatures").val();    
-	jsonObj = {};
-	jsonObj['preference'] = [];
-	jsonObj['room_feature'] = [];
+	    $totalFeatures = $("#totalfeatures").val();
 	for(i=0; i<$totalPreferences; i++){
-		$preference = {};
-		$preference["name"] = $("#pref_"+i).attr('prefname');
-		$preference["value"] = $('input[name="pref_'+i+'"]:checked').val();
-		jsonObj['preference'].push($preference);
-	}	
+		$(document).on('change', "#pref_"+i,function(event){
+	    	$likeInfoChange = true;
+        });     
+	}
 	for(j=0; j<$totalFeatures; j++){
-		$feature = {};
-		if($('#feat_'+j).is(':checked')){
-			jsonObj['room_feature'].push($('#feat_'+j).val());
-		}		
-	}	
-	console.log(JSON.stringify(jsonObj));
-	$.ajax({
-			type: "POST",
-            url: '/dashboard/saveGuestLike',
-            data: jsonObj,
-            dataType: 'json',
-            success: function(data) {    
-            	  	console.log("Saved successfully");
-            },
-            error: function(){
-                console.log("There is an error!!");
-            }
-       });
-	
+		$(document).on('change', "#feat_"+i,function(event){
+	    	$likeInfoChange = true;
+        });  
+	}
 }
 
