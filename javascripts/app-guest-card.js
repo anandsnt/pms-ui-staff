@@ -38,8 +38,12 @@ $(function($){
 	    	}
 	    	  	
 	    }
-	    // $("#current_tab").val(event.target.id);
+	    else if($currentTab == "guest-like"){
+	    	saveLikes();
+	    }
+	    
 	    $currentTab = event.target.id;
+	    
     });
    
 
@@ -101,7 +105,7 @@ function renderContactInformation(){
                $("#mobile").val(data.mobile);
                $guestCardClickTime = false;     
                   
-               renderGuestCardLike();
+               
                // to change flag - to save contact info only if any change happens.
                $(document).on('change', '#guest_firstname, #guest_lastname, #title, #language, #birthday-month,#birthday-year, #birthday-day, #passport-number,#passport-month, #passport-year, #nationality,#email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event){
 	    	        $contactInfoChange = true;
@@ -113,6 +117,7 @@ function renderContactInformation(){
                 $guestCardClickTime = true;
             }
         });
+        renderGuestCardLike();
        }
 	}
 //Function to save contact information
@@ -150,38 +155,54 @@ function saveContactInfo(){
        });
 }
 
-//Function to save contact information
+//Function to render guest card like
 function renderGuestCardLike(){
 		$.ajax({
 			type: "GET",
-            // url: '/data/guest_likes.json',
             url: '/dashboard/likes',
-            // data: {
-            	// firstname: $("#guest_firstname").val(),
-            	// lastname: $("#guest_lastname").val(),
-            	// title: $("#title").val(),
-            	// language: $("#language").val(),
-            	// birth_date: $("#birthday-year").val()+"-"+$("#birthday-month").val()+"-"+$("#birthday-day").val(),
-            	// passport_number: $("#passport-number").val(),
-            	// passport_month: $("#passport-month").val(),
-            	// passport_year: $("#passport-year").val(),
-            	// nationality: $("#nationality").val(),
-            	// email: $("#email").val(),
-            	// streetname: $("#streetname").val(),
-            	// city: $("#city").val(),
-            	// postalcode: $("#postalcode").val(),
-            	// state: $("#state").val(),
-            	// country: $("#country").val(),
-            	// phone: $("#phone").val(),
-            	// mobile: $("#mobile").val()
-            // }, 
             async: false,
             success: function(data) {    
-            	$("#content").html(data);           	
-            	// console.log(data);
+            	$("#likes").html(data);               	
+    	
             },
             error: function(){
                 console.log("There is an error!!");
             }
        });
 }
+//function to save likes
+function saveLikes(){
+	//var data = document.forms["likes"].getElementsByTagName("input");
+	var $totalPreferences = $("#totalpreference").val();
+	    $totalFeatures = $("#totalfeatures").val();    
+	jsonObj = {};
+	jsonObj['preference'] = [];
+	jsonObj['room_feature'] = [];
+	for(i=0; i<$totalPreferences; i++){
+		$preference = {};
+		$preference["name"] = $("#pref_"+i).attr('prefname');
+		$preference["value"] = $('input[name="pref_'+i+'"]:checked').val();
+		jsonObj['preference'].push($preference);
+	}	
+	for(j=0; j<$totalFeatures; j++){
+		$feature = {};
+		if($('#feat_'+j).is(':checked')){
+			jsonObj['room_feature'].push($('#feat_'+j).val());
+		}		
+	}	
+	console.log(JSON.stringify(jsonObj));
+	$.ajax({
+			type: "POST",
+            url: '/dashboard/saveGuestLike',
+            data: jsonObj,
+            dataType: 'json',
+            success: function(data) {    
+            	  	console.log("Saved successfully");
+            },
+            error: function(){
+                console.log("There is an error!!");
+            }
+       });
+	
+}
+

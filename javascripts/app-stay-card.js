@@ -36,7 +36,7 @@ $(function($){
 		var $activeTab = $(this).attr('id') == 'reservation-card' ? 1 : 0;
 
 		$(this).tabs({ 
-			active: $activeTab,
+			//active: $activeTab,
 			beforeActivate: function( event, ui ) {
 				var $prevTab = ui.oldPanel.attr('id'),
 					$nextTab = ui.newPanel.attr('id'),
