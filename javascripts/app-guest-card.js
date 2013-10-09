@@ -41,7 +41,11 @@ $(function($){
     	if(!$focusInGuestCardContent){
     		if($contactInfoChange){
 	    		saveContactInfo();
-	    	} else {
+	    	}
+	    	else if($likeInfoChange){
+	    		saveLikes();
+	    	}
+	    	else {
 	    		console.log("no save");
 	    	}
     	}
@@ -54,12 +58,16 @@ $(function($){
 	    	if($contactInfoChange){
 	    		saveContactInfo();
 	    	} else {
-	    		console.log("no save");
+	    		console.log("no save - Contact");
 	    	}
 	    	  	
 	    }
 	    else if($currentTab == "guest-like"){
-	    	saveLikes();
+	    	if($likeInfoChange){
+	    		saveLikes();
+	    	} else {
+	    		console.log("no save - Likes");
+	    	}
 	    }
 
 	    $currentTab = event.target.id;
