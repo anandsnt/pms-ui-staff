@@ -13,17 +13,16 @@ body {
 }
 
 ::-webkit-selection {
-	background: @logoPrimary;
-	color: @white;
+	background: transparent;
 }
 ::-moz-selection{
-	background: @logoPrimary;
-	color: @white;
+	background: transparent;
 }
 ::selection{
-	background: @logoPrimary;
-	color: @white;
+	background: transparent;
 }
+
+.hidden { display: none !important; }
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
@@ -42,9 +41,7 @@ body {
 		.page {
 			position: absolute;
 			top: 0;
-			left: 0;
 			height: 100%;
-			width: 100%;
 			visibility: hidden;
 			overflow: hidden;
 			z-index: 9;
@@ -53,11 +50,9 @@ body {
 			/* Page inner container ***/
 			.content {
 				position: absolute;
-				top: 60px;
 				left: 0;
 				width: 100%;
 				overflow: hidden;
-				.calc-height(100, 80); /* %, px */
 				.show;
 			}
 
@@ -65,23 +60,11 @@ body {
 			&.main-page { 
 				left: .5%;
 				width: 99.5%;
-
-				&.has-search {
-					.content {
-						top: 120px;
-						.calc-height(100, 120); /* %, px */
-					}
-				}
 			}
 
 			&.inner-page {
-
-				&.has-card {
-					.content {
-						top: 150px;
-						.calc-height(100, 150); /* %, px */
-					}
-				}
+				left: 0;
+				width: 100%;
 			}
 
 			/* Visible pages ***/
@@ -119,21 +102,31 @@ body {
 						&.move-from-right { #move > #from > .right(); }
 					}
 				}
-
-				&.has-card {
-					.nested-view {
-						top: 150px;
-						.calc-height(100, 150); /* %, px */
-
-						.content {
-							top: 0;
-							height: 100%;
-						}
-					}
-				}
 			}
 		}
+	}
 
+/* App screen positioning 	==============================*/
+	.content:not(#login) {
+		top: 60px;
+		.calc-height(100, 60); /* %, px */
+
+		/** Search screen ***/
+		&#search {
+			top: 120px;
+			.calc-height(100, 120); /* %, px */
+		}
+
+		/* Stay Card **/
+		&.stay-card-inner {
+			top: 150px;
+			.calc-height(100, 150); /* %, px */
+		}
+	}
+
+/* App screen transitions 	==============================*/
+
+	.container {		
 		/* Page transitions - opening left side navigation ***/
 		&.menu-open {
 			.page-current {
@@ -150,32 +143,57 @@ body {
 
 		/* Page transitions - opening advanced search options ***/
 		&.advanced-search-open {
+			#search-form {
+				height: 120px;
+				.transition (height, .3s, ease);
+			}
 			#search {
-				#move > #page > .bottom();
+				#move > #element > .bottom(openAdvancedSearch);
 				.calc-height(100, 200); /* %, px */
 			}
 		}
-
+		
 		&.advanced-search-closing {
+			#search-form {
+				height: 60px;
+				.transition (height, .3s, ease);
+			}
 			#search {
-				#move > #page > .top();
+				#move > #element > .top(closeAdvancedSearch);
 				.calc-height(100, 120); /* %, px */
 			}
-		}  
+		} 
 
-		/* Page transitions - opening guest details on stay card 
-		&.reservation-3265971523-guests-open {
-			.reservation-guests {
-				#move > #page > .bottom();
-				background: red;
-			}
+		/* Page transitions - opening guests details ***/
+		&.room-attributes-open {
+			#room-assignment {
+				.room-assignment-content {
+					.rooms-listing {
+						.results {
+							.rooms {
+								#move > #element > .left(openRoomAttributes);
+								.calc-width(100, 190px); /* %, px */
+							}
+						}
+					}
+				}
+			}			
 		}
 
-		&.reservation-3265971523-guests-closing {
-			.reservation-guests {
-				#move > #page > .top();
+		&.room-attributes-closing {
+			#room-assignment {
+				.room-assignment-content {
+					.rooms-listing {
+						.results {
+							.rooms {
+								#move > #element > .right(closeRoomAttributes);
+								width: 100%;
+							}
+						}
+					}
+				}
 			}
-		} ***/
+		}
 
 		/* Page transitions - loading, signing in and out ***/
 		&.loading {
@@ -281,28 +299,51 @@ body {
 		#rotate > .infinite(rotation, .8s, linear, infinite);
 	}
 
+/* Notices					==============================*/
+	.notice {
+		padding: 20px;
+		margin: 10px;
+		color: darken(@yellow, 30);
+		background: lighten(@yellow, 20);
+		border: 1px solid @yellow;
+		#border-radius > .rounded(3px);
+		.show;
+
+		&.error {
+			color: darken(@red, 40);
+			background: lighten(@red, 10);
+			border-color: @red;
+		}
+
+		&.success {
+			color: darken(@green, 20);
+			background: lighten(@green, 20);
+			border-color: @green;
+		}
+	}
+
 /* Scrollable content 		==============================*/
 	.scrollable {
 		width: 100%;
 		overflow: hidden;
 
 		/* Prevent native touch events on Windows */
-		-ms-touch-action: none;
+		-ms-touch-action: none; 
 
 		/* Prevent the callout on tap-hold and text selection */
 		-webkit-touch-callout: none;
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		-ms-user-select: none;
-		user-select: none;
+		user-select: none; 
 
 		/* Prevent text resize on orientation change, useful for web-apps */
 		-webkit-text-size-adjust: none;
 		-moz-text-size-adjust: none;
 		-ms-text-size-adjust: none;
 		-o-text-size-adjust: none;
-		text-size-adjust: none;
-			
+		text-size-adjust: none; 
+
 		.wrapper {
 			/* Prevent elements to be highlighted on tap */
 			-webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -314,6 +355,18 @@ body {
 			-o-transform: translateZ(0);
 			transform: translateZ(0);
 		}
+	}
+
+/* Grey label				==============================*/
+	.label,
+	.block-title {
+		text-transform: uppercase;
+		color: @grey3;
+		font-size: 14px;
+		margin-right: 10px;
+		vertical-align: middle;
+		.show;
+		.pull-left;
 	}
 
 /* Guest image 				==============================*/
@@ -340,6 +393,7 @@ body {
 
 /* Guest status 			==============================*/
 	.guest-status {
+		background-color: @grey2;
 		.hide-text;
 		.show;
 		.pull-left;
@@ -363,6 +417,65 @@ body {
 	.room-status {
 		font-weight: 600;
 		text-transform: uppercase;
+	}
+
+/* Credit card & loyalty items	==========================*/
+	.block-item,
+	.active-item {
+
+		&.item-payment,
+		&.item-loyalty {
+			span {
+				display: inline-block;
+				line-height: 50px;
+				vertical-align: middle;
+				color: @grey3;
+				font-size: 14px;
+				text-transform: uppercase;
+				font-weight: 400;
+				margin-right: 20px;
+
+				&.value,
+				.value {
+					display: inline-block;
+					font-size: 18px;
+					color: @textColor;
+					margin-left: 10px;
+				}
+
+				&.primary {
+					.value {
+						font-size: 14px;
+						color: @green;
+					}
+				}
+			}
+		}
+
+		&.item-payment {
+			.card-logo {
+				margin: 10px 40px 0 0;
+				.pull-left;
+				.size(30px,60px);
+
+				img {
+					width: 100%;
+					height: auto;
+				}
+			}		
+		}
+
+		&.item-loyalty { 
+			.value.code { 
+				color: @textColor;
+				font-size: 24px; 
+				font-weight: 300;
+				margin: 0 5px 0 0; 
+			}
+
+			.number,
+			.value.number { margin: 0; }		
+		}
 	}
 
 /* No content				==============================*/
@@ -408,24 +521,140 @@ body {
 				#fade > .out();  
 			}
 		}
+	}
 
-		&.reservation-content {
-			/*#pixel-to-percent > .top-padding( 370, 1536 );*/
+/* Reservation header		==============================*/
+	.reservation-header,
+	.reservation-guests {
+		width: 100%;
+		height: 50px;
+		padding: 10px 20px;
+		overflow: hidden;
+		.box-shadow(0 1px 1px rgba(0,0,0,.1));
+		.show;
+	}
+
+	.reservation-header {
+		background: @white;
+		z-index: 90;
+
+		.data { 
+			.icon-group,
+			.date,
+			.nights,
+			.room {
+				font-size: 14px;
+				line-height: 30px;
+				vertical-align: middle;
+				display: inline-block;
+			}
+
+			.icon-group {
+				color: @grey3;
+				padding-left: 20px;
+				margin-right: 20px;
+				background-position: 0 -45px;
+			}
+
+			.date,
+			.nights,
+			.room {
+				margin-right: 20px;
+
+				.guest-status {
+					margin: 5px 5px 5px 0;
+					.square(20px);
+				}
+			}
+		}
+
+		.actions {
+			.button {
+				font-size: 14px;
+				text-shadow: none;
+				color: @textColor;
+				line-height: 30px;
+				vertical-align: middle;
+				background-color: @grey1;
+				background-position: 90% 50%;
+				padding: 0 30px 0 10px;
+				.no-transition;
+				.show;
+				.pull-left;
+
+				.label { font-size: 12px; }
+
+				&.toggle { 
+					margin-right: 10px; 
+
+					&.active {
+						padding-bottom: 20px;
+						background-position: 90% -webkit-calc(~"50% - 10px");
+						background-position: 90% -moz-calc(~"50% - 10px");
+						background-position: 90% calc(~"50% - 10px");
+					}
+				}
+
+				&:hover,
+				&:active { 
+					color: @textColor;
+					background-color: @grey1; 
+				}
+			}
+
+			&.back { 
+				.pull-left; 
+
+				.back-button {
+					text-transform: uppercase;
+					font-weight: 600;
+					line-height: 30px;
+					padding-left: 20px;
+					background-position: 0 50%;
+					.show;
+				}
+			}
 		}
 	}
 
-/* Grey label				==============================*/
-	.label,
-	.block-title {
-		text-transform: uppercase;
-		color: @grey3;
-		font-size: 14px;
-		margin-right: 10px;
-		vertical-align: middle;
-		.show;
-		.pull-left;
+	.stay-card-inner {
+		/* Registration header ***/
+		.reservation-header {
+			.data { 
+				.pull-right;
+
+				.room-number {
+					font-size: 18px;
+					line-height: 30px;
+					padding-right: 5px;
+				}
+			}
+
+			.actions {
+				.pull-left; 
+			}
+		}
+
+		&.check-in {
+			.reservation-header {
+				.data {
+					.room-number {
+						&.ready { color: @green; }
+						&.not-ready { color: @red; }
+					}
+				}
+			}
+		}
 	}
 
+/* Stay card inner title 	==============================*/
+	.stay-card-inner {
+		> .wrapper { 
+			padding: 20px;  
+
+			h1 { margin-bottom: 20px; }
+		}	
+	}
 
 /* 6. IE
 ==========================================================*/
