@@ -115,6 +115,9 @@ function renderContactInformation(){
                $("#country").val(data.country);
                $("#phone").val(data.phone);
                $("#mobile").val(data.mobile);
+               $("#reservation_id").val(data.reservation_id);
+               $("#guest_id").val(data.guest_id);
+               $("#user_id").val(data.user_id);
                $guestCardClickTime = false;        
                
                // to change flag - to save contact info only if any change happens.
@@ -134,7 +137,7 @@ function renderContactInformation(){
 function saveContactInfo(){
 		$.ajax({
 			type: "POST",
-            url: '/dashboard/guestcard.json',
+            url: '/dashboard/update_guestcard_profile',
             data: {
             	firstname: $("#guest_firstname").val(),
             	lastname: $("#guest_lastname").val(),
@@ -152,7 +155,10 @@ function saveContactInfo(){
             	state: $("#state").val(),
             	country: $("#country").val(),
             	phone: $("#phone").val(),
-            	mobile: $("#mobile").val()
+            	mobile: $("#mobile").val(),
+            	reservation_id: $("#reservation_id").val(),
+            	guest_id: $("#guest_id").val(),
+            	user_id: $("#user_id").val()
             }, 
             async: false,
             dataType: 'json',
