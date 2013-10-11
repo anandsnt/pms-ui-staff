@@ -92,30 +92,21 @@ function resizeInput() {
 
 // Modal window
 function modalInit(content) {
-
-    var $url = content,
-        $modal = '<div id="modal" role="dialog" />',
-        $overlay = '<div id="modal-overlay" />';
-
-    // Get modal data
-    $.ajax({
-        url: $url,
-        success: function(data) {
-            setModal();
-            $('#modal').html(data);
-        },
-        error: function(){
-            alert("Sorry, not there yet!");
-        }
-    });
-
     // Close modal
     $(document).on('click', '#modal-overlay, #modal-close', function(e){
         e.stopPropagation();
         removeModal();
-    });
+    });       
+}
 
-    // Show modal
+ // Remove modal
+    function removeModal() {
+        $('#modal, #modal-overlay').removeClass('modal-show'); 
+        setTimeout(function() { 
+            $('#modal').empty();
+        }, 150);
+    }
+// Show modal
     function setModal(){
         if ($('#modal').length) 
         { 
@@ -135,16 +126,6 @@ function modalInit(content) {
             $('#modal, #modal-overlay').addClass('modal-show');
         }, 0);
     }
-
-    // Remove modal
-    function removeModal() {
-        $('#modal, #modal-overlay').removeClass('modal-show'); 
-        setTimeout(function() { 
-            $('#modal').empty();
-        }, 150);
-    }
-}
-
 // Fast click polyfill
 window.addEventListener('load', function() {
     FastClick.attach(document.body);
@@ -182,15 +163,6 @@ $(function($){
     });
 
     $('.masked-input').keyup(resizeInput).each(resizeInput);
-
-    // Dialog window
-    $(document).on('click', '.open-modal', function(e){
-        e.preventDefault();
-
-        var $href = $(this).attr('href');
-        modalInit($href);
-    }); 
-
 });
 
 //Update data for custom selects
