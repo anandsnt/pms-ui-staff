@@ -69,4 +69,26 @@ $(function($){
 		}).addClass('ui-tabs-vertical ui-helper-clearfix');
 	});
 	
+	//workaround for populating the reservation details, 
+	//when user clicks on other timeline tabs
+	$('#reservation-timeline li').click(function(){
+		var currentTimeline = $(this).attr('aria-controls');
+		//No reservation details are added to the DOM
+		if (!($("#" + currentTimeline).find('.reservation').length > 0)){
+			$("#" + currentTimeline + ' #reservation-listing ul li').first().find('a').trigger("click");
+		}
+	});
+	
 });
+
+//Add the reservation details to the DOM.
+function displayReservationDetails(divId , html){
+	var currentTimeline = $('#reservation-timeline').find('.ui-state-active').attr('aria-controls');
+	//console.log($('#' +currentTimeline+' > div').length);
+	
+	//if (!($(divId).length > 0)){
+		$("#" + currentTimeline).append(html);
+	//}
+}
+
+
