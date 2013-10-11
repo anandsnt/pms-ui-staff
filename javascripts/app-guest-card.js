@@ -8,6 +8,7 @@ $(function($) {
 	$contactInfoChange = false;
 	$likeInfoChange = false;
 	$focusInGuestCardContent = false;
+	
 
 	// Show/hide guest card on click
 	$(document).on('click', '#guest-card .ui-resizable-handle', function() {
@@ -32,69 +33,7 @@ $(function($) {
 			refreshGuestCardScroll();
 		}, 300);
 	});
-	//Show modal to set credit card as primary or to delete the credit card
-	$(document).on('click', '.credit-card-info', function(e) {
 
-		e.preventDefault();
-		var $href = $(this).attr('href');
-
-		$modal = '<div id="modal" role="dialog" />', $overlay = '<div id="modal-overlay" />';
-
-		// Get modal data
-		$.ajax({
-			url : $href,
-			// async:false,
-			data : {
-				id : $(this).attr('credit_id')
-			},
-			success : function(data) {
-				setModal();
-				$('#modal').html(data);
-			},
-			error : function() {
-				alert("Sorry, not there yet!");
-			}
-		});
-		// to do the closing on click of modal
-		modalInit($href);
-	});
-	// function to set the selected credit card as primary
-	$(document).on('click', "#credit-card-set-as-primary", function() {
-		var $credit_card_id = $("#credit_card_id").val();
-		$("#primary_credit.primary").remove();
-		$("#credit_row" + $credit_card_id).append("<span id='primary_credit' class='primary'><span class='value primary'>Primary</span></span>");
-		removeModal();
-		// $.ajax({
-			// type: "POST",
-			// url: '/dashboard/setCreditCardAsPrimary',
-			// data: {id: $credit_card_id},
-			// dataType: 'json',
-			// success: function(data) {
-				// console.log("Succesfully set credit card as primary");
-			// },
-			// error: function(){
-				// console.log("There is an error!!");
-			// }
-		// });
-	});
-	// function to set the selected credit card as primary
-	$(document).on('click', "#credit-card-delete", function() {
-		var $credit_card_id = $("#credit_card_id").val();
-		$("#credit_row" + $credit_card_id).remove();		
-		removeModal();
-		// $.ajax({
-			// type: "POST",
-			// url: '/dashboard/deleteCreditCard',
-			// data: {id: $credit_card_id},
-			// dataType: 'json',
-			// success: function(data) {
-				// console.log("Succesfully deleted credit card");
-			// },
-			// error: function(){
-				// console.log("There is an error!!");
-			// }
-		// });
-	});
 	// to save the modified contact info while click anywhere in the page outside guest-card-content.
 	$("#guest-card-content").click(function(e) {
 		$focusInGuestCardContent = true;

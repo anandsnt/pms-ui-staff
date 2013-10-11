@@ -92,40 +92,59 @@ function resizeInput() {
 
 // Modal window
 function modalInit(content) {
-    // Close modal
-    $(document).on('click', '#modal-overlay, #modal-close', function(e){
+
+    var $url = content,
+        $modal = '<div id="modal" role="dialog" />',
+        $overlay = '<div id="modal-overlay" />';
+
+    // Get modal data
+    $.ajax({
+        url: $url,
+        success: function(data) {
+            setModal();
+            $('#modal').html(data);
+        },
+        error: function(){
+            alert("Sorry, not there yet!");
+        }
+    });   
+
+}
+// Close modal
+    $(document).on('click', '#modal-overlay, #modal-close, #cancel', function(e){
         e.stopPropagation();
         removeModal();
-    });       
+    });
+
+// Show modal
+function setModal(){
+    if ($('#modal').length) 
+    { 
+        $('#modal').empty(); 
+    }
+    else 
+    { 
+        $($modal).prependTo('body'); 
+    }
+
+    if (!$('#modal-overlay').length) 
+    { 
+        $($overlay).insertAfter('#modal'); 
+    }
+
+    setTimeout(function() {
+        $('#modal, #modal-overlay').addClass('modal-show');
+    }, 0);
 }
 
- // Remove modal
-    function removeModal() {
-        $('#modal, #modal-overlay').removeClass('modal-show'); 
-        setTimeout(function() { 
-            $('#modal').empty();
-        }, 150);
-    }
-// Show modal
-    function setModal(){
-        if ($('#modal').length) 
-        { 
-            $('#modal').empty(); 
-        }
-        else 
-        { 
-            $($modal).prependTo('body'); 
-        }
+// Remove modal
+function removeModal() {
+    $('#modal, #modal-overlay').removeClass('modal-show'); 
+    setTimeout(function() { 
+        $('#modal').empty();
+    }, 150);
+}
 
-        if (!$('#modal-overlay').length) 
-        { 
-            $($overlay).insertAfter('#modal'); 
-        }
-
-        setTimeout(function() {
-            $('#modal, #modal-overlay').addClass('modal-show');
-        }, 0);
-    }
 // Fast click polyfill
 window.addEventListener('load', function() {
     FastClick.attach(document.body);
@@ -163,6 +182,24 @@ $(function($){
     });
 
     $('.masked-input').keyup(resizeInput).each(resizeInput);
+
+    // Dialog window
+    $(document).on('click', '.open-modal', function(e){
+    	
+    	
+    	e.preventDefault();
+        e.stopImmediatePropagation();
+
+        var $href = $(this).attr('href'),
+            $action = $(this).closest('form').attr('action');
+            
+        console.log($href);
+        console.log($action);
+        
+        modalInit($href ? $href : $action);
+        
+    }); 
+
 });
 
 //Update data for custom selects
