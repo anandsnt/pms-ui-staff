@@ -208,6 +208,9 @@ function saveLikes() {
 		var $totalPreferences = $("#totalpreference").val();
 		$totalFeatures = $("#totalfeatures").val();
 		jsonObj = {};
+		jsonObj['user_id'] = $("#user_id").val();
+		jsonObj['newspaper'] = $("#newspaper").val();
+		jsonObj['roomtype'] = $("#roomtype").val();
 		jsonObj['preference'] = [];
 		jsonObj['room_feature'] = [];
 		for ( i = 0; i < $totalPreferences; i++) {
