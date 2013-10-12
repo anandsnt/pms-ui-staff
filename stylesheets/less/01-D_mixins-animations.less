@@ -19,126 +19,142 @@
 
 /* Animations		======================================*/
 	#fade {
-		.in(@animation: fadeIn, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @direction: both) {
-			-webkit-animation: @animation @duration @easing @direction;
-			-moz-animation: @animation @duration @easing @direction;
-			-ms-animation: @animation @duration @easing @direction;
-			-o-animation: @animation @duration @easing @direction;
-			animation: @animation @duration @easing @direction;
+		.in(@animation: fadeIn, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @fill-mode: both) {
+			-webkit-animation: @animation @duration @easing @fill-mode;
+			-moz-animation: @animation @duration @easing @fill-mode;
+			-ms-animation: @animation @duration @easing @fill-mode;
+			-o-animation: @animation @duration @easing @fill-mode;
+			animation: @animation @duration @easing @fill-mode;
 		}
 
-		.out(@animation: fadeOut, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @direction: both) {
-			-webkit-animation: @animation @duration @easing @direction;
-			-moz-animation: @animation @duration @easing @direction;
-			-ms-animation: @animation @duration @easing @direction;
-			-o-animation: @animation @duration @easing @direction;
-			animation: @animation @duration @easing @direction;
+		.out(@animation: fadeOut, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @fill-mode: both) {
+			-webkit-animation: @animation @duration @easing @fill-mode;
+			-moz-animation: @animation @duration @easing @fill-mode;
+			-ms-animation: @animation @duration @easing @fill-mode;
+			-o-animation: @animation @duration @easing @fill-mode;
+			animation: @animation @duration @easing @fill-mode;
 		}
 	}
 
 	#move {
 		#from {
-			.top(@animation: moveFromTop, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @direction: both) {
-				-webkit-animation: @animation @duration @easing @direction;
-				-moz-animation: @animation @duration @easing @direction;
-				-ms-animation: @animation @duration @easing @direction;
-				-o-animation: @animation @duration @easing @direction;
-				animation: @animation @duration @easing @direction;
+			.top(@animation: moveFromTop, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @fill-mode: both) {
+				-webkit-animation: @animation @duration @easing @fill-mode;
+				-moz-animation: @animation @duration @easing @fill-mode;
+				-ms-animation: @animation @duration @easing @fill-mode;
+				-o-animation: @animation @duration @easing @fill-mode;
+				animation: @animation @duration @easing @fill-mode;
 			}
 			
-			.bottom(@animation: moveFromBottom, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @direction: both) {
-				-webkit-animation: @animation @duration @easing @direction;
-				-moz-animation: @animation @duration @easing @direction;
-				-ms-animation: @animation @duration @easing @direction;
-				-o-animation: @animation @duration @easing @direction;
-				animation: @animation @duration @easing @direction;
+			.bottom(@animation: moveFromBottom, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @fill-mode: both) {
+				-webkit-animation: @animation @duration @easing @fill-mode;
+				-moz-animation: @animation @duration @easing @fill-mode;
+				-ms-animation: @animation @duration @easing @fill-mode;
+				-o-animation: @animation @duration @easing @fill-mode;
+				animation: @animation @duration @easing @fill-mode;
 			}
 
-			.left(@animation: moveFromLeft, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @direction: both) {
-				-webkit-animation: @animation @duration @easing @direction;
-				-moz-animation: @animation @duration @easing @direction;
-				-ms-animation: @animation @duration @easing @direction;
-				-o-animation: @animation @duration @easing @direction;
-				animation: @animation @duration @easing @direction;
+			.left(@animation: moveFromLeft, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @fill-mode: both) {
+				-webkit-animation: @animation @duration @easing @fill-mode;
+				-moz-animation: @animation @duration @easing @fill-mode;
+				-ms-animation: @animation @duration @easing @fill-mode;
+				-o-animation: @animation @duration @easing @fill-mode;
+				animation: @animation @duration @easing @fill-mode;
 			}
 
-			.right(@animation: moveFromRight, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @direction: both) {
-				-webkit-animation: @animation @duration @easing @direction;
-				-moz-animation: @animation @duration @easing @direction;
-				-ms-animation: @animation @duration @easing @direction;
-				-o-animation: @animation @duration @easing @direction;
-				animation: @animation @duration @easing @direction;
+			.right(@animation: moveFromRight, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @fill-mode: both) {
+				-webkit-animation: @animation @duration @easing @fill-mode;
+				-moz-animation: @animation @duration @easing @fill-mode;
+				-ms-animation: @animation @duration @easing @fill-mode;
+				-o-animation: @animation @duration @easing @fill-mode;
+				animation: @animation @duration @easing @fill-mode;
 			}
 		}
 
 		#to {
-			.top(@animation: moveToTop, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @direction: both) {
-				-webkit-animation: @animation @duration @easing @direction;
-				-moz-animation: @animation @duration @easing @direction;
-				-ms-animation: @animation @duration @easing @direction;
-				-o-animation: @animation @duration @easing @direction;
-				animation: @animation @duration @easing @direction;
+			.top(@animation: moveToTop, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @fill-mode: both) {
+				-webkit-animation: @animation @duration @easing @fill-mode;
+				-moz-animation: @animation @duration @easing @fill-mode;
+				-ms-animation: @animation @duration @easing @fill-mode;
+				-o-animation: @animation @duration @easing @fill-mode;
+				animation: @animation @duration @easing @fill-mode;
 			}
 
-			.bottom(@animation: moveToBottom, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @direction: both) {
-				-webkit-animation: @animation @duration @easing @direction;
-				-moz-animation: @animation @duration @easing @direction;
-				-ms-animation: @animation @duration @easing @direction;
-				-o-animation: @animation @duration @easing @direction;
-				animation: @animation @duration @easing @direction;
+			.bottom(@animation: moveToBottom, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @fill-mode: both) {
+				-webkit-animation: @animation @duration @easing @fill-mode;
+				-moz-animation: @animation @duration @easing @fill-mode;
+				-ms-animation: @animation @duration @easing @fill-mode;
+				-o-animation: @animation @duration @easing @fill-mode;
+				animation: @animation @duration @easing @fill-mode;
 			}
 
-			.left(@animation: moveToLeft, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @direction: both) {
-				-webkit-animation: @animation @duration @easing @direction;
-				-moz-animation: @animation @duration @easing @direction;
-				-ms-animation: @animation @duration @easing @direction;
-				-o-animation: @animation @duration @easing @direction;
-				animation: @animation @duration @easing @direction;
+			.left(@animation: moveToLeft, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @fill-mode: both) {
+				-webkit-animation: @animation @duration @easing @fill-mode;
+				-moz-animation: @animation @duration @easing @fill-mode;
+				-ms-animation: @animation @duration @easing @fill-mode;
+				-o-animation: @animation @duration @easing @fill-mode;
+				animation: @animation @duration @easing @fill-mode;
 			}
 
-			.right(@animation: moveToRight, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @direction: both) {
-				-webkit-animation: @animation @duration @easing @direction;
-				-moz-animation: @animation @duration @easing @direction;
-				-ms-animation: @animation @duration @easing @direction;
-				-o-animation: @animation @duration @easing @direction;
-				animation: @animation @duration @easing @direction;
+			.right(@animation: moveToRight, @duration: .3s, @easing: cubic-bezier(.10, .10, .25, .90), @fill-mode: both) {
+				-webkit-animation: @animation @duration @easing @fill-mode;
+				-moz-animation: @animation @duration @easing @fill-mode;
+				-ms-animation: @animation @duration @easing @fill-mode;
+				-o-animation: @animation @duration @easing @fill-mode;
+				animation: @animation @duration @easing @fill-mode;
 			}
 		}
 
 		#page {
-			.left(@animation: movePageToLeft, @duration: .3s, @easing: ease, @direction: both) {
-				-webkit-animation: @animation @duration @easing @direction;
-				-moz-animation: @animation @duration @easing @direction;
-				-ms-animation: @animation @duration @easing @direction;
-				-o-animation: @animation @duration @easing @direction;
-				animation: @animation @duration @easing @direction;
+			.left(@animation: movePageToLeft, @duration: .3s, @easing: ease, @fill-mode: both) {
+				-webkit-animation: @animation @duration @easing @fill-mode;
+				-moz-animation: @animation @duration @easing @fill-mode;
+				-ms-animation: @animation @duration @easing @fill-mode;
+				-o-animation: @animation @duration @easing @fill-mode;
+				animation: @animation @duration @easing @fill-mode;
 			}
 
-			.right(@animation: movePageFromRight, @duration: .3s, @easing: ease, @direction: both) {
-				-webkit-animation: @animation @duration @easing @direction;
-				-moz-animation: @animation @duration @easing @direction;
-				-ms-animation: @animation @duration @easing @direction;
-				-o-animation: @animation @duration @easing @direction;
-				animation: @animation @duration @easing @direction;
+			.right(@animation: movePageFromRight, @duration: .3s, @easing: ease, @fill-mode: both) {
+				-webkit-animation: @animation @duration @easing @fill-mode;
+				-moz-animation: @animation @duration @easing @fill-mode;
+				-ms-animation: @animation @duration @easing @fill-mode;
+				-o-animation: @animation @duration @easing @fill-mode;
+				animation: @animation @duration @easing @fill-mode;
+			}
+		}
+
+		#element {		
+			.top(@animation) {
+				-webkit-animation: @animation .3s ease both;
+				-moz-animation: @animation .3s ease both;
+				-ms-animation: @animation .3s ease both;
+				-o-animation: @animation .3s ease both;
+				animation: @animation .3s ease both;
 			}
 
-			.top(@animation: movePageToTop, @duration: .3s, @easing: ease, @direction: both) {
-				-webkit-animation: @animation @duration @easing @direction;
-				-moz-animation: @animation @duration @easing @direction;
-				-ms-animation: @animation @duration @easing @direction;
-				-o-animation: @animation @duration @easing @direction;
-				animation: @animation @duration @easing @direction;
+			.left(@animation){
+				-webkit-animation: @animation .3s ease both;
+				-moz-animation: @animation .3s ease both;
+				-ms-animation: @animation .3s ease both;
+				-o-animation: @animation .3s ease both;
+				animation: @animation .3s ease both;
 			}
 
-
-			.bottom(@animation: movePageToBottom, @duration: .3s, @easing: ease, @direction: both) {
-				-webkit-animation: @animation @duration @easing @direction;
-				-moz-animation: @animation @duration @easing @direction;
-				-ms-animation: @animation @duration @easing @direction;
-				-o-animation: @animation @duration @easing @direction;
-				animation: @animation @duration @easing @direction;
+			.right(@animation) {
+				-webkit-animation: @animation .3s ease both;
+				-moz-animation: @animation .3s ease both;
+				-ms-animation: @animation .3s ease both;
+				-o-animation: @animation .3s ease both;
+				animation: @animation .3s ease both;
 			}
 
+			.bottom(@animation) {
+				-webkit-animation: @animation .3s ease both;
+				-moz-animation: @animation .3s ease both;
+				-ms-animation: @animation .3s ease both;
+				-o-animation: @animation .3s ease both;
+				animation: @animation .3s ease both;
+			}
 		}
 	}
 
@@ -230,6 +246,7 @@
 			from { transform: translate3d(100%, 0, 0); }
 		}
 
+	
 	/* moveToTop ***/
 		@-webkit-keyframes moveToTop {
 			to { -webkit-transform: translate3d(0, -100%, 0); }
@@ -298,7 +315,7 @@
 			to { transform: translate3d(100%, 0, 0); }
 		}
 
-
+	
 	/* movePageToLeft ***/
 		@-webkit-keyframes movePageToLeft {
 			to { -webkit-transform: translate3d(70px, 0, 0); }
@@ -367,7 +384,75 @@
 			to { transform: translate3d(0, 60px, 0); }
 		}
 		
-		
+
+	/* openAdvancedSearch ***/
+		@-webkit-keyframes openAdvancedSearch {
+			to { -webkit-transform: translate3d(0, 60px, 0); }
+		}
+		@-moz-keyframes openAdvancedSearch {
+			to { -moz-transform: translate3d(0, 60px, 0); }
+		}
+		@-ms-keyframes openAdvancedSearch {
+			to { -ms-transform: translate3d(0, 60px, 0); }
+		}
+		@-o-keyframes openAdvancedSearch {
+			to { -o-transform: translate3d(0, 60px, 0); }
+		}
+		@keyframes openAdvancedSearch {
+			to { transform: translate3d(0, 60px, 0); }
+		}
+	
+	/* closeAdvancedSearch ***/
+		@-webkit-keyframes closeAdvancedSearch {
+			from { -webkit-transform: translate3d(0, 60px, 0); }
+		}
+		@-moz-keyframes closeAdvancedSearch {
+			from { -moz-transform: translate3d(0, 60px, 0); }
+		}
+		@-ms-keyframes closeAdvancedSearch {
+			from { -ms-transform: translate3d(0, 60px, 0); }
+		}
+		@-o-keyframes closeAdvancedSearch {
+			from { -o-transform: translate3d(0, 60px, 0); }
+		}
+		@keyframes closeAdvancedSearch {
+			from { transform: translate3d(0, 60px, 0); }
+		}
+
+	/* openRoomAttributes ***/
+		@-webkit-keyframes openRoomAttributes {
+			to { -webkit-transform: translate3d(190px, 0, 0); }
+		}
+		@-moz-keyframes openRoomAttributes {
+			to { -moz-transform: translate3d(190px, 0, 0); }
+		}
+		@-ms-keyframes openRoomAttributes {
+			to { -ms-transform: translate3d(190px, 0, 0); }
+		}
+		@-o-keyframes openRoomAttributes {
+			to { -o-transform: translate3d(190px, 0, 0); }
+		}
+		@keyframes openRoomAttributes {
+			to { transform: translate3d(190px, 0, 0); }
+		}
+	
+	/* closeRoomAttributes ***/
+		@-webkit-keyframes closeRoomAttributes {
+			from { -webkit-transform: translate3d(190px, 0, 0); }
+		}
+		@-moz-keyframes closeRoomAttributes {
+			from { -moz-transform: translate3d(190px, 0, 0); }
+		}
+		@-ms-keyframes closeRoomAttributes {
+			from { -ms-transform: translate3d(190px, 0, 0); }
+		}
+		@-o-keyframes closeRoomAttributes {
+			from { -o-transform: translate3d(190px, 0, 0); }
+		}
+		@keyframes closeRoomAttributes {
+			from { transform: translate3d(190px, 0, 0); }
+		}
+
 
 	/* fadeIn ***/
 		@-webkit-keyframes fadeIn {
