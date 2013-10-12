@@ -301,6 +301,7 @@ $(function($){
         // Nested view transitions
         else if ($pageType.indexOf('nested-view') >= 0)
         {
+            //getParentBookingDetailes($(this).attr('id'));
             $($loader).prependTo('body').show(function(){
                 $.ajax({
                     type:       'GET',

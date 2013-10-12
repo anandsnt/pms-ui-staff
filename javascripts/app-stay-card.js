@@ -115,4 +115,11 @@ function displayReservationDetails(divId , html){
 	//}
 }
 
+function getParentBookingDetailes(clickedElement){
+	alert(clickedElement);
+	var reservationDetails = {};
+	var parentReservationElement = $('#' + clickedElement).closest('div[id^="reservation-content"]').attr('id');
+	alert(parentReservationElement);
+}
+
 

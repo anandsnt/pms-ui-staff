@@ -19,4 +19,5 @@
 //= require jquery.ui.effect-slide
 //= require jquery.ui.touch-punch
 //= require stayntouch
+//= stub roomAssignment
 //= require_tree .
