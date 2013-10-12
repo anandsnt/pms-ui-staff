@@ -1,5 +1,11 @@
+roomCompleteList = {};
+roomCompleteList.room_detils_list = [];
+
 $(function($){ 
 	GetRoomAssignmentList();
+    $('#room-attributes .radio_filters').change(function(){
+        getFilterList()
+    })
 });
 
 function GetRoomAssignmentList(){
@@ -9,9 +15,12 @@ function GetRoomAssignmentList(){
         dataType:   'json',
         timeout:    5000,
         success: function(data){
-        	getFilterList(data);
+            roomCompleteList = data;
+        	getFilterList();
         },
         error: function(){
+            roomCompleteList = {};
+            roomCompleteList.room_detils_list = [];
             alert("failed to fetch json");
         }
     });
@@ -19,7 +28,7 @@ function GetRoomAssignmentList(){
     
 }
 
-function getFilterList(roomList){
+function getFilterList(){
 	var radioFeatureCount = $('#totalpreference_count').val();
     var featureList = [];
     var id = $("#room-attributes input#radio_0").val();
@@ -28,10 +37,10 @@ function getFilterList(roomList){
             featureList.push($('#room-attributes #radio_' + i).val());
         }
     }
-    applyFilters(roomList, featureList);
+    applyFilters(featureList);
 }
-function applyFilters(roomjson, featureList){
-    roomList = roomjson.room_detils_list;
+function applyFilters(featureList){
+    roomList = roomCompleteList.room_detils_list;
 	
     var filteredRoomList = [];
 	for(var k = 0; k<roomList.length ; k++){
