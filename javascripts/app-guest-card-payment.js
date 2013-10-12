@@ -66,6 +66,16 @@ $(function($) {
 	});
 	// function to save new payment type
 	$(document).on('click', "#save_new_credit_card", function() {
+		
+		var $payment_type = $("#new-payment #payment-type").val();
+			$payment_credit_type = $("#new-payment #payment-credit-type").val();
+			$card_number_set1 = $("#new-payment #card-number-set1").val();
+			$card_number_set2 = $("#new-payment #card-number-set2").val();
+			$card_number_set3 = $("#new-payment #card-number-set3").val();
+			$expiry_month	= $("#new-payment #expiry-month").val();
+			$expiry_year	= $("#new-payment #expiry-year").val();
+			$name_on_card	= $("#new-payment #name-on-card").val();
+
 		$("#new-payment .error").hide();
 		if(($("#new-payment #payment-type").val()) == ""){
 			$("#payment-type-error").html("Payment type is required").show();		
@@ -104,19 +114,31 @@ $(function($) {
 			refreshGuestCardScroll();
 		}, 300);
 		/* Umcomment after API is ready */
-		// $.ajax({
-			// type: "POST",
-			// url: '/dashboard/addNewPayment',
-			// data: {id: 1},
-			// dataType: 'json',
-			// success: function(data) {
-				// TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD
-				// console.log("Succesfully added credit card");
-			// },
-			// error: function(){
-				// console.log("There is an error!!");
-			// }
-		// });
+		$.ajax({
+			type: "POST",
+			url: '/dashboard/addNewPayment',
+			data: { 
+					payment_type: $payment_type,
+				    payment_credit_type: $payment_credit_type,
+				    card_number_set1: $card_number_set1,
+				    card_number_set2: $card_number_set2,
+				    card_number_set3: $card_number_set3,
+				    expiry_month: $expiry_month,
+				    expiry_year: $expiry_year,
+				    name_on_card: $name_on_card
+				},
+			dataType: 'json',
+			success: function(data) {
+				//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
+				$("#credit_row").attr("credit_id", data.id);
+				$("#credit_row").attr("id", "credit_row"+data.id);
+				
+				console.log("Succesfully added credit card");
+			},
+			error: function(){
+				console.log("There is an error!!");
+			}
+		});
 		removeModal();
 	});
 
