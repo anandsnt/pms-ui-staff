@@ -31,30 +31,6 @@ $(function($){
 	    }
 	});
     
-    // Resize guest card
-	$('#guest-card').resizable({
-		minHeight: 		'90',
-		maxHeight: 		($maxHeight-90), // 90 is height of the guest card visible part
-		handles: 		's',
-		resize: function( event, ui ) {
-			if ($(this).height() > 120) {
-				$('#guest-card-header .switch-button, #guest-card-content').show();
-			}
-			else {
-				$('#guest-card-header .switch-button, #guest-card-content').hide();
-			}
-		},
-	    stop: function(event, ui) {
-	    	$cardHeight = $(this).css('height');
-
-	    	// Refresh scrollers
-	    	setTimeout(function(){
-		    	refreshGuestCardScroll();
-		    }, 300);
-	   	}
-	});
-
-
 	// Reservation card tabs
 	$('.reservation-tabs').each(function(){
 		var $activeTab = $(this).attr('id') == 'reservation-card' ? 1 : 0;

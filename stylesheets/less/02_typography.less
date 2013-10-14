@@ -92,28 +92,44 @@
 	}
 
 /* Paragraphs & lists 		==============================*/
-p,
-li {
-	font-size: 1em;
-	line-height: 1.5em;
-	margin-bottom: 1em;
+	p,
+	li {
+		font-size: 1em;
+		line-height: 1.5em;
+		margin-bottom: 1em;
 
-	&:last-child { margin-bottom: 0; }
-}
+		&:last-child { margin-bottom: 0; }
+	}
 
 /* Inline elements	======================================*/
 
-em { font-style: italic; }
-strong { font-weight: 700; }
+	em { font-style: italic; }
+	strong { font-weight: 700; }
 
 /* Links			======================================*/
-a {
-	color: @logoPrimary;
-	.transition();
+	a {
+		color: @logoPrimary;
+		.transition;
 
-	&:hover,
-	&:active { color: darken(@logoPrimary, 10); }
-}
+		&:hover,
+		&:active { color: darken(@logoPrimary, 10); }
+	}
+
+/* Tables			======================================*/
+	table {
+		clear: both;
+		border-collapse: collapse;
+		table-layout: fixed;
+		margin-bottom: 1em;
+
+		th,
+		td {
+			vertical-align: top;
+			white-space: nowrap;
+			text-align: left;
+		}
+	} 
+
 
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/
