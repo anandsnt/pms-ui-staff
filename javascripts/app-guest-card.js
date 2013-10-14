@@ -94,7 +94,7 @@ function renderContactInformation(){
 		$($loader).prependTo('body').show(function(){
 		$.ajax({
 			type: "GET",
-            url: '/dashboard/guestcard.json',
+            url: '/guest_cards/show.json',
             data: {fakeDataToAvoidCache: new Date()}, // fakeDataToAvoidCache is iOS Safari fix
             async: false,
             success: function(data) {              
@@ -141,8 +141,8 @@ function renderContactInformation(){
 //Function to save contact information
 function saveContactInfo(){
 		$.ajax({
-			type: "POST",
-            url: '/dashboard/update_guestcard_profile',
+			type: "PUT",
+            url: '/guest_cards/'+$("#user_id").val(),
             data: {
             	firstname: $("#guest_firstname").val(),
             	lastname: $("#guest_lastname").val(),
