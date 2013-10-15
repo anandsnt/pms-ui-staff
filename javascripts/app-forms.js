@@ -108,7 +108,7 @@ function modalInit(content) {
             alert("Sorry, not there yet!");
         }
     });
-
+}
     // Close modal
     $(document).on('click', '#modal-overlay, #modal-close', function(e){
         e.stopPropagation();
@@ -143,7 +143,7 @@ function modalInit(content) {
             $('#modal').empty();
         }, 150);
     }
-}
+
 
 // Fast click polyfill
 window.addEventListener('load', function() {

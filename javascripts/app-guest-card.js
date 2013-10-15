@@ -122,6 +122,9 @@ function renderContactInformation(){
                $("#user_id").val(data.user_id);
                $guestCardClickTime = false;        
                
+               
+               renderPayment();
+               
                // to change flag - to save contact info only if any change happens.
                $(document).on('change', '#guest_firstname, #guest_lastname, #title, #language, #birthday-month,#birthday-year, #birthday-day, #passport-number,#passport-month, #passport-year, #nationality,#email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event){
 	    	        $contactInfoChange = true;
@@ -173,5 +176,24 @@ function saveContactInfo(){
             error: function(){
                 console.log("There is an error!!");
             }
+       });
+}
+
+ // function to render payment
+function renderPayment() {
+	console.log("Call renderPayment");
+       $.ajax({
+               type : "GET",
+               url : '/dashboard/payment',
+               async : false,
+               success : function(data) {
+                       $("#cc-payment").html(data);
+                       $(document).on('click', "#credit-card-set-as-primary", function() {
+                               //setThis
+                       });
+               },
+               error : function() {
+                       console.log("There is an error!!");
+               }
        });
 }

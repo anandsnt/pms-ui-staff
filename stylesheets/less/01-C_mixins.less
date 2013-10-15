@@ -21,7 +21,7 @@
 		&:focus { overflow: hidden; }
 	}
 
-	.placeholder(@font-size, @line-height, @font-weight) {
+	.placeholder-text(@font-size, @line-height, @font-weight) {
 		&::-webkit-input-placeholder {
 		   	font-size: @font-size;
 		   	line-height: @line-height;
@@ -202,19 +202,30 @@
 	/* Clickable item 	======================================*/
 	.clickable {
 		background-color: @white;
-		cursor: pointer;
 		white-space: nowrap;
   		overflow: hidden;
   		text-overflow: ellipsis;
 		#border-radius > .rounded();
 		.box-shadow();
 		.show;
+		.transition;
 
 		&:hover,
 		&:active { 
 			.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)");
 		}
 	}
+
+	.faux-clickable {
+		background-color: @white;
+		white-space: nowrap;
+  		overflow: hidden;
+  		text-overflow: ellipsis;
+		#border-radius > .rounded();
+		.box-shadow();
+		.show;
+	}
+
 
 	/* Content background 		=============================*/
 	.background(@color: @white) {
@@ -261,6 +272,10 @@
 
 	  	.left(@target, @context) {
 	    	left: (@target / @context) * 100%;
+	  	}
+
+	  	.right(@target, @context) {
+	    	right: (@target / @context) * 100%;
 	  	}
 
 	  	.side-padding(@target, @context) {

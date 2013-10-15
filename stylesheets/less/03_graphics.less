@@ -93,6 +93,10 @@
 			background-position: 0 -120px; 
 		}
 
+		&.icon-upgrades {
+			background-position: 0 -240px;
+		}
+
 		@media @highdpi {
 			background-image: @iconNoContent2x;
 			background-size: 120px, 125px;
@@ -101,8 +105,7 @@
 
 /* Global icons			==================================*/
 	.icons,
-	.guest-status,
-	.icon-title {
+	.guest-status {
 		background-image: @icons;
 		background-repeat: no-repeat;
 		border: 0;
@@ -122,19 +125,25 @@
 			.hide-text;
 		}
 
+		/* Guest icons ***/
 		&.icon-location {  background-position: 5px -23px; background-size: 80px; }
 		&.icon-group { background-position: 5px -50px; background-size: 80px; }
 		&.check-in { background-position: 8px -112px; }
 		&.check-out { background-position: 8px -152px; }
 		&.inhouse { background-position: 8px -192px; }
 		&.cancel { background-position: 8px -232px; }
+		&.icon-gc-location { background-position: 10px -269px; }
+		&.icon-gc-phone { background-position: 10px -306px; }
+		&.icon-gc-email {background-position: 10px -344px; }
 
-		&.icon-gc-location { background-position: 0 -277px; }
-		&.icon-gc-phone { background-position: 0 -314px; }
-		&.icon-gc-email {background-position: 0 -353px; }
-
-		&.icon-upgrade { background-position: 5px -440px; }
-		&.icon-key { background-position: 5px -500px; }
+		/* Stay Card Icons ***/
+		&.icon-upgrade { background-position: 3px -440px; }
+		&.icon-key { background-position: 3px -500px; }
+		&.icon-plus { background-position: 3px -1000px; }
+		&.icon-email { background-position: 3px -1060px; }
+		&.icon-print { background-position: 3px -1120px; }
+		&.icon-pencil { background-position: 3px -1178px; }
+		&.icon-wallet { background-position: 3px -1240px; }		
 
 		&.small-icon {
 			background-size: 80px;
@@ -145,7 +154,10 @@
 			&.cancel { background-position: 5px -155px; }
 		}
 
-		&.title-icon {
+		&.room { background-position: 5px -875px; }
+		&.nights { background-position: 5px -935px; }
+
+		&.icon-title {
 			&.check-in { background-position: 0 -553px; }
 			&.check-out { background-position: 0 -593px; }
 			&.inhouse { background-position:  0 -633px; }
@@ -155,6 +167,9 @@
 
 		&.icon-alarm { background-position: 0 -760px; }
 		&.icon-alarm.active { background-position: 0 -820px; }
+
+		&.icon-filter { background-position: 0 -1300px; }
+		&.icon-filter.active { background-position: 0 -1360px; }
 
 		@media @highdpi {
 			background-image: @icons2x;
@@ -184,6 +199,20 @@
 			&.prev-view { background-image: @arrowLeft2x; background-size: 14px 14px; }
 			&.toggle { background-image: @arrowDown2x; background-size: 14px 14px; }
 			&.toggle.active { background-image: @arrowUp2x; background-size: 14px 14px; }
+		}
+	}
+
+	.ui-datepicker-prev,
+	.ui-datepicker-next {
+		background-position: 50% 14px;
+		background-repeat: no-repeat;
+
+		&.ui-datepicker-prev { background-image: @arrowBlackLeft; }
+		&.ui-datepicker-next { background-image: @arrowBlackRight; }
+
+		@media @highdpi {
+			&.ui-datepicker-prev { background-image: @arrowBlackLeft2x; background-size: 14px 14px; }
+			&.ui-datepicker-next { background-image: @arrowBlackRight2x; background-size: 14px 14px; }
 		}
 	}
 
@@ -303,7 +332,7 @@
 
 		/* Button styles ***/
 		&.blank {
-			color: @grey4;
+			color: @grey3;
 			background: transparent;
 			text-shadow: none;
 			#border-radius > .rounded(0);
@@ -335,6 +364,13 @@
 			&:active { .gradient (@blueEnd, @blueStart); }
 		}
 
+		&.purple {
+			.gradient (@purpleStart, @purpleEnd);
+
+			&:hover,
+			&:active { .gradient (@purpleEnd, @purpleStart); }
+		}
+
 		&.grey {
 			.gradient (#d1d1d1, @grey2);
 
@@ -343,19 +379,19 @@
 		}
 
 		&.white {
-			background: @white;
+			color: @textColor;
+			background-color: @white;
 			text-shadow: none;
-			.box-shadow(0 1px 2px rgba(0,0,0,.15));
+			.box-shadow();
 
 			&:hover,
-			&:active { .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)"); }
+			&:active { .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)"); }
 
 			&.blue-text {
 				color: @blue;
 
 				&:hover,
 				&:active { color: @blue; }
-
 			}
 
 			&.red-text {
@@ -363,7 +399,6 @@
 
 				&:hover,
 				&:active { color: @red; }
-
 			}
 		}
 
@@ -373,6 +408,33 @@
 
 			&:hover,
 			&:active { .gradient (@logoGradientEnd, @logoGradientStart); }
+		}
+
+		/* Button with icon ***/
+		&.with-icon {
+			position: relative;
+			padding: 30px 0 0 0;
+			font-size: 12px;
+			line-height: 30px;
+			.size(60px,65px);
+
+			.icons {
+				position: absolute;
+				top: 15px;
+				left: 50%;
+				margin-left: -10px;
+				.show;
+				.square(20px);
+			}
+
+			&.only-icon {
+				.hide-text;
+
+				.icons {
+					top: 50%;
+					margin-top: -10px;
+				}
+			}
 		}
 	}
 
