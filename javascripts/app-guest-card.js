@@ -34,6 +34,7 @@ $(function($){
     $("#guest-card-content").click(function (e){
     	$focusInGuestCardContent = true;
     });
+    /*
     $("html").click(function (e){
     	if(!$focusInGuestCardContent){
     		if($contactInfoChange){
@@ -45,7 +46,7 @@ $(function($){
 		else{
     		$focusInGuestCardContent = false;
     	}
-	});
+	});*/
     $(document).on('click', '#guest-contact, #guest-like, #guest-credit, #guest-loyalty', function(event){
 	    if($currentTab == "guest-contact"){
 	    	if($contactInfoChange){
@@ -123,7 +124,7 @@ function renderContactInformation(){
                $guestCardClickTime = false;        
                
                
-               renderPayment();
+               renderPayment(data.user_id);
                
                // to change flag - to save contact info only if any change happens.
                $(document).on('change', '#guest_firstname, #guest_lastname, #title, #language, #birthday-month,#birthday-year, #birthday-day, #passport-number,#passport-month, #passport-year, #nationality,#email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event){
@@ -180,11 +181,12 @@ function saveContactInfo(){
 }
 
  // function to render payment
-function renderPayment() {
+function renderPayment(user_id) {
 	console.log("Call renderPayment");
        $.ajax({
                type : "GET",
                url : '/dashboard/payment',
+               data : {user_id :user_id},
                async : false,
                success : function(data) {
                        $("#cc-payment").html(data);
