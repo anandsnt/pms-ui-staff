@@ -8,7 +8,7 @@ $(function($) {
 	$contactInfoChange = false;
 	$likeInfoChange = false;
 	$focusInGuestCardContent = false;
-	
+
 
 	// Show/hide guest card on click
 	$(document).on('click', '#guest-card .ui-resizable-handle', function() {
@@ -193,8 +193,10 @@ function renderGuestCardLike() {
 		url : '/dashboard/likes',
 		async : false,
 		success : function(data) {
-			$("#likes").html(data);
-			handleLikeValueChanged();
+
+			/* Commeting this code, to make static rendering work properly, for now.
+			 $("#likes").html(data);
+			handleLikeValueChanged();*/
 		},
 		error : function() {
 			console.log("There is an error!!");
@@ -240,7 +242,7 @@ function saveLikes() {
 			 console.log("There is an error!!");
 			 }
 		 });
-		
+
 	}
 }
 //To handle if any change happened in dynamic like fields
