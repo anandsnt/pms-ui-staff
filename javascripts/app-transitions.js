@@ -44,17 +44,15 @@ var chainedAnimation = function(){
 };
 
 // Change main or inner page
-function changePage($type, $menuActiveItem, $prevPage, $nextPage){
-    var $transition = 'move-from-right',
-        $newScreen = new chainedAnimation(),
+function changePage($type, $menuActiveItem, $prevPage, $nextPage, $transition, $emptyPrev){
+    var $newScreen = new chainedAnimation(),
         $delay = 150;
     
     // Start transitioning when new page is ready
     $('#loading').fadeOut(function(){
         
         // Close navigation panel if open
-        if ($('.container.menu-open').length) 
-        {
+        if ($('.container.menu-open').length) {
             $newScreen.add(function(){ 
                 $('.container').addClass('menu-closing'); 
                 $('.nav-toggle.active').removeClass('active'); 
@@ -89,8 +87,14 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage){
                 var $additionalClass = $type.split('inner-page ');
                 $('#' + $nextPage).addClass($additionalClass[1]);
             }
-
         }, $delay);
+
+        // Empty old page
+        if ($emptyPrev == true) {
+            $newScreen.add(function(){ 
+                $('#' + $prevPage).empty();
+            }, $delay);
+        }
 
         $newScreen.start();
 
@@ -98,7 +102,7 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage){
         $('#main-menu a.active').removeClass('active');
         $('#main-menu a[data-page="' + $menuActiveItem + '"]').addClass('active');
     }).remove();
-
+    
     // Reset the container class (to reset all inner toggle views)
     setTimeout(function() {
         $('.container').attr({'class': 'container'});
@@ -106,7 +110,7 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage){
 }
 
 // Change inner page view 
-function changeView($type, $menuActiveItem, $prevView, $nextView, $transition){
+function changeView($type, $menuActiveItem, $prevView, $nextView, $transition, $emptyPrev){
     var $newView = new chainedAnimation(),
         $delay = 150;
 
@@ -128,10 +132,12 @@ function changeView($type, $menuActiveItem, $prevView, $nextView, $transition){
             $('#' + $prevView).removeClass('view-current set-back ' + $transition);
         }, $delay);
 
-        // Empty old view
-         $newView.add(function(){ 
-            $('#' + $prevView).empty();
-        }, $delay);
+        // Empty old page
+        if ($emptyPrev == true) {
+            $newView.add(function(){ 
+                $('#' + $prevView).empty();
+            }, $delay);
+        }
 
         $newView.start();
     }).remove();
@@ -143,9 +149,8 @@ function changeView($type, $menuActiveItem, $prevView, $nextView, $transition){
 }
 
 // Go back to main page
-function goBackToPage($type, $menuActiveItem, $prevPage){
-    var $transition = 'move-from-left',
-        $oldScreen = new chainedAnimation(),
+function goBackToPage($menuActiveItem, $prevPage, $transition){
+    var $oldScreen = new chainedAnimation(),
         $delay = 150;
 
     // Bring in previous page
@@ -171,6 +176,31 @@ function goBackToPage($type, $menuActiveItem, $prevPage){
     setTimeout(function() {
         $('.container').attr({'class': 'container'});
     }, 300);
+}
+
+// Go back to previous view on the inner page
+function goBackToView($menuActiveItem, $prevView, $transition){
+    var $oldView = new chainedAnimation(),
+        $delay = 150;
+
+    // Bring in previous page
+    $oldView.add(function(){  
+        $('.page-locked .nested-view:not(.view-current)').addClass('view-current ' + $transition);
+        $('#' + $prevView).addClass('set-back');
+    }, $delay);
+
+    // Remove transition class
+    $oldView.add(function(){ 
+        $('.view-current').removeClass($transition);
+        $('.page-locked').removeClass('page-locked ' + $transition);
+        $('#' + $prevView).removeClass('set-back view-current').empty();
+    }, $delay);
+
+    $oldView.start();
+
+    // Set active class in the menu
+    $('#main-menu a.active').removeClass('active');
+    $('#main-menu a[data-page="' + $menuActiveItem + '"]').addClass('active');
 }
 
 $(function($){ 
@@ -216,144 +246,94 @@ $(function($){
     });
 
     // All other screens - loaded dynamicilly
-    $(document).on('click','a[data-transition]',function(e) {
+    $(document).on('click','a[data-transition]:not(.active)',function(e) {
         e.preventDefault();
 
+        // Common variables
         var $loader = '<div id="loading" />',
             $href = $(this).attr('href'),
-	    $search_status = $(this).attr('search-status'),
- 	    $trigger_search = $(this).attr('trigger-search'),
-            $pageType = $(this).attr('data-transition'),
-            $menuPage = $(this).attr('data-page'),
-            $prevMainPage = $('.main-page.page-current').attr('id'),
-            $nextMainPage = $('.main-page:not(.page-current)').attr('id'),
-            $prevInnerPage = $('.inner-page.page-current').attr('id'),
-            $nextInnerPage = $('.inner-page:not(.page-current)').attr('id'),
-            $backButtonPage = $(this).closest('.page-current').attr('id'),
-            $prevNestedView = $('.nested-view.view-current').attr('id'),
-            $nextNestedView = $('.nested-view:not(.view-current)').attr('id'),
-            $transitionType = $(this).hasClass('back-button') ? 'move-from-left' : 'move-from-right';
-       
-        // Main page transitions
-        if ($pageType.indexOf('main-page') >= 0)
-        {
-            // Skip loading for active links and back buttons
-            if(!$(this).hasClass('active') && !$(this).hasClass('back-button'))
-            {
-                $($loader).prependTo('body').show(function(){
-                    $.ajax({
-                        type:       'GET',
-                        url:        $href,
-                        dataType:   'html',
-                        timeout:    5000,
-                        success: function(data){
-                            $('#' + $nextMainPage).html(data);
- 				if($trigger_search=='TRUE'){
- 			                $url = '/search.json?status='+$search_status;
- 			                load_search_data($url,'');
- 			        }
-                        },
-                        error: function(){
-                            $('#loading').remove();
-                            // TODO - create a page for this and replace the current path
-                            // modalInit('modals/alerts/not-there-yet/');
-                        }
-                    }).done(function(){ changePage($pageType, $menuPage, $prevMainPage, $nextMainPage); });
-                });   
-            }
-            // Back buttons
-            else if ($(this).hasClass('back-button'))
-            {
-                goBackToPage($pageType, $menuPage, $backButtonPage);
-            }
-        }
-        
-        // Inner page transitions
-        else if ($pageType.indexOf('inner-page') >= 0)
-        {
-            // Skip loading for back buttons
-            if(!$(this).hasClass('back-button'))
-            {
-                $($loader).prependTo('body').show(function(){
-                    $.ajax({
-                        type:       'GET',
-                        url:        $href,
-                        dataType:   'html',
-                        //timeout:    5000,
-                        success: function(data){
-                            $('#' + $nextInnerPage).html(data);
-                        },
-                        error: function(){
-                            $('#loading').remove();
-                            // TODO - create a page for this and replace the current path
-                            // modalInit('modals/alerts/not-there-yet/');
-                        }
-                    }).done(function(){ changePage($pageType, $menuPage, $prevInnerPage, $nextInnerPage); });
-                });   
-            }
-            // Back buttons
-            else if ($(this).hasClass('back-button'))
-            {
-                goBackToPage($pageType, $menuPage, $backButtonPage);
-            }
-        }
+            $transitionPage = $(this).attr('data-transition'),
+            $reload = $transitionPage.indexOf('reload-content') >= 0 ? true : false,
+            $activeMenuItem = $(this).attr('data-page'),
+            $transitionType = $(this).hasClass('back-button') ? 'move-from-left' : 'move-from-right',
+            $backPage = $(this).closest('.page-current').attr('id'),
+            $backView = $(this).closest('.view-current').attr('id');    
+            //TODO: move to app-search.js
+            $search_status = $(this).attr('search-status'),
+            $trigger_search = $(this).attr('trigger-search');
 
-        // Nested view transitions
-        else if ($pageType.indexOf('nested-view') >= 0)
+        // Different page transitions
+        if ($transitionPage.indexOf('main-page') >= 0)
         {
-            //getParentBookingDetailes($(this).attr('id'));
+            var $previous = $('.main-page.page-current').attr('id'),
+                $next = $('.main-page:not(.page-current)').attr('id');
+        }
+        else if ($transitionPage.indexOf('inner-page') >= 0)
+        {
+            var $previous = $('.inner-page.page-current').attr('id'),
+                $next = $('.inner-page:not(.page-current)').attr('id');
+        }
+        else if ($transitionPage.indexOf('nested-view') >= 0)
+        {
+            var $previous = $('.nested-view.view-current').attr('id'),
+                $next = $('.nested-view:not(.view-current)').attr('id');
+        }
+        // Load reservations
+        if ($transitionPage.indexOf('reservation-list') >= 0)
+        {
+            displayReservationDetails($href);
+        }
+        // Load next page/view or reload previous view before going back
+        else if(!$(this).hasClass('back-button') || ($(this).hasClass('back-button') && $reload == true))
+        {
             $($loader).prependTo('body').show(function(){
                 $.ajax({
                     type:       'GET',
                     url:        $href,
-                    cache:      true,
                     dataType:   'html',
                     timeout:    5000,
                     success: function(data){
-                        $('#' + $nextNestedView).html(data);
+                        $('#' + $next).html(data);
+                        //TODO: move to app-search.js
+                        if($trigger_search=='TRUE'){
+                            $url = '/search.json?status='+$search_status;
+                            load_search_data($url,'');
+                        }
                     },
                     error: function(){
                         $('#loading').remove();
-                        // TODO - create a page for this and replace the current path
-                        // modalInit('modals/alerts/not-there-yet/');
+                        modalInit('modals/alerts/not-there-yet/');
                     }
-                }).done(function(){ 
-                    changeView($pageType, $menuPage, $prevNestedView, $nextNestedView, $transitionType); 
+                }).done(function(){  
+                    if ($transitionPage.indexOf('main-page') >= 0 || $transitionPage.indexOf('inner-page') >= 0)
+                    {
+                        changePage($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reload);
+                    }
+                    else if ($transitionPage.indexOf('nested-view') >= 0)
+                    {
+                       changeView($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reload); 
+                    }
                 });
-            });   
+            });
+        }
 
+        // Back buttons no reload
+        else if ($(this).hasClass('back-button') && $reload == false)
+        {
+            if ($transitionPage.indexOf('main-page') >= 0 || $transitionPage.indexOf('inner-page') >= 0)
+            {
+                goBackToPage($activeMenuItem, $backPage, $transitionType);
+            }
+            else if ($transitionPage.indexOf('nested-view') >= 0)
+            {
+               goBackToView($activeMenuItem, $backView, $transitionType);
+            }
         }
-        else if ($pageType.indexOf('reservation-list') >= 0){
-        	var currentTimeline = $('#reservation-timeline').find('.ui-state-active').attr('aria-controls');
-        	
-        	if($('#' +currentTimeline+' > div').length > 6 && !($($href).length > 0)){
-        		$("#" + currentTimeline).find('div:nth-child(2)').remove();
-        	}
-        	
-        	var reservation = $href.split("-")[1];
-        	//div not present in DOM
-        	if (!($($href).length > 0)){
-	        	$.ajax({
-	                type:       'GET',
-	                url:        "/dashboard/reservation_details?reservation=" + reservation,
-	                dataType:   'html',
-	                timeout:    5000,
-	                success: function(data){
-	                	displayReservationDetails($href, data);
-	                },
-	                error: function(){
-	//                    $('#loading').remove();
-	//                    modalInit('modals/alerts/not-there-yet/');
-	                    //alert("Sorry, not there yet!");
-	                }
-	            }).done(function(){});
-        	}
-            
-        }
+
+        
         else 
         {
-            // TODO - create a page for this and replace the current path
-            // modalInit('modals/alerts/not-there-yet/');
+            modalInit('modals/alerts/not-there-yet/');
         }
     });
 
