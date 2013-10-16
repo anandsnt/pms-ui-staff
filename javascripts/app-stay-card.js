@@ -82,13 +82,35 @@ $(function($){
 });
 
 //Add the reservation details to the DOM.
-function displayReservationDetails(divId , html){
-	var currentTimeline = $('#reservation-timeline').find('.ui-state-active').attr('aria-controls');
-	//console.log($('#' +currentTimeline+' > div').length);
-	
-	//if (!($(divId).length > 0)){
-		$("#" + currentTimeline).append(html);
-	//}
+function displayReservationDetails($href){
+	//get the current highlighted timeline
+    //Not more than 5 resevation should be kept in DOM in a timeline.
+    var currentTimeline = $('#reservation-timeline').find('.ui-state-active').attr('aria-controls');         
+    if($('#' +currentTimeline+' > div').length > 6 && !($($href).length > 0)){
+        $("#" + currentTimeline).find('div:nth-child(2)').remove();
+    }
+    //get the reservation id.
+    var reservation = $href.split("-")[1];
+    //if div not present in DOM, make ajax request 
+    if (!($($href).length > 0)){
+        $.ajax({
+            type:       'GET',
+            url:        "/dashboard/reservation_details?reservation=" + reservation,
+            dataType:   'html',
+            timeout:    5000,
+            success: function(data){
+                $("#" + currentTimeline).append(data);
+            },
+            error: function(){ }
+        }).done(function(){ });
+    }
+}
+
+function getParentBookingDetailes(clickedElement){
+	alert(clickedElement);
+	var reservationDetails = {};
+	var parentReservationElement = $('#' + clickedElement).closest('div[id^="reservation-content"]').attr('id');
+	alert(parentReservationElement);
 }
 
 
