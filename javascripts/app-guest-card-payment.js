@@ -68,17 +68,17 @@ $(function($) {
 	$(document).on('click', "#save_new_credit_card", function() {
 		
 		var $payment_type = $("#new-payment #payment-type").val();
-			$payment_credit_type = $("#new-payment #payment-credit-type_credit_card").val();
-			$card_number_set1 = $("#new-payment #card-number-set1").val();
-			$card_number_set2 = $("#new-payment #card-number-set2").val();
-			$card_number_set3 = $("#new-payment #card-number-set3").val();
-			$expiry_month	= $("#new-payment #expiry-month").val();
-			$expiry_year	= $("#new-payment #expiry-year").val();
-			$name_on_card	= $("#new-payment #name-on-card").val();
-			
-			$card_number = $card_number_set1 + $card_number_set2 + $card_number_set3;
-			$card_expiry = $expiry_year +"-"+$expiry_month +"-01";
-			console.log("$card_number"+$card_number);
+		$payment_credit_type = $("#new-payment #payment-credit-type_credit_card").val();
+		$card_number_set1 = $("#new-payment #card-number-set1").val();
+		$card_number_set2 = $("#new-payment #card-number-set2").val();
+		$card_number_set3 = $("#new-payment #card-number-set3").val();
+		$expiry_month	= $("#new-payment #expiry-month").val();
+		$expiry_year	= $("#new-payment #expiry-year").val();
+		$name_on_card	= $("#new-payment #name-on-card").val();
+		$card_type 		= $("#payment-credit-type_credit_card").val();
+		$card_number = $card_number_set1 + $card_number_set2 + $card_number_set3;
+		$card_expiry = $expiry_year +"-"+$expiry_month +"-01";
+		console.log("$card_number"+$card_number);
 
 		$("#new-payment .error").hide();
 		if(($("#new-payment #payment-type").val()) == ""){
@@ -105,14 +105,14 @@ $(function($) {
 		
         var	$add = 
 	        '<a id="credit_row" href="dashboard/showCreditModal" credit_id="" class="active-item item-payment primary open-modal float credit-card-info new-item">'+
-	        '<figure class="card-logo"></figure>'+$image+'<span class="number">'+
+	        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
 	        'Ending with<span class="value number">'+$number+'</span></span>'+
 			'<span class="date">Date<span class="value date">'+$expiry+'</span>'+
 			'</span><span class="name">Name<span class="value name">'+$cardHolderName+'</span>'+
 			'</span></a>';
 		
 		//console.log($add);
-	    $("#payment_tab #payment_list").append($add);
+	    
 	    removeModal();
 	    setTimeout(function() {
 			refreshGuestCardScroll();
@@ -129,25 +129,24 @@ $(function($) {
 					payment_type: $payment_type,
 				    payment_credit_type: $payment_credit_type,
 				    card_number: $card_number,
+				    credit_card: $card_type,
 				    card_expiry: $card_expiry,
 				    name_on_card: $name_on_card
 				},
 			dataType: 'json',
 			success: function(data) {
-				console.log(data.id);
+				$("#payment_tab #payment_list").append($add);
 				//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
-				$("#new-payment .new-item").attr("credit_id", data.id);
-				$("#new-payment .new-item").attr("id", "credit_row"+data.id);
-				$("#new-payment #credit_row"+data.id).removeClass("new-item");
-				
-				
+				// $("#new-payment .new-item").attr("credit_id", data.id);
+				// $("#new-payment .new-item").attr("id", "credit_row"+data.id);
+				// $("#new-payment #credit_row"+data.id).removeClass("new-item");
 				//$("#credit_row").attr("credit_id", data.id);
 				//$("#credit_row").attr("id", "credit_row"+data.id);
-				
-				console.log("Succesfully added credit card"+data);
+				console.log("Succesfully added credit card");
 			},
-			error: function(){
+			error: function(e){
 				console.log("There is an error!!");
+				alert(e.responseText)
 			}
 		});
 		removeModal();
