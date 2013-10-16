@@ -281,6 +281,7 @@ $(function($){
         // Load reservations
         if ($transitionPage.indexOf('reservation-list') >= 0)
         {
+
             displayReservationDetails($href);
         }
         // Load next page/view or reload previous view before going back
@@ -326,7 +327,7 @@ $(function($){
             }
             else if ($transitionPage.indexOf('nested-view') >= 0)
             {
-               goBackToView($activeMenuItem, $backView, $transitionType);
+                goBackToView($activeMenuItem, $backView, $transitionType);
             }
         }
 

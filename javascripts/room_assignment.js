@@ -12,6 +12,10 @@ $(function($){
     $('.rooms-listing #room_type_selectbox').change(function(){
         getFilterList()
     })
+
+    
+
+
 });
 
 function GetRoomAssignmentList(){
@@ -85,12 +89,30 @@ function applyFilters(featureList){
 function displeFilteredRoomList(filteredRoomList){
     $('#rooms-available ul').html("");
 
-    //TODO: add room status logic
     for (var i=0; i<filteredRoomList.length; i++){
-        var output = "<li><a href='reservation-card/check-in/'"+
-         "class='back-button button white submit-value' data-value='100' data-transition='nested-view'"+
-          "data-page='search'><span class='room-number ready'>"+filteredRoomList[i].room_number+"</span></a></li>";
-        $('#rooms-available ul').append(output);        
+        var room_status_html ="" ;
+        
+        if(filteredRoomList[i].room_status == "ready"){
+            room_status_html = "<span class='room-number ready'>"+filteredRoomList[i].room_number+"</span>";
+        }
+        else{
+            room_status_html = "<span class='room-number not-ready'>"+filteredRoomList[i].room_number +"</span>"+
+            "<span class='room-status not-ready'>"+filteredRoomList[i].room_status_explained +"</span>";    
+        }
+        var output = "<li><a id = 'room-list-item' href='#'"+
+            "class='back-button button white submit-value' data-value='' data-transition='nested-view'"+
+            "data-page='search'>"+room_status_html+"</a></li>";
+            $('#rooms-available ul').append(output);      
+
+       
     }
 
+    $('#rooms-available #room-list-item').click(function(){
+        
+        var roomSelected = $(this).find(">:first-child").html();
+        var currentReservation = $('#roomassignment-ref-id').val();
+        $('#reservation-'+currentReservation+'-room-number').html(roomSelected);
+    });  
+
+ 
 }
