@@ -18,6 +18,7 @@
 //= require jquery.ui.effect
 //= require jquery.ui.effect-slide
 //= require jquery.ui.touch-punch
+//= stub app-guest-card
 //= require stayntouch
 //= stub app-stay-card
 //= stub app-forms
