@@ -1,5 +1,4 @@
-roomCompleteList = {};
-roomCompleteList.room_detils_list = [];
+roomCompleteList = [];
 
 $(function($){ 
     GetRoomAssignmentList();
@@ -29,8 +28,7 @@ function GetRoomAssignmentList(){
             getFilterList();
         },
         error: function(){
-            roomCompleteList = {};
-            roomCompleteList.room_detils_list = [];
+            roomCompleteList = [];
             alert("failed to fetch json");
         }
     });
@@ -63,7 +61,7 @@ function getFilterList(){
 }
 function applyFilters(featureList){
     var matchCountRequired = featureList.length;
-    var roomList = roomCompleteList.room_detils_list;
+    var roomList = roomCompleteList;
     
     var filteredRoomList = [];
 
@@ -108,7 +106,7 @@ function displeFilteredRoomList(filteredRoomList){
     }
 
     $('#rooms-available #room-list-item').click(function(){
-        
+
         var roomSelected = $(this).find(">:first-child").html();
         var currentReservation = $('#roomassignment-ref-id').val();
         $('#reservation-'+currentReservation+'-room-number').html(roomSelected);

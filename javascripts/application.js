@@ -21,6 +21,5 @@
 //= require stayntouch
 //= stub app-stay-card
 //= stub app-forms
-//= stub roomAssignment
-//= stub roomAssignment
+//= stub room_assignment
 //= require_tree .
