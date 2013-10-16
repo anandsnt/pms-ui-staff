@@ -194,9 +194,9 @@ function renderGuestCardLike() {
 		async : false,
 		success : function(data) {
 
-			/* Commeting this code, to make static rendering work properly, for now.
+			//Commeting this code, to make static rendering work properly, for now.
 			 $("#likes").html(data);
-			handleLikeValueChanged();*/
+			handleLikeValueChanged();
 		},
 		error : function() {
 			console.log("There is an error!!");
