@@ -37,7 +37,7 @@ $(function($) {
 	$("#guest-card-content").click(function(e) {
 		$focusInGuestCardContent = true;
 	});
-	
+
 	$("html").click(function(e) {
 		if (!$focusInGuestCardContent) {
 			if ($contactInfoChange) {
@@ -106,7 +106,7 @@ function renderContactInformation() {
 		$($loader).prependTo('body').show(function() {
 			$.ajax({
 				type : "GET",
-				url : '/guest_cards/show.json',
+				url : '/dashboard/guestcard.json',
 				data : {
 					fakeDataToAvoidCache : new Date()
 				}, // fakeDataToAvoidCache is iOS Safari fix
@@ -133,11 +133,11 @@ function renderContactInformation() {
 					$("#mobile").val(data.mobile);
 
                     //TODO - Need to change with original values
-					$("#guest_id").val("1");
-					$("#user_id").val("1");
+					// $("#guest_id").val("1");
+					// $("#user_id").val("1");
 
-					//$("#guest_id").val(data.guest_id);
-					//$("#user_id").val(data.user_id);
+					$("#guest_id").val(data.guest_id);
+					$("#user_id").val(data.user_id);
 
 					$guestCardClickTime = false;
 					// to change flag - to save contact info only if any change happens.
@@ -152,7 +152,8 @@ function renderContactInformation() {
 				}
 			}).done(function() {
 				$('#loading').remove();
-				renderGuestCardLike(data.guest_id);
+				var guest_id = $("#guest_id").val();
+				renderGuestCardLike(guest_id);
 				renderPayment();
 			});
 		});
@@ -178,7 +179,7 @@ function saveContactInfo() {
     $addresses_attributes['country'] =$("#country").val();
     $addresses_attributes['is_primary'] =true;
     $addresses_attributes['label'] ="HOME";
-    $contactJsonObj['user']['addresses_attributes'].push($addresses_attributes);    
+    $contactJsonObj['user']['addresses_attributes'].push($addresses_attributes);
     $contactJsonObj['user']['contacts_attributes'] = [];
     $contact_attributes = {};
     $contact_attributes['contact_type'] = "PHONE";
@@ -193,7 +194,7 @@ function saveContactInfo() {
     $contact_attributes['is_primary'] = true;
     $contact_attributes['id'] = "";
     $contactJsonObj['user']['contacts_attributes'].push($contact_attributes);
-     
+
     console.log(JSON.stringify($contactJsonObj));
 	$.ajax({
 		type : "POST",
@@ -212,16 +213,16 @@ function saveContactInfo() {
 
 //Function to render guest card like
 function renderGuestCardLike(guest_id) {
-	
+
 	$.ajax({
 		type : "GET",
 		url : '/dashboard/likes',
 		data:{user_id :guest_id},
 		async : false,
 		success : function(data) {
-			
+
 			//Commeting this code, to make static rendering work properly, for now.
-			
+
 			$("#likes").html(data);
 			handleLikeValueChanged();
 		},
@@ -237,7 +238,7 @@ function saveLikes() {
 		var $totalPreferences = $("#totalpreference").val();
 		$totalFeatures = $("#totalfeatures").val();
 		jsonObj = {};
-		
+
 		jsonObj['user_id'] = $("#guest_id").val();
 		jsonObj['preference'] = [];
 		for ( i = 0; i < $totalPreferences; i++) {
@@ -246,7 +247,7 @@ function saveLikes() {
 			$preference["value"] = $('input[name="pref_' + i + '"]:checked').val();
 			jsonObj['preference'].push($preference);
 		}
-		
+
 		for ( j = 0; j < $totalFeatures; j++) {
 			$feature = {};
 			if ($('#feat_' + j).is(':checked')) {
@@ -257,7 +258,7 @@ function saveLikes() {
 			}
 		}
 		console.log(JSON.stringify(jsonObj));
-		
+
 		//To save like values - uncomment after API ready
 		$.ajax({
 		 type: "POST",
@@ -280,7 +281,7 @@ function handleLikeValueChanged() {
 	$(document).on('change', "#newspaper,#roomtype", function(event) {
 		$likeInfoChange = true;
 	});
-	
+
 	var $totalPreferences = $("#totalpreference").val();
 	$totalFeatures = $("#totalfeatures").val();
 	for ( i = 0; i < $totalPreferences; i++) {
