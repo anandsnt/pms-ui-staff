@@ -106,7 +106,7 @@ function renderContactInformation() {
 		$($loader).prependTo('body').show(function() {
 			$.ajax({
 				type : "GET",
-				url : '/dashboard/guestcard.json',
+				url : '/guest_cards/show.json',
 				data : {
 					fakeDataToAvoidCache : new Date()
 				}, // fakeDataToAvoidCache is iOS Safari fix
@@ -131,9 +131,14 @@ function renderContactInformation() {
 					$("#country").val(data.country);
 					$("#phone").val(data.phone);
 					$("#mobile").val(data.mobile);
+
+                                        //TODO - Need to change with original values
 					$("#guest_id").val("1");
 					$("#user_id").val("1");
-                                       
+
+					//$("#guest_id").val(data.guest_id);
+					//$("#user_id").val(data.user_id);
+
 					$guestCardClickTime = false;
 					// to change flag - to save contact info only if any change happens.
 					$(document).on('change', '#guest_firstname, #guest_lastname, #title, #language, #birthday-month,#birthday-year, #birthday-day, #passport-number,#passport-month, #passport-year, #nationality,#email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event) {
@@ -157,30 +162,45 @@ function renderContactInformation() {
 
 //Function to save contact information
 function saveContactInfo() {
+	var userId = $("#user_id").val();
+	$contactJsonObj = {};
+    $contactJsonObj['guest_id'] = $("#guest_id").val();
+    $contactJsonObj['user'] = {};
+    $contactJsonObj['user']['first_name'] = $("#guest_firstname").val();
+    $contactJsonObj['user']['last_name'] = $("#guest_lastname").val();
+    $contactJsonObj['user']['addresses_attributes'] = [];
+    $addresses_attributes = {};
+    $addresses_attributes['street1'] = $("#streetname").val();
+    $addresses_attributes['street2'] = "";
+    $addresses_attributes['city'] = $("#city").val();
+    $addresses_attributes['state'] = $("#state").val();
+    $addresses_attributes['postal_code'] = $("#postalcode").val();
+    $addresses_attributes['country'] =$("#country").val();
+    $addresses_attributes['is_primary'] =true;
+    $addresses_attributes['label'] ="HOME";
+    $contactJsonObj['user']['addresses_attributes'].push($addresses_attributes);    
+    $contactJsonObj['user']['contacts_attributes'] = [];
+    $contact_attributes = {};
+    $contact_attributes['contact_type'] = "PHONE";
+    $contact_attributes['label'] = "HOME";
+    $contact_attributes['value'] = $("#phone").val();
+    $contact_attributes['is_primary'] = true;
+    $contactJsonObj['user']['contacts_attributes'].push($contact_attributes);
+    $contact_attributes = {};
+    $contact_attributes['contact_type'] = "EMAIL";
+    $contact_attributes['label'] = "BUSINESS";
+    $contact_attributes['value'] = $("#email").val();
+    $contact_attributes['is_primary'] = true;
+    $contact_attributes['id'] = "";
+    $contactJsonObj['user']['contacts_attributes'].push($contact_attributes);
+     
+    console.log(JSON.stringify($contactJsonObj));
 	$.ajax({
 		type : "POST",
-		url : '/dashboard/guestcard.json',
-		data : {
-			firstname : $("#guest_firstname").val(),
-			lastname : $("#guest_lastname").val(),
-			title : $("#title").val(),
-			language : $("#language").val(),
-			birth_date : $("#birthday-year").val() + "-" + $("#birthday-month").val() + "-" + $("#birthday-day").val(),
-			passport_number : $("#passport-number").val(),
-			passport_month : $("#passport-month").val(),
-			passport_year : $("#passport-year").val(),
-			nationality : $("#nationality").val(),
-			email : $("#email").val(),
-			streetname : $("#streetname").val(),
-			city : $("#city").val(),
-			postalcode : $("#postalcode").val(),
-			state : $("#state").val(),
-			country : $("#country").val(),
-			phone : $("#phone").val(),
-			mobile : $("#mobile").val()
-		},
+		url : '/guest_cards/'+userId,
+		data : $contactJsonObj,
 		async : false,
-		dataType : 'json',
+		dataType: 'json',
 		success : function() {
 			$contactInfoChange = false;
 		},
