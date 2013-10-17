@@ -26,7 +26,7 @@ function writeSearchResult(id, firstname, lastname, image, confirmation, status,
         $image = (image != '') ? '<figure class="guest-image"><img src="/assets/' + image + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = roomstatusextra ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
         $output = 
-        '<a href="/dashboard/staycard?confirmation=' + confirmation + '" class="guest-' + status + ' link-item float" data-transition="inner-page has-card" data-page="search">' + 
+        '<a href="/dashboard/staycard?confirmation=' + confirmation+'&id='+ id+ '" class="guest-' + status + ' link-item float" data-transition="inner-page has-card" data-page="search">' + 
             $image +
             '<div class="data">' +
                 '<h2>' + lastname + ', ' + firstname + '</h2>' +
