@@ -79,6 +79,12 @@ $(function($) {
 		$card_number = $card_number_set1 + $card_number_set2 + $card_number_set3;
 		$card_expiry = $expiry_year +"-"+$expiry_month +"-01";
 		console.log("$card_number"+$card_number);
+		
+		/* credit card validation */
+		if (!checkCreditCard ($card_number, $card_type)) {
+	    	alert (ccErrors[ccErrorNo]);
+	  		return false;
+	  	}
 
 		$("#new-payment .error").hide();
 		if(($("#new-payment #payment-type").val()) == ""){
