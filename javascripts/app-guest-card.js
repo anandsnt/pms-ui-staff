@@ -106,7 +106,7 @@ function renderContactInformation() {
 		$($loader).prependTo('body').show(function() {
 			$.ajax({
 				type : "GET",
-				url : '/guestcard/show.json',
+				url : '/dashboard/guestcard.json',
 				data : {
 					fakeDataToAvoidCache : new Date()
 				}, // fakeDataToAvoidCache is iOS Safari fix
@@ -241,6 +241,18 @@ function saveLikes() {
 
 		jsonObj['user_id'] = $("#guest_id").val();
 		jsonObj['preference'] = [];
+
+		var $newspapaer = {
+			type : "NEWS",
+			value : $("#newspaper").val()
+		};
+		var $roomtype = {
+			type : "ROOMTYPE",
+			value : $("#roomtype").val()
+		};
+		jsonObj['preference'].push($newspapaer);
+		jsonObj['preference'].push($roomtype);
+
 		for ( i = 0; i < $totalPreferences; i++) {
 			$preference = {};
 			$preference["type"] = $("#pref_" + i).attr('prefname');
