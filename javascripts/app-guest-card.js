@@ -132,7 +132,7 @@ function renderContactInformation() {
 					$("#phone").val(data.phone);
 					$("#mobile").val(data.mobile);
 
-                                        //TODO - Need to change with original values
+                    //TODO - Need to change with original values
 					$("#guest_id").val("1");
 					$("#user_id").val("1");
 
