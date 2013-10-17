@@ -133,11 +133,11 @@ function renderContactInformation() {
 					$("#mobile").val(data.mobile);
 
                     //TODO - Need to change with original values
-					$("#guest_id").val("1");
-					$("#user_id").val("1");
+					// $("#guest_id").val("1");
+					// $("#user_id").val("1");
 
-					//$("#guest_id").val(data.guest_id);
-					//$("#user_id").val(data.user_id);
+					$("#guest_id").val(data.guest_id);
+					$("#user_id").val(data.user_id);
 
 					$guestCardClickTime = false;
 					// to change flag - to save contact info only if any change happens.
