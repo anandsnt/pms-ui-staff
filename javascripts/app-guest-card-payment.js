@@ -111,7 +111,7 @@ $(function($) {
 		
         var	$add = 
 	        '<a id="credit_row" href="dashboard/showCreditModal" credit_id="" class="active-item item-payment primary open-modal float credit-card-info new-item">'+
-	        '<figure class="card-logo"></figure>'+$image+'<span class="number">'+
+	        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
 	        'Ending with<span class="value number">'+$number+'</span></span>'+
 			'<span class="date">Date<span class="value date">'+$expiry+'</span>'+
 			'</span><span class="name">Name<span class="value name">'+$cardHolderName+'</span>'+
