@@ -102,12 +102,12 @@ $(function($) {
 		}else if($("#new-payment #name-on-card").val() == ""){
 			$("#name-on-card-error").html("Card holder name is required").show();	
 			return false;			
-		}	
-		
-		var $image = (($("#new-payment #credit_card").val()) == "AX" ? "<img src='/assets/amex.png' alt='amex'>": (($("#new-payment #credit_card").val()) == "MA" ? "<img src='/assets/mastercard.png' alt='mastercard'>": "<img src='/assets/visa.png' alt='visa'>" ));
-			$number = $("#new-payment #card-number-set3").val();
-			$expiry = $("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val();
-			$cardHolderName = $("#new-payment #name-on-card").val();
+		}
+
+		var $image = (($card_type) == "AX" ? "<img src='/assets/amex.png' alt='amex'>": (($card_type) == "MA" ? "<img src='/assets/mastercard.png' alt='mastercard'>": "<img src='/assets/visa.png' alt='visa'>" ));
+		$number = $("#new-payment #card-number-set3").val();
+		$expiry = $("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val();
+		$cardHolderName = $("#new-payment #name-on-card").val();
 		
         var	$add = 
 	        '<a id="credit_row" href="dashboard/showCreditModal" credit_id="" class="active-item item-payment primary open-modal float credit-card-info new-item">'+
