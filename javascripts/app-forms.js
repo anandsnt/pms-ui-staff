@@ -107,43 +107,43 @@ function modalInit(content) {
         error: function(){
             alert("Sorry, not there yet!");
         }
-    });
+    });   
+
 }
-    // Close modal
-    $(document).on('click', '#modal-overlay, #modal-close', function(e){
+// Close modal
+    $(document).on('click', '#modal-overlay, #modal-close, #cancel', function(e){
         e.stopPropagation();
         removeModal();
     });
 
-    // Show modal
-    function setModal(){
-        if ($('#modal').length) 
-        { 
-            $('#modal').empty(); 
-        }
-        else 
-        { 
-            $($modal).prependTo('body'); 
-        }
-
-        if (!$('#modal-overlay').length) 
-        { 
-            $($overlay).insertAfter('#modal'); 
-        }
-
-        setTimeout(function() {
-            $('#modal, #modal-overlay').addClass('modal-show');
-        }, 0);
+// Show modal
+function setModal(){
+    if ($('#modal').length) 
+    { 
+        $('#modal').empty(); 
+    }
+    else 
+    { 
+        $($modal).prependTo('body'); 
     }
 
-    // Remove modal
-    function removeModal() {
-        $('#modal, #modal-overlay').removeClass('modal-show'); 
-        setTimeout(function() { 
-            $('#modal').empty();
-        }, 150);
+    if (!$('#modal-overlay').length) 
+    { 
+        $($overlay).insertAfter('#modal'); 
     }
 
+    setTimeout(function() {
+        $('#modal, #modal-overlay').addClass('modal-show');
+    }, 0);
+}
+
+// Remove modal
+function removeModal() {
+    $('#modal, #modal-overlay').removeClass('modal-show'); 
+    setTimeout(function() { 
+        $('#modal').empty();
+    }, 150);
+}
 
 // Fast click polyfill
 window.addEventListener('load', function() {
@@ -172,23 +172,33 @@ $(function($){
         $(this).updateStyledSelect();
     });
     
-    // Resize masked inputs to match content width
+     // Resize masked inputs to match content width
     $(document).on('focus', '.masked-input', function(){
-        $('.masked-input').addClass('active');
+        $(this).addClass('active');
     }).on('focusout', '.masked-input', function(){
-        $('.masked-input').removeClass('active');
+        $(this).removeClass('active');
+        //send an update request to the third party system
+        updateGuestDetails($(this).val(), $(this).attr('data-val'));
     }).on('change', '.masked-input', function(){
-        alert("Changes are saved!");
     });
 
     $('.masked-input').keyup(resizeInput).each(resizeInput);
 
     // Dialog window
     $(document).on('click', '.open-modal', function(e){
-        e.preventDefault();
+    	
+    	
+    	e.preventDefault();
+        e.stopImmediatePropagation();
 
-        var $href = $(this).attr('href');
-        modalInit($href);
+        var $href = $(this).attr('href'),
+            $action = $(this).closest('form').attr('action');
+            
+        console.log($href);
+        console.log($action);
+        
+        modalInit($href ? $href : $action);
+        
     }); 
 
 });

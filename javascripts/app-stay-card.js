@@ -114,3 +114,25 @@ function getParentBookingDetailes(clickedElement){
 }
 
 
+function updateGuestDetails(update_val, type){
+	
+	var data = {};
+	var confirmNumber = $('#guest-card #reservation_num_hidden').val();
+	data.id = confirmNumber?confirmNumber:4813095;
+	data.update_val = update_val;
+	data.type = type;
+	$.ajax({
+        type:       'POST',
+        url:        "/dashboard/update_guest",
+        data: 		data,
+        timeout:    5000,
+        success: function(data){
+        	//TODO: handle success state
+        },
+        error: function(e){
+        	//TODO: hande error cases
+        	console.log(e);
+        }
+    })
+
+}
