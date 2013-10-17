@@ -297,10 +297,12 @@ function handleLikeValueChanged() {
 
 // function to render payment
 function renderPayment() {
+	user_id = $("#user_id").val();
 	$.ajax({
 		type : "GET",
 		url : '/dashboard/payment',
 		async : false,
+		data :{user_id :user_id},
 		success : function(data) {
 			$("#cc-payment").html(data);
 			$(document).on('click', "#credit-card-set-as-primary", function() {
