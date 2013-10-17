@@ -172,13 +172,14 @@ $(function($){
         $(this).updateStyledSelect();
     });
     
-    // Resize masked inputs to match content width
+     // Resize masked inputs to match content width
     $(document).on('focus', '.masked-input', function(){
-        $('.masked-input').addClass('active');
+        $(this).addClass('active');
     }).on('focusout', '.masked-input', function(){
-        $('.masked-input').removeClass('active');
+        $(this).removeClass('active');
+        //send an update request to the third party system
+        updateGuestDetails($(this).val(), $(this).attr('data-val'));
     }).on('change', '.masked-input', function(){
-        alert("Changes are saved!");
     });
 
     $('.masked-input').keyup(resizeInput).each(resizeInput);
