@@ -105,7 +105,7 @@ function renderContactInformation() {
 		$($loader).prependTo('body').show(function() {
 			$.ajax({
 				type : "GET",
-				url : '/dashboard/guestcard.json',
+				url : '/guest_cards/show.json',
 				data : {
 					fakeDataToAvoidCache : new Date()
 				}, // fakeDataToAvoidCache is iOS Safari fix
