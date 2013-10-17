@@ -63,7 +63,7 @@ function checkCreditCard (cardnumber, cardname) {
   //  prefixes:     List of possible prefixes for the card
   //  checkdigit:   Boolean to say whether there is a check digit
   
-  cards [0] = {name: "VI", 
+  cards [0] = {name: "VA", 
                length: "13,16", 
                prefixes: "4",
                checkdigit: true};
