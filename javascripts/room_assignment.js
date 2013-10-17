@@ -112,6 +112,7 @@ function displeFilteredRoomList(filteredRoomList){
 
         var roomSelected = $(this).find(">:first-child").html();
         var currentReservation = $('#roomassignment-ref-id').val();
+        console.log('#reservation-'+currentReservation+'-room-number');
         $('#reservation-'+currentReservation+'-room-number').html(roomSelected);
     });  
 
