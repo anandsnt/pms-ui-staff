@@ -119,10 +119,7 @@ $(function($) {
 		
 		//console.log($add);
 	    $("#payment_tab #payment_list").append($add);
-	    removeModal();
-	    setTimeout(function() {
-			refreshGuestCardScroll();
-		}, 300);
+	    
 		/* Umcomment after API is ready */
 		
 		var user_id = $("#user_id").val();
@@ -158,6 +155,10 @@ $(function($) {
 			}
 		});
 		removeModal();
+	    setTimeout(function() {
+			refreshGuestCardScroll();
+		}, 300);
+		// removeModal();
 	});
 
 });
