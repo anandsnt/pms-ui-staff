@@ -9,7 +9,6 @@ $(function($) {
 	$likeInfoChange = false;
 	$focusInGuestCardContent = false;
 
-
 	// Show/hide guest card on click
 	$(document).on('click', '#guest-card .ui-resizable-handle', function() {
 
@@ -38,6 +37,7 @@ $(function($) {
 	$("#guest-card-content").click(function(e) {
 		$focusInGuestCardContent = true;
 	});
+
 	$("html").click(function(e) {
 		if (!$focusInGuestCardContent) {
 			if ($contactInfoChange) {
@@ -52,14 +52,15 @@ $(function($) {
 		}
 	});
 	$(document).on('click', '#guest-contact, #guest-like, #guest-credit, #guest-loyalty', function(event) {
-		if ($currentTab == "guest-contact") {
+		if ($currentTab != "guest-contact") {
 			if ($contactInfoChange) {
 				saveContactInfo();
 			} else {
 				console.log("no save - Contact");
 			}
 
-		} else if ($currentTab == "guest-like") {
+		}
+		if ($currentTab != "guest-like") {
 			if ($likeInfoChange) {
 				saveLikes();
 			} else {
@@ -130,6 +131,14 @@ function renderContactInformation() {
 					$("#country").val(data.country);
 					$("#phone").val(data.phone);
 					$("#mobile").val(data.mobile);
+
+                                        //TODO - Need to change with original values
+					$("#guest_id").val("1");
+					$("#user_id").val("1");
+
+					//$("#guest_id").val(data.guest_id);
+					//$("#user_id").val(data.user_id);
+
 					$guestCardClickTime = false;
 					// to change flag - to save contact info only if any change happens.
 					$(document).on('change', '#guest_firstname, #guest_lastname, #title, #language, #birthday-month,#birthday-year, #birthday-day, #passport-number,#passport-month, #passport-year, #nationality,#email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event) {
@@ -143,7 +152,8 @@ function renderContactInformation() {
 				}
 			}).done(function() {
 				$('#loading').remove();
-				renderGuestCardLike();
+				var guest_id = $("#guest_id").val();
+				renderGuestCardLike(guest_id);
 				renderPayment();
 			});
 		});
@@ -153,30 +163,45 @@ function renderContactInformation() {
 
 //Function to save contact information
 function saveContactInfo() {
+	var userId = $("#user_id").val();
+	$contactJsonObj = {};
+    $contactJsonObj['guest_id'] = $("#guest_id").val();
+    $contactJsonObj['user'] = {};
+    $contactJsonObj['user']['first_name'] = $("#guest_firstname").val();
+    $contactJsonObj['user']['last_name'] = $("#guest_lastname").val();
+    $contactJsonObj['user']['addresses_attributes'] = [];
+    $addresses_attributes = {};
+    $addresses_attributes['street1'] = $("#streetname").val();
+    $addresses_attributes['street2'] = "";
+    $addresses_attributes['city'] = $("#city").val();
+    $addresses_attributes['state'] = $("#state").val();
+    $addresses_attributes['postal_code'] = $("#postalcode").val();
+    $addresses_attributes['country'] =$("#country").val();
+    $addresses_attributes['is_primary'] =true;
+    $addresses_attributes['label'] ="HOME";
+    $contactJsonObj['user']['addresses_attributes'].push($addresses_attributes);
+    $contactJsonObj['user']['contacts_attributes'] = [];
+    $contact_attributes = {};
+    $contact_attributes['contact_type'] = "PHONE";
+    $contact_attributes['label'] = "HOME";
+    $contact_attributes['value'] = $("#phone").val();
+    $contact_attributes['is_primary'] = true;
+    $contactJsonObj['user']['contacts_attributes'].push($contact_attributes);
+    $contact_attributes = {};
+    $contact_attributes['contact_type'] = "EMAIL";
+    $contact_attributes['label'] = "BUSINESS";
+    $contact_attributes['value'] = $("#email").val();
+    $contact_attributes['is_primary'] = true;
+    $contact_attributes['id'] = "";
+    $contactJsonObj['user']['contacts_attributes'].push($contact_attributes);
+
+    console.log(JSON.stringify($contactJsonObj));
 	$.ajax({
 		type : "POST",
-		url : '/dashboard/guestcard.json',
-		data : {
-			firstname : $("#guest_firstname").val(),
-			lastname : $("#guest_lastname").val(),
-			title : $("#title").val(),
-			language : $("#language").val(),
-			birth_date : $("#birthday-year").val() + "-" + $("#birthday-month").val() + "-" + $("#birthday-day").val(),
-			passport_number : $("#passport-number").val(),
-			passport_month : $("#passport-month").val(),
-			passport_year : $("#passport-year").val(),
-			nationality : $("#nationality").val(),
-			email : $("#email").val(),
-			streetname : $("#streetname").val(),
-			city : $("#city").val(),
-			postalcode : $("#postalcode").val(),
-			state : $("#state").val(),
-			country : $("#country").val(),
-			phone : $("#phone").val(),
-			mobile : $("#mobile").val()
-		},
+		url : '/guest_cards/'+userId,
+		data : $contactJsonObj,
 		async : false,
-		dataType : 'json',
+		dataType: 'json',
 		success : function() {
 			$contactInfoChange = false;
 		},
@@ -187,15 +212,18 @@ function saveContactInfo() {
 }
 
 //Function to render guest card like
-function renderGuestCardLike() {
+function renderGuestCardLike(guest_id) {
+
 	$.ajax({
 		type : "GET",
 		url : '/dashboard/likes',
+		data:{user_id :guest_id},
 		async : false,
 		success : function(data) {
 
 			//Commeting this code, to make static rendering work properly, for now.
-			 $("#likes").html(data);
+
+			$("#likes").html(data);
 			handleLikeValueChanged();
 		},
 		error : function() {
@@ -210,24 +238,27 @@ function saveLikes() {
 		var $totalPreferences = $("#totalpreference").val();
 		$totalFeatures = $("#totalfeatures").val();
 		jsonObj = {};
-		jsonObj['user_id'] = $("#user_id").val();
-		jsonObj['newspaper'] = $("#newspaper").val();
-		jsonObj['roomtype'] = $("#roomtype").val();
+
+		jsonObj['user_id'] = $("#guest_id").val();
 		jsonObj['preference'] = [];
-		jsonObj['room_feature'] = [];
 		for ( i = 0; i < $totalPreferences; i++) {
 			$preference = {};
-			$preference["name"] = $("#pref_" + i).attr('prefname');
+			$preference["type"] = $("#pref_" + i).attr('prefname');
 			$preference["value"] = $('input[name="pref_' + i + '"]:checked').val();
 			jsonObj['preference'].push($preference);
 		}
+
 		for ( j = 0; j < $totalFeatures; j++) {
 			$feature = {};
 			if ($('#feat_' + j).is(':checked')) {
-				jsonObj['room_feature'].push($('#feat_' + j).val());
+				$preference = {};
+				$preference["type"] = "ROOM_FEATURE";
+				$preference["value"] = $('#feat_' + j).val();
+				jsonObj['preference'].push($preference);
 			}
 		}
 		console.log(JSON.stringify(jsonObj));
+
 		//To save like values - uncomment after API ready
 		$.ajax({
 		 type: "POST",
@@ -235,8 +266,8 @@ function saveLikes() {
 			 data: jsonObj,
 			 dataType: 'json',
 			 success: function(data) {
-			 $likeInfoChange = false;
-			 console.log("Saved successfully");
+				 $likeInfoChange = false;
+				 console.log("Saved successfully");
 			 },
 			 error: function(){
 			 console.log("There is an error!!");
@@ -250,6 +281,7 @@ function handleLikeValueChanged() {
 	$(document).on('change', "#newspaper,#roomtype", function(event) {
 		$likeInfoChange = true;
 	});
+
 	var $totalPreferences = $("#totalpreference").val();
 	$totalFeatures = $("#totalfeatures").val();
 	for ( i = 0; i < $totalPreferences; i++) {
@@ -266,10 +298,12 @@ function handleLikeValueChanged() {
 
 // function to render payment
 function renderPayment() {
+	user_id = $("#user_id").val();
 	$.ajax({
 		type : "GET",
 		url : '/dashboard/payment',
 		async : false,
+		data :{user_id :user_id},
 		success : function(data) {
 			$("#cc-payment").html(data);
 			$(document).on('click', "#credit-card-set-as-primary", function() {
