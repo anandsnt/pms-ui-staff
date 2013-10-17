@@ -9,7 +9,6 @@ $(function($) {
 	$likeInfoChange = false;
 	$focusInGuestCardContent = false;
 
-
 	// Show/hide guest card on click
 	$(document).on('click', '#guest-card .ui-resizable-handle', function() {
 
@@ -38,6 +37,7 @@ $(function($) {
 	$("#guest-card-content").click(function(e) {
 		$focusInGuestCardContent = true;
 	});
+	
 	$("html").click(function(e) {
 		if (!$focusInGuestCardContent) {
 			if ($contactInfoChange) {
@@ -52,14 +52,15 @@ $(function($) {
 		}
 	});
 	$(document).on('click', '#guest-contact, #guest-like, #guest-credit, #guest-loyalty', function(event) {
-		if ($currentTab == "guest-contact") {
+		if ($currentTab != "guest-contact") {
 			if ($contactInfoChange) {
 				saveContactInfo();
 			} else {
 				console.log("no save - Contact");
 			}
 
-		} else if ($currentTab == "guest-like") {
+		}
+		if ($currentTab != "guest-like") {
 			if ($likeInfoChange) {
 				saveLikes();
 			} else {
@@ -130,6 +131,9 @@ function renderContactInformation() {
 					$("#country").val(data.country);
 					$("#phone").val(data.phone);
 					$("#mobile").val(data.mobile);
+					$("#guest_id").val("1");
+					$("#user_id").val("1");
+                                       
 					$guestCardClickTime = false;
 					// to change flag - to save contact info only if any change happens.
 					$(document).on('change', '#guest_firstname, #guest_lastname, #title, #language, #birthday-month,#birthday-year, #birthday-day, #passport-number,#passport-month, #passport-year, #nationality,#email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event) {
@@ -143,7 +147,7 @@ function renderContactInformation() {
 				}
 			}).done(function() {
 				$('#loading').remove();
-				renderGuestCardLike();
+				renderGuestCardLike(data.guest_id);
 				renderPayment();
 			});
 		});
@@ -187,15 +191,18 @@ function saveContactInfo() {
 }
 
 //Function to render guest card like
-function renderGuestCardLike() {
+function renderGuestCardLike(guest_id) {
+	
 	$.ajax({
 		type : "GET",
 		url : '/dashboard/likes',
+		data:{user_id :guest_id},
 		async : false,
 		success : function(data) {
-
+			
 			//Commeting this code, to make static rendering work properly, for now.
-			 $("#likes").html(data);
+			
+			$("#likes").html(data);
 			handleLikeValueChanged();
 		},
 		error : function() {
@@ -210,24 +217,27 @@ function saveLikes() {
 		var $totalPreferences = $("#totalpreference").val();
 		$totalFeatures = $("#totalfeatures").val();
 		jsonObj = {};
-		jsonObj['user_id'] = $("#user_id").val();
-		jsonObj['newspaper'] = $("#newspaper").val();
-		jsonObj['roomtype'] = $("#roomtype").val();
+		
+		jsonObj['user_id'] = $("#guest_id").val();
 		jsonObj['preference'] = [];
-		jsonObj['room_feature'] = [];
 		for ( i = 0; i < $totalPreferences; i++) {
 			$preference = {};
-			$preference["name"] = $("#pref_" + i).attr('prefname');
+			$preference["type"] = $("#pref_" + i).attr('prefname');
 			$preference["value"] = $('input[name="pref_' + i + '"]:checked').val();
 			jsonObj['preference'].push($preference);
 		}
+		
 		for ( j = 0; j < $totalFeatures; j++) {
 			$feature = {};
 			if ($('#feat_' + j).is(':checked')) {
-				jsonObj['room_feature'].push($('#feat_' + j).val());
+				$preference = {};
+				$preference["type"] = "ROOM_FEATURE";
+				$preference["value"] = $('#feat_' + j).val();
+				jsonObj['preference'].push($preference);
 			}
 		}
 		console.log(JSON.stringify(jsonObj));
+		
 		//To save like values - uncomment after API ready
 		$.ajax({
 		 type: "POST",
@@ -235,8 +245,8 @@ function saveLikes() {
 			 data: jsonObj,
 			 dataType: 'json',
 			 success: function(data) {
-			 $likeInfoChange = false;
-			 console.log("Saved successfully");
+				 $likeInfoChange = false;
+				 console.log("Saved successfully");
 			 },
 			 error: function(){
 			 console.log("There is an error!!");
@@ -250,6 +260,7 @@ function handleLikeValueChanged() {
 	$(document).on('change', "#newspaper,#roomtype", function(event) {
 		$likeInfoChange = true;
 	});
+	
 	var $totalPreferences = $("#totalpreference").val();
 	$totalFeatures = $("#totalfeatures").val();
 	for ( i = 0; i < $totalPreferences; i++) {
