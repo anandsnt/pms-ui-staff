@@ -107,43 +107,43 @@ function modalInit(content) {
         error: function(){
             alert("Sorry, not there yet!");
         }
-    });
+    });   
+
 }
-    // Close modal
-    $(document).on('click', '#modal-overlay, #modal-close', function(e){
+// Close modal
+    $(document).on('click', '#modal-overlay, #modal-close, #cancel', function(e){
         e.stopPropagation();
         removeModal();
     });
 
-    // Show modal
-    function setModal(){
-        if ($('#modal').length) 
-        { 
-            $('#modal').empty(); 
-        }
-        else 
-        { 
-            $($modal).prependTo('body'); 
-        }
-
-        if (!$('#modal-overlay').length) 
-        { 
-            $($overlay).insertAfter('#modal'); 
-        }
-
-        setTimeout(function() {
-            $('#modal, #modal-overlay').addClass('modal-show');
-        }, 0);
+// Show modal
+function setModal(){
+    if ($('#modal').length) 
+    { 
+        $('#modal').empty(); 
+    }
+    else 
+    { 
+        $($modal).prependTo('body'); 
     }
 
-    // Remove modal
-    function removeModal() {
-        $('#modal, #modal-overlay').removeClass('modal-show'); 
-        setTimeout(function() { 
-            $('#modal').empty();
-        }, 150);
+    if (!$('#modal-overlay').length) 
+    { 
+        $($overlay).insertAfter('#modal'); 
     }
 
+    setTimeout(function() {
+        $('#modal, #modal-overlay').addClass('modal-show');
+    }, 0);
+}
+
+// Remove modal
+function removeModal() {
+    $('#modal, #modal-overlay').removeClass('modal-show'); 
+    setTimeout(function() { 
+        $('#modal').empty();
+    }, 150);
+}
 
 // Fast click polyfill
 window.addEventListener('load', function() {
@@ -186,10 +186,19 @@ $(function($){
 
     // Dialog window
     $(document).on('click', '.open-modal', function(e){
-        e.preventDefault();
+    	
+    	
+    	e.preventDefault();
+        e.stopImmediatePropagation();
 
-        var $href = $(this).attr('href');
-        modalInit($href);
+        var $href = $(this).attr('href'),
+            $action = $(this).closest('form').attr('action');
+            
+        console.log($href);
+        console.log($action);
+        
+        modalInit($href ? $href : $action);
+        
     }); 
 
 });

@@ -102,23 +102,23 @@ $(function($) {
 		}else if($("#new-payment #name-on-card").val() == ""){
 			$("#name-on-card-error").html("Card holder name is required").show();	
 			return false;			
-		}
-
-		var $image = (($card_type) == "AX" ? "<img src='/assets/amex.png' alt='amex'>": (($card_type) == "MA" ? "<img src='/assets/mastercard.png' alt='mastercard'>": "<img src='/assets/visa.png' alt='visa'>" ));
-		$number = $("#new-payment #card-number-set3").val();
-		$expiry = $("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val();
-		$cardHolderName = $("#new-payment #name-on-card").val();
+		}	
+		
+		var $image = (($("#new-payment #credit_card").val()) == "AX" ? "<img src='/assets/amex.png' alt='amex'>": (($("#new-payment #credit_card").val()) == "MA" ? "<img src='/assets/mastercard.png' alt='mastercard'>": "<img src='/assets/visa.png' alt='visa'>" ));
+			$number = $("#new-payment #card-number-set3").val();
+			$expiry = $("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val();
+			$cardHolderName = $("#new-payment #name-on-card").val();
 		
         var	$add = 
 	        '<a id="credit_row" href="dashboard/showCreditModal" credit_id="" class="active-item item-payment primary open-modal float credit-card-info new-item">'+
-	        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
+	        '<figure class="card-logo"></figure>'+$image+'<span class="number">'+
 	        'Ending with<span class="value number">'+$number+'</span></span>'+
 			'<span class="date">Date<span class="value date">'+$expiry+'</span>'+
 			'</span><span class="name">Name<span class="value name">'+$cardHolderName+'</span>'+
 			'</span></a>';
 		
 		//console.log($add);
-	    
+	    $("#payment_tab #payment_list").append($add);
 	    removeModal();
 	    setTimeout(function() {
 			refreshGuestCardScroll();
@@ -141,18 +141,20 @@ $(function($) {
 				},
 			dataType: 'json',
 			success: function(data) {
-				$("#payment_tab #payment_list").append($add);
+				console.log(data.id);
 				//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
-				// $("#new-payment .new-item").attr("credit_id", data.id);
-				// $("#new-payment .new-item").attr("id", "credit_row"+data.id);
-				// $("#new-payment #credit_row"+data.id).removeClass("new-item");
+				$("#new-payment .new-item").attr("credit_id", data.id);
+				$("#new-payment .new-item").attr("id", "credit_row"+data.id);
+				$("#new-payment #credit_row"+data.id).removeClass("new-item");
+				
+				
 				//$("#credit_row").attr("credit_id", data.id);
 				//$("#credit_row").attr("id", "credit_row"+data.id);
-				console.log("Succesfully added credit card");
+				
+				console.log("Succesfully added credit card"+data);
 			},
-			error: function(e){
+			error: function(){
 				console.log("There is an error!!");
-				alert(e.responseText)
 			}
 		});
 		removeModal();
