@@ -259,10 +259,10 @@ function saveLikes() {
 		}
 		console.log(JSON.stringify(jsonObj));
 
-		//To save like values - uncomment after API ready
+		var userId = $("#user_id").val();
 		$.ajax({
 		 type: "POST",
-			 url: '/dashboard/saveGuestLike',
+			 url: '/guest_cards/'+userId+'/update_preferences',
 			 data: jsonObj,
 			 dataType: 'json',
 			 success: function(data) {
