@@ -102,13 +102,15 @@ function callFunctions() {
 //Function to render the contact information values in the contact form of guest card from API.
 function renderContactInformation() {
 	var $loader = '<div id="loading" />';
+		  $guest_id = $("#guest_id").val();
 	if ($guestCardClickTime) {
 		$($loader).prependTo('body').show(function() {
 			$.ajax({
 				type : "GET",
 				url : '/guestcard/show.json',
 				data : {
-					fakeDataToAvoidCache : new Date()
+					fakeDataToAvoidCache : new Date(),
+					guest_id: $guest_id
 				}, // fakeDataToAvoidCache is iOS Safari fix
 				async : false,
 				success : function(data) {
@@ -261,10 +263,10 @@ function saveLikes() {
 		}
 		console.log(JSON.stringify(jsonObj));
 
-		//To save like values - uncomment after API ready
+		var userId = $("#user_id").val();
 		$.ajax({
 		 type: "POST",
-			 url: '/dashboard/saveGuestLike',
+			 url: '/guest_cards/'+userId+'/update_preferences',
 			 data: jsonObj,
 			 dataType: 'json',
 			 success: function(data) {
