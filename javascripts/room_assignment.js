@@ -47,9 +47,10 @@ function getFilterList(){
     var radioFeatureCount = $('#pref_radio_count').val();
     for (var i = 0; i<radioFeatureCount ; i++){
         if($('#room-attributes #radio_' + i).is(':checked')) {
-        	if(!($('#room-attributes #radio_' + i).val() == "All rooms")){
-        		featureList.push($('#room-attributes #radio_' + i).val());
-        	}
+
+            if(!($('#room-attributes #radio_' + i).val() == "All rooms")){
+                featureList.push($('#room-attributes #radio_' + i).val());
+            }
             
         }
     }
@@ -112,6 +113,7 @@ function displeFilteredRoomList(filteredRoomList){
 
         var roomSelected = $(this).find(">:first-child").html();
         var currentReservation = $('#roomassignment-ref-id').val();
+        console.log('#reservation-'+currentReservation+'-room-number');
         $('#reservation-'+currentReservation+'-room-number').html(roomSelected);
     });  
 

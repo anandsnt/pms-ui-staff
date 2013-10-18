@@ -30,13 +30,14 @@ $(function($) {
 	// function to set the selected credit card as primary
 	$(document).on('click', "#credit-card-set-as-primary", function() {
 		var $credit_card_id = $("#credit_card_id").val();
+		$user_id = $("#user_id").val();
 		$("#primary_credit.primary").remove();
 		$("#credit_row" + $credit_card_id).append("<span id='primary_credit' class='primary'><span class='value primary'>Primary</span></span>");
 		removeModal();
 		$.ajax({
 			type: "POST",
 			url: '/dashboard/setCreditAsPrimary',
-			data: {id: $credit_card_id},
+			data: {id: $credit_card_id, user_id: $user_id},
 			dataType: 'json',
 			success: function(data) {
 				console.log("Succesfully set credit card as primary");
@@ -77,7 +78,7 @@ $(function($) {
 		$name_on_card	= $("#new-payment #name-on-card").val();
 		$card_type 		= $("#payment-credit-type_credit_card").val();
 		$card_number = $card_number_set1 + $card_number_set2 + $card_number_set3;
-		$card_expiry = $expiry_year +"-"+$expiry_month +"-01";
+		$card_expiry = "20"+$expiry_year +"-"+$expiry_month +"-01";
 		console.log("$card_number"+$card_number);
 		
 		/* credit card validation */
@@ -111,7 +112,7 @@ $(function($) {
 		
         var	$add = 
 	        '<a id="credit_row" href="dashboard/showCreditModal" credit_id="" class="active-item item-payment primary open-modal float credit-card-info new-item">'+
-	        '<figure class="card-logo"></figure>'+$image+'<span class="number">'+
+	        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
 	        'Ending with<span class="value number">'+$number+'</span></span>'+
 			'<span class="date">Date<span class="value date">'+$expiry+'</span>'+
 			'</span><span class="name">Name<span class="value name">'+$cardHolderName+'</span>'+
@@ -119,10 +120,7 @@ $(function($) {
 		
 		//console.log($add);
 	    $("#payment_tab #payment_list").append($add);
-	    removeModal();
-	    setTimeout(function() {
-			refreshGuestCardScroll();
-		}, 300);
+	    
 		/* Umcomment after API is ready */
 		
 		var user_id = $("#user_id").val();
@@ -158,6 +156,10 @@ $(function($) {
 			}
 		});
 		removeModal();
+	    setTimeout(function() {
+			refreshGuestCardScroll();
+		}, 300);
+		// removeModal();
 	});
 
 });
