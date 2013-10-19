@@ -102,7 +102,7 @@ function callFunctions() {
 //Function to render the contact information values in the contact form of guest card from API.
 function renderContactInformation() {
 	var $loader = '<div id="loading" />';
-		  $guest_id = $("#guest_id").val();
+		  $reservation_id = $("#reservation_id").val();
 	if ($guestCardClickTime) {
 		$($loader).prependTo('body').show(function() {
 			$.ajax({
@@ -110,7 +110,7 @@ function renderContactInformation() {
 				url : '/guestcard/show.json',
 				data : {
 					fakeDataToAvoidCache : new Date(),
-					guest_id: $guest_id
+					id: $reservation_id
 				}, // fakeDataToAvoidCache is iOS Safari fix
 				async : false,
 				success : function(data) {
