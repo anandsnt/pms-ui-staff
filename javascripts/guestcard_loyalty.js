@@ -4,7 +4,7 @@ hlProgramsList = [];
 function renderGuestCardLoyalty(){
 		$.ajax({
 			type: "GET",
-            url: '/dashboard/loyalty',
+            url: '/user_memberships?confirmno=4813095',
             async: false,
             success: function(data) {    
             	$("#loyalty").html(data);
@@ -139,9 +139,9 @@ $(document).on('click', "#new-hlp #save", function() {
 	
 	var $loyalty_id = $("#newhlp_id").val();
 	
-	var $type = $('#new-hlp-type').val();
-		$level= $('#new-hlp-level').val();
-		$code = $("#code").val();
+	var $type = $('#hotel-loyalty-types').val();
+		$level= $('#hotel-loyalty-levels').val();
+		$code = $("#hl-code").val();
 		
 	var $data = {
             code: $type,
