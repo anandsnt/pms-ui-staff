@@ -157,8 +157,6 @@ function renderContactInformation() {
 				var guest_id = $("#guest_id").val();
 				renderGuestCardLike(guest_id);
 				renderPayment();
-				renderGuestCardLoyalty();
-
 			});
 		});
 
@@ -256,7 +254,7 @@ function saveLikes() {
 			$feature = {};
 			if ($('#feat_' + j).is(':checked')) {
 				$preference = {};
-				$preference["type"] = "ROOM_FEATURE";
+				$preference["type"] = "ROOMFEATURE";
 				$preference["value"] = $('#feat_' + j).val();
 				jsonObj['preference'].push($preference);
 			}
