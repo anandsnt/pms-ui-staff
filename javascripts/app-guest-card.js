@@ -243,6 +243,14 @@ function saveLikes() {
 
 		jsonObj['user_id'] = $("#guest_id").val();
 		jsonObj['preference'] = [];
+		$preference = {};
+		$preference["type"] = "NEWSPAPER";
+		$preference["value"] = $('#newspaper').val();
+		jsonObj['preference'].push($preference);
+		$preference = {};
+		$preference["type"] = "ROOMTYPE";
+		$preference["value"] = $('#roomtype').val();
+		jsonObj['preference'].push($preference);
 		for ( i = 0; i < $totalPreferences; i++) {
 			$preference = {};
 			$preference["type"] = $("#pref_" + i).attr('prefname');
@@ -289,11 +297,13 @@ function handleLikeValueChanged() {
 	for ( i = 0; i < $totalPreferences; i++) {
 		$(document).on('change', "#pref_" + i, function(event) {
 			$likeInfoChange = true;
+			console.log("like change")
 		});
 	}
 	for ( j = 0; j < $totalFeatures; j++) {
 		$(document).on('change', "#feat_" + i, function(event) {
 			$likeInfoChange = true;
+			console.log("like change feature")
 		});
 	}
 }
