@@ -49,18 +49,12 @@ $(function($) {
 		$("#primary_credit.primary").remove();
 		$("#credit_row" + $credit_card_id).append("<span id='primary_credit' class='primary'><span class='value primary'>Primary</span></span>");
 		removeModal();
-		$.ajax({
-			type: "POST",
-			url: '/dashboard/setCreditAsPrimary',
-			data: {id: $credit_card_id, user_id: $user_id},
-			dataType: 'json',
-			success: function(data) {
-				console.log("Succesfully set credit card as primary");
-			},
-			error: function(){
-				console.log("There is an error!!");
-			}
-		});
+		setCreditAsPrimary($credit_card_id, $user_id);
+	});
+	$(document).on('change', "#staycard_creditcard", function() {
+		var $credit_card_id = $("#staycard_creditcard").val();
+		$user_id = $("#user_id").val();
+		setCreditAsPrimary($credit_card_id, $user_id);
 	});
 	// function to set the selected credit card as primary
 	$(document).on('click', "#credit-card-delete", function() {
@@ -94,6 +88,8 @@ $(function($) {
 		$card_type 		= $("#payment-credit-type_credit_card").val();
 		$card_number = $card_number_set1 + $card_number_set2 + $card_number_set3;
 		$card_expiry = "20"+$expiry_year +"-"+$expiry_month +"-01";
+		$guest_id = $("#guest_id").val();
+		
 		console.log("$card_number"+$card_number);
 		
 		/* credit card validation */
@@ -120,9 +116,10 @@ $(function($) {
 			return false;			
 		}	
 		
-		var $image = (($("#new-payment #credit_card").val()) == "AX" ? "<img src='/assets/amex.png' alt='amex'>": (($("#new-payment #credit_card").val()) == "MA" ? "<img src='/assets/mastercard.png' alt='mastercard'>": "<img src='/assets/visa.png' alt='visa'>" ));
+		// var $image = (($("#new-payment #credit_card").val()) == "AX" ? "<img src='/assets/amex.png' alt='amex'>": (($("#new-payment #credit_card").val()) == "MA" ? "<img src='/assets/mastercard.png' alt='mastercard'>": "<img src='/assets/visa.png' alt='visa'>" ));
+		var $image = "<img src='/assets/"+$("#new-payment #credit_card").val().toLowerCase()+".png' alt='visa'>";	
 			$number = $("#new-payment #card-number-set3").val();
-			$expiry = $("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val();
+			$expiry = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
 			$cardHolderName = $("#new-payment #name-on-card").val();
 		
         var	$add = 
@@ -150,7 +147,8 @@ $(function($) {
 				    card_number: $card_number,
 				    credit_card: $card_type,
 				    card_expiry: $card_expiry,
-				    name_on_card: $name_on_card
+				    name_on_card: $name_on_card,
+				    guest_id: $guest_id
 				},
 			dataType: 'json',
 			success: function(data) {
@@ -192,3 +190,17 @@ $(function($) {
 	});
 
 });
+function setCreditAsPrimary($credit_card_id, $user_id){
+	$.ajax({
+			type: "POST",
+			url: '/dashboard/setCreditAsPrimary',
+			data: {id: $credit_card_id, user_id: $user_id},
+			dataType: 'json',
+			success: function(data) {
+				console.log("Succesfully set credit card as primary");
+			},
+			error: function(){
+				console.log("There is an error!!");
+			}
+		});
+}
