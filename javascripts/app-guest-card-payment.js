@@ -107,7 +107,7 @@ $(function($) {
 		
 		var $image = (($("#new-payment #credit_card").val()) == "AX" ? "<img src='/assets/amex.png' alt='amex'>": (($("#new-payment #credit_card").val()) == "MA" ? "<img src='/assets/mastercard.png' alt='mastercard'>": "<img src='/assets/visa.png' alt='visa'>" ));
 			$number = $("#new-payment #card-number-set3").val();
-			$expiry = $("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val();
+			$expiry = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
 			$cardHolderName = $("#new-payment #name-on-card").val();
 		
         var	$add = 
