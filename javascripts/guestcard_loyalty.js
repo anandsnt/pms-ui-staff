@@ -16,7 +16,7 @@ function renderGuestCardLoyalty(){
 
 }
 
-// Show modal to set loyalty as primary or to delete it.
+// Show modal to set delete a loyalty.
 $(document).on('click', '#loyalty-tab .active-item, #loyalty-tab .add-new-button', function(e) {
 
 	e.preventDefault();
@@ -86,10 +86,12 @@ $(document).on('click', "#new-ffp #save", function() {
 	
 	var $loyalty_id = $("#newffp_id").val();
 	
-	var $airline = $('#new-ffp-airline').val();
-		$program = $('#new-ffp-program').val();
-		$code    = $("#code").val();
-		
+	var $airline = $('#airline-ff-types').val();
+		$program = $('#airline-ff-options').val();
+		$code    = $("#ff-code").val();
+	console.log($airline);
+	console.log($program);
+	console.log($code);
 	var $data = {
             code: $program,
             number: $code,
@@ -198,6 +200,19 @@ $('#guest-card-content #guest-loyalty').click(function(){
 		}
 	});
 
+	$.ajax({
+		url : '/sample_json/guestcard_loyalty/hl_pgms.json',
+		type : 'GET',
+		success : function(data) {
+			hlProgramsList = data
+			console.log(data);
+			
+		},
+		error : function() {
+			alert("error");
+		}
+	});
+
 });
 
 function addFFPSelectOptions(){
@@ -208,7 +223,10 @@ function addFFPSelectOptions(){
 };
 
 function addHLPSelectOptions(){
-	console.log("hlp options");
+	$.each(hlProgramsList, function(key, loyaltyType) {
+		var programTypes ='<option value="'+ loyaltyType.hl_value +'">' + loyaltyType.hl_description+ '</option>'
+		$("#new-hlp #hotel-loyalty-types").append(programTypes);
+	});
 }
 
 $(document).on('change', "#new-ffp #airline-ff-types", function() {
@@ -220,6 +238,20 @@ $(document).on('change', "#new-ffp #airline-ff-types", function() {
 			$.each(airline.levels, function(key, value) {
 				var ffOptions ='<option value="'+ value.type +'">' + value.description+ '</option>'
 				$("#new-ffp #airline-ff-options").append(ffOptions);
+			});
+		}
+	});
+});
+
+$(document).on('change', "#new-hlp #hotel-loyalty-types", function() {
+	$("#new-hlp #hotel-loyalty-levels").html("");
+	$("#new-hlp #hotel-loyalty-levels").append('<option value="" selected="selected" class="placeholder">Select level</option>');
+	var selectedLoyaltyPgm = $("#new-hlp #hotel-loyalty-types").val();
+	$.each(hlProgramsList, function(key, loyaltyPgm) {
+		if(loyaltyPgm.hl_value == selectedLoyaltyPgm){
+			$.each(loyaltyPgm.levels, function(key, value) {
+				var hlOptions ='<option value="'+ value.type +'">' + value.description+ '</option>'
+				$("#new-hlp #hotel-loyalty-levels").append(hlOptions);
 			});
 		}
 	});
