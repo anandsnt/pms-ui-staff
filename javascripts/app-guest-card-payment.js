@@ -1,9 +1,8 @@
 $(function($) {
 
-	//var user_id = $("#user_id").val();
+	var $paymentTypes = [];
 	//Show modal to set credit card as primary or to delete the credit card
-	$(document).on('click', '#payment_tab .active-item,#payment_tab #add_new_payment', function(e) {
-
+	$(document).on('click', '#payment_tab .active-item,#payment_tab #add_new_payment, #stay_card_payment #add_new_payment', function(e) {
 		
 		e.preventDefault();
 		var $href = $(this).attr('href');
@@ -26,6 +25,22 @@ $(function($) {
 				alert("Sorry, not there yet!");
 			}
 		});
+		
+		
+		$.ajax({
+			type: "GET",
+			url: '/dashboard/addNewPayment.json',			
+			dataType: 'json',
+			success: function(data) {				
+				$paymentTypes = data.data;
+				console.log(JSON.stringify($paymentTypes));
+			},
+			error: function(){
+				console.log("There is an error!!");
+			}
+		});
+		
+		
 	});
 	// function to set the selected credit card as primary
 	$(document).on('click', "#credit-card-set-as-primary", function() {
@@ -160,6 +175,21 @@ $(function($) {
 			refreshGuestCardScroll();
 		}, 300);
 		// removeModal();
+	});
+	$(document).on('change', "#new-payment #payment-type", function() {
+		var $selectedPaymentType = $("#new-payment #payment-type").val();
+		$paymentTypeValues = '';		
+		$("#payment-credit-type").find('option').remove();
+		$.each($paymentTypes, function(key, value) {
+		    if(value.name == $selectedPaymentType){
+		    	$.each(value.values, function(paymentkey, paymentvalue) {
+		    		$paymentTypeValues+= '<option value="'+paymentvalue.cardcode+'" data-image="images/visa.png">'+paymentvalue.cardname+'</option>';
+		    		$("#payment-credit-type").append($paymentTypeValues);
+		    	});
+		    }
+		    
+		    // $("#payment-credit-type").html($paymentTypeValues);
+		});
 	});
 
 });
