@@ -52,7 +52,7 @@ $(function($) {
 		}
 	});
 	$(document).on('click', '#guest-contact, #guest-like, #guest-credit, #guest-loyalty', function(event) {
-		if ($currentTab != "guest-contact") {
+		if ($currentTab == "guest-contact") {
 			if ($contactInfoChange) {
 				saveContactInfo();
 			} else {
@@ -60,7 +60,7 @@ $(function($) {
 			}
 
 		}
-		if ($currentTab != "guest-like") {
+		if ($currentTab == "guest-like") {
 			if ($likeInfoChange) {
 				saveLikes();
 			} else {
@@ -68,7 +68,7 @@ $(function($) {
 			}
 		}
 
-		$currentTab = event.target.id;
+		$currentTab = $(this).attr("id");
 
 	});
 
