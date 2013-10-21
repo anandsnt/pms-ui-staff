@@ -2,7 +2,7 @@ $(function($) {
 
 	var $paymentTypes = [];
 	//Show modal to set credit card as primary or to delete the credit card
-	$(document).on('click', '#payment_tab .active-item,#payment_tab #add_new_payment, #stay_card_payment #add_new_payment', function(e) {
+	$(document).on('click', '#payment_tab .active-item,#payment_tab #add_new_payment,#stay_card_payment #add_new_payment', function(e) {
 		
 		e.preventDefault();
 		var $href = $(this).attr('href');
@@ -12,7 +12,7 @@ $(function($) {
 		// Get modal data
 		$.ajax({
 			url : $href,
-			// async:false,
+			async:false,
 			data : {
 				id : $(this).attr('credit_id')
 			},
@@ -31,7 +31,7 @@ $(function($) {
 			type: "GET",
 			url: '/dashboard/addNewPayment.json',			
 			dataType: 'json',
-			success: function(data) {				
+			success: function(data) {		
 				$paymentTypes = data.data;
 				console.log(JSON.stringify($paymentTypes));
 			},
@@ -134,7 +134,7 @@ $(function($) {
 			'</span></a>';
 		
 		//console.log($add);
-	    $("#payment_tab #payment_list").append($add);
+	    $("#payment_tab").append($add);
 	    
 		/* Umcomment after API is ready */
 		
@@ -158,8 +158,7 @@ $(function($) {
 				//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
 				$("#new-payment .new-item").attr("credit_id", data.id);
 				$("#new-payment .new-item").attr("id", "credit_row"+data.id);
-				$("#new-payment #credit_row"+data.id).removeClass("new-item");
-				
+				$("#new-payment #credit_row"+data.id).removeClass("new-item");				
 				
 				//$("#credit_row").attr("credit_id", data.id);
 				//$("#credit_row").attr("id", "credit_row"+data.id);
@@ -178,17 +177,17 @@ $(function($) {
 	});
 	$(document).on('change', "#new-payment #payment-type", function() {
 		var $selectedPaymentType = $("#new-payment #payment-type").val();
-		$paymentTypeValues = '';		
-		$("#payment-credit-type").find('option').remove();
+		$paymentTypeValues = '';
+		$("#new-payment #payment-credit-type").find('option').remove().end();
 		$.each($paymentTypes, function(key, value) {
 		    if(value.name == $selectedPaymentType){
+		    	$paymentTypeValues = '<option value="" data-image="images/visa.png">Select credit card</option>';
+		    	$("#payment-credit-type").append($paymentTypeValues);
 		    	$.each(value.values, function(paymentkey, paymentvalue) {
-		    		$paymentTypeValues+= '<option value="'+paymentvalue.cardcode+'" data-image="images/visa.png">'+paymentvalue.cardname+'</option>';
+		    		$paymentTypeValues = '<option value="'+paymentvalue.cardcode+'" data-image="images/visa.png">'+paymentvalue.cardname+'</option>';
 		    		$("#payment-credit-type").append($paymentTypeValues);
 		    	});
-		    }
-		    
-		    // $("#payment-credit-type").html($paymentTypeValues);
+		    }		    
 		});
 	});
 
