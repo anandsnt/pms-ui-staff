@@ -94,7 +94,6 @@ $(function($) {
 		$card_expiry = "20"+$expiry_year +"-"+$expiry_month +"-01";
 		$guest_id = $("#guest_id").val();
 		
-		console.log("$card_number"+$card_number);
 		
 		/* credit card validation */
 		if (!checkCreditCard ($card_number, $payment_credit_type)) {
@@ -172,7 +171,7 @@ $(function($) {
 				removeModal();
 			},
 			error: function(){
-				console.log("There is an error!!");
+				alert(data.errors);
 			}
 		});
 		
