@@ -22,6 +22,7 @@ function renderGuestCardLoyalty(){
 $(document).on('click', '#loyalty-tab .active-item, #loyalty-tab .add-new-button', function(e) {
 
 	e.preventDefault();
+	e.stopPropagation();
 	var $href = $(this).attr('href'),
      	$id = $(this).attr('loyaltyId'),
     	$type = $(this).attr('loyaltytype');
@@ -56,8 +57,8 @@ $(document).on('click', '#loyalty-tab .active-item, #loyalty-tab .add-new-button
 
 
 // Delete selected loyalty
-$(document).on('click', "#loyalty-delete", function() {
-	
+$(document).on('click', "#loyalty-delete", function(event) {
+	event.stopPropagation();
 	var $loyalty_id = $("#loyalty_id").val();
 	var $type = $("#loyalty_id").attr('name');
 	console.log($loyalty_id);
@@ -84,7 +85,8 @@ $(document).on('click', "#loyalty-delete", function() {
 });
 
 // Add new frequent flyer program
-$(document).on('click', "#new-ffp #save", function() {
+$(document).on('click', "#new-ffp #save", function(event) {
+	event.stopPropagation();
 	var $loyalty_id = $("#newffp_id").val();
 	var $airline = $('#airline-ff-list option:selected').val(),
 		$program = $('#airline-ff-pgms option:selected').text(),
@@ -134,8 +136,8 @@ $(document).on('click', "#new-ffp #save", function() {
 });
 
 // Add new hotel loyalty program
-$(document).on('click', "#new-hlp #save", function() {
-	
+$(document).on('click', "#new-hlp #save", function(event) {
+	event.stopPropagation();
 	var $loyalty_id = $("#newhlp_id").val();
 
 	var $type = $('#hotel-loyalty-types option:selected').val(),
@@ -187,7 +189,6 @@ $(document).on('click', "#new-hlp #save", function() {
 });
 
 function updateServerForNewLoyalty(postData, successCallback, type){
-	console.log(postData);
 	console.log(JSON.stringify(postData));
 	$.ajax({
 		type: "POST",
@@ -220,7 +221,8 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 }
 
 //on clicking the loyalty tab, fetch the availabe ffp, hlp list
-$('#guest-card-content #guest-loyalty').click(function(){
+$('#guest-card-content #guest-loyalty').click(function(event){
+	event.stopPropagation();
 	//fetch the ffp list
 	$.ajax({
 		url : '/user_memberships/get_available_ffps.json',
@@ -266,7 +268,8 @@ function addHLPSelectOptions(){
 }
 
 //populate the list for loyalty values - ffp
-$(document).on('change', "#new-ffp #airline-ff-list", function() {
+$(document).on('change', "#new-ffp #airline-ff-list", function(event) {
+	event.stopPropagation();
 	$("#new-ffp #airline-ff-pgms").html("");
 	$("#new-ffp #airline-ff-pgms").append('<option value="" selected="selected" class="placeholder">Select loyalty program</option>');
 	var selectedAirlineType = $("#new-ffp #airline-ff-list").val();
@@ -281,7 +284,8 @@ $(document).on('change', "#new-ffp #airline-ff-list", function() {
 });
 
 //populate the list for loyalty values - hlp
-$(document).on('change', "#new-hlp #hotel-loyalty-types", function() {
+$(document).on('change', "#new-hlp #hotel-loyalty-types", function(event) {
+	event.stopPropagation();
 	$("#new-hlp #hotel-loyalty-levels").html("");
 	$("#new-hlp #hotel-loyalty-levels").append('<option value="" selected="selected" class="placeholder">Select level</option>');
 	var selectedLoyaltyPgm = $("#new-hlp #hotel-loyalty-types").val();
