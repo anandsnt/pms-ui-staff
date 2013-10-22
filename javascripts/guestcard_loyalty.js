@@ -68,27 +68,37 @@ $(document).on('click', "#loyalty-delete", function() {
 	
 	removeModal();
 	$.ajax({
-		type: "POST",
-			url: '/user_memberships/:id.json',
-			data: {id: $loyalty_id},
-			dataType: 'json',
+		type: "DELETE",
+		url: '/user_memberships/' + $loyalty_id +'.json',
+		dataType: 'json',
 			success: function(data) {
 				console.log("Succesfully deleted loyalty primary");
 			},
 			error: function(){
 				console.log("There is an error!!");
-			}
+		}
 	});
 });
 
 // Add new frequent flyer program
 $(document).on('click', "#new-ffp #save", function() {
-	
 	var $loyalty_id = $("#newffp_id").val();
 	var $airline = $('#airline-ff-list option:selected').val(),
 		$program = $('#airline-ff-pgms option:selected').text(),
-		$code    = $("#ff-code").val();
-    
+		$code    = $("#ff-code").val(),
+		$level = $('#airline-ff-pgms option:selected').val();
+
+	if($airline == ""){
+		alert("Please select an Airline");
+		return false;
+	}else if($level == ""){
+		alert("Please select a loyalty program");
+		return false;
+	}else if($code == ""){
+		alert("Please enter the loyalty code");
+		return false;
+	}
+
 	removeModal();
 	
 	var $html = "<a loyaltytype='flyer' loyaltyid='' id=''+ href='user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
@@ -97,19 +107,16 @@ $(document).on('click', "#new-ffp #save", function() {
       "<span class='value name'>"+$program+"</span></a>";
       
     $("#loyalty-type-flyer .add-new-button").before($html);
-    
-	console.log("Add new requent flyer program API call");
+    var userId = $('#user_id').val();
+    var guestId = $('#guest_id').val();
 
 	var newFFP = {};
-	newFFP.user_id = "";
-	newFFP.guest_id = "";
+	newFFP.user_id = userId;
+	newFFP.guest_id = guestId;
 	newFFP.user_membership = {};
-	newFFP.user_membership.membership_type = "";
-	newFFP.user_membership.membership_card_number = "";
-	newFFP.user_membership.membership_level = "";
-
-	console.log(newFFP);
-
+	newFFP.user_membership.membership_type = $airline;
+	newFFP.user_membership.membership_card_number = $code;
+	newFFP.user_membership.membership_level = $level;
 
 	$.ajax({
 		type: "POST",
@@ -118,9 +125,7 @@ $(document).on('click', "#new-ffp #save", function() {
 		dataType: 'json',
 		success: function(data) {
 			$loyaltyid = data.id;
-			
-			var $loyaltyid = 1456; //This id will be get as a response of API call
-		    var $new_id = "program"+$loyaltyid;
+		    var $new_id = "ff-program-"+$loyaltyid;
 		    
 		    $("#loyalty-type-flyer a.program_new").attr('id',$new_id);
 		    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
@@ -141,13 +146,30 @@ $(document).on('click', "#new-hlp #save", function() {
 	var $type = $('#hotel-loyalty-types option:selected').val(),
 		$level= $('#hotel-loyalty-levels option:selected').text(),
 		$code = $("#hl-code").val();
+		$level = $('#hotel-loyalty-levels option:selected').val().val();
+
+
+	if($type == ""){
+		alert("Please select loyalty type");
+		return false;
+	}else if($level == ""){
+		alert("Please select a loyalty level");
+		return false;
+	}else if($code == ""){
+		alert("Please enter the loyalty code");
+		return false;
+	}
+
+	var userId = $('#user_id').val();
+    var guestId = $('#guest_id').val();
 		
-	var $data = {
-            code: $type,
-            number: $code,
-            name : $level
-    };
-	//console.log("$type"+$type+"$level"+$level+"$code"+$code);
+	var newHLP = {};
+	newHLP.user_id = userId;
+	newHLP.guest_id = guestId;
+	newHLP.user_membership = {};
+	newHLP.user_membership.membership_type = $type;
+	newHLP.user_membership.membership_card_number = $code;
+	newHLP.user_membership.membership_level = $level;
 	removeModal();
 	
 	
@@ -158,29 +180,24 @@ $(document).on('click', "#new-hlp #save", function() {
       
     $("#loyalty-type-hotel .add-new-button").before($html);
     
-	console.log("Add new hotel loyalty program API call");
-	console.log($data);
-	// $.ajax({
-		// type: "POST",
-		// url: '/dashboard/AddNewHotelLoyaltyProgram',
-		// data: $data,
-		// dataType: 'json',
-		// success: function(data) {
-			//$loyaltyid=data.id;
-			// console.log("Succesfully saved new hotel loyalty program");
-			
-			var $loyaltyid = 14567; //This id will be get as a response of API call
-		    var $new_id = "program"+$loyaltyid;
+	$.ajax({
+		type: "POST",
+		url: '/user_memberships/create',
+		data: newHLP,
+		dataType: 'json',
+		success: function(data) {
+			$loyaltyid = data.id;
+		    var $new_id = "hl-program-"+$loyaltyid;
 		    
-		    $("#loyalty-type-hotel a.program_new").attr('id',$new_id);
-		    $("#loyalty-type-hotel a.program_new").attr('loyaltyid',$loyaltyid);
-		    $("#loyalty-type-hotel a#"+$new_id).removeClass('program_new');
-			
-		// },
-		// error: function(){
-			// console.log("There is an error!!");
-		// }
-	// });
+		    $("#loyalty-type-flyer a.program_new").attr('id',$new_id);
+		    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
+		    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
+		    
+		},
+		error: function(){
+			console.log("There is an error!!");
+		}
+	 });
     
 });
 
