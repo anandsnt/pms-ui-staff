@@ -1,4 +1,4 @@
-$(function($){ 
+$(function($){
 	// Resizable guest card variables
 	var $maxHeight = $(window).height(),
 		$breakpoint = ($maxHeight/2),
@@ -30,12 +30,12 @@ $(function($){
 
 	    }
 	});
-    
+
 	// Reservation card tabs
 	$('.reservation-tabs').each(function(){
 		var $activeTab = $(this).attr('id') == 'reservation-card' ? 1 : 0;
 
-		$(this).tabs({ 
+		$(this).tabs({
 			//active: $activeTab,
 			beforeActivate: function( event, ui ) {
 				var $prevTab = ui.oldPanel.attr('id'),
@@ -44,20 +44,20 @@ $(function($){
 			        $delay = 600;
 
 				// Bring in new tab
-		        $changeTab.add(function(){  
+		        $changeTab.add(function(){
 		            $('#' + $nextTab).removeAttr('style').addClass('loading');
 		            $('#' + $prevTab).removeAttr('style').addClass('set-back');
 		        });
 
 		        // Show/hide
-		        $changeTab.add(function(){ 
-		            $('#' + $nextTab).show(); 
+		        $changeTab.add(function(){
+		            $('#' + $nextTab).show();
 		            $('#' + $prevTab).hide();
 		        }, $delay);
 
 		        // Clear transition classes
-		        $changeTab.add(function(){ 
-		            $('#' + $nextTab).removeClass('loading'); 
+		        $changeTab.add(function(){
+		            $('#' + $nextTab).removeClass('loading');
 		            $('#' + $prevTab).removeClass('set-back');
 		        });
 
@@ -68,8 +68,8 @@ $(function($){
 			}
 		}).addClass('ui-tabs-vertical ui-helper-clearfix');
 	});
-	
-	//workaround for populating the reservation details, 
+
+	//workaround for populating the reservation details,
 	//when user clicks on other timeline tabs
 	$('#reservation-timeline li').click(function(){
 		var currentTimeline = $(this).attr('aria-controls');
@@ -78,20 +78,20 @@ $(function($){
 			$("#" + currentTimeline + ' #reservation-listing ul li').first().find('a').trigger("click");
 		}
 	});
-	
+
 });
 
 //Add the reservation details to the DOM.
 function displayReservationDetails($href){
 	//get the current highlighted timeline
     //Not more than 5 resevation should be kept in DOM in a timeline.
-    var currentTimeline = $('#reservation-timeline').find('.ui-state-active').attr('aria-controls');         
+    var currentTimeline = $('#reservation-timeline').find('.ui-state-active').attr('aria-controls');
     if($('#' +currentTimeline+' > div').length > 6 && !($($href).length > 0)){
         $("#" + currentTimeline).find('div:nth-child(2)').remove();
     }
     //get the reservation id.
     var reservation = $href.split("-")[1];
-    //if div not present in DOM, make ajax request 
+    //if div not present in DOM, make ajax request
     if (!($($href).length > 0)){
         $.ajax({
             type:       'GET',
@@ -115,19 +115,49 @@ function getParentBookingDetailes(clickedElement){
 
 
 function updateGuestDetails(update_val, type){
-	
-	var data = {};
-	var confirmNumber = $('#guest-card #reservation_num_hidden').val();
-	data.id = confirmNumber?confirmNumber:4813095;
-	data.update_val = update_val;
-	data.type = type;
+    var userId = $("#user_id").val();
+	$guestCardJsonObj = {};
+    $guestCardJsonObj['guest_id'] = $("#guest_id").val();
+    $guestCardJsonObj['user'] = {};
+    $guestFirstName = $guestCardJsonObj['user']['first_name'] = $("#gc-firstname").val();
+    $guestLastName = $guestCardJsonObj['user']['last_name'] = $("#gc-lastname").val();
+    $guestCardJsonObj['user']['addresses_attributes'] = [];
+    $addresses_attributes = {};
+    $guestCity = $addresses_attributes['city'] = $("#gc-location").val();
+    $addresses_attributes['is_primary'] =true;
+    $addresses_attributes['label'] ="HOME";
+    $guestCardJsonObj['user']['addresses_attributes'].push($addresses_attributes);
+    $guestCardJsonObj['user']['contacts_attributes'] = [];
+    $contact_attributes = {};
+    $contact_attributes['contact_type'] = "PHONE";
+    $contact_attributes['label'] = "HOME";
+    $guestPhone = $contact_attributes['value'] = $("#gc-phone").val();
+    $contact_attributes['is_primary'] = true;
+    $guestCardJsonObj['user']['contacts_attributes'].push($contact_attributes);
+    $contact_attributes = {};
+    $contact_attributes['contact_type'] = "EMAIL";
+    $contact_attributes['label'] = "BUSINESS";
+    $guestEmail = $contact_attributes['value'] = $("#gc-email").val();
+    $contact_attributes['is_primary'] = true;
+    $contact_attributes['id'] = "";
+    $guestCardJsonObj['user']['contacts_attributes'].push($contact_attributes);
+
+   console.log(JSON.stringify($guestCardJsonObj))
+
 	$.ajax({
         type:       'POST',
-        url:        "/dashboard/update_guest",
-        data: 		data,
-        timeout:    5000,
+        url:        '/guest_cards/'+userId,
+        data: 		$guestCardJsonObj,
+        dataType: 'json',
         success: function(data){
         	//TODO: handle success state
+        	if (!$guestCardClickTime) {
+				$("#guest_firstname").val($guestFirstName);
+				$("#guest_lastname").val($guestLastName);
+				$("#city").val($guestCity);
+				$("#phone").val($guestPhone);
+				$("#email").val($guestEmail);
+        	}
         },
         error: function(e){
         	//TODO: hande error cases

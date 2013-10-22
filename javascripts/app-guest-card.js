@@ -52,7 +52,7 @@ $(function($) {
 		}
 	});
 	$(document).on('click', '#guest-contact, #guest-like, #guest-credit, #guest-loyalty', function(event) {
-		if ($currentTab != "guest-contact") {
+		if ($currentTab == "guest-contact") {
 			if ($contactInfoChange) {
 				saveContactInfo();
 			} else {
@@ -60,7 +60,7 @@ $(function($) {
 			}
 
 		}
-		if ($currentTab != "guest-like") {
+		if ($currentTab == "guest-like") {
 			if ($likeInfoChange) {
 				saveLikes();
 			} else {
@@ -68,7 +68,7 @@ $(function($) {
 			}
 		}
 
-		$currentTab = event.target.id;
+		$currentTab = $(this).attr("id");
 
 	});
 
@@ -102,13 +102,15 @@ function callFunctions() {
 //Function to render the contact information values in the contact form of guest card from API.
 function renderContactInformation() {
 	var $loader = '<div id="loading" />';
+		  $reservation_id = $("#reservation_id").val();
 	if ($guestCardClickTime) {
 		$($loader).prependTo('body').show(function() {
 			$.ajax({
 				type : "GET",
 				url : '/guestcard/show.json',
 				data : {
-					fakeDataToAvoidCache : new Date()
+					fakeDataToAvoidCache : new Date(),
+					id: $reservation_id
 				}, // fakeDataToAvoidCache is iOS Safari fix
 				async : false,
 				success : function(data) {
@@ -155,6 +157,7 @@ function renderContactInformation() {
 				var guest_id = $("#guest_id").val();
 				renderGuestCardLike(guest_id);
 				renderPayment();
+				renderGuestCardLoyalty();
 			});
 		});
 
@@ -241,6 +244,14 @@ function saveLikes() {
 
 		jsonObj['user_id'] = $("#guest_id").val();
 		jsonObj['preference'] = [];
+		$preference = {};
+		$preference["type"] = "NEWSPAPER";
+		$preference["value"] = $('#newspaper').val();
+		jsonObj['preference'].push($preference);
+		$preference = {};
+		$preference["type"] = "ROOMTYPE";
+		$preference["value"] = $('#roomtype').val();
+		jsonObj['preference'].push($preference);
 		for ( i = 0; i < $totalPreferences; i++) {
 			$preference = {};
 			$preference["type"] = $("#pref_" + i).attr('prefname');
@@ -252,19 +263,19 @@ function saveLikes() {
 			$feature = {};
 			if ($('#feat_' + j).is(':checked')) {
 				$preference = {};
-				$preference["type"] = "ROOM_FEATURE";
+				$preference["type"] = "ROOMFEATURE";
 				$preference["value"] = $('#feat_' + j).val();
 				jsonObj['preference'].push($preference);
 			}
 		}
 		console.log(JSON.stringify(jsonObj));
 
-		//To save like values - uncomment after API ready
+		var userId = $("#user_id").val();
 		$.ajax({
-		 type: "POST",
-			 url: '/dashboard/saveGuestLike',
-			 data: jsonObj,
-			 dataType: 'json',
+		     type: "POST",
+			 url: '/guest_cards/'+userId+'/update_preferences',
+			 data: JSON.stringify(jsonObj),
+			 dataType: "json",
 			 success: function(data) {
 				 $likeInfoChange = false;
 				 console.log("Saved successfully");
@@ -287,11 +298,13 @@ function handleLikeValueChanged() {
 	for ( i = 0; i < $totalPreferences; i++) {
 		$(document).on('change', "#pref_" + i, function(event) {
 			$likeInfoChange = true;
+			console.log("like change")
 		});
 	}
 	for ( j = 0; j < $totalFeatures; j++) {
 		$(document).on('change', "#feat_" + i, function(event) {
 			$likeInfoChange = true;
+			console.log("like change feature")
 		});
 	}
 }
