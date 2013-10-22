@@ -97,7 +97,8 @@ $(function($) {
 		
 		/* credit card validation */
 		if (!checkCreditCard ($card_number, $payment_credit_type)) {
-	    	alert (ccErrors[ccErrorNo]);
+	    	// alert (ccErrors[ccErrorNo]);
+	    	$("#credit-card-number-error").html(ccErrors[ccErrorNo]).show();
 	  		return false;
 	  	}
 
@@ -156,6 +157,11 @@ $(function($) {
 			dataType: 'json',
 			success: function(data) {
 				console.log(data.id);
+				if(data.errors!="" && data.errors!=null){
+					$("#credit-card-number-error").html(data.errors).show();
+					$("#new-payment #credit_row .new-item").remove();
+					return false;
+				}
 				//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
 				$("#new-payment .new-item").attr("credit_id", data.id);
 				$("#new-payment .new-item").attr("id", "credit_row"+data.id);
