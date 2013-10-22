@@ -116,6 +116,7 @@ $(document).on('click', "#new-ffp #save", function() {
 	newFFP.user_id = userId;
 	newFFP.guest_id = guestId;
 	newFFP.user_membership = {};
+	newFFP.user_membership.membership_class = "FFP"
 	newFFP.user_membership.membership_type = $airline;
 	newFFP.user_membership.membership_card_number = $code;
 	newFFP.user_membership.membership_level = $level;
@@ -129,24 +130,6 @@ $(document).on('click', "#new-ffp #save", function() {
 		    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
     })
 
-	// $.ajax({
-	// 	type: "POST",
-	// 	url: '/user_memberships/create',
-	// 	data: newFFP,
-	// 	dataType: 'json',
-	// 	success: function(data) {
-	// 		$loyaltyid = data.id;
-	// 	    var $new_id = "ff-program-"+$loyaltyid;
-		    
-	// 	    $("#loyalty-type-flyer a.program_new").attr('id',$new_id);
-	// 	    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
-	// 	    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
-		    
-	// 	},
-	// 	error: function(){
-	// 		console.log("There is an error!!");
-	// 	}
-	//  });
 });
 
 // Add new hotel loyalty program
@@ -178,6 +161,7 @@ $(document).on('click', "#new-hlp #save", function() {
 	newHLP.user_id = userId;
 	newHLP.guest_id = guestId;
 	newHLP.user_membership = {};
+	newHLP.user_membership.membership_class = "HLP"
 	newHLP.user_membership.membership_type = $type;
 	newHLP.user_membership.membership_card_number = $code;
 	newHLP.user_membership.membership_level = $level;
@@ -198,30 +182,12 @@ $(document).on('click', "#new-hlp #save", function() {
 		    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
 		    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
     })
-	// $.ajax({
-	// 	type: "POST",
-	// 	url: '/user_memberships/create',
-	// 	data: newHLP,
-	// 	dataType: 'json',
-	// 	success: function(data) {
-	// 		$loyaltyid = data.id;
-	// 	    var $new_id = "hl-program-"+$loyaltyid;
-		    
-	// 	    $("#loyalty-type-flyer a.program_new").attr('id',$new_id);
-	// 	    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
-	// 	    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
-		    
-	// 	},
-	// 	error: function(){
-	// 		console.log("There is an error!!");
-	// 	}
-	//  });
     
 });
 
 function updateServerForNewLoyalty(postData, callback){
-	console.log("here");
 	console.log(postData);
+	console.log(JSON.stringify(postData));
 	$.ajax({
 		type: "POST",
 		url: '/user_memberships',
