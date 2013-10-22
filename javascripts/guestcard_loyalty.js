@@ -85,7 +85,6 @@ $(document).on('click', "#loyalty-delete", function() {
 $(document).on('click', "#new-ffp #save", function() {
 	
 	var $loyalty_id = $("#newffp_id").val();
-	$("#list option[value='2']").text()
 	var $airline = $('#airline-ff-list option:selected').val(),
 		$program = $('#airline-ff-pgms option:selected').text(),
 		$code    = $("#ff-code").val();
