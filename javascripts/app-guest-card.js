@@ -94,7 +94,7 @@ function callFunctions() {
 //Function to render the contact information values in the contact form of guest card from API.
 function renderContactInformation() {
 	var $loader = '<div id="loading" />';
-		  $reservation_id = $("#reservation_id").val();
+	$reservation_id = $("#reservation_id").val();
 	if ($guestCardClickTime) {
 		$($loader).prependTo('body').show(function() {
 			$.ajax({
@@ -102,7 +102,7 @@ function renderContactInformation() {
 				url : '/guestcard/show.json',
 				data : {
 					fakeDataToAvoidCache : new Date(),
-					id: $reservation_id
+					id : $reservation_id
 				}, // fakeDataToAvoidCache is iOS Safari fix
 				async : false,
 				success : function(data) {
@@ -126,7 +126,7 @@ function renderContactInformation() {
 					$("#phone").val(data.phone);
 					$("#mobile").val(data.mobile);
 
-                    //TODO - Need to change with original values
+					//TODO - Need to change with original values
 					// $("#guest_id").val("1");
 					// $("#user_id").val("1");
 
@@ -160,43 +160,45 @@ function renderContactInformation() {
 function saveContactInfo() {
 	var userId = $("#user_id").val();
 	$contactJsonObj = {};
-    $contactJsonObj['guest_id'] = $("#guest_id").val();
-    $contactJsonObj['user'] = {};
-    $contactJsonObj['user']['first_name'] = $("#guest_firstname").val();
-    $contactJsonObj['user']['last_name'] = $("#guest_lastname").val();
-    $contactJsonObj['user']['addresses_attributes'] = [];
-    $addresses_attributes = {};
-    $addresses_attributes['street1'] = $("#streetname").val();
-    $addresses_attributes['street2'] = "";
-    $addresses_attributes['city'] = $("#city").val();
-    $addresses_attributes['state'] = $("#state").val();
-    $addresses_attributes['postal_code'] = $("#postalcode").val();
-    $addresses_attributes['country'] =$("#country").val();
-    $addresses_attributes['is_primary'] =true;
-    $addresses_attributes['label'] ="HOME";
-    $contactJsonObj['user']['addresses_attributes'].push($addresses_attributes);
-    $contactJsonObj['user']['contacts_attributes'] = [];
-    $contact_attributes = {};
-    $contact_attributes['contact_type'] = "PHONE";
-    $contact_attributes['label'] = "HOME";
-    $contact_attributes['value'] = $("#phone").val();
-    $contact_attributes['is_primary'] = true;
-    $contactJsonObj['user']['contacts_attributes'].push($contact_attributes);
-    $contact_attributes = {};
-    $contact_attributes['contact_type'] = "EMAIL";
-    $contact_attributes['label'] = "BUSINESS";
-    $contact_attributes['value'] = $("#email").val();
-    $contact_attributes['is_primary'] = true;
-    $contact_attributes['id'] = "";
-    $contactJsonObj['user']['contacts_attributes'].push($contact_attributes);
+	$contactJsonObj['guest_id'] = $("#guest_id").val();
+	$contactJsonObj['user'] = {};
+	$contactJsonObj['user']['first_name'] = $("#guest_firstname").val();
+	$contactJsonObj['user']['last_name'] = $("#guest_lastname").val();
+	$contactJsonObj['user']['addresses_attributes'] = [];
+	$addresses_attributes = {};
+	$addresses_attributes['street1'] = $("#streetname").val();
+	$addresses_attributes['street2'] = "";
+	$addresses_attributes['city'] = $("#city").val();
+	$addresses_attributes['state'] = $("#state").val();
+	$addresses_attributes['postal_code'] = $("#postalcode").val();
+	$addresses_attributes['country'] = $("#country").val();
+	$addresses_attributes['is_primary'] = true;
+	$addresses_attributes['label'] = "HOME";
+	$contactJsonObj['user']['addresses_attributes'].push($addresses_attributes);
+	$contactJsonObj['user']['contacts_attributes'] = [];
+	$contact_attributes = {};
+	$contact_attributes['contact_type'] = "PHONE";
+	$contact_attributes['label'] = "HOME";
+	$contact_attributes['value'] = $("#phone").val();
+	$contact_attributes['is_primary'] = true;
+	$contactJsonObj['user']['contacts_attributes'].push($contact_attributes);
+	$contact_attributes = {};
+	$contact_attributes['contact_type'] = "EMAIL";
+	$contact_attributes['label'] = "BUSINESS";
+	$contact_attributes['value'] = $("#email").val();
+	$contact_attributes['is_primary'] = true;
+	$contactJsonObj['user']['contacts_attributes'].push($contact_attributes);
 
-    console.log(JSON.stringify($contactJsonObj));
+	console.log(JSON.stringify($contactJsonObj));
 	$.ajax({
-		type : "POST",
-		url : '/guest_cards/'+userId,
-		data : $contactJsonObj,
+		type : "PUT",
+		url : '/guest_cards/' + userId,
+		data : JSON.stringify($contactJsonObj),
+
 		async : false,
-		dataType: 'json',
+		dataType : 'json',
+		contentType : 'application/json',
+
 		success : function() {
 			$contactInfoChange = false;
 		},
@@ -212,7 +214,9 @@ function renderGuestCardLike(guest_id) {
 	$.ajax({
 		type : "GET",
 		url : '/dashboard/likes',
-		data:{user_id :user_id},
+		data : {
+			user_id : user_id
+		},
 		async : false,
 		success : function(data) {
 
@@ -264,21 +268,22 @@ function saveLikes() {
 
 		var userId = $("#user_id").val();
 		$.ajax({
-		     type: "POST",
-			 url: '/guest_cards/'+userId+'/update_preferences',
-			 data: JSON.stringify(jsonObj),
-			 dataType: "json",
-			 success: function(data) {
-				 $likeInfoChange = false;
-				 console.log("Saved successfully");
-			 },
-			 error: function(){
-			 console.log("There is an error!!");
-			 }
-		 });
+			type : "POST",
+			url : '/guest_cards/' + userId + '/update_preferences',
+			data : JSON.stringify(jsonObj),
+			dataType : "json",
+			success : function(data) {
+				$likeInfoChange = false;
+				console.log("Saved successfully");
+			},
+			error : function() {
+				console.log("There is an error!!");
+			}
+		});
 
 	}
 }
+
 //To handle if any change happened in dynamic like fields
 function handleLikeValueChanged() {
 	$(document).on('change', "#newspaper,#roomtype", function(event) {
@@ -308,7 +313,9 @@ function renderPayment() {
 		type : "GET",
 		url : '/dashboard/payment',
 		async : false,
-		data :{user_id :user_id},
+		data : {
+			user_id : user_id
+		},
 		success : function(data) {
 			$("#cc-payment").html(data);
 			$(document).on('click', "#credit-card-set-as-primary", function() {
