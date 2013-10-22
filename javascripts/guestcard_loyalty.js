@@ -69,7 +69,7 @@ $(document).on('click', "#loyalty-delete", function() {
 	removeModal();
 	$.ajax({
 		type: "POST",
-			url: '/user_memberships/:id',
+			url: '/user_memberships/:id.json',
 			data: {id: $loyalty_id},
 			dataType: 'json',
 			success: function(data) {

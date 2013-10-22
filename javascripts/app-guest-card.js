@@ -157,6 +157,7 @@ function renderContactInformation() {
 				var guest_id = $("#guest_id").val();
 				renderGuestCardLike(guest_id);
 				renderPayment();
+				renderGuestCardLoyalty();
 			});
 		});
 
