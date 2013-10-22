@@ -161,17 +161,21 @@ $(function($) {
 				$("#new-payment .new-item").attr("credit_id", data.id);
 				$("#new-payment .new-item").attr("id", "credit_row"+data.id);
 				$("#new-payment #credit_row"+data.id).removeClass("new-item");				
-				
-				//$("#credit_row").attr("credit_id", data.id);
-				//$("#credit_row").attr("id", "credit_row"+data.id);
-				
-				console.log("Succesfully added credit card"+data);
+				$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+'.png';
+				$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
+				$newPaymentOption =  "<option value='"+data.id+"'data-number='"+$("#new-payment #card-number-set3").val()+"'"+
+				  "data-name='"+$("#new-payment #name-on-card").val()+"' data-image='"+$newImage+"' data-date='"+$newDate+ "'"+
+				  "data-card='"+$("#new-payment #payment-credit-type").val()+ "'>"+
+				 $("#new-payment #payment-credit-type").val()+" "+$("#new-payment #card-number-set3").val()+" "+$("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val()+ "</option> ";    
+								
+				$("#staycard_creditcard").append($newPaymentOption);
+				removeModal();
 			},
 			error: function(){
 				console.log("There is an error!!");
 			}
 		});
-		removeModal();
+		
 	    setTimeout(function() {
 			refreshGuestCardScroll();
 		}, 300);
@@ -183,7 +187,7 @@ $(function($) {
 		$("#new-payment #payment-credit-type").find('option').remove().end();
 		$.each($paymentTypes, function(key, value) {
 		    if(value.name == $selectedPaymentType){
-		    	$paymentTypeValues = '<option value="" data-image="images/visa.png">Select credit card</option>';
+		    	$paymentTypeValues = '<option value="" data-image="">Select credit card</option>';
 		    	$("#payment-credit-type").append($paymentTypeValues);
 		    	$.each(value.values, function(paymentkey, paymentvalue) {
 		    		$paymentTypeValues = '<option value="'+paymentvalue.cardcode+'" data-image="images/visa.png">'+paymentvalue.cardname+'</option>';
