@@ -1,3 +1,4 @@
+
 ffProgramsList = [];
 hlProgramsList = [];
 // Function to render guest card loyalty
@@ -128,7 +129,7 @@ $(document).on('click', "#new-ffp #save", function() {
 		    $("#loyalty-type-flyer a.program_new").attr('id',$new_id);
 		    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
 		    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
-    })
+    }, "FFP");
 
 });
 
@@ -181,11 +182,11 @@ $(document).on('click', "#new-hlp #save", function() {
 		    $("#loyalty-type-flyer a.program_new").attr('id',$new_id);
 		    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
 		    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
-    })
+    }, "HLP");
     
 });
 
-function updateServerForNewLoyalty(postData, callback){
+function updateServerForNewLoyalty(postData, successCallback, type){
 	console.log(postData);
 	console.log(JSON.stringify(postData));
 	$.ajax({
@@ -193,17 +194,32 @@ function updateServerForNewLoyalty(postData, callback){
 		url: '/user_memberships',
 		data: postData,
 		dataType: 'json',
-		success: function(data) {
-			callback(data);
+		success: function(response) {
+			if(response.errors.length > 0){
+				//Remove the element from DOM
+				if(type == "FFP"){
+					$("#loyalty-type-flyer .add-new-button").prev("a").remove();
+				}else if(type == "HLP"){
+					$("#loyalty-type-hotel .add-new-button").prev("a").remove();
+				}
+				//$("#loyalty-type-flyer .add-new-button").prev("a").remove();
+				//$("#loyalty-type-hotel .add-new-button").prev("a").remove();
+				//TODO: remove element from DOM.
+			}else{
+				//Insert the response id to the new DOM element
+				successCallback(response.data);
+			}
+			
 		},
-		error: function(){
+		error: function(response){
 			console.log("There is an error!!");
 		}
 	 });
 }
 
+//on clicking the loyalty tab, fetch the availabe ffp, hlp list
 $('#guest-card-content #guest-loyalty').click(function(){
-
+	//fetch the ffp list
 	$.ajax({
 		url : '/user_memberships/get_available_ffps.json',
 		type : 'GET',
@@ -216,7 +232,7 @@ $('#guest-card-content #guest-loyalty').click(function(){
 			console.log("error");
 		}
 	});
-
+	//fetch the hlp list
 	$.ajax({
 		url : '/user_memberships/get_available_hlps.json',
 		type : 'GET',
@@ -232,13 +248,14 @@ $('#guest-card-content #guest-loyalty').click(function(){
 
 });
 
+//populate the airline list for frequent flier program add new popup
 function addFFPSelectOptions(){
 	$.each(ffProgramsList, function(key, airline) {
 		var airlineOptions ='<option value="'+ airline.ff_value +'">' + airline.ff_description+ '</option>'
 		$("#new-ffp #airline-ff-list").append(airlineOptions);
 	});
 };
-
+//populate the loyalty type list for hotel loyalty program add new popup
 function addHLPSelectOptions(){
 	$.each(hlProgramsList, function(key, loyaltyType) {
 		var programTypes ='<option value="'+ loyaltyType.hl_value +'">' + loyaltyType.hl_description+ '</option>'
@@ -246,7 +263,8 @@ function addHLPSelectOptions(){
 	});
 }
 
-$(document).on('change', "#new-ffp #airline-ff-list", function() {
+//populate the list for loyalty values - ffp
+$(document).one('change', "#new-ffp #airline-ff-list", function() {
 	$("#new-ffp #airline-ff-pgms").html("");
 	$("#new-ffp #airline-ff-pgms").append('<option value="" selected="selected" class="placeholder">Select loyalty program</option>');
 	var selectedAirlineType = $("#new-ffp #airline-ff-list").val();
@@ -260,6 +278,7 @@ $(document).on('change', "#new-ffp #airline-ff-list", function() {
 	});
 });
 
+//populate the list for loyalty values - hlp
 $(document).on('change', "#new-hlp #hotel-loyalty-types", function() {
 	$("#new-hlp #hotel-loyalty-levels").html("");
 	$("#new-hlp #hotel-loyalty-levels").append('<option value="" selected="selected" class="placeholder">Select level</option>');
