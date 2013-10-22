@@ -212,7 +212,7 @@ $('#guest-card-content #guest-loyalty').click(function(){
 			
 		},
 		error : function() {
-			alert("error");
+			console.log("error");
 		}
 	});
 
@@ -225,7 +225,7 @@ $('#guest-card-content #guest-loyalty').click(function(){
 			
 		},
 		error : function() {
-			alert("error");
+			console.log("error");
 		}
 	});
 
