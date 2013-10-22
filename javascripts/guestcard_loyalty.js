@@ -195,16 +195,14 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 		data: postData,
 		dataType: 'json',
 		success: function(response) {
-			if(response.errors.length > 0){
+			if((response.errors)!== null && (response.errors.length > 0)){
+				alert(response.errors[0]);
 				//Remove the element from DOM
 				if(type == "FFP"){
 					$("#loyalty-type-flyer .add-new-button").prev("a").remove();
 				}else if(type == "HLP"){
 					$("#loyalty-type-hotel .add-new-button").prev("a").remove();
 				}
-				//$("#loyalty-type-flyer .add-new-button").prev("a").remove();
-				//$("#loyalty-type-hotel .add-new-button").prev("a").remove();
-				//TODO: remove element from DOM.
 			}else{
 				//Insert the response id to the new DOM element
 				successCallback(response.data);
@@ -212,7 +210,11 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 			
 		},
 		error: function(response){
-			console.log("There is an error!!");
+			if(type == "FFP"){
+				$("#loyalty-type-flyer .add-new-button").prev("a").remove();
+			}else if(type == "HLP"){
+				$("#loyalty-type-hotel .add-new-button").prev("a").remove();
+			}
 		}
 	 });
 }
@@ -264,7 +266,7 @@ function addHLPSelectOptions(){
 }
 
 //populate the list for loyalty values - ffp
-$(document).one('change', "#new-ffp #airline-ff-list", function() {
+$(document).on('change', "#new-ffp #airline-ff-list", function() {
 	$("#new-ffp #airline-ff-pgms").html("");
 	$("#new-ffp #airline-ff-pgms").append('<option value="" selected="selected" class="placeholder">Select loyalty program</option>');
 	var selectedAirlineType = $("#new-ffp #airline-ff-list").val();
