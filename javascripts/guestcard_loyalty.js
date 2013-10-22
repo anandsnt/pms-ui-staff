@@ -2,6 +2,7 @@ ffProgramsList = [];
 hlProgramsList = [];
 // Function to render guest card loyalty
 function renderGuestCardLoyalty(){
+	var confirmNum = $('#guest-card #reservation_id').val();
 		$.ajax({
 			type: "GET",
             url: '/user_memberships?confirmno=4813095',
@@ -41,12 +42,12 @@ $(document).on('click', '#loyalty-tab .active-item, #loyalty-tab .add-new-button
 			alert("Sorry, not there yet!");
 		}
 	}).done(function(){  
-            if($action == "new-ffp"){
-				addFFPSelectOptions();
-			}else if($action == "new-hlp"){
-				addHLPSelectOptions();
-			}
-        });
+        if($action == "new-ffp"){
+			addFFPSelectOptions();
+		}else if($action == "new-hlp"){
+			addHLPSelectOptions();
+		}
+    });
 	
 });
 
@@ -66,58 +67,58 @@ $(document).on('click', "#loyalty-delete", function() {
 	}
 	
 	removeModal();
-	console.log("Delete primary API call");
-	// $.ajax({
-		// type: "POST",
-		// url: '/dashboard/deleteCreditCard',
-		// data: {id: $loyalty_id},
-		// dataType: 'json',
-		// success: function(data) {
-			// console.log("Succesfully deleted loyalty primary");
-		// },
-		// error: function(){
-			// console.log("There is an error!!");
-		// }
-	// });
+	$.ajax({
+		type: "POST",
+			url: '/user_memberships/:id',
+			data: {id: $loyalty_id},
+			dataType: 'json',
+			success: function(data) {
+				console.log("Succesfully deleted loyalty primary");
+			},
+			error: function(){
+				console.log("There is an error!!");
+			}
+	});
 });
 
 // Add new frequent flyer program
 $(document).on('click', "#new-ffp #save", function() {
 	
 	var $loyalty_id = $("#newffp_id").val();
-	
-	var $airline = $('#airline-ff-types').val();
-		$program = $('#airline-ff-options').val();
+	$("#list option[value='2']").text()
+	var $airline = $('#airline-ff-list option:selected').val(),
+		$program = $('#airline-ff-pgms option:selected').text(),
 		$code    = $("#ff-code").val();
-	console.log($airline);
-	console.log($program);
-	console.log($code);
-	var $data = {
-            code: $program,
-            number: $code,
-            name: $airline
-    };
     
-	//console.log("$airline"+$airline+"$program"+$program+"$code"+$code);
 	removeModal();
 	
-	var $html = "<a loyaltytype='flyer' loyaltyid='' id=''+ href='dashboard/loyaltySelectPrimary' class='active-item item-loyalty float program_new'>"+
-      "<span class='value code'>"+$program+"</span>"+
+	var $html = "<a loyaltytype='flyer' loyaltyid='' id=''+ href='user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
+      "<span class='value code'>"+$airline+"</span>"+
       "<span class='value number'>"+$code+"</span>"+
-      "<span class='value name'>"+$airline+"</span></a>";
+      "<span class='value name'>"+$program+"</span></a>";
       
     $("#loyalty-type-flyer .add-new-button").before($html);
     
 	console.log("Add new requent flyer program API call");
-	console.log($data);
-	// $.ajax({
-		// type: "POST",
-		// url: '/dashboard/AddNewFrequentFlyerProgram',
-		// data: {id: $loyalty_id},
-		// dataType: 'json',
-		// success: function(data) {
-			//$loyaltyid=data.id;
-			// console.log("Succesfully saved new frequent flyer program");
+
+	var newFFP = {};
+	newFFP.user_id = "";
+	newFFP.guest_id = "";
+	newFFP.user_membership = {};
+	newFFP.user_membership.membership_type = "";
+	newFFP.user_membership.membership_card_number = "";
+	newFFP.user_membership.membership_level = "";
+
+	console.log(newFFP);
+
+
+	$.ajax({
+		type: "POST",
+		url: '/user_memberships/create',
+		data: newFFP,
+		dataType: 'json',
+		success: function(data) {
+			$loyaltyid = data.id;
 			
 			var $loyaltyid = 1456; //This id will be get as a response of API call
 		    var $new_id = "program"+$loyaltyid;
@@ -126,21 +127,20 @@ $(document).on('click', "#new-ffp #save", function() {
 		    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
 		    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
 		    
-		// },
-		// error: function(){
-			// console.log("There is an error!!");
-		// }
-	// });
-	
+		},
+		error: function(){
+			console.log("There is an error!!");
+		}
+	 });
 });
 
 // Add new hotel loyalty program
 $(document).on('click', "#new-hlp #save", function() {
 	
 	var $loyalty_id = $("#newhlp_id").val();
-	
-	var $type = $('#hotel-loyalty-types').val();
-		$level= $('#hotel-loyalty-levels').val();
+
+	var $type = $('#hotel-loyalty-types option:selected').val(),
+		$level= $('#hotel-loyalty-levels option:selected').text(),
 		$code = $("#hl-code").val();
 		
 	var $data = {
@@ -152,7 +152,7 @@ $(document).on('click', "#new-hlp #save", function() {
 	removeModal();
 	
 	
-	var $html = "<a loyaltytype='hotel' loyaltyid='' id='' href='dashboard/loyaltySelectPrimary' class='active-item item-loyalty float program_new'>"+
+	var $html = "<a loyaltytype='hotel' loyaltyid='' id='' href='user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
       "<span class='value code'>"+$type+"</span>"+
       "<span class='value number'>"+$code+"</span>"+
       "<span class='value name'>"+$level+"</span></a>";
@@ -188,7 +188,7 @@ $(document).on('click', "#new-hlp #save", function() {
 $('#guest-card-content #guest-loyalty').click(function(){
 
 	$.ajax({
-		url : '/sample_json/guestcard_loyalty/ff_pgms.json',
+		url : '/user_memberships/get_available_ffps.json',
 		type : 'GET',
 		success : function(data) {
 			ffProgramsList = data
@@ -218,7 +218,7 @@ $('#guest-card-content #guest-loyalty').click(function(){
 function addFFPSelectOptions(){
 	$.each(ffProgramsList, function(key, airline) {
 		var airlineOptions ='<option value="'+ airline.ff_value +'">' + airline.ff_description+ '</option>'
-		$("#new-ffp #airline-ff-types").append(airlineOptions);
+		$("#new-ffp #airline-ff-list").append(airlineOptions);
 	});
 };
 
@@ -229,15 +229,15 @@ function addHLPSelectOptions(){
 	});
 }
 
-$(document).on('change', "#new-ffp #airline-ff-types", function() {
-	$("#new-ffp #airline-ff-options").html("");
-	$("#new-ffp #airline-ff-options").append('<option value="" selected="selected" class="placeholder">Select loyalty program</option>');
-	var selectedAirlineType = $("#new-ffp #airline-ff-types").val();
+$(document).on('change', "#new-ffp #airline-ff-list", function() {
+	$("#new-ffp #airline-ff-pgms").html("");
+	$("#new-ffp #airline-ff-pgms").append('<option value="" selected="selected" class="placeholder">Select loyalty program</option>');
+	var selectedAirlineType = $("#new-ffp #airline-ff-list").val();
 	$.each(ffProgramsList, function(key, airline) {
 		if(airline.ff_value == selectedAirlineType){
 			$.each(airline.levels, function(key, value) {
-				var ffOptions ='<option value="'+ value.type +'">' + value.description+ '</option>'
-				$("#new-ffp #airline-ff-options").append(ffOptions);
+				var ffOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>'
+				$("#new-ffp #airline-ff-pgms").append(ffOptions);
 			});
 		}
 	});
@@ -250,7 +250,7 @@ $(document).on('change', "#new-hlp #hotel-loyalty-types", function() {
 	$.each(hlProgramsList, function(key, loyaltyPgm) {
 		if(loyaltyPgm.hl_value == selectedLoyaltyPgm){
 			$.each(loyaltyPgm.levels, function(key, value) {
-				var hlOptions ='<option value="'+ value.type +'">' + value.description+ '</option>'
+				var hlOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>'
 				$("#new-hlp #hotel-loyalty-levels").append(hlOptions);
 			});
 		}
