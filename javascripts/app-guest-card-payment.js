@@ -213,6 +213,9 @@ function setCreditAsPrimary($credit_card_id, $user_id){
 			dataType: 'json',
 			success: function(data) {
 				console.log("Succesfully set credit card as primary");
+				$("#primary_credit.primary").remove();
+				$("#payment_tab #credit_row" + $credit_card_id).append("<span id='primary_credit' class='primary'><span class='value primary'>Primary</span></span>");
+				// $("#payment_tab credit_row"+$credit_card_id)				
 			},
 			error: function(){
 				console.log("There is an error!!");
