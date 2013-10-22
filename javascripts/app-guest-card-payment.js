@@ -127,7 +127,7 @@ $(function($) {
 			$cardHolderName = $("#new-payment #name-on-card").val();
 		
         var	$add = 
-	        '<a id="credit_row" href="dashboard/showCreditModal" credit_id="" class="active-item item-payment primary open-modal float credit-card-info new-item">'+
+	        '<a id="credit_row" href="dashboard/showCreditModal" credit_id="" class="active-item item-payment new-item">'+
 	        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
 	        'Ending with<span class="value number">'+$number+'</span></span>'+
 			'<span class="date">Date<span class="value date">'+$expiry+'</span>'+
@@ -159,7 +159,8 @@ $(function($) {
 				console.log(data.id);
 				if(data.errors!="" && data.errors!=null){
 					$("#credit-card-number-error").html(data.errors).show();
-					$("#new-payment #credit_row .new-item").remove();
+					// $("#new-payment #credit_row .new-item").remove();
+					$('#payment_tab a:first').remove();
 					return false;
 				}
 				//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
