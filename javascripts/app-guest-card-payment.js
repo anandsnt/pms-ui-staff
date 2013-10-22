@@ -97,7 +97,7 @@ $(function($) {
 		console.log("$card_number"+$card_number);
 		
 		/* credit card validation */
-		if (!checkCreditCard ($card_number, $card_type)) {
+		if (!checkCreditCard ($card_number, $payment_credit_type)) {
 	    	alert (ccErrors[ccErrorNo]);
 	  		return false;
 	  	}
@@ -121,7 +121,7 @@ $(function($) {
 		}	
 		
 		// var $image = (($("#new-payment #credit_card").val()) == "AX" ? "<img src='/assets/amex.png' alt='amex'>": (($("#new-payment #credit_card").val()) == "MA" ? "<img src='/assets/mastercard.png' alt='mastercard'>": "<img src='/assets/visa.png' alt='visa'>" ));
-		var $image = "<img src='/assets/"+$("#new-payment #credit_card").val().toLowerCase()+".png' alt='visa'>";	
+		var $image = "<img src='/assets/"+$("#new-payment #payment-credit-type").val().toLowerCase()+".png' alt='visa'>";	
 			$number = $("#new-payment #card-number-set3").val();
 			$expiry = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
 			$cardHolderName = $("#new-payment #name-on-card").val();
@@ -135,7 +135,7 @@ $(function($) {
 			'</span></a>';
 		
 		//console.log($add);
-	    $("#payment_tab").append($add);
+	    $("#payment_tab").prepend($add);
 	    
 		/* Umcomment after API is ready */
 		
