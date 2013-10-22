@@ -201,6 +201,12 @@ function saveContactInfo() {
 
 		success : function() {
 			$contactInfoChange = false;
+			$("#gc-firstname").val($("#guest_firstname").val());
+			$("#gc-lastname").val($("#guest_lastname").val());
+			$("#gc-location").val($("#city").val());
+			$("#gc-phone").val($("#phone").val());
+			$("#gc-email").val($("#email").val());
+			
 		},
 		error : function() {
 			console.log("There is an error!!");
