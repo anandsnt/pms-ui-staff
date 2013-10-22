@@ -1,9 +1,8 @@
 $(function($) {
 
-	//var user_id = $("#user_id").val();
+	var $paymentTypes = [];
 	//Show modal to set credit card as primary or to delete the credit card
-	$(document).on('click', '#payment_tab .active-item,#payment_tab #add_new_payment', function(e) {
-
+	$(document).on('click', '#payment_tab .active-item,#payment_tab #add_new_payment,#stay_card_payment #add_new_payment', function(e) {
 		
 		e.preventDefault();
 		var $href = $(this).attr('href');
@@ -13,7 +12,7 @@ $(function($) {
 		// Get modal data
 		$.ajax({
 			url : $href,
-			// async:false,
+			async:false,
 			data : {
 				id : $(this).attr('credit_id')
 			},
@@ -26,6 +25,22 @@ $(function($) {
 				alert("Sorry, not there yet!");
 			}
 		});
+		
+		
+		$.ajax({
+			type: "GET",
+			url: '/dashboard/addNewPayment.json',			
+			dataType: 'json',
+			success: function(data) {		
+				$paymentTypes = data.data;
+				console.log(JSON.stringify($paymentTypes));
+			},
+			error: function(){
+				console.log("There is an error!!");
+			}
+		});
+		
+		
 	});
 	// function to set the selected credit card as primary
 	$(document).on('click', "#credit-card-set-as-primary", function() {
@@ -34,18 +49,16 @@ $(function($) {
 		$("#primary_credit.primary").remove();
 		$("#credit_row" + $credit_card_id).append("<span id='primary_credit' class='primary'><span class='value primary'>Primary</span></span>");
 		removeModal();
-		$.ajax({
-			type: "POST",
-			url: '/dashboard/setCreditAsPrimary',
-			data: {id: $credit_card_id, user_id: $user_id},
-			dataType: 'json',
-			success: function(data) {
-				console.log("Succesfully set credit card as primary");
-			},
-			error: function(){
-				console.log("There is an error!!");
-			}
-		});
+		setCreditAsPrimary($credit_card_id, $user_id);
+	});
+	$(document).on('change', "#staycard_creditcard", function() {		
+		var $credit_card_id = $("#staycard_creditcard").val();
+		$user_id = $("#user_id").val();
+		if(!$guestCardClickTime){
+			$("#primary_credit.primary").remove();
+			$("#credit_row" + $credit_card_id).append("<span id='primary_credit' class='primary'><span class='value primary'>Primary</span></span>");
+		}
+		setCreditAsPrimary($credit_card_id, $user_id);
 	});
 	// function to set the selected credit card as primary
 	$(document).on('click', "#credit-card-delete", function() {
@@ -69,20 +82,22 @@ $(function($) {
 	$(document).on('click', "#save_new_credit_card", function() {
 		
 		var $payment_type = $("#new-payment #payment-type").val();
-		$payment_credit_type = $("#new-payment #payment-credit-type_credit_card").val();
+		$payment_credit_type = $("#new-payment #payment-credit-type").val();
 		$card_number_set1 = $("#new-payment #card-number-set1").val();
 		$card_number_set2 = $("#new-payment #card-number-set2").val();
 		$card_number_set3 = $("#new-payment #card-number-set3").val();
 		$expiry_month	= $("#new-payment #expiry-month").val();
 		$expiry_year	= $("#new-payment #expiry-year").val();
 		$name_on_card	= $("#new-payment #name-on-card").val();
-		$card_type 		= $("#payment-credit-type_credit_card").val();
+		$card_type 		= $("#payment-credit-type").val();
 		$card_number = $card_number_set1 + $card_number_set2 + $card_number_set3;
 		$card_expiry = "20"+$expiry_year +"-"+$expiry_month +"-01";
+		$guest_id = $("#guest_id").val();
+		
 		console.log("$card_number"+$card_number);
 		
 		/* credit card validation */
-		if (!checkCreditCard ($card_number, $card_type)) {
+		if (!checkCreditCard ($card_number, $payment_credit_type)) {
 	    	alert (ccErrors[ccErrorNo]);
 	  		return false;
 	  	}
@@ -105,7 +120,8 @@ $(function($) {
 			return false;			
 		}	
 		
-		var $image = (($("#new-payment #credit_card").val()) == "AX" ? "<img src='/assets/amex.png' alt='amex'>": (($("#new-payment #credit_card").val()) == "MA" ? "<img src='/assets/mastercard.png' alt='mastercard'>": "<img src='/assets/visa.png' alt='visa'>" ));
+		// var $image = (($("#new-payment #credit_card").val()) == "AX" ? "<img src='/assets/amex.png' alt='amex'>": (($("#new-payment #credit_card").val()) == "MA" ? "<img src='/assets/mastercard.png' alt='mastercard'>": "<img src='/assets/visa.png' alt='visa'>" ));
+		var $image = "<img src='/assets/"+$("#new-payment #payment-credit-type").val().toLowerCase()+".png' alt='visa'>";	
 			$number = $("#new-payment #card-number-set3").val();
 			$expiry = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
 			$cardHolderName = $("#new-payment #name-on-card").val();
@@ -119,7 +135,7 @@ $(function($) {
 			'</span></a>';
 		
 		//console.log($add);
-	    $("#payment_tab #payment_list").append($add);
+	    $("#payment_tab").prepend($add);
 	    
 		/* Umcomment after API is ready */
 		
@@ -135,7 +151,8 @@ $(function($) {
 				    card_number: $card_number,
 				    credit_card: $card_type,
 				    card_expiry: $card_expiry,
-				    name_on_card: $name_on_card
+				    name_on_card: $name_on_card,
+				    guest_id: $guest_id
 				},
 			dataType: 'json',
 			success: function(data) {
@@ -143,8 +160,7 @@ $(function($) {
 				//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
 				$("#new-payment .new-item").attr("credit_id", data.id);
 				$("#new-payment .new-item").attr("id", "credit_row"+data.id);
-				$("#new-payment #credit_row"+data.id).removeClass("new-item");
-				
+				$("#new-payment #credit_row"+data.id).removeClass("new-item");				
 				
 				//$("#credit_row").attr("credit_id", data.id);
 				//$("#credit_row").attr("id", "credit_row"+data.id);
@@ -161,5 +177,34 @@ $(function($) {
 		}, 300);
 		// removeModal();
 	});
+	$(document).on('change', "#new-payment #payment-type", function() {
+		var $selectedPaymentType = $("#new-payment #payment-type").val();
+		$paymentTypeValues = '';
+		$("#new-payment #payment-credit-type").find('option').remove().end();
+		$.each($paymentTypes, function(key, value) {
+		    if(value.name == $selectedPaymentType){
+		    	$paymentTypeValues = '<option value="" data-image="images/visa.png">Select credit card</option>';
+		    	$("#payment-credit-type").append($paymentTypeValues);
+		    	$.each(value.values, function(paymentkey, paymentvalue) {
+		    		$paymentTypeValues = '<option value="'+paymentvalue.cardcode+'" data-image="images/visa.png">'+paymentvalue.cardname+'</option>';
+		    		$("#payment-credit-type").append($paymentTypeValues);
+		    	});
+		    }		    
+		});
+	});
 
 });
+function setCreditAsPrimary($credit_card_id, $user_id){
+	$.ajax({
+			type: "POST",
+			url: '/dashboard/setCreditAsPrimary',
+			data: {id: $credit_card_id, user_id: $user_id},
+			dataType: 'json',
+			success: function(data) {
+				console.log("Succesfully set credit card as primary");
+			},
+			error: function(){
+				console.log("There is an error!!");
+			}
+		});
+}

@@ -52,7 +52,7 @@ $(function($) {
 		}
 	});
 	$(document).on('click', '#guest-contact, #guest-like, #guest-credit, #guest-loyalty', function(event) {
-		if ($currentTab != "guest-contact") {
+		if ($currentTab == "guest-contact") {
 			if ($contactInfoChange) {
 				saveContactInfo();
 			} else {
@@ -60,7 +60,7 @@ $(function($) {
 			}
 
 		}
-		if ($currentTab != "guest-like") {
+		if ($currentTab == "guest-like") {
 			if ($likeInfoChange) {
 				saveLikes();
 			} else {
@@ -68,7 +68,7 @@ $(function($) {
 			}
 		}
 
-		$currentTab = event.target.id;
+		$currentTab = $(this).attr("id");
 
 	});
 
@@ -244,6 +244,14 @@ function saveLikes() {
 
 		jsonObj['user_id'] = $("#guest_id").val();
 		jsonObj['preference'] = [];
+		$preference = {};
+		$preference["type"] = "NEWSPAPER";
+		$preference["value"] = $('#newspaper').val();
+		jsonObj['preference'].push($preference);
+		$preference = {};
+		$preference["type"] = "ROOMTYPE";
+		$preference["value"] = $('#roomtype').val();
+		jsonObj['preference'].push($preference);
 		for ( i = 0; i < $totalPreferences; i++) {
 			$preference = {};
 			$preference["type"] = $("#pref_" + i).attr('prefname');
@@ -290,11 +298,13 @@ function handleLikeValueChanged() {
 	for ( i = 0; i < $totalPreferences; i++) {
 		$(document).on('change', "#pref_" + i, function(event) {
 			$likeInfoChange = true;
+			console.log("like change")
 		});
 	}
 	for ( j = 0; j < $totalFeatures; j++) {
 		$(document).on('change', "#feat_" + i, function(event) {
 			$likeInfoChange = true;
+			console.log("like change feature")
 		});
 	}
 }
