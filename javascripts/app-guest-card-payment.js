@@ -94,11 +94,11 @@ $(function($) {
 		$card_expiry = "20"+$expiry_year +"-"+$expiry_month +"-01";
 		$guest_id = $("#guest_id").val();
 		
-		console.log("$card_number"+$card_number);
 		
 		/* credit card validation */
 		if (!checkCreditCard ($card_number, $payment_credit_type)) {
-	    	alert (ccErrors[ccErrorNo]);
+	    	// alert (ccErrors[ccErrorNo]);
+	    	$("#credit-card-number-error").html(ccErrors[ccErrorNo]).show();
 	  		return false;
 	  	}
 
@@ -157,21 +157,30 @@ $(function($) {
 			dataType: 'json',
 			success: function(data) {
 				console.log(data.id);
+				if(data.errors!="" && data.errors!=null){
+					$("#credit-card-number-error").html(data.errors).show();
+					$("#new-payment #credit_row .new-item").remove();
+					return false;
+				}
 				//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
 				$("#new-payment .new-item").attr("credit_id", data.id);
 				$("#new-payment .new-item").attr("id", "credit_row"+data.id);
 				$("#new-payment #credit_row"+data.id).removeClass("new-item");				
-				
-				//$("#credit_row").attr("credit_id", data.id);
-				//$("#credit_row").attr("id", "credit_row"+data.id);
-				
-				console.log("Succesfully added credit card"+data);
+				$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+'.png';
+				$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
+				$newPaymentOption =  "<option value='"+data.id+"'data-number='"+$("#new-payment #card-number-set3").val()+"'"+
+				  "data-name='"+$("#new-payment #name-on-card").val()+"' data-image='"+$newImage+"' data-date='"+$newDate+ "'"+
+				  "data-card='"+$("#new-payment #payment-credit-type").val()+ "'>"+
+				 $("#new-payment #payment-credit-type").val()+" "+$("#new-payment #card-number-set3").val()+" "+$("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val()+ "</option> ";    
+								
+				$("#staycard_creditcard").append($newPaymentOption);
+				removeModal();
 			},
 			error: function(){
-				console.log("There is an error!!");
+				alert(data.errors);
 			}
 		});
-		removeModal();
+		
 	    setTimeout(function() {
 			refreshGuestCardScroll();
 		}, 300);
@@ -183,7 +192,7 @@ $(function($) {
 		$("#new-payment #payment-credit-type").find('option').remove().end();
 		$.each($paymentTypes, function(key, value) {
 		    if(value.name == $selectedPaymentType){
-		    	$paymentTypeValues = '<option value="" data-image="images/visa.png">Select credit card</option>';
+		    	$paymentTypeValues = '<option value="" data-image="">Select credit card</option>';
 		    	$("#payment-credit-type").append($paymentTypeValues);
 		    	$.each(value.values, function(paymentkey, paymentvalue) {
 		    		$paymentTypeValues = '<option value="'+paymentvalue.cardcode+'" data-image="images/visa.png">'+paymentvalue.cardname+'</option>';
