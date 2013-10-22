@@ -217,7 +217,7 @@ $('#guest-card-content #guest-loyalty').click(function(){
 	});
 
 	$.ajax({
-		url : '/sample_json/guestcard_loyalty/hl_pgms.json',
+		url : '/user_memberships/get_available_hlps.json',
 		type : 'GET',
 		success : function(data) {
 			hlProgramsList = data
