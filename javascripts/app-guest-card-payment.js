@@ -163,10 +163,11 @@ $(function($) {
 					$('#payment_tab a:first').remove();
 					return false;
 				}
+				console.log(data.id);
 				//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
-				$("#new-payment .new-item").attr("credit_id", data.id);
-				$("#new-payment .new-item").attr("id", "credit_row"+data.id);
-				$("#new-payment #credit_row"+data.id).removeClass("new-item");				
+				$("#payment_tab .new-item").attr("credit_id", data.id);
+				$("#payment_tab .new-item").attr("id", "credit_row"+data.id);
+				$("#payment_tab #credit_row"+data.id).removeClass("new-item");				
 				$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+'.png';
 				$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
 				$newPaymentOption =  "<option value='"+data.id+"'data-number='"+$("#new-payment #card-number-set3").val()+"'"+
