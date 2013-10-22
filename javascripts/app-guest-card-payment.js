@@ -89,7 +89,7 @@ $(function($) {
 		$expiry_month	= $("#new-payment #expiry-month").val();
 		$expiry_year	= $("#new-payment #expiry-year").val();
 		$name_on_card	= $("#new-payment #name-on-card").val();
-		$card_type 		= $("#payment-credit-type_credit_card").val();
+		$card_type 		= $("#payment-credit-type").val();
 		$card_number = $card_number_set1 + $card_number_set2 + $card_number_set3;
 		$card_expiry = "20"+$expiry_year +"-"+$expiry_month +"-01";
 		$guest_id = $("#guest_id").val();
