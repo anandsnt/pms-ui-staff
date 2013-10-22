@@ -224,7 +224,7 @@ function updateServerForNewLoyalty(postData, callback){
 	console.log(postData);
 	$.ajax({
 		type: "POST",
-		url: '/user_memberships/create',
+		url: '/user_memberships',
 		data: postData,
 		dataType: 'json',
 		success: function(data) {
