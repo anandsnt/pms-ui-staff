@@ -82,7 +82,7 @@ $(function($) {
 	$(document).on('click', "#save_new_credit_card", function() {
 		
 		var $payment_type = $("#new-payment #payment-type").val();
-		$payment_credit_type = $("#new-payment #payment-credit-type_credit_card").val();
+		$payment_credit_type = $("#new-payment #payment-credit-type").val();
 		$card_number_set1 = $("#new-payment #card-number-set1").val();
 		$card_number_set2 = $("#new-payment #card-number-set2").val();
 		$card_number_set3 = $("#new-payment #card-number-set3").val();

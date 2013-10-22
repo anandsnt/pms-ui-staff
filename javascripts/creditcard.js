@@ -67,7 +67,7 @@ function checkCreditCard (cardnumber, cardname) {
                length: "13,16", 
                prefixes: "4",
                checkdigit: true};
-  cards [1] = {name: "MA", 
+  cards [1] = {name: "MC", 
                length: "16", 
                prefixes: "51,52,53,54,55",
                checkdigit: true};
