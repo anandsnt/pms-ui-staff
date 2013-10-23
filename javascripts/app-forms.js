@@ -173,9 +173,11 @@ $(function($){
     });
     
      // Resize masked inputs to match content width
-    $(document).on('focus', '.masked-input', function(){
+    $(document).on('focus', '.masked-input', function(e){
+        e.stopImmediatePropagation();
         $(this).addClass('active');
-    }).on('focusout', '.masked-input', function(){
+    }).on('focusout', '.masked-input', function(e){
+        e.stopImmediatePropagation();
         $(this).removeClass('active');
         //send an update request to the third party system
         updateGuestDetails($(this).val(), $(this).attr('data-val'));

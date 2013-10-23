@@ -113,7 +113,14 @@ function displeFilteredRoomList(filteredRoomList){
 
         var roomSelected = $(this).find(">:first-child").html();
         var currentReservation = $('#roomassignment-ref-id').val();
-        console.log('#reservation-'+currentReservation+'-room-number');
+        var roomStatusExplained = $(this).find(">:first-child").next().html();
+        var roomReadyStatus = $(this).find(">:first-child").hasClass('ready');
+        if(roomReadyStatus){
+            $('#reservation-'+currentReservation+'-room-number').addClass('ready');
+        }else{
+            $('#reservation-'+currentReservation+'-room-number').addClass('not-ready');
+        }
+
         $('#reservation-'+currentReservation+'-room-number').html(roomSelected);
     });  
 
