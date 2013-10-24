@@ -1,6 +1,4 @@
 
-ffProgramsList = [];
-hlProgramsList = [];
 // Function to render guest card loyalty
 function renderGuestCardLoyalty(){
 	var confirmNum = $('#guest-card #reservation_id').val();
@@ -15,7 +13,6 @@ function renderGuestCardLoyalty(){
                 console.log("There is an error!!");
             }
        });
-
 }
 
 // Show modal to set delete a loyalty.
@@ -46,10 +43,10 @@ $(document).on('click', '#loyalty-tab .active-item, #loyalty-tab .add-new-button
 	}).done(function(){  
         if($action == "new-ffp"){
         	//Populate the options in airline select box for frequent flyer pgm
-			addFFPSelectOptions();
+			addFFPSelectOptions("#new-ffp #airline-ff-list");
 		}else if($action == "new-hlp"){
 			//Populate the options in loyalty type select box for frequent flyer pgm 
-			addHLPSelectOptions();
+			addHLPSelectOptions("#new-hlp #hotel-loyalty-types");
 		}
     });
 	
@@ -208,7 +205,6 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 				//Insert the response id to the new DOM element
 				successCallback(response.data);
 			}
-			
 		},
 		error: function(response){
 			if(type == "FFP"){
@@ -220,50 +216,19 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 	 });
 }
 
-//on clicking the loyalty tab, fetch the availabe ffp, hlp list
-$('#guest-card-content #guest-loyalty').click(function(event){
-	event.stopPropagation();
-	//fetch the ffp list
-	$.ajax({
-		url : '/user_memberships/get_available_ffps.json',
-		type : 'GET',
-		success : function(data) {
-			ffProgramsList = data
-			console.log(data);
-			
-		},
-		error : function() {
-			console.log("error");
-		}
-	});
-	//fetch the hlp list
-	$.ajax({
-		url : '/user_memberships/get_available_hlps.json',
-		type : 'GET',
-		success : function(data) {
-			hlProgramsList = data
-			console.log(data);
-			
-		},
-		error : function() {
-			console.log("error");
-		}
-	});
-
-});
-
 //populate the airline list for frequent flier program add new popup
-function addFFPSelectOptions(){
+//ffProgramsList and hlProgramsList defined at staycard_loyalty.js
+function addFFPSelectOptions(selector){
 	$.each(ffProgramsList, function(key, airline) {
 		var airlineOptions ='<option value="'+ airline.ff_value +'">' + airline.ff_description+ '</option>'
-		$("#new-ffp #airline-ff-list").append(airlineOptions);
+		$(selector).append(airlineOptions);
 	});
 };
 //populate the loyalty type list for hotel loyalty program add new popup
-function addHLPSelectOptions(){
+function addHLPSelectOptions(selector){
 	$.each(hlProgramsList, function(key, loyaltyType) {
 		var programTypes ='<option value="'+ loyaltyType.hl_value +'">' + loyaltyType.hl_description+ '</option>'
-		$("#new-hlp #hotel-loyalty-types").append(programTypes);
+		$(selector).append(programTypes);
 	});
 }
 
