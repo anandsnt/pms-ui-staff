@@ -6,6 +6,7 @@ getViewInstance = function(url){
 	if(viewName == "staycard"){
 		//var viewInstance = new StayCard();
 		var viewInstance = new window[viewName]();
+		console.log(viewInstance);
 
 	}
 
