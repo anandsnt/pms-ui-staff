@@ -49,7 +49,6 @@ $(document).on('click', '#loyalty-tab .active-item, #loyalty-tab .add-new-button
 			addHLPSelectOptions("#new-hlp #hotel-loyalty-types");
 		}
     });
-	
 });
 
 
@@ -103,19 +102,10 @@ $(document).on('click', "#new-ffp #save", function(event) {
 
 	removeModal();
 	
-	var $number = $code.slice(-4); // Get last 4 digits of code.
-	var $value  = ($type).toLowerCase()+"-"+$number;
 	var $name   = $('#airline-ff-pgms option:selected').text();
 		
-	updateFFPLoyaltyUI($airline,$code,$program,$value,$number,$name);
-	/*
-	var $html = "<a loyaltytype='flyer' loyaltyid='' id=''+ href='user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
-      "<span class='value code'>"+$airline+"</span>"+
-      "<span class='value number'>"+$code+"</span>"+
-      "<span class='value name'>"+$program+"</span></a>";
-      
-    $("#loyalty-type-flyer .add-new-button").before($html);
-    */
+	updateFFPLoyaltyUI($airline,$code,$program,$name);
+
     var userId = $('#user_id').val();
     var guestId = $('#guest_id').val();
 
@@ -136,8 +126,6 @@ $(document).on('click', "#new-ffp #save", function(event) {
 		    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
 		    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
     }, "FFP");
-
-	
 });
 
 // Add new hotel loyalty program
@@ -149,7 +137,6 @@ $(document).on('click', "#new-hlp #save", function(event) {
 		$level= $('#hotel-loyalty-levels option:selected').text(),
 		$code = $("#hl-code").val();
 		$level = $('#hotel-loyalty-levels option:selected').val();
-
 
 	if($type == ""){
 		alert("Please select loyalty type");
@@ -175,20 +162,10 @@ $(document).on('click', "#new-hlp #save", function(event) {
 	newHLP.user_membership.membership_level = $level;
 	removeModal();
 	
-	var $number = $code.slice(-4); // Get last 4 digits of code.
-	var $value  = ($type).toLowerCase()+"-"+$number;
 	var $name   = $('#hotel-loyalty-levels option:selected').text();
-	updateHLPLoyaltyUI($type,$code,$level,$value,$number,$name);
 	
-	/*
-	var $html = "<a loyaltytype='hotel' loyaltyid='' id='' href='user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
-      "<span class='value code'>"+$type+"</span>"+
-      "<span class='value number'>"+$code+"</span>"+
-      "<span class='value name'>"+$level+"</span></a>";
-      
-    $("#loyalty-type-hotel .add-new-button").before($html);
-    */
-    
+	updateHLPLoyaltyUI($type,$code,$level,$name);
+	
     updateServerForNewLoyalty(newHLP, function(data){
     	$loyaltyid = data.id;
 		    var $new_id = "hl-program-"+$loyaltyid;
@@ -199,53 +176,6 @@ $(document).on('click', "#new-hlp #save", function(event) {
     }, "HLP");
     
 });
-
-function updateServerForNewLoyalty(postData, successCallback, type){
-	console.log(JSON.stringify(postData));
-	$.ajax({
-		type: "POST",
-		url: '/user_memberships',
-		data: postData,
-		dataType: 'json',
-		success: function(response) {
-			if((response.errors)!== null && (response.errors.length > 0)){
-				alert(response.errors[0]);
-				//Remove the element from DOM
-				if(type == "FFP"){
-					$("#loyalty-type-flyer .add-new-button").prev("a").remove();
-				}else if(type == "HLP"){
-					$("#loyalty-type-hotel .add-new-button").prev("a").remove();
-				}
-			}else{
-				//Insert the response id to the new DOM element
-				successCallback(response.data);
-			}
-		},
-		error: function(response){
-			if(type == "FFP"){
-				$("#loyalty-type-flyer .add-new-button").prev("a").remove();
-			}else if(type == "HLP"){
-				$("#loyalty-type-hotel .add-new-button").prev("a").remove();
-			}
-		}
-	 });
-}
-
-//populate the airline list for frequent flier program add new popup
-//ffProgramsList and hlProgramsList defined at staycard_loyalty.js
-function addFFPSelectOptions(selector){
-	$.each(ffProgramsList, function(key, airline) {
-		var airlineOptions ='<option value="'+ airline.ff_value +'">' + airline.ff_description+ '</option>'
-		$(selector).append(airlineOptions);
-	});
-};
-//populate the loyalty type list for hotel loyalty program add new popup
-function addHLPSelectOptions(selector){
-	$.each(hlProgramsList, function(key, loyaltyType) {
-		var programTypes ='<option value="'+ loyaltyType.hl_value +'">' + loyaltyType.hl_description+ '</option>'
-		$(selector).append(programTypes);
-	});
-}
 
 //populate the list for loyalty values - ffp
 $(document).on('change', "#new-ffp #airline-ff-list", function(event) {
