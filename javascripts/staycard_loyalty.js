@@ -4,8 +4,8 @@ $(function() {
   	var $url_ffp = '/user_memberships/get_available_ffps.json';
 		$url_hlp = '/user_memberships/get_available_hlps.json';
 				
-	//fetchLoyaltyProgramData($url_ffp,'ffp');
-	//fetchLoyaltyProgramData($url_hlp,'hlp');
+	fetchLoyaltyProgramData($url_ffp,'ffp');
+	fetchLoyaltyProgramData($url_hlp,'hlp');
 });
 
 
