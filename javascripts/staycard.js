@@ -1,10 +1,10 @@
-var staycard = function(){
+var StayCard = function(){
   this.pageinit = function(){
-    console.log("hiiii testing");
     setUpStaycard();
   }
 
 }
+
 //Add the reservation details to the DOM.
 function displayReservationDetails($href) {
   //get the current highlighted timeline

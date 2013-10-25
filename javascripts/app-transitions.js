@@ -257,7 +257,7 @@ $(function($){
             $activeMenuItem = $(this).attr('data-page'),
             $transitionType = $(this).hasClass('back-button') ? 'move-from-left' : 'move-from-right',
             $backPage = $(this).closest('.page-current').attr('id'),
-            $backView = $(this).closest('.view-current').attr('id');    
+            $backView = $(this).closest('.view-current').attr('id');  
             //TODO: move to app-search.js
             $search_status = $(this).attr('search-status'),
             $trigger_search = $(this).attr('trigger-search');
@@ -306,7 +306,7 @@ $(function($){
                         modalInit('modals/alerts/not-there-yet/');
                     }
                 }).done(function(){  
-                    viewInstance = getViewInstance($href);
+                    viewInstance = getViewInstance($('#'+$next));
                     if(typeof viewInstance !== "undefined"){
                         viewInstance.pageinit();
                     }
