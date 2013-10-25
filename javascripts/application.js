@@ -23,5 +23,7 @@
 //= stub app-stay-card
 //= stub app-forms
 //= stub guestcard_loyalty
+//= stub guestcard_loyalty
+//= stub utility_loayalty
 //= stub room_assignment
 //= require_tree .
