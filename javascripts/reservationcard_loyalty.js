@@ -1,9 +1,9 @@
 
 // Show modal to add new loyalty program
-$(document).on('click', '#stay-card-loyalty .add-new-button', function(e) {
+$(document).on('click', '#stay-card-loyalty .add-new-button', function(event) {
 
-	e.preventDefault();
-	e.stopPropagation();
+	event.preventDefault();
+	event.stopPropagation();
 	var $href = $(this).attr('href');
      		
 	$modal = '<div id="modal" role="dialog" />', $overlay = '<div id="modal-overlay" />';
@@ -22,6 +22,7 @@ $(document).on('click', '#stay-card-loyalty .add-new-button', function(e) {
 
 // Add new frequent flyer program
 $(document).on('click', "#new-loyalty-program #save", function(event) {
+	event.preventDefault();
 	event.stopPropagation();
 	var $program= $('#new-loyalty-program #program').val();
 		$type 	= $('#new-loyalty-program #type').val();
@@ -100,6 +101,7 @@ $(document).on('click', "#new-loyalty-program #save", function(event) {
 //populate the list for loyalty type on change in program list
 $(document).on('change', "#new-loyalty-program #program", function(event) {
 	
+	event.preventDefault();
 	event.stopPropagation();
 	$("#new-loyalty-program #type").html("");
 	$("#new-loyalty-program #type").append('<option value="" selected="selected" class="placeholder">Select Loyalty Type</option>');
@@ -122,6 +124,7 @@ $(document).on('change', "#new-loyalty-program #program", function(event) {
 //populate the list for Level on change in type list
 $(document).on('change', "#new-loyalty-program #type", function(event) {
 	
+	event.preventDefault();
 	event.stopPropagation();
 	$("#new-loyalty-program #level").html("");
 	$("#new-loyalty-program #level").append('<option value="" selected="selected" class="placeholder">Select Loyalty Level</option>');
@@ -148,12 +151,20 @@ $(document).on('change', "#new-loyalty-program #type", function(event) {
 	}
 });
 
-$(document).on('change', 'select.styled', function(e){
-	e.stopPropagation();
+$(document).on('change', 'select.styled', function(event){
+	event.preventDefault();
+	event.stopPropagation();
+	
     var selectedOption = $(this).find('option:selected');
     var id = $(this).find('option:selected').attr('id');
     var confirmNum = $('#confirm_no').val();
     
+    if(id==""){
+    	clearSelectionUI();
+    }
+    else{
+    	resetSelectionUI();
+    }
     $.ajax({
 		type: "POST",
 		url: '/user_memberships/link_to_reservation',
@@ -168,7 +179,6 @@ $(document).on('change', 'select.styled', function(e){
 			console.log("There is an error!!");
 		}
 	});
-    
 });
     
 

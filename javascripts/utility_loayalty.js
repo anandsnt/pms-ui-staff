@@ -126,6 +126,13 @@ function updateSelectionUI($code,$type){
 function clearSelectionUI(){
 	$("div#reservationLoyalty.selected").html("");
 	var html = 	'<span class="value code"></span>'+
+				'<span class="number">Select Loyalty Program<span class="value number"></span></span>';
+	$("div#reservationLoyalty.selected").html(html);
+}
+
+function resetSelectionUI(){
+	$("div#reservationLoyalty.selected").html("");
+	var html = 	'<span class="value code"></span>'+
 				'<span class="number">Ending with<span class="value number"></span></span>';
 	$("div#reservationLoyalty.selected").html(html);
 }
