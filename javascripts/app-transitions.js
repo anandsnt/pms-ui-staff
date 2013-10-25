@@ -306,6 +306,10 @@ $(function($){
                         modalInit('modals/alerts/not-there-yet/');
                     }
                 }).done(function(){  
+                    viewInstance = getViewInstance($href);
+                    if(typeof viewInstance !== "undefined"){
+                        viewInstance.pageinit();
+                    }
                     if ($transitionPage.indexOf('main-page') >= 0 || $transitionPage.indexOf('inner-page') >= 0)
                     {
                         changePage($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reload);
