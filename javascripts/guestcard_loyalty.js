@@ -103,12 +103,19 @@ $(document).on('click', "#new-ffp #save", function(event) {
 
 	removeModal();
 	
+	var $number = $code.slice(-4); // Get last 4 digits of code.
+	var $value  = ($type).toLowerCase()+"-"+$number;
+	var $name   = $('#airline-ff-pgms option:selected').text();
+		
+	updateFFPLoyaltyUI($airline,$code,$program,$value,$number,$name);
+	/*
 	var $html = "<a loyaltytype='flyer' loyaltyid='' id=''+ href='user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
       "<span class='value code'>"+$airline+"</span>"+
       "<span class='value number'>"+$code+"</span>"+
       "<span class='value name'>"+$program+"</span></a>";
       
     $("#loyalty-type-flyer .add-new-button").before($html);
+    */
     var userId = $('#user_id').val();
     var guestId = $('#guest_id').val();
 
@@ -130,6 +137,7 @@ $(document).on('click', "#new-ffp #save", function(event) {
 		    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
     }, "FFP");
 
+	
 });
 
 // Add new hotel loyalty program
@@ -167,13 +175,20 @@ $(document).on('click', "#new-hlp #save", function(event) {
 	newHLP.user_membership.membership_level = $level;
 	removeModal();
 	
+	var $number = $code.slice(-4); // Get last 4 digits of code.
+	var $value  = ($type).toLowerCase()+"-"+$number;
+	var $name   = $('#hotel-loyalty-levels option:selected').text();
+	updateHLPLoyaltyUI($type,$code,$level,$value,$number,$name);
 	
+	/*
 	var $html = "<a loyaltytype='hotel' loyaltyid='' id='' href='user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
       "<span class='value code'>"+$type+"</span>"+
       "<span class='value number'>"+$code+"</span>"+
       "<span class='value name'>"+$level+"</span></a>";
       
     $("#loyalty-type-hotel .add-new-button").before($html);
+    */
+    
     updateServerForNewLoyalty(newHLP, function(data){
     	$loyaltyid = data.id;
 		    var $new_id = "hl-program-"+$loyaltyid;

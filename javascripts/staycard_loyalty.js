@@ -4,8 +4,8 @@ $(function() {
   	var $url_ffp = '/user_memberships/get_available_ffps.json';
 		$url_hlp = '/user_memberships/get_available_hlps.json';
 				
-	fetchLoyaltyProgramData($url_ffp,'ffp');
-	fetchLoyaltyProgramData($url_hlp,'hlp');
+	//fetchLoyaltyProgramData($url_ffp,'ffp');
+	//fetchLoyaltyProgramData($url_hlp,'hlp');
 });
 
 
@@ -93,12 +93,14 @@ $(document).on('click', "#new-loyalty-program #save", function() {
 	var html = '<option selected="selected" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
 	
 	if($program == "ffp"){
-		newLoyalty.user_membership.membership_class = "FFP"
-		$("#stay-card-loyalty #loyalty optgroup").last().before(html);
+		newLoyalty.user_membership.membership_class = "FFP";
+		updateFFPLoyaltyUI($type,$code,$level,$value,$number,$name);
+		//$("#stay-card-loyalty #loyalty optgroup").last().before(html);
 	}
 	else if($program == "hlp"){
-		newLoyalty.user_membership.membership_class = "HLP"
-		$("#stay-card-loyalty #loyalty").append(html);
+		newLoyalty.user_membership.membership_class = "HLP";
+		updateHLPLoyaltyUI($type,$code,$level,$value,$number,$name);
+		//$("#stay-card-loyalty #loyalty").append(html);
 	}
 	$('select#loyalty.styled').trigger('change');
 	
@@ -159,4 +161,34 @@ $(document).on('change', "#new-loyalty-program #type", function(event) {
 	}
 });
 
+function updateHLPLoyaltyUI($type,$code,$level,$value,$number,$name){
+	
+	var $html = "<a loyaltytype='hotel' loyaltyid='' id='' href='user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
+      "<span class='value code'>"+$type+"</span>"+
+      "<span class='value number'>"+$code+"</span>"+
+      "<span class='value name'>"+$level+"</span></a>";
+      
+    $("#loyalty-type-hotel .add-new-button").before($html);
+    
+    var html_for_staycard = '<option selected="selected" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
+	$("#stay-card-loyalty #loyalty").append(html_for_staycard);
+	$('select#loyalty.styled').trigger('change');
+	
+}
+
+
+function updateFFPLoyaltyUI($type,$code,$program,$value,$number,$name){
+	
+	var $html = "<a loyaltytype='flyer' loyaltyid='' id=''+ href='user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
+      "<span class='value code'>"+$type+"</span>"+
+      "<span class='value number'>"+$code+"</span>"+
+      "<span class='value name'>"+$program+"</span></a>";
+      
+    $("#loyalty-type-flyer .add-new-button").before($html);
+    
+    var html_for_staycard = '<option selected="selected" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
+	$("#stay-card-loyalty #loyalty optgroup").last().before(html_for_staycard);
+	$('select#loyalty.styled').trigger('change');
+	
+}
 
