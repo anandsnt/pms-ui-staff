@@ -57,6 +57,7 @@ $(document).on('click', "#new-loyalty-program #save", function() {
 	
 	if($program == "ffp"){
 		newLoyalty.user_membership.membership_class = "FFP";
+		
 		updateFFPLoyaltyUI($type,$code,$level,$name);
 		
 		updateServerForNewLoyalty(newLoyalty, function(data){
