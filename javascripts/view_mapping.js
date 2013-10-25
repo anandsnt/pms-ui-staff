@@ -4,7 +4,10 @@ getViewInstance = function(url){
 	var viewNameSplited = url.split('?')[0].split('/');
 	var viewName = viewNameSplited[viewNameSplited.length -1];
 	if(viewName == "staycard"){
-		var viewInstance = new StayCard();
+		//var viewInstance = new StayCard();
+		var viewInstance = new window[viewName]();
+
 	}
+
 	return viewInstance;
 }

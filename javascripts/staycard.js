@@ -1,6 +1,6 @@
-var StayCard = function(){
+var staycard = function(){
 	this.pageinit = function(){
-		console.log("helloo testing");
+		console.log("hiiii testing");
 	}
 
 }
