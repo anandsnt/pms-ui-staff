@@ -1,6 +1,37 @@
 $(document).on('click', "#post_notes #reservation_notes", function() {
 	saveReservationNotes();
 });
+
+
+
+$(document).on('click', "#notes #delete_note", function() {
+	deleteReservationNotes(this);
+});
+
+function deleteReservationNotes(that){
+	var noteId= $(that).attr('note_id');
+ 
+	$.ajax({
+		type : "POST",
+		url : '/staff/reservation/delete-reservation-note',	
+		data : {note_id:noteId},
+		dataType : 'json',
+		success : function(data) {
+			console.log("Posted Succesfully. ");			
+			if (data.status == "success") {
+			    $("#notes li#note"+noteId).remove();
+				refreshViewScroll();
+			}
+		},
+		error : function() {		
+		   console.log("There is an error!!");
+		}
+	});
+	
+	
+	
+	
+}
 function saveReservationNotes() {
 	$notes = $("#post_notes textarea").val();
 	$topic = $("#post_notes #topic").val();
@@ -46,3 +77,8 @@ function saveReservationNotes() {
 		}
 	});
 }
+
+
+
+
+
