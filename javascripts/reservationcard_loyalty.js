@@ -21,8 +21,8 @@ $(document).on('click', '#stay-card-loyalty .add-new-button', function(e) {
 });
 
 // Add new frequent flyer program
-$(document).on('click', "#new-loyalty-program #save", function() {
-	
+$(document).on('click', "#new-loyalty-program #save", function(event) {
+	event.stopPropagation();
 	var $program= $('#new-loyalty-program #program').val();
 		$type 	= $('#new-loyalty-program #type').val();
 		$name 	= $('#new-loyalty-program #type option:selected').text();
@@ -48,10 +48,10 @@ $(document).on('click', "#new-loyalty-program #save", function() {
 	}
 		
 	var userId = $('#user_id').val();	
-	var confirmNum = $('#guest-card #reservation_id').val();
+	var confirmNum = $('#guest-card #confirm_no').val(); 
 	
 	var newLoyalty = {};
-	newLoyalty.user_id = userId;
+	
 	newLoyalty.confirmno = confirmNum;
 	newLoyalty.user_membership = {};
 	newLoyalty.user_membership.membership_type = $type;
@@ -74,9 +74,7 @@ $(document).on('click', "#new-loyalty-program #save", function() {
 		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
 		    
-		    $('select#loyalty.styled').trigger('change');
     	}, "FFP");
-		
 	}
 	else if($program == "hlp"){
 		newLoyalty.user_membership.membership_class = "HLP";
@@ -93,7 +91,6 @@ $(document).on('click', "#new-loyalty-program #save", function() {
 		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
 		    
-		    $('select#loyalty.styled').trigger('change');
     	}, "HLP");
 	}
 	
@@ -152,3 +149,29 @@ $(document).on('change', "#new-loyalty-program #type", function(event) {
 		});
 	}
 });
+
+$(document).on('change', 'select.styled', function(e){
+	e.stopPropagation();
+    var selectedOption = $(this).find('option:selected');
+    var id = $(this).find('option:selected').attr('id');
+    var confirmNum = $('#guest-card #confirm_no').val();
+    
+    $.ajax({
+		type: "POST",
+		url: '',
+		data : {
+		    "confirmno": confirmNum,
+		    "membership_id": id
+		},
+		success: function(data) {
+			console.log("Succesfully changed loyalty primary");
+		},
+		error: function(){
+			console.log("There is an error!!");
+		}
+	});
+    
+});
+    
+
+    

@@ -1,10 +1,10 @@
 
 // Function to render guest card loyalty
 function renderGuestCardLoyalty(){
-	var confirmNum = $('#guest-card #reservation_id').val();
+	var confirmNum = $('#guest-card #confirm_no').val();
 		$.ajax({
 			type: "GET",
-            url: '/user_memberships?confirmno=4813095',
+            url: '/user_memberships?confirmno='+confirmNum,
             async: false,
             success: function(data) {    
             	$("#loyalty").html(data);
@@ -51,7 +51,6 @@ $(document).on('click', '#loyalty-tab .active-item, #loyalty-tab .add-new-button
     });
 });
 
-
 // Delete selected loyalty
 $(document).on('click', "#loyalty-delete", function(event) {
 	event.stopPropagation();
@@ -67,7 +66,7 @@ $(document).on('click', "#loyalty-delete", function(event) {
 		$("#loyalty-type-hotel #hl-program-" +$loyalty_id).remove();
 		$("#stay-card-loyalty #loyalty option#"+$loyalty_id).remove();
 	}
-	$('select#loyalty.styled').trigger('change');
+	
 	removeModal();
 	$.ajax({
 		type: "DELETE",
@@ -131,7 +130,6 @@ $(document).on('click', "#new-ffp #save", function(event) {
 		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
 		    
-		    $('select#loyalty.styled').trigger('change');
     }, "FFP");
 });
 
@@ -184,7 +182,6 @@ $(document).on('click', "#new-hlp #save", function(event) {
 		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
 		    
-		    $('select#loyalty.styled').trigger('change');
     }, "HLP");
     
 });
