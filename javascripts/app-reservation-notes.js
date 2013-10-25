@@ -1,5 +1,7 @@
 $(document).on('click', "#post_notes #reservation_notes", function() {
-
+	saveReservationNotes();
+});
+function saveReservationNotes() {
 	$notes = $("#post_notes textarea").val();
 	$topic = $("#post_notes #topic").val();
 	$confirm_num = $('#guest-card #reservation_id').val();
@@ -7,7 +9,6 @@ $(document).on('click', "#post_notes #reservation_notes", function() {
 		alert("Enter text");
 		return false;
 	} else if ($topic == "") {
-
 		alert("Select topic");
 		return false;
 	}
@@ -18,28 +19,30 @@ $(document).on('click', "#post_notes #reservation_notes", function() {
 	};
 
 	console.log($data);
-
+    
 	$.ajax({
 		type : "POST",
-		url : '/staff/reservation/add-reservation-note',
+		url : '/staff/reservation/add-reservation-note',	
 		data : $data,
 		dataType : 'json',
 		success : function(data) {
-			console.log("Posted Succesfully. ");
+			console.log("Posted Succesfully. ");			
 			if (data.status == "success") {
-				$newNote = '<li><figure class="guest-image">' + 
-				'<img src="' + data.user_image + '" alt=""></figure>' + 
-				'<div class="note-title"><h4>' + data.username + '</h4>' + 
-				'<time datetime="2013-10-23 06:05:20"><span class="time">'+data.posted_time + 
-				'</span><span class="date">'+data.posted_date+'</span>' + '</time><span class="topic">' + data.topic +
-				'</span></div><p>' + data.text + '</p></li>';
+				$.each( data.data, function( key, val ) {
+					$newNote = '<li><figure class="guest-image">' + 
+						'<img src="' + val.user_image + '" alt=""></figure>' + 
+						'<div class="note-title"><h4>' + val.username + '</h4>' + 
+						'<time datetime="2013-10-23 06:05:20"><span class="time">'+val.posted_time + 
+						'</span><span class="date">'+val.posted_date+'</span>' + '</time><span class="topic">' + val.topic +
+						'</span></div><p>' + val.text + '</p></li>';
+				});
+				
 				$("#notes").prepend($newNote);
+				refreshViewScroll();
 			}
 		},
-		error : function() {
+		error : function() {		
 		   console.log("There is an error!!");
 		}
 	});
-
-});
-
+}
