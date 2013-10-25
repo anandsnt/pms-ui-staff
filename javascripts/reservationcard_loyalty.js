@@ -42,7 +42,10 @@ $(document).on('click', "#new-loyalty-program #save", function() {
 	}else if($code == ""){
 		alert("Please enter the loyalty code");
 		return false;
-	}	
+	}else if($code.length < 4){
+		alert("Please enter 4 digit loyalty code");
+		return false;
+	}
 		
 	var userId = $('#user_id').val();	
 	var confirmNum = $('#guest-card #reservation_id').val();
@@ -68,6 +71,9 @@ $(document).on('click', "#new-loyalty-program #save", function() {
 		    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
 		    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
 		    
+		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
+		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
+		    
 		    $('select#loyalty.styled').trigger('change');
     	}, "FFP");
 		
@@ -83,6 +89,9 @@ $(document).on('click', "#new-loyalty-program #save", function() {
 		    $("#loyalty-type-flyer a.program_new").attr('id',$new_id);
 		    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
 		    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
+		    
+		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
+		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
 		    
 		    $('select#loyalty.styled').trigger('change');
     	}, "HLP");

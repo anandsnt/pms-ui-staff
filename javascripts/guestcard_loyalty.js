@@ -61,11 +61,13 @@ $(document).on('click', "#loyalty-delete", function(event) {
 	console.log($type);
 	if($type == "flyer"){
 		$("#loyalty-type-flyer #ff-program-" +$loyalty_id).remove();
+		$("#stay-card-loyalty #loyalty option#"+$loyalty_id).remove();
 	}
 	else if($type == "hotel"){
 		$("#loyalty-type-hotel #hl-program-" +$loyalty_id).remove();
+		$("#stay-card-loyalty #loyalty option#"+$loyalty_id).remove();
 	}
-	
+	$('select#loyalty.styled').trigger('change');
 	removeModal();
 	$.ajax({
 		type: "DELETE",
@@ -125,6 +127,11 @@ $(document).on('click', "#new-ffp #save", function(event) {
 		    $("#loyalty-type-flyer a.program_new").attr('id',$new_id);
 		    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
 		    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
+		    
+		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
+		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
+		    
+		    $('select#loyalty.styled').trigger('change');
     }, "FFP");
 });
 
@@ -173,6 +180,11 @@ $(document).on('click', "#new-hlp #save", function(event) {
 		    $("#loyalty-type-flyer a.program_new").attr('id',$new_id);
 		    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
 		    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
+		    
+		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
+		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
+		    
+		    $('select#loyalty.styled').trigger('change');
     }, "HLP");
     
 });
