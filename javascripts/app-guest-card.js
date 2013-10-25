@@ -305,7 +305,7 @@ function handleLikeValueChanged() {
 		});
 	}
 	for ( j = 0; j < $totalFeatures; j++) {
-		$(document).on('change', "#feat_" + i, function(event) {
+		$(document).on('change click', "#feat_" + i, function(event) {
 			$likeInfoChange = true;
 			console.log("like change feature")
 		});
