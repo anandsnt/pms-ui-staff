@@ -50,6 +50,7 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 					$("#loyalty-type-hotel .add-new-button").prev("a").remove();
 					$("#stay-card-loyalty #loyalty option").last().remove();
 				}
+				clearSelectionUI();
 			}else{
 				//Insert the response id to the new DOM element
 				successCallback(response.data);
@@ -113,4 +114,18 @@ function updateFFPLoyaltyUI($type,$code,$program,$name){
 	$("#stay-card-loyalty #loyalty optgroup").last().before(html_for_staycard);
 }
 
+function updateSelectionUI($code,$type){
+	var $number = $code.slice(-4);
+	$("div#reservationLoyalty.selected").html("");
+	var html = 	'<span class="value code">'+$type+'</span>'+
+				'<span class="number">Ending with<span class="value number">'+$number+'</span></span>';
+				
+	$("div#reservationLoyalty.selected").html(html);
+}
 
+function clearSelectionUI(){
+	$("div#reservationLoyalty.selected").html("");
+	var html = 	'<span class="value code"></span>'+
+				'<span class="number">Ending with<span class="value number"></span></span>';
+	$("div#reservationLoyalty.selected").html(html);
+}

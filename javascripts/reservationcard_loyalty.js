@@ -73,7 +73,6 @@ $(document).on('click', "#new-loyalty-program #save", function(event) {
 		    
 		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
-		    
     	}, "FFP");
 	}
 	else if($program == "hlp"){
@@ -91,12 +90,11 @@ $(document).on('click', "#new-loyalty-program #save", function(event) {
 		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
 		    
+		    
     	}, "HLP");
 	}
-	
+	updateSelectionUI($code,$type);
 	removeModal();
-	console.log("Add new requent flyer program API call");
-	console.log(newLoyalty);
 });
 
 //populate the list for loyalty type on change in program list
@@ -154,11 +152,11 @@ $(document).on('change', 'select.styled', function(e){
 	e.stopPropagation();
     var selectedOption = $(this).find('option:selected');
     var id = $(this).find('option:selected').attr('id');
-    var confirmNum = $('#guest-card #confirm_no').val();
+    var confirmNum = $('#confirm_no').val();
     
     $.ajax({
 		type: "POST",
-		url: '',
+		url: '/user_memberships/link_to_reservation',
 		data : {
 		    "confirmno": confirmNum,
 		    "membership_id": id

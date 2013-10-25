@@ -129,7 +129,6 @@ $(document).on('click', "#new-ffp #save", function(event) {
 		    
 		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
-		    
     }, "FFP");
 });
 
@@ -181,7 +180,6 @@ $(document).on('click', "#new-hlp #save", function(event) {
 		    
 		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
-		    
     }, "HLP");
     
 });
