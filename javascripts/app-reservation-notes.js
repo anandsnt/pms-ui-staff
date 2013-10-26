@@ -34,8 +34,9 @@ function deleteReservationNotes(that){
 }
 function saveReservationNotes() {
 	$notes = $("#post_notes textarea").val();
-	$topic = $("#post_notes #topic").val();
+	$topic = 1;
 	$confirm_num = $('#guest-card #reservation_id').val();
+	// $confirm_num = 4813095;
 	if ($notes == "") {
 		alert("Enter text");
 		return false;
@@ -45,7 +46,7 @@ function saveReservationNotes() {
 	}
 	$data = {
 		confirmno : $confirm_num,
-		note_topic : 1,
+		note_topic : $topic,
 		text : $notes
 	};
 
@@ -57,18 +58,16 @@ function saveReservationNotes() {
 		data : $data,
 		dataType : 'json',
 		success : function(data) {
-			console.log(data.data)
-			console.log("Posted Succesfully. ");			
+	
 			if (data.status == "success") {
-				$.each( data.data, function( key, val ) {
-					$newNote = '<li><figure class="guest-image">' + 
-						'<img src="' + val.user_image + '" alt=""></figure>' + 
-						'<div class="note-title"><h4>' + val.username + '</h4>' + 
-						'<time datetime="2013-10-23 06:05:20"><span class="time">'+val.posted_time + 
-						'</span><span class="date">'+val.posted_date+'</span>' + '</time><span class="topic">' + val.topic +
-						'</span></div><p>' + val.text + '</p></li>';
-				});
-				
+				returnData = data.data;
+				console.log(returnData.user_image);
+				$newNote = '<li><figure class="guest-image">' + 
+					'<img src="' + returnData.user_image + '" alt=""></figure>' + 
+					'<div class="note-title"><h4>' + returnData.username + '</h4>' + 
+					'<time datetime="2013-10-23 06:05:20"><span class="time">'+returnData.posted_time + 
+					'</span><span class="date"> '+returnData.posted_date+'</span>' + '</time><span class="topic">' + returnData.topic +
+					'</span></div><p>' + returnData.text + '</p></li>';				
 				$("#notes").prepend($newNote);
 				refreshViewScroll();
 			}
