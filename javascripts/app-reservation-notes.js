@@ -44,8 +44,8 @@ function saveReservationNotes() {
 		return false;
 	}
 	$data = {
-		confirmationno : $confirm_num,
-		notetopic : $topic,
+		confirmno : $confirm_num,
+		note_topic : 1,
 		text : $notes
 	};
 
@@ -53,10 +53,11 @@ function saveReservationNotes() {
     
 	$.ajax({
 		type : "POST",
-		url : '/staff/reservation/add-reservation-note',	
+		url : '/reservation_notes',	
 		data : $data,
 		dataType : 'json',
 		success : function(data) {
+			console.log(data.data)
 			console.log("Posted Succesfully. ");			
 			if (data.status == "success") {
 				$.each( data.data, function( key, val ) {
