@@ -94,7 +94,7 @@ function updateHLPLoyaltyUI($type,$code,$level,$name){
       
     $("#loyalty-type-hotel .add-new-button").before($html);
     
-    var html_for_staycard = '<option class="program_new" selected="selected" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
+    var html_for_staycard = '<option class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
 	$("#stay-card-loyalty #loyalty").append(html_for_staycard);
 }
 
@@ -110,7 +110,7 @@ function updateFFPLoyaltyUI($type,$code,$program,$name){
       
     $("#loyalty-type-flyer .add-new-button").before($html);
     
-    var html_for_staycard = '<option class="program_new" selected="selected" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
+    var html_for_staycard = '<option class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
 	$("#stay-card-loyalty #loyalty optgroup").last().before(html_for_staycard);
 }
 
