@@ -12,10 +12,6 @@ var StayCard = function(domRef){
 
   }
 
-  this.pageshow = function(){
-    console.log("pageshow event is fired");
-  }
-
   //workaround for populating the reservation details,
   //when user clicks on other timeline tabs
   this.reservationTimelineClicked = function(e){
