@@ -48,8 +48,8 @@ $(document).on('click', "#new-loyalty-program #save", function(event) {
 		return false;
 	}
 		
-	var userId = $('#user_id').val();	
-	var confirmNum = $('#guest-card #confirm_no').val(); 
+	var userId = $('#user_id').val();
+	var confirmNum = $('#confirm_no').val();
 	
 	var newLoyalty = {};
 	
@@ -90,7 +90,6 @@ $(document).on('click', "#new-loyalty-program #save", function(event) {
 		    
 		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
-		    
 		    
     	}, "HLP");
 	}
