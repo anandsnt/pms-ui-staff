@@ -44,11 +44,11 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 				//Remove the element from DOM
 				if(type == "FFP"){
 					$("#loyalty-type-flyer .add-new-button").prev("a").remove();
-					$("#stay-card-loyalty #loyalty optgroup").last().prev("option").remove();
+					$("#stay-card-loyalty #loyalty option.program_new").remove();
 					
 				}else if(type == "HLP"){
 					$("#loyalty-type-hotel .add-new-button").prev("a").remove();
-					$("#stay-card-loyalty #loyalty option").last().remove();
+					$("#stay-card-loyalty #loyalty option.program_new").remove();
 				}
 				clearSelectionUI();
 			}else{

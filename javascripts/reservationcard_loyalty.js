@@ -3,7 +3,7 @@
 $(document).on('click', '#stay-card-loyalty .add-new-button', function(event) {
 
 	event.preventDefault();
-	event.stopPropagation();
+	event.stopImmediatePropagation();
 	var $href = $(this).attr('href');
      		
 	$modal = '<div id="modal" role="dialog" />', $overlay = '<div id="modal-overlay" />';
@@ -23,7 +23,7 @@ $(document).on('click', '#stay-card-loyalty .add-new-button', function(event) {
 // Add new frequent flyer program
 $(document).on('click', "#new-loyalty-program #save", function(event) {
 	event.preventDefault();
-	event.stopPropagation();
+	event.stopImmediatePropagation();
 	var $program= $('#new-loyalty-program #program').val();
 		$type 	= $('#new-loyalty-program #type').val();
 		$name 	= $('#new-loyalty-program #type option:selected').text();
@@ -52,6 +52,7 @@ $(document).on('click', "#new-loyalty-program #save", function(event) {
 	var confirmNum = $('#confirm_no').val();
 	
 	var newLoyalty = {};
+	
 	newLoyalty.user_id = userId;
 	newLoyalty.confirmno = confirmNum;
 	newLoyalty.user_membership = {};
@@ -74,6 +75,7 @@ $(document).on('click', "#new-loyalty-program #save", function(event) {
 		    
 		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
+		    
     	}, "FFP");
 	}
 	else if($program == "hlp"){
@@ -101,7 +103,7 @@ $(document).on('click', "#new-loyalty-program #save", function(event) {
 $(document).on('change', "#new-loyalty-program #program", function(event) {
 	
 	event.preventDefault();
-	event.stopPropagation();
+	event.stopImmediatePropagation();
 	$("#new-loyalty-program #type").html("");
 	$("#new-loyalty-program #type").append('<option value="" selected="selected" class="placeholder">Select Loyalty Type</option>');
 	
@@ -124,7 +126,7 @@ $(document).on('change', "#new-loyalty-program #program", function(event) {
 $(document).on('change', "#new-loyalty-program #type", function(event) {
 	
 	event.preventDefault();
-	event.stopPropagation();
+	event.stopImmediatePropagation();
 	$("#new-loyalty-program #level").html("");
 	$("#new-loyalty-program #level").append('<option value="" selected="selected" class="placeholder">Select Loyalty Level</option>');
 	$selectedLoyaltyType = $("#new-loyalty-program #type").val();
