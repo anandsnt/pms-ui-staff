@@ -1,11 +1,12 @@
-var setUpStaycard = function() {
+var setUpStaycard = function(viewDom) {
+	console.log(viewDom);
 	// Resizable guest card variables
 	var $maxHeight = $(window).height(), $breakpoint = ($maxHeight / 2), $cardHeight = '90px';
 	// Hide guest card content until it's resized
-	$('#guest-card-header .switch-button, #guest-card-content').hide();
+	viewDom.find($('#guest-card-header .switch-button, #guest-card-content')).hide();
 
 	// Guest card tabs
-	$('#guest-card-content').tabs({
+	viewDom.find($('#guest-card-content')).tabs({
 		create : function(event, ui) {
 			var $tab = ui.panel.attr('id');
 
@@ -34,7 +35,7 @@ var setUpStaycard = function() {
 	});
 
 	// Reservation card tabs
-	$('.reservation-tabs').each(function() {
+	viewDom.find($('.reservation-tabs')).each(function() {
 		var $activeTab = $(this).attr('id') == 'reservation-card' ? 1 : 0;
 
 		$(this).tabs({
@@ -44,20 +45,20 @@ var setUpStaycard = function() {
 
 				// Bring in new tab
 				$changeTab.add(function() {
-					$('#' + $nextTab).removeAttr('style').addClass('loading');
-					$('#' + $prevTab).removeAttr('style').addClass('set-back');
+					viewDom.find($('#' + $nextTab)).removeAttr('style').addClass('loading');
+					viewDom.find($('#' + $prevTab)).removeAttr('style').addClass('set-back');
 				});
 
 				// Show/hide
 				$changeTab.add(function() {
-					$('#' + $nextTab).show();
-					$('#' + $prevTab).hide();
+					viewDom.find($('#' + $nextTab)).show();
+					viewDom.find($('#' + $prevTab)).hide();
 				}, $delay);
 
 				// Clear transition classes
 				$changeTab.add(function() {
-					$('#' + $nextTab).removeClass('loading');
-					$('#' + $prevTab).removeClass('set-back');
+					viewDom.find($('#' + $nextTab)).removeClass('loading');
+					viewDom.find($('#' + $prevTab)).removeClass('set-back');
 				});
 
 				$changeTab.start();
@@ -67,15 +68,4 @@ var setUpStaycard = function() {
 			}
 		}).addClass('ui-tabs-vertical ui-helper-clearfix');
 	});
-
-	//workaround for populating the reservation details,
-	//when user clicks on other timeline tabs
-	$('#reservation-timeline li').click(function() {
-		var currentTimeline = $(this).attr('aria-controls');
-		//No reservation details are added to the DOM
-		if (!($("#" + currentTimeline).find('.reservation').length > 0)) {
-			$("#" + currentTimeline + ' #reservation-listing ul li').first().find('a').trigger("click");
-		}
-	});
-
 };

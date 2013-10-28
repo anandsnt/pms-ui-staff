@@ -1,6 +1,24 @@
-var StayCard = function(){
+var StayCard = function(domRef){
+  var that = this;
+  this.myDomElement = domRef;
   this.pageinit = function(){
-    setUpStaycard();
+    setUpStaycard(that.myDomElement);
+
+    that.myDomElement.find($('#reservation-timeline li').on('click', that.reservationListItemClicked));
+  }
+
+  this.pageshow = function(){
+    console.log("pageshow event is fired");
+  }
+
+  //workaround for populating the reservation details,
+  //when user clicks on other timeline tabs
+  this.reservationListItemClicked = function(e){
+    var currentTimeline = $(this).attr('aria-controls');
+    //No reservation details are added to the DOM
+    if (!($("#" + currentTimeline).find('.reservation').length > 0)) {
+      $("#" + currentTimeline + ' #reservation-listing ul li').first().find('a').trigger("click");
+    }
   }
 
 }

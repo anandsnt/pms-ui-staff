@@ -246,7 +246,7 @@ $(function($){
     });
 
     // All other screens - loaded dynamicilly
-    $(document).on('click','a[data-transition]:not(.active)',function(e) {
+    $(document).on('click','a[data-transition]:not(.active):not(.no-auto-bind)',function(e) {
         e.preventDefault();
 
         // Common variables
@@ -317,6 +317,9 @@ $(function($){
                     else if ($transitionPage.indexOf('nested-view') >= 0)
                     {
                        changeView($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reload); 
+                    }
+                    if(typeof viewInstance !== "undefined"){
+                        viewInstance.pageshow();
                     }
                 });
             });
