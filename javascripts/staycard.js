@@ -1,7 +1,9 @@
 var StayCard = function(domRef){
+  BaseView.call(this);
   var that = this;
   this.myDomElement = domRef;
   this.pageinit = function(){
+  	console.log("Page Init inside staycard")
     setUpStaycard(that.myDomElement);
     //Bind staycard events
     that.myDomElement.find($('#reservation-timeline li').on('click', that.reservationTimelineClicked));
