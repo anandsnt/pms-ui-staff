@@ -42,13 +42,12 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 			if((response.errors)!== null && (response.errors.length > 0)){
 				alert(response.errors[0]);
 				//Remove the element from DOM
+				$("#stay-card-loyalty #loyalty option.program_new").remove();
 				if(type == "FFP"){
 					$("#loyalty-type-flyer .add-new-button").prev("a").remove();
-					$("#stay-card-loyalty #loyalty option.program_new").remove();
 					
 				}else if(type == "HLP"){
 					$("#loyalty-type-hotel .add-new-button").prev("a").remove();
-					$("#stay-card-loyalty #loyalty option.program_new").remove();
 				}
 				clearSelectionUI();
 			}else{
@@ -57,6 +56,7 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 			}
 		},
 		error: function(response){
+			$("#stay-card-loyalty #loyalty option.program_new").remove();
 			if(type == "FFP"){
 				$("#loyalty-type-flyer .add-new-button").prev("a").remove();
 			}else if(type == "HLP"){
