@@ -248,7 +248,6 @@ $(function($){
     // All other screens - loaded dynamicilly
     $(document).on('click','a[data-transition]:not(.active):not(.no-auto-bind)',function(e) {
         e.preventDefault();
-
         // Common variables
         var $loader = '<div id="loading" />',
             $href = $(this).attr('href'),
@@ -278,14 +277,9 @@ $(function($){
             var $previous = $('.nested-view.view-current').attr('id'),
                 $next = $('.nested-view:not(.view-current)').attr('id');
         }
-        // Load reservations
-        if ($transitionPage.indexOf('reservation-list') >= 0)
-        {
-
-            displayReservationDetails($href);
-        }
+        
         // Load next page/view or reload previous view before going back
-        else if(!$(this).hasClass('back-button') || ($(this).hasClass('back-button') && $reload == true))
+        if(!$(this).hasClass('back-button') || ($(this).hasClass('back-button') && $reload == true))
         {
             $($loader).prependTo('body').show(function(){
                 $.ajax({

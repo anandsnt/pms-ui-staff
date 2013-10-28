@@ -179,8 +179,6 @@ $(function($){
     }).on('focusout', '.masked-input', function(e){
         e.stopImmediatePropagation();
         $(this).removeClass('active');
-        //send an update request to the third party system
-        updateGuestDetails($(this).val(), $(this).attr('data-val'));
     }).on('change', '.masked-input', function(){
     });
 
