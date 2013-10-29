@@ -17,9 +17,3 @@ jQuery.fn.capitalize = function() {
    return this;
 };
 
-
-
-
-
-
-
