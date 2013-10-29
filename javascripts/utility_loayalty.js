@@ -4,8 +4,8 @@ var $selectedLoyaltyType ="";
 $(function() {
 	ffProgramsList = [];
 	hlProgramsList = [];
-  	var $url_ffp = '/user_memberships/get_available_ffps.json';
-		$url_hlp = '/user_memberships/get_available_hlps.json';
+  	var $url_ffp = 'staff/user_memberships/get_available_ffps.json';
+		$url_hlp = 'staff/user_memberships/get_available_hlps.json';
 				
 	fetchLoyaltyProgramData($url_ffp,'ffp');
 	fetchLoyaltyProgramData($url_hlp,'hlp');
@@ -35,20 +35,19 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 	console.log(JSON.stringify(postData));
 	$.ajax({
 		type: "POST",
-		url: '/user_memberships',
+		url: 'staff/user_memberships',
 		data: postData,
 		dataType: 'json',
 		success: function(response) {
 			if((response.errors)!== null && (response.errors.length > 0)){
 				alert(response.errors[0]);
 				//Remove the element from DOM
+				$("#stay-card-loyalty #loyalty option.program_new").remove();
 				if(type == "FFP"){
 					$("#loyalty-type-flyer .add-new-button").prev("a").remove();
-					$("#stay-card-loyalty #loyalty optgroup").last().prev("option").remove();
 					
 				}else if(type == "HLP"){
 					$("#loyalty-type-hotel .add-new-button").prev("a").remove();
-					$("#stay-card-loyalty #loyalty option").last().remove();
 				}
 				clearSelectionUI();
 			}else{
@@ -57,6 +56,7 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 			}
 		},
 		error: function(response){
+			$("#stay-card-loyalty #loyalty option.program_new").remove();
 			if(type == "FFP"){
 				$("#loyalty-type-flyer .add-new-button").prev("a").remove();
 			}else if(type == "HLP"){
@@ -87,14 +87,14 @@ function updateHLPLoyaltyUI($type,$code,$level,$name){
 	var $number = $code.slice(-4); // Get last 4 digits of code.
 	var $value  = ($type).toLowerCase()+"-"+$number;
 	
-	var $html = "<a loyaltytype='hotel' loyaltyid='' id='' href='user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
+	var $html = "<a loyaltytype='hotel' loyaltyid='' id='' href='staff/user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
       "<span class='value code'>"+$type+"</span>"+
       "<span class='value number'>"+$code+"</span>"+
       "<span class='value name'>"+$level+"</span></a>";
       
     $("#loyalty-type-hotel .add-new-button").before($html);
     
-    var html_for_staycard = '<option class="program_new" selected="selected" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
+    var html_for_staycard = '<option class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
 	$("#stay-card-loyalty #loyalty").append(html_for_staycard);
 }
 
@@ -103,14 +103,14 @@ function updateFFPLoyaltyUI($type,$code,$program,$name){
 	var $number = $code.slice(-4); // Get last 4 digits of code.
 	var $value  = ($type).toLowerCase()+"-"+$number;
 	
-	var $html = "<a loyaltytype='flyer' loyaltyid='' id=''+ href='user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
+	var $html = "<a loyaltytype='flyer' loyaltyid='' id=''+ href='staff/user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
       "<span class='value code'>"+$type+"</span>"+
       "<span class='value number'>"+$code+"</span>"+
       "<span class='value name'>"+$program+"</span></a>";
       
     $("#loyalty-type-flyer .add-new-button").before($html);
     
-    var html_for_staycard = '<option class="program_new" selected="selected" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
+    var html_for_staycard = '<option class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
 	$("#stay-card-loyalty #loyalty optgroup").last().before(html_for_staycard);
 }
 

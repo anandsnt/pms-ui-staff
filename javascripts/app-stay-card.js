@@ -170,7 +170,7 @@ function updateGuestDetails(update_val, type) {
 
 	$.ajax({
 		type : 'PUT',
-		url : '/guest_cards/' + userId,
+		url : 'staff/guest_cards/' + userId,
 		data : JSON.stringify($guestCardJsonObj),
 
 		dataType : 'json',
