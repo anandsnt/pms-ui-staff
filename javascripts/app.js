@@ -13,13 +13,14 @@ var app = function(){
     }
 
     this.renderView = function(viewData, viewDom){
+        console.log("render viewwww");
         viewDom.html(viewData);
         viewObject = that.getViewInstance(viewDom);
         viewObject.initialize();
         viewObject.pageshow();
         
     }
-    
+
     //Fetch from AJAX
     // On Success, invoke that.render_view
     // Show error message on failure

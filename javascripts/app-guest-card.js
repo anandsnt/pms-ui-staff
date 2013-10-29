@@ -150,9 +150,7 @@ function renderContactInformation() {
 
 				renderGuestCardLike(guest_id);
 				renderPayment();
-				//renderGuestCardLoyalty();
-				var viewParams = {"confirmno" :4813095};
-				sntapp.fetchAndRenderView('/user_memberships', $("#loyalty"), viewParams);
+				renderGuestCardLoyalty();
 				
 			});
 		});
