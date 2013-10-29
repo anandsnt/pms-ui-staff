@@ -2,7 +2,7 @@ var StayCard = function(viewDom){
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
-  
+
   this.pageinit = function(){
     setUpStaycard(that.myDom);
     //Bind staycard events
@@ -11,10 +11,10 @@ var StayCard = function(viewDom){
     that.myDom.find($('.masked-input').on('focusout', that.guestDetailsEdited));
     that.myDom.find($('#reservation_newspaper').on('change', that.setNewspaperPreferance));
   }
-  
+
   this.setNewspaperPreferance = function(e){
   	var confirmNum = $('#confirm_no').val();
-	var newspaperValue = $('#newspaper').val();
+	var newspaperValue = $('#reservation_newspaper').val();
 	$.ajax({
 	type : 'POST',
 	url : "reservation/add_newspaper_preference",
@@ -45,7 +45,7 @@ var StayCard = function(viewDom){
 
   // Load reservation details
   this.reservationListItemClicked = function(e){
-    that.displayReservationDetails($(this).attr('href')); 
+    that.displayReservationDetails($(this).attr('href'));
   }
 
   //Add the reservation details to the DOM.
