@@ -4,7 +4,7 @@ function renderGuestCardLoyalty(){
 	var confirmNum = $('#confirm_no').val();
 		$.ajax({
 			type: "GET",
-            url: '/user_memberships?confirmno='+confirmNum,
+            url: 'staff/user_memberships?confirmno='+confirmNum,
             async: false,
             success: function(data) {    
             	$("#loyalty").html(data);
@@ -19,7 +19,7 @@ function renderGuestCardLoyalty(){
 $(document).on('click', '#loyalty-tab .active-item, #loyalty-tab .add-new-button', function(e) {
 
 	e.preventDefault();
-	e.stopPropagation();
+	e.stopImmediatePropagation();
 	var $href = $(this).attr('href'),
      	$id = $(this).attr('loyaltyId'),
     	$type = $(this).attr('loyaltytype');
@@ -54,7 +54,7 @@ $(document).on('click', '#loyalty-tab .active-item, #loyalty-tab .add-new-button
 // Delete selected loyalty
 $(document).on('click', "#loyalty-delete", function(event) {
 	event.preventDefault();
-	event.stopPropagation();
+	event.stopImmediatePropagation();
 	var $loyalty_id = $("#loyalty_id").val();
 	var $type = $("#loyalty_id").attr('name');
 	console.log($loyalty_id);
@@ -71,7 +71,7 @@ $(document).on('click', "#loyalty-delete", function(event) {
 	removeModal();
 	$.ajax({
 		type: "DELETE",
-		url: '/user_memberships/' + $loyalty_id +'.json',
+		url: 'staff/user_memberships/' + $loyalty_id +'.json',
 		dataType: 'json',
 			success: function(data) {
 				console.log("Succesfully deleted loyalty primary");
@@ -85,7 +85,7 @@ $(document).on('click', "#loyalty-delete", function(event) {
 // Add new frequent flyer program
 $(document).on('click', "#new-ffp #save", function(event) {
 	event.preventDefault();
-	event.stopPropagation();
+	event.stopImmediatePropagation();
 	var $loyalty_id = $("#newffp_id").val();
 	var $airline = $('#airline-ff-list option:selected').val(),
 		$program = $('#airline-ff-pgms option:selected').text(),
@@ -137,7 +137,7 @@ $(document).on('click', "#new-ffp #save", function(event) {
 // Add new hotel loyalty program
 $(document).on('click', "#new-hlp #save", function(event) {
 	event.preventDefault();
-	event.stopPropagation();
+	event.stopImmediatePropagation();
 	var $loyalty_id = $("#newhlp_id").val();
 
 	var $type = $('#hotel-loyalty-types option:selected').val(),
@@ -190,7 +190,7 @@ $(document).on('click', "#new-hlp #save", function(event) {
 //populate the list for loyalty values - ffp
 $(document).on('change', "#new-ffp #airline-ff-list", function(event) {
 	event.preventDefault();
-	event.stopPropagation();
+	event.stopImmediatePropagation();
 	$("#new-ffp #airline-ff-pgms").html("");
 	$("#new-ffp #airline-ff-pgms").append('<option value="" selected="selected" class="placeholder">Select loyalty program</option>');
 	var selectedAirlineType = $("#new-ffp #airline-ff-list").val();
@@ -207,7 +207,7 @@ $(document).on('change', "#new-ffp #airline-ff-list", function(event) {
 //populate the list for loyalty values - hlp
 $(document).on('change', "#new-hlp #hotel-loyalty-types", function(event) {
 	event.preventDefault();
-	event.stopPropagation();
+	event.stopImmediatePropagation();
 	$("#new-hlp #hotel-loyalty-levels").html("");
 	$("#new-hlp #hotel-loyalty-levels").append('<option value="" selected="selected" class="placeholder">Select level</option>');
 	var selectedLoyaltyPgm = $("#new-hlp #hotel-loyalty-types").val();
