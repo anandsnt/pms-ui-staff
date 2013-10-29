@@ -29,7 +29,7 @@ $(function($) {
 		
 		$.ajax({
 			type: "GET",
-			url: '/dashboard/addNewPayment.json',			
+			url: 'staff/dashboard/addNewPayment.json',			
 			dataType: 'json',
 			success: function(data) {		
 				$paymentTypes = data.data;
@@ -67,7 +67,7 @@ $(function($) {
 		removeModal();
 		$.ajax({
 			type: "POST",
-			url: '/dashboard/deleteCreditCard',
+			url: 'staff/dashboard/deleteCreditCard',
 			data: {id: $credit_card_id},
 			dataType: 'json',
 			success: function(data) {
@@ -143,7 +143,7 @@ $(function($) {
 		console.log("user_id"+user_id);
 		$.ajax({
 			type: "POST",
-			url: '/dashboard/save_new_payment',
+			url: 'staff/dashboard/save_new_payment',
 			data: { 
 				    user_id : user_id,
 					payment_type: $payment_type,
@@ -208,7 +208,7 @@ $(function($) {
 function setCreditAsPrimary($credit_card_id, $user_id){
 	$.ajax({
 			type: "POST",
-			url: '/dashboard/setCreditAsPrimary',
+			url: 'staff/dashboard/setCreditAsPrimary',
 			data: {id: $credit_card_id, user_id: $user_id},
 			dataType: 'json',
 			success: function(data) {
