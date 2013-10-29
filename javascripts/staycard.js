@@ -43,7 +43,6 @@ var StayCard = function(viewDom){
         type : 'GET',
         url : "/dashboard/reservation_details?reservation=" + reservation,
         dataType : 'html',
-        timeout : 5000,
         success : function(data) {
           $("#" + currentTimeline).append(data);
         },

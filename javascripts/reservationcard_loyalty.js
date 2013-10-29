@@ -154,7 +154,6 @@ $(document).on('change', "#new-loyalty-program #type", function(event) {
 
 //Call API for setting link to reservation on changing Loyalty.
 $(document).on('change', 'select.styled#loyalty', function(event){
-	console.log("chngeeeeeeeeeeeeee");
     var selectedOption = $(this).find('option:selected');
     var id = $(this).find('option:selected').attr('id');
     var confirmNum = $('#confirm_no').val();
