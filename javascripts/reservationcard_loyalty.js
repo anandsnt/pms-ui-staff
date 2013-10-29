@@ -48,11 +48,11 @@ $(document).on('click', "#new-loyalty-program #save", function(event) {
 		return false;
 	}
 		
-	var userId = $('#user_id').val();	
-	var confirmNum = $('#guest-card #confirm_no').val(); 
+	var userId = $('#user_id').val();
+	var confirmNum = $('#confirm_no').val();
 	
 	var newLoyalty = {};
-	
+	newLoyalty.user_id = userId;
 	newLoyalty.confirmno = confirmNum;
 	newLoyalty.user_membership = {};
 	newLoyalty.user_membership.membership_type = $type;
@@ -90,7 +90,6 @@ $(document).on('click', "#new-loyalty-program #save", function(event) {
 		    
 		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
-		    
 		    
     	}, "HLP");
 	}
@@ -152,8 +151,6 @@ $(document).on('change', "#new-loyalty-program #type", function(event) {
 });
 
 $(document).on('change', 'select.styled', function(event){
-	event.preventDefault();
-	event.stopPropagation();
 	
     var selectedOption = $(this).find('option:selected');
     var id = $(this).find('option:selected').attr('id');

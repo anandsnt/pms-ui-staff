@@ -177,9 +177,9 @@ $(document).on('click', "#new-hlp #save", function(event) {
     	$loyaltyid = data.id;
 		    var $new_id = "hl-program-"+$loyaltyid;
 		    
-		    $("#loyalty-type-flyer a.program_new").attr('id',$new_id);
-		    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
-		    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
+		    $("#loyalty-type-hotel a.program_new").attr('id',$new_id);
+		    $("#loyalty-type-hotel a.program_new").attr('loyaltyid',$loyaltyid);
+		    $("#loyalty-type-hotel a#"+$new_id).removeClass('program_new');
 		    
 		    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 		    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
