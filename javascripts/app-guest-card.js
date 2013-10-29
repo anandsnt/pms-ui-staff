@@ -192,7 +192,7 @@ function saveContactInfo() {
 	console.log(JSON.stringify($contactJsonObj));
 	$.ajax({
 		type : "PUT",
-		url : '/guest_cards/' + userId,
+		url : 'staff/guest_cards/' + userId,
 		data : JSON.stringify($contactJsonObj),
 
 		async : false,
@@ -219,7 +219,7 @@ function renderGuestCardLike(guest_id) {
 	var user_id = $("#user_id").val();
 	$.ajax({
 		type : "GET",
-		url : '/dashboard/likes',
+		url : 'staff/dashboard/likes',
 		data : {
 			user_id : user_id
 		},
@@ -275,7 +275,7 @@ function saveLikes() {
 		var userId = $("#user_id").val();
 		$.ajax({
 			type : "POST",
-			url : '/guest_cards/' + userId + '/update_preferences',
+			url : 'staff/guest_cards/' + userId + '/update_preferences',
 			data : JSON.stringify(jsonObj),
 			dataType : "json",
 			success : function(data) {
@@ -317,7 +317,7 @@ function renderPayment() {
 	user_id = $("#user_id").val();
 	$.ajax({
 		type : "GET",
-		url : '/dashboard/payment',
+		url : 'staff/dashboard/payment',
 		async : false,
 		data : {
 			user_id : user_id
