@@ -1,4 +1,3 @@
-
 ffProgramsList = [];
 hlProgramsList = [];
 // Function to render guest card loyalty

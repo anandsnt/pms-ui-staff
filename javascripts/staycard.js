@@ -1,14 +1,14 @@
-var StayCard = function(domRef){
+var StayCard = function(viewDom){
   BaseView.call(this);
   var that = this;
-  this.myDomElement = domRef;
+  this.myDom = viewDom;
+  
   this.pageinit = function(){
-  	console.log("Page Init inside staycard")
-    setUpStaycard(that.myDomElement);
+    setUpStaycard(that.myDom);
     //Bind staycard events
-    that.myDomElement.find($('#reservation-timeline li').on('click', that.reservationTimelineClicked));
-    that.myDomElement.find($('#reservation-listing li a').on('click', that.reservationListItemClicked));
-    that.myDomElement.find($('.masked-input').on('focusout', that.guestDetailsEdited));
+    that.myDom.find($('#reservation-timeline li').on('click', that.reservationTimelineClicked));
+    that.myDom.find($('#reservation-listing li a').on('click', that.reservationListItemClicked));
+    that.myDom.find($('.masked-input').on('focusout', that.guestDetailsEdited));
 
   }
 

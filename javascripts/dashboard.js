@@ -1,7 +1,7 @@
 var Dashboard = function(domRef){
   BaseView.call(this);
   var that = this;
-  this.myDomElement = domRef;
+  this.myDom = domRef;
 
   this.pageinit = function(){
   	console.log("Dashboard pageinit");
@@ -22,7 +22,7 @@ var Dashboard = function(domRef){
 		message = "Good Evening";
 	}
 
-	that.myDomElement.find($('#greetings')).html('Good Evening');
+	that.myDom.find($('#greetings')).html('Good Evening');
   }
 
 }
