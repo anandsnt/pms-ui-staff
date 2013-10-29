@@ -99,7 +99,7 @@ function renderContactInformation() {
 		$($loader).prependTo('body').show(function() {
 			$.ajax({
 				type : "GET",
-				url : '/guestcard/show.json',
+				url : 'staff/guestcard/show.json',
 				data : {
 					fakeDataToAvoidCache : new Date(),
 					id : $reservation_id
