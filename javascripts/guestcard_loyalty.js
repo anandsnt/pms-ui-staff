@@ -4,7 +4,7 @@ function renderGuestCardLoyalty(){
 	var confirmNum = $('#confirm_no').val();
 		$.ajax({
 			type: "GET",
-            url: '/user_memberships?confirmno='+confirmNum,
+            url: 'staff/user_memberships?confirmno='+confirmNum,
             async: false,
             success: function(data) {    
             	$("#loyalty").html(data);
@@ -71,7 +71,7 @@ $(document).on('click', "#loyalty-delete", function(event) {
 	removeModal();
 	$.ajax({
 		type: "DELETE",
-		url: '/user_memberships/' + $loyalty_id +'.json',
+		url: 'staff/user_memberships/' + $loyalty_id +'.json',
 		dataType: 'json',
 			success: function(data) {
 				console.log("Succesfully deleted loyalty primary");
