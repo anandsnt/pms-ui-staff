@@ -152,7 +152,8 @@ $(document).on('change', "#new-loyalty-program #type", function(event) {
 	}
 });
 
-$(document).on('change', 'select.styled', function(event){
+//Call API for setting link to reservation on changing Loyalty.
+$(document).on('change', 'select.styled#loyalty', function(event){
 	
     var selectedOption = $(this).find('option:selected');
     var id = $(this).find('option:selected').attr('id');
