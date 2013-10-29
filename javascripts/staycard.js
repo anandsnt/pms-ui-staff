@@ -11,6 +11,11 @@ var StayCard = function(viewDom){
     that.myDom.find($('.masked-input').on('focusout', that.guestDetailsEdited));
 
   }
+  //Load all subviews here
+  this.initSubViews = function(){
+    var testView = new TestView();
+    testView.pageinit();
+  }
 
   //workaround for populating the reservation details,
   //when user clicks on other timeline tabs

@@ -1,5 +1,4 @@
 var setUpStaycard = function(viewDom) {
-	console.log(viewDom);
 	// Resizable guest card variables
 	var $maxHeight = $(window).height(), $breakpoint = ($maxHeight / 2), $cardHeight = '90px';
 	// Hide guest card content until it's resized
