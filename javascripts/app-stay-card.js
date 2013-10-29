@@ -77,20 +77,20 @@ $(function($) {
 			$("#" + currentTimeline + ' #reservation-listing ul li').first().find('a').trigger("click");
 		}
 	});
-	
-	$(document).on('change', "#newspaper", function() {			
+
+	$(document).on('change', "#reservation_newspaper", function() {
 		setNewspaperPreferance();
 	});
-	
-	
+
+
 
 });
 function setNewspaperPreferance(){
 	var confirmNum = $('#confirm_no').val();
-	var newspaperValue = $('#newspaper').val();
+	var newspaperValue = $('#reservation_newspaper').val();
 	$.ajax({
 			type : 'POST',
-			url : "/staff/reservation/set-newspaper",
+			url : "staff/dashboard/add_reservation_newspaper_preference",
 			data : {"confirmno": confirmNum, "selected_newspaper" :newspaperValue } ,
 			success : function(data) {
 				if(data.status == "success"){
