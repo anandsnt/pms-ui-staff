@@ -85,7 +85,7 @@ var StayCard = function(viewDom){
 
     $.ajax({
       type : 'PUT',
-      url : '/guest_cards/' + userId,
+      url : 'staff/guest_cards/' + userId,
       data : JSON.stringify($guestCardJsonObj),
 
       dataType : 'json',

@@ -37,7 +37,7 @@ $(function($) {
 	
 
 	$("html").click(function(e) {
-		console.log(e.target);
+	
 		if (!$(e.target).is("#guest-card-content *", "#guest-card-content")){
 			if ($contactInfoChange) {
 				saveContactInfo();
@@ -72,9 +72,11 @@ $(function($) {
 		stop : function(event, ui) {
 			$cardHeight = $(this).css('height');
 			// Refresh scrollers
+
 			setTimeout(function() {
 				callFunctions();
 			}, 300);
+
 		}
 	});
 });
@@ -92,7 +94,7 @@ function renderContactInformation() {
 		$($loader).prependTo('body').show(function() {
 			$.ajax({
 				type : "GET",
-				url : '/guestcard/show.json',
+				url : 'staff/guestcard/show.json',
 				data : {
 					fakeDataToAvoidCache : new Date(),
 					id : $reservation_id
@@ -119,9 +121,6 @@ function renderContactInformation() {
 					$("#phone").val(data.phone);
 					$("#mobile").val(data.mobile);
 
-					//TODO - Need to change with original values
-					// $("#guest_id").val("1");
-					// $("#user_id").val("1");
 
 					$("#guest_id").val(data.guest_id);
 					$("#user_id").val(data.user_id);
@@ -143,7 +142,11 @@ function renderContactInformation() {
 			    
 
 				var viewParams = {"user_id" : $("#user_id").val()};
-				sntapp.fetchAndRenderView('dashboard/likes', $("#likes"), viewParams);
+				sntapp.fetchAndRenderView('staff/dashboard/likes', $("#likes"), viewParams);
+				setTimeout(function() {
+					refreshGuestCardScroll();
+				}, 300);
+				//createGuestCardScroll( $("#guestcard_likes"))
 				renderPayment();
 				renderGuestCardLoyalty();
 				
@@ -189,7 +192,7 @@ function saveContactInfo() {
 	console.log(JSON.stringify($contactJsonObj));
 	$.ajax({
 		type : "PUT",
-		url : '/guest_cards/' + userId,
+		url : 'staff/guest_cards/' + userId,
 		data : JSON.stringify($contactJsonObj),
 
 		async : false,
@@ -211,13 +214,12 @@ function saveContactInfo() {
 	});
 }
 
-
 // function to render payment
 function renderPayment() {
 	user_id = $("#user_id").val();
 	$.ajax({
 		type : "GET",
-		url : '/dashboard/payment',
+		url : 'staff/dashboard/payment',
 		async : false,
 		data : {
 			user_id : user_id

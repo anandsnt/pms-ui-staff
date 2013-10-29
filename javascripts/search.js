@@ -37,7 +37,7 @@ var Search = function(domRef){
 	    		return false;
 	    	}
 	    	
-	    	$search_url = '/search.json?';
+	    	$search_url = 'staff/search.json?';
 	    	that.load_search_data($search_url,$query);
 	    }
 	    else if(searchResults.guests.length > 0){
@@ -174,7 +174,7 @@ var Search = function(domRef){
         $image = (image != '') ? '<figure class="guest-image"><img src="/assets/' + image + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = roomstatusextra ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
         $output = 
-        '<a href="/dashboard/staycard?confirmation=' + confirmation+'&id='+ id+ '" class="guest-' + status + ' link-item float" data-transition="inner-page has-card" data-page="search">' + 
+        '<a href="staff/dashboard/staycard?confirmation=' + confirmation+'&id='+ id+ '" class="guest-' + status + ' link-item float" data-transition="inner-page has-card" data-page="search">' + 
             $image +
             '<div class="data">' +
                 '<h2>' + lastname + ', ' + firstname + '</h2>' +

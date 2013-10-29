@@ -1,14 +1,20 @@
 
 var LikesView = function(domRef){
-	
   
   BaseView.call(this);
+  
   var that = this;
+  this.myDom = domRef;
+  console.log(domRef);
   var guest_id = $("#guest_id").val();
   this.$likeInfoChange = false;
   console.log("inside likes");
   this.pageinit = function(){
-  	this.handleLikeValueChanged();
+  	
+  this.handleLikeValueChanged();
+  	
+  	//refreshGuestCardScroll();
+  	// These two bindings is not coming under domref
   	$('html').on('click', that.callSaveLikes);    
   	$('#guest-contact, #guest-credit, #guest-loyalty').on('click', that.handleTabClick);      
   };
@@ -65,7 +71,7 @@ var LikesView = function(domRef){
 			var userId = $("#user_id").val();
 			$.ajax({
 				type : "POST",
-				url : '/guest_cards/' + userId + '/update_preferences',
+				url : 'staff/guest_cards/' + userId + '/update_preferences',
 				data : JSON.stringify(jsonObj),
 				dataType : "json",
 				success : function(data) {
@@ -80,26 +86,26 @@ var LikesView = function(domRef){
 	   	
 	     };
    };
-   this.handleLikeValueChanged = function(event){
-   		console.log("lhandleLikeValueChanged");
-	   $(document).on('change', "#newspaper,#roomtype", function(event) {
-	   	    console.log("like newspaper")
-			that.$likeInfoChange = true;
-		});
+   this.handleLikeValueChanged = function(event){  	   
+	  
+		
+		that.myDom.find($('#newspaper,#roomtype')).on('change', function(event) {				
+			   that.$likeInfoChange = true;
+	    });		
 	
 		var $totalPreferences = $("#totalpreference").val();
 		$totalFeatures = $("#totalfeatures").val();
 		for ( i = 0; i < $totalPreferences; i++) {
-			$(document).on('change', "#pref_" + i, function(event) {
-				that.$likeInfoChange = true;
-				console.log("like change")
-			});
+			
+			that.myDom.find($('#pref_'+i)).on('change', function(event) {
+				that.$likeInfoChange = true;				
+			});		
+			
 		}
 		for ( j = 0; j < $totalFeatures; j++) {
-			$(document).on('change click', "#feat_" + i, function(event) {
-				that.$likeInfoChange = true;
-				console.log("like change feature")
-			});
+			that.myDom.find($('#feat_'+j)).on('change click', function(event) {
+				that.$likeInfoChange = true;				
+			});				
 		}
    };
 
