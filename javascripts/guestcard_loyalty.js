@@ -1,4 +1,3 @@
-
 // Function to render guest card loyalty
 function renderGuestCardLoyalty(){
 	var confirmNum = $('#confirm_no').val();

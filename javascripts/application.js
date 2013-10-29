@@ -20,10 +20,10 @@
 //= require jquery.ui.touch-punch
 //= stub app-guest-card
 //= require stayntouch
-//= stub app-stay-card
+
 //= stub app-forms
 //= stub guestcard_loyalty
 //= stub guestcard_loyalty
-//= stub utility_loayalty
+//= stub utility_loyalty
 //= stub room_assignment
 //= require_tree .
