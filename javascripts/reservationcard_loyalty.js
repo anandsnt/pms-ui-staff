@@ -167,7 +167,7 @@ $(document).on('change', 'select.styled#loyalty', function(event){
     }
     $.ajax({
 		type: "POST",
-		url: '/user_memberships/link_to_reservation',
+		url: 'staff/user_memberships/link_to_reservation',
 		data : {
 		    "confirmno": confirmNum,
 		    "membership_id": id
