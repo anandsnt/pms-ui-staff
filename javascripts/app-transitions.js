@@ -300,9 +300,9 @@ $(function($){
                         modalInit('modals/alerts/not-there-yet/');
                     }
                 }).done(function(){  
-                    viewInstance = getViewInstance($('#'+$next));
+                    viewInstance = sntapp.getViewInstance($('#'+$next));
                     if(typeof viewInstance !== "undefined"){
-                        viewInstance.pageinit();
+                        viewInstance.initialize();
                     }
                     if ($transitionPage.indexOf('main-page') >= 0 || $transitionPage.indexOf('inner-page') >= 0)
                     {

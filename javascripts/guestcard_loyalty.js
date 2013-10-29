@@ -1,3 +1,12 @@
+var GuestcardLoyalty = function(domRef){
+  BaseView.call(this);
+  var that = this;
+  this.myDom = domRef;
+  this.pageinit = function(){
+  	console.log("Page Init inside guestcard loyalty123");
+  }
+}
+
 
 ffProgramsList = [];
 hlProgramsList = [];

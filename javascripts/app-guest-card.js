@@ -148,13 +148,12 @@ function renderContactInformation() {
 				$('#loading').remove();
 				var guest_id = $("#guest_id").val();
 
-				/*guestcardrender = new ajaxRender("guest card url", dom_element)
-				gcr.params ={"guest-id": my_guest_id};
-				gcr.start();
-*/
 				renderGuestCardLike(guest_id);
 				renderPayment();
-				renderGuestCardLoyalty();
+				//renderGuestCardLoyalty();
+				var viewParams = {"confirmno" :4813095};
+				sntapp.fetchAndRenderView('/user_memberships', $("#loyalty"), viewParams);
+				
 			});
 		});
 
