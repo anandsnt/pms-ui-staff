@@ -9,7 +9,28 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation-timeline li').on('click', that.reservationTimelineClicked));
     that.myDom.find($('#reservation-listing li a').on('click', that.reservationListItemClicked));
     that.myDom.find($('.masked-input').on('focusout', that.guestDetailsEdited));
-
+    that.myDom.find($('#reservation_newspaper').on('change', that.setNewspaperPreferance));
+  }
+  
+  this.setNewspaperPreferance = function(e){
+  	var confirmNum = $('#confirm_no').val();
+	var newspaperValue = $('#newspaper').val();
+	$.ajax({
+	type : 'POST',
+	url : "reservation/add_newspaper_preference",
+	data : {"confirmno": confirmNum, "selected_newspaper" :newspaperValue } ,
+	success : function(data) {
+	if(data.status == "success"){
+	  console.log("Succesfully set newspaper preferance");
+	  }
+	               else{
+	                console.log("Something is wrong!");
+	               }
+	},
+	error : function() {
+	console.log("There is an error!!");
+	}
+	});
   }
 
   //workaround for populating the reservation details,
