@@ -77,9 +77,34 @@ $(function($) {
 			$("#" + currentTimeline + ' #reservation-listing ul li').first().find('a').trigger("click");
 		}
 	});
+	
+	$(document).on('change', "#newspaper", function() {			
+		setNewspaperPreferance();
+	});
+	
+	
 
 });
-
+function setNewspaperPreferance(){
+	var confirmNum = $('#confirm_no').val();
+	var newspaperValue = $('#newspaper').val();
+	$.ajax({
+			type : 'POST',
+			url : "/staff/reservation/set-newspaper",
+			data : {"confirmno": confirmNum, "selected_newspaper" :newspaperValue } ,
+			success : function(data) {
+				if(data.status == "success"){
+			   console.log("Succesfully set newspaper preferance");
+			   }
+               else{
+               	console.log("Something is wrong!");
+               }
+			},
+			error : function() {
+				console.log("There is an error!!");
+			}
+	});
+}
 //Add the reservation details to the DOM.
 function displayReservationDetails($href) {
 	//get the current highlighted timeline
@@ -96,7 +121,6 @@ function displayReservationDetails($href) {
 			type : 'GET',
 			url : "/dashboard/reservation_details?reservation=" + reservation,
 			dataType : 'html',
-			timeout : 5000,
 			success : function(data) {
 				$("#" + currentTimeline).append(data);
 			},
