@@ -4,12 +4,12 @@ $(document).on('click', '#stay-card-loyalty #wakeup-time', function(event) {
 	event.preventDefault();
 	var $href = $(this).attr('href');
 	$modal = '<div id="modal" role="dialog" />', $overlay = '<div id="modal-overlay" />';
-	var confirmNum = $('#confirm_no').val();
+	var reservation_id = getReservationId();
 	// Get modal data
 	$.ajax({
 		type: "POST",
 		url : $href,
-		data :{	"confirmno": confirmNum	},
+		data :{	"reservation_id": reservation_id	},
 		success : function(data) {
 			setModal();
 			$('#modal').html(data);
@@ -38,10 +38,11 @@ $(document).on('change', 'select.styled#wake-up', function(e){
 });
 
 function saveWakeUpCall(){
-	var confirmNum = $('#confirm_no').val();
+
 	var wakeUpTime = $('#set-wake-up-call #wakeup-time').attr('value');
+	var reservation_id = getReservationId();
 	var wakeUpDay = $('#set-wake-up-call #wakeup-day').text();
-	var data ={	"confirmno": confirmNum	, "wakeUpTime": wakeUpTime, "wakeUpDay": wakeUpDay};
+	var data ={	"reservation_id": reservation_id	, "wakeUpTime": wakeUpTime, "wakeUpDay": wakeUpDay};
 	console.log(data);
 	$.ajax({
 		type: "POST",
