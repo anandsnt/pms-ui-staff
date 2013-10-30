@@ -13,6 +13,10 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
 
   }
+  this.initSubViews = function(){
+     var reservationPaymentView = new ReservationPaymentView("#reservation-card-loyalty");
+     reservationPaymentView.initialize();
+  }
   this.setNewspaperPreferance = function(e){  	
   	var reservation_id = getReservationId();
   	var newspaperValue = $('#reservation_newspaper').val();
@@ -131,7 +135,7 @@ var StayCard = function(viewDom){
 
 
     this.guestDetailsEdited = function(e){
-      alert("herer");
+      //alert("herer");
       //send an update request to the third party system
       that.updateGuestDetails($(this).val(), $(this).attr('data-val'));
     }
