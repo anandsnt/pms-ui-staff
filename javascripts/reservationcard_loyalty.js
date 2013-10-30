@@ -49,12 +49,12 @@ $(document).on('click', "#new-loyalty-program #save", function(event) {
 	}
 		
 	var userId = $('#user_id').val();
-	var confirmNum = $('#confirm_no').val();
+	var reservation_id = getReservationId();
 	
 	var newLoyalty = {};
 	
 	newLoyalty.user_id = userId;
-	newLoyalty.confirmno = confirmNum;
+	newLoyalty.reservation_id = reservation_id;
 	newLoyalty.user_membership = {};
 	newLoyalty.user_membership.membership_type = $type;
 	newLoyalty.user_membership.membership_card_number = $code;
@@ -154,10 +154,10 @@ $(document).on('change', "#new-loyalty-program #type", function(event) {
 
 //Call API for setting link to reservation on changing Loyalty.
 $(document).on('change', 'select.styled#loyalty', function(event){
-	console.log("chngeeeeeeeeeeeeee");
+
     var selectedOption = $(this).find('option:selected');
     var id = $(this).find('option:selected').attr('id');
-    var confirmNum = $('#confirm_no').val();
+    var reservation_id = getReservationId();
     
     if(id==""){
     	clearSelectionUI();
@@ -169,7 +169,7 @@ $(document).on('change', 'select.styled#loyalty', function(event){
 		type: "POST",
 		url: 'staff/user_memberships/link_to_reservation',
 		data : {
-		    "confirmno": confirmNum,
+		    "reservation_id": reservation_id,
 		    "membership_id": id
 		},
 		success: function(data) {
