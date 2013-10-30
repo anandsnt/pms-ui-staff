@@ -4,12 +4,29 @@ var GuestcardLoyaltyView = function(domRef){
   this.myDom = domRef;
 
   this.pageinit = function(){
+  	tempBindEvents();
   	this.myDom.find($('#loyalty-tab .active-item, #loyalty-tab .add-new-button'))
   					.on('click', that.openGuestCardModals);
+  	this.myDom.find($('#loyalty-tab #add-new-ffp')).on('click', that.openAddFFPModal);
+  	this.myDom.find($('#loyalty-tab #add-new-hlp')).on('click', that.openAddHLPModal);
 
   }
 
+  this.openAddFFPModal = function(){
+  	addFFPModal = new AddFFPModal();
+    addFFPModal.initialize();
+
+  }
+
+  this.openAddHLPModal = function(){
+	addHLPModal = new AddHLPModal();
+    addHLPModal.initialize();
+  }
+
+
+
   this.openGuestCardModals = function(e){
+
   	e.preventDefault();
 	e.stopImmediatePropagation();
 	var $href = $(this).attr('href'),
