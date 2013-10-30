@@ -162,7 +162,7 @@ $(function($){
         styleCheckboxRadio();
     });
 
-    $(document).on('click', '.switch-button', function(e){
+    $(document).on('click', '.switch-button:not(#wakeupDate)', function(e){
         e.stopPropagation();
         onOffSwitch();
     });

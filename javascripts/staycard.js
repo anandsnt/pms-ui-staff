@@ -10,8 +10,36 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation-listing li a').on('click', that.reservationListItemClicked));
     that.myDom.find($('.masked-input').on('focusout', that.guestDetailsEdited));
     that.myDom.find($('#reservation_newspaper').on('change', that.setNewspaperPreferance));
+    $('#wakeupDate.switch-button').on('click', that.onOffSwitchWakeupDate);
   }
-
+  this.onOffSwitchWakeupDate = function(e){
+  	console.log("onOffSwitchWakeupDate");
+	/*
+	var onOffSwitch = '.switch-button#wakeupDate';
+	console.log("onOffSwitchWakeupDate");
+		$(onOffSwitch).each(function(){
+			var onOff = $(this),
+				onOffChecked = 'on',
+				onOffDisabled = 'disabled',
+				onOffInput = 'input[type="checkbox"]',
+				text = '.value',
+				textOn = onOff.attr('data-on'),
+				textOff = onOff.attr('data-off');
+				 if (onOff.children(onOffInput).length) {
+				onOff.removeClass(onOffChecked);
+				onOff.find(text).text(textOff);
+					 onOff.children(onOffInput + ':checked').each(function(){
+					onOff.addClass(onOffChecked);
+					onOff.find(text).text(textOn);
+				});
+					 onOff.children(onOffInput + ':disabled').each(function(){
+					onOff.addClass.addClass(onOffDisabled);
+					onOff.find(text).text('');
+				});
+			}
+		});*/
+	
+  }
   this.setNewspaperPreferance = function(e){  	
   	var reservation_id = getReservationId();
 	var newspaperValue = $('#reservation_newspaper').val();
