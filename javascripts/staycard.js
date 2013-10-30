@@ -37,6 +37,8 @@ var StayCard = function(viewDom){
   this.initSubViews = function(){
     var testView = new TestView();
     testView.pageinit();
+    var guestContactView = new GuestContactView("#contact-info");
+    guestContactView.pageinit();
   }
 
   //workaround for populating the reservation details,
@@ -136,7 +138,7 @@ var StayCard = function(viewDom){
 
 
     this.guestDetailsEdited = function(e){
-      alert("herer");
+
       //send an update request to the third party system
       that.updateGuestDetails($(this).val(), $(this).attr('data-val'));
     }
