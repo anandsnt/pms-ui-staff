@@ -67,7 +67,7 @@ var GuestPaymentView = function(domRef){
 		$name_on_card	= $("#new-payment #name-on-card").val();
 		$card_type 		= $("#payment-credit-type").val();
 		$card_number = $card_number_set1 + $card_number_set2 + $card_number_set3;
-		$card_expiry = "20"+$expiry_year +"-"+$expiry_month +"-01";
+		$card_expiry = $expiry_month +"/"+$expiry_year;
 		$guest_id = $("#guest_id").val();
 		
 		
@@ -103,7 +103,7 @@ var GuestPaymentView = function(domRef){
 			$cardHolderName = $("#new-payment #name-on-card").val();
 		
         var	$add = 
-	        '<a id="credit_row" href="dashboard/showCreditModal" credit_id="" class="active-item item-payment new-item">'+
+	        '<a id="credit_row" href="dashboard/showCreditModal" credit_id="" class="active-item float item-payment new-item">'+
 	        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
 	        'Ending with<span class="value number">'+$number+'</span></span>'+
 			'<span class="date">Date<span class="value date">'+$expiry+'</span>'+
