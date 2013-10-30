@@ -58,3 +58,37 @@ function saveWakeUpCall(){
 	});
 }
 
+
+function onOffSwitchWakeupDate() {
+    var onOffSwitch = '.switch-button#wakeupDate';
+
+    $(onOffSwitch).each(function(){
+        var onOff = $(this),
+            onOffChecked = 'on',
+            onOffDisabled = 'disabled',
+            onOffInput = 'input[type="checkbox"]',
+            text = '.value',
+            textOn = onOff.attr('data-on'),
+            textOff = onOff.attr('data-off');
+
+        if (onOff.children(onOffInput).length) {
+            onOff.removeClass(onOffChecked);
+            onOff.find(text).text(textOff);
+
+            onOff.children(onOffInput + ':checked').each(function(){
+                onOff.addClass(onOffChecked);
+                onOff.find(text).text(textOn);
+            });
+
+            onOff.children(onOffInput + ':disabled').each(function(){
+                onOff.addClass.addClass(onOffDisabled);
+                onOff.find(text).text('');
+            });
+        }
+    });
+};
+
+$(document).on('click', '.switch-button#wakeupDate', function(e){
+        e.stopPropagation();
+        onOffSwitchWakeupDate();
+    });
