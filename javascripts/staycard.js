@@ -6,9 +6,9 @@ var StayCard = function(viewDom){
   this.pageinit = function(){
     setUpStaycard(that.myDom);
     //Bind staycard events
-    that.myDom.find($('#reservation-timeline li').on('click', that.reservationTimelineClicked));
-    that.myDom.find($('#reservation-listing li a').on('click', that.reservationListItemClicked));
-    that.myDom.find($('.masked-input').on('focusout', that.guestDetailsEdited));
+    that.myDom.find($('#reservation-timeline li')).on('click', that.reservationTimelineClicked);
+    that.myDom.find($('#reservation-listing li a')).on('click', that.reservationListItemClicked);
+    that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
 
   }
   //Load all subviews here
@@ -114,6 +114,7 @@ var StayCard = function(viewDom){
 
 
     this.guestDetailsEdited = function(e){
+      alert("herer");
       //send an update request to the third party system
       that.updateGuestDetails($(this).val(), $(this).attr('data-val'));
     }
