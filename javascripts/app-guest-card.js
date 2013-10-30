@@ -6,7 +6,7 @@ $(function($) {
 	$guestCardClickTime = true;
 	$currentTab = "guest-contact";
 	$contactInfoChange = false;
-	$likeInfoChange = false;
+
 	$focusInGuestCardContent = false;
 
 	// Show/hide guest card on click
@@ -37,13 +37,11 @@ $(function($) {
 	
 
 	$("html").click(function(e) {
-		// console.log(e.target);
+	
 		if (!$(e.target).is("#guest-card-content *", "#guest-card-content")){
 			if ($contactInfoChange) {
 				saveContactInfo();
-			} else if ($likeInfoChange) {
-				saveLikes();
-			}
+			} 			
 		}
 		
 	});
@@ -53,12 +51,7 @@ $(function($) {
 				saveContactInfo();
 			} 
 
-		}
-		if ($currentTab == "guest-like") {
-			if ($likeInfoChange) {
-				saveLikes();
-			} 
-		}
+		}		
 
 		$currentTab = $(this).attr("id");
 
@@ -79,9 +72,11 @@ $(function($) {
 		stop : function(event, ui) {
 			$cardHeight = $(this).css('height');
 			// Refresh scrollers
+
 			setTimeout(function() {
 				callFunctions();
 			}, 300);
+
 		}
 	});
 });
@@ -126,9 +121,6 @@ function renderContactInformation() {
 					$("#phone").val(data.phone);
 					$("#mobile").val(data.mobile);
 
-					//TODO - Need to change with original values
-					// $("#guest_id").val("1");
-					// $("#user_id").val("1");
 
 					$("#guest_id").val(data.guest_id);
 					$("#user_id").val(data.user_id);
@@ -146,10 +138,18 @@ function renderContactInformation() {
 				}
 			}).done(function() {
 				$('#loading').remove();
-				var guest_id = $("#guest_id").val();
+				var guest_id = $("#guest_id").val();		
+			    
 
-				renderGuestCardLike(guest_id);
-				renderPayment();
+				var viewParams = {"user_id" : $("#user_id").val()};
+				sntapp.fetchAndRenderView('staff/dashboard/likes', $("#likes"), viewParams);
+				// var viewParams = {"user_id" : $("#user_id").val()};
+				sntapp.fetchAndRenderView('staff/dashboard/payment', $("#cc-payment"), viewParams);
+				setTimeout(function() {
+					refreshGuestCardScroll();
+				}, 300);
+		
+				// renderPayment();
 				renderGuestCardLoyalty();
 				
 			});
@@ -214,104 +214,6 @@ function saveContactInfo() {
 			console.log("There is an error!!");
 		}
 	});
-}
-
-//Function to render guest card like
-function renderGuestCardLike(guest_id) {
-	var user_id = $("#user_id").val();
-	$.ajax({
-		type : "GET",
-		url : 'staff/dashboard/likes',
-		data : {
-			user_id : user_id
-		},
-		async : false,
-		success : function(data) {
-
-			//Commeting this code, to make static rendering work properly, for now.
-
-			$("#likes").html(data);
-			handleLikeValueChanged();
-		},
-		error : function() {
-			console.log("There is an error!!");
-		}
-	});
-}
-
-//function to save likes
-function saveLikes() {
-	if ($likeInfoChange) {
-		var $totalPreferences = $("#totalpreference").val();
-		$totalFeatures = $("#totalfeatures").val();
-		jsonObj = {};
-
-		jsonObj['user_id'] = $("#guest_id").val();
-		jsonObj['preference'] = [];
-		$preference = {};
-		$preference["type"] = "NEWSPAPER";
-		$preference["value"] = $('#newspaper').val();
-		jsonObj['preference'].push($preference);
-		$preference = {};
-		$preference["type"] = "ROOMTYPE";
-		$preference["value"] = $('#roomtype').val();
-		jsonObj['preference'].push($preference);
-		for ( i = 0; i < $totalPreferences; i++) {
-			$preference = {};
-			$preference["type"] = $("#pref_" + i).attr('prefname');
-			$preference["value"] = $('input[name="pref_' + i + '"]:checked').val();
-			jsonObj['preference'].push($preference);
-		}
-
-		for ( j = 0; j < $totalFeatures; j++) {
-			$feature = {};
-			if ($('#feat_' + j).is(':checked')) {
-				$preference = {};
-				$preference["type"] = "ROOMFEATURE";
-				$preference["value"] = $('#feat_' + j).val();
-				jsonObj['preference'].push($preference);
-			}
-		}
-		console.log(JSON.stringify(jsonObj));
-
-		var userId = $("#user_id").val();
-		$.ajax({
-			type : "POST",
-			url : 'staff/guest_cards/' + userId + '/update_preferences',
-			data : JSON.stringify(jsonObj),
-			dataType : "json",
-			success : function(data) {
-				$likeInfoChange = false;
-				console.log("Saved successfully");
-			},
-			error : function() {
-				console.log("There is an error!!");
-			}
-		});
-
-	}
-}
-
-//To handle if any change happened in dynamic like fields
-function handleLikeValueChanged() {
-	$(document).on('change', "#newspaper,#roomtype", function(event) {
-		$likeInfoChange = true;
-	});
-
-	var $totalPreferences = $("#totalpreference").val();
-	$totalFeatures = $("#totalfeatures").val();
-	for ( i = 0; i < $totalPreferences; i++) {
-		$(document).on('change', "#pref_" + i, function(event) {
-			$likeInfoChange = true;
-			console.log("like change")
-		});
-	}
-	for ( j = 0; j < $totalFeatures; j++) {
-		$(document).on('change click', "#feat_" + i, function(event) {
-			$likeInfoChange = true;
-			console.log("like change feature")
-		});
-	}
 }
 
 // function to render payment

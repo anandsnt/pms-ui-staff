@@ -1,9 +1,9 @@
 // Function to render guest card loyalty
 function renderGuestCardLoyalty(){
-	var confirmNum = $('#confirm_no').val();
+	var reservation_id = getReservationId();
 		$.ajax({
 			type: "GET",
-            url: 'staff/user_memberships?confirmno='+confirmNum,
+            url: 'staff/user_memberships?reservation_id='+reservation_id,
             async: false,
             success: function(data) {    
             	$("#loyalty").html(data);

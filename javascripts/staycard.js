@@ -6,31 +6,32 @@ var StayCard = function(viewDom){
   this.pageinit = function(){
     setUpStaycard(that.myDom);
     //Bind staycard events
-    that.myDom.find($('#reservation-timeline li').on('click', that.reservationTimelineClicked));
-    that.myDom.find($('#reservation-listing li a').on('click', that.reservationListItemClicked));
-    that.myDom.find($('.masked-input').on('focusout', that.guestDetailsEdited));
-    that.myDom.find($('#reservation_newspaper').on('change', that.setNewspaperPreferance));
-  }
 
+    that.myDom.find($('#reservation-timeline li')).on('click', that.reservationTimelineClicked);
+    that.myDom.find($('#reservation-listing li a')).on('click', that.reservationListItemClicked);
+    that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
+    that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
+
+  }
   this.setNewspaperPreferance = function(e){  	
   	var reservation_id = getReservationId();
-	var newspaperValue = $('#reservation_newspaper').val();
-	$.ajax({
-	type : 'POST',
-	url : "reservation/add_newspaper_preference",
-	data : {"reservation_id": reservation_id, "selected_newspaper" :newspaperValue } ,
-	success : function(data) {
-	if(data.status == "success"){
-	  console.log("Succesfully set newspaper preferance");
-	  }
-	               else{
-	                console.log("Something is wrong!");
-	               }
-	},
-	error : function() {
-	console.log("There is an error!!");
-	}
-	});
+  	var newspaperValue = $('#reservation_newspaper').val();
+  	$.ajax({
+      	type : 'POST',
+      	url : "reservation/add_newspaper_preference",
+      	data : {"reservation_id": reservation_id, "selected_newspaper" :newspaperValue } ,
+      	success : function(data) {
+          	if(data.status == "success"){
+          	    console.log("Succesfully set newspaper preferance");
+          	}
+          	else{
+          	    console.log("Something is wrong!");
+          	}
+      	},
+      	error : function() {
+      	    console.log("There is an error!!");
+      	}
+  	});
   }
 
   //workaround for populating the reservation details,
@@ -64,7 +65,6 @@ var StayCard = function(viewDom){
         type : 'GET',
         url : "staff/staycards/reservation_details?reservation=" + reservation,
         dataType : 'html',
-        timeout : 5000,
         success : function(data) {
           $("#" + currentTimeline).append(data);
         },
@@ -131,6 +131,7 @@ var StayCard = function(viewDom){
 
 
     this.guestDetailsEdited = function(e){
+      alert("herer");
       //send an update request to the third party system
       that.updateGuestDetails($(this).val(), $(this).attr('data-val'));
     }
