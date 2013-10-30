@@ -39,7 +39,7 @@ $(document).on('change', 'select.styled#wake-up', function(e){
 
 function saveWakeUpCall(){
 	var confirmNum = $('#confirm_no').val();
-	var wakeUpTime = $('#set-wake-up-call #wakeup-time').text();
+	var wakeUpTime = $('#set-wake-up-call #wakeup-time').attr('value');
 	var wakeUpDay = $('#set-wake-up-call #wakeup-day').text();
 	var data ={	"confirmno": confirmNum	, "wakeUpTime": wakeUpTime, "wakeUpDay": wakeUpDay};
 	console.log(data);

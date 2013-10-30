@@ -2290,6 +2290,31 @@
     }
   }
 
+// LESS to fix issue in -WakeUp Time - Toggle on select Date.
+// Edited by QBurst
+
+.form .entry.only-switch .switch-button#wakeupDate .switch-icon {
+  height:30px;
+  width:80px;
+}
+.form .entry.only-switch .switch-button#wakeupDate .value {
+  font-size:16px;
+  left:100px;
+  line-height:40px;
+}
+.form .entry.only-switch .switch-button#wakeupDate.on .switch-icon {
+  left:190px;
+}
+.form .entry.only-switch .switch-button#wakeupDate.on .value {
+  left:20px;
+}
+.switch-button#wakeupDate {
+  height:40px !important;
+  width:280px;
+  input[type="checkbox"] {
+    width:280px;
+  }
+}
 
 /* 6. IE
 ==========================================================*/
