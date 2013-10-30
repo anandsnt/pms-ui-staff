@@ -11,7 +11,13 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation-listing li a')).on('click', that.reservationListItemClicked);
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
+
   }
+
+  this.initSubViews = function(){
+    var reservationCardLoyaltyView = new ReservationCardLoyaltyView("#reservationcard-loyalty");
+    reservationCardLoyaltyView.initialize();
+}
 
   this.setNewspaperPreferance = function(e){  	
   	var reservation_id = getReservationId();

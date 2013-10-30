@@ -4,28 +4,49 @@ var GuestcardLoyaltyView = function(domRef){
   this.myDom = domRef;
 
   this.pageinit = function(){
+
   	tempBindEvents();
-  	this.myDom.find($('#loyalty-tab .active-item, #loyalty-tab .add-new-button'))
-  					.on('click', that.openGuestCardModals);
-  	this.myDom.find($('#loyalty-tab #add-new-ffp')).on('click', that.openAddFFPModal);
-  	this.myDom.find($('#loyalty-tab #add-new-hlp')).on('click', that.openAddHLPModal);
+  	/*this.myDom.find($('#loyalty-tab .active-item, #loyalty-tab .add-new-button'))
+  					.on('click', that.openGuestCardModals);*/
+  	/*this.myDom.find($('#loyalty-tab a#add-new-ffp')).on('click', that.openAddFFPModal);
+  	this.myDom.find($('#loyalty-tab a#add-new-hlp')).on('click', that.openAddHLPModal);
+  	this.myDom.find($('#loyalty-tab #loyalty-type-flyer a.active-item')).on('click', that.openDeleteFFPModal);
+  	this.myDom.find($('#loyalty-tab #loyalty-type-hotel a.active-item')).on('click', that.openDeleteHLPModal);*/
 
   }
 
-  this.openAddFFPModal = function(){
+  /*this.openAddFFPModal = function(e){
+  	e.preventDefault();
+	//e.stopImmediatePropagation();
   	addFFPModal = new AddFFPModal();
     addFFPModal.initialize();
 
   }
 
-  this.openAddHLPModal = function(){
+  this.openAddHLPModal = function(e){
+  	e.preventDefault();
+	//e.stopImmediatePropagation();
 	addHLPModal = new AddHLPModal();
     addHLPModal.initialize();
   }
 
+  this.openDeleteFFPModal = function(e){
+  	e.preventDefault();
+	//e.stopImmediatePropagation();
+	deleteFFPModal = new DeleteFFPModal();
+    deleteFFPModal.initialize();
+  }
+
+  this.openDeleteHLPModal = function(e){
+  	e.preventDefault();
+	//e.stopImmediatePropagation();
+	deleteHLPModal = new DeleteHLPModal();
+    deleteHLPModal.initialize();
+  }*/
 
 
-  this.openGuestCardModals = function(e){
+
+  /*this.openGuestCardModals = function(e){
 
   	e.preventDefault();
 	e.stopImmediatePropagation();
@@ -59,13 +80,13 @@ var GuestcardLoyaltyView = function(domRef){
 		}
     });
 
-  }
+  }*/
 
 }
 
 function tempBindEvents(){
 		// Show modal to set delete a loyalty.
-	/*$(document).on('click', '#loyalty-tab .active-item, #loyalty-tab .add-new-button', function(e) {
+	$(document).on('click', '#loyalty-tab .active-item, #loyalty-tab .add-new-button', function(e) {
 		e.preventDefault();
 		e.stopImmediatePropagation();
 		var $href = $(this).attr('href'),
@@ -97,7 +118,7 @@ function tempBindEvents(){
 				addHLPSelectOptions("#new-hlp #hotel-loyalty-types");
 			}
 	    });
-	});*/
+	});
 
 	// Delete selected loyalty
 	$(document).on('click', "#loyalty-delete", function(event) {
