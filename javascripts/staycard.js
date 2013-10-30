@@ -12,13 +12,13 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation_newspaper').on('change', that.setNewspaperPreferance));
   }
 
-  this.setNewspaperPreferance = function(e){
-  	var confirmNum = $('#confirm_no').val();
+  this.setNewspaperPreferance = function(e){  	
+  	var reservation_id = getReservationId();
 	var newspaperValue = $('#reservation_newspaper').val();
 	$.ajax({
 	type : 'POST',
 	url : "reservation/add_newspaper_preference",
-	data : {"confirmno": confirmNum, "selected_newspaper" :newspaperValue } ,
+	data : {"reservation_id": reservation_id, "selected_newspaper" :newspaperValue } ,
 	success : function(data) {
 	if(data.status == "success"){
 	  console.log("Succesfully set newspaper preferance");

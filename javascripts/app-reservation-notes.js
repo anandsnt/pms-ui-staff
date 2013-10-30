@@ -1,4 +1,4 @@
-$(document).on('click', "#post_notes #reservation_notes", function() {
+$(document).on('click', "#post_notes #reservation_notes", function() {	
 	saveReservationNotes();
 });
 
@@ -35,9 +35,8 @@ function deleteReservationNotes(that){
 function saveReservationNotes() {
 	$notes = $("#post_notes textarea").val();
 	$topic = 1;
-	$confirm_num = $('#confirm_no').val();
-	console.log("confirm======"+$confirm_num);
-	// $confirm_num = 4813095;
+	$reservation_id = getReservationId();
+
 	if ($notes == "") {
 		alert("Enter text");
 		return false;
@@ -46,7 +45,7 @@ function saveReservationNotes() {
 		return false;
 	}
 	$data = {
-		confirmno : $confirm_num,
+		reservation_id : $reservation_id,
 		note_topic : $topic,
 		text : $notes
 	};
