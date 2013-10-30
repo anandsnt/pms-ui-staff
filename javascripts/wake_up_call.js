@@ -42,7 +42,7 @@ function saveWakeUpCall(){
 	var wakeUpTime = $('#set-wake-up-call #wakeup-time').attr('value');
 	var reservation_id = getReservationId();
 	var wakeUpDay = $('#set-wake-up-call #wakeup-day').text();
-	var data ={	"reservation_id": reservation_id	, "wakeUpTime": wakeUpTime, "wakeUpDay": wakeUpDay};
+	var data ={	"reservation_id": reservation_id	, "wake_up_time": wakeUpTime, "day": wakeUpDay};
 	console.log(data);
 	$.ajax({
 		type: "POST",
