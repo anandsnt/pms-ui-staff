@@ -246,9 +246,8 @@ $(function($){
     });
 
     // All other screens - loaded dynamicilly
-    $(document).on('click','a[data-transition]:not(.active)',function(e) {
+    $(document).on('click','a[data-transition]:not(.active):not(.no-auto-bind)',function(e) {
         e.preventDefault();
-
         // Common variables
         var $loader = '<div id="loading" />',
             $href = $(this).attr('href'),
@@ -257,7 +256,7 @@ $(function($){
             $activeMenuItem = $(this).attr('data-page'),
             $transitionType = $(this).hasClass('back-button') ? 'move-from-left' : 'move-from-right',
             $backPage = $(this).closest('.page-current').attr('id'),
-            $backView = $(this).closest('.view-current').attr('id');    
+            $backView = $(this).closest('.view-current').attr('id');  
             //TODO: move to app-search.js
             $search_status = $(this).attr('search-status'),
             $trigger_search = $(this).attr('trigger-search');
@@ -278,14 +277,9 @@ $(function($){
             var $previous = $('.nested-view.view-current').attr('id'),
                 $next = $('.nested-view:not(.view-current)').attr('id');
         }
-        // Load reservations
-        if ($transitionPage.indexOf('reservation-list') >= 0)
-        {
-
-            displayReservationDetails($href);
-        }
+        
         // Load next page/view or reload previous view before going back
-        else if(!$(this).hasClass('back-button') || ($(this).hasClass('back-button') && $reload == true))
+        if(!$(this).hasClass('back-button') || ($(this).hasClass('back-button') && $reload == true))
         {
             $($loader).prependTo('body').show(function(){
                 $.ajax({
@@ -296,16 +290,20 @@ $(function($){
                     success: function(data){
                         $('#' + $next).html(data);
                         //TODO: move to app-search.js
-                        if($trigger_search=='TRUE'){
-                            $url = '/search.json?status='+$search_status;
+                        /*if($trigger_search=='TRUE'){
+                            $url = 'staff/search.json?status='+$search_status;
                             load_search_data($url,'');
-                        }
+                        }*/
                     },
                     error: function(){
                         $('#loading').remove();
                         modalInit('modals/alerts/not-there-yet/');
                     }
                 }).done(function(){  
+                    viewInstance = sntapp.getViewInstance($('#'+$next));
+                    if(typeof viewInstance !== "undefined"){
+                        viewInstance.initialize();
+                    }
                     if ($transitionPage.indexOf('main-page') >= 0 || $transitionPage.indexOf('inner-page') >= 0)
                     {
                         changePage($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reload);
@@ -313,6 +311,9 @@ $(function($){
                     else if ($transitionPage.indexOf('nested-view') >= 0)
                     {
                        changeView($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reload); 
+                    }
+                    if(typeof viewInstance !== "undefined"){
+                        viewInstance.pageshow();
                     }
                 });
             });
