@@ -32,6 +32,11 @@ var StayCard = function(viewDom){
 	}
 	});
   }
+  //Load all subviews here
+  this.initSubViews = function(){
+    var testView = new TestView();
+    testView.pageinit();
+  }
 
   //workaround for populating the reservation details,
   //when user clicks on other timeline tabs
@@ -64,7 +69,6 @@ var StayCard = function(viewDom){
         type : 'GET',
         url : "/dashboard/reservation_details?reservation=" + reservation,
         dataType : 'html',
-        timeout : 5000,
         success : function(data) {
           $("#" + currentTimeline).append(data);
         },
