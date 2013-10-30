@@ -1,6 +1,6 @@
 // Show modal to add new loyalty program
 $(document).on('click', '#stay-card-loyalty #wakeup-time', function(event) {
-    
+
 	event.preventDefault();
 	var $href = $(this).attr('href');
 	$modal = '<div id="modal" role="dialog" />', $overlay = '<div id="modal-overlay" />';
@@ -19,7 +19,7 @@ $(document).on('click', '#stay-card-loyalty #wakeup-time', function(event) {
 			alert("Sorry, not there yet!");
 		}
 	});
-	
+
 });
 
 
@@ -29,9 +29,9 @@ $(document).on('click', '#set-wake-up-call #save-wakeup-call', function(event){
 
 $(document).on('change', 'select.styled#wake-up', function(e){
         e.stopImmediatePropagation();
-        
+
         var selectedOption = $(this).find('option:selected').val();
-        
+
         $("#set-wake-up-call #wakeup-time").html("");
         $("#set-wake-up-call #wakeup-time").html(selectedOption);
         $("#set-wake-up-call #wakeup-time").attr("value",selectedOption);
@@ -46,11 +46,11 @@ function saveWakeUpCall(){
 	console.log(data);
 	$.ajax({
 		type: "POST",
-		url : 'dashboard/wakeup_calls',
+		url : 'wakeup/set_wakeup_calls',
 		data :data,
 		success : function(data) {
 			if(data.status == "success"){
-				
+
 			}
 		},
 		error : function() {
