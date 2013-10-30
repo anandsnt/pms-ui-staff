@@ -67,7 +67,7 @@ var StayCard = function(viewDom){
     if (!($($href).length > 0)) {
       $.ajax({
         type : 'GET',
-        url : "staff/dashboard/reservation_details?reservation=" + reservation,
+        url : "staff/staycards/reservation_details?reservation=" + reservation,
         dataType : 'html',
         success : function(data) {
           $("#" + currentTimeline).append(data);
