@@ -145,12 +145,17 @@ function renderContactInformation() {
 				sntapp.fetchAndRenderView('staff/dashboard/likes', $("#likes"), viewParams);
 				// var viewParams = {"user_id" : $("#user_id").val()};
 				sntapp.fetchAndRenderView('staff/dashboard/payment', $("#cc-payment"), viewParams);
+
+				var viewParams = {"confirmno" : $('#confirm_no').val()};
+				sntapp.fetchAndRenderView('staff/user_memberships', $("#loyalty"), viewParams);
+
+
 				setTimeout(function() {
 					refreshGuestCardScroll();
 				}, 300);
 		
 				// renderPayment();
-				renderGuestCardLoyalty();
+				//renderGuestCardLoyalty();
 				
 			});
 		});
