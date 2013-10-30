@@ -147,9 +147,11 @@ function renderContactInformation() {
 			}).done(function() {
 				$('#loading').remove();
 				var guest_id = $("#guest_id").val();
+
 				renderGuestCardLike(guest_id);
 				renderPayment();
 				renderGuestCardLoyalty();
+				
 			});
 		});
 
