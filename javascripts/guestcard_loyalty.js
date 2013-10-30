@@ -1,4 +1,4 @@
-// Function to render guest card loyalty
+/*// Function to render guest card loyalty
 function renderGuestCardLoyalty(){
 	var confirmNum = $('#confirm_no').val();
 		$.ajax({
@@ -218,4 +218,4 @@ $(document).on('change', "#new-hlp #hotel-loyalty-types", function(event) {
 			});
 		}
 	});
-});
+});*/

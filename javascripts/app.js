@@ -13,7 +13,6 @@ var app = function(){
     }
 
     this.renderView = function(viewData, viewDom){
-        console.log("render viewwww");
         viewDom.html(viewData);
         viewObject = that.getViewInstance(viewDom);
         viewObject.initialize();
@@ -22,7 +21,7 @@ var app = function(){
     }
 
     //Fetch from AJAX
-    // On Success, invoke that.render_view
+    // On Success, invoke render_view
     // Show error message on failure
     this.fetchAndRenderView = function(viewURL, viewDom, params){
         $.ajax({
@@ -32,9 +31,6 @@ var app = function(){
             async: false,
             success: function(data) {
                 that.renderView(data, viewDom);    
-                /*viewDom.html(data);
-                var newView = new window[viewName]($(viewDom));
-                newView.pageinit();*/
             },
             error: function(){
                 console.log("There is an error!!");

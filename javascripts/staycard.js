@@ -2,7 +2,7 @@ var StayCard = function(viewDom){
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
-  
+
   this.pageinit = function(){
     setUpStaycard(that.myDom);
     //Bind staycard events
@@ -11,21 +11,27 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation-listing li a')).on('click', that.reservationListItemClicked);
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
+
   }
-  
-  this.setNewspaperPreferance = function(e){
-  	var confirmNum = $('#confirm_no').val();
-  	var newspaperValue = $('#newspaper').val();
+
+  this.initSubViews = function(){
+    var reservationCardLoyaltyView = new ReservationCardLoyaltyView("#reservationcard-loyalty");
+    reservationCardLoyaltyView.initialize();
+}
+
+  this.setNewspaperPreferance = function(e){  	
+  	var reservation_id = getReservationId();
+  	var newspaperValue = $('#reservation_newspaper').val();
   	$.ajax({
       	type : 'POST',
       	url : "reservation/add_newspaper_preference",
-      	data : {"confirmno": confirmNum, "selected_newspaper" :newspaperValue } ,
+      	data : {"reservation_id": reservation_id, "selected_newspaper" :newspaperValue } ,
       	success : function(data) {
           	if(data.status == "success"){
-          	  console.log("Succesfully set newspaper preferance");
+          	    console.log("Succesfully set newspaper preferance");
           	}
           	else{
-          	  console.log("Something is wrong!");
+          	    console.log("Something is wrong!");
           	}
       	},
       	error : function() {
@@ -33,13 +39,14 @@ var StayCard = function(viewDom){
       	}
   	});
   }
+
   //Load all subviews here
   this.initSubViews = function(){
-    var testView = new TestView();
-    testView.pageinit();
+
     var guestContactView = new GuestContactView("#contact-info");
     guestContactView.pageinit();
   }
+
 
   //workaround for populating the reservation details,
   //when user clicks on other timeline tabs
@@ -53,7 +60,7 @@ var StayCard = function(viewDom){
 
   // Load reservation details
   this.reservationListItemClicked = function(e){
-    that.displayReservationDetails($(this).attr('href')); 
+    that.displayReservationDetails($(this).attr('href'));
   }
 
   //Add the reservation details to the DOM.
@@ -70,7 +77,7 @@ var StayCard = function(viewDom){
     if (!($($href).length > 0)) {
       $.ajax({
         type : 'GET',
-        url : "/dashboard/reservation_details?reservation=" + reservation,
+        url : "staff/dashboard/reservation_details?reservation=" + reservation,
         dataType : 'html',
         success : function(data) {
           $("#" + currentTimeline).append(data);
