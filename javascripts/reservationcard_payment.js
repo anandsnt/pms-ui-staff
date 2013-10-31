@@ -8,14 +8,36 @@ var ReservationPaymentView = function(domRef){
   this.pageinit = function(){
   	console.log("Page Init inside reservation payment");
     this.myDom.find($('#add-new-payment')).on('click', that.addNewPaymentModal);
-  }
+    this.myDom.find($('#staycard_creditcard')).on('change', that.setPaymentToReservation);
+  };
   this.delegateEvents = function(){
   	console.log("delegateEvents inside reservation payment");
   	
-  }
+  };
   this.addNewPaymentModal = function(){
   	console.log("Initialise addNewPaymentModal");
-  	var addNewPaymentModal = new AddNewPaymentModal();
+  	var addNewPaymentModal = new AddNewPaymentModal("reservation");
     addNewPaymentModal.initialize();
-  }
-}
+  };
+  this.setPaymentToReservation = function(){
+  	var resevation_id = getReservationId();
+  	var credit_card_id = $("#staycard_creditcard").val();
+  	$.ajax({
+		type : "POST",
+		url : '/staff/reservation/link_payment',
+		data : {"resevation_id": resevation_id, "user_payment_type_id": credit_card_id },
+		async : false,
+		dataType : 'json',
+		success : function() {			
+			
+		},
+		error : function() {
+			console.log("There is an error!!");
+		}
+	});
+  
+  };
+};
+
+
+	
