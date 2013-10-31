@@ -7,12 +7,15 @@ var ValidateCheckinModal = function(){
   	this.delegateEvents = function(){
   		console.log("sub modal delegate events");
     	$('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
-		$('#validate #save').on('click', that.submitAndGotoCheckin);
+   		$('#validate #save').on('click', that.submitAndGotoCheckin);
 		$('#validate #cancel').on('click', that.ignoreAndGotoCheckin);
 	};
 	this.modalInit = function(){
         console.log("modal init in sub modal");
     };
+    this.show{
+    	alert("hai");
+    }
     this.submitAndGotoCheckin = function(){
     	var userId = $("#user_id").val();
     	var guestId = $('#guest_id').val();

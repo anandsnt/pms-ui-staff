@@ -4,52 +4,11 @@ var GuestcardLoyaltyView = function(domRef){
   this.myDom = domRef;
 
   this.pageinit = function(){
-  	this.myDom.find($('#loyalty-tab .active-item, #loyalty-tab .add-new-button'))
-  					.on('click', that.openGuestCardModals);
+  	
+  };
+  this.delegateEvents = function(){
 
-  }
-
-
-  this.openGuestCardModals = function(e){
-  	e.preventDefault();
-	e.stopImmediatePropagation();
-	var $href = $(this).attr('href'),
-     	$id = $(this).attr('loyaltyId'),
-    	$type = $(this).attr('loyaltytype');
-    	$action = $(this).attr('data-action');	
-	$modal = '<div id="modal" role="dialog" />', $overlay = '<div id="modal-overlay" />';
-	// Get modal data
-	$.ajax({
-		url : $href,
-		// async:false,
-		data : {
-			id : $id,
-			type: $type
-		},
-		success : function(data) {
-			setModal();
-			$('#modal').html(data);
-		},
-		error : function() {
-			alert("Sorry, not there yet!");
-		}
-	}).done(function(){  
-        if($action == "new-ffp"){
-        	//Populate the options in airline select box for frequent flyer pgm
-			addFFPSelectOptions("#new-ffp #airline-ff-list");
-		}else if($action == "new-hlp"){
-			//Populate the options in loyalty type select box for frequent flyer pgm 
-			addHLPSelectOptions("#new-hlp #hotel-loyalty-types");
-		}
-    });
-
-  }
-
-}
-
-function tempBindEvents(){
-		// Show modal to set delete a loyalty.
-	/*$(document).on('click', '#loyalty-tab .active-item, #loyalty-tab .add-new-button', function(e) {
+  	$(document).on('click', '#loyalty-tab .active-item, #loyalty-tab .add-new-button', function(e) {
 		e.preventDefault();
 		e.stopImmediatePropagation();
 		var $href = $(this).attr('href'),
@@ -81,7 +40,7 @@ function tempBindEvents(){
 				addHLPSelectOptions("#new-hlp #hotel-loyalty-types");
 			}
 	    });
-	});*/
+	});
 
 	// Delete selected loyalty
 	$(document).on('click', "#loyalty-delete", function(event) {
@@ -252,4 +211,6 @@ function tempBindEvents(){
 			}
 		});
 	});
-}
+  }; 
+
+};

@@ -50,7 +50,8 @@ function saveWakeUpCall(){
 		data :data,
 		success : function(data) {
 			if(data.status == "success"){
-
+				removeModal();
+				$("#reservation_card_wake_up_time").html(wakeUpTime);
 			}
 		},
 		error : function() {
