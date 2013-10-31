@@ -9,7 +9,7 @@ $(document).on('click', '#stay-card-loyalty #wakeup-time', function(event) {
 	$.ajax({
 		type: "POST",
 		url : $href,
-		data :{	"reservation_id": reservation_id	},
+		data :{	"reservation_id": reservation_id},
 		success : function(data) {
 			setModal();
 			$('#modal').html(data);

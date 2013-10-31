@@ -11,7 +11,7 @@ BaseModal = function() {
             that.shoduldShowWhenFetched = true;
             this.fetchFromURL();
         }
-    this.delegateEvents();
+        
     }
     this.modalInit = function(){
         console.log("modal init in basemodal")
@@ -66,6 +66,8 @@ BaseModal = function() {
         }, 0);
 
         $('#modal').html(content);
+        
+        that.delegateEvents();
 
     }
     this.hide = function (){
