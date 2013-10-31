@@ -110,11 +110,8 @@ var GuestContactView = function(domRef){
 					$("#country").val(data.country);
 					$("#phone").val(data.phone);
 					$("#mobile").val(data.mobile);
-
-
-					$("#guest_id").val(data.guest_id);
-					$("#user_id").val(data.user_id);
-
+					
+					
 					$guestCardClickTime = false;
 					// to change flag - to save contact info only if any change happens.
 					$(document).on('change', '#guest_firstname, #guest_lastname, #title, #language, #birthday-month,#birthday-year, #birthday-day, #passport-number,#passport-month, #passport-year, #nationality,#email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event) {
