@@ -11,7 +11,23 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation-listing li a')).on('click', that.reservationListItemClicked);
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
+    that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
 
+  }
+  this.validateEmailAndPhone = function(e){
+  	var reservation_id = getReservationId();
+  	
+  	var phone_num = $("#gc-phone").val();
+  	var email = $("#gc-email").val();
+  	
+  	if(phone_num == "" || email == ""){
+  	       	var validateCheckinModal = new ValidateCheckinModal();
+  	       	validateCheckinModal.initialize();
+  	}
+    else{
+   		alert("not-empty");
+    }
+    
   }
   this.setNewspaperPreferance = function(e){  	
   	var reservation_id = getReservationId();

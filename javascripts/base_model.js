@@ -1,4 +1,5 @@
 BaseModal = function() {
+	this.myDom = "#modal";
     this.url = "";
     this.data = "";
     this.params = {};
@@ -10,12 +11,14 @@ BaseModal = function() {
             that.shoduldShowWhenFetched = true;
             this.fetchFromURL();
         }
+    this.delegateEvents();
     }
     this.modalInit = function(){
         console.log("modal init in basemodal")
     }
 
     this.delegateEvents = function(){
+    	console.log("base modal delegate events")
         $('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
 
     }
