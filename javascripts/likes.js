@@ -75,7 +75,7 @@ var LikesView = function(domRef){
 				data : JSON.stringify(jsonObj),
 				dataType : "json",
 				success : function(data) {
-					$likeInfoChange = false;
+					that.$likeInfoChange = false;
 					console.log("Saved successfully");
 				},
 				error : function() {
