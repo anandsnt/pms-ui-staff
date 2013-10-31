@@ -142,7 +142,7 @@ function renderContactInformation() {
 			    
 
 				var viewParams = {"user_id" : $("#user_id").val()};
-				sntapp.fetchAndRenderView('staff/dashboard/likes', $("#likes"), viewParams);
+				sntapp.fetchAndRenderView('staff/preferences/likes', $("#likes"), viewParams);
 				// var viewParams = {"user_id" : $("#user_id").val()};
 				sntapp.fetchAndRenderView('staff/payments/payment', $("#cc-payment"), viewParams);
 				setTimeout(function() {
