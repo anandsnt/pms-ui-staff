@@ -3,12 +3,78 @@ var AddFFPModal = function(){
   	var that = this;
   	this.url = "staff/user_memberships/new_ffp";
   	this.delegateEvents = function(){
-    	$('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
-
+		that.myDom.find('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
+		that.myDom.find('#new-ffp #save').on('click', that.addFFP);
+		that.myDom.find('#airline-ff-list').on('change', that.airlineChanged);
+		addFFPSelectOptions("#new-ffp #airline-ff-list");
 	}
 	this.modalInit = function(){
-        console.log("modal init in FFP modal")
+        console.log("modal init in FFP modal");
     }
+	this.addFFP = function(event){
+        event.preventDefault();
+		event.stopImmediatePropagation();
+		var $loyalty_id = $("#newffp_id").val();
+		var $airline = $('#airline-ff-list option:selected').val(),
+			$program = $('#airline-ff-pgms option:selected').text(),
+			$code    = $("#ff-code").val(),
+			$level = $('#airline-ff-pgms option:selected').val();
 
+		if($airline == ""){
+			alert("Please select an Airline");
+			return false;
+		}else if($level == ""){
+			alert("Please select a loyalty program");
+			return false;
+		}else if($code == ""){
+			alert("Please enter the loyalty code");
+			return false;
+		}
+
+		var $name   = $('#airline-ff-pgms option:selected').text();
+		updateFFPLoyaltyUI($airline,$code,$program,$name);
+		
+	    var userId = $('#user_id').val();
+	    var guestId = $('#guest_id').val();
+
+		var newFFP = {};
+		newFFP.user_id = userId;
+		newFFP.guest_id = guestId;
+		newFFP.user_membership = {};
+		newFFP.user_membership.membership_class = "FFP"
+		newFFP.user_membership.membership_type = $airline;
+		newFFP.user_membership.membership_card_number = $code;
+		newFFP.user_membership.membership_level = $level;
+
+		updateServerForNewLoyalty(newFFP, function(data){
+	    	$loyaltyid = data.id;
+			    var $new_id = "ff-program-"+$loyaltyid;
+			    
+			    $("#loyalty-type-flyer a.program_new").attr('id',$new_id);
+			    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
+			    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
+			    
+			    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
+			    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
+	    }, "FFP");
+	    
+	    that.hide();
+    }
+  
+    this.airlineChanged = function(event){
+        event.preventDefault();
+		event.stopImmediatePropagation();
+		$("#new-ffp #airline-ff-pgms").html("");
+		$("#new-ffp #airline-ff-pgms").append('<option value="" selected="selected" class="placeholder">Select loyalty program</option>');
+		var selectedAirlineType = $("#new-ffp #airline-ff-list").val();
+		$.each(ffProgramsList, function(key, airline) {
+			if(airline.ff_value == selectedAirlineType){
+				$.each(airline.levels, function(key, value) {
+					var ffOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>'
+					$("#new-ffp #airline-ff-pgms").append(ffOptions);
+				});
+			}
+		});
+    }
   
 }
