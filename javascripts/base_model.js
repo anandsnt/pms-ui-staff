@@ -1,13 +1,14 @@
 BaseModal = function() {
     this.url = "";
     this.data = "";
+    this.myDom = ""; //This will be updated in show method, as the data is inserted into DOM only there.
     this.params = {};
     this.shouldShowWhenFetched = true;
     var that = this;
     this.initialize = function(){
         that.modalInit();
         if(this.data == ""){
-            that.shoduldShowWhenFetched = true;
+            that.shouldShowWhenFetched = true;
             this.fetchFromURL();
         }
     }
@@ -52,7 +53,9 @@ BaseModal = function() {
         { 
             $($modal).prependTo('body'); 
         }
-
+		
+		that.myDom = $('#modal'); // This cannot be done before, as #modal is added to DOM only now.
+		
         if (!$('#modal-overlay').length) 
         { 
             $($overlay).insertAfter('#modal'); 
@@ -63,12 +66,10 @@ BaseModal = function() {
         }, 0);
 
         $('#modal').html(content);
-		that.delegateEvents();
+        
+  		that.delegateEvents();
     }
     this.hide = function (){
-        console.log("hide modal");
-        e.stopPropagation();
-        //removeModal();
         $('#modal, #modal-overlay').removeClass('modal-show'); 
         setTimeout(function() { 
             $('#modal').empty();
