@@ -1,55 +1,47 @@
-/*roomCompleteList = [];
+var RoomAssignmentView = function(viewDom){
+  BaseView.call(this);
+  var that = this;
+  this.myDom = viewDom;
+  //Stores the non-filtered list of rooms
+  this.roomCompleteList = [];
 
-$(function($){ 
-    GetRoomAssignmentList();
-    $('#room-attributes .radio_filters').change(function(){
-        getFilterList();
-    });
-    $('#room-attributes .checkbox_filters').change(function(){
-        getFilterList();
-    });
-    $('.rooms-listing #room_type_selectbox').change(function(){
-        getFilterList()
-    })
+  this.pageinit = function(){
+  	this.GetRoomAssignmentList();
+  	that.myDom.find($('#room-attributes .radio_filters, #room-attributes .checkbox_filters, .rooms-listing #room_type_selectbox')
+  		.change('focusout', that.getFilterList));
+  }
 
-    
-
-
-});
-
-function GetRoomAssignmentList(){
-    $.ajax({
+  //Fetches the non-filtered list of rooms.
+  this.GetRoomAssignmentList = function(){
+  	$.ajax({
         type:       'GET',
         url:        "/sample_json/room_assignment/room_assignment_list.json",
         dataType:   'json',
-        timeout:    5000,
         success: function(data){
-            roomCompleteList = data;
-            getFilterList();
+            that.roomCompleteList = data;
+            that.getFilterList();
         },
         error: function(){
-            roomCompleteList = [];
-            alert("failed to fetch json");
+            that.roomCompleteList = [];
+            console.log("failed to fetch json");
         }
     });
-    
-    
-}
+  }
 
-function getFilterList(){
-    var featureList = [];
+  //Gets the filter options 
+  this.getFilterList = function(e){
+  	var filterOptions = [];
 
     var selctboxOption = $("#room_type_selectbox option:selected").val();
     if(!(selctboxOption === "all")){
-        featureList.push(selctboxOption);
+        filterOptions.push(selctboxOption);
     }
 
     var radioFeatureCount = $('#pref_radio_count').val();
     for (var i = 0; i<radioFeatureCount ; i++){
         if($('#room-attributes #radio_' + i).is(':checked')) {
-
             if(!($('#room-attributes #radio_' + i).val() == "All rooms")){
-                featureList.push($('#room-attributes #radio_' + i).val());
+                filterOptions.push($('#room-attributes #radio_' + i).val());
             }
             
         }
@@ -58,14 +50,16 @@ function getFilterList(){
     var checkboxFeatureCount = $('#pref_checkbox_count').val();
     for (var i = 0; i<checkboxFeatureCount ; i++){
         if($('#room-attributes #option_checkbox_' + i).is(':checked')) {
-            featureList.push($('#room-attributes #option_checkbox_' + i).val());
+            filterOptions.push($('#room-attributes #option_checkbox_' + i).val());
         }
     }
-    applyFilters(featureList);
-}
-function applyFilters(featureList){
-    var matchCountRequired = featureList.length;
-    var roomList = roomCompleteList;
+    that.applyFilters(filterOptions);
+  }
+
+  //Filter the rooms list based on filter options
+  this.applyFilters = function(featureList){
+  	var matchCountRequired = featureList.length;
+    var roomList = this.roomCompleteList;
     
     var filteredRoomList = [];
 
@@ -84,12 +78,12 @@ function applyFilters(featureList){
         }
         
     }
-    displeFilteredRoomList(filteredRoomList);
-    
-    
-}
-function displeFilteredRoomList(filteredRoomList){
-    $('#rooms-available ul').html("");
+    this.displayFilteredRoomList(filteredRoomList);
+  }
+
+  //Display filtered rooms 
+  this.displayFilteredRoomList = function(filteredRoomList){
+  	$('#rooms-available ul').html("");
 
     for (var i=0; i<filteredRoomList.length; i++){
         var room_status_html ="" ;
@@ -124,5 +118,7 @@ function displeFilteredRoomList(filteredRoomList){
         $('#reservation-'+currentReservation+'-room-number').html(roomSelected);
     });  
 
- 
-}*/
+  }
+
+
+}

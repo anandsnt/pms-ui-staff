@@ -1,4 +1,4 @@
-
+/*
 // Show modal to add new loyalty program
 $(document).on('click', '#stay-card-loyalty .add-new-button', function(event) {
 
@@ -182,4 +182,4 @@ $(document).on('change', 'select.styled#loyalty', function(event){
 });
     
 
-    
+    */
