@@ -144,7 +144,7 @@ function renderContactInformation() {
 				var viewParams = {"user_id" : $("#user_id").val()};
 				sntapp.fetchAndRenderView('staff/dashboard/likes', $("#likes"), viewParams);
 				// var viewParams = {"user_id" : $("#user_id").val()};
-				sntapp.fetchAndRenderView('staff/dashboard/payment', $("#cc-payment"), viewParams);
+				sntapp.fetchAndRenderView('staff/payments/payment', $("#cc-payment"), viewParams);
 				setTimeout(function() {
 					refreshGuestCardScroll();
 				}, 300);
