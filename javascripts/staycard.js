@@ -14,7 +14,7 @@ var StayCard = function(viewDom){
 
   }
   this.initSubViews = function(){
-     var reservationPaymentView = new ReservationPaymentView("#reservation-card-loyalty");
+     var reservationPaymentView = new ReservationPaymentView($("#reservation-card-payment"));
      reservationPaymentView.initialize();
   }
   this.setNewspaperPreferance = function(e){  	

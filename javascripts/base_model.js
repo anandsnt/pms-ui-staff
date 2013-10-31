@@ -63,7 +63,7 @@ BaseModal = function() {
         }, 0);
 
         $('#modal').html(content);
-
+		that.delegateEvents();
     }
     this.hide = function (){
         console.log("hide modal");

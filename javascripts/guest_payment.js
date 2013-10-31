@@ -7,7 +7,7 @@ var GuestPaymentView = function(domRef){
   	
   this.pageinit = function(){
   	console.log("Page Init inside guest payment");
-    that.myDomElement.find($('#payment_tab .active-item,#payment_tab #add_new_payment,#stay_card_payment #add_new_payment')).on('click', that.renderNewPaymentView);  
+    that.myDomElement.find($('#payment_tab .active-item,#payment_tab #add_new_payment')).on('click', that.renderNewPaymentView);  
   
   };
   
@@ -146,12 +146,13 @@ var GuestPaymentView = function(domRef){
 				$("#payment_tab #credit_row"+data.id).removeClass("new-item");				
 				$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+'.png';
 				$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
+				/*
 				$newPaymentOption =  "<option value='"+data.id+"'data-number='"+$("#new-payment #card-number-set3").val()+"'"+
 				  "data-name='"+$("#new-payment #name-on-card").val()+"' data-image='"+$newImage+"' data-date='"+$newDate+ "'"+
 				  "data-card='"+$("#new-payment #payment-credit-type").val()+ "'>"+
 				 $("#new-payment #payment-credit-type").val()+" "+$("#new-payment #card-number-set3").val()+" "+$("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val()+ "</option> ";    
-								
-				$("#staycard_creditcard").append($newPaymentOption);
+				*/				
+				//$("#staycard_creditcard").append($newPaymentOption);
 				removeModal();
 			},
 			error: function(){

@@ -7,17 +7,15 @@ var ReservationPaymentView = function(domRef){
   	
   this.pageinit = function(){
   	console.log("Page Init inside reservation payment");
-    
+    this.myDom.find($('#add-new-payment')).on('click', that.addNewPaymentModal);
   }
   this.delegateEvents = function(){
   	console.log("delegateEvents inside reservation payment");
-  	that.myDom.find($('#add-new-payment')).on('click', that.addNewPaymentModal);
-  }
-  this.initialize = function(){
-  	console.log("initialize inside reservation payment");
+  	
   }
   this.addNewPaymentModal = function(){
-  	
-  	alert("addNewPaymentModal");
+  	console.log("Initialise addNewPaymentModal");
+  	var addNewPaymentModal = new AddNewPaymentModal();
+    addNewPaymentModal.initialize();
   }
-};
+}
