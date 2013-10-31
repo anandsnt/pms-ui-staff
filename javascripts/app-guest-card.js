@@ -1,4 +1,4 @@
-$(function($) {
+var setUpGuestcard = function(viewDom) {
 
 	// Resizable guest card variables
 	var $maxHeight = $(window).height(), $breakpoint = ($maxHeight / 2), $cardHeight = '90px';
@@ -50,4 +50,5 @@ $(function($) {
 
 		}
 	});
-});
+
+};

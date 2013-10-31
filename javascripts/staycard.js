@@ -5,6 +5,7 @@ var StayCard = function(viewDom){
 
   this.pageinit = function(){
     setUpStaycard(that.myDom);
+    
     //Bind staycard events
 
     that.myDom.find($('#reservation-timeline li')).on('click', that.reservationTimelineClicked);
@@ -17,7 +18,11 @@ var StayCard = function(viewDom){
   this.initSubViews = function(){
     var reservationCardLoyaltyView = new ReservationCardLoyaltyView("#reservationcard-loyalty");
     reservationCardLoyaltyView.initialize();
-}
+    setUpGuestcard(that.myDom);
+    var guestContactView = new GuestContactView("#contact-info");
+    guestContactView.pageinit();
+  }
+
 
   this.setNewspaperPreferance = function(e){  	
   	var reservation_id = getReservationId();
@@ -40,14 +45,7 @@ var StayCard = function(viewDom){
   	});
   }
 
-  //Load all subviews here
-  this.initSubViews = function(){
-
-    var guestContactView = new GuestContactView("#contact-info");
-    guestContactView.pageinit();
-  }
-
-
+  
   //workaround for populating the reservation details,
   //when user clicks on other timeline tabs
   this.reservationTimelineClicked = function(e){
@@ -77,7 +75,7 @@ var StayCard = function(viewDom){
     if (!($($href).length > 0)) {
       $.ajax({
         type : 'GET',
-        url : "staff/dashboard/reservation_details?reservation=" + reservation,
+        url : "staff/staycards/reservation_details?reservation=" + reservation,
         dataType : 'html',
         success : function(data) {
           $("#" + currentTimeline).append(data);
