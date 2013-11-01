@@ -58,7 +58,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 		}	
 		
 		// var $image = (($("#new-payment #credit_card").val()) == "AX" ? "<img src='/assets/amex.png' alt='amex'>": (($("#new-payment #credit_card").val()) == "MA" ? "<img src='/assets/mastercard.png' alt='mastercard'>": "<img src='/assets/visa.png' alt='visa'>" ));
-		var $image = "<img src='/assets/"+$("#new-payment #payment-credit-type").val().toLowerCase()+".png' alt='visa'>";	
+		var $image = "<img src='/assets/"+$("#new-payment #payment-credit-type").val().toLowerCase()+".png' alt='"+$("#new-payment #payment-credit-type").val().toLowerCase()+"'>";	
 			$number = $card_number.substr($card_number.length - 5);			
 			$expiry = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
 			$cardHolderName = $("#new-payment #name-on-card").val();
@@ -136,7 +136,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 					console.log(data.id);
 					//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
 					
-					
+					$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
 					$newPaymentOption =  "<option value='"+data.id+"'data-number='"+$("#new-payment #card-number-set3").val()+"'"+
 					  "data-name='"+$("#new-payment #name-on-card").val()+"' data-image='"+$newImage+"' data-date='"+$newDate+ "'"+
 					  "data-card='"+$("#new-payment #payment-credit-type").val()+ "'>"+
