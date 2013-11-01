@@ -111,20 +111,18 @@ var AddNewPaymentModal = function(fromPagePayment){
 			});
 			
 		} else {
-			var resevation_id = getReservationId();
+			var reservation_id = getReservationId();
 			$.ajax({
 				type: "POST",
 				url: 'staff/reservation/save_payment',
 				data: { 
-					    resevation_id: resevation_id,
-					    user_id : user_id,
+					    reservation_id: reservation_id,
 						payment_type: $payment_type,
 					    payment_credit_type: $payment_credit_type,
 					    card_number: $card_number,
 					    credit_card: $card_type,
 					    card_expiry: $card_expiry,
-					    name_on_card: $name_on_card,
-					    guest_id: $guest_id
+					    name_on_card: $name_on_card
 					},
 				dataType: 'json',
 				success: function(data) {
