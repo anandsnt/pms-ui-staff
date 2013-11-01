@@ -19,14 +19,12 @@ var AddNewPaymentModal = function(fromPagePayment){
    	
   	var $payment_type = $("#new-payment #payment-type").val();
 		$payment_credit_type = $("#new-payment #payment-credit-type").val();
-		$card_number_set1 = $("#new-payment #card-number-set1").val();
-		$card_number_set2 = $("#new-payment #card-number-set2").val();
-		$card_number_set3 = $("#new-payment #card-number-set3").val();
+		$card_number_set = $("#new-payment #card-number-set1").val();
 		$expiry_month	= $("#new-payment #expiry-month").val();
 		$expiry_year	= $("#new-payment #expiry-year").val();
 		$name_on_card	= $("#new-payment #name-on-card").val();
 		$card_type 		= $("#payment-credit-type").val();
-		$card_number = $card_number_set1;
+		$card_number = $card_number_set;
 		$card_expiry = $expiry_month +"/"+$expiry_year;
 		$card_expiry = "20"+$expiry_year+"-"+$expiry_month+"-01";
 		$guest_id = $("#guest_id").val();
@@ -141,7 +139,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 					$newPaymentOption =  "<option value='"+data.id+"'data-number='"+$number+"'"+
 					  "data-name='"+$("#new-payment #name-on-card").val()+"' data-image='"+$newImage+"' data-date='"+$newDate+ "'"+
 					  "data-card='"+$("#new-payment #payment-credit-type").val()+ "'>"+
-					 $("#new-payment #payment-credit-type").val()+" "+$("#new-payment #card-number-set3").val()+" "+$("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val()+ "</option> ";    
+					 $("#new-payment #payment-credit-type").val()+" "+$number+" "+$("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val()+ "</option> ";    
 									
 					$("#staycard_creditcard").append($newPaymentOption);
 					removeModal();
