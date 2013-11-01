@@ -103,7 +103,7 @@ var GuestPaymentView = function(domRef){
 			$cardHolderName = $("#new-payment #name-on-card").val();
 		
         var	$add = 
-	        '<a id="credit_row" href="dashboard/showCreditModal" credit_id="" class="active-item float item-payment new-item">'+
+	        '<a id="credit_row" href="staf/payments/showCreditModal" credit_id="" class="active-item float item-payment new-item">'+
 	        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
 	        'Ending with<span class="value number">'+$number+'</span></span>'+
 			'<span class="date">Date<span class="value date">'+$expiry+'</span>'+
