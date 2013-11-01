@@ -46,10 +46,10 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 				//Remove the element from DOM
 				$("#stay-card-loyalty #loyalty option.program_new").remove();
 				if(type == "FFP"){
-					$("#loyalty-type-flyer .add-new-button").prev("a").remove();
+					$("#loyalty-ffp a").last().remove();
 					
 				}else if(type == "HLP"){
-					$("#loyalty-type-hotel .add-new-button").prev("a").remove();
+					$("#loyalty-hlp a").last().remove();
 				}
 				clearSelectionUI();
 			}else{
@@ -60,9 +60,9 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 		error: function(response){
 			$("#stay-card-loyalty #loyalty option.program_new").remove();
 			if(type == "FFP"){
-				$("#loyalty-type-flyer .add-new-button").prev("a").remove();
+				$("#loyalty-ffp a").last().remove();
 			}else if(type == "HLP"){
-				$("#loyalty-type-hotel .add-new-button").prev("a").remove();
+				$("#loyalty-hlp a").last().remove();
 			}
 		}
 	 });
@@ -94,7 +94,7 @@ function updateHLPLoyaltyUI($type,$code,$level,$name){
       "<span class='value number'>"+$code+"</span>"+
       "<span class='value name'>"+$level+"</span></a>";
       
-    $("#loyalty-type-hotel .add-new-button").before($html);
+    $("#loyalty-ffp").append($html);
     
     var html_for_staycard = '<option class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
 	$("#stay-card-loyalty #loyalty").append(html_for_staycard);
@@ -110,7 +110,7 @@ function updateFFPLoyaltyUI($type,$code,$program,$name){
       "<span class='value number'>"+$code+"</span>"+
       "<span class='value name'>"+$program+"</span></a>";
       
-    $("#loyalty-type-flyer .add-new-button").before($html);
+    $("#loyalty-ffp").append($html);
     
     var html_for_staycard = '<option class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
 	$("#stay-card-loyalty #loyalty optgroup").last().before(html_for_staycard);
