@@ -131,12 +131,12 @@ var AddNewPaymentModal = function(fromPagePayment){
 						$('#payment_tab a:first').remove();
 						return false;
 					}
-					console.log(data.id);
+					console.log(data.data.id);
 					//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
 					
 					$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
 					$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
-					$newPaymentOption =  "<option value='"+data.id+"'data-number='"+$number+"'"+
+					$newPaymentOption =  "<option value='"+data.data.id+"'data-number='"+$number+"'"+
 					  "data-name='"+$("#new-payment #name-on-card").val()+"' data-image='"+$newImage+"' data-date='"+$newDate+ "'"+
 					  "data-card='"+$("#new-payment #payment-credit-type").val()+ "'>"+
 					 $("#new-payment #payment-credit-type").val()+" "+$number+" "+$("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val()+ "</option> ";    
