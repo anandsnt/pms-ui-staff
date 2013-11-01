@@ -20,12 +20,12 @@ var ReservationPaymentView = function(domRef){
     addNewPaymentModal.initialize();
   };
   this.setPaymentToReservation = function(){
-  	var resevation_id = getReservationId();
+  	var reservation_id = getReservationId();
   	var credit_card_id = $("#staycard_creditcard").val();
   	$.ajax({
 		type : "POST",
 		url : '/staff/reservation/link_payment',
-		data : {"resevation_id": resevation_id, "user_payment_type_id": credit_card_id },
+		data : {"reservation_id": reservation_id, "user_payment_type_id": credit_card_id },
 		async : false,
 		dataType : 'json',
 		success : function() {			
