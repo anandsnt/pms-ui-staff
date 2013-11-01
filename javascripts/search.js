@@ -168,6 +168,19 @@ var Search = function(domRef){
     };
     
     this.writeSearchResult = function(id, firstname, lastname, image, confirmation, status, room, roomstatus, roomstatusextra, roomstatusexplained, location, group, vip){
+    	var $status = "";
+    	if(status == "CHECKING_IN"){
+    		$status = "check-in";
+    	}else if(status == "CHECKEDIN"){
+    		$status = "inhouse";
+    	}else if(status == "CHECKING_OUT"){
+    		$status = "check-out";
+    	}else if(status == "CANCELLED"){
+    		$status = "cancel";
+    	}else if((status == "NOSHOW")||(status == "NOSHOW_CURRENT")){
+    		$status = "no-show";
+    	}
+
     	var $location = (location != '') ? '<span class="icons icon-location">' + location + '</span>' : '',
         $group = (group != '') ? '<em class="icons icon-group">' + group + '</em>' : '',
         $vip = vip ? '<span class="vip">VIP</span>' : '',
@@ -180,7 +193,7 @@ var Search = function(domRef){
                 '<h2>' + lastname + ', ' + firstname + '</h2>' +
                 '<span class="confirmation">' + confirmation + '</span>' + $location + $group +
             '</div>' +
-            '<span class="guest-status ' + status + '">' + status + '</span>' +
+            '<span class="guest-status ' + $status + '">' + $status + '</span>' +
             '<strong class="room-number ' + roomstatus + '">' + room + '</strong>' + $roomAdditional +
         '</a>';
     	return $output;
