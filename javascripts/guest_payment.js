@@ -18,7 +18,7 @@ var GuestPaymentView = function(domRef){
 		removeModal();
 		$.ajax({
 			type: "POST",
-			url: 'staff/dashboard/deleteCreditCard',
+			url: 'staff/payments/deleteCreditCard',
 			data: {id: $credit_card_id},
 			dataType: 'json',
 			success: function(data) {
@@ -41,7 +41,7 @@ var GuestPaymentView = function(domRef){
 		
 		$.ajax({
 			type: "POST",
-			url: 'staff/dashboard/setCreditAsPrimary',
+			url: 'staff/payments/setCreditAsPrimary',
 			data: {id: $credit_card_id, user_id: $user_id},
 			dataType: 'json',
 			success: function(data) {
@@ -119,7 +119,7 @@ var GuestPaymentView = function(domRef){
 		console.log("user_id"+user_id);
 		$.ajax({
 			type: "POST",
-			url: 'staff/dashboard/save_new_payment',
+			url: 'staff/payments/save_new_payment',
 			data: { 
 				    user_id : user_id,
 					payment_type: $payment_type,
@@ -199,7 +199,7 @@ var GuestPaymentView = function(domRef){
 				$('#modal').html(data);
 				$("#new-payment .error").hide();
 				//To be changed
-				if($href == "staff/dashboard/showCreditModal"){
+				if($href == "staff/payments/showCreditModal"){
 					$('#credit-card-set-as-primary').on('click', that.setCreditAsPrimary);   
     				$('#credit-card-delete').on('click', that.deleteCreditCard);  
 				}
@@ -212,7 +212,7 @@ var GuestPaymentView = function(domRef){
 		
 		$.ajax({
 			type: "GET",
-			url: 'staff/dashboard/addNewPayment.json',			
+			url: 'staff/payments/addNewPayment.json',			
 			dataType: 'json',
 			success: function(data) {		
 				that.$paymentTypes = data.data;

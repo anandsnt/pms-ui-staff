@@ -1,29 +1,17 @@
 function bindLoyaltyUtilFunctions(){
-
-
-$(function() {
-	ffProgramsList = [];
-	hlProgramsList = [];
-  	var $url_ffp = 'staff/user_memberships/get_available_ffps.json';
-		$url_hlp = 'staff/user_memberships/get_available_hlps.json';
-				
-	fetchLoyaltyProgramData($url_ffp,'ffp');
-	fetchLoyaltyProgramData($url_hlp,'hlp');
-});
+	$(function() {
+		ffProgramsList = [];
+		hlProgramsList = [];
+	  	var $url_ffp = 'staff/user_memberships/get_available_ffps.json';
+			$url_hlp = 'staff/user_memberships/get_available_hlps.json';
+					
+		fetchLoyaltyProgramData($url_ffp,'ffp');
+		fetchLoyaltyProgramData($url_hlp,'hlp');
+	});
 } 
 
 var $selectedLoyaltyProgram ="";
 var $selectedLoyaltyType ="";
-
-/*$(function() {
-	ffProgramsList = [];
-	hlProgramsList = [];
-  	var $url_ffp = 'staff/user_memberships/get_available_ffps.json';
-		$url_hlp = 'staff/user_memberships/get_available_hlps.json';
-				
-	fetchLoyaltyProgramData($url_ffp,'ffp');
-	fetchLoyaltyProgramData($url_hlp,'hlp');
-});*/
 
 //To fetch the ffp or hlp list
 function fetchLoyaltyProgramData(url,type){
@@ -101,7 +89,7 @@ function updateHLPLoyaltyUI($type,$code,$level,$name){
 	var $number = $code.slice(-4); // Get last 4 digits of code.
 	var $value  = ($type).toLowerCase()+"-"+$number;
 	
-	var $html = "<a loyaltytype='hotel' loyaltyid='' id='' href='staff/user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
+	var $html = "<a loyaltytype='hotel' loyaltyid='' id='' class='active-item item-loyalty float program_new'>"+
       "<span class='value code'>"+$type+"</span>"+
       "<span class='value number'>"+$code+"</span>"+
       "<span class='value name'>"+$level+"</span></a>";
@@ -117,7 +105,7 @@ function updateFFPLoyaltyUI($type,$code,$program,$name){
 	var $number = $code.slice(-4); // Get last 4 digits of code.
 	var $value  = ($type).toLowerCase()+"-"+$number;
 	
-	var $html = "<a loyaltytype='flyer' loyaltyid='' id=''+ href='staff/user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
+	var $html = "<a loyaltytype='flyer' loyaltyid='' id='' class='active-item item-loyalty float program_new'>"+
       "<span class='value code'>"+$type+"</span>"+
       "<span class='value number'>"+$code+"</span>"+
       "<span class='value name'>"+$program+"</span></a>";

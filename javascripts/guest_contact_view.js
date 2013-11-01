@@ -110,8 +110,7 @@ var GuestContactView = function(domRef){
 					$("#country").val(data.country);
 					$("#phone").val(data.phone);
 					$("#mobile").val(data.mobile);
-					
-					
+
 					$guestCardClickTime = false;
 					// to change flag - to save contact info only if any change happens.
 					$(document).on('change', '#guest_firstname, #guest_lastname, #title, #language, #birthday-month,#birthday-year, #birthday-day, #passport-number,#passport-month, #passport-year, #nationality,#email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event) {
@@ -127,11 +126,11 @@ var GuestContactView = function(domRef){
 				$('#loading').remove();
 				var guest_id = $("#guest_id").val();		
 			    
-// 
+ 
 				var viewParams = {"user_id" : $("#user_id").val()};
-				sntapp.fetchAndRenderView('staff/dashboard/likes', $("#likes"), viewParams);
+				sntapp.fetchAndRenderView('staff/preferences/likes', $("#likes"), viewParams);
 
-				sntapp.fetchAndRenderView('staff/dashboard/payment', $("#cc-payment"), viewParams);
+				sntapp.fetchAndRenderView('staff/payments/payment', $("#cc-payment"), viewParams);
 				var reservation_id = getReservationId();
 				viewParams = {"reservation_id" : reservation_id};
 				sntapp.fetchAndRenderView('staff/user_memberships', $("#loyalty"), viewParams);
@@ -139,12 +138,9 @@ var GuestContactView = function(domRef){
 					refreshGuestCardScroll();
 				}, 300);
 
-				// renderGuestCardLoyalty();
-// 				
+ 				
 			});
-		// });
 
-	// }
 	};
 	
 };

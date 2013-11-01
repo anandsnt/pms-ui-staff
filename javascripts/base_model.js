@@ -70,9 +70,6 @@ BaseModal = function() {
   		that.delegateEvents();
     }
     this.hide = function (){
-        console.log("hide modal");
-        e.stopPropagation();
-        //removeModal();
         $('#modal, #modal-overlay').removeClass('modal-show'); 
         setTimeout(function() { 
             $('#modal').empty();

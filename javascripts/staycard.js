@@ -34,14 +34,12 @@ var StayCard = function(viewDom){
 
 
   this.initSubViews = function(){
-    var reservationCardLoyaltyView = new ReservationCardLoyaltyView("#reservationcard-loyalty");
+    var reservationCardLoyaltyView = new ReservationCardLoyaltyView($("#reservationcard-loyalty"));
     reservationCardLoyaltyView.initialize();
     setUpGuestcard(that.myDom);
     var guestContactView = new GuestContactView("#contact-info");
     guestContactView.pageinit();
   }
-
-
 
   this.setNewspaperPreferance = function(e){  	
   	var reservation_id = getReservationId();
