@@ -21,6 +21,8 @@ var StayCard = function(viewDom){
     setUpGuestcard(that.myDom);
     var guestContactView = new GuestContactView("#contact-info");
     guestContactView.pageinit();
+    var reservationCardNotes = new reservationCardNotesView($("#reservation-notes"));
+    reservationCardNotes.initialize();
   }
 
   this.setNewspaperPreferance = function(e){  	
