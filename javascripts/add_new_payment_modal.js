@@ -138,7 +138,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 					
 					$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
 					$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
-					$newPaymentOption =  "<option value='"+data.id+"'data-number='"+$("#new-payment #card-number-set3").val()+"'"+
+					$newPaymentOption =  "<option value='"+data.id+"'data-number='"+$number+"'"+
 					  "data-name='"+$("#new-payment #name-on-card").val()+"' data-image='"+$newImage+"' data-date='"+$newDate+ "'"+
 					  "data-card='"+$("#new-payment #payment-credit-type").val()+ "'>"+
 					 $("#new-payment #payment-credit-type").val()+" "+$("#new-payment #card-number-set3").val()+" "+$("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val()+ "</option> ";    
