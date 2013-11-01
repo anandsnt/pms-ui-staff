@@ -300,7 +300,7 @@ $(function($){
                         $('#' + $next).html(data);
                         //TODO: move to app-search.js
                         /*if($trigger_search=='TRUE'){
-                            $url = 'staff/search.json?status='+$search_status;
+                            $url = search.json?status='+$search_status;
                             load_search_data($url,'');
                         }*/
                     },
