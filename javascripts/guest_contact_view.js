@@ -129,9 +129,9 @@ var GuestContactView = function(domRef){
 			    
 // 
 				var viewParams = {"user_id" : $("#user_id").val()};
-				sntapp.fetchAndRenderView('staff/dashboard/likes', $("#likes"), viewParams);
+				sntapp.fetchAndRenderView('staff/preferences/likes', $("#likes"), viewParams);
 
-				sntapp.fetchAndRenderView('staff/dashboard/payment', $("#cc-payment"), viewParams);
+				sntapp.fetchAndRenderView('staff/payments/payment', $("#cc-payment"), viewParams);
 				var reservation_id = getReservationId();
 				viewParams = {"reservation_id" : reservation_id};
 				sntapp.fetchAndRenderView('staff/user_memberships', $("#loyalty"), viewParams);
@@ -139,8 +139,7 @@ var GuestContactView = function(domRef){
 					refreshGuestCardScroll();
 				}, 300);
 
-				// renderGuestCardLoyalty();
-// 				
+ 				
 			});
 		// });
 

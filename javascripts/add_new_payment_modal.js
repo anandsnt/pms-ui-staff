@@ -2,7 +2,7 @@ var AddNewPaymentModal = function(fromPagePayment){
   	BaseModal.call(this);
   	var that = this;
   	// this.myDom = "#modal";
-  	this.url = "staff/dashboard/addNewPayment";
+  	this.url = "staff/payments/addNewPayment";
   	this.$paymentTypes = [];
   	this.delegateEvents = function(){
   		console.log("sub modal delegate events");
@@ -65,7 +65,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 		var user_id = $("#user_id").val();
 		if(fromPagePayment == "guest"){
 			var	$add = 
-	        '<a id="credit_row" href="dashboard/showCreditModal" credit_id="" class="active-item float item-payment new-item">'+
+	        '<a id="credit_row"  credit_id="" class="active-item float item-payment new-item">'+
 	        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
 	        'Ending with<span class="value number">'+$number+'</span></span>'+
 			'<span class="date">Date<span class="value date">'+$expiry+'</span>'+
@@ -76,7 +76,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 		    $("#payment_tab").prepend($add);
 		    $.ajax({
 				type: "POST",
-				url: 'staff/dashboard/save_new_payment',
+				url: 'staff/payments/save_new_payment',
 				data: { 
 					    user_id : user_id,
 						payment_type: $payment_type,
@@ -157,7 +157,7 @@ var AddNewPaymentModal = function(fromPagePayment){
    this.getPaymentsList = function(){
    $.ajax({
 			type: "GET",
-			url: 'staff/dashboard/addNewPayment.json',			
+			url: 'staff/payments/addNewPayment.json',			
 			dataType: 'json',
 			success: function(data) {		
 				that.$paymentTypes = data.data;

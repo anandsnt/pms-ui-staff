@@ -53,7 +53,9 @@ BaseModal = function() {
         { 
             $($modal).prependTo('body'); 
         }
-that.myDom = $('#modal'); // This cannot be done before, as #modal is added to DOM only now.
+		
+		that.myDom = $('#modal'); // This cannot be done before, as #modal is added to DOM only now.
+		
         if (!$('#modal-overlay').length) 
         { 
             $($overlay).insertAfter('#modal'); 
@@ -65,7 +67,7 @@ that.myDom = $('#modal'); // This cannot be done before, as #modal is added to D
 
         $('#modal').html(content);
         
-  that.delegateEvents();
+  		that.delegateEvents();
     }
     this.hide = function (){
         console.log("hide modal");

@@ -18,11 +18,13 @@ var StayCard = function(viewDom){
   this.initSubViews = function(){
   	var reservationPaymentView = new ReservationPaymentView($("#reservation-card-payment"));
     reservationPaymentView.initialize();
-    var reservationCardLoyaltyView = new ReservationCardLoyaltyView("#reservationcard-loyalty");
+    var reservationCardLoyaltyView = new ReservationCardLoyaltyView($("#reservationcard-loyalty"));
     reservationCardLoyaltyView.initialize();
     setUpGuestcard(that.myDom);
     var guestContactView = new GuestContactView("#contact-info");
     guestContactView.pageinit();
+    var reservationCardNotes = new reservationCardNotesView($("#reservation-notes"));
+    reservationCardNotes.initialize();
   }
 
 
@@ -141,13 +143,14 @@ var StayCard = function(viewDom){
       }
     });
 
-   };
+    }
 
 
     this.guestDetailsEdited = function(e){
+
       //send an update request to the third party system
       that.updateGuestDetails($(this).val(), $(this).attr('data-val'));
-    };
+    }
 
 }
 

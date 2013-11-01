@@ -37,7 +37,7 @@ var Search = function(domRef){
 	    		return false;
 	    	}
 	    	
-	    	$search_url = 'staff/search.json?';
+	    	$search_url = 'search.json?';
 	    	that.load_search_data($search_url,$query);
 	    }
 	    else if(searchResults.guests.length > 0){

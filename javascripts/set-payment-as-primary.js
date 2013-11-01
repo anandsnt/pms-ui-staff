@@ -3,7 +3,7 @@ var SetPaymentAsPrimaryModal = function(){
   	var that = this;
   	this.credit_id = "";
   	// this.myDom = "#modal";
-  	this.url = "staff/dashboard/showCreditModal";
+  	this.url = "staff/payments/showCreditModal";
   	this.$paymentTypes = [];
   	this.delegateEvents = function(){
   		console.log("sub modal delegate events");
@@ -29,7 +29,7 @@ var SetPaymentAsPrimaryModal = function(){
 		
 		$.ajax({
 			type: "POST",
-			url: 'staff/dashboard/setCreditAsPrimary',
+			url: 'staff/payments/setCreditAsPrimary',
 			data: {id: $credit_card_id, user_id: $user_id},
 			dataType: 'json',
 			success: function(data) {
@@ -49,7 +49,7 @@ var SetPaymentAsPrimaryModal = function(){
 		removeModal();
 		$.ajax({
 			type: "POST",
-			url: 'staff/dashboard/deleteCreditCard',
+			url: 'staff/payments/deleteCreditCard',
 			data: {id: $credit_card_id},
 			dataType: 'json',
 			success: function(data) {
