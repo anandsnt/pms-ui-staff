@@ -137,6 +137,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 					//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
 					
 					$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
+					$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
 					$newPaymentOption =  "<option value='"+data.id+"'data-number='"+$("#new-payment #card-number-set3").val()+"'"+
 					  "data-name='"+$("#new-payment #name-on-card").val()+"' data-image='"+$newImage+"' data-date='"+$newDate+ "'"+
 					  "data-card='"+$("#new-payment #payment-credit-type").val()+ "'>"+
