@@ -50,9 +50,9 @@ var AddFFPModal = function(){
 	    	$loyaltyid = data.id;
 			    var $new_id = "ff-program-"+$loyaltyid;
 			    
-			    $("#loyalty-type-flyer a.program_new").attr('id',$new_id);
-			    $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
-			    $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
+			    $("#loyalty-ffp a.program_new").attr('id',$new_id);
+			    $("#loyalty-ffp a.program_new").attr('loyaltyid',$loyaltyid);
+			    $("#loyalty-ffp a#"+$new_id).removeClass('program_new');
 			    
 			    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 			    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');

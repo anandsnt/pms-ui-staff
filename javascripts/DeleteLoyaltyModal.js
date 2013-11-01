@@ -23,15 +23,15 @@ var DeleteLoyaltyModal = function(){
 		var $type = that.loyalty_type;
 		
 		if($type == "flyer"){
-			$("#loyalty-type-flyer #ff-program-" +$loyalty_id).remove();
+			$("#loyalty-ffp #ff-program-" +$loyalty_id).remove();
 			$("#stay-card-loyalty #loyalty option#"+$loyalty_id).remove();
 		}
 		else if($type == "hotel"){
-			$("#loyalty-type-hotel #hl-program-" +$loyalty_id).remove();
+			$("#loyalty-hlp #hl-program-" +$loyalty_id).remove();
 			$("#stay-card-loyalty #loyalty option#"+$loyalty_id).remove();
 		}
-		var FFPEmpty = $("#loyalty-type-flyer a:first").hasClass('add-new-button');
-		var HLPEmpty = $("#loyalty-type-hotel a:first").hasClass('add-new-button');
+		var FFPEmpty = $('#loyalty-ffp').is(':empty');
+		var HLPEmpty = $('#loyalty-hlp').is(':empty');
 		
 		if(FFPEmpty && HLPEmpty){
 			clearSelectionUI();
