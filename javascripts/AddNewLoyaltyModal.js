@@ -5,8 +5,6 @@ var AdddNewLoyaltyModal = function(){
   	
   	this.url = "staff/user_memberships/new_loyalty";
   	this.delegateEvents = function(){
-  		
-  		console.log("sub modal delegate events");
     	that.myDom.find('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
 		that.myDom.find('#new-loyalty-program #save').on('click', that.addLoyaltyProgram);
 		that.myDom.find('#new-loyalty-program #program').on('change', that.programChanged);
@@ -111,9 +109,9 @@ var AdddNewLoyaltyModal = function(){
 	        $loyaltyid = data.id;
 	        var $new_id = "ff-program-"+$loyaltyid;
 	        
-	        $("#loyalty-type-flyer a.program_new").attr('id',$new_id);
-	        $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
-	        $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
+	        $("#loyalty-ffp a.program_new").attr('id',$new_id);
+	        $("#loyalty-ffp a.program_new").attr('loyaltyid',$loyaltyid);
+	        $("#loyalty-ffp a#"+$new_id).removeClass('program_new');
 	        
 	        $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 	        $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
@@ -128,9 +126,9 @@ var AdddNewLoyaltyModal = function(){
 	        $loyaltyid = data.id;
 	        var $new_id = "hl-program-"+$loyaltyid;
 	        
-	        $("#loyalty-type-flyer a.program_new").attr('id',$new_id);
-	        $("#loyalty-type-flyer a.program_new").attr('loyaltyid',$loyaltyid);
-	        $("#loyalty-type-flyer a#"+$new_id).removeClass('program_new');
+	        $("#loyalty-hlp a.program_new").attr('id',$new_id);
+	        $("#loyalty-hlp a.program_new").attr('loyaltyid',$loyaltyid);
+	        $("#loyalty-hlp a#"+$new_id).removeClass('program_new');
 	        
 	        $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 	        $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
