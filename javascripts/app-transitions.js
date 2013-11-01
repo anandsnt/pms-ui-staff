@@ -244,8 +244,8 @@ $(function($){
         $showMaster.add(function(){ $('#main-menu').show(); }, $delay);
         $showMaster.start();
     });
-    
-    // Fixing #CICO- , no action when clicked on an active link
+
+    // Fixing #CICO-1218 , no action when clicked on an active link
     $(document).on('click','a[data-transition].active',function(e) {
         e.preventDefault();
     });
