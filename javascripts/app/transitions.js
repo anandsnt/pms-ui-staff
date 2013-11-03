@@ -367,7 +367,7 @@ $(function($){
         // Drawer item is already loaded, just switch to it
         else if ($(this).attr('data-href') == 'history' && !$(this).hasClass('active') && $reloadInDrawer == false)
         {
-            var $next = $('#' + $activeMenuItem).parent('.main-page').attr('id');
+            var $next = $('#' + $activeMenuItem).closest('.main-page').attr('id');
             switchPage($transitionPage, $activeMenuItem, $previous, $next, 'move-from-left');
         }
 
