@@ -1,0 +1,124 @@
+/* 1. ROOT
+==========================================================*/
+html {
+	#font > .sans-serif();
+	height: 100%;
+	.gradient-with-image(@darkTexture, @logoGradientStart, @logoGradientEnd);
+}
+
+body {
+	color: @textColor;
+	height: 100%;
+}
+
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+/* 3. GRAPHICAL ELEMENTS
+==========================================================*/
+/* 4. LAYOUT
+==========================================================*/
+
+/* Navigation sidebar		==============================*/
+	#main-menu {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 80px;
+		height: 100%;
+		padding: 0 10px;
+		overflow: hidden;
+		z-index: 1;
+		.hide;
+
+		li {
+			line-height: 60px;
+			vertical-align: middle;
+			margin-bottom: 0;
+			border-bottom: 1px solid rgba(0,0,0,.15);
+
+			.active { cursor: default; }
+
+			&:nth-child(6),
+			&:last-child {
+				position: absolute;
+				left: 10px;
+			}
+			
+			&:nth-child(6) { bottom: 60px; }
+
+			&:last-child { 
+				bottom: 0;
+				border-bottom: 0; 
+			}
+		}	
+	}
+
+/* 5. COMPONENTS
+==========================================================*/
+
+/* Loading					==============================*/
+	#loading {
+		position: absolute;
+		bottom: 20px;
+		right: 20px;
+		border: 5px solid;
+		border-color: @logoPrimary rgba(255,255,255,.4);
+		z-index: 9999;
+		.square(32px);
+		#border-radius > .rounded(64px);
+		#rotate > .infinite(rotation, .8s, linear, infinite);
+	}
+
+/* Notices					==============================*/
+	.notice {
+		padding: 20px;
+		margin: 10px;
+		color: darken(@yellow, 30);
+		background: lighten(@yellow, 20);
+		border: 1px solid @yellow;
+		#border-radius > .rounded(3px);
+		.show;
+
+		&.error {
+			color: darken(@red, 40);
+			background: lighten(@red, 10);
+			border-color: @red;
+		}
+
+		&.success {
+			color: darken(@green, 20);
+			background: lighten(@green, 20);
+			border-color: @green;
+		}
+
+		&#instruction-title {
+			margin: 0;
+			padding: 10px;
+			font-size: 14px;
+			font-weight: 600;
+			text-transform: uppercase;
+			text-align: center;
+			.show;
+		}
+	}
+
+	.inline-error {
+		margin: 5px 0;
+		color: @red;
+	}
+
+	.inline-success {
+		margin: 5px 0;
+		color: @green;
+	}
+
+	.inline-warning {
+		margin: 5px 0;
+		color: darken(@yellow, 30);
+	}
+
+/* 6. IE
+==========================================================*/
+/* 7. RESPONSIVE
+==========================================================*/
