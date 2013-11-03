@@ -101,8 +101,7 @@ function displeFilteredRoomList(filteredRoomList){
             "<span class='room-status not-ready'>"+filteredRoomList[i].room_status_explained +"</span>";    
         }
         var output = "<li><a id = 'room-list-item' href='#'"+
-            "class='back-button button white submit-value' data-value='' data-transition='nested-view'"+
-            "data-page='search'>"+room_status_html+"</a></li>";
+            "class='back-button button white submit-value' data-value='' data-transition='nested-view'>"+room_status_html+"</a></li>";
             $('#rooms-available ul').append(output);      
 
        
