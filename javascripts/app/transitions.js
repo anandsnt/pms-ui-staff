@@ -414,19 +414,6 @@ $(function($){
         }
 
         // Back buttons no reload
-        else if ($(this).hasClass('back-button') && $reload == false)
-        {
-            if ($transitionPage.indexOf('main-page') >= 0 || $transitionPage.indexOf('inner-page') >= 0)
-            {
-                goBackToPage($activeMenuItem, $backPage, $transitionType);
-            }
-            else if ($transitionPage.indexOf('nested-view') >= 0)
-            {
-                goBackToView($activeMenuItem, $backView, $transitionType);
-            }
-        }
-
-        // Back buttons no reload
         else if ($(this).hasClass('back-button') && $reloadOnBack == false)
         {
             if ($transitionPage.indexOf('main-page') >= 0 || $transitionPage.indexOf('inner-page') >= 0)
