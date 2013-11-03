@@ -322,11 +322,7 @@ $(function($){
     });
 
     // Masked input
-    $(document).on('DOMNodeInserted', function (e) {
-        if (e.target.id == 'view-nested-first' || e.target.id == 'view-nested-second') {
-            $('.masked-input').keyup(resizeInput).each(resizeInput);
-        }
-    });
+    $('.masked-input').keyup(resizeInput).each(resizeInput);
 
     // Resize masked inputs to match content width
     $(document).on('focus', '.masked-input', function(){
