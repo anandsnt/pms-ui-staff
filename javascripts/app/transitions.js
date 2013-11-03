@@ -91,7 +91,7 @@ function switchPage($type, $menuActiveItem, $prevPage, $nextPage, $transition){
         $('#' + $nextPage).removeClass($transition); 
         $('#' + $prevPage).removeClass('page-current set-back ' + $transition);
 
-        $('.inner-page').removeClass('page-locked').removeClass('page-current').empty();
+        $('.inner-page').removeClass('page-locked').removeClass('set-back').removeClass('page-current').empty();
         $('.main-page').removeClass('prev-page-current');
     }, $delay);
 
