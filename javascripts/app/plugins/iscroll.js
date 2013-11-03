@@ -258,8 +258,8 @@ function IScroll (el, options) {
 		bounceEasing: '',
 
 		// comment out to keep everything selectable
-		// preventDefault: true, 
-		// preventDefaultException: { tagName: /^(A|INPUT|TEXTAREA|BUTTON|SELECT)$/ },
+		preventDefault: true, 
+		preventDefaultException: { tagName: /^(A|DIV|INPUT|TEXTAREA|BUTTON|SELECT)$/ },
 
 		HWCompositing: true,
 		useTransition: true,
