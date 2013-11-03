@@ -218,7 +218,7 @@ function modalInit(content, closeAfter) {
             $('#modal').html(data);
         },
         error: function(){
-            modalInit('modals/alerts/not-there-yet/');
+            console.log('Error loading modal view data');
         }
     });
 
@@ -272,14 +272,6 @@ $(function($){
     styleCheckboxRadio();
     onOffSwitch();   
     setupFile();
-
-    // Styled form elements - on dom inserted
-    $(document).on('DOMNodeInserted', function (e) {
-        if (e.target.id == 'view-nested-first' || e.target.id == 'view-nested-second') {
-            styleCheckboxRadio();
-            onOffSwitch();
-        }
-    });
 
     // Styled form elements - on click
     $(document).on('click', '.checkbox, .radio', function(e){
@@ -357,6 +349,9 @@ $(function($){
         var $href = $(this).attr('href'),
             $action = $(this).closest('form').attr('action'),
             $duration = $(this).attr('data-duration');
+
+        console.log($href);
+        console.log($action);
 
         modalInit($href ? $href : $action, $duration);
     }); 
