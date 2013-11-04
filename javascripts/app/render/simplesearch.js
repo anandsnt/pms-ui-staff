@@ -1,5 +1,5 @@
-searchResults = {};
-searchResults.guests = [];
+// searchResults = {};
+// searchResults.guests = [];
 
 // Capitalize first letter
 jQuery.fn.capitalize = function() {

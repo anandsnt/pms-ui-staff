@@ -2,6 +2,8 @@ var Search = function(domRef){
   BaseView.call(this);
   var that = this;
   this.myDomElement = domRef;  
+  searchResults = {};
+  searchResults.guests = [];
   	
   this.pageinit = function(){
   	console.log("Page Init inside search");
