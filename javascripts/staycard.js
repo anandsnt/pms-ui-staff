@@ -16,11 +16,15 @@ var StayCard = function(viewDom){
   }
 
   this.initSubViews = function(){
-    var reservationCardLoyaltyView = new ReservationCardLoyaltyView("#reservationcard-loyalty");
+  	var reservationPaymentView = new ReservationPaymentView($("#reservation-card-payment"));
+    reservationPaymentView.initialize();
+    var reservationCardLoyaltyView = new ReservationCardLoyaltyView($("#reservationcard-loyalty"));
     reservationCardLoyaltyView.initialize();
     setUpGuestcard(that.myDom);
     var guestContactView = new GuestContactView("#contact-info");
     guestContactView.pageinit();
+    var reservationCardNotes = new reservationCardNotesView($("#reservation-notes"));
+    reservationCardNotes.initialize();
   }
 
 

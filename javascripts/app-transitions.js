@@ -245,9 +245,16 @@ $(function($){
         $showMaster.start();
     });
 
+    // Fixing #CICO-1218 , no action when clicked on an active link
+    $(document).on('click','a[data-transition].active',function(e) {
+        e.preventDefault();
+    });
+
+
     // All other screens - loaded dynamicilly
     $(document).on('click','a[data-transition]:not(.active):not(.no-auto-bind)',function(e) {
         e.preventDefault();
+
         // Common variables
         var $loader = '<div id="loading" />',
             $href = $(this).attr('href'),
@@ -277,6 +284,8 @@ $(function($){
             var $previous = $('.nested-view.view-current').attr('id'),
                 $next = $('.nested-view:not(.view-current)').attr('id');
         }
+
+
         
         // Load next page/view or reload previous view before going back
         if(!$(this).hasClass('back-button') || ($(this).hasClass('back-button') && $reload == true))
@@ -291,7 +300,7 @@ $(function($){
                         $('#' + $next).html(data);
                         //TODO: move to app-search.js
                         /*if($trigger_search=='TRUE'){
-                            $url = 'staff/search.json?status='+$search_status;
+                            $url = search.json?status='+$search_status;
                             load_search_data($url,'');
                         }*/
                     },

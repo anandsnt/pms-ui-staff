@@ -1,29 +1,17 @@
 function bindLoyaltyUtilFunctions(){
-
-
-$(function() {
-	ffProgramsList = [];
-	hlProgramsList = [];
-  	var $url_ffp = 'staff/user_memberships/get_available_ffps.json';
-		$url_hlp = 'staff/user_memberships/get_available_hlps.json';
-				
-	fetchLoyaltyProgramData($url_ffp,'ffp');
-	fetchLoyaltyProgramData($url_hlp,'hlp');
-});
+	$(function() {
+		ffProgramsList = [];
+		hlProgramsList = [];
+	  	var $url_ffp = 'staff/user_memberships/get_available_ffps.json';
+			$url_hlp = 'staff/user_memberships/get_available_hlps.json';
+					
+		fetchLoyaltyProgramData($url_ffp,'ffp');
+		fetchLoyaltyProgramData($url_hlp,'hlp');
+	});
 } 
 
 var $selectedLoyaltyProgram ="";
 var $selectedLoyaltyType ="";
-
-/*$(function() {
-	ffProgramsList = [];
-	hlProgramsList = [];
-  	var $url_ffp = 'staff/user_memberships/get_available_ffps.json';
-		$url_hlp = 'staff/user_memberships/get_available_hlps.json';
-				
-	fetchLoyaltyProgramData($url_ffp,'ffp');
-	fetchLoyaltyProgramData($url_hlp,'hlp');
-});*/
 
 //To fetch the ffp or hlp list
 function fetchLoyaltyProgramData(url,type){
@@ -58,10 +46,10 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 				//Remove the element from DOM
 				$("#stay-card-loyalty #loyalty option.program_new").remove();
 				if(type == "FFP"){
-					$("#loyalty-type-flyer .add-new-button").prev("a").remove();
+					$("#loyalty-ffp a").last().remove();
 					
 				}else if(type == "HLP"){
-					$("#loyalty-type-hotel .add-new-button").prev("a").remove();
+					$("#loyalty-hlp a").last().remove();
 				}
 				clearSelectionUI();
 			}else{
@@ -72,9 +60,9 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 		error: function(response){
 			$("#stay-card-loyalty #loyalty option.program_new").remove();
 			if(type == "FFP"){
-				$("#loyalty-type-flyer .add-new-button").prev("a").remove();
+				$("#loyalty-ffp a").last().remove();
 			}else if(type == "HLP"){
-				$("#loyalty-type-hotel .add-new-button").prev("a").remove();
+				$("#loyalty-hlp a").last().remove();
 			}
 		}
 	 });
@@ -101,12 +89,12 @@ function updateHLPLoyaltyUI($type,$code,$level,$name){
 	var $number = $code.slice(-4); // Get last 4 digits of code.
 	var $value  = ($type).toLowerCase()+"-"+$number;
 	
-	var $html = "<a loyaltytype='hotel' loyaltyid='' id='' href='staff/user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
+	var $html = "<a loyaltytype='hotel' loyaltyid='' id='' class='active-item item-loyalty float program_new'>"+
       "<span class='value code'>"+$type+"</span>"+
       "<span class='value number'>"+$code+"</span>"+
       "<span class='value name'>"+$level+"</span></a>";
       
-    $("#loyalty-type-hotel .add-new-button").before($html);
+    $("#loyalty-ffp").append($html);
     
     var html_for_staycard = '<option class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
 	$("#stay-card-loyalty #loyalty").append(html_for_staycard);
@@ -117,12 +105,12 @@ function updateFFPLoyaltyUI($type,$code,$program,$name){
 	var $number = $code.slice(-4); // Get last 4 digits of code.
 	var $value  = ($type).toLowerCase()+"-"+$number;
 	
-	var $html = "<a loyaltytype='flyer' loyaltyid='' id=''+ href='staff/user_memberships/delete_membership' class='active-item item-loyalty float program_new'>"+
+	var $html = "<a loyaltytype='flyer' loyaltyid='' id='' class='active-item item-loyalty float program_new'>"+
       "<span class='value code'>"+$type+"</span>"+
       "<span class='value number'>"+$code+"</span>"+
       "<span class='value name'>"+$program+"</span></a>";
       
-    $("#loyalty-type-flyer .add-new-button").before($html);
+    $("#loyalty-ffp").append($html);
     
     var html_for_staycard = '<option class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
 	$("#stay-card-loyalty #loyalty optgroup").last().before(html_for_staycard);
