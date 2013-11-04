@@ -94,7 +94,7 @@ function updateHLPLoyaltyUI($type,$code,$level,$name){
       "<span class='value number'>"+$code+"</span>"+
       "<span class='value name'>"+$level+"</span></a>";
       
-    $("#loyalty-ffp").append($html);
+    $("#loyalty-hlp").append($html);
     
     var html_for_staycard = '<option class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
 	$("#stay-card-loyalty #loyalty").append(html_for_staycard);
