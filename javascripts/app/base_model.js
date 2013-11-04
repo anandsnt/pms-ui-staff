@@ -79,11 +79,7 @@ BaseModal = function() {
         that.delegateCancelEvent();
   		that.delegateEvents();
     }
-    this.hide = function (e){
-    	e.stopPropagation();
-    	e.preventDefault();
-    	e.stopImmediatePropagation();
-    	
+    this.hide = function (){
     	that.unbindCancelEvent();
     	that.unbindEvents();
     	

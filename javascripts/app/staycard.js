@@ -12,7 +12,7 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation-listing li a')).on('click', that.reservationListItemClicked);
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
-
+	that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
   }
 
   this.initSubViews = function(){
@@ -151,7 +151,14 @@ var StayCard = function(viewDom){
       //send an update request to the third party system
       that.updateGuestDetails($(this).val(), $(this).attr('data-val'));
     }
-
+    
+	this.setWakeUpCallModal = function(e){
+		var setWakeUpCallModal = new SetWakeUpCallModal();
+  	    this.reservationId = getReservationId();
+    	setWakeUpCallModal.params = {"reservation_id" : this.reservationId};
+    	setWakeUpCallModal.type ="POST";
+    	setWakeUpCallModal.initialize();
+    }
 }
 
 
