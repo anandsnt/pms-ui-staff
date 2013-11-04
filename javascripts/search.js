@@ -168,18 +168,7 @@ var Search = function(domRef){
     };
     
     this.writeSearchResult = function(id, firstname, lastname, image, confirmation, status, room, roomstatus, roomstatusextra, roomstatusexplained, location, group, vip){
-    	var $status = "";
-    	if(status == "CHECKING_IN"){
-    		$status = "check-in";
-    	}else if(status == "CHECKEDIN"){
-    		$status = "inhouse";
-    	}else if(status == "CHECKING_OUT"){
-    		$status = "check-out";
-    	}else if(status == "CANCELLED"){
-    		$status = "cancel";
-    	}else if((status == "NOSHOW")||(status == "NOSHOW_CURRENT")){
-    		$status = "no-show";
-    	}
+    	var viewStatus = this.getViewStatus(status);
 
     	var $location = (location != '') ? '<span class="icons icon-location">' + location + '</span>' : '',
         $group = (group != '') ? '<em class="icons icon-group">' + group + '</em>' : '',
@@ -193,13 +182,29 @@ var Search = function(domRef){
                 '<h2>' + lastname + ', ' + firstname + '</h2>' +
                 '<span class="confirmation">' + confirmation + '</span>' + $location + $group +
             '</div>' +
-            '<span class="guest-status ' + $status + '">' + $status + '</span>' +
+            '<span class="guest-status ' + viewStatus + '">' + viewStatus + '</span>' +
             '<strong class="room-number ' + roomstatus + '">' + room + '</strong>' + $roomAdditional +
         '</a>';
     	return $output;
     };
+
+    this.getViewStatus = function(status){
+    	var viewStatus = "abc";
+    	if(status == "CHECKING_IN"){
+    		viewStatus = "check-in";
+    	}else if(status == "CHECKEDIN"){
+    		viewStatus = "inhouse";
+    	}else if(status == "CHECKING_OUT"){
+    		viewStatus = "check-out";
+    	}else if(status == "CANCELLED"){
+    		viewStatus = "cancel";
+    	}else if((status == "NOSHOW")||(status == "NOSHOW_CURRENT")){
+    		viewStatus = "no-show";
+    	}
+    	return viewStatus;
+    }
     
-     this.updateView = function(){
+    this.updateView = function(){
      	// Content update
 	    if ($('#search-results').is(':empty'))
 	    {
@@ -217,7 +222,7 @@ var Search = function(domRef){
 	    // Set pageScroll
 	    if (pageScroll) { destroyPageScroll(); }
 	    createPageScroll('#search');
-     };
+    };
   
 };
 
