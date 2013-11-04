@@ -7,7 +7,7 @@ var GuestContactView = function(domRef){
 		// that.renderContactInformation();
        setTimeout(function() {
 			that.renderContactInformation();
-		}, 300);
+		}, 1000);
 		// that.handleEv();
 		$('#guest-like, #guest-credit, #guest-loyalty').on('click', that.saveContactInfo);
 		$('html').on('click', that.callSave);
