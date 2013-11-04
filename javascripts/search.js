@@ -189,7 +189,7 @@ var Search = function(domRef){
     };
 
     this.getViewStatus = function(status){
-    	var viewStatus = "abc";
+    	var viewStatus = "";
     	if(status == "CHECKING_IN"){
     		viewStatus = "check-in";
     	}else if(status == "CHECKEDIN"){
