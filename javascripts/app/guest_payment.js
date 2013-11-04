@@ -1,15 +1,22 @@
 var GuestPaymentView = function(domRef){
   BaseView.call(this);
   var that = this;
-  this.myDomElement = domRef;   
+  this.myDom = domRef;   
  	
   this.pageinit = function(){
-    that.myDomElement.find($('#payment_tab #add_new_payment')).on('click', that.renderNewPaymentView); 
-    that.myDomElement.find($('#payment_tab .active-item')).on('click', that.renderSetAsPrimary);    
+    that.myDom.find('#payment_tab').on('click', that.clickedOnPaymentTab);	
   };  
-  
-  this.renderSetAsPrimary = function(e){	
-	var credit_id = $(this).attr("credit_id");
+  this.clickedOnPaymentTab= function(e){
+  	console.log("clickedOnPaymentTab");
+  	if($(e.target).hasClass("active-item")){	
+  		that.renderSetAsPrimary(e.target);
+   	}
+   	else if($(e.target).hasClass("add-new-button")){
+   		that.renderNewPaymentView();
+   	}
+  };
+  this.renderSetAsPrimary = function(that){	
+	var credit_id = $(that).attr("credit_id");
   	var setPaymentAsPrimaryModal = new SetPaymentAsPrimaryModal();
     setPaymentAsPrimaryModal.initialize();
     setPaymentAsPrimaryModal.params = {"credit_id": credit_id};

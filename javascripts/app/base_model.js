@@ -3,13 +3,14 @@ BaseModal = function() {
     this.data = "";
     this.myDom = ""; //This will be updated in show method, as the data is inserted into DOM only there.
     this.params = {};
+    this.type = "GET";
     this.shouldShowWhenFetched = true;
     var that = this;
     this.initialize = function(){
         that.modalInit();
         if(this.data == ""){
             that.shouldShowWhenFetched = true;
-            this.fetchFromURL();
+            this.fetchFromURL(that.type);
         }
     }
     this.modalInit = function(){
@@ -20,15 +21,16 @@ BaseModal = function() {
         $('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
 
     }
-    this.fetchFromURL = function() {
+    this.fetchFromURL = function(type) {
         // Get modal data
         $.ajax({
-            type: "GET",
+            type: type,
             data: that.params,
             url: that.url,
             success: function(data) {
+            	that.data = data;
                 if(that.shouldShowWhenFetched){
-                    that.show(data);
+                    that.show();
                 }
             },
             error: function(){
@@ -38,7 +40,7 @@ BaseModal = function() {
         });
     }
 
-    this.show = function(content){
+    this.show = function(){
         console.log("show modal");
         $modal = '<div id="modal" role="dialog" />',
         $overlay = '<div id="modal-overlay" />';
@@ -65,14 +67,11 @@ BaseModal = function() {
             $('#modal, #modal-overlay').addClass('modal-show');
         }, 0);
 
-        $('#modal').html(content);
+        $('#modal').html(that.data);
         
   		that.delegateEvents();
     }
     this.hide = function (){
-        console.log("hide modal");
-        e.stopPropagation();
-        //removeModal();
         $('#modal, #modal-overlay').removeClass('modal-show'); 
         setTimeout(function() { 
             $('#modal').empty();

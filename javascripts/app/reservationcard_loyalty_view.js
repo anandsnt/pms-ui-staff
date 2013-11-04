@@ -7,8 +7,8 @@ var ReservationCardLoyaltyView = function(domRef){
     bindLoyaltyUtilFunctions();
   }
   this.delegateEvents = function(){
-  	this.myDom.find($('#reservationcard-loyalty .add-new-button')).on('click', that.adddNewLoyaltyModal);
-  	this.myDom.find($('select.styled#loyalty')).on('change', that.changedLoyaltyProgram);				
+  	that.myDom.find('.add-new-button').on('click', that.adddNewLoyaltyModal);
+  	that.myDom.find('select.styled#loyalty').on('change', that.changedLoyaltyProgram);				
   }
   this.adddNewLoyaltyModal = function(){
   	console.log("Initialise adddNewLoyaltyModal");
