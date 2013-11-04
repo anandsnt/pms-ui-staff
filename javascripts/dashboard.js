@@ -4,7 +4,10 @@ var Dashboard = function(domRef){
   this.myDom = domRef;
 
   this.pageinit = function(){
-  	console.log("Dashboard pageinit");
+  	if (pageScroll) { destroyPageScroll(); }
+		setTimeout(function(){
+	      	createPageScroll('#dashboard');
+	  	}, 300);
   }
 
   this.showWelcomeMessage = function(e){
