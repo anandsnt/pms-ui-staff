@@ -5,7 +5,7 @@ var AdddNewLoyaltyModal = function(){
   	
   	this.url = "staff/user_memberships/new_loyalty";
   	this.delegateEvents = function(){
-    	that.myDom.find('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
+    	
 		that.myDom.find('#new-loyalty-program #save').on('click', that.addLoyaltyProgram);
 		that.myDom.find('#new-loyalty-program #program').on('change', that.programChanged);
 		that.myDom.find('#new-loyalty-program #type').on('change', that.typeChanged);

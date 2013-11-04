@@ -16,11 +16,19 @@ BaseModal = function() {
     this.modalInit = function(){
         console.log("modal init in basemodal")
     }
-
-    this.delegateEvents = function(){
-        $('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
-
-    }
+    
+	this.unbindCancelEvent = function(){
+		$('#modal-overlay, #modal-close, #cancel').off('click');
+	}
+	
+	this.unbindEvents = function(){}
+	
+	this.delegateCancelEvent = function(){
+		$('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
+	}
+	
+    this.delegateEvents = function(){ }
+    
     this.fetchFromURL = function(type) {
         // Get modal data
         $.ajax({
@@ -68,10 +76,18 @@ BaseModal = function() {
         }, 0);
 
         $('#modal').html(that.data);
-        
+        that.delegateCancelEvent();
   		that.delegateEvents();
     }
-    this.hide = function (){
+    this.hide = function (e){
+    	e.stopPropagation();
+    	e.preventDefault();
+    	e.stopImmediatePropagation();
+    	
+    	that.unbindCancelEvent();
+    	that.unbindEvents();
+    	
+    	console.log("Reached hide modal");
         $('#modal, #modal-overlay').removeClass('modal-show'); 
         setTimeout(function() { 
             $('#modal').empty();

@@ -3,7 +3,7 @@ var AddFFPModal = function(){
   	var that = this;
   	this.url = "staff/user_memberships/new_ffp";
   	this.delegateEvents = function(){
-		that.myDom.find('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
+		
 		that.myDom.find('#new-ffp #save').on('click', that.addFFP);
 		that.myDom.find('#airline-ff-list').on('change', that.airlineChanged);
 		addFFPSelectOptions("#new-ffp #airline-ff-list");

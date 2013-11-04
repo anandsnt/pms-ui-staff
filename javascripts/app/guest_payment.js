@@ -7,8 +7,9 @@ var GuestPaymentView = function(domRef){
     that.myDom.find('#payment_tab').on('click', that.clickedOnPaymentTab);	
   };  
   this.clickedOnPaymentTab= function(e){
-  	console.log("clickedOnPaymentTab");
+  	
   	if($(e.target).hasClass("active-item")){	
+  		console.log("Inactive set as primary");
   		that.renderSetAsPrimary(e.target);
    	}
    	else if($(e.target).hasClass("add-new-button")){

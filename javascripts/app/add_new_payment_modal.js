@@ -4,9 +4,12 @@ var AddNewPaymentModal = function(fromPagePayment){
   	// this.myDom = "#modal";
   	this.url = "staff/payments/addNewPayment";
   	this.$paymentTypes = [];
+  	
   	this.delegateEvents = function(){
+
   		console.log("sub modal delegate events");
   		that.getPaymentsList();
+
   		that.myDom.find('#new-payment #payment-type').on('change', that.filterPayments);
 		that.myDom.find('#new-payment #save_new_credit_card').on('click', that.saveNewPayment);
 	};
@@ -101,7 +104,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 					$("#payment_tab #credit_row"+data.id).removeClass("new-item");				
 					$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+'.png';
 					$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
-					removeModal();
+					that.hide();
 				},
 				error: function(){
 					//alert(data.errors);
@@ -142,7 +145,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 					 $("#new-payment #payment-credit-type").val()+" "+$number+" "+$("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val()+ "</option> ";    
 									
 					$("#staycard_creditcard").append($newPaymentOption);
-					removeModal();
+					that.hide();
 				},
 				error: function(){
 					//alert(data.errors);

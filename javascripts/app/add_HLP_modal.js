@@ -3,7 +3,7 @@ var AddHLPModal = function(){
   	var that = this;
   	this.url = "staff/user_memberships/new_hlp";
   	this.delegateEvents = function(){
-  		that.myDom.find('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
+  		
 		that.myDom.find('#new-hlp #save').on('click', that.addHLP);
 		that.myDom.find('#hotel-loyalty-types').on('change', that.typeChanged);
 		addHLPSelectOptions("#new-hlp #hotel-loyalty-types");

@@ -194,7 +194,7 @@ $.fn.updateStyledSelect = function() {
     // Check if image data exists and update
     if (selectedOption.data('image'))
     {
-        this.next('.selected').find('img').attr({'src': '../images/' + selectedOption.data('image')});
+        this.next('.selected').find('img').attr({'src': 'assets/' + selectedOption.data('image')});
     }
 };
 

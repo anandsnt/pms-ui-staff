@@ -5,6 +5,7 @@ var SetPaymentAsPrimaryModal = function(){
   	// this.myDom = "#modal";
   	this.url = "staff/payments/showCreditModal";
   	this.$paymentTypes = [];
+  	
   	this.delegateEvents = function(){
   		console.log("sub modal delegate events");
   		// that.getPaymentsList();
@@ -14,10 +15,17 @@ var SetPaymentAsPrimaryModal = function(){
 		this.credit_id = creditParam.credit_id;
 
 	};
+	
+	this.unbindCancelEvent = function(){
+		that.myDom.find('#credit-card-set-as-primary').off('click');
+		that.myDom.find('#credit-card-delete').off('click');
+	}
+	
 	this.modalInit = function(){
         console.log("modal init in sub modal");
         
    };
+   
     this.setCreditAsPrimary = function(){
   	
   		var $credit_card_id = that.credit_id;
@@ -25,7 +33,7 @@ var SetPaymentAsPrimaryModal = function(){
 		$user_id = $("#user_id").val();
 		$("#primary_credit.primary").remove();
 		$("#credit_row" + $credit_card_id).append("<span id='primary_credit' class='primary'><span class='value primary'>Primary</span></span>");
-		removeModal();		
+		that.hide();	
 		
 		$.ajax({
 			type: "POST",
@@ -46,7 +54,7 @@ var SetPaymentAsPrimaryModal = function(){
     this.deleteCreditCard = function(){
   		var $credit_card_id = that.credit_id;
 		$("#credit_row" + $credit_card_id).remove();		
-		removeModal();
+		that.hide();
 		$.ajax({
 			type: "POST",
 			url: 'staff/payments/deleteCreditCard',
