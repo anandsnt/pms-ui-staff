@@ -3,6 +3,12 @@ function getReservationId(){
 	return reservation_id;
 }
 
-__ = function(value){
-	return ((value == null || typeof value == 'undefined' ) ? "": value);
+//function that converts a null value to a desired string. 
+//if no replace value is passed, it returns an empty string
+escapeNull = function(value, replaceWith){
+	var newValue = "";
+	if((typeof replaceWith != "undefined") && (replaceWith != null)){
+		newValue = replaceWith;
+	}
+	return ((value == null || typeof value == 'undefined' ) ? newValue : value);
 }
