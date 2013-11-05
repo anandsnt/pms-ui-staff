@@ -146,6 +146,13 @@ var AddNewPaymentModal = function(fromPagePayment){
 									
 					$("#staycard_creditcard").append($newPaymentOption);
 					$('#staycard_creditcard').val(data.data.id);
+					var replaceHtml = "<figure class='card-logo'>"+
+										"<img src='/assets/"+$newImage+"' alt=''></figure>"+									
+										"<span class='number'>Ending with<span class='value number'>"+$number+							
+										"</span></span><span class='date'> Date <span class='value date'>"+
+										$("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val()+
+										"</span>";
+					$("#selected-reservation-payment-div").html(replaceHtml);
 					that.hide();
 				},
 				error: function(){
