@@ -94,7 +94,7 @@ var Search = function(domRef){
 	            if ($query.match(/^([a-zA-Z]+)$/) && (value.firstname.indexOf($query) >= 0 || value.lastname.indexOf($query) >= 0 || value.group.indexOf($query) >= 0))
 	            {
 	                items.push($('<li />').html( 
-	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip)
+	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
 	                ));
 	
 	                $('#search-results').append.apply($('#search-results'),items).highlight($query);
@@ -103,7 +103,7 @@ var Search = function(domRef){
 	            else if ($query.match(/^([0-9]+)$/) && $query.length <= 5 && (value.room.toString().indexOf($query) >= 0 || value.confirmation.toString().indexOf($query) >= 0))
 	            {
 	                items.push($('<li />').html(
-	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip))
+	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip))
 	                );
 	                $('#search-results').append.apply($('#search-results'),items).highlight($query);
 	            }
@@ -111,7 +111,7 @@ var Search = function(domRef){
 	            else if ($query.length > 6 && (value.confirmation.toString().indexOf($query) >= 0))
 	            {
 	                items.push($('<li />').html( 
-	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip))
+	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip))
 	                );
 	                $('#search-results').append.apply($('#search-results'),items).highlight($query);
 	                
@@ -138,6 +138,8 @@ var Search = function(domRef){
     };
     
     this.displaySearchResults = function(response, $query){
+    	console.log(response);
+    	console.log(JSON.stringify(response));
     	
 	    try
 		    {
@@ -145,7 +147,7 @@ var Search = function(domRef){
 		        $.each(response.guests, function(i,value){
 		        	
 		        items.push($('<li />').html( 
-		                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.roomstatusextra,value.roomstatusexplained,value.location,value.group,value.vip)
+		                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
 		                ));
 		
 		                $('#search-results').append.apply($('#search-results'),items).highlight($query);
@@ -169,14 +171,17 @@ var Search = function(domRef){
 		    };
     };
     
-    this.writeSearchResult = function(id, firstname, lastname, image, confirmation, status, room, roomstatus, roomstatusextra, roomstatusexplained, location, group, vip){
+    this.writeSearchResult = function(id, firstname, lastname, image, confirmation, status, room, roomstatus, foStatus, location, group, vip){
     	
-    	var viewStatus = this.getViewStatus(status);
+    	var viewStatus = this.getReservationStatusMapped(status);
+    	var roomStatusMapped = this.getRoomStatusMapped(roomstatus);
+
     	var $location = (escapeNull(location) != '') ? '<span class="icons icon-location">' + escapeNull(location) + '</span>' : '',
         $group = (escapeNull(group) != '') ? '<em class="icons icon-group">' + escapeNull(group) + '</em>' : '',
         $vip = vip ? '<span class="vip">VIP</span>' : '',
         $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="/assets/' + escapeNull(image) + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
-        $roomAdditional = roomstatusextra ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
+        //$roomAdditional = roomstatusextra ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
+        $roomAdditional = '<span class="room-status">' + "" + '</span>',
         $output = 
         '<a href="staff/staycards/staycard?confirmation=' + confirmation+'&id='+ escapeNull(id)+ '" class="guest-' + escapeNull(status) + ' link-item float" data-transition="inner-page">' + 
             $image +
@@ -185,13 +190,14 @@ var Search = function(domRef){
                 '<span class="confirmation">' + escapeNull(confirmation) + '</span>' + $location + $group +
             '</div>' +
             '<span class="guest-status ' + escapeNull(viewStatus) + '">' + escapeNull(viewStatus) + '</span>' +
-            '<strong class="room-number ' + escapeNull(roomstatus) + '">' + escapeNull(room) + '</strong>' + $roomAdditional +
+            '<strong class="room-number ' + escapeNull(roomStatusMapped) + '">' + escapeNull(room) + '</strong>' + $roomAdditional +
         '</a>';
         console.log($location);
     	return $output;
     };
 
-    this.getViewStatus = function(status){
+    //Map the reservation status to the view expected format
+    this.getReservationStatusMapped = function(status){
     	var viewStatus = "";
     	if(status == "CHECKING_IN"){
     		viewStatus = "check-in";
@@ -205,6 +211,17 @@ var Search = function(domRef){
     		viewStatus = "no-show";
     	}
     	return viewStatus;
+    }
+
+    //Map the room status to the view expected format
+    this.getRoomStatusMapped = function(status){
+    	var roomStatus = "";
+    	if(status == "READY"){
+    		roomStatus = 'ready';
+    	}else if(status == "NOTREADY"){
+    		roomStatus = "not-ready";
+    	}
+
     }
     
     this.updateView = function(){
