@@ -37,9 +37,9 @@ var setUpGuestcard = function(viewDom) {
 	});
 
 	// Birthday datepicker
-	viewDom.find($('#birthday')).datepicker({
+	viewDom.find($('#guest-birthday')).datepicker({
         showOn      : 'button',
-        dateFormat  : 'mm-dd-y',
+        dateFormat  : 'mm-dd-yy',
         changeMonth : true,
         changeYear  : true,
         maxDate   	: '+0D +0M +0Y',

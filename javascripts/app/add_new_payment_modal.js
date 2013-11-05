@@ -145,6 +145,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 					 $("#new-payment #payment-credit-type").val()+" "+$number+" "+$("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val()+ "</option> ";    
 									
 					$("#staycard_creditcard").append($newPaymentOption);
+					$('#staycard_creditcard').val(data.data.id);
 					that.hide();
 				},
 				error: function(){
