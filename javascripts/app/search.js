@@ -170,27 +170,23 @@ var Search = function(domRef){
     };
     
     this.writeSearchResult = function(id, firstname, lastname, image, confirmation, status, room, roomstatus, roomstatusextra, roomstatusexplained, location, group, vip){
-    	var $location = (location != null) ? '<span class="icons icon-location">' + location + '</span>' : '',
-        $group = (group != null) ? '<em class="icons icon-group">' + group + '</em>' : '',
+    	
+    	var $location = (escapeNull(location) != '') ? '<span class="icons icon-location">' + escapeNull(location) + '</span>' : '',
+        $group = (escapeNull(group) != '') ? '<em class="icons icon-group">' + escapeNull(group) + '</em>' : '',
         $vip = vip ? '<span class="vip">VIP</span>' : '',
-        $image = (image != null) ? '<figure class="guest-image"><img src="/assets/' + image + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
+        $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="/assets/' + escapeNull(image) + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = roomstatusextra ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
-        $lastname = (lastname!= null) ? lastname:'',
-        $firstname = (firstname!= null) ? firstname:'',
-        $roomstatus = (roomstatus!= null) ? roomstatus:'',
-        $status = (status!= null) ? status:'',
-        $room = (room!= null) ? room:'',
-        $confirmation =(confirmation!= null) ? confirmation: '', 
         $output = 
-        '<a href="staff/staycards/staycard?confirmation=' + confirmation+'&id='+ id+ '" class="guest-' + status + ' link-item float" data-transition="inner-page">' + 
+        '<a href="staff/staycards/staycard?confirmation=' + confirmation+'&id='+ escapeNull(id)+ '" class="guest-' + escapeNull(status) + ' link-item float" data-transition="inner-page">' + 
             $image +
             '<div class="data">' +
-                '<h2>' + $lastname + ', ' + $firstname + '</h2>' +
-                '<span class="confirmation">' + $confirmation + '</span>' + $location + $group +
+                '<h2>' + escapeNull(lastname) + ', ' + escapeNull(firstname) + '</h2>' +
+                '<span class="confirmation">' + escapeNull(confirmation) + '</span>' + $location + $group +
             '</div>' +
-            '<span class="guest-status ' + $status + '">' + $status + '</span>' +
-            '<strong class="room-number ' + $roomstatus + '">' + $room + '</strong>' + $roomAdditional +
+            '<span class="guest-status ' + escapeNull(status) + '">' + escapeNull(status) + '</span>' +
+            '<strong class="room-number ' + escapeNull(roomstatus) + '">' + escapeNull(room) + '</strong>' + $roomAdditional +
         '</a>';
+        console.log($location);
     	return $output;
     };
     
