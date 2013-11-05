@@ -19,7 +19,6 @@ var AddNewPaymentModal = function(fromPagePayment){
    };
    this.saveNewPayment = function(){
 
-   	
   	var $payment_type = $("#new-payment #payment-type").val();
 		$payment_credit_type = $("#new-payment #payment-credit-type").val();
 		$card_number_set = $("#new-payment #card-number-set1").val();
@@ -39,7 +38,6 @@ var AddNewPaymentModal = function(fromPagePayment){
 	    	$("#credit-card-number-error").html(ccErrors[ccErrorNo]).show();
 	  		return false;
 	  	}
-
 		$("#new-payment .error").hide();
 		if(($("#new-payment #payment-type").val()) == ""){
 			$("#payment-type-error").html("Payment type is required").show();		
@@ -50,10 +48,10 @@ var AddNewPaymentModal = function(fromPagePayment){
 		}else if($("#new-payment #card-number-set1").val() == ""){
 			$("#credit-card-number-error").html("Credit Card number is required").show();	
 			return false;			
-		}else if($("#new-payment #expiry-month").val() == "" || $("#new-payment #expiry-year").val() == ""){
+		}else if($.trim($("#new-payment #expiry-month").val()) == "" || $.trim($("#new-payment #expiry-year").val()) == ""){
 			$("#credit-card-expiry-error").html("Credit Card expiry is required").show();	
 			return false;			
-		}else if($("#new-payment #name-on-card").val() == ""){
+		}else if($.trim($("#new-payment #name-on-card").val()) == ""){
 			$("#name-on-card-error").html("Card holder name is required").show();	
 			return false;			
 		}	
