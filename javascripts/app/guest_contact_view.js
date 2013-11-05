@@ -97,9 +97,13 @@ var GuestContactView = function(domRef){
 				}, // fakeDataToAvoidCache is iOS Safari fix
 				async : false,
 				success : function(data) {
-					birthdate = that.dateSplit(data.birthday);
-					birthday = birthdate['month']+"-"+birthdate['date']+"-"+birthdate['year'];
-					passport_expiry = that.dateSplit(data.passport);
+					birthdate = data.birthday.split('-');
+					birthday = birthdate[1]+"-"+birthdate[2]+"-"+birthdate[0];
+					if(data.passport_expiry!=null){
+						passport_expiry = data.passport_expiry.split('-');
+						$("#passport-month").val(passport_expiry[1]);
+						$("#passport-year").val(passport_expiry[0]);
+					}
 					$("#guest_firstname").val(data.first_name);
 					$("#guest_lastname").val(data.last_name);
 					$("#title").val(data.title);
@@ -107,8 +111,7 @@ var GuestContactView = function(domRef){
 					$("#guest-birthday").val(birthday);		
 					$("#nationality_status").val(data.nationality);						
 					$("#passport-number").val(data.passport_number);
-					$("#passport-month").val(passport_expiry['month']);
-					$("#passport-year").val(passport_expiry['year']);
+					
 					$("#nationality").val(data.nationality);
 					$("#email").val(data.email_address);
 					$("#streetname").val(data.address);
@@ -118,7 +121,6 @@ var GuestContactView = function(domRef){
 					$("#country").val(data.country);
 					$("#phone").val(data.phone);
 					$("#mobile").val(data.mobile);
-
 
 					$guestCardClickTime = false;
 					// to change flag - to save contact info only if any change happens.
