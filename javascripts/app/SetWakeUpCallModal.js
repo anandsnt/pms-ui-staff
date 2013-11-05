@@ -22,12 +22,13 @@ var SetWakeUpCallModal = function() {
 
 		var wakeUpTime = $('#set-wake-up-call #wakeup-time').attr('value');
 		var wakeUpDay = $('#set-wake-up-call #wakeup-day').text();
+		var wakeUpDaySplit = wakeUpDay.split(" ");
+
 		var data = {
 			"reservation_id" : that.reservationId,
 			"wake_up_time" : wakeUpTime,
-			"day" : wakeUpDay
+			"day" : wakeUpDaySplit[0]
 		};
-		console.log(data);
 		$.ajax({
 			type : "POST",
 			url : 'wakeup/set_wakeup_calls',
