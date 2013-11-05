@@ -171,6 +171,7 @@ var Search = function(domRef){
     
     this.writeSearchResult = function(id, firstname, lastname, image, confirmation, status, room, roomstatus, roomstatusextra, roomstatusexplained, location, group, vip){
     	
+    	var viewStatus = this.getViewStatus(status);
     	var $location = (escapeNull(location) != '') ? '<span class="icons icon-location">' + escapeNull(location) + '</span>' : '',
         $group = (escapeNull(group) != '') ? '<em class="icons icon-group">' + escapeNull(group) + '</em>' : '',
         $vip = vip ? '<span class="vip">VIP</span>' : '',
@@ -183,14 +184,30 @@ var Search = function(domRef){
                 '<h2>' + escapeNull(lastname) + ', ' + escapeNull(firstname) + '</h2>' +
                 '<span class="confirmation">' + escapeNull(confirmation) + '</span>' + $location + $group +
             '</div>' +
-            '<span class="guest-status ' + escapeNull(status) + '">' + escapeNull(status) + '</span>' +
+            '<span class="guest-status ' + escapeNull(viewStatus) + '">' + escapeNull(viewStatus) + '</span>' +
             '<strong class="room-number ' + escapeNull(roomstatus) + '">' + escapeNull(room) + '</strong>' + $roomAdditional +
         '</a>';
         console.log($location);
     	return $output;
     };
+
+    this.getViewStatus = function(status){
+    	var viewStatus = "";
+    	if(status == "CHECKING_IN"){
+    		viewStatus = "check-in";
+    	}else if(status == "CHECKEDIN"){
+    		viewStatus = "inhouse";
+    	}else if(status == "CHECKING_OUT"){
+    		viewStatus = "check-out";
+    	}else if(status == "CANCELLED"){
+    		viewStatus = "cancel";
+    	}else if((status == "NOSHOW")||(status == "NOSHOW_CURRENT")){
+    		viewStatus = "no-show";
+    	}
+    	return viewStatus;
+    }
     
-     this.updateView = function(){
+    this.updateView = function(){
      	// Content update
 	    if ($('#search-results').is(':empty'))
 	    {
@@ -208,7 +225,7 @@ var Search = function(domRef){
 	    // Set pageScroll
 	    if (pageScroll) { destroyPageScroll(); }
 	    createPageScroll('#search');
-     };
+    };
   
 };
 
