@@ -2,7 +2,6 @@ var AddNewPaymentModal = function(fromPagePayment){
   	BaseModal.call(this);
   	var that = this;
   	this.save_inprogess = false;
-  	// this.myDom = "#modal";
   	this.url = "staff/payments/addNewPayment";
   	this.$paymentTypes = [];
   	
@@ -35,7 +34,6 @@ var AddNewPaymentModal = function(fromPagePayment){
 		
 		/* credit card validation */
 		if (!checkCreditCard ($card_number, $payment_credit_type)) {
-	    	// alert (ccErrors[ccErrorNo]);
 	    	$("#credit-card-number-error").html(ccErrors[ccErrorNo]).show();
 	  		return false;
 	  	}
@@ -57,23 +55,13 @@ var AddNewPaymentModal = function(fromPagePayment){
 			return false;			
 		}	
 		
-		// var $image = (($("#new-payment #credit_card").val()) == "AX" ? "<img src='/assets/amex.png' alt='amex'>": (($("#new-payment #credit_card").val()) == "MA" ? "<img src='/assets/mastercard.png' alt='mastercard'>": "<img src='/assets/visa.png' alt='visa'>" ));
 		var $image = "<img src='/assets/"+$("#new-payment #payment-credit-type").val().toLowerCase()+".png' alt='"+$("#new-payment #payment-credit-type").val().toLowerCase()+"'>";	
 			$number = $card_number.substr($card_number.length - 5);			
 			$expiry = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
 			$cardHolderName = $("#new-payment #name-on-card").val();
 		var user_id = $("#user_id").val();
 		if(fromPagePayment == "guest"){
-			var	$add = 
-	        '<a id="credit_row"  credit_id="" class="active-item float item-payment new-item">'+
-	        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
-	        'Ending with<span class="value number">'+$number+'</span></span>'+
-			'<span class="date">Date<span class="value date">'+$expiry+'</span>'+
-			'</span><span class="name">Name<span class="value name">'+$cardHolderName+'</span>'+
-			'</span></a>';
-		
-			//console.log($add);
-		    $("#payment_tab").prepend($add);
+			
 		    that.save_inprogress = true; // Handle clicking on Add button twice.
 		    $.ajax({
 				type: "POST",
@@ -94,11 +82,18 @@ var AddNewPaymentModal = function(fromPagePayment){
 					that.save_inprogress = false;
 					if(data.errors!="" && data.errors!=null){
 						$("#credit-card-number-error").html(data.errors).show();
-						// $("#new-payment #credit_row .new-item").remove();
 						$('#payment_tab a:first').remove();
 						return false;
 					}
-					console.log(data.id);
+					var	$add = 
+				        '<a id="credit_row"  credit_id="" class="active-item float item-payment new-item">'+
+				        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
+				        'Ending with<span class="value number">'+$number+'</span></span>'+
+						'<span class="date">Date<span class="value date">'+$expiry+'</span>'+
+						'</span><span class="name">Name<span class="value name">'+$cardHolderName+'</span>'+
+						'</span></a>';
+					
+				    $("#payment_tab").prepend($add);
 					//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
 					$("#payment_tab .new-item").attr("credit_id", data.id);
 					$("#payment_tab .new-item").attr("id", "credit_row"+data.id);
@@ -109,7 +104,6 @@ var AddNewPaymentModal = function(fromPagePayment){
 				},
 				error: function(){
 					that.save_inprogress = false;
-					//alert(data.errors);
 				}
 			});
 			
@@ -130,11 +124,9 @@ var AddNewPaymentModal = function(fromPagePayment){
 					},
 				dataType: 'json',
 				success: function(data) {
-					console.log(data.id);
 					that.save_inprogress = false;
 					if(data.errors!="" && data.errors!=null){
 						$("#credit-card-number-error").html(data.errors).show();
-						// $("#new-payment #credit_row .new-item").remove();
 						$('#payment_tab a:first').remove();
 						return false;
 					}
@@ -161,7 +153,6 @@ var AddNewPaymentModal = function(fromPagePayment){
 				},
 				error: function(){
 					that.save_inprogress = false;
-					//alert(data.errors);
 				}
 			});
 		} 	
