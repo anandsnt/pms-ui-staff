@@ -1,0 +1,282 @@
+/* 1. ROOT
+==========================================================*/
+/* 2. TYPOGRAPHY
+==========================================================*/
+/* 3. GRAPHICAL ELEMENTS
+==========================================================*/
+
+/* No content icons		==================================*/
+	.icon-no-content {
+		background-image: @iconNoContent;
+		background-repeat: no-repeat;
+		.size(120px, 125px);
+		margin: 0 auto;
+		.show;
+
+		&.icon-search { 
+			background-position: 0 0; 
+		}
+
+		&.icon-room {
+			background-position: 0 -120px; 
+		}
+
+		&.icon-upgrades {
+			background-position: 0 -240px;
+		}
+
+		&.icon-social-lobby {
+			background-position: 0 -360px;
+		}
+
+		@media @highdpi {
+			background-image: @iconNoContent2x;
+			background-size: 120px, 125px;
+		}
+	}
+
+/* Global icons			==================================*/
+	.icons,
+	.guest-status {
+		background-image: @icons;
+		background-repeat: no-repeat;
+		border: 0;
+		.show;
+
+		&.icon-search {
+			background-color: transparent;
+			background-position: 0 3px;
+			.square(20px);
+			.hide-text;
+		}
+
+		&.icon-clear-search {
+			background-color: transparent;
+			background-position: 4px -696px;
+			.square(15px);
+			.hide-text;
+		}
+
+		/* Guest icons ***/
+		&.icon-location {  background-position: 5px -23px; background-size: 80px; }
+		&.icon-group { background-position: 5px -50px; background-size: 80px; }
+		&.check-in { background-position: 8px -112px; }
+		&.check-out { background-position: 8px -152px; }
+		&.inhouse { background-position: 8px -192px; }
+		&.cancel { background-position: 8px -232px; }
+		&.icon-gc-location { background-position: 10px -269px; }
+		&.icon-gc-phone { background-position: 10px -306px; }
+		&.icon-gc-email {background-position: 10px -344px; }
+
+		/* Stay Card Icons ***/
+		&.icon-upgrade { background-position: 3px -440px; }
+		&.icon-key { background-position: 3px -500px; }
+		&.icon-plus { background-position: 3px -1000px; }
+		&.icon-email { background-position: 3px -1060px; }
+		&.icon-print { background-position: 3px -1120px; }
+		&.icon-pencil { background-position: 3px -1178px; }
+		&.icon-wallet { background-position: 3px -1240px; }		
+
+		&.icon-trash { 
+			.square(15px);
+			.hide-text;
+			background-position: 0 -1660px; 
+		}
+
+		&.small-icon {
+			background-size: 80px;
+
+			&.check-in { background-position: 6px -75px; }
+			&.check-out { background-position: 6px -101px; }
+			&.inhouse { background-position:  5px -128px; }
+			&.cancel { background-position: 5px -155px; }
+		}
+
+		&.room { background-position: 5px -875px; }
+		&.nights { background-position: 5px -935px; }
+
+		&.icon-title {
+			&.check-in { background-position: 0 -553px; }
+			&.check-out { background-position: 0 -593px; }
+			&.inhouse { background-position:  0 -633px; }
+			&.cancel,
+			&.no-show { background-image: none; }
+		}
+
+		&.icon-alarm { background-position: 0 -760px; }
+		&.icon-alarm.active { background-position: 0 -820px; }
+
+		&.icon-filter { background-position: 0 -1300px; }
+		&.icon-filter.active { background-position: 0 -1360px; }
+
+		@media @highdpi {
+			background-image: @icons2x;
+			background-size: 120px;
+
+			&.icon-location,
+			&.icon-group {
+				background-size: 80px;
+			}
+		}
+	}
+
+/* Arrow icons			==================================*/
+	.has-arrow {
+		background-position: 95% 50%;
+		background-repeat: no-repeat;
+		border: 0;
+		.show;
+
+		&.next-view { background-image: @arrowRight; }
+		&.prev-view { background-image: @arrowLeft; }
+		&.toggle { background-image: @arrowDown; }
+		&.toggle.active { background-image: @arrowUp; }
+
+		@media @highdpi {
+			&.next-view { background-image: @arrowRight2x; background-size: 14px 14px; }
+			&.prev-view { background-image: @arrowLeft2x; background-size: 14px 14px; }
+			&.toggle { background-image: @arrowDown2x; background-size: 14px 14px; }
+			&.toggle.active { background-image: @arrowUp2x; background-size: 14px 14px; }
+		}
+	}
+
+/* Tabs icons			==================================*/
+	.icons-tabs {
+		background-image: @iconsTabs;
+		background-repeat: no-repeat;
+		border: 0;
+		.show;
+
+		&.icon-reservation {
+			background-position: 50% 10px;
+
+			&.ui-tabs-active,
+			&.active {
+				background-position: 50% -70px;
+
+				a { 
+					background-image: @arrowsTabs;
+					background-repeat: no-repeat;
+					background-position: 100% -40px;
+				}
+
+				&.no-reservation {
+					a { background-position: 100% 0; }
+				}
+			}
+		}
+
+		&.no-icon {
+			background-image: none;
+
+			&.ui-tabs-active,
+			&.active {
+				background-image: @arrowsTabs;
+				background-repeat: no-repeat;
+				background-position: 100% -10px;
+
+				&.reservation-tab:first-child { background-position: 100% -90px; }
+			}
+		}
+
+		@media @highdpi {
+			background-image: @iconsTabs2x;
+			background-size: 30px;
+
+			&.icon-reservation {
+				&.ui-tabs-active,
+				&.active {
+					a { 
+						background-image: @arrowsTabs2x;
+						background-size: 120px;
+					}
+				}
+			}
+
+			&.no-icon {
+				&.ui-tabs-active,
+				&.active {
+					background-image: @arrowsTabs2x;
+					background-size: 120px;
+				}
+			}
+		}
+	}
+
+/* Menu toggle			==================================*/
+	.icon-toggle {
+		background-color: @logoGradientStart;
+		background-image: @iconMenu, @darkTexture;
+		background-repeat: no-repeat, repeat;
+		background-position: -10px -10px, 0 0;
+		overflow: hidden;
+		.hide-text;
+		.square(40px);
+		#border-radius > .right();
+		.box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
+		.show;
+		.no-transition;
+		.pull-left;
+
+		&:hover,
+		&.active { background-position: -70px -10px, 0 0; }
+
+		&#back-arrow {
+			background-position: -12px -490px, 0 0;
+
+			&:hover,
+			&.active { background-position: -72px -490px, 0 0; }
+		}
+
+		@media @highdpi {
+			background-image: @iconMenu2x, @darkTexture;
+			background-size: 120px, 60px;
+		}
+	}
+
+/* Back buttone			==================================*/
+	.back-button:not(.button) {
+		color: @logoPrimary;
+		text-transform: uppercase;
+		font-size: 18px;
+		line-height: 30px;
+		vertical-align: middle;
+		font-weight: 600;	
+		padding-left: 25px;
+		background: @icons 0 -1595px no-repeat; 
+		.no-transition;
+
+		&:hover,
+		&:active {
+			color: @textColor;
+			background-position: 0 -1535px;
+		}
+
+		@media @highdpi { 
+			background-image: @icons2x;
+			background-size: 120px;
+		}
+	}
+
+/* Misc					==================================*/
+	.vip {
+		font-size: 10px;
+		font-weight: 700;
+		line-height: 20px;
+		text-transform: uppercase;
+		text-align: center;
+		vertical-align: middle;
+		color: #9f8606;
+		background: @yellow;
+		.square(20px);
+		#border-radius > .rounded(20px);
+	}
+
+/* 4. LAYOUT
+==========================================================*/
+/* 5. COMPONENTS
+==========================================================*/
+/* 6. IE
+==========================================================*/
+/* 7. RESPONSIVE
+==========================================================*/
