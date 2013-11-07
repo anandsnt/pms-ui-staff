@@ -9,17 +9,21 @@
 //
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
+//= require modernizr
 //= require jquery.min
 //= require jquery_ujs
-//= require jquery.ui.resizable
-//= require jquery.ui.tabs
-//= require jquery.ui.sortable
-//- require jquery.ui.slider
-//= require jquery.ui.effect
-//= require jquery.ui.effect-slide
-//= require jquery.ui.touch-punch
+//= require ./jquery-ui/core/jquery.ui.core.min
+//= require ./jquery-ui/core/jquery.ui.widget.min
+//= require ./jquery-ui/core/jquery.ui.mouse.min
+//= require ./jquery-ui/interactions/jquery.ui.resizable.min
+//= require ./jquery-ui/interactions/jquery.ui.draggable.min
+//= require ./jquery-ui/interactions/jquery.ui.droppable.min
+//= require ./jquery-ui/widgets/jquery.ui.tabs.min
+//= require ./jquery-ui/widgets/jquery.ui.datepicker.min
+//= require ./jquery-ui/jquery.ui.touch-punch.min
 
-//= require stayntouch
-
-//= stub app-forms
-//= require_tree .
+// staff app scripts
+//= require_tree ./app/plugins
+//= require_tree ./app/signature
+//= require main
+//= require_tree ./app

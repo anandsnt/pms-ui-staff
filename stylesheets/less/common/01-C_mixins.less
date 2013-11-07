@@ -1,0 +1,341 @@
+/* 1. ROOT
+==========================================================*/
+	.float {
+		*zoom: 1;
+
+		&:before,
+		&:after {
+		    content: "";
+		    display: table;
+		}
+		&:after {
+		    clear: both;
+		}
+	}
+
+	.pull-left  { float: left; }
+	.pull-right { float: right; }
+
+	.hide { display: none; }
+	.show { display: block; }
+
+	.hide-text {
+		text-indent: -9999px;
+		&:focus { overflow: hidden; }
+	}
+
+	.placeholder-text(@font-size, @line-height, @font-weight) {
+		&::-webkit-input-placeholder {
+		   	font-size: @font-size;
+		   	line-height: @line-height;
+		   	font-weight: @font-weight;
+		   	font-style: italic;
+		   	color: @grey3;
+		}
+
+		&:-moz-placeholder {
+		   	font-size: @font-size;
+		   	line-height: @line-height;
+		   	font-weight: @font-weight;
+		   	font-style: italic;
+			color: @grey3;
+		}
+
+		&::-moz-placeholder {
+			font-size: @font-size;
+			line-height: @line-height;
+		   	font-weight: @font-weight;
+		   	font-style: italic;
+		   	color: @grey3;}
+
+		&:-ms-input-placeholder {  
+			font-size: @font-size;
+			line-height: @line-height;
+			font-weight: @font-weight;
+		   	font-style: italic;
+		   	color: @grey3;
+		}
+	}
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+	#font {
+		#family {
+			.sans-serif() {
+				font-family: "source_sans_pro", Helvetica, Arial, sans-serif;
+				text-rendering: optimizeLegibility;
+				-webkit-font-smoothing: antialiased;
+			}
+			.monospace() {
+				font-family: "Courier New", Courier, monospace;
+			}
+		}
+
+		.shorthand(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
+			font-size: @size;
+			font-weight: @weight;
+			line-height: @lineHeight;
+		}
+
+		.sans-serif(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
+			#font > #family > .sans-serif;
+			#font > .shorthand(@size, @weight, @lineHeight);
+		}
+
+		.monospace(@size: @baseFontSize, @weight: normal, @lineHeight: @baseLineHeight) {
+			#font > #family > .monospace;
+			#font > .shorthand(@size, @weight, @lineHeight);
+		}
+	}
+
+	.nowrap {
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+
+/* 3. GRAPHICAL ELEMENTS
+==========================================================*/
+
+	/* Rounded corners			==============================*/
+	#border-radius {
+		.rounded(@radius: 2px) {
+			-webkit-border-radius: @radius;
+			-moz-border-radius: @radius;
+			border-radius: @radius;
+		}
+		
+		.left(@radius: 2px) {
+			-webkit-border-top-left-radius: @radius;
+			-webkit-border-bottom-left-radius: @radius;
+			-moz-border-radius-topleft: @radius;
+			-moz-border-radius-bottomleft: @radius;
+			border-top-left-radius: @radius;
+			border-bottom-left-radius: @radius;
+		}
+		
+		.right(@radius: 2px) {
+			-webkit-border-top-right-radius: @radius;
+			-webkit-border-bottom-right-radius: @radius;
+			-moz-border-radius-topright: @radius;
+			-moz-border-radius-bottomright: @radius;
+			border-top-right-radius: @radius;
+			border-bottom-right-radius: @radius;
+		}
+		
+		.top(@radius: 2px) {
+			-webkit-border-top-left-radius: @radius;
+			-webkit-border-top-right-radius: @radius;
+			-moz-border-radius-topleft: @radius;
+			-moz-border-radius-topright: @radius;
+			border-top-left-radius: @radius;
+			border-top-right-radius: @radius;
+		}
+		
+		.bottom(@radius: 2px) {
+			-webkit-border-bottom-right-radius: @radius;
+			-webkit-border-bottom-left-radius: @radius;
+			-moz-border-radius-bottomright: @radius;
+			-moz-border-radius-bottomleft: @radius;
+			border-bottom-right-radius: @radius;
+			border-bottom-left-radius: @radius;
+		}
+		
+		.left-bottom(@radius: 2px) {
+			-webkit-border-bottom-left-radius: @radius;
+			-moz-border-radius-bottomleft: @radius;
+			border-bottom-left-radius: @radius;
+		}
+		
+		.left-top(@radius: 2px) {
+			-webkit-border-top-left-radius: @radius;
+			-moz-border-radius-topleft: @radius;
+			border-top-left-radius: @radius;
+		}
+		
+		.right-bottom(@radius: 2px) {
+			-webkit-border-bottom-right-radius: @radius;
+			-moz-border-radius-bottomright: @radius;
+			border-bottom-right-radius: @radius;
+		}
+		
+		.right-top(@radius: 2px) {
+			-webkit-border-top-right-radius: @radius;
+			-moz-border-radius-topright: @radius;
+			border-top-right-radius: @radius;
+		}
+	}
+
+	/* Gradient					==============================*/
+	.gradient(@startColor, @endColor) {
+		background-image: -moz-linear-gradient(top, @startColor, @endColor);
+		background-image: -ms-linear-gradient(top, @startColor, @endColor);
+		background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), to(@endColor));
+		background-image: -webkit-linear-gradient(top, @startColor, @endColor);
+		background-image: -o-linear-gradient(top, @startColor, @endColor);
+		background-image: linear-gradient(top, @startColor, @endColor);
+		background-color: mix(@startColor, @endColor, 60%);
+		background-repeat: repeat;
+	}
+
+	.gradient-horizontal(@startColor, @endColor) {
+		background-image: -moz-linear-gradient(left, @startColor, @endColor);
+		background-image: -ms-linear-gradient(left, @startColor, @endColor);
+		background-image: -webkit-gradient(left top, right top, from(@startColor), to(@endColor));
+		background-image: -webkit-linear-gradient(left, @startColor, @endColor);
+		background-image: -o-linear-gradient(left, @startColor, @endColor);
+		background-image: linear-gradient(left, @startColor, @endColor);
+		background-color: mix(@startColor, @endColor, 60%);
+		background-repeat: repeat;
+	}
+
+	.gradient-with-image(@image, @startColor, @endColor) {
+		background-image: @image, -moz-linear-gradient(top, @startColor, @endColor);
+		background-image: @image, -ms-linear-gradient(top, @startColor, @endColor);
+		background-image: @image, -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), to(@endColor));
+		background-image: @image, -webkit-linear-gradient(top, @startColor, @endColor);
+		background-image: @image, -o-linear-gradient(top, @startColor, @endColor);
+		background-image: @image, linear-gradient(top, @startColor, @endColor);
+		background-color: mix(@startColor, @endColor, 60%);
+		background-repeat: repeat;
+	}
+
+	.gradient-horizontal-with-image(@image, @startColor, @endColor) {
+		background-image: @image, -moz-linear-gradient(left, @startColor, @endColor);
+		background-image: @image, -ms-linear-gradient(left, @startColor, @endColor);
+		background-image: @image, -webkit-gradient(linear, left top, right top, from(@startColor), to(@endColor));
+		background-image: @image, -webkit-linear-gradient(left, @startColor, @endColor);
+		background-image: @image, -o-linear-gradient(left, @startColor, @endColor);
+		background-image: @image, linear-gradient(left, @startColor, @endColor);
+		background-color: mix(@startColor, @endColor, 60%);
+		background-repeat: repeat;
+	}
+
+	/* Opacity			======================================*/
+	.opacity(@opacity: 100) {
+		opacity: @opacity / 100;
+		filter: e(%("alpha(opacity=%d)", @opacity));
+	}
+
+	/* Box box-shadow 	======================================*/
+	.box-shadow(@shadow: 1px 1px 0 rgba(0,0,0,.15)) {
+		-webkit-box-shadow: @shadow;
+		-moz-box-shadow: @shadow;
+		box-shadow: @shadow;
+	}
+
+	/* Clickable item 	======================================*/
+	.clickable {
+		background-color: @white;
+		white-space: nowrap;
+  		overflow: hidden;
+  		text-overflow: ellipsis;
+		#border-radius > .rounded();
+		.box-shadow();
+		.show;
+		.transition;
+
+		&:hover,
+		&:active { 
+			.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)");
+		}
+	}
+
+	.faux-clickable {
+		background-color: @white;
+		white-space: nowrap;
+  		overflow: hidden;
+  		text-overflow: ellipsis;
+		#border-radius > .rounded();
+		.box-shadow();
+		.show;
+	}
+
+	/* Content background 		=============================*/
+	.background(@color: @white) {
+		background: @color @textureImage repeat;
+
+		@media @highdpi {
+			background-size: 40px;
+		}
+	}
+
+
+/* 4. LAYOUT
+==========================================================*/
+	.size(@height: 5px, @width: 5px) {
+		width: @width;
+		height: @height;
+	}
+	
+	.square(@size: 5px) {
+		.size(@size, @size);
+	}
+
+	.calc-height(@percentage, @pixels) {
+		height: -webkit-calc(~"@{percentage}% - @{pixels}px");
+		height: -moz-calc(~"@{percentage}% - @{pixels}px");
+		height: calc(~"@{percentage}% - @{pixels}px");
+		.no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
+	}
+
+	.calc-width(@percentage, @pixels) {
+		width: -webkit-calc(~"@{percentage}% - @{pixels}px");
+		width: -moz-calc(~"@{percentage}% - @{pixels}px");
+		width: calc(~"@{percentage}% - @{pixels}px");
+		.no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
+	}
+
+	#pixel-to-percent {
+
+		.height(@target, @context) {
+	    	height: (@target / @context) * 100%;
+	  	}
+
+		.width(@target, @context) {
+	    	width: (@target / @context) * 100%;
+	  	}
+
+	  	.left(@target, @context) {
+	    	left: (@target / @context) * 100%;
+	  	}
+
+	  	.right(@target, @context) {
+	    	right: (@target / @context) * 100%;
+	  	}
+
+	  	.side-padding(@target, @context) {
+	    	padding: 0 (@target / @context) * 100%;
+	  	}
+
+	  	.top-padding(@target, @context) {
+	    	padding-top: (@target / @context) * 100%;
+	  	}
+
+	  	.left-padding(@target, @context) {
+	    	padding-left: (@target / @context) * 100%;
+	  	}
+
+	  	.side-margin(@target, @context) {
+	    	margin: 0 (@target / @context) * 100%;
+	  	}
+
+	  	.top-margin(@target, @context) {
+	    	margin-top: (@target / @context) * 100%;
+	  	}
+
+	  	.left-margin(@target, @context) {
+	    	margin-left: (@target / @context) * 100%;
+	  	}
+
+	  	.right-margin(@target, @context) {
+	    	margin-right: (@target / @context) * 100%;
+	  	}
+  	}
+
+/* 5. COMPONENTS
+==========================================================*/
+/* 6. IE
+==========================================================*/
+/* 7. RESPONSIVE
+==========================================================*/
