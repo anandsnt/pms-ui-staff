@@ -1,6 +1,7 @@
 var AddNewPaymentModal = function(fromPagePayment){
   	BaseModal.call(this);
   	var that = this;
+  	this.save_inprogess = false;
   	// this.myDom = "#modal";
   	this.url = "staff/payments/addNewPayment";
   	this.$paymentTypes = [];
@@ -18,7 +19,7 @@ var AddNewPaymentModal = function(fromPagePayment){
         
    };
    this.saveNewPayment = function(){
-
+   if (that.save_inprogress == true) return false;
   	var $payment_type = $("#new-payment #payment-type").val();
 		$payment_credit_type = $("#new-payment #payment-credit-type").val();
 		$card_number_set = $("#new-payment #card-number-set1").val();
@@ -73,6 +74,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 		
 			//console.log($add);
 		    $("#payment_tab").prepend($add);
+		    that.save_inprogress = true; // Handle clicking on Add button twice.
 		    $.ajax({
 				type: "POST",
 				url: 'staff/payments/save_new_payment',
@@ -89,6 +91,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 				dataType: 'json',
 				success: function(data) {
 					console.log(data.id);
+					that.save_inprogress = false;
 					if(data.errors!="" && data.errors!=null){
 						$("#credit-card-number-error").html(data.errors).show();
 						// $("#new-payment #credit_row .new-item").remove();
@@ -105,12 +108,14 @@ var AddNewPaymentModal = function(fromPagePayment){
 					that.hide();
 				},
 				error: function(){
+					that.save_inprogress = false;
 					//alert(data.errors);
 				}
 			});
 			
 		} else {
 			var reservation_id = getReservationId();
+			that.save_inprogress = true;
 			$.ajax({
 				type: "POST",
 				url: 'staff/reservation/save_payment',
@@ -126,6 +131,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 				dataType: 'json',
 				success: function(data) {
 					console.log(data.id);
+					that.save_inprogress = false;
 					if(data.errors!="" && data.errors!=null){
 						$("#credit-card-number-error").html(data.errors).show();
 						// $("#new-payment #credit_row .new-item").remove();
@@ -154,6 +160,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 					that.hide();
 				},
 				error: function(){
+					that.save_inprogress = false;
 					//alert(data.errors);
 				}
 			});
