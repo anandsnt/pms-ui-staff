@@ -6,7 +6,6 @@ var Search = function(domRef){
   searchResults.guests = [];
   	
   this.pageinit = function(){
-  	console.log("Page Init inside search");
     // setUpSearch(that.myDomElement);
     that.myDomElement.find($('#query')).on('focus', that.callCapitalize);    
     that.myDomElement.find($('#query')).on('keyup', that.loadResults);  
@@ -14,7 +13,6 @@ var Search = function(domRef){
   
   //when user focus on search text
   this.callCapitalize = function(e){
-  	console.log("inside capitalize");
   	$(this).capitalize();
   };
    //when user focus on search text
@@ -50,10 +48,9 @@ var Search = function(domRef){
 	        $('#search-results').empty().addClass('hidden');
 	        that.updateView();            
 	    }
-    };  
+    };
     
    this.load_search_data = function(url,$query){
-	 	console.log("inside load_search_data");
 	 	$.ajax({
 	    type:           "GET",
 	    url:            url + "&query=" + $query,
@@ -94,7 +91,7 @@ var Search = function(domRef){
 	            if ($query.match(/^([a-zA-Z]+)$/) && (value.firstname.indexOf($query) >= 0 || value.lastname.indexOf($query) >= 0 || value.group.indexOf($query) >= 0))
 	            {
 	                items.push($('<li />').html( 
-	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
+	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
 	                ));
 	
 	                $('#search-results').append.apply($('#search-results'),items).highlight($query);
@@ -103,16 +100,16 @@ var Search = function(domRef){
 	            else if ($query.match(/^([0-9]+)$/) && $query.length <= 5 && (value.room.toString().indexOf($query) >= 0 || value.confirmation.toString().indexOf($query) >= 0))
 	            {
 	                items.push($('<li />').html(
-	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip))
-	                );
+	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
+	                ));
 	                $('#search-results').append.apply($('#search-results'),items).highlight($query);
 	            }
 	            // Search by number 
 	            else if ($query.length > 6 && (value.confirmation.toString().indexOf($query) >= 0))
 	            {
 	                items.push($('<li />').html( 
-	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip))
-	                );
+	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
+	                ));
 	                $('#search-results').append.apply($('#search-results'),items).highlight($query);
 	                
 	            }
@@ -125,7 +122,6 @@ var Search = function(domRef){
 	    }
 	    catch(e)
 	    {
-	    	console.log(e);
 	    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
 	    }
 	
@@ -139,28 +135,25 @@ var Search = function(domRef){
     
     this.displaySearchResults = function(response, $query){
     	console.log(response);
-    	console.log(JSON.stringify(response));
-    	
 	    try
 		    {
 		        var items=[];
 		        $.each(response.guests, function(i,value){
 		        	
 		        items.push($('<li />').html( 
-		                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
+		                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
 		                ));
 		
 		                $('#search-results').append.apply($('#search-results'),items).highlight($query);
 		        });
 		        
-		     // Reset scroller
+		     	// Reset scroller
 		        /*setTimeout(function () {
 		            contentScroll.refresh();
 		        }, 0);*/
 		    }
 		    catch(e)
 		    {
-		    	console.log(e);
 		    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
 		    }
 		
@@ -171,28 +164,38 @@ var Search = function(domRef){
 		    };
     };
     
-    this.writeSearchResult = function(id, firstname, lastname, image, confirmation, status, room, roomstatus, foStatus, location, group, vip){
+    this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip){
     	
-    	var viewStatus = this.getReservationStatusMapped(status);
+    	var viewStatus = this.getReservationStatusMapped(reservation_status);
     	var roomStatusMapped = this.getRoomStatusMapped(roomstatus);
-
+    	var roomstatusexplained = "";
+    	roomstatusextra = false;
+    	
+    	if(foStatus =="VACANT" && roomStatusMapped=="not-ready"){
+    		roomstatusexplained ="VACANT";
+    		roomstatusextra = true;
+    	}
+    	else if(foStatus =="OCCUPIED"){
+    		roomstatusexplained ="DUEOUT";
+    		roomstatusextra = true;
+    	}
+    	
     	var $location = (escapeNull(location) != '') ? '<span class="icons icon-location">' + escapeNull(location) + '</span>' : '',
         $group = (escapeNull(group) != '') ? '<em class="icons icon-group">' + escapeNull(group) + '</em>' : '',
         $vip = vip ? '<span class="vip">VIP</span>' : '',
         $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="/assets/' + escapeNull(image) + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
-        //$roomAdditional = roomstatusextra ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
-        $roomAdditional = '<span class="room-status">' + "" + '</span>',
+        $roomAdditional = roomstatusextra ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
+        $viewStatus = viewStatus ? '<span class="guest-status ' + escapeNull(viewStatus) + '">' + escapeNull(viewStatus) + '</span>':'',
         $output = 
         '<a href="staff/staycards/staycard?confirmation=' + confirmation+'&id='+ escapeNull(id)+ '" class="guest-' + escapeNull(status) + ' link-item float" data-transition="inner-page">' + 
             $image +
             '<div class="data">' +
                 '<h2>' + escapeNull(lastname) + ', ' + escapeNull(firstname) + '</h2>' +
                 '<span class="confirmation">' + escapeNull(confirmation) + '</span>' + $location + $group +
-            '</div>' +
-            '<span class="guest-status ' + escapeNull(viewStatus) + '">' + escapeNull(viewStatus) + '</span>' +
+            '</div>'+
+            $viewStatus +
             '<strong class="room-number ' + escapeNull(roomStatusMapped) + '">' + escapeNull(room) + '</strong>' + $roomAdditional +
         '</a>';
-        console.log($location);
     	return $output;
     };
 
@@ -221,7 +224,7 @@ var Search = function(domRef){
     	}else if(status == "NOTREADY"){
     		roomStatus = "not-ready";
     	}
-
+		return roomStatus;
     }
     
     this.updateView = function(){
@@ -238,12 +241,10 @@ var Search = function(domRef){
 	            $('#no-results').removeClass('hidden');
 	        }
 	    }
-	
 	    // Set pageScroll
 	    if (pageScroll) { destroyPageScroll(); }
 	    createPageScroll('#search');
     };
-  
 };
 
 
