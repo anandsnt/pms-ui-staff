@@ -9,154 +9,211 @@
 /* 5. COMPONENTS
 ==========================================================*/
 
-/* Admin home	 			==============================*/
-	#admin-dashboard {
-		#admin-header {
-			#quick-menu {
-				border: 1px dashed rgba(0,0,0,.2);
-				#border-radius > .rounded();
+/* Admin home       ==============================*/
+  #admin-dashboard {
+    #admin-header {
+      #quick-menu {
+        border: 1px dashed rgba(0,0,0,.2);
+        #border-radius > .rounded();
 
-				&.has-items {
-					border: 0;
+        &.has-items {
+          border: 0;
 
-					&:after { .hide; }
-					&.dragging,
-					&.active { border: 1px dashed rgba(0,0,0,.2); }
-				}
+          &:after { .hide; }
+          &.dragging,
+          &.active { border: 1px dashed rgba(0,0,0,.2); }
+        }
 
-				&:after {
-					content: "You can build your custom quick menu by draging item icons in this area";
-					line-height: 58px;
-					width: 100%;
-					text-align: center;
-					font-style: italic;
-					color: rgba(0,0,0,.3);
-					.show;
-				}
-			}
-		}
-	}
+        &:after {
+          content: "You can build your custom quick menu by draging item icons in this area";
+          line-height: 58px;
+          width: 100%;
+          text-align: center;
+          font-style: italic;
+          color: rgba(0,0,0,.3);
+          .show;
+        }
+      }
+    }
+  }
 
-/* Dashboard page 			==============================*/
-	.dashboard-items {
-		li { 
-			font-size: 18px;
-			height: 60px;
-			font-weight: 600;
-			vertical-align: middle;
-			.faux-clickable;
-			overflow: visible;
-			position: relative;
-			#pixel-to-percent > .width( 310, 1010); 
+/* Dashboard page       ==============================*/
+  #dashboard {
+    position: absolute;
+    top: 140px;
+    left: 0;
+    width: 100%;
+    .calc-height(100, 140);
 
-			.icon-admin-menu {
-				position: absolute;
-				top: 4px;
-				left: 14px;
-				z-index: 20;	
-				border: 1px dashed rgba(0,0,0,0);
+    .tabs-nav {
+      height: 100%;
+      padding-left: 20px;
+      background: @rcardTexture1;
+      .pull-left;
+      .box-shadow(inset -1px 0 2px rgba(0,0,0,.1));
+      #pixel-to-percent > .width( 190, 1240 );
 
-				&.moved {
-					cursor: default;
-					 border: 0;
-					.box-shadow(inset 0 -1px 0 rgba(0,0,0,.1));
-				}
-				
-				&.ui-draggable-dragging {
-					height: 50px !important;
-					width: 50px !important;
-				}
-			}
+      li {
+        position: relative;
+        line-height: 59px;
+        margin: 0;
+        vertical-align: middle;
+        white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
 
-			.text {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				line-height: 60px;
-				color: @textColor;
-				padding: 0 20px 0 80px;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				z-index: 10;
-				.show;	
+        a { 
+          font-weight: 600;
+          text-transform: uppercase;
+          color: @grey4;
+          margin-right: 20px;
+          border-bottom: 1px solid rgba(0,0,0,.1);  
+          .no-transition;
+          .show;
 
-				&.icon-setup-error { background: @icons no-repeat 100% -428px; }
-				&.icon-setup-pending { background: @icons no-repeat 100% -475px; }
-			}
+          &.icons { padding-left: 30px; }
 
-			a.icon-admin-menu {
-				&:hover { border-color: rgba(0,0,0,.1); }
-			}
+          &:hover { color: @logoPrimary;  }
+        }
 
-			a.text {
-				&:hover { color: @logoPrimary; }
-			}
-		}
+        &.ui-tabs-active {
+          background-image: @arrowsTabs;
+          background-repeat: no-repeat;
+          background-position: 100% 0;
 
-		> li {
-			position: relative;
-			#pixel-to-percent > .right-margin( 40, 1010);
-			.pull-left;
+          a { color: @textColor; }
+        }
+      }
+    }
 
-			.text { 
-				background-color: @white; 
-				z-index: 9;
-			}
+    .tab {
+      padding: 40px 20px 0 40px;
+      .pull-left;
+      #pixel-to-percent > .width( 1050, 1240 );
 
-			.dropdown {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				z-index: 1;
+      .dashboard-items {
 
-				li {
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					margin: 0;
+        li { 
+          font-size: 18px;
+          height: 60px;
+          font-weight: 600;
+          vertical-align: middle;
+          .faux-clickable;
+          overflow: visible;
+          position: relative;
+          #pixel-to-percent > .width( 310, 1010); 
 
-					&:nth-child(1) { top: 2px; left: -2px; z-index: 3; }
-					&:nth-child(2){ top: 4px; left: 0; z-index: 2; }
-					&:nth-child(3) { top: 6px; left: -2px; z-index: 1; }
-				}
-			}
+          .icon-admin-menu {
+            position: absolute;
+            top: 4px;
+            left: 14px;
+            z-index: 20;  
+            border: 1px dashed rgba(0,0,0,0);
+            .pull-left;
 
-			&.disabled { 
-				background-color: rgba(252,252,252,.2);
-				.box-shadow(1px 1px 0 rgba(0,0,0,.05));
+            &.moved {
+              cursor: default;
+               border: 0;
+              .box-shadow(inset 0 -1px 0 rgba(0,0,0,.1));
+            }
+            
+            &.ui-draggable-dragging {
+              height: 50px !important;
+              width: 50px !important;
+            }
+          }
 
-				.text {
-					.opacity(20);
-					cursor: default;
-					&:hover { color: @textColor; }
-				}
-			}
+          .text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            line-height: 60px;
+            color: @textColor;
+            padding: 0 20px 0 80px;
+            white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              z-index: 10;
+            .show;  
 
-			&:hover {
-				.dropdown { 
-					top: 63px;
-					z-index: 9;
+            &.icon-setup-error { background: @icons no-repeat 100% -428px; }
+            &.icon-setup-pending { background: @icons no-repeat 100% -475px; }
+          }
 
-					li {
-						position: relative;
-						top: auto;
-						left: auto;
-						margin-bottom: 3px;
+          a.icon-admin-menu {
+            &:hover { border-color: rgba(0,0,0,.1); }
+          }
 
-						&:nth-child(1) { top: auto; left: auto; z-index: 9; }
-						&:nth-child(2){ top: auto; left: auto; z-index: 9; }
-						&:nth-child(3) { top: auto; left: auto; z-index: 9; }
-					}
-				}
-			}
+          a.text {
+            &:hover { color: @logoPrimary; }
+          }
+        }
 
-			&:nth-child(3n) { margin-right: 0; }
-		}				
-	}
+        > li {
+          position: relative;
+          #pixel-to-percent > .right-margin( 40, 1010);
+          .pull-left;
+
+          .text { 
+            background-color: @white; 
+            z-index: 9;
+          }
+
+          .dropdown {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1;
+
+            li {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              margin: 0;
+
+              &:nth-child(1) { top: 2px; left: -2px; z-index: 3; }
+              &:nth-child(2){ top: 4px; left: 0; z-index: 2; }
+              &:nth-child(3) { top: 6px; left: -2px; z-index: 1; }
+            }
+          }
+
+          &.disabled { 
+            background-color: rgba(252,252,252,.2);
+            .box-shadow(1px 1px 0 rgba(0,0,0,.05));
+
+            .text {
+              .opacity(20);
+              cursor: default;
+              &:hover { color: @textColor; }
+            }
+          }
+
+          &:hover {
+            .dropdown { 
+              top: 63px;
+              z-index: 9;
+
+              li {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin-bottom: 3px;
+
+                &:nth-child(1) { top: auto; left: auto; z-index: 9; }
+                &:nth-child(2){ top: auto; left: auto; z-index: 9; }
+                &:nth-child(3) { top: auto; left: auto; z-index: 9; }
+              }
+            }
+          }
+
+          &:nth-child(3n) { margin-right: 0; }
+        }       
+      }
+    }
+  }
 
 /* 6. IE
 ==========================================================*/
