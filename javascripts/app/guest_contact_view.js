@@ -108,8 +108,11 @@ var GuestContactView = function(domRef){
 					$("#mobile").val(data.mobile);
 
 					$guestCardClickTime = false;
+					$(document).on('click change', '#countries_status, #guest_nationality_div #nationality_status, #language', function(){
+						that.$contactInfoChange = true;
+					});
 					// to change flag - to save contact info only if any change happens.
-					$(document).on('change', '#guest_firstname, #guest_lastname, #title, #language, #guest-birthday, #passport-number,#passport-month, #passport-year, #nationality,#email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event) {
+					$(document).on('change', '#guest_firstname, #guest_lastname, #title, #language, #guest-birthday, #passport-number,#passport-month, #passport-year, #nationality,#guest_nationality_div #nationality_status, #email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event) {
 						that.$contactInfoChange = true;
 					});
 
