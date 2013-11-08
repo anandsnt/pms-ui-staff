@@ -97,8 +97,11 @@ var GuestContactView = function(domRef){
 				}, // fakeDataToAvoidCache is iOS Safari fix
 				async : false,
 				success : function(data) {
-					birthdate = data.birthday.split('-');
-					birthday = birthdate[1]+"-"+birthdate[2]+"-"+birthdate[0];
+					if(data.birthday!=null){
+						birthdate = data.birthday.split('-');
+						birthday = birthdate[1]+"-"+birthdate[2]+"-"+birthdate[0];
+						$("#guest-birthday").val(birthday);	
+					}
 					if(data.passport_expiry!=null){
 						passport_expiry = data.passport_expiry.split('-');
 						$("#passport-month").val(passport_expiry[1]);
@@ -108,7 +111,7 @@ var GuestContactView = function(domRef){
 					$("#guest_lastname").val(data.last_name);
 					$("#title").val(data.title);
 					$("#language").val(data.language);
-					$("#guest-birthday").val(birthday);		
+						
 					$("#nationality_status").val(data.nationality);						
 					$("#passport-number").val(data.passport_number);
 					
