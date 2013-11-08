@@ -4,7 +4,6 @@ var ValidateCheckinModal = function() {
 	var that = this;
 	this.myDom = "#modal";
 	this.url = "ui/validateEmailAndPhone";
-	//this.url = "/guest/set-contact";
 	this.delegateEvents = function() {
 		
 		that.myDom.find('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
@@ -29,47 +28,47 @@ var ValidateCheckinModal = function() {
 		var guestID = $("#guest_id").val();
 		$contactJsonObj = {};
 		$contactJsonObj['guest_id'] = $("#guest_id").val();
-		$contactJsonObj['user'] = {};
-		$contactJsonObj['user']['contacts_attributes'] = [];
 		
 		if(that.modalType == "NoPhone"){
-			
-			$contact_attributes = {};
-			$contact_attributes['contact_type'] = "PHONE";
-			$contact_attributes['label'] = "HOME";
-			$contact_attributes['value'] = $("#validate #guest-phone").val();
-			$contact_attributes['is_primary'] = true;
-			$contactJsonObj['user']['contacts_attributes'].push($contact_attributes);
+			var phone = $("#validate #guest-phone").val();
+			if(phone == ""){
+				alert("Please enter phone number");
+				return false;
+			}
+			else{
+				$contactJsonObj['phone'] = phone;
+			}
 		}
 		else if(that.modalType == "NoEmail"){
-			
-			$contact_attributes = {};
-			$contact_attributes['contact_type'] = "EMAIL";
-			$contact_attributes['label'] = "BUSINESS";
-			$contact_attributes['value'] = $("#validate #guest-email").val();
-			$contact_attributes['is_primary'] = true;
-			$contactJsonObj['user']['contacts_attributes'].push($contact_attributes);
+			var email = $("#validate #guest-email").val();
+			if(email == ""){
+				alert("Please enter email");
+				return false;
+			}
+			else{
+				$contactJsonObj['email'] = email;
+			}
 		}
 		else if(that.modalType == "NoPhoneNoEmail"){
-			
-			$contact_attributes = {};
-			$contact_attributes['contact_type'] = "PHONE";
-			$contact_attributes['label'] = "HOME";
-			$contact_attributes['value'] = $("#validate #guest-phone").val();
-			$contact_attributes['is_primary'] = true;
-			$contactJsonObj['user']['contacts_attributes'].push($contact_attributes);
-			
-			$contact_attributes = {};
-			$contact_attributes['contact_type'] = "EMAIL";
-			$contact_attributes['label'] = "BUSINESS";
-			$contact_attributes['value'] = $("#validate #guest-email").val();
-			$contact_attributes['is_primary'] = true;
-			$contactJsonObj['user']['contacts_attributes'].push($contact_attributes);
+			var phone = $("#validate #guest-phone").val();
+			var email = $("#validate #guest-email").val();
+			if(phone == ""){
+				alert("Please enter phone number");
+				return false;
+			}
+			else if(email == ""){
+				alert("Please enter email");
+				return false;
+			}
+			else{
+				$contactJsonObj['email'] = email;
+				$contactJsonObj['phone'] = phone;
+			}
 		}
 
 		console.log("JSON.stringify($contactJsonObj) :  " + JSON.stringify($contactJsonObj))
 
-	     $.ajax({
+	    $.ajax({
 				type : "PUT",
 				url : 'staff/guest_cards/' + userId,
 				data : JSON.stringify($contactJsonObj),
