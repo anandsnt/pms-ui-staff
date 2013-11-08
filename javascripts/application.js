@@ -26,9 +26,9 @@
 // staff app scripts
 //= require_tree ./app/plugins
 //= require_tree ./app/signature
-//= require main
+
 //= require_tree ./app
 //= require_tree ./admin/plugins
 //= require_tree ./admin
-
+//= require main
 
