@@ -94,7 +94,8 @@ var GuestContactView = function(domRef){
 					$("#guest_firstname").val(data.first_name);
 					$("#guest_lastname").val(data.last_name);
 					$("#title").val(data.title);
-					$("#language").val(data.language);							
+					$("#language").val(data.language);						
+
 					$("#nationality_status").val(data.nationality);						
 					$("#passport-number").val(data.passport_number);					
 					$("#nationality").val(data.nationality);
