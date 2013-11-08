@@ -7,7 +7,7 @@ var GuestContactView = function(domRef){
 		// that.renderContactInformation();
        setTimeout(function() {
 			that.renderContactInformation();
-		}, 1000);
+		}, 700);
 		// that.handleEv();
 		$('#guest-like, #guest-credit, #guest-loyalty').on('click', that.saveContactInfo);
 		$('html').on('click', that.callSave);
@@ -58,7 +58,7 @@ var GuestContactView = function(domRef){
 					that.$contactInfoChange = false;
 					$("#gc-firstname").val($("#guest_firstname").val());
 					$("#gc-lastname").val($("#guest_lastname").val());
-					$("#gc-location").val($("#city").val());
+					$("#gc-location").val($("#city").val()+","+$("#state").val());
 					$("#gc-phone").val($("#phone").val());
 					$("#gc-email").val($("#email").val());
 					

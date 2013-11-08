@@ -97,7 +97,8 @@ var StayCard = function(viewDom){
     $guestCardJsonObj['guest_id'] = $("#guest_id").val();
     $guestFirstName = $guestCardJsonObj['first_name'] = $("#gc-firstname").val();
     $guestLastName = $guestCardJsonObj['last_name'] = $("#gc-lastname").val();
-    $guestCity = $guestCardJsonObj['city'] = $("#gc-location").val();
+    $guestCity = $guestCardJsonObj['city'] = ($("#gc-location").val()).split(",")[0];
+    $guestState = $guestCardJsonObj['state'] = ($("#gc-location").val()).split(",")[1];
     $guestPhone = $guestCardJsonObj['phone'] = $("#gc-phone").val();
     $guestEmail = $guestCardJsonObj['email'] = $("#gc-email").val();
 
@@ -114,6 +115,7 @@ var StayCard = function(viewDom){
           $("#guest_firstname").val($guestFirstName);
           $("#guest_lastname").val($guestLastName);
           $("#city").val($guestCity);
+          $("#state").val($guestState);
           $("#phone").val($guestPhone);
           $("#email").val($guestEmail);
         }
