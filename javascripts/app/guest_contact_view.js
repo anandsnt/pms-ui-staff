@@ -29,6 +29,7 @@ var GuestContactView = function(domRef){
 			$contactJsonObj['guest_id'] = $("#guest_id").val();
 			$contactJsonObj['first_name'] = $("#guest_firstname").val();
 			$contactJsonObj['last_name'] = $("#guest_lastname").val();
+			$contactJsonObj['title'] = $("#title").val();
 			$contactJsonObj['birthday'] = $("#guest-birthday").val();
 			$contactJsonObj['passport_no'] = $("#passport-number").val();
 			if($("#passport-month").val()!="" && $("#passport-year").val()!="")
