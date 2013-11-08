@@ -18,6 +18,7 @@
 //= require ./jquery-ui/interactions/jquery.ui.resizable.min
 //= require ./jquery-ui/interactions/jquery.ui.draggable.min
 //= require ./jquery-ui/interactions/jquery.ui.droppable.min
+//= require ./jquery-ui/interactions/jquery.ui.sortable.min
 //= require ./jquery-ui/widgets/jquery.ui.tabs.min
 //= require ./jquery-ui/widgets/jquery.ui.datepicker.min
 //= require ./jquery-ui/jquery.ui.touch-punch.min
@@ -27,3 +28,7 @@
 //= require_tree ./app/signature
 //= require main
 //= require_tree ./app
+//= require_tree ./admin/plugins
+//= require_tree ./admin
+
+
