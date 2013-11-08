@@ -69,7 +69,7 @@ var ValidateCheckinModal = function() {
 		console.log("JSON.stringify($contactJsonObj) :  " + JSON.stringify($contactJsonObj))
 
 	    $.ajax({
-				type : "PUT",
+				type : "POST",
 				url : 'staff/guest_cards/' + userId,
 				data : JSON.stringify($contactJsonObj),
 		
