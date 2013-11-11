@@ -2,7 +2,6 @@ var ValidateCheckinModal = function() {
 
 	BaseModal.call(this);
 	var that = this;
-	this.myDom = "#modal";
 	this.url = "ui/validateEmailAndPhone";
 	this.delegateEvents = function() {
 		
@@ -68,17 +67,14 @@ var ValidateCheckinModal = function() {
 
 		console.log("JSON.stringify($contactJsonObj) :  " + JSON.stringify($contactJsonObj));
 		
-		
-		
 	    $.ajax({
-				type : "POST",
+				type : "PUT",
 				url : 'staff/guest_cards/' + userId,
 				data : JSON.stringify($contactJsonObj),
 				async : false,
 				dataType : 'json',
 				contentType : 'application/json',
 				success : function() {
-					
 					console.log("success");
 				},
 				error : function() {
@@ -86,6 +82,7 @@ var ValidateCheckinModal = function() {
 				}
 		});
 		
+		// Update UI changes in Guest card header and Contact information.
 		var guest_phone = $("#gc-phone").val();
 		var guest_email = $("#gc-email").val();
 					
