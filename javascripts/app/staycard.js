@@ -12,8 +12,37 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation-listing li a')).on('click', that.reservationListItemClicked);
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
+    that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
 	that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
   }
+
+  this.validateEmailAndPhone = function(e){
+  	console.log("validateEmailAndPhone");
+  	var reservation_id = getReservationId();
+  	
+  	var phone_num = $("#gc-phone").val();
+  	var email = $("#gc-email").val();
+  	
+  	if(phone_num == "" && email == ""){
+  	       	var validateCheckinModal = new ValidateCheckinModal();
+  	       	validateCheckinModal.initialize();
+  	       	validateCheckinModal.params = {"type": "NoPhoneNoEmail"};
+  	}
+  	else if(phone_num == ""){
+  	       	var validateCheckinModal = new ValidateCheckinModal();
+  	       	validateCheckinModal.initialize();
+  	       	validateCheckinModal.params = {"type": "NoPhone"};
+  	}
+  	else if(email == ""){
+  	       	var validateCheckinModal = new ValidateCheckinModal();
+  	       	validateCheckinModal.initialize();
+  	       	validateCheckinModal.params = {"type": "NoEmail"};
+  	}
+    else{
+   		alert("not-empty");
+    }
+  }
+
 
   this.initSubViews = function(){
   	var reservationPaymentView = new ReservationPaymentView($("#reservation-card-payment"));
@@ -95,30 +124,12 @@ var StayCard = function(viewDom){
     var userId = $("#user_id").val();
     $guestCardJsonObj = {};
     $guestCardJsonObj['guest_id'] = $("#guest_id").val();
-    $guestCardJsonObj['user'] = {};
-    $guestFirstName = $guestCardJsonObj['user']['first_name'] = $("#gc-firstname").val();
-    $guestLastName = $guestCardJsonObj['user']['last_name'] = $("#gc-lastname").val();
-    $guestCardJsonObj['user']['addresses_attributes'] = [];
-    $addresses_attributes = {};
-    $guestCity = $addresses_attributes['city'] = $("#gc-location").val();
-    $addresses_attributes['is_primary'] = true;
-    $addresses_attributes['label'] = "HOME";
-    $guestCardJsonObj['user']['addresses_attributes'].push($addresses_attributes);
-    $guestCardJsonObj['user']['contacts_attributes'] = [];
-    $contact_attributes = {};
-    $contact_attributes['contact_type'] = "PHONE";
-    $contact_attributes['label'] = "HOME";
-    $guestPhone = $contact_attributes['value'] = $("#gc-phone").val();
-    $contact_attributes['is_primary'] = true;
-    $guestCardJsonObj['user']['contacts_attributes'].push($contact_attributes);
-    $contact_attributes = {};
-    $contact_attributes['contact_type'] = "EMAIL";
-    $contact_attributes['label'] = "BUSINESS";
-    $guestEmail = $contact_attributes['value'] = $("#gc-email").val();
-    $contact_attributes['is_primary'] = true;
-    $contact_attributes['id'] = "";
-    $guestCardJsonObj['user']['contacts_attributes'].push($contact_attributes);
-
+    $guestFirstName = $guestCardJsonObj['first_name'] = $("#gc-firstname").val();
+    $guestLastName = $guestCardJsonObj['last_name'] = $("#gc-lastname").val();
+    $guestCity = $guestCardJsonObj['city'] = ($("#gc-location").val()).split(",")[0];
+    $guestState = $guestCardJsonObj['state'] = ($("#gc-location").val()).split(",")[1];
+    $guestPhone = $guestCardJsonObj['phone'] = $("#gc-phone").val();
+    $guestEmail = $guestCardJsonObj['email'] = $("#gc-email").val();
 
     $.ajax({
       type : 'PUT',
@@ -133,6 +144,7 @@ var StayCard = function(viewDom){
           $("#guest_firstname").val($guestFirstName);
           $("#guest_lastname").val($guestLastName);
           $("#city").val($guestCity);
+          $("#state").val($guestState);
           $("#phone").val($guestPhone);
           $("#email").val($guestEmail);
         }
