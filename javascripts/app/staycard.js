@@ -14,6 +14,7 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
     that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
 	that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
+	that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);
   }
 
   this.validateEmailAndPhone = function(e){
@@ -42,7 +43,7 @@ var StayCard = function(viewDom){
    		alert("not-empty");
     }
   }
-
+	
 
   this.initSubViews = function(){
   	var reservationPaymentView = new ReservationPaymentView($("#reservation-card-payment"));
@@ -170,6 +171,10 @@ var StayCard = function(viewDom){
     	setWakeUpCallModal.params = {"reservation_id" : this.reservationId};
     	setWakeUpCallModal.type ="POST";
     	setWakeUpCallModal.initialize();
+    }
+    this.addKeysModal = function(e){
+		var addKeysModal = new AddKeysModal();
+    	addKeysModal.initialize();
     }
 }
 
