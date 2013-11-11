@@ -29,6 +29,10 @@ var GuestContactView = function(domRef){
 			$contactJsonObj['guest_id'] = $("#guest_id").val();
 			$contactJsonObj['first_name'] = $("#guest_firstname").val();
 			$contactJsonObj['last_name'] = $("#guest_lastname").val();
+			
+			$contactJsonObj['works_at'] = $("#works-at").val();
+			$contactJsonObj['job_title'] = $("#job-title").val();
+			
 			$contactJsonObj['title'] = $("#title").val();
 			$contactJsonObj['birthday'] = $("#guest-birthday").val();
 			$contactJsonObj['passport_no'] = $("#passport-number").val();
@@ -93,6 +97,8 @@ var GuestContactView = function(domRef){
 					}
 					$("#guest_firstname").val(data.first_name);
 					$("#guest_lastname").val(data.last_name);
+					$("#works-at").val(data.works_at);
+					$("#job-title").val(data.job_title);
 					$("#title").val(data.title);
 					$("#language").val(data.language);						
 
@@ -113,7 +119,7 @@ var GuestContactView = function(domRef){
 						that.$contactInfoChange = true;
 					});
 					// to change flag - to save contact info only if any change happens.
-					$(document).on('change', '#guest_firstname, #guest_lastname, #title, #language, #guest-birthday, #passport-number,#passport-month, #passport-year, #nationality,#guest_nationality_div #nationality_status, #email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event) {
+					$(document).on('change', '#guest_firstname, #guest_lastname, #works-at, #job-title, #title, #language, #guest-birthday, #passport-number,#passport-month, #passport-year, #nationality,#guest_nationality_div #nationality_status, #email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event) {
 						that.$contactInfoChange = true;
 					});
 
