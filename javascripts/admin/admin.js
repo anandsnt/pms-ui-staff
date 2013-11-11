@@ -16,8 +16,11 @@ function loadInlineForm($target, $item){
     });
 }
 
-$(function($){ 
-
+var setUpAdmin = function(viewDom, delegate) {
+// $(function($){ 
+	this.delegate = delegate;
+	that = this;
+	
 	// Tablet or iPhone?
     var isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
    
@@ -54,7 +57,7 @@ $(function($){
 	        	$('#quick-menu').addClass('dragging');
 	        },
 	        stop: function( event, ui ) {
-	        	$('#quick-menu').removeClass('dragging');
+	        	$('#quick-menu').removeClass('dragging');	        		
 	        }
 		});
 
@@ -66,12 +69,14 @@ $(function($){
 		}).sortable({
 			receive: function (event, ui) {
 				sortableIn = 1;
-	        	$(ui.item).addClass('moved').draggable('option', 'disabled', true);
+	        	$(ui.item).addClass('moved').draggable('option', 'disabled', true);	        	
+	        	var bookMarkId = $(ui.item.context).attr("data-id");
+	        	that.delegate.bookMarkAdded(bookMarkId);
 	    	},
 	        over: function(event, ui){
 				sortableIn = 1;
 			},
-			out: function(event, ui){
+			out: function(event, ui){				
 				sortableIn = 0;
 			},
 			beforeStop: function(event, ui){
@@ -326,4 +331,5 @@ $(function($){
 			$('.dataTables_info').detach().appendTo('.datatable-info');
 			$('.dataTables_paginate').detach().appendTo('.datatable-paginate');
 		}
-});
+// });
+};
