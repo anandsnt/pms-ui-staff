@@ -16,8 +16,11 @@ function loadInlineForm($target, $item){
     });
 }
 
-$(function($){ 
-
+var setUpAdmin = function(viewDom, delegate) {
+// $(function($){ 
+	this.delegate = delegate;
+	that = this;
+	
 	// Tablet or iPhone?
     var isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
    
@@ -54,7 +57,7 @@ $(function($){
 	        	$('#quick-menu').addClass('dragging');
 	        },
 	        stop: function( event, ui ) {
-	        	$('#quick-menu').removeClass('dragging');
+	        	$('#quick-menu').removeClass('dragging');	        		
 	        }
 		});
 
@@ -65,22 +68,34 @@ $(function($){
 			activeClass: 'active'
 		}).sortable({
 			receive: function (event, ui) {
+				console.log("Added to sortable?");
 				sortableIn = 1;
-	        	$(ui.item).addClass('moved').draggable('option', 'disabled', true);
+	        	$(ui.item).addClass('moved').draggable('option', 'disabled', true);	        	
+	        	var bookMarkId = $(ui.item.context).attr("data-id");
+	        	that.delegate.bookMarkAdded(bookMarkId);
+	        	
 	    	},
 	        over: function(event, ui){
 				sortableIn = 1;
 			},
 			out: function(event, ui){
+							
 				sortableIn = 0;
+				
 			},
+			remove: function(event, ui){
+					
+			},
+			
 			beforeStop: function(event, ui){
+				console.log("Before stop?");
 				$(ui.item).addClass('in-quick-menu');
 
 				// Remove from quick navigation
 				if (sortableIn == 0){
 					var $item = $(ui.item).text();
-		
+					var bookMarkId = $(ui.item.context).attr("data-id");
+	        		that.delegate.bookMarkRemoved(bookMarkId);
 					$(ui.item).remove();
 					$('.icon-admin-menu:contains("' + $item + '")').draggable('option', 'disabled', false).find('.icon-admin-menu').removeClass('moved');
 
@@ -326,4 +341,5 @@ $(function($){
 			$('.dataTables_info').detach().appendTo('.datatable-info');
 			$('.dataTables_paginate').detach().appendTo('.datatable-paginate');
 		}
-});
+// });
+};

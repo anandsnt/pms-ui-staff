@@ -2,7 +2,6 @@ var ValidateCheckinModal = function() {
 
 	BaseModal.call(this);
 	var that = this;
-	this.myDom = "#modal";
 	this.url = "ui/validateEmailAndPhone";
 	this.delegateEvents = function() {
 		
@@ -66,33 +65,35 @@ var ValidateCheckinModal = function() {
 			}
 		}
 
-		console.log("JSON.stringify($contactJsonObj) :  " + JSON.stringify($contactJsonObj))
-
+		console.log("JSON.stringify($contactJsonObj) :  " + JSON.stringify($contactJsonObj));
+		
 	    $.ajax({
-				type : "POST",
+				type : "PUT",
 				url : 'staff/guest_cards/' + userId,
 				data : JSON.stringify($contactJsonObj),
-		
 				async : false,
 				dataType : 'json',
 				contentType : 'application/json',
-		
 				success : function() {
-					
-					if($("#gc-phone").val == ""){
-						$("#gc-phone").val($("#validate #guest-phone").val());
-						$("#phone").val($("#validate #guest-phone").val());
-					}
-					if($("#gc-email").val ==""){
-						$("#gc-email").val($("#validate #guest-email").val());
-						$("#email").val($("#validate #guest-email").val());
-					}
-					removeModal();
+					console.log("success");
 				},
 				error : function() {
 					console.log("There is an error!!");
 				}
 		});
+		
+		// Update UI changes in Guest card header and Contact information.
+		var guest_phone = $("#gc-phone").val();
+		var guest_email = $("#gc-email").val();
+					
+		if(guest_phone == ""){
+			$("#gc-phone").val($("#validate #guest-phone").val());
+			$("#phone").val($("#validate #guest-phone").val());
+		}
+		if(guest_email ==""){
+			$("#gc-email").val($("#validate #guest-email").val());
+			$("#email").val($("#validate #guest-email").val());
+		}
 		that.hide();
 	};
 
