@@ -15,4 +15,8 @@ var HotelAdminView = function(domRef){
   	var delegateBookMark = new DelegateBookMark();
   	delegateBookMark.addBookMark(bookMarkId);
   };
+  this.bookMarkRemoved = function(bookMarkId){
+  	var delegateBookMark = new DelegateBookMark();
+  	delegateBookMark.removeBookMark(bookMarkId);
+  };
 };
