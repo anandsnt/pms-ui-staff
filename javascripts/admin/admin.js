@@ -50,7 +50,7 @@ var setUpAdmin = function(viewDom, delegate) {
 		var sortableIn = 0;
 		var dropOut = 0;
 
-		$('.icon-admin-menu:not(.dropped)').draggable({
+		$('.icon-admin-menu:not(.dropped):not(.admin-menu-group)').draggable({
 			revert: 'invalid',
 			connectToSortable: '#quick-menu',
 	        helper: 'clone',
@@ -104,6 +104,7 @@ var setUpAdmin = function(viewDom, delegate) {
 					var bookMarkId = $(ui.item.context).attr("data-id");
 	        		that.delegate.bookMarkRemoved(bookMarkId);
 					$(ui.item).remove();
+					$("#components_"+bookMarkId).removeClass('moved');
 					$('.icon-admin-menu:contains("' + $item + '")').draggable('option', 'disabled', false).find('.icon-admin-menu').removeClass('moved');
 
 
