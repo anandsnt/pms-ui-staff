@@ -50,7 +50,7 @@ var setUpAdmin = function(viewDom, delegate) {
 		var sortableIn = 0;
 		var dropOut = 0;
 
-		$('.icon-admin-menu:not(.dropped)').draggable({
+		$('.icon-admin-menu:not(.dropped):not(.admin-menu-group)').draggable({
 			revert: 'invalid',
 			connectToSortable: '#quick-menu',
 	        helper: 'clone',
