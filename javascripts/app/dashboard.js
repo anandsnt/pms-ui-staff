@@ -33,9 +33,9 @@ var Dashboard = function(domRef){
   }
   
   this.updateAccountSettings = function(e){
-  	var updateAccountSettingsModal = new UpdateAccountSettings();
-  	 updateAccountSettingsModal.initialize();
-  	 updateAccountSettingsModal.type ="POST";
+  	var updateAccountSettings = new UpdateAccountSettings();
+  	 updateAccountSettings.initialize();
+  	 updateAccountSettings.type ="POST";
   	
   }
 

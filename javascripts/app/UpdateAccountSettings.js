@@ -16,8 +16,7 @@ var UpdateAccountSettings = function() {
 	this.saveAccountSettings = function() {
 		var changepwd = $("#change-password").val();
 		var confirmpwd = $("#confirm-password").val();
-		var name = $("#staff-name").val();
-		var email = $("#staff-email").val();
+		
 		if (changepwd != confirmpwd) {
 			alert("Password does not match.");
 		} else if (changepwd == "" || confirmpwd == "") {
@@ -29,7 +28,7 @@ var UpdateAccountSettings = function() {
 			$.ajax({
 				
 				type : "POST",
-				url : "user/change_password",
+				url : "admin/user/change_password",
 				data : data,
 
 				success : function(data) {
