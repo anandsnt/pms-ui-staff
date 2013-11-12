@@ -50,7 +50,7 @@ var StayCard = function(viewDom){
     var reservationCardLoyaltyView = new ReservationCardLoyaltyView($("#reservationcard-loyalty"));
     reservationCardLoyaltyView.initialize();
     setUpGuestcard(that.myDom);
-    var guestContactView = new GuestContactView("#contact-info");
+    var guestContactView = new GuestContactView($("#contact-info"));
     guestContactView.pageinit();
     var reservationCardNotes = new reservationCardNotesView($("#reservation-notes"));
     reservationCardNotes.initialize();

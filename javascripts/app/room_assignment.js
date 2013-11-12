@@ -47,6 +47,7 @@ function getFilterList(){
     var radioFeatureCount = $('#pref_radio_count').val();
     for (var i = 0; i<radioFeatureCount ; i++){
         if($('#room-attributes #radio_' + i).is(':checked')) {
+
             if(!($('#room-attributes #radio_' + i).val() == "All rooms")){
                 featureList.push($('#room-attributes #radio_' + i).val());
             }
