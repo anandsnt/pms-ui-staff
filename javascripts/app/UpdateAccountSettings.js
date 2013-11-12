@@ -2,10 +2,9 @@ var UpdateAccountSettings = function() {
 
 	BaseModal.call(this);
 	var that = this;
-	this.url = "ui/updateAccountSettings";
+	this.url = "admin/user/get_user_name_and_email";
 	this.delegateEvents = function() {
 
-		that.myDom.find('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
 		that.myDom.find('#save-changes').on('click', that.saveAccountSettings);
 	};
 
