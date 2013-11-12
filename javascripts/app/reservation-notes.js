@@ -10,9 +10,8 @@ var reservationCardNotesView = function(domRef){
   	this.myDom.find('#post_notes #reservation_notes').on('click', that.saveReservationNotes);
   	this.myDom.find('#notes #delete_note').on('click', that.deleteReservationNotes);		
   };
-  this.deleteReservationNotes = function(){
-  	var noteId= $(that).attr('note_id');
- 
+  this.deleteReservationNotes = function(e){
+  	var noteId= $(e.target).attr('note_id');
 	$.ajax({
 		type : "POST",
 		url : '/staff/reservation/delete-reservation-note',	
