@@ -104,6 +104,7 @@ var setUpAdmin = function(viewDom, delegate) {
 					var bookMarkId = $(ui.item.context).attr("data-id");
 	        		that.delegate.bookMarkRemoved(bookMarkId);
 					$(ui.item).remove();
+					$("#components_"+bookMarkId).removeClass('moved');
 					$('.icon-admin-menu:contains("' + $item + '")').draggable('option', 'disabled', false).find('.icon-admin-menu').removeClass('moved');
 
 
