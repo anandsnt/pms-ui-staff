@@ -1,20 +1,16 @@
 var GuestContactView = function(domRef){
-    var that = this;
+	BaseView.call(this);
+  	var that = this;
+  	this.myDom = domRef;
     this.$guestCardClickTime = false;
     this.$contactInfoChange  = false;
-    console.log(domRef);
 	this.pageinit = function(){
-		// that.renderContactInformation();
        setTimeout(function() {
 			that.renderContactInformation();
 		}, 700);
-		// that.handleEv();
 		$('#guest-like, #guest-credit, #guest-loyalty').on('click', that.saveContactInfo);
 		$('html').on('click', that.callSave);
 	};
-	// this.handleEv = function(){
-// 		  
-	// };
 	this.callSave = function(e){
 		if (!$(e.target).is("#guest-card-content *", "#guest-card-content")){
 			if (that.$contactInfoChange) {
@@ -26,28 +22,28 @@ var GuestContactView = function(domRef){
 		if(that.$contactInfoChange){
 			var userId = $("#user_id").val();
 			$contactJsonObj = {};
-			$contactJsonObj['guest_id'] = $("#guest_id").val();
-			$contactJsonObj['first_name'] = $("#guest_firstname").val();
-			$contactJsonObj['last_name'] = $("#guest_lastname").val();
+			$contactJsonObj['guest_id'] = that.myDom.find("#guest_id").val();
+			$contactJsonObj['first_name'] = that.myDom.find("#guest_firstname").val();
+			$contactJsonObj['last_name'] = that.myDom.find("#guest_lastname").val();
 			
-			$contactJsonObj['works_at'] = $("#works-at").val();
-			$contactJsonObj['job_title'] = $("#job-title").val();
+			$contactJsonObj['works_at'] = that.myDom.find("#works-at").val();
+			$contactJsonObj['job_title'] = that.myDom.find("#job-title").val();
 			
-			$contactJsonObj['title'] = $("#title").val();
-			$contactJsonObj['birthday'] = $("#guest-birthday").val();
-			$contactJsonObj['passport_no'] = $("#passport-number").val();
-			if($("#passport-month").val()!="" && $("#passport-year").val()!="")
-				$contactJsonObj['passport_expiry'] = "01-"+$("#passport-month").val()+"-"+"20"+$("#passport-year").val();
-			$contactJsonObj['language'] = $("#language").val();
-			$contactJsonObj['nationality'] = $("#nationality_status").val();
-			$contactJsonObj['street'] = $("#streetname").val();
-			$contactJsonObj['city'] = $("#city").val();
-			$contactJsonObj['state'] = $("#state").val();
-			$contactJsonObj['postal_code'] = $("#postalcode").val();
-			$contactJsonObj['country'] = $("#country").val();
-			$contactJsonObj['phone'] = $("#phone").val();
-			$contactJsonObj['email'] = $("#email").val();
-			$contactJsonObj['mobile'] = $("#mobile").val();
+			$contactJsonObj['title'] = that.myDom.find("#title").val();
+			$contactJsonObj['birthday'] = that.myDom.find("#guest-birthday").val();
+			$contactJsonObj['passport_no'] = that.myDom.find("#passport-number").val();
+			if(that.myDom.find("#passport-month").val()!="" && that.myDom.find("#passport-year").val()!="")
+				$contactJsonObj['passport_expiry'] = "01-"+that.myDom.find("#passport-month").val()+"-"+"20"+that.myDom.find("#passport-year").val();
+			$contactJsonObj['language'] = that.myDom.find("#language").val();
+			$contactJsonObj['nationality'] = that.myDom.find("#nationality_status").val();
+			$contactJsonObj['street'] = that.myDom.find("#streetname").val();
+			$contactJsonObj['city'] = that.myDom.find("#city").val();
+			$contactJsonObj['state'] = that.myDom.find("#state").val();
+			$contactJsonObj['postal_code'] = that.myDom.find("#postalcode").val();
+			$contactJsonObj['country'] = that.myDom.find("#country").val();
+			$contactJsonObj['phone'] = that.myDom.find("#phone").val();
+			$contactJsonObj['email'] = that.myDom.find("#email").val();
+			$contactJsonObj['mobile'] = that.myDom.find("#mobile").val();
 		
 			console.log(JSON.stringify($contactJsonObj));
 			$.ajax({
@@ -61,6 +57,7 @@ var GuestContactView = function(domRef){
 		
 				success : function() {
 					that.$contactInfoChange = false;
+					// Update guest card header UI.
 					$("#gc-firstname").val($("#guest_firstname").val());
 					$("#gc-lastname").val($("#guest_lastname").val());
 					$("#gc-location").val($("#city").val()+","+$("#state").val());
@@ -88,31 +85,31 @@ var GuestContactView = function(domRef){
 					if(data.birthday!=null){
 						birthdate = data.birthday.split('-');
 						birthday = birthdate[1]+"-"+birthdate[2]+"-"+birthdate[0].substring(2);
-						$("#guest-birthday").val(birthday);
+						that.myDom.find("#guest-birthday").val(birthday);
 					}
 					if(data.passport_expiry!=null){
 						passport_expiry = data.passport_expiry.split('-');
-						$("#passport-month").val(passport_expiry[1]);						
-						$("#passport-year").val(passport_expiry[0].substring(2));
+						that.myDom.find("#passport-month").val(passport_expiry[1]);						
+						that.myDom.find("#passport-year").val(passport_expiry[0].substring(2));
 					}
-					$("#guest_firstname").val(data.first_name);
-					$("#guest_lastname").val(data.last_name);
-					$("#works-at").val(data.works_at);
-					$("#job-title").val(data.job_title);
-					$("#title").val(data.title);
-					$("#language").val(data.language);						
+					that.myDom.find("#guest_firstname").val(data.first_name);
+					that.myDom.find("#guest_lastname").val(data.last_name);
+					that.myDom.find("#works-at").val(data.works_at);
+					that.myDom.find("#job-title").val(data.job_title);
+					that.myDom.find("#title").val(data.title);
+					that.myDom.find("#language").val(data.language);						
 
-					$("#nationality_status").val(data.nationality);						
-					$("#passport-number").val(data.passport_number);					
-					$("#nationality").val(data.nationality);
-					$("#email").val(data.email_address);
-					$("#streetname").val(data.address);
-					$("#city").val(data.city);
-					$("#postalcode").val(data.postal_code);
-					$("#state").val(data.state);
-					$("#country").val(data.country);
-					$("#phone").val(data.phone);
-					$("#mobile").val(data.mobile);
+					that.myDom.find("#nationality_status").val(data.nationality);						
+					that.myDom.find("#passport-number").val(data.passport_number);					
+					that.myDom.find("#nationality").val(data.nationality);
+					that.myDom.find("#email").val(data.email_address);
+					that.myDom.find("#streetname").val(data.address);
+					that.myDom.find("#city").val(data.city);
+					that.myDom.find("#postalcode").val(data.postal_code);
+					that.myDom.find("#state").val(data.state);
+					that.myDom.find("#country").val(data.country);
+					that.myDom.find("#phone").val(data.phone);
+					that.myDom.find("#mobile").val(data.mobile);
 
 					$guestCardClickTime = false;
 					$(document).on('click change', '#countries_status, #guest_nationality_div #nationality_status, #language', function(){
