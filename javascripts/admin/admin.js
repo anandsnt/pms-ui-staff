@@ -48,6 +48,7 @@ var setUpAdmin = function(viewDom, delegate) {
 
 	// Quick menu
 		var sortableIn = 0;
+		var dropOut = 0;
 
 		$('.icon-admin-menu:not(.dropped)').draggable({
 			revert: 'invalid',
@@ -63,6 +64,7 @@ var setUpAdmin = function(viewDom, delegate) {
 
 		$('#quick-menu').droppable({
 			drop: function( event, ui ) {
+				dropOut = 1;
 				$(this).removeClass('dragging').addClass('has-items');
 			},
 			activeClass: 'active'
@@ -78,13 +80,18 @@ var setUpAdmin = function(viewDom, delegate) {
 	        over: function(event, ui){
 				sortableIn = 1;
 			},
-			out: function(event, ui){
-							
+			out: function(event, ui){						
 				sortableIn = 0;
+				if(dropOut == 0){					
+					var bookMarkId = $(ui.item.context).attr("data-id");
+	        		that.delegate.bookMarkRemoved(bookMarkId);	        				
+	        		$("#bookmark_"+bookMarkId).hide();
+	        		$("#components_"+bookMarkId).removeClass('moved');
+				}
 				
 			},
-			remove: function(event, ui){
-					
+			stop: function(event, ui){
+				
 			},
 			
 			beforeStop: function(event, ui){
