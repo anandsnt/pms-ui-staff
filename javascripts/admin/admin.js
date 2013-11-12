@@ -42,7 +42,7 @@ var setUpAdmin = function(viewDom, delegate) {
 		});
 
 	// Change hotel
-		$(document).on('click', '#change-hotel h1', function(e){
+		$(document).on('click', '#change-hotel h1', function(e){console.log("just")
 			$('#change-hotel').toggleClass('open');
 		});
 
