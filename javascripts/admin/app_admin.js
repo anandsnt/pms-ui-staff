@@ -1,6 +1,11 @@
 $(document).ready(function(){
-	var hotelAdmin = new HotelAdminView($("#hotel-admin-view"));
-	hotelAdmin.initialize();
-	// var sntAdmin = new SntAdminView($("#hotel-admin-view"));
-	// sntAdmin.initialize();
+	var hotelAdminElement = document.getElementById('hotel-admin-view');
+	var sntAdminElement = document.getElementById('snt-admin-view');
+	if (hotelAdminElement != null){
+		var hotelAdmin = new HotelAdminView($("#hotel-admin-view"));
+		hotelAdmin.initialize();		
+	} else if(sntAdminElement != null){
+		var sntAdmin = new SntAdminView($("#snt-admin-view"));
+		sntAdmin.initialize();
+	}
 });
