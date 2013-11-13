@@ -40,10 +40,7 @@ var StayCard = function(viewDom){
   	}
     else{
     	
-    	$(this).attr({
-		  href: "registration/check-in/",
-		  //data-transition: "nested-view"
-		});
+   		$(this).attr('href',"ui/registration");
    		
     }
   }
