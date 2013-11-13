@@ -388,11 +388,10 @@ $(function($){
                         console.log('Error loading screen');
                     }
                 }).done(function(){  
-                    viewInstance = sntapp.getViewInstance($('#'+$next));
+                    var viewInstance = sntapp.getViewInstance($('#'+$next));
                     if(typeof viewInstance !== "undefined"){
                         viewInstance.initialize();
                     }
-
                     if ($transitionPage.indexOf('main-page') >= 0)
                     {
                         changePage($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reloadOnBack);
@@ -424,6 +423,14 @@ $(function($){
             {
                goBackToView($activeMenuItem, $backView, $transitionType);
             }
+
+            //TODO: We are using a new view instance here. 
+            //It has to be replaced by a singletone instance of the view
+            var newViewInstance = sntapp.getViewInstance($('#'+$backPage));
+            if(typeof newViewInstance !== "undefined"){
+                newViewInstance.pageshow();
+            }
+
         }
         else 
         {
