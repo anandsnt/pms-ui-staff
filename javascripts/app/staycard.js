@@ -39,7 +39,12 @@ var StayCard = function(viewDom){
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
     else{
-   		alert("not-empty");
+    	
+    	$(this).attr({
+		  href: "registration/check-in/",
+		  //data-transition: "nested-view"
+		});
+   		
     }
   }
 
