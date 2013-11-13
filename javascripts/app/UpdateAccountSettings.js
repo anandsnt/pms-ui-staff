@@ -8,22 +8,17 @@ var UpdateAccountSettings = function() {
 		that.myDom.find('#save-changes').on('click', that.saveAccountSettings);
 	};
 
-	this.modalInit = function() {
-		console.log("modal init in sub modal");
-	};
-
 	this.saveAccountSettings = function() {
-		var changepwd = $("#change-password").val();
-		var confirmpwd = $("#confirm-password").val();
+		var changepwd = that.myDom.find($("#change-password")).val();
+		var confirmpwd = that.myDom.find($("#confirm-password")).val();
 		
-		if (changepwd != confirmpwd) {
-			alert("Password does not match.");
-		} else if (changepwd == "" || confirmpwd == "") {
+		if(changepwd == "" || confirmpwd == "") {
 			alert("Field cannot be empty.");
+		} else if (changepwd != confirmpwd)  {
+			alert("Password does not match.");
 		} else {
 
 			var data = {"new_password" : changepwd };
-
 			$.ajax({
 				
 				type : "POST",
@@ -32,8 +27,8 @@ var UpdateAccountSettings = function() {
 
 				success : function(data) {
 					if (data.status == "success") {
-					console.log("success");
-					that.hide();
+						console.log("success");
+						that.hide();
 					}
 				},
 				error : function() {
