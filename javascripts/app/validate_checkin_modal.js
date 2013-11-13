@@ -2,7 +2,7 @@ var ValidateCheckinModal = function() {
 
 	BaseModal.call(this);
 	var that = this;
-	this.url = "staycards/validate_email_phone";
+	this.url = "staff/staycards/validate_email_phone";
 	this.delegateEvents = function() {
 		
 		that.myDom.find('#modal-overlay, #modal-close, #cancel').on('click', that.hide);

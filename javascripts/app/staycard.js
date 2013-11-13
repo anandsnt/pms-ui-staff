@@ -58,7 +58,7 @@ var StayCard = function(viewDom){
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
     else{
-   		alert("not-empty");
+   		console.log("Redirect to registration page");
     }
   };
 
