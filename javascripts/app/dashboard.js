@@ -4,7 +4,7 @@ var Dashboard = function(domRef){
   this.myDom = domRef;
 
   this.pageinit = function(){
-  	$('#main-menu li#settings').on('click',that.updateAccountSettings);
+  	$('#main-menu a#staff-settings').on('click',that.updateAccountSettings);
   	
   	
   	if (pageScroll) { destroyPageScroll(); }
