@@ -39,9 +39,12 @@ var StayCard = function(viewDom){
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
     else{
+    	var reservation_id = getReservationId();
    		$(this).attr('data-page',"search");
    		$(this).attr('data-transition',"nested-view");
-   		$(this).attr('href',"ui/registration");
+   		$(this).attr('href',"ui/registration?"+reservation_id);
+   		var registrationCardView = new RegistrationCardView($("#registration-details"));
+    	registrationCardView.initialize();
     }
   }
 
