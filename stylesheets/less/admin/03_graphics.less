@@ -5,134 +5,163 @@
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/
 
-/* Global icons			==================================*/
-	.icons {
-		background-image: @icons;
-		background-repeat: no-repeat;
-		border: 0;
-		.show;
+/* Global icons     ==================================*/
+  .icons {
+    background-image: @icons;
+    background-repeat: no-repeat;
+    border: 0;
+    .show;
 
-		&.icon-search {
-			background-color: transparent;
-			background-position: 0 -100px;
-			.square(20px);
-			.hide-text;
-		}
+    &.icon-search {
+      background-color: transparent;
+      background-position: 0 -100px;
+      .square(20px);
+      .hide-text;
+    }
 
-		&.icon-clear-search {
-			background-color: transparent;
-			background-position: 4px -146px;
-			.square(15px);
-			.hide-text;
-		}
+    &.icon-clear-search {
+      background-color: transparent;
+      background-position: 4px -146px;
+      .square(15px);
+      .hide-text;
+    }
 
-		&.icon-setup-complete { background-position: 0 -375px; }
-		&.icon-setup-error { background-position: 0 -425px; }
-		&.icon-setup-pending { background-position: 0 -475px; }
+    &.icon-setup-complete { background-position: 0 -375px; }
+    &.icon-setup-error { background-position: 0 -425px; }
+    &.icon-setup-pending { background-position: 0 -475px; }
 
-		&.icon-add { 
-			background-position: 5px -346px; 
-			.square(20px);
-		}
+    &.icon-add { 
+      background-position: 5px -346px; 
+      .square(20px);
+    }
 
-		&.icon-delete { 
-			background-position: 5px -546px; 
-			.square(20px);
-		}
-	}
+    &.icon-delete { 
+      background-position: 5px -546px; 
+      .square(20px);
+    }
+  }
 
-	.status {
-		&.icon-setup-complete { background: @icons no-repeat 0 -385px; }
-		&.icon-setup-error { background: @icons no-repeat 0 -438px; }
-		&.icon-setup-pending { background: @icons no-repeat 0 -485px; }
-	}
+  .status {
+    &.icon-setup-complete { background: @icons no-repeat 0 -385px; }
+    &.icon-setup-error { background: @icons no-repeat 0 -438px; }
+    &.icon-setup-pending { background: @icons no-repeat 0 -485px; }
+  }
 
-	.action {
-		padding-left: 20px;
+  .action {
+    padding-left: 20px;
 
-		&.add { background: @icons no-repeat 0 -337px; }
-		&.remove { background: @icons no-repeat 0 -537px; }
-		&.back { background: @icons no-repeat 0 -585px; }
-	}
+    &.add { background: @icons no-repeat 0 -337px; }
+    &.remove { background: @icons no-repeat 0 -537px; }
+    &.back { background: @icons no-repeat 0 -585px; }
+  }
 
-/* Menu iconss			==================================*/
-	.icon-admin-menu {
-		background-image: @iconAdminMenu;
-		background-repeat: no-repeat;
-		background-color: transparent;
-		overflow: hidden;
-		.hide-text;
-		.square(50px);
-		.show;
-		.no-transition;
-		#border-radius > .rounded();
-
-		&.moved { 
-			.gradient-with-image(@iconAdminMenu, @logoGradientStart, @logoGradientEnd); 
-			background-repeat: no-repeat, repeat;
-		}
+/* Menu iconss      ==================================*/
 
 
-		&.icon-new-hotel { background-position: 0 0;}
+  .icon-admin-menu {
+    
+    background-image: @iconAdminMenu;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    overflow: hidden;
+    .hide-text;
+    .square(50px);
+    .show;
+    .no-transition;
+    #border-radius > .rounded();
 
-		&.icon-clone-hotel { background-position: 0 -50px;}
+    &.moved { 
+      .gradient-with-image(@iconAdminMenu, @logoGradientStart, @logoGradientEnd); 
+      background-repeat: no-repeat, repeat;
+    }
 
-		&.icon-hotel {
-			background-position: 0 -100px;
 
-			&.in-quick-menu { background-position: 0 -150px; }
-			&.moved { background-position: 0 -150px, 0 0; }
-		}
+    &.icon-new-hotel { background-position: 0 0;}
 
-		&.icon-user {
-			background-position: 0 -200px;
+    &.icon-clone-hotel { background-position: 0 -50px;}
 
-			&.in-quick-menu { background-position: 0 -250px; }
-			&.moved { background-position: 0 -250px, 0 0; }
-		}
+    &.icon-hotel {
+      background-position: 0 -100px;
 
-		&.icon-permissions {
-			background-position: 0 -300px;
+      &.in-quick-menu { background-position: 0 -150px; }
+      &.moved { background-position: 0 -150px, 0 0; }
+    }
 
-			&.in-quick-menu { background-position: 0 -350px; }
-			&.moved { background-position: 0 -350px, 0 0; }
-		}
+    
 
-		&.icon-settings {
-			background-position: 0 -400px;
+    &.icon-user {
+      background-position: 0 -200px;
 
-			&.in-quick-menu { background-position: 0 -450px; }
-			&.moved { background-position: 0 -450px, 0 0; }
-		}
+      &.in-quick-menu { background-position: 0 -250px; }
+      &.moved { background-position: 0 -250px, 0 0; }
+    }
 
-		&.icon-dashboard {
-			background-position: 0 -500px;
+    &.icon-permissions {
+      background-position: 0 -300px;
 
-			&.in-quick-menu { background-position: 0 -550px; }
-			&.moved { background-position: 0 -550px, 0 0; }
-		}
+      &.in-quick-menu { background-position: 0 -350px; }
+      &.moved { background-position: 0 -350px, 0 0; }
+    }
 
-		&.icon-promotions {
-			background-position: 0 -600px;
+    &.icon-settings {
+      background-position: 0 -400px;
 
-			&.in-quick-menu { background-position: 0 -650px; }
-			&.moved { background-position: 0 -650px, 0 0; }
-		}
-	}
+      &.in-quick-menu { background-position: 0 -450px; }
+      &.moved { background-position: 0 -450px, 0 0; }
+    }
 
-/* Menu toggle icon					======================*/
-	.icon-toggle {
-		background: @icons 10px 12px no-repeat;
-		overflow: hidden;
-		.hide-text;
-		.show;
-		.square(40px);
-		.no-transition;
-		.pull-left;
+    &.icon-dashboard {
+      background-position: 0 -500px;
 
-		&:hover,
-		&.active { background-position: 10px -38px;}
-	}
+      &.in-quick-menu { background-position: 0 -550px; }
+      &.moved { background-position: 0 -550px, 0 0; }
+    }
+
+    &.icon-promotions {
+      background-position: 0 -600px;
+
+      &.in-quick-menu { background-position: 0 -650px; }
+      &.moved { background-position: 0 -650px, 0 0; }
+    }
+
+
+    /* Below items are added as a work around to fix rendering issues while converting css images to img tag*/
+    &.icon-admin-componets {
+    background-image: none;
+    
+    }
+    &.icon-admin-componets img {
+      width:50px;
+      height: 50px;
+      vertical-align:middle;
+    }
+
+  }
+  
+    .icon-admin-menu {
+    text-indent:0;
+    }
+
+/* workaround ends here */
+
+
+
+
+
+
+/* Menu toggle icon         ======================*/
+  .icon-toggle {
+    background: @icons 10px 12px no-repeat;
+    overflow: hidden;
+    .hide-text;
+    .show;
+    .square(40px);
+    .no-transition;
+    .pull-left;
+
+    &:hover,
+    &.active { background-position: 10px -38px;}
+  }
 
 /* 4. LAYOUT
 ==========================================================*/

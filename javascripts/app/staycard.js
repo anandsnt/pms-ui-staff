@@ -12,8 +12,37 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation-listing li a')).on('click', that.reservationListItemClicked);
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
+    that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
 	that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
   }
+
+  this.validateEmailAndPhone = function(e){
+  	console.log("validateEmailAndPhone");
+  	var reservation_id = getReservationId();
+  	
+  	var phone_num = $("#gc-phone").val();
+  	var email = $("#gc-email").val();
+  	
+  	if(phone_num == "" && email == ""){
+  	       	var validateCheckinModal = new ValidateCheckinModal();
+  	       	validateCheckinModal.initialize();
+  	       	validateCheckinModal.params = {"type": "NoPhoneNoEmail"};
+  	}
+  	else if(phone_num == ""){
+  	       	var validateCheckinModal = new ValidateCheckinModal();
+  	       	validateCheckinModal.initialize();
+  	       	validateCheckinModal.params = {"type": "NoPhone"};
+  	}
+  	else if(email == ""){
+  	       	var validateCheckinModal = new ValidateCheckinModal();
+  	       	validateCheckinModal.initialize();
+  	       	validateCheckinModal.params = {"type": "NoEmail"};
+  	}
+    else{
+   		alert("not-empty");
+    }
+  }
+
 
   this.initSubViews = function(){
   	var reservationPaymentView = new ReservationPaymentView($("#reservation-card-payment"));
@@ -21,7 +50,7 @@ var StayCard = function(viewDom){
     var reservationCardLoyaltyView = new ReservationCardLoyaltyView($("#reservationcard-loyalty"));
     reservationCardLoyaltyView.initialize();
     setUpGuestcard(that.myDom);
-    var guestContactView = new GuestContactView("#contact-info");
+    var guestContactView = new GuestContactView($("#contact-info"));
     guestContactView.pageinit();
     var reservationCardNotes = new reservationCardNotesView($("#reservation-notes"));
     reservationCardNotes.initialize();

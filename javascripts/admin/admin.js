@@ -16,8 +16,11 @@ function loadInlineForm($target, $item){
     });
 }
 
-$(function($){ 
-
+var setUpAdmin = function(viewDom, delegate) {
+// $(function($){ 
+	this.delegate = delegate;
+	that = this;
+	
 	// Tablet or iPhone?
     var isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
    
@@ -45,8 +48,9 @@ $(function($){
 
 	// Quick menu
 		var sortableIn = 0;
+		var dropOut = 0;
 
-		$('.icon-admin-menu:not(.dropped)').draggable({
+		$('.icon-admin-menu:not(.dropped):not(.admin-menu-group)').draggable({
 			revert: 'invalid',
 			connectToSortable: '#quick-menu',
 	        helper: 'clone',
@@ -54,34 +58,53 @@ $(function($){
 	        	$('#quick-menu').addClass('dragging');
 	        },
 	        stop: function( event, ui ) {
-	        	$('#quick-menu').removeClass('dragging');
+	        	$('#quick-menu').removeClass('dragging');	        		
 	        }
 		});
 
 		$('#quick-menu').droppable({
 			drop: function( event, ui ) {
+				dropOut = 1;
 				$(this).removeClass('dragging').addClass('has-items');
 			},
 			activeClass: 'active'
 		}).sortable({
 			receive: function (event, ui) {
+				console.log("Added to sortable?");
 				sortableIn = 1;
-	        	$(ui.item).addClass('moved').draggable('option', 'disabled', true);
+	        	$(ui.item).addClass('moved').draggable('option', 'disabled', true);	        	
+	        	var bookMarkId = $(ui.item.context).attr("data-id");
+	        	that.delegate.bookMarkAdded(bookMarkId);
+	        	
 	    	},
 	        over: function(event, ui){
 				sortableIn = 1;
 			},
-			out: function(event, ui){
+			out: function(event, ui){						
 				sortableIn = 0;
+				if(dropOut == 0){					
+					var bookMarkId = $(ui.item.context).attr("data-id");
+	        		that.delegate.bookMarkRemoved(bookMarkId);	        				
+	        		$("#bookmark_"+bookMarkId).hide();
+	        		$("#components_"+bookMarkId).removeClass('moved');
+				}
+				
 			},
+			stop: function(event, ui){
+				
+			},
+			
 			beforeStop: function(event, ui){
+				console.log("Before stop?");
 				$(ui.item).addClass('in-quick-menu');
 
 				// Remove from quick navigation
 				if (sortableIn == 0){
 					var $item = $(ui.item).text();
-		
+					var bookMarkId = $(ui.item.context).attr("data-id");
+	        		that.delegate.bookMarkRemoved(bookMarkId);
 					$(ui.item).remove();
+					$("#components_"+bookMarkId).removeClass('moved');
 					$('.icon-admin-menu:contains("' + $item + '")').draggable('option', 'disabled', false).find('.icon-admin-menu').removeClass('moved');
 
 
@@ -326,4 +349,5 @@ $(function($){
 			$('.dataTables_info').detach().appendTo('.datatable-info');
 			$('.dataTables_paginate').detach().appendTo('.datatable-paginate');
 		}
-});
+// });
+};

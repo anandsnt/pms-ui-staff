@@ -7,342 +7,342 @@
 /* 4. LAYOUT
 ==========================================================*/
 
-/* Form layouts 				==========================*/
-	.form {
-		padding: 30px 20px;
-		background: @white;
-		.box-shadow(1px 1px 2px rgba(0,0,0,.1));
-		#border-radius > .rounded();
-		
-		.form-title {
-			position: relative;
-			line-height: 30px;
-			vertical-align: middle;
-			border-bottom: 1px solid rgba(0,0,0,.1);
-			clear: both;
+/* Form layouts         ==========================*/
+  .form {
+    padding: 30px 20px;
+    background: @white;
+    .box-shadow(1px 1px 2px rgba(0,0,0,.1));
+    #border-radius > .rounded();
+    
+    .form-title {
+      position: relative;
+      line-height: 30px;
+      vertical-align: middle;
+      border-bottom: 1px solid rgba(0,0,0,.1);
+      clear: both;
 
-			h3 {
-				display: inline-block;
-				line-height: 30px;
+      h3 {
+        display: inline-block;
+        line-height: 30px;
 
-				span { color: @grey3; }
-			}
+        span { color: @grey3; }
+      }
 
-			.status {
-				position: absolute;
-				top: 0;
-				right: 0;
-				font-size: 14px;
+      .status {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 14px;
 
-				strong { color: @red; }
-			}
-		}
+        strong { color: @red; }
+      }
+    }
 
-		.holder {
-			#pixel-to-percent > .width(580, 1200);
-			.pull-left;
+    .holder {
+      #pixel-to-percent > .width(580, 1200);
+      .pull-left;
 
-			&.left {
-				#pixel-to-percent > .right-margin(40, 1200);
-			}
+      &.left {
+        #pixel-to-percent > .right-margin(40, 1200);
+      }
 
-			.form-title { margin-bottom: 20px; }
-		}
+      .form-title { margin-bottom: 20px; }
+    }
 
-		.entry {
-			margin-bottom: 30px;
-			#pixel-to-percent > .width(280, 580);
-			.pull-left;
+    .entry {
+      margin-bottom: 30px;
+      #pixel-to-percent > .width(280, 580);
+      .pull-left;
 
-			label {
-				font-size: 14px;
-				line-height: 14px;
-				text-transform: uppercase;
-				margin-bottom: 10px;
-				.show;
+      label {
+        font-size: 14px;
+        line-height: 14px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        .show;
 
-				strong {
-					color: @red;
-					line-height: 14px;
-				}
+        strong {
+          color: @red;
+          line-height: 14px;
+        }
 
-				span { color: @grey4; }
+        span { color: @grey4; }
 
-				&.checkbox,
-				&.radio {
-					font-size: 16px;
-					line-height: 20px;
-					margin-bottom: 10px;
-					text-transform: none;
-				}
-			}
+        &.checkbox,
+        &.radio {
+          font-size: 16px;
+          line-height: 20px;
+          margin-bottom: 10px;
+          text-transform: none;
+        }
+      }
 
-			input,
-			textarea,
-			select,
-			.file-upload { background: @grey1; }
+      input,
+      textarea,
+      select,
+      .file-upload { background: @grey1; }
 
-			input:not([size]),
-			select {  width: 100%; }
+      input:not([size]),
+      select {  width: 100%; }
 
-			input[size] {
-				text-align: center;
-				margin-right: 5px;
+      input[size] {
+        text-align: center;
+        margin-right: 5px;
 
-				&:last-child { margin-right: 0; }
-			}
+        &:last-child { margin-right: 0; }
+      }
 
-			.select {
-				select { height: 40px; }
+      .select {
+        select { height: 40px; }
 
-				&:after { background-color: @grey1; }
-			}
+        &:after { background-color: @grey1; }
+      }
 
-			/* Checkbox / Radio holder ***/
-			.boxes {
-				padding: 20px;
-				background: @grey1;
-				.box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
-				#border-radius > .rounded();
-				.show;
+      /* Checkbox / Radio holder ***/
+      .boxes {
+        padding: 20px;
+        background: @grey1;
+        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+        #border-radius > .rounded();
+        .show;
 
-				input { background: @white; }
+        input { background: @white; }
 
-				.radio,
-				.checkbox {
-					&:last-child { margin-bottom: 0; }
-				}
+        .radio,
+        .checkbox {
+          &:last-child { margin-bottom: 0; }
+        }
 
-				.inline {
-					clear: none;
-					width: 22%;
-					margin-right: 4%;
-					.pull-left;
+        .inline {
+          clear: none;
+          width: 22%;
+          margin-right: 4%;
+          .pull-left;
 
-					.icons {
-						position: absolute;
-						top: 0;
+          .icons {
+            position: absolute;
+            top: 0;
 
-						&.icon-add { left: 0; }
-						&.icon-delete { 
-							left: -20px; 
-							.opacity(0);
-							#fade > .out();
-						}
-					}
+            &.icon-add { left: 0; }
+            &.icon-delete { 
+              left: -20px; 
+              .opacity(0);
+              #fade > .out();
+            }
+          }
 
-					&.add-new-checkbox {
-						position: relative;
-						padding-left: 30px;
-						font-size: 16px;
-						line-height: 20px;
-						font-style: italic;
-						text-transform: none;
-						color: @grey3;
-						margin-bottom: 0;
-						.show;
-					}
+          &.add-new-checkbox {
+            position: relative;
+            padding-left: 30px;
+            font-size: 16px;
+            line-height: 20px;
+            font-style: italic;
+            text-transform: none;
+            color: @grey3;
+            margin-bottom: 0;
+            .show;
+          }
 
-					&:hover {
-						.icons {
-							&.icon-delete { 
-								.opacity(100);
-								#fade > .in();
-							}
-						}
-					}
+          &:hover {
+            .icons {
+              &.icon-delete { 
+                .opacity(100);
+                #fade > .in();
+              }
+            }
+          }
 
-					&:nth-child(4n) { margin-right: 0; }
-				}
+          &:nth-child(4n) { margin-right: 0; }
+        }
 
-				&.float { padding: 0 20px; }
-			}
+        &.float { padding: 0 20px; }
+      }
 
-			/* Add new input ***/
-			.add-new-option {
-				padding-left: 30px;
-				background-image: @icons;
-				background-repeat: no-repeat;
-				background-position: 10px -335px;
-			}
+      /* Add new input ***/
+      .add-new-option {
+        padding-left: 30px;
+        background-image: @icons;
+        background-repeat: no-repeat;
+        background-position: 10px -335px;
+      }
 
-			/* Full width entry ***/
-			&.full-width {
-				width: 100%;
-				float: none;
-				clear: both;
+      /* Full width entry ***/
+      &.full-width {
+        width: 100%;
+        float: none;
+        clear: both;
 
-				.entry { 
-					margin-bottom: 10px; 
+        .entry { 
+          margin-bottom: 10px; 
 
-					&:nth-of-type(even):not(.full-width) { margin-right: 0; }
-				}
-			}
+          &:nth-of-type(even):not(.full-width) { margin-right: 0; }
+        }
+      }
 
-			&:nth-of-type(even) { #pixel-to-percent > .right-margin(20, 580); }
+      &:nth-of-type(even) { #pixel-to-percent > .right-margin(20, 580); }
 
-			.entry {
-				margin-bottom: 0;
+      .entry {
+        margin-bottom: 0;
 
-				&:nth-of-type(even):not(.full-width) { margin-right: 0; }
-				&:nth-of-type(odd):not(.full-width) { #pixel-to-percent > .right-margin(20, 580); }
-			}
-		}
+        &:nth-of-type(even):not(.full-width) { margin-right: 0; }
+        &:nth-of-type(odd):not(.full-width) { #pixel-to-percent > .right-margin(20, 580); }
+      }
+    }
 
-		.actions {
-			width: 100%;
-			clear: both;
-			margin: 0;
-			padding-top: 20px;
-			text-align: center;
-			border-top: 1px solid rgba(0,0,0,.1);
-			.show;
-		}
+    .actions {
+      width: 100%;
+      clear: both;
+      margin: 0;
+      padding-top: 20px;
+      text-align: center;
+      border-top: 1px solid rgba(0,0,0,.1);
+      .show;
+    }
 
-		/* Inline add new/edit form ***/
-		&.inline-form {
-			.form-title {
-				h3 { font-style: italic; }
-			}
+    /* Inline add new/edit form ***/
+    &.inline-form {
+      .form-title {
+        h3 { font-style: italic; }
+      }
 
-			.entry {
-				&:nth-of-type(even):not(.full-width) { margin-right: 0; }
-				&:nth-of-type(odd):not(.full-width) { #pixel-to-percent > .right-margin(20, 580); }
-			}
+      .entry {
+        &:nth-of-type(even):not(.full-width) { margin-right: 0; }
+        &:nth-of-type(odd):not(.full-width) { #pixel-to-percent > .right-margin(20, 580); }
+      }
 
-			.actions { padding: 0; }
-		}
+      .actions { padding: 0; }
+    }
 
-		/* Single field inline form ***/
-		&.single-field-form {
-			.entry {
-				width: 320px;
-				margin: 0 20px 0 0;
+    /* Single field inline form ***/
+    &.single-field-form {
+      .entry {
+        width: 320px;
+        margin: 0 20px 0 0;
 
-				&:nth-of-type(odd):not(.full-width) { margin-right: 20px; }
-			}
+        &:nth-of-type(odd):not(.full-width) { margin-right: 20px; }
+      }
 
-			.actions {
-				width: auto;
-				clear: none;
-				border-top: 0;
-				padding: 0;
-				.pull-left;
+      .actions {
+        width: auto;
+        clear: none;
+        border-top: 0;
+        padding: 0;
+        .pull-left;
 
-				.button { 
-					height: 40px;
-					margin-right: 20px;
-				}
-			}
-		}
-	}
+        .button { 
+          height: 40px;
+          margin-right: 20px;
+        }
+      }
+    }
+  }
 
-/* Inline data edit			==============================*/
-	.data-holder {
-		overflow: hidden;
-		.show;
-	}
+/* Inline data edit     ==============================*/
+  .data-holder {
+    overflow: hidden;
+    .show;
+  }
 
-	#add-new {
-		margin-bottom: 10px;
-		padding-bottom: 20px;
-		border-bottom: 2px solid rgba(0,0,0,.1);
+  #add-new {
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(0,0,0,.1);
 
-		.data-holder {
-			.form-title { margin-bottom: 20px; }
-			.actions { 
-				height: 60px;
-				padding-top: 20px;
-			}
-		}
-	}
+    .data-holder {
+      .form-title { margin-bottom: 20px; }
+      .actions { 
+        height: 60px;
+        padding-top: 20px;
+      }
+    }
+  }
 
 
 /* 5. COMPONENTS
 ==========================================================*/
 
-/* Check & radio box 			==========================*/
-	.checkbox,
-	.radio {
-		padding-left: 30px;
-		line-height: 20px;
-		clear: both;
-		width: 100%;
-		.show;
+/* Check & radio box      ==========================*/
+  .checkbox,
+  .radio {
+    padding-left: 30px;
+    line-height: 20px;
+    clear: both;
+    width: 100%;
+    .show;
 
-		.icon-form {
-			top: 0;
-			left: 0;
-		}
+    .icon-form {
+      top: 0;
+      left: 0;
+    }
 
-		input { min-height: 20px; }
+    input { min-height: 20px; }
 
-		&.inline {
-			display: inline-block;
-			background: transparent;
-			.box-shadow(none);
+    &.inline {
+      display: inline-block;
+      background: transparent;
+      .box-shadow(none);
 
-			.icon-form { 
-				left: 0; 
-				background: @white;
-			} 
-		}
-	}
+      .icon-form { 
+        left: 0; 
+        background: @white;
+      } 
+    }
+  }
 
-/* On/off switch checkbox		==========================*/
-	.switch-button {
-		display: inline-block;
-		cursor: pointer;
-		position: relative;
-		text-shadow: 1px 1px 0 rgba(255,255,255,.7);
-		background: @grey2;
-		.size(26px, 60px);
-		.box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
-		#border-radius > .rounded(20px);
-		
-		.switch-icon {
-			position: absolute;
-			top: 2px;
-			left: 2px;
-			z-index: 9;
-			.gradient-with-image(@onOffLines, @grey1, @white);
-			background-position: 50% 50%, 0 0;
-			background-repeat: no-repeat, repeat;
-			background-size: 6px 7px, auto;
-			.hide-text;
-			.show;
-			.square(22px);
-			.transition;
-			#border-radius > .rounded(22px);
+/* On/off switch checkbox   ==========================*/
+  .switch-button {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    text-shadow: 1px 1px 0 rgba(255,255,255,.7);
+    background: @grey2;
+    .size(26px, 60px);
+    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+    #border-radius > .rounded(20px);
+    
+    .switch-icon {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      z-index: 9;
+      .gradient-with-image(@onOffLines, @grey1, @white);
+      background-position: 50% 50%, 0 0;
+      background-repeat: no-repeat, repeat;
+      background-size: 6px 7px, auto;
+      .hide-text;
+      .show;
+      .square(22px);
+      .transition;
+      #border-radius > .rounded(22px);
 
-			@media @highdpi {
-				.gradient-with-image(@onOffLines2x, @grey1, @white);
-				background-position: 50% 50%, 0 0;
-				background-repeat: no-repeat, repeat;
-				background-size: 6px 7px, auto;
-			}
-		}
+      @media @highdpi {
+        .gradient-with-image(@onOffLines2x, @grey1, @white);
+        background-position: 50% 50%, 0 0;
+        background-repeat: no-repeat, repeat;
+        background-size: 6px 7px, auto;
+      }
+    }
 
-		input[type="checkbox"] { 
-			cursor: pointer;
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			line-height: 26px;
-			min-height: 26px;
-			z-index: 20;
-			.opacity(0);
-			.show;
-		}	
+    input[type="checkbox"] { 
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      line-height: 26px;
+      min-height: 26px;
+      z-index: 20;
+      .opacity(0);
+      .show;
+    } 
 
-		&.on {
-			.gradient(@greenEnd, @greenStart);
-			.switch-icon { left: 34px; }
-		}
+    &.on {
+      .gradient(@greenEnd, @greenStart);
+      .switch-icon { left: 34px; }
+    }
 
-		&.single { margin-top: 5px; }
-	}
+    &.single { margin-top: 5px; }
+  }
 
 /* 6. IE
 ==========================================================*/
