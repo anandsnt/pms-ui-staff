@@ -2,101 +2,61 @@ var AddKeysModal = function() {
 
 	BaseModal.call(this);
 	var that = this;
-	this.url = "ui/addKeys";
-	this.delegateEvents = function() {
-		that.myDom.find('#validate #submit').on('click', that.submitAndGotoCheckin);
-		that.myDom.find('#validate #cancel').on('click', that.ignoreAndGotoCheckin);
+	this.url = "http://localhost:3000/ui/show?haml_file=modals/addKeys&json_input=keys/keys_render.json&is_hash_map=true&is_partial=false";
+	this.delegateEvents = function() {		
+		// that.myDom.find('#validate #submit').on('click', that.submitAndGotoCheckin);
 		
-		this.modalType = this.params.type;
-		if(this.modalType == "NoPhone"){
-			$("#validate .message").html("Phone number missing!");
-			$("#validate #guest-email-entry").hide();
-		}
-		else if(this.modalType == "NoEmail"){
-			$("#validate .message").html("E-mail missing!");
-			$("#validate #guest-phone-entry").hide();
-		}
+		that.myDom.find('.radio').on('click', function(){			
+			that.myDom.find($("#key_print_new,#key_print_additional")).removeClass("is-disabled");
+		});
+		that.myDom.find('#key_print_new').on('click', that.printNewKey);
+		var guestEmail = $("#change-name #gc-email").val();
+		// var guestPhone = $("#change-name #gc-phone").val();
+		if(guestEmail =="")
+		{
+			$(".print_key_missing").show();
+		} else {
+			$(".print_key_missing").hide();
+			that.myDom.find($("#key-guest-email").val(guestEmail));
+			var keyEmailElement = $("#key-guest-email").length;
+			if(keyEmailElement>0){
+				that.myDom.find($("#print-keys")).removeClass("is-disabled");
+			}				
+		}	
 	};
 	this.modalInit = function() {
-		console.log("modal init in sub modal");
+		
 	};
-	this.submitAndGotoCheckin = function() {
-		var userId = $("#user_id").val();
-		var guestID = $("#guest_id").val();
-		$contactJsonObj = {};
-		$contactJsonObj['guest_id'] = $("#guest_id").val();
-		
-		if(that.modalType == "NoPhone"){
-			var phone = $("#validate #guest-phone").val();
-			if(phone == ""){
-				alert("Please enter phone number");
-				return false;
-			}
-			else{
-				$contactJsonObj['phone'] = phone;
-			}
+	this.printNewKey = function(){
+		var reservation_id = getReservationId();
+		var keyEmailElement = $("#key-guest-email").length;
+		if(keyEmailElement>0){
+			key_guest_email = that.myDom.find($("#key-guest-email").val());
+		}else{
+			key_guest_email = $("#change-name #gc-email").val();
 		}
-		else if(that.modalType == "NoEmail"){
-			var email = $("#validate #guest-email").val();
-			if(email == ""){
-				alert("Please enter email");
-				return false;
+	    selected_key = $('input:radio[name="keys"]:checked').val();
+		$.ajax({
+			type : "PUT",
+			url : '',
+			data : {
+					"reservation_id": reservation_id,
+				    "email": key_guest_email,
+				    "key": selected_key
+				    },	
+			async : false,
+			dataType : 'json',
+			contentType : 'application/json',	
+			success : function() {
+				if (data.status == "success") {
+				    $("#change-name #gc-email").val(key_guest_email);
+				}				
+			},
+			error : function() {
+				console.log("There is an error!!");
 			}
-			else{
-				$contactJsonObj['email'] = email;
-			}
-		}
-		else if(that.modalType == "NoPhoneNoEmail"){
-			var phone = $("#validate #guest-phone").val();
-			var email = $("#validate #guest-email").val();
-			if(phone == ""){
-				alert("Please enter phone number");
-				return false;
-			}
-			else if(email == ""){
-				alert("Please enter email");
-				return false;
-			}
-			else{
-				$contactJsonObj['email'] = email;
-				$contactJsonObj['phone'] = phone;
-			}
-		}
-
-		console.log("JSON.stringify($contactJsonObj) :  " + JSON.stringify($contactJsonObj));
-		
-	    $.ajax({
-				type : "PUT",
-				url : 'staff/guest_cards/' + userId,
-				data : JSON.stringify($contactJsonObj),
-				async : false,
-				dataType : 'json',
-				contentType : 'application/json',
-				success : function() {
-					console.log("success");
-				},
-				error : function() {
-					console.log("There is an error!!");
-				}
 		});
-		
-		// Update UI changes in Guest card header and Contact information.
-		var guest_phone = $("#gc-phone").val();
-		var guest_email = $("#gc-email").val();
-					
-		if(guest_phone == ""){
-			$("#gc-phone").val($("#validate #guest-phone").val());
-			$("#phone").val($("#validate #guest-phone").val());
-		}
-		if(guest_email ==""){
-			$("#gc-email").val($("#validate #guest-email").val());
-			$("#email").val($("#validate #guest-email").val());
-		}
-		that.hide();
 	};
 
-	this.ignoreAndGotoCheckin = function() {
-		console.log("modal init in sub modal");
-		that.hide();
-	};
-}
+	
+};
