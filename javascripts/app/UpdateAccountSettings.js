@@ -27,8 +27,15 @@ var UpdateAccountSettings = function() {
 
 				success : function(data) {
 					if (data.status == "success") {
-						console.log("success");
 						that.hide();
+					}else if(data.status == "failure"){
+						that.hide();
+						try{
+							console.log(data.errors[0]);
+						}catch(e){
+							console.log("error");
+						}
+						
 					}
 				},
 				error : function() {
