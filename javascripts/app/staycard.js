@@ -2,8 +2,7 @@ var StayCard = function(viewDom){
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
-
-  
+  this.reservation_id = getReservationId();
   this.pageinit = function(){
     setUpStaycard(that.myDom);
 
@@ -13,7 +12,7 @@ var StayCard = function(viewDom){
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
     that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
-	  that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
+	that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
   };
 
   this.pageshow = function(){
@@ -37,7 +36,6 @@ var StayCard = function(viewDom){
 
 
   this.validateEmailAndPhone = function(e){
-  	var reservation_id = getReservationId();
   	
   	var phone_num = $("#gc-phone").val();
   	var email = $("#gc-email").val();
@@ -58,22 +56,22 @@ var StayCard = function(viewDom){
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
     else{
-    	var reservation_id = getReservationId();
+    	
+    	//Page transition to Registration card view.
    		$(this).attr('data-page',"search");
    		$(this).attr('data-transition',"nested-view");
-   		$(this).attr('href',"ui/registration?"+reservation_id);
+   		$(this).attr('href',"ui/registration?"+that.reservation_id);
    		var registrationCardView = new RegistrationCardView($("#registration-details"));
     	registrationCardView.initialize();
     }
   };
 
   this.setNewspaperPreferance = function(e){  	
-  	var reservation_id = getReservationId();
   	var newspaperValue = $('#reservation_newspaper').val();
   	$.ajax({
       	type : 'POST',
       	url : "reservation/add_newspaper_preference",
-      	data : {"reservation_id": reservation_id, "selected_newspaper" :newspaperValue } ,
+      	data : {"reservation_id": that.reservation_id, "selected_newspaper" :newspaperValue } ,
       	success : function(data) {
           	if(data.status == "success"){
           	    console.log("Succesfully set newspaper preferance");
@@ -176,8 +174,7 @@ var StayCard = function(viewDom){
     
 	this.setWakeUpCallModal = function(e){
 		var setWakeUpCallModal = new SetWakeUpCallModal();
-  	    this.reservationId = getReservationId();
-    	setWakeUpCallModal.params = {"reservation_id" : this.reservationId};
+    	setWakeUpCallModal.params = {"reservation_id" : that.reservation_id};
     	setWakeUpCallModal.type ="POST";
     	setWakeUpCallModal.initialize();
     }

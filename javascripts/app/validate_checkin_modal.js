@@ -3,6 +3,7 @@ var ValidateCheckinModal = function() {
 	BaseModal.call(this);
 	var that = this;
 	this.url = "staff/staycards/validate_email_phone";
+	this.reservation_id = getReservationId();
 	this.delegateEvents = function() {
 		
 		that.myDom.find('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
@@ -94,11 +95,24 @@ var ValidateCheckinModal = function() {
 			$("#gc-email").val($("#validate #guest-email").val());
 			$("#email").val($("#validate #guest-email").val());
 		}
+		
+		//Page transition to Registration card view.
+		$(this).attr('data-page',"search");
+   		$(this).attr('data-transition',"nested-view");
+   		$(this).attr('href',"ui/registration?"+that.reservation_id);
+   		var registrationCardView = new RegistrationCardView($("#registration-details"));
+    	registrationCardView.initialize();
 		that.hide();
 	};
 
-	this.ignoreAndGotoCheckin = function() {
-		console.log("modal init in sub modal");
+	this.ignoreAndGotoCheckin = function(e) {
+		
+		//Page transition to Registration card view.
+		$(this).attr('data-page',"search");
+   		$(this).attr('data-transition',"nested-view");
+   		$(this).attr('href',"ui/registration?"+that.reservation_id);
+   		var registrationCardView = new RegistrationCardView($("#registration-details"));
+    	registrationCardView.initialize();
 		that.hide();
 	};
 }

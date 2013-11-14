@@ -5,6 +5,9 @@ var RegistrationCardView = function(viewDom){
 
   this.pageinit = function(){
     console.log("RegistrationCardView pageinit");
+    
+    
+    
   }
   this.delegateEvents = function(){
   	console.log("RegistrationCardView delegateEvents");
