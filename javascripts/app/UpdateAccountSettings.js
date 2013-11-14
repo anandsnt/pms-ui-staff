@@ -46,6 +46,6 @@ var UpdateAccountSettings = function() {
 		}
 		
 
-	}
-}
+	};
+};
 
