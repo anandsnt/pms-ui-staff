@@ -12,10 +12,13 @@ var RoomAssignmentView = function(viewDom){
   	this.GetRoomAssignmentList();
   	that.myDom.find($('#room-attributes .radio_filters, #room-attributes .checkbox_filters, .rooms-listing #room_type_selectbox')
   		.change('focusout', that.getFilterList));
-
-    
+        
   }
 
+this.executeLoadingAnimation = function(){
+  changeView("nested-view", undefined, "view-nested-first", "view-nested-second", "move-from-right", false); 
+
+}
   this.createViewScroll = function(){
     if (viewScroll) { destroyViewScroll(); }
           setTimeout(function(){

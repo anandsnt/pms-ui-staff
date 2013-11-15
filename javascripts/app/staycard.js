@@ -6,7 +6,7 @@ var StayCard = function(viewDom){
   
   this.pageinit = function(){
     setUpStaycard(that.myDom);
-
+    var reservation_id = getReservationId()
     //Bind staycard events
     that.myDom.find($('#reservation-timeline li')).on('click', that.reservationTimelineClicked);
     that.myDom.find($('#reservation-listing li a')).on('click', that.reservationListItemClicked);
@@ -14,16 +14,16 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
     that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
 	  that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
-    that.myDom.find('#reservation-17-room-number').on('click',that.testView);
+    that.myDom.find('#reservation-'+ reservation_id +'-room-number').on('click',that.goToRoomAssignmentView);
   };
 
-  this.testView = function(e){
+  this.goToRoomAssignmentView = function(e){
     e.preventDefault();
     var viewURL = "staff/preferences/room_assignment";
-    var viewDom = "view-nested-second";
-    var params = {};
-    sntapp.fetchAndRenderView(viewURL, viewDom, params);
-
+    var viewDom = $("#view-nested-second");
+    var reservation_id = getReservationId()
+    var params = {"reservation_id": reservation_id};
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
 
   };
 

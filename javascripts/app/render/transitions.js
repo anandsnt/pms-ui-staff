@@ -3,6 +3,7 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
 
 // Load main page
 function changePage($type, $menuActiveItem, $prevPage, $nextPage, $transition, $emptyPrev){
+
     var $newScreen = new chainedAnimation(),
         $delay = 150;
     
@@ -177,15 +178,26 @@ function changeInnerPage($type, $menuActiveItem, $prevPage, $nextPage, $transiti
 
 // Load inner page view 
 function changeView($type, $menuActiveItem, $prevView, $nextView, $transition, $emptyPrev){
+    console.log("#### Params in change view : ###");
+    console.log($type);
+    console.log($menuActiveItem);
+    console.log($prevView);
+    console.log($nextView);
+    console.log($transition);
+    console.log($emptyPrev);
+    
     var $newView = new chainedAnimation(),
         $delay = 150;
 
     // Lock the current parent view
     $('#' + $nextView).closest('.page-current').addClass('page-locked');
+    
+    console.log("Next new");
+    console.log($($nextView));
 
     // Start transitioning when new page is ready
     $('#loading').fadeOut(function(){
-
+        console.log("With in loading.....");
         // Bring in new view
         $newView.add(function(){  
             $('#' + $nextView).addClass('view-current ' + $transition);
@@ -389,9 +401,11 @@ $(function($){
                     }
                 }).done(function(){  
                     var viewInstance = sntapp.getViewInstance($('#'+$next));
+
                     if(typeof viewInstance !== "undefined"){
                         viewInstance.initialize();
                     }
+
                     if ($transitionPage.indexOf('main-page') >= 0)
                     {
                         changePage($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reloadOnBack);
@@ -402,14 +416,7 @@ $(function($){
                     }
                     else if ($transitionPage.indexOf('nested-view') >= 0)
                     {
-                        alert("here");
-                        console.log($transitionPage);
-                        console.log($activeMenuItem);
-                        console.log($previous);
-                        console.log($next);
-                        console.log($transitionType);
-                        console.log($reloadOnBack);
-                        
+
                        changeView($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reloadOnBack); 
                     }
 
