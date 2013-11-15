@@ -59,6 +59,7 @@ var StayCard = function(viewDom){
     else{
     	
     	//Page transition to Registration card view.
+    	
    		$(this).attr('data-page',"search");
    		$(this).attr('data-transition',"nested-view");
    		$(this).attr('href',"staff/reservation/bill_card?reservation_id="+that.reservation_id);
