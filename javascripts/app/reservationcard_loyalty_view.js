@@ -27,19 +27,19 @@ var ReservationCardLoyaltyView = function(domRef){
       resetSelectionUI();
     }
     $.ajax({
-    type: "POST",
-    url: 'staff/user_memberships/link_to_reservation',
-    data : {
-        "reservation_id": reservation_id,
-        "membership_id": id
-    },
-    success: function(data) {
-      console.log("Succesfully changed loyalty primary");
-    },
-    error: function(){
-      console.log("There is an error!!");
-	    }
-	  });
+	    type: "POST",
+	    url: 'staff/user_memberships/link_to_reservation',
+	    data : {
+	        "reservation_id": reservation_id,
+	        "membership_id": id
+	    },
+	    success: function(data) {
+	      console.log("Succesfully changed loyalty primary");
+	    },
+	    error: function(){
+	      console.log("There is an error!!");
+		    }
+	});
   }
 };
 

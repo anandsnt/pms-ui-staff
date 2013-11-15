@@ -2,9 +2,9 @@ var RegistrationCardView = function(viewDom){
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
-
+  this.reservation_id = getReservationId();
   this.pageinit = function(){
-    console.log("RegistrationCardView pageinit");
+    
     if (viewScroll) { destroyViewScroll(); }
     setTimeout(function(){
         createViewScroll('#registration-content');
@@ -14,34 +14,47 @@ var RegistrationCardView = function(viewDom){
 	that.myDom.find("#signature canvas").height(180);  
   }
   this.delegateEvents = function(){
-  	console.log("RegistrationCardView delegateEvents");
   	that.myDom.find('#checkin-button').on('click', that.completeCheckin);
+  	that.myDom.find('#clear-signature').on('click',that.clearSignature);
   }
   this.completeCheckin = function(){
   	
   	var datapair = JSON.stringify($("#signature").jSignature("getData", "native"));
 	$("#output").val(datapair);
-	
-  	console.log("RegistrationCardView completeCheckin");
-  	
   	var terms_and_conditions = that.myDom.find("#subscribe-via-email").hasClass("checked");
-  	var signature = that.myDom.find(".output").val();
-  	var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked");
-  	
-  	console.log(terms_and_conditions);
   	
   	if(!terms_and_conditions){
   		alert("Please check agree to the Terms &Conditions");
   	}
+  	else if(signature == "[]"){
+  		alert("Please sign in");
+  	}
   	else{
   		
+  		var signature = that.myDom.find(".output").val();
+  		var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
   		var data= {
 		    "is_promotions_and_email_set": is_promotions_and_email_set,
-		    "signature": signature
+		    "signature": signature,
+		    "reservation_id":that.reservation_id
 		};
 	
-		console.log(data);
-  		
+		$.ajax({
+		    type: "POST",
+		    //url: 'staff/user_memberships/link_to_reservation',
+		    data : data,
+		    success: function(data) {
+		      console.log("Succesfully completed checkin");
+		    },
+		    error: function(){
+		      console.log("There is an error!!");
+			}
+	  	});
   	}
+  }
+  this.clearSignature = function(){
+  	var canvas = $("#signature canvas"); 
+  	canvas.html("");
+	that.myDom.find("#output").val("");
   }
 }
