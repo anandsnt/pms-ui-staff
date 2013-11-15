@@ -35,7 +35,7 @@ var RegistrationCardView = function(viewDom){
 		};
 	
 		console.log(data);
-  		
+  		alert(data);
   	}
   }
 }

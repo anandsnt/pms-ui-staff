@@ -60,9 +60,8 @@ var StayCard = function(viewDom){
     	//Page transition to Registration card view.
    		$(this).attr('data-page',"search");
    		$(this).attr('data-transition',"nested-view");
+   		//$(this).attr('href',"staff/reservation/bill_card?reservation_id="+that.reservation_id);
    		$(this).attr('href',"ui/registration?"+that.reservation_id);
-   		var registrationCardView = new RegistrationCardView($("#registration-details"));
-    	registrationCardView.initialize();
     }
   };
 
