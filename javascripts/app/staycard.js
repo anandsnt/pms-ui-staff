@@ -5,14 +5,16 @@ var StayCard = function(viewDom){
   this.reservation_id = getReservationId();
   this.pageinit = function(){
     setUpStaycard(that.myDom);
-
+    
     //Bind staycard events
+
     that.myDom.find($('#reservation-timeline li')).on('click', that.reservationTimelineClicked);
     that.myDom.find($('#reservation-listing li a')).on('click', that.reservationListItemClicked);
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
     that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
 	that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
+    that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);
   };
 
   this.pageshow = function(){
@@ -33,7 +35,6 @@ var StayCard = function(viewDom){
     var reservationCardNotes = new reservationCardNotesView($("#reservation-notes"));
     reservationCardNotes.initialize();
   }
-
 
   this.validateEmailAndPhone = function(e){
   	
@@ -60,10 +61,24 @@ var StayCard = function(viewDom){
     	//Page transition to Registration card view.
    		$(this).attr('data-page',"search");
    		$(this).attr('data-transition',"nested-view");
-   		//$(this).attr('href',"staff/reservation/bill_card?reservation_id="+that.reservation_id);
-   		$(this).attr('href',"ui/registration?"+that.reservation_id);
+   		$(this).attr('href',"staff/reservation/bill_card?reservation_id="+that.reservation_id);
+   		//$(this).attr('href',"ui/registration?"+that.reservation_id);
     }
-  };
+  }
+
+
+  this.initSubViews = function(){
+  	var reservationPaymentView = new ReservationPaymentView($("#reservation-card-payment"));
+    reservationPaymentView.initialize();
+    var reservationCardLoyaltyView = new ReservationCardLoyaltyView($("#reservationcard-loyalty"));
+    reservationCardLoyaltyView.initialize();
+    setUpGuestcard(that.myDom);
+    var guestContactView = new GuestContactView($("#contact-info"));
+    guestContactView.pageinit();
+    var reservationCardNotes = new reservationCardNotesView($("#reservation-notes"));
+    reservationCardNotes.initialize();
+  }
+
 
   this.setNewspaperPreferance = function(e){  	
   	var newspaperValue = $('#reservation_newspaper').val();
@@ -177,5 +192,16 @@ var StayCard = function(viewDom){
     	setWakeUpCallModal.type ="POST";
     	setWakeUpCallModal.initialize();
     }
+    this.addKeysModal = function(e){
+		var addKeysModal = new AddKeysModal();
+    	addKeysModal.initialize();
+    }
 }
 
+
+/*function getParentBookingDetailes(clickedElement) {
+  alert(clickedElement);
+  var reservationDetails = {};
+  var parentReservationElement = $('#' + clickedElement).closest('div[id^="reservation-content"]').attr('id');
+  alert(parentReservationElement);
+}*/
