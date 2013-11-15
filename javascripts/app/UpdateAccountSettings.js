@@ -29,11 +29,11 @@ var UpdateAccountSettings = function() {
 					if (data.status == "success") {
 						that.hide();
 					}else if(data.status == "failure"){
-						that.hide();
 						try{
-							console.log(data.errors[0]);
+							alert(data.errors[0]);
 						}catch(e){
-							console.log("error");
+							console.log("There is an error!!");
+							that.hide();
 						}
 						
 					}
@@ -46,6 +46,6 @@ var UpdateAccountSettings = function() {
 		}
 		
 
-	}
-}
+	};
+};
 

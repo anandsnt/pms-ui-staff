@@ -14,7 +14,26 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
     that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
 	that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
-	that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);
+    that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);
+  };
+
+  this.pageshow = function(){
+    //Create the scroll views for staycard
+    var confirmNum = that.myDom.find($('#reservation_info')).attr('data-confirmation-num');
+    createViewScroll('#reservation-listing');
+    createViewScroll('#reservation-content-'+ confirmNum);
+  };
+
+  this.initSubViews = function(){
+    var reservationPaymentView = new ReservationPaymentView($("#reservation-card-payment"));
+    reservationPaymentView.initialize();
+    var reservationCardLoyaltyView = new ReservationCardLoyaltyView($("#reservationcard-loyalty"));
+    reservationCardLoyaltyView.initialize();
+    setUpGuestcard(that.myDom);
+    var guestContactView = new GuestContactView($("#contact-info"));
+    guestContactView.pageinit();
+    var reservationCardNotes = new reservationCardNotesView($("#reservation-notes"));
+    reservationCardNotes.initialize();
   }
 
   this.validateEmailAndPhone = function(e){
@@ -40,10 +59,10 @@ var StayCard = function(viewDom){
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
     else{
-   		alert("not-empty");
+   		console.log("Redirect to registration page");
     }
   }
-	
+
 
   this.initSubViews = function(){
   	var reservationPaymentView = new ReservationPaymentView($("#reservation-card-payment"));
