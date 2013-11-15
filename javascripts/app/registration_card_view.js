@@ -9,6 +9,9 @@ var RegistrationCardView = function(viewDom){
     setTimeout(function(){
         createViewScroll('#registration-content');
   	}, 300);
+  	that.myDom.find("#signature").jSignature();
+	that.myDom.find("#output").val("");
+	that.myDom.find("#signature canvas").height(180);  
   }
   this.delegateEvents = function(){
   	console.log("RegistrationCardView delegateEvents");
@@ -16,6 +19,9 @@ var RegistrationCardView = function(viewDom){
   }
   this.completeCheckin = function(){
   	
+  	var datapair = JSON.stringify($("#signature").jSignature("getData", "native"));
+	$("#output").val(datapair);
+	
   	console.log("RegistrationCardView completeCheckin");
   	
   	var terms_and_conditions = that.myDom.find("#subscribe-via-email").hasClass("checked");
@@ -30,12 +36,12 @@ var RegistrationCardView = function(viewDom){
   	else{
   		
   		var data= {
-	    "is_promotions_and_email_set": is_promotions_and_email_set,
-	    "signature": signature
+		    "is_promotions_and_email_set": is_promotions_and_email_set,
+		    "signature": signature
 		};
 	
 		console.log(data);
-  		alert(data);
+  		
   	}
   }
 }
