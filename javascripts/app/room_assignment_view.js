@@ -51,9 +51,9 @@ var RoomAssignmentView = function(viewDom){
   	var filterOptions = [];
 
     var selctboxOption = $("#room_type_selectbox option:selected").val();
-    if(!(selctboxOption === "all")){
+    /*if(!(selctboxOption === "all")){
         filterOptions.push(selctboxOption);
-    }
+    }*/
 
     /*var radioFeatureCount = $('#pref_radio_count').val();
     for (var i = 0; i<radioFeatureCount ; i++){
@@ -103,7 +103,7 @@ var RoomAssignmentView = function(viewDom){
   this.displayFilteredRoomList = function(filteredRoomList){
 
     //TODO: This line will be removed once the filter story is complete
-    filteredRoomList = this.roomCompleteList;
+    //filteredRoomList = this.roomCompleteList;
     console.log(filteredRoomList);
   	$('#rooms-available ul').html("");
 
@@ -116,12 +116,12 @@ var RoomAssignmentView = function(viewDom){
             room_status_html = "<span class='room-number ready'>"+filteredRoomList[i].room_number+"</span>";
         }
         else if((filteredRoomList[i].fo_status == "VACANT") && (filteredRoomList[i].room_status == "NOTREADY")){
-            room_status_html = "<span class='room-number not-ready'>"+filteredRoomList[i].room_number +"</span>";//+
-            "<span class='room-status not-ready'>"+ vacant +"</span>";    
+            room_status_html = "<span class='room-number not-ready'>"+filteredRoomList[i].room_number +"</span>"+
+            "<span class='room-status not-ready'> vacant </span>";    
         }
         else if(filteredRoomList[i].fo_status == "OCCUPIED"){
-            room_status_html = "<span class='room-number not-ready'>"+filteredRoomList[i].room_number +"</span>";//+
-            "<span class='room-status not-ready'>"+ due out +"</span>";    
+            room_status_html = "<span class='room-number not-ready'>"+filteredRoomList[i].room_number +"</span>"+
+            "<span class='room-status not-ready'> due out </span>";    
         }
         
         var output = "<li><a id = 'room-list-item' href='#'"+
@@ -141,14 +141,23 @@ var RoomAssignmentView = function(viewDom){
     var roomSelected = $(this).find(">:first-child").html();
     var currentReservation = $('#roomassignment-ref-id').val();
     var roomStatusExplained = $(this).find(">:first-child").next().html();
-    var roomReadyStatus = $(this).find(">:first-child").hasClass('ready');
-    if(roomReadyStatus){
-        $('#reservation-'+currentReservation+'-room-number').addClass('ready');
-    }else{
-        $('#reservation-'+currentReservation+'-room-number').addClass('not-ready');
+    var roomStausNew = "";
+    if((typeof roomStatusExplained != "undefined") && (roomStatusExplained != "")){
+      roomStausNew = "<span class='room-status'>"+ roomStatusExplained +"</span>"
+    }
+    var roomReadyStatus = "";
+    if($(this).find(">:first-child").hasClass('ready')){
+      roomReadyStatus = "ready"
+    }else if($(this).find(">:first-child").hasClass('not-ready')){
+      roomReadyStatus = "not-ready"
+
     }
 
-    $('#reservation-'+currentReservation+'-room-number').html(roomSelected);
+
+    $('#reservation-'+currentReservation+'-room-number').html("");
+    var roomHtml = "<strong class='room-number "+roomReadyStatus+"'>"+roomSelected+"</strong>" + roomStausNew;
+
+    $('#reservation-'+currentReservation+'-room-number').html(roomHtml);
 
     var postParams = {};
     postParams.reservation_id = currentReservation;
