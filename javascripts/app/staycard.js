@@ -14,7 +14,20 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
     that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
 	  that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
+    that.myDom.find('#reservation-17-room-number').on('click',that.testView);
   };
+
+  this.testView = function(e){
+    e.preventDefault();
+    var viewURL = "staff/preferences/room_assignment";
+    var viewDom = "view-nested-second";
+    var params = {};
+    sntapp.fetchAndRenderView(viewURL, viewDom, params);
+
+
+  };
+
+
 
   this.pageshow = function(){
     //Create the scroll views for staycard

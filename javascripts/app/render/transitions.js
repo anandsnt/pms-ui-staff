@@ -402,6 +402,14 @@ $(function($){
                     }
                     else if ($transitionPage.indexOf('nested-view') >= 0)
                     {
+                        alert("here");
+                        console.log($transitionPage);
+                        console.log($activeMenuItem);
+                        console.log($previous);
+                        console.log($next);
+                        console.log($transitionType);
+                        console.log($reloadOnBack);
+                        
                        changeView($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reloadOnBack); 
                     }
 
