@@ -34,8 +34,8 @@ var AddKeysModal = function() {
 		var reservation_id = getReservationId();
 		var keyEmailElement = $("#key-guest-email").length;
 		if(keyEmailElement>0){
-			key_guest_email = $("#gc-email").val();
-			//key_guest_email = that.myDom.find(("#key-guest-email").val());
+			// key_guest_email = $("#gc-email").val();
+			key_guest_email = that.myDom.find(("#key-guest-email")).val();
 		}else{
 			key_guest_email = $("#change-name #gc-email").val();
 		}
@@ -56,8 +56,8 @@ var AddKeysModal = function() {
 		var reservation_id = getReservationId();
 		var keyEmailElement = $("#key-guest-email").length;
 		if(keyEmailElement>0){
-			key_guest_email = $("#gc-email").val();
-			//key_guest_email = that.myDom.find($("#key-guest-email").val());
+			// key_guest_email = $("#gc-email").val();
+			key_guest_email = that.myDom.find($("#key-guest-email")).val();
 		}else{
 			key_guest_email = $("#change-name #gc-email").val();
 		}
@@ -72,7 +72,7 @@ var AddKeysModal = function() {
 		that.saveKey(data);
 	};
 	this.saveKey = function (data){
-		console.log("save print new ===========");
+		
 		$.ajax({
 			type : "POST",
 			url : 'staff/reservation/print_key',
@@ -82,7 +82,7 @@ var AddKeysModal = function() {
 			contentType : 'application/json',
 			success : function() {
 				if (data.status == "success") {
-				    $("#change-name #gc-email").val(key_guest_email);
+				    // $("#change-name #gc-email").val(key_guest_email);
 				}
 			},
 			error : function() {
