@@ -11,11 +11,19 @@ var RegistrationCardView = function(viewDom){
   	}, 300);
   	that.myDom.find("#signature").jSignature();
 	that.myDom.find("#output").val("");
-	that.myDom.find("#signature canvas").height(180);  
+	that.myDom.find("#signature canvas").height(180); 
+	that.myDom.find('.back-button').html("RESERVATION "+that.reservation_id);
+	$("#signature").on('mouseover',function(){
+		viewScroll.disable();
+	});	
+	$("#signature").on('mouseout',function(){
+		viewScroll.enable();
+	});
   }
   this.delegateEvents = function(){
   	that.myDom.find('#checkin-button').on('click', that.completeCheckin);
   	that.myDom.find('#clear-signature').on('click',that.clearSignature);
+  	that.myDom.find('.back-button').on('click',that.gotoStayCard);
   }
   
   this.completeCheckin = function(e){
@@ -44,7 +52,7 @@ var RegistrationCardView = function(viewDom){
 	
 	$.ajax({
 	    type: "POST",
-	    //url: 'staff/user_memberships/link_to_reservation',
+	    url: '/staff/checkin',
 	    data : data,
 	    success: function(data) {
 	      console.log("Succesfully completed checkin");
@@ -57,5 +65,8 @@ var RegistrationCardView = function(viewDom){
   this.clearSignature = function(){
   	that.myDom.find("#signature").jSignature("reset");
   }
-  
+  this.gotoStayCard= function(){
+  	
+  	console.log("Goto stay card");
+  }
 }
