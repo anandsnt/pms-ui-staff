@@ -8,6 +8,10 @@ var HotelAdminView = function(domRef){
   };
   this.delegateEvents = function(){  	
   	that.myDom.find('.sethotel').on('click', that.setNewHotel);
+  	that.myDom.find('.currenthotel').on('click', function(){
+  		$('#change-hotel').toggleClass('open');
+  	});
+  	
   };
   this.setNewHotel = function(){
   	var hotel_id = $(this).attr("id");
