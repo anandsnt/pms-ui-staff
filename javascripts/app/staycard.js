@@ -83,16 +83,10 @@ var StayCard = function(viewDom){
   	       	validateCheckinModal.initialize();
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
-    else if(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').val() == ""){
-
-   		console.log("Redirect to registration page");
-      var viewURL = "staff/preferences/room_assignment";
-      var viewDom = $("#view-nested-second");
-      var reservation_id = getReservationId()
-      var params = {"reservation_id": reservation_id};
-      sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
-    }else{
-      console.log("do nothing");
+    else if(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').text() == ""){
+   		that.goToRoomAssignmentView(e);
+    }else if(that.myDom.find('#reservation-checkin').attr('data-upsell-enabled') == "true"){
+      that.goToRoomUpgradeView(e);
     }
   }
 
