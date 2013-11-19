@@ -133,8 +133,8 @@ var GuestContactView = function(domRef){
 				sntapp.fetchAndRenderView('staff/preferences/likes', $("#likes"), viewParams);
 
 				sntapp.fetchAndRenderView('staff/payments/payment', $("#cc-payment"), viewParams);
-				var reservation_id = getReservationId();
-				viewParams = {"reservation_id" : reservation_id};
+				//var reservation_id = getReservationId();
+				//viewParams = {"reservation_id" : reservation_id};
 				sntapp.fetchAndRenderView('staff/user_memberships', $("#loyalty"), viewParams);
 				setTimeout(function() {
 					refreshGuestCardScroll();
