@@ -3,7 +3,7 @@ var AddKeysModal = function() {
 	BaseModal.call(this);
 	var that = this;
 	var reservation_id = getReservationId();
-	this.url = "reservations/"+reservation_id+"/get_key_setup";
+	this.url = "staff/reservations/"+reservation_id+"/get_key_setup";
 	// this.url = "http://localhost:3000/ui/show?haml_file=modals/addKeys&json_input=keys/keys_render.json&is_hash_map=true&is_partial=false";
 	this.delegateEvents = function() {
 
