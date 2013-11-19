@@ -54,7 +54,7 @@ var StayCard = function(viewDom){
   this.validateEmailAndPhone = function(e){
   	var phone_num = $("#gc-phone").val();
   	var email = $("#gc-email").val();
-  	
+
   	if(phone_num == "" && email == ""){
   	       	var validateCheckinModal = new ValidateCheckinModal();
   	       	validateCheckinModal.initialize();
@@ -71,17 +71,17 @@ var StayCard = function(viewDom){
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
     else if(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').val() == ""){
-   	  console.log("Redirect to registration page");
-      var viewURL = "staff/preferences/room_assignment";
-      var viewDom = $("#view-nested-second");
-      var reservation_id = getReservationId()
-      var params = {"reservation_id": reservation_id};
-      sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
-    }else{
-    	//Page transition to Registration card view.
-   		$(this).attr('data-page',"search");
-   		$(this).attr('data-transition',"nested-view");
-   		$(this).attr('href',"staff/reservation/bill_card?reservation_id="+that.reservation_id);
+			var viewURL = "staff/preferences/room_assignment";
+			var viewDom = $("#view-nested-second");
+			var reservation_id = getReservationId()
+			var params = {"reservation_id": reservation_id};
+			sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
+    }
+    else{
+			//Page transition to Registration card view.
+			$(this).attr('data-page',"search");
+			$(this).attr('data-transition',"nested-view");
+			$(this).attr('href',"staff/reservation/bill_card?reservation_id="+that.reservation_id);
     }
   }
 
