@@ -13,7 +13,7 @@ var RegistrationCardView = function(viewDom){
   	that.myDom.find("#signature").jSignature();
 	that.myDom.find("#output").val("");
 	that.myDom.find("#signature canvas").height(180); 
-	that.myDom.find('.back-button').html("RESERVATION "+that.reservation_id);
+	that.myDom.find('#back-to-staycard').html("RESERVATION "+that.reservation_id);
 	$("#signature").on('mouseover',function(){
 		viewScroll.disable();
 	});	
@@ -24,7 +24,7 @@ var RegistrationCardView = function(viewDom){
   this.delegateEvents = function(){
   	that.myDom.find('#checkin-button').on('click', that.completeCheckin);
   	that.myDom.find('#clear-signature').on('click',that.clearSignature);
-  	that.myDom.find('.back-button').on('click',that.gotoStayCard);
+  	that.myDom.find('#back-to-staycard').on('click',that.gotoStayCard);
   }
   
   this.completeCheckin = function(e){
@@ -71,7 +71,9 @@ var RegistrationCardView = function(viewDom){
   	that.myDom.find("#signature").jSignature("reset");
   }
   this.gotoStayCard= function(){
-  	
-  	console.log("Goto stay card");
+  	//Page transition to stay card.
+   	$(this).attr('data-page',"search");
+   	$(this).attr('data-transition',"nested-view");
+  	$(this).attr('href',"staff/staycards/staycard?id="+that.reservation_id);
   }
 }
