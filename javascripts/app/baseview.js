@@ -21,8 +21,13 @@ var BaseView = function(viewDom){
   	console.log("init sub views method");
   }
 
+  this.executeLoadingAnimation = function(){
+
+  }
+
   this.initialize = function(){
     that.pageinit();
+    that.executeLoadingAnimation();
     that.delegateEvents();
     that.initSubViews();
   }
