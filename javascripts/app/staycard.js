@@ -2,7 +2,7 @@ var StayCard = function(viewDom){
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
-
+  this.reservation_id = getReservationId();
   this.pageinit = function(){
     setUpStaycard(that.myDom);
     that.reservation_id = getReservationId();
@@ -13,7 +13,7 @@ var StayCard = function(viewDom){
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
     that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
-	  that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
+	that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
     that.myDom.find('#reservation-'+ that.reservation_id +'-room-number').on('click',that.goToRoomAssignmentView);
     that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
     that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);
@@ -52,12 +52,9 @@ var StayCard = function(viewDom){
   }
 
   this.validateEmailAndPhone = function(e){
-
-  	var reservation_id = getReservationId();
-  	
   	var phone_num = $("#gc-phone").val();
   	var email = $("#gc-email").val();
-  	
+
   	if(phone_num == "" && email == ""){
   	       	var validateCheckinModal = new ValidateCheckinModal();
   	       	validateCheckinModal.initialize();
@@ -74,15 +71,17 @@ var StayCard = function(viewDom){
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
     else if(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').val() == ""){
-
-   		console.log("Redirect to registration page");
-      var viewURL = "staff/preferences/room_assignment";
-      var viewDom = $("#view-nested-second");
-      var reservation_id = getReservationId()
-      var params = {"reservation_id": reservation_id};
-      sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
-    }else{
-      console.log("do nothing");
+			var viewURL = "staff/preferences/room_assignment";
+			var viewDom = $("#view-nested-second");
+			var reservation_id = getReservationId()
+			var params = {"reservation_id": reservation_id};
+			sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
+    }
+    else{
+			//Page transition to Registration card view.
+			$(this).attr('data-page',"search");
+			$(this).attr('data-transition',"nested-view");
+			$(this).attr('href',"staff/reservation/bill_card?reservation_id="+that.reservation_id);
     }
   }
 
@@ -101,12 +100,11 @@ var StayCard = function(viewDom){
 
 
   this.setNewspaperPreferance = function(e){  	
-  	var reservation_id = getReservationId();
   	var newspaperValue = $('#reservation_newspaper').val();
   	$.ajax({
       	type : 'POST',
       	url : "reservation/add_newspaper_preference",
-      	data : {"reservation_id": reservation_id, "selected_newspaper" :newspaperValue } ,
+      	data : {"reservation_id": that.reservation_id, "selected_newspaper" :newspaperValue } ,
       	success : function(data) {
           	if(data.status == "success"){
           	    console.log("Succesfully set newspaper preferance");
@@ -209,8 +207,7 @@ var StayCard = function(viewDom){
     
 	this.setWakeUpCallModal = function(e){
 		var setWakeUpCallModal = new SetWakeUpCallModal();
-  	    this.reservationId = getReservationId();
-    	setWakeUpCallModal.params = {"reservation_id" : this.reservationId};
+    	setWakeUpCallModal.params = {"reservation_id" : that.reservation_id};
     	setWakeUpCallModal.type ="POST";
     	setWakeUpCallModal.initialize();
     }
