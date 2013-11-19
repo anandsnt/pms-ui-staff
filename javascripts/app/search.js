@@ -10,9 +10,10 @@ var Search = function(domRef){
 
     that.myDomElement.find($('#query')).on('focus', that.callCapitalize);
     that.myDomElement.find($('#query')).on('keyup', that.loadResults);
+    
 
     var type = that.myDomElement.find($('#search_list')).attr("data-search-type");
-
+	
     if(type != "") {
         var search_url = 'search.json?';
         this.loadInitialData(search_url, type);
@@ -43,7 +44,7 @@ var Search = function(domRef){
 	        // No data in JSON file
 	        else
 	        {
-	        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <a href=\"#\" class=\"open-modal\">Or add a New Guest</a>.</li>');
+	        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
 	            }
 	            that.updateView();
 	        },
@@ -106,7 +107,7 @@ var Search = function(domRef){
 	        // No data in JSON file
 	        else
 	        {
-	        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <a href=\"#\" class=\"open-modal\">Or add a New Guest</a>.</li>');
+	        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
 	            }
 	            that.updateView();
 	        },

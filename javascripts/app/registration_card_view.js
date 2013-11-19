@@ -69,10 +69,12 @@ var RegistrationCardView = function(viewDom){
   this.clearSignature = function(){
   	that.myDom.find("#signature").jSignature("reset");
   }
-  this.gotoStayCard= function(){
+  this.gotoStayCard= function(e){
   	//Page transition to stay card.
-   	$(this).attr('data-page',"search");
-   	$(this).attr('data-transition',"nested-view");
-  	$(this).attr('href',"staff/staycards/staycard?id="+that.reservation_id);
+  	e.preventDefault();
+    var viewURL = "staff/staycards/staycard";
+    var viewDom = $("#view-nested-second");
+    var params = {"id": that.reservation_id};
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
   }
 }
