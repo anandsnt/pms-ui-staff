@@ -38,7 +38,7 @@ var RegistrationCardView = function(viewDom){
   	var errorMessage =""
   	
   	if(!terms_and_conditions) erroMessage ="Please check agree to the Terms & Conditions";
-  	if(signature == "[]") errorMessage = "Please sign in";
+  	if(signature == "[]") errorMessage = "Please sign.";
    
    	if (errorMessage) {
    		alert(errorMessage);
