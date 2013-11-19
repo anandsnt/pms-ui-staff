@@ -1,7 +1,6 @@
 var SuccessModal = function() {
 	BaseModal.call(this);
 	var that = this;
-	//this.myDom = $("#modal");
 	this.url = "ui/successModal";
 	this.delegateEvents = function() {
 		var message = this.params.message;
