@@ -17,6 +17,7 @@ var Dashboard = function(domRef){
   this.showWelcomeMessage = function(e){
 	var d = new Date();
 	var time = d.getHours();
+	console.log(time)
 	var message = "";
 	//Display greetings message
 	if (time < 12){
@@ -29,7 +30,7 @@ var Dashboard = function(domRef){
 		message = "Good Evening";
 	}
 
-	that.myDom.find($('#greetings')).html('Good Evening');
+	that.myDom.find($('#greetings')).html(message);
   }
   
   this.updateAccountSettings = function(e){
