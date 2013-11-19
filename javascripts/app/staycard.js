@@ -3,11 +3,11 @@ var StayCard = function(viewDom){
   var that = this;
   this.myDom = viewDom;
 
-  
   this.pageinit = function(){
     setUpStaycard(that.myDom);
     that.reservation_id = getReservationId();
     //Bind staycard events
+
     that.myDom.find($('#reservation-timeline li')).on('click', that.reservationTimelineClicked);
     that.myDom.find($('#reservation-listing li a')).on('click', that.reservationListItemClicked);
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
@@ -15,6 +15,8 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
 	  that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
     that.myDom.find('#reservation-'+ that.reservation_id +'-room-number').on('click',that.goToRoomAssignmentView);
+    that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
+    that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);
   };
 
   this.goToRoomAssignmentView = function(e){
@@ -24,6 +26,7 @@ var StayCard = function(viewDom){
     var reservation_id = getReservationId();
     var params = {"reservation_id": reservation_id};
     sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
+
 
   };
 
@@ -47,7 +50,6 @@ var StayCard = function(viewDom){
     var reservationCardNotes = new reservationCardNotesView($("#reservation-notes"));
     reservationCardNotes.initialize();
   }
-
 
   this.validateEmailAndPhone = function(e){
 
@@ -82,8 +84,20 @@ var StayCard = function(viewDom){
     }else{
       console.log("do nothing");
     }
-  };
+  }
 
+
+  this.initSubViews = function(){
+  	var reservationPaymentView = new ReservationPaymentView($("#reservation-card-payment"));
+    reservationPaymentView.initialize();
+    var reservationCardLoyaltyView = new ReservationCardLoyaltyView($("#reservationcard-loyalty"));
+    reservationCardLoyaltyView.initialize();
+    setUpGuestcard(that.myDom);
+    var guestContactView = new GuestContactView($("#contact-info"));
+    guestContactView.pageinit();
+    var reservationCardNotes = new reservationCardNotesView($("#reservation-notes"));
+    reservationCardNotes.initialize();
+  }
 
 
   this.setNewspaperPreferance = function(e){  	
@@ -200,5 +214,10 @@ var StayCard = function(viewDom){
     	setWakeUpCallModal.type ="POST";
     	setWakeUpCallModal.initialize();
     }
+    this.addKeysModal = function(e){
+		var addKeysModal = new AddKeysModal();
+    	addKeysModal.initialize();
+    }
 }
+
 
