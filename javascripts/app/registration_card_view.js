@@ -13,7 +13,6 @@ var RegistrationCardView = function(viewDom){
   	that.myDom.find("#signature").jSignature();
 	that.myDom.find("#output").val("");
 	that.myDom.find("#signature canvas").height(180); 
-	that.myDom.find('#back-to-staycard').html("RESERVATION "+that.reservation_id);
 	$("#signature").on('mouseover',function(){
 		viewScroll.disable();
 	});	
@@ -37,17 +36,10 @@ var RegistrationCardView = function(viewDom){
   	var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked")? 1 : 0;
   	var errorMessage ="";
   	
-<<<<<<< HEAD
   	if(signature == "[]") errorMessage = "Please sign";
   	else if(!terms_and_conditions) errorMessage ="Please check agree to the Terms & Conditions";
   	
    	if (errorMessage!="") {
-=======
-  	if(!terms_and_conditions) erroMessage ="Please check agree to the Terms & Conditions";
-  	if(signature == "[]") errorMessage = "Please sign.";
-   
-   	if (errorMessage) {
->>>>>>> 799266c8c54ad3a6bd3d7ab1f8573364980f02ac
    		alert(errorMessage);
   		return;
   	}
