@@ -37,6 +37,7 @@ this.executeLoadingAnimation = function(){
         success: function(response){
           if(response.status == "success"){
             that.roomCompleteList = response.data;
+            console.log(JSON.stringify(response.data));
             that.getFilterList();
           }else if(response.status == "failure"){
             console.log(response.errors[0]);
@@ -126,11 +127,11 @@ this.executeLoadingAnimation = function(){
             room_status_html = "<span class='room-number not-ready'>"+filteredRoomList[i].room_number +"</span>"+
             "<span class='room-status not-ready'> due out </span>";    
         }
-        
-        var output = "<li><a id = 'room-list-item' href='#'"+
+        if(room_status_html != ""){
+          var output = "<li><a id = 'room-list-item' href='#'"+
             "class='back-button button white submit-value' data-value='' data-transition='nested-view'>"+room_status_html+"</a></li>";
-        $('#rooms-available ul').append(output);      
-
+          $('#rooms-available ul').append(output);      
+        }
        
     }
 
