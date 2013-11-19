@@ -3,6 +3,7 @@ var RegistrationCardView = function(viewDom){
   var that = this;
   this.myDom = viewDom;
   this.reservation_id = getReservationId();
+  this.url = "ui/checkinSuccess";
   this.pageinit = function(){
     
     if (viewScroll) { destroyViewScroll(); }
@@ -27,6 +28,7 @@ var RegistrationCardView = function(viewDom){
   }
   
   this.completeCheckin = function(e){
+  	
   	e.stopPropagation();
   	e.preventDefault();
   	e.stopImmediatePropagation();
@@ -35,7 +37,7 @@ var RegistrationCardView = function(viewDom){
   	var terms_and_conditions = that.myDom.find("#subscribe-via-email").hasClass("checked");
   	var errorMessage =""
   	
-  	if(!terms_and_conditions) erroMessage ="Please check agree to the Terms &Conditions";
+  	if(!terms_and_conditions) erroMessage ="Please check agree to the Terms & Conditions";
   	if(signature == "[]") errorMessage = "Please sign in";
    
    	if (errorMessage) {
@@ -49,13 +51,17 @@ var RegistrationCardView = function(viewDom){
 	    "signature": signature,
 	    "reservation_id":that.reservation_id
 	};
-	
+       		
 	$.ajax({
 	    type: "POST",
 	    url: '/staff/checkin',
 	    data : data,
 	    success: function(data) {
-	      console.log("Succesfully completed checkin");
+	      var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED IN";
+		  var successModal = new SuccessModal();
+		  successModal.url = "ui/checkinSuccess";
+		  successModal.initialize();
+		  successModal.params = {"message": message};
 	    },
 	    error: function(){
 	      console.log("There is an error!!");
