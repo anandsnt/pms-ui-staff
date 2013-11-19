@@ -32,13 +32,11 @@ var StayCard = function(viewDom){
   };
   this.goToRoomUpgradeView = function(e){
     e.preventDefault();
-    //alert("hiii");
-   /* var viewURL = "staff/preferences/room_assignment";
+    var viewURL = "staff/reservations/room_upsell_options";
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
     var params = {"reservation_id": reservation_id};
-    sntapp.fetchAndRenderView(viewURL, viewDom, params, true);*/
-
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
 
   };
 
