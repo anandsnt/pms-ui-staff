@@ -88,7 +88,7 @@ var Search = function(domRef){
 	        var items=[];
 	        $.each(searchResults.guests, function(i,value){
 	            // Search by name
-	            if ($query.match(/^([a-zA-Z]+)$/) && (value.firstname.indexOf($query) >= 0 || value.lastname.indexOf($query) >= 0 || value.group.indexOf($query) >= 0))
+	            if ($query.match(/^([a-zA-Z]+)$/) && ((value.firstname.toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (value.lastname.toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (value.group.toUpperCase()).indexOf($query.toUpperCase()) >= 0))
 	            {
 	                items.push($('<li />').html(
 	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
