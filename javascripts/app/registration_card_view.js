@@ -34,38 +34,38 @@ var RegistrationCardView = function(viewDom){
   	e.stopImmediatePropagation();
   	
   	var signature = JSON.stringify($("#signature").jSignature("getData", "native"));
-  	var terms_and_conditions = that.myDom.find("#subscribe-via-email").hasClass("checked");
-  	var errorMessage =""
+  	var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked")? 1 : 0;
+  	var errorMessage ="";
   	
-  	if(!terms_and_conditions) erroMessage ="Please check agree to the Terms & Conditions";
-  	if(signature == "[]") errorMessage = "Please sign in";
-   
-   	if (errorMessage) {
+  	if(signature == "[]") errorMessage = "Please sign";
+  	else if(!terms_and_conditions) errorMessage ="Please check agree to the Terms & Conditions";
+  	
+   	if (errorMessage!="") {
    		alert(errorMessage);
   		return;
   	}
-  		
-  	var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
-  	var data= {
-	    "is_promotions_and_email_set": is_promotions_and_email_set,
-	    "signature": signature,
-	    "reservation_id":that.reservation_id
-	};
-       		
-	$.ajax({
-	    type: "POST",
-	    url: '/staff/checkin',
-	    data : data,
-	    success: function(data) {
-	      var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED IN";
-		  var successModal = new SuccessModal();
-		  successModal.initialize();
-		  successModal.params = {"message": message};
-	    },
-	    error: function(){
-	      console.log("There is an error!!");
-		}
-  	});
+  	else{	
+	  	var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
+	  	var data= {
+		    "is_promotions_and_email_set": is_promotions_and_email_set,
+		    "signature": signature,
+		    "reservation_id":that.reservation_id
+		};
+		$.ajax({
+		    type: "POST",
+		    url: '/staff/checkin',
+		    data : data,
+		    success: function(data) {
+		      var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED IN";
+			  var successModal = new SuccessModal();
+			  successModal.initialize();
+			  successModal.params = {"message": message};
+		    },
+		    error: function(){
+		      console.log("There is an error!!");
+			}
+	  	});
+	 }
   }
   this.clearSignature = function(){
   	that.myDom.find("#signature").jSignature("reset");
