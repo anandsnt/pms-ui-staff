@@ -17,6 +17,7 @@ var StayCard = function(viewDom){
     that.myDom.find('#reservation-'+ that.reservation_id +'-room-number').on('click',that.goToRoomAssignmentView);
     that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
     that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);
+    that.myDom.find('#upgrade-btn').on('click',that.goToRoomUpgradeView);
   };
 
   this.goToRoomAssignmentView = function(e){
@@ -26,6 +27,17 @@ var StayCard = function(viewDom){
     var reservation_id = getReservationId();
     var params = {"reservation_id": reservation_id};
     sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
+
+
+  };
+  this.goToRoomUpgradeView = function(e){
+    e.preventDefault();
+    //alert("hiii");
+   /* var viewURL = "staff/preferences/room_assignment";
+    var viewDom = $("#view-nested-second");
+    var reservation_id = getReservationId();
+    var params = {"reservation_id": reservation_id};
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, true);*/
 
 
   };
