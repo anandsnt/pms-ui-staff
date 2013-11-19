@@ -70,13 +70,13 @@ var StayCard = function(viewDom){
   	       	validateCheckinModal.initialize();
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
-    else if(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').val() == ""){
+    /*else if(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').val() == ""){
 			var viewURL = "staff/preferences/room_assignment";
 			var viewDom = $("#view-nested-second");
 			var reservation_id = getReservationId()
 			var params = {"reservation_id": reservation_id};
 			sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
-    }
+    }*/
     else{
 			//Page transition to Registration card view.
 			$(this).attr('data-page',"search");
