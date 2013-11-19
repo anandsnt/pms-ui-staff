@@ -37,7 +37,6 @@ this.executeLoadingAnimation = function(){
         success: function(response){
           if(response.status == "success"){
             that.roomCompleteList = response.data;
-            console.log(JSON.stringify(response.data));
             that.getFilterList();
           }else if(response.status == "failure"){
             console.log(response.errors[0]);
@@ -108,7 +107,6 @@ this.executeLoadingAnimation = function(){
 
     //TODO: This line will be removed once the filter story is complete
     //filteredRoomList = this.roomCompleteList;
-    console.log(filteredRoomList);
   	$('#rooms-available ul').html("");
 
     for (var i=0; i<filteredRoomList.length; i++){
