@@ -4,17 +4,55 @@ var Search = function(domRef){
   this.myDomElement = domRef;
   searchResults = {};
   searchResults.guests = [];
-
-  this.pageinit = function(){
+  
+ this.pageinit = function(){
     // setUpSearch(that.myDomElement);
+
     that.myDomElement.find($('#query')).on('focus', that.callCapitalize);
     that.myDomElement.find($('#query')).on('keyup', that.loadResults);
+
+    var type = that.myDomElement.find($('#search_list')).attr("data-search-type");
+
+    if(type != "") {
+        var search_url = 'search.json?';
+        this.loadInitialData(search_url, type);
+    }
+    
   };
 
   //when user focus on search text
   this.callCapitalize = function(e){
   	$(this).capitalize();
   };
+
+  this.loadInitialData = function($url, $type) {
+    	 $.ajax({
+	    type:  "GET",
+	    url:    $url + "&status=" + $type,
+	    data:  { fakeDataToAvoidCache: new Date()}, // fakeDataToAvoidCache is iOS Safari fix
+	    dataType: "json",
+	    success: function (response) {
+	        $("#search-results").empty().removeClass('hidden');
+	        $('#preloaded-results').addClass('hidden');
+	        $('#no-results').addClass('hidden');
+	        if(response.guests.length>0)
+	        {
+	        	searchResults = response;
+	        	that.displaySearchResults(response, $type);
+	        }
+	        // No data in JSON file
+	        else
+	        {
+	        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <a href=\"#\" class=\"open-modal\">Or add a New Guest</a>.</li>');
+	            }
+	            that.updateView();
+	        },
+	        error: function (result) {
+	           console.log(JSON.stringify(result));
+	        }
+	    });
+  };
+
    //when user focus on search text
   this.loadResults = function(event){
 		var $query = $(this).val();
@@ -82,13 +120,14 @@ var Search = function(domRef){
      	$('#search-results').html("");
 	    that.displayFilteredResults(searchResults, $query);
      };
+
      this.displayFilteredResults = function(searchResults, $query){
      	try
 	    {
 	        var items=[];
 	        $.each(searchResults.guests, function(i,value){
 	            // Search by name
-	            if ($query.match(/^([a-zA-Z]+)$/) && ((value.firstname.toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (value.lastname.toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (value.group.toUpperCase()).indexOf($query.toUpperCase()) >= 0))
+	            if ($query.match(/^([a-zA-Z]+)$/) && (value.firstname.indexOf($query) >= 0 || value.lastname.indexOf($query) >= 0 || value.group.indexOf($query) >= 0))
 	            {
 	                items.push($('<li />').html(
 	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
@@ -246,5 +285,4 @@ var Search = function(domRef){
 	    createPageScroll('#search');
     };
 };
-
 

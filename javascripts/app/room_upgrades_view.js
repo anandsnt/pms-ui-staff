@@ -5,6 +5,8 @@ var RoomUpgradesView = function(viewDom){
 
   this.pageinit = function(){
   	this.createViewScroll();
+  	//$('#roomupgrades_main').attr('data-next-view', this.viewParams.next_view);
+  	console.log(this.viewParams);
   };
 
   this.delegateEvents = function(){
@@ -28,13 +30,21 @@ var RoomUpgradesView = function(viewDom){
   	var roomNumberSelected = $(this).attr('data-room-number');
   	var reservationId = getReservationId();
   	var postParams = {"reservation_id": reservationId, "upsell_amount_id": upsellAmountId};
-
   	$('#reservation-'+reservationId+'-room-number').html("");
     var roomHtml = "<strong class='room-number ready'>"+roomNumberSelected+"</strong>";
     $('#reservation-'+reservationId+'-room-number').html(roomHtml);
-  	/*$.ajax({
+
+    if(that.viewParams.next_view == "staycard"){
+
+    	//TODO: got to staycard
+    }else if (that.viewParams.next_view == "registration"){
+    	e.preventDefault();
+    	//TODO: got to registarion 
+    }
+    console.log(postParams);
+  	$.ajax({
         type:       'POST',
-        url:        "/staff/reservation/modify_reservation",
+        url:        "/staff/reservations/upgrade_room",
         data: postParams,
         dataType:   'json',
         success: function(response){
@@ -47,7 +57,7 @@ var RoomUpgradesView = function(viewDom){
         error: function(){
             console.log("error");
         }
-    });*/
+    });
 
   };
 }
