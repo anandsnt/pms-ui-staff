@@ -59,7 +59,6 @@ var RegistrationCardView = function(viewDom){
 	    success: function(data) {
 	      var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED IN";
 		  var successModal = new SuccessModal();
-		  successModal.url = "ui/checkinSuccess";
 		  successModal.initialize();
 		  successModal.params = {"message": message};
 	    },
