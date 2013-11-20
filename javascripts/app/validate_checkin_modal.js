@@ -95,9 +95,11 @@ var ValidateCheckinModal = function() {
 			$("#gc-email").val($("#validate #guest-email").val());
 			$("#email").val($("#validate #guest-email").val());
 		}
-
+	
 		if($('#reservation-'+that.reservation_id+'-room-number strong').text() == ""){
-   			that.goToRoomAssignmentView();
+			var viewParams = {"next_view" : "registration"}
+    		that.goToRoomAssignmentView(viewParams);
+   			// that.goToRoomAssignmentView();
 	    }else if($('#reservation-checkin').attr('data-upsell-enabled') == "true"){
 	      	var viewParams = {"next_view" : "registration"}
 	      	that.goToRoomUpgradeView(viewParams);

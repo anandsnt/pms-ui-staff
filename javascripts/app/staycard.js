@@ -32,7 +32,7 @@ var StayCard = function(viewDom){
     var viewURL = "staff/preferences/room_assignment";
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
-    var params = {"reservation_id": reservation_id};
+    var params = {"reservation_id": reservation_id, "next_view": "staycard"};
     sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
 
 

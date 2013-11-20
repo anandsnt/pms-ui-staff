@@ -2,7 +2,7 @@ var RoomUpgradesView = function(viewDom){
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
-
+  this.reservation_id = getReservationId();
   this.pageinit = function(){
   	this.createViewScroll();
   	//$('#roomupgrades_main').attr('data-next-view', this.viewParams.next_view);
@@ -28,20 +28,28 @@ var RoomUpgradesView = function(viewDom){
   this.roomUpgradeSelected = function(e){
   	var upsellAmountId = $(this).attr('data-value');
   	var roomNumberSelected = $(this).attr('data-room-number');
-  	var reservationId = getReservationId();
+  	var reservationId = that.reservation_id;
   	var postParams = {"reservation_id": reservationId, "upsell_amount_id": upsellAmountId};
   	$('#reservation-'+reservationId+'-room-number').html("");
     var roomHtml = "<strong class='room-number ready'>"+roomNumberSelected+"</strong>";
     $('#reservation-'+reservationId+'-room-number').html(roomHtml);
 
     if(that.viewParams.next_view == "staycard"){
-
-    	//TODO: got to staycard
-    }else if (that.viewParams.next_view == "registration"){
-    	e.preventDefault();
-    	//TODO: got to registarion 
+		e.preventDefault();
+	   	var viewURL = "staff/staycards/staycard";
+	   	var viewDom = $("#view-nested-second");
+	   	var params = {"id": that.reservation_id};
+	   	sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
     }
-    console.log(postParams);
+    else if (that.viewParams.next_view == "registration"){
+    	e.preventDefault();    	 
+	   	var viewURL = "staff/reservation/bill_card";
+	   	var viewDom = $("#view-nested-first");
+	   	var params = {"reservation_id": that.reservation_id};
+	   	sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
+
+    }
+    
   	$.ajax({
         type:       'POST',
         url:        "/staff/reservations/upgrade_room",
@@ -49,7 +57,7 @@ var RoomUpgradesView = function(viewDom){
         dataType:   'json',
         success: function(response){
           if(response.status == "success"){
-            console.log("room successfully updated")
+            console.log("room successfully updated");
           }else if(response.status == "failure"){
             console.log(response.errors[0]);
           }
