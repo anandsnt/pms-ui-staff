@@ -95,22 +95,57 @@ var ValidateCheckinModal = function() {
 			$("#gc-email").val($("#validate #guest-email").val());
 			$("#email").val($("#validate #guest-email").val());
 		}
-		
-		//Page transition to Registration card view.
-   		$(this).attr('data-page',"search");
-   		$(this).attr('data-transition',"nested-view");
-   		$(this).attr('href',"staff/reservation/bill_card?reservation_id="+that.reservation_id);
-   		//$(this).attr('href',"ui/registration?"+that.reservation_id);
+
+		if($('#reservation-'+that.reservation_id+'-room-number strong').text() == ""){
+   			that.goToRoomAssignmentView();
+	    }else if($('#reservation-checkin').attr('data-upsell-enabled') == "true"){
+	      	var viewParams = {"next_view" : "registration"}
+	      	that.goToRoomUpgradeView(viewParams);
+	    }else{
+
+		   	  //Page transition to Registration card view.
+	   		  $(this).attr('data-page',"search");
+	   		  $(this).attr('data-transition',"nested-view");
+	   		  $(this).attr('href',"staff/reservation/bill_card?reservation_id="+that.reservation_id);
+	   		  //$(this).attr('href',"ui/registration?"+that.reservation_id);
+	    }
 		that.hide();
 	};
 
 	this.ignoreAndGotoCheckin = function(e) {
-		
-		//Page transition to Registration card view.
+		if($('#reservation-'+that.reservation_id+'-room-number strong').val() == ""){
+   			that.goToRoomAssignmentView();
+	    }else if($('#reservation-checkin').attr('data-upsell-enabled') == "true"){
+	      	var viewParams = {"next_view" : "registration"}
+	      	that.goToRoomUpgradeView(viewParams);
+	    }else{
+	    	//Page transition to Registration card view.
    		$(this).attr('data-page',"search");
    		$(this).attr('data-transition',"nested-view");
    		$(this).attr('href',"staff/reservation/bill_card?reservation_id="+that.reservation_id);
    		//$(this).attr('href',"ui/registration?"+that.reservation_id);
+
+	    }
+
+		
 		that.hide();
 	};
+
+	this.goToRoomAssignmentView = function(){
+	    var viewURL = "staff/preferences/room_assignment";
+	    var viewDom = $("#view-nested-second");
+	    var reservation_id = getReservationId();
+	    var params = {"reservation_id": reservation_id};
+	    sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
+
+
+    };
+    this.goToRoomUpgradeView = function(viewParams){
+	    var viewURL = "staff/reservations/room_upsell_options";
+	    var viewDom = $("#view-nested-second");
+	    var reservation_id = getReservationId();
+	    var params = {"reservation_id": reservation_id};
+	    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, viewParams);
+  
+    };
 }
