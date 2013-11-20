@@ -249,8 +249,19 @@
 
 	.search-results {
 		position: relative;
-		padding: 20px;
-
+		padding: 20px;   
+		/*Fix by Qburst Start*/             
+      .no-content{
+          .h2{
+              .open-modal-fix{
+                  color: #89BD55;
+                  font-weight: 600;
+                  background-color: @grey1 !important;
+                  cursor: pointer;
+              }
+          }
+      }
+    /*Fix by Qburst End*/    
 		a:not(.open-modal) {
 			color: @textColor;
 			line-height: 1em;

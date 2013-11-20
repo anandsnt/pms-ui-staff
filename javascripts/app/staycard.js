@@ -17,7 +17,15 @@ var StayCard = function(viewDom){
     that.myDom.find('#reservation-'+ that.reservation_id +'-room-number').on('click',that.goToRoomAssignmentView);
     that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
     that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);
+    that.myDom.find('#upgrade-btn').on('click',that.roomUpgradesClicked);
   };
+
+  this.roomUpgradesClicked = function(e){
+    e.preventDefault();
+    var viewParams = {"next_view" : "staycard"}
+    that.goToRoomUpgradeView(viewParams);
+
+  }
 
   this.goToRoomAssignmentView = function(e){
     e.preventDefault();
@@ -27,6 +35,14 @@ var StayCard = function(viewDom){
     var params = {"reservation_id": reservation_id};
     sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
 
+
+  };
+  this.goToRoomUpgradeView = function(viewParams){
+    var viewURL = "staff/reservations/room_upsell_options";
+    var viewDom = $("#view-nested-second");
+    var reservation_id = getReservationId();
+    var params = {"reservation_id": reservation_id};
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, viewParams);
 
   };
 
@@ -70,12 +86,11 @@ var StayCard = function(viewDom){
   	       	validateCheckinModal.initialize();
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
-    else if(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').val() == ""){
-			var viewURL = "staff/preferences/room_assignment";
-			var viewDom = $("#view-nested-second");
-			var reservation_id = getReservationId()
-			var params = {"reservation_id": reservation_id};
-			sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
+    else if(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').text() == ""){
+   		that.goToRoomAssignmentView(e);
+    }else if(that.myDom.find('#reservation-checkin').attr('data-upsell-enabled') == "true"){
+      var viewParams = {"next_view" : "registration"}
+      that.goToRoomUpgradeView(viewParams);
     }
     else{
 			//Page transition to Registration card view.
