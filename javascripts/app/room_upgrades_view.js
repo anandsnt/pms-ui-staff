@@ -60,4 +60,4 @@ var RoomUpgradesView = function(viewDom){
     });
 
   };
-}
+};
