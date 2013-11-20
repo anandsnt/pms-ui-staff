@@ -113,7 +113,7 @@ var ValidateCheckinModal = function() {
 	};
 
 	this.ignoreAndGotoCheckin = function(e) {
-		if($('#reservation-'+that.reservation_id+'-room-number strong').val() == ""){
+		if($('#reservation-'+that.reservation_id+'-room-number strong').text() == ""){
    			that.goToRoomAssignmentView();
 	    }else if($('#reservation-checkin').attr('data-upsell-enabled') == "true"){
 	      	var viewParams = {"next_view" : "registration"}
