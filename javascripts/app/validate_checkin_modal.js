@@ -103,13 +103,9 @@ var ValidateCheckinModal = function() {
 	    }else if($('#reservation-checkin').attr('data-upsell-enabled') == "true"){
 	      	var viewParams = {"next_view" : "registration"}
 	      	that.goToRoomUpgradeView(viewParams);
-	    }else{
-
-		   	  //Page transition to Registration card view.
-	   		  $(this).attr('data-page',"search");
-	   		  $(this).attr('data-transition',"nested-view");
-	   		  $(this).attr('href',"staff/reservation/bill_card?reservation_id="+that.reservation_id);
-	   		  //$(this).attr('href',"ui/registration?"+that.reservation_id);
+	    }
+	    else{
+	    	that.goToRegistrationCardView();
 	    }
 		that.hide();
 	};
@@ -117,19 +113,14 @@ var ValidateCheckinModal = function() {
 	this.ignoreAndGotoCheckin = function(e) {
 		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text() == "")){
    			that.goToRoomAssignmentView();
-	    }else if($('#reservation-checkin').attr('data-upsell-enabled') == "true"){
+	    }
+	    else if($('#reservation-checkin').attr('data-upsell-enabled') == "true"){
 	      	var viewParams = {"next_view" : "registration"}
 	      	that.goToRoomUpgradeView(viewParams);
-	    }else{
-	    	//Page transition to Registration card view.
-   		$(this).attr('data-page',"search");
-   		$(this).attr('data-transition',"nested-view");
-   		$(this).attr('href',"staff/reservation/bill_card?reservation_id="+that.reservation_id);
-   		//$(this).attr('href',"ui/registration?"+that.reservation_id);
-
 	    }
-
-		
+	    else{
+	    	that.goToRegistrationCardView();
+	    }
 		that.hide();
 	};
 
@@ -139,8 +130,6 @@ var ValidateCheckinModal = function() {
 	    var reservation_id = getReservationId();
 	    var params = {"reservation_id": reservation_id};
 	    sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
-
-
     };
     this.goToRoomUpgradeView = function(viewParams){
 	    var viewURL = "staff/reservations/room_upsell_options";
@@ -148,6 +137,13 @@ var ValidateCheckinModal = function() {
 	    var reservation_id = getReservationId();
 	    var params = {"reservation_id": reservation_id};
 	    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, viewParams);
-  
+    };
+    this.goToRegistrationCardView = function(viewParams){
+	    //Page transition to registration card.
+	  	e.preventDefault();
+	    var viewURL = "staff/reservation/bill_card";
+	    var viewDom = $("#view-nested-first");
+	    var params = {"reservation_id": that.reservation_id};
+	    sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
     };
 }

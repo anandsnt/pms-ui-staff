@@ -86,17 +86,19 @@ var StayCard = function(viewDom){
   	       	validateCheckinModal.initialize();
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
-    else if($.trim(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
-      that.goToRoomAssignmentView(e);
+   	else if($.trim(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
+      		that.goToRoomAssignmentView(e);
     }else if(that.myDom.find('#reservation-checkin').attr('data-upsell-enabled') == "true"){
-      var viewParams = {"next_view" : "registration"}
-      that.goToRoomUpgradeView(viewParams);
+		    var viewParams = {"next_view" : "registration"}
+		    that.goToRoomUpgradeView(viewParams);
     }
     else{
-			//Page transition to Registration card view.
-			$(this).attr('data-page',"search");
-			$(this).attr('data-transition',"nested-view");
-			$(this).attr('href',"staff/reservation/bill_card?reservation_id="+that.reservation_id);
+    	//Page transition to stay card.
+	  	e.preventDefault();
+	    var viewURL = "staff/reservation/bill_card";
+	    var viewDom = $("#view-nested-first");
+	    var params = {"reservation_id": that.reservation_id};
+	    sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
     }
   }
 
