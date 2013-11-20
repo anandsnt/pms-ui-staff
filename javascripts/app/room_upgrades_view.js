@@ -4,6 +4,7 @@ var RoomUpgradesView = function(viewDom){
   this.myDom = viewDom;
 
   this.pageinit = function(){
+
   	this.createViewScroll();
   	//$('#roomupgrades_main').attr('data-next-view', this.viewParams.next_view);
   	console.log(this.viewParams);
@@ -19,11 +20,24 @@ var RoomUpgradesView = function(viewDom){
 	};
 
 	this.createViewScroll = function(){
-	if (viewScroll) { destroyViewScroll(); }
-	      setTimeout(function(){
-	        if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
-	      }, 300);
+	  // We need to calculate width of the horizontal list based on number of items
+  var $containerWidth = $('#room-upgrades').width(),
+    $scrollable = $('#room-upgrades').find('.wrapper'),
+    $items = $('#room-upgrades').find('.wrapper > li').size(),
+    $itemsWidth = ($items * 460) + 10; // * 460 is single item width, + 10 is padding
+
+  if ($itemsWidth > $containerWidth)
+  {
+    $($scrollable).css({ 'width' : $itemsWidth + 'px' });
+    
+    if (horizontalScroll) { destroyHorizontalScroll(); }
+      setTimeout(function(){
+        createHorizontalScroll('#room-upgrades');
+        refreshHorizontalScroll();
+      }, 300);
+  }
   };
+
 
   this.roomUpgradeSelected = function(e){
   	var upsellAmountId = $(this).attr('data-value');
