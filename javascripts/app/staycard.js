@@ -87,7 +87,6 @@ var StayCard = function(viewDom){
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
     else if($.trim(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
-   		alert("here");
       that.goToRoomAssignmentView(e);
     }else if(that.myDom.find('#reservation-checkin').attr('data-upsell-enabled') == "true"){
       var viewParams = {"next_view" : "registration"}

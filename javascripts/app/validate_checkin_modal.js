@@ -96,7 +96,7 @@ var ValidateCheckinModal = function() {
 			$("#email").val($("#validate #guest-email").val());
 		}
 	
-		if($('#reservation-'+that.reservation_id+'-room-number strong').text() == ""){
+		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text() == "")){
 			var viewParams = {"next_view" : "registration"}
     		that.goToRoomAssignmentView(viewParams);
    			// that.goToRoomAssignmentView();
@@ -115,7 +115,7 @@ var ValidateCheckinModal = function() {
 	};
 
 	this.ignoreAndGotoCheckin = function(e) {
-		if($('#reservation-'+that.reservation_id+'-room-number strong').text() == ""){
+		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text() == "")){
    			that.goToRoomAssignmentView();
 	    }else if($('#reservation-checkin').attr('data-upsell-enabled') == "true"){
 	      	var viewParams = {"next_view" : "registration"}

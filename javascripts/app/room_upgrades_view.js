@@ -6,12 +6,19 @@ var RoomUpgradesView = function(viewDom){
   this.pageinit = function(){
 
   	this.createViewScroll();
-  	//$('#roomupgrades_main').attr('data-next-view', this.viewParams.next_view);
-  	console.log(this.viewParams);
+    /*If the room upgrades is not rendered through the check-in process 
+    (navigated to upsell screen by pressing the upgrade button), 
+    do not show the no-thanks button
+    */
+    if(that.viewParams.next_view == "staycard"){
+        that.myDom.find('#no-thanks').hide();
+    }
+
   };
 
-  this.delegateEvents = function(){
+  this.delegateEvents = function(){  
   	that.myDom.find('#upgrade-room-select').on('click',that.roomUpgradeSelected);
+    that.myDom.find('#no-thanks').on('click',that.noThanksButtonCicked);
   };
 
   this.executeLoadingAnimation = function(){
@@ -81,5 +88,13 @@ var RoomUpgradesView = function(viewDom){
         }
     });
 
+  };
+
+  this.noThanksButtonCicked = function(e){
+    e.preventDefault();      
+      var viewURL = "staff/reservation/bill_card";
+      var viewDom = $("#view-nested-first");
+      var params = {"reservation_id": that.reservation_id};
+      sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
   };
 };
