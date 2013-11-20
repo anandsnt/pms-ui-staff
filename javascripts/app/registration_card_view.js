@@ -38,7 +38,7 @@ var RegistrationCardView = function(viewDom){
   	var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked")? 1 : 0;
   	var errorMessage ="";
   	
-  	if(signature == "[]") errorMessage = "Please sign";
+  	if(signature == "[]") errorMessage = "Signature is missing";
   	else if(!terms_and_conditions) errorMessage ="Please check agree to the Terms & Conditions";
   	
    	if (errorMessage!="") {
