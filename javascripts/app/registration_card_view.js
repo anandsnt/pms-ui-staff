@@ -21,12 +21,12 @@ var RegistrationCardView = function(viewDom){
 	$("#signature").on('mouseout',function(){
 		viewScroll.enable();
 	});
-  }
+  };
   this.delegateEvents = function(){
   	that.myDom.find('#checkin-button').on('click', that.completeCheckin);
   	that.myDom.find('#clear-signature').on('click',that.clearSignature);
   	that.myDom.find('#back-to-staycard').on('click',that.gotoStayCard);
-  }
+  };
   
   this.completeCheckin = function(e){
   	
@@ -72,10 +72,10 @@ var RegistrationCardView = function(viewDom){
 			}
 	  	});
 	 }
-  }
+  };
   this.clearSignature = function(){
   	that.myDom.find("#signature").jSignature("reset");
-  }
+  };
   this.gotoStayCard= function(e){
   	//Page transition to stay card.
   	e.preventDefault();
@@ -83,5 +83,5 @@ var RegistrationCardView = function(viewDom){
     var viewDom = $("#view-nested-second");
     var params = {"id": that.reservation_id};
     sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
-  }
-}
+  };
+};
