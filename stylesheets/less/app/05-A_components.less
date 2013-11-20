@@ -2018,6 +2018,62 @@
 			 		#pixel-to-percent > .top-padding(200, 1536);
 			 	}
 			}
+
+			/* Only upgrades screen ***/
+			&.only-upgrades {
+				background: transparent;
+
+				.upgrades {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					overflow: hidden;
+					height: 340px;
+
+					.iScrollHorizontalScrollbar { .hide; }
+
+					.wrapper {
+						margin: 0;
+						padding: 10px;
+						height: 340px;
+
+						> li {
+							width: 450px;
+							height: 100%;
+							margin: 0 10px 0 0;
+							.pull-left;
+
+							&:last-child { margin-right: 0; }
+
+							.room-details {
+								position: absolute;
+								top: 50px;
+								left: 0;
+								width: 100%;
+								margin: 0;
+								padding: 0 0 0 30px;
+								overflow: hidden;
+								z-index: 999;
+								.calc-height(100, 50); /* %, px */
+								#border-radius > .bottom();
+							}
+
+							.room-image {
+					 			img { min-height: 270px; }
+					 		}
+						}
+					}
+				}
+
+				#no-thanks {
+					position: absolute;
+					top: 380px;
+					right: 0;
+					line-height: 50px;
+					width: 50%;
+				}
+			}
 		}
 	}
 
