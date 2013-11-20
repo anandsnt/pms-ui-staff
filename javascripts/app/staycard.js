@@ -166,8 +166,9 @@ var StayCard = function(viewDom){
         type : 'GET',
         url : "staff/staycards/reservation_details?reservation=" + reservation,
         dataType : 'html',
-        success : function(data) {
+        success : function(data) {        	
           $("#" + currentTimeline).append(data);
+          createViewScroll("#reservation-content-"+reservation);
         },
         error : function() {
         }
@@ -230,6 +231,6 @@ var StayCard = function(viewDom){
 		var addKeysModal = new AddKeysModal();
     	addKeysModal.initialize();
     }
-}
+};
 
 

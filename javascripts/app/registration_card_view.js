@@ -57,10 +57,15 @@ var RegistrationCardView = function(viewDom){
 		    url: '/staff/checkin',
 		    data : data,
 		    success: function(data) {
-		      var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED IN";
-			  var successModal = new SuccessModal();
-			  successModal.initialize();
-			  successModal.params = {"message": message};
+		    	if(data.status == "success"){
+				      var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED IN";
+					  var successModal = new SuccessModal();
+					  successModal.initialize();
+					  successModal.params = {"message": message};
+				}
+				if(data.status == "failure"){
+					alert(data.errors);
+				}
 		    },
 		    error: function(){
 		      console.log("There is an error!!");
