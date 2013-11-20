@@ -4,13 +4,21 @@ var RoomUpgradesView = function(viewDom){
   this.myDom = viewDom;
   this.reservation_id = getReservationId();
   this.pageinit = function(){
+
   	this.createViewScroll();
-  	//$('#roomupgrades_main').attr('data-next-view', this.viewParams.next_view);
-  	console.log(this.viewParams);
+    /*If the room upgrades is not rendered through the check-in process 
+    (navigated to upsell screen by pressing the upgrade button), 
+    do not show the no-thanks button
+    */
+    if(that.viewParams.next_view == "staycard"){
+        that.myDom.find('#no-thanks').hide();
+    }
+
   };
 
-  this.delegateEvents = function(){
+  this.delegateEvents = function(){  
   	that.myDom.find('#upgrade-room-select').on('click',that.roomUpgradeSelected);
+    that.myDom.find('#no-thanks').on('click',that.noThanksButtonCicked);
   };
 
   this.executeLoadingAnimation = function(){
@@ -19,11 +27,24 @@ var RoomUpgradesView = function(viewDom){
 	};
 
 	this.createViewScroll = function(){
-	if (viewScroll) { destroyViewScroll(); }
-	      setTimeout(function(){
-	        if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
-	      }, 300);
+	  // We need to calculate width of the horizontal list based on number of items
+  var $containerWidth = $('#room-upgrades').width(),
+    $scrollable = $('#room-upgrades').find('.wrapper'),
+    $items = $('#room-upgrades').find('.wrapper > li').size(),
+    $itemsWidth = ($items * 460) + 10; // * 460 is single item width, + 10 is padding
+
+  if ($itemsWidth > $containerWidth)
+  {
+    $($scrollable).css({ 'width' : $itemsWidth + 'px' });
+    
+    if (horizontalScroll) { destroyHorizontalScroll(); }
+      setTimeout(function(){
+        createHorizontalScroll('#room-upgrades');
+        refreshHorizontalScroll();
+      }, 300);
+  }
   };
+
 
   this.roomUpgradeSelected = function(e){
   	var upsellAmountId = $(this).attr('data-value');
@@ -67,5 +88,13 @@ var RoomUpgradesView = function(viewDom){
         }
     });
 
+  };
+
+  this.noThanksButtonCicked = function(e){
+    e.preventDefault();      
+      var viewURL = "staff/reservation/bill_card";
+      var viewDom = $("#view-nested-first");
+      var params = {"reservation_id": that.reservation_id};
+      sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
   };
 };

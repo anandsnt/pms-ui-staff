@@ -12,10 +12,7 @@ var DeleteLoyaltyModal = function(){
 		this.loyalty_id = params.loyalty_id;
 		this.loyalty_type = params.loyalty_type;
 	}
-	this.modalInit = function(){
-        console.log("modal init in sub modal");
-        alert("modalInit");
-    }
+
     this.deleteLoyalty = function(event){
   		event.preventDefault();
 		event.stopImmediatePropagation();

@@ -178,13 +178,6 @@ function changeInnerPage($type, $menuActiveItem, $prevPage, $nextPage, $transiti
 
 // Load inner page view 
 function changeView($type, $menuActiveItem, $prevView, $nextView, $transition, $emptyPrev){
-    console.log("#### Params in change view : ###");
-    console.log($type);
-    console.log($menuActiveItem);
-    console.log($prevView);
-    console.log($nextView);
-    console.log($transition);
-    console.log($emptyPrev);
     
     var $newView = new chainedAnimation(),
         $delay = 150;
@@ -192,9 +185,6 @@ function changeView($type, $menuActiveItem, $prevView, $nextView, $transition, $
     // Lock the current parent view
     $('#' + $nextView).closest('.page-current').addClass('page-locked');
     
-    console.log("Next new");
-    console.log($($nextView));
-
     // Start transitioning when new page is ready
     $('#loading').fadeOut(function(){
         console.log("With in loading.....");
