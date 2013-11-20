@@ -10,9 +10,11 @@ var RegistrationCardView = function(viewDom){
     setTimeout(function(){
         createViewScroll('#registration-content');
   	}, 300);
-  	that.myDom.find("#signature").jSignature();
-	that.myDom.find("#output").val("");
-	that.myDom.find("#signature canvas").height(180); 
+  	
+  	var width = that.myDom.find("#signature").width();
+  	that.myDom.find("#signature").jSignature({height:130, width:width, lineWidth :1});
+	that.myDom.find("#signature canvas").addClass('pad');
+	 
 	$("#signature").on('mouseover',function(){
 		viewScroll.disable();
 	});	
@@ -75,6 +77,6 @@ var RegistrationCardView = function(viewDom){
     var viewURL = "staff/staycards/staycard";
     var viewDom = $("#view-nested-second");
     var params = {"id": that.reservation_id};
-    sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
   }
 }
