@@ -6,52 +6,26 @@ var Search = function(domRef){
   searchResults.guests = [];
   
  this.pageinit = function(){
-    // setUpSearch(that.myDomElement);
-
-    that.myDomElement.find($('#query')).on('focus', that.callCapitalize);
-    that.myDomElement.find($('#query')).on('keyup', that.loadResults);
-    
 
     var type = that.myDomElement.find($('#search_list')).attr("data-search-type");
-	
+    /*preload the search results, 
+    if navigated to search screen by clicking checking-in/checking-out/in-house options
+    */
     if(type != "") {
-        var search_url = 'search.json?';
-        this.loadInitialData(search_url, type);
+        var search_url = "search.json?&status=" + type;
+        this.loadSearchData(search_url, "");
     }
     
+  };
+
+  this.delegateEvents = function(){  
+  	that.myDomElement.find($('#query')).on('focus', that.callCapitalize);
+    that.myDomElement.find($('#query')).on('keyup', that.loadResults);
   };
 
   //when user focus on search text
   this.callCapitalize = function(e){
   	$(this).capitalize();
-  };
-
-  this.loadInitialData = function($url, $type) {
-    	 $.ajax({
-	    type:  "GET",
-	    url:    $url + "&status=" + $type,
-	    data:  { fakeDataToAvoidCache: new Date()}, // fakeDataToAvoidCache is iOS Safari fix
-	    dataType: "json",
-	    success: function (response) {
-	        $("#search-results").empty().removeClass('hidden');
-	        $('#preloaded-results').addClass('hidden');
-	        $('#no-results').addClass('hidden');
-	        if(response.guests.length>0)
-	        {
-	        	searchResults = response;
-	        	that.displaySearchResults(response, $type);
-	        }
-	        // No data in JSON file
-	        else
-	        {
-	        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
-	            }
-	            that.updateView();
-	        },
-	        error: function (result) {
-	           console.log(JSON.stringify(result));
-	        }
-	    });
   };
 
    //when user focus on search text
@@ -72,12 +46,12 @@ var Search = function(domRef){
 
 	    if($query.length >= 3){
 	    	if(searchResults.guests.length > 0){
+	    		console.log("here123");
 	    		that.getFilteredResults($query);
 	    		return false;
 	    	}
-
-	    	$search_url = 'search.json?';
-	    	that.load_search_data($search_url,$query);
+	    	$search_url = 'search.json?&query='+ $query;
+	    	that.loadSearchData($search_url,$query);
 	    }
 	    else if(searchResults.guests.length > 0){
 	    	that.getFilteredResults($query);
@@ -89,31 +63,31 @@ var Search = function(domRef){
 	    }
     };
 
-   this.load_search_data = function(url,$query){
+   this.loadSearchData = function(url, $query){
 	 	$.ajax({
-	    type:           "GET",
-	    url:            url + "&query=" + $query,
-	    data:           { $match: $query, fakeDataToAvoidCache: new Date()}, // fakeDataToAvoidCache is iOS Safari fix
-	    dataType:       "json",
-	    success: function (response) {
-	        $("#search-results").empty().removeClass('hidden');
-	        $('#preloaded-results').addClass('hidden');
-	        $('#no-results').addClass('hidden');
-	        if(response.guests.length>0)
-	        {
-	        	searchResults = response;
-	        	that.displaySearchResults(response, $query);
-	        }
-	        // No data in JSON file
-	        else
-	        {
-	        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
-	            }
-	            that.updateView();
-	        },
-	        error: function (result) {
-	           console.log(JSON.stringify(result));
-	        }
+		    type:           "GET",
+		    url:            url,
+		    data:           {fakeDataToAvoidCache: new Date()}, // fakeDataToAvoidCache is iOS Safari fix
+		    dataType:       "json",
+		    success: function (response) {
+		        $("#search-results").empty().removeClass('hidden');
+		        $('#preloaded-results').addClass('hidden');
+		        $('#no-results').addClass('hidden');
+		        if(response.guests.length>0)
+		        {
+		        	searchResults = response;
+		        	that.displaySearchResults(response, $query);
+		        }
+		        // No data in JSON file
+		        else
+		        {
+		        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
+		            }
+		            that.updateView();
+		        },
+		        error: function (result) {
+		           console.log(JSON.stringify(result));
+		        }
 	    });
     };
 
@@ -133,8 +107,9 @@ var Search = function(domRef){
 	                items.push($('<li />').html(
 	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
 	                ));
-
-	                $('#search-results').append.apply($('#search-results'),items).highlight($query);
+	                  console.log(that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)) ; 
+	               console.log(items);
+	               $('#search-results').append.apply($('#search-results'),items).highlight($query);
 	            }
 	            // Search by number
 	            else if ($query.match(/^([0-9]+)$/) && $query.length <= 5 && (value.room.toString().indexOf($query) >= 0 || value.confirmation.toString().indexOf($query) >= 0))
