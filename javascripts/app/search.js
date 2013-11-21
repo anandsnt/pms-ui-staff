@@ -46,7 +46,6 @@ var Search = function(domRef){
 
 	    if($query.length >= 3){
 	    	if(searchResults.guests.length > 0){
-	    		console.log("here123");
 	    		that.getFilteredResults($query);
 	    		return false;
 	    	}
@@ -102,30 +101,27 @@ var Search = function(domRef){
 	        var items=[];
 	        $.each(searchResults.guests, function(i,value){
 	            // Search by name
-	            if ($query.match(/^([a-zA-Z]+)$/) && ((value.firstname.toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (value.lastname.toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (value.group.toUpperCase()).indexOf($query.toUpperCase()) >= 0))
+	            if ($query.match(/^([a-zA-Z]+)$/) && ((escapeNull(value.firstname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.lastname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.group).toUpperCase()).indexOf($query.toUpperCase()) >= 0))
 	            {
 	                items.push($('<li />').html(
 	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
 	                ));
-	                  console.log(that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)) ; 
-	               console.log(items);
-	               $('#search-results').append.apply($('#search-results'),items).highlight($query);
 	            }
 	            // Search by number
-	            else if ($query.match(/^([0-9]+)$/) && $query.length <= 5 && (value.room.toString().indexOf($query) >= 0 || value.confirmation.toString().indexOf($query) >= 0))
+	            else if ($query.match(/^([0-9]+)$/) && 
+	            	$query.length <= 5 && (escapeNull(value.room).toString().indexOf($query) >= 0 || 
+	            		escapeNull(value.confirmation).toString().indexOf($query) >= 0))
 	            {
 	                items.push($('<li />').html(
 	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
 	                ));
-	                $('#search-results').append.apply($('#search-results'),items).highlight($query);
 	            }
 	            // Search by number
-	            else if ($query.length > 6 && (value.confirmation.toString().indexOf($query) >= 0))
+	            else if ($query.length > 6 && (escapeNull(value.confirmation).toString().indexOf($query) >= 0))
 	            {
 	                items.push($('<li />').html(
 	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
 	                ));
-	                $('#search-results').append.apply($('#search-results'),items).highlight($query);
 
 	            }
 
@@ -134,9 +130,14 @@ var Search = function(domRef){
 	                contentScroll.refresh();
 	            }, 0);*/
 	        });
+
+ 				$.each(items, function(i,value){
+	            	$('#search-results').append(value).highlight($query);
+	            });
 	    }
 	    catch(e)
 	    {
+	    	console.log(e.message);
 	    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
 	    }
 
@@ -149,7 +150,6 @@ var Search = function(domRef){
     };
 
     this.displaySearchResults = function(response, $query){
-    	console.log(response);
 	    try
 		    {
 		        var items=[];
