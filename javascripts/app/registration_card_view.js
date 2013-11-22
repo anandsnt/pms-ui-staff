@@ -89,6 +89,7 @@ var RegistrationCardView = function(viewDom){
   this.clearSignature = function(){
   	that.myDom.find("#signature").jSignature("reset");
   };
+
   this.gotoStayCard = function(e){
 	e.preventDefault();
 	var $loader = '<div id="loading" />';
@@ -100,7 +101,7 @@ var RegistrationCardView = function(viewDom){
 	e.preventDefault();
 	var $loader = '<div id="loading" />';
 	$($loader).prependTo('body').show();  
-	changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);
-   
+	changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);   
+
   };
 };
