@@ -177,6 +177,7 @@ var StayCard = function(viewDom){
         type : 'GET',
         url : "staff/staycards/reservation_details?reservation=" + reservation,
         dataType : 'html',
+        async:false,
         success : function(data) {        	
           $("#" + currentTimeline).append(data);
           createViewScroll("#reservation-content-"+reservation);
