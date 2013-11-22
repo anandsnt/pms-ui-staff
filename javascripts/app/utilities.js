@@ -13,17 +13,11 @@ escapeNull = function(value, replaceWith){
 	return ((value == null || typeof value == 'undefined' ) ? newValue : value);
 };
 
-
-
 function validateEmail(emailField){
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-
-    if (reg.test(emailField) == false) 
-    {
+    if (reg.test(emailField) == false){
         alert('Invalid Email Address');
         return false;
     }
-
     return true;
-
 }
