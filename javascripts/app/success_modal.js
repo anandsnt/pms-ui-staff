@@ -7,7 +7,6 @@ var SuccessModal = function() {
 		that.myDom.find('.message').html(message);
 	};
 	this.modalInit = function() {
-		console.log("modal init in sub modal");
 	};
 	
 }

@@ -39,10 +39,8 @@ var DeleteLoyaltyModal = function(){
 			url: 'staff/user_memberships/' + $loyalty_id +'.json',
 			dataType: 'json',
 				success: function(data) {
-					console.log("Succesfully deleted loyalty primary");
 				},
 				error: function(){
-					console.log("There is an error!!");
 			}
 		});
 		that.hide();

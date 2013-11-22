@@ -136,14 +136,11 @@ var StayCard = function(viewDom){
       	data : {"reservation_id": that.reservation_id, "selected_newspaper" :newspaperValue } ,
       	success : function(data) {
           	if(data.status == "success"){
-          	    console.log("Succesfully set newspaper preferance");
           	}
           	else{
-          	    console.log("Something is wrong!");
           	}
       	},
       	error : function() {
-      	    console.log("There is an error!!");
       	}
   	});
   };
@@ -222,7 +219,6 @@ var StayCard = function(viewDom){
       },
       error : function(e) {
         //TODO: hande error cases
-        console.log(e);
       }
     });
 

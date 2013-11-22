@@ -11,7 +11,6 @@ var ReservationCardLoyaltyView = function(domRef){
   	that.myDom.find('select.styled#loyalty').on('change', that.changedLoyaltyProgram);				
   }
   this.adddNewLoyaltyModal = function(){
-  	console.log("Initialise adddNewLoyaltyModal");
   	var adddNewLoyaltyModal = new AdddNewLoyaltyModal();
     adddNewLoyaltyModal.initialize();
   }
@@ -34,11 +33,9 @@ var ReservationCardLoyaltyView = function(domRef){
 	        "membership_id": id
 	    },
 	    success: function(data) {
-	      console.log("Succesfully changed loyalty primary");
 	    },
 	    error: function(){
-	      console.log("There is an error!!");
-		    }
+		}
 	});
   }
 };

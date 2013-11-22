@@ -18,14 +18,12 @@ var reservationCardNotesView = function(domRef){
 			url : '/reservation_notes/'+noteId,
 			dataType : 'json',
 			success : function(data) {
-				console.log("Delete Note Succesfully");			
 				if (data.status == "success") {
 				    $("#notes li#note"+noteId).remove();
 					refreshViewScroll();
 				}
 			},
 			error : function() {		
-			   console.log("There is an error!!");
 			}
 		});
 	}
@@ -48,8 +46,6 @@ var reservationCardNotesView = function(domRef){
 			text : $notes
 		};
 	
-		console.log($data);
-	    
 		$.ajax({
 			type : "POST",
 			url : '/reservation_notes',	
@@ -71,7 +67,6 @@ var reservationCardNotesView = function(domRef){
 				}
 			},
 			error : function() {		
-			   console.log("There is an error!!");
 			}
 		});
   };

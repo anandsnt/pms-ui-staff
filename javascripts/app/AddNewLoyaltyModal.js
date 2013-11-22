@@ -11,10 +11,8 @@ var AdddNewLoyaltyModal = function(){
 		that.myDom.find('#new-loyalty-program #type').on('change', that.typeChanged);
 	}
 	this.modalInit = function(){
-        console.log("modal init in sub modal");
     }
     this.programChanged = function(event){
-      console.log("programChanged");
       event.preventDefault();
 	  event.stopImmediatePropagation();
 	  $("#new-loyalty-program #type").html("");

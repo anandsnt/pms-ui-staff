@@ -17,7 +17,6 @@ var Dashboard = function(domRef){
   this.showWelcomeMessage = function(e){
 	var d = new Date();
 	var time = d.getHours();
-	console.log(time)
 	var message = "";
 	//Display greetings message
 	if (time < 12){

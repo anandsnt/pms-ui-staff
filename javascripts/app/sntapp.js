@@ -45,7 +45,6 @@ var app = function(){
                 that.renderView(data, viewDom,nextViewParams);    
             },
             error: function(){
-                console.log("There is an error!!");
             }
        });
     };

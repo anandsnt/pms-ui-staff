@@ -70,7 +70,6 @@ var setUpAdmin = function(viewDom, delegate) {
 			activeClass: 'active'
 		}).sortable({
 			receive: function (event, ui) {
-				console.log("Added to sortable?");
 				sortableIn = 1;
 	        	$(ui.item).addClass('moved').draggable('option', 'disabled', true);	        	
 	        	var bookMarkId = $(ui.item.context).attr("data-id");
@@ -95,7 +94,6 @@ var setUpAdmin = function(viewDom, delegate) {
 			},
 			
 			beforeStop: function(event, ui){
-				console.log("Before stop?");
 				$(ui.item).addClass('in-quick-menu');
 
 				// Remove from quick navigation

@@ -81,7 +81,6 @@ var RegistrationCardView = function(viewDom){
 				}
 		    },
 		    error: function(){
-		      console.log("There is an error!!");
 			}
 	  	});
 	 }

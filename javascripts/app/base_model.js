@@ -14,7 +14,6 @@ BaseModal = function() {
         }
     }
     this.modalInit = function(){
-        console.log("modal init in basemodal")
     }
     
 	this.unbindCancelEvent = function(){
@@ -43,13 +42,11 @@ BaseModal = function() {
             },
             error: function(){
                 //TODO: Replace with the central mechanism for error handling
-                console.log("error in modal fetching");
             }
         });
     }
 
     this.show = function(){
-        console.log("show modal");
         $modal = '<div id="modal" role="dialog" />',
         $overlay = '<div id="modal-overlay" />';
 
@@ -82,8 +79,6 @@ BaseModal = function() {
     this.hide = function (){
     	that.unbindCancelEvent();
     	that.unbindEvents();
-    	
-    	console.log("Reached hide modal");
         $('#modal, #modal-overlay').removeClass('modal-show'); 
         setTimeout(function() { 
             $('#modal').empty();

@@ -9,7 +9,6 @@ var AddHLPModal = function(){
 		addHLPSelectOptions("#new-hlp #hotel-loyalty-types");
 	}
 	this.modalInit = function(){
-        console.log("modal init in sub modal")
     }
 	this.addHLP = function(event){
         event.preventDefault();

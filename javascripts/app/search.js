@@ -85,7 +85,6 @@ var Search = function(domRef){
 		            that.updateView();
 		        },
 		        error: function (result) {
-		           console.log(JSON.stringify(result));
 		        }
 	    });
     };
@@ -137,7 +136,6 @@ var Search = function(domRef){
 	    }
 	    catch(e)
 	    {
-	    	console.log(e.message);
 	    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
 	    }
 

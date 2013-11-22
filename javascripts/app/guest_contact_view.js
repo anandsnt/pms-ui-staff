@@ -45,7 +45,6 @@ var GuestContactView = function(domRef){
 			$contactJsonObj['email'] = that.myDom.find("#email").val();
 			$contactJsonObj['mobile'] = that.myDom.find("#mobile").val();
 		
-			console.log(JSON.stringify($contactJsonObj));
 			$.ajax({
 				type : "PUT",
 				url : 'staff/guest_cards/' + userId,
@@ -66,7 +65,6 @@ var GuestContactView = function(domRef){
 					
 				},
 				error : function() {
-					console.log("There is an error!!");
 				}
 			});
 		}
@@ -122,7 +120,6 @@ var GuestContactView = function(domRef){
 
 				},
 				error : function() {
-					console.log("There is an error!!");
 					$guestCardClickTime = true;
 				}
 			}).done(function() {

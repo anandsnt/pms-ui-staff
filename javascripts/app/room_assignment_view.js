@@ -39,12 +39,10 @@ this.executeLoadingAnimation = function(){
             that.roomCompleteList = response.data;
             that.getFilterList();
           }else if(response.status == "failure"){
-            console.log(response.errors[0]);
           }
         },
         error: function(){
             that.roomCompleteList = [];
-            console.log("failed to fetch json");
         }
     });
   }
@@ -165,8 +163,6 @@ this.executeLoadingAnimation = function(){
     postParams.reservation_id = currentReservation;
     postParams.room_number = roomSelected;
 
-    console.log(JSON.stringify(postParams));
-
     $.ajax({
         type:       'POST',
         url:        "/staff/reservation/modify_reservation",
@@ -174,13 +170,10 @@ this.executeLoadingAnimation = function(){
         dataType:   'json',
         success: function(response){
           if(response.status == "success"){
-            console.log("room successfully updated")
           }else if(response.status == "failure"){
-            console.log(response.errors[0]);
           }
         },
         error: function(){
-            console.log("error");
         }
     });
 

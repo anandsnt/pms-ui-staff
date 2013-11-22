@@ -69,13 +69,10 @@ var RoomUpgradesView = function(viewDom){
         dataType:   'json',
         success: function(response){
           if(response.status == "success"){
-            console.log("room successfully updated");
           }else if(response.status == "failure"){
-            console.log(response.errors[0]);
           }
         },
         error: function(){
-            console.log("error");
         }
     });
 

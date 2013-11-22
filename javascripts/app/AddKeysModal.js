@@ -35,7 +35,6 @@ var AddKeysModal = function() {
 	this.printNewKey = function() {
 		var reservation_id = getReservationId();
 		var keyEmailElement = $("#key-guest-email").length;
-		console.log("keyEmailElement", keyEmailElement);
 		var guest_email = that.myDom.find(("#key-guest-email")).val();
 		if (validateEmail(guest_email)) {
 			if (keyEmailElement > 0) {
@@ -51,7 +50,6 @@ var AddKeysModal = function() {
 				"key" : selected_key,
 				"is_additional" : "false"
 			};
-			console.log("save print new");
 			data = JSON.stringify(data);
 
 			that.saveKey(data);
@@ -95,7 +93,6 @@ var AddKeysModal = function() {
 				}
 			},
 			error : function() {
-				console.log("There is an error!!");
 			}
 		});
 		that.hide();
