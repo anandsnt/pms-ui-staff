@@ -22,7 +22,8 @@ var StayCard = function(viewDom){
   };
   
   this.changeAvathar = function(e){
-	  $("#guest-card-header .guest-image img").attr("src", getAvatharUrl($(this).val()));	  
+	  var img_src = getAvatharUrl($(this).val());
+	  $("#guest-card-header .guest-image img").attr("src", img_src);  
   };
   this.roomUpgradesClicked = function(e){
     e.preventDefault();
