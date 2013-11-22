@@ -59,7 +59,16 @@ var GuestContactView = function(domRef){
 					// Update guest card header UI.
 					$("#gc-firstname").val($("#guest_firstname").val());
 					$("#gc-lastname").val($("#guest_lastname").val());
-					$("#gc-location").val($("#city").val()+","+$("#state").val());
+					var city = $.trim($("#city").val());
+					var state = $.trim($("#state").val());
+					var location = "";
+					if(city!= '' && state!= '')
+					 	location = city+","+state;
+					else if(city!= "")
+					 	location = city;
+				    else if (state!="")
+				    	location = state;
+					$("#gc-location").val(location);
 					$("#gc-phone").val($("#phone").val());
 					$("#gc-email").val($("#email").val());
 					
