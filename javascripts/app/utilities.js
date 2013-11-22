@@ -11,7 +11,7 @@ escapeNull = function(value, replaceWith){
 		newValue = replaceWith;
 	}
 	return ((value == null || typeof value == 'undefined' ) ? newValue : value);
-}
+};
 
 
 
