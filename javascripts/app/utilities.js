@@ -6,11 +6,13 @@ function getReservationId(){
 function getAvatharUrl(title){
 	//function to get avathar image url by giving title
 	var avathar_imgs = {
-			'Mr.': '/assets/avatar-male.png',
-			'Mrs.': '/assets/avatar-female.png',
+			'mr.' : '/assets/avatar-male.png',
+			'mrs.': '/assets/avatar-female.png',
+			'miss.': '/assets/avatar-female.png',
+			'': '/assets/avatar-trans.png',
 	}
 	try{
-		return avathar_imgs[title];
+		return avathar_imgs[$.trim(title).toLowerCase()];
 	}
 	catch (e) {
 		console.log(e.message);
