@@ -6,19 +6,15 @@ var BaseView = function(viewDom){
   var that = this;
 
   this.pageinit = function(){
-    console.log("base view page Init");
   };
   
   this.pageshow = function(){
-  	console.log("base view page Show");
   };  
 
   this.delegateEvents = function(){
-  	console.log("delegateEvents");
   }
 
   this.initSubViews = function(){
-  	console.log("init sub views method");
   }
 
   this.executeLoadingAnimation = function(){

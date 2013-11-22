@@ -25,16 +25,13 @@ function fetchLoyaltyProgramData(url,type){
 			else if(type == 'hlp'){
 				hlProgramsList = data;
 			}
-			console.log(data);
 		},
 		error : function() {
-			console.log("error");
 		}
 	});
 }
 
 function updateServerForNewLoyalty(postData, successCallback, type){
-	console.log(JSON.stringify(postData));
 	$.ajax({
 		type: "POST",
 		url: 'staff/user_memberships',

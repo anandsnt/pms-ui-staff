@@ -19,12 +19,12 @@ var RoomUpgradesView = function(viewDom){
   this.delegateEvents = function(){  
   	that.myDom.find('#upgrade-room-select').on('click',that.roomUpgradeSelected);
     that.myDom.find('#no-thanks').on('click',that.noThanksButtonCicked);
+    that.myDom.find('#upgrade-back-button').on('click',that.upgradeBackButtonClicked);
   };
 
   this.executeLoadingAnimation = function(){
-  changeView("nested-view", "", "view-nested-first", "view-nested-second", "move-from-right", false); 
-
-	};
+  	changeView("nested-view", "", "view-nested-first", "view-nested-second", "move-from-right", false); 
+  };
 
 	this.createViewScroll = function(){
 	  // We need to calculate width of the horizontal list based on number of items
@@ -56,19 +56,10 @@ var RoomUpgradesView = function(viewDom){
     $('#reservation-'+reservationId+'-room-number').html(roomHtml);
 
     if(that.viewParams.next_view == "staycard"){
-		e.preventDefault();
-	   	var viewURL = "staff/staycards/staycard";
-	   	var viewDom = $("#view-nested-second");
-	   	var params = {"id": that.reservation_id};
-	   	sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
+		that.gotoStayCard(); 
     }
     else if (that.viewParams.next_view == "registration"){
-    	e.preventDefault();    	 
-	   	var viewURL = "staff/reservation/bill_card";
-	   	var viewDom = $("#view-nested-first");
-	   	var params = {"reservation_id": that.reservation_id};
-	   	sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
-
+    	that.gotoBillCard(); 
     }
     
   	$.ajax({
@@ -78,23 +69,35 @@ var RoomUpgradesView = function(viewDom){
         dataType:   'json',
         success: function(response){
           if(response.status == "success"){
-            console.log("room successfully updated");
           }else if(response.status == "failure"){
-            console.log(response.errors[0]);
           }
         },
         error: function(){
-            console.log("error");
         }
     });
 
   };
 
-  this.noThanksButtonCicked = function(e){
-    e.preventDefault();      
+  this.noThanksButtonCicked = function(e){     
+  	  e.preventDefault(); 
+      that.gotoBillCard(); 
+  };
+  
+  this.upgradeBackButtonClicked = function(e){  
+  	  e.preventDefault();	
+  	  that.gotoStayCard();  	
+  };
+  this.gotoStayCard = function(){
+  	var $loader = '<div id="loading" />';
+    $($loader).prependTo('body').show();
+  	changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
+  };
+  this.gotoBillCard = function(){
+  	        
       var viewURL = "staff/reservation/bill_card";
-      var viewDom = $("#view-nested-first");
+      var viewDom = $("#view-nested-third");
       var params = {"reservation_id": that.reservation_id};
-      sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
+      var nextViewParams = {"showanimation": true, "current-view" : "room_upgrades_view"};
+      sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
   };
 };

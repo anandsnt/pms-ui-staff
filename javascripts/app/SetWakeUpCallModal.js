@@ -14,7 +14,6 @@ var SetWakeUpCallModal = function() {
 	};
 
 	this.modalInit = function() {
-		console.log("modal init in sub modal");
 
 	};
 

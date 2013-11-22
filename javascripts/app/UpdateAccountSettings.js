@@ -32,14 +32,12 @@ var UpdateAccountSettings = function() {
 						try{
 							alert(data.errors[0]);
 						}catch(e){
-							console.log("There is an error!!");
 							that.hide();
 						}
 						
 					}
 				},
 				error : function() {
-					console.log("There is an error!!");
 				}
 			});
 

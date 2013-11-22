@@ -5,10 +5,8 @@ var LikesView = function(domRef){
   
   var that = this;
   this.myDom = domRef;
-  console.log(domRef);
   var guest_id = $("#guest_id").val();
   this.$likeInfoChange = false;
-  console.log("inside likes");
   this.pageinit = function(){
   	
   this.handleLikeValueChanged();
@@ -34,7 +32,6 @@ var LikesView = function(domRef){
    };    
   
    this.saveLikes = function(event){
-	   	 console.log("reached save likes");
 	     if (this.$likeInfoChange) {
 			var $totalPreferences = $("#totalpreference").val();
 			$totalFeatures = $("#totalfeatures").val();
@@ -66,7 +63,6 @@ var LikesView = function(domRef){
 					jsonObj['preference'].push($preference);
 				}
 			}
-			console.log(JSON.stringify(jsonObj));
 	
 			var userId = $("#user_id").val();
 			$.ajax({
@@ -76,10 +72,8 @@ var LikesView = function(domRef){
 				dataType : "json",
 				success : function(data) {
 					that.$likeInfoChange = false;
-					console.log("Saved successfully");
 				},
 				error : function() {
-					console.log("There is an error!!");
 				}
 			});
 	

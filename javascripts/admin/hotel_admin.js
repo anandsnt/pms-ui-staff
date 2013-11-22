@@ -30,7 +30,6 @@ var HotelAdminView = function(domRef){
 			}
 		},
 		error : function() {		
-		   console.log("There is an error!!");
 		}
 	});
   };

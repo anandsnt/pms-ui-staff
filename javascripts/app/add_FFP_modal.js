@@ -9,7 +9,6 @@ var AddFFPModal = function(){
 		addFFPSelectOptions("#new-ffp #airline-ff-list");
 	}
 	this.modalInit = function(){
-        console.log("modal init in FFP modal");
     }
 	this.addFFP = function(event){
         event.preventDefault();

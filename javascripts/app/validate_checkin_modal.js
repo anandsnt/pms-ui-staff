@@ -21,7 +21,6 @@ var ValidateCheckinModal = function() {
 		}
 	};
 	this.modalInit = function() {
-		console.log("modal init in sub modal");
 	};
 	this.submitAndGotoCheckin = function() {
 		var userId = $("#user_id").val();
@@ -66,8 +65,6 @@ var ValidateCheckinModal = function() {
 			}
 		}
 
-		console.log("JSON.stringify($contactJsonObj) :  " + JSON.stringify($contactJsonObj));
-		
 	    $.ajax({
 				type : "PUT",
 				url : 'staff/guest_cards/' + userId,
@@ -76,10 +73,8 @@ var ValidateCheckinModal = function() {
 				dataType : 'json',
 				contentType : 'application/json',
 				success : function() {
-					console.log("success");
 				},
 				error : function() {
-					console.log("There is an error!!");
 				}
 		});
 		

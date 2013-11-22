@@ -10,7 +10,7 @@ var app = function(){
         }
         
         return viewInstance;
-    }
+    };
 
     this.renderView = function(viewData, viewDom, viewParams){
         viewDom.html(viewData);
@@ -21,7 +21,7 @@ var app = function(){
         viewObject.initialize();
         viewObject.pageshow();
         
-    }
+    };
 
     //Fetch from AJAX
     // On Success, invoke render_view
@@ -45,10 +45,9 @@ var app = function(){
                 that.renderView(data, viewDom,nextViewParams);    
             },
             error: function(){
-                console.log("There is an error!!");
             }
        });
-    }
-}
+    };
+};
 
 sntapp = new app();

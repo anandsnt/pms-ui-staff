@@ -218,7 +218,6 @@ function modalInit(content, closeAfter) {
             $('#modal').html(data);
         },
         error: function(){
-            console.log('Error loading modal view data');
         }
     });
 
@@ -345,9 +344,6 @@ $(function($){
         var $href = $(this).attr('href'),
             $action = $(this).closest('form').attr('action'),
             $duration = $(this).attr('data-duration');
-
-        console.log($href);
-        console.log($action);
 
         modalInit($href ? $href : $action, $duration);
     }); 

@@ -22,11 +22,23 @@ var StayCard = function(viewDom){
 
   this.roomUpgradesClicked = function(e){
     e.preventDefault();
-    var viewParams = {"next_view" : "staycard"}
+    var viewParams = {"next_view" : "staycard"};
     that.goToRoomUpgradeView(viewParams);
 
-  }
+  };
+ this.executeLoadingAnimation = function(){
+  	if (this.viewParams === undefined) return;
+  	if (this.viewParams["showanimation"] === false) return;
+	
+	if (this.viewParams["current-view"] === "bill_card_view")
+  		changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);
+  	else if (this.viewParams["current-view"] === "room_upgrades_view"){
 
+  		changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
+  	}
+  		
+  	 
+  };
   this.goToRoomAssignmentView = function(e){
     e.preventDefault();
     var viewURL = "staff/preferences/room_assignment";
@@ -34,16 +46,14 @@ var StayCard = function(viewDom){
     var reservation_id = getReservationId();
     var params = {"reservation_id": reservation_id, "next_view": "staycard"};
     sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
-
-
   };
-  this.goToRoomUpgradeView = function(viewParams){
+  this.goToRoomUpgradeView = function(){
     var viewURL = "staff/reservations/room_upsell_options";
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
     var params = {"reservation_id": reservation_id};
-    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, viewParams);
-
+    var nextViewParams = {"showanimation": true, "current-view" : "staycard" };
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
   };
 
 
@@ -65,7 +75,7 @@ var StayCard = function(viewDom){
     guestContactView.pageinit();
     var reservationCardNotes = new reservationCardNotesView($("#reservation-notes"));
     reservationCardNotes.initialize();
-  }
+  };
 
   this.validateEmailAndPhone = function(e){
   	var phone_num = $("#gc-phone").val();
@@ -86,21 +96,23 @@ var StayCard = function(viewDom){
   	       	validateCheckinModal.initialize();
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
-   	else if($.trim(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
-      		that.goToRoomAssignmentView(e);
-    }else if(that.myDom.find('#reservation-checkin').attr('data-upsell-enabled') == "true"){
-		    var viewParams = {"next_view" : "registration"}
-		    that.goToRoomUpgradeView(viewParams);
+
+    else if($.trim(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
+      that.goToRoomAssignmentView(e);
+    }
+    else if(that.myDom.find('#reservation-checkin').attr('data-upsell-enabled') == "true"){
+      that.goToRoomUpgradeView();
     }
     else{
-    	//Page transition to stay card.
-	  	e.preventDefault();
-	    var viewURL = "staff/reservation/bill_card";
-	    var viewDom = $("#view-nested-first");
-	    var params = {"reservation_id": that.reservation_id};
-	    sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
+    	
+      var viewURL = "staff/reservation/bill_card";
+      var viewDom = $("#view-nested-third");
+      var params = {"reservation_id": that.reservation_id};
+      var nextViewParams = {"showanimation": true, "current-view" : "staycard" };
+      sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );      
+
     }
-  }
+  };
 
 
   this.initSubViews = function(){
@@ -113,7 +125,7 @@ var StayCard = function(viewDom){
     guestContactView.pageinit();
     var reservationCardNotes = new reservationCardNotesView($("#reservation-notes"));
     reservationCardNotes.initialize();
-  }
+  };
 
 
   this.setNewspaperPreferance = function(e){  	
@@ -124,17 +136,14 @@ var StayCard = function(viewDom){
       	data : {"reservation_id": that.reservation_id, "selected_newspaper" :newspaperValue } ,
       	success : function(data) {
           	if(data.status == "success"){
-          	    console.log("Succesfully set newspaper preferance");
           	}
           	else{
-          	    console.log("Something is wrong!");
           	}
       	},
       	error : function() {
-      	    console.log("There is an error!!");
       	}
   	});
-  }
+  };
 
   
   //workaround for populating the reservation details,
@@ -145,12 +154,12 @@ var StayCard = function(viewDom){
     if (!($("#" + currentTimeline).find('.reservation').length > 0)) {
       $("#" + currentTimeline + ' #reservation-listing ul li').first().find('a').trigger("click");
     }
-  }
+  };
 
   // Load reservation details
   this.reservationListItemClicked = function(e){
     that.displayReservationDetails($(this).attr('href'));
-  }
+  };
 
   //Add the reservation details to the DOM.
   this.displayReservationDetails = function($href){
@@ -168,6 +177,7 @@ var StayCard = function(viewDom){
         type : 'GET',
         url : "staff/staycards/reservation_details?reservation=" + reservation,
         dataType : 'html',
+        async:false,
         success : function(data) {        	
           $("#" + currentTimeline).append(data);
           createViewScroll("#reservation-content-"+reservation);
@@ -176,7 +186,7 @@ var StayCard = function(viewDom){
         }
       });
     }
-  }
+  };
 
 
   this.updateGuestDetails = function(update_val, type){
@@ -210,29 +220,28 @@ var StayCard = function(viewDom){
       },
       error : function(e) {
         //TODO: hande error cases
-        console.log(e);
       }
     });
 
-    }
+   };
 
 
     this.guestDetailsEdited = function(e){
 
       //send an update request to the third party system
       that.updateGuestDetails($(this).val(), $(this).attr('data-val'));
-    }
+    };
     
 	this.setWakeUpCallModal = function(e){
 		var setWakeUpCallModal = new SetWakeUpCallModal();
     	setWakeUpCallModal.params = {"reservation_id" : that.reservation_id};
     	setWakeUpCallModal.type ="POST";
     	setWakeUpCallModal.initialize();
-    }
+   };
     this.addKeysModal = function(e){
 		var addKeysModal = new AddKeysModal();
     	addKeysModal.initialize();
-    }
+    };
 };
 
 

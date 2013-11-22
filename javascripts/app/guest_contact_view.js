@@ -45,7 +45,6 @@ var GuestContactView = function(domRef){
 			$contactJsonObj['email'] = that.myDom.find("#email").val();
 			$contactJsonObj['mobile'] = that.myDom.find("#mobile").val();
 		
-			console.log(JSON.stringify($contactJsonObj));
 			$.ajax({
 				type : "PUT",
 				url : 'staff/guest_cards/' + userId,
@@ -60,13 +59,21 @@ var GuestContactView = function(domRef){
 					// Update guest card header UI.
 					$("#gc-firstname").val($("#guest_firstname").val());
 					$("#gc-lastname").val($("#guest_lastname").val());
-					$("#gc-location").val($("#city").val()+","+$("#state").val());
+					var city = $.trim($("#city").val());
+					var state = $.trim($("#state").val());
+					var location = "";
+					if(city!= '' && state!= '')
+					 	location = city+","+state;
+					else if(city!= "")
+					 	location = city;
+				    else if (state!="")
+				    	location = state;
+					$("#gc-location").val(location);
 					$("#gc-phone").val($("#phone").val());
 					$("#gc-email").val($("#email").val());
 					
 				},
 				error : function() {
-					console.log("There is an error!!");
 				}
 			});
 		}
@@ -122,7 +129,6 @@ var GuestContactView = function(domRef){
 
 				},
 				error : function() {
-					console.log("There is an error!!");
 					$guestCardClickTime = true;
 				}
 			}).done(function() {

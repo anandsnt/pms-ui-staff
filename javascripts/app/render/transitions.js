@@ -187,7 +187,6 @@ function changeView($type, $menuActiveItem, $prevView, $nextView, $transition, $
     
     // Start transitioning when new page is ready
     $('#loading').fadeOut(function(){
-        console.log("With in loading.....");
         // Bring in new view
         $newView.add(function(){  
             $('#' + $nextView).addClass('view-current ' + $transition);
@@ -310,7 +309,6 @@ $(function($){
 
                 },
                 error: function(){
-                    console.log('Error loading screen');
                 }
             });       
 
@@ -387,7 +385,6 @@ $(function($){
                     },
                     error: function(){
                         $('#loading').remove();
-                        console.log('Error loading screen');
                     }
                 }).done(function(){  
                     var viewInstance = sntapp.getViewInstance($('#'+$next));
@@ -439,7 +436,6 @@ $(function($){
         }
         else 
         {
-            console.log('Screen does not exist');
         }
     });
 

@@ -9,7 +9,6 @@ var GuestPaymentView = function(domRef){
   this.clickedOnPaymentTab= function(e){
   	
   	if($(e.target).hasClass("active-item")){	
-  		console.log("Inactive set as primary");
   		that.renderSetAsPrimary(e.target);
    	}
    	else if($(e.target).hasClass("add-new-button")){

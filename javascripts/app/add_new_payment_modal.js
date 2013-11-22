@@ -6,19 +6,14 @@ var AddNewPaymentModal = function(fromPagePayment){
   	this.$paymentTypes = [];
   	
   	this.delegateEvents = function(){
-
-  		console.log("sub modal delegate events");
   		that.getPaymentsList();
-
   		that.myDom.find('#new-payment #payment-type').on('change', that.filterPayments);
 		that.myDom.find('#new-payment #save_new_credit_card').on('click', that.saveNewPayment);
 	};
 	this.modalInit = function(){
-        console.log("modal init in sub modal");
-        
-   };
-   this.saveNewPayment = function(){
-   if (that.save_inprogress == true) return false;
+   	};
+   	this.saveNewPayment = function(){
+   	if (that.save_inprogress == true) return false;
   	var $payment_type = $("#new-payment #payment-type").val();
 		$payment_credit_type = $("#new-payment #payment-credit-type").val();
 		$card_number_set = $("#new-payment #card-number-set1").val();
@@ -78,7 +73,6 @@ var AddNewPaymentModal = function(fromPagePayment){
 					},
 				dataType: 'json',
 				success: function(data) {
-					console.log(data.id);
 					that.save_inprogress = false;
 					if(data.errors!="" && data.errors!=null){
 						$("#credit-card-number-error").html(data.errors).show();
@@ -130,7 +124,6 @@ var AddNewPaymentModal = function(fromPagePayment){
 						$('#payment_tab a:first').remove();
 						return false;
 					}
-					console.log(data.data.id);
 					//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
 					
 					$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
@@ -169,7 +162,6 @@ var AddNewPaymentModal = function(fromPagePayment){
 				that.$paymentTypes = data.data;
 			},
 			error: function(){
-				console.log("There is an error!!");
 			}
 		});
    };

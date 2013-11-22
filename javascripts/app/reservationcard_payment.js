@@ -6,16 +6,13 @@ var ReservationPaymentView = function(domRef){
   this.$paymentTypes = [];
   	
   this.pageinit = function(){
-  	console.log("Page Init inside reservation payment");
     this.myDom.find($('#add-new-payment')).on('click', that.addNewPaymentModal);
     this.myDom.find($('#staycard_creditcard')).on('change', that.setPaymentToReservation);
   };
   this.delegateEvents = function(){
-  	console.log("delegateEvents inside reservation payment");
   	
   };
   this.addNewPaymentModal = function(){
-  	console.log("Initialise addNewPaymentModal");
   	var addNewPaymentModal = new AddNewPaymentModal("reservation");
     addNewPaymentModal.initialize();
   };
@@ -58,7 +55,6 @@ var ReservationPaymentView = function(domRef){
 			
 		},
 		error : function() {
-			console.log("There is an error!!");
 		}
 	});
   
