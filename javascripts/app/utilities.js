@@ -3,6 +3,20 @@ function getReservationId(){
 	return reservation_id;
 }
 
+function getAvatharUrl(title){
+	//function to get avathar image url by giving title
+	var avathar_imgs = {
+			'Mr.': '/assets/avatar-male.png',
+			'Mrs.': '/assets/avatar-female.png',
+	}
+	try{
+		return avathar_imgs[title];
+	}
+	catch (e) {
+		console.log(e.message);
+		// TODO: handle exception
+	}
+}
 //function that converts a null value to a desired string. 
 //if no replace value is passed, it returns an empty string
 escapeNull = function(value, replaceWith){
