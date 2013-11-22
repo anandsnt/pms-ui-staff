@@ -4,8 +4,8 @@ var RegistrationCardView = function(viewDom){
   this.myDom = viewDom;
   this.reservation_id = getReservationId();
   this.url = "ui/checkinSuccess";
+  
   this.pageinit = function(){
-    
     if (viewScroll) { destroyViewScroll(); }
     setTimeout(function(){
         createViewScroll('#registration-content');
@@ -22,6 +22,19 @@ var RegistrationCardView = function(viewDom){
 		viewScroll.enable();
 	});
   };
+  
+  this.executeLoadingAnimation = function(){
+  	
+  	if (this.viewParams === undefined) return;
+  	if (this.viewParams["showanimation"] === false) return;
+	
+	if (this.viewParams["current-view"] === "staycard")
+  		changeView("nested-view", "", "view-nested-first", "view-nested-third", "move-from-right", false);
+  	else
+  		changeView("nested-view", "", "view-nested-second", "view-nested-third", "move-from-right", false);
+  	 
+  };
+  
   this.delegateEvents = function(){
   	that.myDom.find('#checkin-button').on('click', that.completeCheckin);
   	that.myDom.find('#clear-signature').on('click',that.clearSignature);
@@ -76,12 +89,18 @@ var RegistrationCardView = function(viewDom){
   this.clearSignature = function(){
   	that.myDom.find("#signature").jSignature("reset");
   };
-  this.gotoStayCard= function(e){
-  	//Page transition to stay card.
-  	e.preventDefault();
-    var viewURL = "staff/staycards/staycard";
-    var viewDom = $("#view-nested-second");
-    var params = {"id": that.reservation_id};
-    sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
+  this.gotoStayCard = function(e){
+	e.preventDefault();
+	var $loader = '<div id="loading" />';
+	$($loader).prependTo('body').show();
+	
+	changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);
+  };
+  this.goToRoomUpgradeView = function(){
+	e.preventDefault();
+	var $loader = '<div id="loading" />';
+	$($loader).prependTo('body').show();  
+	changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);
+   
   };
 };

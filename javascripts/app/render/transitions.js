@@ -188,6 +188,7 @@ function changeView($type, $menuActiveItem, $prevView, $nextView, $transition, $
     // Start transitioning when new page is ready
     $('#loading').fadeOut(function(){
         console.log("With in loading.....");
+        console.log($newView,$nextView,$prevView);
         // Bring in new view
         $newView.add(function(){  
             $('#' + $nextView).addClass('view-current ' + $transition);

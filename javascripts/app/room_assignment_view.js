@@ -12,7 +12,7 @@ var RoomAssignmentView = function(viewDom){
   	this.GetRoomAssignmentList();
   	that.myDom.find($('#room-attributes .radio_filters, #room-attributes .checkbox_filters, .rooms-listing #room_type_selectbox')
   		.change('focusout', that.getFilterList));
-        
+     that.myDom.find('#room-assignment-button').on('click',that.roomAssignmentBackButtonClicked);   
   }
 
 this.executeLoadingAnimation = function(){
@@ -185,6 +185,11 @@ this.executeLoadingAnimation = function(){
     });
 
   };
+  this.roomAssignmentBackButtonClicked = function(){
+  	var $loader = '<div id="loading" />';
+    $($loader).prependTo('body').show();
+  	changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
+  }
 
 
 }
