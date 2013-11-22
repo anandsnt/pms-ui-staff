@@ -80,7 +80,7 @@ var RegistrationCardView = function(viewDom){
   	//Page transition to stay card.
   	e.preventDefault();
     var viewURL = "staff/staycards/staycard";
-    var viewDom = $("#view-nested-second");
+    var viewDom = $("#view-nested-first");
     var params = {"id": that.reservation_id};
     sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
   };
