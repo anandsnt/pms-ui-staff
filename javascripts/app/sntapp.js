@@ -1,5 +1,5 @@
 var app = function(){
-    that = this;
+    var that = this;
 
 
     this.getViewInstance = function(viewDom){
