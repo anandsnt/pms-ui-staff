@@ -111,6 +111,7 @@ var StayCard = function(viewDom){
     else{
     	
       var viewURL = "staff/reservation/bill_card";
+      //var viewURL = "http://localhost:3000/ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true";
       var viewDom = $("#view-nested-third");
       var params = {"reservation_id": that.reservation_id};
       var nextViewParams = {"showanimation": true, "current-view" : "staycard" };
