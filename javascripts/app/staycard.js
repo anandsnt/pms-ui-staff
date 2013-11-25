@@ -18,8 +18,13 @@ var StayCard = function(viewDom){
     that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
     that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);
     that.myDom.find('#upgrade-btn').on('click',that.roomUpgradesClicked);
+    that.myDom.find("#title").on('change', that.changeAvathar);
   };
-
+  
+  this.changeAvathar = function(e){
+	  var img_src = getAvatharUrl($(this).val());
+	  $("#guest-card-header .guest-image img").attr("src", img_src);  
+  };
   this.roomUpgradesClicked = function(e){
     e.preventDefault();
     var viewParams = {"next_view" : "staycard"};
@@ -177,6 +182,7 @@ var StayCard = function(viewDom){
         type : 'GET',
         url : "staff/staycards/reservation_details?reservation=" + reservation,
         dataType : 'html',
+        async:false,
         success : function(data) {        	
           $("#" + currentTimeline).append(data);
           createViewScroll("#reservation-content-"+reservation);

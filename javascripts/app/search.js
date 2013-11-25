@@ -21,8 +21,15 @@ var Search = function(domRef){
   this.delegateEvents = function(){  
   	that.myDomElement.find($('#query')).on('focus', that.callCapitalize);
     that.myDomElement.find($('#query')).on('keyup', that.loadResults);
+    that.myDomElement.find($('#search-form')).on('submit', that.submitSearchForm);
+    
   };
-
+  
+  //when a user press enter key from search textbox
+  this.submitSearchForm = function(e){
+	  return false;
+  }
+  
   //when user focus on search text
   this.callCapitalize = function(e){
   	$(this).capitalize();

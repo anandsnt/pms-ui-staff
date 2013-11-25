@@ -53,6 +53,8 @@ var AddKeysModal = function() {
 			data = JSON.stringify(data);
 
 			that.saveKey(data);
+		} else {
+			return false;
 		}
 
 	};
@@ -75,6 +77,8 @@ var AddKeysModal = function() {
 			};
 			data = JSON.stringify(data);
 			that.saveKey(data);
+		}else {
+			return false;
 		}
 	};
 	this.saveKey = function(data) {

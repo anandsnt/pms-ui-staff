@@ -113,15 +113,15 @@ this.executeLoadingAnimation = function(){
         var room_status_html ="" ;
         // display room number in green colour
         if((filteredRoomList[i].fo_status == "VACANT") && (filteredRoomList[i].room_status == "READY")){
-            room_status_html = "<span class='room-number ready'>"+filteredRoomList[i].room_number+"</span>";
+        	room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+"></span>";
         }
         else if((filteredRoomList[i].fo_status == "VACANT") && (filteredRoomList[i].room_status == "NOTREADY")){
-            room_status_html = "<span class='room-number not-ready'>"+filteredRoomList[i].room_number +"</span>"+
-            "<span class='room-status not-ready'> vacant </span>";    
+            room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+"></span>"+
+            "<span class='room-status not-ready' data-value='vacant'> vacant </span>";   
         }
         else if(filteredRoomList[i].fo_status == "OCCUPIED"){
-            room_status_html = "<span class='room-number not-ready'>"+filteredRoomList[i].room_number +"</span>"+
-            "<span class='room-status not-ready'> due out </span>";    
+        	room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+"></span>"+
+        	"<span class='room-status not-ready' data-value='due out'> due out </span>";    
         }
         if(room_status_html != ""){
           var output = "<li><a id = 'room-list-item' href='#'"+
@@ -131,16 +131,16 @@ this.executeLoadingAnimation = function(){
        
     }
 
-    that.myDom.find('#rooms-available #room-list-item').on('click',that.updateRoomAssignment);
+    that.myDom.find('div.rooms-listing ul li a').on('click',that.updateRoomAssignment);
 
   };
 
   this.updateRoomAssignment = function(){
 
 
-    var roomSelected = $(this).find(">:first-child").html();
+	var roomSelected = $(this).find(">:first-child").attr("data-value");
     var currentReservation = $('#roomassignment-ref-id').val();
-    var roomStatusExplained = $(this).find(">:first-child").next().html();
+    var roomStatusExplained = $(this).find(">:first-child").next().attr("data-value");
     var roomStausNew = "";
     if((typeof roomStatusExplained != "undefined") && (roomStatusExplained != "")){
       roomStausNew = "<span class='room-status'>"+ roomStatusExplained +"</span>"
