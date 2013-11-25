@@ -1158,7 +1158,7 @@
 		#cboxNext:hover{background-position: 0 20px;}	
 
 /* Float fix ****************************************************************************************/
-	.float:after{content:"";display:block;height:0;clear:both;visibility:hidden;}
+	.float:after{content:"";display:block;height:0;clear:both;visibility:hidden;overflow-y: auto;}
 	.float{display:block;}
 	* html .float{height: 1%;}
 	.float{display:block;}

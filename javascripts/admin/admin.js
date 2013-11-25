@@ -19,7 +19,7 @@ function loadInlineForm($target, $item){
 var setUpAdmin = function(viewDom, delegate) {
 // $(function($){ 
 	this.delegate = delegate;
-	that = this;
+	var that = this;
 	
 	// Tablet or iPhone?
     var isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
@@ -34,7 +34,7 @@ var setUpAdmin = function(viewDom, delegate) {
 	}
 
 	// Light page load animation
-		$('.content').css('opacity','0').delay(200).animate({opacity:1},400);
+		// $('.content').css('opacity','0').delay(200).animate({opacity:1},400);
 
 	// Disabled links
 		$(document).on('click', 'a[data-href="disabled"]', function(e){
