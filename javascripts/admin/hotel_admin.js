@@ -8,10 +8,27 @@ var HotelAdminView = function(domRef){
   };
   this.delegateEvents = function(){  	
   	that.myDom.find('.sethotel').on('click', that.setNewHotel);
+  	that.myDom.find('ul.dashboard-items li').on('click', that.appendNewPage);
+  	//that.myDom.find('li.ui-state-default a.ui-tabs-anchor').on('click', that.clearReplacingDiv);
   	that.myDom.find('.currenthotel').on('click', function(){
   		$('#change-hotel').toggleClass('open');
   	});
   	
+  };
+  this.clearReplacingDiv = function() {	  
+	  $("#replacing-div").html("");
+	  $($(this).attr("href")).show();
+  };
+  this.appendNewPage = function(event){
+	  var href = $(this).find("a").eq(0).attr("href");
+	  if(href != undefined){
+		  var url = href;
+	  	  event.preventDefault();		  
+		  var viewParams = {};
+		  $(this).parents('section:eq(0)').hide();
+		  //viewURL, viewDom, params, shouldShowLoader, nextViewParams
+		  sntapp.fetchAndRenderView(url, $("#replacing-div"), viewParams, false, {});
+	  }
   };
   this.setNewHotel = function(){
   	var hotel_id = $(this).attr("id");
