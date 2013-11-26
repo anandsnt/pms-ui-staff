@@ -1,12 +1,13 @@
 var app = function(){
-    that = this;
+    var that = this;
 
 
     this.getViewInstance = function(viewDom){
         var viewInstance;
         var viewName = viewDom.find('div:first').attr('data-view');
+
         if(typeof viewName !== "undefined"){
-            viewInstance = new window[viewName](viewDom);
+            viewInstance = new window[viewName](viewDom);            
         }
         
         return viewInstance;
@@ -48,6 +49,7 @@ var app = function(){
             }
        });
     };
+
 };
 
 sntapp = new app();

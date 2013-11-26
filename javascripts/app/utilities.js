@@ -10,9 +10,12 @@ function getAvatharUrl(title){
 			'mrs.': '/assets/avatar-female.png',
 			'miss.': '/assets/avatar-female.png',
 			'': '/assets/avatar-trans.png',
-	}
+	};
 	try{
-		return avathar_imgs[$.trim(title).toLowerCase()];
+		if(($.trim(title).toLowerCase() == "mr.") || ($.trim(title).toLowerCase() == "mrs.") || ($.trim(title).toLowerCase() == "miss."))
+			return avathar_imgs[$.trim(title).toLowerCase()];
+	    else
+	    	return avathar_imgs[''];
 	}
 	catch (e) {
 		console.log(e.message);
