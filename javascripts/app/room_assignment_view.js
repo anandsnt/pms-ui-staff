@@ -6,19 +6,26 @@ var RoomAssignmentView = function(viewDom){
   this.roomCompleteList = [];
 
   this.pageinit = function(){
-
-
+    //Scroll view initialization for the view
     this.createViewScroll();
-  	this.GetRoomAssignmentList();
-  	that.myDom.find($('#room-attributes .radio_filters, #room-attributes .checkbox_filters, .rooms-listing #room_type_selectbox')
-  		.change('focusout', that.getFilterList));
-     that.myDom.find('#room-assignment-button').on('click',that.roomAssignmentBackButtonClicked);   
+    //Get the list of rooms from the server.
+  	this.FetchRoomList();
   }
 
-this.executeLoadingAnimation = function(){
-  changeView("nested-view", undefined, "view-nested-first", "view-nested-second", "move-from-right", false); 
+  this.delegateEvents = function(){
 
-}
+    that.myDom.find($('#room-attributes .checkbox')
+      .change('focusout', that.handleMultipleSelection));
+    //that.myDom.find($('.rooms-listing #room-type-selectbox')
+      //.change('focusout', that.filterByRoomType));
+    that.myDom.find('#room-assignment-button').on('click',that.backButtonClicked); 
+
+  }
+
+  this.executeLoadingAnimation = function(){
+    changeView("nested-view", undefined, "view-nested-first", "view-nested-second", "move-from-right", false); 
+
+  }
   this.createViewScroll = function(){
     if (viewScroll) { destroyViewScroll(); }
           setTimeout(function(){
@@ -29,7 +36,7 @@ this.executeLoadingAnimation = function(){
   }
 
   //Fetches the non-filtered list of rooms.
-  this.GetRoomAssignmentList = function(){
+  this.FetchRoomList = function(){
   	$.ajax({
         type:       'POST',
         url:        "/staff/rooms/get_rooms",
@@ -37,24 +44,89 @@ this.executeLoadingAnimation = function(){
         success: function(response){
           if(response.status == "success"){
             that.roomCompleteList = response.data;
-            that.getFilterList();
+            that.displayRoomsList();
           }else if(response.status == "failure"){
+            this.roomCompleteList = [];
+            //TODO: Handle failure cases
           }
         },
         error: function(){
-            that.roomCompleteList = [];
+          that.roomCompleteList = [];
+          //TODO: Handle failure cases
         }
     });
-  }
+  };
+
+  this.handleMultipleSelection = function(){
+    var multiplesAllowed = $(this).closest( ".radio-check" ).attr('data-multiples-allowed');
+    if(multiplesAllowed === "false"){
+      $(this).find('input').attr("checked", false); 
+    }
+  };
+
+  this.filterByRoomType = function(){
+    var filteredRoomList = [];
+    for (var i = 0; i< this.roomCompleteList.length; i++){
+      if(this.roomCompleteList[i].room_type === $(this).val()){
+        filteredRoomList.push(this.roomCompleteList[i]); 
+      }
+    } 
+  };
+
+  this.filterByStatus = function(){
+    var filteredRoomList = [];
+    for (var i = 0; i< this.roomCompleteList.length; i++){
+      if((this.roomCompleteList[i].room_status === "READY") 
+          && (this.roomCompleteList[i].fo_status === "VACANT")){
+        filteredRoomList.push(this.roomCompleteList[i]); 
+      }
+    } 
+    this.displayRoomsList(filteredRoomList);
+  };
+
+  this.displayRoomsList = function(filteredRoomList){
+    $('#rooms-available ul').html("");
+
+    for (var i=0; i<filteredRoomList.length; i++){
+
+
+        var room_status_html ="" ;
+        // display room number in green colour
+        if((filteredRoomList[i].fo_status == "VACANT") && (filteredRoomList[i].room_status == "READY")){
+          room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
+        }
+        else if((filteredRoomList[i].fo_status == "VACANT") && (filteredRoomList[i].room_status == "NOTREADY")){
+            room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
+            "<span class='room-status not-ready' data-value='vacant'> vacant </span>";   
+        }
+        else if(filteredRoomList[i].fo_status == "OCCUPIED"){
+          room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
+          "<span class='room-status not-ready' data-value='due out'> due out </span>";    
+        }
+        if(room_status_html != ""){
+          var output = "<li><a id = 'room-list-item' href='#'"+
+            "class='back-button button white submit-value' data-value='' data-transition='nested-view'>"+room_status_html+"</a></li>";
+          $('#rooms-available ul').append(output);      
+        }
+
+        console.log()
+       
+    }
+
+    that.myDom.find('div.rooms-listing ul li a').on('click',that.updateRoomAssignment);
+
+
+  };
+
 
   //Gets the filter options 
   this.getFilterList = function(e){
   	var filterOptions = [];
 
-    var selctboxOption = $("#room_type_selectbox option:selected").val();
-    /*if(!(selctboxOption === "all")){
-        filterOptions.push(selctboxOption);
-    }*/
+    var roomTypeSelected = $("#room_type_selectbox option:selected").val();
+    if(!(roomTypeSelected === "all-types")){
+        filterOptions.push(roomTypeSelected);
+    }
 
     /*var radioFeatureCount = $('#pref_radio_count').val();
     for (var i = 0; i<radioFeatureCount ; i++){
@@ -104,7 +176,7 @@ this.executeLoadingAnimation = function(){
   this.displayFilteredRoomList = function(filteredRoomList){
 
     //TODO: This line will be removed once the filter story is complete
-    //filteredRoomList = this.roomCompleteList;
+    filteredRoomList = this.roomCompleteList;
   	$('#rooms-available ul').html("");
 
     for (var i=0; i<filteredRoomList.length; i++){
@@ -178,7 +250,7 @@ this.executeLoadingAnimation = function(){
     });
 
   };
-  this.roomAssignmentBackButtonClicked = function(){
+  this.backButtonClicked = function(){
   	var $loader = '<div id="loading" />';
     $($loader).prependTo('body').show();
   	changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
