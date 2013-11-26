@@ -11,6 +11,8 @@ var HotelAdminView = function(domRef){
   	that.myDom.find('.currenthotel').on('click', function(){
   		$('#change-hotel').toggleClass('open');
   	});
+  	that.myDom.find('ul.dashboard-items li').on('click', that.appendNewPage);
+  	that.myDom.find('li.ui-state-default a.ui-tabs-anchor').on('click', that.clearReplacingDiv);
   	
   };
   this.setNewHotel = function(){
@@ -41,4 +43,20 @@ var HotelAdminView = function(domRef){
   	var delegateBookMark = new DelegateBookMark();
   	delegateBookMark.removeBookMark(bookMarkId);
   };
+  this.clearReplacingDiv = function() {	  
+	  $("#replacing-div").html("");
+	  $($(this).attr("href")).show();
+  };
+  this.appendNewPage = function(event){
+	  var href = $(this).find("a").eq(0).attr("href");
+	  var callClass = $(this).find("a").eq(0).attr("data-name");
+	  if(href != undefined){
+		  var url = href;
+	  	  event.preventDefault();		  
+		  var viewParams = {};
+		  $(this).parents('section:eq(0)').hide();
+		  sntapp.fetchAndRenderView(url, $("#replacing-div"), viewParams);
+	  }
+  };
+  
 };
