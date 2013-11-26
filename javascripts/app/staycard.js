@@ -19,6 +19,9 @@ var StayCard = function(viewDom){
     that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);
     that.myDom.find('#upgrade-btn').on('click',that.roomUpgradesClicked);
     that.myDom.find("#title").on('change', that.changeAvathar);
+    that.myDom.find('#reservation-checkout').on('click', that.clickedCheckoutButton);
+    that.myDom.find('#reservation-view-bill').on('click',that.clickedViewBillButton);
+    
   };
   
   this.changeAvathar = function(e){
@@ -243,10 +246,26 @@ var StayCard = function(viewDom){
     	setWakeUpCallModal.params = {"reservation_id" : that.reservation_id};
     	setWakeUpCallModal.type ="POST";
     	setWakeUpCallModal.initialize();
-   };
+   	};
     this.addKeysModal = function(e){
 		var addKeysModal = new AddKeysModal();
     	addKeysModal.initialize();
+    };
+    
+    this.clickedCheckoutButton = function(){
+      that.goToBillCardView();
+    };
+    
+    this.clickedViewBillButton = function(){
+      that.goToBillCardView();
+    };
+    
+    this.goToBillCardView = function (){
+      var viewURL = "staff/reservation/bill_card";
+      var viewDom = $("#view-nested-third");
+      var params = {"reservation_id": that.reservation_id};
+      var nextViewParams = {"showanimation": true, "current-view" : "staycard" };
+      sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
     };
 };
 
