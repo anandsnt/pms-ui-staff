@@ -9,11 +9,9 @@ var HotelAdminView = function(domRef){
   this.delegateEvents = function(){  	
   	that.myDom.find('.sethotel').on('click', that.setNewHotel);
   	that.myDom.find('ul.dashboard-items li').on('click', that.appendNewPage);
-  	//that.myDom.find('li.ui-state-default a.ui-tabs-anchor').on('click', that.clearReplacingDiv);
   	that.myDom.find('.currenthotel').on('click', function(){
   		$('#change-hotel').toggleClass('open');
   	});
-  	that.myDom.find('ul.dashboard-items li').on('click', that.appendNewPage);
   	that.myDom.find('li.ui-state-default a.ui-tabs-anchor').on('click', that.clearReplacingDiv);
   	
   };
