@@ -2,10 +2,13 @@ var RoomAssignmentView = function(viewDom){
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
+
   //Stores the non-filtered list of rooms
   this.roomCompleteList = [];
 
   this.pageinit = function(){
+    this.includeNotReadyRooms = false;
+    this.includeDueout = false;
     //Scroll view initialization for the view
     this.createViewScroll();
     //Get the list of rooms from the server.
@@ -44,9 +47,9 @@ var RoomAssignmentView = function(viewDom){
         success: function(response){
           if(response.status == "success"){
             that.roomCompleteList = response.data;
-            that.displayRoomsList();
+            that.filterByStatus();
           }else if(response.status == "failure"){
-            this.roomCompleteList = [];
+            that.roomCompleteList = [];
             //TODO: Handle failure cases
           }
         },
@@ -58,29 +61,74 @@ var RoomAssignmentView = function(viewDom){
   };
 
   this.handleMultipleSelection = function(){
+    that.includeNotReadyRooms = false;
+    that.includeDueout = false;
+
+    if(that.myDom.find($('#filter-not-ready')).is(':checked')){
+      that.includeNotReadyRooms = true;
+    }
+
+    if(that.myDom.find($('#filter-dueout')).is(':checked')){
+      that.includeDueout = true;
+    }
+
     var multiplesAllowed = $(this).closest( ".radio-check" ).attr('data-multiples-allowed');
     if(multiplesAllowed === "false"){
       $(this).find('input').attr("checked", false); 
     }
+
+    that.filterByStatus();
   };
 
-  this.filterByRoomType = function(){
+  /*this.filterByRoomType = function(){
     var filteredRoomList = [];
     for (var i = 0; i< this.roomCompleteList.length; i++){
       if(this.roomCompleteList[i].room_type === $(this).val()){
         filteredRoomList.push(this.roomCompleteList[i]); 
       }
     } 
-  };
+  };*/
+
+  
 
   this.filterByStatus = function(){
     var filteredRoomList = [];
-    for (var i = 0; i< this.roomCompleteList.length; i++){
-      if((this.roomCompleteList[i].room_status === "READY") 
-          && (this.roomCompleteList[i].fo_status === "VACANT")){
-        filteredRoomList.push(this.roomCompleteList[i]); 
+
+    //include not-ready rooms and dueout rooms (show all rooms)
+    if(this.includeNotReadyRooms && this.includeDueout){
+      filteredRoomList = this.roomCompleteList;
+    }
+
+    //include not ready rooms (filter by only VACANT status)
+    else if(this.includeNotReadyRooms){
+      for (var i = 0; i< this.roomCompleteList.length; i++){
+        if(this.roomCompleteList[i].fo_status === "VACANT"){
+          filteredRoomList.push(this.roomCompleteList[i]);
+        } 
       }
-    } 
+    }
+
+    //include dueout rooms (filter by only READY status)
+    else if(this.includeDueout){
+      for (var i = 0; i< this.roomCompleteList.length; i++){
+        if((this.roomCompleteList[i].fo_status === "OCCUPIED") 
+          || (this.roomCompleteList[i].room_status === "READY")){
+          filteredRoomList.push(this.roomCompleteList[i]); 
+        }
+      }
+    }
+
+    //Display only ready and vacant rooms
+    else{
+      for (var i = 0; i< this.roomCompleteList.length; i++){
+        if((this.roomCompleteList[i].room_status === "READY") &&
+         (this.roomCompleteList[i].fo_status === "VACANT")){
+          filteredRoomList.push(this.roomCompleteList[i]); 
+        }
+      }
+
+    }
+
     this.displayRoomsList(filteredRoomList);
   };
 
@@ -88,8 +136,6 @@ var RoomAssignmentView = function(viewDom){
     $('#rooms-available ul').html("");
 
     for (var i=0; i<filteredRoomList.length; i++){
-
-
         var room_status_html ="" ;
         // display room number in green colour
         if((filteredRoomList[i].fo_status == "VACANT") && (filteredRoomList[i].room_status == "READY")){
@@ -107,15 +153,10 @@ var RoomAssignmentView = function(viewDom){
           var output = "<li><a id = 'room-list-item' href='#'"+
             "class='back-button button white submit-value' data-value='' data-transition='nested-view'>"+room_status_html+"</a></li>";
           $('#rooms-available ul').append(output);      
-        }
-
-        console.log()
-       
+        }       
     }
 
     that.myDom.find('div.rooms-listing ul li a').on('click',that.updateRoomAssignment);
-
-
   };
 
 
