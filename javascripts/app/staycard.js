@@ -21,7 +21,7 @@ var StayCard = function(viewDom){
     that.myDom.find("#title").on('change', that.changeAvathar);
     that.myDom.find('#reservation-checkout').on('click', that.clickedCheckoutButton);
     that.myDom.find('#reservation-view-bill').on('click',that.clickedViewBillButton);
-    
+    that.myDom.find('#stay-card-total-stay-cost').on('click',that.clickedTotalStayCost);
   };
   
   this.changeAvathar = function(e){
@@ -106,20 +106,13 @@ var StayCard = function(viewDom){
   	}
 
     else if($.trim(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
-      that.goToRoomAssignmentView(e);
+      		that.goToRoomAssignmentView(e);
     }
     else if(that.myDom.find('#reservation-checkin').attr('data-upsell-enabled') == "true"){
-      that.goToRoomUpgradeView();
+      		that.goToRoomUpgradeView();
     }
     else{
-    	
-      var viewURL = "staff/reservation/bill_card";
-      //var viewURL = "http://localhost:3000/ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true";
-      var viewDom = $("#view-nested-third");
-      var params = {"reservation_id": that.reservation_id};
-      var nextViewParams = {"showanimation": true, "current-view" : "staycard" };
-      sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );      
-
+    		that.goToBillCardView();
     }
   };
 
@@ -259,7 +252,9 @@ var StayCard = function(viewDom){
     this.clickedViewBillButton = function(){
       that.goToBillCardView();
     };
-    
+    this.clickedTotalStayCost = function(){
+    	that.goToBillCardView();
+    }
     this.goToBillCardView = function (){
       var viewURL = "staff/reservation/bill_card";
       var viewDom = $("#view-nested-third");
