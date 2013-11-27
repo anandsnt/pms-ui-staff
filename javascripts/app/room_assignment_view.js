@@ -10,7 +10,7 @@ var RoomAssignmentView = function(viewDom){
     //Scroll view initialization for the view
     this.createViewScroll();
     //Get the list of rooms from the server.
-  	this.FetchRoomList();
+  	this.fetchRoomList();
   }
 
   this.delegateEvents = function(){
@@ -37,14 +37,15 @@ var RoomAssignmentView = function(viewDom){
   }
 
   //Fetches the non-filtered list of rooms.
-  this.FetchRoomList = function(){
+  this.fetchRoomList = function(){
   	$.ajax({
-        type:       'GET',
-        url:        "/sample_json/room_assignment/room_list.json",
+        type:       'POST',
+        url:        "/staff/rooms/get_rooms",
         dataType:   'json',
         success: function(response){
           if(response.status == "success"){
             that.roomCompleteList = response.data;
+            console.log(JSON.stringify(that.roomCompleteList));
             that.applyFilters();
           }else if(response.status == "failure"){
             that.roomCompleteList = [];
@@ -58,7 +59,6 @@ var RoomAssignmentView = function(viewDom){
     });
   };
   this.filterOptionChecked = function(e){
-    console.log("option checked");
     that.handleMultipleSelection(e);
     that.applyFilters();
 
@@ -138,19 +138,19 @@ var RoomAssignmentView = function(viewDom){
 
     //include not ready rooms (filter by only VACANT status)
     else if(includeNotReadyRooms){
+
       for (var i = 0; i< this.roomCompleteList.length; i++){
-        if(this.roomCompleteList[i].fo_status === "VACANT"){
+        if(this.roomCompleteList[i].is_dueout === "false"){
           filteredRoomList.push(this.roomCompleteList[i]);
-        } 
+        }
       }
     }
 
     //include dueout rooms (filter by only READY status)
     else if(includeDueout){
       for (var i = 0; i< this.roomCompleteList.length; i++){
-        if((this.roomCompleteList[i].fo_status === "OCCUPIED") 
-          || (this.roomCompleteList[i].room_status === "READY")){
-          filteredRoomList.push(this.roomCompleteList[i]); 
+        if(this.roomCompleteList[i].is_dueout === "true"){
+          filteredRoomList.push(this.roomCompleteList[i]);
         }
       }
     }
@@ -184,9 +184,13 @@ var RoomAssignmentView = function(viewDom){
             room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
             "<span class='room-status not-ready' data-value='vacant'> vacant </span>";   
         }
-        else if(filteredRoomList[i].fo_status == "OCCUPIED"){
+        else if((filteredRoomList[i].fo_status == "OCCUPIED") &&(filteredRoomList[i].is_dueout == "true")){
           room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
           "<span class='room-status not-ready' data-value='due out'> due out </span>";    
+        }
+        else if(filteredRoomList[i].fo_status == "OCCUPIED"){
+          room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
+          "<span class='room-status not-ready'></span>";    
         }
         if(room_status_html != ""){
           var output = "<li><a id = 'room-list-item' href='#'"+
