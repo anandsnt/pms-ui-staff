@@ -49,14 +49,6 @@ body { overflow: hidden; }
     }
   }
 
-  #content { 
-    padding: 40px 20px; 
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
-    .calc-height(100, 140);
-
-    &.no-padding { padding: 0; }
-  }
 
 /* Global header      ==============================*/
   #global-header{ 
@@ -502,12 +494,30 @@ body { overflow: hidden; }
       tbody {
         tr {
           th:first-child,
-          td:first-child:not([colspan]) { .hide; }
+          td:first-child:not([colspan]) { /*.hide;*/ }
         }
       }
     }
   }
 
+
+
+
+//Added by QBURST
+
+
+#content .content:not(.ui-tabs-panel) {
+    overflow-y: auto;
+}
+#content .content {
+    height: 100%;
+    padding: 20px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 84.6774%;
+}
+  
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
