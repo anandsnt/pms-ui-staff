@@ -41,8 +41,8 @@ var RoomAssignmentView = function(viewDom){
   //Fetches the non-filtered list of rooms.
   this.FetchRoomList = function(){
   	$.ajax({
-        type:       'POST',
-        url:        "/staff/rooms/get_rooms",
+        type:       'GET',
+        url:        "/sample_json/room_assignment/room_list.json",
         dataType:   'json',
         success: function(response){
           if(response.status == "success"){
@@ -77,6 +77,8 @@ var RoomAssignmentView = function(viewDom){
       $(this).find('input').attr("checked", false); 
     }
 
+
+
     that.filterByStatus();
   };
 
@@ -89,7 +91,9 @@ var RoomAssignmentView = function(viewDom){
     } 
   };*/
 
-  
+  /*this.getFilterList = function(){
+
+  };*/
 
   this.filterByStatus = function(){
     var filteredRoomList = [];
@@ -128,8 +132,9 @@ var RoomAssignmentView = function(viewDom){
       }
 
     }
+    this.getFilterList();
 
-    this.displayRoomsList(filteredRoomList);
+    
   };
 
   this.displayRoomsList = function(filteredRoomList){
@@ -162,35 +167,91 @@ var RoomAssignmentView = function(viewDom){
 
   //Gets the filter options 
   this.getFilterList = function(e){
-  	var filterOptions = [];
+  	var filterOptionsArray = [];
 
-    var roomTypeSelected = $("#room_type_selectbox option:selected").val();
-    if(!(roomTypeSelected === "all-types")){
-        filterOptions.push(roomTypeSelected);
+    var checkboxGroupCount = $('#group-count').val();
+    //var checkboxInGroupCount = $('#pref_checkbox_count').val();
+    for(var i = 0; i < checkboxGroupCount; i++){
+
+      var filterGroup = {};
+      filterGroup.group_name = $('#group-'+i).attr('data-group-name');
+      filterGroup.filters = [];
+
+      $('#group-'+i).children('label').each(function () {
+        if($(this).hasClass("checked")){
+          filterGroup.filters.push($(this).find('input').val()); 
+        }
+      }); 
+      if(filterGroup.filters.length > 0){
+        filterOptionsArray.push(filterGroup);
+      }
+      
+
     }
 
-    /*var radioFeatureCount = $('#pref_radio_count').val();
-    for (var i = 0; i<radioFeatureCount ; i++){
-        if($('#room-attributes #radio_' + i).is(':checked')) {
-            if(!($('#room-attributes #radio_' + i).val() == "All rooms")){
-                filterOptions.push($('#room-attributes #radio_' + i).val());
-            }
-            
-        }
-    }*/
+    that.applyFilters(filterOptionsArray, that.roomCompleteList);
+    
+  };
 
-    var checkboxFeatureCount = $('#pref_checkbox_count').val();
-    for (var i = 0; i<checkboxFeatureCount ; i++){
-        if($('#room-attributes #option_checkbox_' + i).is(':checked')) {
-            filterOptions.push($('#room-attributes #option_checkbox_' + i).val());
-        }
-    }
-    that.applyFilters(filterOptions);
-  }
+
 
   //Filter the rooms list based on filter options
-  this.applyFilters = function(featureList){
-  	var matchCountRequired = featureList.length;
+  this.applyFilters = function(filterOptionsArray, roomListToFilter){
+    var filteredRoomList = [];
+    //Iterate through each filter group and apply filter
+    console.log(filterOptionsArray);
+    $.each(filterOptionsArray, function( index, filterGroup ) {
+
+      //In room-feature filters, all the filter values should be availabe in room list
+      if(filterGroup.group_name == "room-feature"){
+        var matchCountRequired = filterGroup.filters.length;
+        $.each(roomListToFilter, function( i, room) {
+          var roomFeatureMatch = 0;
+          for(var j=0; j<filterGroup.filters.length; j++){
+            if(room.room_features.indexOf(filterGroup.filters[j])>= 0){
+              roomFeatureMatch++;
+            }
+          }
+
+          if(roomFeatureMatch === matchCountRequired){
+            filteredRoomList.push(room);
+          }
+          roomListToFilter = filteredRoomList;
+        });
+
+        console.log(filteredRoomList);
+        console.log(roomListToFilter);
+      }
+
+
+      //In other filter groups, if one filter option matches, display the room
+      else{
+        console.log("inside");
+        $.each(roomListToFilter, function( i, room) {
+          var matchFound = false;
+          for(var j=0; j<filterGroup.filters.length; j++){
+            if(room.room_features.indexOf(filterGroup.filters[j])>= 0){
+              matchFound = true;
+            }
+          }
+
+          if(matchFound){
+
+            console.log("push");
+            filteredRoomList.push(room);
+          }
+          roomListToFilter = filteredRoomList;
+        });
+
+        //TODO: or condition filtering
+      }
+
+
+    });
+
+    this.displayRoomsList(roomListToFilter);
+
+  	/*var matchCountRequired = featureList.length;
     var roomList = this.roomCompleteList;
     
     var filteredRoomList = [];
@@ -210,7 +271,7 @@ var RoomAssignmentView = function(viewDom){
         }
         
     }
-    this.displayFilteredRoomList(filteredRoomList);
+    this.displayFilteredRoomList(filteredRoomList);*/
   }
 
   //Display filtered rooms 
