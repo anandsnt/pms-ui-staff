@@ -7,8 +7,6 @@ var RoomAssignmentView = function(viewDom){
   this.roomCompleteList = [];
 
   this.pageinit = function(){
-    this.includeNotReadyRooms = false;
-    this.includeDueout = false;
     //Scroll view initialization for the view
     this.createViewScroll();
     //Get the list of rooms from the server.
@@ -18,7 +16,7 @@ var RoomAssignmentView = function(viewDom){
   this.delegateEvents = function(){
 
     that.myDom.find($('#room-attributes .checkbox')
-      .change('focusout', that.handleMultipleSelection));
+      .change('focusout', that.filterOptionChecked));
     //that.myDom.find($('.rooms-listing #room-type-selectbox')
       //.change('focusout', that.filterByRoomType));
     that.myDom.find('#room-assignment-button').on('click',that.backButtonClicked); 
@@ -47,7 +45,7 @@ var RoomAssignmentView = function(viewDom){
         success: function(response){
           if(response.status == "success"){
             that.roomCompleteList = response.data;
-            that.filterByStatus();
+            that.applyFilters();
           }else if(response.status == "failure"){
             that.roomCompleteList = [];
             //TODO: Handle failure cases
@@ -59,27 +57,53 @@ var RoomAssignmentView = function(viewDom){
         }
     });
   };
+  this.filterOptionChecked = function(e){
+    console.log("option checked");
+    that.handleMultipleSelection(e);
+    that.applyFilters();
 
-  this.handleMultipleSelection = function(){
-    that.includeNotReadyRooms = false;
-    that.includeDueout = false;
+  };
 
-    if(that.myDom.find($('#filter-not-ready')).is(':checked')){
-      that.includeNotReadyRooms = true;
+   //Gets the filter options 
+  this.getFilterList = function(){
+    var filterOptionsArray = [];
+
+    var checkboxGroupCount = $('#group-count').val();
+    //var checkboxInGroupCount = $('#pref_checkbox_count').val();
+    for(var i = 0; i < checkboxGroupCount; i++){
+      var filterGroup = {};
+      filterGroup.group_name = $('#group-'+i).attr('data-group-name');
+      filterGroup.filters = [];
+
+      $('#group-'+i).children('label').each(function () {
+        if($(this).hasClass("checked")){
+          filterGroup.filters.push($(this).find('input').val()); 
+        }
+      }); 
+      if(filterGroup.filters.length > 0){
+        filterOptionsArray.push(filterGroup);
+      }
     }
 
-    if(that.myDom.find($('#filter-dueout')).is(':checked')){
-      that.includeDueout = true;
-    }
+    return filterOptionsArray;    
+  };
 
-    var multiplesAllowed = $(this).closest( ".radio-check" ).attr('data-multiples-allowed');
+  this.applyFilters = function(){
+    var filterOptionsArray = that.getFilterList();
+    var roomStatusFilteredList = that.filterByStatus(false, false);
+    var roomListToDisplay = that.startFiltering(filterOptionsArray, roomStatusFilteredList);
+
+    that.displayRoomsList(roomListToDisplay);
+
+
+  };
+
+  this.handleMultipleSelection = function(e){
+    var multiplesAllowed = $(e.currentTarget).closest( ".radio-check" ).attr('data-multiples-allowed');
     if(multiplesAllowed === "false"){
-      $(this).find('input').attr("checked", false); 
+      $(e.currentTarget).find('input').attr("checked", false); 
     }
 
-
-
-    that.filterByStatus();
   };
 
   /*this.filterByRoomType = function(){
@@ -95,19 +119,25 @@ var RoomAssignmentView = function(viewDom){
 
   };*/
 
-  this.filterByStatus = function(){
-    console.log("filter by status");
-    console.log(this.includeNotReadyRooms);
-    console.log(this.includeDueout);
+  this.filterByStatus = function(includeNotReadyRooms, includeDueout){
+
     var filteredRoomList = [];
 
+    if(that.myDom.find($('#filter-not-ready')).is(':checked')){
+      includeNotReadyRooms = true;
+    }
+
+    if(that.myDom.find($('#filter-dueout')).is(':checked')){
+      includeDueout = true;
+    }
+
     //include not-ready rooms and dueout rooms (show all rooms)
-    if(this.includeNotReadyRooms && this.includeDueout){
+    if(includeNotReadyRooms && includeDueout){
       filteredRoomList = this.roomCompleteList;
     }
 
     //include not ready rooms (filter by only VACANT status)
-    else if(this.includeNotReadyRooms){
+    else if(includeNotReadyRooms){
       for (var i = 0; i< this.roomCompleteList.length; i++){
         if(this.roomCompleteList[i].fo_status === "VACANT"){
           filteredRoomList.push(this.roomCompleteList[i]);
@@ -116,7 +146,7 @@ var RoomAssignmentView = function(viewDom){
     }
 
     //include dueout rooms (filter by only READY status)
-    else if(this.includeDueout){
+    else if(includeDueout){
       for (var i = 0; i< this.roomCompleteList.length; i++){
         if((this.roomCompleteList[i].fo_status === "OCCUPIED") 
           || (this.roomCompleteList[i].room_status === "READY")){
@@ -135,7 +165,8 @@ var RoomAssignmentView = function(viewDom){
       }
 
     }
-    this.getFilterList(filteredRoomList);
+
+    return filteredRoomList;
 
     
   };
@@ -168,38 +199,12 @@ var RoomAssignmentView = function(viewDom){
   };
 
 
-  //Gets the filter options 
-  this.getFilterList = function(filteredRoomList){
-  	var filterOptionsArray = [];
-
-    var checkboxGroupCount = $('#group-count').val();
-    //var checkboxInGroupCount = $('#pref_checkbox_count').val();
-    for(var i = 0; i < checkboxGroupCount; i++){
-
-      var filterGroup = {};
-      filterGroup.group_name = $('#group-'+i).attr('data-group-name');
-      filterGroup.filters = [];
-
-      $('#group-'+i).children('label').each(function () {
-        if($(this).hasClass("checked")){
-          filterGroup.filters.push($(this).find('input').val()); 
-        }
-      }); 
-      if(filterGroup.filters.length > 0){
-        filterOptionsArray.push(filterGroup);
-      }
-      
-
-    }
-
-    that.applyFilters(filterOptionsArray, filteredRoomList);
-    
-  };
+ 
 
 
 
   //Filter the rooms list based on filter options
-  this.applyFilters = function(filterOptionsArray, roomListToFilter){
+  this.startFiltering = function(filterOptionsArray, roomListToFilter){
 
     var filteredRoomList = roomListToFilter;
     //Iterate through each filter group and apply filter
@@ -210,8 +215,8 @@ var RoomAssignmentView = function(viewDom){
       }
       filteredRoomList = that.applyFilterForGroup(filteredRoomList, filterGroup.filters, operation);
      });
-
-    this.displayRoomsList(filteredRoomList);
+  
+    return filteredRoomList;
 
   }
 
