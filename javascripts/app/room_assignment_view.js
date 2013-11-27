@@ -96,6 +96,9 @@ var RoomAssignmentView = function(viewDom){
   };*/
 
   this.filterByStatus = function(){
+    console.log("filter by status");
+    console.log(this.includeNotReadyRooms);
+    console.log(this.includeDueout);
     var filteredRoomList = [];
 
     //include not-ready rooms and dueout rooms (show all rooms)
@@ -132,7 +135,7 @@ var RoomAssignmentView = function(viewDom){
       }
 
     }
-    this.getFilterList();
+    this.getFilterList(filteredRoomList);
 
     
   };
@@ -166,7 +169,7 @@ var RoomAssignmentView = function(viewDom){
 
 
   //Gets the filter options 
-  this.getFilterList = function(e){
+  this.getFilterList = function(filteredRoomList){
   	var filterOptionsArray = [];
 
     var checkboxGroupCount = $('#group-count').val();
@@ -189,7 +192,7 @@ var RoomAssignmentView = function(viewDom){
 
     }
 
-    that.applyFilters(filterOptionsArray, that.roomCompleteList);
+    that.applyFilters(filterOptionsArray, filteredRoomList);
     
   };
 
@@ -197,18 +200,36 @@ var RoomAssignmentView = function(viewDom){
 
   //Filter the rooms list based on filter options
   this.applyFilters = function(filterOptionsArray, roomListToFilter){
-    var filteredRoomList = [];
-    //Iterate through each filter group and apply filter
-    console.log(filterOptionsArray);
-    $.each(filterOptionsArray, function( index, filterGroup ) {
 
-      //In room-feature filters, all the filter values should be availabe in room list
+    var filteredRoomList = roomListToFilter;
+    //Iterate through each filter group and apply filter
+    $.each(filterOptionsArray, function( index, filterGroup ) {
+      var operation = "OR";
       if(filterGroup.group_name == "room-feature"){
-        var matchCountRequired = filterGroup.filters.length;
-        $.each(roomListToFilter, function( i, room) {
+        operation = "AND";
+      }
+      filteredRoomList = that.applyFilterForGroup(filteredRoomList, filterGroup.filters, operation);
+     });
+
+    this.displayRoomsList(filteredRoomList);
+
+  }
+
+  this.applyFilterForGroup = function(roomListToFilter, filters, operation){
+    var filteredRoomList = [];
+    if(operation === "OR"){
+      $.each(roomListToFilter, function( i, room) {
+        var matchFound = that.roomSatisfyFilters(room, filters, operation);
+        if(matchFound){
+          filteredRoomList.push(room);
+        }
+      });
+    }else{
+      var matchCountRequired = filters.length;
+      $.each(roomListToFilter, function( i, room) {
           var roomFeatureMatch = 0;
-          for(var j=0; j<filterGroup.filters.length; j++){
-            if(room.room_features.indexOf(filterGroup.filters[j])>= 0){
+          for(var j=0; j<filters.length; j++){
+            if(room.room_features.indexOf(filters[j])>= 0){
               roomFeatureMatch++;
             }
           }
@@ -216,97 +237,24 @@ var RoomAssignmentView = function(viewDom){
           if(roomFeatureMatch === matchCountRequired){
             filteredRoomList.push(room);
           }
-          roomListToFilter = filteredRoomList;
         });
-
-        console.log(filteredRoomList);
-        console.log(roomListToFilter);
-      }
-
-
-      //In other filter groups, if one filter option matches, display the room
-      else{
-        console.log("inside");
-        $.each(roomListToFilter, function( i, room) {
-          var matchFound = false;
-          for(var j=0; j<filterGroup.filters.length; j++){
-            if(room.room_features.indexOf(filterGroup.filters[j])>= 0){
-              matchFound = true;
-            }
-          }
-
-          if(matchFound){
-
-            console.log("push");
-            filteredRoomList.push(room);
-          }
-          roomListToFilter = filteredRoomList;
-        });
-
-        //TODO: or condition filtering
-      }
-
-
-    });
-
-    this.displayRoomsList(roomListToFilter);
-
-  	/*var matchCountRequired = featureList.length;
-    var roomList = this.roomCompleteList;
+    }
     
-    var filteredRoomList = [];
-
-    for(var k = 0; k<roomList.length ; k++){
-        var roomFeatureMatch = 0;
-        var roomFeatures = roomList[k].room_features;
-        for(var j=0; j<featureList.length; j++){
-            if(roomFeatures.indexOf(featureList[j])>= 0){
-                roomFeatureMatch++;
-            }
-        }
-
-        if(roomFeatureMatch == matchCountRequired){
-
-            filteredRoomList.push(roomList[k]);
-        }
-        
-    }
-    this.displayFilteredRoomList(filteredRoomList);*/
-  }
-
-  //Display filtered rooms 
-  this.displayFilteredRoomList = function(filteredRoomList){
-
-    //TODO: This line will be removed once the filter story is complete
-    filteredRoomList = this.roomCompleteList;
-  	$('#rooms-available ul').html("");
-
-    for (var i=0; i<filteredRoomList.length; i++){
 
 
-        var room_status_html ="" ;
-        // display room number in green colour
-        if((filteredRoomList[i].fo_status == "VACANT") && (filteredRoomList[i].room_status == "READY")){
-        	room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+"></span>";
-        }
-        else if((filteredRoomList[i].fo_status == "VACANT") && (filteredRoomList[i].room_status == "NOTREADY")){
-            room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+"></span>"+
-            "<span class='room-status not-ready' data-value='vacant'> vacant </span>";   
-        }
-        else if(filteredRoomList[i].fo_status == "OCCUPIED"){
-        	room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+"></span>"+
-        	"<span class='room-status not-ready' data-value='due out'> due out </span>";    
-        }
-        if(room_status_html != ""){
-          var output = "<li><a id = 'room-list-item' href='#'"+
-            "class='back-button button white submit-value' data-value='' data-transition='nested-view'>"+room_status_html+"</a></li>";
-          $('#rooms-available ul').append(output);      
-        }
-       
+    return filteredRoomList;
+
+  };
+
+  this.roomSatisfyFilters = function(room, filters, operation){
+    var filterMatch = false;
+    for(var j=0; j<filters.length; j++){
+      if(room.room_features.indexOf(filters[j])>= 0){
+        filterMatch = true;
+      }
     }
 
-    that.myDom.find('div.rooms-listing ul li a').on('click',that.updateRoomAssignment);
-
+    return filterMatch;   
   };
 
   this.updateRoomAssignment = function(){
