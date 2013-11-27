@@ -22,6 +22,7 @@
 //= require ./jquery-ui/widgets/jquery.ui.tabs.min
 //= require ./jquery-ui/widgets/jquery.ui.datepicker.min
 //= require ./jquery-ui/jquery.ui.touch-punch.min
+//= require ./jquery.tablesorter.min
 
 // staff app scripts
 //= require_tree ./app/plugins
