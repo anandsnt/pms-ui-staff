@@ -8,7 +8,7 @@ var UpsellRoomDetailsView = function(domRef){
   };
   this.delegateEvents = function(){  
      that.myDom.find('#upsell_level .sortable-list').sortable({
-        connectWith: '#upsell_level .sortable-list',
+        connectWith: '#upsell_level .sortable-list'
        });
   	
   };
