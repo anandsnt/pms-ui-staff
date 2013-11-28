@@ -29,8 +29,9 @@ var HotelDetailsView = function(domRef){
   	    hotelContactPhone = $.trim(that.myDom.find($("#contact-phone")).val()),
   	    hotelCurrency = $.trim(that.myDom.find($("#hotel-currency")).val()),
   	    password = $.trim(that.myDom.find($("#admin-pwd")).val()),
-  	    confirmPassword = $.trim(that.myDom.find($("#admin-confirm-pwd")).val());
-  	    
+  	    confirmPassword = $.trim(that.myDom.find($("#admin-confirm-pwd")).val()),
+  	    zipcode = $.trim(that.myDom.find($("#hotel-zipcode")).val());
+  	    numberOfRooms = $.trim(that.myDom.find($("#hotel-rooms")).val());
   	 
   	 
 	  	 if(hotelName == null || hotelName == ''){
@@ -64,13 +65,15 @@ var HotelDetailsView = function(domRef){
 
         if(escapeNull(password) != "" && escapeNull(confirmPassword) != ""){
 	        	data = {
-			  		name: hotelName,
+			  		hotel_name: hotelName,
 			  		code: hotelCode,
 					street: hotelStreet,
 					city: hotelCity,
 					state: hotelState,
-					country_id: hotelCountry,
+					zipcode: zipcode,
+					country: hotelCountry,
 					phone: hotelPhone,
+					number_of_rooms: numberOfRooms,
 					main_user_first_name: hotelContactFirstName,
 					main_user_last_name: hotelContactLastName,
 					main_user_email:hotelContactEmail,
@@ -87,13 +90,15 @@ var HotelDetailsView = function(domRef){
 	        else 
 	        {
 	        	data = {
-			  		name: hotelName,
+			  		hotel_name: hotelName,
 			  		code: hotelCode,
 					street: hotelStreet,
 					city: hotelCity,
 					state: hotelState,
-					country_id: hotelCountry,
+					zipcode: zipcode,
+					country: hotelCountry,
 					phone: hotelPhone,
+					number_of_rooms: numberOfRooms,
 					main_user_first_name: hotelContactFirstName,
 					main_user_last_name: hotelContactLastName,
 					main_user_email:hotelContactEmail,
@@ -106,14 +111,15 @@ var HotelDetailsView = function(domRef){
 					} ;
 	        }  				
 			
-  	  
+
 	  	$.ajax({
-			type: "POST",
-			url : 'admin/hotels/'+currentHotel,
+			type: "PUT",
+			url : '/admin/hotels/'+currentHotel,
+			dataType: 'json',
 			data :data,
 			success : function(data) {
 				if(data.status == "success"){
-
+alert("succe")
 				}
 			},
 			error : function() {
