@@ -1,4 +1,4 @@
-var HotelDetailsView = function(domRef){
+var HotelListView = function(domRef){
   BaseView.call(this);  
   this.myDom = domRef;  
   var that = this;
@@ -6,8 +6,18 @@ var HotelDetailsView = function(domRef){
   this.pageinit = function(){
     console.log("Reached in pageinit HotelDetailsView");
   };
-  this.delegateEvents = function(){  	
-  	that.myDom.find('#save').on('click', that.saveHotelDetails);  	
+  this.delegateEvents = function(){   		
+  	 that.myDom.find($('#hotels_list_table')).tablesorter();
+  	 that.myDom.find($('.title')).on('click', this.gotoNextPage);
+  };
+  this.gotoNextPage =  function(e){
+  	e.preventDefault();	
+  	sntadminapp.clearReplacingDiv();  	
+  	var href = $(this).attr("href"),
+  		viewParams = {};
+    if(href != undefined){
+  		sntapp.fetchAndRenderView(href, $("#replacing-div"), viewParams);
+    }
   };
   this.saveHotelDetails =  function(){
   	

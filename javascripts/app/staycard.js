@@ -246,21 +246,23 @@ var StayCard = function(viewDom){
     };
     
     this.clickedCheckoutButton = function(){
-      that.goToBillCardView();
+      	that.goToBillCardView();
     };
     
     this.clickedViewBillButton = function(){
-      that.goToBillCardView();
+      	that.goToBillCardView();
+      	// To Display Guest Bill screen in detailed mode
+      	$("#bills #bill1 #bill1-total-fees a").trigger("click");
     };
     this.clickedTotalStayCost = function(){
     	that.goToBillCardView();
     }
     this.goToBillCardView = function (){
-      var viewURL = "staff/reservation/bill_card";
-      var viewDom = $("#view-nested-third");
-      var params = {"reservation_id": that.reservation_id};
-      var nextViewParams = {"showanimation": true, "current-view" : "staycard" };
-      sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
+		var viewURL = "staff/reservation/bill_card";
+		var viewDom = $("#view-nested-third");
+		var params = {"reservation_id": that.reservation_id};
+		var nextViewParams = {"showanimation": true, "current-view" : "staycard" };
+		sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
     };
 };
 

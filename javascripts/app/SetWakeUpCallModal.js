@@ -10,7 +10,7 @@ var SetWakeUpCallModal = function() {
 		that.myDom.find('#set-wake-up-call #save-wakeup-call').on('click', that.saveWakeUpCall);
 		that.myDom.find('.switch-button#wakeupDate').on('click', that.onOffSwitchWakeupDate);
 		that.myDom.find('select.styled#wake-up').on('change', that.changedWakeUpTime);
-		
+		that.myDom.find('#set-wake-up-call #delete-wakeup-call').on('click', that.deleteWakeUpCall);
 	};
 
 	this.modalInit = function() {
@@ -19,8 +19,8 @@ var SetWakeUpCallModal = function() {
 
 	this.saveWakeUpCall = function() {
 
-		var wakeUpTime = $('#set-wake-up-call #wakeup-time').attr('value');
-		var wakeUpDay = $('#set-wake-up-call #wakeup-day').text();
+		var wakeUpTime = that.myDom.find('#set-wake-up-call #wakeup-time').attr('value');
+		var wakeUpDay = that.myDom.find('#set-wake-up-call #wakeup-day').text();
 		var wakeUpDaySplit = wakeUpDay.split(" ");
 
 		var data = {
@@ -28,6 +28,7 @@ var SetWakeUpCallModal = function() {
 			"wake_up_time" : wakeUpTime,
 			"day" : wakeUpDaySplit[0]
 		};
+		
 		$.ajax({
 			type : "POST",
 			url : 'wakeup/set_wakeup_calls',
@@ -72,15 +73,41 @@ var SetWakeUpCallModal = function() {
 		var selectedOption = $(this).find('option:selected').val();
 
 		if(selectedOption == ""){
-			$("#save-wakeup-call").removeClass("green");
-			$("#save-wakeup-call").attr("disabled", true);
-		} else {
-			$("#save-wakeup-call").addClass("green");
-			$("#save-wakeup-call").attr("disabled", false);
+			that.myDom.find("#save-wakeup-call").removeClass("green");
+			that.myDom.find("#delete-wakeup-call").removeClass("red");
+			that.myDom.find("#save-wakeup-call").attr("disabled", true);
+			that.myDom.find("#delete-wakeup-call").attr("disabled", true);
 		}
-		$("#set-wake-up-call #wakeup-time").html("");
-		$("#set-wake-up-call #wakeup-time").html(selectedOption);
-		$("#set-wake-up-call #wakeup-time").attr("value", selectedOption);
+		else {
+			that.myDom.find("#save-wakeup-call").addClass("green");
+			that.myDom.find("#delete-wakeup-call").addClass("red");
+			that.myDom.find("#save-wakeup-call").attr("disabled", false);
+			that.myDom.find("#delete-wakeup-call").attr("disabled", false);
+		}
+		that.myDom.find("#set-wake-up-call #wakeup-time").html("");
+		that.myDom.find("#set-wake-up-call #wakeup-time").html(selectedOption);
+		that.myDom.find("#set-wake-up-call #wakeup-time").attr("value", selectedOption);
 	};
-
+	
+    this.deleteWakeUpCall = function() {
+    	
+    	var data = {
+			"reservation_id" : that.reservationId,
+		};
+		$.ajax({
+			type : "POST",
+			url : 'wakeup/set_wakeup_calls',
+			data : data,
+			success : function(data) {
+				if (data.status == "success") {
+					that.hide();
+					$("#reservation_card_wake_up_time").html("Not Set");
+				}
+			},
+			error : function() {
+				alert("Sorry, not there yet!");
+			}
+		});
+    	
+    };
 };
