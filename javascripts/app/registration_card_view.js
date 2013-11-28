@@ -41,6 +41,14 @@ var RegistrationCardView = function(viewDom){
   	that.myDom.find('#back-to-staycard').on('click',that.gotoStayCard);
   };
   
+  this.reloadBillCardPage = function(){
+  	var viewURL = "staff/reservation/bill_card";
+	var viewDom = $("#view-nested-third");
+	var params = {"reservation_id": that.reservation_id};
+	var nextViewParams = {"showanimation": false, "current-view" : "staycard" };
+	sntapp.fetchAndRenderView(viewURL, viewDom, params, false, nextViewParams );
+  };
+  
   this.completeCheckin = function(e){
   	
   	e.stopPropagation();
