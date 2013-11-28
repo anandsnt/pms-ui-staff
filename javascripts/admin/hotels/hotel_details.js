@@ -74,15 +74,15 @@ var HotelDetailsView = function(domRef){
 					country: hotelCountry,
 					phone: hotelPhone,
 					number_of_rooms: numberOfRooms,
-					main_user_first_name: hotelContactFirstName,
-					main_user_last_name: hotelContactLastName,
-					main_user_email:hotelContactEmail,
-					main_user_phone: hotelContactPhone,			
-					checkin_hour: hotelCheckinHour,
-					checkin_min: hotelCheckinMin,
-					checkout_hour: hotelCheckoutHour,
-					checkout_min: hotelCheckoutMinutes,
-					hotel_currency: hotelCurrency,
+					contact_first_name: hotelContactFirstName,
+					contact_last_name: hotelContactLastName,
+					contact_email:hotelContactEmail,
+					contact_phone: hotelContactPhone,			
+					check_in_hour: hotelCheckinHour,
+					check_in_min: hotelCheckinMin,
+					check_out_hour: hotelCheckoutHour,
+					check_out_min: hotelCheckoutMinutes,
+					default_currency: hotelCurrency,
 					admin_password:password,
 					admin_password_confirmation:confirmPassword
 					} ;
@@ -99,15 +99,15 @@ var HotelDetailsView = function(domRef){
 					country: hotelCountry,
 					phone: hotelPhone,
 					number_of_rooms: numberOfRooms,
-					main_user_first_name: hotelContactFirstName,
-					main_user_last_name: hotelContactLastName,
-					main_user_email:hotelContactEmail,
-					main_user_phone: hotelContactPhone,			
-					checkin_hour: hotelCheckinHour,
-					checkin_min: hotelCheckinMin,
-					checkout_hour: hotelCheckoutHour,
-					checkout_min: hotelCheckoutMinutes,
-					hotel_currency: hotelCurrency
+					contact_first_name: hotelContactFirstName,
+					contact_last_name: hotelContactLastName,
+					contact_email:hotelContactEmail,
+					contact_phone: hotelContactPhone,			
+					check_in_hour: hotelCheckinHour,
+					check_in_min: hotelCheckinMin,
+					check_out_hour: hotelCheckoutHour,
+					check_out_min: hotelCheckoutMinutes,
+					default_currency: hotelCurrency
 					} ;
 	        }  				
 			
@@ -119,7 +119,7 @@ var HotelDetailsView = function(domRef){
 			data :data,
 			success : function(data) {
 				if(data.status == "success"){
-alert("succe")
+					console.log("Saved Successfully");
 				}
 			},
 			error : function() {
