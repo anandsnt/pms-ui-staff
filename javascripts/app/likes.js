@@ -44,7 +44,7 @@ var LikesView = function(domRef){
 			$preference["value"] = $('#newspaper').val();
 			jsonObj['preference'].push($preference);
 			$preference = {};
-			$preference["type"] = "ROOMTYPE";
+			$preference["type"] = "ROOM TYPE";
 			$preference["value"] = $('#roomtype').val();
 			jsonObj['preference'].push($preference);
 			for ( i = 0; i < $totalPreferences; i++) {
@@ -58,7 +58,7 @@ var LikesView = function(domRef){
 				$feature = {};
 				if ($('#feat_' + j).is(':checked')) {
 					$preference = {};
-					$preference["type"] = "ROOMFEATURE";
+					$preference["type"] = "ROOM FEATURE";
 					$preference["value"] = $('#feat_' + j).val();
 					jsonObj['preference'].push($preference);
 				}
