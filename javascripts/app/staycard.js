@@ -252,7 +252,7 @@ var StayCard = function(viewDom){
     this.clickedViewBillButton = function(){
       	that.goToBillCardView();
       	// To Display Guest Bill screen in detailed mode
-      	$("#bills #bill1 #bill1-total-fees a").trigger("click");
+      	$("#bills #bill1 #bill1-total-fees #bill1-fees").removeClass("hidden");
     };
     this.clickedTotalStayCost = function(){
     	that.goToBillCardView();
