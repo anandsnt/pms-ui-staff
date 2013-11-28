@@ -45,7 +45,6 @@ var RoomAssignmentView = function(viewDom){
         success: function(response){
           if(response.status == "success"){
             that.roomCompleteList = response.data;
-            console.log(JSON.stringify(that.roomCompleteList));
             that.applyFilters();
           }else if(response.status == "failure"){
             that.roomCompleteList = [];
@@ -151,7 +150,9 @@ var RoomAssignmentView = function(viewDom){
     //include dueout rooms (filter by only READY status)
     else if(includeDueout){
       for (var i = 0; i< this.roomCompleteList.length; i++){
-        if(this.roomCompleteList[i].is_dueout === "true"){
+        if((this.roomCompleteList[i].is_dueout === "true") ||( 
+          (this.roomCompleteList[i].room_status === "READY") &&
+         (this.roomCompleteList[i].fo_status === "VACANT"))){
           filteredRoomList.push(this.roomCompleteList[i]);
         }
       }
