@@ -26,65 +26,100 @@ var HotelDetailsView = function(domRef){
   	    hotelContactFirstName = $.trim(that.myDom.find($("#contact-first-name")).val()),
   	    hotelContactLastName = $.trim(that.myDom.find($("#contact-last-name")).val()),
   	    hotelContactEmail = $.trim(that.myDom.find($("#contact-email")).val()),
-  	    hotelContactPhone = $.trim(that.myDom.find($("#contact-phone")).val());
-  	    hotelCurrency = $.trim(that.myDom.find($("#hotel-currency")).val());
-  	    
-  	 if(hotelName == null || hotelName == ''){
-  	 	alert("Hotel name is required");
-  	 	return  false;
-  	 }
-  	 if(hotelCode == null || hotelCode == ''){
-  	 	alert("Hotel code is required");
-  	 	return  false;
-  	 } 
-  	 if(hotelStreet == null || hotelStreet == ''){
-  	 	alert("Hotel street is required");
-  	 	return  false;
-  	 } 
-  	 if(hotelCity == null || hotelCity == ''){
-  	 	alert("Hotel city is required");
-  	 	return  false;
-  	 } 
-  	 if(hotelCountry == null || hotelCountry == ''){
-  	 	alert("Hotel country is required");
-  	 	return  false;
-  	 } 
-  	 if(hotelPhone == null || hotelPhone == ''){
-  	 	alert("Hotel phone is required");
-  	 	return  false;
-  	 } 
-  	 if(hotelCurrency == null || hotelCurrency == ''){
-  	 	alert("Hotel currency is required");
-  	 	return  false;
-  	 } 	  	
+  	    hotelContactPhone = $.trim(that.myDom.find($("#contact-phone")).val()),
+  	    hotelCurrency = $.trim(that.myDom.find($("#hotel-currency")).val()),
+  	    password = $.trim(that.myDom.find($("#admin-pwd")).val()),
+  	    confirmPassword = $.trim(that.myDom.find($("#admin-confirm-pwd")).val()),
+  	    zipcode = $.trim(that.myDom.find($("#hotel-zipcode")).val());
+  	    numberOfRooms = $.trim(that.myDom.find($("#hotel-rooms")).val());
+  	 
+  	 
+	  	 if(hotelName == null || hotelName == ''){
+	  	 	alert("Hotel name is required");
+	  	 	return  false;
+	  	 }
+	  	 if(hotelCode == null || hotelCode == ''){
+	  	 	alert("Hotel code is required");
+	  	 	return  false;
+	  	 } 
+	  	 if(hotelStreet == null || hotelStreet == ''){
+	  	 	alert("Hotel street is required");
+	  	 	return  false;
+	  	 } 
+	  	 if(hotelCity == null || hotelCity == ''){
+	  	 	alert("Hotel city is required");
+	  	 	return  false;
+	  	 } 
+	  	 if(hotelCountry == null || hotelCountry == ''){
+	  	 	alert("Hotel country is required");
+	  	 	return  false;
+	  	 } 
+	  	 if(hotelPhone == null || hotelPhone == ''){
+	  	 	alert("Hotel phone is required");
+	  	 	return  false;
+	  	 } 
+	  	 if(hotelCurrency == null || hotelCurrency == ''){
+	  	 	alert("Hotel currency is required");
+	  	 	return  false;
+	  	 } 	  	
 
-	  	data = {
-	  		name: hotelName,
-	  		code: hotelCode,
-			street: hotelStreet,
-			city: hotelCity,
-			state: hotelState,
-			country_id: hotelCountry,
-			phone: hotelPhone,
-			main_user_first_name: hotelContactFirstName,
-			main_user_last_name: hotelContactLastName,
-			main_user_email:hotelContactEmail,
-			main_user_phone: hotelContactPhone,			
-			checkin_hour: hotelCheckinHour,
-			checkin_min: hotelCheckinMin,
-			checkout_hour: hotelCheckoutHour,
-			checkout_min: hotelCheckoutMinutes,
-			hotel_currency: hotelCurrency
-			} ;			
+        if(escapeNull(password) != "" && escapeNull(confirmPassword) != ""){
+	        	data = {
+			  		hotel_name: hotelName,
+			  		code: hotelCode,
+					street: hotelStreet,
+					city: hotelCity,
+					state: hotelState,
+					zipcode: zipcode,
+					country: hotelCountry,
+					phone: hotelPhone,
+					number_of_rooms: numberOfRooms,
+					contact_first_name: hotelContactFirstName,
+					contact_last_name: hotelContactLastName,
+					contact_email:hotelContactEmail,
+					contact_phone: hotelContactPhone,			
+					check_in_hour: hotelCheckinHour,
+					check_in_min: hotelCheckinMin,
+					check_out_hour: hotelCheckoutHour,
+					check_out_min: hotelCheckoutMinutes,
+					default_currency: hotelCurrency,
+					admin_password:password,
+					admin_password_confirmation:confirmPassword
+					} ;
+	        }
+	        else 
+	        {
+	        	data = {
+			  		hotel_name: hotelName,
+			  		code: hotelCode,
+					street: hotelStreet,
+					city: hotelCity,
+					state: hotelState,
+					zipcode: zipcode,
+					country: hotelCountry,
+					phone: hotelPhone,
+					number_of_rooms: numberOfRooms,
+					contact_first_name: hotelContactFirstName,
+					contact_last_name: hotelContactLastName,
+					contact_email:hotelContactEmail,
+					contact_phone: hotelContactPhone,			
+					check_in_hour: hotelCheckinHour,
+					check_in_min: hotelCheckinMin,
+					check_out_hour: hotelCheckoutHour,
+					check_out_min: hotelCheckoutMinutes,
+					default_currency: hotelCurrency
+					} ;
+	        }  				
 			
-  	  
+
 	  	$.ajax({
-			type: "POST",
-			url : 'admin/hotels/'+currentHotel,
+			type: "PUT",
+			url : '/admin/hotels/'+currentHotel,
+			dataType: 'json',
 			data :data,
 			success : function(data) {
 				if(data.status == "success"){
-
+					console.log("Saved Successfully");
 				}
 			},
 			error : function() {
