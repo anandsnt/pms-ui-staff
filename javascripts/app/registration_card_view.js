@@ -21,6 +21,18 @@ var RegistrationCardView = function(viewDom){
 	$("#signature").on('mouseout',function(){
 		viewScroll.enable();
 	});
+	
+	var reservation_status = that.myDom.find("#registration-content").attr("data-reservation-status");
+	
+	if(this.viewParams.clickedButton == "ViewBill button"){
+		// To Display Guest Bill screen in detailed mode via ViewBillButton click.
+      	that.myDom.find("#bill1-fees").removeClass("hidden");
+	}
+	else if(this.viewParams.clickedButton == "CheckoutButton" || reservation_status == "CHECKING_OUT"){
+		// To show 'COMPLETE CHECK OUT' button when Reservation is DUE OUT,regardless of how it has been accessed.
+		// Always show 'COMPLETE CHECK OUT' button when click "CheckoutButton" in stay card.
+      	that.myDom.find("#complete-checkout-button").removeClass("hidden");
+	}
   };
   
   this.executeLoadingAnimation = function(){
@@ -39,6 +51,14 @@ var RegistrationCardView = function(viewDom){
   	that.myDom.find('#checkin-button').on('click', that.completeCheckin);
   	that.myDom.find('#clear-signature').on('click',that.clearSignature);
   	that.myDom.find('#back-to-staycard').on('click',that.gotoStayCard);
+  };
+  
+  this.reloadBillCardPage = function(){
+  	var viewURL = "staff/reservation/bill_card";
+	var viewDom = $("#view-nested-third");
+	var params = {"reservation_id": that.reservation_id};
+	var nextViewParams = {"showanimation": false, "current-view" : "staycard" };
+	sntapp.fetchAndRenderView(viewURL, viewDom, params, false, nextViewParams );
   };
   
   this.completeCheckin = function(e){
