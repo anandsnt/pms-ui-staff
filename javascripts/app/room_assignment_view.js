@@ -101,7 +101,9 @@ var RoomAssignmentView = function(viewDom){
   this.handleMultipleSelection = function(e){
     var multiplesAllowed = $(e.currentTarget).closest( ".radio-check" ).attr('data-multiples-allowed');
     if(multiplesAllowed === "false"){
-      $(e.currentTarget).find('input').attr("checked", false); 
+      $(e.currentTarget).siblings().removeClass("checked");
+      $(e.currentTarget).siblings().find(".icon-checkbox").removeClass("checked");
+      $(e.currentTarget).siblings().find("input").attr("checked", false);
     }
 
   };
