@@ -112,7 +112,7 @@ var StayCard = function(viewDom){
       		that.goToRoomUpgradeView();
     }
     else{
-    		that.goToBillCardView();
+    		that.goToBillCardView("CheckinButton");
     }
   };
 
@@ -246,23 +246,21 @@ var StayCard = function(viewDom){
     };
     
     this.clickedCheckoutButton = function(){
-      	that.goToBillCardView();
+      	that.goToBillCardView("CheckoutButton");
     };
     
     this.clickedViewBillButton = function(){
-      	that.goToBillCardView();
-      	// To Display Guest Bill screen in detailed mode
-      	$("#bills #bill1 #bill1-total-fees #bill1-fees").removeClass("hidden");
-      	$(".complete-registration #checkout-button").addClass("hidden");
+      	that.goToBillCardView("ViewBillButton");
     };
+    
     this.clickedTotalStayCost = function(){
-    	that.goToBillCardView();
-    }
-    this.goToBillCardView = function (){
+    	that.goToBillCardView("TotalStayCost");
+    };
+    this.goToBillCardView = function (clickedButton){
 		var viewURL = "staff/reservation/bill_card";
 		var viewDom = $("#view-nested-third");
 		var params = {"reservation_id": that.reservation_id};
-		var nextViewParams = {"showanimation": true, "current-view" : "staycard" };
+		var nextViewParams = {"showanimation": true, "current-view" : "staycard","clickedButton":clickedButton };
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
     };
 };
