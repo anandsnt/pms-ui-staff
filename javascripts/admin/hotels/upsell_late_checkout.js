@@ -7,10 +7,10 @@ var UpsellLateCheckoutView = function(domRef){
   };
    this.delegateEvents = function(){  
 	   that.myDom.find('#save').on('click', that.saveHotelDetails);
-	   that.myDom.find('#cancel').on('click', that.cancelClick); 
+	   that.myDom.find('#cancel').on('click', that.gotoPreviousPage); 
   };
-  this.cancelClick = function() {
-	  $("#replacing-div").html("");
+  this.gotoPreviousPage = function() {
+	  $("#replacing-div-first").html("");
 	  $(that.viewParams['backDom']).show();	  
   };
   this.saveHotelDetails =  function(){
@@ -53,7 +53,7 @@ var UpsellLateCheckoutView = function(domRef){
 		async:false,
 		success : function(data) {					
 			if (data.status == "success") {
-
+				that.gotoPreviousPage();
 			}
 		},
 		error : function() {		

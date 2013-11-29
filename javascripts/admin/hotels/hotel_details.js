@@ -11,6 +11,7 @@ var HotelDetailsView = function(domRef){
   	that.myDom.find('#save').on('click', that.saveHotelDetails); 
   	that.myDom.find('#cancel').on('click', that.cancelClick); 
   	that.myDom.find('#save_new_hotel').on('click', that.addNewHotel); 
+
     if(that.currentView == "snt-admin-view"){
     	//Since we are using the same page for hotel admin and snt admin. Some fields are non editable for hotel admin
     	$('input[readonly="readonly"]').removeAttr("readonly");
@@ -20,12 +21,13 @@ var HotelDetailsView = function(domRef){
   };
   
   this.cancelClick = function() {
-	  $("#replacing-div").html("");
+	  if($("#replacing-div-second").html("") != "")
+		  $("#replacing-div-second").html("");	 
+	  else
+		  $("#replacing-div-first").html("");
 	  $(that.viewParams['backDom']).show();	  
   };
-  
 
-  //Update hotel details
   this.saveHotelDetails =  function(){
   	
   	var currentHotel = $(".currenthotel").attr("id");

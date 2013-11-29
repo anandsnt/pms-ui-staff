@@ -17,7 +17,7 @@ var HotelAdminView = function(domRef){
   };
   
   this.clearReplacingDiv = function() {	  
-	  $("#replacing-div").html("");
+	  $("#replacing-div-first").html("");
 	  $($(this).attr("href")).show();
   };
   this.appendNewPage = function(event){	
@@ -32,7 +32,7 @@ var HotelAdminView = function(domRef){
 		  var viewParams = {'backDom': backDom};
 		  $(this).parents('section:eq(0)').hide();
 		  //viewURL, viewDom, params, shouldShowLoader, nextViewParams
-		  sntapp.fetchAndRenderView(url, $("#replacing-div"), {}, false, viewParams);
+		  sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, false, viewParams);
 	  }
   };
   this.setNewHotel = function(){
