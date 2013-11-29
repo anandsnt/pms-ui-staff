@@ -15,12 +15,24 @@ var RegistrationCardView = function(viewDom){
   	that.myDom.find("#signature").jSignature({height:130, width:width, lineWidth :1});
 	that.myDom.find("#signature canvas").addClass('pad');
 	 
-	$("#signature").on('mouseover',function(){
+	that.myDom.find("#signature").on('mouseover',function(){
 		viewScroll.disable();
 	});	
-	$("#signature").on('mouseout',function(){
+	that.myDom.find("#signature").on('mouseout',function(){
 		viewScroll.enable();
 	});
+	
+	var reservation_status = that.myDom.find("#registration-content").attr("data-reservation-status");
+	
+	if(this.viewParams.clickedButton == "ViewBillButton"){
+		// To Display Guest Bill screen in detailed mode via ViewBillButton click.
+      	that.myDom.find("#bill1-fees").removeClass("hidden");
+	}
+	if(this.viewParams.clickedButton == "CheckoutButton" || reservation_status == "CHECKING_OUT"){
+		// To show 'COMPLETE CHECK OUT' button when Reservation is DUE OUT,regardless of how it has been accessed.
+		// Always show 'COMPLETE CHECK OUT' button when click "CheckoutButton" in stay card.
+      	that.myDom.find("#complete-checkout-button").removeClass("hidden");
+	}
   };
   
   this.executeLoadingAnimation = function(){

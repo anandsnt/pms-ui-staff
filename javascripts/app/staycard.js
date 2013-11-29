@@ -112,7 +112,7 @@ var StayCard = function(viewDom){
       		that.goToRoomUpgradeView();
     }
     else{
-    		that.goToBillCardView();
+    		that.goToBillCardView("CheckinButton");
     }
   };
 
@@ -135,7 +135,7 @@ var StayCard = function(viewDom){
   	$.ajax({
       	type : 'POST',
       	url : "reservation/add_newspaper_preference",
-      	data : {"reservation_id": that.reservation_id, "selected_newspaper" :newspaperValue } ,
+      	data : {"reservation_id": tha27t.reservation_id, "selected_newspaper" :newspaperValue } ,
       	success : function(data) {
           	if(data.status == "success"){
           	}
@@ -246,23 +246,22 @@ var StayCard = function(viewDom){
     };
     
     this.clickedCheckoutButton = function(){
-      	that.goToBillCardView();
+      	that.goToBillCardView("CheckoutButton");
     };
     
-    this.clickedViewBillButton = function(){
-      	that.goToBillCardView();
-      	// To Display Guest Bill screen in detailed mode
-      	$("#bills #bill1 #bill1-total-fees #bill1-fees").removeClass("hidden");
-      	$(".complete-registration #checkout-button").addClass("hidden");
+    this.clickedViewBillButton = function(e){
+      	that.goToBillCardView("ViewBillButton");
     };
+    
     this.clickedTotalStayCost = function(){
-    	that.goToBillCardView();
-    }
-    this.goToBillCardView = function (){
-		var viewURL = "staff/reservation/bill_card";
+    	that.goToBillCardView("TotalStayCost");
+    };
+    
+    this.goToBillCardView = function (clickedButton){
+		var viewURL = "/ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true";
 		var viewDom = $("#view-nested-third");
 		var params = {"reservation_id": that.reservation_id};
-		var nextViewParams = {"showanimation": true, "current-view" : "staycard" };
+		var nextViewParams = {"showanimation": true, "current-view" : "staycard","clickedButton":clickedButton };
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
     };
 };
