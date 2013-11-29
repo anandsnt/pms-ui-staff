@@ -49,7 +49,7 @@ var HotelAdminView = function(domRef){
   };
   this.appendNewPage = function(event){
 	  var href = $(this).find("a").eq(0).attr("href");
-	  var callClass = $(this).find("a").eq(0).attr("data-name");
+	  
 	  if(href != undefined){
 		  var url = href;
 	  	  event.preventDefault();		  
