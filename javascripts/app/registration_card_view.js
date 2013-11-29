@@ -51,6 +51,7 @@ var RegistrationCardView = function(viewDom){
   	that.myDom.find('#checkin-button').on('click', that.completeCheckin);
   	that.myDom.find('#clear-signature').on('click',that.clearSignature);
   	that.myDom.find('#back-to-staycard').on('click',that.gotoStayCard);
+  	that.myDom.find('#pay-button').on('click',that.payButtonClicked);
   };
   
   this.reloadBillCardPage = function(){
@@ -122,5 +123,15 @@ var RegistrationCardView = function(viewDom){
 	$($loader).prependTo('body').show();  
 	changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);   
 
+  };
+  
+  this.payButtonClicked = function(){
+  	
+  	console.log("payButtonClicked");
+  	
+  	var billCardPaymentModal = new BillCardPaymentModal();
+  	billCardPaymentModal.initialize();
+  	
+  	
   };
 };
