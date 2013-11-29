@@ -9,7 +9,7 @@ var HotelDetailsView = function(domRef){
   };
   this.delegateEvents = function(){  	
   	that.myDom.find('#save').on('click', that.saveHotelDetails); 
-  	that.myDom.find('#cancel').on('click', that.cancelClick); 
+  	that.myDom.find('#cancel').on('click', that.gotoPreviousPage); 
   	that.myDom.find('#save_new_hotel').on('click', that.addNewHotel); 
 
     if(that.currentView == "snt-admin-view"){
@@ -20,7 +20,7 @@ var HotelDetailsView = function(domRef){
     }
   };
   
-  this.cancelClick = function() {
+  this.gotoPreviousPage = function() {
 	  if($("#replacing-div-second").html() != ""){
 		  $("#replacing-div-second").html("");	 
 	  }
@@ -156,6 +156,7 @@ var HotelDetailsView = function(domRef){
 			success : function(data) {
 				if(data.status == "success"){
 					console.log("Saved Successfully");
+					that.gotoPreviousPage();
 				}
 			},
 			error : function() {
