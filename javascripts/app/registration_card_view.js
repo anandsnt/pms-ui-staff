@@ -124,8 +124,11 @@ var RegistrationCardView = function(viewDom){
 	changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);   
   };
   
-  this.clickedCompleteCheckout = function(){
-  	console.log("clickedCompleteCheckout");
+  this.clickedCompleteCheckout = function(e){
+  	e.stopPropagation();
+  	e.preventDefault();
+  	e.stopImmediatePropagation();
+  	
   	var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED OUT";
 	var failureModal = new FailureModal();
 	failureModal.initialize();
