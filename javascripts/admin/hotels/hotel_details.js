@@ -21,8 +21,10 @@ var HotelDetailsView = function(domRef){
   };
   
   this.cancelClick = function() {
-	  if($("#replacing-div-second").html("") != "")
+	  if($("#replacing-div-second").html() != ""){
+		  console.log("test");
 		  $("#replacing-div-second").html("");	 
+	  }
 	  else
 		  $("#replacing-div-first").html("");
 	  $(that.viewParams['backDom']).show();	  
