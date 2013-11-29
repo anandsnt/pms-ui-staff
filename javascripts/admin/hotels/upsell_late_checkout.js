@@ -42,7 +42,7 @@ var UpsellLateCheckoutView = function(domRef){
 	  
 	  $.ajax({
 		type : "POST",
-		url : 'http://localhost:3000/staff/hotel/1/update_late_checkout_setup.json',	
+		url : '/staff/hotel/update_late_checkout_setup',	
 		data : postParams,
 		dataType : 'json',
 		async:false,
