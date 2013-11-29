@@ -51,6 +51,7 @@ var RegistrationCardView = function(viewDom){
   	that.myDom.find('#checkin-button').on('click', that.completeCheckin);
   	that.myDom.find('#clear-signature').on('click',that.clearSignature);
   	that.myDom.find('#back-to-staycard').on('click',that.gotoStayCard);
+  	that.myDom.find('#complete-checkout-button').on('click',that.clickedCompleteCheckout);
   };
   
   this.reloadBillCardPage = function(){
@@ -121,6 +122,14 @@ var RegistrationCardView = function(viewDom){
 	var $loader = '<div id="loading" />';
 	$($loader).prependTo('body').show();  
 	changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);   
-
+  };
+  
+  this.clickedCompleteCheckout = function(){
+  	console.log("clickedCompleteCheckout");
+  	var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED OUT";
+	var failureModal = new FailureModal();
+	failureModal.initialize();
+	failureModal.params = {"message": message};
+  	
   };
 };
