@@ -42,7 +42,7 @@ var app = function(){
             data: params,
             url: viewURL,
             async: false,
-            success: function(data) {
+            success: function(data) {      
                 that.renderView(data, viewDom, nextViewParams);    
             },
             error: function(){
