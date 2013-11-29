@@ -15,19 +15,24 @@ var HotelAdminView = function(domRef){
   	that.myDom.find('li.ui-state-default a.ui-tabs-anchor').on('click', that.clearReplacingDiv);
   	
   };
+  
   this.clearReplacingDiv = function() {	  
 	  $("#replacing-div").html("");
 	  $($(this).attr("href")).show();
   };
-  this.appendNewPage = function(event){
+  this.appendNewPage = function(event){	
+	  var backDom = $(this).parents("section:eq(0)");
+	  if(backDom == undefined) {
+		  
+	  }
 	  var href = $(this).find("a").eq(0).attr("href");
 	  if(href != undefined){
 		  var url = href;
 	  	  event.preventDefault();		  
-		  var viewParams = {};
+		  var viewParams = {'backDom': backDom};
 		  $(this).parents('section:eq(0)').hide();
 		  //viewURL, viewDom, params, shouldShowLoader, nextViewParams
-		  sntapp.fetchAndRenderView(url, $("#replacing-div"), viewParams, false, {});
+		  sntapp.fetchAndRenderView(url, $("#replacing-div"), {}, false, viewParams);
 	  }
   };
   this.setNewHotel = function(){
@@ -57,21 +62,6 @@ var HotelAdminView = function(domRef){
   this.bookMarkRemoved = function(bookMarkId){
   	var delegateBookMark = new DelegateBookMark();
   	delegateBookMark.removeBookMark(bookMarkId);
-  };
-  this.clearReplacingDiv = function() {	  
-	  $("#replacing-div").html("");
-	  $($(this).attr("href")).show();
-  };
-  this.appendNewPage = function(event){
-	  var href = $(this).find("a").eq(0).attr("href");
-	  var callClass = $(this).find("a").eq(0).attr("data-name");
-	  if(href != undefined){
-		  var url = href;
-	  	  event.preventDefault();		  
-		  var viewParams = {};
-		  $(this).parents('section:eq(0)').hide();
-		  sntapp.fetchAndRenderView(url, $("#replacing-div"), viewParams);
-	  }
   };
   
 };

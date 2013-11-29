@@ -7,8 +7,15 @@ var HotelDetailsView = function(domRef){
     console.log("Reached in pageinit HotelDetailsView");
   };
   this.delegateEvents = function(){  	
-  	that.myDom.find('#save').on('click', that.saveHotelDetails);  	
+  	that.myDom.find('#save').on('click', that.saveHotelDetails); 
+  	that.myDom.find('#cancel').on('click', that.cancelClick); 
   };
+  
+  this.cancelClick = function() {
+	  $("#replacing-div").html("");
+	  $(that.viewParams['backDom']).show();	  
+  };
+  
   this.saveHotelDetails =  function(){
   	
   	var currentHotel = $(".currenthotel").attr("id");

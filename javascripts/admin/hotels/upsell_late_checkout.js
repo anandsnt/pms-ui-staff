@@ -6,7 +6,12 @@ var UpsellLateCheckoutView = function(domRef){
   this.pageinit = function(){
   };
    this.delegateEvents = function(){  
-	   that.myDom.find('#save').on('click', that.saveHotelDetails); 
+	   that.myDom.find('#save').on('click', that.saveHotelDetails);
+	   that.myDom.find('#cancel').on('click', that.cancelClick); 
+  };
+  this.cancelClick = function() {
+	  $("#replacing-div").html("");
+	  $(that.viewParams['backDom']).show();	  
   };
   this.saveHotelDetails =  function(){
 	  var extended_checkout = new Array();
