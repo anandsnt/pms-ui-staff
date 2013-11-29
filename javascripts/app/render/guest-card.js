@@ -45,9 +45,6 @@ var setUpGuestcard = function(viewDom) {
 
 	$(window).resize(function() { $maxHeight = $(window).height(); });
 
-	// Hide guest card content until it's resized
-	viewDom.find($('#guest-card-header .switch-button, #guest-card-content')).hide();
-
 	// Guest card tabs
 	viewDom.find($('#guest-card-content')).tabs({
 		create : function(event, ui) {
