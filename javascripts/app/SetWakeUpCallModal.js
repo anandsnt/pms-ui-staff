@@ -16,7 +16,7 @@ var SetWakeUpCallModal = function() {
 	this.modalInit = function() {
 
 	};
-
+    //function to save wake up call
 	this.saveWakeUpCall = function() {
 
 		var wakeUpTime = that.myDom.find('#set-wake-up-call #wakeup-time').attr('value');
@@ -45,7 +45,7 @@ var SetWakeUpCallModal = function() {
 		});
 
 	};
-
+    
 	this.onOffSwitchWakeupDate = function() {
 		var onOffSwitch = '.switch-button#wakeupDate';
 		$(onOffSwitch).each(function() {
@@ -68,7 +68,7 @@ var SetWakeUpCallModal = function() {
 		});
 
 	};
-
+    // Function to enable/disable buttons
 	this.changedWakeUpTime = function() {
 		var selectedOption = $(this).find('option:selected').val();
 
@@ -88,7 +88,7 @@ var SetWakeUpCallModal = function() {
 		that.myDom.find("#set-wake-up-call #wakeup-time").html(selectedOption);
 		that.myDom.find("#set-wake-up-call #wakeup-time").attr("value", selectedOption);
 	};
-	
+	// function to delete wake up call
     this.deleteWakeUpCall = function() {
     	
     	var data = {
