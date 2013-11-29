@@ -1,7 +1,8 @@
 var BillCardPaymentModal = function(){
   	BaseModal.call(this);
   	var that = this;
-  	this.url = "http://localhost:3000/ui/show?haml_file=modals/billCardPayment&is_partial=true";
+  	this.reservation_id = getReservationId();
+  	this.url = "reservation/"+this.reservation_id+"/get_pay_bill_details";
   	this.delegateEvents = function(){
 		that.myDom.find("#submit-payment").on("click",that.clickedSubmitPayment);
 	};
