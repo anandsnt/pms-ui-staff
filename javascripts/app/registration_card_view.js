@@ -24,7 +24,7 @@ var RegistrationCardView = function(viewDom){
 	
 	var reservation_status = that.myDom.find("#registration-content").attr("data-reservation-status");
 	
-	if(this.viewParams.clickedButton == "ViewBill button"){
+	if(this.viewParams.clickedButton == "ViewBillButton"){
 		// To Display Guest Bill screen in detailed mode via ViewBillButton click.
       	that.myDom.find("#bill1-fees").removeClass("hidden");
 	}
