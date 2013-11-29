@@ -126,12 +126,10 @@ var RegistrationCardView = function(viewDom){
   };
   
   this.payButtonClicked = function(){
-  	
-  	console.log("payButtonClicked");
-  	
+  	var bill_number = that.myDom.find("#pay-button").attr('data-bill-number');
   	var billCardPaymentModal = new BillCardPaymentModal();
   	billCardPaymentModal.initialize();
-  	
-  	
+  	billCardPaymentModal.params = {"bill_number":bill_number};
   };
+  
 };
