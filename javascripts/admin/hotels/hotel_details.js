@@ -13,6 +13,8 @@ var HotelDetailsView = function(domRef){
     if(that.currentView == "snt-admin-view"){
     	//Since we are using the same page for hotel admin and snt admin. Some fields are non editable for hotel admin
     	$('input[readonly="readonly"]').removeAttr("readonly");
+    	//Since these values are calculated using gem file
+    	$('#hotel-longitude, #hotel-latitude').attr("readonly", true);
     }	
   };
   //Update hotel details
