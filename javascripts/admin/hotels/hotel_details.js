@@ -46,7 +46,8 @@ var HotelDetailsView = function(domRef){
   	    password = $.trim(that.myDom.find($("#admin-pwd")).val()),
   	    confirmPassword = $.trim(that.myDom.find($("#admin-confirm-pwd")).val()),
   	    zipcode = $.trim(that.myDom.find($("#hotel-zipcode")).val()),
-  	    numberOfRooms = $.trim(that.myDom.find($("#hotel-rooms")).val());
+  	    numberOfRooms = $.trim(that.myDom.find($("#hotel-rooms")).val()),
+  	    hotelTimeZone = $.trim(that.myDom.find($("#hotel-time-zone")).val());
   	  
   	 
 	  	 if(hotelName == null || hotelName == ''){
@@ -76,7 +77,11 @@ var HotelDetailsView = function(domRef){
 	  	 if(hotelCurrency == null || hotelCurrency == ''){
 	  	 	alert("Hotel currency is required");
 	  	 	return  false;
-	  	 } 	  	
+	  	 }
+	  	 if(hotelTimeZone == null || hotelTimeZone == ''){
+	  	 	alert("Hotel TimeZone is required");
+	  	 	return  false;
+	  	 }  	
 
         if(that.currentView == "snt-admin-view"){
 	        	data = {
@@ -106,7 +111,8 @@ var HotelDetailsView = function(domRef){
 				  	admin_first_name: adminFirstName,
 				  	admin_last_name: adminLastName,
 					admin_password:password,
-					admin_password_confirmation:confirmPassword
+					admin_password_confirmation:confirmPassword,
+					hotel_time_zone: hotelTimeZone
 					
 					} ;
 	        }
@@ -132,7 +138,8 @@ var HotelDetailsView = function(domRef){
 					check_out_min: hotelCheckoutMinutes,
 					default_currency: hotelCurrency,
 					hotel_brand:hotelBrand,
-  	    			hotel_chain:hotelChain
+  	    			hotel_chain:hotelChain,
+					hotel_time_zone: hotelTimeZone
 					} ;
 	        }  				
 			
@@ -182,7 +189,7 @@ var HotelDetailsView = function(domRef){
   	    confirmPassword = $.trim(that.myDom.find($("#admin-confirm-pwd")).val()),
   	    zipcode = $.trim(that.myDom.find($("#hotel-zipcode")).val()),
   	    numberOfRooms = $.trim(that.myDom.find($("#hotel-rooms")).val());
-  	 
+  	    hotelTimeZone = $.trim(that.myDom.find($("#hotel-time-zone")).val());
   	 
 	  	 if(hotelName == null || hotelName == ''){
 	  	 	alert("Hotel name is required");
@@ -241,7 +248,8 @@ var HotelDetailsView = function(domRef){
 				  	admin_first_name: adminFirstName,
 				  	admin_last_name: adminLastName,
 					admin_password:password,
-					admin_password_confirmation:confirmPassword
+					admin_password_confirmation:confirmPassword,
+					hotel_time_zone: hotelTimeZone
 					} ;
 	        			
 			
