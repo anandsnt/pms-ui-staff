@@ -9,15 +9,26 @@ var HotelDetailsView = function(domRef){
   };
   this.delegateEvents = function(){  	
   	that.myDom.find('#save').on('click', that.saveHotelDetails); 
+  	that.myDom.find('#cancel').on('click', that.gotoPreviousPage); 
   	that.myDom.find('#save_new_hotel').on('click', that.addNewHotel); 
+
     if(that.currentView == "snt-admin-view"){
     	//Since we are using the same page for hotel admin and snt admin. Some fields are non editable for hotel admin
     	$('input[readonly="readonly"]').removeAttr("readonly");
     	//Since these values are calculated using gem file
     	$('#hotel-longitude, #hotel-latitude').attr("readonly", true);
-    }	
+    }
   };
-  //Update hotel details
+  
+  this.gotoPreviousPage = function() {
+	  if($("#replacing-div-second").html() != ""){
+		  $("#replacing-div-second").html("");	 
+	  }
+	  else
+		  $("#replacing-div-first").html("");
+	  $(that.viewParams['backDom']).show();	  
+  };
+
   this.saveHotelDetails =  function(){
   	
   	var currentHotel = $(".currenthotel").attr("id");
@@ -152,6 +163,7 @@ var HotelDetailsView = function(domRef){
 			success : function(data) {
 				if(data.status == "success"){
 					console.log("Saved Successfully");
+					that.gotoPreviousPage();
 				}
 			},
 			error : function() {
