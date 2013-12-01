@@ -323,10 +323,10 @@ var RoomAssignmentView = function(viewDom){
 
     $('#reservation-'+currentReservation+'-room-number').html(roomHtml);
     if(that.viewParams.next_view == "staycard"){
-      goBackToView("", "view-nested-second", "move-from-left");
+      that.gotoStayCard();
     }
     else if(that.viewParams.next_view =="registration"){
-      console.log("go to registration");
+      that.gotoBillCard();
     }
   };
 
@@ -356,6 +356,19 @@ var RoomAssignmentView = function(viewDom){
     var $loader = '<div id="loading" />';
     $($loader).prependTo('body').show();
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
+  };
+
+  this.gotoStayCard = function(){
+    goBackToView("", "view-nested-second", "move-from-left");
+  };
+
+  this.gotoBillCard = function(){
+      //var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false&reservation_id=4";
+      var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
+      var viewDom = $("#view-nested-third");
+      var params = {"reservation_id": that.reservation_id};
+      var nextViewParams = {"showanimation": true, "from-view" : "room_assignment_view"};
+      sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
   };
 
 

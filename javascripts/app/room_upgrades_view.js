@@ -19,7 +19,7 @@ var RoomUpgradesView = function(viewDom){
   this.delegateEvents = function(){  
   	that.myDom.find('#upgrade-room-select').on('click',that.roomUpgradeSelected);
     that.myDom.find('#no-thanks').on('click',that.noThanksButtonCicked);
-    that.myDom.find('#upgrade-back-button').on('click',that.upgradeBackButtonClicked);
+    //that.myDom.find('#upgrade-back-button').on('click',that.upgradeBackButtonClicked);
   };
 
   this.executeLoadingAnimation = function(){
@@ -78,10 +78,10 @@ var RoomUpgradesView = function(viewDom){
     });
 
     if(that.viewParams.next_view == "staycard"){
-      goBackToView("", "view-nested-second", "move-from-left");
+      that.gotoStayCard();
     }
     else if(that.viewParams.next_view =="registration"){
-      console.log("go to registration");
+      that.gotoBillCard();
     }
 
 
@@ -92,21 +92,20 @@ var RoomUpgradesView = function(viewDom){
       that.gotoBillCard(); 
   };
   
-  this.upgradeBackButtonClicked = function(e){  
+  /*this.upgradeBackButtonClicked = function(e){  
   	  e.preventDefault();	
   	  that.gotoStayCard();  	
-  };
+  };*/
   this.gotoStayCard = function(){
-  	var $loader = '<div id="loading" />';
-    $($loader).prependTo('body').show();
-  	changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
+    goBackToView("", "view-nested-second", "move-from-left");
   };
+
   this.gotoBillCard = function(){
-  	        
-      var viewURL = "staff/reservation/bill_card";
+      //var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false&reservation_id=4";
+      var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
       var viewDom = $("#view-nested-third");
       var params = {"reservation_id": that.reservation_id};
-      var nextViewParams = {"showanimation": true, "current-view" : "room_upgrades_view"};
+      var nextViewParams = {"showanimation": true, "from-view" : "room_upgrades_view"};
       sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
   };
 };

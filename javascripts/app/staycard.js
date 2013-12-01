@@ -71,7 +71,6 @@ var StayCard = function(viewDom){
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
     var params = {"reservation_id": reservation_id};
-    //var nextViewParams = {"showanimation": true, "current-view" : "staycard" };
     sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
   };
 
@@ -269,12 +268,13 @@ var StayCard = function(viewDom){
     this.clickedTotalStayCost = function(){
     	that.goToBillCardView("TotalStayCost");
     };
-    
+
+
     this.goToBillCardView = function (clickedButton){
 		var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
 		var viewDom = $("#view-nested-third");
 		var params = {"reservation_id": that.reservation_id};
-		var nextViewParams = {"showanimation": true, "current-view" : "staycard","clickedButton":clickedButton };
+		var nextViewParams = {"showanimation": true, "from-view" : "staycard", "clickedButton":clickedButton };
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
     };
 };
