@@ -40,10 +40,10 @@ var RegistrationCardView = function(viewDom){
   	if (this.viewParams === undefined) return;
   	if (this.viewParams["showanimation"] === false) return;
 	
-	  if (this.viewParams["from-view"] === "staycard")
+	  if (this.viewParams["from-view"] === views.STAYCARD)
   		changeView("nested-view", "", "view-nested-first", "view-nested-third", "move-from-right", false);
-  	else if ((this.viewParams["from-view"] === "room_assignment_view")||
-            (this.viewParams["from-view"] === "room_upgrades_view"))
+  	else if ((this.viewParams["from-view"] === views.ROOM_ASSIGNMENT)||
+            (this.viewParams["from-view"] === views.ROOM_UPGRADES))
   		changeView("nested-view", "", "view-nested-second", "view-nested-third", "move-from-right", false);
   	 
   };

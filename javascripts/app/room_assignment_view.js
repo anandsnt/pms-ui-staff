@@ -322,10 +322,10 @@ var RoomAssignmentView = function(viewDom){
     var roomHtml = "<strong class='room-number "+roomReadyStatus+"'>"+roomSelected+"</strong>" + roomStausNew;
 
     $('#reservation-'+currentReservation+'-room-number').html(roomHtml);
-    if(that.viewParams.next_view == "staycard"){
+    if(that.viewParams.next_view == views.STAYCARD){
       that.gotoStayCard();
     }
-    else if(that.viewParams.next_view =="registration"){
+    else if(that.viewParams.next_view == views.BILLCARD){
       that.gotoBillCard();
     }
   };
@@ -367,7 +367,7 @@ var RoomAssignmentView = function(viewDom){
       var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
       var viewDom = $("#view-nested-third");
       var params = {"reservation_id": that.reservation_id};
-      var nextViewParams = {"showanimation": true, "from-view" : "room_assignment_view"};
+      var nextViewParams = {"showanimation": true, "from-view" : views.ROOM_ASSIGNMENT};
       sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
   };
 

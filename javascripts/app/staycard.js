@@ -5,6 +5,7 @@ var StayCard = function(viewDom){
   this.reservation_id = getReservationId();
   this.pageinit = function(){
     setUpStaycard(that.myDom);
+
     that.reservation_id = getReservationId();
     //Bind staycard events
 
@@ -31,13 +32,13 @@ var StayCard = function(viewDom){
 
   this.roomNumberClicked = function(e){
     e.preventDefault();
-    var nextViewParams = {"next_view": "staycard"};
+    var nextViewParams = {"next_view": views.STAYCARD};
     that.goToRoomAssignmentView(nextViewParams);
   };
 
   this.roomUpgradesClicked = function(e){
     e.preventDefault();
-    var nextViewParams = {"showanimation": true, "next_view" : "staycard" };
+    var nextViewParams = {"showanimation": true, "next_view" : views.STAYCARD};
     that.goToRoomUpgradeView(nextViewParams);
 
   };
@@ -116,11 +117,11 @@ var StayCard = function(viewDom){
   	}
 
     else if($.trim(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
-          var nextViewParams = {"next_view": "registration"};
+          var nextViewParams = {"next_view": views.BILLCARD};
       		that.goToRoomAssignmentView(nextViewParams);
     }
     else if(that.myDom.find('#reservation-checkin').attr('data-upsell-enabled') == "true"){
-          var nextViewParams = {"showanimation": true, "next_view" : "registration" };
+          var nextViewParams = {"showanimation": true, "next_view" : views.BILLCARD };
       		that.goToRoomUpgradeView(nextViewParams);
     }
     else{
@@ -274,7 +275,7 @@ var StayCard = function(viewDom){
 		var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
 		var viewDom = $("#view-nested-third");
 		var params = {"reservation_id": that.reservation_id};
-		var nextViewParams = {"showanimation": true, "from-view" : "staycard", "clickedButton":clickedButton };
+		var nextViewParams = {"showanimation": true, "from-view" : views.STAYCARD, "clickedButton":clickedButton };
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
     };
 };

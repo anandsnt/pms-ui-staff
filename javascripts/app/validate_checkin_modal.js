@@ -120,7 +120,7 @@ var ValidateCheckinModal = function() {
 	    var viewDom = $("#view-nested-second");
 	    var reservation_id = getReservationId();
 	    var params = {"reservation_id": reservation_id};
-	    var nextViewParams = {"showanimation": true, "next_view" : "registration" };
+	    var nextViewParams = {"showanimation": true, "next_view" : views.BILLCARD };
 	    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams);
     };
 
@@ -129,7 +129,7 @@ var ValidateCheckinModal = function() {
 	    var viewDom = $("#view-nested-second");
 	    var reservation_id = getReservationId();
 	    var params = {"reservation_id": reservation_id};
-	    var nextViewParams = {"showanimation": true, "next_view" : "registration" };
+	    var nextViewParams = {"showanimation": true, "next_view" : views.BILLCARD };
 	    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
     };
 
@@ -139,7 +139,7 @@ var ValidateCheckinModal = function() {
 	    var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
         var viewDom = $("#view-nested-third");
         var params = {"reservation_id": that.reservation_id};
-        var nextViewParams = {"showanimation": true, "from-view" : "staycard"};
+        var nextViewParams = {"showanimation": true, "from-view" : views.STAYCARD};
         sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
     };
 }
