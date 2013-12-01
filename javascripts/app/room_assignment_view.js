@@ -218,8 +218,8 @@ var RoomAssignmentView = function(viewDom){
 
         //Append the HTML to the UI.
         if(room_status_html != ""){
-          var output = "<li><a id = 'room-list-item' href='#'"+
-            "class='back-button button white submit-value' data-value='' data-transition='nested-view'>"+room_status_html+"</a></li>";
+          var output = "<li><a id = 'room-list-item' href='javascript:void(0)'"+
+            "class='button white submit-value' data-value='' data-transition='nested-view'>"+room_status_html+"</a></li>";
           $('#rooms-available ul').append(output);      
         }       
     }
@@ -322,7 +322,12 @@ var RoomAssignmentView = function(viewDom){
     var roomHtml = "<strong class='room-number "+roomReadyStatus+"'>"+roomSelected+"</strong>" + roomStausNew;
 
     $('#reservation-'+currentReservation+'-room-number').html(roomHtml);
-
+    if(that.viewParams.next_view == "staycard"){
+      goBackToView("", "view-nested-second", "move-from-left");
+    }
+    else if(that.viewParams.next_view =="registration"){
+      console.log("go to registration");
+    }
   };
 
   this.updateServerwithSelectedRoom = function(currentReservation, roomSelected){
@@ -346,6 +351,7 @@ var RoomAssignmentView = function(viewDom){
     });
 
   };
+
   this.backButtonClicked = function(){
     var $loader = '<div id="loading" />';
     $($loader).prependTo('body').show();

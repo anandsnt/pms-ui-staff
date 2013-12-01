@@ -28,25 +28,26 @@ var RoomUpgradesView = function(viewDom){
 
 	this.createViewScroll = function(){
 	  // We need to calculate width of the horizontal list based on number of items
-  var $containerWidth = $('#room-upgrades').width(),
-    $scrollable = $('#room-upgrades').find('.wrapper'),
-    $items = $('#room-upgrades').find('.wrapper > li').size(),
-    $itemsWidth = ($items * 460) + 10; // * 460 is single item width, + 10 is padding
+    var $containerWidth = $('#room-upgrades').width(),
+      $scrollable = $('#room-upgrades').find('.wrapper'),
+      $items = $('#room-upgrades').find('.wrapper > li').size(),
+      $itemsWidth = ($items * 460) + 10; // * 460 is single item width, + 10 is padding
 
-  if ($itemsWidth > $containerWidth)
-  {
-    $($scrollable).css({ 'width' : $itemsWidth + 'px' });
-    
-    if (horizontalScroll) { destroyHorizontalScroll(); }
-      setTimeout(function(){
-        createHorizontalScroll('#room-upgrades');
-        refreshHorizontalScroll();
+    if ($itemsWidth > $containerWidth)
+    {
+      $($scrollable).css({ 'width' : $itemsWidth + 'px' });
+      
+      if (horizontalScroll) { destroyHorizontalScroll(); }
+        setTimeout(function(){
+          createHorizontalScroll('#room-upgrades');
+          refreshHorizontalScroll();
       }, 300);
-  }
+    }
   };
 
 
   this.roomUpgradeSelected = function(e){
+    e.preventDefault();
   	var upsellAmountId = $(this).attr('data-value');
   	var roomNumberSelected = $(this).attr('data-room-number');
   	var reservationId = that.reservation_id;
@@ -75,6 +76,14 @@ var RoomUpgradesView = function(viewDom){
         error: function(){
         }
     });
+
+    if(that.viewParams.next_view == "staycard"){
+      goBackToView("", "view-nested-second", "move-from-left");
+    }
+    else if(that.viewParams.next_view =="registration"){
+      console.log("go to registration");
+    }
+
 
   };
 
