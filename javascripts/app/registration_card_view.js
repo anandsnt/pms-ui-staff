@@ -48,6 +48,7 @@ var RegistrationCardView = function(viewDom){
   };
   
   this.delegateEvents = function(){
+  	this.bill_number = that.myDom.find("#bills li.active").attr('data-bill-number');
   	that.myDom.find('#checkin-button').on('click', that.completeCheckin);
   	that.myDom.find('#clear-signature').on('click',that.clearSignature);
   	that.myDom.find('#back-to-staycard').on('click',that.gotoStayCard);
@@ -130,38 +131,35 @@ var RegistrationCardView = function(viewDom){
   	e.preventDefault();
   	e.stopImmediatePropagation();
   	
+  	var balance_amount = that.myDom.find("#balance-amount").attr("data-balance-amount");
   	
-	$.ajax({
+  	if(balance_amount != 0){
+  		// Payment modal
+  		that.payButtonClicked();
+  	}
+  	else{
+  		// Balance amount is 0 - complete check out action.
+  		$.ajax({
 		    type: "POST",
 		    url: '/staff/checkout',
 		    data : {"reservation_id" : that.reservation_id},
 		    success: function(data) {
-		    	console.log(data);
 		    	var failureModal = new FailureModal();
 				failureModal.initialize();
 				failureModal.params = {"message": data.data};
-		    	if(data.status == "success"){
-				    console.log("success");
-				}
-				if(data.status == "failure"){
-					console.log("failure");
-				}
 		    },
 		    error: function(){
-		    	console.log("error");
 			}
 	  	});
-	  	
-  	var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED OUT";
-	
-  	
+  	}
   };
   
   this.payButtonClicked = function(){
-  	var bill_number = that.myDom.find("#pay-button").attr('data-bill-number');
   	var billCardPaymentModal = new BillCardPaymentModal();
   	billCardPaymentModal.initialize();
-  	billCardPaymentModal.params = {"bill_number":bill_number};
+  	billCardPaymentModal.params = {"bill_number":that.bill_number};
   };
-  
+  this.goToSearchScreen = function(){
+  	switchPage('main-page','search','','page-main-second','move-from-left');
+  };
 };
