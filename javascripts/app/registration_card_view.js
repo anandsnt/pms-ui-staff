@@ -129,10 +129,30 @@ var RegistrationCardView = function(viewDom){
   	e.preventDefault();
   	e.stopImmediatePropagation();
   	
+  	
+	$.ajax({
+		    type: "POST",
+		    url: '/staff/checkout',
+		    data : {"reservation_id" : that.reservation_id},
+		    success: function(data) {
+		    	console.log(data);
+		    	var failureModal = new FailureModal();
+				failureModal.initialize();
+				failureModal.params = {"message": data.data};
+		    	if(data.status == "success"){
+				    console.log("success");
+				}
+				if(data.status == "failure"){
+					console.log("failure");
+				}
+		    },
+		    error: function(){
+		    	console.log("error");
+			}
+	  	});
+	  	
   	var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED OUT";
-	var failureModal = new FailureModal();
-	failureModal.initialize();
-	failureModal.params = {"message": message};
+	
   	
   };
 };
