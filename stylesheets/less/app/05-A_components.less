@@ -415,6 +415,7 @@
 						text-shadow: none;
 						background: rgba(0,0,0,.1);
 						.box-shadow(none);
+						.hide;
 
 						.value {
 							color: @white;
@@ -461,7 +462,7 @@
 		#guest-card-content {
 			margin-top: 20px;
 			.calc-height(100, 70); /* %, px */
-			.show;
+			.hide;
 
 			#guest-card-tabs-nav {
 				width: 100%;
@@ -620,6 +621,18 @@
 					.show;
 				}
 			}
+		}
+
+		&.open {
+			#guest-card-header {
+				form {
+					.holder {
+						.switch-button { .show; }
+					}
+				}
+			}
+
+			#guest-card-content { .show; }
 		}
 	}
 
