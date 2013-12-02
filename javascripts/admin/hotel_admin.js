@@ -18,17 +18,18 @@ var HotelAdminView = function(domRef){
   
   this.clearReplacingDiv = function() {	  
 	  $("#replacing-div-first").html("");
+	  $("#replacing-div-first").show();
 	  $($(this).attr("href")).show();
   };
   this.appendNewPage = function(event){	
+	  event.preventDefault();	
 	  var backDom = $(this).parents("section:eq(0)");
 	  if(backDom == undefined) {
 		  
 	  }
 	  var href = $(this).find("a").eq(0).attr("href");
-	  if(href != undefined){
-		  var url = href;
-	  	  event.preventDefault();		  
+	  if(href != "#" && href != undefined){
+		  var url = href;	  	  	 
 		  var viewParams = {'backDom': backDom};
 		  $(this).parents('section:eq(0)').hide();
 		  //viewURL, viewDom, params, shouldShowLoader, nextViewParams
