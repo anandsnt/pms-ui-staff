@@ -21,8 +21,9 @@ var HotelAdminView = function(domRef){
 	  $("#replacing-div-first").show();
 	  $($(this).attr("href")).show();
   };
+  
   this.appendNewPage = function(event){	
-	  event.preventDefault();	
+	  event.preventDefault();
 	  var backDom = $(this).parents("section:eq(0)");
 	  if(backDom == undefined) {
 		  

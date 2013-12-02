@@ -13,12 +13,16 @@ var SntAdminView = function(domRef){
   	that.myDom.find($('#admin-menu #add_new_hotel')).on('click', function(event){
   		event.preventDefault();
   		var div = $("#replacing-div-first");
-  		if($("#replacing-div-second").is(":visible")){
-  			
+  		if($("#replacing-div-second").is(":visible")){  			
   			div = $("#replacing-div-second");
   		}
+  		var backDom = null;
+  		$("#content section").each(function(){
+  			if($(this).is(":visible"))
+  				backDom = $(this);
+  		});
   		$("#content section").hide();
-  		viewParams = {};
+  		viewParams = {'backDom': backDom};
   		var url = $(this).attr("href");
   		sntapp.fetchAndRenderView(url, div, {}, false, viewParams);
   	});
