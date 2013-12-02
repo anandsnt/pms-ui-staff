@@ -352,14 +352,18 @@ var RoomAssignmentView = function(viewDom){
 
   };
 
-  this.backButtonClicked = function(){
-    var $loader = '<div id="loading" />';
+  this.backButtonClicked = function(e){
+    e.preventDefault();
+    that.gotoStayCard();
+    /*var $loader = '<div id="loading" />';
     $($loader).prependTo('body').show();
-    changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
+    changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);*/
   };
 
   this.gotoStayCard = function(){
-    goBackToView("", "view-nested-second", "move-from-left");
+    var $loader = '<div id="loading" />';
+    $($loader).prependTo('body').show();
+    changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
   };
 
   this.gotoBillCard = function(){

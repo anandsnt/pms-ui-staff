@@ -93,7 +93,9 @@ var ValidateCheckinModal = function() {
 	
 		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text() == "")){
     		that.goToRoomAssignmentView();
-	    }else if($('#reservation-checkin').attr('data-upsell-enabled') == "true"){
+    	}
+	    else if((that.myDom.find('#reservation-checkin').attr('data-force-upsell') == "true")
+     		&&(that.myDom.find('#reservation-checkin').attr('data-upsell-available') == "true")){
     		that.goToRoomUpgradeView();
 	    }
 	    else{
@@ -106,7 +108,8 @@ var ValidateCheckinModal = function() {
 		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text() == "")){
     		that.goToRoomAssignmentView();
 	    }
-	    else if($('#reservation-checkin').attr('data-upsell-enabled') == "true"){
+	    else if((that.myDom.find('#reservation-checkin').attr('data-force-upsell') == "true")
+     		&&(that.myDom.find('#reservation-checkin').attr('data-upsell-available') == "true")){
     		that.goToRoomUpgradeView();
 	    }
 	    else{

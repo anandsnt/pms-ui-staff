@@ -19,7 +19,7 @@ var RoomUpgradesView = function(viewDom){
   this.delegateEvents = function(){  
   	that.myDom.find('#upgrade-room-select').on('click',that.roomUpgradeSelected);
     that.myDom.find('#no-thanks').on('click',that.noThanksButtonCicked);
-    //that.myDom.find('#upgrade-back-button').on('click',that.upgradeBackButtonClicked);
+    that.myDom.find('#upgrade-back-button').on('click',that.upgradeBackButtonClicked);
   };
 
   this.executeLoadingAnimation = function(){
@@ -92,12 +92,16 @@ var RoomUpgradesView = function(viewDom){
       that.gotoBillCard(); 
   };
   
-  /*this.upgradeBackButtonClicked = function(e){  
+  this.upgradeBackButtonClicked = function(e){  
   	  e.preventDefault();	
   	  that.gotoStayCard();  	
-  };*/
+  };
+
   this.gotoStayCard = function(){
-    goBackToView("", "view-nested-second", "move-from-left");
+    var $loader = '<div id="loading" />';
+    $($loader).prependTo('body').show();
+    changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);  
+    //goBackToView("", "view-nested-second", "move-from-left");
   };
 
   this.gotoBillCard = function(){

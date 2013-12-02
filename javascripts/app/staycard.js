@@ -120,7 +120,8 @@ var StayCard = function(viewDom){
           var nextViewParams = {"next_view": views.BILLCARD};
       		that.goToRoomAssignmentView(nextViewParams);
     }
-    else if(that.myDom.find('#reservation-checkin').attr('data-upsell-enabled') == "true"){
+    else if((that.myDom.find('#reservation-checkin').attr('data-force-upsell') == "true")
+     &&(that.myDom.find('#reservation-checkin').attr('data-upsell-available') == "true")){
           var nextViewParams = {"showanimation": true, "next_view" : views.BILLCARD };
       		that.goToRoomUpgradeView(nextViewParams);
     }
