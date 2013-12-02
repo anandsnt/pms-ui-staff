@@ -17,6 +17,7 @@ var RoomAssignmentView = function(viewDom){
 
     that.myDom.find($('#room-attributes .checkbox')
       .change('focusout', that.filterOptionChecked));
+    that.myDom.find('#room-upgrades ul li #upgrade-room-select').on('click',that.roomUpgradeSelected);
     //that.myDom.find($('.rooms-listing #room-type-selectbox')
       //.change('focusout', that.filterByRoomType));
     that.myDom.find('#room-assignment-button').on('click',that.backButtonClicked); 
@@ -373,6 +374,48 @@ var RoomAssignmentView = function(viewDom){
       var params = {"reservation_id": that.reservation_id};
       var nextViewParams = {"showanimation": true, "from-view" : views.ROOM_ASSIGNMENT};
       sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
+  };
+
+
+  this.roomUpgradeSelected = function(e){
+    e.preventDefault();
+    var upsellAmountId = $(this).attr('data-value');
+    var roomNumberSelected = $(this).attr('data-room-number');
+    var reservationId = that.reservation_id;
+    var postParams = {"reservation_id": reservationId, "upsell_amount_id": upsellAmountId};
+    $('#reservation-'+reservationId+'-room-number').html("");
+    var roomHtml = "<strong class='room-number ready'>"+roomNumberSelected+"</strong>";
+    $('#reservation-'+reservationId+'-room-number').html(roomHtml);
+
+    if(that.viewParams.next_view == views.STAYCARD){
+    that.gotoStayCard(); 
+    }
+    else if (that.viewParams.next_view == views.BILLCARD){
+      that.gotoBillCard(); 
+    }
+    
+    $.ajax({
+        type:       'POST',
+        url:        "/staff/reservations/upgrade_room",
+        data: postParams,
+        dataType:   'json',
+        success: function(response){
+          if(response.status == "success"){
+          }else if(response.status == "failure"){
+          }
+        },
+        error: function(){
+        }
+    });
+
+    if(that.viewParams.next_view == views.STAYCARD){
+      that.gotoStayCard();
+    }
+    else if(that.viewParams.next_view == views.BILLCARD){
+      that.gotoBillCard();
+    }
+
+
   };
 
 
