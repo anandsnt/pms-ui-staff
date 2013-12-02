@@ -26,6 +26,8 @@ var BaseView = function(viewDom){
     that.executeLoadingAnimation();
     that.delegateEvents();
     that.initSubViews();
-  }
+  };
+  
+  
   
 };

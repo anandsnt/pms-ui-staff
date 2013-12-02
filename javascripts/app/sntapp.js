@@ -15,7 +15,7 @@ var app = function(){
 
     this.renderView = function(viewData, viewDom, viewParams){
         viewDom.html(viewData);
-        viewObject = that.getViewInstance(viewDom);
+        var viewObject = that.getViewInstance(viewDom);
         if((viewParams != null) && (typeof viewParams != undefined)){
             viewObject.viewParams = viewParams;
         }
@@ -42,8 +42,8 @@ var app = function(){
             data: params,
             url: viewURL,
             async: false,
-            success: function(data) {
-                that.renderView(data, viewDom,nextViewParams);    
+            success: function(data) {      
+                that.renderView(data, viewDom, nextViewParams);    
             },
             error: function(){
             }
