@@ -218,8 +218,8 @@ var RoomAssignmentView = function(viewDom){
 
         //Append the HTML to the UI.
         if(room_status_html != ""){
-          var output = "<li><a id = 'room-list-item' href='#'"+
-            "class='back-button button white submit-value' data-value='' data-transition='nested-view'>"+room_status_html+"</a></li>";
+          var output = "<li><a id = 'room-list-item' href='javascript:void(0)'"+
+            "class='button white submit-value' data-value='' data-transition='nested-view'>"+room_status_html+"</a></li>";
           $('#rooms-available ul').append(output);      
         }       
     }
@@ -322,7 +322,12 @@ var RoomAssignmentView = function(viewDom){
     var roomHtml = "<strong class='room-number "+roomReadyStatus+"'>"+roomSelected+"</strong>" + roomStausNew;
 
     $('#reservation-'+currentReservation+'-room-number').html(roomHtml);
-
+    if(that.viewParams.next_view == views.STAYCARD){
+      that.gotoStayCard();
+    }
+    else if(that.viewParams.next_view == views.BILLCARD){
+      that.gotoBillCard();
+    }
   };
 
   this.updateServerwithSelectedRoom = function(currentReservation, roomSelected){
@@ -346,10 +351,28 @@ var RoomAssignmentView = function(viewDom){
     });
 
   };
-  this.backButtonClicked = function(){
+
+  this.backButtonClicked = function(e){
+    e.preventDefault();
+    that.gotoStayCard();
+    /*var $loader = '<div id="loading" />';
+    $($loader).prependTo('body').show();
+    changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);*/
+  };
+
+  this.gotoStayCard = function(){
     var $loader = '<div id="loading" />';
     $($loader).prependTo('body').show();
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
+  };
+
+  this.gotoBillCard = function(){
+      //var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false&reservation_id=4";
+      var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
+      var viewDom = $("#view-nested-third");
+      var params = {"reservation_id": that.reservation_id};
+      var nextViewParams = {"showanimation": true, "from-view" : views.ROOM_ASSIGNMENT};
+      sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
   };
 
 
