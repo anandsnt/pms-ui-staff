@@ -2,6 +2,7 @@ var RoomAssignmentView = function(viewDom){
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
+  this.reservation_id = getReservationId();
 
   //Stores the non-filtered list of rooms
   this.roomCompleteList = [];
