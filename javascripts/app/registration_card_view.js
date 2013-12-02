@@ -40,9 +40,10 @@ var RegistrationCardView = function(viewDom){
   	if (this.viewParams === undefined) return;
   	if (this.viewParams["showanimation"] === false) return;
 	
-	if (this.viewParams["current-view"] === "staycard")
+	  if (this.viewParams["from-view"] === views.STAYCARD)
   		changeView("nested-view", "", "view-nested-first", "view-nested-third", "move-from-right", false);
-  	else
+  	else if ((this.viewParams["from-view"] === views.ROOM_ASSIGNMENT)||
+            (this.viewParams["from-view"] === views.ROOM_UPGRADES))
   		changeView("nested-view", "", "view-nested-second", "view-nested-third", "move-from-right", false);
   	 
   };
@@ -114,13 +115,15 @@ var RegistrationCardView = function(viewDom){
 
   this.gotoStayCard = function(e){
 	e.preventDefault();
+  //goBackToView("", "view-nested-third", "move-from-left");
 	var $loader = '<div id="loading" />';
 	$($loader).prependTo('body').show();
 	
 	changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);
   };
-  this.goToRoomUpgradeView = function(){
+  this.goToRoomUpgradeView = function(e){
 	e.preventDefault();
+  //goBackToView("", "view-nested-third", "move-from-left");
 	var $loader = '<div id="loading" />';
 	$($loader).prependTo('body').show();  
 	changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);   
