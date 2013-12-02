@@ -4,6 +4,7 @@ var BillCardPaymentModal = function(){
   	this.reservation_id = getReservationId();
   	this.url = "staff/reservation/"+this.reservation_id+"/get_pay_bill_details";
   	this.delegateEvents = function(){
+  		that.myDom.find("#submit-payment").append(this.params.bill_number);// To set bill number to submit buton text.
 		that.myDom.find("#submit-payment").on("click",that.clickedSubmitPayment);
 	};
 	
@@ -27,11 +28,11 @@ var BillCardPaymentModal = function(){
 			async : false,
 			dataType : 'json',
 			contentType : 'application/json',
-		success : function(data) {
-		    that.hide();
-		},
-		error : function() {
-		}
+			success : function(data) {
+			    that.hide();
+			},
+			error : function() {
+			}
 		});
     };
 }
