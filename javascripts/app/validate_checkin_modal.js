@@ -81,6 +81,7 @@ var ValidateCheckinModal = function() {
 		// Update UI changes in Guest card header and Contact information.
 		var guest_phone = $("#gc-phone").val();
 		var guest_email = $("#gc-email").val();
+
 					
 		if(guest_phone == ""){
 			$("#gc-phone").val($("#validate #guest-phone").val());
@@ -91,12 +92,13 @@ var ValidateCheckinModal = function() {
 			$("#email").val($("#validate #guest-email").val());
 		}
 	
-		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text() == "")){
+		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
     		that.goToRoomAssignmentView();
     	}
-	    else if((that.myDom.find('#reservation-checkin').attr('data-force-upsell') == "true")
-     		&&(that.myDom.find('#reservation-checkin').attr('data-upsell-available') == "true")){
+	    else if(($('#reservation-checkin').attr('data-force-upsell') == "true")
+     		&&($('#reservation-checkin').attr('data-upsell-available') == "true")){
     		that.goToRoomUpgradeView();
+
 	    }
 	    else{
 	    	that.goToRegistrationCardView();
@@ -105,11 +107,11 @@ var ValidateCheckinModal = function() {
 	};
 
 	this.ignoreAndGotoCheckin = function(e) {
-		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text() == "")){
+		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
     		that.goToRoomAssignmentView();
 	    }
-	    else if((that.myDom.find('#reservation-checkin').attr('data-force-upsell') == "true")
-     		&&(that.myDom.find('#reservation-checkin').attr('data-upsell-available') == "true")){
+	    else if(($('#reservation-checkin').attr('data-force-upsell') == "true")
+     		&&($('#reservation-checkin').attr('data-upsell-available') == "true")){
     		that.goToRoomUpgradeView();
 	    }
 	    else{
@@ -138,7 +140,6 @@ var ValidateCheckinModal = function() {
 
     this.goToRegistrationCardView = function(viewParams){
 	    //Page transition to registration card.
-	  	e.preventDefault();
 	    var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
         var viewDom = $("#view-nested-third");
         var params = {"reservation_id": that.reservation_id};

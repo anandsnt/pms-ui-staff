@@ -17,7 +17,7 @@ var RoomUpgradesView = function(viewDom){
   };
 
   this.delegateEvents = function(){  
-  	that.myDom.find('#upgrade-room-select').on('click',that.roomUpgradeSelected);
+  	that.myDom.find('#room-upgrades ul li #upgrade-room-select').on('click',that.roomUpgradeSelected);
     that.myDom.find('#no-thanks').on('click',that.noThanksButtonCicked);
     that.myDom.find('#upgrade-back-button').on('click',that.upgradeBackButtonClicked);
   };
