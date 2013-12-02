@@ -217,7 +217,6 @@ function changeView($type, $menuActiveItem, $prevView, $nextView, $transition, $
 
 // Go back to main page
 function goBackToPage($menuActiveItem, $prevPage, $transition){
-	console.log($menuActiveItem+"**"+$prevPage+"**"+ $transition);
     var $oldScreen = new chainedAnimation(),
         $delay = 150;
 
@@ -248,7 +247,6 @@ function goBackToPage($menuActiveItem, $prevPage, $transition){
 
 // Go back to previous view on the inner page
 function goBackToView($menuActiveItem, $prevView, $transition){
-	console.log($menuActiveItem+"**"+$prevView+"**"+ $transition);
     var $oldView = new chainedAnimation(),
         $delay = 150;
 
