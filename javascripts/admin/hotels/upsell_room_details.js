@@ -84,7 +84,13 @@ var UpsellRoomDetailsView = function(domRef){
 				alert("Sorry, not there yet!");
 			}
 		});
-  	 
-  	  
+  };
+  this.gotoPreviousPage = function() {
+	  if($("#replacing-div-second").html() != ""){
+		  $("#replacing-div-second").html("");	 
+	  }
+	  else
+		  $("#replacing-div-first").html("");
+	  that.viewParams['backDom'].show();	  
   };
 };
