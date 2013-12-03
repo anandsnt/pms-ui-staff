@@ -10,8 +10,7 @@ var SuccessModal = function(callBack) {
 	};
 	
 	this.okButtonClicked = function(){
-		that.hide();
-		callBack();
+		that.hide(callBack);
 	};
 	
 }

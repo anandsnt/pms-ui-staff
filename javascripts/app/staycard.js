@@ -272,8 +272,8 @@ var StayCard = function(viewDom){
     };
 
     this.goToBillCardView = function (clickedButton){
-    	//var viewURL = "staff/reservation/bill_card";
-		var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
+    	var viewURL = "staff/reservation/bill_card";
+		//var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
 		var viewDom = $("#view-nested-third");
 		var params = {"reservation_id": that.reservation_id};
 		var nextViewParams = {"showanimation": true, "from-view" : views.STAYCARD, "clickedButton":clickedButton };
