@@ -38,7 +38,7 @@ var UpsellRoomDetailsView = function(domRef){
   	 	upsell_amount_data.amount = $("#upsell_amounts_"+i).val();
   	 	upsell_amount_data.level_from = $("#level_from_"+i).val();
   	 	upsell_amount_data.level_to = $("#level_to_"+i).val();
-  	 	console.log("reached ===="+ $("#level_from_"+i).val());
+  	 	console.log("reached ===="+ JSON.stringify(upsell_amounts));
   	 	upsell_amounts.push(upsell_amount_data);
   	 }
   	 //to create upsell room levels array
