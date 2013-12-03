@@ -32,10 +32,29 @@ body {
 		.hide;
 
 		li {
+			position: relative;
 			line-height: 60px;
 			vertical-align: middle;
 			margin-bottom: 0;
 			border-bottom: 1px solid rgba(0,0,0,.15);
+
+			span {
+				position: absolute;
+				top: 5px;
+				right: -5px;
+				color: @white;
+				font-size: 14px;
+				font-weight: 600;
+				line-height: 20px;
+				vertical-align: middle;
+				text-align: center;
+				overflow: hidden;
+				text-shadow: 1px 1px 0 rgba(0,0,0,.1);
+				.show;
+				.square(20px);
+				#border-radius > .rounded(20px);
+				.gradient(@redStart, @redEnd);
+			}
 
 			.active { cursor: default; }
 

@@ -24,13 +24,13 @@
 		&:focus { overflow: hidden; }
 	}
 
-	.placeholder-text(@font-size, @line-height, @font-weight) {
+	.placeholder-text(@font-size, @line-height, @font-weight, @color) {
 		&::-webkit-input-placeholder {
 		   	font-size: @font-size;
 		   	line-height: @line-height;
 		   	font-weight: @font-weight;
 		   	font-style: italic;
-		   	color: @grey3;
+		   	color: @color;
 		}
 
 		&:-moz-placeholder {
@@ -38,7 +38,7 @@
 		   	line-height: @line-height;
 		   	font-weight: @font-weight;
 		   	font-style: italic;
-			color: @grey3;
+			color: @color;
 		}
 
 		&::-moz-placeholder {
@@ -46,14 +46,14 @@
 			line-height: @line-height;
 		   	font-weight: @font-weight;
 		   	font-style: italic;
-		   	color: @grey3;}
+		   	color: @color;}
 
 		&:-ms-input-placeholder {  
 			font-size: @font-size;
 			line-height: @line-height;
 			font-weight: @font-weight;
 		   	font-style: italic;
-		   	color: @grey3;
+		   	color: @color;
 		}
 	}
 

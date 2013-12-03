@@ -17,7 +17,7 @@ textarea {
 	border: 0;
 	resize: none;
 	background-color: @white;
-	.placeholder-text(16px, 40px, 400);
+	.placeholder-text(16px, 40px, 400, @grey3);
 	.transition;
 	.box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
 	#border-radius > .rounded();
@@ -175,50 +175,73 @@ label {
 	}
 
 /* File upload 					==========================*/
-.file-upload {
-	width: 100%;
-	min-height: 40px;
-	background-color: @white;
-	position: relative;
-	.transition;
-	.box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
-	#border-radius > .rounded();
+	.file-upload {
+		width: 100%;
+		min-height: 40px;
+		background-color: @white;
+		position: relative;
+		.transition;
+		.box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+		#border-radius > .rounded();
 
-	input,
-	.input,
-	.button { position: absolute; }
+		input,
+		.input,
+		.button { position: absolute; }
 
-	input,
-	.input { height: 40px; width: 100%; }
+		input,
+		.input { height: 40px; width: 100%; }
 
-	input { 
-		cursor: pointer;
-		z-index: 39;
-		.opacity(0); 		
+		input { 
+			cursor: pointer;
+			z-index: 39;
+			.opacity(0); 		
+		}
+
+		.input {
+			color: @grey3;
+			font-style: italic;
+			line-height: 40px;
+			padding: 0 10px;
+			vertical-align: middle;
+			z-index: 9;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+
+		.button {
+			top: 5px;
+			right: 5px;
+			line-height: 30px;
+			height: 30px;
+			padding: 0 10px;
+			font-size: 14px;
+			z-index: 9;
+		}
+
+		&.with-preview {
+			.calc-width(100, 120);
+			.pull-left;
+		}
 	}
 
-	.input {
-		color: @grey3;
-		font-style: italic;
-		line-height: 40px;
-		padding: 0 10px;
+	.file-preview {
+		background: @grey1;
+		.square(100px);
+		.box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+		#border-radius > .rounded();
+		.pull-right;
+	}
+
+	span.file-preview {
+		font-size: 12px;
+		line-height: 18px;
+		padding-top: 32px;
 		vertical-align: middle;
-		z-index: 9;
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis;
+		text-transform: uppercase;
+		text-align: center;
+		color: @grey3;
 	}
-
-	.button {
-		top: 5px;
-		right: 5px;
-		line-height: 30px;
-		height: 30px;
-		padding: 0 10px;
-		font-size: 14px;
-		z-index: 9;
-	}
-}
 
 /* Styled selectboxes			==========================*/
 	.select {
