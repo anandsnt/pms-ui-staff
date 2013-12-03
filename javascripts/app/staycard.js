@@ -280,5 +280,3 @@ var StayCard = function(viewDom){
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
     };
 };
-
-
