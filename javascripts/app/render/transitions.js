@@ -353,8 +353,8 @@ $(function($){
         }
         else if ($transitionPage.indexOf('nested-view') >= 0)
         {
-            var $previous = $('.nested-view.view-current').attr('id'),
-                $next = $('.nested-view:not(.view-current)').attr('id');
+            var $previous = $('.page-current').find('.nested-view.view-current').attr('id'),
+                $next = $('.page-current').find('.nested-view:not(.view-current)').attr('id');
         }
 
 
