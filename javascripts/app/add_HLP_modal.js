@@ -42,7 +42,7 @@ var AddHLPModal = function(){
 		newHLP.user_membership.membership_type = $type;
 		newHLP.user_membership.membership_card_number = $code;
 		newHLP.user_membership.membership_level = $level;
-		removeModal();
+		//removeModal();
 		
 		var $name   = $('#hotel-loyalty-levels option:selected').text();
 		
