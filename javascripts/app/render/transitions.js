@@ -369,6 +369,7 @@ $(function($){
         {
             var $next = $('#' + $activeMenuItem).closest('.main-page').attr('id');
             switchPage($transitionPage, $activeMenuItem, $previous, $next, 'move-from-left');
+            
         }
 
         // Load next page/view or reload previous view before going back
