@@ -11,6 +11,7 @@ var HotelListView = function(domRef){
   	 that.myDom.find($('.title, #add_new_hotel')).on('click', this.gotoNextPage);
   };
   this.gotoNextPage =  function(e){  	
+  	
   	e.preventDefault();	
   	//sntadminapp.clearReplacingDiv();  	
   	var href = $(this).attr("href");
