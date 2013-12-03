@@ -2,6 +2,7 @@ var RoomAssignmentView = function(viewDom){
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
+  this.reservation_id = getReservationId();
 
   //Stores the non-filtered list of rooms
   this.roomCompleteList = [];
@@ -17,6 +18,7 @@ var RoomAssignmentView = function(viewDom){
 
     that.myDom.find($('#room-attributes .checkbox')
       .change('focusout', that.filterOptionChecked));
+    that.myDom.find('#room-upgrades ul li #upgrade-room-select').on('click',that.roomUpgradeSelected);
     //that.myDom.find($('.rooms-listing #room-type-selectbox')
       //.change('focusout', that.filterByRoomType));
     that.myDom.find('#room-assignment-button').on('click',that.backButtonClicked); 
@@ -218,8 +220,8 @@ var RoomAssignmentView = function(viewDom){
 
         //Append the HTML to the UI.
         if(room_status_html != ""){
-          var output = "<li><a id = 'room-list-item' href='#'"+
-            "class='back-button button white submit-value' data-value='' data-transition='nested-view'>"+room_status_html+"</a></li>";
+          var output = "<li><a id = 'room-list-item' href='javascript:void(0)'"+
+            "class='button white submit-value' data-value='' data-transition='nested-view'>"+room_status_html+"</a></li>";
           $('#rooms-available ul').append(output);      
         }       
     }
@@ -322,7 +324,12 @@ var RoomAssignmentView = function(viewDom){
     var roomHtml = "<strong class='room-number "+roomReadyStatus+"'>"+roomSelected+"</strong>" + roomStausNew;
 
     $('#reservation-'+currentReservation+'-room-number').html(roomHtml);
-
+    if(that.viewParams.next_view == views.STAYCARD){
+      that.gotoStayCard();
+    }
+    else if(that.viewParams.next_view == views.BILLCARD){
+      that.gotoBillCard();
+    }
   };
 
   this.updateServerwithSelectedRoom = function(currentReservation, roomSelected){
@@ -346,10 +353,70 @@ var RoomAssignmentView = function(viewDom){
     });
 
   };
-  this.backButtonClicked = function(){
+
+  this.backButtonClicked = function(e){
+    e.preventDefault();
+    that.gotoStayCard();
+    /*var $loader = '<div id="loading" />';
+    $($loader).prependTo('body').show();
+    changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);*/
+  };
+
+  this.gotoStayCard = function(){
     var $loader = '<div id="loading" />';
     $($loader).prependTo('body').show();
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
+  };
+
+  this.gotoBillCard = function(){
+      //var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false&reservation_id=4";
+      var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
+      var viewDom = $("#view-nested-third");
+      var params = {"reservation_id": that.reservation_id};
+      var nextViewParams = {"showanimation": true, "from-view" : views.ROOM_ASSIGNMENT};
+      sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
+  };
+
+
+  this.roomUpgradeSelected = function(e){
+    e.preventDefault();
+    var upsellAmountId = $(this).attr('data-value');
+    var roomNumberSelected = $(this).attr('data-room-number');
+    var reservationId = that.reservation_id;
+    var postParams = {"reservation_id": reservationId, "upsell_amount_id": upsellAmountId};
+    $('#reservation-'+reservationId+'-room-number').html("");
+    var roomHtml = "<strong class='room-number ready'>"+roomNumberSelected+"</strong>";
+    $('#reservation-'+reservationId+'-room-number').html(roomHtml);
+
+    if(that.viewParams.next_view == views.STAYCARD){
+    that.gotoStayCard(); 
+    }
+    else if (that.viewParams.next_view == views.BILLCARD){
+      that.gotoBillCard(); 
+    }
+    
+    $.ajax({
+        type:       'POST',
+        url:        "/staff/reservations/upgrade_room",
+        data: postParams,
+        dataType:   'json',
+        success: function(response){
+          if(response.status == "success"){
+          }else if(response.status == "failure"){
+          }
+        },
+        error: function(){
+        }
+    });
+
+    if(that.viewParams.next_view == views.STAYCARD){
+      that.gotoStayCard();
+    }
+    else if(that.viewParams.next_view == views.BILLCARD){
+      that.gotoBillCard();
+    }
+
+
   };
 
 
