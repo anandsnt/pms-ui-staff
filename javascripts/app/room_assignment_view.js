@@ -22,6 +22,8 @@ var RoomAssignmentView = function(viewDom){
     //that.myDom.find($('.rooms-listing #room-type-selectbox')
       //.change('focusout', that.filterByRoomType));
     that.myDom.find('#room-assignment-button').on('click',that.backButtonClicked); 
+    that.myDom.find('#clear-filters-button').on('click',that.clearFiltersClicked); 
+
 
   }
 
@@ -59,6 +61,18 @@ var RoomAssignmentView = function(viewDom){
         }
     });
   };
+
+  this.clearFiltersClicked = function(e){
+    var filteredRoomList = [];
+    for (var i = 0; i< that.roomCompleteList.length; i++){
+        if((that.roomCompleteList[i].room_status === "READY") &&
+         (that.roomCompleteList[i].fo_status === "VACANT")){
+          filteredRoomList.push(that.roomCompleteList[i]); 
+      }
+    }
+    //Apply filters using due-out status, ready status.
+    that.displayRoomsList(filteredRoomList);
+  }
 
   this.filterOptionChecked = function(e){
     that.handleMultipleSelection(e);
@@ -252,10 +266,8 @@ var RoomAssignmentView = function(viewDom){
   };
 
   this.applyFilterForGroup = function(roomListToFilter, filters, operation){
-    console.log(JSON.stringify(filters));
     var filteredRoomList = [];
     if(operation === "OR"){
-      console.log("or");
       $.each(roomListToFilter, function( i, room) {
         var matchFound = that.roomSatisfyFilters(room, filters, operation);
         if(matchFound){
@@ -263,7 +275,6 @@ var RoomAssignmentView = function(viewDom){
         }
       });
     }else{
-      console.log("and");
       var matchCountRequired = filters.length;
       $.each(roomListToFilter, function( i, room) {
           var roomFeatureMatch = 0;
