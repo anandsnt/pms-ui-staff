@@ -5,6 +5,7 @@ var StayCard = function(viewDom){
   this.reservation_id = getReservationId();
   this.pageinit = function(){
     setUpStaycard(that.myDom);
+
     that.reservation_id = getReservationId();
     //Bind staycard events
 
@@ -13,8 +14,8 @@ var StayCard = function(viewDom){
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
     that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
-	that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
-    that.myDom.find('#reservation-'+ that.reservation_id +'-room-number').on('click',that.goToRoomAssignmentView);
+        that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
+    that.myDom.find('#reservation-'+ that.reservation_id +'-room-number').on('click',that.roomNumberClicked);
     that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
     that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);
     that.myDom.find('#upgrade-btn').on('click',that.roomUpgradesClicked);
@@ -25,42 +26,52 @@ var StayCard = function(viewDom){
   };
   
   this.changeAvathar = function(e){
-	  var img_src = getAvatharUrl($(this).val());
-	  $("#guest-card-header .guest-image img").attr("src", img_src);  
+          var img_src = getAvatharUrl($(this).val());
+          $("#guest-card-header .guest-image img").attr("src", img_src);  
   };
+
+  this.roomNumberClicked = function(e){
+    e.preventDefault();
+    var nextViewParams = {"next_view": views.STAYCARD};
+    that.goToRoomAssignmentView(nextViewParams);
+  };
+
   this.roomUpgradesClicked = function(e){
     e.preventDefault();
-    var viewParams = {"next_view" : "staycard"};
-    that.goToRoomUpgradeView(viewParams);
+    var nextViewParams = {"showanimation": true, "next_view" : views.STAYCARD};
+    that.goToRoomUpgradeView(nextViewParams);
 
   };
+
  this.executeLoadingAnimation = function(){
-  	if (this.viewParams === undefined) return;
-  	if (this.viewParams["showanimation"] === false) return;
-	
-	if (this.viewParams["current-view"] === "bill_card_view")
-  		changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);
-  	else if (this.viewParams["current-view"] === "room_upgrades_view"){
+          if (this.viewParams === undefined) return;
+          if (this.viewParams["showanimation"] === false) return;
+        
+        if (this.viewParams["current-view"] === "bill_card_view")
+                  changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);
+          else if (this.viewParams["current-view"] === "room_upgrades_view"){
 
-  		changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
-  	}
-  		
-  	 
+                  changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
+          }
+                  
+           
   };
-  this.goToRoomAssignmentView = function(e){
-    e.preventDefault();
+
+  
+
+  this.goToRoomAssignmentView = function(nextViewParams){
     var viewURL = "staff/preferences/room_assignment";
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
-    var params = {"reservation_id": reservation_id, "next_view": "staycard"};
-    sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
+    var params = {"reservation_id": reservation_id};
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams);
   };
-  this.goToRoomUpgradeView = function(){
+
+  this.goToRoomUpgradeView = function(nextViewParams){
     var viewURL = "staff/reservations/room_upsell_options";
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
     var params = {"reservation_id": reservation_id};
-    var nextViewParams = {"showanimation": true, "current-view" : "staycard" };
     sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
   };
 
@@ -86,39 +97,42 @@ var StayCard = function(viewDom){
   };
 
   this.validateEmailAndPhone = function(e){
-  	var phone_num = $("#gc-phone").val();
-  	var email = $("#gc-email").val();
+          var phone_num = $("#gc-phone").val();
+          var email = $("#gc-email").val();
 
-  	if(phone_num == "" && email == ""){
-  	       	var validateCheckinModal = new ValidateCheckinModal();
-  	       	validateCheckinModal.initialize();
-  	       	validateCheckinModal.params = {"type": "NoPhoneNoEmail"};
-  	}
-  	else if(phone_num == ""){
-  	       	var validateCheckinModal = new ValidateCheckinModal();
-  	       	validateCheckinModal.initialize();
-  	       	validateCheckinModal.params = {"type": "NoPhone"};
-  	}
-  	else if(email == ""){
-  	       	var validateCheckinModal = new ValidateCheckinModal();
-  	       	validateCheckinModal.initialize();
-  	       	validateCheckinModal.params = {"type": "NoEmail"};
-  	}
+          if(phone_num == "" && email == ""){
+                         var validateCheckinModal = new ValidateCheckinModal();
+                         validateCheckinModal.initialize();
+                         validateCheckinModal.params = {"type": "NoPhoneNoEmail"};
+          }
+          else if(phone_num == ""){
+                         var validateCheckinModal = new ValidateCheckinModal();
+                         validateCheckinModal.initialize();
+                         validateCheckinModal.params = {"type": "NoPhone"};
+          }
+          else if(email == ""){
+                         var validateCheckinModal = new ValidateCheckinModal();
+                         validateCheckinModal.initialize();
+                         validateCheckinModal.params = {"type": "NoEmail"};
+          }
 
     else if($.trim(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
-      		that.goToRoomAssignmentView(e);
+          var nextViewParams = {"next_view": views.BILLCARD};
+                      that.goToRoomAssignmentView(nextViewParams);
     }
-    else if(that.myDom.find('#reservation-checkin').attr('data-upsell-enabled') == "true"){
-      		that.goToRoomUpgradeView();
+    else if((that.myDom.find('#reservation-checkin').attr('data-force-upsell') == "true")
+     &&(that.myDom.find('#reservation-checkin').attr('data-upsell-available') == "true")){
+          var nextViewParams = {"showanimation": true, "next_view" : views.BILLCARD };
+                      that.goToRoomUpgradeView(nextViewParams);
     }
     else{
-    		that.goToBillCardView();
+                    that.goToBillCardView("CheckinButton");
     }
   };
 
 
   this.initSubViews = function(){
-  	var reservationPaymentView = new ReservationPaymentView($("#reservation-card-payment"));
+          var reservationPaymentView = new ReservationPaymentView($("#reservation-card-payment"));
     reservationPaymentView.initialize();
     var reservationCardLoyaltyView = new ReservationCardLoyaltyView($("#reservationcard-loyalty"));
     reservationCardLoyaltyView.initialize();
@@ -130,21 +144,21 @@ var StayCard = function(viewDom){
   };
 
 
-  this.setNewspaperPreferance = function(e){  	
-  	var newspaperValue = $('#reservation_newspaper').val();
-  	$.ajax({
-      	type : 'POST',
-      	url : "reservation/add_newspaper_preference",
-      	data : {"reservation_id": that.reservation_id, "selected_newspaper" :newspaperValue } ,
-      	success : function(data) {
-          	if(data.status == "success"){
-          	}
-          	else{
-          	}
-      	},
-      	error : function() {
-      	}
-  	});
+  this.setNewspaperPreferance = function(e){          
+          var newspaperValue = $('#reservation_newspaper').val();
+          $.ajax({
+              type : 'POST',
+              url : "reservation/add_newspaper_preference",
+              data : {"reservation_id": tha27t.reservation_id, "selected_newspaper" :newspaperValue } ,
+              success : function(data) {
+                  if(data.status == "success"){
+                  }
+                  else{
+                  }
+              },
+              error : function() {
+              }
+          });
   };
 
   
@@ -180,7 +194,7 @@ var StayCard = function(viewDom){
         url : "staff/staycards/reservation_details?reservation=" + reservation,
         dataType : 'html',
         async:false,
-        success : function(data) {        	
+        success : function(data) {                
           $("#" + currentTimeline).append(data);
           createViewScroll("#reservation-content-"+reservation);
         },
@@ -234,40 +248,35 @@ var StayCard = function(viewDom){
       that.updateGuestDetails($(this).val(), $(this).attr('data-val'));
     };
     
-	this.setWakeUpCallModal = function(e){
-		var setWakeUpCallModal = new SetWakeUpCallModal();
-    	setWakeUpCallModal.params = {"reservation_id" : that.reservation_id};
-    	setWakeUpCallModal.type ="POST";
-    	setWakeUpCallModal.initialize();
-   	};
+        this.setWakeUpCallModal = function(e){
+                var setWakeUpCallModal = new SetWakeUpCallModal();
+            setWakeUpCallModal.params = {"reservation_id" : that.reservation_id};
+            setWakeUpCallModal.type ="POST";
+            setWakeUpCallModal.initialize();
+           };
     this.addKeysModal = function(e){
-		var addKeysModal = new AddKeysModal();
-    	addKeysModal.initialize();
+                var addKeysModal = new AddKeysModal();
+            addKeysModal.initialize();
     };
     
     this.clickedCheckoutButton = function(){
-
-      	that.goToBillCardView();
+              that.goToBillCardView("CheckoutButton");
     };
     
-    this.clickedViewBillButton = function(){
-      	that.goToBillCardView();
-      	// To Display Guest Bill screen in detailed mode
-      	$("#bills #bill1 #bill1-total-fees #bill1-fees").removeClass("hidden");
-
+    this.clickedViewBillButton = function(e){
+              that.goToBillCardView("ViewBillButton");
     };
+    
     this.clickedTotalStayCost = function(){
-    	that.goToBillCardView();
-    }
-    this.goToBillCardView = function (){
+            that.goToBillCardView("TotalStayCost");
+    };
 
-      var viewURL = "staff/reservation/bill_card";
-      var viewDom = $("#view-nested-third");
-      var params = {"reservation_id": that.reservation_id};
-      var nextViewParams = {"showanimation": true, "current-view" : "staycard" };
-      sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
-
+    this.goToBillCardView = function (clickedButton){
+            var viewURL = "staff/reservation/bill_card";
+                //var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
+                var viewDom = $("#view-nested-third");
+                var params = {"reservation_id": that.reservation_id};
+                var nextViewParams = {"showanimation": true, "from-view" : views.STAYCARD, "clickedButton":clickedButton };
+                sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
     };
 };
-
-

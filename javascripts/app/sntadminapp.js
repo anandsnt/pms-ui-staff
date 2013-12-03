@@ -1,7 +1,7 @@
 var adminApp = function(){
     var that = this;
     this.clearReplacingDiv = function() {	
-	  $("#replacing-div").html("");
+	  $("#replacing-div-first").html("");
 	  $($(this).attr("href")).show();
     };
     this.appendNewPage = function(event){ 		
@@ -11,7 +11,7 @@ var adminApp = function(){
                     event.preventDefault();		  
                     var viewParams = {};
                     $(this).parents('section:eq(0)').hide();
-                    sntapp.fetchAndRenderView(url, $("#replacing-div"), viewParams);
+                    sntapp.fetchAndRenderView(url, $("#replacing-div-first"), viewParams);
             }
     };
     
