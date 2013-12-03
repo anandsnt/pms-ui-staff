@@ -12,62 +12,78 @@ var UpsellRoomDetailsView = function(domRef){
      });
   	 that.myDom.find('#save').on('click',that.saveDailyUpSellSetup);
   };
+  //Save daily upsell rooms set up
   this.saveDailyUpSellSetup = function(){
-  	console.log("saveDailyUpSellSetup");
-  	
-  	 var len1 = that.myDom.find('#level_one ul li').length;
-  	 var len2 = that.myDom.find('#level_two ul li').length;
-  	 var len3 = that.myDom.find('#level_three ul li').length;
-  	 var upsell_rooms = that.myDom.find('#upsell-rooms').val();
-  	 var daily_upsell_targets = that.myDom.find('#daily-upsell-targets').val();
-  	 var rooms = that.myDom.find('#rooms').val();
-  	 var upsell_for_one_night = that.myDom.find('#upsell_for_one_night').val();
-  	 var force_upsell = that.myDom.find('#force_upsell').val();
-  	 var upsell_amounts = that.myDom.find('#upsell_amounts').val();
-  	 console.log("len1 =",len1);
-  	 console.log("len2 =",len2);
-  	 console.log("len3 =",len3);
-  	 console.log("upsell_rooms =",upsell_rooms)
-  	 console.log("daily_upsell_targets =",daily_upsell_targets);
-  	 console.log("rooms =",rooms);
-  	 console.log("upsell_for_one_night =",upsell_for_one_night);
-  	 console.log("force_upsell =",force_upsell);
-  	 console.log("upsell_amounts =",upsell_amounts); 
-  	 var upsell_level1 = [];
-  	 var upsell_level2 = [];
-  	 var upsell_level3 = [];
   	 
-  	 for (var i=1;i<=len1;i++){
-  	 	console.log("upsell_level1.push = ",that.myDom.find("#level_one ul li:nth-child("+i+")").val());
-  	 	upsell_level1.push(that.myDom.find("#level_one ul li:nth-child("+i+")").val());
+  	 var is_upsell_on = "false";
+  	 if($("#div-upsell-rooms").hasClass("on")){
+  	 	var is_upsell_on = "true";
   	 }
-  	 for (var i=1;i<=len2;i++){
-  	 	console.log("upsell_level2.push = ",that.myDom.find("#level_two ul li:nth-child("+i+")").val());
-  	 	upsell_level2.push(that.myDom.find("#level_two ul li:nth-child("+i+")").val());
+  	 var is_one_night_only = "false";
+  	 if($("#upsell_for_one_night").parent("label:eq(0)").hasClass("checked")) {
+	  	  var is_one_night_only = "true";
+	 }
+	 var is_force_upsell = "false";
+  	 if($("#force_upsell").parent("label:eq(0)").hasClass("checked")) {
+	  	  var is_force_upsell = "true";
+	 }
+  	 var total_upsell_target_amount = that.myDom.find('#daily-upsell-targets-amount').val(),
+  	 total_upsell_target_rooms = that.myDom.find('#daily-upsell-target-rooms').val(),
+  	 upsell_amounts_count = that.myDom.find('#upsell_amounts_count').val(),
+  	 upsell_levels_count = that.myDom.find('#total_level_count').val();
+  	 // to create upsell amonts array
+  	 var upsell_amounts = [];
+  	 for(i=0; i< upsell_amounts_count; i++){
+  	 	var upsell_amount_data = {};
+  	 	upsell_amount_data.amount = $("#upsell_amounts_"+i).val();
+  	 	upsell_amount_data.level_from = $("#level_from"+i).val();
+  	 	upsell_amount_data.level_to = $("#level_to"+i).val();
+  	 	upsell_amounts.push(upsell_amount_data);
   	 }
-  	 for (var i=1;i<=len3;i++){
-  	 	console.log("upsell_level3.push = ",that.myDom.find("#level_three ul li:nth-child("+i+")").val());
-  	 	upsell_level3.push(that.myDom.find("#level_three ul li:nth-child("+i+")").val());
+  	 //to create upsell room levels array
+  	 var upsell_room_levels = [];
+  	 for(j=1; j<= upsell_levels_count; j++){
+  	 	var len = that.myDom.find('#level_'+j+' ul li').length;
+  	 	var upsell_level_data = {};
+  	 	upsell_level_data.level_id = j;
+  	 	upsell_level_data.room_types = [];
+  	 	for (var k=1;k<=len;k++){
+  	 		upsell_level_data.room_types.push(that.myDom.find('#level_'+j+' li:nth-child('+k+')').val());
+  	 	}
+  	 	upsell_room_levels.push(upsell_level_data);
   	 }
   	 
+  	 var data = {};
   	 
-  	 console.log("upsell_level1 ="+upsell_level1);
-  	 console.log("upsell_level2 ="+upsell_level2);
-  	 console.log("upsell_level3 ="+upsell_level3);
-  	  
-  	  var upsellrooms = {};
-  	  upsellrooms.upsell_setup ={};
-  	  upsellrooms.upsell_setup.is_force_upsell = that.myDom.find('#force_upsell').val();
-  	  upsellrooms.upsell_setup.is_one_night_only = that.myDom.find('#upsell_for_one_night').val();
-  	  upsellrooms.upsell_setup.is_upsell_on = that.myDom.find('#upsell-rooms').val();
-  	  upsellrooms.upsell_setup.total_upsell_target_amount = that.myDom.find('#daily-upsell-targets').val();
-  	  upsellrooms.upsell_setup.total_upsell_target_rooms = that.myDom.find('#rooms').val();
-  	  
-  	  upsellrooms.upsell_amounts =[];
-  	  upsell_amounts = {};
-  	  upsell_amounts[ "amount"] = that.myDom.find('#upsell_amounts').val();
-  	  upsellrooms.upsell_amounts.push(upsell_amounts);
+  	 var upsell_setup = {};
+  	 
+  	 upsell_setup.is_force_upsell = is_force_upsell;
+  	 upsell_setup.is_one_night_only = is_one_night_only;
+  	 upsell_setup.is_upsell_on = is_upsell_on;
+  	 upsell_setup.total_upsell_target_amount = total_upsell_target_amount;
+  	 upsell_setup.total_upsell_target_rooms = total_upsell_target_rooms;
+  	 
+  	 data.upsell_setup = upsell_setup;
+  	 data.upsell_amounts = upsell_amounts;
+  	 data.upsell_room_levels = upsell_room_levels;
+  	 console.log(JSON.stringify(data));
+  	 
+  	 $.ajax({
+			type: "PUT",
+			url : '/admin/hotels/'+currentHotel,
+			dataType: 'json',
+			data :data,
+			success : function(data) {
+				if(data.status == "success"){
+					console.log("Saved Successfully");
+					that.gotoPreviousPage();
+				}
+			},
+			error : function() {
+				alert("Sorry, not there yet!");
+			}
+		});
   	 
   	  
-  }
+  };
 };
