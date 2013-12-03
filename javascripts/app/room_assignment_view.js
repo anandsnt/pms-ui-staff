@@ -241,7 +241,7 @@ var RoomAssignmentView = function(viewDom){
       var operation = "OR";
       //if operation is AND, 
       //in a group, search for all the checked filter values should be availabel in room list.
-      if(filterGroup.group_name == "room-feature"){
+      if(filterGroup.group_name == "ROOM FEATURE"){
         operation = "AND";
       }
       filteredRoomList = that.applyFilterForGroup(filteredRoomList, filterGroup.filters, operation);
@@ -252,8 +252,10 @@ var RoomAssignmentView = function(viewDom){
   };
 
   this.applyFilterForGroup = function(roomListToFilter, filters, operation){
+    console.log(JSON.stringify(filters));
     var filteredRoomList = [];
     if(operation === "OR"){
+      console.log("or");
       $.each(roomListToFilter, function( i, room) {
         var matchFound = that.roomSatisfyFilters(room, filters, operation);
         if(matchFound){
@@ -261,11 +263,12 @@ var RoomAssignmentView = function(viewDom){
         }
       });
     }else{
+      console.log("and");
       var matchCountRequired = filters.length;
       $.each(roomListToFilter, function( i, room) {
           var roomFeatureMatch = 0;
           for(var j=0; j<filters.length; j++){
-            if(room.room_features.indexOf(filters[j])>= 0){
+            if(room.room_features.indexOf(parseInt(filters[j]))>= 0){
               roomFeatureMatch++;
             }
           }
@@ -285,7 +288,7 @@ var RoomAssignmentView = function(viewDom){
   this.roomSatisfyFilters = function(room, filters, operation){
     var filterMatch = false;
     for(var j=0; j<filters.length; j++){
-      if(room.room_features.indexOf(filters[j])>= 0){
+      if(room.room_features.indexOf(parseInt(filters[j]))>= 0){
         filterMatch = true;
       }
     }
