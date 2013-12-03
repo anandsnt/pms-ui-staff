@@ -28,7 +28,7 @@ var HotelDetailsView = function(domRef){
 	  }
 	  else
 		  $("#replacing-div-first").html("");
-	  $(that.viewParams['backDom']).show();	  
+	  that.viewParams['backDom'].show();	  
   };
 
   this.saveHotelDetails =  function(){
