@@ -155,7 +155,7 @@ var RegistrationCardView = function(viewDom){
   };
   
   this.payButtonClicked = function(){
-  	var billCardPaymentModal = new BillCardPaymentModal();
+  	var billCardPaymentModal = new BillCardPaymentModal(that.reloadBillCardPage);
   	billCardPaymentModal.initialize();
   	billCardPaymentModal.params = {"bill_number":that.bill_number};
   };

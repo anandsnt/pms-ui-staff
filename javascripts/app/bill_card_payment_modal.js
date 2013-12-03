@@ -1,4 +1,4 @@
-var BillCardPaymentModal = function(){
+var BillCardPaymentModal = function(callBack){
   	BaseModal.call(this);
   	var that = this;
   	this.reservation_id = getReservationId();
@@ -29,7 +29,7 @@ var BillCardPaymentModal = function(){
 			dataType : 'json',
 			contentType : 'application/json',
 			success : function(data) {
-			    that.hide();
+			    that.hide(callBack);
 			},
 			error : function() {
 			}
