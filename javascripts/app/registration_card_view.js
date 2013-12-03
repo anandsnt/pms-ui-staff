@@ -96,12 +96,16 @@ var RegistrationCardView = function(viewDom){
 		    success: function(data) {
 		    	if(data.status == "success"){
 				      var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED IN";
-					  var successModal = new SuccessModal();
+					  var successModal = new SuccessModal(that.openAddKeysModal);
 					  successModal.initialize();
 					  successModal.params = {"message": message};
 				}
 				if(data.status == "failure"){
-					alert(data.errors);
+          //that.openAddKeysModal();
+					var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED IN";
+            var successModal = new SuccessModal(that.openAddKeysModal);
+            successModal.initialize();
+            successModal.params = {"message": message};
 				}
 		    },
 		    error: function(){
@@ -164,5 +168,10 @@ var RegistrationCardView = function(viewDom){
   };
   this.goToSearchScreen = function(){
   	switchPage('main-page','search','','page-main-second','move-from-left');
+  };
+
+  this.openAddKeysModal = function(e){
+    var addKeysModal = new AddKeysModal();
+      addKeysModal.initialize();
   };
 };
