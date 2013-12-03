@@ -16,7 +16,6 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
 	that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
     that.myDom.find('#reservation-'+ that.reservation_id +'-room-number').on('click',that.roomNumberClicked);
-    that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
     that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);
     that.myDom.find('#upgrade-btn').on('click',that.roomUpgradesClicked);
     that.myDom.find("#title").on('change', that.changeAvathar);
@@ -249,10 +248,15 @@ var StayCard = function(viewDom){
     };
     
 	this.setWakeUpCallModal = function(e){
-		var setWakeUpCallModal = new SetWakeUpCallModal();
-    	setWakeUpCallModal.params = {"reservation_id" : that.reservation_id};
-    	setWakeUpCallModal.type ="POST";
-    	setWakeUpCallModal.initialize();
+		if($(e.target).hasClass("feature-available")){	
+			var setWakeUpCallModal = new SetWakeUpCallModal();
+	    	setWakeUpCallModal.params = {"reservation_id" : that.reservation_id};
+	    	setWakeUpCallModal.type ="POST";
+	    	setWakeUpCallModal.initialize();
+   		}
+   		else{
+   			that.showErrorMessage("Feature not available");
+   		}
    	};
     this.addKeysModal = function(e){
 		var addKeysModal = new AddKeysModal();
