@@ -28,6 +28,10 @@ var BaseView = function(viewDom){
     that.initSubViews();
   };
   
-  
+  this.showErrorMessage = function(error,callBack){
+  	var failureModal = new FailureModal(callBack);
+	failureModal.initialize();
+	failureModal.params = {"message": error};
+  };
   
 };

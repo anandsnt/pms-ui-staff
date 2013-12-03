@@ -79,7 +79,7 @@ var RegistrationCardView = function(viewDom){
   	else if(!terms_and_conditions) errorMessage ="Please check agree to the Terms & Conditions";
   	
    	if (errorMessage!="") {
-   		alert(errorMessage);
+   		that.showErrorMessage(errorMessage);
   		return;
   	}
   	else{	
@@ -97,8 +97,8 @@ var RegistrationCardView = function(viewDom){
 		    	if(data.status == "success"){
 		    		that.openAddKeysModal();
 				}
-				if(data.status == "failure"){
-          			
+				else if(data.status == "failure"){
+					that.showErrorMessage(data.errors);
 				}
 		    },
 		    error: function(){
@@ -175,4 +175,5 @@ var RegistrationCardView = function(viewDom){
 	successModal.initialize();
 	successModal.params = {"message": message};
   };
+  
 };
