@@ -36,8 +36,9 @@ var UpsellRoomDetailsView = function(domRef){
   	 for(i=0; i< upsell_amounts_count; i++){
   	 	var upsell_amount_data = {};
   	 	upsell_amount_data.amount = $("#upsell_amounts_"+i).val();
-  	 	upsell_amount_data.level_from = $("#level_from"+i).val();
-  	 	upsell_amount_data.level_to = $("#level_to"+i).val();
+  	 	upsell_amount_data.level_from = $("#level_from_"+i).val();
+  	 	upsell_amount_data.level_to = $("#level_to_"+i).val();
+  	 	console.log("reached ===="+ $("#level_from_"+i).val());
   	 	upsell_amounts.push(upsell_amount_data);
   	 }
   	 //to create upsell room levels array
@@ -69,8 +70,8 @@ var UpsellRoomDetailsView = function(domRef){
   	 console.log(JSON.stringify(data));
   	 
   	 $.ajax({
-			type: "PUT",
-			url : '/admin/hotels/'+currentHotel,
+			type: "POST",
+			url : "/admin/room_upsells/update_upsell_options",
 			dataType: 'json',
 			data :data,
 			success : function(data) {
