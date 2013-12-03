@@ -48,25 +48,25 @@ var SetWakeUpCallModal = function() {
     
 	this.onOffSwitchWakeupDate = function() {
 		var onOffSwitch = '.switch-button#wakeupDate';
-		$(onOffSwitch).each(function() {
-			var onOff = $(this), onOffChecked = 'on', onOffDisabled = 'disabled', onOffInput = 'input[type="checkbox"]', text = '.value', textOn = onOff.attr('data-on'), textOff = onOff.attr('data-off');
 
-			if (onOff.children(onOffInput).length) {
-				onOff.removeClass(onOffChecked);
-				onOff.find(text).text(textOff);
+		$(onOffSwitch).each(function(){
+	        var onOff = $(this),
+	            onOffChecked = 'on',
+	            onOffDisabled = 'disabled',
+	            onOffInput = 'input[type="checkbox"]';
 
-				onOff.children(onOffInput + ':checked').each(function() {
-					onOff.addClass(onOffChecked);
-					onOff.find(text).text(textOn);
-				});
+	        if (onOff.children(onOffInput).length) {
+	            onOff.removeClass(onOffChecked);
 
-				onOff.children(onOffInput + ':disabled').each(function() {
-					onOff.addClass.addClass(onOffDisabled);
-					onOff.find(text).text('');
-				});
-			}
-		});
+	            onOff.children(onOffInput + ':checked').each(function(){
+	                onOff.addClass(onOffChecked);
+	            });
 
+	            onOff.children(onOffInput + ':disabled').each(function(){
+	                onOff.addClass.addClass(onOffDisabled);
+	            });
+	        }
+	    });
 	};
     // Function to enable/disable buttons
 	this.changedWakeUpTime = function() {

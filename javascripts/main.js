@@ -124,23 +124,17 @@ function onOffSwitch() {
         var onOff = $(this),
             onOffChecked = 'on',
             onOffDisabled = 'disabled',
-            onOffInput = 'input[type="checkbox"]',
-            text = '.value',
-            textOn = onOff.attr('data-on'),
-            textOff = onOff.attr('data-off');
+            onOffInput = 'input[type="checkbox"]';
 
         if (onOff.children(onOffInput).length) {
             onOff.removeClass(onOffChecked);
-            onOff.find(text).text(textOff);
 
             onOff.children(onOffInput + ':checked').each(function(){
                 onOff.addClass(onOffChecked);
-                onOff.find(text).text(textOn);
             });
 
             onOff.children(onOffInput + ':disabled').each(function(){
                 onOff.addClass.addClass(onOffDisabled);
-                onOff.find(text).text('');
             });
         }
     });
