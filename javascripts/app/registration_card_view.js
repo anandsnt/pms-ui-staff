@@ -40,17 +40,20 @@ var RegistrationCardView = function(viewDom){
   	if (this.viewParams === undefined) return;
   	if (this.viewParams["showanimation"] === false) return;
 	
-	if (this.viewParams["current-view"] === "staycard")
+	  if (this.viewParams["from-view"] === views.STAYCARD)
   		changeView("nested-view", "", "view-nested-first", "view-nested-third", "move-from-right", false);
-  	else
+  	else if ((this.viewParams["from-view"] === views.ROOM_ASSIGNMENT)||
+            (this.viewParams["from-view"] === views.ROOM_UPGRADES))
   		changeView("nested-view", "", "view-nested-second", "view-nested-third", "move-from-right", false);
   	 
   };
   
   this.delegateEvents = function(){
+  	this.bill_number = that.myDom.find("#bills li.active").attr('data-bill-number');
   	that.myDom.find('#checkin-button').on('click', that.completeCheckin);
   	that.myDom.find('#clear-signature').on('click',that.clearSignature);
   	that.myDom.find('#back-to-staycard').on('click',that.gotoStayCard);
+  	that.myDom.find('#complete-checkout-button').on('click',that.clickedCompleteCheckout);
   	that.myDom.find('#pay-button').on('click',that.payButtonClicked);
   };
   
@@ -112,24 +115,54 @@ var RegistrationCardView = function(viewDom){
 
   this.gotoStayCard = function(e){
 	e.preventDefault();
+  //goBackToView("", "view-nested-third", "move-from-left");
 	var $loader = '<div id="loading" />';
 	$($loader).prependTo('body').show();
 	
 	changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);
   };
-  this.goToRoomUpgradeView = function(){
+  this.goToRoomUpgradeView = function(e){
 	e.preventDefault();
+  //goBackToView("", "view-nested-third", "move-from-left");
 	var $loader = '<div id="loading" />';
 	$($loader).prependTo('body').show();  
 	changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);   
-
+  };
+  
+  this.clickedCompleteCheckout = function(e){
+  	e.stopPropagation();
+  	e.preventDefault();
+  	e.stopImmediatePropagation();
+  	
+  	var balance_amount = that.myDom.find("#balance-amount").attr("data-balance-amount");
+  	
+  	if(balance_amount != 0){
+  		// Payment modal
+  		that.payButtonClicked();
+  	}
+  	else{
+  		// Balance amount is 0 - complete check out action.
+  		$.ajax({
+		    type: "POST",
+		    url: '/staff/checkout',
+		    data : {"reservation_id" : that.reservation_id},
+		    success: function(data) {
+		    	var failureModal = new FailureModal();
+				failureModal.initialize();
+				failureModal.params = {"message": data.data};
+		    },
+		    error: function(){
+			}
+	  	});
+  	}
   };
   
   this.payButtonClicked = function(){
-  	var bill_number = that.myDom.find("#pay-button").attr('data-bill-number');
   	var billCardPaymentModal = new BillCardPaymentModal();
   	billCardPaymentModal.initialize();
-  	billCardPaymentModal.params = {"bill_number":bill_number};
+  	billCardPaymentModal.params = {"bill_number":that.bill_number};
   };
-  
+  this.goToSearchScreen = function(){
+  	switchPage('main-page','search','','page-main-second','move-from-left');
+  };
 };
