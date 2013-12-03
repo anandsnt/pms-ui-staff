@@ -95,13 +95,10 @@ var RegistrationCardView = function(viewDom){
 		    data : data,
 		    success: function(data) {
 		    	if(data.status == "success"){
-				      var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED IN";
-					  var successModal = new SuccessModal();
-					  successModal.initialize();
-					  successModal.params = {"message": message};
+		    		that.openAddKeysModal();
 				}
 				if(data.status == "failure"){
-					alert(data.errors);
+          			
 				}
 		    },
 		    error: function(){
@@ -147,7 +144,7 @@ var RegistrationCardView = function(viewDom){
 		    url: '/staff/checkout',
 		    data : {"reservation_id" : that.reservation_id},
 		    success: function(data) {
-		    	var failureModal = new FailureModal();
+		    	var failureModal = new FailureModal(that.goToSearchScreen);
 				failureModal.initialize();
 				failureModal.params = {"message": data.data};
 		    },
@@ -164,5 +161,18 @@ var RegistrationCardView = function(viewDom){
   };
   this.goToSearchScreen = function(){
   	switchPage('main-page','search','','page-main-second','move-from-left');
+  };
+
+  this.openAddKeysModal = function(e){
+    var addKeysModal = new AddKeysModal(that.showCheckinSuccessModal);
+    addKeysModal.initialize();
+    addKeysModal.params = {"source_page": "bill_card"};
+  };
+  
+  this.showCheckinSuccessModal = function(e){
+  	var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED IN";
+	var successModal = new SuccessModal(that.goToSearchScreen);
+	successModal.initialize();
+	successModal.params = {"message": message};
   };
 };

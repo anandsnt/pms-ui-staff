@@ -76,12 +76,13 @@ BaseModal = function() {
         that.delegateCancelEvent();
   		that.delegateEvents();
     }
-    this.hide = function (){
+    this.hide = function (callBack){
     	that.unbindCancelEvent();
     	that.unbindEvents();
         $('#modal, #modal-overlay').removeClass('modal-show'); 
         setTimeout(function() { 
             $('#modal').empty();
+        	if(typeof callBack === "function") callBack();
         }, 150);
     }
 }

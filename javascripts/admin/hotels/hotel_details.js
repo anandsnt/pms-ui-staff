@@ -28,7 +28,7 @@ var HotelDetailsView = function(domRef){
 	  }
 	  else
 		  $("#replacing-div-first").html("");
-	  $(that.viewParams['backDom']).show();	  
+	  that.viewParams['backDom'].show();	  
   };
 
   this.saveHotelDetails =  function(){
@@ -138,7 +138,11 @@ var HotelDetailsView = function(domRef){
 				success : function(data) {
 					if(data.status == "success"){
 						console.log("Saved Successfully");
-						that.gotoPreviousPage();
+						viewParams = {};
+						$("#replacing-div-first").show();
+						$("#replacing-div-second").html("");
+						sntapp.fetchAndRenderView("/admin/hotels", $("#replacing-div-first"), {}, false, viewParams);
+						// that.gotoPreviousPage();
 					}
 				},
 				error : function() {

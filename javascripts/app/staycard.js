@@ -149,7 +149,7 @@ var StayCard = function(viewDom){
   	$.ajax({
       	type : 'POST',
       	url : "reservation/add_newspaper_preference",
-      	data : {"reservation_id": tha27t.reservation_id, "selected_newspaper" :newspaperValue } ,
+      	data : {"reservation_id": that.reservation_id, "selected_newspaper" :newspaperValue } ,
       	success : function(data) {
           	if(data.status == "success"){
           	}
@@ -280,5 +280,3 @@ var StayCard = function(viewDom){
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
     };
 };
-
-

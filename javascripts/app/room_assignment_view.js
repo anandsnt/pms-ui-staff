@@ -22,6 +22,8 @@ var RoomAssignmentView = function(viewDom){
     //that.myDom.find($('.rooms-listing #room-type-selectbox')
       //.change('focusout', that.filterByRoomType));
     that.myDom.find('#room-assignment-button').on('click',that.backButtonClicked); 
+    that.myDom.find('#clear-filters-button').on('click',that.clearFiltersClicked); 
+
 
   }
 
@@ -59,6 +61,18 @@ var RoomAssignmentView = function(viewDom){
         }
     });
   };
+
+  this.clearFiltersClicked = function(e){
+    var filteredRoomList = [];
+    for (var i = 0; i< that.roomCompleteList.length; i++){
+        if((that.roomCompleteList[i].room_status === "READY") &&
+         (that.roomCompleteList[i].fo_status === "VACANT")){
+          filteredRoomList.push(that.roomCompleteList[i]); 
+      }
+    }
+    //Apply filters using due-out status, ready status.
+    that.displayRoomsList(filteredRoomList);
+  }
 
   this.filterOptionChecked = function(e){
     that.handleMultipleSelection(e);
@@ -241,7 +255,7 @@ var RoomAssignmentView = function(viewDom){
       var operation = "OR";
       //if operation is AND, 
       //in a group, search for all the checked filter values should be availabel in room list.
-      if(filterGroup.group_name == "room-feature"){
+      if(filterGroup.group_name == "ROOM FEATURE"){
         operation = "AND";
       }
       filteredRoomList = that.applyFilterForGroup(filteredRoomList, filterGroup.filters, operation);
@@ -265,7 +279,7 @@ var RoomAssignmentView = function(viewDom){
       $.each(roomListToFilter, function( i, room) {
           var roomFeatureMatch = 0;
           for(var j=0; j<filters.length; j++){
-            if(room.room_features.indexOf(filters[j])>= 0){
+            if(room.room_features.indexOf(parseInt(filters[j]))>= 0){
               roomFeatureMatch++;
             }
           }
@@ -285,7 +299,7 @@ var RoomAssignmentView = function(viewDom){
   this.roomSatisfyFilters = function(room, filters, operation){
     var filterMatch = false;
     for(var j=0; j<filters.length; j++){
-      if(room.room_features.indexOf(filters[j])>= 0){
+      if(room.room_features.indexOf(parseInt(filters[j]))>= 0){
         filterMatch = true;
       }
     }
@@ -369,8 +383,8 @@ var RoomAssignmentView = function(viewDom){
   };
 
   this.gotoBillCard = function(){
-      //var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false&reservation_id=4";
-      var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
+      var viewURL = "staff/reservation/bill_card";
+      //var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
       var viewDom = $("#view-nested-third");
       var params = {"reservation_id": that.reservation_id};
       var nextViewParams = {"showanimation": true, "from-view" : views.ROOM_ASSIGNMENT};
