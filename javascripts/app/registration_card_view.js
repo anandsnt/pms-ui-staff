@@ -151,7 +151,7 @@ var RegistrationCardView = function(viewDom){
 		    url: '/staff/checkout',
 		    data : {"reservation_id" : that.reservation_id},
 		    success: function(data) {
-		    	var failureModal = new FailureModal();
+		    	var failureModal = new FailureModal(that.goToSearchScreen);
 				failureModal.initialize();
 				failureModal.params = {"message": data.data};
 		    },
