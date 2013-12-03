@@ -29,6 +29,10 @@
 			background-position: 0 -360px;
 		}
 
+		&.icon-messages {
+			background-position: 0 -480px;
+		}
+
 		@media @highdpi {
 			background-image: @iconNoContent2x;
 			background-size: 120px, 125px;
@@ -58,8 +62,8 @@
 		}
 
 		/* Guest icons ***/
-		&.icon-location {  background-position: 5px -23px; background-size: 80px; }
-		&.icon-group { background-position: 5px -50px; background-size: 80px; }
+		&.icon-location {  background-position: 0 -23px; background-size: 80px; }
+		&.icon-group { background-position: 0 -50px; background-size: 80px; }
 		&.check-in { background-position: 8px -112px; }
 		&.check-out { background-position: 8px -152px; }
 		&.inhouse { background-position: 8px -192px; }
@@ -92,7 +96,7 @@
 			&.cancel { background-position: 5px -155px; }
 		}
 
-		&.room { background-position: 5px -875px; }
+		&.room { background-position: 5px -873px; }
 		&.nights { background-position: 5px -935px; }
 
 		&.icon-title {
@@ -109,14 +113,59 @@
 		&.icon-filter { background-position: 0 -1300px; }
 		&.icon-filter.active { background-position: 0 -1360px; }
 
+		/* Social Lobby Icons ***/
+		&.icon-show-conversations {
+			background-position: 1px -2199px;
+			&.active {
+				background-position: 1px -2259px;
+			}
+		}
+
+		&.icon-comment {
+			background-color: @softRed;
+			background-position: 5px -1955px;
+		}
+		&.icon-entered {
+			background-color: @green;
+			background-position: 6px -1416px;
+		}
+		&.icon-left {
+			background-color: @red;
+			background-position: 6px -1476px;
+		}
+		&.icon-staff-white {
+			background-color: @blue;
+			background-position: 5px -2015px;
+		}
+		&.icon-staff-blue {
+			background-position: 5px -2075px;
+		}
+
+		&.icon-lobby-activity { 
+			background-position: 12px -1712px;
+			&.active { background-position: 12px -1770px; }
+		}
+
+		&.icon-group-activity {
+			background-position: 15px -1832px;
+			&.active { background-position: 15px -1890px; }
+		}
+
+		&.icon-messages-guests { 
+			background-position: 15px -2310px;
+			&.active { background-position: 15px -2370px; }
+		}
+
+		&.icon-messages-staff {
+			background-position: 15px -2430px;
+			&.active { background-position: 15px -2490px; }
+		}
+
+		&.icon-pencil-blue { background-position: 3px -2137px; }
+
 		@media @highdpi {
 			background-image: @icons2x;
 			background-size: 120px;
-
-			&.icon-location,
-			&.icon-group {
-				background-size: 80px;
-			}
 		}
 	}
 
@@ -235,7 +284,7 @@
 	}
 
 /* Back buttone			==================================*/
-	.back-button:not(.button) {
+	.back-button:not(.button):not(#change-lobby) {
 		color: @logoPrimary;
 		text-transform: uppercase;
 		font-size: 18px;
@@ -266,10 +315,31 @@
 		text-transform: uppercase;
 		text-align: center;
 		vertical-align: middle;
-		color: #9f8606;
+		color: rgba(0,0,0,.5);
+		text-shadow: none;
 		background: @yellow;
 		.square(20px);
 		#border-radius > .rounded(20px);
+	}
+
+	.stars {
+		display: inline-block;
+		background-image: @stars;
+		background-repeat: no-repeat;
+		.hide-text;
+		.size(11px, 68px);
+
+		&.stars0 { background-position: 0 -55px; }
+		&.stars1 { background-position: 0 -44px; }
+		&.stars2 { background-position: 0 -33px; }
+		&.stars3 { background-position: 0 -22px; }
+		&.stars4 { background-position: 0 -11px; }
+		&.stars5 { background-position: 0 0; }
+
+		@media @highdpi {
+			background-image: @stars2x;
+			background-size: 68px;
+		}
 	}
 
 /* 4. LAYOUT
