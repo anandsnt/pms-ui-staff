@@ -38,6 +38,25 @@
     &.icon-delete { 
       background-position: 5px -546px; 
       .square(20px);
+
+      &.large-icon {
+        background-position: 0 -650px; 
+      }
+    }
+
+    &.icon-handle {
+      background-position: 0 -700px; 
+      &.dragging { background-position: 0 -750px; }
+    }
+
+    &.icon-mover-right {
+      background-position: 13px -788px; 
+      &.active { background-position: 13px -888px; }
+    }
+
+    &.icon-mover-left {
+      background-position: 13px -838px; 
+      &.active { background-position: 13px -938px; }
     }
   }
 
@@ -51,15 +70,12 @@
     padding-left: 20px;
 
     &.add { background: @icons no-repeat 0 -337px; }
-    &.remove { background: @icons no-repeat 0 -537px; }
+    &.remove { background: @icons no-repeat 0 -535px; }
     &.back { background: @icons no-repeat 0 -585px; }
   }
 
-/* Menu iconss      ==================================*/
-
-
+/* Menu icons     ==================================*/
   .icon-admin-menu {
-    
     background-image: @iconAdminMenu;
     background-repeat: no-repeat;
     background-color: transparent;
@@ -86,8 +102,6 @@
       &.in-quick-menu { background-position: 0 -150px; }
       &.moved { background-position: 0 -150px, 0 0; }
     }
-
-    
 
     &.icon-user {
       background-position: 0 -200px;
@@ -123,15 +137,7 @@
       &.in-quick-menu { background-position: 0 -650px; }
       &.moved { background-position: 0 -650px, 0 0; }
     }
-
   }
-  
-    
-
-
-
-
-
 
 /* Menu toggle icon         ======================*/
   .icon-toggle {
