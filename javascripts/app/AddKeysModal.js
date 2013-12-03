@@ -95,7 +95,7 @@ var AddKeysModal = function(callBack) {
 			async : false,
 			dataType : 'json',
 			contentType : 'application/json',
-			success : function() {
+			success : function(data) {
 				if (data.status == "success") {
 					// Commenting for now. Might be we need this in future
 					// $("#change-name #gc-email").val(key_guest_email);
