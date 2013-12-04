@@ -12,6 +12,15 @@ $.cachedScript = function(url, options) {
     return jQuery.ajax(options);
 };
 
+// Equal heights
+$.fn.maximize = function(size) {
+    var max = Math.max.apply(Math, jQuery.map(this, function (e) {
+        return jQuery(e).height();
+    }));
+
+    this[size](max);
+};
+
 // Chaining with intervals
 var chainedAnimation = function(){
     var This = this;
@@ -266,6 +275,12 @@ $(function($){
     onOffSwitch();   
     setupFile();
 
+    // Styled form elements - on dom inserted
+    $(document).ajaxComplete(function() {
+        styleCheckboxRadio();
+        onOffSwitch();
+    });
+    
     // Styled form elements - on click
     $(document).on('click', '.checkbox, .radio', function(e){
         e.stopImmediatePropagation();
@@ -315,7 +330,10 @@ $(function($){
     });
 
     // Masked input
-    $('.masked-input').keyup(resizeInput).each(resizeInput);
+    $(document).ajaxComplete(function() {
+        if($('.masked-input').length)
+            $('.masked-input').keyup(resizeInput).each(resizeInput);
+    });
 
     // Resize masked inputs to match content width
     $(document).on('focus', '.masked-input', function(){

@@ -1,8 +1,3 @@
-// Touch listeners
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-document.addEventListener('drag', function (e) { return true }, false);
-document.addEventListener('drop', function (e) { return true }, false);
-
 // Scroll global variables
 var pageScroll,
     viewScroll,

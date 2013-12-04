@@ -16,6 +16,42 @@ function loadInlineForm($target, $item){
     });
 }
 
+// Refresh sortable block after item move or drop
+function refreshSortable(){
+	$('.boxes:visible').each(function(){
+		var $placeholder = $(this).attr('data-placeholder');
+
+		if (!$(this).children('li').length){
+			$(this).addClass('empty').append('<span class="placeholder ui-state-disabled">' + $placeholder + '</span>');
+		} else {
+			$(this).removeClass('empty').find('.placeholder').remove();
+		}
+	});
+
+	setTimeout(function() {
+		$('.boxes:visible').removeAttr('style').maximize('height');
+	}, 300);
+}
+
+function setDatepicker($minDate, $maxDate, $yearRangeStart, $yearRangeStop){
+	$('.datepicker').datepicker({
+        showOn      : 'button',
+        dateFormat  : 'mm-dd-y',
+        changeMonth : true,
+        changeYear  : true,
+        minDate		: $minDate,
+        maxDate		: $maxDate,
+        yearRange   : $yearRangeStart + ':' + $yearRangeStop,
+        monthNamesShort: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
+        beforeShow: function(input, inst){
+            $('<div id="ui-datepicker-overlay" />').insertAfter('#ui-datepicker-div');
+        },
+        onClose: function(dateText, inst){ 
+            $('#ui-datepicker-overlay').remove();
+        }
+    });
+}
+
 var setUpAdmin = function(viewDom, delegate) {
 // $(function($){ 
 	this.delegate = delegate;
