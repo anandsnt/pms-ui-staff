@@ -1,17 +1,6 @@
 // Disable cache busting
 $.ajaxSetup({ cache: true });
 
-// Function for inline calling of scripts when screen is loaded
-$.cachedScript = function(url, options) {
-    options = $.extend( options || {}, {
-        dataType: "script",
-        cache: true,
-        url: url
-    });
-  
-    return jQuery.ajax(options);
-};
-
 // Equal heights
 $.fn.maximize = function(size) {
     var max = Math.max.apply(Math, jQuery.map(this, function (e) {
