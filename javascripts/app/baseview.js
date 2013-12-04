@@ -28,10 +28,20 @@ var BaseView = function(viewDom){
     that.initSubViews();
   };
   
-  this.showErrorMessage = function(error,callBack){
+  this.showErrorMessage = function(errorMessage,callBack){
+  	console.log("error"+errorMessage);
+  	console.log("callBack"+callBack);
   	var failureModal = new FailureModal(callBack);
 	failureModal.initialize();
-	failureModal.params = {"message": error};
+	failureModal.params = {"message": errorMessage};
+  };
+  
+  this.showSuccessMessage = function(successMessage,callBack){
+  	console.log("successMessage"+successMessage);
+  	console.log("callBack"+callBack);
+	var successModal = new SuccessModal(callBack);
+	successModal.initialize();
+	successModal.params = {"message": successMessage};
   };
   
 };

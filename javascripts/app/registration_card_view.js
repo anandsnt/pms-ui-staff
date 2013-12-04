@@ -134,46 +134,48 @@ var RegistrationCardView = function(viewDom){
   	var balance_amount = that.myDom.find("#balance-amount").attr("data-balance-amount");
   	
   	if(balance_amount != 0){
-  		// Payment modal
+  		// When balance amount is not 0 - perform payment action.
   		that.payButtonClicked();
   	}
   	else{
-  		// Balance amount is 0 - complete check out action.
+  		// When balance amount is 0 - perform complete check out action.
   		$.ajax({
 		    type: "POST",
 		    url: '/staff/checkout',
 		    data : {"reservation_id" : that.reservation_id},
 		    success: function(data) {
-		    	var failureModal = new FailureModal(that.goToSearchScreen);
-				failureModal.initialize();
-				failureModal.params = {"message": data.data};
+		    	if(data.status == "success"){
+		    		that.showSuccessMessage(data.data,that.goToSearchScreen);
+		    	}
+		    	else if(data.status == "failure"){
+		    		that.showErrorMessage(data.errors);
+		    	}
 		    },
 		    error: function(){
 			}
 	  	});
   	}
   };
-  
+  // To show payment modal
   this.payButtonClicked = function(){
   	var billCardPaymentModal = new BillCardPaymentModal(that.reloadBillCardPage);
   	billCardPaymentModal.initialize();
   	billCardPaymentModal.params = {"bill_number":that.bill_number};
   };
+  // Goto search screen
   this.goToSearchScreen = function(){
   	switchPage('main-page','search','','page-main-second','move-from-left');
   };
-
+  // To show add keys modal
   this.openAddKeysModal = function(e){
     var addKeysModal = new AddKeysModal(that.showCheckinSuccessModal);
     addKeysModal.initialize();
     addKeysModal.params = {"source_page": "bill_card"};
   };
-  
+  // To show success message after check in
   this.showCheckinSuccessModal = function(e){
   	var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED IN";
-	var successModal = new SuccessModal(that.goToSearchScreen);
-	successModal.initialize();
-	successModal.params = {"message": message};
+  	that.showSuccessMessage(message,that.goToSearchScreen);
   };
   
 };
