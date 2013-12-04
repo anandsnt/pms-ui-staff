@@ -29,7 +29,14 @@ var BillCardPaymentModal = function(callBack){
 			dataType : 'json',
 			contentType : 'application/json',
 			success : function(data) {
-			    that.hide(callBack);
+				if(data.status == "success"){
+					that.hide(callBack);
+					alert(data.data);
+				} 
+				else if(data.status == "failure"){
+					that.hide();
+					alert(data.errors);
+				}
 			},
 			error : function() {
 			}
