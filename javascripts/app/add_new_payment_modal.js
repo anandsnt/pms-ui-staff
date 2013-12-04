@@ -22,8 +22,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 		$name_on_card	= $("#new-payment #name-on-card").val();
 		$card_type 		= $("#payment-credit-type").val();
 		$card_number = $card_number_set;
-		$card_expiry = $expiry_month +"/"+$expiry_year;
-		$card_expiry = "20"+$expiry_year+"-"+$expiry_month+"-01";
+		$card_expiry = $expiry_month && $expiry_year ? "20"+$expiry_year+"-"+$expiry_month+"-01" : "";
 		$guest_id = $("#guest_id").val();
 		
 		// MOVED TO SERVER SIDE VALIDATION ONLY
@@ -52,8 +51,8 @@ var AddNewPaymentModal = function(fromPagePayment){
 		
 		var $image = "<img src='/assets/"+$("#new-payment #payment-credit-type").val().toLowerCase()+".png' alt='"+$("#new-payment #payment-credit-type").val().toLowerCase()+"'>";	
 		
-		$number = $card_number.substr($card_number.length - 5);			
-		$expiry = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
+		$number = $card_number.substr($card_number.length - 5);
+		$expiry = $expiry_month && $expiry_year ? $expiry_month + "/" + $expiry_year : "";		
 		$cardHolderName = $("#new-payment #name-on-card").val();
 		
 		var user_id = $("#user_id").val();
