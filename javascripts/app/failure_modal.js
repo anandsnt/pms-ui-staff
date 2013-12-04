@@ -10,6 +10,6 @@ var FailureModal = function(callBack) {
 	};
 	
 	this.okButtonClicked = function(){
-		callBack();
+		that.hide(callBack);
 	};
 }
