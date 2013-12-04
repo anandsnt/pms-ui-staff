@@ -29,16 +29,12 @@ var BaseView = function(viewDom){
   };
   
   this.showErrorMessage = function(errorMessage,callBack){
-  	console.log("error"+errorMessage);
-  	console.log("callBack"+callBack);
   	var failureModal = new FailureModal(callBack);
 	failureModal.initialize();
 	failureModal.params = {"message": errorMessage};
   };
   
   this.showSuccessMessage = function(successMessage,callBack){
-  	console.log("successMessage"+successMessage);
-  	console.log("callBack"+callBack);
 	var successModal = new SuccessModal(callBack);
 	successModal.initialize();
 	successModal.params = {"message": successMessage};
