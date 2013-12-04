@@ -23,7 +23,6 @@ var RegistrationCardView = function(viewDom){
 	});
 	
 	var reservation_status = that.myDom.find("#registration-content").attr("data-reservation-status");
-	
 	if(this.viewParams.clickedButton == "ViewBillButton"){
 		// To Display Guest Bill screen in detailed mode via ViewBillButton click.
       	that.myDom.find("#bill1-fees").removeClass("hidden");
@@ -33,6 +32,9 @@ var RegistrationCardView = function(viewDom){
 		// Always show 'COMPLETE CHECK OUT' button when click "CheckoutButton" in stay card.
       	that.myDom.find("#complete-checkout-button").removeClass("hidden");
 	}
+	// To add active class to the first bill tab
+	that.myDom.find("#bills-tabs-nav li[bill_active='true']").addClass('active');
+	
   };
   
   this.executeLoadingAnimation = function(){
@@ -179,3 +181,4 @@ var RegistrationCardView = function(viewDom){
   };
   
 };
+
