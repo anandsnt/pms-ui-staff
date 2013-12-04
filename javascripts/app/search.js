@@ -22,13 +22,23 @@ var Search = function(domRef){
   	that.myDomElement.find($('#query')).on('focus', that.callCapitalize);
     that.myDomElement.find($('#query')).on('keyup', that.loadResults);
     that.myDomElement.find($('#search-form')).on('submit', that.submitSearchForm);
-    
+    that.myDomElement.find($('#clear-query')).on('click', that.clearResults);
   };
-  
+  //Clear Search Results
+  this.clearResults = function(e){
+  	e.preventDefault();
+  	if($(this).hasClass('visible')){  		
+  		$(this).removeClass('visible');
+	    $('#query').val('');
+	    $('#search-results').empty().addClass('hidden');
+	    that.updateView();
+  	}
+    
+  } ;
   //when a user press enter key from search textbox
   this.submitSearchForm = function(e){
 	  return false;
-  }
+  };
   
   //when user focus on search text
   this.callCapitalize = function(e){
