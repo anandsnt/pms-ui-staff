@@ -84,7 +84,7 @@ var GuestContactView = function(domRef) {
 				fakeDataToAvoidCache : new Date(),
 				id : $reservation_id
 			}, // fakeDataToAvoidCache is iOS Safari fix
-			async : false,
+			
 			success : function(data) {
 				if (data.birthday != null) {
 					birthdate = data.birthday.split('-');

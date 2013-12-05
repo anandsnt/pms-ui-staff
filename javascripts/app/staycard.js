@@ -83,17 +83,7 @@ var StayCard = function(viewDom){
     createViewScroll('#reservation-content-'+ confirmNum);
   };
 
-  this.initSubViews = function(){
-    var reservationPaymentView = new ReservationPaymentView($("#reservation-card-payment"));
-    reservationPaymentView.initialize();
-    var reservationCardLoyaltyView = new ReservationCardLoyaltyView($("#reservationcard-loyalty"));
-    reservationCardLoyaltyView.initialize();
-    setUpGuestcard(that.myDom);
-    var guestContactView = new GuestContactView($("#contact-info"));
-    guestContactView.pageinit();
-    var reservationCardNotes = new reservationCardNotesView($("#reservation-notes"));
-    reservationCardNotes.initialize();
-  };
+ 
 
   this.validateEmailAndPhone = function(e){
   	var phone_num = $("#gc-phone").val();
