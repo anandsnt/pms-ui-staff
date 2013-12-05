@@ -30,46 +30,38 @@ var ValidateCheckinModal = function() {
 		
 		if(that.modalType == "NoPhone"){
 			var phone = $("#validate #guest-phone").val();
-			if(phone == ""){
-				alert("Please enter phone number");
-				return false;
-			}
-			else{
-				$contactJsonObj['phone'] = phone;
-			}
+			$contactJsonObj['phone'] = phone;
 		}
 		else if(that.modalType == "NoEmail"){
 			var email = $("#validate #guest-email").val();
-			if(email == ""){
-				alert("Please enter email");
-				return false;
-			}
-			else{
+			if(email != ""){
 				if(validateEmail(email)){
 					$contactJsonObj['email'] = email;
 				} else {
 					return false;
 				}
-					
 			}
 		}
 		else if(that.modalType == "NoPhoneNoEmail"){
 			var phone = $("#validate #guest-phone").val();
 			var email = $("#validate #guest-email").val();
-			if(phone == ""){
-				alert("Please enter phone number");
-				return false;
-			}
-			else if(email == ""){
-				alert("Please enter email");
+			if(phone == "" && email == ""){
+				alert("Please enter any of the fields");
 				return false;
 			}
 			else{
-				if(validateEmail(email)){
+				if(email!=""){
+					if(validateEmail(email)){
+						$contactJsonObj['email'] = email;
+						$contactJsonObj['phone'] = phone;
+					} 
+					else {
+						return false;
+					}
+				}
+				 else {
 					$contactJsonObj['email'] = email;
 					$contactJsonObj['phone'] = phone;
-				} else {
-					return false;
 				}
 			}
 		}
