@@ -131,7 +131,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 					$newPaymentOption =  "<option value='"+data.data.id+"'data-number='"+$number+"'"+
 					  "data-name='"+$("#new-payment #name-on-card").val()+"' data-image='"+$newImage+"' data-date='"+$newDate+ "'"+
 					  "data-card='"+$("#new-payment #payment-credit-type").val()+ "'>"+
-					 $("#new-payment #payment-credit-type").val()+" "+$number+" "+$("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val()+ "</option> ";    
+					 $("#new-payment #payment-credit-type").val()+" "+$number+" "+$("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val()+ "</option> ";    
 									
 					$("#staycard_creditcard").append($newPaymentOption);
 					$('#staycard_creditcard').val(data.data.id);
@@ -139,7 +139,7 @@ var AddNewPaymentModal = function(fromPagePayment){
 										"<img src='/assets/"+$newImage+"' alt=''></figure>"+									
 										"<span class='number'>Ending with<span class='value number'>"+$number+							
 										"</span></span><span class='date'> Date <span class='value date'>"+
-										$("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val()+
+										$("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val()+
 										"</span>";
 					$("#selected-reservation-payment-div").html(replaceHtml);
 					that.hide();
