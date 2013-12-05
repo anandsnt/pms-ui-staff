@@ -446,14 +446,6 @@ $(function($){
         }
     });
 
-    // Clear search query 
-    $(document).on('click', '#clear-query.visible', function(e){
-        e.preventDefault();
-        
-        $(this).removeClass('visible');
-        $('#query').val('');
 
-        updateView();
-    });
 
 });
