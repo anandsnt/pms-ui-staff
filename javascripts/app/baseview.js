@@ -26,6 +26,18 @@ var BaseView = function(viewDom){
     that.executeLoadingAnimation();
     that.delegateEvents();
     that.initSubViews();
-  }
+  };
+  // To show error message.
+  this.showErrorMessage = function(errorMessage,callBack){
+  	var failureModal = new FailureModal(callBack);
+	failureModal.initialize();
+	failureModal.params = {"message": errorMessage};
+  };
+  // To show failure message.
+  this.showSuccessMessage = function(successMessage,callBack){
+	var successModal = new SuccessModal(callBack);
+	successModal.initialize();
+	successModal.params = {"message": successMessage};
+  };
   
 };

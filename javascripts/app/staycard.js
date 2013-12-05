@@ -5,6 +5,7 @@ var StayCard = function(viewDom){
   this.reservation_id = getReservationId();
   this.pageinit = function(){
     setUpStaycard(that.myDom);
+
     that.reservation_id = getReservationId();
     //Bind staycard events
 
@@ -14,23 +15,33 @@ var StayCard = function(viewDom){
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
     that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
 	that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
-    that.myDom.find('#reservation-'+ that.reservation_id +'-room-number').on('click',that.goToRoomAssignmentView);
-    that.myDom.find('#stay-card-loyalty #wakeup-time').on('click',that.setWakeUpCallModal);
+    that.myDom.find('#reservation-'+ that.reservation_id +'-room-number').on('click',that.roomNumberClicked);
     that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);
     that.myDom.find('#upgrade-btn').on('click',that.roomUpgradesClicked);
     that.myDom.find("#title").on('change', that.changeAvathar);
+    that.myDom.find('#reservation-checkout').on('click', that.clickedCheckoutButton);
+    that.myDom.find('#reservation-view-bill').on('click',that.clickedViewBillButton);
+    that.myDom.find('#stay-card-total-stay-cost').on('click',that.clickedTotalStayCost);
   };
   
   this.changeAvathar = function(e){
 	  var img_src = getAvatharUrl($(this).val());
 	  $("#guest-card-header .guest-image img").attr("src", img_src);  
   };
+
+  this.roomNumberClicked = function(e){
+    e.preventDefault();
+    var nextViewParams = {"next_view": views.STAYCARD};
+    that.goToRoomAssignmentView(nextViewParams);
+  };
+
   this.roomUpgradesClicked = function(e){
     e.preventDefault();
-    var viewParams = {"next_view" : "staycard"};
-    that.goToRoomUpgradeView(viewParams);
+    var nextViewParams = {"showanimation": true, "next_view" : views.STAYCARD};
+    that.goToRoomUpgradeView(nextViewParams);
 
   };
+
  this.executeLoadingAnimation = function(){
   	if (this.viewParams === undefined) return;
   	if (this.viewParams["showanimation"] === false) return;
@@ -44,20 +55,22 @@ var StayCard = function(viewDom){
   		
   	 
   };
-  this.goToRoomAssignmentView = function(e){
-    e.preventDefault();
+
+  
+
+  this.goToRoomAssignmentView = function(nextViewParams){
     var viewURL = "staff/preferences/room_assignment";
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
-    var params = {"reservation_id": reservation_id, "next_view": "staycard"};
-    sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
+    var params = {"reservation_id": reservation_id};
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams);
   };
-  this.goToRoomUpgradeView = function(){
+
+  this.goToRoomUpgradeView = function(nextViewParams){
     var viewURL = "staff/reservations/room_upsell_options";
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
     var params = {"reservation_id": reservation_id};
-    var nextViewParams = {"showanimation": true, "current-view" : "staycard" };
     sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
   };
 
@@ -103,20 +116,16 @@ var StayCard = function(viewDom){
   	}
 
     else if($.trim(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
-      that.goToRoomAssignmentView(e);
+          var nextViewParams = {"next_view": views.BILLCARD};
+      		that.goToRoomAssignmentView(nextViewParams);
     }
-    else if(that.myDom.find('#reservation-checkin').attr('data-upsell-enabled') == "true"){
-      that.goToRoomUpgradeView();
+    else if((that.myDom.find('#reservation-checkin').attr('data-force-upsell') == "true")
+     &&(that.myDom.find('#reservation-checkin').attr('data-upsell-available') == "true")){
+          var nextViewParams = {"showanimation": true, "next_view" : views.BILLCARD };
+      		that.goToRoomUpgradeView(nextViewParams);
     }
     else{
-    	
-      var viewURL = "staff/reservation/bill_card";
-      //var viewURL = "http://localhost:3000/ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true";
-      var viewDom = $("#view-nested-third");
-      var params = {"reservation_id": that.reservation_id};
-      var nextViewParams = {"showanimation": true, "current-view" : "staycard" };
-      sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );      
-
+    		that.goToBillCardView("CheckinButton");
     }
   };
 
@@ -239,15 +248,39 @@ var StayCard = function(viewDom){
     };
     
 	this.setWakeUpCallModal = function(e){
-		var setWakeUpCallModal = new SetWakeUpCallModal();
-    	setWakeUpCallModal.params = {"reservation_id" : that.reservation_id};
-    	setWakeUpCallModal.type ="POST";
-    	setWakeUpCallModal.initialize();
-   };
+		if($(e.target).hasClass("feature-available")){	
+			var setWakeUpCallModal = new SetWakeUpCallModal();
+	    	setWakeUpCallModal.params = {"reservation_id" : that.reservation_id};
+	    	setWakeUpCallModal.type ="POST";
+	    	setWakeUpCallModal.initialize();
+   		}
+   		else{
+   			that.showErrorMessage("Feature not available");
+   		}
+   	};
     this.addKeysModal = function(e){
 		var addKeysModal = new AddKeysModal();
     	addKeysModal.initialize();
     };
+    
+    this.clickedCheckoutButton = function(){
+      	that.goToBillCardView("CheckoutButton");
+    };
+    
+    this.clickedViewBillButton = function(e){
+      	that.goToBillCardView("ViewBillButton");
+    };
+    
+    this.clickedTotalStayCost = function(){
+    	that.goToBillCardView("TotalStayCost");
+    };
+
+    this.goToBillCardView = function (clickedButton){
+    	var viewURL = "staff/reservation/bill_card";
+		//var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
+		var viewDom = $("#view-nested-third");
+		var params = {"reservation_id": that.reservation_id};
+		var nextViewParams = {"showanimation": true, "from-view" : views.STAYCARD, "clickedButton":clickedButton };
+		sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
+    };
 };
-
-

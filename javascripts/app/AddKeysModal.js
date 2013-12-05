@@ -1,4 +1,4 @@
-var AddKeysModal = function() {
+var AddKeysModal = function(callBack) {
 
 	BaseModal.call(this);
 	var that = this;
@@ -27,6 +27,14 @@ var AddKeysModal = function() {
 				that.myDom.find($("#print-keys")).removeClass("is-disabled");
 				$("input:radio").attr("disabled", false);
 			}
+		}
+		
+		// Hide key_print_additional button while coming from bill card.
+		var source_page = this.params.source_page;
+		if(source_page == "bill_card"){
+			that.myDom.find("#key_print_additional").addClass('hidden');
+			that.myDom.find("#key_print_new").removeClass('half');
+			that.hide(callBack);
 		}
 	};
 	this.modalInit = function() {
@@ -82,7 +90,6 @@ var AddKeysModal = function() {
 		}
 	};
 	this.saveKey = function(data) {
-
 		$.ajax({
 			type : "POST",
 			url : 'staff/reservation/print_key',
@@ -90,16 +97,15 @@ var AddKeysModal = function() {
 			async : false,
 			dataType : 'json',
 			contentType : 'application/json',
-			success : function() {
+			success : function(data) {
 				if (data.status == "success") {
 					// Commenting for now. Might be we need this in future
 					// $("#change-name #gc-email").val(key_guest_email);
+					that.hide(callBack);
 				}
 			},
 			error : function() {
 			}
 		});
-		that.hide();
 	};
-
 }; 

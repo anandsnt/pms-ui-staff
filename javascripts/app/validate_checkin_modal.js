@@ -45,7 +45,12 @@ var ValidateCheckinModal = function() {
 				return false;
 			}
 			else{
-				$contactJsonObj['email'] = email;
+				if(validateEmail(email)){
+					$contactJsonObj['email'] = email;
+				} else {
+					return false;
+				}
+					
 			}
 		}
 		else if(that.modalType == "NoPhoneNoEmail"){
@@ -60,8 +65,12 @@ var ValidateCheckinModal = function() {
 				return false;
 			}
 			else{
-				$contactJsonObj['email'] = email;
-				$contactJsonObj['phone'] = phone;
+				if(validateEmail(email)){
+					$contactJsonObj['email'] = email;
+					$contactJsonObj['phone'] = phone;
+				} else {
+					return false;
+				}
 			}
 		}
 
@@ -81,6 +90,7 @@ var ValidateCheckinModal = function() {
 		// Update UI changes in Guest card header and Contact information.
 		var guest_phone = $("#gc-phone").val();
 		var guest_email = $("#gc-email").val();
+
 					
 		if(guest_phone == ""){
 			$("#gc-phone").val($("#validate #guest-phone").val());
@@ -91,13 +101,13 @@ var ValidateCheckinModal = function() {
 			$("#email").val($("#validate #guest-email").val());
 		}
 	
-		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text() == "")){
-			var viewParams = {"next_view" : "registration"}
-    		that.goToRoomAssignmentView(viewParams);
-   			// that.goToRoomAssignmentView();
-	    }else if($('#reservation-checkin').attr('data-upsell-enabled') == "true"){
-	      	var viewParams = {"next_view" : "registration"}
-	      	that.goToRoomUpgradeView(viewParams);
+		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
+    		that.goToRoomAssignmentView();
+    	}
+	    else if(($('#reservation-checkin').attr('data-force-upsell') == "true")
+     		&&($('#reservation-checkin').attr('data-upsell-available') == "true")){
+    		that.goToRoomUpgradeView();
+
 	    }
 	    else{
 	    	that.goToRegistrationCardView();
@@ -106,12 +116,12 @@ var ValidateCheckinModal = function() {
 	};
 
 	this.ignoreAndGotoCheckin = function(e) {
-		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text() == "")){
-   			that.goToRoomAssignmentView();
+		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
+    		that.goToRoomAssignmentView();
 	    }
-	    else if($('#reservation-checkin').attr('data-upsell-enabled') == "true"){
-	      	var viewParams = {"next_view" : "registration"}
-	      	that.goToRoomUpgradeView(viewParams);
+	    else if(($('#reservation-checkin').attr('data-force-upsell') == "true")
+     		&&($('#reservation-checkin').attr('data-upsell-available') == "true")){
+    		that.goToRoomUpgradeView();
 	    }
 	    else{
 	    	that.goToRegistrationCardView();
@@ -124,21 +134,26 @@ var ValidateCheckinModal = function() {
 	    var viewDom = $("#view-nested-second");
 	    var reservation_id = getReservationId();
 	    var params = {"reservation_id": reservation_id};
-	    sntapp.fetchAndRenderView(viewURL, viewDom, params, true);
+	    var nextViewParams = {"showanimation": true, "next_view" : views.BILLCARD };
+	    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams);
     };
-    this.goToRoomUpgradeView = function(viewParams){
+
+    this.goToRoomUpgradeView = function(){
 	    var viewURL = "staff/reservations/room_upsell_options";
 	    var viewDom = $("#view-nested-second");
 	    var reservation_id = getReservationId();
 	    var params = {"reservation_id": reservation_id};
-	    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, viewParams);
+	    var nextViewParams = {"showanimation": true, "next_view" : views.BILLCARD };
+	    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
     };
+
     this.goToRegistrationCardView = function(viewParams){
 	    //Page transition to registration card.
-	  	e.preventDefault();
-	    var viewURL = "staff/reservation/bill_card";
-	    var viewDom = $("#view-nested-first");
-	    var params = {"reservation_id": that.reservation_id};
-	    sntapp.fetchAndRenderView(viewURL, viewDom, params, false);
+      	var viewURL = "staff/reservation/bill_card";
+	    //var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
+        var viewDom = $("#view-nested-third");
+        var params = {"reservation_id": that.reservation_id};
+        var nextViewParams = {"showanimation": true, "from-view" : views.STAYCARD};
+        sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
     };
-}
+};

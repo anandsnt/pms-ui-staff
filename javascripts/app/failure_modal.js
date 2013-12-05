@@ -1,8 +1,8 @@
-var SuccessModal = function(callBack) {
+var FailureModal = function(callBack) {
 	BaseModal.call(this);
 	var that = this;
-	this.url = "ui/successModal";
-
+	this.url = "ui/failureModal";
+		
 	this.delegateEvents = function() {
 		var message = this.params.message;
 		that.myDom.find('.message').html(message);
@@ -12,5 +12,4 @@ var SuccessModal = function(callBack) {
 	this.okButtonClicked = function(){
 		that.hide(callBack);
 	};
-	
 }

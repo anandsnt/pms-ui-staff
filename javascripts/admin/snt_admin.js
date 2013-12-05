@@ -7,9 +7,36 @@ var SntAdminView = function(domRef){
     setUpAdmin(domRef, this);
   };
   this.delegateEvents = function(){
-  	// $('.icon-admin-menu').on('draggable', that.customDrag);
-  	that.myDom.find('ul.dashboard-items li').on('click', that.appendNewPage);
-  	that.myDom.find('li.ui-state-default a.ui-tabs-anchor').on('click', that.clearReplacingDiv);
+  	that.myDom.find('li.ui-state-default a.ui-tabs-anchor').on('click', sntadminapp.clearReplacingDiv);
+  	that.myDom.find('ul.dashboard-items li').on('click', sntadminapp.appendNewPage);
+  	
+  	that.myDom.find('#admin-menu li a').on('click', that.bookMarkClick);
+  	that.myDom.find('#admin-header nav a').on('click', that.bookMarkClick);
+  };
+  this.bookMarkClick = function(event){
+	event.preventDefault();
+	var url = $(this).attr("href");
+	if(url != "#" && url != undefined){
+
+  		var backDom = null;
+  		that.myDom.find("#content section.tab").each(function(){
+  			if($(this).is(":visible")){
+  				backDom = $(this); 				 				
+  			}
+  		});
+  		
+  		var div = that.myDom.find("#replacing-div-first");
+  		if(div.html() != ""){  
+  			div.hide();
+  			div = that.myDom.find("#replacing-div-second");
+  			if(backDom == null)
+  				backDom = that.myDom.find("#replacing-div-first");
+  		}
+  		that.myDom.find("#content section.tab").hide(); 
+  		viewParams = {'backDom': backDom};
+  		
+  		sntapp.fetchAndRenderView(url, div, {}, false, viewParams);
+	}	  
   };
   this.bookMarkAdded = function(bookMarkId){
   	var delegateBookMark = new DelegateBookMark();
@@ -18,19 +45,5 @@ var SntAdminView = function(domRef){
   this.bookMarkRemoved = function(bookMarkId){
   	var delegateBookMark = new DelegateBookMark();
   	delegateBookMark.removeBookMark(bookMarkId);
-  };
-  this.clearReplacingDiv = function() {	  
-	  $("#replacing-div").html("");
-	  $($(this).attr("href")).show();
-  };
-  this.appendNewPage = function(event){
-	  var href = $(this).find("a").eq(0).attr("href");
-	  if(href != undefined){
-		  var url = href;
-	  	  event.preventDefault();		  
-		  var viewParams = {};
-		  $(this).parents('section:eq(0)').hide();
-		  sntapp.fetchAndRenderView(url, $("#replacing-div"), viewParams);
-	  }
-  };
+  };  
 };
