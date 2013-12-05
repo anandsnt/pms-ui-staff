@@ -14,7 +14,7 @@ var adminApp = function(){
             var url = href;                    		 
             var viewParams = {};
             $(this).parents('section:eq(0)').hide();
-            sntapp.fetchAndRenderView(url, $("#replacing-div-first"), viewParams);
+            sntapp.fetchAndRenderView(url, $("#replacing-div-first"), viewParams, false);
         }
     };
     

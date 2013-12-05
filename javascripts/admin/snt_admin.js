@@ -35,7 +35,7 @@ var SntAdminView = function(domRef){
   		that.myDom.find("#content section.tab").hide(); 
   		viewParams = {'backDom': backDom};
   		
-  		sntapp.fetchAndRenderView(url, div, {}, false, viewParams);
+  		sntapp.fetchAndRenderView(url, div, {}, true, viewParams);
 	}	  
   };
   this.bookMarkAdded = function(bookMarkId){

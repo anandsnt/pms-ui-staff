@@ -68,7 +68,7 @@ var HotelDetailsView = function(domRef){
 									  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, 
 									  	hotelCheckoutHour, hotelCheckoutMinutes, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
 									  	password, confirmPassword, hotelTimeZone);
-
+			sntapp.activityIndicator.showActivityIndicator();
 		  	$.ajax({
 				type: "PUT",
 				url : '/admin/hotels/'+currentHotel,
@@ -76,11 +76,14 @@ var HotelDetailsView = function(domRef){
 				data :data,
 				success : function(data) {
 					if(data.status == "success"){
-						console.log("Saved Successfully");
+						sntapp.notification.showMessage(that.myDom, "Saved Successfully");
+						sntapp.activityIndicator.hideActivityIndicator();
 						that.gotoPreviousPage();
 					}
 				},
 				error : function() {
+					sntapp.activityIndicator.hideActivityIndicator();
+					sntapp.notification.showErrorMessage(that.myDom, "Some error");
 					alert("Sorry, not there yet!");
 				}
 			});
@@ -129,7 +132,7 @@ var HotelDetailsView = function(domRef){
   	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, 
   	hotelCheckoutHour, hotelCheckoutMinutes, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
   	password, confirmPassword, hotelTimeZone);
-		        	
+		       	
 		  	$.ajax({
 				type: "POST",
 				url : ' /admin/hotels',

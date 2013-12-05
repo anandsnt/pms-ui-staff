@@ -29,6 +29,7 @@
 //= require_tree ./app/signature
 
 //= require_tree ./app
+//= stub ./app/sntapp 
 //= require_tree ./admin/plugins
 //= require_tree ./admin
 //= require main

@@ -516,6 +516,56 @@ body { overflow: hidden; }
     width: 84.6774%;
 }
 
+// for success and error message
+.success_message {
+	padding:2px 4px;
+	margin:0px;
+	border:solid 1px #C0F0B9;
+	background:#D5FFC6;
+	color:#48A41C; 
+	font-family:Arial, Helvetica, sans-serif; font-size:14px; 
+	font-weight:bold;
+	text-align:center;
+}
+.error_message {
+	padding:2px 4px;
+	margin:0px;
+	border:solid 1px #FBD3C6;
+	background:#FDE4E1;
+	color:#CB4721;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:bold;
+	text-align:center;
+}
+
+// for loader or activity indicator
+ .loader {
+	position:absolute;
+	z-index:10000;
+	top:0;
+	left:0;
+	height:100%;
+	width:100%;
+	opacity:0.7;
+	filter:alpha(opacity=70);
+	background: #FFF;
+	text-align:center;
+	display: none;
+}
+.loader .activity-indicator {
+	animation: 0.8s linear 0s normal none infinite rotation;
+	border-color: #F6991B rgba(255, 255, 255, 0.4);
+	border-image: none;
+	border-radius: 64px 64px 64px 64px;
+	border-style: solid;
+	border-width: 5px;
+	height: 100px;
+	width: 100px;
+	position: absolute;
+	left: 700px;
+	top: 400px;
+}
 
 //drag and drop - Added by Qburst
 

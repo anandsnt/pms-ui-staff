@@ -6,6 +6,7 @@ var HotelAdminView = function(domRef){
   this.pageinit = function(){
     setUpAdmin(domRef, this);
   };
+  
   this.delegateEvents = function(){  	
   	that.myDom.find('.sethotel').on('click', that.setNewHotel);
   	that.myDom.find('ul.dashboard-items li').on('click', that.appendNewPage);
@@ -15,6 +16,7 @@ var HotelAdminView = function(domRef){
   	that.myDom.find('li.ui-state-default a.ui-tabs-anchor').on('click', that.clearReplacingDiv);
   	that.myDom.find('#admin-header nav').on('click', that.bookMarkClick);
   };
+  
   this.bookMarkClick = function(event){
 	event.preventDefault();
 	var target = $( event.target );
@@ -39,7 +41,7 @@ var HotelAdminView = function(domRef){
   		that.myDom.find("#dashboard section.tab").hide(); 
   		viewParams = {'backDom': backDom};
   		
-  		sntapp.fetchAndRenderView(url, div, {}, false, viewParams);
+  		sntapp.fetchAndRenderView(url, div, {}, true, viewParams);
 	}	  
   };
   this.clearReplacingDiv = function() {	  
@@ -60,7 +62,7 @@ var HotelAdminView = function(domRef){
 		  var viewParams = {'backDom': backDom};
 		  $(this).parents('section:eq(0)').hide();
 		  //viewURL, viewDom, params, shouldShowLoader, nextViewParams
-		  sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, false, viewParams);
+		  sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, true, viewParams);
 	  }
   };
   this.setNewHotel = function(){

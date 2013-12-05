@@ -1,7 +1,12 @@
+
 var app = function(){
     var that = this;
-
-
+    
+    this.init = function(){
+    	this.activityIndicator = new ActivityIndicator();
+    	this.notification = new NotificationMessage();
+    };
+    
     this.getViewInstance = function(viewDom){
         var viewInstance;
         var viewName = viewDom.find('div:first').attr('data-view');
@@ -21,7 +26,7 @@ var app = function(){
         }
         viewObject.initialize();
         viewObject.pageshow();
-        
+        //hideActivityIndicator();
     };
 
     //Fetch from AJAX
@@ -35,17 +40,20 @@ var app = function(){
     */
         if(shouldShowLoader){
            var $loader = '<div id="loading" />';
-           $($loader).prependTo('body').show();
+           $($loader).prependTo('body').show(); 
+           //showActivityIndicator();
         }
+    	
         $.ajax({
             type: "GET",
             data: params,
             url: viewURL,
             async: false,
             success: function(data) {      
-                that.renderView(data, viewDom, nextViewParams);    
+                that.renderView(data, viewDom, nextViewParams);                   
             },
             error: function(){
+            	hideActivityIndicator();
             }
        });
     };    
@@ -53,3 +61,6 @@ var app = function(){
 };
 
 sntapp = new app();
+sntapp.init();
+
+
