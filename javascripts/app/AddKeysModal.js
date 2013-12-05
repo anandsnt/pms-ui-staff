@@ -33,6 +33,8 @@ var AddKeysModal = function(callBack) {
 		var source_page = this.params.source_page;
 		if(source_page == "bill_card"){
 			that.myDom.find("#key_print_additional").addClass('hidden');
+			that.myDom.find("#key_print_new").removeClass('half');
+			that.hide(callBack);
 		}
 	};
 	this.modalInit = function() {
