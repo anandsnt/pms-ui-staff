@@ -8,11 +8,12 @@ var RoomAssignmentView = function(viewDom){
   this.roomCompleteList = [];
 
   this.pageinit = function(){
-    //Scroll view initialization for the view
-    this.createViewScroll();
+    
     //Get the list of rooms from the server.
     this.fetchRoomList();
-  }
+     //Scroll view initialization for the view
+    this.createViewScroll();   
+  };   
 
   this.delegateEvents = function(){
 
@@ -25,20 +26,20 @@ var RoomAssignmentView = function(viewDom){
     that.myDom.find('#clear-filters-button').on('click',that.clearFiltersClicked); 
 
 
-  }
+  };
 
   this.executeLoadingAnimation = function(){
     changeView("nested-view", undefined, "view-nested-first", "view-nested-second", "move-from-right", false); 
 
-  }
+  };
   this.createViewScroll = function(){
-    if (viewScroll) { destroyViewScroll(); }
+    
           setTimeout(function(){
             if (that.myDom.find($('#room-attributes')).length) { createViewScroll('#room-attributes'); }
             if (that.myDom.find($('#rooms-available')).length) { createViewScroll('#rooms-available'); }
             if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
           }, 300);
-  }
+  };
 
   //Fetches the non-filtered list of rooms.
   this.fetchRoomList = function(){
@@ -46,6 +47,7 @@ var RoomAssignmentView = function(viewDom){
         type:       'POST',
         url:        "/staff/rooms/get_rooms",
         dataType:   'json',
+        async:       false,  
         success: function(response){
           if(response.status == "success"){
             that.roomCompleteList = response.data;
@@ -72,7 +74,7 @@ var RoomAssignmentView = function(viewDom){
     }
     //Apply filters using due-out status, ready status.
     that.displayRoomsList(filteredRoomList);
-  }
+  };
 
   this.filterOptionChecked = function(e){
     that.handleMultipleSelection(e);
@@ -434,4 +436,4 @@ var RoomAssignmentView = function(viewDom){
   };
 
 
-}
+};

@@ -45,7 +45,12 @@ var ValidateCheckinModal = function() {
 				return false;
 			}
 			else{
-				$contactJsonObj['email'] = email;
+				if(validateEmail(email)){
+					$contactJsonObj['email'] = email;
+				} else {
+					return false;
+				}
+					
 			}
 		}
 		else if(that.modalType == "NoPhoneNoEmail"){
@@ -60,8 +65,12 @@ var ValidateCheckinModal = function() {
 				return false;
 			}
 			else{
-				$contactJsonObj['email'] = email;
-				$contactJsonObj['phone'] = phone;
+				if(validateEmail(email)){
+					$contactJsonObj['email'] = email;
+					$contactJsonObj['phone'] = phone;
+				} else {
+					return false;
+				}
 			}
 		}
 
@@ -147,4 +156,4 @@ var ValidateCheckinModal = function() {
         var nextViewParams = {"showanimation": true, "from-view" : views.STAYCARD};
         sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
     };
-}
+};

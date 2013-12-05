@@ -6,7 +6,7 @@ var RegistrationCardView = function(viewDom){
   this.url = "ui/checkinSuccess";
   
   this.pageinit = function(){
-    if (viewScroll) { destroyViewScroll(); }
+    
     setTimeout(function(){
         createViewScroll('#registration-content');
   	}, 300);
