@@ -15,23 +15,23 @@ var AddFFPModal = function(){
 		event.stopImmediatePropagation();
 		var $loyalty_id = $("#newffp_id").val();
 		var $airline = $('#airline-ff-list option:selected').val(),
-			$program = $('#airline-ff-pgms option:selected').text(),
-			$code    = $("#ff-code").val(),
-			$level = $('#airline-ff-pgms option:selected').val();
+		$program = $('#airline-ff-pgms option:selected').text(),
+		$code    = $("#ff-code").val(),
+		$level = $('#airline-ff-pgms option:selected').val();
 
-		if($airline == ""){
-			alert("Please select an Airline");
-			return false;
-		}else if($level == ""){
-			alert("Please select a loyalty program");
-			return false;
-		}else if($code == ""){
-			alert("Please enter the loyalty code");
-			return false;
-		}
+		// REMOVING CLIENT SIDE VALIDATION FOR MEMBERSHIPS
+		// if($airline == ""){
+		// 	alert("Please select an Airline");
+		// 	return false;
+		// }else if($level == ""){
+		// 	alert("Please select a loyalty program");
+		// 	return false;
+		// }else if($code == ""){
+		// 	alert("Please enter the loyalty code");
+		// 	return false;
+		// }
 
 		var $name   = $('#airline-ff-pgms option:selected').text();
-		updateFFPLoyaltyUI($airline,$code,$program,$name);
 		
 	    var userId = $('#user_id').val();
 	    var guestId = $('#guest_id').val();
@@ -46,18 +46,19 @@ var AddFFPModal = function(){
 		newFFP.user_membership.membership_level = $level;
 
 		updateServerForNewLoyalty(newFFP, function(data){
+			updateFFPLoyaltyUI($airline,$code,$program,$name);
+		    that.hide();
+			
 	    	$loyaltyid = data.id;
-			    var $new_id = "ff-program-"+$loyaltyid;
+			var $new_id = "ff-program-"+$loyaltyid;
 			    
-			    $("#loyalty-ffp a.program_new").attr('id',$new_id);
-			    $("#loyalty-ffp a.program_new").attr('loyaltyid',$loyaltyid);
-			    $("#loyalty-ffp a#"+$new_id).removeClass('program_new');
+			$("#loyalty-ffp a.program_new").attr('id',$new_id);
+			$("#loyalty-ffp a.program_new").attr('loyaltyid',$loyaltyid);
+			$("#loyalty-ffp a#"+$new_id).removeClass('program_new');
 			    
-			    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
-			    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
-	    }, "FFP");
-	    
-	    that.hide();
+			$("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
+			$("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');			
+	    }, "FFP");	    
     }
   
     this.airlineChanged = function(event){

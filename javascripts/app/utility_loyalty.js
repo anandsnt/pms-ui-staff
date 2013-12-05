@@ -38,29 +38,19 @@ function updateServerForNewLoyalty(postData, successCallback, type){
 		data: postData,
 		dataType: 'json',
 		success: function(response) {
-			if((response.errors)!== null && (response.errors.length > 0)){
-				alert(response.errors[0]);
-				//Remove the element from DOM
-				$("#stay-card-loyalty #loyalty option.program_new").remove();
-				if(type == "FFP"){
-					$("#loyalty-ffp a").last().remove();
-					
-				}else if(type == "HLP"){
-					$("#loyalty-hlp a").last().remove();
-				}
-				clearSelectionUI();
+			if(response.errors != null && response.errors.length > 0){
+				if (type == 'FFP') {
+					$("#new-ffp .error-messages").html(response.errors.join('<br>')).show();					
+				} else if (type == 'HLP') {
+					$("#new-hlp .error-messages").html(response.errors.join('<br>')).show();
+				}				
 			}else{
 				//Insert the response id to the new DOM element
 				successCallback(response.data);
 			}
 		},
 		error: function(response){
-			$("#stay-card-loyalty #loyalty option.program_new").remove();
-			if(type == "FFP"){
-				$("#loyalty-ffp a").last().remove();
-			}else if(type == "HLP"){
-				$("#loyalty-hlp a").last().remove();
-			}
+			// TODO: Handle error
 		}
 	 });
 }
