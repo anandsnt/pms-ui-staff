@@ -10,7 +10,7 @@ var StayCard = function(viewDom){
     //Bind staycard events
 
     that.myDom.find($('#reservation-timeline li')).on('click', that.reservationTimelineClicked);
-    that.myDom.find($('#reservation-listing li a')).on('click', that.reservationListItemClicked);
+    that.myDom.find($('#reservation-listing li')).on('click', that.reservationListItemClicked);
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
     that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
     that.myDom.find($('#reservation-checkin')).on('click', that.validateEmailAndPhone);
@@ -167,13 +167,16 @@ var StayCard = function(viewDom){
     var currentTimeline = $(this).attr('aria-controls');
     //No reservation details are added to the DOM
     if (!($("#" + currentTimeline).find('.reservation').length > 0)) {
-      $("#" + currentTimeline + ' #reservation-listing ul li').first().find('a').trigger("click");
+      $("#" + currentTimeline + ' #reservation-listing ul li').first().trigger("click");
     }
   };
 
   // Load reservation details
   this.reservationListItemClicked = function(e){
-    that.displayReservationDetails($(this).attr('href'));
+    var confirmationNumClicked = $(this).attr('data-confirmation-num');
+    //var currentTimeline = $(this).parents().find(".reservation-list:eq(0)").attr('id');
+    //$('#'+currentTimeline).append("<div id= 'reservation-"+confirmationNumClicked+"'>test div</div>");
+    that.displayReservationDetails($(this).find('a').attr('href'));
   };
 
   //Add the reservation details to the DOM.
