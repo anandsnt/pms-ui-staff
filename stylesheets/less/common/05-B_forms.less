@@ -9,15 +9,12 @@ textarea {
 
 input,
 textarea {
-	line-height: 40px;
 	min-height: 40px;
 	vertical-align: middle;
-	padding: 0 10px;
 	margin: 0;
 	border: 0;
 	resize: none;
 	background-color: @white;
-	.placeholder-text(16px, 40px, 400, @grey3);
 	.transition;
 	.box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
 	#border-radius > .rounded();
@@ -35,6 +32,9 @@ textarea {
 		margin: 0;
 		cursor: pointer;
 		vertical-align: middle;
+		/*white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;*/
 		.box-shadow(none);
 
 		&:focus,
@@ -42,6 +42,18 @@ textarea {
 			.box-shadow(none);
 		}
 	}
+}
+
+input { 
+	line-height: 40px; 
+	padding: 0 10px;
+	.placeholder-text(16px, 40px, 400, @grey3);
+}
+
+textarea { 
+	line-height: 1.5em;
+	padding: 10px; 
+	.placeholder-text(16px, 1.5em, 400, @grey3);
 }
 
 input[type="search"] { -webkit-appearance: textfield; }
@@ -59,6 +71,11 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
+}
+
+input[readonly]{
+	color: @grey3;
+	cursor: default;
 }
 
 select {

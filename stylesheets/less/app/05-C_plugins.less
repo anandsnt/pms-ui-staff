@@ -53,6 +53,13 @@
 		}
 	}
 
+/* jQuery UI datepicker		==============================*/
+	.has-datepicker {
+		&.entry {
+			.ui-datepicker-trigger { top: 28px; }
+		}
+	}
+
 /* Modal window				==============================*/
 	#modal {
 		position: fixed;
@@ -323,6 +330,93 @@
 						margin: 0 auto;
 					}
 				}				
+			}
+
+			/* Messages & review form ***/
+			&.messages-form,
+			&.review-form {
+				padding: 0;
+				width: 480px;
+				.float;
+
+				.sender-details {
+					color: @white;
+					padding: 20px;
+					background: @gcard;
+					position: relative;
+					#border-radius > .top();
+					.show;
+					.float;
+
+					.data {
+						margin-left: 20px;
+						overflow: hidden;
+						.pull-left;
+						.calc-width(100, 70); /* %, px */
+
+						.room {
+							font-size: 16px;
+							font-weight: 600;
+							margin-right: 10px; 
+							.pull-left;
+						}
+					
+						h1 {
+							.h2;
+							line-height: 24px;
+							font-weight: 600;
+							clear: none;
+							.pull-left;
+						}
+
+						h2,
+						h3 {
+							font-size: 14px;
+							line-height: 16px;
+							font-style: italic;
+							max-height: 32px;
+						}
+
+						time {
+							font-size: 12px;
+							line-height: 26px;
+							vertical-align: middle;
+							text-transform: uppercase;
+							margin-left: 10px; 
+							.pull-right;
+						}
+
+						.review-title {
+							.float;
+
+							h2 {
+								font-size: 16px;
+								font-weight: 600;
+								font-style: normal;
+								white-space: nowrap;
+						  		overflow: hidden;
+						  		text-overflow: ellipsis;
+								.calc-width(100, 80); /* %, px */
+								.pull-left;
+							}
+
+							.stars {
+								.stars-inverted;
+								.pull-right;
+							}
+						}
+					}
+				}
+
+				.message { margin-top: 40px; }
+
+				.entry {
+					padding: 0 20px;
+				}
+
+				.actions {
+					padding: 0 20px 20px 20px;
+				}
 			}
 		}
 

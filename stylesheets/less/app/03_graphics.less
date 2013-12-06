@@ -33,9 +33,13 @@
 			background-position: 0 -480px;
 		}
 
+		&.icon-reviews {
+			background-position: 0 -600px;
+		}
+
 		@media @highdpi {
 			background-image: @iconNoContent2x;
-			background-size: 120px, 125px;
+			background-size: 125px, 120px;
 		}
 	}
 
@@ -68,6 +72,10 @@
 		&.check-out { background-position: 8px -152px; }
 		&.inhouse { background-position: 8px -192px; }
 		&.cancel { background-position: 8px -232px; }
+		
+		&.arrival,
+		&.departed { background-image: none; }
+
 		&.icon-gc-location { background-position: 10px -269px; }
 		&.icon-gc-phone { background-position: 10px -306px; }
 		&.icon-gc-email {background-position: 10px -344px; }
@@ -284,7 +292,7 @@
 	}
 
 /* Back buttone			==================================*/
-	.back-button:not(.button):not(#change-lobby) {
+	.back-button:not(.button):not(.switch) {
 		color: @logoPrimary;
 		text-transform: uppercase;
 		font-size: 18px;
@@ -339,6 +347,58 @@
 		@media @highdpi {
 			background-image: @stars2x;
 			background-size: 68px;
+		}
+	}
+
+	.stars-inverted {
+		background-image: @starsInverted;
+
+		@media @highdpi {
+			background-image: @starsInverted2x;
+			background-size: 68px;
+		}
+	}
+
+	.stars-active {
+		background-image: @starsActive;
+
+		@media @highdpi {
+			background-image: @starsActive2x;
+			background-size: 68px;
+		}
+	}
+
+	.stars-medium {
+		.size(12px, 77px);
+		background-image: @starsMedium;
+
+		&.stars0 { background-position: 0 -60px; }
+		&.stars1 { background-position: 0 -48px; }
+		&.stars2 { background-position: 0 -36px; }
+		&.stars3 { background-position: 0 -24px; }
+		&.stars4 { background-position: 0 -12px; }
+		&.stars5 { background-position: 0 0; }
+
+		@media @highdpi {
+			background-image: @starsMedium2x;
+			background-size: 77px;
+		}
+	}
+
+	.stars-large {
+		.size(16px, 97px);
+		background-image: @starsLarge;
+
+		&.stars0 { background-position: 0 -80px; }
+		&.stars1 { background-position: 0 -64px; }
+		&.stars2 { background-position: 0 -48px; }
+		&.stars3 { background-position: 0 -32px; }
+		&.stars4 { background-position: 0 -16px; }
+		&.stars5 { background-position: 0 0; }
+
+		@media @highdpi {
+			background-image: @starsLarge2x;
+			background-size: 97px;
 		}
 	}
 

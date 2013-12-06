@@ -183,28 +183,42 @@
 				color: @logoPrimary;
 
 				&:hover,
-				&:active { color: @logoPrimary; }
+				&:active { color: darken(@logoPrimary, 10); }
 			}
 
 			&.blue-text {
 				color: @blue;
 
 				&:hover,
-				&:active { color: @blue; }
+				&:active { color: darken(@blue, 10); }
 			}
 
 			&.red-text {
 				color: @red;
 
 				&:hover,
-				&:active { color: @red; }
+				&:active { color: darken(@red, 10); }
 			}
 
 			&.soft-red-text {
 				color: @softRed;
 
 				&:hover,
-				&:active { color: @softRed; }
+				&:active { color: darken(@softRed, 10); }
+			}
+
+			&.green-text {
+				color: @green;
+
+				&:hover,
+				&:active { color: darken(@green, 10); }
+			}
+
+			&.grey-text {
+				color: @grey3;
+
+				&:hover,
+				&:active { color: grey4; }
 			}
 		}
 

@@ -131,11 +131,16 @@ body { overflow: hidden; }
 			.calc-height(100, 180); /* %, px */
 		}
 
-		/* Messages & Reviews ***/
-		&.messages-content,
-		&.reviews-content {
+		/* Messages ***/
+		&.messages-content {
 			top: 60px;
 			.calc-height(100, 120); /* %, px */
+		}
+
+		/* Reviews ***/
+		&.reviews-content {
+			top: 60px;
+			.calc-height(100, 60); /* %, px */
 		}
 	}
 
@@ -160,7 +165,7 @@ body { overflow: hidden; }
 
 		/* Page transitions - opening advanced search options ***/
 		&.advanced-search-open {
-			#search-form {
+			.search-form {
 				height: 110px;
 				.transition (height, .3s, ease);
 			}
@@ -171,7 +176,7 @@ body { overflow: hidden; }
 			}
 		}
 		&.advanced-search-closing {
-			#search-form {
+			.search-form {
 				height: 60px;
 				.transition (height, .3s, ease);
 			}
@@ -189,7 +194,7 @@ body { overflow: hidden; }
 
 		/* Page transitions - social lobby filtering ***/
 		&.filter-lobby-open {
-			#search-form {
+			.search-form {
 				height: 110px;
 				.transition (height, .3s, ease);
 			}
@@ -200,7 +205,7 @@ body { overflow: hidden; }
 			}
 		}
 		&.filter-lobby-closing {
-			#search-form {
+			.search-form {
 				height: 60px;
 				.transition (height, .3s, ease);
 			}
@@ -213,23 +218,23 @@ body { overflow: hidden; }
 
 		/* Page transitions - message filtering ***/
 		&.filter-messages-open {
-			#search-form {
+			.search-form {
 				height: 110px;
 				.transition (height, .3s, ease);
 			}
 
-			#messages-guests-list {
+			.content-left .scrollable {
 				#move > #element > .bottom(openAdvancedSearch);
 				.calc-height(100, 120); /*  %, px */
 			}
 		}
 		&.filter-messages-closing {
-			#search-form {
+			.search-form {
 				height: 60px;
 				.transition (height, .3s, ease);
 			}
 
-			#messages-guests-list {
+			.content-left .scrollable {
 				#move > #element > .top(closeAdvancedSearch);
 				.calc-height(100, 60);  /* %, px */
 			}
@@ -349,7 +354,7 @@ body { overflow: hidden; }
 	}
 
 /* Search bar				==============================*/
-	#search-form {
+	.search-form {
 		text-align: center;
 		height: 60px;
 		padding: 10px 20px;
@@ -536,7 +541,7 @@ body { overflow: hidden; }
 	}	
 
 /* Post bar					==============================*/
-	#post-form {
+	.post-form {
 		position: absolute;
 		left: 0;
 		bottom: 0;
@@ -702,9 +707,10 @@ body { overflow: hidden; }
 		.show;
 		.pull-left;
 
-
-		&.check-in { background-color: @green; }
-		&.check-out { background-color: @red; }
+		&.check-in,
+		&.arrival { background-color: @green; }
+		&.check-out,
+		&.departed { background-color: @red; }
 		&.inhouse { background-color: @blue; }
 		&.cancel { background-color: @grey3; }
 		&.no-show { background: @grey2; }
@@ -845,6 +851,7 @@ body { overflow: hidden; }
 		.actions {
 			.button,
 			.inactive-nights {
+				display: inline-block;
 				font-size: 14px;
 				text-shadow: none;
 				color: @textColor;
@@ -854,8 +861,6 @@ body { overflow: hidden; }
 				background-position: 90% 50%;
 				padding: 0 30px 0 10px;
 				.no-transition;
-				.show;
-				.pull-left;
 
 				.label { font-size: 12px; }
 
@@ -960,9 +965,6 @@ body { overflow: hidden; }
 			}
 		}
 	}
-
-// To show Mouse over hand symbol - added by Qburst
-.hover-hand{cursor:pointer;cursor:hand}
 
 /* 6. IE
 ==========================================================*/
