@@ -10,9 +10,7 @@ var setUpStaycard = function(viewDom) {
 		var activeTabIndex = 0;
 		var currentReservation = viewDom.find($('#confirm_no')).val();
 		var activeTimeline = $('#reservation-card').attr('data-current-timeliine');
-		console.log(viewDom.find($("#reservation-listing ul li")));
 		viewDom.find($("#"+activeTimeline+" #reservation-listing ul li")).each(function(index){
-			console.log($(this).attr("data-confirmation-num"));
 			if($(this).attr("data-confirmation-num") == currentReservation ){
 				activeTabIndex = index;
 			}
