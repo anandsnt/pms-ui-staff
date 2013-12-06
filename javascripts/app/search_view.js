@@ -60,8 +60,6 @@ var Search  = function(domRef){
 	        $('#no-results').addClass('hidden');
 	        if(response.guests.length>0)
 	        {
-	        	console.log(response);
-	        	console.log(that.currentQuery);
 	        	that.fetchResults = response.guests;
 	        	that.displayFilteredResults(that.fetchResults, that.currentQuery);
 	        }
