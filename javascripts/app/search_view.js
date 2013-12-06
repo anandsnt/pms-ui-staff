@@ -2,15 +2,17 @@ var Search = function(domRef){
   BaseView.call(this);
   var that = this;
   this.myDomElement = domRef;
-  searchResults = {};
-  searchResults.guests = [];
-  
- this.pageinit = function(){
+  this.currentQuery = "";
+  this.fetchResults = [];
+  this.fetchTerm = "";
+    
+  this.pageinit = function(){
 
     var type = that.myDomElement.find($('#search_list')).attr("data-search-type");
     /*preload the search results, 
     if navigated to search screen by clicking checking-in/checking-out/in-house options
     */
+	
     if(type != "") {
         var search_url = "search.json?&status=" + type;
         this.fetchSearchData(search_url, "");
@@ -20,7 +22,7 @@ var Search = function(domRef){
 
   this.delegateEvents = function(){  
   	that.myDomElement.find($('#query')).on('focus', that.callCapitalize);
-    that.myDomElement.find($('#query')).on('keyup', that.loadResults);
+    that.myDomElement.find($('#query')).on('keyup', that.queryEntered);
     that.myDomElement.find($('#search-form')).on('submit', that.submitSearchForm);
     that.myDomElement.find($('#clear-query')).on('click', that.clearResults);
   };
@@ -34,7 +36,8 @@ var Search = function(domRef){
 	    that.updateView();
   	}
     
-  } ;
+  };
+
   //when a user press enter key from search textbox
   this.submitSearchForm = function(e){
 	  return false;
@@ -45,78 +48,92 @@ var Search = function(domRef){
   	$(this).capitalize();
   };
 
+  this.fetchSearchData = function(url, $query){
+ 	$.ajax({
+	    type:           "GET",
+	    url:            url,
+	    data:           {fakeDataToAvoidCache: new Date()}, // fakeDataToAvoidCache is iOS Safari fix
+	    dataType:       "json",
+	    success: function (response) {
+	        $("#search-results").empty().removeClass('hidden');
+	        $('#preloaded-results').addClass('hidden');
+	        $('#no-results').addClass('hidden');
+	        if(response.guests.length>0)
+	        {
+	        	console.log(response);
+	        	console.log(that.currentQuery);
+	        	that.fetchResults = response.guests;
+	        	that.displayFilteredResults(that.fetchResults, that.currentQuery);
+	        }
+	        // No data in JSON file
+	        else
+	        {
+	        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
+
+	            //TODO: verify implemention, rename function
+	            that.updateView();
+	        }
+	    },
+        error: function (result) {
+        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
+            //TODO: verify implemention, rename function
+            that.updateView();
+        }
+	    
+      });
+  };
+
    //when user focus on search text
-  this.loadResults = function(event){
-		var $query = $(this).val();
+  this.queryEntered = function(event){
+  	that.currentQuery = $(this).val();
+    // Clear button visibility toggle
+    that.showHideClearQueryButton();
 
-	    // Clear button visibility toggle
-	    if($.trim($('#query').val()) !== '') {
-	        $('#clear-query:not(.visible)').addClass('visible');
-	    } else {
-	        $('#clear-query.visible').removeClass('visible');
-	    }
-	    //Keyboard backspace pressed
-	    if(event.keyCode == 8){
-	    	searchResults = {};
-	    	searchResults.guests = [];
-	    }
 
-	    if($query.length >= 3){
-	    	if(searchResults.guests.length > 0){
-	    		that.getFilteredResults($query);
-	    		return false;
-	    	}
-	    	$search_url = 'search.json?&query='+ $query;
-	    	that.fetchSearchData($search_url,$query);
-	    }
-	    else if(searchResults.guests.length > 0){
-	    	that.getFilteredResults($query);
-	    }
-	    else
-	    {
-	        $('#search-results').empty().addClass('hidden');
-	        that.updateView();
-	    }
-    };
+    if(that.currentQuery.length < 3){
+      that.currentQuery = "";
+	  that.fetchResults = [];
+	  that.fetchTerm = "";
+      $('#search-results').empty().addClass('hidden');
+      //TODO: verify working. Rename function
+	  that.updateView();
+	  return;
+	}
 
-   this.fetchSearchData = function(url, $query){
-	 	$.ajax({
-		    type:           "GET",
-		    url:            url,
-		    data:           {fakeDataToAvoidCache: new Date()}, // fakeDataToAvoidCache is iOS Safari fix
-		    dataType:       "json",
-		    success: function (response) {
-		        $("#search-results").empty().removeClass('hidden');
-		        $('#preloaded-results').addClass('hidden');
-		        $('#no-results').addClass('hidden');
-		        if(response.guests.length>0)
-		        {
-		        	searchResults = response;
-		        	that.displaySearchResults(response, $query);
-		        }
-		        // No data in JSON file
-		        else
-		        {
-		        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
-		            }
-		            that.updateView();
-		        },
-		        error: function (result) {
-		        }
-	    });
-    };
+	if(that.fetchTerm!="" && that.currentQuery.indexOf(that.fetchTerm) === 0) {
+      that.displayFilteredResults(that.fetchResults, that.currentQuery);
+      return;
+    }
 
-     this.getFilteredResults = function($query){
+
+
+    that.fetchTerm = that.currentQuery;
+	var searchUrl = 'search.json?&query='+ that.fetchTerm;
+	that.fetchSearchData(searchUrl, that.fetchTerm);
+  };
+
+  //TODO:pass query 
+  this.showHideClearQueryButton = function(){
+  	if($.trim($('#query').val()) !== '') {
+        $('#clear-query:not(.visible)').addClass('visible');
+    } else {
+        $('#clear-query.visible').removeClass('visible');
+    }
+  };
+
+   
+
+     /*this.getFilteredResults = function($query){
      	$('#search-results').html("");
 	    that.displayFilteredResults(searchResults, $query);
-     };
+     };*/
 
      this.displayFilteredResults = function(searchResults, $query){
-     	console.log(JSON.stringify(searchResults));
+     	$('#search-results').html("");
      	try
 	    {
 	        var items=[];
-	        $.each(searchResults.guests, function(i,value){
+	        $.each(searchResults, function(i,value){
 	            // Search by name
 	            if ($query.match(/^([a-zA-Z]+)$/) && ((escapeNull(value.firstname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.lastname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.group).toUpperCase()).indexOf($query.toUpperCase()) >= 0))
 	            {
@@ -132,19 +149,7 @@ var Search = function(domRef){
 	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
 	                ));
 	            }
-	            // Search by number
-	            // else if ($query.length > 6 && (escapeNull(value.confirmation).toString().indexOf($query) >= 0))
-	            // {
-	            //     items.push($('<li />').html(
-	            //         that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
-	            //     ));
-
-	            // }
-
-	            // Reset scroller
-	            /*setTimeout(function () {
-	                contentScroll.refresh();
-	            }, 0);*/
+	            
 	        });
 
  				$.each(items, function(i,value){
@@ -163,36 +168,6 @@ var Search = function(domRef){
 	    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number</span></li>');
 	    }
 
-    };
-
-    this.displaySearchResults = function(response, $query){
-	    try
-		    {
-		        var items=[];
-		        $.each(response.guests, function(i,value){
-
-		        items.push($('<li />').html(
-		                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
-		                ));
-
-		                $('#search-results').append.apply($('#search-results'),items).highlight($query);
-		        });
-
-		     	// Reset scroller
-		        /*setTimeout(function () {
-		            contentScroll.refresh();
-		        }, 0);*/
-		    }
-		    catch(e)
-		    {
-		    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
-		    }
-
-		    // As this search filters JSON content, we need temp custom handling for no results scenario
-		    if ($('#search-results').is(':empty'))
-		    {
-		    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number</span></li>');
-		    };
     };
 
     this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip){
