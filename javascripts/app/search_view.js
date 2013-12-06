@@ -1,4 +1,4 @@
-var Search = function(domRef){
+var Search  = function(domRef){
   BaseView.call(this);
   var that = this;
   this.myDomElement = domRef;
@@ -129,6 +129,10 @@ var Search = function(domRef){
      };*/
 
      this.displayFilteredResults = function(searchResults, $query){
+      if($query == ""){
+        that.displaySearchResults(searchResults,$query);
+        return false;
+      }
      	$('#search-results').html("");
      	try
 	    {
@@ -168,6 +172,36 @@ var Search = function(domRef){
 	    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number</span></li>');
 	    }
 
+    };
+
+    this.displaySearchResults = function(response, $query){
+      try
+        {
+            var items=[];
+            $.each(response, function(i,value){
+
+            items.push($('<li />').html(
+                        that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
+                    ));
+
+                    $('#search-results').append.apply($('#search-results'),items).highlight($query);
+            });
+
+          // Reset scroller
+            /*setTimeout(function () {
+                contentScroll.refresh();
+            }, 0);*/
+        }
+        catch(e)
+        {
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
+        }
+
+        // As this search filters JSON content, we need temp custom handling for no results scenario
+        if ($('#search-results').is(':empty'))
+        {
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number</span></li>');
+        };
     };
 
     this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip){
