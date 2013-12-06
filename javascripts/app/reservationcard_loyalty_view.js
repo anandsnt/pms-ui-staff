@@ -20,9 +20,11 @@ var ReservationCardLoyaltyView = function(domRef){
     var reservation_id = getReservationId();
     
     if(id==""){
+      // on Selecting option "Select Loyalty Program"
       clearSelectionUI();
     }
     else{
+      // on Selecting option containg data, HLP or FFP
       resetSelectionUI();
     }
     $.ajax({
