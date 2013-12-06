@@ -13,7 +13,7 @@ var Search = function(domRef){
     */
     if(type != "") {
         var search_url = "search.json?&status=" + type;
-        this.loadSearchData(search_url, "");
+        this.fetchSearchData(search_url, "");
     }
     
   };
@@ -67,7 +67,7 @@ var Search = function(domRef){
 	    		return false;
 	    	}
 	    	$search_url = 'search.json?&query='+ $query;
-	    	that.loadSearchData($search_url,$query);
+	    	that.fetchSearchData($search_url,$query);
 	    }
 	    else if(searchResults.guests.length > 0){
 	    	that.getFilteredResults($query);
@@ -79,7 +79,7 @@ var Search = function(domRef){
 	    }
     };
 
-   this.loadSearchData = function(url, $query){
+   this.fetchSearchData = function(url, $query){
 	 	$.ajax({
 		    type:           "GET",
 		    url:            url,
@@ -112,6 +112,7 @@ var Search = function(domRef){
      };
 
      this.displayFilteredResults = function(searchResults, $query){
+     	console.log(JSON.stringify(searchResults));
      	try
 	    {
 	        var items=[];
@@ -124,8 +125,7 @@ var Search = function(domRef){
 	                ));
 	            }
 	            // Search by number
-	            else if ($query.match(/^([0-9]+)$/) && 
-	            	$query.length <= 5 && (escapeNull(value.room).toString().indexOf($query) >= 0 || 
+	            else if ($query.match(/^([0-9]+)$/) &&(escapeNull(value.room).toString().indexOf($query) >= 0 || 
 	            		escapeNull(value.confirmation).toString().indexOf($query) >= 0))
 	            {
 	                items.push($('<li />').html(
@@ -133,13 +133,13 @@ var Search = function(domRef){
 	                ));
 	            }
 	            // Search by number
-	            else if ($query.length > 6 && (escapeNull(value.confirmation).toString().indexOf($query) >= 0))
-	            {
-	                items.push($('<li />').html(
-	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
-	                ));
+	            // else if ($query.length > 6 && (escapeNull(value.confirmation).toString().indexOf($query) >= 0))
+	            // {
+	            //     items.push($('<li />').html(
+	            //         that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
+	            //     ));
 
-	            }
+	            // }
 
 	            // Reset scroller
 	            /*setTimeout(function () {
@@ -153,6 +153,7 @@ var Search = function(domRef){
 	    }
 	    catch(e)
 	    {
+	    	console.log(e.message);
 	    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
 	    }
 
