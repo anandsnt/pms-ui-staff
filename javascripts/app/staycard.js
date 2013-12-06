@@ -5,8 +5,8 @@ var StayCard = function(viewDom){
   this.reservation_id = getReservationId();
   this.pageinit = function(){
     setUpStaycard(that.myDom);
-    var currentConfirmNumber = $("#confirm_no").val();
-    var reservationDetails = new reservationDetailsView($("#reservation-content-"+currentConfirmNumber));
+    var currentConfirmNumber = $("#confirm_no").val();    
+    var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
 	reservationDetails.initialize();
     that.reservation_id = getReservationId();
   };
