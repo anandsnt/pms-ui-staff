@@ -16,20 +16,21 @@ var AddHLPModal = function(){
 		var $loyalty_id = $("#newhlp_id").val();
 
 		var $type = $('#hotel-loyalty-types option:selected').val(),
-			$level= $('#hotel-loyalty-levels option:selected').text(),
-			$code = $("#hl-code").val();
-			$level = $('#hotel-loyalty-levels option:selected').val();
+		$level= $('#hotel-loyalty-levels option:selected').text(),
+		$code = $("#hl-code").val();
+		$level = $('#hotel-loyalty-levels option:selected').val();
 
-		if($type == ""){
-			alert("Please select loyalty type");
-			return false;
-		}else if($level == ""){
-			alert("Please select a loyalty level");
-			return false;
-		}else if($code == ""){
-			alert("Please enter the loyalty code");
-			return false;
-		}
+		// REMOVING CLIENT SIDE VALIDATION FOR MEMBERSHIPS
+		// if($type == ""){
+		// 	alert("Please select loyalty type");
+		// 	return false;
+		// }else if($level == ""){
+		// 	alert("Please select a loyalty level");
+		// 	return false;
+		// }else if($code == ""){
+		// 	alert("Please enter the loyalty code");
+		// 	return false;
+		// }
 
 		var userId = $('#user_id').val();
 	    var guestId = $('#guest_id').val();
@@ -46,20 +47,20 @@ var AddHLPModal = function(){
 		
 		var $name   = $('#hotel-loyalty-levels option:selected').text();
 		
-		updateHLPLoyaltyUI($type,$code,$level,$name);
-		
 	    updateServerForNewLoyalty(newHLP, function(data){
+			updateHLPLoyaltyUI($type,$code,$level,$name);
+		    that.hide();
+			
 	    	$loyaltyid = data.id;
-			    var $new_id = "hl-program-"+$loyaltyid;
+			var $new_id = "hl-program-"+$loyaltyid;
 			    
-			    $("#loyalty-hlp a.program_new").attr('id',$new_id);
-			    $("#loyalty-hlp a.program_new").attr('loyaltyid',$loyaltyid);
-			    $("#loyalty-hlp a#"+$new_id).removeClass('program_new');
+			$("#loyalty-hlp a.program_new").attr('id',$new_id);
+			$("#loyalty-hlp a.program_new").attr('loyaltyid',$loyaltyid);
+			$("#loyalty-hlp a#"+$new_id).removeClass('program_new');
 			    
-			    $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
-			    $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
+			$("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
+			$("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
 	    }, "HLP");
-	    that.hide();
     }
   	this.typeChanged = function(event){
         event.preventDefault();
