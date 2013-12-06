@@ -166,6 +166,10 @@ var Search  = function(domRef){
  				$.each(items, function(i,value){
 	            	$('#search-results').append(value).highlight($query);
 	            });
+
+        // Set pageScroll
+      if (pageScroll) { destroyPageScroll(); }
+      createPageScroll('#search');
 	    }
 	    catch(e)
 	    {
@@ -194,10 +198,9 @@ var Search  = function(domRef){
                     $('#search-results').append.apply($('#search-results'),items).highlight($query);
             });
 
-          // Reset scroller
-            /*setTimeout(function () {
-                contentScroll.refresh();
-            }, 0);*/
+          // Set pageScroll
+      if (pageScroll) { destroyPageScroll(); }
+      createPageScroll('#search');
         }
         catch(e)
         {
