@@ -1,5 +1,13 @@
+function getCurrentReservationDiv(){
+	var currentConfirmation = $("#reservation-listing ul li.ui-state-active").attr("data-confirmation-num");
+	var currentReservationDiv = "reservation-"+currentConfirmation;
+	return currentReservationDiv;
+}
+
+
 function getReservationId(){
-	var reservation_id = $("#reservation_info").attr("data-reservation-id");
+	var currentFetchDom = getCurrentReservationDiv();
+	var reservation_id = $("#"+currentFetchDom+" #reservation_info").attr("data-reservation-id");
 	return reservation_id;
 }
 
