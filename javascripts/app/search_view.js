@@ -83,7 +83,7 @@ var Search  = function(domRef){
 
    //when user focus on search text
   this.queryEntered = function(event){
-  	that.currentQuery = $(this).val();
+  	that.currentQuery = $.trim($(this).val());
     // Clear button visibility toggle
     that.showHideClearQueryButton();
 
@@ -137,7 +137,10 @@ var Search  = function(domRef){
 	        var items=[];
 	        $.each(searchResults, function(i,value){
 	            // Search by name
-	            if ($query.match(/^([a-zA-Z]+)$/) && ((escapeNull(value.firstname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.lastname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.group).toUpperCase()).indexOf($query.toUpperCase()) >= 0))
+	            if ($query.match(/^([a-zA-Z]+)$/) && 
+                ((escapeNull(value.firstname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || 
+                  (escapeNull(value.lastname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || 
+                  (escapeNull(value.group).toUpperCase()).indexOf($query.toUpperCase()) >= 0))
 	            {
 	                items.push($('<li />').html(
 	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
@@ -151,6 +154,12 @@ var Search  = function(domRef){
 	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
 	                ));
 	            }
+              else if((escapeNull(value.group).toUpperCase()).indexOf($query.toUpperCase()) >= 0){
+                items.push($('<li />').html(
+                      that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
+                  ));
+
+              }
 	            
 	        });
 
