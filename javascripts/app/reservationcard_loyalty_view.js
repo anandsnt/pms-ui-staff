@@ -5,15 +5,15 @@ var ReservationCardLoyaltyView = function(domRef){
 
   this.pageinit = function(){
     bindLoyaltyUtilFunctions();
-  }
+  };
   this.delegateEvents = function(){
   	that.myDom.find('.add-new-button').on('click', that.adddNewLoyaltyModal);
   	that.myDom.find('select.styled#loyalty').on('change', that.changedLoyaltyProgram);				
-  }
+  };
   this.adddNewLoyaltyModal = function(){
   	var adddNewLoyaltyModal = new AdddNewLoyaltyModal();
     adddNewLoyaltyModal.initialize();
-  }
+  };
   this.changedLoyaltyProgram = function(){
 	var selectedOption = $(this).find('option:selected');
     var id = $(this).find('option:selected').attr('id');
@@ -37,7 +37,7 @@ var ReservationCardLoyaltyView = function(domRef){
 	    error: function(){
 		}
 	});
-  }
+  };
 };
 
 
