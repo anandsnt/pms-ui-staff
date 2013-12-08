@@ -9,7 +9,6 @@
 /* 5. COMPONENTS
 ==========================================================*/
 
-
 /* DataTables       ==============================*/
   .dataTables_wrapper { position: relative; }
 
@@ -168,6 +167,12 @@
     -webkit-overflow-scrolling: touch;
   }
 
+/* jQuery UI datepicker   ==============================*/
+  .has-datepicker {
+    &.entry {
+      .ui-datepicker-trigger { top: 24px; }
+    }
+  }
 
 
 /* 6. IE
