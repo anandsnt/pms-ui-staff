@@ -166,6 +166,10 @@ var Search  = function(domRef){
  				$.each(items, function(i,value){
 	            	$('#search-results').append(value).highlight($query);
 	            });
+
+        // Set pageScroll
+      if (pageScroll) { destroyPageScroll(); }
+      createPageScroll('#search');
 	    }
 	    catch(e)
 	    {
@@ -194,10 +198,9 @@ var Search  = function(domRef){
                     $('#search-results').append.apply($('#search-results'),items).highlight($query);
             });
 
-          // Reset scroller
-            /*setTimeout(function () {
-                contentScroll.refresh();
-            }, 0);*/
+          // Set pageScroll
+      if (pageScroll) { destroyPageScroll(); }
+      createPageScroll('#search');
         }
         catch(e)
         {
@@ -232,7 +235,7 @@ var Search  = function(domRef){
         $vip = vip ? '<span class="vip">VIP</span>' : '',
         $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="' + escapeNull(image) + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = roomstatusextra ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
-        $viewStatus = viewStatus ? '<span class="guest-status ' + escapeNull(viewStatus) + '">' + escapeNull(viewStatus) + '</span>':'',
+        $viewStatus = viewStatus ? '<span class="guest-status ' + escapeNull(viewStatus) + '"></span>':'<span class="guest-status"></span>',
         $output =
         '<a href="staff/staycards/staycard?confirmation=' + confirmation+'&id='+ escapeNull(id)+ '" class="guest-' + escapeNull(status) + ' link-item float" data-transition="inner-page">' +
             $image +

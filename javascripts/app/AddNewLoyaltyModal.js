@@ -9,9 +9,9 @@ var AdddNewLoyaltyModal = function(){
 		that.myDom.find('#new-loyalty-program #save').on('click', that.addLoyaltyProgram);
 		that.myDom.find('#new-loyalty-program #program').on('change', that.programChanged);
 		that.myDom.find('#new-loyalty-program #type').on('change', that.typeChanged);
-	}
+	};
 	this.modalInit = function(){
-    }
+    };
     this.programChanged = function(event){
       event.preventDefault();
 	  event.stopImmediatePropagation();
@@ -30,7 +30,7 @@ var AdddNewLoyaltyModal = function(){
 	    //Populate the options in loyalty type select box for hotel loyalty pgm 
 	    addHLPSelectOptions("#new-loyalty-program #type");  // TODO function is in guestcard_loyalty.js
 	  }
-    }
+    };
     this.typeChanged = function(event){
       event.preventDefault();
 	  event.stopImmediatePropagation();
@@ -42,7 +42,7 @@ var AdddNewLoyaltyModal = function(){
 	      $.each(ffProgramsList, function(key, airline) {
 	      if(airline.ff_value == $selectedLoyaltyType){
 	        $.each(airline.levels, function(key, value) {
-	          var ffOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>'
+	          var ffOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>';
 	          $("#new-loyalty-program #level").append(ffOptions);
 	        });
 	      }
@@ -51,14 +51,14 @@ var AdddNewLoyaltyModal = function(){
 	    $.each(hlProgramsList, function(key, loyaltyPgm) {
 	      if(loyaltyPgm.hl_value == $selectedLoyaltyType){
 	        $.each(loyaltyPgm.levels, function(key, value) {
-	          var hlOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>'
+	          var hlOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>';
 	          $("#new-loyalty-program #level").append(hlOptions);
 	        });
 	      }
 	    });
 	  }
     	
-    }
+    };
     this.addLoyaltyProgram = function(event){
       event.preventDefault();
 	  event.stopImmediatePropagation();
@@ -135,5 +135,5 @@ var AdddNewLoyaltyModal = function(){
 	  }
 	  updateSelectionUI($code,$type);
       that.hide();
-    }
-}
+    };
+};
