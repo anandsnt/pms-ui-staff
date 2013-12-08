@@ -102,9 +102,6 @@ var setUpAdmin = function(viewDom, delegate) {
 			receive: function (event, ui) {
 				sortableIn = 1;
 	        	$(ui.item).addClass('moved').draggable('option', 'disabled', true);	        	
-	        	var bookMarkId = $(ui.item.context).attr("data-id");
-	        	that.delegate.bookMarkAdded(bookMarkId);
-	        	
 	    	},
 	        over: function(event, ui){
 				sortableIn = 1;
@@ -124,7 +121,14 @@ var setUpAdmin = function(viewDom, delegate) {
 			},
 			
 			beforeStop: function(event, ui){
-				$(ui.item).addClass('in-quick-menu');
+				var bookMarkId = $(ui.item.context).attr("data-id")
+					bookMarkWidth = parseInt(ui.item.outerWidth());
+
+				$(ui.item).css('width', bookMarkWidth).addClass('in-quick-menu');
+
+				// TODO - pass bookMarkWidth as well so that in _quick_menu.html.haml 
+				// you can add "style" => "width:" + menu_components['width']
+	        	that.delegate.bookMarkAdded(bookMarkId);
 
 				// Remove from quick navigation
 				if (sortableIn == 0){
