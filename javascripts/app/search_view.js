@@ -229,7 +229,8 @@ var Search  = function(domRef){
     		roomstatusexplained ="DUEOUT";
     		roomstatusextra = true;
     	}
-
+		if(reservation_status == "CHECKEDIN") roomstatusextra = false;
+		
     	var $location = (escapeNull(location) != '') ? '<span class="icons icon-location">' + escapeNull(location) + '</span>' : '',
         $group = (escapeNull(group) != '') ? '<em class="icons icon-group">' + escapeNull(group) + '</em>' : '',
         $vip = vip ? '<span class="vip">VIP</span>' : '',
