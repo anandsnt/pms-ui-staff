@@ -2,71 +2,87 @@ var StayCard = function(viewDom){
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
-
+  this.reservation_id = getReservationId();
   this.pageinit = function(){
     setUpStaycard(that.myDom);
-    
-    //Bind staycard events
-
-    that.myDom.find($('#reservation-timeline li')).on('click', that.reservationTimelineClicked);
-    that.myDom.find($('#reservation-listing li a')).on('click', that.reservationListItemClicked);
-    that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);
-    that.myDom.find($('#reservation_newspaper')).on('change', that.setNewspaperPreferance);
-
-  }
-
-  this.initSubViews = function(){
-  	var reservationPaymentView = new ReservationPaymentView($("#reservation-card-payment"));
-    reservationPaymentView.initialize();
-    var reservationCardLoyaltyView = new ReservationCardLoyaltyView($("#reservationcard-loyalty"));
-    reservationCardLoyaltyView.initialize();
-    setUpGuestcard(that.myDom);
-    var guestContactView = new GuestContactView("#contact-info");
-    guestContactView.pageinit();
-    var reservationCardNotes = new reservationCardNotesView($("#reservation-notes"));
-    reservationCardNotes.initialize();
-  }
-
-
-  this.setNewspaperPreferance = function(e){  	
-  	var reservation_id = getReservationId();
-  	var newspaperValue = $('#reservation_newspaper').val();
-  	$.ajax({
-      	type : 'POST',
-      	url : "reservation/add_newspaper_preference",
-      	data : {"reservation_id": reservation_id, "selected_newspaper" :newspaperValue } ,
-      	success : function(data) {
-          	if(data.status == "success"){
-          	    console.log("Succesfully set newspaper preferance");
-          	}
-          	else{
-          	    console.log("Something is wrong!");
-          	}
-      	},
-      	error : function() {
-      	    console.log("There is an error!!");
-      	}
-  	});
-  }
+    var currentConfirmNumber = $("#confirm_no").val();    
+    var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
+	reservationDetails.initialize();
+    that.reservation_id = getReservationId();
+  };
+   this.delegateEvents = function(partialViewRef){  
+   	if(partialViewRef === undefined){
+   		partialViewRef = $("#confirm_no").val();
+   	}   	
+  	
+    that.myDom.find('#reservation-timeline li').on('click', that.reservationTimelineClicked);
+    that.myDom.find('#reservation-listing li').on('click', that.reservationListItemClicked);
+    that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);  
+    that.myDom.find('#title').on('change', that.changeAvathar);
+  };
+  
+  this.changeAvathar = function(e){
+	  var img_src = getAvatharUrl($(this).val());
+	  $("#guest-card-header .guest-image img").attr("src", img_src);  
+  };
 
   
+ this.executeLoadingAnimation = function(){
+  	if (this.viewParams === undefined) return;
+  	if (this.viewParams["showanimation"] === false) return;
+	
+	if (this.viewParams["current-view"] === "bill_card_view")
+  		changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);
+  	else if (this.viewParams["current-view"] === "room_upgrades_view"){
+
+  		changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
+  	}
+  		
+  	 
+  };
+
+
+  this.pageshow = function(){
+    //Create the scroll views for staycard
+    var confirmNum = that.myDom.find($('#reservation_info')).attr('data-confirmation-num');
+    createViewScroll('#reservation-listing');
+    createViewScroll('#reservation-content-'+ confirmNum);
+  };
+
+ 
+ 
+
+  this.initSubViews = function(){
+  	 
+	partialViewRef = $("#confirm_no").val();
+	setUpGuestcard(that.myDom);
+	var guestContactView = new GuestContactView($("#contact-info"));
+	guestContactView.pageinit();  	
+  };
+
+ 
   //workaround for populating the reservation details,
   //when user clicks on other timeline tabs
   this.reservationTimelineClicked = function(e){
     var currentTimeline = $(this).attr('aria-controls');
     //No reservation details are added to the DOM
     if (!($("#" + currentTimeline).find('.reservation').length > 0)) {
-      $("#" + currentTimeline + ' #reservation-listing ul li').first().find('a').trigger("click");
+    	
+      $("#" + currentTimeline + ' #reservation-listing ul li').first().trigger("click");
     }
-  }
+  };
 
   // Load reservation details
   this.reservationListItemClicked = function(e){
-    that.displayReservationDetails($(this).attr('href'));
-  }
+    var confirmationNumClicked = $(this).attr('data-confirmation-num');
+    //var currentTimeline = $(this).parents().find(".reservation-list:eq(0)").attr('id');
+    //$('#'+currentTimeline).append("<div id= 'reservation-"+confirmationNumClicked+"'>test div</div>");
+    that.displayReservationDetails($(this).find('a').attr('href'));
+  };
 
   //Add the reservation details to the DOM.
   this.displayReservationDetails = function($href){
+  	$("#view-nested-first #reservation_info").removeClass("current");
     //get the current highlighted timeline
     //Not more than 5 resevation should be kept in DOM in a timeline.
     var currentTimeline = $('#reservation-timeline').find('.ui-state-active').attr('aria-controls');
@@ -77,48 +93,37 @@ var StayCard = function(viewDom){
     var reservation = $href.split("-")[1];
     //if div not present in DOM, make ajax request
     if (!($($href).length > 0)) {
+
       $.ajax({
         type : 'GET',
         url : "staff/staycards/reservation_details?reservation=" + reservation,
         dataType : 'html',
-        success : function(data) {
-          $("#" + currentTimeline).append(data);
+        async:false,
+        success : function(data) {        	
+          $("#" + currentTimeline).append(data);         
+          createViewScroll("#reservation-content-"+reservation);       
+          var reservationDetails = new reservationDetailsView($("#reservation-"+reservation));
+          reservationDetails.initialize();
         },
         error : function() {
         }
       });
+    } else{
+    	$("#view-nested-first #reservation-"+reservation+" #reservation_info").addClass("current");
     }
-  }
+  };
 
 
   this.updateGuestDetails = function(update_val, type){
     var userId = $("#user_id").val();
     $guestCardJsonObj = {};
     $guestCardJsonObj['guest_id'] = $("#guest_id").val();
-    $guestCardJsonObj['user'] = {};
-    $guestFirstName = $guestCardJsonObj['user']['first_name'] = $("#gc-firstname").val();
-    $guestLastName = $guestCardJsonObj['user']['last_name'] = $("#gc-lastname").val();
-    $guestCardJsonObj['user']['addresses_attributes'] = [];
-    $addresses_attributes = {};
-    $guestCity = $addresses_attributes['city'] = $("#gc-location").val();
-    $addresses_attributes['is_primary'] = true;
-    $addresses_attributes['label'] = "HOME";
-    $guestCardJsonObj['user']['addresses_attributes'].push($addresses_attributes);
-    $guestCardJsonObj['user']['contacts_attributes'] = [];
-    $contact_attributes = {};
-    $contact_attributes['contact_type'] = "PHONE";
-    $contact_attributes['label'] = "HOME";
-    $guestPhone = $contact_attributes['value'] = $("#gc-phone").val();
-    $contact_attributes['is_primary'] = true;
-    $guestCardJsonObj['user']['contacts_attributes'].push($contact_attributes);
-    $contact_attributes = {};
-    $contact_attributes['contact_type'] = "EMAIL";
-    $contact_attributes['label'] = "BUSINESS";
-    $guestEmail = $contact_attributes['value'] = $("#gc-email").val();
-    $contact_attributes['is_primary'] = true;
-    $contact_attributes['id'] = "";
-    $guestCardJsonObj['user']['contacts_attributes'].push($contact_attributes);
-
+    $guestFirstName = $guestCardJsonObj['first_name'] = $("#gc-firstname").val();
+    $guestLastName = $guestCardJsonObj['last_name'] = $("#gc-lastname").val();
+    $guestCity = $guestCardJsonObj['city'] = ($("#gc-location").val()).split(",")[0];
+    $guestState = $guestCardJsonObj['state'] = ($("#gc-location").val()).split(",")[1];
+    $guestPhone = $guestCardJsonObj['phone'] = $("#gc-phone").val();
+    $guestEmail = $guestCardJsonObj['email'] = $("#gc-email").val();
 
     $.ajax({
       type : 'PUT',
@@ -133,31 +138,20 @@ var StayCard = function(viewDom){
           $("#guest_firstname").val($guestFirstName);
           $("#guest_lastname").val($guestLastName);
           $("#city").val($guestCity);
+          $("#state").val($guestState);
           $("#phone").val($guestPhone);
           $("#email").val($guestEmail);
         }
       },
       error : function(e) {
         //TODO: hande error cases
-        console.log(e);
       }
     });
 
-    }
-
+   };
 
     this.guestDetailsEdited = function(e){
-
       //send an update request to the third party system
       that.updateGuestDetails($(this).val(), $(this).attr('data-val'));
-    }
-
-}
-
-
-/*function getParentBookingDetailes(clickedElement) {
-  alert(clickedElement);
-  var reservationDetails = {};
-  var parentReservationElement = $('#' + clickedElement).closest('div[id^="reservation-content"]').attr('id');
-  alert(parentReservationElement);
-}*/
+    };
+};

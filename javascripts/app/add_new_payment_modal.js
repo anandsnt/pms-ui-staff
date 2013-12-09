@@ -1,26 +1,20 @@
-var AddNewPaymentModal = function(fromPagePayment){
+var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
   	BaseModal.call(this);
   	var that = this;
-  	// this.myDom = "#modal";
+  	this.save_inprogess = false;
   	this.url = "staff/payments/addNewPayment";
   	this.$paymentTypes = [];
   	
   	this.delegateEvents = function(){
-
-  		console.log("sub modal delegate events");
   		that.getPaymentsList();
-
   		that.myDom.find('#new-payment #payment-type').on('change', that.filterPayments);
 		that.myDom.find('#new-payment #save_new_credit_card').on('click', that.saveNewPayment);
 	};
 	this.modalInit = function(){
-        console.log("modal init in sub modal");
-        
-   };
-   this.saveNewPayment = function(){
-
-   	
-  	var $payment_type = $("#new-payment #payment-type").val();
+   	};
+   	this.saveNewPayment = function(){
+   		if (that.save_inprogress == true) return false;
+		var $payment_type = $("#new-payment #payment-type").val();
 		$payment_credit_type = $("#new-payment #payment-credit-type").val();
 		$card_number_set = $("#new-payment #card-number-set1").val();
 		$expiry_month	= $("#new-payment #expiry-month").val();
@@ -28,53 +22,44 @@ var AddNewPaymentModal = function(fromPagePayment){
 		$name_on_card	= $("#new-payment #name-on-card").val();
 		$card_type 		= $("#payment-credit-type").val();
 		$card_number = $card_number_set;
-		$card_expiry = $expiry_month +"/"+$expiry_year;
-		$card_expiry = "20"+$expiry_year+"-"+$expiry_month+"-01";
+		$card_expiry = $expiry_month && $expiry_year ? "20"+$expiry_year+"-"+$expiry_month+"-01" : "";
 		$guest_id = $("#guest_id").val();
 		
+		// MOVED TO SERVER SIDE VALIDATION ONLY
+		// /* credit card validation */
+		// if (!checkCreditCard ($card_number, $payment_credit_type)) {
+		// 	    	$("#credit-card-number-error").html(ccErrors[ccErrorNo]).show();
+		// 	  		return false;
+		// 	  	}
+		// $("#new-payment .error").hide();
+		// if(($("#new-payment #payment-type").val()) == ""){
+		// 	$("#payment-type-error").html("Payment type is required").show();		
+		// 	return false;	
+		// 	    }else if($("#new-payment #payment-credit-type").val() == ""){ 
+		// 	$("#payment-credit-type-error").html("Credit Card type is required").show();	
+		// 	return false;			
+		// }else if($("#new-payment #card-number-set1").val() == ""){
+		// 	$("#credit-card-number-error").html("Credit Card number is required").show();	
+		// 	return false;			
+		// }else if($.trim($("#new-payment #expiry-month").val()) == "" || $.trim($("#new-payment #expiry-year").val()) == ""){
+		// 	$("#credit-card-expiry-error").html("Credit Card expiry is required").show();	
+		// 	return false;			
+		// }else if($.trim($("#new-payment #name-on-card").val()) == ""){
+		// 	$("#name-on-card-error").html("Card holder name is required").show();	
+		// 	return false;			
+		// }
 		
-		/* credit card validation */
-		if (!checkCreditCard ($card_number, $payment_credit_type)) {
-	    	// alert (ccErrors[ccErrorNo]);
-	    	$("#credit-card-number-error").html(ccErrors[ccErrorNo]).show();
-	  		return false;
-	  	}
-
-		$("#new-payment .error").hide();
-		if(($("#new-payment #payment-type").val()) == ""){
-			$("#payment-type-error").html("Payment type is required").show();		
-			return false;	
-	    }else if($("#new-payment #payment-credit-type").val() == ""){ 
-			$("#payment-credit-type-error").html("Credit Card type is required").show();	
-			return false;			
-		}else if($("#new-payment #card-number-set1").val() == ""){
-			$("#credit-card-number-error").html("Credit Card number is required").show();	
-			return false;			
-		}else if($("#new-payment #expiry-month").val() == "" || $("#new-payment #expiry-year").val() == ""){
-			$("#credit-card-expiry-error").html("Credit Card expiry is required").show();	
-			return false;			
-		}else if($("#new-payment #name-on-card").val() == ""){
-			$("#name-on-card-error").html("Card holder name is required").show();	
-			return false;			
-		}	
-		
-		// var $image = (($("#new-payment #credit_card").val()) == "AX" ? "<img src='/assets/amex.png' alt='amex'>": (($("#new-payment #credit_card").val()) == "MA" ? "<img src='/assets/mastercard.png' alt='mastercard'>": "<img src='/assets/visa.png' alt='visa'>" ));
 		var $image = "<img src='/assets/"+$("#new-payment #payment-credit-type").val().toLowerCase()+".png' alt='"+$("#new-payment #payment-credit-type").val().toLowerCase()+"'>";	
-			$number = $card_number.substr($card_number.length - 5);			
-			$expiry = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
-			$cardHolderName = $("#new-payment #name-on-card").val();
-		var user_id = $("#user_id").val();
-		if(fromPagePayment == "guest"){
-			var	$add = 
-	        '<a id="credit_row"  credit_id="" class="active-item float item-payment new-item">'+
-	        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
-	        'Ending with<span class="value number">'+$number+'</span></span>'+
-			'<span class="date">Date<span class="value date">'+$expiry+'</span>'+
-			'</span><span class="name">Name<span class="value name">'+$cardHolderName+'</span>'+
-			'</span></a>';
 		
-			//console.log($add);
-		    $("#payment_tab").prepend($add);
+		$number = $card_number.substr($card_number.length - 5);
+		$expiry = $expiry_month && $expiry_year ? $expiry_month + "/" + $expiry_year : "";		
+		$cardHolderName = $("#new-payment #name-on-card").val();
+		
+		var user_id = $("#user_id").val();
+		
+		if(fromPagePayment == "guest"){
+			
+		    that.save_inprogress = true; // Handle clicking on Add button twice.
 		    $.ajax({
 				type: "POST",
 				url: 'staff/payments/save_new_payment',
@@ -90,14 +75,20 @@ var AddNewPaymentModal = function(fromPagePayment){
 					},
 				dataType: 'json',
 				success: function(data) {
-					console.log(data.id);
+					that.save_inprogress = false;
 					if(data.errors!="" && data.errors!=null){
-						$("#credit-card-number-error").html(data.errors).show();
-						// $("#new-payment #credit_row .new-item").remove();
-						$('#payment_tab a:first').remove();
+						$("#new-payment .error-messages").html(data.errors.join('<br>')).show();
 						return false;
 					}
-					console.log(data.id);
+					var	$add = 
+				        '<a id="credit_row"  credit_id="" class="active-item float item-payment new-item">'+
+				        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
+				        'Ending with<span class="value number">'+$number+'</span></span>'+
+						'<span class="date">Date<span class="value date">'+$expiry+'</span>'+
+						'</span><span class="name">Name<span class="value name">'+$cardHolderName+'</span>'+
+						'</span></a>';
+					
+				    $("#payment_tab").prepend($add);
 					//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
 					$("#payment_tab .new-item").attr("credit_id", data.id);
 					$("#payment_tab .new-item").attr("id", "credit_row"+data.id);
@@ -107,12 +98,13 @@ var AddNewPaymentModal = function(fromPagePayment){
 					that.hide();
 				},
 				error: function(){
-					//alert(data.errors);
+					that.save_inprogress = false;
 				}
 			});
 			
 		} else {
 			var reservation_id = getReservationId();
+			that.save_inprogress = true;
 			$.ajax({
 				type: "POST",
 				url: 'staff/reservation/save_payment',
@@ -127,14 +119,11 @@ var AddNewPaymentModal = function(fromPagePayment){
 					},
 				dataType: 'json',
 				success: function(data) {
-					console.log(data.id);
+					that.save_inprogress = false;
 					if(data.errors!="" && data.errors!=null){
-						$("#credit-card-number-error").html(data.errors).show();
-						// $("#new-payment #credit_row .new-item").remove();
-						$('#payment_tab a:first').remove();
+						$("#new-payment .error-messages").html(data.errors.join("<br>")).show();
 						return false;
 					}
-					console.log(data.data.id);
 					//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
 					
 					$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
@@ -142,13 +131,22 @@ var AddNewPaymentModal = function(fromPagePayment){
 					$newPaymentOption =  "<option value='"+data.data.id+"'data-number='"+$number+"'"+
 					  "data-name='"+$("#new-payment #name-on-card").val()+"' data-image='"+$newImage+"' data-date='"+$newDate+ "'"+
 					  "data-card='"+$("#new-payment #payment-credit-type").val()+ "'>"+
-					 $("#new-payment #payment-credit-type").val()+" "+$number+" "+$("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val()+ "</option> ";    
+					 $("#new-payment #payment-credit-type").val()+" "+$number+" "+$("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val()+ "</option> ";    
 									
-					$("#staycard_creditcard").append($newPaymentOption);
+					currentStayCardView.find("#staycard_creditcard").append($newPaymentOption);
+					$('#staycard_creditcard').val(data.data.id);
+					var replaceHtml = "<figure class='card-logo'>"+
+										"<img src='/assets/"+$newImage+"' alt=''></figure>"+									
+										"<span class='number'>Ending with<span class='value number'>"+$number+							
+										"</span></span><span class='date'> Date <span class='value date'>"+
+										$("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val()+
+										"</span>";
+				    						
+					currentStayCardView.find("#selected-reservation-payment-div").html(replaceHtml);
 					that.hide();
 				},
 				error: function(){
-					//alert(data.errors);
+					that.save_inprogress = false;
 				}
 			});
 		} 	
@@ -165,7 +163,6 @@ var AddNewPaymentModal = function(fromPagePayment){
 				that.$paymentTypes = data.data;
 			},
 			error: function(){
-				console.log("There is an error!!");
 			}
 		});
    };

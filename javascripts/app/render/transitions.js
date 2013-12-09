@@ -3,6 +3,7 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
 
 // Load main page
 function changePage($type, $menuActiveItem, $prevPage, $nextPage, $transition, $emptyPrev){
+
     var $newScreen = new chainedAnimation(),
         $delay = 150;
     
@@ -177,15 +178,15 @@ function changeInnerPage($type, $menuActiveItem, $prevPage, $nextPage, $transiti
 
 // Load inner page view 
 function changeView($type, $menuActiveItem, $prevView, $nextView, $transition, $emptyPrev){
+    
     var $newView = new chainedAnimation(),
         $delay = 150;
 
     // Lock the current parent view
     $('#' + $nextView).closest('.page-current').addClass('page-locked');
-
+    
     // Start transitioning when new page is ready
     $('#loading').fadeOut(function(){
-
         // Bring in new view
         $newView.add(function(){  
             $('#' + $nextView).addClass('view-current ' + $transition);
@@ -308,7 +309,6 @@ $(function($){
 
                 },
                 error: function(){
-                    console.log('Error loading screen');
                 }
             });       
 
@@ -353,8 +353,8 @@ $(function($){
         }
         else if ($transitionPage.indexOf('nested-view') >= 0)
         {
-            var $previous = $('.nested-view.view-current').attr('id'),
-                $next = $('.nested-view:not(.view-current)').attr('id');
+            var $previous = $('.page-current').find('.nested-view.view-current').attr('id'),
+                $next = $('.page-current').find('.nested-view:not(.view-current)').attr('id');
         }
 
 
@@ -369,6 +369,7 @@ $(function($){
         {
             var $next = $('#' + $activeMenuItem).closest('.main-page').attr('id');
             switchPage($transitionPage, $activeMenuItem, $previous, $next, 'move-from-left');
+            
         }
 
         // Load next page/view or reload previous view before going back
@@ -385,10 +386,10 @@ $(function($){
                     },
                     error: function(){
                         $('#loading').remove();
-                        console.log('Error loading screen');
                     }
                 }).done(function(){  
-                    viewInstance = sntapp.getViewInstance($('#'+$next));
+                    var viewInstance = sntapp.getViewInstance($('#'+$next));
+
                     if(typeof viewInstance !== "undefined"){
                         viewInstance.initialize();
                     }
@@ -403,6 +404,7 @@ $(function($){
                     }
                     else if ($transitionPage.indexOf('nested-view') >= 0)
                     {
+
                        changeView($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reloadOnBack); 
                     }
 
@@ -424,10 +426,17 @@ $(function($){
             {
                goBackToView($activeMenuItem, $backView, $transitionType);
             }
+
+            //TODO: We are using a new view instance here. 
+            //It has to be replaced by a singletone instance of the view
+            var newViewInstance = sntapp.getViewInstance($('#'+$backPage));
+            if(typeof newViewInstance !== "undefined"){
+                newViewInstance.pageshow();
+            }
+
         }
         else 
         {
-            console.log('Screen does not exist');
         }
     });
 

@@ -25,45 +25,32 @@ function fetchLoyaltyProgramData(url,type){
 			else if(type == 'hlp'){
 				hlProgramsList = data;
 			}
-			console.log(data);
 		},
 		error : function() {
-			console.log("error");
 		}
 	});
 }
 
 function updateServerForNewLoyalty(postData, successCallback, type){
-	console.log(JSON.stringify(postData));
 	$.ajax({
 		type: "POST",
 		url: 'staff/user_memberships',
 		data: postData,
 		dataType: 'json',
 		success: function(response) {
-			if((response.errors)!== null && (response.errors.length > 0)){
-				alert(response.errors[0]);
-				//Remove the element from DOM
-				$("#stay-card-loyalty #loyalty option.program_new").remove();
-				if(type == "FFP"){
-					$("#loyalty-ffp a").last().remove();
-					
-				}else if(type == "HLP"){
-					$("#loyalty-hlp a").last().remove();
-				}
-				clearSelectionUI();
+			if(response.errors != null && response.errors.length > 0){
+				if (type == 'FFP') {
+					$("#new-ffp .error-messages").html(response.errors.join('<br>')).show();					
+				} else if (type == 'HLP') {
+					$("#new-hlp .error-messages").html(response.errors.join('<br>')).show();
+				}				
 			}else{
 				//Insert the response id to the new DOM element
 				successCallback(response.data);
 			}
 		},
 		error: function(response){
-			$("#stay-card-loyalty #loyalty option.program_new").remove();
-			if(type == "FFP"){
-				$("#loyalty-ffp a").last().remove();
-			}else if(type == "HLP"){
-				$("#loyalty-hlp a").last().remove();
-			}
+			// TODO: Handle error
 		}
 	 });
 }
@@ -94,9 +81,9 @@ function updateHLPLoyaltyUI($type,$code,$level,$name){
       "<span class='value number'>"+$code+"</span>"+
       "<span class='value name'>"+$level+"</span></a>";
       
-    $("#loyalty-ffp").append($html);
+    $("#loyalty-hlp").append($html);
     
-    var html_for_staycard = '<option class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
+    var html_for_staycard = '<option selected="selected" class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
 	$("#stay-card-loyalty #loyalty").append(html_for_staycard);
 }
 
@@ -112,11 +99,12 @@ function updateFFPLoyaltyUI($type,$code,$program,$name){
       
     $("#loyalty-ffp").append($html);
     
-    var html_for_staycard = '<option class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
+    var html_for_staycard = '<option selected="selected" class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
 	$("#stay-card-loyalty #loyalty optgroup").last().before(html_for_staycard);
 }
 
 function updateSelectionUI($code,$type){
+	console.log("updateSelectionUI");
 	var $number = $code.slice(-4);
 	$("div#reservationLoyalty.selected").html("");
 	var html = 	'<span class="value code">'+$type+'</span>'+

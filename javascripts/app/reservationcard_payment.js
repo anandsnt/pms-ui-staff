@@ -6,33 +6,55 @@ var ReservationPaymentView = function(domRef){
   this.$paymentTypes = [];
   	
   this.pageinit = function(){
-  	console.log("Page Init inside reservation payment");
-    this.myDom.find($('#add-new-payment')).on('click', that.addNewPaymentModal);
-    this.myDom.find($('#staycard_creditcard')).on('change', that.setPaymentToReservation);
+    
   };
   this.delegateEvents = function(){
-  	console.log("delegateEvents inside reservation payment");
-  	
+  	that.myDom.find('#add-new-payment').on('click', that.addNewPaymentModal);
+    that.myDom.find('#staycard_creditcard').on('change', that.setPaymentToReservation);
   };
   this.addNewPaymentModal = function(){
-  	console.log("Initialise addNewPaymentModal");
-  	var addNewPaymentModal = new AddNewPaymentModal("reservation");
+  	var addNewPaymentModal = new AddNewPaymentModal("reservation", that.myDom);
     addNewPaymentModal.initialize();
   };
   this.setPaymentToReservation = function(){
   	var reservation_id = getReservationId();
-  	var credit_card_id = $("#staycard_creditcard").val();
+  	var credit_card_id = that.myDom.find("#staycard_creditcard").val();
+  	if(credit_card_id == ""){
+  		var html = "<figure class='card-logo'>Select Credit Card</figure>"+		
+				"<span class='number'>"+					
+				"<span class='value number'> </span>"+
+				"</span>"+
+				"<span class='date'>"+					
+				"<span class='value date'></span>"+
+				"</span>"+
+				"";
+  		
+  	} else {
+  		var html = "<figure class='card-logo'>"+
+			"<img src='' alt=''>"+
+			"</figure>"+
+			"<span class='number'>"+
+			"Ending with"+
+			"<span class='value number'></span>"+
+			"</span>"+
+			"<span class='date'>"+
+			"Date"+
+			"<span class='value date'></span>"+
+			"</span>";
+  		
+  	}
+  	that.myDom.find("#selected-reservation-payment-div").html(html);
+  	
   	$.ajax({
 		type : "POST",
 		url : '/staff/reservation/link_payment',
 		data : {"reservation_id": reservation_id, "user_payment_type_id": credit_card_id },
 		async : false,
 		dataType : 'json',
-		success : function() {			
+		success : function() {	
 			
 		},
 		error : function() {
-			console.log("There is an error!!");
 		}
 	});
   

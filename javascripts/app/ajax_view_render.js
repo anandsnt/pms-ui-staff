@@ -20,7 +20,6 @@ var AjaxRender = function(url, domElem, viewName){
                 that.newView.pageinit();
             },
             error: function(){
-                console.log("There is an error!!");
             }
        });
 	}

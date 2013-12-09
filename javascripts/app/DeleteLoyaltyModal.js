@@ -12,9 +12,7 @@ var DeleteLoyaltyModal = function(){
 		this.loyalty_id = params.loyalty_id;
 		this.loyalty_type = params.loyalty_type;
 	}
-	this.modalInit = function(){
-        console.log("modal init in sub modal")
-    }
+
     this.deleteLoyalty = function(event){
   		event.preventDefault();
 		event.stopImmediatePropagation();
@@ -41,10 +39,8 @@ var DeleteLoyaltyModal = function(){
 			url: 'staff/user_memberships/' + $loyalty_id +'.json',
 			dataType: 'json',
 				success: function(data) {
-					console.log("Succesfully deleted loyalty primary");
 				},
 				error: function(){
-					console.log("There is an error!!");
 			}
 		});
 		that.hide();

@@ -1,13 +1,10 @@
-// Touch listeners
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-document.addEventListener('drag', function (e) { return true }, false);
-document.addEventListener('drop', function (e) { return true }, false);
-
 // Scroll global variables
 var pageScroll,
     viewScroll,
     guestCardScroll,
-    registrationScroll;
+    conversationsScroll,
+    registrationScroll,
+    horizontalScroll;
 
 // Page scroll
     function createPageScroll($target){
@@ -37,7 +34,7 @@ var pageScroll,
         }, 0);
     }
 
-// Stay card scroll
+// Guest card scroll
     function createGuestCardScroll($target){
         guestCardScroll = new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' });
     }
@@ -51,7 +48,22 @@ var pageScroll,
         }, 0);
     }
 
-// Registration scrollers
+// Guest card conversations scroll
+    function createConversationsScroll($target){
+        conversationsScroll = new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' });
+    }
+    function destroyConversationsScroll(){
+        conversationsScroll.destroy();
+        conversationsScroll = null;
+    }
+    function refreshConversationsScroll(){
+        setTimeout(function(){
+            conversationsScroll.refresh(); 
+        }, 0);
+    }
+    
+
+// Registration scroll
     function createRegistrationScroll($target){
         registrationScroll = new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' });
     }
@@ -62,5 +74,19 @@ var pageScroll,
     function refreshRegistrationScroll(){
         setTimeout(function(){
             registrationScroll.refresh(); 
+        }, 0);
+    }
+
+// Horizontal scroll
+    function createHorizontalScroll($target){
+        horizontalScroll = new IScroll($target, { mouseWheel: true, scrollX: true, scrollY: false, scrollbars: true, scrollbars: 'custom' });
+    }
+    function destroyHorizontalScroll(){
+        horizontalScroll.destroy();
+        horizontalScroll = null;
+    }
+    function refreshHorizontalScroll(){
+        setTimeout(function(){
+            horizontalScroll.refresh(); 
         }, 0);
     }

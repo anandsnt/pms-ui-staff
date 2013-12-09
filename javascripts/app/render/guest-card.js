@@ -1,11 +1,49 @@
+function resizableGuestCard($maxHeight){
+	$('#guest-card').resizable({
+		minHeight: 		'90',
+		maxHeight: 		($maxHeight-90), // 90 is height of the guest card visible part
+		handles: 		's',
+		resize: function( event, ui ) {
+			if ($(this).height() > 120) {
+				$('#guest-card').addClass('open');
+			}
+			else {
+				$('#guest-card').removeClass('open');
+			}
+		},
+	    stop: function(event, ui) {
+	    	// Refresh scrollers
+	    	setTimeout(function(){
+		    	refreshGuestCardScroll();
+		    }, 300);
+	   	}
+	});
+}
+
 var setUpGuestcard = function(viewDom) {
 
 	// Resizable guest card variables
-	var $maxHeight = $(window).height(), $breakpoint = ($maxHeight / 2), $cardHeight = '90px';
-	$(window).resize(function() { $maxHeight = $(window).height(); });
+	var $maxHeight = $(window).height(), $breakpoint = ($maxHeight / 2);
 
-	// Hide guest card content until it's resized
-	viewDom.find($('#guest-card-header .switch-button, #guest-card-content')).hide();
+	$(window).resize(function() {
+    	$maxHeight = $(window).height();
+
+    	// Resize guest card if too big
+    	if ($('#guest-card').hasClass('open') && $('#guest-card').height() > ($maxHeight-90))
+    	{
+    		$('#guest-card').css({'height':$maxHeight-90+'px'});
+    	}
+
+    	// Close guest card if too small
+    	if ($('#guest-card').height() < 90)
+    	{
+    		$('#guest-card').removeClass('open').css({'height':90+'px'});
+    	}
+
+    	resizableGuestCard($maxHeight);
+	});
+
+	$(window).resize(function() { $maxHeight = $(window).height(); });
 
 	// Guest card tabs
 	viewDom.find($('#guest-card-content')).tabs({
@@ -37,9 +75,9 @@ var setUpGuestcard = function(viewDom) {
 	});
 
 	// Birthday datepicker
-	viewDom.find($('#birthday')).datepicker({
+	viewDom.find($('#guest-birthday')).datepicker({
         showOn      : 'button',
-        dateFormat  : 'mm-dd-y',
+        dateFormat  : 'mm-dd-yy',
         changeMonth : true,
         changeYear  : true,
         maxDate   	: '+0D +0M +0Y',
@@ -55,44 +93,21 @@ var setUpGuestcard = function(viewDom) {
     });
 
     // Resize guest card
-	$('#guest-card').resizable({
-		minHeight : '90',
-		maxHeight : ($maxHeight - 90), // 90 is height of the guest card visible part
-		handles : 's',
-		resize : function(event, ui) {
-			if ($(this).height() > 120) {
-				$('#guest-card-header .switch-button, #guest-card-content').show();
-			} else {
-				$('#guest-card-header .switch-button, #guest-card-content').hide();
-			}
-		},
-		stop : function(event, ui) {
-			$cardHeight = $(this).css('height');
-			// Refresh scrollers
-
-			// setTimeout(function() {
-				// callFunctions();
-			// }, 300);
-
-		}
-	});
+    resizableGuestCard($maxHeight);
 
 	// Show/hide guest card on click
 	$(document).on('click', '#guest-card .ui-resizable-handle', function() {
 
 		// Show if hidden or open in less than 50% of screen height
 		if ($('#guest-card').height() == '90' || $('#guest-card').height() < $breakpoint) {
-			$('#guest-card').animate({
-				height : ($maxHeight - 90)
-			}, 300);
-			$('#guest-card-header .switch-button, #guest-card-content').show();
+			
+			$('#guest-card').addClass('open').animate({height: ($maxHeight-90)}, 300);
 		}
 		// Hide if open or shown in more than 50% of screen height
 		else {
-			$('#guest-card').animate({
-				height : '90px'
-			}, 300);
-			$('#guest-card-header .switch-button, #guest-card-content').hide();
+			$('#guest-card').animate({height: '90px'}, 300, function(){
+    			$(this).removeClass('open');
+			});
 		}
 
 		// Refresh scrollers

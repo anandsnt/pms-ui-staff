@@ -12,22 +12,20 @@ BaseModal = function() {
             that.shouldShowWhenFetched = true;
             this.fetchFromURL(that.type);
         }
-    }
+    };
     this.modalInit = function(){
-        console.log("modal init in basemodal")
-    }
-    
+    };
 	this.unbindCancelEvent = function(){
 		$('#modal-overlay, #modal-close, #cancel').off('click');
-	}
+	};
 	
-	this.unbindEvents = function(){}
+	this.unbindEvents = function(){};
 	
 	this.delegateCancelEvent = function(){
 		$('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
-	}
+	};
 	
-    this.delegateEvents = function(){ }
+    this.delegateEvents = function(){ };
     
     this.fetchFromURL = function(type) {
         // Get modal data
@@ -43,13 +41,11 @@ BaseModal = function() {
             },
             error: function(){
                 //TODO: Replace with the central mechanism for error handling
-                console.log("error in modal fetching");
             }
         });
-    }
+    };
 
     this.show = function(){
-        console.log("show modal");
         $modal = '<div id="modal" role="dialog" />',
         $overlay = '<div id="modal-overlay" />';
 
@@ -78,19 +74,16 @@ BaseModal = function() {
         $('#modal').html(that.data);
         that.delegateCancelEvent();
   		that.delegateEvents();
-    }
-    this.hide = function (e){
-    	// e.stopPropagation();
-    	// e.preventDefault();
-    	// e.stopImmediatePropagation();
-    	
+    };
+
+    this.hide = function (callBack){
+
     	that.unbindCancelEvent();
     	that.unbindEvents();
-    	
-    	console.log("Reached hide modal");
         $('#modal, #modal-overlay').removeClass('modal-show'); 
         setTimeout(function() { 
             $('#modal').empty();
+        	if(typeof callBack === "function") callBack();
         }, 150);
-    }
-}
+    };
+};

@@ -4,7 +4,14 @@ var Dashboard = function(domRef){
   this.myDom = domRef;
 
   this.pageinit = function(){
-  	console.log("Dashboard pageinit");
+  	$('#main-menu a#staff-settings').on('click',that.updateAccountSettings);
+  	
+  	
+  	if (pageScroll) { destroyPageScroll(); }
+		setTimeout(function(){
+	      	createPageScroll('#dashboard');
+	  	}, 300);
+	  
   }
 
   this.showWelcomeMessage = function(e){
@@ -22,7 +29,14 @@ var Dashboard = function(domRef){
 		message = "Good Evening";
 	}
 
-	that.myDom.find($('#greetings')).html('Good Evening');
+	that.myDom.find($('#greetings')).html(message);
+  }
+  
+  this.updateAccountSettings = function(e){
+  	var updateAccountSettings = new UpdateAccountSettings();
+  	 updateAccountSettings.initialize();
+  	 updateAccountSettings.type ="POST";
+  	
   }
 
 }

@@ -3,6 +3,5 @@ var TestView = function(viewDom){
   var that = this;
   this.myDom = viewDom;
   this.pageinit = function(){
-  	console.log("Page Init inside testview");
   }
 }
