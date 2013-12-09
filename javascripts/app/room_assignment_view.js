@@ -44,10 +44,14 @@ var RoomAssignmentView = function(viewDom){
   //Fetches the non-filtered list of rooms.
   this.fetchRoomList = function(){
     var roomType = that.myDom.find('.reservation-header #room-type').attr('data-room-type');
+    var data = {};
+    if(roomType != null && roomType!= undefined){
+      data = {"room_type": roomType};
+    }
     $.ajax({
         type:       'POST',
         url:        "/staff/rooms/get_rooms",
-        data: {"room_type": roomType},
+        data: data,
         dataType:   'json',
         async:       false,  
         success: function(response){
