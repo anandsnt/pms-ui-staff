@@ -43,9 +43,11 @@ var RoomAssignmentView = function(viewDom){
 
   //Fetches the non-filtered list of rooms.
   this.fetchRoomList = function(){
+    var roomType = that.myDom.find('.reservation-header #room-type').attr('data-room-type');
     $.ajax({
         type:       'POST',
         url:        "/staff/rooms/get_rooms",
+        data: {"room_type": roomType},
         dataType:   'json',
         async:       false,  
         success: function(response){
@@ -267,6 +269,7 @@ var RoomAssignmentView = function(viewDom){
 
   };
 
+  //Filter logic is applied for each group
   this.applyFilterForGroup = function(roomListToFilter, filters, operation){
     var filteredRoomList = [];
     if(operation === "OR"){
@@ -309,7 +312,7 @@ var RoomAssignmentView = function(viewDom){
     return filterMatch;   
   };
 
-
+  //Update resevation with the selected room.
   this.updateRoomAssignment = function(e){
 
     var roomSelected = $(this).find(">:first-child").attr("data-value");
@@ -323,6 +326,7 @@ var RoomAssignmentView = function(viewDom){
   };
 
 
+  //Update staycard UI. Staycard contents are available in DOM
   this.updateStaycardUI = function(roomSelected, currentReservation, roomStatusExplained, selectedItem){
     var roomStausNew = "";
     if((typeof roomStatusExplained != "undefined") && (roomStatusExplained != "")){
@@ -348,6 +352,7 @@ var RoomAssignmentView = function(viewDom){
     }
   };
 
+  //API call to update the room
   this.updateServerwithSelectedRoom = function(currentReservation, roomSelected){
 
     var postParams = {};
