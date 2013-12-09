@@ -1,9 +1,4 @@
 
-$(window).resize(function(){	
-	var top = $(window).height() / 2;
-	var left = $(window).width() / 2;
-	$("#snt-admin-view .loader .activity-indicator").css({'top': top, 'left': left});	
-});
 
 function getReservationId(){
 	var reservation_id = $("#reservation_info").attr("data-reservation-id");
