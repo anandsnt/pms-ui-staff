@@ -7,7 +7,7 @@ var SntAdminView = function(domRef){
     setUpAdmin(domRef, this);
   };
   this.delegateEvents = function(){
-  	that.myDom.find('li.ui-state-default a.ui-tabs-anchor').on('click', sntadminapp.clearReplacingDiv);
+  	that.myDom.find('li.ui-state-default a.ui-tabs-anchor').on('click', that.clearReplacingDiv);
   	that.myDom.find('ul.dashboard-items li').on('click', sntadminapp.appendNewPage);
   	
   	that.myDom.find('#admin-menu li a').on('click', that.bookMarkClick);
@@ -38,6 +38,11 @@ var SntAdminView = function(domRef){
   		sntapp.fetchAndRenderView(url, div, {}, false, viewParams);
 	}	  
   };
+
+  this.clearReplacingDiv = function() {   
+    sntadminapp.clearReplacingDiv();
+  };
+
   this.bookMarkAdded = function(bookMarkId){
   	var delegateBookMark = new DelegateBookMark();
   	delegateBookMark.addBookMark(bookMarkId);

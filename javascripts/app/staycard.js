@@ -2,13 +2,13 @@ var StayCard = function(viewDom){
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
-  this.reservation_id = getReservationId();
+  
   this.pageinit = function(){
     setUpStaycard(that.myDom);
     var currentConfirmNumber = $("#confirm_no").val();    
     var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
 	reservationDetails.initialize();
-    that.reservation_id = getReservationId();
+   
   };
    this.delegateEvents = function(partialViewRef){  
    	if(partialViewRef === undefined){
@@ -43,14 +43,19 @@ var StayCard = function(viewDom){
 
 
   this.pageshow = function(){
-    //Create the scroll views for staycard
-    var confirmNum = that.myDom.find($('#reservation_info')).attr('data-confirmation-num');
-    createViewScroll('#reservation-listing');
-    createViewScroll('#reservation-content-'+ confirmNum);
+    that.createScroll();
   };
 
- 
- 
+  //Create the scroll views for staycard
+  this.createScroll = function(){
+
+    var confirmNum = that.myDom.find($('#reservation_info')).attr('data-confirmation-num');
+    $("div[id='reservation-listing']").each(function(index){
+      createViewScroll("#"+ $(this).parent().attr('id')+" #"+ $(this).attr('id'));
+    });
+    createViewScroll('#reservation-content-'+ confirmNum);
+
+  };
 
   this.initSubViews = function(){
   	 
