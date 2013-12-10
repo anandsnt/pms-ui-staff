@@ -8,11 +8,12 @@ var RoomAssignmentView = function(viewDom){
   this.roomCompleteList = [];
 
   this.pageinit = function(){
-    //Scroll view initialization for the view
-    this.createViewScroll();
+    
     //Get the list of rooms from the server.
     this.fetchRoomList();
-  }
+     //Scroll view initialization for the view
+    this.createViewScroll();   
+  };   
 
   this.delegateEvents = function(){
 
@@ -25,26 +26,40 @@ var RoomAssignmentView = function(viewDom){
     that.myDom.find('#clear-filters-button').on('click',that.clearFiltersClicked); 
 
 
-  }
+  };
 
   this.executeLoadingAnimation = function(){
     changeView("nested-view", undefined, "view-nested-first", "view-nested-second", "move-from-right", false); 
 
-  }
+  };
+  //
   this.createViewScroll = function(){
     if (viewScroll) { destroyViewScroll(); }
           setTimeout(function(){
             if (that.myDom.find($('#room-attributes')).length) { createViewScroll('#room-attributes'); }
-            if (that.myDom.find($('#rooms-available')).length) { createViewScroll('#rooms-available'); }
             if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
           }, 300);
-  }
+  };
+
+  //Scroll view creation for the the room list
+  this.createRoomListScroll = function(){
+    if (viewScroll) { destroyViewScroll(); }
+    setTimeout(function(){
+      if (that.myDom.find($('#rooms-available')).length) { createViewScroll('#rooms-available'); }
+    }, 300);
+  };
 
   //Fetches the non-filtered list of rooms.
   this.fetchRoomList = function(){
+    var roomType = that.myDom.find('.reservation-header #room-type').attr('data-room-type');
+    var data = {};
+    if(roomType != null && roomType!= undefined){
+      data = {"room_type": roomType};
+    }
     $.ajax({
         type:       'POST',
         url:        "/staff/rooms/get_rooms",
+        data: data,
         dataType:   'json',
         success: function(response){
           if(response.status == "success"){
@@ -72,7 +87,7 @@ var RoomAssignmentView = function(viewDom){
     }
     //Apply filters using due-out status, ready status.
     that.displayRoomsList(filteredRoomList);
-  }
+  };
 
   this.filterOptionChecked = function(e){
     that.handleMultipleSelection(e);
@@ -239,6 +254,7 @@ var RoomAssignmentView = function(viewDom){
           $('#rooms-available ul').append(output);      
         }       
     }
+    that.createRoomListScroll();
 
     that.myDom.find('div.rooms-listing ul li a').on('click',that.updateRoomAssignment);
   };
@@ -265,6 +281,7 @@ var RoomAssignmentView = function(viewDom){
 
   };
 
+  //Filter logic is applied for each group
   this.applyFilterForGroup = function(roomListToFilter, filters, operation){
     var filteredRoomList = [];
     if(operation === "OR"){
@@ -307,7 +324,7 @@ var RoomAssignmentView = function(viewDom){
     return filterMatch;   
   };
 
-
+  //Update resevation with the selected room.
   this.updateRoomAssignment = function(e){
 
     var roomSelected = $(this).find(">:first-child").attr("data-value");
@@ -321,6 +338,7 @@ var RoomAssignmentView = function(viewDom){
   };
 
 
+  //Update staycard UI. Staycard contents are available in DOM
   this.updateStaycardUI = function(roomSelected, currentReservation, roomStatusExplained, selectedItem){
     var roomStausNew = "";
     if((typeof roomStatusExplained != "undefined") && (roomStatusExplained != "")){
@@ -346,6 +364,7 @@ var RoomAssignmentView = function(viewDom){
     }
   };
 
+  //API call to update the room
   this.updateServerwithSelectedRoom = function(currentReservation, roomSelected){
 
     var postParams = {};
@@ -434,4 +453,4 @@ var RoomAssignmentView = function(viewDom){
   };
 
 
-}
+};

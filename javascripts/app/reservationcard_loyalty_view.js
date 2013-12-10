@@ -5,24 +5,26 @@ var ReservationCardLoyaltyView = function(domRef){
 
   this.pageinit = function(){
     bindLoyaltyUtilFunctions();
-  }
+  };
   this.delegateEvents = function(){
   	that.myDom.find('.add-new-button').on('click', that.adddNewLoyaltyModal);
   	that.myDom.find('select.styled#loyalty').on('change', that.changedLoyaltyProgram);				
-  }
+  };
   this.adddNewLoyaltyModal = function(){
   	var adddNewLoyaltyModal = new AdddNewLoyaltyModal();
     adddNewLoyaltyModal.initialize();
-  }
+  };
   this.changedLoyaltyProgram = function(){
 	var selectedOption = $(this).find('option:selected');
     var id = $(this).find('option:selected').attr('id');
     var reservation_id = getReservationId();
     
     if(id==""){
+      // on Selecting option "Select Loyalty Program"
       clearSelectionUI();
     }
     else{
+      // on Selecting option containg data, HLP or FFP
       resetSelectionUI();
     }
     $.ajax({
@@ -37,7 +39,7 @@ var ReservationCardLoyaltyView = function(domRef){
 	    error: function(){
 		}
 	});
-  }
+  };
 };
 
 

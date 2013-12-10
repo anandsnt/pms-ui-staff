@@ -3,7 +3,8 @@ var reservationCardNotesView = function(domRef){
   var that = this;
   this.myDom = domRef;
   this.delegateEvents = function(){
-  	that.myDom.find('#post_notes #reservation_notes').on('click', that.saveReservationNotes);
+
+  	that.myDom.find('#reservation_notes_post').on('click', that.saveReservationNotes);
   	that.myDom.find('#notes').on('click', that.deleteReservationNotes);		
   };
   this.pageinit = function(){
@@ -29,7 +30,7 @@ var reservationCardNotesView = function(domRef){
 	}
   };
   this.saveReservationNotes = function(){
-	  	$notes = $("#post_notes textarea").val();
+	  	$notes = that.myDom.find($("#post_notes textarea")).val();
 		$topic = 1;
 		$reservation_id = getReservationId();
 	
@@ -60,8 +61,11 @@ var reservationCardNotesView = function(domRef){
 						'<time datetime="2013-10-23 06:05:20"><span class="time">'+returnData.posted_time + 
 						'</span><span class="date"> '+returnData.posted_date+'</span>' + '</time><span class="topic">' + returnData.topic +
 						'<a id="delete_note" class="icons icon-trash" note_id="'+returnData.note_id+'">Delete post</a>'+
-						'</span></div><p>' + returnData.text + '</p></li>';				
-					$("#notes").prepend($newNote);
+						'</span></div><p>' + returnData.text + '</p></li>';	
+				    
+					that.myDom.find($("#reservation-notes #notes")).prepend($newNote);
+					createViewScroll('#reservation-notes #notes');
+					createViewScroll("#reservation-content-"+reservation);
 					refreshViewScroll();
 					$("#post_notes textarea").val("");
 				}

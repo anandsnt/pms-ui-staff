@@ -4,21 +4,24 @@ var GuestContactView = function(domRef) {
 	this.myDom = domRef;
 	this.$guestCardClickTime = false;
 	this.$contactInfoChange = false;
+	
 	this.pageinit = function() {
 		setTimeout(function() {
 			that.renderContactInformation();
-		}, 700);
-		$('#guest-like, #guest-credit, #guest-loyalty').on('click', that.saveContactInfo);
+		}, 700);		
+		$('html').off();
 		$('html').on('click', that.callSave);
 	};
+	
 	this.callSave = function(e) {
-		if (!$(e.target).is("#guest-card-content *", "#guest-card-content")) {
+		if (!$(e.target).is("#contact-info *", "#guest-card-content")) {
 			if (that.$contactInfoChange) {
 				that.saveContactInfo();
 			}
 		}
 	};
 	this.saveContactInfo = function() {
+		
 		if (that.$contactInfoChange) {
 			var userId = $("#user_id").val();
 			$contactJsonObj = {};
@@ -114,12 +117,17 @@ var GuestContactView = function(domRef) {
 				that.myDom.find("#mobile").val(data.mobile);
 
 				$guestCardClickTime = false;
-				$(document).on('click change', '#countries_status, #guest_nationality_div #nationality_status, #language', function() {
-					that.$contactInfoChange = true;
-				});
+				that.myDom.find('#countries_status, #guest_nationality_div #nationality_status, #language').on('change', 
+					function(){
+						console.log("srop down change");
+						that.$contactInfoChange = true;
+					}				
+				);
 				// to change flag - to save contact info only if any change happens.
-				$(document).on('change', '#title, #guest_firstname, #guest_lastname, #works-at, #job-title, #guest-birthday, #passport-number,#passport-month, #passport-year, #nationality,#guest_nationality_div #nationality_status, #email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event) {
+				that.myDom.find('#title, #guest_firstname, #guest_lastname, #works-at, #job-title, #guest-birthday, #passport-number,#passport-month, #passport-year, #nationality,#guest_nationality_div #nationality_status, #email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile').on('change', function(){
+					console.log("text text change");
 					that.$contactInfoChange = true;
+					
 				});
 	},
 				error : function() {

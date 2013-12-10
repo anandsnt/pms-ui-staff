@@ -6,19 +6,19 @@ var ReservationPaymentView = function(domRef){
   this.$paymentTypes = [];
   	
   this.pageinit = function(){
-    this.myDom.find($('#add-new-payment')).on('click', that.addNewPaymentModal);
-    this.myDom.find($('#staycard_creditcard')).on('change', that.setPaymentToReservation);
+    
   };
   this.delegateEvents = function(){
-  	
+  	that.myDom.find('#add-new-payment').on('click', that.addNewPaymentModal);
+    that.myDom.find('#staycard_creditcard').on('change', that.setPaymentToReservation);
   };
   this.addNewPaymentModal = function(){
-  	var addNewPaymentModal = new AddNewPaymentModal("reservation");
+  	var addNewPaymentModal = new AddNewPaymentModal("reservation", that.myDom);
     addNewPaymentModal.initialize();
   };
   this.setPaymentToReservation = function(){
   	var reservation_id = getReservationId();
-  	var credit_card_id = $("#staycard_creditcard").val();
+  	var credit_card_id = that.myDom.find("#staycard_creditcard").val();
   	if(credit_card_id == ""){
   		var html = "<figure class='card-logo'>Select Credit Card</figure>"+		
 				"<span class='number'>"+					
@@ -43,7 +43,7 @@ var ReservationPaymentView = function(domRef){
 			"</span>";
   		
   	}
-  	$("#selected-reservation-payment-div").html(html);
+  	that.myDom.find("#selected-reservation-payment-div").html(html);
   	
   	$.ajax({
 		type : "POST",
