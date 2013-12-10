@@ -40,20 +40,16 @@ var GuestContactView = function(domRef) {
 			$contactJsonObj['city'] = that.myDom.find("#city").val();
 			$contactJsonObj['state'] = that.myDom.find("#state").val();
 			$contactJsonObj['postal_code'] = that.myDom.find("#postalcode").val();
-			$contactJsonObj['country'] = that.myDom.find("#country").val();
+			$contactJsonObj['country'] = that.myDom.find("#countries_status").val();
 			$contactJsonObj['phone'] = that.myDom.find("#phone").val();
 			$contactJsonObj['email'] = that.myDom.find("#email").val();
 			$contactJsonObj['mobile'] = that.myDom.find("#mobile").val();
-
+			
 			$.ajax({
 				type : "PUT",
 				url : 'staff/guest_cards/' + userId,
-				data : JSON.stringify($contactJsonObj),
-
-				async : false,
+				data : $contactJsonObj,				
 				dataType : 'json',
-				contentType : 'application/json',
-
 				success : function() {
 					that.$contactInfoChange = false;
 					// Update guest card header UI.
@@ -112,7 +108,7 @@ var GuestContactView = function(domRef) {
 				that.myDom.find("#city").val(data.city);
 				that.myDom.find("#postalcode").val(data.postal_code);
 				that.myDom.find("#state").val(data.state);
-				that.myDom.find("#country").val(data.country);
+				that.myDom.find("#countries_status").val(data.country);
 				that.myDom.find("#phone").val(data.phone);
 				that.myDom.find("#mobile").val(data.mobile);
 
