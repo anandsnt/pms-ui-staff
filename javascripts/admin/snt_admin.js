@@ -39,8 +39,11 @@ var SntAdminView = function(domRef){
 	}	  
   };
 
-  this.clearReplacingDiv = function() {   
-    sntadminapp.clearReplacingDiv();
+  this.clearReplacingDiv = function() {  
+  	$("#replacing-div-first").html("");
+    $("#replacing-div-second").html("");
+	  $("#replacing-div-first").show();
+	  $($(this).attr("href")).show(); 
   };
 
   this.bookMarkAdded = function(bookMarkId){

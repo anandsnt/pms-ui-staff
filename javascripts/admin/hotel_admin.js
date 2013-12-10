@@ -44,11 +44,10 @@ var HotelAdminView = function(domRef){
   };
 
   this.clearReplacingDiv = function() {	  
-    sntadminapp.clearReplacingDiv();
-	  /*$("#replacing-div-first").html("");
+	  $("#replacing-div-first").html("");
     $("#replacing-div-second").html("");
 	  $("#replacing-div-first").show();
-	  $($(this).attr("href")).show();*/
+	  $($(this).attr("href")).show();
   };
   
   this.appendNewPage = function(event){	
