@@ -12,14 +12,14 @@ var BaseView = function(viewDom){
   };  
 
   this.delegateEvents = function(){
-  }
+  };
 
   this.initSubViews = function(){
-  }
+  };
 
   this.executeLoadingAnimation = function(){
 
-  }
+  };
 
   this.initialize = function(){
     that.pageinit();
