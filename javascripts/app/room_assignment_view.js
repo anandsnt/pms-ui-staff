@@ -32,19 +32,20 @@ var RoomAssignmentView = function(viewDom){
     changeView("nested-view", undefined, "view-nested-first", "view-nested-second", "move-from-right", false); 
 
   };
+  //
   this.createViewScroll = function(){
     if (viewScroll) { destroyViewScroll(); }
           setTimeout(function(){
             if (that.myDom.find($('#room-attributes')).length) { createViewScroll('#room-attributes'); }
-            //if (that.myDom.find($('#rooms-available')).length) { createViewScroll('#rooms-available'); }
             if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
           }, 300);
   };
 
+  //Scroll view creation for the the room list
   this.createRoomListScroll = function(){
     if (viewScroll) { destroyViewScroll(); }
     setTimeout(function(){
-    if (that.myDom.find($('#rooms-available')).length) { createViewScroll('#rooms-available'); }
+      if (that.myDom.find($('#rooms-available')).length) { createViewScroll('#rooms-available'); }
     }, 300);
   };
 
