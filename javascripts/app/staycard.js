@@ -2,13 +2,13 @@ var StayCard = function(viewDom){
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
-  this.reservation_id = getReservationId();
+  
   this.pageinit = function(){
     setUpStaycard(that.myDom);
     var currentConfirmNumber = $("#confirm_no").val();    
     var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
 	reservationDetails.initialize();
-    that.reservation_id = getReservationId();
+   
   };
    this.delegateEvents = function(partialViewRef){  
    	if(partialViewRef === undefined){
