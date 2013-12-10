@@ -230,16 +230,13 @@ var Search  = function(domRef){
 		// Show color coding ( Red / Green - for Room status) for room only if reservation status = CHECKING-IN
         if(reservation_status == "CHECKING_IN")	roomStatus = '<strong class="room-number ' + escapeNull(roomStatusMapped) + '">' + escapeNull(room) + '</strong>';
 		else roomStatus = '<strong class="room-number">' + escapeNull(room) + '</strong>';
-		
+			
     	var $location = (escapeNull(location) != '') ? '<span class="icons icon-location">' + escapeNull(location) + '</span>' : '',
         $group = (escapeNull(group) != '') ? '<em class="icons icon-group">' + escapeNull(group) + '</em>' : '',
         $vip = vip ? '<span class="vip">VIP</span>' : '',
         $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="' + escapeNull(image) + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = roomstatusextra ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
         $viewStatus = viewStatus ? '<span class="guest-status ' + escapeNull(viewStatus) + '"></span>':'<span class="guest-status"></span>',
-        $roomStatus = '';
-        
-        
 		
         $output =
         '<a href="staff/staycards/staycard?confirmation=' + confirmation+'&id='+ escapeNull(id)+ '" class="guest-check-in link-item float" data-transition="inner-page">' +
@@ -249,7 +246,7 @@ var Search  = function(domRef){
                 '<span class="confirmation">' + escapeNull(confirmation) + '</span>' + $location + $group +
             '</div>'+
             $viewStatus +
-            $roomStatus + $roomAdditional +
+            roomStatus + $roomAdditional +
         '</a>';
     	return $output;
     };
