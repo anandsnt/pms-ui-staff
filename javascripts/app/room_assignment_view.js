@@ -33,12 +33,19 @@ var RoomAssignmentView = function(viewDom){
 
   };
   this.createViewScroll = function(){
-    
+    if (viewScroll) { destroyViewScroll(); }
           setTimeout(function(){
             if (that.myDom.find($('#room-attributes')).length) { createViewScroll('#room-attributes'); }
-            if (that.myDom.find($('#rooms-available')).length) { createViewScroll('#rooms-available'); }
+            //if (that.myDom.find($('#rooms-available')).length) { createViewScroll('#rooms-available'); }
             if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
           }, 300);
+  };
+
+  this.createRoomListScroll = function(){
+    if (viewScroll) { destroyViewScroll(); }
+    setTimeout(function(){
+    if (that.myDom.find($('#rooms-available')).length) { createViewScroll('#rooms-available'); }
+    }, 300);
   };
 
   //Fetches the non-filtered list of rooms.
@@ -53,7 +60,6 @@ var RoomAssignmentView = function(viewDom){
         url:        "/staff/rooms/get_rooms",
         data: data,
         dataType:   'json',
-        async:       false,  
         success: function(response){
           if(response.status == "success"){
             that.roomCompleteList = response.data;
@@ -247,6 +253,7 @@ var RoomAssignmentView = function(viewDom){
           $('#rooms-available ul').append(output);      
         }       
     }
+    that.createRoomListScroll();
 
     that.myDom.find('div.rooms-listing ul li a').on('click',that.updateRoomAssignment);
   };
