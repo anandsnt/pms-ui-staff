@@ -24,12 +24,12 @@ var NotificationMessage = function() {
 	var scrollToErrorArea = function(dom) {
 		// function used to scroll to the message displayed area	
 		//not recommended method
-//		var parent = dom.find("#notification-message").parents("form:eq(0)");		
-//		var location = new String(document.location); 
-//		location = location.split("#")[0];
-//		document.location = location + "#" + parent.attr("id") ;	
-		//createViewScroll("#" + parent.attr("id"));
-		createViewScroll(dom.find("#notification-message"));
+		var parent = dom.find("#notification-message").parents("form:eq(0)");		
+		var location = new String(document.location); 
+		location = location.split("#")[0];
+		document.location = location + "#" + parent.attr("id") ;	
+		
+
 	};
 	
 	this.showMessage = function(message, dom){
@@ -43,10 +43,14 @@ var NotificationMessage = function() {
 		});
 	};
 	
+	var getDisplayDom = function(){
+		return $('body');
+	};
+	
 	this.showErrorList = function(errorMessages, dom, priority="DEBUG"){
 		
 		if (!shouldShowMessage(priority, "Error")) return;
-		
+		dom = getDisplayDom();
 		var message = "";
 		if (errorMessages.length == 0) { 
 			message = "Sorry, an undefined error occured";
@@ -73,7 +77,7 @@ var NotificationMessage = function() {
 	
 	// function for show success message
 	this.showSuccessMessage = function(message, dom, priority="DEBUG"){
-		
+		dom = getDisplayDom();
 		if (!shouldShowMessage(priority, "Success")) return;
 		
 	
@@ -86,7 +90,7 @@ var NotificationMessage = function() {
 		var htmlToAppend = message;
 		// dont show close button if false
 		if(this.shouldShowCloseButtonForSuccess == true) {
-			htmlToAppend += "<span class='close-btn'></span>";
+			htmlToAppend = "<span class='close-btn'></span>" + htmlToAppend;
 		}
 		
 		that.showMessage(htmlToAppend, dom);
@@ -99,7 +103,7 @@ var NotificationMessage = function() {
 	
 	// function for show error message
 	this.showErrorMessage = function(errorMessage, dom, priority="DEBUG"){
-		
+		dom = getDisplayDom();
 		if (!shouldShowMessage(priority, "Error")) return;
 			
 		if(typeof dom == 'undefined')
@@ -110,7 +114,7 @@ var NotificationMessage = function() {
 		
 		// dont show close button if false
 		if(this.shouldShowCloseButtonForError == true) {
-			htmlToAppend += "<span class='close-btn'></span>";
+			htmlToAppend = "<span class='close-btn'></span>" + htmlToAppend;
 		}
 		
 		that.showMessage(htmlToAppend, dom);
@@ -125,6 +129,7 @@ var NotificationMessage = function() {
 	
 	// to close the message
 	this.hideMessage = function(dom=$('body')){
+		dom = getDisplayDom();
 		dom.find("#notification-message").removeClass('success_message error_message').html('').hide();
 		return;
 	};

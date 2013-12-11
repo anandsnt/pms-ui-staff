@@ -50,13 +50,14 @@ var app = function(){
             data: params,
             url: viewURL,
             async: true,
-            success: function(data) {      
+            success: function(data) { 
+            	
                 that.renderView(data, viewDom, nextViewParams); 
                 that.activityIndicator.hideActivityIndicator();
                 
             },
             error: function(){
-            	//show error message
+            	that.notification.showErrorMessage('An error has occured while fetching the view' );
             	that.activityIndicator.hideActivityIndicator();
             }
             

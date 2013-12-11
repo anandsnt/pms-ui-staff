@@ -1,7 +1,7 @@
 var WebServiceInterface = function(){
 	
 	this.timeout = 80000; //80 seconds
-	this.defaultLoader = "BLOCKER";
+	this.defaultLoader = "NORMAL";
 	var that = this;	
 	
 	this.getJSON = function(requestUrl, options ){
@@ -118,18 +118,24 @@ var WebServiceInterface = function(){
 			
 			success: function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
-				if (successCallBack != null){
-					//show success notification
-					successCallBack(data);
+				if(data.status == 'success'){
+					//TODO: show success notification
+					if(successCallBack) {					
+						successCallBack(data);
+					}
+				}
+				else{
+					sntapp.notification.showErrorMessage(that.createErrorMessage(jqXHR, exception));
+					if(failCallBack) {	
+						failCallBack(that.createErrorMessage(jqXHR, exception));
+					}					
 				}
 			},
 			error: function(jqXHR, exception){
 				sntapp.activityIndicator.hideActivityIndicator();				
 				//Show error notification
-				if (failCallBack) {	
-					sntapp.notification.showErrorMessage(that.createErrorMessage(jqXHR, exception));				
-				}
-				else{
+				sntapp.notification.showErrorMessage(that.createErrorMessage(jqXHR, exception));
+				if(failCallBack) {	
 					failCallBack(that.createErrorMessage(jqXHR, exception));
 				}
 			}
