@@ -224,33 +224,22 @@ var RoomAssignmentView = function(viewDom){
   this.displayRoomsList = function(filteredRoomList){
     $('#rooms-available ul').html("");
 
-
     for (var i=0; i<filteredRoomList.length; i++){
         var room_status_html ="" ;
         // display room number in green colour
-        if((filteredRoomList[i].fo_status == "VACANT") && (filteredRoomList[i].room_status == "READY")){
+        if(filteredRoomList[i].room_status == "READY"){
           room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
         }
-        //Display the rooms numberin read color, add a label VACANT
-        else if((filteredRoomList[i].fo_status == "VACANT") && (filteredRoomList[i].room_status == "NOTREADY")){
+        //Display the rooms numberin read color, add a label appropriate
+        else if(filteredRoomList[i].room_status == "NOTREADY"){
             room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
-            "<span class='room-status not-ready' data-value='vacant'> vacant </span>";   
-        }
-        //Display the rooms numberin read color, add a label DUEOUT
-        else if((filteredRoomList[i].fo_status == "OCCUPIED") &&(filteredRoomList[i].is_dueout == "true")){
-          room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
-          "<span class='room-status not-ready' data-value='due out'> due out </span>";    
-        }
-        //Display the rooms numberin read color, no label displayed
-        else if(filteredRoomList[i].fo_status == "OCCUPIED"){
-          room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
-          "<span class='room-status not-ready'></span>";    
+            "<span class='room-status not-ready' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].fo_status+" </span>";   
         }
 
         //Append the HTML to the UI.
         if(room_status_html != ""){
-          var output = "<li><a id = 'room-list-item' href='javascript:void(0)'"+
-            "class='button white submit-value' data-value='' data-transition='nested-view'>"+room_status_html+"</a></li>";
+          var output = "<li><a id = 'room-list-item'"+
+            "class='button white submit-value hover-hand' data-value='' >"+room_status_html+"</a></li>";
           $('#rooms-available ul').append(output);      
         }       
     }
