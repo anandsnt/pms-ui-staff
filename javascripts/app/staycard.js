@@ -98,17 +98,20 @@ var StayCard = function(viewDom){
     var reservation = $href.split("-")[1];
     //if div not present in DOM, make ajax request
     if (!($($href).length > 0)) {
-
       $.ajax({
         type : 'GET',
         url : "staff/staycards/reservation_details?reservation=" + reservation,
         dataType : 'html',
-        async:false,
-        success : function(data) {        	
-          $("#" + currentTimeline).append(data);         
-          createViewScroll("#reservation-content-"+reservation);       
-          var reservationDetails = new reservationDetailsView($("#reservation-"+reservation));
-          reservationDetails.initialize();
+        //async:false,
+        success : function(data) {    
+          //To avoid multiple ajax content fetches appended to DOM.
+          if (!($($href).length > 0)) {
+            $("#" + currentTimeline).append(data);         
+            createViewScroll("#reservation-content-"+reservation);       
+            var reservationDetails = new reservationDetailsView($("#reservation-"+reservation));
+            reservationDetails.initialize();
+          } 	
+          
         },
         error : function() {
         }
