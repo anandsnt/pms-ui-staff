@@ -1,11 +1,11 @@
 var adminApp = function(){
     var that = this;
     this.clearReplacingDiv = function() {	
-      $("#replacing-div-second").html("");
-	  $("#replacing-div-first").html("");
-      $("#replacing-div-second").show();
-	  $("#replacing-div-first").show();	  
+      $("#replacing-div-first").html("");
+    $("#replacing-div-second").html("");
+	  $("#replacing-div-first").show();
 	  $($(this).attr("href")).show();
+  
     };
     this.appendNewPage = function(event){ 		
         var href = $(this).find("a").eq(0).attr("href");

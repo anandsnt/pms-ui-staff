@@ -4,6 +4,7 @@ var reservationDetailsView = function(domRef){
   this.myDom = domRef;
   this.reservation_id = getReservationId();
   this.pageinit = function(){    
+
   };
   this.delegateEvents = function(){
   	that.myDom.find('#reservation_newspaper').on('change', that.setNewspaperPreferance);

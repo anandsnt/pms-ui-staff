@@ -44,6 +44,7 @@ var HotelAdminView = function(domRef){
   		sntapp.fetchAndRenderView(url, div, {}, 'BLOCKER', viewParams);
 	}	  
   };
+
   this.clearReplacingDiv = function() {	  
 	  $("#replacing-div-first").html("");
 	  $("#replacing-div-second").html("");
