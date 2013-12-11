@@ -68,33 +68,35 @@ var WebServiceInterface = function(){
 				async, requestType, contentType, dataType)			
 	};
 	
-	var createErrorMessage = function(jqXHR, exception){
-		console.log('testing');
+	this.createErrorMessage = function(jqXHR, exception){
+		var errorMessage = "";
 		if (exception === 'parsererror') {
-			sntapp.notification.showErrorMessage('Requested JSON parse failed.');
+			errorMessage = 'Requested JSON parse failed.';
         } 
 		else if (exception === 'timeout') {
-            sntapp.notification.showErrorMessage('Time out error.');
+            errorMessage = 'Time out error.';
         } 
 		else if (exception === 'abort') {
-            sntapp.notification.showErrorMessage('Ajax request aborted.');
+            errorMessage = 'Ajax request aborted.';
         } 
         else if (jqXHR.status === 0) {
-            sntapp.notification.showErrorMessage('Not connect.\n Verify Network.');
+            errorMessage = 'Not connect.\n Verify Network.';
         } 
 		else if (jqXHR.status == 404) {
-            sntapp.notification.showErrorMessage('Requested page not found. [404]');
+            errorMessage = 'Requested page not found. [404]';
         } 
 		else if (jqXHR.status == 500) {
-            sntapp.notification.showErrorMessage('Internal Server Error [500].');
+            errorMessage = 'Internal Server Error [500].';
         } 		
 		else {
-            sntapp.notification.showErrorMessage('Uncaught Error.\n' + jqXHR.responseText);
-        }		
+            errorMessage = 'Uncaught Error.\n' + jqXHR.responseText;
+        }	
+		return errorMessage;
 	};
 	
-	this.performRequest = function(requestUrl, requestParameters={}, loader='BLOCKER', successCallBack=null, failCallBack=null, 
-			async=true, requestType='GET', contentType='application/json', dataType='json'){		
+	this.performRequest = function(requestUrl, requestParameters={}, loader='BLOCKER', 
+			successCallBack=null, failCallBack=null, async=true, requestType='GET', 
+			contentType='application/json', dataType='json'){		
 		
 		if(requestType == 'GET' && requestParameters!={}) {
 			requestUrl = requestUrl + "?" + requestParameters; //Expand
@@ -122,13 +124,13 @@ var WebServiceInterface = function(){
 				}
 			},
 			error: function(jqXHR, exception){
-				sntapp.activityIndicator.hideActivityIndicator();
-				sntapp.notification.showErrorMessage(createErrorMessage(jqXHR, exception) );
-
+				sntapp.activityIndicator.hideActivityIndicator();				
 				//Show error notification
-				if (!failCallBack) {
-					
-					failCallBack(jqXHR, exception);
+				if (failCallBack) {	
+					sntapp.notification.showErrorMessage(that.createErrorMessage(jqXHR, exception));				
+				}
+				else{
+					failCallBack(that.createErrorMessage(jqXHR, exception));
 				}
 			}
 			

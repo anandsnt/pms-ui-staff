@@ -93,9 +93,9 @@ var HotelDetailsView = function(domRef){
 	  }	  
   };
   
-  this.fetchFailedOfSave = function(){
+  this.fetchFailedOfSave = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage("Some error", that.myDom);  
+	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
   };
   // add New hotel from snt admin 
   this.addNewHotel =  function(){
@@ -164,10 +164,10 @@ var HotelDetailsView = function(domRef){
 		sntapp.notification.showErrorList(data.errors, that.myDom);  
 	}
   };
-  this.fetchFailedOfAddNewHotel = function(jqXHR, exception){
+  this.fetchFailedOfAddNewHotel = function(errorMessage){
 	// fail function of add new hotel api call
 	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage("Sorry, not there yet!", that.myDom);  
+	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
   };
   //Validate Mandatory fields
   this.validateAddNewHotel = function(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone){

@@ -120,7 +120,26 @@ var StayCard = function(viewDom){
     } 
   };
 
-
+  
+  this.fetchCompletedUpdateGuestDetails = function(data){
+	  if(data.status == 'success'){
+          $("#guest_firstname").val($guestFirstName);
+          $("#guest_lastname").val($guestLastName);
+          $("#city").val($guestCity);
+          $("#state").val($guestState);
+          $("#phone").val($guestPhone);
+          $("#email").val($guestEmail);  
+	  }
+	  else{
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorList(data.errors, that.myDom); 		  
+	  }
+  };
+  this.fetchFailedUpdateGuestDetails = function(errorMessage){
+	sntapp.activityIndicator.hideActivityIndicator();
+	sntapp.notification.showErrorMessage(errorMessage, that.myDom); 	  
+  };
+  
   this.updateGuestDetails = function(update_val, type){
     var userId = $("#user_id").val();
     $guestCardJsonObj = {};
@@ -131,29 +150,15 @@ var StayCard = function(viewDom){
     $guestState = $guestCardJsonObj['state'] = ($("#gc-location").val()).split(",")[1];
     $guestPhone = $guestCardJsonObj['phone'] = $("#gc-phone").val();
     $guestEmail = $guestCardJsonObj['email'] = $("#gc-email").val();
-
-    $.ajax({
-      type : 'PUT',
-      url : 'staff/guest_cards/' + userId,
-      data : JSON.stringify($guestCardJsonObj),
-
-      dataType : 'json',
-      contentType : 'application/json',
-      success : function(data) {
-        //TODO: handle success state
-        if (!$guestCardClickTime) {
-          $("#guest_firstname").val($guestFirstName);
-          $("#guest_lastname").val($guestLastName);
-          $("#city").val($guestCity);
-          $("#state").val($guestState);
-          $("#phone").val($guestPhone);
-          $("#email").val($guestEmail);
-        }
-      },
-      error : function(e) {
-        //TODO: hande error cases
-      }
-    });
+    
+    var url = 'staff/guest_cards/' + userId;
+    var webservice = new WebServiceInterface();
+    var options = {
+		   requestParameters: JSON.stringify($guestCardJsonObj),
+		   successCallBack: that.fetchCompletedUpdateGuestDetails,
+		   failureCallBack: that.fetchFailedUpdateGuestDetails,		   
+    };
+    webservice.putJSON(url, options);
 
    };
 

@@ -30,7 +30,7 @@ var reservationCardNotesView = function(domRef){
 	}
   };
   this.saveReservationNotes = function(){
-	  	$notes = that.myDom.find($("#post_notes textarea")).val();
+	  	$notes = that.myDom.find("#post_notes textarea").val();
 		$topic = 1;
 		$reservation_id = getReservationId();
 	
@@ -47,32 +47,41 @@ var reservationCardNotesView = function(domRef){
 			text : $notes
 		};
 	
-		$.ajax({
-			type : "POST",
-			url : '/reservation_notes',	
-			data : $data,
-			dataType : 'json',
-			success : function(data) {
-				if (data.status == "success") {
-					returnData = data.data;
-					$newNote = '<li id="note'+returnData.note_id+'"><figure class="guest-image">' + 
-						'<img src="' + returnData.user_image + '" alt=""></figure>' + 
-						'<div class="note-title"><h4>' + returnData.username + '</h4>' + 
-						'<time datetime="2013-10-23 06:05:20"><span class="time">'+returnData.posted_time + 
-						'</span><span class="date"> '+returnData.posted_date+'</span>' + '</time><span class="topic">' + returnData.topic +
-						'<a id="delete_note" class="icons icon-trash" note_id="'+returnData.note_id+'">Delete post</a>'+
-						'</span></div><p>' + returnData.text + '</p></li>';	
-				    
-					that.myDom.find($("#reservation-notes #notes")).prepend($newNote);
-					createViewScroll('#reservation-notes #notes');
-					createViewScroll("#reservation-content-"+reservation);
-					refreshViewScroll();
-					$("#post_notes textarea").val("");
-				}
-			},
-			error : function() {		
-			}
-		});
+	   var webservice = new WebServiceInterface();
+	   var options = {
+			   requestParameters: $data,
+			   successCallBack: that.fetchCompletedOfReservationNotes,
+			   failureCallBack: that.fetchErrorOfReservationNotes,
+	   };
+	   webservice.postJSON('/reservation_notes', options);
+
+  };
+  
+  this.fetchCompletedOfReservationNotes = function(data) {
+	  sntapp.notification.showErrorList("Testing Buddy..", that.myDom);
+	if (data.status == "success") {
+		returnData = data.data;
+		$newNote = '<li id="note'+returnData.note_id+'"><figure class="guest-image">' + 
+			'<img src="' + returnData.user_image + '" alt=""></figure>' + 
+			'<div class="note-title"><h4>' + returnData.username + '</h4>' + 
+			'<time datetime="2013-10-23 06:05:20"><span class="time">'+returnData.posted_time + 
+			'</span><span class="date"> '+returnData.posted_date+'</span>' + '</time><span class="topic">' + returnData.topic +
+			'<a id="delete_note" class="icons icon-trash" note_id="'+returnData.note_id+'">Delete post</a>'+
+			'</span></div><p>' + returnData.text + '</p></li>';	
+	    
+		that.myDom.find(("#reservation-notes #notes")).prepend($newNote);
+		createViewScroll('#reservation-notes #notes');
+		createViewScroll("#reservation-content-" + $reservation_id);
+		refreshViewScroll();
+		$("#post_notes textarea").val("");
+	}
+	else{
+		sntapp.notification.showErrorList(data.errors, that.myDom);
+	}
+  };
+  
+  this.fetchErrorOfReservationNotes = function(errorMessage){
+	  sntapp.notitfication.showErrorMessage(errorMessage);
   };
 };
 

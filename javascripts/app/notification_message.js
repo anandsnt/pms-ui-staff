@@ -24,10 +24,12 @@ var NotificationMessage = function() {
 	var scrollToErrorArea = function(dom) {
 		// function used to scroll to the message displayed area	
 		//not recommended method
-		var parent = dom.find("#notification-message").parents("form:eq(0)");		
-		var location = new String(document.location); 
-		location = location.split("#")[0];
-		document.location = location + "#" + parent.attr("id") ;		
+//		var parent = dom.find("#notification-message").parents("form:eq(0)");		
+//		var location = new String(document.location); 
+//		location = location.split("#")[0];
+//		document.location = location + "#" + parent.attr("id") ;	
+		//createViewScroll("#" + parent.attr("id"));
+		createViewScroll(dom.find("#notification-message"));
 	};
 	
 	this.showMessage = function(message, dom){
@@ -49,16 +51,21 @@ var NotificationMessage = function() {
 		if (errorMessages.length == 0) { 
 			message = "Sorry, an undefined error occured";
 		}
-		else if(errorMessages.length == 1) {
-			// we don't want to show an ul li list
-			message = errorMessages[0];
-		}
-		else {
+		else if(errorMessages instanceof Array && errorMessages.length > 1){
 			message = "<UL>";
 			for(var i = 0; i < errorMessages.length; i++)
 				message += "<LI>" +  errorMessages[i] + "</LI>";
 			message +=  "</UL>";
+		}		
+		else if(errorMessages instanceof Array && errorMessages.length == 1){
+			// we don't want to show an ul li list
+			message = errorMessages[0];
 		}
+		else{
+			// we don't want to show an ul li list
+			message = errorMessages;
+		}
+
 		
 		that.showErrorMessage(message, dom, priority);
 		

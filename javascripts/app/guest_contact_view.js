@@ -20,6 +20,33 @@ var GuestContactView = function(domRef) {
 			}
 		}
 	};
+	this.fetchCompletedOfSaveContactInfo = function(data){
+		if(data.status == 'success'){
+			that.$contactInfoChange = false;
+			// Update guest card header UI.
+			$("#gc-firstname").val($("#guest_firstname").val());
+			$("#gc-lastname").val($("#guest_lastname").val());
+			var city = $.trim($("#city").val());
+			var state = $.trim($("#state").val());
+			var location = "";
+			if(city!= '' && state!= '')
+			 	location = city+","+state;
+			else if(city!= "")
+			 	location = city;
+		    else if (state!="")
+		    	location = state;
+			$("#gc-location").val(location);
+			$("#gc-phone").val($("#phone").val());
+			$("#gc-email").val($("#email").val());	
+			sntapp.notification.showSuccessMessage("Successfully Saved.", that.myDom); 
+		}
+		else{
+			sntapp.notification.showErrorList(data.errors, that.myDom); 
+		}
+	};
+	this.fetchFailedOfSaveContactInfo = function(errorMessage){
+		
+	};
 	this.saveContactInfo = function() {
 		
 		if (that.$contactInfoChange) {
@@ -45,33 +72,15 @@ var GuestContactView = function(domRef) {
 			$contactJsonObj['email'] = that.myDom.find("#email").val();
 			$contactJsonObj['mobile'] = that.myDom.find("#mobile").val();
 			
-			$.ajax({
-				type : "PUT",
-				url : 'staff/guest_cards/' + userId,
-				data : $contactJsonObj,				
-				dataType : 'json',
-				success : function() {
-					that.$contactInfoChange = false;
-					// Update guest card header UI.
-					$("#gc-firstname").val($("#guest_firstname").val());
-					$("#gc-lastname").val($("#guest_lastname").val());
-					var city = $.trim($("#city").val());
-					var state = $.trim($("#state").val());
-					var location = "";
-					if(city!= '' && state!= '')
-					 	location = city+","+state;
-					else if(city!= "")
-					 	location = city;
-				    else if (state!="")
-				    	location = state;
-					$("#gc-location").val(location);
-					$("#gc-phone").val($("#phone").val());
-					$("#gc-email").val($("#email").val());
-
-				},
-				error : function() {
-				}
-			});
+		    var url = 'staff/guest_cards/' + userId;
+		    var webservice = new WebServiceInterface();
+		    var options = {
+				   requestParameters: $contactJsonObj,
+				   successCallBack: that.fetchCompletedOfSaveContactInfo,
+				   failureCallBack: that.fetchFailedOfSaveContactInfo,
+				   loader: 'NORMAL',
+		    };
+		    webservice.putJSON(url, options);
 		}
 	};
 	this.renderContactInformation = function() {
