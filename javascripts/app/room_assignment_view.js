@@ -186,18 +186,13 @@ var RoomAssignmentView = function(viewDom){
     //include not ready rooms (rooms that are available to check-in)
     //We assume, that for ready and vacant rooms, is_dueout = "false"
     else if(includeNotReadyRooms){
-
-      for (var i = 0; i< this.roomCompleteList.length; i++){
-        if(this.roomCompleteList[i].is_dueout === "false"){
-          filteredRoomList.push(this.roomCompleteList[i]);
-        }
-      }
+      filteredRoomList = this.roomCompleteList;
     }
 
     //include dueout rooms (show, ready and vacant rooms, is_dueout = "true" rooms)
     else if(includeDueout){
       for (var i = 0; i< this.roomCompleteList.length; i++){
-        if((this.roomCompleteList[i].is_dueout === "true") ||( 
+        if((this.roomCompleteList[i].fo_status === "DUEOUT") ||( 
           (this.roomCompleteList[i].room_status === "READY") &&
          (this.roomCompleteList[i].fo_status === "VACANT"))){
           filteredRoomList.push(this.roomCompleteList[i]);
