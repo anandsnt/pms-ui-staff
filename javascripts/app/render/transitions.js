@@ -330,7 +330,7 @@ $(function($){
         e.preventDefault();
 
         // Common variables
-        var $loader = '<div id="loading" />',
+        var $loader = '<div id="loading"><div id="loading-spinner" /></div>',
             $href = $(this).attr('href'),
             $transitionPage = $(this).attr('data-transition'),
             $activeMenuItem = $(this).attr('data-page'),

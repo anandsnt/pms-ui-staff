@@ -380,13 +380,13 @@ var RoomAssignmentView = function(viewDom){
   this.backButtonClicked = function(e){
     e.preventDefault();
     that.gotoStayCard();
-    /*var $loader = '<div id="loading" />';
+    /*var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
     $($loader).prependTo('body').show();
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);*/
   };
 
   this.gotoStayCard = function(){
-    var $loader = '<div id="loading" />';
+    var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
     $($loader).prependTo('body').show();
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
   };
