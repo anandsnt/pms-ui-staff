@@ -7,7 +7,7 @@ var ReservationCardLoyaltyView = function(domRef){
     bindLoyaltyUtilFunctions();
   };
   this.delegateEvents = function(){
-  	that.myDom.find('.add-new-button').on('click', that.adddNewLoyaltyModal);
+  	that.myDom.find('#add_new_loyalty_staycard').on('click', that.adddNewLoyaltyModal);
   	that.myDom.find('select.styled#loyalty').on('change', that.changedLoyaltyProgram);				
   };
   this.adddNewLoyaltyModal = function(){

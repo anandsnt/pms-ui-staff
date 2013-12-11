@@ -4,21 +4,24 @@ var GuestContactView = function(domRef) {
 	this.myDom = domRef;
 	this.$guestCardClickTime = false;
 	this.$contactInfoChange = false;
+	
 	this.pageinit = function() {
 		setTimeout(function() {
 			that.renderContactInformation();
-		}, 700);
-		$('#guest-like, #guest-credit, #guest-loyalty').on('click', that.saveContactInfo);
+		}, 700);		
+		$('html').off();
 		$('html').on('click', that.callSave);
 	};
+	
 	this.callSave = function(e) {
-		if (!$(e.target).is("#guest-card-content *", "#guest-card-content")) {
+		if (!$(e.target).is("#contact-info *", "#guest-card-content")) {
 			if (that.$contactInfoChange) {
 				that.saveContactInfo();
 			}
 		}
 	};
 	this.saveContactInfo = function() {
+		
 		if (that.$contactInfoChange) {
 			var userId = $("#user_id").val();
 			$contactJsonObj = {};
@@ -37,20 +40,16 @@ var GuestContactView = function(domRef) {
 			$contactJsonObj['city'] = that.myDom.find("#city").val();
 			$contactJsonObj['state'] = that.myDom.find("#state").val();
 			$contactJsonObj['postal_code'] = that.myDom.find("#postalcode").val();
-			$contactJsonObj['country'] = that.myDom.find("#country").val();
+			$contactJsonObj['country'] = that.myDom.find("#countries_status").val();
 			$contactJsonObj['phone'] = that.myDom.find("#phone").val();
 			$contactJsonObj['email'] = that.myDom.find("#email").val();
 			$contactJsonObj['mobile'] = that.myDom.find("#mobile").val();
-
+			
 			$.ajax({
 				type : "PUT",
 				url : 'staff/guest_cards/' + userId,
-				data : JSON.stringify($contactJsonObj),
-
-				async : false,
+				data : $contactJsonObj,				
 				dataType : 'json',
-				contentType : 'application/json',
-
 				success : function() {
 					that.$contactInfoChange = false;
 					// Update guest card header UI.
@@ -84,7 +83,7 @@ var GuestContactView = function(domRef) {
 				fakeDataToAvoidCache : new Date(),
 				id : $reservation_id
 			}, // fakeDataToAvoidCache is iOS Safari fix
-			async : false,
+			
 			success : function(data) {
 				if (data.birthday != null) {
 					birthdate = data.birthday.split('-');
@@ -109,17 +108,22 @@ var GuestContactView = function(domRef) {
 				that.myDom.find("#city").val(data.city);
 				that.myDom.find("#postalcode").val(data.postal_code);
 				that.myDom.find("#state").val(data.state);
-				that.myDom.find("#country").val(data.country);
+				that.myDom.find("#countries_status").val(data.country);
 				that.myDom.find("#phone").val(data.phone);
 				that.myDom.find("#mobile").val(data.mobile);
 
 				$guestCardClickTime = false;
-				$(document).on('click change', '#countries_status, #guest_nationality_div #nationality_status, #language', function() {
-					that.$contactInfoChange = true;
-				});
+				that.myDom.find('#countries_status, #guest_nationality_div #nationality_status, #language').on('change', 
+					function(){
+						console.log("srop down change");
+						that.$contactInfoChange = true;
+					}				
+				);
 				// to change flag - to save contact info only if any change happens.
-				$(document).on('change', '#title, #guest_firstname, #guest_lastname, #works-at, #job-title, #guest-birthday, #passport-number,#passport-month, #passport-year, #nationality,#guest_nationality_div #nationality_status, #email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile', function(event) {
+				that.myDom.find('#title, #guest_firstname, #guest_lastname, #works-at, #job-title, #guest-birthday, #passport-number,#passport-month, #passport-year, #nationality,#guest_nationality_div #nationality_status, #email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile').on('change', function(){
+					console.log("text text change");
 					that.$contactInfoChange = true;
+					
 				});
 	},
 				error : function() {

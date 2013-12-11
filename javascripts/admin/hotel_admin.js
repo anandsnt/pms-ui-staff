@@ -42,8 +42,10 @@ var HotelAdminView = function(domRef){
   		sntapp.fetchAndRenderView(url, div, {}, false, viewParams);
 	}	  
   };
+
   this.clearReplacingDiv = function() {	  
 	  $("#replacing-div-first").html("");
+    $("#replacing-div-second").html("");
 	  $("#replacing-div-first").show();
 	  $($(this).attr("href")).show();
   };

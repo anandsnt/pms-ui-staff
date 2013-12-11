@@ -32,22 +32,35 @@ var RoomAssignmentView = function(viewDom){
     changeView("nested-view", undefined, "view-nested-first", "view-nested-second", "move-from-right", false); 
 
   };
+  //
   this.createViewScroll = function(){
-    
+    if (viewScroll) { destroyViewScroll(); }
           setTimeout(function(){
             if (that.myDom.find($('#room-attributes')).length) { createViewScroll('#room-attributes'); }
-            if (that.myDom.find($('#rooms-available')).length) { createViewScroll('#rooms-available'); }
             if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
           }, 300);
   };
 
+  //Scroll view creation for the the room list
+  this.createRoomListScroll = function(){
+    if (viewScroll) { destroyViewScroll(); }
+    setTimeout(function(){
+      if (that.myDom.find($('#rooms-available')).length) { createViewScroll('#rooms-available'); }
+    }, 300);
+  };
+
   //Fetches the non-filtered list of rooms.
   this.fetchRoomList = function(){
+    var roomType = that.myDom.find('.reservation-header #room-type').attr('data-room-type');
+    var data = {};
+    if(roomType != null && roomType!= undefined){
+      data = {"room_type": roomType};
+    }
     $.ajax({
         type:       'POST',
         url:        "/staff/rooms/get_rooms",
+        data: data,
         dataType:   'json',
-        async:       false,  
         success: function(response){
           if(response.status == "success"){
             that.roomCompleteList = response.data;
@@ -211,36 +224,27 @@ var RoomAssignmentView = function(viewDom){
   this.displayRoomsList = function(filteredRoomList){
     $('#rooms-available ul').html("");
 
-
     for (var i=0; i<filteredRoomList.length; i++){
         var room_status_html ="" ;
-        // display room number in green colour
-        if((filteredRoomList[i].fo_status == "VACANT") && (filteredRoomList[i].room_status == "READY")){
+        
+        // Display FO status (VACANT, DUEOUT, etc) only when room-status = NOT-READY
+        // Always show color coding ( Red / Green - for Room status)
+        if(filteredRoomList[i].room_status == "READY"){
           room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
         }
-        //Display the rooms numberin read color, add a label VACANT
-        else if((filteredRoomList[i].fo_status == "VACANT") && (filteredRoomList[i].room_status == "NOTREADY")){
+        else if(filteredRoomList[i].room_status == "NOTREADY"){
             room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
-            "<span class='room-status not-ready' data-value='vacant'> vacant </span>";   
-        }
-        //Display the rooms numberin read color, add a label DUEOUT
-        else if((filteredRoomList[i].fo_status == "OCCUPIED") &&(filteredRoomList[i].is_dueout == "true")){
-          room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
-          "<span class='room-status not-ready' data-value='due out'> due out </span>";    
-        }
-        //Display the rooms numberin read color, no label displayed
-        else if(filteredRoomList[i].fo_status == "OCCUPIED"){
-          room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
-          "<span class='room-status not-ready'></span>";    
+            "<span class='room-status not-ready' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].fo_status+" </span>";   
         }
 
         //Append the HTML to the UI.
         if(room_status_html != ""){
-          var output = "<li><a id = 'room-list-item' href='javascript:void(0)'"+
-            "class='button white submit-value' data-value='' data-transition='nested-view'>"+room_status_html+"</a></li>";
+          var output = "<li><a id = 'room-list-item'"+
+            "class='button white submit-value hover-hand' data-value='' >"+room_status_html+"</a></li>";
           $('#rooms-available ul').append(output);      
         }       
     }
+    that.createRoomListScroll();
 
     that.myDom.find('div.rooms-listing ul li a').on('click',that.updateRoomAssignment);
   };
@@ -267,6 +271,7 @@ var RoomAssignmentView = function(viewDom){
 
   };
 
+  //Filter logic is applied for each group
   this.applyFilterForGroup = function(roomListToFilter, filters, operation){
     var filteredRoomList = [];
     if(operation === "OR"){
@@ -309,7 +314,7 @@ var RoomAssignmentView = function(viewDom){
     return filterMatch;   
   };
 
-
+  //Update resevation with the selected room.
   this.updateRoomAssignment = function(e){
 
     var roomSelected = $(this).find(">:first-child").attr("data-value");
@@ -323,6 +328,7 @@ var RoomAssignmentView = function(viewDom){
   };
 
 
+  //Update staycard UI. Staycard contents are available in DOM
   this.updateStaycardUI = function(roomSelected, currentReservation, roomStatusExplained, selectedItem){
     var roomStausNew = "";
     if((typeof roomStatusExplained != "undefined") && (roomStatusExplained != "")){
@@ -348,6 +354,7 @@ var RoomAssignmentView = function(viewDom){
     }
   };
 
+  //API call to update the room
   this.updateServerwithSelectedRoom = function(currentReservation, roomSelected){
 
     var postParams = {};

@@ -12,7 +12,10 @@ var Dashboard = function(domRef){
 	      	createPageScroll('#dashboard');
 	  	}, 300);
 	  
-  }
+  };
+  this.pageshow = function(){
+  	that.showWelcomeMessage();
+  };
 
   this.showWelcomeMessage = function(e){
 	var d = new Date();
@@ -28,15 +31,14 @@ var Dashboard = function(domRef){
 	else{
 		message = "Good Evening";
 	}
-
-	that.myDom.find($('#greetings')).html(message);
-  }
+	that.myDom.find('#greetings').html(message);
+  };
   
   this.updateAccountSettings = function(e){
   	var updateAccountSettings = new UpdateAccountSettings();
   	 updateAccountSettings.initialize();
   	 updateAccountSettings.type ="POST";
   	
-  }
+  };
 
-}
+};

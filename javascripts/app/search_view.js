@@ -216,35 +216,37 @@ var Search  = function(domRef){
 
     this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip){
 
-    	var viewStatus = this.getReservationStatusMapped(reservation_status);
+    	var reservationStatusIcon = this.getReservationStatusMapped(reservation_status);
     	var roomStatusMapped = this.getRoomStatusMapped(roomstatus);
     	var roomstatusexplained = "";
-    	roomstatusextra = false;
-
-    	if(foStatus =="VACANT" && roomStatusMapped=="not-ready"){
-    		roomstatusexplained ="VACANT";
-    		roomstatusextra = true;
+    	var roomStatus = "";
+    	var showRoomStatus = false;
+		
+		// Display FO status only when room-status = NOT-READY and reservation status = CHECKING-IN
+    	if(roomStatusMapped == "not-ready" && reservation_status == "CHECKING_IN"){
+    		roomstatusexplained = foStatus;
+    		showRoomStatus = true;
     	}
-    	else if(foStatus =="OCCUPIED"){
-    		roomstatusexplained ="DUEOUT";
-    		roomstatusextra = true;
-    	}
-
+		// Show color coding ( Red / Green - for Room status) for room only if reservation status = CHECKING-IN
+        if(reservation_status == "CHECKING_IN")	roomStatus = '<strong class="room-number ' + escapeNull(roomStatusMapped) + '">' + escapeNull(room) + '</strong>';
+		else roomStatus = '<strong class="room-number">' + escapeNull(room) + '</strong>';
+			
     	var $location = (escapeNull(location) != '') ? '<span class="icons icon-location">' + escapeNull(location) + '</span>' : '',
         $group = (escapeNull(group) != '') ? '<em class="icons icon-group">' + escapeNull(group) + '</em>' : '',
         $vip = vip ? '<span class="vip">VIP</span>' : '',
         $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="' + escapeNull(image) + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
-        $roomAdditional = roomstatusextra ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
-        $viewStatus = viewStatus ? '<span class="guest-status ' + escapeNull(viewStatus) + '"></span>':'<span class="guest-status"></span>',
+        $roomAdditional = showRoomStatus ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
+        $viewStatus = reservationStatusIcon ? '<span class="guest-status ' + escapeNull(reservationStatusIcon) + '"></span>':'<span class="guest-status"></span>',
+		
         $output =
-        '<a href="staff/staycards/staycard?confirmation=' + confirmation+'&id='+ escapeNull(id)+ '" class="guest-' + escapeNull(status) + ' link-item float" data-transition="inner-page">' +
+        '<a href="staff/staycards/staycard?confirmation=' + confirmation+'&id='+ escapeNull(id)+ '" class="guest-check-in link-item float" data-transition="inner-page">' +
             $image +
             '<div class="data">' +
                 '<h2>' + escapeNull(lastname) + ', ' + escapeNull(firstname) + '</h2>' +
                 '<span class="confirmation">' + escapeNull(confirmation) + '</span>' + $location + $group +
             '</div>'+
             $viewStatus +
-            '<strong class="room-number ' + escapeNull(roomStatusMapped) + '">' + escapeNull(room) + '</strong>' + $roomAdditional +
+            roomStatus + $roomAdditional +
         '</a>';
     	return $output;
     };
