@@ -96,7 +96,7 @@ var StayCard = function(viewDom){
     }
     //get the reservation id.
     var reservation = $href.split("-")[1];
-    //if div not present in DOM, make ajax request
+    //if div not present in DOM, make ajax request 
     if (!($($href).length > 0)) {
       $.ajax({
         type : 'GET',
@@ -114,11 +114,10 @@ var StayCard = function(viewDom){
           
         },
         error : function() {
+          //TODO: handle error display
         }
       });
-    } else{
-    	$("#view-nested-first #reservation-"+reservation+" #reservation_info").addClass("current");
-    }
+    } 
   };
 
 
