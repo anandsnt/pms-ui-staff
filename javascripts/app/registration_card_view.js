@@ -65,7 +65,7 @@ var RegistrationCardView = function(viewDom){
 	var viewDom = $("#view-nested-third");
 	var params = {"reservation_id": that.reservation_id};
 	var nextViewParams = {"showanimation": false, "current-view" : "staycard" };
-	sntapp.fetchAndRenderView(viewURL, viewDom, params, false, nextViewParams );
+	sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NONE', nextViewParams );
   };
   
   this.completeCheckin = function(e){

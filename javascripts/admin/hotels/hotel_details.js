@@ -68,30 +68,34 @@ var HotelDetailsView = function(domRef){
 									  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, 
 									  	hotelCheckoutHour, hotelCheckoutMinutes, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
 									  	password, confirmPassword, hotelTimeZone);
-			sntapp.activityIndicator.showActivityIndicator();
-		  	$.ajax({
-				type: "PUT",
-				url : '/admin/hotels/'+currentHotel,
-				dataType: 'json',
-				data :data,
-				success : function(data) {
-					if(data.status == "success"){
-						sntapp.notification.showMessage(that.myDom, "Saved Successfully");
-						sntapp.activityIndicator.hideActivityIndicator();
-						that.gotoPreviousPage();
-					}
-				},
-				error : function() {
-					sntapp.activityIndicator.hideActivityIndicator();
-					sntapp.notification.showErrorMessage(that.myDom, "Some error");
-					alert("Sorry, not there yet!");
-				}
-			});
+			var url = '/admin/hotels/'+currentHotel;
+			var webservice = new WebServiceInterface();		
+			var options = {
+					   requestParameters: data,
+					   successCallBack: that.fetchCompletedOfSave,
+					   failureCallBack: that.fetchFailedOfSave
+			};
+			webservice.putJSON(url, options);			
+			//webservice.performRequest(url, data, that.fetchCompletedOfAddNewHotel, that.fetchFailedOfSave, false, 'PUT');
   	    	
   	    }
-	  		
-
-        
+	  		 
+  };
+  
+  this.fetchCompletedOfSave = function(data){
+	  if(data.status == "success"){
+		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+		  that.gotoPreviousPage();
+	  }	 
+	  else{
+		  sntapp.activityIndicator.hideActivityIndicator();
+		  sntapp.notification.showErrorList(data.errors, that.myDom);  
+	  }	  
+  };
+  
+  this.fetchFailedOfSave = function(){
+	sntapp.activityIndicator.hideActivityIndicator();
+	sntapp.notification.showErrorMessage("Some error", that.myDom);  
   };
   // add New hotel from snt admin 
   this.addNewHotel =  function(){
@@ -128,31 +132,42 @@ var HotelDetailsView = function(domRef){
   	     if(that.validateAddNewHotel(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone)){
 		  	 
 		
-	       var data = that.getInputData(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand,hotelChain, hotelCode, 
-  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, 
-  	hotelCheckoutHour, hotelCheckoutMinutes, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
-  	password, confirmPassword, hotelTimeZone);
-		       	
-		  	$.ajax({
-				type: "POST",
-				url : ' /admin/hotels',
-				dataType: 'json',
-				data :data,
-				success : function(data) {
-					if(data.status == "success"){
-						console.log("Saved Successfully");
-						viewParams = {};
-						$("#replacing-div-first").show();
-						$("#replacing-div-second").html("");
-						sntapp.fetchAndRenderView("/admin/hotels", $("#replacing-div-first"), {}, false, viewParams);
-						// that.gotoPreviousPage();
-					}
-				},
-				error : function() {
-					alert("Sorry, not there yet!");
-				}
-			});
+	       var data = that.getInputData(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, 
+	    		   						hotelPhone, hotelBrand,hotelChain, hotelCode, 
+	    		   						numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, 
+	    		   						hotelContactPhone, hotelCheckinHour, hotelCheckinMin, 
+	    		   						hotelCheckoutHour, hotelCheckoutMinutes, hotelCurrency, adminEmail, adminPhone, 
+	    		   						adminFirstName, adminLastName, 
+	    		   						password, confirmPassword, hotelTimeZone);
+		    
+	       var url = '/admin/hotels';
+		   var webservice = new WebServiceInterface();
+		   var options = {
+				   requestParameters: data,
+				   successCallBack: that.fetchCompletedOfAddNewHotel,
+				   
+		   };
+		   webservice.postJSON(url, options);
 	  }
+  };
+  this.fetchCompletedOfAddNewHotel = function(data){
+	  // success function of add new hotel api call
+	if(data.status == "success"){
+		$("#replacing-div-first").show();
+		$("#replacing-div-second").html("");
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showSuccessMessage("Successfully Saved. Please wait while it is being redirected to hotel list page..", that.myDom); 
+		sntapp.fetchAndRenderView("/admin/hotels", $("#replacing-div-first"), {}, 'None', viewParams);
+	}
+	else{
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorList(data.errors, that.myDom);  
+	}
+  };
+  this.fetchFailedOfAddNewHotel = function(jqXHR, exception){
+	// fail function of add new hotel api call
+	sntapp.activityIndicator.hideActivityIndicator();
+	sntapp.notification.showErrorMessage("Sorry, not there yet!", that.myDom);  
   };
   //Validate Mandatory fields
   this.validateAddNewHotel = function(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone){

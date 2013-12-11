@@ -390,7 +390,7 @@ var RoomAssignmentView = function(viewDom){
       var viewDom = $("#view-nested-third");
       var params = {"reservation_id": that.reservation_id};
       var nextViewParams = {"showanimation": true, "from-view" : views.ROOM_ASSIGNMENT};
-      sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
+      sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams );
   };
 
 

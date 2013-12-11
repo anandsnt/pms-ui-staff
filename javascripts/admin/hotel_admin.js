@@ -41,11 +41,12 @@ var HotelAdminView = function(domRef){
   		that.myDom.find("#dashboard section.tab").hide(); 
   		viewParams = {'backDom': backDom};
   		
-  		sntapp.fetchAndRenderView(url, div, {}, true, viewParams);
+  		sntapp.fetchAndRenderView(url, div, {}, 'BLOCKER', viewParams);
 	}	  
   };
   this.clearReplacingDiv = function() {	  
 	  $("#replacing-div-first").html("");
+	  $("#replacing-div-second").html("");
 	  $("#replacing-div-first").show();
 	  $($(this).attr("href")).show();
   };
@@ -62,7 +63,7 @@ var HotelAdminView = function(domRef){
 		  var viewParams = {'backDom': backDom};
 		  $(this).parents('section:eq(0)').hide();
 		  //viewURL, viewDom, params, shouldShowLoader, nextViewParams
-		  sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, true, viewParams);
+		  sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
 	  }
   };
   this.setNewHotel = function(){

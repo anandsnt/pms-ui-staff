@@ -10,9 +10,10 @@ var setUpStaycard = function(viewDom) {
 		var activeTabIndex = 0;
 		var currentReservation = viewDom.find($('#confirm_no')).val();
 		var activeTimeline = $('#reservation-card').attr('data-current-timeliine');
-		viewDom.find($("#reservation-listing ul li")).each(function(index){
-			if($(this).attr("data-confirmation-num") == currentReservation )
+		viewDom.find($("#"+activeTimeline+" #reservation-listing ul li")).each(function(index){
+			if($(this).attr("data-confirmation-num") == currentReservation ){
 				activeTabIndex = index;
+			}
 		});
 		if($(this).attr('id') !== activeTimeline){
 			activeTabIndex = 0;

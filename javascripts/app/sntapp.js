@@ -1,11 +1,8 @@
 
 var app = function(){
     var that = this;
-    
-    this.init = function(){
-    	this.activityIndicator = new ActivityIndicator();
-    	this.notification = new NotificationMessage();
-    };
+    this.activityIndicator = new ActivityIndicator();
+    this.notification = new NotificationMessage();    	
     
     this.getViewInstance = function(viewDom){
         var viewInstance;
@@ -15,52 +12,59 @@ var app = function(){
             viewInstance = new window[viewName](viewDom);            
         }
         
+        
+        
         return viewInstance;
     };
 
     this.renderView = function(viewData, viewDom, viewParams){
         viewDom.html(viewData);
         var viewObject = that.getViewInstance(viewDom);
+        
+     // CR Sajith: if viewObject is undefined or nil, show a predefined error message & return.
+        
         if((viewParams != null) && (typeof viewParams != undefined)){
             viewObject.viewParams = viewParams;
         }
         viewObject.initialize();
         viewObject.pageshow();
-        //hideActivityIndicator();
     };
+    
 
     //Fetch from AJAX
     // On Success, invoke render_view
     // Show error message on failure
-    this.fetchAndRenderView = function(viewURL, viewDom, params, shouldShowLoader, nextViewParams){
+    this.fetchAndRenderView = function(viewURL, viewDom, params={}, loader='None', nextViewParams={}){
 
     /*
     If you intent to call changeView or changePage function for animating page loading, 
     shouldShowLoader should be true. chageView / ChangePage functions depends on loaders presence.  
     */
-        if(shouldShowLoader){
-           var $loader = '<div id="loading" />';
-           $($loader).prependTo('body').show(); 
-           //showActivityIndicator();
-        }
+    // loader options are ['None', "BLOCK", 'NORMAL']
     	
+    	that.activityIndicator.showActivityIndicator(loader);
+     
+        
         $.ajax({
             type: "GET",
             data: params,
             url: viewURL,
-            async: false,
+            async: true,
             success: function(data) {      
-                that.renderView(data, viewDom, nextViewParams);                   
+                that.renderView(data, viewDom, nextViewParams); 
+                that.activityIndicator.hideActivityIndicator();
+                
             },
             error: function(){
-            	hideActivityIndicator();
+            	//show error message
+            	that.activityIndicator.hideActivityIndicator();
             }
+            
        });
-    };    
+    }; 
 
 };
 
 sntapp = new app();
-sntapp.init();
 
 

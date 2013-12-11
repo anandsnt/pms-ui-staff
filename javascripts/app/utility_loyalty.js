@@ -83,7 +83,7 @@ function updateHLPLoyaltyUI($type,$code,$level,$name){
       
     $("#loyalty-hlp").append($html);
     
-    var html_for_staycard = '<option class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
+    var html_for_staycard = '<option selected="selected" class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
 	$("#stay-card-loyalty #loyalty").append(html_for_staycard);
 }
 
@@ -99,11 +99,12 @@ function updateFFPLoyaltyUI($type,$code,$program,$name){
       
     $("#loyalty-ffp").append($html);
     
-    var html_for_staycard = '<option class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
+    var html_for_staycard = '<option selected="selected" class="program_new" value="'+$value+'" data-type="ffp" data-primary="true" data-number="'+$number+'" data-name="'+$name+'" data-code="'+$type+'">'+$type+' '+$code+'</option>';
 	$("#stay-card-loyalty #loyalty optgroup").last().before(html_for_staycard);
 }
 
 function updateSelectionUI($code,$type){
+	console.log("updateSelectionUI");
 	var $number = $code.slice(-4);
 	$("div#reservationLoyalty.selected").html("");
 	var html = 	'<span class="value code">'+$type+'</span>'+
