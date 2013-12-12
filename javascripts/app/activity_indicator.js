@@ -5,16 +5,17 @@ var ActivityIndicator = function() {
 	this.showActivityIndicator = function(loaderType) {
 		if(loaderType.toUpperCase() == 'BLOCKER'){
 			// function for showing the loader (with overlay) on the screen
-			var $loader = "<div id=loader class=loader><div id=activity-indicator class=activity-indicator></div></div>";		
+			var $loader = '<div id="loading" ><div id="loading-spinner" /></div>';
+			//var $loader = "<div id=loader class=loader><div id=activity-indicator class=activity-indicator></div></div>";		
 			$($loader).prependTo('body').show();
 			
 			//adjusting the position
-			var top = $(window).height() / 2;
+			/*var top = $(window).height() / 2;
 			var left = $(window).width() / 2;
-			$(".loader .activity-indicator").css({'top': top, 'left': left});	
+			$(".loader .activity-indicator").css({'top': top, 'left': left});	*/
 		}
 		else if(loaderType.toUpperCase() == 'NORMAL'){
-           var $loader = '<div id="loading" />';
+           var $loader = '<div id="loading" >></div>';
            $($loader).prependTo('body').show(); 
 		}
 	};
