@@ -334,7 +334,7 @@ $(function($){
         
         // TODO - fire this when changes are actually saved, not just on value change
         // Feedback on change
-        modalInit('modals/alerts/changes-saved/', 1000);
+        //modalInit('modals/alerts/changes-saved/', 1000);
     });
       
     // Dialog window
