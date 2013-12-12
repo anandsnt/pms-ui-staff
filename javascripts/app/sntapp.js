@@ -20,7 +20,6 @@ var app = function(){
     this.renderView = function(viewData, viewDom, viewParams){
         viewDom.html(viewData);
         viewDom.addClass("current");
-        // viewDom.add("opacity",1);
         
         var viewObject = that.getViewInstance(viewDom);
         
@@ -50,8 +49,8 @@ var app = function(){
      
         
         // if(shouldShowLoader){
-           var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
-           $($loader).prependTo('body').show();
+           // var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
+           // $($loader).prependTo('body').show();
         // }
         $.ajax({
             type: "GET",
