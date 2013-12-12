@@ -9,10 +9,12 @@ var HotelDetailsView = function(domRef){
   };
   this.delegateEvents = function(){  	
   	that.myDom.find('#save').on('click', that.saveHotelDetails); 
-  	that.myDom.find('#cancel').on('click', that.gotoPreviousPage); 
+  	that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView); 
   	that.myDom.find('#save_new_hotel').on('click', that.addNewHotel); 
   };
-  
+  this.goBackToPreviousView = function() {
+  	sntadminapp.gotoPreviousPage(that.viewParams);
+  };
   this.pageshow = function(){
   	if(that.currentView == "snt-admin-view"){
     	//Since we are using the same page for hotel admin and snt admin. Some fields are non editable for hotel admin
@@ -22,18 +24,6 @@ var HotelDetailsView = function(domRef){
     }
   }; 
   
-  this.gotoPreviousPage = function() {
-	  if($("#replacing-div-second").html() != ""){
-		  $("#replacing-div-second").html("");
-		  $("#replacing-div-second").removeClass("current");	 
-	  }
-	  else{
-	  	$("#replacing-div-first").html("");
-	  	$("#replacing-div-first").removeClass("current");
-	  }
-		  
-	  that.viewParams['backDom'].show();	  
-  };
 
   this.saveHotelDetails =  function(){
   	

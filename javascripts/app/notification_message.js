@@ -48,8 +48,11 @@ var NotificationMessage = function() {
 		return $('body');
 	};
 	
-	this.showErrorList = function(errorMessages, dom, priority="DEBUG"){
+	this.showErrorList = function(errorMessages, dom, priority){
 		
+       if(typeof priority === 'undefined'){
+               priority = "DEBUG";
+       }  
 		if (!shouldShowMessage(priority, "Error")) return;
 		dom = getDisplayDom();
 		var message = "";
@@ -77,7 +80,11 @@ var NotificationMessage = function() {
 	}; 
 	
 	// function for show success message
-	this.showSuccessMessage = function(message, dom, priority="DEBUG"){
+	this.showSuccessMessage = function(message, dom, priority){
+		
+       if(typeof priority === 'undefined'){
+               priority = "DEBUG";
+       }  
 		dom = getDisplayDom();
 		if (!shouldShowMessage(priority, "Success")) return;
 		
@@ -103,7 +110,11 @@ var NotificationMessage = function() {
 	};
 	
 	// function for show error message
-	this.showErrorMessage = function(errorMessage, dom, priority="DEBUG"){
+	this.showErrorMessage = function(errorMessage, dom, priority){
+		
+       if(typeof priority === 'undefined'){
+               priority = "DEBUG";
+       }  
 		dom = getDisplayDom();
 		if (!shouldShowMessage(priority, "Error")) return;
 			
@@ -129,7 +140,12 @@ var NotificationMessage = function() {
 	};
 	
 	// to close the message
-	this.hideMessage = function(dom=$('body')){
+	this.hideMessage = function(dom){
+		
+		
+       if(typeof dom === 'undefined'){
+               dom = $('body');
+       }  
 		dom = getDisplayDom();
 		dom.find("#notification-message").removeClass('success_message error_message').html('').hide();
 		return;

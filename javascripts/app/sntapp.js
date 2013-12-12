@@ -36,8 +36,17 @@ var app = function(){
     //Fetch from AJAX
     // On Success, invoke render_view
     // Show error message on failure
-    this.fetchAndRenderView = function(viewURL, viewDom, params ={}, loader='None', nextViewParams={}) {
-
+    this.fetchAndRenderView = function(viewURL, viewDom, params, loader, nextViewParams) {
+      
+       if(typeof params === 'undefined'){
+               params = {};
+       } 
+       if(typeof loader === 'undefined'){
+               loader = 'None';
+       }  
+       if(typeof nextViewParams === 'undefined'){
+               nextViewParams = {};
+       }   
     /*
     If you intent to call changeView or changePage function for animating page loading, 
     shouldShowLoader should be true. chageView / ChangePage functions depends on loaders presence.  

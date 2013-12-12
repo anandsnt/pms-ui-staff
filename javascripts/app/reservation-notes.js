@@ -14,6 +14,7 @@ var reservationCardNotesView = function(domRef){
   	var isDelete = $(e.target).hasClass('icon-trash');
   	if(isDelete){
 	  	var noteId= $(e.target).attr('note_id');
+	  	
 		$.ajax({
 			type : "DELETE",
 			url : '/reservation_notes/'+noteId,
