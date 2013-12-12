@@ -63,9 +63,8 @@ var reservationCardNotesView = function(domRef){
 						'<a id="delete_note" class="icons icon-trash" note_id="'+returnData.note_id+'">Delete post</a>'+
 						'</span></div><p>' + returnData.text + '</p></li>';	
 				    
-					that.myDom.find($("#reservation-notes #notes")).prepend($newNote);
-					createViewScroll('#reservation-notes #notes');
-					createViewScroll("#reservation-content-"+$reservation_id);
+					that.myDom.find("#reservation-notes #notes").prepend($newNote);
+					that.myDom.find('#reservation_info').attr('data-confirmation-num');
 					refreshViewScroll();
 					$("#post_notes textarea").val("");
 				}
