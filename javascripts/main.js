@@ -1,15 +1,13 @@
 // Disable cache busting
 $.ajaxSetup({ cache: true });
 
-// Function for inline calling of scripts when screen is loaded
-$.cachedScript = function(url, options) {
-    options = $.extend( options || {}, {
-        dataType: "script",
-        cache: true,
-        url: url
-    });
-  
-    return jQuery.ajax(options);
+// Equal heights
+$.fn.maximize = function(size) {
+    var max = Math.max.apply(Math, jQuery.map(this, function (e) {
+        return jQuery(e).height();
+    }));
+
+    this[size](max);
 };
 
 // Chaining with intervals
@@ -124,23 +122,17 @@ function onOffSwitch() {
         var onOff = $(this),
             onOffChecked = 'on',
             onOffDisabled = 'disabled',
-            onOffInput = 'input[type="checkbox"]',
-            text = '.value',
-            textOn = onOff.attr('data-on'),
-            textOff = onOff.attr('data-off');
+            onOffInput = 'input[type="checkbox"]';
 
         if (onOff.children(onOffInput).length) {
             onOff.removeClass(onOffChecked);
-            onOff.find(text).text(textOff);
 
             onOff.children(onOffInput + ':checked').each(function(){
                 onOff.addClass(onOffChecked);
-                onOff.find(text).text(textOn);
             });
 
             onOff.children(onOffInput + ':disabled').each(function(){
                 onOff.addClass.addClass(onOffDisabled);
-                onOff.find(text).text('');
             });
         }
     });
@@ -272,6 +264,12 @@ $(function($){
     onOffSwitch();   
     setupFile();
 
+    // Styled form elements - on dom inserted
+    $(document).ajaxComplete(function() {
+        styleCheckboxRadio();
+        onOffSwitch();
+    });
+    
     // Styled form elements - on click
     $(document).on('click', '.checkbox, .radio', function(e){
         e.stopImmediatePropagation();
@@ -321,7 +319,10 @@ $(function($){
     });
 
     // Masked input
-    $('.masked-input').keyup(resizeInput).each(resizeInput);
+    $(document).ajaxComplete(function() {
+        if($('.masked-input').length)
+            $('.masked-input').keyup(resizeInput).each(resizeInput);
+    });
 
     // Resize masked inputs to match content width
     $(document).on('focus', '.masked-input', function(){

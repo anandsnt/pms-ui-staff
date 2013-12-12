@@ -1,18 +1,50 @@
 $(function($){ 
+
+	// On resize
+	$(window).resize(function() {
+    	var $tab = $('.ui-tabs-panel:visible').attr('id'),
+    		$tabWidth = $('#' + $tab).outerWidth(true),
+    		$itemsWidth = 0;
+
+    	// Calcualte total width and set it
+		$('#' + $tab).find('.wrapper li').each(function() {
+		    $itemsWidth += $(this).outerWidth(true);
+		});
+
+		console.log($itemsWidth + ", " + $tabWidth);
+
+		// Set vertical if total items width is larger than tab width
+		if ($itemsWidth > $tabWidth)
+		{
+			$('#' + $tab + '-summary').css({ 'padding-top' : '10px' });
+			$($scrollable).css('width', $itemsWidth + 5);
+			
+			if (horizontalScroll) { destroyHorizontalScroll(); }
+		    setTimeout(function(){
+		    	createHorizontalScroll('#' + $tab + '-summary');
+		    	refreshHorizontalScroll();
+		    }, 600);
+		}
+	});
+
 	// Bill summary tabs
 	$('#bills').tabs({
 		create:  function( event, ui ) {
 			var $tab = ui.panel.attr('id'),
 				$tabWidth = ui.panel.width(),
-				$scrollable = $('#' + $tab).find('.wrapper'),
-				$items = $('#' + $tab).find('.wrapper li').size(),
-				$itemsWidth = ($items * 10) + 20; // * 65 is single item width, + 20 is padding
+				$scrollable = $('#' + $tab).find('.wrapper')
+				$itemsWidth = 0;
+
+			// Calcualte total width and set it
+			$('#' + $tab).find('.wrapper li').each(function() {
+			    $itemsWidth += $(this).outerWidth(true);
+			});
 
 			// Set vertical if total items width is larger than tab width
 			if ($itemsWidth > $tabWidth)
 			{
 				$('#' + $tab + '-summary').css({ 'padding-top' : '10px' });
-				$($scrollable).css({ 'width' : $itemsWidth + 'px' });
+				$($scrollable).css('width', $itemsWidth + 5);
 				
 				if (horizontalScroll) { destroyHorizontalScroll(); }
 			    setTimeout(function(){
@@ -34,6 +66,8 @@ $(function($){
 		        $delay = 600,
 		        $tabWidth = ui.newPanel.width(),
 				$scrollable = $('#' + $nextTab).find('.wrapper'),
+				$itemsWidth = 0;
+
 				$items = $('#' + $nextTab).find('.wrapper li').size(),
 				$itemsWidth = ($items * 65) + 20; // * 65 is single item width, + 20 is padding
 
@@ -64,11 +98,16 @@ $(function($){
 	        	$($activeToggle).removeClass('active');
 	        	$($openedToggleElement).addClass('hidden');*/
 
+	        // Calcualte total width and set it
+			$('#' + $nextTab).find('.wrapper li').each(function() {
+			    $itemsWidth += $(this).outerWidth(true);
+			});
+
 	        // Set vertical scroller if total items width is larger than tab width
 			if ($itemsWidth > $tabWidth)
 			{
 				$('#' + $nextTab + '-summary').css({ 'padding-top' : '10px' });
-				$($scrollable).css({ 'width' : $itemsWidth + 'px' });
+				$($scrollable).css('width', $itemsWidth + 5);
 
 				if (horizontalScroll) { destroyHorizontalScroll(); }
 			    setTimeout(function(){

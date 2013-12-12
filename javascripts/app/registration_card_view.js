@@ -116,7 +116,7 @@ var RegistrationCardView = function(viewDom){
   this.gotoStayCard = function(e){
 	e.preventDefault();
   //goBackToView("", "view-nested-third", "move-from-left");
-	var $loader = '<div id="loading" />';
+	var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
 	$($loader).prependTo('body').show();
 	
 	changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);
@@ -124,7 +124,7 @@ var RegistrationCardView = function(viewDom){
   this.goToRoomUpgradeView = function(e){
 	e.preventDefault();
   //goBackToView("", "view-nested-third", "move-from-left");
-	var $loader = '<div id="loading" />';
+	var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
 	$($loader).prependTo('body').show();  
 	changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);   
   };

@@ -12,21 +12,20 @@ BaseModal = function() {
             that.shouldShowWhenFetched = true;
             this.fetchFromURL(that.type);
         }
-    }
+    };
     this.modalInit = function(){
-    }
-    
+    };
 	this.unbindCancelEvent = function(){
 		$('#modal-overlay, #modal-close, #cancel').off('click');
-	}
+	};
 	
-	this.unbindEvents = function(){}
+	this.unbindEvents = function(){};
 	
 	this.delegateCancelEvent = function(){
 		$('#modal-overlay, #modal-close, #cancel').on('click', that.hide);
-	}
+	};
 	
-    this.delegateEvents = function(){ }
+    this.delegateEvents = function(){ };
     
     this.fetchFromURL = function(type) {
         // Get modal data
@@ -44,7 +43,7 @@ BaseModal = function() {
                 //TODO: Replace with the central mechanism for error handling
             }
         });
-    }
+    };
 
     this.show = function(){
         $modal = '<div id="modal" role="dialog" />',
@@ -75,8 +74,10 @@ BaseModal = function() {
         $('#modal').html(that.data);
         that.delegateCancelEvent();
   		that.delegateEvents();
-    }
+    };
+
     this.hide = function (callBack){
+
     	that.unbindCancelEvent();
     	that.unbindEvents();
         $('#modal, #modal-overlay').removeClass('modal-show'); 
@@ -84,5 +85,5 @@ BaseModal = function() {
             $('#modal').empty();
         	if(typeof callBack === "function") callBack();
         }, 150);
-    }
-}
+    };
+};
