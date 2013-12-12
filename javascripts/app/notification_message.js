@@ -153,4 +153,4 @@ var NotificationMessage = function() {
 	
 	
 	
-}
+};
