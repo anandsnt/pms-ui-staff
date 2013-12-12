@@ -87,6 +87,7 @@ var StayCard = function(viewDom){
 
   //Add the reservation details to the DOM.
   this.displayReservationDetails = function($href){
+  	 
   	$("#view-nested-first #reservation_info").removeClass("current");
     //get the current highlighted timeline
     //Not more than 5 resevation should be kept in DOM in a timeline.
@@ -98,18 +99,23 @@ var StayCard = function(viewDom){
     var reservation = $href.split("-")[1];
     //if div not present in DOM, make ajax request 
     if (!($($href).length > 0)) {
+    	var loader = '<div id="loading"><div id="loading-spinner" /></div>';
+		$(loader).prependTo('body').show(); 
       $.ajax({
         type : 'GET',
         url : "staff/staycards/reservation_details?reservation=" + reservation,
         dataType : 'html',
         //async:false,
-        success : function(data) {    
+        success : function(data) {   
+        	console.log(loader);
+        	$("#loading").hide();  
           //To avoid multiple ajax content fetches appended to DOM.
           if (!($($href).length > 0)) {
             $("#" + currentTimeline).append(data);         
             createViewScroll("#reservation-content-"+reservation);       
             var reservationDetails = new reservationDetailsView($("#reservation-"+reservation));
             reservationDetails.initialize();
+            
           } 	
           
         },
