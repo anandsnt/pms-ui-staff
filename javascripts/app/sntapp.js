@@ -19,7 +19,6 @@ var app = function(){
 
     this.renderView = function(viewData, viewDom, viewParams){
         viewDom.html(viewData);
-        viewDom.removeClass("content-holder");
         viewDom.addClass("current");
         // viewDom.add("opacity",1);
         

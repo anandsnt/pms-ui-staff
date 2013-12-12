@@ -48,6 +48,7 @@ var HotelAdminView = function(domRef){
   this.clearReplacingDiv = function() {	  
 	  $("#replacing-div-first").html("");
 	  $("#replacing-div-second").html("");
+	  $("#replacing-div-first, #replacing-div-second").removeClass("current");
 	  $("#replacing-div-first").show();
 	  $($(this).attr("href")).show();
   };

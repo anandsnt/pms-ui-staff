@@ -47,6 +47,7 @@ var reservationCardNotesView = function(domRef){
 			text : $notes
 		};
 	
+
 	   var webservice = new WebServiceInterface();
 	   var options = {
 			   requestParameters: $data,
@@ -82,6 +83,32 @@ var reservationCardNotesView = function(domRef){
   
   this.fetchErrorOfReservationNotes = function(errorMessage){
 	  sntapp.notitfication.showErrorMessage(errorMessage);
+
+		$.ajax({
+			type : "POST",
+			url : '/reservation_notes',	
+			data : $data,
+			dataType : 'json',
+			success : function(data) {
+				if (data.status == "success") {
+					returnData = data.data;
+					$newNote = '<li id="note'+returnData.note_id+'"><figure class="guest-image">' + 
+						'<img src="' + returnData.user_image + '" alt=""></figure>' + 
+						'<div class="note-title"><h4>' + returnData.username + '</h4>' + 
+						'<time datetime="2013-10-23 06:05:20"><span class="time">'+returnData.posted_time + 
+						'</span><span class="date"> '+returnData.posted_date+'</span>' + '</time><span class="topic">' + returnData.topic +
+						'<a id="delete_note" class="icons icon-trash" note_id="'+returnData.note_id+'">Delete post</a>'+
+						'</span></div><p>' + returnData.text + '</p></li>';	
+				    
+					that.myDom.find("#reservation-notes #notes").prepend($newNote);
+					that.myDom.find('#reservation_info').attr('data-confirmation-num');
+					refreshViewScroll();
+					$("#post_notes textarea").val("");
+				}
+			},
+			error : function() {		
+			}
+		});
   };
 };
 

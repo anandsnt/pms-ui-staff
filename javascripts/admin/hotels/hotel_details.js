@@ -24,10 +24,14 @@ var HotelDetailsView = function(domRef){
   
   this.gotoPreviousPage = function() {
 	  if($("#replacing-div-second").html() != ""){
-		  $("#replacing-div-second").html("");	 
+		  $("#replacing-div-second").html("");
+		  $("#replacing-div-second").removeClass("current");	 
 	  }
-	  else
-		  $("#replacing-div-first").html("");
+	  else{
+	  	$("#replacing-div-first").html("");
+	  	$("#replacing-div-first").removeClass("current");
+	  }
+		  
 	  that.viewParams['backDom'].show();	  
   };
 
