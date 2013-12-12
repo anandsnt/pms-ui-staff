@@ -26,4 +26,4 @@ var ActivityIndicator = function() {
 	};
 
 	
-}
+};
