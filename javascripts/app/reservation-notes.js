@@ -73,9 +73,8 @@ var reservationCardNotesView = function(domRef){
 			'</span></div><p>' + returnData.text + '</p></li>';	
 	    
 		that.myDom.find(("#reservation-notes #notes")).prepend($newNote);
-		createViewScroll('#reservation-notes #notes');
-		createViewScroll("#reservation-content-" + $reservation_id);
 		refreshViewScroll();
+		sntapp.notification.showSuccessMessage("Successfully Saved.", that.myDom);
 		$("#post_notes textarea").val("");
 	}
 	else{

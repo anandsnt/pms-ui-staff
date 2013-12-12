@@ -97,17 +97,17 @@ var StayCard = function(viewDom){
     }
     //get the reservation id.
     var reservation = $href.split("-")[1];
+    sntapp.activityIndicator.showActivityIndicator("normal");
     //if div not present in DOM, make ajax request 
     if (!($($href).length > 0)) {
-    	var loader = '<div id="loading"><div id="loading-spinner" /></div>';
-		$(loader).prependTo('body').show(); 
       $.ajax({
         type : 'GET',
         url : "staff/staycards/reservation_details?reservation=" + reservation,
         dataType : 'html',
         //async:false,
-        success : function(data) {   
-        	$("#loading").hide();  
+
+        success : function(data) {  
+          sntapp.activityIndicator.hideActivityIndicator(); 
           //To avoid multiple ajax content fetches appended to DOM.
           if (!($($href).length > 0)) {
             $("#" + currentTimeline).append(data);         
