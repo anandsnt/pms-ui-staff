@@ -65,20 +65,36 @@ var LikesView = function(domRef){
 			}
 	
 			var userId = $("#user_id").val();
-			$.ajax({
-				type : "POST",
-				url : 'staff/guest_cards/' + userId + '/update_preferences',
-				data : JSON.stringify(jsonObj),
-				dataType : "json",
-				success : function(data) {
-					that.$likeInfoChange = false;
-				},
-				error : function() {
-				}
-			});
-	
+			// $.ajax({
+				// type : "POST",
+				// url : 'staff/guest_cards/' + userId + '/update_preferences',
+				// data : JSON.stringify(jsonObj),
+				// dataType : "json",
+				// success : function(data) {
+					// that.$likeInfoChange = false;
+				// },
+				// error : function() {
+				// }
+			// });
+			var url = 'staff/guest_cards/' + userId + '/update_preferences';
+		    var webservice = new WebServiceInterface();
+			var options = {
+				   requestParameters: JSON.stringify(jsonObj),
+				   successCallBack: that.fetchCompletedOfSaveLikes,
+				   loader: 'NORMAL',
+		    };
+		    webservice.postJSON(url, options);
+			
 	   	
 	     };
+   };
+   this.fetchCompletedOfSaveLikes = function(data){
+   		if(data.status == 'success'){
+   			that.$likeInfoChange = false;
+   			sntapp.notification.showSuccessMessage("Successfully Saved.", that.myDom); 
+   		}else{
+   			sntapp.notification.showErrorList(data.errors, that.myDom); 
+   		}
    };
    this.handleLikeValueChanged = function(event){  	   
 	  

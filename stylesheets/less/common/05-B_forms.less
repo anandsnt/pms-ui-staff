@@ -42,18 +42,27 @@ textarea {
 			.box-shadow(none);
 		}
 	}
+
+	&.error {
+		color: @red;
+		.box-shadow(inset 0 0 1px 1px @red);
+	}
 }
 
 input { 
 	line-height: 40px; 
 	padding: 0 10px;
 	.placeholder-text(16px, 40px, 400, @grey3);
+
+	&.error { .placeholder-text(16px, 40px, 400, @red); }
 }
 
 textarea { 
 	line-height: 1.5em;
 	padding: 10px; 
 	.placeholder-text(16px, 1.5em, 400, @grey3);
+
+	&.error { .placeholder-text(16px, 1.5em, 400, @red); }
 }
 
 input[type="search"] { -webkit-appearance: textfield; }
