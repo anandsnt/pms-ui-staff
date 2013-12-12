@@ -58,7 +58,7 @@ var reservationCardNotesView = function(domRef){
   };
   
   this.fetchCompletedOfReservationNotes = function(data) {
-	  sntapp.notification.showErrorList("Testing Buddy..", that.myDom);
+	  
 	if (data.status == "success") {
 		returnData = data.data;
 		$newNote = '<li id="note'+returnData.note_id+'"><figure class="guest-image">' + 

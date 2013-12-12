@@ -12,8 +12,8 @@ var WebServiceInterface = function(){
 		var dataType='json'
 		var requestParameters = options["requestParameters"] ? options["requestParameters"] : {};
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
-		var successCallBack = options["successCallBack"] ? options["successCallBack"] : {};
-		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : {};
+		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 	
 		
 		that.performRequest(requestUrl, requestParameters, loader, successCallBack, failureCallBack, 
@@ -28,8 +28,8 @@ var WebServiceInterface = function(){
 		var dataType = 'json'
 		var requestParameters = options["requestParameters"] ? options["requestParameters"] : {};
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
-		var successCallBack = options["successCallBack"] ? options["successCallBack"] : {};
-		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : {};	
+		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;	
 		
 		
 		that.performRequest(requestUrl, requestParameters, loader, successCallBack, failureCallBack, 
@@ -44,8 +44,8 @@ var WebServiceInterface = function(){
 		var dataType = 'json'
 		var requestParameters = options["requestParameters"] ? options["requestParameters"] : {};
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
-		var successCallBack = options["successCallBack"] ? options["successCallBack"] : {};
-		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : {};	
+		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;	
 		
 		
 		that.performRequest(requestUrl, requestParameters, loader, successCallBack, failureCallBack, 
@@ -60,8 +60,8 @@ var WebServiceInterface = function(){
 		var dataType = 'json'
 		var requestParameters = options["requestParameters"] ? options["requestParameters"] : {};
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
-		var successCallBack = options["successCallBack"] ? options["successCallBack"] : {};
-		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : {};	
+		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;	
 		
 		
 		that.performRequest(requestUrl, requestParameters, loader, successCallBack, failureCallBack, 
@@ -99,7 +99,7 @@ var WebServiceInterface = function(){
 			requestUrl = requestUrl + "?" + requestParameters; //Expand
 			requestParameters = "";
 		}
-		
+
 		$.ajax({
 			beforeSend: function(){
 				sntapp.notification.hideMessage();
@@ -122,9 +122,9 @@ var WebServiceInterface = function(){
 					}
 				}
 				else{
-					sntapp.notification.showErrorMessage(that.createErrorMessage(jqXHR, exception));
+					sntapp.notification.showErrorMessage(data.errors);
 					if(failCallBack) {	
-						failCallBack(that.createErrorMessage(jqXHR, exception));
+						failCallBack(data.errors);
 					}					
 				}
 			},

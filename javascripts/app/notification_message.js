@@ -27,7 +27,8 @@ var NotificationMessage = function() {
 		var parent = dom.find("#notification-message").parents("form:eq(0)");		
 		var location = new String(document.location); 
 		location = location.split("#")[0];
-		document.location = location + "#" + parent.attr("id") ;	
+		//document.location = location + "#" + parent.attr("id") ;	
+		document.location = location + "#";
 		
 
 	};

@@ -19,6 +19,10 @@ var app = function(){
 
     this.renderView = function(viewData, viewDom, viewParams){
         viewDom.html(viewData);
+        viewDom.removeClass("content-holder");
+        viewDom.addClass("current");
+        // viewDom.add("opacity",1);
+        
         var viewObject = that.getViewInstance(viewDom);
         
      // CR Sajith: if viewObject is undefined or nil, show a predefined error message & return.
@@ -47,8 +51,8 @@ var app = function(){
      
         
         // if(shouldShowLoader){
-           // var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
-           // $($loader).prependTo('body').show();
+           var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
+           $($loader).prependTo('body').show();
         // }
         $.ajax({
             type: "GET",

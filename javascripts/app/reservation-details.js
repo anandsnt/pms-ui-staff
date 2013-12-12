@@ -27,21 +27,15 @@ var reservationDetailsView = function(domRef){
     reservationCardNotes.initialize();
   };
    this.setNewspaperPreferance = function(e){  	
-  	var newspaperValue = that.myDom.find('#reservation_newspaper').val();
-  	var reservation_id = getReservationId();
-  	$.ajax({
-      	type : 'POST',
-      	url : "reservation/add_newspaper_preference",
-      	data : {"reservation_id": reservation_id, "selected_newspaper" :newspaperValue } ,
-      	success : function(data) {
-          	if(data.status == "success"){
-          	}
-          	else{
-          	}
-      	},
-      	error : function() {
-      	}
-  	});
+		var newspaperValue = that.myDom.find('#reservation_newspaper').val();
+		var reservation_id = getReservationId();
+		
+		var data = {"reservation_id": reservation_id, "selected_newspaper" :newspaperValue };
+		var webservice = new WebServiceInterface();
+		var options = {
+		  requestParameters: data
+		};
+  		webservice.postJSON('/reservation/add_newspaper_preference', options);
   };
   this.setWakeUpCallModal = function(e){
 		if($(e.target).hasClass("feature-available")){	
