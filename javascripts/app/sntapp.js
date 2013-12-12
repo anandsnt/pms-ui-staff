@@ -34,17 +34,22 @@ var app = function(){
     //Fetch from AJAX
     // On Success, invoke render_view
     // Show error message on failure
-    this.fetchAndRenderView = function(viewURL, viewDom, params={}, loader='None', nextViewParams={}){
+    this.fetchAndRenderView = function(viewURL, viewDom, params ={}, loader='None', nextViewParams={}) {
 
     /*
     If you intent to call changeView or changePage function for animating page loading, 
     shouldShowLoader should be true. chageView / ChangePage functions depends on loaders presence.  
     */
-    // loader options are ['None', "BLOCK", 'NORMAL']
+
+    // loader options are ['None', "BLOCKER", 'NORMAL']
     	
     	that.activityIndicator.showActivityIndicator(loader);
      
         
+        // if(shouldShowLoader){
+           // var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
+           // $($loader).prependTo('body').show();
+        // }
         $.ajax({
             type: "GET",
             data: params,

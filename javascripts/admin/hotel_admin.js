@@ -26,7 +26,7 @@ var HotelAdminView = function(domRef){
 	var url = target.attr("href");
 	if(url != "#" && url != undefined){
   		var backDom = null;
-  		that.myDom.find("#dashboard section.tab").each(function(){
+  		that.myDom.find("#content section.tab").each(function(){
   			if($(this).is(":visible")){
   				backDom = $(this); 				 				
   			}
@@ -38,7 +38,7 @@ var HotelAdminView = function(domRef){
   			if(backDom == null)
   				backDom = that.myDom.find("#replacing-div-first");
   		}
-  		that.myDom.find("#dashboard section.tab").hide(); 
+  		that.myDom.find("#content section.tab").hide(); 
   		viewParams = {'backDom': backDom};
   		
   		sntapp.fetchAndRenderView(url, div, {}, 'BLOCKER', viewParams);

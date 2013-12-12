@@ -118,6 +118,13 @@
 
 			&:hover,
 			&:active { color: @logoPrimary; }
+
+			&.soft-red-text {
+				color: @softRed;
+
+				&:hover,
+				&:active { color: @softRed; }
+			}
 		}
 
 		/* Button colors ***/
@@ -133,6 +140,13 @@
 
 			&:hover,
 			&:active { .gradient (@redEnd, @redStart); }
+		}
+
+		&.soft-red { 
+			.gradient (@softRedStart, @softRedEnd);
+
+			&:hover,
+			&:active { .gradient (@softRedEnd, @softRedStart); }
 		}
 
 		&.blue { 
@@ -165,18 +179,46 @@
 			&:hover,
 			&:active { .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)"); }
 
+			&.brand-text {
+				color: @logoPrimary;
+
+				&:hover,
+				&:active { color: darken(@logoPrimary, 10); }
+			}
+
 			&.blue-text {
 				color: @blue;
 
 				&:hover,
-				&:active { color: @blue; }
+				&:active { color: darken(@blue, 10); }
 			}
 
 			&.red-text {
 				color: @red;
 
 				&:hover,
-				&:active { color: @red; }
+				&:active { color: darken(@red, 10); }
+			}
+
+			&.soft-red-text {
+				color: @softRed;
+
+				&:hover,
+				&:active { color: darken(@softRed, 10); }
+			}
+
+			&.green-text {
+				color: @green;
+
+				&:hover,
+				&:active { color: darken(@green, 10); }
+			}
+
+			&.grey-text {
+				color: @grey3;
+
+				&:hover,
+				&:active { color: grey4; }
 			}
 		}
 

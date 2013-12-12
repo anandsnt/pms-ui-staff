@@ -69,28 +69,25 @@ var WebServiceInterface = function(){
 	};
 	
 	this.createErrorMessage = function(jqXHR, exception){
-		var errorMessage = "";
+		var errorMessage = '';
 		if (exception === 'parsererror') {
 			errorMessage = 'Requested JSON parse failed.';
-        } 
+              } 
 		else if (exception === 'timeout') {
-            errorMessage = 'Time out error.';
-        } 
+			errorMessage = 'Time out error.';
+			} 
 		else if (exception === 'abort') {
-            errorMessage = 'Ajax request aborted.';
-        } 
-        else if (jqXHR.status === 0) {
-            errorMessage = 'Not connect.\n Verify Network.';
-        } 
-		else if (jqXHR.status == 404) {
-            errorMessage = 'Requested page not found. [404]';
-        } 
-		else if (jqXHR.status == 500) {
-            errorMessage = 'Internal Server Error [500].';
-        } 		
-		else {
-            errorMessage = 'Uncaught Error.\n' + jqXHR.responseText;
-        }	
+			errorMessage = 'Ajax request aborted.';
+			}
+		else if (jqXHR.status === '0') {
+			errorMessage = 'Not connect.\n Verify Network.';
+		}else if (jqXHR.status == 404) {
+			errorMessage = 'Requested page not found. [404]';
+		}else if (jqXHR.status == 500) {
+			errorMessage = 'Internal Server Error [500].';
+		}else {
+			errorMessage = 'Uncaught Error.\n' + jqXHR.responseText;
+		}	
 		return errorMessage;
 	};
 	
@@ -144,4 +141,4 @@ var WebServiceInterface = function(){
 	};
 
 
-}
+};

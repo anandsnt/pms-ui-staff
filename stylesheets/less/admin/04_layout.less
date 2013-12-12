@@ -43,12 +43,44 @@ body { overflow: hidden; }
     &.menu-closing {
       #move > #container > .right();
     }
-
-    &.loading {
-      #move > #from > .top();
-    }
   }
 
+  #content { 
+    position: relative;
+    .calc-height(100, 140);
+
+    .content {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 20px;
+      height: 100%;
+      #pixel-to-percent > .width( 1050, 1240 );
+      
+      &:not(.ui-tabs-panel) {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+
+        &::-webkit-scrollbar{ 
+          margin-right: 5px;
+          width: 5px; 
+        }
+        &::-webkit-scrollbar-track{ background: transparent; }
+        &::-webkit-scrollbar-thumb{
+          background: @logoGradientStart;
+          #border-radius > .rounded(5px);
+        }
+        &::-webkit-scrollbar-thumb:window-inactive{background:transparent;}
+      }
+
+      &.current {
+        background: @background;
+        z-index: 999;
+      }
+
+      &.content-holder { .opacity(0); }
+    }
+  }
 
 /* Global header      ==============================*/
   #global-header{ 
@@ -98,7 +130,7 @@ body { overflow: hidden; }
           line-height: 30px;
           min-height: 30px;
           padding-left: 30px;
-          .placeholder-text(14px, 30px, 400);
+          .placeholder-text(14px, 30px, 400, @grey3);
         }
 
         #clear-query {
@@ -177,7 +209,6 @@ body { overflow: hidden; }
       left: 20px;
 
       h1 {
-        display: inline-block;
         color: @white;
         font-weight: 700;
         line-height: 60px;
@@ -202,7 +233,6 @@ body { overflow: hidden; }
           .h3;
           padding: 20px 40px 20px 20px;
           background-position: 95% -25px;
-        
         }
 
         .dropdown {
@@ -243,33 +273,121 @@ body { overflow: hidden; }
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      border: 1px dashed rgba(0,0,0,.2);
+      #border-radius > .rounded();
       .show;
       .pull-right;
 
       &.has-items {
+        border: 0;
 
         .icon-admin-menu {
-          background-color: rgba(0,0,0,.1);
           margin: 4px 5px 5px 10px;
-          .hide-text;
-          .square(50px);
+          padding: 0 15px 0 45px;
+          color: @white;
+          font-weight: 600;
+          line-height: 50px;
+          text-transform: uppercase;
+          text-shadow: 1px 1px 0 rgba(0,0,0,.1);
+          text-indent: 0;
+          background-color: rgba(0,0,0,.1);
+          width: auto;
           .box-shadow();
           .pull-right;
-          .transition(width, .3s, cubic-bezier(.10, .10, .25, .90));
+          
           #border-radius > .rounded();
 
           &:last-child { margin-right: 0; }
 
-          &:hover {
-            width: 160px;
-            text-indent: 0;
-            line-height: 50px;
-            padding: 0 15px 0 45px;
-            color: @white;
-            font-weight: 600;
-            text-transform: uppercase;
-            text-shadow: 1px 1px 0 rgba(0,0,0,.1);
+          &.in-quick-menu {
+            padding: 0;
+            max-width: 50px !important;
+            .hide-text;
+            
+
+            &:hover {
+              max-width: 100% !important;
+              padding: 0 15px 0 45px;
+              text-indent: 0;
+              .transition(max-width, .3s, ease-out);
+            }
           }
+        }
+
+        &:after { .hide; }
+        &.dragging,
+        &.active { border: 1px dashed rgba(0,0,0,.2); }
+      }
+
+      &:after {
+        content: "You can build your custom quick menu by draging item icons in this area";
+        line-height: 58px;
+        width: 100%;
+        text-align: center;
+        font-style: italic;
+        color: rgba(0,0,0,.3);
+        .show;
+      }
+    }
+  }
+
+/* Admin left side menu   ==============================*/
+  #tabs-menu {
+    height: 100%;
+    padding-left: 20px;
+    background: @rcardTexture1;
+    .pull-left;
+    .box-shadow(inset -1px 0 2px rgba(0,0,0,.1));
+    #pixel-to-percent > .width( 190, 1240 );
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar{ 
+      margin-right: 5px;
+      width: 5px; 
+    }
+    &::-webkit-scrollbar-track{ background: transparent; }
+    &::-webkit-scrollbar-thumb{
+      background: rgba(0,0,0,.05);
+      #border-radius > .rounded(5px);
+    }
+    &::-webkit-scrollbar-thumb:window-inactive{background:transparent;}
+
+    li {
+      position: relative;
+      line-height: 59px;
+      margin: 0;
+      vertical-align: middle;
+      white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+      a { 
+        font-weight: 600;
+        text-transform: uppercase;
+        color: @grey4;
+        margin-right: 20px;
+        border-bottom: 1px solid rgba(0,0,0,.1);  
+        .no-transition;
+        .show;
+
+        &.icons { padding-left: 30px; }
+
+        &:hover { color: @logoPrimary;  }
+      }
+
+      &.ui-tabs-active,
+      &.active {
+        background-image: @arrowsTabs;
+        background-repeat: no-repeat;
+        background-position: 100% 0;
+
+        a { color: @textColor; }
+      }
+
+      &.active {
+        a {
+          &:hover { color: @logoPrimary; }
         }
       }
     }
@@ -277,6 +395,9 @@ body { overflow: hidden; }
 
 /* 5. COMPONENTS
 ==========================================================*/
+
+/* Navigation sidebar   ==============================*/
+  #main-menu { .show; }
 
 /* Content title      ==============================*/
   .content-title {
@@ -308,8 +429,11 @@ body { overflow: hidden; }
         color: @green; 
         &:hover { color: darken(@green, 10); }
       }
+
       &.remove { 
         color: @red; 
+        .pull-right;
+        
         &:hover { color: darken(@red, 10); }
       }
 
@@ -369,6 +493,10 @@ body { overflow: hidden; }
     th,
     td {
       padding: 0 20px;
+
+      &.activate {
+        text-align: center;
+      }
     }
 
     thead,
@@ -443,7 +571,6 @@ body { overflow: hidden; }
           &:last-child { #border-radius > .right(); }
         }
 
-
         /* Edit data row ***/
         &.edit-data {
           td {
@@ -467,6 +594,20 @@ body { overflow: hidden; }
             .box-shadow(none);
           }
         }
+
+        /* Inactive data ***/
+        &.inactive {
+          td { 
+            color: @grey3; 
+            .transition;
+
+            a { 
+              color: @grey3; 
+
+              &:hover { color: @logoPrimary; }
+            }
+          }
+        }
       }
     }
   }
@@ -478,10 +619,32 @@ body { overflow: hidden; }
       tr {
         td {
 
-        /* Custom datatable styles - hotels list ***/
+          /* Custom datatable styles - hotels list ***/
           .title {
             line-height: 21px;
             .show;
+          }
+
+          /* */
+          .login { font-style: italic; }
+
+          /* Delete icon ***/
+          .icon-delete {
+            margin: 0 auto 12px auto;
+            .hide-text;
+          }
+        }
+
+        &.inactive {
+          td { 
+            color: @grey3; 
+            .transition;
+
+            a { 
+              color: @grey3; 
+
+              &:hover { color: @logoPrimary; }
+            }
           }
         }
       }
@@ -494,7 +657,7 @@ body { overflow: hidden; }
       tbody {
         tr {
           th:first-child,
-          td:first-child:not([colspan]) { /*.hide;*/ }
+          td:first-child:not([colspan]) { .hide; }
         }
       }
     }
@@ -566,6 +729,7 @@ body { overflow: hidden; }
   line-height: 0;
 }
   
+
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
