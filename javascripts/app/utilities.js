@@ -1,3 +1,4 @@
+
 function getCurrentReservationDiv(){
 	var activeTimeline = $('#reservation-card').attr('data-current-timeliine');
 	var currentConfirmation = $("#"+activeTimeline+" #reservation-listing ul li.ui-state-active").attr("data-confirmation-num");

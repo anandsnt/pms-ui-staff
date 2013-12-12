@@ -3,9 +3,7 @@ var HotelListView = function(domRef){
   this.myDom = domRef;  
   var that = this;
   
-  this.pageinit = function(){
-    
-  };
+  
   this.delegateEvents = function(){   		
   	 that.myDom.find($('#hotels_list_table')).tablesorter();
   	 that.myDom.find($('.title, #add_new_hotel')).on('click', this.gotoNextPage);
@@ -22,7 +20,7 @@ var HotelListView = function(domRef){
     $(".currenthotel").attr("id", href.split('/')[3]);
   
     if(href != undefined){
-  		sntapp.fetchAndRenderView(href, $("#replacing-div-second"), viewParams, false, nextViewParams);
+  		sntapp.fetchAndRenderView(href, $("#replacing-div-second"), viewParams, 'NONE', nextViewParams);
     }
   };
   

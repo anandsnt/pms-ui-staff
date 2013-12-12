@@ -2,7 +2,7 @@ var adminApp = function(){
     var that = this;
     this.clearReplacingDiv = function() {	
       $("#replacing-div-first").html("");
-    $("#replacing-div-second").html("");
+      $("#replacing-div-second").html("");
 	  $("#replacing-div-first").show();
 	  $($(this).attr("href")).show();
   
@@ -14,9 +14,20 @@ var adminApp = function(){
             var url = href;                    		 
             var viewParams = {};
             $(this).parents('section:eq(0)').hide();
-            sntapp.fetchAndRenderView(url, $("#replacing-div-first"), viewParams);
+            sntapp.fetchAndRenderView(url, $("#replacing-div-first"), viewParams, 'NORMAL');
         }
     };
+    this.gotoPreviousPage = function(viewParams) {
+	  if($("#replacing-div-second").html() != ""){
+		  $("#replacing-div-second").html("");
+		  $("#replacing-div-second").removeClass("current");	 
+	  }
+	  else{
+	  	$("#replacing-div-first").html("");
+	  	$("#replacing-div-first").removeClass("current");
+	  }
+	  viewParams['backDom'].show();	  
+  };
     
 
 };

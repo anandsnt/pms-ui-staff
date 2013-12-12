@@ -6,12 +6,39 @@ var UpsellRoomDetailsView = function(domRef){
   this.pageinit = function(){
     console.log("Reached in pageinit UpsellRoomDetailsView");
   };
+  
   this.delegateEvents = function(){  
      that.myDom.find('#upsell_level .sortable-list').sortable({
         connectWith: '#upsell_level .sortable-list'
      });
   	 that.myDom.find('#save').on('click',that.saveDailyUpSellSetup);
+  	 that.myDom.find("#upsell-rooms").on('click', that.turnOnOffAllControls);
+  	 that.myDom.find('#cancel,#go_back').on('click', that.goBackToPreviousView); 
   };
+  this.goBackToPreviousView = function() {
+  	sntadminapp.gotoPreviousPage(that.viewParams);
+  };
+  
+  
+  
+  // function to invisible/visible the controls in the form
+  // when upsell rooms button is off/on
+  this.turnOnOffAllControls = function() {
+	if($(this).is(':checked')){		
+		$(this).parents("form:eq(0)").find("div").show();
+	}
+	else {
+		// finding the parent div (with entry class)
+		// which we need to be there, hide the rest
+		var that = $(this).parents().find(".entry:eq(0)");
+		$(this).parents("form:eq(0)").find("div").hide();
+		that.show();
+		that.find("div").show();
+		//showing the button area [Save, Cancel]
+		$(this).parents("form:eq(0)").find("button").parents().find(".actions,.float.form").show();
+	}
+  };
+  
   //Save daily upsell rooms set up
   this.saveDailyUpSellSetup = function(){
   	 

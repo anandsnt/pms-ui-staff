@@ -14,6 +14,7 @@ var reservationCardNotesView = function(domRef){
   	var isDelete = $(e.target).hasClass('icon-trash');
   	if(isDelete){
 	  	var noteId= $(e.target).attr('note_id');
+	  	
 		$.ajax({
 			type : "DELETE",
 			url : '/reservation_notes/'+noteId,
@@ -30,7 +31,7 @@ var reservationCardNotesView = function(domRef){
 	}
   };
   this.saveReservationNotes = function(){
-	  	$notes = that.myDom.find($("#post_notes textarea")).val();
+	  	$notes = that.myDom.find("#post_notes textarea").val();
 		$topic = 1;
 		$reservation_id = getReservationId();
 	
@@ -47,6 +48,43 @@ var reservationCardNotesView = function(domRef){
 			text : $notes
 		};
 	
+
+	   var webservice = new WebServiceInterface();
+	   var options = {
+			   requestParameters: $data,
+			   successCallBack: that.fetchCompletedOfReservationNotes,
+			   failureCallBack: that.fetchErrorOfReservationNotes,
+	   };
+	   webservice.postJSON('/reservation_notes', options);
+
+  };
+  
+  this.fetchCompletedOfReservationNotes = function(data) {
+	  
+	if (data.status == "success") {
+		returnData = data.data;
+		$newNote = '<li id="note'+returnData.note_id+'"><figure class="guest-image">' + 
+			'<img src="' + returnData.user_image + '" alt=""></figure>' + 
+			'<div class="note-title"><h4>' + returnData.username + '</h4>' + 
+			'<time datetime="2013-10-23 06:05:20"><span class="time">'+returnData.posted_time + 
+			'</span><span class="date"> '+returnData.posted_date+'</span>' + '</time><span class="topic">' + returnData.topic +
+			'<a id="delete_note" class="icons icon-trash" note_id="'+returnData.note_id+'">Delete post</a>'+
+			'</span></div><p>' + returnData.text + '</p></li>';	
+	    
+		that.myDom.find(("#reservation-notes #notes")).prepend($newNote);
+		createViewScroll('#reservation-notes #notes');
+		createViewScroll("#reservation-content-" + $reservation_id);
+		refreshViewScroll();
+		$("#post_notes textarea").val("");
+	}
+	else{
+		sntapp.notification.showErrorList(data.errors, that.myDom);
+	}
+  };
+  
+  this.fetchErrorOfReservationNotes = function(errorMessage){
+	  sntapp.notitfication.showErrorMessage(errorMessage);
+
 		$.ajax({
 			type : "POST",
 			url : '/reservation_notes',	

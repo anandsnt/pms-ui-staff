@@ -35,13 +35,14 @@ var SntAdminView = function(domRef){
   		that.myDom.find("#content section.tab").hide(); 
   		viewParams = {'backDom': backDom};
   		
-  		sntapp.fetchAndRenderView(url, div, {}, false, viewParams);
+  		sntapp.fetchAndRenderView(url, div, {}, 'NORMAL', viewParams);
 	}	  
   };
 
   this.clearReplacingDiv = function() {  
   	$("#replacing-div-first").html("");
     $("#replacing-div-second").html("");
+    $("#replacing-div-first, #replacing-div-second").removeClass("current");
 	  $("#replacing-div-first").show();
 	  $($(this).attr("href")).show(); 
   };

@@ -127,7 +127,7 @@ var ValidateCheckinModal = function() {
 	    var reservation_id = getReservationId();
 	    var params = {"reservation_id": reservation_id};
 	    var nextViewParams = {"showanimation": true, "next_view" : views.BILLCARD };
-	    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams);
+	    sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams);
     };
 
     this.goToRoomUpgradeView = function(){
@@ -136,7 +136,7 @@ var ValidateCheckinModal = function() {
 	    var reservation_id = getReservationId();
 	    var params = {"reservation_id": reservation_id};
 	    var nextViewParams = {"showanimation": true, "next_view" : views.BILLCARD };
-	    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
+	    sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams );
     };
 
     this.goToRegistrationCardView = function(viewParams){
@@ -146,6 +146,6 @@ var ValidateCheckinModal = function() {
         var viewDom = $("#view-nested-third");
         var params = {"reservation_id": that.reservation_id};
         var nextViewParams = {"showanimation": true, "from-view" : views.STAYCARD};
-        sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
+        sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams );
     };
 };

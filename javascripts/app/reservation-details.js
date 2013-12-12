@@ -27,21 +27,15 @@ var reservationDetailsView = function(domRef){
     reservationCardNotes.initialize();
   };
    this.setNewspaperPreferance = function(e){  	
-  	var newspaperValue = that.myDom.find('#reservation_newspaper').val();
-  	var reservation_id = getReservationId();
-  	$.ajax({
-      	type : 'POST',
-      	url : "reservation/add_newspaper_preference",
-      	data : {"reservation_id": reservation_id, "selected_newspaper" :newspaperValue } ,
-      	success : function(data) {
-          	if(data.status == "success"){
-          	}
-          	else{
-          	}
-      	},
-      	error : function() {
-      	}
-  	});
+		var newspaperValue = that.myDom.find('#reservation_newspaper').val();
+		var reservation_id = getReservationId();
+		
+		var data = {"reservation_id": reservation_id, "selected_newspaper" :newspaperValue };
+		var webservice = new WebServiceInterface();
+		var options = {
+		  requestParameters: data
+		};
+  		webservice.postJSON('/reservation/add_newspaper_preference', options);
   };
   this.setWakeUpCallModal = function(e){
 		if($(e.target).hasClass("feature-available")){	
@@ -66,7 +60,7 @@ var reservationDetailsView = function(domRef){
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
     var params = {"reservation_id": reservation_id};
-    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams);
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams);
   };
   
   this.addKeysModal = function(e){
@@ -84,7 +78,7 @@ var reservationDetailsView = function(domRef){
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
     var params = {"reservation_id": reservation_id};
-    sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams );
   };
    
     this.goToBillCardView = function (clickedButton){
@@ -93,7 +87,7 @@ var reservationDetailsView = function(domRef){
 		var viewDom = $("#view-nested-third");
 		var params = {"reservation_id": that.reservation_id};
 		var nextViewParams = {"showanimation": true, "from-view" : views.STAYCARD, "clickedButton":clickedButton };
-		sntapp.fetchAndRenderView(viewURL, viewDom, params, true, nextViewParams );
+		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams );
     };
     this.clickedCheckoutButton = function(){
    	that.goToBillCardView("CheckoutButton");
