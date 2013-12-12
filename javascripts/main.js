@@ -269,6 +269,19 @@ $(function($){
         styleCheckboxRadio();
         onOffSwitch();
     });
+
+    // Styled checkbox groups
+   $(document).on('change', 'input:checkbox', function(e){
+        var $group = $(this).attr('data-group'),
+            $groupItem = 'input:checkbox[data-group='+$group+']';
+
+        if ($group)
+        {
+            $($groupItem).not($(this)).attr('checked',false);
+            $(this).attr('checked', $(this).attr('checked'));
+            styleCheckboxRadio();
+        }        
+    });
     
     // Styled form elements - on click
     $(document).on('click', '.checkbox, .radio', function(e){

@@ -450,6 +450,7 @@
 				.holder {
 					height: 100%;
 					#pixel-to-percent > .width(904, 1888);
+					.float;
 					.pull-left;
 
 					.h3 {
@@ -475,9 +476,24 @@
 							.radio {
 								#pixel-to-percent > .width(432, 904);
 							}
+						}
+					}
 
-							.checkbox:nth-child(odd),
-							.radio:nth-child(even) { #pixel-to-percent > .right-margin(40, 904); }
+					&.left {
+						.entry {
+							&.radio-check {
+								.checkbox:nth-child(even),
+								.radio:nth-child(even) { #pixel-to-percent > .right-margin(40, 904); }
+							}
+						}
+					}
+
+					&.right {
+						.entry {
+							&.radio-check {
+								.checkbox:nth-child(odd),
+								.radio:nth-child(odd) { #pixel-to-percent > .right-margin(40, 904); }
+							}
 						}
 					}
 
