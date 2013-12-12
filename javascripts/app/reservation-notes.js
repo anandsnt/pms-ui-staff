@@ -65,7 +65,7 @@ var reservationCardNotesView = function(domRef){
 				    
 					that.myDom.find($("#reservation-notes #notes")).prepend($newNote);
 					createViewScroll('#reservation-notes #notes');
-					createViewScroll("#reservation-content-"+reservation);
+					createViewScroll("#reservation-content-"+$reservation_id);
 					refreshViewScroll();
 					$("#post_notes textarea").val("");
 				}
