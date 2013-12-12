@@ -148,20 +148,20 @@ body {
 		}
 	}
 
-	.inline-error {
+	.inline-error,
+	.inline-success,
+	.inline-warning,
+	.inline-info {
 		margin: 5px 0;
-		color: @red;
+		font-size: 13px;
+		line-height: 16px;
+		font-weight: 600;
 	}
 
-	.inline-success {
-		margin: 5px 0;
-		color: @green;
-	}
-
-	.inline-warning {
-		margin: 5px 0;
-		color: darken(@yellow, 30);
-	}
+	.inline-error { color: @red; }
+	.inline-success { color: @green; }
+	.inline-warning { color: darken(@yellow, 10); }
+	.inline-info { color: darken(@blue, 10); }
 
 /* 6. IE
 ==========================================================*/
