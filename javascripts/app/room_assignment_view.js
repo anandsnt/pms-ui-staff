@@ -406,6 +406,7 @@ var RoomAssignmentView = function(viewDom){
     var roomHtml = "<strong class='room-number ready'>"+roomNumberSelected+"</strong>";
     $('#reservation-'+reservationId+'-room-number').html(roomHtml);
 
+       
     $.ajax({
         type:       'POST',
         url:        "/staff/reservations/upgrade_room",
