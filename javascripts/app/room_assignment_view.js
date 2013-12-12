@@ -375,13 +375,13 @@ var RoomAssignmentView = function(viewDom){
   this.backButtonClicked = function(e){
     e.preventDefault();
     that.gotoStayCard();
-    /*var $loader = '<div id="loading" />';
+    /*var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
     $($loader).prependTo('body').show();
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);*/
   };
 
   this.gotoStayCard = function(){
-    var $loader = '<div id="loading" />';
+    var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
     $($loader).prependTo('body').show();
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
   };
@@ -406,13 +406,6 @@ var RoomAssignmentView = function(viewDom){
     var roomHtml = "<strong class='room-number ready'>"+roomNumberSelected+"</strong>";
     $('#reservation-'+reservationId+'-room-number').html(roomHtml);
 
-    if(that.viewParams.next_view == views.STAYCARD){
-    that.gotoStayCard(); 
-    }
-    else if (that.viewParams.next_view == views.BILLCARD){
-      that.gotoBillCard(); 
-    }
-    
     $.ajax({
         type:       'POST',
         url:        "/staff/reservations/upgrade_room",

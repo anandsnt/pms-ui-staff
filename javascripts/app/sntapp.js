@@ -34,7 +34,7 @@ var app = function(){
     shouldShowLoader should be true. chageView / ChangePage functions depends on loaders presence.  
     */
         if(shouldShowLoader){
-           var $loader = '<div id="loading" />';
+           var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
            $($loader).prependTo('body').show();
         }
         $.ajax({

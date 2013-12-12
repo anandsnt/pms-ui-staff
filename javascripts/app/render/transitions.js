@@ -330,7 +330,7 @@ $(function($){
         e.preventDefault();
 
         // Common variables
-        var $loader = '<div id="loading" />',
+        var $loader = '<div id="loading"><div id="loading-spinner" /></div>',
             $href = $(this).attr('href'),
             $transitionPage = $(this).attr('data-transition'),
             $activeMenuItem = $(this).attr('data-page'),
@@ -353,8 +353,8 @@ $(function($){
         }
         else if ($transitionPage.indexOf('nested-view') >= 0)
         {
-            var $previous = $('.nested-view.view-current').attr('id'),
-                $next = $('.nested-view:not(.view-current)').attr('id');
+            var $previous = $('.page-current').find('.nested-view.view-current').attr('id'),
+                $next = $('.page-current').find('.nested-view:not(.view-current)').attr('id');
         }
 
 
