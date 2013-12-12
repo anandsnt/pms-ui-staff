@@ -6,66 +6,93 @@ var WebServiceInterface = function(){
 	
 	this.getJSON = function(requestUrl, options ){
 		var options = options ? options : {};
-		var async = true;
+		
 		var requestType = "GET";
 		var contentType='application/json';
 		var dataType = 'json'; 
 		var requestParameters = options["requestParameters"] ? options["requestParameters"] : {};
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
+		var async = options["async"] ? options["async"] : true;
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
-	
+		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
+		var failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
 		
-		that.performRequest(requestUrl, requestParameters, loader, successCallBack, failureCallBack, 
-			async, requestType, contentType, dataType);
+		that.performRequest(requestUrl, requestParameters, loader, successCallBack, 
+				failureCallBack, successCallBackParameters, failureCallBackParameters, 
+				async, requestType, contentType, dataType);
 	};
 	
 	this.postJSON = function(requestUrl, options ){
-		var options = options ? options : {};
-		var async = true;
+		var options = options ? options : {};		
 		var requestType = "POST";
 		var contentType = 'application/json';
 		var dataType = 'json';
 		var requestParameters = options["requestParameters"] ? options["requestParameters"] : {};
+		var async = options["async"] ? options["async"] : true;
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;	
+		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
+		var failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
 		
-		
-		that.performRequest(requestUrl, requestParameters, loader, successCallBack, failureCallBack, 
-				async, requestType, contentType, dataType);	
+		that.performRequest(requestUrl, requestParameters, loader, successCallBack, 
+				failureCallBack, successCallBackParameters, failureCallBackParameters, 
+				async, requestType, contentType, dataType);
 	};
 	
 	this.putJSON = function(requestUrl, options ){
-		var options = options ? options : {};
-		var async = true;
+		var options = options ? options : {};		
 		var requestType = "PUT";
 		var contentType = 'application/json';
 		var dataType = 'json';
 		var requestParameters = options["requestParameters"] ? options["requestParameters"] : {};
+		var async = options["async"] ? options["async"] : true;
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;	
+		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
+		var failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
 		
-		
-		that.performRequest(requestUrl, requestParameters, loader, successCallBack, failureCallBack, 
+		that.performRequest(requestUrl, requestParameters, loader, successCallBack, 
+				failureCallBack, successCallBackParameters, failureCallBackParameters, 
 				async, requestType, contentType, dataType);			
 	};
-	
+
+	this.deleteJSON = function(requestUrl, options ){
+		var options = options ? options : {};
+		var requestType = "DELETE";
+		var contentType = 'application/json';
+		var dataType = 'json';
+		//Ask Sajith: will request parameters is there?
+		var requestParameters = options["requestParameters"] ? options["requestParameters"] : {};
+		var async = options["async"] ? options["async"] : true;
+		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
+		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;	
+		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
+		var failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
+		
+		that.performRequest(requestUrl, requestParameters, loader, successCallBack, 
+				failureCallBack, successCallBackParameters, failureCallBackParameters, 
+				async, requestType, contentType, dataType);			
+	};
 	this.getHTML = function(requestUrl, options){
 		var options = options ? options : {};
-		var async = true;
 		var requestType = "GET";
 		var contentType = 'text/html';
 		var dataType = 'json';
 		var requestParameters = options["requestParameters"] ? options["requestParameters"] : {};
+		var async = options["async"] ? options["async"] : true;
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;	
-		
-		
-		that.performRequest(requestUrl, requestParameters, loader, successCallBack, failureCallBack, 
-				async, requestType, contentType, dataType);		
+		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
+		var failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
+		 
+		that.performRequest(requestUrl, requestParameters, loader, successCallBack, 
+				failureCallBack, successCallBackParameters, failureCallBackParameters, 
+				async, requestType, contentType, dataType);	
 	};
 	
 	this.createErrorMessage = function(jqXHR, exception){
@@ -92,8 +119,8 @@ var WebServiceInterface = function(){
 	};
 	
 	this.performRequest = function(requestUrl, requestParameters, loader, 
-			successCallBack, failCallBack, async, requestType, 
-			contentType, dataType){	
+			successCallBack, failureCallBack, successCallBackParameters, failureCallBackParameters, 
+			async, requestType, contentType, dataType){	
 					
        if(typeof requestParameters === 'undefined'){
                requestParameters = {};
@@ -125,7 +152,7 @@ var WebServiceInterface = function(){
 			requestUrl = requestUrl + "?" + requestParameters; //Expand
 			requestParameters = "";
 		}
-
+		console.log("successCallBackParameters: " + successCallBackParameters);
 		$.ajax({
 			beforeSend: function(){
 				sntapp.notification.hideMessage();
@@ -143,14 +170,24 @@ var WebServiceInterface = function(){
 				sntapp.activityIndicator.hideActivityIndicator();
 				if(data.status == 'success'){
 					//TODO: show success notification
-					if(successCallBack) {					
-						successCallBack(data);
+					if(successCallBack) {
+						if(successCallBackParameters){
+							successCallBack(data, successCallBackParameters);
+						}
+						else{
+							successCallBack(data);
+						}
 					}
 				}
 				else{
 					sntapp.notification.showErrorMessage(data.errors);
-					if(failCallBack) {	
-						failCallBack(data.errors);
+					if(failureCallBack) {	
+						if(failureCallBackParameters){
+							failureCallBack(data.errors, failureCallBackParameters);
+						}
+						else{
+							failureCallBack(data.errors);
+						}
 					}					
 				}
 			},
@@ -158,8 +195,8 @@ var WebServiceInterface = function(){
 				sntapp.activityIndicator.hideActivityIndicator();				
 				//Show error notification
 				sntapp.notification.showErrorMessage(that.createErrorMessage(jqXHR, exception));
-				if(failCallBack) {	
-					failCallBack(that.createErrorMessage(jqXHR, exception));
+				if(failureCallBack) {	
+					failureCallBack(that.createErrorMessage(jqXHR, exception));
 				}
 			}
 			
