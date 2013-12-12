@@ -7,7 +7,7 @@ var UpsellLateCheckoutView = function(domRef){
   };
    this.delegateEvents = function(){  
 	   that.myDom.find('#save').on('click', that.saveHotelDetails);
-	   that.myDom.find('#cancel').on('click', that.goBackToPreviousView); 
+	   that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView); 
   };
   this.goBackToPreviousView = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams);

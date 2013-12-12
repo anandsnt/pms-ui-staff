@@ -13,17 +13,13 @@ var UpsellRoomDetailsView = function(domRef){
      });
   	 that.myDom.find('#save').on('click',that.saveDailyUpSellSetup);
   	 that.myDom.find("#upsell-rooms").on('click', that.turnOnOffAllControls);
-  	 that.myDom.find('#cancel').on('click', that.gotoPreviousPage); 
+  	 that.myDom.find('#cancel,#go_back').on('click', that.goBackToPreviousView); 
+  };
+  this.goBackToPreviousView = function() {
+  	sntadminapp.gotoPreviousPage(that.viewParams);
   };
   
-  this.gotoPreviousPage = function() {
-	  if($("#replacing-div-second").html() != ""){
-		  $("#replacing-div-second").html("");	 
-	  }
-	  else
-		  $("#replacing-div-first").html("");
-	  that.viewParams['backDom'].show();	  
-  }; 
+  
   
   // function to invisible/visible the controls in the form
   // when upsell rooms button is off/on

@@ -287,6 +287,7 @@ $(function($){
 
         // If hash exists, try to load targeted screen
         if(window.location.hash) {
+
             var $pageToShow = window.location.hash.split('#');
 
             $.ajax({
@@ -301,6 +302,13 @@ $(function($){
                     $('#main-menu .active').removeClass('active');
                     $('#main-menu a[data-page="' + $pageToShow[1] + '"]').addClass('active');
 
+                //Adding a hook, to connect the rendering code to functional view component. 
+                var viewInstance = sntapp.getViewInstance($('#page-main-first'));
+                if(typeof viewInstance !== "undefined"){
+                        viewInstance.initialize();
+                        viewInstance.pageshow();
+                }
+
                     // Back buttons in this case need to load data
                     $('.back-button[data-transition]').each(function(e){
                         var $transition = $(this).attr('data-transition');
@@ -310,7 +318,7 @@ $(function($){
                 },
                 error: function(){
                 }
-            });       
+            });    
 
             // Remove the hash 
             history.pushState("", document.title, window.location.pathname);    
