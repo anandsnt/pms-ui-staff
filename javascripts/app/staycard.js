@@ -107,7 +107,6 @@ var StayCard = function(viewDom){
         dataType : 'html',
         //async:false,
         success : function(data) {   
-        	console.log(loader);
         	$("#loading").hide();  
           //To avoid multiple ajax content fetches appended to DOM.
           if (!($($href).length > 0)) {
