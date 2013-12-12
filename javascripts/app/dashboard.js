@@ -5,13 +5,12 @@ var Dashboard = function(domRef){
 
   this.pageinit = function(){
   	$('#main-menu a#staff-settings').on('click',that.updateAccountSettings);
-  	
-  	
   	if (pageScroll) { destroyPageScroll(); }
 		setTimeout(function(){
+      if ($('#dashboard').length){
 	      	createPageScroll('#dashboard');
+        }
 	  	}, 300);
-	  
   };
   this.pageshow = function(){
   	that.showWelcomeMessage();
