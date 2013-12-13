@@ -90,22 +90,40 @@ var AddKeysModal = function(callBack) {
 		}
 	};
 	this.saveKey = function(data) {
-		$.ajax({
-			type : "POST",
-			url : 'staff/reservation/print_key',
-			data : data,
-			async : false,
-			dataType : 'json',
-			contentType : 'application/json',
-			success : function(data) {
-				if (data.status == "success") {
-					// Commenting for now. Might be we need this in future
-					// $("#change-name #gc-email").val(key_guest_email);
-					that.hide(callBack);
-				}
-			},
-			error : function() {
-			}
-		});
+		// $.ajax({
+			// type : "POST",
+			// url : 'staff/reservation/print_key',
+			// data : data,
+			// async : false,
+			// dataType : 'json',
+			// contentType : 'application/json',
+			// success : function(data) {
+				// if (data.status == "success") {
+					// // Commenting for now. Might be we need this in future
+					// // $("#change-name #gc-email").val(key_guest_email);
+					// that.hide(callBack);
+				// }
+			// },
+			// error : function() {
+			// }
+		// });
+		     
+	    var url = "staff/reservation/print_key";
+	    var webservice = new WebServiceInterface();
+	    var options = {
+			   requestParameters: data,
+			   successCallBack: that.fetchCompletedKeys,
+			   loader: 'NORMAL',
+	    };
+	    webservice.postJSON(url, options);
 	};
+	this.fetchCompletedKeys = function(data) {
+	  
+		if (data.status == "success") {
+			hat.hide(callBack);
+		}
+		else{
+			sntapp.notification.showErrorList(data.errors, that.myDom);
+		}
+   };
 }; 
