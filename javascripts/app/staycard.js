@@ -97,10 +97,11 @@ var StayCard = function(viewDom){
     }
     //get the reservation id.
     var reservation = $href.split("-")[1];
+
     //if div not present in DOM, make ajax request 
     if (!($($href).length > 0)) {
       //show loading indicator
-      sntapp.activityIndicator.showActivityIndicator("normal");
+      sntapp.activityIndicator.showActivityIndicator("blocker");
       $.ajax({
         type : 'GET',
         url : "staff/staycards/reservation_details?reservation=" + reservation,

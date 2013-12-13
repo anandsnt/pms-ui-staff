@@ -41,6 +41,7 @@ var GuestContactView = function(domRef) {
 			sntapp.notification.showSuccessMessage("Successfully Saved.", that.myDom); 
 		}
 		else{
+			that.$contactInfoChange = false;
 			sntapp.notification.showErrorList(data.errors, that.myDom); 
 		}
 	};
