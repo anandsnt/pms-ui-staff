@@ -31,10 +31,9 @@ var AddKeysModal = function(callBack) {
 		
 		// Hide key_print_additional button while coming from bill card.
 		var source_page = this.params.source_page;
-		if(source_page == "bill_card"){
+		if(source_page == views.BILLCARD){
 			that.myDom.find("#key_print_additional").addClass('hidden');
 			that.myDom.find("#key_print_new").removeClass('half');
-			that.hide(callBack);
 		}
 	};
 	this.modalInit = function() {

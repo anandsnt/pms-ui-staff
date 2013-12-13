@@ -8,11 +8,11 @@ var RoomAssignmentView = function(viewDom){
   this.roomCompleteList = [];
 
   this.pageinit = function(){
-    
+     //Scroll view initialization for the view
+    this.createViewScroll();  
     //Get the list of rooms from the server.
     this.fetchRoomList();
-     //Scroll view initialization for the view
-    this.createViewScroll();   
+     
   };   
 
   this.delegateEvents = function(){
@@ -60,6 +60,7 @@ var RoomAssignmentView = function(viewDom){
         type:       'POST',
         url:        "/staff/rooms/get_rooms",
         data: data,
+        async: false,
         dataType:   'json',
         success: function(response){
           if(response.status == "success"){
