@@ -68,7 +68,7 @@ var app = function(){
             async: true,
             success: function(data) { 
             	
-                that.renderView(data, viewDom, nextViewParams); 
+                that.renderView(data, viewDom, nextViewParams);                 
                 that.activityIndicator.hideActivityIndicator();
                 
             },
