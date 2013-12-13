@@ -96,7 +96,8 @@ var GuestContactView = function(domRef) {
 			success : function(data) {
 				if (data.birthday != null) {
 					birthdate = data.birthday.split('-');
-					birthday = birthdate[1] + "-" + birthdate[2] + "-" + birthdate[0].substring(2);
+					//data.birthday is in DD-MM-YY format.Changed to MM-DD-YY format.
+					birthday = birthdate[2] + "-" + birthdate[1] + "-" + birthdate[0].substring(2);
 					that.myDom.find("#guest-birthday").val(birthday);
 				}
 				if (data.passport_expiry != null) {
@@ -124,15 +125,12 @@ var GuestContactView = function(domRef) {
 				$guestCardClickTime = false;
 				that.myDom.find('#countries_status, #guest_nationality_div #nationality_status, #language').on('change', 
 					function(){
-						console.log("srop down change");
 						that.$contactInfoChange = true;
 					}				
 				);
 				// to change flag - to save contact info only if any change happens.
 				that.myDom.find('#title, #guest_firstname, #guest_lastname, #works-at, #job-title, #guest-birthday, #passport-number,#passport-month, #passport-year, #nationality,#guest_nationality_div #nationality_status, #email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile').on('change', function(){
-					console.log("text text change");
 					that.$contactInfoChange = true;
-					
 				});
 	},
 				error : function() {
