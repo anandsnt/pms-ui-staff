@@ -67,7 +67,7 @@ var AddFFPModal = function(){
 		$("#new-ffp #airline-ff-pgms").html("");
 		$("#new-ffp #airline-ff-pgms").append('<option value="" selected="selected" class="placeholder">Select loyalty program</option>');
 		var selectedAirlineType = $("#new-ffp #airline-ff-list").val();
-		$.each(ffProgramsList, function(key, airline) {
+		$.each(ffProgramsList.data, function(key, airline) {
 			if(airline.ff_value == selectedAirlineType){
 				$.each(airline.levels, function(key, value) {
 					var ffOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>'
