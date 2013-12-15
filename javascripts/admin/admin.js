@@ -68,6 +68,7 @@ var setUpAdmin = function(viewDom, delegate) {
 	// Quick menu
 		var sortableIn = 0;
 		var dropOut = 0;
+		var limit = 8;
 
 		$('.icon-admin-menu:not(.dropped):not(.admin-menu-group)').draggable({
 			revert: 'invalid',
@@ -107,8 +108,7 @@ var setUpAdmin = function(viewDom, delegate) {
 			beforeStop: function(event, ui){
 				var bookMarkId = $(ui.item.context).attr("data-id")
 					bookMarkWidth = parseInt(ui.item.outerWidth()),
-					$items = $(this).children('.ui-draggable').length-1,
-					$limit = 8;
+					$items = $(this).children('.ui-draggable').length-1; // -1 because at this point item that's dropped out is still considered part of navigation
 
 				$(ui.item).css('width', bookMarkWidth + 10).addClass('in-quick-menu');
 
@@ -131,7 +131,7 @@ var setUpAdmin = function(viewDom, delegate) {
 					}
 
 					// If space is available, enable addition of new items (-1 because at this point item that's dropped out is still considered part of navigation)
-					if(($items-1) < $limit)
+					if(($items-1) < limit)
 					{
 						$('.icon-admin-menu:not(.dropped):not(.draggable-disabled):not(.in-quick-menu)').draggable({
 							revert: 'invalid',
@@ -148,7 +148,7 @@ var setUpAdmin = function(viewDom, delegate) {
 				}
 				// Adding to quick navigation is disabled after limit is met
 				else {
-					if($items == $limit)
+					if($items == limit)
 					{
 						$('.icon-admin-menu:not(.dropped):not(.draggable-disabled):not(.in-quick-menu)').draggable({
 							revert: true,
