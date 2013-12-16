@@ -92,6 +92,7 @@ var RoomAssignmentView = function(viewDom){
 
   this.filterOptionChecked = function(e){
     that.handleMultipleSelection(e);
+    //Fix for chrome checkbox issue CICO-2507. 
     setTimeout(function(){
       that.applyFilters();
     }, 100);
