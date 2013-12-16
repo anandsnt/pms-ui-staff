@@ -76,7 +76,7 @@ var reservationDetailsView = function(domRef){
 
   };
   this.goToRoomUpgradeView = function(nextViewParams){
-
+    sntapp.activityIndicator.showActivityIndicator("blocker");
     var viewURL = "staff/reservations/room_upsell_options";
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
