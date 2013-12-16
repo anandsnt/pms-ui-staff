@@ -16,6 +16,16 @@ var SetWakeUpCallModal = function() {
 	this.modalInit = function() {
 
 	};
+
+	this.fetchCompletedOfSetWakeUpCall = function(data, requestParameters){
+		if (data.status == "success") {
+			that.hide();
+			$("#reservation_card_wake_up_time").html(requestParameters['wakeUpTime']);
+		}
+		else{
+			sntapp.notification.showErrorList(data.errors, that.myDom);
+		}
+	};
     //function to save wake up call
 	this.saveWakeUpCall = function() {
 
@@ -28,21 +38,15 @@ var SetWakeUpCallModal = function() {
 			"wake_up_time" : wakeUpTime,
 			"day" : wakeUpDaySplit[0]
 		};
+		var webservice = new WebServiceInterface();
 		
-		$.ajax({
-			type : "POST",
-			url : 'wakeup/set_wakeup_calls',
-			data : data,
-			success : function(data) {
-				if (data.status == "success") {
-					that.hide();
-					$("#reservation_card_wake_up_time").html(wakeUpTime);
-				}
-			},
-			error : function() {
-				alert("Sorry, not there yet!");
-			}
-		});
+	    var url = 'wakeup/set_wakeup_calls'; 
+	    var options = {
+	    		requestParameters: data,
+				successCallBack: that.fetchCompletedOfSetWakeUpCall,
+				successCallBackParameters: {'wakeUpTime': wakeUpTime},
+		};
+	    webservice.postJSON(url, options);
 
 	};
     
@@ -88,26 +92,26 @@ var SetWakeUpCallModal = function() {
 		that.myDom.find("#set-wake-up-call #wakeup-time").html(selectedOption);
 		that.myDom.find("#set-wake-up-call #wakeup-time").attr("value", selectedOption);
 	};
+	this.fetchCompletedOfDeleteWakeUpCall = function(data){
+		if (data.status == "success") {
+			that.hide();
+			$("#reservation_card_wake_up_time").html("Not Set");
+		}		
+	};
 	// function to delete wake up call
     this.deleteWakeUpCall = function() {
     	
     	var data = {
 			"reservation_id" : that.reservationId,
 		};
-		$.ajax({
-			type : "POST",
-			url : 'wakeup/set_wakeup_calls',
-			data : data,
-			success : function(data) {
-				if (data.status == "success") {
-					that.hide();
-					$("#reservation_card_wake_up_time").html("Not Set");
-				}
-			},
-			error : function() {
-				alert("Sorry, not there yet!");
-			}
-		});
+		var webservice = new WebServiceInterface();
+		
+	    var url = 'wakeup/set_wakeup_calls'; 
+	    var options = {
+	    		requestParameters: data,
+				successCallBack: that.fetchCompletedOfDeleteWakeUpCall,
+		};
+	    webservice.postJSON(url, options);
     	
     };
 };

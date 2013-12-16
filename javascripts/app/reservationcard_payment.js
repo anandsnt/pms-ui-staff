@@ -16,6 +16,11 @@ var ReservationPaymentView = function(domRef){
   	var addNewPaymentModal = new AddNewPaymentModal("reservation", that.myDom);
     addNewPaymentModal.initialize();
   };
+  
+  this.fetchCompletedOfSetPaymentToReservation = function(data){
+	// success function set payment to reservation's ajax call  
+  };
+  
   this.setPaymentToReservation = function(){
   	var reservation_id = getReservationId();
   	var credit_card_id = that.myDom.find("#staycard_creditcard").val();
@@ -44,19 +49,16 @@ var ReservationPaymentView = function(domRef){
   		
   	}
   	that.myDom.find("#selected-reservation-payment-div").html(html);
-  	
-  	$.ajax({
-		type : "POST",
-		url : '/staff/reservation/link_payment',
-		data : {"reservation_id": reservation_id, "user_payment_type_id": credit_card_id },
-		async : false,
-		dataType : 'json',
-		success : function() {	
-			
-		},
-		error : function() {
-		}
-	});
+  	var data = {"reservation_id": reservation_id, "user_payment_type_id": credit_card_id };
+  	var url = "/staff/reservation/link_payment";
+    var webservice = new WebServiceInterface();
+    var options = {
+		   requestParameters: data,
+		   successCallBack: that.fetchCompletedOfSetPaymentToReservation,
+		   async: false,
+    };
+    webservice.postJSON(url, options);
+
   
   };
 };

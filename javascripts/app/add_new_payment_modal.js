@@ -12,6 +12,65 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 	};
 	this.modalInit = function(){
    	};
+   	this.fetchCompletedOfReservationPayment = function(data, requestParameters){
+   		if(data.status == 'success') {
+			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
+			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
+			$newPaymentOption =  "<option value='"+data.data.id+"'data-number='"+requestParameters['number']+"'"+
+			  "data-name='"+$("#new-payment #name-on-card").val()+"' data-image='"+$newImage+"' data-date='"+$newDate+ "'"+
+			  "data-card='"+$("#new-payment #payment-credit-type").val()+ "'>"+
+			 $("#new-payment #payment-credit-type").val()+" "+requestParameters['number']+" "+$("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val()+ "</option> ";    
+							
+			currentStayCardView.find("#staycard_creditcard").append($newPaymentOption);
+			$('#staycard_creditcard').val(data.data.id);
+			var replaceHtml = "<figure class='card-logo'>"+
+								"<img src='/assets/"+$newImage+"' alt=''></figure>"+									
+								"<span class='number'>Ending with<span class='value number'>"+requestParameters['number']+							
+								"</span></span><span class='date'> Date <span class='value date'>"+
+								$("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val()+
+								"</span>";
+		    						
+			currentStayCardView.find("#selected-reservation-payment-div").html(replaceHtml);
+			that.hide();   			
+   		}
+   		else{
+   			sntapp.notification.showErrorList(data.errors, that.myDom);
+   			return false;  			
+   		}
+   	};
+   	this.fetchFailedOfReservationPayment = function(errorMessage){
+   		sntapp.notification.showErrorList(errorMessage, that.myDom);
+   		that.save_inprogress = false;
+   	};  
+   	this.fetchCompletedOfPayment = function(data, requestParameters){
+   		if(data.status == 'success'){
+			that.save_inprogress = false;
+			var	$add = 
+		        '<a id="credit_row"  credit_id="" class="active-item float item-payment new-item">'+
+		        '<figure class="card-logo">'+requestParameters['image']+'</figure><span class="number">'+
+		        'Ending with<span class="value number">'+requestParameters['number']+'</span></span>'+
+				'<span class="date">Date<span class="value date">'+requestParameters['expiry']+'</span>'+
+				'</span><span class="name">Name<span class="value name">'+requestParameters['cardHolderName']+'</span>'+
+				'</span></a>';
+			
+		    $("#payment_tab").prepend($add);
+			//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
+			$("#payment_tab .new-item").attr("credit_id", data.id);
+			$("#payment_tab .new-item").attr("id", "credit_row"+data.id);
+			$("#payment_tab #credit_row"+data.id).removeClass("new-item");				
+			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+'.png';
+			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
+			that.hide();   	
+   		}
+   		else {
+   			sntapp.notification.showErrorList(data.errors, that.myDom);
+   			return false;
+   		}
+   	};
+   	this.fetchFailedOfPayment = function(errorMessage){
+   		sntapp.notification.showErrorList(errorMessage, that.myDom);
+   		that.save_inprogress = false;
+   	};    	
    	this.saveNewPayment = function(){
    		if (that.save_inprogress == true) return false;
 		var $payment_type = $("#new-payment #payment-type").val();
@@ -60,112 +119,73 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		if(fromPagePayment == "guest"){
 			
 		    that.save_inprogress = true; // Handle clicking on Add button twice.
-		    $.ajax({
-				type: "POST",
-				url: 'staff/payments/save_new_payment',
-				data: { 
-					    user_id : user_id,
-						payment_type: $payment_type,
-					    payment_credit_type: $payment_credit_type,
-					    card_number: $card_number,
-					    credit_card: $card_type,
-					    card_expiry: $card_expiry,
-					    name_on_card: $name_on_card,
-					    guest_id: $guest_id
-					},
-				dataType: 'json',
-				success: function(data) {
-					that.save_inprogress = false;
-					if(data.errors!="" && data.errors!=null){
-						$("#new-payment .error-messages").html(data.errors.join('<br>')).show();
-						return false;
-					}
-					var	$add = 
-				        '<a id="credit_row"  credit_id="" class="active-item float item-payment new-item">'+
-				        '<figure class="card-logo">'+$image+'</figure><span class="number">'+
-				        'Ending with<span class="value number">'+$number+'</span></span>'+
-						'<span class="date">Date<span class="value date">'+$expiry+'</span>'+
-						'</span><span class="name">Name<span class="value name">'+$cardHolderName+'</span>'+
-						'</span></a>';
-					
-				    $("#payment_tab").prepend($add);
-					//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
-					$("#payment_tab .new-item").attr("credit_id", data.id);
-					$("#payment_tab .new-item").attr("id", "credit_row"+data.id);
-					$("#payment_tab #credit_row"+data.id).removeClass("new-item");				
-					$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+'.png';
-					$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
-					that.hide();
-				},
-				error: function(){
-					that.save_inprogress = false;
-				}
-			});
+		    var webservice = new WebServiceInterface();
+		    var data = {
+		    		user_id : user_id,
+					payment_type: $payment_type,
+				    payment_credit_type: $payment_credit_type,
+				    card_number: $card_number,
+				    credit_card: $card_type,
+				    card_expiry: $card_expiry,
+				    name_on_card: $name_on_card,
+				    guest_id: $guest_id
+		    };
+		    var url = 'staff/payments/save_new_payment'; 
+		    var options = {
+				   requestParameters: data,
+				   successCallBack: that.fetchCompletedOfPayment,
+				   failureCallBack: that.fetchFailedOfPayment,
+				   successCallBackParameters: {
+					   'image': $image, 
+					   'number': $number, 
+					   'expiry': $expiry,
+					   'cardHolderName': $cardHolderName,
+				   },
+		    };
+			webservice.postJSON(url, options);
 			
-		} else {
+		} 
+		else {
 			var reservation_id = getReservationId();
 			that.save_inprogress = true;
-			$.ajax({
-				type: "POST",
-				url: 'staff/reservation/save_payment',
-				data: { 
-					    reservation_id: reservation_id,
-						payment_type: $payment_type,
-					    payment_credit_type: $payment_credit_type,
-					    card_number: $card_number,
-					    credit_card: $card_type,
-					    card_expiry: $card_expiry,
-					    name_on_card: $name_on_card
-					},
-				dataType: 'json',
-				success: function(data) {
-					that.save_inprogress = false;
-					if(data.errors!="" && data.errors!=null){
-						$("#new-payment .error-messages").html(data.errors.join("<br>")).show();
-						return false;
-					}
-					//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
-					
-					$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
-					$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
-					$newPaymentOption =  "<option value='"+data.data.id+"'data-number='"+$number+"'"+
-					  "data-name='"+$("#new-payment #name-on-card").val()+"' data-image='"+$newImage+"' data-date='"+$newDate+ "'"+
-					  "data-card='"+$("#new-payment #payment-credit-type").val()+ "'>"+
-					 $("#new-payment #payment-credit-type").val()+" "+$number+" "+$("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val()+ "</option> ";    
-									
-					currentStayCardView.find("#staycard_creditcard").append($newPaymentOption);
-					$('#staycard_creditcard').val(data.data.id);
-					var replaceHtml = "<figure class='card-logo'>"+
-										"<img src='/assets/"+$newImage+"' alt=''></figure>"+									
-										"<span class='number'>Ending with<span class='value number'>"+$number+							
-										"</span></span><span class='date'> Date <span class='value date'>"+
-										$("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val()+
-										"</span>";
-				    						
-					currentStayCardView.find("#selected-reservation-payment-div").html(replaceHtml);
-					that.hide();
-				},
-				error: function(){
-					that.save_inprogress = false;
-				}
-			});
+			var webservice = new WebServiceInterface();
+		    var data = {
+				    reservation_id: reservation_id,
+					payment_type: $payment_type,
+				    payment_credit_type: $payment_credit_type,
+				    card_number: $card_number,
+				    credit_card: $card_type,
+				    card_expiry: $card_expiry,
+				    name_on_card: $name_on_card
+		    };		
+		    var url = 'staff/reservation/save_payment'; 
+		    var options = {
+					   requestParameters: data,
+					   successCallBack: that.fetchCompletedOfReservationPayment,
+					   failureCallBack: that.fetchFailedOfReservationPayment,
+					   successCallBackParameters: {
+						   'number': $number, 
+					   },
+			};
+		    webservice.postJSON(url, options);
 		} 	
 	    setTimeout(function() {
 			refreshGuestCardScroll();
 		}, 300);
   };
    this.getPaymentsList = function(){
-   $.ajax({
-			type: "GET",
-			url: 'staff/payments/addNewPayment.json',			
-			dataType: 'json',
-			success: function(data) {		
-				that.$paymentTypes = data.data;
-			},
-			error: function(){
-			}
-		});
+		var webservice = new WebServiceInterface();
+	
+	    var url = 'staff/payments/addNewPayment.json'; 
+	    var options = {
+				   successCallBack: that.fetchCompletedOfGetPayment,
+		};
+	    webservice.getJSON(url, options);	   
    };
+   this.fetchCompletedOfGetPayment = function(data){
+	   that.$paymentTypes = data.data;
+   };
+   
      this.filterPayments = function(e){
 
   		var $selectedPaymentType = $("#new-payment #payment-type").val();

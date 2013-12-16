@@ -449,6 +449,23 @@ $(function($){
     });
 
 /*  Sign In / Sign Out        *************************************************/
+    
+    // Close drawer when clicked on content
+    $(document).on('click','.page, .nested-view, .page *, .nested-view *',function(e) {
+        var $sameScreen = new chainedAnimation(),
+            $delay = 150;
+
+        if ($('.container.menu-open').length) {
+            $sameScreen.add(function(){ 
+                $('.container').addClass('menu-closing'); 
+                $('.nav-toggle.active').each(function(e){
+                    $(this).removeClass('active'); 
+                });
+            });
+            $sameScreen.add(function(){ $('.container').removeClass('menu-open menu-closing'); }, $delay);
+            $sameScreen.start();
+        }
+    });
 
     // Sign in page loaded
     $('#login-page').on('ready', function(){

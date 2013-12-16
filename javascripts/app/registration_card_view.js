@@ -173,7 +173,7 @@ var RegistrationCardView = function(viewDom){
   this.openAddKeysModal = function(e){
     var addKeysModal = new AddKeysModal(that.showCheckinSuccessModal);
     addKeysModal.initialize();
-    addKeysModal.params = {"source_page": "bill_card"};
+    addKeysModal.params = {"source_page": views.BILLCARD};
   };
   // To show success message after check in
   this.showCheckinSuccessModal = function(e){

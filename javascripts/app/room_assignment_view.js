@@ -8,11 +8,11 @@ var RoomAssignmentView = function(viewDom){
   this.roomCompleteList = [];
 
   this.pageinit = function(){
-    
+     //Scroll view initialization for the view
+    this.createViewScroll();  
     //Get the list of rooms from the server.
     this.fetchRoomList();
-     //Scroll view initialization for the view
-    this.createViewScroll();   
+     
   };   
 
   this.delegateEvents = function(){
@@ -60,6 +60,7 @@ var RoomAssignmentView = function(viewDom){
         type:       'POST',
         url:        "/staff/rooms/get_rooms",
         data: data,
+        async: false,
         dataType:   'json',
         success: function(response){
           if(response.status == "success"){
@@ -356,19 +357,15 @@ var RoomAssignmentView = function(viewDom){
     postParams.reservation_id = currentReservation;
     postParams.room_number = roomSelected;
 
-    $.ajax({
-        type:       'POST',
-        url:        "/staff/reservation/modify_reservation",
-        data: postParams,
-        dataType:   'json',
-        success: function(response){
-          if(response.status == "success"){
-          }else if(response.status == "failure"){
-          }
-        },
-        error: function(){
-        }
-    });
+  
+    var url = "/staff/reservation/modify_reservation";
+    var webservice = new WebServiceInterface();
+    var options = {
+		   requestParameters: postParams,
+		   
+		   loader: 'NORMAL',
+    };
+    webservice.postJSON(url, options);
 
   };
 
@@ -407,19 +404,28 @@ var RoomAssignmentView = function(viewDom){
     $('#reservation-'+reservationId+'-room-number').html(roomHtml);
 
        
-    $.ajax({
-        type:       'POST',
-        url:        "/staff/reservations/upgrade_room",
-        data: postParams,
-        dataType:   'json',
-        success: function(response){
-          if(response.status == "success"){
-          }else if(response.status == "failure"){
-          }
-        },
-        error: function(){
-        }
-    });
+    // $.ajax({
+        // type:       'POST',
+        // url:        "/staff/reservations/upgrade_room",
+        // data: postParams,
+        // dataType:   'json',
+        // success: function(response){
+          // if(response.status == "success"){
+          // }else if(response.status == "failure"){
+          // }
+        // },
+        // error: function(){
+        // }
+    // });
+    console.log("upgrades");
+    var url = "/staff/reservations/upgrade_room";
+    var webservice = new WebServiceInterface();
+    var options = {
+		   requestParameters: postParams,
+		   
+		   loader: 'NORMAL',
+    };
+    webservice.postJSON(url, options);
 
     if(that.viewParams.next_view == views.STAYCARD){
       that.gotoStayCard();

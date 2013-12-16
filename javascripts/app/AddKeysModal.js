@@ -31,10 +31,9 @@ var AddKeysModal = function(callBack) {
 		
 		// Hide key_print_additional button while coming from bill card.
 		var source_page = this.params.source_page;
-		if(source_page == "bill_card"){
+		if(source_page == views.BILLCARD){
 			that.myDom.find("#key_print_additional").addClass('hidden');
 			that.myDom.find("#key_print_new").removeClass('half');
-			that.hide(callBack);
 		}
 	};
 	this.modalInit = function() {
@@ -90,22 +89,40 @@ var AddKeysModal = function(callBack) {
 		}
 	};
 	this.saveKey = function(data) {
-		$.ajax({
-			type : "POST",
-			url : 'staff/reservation/print_key',
-			data : data,
-			async : false,
-			dataType : 'json',
-			contentType : 'application/json',
-			success : function(data) {
-				if (data.status == "success") {
-					// Commenting for now. Might be we need this in future
-					// $("#change-name #gc-email").val(key_guest_email);
-					that.hide(callBack);
-				}
-			},
-			error : function() {
-			}
-		});
+		// $.ajax({
+			// type : "POST",
+			// url : 'staff/reservation/print_key',
+			// data : data,
+			// async : false,
+			// dataType : 'json',
+			// contentType : 'application/json',
+			// success : function(data) {
+				// if (data.status == "success") {
+					// // Commenting for now. Might be we need this in future
+					// // $("#change-name #gc-email").val(key_guest_email);
+					// that.hide(callBack);
+				// }
+			// },
+			// error : function() {
+			// }
+		// });
+		     
+	    var url = "staff/reservation/print_key";
+	    var webservice = new WebServiceInterface();
+	    var options = {
+			   requestParameters: data,
+			   successCallBack: that.fetchCompletedKeys,
+			   loader: 'NORMAL',
+	    };
+	    webservice.postJSON(url, options);
 	};
+	this.fetchCompletedKeys = function(data) {
+	  
+		if (data.status == "success") {
+			hat.hide(callBack);
+		}
+		else{
+			sntapp.notification.showErrorList(data.errors, that.myDom);
+		}
+   };
 }; 
