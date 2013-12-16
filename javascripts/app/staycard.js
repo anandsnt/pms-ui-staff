@@ -161,7 +161,7 @@ var StayCard = function(viewDom){
     var url = 'staff/guest_cards/' + userId;
     var webservice = new WebServiceInterface();
     var options = {
-		   requestParameters: JSON.stringify($guestCardJsonObj),
+		   requestParameters: $guestCardJsonObj,
 		   successCallBack: that.fetchCompletedUpdateGuestDetails,
 		   failureCallBack: that.fetchFailedUpdateGuestDetails,		   
     };

@@ -8,5 +8,8 @@ $(document).ready(function(){
 		var sntAdmin = new SntAdminView($("#snt-admin-view"));
 		sntAdmin.initialize();
 	}
-	
+	$('html').on('click', function(){
+		var notification = new NotificationMessage();
+		notification.hideMessage();
+	});
 });

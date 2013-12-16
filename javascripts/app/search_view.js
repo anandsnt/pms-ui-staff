@@ -26,15 +26,17 @@ var Search  = function(domRef){
     that.myDomElement.find($('#search-form')).on('submit', that.submitSearchForm);
     that.myDomElement.find($('#clear-query')).on('click', that.clearResults);
   };
-  //Clear Search Results
+
+  //Clear Search Results 
   this.clearResults = function(e){
-  	e.preventDefault();
-  	if($(this).hasClass('visible')){  		
+    //if the method is invoked from other views to clear search results, 'this', 'e' are undefined.
+  	if($(this).hasClass('visible')){  	
   		$(this).removeClass('visible');
-	    $('#query').val('');
-	    $('#search-results').empty().addClass('hidden');
-	    that.updateView();
-  	}
+    }
+
+    $('#query').val('');
+    $('#search-results').empty().addClass('hidden');
+    that.updateView();
     
   };
 

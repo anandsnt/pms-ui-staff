@@ -165,9 +165,12 @@ var RegistrationCardView = function(viewDom){
   	billCardPaymentModal.initialize();
   	billCardPaymentModal.params = {"bill_number":that.bill_number};
   };
-  // Goto search screen
+  // Goto search screen with empty search results
   this.goToSearchScreen = function(){
   	switchPage('main-page','search','','page-main-second','move-from-left');
+    //Do not call 'initialize' method for this object. which results multiple event binding
+    var searchView = new Search();
+    searchView.clearResults();
   };
   // To show add keys modal
   this.openAddKeysModal = function(e){

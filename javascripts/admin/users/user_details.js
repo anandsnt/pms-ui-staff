@@ -9,6 +9,12 @@ var UserDetailsView = function(domRef){
   this.delegateEvents = function(){  	
   	that.myDom.find($('#save_new_user')).on('click', that.saveNewUser);
   	that.myDom.find('#save').on('click', that.updateUser);
+  	that.myDom.find('#user-picture').on('change', that.testUser);
+
+  };
+  this.testUser = function(){
+  	console.log("gffffffffffffffff");
+  	console.log(that.myDom.find('#user-picture').val());
   };
   this.goBackToPreviousView = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams);
