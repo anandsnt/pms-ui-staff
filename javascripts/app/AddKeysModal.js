@@ -118,7 +118,7 @@ var AddKeysModal = function(callBack) {
 	this.fetchCompletedKeys = function(data) {
 	  
 		if (data.status == "success") {
-			hat.hide(callBack);
+			that.hide(callBack);
 		}
 		else{
 			sntapp.notification.showErrorList(data.errors, that.myDom);
