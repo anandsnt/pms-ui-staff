@@ -92,7 +92,9 @@ var RoomAssignmentView = function(viewDom){
 
   this.filterOptionChecked = function(e){
     that.handleMultipleSelection(e);
-    that.applyFilters();
+    setTimeout(function(){
+      that.applyFilters();
+    }, 100);
 
   };
 
