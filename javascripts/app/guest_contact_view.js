@@ -11,9 +11,13 @@ var GuestContactView = function(domRef) {
 		}, 700);		
 		$('html').off();
 		$('html').on('click', that.callSave);
+		
 	};
 	
 	this.callSave = function(e) {
+		
+		var notification = new NotificationMessage();
+		notification.hideMessage();
 		if (!$(e.target).is("#contact-info *", "#guest-card-content")) {
 			if (that.$contactInfoChange) {
 				that.saveContactInfo();
