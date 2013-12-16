@@ -331,13 +331,13 @@ var RoomAssignmentView = function(viewDom){
   this.updateStaycardUI = function(roomSelected, currentReservation, roomStatusExplained, selectedItem){
     var roomStausNew = "";
     if((typeof roomStatusExplained != "undefined") && (roomStatusExplained != "")){
-      roomStausNew = "<span class='room-status'>"+ roomStatusExplained +"</span>"
+      roomStausNew = "<span class='room-status'>"+ roomStatusExplained +"</span>";
     }
     var roomReadyStatus = "";
     if(selectedItem.find(">:first-child").hasClass('ready')){
-      roomReadyStatus = "ready"
+      roomReadyStatus = "ready";
     }else if(selectedItem.find(">:first-child").hasClass('not-ready')){
-      roomReadyStatus = "not-ready"
+      roomReadyStatus = "not-ready";
 
     }
 
@@ -359,16 +359,21 @@ var RoomAssignmentView = function(viewDom){
     var postParams = {};
     postParams.reservation_id = currentReservation;
     postParams.room_number = roomSelected;
+    sntapp.activityIndicator.showActivityIndicator("blocker");
+    $.ajax({
+        type:       'POST',
+        url:        "/staff/reservation/modify_reservation",
+        data: postParams,
+        dataType:   'json',
+        success: function(response){
+          if(response.status == "success"){
+          }else if(response.status == "failure"){
+          }
+        },
+        error: function(){
+        }
+    });
 
-  
-    var url = "/staff/reservation/modify_reservation";
-    var webservice = new WebServiceInterface();
-    var options = {
-		   requestParameters: postParams,
-		   
-		   loader: 'NORMAL',
-    };
-    webservice.postJSON(url, options);
 
   };
 
@@ -406,30 +411,21 @@ var RoomAssignmentView = function(viewDom){
     var roomHtml = "<strong class='room-number ready'>"+roomNumberSelected+"</strong>";
     $('#reservation-'+reservationId+'-room-number').html(roomHtml);
 
-       
-    // $.ajax({
-        // type:       'POST',
-        // url:        "/staff/reservations/upgrade_room",
-        // data: postParams,
-        // dataType:   'json',
-        // success: function(response){
-          // if(response.status == "success"){
-          // }else if(response.status == "failure"){
-          // }
-        // },
-        // error: function(){
-        // }
-    // });
-    console.log("upgrades");
-    var url = "/staff/reservations/upgrade_room";
-    var webservice = new WebServiceInterface();
-    var options = {
-		   requestParameters: postParams,
-		   
-		   loader: 'NORMAL',
-    };
-    webservice.postJSON(url, options);
-
+    sntapp.activityIndicator.showActivityIndicator("blocker");   
+    $.ajax({
+        type:       'POST',
+        url:        "/staff/reservations/upgrade_room",
+        data: postParams,
+        dataType:   'json',
+        success: function(response){
+          if(response.status == "success"){
+          }else if(response.status == "failure"){
+          }
+        },
+        error: function(){
+        }
+    });
+    
     if(that.viewParams.next_view == views.STAYCARD){
       that.gotoStayCard();
     }

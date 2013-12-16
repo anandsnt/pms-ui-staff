@@ -56,6 +56,7 @@ var reservationDetailsView = function(domRef){
   };
   
   this.goToRoomAssignmentView = function(nextViewParams){
+
     var viewURL = "staff/preferences/room_assignment";
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
@@ -68,12 +69,14 @@ var reservationDetailsView = function(domRef){
     	addKeysModal.initialize();
     };
   this.roomUpgradesClicked = function(e){
+  	
     e.preventDefault();
     var nextViewParams = {"showanimation": true, "next_view" : views.STAYCARD};
     that.goToRoomUpgradeView(nextViewParams);
 
   };
   this.goToRoomUpgradeView = function(nextViewParams){
+
     var viewURL = "staff/reservations/room_upsell_options";
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
@@ -82,6 +85,7 @@ var reservationDetailsView = function(domRef){
   };
    
     this.goToBillCardView = function (clickedButton){
+
     	var viewURL = "staff/reservation/bill_card";
 		//var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
 		var viewDom = $("#view-nested-third");
@@ -93,6 +97,7 @@ var reservationDetailsView = function(domRef){
    	that.goToBillCardView("CheckoutButton");
    };
     this.clickedViewBillButton = function(e){
+    	sntapp.activityIndicator.showActivityIndicator("blocker");
       	that.goToBillCardView("ViewBillButton");
     };
     
@@ -118,17 +123,22 @@ var reservationDetailsView = function(domRef){
   	       	validateCheckinModal.initialize();
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
-
+    
     else if($.trim(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
+    
           var nextViewParams = {"next_view": views.BILLCARD};
-      		that.goToRoomAssignmentView(nextViewParams);
+          sntapp.activityIndicator.showActivityIndicator("blocker");
+      	  that.goToRoomAssignmentView(nextViewParams);
     }
     else if((that.myDom.find('#reservation-checkin').attr('data-force-upsell') == "true")
-     &&(that.myDom.find('#reservation-checkin').attr('data-upsell-available') == "true")){
+      &&(that.myDom.find('#reservation-checkin').attr('data-upsell-available') == "true")){
+      
           var nextViewParams = {"showanimation": true, "next_view" : views.BILLCARD };
+            sntapp.activityIndicator.showActivityIndicator("blocker");
       		that.goToRoomUpgradeView(nextViewParams);
     }
     else{
+    	    sntapp.activityIndicator.showActivityIndicator("blocker");
     		that.goToBillCardView("CheckinButton");
     }
   };
