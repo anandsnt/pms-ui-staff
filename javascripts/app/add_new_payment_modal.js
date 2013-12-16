@@ -86,20 +86,21 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		
 		
 		var date_expiry = new Date("20"+$expiry_year, $expiry_month-1, 01);
-		var date_today = new Date();
+		var date_today 	= new Date();
+		var curr_year  	= new Date().getFullYear()%100; // Last two digits of current year.
 		var errorMessage = "";
 		// Validation on Expiry date
 		// 1.card_expiry > today (MM/YY) 2. MM/YY valid i.e. MM 01-12, YY >13
 		if($expiry_month > 12 || $expiry_month < 1){
 			errorMessage = "Expiration date : Invalid month";
 		}
-		else if($expiry_year < 13){
+		else if($expiry_year < curr_year){
 			errorMessage = "Expiration date : Invalid year";
 		}
 		else if(date_expiry < date_today){
 			errorMessage = "Expiration date : Date expired";
 		}
-		if (errorMessage!="") {
+		if(errorMessage!=""){
 			alert(errorMessage);
 	  		return;
   		}
