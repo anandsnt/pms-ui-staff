@@ -82,7 +82,7 @@ var AddKeysModal = function(callBack) {
 				"key" : selected_key,
 				"is_additional" : "true"
 			};
-			data = JSON.stringify(data);
+			//data = JSON.stringify(data);
 			that.saveKey(data);
 		}else {
 			return false;

@@ -15,6 +15,7 @@ var reservationCardNotesView = function(domRef){
 		var noteId = requestParameters['note_id'];
 	    $("#notes li#note"+noteId).remove();
 		refreshViewScroll();
+		sntapp.notification.showSuccessMessage("Note deleted", that.myDom);
 	}	  
   };
   
@@ -74,8 +75,9 @@ var reservationCardNotesView = function(domRef){
 	    
 		that.myDom.find(("#reservation-notes #notes")).prepend($newNote);
 		refreshViewScroll();
-		sntapp.notification.showSuccessMessage("Successfully Saved.", that.myDom);
+		sntapp.notification.showSuccessMessage("Note posted", that.myDom);
 		$("#post_notes textarea").val("");
+		
 	}
 	else{
 		sntapp.notification.showErrorList(data.errors, that.myDom);
