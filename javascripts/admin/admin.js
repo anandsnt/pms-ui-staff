@@ -159,7 +159,7 @@ var setUpAdmin = function(viewDom, delegate) {
 				}
 			}
 		});
-setTabs();
+
 	// Dashboard tabs
 		$('.tabs').tabs({
 			beforeActivate: function( event, ui ) {
@@ -170,44 +170,84 @@ setTabs();
 		        $('#' + $nextTab).fadeIn(300);
 			}
 		});	
+		
+		
+		
+		// Roles & permissions Drag & Drop UI
+		$(document).ajaxComplete(function() {
+			refreshSortable();
+			$('.sortable')
+				.sortable({ 
+					/*disabled: true,*/
+					connectWith: '.sortable',
+					cursor: 'move',
+					revert: true,
+					cancel: '.ui-state-disabled',
+					placeholder: 'ui-state-highlight',
+					receive: function(event, ui){
+						
+						if ($('.sortable').children('.selected').length < 2) {
+							$('.movers .icons').removeClass('active');
+						}
+
+						refreshSortable();				
+					},
+					stop: function(event, ui){
+						ui.item.removeClass('selected').find('.icon-handle').removeClass('dragging');
+					}
+				})
+				.disableSelection()
+		    	.find('li')
+		    		.prepend('<span class="icons icon-handle" />')
+		    		.mousedown(function(){ $(this).find('.icon-handle').addClass('dragging'); })
+		    		.mouseup(function(){ $(this).find('.icon-handle').removeClass('dragging'); });
+		});   		
+      		
+   	 	// Select multiple items
+   	 	$(document).on('click', '.sortable li', function(){
+			$(this).toggleClass('selected');
+
+			var $selected = $(this).closest('.sortable').children('.selected').length,
+				$holder = $(this).closest('.sortable').attr('data-type');
+
+			if ($selected > 0)
+			{
+				if ($holder == 'source') $('.to-source').addClass('active');
+				else if ($holder == 'target') $('.to-target').addClass('active');
+			}
+			else 
+			{
+				if ($holder == 'source') $('.to-source').removeClass('active');
+				else if ($holder == 'target') $('.to-target').removeClass('active');
+			}
+		});
+		// Move multiple items
+		$(document).on('click', '.movers .icons', function(e){
+			e.stopImmediatePropagation();
+
+			var $type = $(this).attr('data-type');
+
+			if($(this).hasClass('active'))
+			{
+				switch($type){
+					case "source":
+						$('.sortable:visible[data-type="source"] li.selected').animate({opacity: 0}, 300, function(){
+            				$(this).detach().removeClass('selected').appendTo('.sortable:visible[data-type="target"]').animate({opacity: 1}, 300);
+            				refreshSortable();
+        				});
+					break; 
+		            case "target":
+		            	$('.sortable:visible[data-type="target"] li.selected').animate({opacity: 0}, 300, function(){
+            				$(this).detach().removeClass('selected').appendTo('.sortable:visible[data-type="source"]').animate({opacity: 1}, 300);
+            				refreshSortable();
+        				});
+		            break;
+		            default:
+		            	return false;
+		            break;
+				}
+				$(this).removeClass('active');			
+			}
+		});
+		
 };
-function setTabs(){
-	$('.tabs').tabs({
-		hide: 'fadeOut', 
-		show: 'fadeIn',
-		beforeActivate: function(event, ui){
-
-			// Check if tab has sortable lists with data selected, and then reset it
-			var $prevTab = ui.oldPanel.attr('id'),
-				$selected = $('#' + $prevTab).find('.sortable > li.selected'),
-				$tabsType = $(this).attr('data-tabs');
-
-			if ($selected.length > '0')
-			{
-				$selected.removeClass('selected');
-    			$('.movers .icons').removeClass('active');
-			}
-
-			// Clear loaded content
-			$('.edit-data, .inline-form').animate({opacity: 0}, 300, function(){
-				$(this).remove();
-			});
-
-			if($tabsType == 'dashboard-tabs')
-			{
-				$('#load-listing, #load-details').animate({opacity: 0}, 300, function(){
-					$(this).hide().removeClass('current').empty();
-				});
-			}
-		},
-		activate: function(event, ui){
-			var	$nextTab = ui.newPanel.attr('id'),
-				$sortable = $('#' + $nextTab).find('.sortable').length;
-
-			if ($sortable > '0')
-			{
-				refreshSortable();
-			}
-		}
-	});
-}
