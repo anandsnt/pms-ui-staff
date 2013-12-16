@@ -159,7 +159,7 @@ var setUpAdmin = function(viewDom, delegate) {
 				}
 			}
 		});
-
+setTabs();
 	// Dashboard tabs
 		$('.tabs').tabs({
 			beforeActivate: function( event, ui ) {
@@ -171,3 +171,43 @@ var setUpAdmin = function(viewDom, delegate) {
 			}
 		});	
 };
+function setTabs(){
+	$('.tabs').tabs({
+		hide: 'fadeOut', 
+		show: 'fadeIn',
+		beforeActivate: function(event, ui){
+
+			// Check if tab has sortable lists with data selected, and then reset it
+			var $prevTab = ui.oldPanel.attr('id'),
+				$selected = $('#' + $prevTab).find('.sortable > li.selected'),
+				$tabsType = $(this).attr('data-tabs');
+
+			if ($selected.length > '0')
+			{
+				$selected.removeClass('selected');
+    			$('.movers .icons').removeClass('active');
+			}
+
+			// Clear loaded content
+			$('.edit-data, .inline-form').animate({opacity: 0}, 300, function(){
+				$(this).remove();
+			});
+
+			if($tabsType == 'dashboard-tabs')
+			{
+				$('#load-listing, #load-details').animate({opacity: 0}, 300, function(){
+					$(this).hide().removeClass('current').empty();
+				});
+			}
+		},
+		activate: function(event, ui){
+			var	$nextTab = ui.newPanel.attr('id'),
+				$sortable = $('#' + $nextTab).find('.sortable').length;
+
+			if ($sortable > '0')
+			{
+				refreshSortable();
+			}
+		}
+	});
+}
