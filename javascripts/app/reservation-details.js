@@ -56,7 +56,7 @@ var reservationDetailsView = function(domRef){
   };
   
   this.goToRoomAssignmentView = function(nextViewParams){
-
+    sntapp.activityIndicator.showActivityIndicator("blocker");
     var viewURL = "staff/preferences/room_assignment";
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
