@@ -10,7 +10,7 @@ var WebServiceInterface = function(){
 		var requestType = "GET";
 		var contentType='application/json';
 		var dataType = 'json'; 
-		var requestParameters = options["requestParameters"] ? options["requestParameters"] : {};
+		var requestParameters = options["requestParameters"] ? options["requestParameters"] : null;
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
 		var async = options["async"] ? options["async"] : true;
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
@@ -146,13 +146,40 @@ var WebServiceInterface = function(){
        if(typeof dataType === 'undefined'){
                dataType = 'json';
        }  
-                      
-                    		
-		if(requestType == 'GET' && requestParameters!={}) {
-			requestUrl = requestUrl + "?" + requestParameters; //Expand
+       
+		if(requestType == 'GET') {
+			if(requestParameters && typeof(requestParameters) !== 'object') {	
+				if(requestUrl.indexOf("?") == -1)
+					requestUrl = requestUrl + "?" + requestParameters; //Expand
+				else
+					requestUrl = requestUrl + requestParameters;
+			}
+			else{
+
+				var parameters = "";
+				if(requestParameters && typeof(requestParameters) === 'object'){					
+					for (var key in requestParameters) {
+						  if (requestParameters.hasOwnProperty(key)) {
+							  parameters += key + "=" + requestParameters[key] + "&";							    
+						  }
+					}
+					//removing  the last character '&'
+					if(parameters.indexOf("&") != -1){
+						parameters = parameters.substring(0, parameters.length - 1);
+					}
+
+				}
+				if(parameters.trim() != ""){
+					if(requestUrl.indexOf("?") == -1){					
+							requestUrl = requestUrl + "?" + parameters;
+					}
+					else{
+							requestUrl = requestUrl + parameters;
+					}
+				}
+			}
 			requestParameters = "";
 		}
-		console.log("successCallBackParameters: " + successCallBackParameters);
 		$.ajax({
 			beforeSend: function(){
 				sntapp.notification.hideMessage();
@@ -176,8 +203,7 @@ var WebServiceInterface = function(){
 						}
 						else{
 							successCallBack(data);
-						}
-					}
+						}					}
 				}
 				else{
 					sntapp.notification.showErrorMessage(data.errors);

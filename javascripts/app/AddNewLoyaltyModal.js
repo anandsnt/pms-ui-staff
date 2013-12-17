@@ -1,4 +1,4 @@
-var AdddNewLoyaltyModal = function(){
+var AddNewLoyaltyModal = function(){
 	
   	BaseModal.call(this);
   	var that = this;
