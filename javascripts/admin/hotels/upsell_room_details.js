@@ -65,7 +65,6 @@ var UpsellRoomDetailsView = function(domRef){
   	 	upsell_amount_data.amount = $("#upsell_amounts_"+i).val();
   	 	upsell_amount_data.level_from = $("#level_from_"+i).val();
   	 	upsell_amount_data.level_to = $("#level_to_"+i).val();
-  	 	console.log("reached ===="+ JSON.stringify(upsell_amounts));
   	 	upsell_amounts.push(upsell_amount_data);
   	 }
   	 //to create upsell room levels array
@@ -94,23 +93,34 @@ var UpsellRoomDetailsView = function(domRef){
   	 data.upsell_setup = upsell_setup;
   	 data.upsell_amounts = upsell_amounts;
   	 data.upsell_room_levels = upsell_room_levels;
-  	 console.log(JSON.stringify(data));
   	 
-  	 $.ajax({
-			type: "POST",
-			url : "/admin/room_upsells/update_upsell_options",
-			dataType: 'json',
-			data :data,
-			success : function(data) {
-				if(data.status == "success"){
-					console.log("Saved Successfully");
-					that.gotoPreviousPage();
-				}
-			},
-			error : function() {
-				alert("Sorry, not there yet!");
-			}
-		});
+  	  var url = '/admin/room_upsells/update_upsell_options';
+	  var webservice = new WebServiceInterface();		
+	  var options = {
+			   requestParameters: data,
+			   successCallBack: that.fetchCompletedOfSave,
+			   loader: "BLOCKER"
+	  };
+	  webservice.postJSON(url, options);
+  	 // $.ajax({
+			// type: "POST",
+			// url : "/admin/room_upsells/update_upsell_options",
+			// dataType: 'json',
+			// data :data,
+			// success : function(data) {
+				// if(data.status == "success"){
+					// that.gotoPreviousPage();
+				// }
+			// },
+			// error : function() {
+				// alert("Sorry, not there yet!");
+			// }
+		// });
+  };
+  this.fetchCompletedOfSave = function(data){
+  	if(data.status == "success"){
+  		that.goBackToPreviousView();
+  	}
   };
   this.gotoPreviousPage = function() {
 	 	  
