@@ -67,7 +67,8 @@ var HotelDetailsView = function(domRef){
 			var options = {
 					   requestParameters: data,
 					   successCallBack: that.fetchCompletedOfSave,
-					   failureCallBack: that.fetchFailedOfSave
+					   failureCallBack: that.fetchFailedOfSave,
+					   loader: "BLOCKER"
 			};
 			webservice.putJSON(url, options);			
 			//webservice.performRequest(url, data, that.fetchCompletedOfAddNewHotel, that.fetchFailedOfSave, false, 'PUT');
@@ -139,6 +140,7 @@ var HotelDetailsView = function(domRef){
 		   var options = {
 				   requestParameters: data,
 				   successCallBack: that.fetchCompletedOfAddNewHotel,
+				    loader: "BLOCKER"
 				   
 		   };
 		   webservice.postJSON(url, options);
