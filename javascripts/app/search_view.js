@@ -15,7 +15,7 @@ var Search  = function(domRef){
 	
     if(type != "") {
         var search_url = "search.json?&status=" + type;
-        this.fetchSearchData(search_url, "");
+        this.fetchSearchData(search_url, "",type);
     }
     
   };
@@ -26,15 +26,17 @@ var Search  = function(domRef){
     that.myDomElement.find($('#search-form')).on('submit', that.submitSearchForm);
     that.myDomElement.find($('#clear-query')).on('click', that.clearResults);
   };
-  //Clear Search Results
+
+  //Clear Search Results 
   this.clearResults = function(e){
-  	e.preventDefault();
-  	if($(this).hasClass('visible')){  		
+    //if the method is invoked from other views to clear search results, 'this', 'e' are undefined.
+  	if($(this).hasClass('visible')){  	
   		$(this).removeClass('visible');
-	    $('#query').val('');
-	    $('#search-results').empty().addClass('hidden');
-	    that.updateView();
-  	}
+    }
+
+    $('#query').val('');
+    $('#search-results').empty().addClass('hidden');
+    that.updateView();
     
   };
 
@@ -48,7 +50,7 @@ var Search  = function(domRef){
   	$(this).capitalize();
   };
 
-  this.fetchSearchData = function(url, $query){
+  this.fetchSearchData = function(url, $query,type){
  	$.ajax({
 	    type:           "GET",
 	    url:            url,
@@ -58,7 +60,23 @@ var Search  = function(domRef){
 	        $("#search-results").empty().removeClass('hidden');
 	        $('#preloaded-results').addClass('hidden');
 	        $('#no-results').addClass('hidden');
-	        if(response.guests.length>0)
+	        
+	        // set up reservation status
+	        var reservation_status = "";
+	        if(type == "DUEIN"){
+	        	reservation_status = "checking in";
+	        }
+	        else if(type == "DUEOUT"){
+	        	reservation_status = "checking out";
+	        }
+	        else if(type == "INHOUSE"){
+	        	reservation_status = "in house";
+	        }
+	        
+	        if(response.guests.length == 0){
+	        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+reservation_status+'</strong><span class="h2"> <strong></strong>  <strong></strong><strong></strong>  <strong></strong>  <span href=\"#\" class=\"open-modal-fix\">Add a New Guest</span>.</li>');
+	        }
+	        else if(response.guests.length>0)
 	        {
 	        	that.fetchResults = response.guests;
 	        	that.displayFilteredResults(that.fetchResults, that.currentQuery);
@@ -107,7 +125,7 @@ var Search  = function(domRef){
 
     that.fetchTerm = that.currentQuery;
 	var searchUrl = 'search.json?&query='+ that.fetchTerm;
-	that.fetchSearchData(searchUrl, that.fetchTerm);
+	that.fetchSearchData(searchUrl, that.fetchTerm,"");
   };
 
   //TODO:pass query 

@@ -56,21 +56,10 @@ var setUpAdmin = function(viewDom, delegate) {
 // $(function($){ 
 	this.delegate = delegate;
 	var that = this;
+
+	// Light page load animation
+		$('#content').css('opacity','0').delay(200).animate({opacity:1},400);
 	
-	// Tablet or iPhone?
-    var isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
-   
-   	if (isTablet) {
-		// Prevent jump to mobile Safari
-		$('a:not(.nav-toggle)').click(function(e){
-			e.preventDefault();
-
-			location.href = $(this).attr("href");		
-		});
-	}
-
-	
-
 	// Change hotel
 		$(document).on('click', '#change-hotel h1', function(e){
 			$('#change-hotel').toggleClass('open');
@@ -79,6 +68,7 @@ var setUpAdmin = function(viewDom, delegate) {
 	// Quick menu
 		var sortableIn = 0;
 		var dropOut = 0;
+		var limit = 8;
 
 		$('.icon-admin-menu:not(.dropped):not(.admin-menu-group)').draggable({
 			revert: 'invalid',
@@ -96,8 +86,7 @@ var setUpAdmin = function(viewDom, delegate) {
 			drop: function( event, ui ) {
 				dropOut = 1;
 				$(this).removeClass('dragging').addClass('has-items');
-			},
-			activeClass: 'active'
+			}
 		}).sortable({
 			receive: function (event, ui) {
 				sortableIn = 1;
@@ -115,16 +104,13 @@ var setUpAdmin = function(viewDom, delegate) {
 	        		$("#components_"+bookMarkId).removeClass('moved');
 				}
 				
-			},
-			stop: function(event, ui){
-				
-			},
-			
+			},		
 			beforeStop: function(event, ui){
 				var bookMarkId = $(ui.item.context).attr("data-id")
-					bookMarkWidth = parseInt(ui.item.outerWidth());
+					bookMarkWidth = parseInt(ui.item.outerWidth()),
+					$items = $(this).children('.ui-draggable').length-1; // -1 because at this point item that's dropped out is still considered part of navigation
 
-				$(ui.item).css('width', bookMarkWidth).addClass('in-quick-menu');
+				$(ui.item).css('width', bookMarkWidth + 10).addClass('in-quick-menu');
 
 				// TODO - pass bookMarkWidth as well so that in _quick_menu.html.haml 
 				// you can add "style" => "width:" + menu_components['width']
@@ -137,12 +123,38 @@ var setUpAdmin = function(viewDom, delegate) {
 	        		that.delegate.bookMarkRemoved(bookMarkId);
 					$(ui.item).remove();
 					$("#components_"+bookMarkId).removeClass('moved');
-					$('.icon-admin-menu:contains("' + $item + '")').draggable('option', 'disabled', false).find('.icon-admin-menu').removeClass('moved');
-
+					$('.icon-admin-menu:contains("' + $item + '")').draggable('option', 'disabled', false).removeClass('moved');
 
 					// When the last empty clone is left
 					if ($(this).children().length == 1) {
 						$(this).removeClass('has-items');
+					}
+
+					// If space is available, enable addition of new items (-1 because at this point item that's dropped out is still considered part of navigation)
+					if(($items-1) < limit)
+					{
+						$('.icon-admin-menu:not(.dropped):not(.draggable-disabled):not(.in-quick-menu)').draggable({
+							revert: 'invalid',
+							connectToSortable: '#quick-menu',
+					        helper: 'clone',
+					        start: function( event, ui ) {
+					        	$('#quick-menu').addClass('dragging');
+					        },
+					        stop: function( event, ui ) {
+					        	$('#quick-menu').removeClass('dragging');
+					        }
+						});
+					}
+				}
+				// Adding to quick navigation is disabled after limit is met
+				else {
+					if($items == limit)
+					{
+						$('.icon-admin-menu:not(.dropped):not(.draggable-disabled):not(.in-quick-menu)').draggable({
+							revert: true,
+							connectToSortable: null,
+							helper: null
+						});
 					}
 				}
 			}
@@ -157,7 +169,5 @@ var setUpAdmin = function(viewDom, delegate) {
 				$('#' + $prevTab).fadeOut(300);
 		        $('#' + $nextTab).fadeIn(300);
 			}
-		});
-
-	
+		});	
 };

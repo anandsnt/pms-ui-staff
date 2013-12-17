@@ -84,6 +84,25 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		$card_expiry = $expiry_month && $expiry_year ? "20"+$expiry_year+"-"+$expiry_month+"-01" : "";
 		$guest_id = $("#guest_id").val();
 		
+		var curr_year  	= new Date().getFullYear()%100; // Last two digits of current year.
+		var curr_month  = new Date().getMonth()+1;
+		var errorMessage = "";
+		// Validation on Expiry date
+		// 1.card_expiry > today (MM/YY) 2. MM/YY valid i.e. MM 01-12, YY >13
+		if($expiry_month > 12 || $expiry_month < 1){
+			errorMessage = "Expiration date : Invalid month";
+		}
+		else if($expiry_year < curr_year){
+			errorMessage = "Expiration date : Invalid year";
+		}
+		else if($expiry_year == curr_year && $expiry_month < curr_month){
+			errorMessage = "Expiration date : Date expired";
+		}
+		if(errorMessage!=""){
+			alert(errorMessage);
+	  		return;
+  		}
+		
 		// MOVED TO SERVER SIDE VALIDATION ONLY
 		// /* credit card validation */
 		// if (!checkCreditCard ($card_number, $payment_credit_type)) {

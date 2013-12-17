@@ -31,10 +31,9 @@ var AddKeysModal = function(callBack) {
 		
 		// Hide key_print_additional button while coming from bill card.
 		var source_page = this.params.source_page;
-		if(source_page == "bill_card"){
+		if(source_page == views.BILLCARD){
 			that.myDom.find("#key_print_additional").addClass('hidden');
 			that.myDom.find("#key_print_new").removeClass('half');
-			that.hide(callBack);
 		}
 	};
 	this.modalInit = function() {
@@ -58,7 +57,6 @@ var AddKeysModal = function(callBack) {
 				"key" : selected_key,
 				"is_additional" : "false"
 			};
-			data = JSON.stringify(data);
 
 			that.saveKey(data);
 		} else {
@@ -83,7 +81,7 @@ var AddKeysModal = function(callBack) {
 				"key" : selected_key,
 				"is_additional" : "true"
 			};
-			data = JSON.stringify(data);
+			//data = JSON.stringify(data);
 			that.saveKey(data);
 		}else {
 			return false;
@@ -120,7 +118,7 @@ var AddKeysModal = function(callBack) {
 	this.fetchCompletedKeys = function(data) {
 	  
 		if (data.status == "success") {
-			hat.hide(callBack);
+			that.hide(callBack);
 		}
 		else{
 			sntapp.notification.showErrorList(data.errors, that.myDom);

@@ -39,7 +39,7 @@ var AddNewLoyaltyModal = function(){
 	  $selectedLoyaltyType = $("#new-loyalty-program #type").val();
 	  
 	  if($selectedLoyaltyProgram == "ffp"){
-	      $.each(ffProgramsList, function(key, airline) {
+	      $.each(ffProgramsList.data, function(key, airline) {
 	      if(airline.ff_value == $selectedLoyaltyType){
 	        $.each(airline.levels, function(key, value) {
 	          var ffOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>';
@@ -48,7 +48,7 @@ var AddNewLoyaltyModal = function(){
 	      }
 	    });
 	  }else if($selectedLoyaltyProgram == "hlp"){
-	    $.each(hlProgramsList, function(key, loyaltyPgm) {
+	    $.each(hlProgramsList.data, function(key, loyaltyPgm) {
 	      if(loyaltyPgm.hl_value == $selectedLoyaltyType){
 	        $.each(loyaltyPgm.levels, function(key, value) {
 	          var hlOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>';

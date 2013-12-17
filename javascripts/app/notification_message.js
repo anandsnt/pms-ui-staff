@@ -43,7 +43,7 @@ var NotificationMessage = function() {
 			});
 		});
 	};
-	
+
 	var getDisplayDom = function(){
 		return $('body');
 	};
@@ -147,7 +147,10 @@ var NotificationMessage = function() {
                dom = $('body');
        }  
 		dom = getDisplayDom();
-		dom.find("#notification-message").removeClass('success_message error_message').html('').hide();
+                dom.find("#notification-message").slideUp(duration, function(){
+				dom.find("#notification-message").removeClass('success_message error_message').html('').hide();
+			});
+//		dom.find("#notification-message").removeClass('success_message error_message').html('').hide();
 		return;
 	};
 	

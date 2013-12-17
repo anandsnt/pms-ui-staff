@@ -113,11 +113,7 @@ var UpsellRoomDetailsView = function(domRef){
 		});
   };
   this.gotoPreviousPage = function() {
-	  if($("#replacing-div-second").html() != ""){
-		  $("#replacing-div-second").html("");	 
-	  }
-	  else
-		  $("#replacing-div-first").html("");
-	  that.viewParams['backDom'].show();	  
+	 	  
+	  sntadminapp.gotoPreviousPage(that.viewParams);
   };
 };

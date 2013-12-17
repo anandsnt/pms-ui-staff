@@ -37,7 +37,7 @@ var LikesView = function(domRef){
 			$totalFeatures = $("#totalfeatures").val();
 			jsonObj = {};
 	
-			jsonObj['user_id'] = $("#guest_id").val();
+			jsonObj['guest_id'] = $("#guest_id").val();
 			jsonObj['preference'] = [];
 			$preference = {};
 			$preference["type"] = "NEWSPAPER";
@@ -81,7 +81,7 @@ var LikesView = function(domRef){
 			var options = {
 				   requestParameters: JSON.stringify(jsonObj),
 				   successCallBack: that.fetchCompletedOfSaveLikes,
-				   loader: 'NORMAL',
+				   loader: 'BLOCKER',
 		    };
 		    webservice.postJSON(url, options);
 			

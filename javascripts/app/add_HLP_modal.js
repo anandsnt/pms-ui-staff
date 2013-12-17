@@ -68,7 +68,7 @@ var AddHLPModal = function(){
 		$("#new-hlp #hotel-loyalty-levels").html("");
 		$("#new-hlp #hotel-loyalty-levels").append('<option value="" selected="selected" class="placeholder">Select level</option>');
 		var selectedLoyaltyPgm = $("#new-hlp #hotel-loyalty-types").val();
-		$.each(hlProgramsList, function(key, loyaltyPgm) {
+		$.each(hlProgramsList.data, function(key, loyaltyPgm) {
 			if(loyaltyPgm.hl_value == selectedLoyaltyPgm){
 				$.each(loyaltyPgm.levels, function(key, value) {
 					var hlOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>'

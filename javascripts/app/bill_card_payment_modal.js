@@ -20,7 +20,6 @@ var BillCardPaymentModal = function(callBack){
     		"credit_card_number":card_number,
     		"bill_number":bill_number,
     		"amount":amount };
-    	console.log('Hello this');
 	    $.ajax({
 			type : "POST",
 			url : 'staff/reservation/post_payment',

@@ -165,15 +165,18 @@ var RegistrationCardView = function(viewDom){
   	billCardPaymentModal.initialize();
   	billCardPaymentModal.params = {"bill_number":that.bill_number};
   };
-  // Goto search screen
+  // Goto search screen with empty search results
   this.goToSearchScreen = function(){
   	switchPage('main-page','search','','page-main-second','move-from-left');
+    //Do not call 'initialize' method for this object. which results multiple event binding
+    var searchView = new Search();
+    searchView.clearResults();
   };
   // To show add keys modal
   this.openAddKeysModal = function(e){
     var addKeysModal = new AddKeysModal(that.showCheckinSuccessModal);
     addKeysModal.initialize();
-    addKeysModal.params = {"source_page": "bill_card"};
+    addKeysModal.params = {"source_page": views.BILLCARD};
   };
   // To show success message after check in
   this.showCheckinSuccessModal = function(e){
