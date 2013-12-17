@@ -386,9 +386,8 @@ var RoomAssignmentView = function(viewDom){
   };
 
   this.gotoStayCard = function(){
-    // var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
-    // $($loader).prependTo('body').show();
-    sntapp.activityIndicator.hideActivityIndicator();
+    var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
+    $($loader).prependTo('body').show();
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
   };
 
