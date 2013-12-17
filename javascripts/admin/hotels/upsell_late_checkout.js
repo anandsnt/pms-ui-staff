@@ -44,7 +44,7 @@ var UpsellLateCheckoutView = function(domRef){
 	  postParams.extended_checkout = extended_checkout;
 	  postParams.sent_alert = sent_alert;
 	
-	  var url = '/staff/hotel/update_late_checkout_setup';
+	  var url = '/admin/hotel/update_late_checkout_setup';
 	  var webservice = new WebServiceInterface();		
 	  var options = {
 			   requestParameters: postParams,
