@@ -66,16 +66,37 @@
   }
 
   .status {
-    background-image: @icons;
-    background-repeat: no-repeat;
+   &.icon-setup-complete { 
+      background-image: @icons;
+      background-repeat: no-repeat;
+      background-position: 0 -385px; 
+      
+      @media @highdpi {
+        background-image: @icons2x;
+        background-size: 50px;
+      }
+    }
 
-    &.icon-setup-complete { background-position: 0 -385px; }
-    &.icon-setup-error { background-position: 0 -438px; }
-    &.icon-setup-pending { background-position: 0 -485px; }
+    &.icon-setup-error { 
+      background-image: @icons;
+      background-repeat: no-repeat;
+      background-position: 0 -438px; 
 
-    @media @highdpi {
-      background-image: @icons2x;
-      background-size: 50px;
+      @media @highdpi {
+        background-image: @icons2x;
+        background-size: 50px;
+      }
+    }
+
+    &.icon-setup-pending { 
+      background-image: @icons;
+      background-repeat: no-repeat;
+      background-position: 0 -485px; 
+
+      @media @highdpi {
+        background-image: @icons2x;
+        background-size: 50px;
+      }
     }
   }
 
