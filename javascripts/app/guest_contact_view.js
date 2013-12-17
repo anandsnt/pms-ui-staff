@@ -83,7 +83,7 @@ var GuestContactView = function(domRef) {
 				   requestParameters: $contactJsonObj,
 				   successCallBack: that.fetchCompletedOfSaveContactInfo,
 				   failureCallBack: that.fetchFailedOfSaveContactInfo,
-				   loader: 'NORMAL',
+				   loader: 'BLOCKER',
 		    };
 		    webservice.putJSON(url, options);
 		}
