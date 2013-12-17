@@ -12,6 +12,11 @@
     border: 0;
     .show;
 
+    @media @highdpi {
+      background-image: @icons2x;
+      background-size: 50px;
+    }
+
     &.icon-search {
       background-color: transparent;
       background-position: 0 -100px;
@@ -61,17 +66,53 @@
   }
 
   .status {
-    &.icon-setup-complete { background: @icons no-repeat 0 -385px; }
-    &.icon-setup-error { background: @icons no-repeat 0 -438px; }
-    &.icon-setup-pending { background: @icons no-repeat 0 -485px; }
+   &.icon-setup-complete { 
+      background-image: @icons;
+      background-repeat: no-repeat;
+      background-position: 0 -385px; 
+      
+      @media @highdpi {
+        background-image: @icons2x;
+        background-size: 50px;
+      }
+    }
+
+    &.icon-setup-error { 
+      background-image: @icons;
+      background-repeat: no-repeat;
+      background-position: 0 -438px; 
+
+      @media @highdpi {
+        background-image: @icons2x;
+        background-size: 50px;
+      }
+    }
+
+    &.icon-setup-pending { 
+      background-image: @icons;
+      background-repeat: no-repeat;
+      background-position: 0 -485px; 
+
+      @media @highdpi {
+        background-image: @icons2x;
+        background-size: 50px;
+      }
+    }
   }
 
   .action {
+    background-image: @icons;
+    background-repeat: no-repeat;
     padding-left: 20px;
 
-    &.add { background: @icons no-repeat 0 -337px; }
-    &.remove { background: @icons no-repeat 0 -535px; }
-    &.back { background: @icons no-repeat 0 -585px; }
+    &.add { background-position: 0 -337px; }
+    &.remove { background-position: 0 -535px; }
+    &.back { background-position: 0 -585px; }
+
+    @media @highdpi {
+      background-image: @icons2x;
+      background-size: 50px;
+    }
   }
 
 /* Menu icons     ==================================*/
@@ -86,62 +127,235 @@
     .no-transition;
     #border-radius > .rounded();
 
+    @media @highdpi {
+      background-image: @iconAdminMenu2x;
+      background-size: 50px;
+    }
+
+    /* Default icon ***/
+    background-position: 0 0;
+
     &.moved { 
       .gradient-with-image(@iconAdminMenu, @logoGradientStart, @logoGradientEnd); 
       background-repeat: no-repeat, repeat;
+      background-position: 0 -50px, 0 0;
     }
 
+    &.in-quick-menu { background-position: 0 -50px; }
 
-    &.icon-new-hotel { background-position: 0 0;}
-
-    &.icon-clone-hotel { background-position: 0 -50px;}
+    /* Custom icons ***/
+    &.icon-new-hotel { background-position: 0 -100px; }
+    &.icon-clone-hotel { background-position: 0 -150px;}
 
     &.icon-hotel {
-      background-position: 0 -100px;
-
-      &.in-quick-menu { background-position: 0 -150px; }
-      &.moved { background-position: 0 -150px, 0 0; }
-    }
-
-    &.icon-user {
       background-position: 0 -200px;
 
       &.in-quick-menu { background-position: 0 -250px; }
       &.moved { background-position: 0 -250px, 0 0; }
     }
 
-    &.icon-permissions {
+    &.icon-chain {
       background-position: 0 -300px;
 
       &.in-quick-menu { background-position: 0 -350px; }
       &.moved { background-position: 0 -350px, 0 0; }
     }
 
-    &.icon-settings {
+    &.icon-brand {
       background-position: 0 -400px;
 
       &.in-quick-menu { background-position: 0 -450px; }
       &.moved { background-position: 0 -450px, 0 0; }
     }
 
-    &.icon-dashboard {
+    &.icon-user {
       background-position: 0 -500px;
 
       &.in-quick-menu { background-position: 0 -550px; }
       &.moved { background-position: 0 -550px, 0 0; }
     }
 
-    &.icon-promotions {
+    &.icon-permissions {
       background-position: 0 -600px;
 
       &.in-quick-menu { background-position: 0 -650px; }
       &.moved { background-position: 0 -650px, 0 0; }
     }
+
+    &.icon-roles {
+      background-position: 0 -700px;
+
+      &.in-quick-menu { background-position: 0 -750px; }
+      &.moved { background-position: 0 -750px, 0 0; }
+    }
+
+    &.icon-announcement {
+      background-position: 0 -800px;
+
+      &.in-quick-menu { background-position: 0 -850px; }
+      &.moved { background-position: 0 -850px, 0 0; }
+    }
+
+    &.icon-lobby {
+      background-position: 0 -900px;
+
+      &.in-quick-menu { background-position: 0 -950px; }
+      &.moved { background-position: 0 -950px, 0 0; }
+    }
+
+    &.icon-reviews {
+      background-position: 0 -1000px;
+
+      &.in-quick-menu { background-position: 0 -1050px; }
+      &.moved { background-position: 0 -1050px, 0 0; }
+    }
+
+    &.icon-messages {
+      background-position: 0 -1100px;
+
+      &.in-quick-menu { background-position: 0 -1150px; }
+      &.moved { background-position: 0 -1150px, 0 0; }
+    }
+
+    &.icon-check-in {
+      background-position: 0 -1200px;
+
+      &.in-quick-menu { background-position: 0 -1250px; }
+      &.moved { background-position: 0 -1250px, 0 0; }
+    }
+
+    &.icon-check-out {
+      background-position: 0 -1300px;
+
+      &.in-quick-menu { background-position: 0 -1350px; }
+      &.moved { background-position: 0 -1350px, 0 0; }
+    }
+
+    &.icon-profile {
+      background-position: 0 -1400px;
+
+      &.in-quick-menu { background-position: 0 -1450px; }
+      &.moved { background-position: 0 -1450px, 0 0; }
+    }
+
+    &.icon-upsell {
+      background-position: 0 -1500px;
+
+      &.in-quick-menu { background-position: 0 -1550px; }
+      &.moved { background-position: 0 -1550px, 0 0; }
+    }
+
+    &.icon-promotions {
+      background-position: 0 -1600px;
+
+      &.in-quick-menu { background-position: 0 -1650px; }
+      &.moved { background-position: 0 -1650px, 0 0; }
+    }
+
+    &.icon-likes {
+      background-position: 0 -1700px;
+
+      &.in-quick-menu { background-position: 0 -1750px; }
+      &.moved { background-position: 0 -1750px, 0 0; }
+    }
+
+    &.icon-ffp {
+      background-position: 0 -1800px;
+
+      &.in-quick-menu { background-position: 0 -1850px; }
+      &.moved { background-position: 0 -1850px, 0 0; }
+    }
+
+    &.icon-loyalty {
+      background-position: 0 -1900px;
+
+      &.in-quick-menu { background-position: 0 -1950px; }
+      &.moved { background-position: 0 -1950px, 0 0; }
+    }
+
+    &.icon-room-features{
+      background-position: 0 -2000px;
+
+      &.in-quick-menu { background-position: 0 -2050px; }
+      &.moved { background-position: 0 -2050px, 0 0; }
+    }
+
+    &.icon-room-types {
+      background-position: 0 -2100px;
+
+      &.in-quick-menu { background-position: 0 -2150px; }
+      &.moved { background-position: 0 -2150px, 0 0; }
+    }
+
+    &.icon-room {
+      background-position: 0 -2200px;
+
+      &.in-quick-menu { background-position: 0 -2250px; }
+      &.moved { background-position: 0 -2250px, 0 0; }
+    }
+
+    &.icon-key {
+      background-position: 0 -2300px;
+
+      &.in-quick-menu { background-position: 0 -2350px; }
+      &.moved { background-position: 0 -2350px, 0 0; }
+    }
+
+    &.icon-payment {
+      background-position: 0 -2400px;
+
+      &.in-quick-menu { background-position: 0 -2450px; }
+      &.moved { background-position: 0 -2450px, 0 0; }
+    }
+
+    &.icon-charge {
+      background-position: 0 -2500px;
+
+      &.in-quick-menu { background-position: 0 -2550px; }
+      &.moved { background-position: 0 -2550px, 0 0; }
+    }
+
+    &.icon-rate-types {
+      background-position: 0 -2600px;
+
+      &.in-quick-menu { background-position: 0 -2650px; }
+      &.moved { background-position: 0 -2650px, 0 0; }
+    }
+
+    &.icon-rate {
+      background-position: 0 -2700px;
+
+      &.in-quick-menu { background-position: 0 -2750px; }
+      &.moved { background-position: 0 -2750px, 0 0; }
+    }
+
+    &.icon-addon {
+      background-position: 0 -2800px;
+
+      &.in-quick-menu { background-position: 0 -2850px; }
+      &.moved { background-position: 0 -2850px, 0 0; }
+    }
+
+    &.icon-external {
+      background-position: 0 -2900px;
+
+      &.in-quick-menu { background-position: 0 -2950px; }
+      &.moved { background-position: 0 -2950px, 0 0; }
+    }
+
+    &.icon-departments {
+      background-position: 0 -3000px;
+
+      &.in-quick-menu { background-position: 0 -3050px; }
+      &.moved { background-position: 0 -3050px, 0 0; }
+    }
   }
 
-/* Menu toggle icon         ======================*/
+/* Menu toggle icon   ==================================*/
   .icon-toggle {
-    background: @icons 10px 12px no-repeat;
+    background-image: @icons;
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
     overflow: hidden;
     .hide-text;
     .show;
@@ -151,7 +365,26 @@
 
     &:hover,
     &.active { background-position: 10px -38px;}
+
+    @media @highdpi {
+      background-image: @icons2x;
+      background-size: 50px;
+    }
   }
+
+/* Rover icons      ==================================*/
+  .app-icons {
+    background-image: @iconsApp;
+    background-repeat: no-repeat;
+    border: 0;
+    .show;
+
+    &.guest-alert {
+      background-position: 0 -2680px;
+      .square(20px);
+    }
+  }
+
 
 /* 4. LAYOUT
 ==========================================================*/
