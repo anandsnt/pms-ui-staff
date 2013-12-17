@@ -54,8 +54,19 @@
         z-index: 10;
         .show;  
 
-        &.icon-setup-error { background: @icons no-repeat 100% -428px; }
-        &.icon-setup-pending { background: @icons no-repeat 100% -475px; }
+        &.icon-setup-error,
+        &.icon-setup-pending {
+          background-image: @icons;
+          background-repeat: no-repeat;
+
+          @media @highdpi {
+            background-image: @icons2x;
+            background-size: 50px;
+          }
+        }
+
+        &.icon-setup-error { background-position: 105% -428px; }
+        &.icon-setup-pending { background-position: 105% -475px; }
       }
 
       a.icon-admin-menu {
@@ -101,9 +112,10 @@
         background-color: rgba(252,252,252,.2);
         .box-shadow(1px 1px 0 rgba(0,0,0,.05));
 
+        .icon-admin-menu,
         .text {
           .opacity(20);
-          cursor: default;
+          cursor: default !important;
           &:hover { color: @textColor; }
         }
       }
