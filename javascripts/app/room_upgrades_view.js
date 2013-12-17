@@ -92,8 +92,8 @@ var RoomUpgradesView = function(viewDom){
   };
 
   this.gotoStayCard = function(){
-    var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
-    $($loader).prependTo('body').show();
+    // var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
+    // $($loader).prependTo('body').show();
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);  
     //goBackToView("", "view-nested-second", "move-from-left");
   };
