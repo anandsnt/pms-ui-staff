@@ -28,7 +28,12 @@ var UserDetailsView = function(domRef){
   	postData.confirm_email = that.myDom.find("#confirm-email").val();
   	postData.password = that.myDom.find("#password").val();
   	postData.confirm_password = that.myDom.find("#confirm-password").val();
-  	postData.user_photo = that.myDom.find("#file-preview").attr("value");
+  	postData.user_photo = that.myDom.find("#file-preview").attr("src");
+  	postData.user_roles = [];
+  	that.myDom.find("#assigned-roles li").each(function(n) {
+        postData.user_roles.push($(this).attr("id"));
+    });
+      console.log(postData.user_roles);
   	// console.log(JSON.stringify(postData));
   	var url = '/admin/users/updateuser';
 	var webservice = new WebServiceInterface();		
@@ -50,8 +55,13 @@ var UserDetailsView = function(domRef){
   	postData.confirm_email = that.myDom.find("#confirm-email").val();
   	postData.password = that.myDom.find("#password").val();
   	postData.confirm_password = that.myDom.find("#confirm-password").val();
-  	postData.user_photo = that.myDom.find("#file-preview").attr("value");
+  	postData.user_photo = that.myDom.find("#file-preview").attr("src");
   	// console.log(JSON.stringify(postData));
+  	postData.user_roles = [];
+  	that.myDom.find("#assigned-roles li").each(function(n) {
+            postData.user_roles.push($(this).attr("id"));
+      });
+      
   	var url = '/admin/users/savenewuser';
 	var webservice = new WebServiceInterface();		
 	var options = {
