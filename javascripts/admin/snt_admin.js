@@ -15,7 +15,10 @@ var SntAdminView = function(domRef){
   };
   this.bookMarkClick = function(event){
 	event.preventDefault();
-	var url = $(this).attr("href");
+	var target = $(event.target);	
+	if(target.prop('tagName') != "A")
+		return false;	
+	var url = target.attr("href");
 	if(url != "#" && url != undefined){
 
   		var backDom = null;
@@ -36,7 +39,7 @@ var SntAdminView = function(domRef){
   		viewParams = {'backDom': backDom};
   		
   		sntapp.fetchAndRenderView(url, div, {}, 'BLOCKER', viewParams);
-	}	  
+	}		  
   };
 
   this.clearReplacingDiv = function() {  
