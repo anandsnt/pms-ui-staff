@@ -11,7 +11,7 @@ var SntAdminView = function(domRef){
   	that.myDom.find('ul.dashboard-items li').on('click', sntadminapp.appendNewPage);
   	
   	that.myDom.find('#admin-menu li a').on('click', that.bookMarkClick);
-  	that.myDom.find('#admin-header nav a').on('click', that.bookMarkClick);
+  	that.myDom.find('#admin-header nav').on('click', that.bookMarkClick);
   };
   this.bookMarkClick = function(event){
 	event.preventDefault();
