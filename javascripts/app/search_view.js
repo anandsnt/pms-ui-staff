@@ -272,13 +272,17 @@ var Search  = function(domRef){
     //Map the reservation status to the view expected format
     this.getReservationStatusMapped = function(status){
     	var viewStatus = "";
-    	if(status == "CHECKING_IN"){
+      if(status == "RESERVED"){
+        viewStatus = "arrival";
+      }else if(status == "CHECKING_IN"){
     		viewStatus = "check-in";
     	}else if(status == "CHECKEDIN"){
     		viewStatus = "inhouse";
+    	}else if(status == "CHECKEDOUT"){
+    		viewStatus = "departed";
     	}else if(status == "CHECKING_OUT"){
-    		viewStatus = "check-out";
-    	}else if(status == "CANCELLED"){
+        viewStatus = "check-out";
+      }else if(status == "CANCELLED"){
     		viewStatus = "cancel";
     	}else if((status == "NOSHOW")||(status == "NOSHOW_CURRENT")){
     		viewStatus = "no-show";
