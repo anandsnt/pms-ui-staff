@@ -81,7 +81,7 @@ var LikesView = function(domRef){
 			var options = {
 				   requestParameters: JSON.stringify(jsonObj),
 				   successCallBack: that.fetchCompletedOfSaveLikes,
-				   loader: 'NORMAL',
+				   loader: 'BLOCKER',
 		    };
 		    webservice.postJSON(url, options);
 			
