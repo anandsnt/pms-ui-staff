@@ -20,7 +20,7 @@ var HotelListView = function(domRef){
     $(".currenthotel").attr("id", href.split('/')[3]);
   
     if(href != undefined){
-  		sntapp.fetchAndRenderView(href, $("#replacing-div-second"), viewParams, 'NONE', nextViewParams);
+  		sntapp.fetchAndRenderView(href, $("#replacing-div-second"), viewParams, 'BLOCKER', nextViewParams);
     }
   };
   

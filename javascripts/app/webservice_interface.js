@@ -152,7 +152,6 @@ var WebServiceInterface = function(){
 			requestUrl = requestUrl + "?" + requestParameters; //Expand
 			requestParameters = "";
 		}
-		console.log("successCallBackParameters: " + successCallBackParameters);
 		$.ajax({
 			beforeSend: function(){
 				sntapp.notification.hideMessage();
