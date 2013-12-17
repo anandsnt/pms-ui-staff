@@ -359,24 +359,39 @@ var RoomAssignmentView = function(viewDom){
     var postParams = {};
     postParams.reservation_id = currentReservation;
     postParams.room_number = roomSelected;
-    sntapp.activityIndicator.showActivityIndicator("blocker");
-    $.ajax({
-        type:       'POST',
-        url:        "/staff/reservation/modify_reservation",
-        data: postParams,
-        dataType:   'json',
-        success: function(response){
-          if(response.status == "success"){
-          }else if(response.status == "failure"){
-          }
-        },
-        error: function(){
-        }
-    });
-
+    // sntapp.activityIndicator.showActivityIndicator("blocker");
+    // $.ajax({
+        // type:       'POST',
+        // url:        "/staff/reservation/modify_reservation",
+        // data: postParams,
+        // dataType:   'json',
+        // success: function(response){
+          // if(response.status == "success"){
+          // }else if(response.status == "failure"){
+          // }
+        // },
+        // error: function(){
+        // }
+    // });
+     var url = '/staff/reservation/modify_reservation';
+  	 var webservice = new WebServiceInterface();
+     var options = {
+     	   requestParameters: postParams,
+		   successCallBack: that.fetchCompletedOfUpdateServerwithSelectedRoom,
+		   successCallBackParameters: {'viewParams': that.viewParams},
+     };
+     webservice.postJSON(url, options);
 
   };
-
+	this.fetchCompletedOfUpdateServerwithSelectedRoom = function(data, requestParameters){
+		console.log('Here'+that.viewParams.next_view);    
+	    if(that.viewParams.next_view == views.STAYCARD){
+	      that.gotoStayCard();
+	    }
+	    else if(that.viewParams.next_view == views.BILLCARD){
+	      that.gotoBillCard();
+	    }		
+	};
   this.backButtonClicked = function(e){
     e.preventDefault();
     that.gotoStayCard();
@@ -386,9 +401,8 @@ var RoomAssignmentView = function(viewDom){
   };
 
   this.gotoStayCard = function(){
-    // var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
-    // $($loader).prependTo('body').show();
-    sntapp.activityIndicator.hideActivityIndicator();
+
+	sntapp.activityIndicator.showActivityIndicator("blocker");
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
   };
 
