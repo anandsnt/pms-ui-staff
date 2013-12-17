@@ -72,9 +72,9 @@ var Search  = function(domRef){
 	        else if(type == "INHOUSE"){
 	        	reservation_status = "in house";
 	        }
-	        
-	        if(response.guests.length == 0){
-	        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+reservation_status+'</strong><span class="h2"> <strong></strong>  <strong></strong><strong></strong>  <strong></strong>  <span href=\"#\" class=\"open-modal-fix\">Add a New Guest</span>.</li>');
+	        // When dashboard buttons with 0 guests are clicked, show search screen message - "No guests checking in/out/in house" 
+	        if(response.guests.length == 0 && reservation_status != ""){
+	        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+reservation_status+'</strong></li>');
 	        }
 	        else if(response.guests.length>0)
 	        {
