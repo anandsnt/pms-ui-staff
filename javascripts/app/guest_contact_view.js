@@ -83,7 +83,7 @@ var GuestContactView = function(domRef) {
 				   requestParameters: $contactJsonObj,
 				   successCallBack: that.fetchCompletedOfSaveContactInfo,
 				   failureCallBack: that.fetchFailedOfSaveContactInfo,
-				   loader: 'NORMAL',
+				   loader: 'BLOCKER',
 		    };
 		    webservice.putJSON(url, options);
 		}
@@ -101,8 +101,8 @@ var GuestContactView = function(domRef) {
 			success : function(data) {
 				if (data.birthday != null) {
 					birthdate = data.birthday.split('-');
-					//data.birthday is in DD-MM-YY format.Changed to MM-DD-YY format.
-					birthday = birthdate[2] + "-" + birthdate[1] + "-" + birthdate[0].substring(2);
+					//data.birthday is in YYYY-MM-DD format. Changed to MM-DD-YYYY format.
+					birthday = birthdate[1] + "-" + birthdate[2] + "-" + birthdate[0];
 					that.myDom.find("#guest-birthday").val(birthday);
 				}
 				if (data.passport_expiry != null) {

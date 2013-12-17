@@ -35,7 +35,7 @@ var SntAdminView = function(domRef){
   		that.myDom.find("#content section.tab").hide(); 
   		viewParams = {'backDom': backDom};
   		
-  		sntapp.fetchAndRenderView(url, div, {}, 'NORMAL', viewParams);
+  		sntapp.fetchAndRenderView(url, div, {}, 'BLOCKER', viewParams);
 	}	  
   };
 

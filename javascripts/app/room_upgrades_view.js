@@ -55,7 +55,7 @@ var RoomUpgradesView = function(viewDom){
   	$('#reservation-'+reservationId+'-room-number').html("");
     var roomHtml = "<strong class='room-number ready'>"+roomNumberSelected+"</strong>";
     $('#reservation-'+reservationId+'-room-number').html(roomHtml);
-
+    sntapp.activityIndicator.showActivityIndicator("blocker");
   	$.ajax({
         type:       'POST',
         url:        "/staff/reservations/upgrade_room",
@@ -69,11 +69,12 @@ var RoomUpgradesView = function(viewDom){
         error: function(){
         }
     });
+    
 
     if(that.viewParams.next_view == views.STAYCARD){
       that.gotoStayCard();
     }
-    else if(that.viewParams.next_view == views.BILLCARD){
+    else if(that.viewParams.next_view == views.BILLCARD){    	
       that.gotoBillCard();
     }
 
@@ -91,8 +92,9 @@ var RoomUpgradesView = function(viewDom){
   };
 
   this.gotoStayCard = function(){
-    var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
-    $($loader).prependTo('body').show();
+    // var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
+    // $($loader).prependTo('body').show();
+    sntapp.activityIndicator.hideActivityIndicator();
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);  
     //goBackToView("", "view-nested-second", "move-from-left");
   };

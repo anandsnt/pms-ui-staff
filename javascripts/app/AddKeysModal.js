@@ -57,7 +57,6 @@ var AddKeysModal = function(callBack) {
 				"key" : selected_key,
 				"is_additional" : "false"
 			};
-			data = JSON.stringify(data);
 
 			that.saveKey(data);
 		} else {
@@ -82,7 +81,7 @@ var AddKeysModal = function(callBack) {
 				"key" : selected_key,
 				"is_additional" : "true"
 			};
-			data = JSON.stringify(data);
+			//data = JSON.stringify(data);
 			that.saveKey(data);
 		}else {
 			return false;
@@ -119,7 +118,7 @@ var AddKeysModal = function(callBack) {
 	this.fetchCompletedKeys = function(data) {
 	  
 		if (data.status == "success") {
-			hat.hide(callBack);
+			that.hide(callBack);
 		}
 		else{
 			sntapp.notification.showErrorList(data.errors, that.myDom);
