@@ -215,8 +215,15 @@ body { overflow: hidden; }
         text-shadow: 1px 1px 0 rgba(0,0,0,.15);
         padding-right: 20px;
         cursor: pointer;
-        background: @doubleSelectArrow 100% 25px no-repeat;
+        background-image: @doubleSelectArrow;
+        background-position: 100% 25px;
+        background-repeat: no-repeat;
         .show;
+
+        @media @highdpi {
+          background-image: @doubleSelectArrow2x;
+          background-size: 10px;
+        }
       }
       
       .dropdown { .hide; }
@@ -309,6 +316,13 @@ body { overflow: hidden; }
               padding: 0 10px 0 45px;
               text-indent: 0;
               .transition(max-width, .6s, ease-out);
+
+              &.ui-sortable-helper {
+                padding: 0;
+                max-width: 50px !important;
+                .hide-text;
+                .no-transition;
+              }
             }
           }
         }
@@ -323,7 +337,7 @@ body { overflow: hidden; }
       }
 
       &:after {
-        content: "You can build your custom quick menu by draging item icons in this area";
+        content: "Drop up to 8 dashboard icons here for your custom quick menu";
         line-height: 58px;
         width: 100%;
         text-align: center;
@@ -362,8 +376,8 @@ body { overflow: hidden; }
       margin: 0;
       vertical-align: middle;
       white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       a { 
         font-weight: 600;
@@ -496,10 +510,6 @@ body { overflow: hidden; }
     th,
     td {
       padding: 0 20px;
-
-      &.activate {
-        text-align: center;
-      }
     }
 
     thead,
@@ -576,6 +586,8 @@ body { overflow: hidden; }
 
         /* Edit data row ***/
         &.edit-data {
+          
+
           td {
             padding: 0;
             line-height: 1em;
@@ -584,7 +596,7 @@ body { overflow: hidden; }
 
             .data-holder {
               margin-top: -70px;
-
+              
               .form { padding: 0 20px; }
             }
           }
@@ -618,6 +630,21 @@ body { overflow: hidden; }
 /* Datatable        ==============================*/
   .datatable {
     
+    tr:not(.edit-data){
+      th,
+      td {
+        &:not(.activate) {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        &.activate {
+          text-align: center;
+        }
+      }
+    }
+    
     tbody {
       tr {
         td {
@@ -628,7 +655,6 @@ body { overflow: hidden; }
             .show;
           }
 
-          /* */
           .login { font-style: italic; }
 
           /* Delete icon ***/
@@ -665,73 +691,6 @@ body { overflow: hidden; }
       }
     }
   }
-
-
-
-
-//Added by QBURST
-
-
-#content .content:not(.ui-tabs-panel) {
-    overflow-y: auto;
-}
-#content .content {
-    height: 100%;
-    padding: 20px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 84.6774%;
-}
-
-
-
-//drag and drop - Added by Qburst
-
-/* Sortable items */
-
-.sortable-list {
- /* background-color: #F93;*/
-  border:1px solid #000;
-  list-style: none;
-  margin: 0;
-  min-height: 60px;
-  padding: 5px;
-}
-.sortable-item {
-  background-color: #dbdbdb;
-  border: 1px solid #000;
-  cursor: move;
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-  padding: 3px 0;
-  text-align: center;
-}
-.level_header{
- margin-bottom:6px;
-}
-
-/* Columns */
-
-.column {
-  margin-left: 2%;
-  width: 30%;
-
-}
-.column.first {margin-left: 0;}
-
-.left {float: left;}
-
-.clear,.clearer {clear: both;}
-
-.clearer {
-  display: block;
-  font-size: 0;
-  height: 0;
-  line-height: 0;
-}
-  
 
 /* 6. IE
 ==========================================================*/

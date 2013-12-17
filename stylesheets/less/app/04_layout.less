@@ -967,7 +967,14 @@ body { overflow: hidden; }
 			}
 		}
 	}
-
+// Added by QBurts - Disable left nav bar icon when it is active
+#main-menu{
+  li {
+    .active {
+  cursor:default;
+  pointer-events:none;
+  }}
+}
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
