@@ -43,23 +43,18 @@ var UpsellLateCheckoutView = function(domRef){
 	  postParams.currency_code = currency_code;
 	  postParams.extended_checkout = extended_checkout;
 	  postParams.sent_alert = sent_alert;
+	
+	  var url = '/staff/hotel/update_late_checkout_setup';
+	  var webservice = new WebServiceInterface();		
+	  var options = {
+			   requestParameters: postParams,
+			   successCallBack: that.fetchCompletedOfSave,
+			   loader: "BLOCKER"
+	  };
+	  webservice.postJSON(url, options);	  
 
-	  
-	  $.ajax({
-		type : "POST",
-		url : '/staff/hotel/update_late_checkout_setup',	
-		data : postParams,
-		dataType : 'json',
-		async:false,
-		success : function(data) {					
-			if (data.status == "success") {
-				that.goBackToPreviousView();
-			}
-		},
-		error : function() {		
-		}
-	});
-	  return false;
-
+  };
+  this.fetchCompletedOfSave = function(data){
+  	that.goBackToPreviousView();
   };
 };

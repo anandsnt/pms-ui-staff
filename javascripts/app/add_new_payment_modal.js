@@ -95,7 +95,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		else if($expiry_year < curr_year){
 			errorMessage = "Expiration date : Invalid year";
 		}
-		else if($expiry_month < curr_month){
+		else if($expiry_year == curr_year && $expiry_month < curr_month){
 			errorMessage = "Expiration date : Date expired";
 		}
 		if(errorMessage!=""){
