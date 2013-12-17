@@ -9,13 +9,10 @@ var UserDetailsView = function(domRef){
   this.delegateEvents = function(){  	
   	that.myDom.find($('#save_new_user')).on('click', that.saveNewUser);
   	that.myDom.find('#save').on('click', that.updateUser);
-  	that.myDom.find('#user-picture').on('change', that.testUser);
-
-  };
-  this.testUser = function(){
-  	console.log("gffffffffffffffff");
-  	console.log(that.myDom.find('#user-picture').val());
-  };
+  	that.myDom.find('#user-picture').on('change', function(){
+  		that.readURL(this);
+  	});
+  };  
   this.goBackToPreviousView = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams);
   };
@@ -79,5 +76,13 @@ var UserDetailsView = function(domRef){
 	sntapp.activityIndicator.hideActivityIndicator();
 	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
   };
-  
+  this.readURL = function(input) {
+       if (input.files && input.files[0]) {
+           var reader = new FileReader();
+           reader.onload = function(e) {
+               $('#file-preview').attr('src', e.target.result);
+           };
+           reader.readAsDataURL(input.files[0]);
+       }
+  };
 };
