@@ -73,21 +73,22 @@ var Search  = function(domRef){
 	        	reservation_status = "in house";
 	        }
 	        
-	        if(response.guests.length == 0){
-	        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+reservation_status+'</strong><span class="h2"> <strong></strong>  <strong></strong><strong></strong>  <strong></strong>  <span href=\"#\" class=\"open-modal-fix\">Add a New Guest</span>.</li>');
-	        }
-	        else if(response.guests.length>0)
-	        {
+	        if(response.guests.length > 0){
 	        	that.fetchResults = response.guests;
 	        	that.displayFilteredResults(that.fetchResults, that.currentQuery);
 	        }
 	        // No data in JSON file
-	        else
-	        {
-	        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
-
-	            //TODO: verify implemention, rename function
-	            that.updateView();
+	        else if(response.guests.length == 0){
+	        	if(reservation_status != ""){
+	        		// When dashboard buttons with 0 guests are clicked, show search screen message - "No guests checking in/out/in house" 
+	        		$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+reservation_status+'</strong></li>');
+	        	}
+	        	else{
+	        		// To show no matches message while search guest with 0 results.
+	        		$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
+		            //TODO: verify implemention, rename function
+		            that.updateView();
+	        	}
 	        }
 	    },
         error: function (result) {
@@ -272,13 +273,17 @@ var Search  = function(domRef){
     //Map the reservation status to the view expected format
     this.getReservationStatusMapped = function(status){
     	var viewStatus = "";
-    	if(status == "CHECKING_IN"){
+      if(status == "RESERVED"){
+        viewStatus = "arrival";
+      }else if(status == "CHECKING_IN"){
     		viewStatus = "check-in";
     	}else if(status == "CHECKEDIN"){
     		viewStatus = "inhouse";
+    	}else if(status == "CHECKEDOUT"){
+    		viewStatus = "departed";
     	}else if(status == "CHECKING_OUT"){
-    		viewStatus = "check-out";
-    	}else if(status == "CANCELLED"){
+        viewStatus = "check-out";
+      }else if(status == "CANCELLED"){
     		viewStatus = "cancel";
     	}else if((status == "NOSHOW")||(status == "NOSHOW_CURRENT")){
     		viewStatus = "no-show";
