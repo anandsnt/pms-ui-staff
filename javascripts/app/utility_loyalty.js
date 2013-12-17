@@ -13,46 +13,55 @@ function bindLoyaltyUtilFunctions(){
 var $selectedLoyaltyProgram ="";
 var $selectedLoyaltyType ="";
 
+// success function call of fetchLoyaltyProgramData's ajax call
+function fetchCompletedOfFetchLoyaltyProgramData(data, requestParameters) {
+	if(requestParameters['type'] == 'ffp'){
+		ffProgramsList = data;
+	}
+	else if(requestParameters['type'] == 'hlp'){
+		hlProgramsList = data;
+	}	
+}
+
 //To fetch the ffp or hlp list
 function fetchLoyaltyProgramData(url,type){
-	$.ajax({
-		url : url,
-		type : 'GET',
-		success : function(data) {
-			if(type == 'ffp'){
-				ffProgramsList = data;
-			}
-			else if(type == 'hlp'){
-				hlProgramsList = data;
-			}
-		},
-		error : function() {
-		}
-	});
+	
+   var webservice = new WebServiceInterface();
+   var options = {
+		   successCallBack: fetchCompletedOfFetchLoyaltyProgramData,
+		   
+		   successCallBackParameters: {'type': type},
+   };
+   webservice.getJSON(url, options);	
+}
+
+ // success function call of updateServerForNewLoyalty's ajax call
+function fetchCompletedOfUpdateServerForNewLoyalty(data, requestParameters) {
+	if(data.status == 'success'){
+		//Insert the response id to the new DOM element
+		requestParameters['successCallback'](data.data);		
+	}
+	else{
+		// the following was the old code present there.
+		/*if (type == 'FFP') {
+			$("#new-ffp .error-messages").html(response.errors.join('<br>')).show();					
+		} else if (type == 'HLP') {
+			$("#new-hlp .error-messages").html(response.errors.join('<br>')).show();
+		}	*/
+		sntapp.notification.showErrorList(data.errors, that.myDom);
+	}
 }
 
 function updateServerForNewLoyalty(postData, successCallback, type){
-	$.ajax({
-		type: "POST",
-		url: 'staff/user_memberships',
-		data: postData,
-		dataType: 'json',
-		success: function(response) {
-			if(response.errors != null && response.errors.length > 0){
-				if (type == 'FFP') {
-					$("#new-ffp .error-messages").html(response.errors.join('<br>')).show();					
-				} else if (type == 'HLP') {
-					$("#new-hlp .error-messages").html(response.errors.join('<br>')).show();
-				}				
-			}else{
-				//Insert the response id to the new DOM element
-				successCallback(response.data);
-			}
-		},
-		error: function(response){
-			// TODO: Handle error
-		}
-	 });
+	
+   var webservice = new WebServiceInterface();
+   var options = {
+		   requestParameters: postData,
+		   successCallBack: fetchCompletedOfUpdateServerForNewLoyalty,
+		   successCallBackParameters: {'type': type, 'successCallback': successCallback},
+   };
+   var url = 'staff/user_memberships';
+   webservice.postJSON(url, options);	
 }
 
 //populate the airline list for frequent flier program add new popup
