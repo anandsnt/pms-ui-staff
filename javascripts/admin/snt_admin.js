@@ -11,11 +11,14 @@ var SntAdminView = function(domRef){
   	that.myDom.find('ul.dashboard-items li').on('click', sntadminapp.appendNewPage);
   	
   	that.myDom.find('#admin-menu li a').on('click', that.bookMarkClick);
-  	that.myDom.find('#admin-header nav a').on('click', that.bookMarkClick);
+  	that.myDom.find('#admin-header nav').on('click', that.bookMarkClick);
   };
   this.bookMarkClick = function(event){
 	event.preventDefault();
-	var url = $(this).attr("href");
+	var target = $(event.target);	
+	if(target.prop('tagName') != "A")
+		return false;	
+	var url = target.attr("href");
 	if(url != "#" && url != undefined){
 
   		var backDom = null;
@@ -36,7 +39,7 @@ var SntAdminView = function(domRef){
   		viewParams = {'backDom': backDom};
   		
   		sntapp.fetchAndRenderView(url, div, {}, 'BLOCKER', viewParams);
-	}	  
+	}		  
   };
 
   this.clearReplacingDiv = function() {  

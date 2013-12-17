@@ -7,7 +7,9 @@ var HotelListView = function(domRef){
   this.delegateEvents = function(){   		
   	 that.myDom.find($('#hotels_list_table')).tablesorter();
   	 that.myDom.find($('.title, #add_new_hotel')).on('click', this.gotoNextPage);
+  	 
   };
+  
   this.gotoNextPage =  function(e){  	
   	
   	e.preventDefault();	

@@ -28,7 +28,20 @@ var adminApp = function(){
 	  }
 	  viewParams['backDom'].show();	  
   };
-    
+  this.gotoNextPage =  function(e){  	
+  	
+  	e.preventDefault();	
+  	//sntadminapp.clearReplacingDiv();  	
+  	var href = $(this).attr("href");
+  	var viewParams = {};
+  	var backDom = $("#replacing-div-first");
+  	backDom.hide();
+  	var nextViewParams = {'backDom': backDom};
+     
+    if(href != undefined){
+  		sntapp.fetchAndRenderView(href, $("#replacing-div-second"), viewParams, 'NONE', nextViewParams);
+    }
+  };  
 
 };
 
