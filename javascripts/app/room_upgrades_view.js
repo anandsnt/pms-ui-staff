@@ -63,6 +63,7 @@ var RoomUpgradesView = function(viewDom){
         dataType:   'json',
         success: function(response){
           if(response.status == "success"){
+          	sntapp.activityIndicator.hideActivityIndicator();
           }else if(response.status == "failure"){
           }
         },
@@ -94,7 +95,7 @@ var RoomUpgradesView = function(viewDom){
   this.gotoStayCard = function(){
     // var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
     // $($loader).prependTo('body').show();
-    sntapp.activityIndicator.hideActivityIndicator();
+    
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);  
     //goBackToView("", "view-nested-second", "move-from-left");
   };
