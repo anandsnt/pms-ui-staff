@@ -46,6 +46,14 @@ var RoomUpgradesView = function(viewDom){
   };
 
 
+  this.fetchCompletedOfRoomUpgradeSelected = function(data){
+      if(response.status == "success"){
+    	  
+      }else if(response.status == "failure"){
+    	  
+      }	  
+  };
+  
   this.roomUpgradeSelected = function(e){
     e.preventDefault();
   	var upsellAmountId = $(this).attr('data-value');
@@ -55,20 +63,17 @@ var RoomUpgradesView = function(viewDom){
   	$('#reservation-'+reservationId+'-room-number').html("");
     var roomHtml = "<strong class='room-number ready'>"+roomNumberSelected+"</strong>";
     $('#reservation-'+reservationId+'-room-number').html(roomHtml);
-    sntapp.activityIndicator.showActivityIndicator("blocker");
-  	$.ajax({
-        type:       'POST',
-        url:        "/staff/reservations/upgrade_room",
-        data: postParams,
-        dataType:   'json',
-        success: function(response){
-          if(response.status == "success"){
-          }else if(response.status == "failure"){
-          }
-        },
-        error: function(){
-        }
-    });
+    
+    var url = "/staff/reservations/upgrade_room";
+    var webservice = new WebServiceInterface();
+    var options = {
+		   requestParameters: postParams,
+		   successCallBack: that.fetchCompletedOfRoomUpgradeSelected,
+		   loader: 'blocker',
+    };
+    webservice.postJSON(url, options);
+    
+
     
 
     if(that.viewParams.next_view == views.STAYCARD){

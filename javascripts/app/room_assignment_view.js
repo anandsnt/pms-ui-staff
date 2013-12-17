@@ -378,7 +378,8 @@ var RoomAssignmentView = function(viewDom){
      var url = '/staff/reservation/modify_reservation';
   	 var webservice = new WebServiceInterface();
      var options = {
-     	   requestParameters: postParams
+     	   requestParameters: postParams,
+     	   loader: 'blocker',
      };
      webservice.postJSON(url, options);
 
