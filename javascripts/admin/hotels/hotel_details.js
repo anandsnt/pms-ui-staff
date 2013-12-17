@@ -268,4 +268,8 @@ var HotelDetailsView = function(domRef){
 	        } 
 	        return data;
   };
+  this.gotoPreviousPage = function() {
+	 	  
+	  sntadminapp.gotoPreviousPage(that.viewParams);
+  };
 };
