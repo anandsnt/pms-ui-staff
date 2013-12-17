@@ -367,6 +367,7 @@ var RoomAssignmentView = function(viewDom){
         // dataType:   'json',
         // success: function(response){
           // if(response.status == "success"){
+          	// sntapp.activityIndicator.hideActivityIndicator();
           // }else if(response.status == "failure"){
           // }
         // },
@@ -377,23 +378,13 @@ var RoomAssignmentView = function(viewDom){
      var url = '/staff/reservation/modify_reservation';
   	 var webservice = new WebServiceInterface();
      var options = {
-     	   requestParameters: postParams,
-		   successCallBack: that.fetchCompletedOfUpdateServerwithSelectedRoom,
-		   successCallBackParameters: {'viewParams': that.viewParams},
+     	   requestParameters: postParams
      };
      webservice.postJSON(url, options);
 
 
   };
-	this.fetchCompletedOfUpdateServerwithSelectedRoom = function(data, requestParameters){
-		console.log('Here'+that.viewParams.next_view);    
-	    if(that.viewParams.next_view == views.STAYCARD){
-	      that.gotoStayCard();
-	    }
-	    else if(that.viewParams.next_view == views.BILLCARD){
-	      that.gotoBillCard();
-	    }		
-	};
+	
   this.backButtonClicked = function(e){
     e.preventDefault();
     that.gotoStayCard();
