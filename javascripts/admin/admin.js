@@ -70,7 +70,7 @@ var setUpAdmin = function(viewDom, delegate) {
 		var dropOut = 0;
 		var limit = 8;
 
-		$('.icon-admin-menu:not(.dropped):not(.admin-menu-group)').draggable({
+		$('.icon-admin-menu:not(.dropped):not(.admin-menu-group):not(.disabled)').draggable({
 			revert: 'invalid',
 			connectToSortable: '#quick-menu',
 	        helper: 'clone',
@@ -110,7 +110,10 @@ var setUpAdmin = function(viewDom, delegate) {
 					bookMarkWidth = parseInt(ui.item.outerWidth()),
 					$items = $(this).children('.ui-draggable').length-1; // -1 because at this point item that's dropped out is still considered part of navigation
 
-				$(ui.item).css('width', bookMarkWidth + 10).addClass('in-quick-menu');
+				if (!ui.item.hasClass('in-quick-menu'))
+				{
+					$(ui.item).css('width', bookMarkWidth + 10).addClass('in-quick-menu');
+				}
 
 				// TODO - pass bookMarkWidth as well so that in _quick_menu.html.haml 
 				// you can add "style" => "width:" + menu_components['width']
