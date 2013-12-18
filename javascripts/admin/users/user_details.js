@@ -1,6 +1,7 @@
 var UserDetailsView = function(domRef){
   BaseView.call(this);  
-  this.myDom = domRef; 
+  this.myDom = domRef;
+  this.fileContent ="";
   var that = this;
   
   this.pageinit = function(){
@@ -40,10 +41,11 @@ var UserDetailsView = function(domRef){
   	// console.log(JSON.stringify(postData));
   	var url = '/admin/users/'+postData.user_id;
 	var webservice = new WebServiceInterface();		
+	//failureCallBack: that.fetchFailedOfSave
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
-			   failureCallBack: that.fetchFailedOfSave
+			   
 	};
 	webservice.putJSON(url, options);	
   };
@@ -69,11 +71,12 @@ var UserDetailsView = function(domRef){
       });
       
   	var url = '/admin/users';
-	var webservice = new WebServiceInterface();		
+	var webservice = new WebServiceInterface();
+	//failureCallBack: that.fetchFailedOfSave		
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
-			   failureCallBack: that.fetchFailedOfSave
+			   
 	};
 	webservice.postJSON(url, options);	
   }; 
@@ -90,14 +93,14 @@ var UserDetailsView = function(domRef){
   
   this.fetchFailedOfSave = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+	sntapp.notification.showErrorList("Some error occured: " + errorMessage, that.myDom);  
   };
   this.readURL = function(input) {
   	   $('#file-preview').attr('changed', "changed");
        if (input.files && input.files[0]) {
            var reader = new FileReader();
            reader.onload = function(e) {
-               $('#file-preview').attr('src', e.target.result);
+               that.fileContent = e.target.result;
            };
            reader.readAsDataURL(input.files[0]);
        }
