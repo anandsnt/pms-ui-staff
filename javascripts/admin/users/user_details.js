@@ -35,14 +35,14 @@ var UserDetailsView = function(domRef){
     });
       console.log(postData.user_roles);
   	// console.log(JSON.stringify(postData));
-  	var url = '/admin/users/updateuser';
+  	var url = '/admin/users/'+postData.user_id;
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
 			   failureCallBack: that.fetchFailedOfSave
 	};
-	webservice.postJSON(url, options);	
+	webservice.putJSON(url, options);	
   };
   this.saveNewUser = function(){
   	var postData = {};
