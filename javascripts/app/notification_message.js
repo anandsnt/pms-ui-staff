@@ -38,7 +38,7 @@ var NotificationMessage = function() {
 		dom.find("#notification-message").removeClass('success_message error_message').html(message).show();		
 		//binding the click event for close button
 
-		dom.find("#notification-message .close-btn").on('click', function(){
+		dom.find("#notification-message span.close-btn").on('click', function(){
 
 			dom.find("#notification-message").slideUp(duration, function(){
 				dom.find("#notification-message").removeClass('success_message error_message').html('').hide();
