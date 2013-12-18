@@ -43,7 +43,7 @@ var RoomAssignmentView = function(viewDom){
 
   //Scroll view creation for the the room list
   this.createRoomListScroll = function(){
-   // if (viewScroll) { destroyViewScroll(); }
+    if (viewScroll) { destroyViewScroll(); }
     setTimeout(function(){
       if (that.myDom.find($('#rooms-available')).length) { createViewScroll('#rooms-available'); }
     }, 300);
@@ -105,7 +105,7 @@ var RoomAssignmentView = function(viewDom){
   this.applyFilters = function(){
     var filterOptionsArray = that.getFilterList();
     //Apply filters using due-out status, ready status.
-    var roomStatusFilteredList = that.filterByStatus(false, false);
+    var roomStatusFilteredList = that.filterByStatus();
     //Apply filters using dynamic filter options
     var roomListToDisplay = that.startFiltering(filterOptionsArray, roomStatusFilteredList);
 
@@ -170,51 +170,31 @@ var RoomAssignmentView = function(viewDom){
   /*
   Apply filters for room status and due-out status
   */
-  this.filterByStatus = function(includeNotReadyRooms, includeDueout){
-
+  this.filterByStatus = function(){
+    var roomList = that.roomCompleteList;
     var filteredRoomList = [];
+    var includeNotReady = false;
+    var includeDueout = false;
 
     if(that.myDom.find($('#filter-not-ready')).is(':checked')){
-      includeNotReadyRooms = true;
+      includeNotReady = true;
     }
 
     if(that.myDom.find($('#filter-dueout')).is(':checked')){
       includeDueout = true;
     }
 
-    //include not-ready rooms and dueout rooms (show all rooms)
-    if(includeNotReadyRooms && includeDueout){
-      filteredRoomList = this.roomCompleteList;
-    }
-
-    //include not ready rooms (rooms that are available to check-in)
-    //We assume, that for ready and vacant rooms, is_dueout = "false"
-    else if(includeNotReadyRooms){
-      filteredRoomList = this.roomCompleteList;
-    }
-
-    //include dueout rooms (show, ready and vacant rooms, is_dueout = "true" rooms)
-    else if(includeDueout){
-      for (var i = 0; i< this.roomCompleteList.length; i++){
-        if((this.roomCompleteList[i].fo_status === "DUEOUT") ||( 
-          (this.roomCompleteList[i].room_status === "READY") &&
-         (this.roomCompleteList[i].fo_status === "VACANT"))){
-          filteredRoomList.push(this.roomCompleteList[i]);
-        }
+    for (var i = 0; i< roomList.length; i++){
+      if(roomList[i].fo_status === "VACANT" && roomList[i].room_status === "READY"){
+        filteredRoomList.push(roomList[i]);
+      }
+      else if(includeDueout && roomList[i].fo_status === "DUEOUT"){
+        filteredRoomList.push(roomList[i]);
+      }
+      else if(includeNotReady && roomList[i].room_status === "NOTREADY" && roomList[i].fo_status == "VACANT"){
+        filteredRoomList.push(roomList[i]);
       }
     }
-
-    //Display only ready and vacant rooms
-    else{
-      for (var i = 0; i< this.roomCompleteList.length; i++){
-        if((this.roomCompleteList[i].room_status === "READY") &&
-         (this.roomCompleteList[i].fo_status === "VACANT")){
-          filteredRoomList.push(this.roomCompleteList[i]); 
-        }
-      }
-
-    }
-
     return filteredRoomList;
 
     
