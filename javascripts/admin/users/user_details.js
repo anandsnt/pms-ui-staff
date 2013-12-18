@@ -13,7 +13,7 @@ var UserDetailsView = function(domRef){
   		that.readURL(this);
   	});
   };  
-  this.goBackToPreviousView = function() {
+  this.gotoPreviousPage = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams);
   };
   this.updateUser = function(){
@@ -28,12 +28,15 @@ var UserDetailsView = function(domRef){
   	postData.confirm_email = that.myDom.find("#confirm-email").val();
   	postData.password = that.myDom.find("#password").val();
   	postData.confirm_password = that.myDom.find("#confirm-password").val();
-  	postData.user_photo = that.myDom.find("#file-preview").attr("src");
+  	if(that.myDom.find("#file-preview").attr("changed") == "changed")
+  		postData.user_photo = that.myDom.find("#file-preview").attr("src");
+  	else
+  		postData.user_photo = "";
   	postData.user_roles = [];
   	that.myDom.find("#assigned-roles li").each(function(n) {
         postData.user_roles.push($(this).attr("id"));
     });
-      console.log(postData.user_roles);
+     
   	// console.log(JSON.stringify(postData));
   	var url = '/admin/users/'+postData.user_id;
 	var webservice = new WebServiceInterface();		
@@ -55,7 +58,10 @@ var UserDetailsView = function(domRef){
   	postData.confirm_email = that.myDom.find("#confirm-email").val();
   	postData.password = that.myDom.find("#password").val();
   	postData.confirm_password = that.myDom.find("#confirm-password").val();
-  	postData.user_photo = that.myDom.find("#file-preview").attr("src");
+  	if(that.myDom.find("#file-preview").attr("changed") == "changed")
+  		postData.user_photo = that.myDom.find("#file-preview").attr("src");
+  	else
+  		postData.user_photo = "";
   	// console.log(JSON.stringify(postData));
   	postData.user_roles = [];
   	that.myDom.find("#assigned-roles li").each(function(n) {
@@ -87,6 +93,7 @@ var UserDetailsView = function(domRef){
 	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
   };
   this.readURL = function(input) {
+  	   $('#file-preview').attr('changed', "changed");
        if (input.files && input.files[0]) {
            var reader = new FileReader();
            reader.onload = function(e) {
