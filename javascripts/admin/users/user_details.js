@@ -62,7 +62,7 @@ var UserDetailsView = function(domRef){
             postData.user_roles.push($(this).attr("id"));
       });
       
-  	var url = '/admin/users/savenewuser';
+  	var url = '/admin/users';
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
