@@ -247,11 +247,11 @@ var Search  = function(domRef){
     		showRoomStatus = true;
     	}
 		// Show color coding ( Red / Green - for Room status) for room only if reservation status = CHECKING-IN
-        if(reservation_status == "CHECKING_IN")	{
-          roomStatus = '<strong class="room-number ' + escapeNull(roomStatusMapped) + '">' + escapeNull(room) + '</strong>';
-        }else {
-          roomStatus = '<strong class="room-number">' + escapeNull(room) + '</strong>';
-        }
+      if(reservation_status == "CHECKING_IN")	{
+        roomStatus = '<strong class="room-number ' + escapeNull(roomStatusMapped) + '">' + escapeNull(room) + '</strong>';
+      }else {
+        roomStatus = '<strong class="room-number">' + escapeNull(room) + '</strong>';
+      }
 			
     	var $location = (escapeNull(location) != '') ? '<span class="icons icon-location">' + escapeNull(location) + '</span>' : '',
         $group = (escapeNull(group) != '') ? '<em class="icons icon-group">' + escapeNull(group) + '</em>' : '',
