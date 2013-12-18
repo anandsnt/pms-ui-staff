@@ -313,6 +313,7 @@ var RoomAssignmentView = function(viewDom){
     return filterMatch;   
   };
 
+  
   //Update resevation with the selected room.
   this.updateRoomAssignment = function(e){
 
@@ -320,15 +321,35 @@ var RoomAssignmentView = function(viewDom){
     var currentReservation = $('#roomassignment-ref-id').val();
     var roomStatusExplained = $(this).find(">:first-child").next().attr("data-value");
     
-    that.updateStaycardUI(roomSelected, currentReservation, roomStatusExplained, $(this));
-    that.updateServerwithSelectedRoom(currentReservation, roomSelected);
+    var postParams = {};
+    postParams.reservation_id = currentReservation;
+    postParams.room_number = roomSelected;
+    var url = '/staff/reservation/modify_reservation';
+  	var webservice = new WebServiceInterface();
+  	var successCallBackParams = {
+  			'roomSelected': roomSelected,
+  			'currentReservation': currentReservation, 
+  			'roomStatusExplained': roomStatusExplained,
+  			'selectedItem': $(this),
+  	};
+    var options = { requestParameters: postParams,
+    				successCallBack: that.updateStaycardUI,
+    				successCallBackParameters: successCallBackParams,
+    				loader: 'blocker'
+    		};
+    webservice.postJSON(url, options);
     
 
   };
 
 
   //Update staycard UI. Staycard contents are available in DOM
-  this.updateStaycardUI = function(roomSelected, currentReservation, roomStatusExplained, selectedItem){
+  this.updateStaycardUI = function(data, requestParams){
+	var roomSelected = requestParams['roomSelected'], 
+	currentReservation = requestParams['currentReservation'],
+	roomStatusExplained = requestParams['roomStatusExplained'], 
+	selectedItem = requestParams['selectedItem'];
+	
     var roomStausNew = "";
     if((typeof roomStatusExplained != "undefined") && (roomStatusExplained != "")){
       roomStausNew = "<span class='room-status'>"+ roomStatusExplained +"</span>";
@@ -353,44 +374,11 @@ var RoomAssignmentView = function(viewDom){
     }
   };
 
-  //API call to update the room
-  this.updateServerwithSelectedRoom = function(currentReservation, roomSelected){
-
-    var postParams = {};
-    postParams.reservation_id = currentReservation;
-    postParams.room_number = roomSelected;
-    // sntapp.activityIndicator.showActivityIndicator("blocker");
-    // $.ajax({
-        // type:       'POST',
-        // url:        "/staff/reservation/modify_reservation",
-        // data: postParams,
-        // dataType:   'json',
-        // success: function(response){
-          // if(response.status == "success"){
-          	// sntapp.activityIndicator.hideActivityIndicator();
-          // }else if(response.status == "failure"){
-          // }
-        // },
-        // error: function(){
-        // }
-    // });
-
-     var url = '/staff/reservation/modify_reservation';
-  	 var webservice = new WebServiceInterface();
-     var options = {
-     	   requestParameters: postParams
-     };
-     webservice.postJSON(url, options);
-
-
-  };
+  
 	
   this.backButtonClicked = function(e){
     e.preventDefault();
     that.gotoStayCard();
-    /*var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
-    $($loader).prependTo('body').show();
-    changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);*/
   };
 
   this.gotoStayCard = function(){
@@ -400,11 +388,10 @@ var RoomAssignmentView = function(viewDom){
 
   this.gotoBillCard = function(){
       var viewURL = "staff/reservation/bill_card";
-      //var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
       var viewDom = $("#view-nested-third");
       var params = {"reservation_id": that.reservation_id};
       var nextViewParams = {"showanimation": true, "from-view" : views.ROOM_ASSIGNMENT};
-      sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams );
+      sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams );
   };
 
 
@@ -414,43 +401,30 @@ var RoomAssignmentView = function(viewDom){
     var roomNumberSelected = $(this).attr('data-room-number');
     var reservationId = that.reservation_id;
     var postParams = {"reservation_id": reservationId, "upsell_amount_id": upsellAmountId};
-    $('#reservation-'+reservationId+'-room-number').html("");
-    var roomHtml = "<strong class='room-number ready'>"+roomNumberSelected+"</strong>";
-    $('#reservation-'+reservationId+'-room-number').html(roomHtml);
 
-    //sntapp.activityIndicator.showActivityIndicator("blocker");   
-    // $.ajax({
-        // type:       'POST',
-        // url:        "/staff/reservations/upgrade_room",
-        // data: postParams,
-        // dataType:   'json',
-        // success: function(response){
-          // if(response.status == "success"){
-          // }else if(response.status == "failure"){
-          // }
-        // },
-        // error: function(){
-        // }
-    // });
-     var url = '/staff/reservations/upgrade_room';
-	  var webservice = new WebServiceInterface();		
-	  var options = {
+    var url = '/staff/reservations/upgrade_room';
+	var webservice = new WebServiceInterface();	
+  	var successCallBackParams = {
+  			'reservationId': reservationId,
+  			'roomNumberSelected': roomNumberSelected, 
+  	};	
+	var options = {
 			   requestParameters: postParams,
 			   successCallBack: that.upgradeSuccess,
-			   successCallBackParameters: {'viewParams': that.viewParams},
+			   successCallBackParameters: successCallBackParams,
 			   loader: "BLOCKER"
-	  };
-	  webservice.postJSON(url, options);	
-    
-   
-
-
+	};
+	webservice.postJSON(url, options);	
   };
-  this.upgradeSuccess = function(data, viewParams){
-	  	if(viewParams.next_view == views.STAYCARD){
+  
+  this.upgradeSuccess = function(data, requestParams){
+	    $('#reservation-'+requestParams['reservationId']+'-room-number').html("");
+	    var roomHtml = "<strong class='room-number ready'>"+requestParams['roomNumberSelected']+"</strong>";
+	    $('#reservation-'+requestParams['reservationId']+'-room-number').html(roomHtml);
+	  	if(that.viewParams.next_view == views.STAYCARD){
 	      that.gotoStayCard();
 	    }
-	    else if(viewParams.next_view == views.BILLCARD){
+	    else if(that.viewParams.next_view == views.BILLCARD){
 	      that.gotoBillCard();
 	    }
   };
