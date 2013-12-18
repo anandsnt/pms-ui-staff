@@ -52,6 +52,7 @@ var UsersListView = function(domRef){
 	
 	
   }; 
+  //to remove deleted row and show messa
   this.fetchCompletedOfDelete = function(data, successParams){
 	  if(data.status == "success"){
 		  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
