@@ -18,7 +18,10 @@ var UserDetailsView = function(domRef){
   	sntadminapp.gotoPreviousPage(that.viewParams);
   };
    this.gotoPreviousPageWithUpdate = function() {
-  	sntadminapp.gotoPreviousPage(that.viewParams);
+   	var url = "/admin/users";
+   	viewParams = {};
+  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+    sntadminapp.gotoPreviousPage(that.viewParams);
   };
   this.updateUser = function(){
   	var postData = {};
@@ -87,7 +90,7 @@ var UserDetailsView = function(domRef){
   this.fetchCompletedOfSave = function(data){
 	  if(data.status == "success"){
 		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
-		  that.gotoPreviousPage();
+		  that.gotoPreviousPageWithUpdate();
 	  }	 
 	  else{
 		  sntapp.activityIndicator.hideActivityIndicator();
