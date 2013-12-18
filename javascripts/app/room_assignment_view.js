@@ -208,10 +208,10 @@ var RoomAssignmentView = function(viewDom){
         
         // Display FO status (VACANT, DUEOUT, etc) only when room-status = NOT-READY
         // Always show color coding ( Red / Green - for Room status)
-        if(filteredRoomList[i].room_status == "READY"){
+        if(filteredRoomList[i].room_status == "READY" && filteredRoomList[i].fo_status == "VACANT"){
           room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
         }
-        else if(filteredRoomList[i].room_status == "NOTREADY"){
+        else{
             room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
             "<span class='room-status not-ready' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].fo_status+" </span>";   
         }
