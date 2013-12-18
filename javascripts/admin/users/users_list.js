@@ -45,6 +45,7 @@ var UsersListView = function(domRef){
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfDelete,
+			   loader:"BLOCKER",
 			   successCallBackParameters: {"selectedId": selectedId}
 	};
 	webservice.deleteJSON(url, options);
