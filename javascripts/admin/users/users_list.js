@@ -44,16 +44,17 @@ var UsersListView = function(domRef){
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
-			   successCallBack: that.fetchCompletedOfDelete
+			   successCallBack: that.fetchCompletedOfDelete,
+			   successCallBackParameters: {"selectedId": selectedId}
 	};
 	webservice.deleteJSON(url, options);
-	that.myDom.find($("#user_row_"+selectedId)).html("");
+	
 	
   }; 
-  this.fetchCompletedOfDelete = function(data){
+  this.fetchCompletedOfDelete = function(data, successParams){
 	  if(data.status == "success"){
 		  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
-		  
+		  that.myDom.find($("#user_row_"+successParams['selectedId'])).html("");
 	  }	 
 	  else{
 		  
