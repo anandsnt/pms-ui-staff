@@ -65,17 +65,6 @@ var LikesView = function(domRef){
 			}
 	
 			var userId = $("#user_id").val();
-			// $.ajax({
-				// type : "POST",
-				// url : 'staff/guest_cards/' + userId + '/update_preferences',
-				// data : JSON.stringify(jsonObj),
-				// dataType : "json",
-				// success : function(data) {
-					// that.$likeInfoChange = false;
-				// },
-				// error : function() {
-				// }
-			// });
 			var url = 'staff/guest_cards/' + userId + '/update_preferences';
 		    var webservice = new WebServiceInterface();
 			var options = {

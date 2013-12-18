@@ -171,10 +171,11 @@ var WebServiceInterface = function(){
 				}
 				if(parameters.trim() != ""){
 					if(requestUrl.indexOf("?") == -1){					
-							requestUrl = requestUrl + "?" + parameters;
+						requestUrl = requestUrl + "?" + parameters;
 					}
 					else{
-							requestUrl = requestUrl + parameters;
+						parameters = "&" + parameters;
+						requestUrl = requestUrl + parameters;
 					}
 				}
 			}
@@ -194,7 +195,7 @@ var WebServiceInterface = function(){
 			timeout: that.timeout,
 			
 			success: function(data){
-				sntapp.activityIndicator.hideActivityIndicator();
+				sntapp.activityIndicator.hideActivityIndicator();		
 				if(data.status == 'success'){
 					//TODO: show success notification
 					if(successCallBack) {
