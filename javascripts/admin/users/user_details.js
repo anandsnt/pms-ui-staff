@@ -17,6 +17,9 @@ var UserDetailsView = function(domRef){
   this.gotoPreviousPage = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams);
   };
+   this.gotoPreviousPageWithUpdate = function() {
+  	sntadminapp.gotoPreviousPage(that.viewParams);
+  };
   this.updateUser = function(){
   	var postData = {};
   	postData.user_id = that.myDom.find("#edit-user").attr('user');
@@ -45,6 +48,7 @@ var UserDetailsView = function(domRef){
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
+			   loader:"BLOCKER"
 			   
 	};
 	webservice.putJSON(url, options);	
@@ -76,7 +80,7 @@ var UserDetailsView = function(domRef){
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
-			   
+			   loader:"BLOCKER"
 	};
 	webservice.postJSON(url, options);	
   }; 
@@ -100,6 +104,7 @@ var UserDetailsView = function(domRef){
        if (input.files && input.files[0]) {
            var reader = new FileReader();
            reader.onload = function(e) {
+           	   $('#file-preview').attr('src', e.target.result);
                that.fileContent = e.target.result;
            };
            reader.readAsDataURL(input.files[0]);
