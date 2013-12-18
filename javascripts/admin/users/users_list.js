@@ -16,7 +16,7 @@ var UsersListView = function(domRef){
   };
   //activate/inactivate user
   this.activateInactivateUser = function(){
-  	var url = '/admin/users/activateInactivateUser';
+  	var url = '/admin/users/toggle_activation';
   	var postData = {};
   	var selectedId = $(this).attr("user");// to get the current toggle user's id
     if($("#activate-inactivate-button_"+selectedId+" .switch-button").hasClass("on")) {
@@ -36,15 +36,16 @@ var UsersListView = function(domRef){
   };
   //to delete user
   this.deleteUser = function(){
-  	var url = '/admin/users/deleteUser';
+  	
   	var postData = {};
   	var selectedId = $(this).attr("id");
+  	var url = '/admin/users/'+selectedId;
   	postData.id = selectedId;
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData
 	};
-	webservice.postJSON(url, options);	
+	webservice.deleteJSON(url, options);	
   }; 
   
 };
