@@ -16,6 +16,8 @@ var RoomAssignmentView = function(viewDom){
   };   
 
   this.delegateEvents = function(){
+	// Apply filters upon page load as there may be guest likes defaulted on the filters.
+	that.applyFilters();
 
     that.myDom.find($('#room-attributes .checkbox')
       .change('focusout', that.filterOptionChecked));
