@@ -80,7 +80,7 @@ var HotelDetailsView = function(domRef){
   this.fetchCompletedOfSave = function(data){
 	  if(data.status == "success"){
 		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
-		  that.gotoPreviousPage();
+		  that.goBackToPreviousView();
 	  }	 
 	  else{
 		  sntapp.activityIndicator.hideActivityIndicator();
