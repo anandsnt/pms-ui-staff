@@ -242,7 +242,7 @@ var Search  = function(domRef){
     	var showRoomStatus = false;
 		
 		// Display FO status only when room-status = NOT-READY and reservation status = CHECKING-IN
-    	if(roomStatusMapped == "not-ready" && reservation_status == "CHECKING_IN"){
+    	if((roomstatus != "READY" && foStatus != "VACANT") && reservation_status == "CHECKING_IN"){
     		roomstatusexplained = foStatus;
     		showRoomStatus = true;
     	}
