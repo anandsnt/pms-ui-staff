@@ -22,28 +22,30 @@ function resizableGuestCard($maxHeight){
 
 var setUpGuestcard = function(viewDom) {
 
-	// Resizable guest card variables
-	var $maxHeight = $(window).height(), $breakpoint = ($maxHeight / 2);
+	// Resizable guest card when not on tablet
+	var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null,
+		$maxHeight = $(window).height(),
+		$breakpoint = ($maxHeight/2);
 
-	$(window).resize(function() {
-    	$maxHeight = $(window).height();
+	if (!$isTablet) {
+		$(window).resize(function() {
+	    	$maxHeight = $(window).height();
 
-    	// Resize guest card if too big
-    	if ($('#guest-card').hasClass('open') && $('#guest-card').height() > ($maxHeight-90))
-    	{
-    		$('#guest-card').css({'height':$maxHeight-90+'px'});
-    	}
+	    	// Resize guest card if too big
+	    	if ($('#guest-card').hasClass('open') && $('#guest-card').height() > ($maxHeight-90))
+	    	{
+	    		$('#guest-card').css({'height':$maxHeight-90+'px'});
+	    	}
 
-    	// Close guest card if too small
-    	if ($('#guest-card').height() < 90)
-    	{
-    		$('#guest-card').removeClass('open').css({'height':90+'px'});
-    	}
+	    	// Close guest card if too small
+	    	if ($('#guest-card').height() < 90)
+	    	{
+	    		$('#guest-card').removeClass('open').css({'height':90+'px'});
+	    	}
 
-    	resizableGuestCard($maxHeight);
-	});
-
-	$(window).resize(function() { $maxHeight = $(window).height(); });
+	    	resizableGuestCard($maxHeight);
+		});
+	}
 
 	// Guest card tabs
 	viewDom.find($('#guest-card-content')).tabs({

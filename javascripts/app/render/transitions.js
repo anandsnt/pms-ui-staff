@@ -275,11 +275,6 @@ $(function($){
     // FastClick
     FastClick.attach(document.body);
 
-    // Prevent screen scroll when iPad virtual keyboard appears
-    $(document).on('focus', 'input', function() {
-        window.scrollTo(0, 0);
-    });
-
 /*  Main screens        *******************************************************/
     
     // First main scren - check is it preloaded or hash from admin app exists
