@@ -13,7 +13,7 @@ var UserDetailsView = function(domRef){
   		that.readURL(this);
   	});
   };  
-  this.goBackToPreviousView = function() {
+  this.gotoPreviousPage = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams);
   };
   this.updateUser = function(){
@@ -36,7 +36,7 @@ var UserDetailsView = function(domRef){
   	that.myDom.find("#assigned-roles li").each(function(n) {
         postData.user_roles.push($(this).attr("id"));
     });
-      console.log(postData);
+     
   	// console.log(JSON.stringify(postData));
   	var url = '/admin/users/'+postData.user_id;
 	var webservice = new WebServiceInterface();		
