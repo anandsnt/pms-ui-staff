@@ -236,7 +236,7 @@ var Search  = function(domRef){
     this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip){
 
     	var reservationStatusIcon = this.getReservationStatusMapped(reservation_status);
-    	var roomStatusMapped = this.getRoomStatusMapped(roomstatus);
+    	var roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
     	var roomstatusexplained = "";
     	var roomStatus = "";
     	var showRoomStatus = false;
@@ -247,8 +247,11 @@ var Search  = function(domRef){
     		showRoomStatus = true;
     	}
 		// Show color coding ( Red / Green - for Room status) for room only if reservation status = CHECKING-IN
-        if(reservation_status == "CHECKING_IN")	roomStatus = '<strong class="room-number ' + escapeNull(roomStatusMapped) + '">' + escapeNull(room) + '</strong>';
-		else roomStatus = '<strong class="room-number">' + escapeNull(room) + '</strong>';
+      if(reservation_status == "CHECKING_IN")	{
+        roomStatus = '<strong class="room-number ' + escapeNull(roomStatusMapped) + '">' + escapeNull(room) + '</strong>';
+      }else {
+        roomStatus = '<strong class="room-number">' + escapeNull(room) + '</strong>';
+      }
 			
     	var $location = (escapeNull(location) != '') ? '<span class="icons icon-location">' + escapeNull(location) + '</span>' : '',
         $group = (escapeNull(group) != '') ? '<em class="icons icon-group">' + escapeNull(group) + '</em>' : '',
@@ -292,14 +295,14 @@ var Search  = function(domRef){
     }
 
     //Map the room status to the view expected format
-    this.getRoomStatusMapped = function(status){
-    	var roomStatus = "";
-    	if(status == "READY"){
-    		roomStatus = 'ready';
-    	}else if(status == "NOTREADY"){
-    		roomStatus = "not-ready";
+    this.getRoomStatusMapped = function(roomstatus, fostatus){
+    	var mappedStatus = "";
+    	if(roomstatus == "READY" && fostatus == "VACANT"){
+    		mappedStatus = 'ready';
+    	}else{
+    		mappedStatus = "not-ready";
     	}
-		return roomStatus;
+		return mappedStatus;
     }
 
     this.updateView = function(){

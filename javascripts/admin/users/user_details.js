@@ -1,6 +1,7 @@
 var UserDetailsView = function(domRef){
   BaseView.call(this);  
-  this.myDom = domRef; 
+  this.myDom = domRef;
+  this.fileContent ="";
   var that = this;
   
   this.pageinit = function(){
@@ -8,14 +9,24 @@ var UserDetailsView = function(domRef){
   };
   this.delegateEvents = function(){  	
   	that.myDom.find($('#save_new_user')).on('click', that.saveNewUser);
+  	that.myDom.find($('#go_back, #cancel')).on('click', that.gotoPreviousPage);
   	that.myDom.find('#save').on('click', that.updateUser);
   	that.myDom.find('#user-picture').on('change', function(){
   		that.readURL(this);
   	});
   };  
-  this.goBackToPreviousView = function() {
+  //go to previous page withount any update in view
+  this.gotoPreviousPage = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams);
   };
+   //go to previous page with update in view - after adding new user or update user
+   this.gotoPreviousPageWithUpdate = function() {
+   	var url = "/admin/users";
+   	viewParams = {};
+  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+    sntadminapp.gotoPreviousPage(that.viewParams);
+  };
+  //update user
   this.updateUser = function(){
   	var postData = {};
   	postData.user_id = that.myDom.find("#edit-user").attr('user');
@@ -28,22 +39,28 @@ var UserDetailsView = function(domRef){
   	postData.confirm_email = that.myDom.find("#confirm-email").val();
   	postData.password = that.myDom.find("#password").val();
   	postData.confirm_password = that.myDom.find("#confirm-password").val();
-  	postData.user_photo = that.myDom.find("#file-preview").attr("src");
+  	// to handle image uploaded or not
+  	if(that.myDom.find("#file-preview").attr("changed") == "changed")
+  		postData.user_photo = that.myDom.find("#file-preview").attr("src");
+  	else
+  		postData.user_photo = "";
   	postData.user_roles = [];
   	that.myDom.find("#assigned-roles li").each(function(n) {
         postData.user_roles.push($(this).attr("id"));
     });
-      console.log(postData.user_roles);
-  	// console.log(JSON.stringify(postData));
+     
   	var url = '/admin/users/'+postData.user_id;
 	var webservice = new WebServiceInterface();		
+	//failureCallBack: that.fetchFailedOfSave
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
-			   failureCallBack: that.fetchFailedOfSave
+			   loader:"BLOCKER"
+			   
 	};
 	webservice.putJSON(url, options);	
   };
+  //to save new user
   this.saveNewUser = function(){
   	var postData = {};
   	postData.first_name = that.myDom.find("#first-name").val();
@@ -55,42 +72,51 @@ var UserDetailsView = function(domRef){
   	postData.confirm_email = that.myDom.find("#confirm-email").val();
   	postData.password = that.myDom.find("#password").val();
   	postData.confirm_password = that.myDom.find("#confirm-password").val();
-  	postData.user_photo = that.myDom.find("#file-preview").attr("src");
-  	// console.log(JSON.stringify(postData));
+  	// to handle image uploaded or not
+  	if(that.myDom.find("#file-preview").attr("changed") == "changed")
+  		postData.user_photo = that.myDom.find("#file-preview").attr("src");
+  	else
+  		postData.user_photo = "";
+
   	postData.user_roles = [];
   	that.myDom.find("#assigned-roles li").each(function(n) {
             postData.user_roles.push($(this).attr("id"));
       });
       
   	var url = '/admin/users';
-	var webservice = new WebServiceInterface();		
+	var webservice = new WebServiceInterface();
+	
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
-			   failureCallBack: that.fetchFailedOfSave
+			   loader:"BLOCKER"
 	};
 	webservice.postJSON(url, options);	
   }; 
+  //to do the actions after completeing server call
   this.fetchCompletedOfSave = function(data){
 	  if(data.status == "success"){
 		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
-		  that.gotoPreviousPage();
+		  that.gotoPreviousPageWithUpdate();
 	  }	 
 	  else{
 		  sntapp.activityIndicator.hideActivityIndicator();
 		  sntapp.notification.showErrorList(data.errors, that.myDom);  
 	  }	  
   };
-  
+  //to do the actions on fail
   this.fetchFailedOfSave = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+	sntapp.notification.showErrorList("Some error occured: " + errorMessage, that.myDom);  
   };
+  //to show preview of the image using file reader
   this.readURL = function(input) {
+  	   $('#file-preview').attr('changed', "changed");
        if (input.files && input.files[0]) {
            var reader = new FileReader();
            reader.onload = function(e) {
-               $('#file-preview').attr('src', e.target.result);
+           	   $('#file-preview').attr('src', e.target.result);
+               that.fileContent = e.target.result;
            };
            reader.readAsDataURL(input.files[0]);
        }

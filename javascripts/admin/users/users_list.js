@@ -43,9 +43,25 @@ var UsersListView = function(domRef){
   	postData.id = selectedId;
 	var webservice = new WebServiceInterface();		
 	var options = {
-			   requestParameters: postData
+			   requestParameters: postData,
+			   successCallBack: that.fetchCompletedOfDelete,
+			   loader:"BLOCKER",
+			   successCallBackParameters: {"selectedId": selectedId}
 	};
-	webservice.deleteJSON(url, options);	
+	webservice.deleteJSON(url, options);
+	
+	
   }; 
+  //to remove deleted row and show messa
+  this.fetchCompletedOfDelete = function(data, successParams){
+	  if(data.status == "success"){
+		  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
+		  that.myDom.find($("#user_row_"+successParams['selectedId'])).html("");
+	  }	 
+	  else{
+		  
+		  sntapp.notification.showErrorList(data.errors, that.myDom);  
+	  }	  
+  };
   
 };
