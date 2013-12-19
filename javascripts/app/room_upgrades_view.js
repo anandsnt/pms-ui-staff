@@ -47,25 +47,27 @@ var RoomUpgradesView = function(viewDom){
 
 
   this.roomUpgradeSelected = function(e){
+    
     e.preventDefault();
     var upsellAmountId = $(this).attr('data-value');
     var roomNumberSelected = $(this).attr('data-room-number');
     var reservationId = that.reservation_id;
-    var postParams = {"reservation_id": reservationId, "upsell_amount_id": upsellAmountId};
+    var postParams = {"reservation_id": reservationId, "upsell_amount_id": upsellAmountId, "room_no": roomNumberSelected};
 
     var url = '/staff/reservations/upgrade_room';
-	var webservice = new WebServiceInterface();	
+	  var webservice = new WebServiceInterface();	
   	var successCallBackParams = {
   			'reservationId': reservationId,
   			'roomNumberSelected': roomNumberSelected, 
   	};	
-	var options = {
-			   requestParameters: postParams,
-			   successCallBack: that.upgradeSuccess,
-			   successCallBackParameters: successCallBackParams,
-			   loader: "BLOCKER"
-	};
-	webservice.postJSON(url, options);	
+  	var options = {
+  			   requestParameters: postParams,
+  			   successCallBack: that.upgradeSuccess,
+  			   successCallBackParameters: successCallBackParams,
+  			   loader: "BLOCKER"
+  	};
+	  webservice.postJSON(url, options);	
+
   };
 	  
   this.upgradeSuccess = function(data, requestParams){
@@ -96,10 +98,10 @@ var RoomUpgradesView = function(viewDom){
   };
 
   this.gotoBillCard = function(){
-      var viewURL = "staff/reservation/bill_card";
-      var viewDom = $("#view-nested-third");
-      var params = {"reservation_id": that.reservation_id};
-      var nextViewParams = {"showanimation": true, "from-view" : views.ROOM_UPGRADES};
-      sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams );
+    var viewURL = "staff/reservation/bill_card";
+    var viewDom = $("#view-nested-third");
+    var params = {"reservation_id": that.reservation_id};
+    var nextViewParams = {"showanimation": true, "from-view" : views.ROOM_UPGRADES};
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams );
   };
 };
