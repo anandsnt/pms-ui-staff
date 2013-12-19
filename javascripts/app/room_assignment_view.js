@@ -17,7 +17,6 @@ var RoomAssignmentView = function(viewDom){
 
   this.delegateEvents = function(){
 	// Apply filters upon page load as there may be guest likes defaulted on the filters.
-	that.applyFilters();
 
     that.myDom.find($('#room-attributes .checkbox')
       .change('focusout', that.filterOptionChecked));
@@ -37,10 +36,10 @@ var RoomAssignmentView = function(viewDom){
   //
   this.createViewScroll = function(){
    // if (viewScroll) { destroyViewScroll(); }
-          setTimeout(function(){
-            if (that.myDom.find($('#room-attributes')).length) { createViewScroll('#room-attributes'); }
-            if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
-          }, 300);
+      setTimeout(function(){
+        if (that.myDom.find($('#room-attributes')).length) { createViewScroll('#room-attributes'); }
+        if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
+      }, 300);
   };
 
   //Scroll view creation for the the room list
@@ -130,7 +129,7 @@ var RoomAssignmentView = function(viewDom){
       filterGroup.filters = [];
 
       $('#group-'+i).children('label').each(function () {
-        if($(this).hasClass("checked")){
+        if($(this).find('input').is(':checked')){
           filterGroup.filters.push($(this).find('input').val()); 
         }
       }); 
