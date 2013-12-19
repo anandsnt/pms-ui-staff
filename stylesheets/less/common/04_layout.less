@@ -56,7 +56,10 @@ body {
 				.gradient(@redStart, @redEnd);
 			}
 
-			.active { cursor: default; }
+			.active { 
+				cursor: default; 
+				pointer-events:none;
+			}
 
 			&:nth-child(6),
 			&:last-child {
@@ -105,7 +108,7 @@ body {
 			border-color: @logoPrimary rgba(255,255,255,.4);
 			.square(32px);
 			#border-radius > .rounded(64px);
-			#rotate > .infinite(rotation, .8s, linear, infinite);
+			#rotate > .infinite();
 		}
 	}
 
@@ -163,77 +166,41 @@ body {
 	.inline-warning { color: darken(@yellow, 10); }
 	.inline-info { color: darken(@blue, 10); }
 
+	// System success & error message
+	.success_message,
+	.error_message {
+		padding: 10px;
+		margin: 0;
+		border-bottom: 1px solid;
+		font-size: 14px; 
+		line-height: 1em;
+		font-weight: 600;
+		text-align: center;
+		z-index: 11000;
+
+		.close-btn:after {
+			content: "×";
+			font-size: 20px;
+			margin-left: 12px;
+			width: auto;
+			cursor: pointer;
+			.pull-right;
+		}
+	}
+	
+	.success_message {	
+		border-color: @green;
+		background: lighten(@green, 20);
+		color: darken(@green, 20);
+	}
+
+	.error_message {
+		color: @red;
+		background: lighten(@softRed, 20);
+		border-color: @softRed;
+	}
+
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
 ==========================================================*/
-
-//Added by Qburst
-
-// for success and error message
-.success_message {
-	padding:2px 4px;
-	margin:0px;
-	border:solid 1px #C0F0B9;
-	background:#D5FFC6;
-	color:#48A41C; 
-	font-family:Arial, Helvetica, sans-serif; 
-	font-size:14px; 
-	font-weight:bold;
-	text-align:center;
-	z-index: 11000;
-}
-.error_message {
-	padding:2px 4px;
-	margin:0px;
-	border:solid 1px #FBD3C6;
-	background:#FDE4E1;
-	color:#CB4721;
-	font-family:Arial, Helvetica, sans-serif;
-	font-size:14px;
-	font-weight:bold;
-	text-align:center;
-	z-index: 11000;
-}
-.success_message .close-btn:after {
-	float: right;
-	content: "×"; 
-	width: auto;
-	margin-left: 12px;
-	font-size: 20px;
-}
-.error_message .close-btn:after {
-	float: right;
-	content: "×"; 
-	width: auto;
-	font-size: 20px;
-	margin-left: 12px;
-}
-
-// for loader or activity indicator
- .loader {
-	position:absolute;
-	z-index:10000;
-	top:0;
-	left:0;
-	height:100%;
-	width:100%;
-	opacity:0.7;
-	filter:alpha(opacity=70);
-	background: #FFF;
-	text-align:center;
-	display: none;
-}
-.loader .activity-indicator {
-	animation: 0.8s linear 0s normal none infinite rotation;
-	border-color: #F6991B rgba(255, 255, 255, 0.4);
-	border-image: none;
-	border-radius: 64px 64px 64px 64px;
-	border-style: solid;
-	border-width: 5px;
-	height: 100px;
-	width: 100px;
-	position: absolute;
-	left: 700px;
-	top: 400px;
-}
