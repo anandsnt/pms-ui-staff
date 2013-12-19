@@ -39,7 +39,7 @@ var RegistrationCardView = function(viewDom){
   };
   
   this.executeLoadingAnimation = function(){
-  	
+  	sntapp.activityIndicator.showActivityIndicator("blocker");
   	if (this.viewParams === undefined) return;
   	if (this.viewParams["showanimation"] === false) return;
 	

@@ -333,10 +333,12 @@ var RoomAssignmentView = function(viewDom){
       staycardView.refreshReservationDetails(currentReservation, that.gotoStayCard);
     }
     else if(that.viewParams.next_view == views.BILLCARD){
+      console.log("next view bill card");
       var staycardView = new StayCard($("#view-nested-first"));
       currentReservation = requestParams['currentReservation'];
       staycardView.refreshReservationDetails(currentReservation, that.gotoBillCard);
     }
+
   };
 
   
@@ -352,6 +354,7 @@ var RoomAssignmentView = function(viewDom){
   };
 
   this.gotoBillCard = function(){
+      
       var viewURL = "staff/reservation/bill_card";
       var viewDom = $("#view-nested-third");
       var params = {"reservation_id": that.reservation_id};
