@@ -48,7 +48,7 @@ var StayCard = function(viewDom){
 
   //Create the scroll views for staycard
   this.createScroll = function(){
-
+    
     var confirmNum = that.myDom.find($('#reservation_info')).attr('data-confirmation-num');
     $("div[id='reservation-listing']").each(function(index){
       createViewScroll("#"+ $(this).parent().attr('id')+" #"+ $(this).attr('id'));
@@ -59,10 +59,10 @@ var StayCard = function(viewDom){
 
   this.initSubViews = function(){
   	 
-	partialViewRef = $("#confirm_no").val();
-	setUpGuestcard(that.myDom);
-	var guestContactView = new GuestContactView($("#contact-info"));
-	guestContactView.pageinit();  	
+  	partialViewRef = $("#confirm_no").val();
+  	setUpGuestcard(that.myDom);
+  	var guestContactView = new GuestContactView($("#contact-info"));
+  	guestContactView.pageinit();  	
   };
 
  
@@ -88,7 +88,6 @@ var StayCard = function(viewDom){
   //Add the reservation details to the DOM.
   this.displayReservationDetails = function($href){
   	 
-  	$("#view-nested-first #reservation_info").removeClass("current");
     //get the current highlighted timeline
     //Not more than 5 resevation should be kept in DOM in a timeline.
     var currentTimeline = $('#reservation-timeline').find('.ui-state-active').attr('aria-controls');

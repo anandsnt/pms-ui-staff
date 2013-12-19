@@ -9,8 +9,9 @@ function getCurrentReservationDiv(){
 
 
 function getReservationId(){
+
 	var currentFetchDom = getCurrentReservationDiv();
-	var reservation_id = $("#"+currentFetchDom+" #reservation_info").attr("data-reservation-id");
+	var reservation_id = $("#"+currentFetchDom).attr("data-reservation-id");
 	return reservation_id;
 }
 
