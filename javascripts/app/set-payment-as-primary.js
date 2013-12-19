@@ -22,6 +22,11 @@ var SetPaymentAsPrimaryModal = function(){
         
    };
    
+   this.fetchCompletedOfSetCreditAsPrimary = function(data, requestParameters){
+	   var html = "<span id='primary_credit' class='primary'><span class='value primary'>Primary</span></span>";
+		$("#primary_credit.primary").remove();
+		$("#payment_tab #credit_row" + requestParameters['credit_card_id']).append(html);	   
+   };
     this.setCreditAsPrimary = function(){
   	
   		var $credit_card_id = that.credit_id;
@@ -31,33 +36,35 @@ var SetPaymentAsPrimaryModal = function(){
 		$("#credit_row" + $credit_card_id).append("<span id='primary_credit' class='primary'><span class='value primary'>Primary</span></span>");
 		that.hide();	
 		
-		$.ajax({
-			type: "POST",
-			url: 'staff/payments/setCreditAsPrimary',
-			data: {id: $credit_card_id, user_id: $user_id},
-			dataType: 'json',
-			success: function(data) {
-				$("#primary_credit.primary").remove();
-				$("#payment_tab #credit_row" + $credit_card_id).append("<span id='primary_credit' class='primary'><span class='value primary'>Primary</span></span>");
-				// $("#payment_tab credit_row"+$credit_card_id)				
-			},
-			error: function(){
-			}
-		});
+	    var url = 'staff/payments/setCreditAsPrimary';
+	  	var webservice = new WebServiceInterface();
+	  	var successCallBackParams = {
+	  			'credit_card_id': $credit_card_id,
+	  	};
+	  	var data = {id: $credit_card_id, user_id: $user_id};
+	    var options = { 
+	    				requestParameters: data,
+	    				successCallBack: that.fetchCompletedOfSetCreditAsPrimary,
+	    				successCallBackParameters: successCallBackParams,
+	    				loader: 'blocker'
+	    		};
+	    webservice.postJSON(url, options);	
+    };
+    this.fetchCompletedOfDeleteCreditCard = function(data){
+    	var $credit_card_id = that.credit_id;
+		$("#credit_row" + $credit_card_id).remove();
     };
     this.deleteCreditCard = function(){
-  		var $credit_card_id = that.credit_id;
-		$("#credit_row" + $credit_card_id).remove();		
+  		var $credit_card_id = that.credit_id;		
 		that.hide();
-		$.ajax({
-			type: "POST",
-			url: 'staff/payments/deleteCreditCard',
-			data: {id: $credit_card_id},
-			dataType: 'json',
-			success: function(data) {
-			},
-			error: function(){
-			}
-		});
+	    var url = 'staff/payments/deleteCreditCard';
+	  	var webservice = new WebServiceInterface();
+	  	var data = {id: $credit_card_id};
+	    var options = { 
+	    				requestParameters: data,
+	    				successCallBack: that.fetchCompletedOfDeleteCreditCard,
+	    				loader: 'blocker'
+	    		};
+	    webservice.postJSON(url, options);	
     };
 };
