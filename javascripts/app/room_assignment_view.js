@@ -326,33 +326,19 @@ var RoomAssignmentView = function(viewDom){
 
   //Update staycard UI. Staycard contents are available in DOM
   this.updateStaycardUI = function(data, requestParams){
-	var roomSelected = requestParams['roomSelected'], 
-	currentReservation = requestParams['currentReservation'],
-	roomStatusExplained = requestParams['roomStatusExplained'], 
-	selectedItem = requestParams['selectedItem'];
-	
-    var roomStausNew = "";
-    if((typeof roomStatusExplained != "undefined") && (roomStatusExplained != "")){
-      roomStausNew = "<span class='room-status'>"+ roomStatusExplained +"</span>";
-    }
-    var roomReadyStatus = "";
-    if(selectedItem.find(">:first-child").hasClass('ready')){
-      roomReadyStatus = "ready";
-    }else if(selectedItem.find(">:first-child").hasClass('not-ready')){
-      roomReadyStatus = "not-ready";
 
-    }
-
-    $('#reservation-'+currentReservation+'-room-number').html("");
-    var roomHtml = "<strong class='room-number "+roomReadyStatus+"'>"+roomSelected+"</strong>" + roomStausNew;
-
-    $('#reservation-'+currentReservation+'-room-number').html(roomHtml);
     if(that.viewParams.next_view == views.STAYCARD){
-      that.gotoStayCard();
+      var staycardView = new StayCard($("#view-nested-first"));
+      currentReservation = requestParams['currentReservation'];
+      staycardView.refreshReservationDetails(currentReservation, that.gotoStayCard);
     }
     else if(that.viewParams.next_view == views.BILLCARD){
-      that.gotoBillCard();
+      console.log("next view bill card");
+      var staycardView = new StayCard($("#view-nested-first"));
+      currentReservation = requestParams['currentReservation'];
+      staycardView.refreshReservationDetails(currentReservation, that.gotoBillCard);
     }
+
   };
 
   
@@ -368,6 +354,7 @@ var RoomAssignmentView = function(viewDom){
   };
 
   this.gotoBillCard = function(){
+      
       var viewURL = "staff/reservation/bill_card";
       var viewDom = $("#view-nested-third");
       var params = {"reservation_id": that.reservation_id};

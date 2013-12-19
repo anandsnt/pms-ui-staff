@@ -275,6 +275,13 @@ $(function($){
     // FastClick
     FastClick.attach(document.body);
 
+    // Set height so that keyboard can push content up
+    var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
+
+    if ($isTablet) {
+        $("#app-page").css("height",window.innerHeight);
+    }
+
 /*  Main screens        *******************************************************/
     
     // First main scren - check is it preloaded or hash from admin app exists
