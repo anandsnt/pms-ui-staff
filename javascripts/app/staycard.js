@@ -10,10 +10,12 @@ var StayCard = function(viewDom){
 	reservationDetails.initialize();
    
   };
+
+
    this.delegateEvents = function(partialViewRef){  
    	if(partialViewRef === undefined){
    		partialViewRef = $("#confirm_no").val();
-   	}   	
+   	};   	
   	
     that.myDom.find('#reservation-timeline li').on('click', that.reservationTimelineClicked);
     that.myDom.find('#reservation-listing li').on('click', that.reservationListItemClicked);
@@ -48,7 +50,7 @@ var StayCard = function(viewDom){
 
   //Create the scroll views for staycard
   this.createScroll = function(){
-    
+
     var confirmNum = that.myDom.find($('#reservation_info')).attr('data-confirmation-num');
     $("div[id='reservation-listing']").each(function(index){
       createViewScroll("#"+ $(this).parent().attr('id')+" #"+ $(this).attr('id'));
@@ -80,14 +82,8 @@ var StayCard = function(viewDom){
   // Load reservation details
   this.reservationListItemClicked = function(e){
     var confirmationNumClicked = $(this).attr('data-confirmation-num');
-    //var currentTimeline = $(this).parents().find(".reservation-list:eq(0)").attr('id');
-    //$('#'+currentTimeline).append("<div id= 'reservation-"+confirmationNumClicked+"'>test div</div>");
-    that.displayReservationDetails($(this).find('a').attr('href'));
-  };
+    var $href = $(this).find('a').attr('href');
 
-  //Add the reservation details to the DOM.
-  this.displayReservationDetails = function($href){
-  	 
     //get the current highlighted timeline
     //Not more than 5 resevation should be kept in DOM in a timeline.
     var currentTimeline = $('#reservation-timeline').find('.ui-state-active').attr('aria-controls');
@@ -97,33 +93,48 @@ var StayCard = function(viewDom){
     //get the reservation id.
     var reservation = $href.split("-")[1];
 
+
     //if div not present in DOM, make ajax request 
     if (!($($href).length > 0)) {
+      that.loadReservationDetails($href);
+    } 
+  };
+
+  this.refreshReservationDetails = function(reservationId, sucessCallback){
+    var currentReservationDom = that.myDom.find("[data-reservation-id='" + reservationId + "']").attr('id');
+    that.loadReservationDetails("#" + currentReservationDom, sucessCallback);
+
+
+  }
+
+  this.loadReservationDetails = function(currentReservationDom, sucessCallback){
+    var confirmationNum = currentReservationDom.split("-")[1];
+    var currentTimeline = $('#reservation-timeline').find('.ui-state-active').attr('aria-controls');
       //show loading indicator
       sntapp.activityIndicator.showActivityIndicator("blocker");
       $.ajax({
         type : 'GET',
-        url : "staff/staycards/reservation_details?reservation=" + reservation,
+        url : "staff/staycards/reservation_details?reservation=" + confirmationNum,
         dataType : 'html',
         //async:false,
 
         success : function(data) {  
           sntapp.activityIndicator.hideActivityIndicator(); 
-          //To avoid multiple ajax content fetches appended to DOM.
-          if (!($($href).length > 0)) {
+            if ($(currentReservationDom).length > 0) {
+              $("#" +currentTimeline).find(currentReservationDom).remove();
+            }
             $("#" + currentTimeline).append(data);         
-            createViewScroll("#reservation-content-"+reservation);       
-            var reservationDetails = new reservationDetailsView($("#reservation-"+reservation));
+            createViewScroll("#reservation-content-"+confirmationNum);       
+            var reservationDetails = new reservationDetailsView($("#reservation-"+confirmationNum));
             reservationDetails.initialize();
-            
-          } 	
-          
+            if(sucessCallback != undefined){
+              sucessCallback();
+            }
         },
         error : function() {
           //TODO: handle error display
         }
       });
-    } 
   };
 
   
