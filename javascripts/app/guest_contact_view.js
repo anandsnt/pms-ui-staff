@@ -64,10 +64,6 @@ var GuestContactView = function(domRef) {
 			$contactJsonObj['works_at'] = that.myDom.find("#works-at").val();
 			$contactJsonObj['job_title'] = that.myDom.find("#job-title").val();
 			$contactJsonObj['birthday'] = that.myDom.find("#guest-birthday").val();
-			$contactJsonObj['passport_no'] = that.myDom.find("#passport-number").val();
-			if (that.myDom.find("#passport-month").val() != "" && that.myDom.find("#passport-year").val() != "")
-				$contactJsonObj['passport_expiry'] = "01-" + that.myDom.find("#passport-month").val() + "-" + "20" + that.myDom.find("#passport-year").val();
-			$contactJsonObj['nationality'] = that.myDom.find("#nationality_status").val();
 			$contactJsonObj['street'] = that.myDom.find("#streetname").val();
 			$contactJsonObj['city'] = that.myDom.find("#city").val();
 			$contactJsonObj['state'] = that.myDom.find("#state").val();
