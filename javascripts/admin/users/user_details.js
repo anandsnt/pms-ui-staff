@@ -85,7 +85,7 @@ var UserDetailsView = function(domRef){
       
   	var url = '/admin/users';
 	var webservice = new WebServiceInterface();
-	
+	console.log(postData.user_roles);
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
