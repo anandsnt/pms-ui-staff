@@ -48,7 +48,7 @@ var UserDetailsView = function(domRef){
   	that.myDom.find("#assigned-roles li").each(function(n) {
         postData.user_roles.push($(this).attr("id"));
     });
-     
+     console.log(postData.user_roles);
   	var url = '/admin/users/'+postData.user_id;
 	var webservice = new WebServiceInterface();		
 	//failureCallBack: that.fetchFailedOfSave
@@ -85,7 +85,7 @@ var UserDetailsView = function(domRef){
       
   	var url = '/admin/users';
 	var webservice = new WebServiceInterface();
-	console.log(postData.user_roles);
+	
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
