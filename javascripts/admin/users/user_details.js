@@ -44,11 +44,11 @@ var UserDetailsView = function(domRef){
   		postData.user_photo = that.myDom.find("#file-preview").attr("src");
   	else
   		postData.user_photo = "";
+  	//To get assigned roles
   	postData.user_roles = [];
   	that.myDom.find("#assigned-roles li").each(function(n) {
         postData.user_roles.push($(this).attr("id"));
     });
-     console.log(postData.user_roles);
   	var url = '/admin/users/'+postData.user_id;
 	var webservice = new WebServiceInterface();		
 	//failureCallBack: that.fetchFailedOfSave
@@ -77,7 +77,7 @@ var UserDetailsView = function(domRef){
   		postData.user_photo = that.myDom.find("#file-preview").attr("src");
   	else
   		postData.user_photo = "";
-
+    //To get assigned roles
   	postData.user_roles = [];
   	that.myDom.find("#assigned-roles li").each(function(n) {
             postData.user_roles.push($(this).attr("id"));
