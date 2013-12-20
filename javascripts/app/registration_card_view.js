@@ -142,23 +142,22 @@ var RegistrationCardView = function(viewDom){
   	}
   	else{
   		// When balance amount is 0 - perform complete check out action.
-  		$.ajax({
-		    type: "POST",
-		    url: '/staff/checkout',
-		    data : {"reservation_id" : that.reservation_id},
-		    success: function(data) {
-		    	if(data.status == "success"){
-		    		that.showSuccessMessage(data.data,that.goToSearchScreen);
-		    	}
-		    	else if(data.status == "failure"){
-		    		that.showErrorMessage(data.errors);
-		    	}
-		    },
-		    error: function(){
-			}
-	  	});
+  		var url = '/staff/checkout';
+	  	var webservice = new WebServiceInterface();
+	  	var data = {"reservation_id" : that.reservation_id};
+	    var options = { 
+	    				requestParameters: data,
+	    				successCallBack: that.fetchCompletedOfCompleteCheckout,
+	    				loader: 'blocker'
+	    		};
+	    webservice.postJSON(url, options);
   	}
   };
+  
+  this.fetchCompletedOfCompleteCheckout = function(data){
+  		that.showErrorMessage(data.data,that.goToSearchScreen);
+  };
+  
   // To show payment modal
   this.payButtonClicked = function(){
   	var billCardPaymentModal = new BillCardPaymentModal(that.reloadBillCardPage);
