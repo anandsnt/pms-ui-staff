@@ -314,7 +314,7 @@ var RoomAssignmentView = function(viewDom){
   			'selectedItem': $(this),
   	};
     var options = { requestParameters: postParams,
-    				successCallBack: that.updateStaycardUI,
+    				successCallBack: that.roomAssignmentSuccess,
     				successCallBackParameters: successCallBackParams,
     				loader: 'blocker'
     		};
@@ -325,17 +325,15 @@ var RoomAssignmentView = function(viewDom){
 
 
   //Update staycard UI. Staycard contents are available in DOM
-  this.updateStaycardUI = function(data, requestParams){
+  this.roomAssignmentSuccess = function(data, requestParams){
+
+    var staycardView = new StayCard($("#view-nested-first"));
+    currentReservation = requestParams['currentReservation'];
 
     if(that.viewParams.next_view == views.STAYCARD){
-      var staycardView = new StayCard($("#view-nested-first"));
-      currentReservation = requestParams['currentReservation'];
       staycardView.refreshReservationDetails(currentReservation, that.gotoStayCard);
     }
     else if(that.viewParams.next_view == views.BILLCARD){
-      console.log("next view bill card");
-      var staycardView = new StayCard($("#view-nested-first"));
-      currentReservation = requestParams['currentReservation'];
       staycardView.refreshReservationDetails(currentReservation, that.gotoBillCard);
     }
 
@@ -364,37 +362,45 @@ var RoomAssignmentView = function(viewDom){
 
 
   this.roomUpgradeSelected = function(e){
+
+    // var roomUpgradesView = new RoomUpgradesView();
+    // roomUpgradesView.roomUpgradeSelected();
+
+    
     e.preventDefault();
     var upsellAmountId = $(this).attr('data-value');
     var roomNumberSelected = $(this).attr('data-room-number');
     var reservationId = that.reservation_id;
-    var postParams = {"reservation_id": reservationId, "upsell_amount_id": upsellAmountId};
+    var postParams = {"reservation_id": reservationId, "upsell_amount_id": upsellAmountId, "room_no": roomNumberSelected};
 
     var url = '/staff/reservations/upgrade_room';
-	var webservice = new WebServiceInterface();	
-  	var successCallBackParams = {
-  			'reservationId': reservationId,
-  			'roomNumberSelected': roomNumberSelected, 
-  	};	
-	var options = {
-			   requestParameters: postParams,
-			   successCallBack: that.upgradeSuccess,
-			   successCallBackParameters: successCallBackParams,
-			   loader: "BLOCKER"
-	};
-	webservice.postJSON(url, options);	
+    var webservice = new WebServiceInterface(); 
+    var successCallBackParams = {
+        'reservationId': reservationId,
+        'roomNumberSelected': roomNumberSelected, 
+    };  
+    var options = {
+           requestParameters: postParams,
+           successCallBack: that.upgradeSuccess,
+           successCallBackParameters: successCallBackParams,
+           loader: "BLOCKER"
+    };
+    webservice.postJSON(url, options);  
+
   };
-  
+    
   this.upgradeSuccess = function(data, requestParams){
-	    $('#reservation-'+requestParams['reservationId']+'-room-number').html("");
-	    var roomHtml = "<strong class='room-number ready'>"+requestParams['roomNumberSelected']+"</strong>";
-	    $('#reservation-'+requestParams['reservationId']+'-room-number').html(roomHtml);
-	  	if(that.viewParams.next_view == views.STAYCARD){
-	      that.gotoStayCard();
-	    }
-	    else if(that.viewParams.next_view == views.BILLCARD){
-	      that.gotoBillCard();
-	    }
+
+    var staycardView = new StayCard($("#view-nested-first"));
+    currentReservation = requestParams['reservationId'];
+
+    if(that.viewParams.next_view == views.STAYCARD){
+      staycardView.refreshReservationDetails(currentReservation, that.gotoStayCard);
+    }
+    else if(that.viewParams.next_view == views.BILLCARD){
+      staycardView.refreshReservationDetails(currentReservation, that.gotoBillCard);
+    }
+
   };
 
 
