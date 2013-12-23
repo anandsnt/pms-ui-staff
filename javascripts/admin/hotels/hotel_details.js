@@ -37,8 +37,10 @@ var HotelDetailsView = function(domRef){
   	    hotelCountry = $.trim(that.myDom.find("#hotel-country").val()),
   	    hotelCheckinHour = $.trim(that.myDom.find("#hotel-checkin-hour").val()),
   	    hotelCheckinMin = $.trim(that.myDom.find("#hotel-checkin-minutes").val()),
+  	    hotelCheckinPrimeTime = $.trim(that.myDom.find("#hotel-checkin-primetime").val()),
   	    hotelCheckoutHour = $.trim(that.myDom.find("#hotel-checkout-hour").val()),
   	    hotelCheckoutMinutes = $.trim(that.myDom.find("#hotel-checkout-minutes").val()),
+  	    hotelCheckoutPrimeTime = $.trim(that.myDom.find("#hotel-checkout-primetime").val()),
   	    hotelContactFirstName = $.trim(that.myDom.find("#contact-first-name").val()),
   	    hotelContactLastName = $.trim(that.myDom.find("#contact-last-name").val()),
   	    hotelContactEmail = $.trim(that.myDom.find("#contact-email").val()),
@@ -59,8 +61,8 @@ var HotelDetailsView = function(domRef){
   	    if(that.validateAddNewHotel(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone)){
   	    	 				
 			var data = that.getInputData(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand,hotelChain, hotelCode, 
-									  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, 
-									  	hotelCheckoutHour, hotelCheckoutMinutes, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
+									  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin,hotelCheckinPrimeTime, 
+									  	hotelCheckoutHour, hotelCheckoutMinutes,hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
 									  	password, confirmPassword, hotelTimeZone);
 			var url = '/admin/hotels/'+currentHotel;
 			var webservice = new WebServiceInterface();		
@@ -105,8 +107,10 @@ var HotelDetailsView = function(domRef){
   	    hotelCountry = $.trim(that.myDom.find("#hotel-country").val()),
   	    hotelCheckinHour = $.trim(that.myDom.find("#hotel-checkin-hour").val()),
   	    hotelCheckinMin = $.trim(that.myDom.find("#hotel-checkin-minutes").val()),
+  	    hotelCheckinPrimeTime = $.trim(that.myDom.find("#hotel-checkin-primetime").val()),
   	    hotelCheckoutHour = $.trim(that.myDom.find("#hotel-checkout-hour").val()),
   	    hotelCheckoutMinutes = $.trim(that.myDom.find("#hotel-checkout-minutes").val()),
+  	    hotelCheckoutPrimeTime = $.trim(that.myDom.find("#hotel-checkout-primetime").val()),
   	    hotelContactFirstName = $.trim(that.myDom.find("#contact-first-name").val()),
   	    hotelContactLastName = $.trim(that.myDom.find("#contact-last-name").val()),
   	    hotelContactEmail = $.trim(that.myDom.find("#contact-email").val()),
@@ -130,8 +134,8 @@ var HotelDetailsView = function(domRef){
 	       var data = that.getInputData(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, 
 	    		   						hotelPhone, hotelBrand,hotelChain, hotelCode, 
 	    		   						numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, 
-	    		   						hotelContactPhone, hotelCheckinHour, hotelCheckinMin, 
-	    		   						hotelCheckoutHour, hotelCheckoutMinutes, hotelCurrency, adminEmail, adminPhone, 
+	    		   						hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime,
+	    		   						hotelCheckoutHour, hotelCheckoutMinutes,hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, 
 	    		   						adminFirstName, adminLastName, 
 	    		   						password, confirmPassword, hotelTimeZone);
 		    
@@ -204,8 +208,8 @@ var HotelDetailsView = function(domRef){
   };
   //Generating post data
   this.getInputData = function(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand,hotelChain, hotelCode, 
-  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, 
-  	hotelCheckoutHour, hotelCheckoutMinutes, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
+  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime,
+  	hotelCheckoutHour, hotelCheckoutMinutes,hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
   	password, confirmPassword, hotelTimeZone){
   	
   	if(that.currentView == "snt-admin-view"){
@@ -227,8 +231,10 @@ var HotelDetailsView = function(domRef){
 					contact_phone: hotelContactPhone,			
 					check_in_hour: hotelCheckinHour,
 					check_in_min: hotelCheckinMin,
+					check_in_primetime : hotelCheckinPrimeTime,
 					check_out_hour: hotelCheckoutHour,
 					check_out_min: hotelCheckoutMinutes,
+					check_out_primetime : hotelCheckoutPrimeTime,
 					default_currency: hotelCurrency,
 					admin_email: adminEmail,
 				  	admin_phone: adminPhone,
@@ -258,8 +264,10 @@ var HotelDetailsView = function(domRef){
 					contact_phone: hotelContactPhone,			
 					check_in_hour: hotelCheckinHour,
 					check_in_min: hotelCheckinMin,
+					check_in_primetime : hotelCheckinPrimeTime,
 					check_out_hour: hotelCheckoutHour,
 					check_out_min: hotelCheckoutMinutes,
+					check_out_primetime : hotelCheckoutPrimeTime,
 					default_currency: hotelCurrency,
 					hotel_brand:hotelBrand,
   	    			hotel_chain:hotelChain,

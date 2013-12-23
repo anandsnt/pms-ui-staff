@@ -9,7 +9,7 @@ var SetWakeUpCallModal = function() {
 	this.delegateEvents = function() {
 		that.myDom.find('#set-wake-up-call #save-wakeup-call').on('click', that.saveWakeUpCall);
 		that.myDom.find('.switch-button#wakeupDate').on('click', that.onOffSwitchWakeupDate);
-		that.myDom.find('select.styled#wake-up').on('change', that.changedWakeUpTime);
+		that.myDom.find('select.styled#wake-up-hour').on('change', that.changedWakeUpTime);
 		that.myDom.find('#set-wake-up-call #delete-wakeup-call').on('click', that.deleteWakeUpCall);
 	};
 
@@ -28,8 +28,12 @@ var SetWakeUpCallModal = function() {
 	};
     //function to save wake up call
 	this.saveWakeUpCall = function() {
-
-		var wakeUpTime = that.myDom.find('#set-wake-up-call #wakeup-time').attr('value');
+		
+		var wakeUpHour = that.myDom.find('#set-wake-up-call #wake-up-hour').val();
+		var wakeUpMinute = that.myDom.find('#set-wake-up-call #wake-up-minute').val();
+		var wakeUpPrimetime = that.myDom.find('#set-wake-up-call #wake-up-primetime').val();
+		var wakeUpTime = wakeUpHour+":"+wakeUpMinute+" "+wakeUpPrimetime;
+		
 		var wakeUpDay = that.myDom.find('#set-wake-up-call #wakeup-day').text();
 		var wakeUpDaySplit = wakeUpDay.split(" ");
 
@@ -38,6 +42,7 @@ var SetWakeUpCallModal = function() {
 			"wake_up_time" : wakeUpTime,
 			"day" : wakeUpDaySplit[0]
 		};
+		
 		var webservice = new WebServiceInterface();
 		
 	    var url = 'wakeup/set_wakeup_calls'; 

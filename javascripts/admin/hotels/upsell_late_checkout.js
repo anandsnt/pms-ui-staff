@@ -20,8 +20,10 @@ var UpsellLateCheckoutView = function(domRef){
 	  var dict = "";
 	  var is_late_checkout_set = "false", is_exclude_guests = "false";
 	  var allowed_late_checkout = "", sent_alert = "", currency_code = "";
-	  $("input[name=checkout-time-extended-to]").each(function(){
-		  time = $("#checkout-time-extended-to-" + i).val();
+	  $("select[name='checkout-time-extended-to']").each(function(){
+		  hour = $("#checkout-time-extended-to-" + i).val();
+		  primetime = "PM";
+		  time = hour+" "+primetime;
 		  charge = $("#charge-for-checkout-" + i).val();
 		  dict = {'time': time, 'charge': charge};
 		  extended_checkout.push(dict);
