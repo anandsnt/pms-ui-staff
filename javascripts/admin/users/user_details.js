@@ -112,6 +112,7 @@ var UserDetailsView = function(domRef){
   //to show preview of the image using file reader
   this.readURL = function(input) {
   	   $('#file-preview').attr('changed', "changed");
+  	   console.log($('#user-picture').val());
        if (input.files && input.files[0]) {
            var reader = new FileReader();
            reader.onload = function(e) {
