@@ -72,27 +72,16 @@ var RoomUpgradesView = function(viewDom){
 	  
   this.upgradeSuccess = function(data, requestParams){
 
+    var staycardView = new StayCard($("#view-nested-first"));
+    currentReservation = requestParams['reservationId'];
+
     if(that.viewParams.next_view == views.STAYCARD){
-      var staycardView = new StayCard($("#view-nested-first"));
-      currentReservation = requestParams['reservationId'];
       staycardView.refreshReservationDetails(currentReservation, that.gotoStayCard);
     }
     else if(that.viewParams.next_view == views.BILLCARD){
-      var staycardView = new StayCard($("#view-nested-first"));
-      currentReservation = requestParams['reservationId'];
       staycardView.refreshReservationDetails(currentReservation, that.gotoBillCard);
     }
 
-
-	    /*$('#reservation-'+requestParams['reservationId']+'-room-number').html("");
-	    var roomHtml = "<strong class='room-number ready'>"+requestParams['roomNumberSelected']+"</strong>";
-	    $('#reservation-'+requestParams['reservationId']+'-room-number').html(roomHtml);
-	  	if(that.viewParams.next_view == views.STAYCARD){
-	      that.gotoStayCard();
-	    }
-	    else if(that.viewParams.next_view == views.BILLCARD){
-	      that.gotoBillCard();
-	    }*/
   };
 
   this.noThanksButtonCicked = function(e){     

@@ -289,8 +289,9 @@ $(function($){
 
         // If hash exists, try to load targeted screen
         if(window.location.hash) {
-
             var $pageToShow = window.location.hash.split('#');
+
+            $('#page-main-first').empty();
 
             $.ajax({
                 type:       'GET',
@@ -298,25 +299,24 @@ $(function($){
                 dataType:   'html',
                 //timeout:    5000,
                 success: function(data){
-                    $('#page-main-first').empty().html(data);
+                    $('#page-main-first').html(data);
 
                     // Set active link in the menu
                     $('#main-menu .active').removeClass('active');
                     $('#main-menu a[data-page="' + $pageToShow[1] + '"]').addClass('active');
 
-                //Adding a hook, to connect the rendering code to functional view component. 
-                var viewInstance = sntapp.getViewInstance($('#page-main-first'));
-                if(typeof viewInstance !== "undefined"){
-                        viewInstance.initialize();
-                        viewInstance.pageshow();
-                }
+                    //Adding a hook, to connect the rendering code to functional view component. 
+                    var viewInstance = sntapp.getViewInstance($('#page-main-first'));
+                    if(typeof viewInstance !== "undefined"){
+                            viewInstance.initialize();
+                            viewInstance.pageshow();
+                    }
 
                     // Back buttons in this case need to load data
                     $('.back-button[data-transition]').each(function(e){
                         var $transition = $(this).attr('data-transition');
                         $(this).attr({'data-transition': $transition + ' reload-content'});
                     });
-
                 },
                 error: function(){
                 }
