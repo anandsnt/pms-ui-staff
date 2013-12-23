@@ -17,7 +17,6 @@ var RoomAssignmentView = function(viewDom){
 
   this.delegateEvents = function(){
 	// Apply filters upon page load as there may be guest likes defaulted on the filters.
-	that.applyFilters();
 
     that.myDom.find($('#room-attributes .checkbox')
       .change('focusout', that.filterOptionChecked));
@@ -37,10 +36,10 @@ var RoomAssignmentView = function(viewDom){
   //
   this.createViewScroll = function(){
    // if (viewScroll) { destroyViewScroll(); }
-          setTimeout(function(){
-            if (that.myDom.find($('#room-attributes')).length) { createViewScroll('#room-attributes'); }
-            if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
-          }, 300);
+      setTimeout(function(){
+        if (that.myDom.find($('#room-attributes')).length) { createViewScroll('#room-attributes'); }
+        if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
+      }, 300);
   };
 
   //Scroll view creation for the the room list
@@ -130,7 +129,7 @@ var RoomAssignmentView = function(viewDom){
       filterGroup.filters = [];
 
       $('#group-'+i).children('label').each(function () {
-        if($(this).hasClass("checked")){
+        if($(this).find('input').is(':checked')){
           filterGroup.filters.push($(this).find('input').val()); 
         }
       }); 
@@ -315,7 +314,7 @@ var RoomAssignmentView = function(viewDom){
   			'selectedItem': $(this),
   	};
     var options = { requestParameters: postParams,
-    				successCallBack: that.updateStaycardUI,
+    				successCallBack: that.roomAssignmentSuccess,
     				successCallBackParameters: successCallBackParams,
     				loader: 'blocker'
     		};
@@ -326,34 +325,18 @@ var RoomAssignmentView = function(viewDom){
 
 
   //Update staycard UI. Staycard contents are available in DOM
-  this.updateStaycardUI = function(data, requestParams){
-	var roomSelected = requestParams['roomSelected'], 
-	currentReservation = requestParams['currentReservation'],
-	roomStatusExplained = requestParams['roomStatusExplained'], 
-	selectedItem = requestParams['selectedItem'];
-	
-    var roomStausNew = "";
-    if((typeof roomStatusExplained != "undefined") && (roomStatusExplained != "")){
-      roomStausNew = "<span class='room-status'>"+ roomStatusExplained +"</span>";
-    }
-    var roomReadyStatus = "";
-    if(selectedItem.find(">:first-child").hasClass('ready')){
-      roomReadyStatus = "ready";
-    }else if(selectedItem.find(">:first-child").hasClass('not-ready')){
-      roomReadyStatus = "not-ready";
+  this.roomAssignmentSuccess = function(data, requestParams){
 
-    }
+    var staycardView = new StayCard($("#view-nested-first"));
+    currentReservation = requestParams['currentReservation'];
 
-    $('#reservation-'+currentReservation+'-room-number').html("");
-    var roomHtml = "<strong class='room-number "+roomReadyStatus+"'>"+roomSelected+"</strong>" + roomStausNew;
-
-    $('#reservation-'+currentReservation+'-room-number').html(roomHtml);
     if(that.viewParams.next_view == views.STAYCARD){
-      that.gotoStayCard();
+      staycardView.refreshReservationDetails(currentReservation, that.gotoStayCard);
     }
     else if(that.viewParams.next_view == views.BILLCARD){
-      that.gotoBillCard();
+      staycardView.refreshReservationDetails(currentReservation, that.gotoBillCard);
     }
+
   };
 	
   this.backButtonClicked = function(e){
@@ -367,6 +350,7 @@ var RoomAssignmentView = function(viewDom){
   };
 
   this.gotoBillCard = function(){
+      
       var viewURL = "staff/reservation/bill_card";
       var viewDom = $("#view-nested-third");
       var params = {"reservation_id": that.reservation_id};
@@ -376,37 +360,45 @@ var RoomAssignmentView = function(viewDom){
 
 
   this.roomUpgradeSelected = function(e){
+
+    // var roomUpgradesView = new RoomUpgradesView();
+    // roomUpgradesView.roomUpgradeSelected();
+
+    
     e.preventDefault();
     var upsellAmountId = $(this).attr('data-value');
     var roomNumberSelected = $(this).attr('data-room-number');
     var reservationId = that.reservation_id;
-    var postParams = {"reservation_id": reservationId, "upsell_amount_id": upsellAmountId};
+    var postParams = {"reservation_id": reservationId, "upsell_amount_id": upsellAmountId, "room_no": roomNumberSelected};
 
     var url = '/staff/reservations/upgrade_room';
-	var webservice = new WebServiceInterface();	
-  	var successCallBackParams = {
-  			'reservationId': reservationId,
-  			'roomNumberSelected': roomNumberSelected, 
-  	};	
-	var options = {
-			   requestParameters: postParams,
-			   successCallBack: that.upgradeSuccess,
-			   successCallBackParameters: successCallBackParams,
-			   loader: "BLOCKER"
-	};
-	webservice.postJSON(url, options);	
+    var webservice = new WebServiceInterface(); 
+    var successCallBackParams = {
+        'reservationId': reservationId,
+        'roomNumberSelected': roomNumberSelected, 
+    };  
+    var options = {
+           requestParameters: postParams,
+           successCallBack: that.upgradeSuccess,
+           successCallBackParameters: successCallBackParams,
+           loader: "BLOCKER"
+    };
+    webservice.postJSON(url, options);  
+
   };
-  
+    
   this.upgradeSuccess = function(data, requestParams){
-	    $('#reservation-'+requestParams['reservationId']+'-room-number').html("");
-	    var roomHtml = "<strong class='room-number ready'>"+requestParams['roomNumberSelected']+"</strong>";
-	    $('#reservation-'+requestParams['reservationId']+'-room-number').html(roomHtml);
-	  	if(that.viewParams.next_view == views.STAYCARD){
-	      that.gotoStayCard();
-	    }
-	    else if(that.viewParams.next_view == views.BILLCARD){
-	      that.gotoBillCard();
-	    }
+
+    var staycardView = new StayCard($("#view-nested-first"));
+    currentReservation = requestParams['reservationId'];
+
+    if(that.viewParams.next_view == views.STAYCARD){
+      staycardView.refreshReservationDetails(currentReservation, that.gotoStayCard);
+    }
+    else if(that.viewParams.next_view == views.BILLCARD){
+      staycardView.refreshReservationDetails(currentReservation, that.gotoBillCard);
+    }
+
   };
 
 

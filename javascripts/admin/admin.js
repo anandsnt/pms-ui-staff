@@ -21,7 +21,7 @@ function refreshSortable(){
 	$('.boxes:visible').each(function(){
 		var $placeholder = $(this).attr('data-placeholder');
 
-		if (!$(this).children('li').length){
+		if (!$(this).children('li').length && $placeholder != null){
 			$(this).addClass('empty').append('<span class="placeholder ui-state-disabled">' + $placeholder + '</span>');
 		} else {
 			$(this).removeClass('empty').find('.placeholder').remove();

@@ -55,38 +55,42 @@ var RoomUpgradesView = function(viewDom){
   };
   
   this.roomUpgradeSelected = function(e){
+    
     e.preventDefault();
 
     var upsellAmountId = $(this).attr('data-value');
     var roomNumberSelected = $(this).attr('data-room-number');
     var reservationId = that.reservation_id;
-    var postParams = {"reservation_id": reservationId, "upsell_amount_id": upsellAmountId};
+    var postParams = {"reservation_id": reservationId, "upsell_amount_id": upsellAmountId, "room_no": roomNumberSelected};
 
     var url = '/staff/reservations/upgrade_room';
-	var webservice = new WebServiceInterface();	
+	  var webservice = new WebServiceInterface();	
   	var successCallBackParams = {
   			'reservationId': reservationId,
   			'roomNumberSelected': roomNumberSelected, 
   	};	
-	var options = {
-			   requestParameters: postParams,
-			   successCallBack: that.upgradeSuccess,
-			   successCallBackParameters: successCallBackParams,
-			   loader: "BLOCKER"
-	};
-	webservice.postJSON(url, options);	
+  	var options = {
+  			   requestParameters: postParams,
+  			   successCallBack: that.upgradeSuccess,
+  			   successCallBackParameters: successCallBackParams,
+  			   loader: "BLOCKER"
+  	};
+	  webservice.postJSON(url, options);	
+
   };
 	  
   this.upgradeSuccess = function(data, requestParams){
-	    $('#reservation-'+requestParams['reservationId']+'-room-number').html("");
-	    var roomHtml = "<strong class='room-number ready'>"+requestParams['roomNumberSelected']+"</strong>";
-	    $('#reservation-'+requestParams['reservationId']+'-room-number').html(roomHtml);
-	  	if(that.viewParams.next_view == views.STAYCARD){
-	      that.gotoStayCard();
-	    }
-	    else if(that.viewParams.next_view == views.BILLCARD){
-	      that.gotoBillCard();
-	    }
+
+    var staycardView = new StayCard($("#view-nested-first"));
+    currentReservation = requestParams['reservationId'];
+
+    if(that.viewParams.next_view == views.STAYCARD){
+      staycardView.refreshReservationDetails(currentReservation, that.gotoStayCard);
+    }
+    else if(that.viewParams.next_view == views.BILLCARD){
+      staycardView.refreshReservationDetails(currentReservation, that.gotoBillCard);
+    }
+
   };
 
   this.noThanksButtonCicked = function(e){     
@@ -105,10 +109,10 @@ var RoomUpgradesView = function(viewDom){
   };
 
   this.gotoBillCard = function(){
-      var viewURL = "staff/reservation/bill_card";
-      var viewDom = $("#view-nested-third");
-      var params = {"reservation_id": that.reservation_id};
-      var nextViewParams = {"showanimation": true, "from-view" : views.ROOM_UPGRADES};
-      sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams );
+    var viewURL = "staff/reservation/bill_card";
+    var viewDom = $("#view-nested-third");
+    var params = {"reservation_id": that.reservation_id};
+    var nextViewParams = {"showanimation": true, "from-view" : views.ROOM_UPGRADES};
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams );
   };
 };

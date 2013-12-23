@@ -275,6 +275,25 @@ label {
 	.select {
 		position: relative;
 
+		/* 3 column select layout for time selection ***/
+		&.select-col {
+			.pull-left;
+
+			&.col1-2 { 
+				width: 48%; 
+				margin-right: 4%;
+
+				&:last-child { margin-right: 0; }
+			}
+
+			&.col1-3 { 
+				width: 30%; 
+				margin-right: 3.3333%;
+
+				&:last-child { margin-right: 0; }
+			}
+		}
+
 		&:after {
 			content: "";
 			position: absolute;

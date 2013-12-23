@@ -300,6 +300,42 @@ body { overflow: hidden; }
 			left: 0;
 		}
 
+		.alerts {
+			position: absolute;
+			top: 10px;
+			left: 50px;
+			.float;
+
+			li {
+				position: relative;
+				margin: 0;
+				.square(40px);
+				.show;
+				.pull-left;
+
+				.icon-alert {
+					.no-transition;
+					.hide-text;
+					.show;
+				}
+
+				span {
+					position: absolute;
+					top: 0;
+					right: 0;
+					font-size: 14px;
+					line-height: 14px;
+					font-weight: 700;
+					color: @softRed;
+					.show;
+				}
+
+				&:last-child {
+					span { color: @red; }
+				}
+			}
+		}
+
 		.logo {
 			position: absolute;
 			top: 14px;
@@ -852,6 +888,7 @@ body { overflow: hidden; }
 			.button,
 			.inactive-nights {
 				display: inline-block;
+				display: inline-flex;
 				font-size: 14px;
 				text-shadow: none;
 				color: @textColor;
@@ -967,14 +1004,7 @@ body { overflow: hidden; }
 			}
 		}
 	}
-// Added by QBurst - Disable left nav bar icon when it is active
-#main-menu{
-  li {
-    .active {
-  cursor:default;
-  pointer-events:none;
-  }}
-}
+
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE

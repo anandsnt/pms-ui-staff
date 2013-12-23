@@ -159,27 +159,24 @@ var Search  = function(domRef){
     // Clear button visibility toggle
     that.showHideClearQueryButton();
 
-
     if(that.currentQuery.length < 3){
       that.currentQuery = "";
-	  that.fetchResults = [];
-	  that.fetchTerm = "";
+	    that.fetchResults = [];
+	    that.fetchTerm = "";
       $('#search-results').empty().addClass('hidden');
       //TODO: verify working. Rename function
-	  that.updateView();
+	    that.updateView();
 	  return;
 	}
 
 	if(that.fetchTerm!="" && that.currentQuery.indexOf(that.fetchTerm) === 0) {
       that.displayFilteredResults(that.fetchResults, that.currentQuery);
       return;
-    }
-
-
-
+  }
     that.fetchTerm = that.currentQuery;
-	var searchUrl = 'search.json?&query='+ that.fetchTerm;
-	that.fetchSearchData(searchUrl, that.fetchTerm,"");
+  	var searchUrl = 'search.json?&query='+ that.fetchTerm;
+  	that.fetchSearchData(searchUrl, that.fetchTerm,"");
+    
   };
 
   //TODO:pass query 
@@ -190,8 +187,6 @@ var Search  = function(domRef){
         $('#clear-query.visible').removeClass('visible');
     }
   };
-
-   
 
      /*this.getFilteredResults = function($query){
      	$('#search-results').html("");
@@ -208,29 +203,17 @@ var Search  = function(domRef){
 	    {
 	        var items=[];
 	        $.each(searchResults, function(i,value){
-	            // Search by name
-	            if ($query.match(/^([a-zA-Z]+)$/) && 
-                ((escapeNull(value.firstname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || 
+
+
+            if ((escapeNull(value.firstname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || 
                   (escapeNull(value.lastname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || 
-                  (escapeNull(value.group).toUpperCase()).indexOf($query.toUpperCase()) >= 0))
-	            {
-	                items.push($('<li />').html(
-	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
-	                ));
-	            }
-	            // Search by number
-	            else if ($query.match(/^([0-9]+)$/) &&(escapeNull(value.room).toString().indexOf($query) >= 0 || 
-	            		escapeNull(value.confirmation).toString().indexOf($query) >= 0))
-	            {
-	                items.push($('<li />').html(
-	                    that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
-	                ));
-	            }
-              else if((escapeNull(value.group).toUpperCase()).indexOf($query.toUpperCase()) >= 0){
-                items.push($('<li />').html(
+                  (escapeNull(value.group).toUpperCase()).indexOf($query.toUpperCase()) >= 0 ||
+                  (escapeNull(value.room).toString()).indexOf($query) >= 0 || 
+                  (escapeNull(value.confirmation).toString()).indexOf($query) >= 0)
+              {
+                  items.push($('<li />').html(
                       that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
                   ));
-
               }
 	            
 	        });

@@ -33,7 +33,10 @@
 				.background(@white);
 				.box-shadow(0 0 5px rgba(0,0,0,.2));
 				#border-radius > .rounded();
-
+                                .support a {
+				    color: @textColor;;
+                                    display: inline;
+				}
 				.logo {
 					margin: 0 auto;
 					.size(28px,125px);
@@ -305,7 +308,7 @@
 							font-weight: 700;
 							clear: none;
 							.pull-left;
-
+							
 							&:first-child { margin-right: 10px;}
 						}
 					}
@@ -449,8 +452,8 @@
 				/* Columns holder ***/
 				.holder {
 					height: 100%;
-					#pixel-to-percent > .width(904, 1888);
 					.float;
+					#pixel-to-percent > .width(904, 1888);
 					.pull-left;
 
 					.h3 {
@@ -1466,8 +1469,8 @@
 							}
 						}
 
-						&.ui-tabs-active {
-							/*font-size: 18px;*/
+						&.ui-tabs-active,
+						&.active {
 							line-height: 1em;
 							margin-top: 0;
 							height: 50px;

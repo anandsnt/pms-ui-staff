@@ -51,11 +51,11 @@ var SetPaymentAsPrimaryModal = function(){
 	    webservice.postJSON(url, options);	
     };
     this.fetchCompletedOfDeleteCreditCard = function(data){
-    	
+    	var $credit_card_id = that.credit_id;
+		$("#credit_row" + $credit_card_id).remove();
     };
     this.deleteCreditCard = function(){
-  		var $credit_card_id = that.credit_id;
-		$("#credit_row" + $credit_card_id).remove();		
+  		var $credit_card_id = that.credit_id;		
 		that.hide();
 	    var url = 'staff/payments/deleteCreditCard';
 	  	var webservice = new WebServiceInterface();
