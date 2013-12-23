@@ -14,7 +14,6 @@ var HotelAnnouncementView = function(domRef){
   };
   
   this.saveHotelAnnouncements = function() {
-	 console.log("saveHotelAnnouncements");
 	 var guest_zest_welcome_message = that.myDom.find("#guest-zest-welcome-message").val();
 	 var guest_zest_checkout_message = that.myDom.find("#guest-zest-checkout-message").val();
 	 var guest_zest_key_delivery_email_message = that.myDom.find("#guest-zest-key-delivery-email-message").val();
@@ -23,7 +22,6 @@ var HotelAnnouncementView = function(domRef){
 				"guest_zest_checkout_complete_message":  guest_zest_checkout_message,
 				"key_delivery_email_message": guest_zest_key_delivery_email_message
 	 };
-	 console.log(data);
 	 
 	 var url = '';
 	 var webservice = new WebServiceInterface();
