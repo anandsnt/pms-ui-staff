@@ -207,8 +207,7 @@ var WebServiceInterface = function(){
 								successCallBack(data);
 							}					}
 					}
-					else{
-						sntapp.notification.showErrorMessage(data.errors);
+					else{						
 						if(failureCallBack) {	
 							if(failureCallBackParameters){
 								failureCallBack(data.errors, failureCallBackParameters);
@@ -216,7 +215,10 @@ var WebServiceInterface = function(){
 							else{
 								failureCallBack(data.errors);
 							}
-						}					
+						}
+						else {
+							sntapp.notification.showErrorMessage(data.errors);
+						}
 					}
 				}
 				else{
@@ -232,10 +234,13 @@ var WebServiceInterface = function(){
 			},
 			error: function(jqXHR, exception){
 				sntapp.activityIndicator.hideActivityIndicator();				
-				//Show error notification
-				sntapp.notification.showErrorMessage(that.createErrorMessage(jqXHR, exception));
+
 				if(failureCallBack) {	
 					failureCallBack(that.createErrorMessage(jqXHR, exception));
+				}
+				else{
+					//Show error notification
+					sntapp.notification.showErrorMessage(that.createErrorMessage(jqXHR, exception));
 				}
 			}
 			
