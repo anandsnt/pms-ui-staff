@@ -21,9 +21,11 @@ var DataInline = function(){
 		element.addClass("hide-content");
         setTimeout(function() {
     	   $(data).insertAfter(element);
+    	   containerTable.find("div.actions #cancel.button.blank").on('click', that.cancelFromAppendedDataInline);
         }, 300);				
-		containerTable.find("div.actions #cancel.button.blank").on('click', that.cancelFromAppendedDataInline);
+		
 	};
+	
 	// event to handle cancel button click in form
 	// Ask Sajith: If it is handling seperately in the view, then..
 	this.cancelFromAppendedDataInline = function(event){
@@ -44,15 +46,19 @@ var DataInline = function(){
 	this.fetchFailedOfAppendDataInline = function(errorMessage){
 		sntapp.notification.showErrorMessage('Something went wrong: ' + errorMessage);
 	};
+	
 	this.appendDataInline = function(event) {				
 		event.preventDefault();
 		var element = $(event.target);
-		
 		if(element.prop('tagName') != "A" && element.hasClass('edit-data-inline') == false)
 			return false;	
 		
 		var webservice = new WebServiceInterface();
 		var url = element.attr("href");
+		
+		if(typeof url === 'undefined' && url == "#" )
+			return false;
+		
 	    var options = {
 				   successCallBack: that.fetchCompletedOfAppendDataInline,
 				   failureCallBack: that.fetchFailedOfAppendDataInline,

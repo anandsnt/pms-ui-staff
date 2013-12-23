@@ -2,9 +2,13 @@ var NotificationMessage = function() {
 	// class for showing notification messages
 	this.showSuccessLevel = "DEBUG";
 	this.showErrorLevel = "DEBUG";
+	
 	this.shouldShowErrorMessages = true;
+	this.shouldShowSuccessMessage = true;
+	
 	this.shouldShowCloseButtonForSuccess = true;
 	this.shouldShowCloseButtonForError = true;
+	
 	this.levels =["DEBUG","INFO", "NORMAL", "IMPORTANT","CRITICAL"];
 		
 	var that = this;
@@ -35,7 +39,7 @@ var NotificationMessage = function() {
 	
 		var message_element = dom.find("#notification-message");
 		message_element.removeClass('success_message error_message').addClass(message_class);
-		message_element.html(message);		
+		message_element.html(message);			
 		scrollToErrorArea(dom);			
 		dom.find("#notification-message").slideDown(duration, function() {});
 				
@@ -79,9 +83,13 @@ var NotificationMessage = function() {
 	// function for show success message
 	this.showSuccessMessage = function(message, dom, priority){
 		
-       if(typeof priority === 'undefined'){
+		// only show success message if 'shouldShowSuccessMessage' is set to true
+		if(!this.shouldShowSuccessMessage == false) {return;}
+		
+        if(typeof priority === 'undefined'){
                priority = "DEBUG";
-       }  
+        }          
+        
 		dom = getDisplayDom();
 		if (!shouldShowMessage(priority, "Success")) return;
 		
@@ -89,7 +97,7 @@ var NotificationMessage = function() {
 		if(typeof dom == 'undefined')
 			dom = $('body');		
 		
-		this.hideMessage(dom);
+		this.hideMessage();
 		
 		
 		var htmlToAppend = message;
@@ -106,12 +114,16 @@ var NotificationMessage = function() {
 	// function for show error message
 	this.showErrorMessage = function(errorMessage, dom, priority){
 		
-       if(typeof priority === 'undefined') { priority = "DEBUG"; }
+		// only show success message if 'shouldShowErrorMessages' is set to true
+		if(!this.shouldShowErrorMessages) { return; }
+	
+		if(typeof priority === 'undefined') { priority = "DEBUG"; }
        
 		dom = getDisplayDom();
-		if (!shouldShowMessage(priority, "Error")) return;
+		if (!shouldShowMessage(priority, "Error")) { return };
 			
-		this.hideMessage(dom);
+		this.hideMessage();
+		
 		var htmlToAppend = errorMessage;
 		
 		// dont show close button if false
@@ -131,9 +143,9 @@ var NotificationMessage = function() {
         dom.find("#notification-message").slideUp({ 
         	duration : duration, 
         	complete : function(){
-        		var my_element = dom.find("#notification-message");
-        		if (my_element.queue( "fx" ).length <=1)   {
-        			my_element.removeClass('success_message error_message').html('');
+        		var myElement = dom.find("#notification-message");
+        		if (myElement.queue( "fx" ).length <=1)   {
+        			myElement.removeClass('success_message error_message').html('');
         		}
         	}, 
         });
