@@ -18,10 +18,14 @@ var DataInline = function(){
 		
 		containerTable.find("tr.edit-data").remove();
 		containerTable.find("tr.hide-content").removeClass('hide-content');
+		
 		element.addClass("hide-content");
+		
+		sntapp.activityIndicator.showActivityIndicator('normal');
         setTimeout(function() {
     	   $(data).insertAfter(element);
     	   containerTable.find("div.actions #cancel.button.blank").on('click', that.cancelFromAppendedDataInline);
+    	   sntapp.activityIndicator.hideActivityIndicator();
         }, 300);				
 		
 	};
