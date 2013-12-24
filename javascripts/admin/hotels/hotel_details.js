@@ -26,7 +26,6 @@ var HotelDetailsView = function(domRef){
   
 
   this.saveHotelDetails =  function(){
-  	
   	var currentHotel = $(".currenthotel").attr("id");
   	var hotelName = $.trim(that.myDom.find("#hotel-name").val()),
   	    hotelCode = $.trim(that.myDom.find("#hotel-code").val()),
@@ -90,7 +89,7 @@ var HotelDetailsView = function(domRef){
   
   this.fetchFailedOfSave = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage);  
   };
   // add New hotel from snt admin 
   this.addNewHotel =  function(){

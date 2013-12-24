@@ -22,12 +22,12 @@ var BaseInlineView = function(viewDom){
 		var webservice = new WebServiceInterface();
 		var url = element.attr("href");
 		
-		if(typeof url === 'undefined' && url == "#" )
+		if(typeof url === 'undefined' || url == "#" )
 			return false;
 		
 	    var options = {
 				   successCallBack: that.fetchCompletedOfNewForm,
-				   failureCallBack: that.fetchFailedOfData,
+				   failureCallBack: that.fetchFailedOfAppendInlineData,
 				   successCallBackParameters : {'element': element},
 	    		   loader: 'normal',
 		};
@@ -47,8 +47,10 @@ var BaseInlineView = function(viewDom){
 		
 	};
 	
-  this.appendInlineData = function(event) {	+
-  				
+  this.appendInlineData = function(event) {
+	  	// event for tr's click to append the data
+	    // this will check the tr's  'a' tag children with class edit-data-inline
+	  	// it is using 'a' tag's href for fetching the view
 		event.preventDefault();
 		var element = $(event.target);
 		if(element.prop('tagName') != "A" && element.hasClass('edit-data-inline') == false)
@@ -57,12 +59,12 @@ var BaseInlineView = function(viewDom){
 		var webservice = new WebServiceInterface();
 		var url = element.attr("href");
 		
-		if(typeof url === 'undefined' && url == "#" )
+		if(typeof url === 'undefined' || url == "#" )
 			return false;
 		
 	    var options = {
 				   successCallBack: that.fetchCompletedOfAppendInlineData,
-				   failureCallBack: that.fetchFailedOfData,
+				   failureCallBack: that.fetchFailedOfAppendInlineData,
 				   successCallBackParameters : {'element': element},
 	    		   loader: 'normal',
 		};
@@ -70,15 +72,20 @@ var BaseInlineView = function(viewDom){
 	};  
 
 	this.fetchCompletedOfAppendInlineData = function(data, requestParameters){	
+		//success function of appendInlineData 's ajax call
+		
 		var containerTable = requestParameters['element'].parents("table:eq(0)");
-		var element = requestParameters['element'].parents("tr:eq(0)");
+		var elementRow = requestParameters['element'].parents("tr:eq(0)");
+		
+		//we need to remove add new's view if there  
 		that.myDom.find('#new-form-holder').children("div:eq(0)").remove();
+		
 		containerTable.find("tr.edit-data").remove();
 		containerTable.find("tr.hide-content").removeClass('hide-content');
-		element.addClass("hide-content");
+		elementRow.addClass("hide-content");
 		sntapp.activityIndicator.showActivityIndicator("BLOCKER");
         setTimeout(function() {
-    	    $(data).insertAfter(element);
+    	    $(data).insertAfter(elementRow);
     	    containerTable.find("div.actions #cancel.button.blank").on('click', that.cancelFromAppendedDataInline);
     	    containerTable.find("div.actions #update.button.green").on('click', that.updateData);
     	    
@@ -94,7 +101,7 @@ var BaseInlineView = function(viewDom){
     };
     //Update data
     this.updateData = function(event){
-    	that.updateApi();// Override this function to call the individual API
+    	that.updateApi(event);// Override this function to call the individual API
     	that.cancelFromAppendedDataInline(event);
     };
 	
@@ -115,7 +122,7 @@ var BaseInlineView = function(viewDom){
 		containerTable.find("tr.hide-content").removeClass('hide-content');
 	};
 	
-	this.fetchFailedOfData = function(errorMessage){
+	this.fetchFailedOfAppendInlineData = function(errorMessage){
 		sntapp.notification.showErrorMessage('Something went wrong: ' + errorMessage);
 	};
 	this.cancelFromAddNewForm = function(event){
