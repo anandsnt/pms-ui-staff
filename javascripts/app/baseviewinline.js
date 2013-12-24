@@ -13,7 +13,8 @@ var BaseInlineView = function(viewDom){
   this.delegateEvents = function(){
   	that.myDom.find('tr').on('click', that.appendInlineData);
   };
-  this.appendInlineData = function(event) {				
+  this.appendInlineData = function(event) {	+
+  				
 		event.preventDefault();
 		var element = $(event.target);
 		if(element.prop('tagName') != "A" && element.hasClass('edit-data-inline') == false)
@@ -42,12 +43,21 @@ var BaseInlineView = function(viewDom){
 		containerTable.find("tr.edit-data").remove();
 		containerTable.find("tr.hide-content").removeClass('hide-content');
 		element.addClass("hide-content");
+		sntapp.activityIndicator.showActivityIndicator("BLOCKER");
         setTimeout(function() {
-    	   $(data).insertAfter(element);
-    	   containerTable.find("div.actions #cancel.button.blank").on('click', that.cancelFromAppendedDataInline);
+    	    $(data).insertAfter(element);
+    	    containerTable.find("div.actions #cancel.button.blank").on('click', that.cancelFromAppendedDataInline);
+    	    containerTable.find("div.actions #save.button.green").on('click', that.saveData);
+    	    sntapp.activityIndicator.hideActivityIndicator();
         }, 300);				
 		
 	};
+	
+    this.saveData = function(event){
+    	
+    	that.callSaveApi();
+    	that.cancelFromAppendedDataInline(event);
+    };
 	
 	// event to handle cancel button click in form
 	// Ask Sajith: If it is handling seperately in the view, then..
