@@ -12,7 +12,38 @@ var BaseInlineView = function(viewDom){
   
   this.delegateEvents = function(){
   	that.myDom.find('tr').on('click', that.appendInlineData);
+  	that.myDom.find('#add-new-button').on('click', that.addNewForm);
+  	
   };
+  this.addNewForm = function(event){
+  	// element.closest('div[data-view-type="inline-forms"]');
+  		event.preventDefault();
+		var element = $(event.target);
+		var webservice = new WebServiceInterface();
+		var url = element.attr("href");
+		
+		if(typeof url === 'undefined' && url == "#" )
+			return false;
+		
+	    var options = {
+				   successCallBack: that.fetchCompletedOfNewForm,
+				   failureCallBack: that.fetchFailedOfData,
+				   successCallBackParameters : {'element': element},
+	    		   loader: 'normal',
+		};
+	    webservice.getHTML(url, options);
+  };
+  this.fetchCompletedOfNewForm = function(data, requestParameters){	
+		sntapp.activityIndicator.showActivityIndicator("BLOCKER");
+        setTimeout(function() {
+    	    $("#new-form-holder").html(data);
+    	    that.myDom.find("div.actions #cancel.button.blank").on('click', that.cancelFromAddNewForm);
+    	    that.myDom.find("div.actions #save.button.green").on('click', that.addNewData);
+    	    sntapp.activityIndicator.hideActivityIndicator();
+        }, 300);				
+		
+	};
+	
   this.appendInlineData = function(event) {	+
   				
 		event.preventDefault();
@@ -28,7 +59,7 @@ var BaseInlineView = function(viewDom){
 		
 	    var options = {
 				   successCallBack: that.fetchCompletedOfAppendInlineData,
-				   failureCallBack: that.fetchFailedOfAppendInlineData,
+				   failureCallBack: that.fetchFailedOfData,
 				   successCallBackParameters : {'element': element},
 	    		   loader: 'normal',
 		};
@@ -47,7 +78,6 @@ var BaseInlineView = function(viewDom){
         setTimeout(function() {
     	    $(data).insertAfter(element);
     	    containerTable.find("div.actions #cancel.button.blank").on('click', that.cancelFromAppendedDataInline);
-    	    containerTable.find("div.actions #save.button.green").on('click', that.saveData);
     	    containerTable.find("div.actions #update.button.green").on('click', that.updateData);
     	    
     	    sntapp.activityIndicator.hideActivityIndicator();
@@ -55,7 +85,7 @@ var BaseInlineView = function(viewDom){
 		
 	};
 	//Add new data
-    this.saveData = function(event){
+    this.addNewData = function(event){
     	
     	that.callSaveApi();// Override this function to call the individual API
     	that.cancelFromAppendedDataInline(event);
@@ -83,8 +113,24 @@ var BaseInlineView = function(viewDom){
 		containerTable.find("tr.hide-content").removeClass('hide-content');
 	};
 	
-	this.fetchFailedOfAppendInlineData = function(errorMessage){
+	this.fetchFailedOfData = function(errorMessage){
 		sntapp.notification.showErrorMessage('Something went wrong: ' + errorMessage);
+	};
+	this.cancelFromAddNewForm = function(event){
+
+		var element = $(event.target);
+		
+		//var parentToRemove = element.parents("tr:eq(0)");
+		// if(typeof parentToRemove === 'undefined'){
+			// sntapp.notification.showErrorMessage('Something went wrong, Please reload and check');
+		// }
+		// else{
+			element.unbind('click');
+			
+			// parentToRemove.remove();
+			that.myDom.find('#new-form-holder').html("");
+		// }
+		// containerTable.find("tr.hide-content").removeClass('hide-content');
 	};
 
 };
