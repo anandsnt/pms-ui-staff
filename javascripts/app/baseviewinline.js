@@ -13,7 +13,7 @@ var BaseInlineView = function(viewDom){
   this.delegateEvents = function(){
   	that.myDom.find('tr').on('click', that.appendInlineData);
   	that.myDom.find('#add-new-button').on('click', that.addNewForm);
-  	
+  	that.myDom.find('.icon-delete').on('click', that.deleteItem);
   };
   this.addNewForm = function(event){
   	// element.closest('div[data-view-type="inline-forms"]');
@@ -89,7 +89,7 @@ var BaseInlineView = function(viewDom){
 	//Add new data
     this.addNewData = function(event){
     	
-    	that.callSaveApi();// Override this function to call the individual API
+    	that.saveNewApi();// Override this function to call the individual API
     	that.cancelFromAppendedDataInline(event);
     };
     //Update data
@@ -122,7 +122,6 @@ var BaseInlineView = function(viewDom){
 
 		var element = $(event.target);
 			element.unbind('click');
-			
 			that.myDom.find('#new-form-holder').children("div:eq(0)").remove();
 	};
 
