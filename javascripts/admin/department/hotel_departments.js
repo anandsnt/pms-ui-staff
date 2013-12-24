@@ -8,7 +8,7 @@ var HotelDepartmentsView = function(domRef){
   	 	
   	var postData = {};
   	postData.name = that.myDom.find("#department-name").val(); 	
-  	var url = 'admin/addnewdepartment';
+  	var url = '/admin/department/create';
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -16,7 +16,7 @@ var HotelDepartmentsView = function(domRef){
 			   loader:"BLOCKER"
 			   
 	};
-	webservice.putJSON(url, options);	
+	webservice.postJSON(url, options);	
   };
   //function to update department
   this.updateApi = function(){
@@ -24,7 +24,7 @@ var HotelDepartmentsView = function(domRef){
   	postData.name = that.myDom.find("#department-name").val();
   	postData.value = that.myDom.find("#edit-department-details").attr("department_id");
   
-  	var url = 'admin/updateuser';
+  	var url = '/admin/department/'+postData.value;
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
