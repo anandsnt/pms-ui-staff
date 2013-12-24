@@ -35,6 +35,9 @@ var BaseInlineView = function(viewDom){
   };
   this.fetchCompletedOfNewForm = function(data, requestParameters){	
 		sntapp.activityIndicator.showActivityIndicator("BLOCKER");
+		that.myDom.find("tr.hide-content").removeClass('hide-content');
+		
+		that.myDom.find("tr.edit-data").remove();
         setTimeout(function() {
     	    $("#new-form-holder").html(data);
     	    that.myDom.find("div.actions #cancel.button.blank").on('click', that.cancelFromAddNewForm);
@@ -67,10 +70,9 @@ var BaseInlineView = function(viewDom){
 	};  
 
 	this.fetchCompletedOfAppendInlineData = function(data, requestParameters){	
-		console.log('from fetchCompletedOfAppendInlineData');
 		var containerTable = requestParameters['element'].parents("table:eq(0)");
 		var element = requestParameters['element'].parents("tr:eq(0)");
-		
+		that.myDom.find('#new-form-holder').children("div:eq(0)").remove();
 		containerTable.find("tr.edit-data").remove();
 		containerTable.find("tr.hide-content").removeClass('hide-content');
 		element.addClass("hide-content");
@@ -119,18 +121,9 @@ var BaseInlineView = function(viewDom){
 	this.cancelFromAddNewForm = function(event){
 
 		var element = $(event.target);
-		
-		//var parentToRemove = element.parents("tr:eq(0)");
-		// if(typeof parentToRemove === 'undefined'){
-			// sntapp.notification.showErrorMessage('Something went wrong, Please reload and check');
-		// }
-		// else{
 			element.unbind('click');
 			
-			// parentToRemove.remove();
-			that.myDom.find('#new-form-holder').html("");
-		// }
-		// containerTable.find("tr.hide-content").removeClass('hide-content');
+			that.myDom.find('#new-form-holder').children("div:eq(0)").remove();
 	};
 
 };
