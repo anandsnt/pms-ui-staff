@@ -11,7 +11,6 @@ var BaseInlineView = function(viewDom){
   var that = this;
   
   this.delegateEvents = function(){
-  	
   	that.myDom.find('tr').on('click', that.appendInlineData);
   };
   this.appendInlineData = function(event) {	+
@@ -37,7 +36,7 @@ var BaseInlineView = function(viewDom){
 	};  
 
 	this.fetchCompletedOfAppendInlineData = function(data, requestParameters){	
-		
+		console.log('from fetchCompletedOfAppendInlineData');
 		var containerTable = requestParameters['element'].parents("table:eq(0)");
 		var element = requestParameters['element'].parents("tr:eq(0)");
 		
