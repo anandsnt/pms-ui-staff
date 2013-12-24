@@ -3,7 +3,7 @@ var app = function(){
     var that = this;
     this.activityIndicator = new ActivityIndicator();
     this.notification = new NotificationMessage();    	
-    this.appendDataInline = new DataInline();
+    
     
     this.getViewInstance = function(viewDom){
         var viewInstance;
