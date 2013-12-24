@@ -49,14 +49,21 @@ var BaseInlineView = function(viewDom){
     	    $(data).insertAfter(element);
     	    containerTable.find("div.actions #cancel.button.blank").on('click', that.cancelFromAppendedDataInline);
     	    containerTable.find("div.actions #save.button.green").on('click', that.saveData);
+    	    containerTable.find("div.actions #update.button.green").on('click', that.updateData);
+    	    
     	    sntapp.activityIndicator.hideActivityIndicator();
         }, 300);				
 		
 	};
-	
+	//Add new data
     this.saveData = function(event){
     	
-    	that.callSaveApi();
+    	that.callSaveApi();// Override this function to call the individual API
+    	that.cancelFromAppendedDataInline(event);
+    };
+    //Update data
+    this.updateData = function(event){
+    	that.updateApi();// Override this function to call the individual API
     	that.cancelFromAppendedDataInline(event);
     };
 	
