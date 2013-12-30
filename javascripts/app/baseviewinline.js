@@ -12,6 +12,7 @@ var BaseInlineView = function(viewDom){
   
   this.delegateEvents = function(){
   	that.myDom.find('tr').on('click', that.appendInlineData);
+
   	that.myDom.find('#add-new-button').on('click', that.addNewForm);
   	that.myDom.find('.icon-delete').on('click', that.deleteItem);
   };
@@ -51,10 +52,12 @@ var BaseInlineView = function(viewDom){
 	  	// event for tr's click to append the data
 	    // this will check the tr's  'a' tag children with class edit-data-inline
 	  	// it is using 'a' tag's href for fetching the view
-		event.preventDefault();
+		
+		//
 		var element = $(event.target);
-		if(element.prop('tagName') != "A" && element.hasClass('edit-data-inline') == false)
-			return false;	
+
+		if(element.prop('tagName') != "A") return true;
+		event.preventDefault();
 		
 		var webservice = new WebServiceInterface();
 		var url = element.attr("href");
