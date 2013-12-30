@@ -109,7 +109,7 @@ var BaseInlineView = function(viewDom){
     this.addNewData = function(event){
     	
     	that.saveNewApi();// Override this function to call the individual API
-    	that.cancelFromAppendedDataInline(event);
+    	
     };
     //Update data
     this.updateData = function(event){
