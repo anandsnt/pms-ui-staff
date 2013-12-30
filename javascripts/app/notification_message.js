@@ -84,7 +84,7 @@ var NotificationMessage = function() {
 	this.showSuccessMessage = function(message, dom, priority){
 		
 		// only show success message if 'shouldShowSuccessMessage' is set to true
-		if(!this.shouldShowSuccessMessage == false) {return;}
+		if(!this.shouldShowSuccessMessage) {return;}
 		
         if(typeof priority === 'undefined'){
                priority = "DEBUG";
