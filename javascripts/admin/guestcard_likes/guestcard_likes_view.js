@@ -64,21 +64,11 @@ var GuestCardLikesView = function(domRef){
    this.viewEventHandler = function(event){
       var element = $(event.target);
 
-      
-      if(element.parent().hasClass('switch-button')) 
-            return that.onOffButtonHandler(element);
-      else if(element.hasClass('change-data'))
-        	return that.changeData(element);
-      else if(element.hasClass('add-new-option'))
-      		return that.addNewOption(element, event);
+      if(element.parent().hasClass('switch-button')) {return that.toggleButtonClicked(element);}
+      if(element.hasClass('change-data')) return that.changeData(element);
+      if(element.hasClass('add-new-option'))	return that.addNewOption(element, event);
 
-     
-	 // if(element.hasClass('add-new-option'))
-      		// that.addNewOption();
-      		 // if(element.parent().hasClass('delete-option'))
-      		// that.deleteOption();
-      		
-      		return true;
+      return true;
 	// that.myDom.find('.add-new-option').on('click', that.addNewOption);
 	// that.myDom.find('.delete-option').on('keyup', that.deleteOption);
       
@@ -90,10 +80,21 @@ var GuestCardLikesView = function(domRef){
    };
 
 
-  this.onOffButtonHandler = function(element){
-      console.log("handle on off button");
+  this.toggleButtonClicked = function(element){
+      var likeId = element.closest('tr').attr('data-like-id');
+      var toggleStatus = element.parent().hasClass('on') ? "true" : "false";
+      var postParams = {"likes_id" : likeId, "set_active" : toggleStatus};
+
+      var webservice = new WebServiceInterface(); 
+      var options = {
+           requestParameters: postParams,
+           loader: "BLOCKER"
+      };
+      //var url = '/staff/reservations/upgrade_room';
+      //webservice.postJSON(url, options);
       return true;
   };
+
 
    this.addNewOption = function(element, event){
 	   	var $type = element.attr('data-type');
@@ -111,9 +112,7 @@ var GuestCardLikesView = function(domRef){
 		$('.add-new-option').unbind('click');
 	    element.removeClass('add-new-option').addClass('delete-option');    
 
+
    };
-
-
- 
 
 };
