@@ -16,7 +16,9 @@ var BaseInlineView = function(viewDom){
 
   	that.myDom.find('#add-new-button').on('click', that.addNewForm);
   	that.myDom.find('.icon-delete').on('click', that.deleteItem);
+  	that.delegateInlineEvents();
   };
+
   this.addNewForm = function(event){
   	// element.closest('div[data-view-type="inline-forms"]');
   		event.preventDefault();
@@ -95,7 +97,7 @@ var BaseInlineView = function(viewDom){
     	    
     	    sntapp.activityIndicator.hideActivityIndicator();
     	    //if any extra events to be handled over ride below function
-    	    that.delegateInlineEvents();
+    	    
         }, 300);				
 		
 	};

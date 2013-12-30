@@ -9,14 +9,7 @@ var GuestCardLikesView = function(domRef){
   	 that.myDom.find('tr').on('click', that.appendInlineData);
   };
 */
-  this.delegateEvents =function(e){
   
-  	//that.myDom.find('.change-data').on('click', that.changeData);
-  	// that.myDom.find('tr').on('click', that.appendInlineData);
-  	that.myDom.find('tr').on('click', that.appendInlineData);
-  	that.myDom.find('#add-new-button').on('click', that.addNewForm);
-  	that.myDom.find('.icon-delete').on('click', that.deleteItem);
-  };
   this.changeData = function(){
   	var target = $(this).attr('data-type');
 	if (target != 'textbox'){
@@ -52,9 +45,23 @@ var GuestCardLikesView = function(domRef){
 
   };
   this.delegateInlineEvents = function(){
-	that.myDom.find('.change-data').on('click', that.changeData);
-	that.myDom.find('.add-new-option').on('click', that.addNewOption);
+  	that.myDom.find('.change-data').on('click', that.changeData);
+  	that.myDom.find('.add-new-option').on('click', that.addNewOption);
+    that.myDom.on('click', that.viewElementClicked);
+
    };
+
+   this.viewElementClicked = function(event){
+      var element = $(event.target);
+      if(!element.parent().hasClass('switch-button')) return true;
+      that.onOffButtonHandler();
+
+   }
+
+  this.onOffButtonHandler = function(){
+      console.log("handle on off button");
+  };
+
    this.addNewOption = function(){
    	var $type = $(this).attr('data-type');
 
