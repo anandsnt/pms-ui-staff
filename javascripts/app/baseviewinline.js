@@ -90,7 +90,13 @@ var BaseInlineView = function(viewDom){
     	    containerTable.find("div.actions #update.button.green").on('click', that.updateData);
     	    
     	    sntapp.activityIndicator.hideActivityIndicator();
+    	    //if any extra events to be handled over ride below function
+    	    that.delegateInlineEvents();
         }, 300);				
+		
+	};
+	 //if any extra events to be handled over ride below function
+	this.delegateInlineEvents = function(){
 		
 	};
 	//Add new data
