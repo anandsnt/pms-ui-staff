@@ -114,7 +114,7 @@ var BaseInlineView = function(viewDom){
     //Update data
     this.updateData = function(event){
     	that.updateApi(event);// Override this function to call the individual API
-    	that.cancelFromAppendedDataInline(event);
+    	
     };
 	
 	// event to handle cancel button click in form

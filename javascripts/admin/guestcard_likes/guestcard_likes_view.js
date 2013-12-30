@@ -10,9 +10,9 @@ var GuestCardLikesView = function(domRef){
   };
 */
   
-  this.changeData = function(){
-  	
-  	var target = $(this).attr('data-type');
+  this.changeData = function(element){
+
+  	var target = element.attr('data-type');
 	if (target != 'textbox'){
 
 		// Hide previous and show new fields 
@@ -46,29 +46,38 @@ var GuestCardLikesView = function(domRef){
 
   };
   this.delegateInlineEvents = function(){
+
+  	//that.myDom.find('.change-data').on('click', that.changeData);
+  	//that.myDom.find('.add-new-option').on('click', that.addNewOption);
+
     that.myDom.on('click', that.viewElementClicked);
 	
    };
-   this.deleteOption = function(){
-	   	if ($(this).val() == '')
+   this.deleteOption = function(element){
+   	console.log("remove")
+	   	if (element.val() == '')
 		{
-			$(this).parent('.entry').remove();
+			element.parent('.entry').remove();
 		}	
 
    };
 
    this.viewElementClicked = function(event){
       var element = $(event.target);
+      
       if(element.parent().hasClass('switch-button')) 
-            that.onOffButtonHandler();
-      console.log(element)
-      if(element.hasClass('change-data'))
-      		that.changeData();
+            that.onOffButtonHandler(element);
+      else if(element.hasClass('change-data'))
+        	that.changeData(element);
+      else if(element.hasClass('add-new-option'))
+      		that.addNewOption(element, event);
+      else if(element.hasClass('delete-option'))
+      		that.deleteOption(element);
      
-	 if(element.hasClass('add-new-option'))
-      		that.addNewOption();
-      		 if(element.parent().hasClass('delete-option'))
-      		that.deleteOption();
+	 // if(element.hasClass('add-new-option'))
+      		// that.addNewOption();
+      		 // if(element.parent().hasClass('delete-option'))
+      		// that.deleteOption();
       		
       		return true;
 	// that.myDom.find('.add-new-option').on('click', that.addNewOption);
@@ -76,27 +85,27 @@ var GuestCardLikesView = function(domRef){
       
    };
 
-  this.onOffButtonHandler = function(){
+  this.onOffButtonHandler = function(element){
       console.log("handle on off button");
   };
 
-   this.addNewOption = function(){
-	   	var $type = $(this).attr('data-type');
+   this.addNewOption = function(element, event){
+	   	var $type = element.attr('data-type');
 	
 		$textOptionStart++;
 	
-		$(this)
+		element
 			.clone() 											// Clone element
 			.val('') 											// Clear value
 			.attr('id', $type + '-option' + $textOptionStart) 	// Increment ID value
-			.insertAfter($(this).parent('.entry'))				// Insert after this one
+			.insertAfter(element.parent('.entry'))				// Insert after this one
 			.wrap('<div class="entry" />');						// Wrap to div
 	
 		// Set new class
-		$('.add-new-option').unbind();
-	    $(this).removeClass('add-new-option').addClass('delete-option');    
+		$('.add-new-option').unbind('click');
+	    element.removeClass('add-new-option').addClass('delete-option');    
 	    
-	    that.delegateInlineEvents();
+	    that.viewElementClicked(event);
    };
 
 
