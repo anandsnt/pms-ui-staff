@@ -45,26 +45,27 @@ var GuestCardLikesView = function(domRef){
   this.callSaveAPI = function(){
 
   };
-  this.delegateInlineEvents = function(){
+  this.delegateSubviewEvents = function(){
   	//that.myDom.find('.change-data').on('click', that.changeData);
   	//that.myDom.find('.add-new-option').on('click', that.addNewOption);
-    that.myDom.on('click', that.viewElementClicked);
+    that.myDom.on('click', that.viewEventHandler);
 
    };
 
-   this.viewElementClicked = function(event){
+   this.viewEventHandler = function(event){
       var element = $(event.target);
-      if(element.parent().hasClass('switch-button')) 
-        that.onOffButtonHandler(element);
-      else if(element.hasClass('change-data'))
-        that.changeData();
+      if(element.parent().hasClass('switch-button')) {return that.onOffButtonHandler(element);}
+      if(element.hasClass('change-data')) return that.changeData(element);
+
       
+      //We have not handled this event.
       return true;
 
    }
 
   this.onOffButtonHandler = function(element){
       console.log("handle on off button");
+      return true;
   };
 
    this.addNewOption = function(){
