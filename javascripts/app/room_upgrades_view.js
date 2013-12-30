@@ -46,9 +46,18 @@ var RoomUpgradesView = function(viewDom){
   };
 
 
+  this.fetchCompletedOfRoomUpgradeSelected = function(data){
+      if(response.status == "success"){
+    	  
+      }else if(response.status == "failure"){
+    	  
+      }	  
+  };
+  
   this.roomUpgradeSelected = function(e){
     
     e.preventDefault();
+
     var upsellAmountId = $(this).attr('data-value');
     var roomNumberSelected = $(this).attr('data-room-number');
     var reservationId = that.reservation_id;

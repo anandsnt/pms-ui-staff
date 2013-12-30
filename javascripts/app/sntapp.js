@@ -4,6 +4,7 @@ var app = function(){
     this.activityIndicator = new ActivityIndicator();
     this.notification = new NotificationMessage();    	
     
+    
     this.getViewInstance = function(viewDom){
         var viewInstance;
         var viewName = viewDom.find('div:first').attr('data-view');
