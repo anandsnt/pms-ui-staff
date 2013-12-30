@@ -38,7 +38,7 @@ var HotelDepartmentsView = function(domRef){
   	event.preventDefault();
   	var postData = {};
   	var selectedId = $(this).attr("id");
-  	var url = '/admin/departments/'+selectedId;
+  	var url = '/admin/department/'+selectedId;
   	postData.id = selectedId;
 	var webservice = new WebServiceInterface();		
 	var options = {
