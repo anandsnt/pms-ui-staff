@@ -54,7 +54,7 @@ var GuestCardLikesView = function(domRef){
 
    this.viewEventHandler = function(event){
       var element = $(event.target);
-      if(element.parent().hasClass('switch-button')) {return that.onOffButtonHandler(element);}
+      if(element.parent().hasClass('switch-button')) {return that.toggleButtonClicked(element);}
       if(element.hasClass('change-data')) return that.changeData(element);
 
       
@@ -63,13 +63,23 @@ var GuestCardLikesView = function(domRef){
 
    }
 
-  this.onOffButtonHandler = function(element){
-      console.log("handle on off button");
+  this.toggleButtonClicked = function(element){
+      var likeId = element.closest('tr').attr('data-like-id');
+      var toggleStatus = element.parent().hasClass('on') ? "true" : "false";
+      var postParams = {"likes_id" : likeId, "set_active" : toggleStatus};
+
+      var webservice = new WebServiceInterface(); 
+      var options = {
+           requestParameters: postParams,
+           loader: "BLOCKER"
+      };
+      //var url = '/staff/reservations/upgrade_room';
+      //webservice.postJSON(url, options);
       return true;
   };
 
    this.addNewOption = function(){
-   	var $type = $(this).attr('data-type');
+   	  var $type = $(this).attr('data-type');
 
 			$textOptionStart++;
 
