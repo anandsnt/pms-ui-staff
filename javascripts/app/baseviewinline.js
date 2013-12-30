@@ -11,11 +11,14 @@ var BaseInlineView = function(viewDom){
   var that = this;
   
   this.delegateEvents = function(){
-  	that.myDom.find('tr').on('click', that.appendInlineData);
+  	//console.log(that.myDom);
+  	that.myDom.on('click', that.appendInlineData);
 
   	that.myDom.find('#add-new-button').on('click', that.addNewForm);
   	that.myDom.find('.icon-delete').on('click', that.deleteItem);
+  	that.delegateInlineEvents();
   };
+
   this.addNewForm = function(event){
   	// element.closest('div[data-view-type="inline-forms"]');
   		event.preventDefault();
@@ -56,7 +59,7 @@ var BaseInlineView = function(viewDom){
 		//
 		var element = $(event.target);
 
-		if(element.prop('tagName') != "A") return true;
+		if(element.prop('tagName') != "A" && !(element.hasClass('edit-data-inline'))) return true;
 		event.preventDefault();
 		
 		var webservice = new WebServiceInterface();
@@ -93,8 +96,8 @@ var BaseInlineView = function(viewDom){
     	    containerTable.find("div.actions #update.button.green").on('click', that.updateData);
     	    
     	    sntapp.activityIndicator.hideActivityIndicator();
-    	    //if any extra events to be handled over ride below function
-    	    that.delegateInlineEvents();
+    	    
+    	    
         }, 300);				
 		
 	};
