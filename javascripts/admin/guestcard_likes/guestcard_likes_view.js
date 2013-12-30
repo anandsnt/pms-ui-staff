@@ -11,6 +11,7 @@ var GuestCardLikesView = function(domRef){
 */
   
   this.changeData = function(){
+    console.log("change data");
   	var target = $(this).attr('data-type');
 	if (target != 'textbox'){
 
@@ -45,20 +46,24 @@ var GuestCardLikesView = function(domRef){
 
   };
   this.delegateInlineEvents = function(){
-  	that.myDom.find('.change-data').on('click', that.changeData);
-  	that.myDom.find('.add-new-option').on('click', that.addNewOption);
+  	//that.myDom.find('.change-data').on('click', that.changeData);
+  	//that.myDom.find('.add-new-option').on('click', that.addNewOption);
     that.myDom.on('click', that.viewElementClicked);
 
    };
 
    this.viewElementClicked = function(event){
       var element = $(event.target);
-      if(!element.parent().hasClass('switch-button')) return true;
-      that.onOffButtonHandler();
+      if(element.parent().hasClass('switch-button')) 
+        that.onOffButtonHandler(element);
+      else if(element.hasClass('change-data'))
+        that.changeData();
+      
+      return true;
 
    }
 
-  this.onOffButtonHandler = function(){
+  this.onOffButtonHandler = function(element){
       console.log("handle on off button");
   };
 
