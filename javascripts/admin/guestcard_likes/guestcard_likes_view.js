@@ -45,34 +45,33 @@ var GuestCardLikesView = function(domRef){
   this.callSaveAPI = function(){
 
   };
-  this.delegateInlineEvents = function(){
 
-  	//that.myDom.find('.change-data').on('click', that.changeData);
-  	//that.myDom.find('.add-new-option').on('click', that.addNewOption);
-
-    that.myDom.on('click', that.viewElementClicked);
-	
-   };
    this.deleteOption = function(element){
-   	console.log("remove")
-	   	if (element.val() == '')
+	   	if ($.trim(element.val()) == '')
 		{
 			element.parent('.entry').remove();
 		}	
-
    };
 
-   this.viewElementClicked = function(event){
+  this.delegateSubviewEvents = function(){
+  	//that.myDom.find('.change-data').on('click', that.changeData);
+  	//that.myDom.find('.add-new-option').on('click', that.addNewOption);
+    that.myDom.on('click', that.viewEventHandler);
+    // to remove text if value is null
+    that.myDom.on('keyup', that.optionsEventHandler);
+   };
+
+   this.viewEventHandler = function(event){
       var element = $(event.target);
+
       
       if(element.parent().hasClass('switch-button')) 
-            that.onOffButtonHandler(element);
+            return that.onOffButtonHandler(element);
       else if(element.hasClass('change-data'))
-        	that.changeData(element);
+        	return that.changeData(element);
       else if(element.hasClass('add-new-option'))
-      		that.addNewOption(element, event);
-      else if(element.hasClass('delete-option'))
-      		that.deleteOption(element);
+      		return that.addNewOption(element, event);
+
      
 	 // if(element.hasClass('add-new-option'))
       		// that.addNewOption();
@@ -84,9 +83,16 @@ var GuestCardLikesView = function(domRef){
 	// that.myDom.find('.delete-option').on('keyup', that.deleteOption);
       
    };
+   this.optionsEventHandler = function(event){
+   	  var element = $(event.target);
+   	  if(element.hasClass('delete-option'))
+      		return that.deleteOption(element);
+   };
+
 
   this.onOffButtonHandler = function(element){
       console.log("handle on off button");
+      return true;
   };
 
    this.addNewOption = function(element, event){
@@ -104,8 +110,7 @@ var GuestCardLikesView = function(domRef){
 		// Set new class
 		$('.add-new-option').unbind('click');
 	    element.removeClass('add-new-option').addClass('delete-option');    
-	    
-	    that.viewElementClicked(event);
+
    };
 
 

@@ -9,15 +9,30 @@ var BaseInlineView = function(viewDom){
   BaseView.call(this);
   this.myDom = viewDom;
   var that = this;
-  
+  this.pageinit = function(){
+  	that.myDom.unbind('click');
+  };
+
   this.delegateEvents = function(){
   	//console.log(that.myDom);
-  	that.myDom.on('click', that.appendInlineData);
+  	that.myDom.on('click', that.genericEventHandler);
 
-  	that.myDom.find('#add-new-button').on('click', that.addNewForm);
-  	that.myDom.find('.icon-delete').on('click', that.deleteItem);
-  	that.delegateInlineEvents();
+  	//that.myDom.find('#add-new-button').on('click', that.addNewForm);
+  	//that.myDom.find('.icon-delete').on('click', that.deleteItem);
+  	that.delegateSubviewEvents();
   };
+  
+
+  this.genericEventHandler = function(event){
+  	var element = $(event.target);
+	if(element.prop('tagName') == "A" && (element.hasClass('edit-data-inline'))) return that.appendInlineData(event);
+	if(element.attr('id') == "add-new-button") return that.addNewForm(event);
+	if(element.hasClass('icon-delete')) return that.deleteItem(event);
+
+
+
+  };
+
 
   this.addNewForm = function(event){
   	// element.closest('div[data-view-type="inline-forms"]');
@@ -36,7 +51,14 @@ var BaseInlineView = function(viewDom){
 	    		   loader: 'normal',
 		};
 	    webservice.getHTML(url, options);
+
+	    return true;
   };
+
+  this.deleteItem = function(){
+  		console.log("deleteItem");
+  };
+
   this.fetchCompletedOfNewForm = function(data, requestParameters){	
 		sntapp.activityIndicator.showActivityIndicator("BLOCKER");
 		that.myDom.find("tr.hide-content").removeClass('hide-content');
@@ -55,12 +77,8 @@ var BaseInlineView = function(viewDom){
 	  	// event for tr's click to append the data
 	    // this will check the tr's  'a' tag children with class edit-data-inline
 	  	// it is using 'a' tag's href for fetching the view
-		
-		//
-		var element = $(event.target);
-
-		if(element.prop('tagName') != "A" && !(element.hasClass('edit-data-inline'))) return true;
 		event.preventDefault();
+		var element = $(event.target);
 		
 		var webservice = new WebServiceInterface();
 		var url = element.attr("href");
@@ -75,6 +93,8 @@ var BaseInlineView = function(viewDom){
 	    		   loader: 'normal',
 		};
 	    webservice.getHTML(url, options);	
+
+	    return true;
 	};  
 
 	this.fetchCompletedOfAppendInlineData = function(data, requestParameters){	
@@ -102,7 +122,7 @@ var BaseInlineView = function(viewDom){
 		
 	};
 	 //if any extra events to be handled over ride below function
-	this.delegateInlineEvents = function(){
+	this.delegateSubviewEvents = function(){
 		
 	};
 	//Add new data
