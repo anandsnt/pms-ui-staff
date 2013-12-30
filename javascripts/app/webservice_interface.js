@@ -81,7 +81,7 @@ var WebServiceInterface = function(){
 		var options = options ? options : {};
 		var requestType = "GET";
 		var contentType = 'text/html';
-		var dataType = 'json';
+		var dataType = 'html';
 		var requestParameters = options["requestParameters"] ? options["requestParameters"] : {};
 		var async = options["async"] ? options["async"] : true;
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
@@ -171,10 +171,11 @@ var WebServiceInterface = function(){
 				}
 				if(parameters.trim() != ""){
 					if(requestUrl.indexOf("?") == -1){					
-							requestUrl = requestUrl + "?" + parameters;
+						requestUrl = requestUrl + "?" + parameters;
 					}
 					else{
-							requestUrl = requestUrl + parameters;
+						parameters = "&" + parameters;
+						requestUrl = requestUrl + parameters;
 					}
 				}
 			}
@@ -195,34 +196,51 @@ var WebServiceInterface = function(){
 			
 			success: function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
-				if(data.status == 'success'){
-					//TODO: show success notification
+				if(dataType.toUpperCase() === 'json'){
+					if(data.status == 'success'){
+						//TODO: show success notification
+						if(successCallBack) {
+							if(successCallBackParameters){
+								successCallBack(data, successCallBackParameters);
+							}
+							else{
+								successCallBack(data);
+							}					}
+					}
+					else{						
+						if(failureCallBack) {	
+							if(failureCallBackParameters){
+								failureCallBack(data.errors, failureCallBackParameters);
+							}
+							else{
+								failureCallBack(data.errors);
+							}
+						}
+						else {
+							sntapp.notification.showErrorMessage(data.errors);
+						}
+					}
+				}
+				else{
 					if(successCallBack) {
 						if(successCallBackParameters){
 							successCallBack(data, successCallBackParameters);
 						}
 						else{
 							successCallBack(data);
-						}					}
-				}
-				else{
-					sntapp.notification.showErrorMessage(data.errors);
-					if(failureCallBack) {	
-						if(failureCallBackParameters){
-							failureCallBack(data.errors, failureCallBackParameters);
-						}
-						else{
-							failureCallBack(data.errors);
-						}
-					}					
+						}						
+					}
 				}
 			},
 			error: function(jqXHR, exception){
 				sntapp.activityIndicator.hideActivityIndicator();				
-				//Show error notification
-				sntapp.notification.showErrorMessage(that.createErrorMessage(jqXHR, exception));
+
 				if(failureCallBack) {	
 					failureCallBack(that.createErrorMessage(jqXHR, exception));
+				}
+				else{
+					//Show error notification
+					sntapp.notification.showErrorMessage(that.createErrorMessage(jqXHR, exception));
 				}
 			}
 			

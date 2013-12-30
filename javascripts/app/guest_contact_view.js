@@ -16,8 +16,7 @@ var GuestContactView = function(domRef) {
 	
 	this.callSave = function(e) {
 		
-		var notification = new NotificationMessage();
-		notification.hideMessage();
+		sntapp.notification.hideMessage();
 		if (!$(e.target).is("#contact-info *", "#guest-card-content")) {
 			if (that.$contactInfoChange) {
 				that.saveContactInfo();
