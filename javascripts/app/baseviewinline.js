@@ -13,6 +13,7 @@ var BaseInlineView = function(viewDom){
   	that.myDom.unbind('click');
   };
 
+  
   this.delegateEvents = function(){
   	//console.log(that.myDom);
   	that.myDom.on('click', that.genericEventHandler);

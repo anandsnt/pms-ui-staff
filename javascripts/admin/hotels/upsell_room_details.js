@@ -4,7 +4,7 @@ var UpsellRoomDetailsView = function(domRef){
   var that = this;
   
   this.pageinit = function(){
-    console.log("Reached in pageinit UpsellRoomDetailsView");
+
   };
   
   this.delegateEvents = function(){  
@@ -102,20 +102,6 @@ var UpsellRoomDetailsView = function(domRef){
 			   loader: "BLOCKER"
 	  };
 	  webservice.postJSON(url, options);
-  	 // $.ajax({
-			// type: "POST",
-			// url : "/admin/room_upsells/update_upsell_options",
-			// dataType: 'json',
-			// data :data,
-			// success : function(data) {
-				// if(data.status == "success"){
-					// that.gotoPreviousPage();
-				// }
-			// },
-			// error : function() {
-				// alert("Sorry, not there yet!");
-			// }
-		// });
   };
   this.fetchCompletedOfSave = function(data){
   	if(data.status == "success"){
