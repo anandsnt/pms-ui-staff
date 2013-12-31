@@ -94,7 +94,7 @@ var GuestCardLikesView = function(domRef){
   this.toggleButtonClicked = function(element){
       var likeId = element.closest('tr').attr('data-like-id');
       var toggleStatus = element.parent().hasClass('on') ? "true" : "false";
-      var postParams = {"likes_id" : likeId, "set_active" : toggleStatus};
+      var postParams = {"id" : likeId, "set_active" : toggleStatus};
 
       var webservice = new WebServiceInterface(); 
       var options = {
