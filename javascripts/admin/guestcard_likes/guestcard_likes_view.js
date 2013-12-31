@@ -2,7 +2,7 @@ var GuestCardLikesView = function(domRef){
   BaseInlineView.call(this);  
   this.myDom = domRef; 
   var that = this;
-  var $textOptionStart = 1;
+  var textOptionStart = 1;
  /* this.delegateEvents = function(){
   	console.log(that.myDom);
   	 //that.myDom.find('.switch-button').on('click', 'onOffClicked');
@@ -173,14 +173,14 @@ var GuestCardLikesView = function(domRef){
 
 
    this.addNewOption = function(element, event){
-	   	var $type = element.attr('data-type');
+	   	var type = element.attr('data-type');
 	
-		$textOptionStart++;
+		textOptionStart++;
 	
 		element
 			.clone() 											// Clone element
 			.val('') 											// Clear value
-			.attr('id', $type + '-option' + $textOptionStart) 	// Increment ID value
+			.attr('id', type + '-option' + textOptionStart) 	// Increment ID value
 			.insertAfter(element.parent('.entry'))				// Insert after this one
 			.wrap('<div class="entry" />');						// Wrap to div
 	
@@ -195,7 +195,7 @@ var GuestCardLikesView = function(domRef){
    		 var element = $(event.target);
    		 var type = element.attr('like-type');
    		 if(type == "common"){
-   		 	that.updateCommonLikes();
+   		 	that.updateCommonLikes(element);
    		 }else if(type == "newspaper"){
    		 	that.updateNewsPaper();
    		 }
@@ -209,6 +209,10 @@ var GuestCardLikesView = function(domRef){
    		 }else if(type == "newspaper"){
    		 	that.saveNewsPaper();
    		 }
+    };
+    
+    this. updateCommonLikes = function(element){
+    	
     };
 
 };
