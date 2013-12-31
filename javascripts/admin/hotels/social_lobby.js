@@ -34,7 +34,7 @@ var SocialLobbyView = function(domRef){
 	 };
 	 console.log(data);
 	 
-	 var url = '';
+	 var url = '/admin/hotel/save_social_lobby_settings';
 	 var webservice = new WebServiceInterface();
 	 var options = { 
 				requestParameters: data,
