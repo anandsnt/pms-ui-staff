@@ -22,7 +22,7 @@ var HotelAnnouncementView = function(domRef){
 				"key_delivery_email_message": guest_zest_key_delivery_email_message
 	 };
 	 
-	 var url = '/admin/hotel/save_social_lobby_settings';
+	 var url = '/admin/hotel/save_announcements_settings';
 	 var webservice = new WebServiceInterface();
 	 var options = { 
 				requestParameters: data,
