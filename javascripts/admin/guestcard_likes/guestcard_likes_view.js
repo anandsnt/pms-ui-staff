@@ -119,24 +119,140 @@ var GuestCardLikesView = function(domRef){
    		 var element = $(event.target);
    		 var type = element.attr('like-type');
    		 if(type == "common"){
-   		 	that.updateCommonLikes(element);
+   		 	that.updateCommonLikes(element, event);
    		 }else if(type == "newspaper"){
    		 	that.updateNewsPaper();
    		 }
     	
     };
-    this.saveNewApi = function(){
+    this.saveNewApi = function(event){
     	var element = $(event.target);
    		 var type = element.attr('like-type');
    		 if(type == "common"){
-   		 	that.saveCommonLikes();
+   		 	that.saveCommonLikes(element, event);
    		 }else if(type == "newspaper"){
    		 	that.saveNewsPaper();
    		 }
     };
     
-    this. updateCommonLikes = function(element){
+    this.updateCommonLikes = function(element, event){
+    	
+    	var show_on_room_setup = "false";
+    	if(that.myDom.find("#show-on-room-setup").parent("label:eq(0)").hasClass("checked")) {
+		  show_on_room_setup = "true";
+	    }
+	    var selected = that.myDom.find("input[type='radio'][name='type']:checked");
+	    selectedType = "";
+		if (selected.length > 0) {
+		    selectedType = selected.val();
+		}
+		var options = new Array();
+		var optionDiv = "";
+		if(selectedType == "selectbox")
+		{
+			optionDiv = "entry-select";
+		} else if(selectedType == "checkbox"){
+			optionDiv = "entry-checkbox";
+		}else if(selectedType == "radio"){
+			optionDiv = "entry-radio";
+		}
+		console.log(selectedType)
+		if(selectedType == "selectbox" || selectedType == "checkbox" || selectedType == "radio") {
+			$("#"+optionDiv+" input[name=radio-option]").each(function(){
+			   id = $(this).attr("data-id");
+			   name = $(this).val();
+			   dict = {'id': id, 'name': name};
+			   if(name != ""){
+			     options.push(dict);
+			   }
+		    });
+		} 
+    	
+	    var postData = {};
+	    postData.id = that.myDom.find("#edit-like").attr("like_id");
+    	postData.name = that.myDom.find("#category-name").val();
+    	postData.show_on_room_setup = show_on_room_setup;
+    	postData.type = selectedType;
+    	postData.options = options;
+    	//console.log(JSON.stringify(postData));
+    	
+    	var url = '/admin/likes/'+postData.id;
+		var webservice = new WebServiceInterface();		
+		var options = {
+				   requestParameters: postData,
+				   successCallBack: that.fetchCompletedOfSave,
+				   successCallBackParameters:{ "event": event},
+				   loader:"BLOCKER"
+				   
+		};
+		webservice.putJSON(url, options);	
     	
     };
+    this.saveCommonLikes = function(element, event){
+    	console.log("----********-------")
+    	var show_on_room_setup = "false";
+    	if(that.myDom.find("#show-on-room-setup").parent("label:eq(0)").hasClass("checked")) {
+		  show_on_room_setup = "true";
+	    }
+	    var selected = that.myDom.find("input[type='radio'][name='type']:checked");
+	    selectedType = "";
+		if (selected.length > 0) {
+		    selectedType = selected.val();
+		}
+		var options = new Array();
+		var optionDiv = "";
+		if(selectedType == "selectbox")
+		{
+			optionDiv = "entry-select";
+		} else if(selectedType == "checkbox"){
+			optionDiv = "entry-checkbox";
+		}else if(selectedType == "radio"){
+			optionDiv = "entry-radio";
+		}
+		console.log("-----------")
+		if(selectedType == "selectbox" || selectedType == "checkbox" || selectedType == "radio") {
+			$("#"+optionDiv+" input[name=radio-option]").each(function(){
+			   id = $(this).attr("data-id");
+			   name = $(this).val();
+			   dict = {'id': id, 'name': name};
+			   if(name != ""){
+			     options.push(dict);
+			   }
+		    });
+		} 
+    	
+	    var postData = {};
+    	postData.name = that.myDom.find("#category-name").val();
+    	postData.show_on_room_setup = show_on_room_setup;
+    	postData.type = selectedType;
+    	postData.options = options;
+    	console.log(JSON.stringify(postData));
+    	
+    	var url = '/admin/likes/create';
+		var webservice = new WebServiceInterface();		
+		var options = {
+				   requestParameters: postData,
+				   successCallBack: that.fetchCompletedOfSave,
+				   successCallBackParameters:{ "event": event},
+				   loader:"BLOCKER"
+				   
+		};
+		webservice.putJSON(url, options);	
+    	
+    };
+    //refreshing view with new data and showing message
+  this.fetchCompletedOfSave = function(data, requestParams){
+  	
+  	  var url = "/admin/departments";
+   	  viewParams = {};
+  	  sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+  	  if(data.status == "success"){
+		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
+		  that.cancelFromAppendedDataInline(requestParams['event']);  
+	  }	 
+	  else{
+		  sntapp.notification.showErrorList(data.errors, that.myDom);  
+	  }
+  };
 
 };
