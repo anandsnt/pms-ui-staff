@@ -55,7 +55,7 @@ var BaseInlineView = function(viewDom){
 	    return true;
   };
 
-  this.deleteItem = function(){
+  this.deleteItem = function(event){
   		console.log("deleteItem");
   };
 
