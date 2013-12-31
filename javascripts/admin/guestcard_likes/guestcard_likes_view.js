@@ -114,5 +114,12 @@ var GuestCardLikesView = function(domRef){
 
 
    };
+   
+   this.updateApi = function(event){
+   		 var element = $(event.target);
+   		 var type = element.attr('like-type');
+   		 
+    	
+    };
 
 };
