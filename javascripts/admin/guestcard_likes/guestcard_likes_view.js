@@ -118,8 +118,21 @@ var GuestCardLikesView = function(domRef){
    this.updateApi = function(event){
    		 var element = $(event.target);
    		 var type = element.attr('like-type');
-   		 
+   		 if(type == "common"){
+   		 	that.updateCommonLikes();
+   		 }else if(type == "newspaper"){
+   		 	that.updateNewsPaper();
+   		 }
     	
+    };
+    this.saveNewApi = function(){
+    	var element = $(event.target);
+   		 var type = element.attr('like-type');
+   		 if(type == "common"){
+   		 	that.saveCommonLikes();
+   		 }else if(type == "newspaper"){
+   		 	that.saveNewsPaper();
+   		 }
     };
 
 };
