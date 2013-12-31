@@ -1,7 +1,6 @@
 var RoomKeyDeliveryView = function(domRef){
   BaseView.call(this);  
   this.myDom = domRef; 
-  this.currentView = $("body").attr("id") ;
   var that = this;
   
   this.delegateEvents = function(){  	
@@ -12,7 +11,7 @@ var RoomKeyDeliveryView = function(domRef){
   this.goBackToPreviousView = function() {
  	sntadminapp.gotoPreviousPage(that.viewParams);
   };
-  
+  // To save Room Key Delivery View
   this.saveRoomKeyDeliveryView = function() {
   	
 	var room_key_for_guest_zest = $("#room-key-for-guest-zest input[type='radio']:checked").val();
@@ -28,13 +27,18 @@ var RoomKeyDeliveryView = function(domRef){
 	var options = { 
 			requestParameters: data,
 			successCallBack: that.fetchCompletedOfSaveRoomKeyDeliveryView,
+			failureCallBack: that.fetchFailedOfSaveRoomKeyDeliveryView,
 			loader: 'blocker'
 	};
 	webservice.postJSON(url, options);	
 	    
   };
-  
-  this.fetchCompletedOfSaveRoomKeyDeliveryView = function() {
-  	console.log("fetchCompletedOfSaveRoomKeyDeliveryView");
+  // To handle success on save API
+  this.fetchCompletedOfSaveRoomKeyDeliveryView = function(data) {
+  	sntapp.notification.showSuccessMessage("Save successfully", that.myDom);
+  };
+  // To handle failure on save API
+  this.fetchFailedOfSaveRoomKeyDeliveryView = function(data){
+  	sntapp.notification.showErrorMessage(data.errors, that.myDom);
   };
 };
