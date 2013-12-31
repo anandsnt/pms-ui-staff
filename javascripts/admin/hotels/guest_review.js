@@ -30,18 +30,23 @@ var GuestReviewView = function(domRef){
 		    "rating_limit": rating_limit
 	 };
 	 
-	 var url = '';
+	 var url = '/admin/update_review_settings';
 	 var webservice = new WebServiceInterface();
 	 var options = { 
 				requestParameters: data,
 				successCallBack: that.fetchCompletedOfSaveGuestReviews,
+				failureCallBack: that.fetchFailedOfSaveGuestReviews,
 				loader: 'blocker'
 	 };
 	 webservice.postJSON(url, options);	
 	    
   };
   
-  this.fetchCompletedOfSaveGuestReviews = function() {
-  	console.log("fetchCompletedOfSaveGuestReviews");
+  this.fetchCompletedOfSaveGuestReviews = function(data) {
+  	sntapp.notification.showSuccessMessage("Updated Guest Review Setup", that.myDom);
   };
+  
+  this.fetchFailedOfSaveGuestReviews = function(data){
+  	sntapp.notification.showErrorMessage(data.errors, that.myDom);
+  }
 };
