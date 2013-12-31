@@ -9,12 +9,31 @@ var BaseInlineView = function(viewDom){
   BaseView.call(this);
   this.myDom = viewDom;
   var that = this;
-  
-  this.delegateEvents = function(){
-  	that.myDom.find('tr').on('click', that.appendInlineData);
-  	that.myDom.find('#add-new-button').on('click', that.addNewForm);
-  	that.myDom.find('.icon-delete').on('click', that.deleteItem);
+  this.pageinit = function(){
+  	that.myDom.unbind('click');
   };
+
+  this.delegateEvents = function(){
+  	//console.log(that.myDom);
+  	that.myDom.on('click', that.genericEventHandler);
+
+  	//that.myDom.find('#add-new-button').on('click', that.addNewForm);
+  	//that.myDom.find('.icon-delete').on('click', that.deleteItem);
+  	that.delegateSubviewEvents();
+  };
+  
+
+  this.genericEventHandler = function(event){
+  	var element = $(event.target);
+	if(element.prop('tagName') == "A" && (element.hasClass('edit-data-inline'))) return that.appendInlineData(event);
+	if(element.attr('id') == "add-new-button") return that.addNewForm(event);
+	if(element.hasClass('icon-delete')) return that.deleteItem(event);
+
+
+
+  };
+
+
   this.addNewForm = function(event){
   	// element.closest('div[data-view-type="inline-forms"]');
   		event.preventDefault();
@@ -32,7 +51,14 @@ var BaseInlineView = function(viewDom){
 	    		   loader: 'normal',
 		};
 	    webservice.getHTML(url, options);
+
+	    return true;
   };
+
+  this.deleteItem = function(){
+  		console.log("deleteItem");
+  };
+
   this.fetchCompletedOfNewForm = function(data, requestParameters){	
 		sntapp.activityIndicator.showActivityIndicator("BLOCKER");
 		that.myDom.find("tr.hide-content").removeClass('hide-content');
@@ -53,8 +79,6 @@ var BaseInlineView = function(viewDom){
 	  	// it is using 'a' tag's href for fetching the view
 		event.preventDefault();
 		var element = $(event.target);
-		if(element.prop('tagName') != "A" && element.hasClass('edit-data-inline') == false)
-			return false;	
 		
 		var webservice = new WebServiceInterface();
 		var url = element.attr("href");
@@ -69,6 +93,8 @@ var BaseInlineView = function(viewDom){
 	    		   loader: 'normal',
 		};
 	    webservice.getHTML(url, options);	
+
+	    return true;
 	};  
 
 	this.fetchCompletedOfAppendInlineData = function(data, requestParameters){	
@@ -90,19 +116,25 @@ var BaseInlineView = function(viewDom){
     	    containerTable.find("div.actions #update.button.green").on('click', that.updateData);
     	    
     	    sntapp.activityIndicator.hideActivityIndicator();
+    	    
+    	    
         }, 300);				
+		
+	};
+	 //if any extra events to be handled over ride below function
+	this.delegateSubviewEvents = function(){
 		
 	};
 	//Add new data
     this.addNewData = function(event){
     	
     	that.saveNewApi();// Override this function to call the individual API
-    	that.cancelFromAppendedDataInline(event);
+    	
     };
     //Update data
     this.updateData = function(event){
     	that.updateApi(event);// Override this function to call the individual API
-    	that.cancelFromAppendedDataInline(event);
+    	
     };
 	
 	// event to handle cancel button click in form
