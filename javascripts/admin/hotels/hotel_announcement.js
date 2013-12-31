@@ -1,7 +1,6 @@
 var HotelAnnouncementView = function(domRef){
   BaseView.call(this);  
   this.myDom = domRef; 
-  this.currentView = $("body").attr("id") ;
   var that = this;
   
   this.delegateEvents = function(){  	
@@ -12,7 +11,7 @@ var HotelAnnouncementView = function(domRef){
   this.goBackToPreviousView = function() {
  	sntadminapp.gotoPreviousPage(that.viewParams);
   };
-  
+  // To save Hotel Announcements
   this.saveHotelAnnouncements = function() {
 	 var guest_zest_welcome_message = that.myDom.find("#guest-zest-welcome-message").val();
 	 var guest_zest_checkout_message = that.myDom.find("#guest-zest-checkout-message").val();
@@ -27,14 +26,20 @@ var HotelAnnouncementView = function(domRef){
 	 var webservice = new WebServiceInterface();
 	 var options = { 
 				requestParameters: data,
-				successCallBack: that.fetchCompletedOfsaveHotelAnnouncements,
+				successCallBack: that.fetchCompletedOfSaveHotelAnnouncements,
+				failureCallBack: that.fetchFailedOfSaveHotelAnnouncements,
 				loader: 'blocker'
 	 };
 	 webservice.postJSON(url, options);	
 	    
   };
-  
-  this.fetchCompletedOfsaveHotelAnnouncements = function() {
-  	console.log("fetchCompletedOfsaveHotelAnnouncements");
+  // To handle success on save API
+  this.fetchCompletedOfSaveHotelAnnouncements = function() {
+  	sntapp.notification.showSuccessMessage("Save successfully", that.myDom);
   };
+  // To handle failure on save API
+  this.fetchFailedOfSaveHotelAnnouncements = function(data){
+  	sntapp.notification.showErrorMessage(data.errors, that.myDom);
+  };
+  
 };
