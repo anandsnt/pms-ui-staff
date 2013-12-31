@@ -4,7 +4,7 @@ var HotelDepartmentsView = function(domRef){
   that = this;
   this.myDom = domRef;
   //function to add new department
-  this.saveNewApi = function(){ 
+  this.saveNewApi = function(event){ 
   	 	
   	var postData = {};
   	postData.name = that.myDom.find("#department-name").val(); 	
@@ -13,20 +13,21 @@ var HotelDepartmentsView = function(domRef){
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
-			   loader:"BLOCKER",
-			   shouldShowSuccessMessage: "true"
+			   successCallBackParameters:{ "event": event},
+			   loader:"BLOCKER"
 			   
 	};
 	webservice.postJSON(url, options);	
   };
   //refreshing view with new data and showing message
-  this.fetchCompletedOfSave = function(data){
+  this.fetchCompletedOfSave = function(data, requestParams){
   	
   	var url = "/admin/departments";
    	viewParams = {};
   	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
   	if(data.status == "success"){
-		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		  
+		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
+		  that.cancelFromAppendedDataInline(requestParams['event']);  
 	  }	 
 	  else{
 		  sntapp.notification.showErrorList(data.errors, that.myDom);  
@@ -46,7 +47,7 @@ var HotelDepartmentsView = function(domRef){
 	  }
   };
   //function to update department
-  this.updateApi = function(){
+  this.updateApi = function(event){
   	var postData = {};
   	postData.name = that.myDom.find("#department-name").val();
   	postData.value = that.myDom.find("#edit-department-details").attr("department_id");
@@ -56,8 +57,8 @@ var HotelDepartmentsView = function(domRef){
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
-			   loader:"BLOCKER",
-			   shouldShowSuccessMessage: "true"
+			   successCallBackParameters:{ "event": event},
+			   loader:"BLOCKER"
 			   
 	};
 	webservice.putJSON(url, options);	
@@ -66,7 +67,7 @@ var HotelDepartmentsView = function(domRef){
   this.deleteItem = function(event){
   	event.preventDefault();
   	var postData = {};
-  	var selectedId = $(this).attr("id");
+  	var selectedId = $(event.target).attr("id");
   	var url = '/admin/departments/'+selectedId;
   	postData.id = selectedId;
 	var webservice = new WebServiceInterface();		
