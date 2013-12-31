@@ -3,9 +3,7 @@ var HotelBrandsView = function(domRef){
 	BaseInlineView.call(this);  
 	this.myDom = domRef;
 	var that = this;
-	this.pageinit = function(){
-		    
-	};
+
 	this.updateApi = function(event){
 		var brandName = $.trim(that.myDom.find("#brand-name").val());
 		var brandID = that.myDom.find("#edit-brand-details").attr("data-brand-id");		
@@ -14,7 +12,7 @@ var HotelBrandsView = function(domRef){
 			return false;
 		}
 		else if(typeof brandID === 'undefined' || brandID === ""){ // rare case
-			sntapp.notificationMessage.showErrorMessage('Some thing went wrong, please refresh the page and try again');
+			sntapp.notification.showErrorMessage('Some thing went wrong, please refresh the page and try again');
 			return false;
 		}
 		else{
@@ -35,7 +33,7 @@ var HotelBrandsView = function(domRef){
 	};
 	
 	this.fetchCompletedOfUpdateApi = function(data){
-		sntapp.notificationMessage.showSuccessMessage('Successfully updated');
+		sntapp.notification.showSuccessMessage('Successfully updated');
 		// update the view of listing the brand listing
 		
 	};
@@ -48,7 +46,7 @@ var HotelBrandsView = function(domRef){
 			return false;
 		}
 		else if(typeof brandID === 'undefined' || brandID === ""){ // rare case
-			sntapp.notificationMessage.showErrorMessage('Some thing went wrong, please refresh the page and try again');
+			sntapp.notification.showErrorMessage('Some thing went wrong, please refresh the page and try again');
 			return false;
 		}
 		else{
@@ -68,7 +66,7 @@ var HotelBrandsView = function(domRef){
 		}		
 	};
 	this.fetchCompletedOfSaveNewApi = function(data){
-		sntapp.notificationMessage.showSuccessMessage('Successfully updated');
+		sntapp.notification.showSuccessMessage('Successfully updated');
 		// update the view of listing the brand listing
 		
 	};	
