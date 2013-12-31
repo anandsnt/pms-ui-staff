@@ -56,27 +56,43 @@ var GuestCardLikesView = function(domRef){
   this.delegateSubviewEvents = function(){
   	//that.myDom.find('.change-data').on('click', that.changeData);
   	//that.myDom.find('.add-new-option').on('click', that.addNewOption);
-    that.myDom.on('click', that.viewEventHandler);
+    that.myDom.on('click', that.viewClickEventHandler);
     // to remove text if value is null
-    that.myDom.on('keyup', that.optionsEventHandler);
+    that.myDom.on('keyup', that.viewKeyupEventHandler);
+    that.myDom.on('focusout', that.viewFocusoutEventHandler);
    };
 
-   this.viewEventHandler = function(event){
+   this.viewClickEventHandler = function(event){
       var element = $(event.target);
+      console.log(element);
 
       if(element.parent().hasClass('switch-button')) {return that.toggleButtonClicked(element);}
       if(element.hasClass('change-data')) return that.changeData(element);
       if(element.hasClass('add-new-option'))	return that.addNewOption(element, event);
+      if(element.hasClass('add-new-checkbox'))  
+        { return that.addNewNewspaper(element);}
+      if(element.hasClass('icon-add') && element.parent().hasClass('add-new-checkbox'))  
+        { return that.addNewNewspaper(element.parent());}
 
       return true;
 	// that.myDom.find('.add-new-option').on('click', that.addNewOption);
 	// that.myDom.find('.delete-option').on('keyup', that.deleteOption);
       
    };
-   this.optionsEventHandler = function(event){
+
+   this.viewKeyupEventHandler = function(event){
    	  var element = $(event.target);
    	  if(element.hasClass('delete-option'))
       		return that.deleteOption(element);
+      if(element.hasClass('checkbox') && element.hasClass('icon-delete')){ 
+            return that.removeNewspaper(element); 
+      }
+
+   };
+
+   this.viewFocusoutEventHandler = function(event){
+      var element = $(event.target);
+      if(element.hasClass('checkbox-value')) return that.convertToCheckbox(element);
    };
 
 
@@ -93,6 +109,66 @@ var GuestCardLikesView = function(domRef){
       //var url = '/staff/reservations/upgrade_room';
       //webservice.postJSON(url, options);
       return true;
+  };
+
+  // Add new checkbox option, step 1 - create text field
+  this.addNewNewspaper = function(element){
+      var checkboxOptionStart = 48;
+      var type = element.attr('data-type'),
+      deleteIcon = '<span class="icons icon-delete" />';
+
+      checkboxOptionStart++;
+
+      // Clone add new option
+      element.clone().insertAfter(element);
+
+      // Add text field
+      element.removeClass('add-new-checkbox').text('');
+
+      $('<input type="text" value="" />')
+          .attr('name', type)
+          .attr('data-id', "")
+          .attr('id', type + '-option' + checkboxOptionStart)
+          .attr('class', 'checkbox-value')
+          .appendTo(element);
+
+      return true;
+
+  };
+
+  // Add new checkbox option, step 2 - convert text field to checkbox field if value entered
+  this.convertToCheckbox = function(element){
+    var value = element.val();
+
+      // If value is entered
+      if (value)
+      {
+        // First change input type
+        element
+          .attr('type', 'checkbox')
+          .attr('checked', 'checked')
+          .removeAttr('class');
+
+        // Now update with new value
+        var icons = '<span class="icons icon-delete" /><span class="icon-form icon-checkbox checked" />',
+          input = element.parent().html(),
+          text = element.val();
+
+        element.parent()
+          .addClass('checkbox checked')
+          .removeAttr('data-type')
+          .html(icons + input + text);
+      }
+      // No value
+      else
+      {
+        element.parent().remove();
+      }
+  };
+
+  this.removeNewspaper = function(element){
+    element.parent('.checkbox').remove();
+    return false;
   };
 
 
