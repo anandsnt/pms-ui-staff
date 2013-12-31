@@ -42,10 +42,10 @@ var GuestReviewView = function(domRef){
   };
   // To handle success on save API
   this.fetchCompletedOfSaveGuestReviews = function(data) {
-  	sntapp.notification.showSuccessMessage("Updated Guest Review Setup", that.myDom);
+  	sntapp.notification.showSuccessMessage("Save successfully", that.myDom);
   };
   // To handle failure on save API
   this.fetchFailedOfSaveGuestReviews = function(data){
   	sntapp.notification.showErrorMessage(data.errors, that.myDom);
-  }
+  };
 };
