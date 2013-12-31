@@ -45,7 +45,7 @@ var GuestReviewView = function(domRef){
   	sntapp.notification.showSuccessMessage("Save successfully", that.myDom);
   };
   // To handle failure on save API
-  this.fetchFailedOfSaveGuestReviews = function(data){
-  	sntapp.notification.showErrorMessage(data.errors, that.myDom);
+  this.fetchFailedOfSaveGuestReviews = function(error){
+  	sntapp.notification.showErrorMessage(error, that.myDom);
   };
 };
