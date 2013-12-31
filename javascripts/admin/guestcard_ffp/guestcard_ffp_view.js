@@ -11,7 +11,7 @@ var GuestCardFFPView = function(domRef) {
 	//activate/inactivate loyallty
 	this.activateInactivateLoyalty = function() {
 		//TODO set url.
-		var url = '';
+		var url = '#';
 		var postData = {};
 		var selectedId = $(this).attr("ffp");
 		// to get the current toggle ffp id

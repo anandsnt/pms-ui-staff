@@ -11,11 +11,10 @@ var PermissionView = function(domRef) {
 		var postData = {};
 		postData.assigned_roles = [];
 		that.myDom.find("#assigned-roles li").each(function(n) {
-			postData.assigned_roles.push($(this).attr("id"));
-			console.log("postData", postData.assigned_roles);
+			postData.assigned_roles.push($(this).attr("value"));
 			});
-/*
-			var url = '';
+
+			var url = '#';
 			var webservice = new WebServiceInterface();
 
 			var options = {
@@ -23,7 +22,7 @@ var PermissionView = function(domRef) {
 				successCallBack : that.fetchCompletedOfSave,
 				loader : "BLOCKER"
 			};
-			webservice.postJSON(url, options);*/
+			webservice.postJSON(url, options);
 
 		
 	};
