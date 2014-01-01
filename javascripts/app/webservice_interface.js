@@ -196,7 +196,8 @@ var WebServiceInterface = function(){
 			
 			success: function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
-				if(dataType.toUpperCase() === 'json'){
+				if(dataType.toLowerCase() === 'json'){
+					
 					if(data.status == 'success'){
 						//TODO: show success notification
 						if(successCallBack) {

@@ -1,7 +1,6 @@
 var GuestReviewView = function(domRef){
   BaseView.call(this);  
   this.myDom = domRef; 
-  this.currentView = $("body").attr("id") ;
   var that = this;
   
   this.delegateEvents = function(){  	
@@ -12,7 +11,7 @@ var GuestReviewView = function(domRef){
   this.goBackToPreviousView = function() {
  	sntadminapp.gotoPreviousPage(that.viewParams);
   };
-  
+  // To save guest review
   this.saveGuestReviews = function() {
   	
   	 var is_guest_reviews_on = "false";
@@ -41,12 +40,12 @@ var GuestReviewView = function(domRef){
 	 webservice.postJSON(url, options);	
 	    
   };
-  
+  // To handle success on save API
   this.fetchCompletedOfSaveGuestReviews = function(data) {
-  	sntapp.notification.showSuccessMessage("Updated Guest Review Setup", that.myDom);
+  	sntapp.notification.showSuccessMessage("Saved successfully", that.myDom);
   };
-  
-  this.fetchFailedOfSaveGuestReviews = function(data){
-  	sntapp.notification.showErrorMessage(data.errors, that.myDom);
-  }
+  // To handle failure on save API
+  this.fetchFailedOfSaveGuestReviews = function(errorMessage){
+  	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
+  };
 };
