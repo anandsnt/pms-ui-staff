@@ -54,7 +54,6 @@ var RoomTypesView = function(domRef){
 			   successCallBack: that.fetchCompletedOfSave,
 			   successCallBackParameters:{ "event": event},
 			   loader:"BLOCKER"
-			   
 	};
 	webservice.postJSON(url, options);	
   };
@@ -75,8 +74,26 @@ var RoomTypesView = function(domRef){
   
   //function to update department
   this.updateApi = function(event){
-  	var postData = {};
   	
+  	var postData = {};
+  	postData.room_type_code = that.myDom.find("#room-type-code").val(); 
+  	postData.room_type_name = that.myDom.find("#room-type-name").val(); 
+  	postData.max_occupancy = that.myDom.find("#room-type-max-occupancy").val(); 
+  	postData.snt_description = that.myDom.find("#room-type-description").val(); 
+  	
+  	// to handle is_pseudo_room_type checked or not
+  	postData.is_pseudo_room_type = "false";
+  	if($("#is-pseudo-room-type").parent("label:eq(0)").hasClass("checked")) {
+	    postData.is_pseudo_room_type = "true";
+	}
+	
+  	// to handle image uploaded or not
+  	if(that.myDom.find("#file-preview").attr("changed") == "changed")
+  		postData.image_of_room_type = that.myDom.find("#file-preview").attr("src");
+  	else
+  		postData.image_of_room_type = "";
+  	
+  	console.log(postData);
   	var url = '';
 	var webservice = new WebServiceInterface();		
 	var options = {
