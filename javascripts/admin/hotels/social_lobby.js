@@ -32,7 +32,7 @@ var SocialLobbyView = function(domRef){
 				"departure_grace_days":departure_grace_days
 	 };
 	 
-	 var url = '';
+	 var url = '/admin/hotel/save_social_lobby_settings';
 	 var webservice = new WebServiceInterface();
 	 var options = { 
 				requestParameters: data,
