@@ -237,7 +237,13 @@ var WebServiceInterface = function(){
 				sntapp.activityIndicator.hideActivityIndicator();				
 
 				if(failureCallBack) {	
-					failureCallBack(that.createErrorMessage(jqXHR, exception));
+					var errorMessage = that.createErrorMessage(jqXHR, exception);
+					if(failureCallBackParameters){
+						failureCallBack(errorMessage, failureCallBackParameters);
+					}
+					else{
+						failureCallBack(errorMessage);
+					}
 				}
 				else{
 					//Show error notification
