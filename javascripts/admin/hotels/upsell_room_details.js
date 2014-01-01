@@ -12,7 +12,7 @@ var UpsellRoomDetailsView = function(domRef){
         connectWith: '#upsell_level .sortable-list'
      });
   	 that.myDom.find('#save').on('click',that.saveDailyUpSellSetup);
-  	 that.myDom.find("#upsell-rooms").on('click', that.turnOnOffAllControls);
+  	 that.myDom.find("#upsell_rooms").on('click', that.turnOnOffAllControls);
   	 that.myDom.find('#cancel,#go_back').on('click', that.goBackToPreviousView); 
   };
   this.goBackToPreviousView = function() {
