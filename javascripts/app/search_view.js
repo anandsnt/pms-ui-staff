@@ -68,12 +68,12 @@ var Search  = function(domRef){
       	reservation_status = "in house";
       }
       
-      if(response.guests.length > 0){
-      	that.fetchResults = response.guests;
+      if(response.data.length > 0){
+      	that.fetchResults = response.data;
       	that.displayFilteredResults(that.fetchResults, that.currentQuery);
       }
       // No data in JSON file
-      else if(response.guests.length == 0){
+      else if(response.data.length == 0){
       	if(reservation_status != ""){
       		// When dashboard buttons with 0 guests are clicked, show search screen message - "No guests checking in/out/in house" 
       		$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+reservation_status+'</strong></li>');

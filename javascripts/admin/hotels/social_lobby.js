@@ -32,7 +32,7 @@ var SocialLobbyView = function(domRef){
 				"departure_grace_days":departure_grace_days
 	 };
 	 
-	 var url = '';
+	 var url = '/admin/hotel/save_social_lobby_settings';
 	 var webservice = new WebServiceInterface();
 	 var options = { 
 				requestParameters: data,
@@ -45,10 +45,10 @@ var SocialLobbyView = function(domRef){
   };
   // To handle success on save API
   this.fetchCompletedOfSaveSocialLobby = function() {
-  	sntapp.notification.showSuccessMessage("Save successfully", that.myDom);
+  	sntapp.notification.showSuccessMessage("Saved successfully", that.myDom);
   };
   // To handle failure on save API
-  this.fetchFailedOfSaveSocialLobby = function(data){
-  	sntapp.notification.showErrorMessage(data.errors, that.myDom);
+  this.fetchFailedOfSaveSocialLobby = function(errorMessage){
+  	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   };
 };
