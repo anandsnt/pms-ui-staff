@@ -173,7 +173,7 @@ var GuestCardLikesView = function(domRef){
    		 if(type == "common"){
    		 	that.updateCommonLikes(element, event);
    		 }else if(type == "newspaper"){
-   		 	that.saveNewsPaper(element);
+   		 	that.saveNewsPaper(event, element);
    		 }
     	
     };
@@ -302,7 +302,7 @@ var GuestCardLikesView = function(domRef){
 	  }
   };
 
-    this.saveNewsPaper = function(element){
+    this.saveNewsPaper = function(event, element){
       var postData = {};
       postData.news_paper = [];
       element.closest('form').find('#newspaper-options').find('label').each(function(index){
