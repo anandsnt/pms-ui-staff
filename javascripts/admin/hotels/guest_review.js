@@ -46,7 +46,6 @@ var GuestReviewView = function(domRef){
   };
   // To handle failure on save API
   this.fetchFailedOfSaveGuestReviews = function(errorMessage){
-  	
   	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   };
 };

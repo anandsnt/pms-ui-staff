@@ -48,7 +48,7 @@ var SocialLobbyView = function(domRef){
   	sntapp.notification.showSuccessMessage("Saved successfully", that.myDom);
   };
   // To handle failure on save API
-  this.fetchFailedOfSaveSocialLobby = function(data){
-  	sntapp.notification.showErrorMessage(data.errors, that.myDom);
+  this.fetchFailedOfSaveSocialLobby = function(errorMessage){
+  	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   };
 };
