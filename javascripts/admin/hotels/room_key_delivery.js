@@ -22,7 +22,7 @@ var RoomKeyDeliveryView = function(domRef){
 			"room_key_delivery_for_rover_check_in": room_key_for_rover
 	};
 	
-	var url = '';
+	var url = '/admin/update_room_key_delivery_settings';
 	var webservice = new WebServiceInterface();
 	var options = { 
 			requestParameters: data,
