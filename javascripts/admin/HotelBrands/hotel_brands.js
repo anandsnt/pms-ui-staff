@@ -14,7 +14,7 @@ var HotelBrandsView = function(domRef){
 		if(typeof url === 'undefined' || url == "#" )
 			return false;
 		
-		var data = {'id': brandID, 'name':brandName  };
+		var data = {'value': brandID, 'name':brandName  };
 	    var options = {
 				   successCallBack: that.fetchCompletedOfUpdateApi,
 				   requestParameters: data,

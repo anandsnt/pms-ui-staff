@@ -1,7 +1,6 @@
 var SocialLobbyView = function(domRef){
   BaseView.call(this);  
   this.myDom = domRef; 
-  this.currentView = $("body").attr("id") ;
   var that = this;
   
   this.delegateEvents = function(){  	
@@ -12,7 +11,7 @@ var SocialLobbyView = function(domRef){
   this.goBackToPreviousView = function() {
  	sntadminapp.gotoPreviousPage(that.viewParams);
   };
-  
+  // To save Social Lobby
   this.saveSocialLobby = function() {
 	 
 	 var is_social_lobby_on = "false",
@@ -32,20 +31,24 @@ var SocialLobbyView = function(domRef){
 				"arrival_grace_days": arrival_grace_days,
 				"departure_grace_days":departure_grace_days
 	 };
-	 console.log(data);
 	 
-	 var url = '';
+	 var url = '/admin/hotel/save_social_lobby_settings';
 	 var webservice = new WebServiceInterface();
 	 var options = { 
 				requestParameters: data,
 				successCallBack: that.fetchCompletedOfSaveSocialLobby,
+				failureCallBack: that.fetchFailedOfSaveSocialLobby,
 				loader: 'blocker'
 	 };
 	 webservice.postJSON(url, options);	
 	    
   };
-  
+  // To handle success on save API
   this.fetchCompletedOfSaveSocialLobby = function() {
-  	console.log("fetchCompletedOfSaveSocialLobby");
+  	sntapp.notification.showSuccessMessage("Saved successfully", that.myDom);
+  };
+  // To handle failure on save API
+  this.fetchFailedOfSaveSocialLobby = function(errorMessage){
+  	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   };
 };

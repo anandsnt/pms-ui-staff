@@ -10,7 +10,11 @@ var app = function(){
         var viewName = viewDom.find('div:first').attr('data-view');
 
         if(typeof viewName !== "undefined"){
-            viewInstance = new window[viewName](viewDom);            
+            try{
+                viewInstance = new window[viewName](viewDom); 
+            }
+            catch(e){
+            }         
         }
         
         
@@ -25,12 +29,24 @@ var app = function(){
         var viewObject = that.getViewInstance(viewDom);
         
      // CR Sajith: if viewObject is undefined or nil, show a predefined error message & return.
-        
-        if((viewParams != null) && (typeof viewParams != undefined)){
+        try{
+
+            if((viewParams != null) && (typeof viewParams != undefined)){
+                viewObject.viewParams = viewParams;
+            }
+            viewObject.initialize();
+            viewObject.pageshow();
+
+        }
+
+        catch(e){
+            console.log("view object is not defined");
+        }
+        /*if((viewParams != null) && (typeof viewParams != undefined)){
             viewObject.viewParams = viewParams;
         }
         viewObject.initialize();
-        viewObject.pageshow();
+        viewObject.pageshow();*/
     };
     
 
