@@ -9,7 +9,7 @@ var HotelBrandsView = function(domRef){
 		var brandID = that.myDom.find("#edit-brand-details").attr("data-brand-id");		
 		
 		var webservice = new WebServiceInterface();
-		var url = '/admin/brands';
+		var url = '/admin/hotel_brands/'+brandID;
 		
 		if(typeof url === 'undefined' || url == "#" )
 			return false;
@@ -26,7 +26,7 @@ var HotelBrandsView = function(domRef){
 	};
 	//Function to render with the updated screen
 	this.fetchCompletedOfUpdateApi = function(data, requestParams){
-		var url = "/admin/brands";
+		var url = "/admin/hotel_brands";
 	   	viewParams = {};
 	  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
 	  	if(data.status == "success"){
@@ -42,7 +42,7 @@ var HotelBrandsView = function(domRef){
 	this.saveNewApi = function(event){
 		var brandName = $.trim(that.myDom.find("#brand-name").val());
 		var webservice = new WebServiceInterface();
-		var url = '/admin/brands/create';
+		var url = '/admin/hotel_brands/create';
 		
 		if(typeof url === 'undefined' || url == "#" )
 			return false;
@@ -59,7 +59,7 @@ var HotelBrandsView = function(domRef){
 	};
 	//Function to render with the updated screen and success/error messages
 	this.fetchCompletedOfSaveNewApi = function(data, requestParams){
-		var url = "/admin/brands";
+		var url = "/admin/hotel_brands";
 	   	viewParams = {};
 	  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
 	  	if(data.status == "success"){
