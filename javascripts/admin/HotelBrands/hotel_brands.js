@@ -16,7 +16,7 @@ var HotelBrandsView = function(domRef){
 		
 		var data = {'value': brandID, 'name':brandName, 'hotel_chain_id':  hotelChainId};
 	    var options = {
-				   successCallBack: that.fetchCompletedOfUpdateApi,
+				   successCallBack: that.fetchCompletedOfSave,
 				   requestParameters: data,
 				   successCallBackParameters:{ "event": event},
 	    		   loader: 'normal',
@@ -25,10 +25,10 @@ var HotelBrandsView = function(domRef){
 		
 	};
 	//Function to render with the updated screen
-	this.fetchCompletedOfUpdateApi = function(data, requestParams){
+	this.fetchCompletedOfSave = function(data, requestParams){
 		var url = "/admin/hotel_brands";
 	   	viewParams = {};
-	  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+	  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
 	  	if(data.status == "success"){
 			  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
 			  that.cancelFromAppendedDataInline(requestParams['event']);  
@@ -49,7 +49,7 @@ var HotelBrandsView = function(domRef){
 		
 		var data = {'name':brandName  , 'hotel_chain_id':  hotelChainId};
 	    var options = {
-				   successCallBack: that.fetchCompletedOfSaveNewApi,
+				   successCallBack: that.fetchCompletedOfSave,
 				   requestParameters: data,
 				   successCallBackParameters:{ "event": event},
 	    		   loader: 'normal',
@@ -57,18 +57,4 @@ var HotelBrandsView = function(domRef){
 	    webservice.postJSON(url, options);				
 		
 	};
-	//Function to render with the updated screen and success/error messages
-	this.fetchCompletedOfSaveNewApi = function(data, requestParams){
-		var url = "/admin/hotel_brands";
-	   	viewParams = {};
-	  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
-	  	if(data.status == "success"){
-		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
-		  that.cancelFromAppendedDataInline(requestParams['event']);  
-	    }	 
-	    else{
-		  sntapp.notification.showErrorList(data.errors, that.myDom);  
-	    }
-	};	
-
 };
