@@ -26,10 +26,9 @@ var BaseInlineView = function(viewDom){
   this.genericEventHandler = function(event){
   	var element = $(event.target);
 	if(element.prop('tagName') == "A" && (element.hasClass('edit-data-inline'))) return that.appendInlineData(event);
+	if(element.parent().hasClass('switch-button')) {return that.toggleButtonClicked(element);}
 	if(element.attr('id') == "add-new-button") return that.addNewForm(event);
 	if(element.hasClass('icon-delete')) return that.deleteItem(event);
-
-
 
   };
 
@@ -137,6 +136,12 @@ var BaseInlineView = function(viewDom){
     };
     this.updateApi = function(event){
     	// Override this function to call the individual API
+    };
+
+    this.toggleButtonClicked = function(element){
+    	console.log("toggle button clicked");
+    	return true;
+
     };
 	
 	// event to handle cancel button click in form

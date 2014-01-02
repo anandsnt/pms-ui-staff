@@ -12,7 +12,7 @@ var UpsellRoomDetailsView = function(domRef){
         connectWith: '#upsell_level .sortable-list'
      });
   	 that.myDom.find('#save').on('click',that.saveDailyUpSellSetup);
-  	 that.myDom.find("#upsell-rooms").on('click', that.turnOnOffAllControls);
+  	 that.myDom.find("#upsell_rooms").on('click', that.turnOnOffAllControls);
   	 that.myDom.find('#cancel,#go_back').on('click', that.goBackToPreviousView); 
   };
   this.goBackToPreviousView = function() {
@@ -70,7 +70,7 @@ var UpsellRoomDetailsView = function(domRef){
   	 //to create upsell room levels array
   	 var upsell_room_levels = [];
   	 for(j=1; j<= upsell_levels_count; j++){
-  	 	var len = that.myDom.find('#level_'+j+' ul li').length;
+  	 	var len = that.myDom.find('#level_'+j+' li').length;
   	 	var upsell_level_data = {};
   	 	upsell_level_data.level_id = j;
   	 	upsell_level_data.room_types = [];
@@ -93,7 +93,7 @@ var UpsellRoomDetailsView = function(domRef){
   	 data.upsell_setup = upsell_setup;
   	 data.upsell_amounts = upsell_amounts;
   	 data.upsell_room_levels = upsell_room_levels;
-  	 
+  	 console.log(JSON.stringify(data));
   	  var url = '/admin/room_upsells/update_upsell_options';
 	  var webservice = new WebServiceInterface();		
 	  var options = {
@@ -102,20 +102,7 @@ var UpsellRoomDetailsView = function(domRef){
 			   loader: "BLOCKER"
 	  };
 	  webservice.postJSON(url, options);
-  	 // $.ajax({
-			// type: "POST",
-			// url : "/admin/room_upsells/update_upsell_options",
-			// dataType: 'json',
-			// data :data,
-			// success : function(data) {
-				// if(data.status == "success"){
-					// that.gotoPreviousPage();
-				// }
-			// },
-			// error : function() {
-				// alert("Sorry, not there yet!");
-			// }
-		// });
+  	
   };
   this.fetchCompletedOfSave = function(data){
   	if(data.status == "success"){
