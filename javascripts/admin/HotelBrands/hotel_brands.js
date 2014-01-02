@@ -7,26 +7,26 @@ var HotelBrandsView = function(domRef){
 	this.updateApi = function(event){
 		var brandName = $.trim(that.myDom.find("#brand-name").val());
 		var brandID = that.myDom.find("#edit-brand-details").attr("data-brand-id");		
-		
+		var hotelChainId = that.myDom.find("#hotel-chain").val(); 
 		var webservice = new WebServiceInterface();
-		var url = '/admin/brands';
+		var url = '/admin/hotel_brands/'+brandID;
 		
 		if(typeof url === 'undefined' || url == "#" )
 			return false;
 		
-		var data = {'value': brandID, 'name':brandName  };
+		var data = {'value': brandID, 'name':brandName, 'hotel_chain_id':  hotelChainId};
 	    var options = {
 				   successCallBack: that.fetchCompletedOfUpdateApi,
 				   requestParameters: data,
 				   successCallBackParameters:{ "event": event},
 	    		   loader: 'normal',
 		};
-	    webservice.postJSON(url, options);				
+	    webservice.putJSON(url, options);				
 		
 	};
 	//Function to render with the updated screen
 	this.fetchCompletedOfUpdateApi = function(data, requestParams){
-		var url = "/admin/brands";
+		var url = "/admin/hotel_brands";
 	   	viewParams = {};
 	  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
 	  	if(data.status == "success"){
@@ -42,12 +42,12 @@ var HotelBrandsView = function(domRef){
 	this.saveNewApi = function(event){
 		var brandName = $.trim(that.myDom.find("#brand-name").val());
 		var webservice = new WebServiceInterface();
-		var url = '/admin/brands/create';
-		
+		var url = '/admin/hotel_brands';
+		var hotelChainId = that.myDom.find("#hotel-chain").val(); 
 		if(typeof url === 'undefined' || url == "#" )
 			return false;
 		
-		var data = {'name':brandName  };
+		var data = {'name':brandName  , 'hotel_chain_id':  hotelChainId};
 	    var options = {
 				   successCallBack: that.fetchCompletedOfSaveNewApi,
 				   requestParameters: data,
@@ -59,7 +59,7 @@ var HotelBrandsView = function(domRef){
 	};
 	//Function to render with the updated screen and success/error messages
 	this.fetchCompletedOfSaveNewApi = function(data, requestParams){
-		var url = "/admin/brands";
+		var url = "/admin/hotel_brands";
 	   	viewParams = {};
 	  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
 	  	if(data.status == "success"){
