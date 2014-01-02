@@ -30,29 +30,28 @@ var GuestCardHLPView = function(domRef) {
 
 		if (element.hasClass('add-new-option'))
 			return that.addNewOption(element, event);
-		if (element.parent().hasClass('switch-button')) {
-			return that.toggleButtonClicked(element);
-		}
 		return true;
 
 	};
 
 	this.toggleButtonClicked = function(element) {
+
 		var hlpId = element.closest('tr').attr('hlp_id');
-		var toggleStatus = element.parent().hasClass('on') ? "true" : "false";
-		var postParams = {
-			"value" : hlpId,
-			"set_active" : toggleStatus
-		};
-	//console.log(JSON.stringify(postParams));
-		var webservice = new WebServiceInterface();
-		var options = {
-			requestParameters : postParams,
-			loader : "NONE"
-		};
-		//var url = '/staff/reservations/upgrade_room';
-		//webservice.postJSON(url, options);
-		return true;
+		setTimeout(function(){
+			var toggleStatus = element.parent().hasClass('on') ? "true" : "false";
+			var postParams = {
+				"value" : hlpId,
+				"set_active" : toggleStatus
+			};
+			var webservice = new WebServiceInterface();
+			var options = {
+				requestParameters : postParams,
+				loader : "NONE"
+			};
+			//var url = '/staff/reservations/upgrade_room';
+			//webservice.postJSON(url, options);
+			return true;
+		}, 100);
 	};
 	this.addNewOption = function(element, event) {
 		var type = element.attr('data-type');
@@ -76,7 +75,7 @@ var GuestCardHLPView = function(domRef) {
 
 		var url = "/admin/hotel_loyalty_program/";
 		viewParams = {};
-		sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
 		if (data.status == "success") {
 			sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
 			that.cancelFromAppendedDataInline(requestParams['event']);
