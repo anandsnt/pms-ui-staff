@@ -22,7 +22,7 @@ var HotelAnnouncementView = function(domRef){
 				"key_delivery_email_message": guest_zest_key_delivery_email_message
 	 };
 	 
-	 var url = '';
+	 var url = '/admin/hotel/save_announcements_settings';
 	 var webservice = new WebServiceInterface();
 	 var options = { 
 				requestParameters: data,
@@ -35,11 +35,11 @@ var HotelAnnouncementView = function(domRef){
   };
   // To handle success on save API
   this.fetchCompletedOfSaveHotelAnnouncements = function() {
-  	sntapp.notification.showSuccessMessage("Save successfully", that.myDom);
+  	sntapp.notification.showSuccessMessage("Saved successfully", that.myDom);
   };
   // To handle failure on save API
-  this.fetchFailedOfSaveHotelAnnouncements = function(data){
-  	sntapp.notification.showErrorMessage(data.errors, that.myDom);
+  this.fetchFailedOfSaveHotelAnnouncements = function(errorMessage){
+  	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   };
   
 };

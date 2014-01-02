@@ -22,7 +22,7 @@ var RoomKeyDeliveryView = function(domRef){
 			"room_key_delivery_for_rover_check_in": room_key_for_rover
 	};
 	
-	var url = '';
+	var url = '/admin/update_room_key_delivery_settings';
 	var webservice = new WebServiceInterface();
 	var options = { 
 			requestParameters: data,
@@ -35,10 +35,10 @@ var RoomKeyDeliveryView = function(domRef){
   };
   // To handle success on save API
   this.fetchCompletedOfSaveRoomKeyDeliveryView = function(data) {
-  	sntapp.notification.showSuccessMessage("Save successfully", that.myDom);
+  	sntapp.notification.showSuccessMessage("Saved successfully", that.myDom);
   };
   // To handle failure on save API
-  this.fetchFailedOfSaveRoomKeyDeliveryView = function(data){
-  	sntapp.notification.showErrorMessage(data.errors, that.myDom);
+  this.fetchFailedOfSaveRoomKeyDeliveryView = function(errorMessage){
+  	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   };
 };

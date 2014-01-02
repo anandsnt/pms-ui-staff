@@ -11,7 +11,35 @@ var HotelDetailsView = function(domRef){
   	that.myDom.find('#save').on('click', that.saveHotelDetails); 
   	that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView); 
   	that.myDom.find('#save_new_hotel').on('click', that.addNewHotel); 
+  	that.myDom.find("#re-invite").on('click', that.reInvite);
   };
+  
+  this.reInvite = function(){
+	var url = '#';
+	if(typeof url === 'undefined' || url === '#'){
+		return false;
+	}
+	var webservice = new WebServiceInterface();		
+	var data = {};
+	var options = {
+			   requestParameters: data,
+			   successCallBack: that.fetchCompletedOfReInvite,
+			   failureCallBack: that.fetchFailedOfReInvite,
+			   loader: "BLOCKER"
+	};
+	webservice.postJSON(url, options);	 
+  };
+  
+  // success function of re-invite api call
+  this.fetchCompletedOfReInvite = function(data){
+	  
+  };
+  
+  // failure call of re-invite api call
+  this.fetchFailedOfReInvite = function(errorMessage){
+	  
+  };
+  
   this.goBackToPreviousView = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams);
   };
@@ -21,7 +49,11 @@ var HotelDetailsView = function(domRef){
     	$('input[readonly="readonly"]').removeAttr("readonly");
     	//Since these values are calculated using gem file
     	$('#hotel-longitude, #hotel-latitude').attr("readonly", true);
+    	
     }
+  	else{
+  		$("#re-invite-div").remove();
+  	}
   }; 
   
 
