@@ -8,7 +8,7 @@ var UserRolesView = function(domRef){
   	 	
   	var postData = {};
   	postData.name = that.myDom.find("#user_role").val();
-  	postData.hotel_chain_id = that.myDom.find("#hotel-chain").val(); 
+  	
   	var url = '/admin/user_roles';
 	var webservice = new WebServiceInterface();		
 	var options = {
@@ -52,7 +52,7 @@ var UserRolesView = function(domRef){
   	var postData = {};
   	postData.name = that.myDom.find("#user_role").val();
   	postData.value = that.myDom.find("#edit-user-role-details").attr("user_role_id");
-    postData.hotel_chain_id = that.myDom.find("#hotel-chain").val(); 
+    
   	var url = '/admin/user_roles/'+postData.value;
 	var webservice = new WebServiceInterface();		
 	var options = {
