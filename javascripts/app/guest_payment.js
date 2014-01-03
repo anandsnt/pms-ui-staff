@@ -7,23 +7,26 @@ var GuestPaymentView = function(domRef){
     that.myDom.find('#payment_tab').on('click', that.clickedOnPaymentTab);	
   };  
   this.clickedOnPaymentTab= function(e){
-  	
-  	if($(e.target).hasClass("active-item")){	
-  		that.renderSetAsPrimary(e.target);
+  	var clickedElement = $(e.target);
+  	if(clickedElement.hasClass("active-item")){	
+  		that.renderSetAsPrimary(clickedElement);
    	}
-   	else if($(e.target).hasClass("add-new-button")){
+  	else if(clickedElement.parent().hasClass("active-item")){
+   		that.renderSetAsPrimary(clickedElement.parent());
+   	}
+  	else if(clickedElement.hasClass("add-new-button") || clickedElement.parent().hasClass("add-new-button")){
    		that.renderNewPaymentView();
    	}
   };
-  this.renderSetAsPrimary = function(that){	
-	var credit_id = $(that).attr("credit_id");
+  this.renderSetAsPrimary = function(element){	
+	var credit_id = element.attr("credit_id");
   	var setPaymentAsPrimaryModal = new SetPaymentAsPrimaryModal();
     setPaymentAsPrimaryModal.initialize();
     setPaymentAsPrimaryModal.params = {"credit_id": credit_id};
   };
   
   this.renderNewPaymentView = function(e){
-  	var addNewPaymentModal = new AddNewPaymentModal("guest");
+  	var addNewPaymentModal = new AddNewPaymentModal("guest", $('#reservation-card'));
     addNewPaymentModal.initialize();  
   };
 };
