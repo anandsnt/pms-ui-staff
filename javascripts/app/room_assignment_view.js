@@ -338,8 +338,6 @@ var RoomAssignmentView = function(viewDom){
     }
 
   };
-
-  
 	
   this.backButtonClicked = function(e){
     e.preventDefault();

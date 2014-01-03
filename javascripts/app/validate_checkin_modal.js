@@ -93,9 +93,12 @@ var ValidateCheckinModal = function() {
 			$("#email").val($("#validate #guest-email").val());
 		}
 	
-		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
+		if(($.trim($('#room-number strong').text()) == "")||
+		  ($('#room-number').attr('data-room-status') != "READY") ||
+          ($('#room-number').attr('data-fo-status') != "VACANT")){
     		that.goToRoomAssignmentView();
     	}
+    	
 	    else if(($('#reservation-checkin').attr('data-force-upsell') == "true")
      		&&($('#reservation-checkin').attr('data-upsell-available') == "true")){
     		that.goToRoomUpgradeView();
@@ -108,9 +111,11 @@ var ValidateCheckinModal = function() {
 	};
 
 	this.ignoreAndGotoCheckin = function(e) {
-		if($.trim($('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
+		if(($.trim($('#room-number strong').text()) == "")||
+		  ($('#room-number').attr('data-room-status') != "READY") ||
+          ($('#room-number').attr('data-fo-status') != "VACANT")){
     		that.goToRoomAssignmentView();
-	    }
+    	}
 	    else if(($('#reservation-checkin').attr('data-force-upsell') == "true")
      		&&($('#reservation-checkin').attr('data-upsell-available') == "true")){
     		that.goToRoomUpgradeView();

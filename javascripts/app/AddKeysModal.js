@@ -87,25 +87,7 @@ var AddKeysModal = function(callBack) {
 			return false;
 		}
 	};
-	this.saveKey = function(data) {
-		// $.ajax({
-			// type : "POST",
-			// url : 'staff/reservation/print_key',
-			// data : data,
-			// async : false,
-			// dataType : 'json',
-			// contentType : 'application/json',
-			// success : function(data) {
-				// if (data.status == "success") {
-					// // Commenting for now. Might be we need this in future
-					// // $("#change-name #gc-email").val(key_guest_email);
-					// that.hide(callBack);
-				// }
-			// },
-			// error : function() {
-			// }
-		// });
-		     
+	this.saveKey = function(data) {		     
 	    var url = "staff/reservation/print_key";
 	    var webservice = new WebServiceInterface();
 	    var options = {
