@@ -16,8 +16,8 @@ var PaymentMethodsView = function(domRef){
 		       loader: "NONE"
 		    };
 
-			//var url = '/staff/reservations/upgrade_room';
-			//webservice.postJSON(url, options);
+			var url = '/admin/hotel_payment_types';
+			webservice.postJSON(url, options);
 		  	return true;
 	    }, 100);
 	  
