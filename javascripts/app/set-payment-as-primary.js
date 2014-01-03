@@ -52,7 +52,8 @@ var SetPaymentAsPrimaryModal = function(){
     };
     this.fetchCompletedOfDeleteCreditCard = function(data){
     	var $credit_card_id = that.credit_id;
-		$("#credit_row" + $credit_card_id).remove();
+		//$("#credit_row" + $credit_card_id).remove();
+    	$(".credit-card-option-row" + $credit_card_id).remove();
     };
     this.deleteCreditCard = function(){
   		var $credit_card_id = that.credit_id;		
