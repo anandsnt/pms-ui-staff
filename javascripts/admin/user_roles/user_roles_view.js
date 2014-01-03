@@ -9,7 +9,7 @@ var UserRolesView = function(domRef){
   	var postData = {};
   	postData.name = that.myDom.find("#user_role").val();
   	
-  	var url = '/admin/user_roles';
+  	var url = '/admin/roles';
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -23,9 +23,9 @@ var UserRolesView = function(domRef){
   //refreshing view with new data and showing message
   this.fetchCompletedOfSave = function(data, requestParams){
   	
-  	var url = "/admin/user_roles";
+  	var url = "/admin/roles";
    	viewParams = {};
-  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
   	if(data.status == "success"){
 		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
 		  that.cancelFromAppendedDataInline(requestParams['event']);  
@@ -53,7 +53,7 @@ var UserRolesView = function(domRef){
   	postData.name = that.myDom.find("#user_role").val();
   	postData.value = that.myDom.find("#edit-user-role-details").attr("user_role_id");
     
-  	var url = '/admin/user_roles/'+postData.value;
+  	var url = '/admin/roles/'+postData.value;
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -85,7 +85,7 @@ var UserRolesView = function(domRef){
   this.fetchCompletedOfDelete = function(data, successParams){
   	  var url = "/admin/user_roles";
    	  viewParams = {};
-  	  sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+  	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
 	  if(data.status == "success"){
 		  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
 		  that.myDom.find($("#user_row_"+successParams['selectedId'])).html("");
