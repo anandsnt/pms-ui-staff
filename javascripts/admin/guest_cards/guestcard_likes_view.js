@@ -294,14 +294,15 @@ var GuestCardLikesView = function(domRef){
   	
   	  var url = "/admin/departments";
    	  viewParams = {};
-  	  sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+  	  
   	  if(data.status == "success"){
-		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
-		  that.cancelFromAppendedDataInline(requestParams['event']);  
-	  }	 
-	  else{
-		  sntapp.notification.showErrorList(data.errors, that.myDom);  
-	  }
+        sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+  		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
+  		  that.cancelFromAppendedDataInline(requestParams['event']);  
+  	  }	 
+  	  else{
+  		  sntapp.notification.showErrorList(data.errors, that.myDom);  
+  	  }
   };
 
     this.saveNewsPaper = function(event, element){
@@ -334,8 +335,9 @@ var GuestCardLikesView = function(domRef){
   this.newsPaperSaveComplete = function(data, requestParams){
     var url = "/admin/departments";
     viewParams = {};
-    sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+    
     if(data.status == "success"){
+      sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
       sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);   
       that.cancelFromAppendedDataInline(requestParams['event']);  
     }  

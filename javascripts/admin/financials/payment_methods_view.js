@@ -3,9 +3,10 @@ var PaymentMethodsView = function(domRef){
 	this.myDom = domRef; 
 	var that = this;
 
-  
+  	//Event handler for on-off toggle button.
 	this.toggleButtonClicked = function(element){
 	    var paymentId = element.closest('tr').attr('data-payment-id');
+	    //timeout added as a workaround - hasClass 'on' takes time to be applied
 	    setTimeout(function(){
 		  	var toggleStatus = element.parent().hasClass('on') ? "true" : "false";
 		    var postParams = {"id" : paymentId, "set_active" : toggleStatus};
@@ -16,8 +17,8 @@ var PaymentMethodsView = function(domRef){
 		       loader: "NONE"
 		    };
 
-			//var url = '/staff/reservations/upgrade_room';
-			//webservice.postJSON(url, options);
+			var url = '/admin/hotel_payment_types';
+			webservice.postJSON(url, options);
 		  	return true;
 	    }, 100);
 	  
