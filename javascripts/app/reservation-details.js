@@ -9,7 +9,7 @@ var reservationDetailsView = function(domRef){
   this.delegateEvents = function(){
   	that.myDom.find('#reservation_newspaper').on('change', that.setNewspaperPreferance);
   	that.myDom.find('#wakeup-time').on('click',that.setWakeUpCallModal);
-  	that.myDom.find('#reservation-'+ that.reservation_id +'-room-number').on('click',that.roomNumberClicked);
+  	that.myDom.find('#room-number').on('click',that.roomNumberClicked);
 	that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);	
 	that.myDom.find('#upgrade-btn').on('click',that.roomUpgradesClicked);
 	that.myDom.find('.reservation-actions #reservation-checkout').on('click', that.clickedCheckoutButton);
@@ -124,7 +124,9 @@ var reservationDetailsView = function(domRef){
   	       	validateCheckinModal.params = {"type": "NoEmail"};
   	}
     
-    else if($.trim(that.myDom.find('#reservation-'+that.reservation_id+'-room-number strong').text()) == ""){
+    else if(($.trim(that.myDom.find('#room-number strong').text()) == "") || 
+      (that.myDom.find('#room-number').attr('data-room-status') != "READY") ||
+       (that.myDom.find('#room-number').attr('data-fo-status') != "VACANT")){
     
           var nextViewParams = {"next_view": views.BILLCARD};
           sntapp.activityIndicator.showActivityIndicator("blocker");
