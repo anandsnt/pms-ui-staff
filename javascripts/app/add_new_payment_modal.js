@@ -55,7 +55,12 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+'.png';
 			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
 			that.hide(); 
-			that.fetchCompletedOfReservationPayment(data, requestParameters);
+			if(typeof data.data.id !== 'undefined' && data.data.id !== ""){
+				that.fetchCompletedOfReservationPayment(data, requestParameters);
+			}
+			else{
+				sntapp.notification.showErrorMessage('ID is missing after payment method operation');
+			}
    	};
    	this.fetchFailedOfPayment = function(errorMessage){
    		sntapp.notification.showErrorList(errorMessage, that.myDom);
