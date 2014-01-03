@@ -15,12 +15,13 @@ var HotelDetailsView = function(domRef){
   };
   
   this.reInvite = function(){
-	var url = '#';
+	var url = 'admin/user/send_invitation';
 	if(typeof url === 'undefined' || url === '#'){
 		return false;
 	}
 	var webservice = new WebServiceInterface();		
 	var data = {};
+	data.email = that.myDom.find('#admin-email').val();
 	var options = {
 			   requestParameters: data,
 			   successCallBack: that.fetchCompletedOfReInvite,
@@ -52,7 +53,7 @@ var HotelDetailsView = function(domRef){
     	
     }
   	else{
-  		$("#re-invite-div").remove();
+  		$(".re-invite").remove();
   	}
   }; 
   
@@ -87,7 +88,7 @@ var HotelDetailsView = function(domRef){
   	    numberOfRooms = $.trim(that.myDom.find("#hotel-rooms").val());
   	    hotelTimeZone = $.trim(that.myDom.find("#hotel-time-zone").val());
   	  
-  	    if(that.validateAddNewHotel(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone)){
+  	    if(that.validateAddNewHotel(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword)){
   	    	 				
 			var data = that.getInputData(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand,hotelChain, hotelCode, 
 									  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, 
@@ -155,7 +156,7 @@ var HotelDetailsView = function(domRef){
   	    numberOfRooms = $.trim(that.myDom.find("#hotel-rooms").val());
   	    hotelTimeZone = $.trim(that.myDom.find("#hotel-time-zone").val());
   	    
-  	     if(that.validateAddNewHotel(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone)){
+  	     if(that.validateAddNewHotel(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword)){
 		  	 
 		
 	       var data = that.getInputData(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, 
@@ -197,7 +198,7 @@ var HotelDetailsView = function(domRef){
 	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
   };
   //Validate Mandatory fields
-  this.validateAddNewHotel = function(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone){
+  this.validateAddNewHotel = function(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword){
   	 
   	 if(hotelName == null || hotelName == ''){
 	  	 	alert("Hotel name is required");
@@ -231,6 +232,47 @@ var HotelDetailsView = function(domRef){
 	  	 	alert("Hotel TimeZone is required");
 	  	 	return  false;
 	  	 }  
+	  	 if(hotelContactFirstName == null || hotelContactFirstName == ''){
+	  	 	alert("Hotel contact firstName is required");
+	  	 	return  false;
+	  	 }
+	  	 if(hotelContactLastName == null || hotelContactLastName == ''){
+	  	 	alert("Hotel contact lastname is required");
+	  	 	return  false;
+	  	 }
+	  	 if(hotelContactEmail == null || hotelContactEmail == ''){
+	  	 	alert("Hotel contact email is required");
+	  	 	return  false;
+	  	 }
+	  	 if(hotelContactPhone == null || hotelContactPhone == ''){
+	  	 	alert("Hotel contact phone is required");
+	  	 	return  false;
+	  	 }
+	  	 if(adminEmail == null || adminEmail == ''){
+	  	 	alert("Admin email is required");
+	  	 	return  false;
+	  	 }
+	  	 if(adminPhone == null || adminPhone == ''){
+	  	 	alert("Admin phone is required");
+	  	 	return  false;
+	  	 }
+	  	 if(adminFirstName == null || adminFirstName == ''){
+	  	 	alert("Admin first name is required");
+	  	 	return  false;
+	  	 }
+	  	 if(adminLastName == null || adminLastName == ''){
+	  	 	alert("Admin last name is required");
+	  	 	return  false;
+	  	 }
+	  	  if(password == null || password == ''){
+	  	 	alert("Admin first name is required");
+	  	 	return  false;
+	  	 }
+	  	 if(confirmPassword == null || confirmPassword == ''){
+	  	 	alert("Admin last name is required");
+	  	 	return  false;
+	  	 }
+	  	 
   	   return true;
   };
   //Generating post data
