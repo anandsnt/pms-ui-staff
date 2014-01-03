@@ -152,7 +152,7 @@ var HotelDetailsView = function(domRef){
 		$("#replacing-div-second").html("");
 		sntapp.activityIndicator.hideActivityIndicator();
 		sntapp.notification.showSuccessMessage("Successfully Saved. Please wait while it is being redirected to hotel list page..", that.myDom); 
-		sntapp.fetchAndRenderView("/admin/hotels", $("#replacing-div-first"), {}, 'None', viewParams);
+		sntapp.fetchAndRenderView("/admin/hotels", $("#replacing-div-first"), {}, 'None', {});
 	}
 	else{
 		sntapp.activityIndicator.hideActivityIndicator();
