@@ -14,7 +14,7 @@ var Search  = function(domRef){
     */
 	
     if(type != "") {
-        var search_url = "search.json?&status=" + type;
+        var search_url = "search.json?status=" + type;
         this.fetchSearchData(search_url, "",type);
     }
     
@@ -50,54 +50,63 @@ var Search  = function(domRef){
   	$(this).capitalize();
   };
 
+  this.fetchCompletedOfFetchSearchData = function(response, requestParams) {
+      $("#search-results").empty().removeClass('hidden');
+      $('#preloaded-results').addClass('hidden');
+      $('#no-results').addClass('hidden');
+      
+      // set up reservation status
+      var reservation_status = "";
+      var type = requestParams['type'];
+      if(type == "DUEIN"){
+      	reservation_status = "checking in";
+      }
+      else if(type == "DUEOUT"){
+      	reservation_status = "checking out";
+      }
+      else if(type == "INHOUSE"){
+      	reservation_status = "in house";
+      }
+      
+      if(response.data.length > 0){
+      	that.fetchResults = response.data;
+      	that.displayFilteredResults(that.fetchResults, that.currentQuery);
+      }
+      // No data in JSON file
+      else if(response.data.length == 0){
+      	if(reservation_status != ""){
+      		// When dashboard buttons with 0 guests are clicked, show search screen message - "No guests checking in/out/in house" 
+      		$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+reservation_status+'</strong></li>');
+      	}
+      	else{
+      		// To show no matches message while search guest with 0 results.
+      		$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
+	            //TODO: verify implemention, rename function
+	            that.updateView();
+      	}
+      }	  
+  };
+  
+  this.fetchFailedOfFetchSearchData = function(){
+  	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
+    //TODO: verify implemention, rename function
+    that.updateView();	  
+  };
+  
   this.fetchSearchData = function(url, $query,type){
- 	$.ajax({
-	    type:           "GET",
-	    url:            url,
-	    data:           {fakeDataToAvoidCache: new Date()}, // fakeDataToAvoidCache is iOS Safari fix
-	    dataType:       "json",
-	    success: function (response) {
-	        $("#search-results").empty().removeClass('hidden');
-	        $('#preloaded-results').addClass('hidden');
-	        $('#no-results').addClass('hidden');
-	        
-	        // set up reservation status
-	        var reservation_status = "";
-	        if(type == "DUEIN"){
-	        	reservation_status = "checking in";
-	        }
-	        else if(type == "DUEOUT"){
-	        	reservation_status = "checking out";
-	        }
-	        else if(type == "INHOUSE"){
-	        	reservation_status = "in house";
-	        }
-	        
-	        if(response.guests.length > 0){
-	        	that.fetchResults = response.guests;
-	        	that.displayFilteredResults(that.fetchResults, that.currentQuery);
-	        }
-	        // No data in JSON file
-	        else if(response.guests.length == 0){
-	        	if(reservation_status != ""){
-	        		// When dashboard buttons with 0 guests are clicked, show search screen message - "No guests checking in/out/in house" 
-	        		$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+reservation_status+'</strong></li>');
-	        	}
-	        	else{
-	        		// To show no matches message while search guest with 0 results.
-	        		$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
-		            //TODO: verify implemention, rename function
-		            that.updateView();
-	        	}
-	        }
-	    },
-        error: function (result) {
-        	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
-            //TODO: verify implemention, rename function
-            that.updateView();
-        }
-	    
-      });
+	  
+    var webservice = new WebServiceInterface();
+    var data = {fakeDataToAvoidCache: new Date()}; // fakeDataToAvoidCache is iOS Safari fix
+    var successCallBackParams = {'type': type};
+	var options = {
+		   requestParameters: data,
+		   successCallBack: that.fetchCompletedOfFetchSearchData,
+		   successCallBackParameters: successCallBackParams,
+		   failureCallBack: that.fetchFailedOfFetchSearchData,
+		   loader: 'BLOCKER',
+    }; 
+    webservice.getJSON(url, options);
+ 	
   };
 
    //when user focus on search text
@@ -175,7 +184,6 @@ var Search  = function(domRef){
 	    }
 	    catch(e)
 	    {
-	    	console.log(e.message);
 	    	$('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
 	    }
 

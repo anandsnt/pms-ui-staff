@@ -13,7 +13,6 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 	this.modalInit = function(){
    	};
    	this.fetchCompletedOfReservationPayment = function(data, requestParameters){
-   		if(data.status == 'success') {
 			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
 			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
 			$newPaymentOption =  "<option value='"+data.data.id+"'data-number='"+requestParameters['number']+"'"+
@@ -32,18 +31,13 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		    						
 			currentStayCardView.find("#selected-reservation-payment-div").html(replaceHtml);
 			that.hide();   			
-   		}
-   		else{
-   			sntapp.notification.showErrorList(data.errors, that.myDom);
-   			return false;  			
-   		}
+
    	};
    	this.fetchFailedOfReservationPayment = function(errorMessage){
    		sntapp.notification.showErrorList(errorMessage, that.myDom);
    		that.save_inprogress = false;
    	};  
    	this.fetchCompletedOfPayment = function(data, requestParameters){
-   		if(data.status == 'success'){
 			that.save_inprogress = false;
 			var	$add = 
 		        '<a id="credit_row"  credit_id="" class="active-item float item-payment new-item">'+
@@ -61,11 +55,6 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+'.png';
 			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
 			that.hide();   	
-   		}
-   		else {
-   			sntapp.notification.showErrorList(data.errors, that.myDom);
-   			return false;
-   		}
    	};
    	this.fetchFailedOfPayment = function(errorMessage){
    		sntapp.notification.showErrorList(errorMessage, that.myDom);
