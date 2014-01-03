@@ -11,7 +11,37 @@ var HotelDetailsView = function(domRef){
   	that.myDom.find('#save').on('click', that.saveHotelDetails); 
   	that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView); 
   	that.myDom.find('#save_new_hotel').on('click', that.addNewHotel); 
+  	that.myDom.find("#re-invite").on('click', that.reInvite);
   };
+  //function to re invite
+  this.reInvite = function(){
+	var url = 'admin/user/send_invitation';
+	if(typeof url === 'undefined' || url === '#'){
+		return false;
+	}
+	var webservice = new WebServiceInterface();		
+	var data = {};
+	data.email = that.myDom.find('#admin-email').val();
+	data.hotel_id = $(".currenthotel").attr("id");  	
+	var options = {
+			   requestParameters: data,
+			   successCallBack: that.fetchCompletedOfReInvite,
+			   failureCallBack: that.fetchFailedOfReInvite,
+			   loader: "BLOCKER"
+	};
+	webservice.postJSON(url, options);	 
+  };
+  
+  // success function of re-invite api call
+  this.fetchCompletedOfReInvite = function(data){
+	  
+  };
+  
+  // failure call of re-invite api call
+  this.fetchFailedOfReInvite = function(errorMessage){
+	  
+  };
+  
   this.goBackToPreviousView = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams);
   };
@@ -21,12 +51,16 @@ var HotelDetailsView = function(domRef){
     	$('input[readonly="readonly"]').removeAttr("readonly");
     	//Since these values are calculated using gem file
     	$('#hotel-longitude, #hotel-latitude').attr("readonly", true);
+    	
     }
+  	else{
+  		$(".re-invite").remove();
+  	}
   }; 
   
 
   this.saveHotelDetails =  function(){
-  	var currentHotel = $(".currenthotel").attr("id");
+  	var currentHotel = $(".currenthotel").attr("id");  	
   	var hotelName = $.trim(that.myDom.find("#hotel-name").val()),
   	    hotelCode = $.trim(that.myDom.find("#hotel-code").val()),
   	    hotelStreet = $.trim(that.myDom.find("#hotel-street").val()),
@@ -57,7 +91,7 @@ var HotelDetailsView = function(domRef){
   	    numberOfRooms = $.trim(that.myDom.find("#hotel-rooms").val());
   	    hotelTimeZone = $.trim(that.myDom.find("#hotel-time-zone").val());
   	  
-  	    if(that.validateAddNewHotel(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone)){
+  	    if(that.validateAddNewHotel(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword)){
   	    	 				
 			var data = that.getInputData(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand,hotelChain, hotelCode, 
 									  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin,hotelCheckinPrimeTime, 
@@ -127,7 +161,7 @@ var HotelDetailsView = function(domRef){
   	    numberOfRooms = $.trim(that.myDom.find("#hotel-rooms").val());
   	    hotelTimeZone = $.trim(that.myDom.find("#hotel-time-zone").val());
   	    
-  	     if(that.validateAddNewHotel(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone)){
+  	     if(that.validateAddNewHotel(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword)){
 		  	 
 		
 	       var data = that.getInputData(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, 
@@ -156,7 +190,7 @@ var HotelDetailsView = function(domRef){
 		$("#replacing-div-second").html("");
 		sntapp.activityIndicator.hideActivityIndicator();
 		sntapp.notification.showSuccessMessage("Successfully Saved. Please wait while it is being redirected to hotel list page..", that.myDom); 
-		sntapp.fetchAndRenderView("/admin/hotels", $("#replacing-div-first"), {}, 'None', viewParams);
+		sntapp.fetchAndRenderView("/admin/hotels", $("#replacing-div-first"), {}, 'None', {});
 	}
 	else{
 		sntapp.activityIndicator.hideActivityIndicator();
@@ -169,7 +203,7 @@ var HotelDetailsView = function(domRef){
 	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
   };
   //Validate Mandatory fields
-  this.validateAddNewHotel = function(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone){
+  this.validateAddNewHotel = function(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword){
   	 
   	 if(hotelName == null || hotelName == ''){
 	  	 	alert("Hotel name is required");
@@ -203,6 +237,47 @@ var HotelDetailsView = function(domRef){
 	  	 	alert("Hotel TimeZone is required");
 	  	 	return  false;
 	  	 }  
+	  	 if(hotelContactFirstName == null || hotelContactFirstName == ''){
+	  	 	alert("Hotel contact firstName is required");
+	  	 	return  false;
+	  	 }
+	  	 if(hotelContactLastName == null || hotelContactLastName == ''){
+	  	 	alert("Hotel contact lastname is required");
+	  	 	return  false;
+	  	 }
+	  	 if(hotelContactEmail == null || hotelContactEmail == ''){
+	  	 	alert("Hotel contact email is required");
+	  	 	return  false;
+	  	 }
+	  	 if(hotelContactPhone == null || hotelContactPhone == ''){
+	  	 	alert("Hotel contact phone is required");
+	  	 	return  false;
+	  	 }
+	  	 if(adminEmail == null || adminEmail == ''){
+	  	 	alert("Admin email is required");
+	  	 	return  false;
+	  	 }
+	  	 if(adminPhone == null || adminPhone == ''){
+	  	 	alert("Admin phone is required");
+	  	 	return  false;
+	  	 }
+	  	 if(adminFirstName == null || adminFirstName == ''){
+	  	 	alert("Admin first name is required");
+	  	 	return  false;
+	  	 }
+	  	 if(adminLastName == null || adminLastName == ''){
+	  	 	alert("Admin last name is required");
+	  	 	return  false;
+	  	 }
+	  	  if(password == null || password == ''){
+	  	 	alert("Admin first name is required");
+	  	 	return  false;
+	  	 }
+	  	 if(confirmPassword == null || confirmPassword == ''){
+	  	 	alert("Admin last name is required");
+	  	 	return  false;
+	  	 }
+	  	 
   	   return true;
   };
   //Generating post data
