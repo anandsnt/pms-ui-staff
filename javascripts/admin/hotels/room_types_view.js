@@ -16,7 +16,7 @@ var RoomTypesView = function(domRef){
   
   this.viewClickEventHandler = function(event){  
 	   	var element = $(event.target);
-	   	if(element.hasClass('import-rooms')) {return that.importRooms(event);}
+	   	if(element.hasClass('import')) {return that.importRooms(event);}
   };
   // To call import rooms API
   this.importRooms = function(event) {
