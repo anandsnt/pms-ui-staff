@@ -24,9 +24,16 @@ var RateTypeListView = function(domRef){
 	};
 	
 	// success function of on off api ajax call
-	this.fetchCompletedOfUpdateApi = function(data, requestParams){
+	this.fetchCompletedOfSave = function(data, requestParams){
 		var event = requestParams['event'];
 		that.cancelFromAppendedDataInline(event);
+		var url = "/admin//hotel_rate_types";
+	   	viewParams = {};
+	  	if(data.status == "success"){
+	  		  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+			  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
+			  that.cancelFromAppendedDataInline(requestParams['event']);  
+	    }
 	};
 	
 	this.delegateSubviewEvents = function(){
@@ -96,14 +103,11 @@ var RateTypeListView = function(domRef){
 	    data.name = $.trim(that.myDom.find("#rate-type-name").val());
 		var options = {
 			   requestParameters: data,
-			   successCallBack: that.fetchCompletedOfSaveNewApi,
+			   successCallBack: that.fetchCompletedOfSave,
 			   loader: 'BLOCKER'
 	    };
 	    webservice.postJSON(url, options);
 	};
-	// success function of on off api ajax call
-	this.fetchCompletedOfSaveNewApi = function(data){
-		
-	};
+	
 
 };
