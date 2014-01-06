@@ -41,7 +41,7 @@ var RateTypeListView = function(domRef){
 			var is_system_defined = element.attr("is_system_defined");
 			
 			if(typeof can_off !== 'undefined' || typeof is_system_defined !== 'undefined'){
-				if(can_off === "no" || is_system_defined === "true"){
+				if(can_off === "false" || is_system_defined === "true"){
 					sntapp.notification.showErrorMessage('Rate Type cannot be deleted as it is already in use or it is system defined');
 					event.preventDefault();
 					return false;
@@ -55,7 +55,12 @@ var RateTypeListView = function(domRef){
 				    var webservice = new WebServiceInterface();
 				    var data = {};
 				    data.id = element.parents('tr:eq(0)').attr('data-rate-type-id');
-				    data.onOff = element.is(":checked");
+				   
+				    if(element.is(":checked")){
+				    	data.status = "activate";
+				    } else {
+				    	data.status = "inactivate";
+				    }
 					var options = {
 						   requestParameters: data,
 						   successCallBack: that.fetchCompletedOfOnOffApi,
