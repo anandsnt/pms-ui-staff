@@ -65,7 +65,7 @@ var RoomsView = function(domRef) {
 			postData.room_image = that.myDom.find("#file-preview").attr("src");
 		else
 			postData.room_image = "";
-
+console.log(postData);
 		var url = '';
 		var webservice = new WebServiceInterface();
 		var options = {
@@ -98,13 +98,26 @@ var RoomsView = function(domRef) {
 		postData.room_type_id = that.myDom.find("#room-type").val();
 		postData.active_room_features = [];
 		postData.active_room_likes = [];
-
+		// to get active features
+		that.myDom.find('#room-features label.checkbox').each(function () {
+			if($(this).hasClass("checked")){
+				var value = $(this).find("input").attr('name');
+				postData.active_room_features.push(value);
+			}
+		});
+		// to get active likes
+		that.myDom.find('#room-likes label.checkbox').each(function () {
+			if($(this).hasClass("checked")){
+				var value = $(this).find("input").attr('name');
+				postData.active_room_likes.push(value);
+			}
+		});
 		// to handle image uploaded or not
 		if (that.myDom.find("#file-preview").attr("changed") == "changed")
 			postData.room_image = that.myDom.find("#file-preview").attr("src");
 		else
 			postData.room_image = "";
-
+console.log(postData);
 		var url = '';
 		var webservice = new WebServiceInterface();
 		var options = {
