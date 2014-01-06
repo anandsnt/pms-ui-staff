@@ -5,14 +5,15 @@ var RateTypeListView = function(domRef){
 	var that = this;
 
 	this.updateApi = function(event){
-		var url = '#';
+		var data = {};
+	    data.name = $.trim(that.myDom.find("#rate-type-name").val());
+	    data.id = that.myDom.find("#edit-rate-type-details").attr("rate-type-id");
+		var url = ' /admin/hotel_rate_types/'+data.id;
 		if(typeof url === 'undefined' || $.trim(url) === '#'){
 			return false;
 		}
 	    var webservice = new WebServiceInterface();
-	    var data = {};
-	    data.name = $.trim(that.myDom.find("#rate-type-name").val());
-	    data.id = that.myDom.find("#edit-rate-type-details").attr("rate-type-id");
+	    
 		var options = {
 			   requestParameters: data,
 			   successCallBack: that.fetchCompletedOfUpdateApi,
@@ -48,7 +49,7 @@ var RateTypeListView = function(domRef){
 				}
 				else{
 
-					var url = '#';
+					var url = '/admin/hotel_rate_types/save';
 					// if(typeof url === 'undefined' || $.trim(url) === '#'){
 						// return false;
 					// }
@@ -86,7 +87,7 @@ var RateTypeListView = function(domRef){
 
 	
 	this.saveNewApi = function(){
-		var url = '#';
+		var url = '/admin//hotel_rate_types';
 		if(typeof url === 'undefined' || $.trim(url) === '#'){
 			return false;
 		}
