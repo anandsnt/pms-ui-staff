@@ -20,7 +20,7 @@ var RateTypeListView = function(domRef){
 			   successCallBackParameters: {'event': event},		   
 			   loader: 'BLOCKER'
 	    };
-	    webservice.postJSON(url, options);
+	    webservice.putJSON(url, options);
 	};
 	
 	// success function of on off api ajax call
