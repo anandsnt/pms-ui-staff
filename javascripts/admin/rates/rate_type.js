@@ -7,7 +7,6 @@ var RateTypeListView = function(domRef){
 	this.updateApi = function(event){
 		var data = {};
 	    data.name = $.trim(that.myDom.find("#rate-type-name").val());
-	    data.id = that.myDom.find("#edit-rate-type-details").attr("rate-type-id");
 		var url = ' /admin/hotel_rate_types/'+data.id;
 		if(typeof url === 'undefined' || $.trim(url) === '#'){
 			return false;
@@ -62,7 +61,7 @@ var RateTypeListView = function(domRef){
 					// }
 				    var webservice = new WebServiceInterface();
 				    var data = {};
-				    data.id = element.parents('tr:eq(0)').attr('data-rate-type-id');
+				    data.value = element.parents('tr:eq(0)').attr('data-rate-type-id');
 				   
 				    if(element.is(":checked")){
 				    	data.status = "activate";
