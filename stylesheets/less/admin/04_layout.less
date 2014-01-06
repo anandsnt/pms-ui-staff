@@ -55,24 +55,33 @@ body { overflow: hidden; }
       right: 0;
       padding: 20px;
       height: 100%;
+      background: @background;
+      /*overflow: hidden;*/
       #pixel-to-percent > .width( 1050, 1240 );
-      
+
       &:not(.ui-tabs-panel) {
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
 
-        &::-webkit-scrollbar{ 
-          margin-right: 5px;
-          width: 5px; 
+            &::-webkit-scrollbar{ 
+              margin-right: 5px;
+              width: 5px; 
+            }
+            &::-webkit-scrollbar-track{ background: transparent; }
+            &::-webkit-scrollbar-thumb{
+              background: @logoGradientStart;
+              #border-radius > .rounded(5px);
+            }
+            &::-webkit-scrollbar-thumb:window-inactive{background:transparent;}
         }
-        &::-webkit-scrollbar-track{ background: transparent; }
-        &::-webkit-scrollbar-thumb{
-          background: @logoGradientStart;
-          #border-radius > .rounded(5px);
-        }
-        &::-webkit-scrollbar-thumb:window-inactive{background:transparent;}
-      }
 
+      /*.jspPane { padding: 20px !important; }
+
+      &:not(.jspScrollable),
+      .jspPane {
+        padding: 20px !important;
+      }*/
+      
       &.current {
         background: @background;
         z-index: 999;
@@ -350,30 +359,17 @@ body { overflow: hidden; }
 
 /* Admin left side menu   ==============================*/
   #tabs-menu {
+    position: relative;
     height: 100%;
-    padding-left: 20px;
     background: @rcardTexture1;
     .pull-left;
     .box-shadow(inset -1px 0 2px rgba(0,0,0,.1));
     #pixel-to-percent > .width( 190, 1240 );
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-
-    &::-webkit-scrollbar{ 
-      margin-right: 5px;
-      width: 5px; 
-    }
-    &::-webkit-scrollbar-track{ background: transparent; }
-    &::-webkit-scrollbar-thumb{
-      background: rgba(0,0,0,.05);
-      #border-radius > .rounded(5px);
-    }
-    &::-webkit-scrollbar-thumb:window-inactive{background:transparent;}
 
     li {
       position: relative;
       line-height: 59px;
-      margin: 0;
+      margin: 0 0 0 20px;
       vertical-align: middle;
       white-space: nowrap;
       overflow: hidden;
@@ -408,6 +404,14 @@ body { overflow: hidden; }
         }
       }
     }
+
+    .jspContainer{
+      .jspTrack {
+        .jspDrag {
+          background: rgba(0,0,0,.05);
+        }
+      }
+    }
   }
 
 /* 5. COMPONENTS
@@ -431,6 +435,10 @@ body { overflow: hidden; }
       .pull-left;
     }
 
+    h2 {
+      span { color: @grey3; }
+    }
+
     .count { 
       color: @grey3; 
       margin-left: 10px;
@@ -452,6 +460,13 @@ body { overflow: hidden; }
         .pull-right;
         
         &:hover { color: darken(@red, 10); }
+      }
+
+      &.import {
+        color: @blue; 
+        .pull-left;
+
+        &:hover { color: darken(@blue, 10); }
       }
 
       &.back { 
@@ -484,6 +499,7 @@ body { overflow: hidden; }
       position: absolute;
       top: 0;
       right: 0;
+      color: @grey3;
       font-size: 14px;
       line-height: 40px;
       font-weight: 600;
@@ -692,8 +708,7 @@ body { overflow: hidden; }
     }
   }
 
-
-//drag and drop - Added by Qburst
+  //drag and drop - Added by Qburst
  
  /* Sortable items */
  
@@ -737,18 +752,17 @@ body { overflow: hidden; }
  /* Added by QBurst */ 
  
  textarea.full-width{
-   /*min-width:500px;*/
+   min-width:500px;
    min-height:150px;
    width:100%;
+   
  }
-
- 
  textarea.full-height{
    min-width:500px;
    min-height:300px;
    
  }
- 
+
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
