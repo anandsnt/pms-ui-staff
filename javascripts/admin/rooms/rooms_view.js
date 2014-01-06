@@ -48,14 +48,14 @@ var RoomsView = function(domRef) {
 		// to get active features
 		that.myDom.find('#room-features label.checkbox').each(function () {
 			if($(this).hasClass("checked")){
-				var value = $(this).find("input").val();
+				var value = $(this).find("input").attr('name');
 				postData.active_room_features.push(value);
 			}
 		});
 		// to get active likes
 		that.myDom.find('#room-likes label.checkbox').each(function () {
 			if($(this).hasClass("checked")){
-				var value = $(this).find("input").val();
+				var value = $(this).find("input").attr('name');
 				postData.active_room_likes.push(value);
 			}
 		});
