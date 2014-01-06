@@ -49,9 +49,9 @@ var RateTypeListView = function(domRef){
 				else{
 
 					var url = '#';
-					if(typeof url === 'undefined' || $.trim(url) === '#'){
-						return false;
-					}
+					// if(typeof url === 'undefined' || $.trim(url) === '#'){
+						// return false;
+					// }
 				    var webservice = new WebServiceInterface();
 				    var data = {};
 				    data.id = element.parents('tr:eq(0)').attr('data-rate-type-id');
