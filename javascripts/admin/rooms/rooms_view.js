@@ -38,6 +38,7 @@ var RoomsView = function(domRef) {
   	postData.room_number = that.myDom.find("#room-number").val(); 
   	postData.room_type_id = that.myDom.find("#room-type").val();
   	postData.active_room_features = []; 
+  	
   	postData.active_room_likes = []; 
   	
   	// to handle image uploaded or not
