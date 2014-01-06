@@ -9,7 +9,7 @@ var SetWakeUpCallModal = function() {
 	this.delegateEvents = function() {
 		that.myDom.find('#set-wake-up-call #save-wakeup-call').on('click', that.saveWakeUpCall);
 		that.myDom.find('.switch-button#wakeupDate').on('click', that.onOffSwitchWakeupDate);
-		that.myDom.find('select.styled#wake-up-hour').on('change', that.changedWakeUpTime);
+		that.myDom.find('#set-wake-up-call #wake-up-hour, #set-wake-up-call #wake-up-minute, #set-wake-up-call #wake-up-primetime')													.on('change', that.changedWakeUpTime);
 		that.myDom.find('#set-wake-up-call #delete-wakeup-call').on('click', that.deleteWakeUpCall);
 	};
 
@@ -26,12 +26,16 @@ var SetWakeUpCallModal = function() {
 			sntapp.notification.showErrorList(data.errors, that.myDom);
 		}
 	};
+	
     //function to save wake up call
 	this.saveWakeUpCall = function() {
 		
 		var wakeUpHour = that.myDom.find('#set-wake-up-call #wake-up-hour').val();
 		var wakeUpMinute = that.myDom.find('#set-wake-up-call #wake-up-minute').val();
 		var wakeUpPrimetime = that.myDom.find('#set-wake-up-call #wake-up-primetime').val();
+		console.log(wakeUpHour);
+		console.log(wakeUpMinute);
+		console.log(wakeUpPrimetime);
 		var wakeUpTime = wakeUpHour+":"+wakeUpMinute+" "+wakeUpPrimetime;
 		
 		var wakeUpDay = that.myDom.find('#set-wake-up-call #wakeup-day').text();
@@ -43,6 +47,8 @@ var SetWakeUpCallModal = function() {
 			"day" : wakeUpDaySplit[0]
 		};
 		
+
+		console.log(JSON.stringify(data));
 		var webservice = new WebServiceInterface();
 		
 	    var url = 'wakeup/set_wakeup_calls'; 
@@ -79,24 +85,22 @@ var SetWakeUpCallModal = function() {
 	};
     // Function to enable/disable buttons
 	this.changedWakeUpTime = function() {
-		var selectedOption = $(this).find('option:selected').val();
 
-		if(selectedOption == ""){
-			that.myDom.find("#save-wakeup-call").removeClass("green");
-			that.myDom.find("#delete-wakeup-call").removeClass("red");
+		var wakeUpHour = that.myDom.find('#set-wake-up-call #wake-up-hour option:selected').val();
+		var wakeUpMinute = that.myDom.find('#set-wake-up-call #wake-up-minute option:selected').val();
+		var wakeUpPrimetime = that.myDom.find('#set-wake-up-call #wake-up-primetime option:selected').val();
+
+		if((wakeUpHour == "")||(wakeUpMinute == "")||(wakeUpPrimetime == "")){
 			that.myDom.find("#save-wakeup-call").attr("disabled", true);
 			that.myDom.find("#delete-wakeup-call").attr("disabled", true);
 		}
 		else {
-			that.myDom.find("#save-wakeup-call").addClass("green");
-			that.myDom.find("#delete-wakeup-call").addClass("red");
 			that.myDom.find("#save-wakeup-call").attr("disabled", false);
 			that.myDom.find("#delete-wakeup-call").attr("disabled", false);
 		}
-		that.myDom.find("#set-wake-up-call #wakeup-time").html("");
-		that.myDom.find("#set-wake-up-call #wakeup-time").html(selectedOption);
-		that.myDom.find("#set-wake-up-call #wakeup-time").attr("value", selectedOption);
+
 	};
+
 	this.fetchCompletedOfDeleteWakeUpCall = function(data){
 		if (data.status == "success") {
 			that.hide();
