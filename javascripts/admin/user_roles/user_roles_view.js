@@ -71,7 +71,7 @@ var UserRolesView = function(domRef){
   	event.preventDefault();
   	var postData = {};
   	var selectedId = $(event.target).attr("id");
-  	var url = '/admin/user_roles/'+selectedId;
+  	var url = '/admin/roles/'+selectedId;
   	postData.id = selectedId;
 	var webservice = new WebServiceInterface();		
 	var options = {
@@ -85,7 +85,7 @@ var UserRolesView = function(domRef){
   };
    //to remove deleted row and show message
   this.fetchCompletedOfDelete = function(data, successParams){
-  	  var url = "/admin/user_roles";
+  	  var url = "/admin/roles";
    	  viewParams = {};
 	  if(data.status == "success"){
 	  	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
