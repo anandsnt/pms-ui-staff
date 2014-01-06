@@ -49,7 +49,6 @@ var GuestCardLikesView = function(domRef){
    this.viewClickEventHandler = function(event){
       var element = $(event.target);
 
-      if(element.parent().hasClass('switch-button')) {return that.toggleButtonClicked(element);}
       if(element.hasClass('change-data')) return that.changeData(element);
       if(element.hasClass('add-new-option'))	return that.addNewOption(element, event);
       if(element.hasClass('add-new-checkbox'))  
@@ -75,17 +74,20 @@ var GuestCardLikesView = function(domRef){
 
   this.toggleButtonClicked = function(element){
       var likeId = element.closest('tr').attr('data-like-id');
-      var toggleStatus = element.parent().hasClass('on') ? "true" : "false";
-      var postParams = {"id" : likeId, "set_active" : toggleStatus};
+      setTimeout(function(){
+          var toggleStatus = element.parent().hasClass('on') ? "true" : "false";
+          var postParams = {"id" : likeId, "set_active" : toggleStatus};
 
-      var webservice = new WebServiceInterface(); 
-      var options = {
-           requestParameters: postParams,
-           loader: "NONE"
-      };
-      //var url = '/staff/reservations/upgrade_room';
-      //webservice.postJSON(url, options);
-      return true;
+          var webservice = new WebServiceInterface(); 
+          var options = {
+               requestParameters: postParams,
+               loader: "NONE"
+          };
+          //var url = '/staff/reservations/upgrade_room';
+          //webservice.postJSON(url, options);
+          return true;
+      }, 100);
+
   };
 
   // Add new checkbox option, step 1 - create text field
@@ -173,7 +175,7 @@ var GuestCardLikesView = function(domRef){
    		 if(type == "common"){
    		 	that.updateCommonLikes(element, event);
    		 }else if(type == "newspaper"){
-   		 	that.saveNewsPaper(element);
+   		 	that.saveNewsPaper(event, element);
    		 }
     	
     };
@@ -292,17 +294,18 @@ var GuestCardLikesView = function(domRef){
   	
   	  var url = "/admin/departments";
    	  viewParams = {};
-  	  sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+  	  
   	  if(data.status == "success"){
-		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
-		  that.cancelFromAppendedDataInline(requestParams['event']);  
-	  }	 
-	  else{
-		  sntapp.notification.showErrorList(data.errors, that.myDom);  
-	  }
+        sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+  		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
+  		  that.cancelFromAppendedDataInline(requestParams['event']);  
+  	  }	 
+  	  else{
+  		  sntapp.notification.showErrorList(data.errors, that.myDom);  
+  	  }
   };
 
-    this.saveNewsPaper = function(element){
+    this.saveNewsPaper = function(event, element){
       var postData = {};
       postData.news_paper = [];
       element.closest('form').find('#newspaper-options').find('label').each(function(index){
@@ -332,8 +335,9 @@ var GuestCardLikesView = function(domRef){
   this.newsPaperSaveComplete = function(data, requestParams){
     var url = "/admin/departments";
     viewParams = {};
-    sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+    
     if(data.status == "success"){
+      sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
       sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);   
       that.cancelFromAppendedDataInline(requestParams['event']);  
     }  
