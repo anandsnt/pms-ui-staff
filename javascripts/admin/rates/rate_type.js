@@ -87,7 +87,7 @@ var RateTypeListView = function(domRef){
 
 	
 	this.saveNewApi = function(){
-		var url = '/admin//hotel_rate_types';
+		var url = '/admin/hotel_rate_types';
 		if(typeof url === 'undefined' || $.trim(url) === '#'){
 			return false;
 		}
