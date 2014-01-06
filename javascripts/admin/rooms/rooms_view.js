@@ -20,7 +20,10 @@ var RoomsView = function(domRef) {
 	   	var element = $(event.target);
 	   	if(element.hasClass('back')) {return that.goBackToPreviousView();}
  	};
-
+	// To go back to rooms
+  	this.goBackToPreviousView = function() {
+ 		sntadminapp.gotoPreviousPage(that.viewParams);
+  	};
 	//to show preview of the image using file reader
 	this.readURL = function(input) {
 		$('#file-preview').attr('changed', "changed");
@@ -40,11 +43,23 @@ var RoomsView = function(domRef) {
 		var postData = {};
 		postData.room_number = that.myDom.find("#room-number").val();
 		postData.room_type_id = that.myDom.find("#room-type").val();
-
 		postData.active_room_features = [];
-
 		postData.active_room_likes = [];
-
+		// to get active features
+		that.myDom.find('#room-features label.checkbox').each(function () {
+			if($(this).hasClass("checked")){
+				var value = $(this).find("input").val();
+				postData.active_room_features.push(value);
+			}
+		});
+		// to get active likes
+		that.myDom.find('#room-likes label.checkbox').each(function () {
+			if($(this).hasClass("checked")){
+				var value = $(this).find("input").val();
+				postData.active_room_likes.push(value);
+			}
+		});
+		
 		// to handle image uploaded or not
 		if (that.myDom.find("#file-preview").attr("changed") == "changed")
 			postData.room_image = that.myDom.find("#file-preview").attr("src");
