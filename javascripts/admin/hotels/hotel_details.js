@@ -13,7 +13,7 @@ var HotelDetailsView = function(domRef){
   	that.myDom.find('#save_new_hotel').on('click', that.addNewHotel); 
   	that.myDom.find("#re-invite").on('click', that.reInvite);
   };
-  
+  //function to re invite
   this.reInvite = function(){
 	var url = 'admin/user/send_invitation';
 	if(typeof url === 'undefined' || url === '#'){
@@ -22,6 +22,7 @@ var HotelDetailsView = function(domRef){
 	var webservice = new WebServiceInterface();		
 	var data = {};
 	data.email = that.myDom.find('#admin-email').val();
+	data.hotel_id = $(".currenthotel").attr("id");  	
 	var options = {
 			   requestParameters: data,
 			   successCallBack: that.fetchCompletedOfReInvite,
@@ -59,7 +60,7 @@ var HotelDetailsView = function(domRef){
   
 
   this.saveHotelDetails =  function(){
-  	var currentHotel = $(".currenthotel").attr("id");
+  	var currentHotel = $(".currenthotel").attr("id");  	
   	var hotelName = $.trim(that.myDom.find("#hotel-name").val()),
   	    hotelCode = $.trim(that.myDom.find("#hotel-code").val()),
   	    hotelStreet = $.trim(that.myDom.find("#hotel-street").val()),
