@@ -16,6 +16,45 @@ var RoomsView = function(domRef) {
 	this.viewClickEventHandler = function(event){  
 	   	var element = $(event.target);
 	   	if(element.hasClass('back')) {return that.goBackToPreviousView();}
+  
+  //to show preview of the image using file reader
+  this.readURL = function(input) {
+  	console.log("readURL");
+  	   $('#file-preview').attr('changed', "changed");
+       if (input.files && input.files[0]) {
+           var reader = new FileReader();
+           reader.onload = function(e) {
+           	   $('#file-preview').attr('src', e.target.result);
+               that.fileContent = e.target.result;
+           };
+           reader.readAsDataURL(input.files[0]);
+       }
+  };
+
+  //function to add new room type
+  this.saveNewApi = function(event){ 
+  	 	
+  	var postData = {};
+  	postData.room_number = that.myDom.find("#room-number").val(); 
+  	postData.room_type_id = that.myDom.find("#room-type").val();
+  	postData.active_room_features = []; 
+  	
+  	postData.active_room_likes = []; 
+  	
+  	// to handle image uploaded or not
+  	if(that.myDom.find("#file-preview").attr("changed") == "changed")
+  		postData.room_image = that.myDom.find("#file-preview").attr("src");
+  	else
+  		postData.room_image = "";
+  		
+  	var url = '';
+	var webservice = new WebServiceInterface();		
+	var options = {
+			   requestParameters: postData,
+			   successCallBack: that.fetchCompletedOfSave,
+			   successCallBackParameters:{ "event": event},
+			   failureCallBack: that.fetchFailedOfSave,
+			   loader:"BLOCKER"
 	};
 	// To go back to rooms
   	this.goBackToPreviousView = function() {
