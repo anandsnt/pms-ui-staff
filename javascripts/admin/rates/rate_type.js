@@ -16,7 +16,7 @@ var RateTypeListView = function(domRef){
 	    
 		var options = {
 			   requestParameters: data,
-			   successCallBack: that.fetchCompletedOfUpdateApi,
+			   successCallBack: that.fetchCompletedOfSave,
 			   successCallBackParameters: {'event': event},		   
 			   loader: 'BLOCKER'
 	    };
