@@ -59,7 +59,7 @@ var RateTypeListView = function(domRef){
 				    if(element.is(":checked")){
 				    	data.status = "activate";
 				    } else {
-				    	data.status = "inactivate";
+				    	data.status = "deactivate";
 				    }
 					var options = {
 						   requestParameters: data,
