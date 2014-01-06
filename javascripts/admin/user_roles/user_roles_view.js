@@ -25,8 +25,9 @@ var UserRolesView = function(domRef){
   	
   	var url = "/admin/roles";
    	viewParams = {};
-  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+  	
   	if(data.status == "success"){
+  		  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
 		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
 		  that.cancelFromAppendedDataInline(requestParams['event']);  
 	  }	 
@@ -39,8 +40,9 @@ var UserRolesView = function(domRef){
   	
   	var url = "/admin/user_roles";
    	viewParams = {};
-  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+  	
   	if(data.status == "success"){
+  		  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
 		  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);		  
 	  }	 
 	  else{
@@ -85,8 +87,8 @@ var UserRolesView = function(domRef){
   this.fetchCompletedOfDelete = function(data, successParams){
   	  var url = "/admin/roles";
    	  viewParams = {};
-  	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
 	  if(data.status == "success"){
+	  	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
 		  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
 		  that.myDom.find($("#user_row_"+successParams['selectedId'])).html("");
 	  }	 

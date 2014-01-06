@@ -70,8 +70,10 @@ var HotelDetailsView = function(domRef){
   	    hotelCountry = $.trim(that.myDom.find("#hotel-country").val()),
   	    hotelCheckinHour = $.trim(that.myDom.find("#hotel-checkin-hour").val()),
   	    hotelCheckinMin = $.trim(that.myDom.find("#hotel-checkin-minutes").val()),
+  	    hotelCheckinPrimeTime = $.trim(that.myDom.find("#hotel-checkin-primetime").val()),
   	    hotelCheckoutHour = $.trim(that.myDom.find("#hotel-checkout-hour").val()),
   	    hotelCheckoutMinutes = $.trim(that.myDom.find("#hotel-checkout-minutes").val()),
+  	    hotelCheckoutPrimeTime = $.trim(that.myDom.find("#hotel-checkout-primetime").val()),
   	    hotelContactFirstName = $.trim(that.myDom.find("#contact-first-name").val()),
   	    hotelContactLastName = $.trim(that.myDom.find("#contact-last-name").val()),
   	    hotelContactEmail = $.trim(that.myDom.find("#contact-email").val()),
@@ -89,11 +91,10 @@ var HotelDetailsView = function(domRef){
   	    numberOfRooms = $.trim(that.myDom.find("#hotel-rooms").val());
   	    hotelTimeZone = $.trim(that.myDom.find("#hotel-time-zone").val());
   	  
-  	    if(that.validateAddNewHotel(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword)){
   	    	 				
 			var data = that.getInputData(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand,hotelChain, hotelCode, 
-									  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, 
-									  	hotelCheckoutHour, hotelCheckoutMinutes, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
+									  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin,hotelCheckinPrimeTime, 
+									  	hotelCheckoutHour, hotelCheckoutMinutes,hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
 									  	password, confirmPassword, hotelTimeZone);
 			var url = '/admin/hotels/'+currentHotel;
 			var webservice = new WebServiceInterface();		
@@ -106,7 +107,7 @@ var HotelDetailsView = function(domRef){
 			webservice.putJSON(url, options);			
 			//webservice.performRequest(url, data, that.fetchCompletedOfAddNewHotel, that.fetchFailedOfSave, false, 'PUT');
   	    	
-  	    }
+  	  
 	  		 
   };
   
@@ -138,8 +139,10 @@ var HotelDetailsView = function(domRef){
   	    hotelCountry = $.trim(that.myDom.find("#hotel-country").val()),
   	    hotelCheckinHour = $.trim(that.myDom.find("#hotel-checkin-hour").val()),
   	    hotelCheckinMin = $.trim(that.myDom.find("#hotel-checkin-minutes").val()),
+  	    hotelCheckinPrimeTime = $.trim(that.myDom.find("#hotel-checkin-primetime").val()),
   	    hotelCheckoutHour = $.trim(that.myDom.find("#hotel-checkout-hour").val()),
   	    hotelCheckoutMinutes = $.trim(that.myDom.find("#hotel-checkout-minutes").val()),
+  	    hotelCheckoutPrimeTime = $.trim(that.myDom.find("#hotel-checkout-primetime").val()),
   	    hotelContactFirstName = $.trim(that.myDom.find("#contact-first-name").val()),
   	    hotelContactLastName = $.trim(that.myDom.find("#contact-last-name").val()),
   	    hotelContactEmail = $.trim(that.myDom.find("#contact-email").val()),
@@ -157,14 +160,12 @@ var HotelDetailsView = function(domRef){
   	    numberOfRooms = $.trim(that.myDom.find("#hotel-rooms").val());
   	    hotelTimeZone = $.trim(that.myDom.find("#hotel-time-zone").val());
   	    
-  	     if(that.validateAddNewHotel(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword)){
-		  	 
 		
 	       var data = that.getInputData(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, 
 	    		   						hotelPhone, hotelBrand,hotelChain, hotelCode, 
 	    		   						numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, 
-	    		   						hotelContactPhone, hotelCheckinHour, hotelCheckinMin, 
-	    		   						hotelCheckoutHour, hotelCheckoutMinutes, hotelCurrency, adminEmail, adminPhone, 
+	    		   						hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime,
+	    		   						hotelCheckoutHour, hotelCheckoutMinutes,hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, 
 	    		   						adminFirstName, adminLastName, 
 	    		   						password, confirmPassword, hotelTimeZone);
 		    
@@ -177,7 +178,7 @@ var HotelDetailsView = function(domRef){
 				   
 		   };
 		   webservice.postJSON(url, options);
-	  }
+	  
   };
   this.fetchCompletedOfAddNewHotel = function(data){
 	  // success function of add new hotel api call
@@ -198,88 +199,11 @@ var HotelDetailsView = function(domRef){
 	sntapp.activityIndicator.hideActivityIndicator();
 	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
   };
-  //Validate Mandatory fields
-  this.validateAddNewHotel = function(hotelName, hotelCode, hotelStreet, hotelCity, hotelCountry, hotelPhone, hotelCurrency, hotelTimeZone, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword){
-  	 
-  	 if(hotelName == null || hotelName == ''){
-	  	 	alert("Hotel name is required");
-	  	 	return  false;
-	  	 }
-	  	 if(hotelCode == null || hotelCode == ''){
-	  	 	alert("Hotel code is required");
-	  	 	return  false;
-	  	 } 
-	  	 if(hotelStreet == null || hotelStreet == ''){
-	  	 	alert("Hotel street is required");
-	  	 	return  false;
-	  	 } 
-	  	 if(hotelCity == null || hotelCity == ''){
-	  	 	alert("Hotel city is required");
-	  	 	return  false;
-	  	 } 
-	  	 if(hotelCountry == null || hotelCountry == ''){
-	  	 	alert("Hotel country is required");
-	  	 	return  false;
-	  	 } 
-	  	 if(hotelPhone == null || hotelPhone == ''){
-	  	 	alert("Hotel phone is required");
-	  	 	return  false;
-	  	 } 
-	  	 if(hotelCurrency == null || hotelCurrency == ''){
-	  	 	alert("Hotel currency is required");
-	  	 	return  false;
-	  	 }
-	  	 if(hotelTimeZone == null || hotelTimeZone == ''){
-	  	 	alert("Hotel TimeZone is required");
-	  	 	return  false;
-	  	 }  
-	  	 if(hotelContactFirstName == null || hotelContactFirstName == ''){
-	  	 	alert("Hotel contact firstName is required");
-	  	 	return  false;
-	  	 }
-	  	 if(hotelContactLastName == null || hotelContactLastName == ''){
-	  	 	alert("Hotel contact lastname is required");
-	  	 	return  false;
-	  	 }
-	  	 if(hotelContactEmail == null || hotelContactEmail == ''){
-	  	 	alert("Hotel contact email is required");
-	  	 	return  false;
-	  	 }
-	  	 if(hotelContactPhone == null || hotelContactPhone == ''){
-	  	 	alert("Hotel contact phone is required");
-	  	 	return  false;
-	  	 }
-	  	 if(adminEmail == null || adminEmail == ''){
-	  	 	alert("Admin email is required");
-	  	 	return  false;
-	  	 }
-	  	 if(adminPhone == null || adminPhone == ''){
-	  	 	alert("Admin phone is required");
-	  	 	return  false;
-	  	 }
-	  	 if(adminFirstName == null || adminFirstName == ''){
-	  	 	alert("Admin first name is required");
-	  	 	return  false;
-	  	 }
-	  	 if(adminLastName == null || adminLastName == ''){
-	  	 	alert("Admin last name is required");
-	  	 	return  false;
-	  	 }
-	  	  if(password == null || password == ''){
-	  	 	alert("Admin first name is required");
-	  	 	return  false;
-	  	 }
-	  	 if(confirmPassword == null || confirmPassword == ''){
-	  	 	alert("Admin last name is required");
-	  	 	return  false;
-	  	 }
-	  	 
-  	   return true;
-  };
+  
   //Generating post data
   this.getInputData = function(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand,hotelChain, hotelCode, 
-  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, 
-  	hotelCheckoutHour, hotelCheckoutMinutes, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
+  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime,
+  	hotelCheckoutHour, hotelCheckoutMinutes,hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
   	password, confirmPassword, hotelTimeZone){
   	
   	if(that.currentView == "snt-admin-view"){
@@ -301,8 +225,10 @@ var HotelDetailsView = function(domRef){
 					contact_phone: hotelContactPhone,			
 					check_in_hour: hotelCheckinHour,
 					check_in_min: hotelCheckinMin,
+					check_in_primetime : hotelCheckinPrimeTime,
 					check_out_hour: hotelCheckoutHour,
 					check_out_min: hotelCheckoutMinutes,
+					check_out_primetime : hotelCheckoutPrimeTime,
 					default_currency: hotelCurrency,
 					admin_email: adminEmail,
 				  	admin_phone: adminPhone,
@@ -332,8 +258,10 @@ var HotelDetailsView = function(domRef){
 					contact_phone: hotelContactPhone,			
 					check_in_hour: hotelCheckinHour,
 					check_in_min: hotelCheckinMin,
+					check_in_primetime : hotelCheckinPrimeTime,
 					check_out_hour: hotelCheckoutHour,
 					check_out_min: hotelCheckoutMinutes,
+					check_out_primetime : hotelCheckoutPrimeTime,
 					default_currency: hotelCurrency,
 					hotel_brand:hotelBrand,
   	    			hotel_chain:hotelChain,
