@@ -18,7 +18,7 @@ var GuestCardFFPView = function(domRef) {
                	requestParameters: postParams,
                	loader: "NONE"
           	};
-          	var url = '';
+          	var url = '/admin/hotel/toggle_ffp_activation/';
           	webservice.postJSON(url, options);
           	return true;
 	    }, 100);
