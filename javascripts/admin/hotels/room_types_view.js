@@ -21,9 +21,8 @@ var RoomTypesView = function(domRef){
   // To call import rooms API
   this.importRooms = function(event) {
   	
-  	console.log("importRooms API call");
   	var postData = {};
-  	var url = 'admin/room_types/import_rooms';
+  	var url = '/admin/room_types/import_rooms';
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -80,11 +79,11 @@ var RoomTypesView = function(domRef){
 	webservice.postJSON(url, options);	
   };
   //refreshing view with new data and showing message
-  this.fetchCompletedOfSave = function(data, requestParams){
+  this.fetchCompletedOfSave = function(data,requestParams){
   	
   	var url = "/admin/room_types";
    	viewParams = {};
-  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
   	sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
   	that.cancelFromAppendedDataInline(requestParams['event']);  
   };
@@ -130,7 +129,7 @@ var RoomTypesView = function(domRef){
   this.fetchCompletedOfImport = function(requestParams){
   	var url = "/admin/room_types";
    	viewParams = {};
-  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
   	sntapp.notification.showSuccessMessage("Imported Successfully", that.myDom);		
   	that.cancelFromAppendedDataInline(requestParams['event']);  
   };
