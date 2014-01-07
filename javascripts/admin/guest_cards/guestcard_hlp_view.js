@@ -52,8 +52,8 @@ var GuestCardHLPView = function(domRef) {
 				requestParameters : postData,
 				loader : "NONE"
 			};
-			//var url = "";
-			//webservice.postJSON(url, options);
+			var url = "admin/hotel/toggle_hlp_activation/";
+			webservice.postJSON(url, options);
 			return true;
 		}, 100);
 	};
@@ -101,7 +101,7 @@ var GuestCardHLPView = function(domRef) {
 
 	this.saveNewApi = function(event) {
 
-		var url = '/admin/hotel/add_hlp';
+		var url = '/admin/hotel/save_hlp';
 		var action = "ACTION_SAVE"
 		that.makeAPICall(url, action, event);
 
