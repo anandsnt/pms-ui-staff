@@ -7,7 +7,6 @@ var RoomsView = function(domRef) {
 	this.delegateSubviewEvents = function() {
 		that.myDom.on('change', that.viewChangeEventHandler);
 		that.myDom.on('click', that.viewClickEventHandler);
-		that.myDom.find('#rooms').tablesorter();
 	};
 
 	this.viewChangeEventHandler = function(event) {
@@ -67,7 +66,7 @@ var RoomsView = function(domRef) {
 		else
 			postData.room_image = "";
 
-		var url = '';
+		var url = '/admin/hotel_rooms/';
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
@@ -83,8 +82,8 @@ var RoomsView = function(domRef) {
 	};
 	//refreshing view with new data and showing message
 	this.fetchCompletedOfSave = function(requestParams) {
-
-		var url = "";
+		
+		var url = "/admin/hotel_rooms";
 		viewParams = {};
 		sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
 		sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
@@ -120,7 +119,7 @@ var RoomsView = function(domRef) {
 		else
 			postData.room_image = "";
 
-		var url = '';
+		var url = '/admin/hotel_rooms'+postData.room_type_id;
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
