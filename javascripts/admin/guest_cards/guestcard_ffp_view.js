@@ -16,11 +16,25 @@ var GuestCardFFPView = function(domRef) {
           	var webservice = new WebServiceInterface(); 
           	var options = {
                	requestParameters: postParams,
+               	successCallBack : that.fetchCompletedOfSave,
+               	failureCallBack : that.fetchFailedOfSave,
                	loader: "NONE"
           	};
-          	var url = '';
+          	var url = '/admin/hotel/toggle_ffp_activation/';
           	webservice.postJSON(url, options);
           	return true;
 	    }, 100);
 	};
+	
+	// To handle success on save API
+	this.fetchCompletedOfSave = function(errorMessage) {
+		sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+	};
+	
+	// To handle failure on save API
+	this.fetchFailedOfSave = function(errorMessage) {
+		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
+	};
+	
+	
 };

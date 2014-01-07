@@ -9,25 +9,25 @@ var GuestCardLikesView = function(domRef){
 	if (target != 'textbox'){
 
 		// Hide previous and show new fields 
-		$('.data-type:visible').addClass('hidden');
-		$('#entry-' + target).removeClass('hidden');
+		that.myDom.find('.data-type:visible').addClass('hidden');
+		that.myDom.find('#entry-' + target).removeClass('hidden');
 
 		// Empty data from previous fields except those that are in DB already
-		$('.data-type:visible input:not(.predefined)').val('');
+		that.myDom.find('.data-type:visible input:not(.predefined)').val('');
 
 		// Delete all dynamically added fileds which are now emtpy
-		$('.data-type:visible input.delete-option').parent('.entry').remove();
+		that.myDom.find('.data-type:visible input.delete-option').parent('.entry').remove();
 	}
 	// If textbox, just hide visible data type option
 	else {
 		// Hide previous
-		$('.data-type:visible').addClass('hidden');
+		that.myDom.find('.data-type:visible').addClass('hidden');
 
 		// Empty data from previous fields except those that are in DB already
-		$('.data-type:visible input:not(.predefined)').val('');
+		that.myDom.find('.data-type:visible input:not(.predefined)').val('');
 
 		// Delete all dynamically added fileds which are now emtpy
-		$('.data-type:visible input.delete-option').parent('.entry').remove();
+		that.myDom.find('.data-type:visible input.delete-option').parent('.entry').remove();
 	}
 	
   };
@@ -260,7 +260,7 @@ var GuestCardLikesView = function(domRef){
 			optionDiv = "entry-radio";
 		}
 		if(selectedType == "selectbox" || selectedType == "checkbox" || selectedType == "radio") {
-			$("#"+optionDiv+" input[name=radio-option]").each(function(){
+			that.myDom.find("#"+optionDiv+" input[name=radio-option]").each(function(){
 			   id = $(this).attr("data-id");
 			   name = $(this).val();
 			   dict = {'id': id, 'name': name};

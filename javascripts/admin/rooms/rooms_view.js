@@ -7,6 +7,7 @@ var RoomsView = function(domRef) {
 	this.delegateSubviewEvents = function() {
 		that.myDom.on('change', that.viewChangeEventHandler);
 		that.myDom.on('click', that.viewClickEventHandler);
+		that.myDom.find('#rooms').tablesorter();
 	};
 
 	this.viewChangeEventHandler = function(event) {
@@ -26,11 +27,11 @@ var RoomsView = function(domRef) {
   	};
 	//to show preview of the image using file reader
 	this.readURL = function(input) {
-		$('#file-preview').attr('changed', "changed");
+		that.myDom.find('#file-preview').attr('changed', "changed");
 		if (input.files && input.files[0]) {
 			var reader = new FileReader();
 			reader.onload = function(e) {
-				$('#file-preview').attr('src', e.target.result);
+				that.myDom.find('#file-preview').attr('src', e.target.result);
 				that.fileContent = e.target.result;
 			};
 			reader.readAsDataURL(input.files[0]);
@@ -47,14 +48,14 @@ var RoomsView = function(domRef) {
 		postData.active_room_likes = [];
 		// to get active features
 		that.myDom.find('#room-features label.checkbox').each(function () {
-			if($(this).hasClass("checked")){
+			if(that.myDom.find(this).hasClass("checked")){
 				var value = $(this).find("input").attr('name');
 				postData.active_room_features.push(value);
 			}
 		});
 		// to get active likes
 		that.myDom.find('#room-likes label.checkbox').each(function () {
-			if($(this).hasClass("checked")){
+			if(that.myDom.find(this).hasClass("checked")){
 				var value = $(this).find("input").attr('name');
 				postData.active_room_likes.push(value);
 			}
@@ -65,12 +66,13 @@ var RoomsView = function(domRef) {
 			postData.room_image = that.myDom.find("#file-preview").attr("src");
 		else
 			postData.room_image = "";
-console.log(postData);
+
 		var url = '';
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
 			successCallBack : that.fetchCompletedOfSave,
+			failureCallBack : that.fetchFailedOfSave,
 			successCallBackParameters : {
 				"event" : event
 			},
@@ -80,7 +82,7 @@ console.log(postData);
 		webservice.postJSON(url, options);
 	};
 	//refreshing view with new data and showing message
-	this.fetchCompletedOfSave = function(data, requestParams) {
+	this.fetchCompletedOfSave = function(requestParams) {
 
 		var url = "";
 		viewParams = {};
@@ -100,14 +102,14 @@ console.log(postData);
 		postData.active_room_likes = [];
 		// to get active features
 		that.myDom.find('#room-features label.checkbox').each(function () {
-			if($(this).hasClass("checked")){
+			if(that.myDom.find(this).hasClass("checked")){
 				var value = $(this).find("input").attr('name');
 				postData.active_room_features.push(value);
 			}
 		});
 		// to get active likes
 		that.myDom.find('#room-likes label.checkbox').each(function () {
-			if($(this).hasClass("checked")){
+			if(that.myDom.find(this).hasClass("checked")){
 				var value = $(this).find("input").attr('name');
 				postData.active_room_likes.push(value);
 			}
@@ -117,12 +119,13 @@ console.log(postData);
 			postData.room_image = that.myDom.find("#file-preview").attr("src");
 		else
 			postData.room_image = "";
-console.log(postData);
+
 		var url = '';
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
 			successCallBack : that.fetchCompletedOfSave,
+			failureCallBack : that.fetchFailedOfSave,
 			successCallBackParameters : {
 				"event" : event
 			},
