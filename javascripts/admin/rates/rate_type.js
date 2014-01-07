@@ -45,13 +45,11 @@ var RateTypeListView = function(domRef){
 			if(typeof can_off !== 'undefined' || typeof is_system_defined !== 'undefined'){
 				if(can_off === "false"){
 					sntapp.notification.showErrorMessage('Rate Type cannot be deleted as it is already in use');
-					event.preventDefault();
 					return false;
 				}
 
 				else if(is_system_defined === "true"){
 					sntapp.notification.showErrorMessage('Rate Type cannot be deleted as it is system defined');
-					event.preventDefault();
 					return false;
 				}
 				
