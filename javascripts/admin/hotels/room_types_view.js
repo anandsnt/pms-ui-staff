@@ -23,7 +23,7 @@ var RoomTypesView = function(domRef){
   	
   	console.log("importRooms API call");
   	var postData = {};
-  	var url = '';
+  	var url = 'admin/room_types/import_rooms';
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -36,11 +36,11 @@ var RoomTypesView = function(domRef){
   };
   //to show preview of the image using file reader
   this.readURL = function(input) {
-  	   $('#file-preview').attr('changed', "changed");
+  	   that.myDom.find('#file-preview').attr('changed', "changed");
        if (input.files && input.files[0]) {
            var reader = new FileReader();
            reader.onload = function(e) {
-           	   $('#file-preview').attr('src', e.target.result);
+           	   that.myDom.find('#file-preview').attr('src', e.target.result);
                that.fileContent = e.target.result;
            };
            reader.readAsDataURL(input.files[0]);
@@ -58,7 +58,7 @@ var RoomTypesView = function(domRef){
   	
   	// to handle is_pseudo_room_type checked or not
   	postData.is_pseudo_room_type = "false";
-  	if($("#is-pseudo-room-type").parent("label:eq(0)").hasClass("checked")) {
+  	if(that.myDom.find("#is-pseudo-room-type").parent("label:eq(0)").hasClass("checked")) {
 	    postData.is_pseudo_room_type = "true";
 	}
 	
@@ -68,7 +68,7 @@ var RoomTypesView = function(domRef){
   	else
   		postData.image_of_room_type = "";
   		
-  	var url = '';
+  	var url = '/admin/room_types';
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -82,7 +82,7 @@ var RoomTypesView = function(domRef){
   //refreshing view with new data and showing message
   this.fetchCompletedOfSave = function(data, requestParams){
   	
-  	var url = "";
+  	var url = "/admin/room_types";
    	viewParams = {};
   	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
   	sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
@@ -101,7 +101,7 @@ var RoomTypesView = function(domRef){
   	
   	// to handle is_pseudo_room_type checked or not
   	postData.is_pseudo_room_type = "false";
-  	if($("#is-pseudo-room-type").parent("label:eq(0)").hasClass("checked")) {
+  	if(that.myDom.find("#is-pseudo-room-type").parent("label:eq(0)").hasClass("checked")) {
 	    postData.is_pseudo_room_type = "true";
 	}
 	
@@ -111,7 +111,7 @@ var RoomTypesView = function(domRef){
   	else
   		postData.image_of_room_type = "";
   	
-  	var url = '';
+  	var url = '/admin/room_types/'+postData.room_type_id;
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -128,7 +128,7 @@ var RoomTypesView = function(domRef){
   };
   //refreshing view with new data and showing message after import
   this.fetchCompletedOfImport = function(requestParams){
-  	var url = "";
+  	var url = "/admin/room_types";
    	viewParams = {};
   	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
   	sntapp.notification.showSuccessMessage("Imported Successfully", that.myDom);		

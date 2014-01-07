@@ -5,27 +5,34 @@ var RateTypeListView = function(domRef){
 	var that = this;
 
 	this.updateApi = function(event){
-		var url = '#';
+		var data = {};
+	    data.name = $.trim(that.myDom.find("#rate-type-name").val());
+		var url = ' /admin/hotel_rate_types/'+data.id;
 		if(typeof url === 'undefined' || $.trim(url) === '#'){
 			return false;
 		}
 	    var webservice = new WebServiceInterface();
-	    var data = {};
-	    data.name = $.trim(that.myDom.find("#rate-type-name").val());
-	    data.id = that.myDom.find("#edit-rate-type-details").attr("rate-type-id");
+	    
 		var options = {
 			   requestParameters: data,
-			   successCallBack: that.fetchCompletedOfUpdateApi,
+			   successCallBack: that.fetchCompletedOfSave,
 			   successCallBackParameters: {'event': event},		   
 			   loader: 'BLOCKER'
 	    };
-	    webservice.postJSON(url, options);
+	    webservice.putJSON(url, options);
 	};
 	
 	// success function of on off api ajax call
-	this.fetchCompletedOfUpdateApi = function(data, requestParams){
+	this.fetchCompletedOfSave = function(data, requestParams){
 		var event = requestParams['event'];
 		that.cancelFromAppendedDataInline(event);
+		var url = "/admin//hotel_rate_types";
+	   	viewParams = {};
+	  	if(data.status == "success"){
+	  		  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+			  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
+			  that.cancelFromAppendedDataInline(requestParams['event']);  
+	    }
 	};
 	
 	this.delegateSubviewEvents = function(){
@@ -48,13 +55,13 @@ var RateTypeListView = function(domRef){
 				}
 				else{
 
-					var url = '#';
+					var url = '/admin/hotel_rate_types/save';
 					// if(typeof url === 'undefined' || $.trim(url) === '#'){
 						// return false;
 					// }
 				    var webservice = new WebServiceInterface();
 				    var data = {};
-				    data.id = element.parents('tr:eq(0)').attr('data-rate-type-id');
+				    data.value = element.parents('tr:eq(0)').attr('data-rate-type-id');
 				   
 				    if(element.is(":checked")){
 				    	data.status = "activate";
@@ -86,7 +93,7 @@ var RateTypeListView = function(domRef){
 
 	
 	this.saveNewApi = function(){
-		var url = '#';
+		var url = '/admin/hotel_rate_types';
 		if(typeof url === 'undefined' || $.trim(url) === '#'){
 			return false;
 		}
@@ -95,14 +102,11 @@ var RateTypeListView = function(domRef){
 	    data.name = $.trim(that.myDom.find("#rate-type-name").val());
 		var options = {
 			   requestParameters: data,
-			   successCallBack: that.fetchCompletedOfSaveNewApi,
+			   successCallBack: that.fetchCompletedOfSave,
 			   loader: 'BLOCKER'
 	    };
 	    webservice.postJSON(url, options);
 	};
-	// success function of on off api ajax call
-	this.fetchCompletedOfSaveNewApi = function(data){
-		
-	};
+	
 
 };
