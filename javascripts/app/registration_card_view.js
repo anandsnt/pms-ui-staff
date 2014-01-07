@@ -146,6 +146,7 @@ var RegistrationCardView = function(viewDom){
   		var url = '/staff/checkout';
 	  	var webservice = new WebServiceInterface();
 	  	var data = {"reservation_id" : that.reservation_id, "email": email};
+	  	console.log(JSON.stringify(data))
 	    var options = { 
 	    				requestParameters: data,
 	    				successCallBack: that.fetchCompletedOfCompleteCheckout,
