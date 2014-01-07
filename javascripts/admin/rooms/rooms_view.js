@@ -7,6 +7,7 @@ var RoomsView = function(domRef) {
 	this.delegateSubviewEvents = function() {
 		that.myDom.on('change', that.viewChangeEventHandler);
 		that.myDom.on('click', that.viewClickEventHandler);
+		that.myDom.find('#rooms').tablesorter();
 	};
 
 	this.viewChangeEventHandler = function(event) {
@@ -71,6 +72,7 @@ var RoomsView = function(domRef) {
 		var options = {
 			requestParameters : postData,
 			successCallBack : that.fetchCompletedOfSave,
+			failureCallBack : that.fetchFailedOfSave,
 			successCallBackParameters : {
 				"event" : event
 			},
@@ -80,7 +82,7 @@ var RoomsView = function(domRef) {
 		webservice.postJSON(url, options);
 	};
 	//refreshing view with new data and showing message
-	this.fetchCompletedOfSave = function(data, requestParams) {
+	this.fetchCompletedOfSave = function(requestParams) {
 
 		var url = "";
 		viewParams = {};
@@ -123,6 +125,7 @@ var RoomsView = function(domRef) {
 		var options = {
 			requestParameters : postData,
 			successCallBack : that.fetchCompletedOfSave,
+			failureCallBack : that.fetchFailedOfSave,
 			successCallBackParameters : {
 				"event" : event
 			},
