@@ -119,7 +119,7 @@ var RoomsView = function(domRef) {
 		else
 			postData.room_image = "";
 
-		var url = '/admin/hotel_rooms'+postData.room_type_id;
+		var url = '/admin/hotel_rooms/'+postData.room_type_id;
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
