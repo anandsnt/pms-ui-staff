@@ -52,8 +52,8 @@ var GuestCardHLPView = function(domRef) {
 				requestParameters : postData,
 				loader : "NONE"
 			};
-			//var url = "";
-			//webservice.postJSON(url, options);
+			var url = "admin/hotel/toggle_hlp_activation/";
+			webservice.postJSON(url, options);
 			return true;
 		}, 100);
 	};
@@ -93,7 +93,7 @@ var GuestCardHLPView = function(domRef) {
 	this.updateApi = function(event) {
 
 		var hlpId = that.myDom.find("form#edit-loyalty").attr("hlp_id");
-		var url = '/admin/hotel_loyalty_program/' + hlpId ;
+		var url = '/admin/hotel/update_hlp/' + hlpId ;
 		var action = "ACTION_EDIT"
 		that.makeAPICall(url , action, event);
 
@@ -101,7 +101,7 @@ var GuestCardHLPView = function(domRef) {
 
 	this.saveNewApi = function(event) {
 
-		var url = '/admin/hotel_loyalty_program/create';
+		var url = '/admin/hotel/save_hlp';
 		var action = "ACTION_SAVE"
 		that.makeAPICall(url, action, event);
 
@@ -129,8 +129,6 @@ var GuestCardHLPView = function(domRef) {
 			}
 		});
 		postData.levels = levels;
-		//console.log(JSON.stringify(postData));// DELETE once API Integration is complete
-
 
 		var webservice = new WebServiceInterface();
 		var options = {
@@ -140,7 +138,12 @@ var GuestCardHLPView = function(domRef) {
 			loader : "BLOCKER"
 
 		};
-		webservice.putJSON(url, options);
+		if(action == "ACTION_EDIT"){
+			webservice.putJSON(url, options);
+		}else if(action == "ACTION_SAVE"){
+			webservice.postJSON(url, options);
+		}
+		
 
 	}
 };
