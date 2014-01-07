@@ -94,7 +94,6 @@ var RoomsView = function(domRef) {
 	this.updateApi = function(event) {
 
 		var postData = {};
-		postData.room_id = that.myDom.find("#edit-room").attr('data-room-id');
 		postData.room_number = that.myDom.find("#room-number").val();
 		postData.room_type_id = that.myDom.find("#room-type").val();
 		postData.active_room_features = [];
@@ -119,7 +118,7 @@ var RoomsView = function(domRef) {
 		else
 			postData.room_image = "";
 
-		var url = '/admin/hotel_rooms/'+postData.room_type_id;
+		var url = '/admin/hotel_rooms/'+postData.room_id;
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
