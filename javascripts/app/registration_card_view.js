@@ -142,9 +142,10 @@ var RegistrationCardView = function(viewDom){
   	}
   	else{
   		// When balance amount is 0 - perform complete check out action.
+  		var email = $("#gc-email").val();
   		var url = '/staff/checkout';
 	  	var webservice = new WebServiceInterface();
-	  	var data = {"reservation_id" : that.reservation_id};
+	  	var data = {"reservation_id" : that.reservation_id, "email": email};
 	    var options = { 
 	    				requestParameters: data,
 	    				successCallBack: that.fetchCompletedOfCompleteCheckout,
