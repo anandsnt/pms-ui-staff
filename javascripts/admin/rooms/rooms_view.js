@@ -81,11 +81,11 @@ var RoomsView = function(domRef) {
 		webservice.postJSON(url, options);
 	};
 	//refreshing view with new data and showing message
-	this.fetchCompletedOfSave = function(requestParams) {
+	this.fetchCompletedOfSave = function(data,requestParams) {
 		
 		var url = "/admin/hotel_rooms";
 		viewParams = {};
-		sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
 		sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
 		that.cancelFromAppendedDataInline(requestParams['event']);
 	};
