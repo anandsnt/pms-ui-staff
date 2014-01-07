@@ -95,9 +95,8 @@ var reservationDetailsView = function(domRef){
     };
     this.clickedCheckoutButton = function(){
 	  	var email = $("#gc-email").val();
-	
 	  	if(email == ""){
-	  	       	var validateCheckoutModal = new ValidateCheckoutModal();
+	  	       	var validateCheckoutModal = new ValidateCheckoutModal(that.goToBillCardView, "CheckoutButton");
 	  	       	validateCheckoutModal.initialize();
 	  	       	validateCheckoutModal.params = {"type": "NoEmail"};
 	  	} else {
