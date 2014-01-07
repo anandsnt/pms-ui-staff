@@ -3,10 +3,11 @@ var RateTypeListView = function(domRef){
 	BaseInlineView.call(this);  
 	this.myDom = domRef;
 	var that = this;
-
+    // function to update
 	this.updateApi = function(event){
 		var data = {};
 	    data.name = $.trim(that.myDom.find("#rate-type-name").val());
+	    data.id = that.myDom.find("#edit-rate-type-details").attr("rate-type-id");
 		var url = ' /admin/hotel_rate_types/'+data.id;
 		if(typeof url === 'undefined' || $.trim(url) === '#'){
 			return false;
@@ -26,7 +27,7 @@ var RateTypeListView = function(domRef){
 	this.fetchCompletedOfSave = function(data, requestParams){
 		var event = requestParams['event'];
 		that.cancelFromAppendedDataInline(event);
-		var url = "/admin//hotel_rate_types";
+		var url = "/admin/hotel_rate_types";
 	   	viewParams = {};
 	  	if(data.status == "success"){
 	  		  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
@@ -92,7 +93,7 @@ var RateTypeListView = function(domRef){
 	};
 
 	
-	this.saveNewApi = function(){
+	this.saveNewApi = function(event){
 		var url = '/admin/hotel_rate_types';
 		if(typeof url === 'undefined' || $.trim(url) === '#'){
 			return false;
@@ -103,6 +104,7 @@ var RateTypeListView = function(domRef){
 		var options = {
 			   requestParameters: data,
 			   successCallBack: that.fetchCompletedOfSave,
+			   successCallBackParameters: {'event': event},		   
 			   loader: 'BLOCKER'
 	    };
 	    webservice.postJSON(url, options);
