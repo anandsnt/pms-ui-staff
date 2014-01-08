@@ -78,7 +78,7 @@ var GuestCardHLPView = function(domRef) {
 	//refreshing view with new data and showing message
 	this.fetchCompletedOfSave = function(data, requestParams) {
 
-		var url = "/admin/hotel_loyalty_program/";
+		var url = "/admin/hotel/list_hlps/";
 		viewParams = {};
 		
 		if (data.status == "success") {
