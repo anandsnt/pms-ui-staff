@@ -34,22 +34,15 @@ var SetWakeUpCallModal = function() {
 		var wakeUpHour = that.myDom.find('#set-wake-up-call #wake-up-hour').val();
 		var wakeUpMinute = that.myDom.find('#set-wake-up-call #wake-up-minute').val();
 		var wakeUpPrimetime = that.myDom.find('#set-wake-up-call #wake-up-primetime').val();
-		console.log(wakeUpHour);
-		console.log(wakeUpMinute);
-		console.log(wakeUpPrimetime);
 		var wakeUpTime = wakeUpHour+":"+wakeUpMinute+" "+wakeUpPrimetime;
-		
-		var wakeUpDay = that.myDom.find('#set-wake-up-call #wakeup-day').text();
-		var wakeUpDaySplit = wakeUpDay.split(" ");
+		var wakeUpday = that.myDom.find('#set-wake-up-call #wakeupDate').hasClass('on') ? "Tomorrow":"Today";
 
 		var data = {
 			"reservation_id" : that.reservationId,
 			"wake_up_time" : wakeUpTime,
-			"day" : wakeUpDaySplit[0]
+			"day" : wakeUpday
 		};
-		
 
-		console.log(JSON.stringify(data));
 		var webservice = new WebServiceInterface();
 		
 	    var url = 'wakeup/set_wakeup_calls'; 
