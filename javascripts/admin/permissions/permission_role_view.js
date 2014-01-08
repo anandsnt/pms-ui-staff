@@ -21,7 +21,6 @@ var PermissionView = function(domRef) {
 		that.myDom.find(".current-permission li").each(function(n) {
 			postData.permissions.push($(this).attr("value")); // to get the assigned permissons
 		});
-		console.log(JSON.stringify(postData));
 		var url = '/admin/roles_permissions/save_permissions';
 		var webservice = new WebServiceInterface();
 
