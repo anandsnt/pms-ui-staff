@@ -5,8 +5,9 @@ var PermissionView = function(domRef) {
     //delegate Events
 	this.delegateEvents = function() {
 		that.myDom.find($('.permission-tabs')).tabs(); // ui tabs
-		that.myDom.find($('#permissions ul li')).on('click', function(){
+		that.myDom.find($('#roles-menu li')).on('click', function(){
 			var currentId = $(this).attr("data-id");
+			console.log("==========="+currentId)
 			$("ul.permission-box").removeClass("current-permission");
 			$("#assigined-roles-"+currentId).addClass("current-permission"); // to get current selected permissions box 
 		});
