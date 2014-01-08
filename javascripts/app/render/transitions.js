@@ -291,8 +291,6 @@ $(function($){
         if(window.location.hash) {
             var $pageToShow = window.location.hash.split('#');
 
-            $('#page-main-first').empty();
-
             $.ajax({
                 type:       'GET',
                 url:        $pageToShow[1] + '/',
@@ -324,6 +322,22 @@ $(function($){
 
             // Remove the hash 
             history.pushState("", document.title, window.location.pathname);    
+        }
+        // Load the dashboard when no hash
+        else {
+            var $pageToShow = 'staff/dashboard/dashboard/';
+            
+            $.ajax({
+                type:       'GET',
+                url:        $pageToShow,
+                dataType:   'html',
+                //timeout:    5000,
+                success: function(data){
+                    $('#page-main-first').html(data);
+                },
+                error: function(){
+                }
+            });
         }
 
         // Carry on with the animation
