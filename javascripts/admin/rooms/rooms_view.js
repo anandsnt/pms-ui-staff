@@ -7,7 +7,6 @@ var RoomsView = function(domRef) {
 	this.delegateSubviewEvents = function() {
 		that.myDom.on('change', that.viewChangeEventHandler);
 		that.myDom.on('click', that.viewClickEventHandler);
-		that.myDom.find('#rooms').tablesorter();
 	};
 
 	this.viewChangeEventHandler = function(event) {
@@ -67,7 +66,7 @@ var RoomsView = function(domRef) {
 		else
 			postData.room_image = "";
 
-		var url = '';
+		var url = '/admin/hotel_rooms/';
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
@@ -82,11 +81,11 @@ var RoomsView = function(domRef) {
 		webservice.postJSON(url, options);
 	};
 	//refreshing view with new data and showing message
-	this.fetchCompletedOfSave = function(requestParams) {
-
-		var url = "";
+	this.fetchCompletedOfSave = function(data,requestParams) {
+		
+		var url = "/admin/hotel_rooms";
 		viewParams = {};
-		sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
 		sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
 		that.cancelFromAppendedDataInline(requestParams['event']);
 	};
@@ -95,7 +94,7 @@ var RoomsView = function(domRef) {
 	this.updateApi = function(event) {
 
 		var postData = {};
-		postData.room_id = that.myDom.find("#edit-room").attr('data-room-id');
+		var room_id = that.myDom.find("#edit-room").attr('data-room-id');
 		postData.room_number = that.myDom.find("#room-number").val();
 		postData.room_type_id = that.myDom.find("#room-type").val();
 		postData.active_room_features = [];
@@ -120,7 +119,7 @@ var RoomsView = function(domRef) {
 		else
 			postData.room_image = "";
 
-		var url = '';
+		var url = '/admin/hotel_rooms/'+room_id;
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
