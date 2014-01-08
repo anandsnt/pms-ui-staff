@@ -5,7 +5,7 @@ var PermissionView = function(domRef) {
     //delegate Events
 	this.delegateEvents = function() {
 		that.myDom.find($('.permission-tabs')).tabs(); // ui tabs
-		that.myDom.find($('#permissions ul li')).on('click', function(){
+		that.myDom.find($('#roles-menu li')).on('click', function(){
 			var currentId = $(this).attr("data-id");
 			$("ul.permission-box").removeClass("current-permission");
 			$("#assigined-roles-"+currentId).addClass("current-permission"); // to get current selected permissions box 
@@ -17,10 +17,11 @@ var PermissionView = function(domRef) {
 		var postData = {};
 		postData.permissions = [];
 		postData.value = $(".current-permission").attr("data-id");
+		
 		that.myDom.find(".current-permission li").each(function(n) {
 			postData.permissions.push($(this).attr("value")); // to get the assigned permissons
 		});
-		var url = '#';
+		var url = '/admin/roles_permissions/save_permissions';
 		var webservice = new WebServiceInterface();
 
 		var options = {
