@@ -14,7 +14,7 @@ var PermissionView = function(domRef) {
 			postData.assigned_roles.push($(this).attr("value"));
 			});
 
-			var url = '#';
+			var url = '/admin/roles_permissions/save_permissions';
 			var webservice = new WebServiceInterface();
 
 			var options = {
