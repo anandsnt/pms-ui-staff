@@ -320,20 +320,20 @@ var GuestCardLikesView = function(domRef){
       });
 
       var webservice = new WebServiceInterface();
-      var url = '/admin/departments';
+      var url = '/admin/hotel_likes/save_news_paper';
       var options = {
            requestParameters: postData,
            successCallBack: that.newsPaperSaveComplete,
            successCallBackParameters:{ "event": event},
            loader:"BLOCKER"
       };
-      //webservice.postJSON(url, options);
+      webservice.postJSON(url, options);
 
     };
 
   //refreshing view with new data and showing message
   this.newsPaperSaveComplete = function(data, requestParams){
-    var url = "/admin/departments";
+    var url = "/admin/hotel_likes/get_hotel_likes";
     viewParams = {};
 
     if(data.status == "success"){
