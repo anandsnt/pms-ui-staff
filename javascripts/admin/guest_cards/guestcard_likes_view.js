@@ -83,8 +83,8 @@ var GuestCardLikesView = function(domRef){
                requestParameters: postParams,
                loader: "NONE"
           };
-          //var url = '/staff/reservations/upgrade_room';
-          //webservice.postJSON(url, options);
+          var url = '/admin/hotel_likes/activate_feature';
+          webservice.postJSON(url, options);
           return true;
       }, 100);
 
