@@ -38,7 +38,7 @@ var UserRolesView = function(domRef){
   //refreshing view with new data and showing message
   this.fetchCompletedOfDelete = function(data){
   	
-  	var url = "/admin/user_roles";
+  	var url = "/admin/roles";
    	viewParams = {};
   	
   	if(data.status == "success"){
@@ -71,6 +71,10 @@ var UserRolesView = function(domRef){
   	event.preventDefault();
   	var postData = {};
   	var selectedId = $(event.target).attr("id");
+  	if(selectedId == "delete")
+  	{
+  		selectedId = that.myDom.find("#edit-user-role-details").attr("user_role_id");
+  	}
   	var url = '/admin/roles/'+selectedId;
   	postData.id = selectedId;
 	var webservice = new WebServiceInterface();		
@@ -83,18 +87,5 @@ var UserRolesView = function(domRef){
 	};
 	webservice.deleteJSON(url, options);
   };
-   //to remove deleted row and show message
-  this.fetchCompletedOfDelete = function(data, successParams){
-  	  var url = "/admin/roles";
-   	  viewParams = {};
-	  if(data.status == "success"){
-	  	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
-		  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
-		  that.myDom.find($("#user_row_"+successParams['selectedId'])).html("");
-	  }	 
-	  else{
-		  
-		  sntapp.notification.showErrorList(data.errors, that.myDom);  
-	  }	  
-  };
+   
 };
