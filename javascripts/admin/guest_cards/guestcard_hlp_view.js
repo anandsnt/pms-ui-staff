@@ -45,7 +45,6 @@ var GuestCardHLPView = function(domRef) {
 				"value" : hlpId,
 				"set_active" : toggleStatus
 			};
-		//console.log(JSON.stringify(postData));// DELETE once API Integration is complete
 
 			var webservice = new WebServiceInterface();
 			var options = {
@@ -70,7 +69,7 @@ var GuestCardHLPView = function(domRef) {
 			.wrap('<div class="entry" />');// Wrap to div
 
 		// Set new class
-		$('.add-new-option').unbind('click');
+		that.myDom.find('.add-new-option').unbind('click');
 		element.removeClass('add-new-option').addClass('delete-option');
 
 	};
@@ -116,7 +115,7 @@ var GuestCardHLPView = function(domRef) {
 		postData.name = that.myDom.find("#name").val();
 		postData.code = that.myDom.find("#code").val();
 		var levels = [];
-		$("input[name=loyalty-levels]").each(function() {
+		that.myDom.find("input[name=loyalty-levels]").each(function() {
 			
 			var name = $(this).val();
 			if (name != "") {
@@ -129,7 +128,7 @@ var GuestCardHLPView = function(domRef) {
 			}
 		});
 		postData.levels = levels;
-		console.log(JSON.stringify(postData));
+
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
