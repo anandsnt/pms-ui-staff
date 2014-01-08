@@ -292,7 +292,7 @@ var GuestCardLikesView = function(domRef){
     //refreshing view with new data and showing message
   this.fetchCompletedOfSave = function(data, requestParams){
   	
-  	  var url = "/admin/departments";
+  	  var url = "/admin/hotel_likes/likes_list";
    	  viewParams = {};
   	  
   	  if(data.status == "success"){
