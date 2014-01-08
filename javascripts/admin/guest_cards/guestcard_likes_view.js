@@ -227,7 +227,7 @@ var GuestCardLikesView = function(domRef){
     	postData.options = options;
     	//console.log(JSON.stringify(postData));// DELETE once API Integration is complete
     	
-    	var url = '/admin/likes/'+postData.id;
+    	var url = '/admin/hotel_likes/add_feature_type';
 		var webservice = new WebServiceInterface();		
 		var options = {
 				   requestParameters: postData,
@@ -277,7 +277,7 @@ var GuestCardLikesView = function(domRef){
     	postData.options = options;
     	//console.log(JSON.stringify(postData)); // DELETE once API Integration is complete
     	
-    	var url = '/admin/likes/create';
+    	var url = '/admin/hotel_likes/add_feature_type';
 		var webservice = new WebServiceInterface();		
 		var options = {
 				   requestParameters: postData,
@@ -286,13 +286,13 @@ var GuestCardLikesView = function(domRef){
 				   loader:"BLOCKER"
 				   
 		};
-		webservice.putJSON(url, options);	
+		webservice.postJSON(url, options);	
     	
     };
     //refreshing view with new data and showing message
   this.fetchCompletedOfSave = function(data, requestParams){
   	
-  	  var url = "/admin/departments";
+  	  var url = "/admin/hotel_likes/likes_list";
    	  viewParams = {};
   	  
   	  if(data.status == "success"){
