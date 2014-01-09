@@ -3,14 +3,13 @@ var RoomsView = function(domRef) {
 	this.myDom = domRef;
 	var that = this;
 
-	this.pageinit = function() {
-
-	};
 	this.delegateEvents = function() {
 		that.myDom.find('#rooms').tablesorter();
 		that.myDom.find('.add-data-inline,.edit-data-inline').on('click', sntadminapp.gotoNextPage);
 		that.myDom.find('#go_back,#cancel').on('click', that.goBackToPreviousView);
-		that.myDom.find('#room-picture').on('change', that.readURL);
+		that.myDom.find('#room-picture').on('change', function(){
+  			that.readURL(this);
+  		});
 		that.myDom.find('#save').on('click', that.addNewRoom);
 		that.myDom.find('#update').on('click', that.updateRoom);
 	};
@@ -20,8 +19,7 @@ var RoomsView = function(domRef) {
 	};
 
 	//to show preview of the image using file reader
-	this.readURL = function(event) {
-		var input = event.target;
+	this.readURL = function(input) {
 		that.myDom.find('#file-preview').attr('changed', "changed");
 		if (input.files && input.files[0]) {
 			var reader = new FileReader();
