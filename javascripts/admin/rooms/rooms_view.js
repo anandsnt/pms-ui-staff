@@ -1,31 +1,27 @@
 var RoomsView = function(domRef) {
-	BaseInlineView.call(this);
+	BaseView.call(this);
 	this.myDom = domRef;
 	var that = this;
 
-	// to handle sub view events
-	this.delegateSubviewEvents = function() {
-		that.myDom.on('change', that.viewChangeEventHandler);
-		that.myDom.on('click', that.viewClickEventHandler);
+	this.pageinit = function() {
+
+	};
+	this.delegateEvents = function() {
+		that.myDom.find('#rooms').tablesorter();
+		that.myDom.find('#add_new_room').on('click', sntadminapp.gotoNextPage);
+		that.myDom.find('#go_back,#cancel').on('click', that.goBackToPreviousView);
+		that.myDom.find('#room-picture').on('change', that.readURL);
+		that.myDom.find('#save').on('click', that.addNewRoom);
+
+	};
+	// To go back to rooms
+	this.goBackToPreviousView = function() {
+		sntadminapp.gotoPreviousPage(that.viewParams);
 	};
 
-	this.viewChangeEventHandler = function(event) {
-		var element = $(event.target);
-		if (element.parent().hasClass('file-upload')) {
-			return that.readURL(event.target);
-		}
-	};
-	
-	this.viewClickEventHandler = function(event){  
-	   	var element = $(event.target);
-	   	if(element.hasClass('back')) {return that.goBackToPreviousView();}
- 	};
-	// To go back to rooms
-  	this.goBackToPreviousView = function() {
- 		sntadminapp.gotoPreviousPage(that.viewParams);
-  	};
 	//to show preview of the image using file reader
-	this.readURL = function(input) {
+	this.readURL = function(event) {
+		var input = event.target;
 		that.myDom.find('#file-preview').attr('changed', "changed");
 		if (input.files && input.files[0]) {
 			var reader = new FileReader();
@@ -38,7 +34,7 @@ var RoomsView = function(domRef) {
 	};
 
 	//function to add new room type
-	this.saveNewApi = function(event) {
+	this.addNewRoom = function(event) {
 
 		var postData = {};
 		postData.room_number = that.myDom.find("#room-number").val();
@@ -46,20 +42,20 @@ var RoomsView = function(domRef) {
 		postData.active_room_features = [];
 		postData.active_room_likes = [];
 		// to get active features
-		that.myDom.find('#room-features label.checkbox').each(function () {
-			if(that.myDom.find(this).hasClass("checked")){
+		that.myDom.find('#room-features label.checkbox').each(function() {
+			if (that.myDom.find(this).hasClass("checked")) {
 				var value = $(this).find("input").attr('name');
 				postData.active_room_features.push(value);
 			}
 		});
 		// to get active likes
-		that.myDom.find('#room-likes label.checkbox').each(function () {
-			if(that.myDom.find(this).hasClass("checked")){
+		that.myDom.find('#room-likes label.checkbox').each(function() {
+			if (that.myDom.find(this).hasClass("checked")) {
 				var value = $(this).find("input").attr('name');
 				postData.active_room_likes.push(value);
 			}
 		});
-		
+
 		// to handle image uploaded or not
 		if (that.myDom.find("#file-preview").attr("changed") == "changed")
 			postData.room_image = that.myDom.find("#file-preview").attr("src");
@@ -81,8 +77,8 @@ var RoomsView = function(domRef) {
 		webservice.postJSON(url, options);
 	};
 	//refreshing view with new data and showing message
-	this.fetchCompletedOfSave = function(data,requestParams) {
-		
+	this.fetchCompletedOfSave = function(data, requestParams) {
+
 		var url = "/admin/hotel_rooms";
 		viewParams = {};
 		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
@@ -100,15 +96,15 @@ var RoomsView = function(domRef) {
 		postData.active_room_features = [];
 		postData.active_room_likes = [];
 		// to get active features
-		that.myDom.find('#room-features label.checkbox').each(function () {
-			if(that.myDom.find(this).hasClass("checked")){
+		that.myDom.find('#room-features label.checkbox').each(function() {
+			if (that.myDom.find(this).hasClass("checked")) {
 				var value = $(this).find("input").attr('name');
 				postData.active_room_features.push(value);
 			}
 		});
 		// to get active likes
-		that.myDom.find('#room-likes label.checkbox').each(function () {
-			if(that.myDom.find(this).hasClass("checked")){
+		that.myDom.find('#room-likes label.checkbox').each(function() {
+			if (that.myDom.find(this).hasClass("checked")) {
 				var value = $(this).find("input").attr('name');
 				postData.active_room_likes.push(value);
 			}
@@ -119,7 +115,7 @@ var RoomsView = function(domRef) {
 		else
 			postData.room_image = "";
 
-		var url = '/admin/hotel_rooms/'+room_id;
+		var url = '/admin/hotel_rooms/' + room_id;
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
@@ -138,4 +134,4 @@ var RoomsView = function(domRef) {
 		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
 	};
 
-}; 
+};
