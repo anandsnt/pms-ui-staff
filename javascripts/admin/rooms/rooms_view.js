@@ -2,17 +2,24 @@ var RoomsView = function(domRef) {
 	BaseView.call(this);
 	this.myDom = domRef;
 	var that = this;
-
+	
 	this.delegateEvents = function() {
 		that.myDom.find('#rooms').tablesorter();
 		that.myDom.find('.add-data-inline,.edit-data-inline').on('click', sntadminapp.gotoNextPage);
-		that.myDom.find('#go_back,#cancel').on('click', that.goBackToPreviousView);
+		//that.myDom.find('#go_back,#cancel').on('click', that.goBackToPreviousView);
+		that.myDom.find('#go_back,#cancel').on('click', that.gotoPreviousPage);
 		that.myDom.find('#room-picture').on('change', function(){
   			that.readURL(this);
   		});
 		that.myDom.find('#save').on('click', that.addNewRoom);
 		that.myDom.find('#update').on('click', that.updateRoom);
 	};
+	
+	//go to previous page withount any update in view
+	this.gotoPreviousPage = function() {
+		sntadminapp.gotoPreviousPage(that.viewParams);
+	}; 
+  
 	// To go back to rooms
 	this.goBackToPreviousView = function() {
 		sntadminapp.gotoPreviousPage(that.viewParams);
