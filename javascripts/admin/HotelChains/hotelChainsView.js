@@ -94,7 +94,7 @@ var HotelChainsView = function(domRef){
 			var id = $(this).attr("data-id");
 		    var name =  $.trim($(this).val());
 		    dict = {'value': id, 'name': name};
-			if( lov_value !== ""){
+			if( name !== ""){
 				lovs.push(dict);
 			}
 		});
@@ -115,7 +115,7 @@ var HotelChainsView = function(domRef){
 		data.terms_cond_email = emailT_C;
 		data.terms_cond = terms_and_condtn;
 		data.lov = lovs;
-				
+				console.log(JSON.stringify(data));
 	    var options = {
 				   successCallBack: that.fetchCompletedOfSave,
 				   requestParameters: data,
