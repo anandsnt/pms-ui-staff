@@ -88,20 +88,17 @@ var HotelChainsView = function(domRef){
 		var emailT_C = $.trim(that.myDom.find("#email").val()); //T_C : terms & conditions
 		var terms_and_condtn = $.trim(that.myDom.find("#terms_and_condtn").val());
 		
-		var lovs = []; //list of values
+		var lovs = new Array();
 		// looping over list of values text boxes
 		that.myDom.find('input[name=lov]').each(function(){ 
-			var lov_value = $.trim($(this).val());
+			var id = $(this).attr("data-id");
+		    var name =  $.trim($(this).val());
+		    dict = {'value': id, 'name': name};
 			if( lov_value !== ""){
-				lovs.push(lov_value);
+				lovs.push(dict);
 			}
 		});
 		
-		// the validation part need to be modified or removed based on which validation that
-		// we are going to use. I mean jQuery validator or something like that.
-		
-			
-			
 		var webservice = new WebServiceInterface();
 		var url = '/admin/hotel_chains/'+chainID;
 		
@@ -109,15 +106,15 @@ var HotelChainsView = function(domRef){
 			return false;	
 		
 		var data = {};
-		data.chain_id = chainID;
-		data.chain_name = chainName;
+		data.value = chainID;
+		data.name = chainName;
 		data.hotel_code = hotelCode;
-		data.program_name = programName;
-		data.program_code = programCode;
-		data.phoneT_C = phoneT_C;
-		data.emailT_C = emailT_C;
-		data.terms_and_condtn = terms_and_condtn;
-		data.list_of_values = lovs;
+		data.loyalty_program_name = programName;
+		data.loyalty_program_code = programCode;
+		data.terms_cond_phone = phoneT_C;
+		data.terms_cond_email = emailT_C;
+		data.terms_cond = terms_and_condtn;
+		data.lov = lovs;
 				
 	    var options = {
 				   successCallBack: that.fetchCompletedOfSave,
@@ -158,15 +155,15 @@ var HotelChainsView = function(domRef){
 			return false;	
 		
 		var data = {};
-		data.chain_name = chainName;
+		data.name = chainName;
 		data.hotel_code = hotelCode;
-		data.program_name = programName;
-		data.program_code = programCode;
-		data.phoneT_C = phoneT_C;
-		data.emailT_C = emailT_C;
-		data.terms_and_condtn = terms_and_condtn;
-		data.list_of_values = lovs;	
-	
+		data.loyalty_program_name = programName;
+		data.loyalty_program_code = programCode;
+		data.terms_cond_phone = phoneT_C;
+		data.terms_cond_email = emailT_C;
+		data.terms_cond = terms_and_condtn;
+		data.lov = lovs;	
+	console.log(JSON.stringify(data));
 	    var options = {
 				   successCallBack: that.fetchCompletedOfSave,
 				   requestParameters: data,
