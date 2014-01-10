@@ -94,8 +94,16 @@ var reservationDetailsView = function(domRef){
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams );
     };
     this.clickedCheckoutButton = function(){
-   	that.goToBillCardView("CheckoutButton");
-   };
+	  	var email = $("#gc-email").val();
+	  	if(email == ""){
+	  	       	var validateCheckoutModal = new ValidateCheckoutModal(that.goToBillCardView, "CheckoutButton");
+	  	       	validateCheckoutModal.initialize();
+	  	       	validateCheckoutModal.params = {"type": "NoEmail"};
+	  	} else {
+	  		that.goToBillCardView("CheckoutButton");
+	  	}
+   		
+    };
     this.clickedViewBillButton = function(e){
     	sntapp.activityIndicator.showActivityIndicator("blocker");
       	that.goToBillCardView("ViewBillButton");
