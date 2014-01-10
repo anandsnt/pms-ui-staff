@@ -1,29 +1,30 @@
 var RoomsView = function(domRef) {
-	BaseInlineView.call(this);
+	BaseView.call(this);
 	this.myDom = domRef;
 	var that = this;
-
-	// to handle sub view events
-	this.delegateSubviewEvents = function() {
-		that.myDom.on('change', that.viewChangeEventHandler);
-		that.myDom.on('click', that.viewClickEventHandler);
-	};
-
-	this.viewChangeEventHandler = function(event) {
-		var element = $(event.target);
-		if (element.parent().hasClass('file-upload')) {
-			return that.readURL(event.target);
-		}
+	
+	this.delegateEvents = function() {
+		that.myDom.find('#rooms').tablesorter();
+		that.myDom.find('.add-data-inline,.edit-data-inline').on('click', sntadminapp.gotoNextPage);
+		//that.myDom.find('#go_back,#cancel').on('click', that.goBackToPreviousView);
+		that.myDom.find('#go_back,#cancel').on('click', that.gotoPreviousPage);
+		that.myDom.find('#room-picture').on('change', function(){
+  			that.readURL(this);
+  		});
+		that.myDom.find('#save').on('click', that.addNewRoom);
+		that.myDom.find('#update').on('click', that.updateRoom);
 	};
 	
-	this.viewClickEventHandler = function(event){  
-	   	var element = $(event.target);
-	   	if(element.hasClass('back')) {return that.goBackToPreviousView();}
- 	};
+	//go to previous page withount any update in view
+	this.gotoPreviousPage = function() {
+		sntadminapp.gotoPreviousPage(that.viewParams);
+	}; 
+  
 	// To go back to rooms
-  	this.goBackToPreviousView = function() {
- 		sntadminapp.gotoPreviousPage(that.viewParams);
-  	};
+	this.goBackToPreviousView = function() {
+		sntadminapp.gotoPreviousPage(that.viewParams);
+	};
+
 	//to show preview of the image using file reader
 	this.readURL = function(input) {
 		that.myDom.find('#file-preview').attr('changed', "changed");
@@ -38,7 +39,7 @@ var RoomsView = function(domRef) {
 	};
 
 	//function to add new room type
-	this.saveNewApi = function(event) {
+	this.addNewRoom = function(event) {
 
 		var postData = {};
 		postData.room_number = that.myDom.find("#room-number").val();
@@ -46,20 +47,20 @@ var RoomsView = function(domRef) {
 		postData.active_room_features = [];
 		postData.active_room_likes = [];
 		// to get active features
-		that.myDom.find('#room-features label.checkbox').each(function () {
-			if(that.myDom.find(this).hasClass("checked")){
+		that.myDom.find('#room-features label.checkbox').each(function() {
+			if (that.myDom.find(this).hasClass("checked")) {
 				var value = $(this).find("input").attr('name');
 				postData.active_room_features.push(value);
 			}
 		});
 		// to get active likes
-		that.myDom.find('#room-likes label.checkbox').each(function () {
-			if(that.myDom.find(this).hasClass("checked")){
+		that.myDom.find('#room-likes label.checkbox').each(function() {
+			if (that.myDom.find(this).hasClass("checked")) {
 				var value = $(this).find("input").attr('name');
 				postData.active_room_likes.push(value);
 			}
 		});
-		
+
 		// to handle image uploaded or not
 		if (that.myDom.find("#file-preview").attr("changed") == "changed")
 			postData.room_image = that.myDom.find("#file-preview").attr("src");
@@ -80,62 +81,59 @@ var RoomsView = function(domRef) {
 		};
 		webservice.postJSON(url, options);
 	};
-	//refreshing view with new data and showing message
-	this.fetchCompletedOfSave = function(data,requestParams) {
-		
-		var url = "/admin/hotel_rooms";
-		viewParams = {};
-		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
-		sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
-		that.cancelFromAppendedDataInline(requestParams['event']);
-	};
 
-	//function to update department
-	this.updateApi = function(event) {
-
+	//update room details
+	this.updateRoom = function() {
 		var postData = {};
-		var room_id = that.myDom.find("#edit-room").attr('data-room-id');
+		postData.room_id = that.myDom.find("#edit-room").attr('data-room-id');
 		postData.room_number = that.myDom.find("#room-number").val();
 		postData.room_type_id = that.myDom.find("#room-type").val();
 		postData.active_room_features = [];
 		postData.active_room_likes = [];
 		// to get active features
-		that.myDom.find('#room-features label.checkbox').each(function () {
-			if(that.myDom.find(this).hasClass("checked")){
+		that.myDom.find('#room-features label.checkbox').each(function() {
+			if (that.myDom.find(this).hasClass("checked")) {
 				var value = $(this).find("input").attr('name');
 				postData.active_room_features.push(value);
 			}
 		});
 		// to get active likes
-		that.myDom.find('#room-likes label.checkbox').each(function () {
-			if(that.myDom.find(this).hasClass("checked")){
+		that.myDom.find('#room-likes label.checkbox').each(function() {
+			if (that.myDom.find(this).hasClass("checked")) {
 				var value = $(this).find("input").attr('name');
 				postData.active_room_likes.push(value);
 			}
 		});
+
 		// to handle image uploaded or not
 		if (that.myDom.find("#file-preview").attr("changed") == "changed")
 			postData.room_image = that.myDom.find("#file-preview").attr("src");
 		else
 			postData.room_image = "";
 
-		var url = '/admin/hotel_rooms/'+room_id;
+		var url = '/admin/hotel_rooms/'+postData.room_id;
 		var webservice = new WebServiceInterface();
 		var options = {
-			requestParameters : postData,
-			successCallBack : that.fetchCompletedOfSave,
-			failureCallBack : that.fetchFailedOfSave,
-			successCallBackParameters : {
-				"event" : event
-			},
-			failureCallBack : that.fetchFailedOfSave,
-			loader : "BLOCKER"
-		};
+			   requestParameters: postData,
+			   successCallBack: that.fetchCompletedOfSave,
+			   loader:"BLOCKER"
+			   
+	};
 		webservice.putJSON(url, options);
 	};
+
+	//refreshing view with new data and showing message
+	this.fetchCompletedOfSave = function(data, requestParams) {
+
+		var url = "/admin/hotel_rooms";
+		viewParams = {};
+		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+		sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+	};
+	
 	// To handle failure on save API
 	this.fetchFailedOfSave = function(errorMessage) {
 		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
 	};
 
-}; 
+};
