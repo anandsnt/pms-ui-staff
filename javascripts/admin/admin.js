@@ -165,14 +165,40 @@ var setUpAdmin = function(viewDom, delegate) {
 
 	// Dashboard tabs
 		$('.tabs').tabs({
-			beforeActivate: function( event, ui ) {
-				var $prevTab = ui.oldPanel.attr('id'),
-					$nextTab = ui.newPanel.attr('id')
-
-				$('#' + $prevTab).fadeOut(300);
-		        $('#' + $nextTab).fadeIn(300);
-			}
+			// beforeActivate: function( event, ui ) {
+				// var $prevTab = ui.oldPanel.attr('id'),
+					// $nextTab = ui.newPanel.attr('id')
+// 
+				// $('#' + $prevTab).fadeOut(300);
+		        // $('#' + $nextTab).fadeIn(300);
+			// }
+		   hide: 'fadeOut', 
+		   show: 'fadeIn',
+		   beforeActivate: function(event, ui){
+		     var $tabsType = $(this).attr('data-tabs');
+		     if($tabsType == 'dashboard-tabs')
+		     {
+		       $('#replacing-div-first, #replacing-div-second').animate({opacity: 0}, 300, function(){
+		         $('#replacing-div-first, #replacing-div-second').removeAttr('style').hide().removeClass('current').empty();
+		       });
+		     }
+		   },
+		   activate: function(event, ui){
+		     var  $nextTab = ui.newPanel.attr('id'),
+		       $sortable = $('#' + $nextTab).find('.sortable').length;
+		  
+		
+		     if ($sortable > '0')
+		     {
+		       refreshSortable();
+		     }
 		});	
+		
+		$('#tabs-menu').jScrollPane({
+   			autoReinitialise    : true,
+         	animateScroll       : true,
+         	mouseWheelSpeed     : 50
+     	});
 		
 		
 		
