@@ -30,6 +30,7 @@ var BaseInlineView = function(viewDom){
 	if(element.parent().hasClass('switch-button')) {return that.toggleButtonClicked(element);}
 	if(element.attr('id') == "add-new-button") return that.addNewForm(event);
 	if(element.hasClass('icon-delete')) return that.deleteItem(event);
+	
 
   };
 
@@ -114,6 +115,7 @@ var BaseInlineView = function(viewDom){
     	    $(data).insertAfter(elementRow);
     	    containerTable.find("div.actions #cancel.button.blank").on('click', that.cancelFromAppendedDataInline);
     	    containerTable.find("div.actions #update.button.green").on('click', that.updateData);
+    	    containerTable.find("div.actions #delete").on('click', that.deleteItem); // from list and from inline edit delete method is same. pls do the logic in the method
     	    
     	    sntapp.activityIndicator.hideActivityIndicator();
     	    

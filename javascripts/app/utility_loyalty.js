@@ -113,7 +113,7 @@ function updateFFPLoyaltyUI($type,$code,$program,$name){
 }
 
 function updateSelectionUI($code,$type){
-	console.log("updateSelectionUI");
+
 	var $number = $code.slice(-4);
 	$("div#reservationLoyalty.selected").html("");
 	var html = 	'<span class="value code">'+$type+'</span>'+

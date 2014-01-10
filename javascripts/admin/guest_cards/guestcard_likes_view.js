@@ -1,14 +1,14 @@
 var GuestCardLikesView = function(domRef){
-  BaseInlineView.call(this);  
-  this.myDom = domRef; 
+  BaseInlineView.call(this);
+  this.myDom = domRef;
   var that = this;
   var textOptionStart = 1;
-  
+
   this.changeData = function(element){
   	var target = element.attr('data-type');
 	if (target != 'textbox'){
 
-		// Hide previous and show new fields 
+		// Hide previous and show new fields
 		that.myDom.find('.data-type:visible').addClass('hidden');
 		that.myDom.find('#entry-' + target).removeClass('hidden');
 
@@ -29,14 +29,14 @@ var GuestCardLikesView = function(domRef){
 		// Delete all dynamically added fileds which are now emtpy
 		that.myDom.find('.data-type:visible input.delete-option').parent('.entry').remove();
 	}
-	
+
   };
   // To delete the textbox if value is null - Options values
    this.deleteOption = function(element){
 	   	if ($.trim(element.val()) == '')
 		{
 			element.parent('.entry').remove();
-		}	
+		}
    };
   // to handle sub view events
   this.delegateSubviewEvents = function(){
@@ -51,13 +51,13 @@ var GuestCardLikesView = function(domRef){
 
       if(element.hasClass('change-data')) return that.changeData(element);
       if(element.hasClass('add-new-option'))	return that.addNewOption(element, event);
-      if(element.hasClass('add-new-checkbox'))  
+      if(element.hasClass('add-new-checkbox'))
         { return that.addNewNewspaper(element);}
-      if(element.hasClass('icon-add') && element.parent().hasClass('add-new-checkbox'))  
+      if(element.hasClass('icon-add') && element.parent().hasClass('add-new-checkbox'))
         { return that.addNewNewspaper(element.parent());}
       return true;
 
-      
+
    };
    //to handle keyup events- text box show new textbox on key up
    this.viewKeyupEventHandler = function(event){
@@ -78,13 +78,13 @@ var GuestCardLikesView = function(domRef){
           var toggleStatus = element.parent().hasClass('on') ? "true" : "false";
           var postParams = {"id" : likeId, "set_active" : toggleStatus};
 
-          var webservice = new WebServiceInterface(); 
+          var webservice = new WebServiceInterface();
           var options = {
                requestParameters: postParams,
                loader: "NONE"
           };
-          //var url = '/staff/reservations/upgrade_room';
-          //webservice.postJSON(url, options);
+          var url = '/admin/hotel_likes/activate_feature';
+          webservice.postJSON(url, options);
           return true;
       }, 100);
 
@@ -152,23 +152,23 @@ var GuestCardLikesView = function(domRef){
 
    this.addNewOption = function(element, event){
 	   	var type = element.attr('data-type');
-	
+
 		textOptionStart++;
-	
+
 		element
 			.clone() 											// Clone element
 			.val('') 											// Clear value
 			.attr('id', type + '-option' + textOptionStart) 	// Increment ID value
 			.insertAfter(element.parent('.entry'))				// Insert after this one
 			.wrap('<div class="entry" />');						// Wrap to div
-	
+
 		// Set new class
 		$('.add-new-option').unbind('click');
-	    element.removeClass('add-new-option').addClass('delete-option');    
+	    element.removeClass('add-new-option').addClass('delete-option');
 
 
    };
-   
+
    this.updateApi = function(event){
    		 var element = $(event.target);
    		 var type = element.attr('like-type');
@@ -177,7 +177,7 @@ var GuestCardLikesView = function(domRef){
    		 }else if(type == "newspaper"){
    		 	that.saveNewsPaper(event, element);
    		 }
-    	
+
     };
     this.saveNewApi = function(event){
     	var element = $(event.target);
@@ -186,9 +186,9 @@ var GuestCardLikesView = function(domRef){
    		 	that.saveCommonLikes(element, event);
    		 }
     };
-    
+
     this.updateCommonLikes = function(element, event){
-    	
+
     	var show_on_room_setup = "false";
     	if(that.myDom.find("#show-on-room-setup").parent("label:eq(0)").hasClass("checked")) {
 		  show_on_room_setup = "true";
@@ -217,8 +217,8 @@ var GuestCardLikesView = function(domRef){
 			     options.push(dict);
 			   }
 		    });
-		} 
-    	
+		}
+
 	    var postData = {};
 	    postData.id = that.myDom.find("#edit-like").attr("like_id");
     	postData.name = that.myDom.find("#category-name").val();
@@ -226,18 +226,18 @@ var GuestCardLikesView = function(domRef){
     	postData.type = selectedType;
     	postData.options = options;
     	//console.log(JSON.stringify(postData));// DELETE once API Integration is complete
-    	
-    	var url = '/admin/likes/'+postData.id;
-		var webservice = new WebServiceInterface();		
+
+    	var url = '/admin/hotel_likes/add_feature_type';
+		var webservice = new WebServiceInterface();
 		var options = {
 				   requestParameters: postData,
 				   successCallBack: that.fetchCompletedOfSave,
 				   successCallBackParameters:{ "event": event},
 				   loader:"BLOCKER"
-				   
+
 		};
-		webservice.putJSON(url, options);	
-    	
+		webservice.putJSON(url, options);
+
     };
     this.saveCommonLikes = function(element, event){
     	var show_on_room_setup = "false";
@@ -268,40 +268,40 @@ var GuestCardLikesView = function(domRef){
 			     options.push(dict);
 			   }
 		    });
-		} 
-    	
+		}
+
 	    var postData = {};
     	postData.name = that.myDom.find("#category-name").val();
     	postData.show_on_room_setup = show_on_room_setup;
     	postData.type = selectedType;
     	postData.options = options;
     	//console.log(JSON.stringify(postData)); // DELETE once API Integration is complete
-    	
-    	var url = '/admin/likes/create';
-		var webservice = new WebServiceInterface();		
+
+    	var url = '/admin/hotel_likes/add_feature_type';
+		var webservice = new WebServiceInterface();
 		var options = {
 				   requestParameters: postData,
 				   successCallBack: that.fetchCompletedOfSave,
 				   successCallBackParameters:{ "event": event},
 				   loader:"BLOCKER"
-				   
+
 		};
-		webservice.putJSON(url, options);	
-    	
+		webservice.postJSON(url, options);
+
     };
     //refreshing view with new data and showing message
   this.fetchCompletedOfSave = function(data, requestParams){
-  	
-  	  var url = "/admin/departments";
+
+  	  var url = "/admin/hotel_likes/get_hotel_likes";
    	  viewParams = {};
-  	  
+
   	  if(data.status == "success"){
         sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
-  		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
-  		  that.cancelFromAppendedDataInline(requestParams['event']);  
-  	  }	 
+  		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+  		  that.cancelFromAppendedDataInline(requestParams['event']);
+  	  }
   	  else{
-  		  sntapp.notification.showErrorList(data.errors, that.myDom);  
+  		  sntapp.notification.showErrorList(data.errors, that.myDom);
   	  }
   };
 
@@ -318,31 +318,31 @@ var GuestCardLikesView = function(domRef){
           postData.news_paper.push(newsPaperItem);
         }
       });
-      
-      var webservice = new WebServiceInterface(); 
-      var url = '/admin/departments';
+
+      var webservice = new WebServiceInterface();
+      var url = '/admin/hotel_likes/save_news_paper';
       var options = {
            requestParameters: postData,
            successCallBack: that.newsPaperSaveComplete,
            successCallBackParameters:{ "event": event},
            loader:"BLOCKER"
       };
-      //webservice.postJSON(url, options); 
+      webservice.postJSON(url, options);
 
     };
 
   //refreshing view with new data and showing message
   this.newsPaperSaveComplete = function(data, requestParams){
-    var url = "/admin/departments";
+    var url = "/admin/hotel_likes/get_hotel_likes";
     viewParams = {};
-    
+
     if(data.status == "success"){
       sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
-      sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);   
-      that.cancelFromAppendedDataInline(requestParams['event']);  
-    }  
+      sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+      that.cancelFromAppendedDataInline(requestParams['event']);
+    }
     else{
-      sntapp.notification.showErrorList(data.errors, that.myDom);  
+      sntapp.notification.showErrorList(data.errors, that.myDom);
     }
   };
 

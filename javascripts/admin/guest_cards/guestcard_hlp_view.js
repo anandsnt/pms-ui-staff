@@ -45,15 +45,14 @@ var GuestCardHLPView = function(domRef) {
 				"value" : hlpId,
 				"set_active" : toggleStatus
 			};
-		//console.log(JSON.stringify(postData));// DELETE once API Integration is complete
 
 			var webservice = new WebServiceInterface();
 			var options = {
 				requestParameters : postData,
 				loader : "NONE"
 			};
-			//var url = "";
-			//webservice.postJSON(url, options);
+			var url = "/admin/hotel/toggle_hlp_activation/";
+			webservice.postJSON(url, options);
 			return true;
 		}, 100);
 	};
@@ -70,7 +69,7 @@ var GuestCardHLPView = function(domRef) {
 			.wrap('<div class="entry" />');// Wrap to div
 
 		// Set new class
-		$('.add-new-option').unbind('click');
+		that.myDom.find('.add-new-option').unbind('click');
 		element.removeClass('add-new-option').addClass('delete-option');
 
 	};
@@ -78,7 +77,7 @@ var GuestCardHLPView = function(domRef) {
 	//refreshing view with new data and showing message
 	this.fetchCompletedOfSave = function(data, requestParams) {
 
-		var url = "/admin/hotel_loyalty_program/";
+		var url = "/admin/hotel/list_hlps/";
 		viewParams = {};
 		
 		if (data.status == "success") {
@@ -93,7 +92,7 @@ var GuestCardHLPView = function(domRef) {
 	this.updateApi = function(event) {
 
 		var hlpId = that.myDom.find("form#edit-loyalty").attr("hlp_id");
-		var url = '/admin/hotel_loyalty_program/' + hlpId ;
+		var url = '/admin/hotel/update_hlp/' ;
 		var action = "ACTION_EDIT"
 		that.makeAPICall(url , action, event);
 
@@ -101,7 +100,7 @@ var GuestCardHLPView = function(domRef) {
 
 	this.saveNewApi = function(event) {
 
-		var url = '/admin/hotel_loyalty_program/create';
+		var url = '/admin/hotel/save_hlp';
 		var action = "ACTION_SAVE"
 		that.makeAPICall(url, action, event);
 
@@ -116,7 +115,7 @@ var GuestCardHLPView = function(domRef) {
 		postData.name = that.myDom.find("#name").val();
 		postData.code = that.myDom.find("#code").val();
 		var levels = [];
-		$("input[name=loyalty-levels]").each(function() {
+		that.myDom.find("input[name=loyalty-levels]").each(function() {
 			
 			var name = $(this).val();
 			if (name != "") {
@@ -129,8 +128,6 @@ var GuestCardHLPView = function(domRef) {
 			}
 		});
 		postData.levels = levels;
-		//console.log(JSON.stringify(postData));// DELETE once API Integration is complete
-
 
 		var webservice = new WebServiceInterface();
 		var options = {
@@ -140,7 +137,12 @@ var GuestCardHLPView = function(domRef) {
 			loader : "BLOCKER"
 
 		};
-		webservice.putJSON(url, options);
+		if(action == "ACTION_EDIT"){
+			webservice.putJSON(url, options);
+		}else if(action == "ACTION_SAVE"){
+			webservice.postJSON(url, options);
+		}
+		
 
 	}
 };

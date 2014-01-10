@@ -3,10 +3,11 @@ var RateTypeListView = function(domRef){
 	BaseInlineView.call(this);  
 	this.myDom = domRef;
 	var that = this;
-
+    // function to update
 	this.updateApi = function(event){
 		var data = {};
 	    data.name = $.trim(that.myDom.find("#rate-type-name").val());
+	    data.id = that.myDom.find("#edit-rate-type-details").attr("rate-type-id");
 		var url = ' /admin/hotel_rate_types/'+data.id;
 		if(typeof url === 'undefined' || $.trim(url) === '#'){
 			return false;
@@ -26,7 +27,7 @@ var RateTypeListView = function(domRef){
 	this.fetchCompletedOfSave = function(data, requestParams){
 		var event = requestParams['event'];
 		that.cancelFromAppendedDataInline(event);
-		var url = "/admin//hotel_rate_types";
+		var url = "/admin/hotel_rate_types";
 	   	viewParams = {};
 	  	if(data.status == "success"){
 	  		  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
@@ -35,30 +36,29 @@ var RateTypeListView = function(domRef){
 	    }
 	};
 	
-	this.delegateSubviewEvents = function(){
-		that.myDom.on("click", that.onOffClick);
-	};
-	
 	// function for on off click off 
-	this.onOffClick = function(event){
-		var element = $(event.target);
+	this.toggleButtonClicked = function(element){
 		if(element.is(':checkbox') && element.parent().hasClass('switch-button')) {
 			// following attributes of element will decide to allow turn on/off operation
 			var can_off = element.attr("can-off");
 			var is_system_defined = element.attr("is_system_defined");
-			
 			if(typeof can_off !== 'undefined' || typeof is_system_defined !== 'undefined'){
-				if(can_off === "false" || is_system_defined === "true"){
-					sntapp.notification.showErrorMessage('Rate Type cannot be deleted as it is already in use or it is system defined');
-					event.preventDefault();
+				if(can_off === "false"){
+					sntapp.notification.showErrorMessage('Rate Type cannot be deleted as it is already in use');
 					return false;
 				}
+
+				else if(is_system_defined === "true"){
+					sntapp.notification.showErrorMessage('Rate Type cannot be deleted as it is system defined');
+					return false;
+				}
+				
 				else{
 
 					var url = '/admin/hotel_rate_types/save';
-					// if(typeof url === 'undefined' || $.trim(url) === '#'){
-						// return false;
-					// }
+					if(typeof url === 'undefined' || $.trim(url) === '#'){
+						return false;
+					}
 				    var webservice = new WebServiceInterface();
 				    var data = {};
 				    data.value = element.parents('tr:eq(0)').attr('data-rate-type-id');
@@ -69,8 +69,7 @@ var RateTypeListView = function(domRef){
 				    	data.status = "deactivate";
 				    }
 					var options = {
-						   requestParameters: data,
-						   successCallBack: that.fetchCompletedOfOnOffApi,
+						   requestParameters: data,						   
 						   loader: 'BLOCKER'
 				    };
 				    webservice.postJSON(url, options);
@@ -85,14 +84,8 @@ var RateTypeListView = function(domRef){
 		}
 		
 	};
-	
-	// success function of on off api ajax call
-	this.fetchCompletedOfOnOffApi = function(data){
-		
-	};
-
-	
-	this.saveNewApi = function(){
+	// to save the new rate types
+	this.saveNewApi = function(event){
 		var url = '/admin/hotel_rate_types';
 		if(typeof url === 'undefined' || $.trim(url) === '#'){
 			return false;
@@ -103,10 +96,9 @@ var RateTypeListView = function(domRef){
 		var options = {
 			   requestParameters: data,
 			   successCallBack: that.fetchCompletedOfSave,
+			   successCallBackParameters: {'event': event},		   
 			   loader: 'BLOCKER'
 	    };
 	    webservice.postJSON(url, options);
 	};
-	
-
 };

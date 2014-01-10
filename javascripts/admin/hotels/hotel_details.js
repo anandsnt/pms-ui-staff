@@ -34,12 +34,12 @@ var HotelDetailsView = function(domRef){
   
   // success function of re-invite api call
   this.fetchCompletedOfReInvite = function(data){
-	  
+	  sntapp.notification.showSuccessMessage("Mail send succsfully.", that.myDom);
   };
   
   // failure call of re-invite api call
   this.fetchFailedOfReInvite = function(errorMessage){
-	  
+	  sntapp.notification.showErrorList("Some error occured.", that.myDom);  
   };
   
   this.goBackToPreviousView = function() {

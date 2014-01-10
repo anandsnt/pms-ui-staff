@@ -5,7 +5,7 @@ var HotelChainsView = function(domRef){
 	this.textOptionStart = 1;
 	var that = this;
 	
-	
+	// page init function
 	this.pageinit = function(){
 		that.myDom.unbind('click');
 		that.myDom.unbind("keyup");
@@ -18,7 +18,7 @@ var HotelChainsView = function(domRef){
 		that.myDom.on("focusin", that.viewEventHandler);
 		that.myDom.on("focusout", that.viewFocusOutHandler);
 	};
-	
+	// text box clearing when value is null
 	this.viewFocusOutHandler = function(event){
 		var element = $(event.target);
 		if(typeof element !== 'undefined'){
@@ -30,7 +30,7 @@ var HotelChainsView = function(domRef){
 			}
 		}
 	};
-	
+	//on entering value in text box show next text box
 	this.viewEventHandler = function(event){
 		var element = $(event.target);
 		if(typeof element !== 'undefined'){
@@ -70,14 +70,14 @@ var HotelChainsView = function(domRef){
 			element.parent('.entry').remove();
 		}
 	};
-	
+	// set key up operations
 	this.keyUpOperations = function(event){
 		var element = $(event.target);
 		if(element.hasClass('delete-option')){
 			that.removeLOV(element);
 		}
 	};
-	
+	// function to update chain
 	this.updateApi = function(event){
 		var chainID = that.myDom.find("#edit-chain-details").attr("data_chain_id");
 		var chainName = $.trim(that.myDom.find("#chain-name").val());		
@@ -88,60 +88,45 @@ var HotelChainsView = function(domRef){
 		var emailT_C = $.trim(that.myDom.find("#email").val()); //T_C : terms & conditions
 		var terms_and_condtn = $.trim(that.myDom.find("#terms_and_condtn").val());
 		
-		var lovs = []; //list of values
+		var lovs = new Array();
 		// looping over list of values text boxes
 		that.myDom.find('input[name=lov]').each(function(){ 
-			var lov_value = $.trim($(this).val());
-			if( lov_value !== ""){
-				lovs.push(lov_value);
+			var id = $(this).attr("data-id");
+		    var name =  $.trim($(this).val());
+		    dict = {'value': id, 'name': name};
+			if( name !== ""){
+				lovs.push(dict);
 			}
 		});
 		
-		// the validation part need to be modified or removed based on which validation that
-		// we are going to use. I mean jQuery validator or something like that.
-		if(typeof chainName === 'undefined' || chainName === ""){
-			alert('Please enter a valid chain name');
-			return false;
-		}
-		else if(typeof chainID === 'undefined' || chainID === ""){ // rare case
-			sntapp.notification.showErrorMessage('Some thing went wrong, please refresh the page and try again');
-			return false;
-		}
-		else{
-			
-			
-			var webservice = new WebServiceInterface();
-			var url = '#';
-			
-			if(typeof url === 'undefined' || url == "#" )
-				return false;	
-			
-			var data = {};
-			data.chain_id = chainID;
-			data.chain_name = chainName;
-			data.hotel_code = hotelCode;
-			data.program_name = programName;
-			data.program_code = programCode;
-			data.phoneT_C = phoneT_C;
-			data.emailT_C = emailT_C;
-			data.terms_and_condtn = terms_and_condtn;
-			data.list_of_values = lovs;
-					
-		    var options = {
-					   successCallBack: that.fetchCompletedOfUpdateApi,
-					   requestParameters: data,
-		    		   loader: 'normal',
-			};
-		    webservice.postJSON(url, options);				
-		}
-	};
-	
-	this.fetchCompletedOfUpdateApi = function(data){
-		sntapp.notification.showSuccessMessage('Successfully updated');
-		// update the view of listing the chain listing
+		var webservice = new WebServiceInterface();
+		var url = '/admin/hotel_chains/'+chainID;
+		
+		if(typeof url === 'undefined' || url == "#" )
+			return false;	
+		
+		var data = {};
+		data.value = chainID;
+		data.name = chainName;
+		data.hotel_code = hotelCode;
+		data.loyalty_program_name = programName;
+		data.loyalty_program_code = programCode;
+		data.terms_cond_phone = phoneT_C;
+		data.terms_cond_email = emailT_C;
+		data.terms_cond = terms_and_condtn;
+		data.lov = lovs;
+				console.log(JSON.stringify(data));
+	    var options = {
+				   successCallBack: that.fetchCompletedOfSave,
+				   requestParameters: data,
+	    		   loader: 'normal',
+		};
+	    webservice.putJSON(url, options);				
 		
 	};
 	
+	
+	// function to save new chain
 	this.saveNewApi = function(){
 		var chainName = $.trim(that.myDom.find("#chain-name").val());
 		var hotelCode = $.trim(that.myDom.find("#hotel-code").val());	
@@ -162,42 +147,40 @@ var HotelChainsView = function(domRef){
 		
 		// the validation part need to be modified or removed based on which validation that
 		// we are going to use. I mean jQuery validator or something like that.
-		if(typeof hotelCode === 'undefined' || hotelCode === ""){ 
-			alert('Please enter a valid hotel code');
-			return false;
-		}
-		else if(typeof chainName === 'undefined' || chainName === ""){
-			alert('Please enter a valid chain name');
-			return false;
-		}
-		else{
-			var webservice = new WebServiceInterface();
-			var url = '#';
-			
-			if(typeof url === 'undefined' || url == "#" )
-				return false;	
-			
-			var data = {};
-			data.chain_name = chainName;
-			data.hotel_code = hotelCode;
-			data.program_name = programName;
-			data.program_code = programCode;
-			data.phoneT_C = phoneT_C;
-			data.emailT_C = emailT_C;
-			data.terms_and_condtn = terms_and_condtn;
-			data.list_of_values = lovs;	
 		
-		    var options = {
-					   successCallBack: that.fetchCompletedOfSaveNewApi,
-					   requestParameters: data,
-		    		   loader: 'normal',
-			};
-		    webservice.postJSON(url, options);				
-		}		
+		var webservice = new WebServiceInterface();
+		var url = '/admin/hotel_chains';
+		
+		if(typeof url === 'undefined' || url == "#" )
+			return false;	
+		
+		var data = {};
+		data.name = chainName;
+		data.hotel_code = hotelCode;
+		data.loyalty_program_name = programName;
+		data.loyalty_program_code = programCode;
+		data.terms_cond_phone = phoneT_C;
+		data.terms_cond_email = emailT_C;
+		data.terms_cond = terms_and_condtn;
+		data.lov = lovs;	
+	console.log(JSON.stringify(data));
+	    var options = {
+				   successCallBack: that.fetchCompletedOfSave,
+				   requestParameters: data,
+	    		   loader: 'normal',
+		};
+	    webservice.postJSON(url, options);				
+			
 	};
-	this.fetchCompletedOfSaveNewApi = function(data){
-		sntapp.notification.showSuccessMessage('Successfully updated');
+	// show success message on complete
+	this.fetchCompletedOfSave = function(data){
+		
 		// update the view of listing the chain listing
+		viewParams = {};
+		var url = "/admin/hotel_chains";
+		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+	    sntapp.notification.showSuccessMessage('Successfully updated');
+	    that.myDom.find($("#user_row_"+successParams['selectedId'])).html("");
 		
 	};	
 
