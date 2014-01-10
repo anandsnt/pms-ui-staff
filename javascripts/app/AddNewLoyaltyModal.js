@@ -51,7 +51,7 @@ var AddNewLoyaltyModal = function(){
 	    $.each(hlProgramsList.data, function(key, loyaltyPgm) {
 	      if(loyaltyPgm.hl_value == $selectedLoyaltyType){
 	        $.each(loyaltyPgm.levels, function(key, value) {
-	          var hlOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>';
+	          var hlOptions ='<option value="'+ value.membership_level +'">' + value.membership_level+ '</option>';
 	          $("#new-loyalty-program #level").append(hlOptions);
 	        });
 	      }
