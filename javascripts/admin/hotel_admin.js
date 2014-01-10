@@ -32,12 +32,22 @@ var HotelAdminView = function(domRef){
   			}
   		});  		
   		var div = that.myDom.find("#replacing-div-first");
-  		if(div.html() != ""){  
-  			div.hide();
-  			div = that.myDom.find("#replacing-div-second");
-  			if(backDom == null)
-  				backDom = that.myDom.find("#replacing-div-first");
-  		}
+
+  		if(backDom == null){
+	  		if(div.is(":visible") && div.html() != ""){  
+	  			div = that.myDom.find("#replacing-div-second");
+	  			div.show();
+	  			backDom = that.myDom.find("#replacing-div-first");
+	  			backDom.hide();
+	  		}
+	  		else{
+	  			div =  that.myDom.find("#replacing-div-first");
+	  			div.show();
+	  			backDom = that.myDom.find("#replacing-div-second");
+	  			backDom.hide();
+	  		}
+  		}  		
+  		
   		that.myDom.find("#content section.tab").hide(); 
   		viewParams = {'backDom': backDom};
   		
@@ -56,7 +66,7 @@ var HotelAdminView = function(domRef){
   this.appendNewPage = function(event){	
 	  event.preventDefault();
 	  var backDom = $(this).parents("section:eq(0)");
-	  if(backDom == undefined) {
+	  if(typeof backDom === 'undefined') {
 		  
 	  }
 	  var href = $(this).find("a").eq(0).attr("href");

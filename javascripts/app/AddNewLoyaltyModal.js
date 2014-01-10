@@ -51,7 +51,7 @@ var AddNewLoyaltyModal = function(){
 	    $.each(hlProgramsList.data, function(key, loyaltyPgm) {
 	      if(loyaltyPgm.hl_value == $selectedLoyaltyType){
 	        $.each(loyaltyPgm.levels, function(key, value) {
-	          var hlOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>';
+	          var hlOptions ='<option value="'+ value.membership_level +'">' + value.membership_level+ '</option>';
 	          $("#new-loyalty-program #level").append(hlOptions);
 	        });
 	      }
@@ -100,10 +100,10 @@ var AddNewLoyaltyModal = function(){
 	  
 	  if($program == "ffp"){
 	    newLoyalty.user_membership.membership_class = "FFP";
-	    
-	    updateFFPLoyaltyUI($type,$code,$level,$name);
-	    
 	    updateServerForNewLoyalty(newLoyalty, function(data){
+	    	
+	    	updateFFPLoyaltyUI($type,$code,$level,$name);
+	    	
 	        $loyaltyid = data.id;
 	        var $new_id = "ff-program-"+$loyaltyid;
 	        
@@ -114,13 +114,15 @@ var AddNewLoyaltyModal = function(){
 	        $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 	        $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
 	        
+	        updateSelectionUI($code,$type);
+	        
 	      }, "FFP");
 	  }
 	  else if($program == "hlp"){
 	    newLoyalty.user_membership.membership_class = "HLP";
-	    updateHLPLoyaltyUI($type,$code,$level,$name);
-	    
 	    updateServerForNewLoyalty(newLoyalty, function(data){
+	    	
+	    	updateHLPLoyaltyUI($type,$code,$level,$name);
 	        $loyaltyid = data.id;
 	        var $new_id = "hl-program-"+$loyaltyid;
 	        
@@ -131,9 +133,11 @@ var AddNewLoyaltyModal = function(){
 	        $("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 	        $("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
 	        
+	        updateSelectionUI($code,$type);
+	        
 	      }, "HLP");
 	  }
-	  updateSelectionUI($code,$type);
+	  
       that.hide();
     };
 };

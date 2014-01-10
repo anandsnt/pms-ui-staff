@@ -7,26 +7,40 @@ var adminApp = function(){
 	  $($(this).attr("href")).show();
   
     };
-    this.appendNewPage = function(event){ 		
+    this.appendNewPage = function(event){		
         var href = $(this).find("a").eq(0).attr("href");
+	  	 var backDom = $(this).parents("section:eq(0)");
+
+		  if(typeof backDom === 'undefined') {
+			  
+		  }
         event.preventDefault();
+
         if(href != "#" && href != undefined){
-            var url = href;                    		 
-            var viewParams = {};
+            var url = href;       
+            var viewParams = {'backDom': backDom};
+
             $(this).parents('section:eq(0)').hide();
-            sntapp.fetchAndRenderView(url, $("#replacing-div-first"), viewParams, 'BLOCKER');
+
+
+            sntapp.fetchAndRenderView(url, $("#replacing-div-first"),{}, 'BLOCKER', viewParams);
         }
     };
-    this.gotoPreviousPage = function(viewParams) {
-	  if($("#replacing-div-second").html() != ""){
+    this.gotoPreviousPage = function(viewParams, currentView) {
+	  /*if($("#replacing-div-second").html() != ""){
 		  $("#replacing-div-second").html("");
 		  $("#replacing-div-second").removeClass("current");	 
 	  }
 	  else{
 	  	$("#replacing-div-first").html("");
 	  	$("#replacing-div-first").removeClass("current");
-	  }
-	  viewParams['backDom'].show();	  
+	  }*/
+    	console.log(viewParams['backDom']);
+      
+      currentView.removeClass("current");
+      //currentView.html("");
+	  viewParams['backDom'].show();	
+	  viewParams['backDom'].addClass("current");	
   };
   this.gotoNextPage =  function(e){  	
   	
