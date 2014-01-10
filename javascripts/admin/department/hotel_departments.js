@@ -68,6 +68,10 @@ var HotelDepartmentsView = function(domRef){
   	event.preventDefault();
   	var postData = {};
   	var selectedId = $(event.target).attr("id");
+  	if(selectedId == "delete")
+  	{
+  		selectedId = that.myDom.find("#edit-department-details").attr("department_id");
+  	}
   	var url = '/admin/departments/'+selectedId;
   	postData.id = selectedId;
 	var webservice = new WebServiceInterface();		
