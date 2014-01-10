@@ -9,7 +9,7 @@ var GuestReviewView = function(domRef){
   };
   
   this.goBackToPreviousView = function() {
- 	sntadminapp.gotoPreviousPage(that.viewParams);
+ 	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
   // To save guest review
   this.saveGuestReviews = function() {

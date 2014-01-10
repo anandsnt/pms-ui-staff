@@ -19,7 +19,7 @@ var SntAdminView = function(domRef){
 	if(target.prop('tagName') != "A")
 		return false;	
 	var url = target.attr("href");
-	if(url != "#" && url != undefined){
+	if(typeof url !== 'undefined' && url != "#"){
 
   		var backDom = null;
   		that.myDom.find("#content section.tab").each(function(){
@@ -29,11 +29,19 @@ var SntAdminView = function(domRef){
   		});
   		
   		var div = that.myDom.find("#replacing-div-first");
-  		if(div.html() != ""){  
-  			div.hide();
-  			div = that.myDom.find("#replacing-div-second");
-  			if(backDom == null)
-  				backDom = that.myDom.find("#replacing-div-first");
+  		if(backDom == null){
+	  		if(div.is(":visible") && div.html() != ""){  
+	  			div = that.myDom.find("#replacing-div-second");
+	  			div.show();
+	  			backDom = that.myDom.find("#replacing-div-first");
+	  			backDom.hide();
+	  		}
+	  		else{
+	  			div = that.myDom.find("#replacing-div-first");
+	  			div.show();
+	  			backDom = that.myDom.find("#replacing-div-second");
+	  			backDom.hide();
+	  		}
   		}
   		that.myDom.find("#content section.tab").hide(); 
   		viewParams = {'backDom': backDom};

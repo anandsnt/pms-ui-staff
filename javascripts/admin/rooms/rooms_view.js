@@ -21,9 +21,9 @@ var RoomsView = function(domRef) {
 	}; 
   
 	// To go back to rooms
-	this.goBackToPreviousView = function() {
-		sntadminapp.gotoPreviousPage(that.viewParams);
-	};
+  	this.goBackToPreviousView = function() {
+ 		sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
+  	};
 
 	//to show preview of the image using file reader
 	this.readURL = function(input) {

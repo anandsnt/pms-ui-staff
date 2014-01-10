@@ -43,7 +43,7 @@ var HotelDetailsView = function(domRef){
   };
   
   this.goBackToPreviousView = function() {
-  	sntadminapp.gotoPreviousPage(that.viewParams);
+  	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
   this.pageshow = function(){
   	if(that.currentView == "snt-admin-view"){
@@ -272,6 +272,6 @@ var HotelDetailsView = function(domRef){
   };
   this.gotoPreviousPage = function() {
 	 	  
-	  sntadminapp.gotoPreviousPage(that.viewParams);
+	  sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
 };
