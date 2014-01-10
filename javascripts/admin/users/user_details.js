@@ -17,14 +17,14 @@ var UserDetailsView = function(domRef){
   };  
   //go to previous page withount any update in view
   this.gotoPreviousPage = function() {
-  	sntadminapp.gotoPreviousPage(that.viewParams);
+  	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
    //go to previous page with update in view - after adding new user or update user
    this.gotoPreviousPageWithUpdate = function() {
    	var url = "/admin/users";
    	viewParams = {};
   	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
-    sntadminapp.gotoPreviousPage(that.viewParams);
+    sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
   //update user
   this.updateUser = function(){
