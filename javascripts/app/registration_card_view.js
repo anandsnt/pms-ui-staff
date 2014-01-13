@@ -181,7 +181,8 @@ var RegistrationCardView = function(viewDom){
   };
   // To show success message after check in
   this.showCheckinSuccessModal = function(e){
-  	var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED IN";
+  	var room_no = that.myDom.find('#registration-content').attr('data-room-number');
+  	var message = $("#gc-firstname").val()+" "+$("#gc-lastname").val()+" IS CHECKED IN TO ROOM "+room_no;
   	that.showSuccessMessage(message,that.goToSearchScreen);
   };
   
