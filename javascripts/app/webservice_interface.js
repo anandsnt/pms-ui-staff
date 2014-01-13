@@ -95,15 +95,15 @@ var WebServiceInterface = function(){
 				async, requestType, contentType, dataType);	
 	};
 	
-	this.createErrorMessage = function(jqXHR, exception){
+	this.createErrorMessage = function(jqXHR, textStatus, errorThrown){
 		var errorMessage = '';
-		if (exception === 'parsererror') {
+		if (textStatus === 'parsererror') {
 			errorMessage = 'Requested JSON parse failed.';
               } 
-		else if (exception === 'timeout') {
+		else if (textStatus === 'timeout') {
 			errorMessage = 'Time out error.';
 			} 
-		else if (exception === 'abort') {
+		else if (textStatus === 'abort') {
 			errorMessage = 'Ajax request aborted.';
 			}
 		else if (jqXHR.status === '0') {
@@ -111,9 +111,10 @@ var WebServiceInterface = function(){
 		}else if (jqXHR.status == 404) {
 			errorMessage = 'Requested page not found. [404]';
 		}else if (jqXHR.status == 500) {
-			errorMessage = 'Internal Server Error [500].';
-		}else {
-			errorMessage = 'Uncaught Error.\n' + jqXHR.responseText;
+			errorMessage = 'Internal Server Error [500].';			
+		}
+		else {
+			errorMessage = 'Uncaught Error.\n [' + jqXHR.status + '] ' + errorThrown;
 		}	
 		return errorMessage;
 	};
@@ -233,11 +234,11 @@ var WebServiceInterface = function(){
 					}
 				}
 			},
-			error: function(jqXHR, exception){
+			error: function(jqXHR, textStatus, errorThrown){
 				sntapp.activityIndicator.hideActivityIndicator();				
 
 				if(failureCallBack) {	
-					var errorMessage = that.createErrorMessage(jqXHR, exception);
+					var errorMessage = that.createErrorMessage(jqXHR, textStatus, errorThrown);
 					if(failureCallBackParameters){
 						failureCallBack(errorMessage, failureCallBackParameters);
 					}
@@ -247,7 +248,7 @@ var WebServiceInterface = function(){
 				}
 				else{
 					//Show error notification
-					sntapp.notification.showErrorMessage(that.createErrorMessage(jqXHR, exception));
+					sntapp.notification.showErrorMessage(that.createErrorMessage(jqXHR, textStatus, errorThrown));
 				}
 			}
 			

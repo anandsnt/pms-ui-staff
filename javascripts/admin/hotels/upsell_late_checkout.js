@@ -10,7 +10,7 @@ var UpsellLateCheckoutView = function(domRef){
 	   that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView); 
   };
   this.goBackToPreviousView = function() {
-  	sntadminapp.gotoPreviousPage(that.viewParams);
+  	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
 
   this.saveHotelDetails =  function(){

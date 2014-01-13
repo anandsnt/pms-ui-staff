@@ -167,12 +167,19 @@ var setUpAdmin = function(viewDom, delegate) {
 		$('.tabs').tabs({
 			beforeActivate: function( event, ui ) {
 				var $prevTab = ui.oldPanel.attr('id'),
-					$nextTab = ui.newPanel.attr('id')
+					$nextTab = ui.newPanel.attr('id');
 
 				$('#' + $prevTab).fadeOut(300);
 		        $('#' + $nextTab).fadeIn(300);
 			}
+		  
 		});	
+		
+		$('#tabs-menu').jScrollPane({
+   			autoReinitialise    : true,
+         	animateScroll       : true,
+         	mouseWheelSpeed     : 50
+     	});
 		
 		
 		
