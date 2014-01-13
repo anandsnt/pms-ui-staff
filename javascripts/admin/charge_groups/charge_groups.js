@@ -8,7 +8,7 @@ var HotelChargeGroupsView = function(domRef){
   	 	
   	var postData = {};
   	postData.name = that.myDom.find("#charge-group-name").val(); 	
-  	var url = 'urltosave';
+  	var url = '/admin/charge_groups';
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -22,7 +22,7 @@ var HotelChargeGroupsView = function(domRef){
   //refreshing view with new data and showing message
   this.fetchCompletedOfSave = function(data, requestParams){
   	
-  	var url = "/admin/departments";
+  	var url = "/admin/charge_groups";
    	viewParams = {};
   	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
     sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
