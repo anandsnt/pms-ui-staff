@@ -15,8 +15,7 @@ var ReservationCardLoyaltyView = function(domRef){
     addNewLoyaltyModal.initialize();
   };
   this.changedLoyaltyProgram = function(){
-	var selectedOption = $(this).find('option:selected');
-    var id = $(this).find('option:selected').attr('id');
+    var id = $(this).find('option:selected').attr('data-id');
     var reservation_id = getReservationId();
     
     if(id==""){
