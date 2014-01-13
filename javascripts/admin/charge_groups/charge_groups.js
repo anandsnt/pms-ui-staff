@@ -3,7 +3,7 @@ var HotelChargeGroupsView = function(domRef){
   
   that = this;
   this.myDom = domRef;
-  //function to add new department
+  //function to add new charge group
   this.saveNewApi = function(event){ 
   	 	
   	var postData = {};
@@ -28,26 +28,14 @@ var HotelChargeGroupsView = function(domRef){
     sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
     that.cancelFromAppendedDataInline(requestParams['event']);  
   };
-  //refreshing view with new data and showing message
-  this.fetchCompletedOfDelete = function(data){
-  	
-  	var url = "/admin/departments";
-   	viewParams = {};
-  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
-  	if(data.status == "success"){
-		  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);		  
-	  }	 
-	  else{
-		  sntapp.notification.showErrorList(data.errors, that.myDom);  
-	  }
-  };
-  //function to update department
+  
+  //function to update charge group
   this.updateApi = function(event){
   	var postData = {};
-  	postData.name = that.myDom.find("#department-name").val();
-  	postData.value = that.myDom.find("#edit-department-details").attr("department_id");
+  	postData.name = that.myDom.find("#charge-group-name").val();
+  	postData.value = that.myDom.find("#edit-charge-group").attr("charge_group_id");
   
-  	var url = '/admin/departments/'+postData.value;
+  	var url = 'urltomodify'+postData.value;
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -57,16 +45,16 @@ var HotelChargeGroupsView = function(domRef){
 	};
 	webservice.putJSON(url, options);	
   };
-  //function to delete department
+  //function to delete charge group
   this.deleteItem = function(event){
   	event.preventDefault();
   	var postData = {};
   	var selectedId = $(event.target).attr("id");
   	if(selectedId == "delete")
   	{
-  		selectedId = that.myDom.find("#edit-department-details").attr("department_id");
+  		selectedId = that.myDom.find("#edit-charge-group").attr("charge_group_id");
   	}
-  	var url = '/admin/departments/'+selectedId;
+  	var url = 'deleteurl/'+selectedId;
   	postData.id = selectedId;
 	var webservice = new WebServiceInterface();		
 	var options = {
@@ -80,16 +68,11 @@ var HotelChargeGroupsView = function(domRef){
   };
    //to remove deleted row and show message
   this.fetchCompletedOfDelete = function(data, successParams){
-  	  var url = "/admin/departments";
+  	  var url = "listgrpsurl";
    	  viewParams = {};
-  	  sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
-	  if(data.status == "success"){
-		  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
-		  that.myDom.find($("#user_row_"+successParams['selectedId'])).html("");
-	  }	 
-	  else{
-		  
-		  sntapp.notification.showErrorList(data.errors, that.myDom);  
-	  }	  
+  	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+	  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
+	  that.myDom.find($("#charge-group-row-"+successParams['selectedId'])).html("");
+	  
   };
 };
