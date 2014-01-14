@@ -38,7 +38,7 @@ var RatesView = function(domRef) {
 		var postData = {};
 		postData.name = that.myDom.find("#rate-name").val();
 		postData.description = that.myDom.find("#rate-description").val();
-		postData.begin_date = "";
+		postData.begin_date = that.myDom.find("#rates").attr('data-business-date');
 		postData.end_date = "";
 		
 		var url = '/admin/rates';
@@ -71,7 +71,7 @@ var RatesView = function(domRef) {
 		var rate_id = that.myDom.find("#edit-rates").attr('rate_id');
 		postData.name = that.myDom.find("#rate-name").val();
 		postData.description = that.myDom.find("#rate-description").val();
-		postData.begin_date = "";
+		postData.begin_date = that.myDom.find("#rates").attr('data-business-date');
 		postData.end_date = "";
 		
 		var url = '/admin/rates/'+rate_id;
