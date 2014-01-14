@@ -74,7 +74,7 @@ var RatesView = function(domRef) {
 		postData.begin_date = "";
 		postData.end_date = "";
 		
-		var url = '/admin/'+rate_id+'/rates';
+		var url = '/admin/rates/'+rate_id;
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
