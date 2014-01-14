@@ -30,7 +30,7 @@ var reservationDetailsView = function(domRef){
 
   this.gotToChangeDatesScreen = function(){
     sntapp.activityIndicator.showActivityIndicator("blocker");
-    var viewURL = "http://localhost:3000/ui/show?haml_file=staff/change_stay/change_stay&is_partial=true";
+    var viewURL = "/staff/change_stay_date/show/";
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
     var params = {"reservation_id": reservation_id};
