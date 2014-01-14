@@ -35,8 +35,6 @@ var adminApp = function(){
 	  	$("#replacing-div-first").html("");
 	  	$("#replacing-div-first").removeClass("current");
 	  }*/
-    	console.log(viewParams['backDom']);
-      
       currentView.removeClass("current");
       //currentView.html("");
 	  viewParams['backDom'].show();	

@@ -12,6 +12,28 @@ var HotelDetailsView = function(domRef){
   	that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView); 
   	that.myDom.find('#save_new_hotel').on('click', that.addNewHotel); 
   	that.myDom.find("#re-invite").on('click', that.reInvite);
+  	that.myDom.find("#mapings").on('click', that.renderMappings);
+  };
+   this.renderMappings =  function(){
+	  var backDom = that.myDom;
+	  var div = null;
+	  
+	  if(that.myDom.attr("id") == "replacing-div-first"){
+		  div = $("#replacing-div-second");
+	  }
+	  else if(that.myDom.attr("id") == "replacing-div-second"){
+	  div = $("#replacing-div-third");
+	  }
+	  else{
+		  div = $("#replacing-div-first");
+	  }
+	  backDom.hide();
+	  div.show();
+	  console.log(div);	
+	  
+	  var url = "/admin/get_review_settings";
+	  viewParams = {'backDom': backDom};
+      sntapp.fetchAndRenderView(url, div, {}, 'BLOCKER', viewParams);
   };
   //function to re invite
   this.reInvite = function(){

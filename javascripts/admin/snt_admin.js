@@ -32,14 +32,23 @@ var SntAdminView = function(domRef){
   		if(backDom == null){
 	  		if(div.is(":visible") && div.html() != ""){  
 	  			div = that.myDom.find("#replacing-div-second");
-	  			div.show();
 	  			backDom = that.myDom.find("#replacing-div-first");
+	  			div.show();	  			
 	  			backDom.hide();
 	  		}
 	  		else{
-	  			div = that.myDom.find("#replacing-div-first");
+	  			div = that.myDom.find("#replacing-div-second");
+	  			if(div.is(":visible") && div.html() != ""){  
+	  				div = that.myDom.find("#replacing-div-third");
+	  				backDom = that.myDom.find("#replacing-div-second");
+	  			}
+	  			else{
+	  				div = that.myDom.find("#replacing-div-first");
+	  				backDom = that.myDom.find("#replacing-div-third");
+	  			}
+	  			
 	  			div.show();
-	  			backDom = that.myDom.find("#replacing-div-second");
+	  			
 	  			backDom.hide();
 	  		}
   		}
@@ -53,9 +62,10 @@ var SntAdminView = function(domRef){
   this.clearReplacingDiv = function() {  
   	$("#replacing-div-first").html("");
     $("#replacing-div-second").html("");
-    $("#replacing-div-first, #replacing-div-second").removeClass("current");
-	  $("#replacing-div-first").show();
-	  $($(this).attr("href")).show(); 
+    $("#replacing-div-third").html("");
+    $("#replacing-div-first, #replacing-div-second, #replacing-div-third").removeClass("current");
+	$("#replacing-div-first").show();
+	$($(this).attr("href")).show(); 
   };
 
   this.bookMarkAdded = function(bookMarkId){

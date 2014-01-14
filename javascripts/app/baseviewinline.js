@@ -66,7 +66,7 @@ var BaseInlineView = function(viewDom){
 		
 		that.myDom.find("tr.edit-data").remove();
         setTimeout(function() {
-    	    $("#new-form-holder").html(data);
+    	    that.myDom.find("#new-form-holder").html(data);
     	    that.myDom.find("div.actions #cancel.button.blank").on('click', that.cancelFromAddNewForm);
     	    that.myDom.find("div.actions #save.button.green").on('click', that.addNewData);
     	    sntapp.activityIndicator.hideActivityIndicator();
