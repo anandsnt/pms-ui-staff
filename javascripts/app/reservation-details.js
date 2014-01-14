@@ -10,12 +10,13 @@ var reservationDetailsView = function(domRef){
   	that.myDom.find('#reservation_newspaper').on('change', that.setNewspaperPreferance);
   	that.myDom.find('#wakeup-time').on('click',that.setWakeUpCallModal);
   	that.myDom.find('#room-number').on('click',that.roomNumberClicked);
-	that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);	
-	that.myDom.find('#upgrade-btn').on('click',that.roomUpgradesClicked);
-	that.myDom.find('.reservation-actions #reservation-checkout').on('click', that.clickedCheckoutButton);
-	that.myDom.find('#reservation-view-bill').on('click',that.clickedViewBillButton);
+  	that.myDom.find('#reservation-card-room #add-keys').on('click',that.addKeysModal);	
+  	that.myDom.find('#upgrade-btn').on('click',that.roomUpgradesClicked);
+  	that.myDom.find('.reservation-actions #reservation-checkout').on('click', that.clickedCheckoutButton);
+  	that.myDom.find('#reservation-view-bill').on('click',that.clickedViewBillButton);
     that.myDom.find('#stay-card-total-stay-cost').on('click',that.clickedTotalStayCost);
-    that.myDom.find('#reservation-checkin').on('click', that.validateEmailAndPhone);
+    that.myDom.find('#reservation-checkin').on('click', that.validateEmailAndPhone);  
+    that.myDom.find('#nights-btn').on('click', that.gotToChangeDatesScreen);
   };
   this.initSubViews = function(partialViewRef){
   	
@@ -26,6 +27,16 @@ var reservationDetailsView = function(domRef){
     var reservationCardNotes = new reservationCardNotesView(that.myDom);
     reservationCardNotes.initialize();
   };
+
+  this.gotToChangeDatesScreen = function(){
+    sntapp.activityIndicator.showActivityIndicator("blocker");
+    var viewURL = "http://localhost:3000/ui/show?haml_file=staff/change_stay/change_stay&is_partial=true";
+    var viewDom = $("#view-nested-second");
+    var reservation_id = getReservationId();
+    var params = {"reservation_id": reservation_id};
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', {});
+  };
+
    this.setNewspaperPreferance = function(e){  	
 		var newspaperValue = that.myDom.find('#reservation_newspaper').val();
 		var reservation_id = getReservationId();
