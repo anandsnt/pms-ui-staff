@@ -53,8 +53,66 @@ var adminApp = function(){
     if(href != undefined){
   		sntapp.fetchAndRenderView(href, $("#replacing-div-second"), viewParams, 'NONE', nextViewParams);
     }
-  };  
+  };
+  
+  // function for get current focused div, mainly used for backDom assigning
+  this.getCurrentDiv = function(){
+	  var currentDiv = null;
+	  $("#content section.tab").each(function(){
+			if($(this).is(":visible")){
+				currentDiv = $(this); 				 				
+			}
+	  });
+	  if(currentDiv == null) {
+		  var currentDiv = $("#replacing-div-first");
+		  console.log(currentDiv.is(":visible"));
+		  if(!currentDiv.is(":visible")){  
+			  currentDiv = $("#replacing-div-second");
+		  }
+	  }
+	  return currentDiv;
+  };
+  
+  // function for get next div
+  this.getReplacingDiv = function(currentDiv){
+
+	  var replacingDiv = null;
+	  var currentDivID = currentDiv.attr("id");
+	  if(currentDivID == "replacing-div-first"){
+		  replacingDiv = $("#replacing-div-second");
+	  }
+	  else{
+		  replacingDiv = $("#replacing-div-first");
+	  }
+	  return replacingDiv;	  
+  };
+  
+  this.bookMarkClick = function(event){
+		event.preventDefault();
+		var target = $(event.target);	
+		if(target.prop('tagName') != "A")
+			return false;	
+		var url = target.attr("href");
+
+		if(typeof url !== 'undefined' && url != "#"){
+			
+			var currentDiv = that.getCurrentDiv();
+			var nextDiv = that.getReplacingDiv(currentDiv);
+	  		var backDom = currentDiv;
+	  		
+	  		$("#content section.tab").hide(); 
+	  		viewParams = {'backDom': backDom};
+	  		console.log(backDom);
+	  		console.log(nextDiv);
+	  		sntapp.fetchAndRenderView(url, nextDiv, {}, 'BLOCKER', viewParams);
+	  		
+	  		backDom.hide();
+	  		nextDiv.show();
+		}		  
+	  };  
+  
 
 };
+
 
 sntadminapp = new adminApp();

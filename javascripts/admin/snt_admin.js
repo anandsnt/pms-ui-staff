@@ -13,50 +13,12 @@ var SntAdminView = function(domRef){
   	that.myDom.find('#admin-menu li a').on('click', that.bookMarkClick);
   	that.myDom.find('#admin-header nav').on('click', that.bookMarkClick);
   };
-  this.bookMarkClick = function(event){
-	event.preventDefault();
-	var target = $(event.target);	
-	if(target.prop('tagName') != "A")
-		return false;	
-	var url = target.attr("href");
-	if(typeof url !== 'undefined' && url != "#"){
+  
 
-  		var backDom = null;
-  		that.myDom.find("#content section.tab").each(function(){
-  			if($(this).is(":visible")){
-  				backDom = $(this); 				 				
-  			}
-  		});
-  		
-  		var div = that.myDom.find("#replacing-div-first");
-  		if(backDom == null){
-	  		if(div.is(":visible") && div.html() != ""){  
-	  			div = that.myDom.find("#replacing-div-second");
-	  			backDom = that.myDom.find("#replacing-div-first");
-	  			div.show();	  			
-	  			backDom.hide();
-	  		}
-	  		else{
-	  			div = that.myDom.find("#replacing-div-second");
-	  			if(div.is(":visible") && div.html() != ""){  
-	  				div = that.myDom.find("#replacing-div-third");
-	  				backDom = that.myDom.find("#replacing-div-second");
-	  			}
-	  			else{
-	  				div = that.myDom.find("#replacing-div-first");
-	  				backDom = that.myDom.find("#replacing-div-third");
-	  			}
-	  			
-	  			div.show();
-	  			
-	  			backDom.hide();
-	  		}
-  		}
-  		that.myDom.find("#content section.tab").hide(); 
-  		viewParams = {'backDom': backDom};
-  		
-  		sntapp.fetchAndRenderView(url, div, {}, 'BLOCKER', viewParams);
-	}		  
+  
+  
+  this.bookMarkClick = function(event){
+	  sntadminapp.bookMarkClick(event);
   };
 
   this.clearReplacingDiv = function() {  

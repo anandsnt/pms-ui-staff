@@ -17,19 +17,17 @@ var HotelListView = function(domRef){
   	var href = $(this).attr("href");
   	var viewParams = {};
   	
-  	var backDom = that.myDom;
-  	backDom.hide();
+  	
+	var currentDiv = sntadminapp.getCurrentDiv();
+	var nextDiv = sntadminapp.getReplacingDiv(currentDiv);  	
+	var backDom = currentDiv;
   	var nextViewParams = {'backDom': backDom};
-  	var nextDiv = $("#replacing-div-first");
-  	if(that.myDom.attr('id') == "replacing-div-first"){
-  		nextDiv = $("#replacing-div-second");
- 		$("#replacing-div-third").html(""); 		
-  	}
     $(".currenthotel").attr("id", href.split('/')[3]);
   
     if(href != undefined){
   		sntapp.fetchAndRenderView(href, nextDiv, viewParams, 'BLOCKER', nextViewParams);
   		nextDiv.show();
+  		backDom.hide();
     }
   };
   
