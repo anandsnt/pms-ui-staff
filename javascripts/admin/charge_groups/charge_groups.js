@@ -8,7 +8,7 @@ var HotelChargeGroupsView = function(domRef){
   	 	
   	var postData = {};
   	postData.name = that.myDom.find("#charge-group-name").val(); 	
-  	var url = 'urltosave';
+  	var url = '/admin/charge_groups';
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -22,7 +22,7 @@ var HotelChargeGroupsView = function(domRef){
   //refreshing view with new data and showing message
   this.fetchCompletedOfSave = function(data, requestParams){
   	
-  	var url = "/admin/departments";
+  	var url = "/admin/charge_groups";
    	viewParams = {};
   	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
     sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
@@ -35,7 +35,7 @@ var HotelChargeGroupsView = function(domRef){
   	postData.name = that.myDom.find("#charge-group-name").val();
   	postData.value = that.myDom.find("#edit-charge-group").attr("charge_group_id");
   
-  	var url = 'urltomodify'+postData.value;
+  	var url = '/admin/charge_groups/'+postData.value;
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -54,7 +54,7 @@ var HotelChargeGroupsView = function(domRef){
   	{
   		selectedId = that.myDom.find("#edit-charge-group").attr("charge_group_id");
   	}
-  	var url = 'deleteurl/'+selectedId;
+  	var url = '/admin/charge_groups/'+selectedId;
   	postData.id = selectedId;
 	var webservice = new WebServiceInterface();		
 	var options = {
@@ -68,7 +68,7 @@ var HotelChargeGroupsView = function(domRef){
   };
    //to remove deleted row and show message
   this.fetchCompletedOfDelete = function(data, successParams){
-  	  var url = "listgrpsurl";
+  	  var url = "/admin/charge_groups";
    	  viewParams = {};
   	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
 	  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
