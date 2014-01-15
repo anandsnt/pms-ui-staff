@@ -69,14 +69,12 @@ var AddNewLoyaltyModal = function(){
 	    $code   = $("#new-loyalty-program #code").val();
 	    
 	  // Validate fields
+	  
 	  if($program == ""){
 	    alert("Please select a loyalty program");
 	    return false;
 	  }else if($type == ""){
 	    alert("Please select a loyalty type");
-	    return false;
-	  }else if($level == ""){
-	    alert("Please enter the loyalty level");
 	    return false;
 	  }else if($code == ""){
 	    alert("Please enter the loyalty code");
