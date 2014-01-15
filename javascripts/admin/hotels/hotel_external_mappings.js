@@ -34,19 +34,30 @@ var HotelExternalMappingsView = function(domRef){
   // to repopultae snt vlues drop down on selecting external mappings 
   this.filterExternalMappings = function(e){
  	if(e.target.id == "mapping-type"){
+ 		
  		var selectedMappingType = that.myDom.find("#mapping-type").val();
-		mappingTypeValues = '';
-		that.myDom.find("#snt-value").find('option').remove().end();
-		$.each(that.externalMappings, function(key, value) {
-		    if(value.name == selectedMappingType){
-		    	mappingTypeValues = '<option value="" data-image="">Select value</option>';
-		    	$("#snt-value").append(mappingTypeValues);
-		    	$.each(value.sntvalues, function(mappingkey, mappingvalue) {
-		    		mappingTypeValues = '<option value="'+mappingvalue.value+'">'+mappingvalue.name+'</option>';
-		    		$("#snt-value").append(mappingTypeValues);
-		    	});
-		    }		    
-		});
+ 		
+ 		if(selectedMappingType != "VIP_EXCLUSION"){
+ 			that.myDom.find(".sntvalue").show();
+ 			that.myDom.find("#hideDiv").show();
+ 			mappingTypeValues = '';
+			that.myDom.find("#snt-value").find('option').remove().end();
+			$.each(that.externalMappings, function(key, value) {
+			    if(value.name == selectedMappingType){
+			    	mappingTypeValues = '<option value="" data-image="">Select value</option>';
+			    	$("#snt-value").append(mappingTypeValues);
+			    	$.each(value.sntvalues, function(mappingkey, mappingvalue) {
+			    		mappingTypeValues = '<option value="'+mappingvalue.value+'">'+mappingvalue.name+'</option>';
+			    		$("#snt-value").append(mappingTypeValues);
+			    	});
+			    }		    
+			});
+ 		} else {
+ 			
+ 			that.myDom.find("#hideDiv").hide();
+ 			that.myDom.find(".sntvalue").hide();
+ 		}
+		
  	}
   		
   };
