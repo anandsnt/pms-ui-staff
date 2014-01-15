@@ -27,22 +27,14 @@ var HotelExternalMappingsView = function(domRef){
   };
   
   
-  
-  this.getPaymentsList = function(){
-		var webservice = new WebServiceInterface();
-	
-	    var url = 'staff/payments/addNewPayment.json'; 
-	    var options = {
-				   successCallBack: that.fetchCompletedOfGetPayment,
-		};
-	    webservice.getJSON(url, options);	   
-   };
+
    this.fetchCompletedOfGetExternalMappings = function(data){
 	   that.externalMappings = data.mapping_type;
 	   console.log(that.externalMappings);
    };
    
      this.filterExternalMappings = function(e){
+     	console.log("--------------")
   		var selectedMappingType = that.myDom.find("#mapping-type").val();
 		mappingTypeValues = '';
 		that.myDom.find("#snt-value").find('option').remove().end();
@@ -57,6 +49,23 @@ var HotelExternalMappingsView = function(domRef){
 		    }		    
 		});
   };
-  
+  //function to add new department
+  this.saveNewApi = function(event){ 
+  	var postData = {};
+  	postData.mapping_type = that.myDom.find("#mapping-type").val(); 
+  	postData.snt_value = that.myDom.find("#snt-value").val(); 
+  	postData.external_value = that.myDom.find("#external-value").val(); 	
+  	
+  	var url = 'urltocreate';
+	var webservice = new WebServiceInterface();		
+	var options = {
+			   requestParameters: postData,
+			   successCallBack: that.fetchCompletedOfSave,
+			   successCallBackParameters:{ "event": event},
+			   loader:"BLOCKER"
+			   
+	};
+	webservice.postJSON(url, options);	
+  };
   
 };
