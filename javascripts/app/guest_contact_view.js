@@ -11,9 +11,13 @@ var GuestContactView = function(domRef) {
 		}, 700);		
 		$('html').off();
 		$('html').on('click', that.callSave);
+		that.myDom.find("#clearbirthday").on("click", function(){
+			that.myDom.find("#guest-birthday").val("");
+		});
 		
 	};
 	
+
 	this.callSave = function(e) {
 		
 		sntapp.notification.hideMessage();
