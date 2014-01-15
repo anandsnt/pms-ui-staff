@@ -95,14 +95,15 @@ var ChangeStayDatesView = function(viewDom){
       finalCheckout = newDateSelected;
     }
 
-   // that.showReservationUpdates(finalCheckin, finalCheckout);
+    that.showReservationUpdates(finalCheckin, finalCheckout);
 
   };
 
   this.showReservationUpdates = function(checkinDate, checkoutDate){
     var postParams = {"arrival_date": checkinDate, "dep_date": checkoutDate};
 
-    var url = '/staff/change_stay_dates/'+that.reservationId+'/update';
+    //var url = '/staff/change_stay_dates/'+that.reservationId+'/update';
+    var url = 'http://localhost:3000/ui/show?haml_file=staff/change_stay_dates/reservation_updates&is_partial=true';
     var webservice = new WebServiceInterface(); 
     /*var successCallBackParams = {
         'reservationId': reservationId,
@@ -110,13 +111,21 @@ var ChangeStayDatesView = function(viewDom){
     }; */ 
     var options = {
            requestParameters: postParams,
-           successCallBack: that.upgradeSuccess,
+           successCallBack: that.datesChangeSuccess,
            //successCallBackParameters: successCallBackParams,
            loader: "BLOCKER"
     };
-    webservice.postJSON(url, options);  
+    webservice.getHTML(url, options);  
 
   };
+
+  this.datesChangeSuccess = function(data){
+    $('#no-reservation-updates').hide();
+    $('#reservation-updates').html(data);
+
+  };
+
+
 
 
 
