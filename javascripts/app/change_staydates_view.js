@@ -39,7 +39,45 @@ var ChangeStayDatesView = function(viewDom){
                       alert('there was an error while fetching events!');
                   }
               }
-          ]
+          ],
+          // Set how many months are visible on display
+          viewDisplay: function(view) {
+            $.setupCalendarDates(view);
+          },
+          // Stay date has changed
+          eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+           // $.datesChanged(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view);
+
+            var checkinOrig = $('.fc-event.check-in').attr('data-date');
+            var checkoutOrig = $('.fc-event.check-out').attr('data-date');
+            var newDateSelected = $.fullCalendar.formatDate(event.start, 'yyyy-MM-dd');
+            var firstAvailableDate = $('.fc-event:first').attr('data-date');
+            var lastAvailableDate = $('.fc-event:last').attr('data-date');
+            var finalCheckin = "";
+            var finalCheckout = "";
+            if(newDateSelected <=firstAvailableDate || newDateSelected >=lastAvailableDate){;
+              revertFunc();
+                
+            }
+           /* var date1 = '2014-01-05';
+            var abc = new Date(date1.split('-')[0], date1.split('-')[1], date1.split('-')[2]);
+            console.log(abc.getDate());*/
+            if(event.id == 'check-in'){
+              if(newDateSelected > checkoutOrig){
+                revertFunc();
+                return false;
+              }
+              finalCheckin = newDateSelected;
+              finalCheckout = checkoutOrig;
+            }else if (event.id == "check-out"){
+              if(newDateSelected < checkinOrig){
+                revertFunc();
+                return false;
+              }
+              finalCheckin = checkinOrig;
+              finalCheckout = newDateSelected;
+            }
+          }
 
       });
 
