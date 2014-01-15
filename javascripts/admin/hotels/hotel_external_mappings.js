@@ -39,11 +39,11 @@ var HotelExternalMappingsView = function(domRef){
 		mappingTypeValues = '';
 		that.myDom.find("#snt-value").find('option').remove().end();
 		$.each(that.externalMappings, function(key, value) {
-		    if(value.value == selectedMappingType){
-		    	mappingTypeValues = '<option value="" data-image="">Select credit card</option>';
+		    if(value.name == selectedMappingType){
+		    	mappingTypeValues = '<option value="" data-image="">Select value</option>';
 		    	$("#snt-value").append(mappingTypeValues);
 		    	$.each(value.sntvalues, function(mappingkey, mappingvalue) {
-		    		mappingTypeValues = '<option value="'+mappingvalue.value+'">'+mappingvalue.name+'</option>';
+		    		mappingTypeValues = '<option value="'+mappingvalue.name+'">'+mappingvalue.name+'</option>';
 		    		$("#snt-value").append(mappingTypeValues);
 		    	});
 		    }		    
