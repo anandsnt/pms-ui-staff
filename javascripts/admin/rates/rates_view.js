@@ -8,11 +8,32 @@ var RatesView = function(domRef) {
 		that.myDom.on('change', that.viewChangeEventHandler);
 		that.myDom.on('click', that.viewClickEventHandler);
 	};
+	this.appendUpdateInlineData = function(event) {
+		
+		event.preventDefault();
+		var element = $(event.target);
+		var webservice = new WebServiceInterface();
+		var url = element.attr("data-url");
+		if(typeof url === 'undefined' || url == "#" )
+			return false;
+		
+	    var options = {
+				   successCallBack: that.fetchCompletedOfAppendInlineData,
+				   failureCallBack: that.fetchFailedOfAppendInlineData,
+				   successCallBackParameters : {'element': element},
+	    		   loader: 'normal',
+		};
+	    webservice.getHTML(url, options);	
+
+	    return true;
+	};  
+
 	this.viewClickEventHandler = function(event) {
 		var element = $(event.target);
 		if (element.hasClass('import')) {
 			return that.importRatesFromPMS(event);
 		}
+		if((element.hasClass('edit-data'))) return that.appendUpdateInlineData(event);
 	};
 	// To call import rates API
 	this.importRatesFromPMS = function(event) {
@@ -38,7 +59,7 @@ var RatesView = function(domRef) {
 		var postData = {};
 		postData.name = that.myDom.find("#rate-name").val();
 		postData.description = that.myDom.find("#rate-description").val();
-		postData.begin_date = "";
+		postData.begin_date = that.myDom.find("#rates").attr('data-business-date');
 		postData.end_date = "";
 		
 		var url = '/admin/rates';
@@ -71,7 +92,7 @@ var RatesView = function(domRef) {
 		var rate_id = that.myDom.find("#edit-rates").attr('rate_id');
 		postData.name = that.myDom.find("#rate-name").val();
 		postData.description = that.myDom.find("#rate-description").val();
-		postData.begin_date = "";
+		postData.begin_date = that.myDom.find("#rates").attr('data-business-date');
 		postData.end_date = "";
 		
 		var url = '/admin/rates/'+rate_id;
