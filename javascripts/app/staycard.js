@@ -55,7 +55,9 @@ var StayCard = function(viewDom){
     $("div[id='reservation-listing']").each(function(index){
       createViewScroll("#"+ $(this).parent().attr('id')+" #"+ $(this).attr('id'));
     });
-    createViewScroll('#reservation-content-'+ confirmNum);
+    if ($('#reservation-content-'+ confirmNum).length){
+      createViewScroll('#reservation-content-'+ confirmNum);
+    }
 
   };
 
