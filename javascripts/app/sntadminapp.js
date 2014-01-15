@@ -105,13 +105,14 @@ var adminApp = function(){
 	  		console.log(backDom);
 	  		console.log(nextDiv);
 	  		sntapp.fetchAndRenderView(url, nextDiv, {}, 'BLOCKER', viewParams);
+	  		// currently we are working only with replacing-div-first & second
+	  		// so we can hide the rest which is using for showing some sub forms/pages
+	  		$("#replacing-div-third").removeClass("current");
 	  		
 	  		backDom.hide();
 	  		nextDiv.show();
 		}		  
 	  };  
-  
-
 };
 
 
