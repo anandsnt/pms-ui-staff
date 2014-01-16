@@ -31,7 +31,6 @@ var HotelExternalMappingsView = function(domRef){
   //to fetch external mapping details to do internal filtering
   this.fetchCompletedOfGetExternalMappings = function(data){
 	  that.externalMappings = data.data.mapping_type;
-	  console.log(that.externalMappings);
   };
   // to repopultae snt vlues drop down on selecting external mappings 
   this.filterExternalMappings = function(e){
@@ -44,15 +43,12 @@ var HotelExternalMappingsView = function(domRef){
  			that.myDom.find("#hideDiv").show();
  			mappingTypeValues = '';
 			that.myDom.find("#snt-value").find('option').remove().end();
-			// console.log(that.externalMappings);
 			$.each(that.externalMappings, function(key, value) {
-				 console.log(value.name+" ============="+ selectedMappingType);
 				
 			    if(value.name == selectedMappingType){
 			    	mappingTypeValues = '<option value="" data-image="">Select value</option>';
 			    	$("#snt-value").append(mappingTypeValues);
 			    	$.each(value.sntvalues, function(mappingkey, mappingvalue) {
-			    		 console.log(mappingvalue.value+" =====++++++++++========"+ mappingvalue.name);
 			    		mappingTypeValues = '<option value="'+mappingvalue.value+'">'+mappingvalue.name+'</option>';
 			    		$("#snt-value").append(mappingTypeValues);
 			    	});
@@ -96,7 +92,7 @@ var HotelExternalMappingsView = function(domRef){
   	postData.hotel_id = that.myDom.find("#selected_hotel").attr("data-hotel-id");
   	postData.value = that.myDom.find("#edit-external-mapping").attr("data-id");
   
-  	var url = 'cvnbvbnvbnvbn/'+postData.value;
+  	var url = '/admin/external_mappings/save_mapping/';
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -105,17 +101,17 @@ var HotelExternalMappingsView = function(domRef){
 			   loader:"BLOCKER"
 			   
 	};
-	webservice.putJSON(url, options);	
+	webservice.postJSON(url, options);	
 	
   };
   //refreshing view with new data and showing message
   this.fetchCompletedOfSave = function(data, requestParams){
   	
-  	var url = "/ui/show?haml_file=admin/hotels/external_mappings&json_input=snt_admin/external_mappings.json&is_hash_map=true&is_partial=true";
+  	currentHotel = that.myDom.find("#selected_hotel").attr("data-hotel-id"); 	
+  	var url = "/admin/external_mappings/"+currentHotel+"/list_mappings";
    	viewParams = {};
   	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
     sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
-    that.cancelFromAppendedDataInline(requestParams['event']);  
 	 
   };
 };
