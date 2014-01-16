@@ -173,14 +173,25 @@ var RegistrationCardView = function(viewDom) {
 		$($loader).prependTo('body').show();
 		changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);
 	};
-
+    //function on click complete checkout button - If email is null then popup comes to enter email
 	this.clickedCompleteCheckout = function(e) {
 		e.stopPropagation();
 		e.preventDefault();
 		e.stopImmediatePropagation();
-
+		
+		 var email = $("#gc-email").val();
+	  	 if(email == ""){
+	  	       	 var validateCheckoutModal = new ValidateCheckoutModal(that.completeCheckout, e);
+	  	       	 validateCheckoutModal.initialize();
+	  	       	 validateCheckoutModal.params = {"type": "NoEmail"};
+	  	 } else {
+	  		that.completeCheckout(e);
+	  	 }
+		
+	};
+	
+	this.completeCheckout =  function(e){
 		var balance_amount = that.myDom.find("#balance-amount").attr("data-balance-amount");
-
 		if (balance_amount != 0) {
 			// When balance amount is not 0 - perform payment action.
 			that.payButtonClicked();
@@ -193,7 +204,6 @@ var RegistrationCardView = function(viewDom) {
 				"reservation_id" : that.reservation_id,
 				"email" : email
 			};
-			console.log(JSON.stringify(data))
 			var options = {
 				requestParameters : data,
 				successCallBack : that.fetchCompletedOfCompleteCheckout,
