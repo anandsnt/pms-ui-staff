@@ -18,6 +18,8 @@ var ChangeStayDatesView = function(viewDom){
     this.availableEvents = "";
     this.confirmedCheckinDate = "";
     this.confirmedCheckoutDate = "";
+    this.checkinDateInCalender = "";
+    this.checkoutDateInCalender = "";
     that.reservationId = that.viewParams.reservation_id;
     that.fetchCalenderEvents();
   };
@@ -53,12 +55,13 @@ var ChangeStayDatesView = function(viewDom){
 
   this.calenderDatesFetchCompleted = function(calenderEvents){
     that.availableEvents = calenderEvents;
-    that.confirmedCheckinDate = new Date(calenderEvents.data.checkin_date);
-    that.confirmedCheckoutDate = new Date(calenderEvents.data.checkout_date);
+    that.checkinDateInCalender = that.confirmedCheckinDate = new Date(calenderEvents.data.checkin_date);
+    that.checkoutDateInCalender = that.confirmedCheckoutDate = new Date(calenderEvents.data.checkout_date);
     that.updateCalender(that.confirmedCheckinDate, that.confirmedCheckoutDate);
   };
 
   this.updateCalender = function(checkinDate, checkoutDate){
+    console.log(checkinDate);
     var calenderEvents = that.availableEvents ;
     var eventSource = that.getEventSourceObject(checkinDate, checkoutDate);
     $('#reservation-calendar').fullCalendar({
@@ -154,8 +157,11 @@ var ChangeStayDatesView = function(viewDom){
 
   this.datesChanged = function(event, revertFunc){
 
-    var checkinOrig = $('.fc-event.check-in').attr('data-date');
-    var checkoutOrig = $('.fc-event.check-out').attr('data-date');
+    var checkinOrig = that.checkinDateInCalender;
+    var checkoutOrig = that.checkoutDateInCalender;
+
+    /*var checkinOrig = $('.fc-event.check-in').attr('data-date');
+    var checkoutOrig = $('.fc-event.check-out').attr('data-date');*/
     var newDateSelected = $.fullCalendar.formatDate(event.start, 'yyyy-MM-dd');
     var firstAvailableDate = $('.fc-event:first').attr('data-date');
     var lastAvailableDate = $('.fc-event:last').attr('data-date');
@@ -183,10 +189,15 @@ var ChangeStayDatesView = function(viewDom){
       finalCheckout = newDateSelected;
     }
 
+    that.checkinDateInCalender = finalCheckin;
+    that.checkoutDateInCalender = finalCheckout;
+    console.log(finalCheckin);
+    console.log(finalCheckout);
     //Refresh the calender with the new dates
     that.refreshCalenderView(finalCheckin, finalCheckout);
+    console.log("from dates droped");
     //Show the reservation updates for the selected date range
-    that.showReservationUpdates(finalCheckin, finalCheckout);
+    //that.showReservationUpdates(finalCheckin, finalCheckout);
 
   };
 
