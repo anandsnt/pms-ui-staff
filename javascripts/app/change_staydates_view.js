@@ -61,7 +61,6 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.updateCalender = function(checkinDate, checkoutDate, focusDate){
-    console.log(checkinDate);
     var calenderEvents = that.availableEvents ;
     var eventSource = that.getEventSourceObject(checkinDate, checkoutDate);
     $('#reservation-calendar').fullCalendar({
@@ -193,13 +192,10 @@ var ChangeStayDatesView = function(viewDom){
 
     that.checkinDateInCalender = finalCheckin;
     that.checkoutDateInCalender = finalCheckout;
-    console.log(finalCheckin);
-    console.log(finalCheckout);
     //Refresh the calender with the new dates
     that.refreshCalenderView(finalCheckin, finalCheckout, focusDate);
-    console.log("from dates droped");
     //Show the reservation updates for the selected date range
-    //that.showReservationUpdates(finalCheckin, finalCheckout);
+    that.showReservationUpdates(finalCheckin, finalCheckout);
 
   };
 
@@ -248,7 +244,6 @@ var ChangeStayDatesView = function(viewDom){
   this.confirmUpdatesClicked = function(element){
     var checkinSelected = $('.fc-event.check-in').attr('data-date');
     var checkoutSelected = $('.fc-event.check-out').attr('data-date');
-    console.log("confirmUpdatesClicked-- DO API call");
 
     var postData = {"arrival_date": checkinSelected, "dep_date": checkoutSelected};
 
