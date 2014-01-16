@@ -115,7 +115,6 @@ var HotelChainsView = function(domRef){
 		data.terms_cond_email = emailT_C;
 		data.terms_cond = terms_and_condtn;
 		data.lov = lovs;
-				console.log(JSON.stringify(data));
 	    var options = {
 				   successCallBack: that.fetchCompletedOfSave,
 				   requestParameters: data,
@@ -163,7 +162,6 @@ var HotelChainsView = function(domRef){
 		data.terms_cond_email = emailT_C;
 		data.terms_cond = terms_and_condtn;
 		data.lov = lovs;	
-	console.log(JSON.stringify(data));
 	    var options = {
 				   successCallBack: that.fetchCompletedOfSave,
 				   requestParameters: data,
@@ -180,7 +178,6 @@ var HotelChainsView = function(domRef){
 		var url = "/admin/hotel_chains";
 		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
 	    sntapp.notification.showSuccessMessage('Successfully updated');
-	    that.myDom.find($("#user_row_"+successParams['selectedId'])).html("");
 		
 	};	
 
