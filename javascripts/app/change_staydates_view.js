@@ -57,10 +57,10 @@ var ChangeStayDatesView = function(viewDom){
     that.availableEvents = calenderEvents;
     that.checkinDateInCalender = that.confirmedCheckinDate = new Date(calenderEvents.data.checkin_date);
     that.checkoutDateInCalender = that.confirmedCheckoutDate = new Date(calenderEvents.data.checkout_date);
-    that.updateCalender(that.confirmedCheckinDate, that.confirmedCheckoutDate);
+    that.updateCalender(that.confirmedCheckinDate, that.confirmedCheckoutDate, that.confirmedCheckinDate);
   };
 
-  this.updateCalender = function(checkinDate, checkoutDate){
+  this.updateCalender = function(checkinDate, checkoutDate, focusDate){
     console.log(checkinDate);
     var calenderEvents = that.availableEvents ;
     var eventSource = that.getEventSourceObject(checkinDate, checkoutDate);
@@ -70,9 +70,9 @@ var ChangeStayDatesView = function(viewDom){
             center      : 'title',
             right       : 'next'
         },
-        year      : checkinDate.getFullYear(),   // Check in year
-        month       : checkinDate.getMonth(),     // Check in month (month is zero based)
-        day       : checkinDate.getDate(),   // Check in day
+        year      : focusDate.getFullYear(),   // Check in year
+        month       : focusDate.getMonth(),     // Check in month (month is zero based)
+        day       : focusDate.getDate(),   // Check in day
         editable        : false,
         disableResizing : true,
         contentHeight   : 320,
@@ -180,6 +180,7 @@ var ChangeStayDatesView = function(viewDom){
       }
       finalCheckin = newDateSelected;
       finalCheckout = checkoutOrig;
+      focusDate = finalCheckin;
     }else if (event.id == "check-out"){
       if(newDateSelected < checkinOrig){
         revertFunc();
@@ -187,6 +188,7 @@ var ChangeStayDatesView = function(viewDom){
       }
       finalCheckin = checkinOrig;
       finalCheckout = newDateSelected;
+      focusDate = finalCheckout
     }
 
     that.checkinDateInCalender = finalCheckin;
@@ -194,17 +196,17 @@ var ChangeStayDatesView = function(viewDom){
     console.log(finalCheckin);
     console.log(finalCheckout);
     //Refresh the calender with the new dates
-    that.refreshCalenderView(finalCheckin, finalCheckout);
+    that.refreshCalenderView(finalCheckin, finalCheckout, focusDate);
     console.log("from dates droped");
     //Show the reservation updates for the selected date range
     //that.showReservationUpdates(finalCheckin, finalCheckout);
 
   };
 
-  this.refreshCalenderView = function(checkinDate, checkoutDate){
+  this.refreshCalenderView = function(checkinDate, checkoutDate, focusDate){
     $('#reservation-calendar').fullCalendar('removeEvents').fullCalendar('removeEventSources');
     $('#reservation-calendar').html('');
-    that.updateCalender(new Date(checkinDate), new Date(checkoutDate));
+    that.updateCalender(new Date(checkinDate), new Date(checkoutDate), new Date(focusDate));
   };
 
   this.showReservationUpdates = function(checkinDate, checkoutDate){
@@ -232,7 +234,7 @@ var ChangeStayDatesView = function(viewDom){
   this.dateChangeFailure = function(errorMsg){
     sntapp.notification.showErrorList(errorMsg);
     //Reset calender view
-    that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate)
+    that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate, that.confirmedCheckinDate)
     return false;
 
   };
@@ -272,7 +274,7 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.resetDatesClicked = function(element){
-    that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate)
+    that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate, that.confirmedCheckinDate)
     return false;
   };
 
