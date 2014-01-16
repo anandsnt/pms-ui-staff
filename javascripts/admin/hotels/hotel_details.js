@@ -21,7 +21,9 @@ var HotelDetailsView = function(domRef){
 	  backDom.hide();
 	  replacingDiv.show();
 	  var currentHotel = $(".currenthotel").attr("id"); // this will be used to pass current hotel id along with url
-	  var url = "/ui/show?haml_file=admin/hotels/external_mappings&json_input=snt_admin/external_mappings.json&is_hash_map=true&is_partial=true";
+	  
+	  var url = "/admin/external_mappings/"+currentHotel+"/list_mappings";
+	  //var url = "/ui/show?haml_file=admin/hotels/external_mappings&json_input=snt_admin/external_mappings.json&is_hash_map=true&is_partial=true";
 	  viewParams = {'backDom': backDom};
       sntapp.fetchAndRenderView(url, replacingDiv, {}, 'BLOCKER', viewParams);
   };
