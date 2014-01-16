@@ -5,7 +5,9 @@ var ChangeStayDatesView = function(viewDom){
   this.reservation_id = getReservationId();
 
   this.delegateEvents = function(){  
-    that.myDom.find('#changedates-back-btn').on('click',that.backbuttonClicked);
+    that.myDom.find('#changedates-back-btn').on('click',that.goBackToStaycard);
+    that.myDom.find('#reservation-updates').on('click', that.reservationUpdateClickEvents);
+
   };
 
   this.executeLoadingAnimation = function(){
@@ -14,8 +16,19 @@ var ChangeStayDatesView = function(viewDom){
 
   this.pageinit = function(){
     this.availableEvents = "";
+    this.confirmedCheckinDate = "";
+    this.confirmedCheckoutDate = "";
     that.reservationId = that.viewParams.reservation_id;
     that.fetchCalenderEvents();
+  };
+
+  this.reservationUpdateClickEvents = function(event){
+      var element = $(event.target);
+
+      if(element.attr('id') == 'confirm-changes') return that.confirmUpdatesClicked(element);
+      if(element.attr('id') == 'reset-dates')  return that.resetDatesClicked(element);
+      return true;
+
   };
 
 
@@ -40,9 +53,9 @@ var ChangeStayDatesView = function(viewDom){
 
   this.calenderDatesFetchCompleted = function(calenderEvents){
     that.availableEvents = calenderEvents;
-    var checkinDate = new Date(calenderEvents.data.checkin_date);
-    var checkoutDate = new Date(calenderEvents.data.checkout_date);
-    that.updateCalender(checkinDate, checkoutDate);
+    that.confirmedCheckinDate = new Date(calenderEvents.data.checkin_date);
+    that.confirmedCheckoutDate = new Date(calenderEvents.data.checkout_date);
+    that.updateCalender(that.confirmedCheckinDate, that.confirmedCheckoutDate);
   };
 
   this.updateCalender = function(checkinDate, checkoutDate){
@@ -171,17 +184,23 @@ var ChangeStayDatesView = function(viewDom){
     }
 
     //Refresh the calender with the new dates
-    that.updateCalender(new Date(finalCheckin), new Date(finalCheckout));
+    that.refreshCalenderView(finalCheckin, finalCheckout);
     //Show the reservation updates for the selected date range
     that.showReservationUpdates(finalCheckin, finalCheckout);
 
   };
 
+  this.refreshCalenderView = function(checkinDate, checkoutDate){
+    $('#reservation-calendar').fullCalendar('removeEvents').fullCalendar('removeEventSources');
+    $('#reservation-calendar').html('');
+    that.updateCalender(new Date(checkinDate), new Date(checkoutDate));
+  };
+
   this.showReservationUpdates = function(checkinDate, checkoutDate){
     var postParams = {"arrival_date": checkinDate, "dep_date": checkoutDate};
 
-    //var url = '/staff/change_stay_dates/'+that.reservationId+'/update';
-    var url = 'http://localhost:3000/ui/show?haml_file=staff/change_stay_dates/reservation_updates&is_partial=true';
+    var url = '/staff/change_stay_dates/'+that.reservationId+'/update';
+    //var url = 'http://localhost:3000/ui/show?haml_file=staff/change_stay_dates/reservation_updates&is_partial=true';
     var webservice = new WebServiceInterface(); 
     /*var successCallBackParams = {
         'reservationId': reservationId,
@@ -190,10 +209,20 @@ var ChangeStayDatesView = function(viewDom){
     var options = {
            requestParameters: postParams,
            successCallBack: that.datesChangeSuccess,
+           failureCallBack: that.dateChangeFailure,
            //successCallBackParameters: successCallBackParams,
            loader: "BLOCKER"
     };
-    webservice.getHTML(url, options);  
+    webservice.postJSON(url, options);  
+    //webservice.getHTML(url, options);
+
+  };
+
+  this.dateChangeFailure = function(errorMsg){
+    sntapp.notification.showErrorList(errorMsg);
+    //Reset calender view
+    that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate)
+    return false;
 
   };
 
@@ -203,8 +232,43 @@ var ChangeStayDatesView = function(viewDom){
 
   };
 
-  this.backbuttonClicked = function(e){
-    e.preventDefault();
+  this.confirmUpdatesClicked = function(element){
+    var checkinSelected = $('.fc-event.check-in').attr('data-date');
+    var checkoutSelected = $('.fc-event.check-out').attr('data-date');
+    console.log("confirmUpdatesClicked-- DO API call");
+
+    var postData = {"arrival_date": checkinSelected, "dep_date": checkoutSelected};
+
+    var url = '/staff/change_stay_dates/'+ that.reservationId +'/confirm';
+    var webservice = new WebServiceInterface(); 
+    /*var successCallBackParams = {
+        'reservationId': reservationId,
+        'roomNumberSelected': roomNumberSelected, 
+    }; */ 
+    var options = {
+           requestParameters: postData,
+           successCallBack: that.confirmDatesSuccess,
+           //successCallBackParameters: successCallBackParams,
+           loader: "BLOCKER"
+    };
+    webservice.postJSON(url, options);  
+    return false;
+
+  };
+
+  this.confirmDatesSuccess = function(){
+    that.goBackToStaycard();
+  };
+
+  this.resetDatesClicked = function(element){
+    that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate)
+    return false;
+  };
+
+  this.goBackToStaycard = function(event){
+    if(event != undefined){
+      event.preventDefault();
+    }
     sntapp.activityIndicator.showActivityIndicator('blocker');
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);  
   };
