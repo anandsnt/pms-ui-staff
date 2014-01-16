@@ -124,7 +124,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		
 		var $image = "<img src='/assets/"+$("#new-payment #payment-credit-type").val().toLowerCase()+".png' alt='"+$("#new-payment #payment-credit-type").val().toLowerCase()+"'>";	
 		
-		$number = $card_number.substr($card_number.length - 5);
+		$number = $card_number.substr($card_number.length - 4);
 		$expiry = $expiry_month && $expiry_year ? $expiry_month + "/" + $expiry_year : "";		
 		$cardHolderName = $("#new-payment #name-on-card").val();
 		
