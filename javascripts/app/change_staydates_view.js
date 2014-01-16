@@ -13,12 +13,9 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.pageinit = function(){
+    this.availableEvents = "";
     that.reservationId = that.viewParams.reservation_id;
     that.fetchCalenderEvents();
-
-    
-
-
   };
 
 
@@ -33,7 +30,7 @@ var ChangeStayDatesView = function(viewDom){
     }; */ 
     var options = {
            requestParameters: postParams,
-           successCallBack: that.displayCalender,
+           successCallBack: that.calenderDatesFetchCompleted,
            //successCallBackParameters: successCallBackParams,
            loader: "BLOCKER"
     };
@@ -41,33 +38,35 @@ var ChangeStayDatesView = function(viewDom){
 
   };
 
-  this.displayCalender = function(calenderEvents){
-
-    var eventSource = that.getEventSourceObject(calenderEvents);
-   /* console.log("events");
-    console.log(JSON.stringify(events));*/
-    // Set calendar - timeout set to make sure functions from edit-reservation.js are available
+  this.calenderDatesFetchCompleted = function(calenderEvents){
+    that.availableEvents = calenderEvents;
     var checkinDate = new Date(calenderEvents.data.checkin_date);
     var checkoutDate = new Date(calenderEvents.data.checkout_date);
+    that.displayCalender(checkinDate, checkoutDate);
+  };
+
+  this.displayCalender = function(checkinDate, checkoutDate){
+    var calenderEvents = that.availableEvents ;
+    var eventSource = that.getEventSourceObject(checkinDate, checkoutDate);
     $('#reservation-calendar').fullCalendar({
           header: {
               left        : 'prev',
               center      : 'title',
               right       : 'next'
           },
-          year      : checkinDate.getYear(),   // Check in year
+          year      : checkinDate.getFullYear(),   // Check in year
           month       : checkinDate.getMonth(),     // Check in month (month is zero based)
-          day       : checkinDate.getDay(),   // Check in day
+          day       : checkinDate.getDate(),   // Check in day
           editable        : false,
           disableResizing : true,
           contentHeight   : 320,
           weekMode    : 'fixed',
-          // Availability dates
           events: eventSource,
+          /*
           // Set how many months are visible on display
           viewDisplay: function(view) {
             $.setupCalendarDates(view);
-          },
+          },*/
           // Stay date has changed
           eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
            // $.datesChanged(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view);
@@ -76,27 +75,28 @@ var ChangeStayDatesView = function(viewDom){
           }
 
       });
-
   };
 
 
 
-  this.getEventSourceObject = function(calenderEvents){
+  this.getEventSourceObject = function(checkinDate, checkoutDate){
 
+    var calenderEvents = that.availableEvents;
     var events = [];
-    var checkinDate = new Date(calenderEvents.data.checkin_date);
-    var checkoutDate = new Date(calenderEvents.data.checkout_date);
+    /*var checkinDate = new Date(calenderEvents.data.checkin_date);
+    var checkoutDate = new Date(calenderEvents.data.checkout_date);*/
+    var currencyCode = calenderEvents.data.currency_code;
 
-    $(calenderEvents.data.events).each(function(index){
+    $(calenderEvents.data.available_dates).each(function(index){
       var event = {};
       thisDate = new Date(this.date);
-      event.title = getCurrencySymbol(this.currency_code)+this.price;
-      event.start = this.date;
-      event.end = this.date;
-      event.day = thisDate.getDate();
+      event["title"] = getCurrencySymbol(currencyCode)+this.price;
+      event["start"] = this.date;
+      event["end"] = this.date;
+      event["day"] = thisDate.getDate().toString();
 
       
-      
+  
       //Event is check-in
       if(thisDate.getTime() == checkinDate.getTime()){
         event.id = "check-in";
@@ -121,17 +121,11 @@ var ChangeStayDatesView = function(viewDom){
 
       events.push(event);
     });
+    
     return events;
 
 
   };
-
-
-
-  /*this.datesChanged = function(event, revertFunc){
-    that.handleDragRange(event, revertFunc);
-  };*/
-
 
   this.datesChanged = function(event, revertFunc){
 
@@ -142,13 +136,11 @@ var ChangeStayDatesView = function(viewDom){
     var lastAvailableDate = $('.fc-event:last').attr('data-date');
     var finalCheckin = "";
     var finalCheckout = "";
-    if(newDateSelected <=firstAvailableDate || newDateSelected >=lastAvailableDate){;
+    if(newDateSelected <firstAvailableDate || newDateSelected >lastAvailableDate){;
       revertFunc();
+      return false;
         
     }
-    /*var date1 = '2014-01-05';
-    var abc = new Date(date1);
-    console.log(abc.getDate());*/
 
     if(event.id == 'check-in'){
       if(newDateSelected > checkoutOrig){
@@ -166,6 +158,7 @@ var ChangeStayDatesView = function(viewDom){
       finalCheckout = newDateSelected;
     }
 
+    that.displayCalender(new Date(finalCheckin), new Date(finalCheckout));
     that.showReservationUpdates(finalCheckin, finalCheckout);
 
   };
