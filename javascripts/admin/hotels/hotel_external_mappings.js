@@ -14,9 +14,10 @@ var HotelExternalMappingsView = function(domRef){
   };
   //to get all external mappings data
   this.getAllExternalMappings =  function(){
+  	var hotel_id = that.myDom.find("#selected_hotel").attr("data-hotel-id"); 	
   	var webservice = new WebServiceInterface();
 	
-	    var url = "/ui/show.json?haml_file=admin/hotels/add_new_external_mapping&json_input=snt_admin/add_new_external_mappings.json&is_hash_map=true&is_partial=false";
+	    var url = "/admin/external_mappings/"+hotel_id+"/new_mappings.json";
 	    var options = {
 				   successCallBack: that.fetchCompletedOfGetExternalMappings
 		};
@@ -29,24 +30,29 @@ var HotelExternalMappingsView = function(domRef){
   };
   //to fetch external mapping details to do internal filtering
   this.fetchCompletedOfGetExternalMappings = function(data){
-	  that.externalMappings = data.mapping_type;
+	  that.externalMappings = data.data.mapping_type;
+	  console.log(that.externalMappings);
   };
   // to repopultae snt vlues drop down on selecting external mappings 
   this.filterExternalMappings = function(e){
  	if(e.target.id == "mapping-type"){
  		
  		var selectedMappingType = that.myDom.find("#mapping-type").val();
- 		
+ 		console.log(selectedMappingType);
  		if(selectedMappingType != "VIP_EXCLUSION"){
  			that.myDom.find(".sntvalue").show();
  			that.myDom.find("#hideDiv").show();
  			mappingTypeValues = '';
 			that.myDom.find("#snt-value").find('option').remove().end();
+			// console.log(that.externalMappings);
 			$.each(that.externalMappings, function(key, value) {
+				 console.log(value.name+" ============="+ selectedMappingType);
+				
 			    if(value.name == selectedMappingType){
 			    	mappingTypeValues = '<option value="" data-image="">Select value</option>';
 			    	$("#snt-value").append(mappingTypeValues);
 			    	$.each(value.sntvalues, function(mappingkey, mappingvalue) {
+			    		 console.log(mappingvalue.value+" =====++++++++++========"+ mappingvalue.name);
 			    		mappingTypeValues = '<option value="'+mappingvalue.value+'">'+mappingvalue.name+'</option>';
 			    		$("#snt-value").append(mappingTypeValues);
 			    	});
@@ -69,7 +75,7 @@ var HotelExternalMappingsView = function(domRef){
   	postData.external_value = that.myDom.find("#external-value").val(); 
   	postData.hotel_id = that.myDom.find("#selected_hotel").attr("data-hotel-id"); 	
   	
-  	var url = 'urltocreate';
+  	var url = '/admin/external_mappings/save_mapping';
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
