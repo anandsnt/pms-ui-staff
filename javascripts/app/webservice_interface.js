@@ -198,7 +198,10 @@ var WebServiceInterface = function(){
 			success: function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
 				if(dataType.toLowerCase() === 'json'){
-					
+					if(!('status' in data)){
+						sntapp.notification.showErrorMessage("Some error happend: 'status' key does not exist in web service, please contact developers");
+						return false;
+					}
 					if(data.status == 'success'){
 						//TODO: show success notification
 						if(successCallBack) {

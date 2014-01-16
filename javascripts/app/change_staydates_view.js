@@ -14,10 +14,41 @@ var ChangeStayDatesView = function(viewDom){
 
   this.pageinit = function(){
     that.reservationId = that.viewParams.reservation_id;
+    that.fetchCalenderEvents();
 
+    
+
+
+  };
+
+
+  this.fetchCalenderEvents = function(){
+    var postParams = {"reservation_id": that.reservationId};
+
+    var url = 'sample_json/change_staydates/rooms_available.json';
+    var webservice = new WebServiceInterface(); 
+    /*var successCallBackParams = {
+        'reservationId': reservationId,
+        'roomNumberSelected': roomNumberSelected, 
+    }; */ 
+    var options = {
+           requestParameters: postParams,
+           successCallBack: that.displayCalender,
+           //successCallBackParameters: successCallBackParams,
+           loader: "BLOCKER"
+    };
+    webservice.getJSON(url, options);  
+
+  };
+
+  this.displayCalender = function(calenderEvents){
+
+    var events = that.getEventSourceObject(calenderEvents);
+    console.log("events");
+    console.log(events);
     // Set calendar - timeout set to make sure functions from edit-reservation.js are available
 
-    $('#reservation-calendar').fullCalendar({
+    /*$('#reservation-calendar').fullCalendar({
           header: {
               left        : 'prev',
               center      : 'title',
@@ -52,10 +83,81 @@ var ChangeStayDatesView = function(viewDom){
             that.datesChanged(event, revertFunc);
           }
 
-      });
+      });*/
+
+  };
+
+
+
+  this.getEventSourceObject = function(calenderEvents){
+
+    var events = [];
+    var checkinDate = calenderEvents.data.checkin_date;
+    var checkoutDate = calenderEvents.data.checkout_date;
+
+    $(calenderEvents.data.events).each(function(index){
+      var event = {};
+      if(this.date == checkinDate){
+        event.id == "check-in";
+      }else if(this.date == checkoutDate){
+        event.id == "check-out";
+      }else{
+        event.id == "availability";
+      }
+
+      event.title = getCurrencySymbol(this.currency_code)+this.price;
+      event.start = this.date;
+      event.end = this.date;
+      
+      //Event is check-in
+      if(this.getTime() == checkinDate.getTime()){
+        event.id == "check-in";
+        event.className = "check-in";
+      //mid-stay range
+      }else if((this.getTime() > checkinDate.getTime()) && (this.getTime() < checkoutDate.getTime())){
+        event.id == "availability";
+        event.className = "mid-stay"
+      //Event is check-out
+      }else if(this.getTime() == checkoutDate.getTime()){
+        event.id == "check-out";
+        event.className = "check-out";
+      //dates prior to check-in and dates after checkout
+      }else if((this.getTime() < checkinDate.getTime()) || (this.getTime() > checkoutDate.getTime())){
+        event.id == "availability";
+        event.className = "room-available"
+      }
+
+      /*var date1 = '2014-01-05';
+    var abc = new Date(date1);*/
+
+      events.push(this);
+    });
+
+alert("here");
+    
+    var date1 = '2014-01-05';
+    var abc = new Date(date1);
+    var date2 = '2014-01-05';
+    var abcd = new Date(date2);
+    if(date1 == date2){
+      alert("case1");
+    }
+    console.log(abcd);
+    var date1 = '2014-01-06';
+    var abc = new Date(date1);
+    var date2 = '2014-01-05';
+    var abcd = new Date(date2);
+    if(date1 == date2){
+      alert("case2");
+    }
+
+    console.log(abcd);
+    return events;
 
 
   };
+
+
 
   /*this.datesChanged = function(event, revertFunc){
     that.handleDragRange(event, revertFunc);
