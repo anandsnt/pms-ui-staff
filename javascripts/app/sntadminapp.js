@@ -51,7 +51,7 @@ var adminApp = function(){
   	var nextViewParams = {'backDom': backDom};
      
     if(href != undefined){
-  		sntapp.fetchAndRenderView(href, $("#replacing-div-second"), viewParams, 'NONE', nextViewParams);
+  		sntapp.fetchAndRenderView(href, $("#replacing-div-second"), viewParams, 'BLOCKER', nextViewParams);
     }
   };
   
