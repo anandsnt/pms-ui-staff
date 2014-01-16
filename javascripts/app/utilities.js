@@ -52,3 +52,11 @@ function validateEmail(emailField){
     }
     return true;
 }
+
+function getCurrencySymbol(currenyCode){
+      var symbol = "";
+      if(currenyCode == "USD"){
+        symbol = "$";
+      }
+      return symbol;
+};
