@@ -34,7 +34,8 @@ var reservationDetailsView = function(domRef){
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();
     var params = {"reservation_id": reservation_id};
-    sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', {});
+    var nextViewParams = {"reservation_id": reservation_id};
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams);
   };
 
    this.setNewspaperPreferance = function(e){  	

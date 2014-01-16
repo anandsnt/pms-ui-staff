@@ -12,6 +12,18 @@ var HotelDetailsView = function(domRef){
   	that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView); 
   	that.myDom.find('#save_new_hotel').on('click', that.addNewHotel); 
   	that.myDom.find("#re-invite").on('click', that.reInvite);
+  	that.myDom.find("#external-mappings").on('click', that.renderExternalMappings);
+  };
+  // function to view external mappings 
+  this.renderExternalMappings =  function(){
+	  var backDom = that.myDom;
+	  var replacingDiv = $("#replacing-div-third");
+	  backDom.hide();
+	  replacingDiv.show();
+	  var currentHotel = $(".currenthotel").attr("id"); // this will be used to pass current hotel id along with url
+	  var url = "/ui/show?haml_file=admin/hotels/external_mappings&json_input=snt_admin/external_mappings.json&is_hash_map=true&is_partial=true";
+	  viewParams = {'backDom': backDom};
+      sntapp.fetchAndRenderView(url, replacingDiv, {}, 'BLOCKER', viewParams);
   };
   //function to re invite
   this.reInvite = function(){
@@ -54,6 +66,7 @@ var HotelDetailsView = function(domRef){
     	
     }
   	else{
+  		$("#external-mappings").remove();
   		$(".re-invite").remove();
   	}
   }; 
