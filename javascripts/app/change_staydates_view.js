@@ -42,60 +42,72 @@ var ChangeStayDatesView = function(viewDom){
     that.availableEvents = calenderEvents;
     var checkinDate = new Date(calenderEvents.data.checkin_date);
     var checkoutDate = new Date(calenderEvents.data.checkout_date);
-    that.displayCalender(checkinDate, checkoutDate);
+    that.updateCalender(checkinDate, checkoutDate);
   };
 
-  this.displayCalender = function(checkinDate, checkoutDate){
+  this.updateCalender = function(checkinDate, checkoutDate){
     var calenderEvents = that.availableEvents ;
     var eventSource = that.getEventSourceObject(checkinDate, checkoutDate);
     $('#reservation-calendar').fullCalendar({
-          header: {
-              left        : 'prev',
-              center      : 'title',
-              right       : 'next'
-          },
-          year      : checkinDate.getFullYear(),   // Check in year
-          month       : checkinDate.getMonth(),     // Check in month (month is zero based)
-          day       : checkinDate.getDate(),   // Check in day
-          editable        : false,
-          disableResizing : true,
-          contentHeight   : 320,
-          weekMode    : 'fixed',
-          events: eventSource,
-          /*
-          // Set how many months are visible on display
-          viewDisplay: function(view) {
-            $.setupCalendarDates(view);
-          },*/
-          // Stay date has changed
-          eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-           // $.datesChanged(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view);
+        header: {
+            left        : 'prev',
+            center      : 'title',
+            right       : 'next'
+        },
+        year      : checkinDate.getFullYear(),   // Check in year
+        month       : checkinDate.getMonth(),     // Check in month (month is zero based)
+        day       : checkinDate.getDate(),   // Check in day
+        editable        : false,
+        disableResizing : true,
+        contentHeight   : 320,
+        weekMode    : 'fixed',
+        events: eventSource,
+        
+        // Set how many months are visible on display
+        viewDisplay: function(view) {
+          that.setupCalendarDates(view, checkinDate, checkoutDate);
+        },
+        // Stay date has changed
+        eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
+         // $.datesChanged(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view);
 
-            that.datesChanged(event, revertFunc);
-          }
+          that.datesChanged(event, revertFunc);
+        }
 
       });
   };
 
+  this.setupCalendarDates = function(view, checkinDate, checkoutDate){
 
+    var end = new Date(),
+        begin = new Date();
+    end.setMonth(checkoutDate.getMonth()+1);   //  Allow 1 month in the future
+    begin.setMonth(checkinDate.getMonth()-1); //  Allow 1 month in the past
+
+    var cal_date_string = view.start.getMonth()+'/'+view.start.getFullYear(),
+        end_date_string = end.getMonth()+'/'+end.getFullYear(),
+        begin_date_string = begin.getMonth()+'/'+begin.getFullYear();
+
+    if(cal_date_string == begin_date_string) { $('.fc-button-prev').addClass("fc-state-disabled"); }
+    else { $('.fc-button-prev').removeClass("fc-state-disabled"); }
+
+    if(end_date_string == cal_date_string) { $('.fc-button-next').addClass("fc-state-disabled"); }
+    else { $('.fc-button-next').removeClass("fc-state-disabled"); }
+  }
 
   this.getEventSourceObject = function(checkinDate, checkoutDate){
 
     var calenderEvents = that.availableEvents;
     var events = [];
-    /*var checkinDate = new Date(calenderEvents.data.checkin_date);
-    var checkoutDate = new Date(calenderEvents.data.checkout_date);*/
     var currencyCode = calenderEvents.data.currency_code;
 
     $(calenderEvents.data.available_dates).each(function(index){
       var event = {};
       thisDate = new Date(this.date);
-      event["title"] = getCurrencySymbol(currencyCode)+this.price;
-      event["start"] = this.date;
-      event["end"] = this.date;
-      event["day"] = thisDate.getDate().toString();
-
-      
+      event.title = getCurrencySymbol(currencyCode)+this.price;
+      event.start = this.date;
+      event.end = this.date;
+      event.day = thisDate.getDate().toString();
   
       //Event is check-in
       if(thisDate.getTime() == checkinDate.getTime()){
@@ -136,12 +148,12 @@ var ChangeStayDatesView = function(viewDom){
     var lastAvailableDate = $('.fc-event:last').attr('data-date');
     var finalCheckin = "";
     var finalCheckout = "";
+
+    //Check the allowed drag and drop range. revert if not available
     if(newDateSelected <firstAvailableDate || newDateSelected >lastAvailableDate){;
       revertFunc();
-      return false;
-        
+      return false;      
     }
-
     if(event.id == 'check-in'){
       if(newDateSelected > checkoutOrig){
         revertFunc();
@@ -158,7 +170,9 @@ var ChangeStayDatesView = function(viewDom){
       finalCheckout = newDateSelected;
     }
 
-    that.displayCalender(new Date(finalCheckin), new Date(finalCheckout));
+    //Refresh the calender with the new dates
+    that.updateCalender(new Date(finalCheckin), new Date(finalCheckout));
+    //Show the reservation updates for the selected date range
     that.showReservationUpdates(finalCheckin, finalCheckout);
 
   };
@@ -188,10 +202,6 @@ var ChangeStayDatesView = function(viewDom){
     $('#reservation-updates').html(data);
 
   };
-
-
-
-
 
   this.backbuttonClicked = function(e){
     e.preventDefault();
