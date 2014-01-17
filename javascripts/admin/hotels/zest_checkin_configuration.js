@@ -31,7 +31,7 @@ var ZestCheckinConfiguration = function(domRef){
 		    "is_notify_on_room_ready": is_notify
 	 };
 	 
-	 var url = 'urltosave';
+	 var url = '/admin/checkin_setups/save_setup';
 	 var webservice = new WebServiceInterface();
 	 var options = { 
 				requestParameters: data,
