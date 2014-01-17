@@ -143,12 +143,13 @@
 
 			#stats-today {
 				li {
-					width: 33%;
+					width: 100%;
 					color: @grey3;
 					text-align: center;
 					text-transform: uppercase;
 					padding-bottom: 40px;
 					margin: 0;
+					height: 112px;
 					.pull-left;
 
 					&:nth-child(1n+4) { padding-bottom: 0; }
@@ -164,6 +165,12 @@
 						&.green { color: @green; }
 						&.red { color: @red; }
 						&.orange { color: @orange; }
+					}
+				}
+				
+				&.upsell_on {
+					li {
+						width: 33%;
 					}
 				}
 			}
