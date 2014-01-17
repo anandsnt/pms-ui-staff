@@ -42,7 +42,7 @@ var ZestCheckinConfiguration = function(domRef){
 	    
   };
   // To handle success on save API
-  this.fetchCompletedOfSaveGuestReviews = function(data) {
+  this.fetchCompletedOfSaveGuestCheckinConfig = function(data) {
   	sntapp.notification.showSuccessMessage("Saved successfully", that.myDom);
   };
   
