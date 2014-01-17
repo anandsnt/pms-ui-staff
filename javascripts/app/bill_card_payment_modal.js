@@ -36,4 +36,4 @@ var BillCardPaymentModal = function(callBack){
     this.fetchFailedOfSubmitPayment = function(){
     	that.hide();
     };
-}
+};

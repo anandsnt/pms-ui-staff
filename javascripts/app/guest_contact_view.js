@@ -33,16 +33,8 @@ var GuestContactView = function(domRef) {
 			// Update guest card header UI.
 			$("#gc-firstname").val($("#guest_firstname").val());
 			$("#gc-lastname").val($("#guest_lastname").val());
-			var city = $.trim($("#city").val());
-			var state = $.trim($("#state").val());
-			var location = "";
-			if(city!= '' && state!= '')
-			 	location = city+","+state;
-			else if(city!= "")
-			 	location = city;
-		    else if (state!="")
-		    	location = state;
-			$("#gc-location").val(location);
+			$("#gc-city").val($("#city").val());
+			$("#gc-state").val($("#state").val());
 			$("#gc-phone").val($("#phone").val());
 			$("#gc-email").val($("#email").val());	
 			sntapp.notification.showSuccessMessage("Successfully Saved.", that.myDom); 
