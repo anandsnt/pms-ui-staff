@@ -67,7 +67,8 @@ var GuestContactView = function(domRef) {
 			$contactJsonObj['phone'] = that.myDom.find("#phone").val();
 			$contactJsonObj['email'] = that.myDom.find("#email").val();
 			$contactJsonObj['mobile'] = that.myDom.find("#mobile").val();
-			
+			$contactJsonObj['is_opted_promotion_email'] = that.myDom.find("#opt-in").parent().hasClass('checked') ? "true" : "false";
+
 		    var url = 'staff/guest_cards/' + userId;
 		    var webservice = new WebServiceInterface();
 		    var options = {
@@ -90,6 +91,7 @@ var GuestContactView = function(domRef) {
 			}, // fakeDataToAvoidCache is iOS Safari fix
 			
 			success : function(data) {
+				
 				if (data.birthday != null) {
 					birthdate = data.birthday.split('-');
 					//data.birthday is in YYYY-MM-DD format. Changed to MM-DD-YYYY format.
@@ -117,7 +119,10 @@ var GuestContactView = function(domRef) {
 				that.myDom.find("#countries_status").val(data.country);
 				that.myDom.find("#phone").val(data.phone);
 				that.myDom.find("#mobile").val(data.mobile);
-
+				if(data.is_opted_promotion_email == 'true'){
+					that.myDom.find("#opt-in").attr("checked","checked");
+				}
+				
 				$guestCardClickTime = false;
 				that.myDom.find('#countries_status, #guest_nationality_div #nationality_status, #language').on('change', 
 					function(){
@@ -125,10 +130,10 @@ var GuestContactView = function(domRef) {
 					}				
 				);
 				// to change flag - to save contact info only if any change happens.
-				that.myDom.find('#title, #guest_firstname, #guest_lastname, #works-at, #job-title, #guest-birthday, #passport-number,#passport-month, #passport-year, #nationality,#guest_nationality_div #nationality_status, #email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile').on('change', function(){
+				that.myDom.find('#title, #guest_firstname, #guest_lastname, #works-at, #job-title, #guest-birthday, #passport-number,#passport-month, #passport-year, #nationality,#guest_nationality_div #nationality_status, #email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile, #opt-in').on('change', function(){
 					that.$contactInfoChange = true;
 				});
-	},
+			},
 				error : function() {
 					$guestCardClickTime = true;
 				}
