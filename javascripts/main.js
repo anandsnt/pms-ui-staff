@@ -245,7 +245,7 @@ function modalInit(content, closeAfter) {
 
         setTimeout(function() {
             $('#modal, #modal-overlay').addClass('modal-show');
-        }, 0);
+        }, 150);
     }
 
     // Remove modal
