@@ -77,7 +77,7 @@ var HotelChargeCodesView = function(domRef){
 	  	
   	postData.link_with = link_with; 	
   	// console.log(JSON.stringify(postData));
-  	var url = 'urltosaave';
+  	var url = '/admin/charge_codes/save';
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -136,7 +136,7 @@ var HotelChargeCodesView = function(domRef){
   	var postData = {};
   	var selectedId = $(event.target).attr("id");
   	
-  	var url = 'urltodelete/'+selectedId;
+  	var url = '/admin/charge_codes/'+selectedId+'/delete';
   	postData.value = selectedId;
 	var webservice = new WebServiceInterface();		
 	var options = {
