@@ -479,6 +479,11 @@
 							.radio {
 								#pixel-to-percent > .width(432, 904);
 							}
+
+							&.full-width {
+								.checkbox,
+								.radio { width: 100%; }
+							}
 						}
 					}
 
@@ -2342,9 +2347,10 @@
 				padding-right: 20px;
 				.show;
 
+				.notice { padding: 5px 10px; }
+
 				#reservation-calendar-legend {
 					margin-top: 5px;
-					padding-top: 5px;
 					border-top: 1px solid rgba(0,0,0,.1);
 					.float;
 
@@ -2355,7 +2361,7 @@
 						text-transform: uppercase;
 						padding: 4px 0;
 						margin-bottom: 5px;
-						.size(22px, 50%);
+						.size(22px, 33%);
 						.pull-left;
 
 						span {
@@ -2385,6 +2391,8 @@
 							&.mid-stay { background: rgba(137,189,85,.2); }
 							&.availability { border: 2px solid @green; .background(); }
 						}
+
+						&:nth-child(5) { .size(22px, 66%); }
 					}
 				}
 			}
@@ -2394,39 +2402,44 @@
 				.calc-width(100, 490);
 				#border-radius > .rounded();
 
-				#no-reservation-updates,
-				#reservation-updates {
+				.updates-content {
+					padding: 20px;
 					.opacity(100);
 					#fade > .in;
 
-					&.hidden {
-						.opacity(0);
-						#fade > .out;
-					}
+					.button {
+				 		width: 100%;
+				 		line-height: 50px;
+				 		.show;
 
-					&.no-content {
-						position: static;
-						padding: 40% 15%;
-
-						.h1 { font-size: 30px; }
-					}
-				}
-
-				#reservation-updates {
-					padding: 20px;
+				 		&.blank { margin-top: 10px; }
+				 	}
 
 					.available-title {
-				 		color: @grey3;
+				 		color: @textColor;
 				 		font-weight: 600;
 				 		text-transform: uppercase;
 				 		padding-bottom: 10px;
 				 		margin-bottom: 20px;
 				 		border-bottom: 2px solid rgba(0,0,0,.1);
+
+				 		&.error { 
+				 			color: @red; 
+				 			margin-bottom: 10px;
+				 		}
 				 	}
+
+				 	.subheading { text-transform: uppercase; }
 
 				 	.details {
 				 		padding: 20px;
 				 		.faux-clickable;
+
+				 		.unnasign-from-guest {
+				 			white-space: normal;
+				 			text-align: center;
+				 			margin-bottom: 20px;
+				 		}
 
 				 		.room {
 					 		line-height: 40px;	
@@ -2471,15 +2484,47 @@
 								strong { font-weight: 400; }
 							}
 					 	}
-
-					 	.button {
-					 		width: 100%;
-					 		line-height: 50px;
-					 		.show;
-
-					 		&.blank { margin-top: 10px; }
-					 	}
 				 	}
+
+				 	#change-room {
+				 		position: relative;
+				 		height: 340px;
+				 		margin-top: 10px;
+				 		padding-right: 10px;
+
+				 		li {
+				 			margin: 0 5px 10px 0;
+
+				 			.button {
+					 			text-align: left;
+
+					 			.room-number {
+									margin-right: 20px;
+
+					 				&.ready { color: @green; }
+									&.not-ready { color: @red; }
+					 			}
+					 		}
+				 		}
+
+				 		.iScrollVerticalScrollbar {
+				 			top: 0;
+				 			bottom: 0;
+				 			right: 0; 
+				 		}
+			 		}
+
+				 	&.hidden {
+						.opacity(0);
+						#fade > .out;
+					}
+
+					&.no-content {
+						position: static;
+						padding: 40% 15%;
+
+						.h1 { font-size: 30px; }
+					}
 				}
 			}
 		}
