@@ -6,7 +6,11 @@ var HotelExternalMappingsView = function(domRef){
   
   // to handle subview events
   this.delegateSubviewEvents = function(){ 
-  	that.myDom.find('#external_mapping_table').tablesorter();	
+  	var ext_mapping_table = that.myDom.find('#external_mapping_table');
+	// we need to apply table sorter if the table has more than one row
+	if(ext_mapping_table.find("tr").length > 1){
+		ext_mapping_table.tablesorter();	
+	}
   	that.myDom.find('#go_back').on('click', that.goBack); 
   	that.myDom.on('change', that.filterExternalMappings); 
   	that.myDom.find('#add-new-external-mapping').on('click', that.addNewExternalMapping);
