@@ -20,7 +20,7 @@ var HotelChargeCodesView = function(domRef){
   // to call import charge codes API
   this.callImportApi = function(event){
   	var postData = {};
-  	var url = 'urltoimport';
+  	var url = '/admin/charge_codes/import';
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -33,7 +33,7 @@ var HotelChargeCodesView = function(domRef){
   };
   //refreshing view with new data and showing message after import
   this.fetchCompletedOfImport = function(data,requestParams){
-  	var url = "dfgdghgh";
+  	var url = "/admin/charge_codes/list";
    	viewParams = {};
   	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
   	sntapp.notification.showSuccessMessage("Imported Successfully", that.myDom);		
@@ -91,7 +91,7 @@ var HotelChargeCodesView = function(domRef){
   //refreshing view with new data and showing message
   this.fetchCompletedOfSave = function(data, requestParams){
   	
-  	var url = "/admin/charge_groups";
+  	var url = "/admin/charge_codes/list";
    	viewParams = {};
   	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
     sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
@@ -120,7 +120,7 @@ var HotelChargeCodesView = function(domRef){
 	  	
   	postData.link_with = link_with; 	
   	// console.log(JSON.stringify(postData));
-  	var url = 'urltoupdate'+postData.value;
+  	var url = '/admin/charge_codes/save';
 	var webservice = new WebServiceInterface();		
 	var options = {
 			   requestParameters: postData,
@@ -128,7 +128,7 @@ var HotelChargeCodesView = function(domRef){
 			   successCallBackParameters:{ "event": event},
 			   loader:"BLOCKER"
 	};
-	webservice.putJSON(url, options);	
+	webservice.postJSON(url, options);	
   };
   //function to delete charge codes
   this.deleteItem = function(event){
@@ -146,11 +146,11 @@ var HotelChargeCodesView = function(domRef){
 			   shouldShowSuccessMessage: "true",
 			   successCallBackParameters: {"selectedId": selectedId}
 	};
-	webservice.deleteJSON(url, options);
+	webservice.getJSON(url, options);
   };
    //to remove deleted row and show message
   this.fetchCompletedOfDelete = function(data, successParams){
-  	  var url = "/admin/charge_groups";
+  	  var url = "/admin/charge_codes/list";
    	  viewParams = {};
   	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
 	  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
