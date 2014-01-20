@@ -67,8 +67,20 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find('#back-to-staycard').on('click', that.gotoStayCard);
 		that.myDom.find('#complete-checkout-button').on('click', that.clickedCompleteCheckout);
 		that.myDom.find('#pay-button').on('click', that.payButtonClicked);
+		that.myDom.find('#subscribe').on('click', that.subscribeCheckboxClicked);
 	};
-
+    this.subscribeCheckboxClicked = function(e){
+    	var guest_email = $("#contact-info #email").val();
+    	var is_promo_and_email = $("#contact-info #opt-in").parent().hasClass('checked');
+    	
+    	// To popup email opt modal when EMAIL OPT IN is enabled in guest card and guest email field is empty. 
+    	if((!$(e.target).parent().hasClass('checked')) && (guest_email == "")){
+    		if(is_promo_and_email){
+    			var validateOptEmailModal = new ValidateOptEmailModal();
+    			validateOptEmailModal.initialize();
+    		}
+    	}
+    };
 	this.createHorizontalScroll = function() {
 		$('#bills').tabs({
 			create:  function( event, ui ) {
