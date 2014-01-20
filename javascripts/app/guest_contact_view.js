@@ -16,11 +16,12 @@ var GuestContactView = function(domRef) {
 		});
 		that.myDom.find("#opt-in").on("click", function(){
 			if(that.myDom.find("#opt-in").parent().hasClass('checked')) {
-				$("#subscribe-via-email #subscribe").attr("checked","checked");
+				//To enable EMAIL OPT IN check button in registartion card
+				$("#subscribe-via-email input#subscribe").prop("checked",false);
 			}
 			else{
-				//$("#subscribe-via-email #subscribe").removeAttr("checked");
-				that.myDom.find("#opt-in").parent().removeClass('checked')
+				//To disable EMAIL OPT IN check button in registartion card
+				$("#subscribe-via-email input#subscribe").prop("checked",true);
 			}
 		});
 	};

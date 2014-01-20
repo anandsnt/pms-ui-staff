@@ -71,14 +71,19 @@ var RegistrationCardView = function(viewDom) {
 	};
     this.subscribeCheckboxClicked = function(e){
     	var guest_email = $("#contact-info #email").val();
-    	var is_promo_and_email = $("#contact-info #opt-in").parent().hasClass('checked');
     	
-    	// To popup email opt modal when EMAIL OPT IN is enabled in guest card and guest email field is empty. 
-    	if((!$(e.target).parent().hasClass('checked')) && (guest_email == "")){
-    		if(is_promo_and_email){
-    			var validateOptEmailModal = new ValidateOptEmailModal();
-    			validateOptEmailModal.initialize();
-    		}
+    	// To popup email opt modal when guest email field is empty.
+    	if((!$(e.target).parent().hasClass('checked'))){
+			if(guest_email == ""){
+				var validateOptEmailModal = new ValidateOptEmailModal();
+				validateOptEmailModal.initialize();
+			}
+			//To enable EMAIL OPT IN check button in guest card
+			$("#contact-info input#opt-in").prop("checked",true);
+    	}
+    	else{
+    		//To disable EMAIL OPT IN check button in guest card
+    		$("#contact-info input#opt-in").prop("checked",false);
     	}
     };
 	this.createHorizontalScroll = function() {
