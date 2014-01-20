@@ -14,7 +14,15 @@ var GuestContactView = function(domRef) {
 		that.myDom.find("#clearbirthday").on("click", function(){
 			that.myDom.find("#guest-birthday").val("");
 		});
-		
+		that.myDom.find("#opt-in").on("click", function(){
+			if(that.myDom.find("#opt-in").parent().hasClass('checked')) {
+				$("#subscribe-via-email #subscribe").attr("checked","checked");
+			}
+			else{
+				//$("#subscribe-via-email #subscribe").removeAttr("checked");
+				that.myDom.find("#opt-in").parent().removeClass('checked')
+			}
+		});
 	};
 	
 
