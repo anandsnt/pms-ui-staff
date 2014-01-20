@@ -7,7 +7,7 @@ var UsersListView = function(domRef){
    
   };
   this.delegateEvents = function(){  	
-  	that.myDom.find($('#users_list_table')).tablesorter();
+  	that.myDom.find($('#users_list_table')).tablesorter({ headers: { 4:{sorter:false},5:{sorter:false} } });
   	that.myDom.find($('#add_new_user')).on('click', sntadminapp.gotoNextPage);
   	that.myDom.find($('.title')).on('click', sntadminapp.gotoNextPage);
   	// to activate/inactivate user on clicks toggle button of users row
