@@ -92,6 +92,7 @@ var ChangeStayDatesView = function(viewDom){
       });
   };
 
+  //Limit the number calender display to 1 month before check-in date and 1 month after checkout date
   this.setupCalendarDates = function(view, checkinDate, checkoutDate){
 
     var end = new Date(),
@@ -206,16 +207,13 @@ var ChangeStayDatesView = function(viewDom){
   this.refreshCalenderView = function(checkinDate, checkoutDate, focusDate){
     $('#reservation-calendar').fullCalendar('removeEvents').fullCalendar('removeEventSources');
     $('#reservation-calendar').html('');
-    console.log("here");
-    console.log(checkinDate);
-    console.log(checkoutDate);
-    //that.updateCalender(new Date(checkinDate), new Date(checkoutDate), new Date(focusDate));
+    that.updateCalender(new Date(checkinDate), new Date(checkoutDate), new Date(focusDate));
   };
 
   this.showReservationUpdates = function(checkinDate, checkoutDate){
     var postParams = {"arrival_date": checkinDate, "dep_date": checkoutDate};
 
-    var url = '/staff/change_stay_dates/'+that.reservationId+'/update';
+    var url = '/staff/change_stay_dates/'+that.reservationId+'/update.json';
     //var url = 'http://localhost:3000/ui/show?haml_file=staff/change_stay_dates/reservation_updates&is_partial=true';
     var webservice = new WebServiceInterface(); 
     /*var successCallBackParams = {
@@ -229,7 +227,7 @@ var ChangeStayDatesView = function(viewDom){
            //successCallBackParameters: successCallBackParams,
            loader: "BLOCKER"
     };
-    webservice.postHTML(url, options);  
+    webservice.postJSON(url, options);  
     //webservice.getHTML(url, options);
 
   };
@@ -244,7 +242,8 @@ var ChangeStayDatesView = function(viewDom){
 
   this.datesChangeSuccess = function(data){
     $('#no-reservation-updates').hide();
-    $('#reservation-updates').html(data);
+    console.log(data);
+    //$('#reservation-updates').html(data);
 
   };
 
