@@ -33,10 +33,12 @@
 				.background(@white);
 				.box-shadow(0 0 5px rgba(0,0,0,.2));
 				#border-radius > .rounded();
-                                .support a {
-				    color: @textColor;;
-                                    display: inline;
+                
+                .support a {
+				    color: @textColor;
+                    display: inline;
 				}
+				
 				.logo {
 					margin: 0 auto;
 					.size(28px,125px);
@@ -938,6 +940,7 @@
 								&.check-in,
 								&.arrival { background-color: @green; }
 								&.check-out,
+								&.late-check-out,
 								&.departed { background-color: @red; }
 								&.inhouse { background-color: @blue; }
 								&.cancel { background-color: @grey3; }
@@ -1053,6 +1056,20 @@
 			#pixel-to-percent > .width(388, 1588);
 			#border-radius > .rounded();
 			.pull-right;
+
+			.check-out-time {
+				font-size: 24px;
+				line-height: 50px;
+				text-align: center;
+				font-weight: 100;
+				color: @red;
+				text-transform: uppercase;
+				margin-bottom: 10px;
+				border: 1px solid @yellow;
+				background-color: lighten(@yellow, 20);
+				#border-radius > .rounded(3px);
+				.show;
+			}
 
 			.balance {
 				text-align: right; 
