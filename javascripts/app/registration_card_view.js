@@ -68,8 +68,18 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find('#complete-checkout-button').on('click', that.clickedCompleteCheckout);
 		that.myDom.find('#pay-button').on('click', that.payButtonClicked);
 		that.myDom.find('#add-new-button').on('click', that.addNewButtonClicked);
+		that.myDom.find('#subscribe').on('click', that.subscribeCheckboxClicked);
 	};
-
+    this.subscribeCheckboxClicked = function(e){
+    	var guest_email = $("#contact-info #email").val();
+    	
+    	// To popup email opt modal when guest email field is empty.
+    	if((!$(e.target).parent().hasClass('checked')) && guest_email == ""){
+			var validateOptEmailModal = new ValidateOptEmailModal();
+			validateOptEmailModal.initialize();
+    	}
+    	
+    };
 	this.createHorizontalScroll = function() {
 		$('#bills').tabs({
 			create:  function( event, ui ) {
@@ -146,7 +156,16 @@ var RegistrationCardView = function(viewDom) {
 				success : function(data) {
 					if (data.status == "success") {
 						that.openAddKeysModal();
-					} else if (data.status == "failure") {
+						if(data.is_promotions_and_email_set == "true"){
+							//To enable EMAIL OPT IN check button in guest card
+							$("#contact-info input#opt-in").prop("checked",true);
+						}
+						else{
+							//To disable EMAIL OPT IN check button in guest card
+    						$("#contact-info input#opt-in").prop("checked",false);
+						}
+					} 
+					else if (data.status == "failure") {
 						that.showErrorMessage(data.errors);
 					}
 				},

@@ -14,7 +14,16 @@ var GuestContactView = function(domRef) {
 		that.myDom.find("#clearbirthday").on("click", function(){
 			that.myDom.find("#guest-birthday").val("");
 		});
-		
+		that.myDom.find("#opt-in").on("click", function(){
+			if(that.myDom.find("#opt-in").parent().hasClass('checked')) {
+				//To enable EMAIL OPT IN check button in registartion card
+				$("#subscribe-via-email input#subscribe").prop("checked",false);
+			}
+			else{
+				//To disable EMAIL OPT IN check button in registartion card
+				$("#subscribe-via-email input#subscribe").prop("checked",true);
+			}
+		});
 	};
 	
 
