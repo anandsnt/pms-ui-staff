@@ -131,6 +131,8 @@ var RegistrationCardView = function(viewDom) {
 
 		var signature = JSON.stringify($("#signature").jSignature("getData", "native"));
 		var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked") ? 1 : 0;
+		var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
+		var guest_email = $("#contact-info #email").val();
 		var errorMessage = "";
 
 		if (signature == "[]")
@@ -141,7 +143,13 @@ var RegistrationCardView = function(viewDom) {
 		if (errorMessage != "") {
 			that.showErrorMessage(errorMessage);
 			return;
-		} else {
+		}
+		else if(is_promotions_and_email_set && guest_email == ""){
+			// To show pop up to add email adress when EMAIL OPT is enabled and guest email is blank.
+			var validateOptEmailModal = new ValidateOptEmailModal();
+			validateOptEmailModal.initialize();
+		}
+		else {
 			var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
 			var data = {
 				"is_promotions_and_email_set" : is_promotions_and_email_set,
