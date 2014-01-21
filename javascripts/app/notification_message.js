@@ -31,6 +31,7 @@ var NotificationMessage = function() {
 		location = location.split("#")[0];
 		//document.location = location + "#" + parent.attr("id") ;	
 		document.location = location + "#";
+		dom.scrollTo( '#notification-message', 800);
 		
 
 	};
@@ -39,7 +40,8 @@ var NotificationMessage = function() {
 	
 		var message_element = dom.find("#notification-message");
 		message_element.removeClass('success_message error_message').addClass(message_class);
-		message_element.html(message);			
+		message_element.html(message);	
+		console.log(dom)
 		scrollToErrorArea(dom);			
 		dom.find("#notification-message").slideDown(duration, function() {});
 				
@@ -90,7 +92,7 @@ var NotificationMessage = function() {
                priority = "DEBUG";
         }          
         
-		dom = getDisplayDom();
+		// dom = getDisplayDom();
 		if (!shouldShowMessage(priority, "Success")) return;
 		
 	
@@ -106,7 +108,7 @@ var NotificationMessage = function() {
 			htmlToAppend = "<span class='close-btn'></span>" + htmlToAppend;
 		}
 		
-		that.showMessage(htmlToAppend, dom, 'success_message');
+		that.showMessage(htmlToAppend, dom, 'notice success');
 
  
 	};
@@ -119,7 +121,7 @@ var NotificationMessage = function() {
 	
 		if(typeof priority === 'undefined') { priority = "DEBUG"; }
        
-		dom = getDisplayDom();
+		// dom = getDisplayDom();
 		if (!shouldShowMessage(priority, "Error")) { return };
 			
 		this.hideMessage();
@@ -131,7 +133,7 @@ var NotificationMessage = function() {
 			htmlToAppend = "<span class='close-btn'></span>" + htmlToAppend;
 		}
 		
-		that.showMessage(htmlToAppend, dom, 'error_message');
+		that.showMessage(htmlToAppend, dom, 'notice error');
 		 
 	
 	};

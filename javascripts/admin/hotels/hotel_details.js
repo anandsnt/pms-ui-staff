@@ -5,6 +5,7 @@ var HotelDetailsView = function(domRef){
   var that = this;
   
   this.pageinit = function(){
+  	
     
   };
   this.delegateEvents = function(){  	
@@ -13,6 +14,7 @@ var HotelDetailsView = function(domRef){
   	that.myDom.find('#save_new_hotel').on('click', that.addNewHotel); 
   	that.myDom.find("#re-invite").on('click', that.reInvite);
   	that.myDom.find("#external-mappings").on('click', that.renderExternalMappings);
+  
   };
   // function to view external mappings 
   this.renderExternalMappings =  function(){
@@ -58,6 +60,10 @@ var HotelDetailsView = function(domRef){
   
   this.goBackToPreviousView = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
+  	console.log(">>>>>>>>>>");
+  	console.log(that.myDom);
+  		console.log(that.viewParams.backDom);
+  	
   };
   this.pageshow = function(){
   	if(that.currentView == "snt-admin-view"){
@@ -127,19 +133,17 @@ var HotelDetailsView = function(domRef){
   };
   
   this.fetchCompletedOfSave = function(data){
-	  if(data.status == "success"){
-		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+	  if(data.status == "success"){		  
 		  that.goBackToPreviousView();
-	  }	 
-	  else{
-		  sntapp.activityIndicator.hideActivityIndicator();
-		  sntapp.notification.showErrorList(data.errors, that.myDom);  
-	  }	  
+		  
+		  sntapp.notification.showSuccessMessage("Saved Successfully", that.viewParams.backDom);
+		  console.log(that.viewParams.backDom);
+	  }
   };
   
   this.fetchFailedOfSave = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage);  
+	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
   };
   // add New hotel from snt admin 
   this.addNewHotel =  function(){
