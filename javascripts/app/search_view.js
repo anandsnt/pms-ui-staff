@@ -17,10 +17,10 @@ var Search  = function(domRef){
       var options = {
           successCallBack: function(data){ 
             if(that.myDomElement.is(':visible')){
-              var url = 'http://pms-dev.stayntouch.com/staff/payments/search_by_cc';
+              var url = '/staff/payments/search_by_cc';
               var data = {
                 'et2': data.RVCardReadTrack2,
-                'kns': data.RVCardReadTrack2KSN
+                'ksn': data.RVCardReadTrack2KSN
               }
               that.postCardSwipData(url, data);
             }
@@ -166,7 +166,7 @@ var Search  = function(domRef){
     //     'id': 573
     //   },
     //   successCallBack: function(data) {
-    //     $('#page-inner-first').html(data)//.addClass( 'page-current' );
+    //     $('#page-inner-first').html(data).addClass( 'page-current' );
     //     changeInnerPage('inner-page', false, false, 'page-inner-first', 'move-from-right', false);
     //   }
     // };
@@ -184,11 +184,11 @@ var Search  = function(domRef){
     var options = {
       loader: 'BLOCKER',
       requestParameters: {
-        'confirmation': 4818623,
-        'id': 573
+        'confirmation': response.data.confirmation,
+        'id': response.data.id
       },
       successCallBack: function(data) {
-        $('#page-inner-first').html(data)//.addClass( 'page-current' );
+        $('#page-inner-first').html(data).addClass( 'page-current' );
         changeInnerPage('inner-page', false, false, 'page-inner-first', 'move-from-right', false);
       }
     }
