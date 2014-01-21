@@ -87,6 +87,7 @@ var HotelChainsView = function(domRef){
 		var phoneT_C = $.trim(that.myDom.find("#phone").val()); //T_C : terms & conditions
 		var emailT_C = $.trim(that.myDom.find("#email").val()); //T_C : terms & conditions
 		var terms_and_condtn = $.trim(that.myDom.find("#terms_and_condtn").val());
+		var import_frequency = $.trim(that.myDom.find("#import-frequency").val());
 		
 		var lovs = new Array();
 		// looping over list of values text boxes
@@ -115,6 +116,7 @@ var HotelChainsView = function(domRef){
 		data.terms_cond_email = emailT_C;
 		data.terms_cond = terms_and_condtn;
 		data.lov = lovs;
+		data.import_frequency = import_frequency;
 	    var options = {
 				   successCallBack: that.fetchCompletedOfSave,
 				   requestParameters: data,
@@ -134,7 +136,7 @@ var HotelChainsView = function(domRef){
 		var phoneT_C = $.trim(that.myDom.find("#phone").val()); //T_C : terms & conditions
 		var emailT_C = $.trim(that.myDom.find("#email").val()); //T_C : terms & conditions
 		var terms_and_condtn = $.trim(that.myDom.find("#terms_and_condtn").val());	
-		
+		var import_frequency = $.trim(that.myDom.find("#import-frequency").val());
 		var lovs = []; //list of values
 		// looping over list of values text boxes
 		that.myDom.find('input[name=lov]').each(function(){ 
@@ -162,6 +164,7 @@ var HotelChainsView = function(domRef){
 		data.terms_cond_email = emailT_C;
 		data.terms_cond = terms_and_condtn;
 		data.lov = lovs;	
+		data.import_frequency = import_frequency;
 	    var options = {
 				   successCallBack: that.fetchCompletedOfSave,
 				   requestParameters: data,
