@@ -3,24 +3,38 @@ var PostChargeModel = function(callBack){
   	var that = this;
   	this.reservation_id = getReservationId();
   	this.url = "/ui/show?haml_file=modals/postChargeToGuestBill&json_input=registration_card/post_charge.json&is_hash_map=true&is_partial=true";
+  	this.itemCompleteList = [];
+  	
   	this.delegateEvents = function(){
   		this.origin = this.params.origin;
   		if(this.origin == "bill_card"){
   			$("#select-bill-number").hide();
   			that.myDom.find(".h2.message").append(this.params.bill_number);
-  			}
+  		}
 
   		if (viewScroll) { destroyViewScroll(); }
     		setTimeout(function(){
 	    	createViewScroll('#items-listing');
 	    	createViewScroll('#items-summary');
-	    	}, 300);
+	    }, 300);
   		that.myDom.find(".button[data-type='post-charge']").on("click",that.clickItemList);
   		that.myDom.find("#items-summary ").on("click",that.clickItemListSummary);
 	};
 	
 	this.modalInit = function(){
+		this.fetchItemList();
     };
+    
+    this.fetchItemList = function(){
+		$.ajax({
+			type : "GET",
+			url : '/ui/show.json?haml_file=modals/postChargeToGuestBill&json_input=registration_card/post_charge.json&is_hash_map=true&is_partial=true',
+			success : function(data) {
+				that.itemCompleteList = data.items;
+			}
+		});
+    };
+    
     // Selected item in charges to be posted list
     this.clickItemListSummary = function(e){
 	  var element = $(e.target);
@@ -34,6 +48,7 @@ var PostChargeModel = function(callBack){
 
     // Add item to charges to be posted list
     this.clickItemList = function(e){
+    	
         e.preventDefault();
         e.stopImmediatePropagation();
 
