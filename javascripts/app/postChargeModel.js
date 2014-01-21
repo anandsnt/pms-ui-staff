@@ -4,6 +4,7 @@ var PostChargeModel = function(callBack) {
 	this.reservation_id = getReservationId();
 	this.url = "/ui/show?haml_file=modals/postChargeToGuestBill&json_input=registration_card/post_charge.json&is_hash_map=true&is_partial=true";
 	this.itemCompleteList = [];
+	this.currentQuery = "";
 	
 	this.delegateEvents = function() {
 		this.origin = this.params.origin;
@@ -22,13 +23,85 @@ var PostChargeModel = function(callBack) {
 		that.myDom.find("#items-listing").on("click", that.clickItemList);
 		that.myDom.find("#items-summary").on("click", that.clickItemListSummary);
 		that.myDom.find("#charge-groups").on("change", that.changedChargeGroup);
+  		that.myDom.find('#query').on('keyup', that.queryEntered);
+  		that.myDom.find('#clear-query').on('click', that.clearResults);
+
 	};
 
 	this.modalInit = function() {
 		this.fetchItemList();
 		
 	};
+ //Clear Search Results 
+  this.clearResults = function(e){
+    //if the method is invoked from other views to clear search results, 'this', 'e' are undefined.
+  	if($(this).hasClass('visible')){  	
+  		$(this).removeClass('visible');
+    }
 
+    $('#query').val('');
+    
+  };
+  
+  //Search items
+    this.queryEntered = function(e){
+		that.currentQuery = $(this).val();
+        console.log(that.currentQuery);
+        // Clear button visibility toggle
+    	that.showHideClearQueryButton();
+    	
+    	that.displaySearchItem(that.currentQuery);
+    	
+    };
+    this.displaySearchItem = function(query){
+    	console.log("here---"+query)
+    	if(query == ""){
+        	//that.displaySearchItem(query);
+        	return false;
+      	}
+      	$('#search-item-results ul').html("");
+    	try
+	    {
+	        var items=[];
+	        
+	        $.each(that.itemCompleteList, function(i,value){
+	        	console.log(i);
+	        	console.log(value);
+	            if ((escapeNull(value.item_name).toUpperCase()).indexOf(query.toUpperCase()) >= 0 ){
+	            	console.log("found"+value.item_name);
+	            	console.log("found"+value.value);
+	            	var $count_html = "";
+	            	var html="";
+	            	var currency_code = getCurrencySymbol(value.currency_code);
+	            	if(value.count > 0) {
+						$count_html = '<span class="count">'+value.count+'</span>';
+					}
+					
+					html = '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + value.unit_price + '" data-item="' + value.item_name + '" data-is-favourite="' + value.is_favourite + '" data-id="' + value.value + '" data-charge-group="' + value.charge_group_value + '" data-cc="' + value.currency_code + '" data-base="unit" class="button white">' + value.item_name + '<span class="price"> '+currency_code+' <span class="value">' + value.unit_price + '</span></span>'+$count_html+'</a></li>';
+	            
+	            	items.push($('#search-item-results').append(html));
+	            
+	            
+	            }
+    		});
+    		
+    		//$('#search-item-results').html(html);
+    		$.each(items, function(i,value){
+	            	$('#search-item-results').append(value).highlight(query);
+	        });
+    		
+    	}
+    	catch(e){
+	    	$('#search-item-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
+	    }
+    };
+	this.showHideClearQueryButton = function(){
+	  	if($('#query').val() !== '') {
+	        $('#clear-query:not(.visible)').addClass('visible');
+	    } else {
+	        $('#clear-query.visible').removeClass('visible');
+	    }
+	};
 	this.fetchItemList = function() {
 		$.ajax({
 			type : "GET",
