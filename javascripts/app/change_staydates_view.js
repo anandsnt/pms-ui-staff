@@ -298,9 +298,6 @@ var ChangeStayDatesView = function(viewDom){
     that.myDom.find('#reservation-updates #total-stay-cost').text(currencySymbol + totalRate);
     that.myDom.find('#reservation-updates #rate-desc').text(that.availableEvents.data.rate_desc);
 
-
-
-
   };
 
   this.confirmUpdatesClicked = function(element){
