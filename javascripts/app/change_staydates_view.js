@@ -35,7 +35,7 @@ var ChangeStayDatesView = function(viewDom){
 
 
   this.fetchCalenderEvents = function(){
-    var url = "/staff/change_stay_dates/"+that.reservationId+"/calender.json"
+    var url = "/staff/change_stay_dates/"+that.reservationId+"/calendar.json"
 
     //var url = 'sample_json/change_staydates/rooms_available.json';
     var webservice = new WebServiceInterface(); 
@@ -49,7 +49,6 @@ var ChangeStayDatesView = function(viewDom){
 
   this.calenderDatesFetchCompleted = function(calenderEvents){
 
-    console.log(JSON.stringify(calenderEvents));
     that.availableEvents = calenderEvents;
     that.checkinDateInCalender = that.confirmedCheckinDate = new Date(calenderEvents.data.arrival_date);
     that.checkoutDateInCalender = that.confirmedCheckoutDate = new Date(calenderEvents.data.dep_date);
@@ -168,9 +167,18 @@ var ChangeStayDatesView = function(viewDom){
     var checkinOrig = that.checkinDateInCalender;
     var checkoutOrig = that.checkoutDateInCalender;
 
+
     var newDateSelected = event.start //$.fullCalendar.formatDate(event.start, 'yyyy-MM-dd');
     var firstAvailableDate = new Date($('.fc-event:first').attr('data-date'));
     var lastAvailableDate = new Date($('.fc-event:last').attr('data-date'));
+    checkinOrig.setHours(0,0,0,0);
+    checkoutOrig.setHours(0,0,0,0);
+    newDateSelected.setHours(0,0,0,0);
+    firstAvailableDate.setHours(0,0,0,0);
+    lastAvailableDate.setHours(0,0,0,0);
+    var currentBusinessDate = new Date(that.availableEvents.data.current_busines_date);
+    currentBusinessDate.setHours(0,0,0,0);
+  
 
     var finalCheckin = "";
     var finalCheckout = "";
@@ -194,14 +202,15 @@ var ChangeStayDatesView = function(viewDom){
         revertFunc();
         return false;
       }
+      if(newDateSelected.getTime() < currentBusinessDate.getTime()){
+        revertFunc();
+        return false;
+      }
 
       finalCheckin = checkinOrig;
       finalCheckout = newDateSelected;
       focusDate = finalCheckout
     }
-
-    that.checkinDateInCalender = finalCheckin;
-    that.checkoutDateInCalender = finalCheckout;
 
     //Refresh the calender with the new dates
     that.refreshCalenderView(finalCheckin, finalCheckout, focusDate);
@@ -211,32 +220,19 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.refreshCalenderView = function(checkinDate, checkoutDate, focusDate){
-   // $('#reservation-calendar').fullCalendar('removeEvents').fullCalendar('removeEventSources');
-   // $('#reservation-calendar').html('');
-    
+    that.checkinDateInCalender = checkinDate;
+    that.checkoutDateInCalender = checkoutDate; 
+
     $('#reservation-calendar').fullCalendar('removeEvents');
-   // $('#reservation-calendar').fullCalendar('Events', that.getEventSourceObject(checkinDate, checkoutDate));
-    /*var myevents = $('#reservation-calendar').fullCalendar('clientEvents');
-    $.each(myevents, function(){
-      var event = this;
-      if event.start < checkinDate {event.id ="available"; event.class ="room-available";}
-
-      $('#reservation-calendar').fullCalendar( 'updateEvent', event )
-
-    } )
-    $('#reservation-calendar').fullCalendar('render') */
-    
-  // that.updateCalender(checkinDate, checkoutDate, focusDate);
-  $('#reservation-calendar').fullCalendar('refetchEvents').fullCalendar('renderEvents');
+    $('#reservation-calendar').fullCalendar('refetchEvents').fullCalendar('renderEvents');
 
   };
 
   this.showReservationUpdates = function(checkinDate, checkoutDate){
     var postParams = {"arrival_date": checkinDate, "dep_date": checkoutDate};
-    var url = 'sample_json/change_staydates/reservation_updates.json';
+    //var url = 'sample_json/change_staydates/reservation_updates.json';
 
-    //var url = '/staff/change_stay_dates/'+that.reservationId+'/update.json';
-    //var url = 'http://localhost:3000/ui/show?haml_file=staff/change_stay_dates/reservation_updates&is_partial=true';
+    var url = '/staff/change_stay_dates/'+that.reservationId+'/update.json';
     var webservice = new WebServiceInterface(); 
     var successCallBackParams = {
         'reservationId': that.reservationId,
@@ -251,7 +247,6 @@ var ChangeStayDatesView = function(viewDom){
            loader: "BLOCKER"
     };
     webservice.getJSON(url, options);  
-    //webservice.getHTML(url, options);
 
   };
 
@@ -268,8 +263,6 @@ var ChangeStayDatesView = function(viewDom){
     if(response.data.availability_status == "room_available"){
       that.showRoomAvailableUpdates(response, reservationDetails);
     }
-
-    
 
   };
 
