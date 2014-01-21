@@ -17,7 +17,7 @@ var Search  = function(domRef){
       var options = {
           successCallBack: function(data){ 
             if(that.myDomElement.is(':visible')){
-              var url = 'http://pms-dev.stayntouch.com/staff/search_by_cc';
+              var url = 'http://pms-dev.stayntouch.com/staff/payments/search_by_cc';
               var data = {
                 'et2': data.RVCardReadTrack2,
                 'kns': data.RVCardReadTrack2KSN
@@ -183,10 +183,15 @@ var Search  = function(domRef){
     var url = '/staff/staycards/staycard';
     var options = {
       loader: 'BLOCKER',
-      confirmation: response.data.confirmation,
-      id: response.data.id,
-
-    };
+      requestParameters: {
+        'confirmation': 4818623,
+        'id': 573
+      },
+      successCallBack: function(data) {
+        $('#page-inner-first').html(data)//.addClass( 'page-current' );
+        changeInnerPage('inner-page', false, false, 'page-inner-first', 'move-from-right', false);
+      }
+    }
     webservice.getHTML(url, options);
   };
 
