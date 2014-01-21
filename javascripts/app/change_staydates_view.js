@@ -35,9 +35,9 @@ var ChangeStayDatesView = function(viewDom){
 
 
   this.fetchCalenderEvents = function(){
-    var url = "/staff/change_stay_dates/"+that.reservationId+"/show.json"
+    //var url = "/staff/change_stay_dates/"+that.reservationId+"/show.json"
 
-    //var url = 'sample_json/change_staydates/rooms_available.json';
+    var url = 'sample_json/change_staydates/rooms_available.json';
     var webservice = new WebServiceInterface(); 
     /*var successCallBackParams = {
         'reservationId': reservationId,
@@ -133,7 +133,7 @@ var ChangeStayDatesView = function(viewDom){
       event.start = this.date;
       event.end = this.date;
       event.day = thisDate.getDate().toString();
-      //console.log(thisDate.getTime());
+
       //Event is check-in
       thisDate.setHours(0,0,0,0);
       if(thisDate.getTime() == checkinDate.getTime()){
@@ -237,8 +237,9 @@ var ChangeStayDatesView = function(viewDom){
 
   this.showReservationUpdates = function(checkinDate, checkoutDate){
     var postParams = {"arrival_date": checkinDate, "dep_date": checkoutDate};
+    var url = 'sample_json/change_staydates/reservation_updates.json';
 
-    var url = '/staff/change_stay_dates/'+that.reservationId+'/update.json';
+    //var url = '/staff/change_stay_dates/'+that.reservationId+'/update.json';
     //var url = 'http://localhost:3000/ui/show?haml_file=staff/change_stay_dates/reservation_updates&is_partial=true';
     var webservice = new WebServiceInterface(); 
     var successCallBackParams = {
@@ -253,7 +254,7 @@ var ChangeStayDatesView = function(viewDom){
            successCallBackParameters: successCallBackParams,
            loader: "BLOCKER"
     };
-    webservice.postJSON(url, options);  
+    webservice.getJSON(url, options);  
     //webservice.getHTML(url, options);
 
   };
@@ -268,7 +269,7 @@ var ChangeStayDatesView = function(viewDom){
 
   this.datesChangeSuccess = function(response, reservationDetails){
 
-    if(response.data.is_available == "true"){
+    if(response.data.availability_status == "room_available"){
       that.showRoomAvailableUpdates(response, reservationDetails);
     }
 
@@ -293,18 +294,20 @@ var ChangeStayDatesView = function(viewDom){
     });
 
     avgRate = totalRate/totalNights;
-    getDateString(reservationDetails['arrival_date']);
+
+    var currencySymbol = getCurrencySymbol(that.availableEvents.data.currency_code);
 
     that.myDom.find('#no-reservation-updates').addClass('hidden');
     that.myDom.find('#reservation-updates.hidden').removeClass('hidden');
     // Update values
-    that.myDom.find('#reservation-updates #room-number').text("123");
-    that.myDom.find('#reservation-updates #room-type').text("Standard King");
-    that.myDom.find('#reservation-updates #new-nights').text("5");
+    that.myDom.find('#reservation-updates #room-number').text(that.myDom.find('#header-room-num').text());
+    that.myDom.find('#reservation-updates #room-type').text(that.myDom.find('#room-type').text());
+    that.myDom.find('#reservation-updates #new-nights').text(totalNights);
     that.myDom.find('#reservation-updates #new-check-in').text(getDateString(reservationDetails['arrival_date']));
     that.myDom.find('#reservation-updates #new-check-out').text(getDateString(reservationDetails['dep_date']));
-    that.myDom.find('#reservation-updates #avg-daily-rate').text(avgRate +" /");
-    that.myDom.find('#reservation-updates #total-stay-cost').text(totalRate);
+    that.myDom.find('#reservation-updates #avg-daily-rate').text(currencySymbol + avgRate +" /");
+    that.myDom.find('#reservation-updates #total-stay-cost').text(currencySymbol + totalRate);
+    that.myDom.find('#reservation-updates #rate-desc').text(that.availableEvents.data.rate_desc);
 
 
 

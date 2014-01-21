@@ -73,11 +73,20 @@ function getDateString(dateObj){
 	weekday[5]="Saturday";
 	weekday[6]="Sunday";
 
-	var month = dateObj.getMonth();// > 9 ? ("0" + dateObj.getMonth()): dateObj.getMonth();
+	var month = dateObj.getMonth() + 1 + "";// > 9 ? ("0" + dateObj.getMonth()): dateObj.getMonth();
 	console.log(month);
+	if (month.length == 1){
+        month = "0" + month;
+    }
 
-	var date = dateObj.getDate();
+	var date = dateObj.getDate() + "";
+	if (date.length == 1)
+    {
+        date = "0" + date;
+    }
 
 	var dateString = weekday[dateObj.getDay()] + " " + dateObj.getFullYear() + "-" + month  + "-" + date ;
+	console.log(dateString);
+	return dateString;
 
 };
