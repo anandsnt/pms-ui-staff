@@ -67,6 +67,7 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find('#back-to-staycard').on('click', that.gotoStayCard);
 		that.myDom.find('#complete-checkout-button').on('click', that.clickedCompleteCheckout);
 		that.myDom.find('#pay-button').on('click', that.payButtonClicked);
+		that.myDom.find('#add-new-button').on('click', that.addNewButtonClicked);
 	};
 
 	this.createHorizontalScroll = function() {
@@ -225,6 +226,16 @@ var RegistrationCardView = function(viewDom) {
 			"bill_number" : that.bill_number
 		};
 	};
+	// To show post charge modal
+	this.addNewButtonClicked = function() {
+		var postChargeModel = new PostChargeModel(that.reloadBillCardPage);
+		postChargeModel.initialize();
+		postChargeModel.params = {
+			"origin":"bill_card",
+			"bill_number" : that.bill_number
+		};
+	};
+	
 	// Goto search screen with empty search results
 	this.goToSearchScreen = function() {
 		switchPage('main-page', 'search', '', 'page-main-second', 'move-from-left');
