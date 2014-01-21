@@ -300,54 +300,76 @@ body { overflow: hidden; }
 			left: 0;
 		}
 
-		.alerts {
+		.icon-alert {
 			position: absolute;
 			top: 10px;
-			left: 50px;
-			.float;
+			.square(40px);
+			.show;
 
-			li {
-				position: relative;
-				margin: 0;
-				.square(40px);
+			span {
+				position: absolute;
+				top: 0;
+				right: 0;
+				font-size: 11px;
+				line-height: 16px;
+				font-weight: 400;
+				color: @white;
+				background: @softRed;
+				.square(16px);				
 				.show;
-				.pull-left;
-
-				.icon-alert {
-					.no-transition;
-					.hide-text;
-					.show;
-				}
-
-				span {
-					position: absolute;
-					top: 0;
-					right: 0;
-					font-size: 14px;
-					line-height: 14px;
-					font-weight: 700;
-					color: @softRed;
-					.show;
-				}
-
-				&:last-child {
-					span { color: @red; }
-				}
+				#border-radius > .rounded(16px);
 			}
+
+			&#lobby-alert { left: 50px; }
+			&#messages-alert { left: 100px; }
+			&#reviews-alert { left: 150px; }
+			
+			&#late-checkout-alert { 
+				top: 15px;
+				right: 160px; 
+				height: 30px;
+				width: auto;
+				padding: 0 10px 0 30px;
+				color: @white;
+				font-weight: 600;
+				line-height: 30px;
+				background-color: @red;
+			}
+
 		}
 
 		.logo {
 			position: absolute;
-			top: 14px;
+			top: 10px;
 			right: 20px;
-			.size(28px,125px);
+			line-height: 14px;
+			vertical-align: top;
+			text-align: right;
+
+			img { .size(22px,100px); }
+
+			.date {
+				font-size: 12px;
+				color: @grey3;
+				.show;
+			}
 		}
 
 		h1 {
 			font-weight: 700;
-			line-height: 40px;
+			line-height: 26px;
 			vertical-align: middle;
 			clear: none;
+
+			span {
+				font-size: 14px;
+				line-height: 1em;
+				font-weight: 400;
+				color: @grey3;
+				.show;
+
+				strong { font-weight: 600; }
+			}
 		}
 	}
 
@@ -470,7 +492,7 @@ body { overflow: hidden; }
 				width: 60px;
 				padding: 0 10px;
 				border-left: 1px solid rgba(0,0,0,.1);
-				
+
 				input {
 					position: absolute;
 					top: 0;
@@ -746,6 +768,7 @@ body { overflow: hidden; }
 		&.check-in,
 		&.arrival { background-color: @green; }
 		&.check-out,
+		&.late-check-out,
 		&.departed { background-color: @red; }
 		&.inhouse { background-color: @blue; }
 		&.cancel { background-color: @grey3; }
@@ -1004,11 +1027,7 @@ body { overflow: hidden; }
 			}
 		}
 	}
-/***************************Added By Qburst *********************/
-.clearfield{
-  float:right;
-  color:#ED341C !important;
-}
+
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE

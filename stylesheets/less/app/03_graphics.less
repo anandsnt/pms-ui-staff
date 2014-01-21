@@ -68,37 +68,10 @@
 		&.icon-alert {
 			.square(40px);
 
-			&.social-lobby {
-				background-position: 10px -2670px;
-
-				&:hover,
-				&:active,
-				&.alert { background-position: 10px -2730px; }
-			}
-
-			&.messages {
-				background-position: 10px -2789px;
-
-				&:hover,
-				&:active,
-				&.alert { background-position: 10px -2849px; }
-			}
-
-			&.reviews {
-				background-position: 10px -2908px;
-
-				&:hover,
-				&:active,
-				&.alert { background-position: 10px -2968px; }
-			}
-
-			&.search {
-				background-position: 15px -3028px;
-
-				&:hover,
-				&:active,
-				&.alert { background-position: 15px -588px; }
-			}
+			&.social-lobby { background-position: 10px -2670px; }
+			&.messages { background-position: 10px -2730px; }
+			&.reviews { background-position: 10px -2788px; }
+			&.late-check-out { background-position: 10px -2852px; }
 		}
 
 		/* Guest icons ***/
@@ -108,6 +81,7 @@
 		&.check-out { background-position: 8px -152px; }
 		&.inhouse { background-position: 8px -192px; }
 		&.cancel { background-position: 8px -232px; }
+		&.late-check-out { background-position: 8px -2852px;}
 		
 		&.arrival,
 		&.departed { background-image: none; }
@@ -126,10 +100,13 @@
 		&.icon-wallet { background-position: 3px -1240px; }		
 
 		&.icon-trash { 
-			.square(15px);
+			.square(20px);
 			.hide-text;
-			background-position: 0 -1660px; 
+			background-position: 2px -1657px; 
 		}
+
+		&.check-out-time { background-position: 10px -2903px; }
+		&.icon-clear { background-position: 0 -2975px; }
 
 		&.small-icon {
 			background-size: 80px;
@@ -138,6 +115,7 @@
 			&.check-out { background-position: 6px -101px; }
 			&.inhouse { background-position:  5px -128px; }
 			&.cancel { background-position: 5px -155px; }
+			&.late-check-out { background-position: 6px -1902px; }
 		}
 
 		&.room { background-position: 5px -873px; }
