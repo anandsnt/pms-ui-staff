@@ -63,7 +63,8 @@ function getCurrencySymbol(currenyCode){
       return symbol;
 };
 
-function getDateString(dateObj){
+function getDateString(dateObj, showDay){
+	var dateString = "";
 	var weekday = new Array(7);
 	weekday[0]="Monday";
 	weekday[1]="Tuesday";
@@ -74,19 +75,20 @@ function getDateString(dateObj){
 	weekday[6]="Sunday";
 
 	var month = dateObj.getMonth() + 1 + "";// > 9 ? ("0" + dateObj.getMonth()): dateObj.getMonth();
-	console.log(month);
 	if (month.length == 1){
         month = "0" + month;
     }
 
 	var date = dateObj.getDate() + "";
-	if (date.length == 1)
-    {
+	if (date.length == 1){
         date = "0" + date;
     }
 
-	var dateString = weekday[dateObj.getDay()] + " " + dateObj.getFullYear() + "-" + month  + "-" + date ;
-	console.log(dateString);
+    if(showDay == true){
+    	var dateString = weekday[dateObj.getDay()] + " " + dateObj.getFullYear() + "-" + month  + "-" + date ;
+    }else{
+		var dateString = dateObj.getFullYear() + "-" + month  + "-" + date ;
+    }
 	return dateString;
 
 };

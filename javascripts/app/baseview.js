@@ -22,8 +22,8 @@ var BaseView = function(viewDom){
   };
 
   this.initialize = function(){
-    that.pageinit();
     that.executeLoadingAnimation();
+    that.pageinit();
     that.delegateEvents();
     that.initSubViews();
   };

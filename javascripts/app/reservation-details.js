@@ -29,7 +29,6 @@ var reservationDetailsView = function(domRef){
   };
 
   this.gotToChangeDatesScreen = function(){
-    sntapp.activityIndicator.showActivityIndicator("blocker");
     var viewURL = "/staff/change_stay_dates/"+getReservationId();
     var viewDom = $("#view-nested-second");
     var reservation_id = getReservationId();

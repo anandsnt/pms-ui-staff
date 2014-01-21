@@ -229,7 +229,9 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.showReservationUpdates = function(checkinDate, checkoutDate){
-    var postParams = {"arrival_date": checkinDate, "dep_date": checkoutDate};
+    var arrivalDate = getDateString(checkinDate);
+    var departureDate = getDateString(checkoutDate);
+    var postParams = {"arrival_date": arrivalDate, "dep_date": departureDate};
     //var url = 'sample_json/change_staydates/reservation_updates.json';
 
     var url = '/staff/change_stay_dates/'+that.reservationId+'/update.json';
@@ -262,6 +264,8 @@ var ChangeStayDatesView = function(viewDom){
 
     if(response.data.availability_status == "room_available"){
       that.showRoomAvailableUpdates(response, reservationDetails);
+    }else if(response.data.availability_status == "not_available"){
+      that.showNo(response, reservationDetails);
     }
 
   };
@@ -282,8 +286,7 @@ var ChangeStayDatesView = function(viewDom){
       totalNights ++;
     });
 
-    avgRate = totalRate/totalNights;
-
+    avgRate = Math.round((totalRate/totalNights + 0.00001) * 100) / 100;
     var currencySymbol = getCurrencySymbol(that.availableEvents.data.currency_code);
 
     that.myDom.find('#no-reservation-updates').addClass('hidden');
@@ -292,8 +295,8 @@ var ChangeStayDatesView = function(viewDom){
     that.myDom.find('#reservation-updates #room-number').text(that.myDom.find('#header-room-num').text());
     that.myDom.find('#reservation-updates #room-type').text(that.myDom.find('#room-type').text());
     that.myDom.find('#reservation-updates #new-nights').text(totalNights);
-    that.myDom.find('#reservation-updates #new-check-in').text(getDateString(reservationDetails['arrival_date']));
-    that.myDom.find('#reservation-updates #new-check-out').text(getDateString(reservationDetails['dep_date']));
+    that.myDom.find('#reservation-updates #new-check-in').text(getDateString(reservationDetails['arrival_date'], true));
+    that.myDom.find('#reservation-updates #new-check-out').text(getDateString(reservationDetails['dep_date'], true));
     that.myDom.find('#reservation-updates #avg-daily-rate').text(currencySymbol + avgRate +" /");
     that.myDom.find('#reservation-updates #total-stay-cost').text(currencySymbol + totalRate);
     that.myDom.find('#reservation-updates #rate-desc').text(that.availableEvents.data.rate_desc);
@@ -301,8 +304,8 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.confirmUpdatesClicked = function(element){
-    var checkinSelected = $('.fc-event.check-in').attr('data-date');
-    var checkoutSelected = $('.fc-event.check-out').attr('data-date');
+    var checkinSelected = getDateString(new Date($('.fc-event.check-in').attr('data-date')));
+    var checkoutSelected = getDateString(new Date($('.fc-event.check-out').attr('data-date')));
 
     var postData = {"arrival_date": checkinSelected, "dep_date": checkoutSelected};
 
@@ -328,8 +331,9 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.resetDatesClicked = function(element){
+    that.myDom.find('#no-reservation-updates.hidden').removeClass('hidden');
+    that.myDom.find('#reservation-updates').addClass('hidden');
     that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate, that.confirmedCheckinDate)
-    return false;
   };
 
   this.goBackToStaycard = function(event){
