@@ -35,16 +35,16 @@ var ChangeStayDatesView = function(viewDom){
 
 
   this.fetchCalenderEvents = function(){
-    var postParams = {"reservation_id": that.reservationId};
+    var url = "/staff/change_stay_dates/"+that.reservationId+"/show.json"
 
-    var url = 'sample_json/change_staydates/rooms_available.json';
+    //var url = 'sample_json/change_staydates/rooms_available.json';
     var webservice = new WebServiceInterface(); 
     /*var successCallBackParams = {
         'reservationId': reservationId,
         'roomNumberSelected': roomNumberSelected, 
     }; */ 
     var options = {
-           requestParameters: postParams,
+           //requestParameters: postParams,
            successCallBack: that.calenderDatesFetchCompleted,
            //successCallBackParameters: successCallBackParams,
            loader: "BLOCKER"
@@ -55,8 +55,8 @@ var ChangeStayDatesView = function(viewDom){
 
   this.calenderDatesFetchCompleted = function(calenderEvents){
     that.availableEvents = calenderEvents;
-    that.checkinDateInCalender = that.confirmedCheckinDate = new Date(calenderEvents.data.checkin_date);
-    that.checkoutDateInCalender = that.confirmedCheckoutDate = new Date(calenderEvents.data.checkout_date);
+    that.checkinDateInCalender = that.confirmedCheckinDate = new Date(calenderEvents.data.arrival_date);
+    that.checkoutDateInCalender = that.confirmedCheckoutDate = new Date(calenderEvents.data.dep_date);
     that.updateCalender(that.confirmedCheckinDate, that.confirmedCheckoutDate, that.confirmedCheckinDate);
   };
 
@@ -76,8 +76,7 @@ var ChangeStayDatesView = function(viewDom){
         disableResizing : true,
         contentHeight   : 320,
         weekMode    : 'fixed',
-        events: eventSource,
-        
+        events : that.getMyEvents,
         // Set how many months are visible on display
         viewDisplay: function(view) {
           that.setupCalendarDates(view, checkinDate, checkoutDate);
@@ -92,6 +91,13 @@ var ChangeStayDatesView = function(viewDom){
       });
   };
 
+  this.getMyEvents = function(start, end, callback){
+    var events = that.getEventSourceObject(that.checkinDateInCalender, that.checkoutDateInCalender);
+    callback(events);
+
+  };
+
+  //Limit the number calender display to 1 month before check-in date and 1 month after checkout date
   this.setupCalendarDates = function(view, checkinDate, checkoutDate){
 
     var end = new Date(),
@@ -110,25 +116,32 @@ var ChangeStayDatesView = function(viewDom){
     else { $('.fc-button-next').removeClass("fc-state-disabled"); }
   }
 
+
   this.getEventSourceObject = function(checkinDate, checkoutDate){
 
     var calenderEvents = that.availableEvents;
+
     var events = [];
     var currencyCode = calenderEvents.data.currency_code;
-
+    var reservationStatus = calenderEvents.data.reservation_status;
+    checkinDate.setHours(0,0,0,0);
+    checkoutDate.setHours(0,0,0,0);
     $(calenderEvents.data.available_dates).each(function(index){
       var event = {};
       thisDate = new Date(this.date);
-      event.title = getCurrencySymbol(currencyCode)+this.price;
+      event.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
       event.start = this.date;
       event.end = this.date;
       event.day = thisDate.getDate().toString();
-  
+      //console.log(thisDate.getTime());
       //Event is check-in
+      thisDate.setHours(0,0,0,0);
       if(thisDate.getTime() == checkinDate.getTime()){
         event.id = "check-in";
         event.className = "check-in";
-        event.startEditable = "true";
+        if(reservationStatus != "CHECKEDIN" && reservationStatus != "CHECKING_OUT"){
+          event.startEditable = "true";
+        }
         event.durationEditable = "false"
       //mid-stay range
       }else if((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())){
@@ -159,11 +172,10 @@ var ChangeStayDatesView = function(viewDom){
     var checkinOrig = that.checkinDateInCalender;
     var checkoutOrig = that.checkoutDateInCalender;
 
-    /*var checkinOrig = $('.fc-event.check-in').attr('data-date');
-    var checkoutOrig = $('.fc-event.check-out').attr('data-date');*/
-    var newDateSelected = $.fullCalendar.formatDate(event.start, 'yyyy-MM-dd');
-    var firstAvailableDate = $('.fc-event:first').attr('data-date');
-    var lastAvailableDate = $('.fc-event:last').attr('data-date');
+    var newDateSelected = event.start //$.fullCalendar.formatDate(event.start, 'yyyy-MM-dd');
+    var firstAvailableDate = new Date($('.fc-event:first').attr('data-date'));
+    var lastAvailableDate = new Date($('.fc-event:last').attr('data-date'));
+
     var finalCheckin = "";
     var finalCheckout = "";
 
@@ -172,6 +184,7 @@ var ChangeStayDatesView = function(viewDom){
       revertFunc();
       return false;      
     }
+
     if(event.id == 'check-in'){
       if(newDateSelected > checkoutOrig){
         revertFunc();
@@ -185,6 +198,7 @@ var ChangeStayDatesView = function(viewDom){
         revertFunc();
         return false;
       }
+
       finalCheckin = checkinOrig;
       finalCheckout = newDateSelected;
       focusDate = finalCheckout
@@ -192,6 +206,7 @@ var ChangeStayDatesView = function(viewDom){
 
     that.checkinDateInCalender = finalCheckin;
     that.checkoutDateInCalender = finalCheckout;
+
     //Refresh the calender with the new dates
     that.refreshCalenderView(finalCheckin, finalCheckout, focusDate);
     //Show the reservation updates for the selected date range
@@ -200,26 +215,42 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.refreshCalenderView = function(checkinDate, checkoutDate, focusDate){
-    $('#reservation-calendar').fullCalendar('removeEvents').fullCalendar('removeEventSources');
-    $('#reservation-calendar').html('');
-    that.updateCalender(new Date(checkinDate), new Date(checkoutDate), new Date(focusDate));
+   // $('#reservation-calendar').fullCalendar('removeEvents').fullCalendar('removeEventSources');
+   // $('#reservation-calendar').html('');
+    
+    $('#reservation-calendar').fullCalendar('removeEvents');
+   // $('#reservation-calendar').fullCalendar('Events', that.getEventSourceObject(checkinDate, checkoutDate));
+    /*var myevents = $('#reservation-calendar').fullCalendar('clientEvents');
+    $.each(myevents, function(){
+      var event = this;
+      if event.start < checkinDate {event.id ="available"; event.class ="room-available";}
+
+      $('#reservation-calendar').fullCalendar( 'updateEvent', event )
+
+    } )
+    $('#reservation-calendar').fullCalendar('render') */
+    
+  // that.updateCalender(checkinDate, checkoutDate, focusDate);
+  $('#reservation-calendar').fullCalendar('refetchEvents').fullCalendar('renderEvents');
+
   };
 
   this.showReservationUpdates = function(checkinDate, checkoutDate){
     var postParams = {"arrival_date": checkinDate, "dep_date": checkoutDate};
 
-    var url = '/staff/change_stay_dates/'+that.reservationId+'/update';
+    var url = '/staff/change_stay_dates/'+that.reservationId+'/update.json';
     //var url = 'http://localhost:3000/ui/show?haml_file=staff/change_stay_dates/reservation_updates&is_partial=true';
     var webservice = new WebServiceInterface(); 
-    /*var successCallBackParams = {
-        'reservationId': reservationId,
-        'roomNumberSelected': roomNumberSelected, 
-    }; */ 
+    var successCallBackParams = {
+        'reservationId': that.reservationId,
+        'arrival_date': checkinDate, 
+        'dep_date': checkoutDate
+    };
     var options = {
            requestParameters: postParams,
            successCallBack: that.datesChangeSuccess,
            failureCallBack: that.dateChangeFailure,
-           //successCallBackParameters: successCallBackParams,
+           successCallBackParameters: successCallBackParams,
            loader: "BLOCKER"
     };
     webservice.postJSON(url, options);  
@@ -235,9 +266,48 @@ var ChangeStayDatesView = function(viewDom){
 
   };
 
-  this.datesChangeSuccess = function(data){
-    $('#no-reservation-updates').hide();
-    $('#reservation-updates').html(data);
+  this.datesChangeSuccess = function(response, reservationDetails){
+
+    if(response.data.is_available == "true"){
+      that.showRoomAvailableUpdates(response, reservationDetails);
+    }
+
+    
+
+  };
+
+  this.showRoomAvailableUpdates = function(response, reservationDetails){
+
+    var totalNights = 0,
+        totalRate = 0,
+        avgRate = 0,
+        checkinDay = 0,
+        checkoutDay = 0;
+    $(that.availableEvents.data.available_dates).each(function(index){
+      if(new Date(this.date) < new Date(reservationDetails['arrival_date']) ||
+               new Date(this.date) > new Date(reservationDetails['dep_date'])){
+        return true;
+      }
+      totalRate = totalRate + parseInt(this.rate);
+      totalNights ++;
+    });
+
+    avgRate = totalRate/totalNights;
+    getDateString(reservationDetails['arrival_date']);
+
+    that.myDom.find('#no-reservation-updates').addClass('hidden');
+    that.myDom.find('#reservation-updates.hidden').removeClass('hidden');
+    // Update values
+    that.myDom.find('#reservation-updates #room-number').text("123");
+    that.myDom.find('#reservation-updates #room-type').text("Standard King");
+    that.myDom.find('#reservation-updates #new-nights').text("5");
+    that.myDom.find('#reservation-updates #new-check-in').text(getDateString(reservationDetails['arrival_date']));
+    that.myDom.find('#reservation-updates #new-check-out').text(getDateString(reservationDetails['dep_date']));
+    that.myDom.find('#reservation-updates #avg-daily-rate').text(avgRate +" /");
+    that.myDom.find('#reservation-updates #total-stay-cost').text(totalRate);
+
+
+
 
   };
 

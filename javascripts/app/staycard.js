@@ -24,7 +24,12 @@ var StayCard = function(viewDom){
   };
   
   this.changeAvathar = function(e){
-	  var img_src = getAvatharUrl($(this).val());
+    var enteredText = $(this).val();
+    var imgSrc = $("#guest-card-header .guest-image img").attr("src");
+    console.log(imgSrc);
+    console.log($.inArray(imgSrc, avathar_img_urls));
+
+	  var img_src = getAvatharUrl(enteredText);
 	  $("#guest-card-header .guest-image img").attr("src", img_src);  
   };
 

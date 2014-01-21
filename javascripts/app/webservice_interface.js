@@ -94,7 +94,23 @@ var WebServiceInterface = function(){
 				failureCallBack, successCallBackParameters, failureCallBackParameters, 
 				async, requestType, contentType, dataType);	
 	};
-	
+	this.postHTML = function(requestUrl, options ){
+		var options = options ? options : {};		
+		var requestType = "POST";
+		var contentType = 'text/html';
+		var dataType = 'html';
+		var requestParameters = options["requestParameters"] ? options["requestParameters"] : {};
+		var async = options["async"] ? options["async"] : true;
+		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
+		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;	
+		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
+		var failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
+		
+		that.performRequest(requestUrl, requestParameters, loader, successCallBack, 
+				failureCallBack, successCallBackParameters, failureCallBackParameters, 
+				async, requestType, contentType, dataType);			
+	};	
 	this.createErrorMessage = function(jqXHR, textStatus, errorThrown){
 		var errorMessage = '';
 		if (textStatus === 'parsererror') {
