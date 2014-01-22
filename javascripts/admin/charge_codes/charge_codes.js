@@ -35,7 +35,7 @@ var HotelChargeCodesView = function(domRef){
   this.fetchCompletedOfImport = function(data,requestParams){
   	var url = "/admin/charge_codes/list";
    	viewParams = {};
-  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
   	sntapp.notification.showSuccessMessage("Imported Successfully", that.myDom);		
   	that.cancelFromAppendedDataInline(requestParams['event']);  
   };
@@ -93,7 +93,7 @@ var HotelChargeCodesView = function(domRef){
   	
   	var url = "/admin/charge_codes/list";
    	viewParams = {};
-  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
     sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
     that.cancelFromAppendedDataInline(requestParams['event']);  
   };
@@ -152,7 +152,7 @@ var HotelChargeCodesView = function(domRef){
   this.fetchCompletedOfDelete = function(data, successParams){
   	  var url = "/admin/charge_codes/list";
    	  viewParams = {};
-  	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+  	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
 	  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
   };
 };

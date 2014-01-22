@@ -83,7 +83,7 @@ var RoomTypesView = function(domRef){
   	
   	var url = "/admin/room_types";
    	viewParams = {};
-  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
   	sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
   	that.cancelFromAppendedDataInline(requestParams['event']);  
   };
@@ -129,7 +129,7 @@ var RoomTypesView = function(domRef){
   this.fetchCompletedOfImport = function(data,requestParams){
   	var url = "/admin/room_types";
    	viewParams = {};
-  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
   	sntapp.notification.showSuccessMessage("Imported Successfully", that.myDom);		
   	that.cancelFromAppendedDataInline(requestParams['event']);  
   };
