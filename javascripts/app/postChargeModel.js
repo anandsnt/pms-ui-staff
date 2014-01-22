@@ -2,7 +2,6 @@ var PostChargeModel = function(callBack) {
 	BaseModal.call(this);
 	var that = this;
 	this.reservation_id = getReservationId();
-	//this.url = "/ui/show?haml_file=modals/postChargeToGuestBill&json_input=registration_card/post_charge.json&is_hash_map=true&is_partial=true";
 	this.url = 'staff/items/'+that.reservation_id+'/get_items';
 	this.itemCompleteList = [];
 	this.currentList = [];
@@ -117,7 +116,6 @@ var PostChargeModel = function(callBack) {
 		$.ajax({
 			type : "GET",
 			url: 'staff/items/'+that.reservation_id+'/get_items.json',
-			//url : '/ui/show.json?haml_file=modals/postChargeToGuestBill&json_input=registration_card/post_charge.json&is_hash_map=true&is_partial=true',
 			success : function(response) {
 				that.itemCompleteList = response.data.items;
 				for(var i=0;i<that.itemCompleteList.length;i++){
