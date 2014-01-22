@@ -12,7 +12,8 @@ var ReservationPaymentView = function(domRef){
   	that.myDom.find('#add-new-payment').on('click', that.addNewPaymentModal);
     that.myDom.find('#staycard_creditcard').on('change', that.setPaymentToReservation);
   };
-  this.addNewPaymentModal = function(){
+  this.addNewPaymentModal = function(event, options){
+    console.log(options);
   	var addNewPaymentModal = new AddNewPaymentModal("reservation", that.myDom);
     addNewPaymentModal.initialize();
   };
