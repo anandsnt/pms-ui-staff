@@ -21,20 +21,19 @@ var PostChargeModel = function(callBack) {
 		setTimeout(function() {
 			createViewScroll('#items-listing');
 			createViewScroll('#items-summary');
-			that.showFavouriteItems();
 		}, 300);
 		that.myDom.find("#items-listing").on("click", that.clickItemList);
 		that.myDom.find("#items-summary").on("click", that.clickItemListSummary);
 		that.myDom.find("#charge-groups").on("change", that.changedChargeGroup);
   		that.myDom.find('#query').on('keyup', that.queryEntered);
   		that.myDom.find('#clear-query').on('click', that.clearResults);
-
+		that.myDom.find('#post').on('click', that.postCharge);
 	};
 
 	this.modalInit = function() {
 		this.fetchItemList();
-		
 	};
+	
  	//Clear Search Results 
   	this.clearResults = function(e){
 	    //if the method is invoked from other views to clear search results, 'this', 'e' are undefined.
@@ -86,17 +85,17 @@ var PostChargeModel = function(callBack) {
     		});
     		if(!item_found){
     			 var html = "<div id='no-items-added' class='no-content'><strong class='h1'>No items found</strong></div>";
-	             $('#search-item-results').html(html);
+	             that.myDom.find('#search-item-results').html(html);
 	        }
 	        else{
 	    		$.each(items, function(i,value){
-		            	$('#search-item-results').append(value).highlight(query);
+		            	that.myDom.find('#search-item-results').append(value).highlight(query);
 		        });
 	        }
     		
     	}
     	catch(e){
-	    	$('#search-item-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
+	    	that.myDom.find('#search-item-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
 	    }
     };
     
@@ -299,4 +298,46 @@ var PostChargeModel = function(callBack) {
 		that.myDom.find("#items-listing ul").html(html);
 	};
 	
+	// Post charge.
+	this.postCharge = function(){
+		
+		var data = {};
+	    data.reservation_id = getReservationId();
+	    
+	    var bill_number = $("#select-bill-number").find('option:selected').val();
+	    data.bill_no = (that.params.bill_number == undefined) ? bill_number :that.params.bill_number;
+	    data.total = that.myDom.find("#total-charge .value").text();
+	    data.items = [];
+	    
+	    that.myDom.find("#items-summary li" ).each(function() {
+	    	var obj ={
+	    		"id" : $(this).attr('data-id'),
+	    		"amount" : $(this).find('.value').text()
+	    	};
+			data.items.push(obj);
+		});
+			
+	    
+	    console.log(data);
+		var url = '';
+	    var webservice = new WebServiceInterface();
+		var options = {
+			   requestParameters: data,
+			   successCallBack: that.fetchCompletedOfPostCharge,
+			   failureCallBack: that.fetchFailedOfPostCharge,
+			   loader: 'BLOCKER'
+	    };
+	    webservice.postJSON(url, options);
+	    that.hide();
+	};
+	
+	// success callback on post cahrges
+	this.fetchCompletedOfPostCharge = function(){
+		 sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+	};
+	
+	// failure callback on post cahrges
+	this.fetchFailedOfPostCharge = function(errorMessage){
+		 sntapp.notification.showErrorMessage(errorMessage, that.myDom);	
+	};
 }; 
