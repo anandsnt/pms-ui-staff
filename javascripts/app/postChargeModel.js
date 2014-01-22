@@ -3,9 +3,11 @@ var PostChargeModel = function(callBack) {
 	var that = this;
 	this.reservation_id = getReservationId();
 	this.url = "/ui/show?haml_file=modals/postChargeToGuestBill&json_input=registration_card/post_charge.json&is_hash_map=true&is_partial=true";
+	//this.url = 'staff/items/'+that.reservationId+'/get_items';
 	this.itemCompleteList = [];
 	this.currentList = [];
 	this.currentQuery = "";
+	this.reservationId = getReservationId();
 	
 	this.delegateEvents = function() {
 		
@@ -113,12 +115,14 @@ var PostChargeModel = function(callBack) {
 	this.fetchItemList = function() {
 		$.ajax({
 			type : "GET",
+			//url: 'staff/items/'+that.reservationId+'/get_items.json',
 			url : '/ui/show.json?haml_file=modals/postChargeToGuestBill&json_input=registration_card/post_charge.json&is_hash_map=true&is_partial=true',
 			success : function(data) {
 				that.itemCompleteList = data.items;
 				for(var i=0;i<that.itemCompleteList.length;i++){
 					that.itemCompleteList[i].count = 0;
 				}
+				that.currentList = that.itemCompleteList;
 			}
 		});
 	};
@@ -304,7 +308,7 @@ var PostChargeModel = function(callBack) {
 	this.postCharge = function(){
 		
 		var data = {};
-	    data.reservation_id = getReservationId();
+	    data.reservation_id = that.reservationId;
 	    
 	    var bill_number = $("#select-bill-number").find('option:selected').val();
 	    data.bill_no = (that.params.bill_number == undefined) ? bill_number :that.params.bill_number;
@@ -319,7 +323,7 @@ var PostChargeModel = function(callBack) {
 			data.items.push(obj);
 		});
 	    
-		var url = '';
+		var url = '/staff/items/post_items_to_bill';
 	    var webservice = new WebServiceInterface();
 		var options = {
 			   requestParameters: data,
