@@ -60,13 +60,13 @@ var PostChargeModel = function(callBack) {
     	that.myDom.find('#search-item-results').html("");
     	
     	if(query == ""){
+    		that.showAllItems();
         	return false;
       	}
       	
-    	try
-	    {
+    	try{
 	        var items=[];
-	        
+	        var item_found = false;
 	        $.each(that.itemCompleteList, function(i,value){
 	            if ((escapeNull(value.item_name).toUpperCase()).indexOf(query.toUpperCase()) == 0 ){
 	            	var $count_html = "";
@@ -79,12 +79,20 @@ var PostChargeModel = function(callBack) {
 					html = '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + value.unit_price + '" data-item="' + value.item_name + '" data-is-favourite="' + value.is_favourite + '" data-id="' + value.value + '" data-charge-group="' + value.charge_group_value + '" data-cc="' + value.currency_code + '" data-base="unit" class="button white">' + value.item_name + '<span class="price"> '+currency_code+' <span class="value">' + value.unit_price + '</span></span>'+$count_html+'</a></li>';
 	            
 	            	items.push($('#search-item-results').append(html));
+	            	
+	            	item_found = true;
 	            }
+	            
     		});
-    		
-    		$.each(items, function(i,value){
-	            	$('#search-item-results').append(value).highlight(query);
-	        });
+    		if(!item_found){
+    			 var html = "<div id='no-items-added' class='no-content'><strong class='h1'>No items found</strong></div>";
+	             $('#search-item-results').html(html);
+	        }
+	        else{
+	    		$.each(items, function(i,value){
+		            	$('#search-item-results').append(value).highlight(query);
+		        });
+	        }
     		
     	}
     	catch(e){
