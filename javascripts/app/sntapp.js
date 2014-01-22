@@ -4,6 +4,7 @@ var app = function(){
     this.activityIndicator = new ActivityIndicator();
     this.notification = new NotificationMessage();
     this.browser = "other";
+    this.cordovaLoaded = false;
     this.cardReader = null;
     
     this.getViewInstance = function(viewDom){
@@ -99,36 +100,38 @@ var app = function(){
     }; 
     
     this.setBrowser = function(browser){
-        if(typeof browser === 'undefined' || browser === ''){
-            that.browser = "other";
-        }
-        else{
-            that.browser = browser;
-        }
-        if(browser === 'rv_native'){
-            
-            $.ajax({
-                url: "/ui/show?haml_file=cordova/cordova_ipad_ios&json_input=cordova/cordova.json&is_hash_map=true&is_partial=true",
-                success: function(data){
-                    $('body').append(data);
-                    that.cardReader = new CardOperation();
-                },
-                error: function(data){
-                    alert('from error: ' + data);
-                }
-                
-            });
-            /*var webservice = new WebServiceInterface();
-            var url = "/ui/show?haml_file=cordova/cordova_ipad_ios&json_input=cordova/cordova.json&is_hash_map=true&is_partial=true";
-            var options = {                
-                        successCallBack: function(data){alert(data); $('body').append(data);},
-                        failureCallBack: function(errorMessage){alert("From error messae: " + errorMessage);console.log(errorMessage);},
-                        loader: 'BLOCKER',
-                        }
-            webservice.getHTML(url, options);*/
-        }   
+    	if(typeof browser === 'undefined' || browser === ''){
+    		that.browser = "other";
+    	}
+    	else{
+    		that.browser = browser;
+    	}
+    	if(browser === 'rv_native' && !that.cordovaLoaded){
+    		
+    		var webservice = new WebServiceInterface();
+    		var url = "/ui/show?haml_file=cordova/cordova_ipad_ios&json_input=cordova/cordova.json&is_hash_map=true&is_partial=true";
+    		var options = {				   
+    					successCallBack: that.fetchCompletedOfCordovaPlugins,
+    					failureCallBack: that.fetchFailedOfCordovaPlugins,
+    					loader: 'BLOCKER',
+    					}
+    		webservice.getHTML(url, options);
+    	}	
+    };
+    
+    // success function of coddova plugin's appending
+    this.fetchCompletedOfCordovaPlugins = function(data){
+    	$('body').append(data);
+    	that.cardReader = new CardOperation();
+    	that.cordovaLoaded = true;
+    };
+    
+    // success function of coddova plugin's appending
+    this.fetchFailedOfCordovaPlugins = function(errorMessage){    	
+    	that.cordovaLoaded = false;
     };
     
 };
 
 sntapp = new app();
+
