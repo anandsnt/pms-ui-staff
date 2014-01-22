@@ -25,14 +25,13 @@ var NotificationMessage = function() {
 	};
 	
 	var scrollToErrorArea = function(dom) {
+		$(window).scrollTop($('#notification-message').offset().top);
 		// function used to scroll to the message displayed area	
 		//not recommended method	
 		var location = new String(document.location); 
 		location = location.split("#")[0];
 		//document.location = location + "#" + parent.attr("id") ;	
 		document.location = location + "#";
-		dom.scrollTo( '#notification-message', 800);
-		
 
 	};
 	
@@ -40,8 +39,7 @@ var NotificationMessage = function() {
 	
 		var message_element = dom.find("#notification-message");
 		message_element.removeClass('success_message error_message').addClass(message_class);
-		message_element.html(message);	
-		console.log(dom)
+		message_element.html(message);			
 		scrollToErrorArea(dom);			
 		dom.find("#notification-message").slideDown(duration, function() {});
 				
@@ -92,7 +90,7 @@ var NotificationMessage = function() {
                priority = "DEBUG";
         }          
         
-		// dom = getDisplayDom();
+		//dom = getDisplayDom();
 		if (!shouldShowMessage(priority, "Success")) return;
 		
 	
@@ -121,7 +119,7 @@ var NotificationMessage = function() {
 	
 		if(typeof priority === 'undefined') { priority = "DEBUG"; }
        
-		// dom = getDisplayDom();
+		//dom = getDisplayDom();
 		if (!shouldShowMessage(priority, "Error")) { return };
 			
 		this.hideMessage();
@@ -141,14 +139,14 @@ var NotificationMessage = function() {
 	// to close the message
 	this.hideMessage = function(){
 		dom = getDisplayDom();
-	
-        dom.find("#notification-message").slideUp({ 
+        dom.find(".notice").slideUp({ 
         	duration : duration, 
         	complete : function(){
-        		var myElement = dom.find("#notification-message");
-        		if (myElement.queue( "fx" ).length <=1)   {
-        			myElement.removeClass('success_message error_message').html('');
-        		}
+        		// var myElement = dom.find("#notification-message");
+        		var myElement = dom.find(".notice");
+        		// if (myElement.queue( "fx" ).length <=1)   {
+        			myElement.removeClass('notice error success').html('');
+        		// }
         	}, 
         });
         

@@ -60,10 +60,6 @@ var HotelDetailsView = function(domRef){
   
   this.goBackToPreviousView = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
-  	console.log(">>>>>>>>>>");
-  	console.log(that.myDom);
-  		console.log(that.viewParams.backDom);
-  	
   };
   this.pageshow = function(){
   	if(that.currentView == "snt-admin-view"){
@@ -134,10 +130,12 @@ var HotelDetailsView = function(domRef){
   
   this.fetchCompletedOfSave = function(data){
 	  if(data.status == "success"){		  
-		  that.goBackToPreviousView();
+		 
+		  sntapp.fetchAndRenderView("/admin/hotels", that.viewParams.backDom, {}, 'None', {}, false);
 		  
-		  sntapp.notification.showSuccessMessage("Saved Successfully", that.viewParams.backDom);
 		  console.log(that.viewParams.backDom);
+		  that.goBackToPreviousView();
+		  sntapp.notification.showSuccessMessage("Saved Successfully", that.viewParams.backDom);
 	  }
   };
   
@@ -192,7 +190,8 @@ var HotelDetailsView = function(domRef){
 		   var webservice = new WebServiceInterface();
 		   var options = {
 				   requestParameters: data,
-				   successCallBack: that.fetchCompletedOfAddNewHotel,
+				   successCallBack: that.fetchCompletedOfSave,
+				   failureCallBack: that.fetchFailedOfSave,
 				    loader: "BLOCKER"
 				   
 		   };
