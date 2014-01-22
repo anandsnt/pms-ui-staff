@@ -12,7 +12,6 @@ var StayCard = function(viewDom){
     if(sntapp.cordovaLoaded){
       var options = {
           successCallBack: function(data){
-            alert( JSON.stringify(data) );
             var cardData = {
               cardType: data.RVCardReadCardType || '',
               expiry: data.RVCardReadExpDate || '',
@@ -41,9 +40,7 @@ var StayCard = function(viewDom){
     var options = {
       requestParameters: cardData.getTokenFrom,
       successCallBack: function(data) {
-        alert( JSON.stringify(data) );
-
-        window.injectSwipeCardData = function() {
+        window.injectSwipeCardData = function(cardData) {
           $('#payment-type').val( 'CC' );
           $('#payment-credit-type').val( cardData.cardType );
           $('#card-number-set1').val('xxxx-xxxx-xxxx-' + data.slice(-4));
