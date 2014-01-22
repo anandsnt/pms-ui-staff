@@ -14,6 +14,7 @@ var reservationDetailsView = function(domRef){
   	that.myDom.find('#upgrade-btn').on('click',that.roomUpgradesClicked);
   	that.myDom.find('.reservation-actions #reservation-checkout').on('click', that.clickedCheckoutButton);
   	that.myDom.find('#reservation-view-bill').on('click',that.clickedViewBillButton);
+  	that.myDom.find('#post-charge').on('click',that.clickedPostChargeButton);
     that.myDom.find('#stay-card-total-stay-cost').on('click',that.clickedTotalStayCost);
     that.myDom.find('#reservation-checkin').on('click', that.validateEmailAndPhone);  
     that.myDom.find('#nights-btn').on('click', that.gotToChangeDatesScreen);
@@ -112,7 +113,11 @@ var reservationDetailsView = function(domRef){
     	sntapp.activityIndicator.showActivityIndicator("blocker");
       	that.goToBillCardView("ViewBillButton");
     };
-    
+    this.clickedPostChargeButton = function(e){
+		var postChargeModel = new PostChargeModel();
+		postChargeModel.initialize();
+		
+    };
     this.clickedTotalStayCost = function(){
     	that.goToBillCardView("TotalStayCost");
     };
