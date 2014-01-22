@@ -2,8 +2,9 @@
 var app = function(){
     var that = this;
     this.activityIndicator = new ActivityIndicator();
-    this.notification = new NotificationMessage();    	
-    
+    this.notification = new NotificationMessage();
+    this.browser = "other";
+    this.cardReader = null;
     
     this.getViewInstance = function(viewDom){
         var viewInstance;
@@ -70,8 +71,8 @@ var app = function(){
     */
 
     // loader options are ['None', "BLOCKER", 'NORMAL']
-    	
-    	that.activityIndicator.showActivityIndicator(loader);
+        
+        that.activityIndicator.showActivityIndicator(loader);
      
         
         // if(shouldShowLoader){
@@ -84,21 +85,50 @@ var app = function(){
             url: viewURL,
             async: true,
             success: function(data) { 
-            	
+                
                 that.renderView(data, viewDom, nextViewParams);                 
                 that.activityIndicator.hideActivityIndicator();
                 
             },
             error: function(){
-            	that.notification.showErrorMessage('An error has occured while fetching the view' );
-            	that.activityIndicator.hideActivityIndicator();
+                that.notification.showErrorMessage('An error has occured while fetching the view' );
+                that.activityIndicator.hideActivityIndicator();
             }
             
        });
     }; 
-
+    
+    this.setBrowser = function(browser){
+        if(typeof browser === 'undefined' || browser === ''){
+            that.browser = "other";
+        }
+        else{
+            that.browser = browser;
+        }
+        if(browser === 'rv_native'){
+            
+            $.ajax({
+                url: "/ui/show?haml_file=cordova/cordova_ipad_ios&json_input=cordova/cordova.json&is_hash_map=true&is_partial=true",
+                success: function(data){
+                    $('body').append(data);
+                    that.cardReader = new CardOperation();
+                },
+                error: function(data){
+                    alert('from error: ' + data);
+                }
+                
+            });
+            /*var webservice = new WebServiceInterface();
+            var url = "/ui/show?haml_file=cordova/cordova_ipad_ios&json_input=cordova/cordova.json&is_hash_map=true&is_partial=true";
+            var options = {                
+                        successCallBack: function(data){alert(data); $('body').append(data);},
+                        failureCallBack: function(errorMessage){alert("From error messae: " + errorMessage);console.log(errorMessage);},
+                        loader: 'BLOCKER',
+                        }
+            webservice.getHTML(url, options);*/
+        }   
+    };
+    
 };
 
 sntapp = new app();
-
-
