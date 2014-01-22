@@ -8,7 +8,65 @@ var StayCard = function(viewDom){
     var currentConfirmNumber = $("#confirm_no").val();    
     var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
 	reservationDetails.initialize();
-   
+
+    if(sntapp.cordovaLoaded){
+      var options = {
+          successCallBack: function(data){
+            alert( JSON.stringify(data) );
+
+            if(that.myDomElement.is(':visible')){
+              var cardData = {
+                cardType: data.RVCardReadCardType || '',
+                expiryMonth: '06',
+                expiryYear: '16',
+                cardHolderName: data.RVCardReadCardName || '',
+                getTokenFrom: {
+                  'et2': data.RVCardReadTrack2,
+                  'ksn': data.RVCardReadTrack2KSN
+                }
+              }
+              that.postCardSwipData(cardData);
+            }
+            else{
+              sntapp.notification.showErrorMessage('not visible from success');
+            }
+
+            $("#add-new-payment").trigger('click');
+          },
+          failureCallBack: function(errorObject){
+            sntapp.notification.showErrorMessage('not visible from failure');
+          }
+      };
+      sntapp.cardReader.startReader(options);
+    } 
+  };
+
+  // lets post the 'et2' and 'ksn' data
+  // to get the token code from MLI
+  this.postCardSwipData = function(cardData) {
+    var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
+    var options = {
+      requestParameters: cardData.getTokenFrom,
+      successCallBack: function(data) {
+        alert( JSON.stringify(data) );
+
+        window.injectSwipeCardData = function() {
+          $('#payment-type').val( 'CC' );
+          $('#payment-credit-type').val( cardData.cardType );
+          $('#card-number-set1').val('xxxx-xxxx-xxxx-' + data.substr(data.length - 4));
+          $('#expiry-month').val( cardData.expiryMonth );
+          $('#expiry-year').val( cardData.expiryYear );
+          $('#name-on-card').val( cardData.cardHolderName );
+
+          // inject the token as hidden field into form
+          // TODO: Fix Security Issue associated with input[type="hidden"]!
+          $('#new-payment').append('<input type="hidden" id="card-token" value="' + data + '">')
+        };
+      }
+    }
+
+    var webservice = new WebServiceInterface();
+    webservice.postJSON(url, options);
   };
 
 
@@ -45,8 +103,8 @@ var StayCard = function(viewDom){
 
   };
 
-
-  this.pageshow = function(){
+this
+  .pageshow = function(){
     that.createScroll();
   };
 
