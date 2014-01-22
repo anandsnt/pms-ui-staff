@@ -42,7 +42,7 @@ var StayCard = function(viewDom){
       successCallBack: function(data) {
         window.injectSwipeCardData = function(cardData) {
 
-          console.log( JSON.stringify(cardData) );
+          alert( JSON.stringify(cardData) );
 
           $('#payment-type').val( 'CC' );
           $('#payment-credit-type').val( cardData.cardType );
