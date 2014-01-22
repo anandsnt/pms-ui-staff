@@ -118,9 +118,11 @@ var NotificationMessage = function() {
 		if(!this.shouldShowErrorMessages) { return; }
 	
 		if(typeof priority === 'undefined') { priority = "DEBUG"; }
-       
-		//dom = getDisplayDom();
-		if (!shouldShowMessage(priority, "Error")) { return };
+        if(typeof dom === "undefined"){
+        	dom = getDisplayDom();
+        }
+			
+		if (!shouldShowMessage(priority, "Error")) { return; };
 			
 		this.hideMessage();
 		

@@ -117,6 +117,7 @@ var HotelChainsView = function(domRef){
 		data.lov = lovs;
 	    var options = {
 				   successCallBack: that.fetchCompletedOfSave,
+				   failureCallBack: that.fetchFailedOfSave,
 				   requestParameters: data,
 	    		   loader: 'normal',
 		};
@@ -164,6 +165,7 @@ var HotelChainsView = function(domRef){
 		data.lov = lovs;	
 	    var options = {
 				   successCallBack: that.fetchCompletedOfSave,
+				   failureCallBack: that.fetchFailedOfSave,
 				   requestParameters: data,
 	    		   loader: 'normal',
 		};
@@ -176,9 +178,14 @@ var HotelChainsView = function(domRef){
 		// update the view of listing the chain listing
 		viewParams = {};
 		var url = "/admin/hotel_chains";
-		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
-	    sntapp.notification.showSuccessMessage('Successfully updated');
+		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
+	    sntapp.notification.showSuccessMessage('Successfully Saved');
 		
-	};	
+	};
+	//Handling failure
+   this.fetchFailedOfSave = function(errorMessage){
+	 sntapp.activityIndicator.hideActivityIndicator();
+	 sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+   };
 
 };

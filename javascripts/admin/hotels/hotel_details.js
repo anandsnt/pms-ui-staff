@@ -50,7 +50,7 @@ var HotelDetailsView = function(domRef){
   
   // success function of re-invite api call
   this.fetchCompletedOfReInvite = function(data){
-	  sntapp.notification.showSuccessMessage("Mail send succsfully.", that.myDom);
+	  sntapp.notification.showSuccessMessage("Mail send succesfully.", that.myDom);
   };
   
   // failure call of re-invite api call
@@ -129,11 +129,10 @@ var HotelDetailsView = function(domRef){
   };
   
   this.fetchCompletedOfSave = function(data){
-	  if(data.status == "success"){		  
-		 
+	  if(data.status == "success"){		
+	  	if(that.currentView == "snt-admin-view"){  
 		  sntapp.fetchAndRenderView("/admin/hotels", that.viewParams.backDom, {}, 'None', {}, false);
-		  
-		  console.log(that.viewParams.backDom);
+		}
 		  that.goBackToPreviousView();
 		  sntapp.notification.showSuccessMessage("Saved Successfully", that.viewParams.backDom);
 	  }
@@ -198,26 +197,7 @@ var HotelDetailsView = function(domRef){
 		   webservice.postJSON(url, options);
 	  
   };
-  this.fetchCompletedOfAddNewHotel = function(data){
-	  // success function of add new hotel api call
-	if(data.status == "success"){
-		$("#replacing-div-first").show();
-		$("#replacing-div-second").html("");
-		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showSuccessMessage("Successfully Saved. Please wait while it is being redirected to hotel list page..", that.myDom); 
-		sntapp.fetchAndRenderView("/admin/hotels", $("#replacing-div-first"), {}, 'None', {});
-	}
-	else{
-		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorList(data.errors, that.myDom);  
-	}
-  };
-  this.fetchFailedOfAddNewHotel = function(errorMessage){
-	// fail function of add new hotel api call
-	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
-  };
-  
+
   //Generating post data
   this.getInputData = function(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand,hotelChain, hotelCode, 
   	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime,
