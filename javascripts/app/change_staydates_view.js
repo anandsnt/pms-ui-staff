@@ -151,7 +151,7 @@ var ChangeStayDatesView = function(viewDom){
       //dates prior to check-in and dates after checkout
       }else{
         event.id = "availability";
-        event.className = "room-available"
+        event.className = "type-available"
       }
 
       events.push(event);
