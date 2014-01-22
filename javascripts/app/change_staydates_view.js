@@ -29,6 +29,7 @@ var ChangeStayDatesView = function(viewDom){
 
       if(element.attr('id') == 'confirm-changes') return that.confirmUpdatesClicked(element);
       if(element.attr('id') == 'reset-dates')  return that.resetDatesClicked(element);
+      //if(element.attr('id') == 'reset-dates')  return that.resetDatesClicked(element);
       return true;
 
   };
@@ -287,7 +288,9 @@ var ChangeStayDatesView = function(viewDom){
   this.datesChangeSuccess = function(response, reservationDetails){
     that.fadeoutHeaderDates();
     if(response.data.availability_status == "room_available"){
-      that.showRoomAvailableUpdates(response, reservationDetails);
+      that.myDom.find('#no-reservation-updates').addClass('hidden');
+      that.myDom.find('#reservation-updates.hidden').removeClass('hidden');
+      that.showRoomAvailableUpdates(reservationDetails);
     }else if(response.data.availability_status == "room_type_available"){
       that.showRoomList(response, reservationDetails);
     }else if(response.data.availability_status == "not_available"){
@@ -296,7 +299,9 @@ var ChangeStayDatesView = function(viewDom){
 
   };
 
-  this.showRoomAvailableUpdates = function(response, reservationDetails){
+  this.showRoomAvailableUpdates = function(reservationDetails, roomNumber){
+
+    var roomSelected = (roomNumber == 'undefined' ? that.myDom.find('#header-room-num').text(): roomNumber);
 
     var totalNights = 0,
         totalRate = 0,
@@ -315,10 +320,9 @@ var ChangeStayDatesView = function(viewDom){
     avgRate = Math.round((totalRate/totalNights + 0.00001) * 100) / 100;
     var currencySymbol = getCurrencySymbol(that.availableEvents.data.currency_code);
 
-    that.myDom.find('#no-reservation-updates').addClass('hidden');
-    that.myDom.find('#reservation-updates.hidden').removeClass('hidden');
+
     // Update values
-    that.myDom.find('#reservation-updates #room-number').text(that.myDom.find('#header-room-num').text());
+    that.myDom.find('#reservation-updates #room-number').text(roomSelected);
     that.myDom.find('#reservation-updates #room-type').text(that.myDom.find('#room-type').text());
     that.myDom.find('#reservation-updates #new-nights').text(totalNights);
     that.myDom.find('#reservation-updates #new-check-in').text(getDateString(reservationDetails['arrival_date'], true));
@@ -373,20 +377,40 @@ var ChangeStayDatesView = function(viewDom){
 
   this.showRoomList = function(response, reservationDetails){
     that.myDom.find('#no-reservation-updates').addClass('hidden');
-    that.myDom.find('#room-unavailable.hidden').removeClass('hidden');
+    that.myDom.find('#room-list.hidden').removeClass('hidden');
 
     var currentRoom = that.myDom.find('#header-room-num').text();
     that.myDom.find('#current-room').text(currentRoom);
+    
+    that.myDom.find('#change-room ul').html('');
 
     $(response.data.rooms).each(function(index){
-      var roomElement = '<span class="room-number ready">'+ this.room_number +'</span>';
+      var roomElement = '<span id = "room-list-number" class="room-number '+ (this.room_status=="READY" ? "ready" : "not-ready") +'">'+ this.room_number +'</span>';
           var roomListEntry = '<li><button type="button" data-value="'+ this.room_number +'" class="button white">' 
-                        +roomElement+
-                        '</button></li>';
+                        +roomElement+ '</button></li>';
       that.myDom.find('#change-room ul').append(roomListEntry);
 
     });
 
+    that.myDom.find('#change-room ul li').on('click', that.roomListNumberSelected);
+
+
+
+  };
+
+  this.roomListNumberSelected = function(e){
+
+    var reservationDetails = {
+        'reservationId': that.reservationId,
+        'arrival_date': that.checkinDateInCalender, 
+        'dep_date': that.checkoutDateInCalender
+    };
+
+    var roomSelected = $(e.target).find('#room-list-number').text();
+    that.myDom.find('#room-list').addClass('hidden');
+    that.myDom.find('#reservation-updates.hidden').removeClass('hidden');
+
+    that.showRoomAvailableUpdates(reservationDetails, roomSelected);
   };
 
 
