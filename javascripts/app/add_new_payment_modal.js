@@ -160,8 +160,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 				    credit_card: $card_type,
 				    card_expiry: $card_expiry,
 				    name_on_card: $name_on_card,
-				    guest_id: $guest_id,
-				    card_token: $card_token
+				    guest_id: $guest_id
 		    };
 		    var url = 'staff/payments/save_new_payment'; 
 		    var options = {
@@ -190,7 +189,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 				    credit_card: $card_type,
 				    card_expiry: $card_expiry,
 				    name_on_card: $name_on_card,
-				    card_token: $card_token
+				    mli_token: $card_token
 		    };		
 		    var url = 'staff/reservation/save_payment'; 
 		    var options = {
