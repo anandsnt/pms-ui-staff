@@ -121,7 +121,7 @@ var RegistrationCardView = function(viewDom) {
 			"showanimation" : false,
 			"current-view" : "staycard"
 		};
-		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NONE', nextViewParams);
+		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
 	};
 
 	this.completeCheckin = function(e) {
