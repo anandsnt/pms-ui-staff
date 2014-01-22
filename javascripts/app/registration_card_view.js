@@ -258,7 +258,7 @@ var RegistrationCardView = function(viewDom) {
 		var postChargeModel = new PostChargeModel(that.reloadBillCardPage);
 		postChargeModel.initialize();
 		postChargeModel.params = {
-			"origin":"bill_card",
+			"origin":views.BILLCARD,
 			"bill_number" : that.bill_number
 		};
 	};
