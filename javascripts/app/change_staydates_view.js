@@ -37,7 +37,7 @@ var ChangeStayDatesView = function(viewDom){
   this.fetchCalenderEvents = function(){
     var url = "/staff/change_stay_dates/"+that.reservationId+"/calendar.json"
 
-    //var url = 'sample_json/change_staydates/rooms_available.json';
+    var url = 'sample_json/change_staydates/rooms_available.json';
     var webservice = new WebServiceInterface(); 
     var options = {
            successCallBack: that.calenderDatesFetchCompleted,
@@ -129,15 +129,33 @@ var ChangeStayDatesView = function(viewDom){
       event.end = this.date;
       event.day = thisDate.getDate().toString();
 
-      //Event is check-in
       thisDate.setHours(0,0,0,0);
+      //Event is check-in
       if(thisDate.getTime() == checkinDate.getTime()){
         event.id = "check-in";
         event.className = "check-in";
         if(reservationStatus != "CHECKEDIN" && reservationStatus != "CHECKING_OUT"){
           event.startEditable = "true";
         }
-        event.durationEditable = "false"
+        event.durationEditable = "false";
+
+        //If check-in date and check-out dates are the same, show split view.
+        if(checkinDate.getTime() == checkoutDate.getTime()){
+          event.className = "check-in split-view";
+          events.push(event);
+          //checkout-event
+          var event = {};
+          thisDate = new Date(this.date);
+          event.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
+          event.start = this.date;
+          event.end = this.date;
+          event.day = thisDate.getDate().toString();
+          event.id = "check-out";
+          event.className = "check-out split-view";
+          event.startEditable = "true";
+          event.durationEditable = "false"
+        }
+
       //mid-stay range
       }else if((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())){
         event.id = "availability";
@@ -145,6 +163,9 @@ var ChangeStayDatesView = function(viewDom){
       //Event is check-out
       }else if(thisDate.getTime() == checkoutDate.getTime()){
         event.id = "check-out";
+        /*if(checkinDate.getTime() == checkoutDate.getTime()){
+          event.className = "check-out split-view"
+        }*/
         event.className = "check-out";
         event.startEditable = "true";
         event.durationEditable = "false"
