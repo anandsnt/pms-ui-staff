@@ -22,6 +22,14 @@ var BaseView = function(viewDom){
   };
 
   this.initialize = function(){
+    /**
+    * Card reader device must not be on for all pages.
+    
+    * if cardReader is already started, stop the reader
+    * if this is a search page the reader will be started again
+    * by the search page's controller
+    */
+
     that.pageinit();
     that.executeLoadingAnimation();
     that.delegateEvents();
