@@ -257,9 +257,9 @@ var ChangeStayDatesView = function(viewDom){
     var arrivalDate = getDateString(checkinDate);
     var departureDate = getDateString(checkoutDate);
     var postParams = {"arrival_date": arrivalDate, "dep_date": departureDate};
-    //var url = 'sample_json/change_staydates/reservation_updates.json';
+    var url = 'sample_json/change_staydates/reservation_updates.json';
 
-    var url = '/staff/change_stay_dates/'+that.reservationId+'/update.json';
+    //var url = '/staff/change_stay_dates/'+that.reservationId+'/update.json';
     var webservice = new WebServiceInterface(); 
     var successCallBackParams = {
         'reservationId': that.reservationId,
@@ -337,7 +337,9 @@ var ChangeStayDatesView = function(viewDom){
     var checkinSelected = getDateString(new Date($('.fc-event.check-in').attr('data-date')));
     var checkoutSelected = getDateString(new Date($('.fc-event.check-out').attr('data-date')));
 
-    var postData = {"arrival_date": checkinSelected, "dep_date": checkoutSelected};
+    var roomSelected = that.myDom.find('#reservation-updates #room-number').text();
+
+    var postData = {"arrival_date": checkinSelected, "dep_date": checkoutSelected, "room_number": roomSelected};
 
     var url = '/staff/change_stay_dates/'+ that.reservationId +'/confirm';
     var webservice = new WebServiceInterface(); 
