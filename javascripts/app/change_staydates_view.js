@@ -6,7 +6,7 @@ var ChangeStayDatesView = function(viewDom){
 
   this.delegateEvents = function(){  
     that.myDom.find('#changedates-back-btn').on('click',that.goBackToStaycard);
-    that.myDom.find('#reservation-updates').on('click', that.reservationUpdateClickEvents);
+    that.myDom.find('#reservation-details').on('click', that.reservationUpdateClickEvents);
 
   };
 
@@ -29,7 +29,6 @@ var ChangeStayDatesView = function(viewDom){
 
       if(element.attr('id') == 'confirm-changes') return that.confirmUpdatesClicked(element);
       if(element.attr('id') == 'reset-dates')  return that.resetDatesClicked(element);
-      //if(element.attr('id') == 'reset-dates')  return that.resetDatesClicked(element);
       return true;
 
   };
@@ -342,15 +341,10 @@ var ChangeStayDatesView = function(viewDom){
     var postData = {"arrival_date": checkinSelected, "dep_date": checkoutSelected, "room_number": roomSelected};
 
     var url = '/staff/change_stay_dates/'+ that.reservationId +'/confirm';
-    var webservice = new WebServiceInterface(); 
-    /*var successCallBackParams = {
-        'reservationId': reservationId,
-        'roomNumberSelected': roomNumberSelected, 
-    }; */ 
+    var webservice = new WebServiceInterface();  
     var options = {
            requestParameters: postData,
            successCallBack: that.confirmDatesSuccess,
-           //successCallBackParameters: successCallBackParams,
            loader: "BLOCKER"
     };
     webservice.postJSON(url, options);  
@@ -363,6 +357,8 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.resetDatesClicked = function(element){
+
+    console.log("here");
     that.fadeinHeaderDates();
     that.myDom.find('#no-reservation-updates.hidden').removeClass('hidden');
     that.myDom.find('#reservation-updates').addClass('hidden');
@@ -415,6 +411,13 @@ var ChangeStayDatesView = function(viewDom){
     that.showRoomAvailableUpdates(reservationDetails, roomSelected);
   };
 
+  this.showNoRoomsAvailableMessage = function(){
+
+    that.myDom.find('#room-list').addClass('hidden');  
+    that.myDom.find('#reservation-updates').addClass('hidden');
+    that.myDom.find('#no-reservation-updates').addClass('hidden');
+    that.myDom.find('#room-locked.hidden').removeClass('hidden');
+  };
 
   this.fadeinHeaderDates = function(){
     // Fade in previous dates in reservation header
