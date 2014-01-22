@@ -62,7 +62,7 @@ var StayCard = function(viewDom){
           // TODO: Fix Security Issue associated with input[type="hidden"]!
           $('#new-payment').append('<input type="hidden" id="card-token" value="' + data + '">')
         };
-      };
+      }
     }
 
     var webservice = new WebServiceInterface();
