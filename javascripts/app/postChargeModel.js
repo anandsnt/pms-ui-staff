@@ -2,12 +2,11 @@ var PostChargeModel = function(callBack) {
 	BaseModal.call(this);
 	var that = this;
 	this.reservation_id = getReservationId();
-	this.url = "/ui/show?haml_file=modals/postChargeToGuestBill&json_input=registration_card/post_charge.json&is_hash_map=true&is_partial=true";
-	//this.url = 'staff/items/'+that.reservationId+'/get_items';
+	//this.url = "/ui/show?haml_file=modals/postChargeToGuestBill&json_input=registration_card/post_charge.json&is_hash_map=true&is_partial=true";
+	this.url = 'staff/items/'+that.reservation_id+'/get_items';
 	this.itemCompleteList = [];
 	this.currentList = [];
 	this.currentQuery = "";
-	this.reservationId = getReservationId();
 	
 	this.delegateEvents = function() {
 		
@@ -44,6 +43,8 @@ var PostChargeModel = function(callBack) {
 	  		$(this).removeClass('visible');
 	    }
 	    $('#query').val('');
+	    that.currentList = that.itemCompleteList;
+    	that.showAllItems();
   	};
   
   	//Search items
@@ -60,8 +61,8 @@ var PostChargeModel = function(callBack) {
     // To display search results
     this.displaySearchItem = function(){
     	that.myDom.find('#search-item-results').html("");
-    	
     	if(that.currentQuery == ""){
+    		that.currentList = that.itemCompleteList;
     		that.showAllItems();
         	return false;
       	}
@@ -79,7 +80,7 @@ var PostChargeModel = function(callBack) {
 						$count_html = '<span class="count">'+value.count+'</span>';
 					}
 					
-					html = '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + value.unit_price + '" data-item="' + value.item_name + '" data-is-favourite="' + value.is_favourite + '" data-id="' + value.value + '" data-charge-group="' + value.charge_group_value + '" data-cc="' + value.currency_code + '" data-base="unit" class="button white">' + value.item_name + '<span class="price"> '+currency_code+' <span class="value">' + value.unit_price + '</span></span>'+$count_html+'</a></li>';
+					html = '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + value.unit_price + '" data-item="' + value.item_name + '" data-is-favourite="' + value.is_favorite + '" data-id="' + value.value + '" data-charge-group="' + value.charge_group_value + '" data-cc="' + value.currency_code + '" data-base="unit" class="button white">' + value.item_name + '<span class="price"> '+currency_code+' <span class="value">' + value.unit_price + '</span></span>'+$count_html+'</a></li>';
 	            	items.push($('#search-item-results').append(html));
 	            	is_item_found = true;
 	            	that.currentList.push(value);
@@ -115,10 +116,10 @@ var PostChargeModel = function(callBack) {
 	this.fetchItemList = function() {
 		$.ajax({
 			type : "GET",
-			//url: 'staff/items/'+that.reservationId+'/get_items.json',
-			url : '/ui/show.json?haml_file=modals/postChargeToGuestBill&json_input=registration_card/post_charge.json&is_hash_map=true&is_partial=true',
-			success : function(data) {
-				that.itemCompleteList = data.items;
+			url: 'staff/items/'+that.reservation_id+'/get_items.json',
+			//url : '/ui/show.json?haml_file=modals/postChargeToGuestBill&json_input=registration_card/post_charge.json&is_hash_map=true&is_partial=true',
+			success : function(response) {
+				that.itemCompleteList = response.data.items;
 				for(var i=0;i<that.itemCompleteList.length;i++){
 					that.itemCompleteList[i].count = 0;
 				}
@@ -155,7 +156,7 @@ var PostChargeModel = function(callBack) {
 			$price = element.attr('data-price'),
 			$currency_code = getCurrencySymbol(element.attr('data-cc')),
 			$base = element.attr('data-base'),
-			$output = $item + ' <span class="count" /><span class="base">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">$ <span class="value">' + $price + '</span></span>';
+			$output = $item + ' <span class="count" /><span class="base">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">'+$currency_code+'<span class="value">' + $price + '</span></span>';
 	
 			// Update right side panel
 			if (that.myDom.find('#items-added.hidden')) {
@@ -260,13 +261,13 @@ var PostChargeModel = function(callBack) {
 		that.myDom.find("#items-listing ul").html("");
 		var html = '';
 		for (var i = 0; i < that.currentList.length; i++) {
-			if (that.currentList[i].is_favourite == "true") {
+			if (that.currentList[i].is_favorite == "true") {
 				var currency_code = getCurrencySymbol(that.currentList[i].currency_code);
 				var $count_html = "";
 				if(that.currentList[i].count > 0) {
 					$count_html = '<span class="count">'+that.currentList[i].count+'</span>';
 				}
-				html += '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + that.currentList[i].unit_price + '" data-item="' + that.currentList[i].item_name + '" data-is-favourite="' + that.currentList[i].is_favourite + '" data-id="' + that.currentList[i].value + '" data-charge-group="' + that.currentList[i].charge_group_value + '" data-cc="' + that.currentList[i].currency_code + '" data-base="unit" class="button white">' + that.currentList[i].item_name + '<span class="price"> '+currency_code+' <span class="value">' + that.currentList[i].unit_price + '</span></span>'+$count_html+'</a></li>';
+				html += '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + that.currentList[i].unit_price + '" data-item="' + that.currentList[i].item_name + '" data-is-favourite="' + that.currentList[i].is_favorite + '" data-id="' + that.currentList[i].value + '" data-charge-group="' + that.currentList[i].charge_group_value + '" data-cc="' + that.currentList[i].currency_code + '" data-base="unit" class="button white">' + that.currentList[i].item_name + '<span class="price"> '+currency_code+' <span class="value">' + that.currentList[i].unit_price + '</span></span>'+$count_html+'</a></li>';
 			}
 		}
 		that.myDom.find("#items-listing ul").html(html);
@@ -276,13 +277,13 @@ var PostChargeModel = function(callBack) {
 	this.showAllItems = function() {
 		that.myDom.find("#items-listing ul").html("");
 		var html = '';
-		for (var i = 0; i < that.itemCompleteList.length; i++) {
-			var currency_code = getCurrencySymbol(that.itemCompleteList[i].currency_code);
+		for (var i = 0; i < that.currentList.length; i++) {
+			var currency_code = getCurrencySymbol(that.currentList[i].currency_code);
 			var $count_html = "";
-			if(that.itemCompleteList[i].count > 0) {
-				$count_html = '<span class="count">'+that.itemCompleteList[i].count+'</span>';
+			if(that.currentList[i].count > 0) {
+				$count_html = '<span class="count">'+that.currentList[i].count+'</span>';
 			}
-			html += '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + that.itemCompleteList[i].unit_price + '" data-item="' + that.itemCompleteList[i].item_name + '" data-is-favourite="' + that.itemCompleteList[i].is_favourite + '" data-id="' + that.itemCompleteList[i].value + '" data-charge-group="' + that.itemCompleteList[i].charge_group_value + '" data-cc="' + that.itemCompleteList[i].currency_code + '" data-base="unit" class="button white">' + that.itemCompleteList[i].item_name + '<span class="price"> '+currency_code+' <span class="value">' + that.itemCompleteList[i].unit_price + '</span></span>'+$count_html+'</a></li>';
+			html += '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + that.currentList[i].unit_price + '" data-item="' + that.currentList[i].item_name + '" data-is-favourite="' + that.currentList[i].is_favorite + '" data-id="' + that.currentList[i].value + '" data-charge-group="' + that.currentList[i].charge_group_value + '" data-cc="' + that.currentList[i].currency_code + '" data-base="unit" class="button white">' + that.currentList[i].item_name + '<span class="price"> '+currency_code+' <span class="value">' + that.currentList[i].unit_price + '</span></span>'+$count_html+'</a></li>';
 		}
 		that.myDom.find("#items-listing ul").html(html);
 	};
@@ -298,7 +299,7 @@ var PostChargeModel = function(callBack) {
 				if(that.currentList[i].count > 0) {
 					$count_html = '<span class="count">'+that.currentList[i].count+'</span>';
 				}
-				html += '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + that.currentList[i].unit_price + '" data-item="' + that.currentList[i].item_name + '" data-is-favourite="' + that.currentList[i].is_favourite + '" data-id="' + that.currentList[i].value + '" data-charge-group="' + that.currentList[i].charge_group_value + '" data-cc="' + that.currentList[i].currency_code + '" data-base="unit" class="button white">' + that.currentList[i].item_name + '<span class="price"> '+currency_code+' <span class="value">' + that.currentList[i].unit_price + '</span></span>'+$count_html+'</a></li>';
+				html += '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + that.currentList[i].unit_price + '" data-item="' + that.currentList[i].item_name + '" data-is-favourite="' + that.currentList[i].is_favorite + '" data-id="' + that.currentList[i].value + '" data-charge-group="' + that.currentList[i].charge_group_value + '" data-cc="' + that.currentList[i].currency_code + '" data-base="unit" class="button white">' + that.currentList[i].item_name + '<span class="price"> '+currency_code+' <span class="value">' + that.currentList[i].unit_price + '</span></span>'+$count_html+'</a></li>';
 			}
 		}
 		that.myDom.find("#items-listing ul").html(html);
@@ -308,16 +309,16 @@ var PostChargeModel = function(callBack) {
 	this.postCharge = function(){
 		
 		var data = {};
-	    data.reservation_id = that.reservationId;
-	    
+	    data.reservation_id = that.reservation_id;
 	    var bill_number = $("#select-bill-number").find('option:selected').val();
-	    data.bill_no = (that.params.bill_number == undefined) ? bill_number :that.params.bill_number;
+	    
+	    data.bill_no = (that.params.bill_number === undefined) ? bill_number :that.params.bill_number;
 	    data.total = that.myDom.find("#total-charge .value").text();
 	    data.items = [];
 	    
 	    that.myDom.find("#items-summary li" ).each(function() {
 	    	var obj ={
-	    		"id" : $(this).attr('data-id'),
+	    		"value" : $(this).attr('data-id'),
 	    		"amount" : $(this).find('.value').text()
 	    	};
 			data.items.push(obj);
@@ -338,6 +339,9 @@ var PostChargeModel = function(callBack) {
 	// success callback on post cahrges
 	this.fetchCompletedOfPostCharge = function(){
 		 sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+		 if(that.origin == views.BILLCARD){
+		 	callBack(); //To Reload page on bill card
+		 }
 	};
 	
 	// failure callback on post cahrges
