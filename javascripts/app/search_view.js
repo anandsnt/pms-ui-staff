@@ -13,34 +13,33 @@ var Search  = function(domRef){
     if navigated to search screen by clicking checking-in/checking-out/in-house options
     */
 
- 
-    if(sntapp.cordovaLoaded){
-        var options = {
-                successCallBack: function(data){ 
-                  if(that.myDomElement.is(':visible')){
-                    var url = '/staff/payments/search_by_cc';
-                    var data = {
-                      'et2': data.RVCardReadTrack2,
-                      'ksn': data.RVCardReadTrack2KSN
-                    }
-                    that.postCardSwipData(url, data);
-                  }
-                  else{
-                    sntapp.notification.showErrorMessage('not visible from success');
-                  }
-                },
-                failureCallBack: function(errorObject){
-                  if(that.myDomElement.is(':visible')){
-                    var errorCode = errorObject.RVErrorCode;
-                    var errorDesc = errorObject.RVErrorDesc;
-                    sntapp.notification.showErrorMessage("Error occured (" + errorCode + "): " + errorDesc);
-                  }
-                  else{
-                    sntapp.notification.showErrorMessage('not visible from failure');
-                  }
-                }
-            };
-      sntapp.cardReader.startReader(options);
+    if(sntapp.browser == 'rv_native'){
+      var options = {
+          successCallBack: function(data){ 
+            if(that.myDomElement.is(':visible')){
+              var url = '/staff/payments/search_by_cc';
+              var data = {
+                'et2': data.RVCardReadTrack2,
+                'ksn': data.RVCardReadTrack2KSN
+              }
+              that.postCardSwipData(url, data);
+            }
+            else{
+              sntapp.notification.showErrorMessage('not visible from success');
+            }
+          },
+          failureCallBack: function(errorObject){
+            if(that.myDomElement.is(':visible')){
+              var errorCode = errorObject.RVErrorCode;
+              var errorDesc = errorObject.RVErrorDesc;
+              sntapp.notification.showErrorMessage("Error occured (" + errorCode + "): " + errorDesc);
+            }
+            else{
+              sntapp.notification.showErrorMessage('not visible from failure');
+            }
+          }
+      };
+      sntapp.cardReader.startReader(options);     
     }
     if(type != "") {
         var search_url = "search.json?status=" + type;
@@ -163,20 +162,16 @@ var Search  = function(domRef){
     alert('postCardSwipDataSuccess');
     alert( JSON.stringify(response) );
 
-    var webservice = new WebServiceInterface();
-    var url = '/staff/staycards/staycard';
-    var options = {
-      loader: 'BLOCKER',
-      requestParameters: {
-        'confirmation': response.data.confirmation,
-        'id': response.data.id
-      },
-      successCallBack: function(data) {
-        $('#page-inner-first').html(data).addClass( 'page-current' );
-        changeInnerPage('inner-page', false, false, 'page-inner-first', 'move-from-right', false);
-      }
+    var viewURL = '/staff/staycards/staycard';
+    var viewDom = $('#page-inner-first');
+    var params = {
+      'confirmation': response.data.confirmation,
+      'id': response.data.id
     }
-    webservice.getHTML(url, options);
+    var loader = 'BLOCKER';
+    var nextViewParams = {};
+
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, loader, nextViewParams);
   };
 
 
