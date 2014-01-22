@@ -38,9 +38,11 @@ var StayCard = function(viewDom){
   	else if (this.viewParams["current-view"] === "room_upgrades_view"){
 
   		changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
-  	}
+  	} else if (this.viewParams["current-view"] === "search_view"){
+      changeInnerPage('inner-page', undefined, undefined, 'page-inner-first', 'move-from-right', false);
+    }
   		
-  	 
+
   };
 
 

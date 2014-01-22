@@ -140,17 +140,13 @@ var Search  = function(domRef){
 
   // post the card swipe data
   this.postCardSwipData = function(url, data) {
-    alert('postCardSwipData');
-    alert(url);
-    alert( JSON.stringify(data) );
-
     var webservice = new WebServiceInterface();
     var options = {
       loader: 'BLOCKER',
       requestParameters: data,
       successCallBack: that.postCardSwipDataSuccess,
       failureCallBack: function (errorMessage){
-        sntapp.notification.showErrorMessage(url + ' ' + errorMessage);
+        sntapp.notification.showErrorMessage('Oops something went wrong with - ' + errorMessage);
       }
     }
     webservice.postJSON(url, options);
@@ -159,9 +155,6 @@ var Search  = function(domRef){
   // got the guest!
   // lets load his staycard right away! 
   this.postCardSwipDataSuccess = function(response) {
-    alert('postCardSwipDataSuccess');
-    alert( JSON.stringify(response) );
-
     var viewURL = '/staff/staycards/staycard';
     var viewDom = $('#page-inner-first');
     var params = {
@@ -169,8 +162,10 @@ var Search  = function(domRef){
       'id': response.data.id
     }
     var loader = 'BLOCKER';
-    var nextViewParams = {};
-
+    var nextViewParams = {
+      'showanimation': true,
+      'current-view': 'search_view'
+    };
     sntapp.fetchAndRenderView(viewURL, viewDom, params, loader, nextViewParams);
   };
 
