@@ -154,23 +154,6 @@ var Search  = function(domRef){
       }
     }
     webservice.postJSON(url, options);
-
-
-    // alert('hello from');
-    // var webservice = new WebServiceInterface();
-    // var url = '/staff/staycards/staycard';
-    // var options = {
-    //   loader: 'BLOCKER',
-    //   requestParameters: {
-    //     'confirmation': 4818623,
-    //     'id': 573
-    //   },
-    //   successCallBack: function(data) {
-    //     $('#page-inner-first').html(data).addClass( 'page-current' );
-    //     changeInnerPage('inner-page', false, false, 'page-inner-first', 'move-from-right', false);
-    //   }
-    // };
-    // webservice.getHTML(url, options);
   };
 
   // got the guest!
@@ -179,20 +162,16 @@ var Search  = function(domRef){
     alert('postCardSwipDataSuccess');
     alert( JSON.stringify(response) );
 
-    var webservice = new WebServiceInterface();
-    var url = '/staff/staycards/staycard';
-    var options = {
-      loader: 'BLOCKER',
-      requestParameters: {
-        'confirmation': response.data.confirmation,
-        'id': response.data.id
-      },
-      successCallBack: function(data) {
-        $('#page-inner-first').html(data).addClass( 'page-current' );
-        changeInnerPage('inner-page', false, false, 'page-inner-first', 'move-from-right', false);
-      }
-    }
-    webservice.getHTML(url, options);
+    var viewURL = '/staff/staycards/staycard';
+    var viewDOM = $('#page-inner-first');
+    var params = {
+      'confirmation': response.data.confirmation,
+      'id': response.data.id
+    };
+    var loader = 'BLOCKER';
+    var nextViewParams = {};
+
+    sntapp.fetchAndRenderView(viewURL, viewDom, params, loader, nextViewParams);
   };
 
 
