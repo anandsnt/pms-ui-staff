@@ -141,7 +141,7 @@ var PostChargeModel = function(callBack) {
 		
 		var element = $(e.target);
 		
-		if(element.closest('li').prop('id') == "items-list"){
+		if(element.hasClass('button white')){
 		
 			e.preventDefault();
 			e.stopImmediatePropagation();
