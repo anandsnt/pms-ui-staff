@@ -257,9 +257,9 @@ var ChangeStayDatesView = function(viewDom){
     var arrivalDate = getDateString(checkinDate);
     var departureDate = getDateString(checkoutDate);
     var postParams = {"arrival_date": arrivalDate, "dep_date": departureDate};
-    var url = 'sample_json/change_staydates/reservation_updates.json';
+    //var url = 'sample_json/change_staydates/reservation_updates.json';
 
-    //var url = '/staff/change_stay_dates/'+that.reservationId+'/update.json';
+    var url = '/staff/change_stay_dates/'+that.reservationId+'/update.json';
     var webservice = new WebServiceInterface(); 
     var successCallBackParams = {
         'reservationId': that.reservationId,
