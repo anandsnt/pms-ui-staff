@@ -37,7 +37,7 @@ var ChangeStayDatesView = function(viewDom){
   this.fetchCalenderEvents = function(){
     var url = "/staff/change_stay_dates/"+that.reservationId+"/calendar.json"
 
-    var url = 'sample_json/change_staydates/rooms_available.json';
+    //var url = 'sample_json/change_staydates/rooms_available.json';
     var webservice = new WebServiceInterface(); 
     var options = {
            successCallBack: that.calenderDatesFetchCompleted,
@@ -185,6 +185,7 @@ var ChangeStayDatesView = function(viewDom){
 
   this.datesChanged = function(event, revertFunc){
 
+    
     var checkinOrig = that.checkinDateInCalender;
     var checkoutOrig = that.checkoutDateInCalender;
 
@@ -244,12 +245,14 @@ var ChangeStayDatesView = function(viewDom){
     that.checkinDateInCalender = checkinDate;
     that.checkoutDateInCalender = checkoutDate; 
 
+    $('#reservation-calendar').fullCalendar( 'gotoDate', focusDate.getFullYear(), focusDate.getMonth());
     $('#reservation-calendar').fullCalendar('removeEvents');
     $('#reservation-calendar').fullCalendar('refetchEvents').fullCalendar('renderEvents');
 
   };
 
   this.showReservationUpdates = function(checkinDate, checkoutDate){
+    that.fadeinHeaderDates();
     var arrivalDate = getDateString(checkinDate);
     var departureDate = getDateString(checkoutDate);
     var postParams = {"arrival_date": arrivalDate, "dep_date": departureDate};
@@ -282,7 +285,7 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.datesChangeSuccess = function(response, reservationDetails){
-
+    that.fadeoutHeaderDates();
     if(response.data.availability_status == "room_available"){
       that.showRoomAvailableUpdates(response, reservationDetails);
     }else if(response.data.availability_status == "not_available"){
@@ -352,6 +355,7 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.resetDatesClicked = function(element){
+    that.fadeinHeaderDates();
     that.myDom.find('#no-reservation-updates.hidden').removeClass('hidden');
     that.myDom.find('#reservation-updates').addClass('hidden');
     that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate, that.confirmedCheckinDate)
@@ -363,5 +367,16 @@ var ChangeStayDatesView = function(viewDom){
     }
     sntapp.activityIndicator.showActivityIndicator('blocker');
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);  
+  };
+
+
+  this.fadeinHeaderDates = function(){
+    // Fade in previous dates in reservation header
+    that.myDom.find('#edit-reservation .reservation-header').find('.data > .nights, .data > .date').removeAttr('style');
+  };
+
+  this.fadeoutHeaderDates = function(){
+    // Fade out previous dates in reservation header
+    that.myDom.find('#edit-reservation .reservation-header').find('.data > .nights, .data > .date').css('opacity','.2');
   };
 };
