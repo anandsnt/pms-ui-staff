@@ -12,8 +12,10 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 
 		// Keep looking for "injectSwipeCardData"
 		// Once avaliable, execute it
-		window.injectCardTimer = null;
-		injectCard();
+		// window.injectCardTimer = null;
+		// injectCard();
+
+		window.injectSwipeCardData();
 	};
 
 	// Keep looking for "injectSwipeCardData"
