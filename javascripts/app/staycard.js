@@ -13,24 +13,17 @@ var StayCard = function(viewDom){
       var options = {
           successCallBack: function(data){
             alert( JSON.stringify(data) );
-
-            if(that.myDomElement.is(':visible')){
-              var cardData = {
-                cardType: data.RVCardReadCardType || '',
-                expiryMonth: '06',
-                expiryYear: '16',
-                cardHolderName: data.RVCardReadCardName || '',
-                getTokenFrom: {
-                  'et2': data.RVCardReadTrack2,
-                  'ksn': data.RVCardReadTrack2KSN
-                }
+            var cardData = {
+              cardType: data.RVCardReadCardType || '',
+              expiry: data.RVCardReadExpDate || '',
+              cardHolderName: data.RVCardReadCardName || '',
+              getTokenFrom: {
+                'et2': data.RVCardReadTrack2,
+                'ksn': data.RVCardReadTrack2KSN
               }
-              that.postCardSwipData(cardData);
-            }
-            else{
-              sntapp.notification.showErrorMessage('not visible from success');
             }
 
+            that.postCardSwipData(cardData);
             $("#add-new-payment").trigger('click');
           },
           failureCallBack: function(errorObject){
@@ -53,15 +46,18 @@ var StayCard = function(viewDom){
         window.injectSwipeCardData = function() {
           $('#payment-type').val( 'CC' );
           $('#payment-credit-type').val( cardData.cardType );
-          $('#card-number-set1').val('xxxx-xxxx-xxxx-' + data.substr(data.length - 4));
-          $('#expiry-month').val( cardData.expiryMonth );
-          $('#expiry-year').val( cardData.expiryYear );
+          $('#card-number-set1').val('xxxx-xxxx-xxxx-' + data.slice(-4));
+          $('#expiry-month').val( cardData.expiry.substring(0, 2) );
+          $('#expiry-year').val( cardData.expiry.slice(-2) );
           $('#name-on-card').val( cardData.cardHolderName );
 
           // inject the token as hidden field into form
           // TODO: Fix Security Issue associated with input[type="hidden"]!
           $('#new-payment').append('<input type="hidden" id="card-token" value="' + data + '">')
-        };
+        }
+      },
+      failureCallBack: function(error) {
+        sntapp.notification.showErrorMessage('failed on postCardSwipData ' + error);
       }
     }
 
