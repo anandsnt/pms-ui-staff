@@ -256,9 +256,9 @@ var ChangeStayDatesView = function(viewDom){
     var arrivalDate = getDateString(checkinDate);
     var departureDate = getDateString(checkoutDate);
     var postParams = {"arrival_date": arrivalDate, "dep_date": departureDate};
-    //var url = 'sample_json/change_staydates/reservation_updates.json';
+    var url = 'sample_json/change_staydates/reservation_updates.json';
 
-    var url = '/staff/change_stay_dates/'+that.reservationId+'/update.json';
+    //var url = '/staff/change_stay_dates/'+that.reservationId+'/update.json';
     var webservice = new WebServiceInterface(); 
     var successCallBackParams = {
         'reservationId': that.reservationId,
@@ -288,8 +288,10 @@ var ChangeStayDatesView = function(viewDom){
     that.fadeoutHeaderDates();
     if(response.data.availability_status == "room_available"){
       that.showRoomAvailableUpdates(response, reservationDetails);
+    }else if(response.data.availability_status == "room_type_available"){
+      that.showRoomList(response, reservationDetails);
     }else if(response.data.availability_status == "not_available"){
-      that.showNo(response, reservationDetails);
+      that.showNoRoomsAvailableMessage();
     }
 
   };
@@ -367,6 +369,18 @@ var ChangeStayDatesView = function(viewDom){
     }
     sntapp.activityIndicator.showActivityIndicator('blocker');
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);  
+  };
+
+  this.showRoomList = function(response, reservationDetails){
+    that.myDom.find('#no-reservation-updates').addClass('hidden');
+    that.myDom.find('#room-unavailable.hidden').removeClass('hidden');
+
+    var roomListEntry = '<li>
+                        <button type="button" data-value="100" class="button white">
+                        <span class="room-number ready">100</span>
+                        </button>
+                        </li>'
+
   };
 
 
