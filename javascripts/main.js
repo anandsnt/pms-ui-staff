@@ -132,7 +132,7 @@ function onOffSwitch() {
             });
 
             onOff.children(onOffInput + ':disabled').each(function(){
-                onOff.addClass.addClass(onOffDisabled);
+                onOff.addClass(onOffDisabled);
             });
         }
     });
