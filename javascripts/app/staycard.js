@@ -30,7 +30,11 @@ var StayCard = function(viewDom){
           }
       };
       sntapp.cardReader.startReader(options);
-    } 
+    }
+
+    // demo
+    // $("#add-new-payment").trigger('click');
+    // this.postCardSwipData(); 
   };
 
   // lets post the 'et2' and 'ksn' data
@@ -40,22 +44,35 @@ var StayCard = function(viewDom){
     var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
     var options = {
       requestParameters: cardData.getTokenFrom,
-      successCallBack: function(data) {
+      successCallBack: function(token) {
         window.injectSwipeCardData = function(cardData) {
-
+          window.cardData.token = token;
           var cardData = window.cardData;
-          alert( JSON.stringify(cardData) );
 
           $('#payment-type').val( 'CC' );
-          $('#payment-credit-type').val( cardData.cardType );
-          $('#card-number-set1').val('xxxx-xxxx-xxxx-' + data.slice(-4));
-          $('#expiry-month').val( cardData.expiry.substring(0, 2) );
-          $('#expiry-year').val( cardData.expiry.slice(-2) );
+
+          var cards = {
+            'VA': 'VISA',
+            'MC': 'Master Card',
+            'DC': 'Diners Club',
+            'DS': 'Discover',
+            'JCB': 'Japan Credit Bureau',
+            'AX': 'American Express'
+          }
+          var option = '<option value="'+window.cardData.cardType+'" data-image="images/visa.png">'+cards[window.cardData.cardType]+'</option>'
+          $('#payment-credit-type').append(option).val(window.cardData.cardType);
+
+          $('#card-number-set1').val( cardData.token );
+          $('#expiry-month').val( cardData.expiry.slice(-2) );
+          $('#expiry-year').val( cardData.expiry.substring(0, 2) );
           $('#name-on-card').val( cardData.cardHolderName );
 
           // inject the token as hidden field into form
           // TODO: Fix Security Issue associated with input[type="hidden"]!
-          $('#new-payment').append('<input type="hidden" id="card-token" value="' + data + '">')
+          $('#new-payment').append('<input type="hidden" id="card-token" value="' + cardData.token + '">');
+
+          // Remove card data stored in window.cardData
+          window.cardData = {};
         }
       },
       failureCallBack: function(error) {
