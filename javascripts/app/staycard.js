@@ -12,7 +12,7 @@ var StayCard = function(viewDom){
     if(sntapp.cordovaLoaded){
       var options = {
           successCallBack: function(data){
-            var cardData = {
+            window.cardData = {
               cardType: data.RVCardReadCardType || '',
               expiry: data.RVCardReadExpDate || '',
               cardHolderName: data.RVCardReadCardName || '',
@@ -22,7 +22,7 @@ var StayCard = function(viewDom){
               }
             }
 
-            that.postCardSwipData(cardData);
+            that.postCardSwipData();
             $("#add-new-payment").trigger('click');
           },
           failureCallBack: function(errorObject){
@@ -36,12 +36,14 @@ var StayCard = function(viewDom){
   // lets post the 'et2' and 'ksn' data
   // to get the token code from MLI
   this.postCardSwipData = function(cardData) {
+    var cardData = window.cardData;
     var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
     var options = {
       requestParameters: cardData.getTokenFrom,
       successCallBack: function(data) {
         window.injectSwipeCardData = function(cardData) {
 
+          var cardData = window.cardData;
           alert( JSON.stringify(cardData) );
 
           $('#payment-type').val( 'CC' );
