@@ -222,6 +222,8 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
    
      this.filterPayments = function(e){
 
+     	alert('change trigger');
+
   		var $selectedPaymentType = $("#new-payment #payment-type").val();
 		$paymentTypeValues = '';
 		$("#new-payment #payment-credit-type").find('option').remove().end();

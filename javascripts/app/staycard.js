@@ -46,7 +46,7 @@ var StayCard = function(viewDom){
       requestParameters: cardData.getTokenFrom,
       successCallBack: function(token) {
         window.injectSwipeCardData = function(cardData) {
-          window.cardData.token = token;
+          window.cardData.token = token.data;
           var cardData = window.cardData;
 
           $('#payment-type').val( 'CC' );
