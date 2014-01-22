@@ -300,8 +300,7 @@ var ChangeStayDatesView = function(viewDom){
 
   this.showRoomAvailableUpdates = function(reservationDetails, roomNumber){
 
-    var roomSelected = (roomNumber == 'undefined' ? that.myDom.find('#header-room-num').text(): roomNumber);
-
+    var roomSelected = (typeof roomNumber == 'undefined' ? that.myDom.find('#header-room-num').html(): roomNumber);
     var totalNights = 0,
         totalRate = 0,
         avgRate = 0,
@@ -357,8 +356,6 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.resetDatesClicked = function(element){
-
-    console.log("here");
     that.fadeinHeaderDates();
     that.myDom.find('#no-reservation-updates.hidden').removeClass('hidden');
     that.myDom.find('#reservation-updates').addClass('hidden');
