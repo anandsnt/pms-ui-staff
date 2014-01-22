@@ -379,9 +379,9 @@ var ChangeStayDatesView = function(viewDom){
     that.myDom.find('#current-room').text(currentRoom);
 
     $(response.data.rooms).each(function(index){
-      var roomElement = '<span class="room-number '+'ready'+'">'+ this.room-number +'</span>';
-          var roomListEntry = '<li><button type="button" data-value="'+ this.room_number +'" class="button white">' +
-                        '<span class="room-number ready">'+ this.room-number +'</span>' +
+      var roomElement = '<span class="room-number ready">'+ this.room_number +'</span>';
+          var roomListEntry = '<li><button type="button" data-value="'+ this.room_number +'" class="button white">' 
+                        +roomElement+
                         '</button></li>';
       that.myDom.find('#change-room ul').append(roomListEntry);
 
