@@ -375,11 +375,17 @@ var ChangeStayDatesView = function(viewDom){
     that.myDom.find('#no-reservation-updates').addClass('hidden');
     that.myDom.find('#room-unavailable.hidden').removeClass('hidden');
 
-    var roomListEntry = '<li>
-                        <button type="button" data-value="100" class="button white">
-                        <span class="room-number ready">100</span>
-                        </button>
-                        </li>'
+    var currentRoom = that.myDom.find('#header-room-num').text();
+    that.myDom.find('#current-room').text(currentRoom);
+
+    $(response.data.rooms).each(function(index){
+      var roomElement = '<span class="room-number '+'ready'+'">'+ this.room-number +'</span>';
+          var roomListEntry = '<li><button type="button" data-value="'+ this.room_number +'" class="button white">' +
+                        '<span class="room-number ready">'+ this.room-number +'</span>' +
+                        '</button></li>';
+      that.myDom.find('#change-room ul').append(roomListEntry);
+
+    });
 
   };
 
