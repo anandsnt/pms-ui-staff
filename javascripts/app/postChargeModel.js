@@ -21,6 +21,7 @@ var PostChargeModel = function(callBack) {
 		setTimeout(function() {
 			createViewScroll('#items-listing');
 			createViewScroll('#items-summary');
+			that.showFavouriteItems();
 		}, 300);
 		that.myDom.find("#items-listing").on("click", that.clickItemList);
 		that.myDom.find("#items-summary").on("click", that.clickItemListSummary);
@@ -32,6 +33,7 @@ var PostChargeModel = function(callBack) {
 
 	this.modalInit = function() {
 		this.fetchItemList();
+		
 	};
  	//Clear Search Results 
   	this.clearResults = function(e){
@@ -45,11 +47,12 @@ var PostChargeModel = function(callBack) {
   	//Search items
     this.queryEntered = function(e){
 		that.currentQuery = $(this).val();
-        console.log(that.currentQuery);
         // Clear button visibility toggle
     	that.showHideClearQueryButton();
     	
     	that.displaySearchItem(that.currentQuery);
+    	$("#charge-groups").find('option:selected').removeAttr('selected');
+    	$("#charge-groups #all-charge-groups").attr('selected','selected');
     };
     
     // To display search results
@@ -65,9 +68,7 @@ var PostChargeModel = function(callBack) {
 	        var items=[];
 	        
 	        $.each(that.itemCompleteList, function(i,value){
-	        	console.log(i);
-	        	console.log(value);
-	            if ((escapeNull(value.item_name).toUpperCase()).indexOf(query.toUpperCase()) >= 0 ){
+	            if ((escapeNull(value.item_name).toUpperCase()).indexOf(query.toUpperCase()) == 0 ){
 	            	var $count_html = "";
 	            	var html="";
 	            	var currency_code = getCurrencySymbol(value.currency_code);
