@@ -197,7 +197,7 @@ var ChangeStayDatesView = function(viewDom){
     newDateSelected.setHours(0,0,0,0);
     firstAvailableDate.setHours(0,0,0,0);
     lastAvailableDate.setHours(0,0,0,0);
-    var currentBusinessDate = new Date(that.availableEvents.data.current_busines_date);
+    var currentBusinessDate = new Date(that.availableEvents.data.current_business_date);
     currentBusinessDate.setHours(0,0,0,0);
   
 
