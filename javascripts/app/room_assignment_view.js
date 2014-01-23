@@ -219,6 +219,10 @@ var RoomAssignmentView = function(viewDom){
         // Always show color coding ( Red / Green - for Room status)
         if(filteredRoomList[i].room_status == "READY" && filteredRoomList[i].fo_status == "VACANT"){
           room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
+		  
+		  if(filteredRoomList[i].is_preassigned) {
+			  room_status_html += "<span class='room-preassignment'>"+filteredRoomList[i].last_name + " " + filteredRoomList[i].guarantee_type+"</span>";
+		  } 
         }
         else{
             room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
@@ -229,8 +233,8 @@ var RoomAssignmentView = function(viewDom){
         if(room_status_html != ""){
           var output = "<li><a id = 'room-list-item'"+
             "class='button white submit-value hover-hand' data-value='' >"+room_status_html+"</a></li>";
-          $('#rooms-available ul').append(output);      
-        }       
+          $('#rooms-available ul').append(output);    
+        }    
     }
     that.createRoomListScroll();
 
