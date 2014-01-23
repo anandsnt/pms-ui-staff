@@ -35,21 +35,36 @@ var ValidateCheckoutModal = function(callBack, callBackParam) {
 		}
 		else if(validateEmail(email)){
 
-		    $.ajax({
-					type : "PUT",
-					url : 'staff/guest_cards/' + userId,
-					data : JSON.stringify($contactJsonObj),
-					async : false,
-					dataType : 'json',
-					contentType : 'application/json',
-					success : function() {
-						
-					},
-					error : function() {
-					}
-			});
+		    // $.ajax({
+					// type : "PUT",
+					// url : 'staff/guest_cards/' + userId,
+					// data : JSON.stringify($contactJsonObj),
+					// async : false,
+					// dataType : 'json',
+					// contentType : 'application/json',
+					// success : function() {
+// 						
+					// },
+					// error : function() {
+					// }
+			// });
 			
-			// Update UI changes in Guest card header and Contact information.
+			
+			var webservice = new WebServiceInterface();
+		    	
+		    var url = 'staff/guest_cards/' + userId; 
+		    var options = {
+					   requestParameters: JSON.stringify($contactJsonObj),
+					   successCallBack: that.fetchCompletedOfSave,
+					   failureCallBack: that.fetchFailedOfSave,
+					   successCallBackParameters:{ "callBack": callBack, 'callBackParam':callBackParam}
+					   
+			};
+		    webservice.putJSON(url, options);
+		}
+	};
+	this.fetchCompletedOfSave = function(data, requestParameters){
+    	// Update UI changes in Guest card header and Contact information.
 			var guest_email = $("#gc-email").val();
 			
 			if(guest_email ==""){
@@ -57,8 +72,11 @@ var ValidateCheckoutModal = function(callBack, callBackParam) {
 				$("#email").val($("#validate #guest-email").val());
 			}
 		
-			callBack(callBackParam);
+			requestParameters['callBack'](requestParameters['callBackParam']);
 			that.hide();
-		}
-	};
+    };
+    this.fetchFailedOfSave = function(errorMessage){
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
+    };
 };
