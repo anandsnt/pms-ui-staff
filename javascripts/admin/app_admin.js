@@ -9,6 +9,6 @@ $(document).ready(function(){
 		sntAdmin.initialize();
 	}
 	$('html').on('click', function(){
-		sntapp.notification.hideMessage();
+		// sntapp.notification.hideMessage();
 	});
 });

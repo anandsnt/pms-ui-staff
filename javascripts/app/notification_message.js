@@ -10,6 +10,8 @@ var NotificationMessage = function() {
 	this.shouldShowCloseButtonForError = true;
 	
 	this.levels =["DEBUG","INFO", "NORMAL", "IMPORTANT","CRITICAL"];
+	
+	
 		
 	var that = this;
 	var duration = 700;
@@ -25,14 +27,20 @@ var NotificationMessage = function() {
 	};
 	
 	var scrollToErrorArea = function(dom) {
-		$(window).scrollTop($('#notification-message').offset().top);
-		// function used to scroll to the message displayed area	
-		//not recommended method	
-		var location = new String(document.location); 
-		location = location.split("#")[0];
-		//document.location = location + "#" + parent.attr("id") ;	
-		document.location = location + "#";
-		$("#reservation-content-4823374").scrollTop(0);
+		//in admin screens div scroll and in rover scroll is generated using iscroll
+		//to handle selecting current app
+		var currentApp = $("body").attr("id");
+		if((currentApp == "snt-admin-view") || (currentApp == "hotel-admin-view"))
+		{
+			dom.animate({
+				scrollTop: 0
+			}, 300);
+			$(window).scrollTop($('#notification-message').offset().top);
+		} else {
+			var element = $('#notification-message')[0];
+			var time = 2000;
+			viewScroll.scrollToElement(element, time);
+		}
 
 	};
 	
