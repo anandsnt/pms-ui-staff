@@ -796,7 +796,6 @@ body { overflow: hidden; }
 		&.item-loyalty {
 			span {
 				display: inline-block;
-				line-height: 50px;
 				vertical-align: middle;
 				color: @grey3;
 				font-size: 14px;
@@ -835,15 +834,19 @@ body { overflow: hidden; }
 		}
 
 		&.item-loyalty { 
-			.value.code { 
-				color: @textColor;
-				font-size: 24px; 
-				font-weight: 300;
-				margin: 0 5px 0 0; 
-			}
+			span {
+				line-height: 50px;
 
-			.number,
-			.value.number { margin: 0; }		
+				&.value.code { 
+					color: @textColor;
+					font-size: 24px; 
+					font-weight: 300;
+					margin: 0 5px 0 0; 
+				}
+
+				&.number,
+				&.value.number { margin: 0; }	
+			}	
 		}
 	}
 

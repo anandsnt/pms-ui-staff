@@ -49,11 +49,10 @@ body {
 				vertical-align: middle;
 				text-align: center;
 				overflow: hidden;
-				text-shadow: 1px 1px 0 rgba(0,0,0,.1);
+				background: @softRed;
 				.show;
 				.square(20px);
 				#border-radius > .rounded(20px);
-				.gradient(@redStart, @redEnd);
 			}
 
 			.active { 
@@ -116,6 +115,7 @@ body {
 	.notice {
 		padding: 10px;
 		margin: 10px;
+		margin-bottom: 10px;
 		color: darken(@yellow, 30);
 		background: lighten(@yellow, 20);
 		border: 1px solid @yellow;
