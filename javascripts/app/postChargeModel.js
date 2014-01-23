@@ -139,7 +139,7 @@ var PostChargeModel = function(callBack) {
 	// Add item to charges to be posted list
 	this.clickItemList = function(e) {
 		
-		var element = $(e.target);
+		var element = $(e.target).closest('a');
 		
 		if(element.hasClass('button white')){
 		
