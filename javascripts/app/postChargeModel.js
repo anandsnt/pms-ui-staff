@@ -2,8 +2,9 @@ var PostChargeModel = function(callBack) {
 	BaseModal.call(this);
 	var that = this;
 	this.reservation_id = getReservationId();
-	this.url = "/ui/show?haml_file=modals/postChargeToGuestBill&json_input=registration_card/post_charge.json&is_hash_map=true&is_partial=true";
+	this.url = 'staff/items/'+that.reservation_id+'/get_items';
 	this.itemCompleteList = [];
+	this.currentList = [];
 	this.currentQuery = "";
 	
 	this.delegateEvents = function() {
@@ -21,20 +22,19 @@ var PostChargeModel = function(callBack) {
 		setTimeout(function() {
 			createViewScroll('#items-listing');
 			createViewScroll('#items-summary');
-			that.showFavouriteItems();
 		}, 300);
 		that.myDom.find("#items-listing").on("click", that.clickItemList);
 		that.myDom.find("#items-summary").on("click", that.clickItemListSummary);
 		that.myDom.find("#charge-groups").on("change", that.changedChargeGroup);
   		that.myDom.find('#query').on('keyup', that.queryEntered);
   		that.myDom.find('#clear-query').on('click', that.clearResults);
-
+		that.myDom.find('#post').on('click', that.postCharge);
 	};
 
 	this.modalInit = function() {
 		this.fetchItemList();
-		
 	};
+	
  	//Clear Search Results 
   	this.clearResults = function(e){
 	    //if the method is invoked from other views to clear search results, 'this', 'e' are undefined.
@@ -42,6 +42,8 @@ var PostChargeModel = function(callBack) {
 	  		$(this).removeClass('visible');
 	    }
 	    $('#query').val('');
+	    that.currentList = that.itemCompleteList;
+    	that.showAllItems();
   	};
   
   	//Search items
@@ -50,25 +52,26 @@ var PostChargeModel = function(callBack) {
         // Clear button visibility toggle
     	that.showHideClearQueryButton();
     	
-    	that.displaySearchItem(that.currentQuery);
+    	that.displaySearchItem();
     	$("#charge-groups").find('option:selected').removeAttr('selected');
     	$("#charge-groups #all-charge-groups").attr('selected','selected');
     };
     
     // To display search results
-    this.displaySearchItem = function(query){
+    this.displaySearchItem = function(){
     	that.myDom.find('#search-item-results').html("");
-    	
-    	if(query == ""){
+    	if(that.currentQuery == ""){
+    		that.currentList = that.itemCompleteList;
     		that.showAllItems();
         	return false;
       	}
       	
     	try{
 	        var items=[];
-	        var item_found = false;
+	        var is_item_found = false;
+	        that.currentList = [];
 	        $.each(that.itemCompleteList, function(i,value){
-	            if ((escapeNull(value.item_name).toUpperCase()).indexOf(query.toUpperCase()) == 0 ){
+	            if ((escapeNull(value.item_name).toUpperCase()).indexOf(that.currentQuery.toUpperCase()) == 0 ){
 	            	var $count_html = "";
 	            	var html="";
 	            	var currency_code = getCurrencySymbol(value.currency_code);
@@ -76,27 +79,25 @@ var PostChargeModel = function(callBack) {
 						$count_html = '<span class="count">'+value.count+'</span>';
 					}
 					
-					html = '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + value.unit_price + '" data-item="' + value.item_name + '" data-is-favourite="' + value.is_favourite + '" data-id="' + value.value + '" data-charge-group="' + value.charge_group_value + '" data-cc="' + value.currency_code + '" data-base="unit" class="button white">' + value.item_name + '<span class="price"> '+currency_code+' <span class="value">' + value.unit_price + '</span></span>'+$count_html+'</a></li>';
-	            
+					html = '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + value.unit_price + '" data-item="' + value.item_name + '" data-is-favourite="' + value.is_favorite + '" data-id="' + value.value + '" data-charge-group="' + value.charge_group_value + '" data-cc="' + value.currency_code + '" data-base="unit" class="button white">' + value.item_name + '<span class="price"> '+currency_code+' <span class="value">' + value.unit_price + '</span></span>'+$count_html+'</a></li>';
 	            	items.push($('#search-item-results').append(html));
-	            	
-	            	item_found = true;
+	            	is_item_found = true;
+	            	that.currentList.push(value);
 	            }
-	            
     		});
-    		if(!item_found){
-    			 var html = "<div id='no-items-added' class='no-content'><strong class='h1'>No items found</strong></div>";
-	             $('#search-item-results').html(html);
-	        }
-	        else{
-	    		$.each(items, function(i,value){
-		            	$('#search-item-results').append(value).highlight(query);
+    		
+    		if(is_item_found){
+    			$.each(items, function(i,value){
+		            	that.myDom.find('#search-item-results').append(value).highlight(that.currentQuery);
 		        });
 	        }
-    		
+	        else{
+	    		var html = "<div id='no-items-added' class='no-content'><strong class='h1'>No items found</strong></div>";
+	            that.myDom.find('#search-item-results').html(html);
+	        }
     	}
     	catch(e){
-	    	$('#search-item-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
+	    	that.myDom.find('#search-item-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
 	    }
     };
     
@@ -104,7 +105,8 @@ var PostChargeModel = function(callBack) {
 	this.showHideClearQueryButton = function(){
 	  	if($('#query').val() !== '') {
 	        $('#clear-query:not(.visible)').addClass('visible');
-	    } else {
+	    }
+	    else{
 	        $('#clear-query.visible').removeClass('visible');
 	    }
 	};
@@ -113,12 +115,13 @@ var PostChargeModel = function(callBack) {
 	this.fetchItemList = function() {
 		$.ajax({
 			type : "GET",
-			url : '/ui/show.json?haml_file=modals/postChargeToGuestBill&json_input=registration_card/post_charge.json&is_hash_map=true&is_partial=true',
-			success : function(data) {
-				that.itemCompleteList = data.items;
+			url: 'staff/items/'+that.reservation_id+'/get_items.json',
+			success : function(response) {
+				that.itemCompleteList = response.data.items;
 				for(var i=0;i<that.itemCompleteList.length;i++){
 					that.itemCompleteList[i].count = 0;
 				}
+				that.currentList = that.itemCompleteList;
 			}
 		});
 	};
@@ -138,7 +141,7 @@ var PostChargeModel = function(callBack) {
 		
 		var element = $(e.target);
 		
-		if(element.closest('li').prop('id') == "items-list"){
+		if(element.hasClass('button white')){
 		
 			e.preventDefault();
 			e.stopImmediatePropagation();
@@ -151,7 +154,7 @@ var PostChargeModel = function(callBack) {
 			$price = element.attr('data-price'),
 			$currency_code = getCurrencySymbol(element.attr('data-cc')),
 			$base = element.attr('data-base'),
-			$output = $item + ' <span class="count" /><span class="base">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">$ <span class="value">' + $price + '</span></span>';
+			$output = $item + ' <span class="count" /><span class="base">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">'+$currency_code+'<span class="value">' + $price + '</span></span>';
 	
 			// Update right side panel
 			if (that.myDom.find('#items-added.hidden')) {
@@ -196,7 +199,8 @@ var PostChargeModel = function(callBack) {
 				if (that.myDom.find('#items-summary li').length > '4') {
 					pageScroll.scrollTo(0, -(that.myDom.find('#items-summary li').length - 4) * 45);
 					that.myDom.find('#total-charge').removeAttr('class');
-				} else {
+				}
+				else {
 					that.myDom.find('#total-charge').removeAttr('class').addClass('offset-' + that.myDom.find('#items-summary li').length)
 				}
 			}
@@ -254,14 +258,14 @@ var PostChargeModel = function(callBack) {
 	this.showFavouriteItems = function() {
 		that.myDom.find("#items-listing ul").html("");
 		var html = '';
-		for (var i = 0; i < that.itemCompleteList.length; i++) {
-			if (that.itemCompleteList[i].is_favourite == "true") {
-				var currency_code = getCurrencySymbol(that.itemCompleteList[i].currency_code);
+		for (var i = 0; i < that.currentList.length; i++) {
+			if (that.currentList[i].is_favorite == "true") {
+				var currency_code = getCurrencySymbol(that.currentList[i].currency_code);
 				var $count_html = "";
-				if(that.itemCompleteList[i].count > 0) {
-					$count_html = '<span class="count">'+that.itemCompleteList[i].count+'</span>';
+				if(that.currentList[i].count > 0) {
+					$count_html = '<span class="count">'+that.currentList[i].count+'</span>';
 				}
-				html += '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + that.itemCompleteList[i].unit_price + '" data-item="' + that.itemCompleteList[i].item_name + '" data-is-favourite="' + that.itemCompleteList[i].is_favourite + '" data-id="' + that.itemCompleteList[i].value + '" data-charge-group="' + that.itemCompleteList[i].charge_group_value + '" data-cc="' + that.itemCompleteList[i].currency_code + '" data-base="unit" class="button white">' + that.itemCompleteList[i].item_name + '<span class="price"> '+currency_code+' <span class="value">' + that.itemCompleteList[i].unit_price + '</span></span>'+$count_html+'</a></li>';
+				html += '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + that.currentList[i].unit_price + '" data-item="' + that.currentList[i].item_name + '" data-is-favourite="' + that.currentList[i].is_favorite + '" data-id="' + that.currentList[i].value + '" data-charge-group="' + that.currentList[i].charge_group_value + '" data-cc="' + that.currentList[i].currency_code + '" data-base="unit" class="button white">' + that.currentList[i].item_name + '<span class="price"> '+currency_code+' <span class="value">' + that.currentList[i].unit_price + '</span></span>'+$count_html+'</a></li>';
 			}
 		}
 		that.myDom.find("#items-listing ul").html(html);
@@ -271,13 +275,13 @@ var PostChargeModel = function(callBack) {
 	this.showAllItems = function() {
 		that.myDom.find("#items-listing ul").html("");
 		var html = '';
-		for (var i = 0; i < that.itemCompleteList.length; i++) {
-			var currency_code = getCurrencySymbol(that.itemCompleteList[i].currency_code);
+		for (var i = 0; i < that.currentList.length; i++) {
+			var currency_code = getCurrencySymbol(that.currentList[i].currency_code);
 			var $count_html = "";
-			if(that.itemCompleteList[i].count > 0) {
-				$count_html = '<span class="count">'+that.itemCompleteList[i].count+'</span>';
+			if(that.currentList[i].count > 0) {
+				$count_html = '<span class="count">'+that.currentList[i].count+'</span>';
 			}
-			html += '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + that.itemCompleteList[i].unit_price + '" data-item="' + that.itemCompleteList[i].item_name + '" data-is-favourite="' + that.itemCompleteList[i].is_favourite + '" data-id="' + that.itemCompleteList[i].value + '" data-charge-group="' + that.itemCompleteList[i].charge_group_value + '" data-cc="' + that.itemCompleteList[i].currency_code + '" data-base="unit" class="button white">' + that.itemCompleteList[i].item_name + '<span class="price"> '+currency_code+' <span class="value">' + that.itemCompleteList[i].unit_price + '</span></span>'+$count_html+'</a></li>';
+			html += '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + that.currentList[i].unit_price + '" data-item="' + that.currentList[i].item_name + '" data-is-favourite="' + that.currentList[i].is_favorite + '" data-id="' + that.currentList[i].value + '" data-charge-group="' + that.currentList[i].charge_group_value + '" data-cc="' + that.currentList[i].currency_code + '" data-base="unit" class="button white">' + that.currentList[i].item_name + '<span class="price"> '+currency_code+' <span class="value">' + that.currentList[i].unit_price + '</span></span>'+$count_html+'</a></li>';
 		}
 		that.myDom.find("#items-listing ul").html(html);
 	};
@@ -286,17 +290,60 @@ var PostChargeModel = function(callBack) {
 	this.showFilteredItems = function(filterId) {
 		that.myDom.find("#items-listing ul").html("");
 		var html = '';
-		for (var i = 0; i < that.itemCompleteList.length; i++) {
-			if (that.itemCompleteList[i].charge_group_value == filterId) {
-				var currency_code = getCurrencySymbol(that.itemCompleteList[i].currency_code);
+		for (var i = 0; i < that.currentList.length; i++) {
+			if (that.currentList[i].charge_group_value == filterId) {
+				var currency_code = getCurrencySymbol(that.currentList[i].currency_code);
 				var $count_html = "";
-				if(that.itemCompleteList[i].count > 0) {
-					$count_html = '<span class="count">'+that.itemCompleteList[i].count+'</span>';
+				if(that.currentList[i].count > 0) {
+					$count_html = '<span class="count">'+that.currentList[i].count+'</span>';
 				}
-				html += '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + that.itemCompleteList[i].unit_price + '" data-item="' + that.itemCompleteList[i].item_name + '" data-is-favourite="' + that.itemCompleteList[i].is_favourite + '" data-id="' + that.itemCompleteList[i].value + '" data-charge-group="' + that.itemCompleteList[i].charge_group_value + '" data-cc="' + that.itemCompleteList[i].currency_code + '" data-base="unit" class="button white">' + that.itemCompleteList[i].item_name + '<span class="price"> '+currency_code+' <span class="value">' + that.itemCompleteList[i].unit_price + '</span></span>'+$count_html+'</a></li>';
+				html += '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + that.currentList[i].unit_price + '" data-item="' + that.currentList[i].item_name + '" data-is-favourite="' + that.currentList[i].is_favorite + '" data-id="' + that.currentList[i].value + '" data-charge-group="' + that.currentList[i].charge_group_value + '" data-cc="' + that.currentList[i].currency_code + '" data-base="unit" class="button white">' + that.currentList[i].item_name + '<span class="price"> '+currency_code+' <span class="value">' + that.currentList[i].unit_price + '</span></span>'+$count_html+'</a></li>';
 			}
 		}
 		that.myDom.find("#items-listing ul").html(html);
 	};
 	
+	// Post charge.
+	this.postCharge = function(){
+		
+		var data = {};
+	    data.reservation_id = that.reservation_id;
+	    var bill_number = $("#select-bill-number").find('option:selected').val();
+	    
+	    data.bill_no = (that.params.bill_number === undefined) ? bill_number :that.params.bill_number;
+	    data.total = that.myDom.find("#total-charge .value").text();
+	    data.items = [];
+	    
+	    that.myDom.find("#items-summary li" ).each(function() {
+	    	var obj ={
+	    		"value" : $(this).attr('data-id'),
+	    		"amount" : $(this).find('.value').text()
+	    	};
+			data.items.push(obj);
+		});
+	    
+		var url = '/staff/items/post_items_to_bill';
+	    var webservice = new WebServiceInterface();
+		var options = {
+			   requestParameters: data,
+			   successCallBack: that.fetchCompletedOfPostCharge,
+			   failureCallBack: that.fetchFailedOfPostCharge,
+			   loader: 'BLOCKER'
+	    };
+	    webservice.postJSON(url, options);
+	    that.hide();
+	};
+	
+	// success callback on post cahrges
+	this.fetchCompletedOfPostCharge = function(){
+		 sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+		 if(that.origin == views.BILLCARD){
+		 	callBack(); //To Reload page on bill card
+		 }
+	};
+	
+	// failure callback on post cahrges
+	this.fetchFailedOfPostCharge = function(errorMessage){
+		 sntapp.notification.showErrorMessage(errorMessage, that.myDom);	
+	};
 }; 

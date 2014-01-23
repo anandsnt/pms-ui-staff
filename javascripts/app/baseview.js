@@ -29,7 +29,6 @@ var BaseView = function(viewDom){
     * if this is a search page the reader will be started again
     * by the search page's controller
     */
-    sntapp.cardReader && sntapp.cardReader.stopReader();
 
     that.pageinit();
     that.executeLoadingAnimation();

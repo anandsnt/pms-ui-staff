@@ -121,7 +121,7 @@ var RegistrationCardView = function(viewDom) {
 			"showanimation" : false,
 			"current-view" : "staycard"
 		};
-		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NONE', nextViewParams);
+		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
 	};
 
 	this.completeCheckin = function(e) {
@@ -223,7 +223,8 @@ var RegistrationCardView = function(viewDom) {
 		if (balance_amount != 0) {
 			// When balance amount is not 0 - perform payment action.
 			that.payButtonClicked();
-		} else {
+		}
+		else {
 			// When balance amount is 0 - perform complete check out action.
 			var email = $("#gc-email").val();
 			var url = '/staff/checkout';

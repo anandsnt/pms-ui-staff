@@ -9,7 +9,24 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
   		that.getPaymentsList();
   		that.myDom.find('#new-payment #payment-type').on('change', that.filterPayments);
 		that.myDom.find('#new-payment #save_new_credit_card').on('click', that.saveNewPayment);
+
+		// Keep looking for "injectSwipeCardData"
+		// Once avaliable, execute it
+		window.injectCardTimer = null;
+		injectCard();
 	};
+
+	// Keep looking for "injectSwipeCardData"
+	// Once avaliable, execute it
+	var injectCard = function() {
+		if (window.injectSwipeCardData) {
+			clearInterval(window.injectCardTimer);
+			window.injectSwipeCardData();
+		} else {
+			window.injectCardTimer = setInterval(injectCard, 200);
+		}
+	};
+
 	this.modalInit = function(){
    	};
    	this.fetchCompletedOfReservationPayment = function(data, requestParameters){
@@ -69,15 +86,16 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
    	this.saveNewPayment = function(){
    		if (that.save_inprogress == true) return false;
 		var $payment_type = $("#new-payment #payment-type").val();
-		$payment_credit_type = $("#new-payment #payment-credit-type").val();
-		$card_number_set = $("#new-payment #card-number-set1").val();
-		$expiry_month	= $("#new-payment #expiry-month").val();
-		$expiry_year	= $("#new-payment #expiry-year").val();
-		$name_on_card	= $("#new-payment #name-on-card").val();
-		$card_type 		= $("#payment-credit-type").val();
-		$card_number = $card_number_set;
-		$card_expiry = $expiry_month && $expiry_year ? "20"+$expiry_year+"-"+$expiry_month+"-01" : "";
-		$guest_id = $("#guest_id").val();
+		var $payment_credit_type = $("#new-payment #payment-credit-type").val();
+		var $card_number_set = $("#new-payment #card-number-set1").val();
+		var $expiry_month	= $("#new-payment #expiry-month").val();
+		var $expiry_year	= $("#new-payment #expiry-year").val();
+		var $name_on_card	= $("#new-payment #name-on-card").val();
+		var $card_type 		= $("#payment-credit-type").val();
+		var $card_number = $card_number_set;
+		var $card_expiry = $expiry_month && $expiry_year ? "20"+$expiry_year+"-"+$expiry_month+"-01" : "";
+		var $guest_id = $("#guest_id").val();
+		var $card_token = $('#card-token').val();
 		
 		var curr_year  	= new Date().getFullYear()%100; // Last two digits of current year.
 		var curr_month  = new Date().getMonth()+1;
@@ -142,7 +160,8 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 				    credit_card: $card_type,
 				    card_expiry: $card_expiry,
 				    name_on_card: $name_on_card,
-				    guest_id: $guest_id
+				    guest_id: $guest_id,
+				    card_token: $card_token
 		    };
 		    var url = 'staff/payments/save_new_payment'; 
 		    var options = {
@@ -170,7 +189,8 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 				    card_number: $card_number,
 				    credit_card: $card_type,
 				    card_expiry: $card_expiry,
-				    name_on_card: $name_on_card
+				    name_on_card: $name_on_card,
+				    card_token: $card_token
 		    };		
 		    var url = 'staff/reservation/save_payment'; 
 		    var options = {
