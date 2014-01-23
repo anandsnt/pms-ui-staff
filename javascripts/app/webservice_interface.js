@@ -77,6 +77,7 @@ var WebServiceInterface = function(){
 				failureCallBack, successCallBackParameters, failureCallBackParameters, 
 				async, requestType, contentType, dataType);			
 	};
+
 	this.getHTML = function(requestUrl, options){
 		var options = options ? options : {};
 		var requestType = "GET";
@@ -94,6 +95,7 @@ var WebServiceInterface = function(){
 				failureCallBack, successCallBackParameters, failureCallBackParameters, 
 				async, requestType, contentType, dataType);	
 	};
+	
 	this.postHTML = function(requestUrl, options ){
 		var options = options ? options : {};		
 		var requestType = "POST";
@@ -111,6 +113,7 @@ var WebServiceInterface = function(){
 				failureCallBack, successCallBackParameters, failureCallBackParameters, 
 				async, requestType, contentType, dataType);			
 	};	
+
 	this.createErrorMessage = function(jqXHR, textStatus, errorThrown){
 		var errorMessage = '';
 		if (textStatus === 'parsererror') {
