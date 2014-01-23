@@ -145,7 +145,7 @@ var PostChargeModel = function(callBack) {
 			e.stopImmediatePropagation();
 	
 			// Count clicks
-			element.data('count', 1 + (element.data('count') || 0 ));
+			//element.data('count', 1 + (element.data('count') || 0 ));
 	
 			var $id = element.attr('data-id'),
 			$item = element.attr('data-item'),
@@ -155,27 +155,18 @@ var PostChargeModel = function(callBack) {
 			$output = $item + ' <span class="count" data-count="1"/><span class="base">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">'+$currency_code+'<span class="value">' + $price + '</span></span>';
 	
 			// Update right side panel
-			if (that.myDom.find('#items-added.hidden')) {
+			if(that.myDom.find('#items-added.hidden')) {
 				that.myDom.find('#no-items-added').addClass('hidden');
 				that.myDom.find('#items-added.hidden').removeClass('hidden');
 			}
-			
-			// To set flag whether the list-item already clicked or not.
-			var is_item_selected = 0;
-			$("#items-summary li" ).each(function() {
-				var id = $(this).attr('data-id')
-			  	if(id == $id){
-			  		is_item_selected = 1;
-			  	} 
-			});
 			
 			// To get count of the clicked item
 			var current_item_count = that.getItemCount($id);
 			
 			// First click on a list item - add item to item summary 
-			if (!is_item_selected) {
+			if (current_item_count == 0) {
 				
-				$('<span class="count" />').appendTo(element).text(current_item_count || 0);
+				$('<span class="count" />').appendTo(element);
 	
 				// Add item to list
 				var items = [];
@@ -188,11 +179,11 @@ var PostChargeModel = function(callBack) {
 				}
 				createPageScroll('#items-summary');
 	
-				if (that.myDom.find('#items-summary li').length > '4') {
+				if(that.myDom.find('#items-summary li').length > '4') {
 					pageScroll.scrollTo(0, -(that.myDom.find('#items-summary li').length - 4) * 45);
 					that.myDom.find('#total-charge').removeAttr('class');
 				}
-				else {
+				else{
 					that.myDom.find('#total-charge').removeAttr('class').addClass('offset-' + that.myDom.find('#items-summary li').length)
 				}
 				
@@ -200,7 +191,7 @@ var PostChargeModel = function(callBack) {
 			}
 	
 			// Other clicks - increase count and value
-			else {
+			else{
 				// Update item count
 				that.updateItemCount($id,current_item_count+1);
 				// Update item price
