@@ -176,6 +176,7 @@ var RoomAssignmentView = function(viewDom){
     var filteredRoomList = [];
     var includeNotReady = false;
     var includeDueout = false;
+    var includePreAssigned = false;
 
     if(that.myDom.find($('#filter-not-ready')).is(':checked')){
       includeNotReady = true;
@@ -184,15 +185,22 @@ var RoomAssignmentView = function(viewDom){
     if(that.myDom.find($('#filter-dueout')).is(':checked')){
       includeDueout = true;
     }
+	
+    if(that.myDom.find($('#filter-preassigned')).is(':checked')){
+      includePreAssigned = true;
+    }
 
     for (var i = 0; i< roomList.length; i++){
-      if(roomList[i].fo_status === "VACANT" && roomList[i].room_status === "READY"){
+      if(roomList[i].fo_status === "VACANT" && roomList[i].room_status === "READY" && !roomList[i].is_preassigned){
         filteredRoomList.push(roomList[i]);
       }
       else if(includeDueout && roomList[i].fo_status === "DUEOUT"){
         filteredRoomList.push(roomList[i]);
       }
       else if(includeNotReady && roomList[i].room_status === "NOTREADY" && roomList[i].fo_status == "VACANT"){
+        filteredRoomList.push(roomList[i]);
+      }
+      else if(includePreAssigned && roomList[i].is_preassigned){
         filteredRoomList.push(roomList[i]);
       }
     }
