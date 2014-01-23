@@ -6,6 +6,7 @@ var PostChargeModel = function(callBack) {
 	this.itemCompleteList = [];
 	this.currentList = [];
 	this.currentQuery = "";
+	this.action = "QTY";
 	
 	this.delegateEvents = function() {
 		
@@ -27,6 +28,7 @@ var PostChargeModel = function(callBack) {
   		that.myDom.find('#query').on('keyup', that.queryEntered);
   		that.myDom.find('#clear-query').on('click', that.clearResults);
 		that.myDom.find('#post').on('click', that.postCharge);
+		that.myDom.find('#numpad').on('click', that.clickedNumberPad);
 	};
 
 	this.modalInit = function() {
@@ -152,7 +154,7 @@ var PostChargeModel = function(callBack) {
 			$price = element.attr('data-price'),
 			$currency_code = getCurrencySymbol(element.attr('data-cc')),
 			$base = element.attr('data-base'),
-			$output = $item + ' <span class="count" data-count="1"/><span class="base">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">'+$currency_code+'<span class="value">' + $price + '</span></span>';
+			$output = $item + ' <span class="count" data-count="1"/><span class="base" data-unit-price="'+$price+'">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">'+$currency_code+'<span class="value">' + $price + '</span></span>';
 	
 			// Update right side panel
 			if(that.myDom.find('#items-added.hidden')) {
@@ -230,10 +232,15 @@ var PostChargeModel = function(callBack) {
 				var current_item_count = that.itemCompleteList[i].count;
 			}
 		}
-		// Update count in items-listing
-		that.myDom.find('#items-listing ul').find('a[data-id="' + id + '"] .count').text(current_item_count || 0);
-		// Update count in items-summary
-		if (current_item_count > '1') {
+		
+		if(current_item_count == 0) {
+			that.myDom.find('#items-listing ul').find('a[data-id="' + id + '"] .count').remove();
+			that.myDom.find('#items-summary ul').find('li[data-id="' + id + '"] .count').text("");
+		}
+		else{
+			// Update count in items-listing
+			that.myDom.find('#items-listing ul').find('a[data-id="' + id + '"] .count').text(current_item_count || 0);
+			// Update count in items-summary
 			that.myDom.find('#items-summary ul').find('li[data-id="' + id + '"] .count').text('(' + (current_item_count || 0) + ')');
 			that.myDom.find('#items-summary ul').find('li[data-id="' + id + '"] .count').attr('data-count',(current_item_count || 0));
 		}
@@ -359,5 +366,130 @@ var PostChargeModel = function(callBack) {
 	// failure callback on post cahrges
 	this.fetchFailedOfPostCharge = function(errorMessage){
 		 sntapp.notification.showErrorMessage(errorMessage, that.myDom);	
+	};
+	
+	this.clickedNumberPad = function(e){
+		
+		var element = $(e.target);
+		
+		var is_active_item_present = false;
+		var active_item_count , active_item_id, active_item_unit_price, element_active_item;
+		
+		// Searching for item-summary for active item.
+		that.myDom.find("#items-summary li" ).each(function() {
+			if($(this).hasClass('selected')){
+			  	is_active_item_present = true;
+			  	active_item_count = $(this).find('.count').attr('data-count');
+			  	active_item_id = $(this).attr('data-id');
+			  	active_item_unit_price = $(this).find('.base').attr('data-unit-price');
+			  	element_active_item = $(this);
+			}
+		});
+		
+		
+		if(is_active_item_present && element.hasClass('button')){
+			
+			var buttonValue = element.val();
+			
+			switch(buttonValue){
+				case "0":
+					if(that.action == "QTY"){
+						that.updateItemCount(active_item_id,0);
+						that.updateItemPrice(active_item_id,0,active_item_unit_price);
+						that.updateTotalPrice();
+					}
+				  break;
+				case "1":
+					if(that.action == "QTY"){
+						that.updateItemCount(active_item_id,1);
+						that.updateItemPrice(active_item_id,1,active_item_unit_price);
+						that.updateTotalPrice();
+					}
+				  break;
+				case "2":
+					if(that.action == "QTY"){
+						that.updateItemCount(active_item_id,2);
+						that.updateItemPrice(active_item_id,2,active_item_unit_price);
+						that.updateTotalPrice();
+					}
+				  break;
+				case "3":
+				  if(that.action == "QTY"){
+						that.updateItemCount(active_item_id,3);
+						that.updateItemPrice(active_item_id,3,active_item_unit_price);
+						that.updateTotalPrice();
+					}
+				  break;
+				case "4":
+				   if(that.action == "QTY"){
+						that.updateItemCount(active_item_id,4);
+						that.updateItemPrice(active_item_id,4,active_item_unit_price);
+						that.updateTotalPrice();
+					}
+				  break;
+				case "5":
+					if(that.action == "QTY"){
+						that.updateItemCount(active_item_id,5);
+						that.updateItemPrice(active_item_id,5,active_item_unit_price);
+						that.updateTotalPrice();
+					}
+				  break;
+				case "6":
+					if(that.action == "QTY"){
+						that.updateItemCount(active_item_id,6);
+						that.updateItemPrice(active_item_id,6,active_item_unit_price);
+						that.updateTotalPrice();
+					}
+				  break;
+				case "7":
+					if(that.action == "QTY"){
+						that.updateItemCount(active_item_id,7);
+						that.updateItemPrice(active_item_id,7,active_item_unit_price);
+						that.updateTotalPrice();
+					}
+				  break;
+				case "8":
+					if(that.action == "QTY"){
+						that.updateItemCount(active_item_id,8);
+						that.updateItemPrice(active_item_id,8,active_item_unit_price);
+						that.updateTotalPrice();
+					}
+				  break;
+				case "9":
+					if(that.action == "QTY"){
+						that.updateItemCount(active_item_id,9);
+						that.updateItemPrice(active_item_id,9,active_item_unit_price);
+						that.updateTotalPrice();
+					}
+				  break;
+				  
+				  
+				case ".":
+				  break;
+				case "QTY":
+					  that.myDom.find("#price").removeClass('selected');
+					  element.addClass('selected');
+					  that.action = "QTY";
+				  break;  
+				case "PR":
+					  that.myDom.find("#quantity").removeClass('selected');
+					  element.addClass('selected');
+					  that.action = "PRICE";
+				  break;
+				case "undo":
+				  break;
+				case "delete":
+					  that.updateItemCount(active_item_id,0);
+					  element_active_item.remove();
+					  that.updateTotalPrice();
+				  break;
+				case "+/-":
+					  	that.updateItemCount(active_item_id,-1);
+						that.updateItemPrice(active_item_id,-1,active_item_unit_price);
+						that.updateTotalPrice();
+				  break;  
+		}
+
+		}
 	};
 }; 
