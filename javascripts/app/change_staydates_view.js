@@ -5,7 +5,7 @@ var ChangeStayDatesView = function(viewDom){
   this.reservation_id = getReservationId();
 
   this.delegateEvents = function(){  
-    that.myDom.find('#changedates-back-btn').on('click',that.goBackToStaycard);
+    that.myDom.find('#changedates-back-btn').on('click',that.backButtonClicked);
     that.myDom.find('#reservation-details').on('click', that.reservationUpdateClickEvents);
 
   };
@@ -26,7 +26,6 @@ var ChangeStayDatesView = function(viewDom){
 
   this.reservationUpdateClickEvents = function(event){
       var element = $(event.target);
-
       if(element.attr('id') == 'confirm-changes') return that.confirmUpdatesClicked(element);
       if(element.attr('id') == 'reset-dates')  return that.resetDatesClicked(element);
       return true;
@@ -352,7 +351,9 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.confirmDatesSuccess = function(){
-    that.goBackToStaycard();
+    var staycardView = new StayCard($("#view-nested-first"));
+    staycardView.refreshReservationDetails(that.reservationId, that.goBackToStaycard);
+
   };
 
   this.resetDatesClicked = function(element){
@@ -362,10 +363,12 @@ var ChangeStayDatesView = function(viewDom){
     that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate, that.confirmedCheckinDate)
   };
 
+  this.backButtonClicked = function(event){
+    event.preventDefault();
+    that.goBackToStaycard();
+  }
+
   this.goBackToStaycard = function(event){
-    if(event != undefined){
-      event.preventDefault();
-    }
     sntapp.activityIndicator.showActivityIndicator('blocker');
     changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);  
   };
