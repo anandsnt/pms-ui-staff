@@ -13,7 +13,7 @@ var StayCard = function(viewDom){
       var options = {
           successCallBack: function(data){
             //clear previous data
-            window.cardData = {}
+            window.cardData = {};
             // add new data
             window.cardData = {
               cardType: data.RVCardReadCardType || '',
@@ -23,7 +23,7 @@ var StayCard = function(viewDom){
                 'et2': data.RVCardReadTrack2,
                 'ksn': data.RVCardReadTrack2KSN
               }
-            }
+            };
 
             that.postCardSwipData();
           },
@@ -65,8 +65,8 @@ var StayCard = function(viewDom){
             'DS': 'Discover',
             'JCB': 'Japan Credit Bureau',
             'AX': 'American Express'
-          }
-          var option = '<option value="'+window.cardData.cardType+'" data-image="images/visa.png">'+cards[window.cardData.cardType]+'</option>'
+          };
+          var option = '<option value="'+window.cardData.cardType+'" data-image="images/visa.png">'+cards[window.cardData.cardType]+'</option>';
           $('#payment-credit-type').append(option).val(window.cardData.cardType);
 
           // inject card number, exipry & name
@@ -88,7 +88,7 @@ var StayCard = function(viewDom){
       failureCallBack: function(error) {
         sntapp.notification.showErrorMessage('failed on postCardSwipData ' + error);
       }
-    }
+    };
 
     var webservice = new WebServiceInterface();
     webservice.postJSON(url, options);
@@ -190,9 +190,7 @@ this
   this.refreshReservationDetails = function(reservationId, sucessCallback){
     var currentReservationDom = that.myDom.find("[data-reservation-id='" + reservationId + "']").attr('id');
     that.loadReservationDetails("#" + currentReservationDom, sucessCallback);
-
-
-  }
+  };
 
   this.loadReservationDetails = function(currentReservationDom, sucessCallback){
     var confirmationNum = currentReservationDom.split("-")[1];
@@ -226,22 +224,20 @@ this
 
   
   this.fetchCompletedUpdateGuestDetails = function(data){
-	  if(data.status == 'success'){
           $("#guest_firstname").val($guestFirstName);
           $("#guest_lastname").val($guestLastName);
           $("#city").val($guestCity);
           $("#state").val($guestState);
           $("#phone").val($guestPhone);
           $("#email").val($guestEmail);  
-	  }
-	  else{
-		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorList(data.errors, that.myDom); 		  
-	  }
   };
   this.fetchFailedUpdateGuestDetails = function(errorMessage){
-	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage(errorMessage, that.myDom); 	  
+	// sntapp.activityIndicator.hideActivityIndicator();
+	// sntapp.notification.showErrorMessage(errorMessage, that.myDom); 	 
+		var message_element = dom.find("#notification-message-guest");
+		message_element.removeClass('success_message error_message').addClass("error_message");
+		message_element.html("Some error occured:"+ errorMessage);			
+		dom.find("#notification-message-guest").slideDown(700, function() {}); 
   };
   
   this.updateGuestDetails = function(update_val, type){

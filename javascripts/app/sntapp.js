@@ -117,7 +117,7 @@ var app = function(){
     					successCallBack: that.fetchCompletedOfCordovaPlugins,
     					failureCallBack: that.fetchFailedOfCordovaPlugins,
     					loader: 'BLOCKER',
-    					}
+    				};
     		webservice.getHTML(url, options);
     	}	
     };

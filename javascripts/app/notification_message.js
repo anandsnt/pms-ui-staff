@@ -158,8 +158,14 @@ var NotificationMessage = function() {
         		// var myElement = dom.find("#notification-message");
         		var myElement = dom.find(".notice");
         		// if (myElement.queue( "fx" ).length <=1)   {
-        			myElement.removeClass('notice error success').html('');
+        			myElement.removeClass('notice success_message error_message').html('');
         		// }
+        	}, 
+        });
+        $("#notification-message-guest").slideUp({ 
+        	duration : duration, 
+        	complete : function(){
+        			$("#notification-message-guest").removeClass('notice success_message error_message').html('');
         	}, 
         });
         

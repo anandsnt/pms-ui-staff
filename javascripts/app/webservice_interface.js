@@ -184,7 +184,7 @@ var WebServiceInterface = function(){
 		}
 		$.ajax({
 			beforeSend: function(){
-//				sntapp.notification.hideMessage();
+				sntapp.notification.hideMessage();
 				sntapp.activityIndicator.showActivityIndicator(loader);
 			},
 			
