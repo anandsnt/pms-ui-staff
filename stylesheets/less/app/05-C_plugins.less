@@ -77,15 +77,43 @@
 		transform: translate3d(-50%, -50%, 0);
 		#border-radius > .rounded(3px);
 
+		#modal-close,
 		.modal-content {
-			padding: 20px;
 			-webkit-transform: scale(0.7);
 			-moz-transform: scale(0.7);
 			-ms-transform: scale(0.7);
 			transform: scale(0.7);
-			opacity: 0;
-			.background(@white);
+			.opacity(0);
 			.transition;
+		}
+
+		#modal-close {
+			position: absolute;
+			top: -20px;
+			left: -20px;
+			z-index: 9995;
+			border: 0;
+			cursor: pointer;
+			.square(40px);
+			.background(@white);
+			#border-radius > .rounded(20px);
+
+			.icons {
+				position: absolute;
+				top: 8px;
+				left: 8px;
+				z-index: 9992;
+			}
+
+			&.show-qr {
+				background: @blue;
+			}
+		}
+
+		.modal-content {
+			padding: 20px;
+			z-index: 9990;
+			.background(@white);
 			#border-radius > .rounded(3px);
 
 			.message,
@@ -96,7 +124,7 @@
 			}
 
 			.message { 
-				margin: 10px 0; 
+				margin: 10px 0 20px 0;
 				text-align: center;
 
 				.select {
@@ -106,6 +134,8 @@
 
 					select { font-weight: 600; }
 				}
+
+				&.notice { margin-top: 0; }
 			}
 
 			.text:not(.value) {
@@ -658,6 +688,46 @@
 				}
 			}
 
+			/* QR Code ***/
+			&.show-qr {
+				width: 620px;
+				padding: 0;
+				background: transparent;
+
+				#qr-code {
+					padding: 20px; 
+					color: @white;
+					background: @blue;
+					#border-radius > .rounded();
+					.float;
+
+					h1 {
+						font-size: 30px;
+						line-height: 60px;
+						font-weight: 100;
+						clear: none;
+						padding: 40px 0 0 130px;
+						.size(auto, auto);
+						.pull-left;
+
+						span { 
+							font-size: 72px;
+							.show; 
+						}
+					}
+
+					.qr-holder { 
+						margin-left: 40px;
+						text-align: center;
+						.pull-right;
+
+						img {
+							width: 203px;
+							height: auto;
+						}
+					}
+				}
+			}
 		}
 
 		/* Auto-close notice message ***/
@@ -671,14 +741,29 @@
 		&.modal-show { 
 			visibility: visible; 
 
+			#modal-close, 
 			.modal-content {
 				-webkit-transform: scale(1);
 				-moz-transform: scale(1);
 				-ms-transform: scale(1);
 				transform: scale(1);
-				opacity: 1;
+				.opacity(100);
 			}
 		}
+
+		/* Custom positioning ***/
+		&[data-position="bottom-right"]{
+			top: auto;
+			left: auto;
+			bottom: 20px;
+			right: 20px;
+			-webkit-transform: translate3d(0, 0, 0);
+			-moz-transform: translate3d(0, 0, 0);
+			-ms-transform: translate3d(0, 0, 0);
+			transform: translate3d(0, 0, 0);
+		}
+
+		&.ui-draggable { cursor: move; }
 	}
 
 	#modal-overlay {

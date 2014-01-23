@@ -67,6 +67,7 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find('#back-to-staycard').on('click', that.gotoStayCard);
 		that.myDom.find('#complete-checkout-button').on('click', that.clickedCompleteCheckout);
 		that.myDom.find('#pay-button').on('click', that.payButtonClicked);
+		that.myDom.find('#add-new-button').on('click', that.addNewButtonClicked);
 		that.myDom.find('#subscribe').on('click', that.subscribeCheckboxClicked);
 	};
     this.subscribeCheckboxClicked = function(e){
@@ -120,7 +121,7 @@ var RegistrationCardView = function(viewDom) {
 			"showanimation" : false,
 			"current-view" : "staycard"
 		};
-		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NONE', nextViewParams);
+		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
 	};
 
 	this.completeCheckin = function(e) {
@@ -222,7 +223,8 @@ var RegistrationCardView = function(viewDom) {
 		if (balance_amount != 0) {
 			// When balance amount is not 0 - perform payment action.
 			that.payButtonClicked();
-		} else {
+		}
+		else {
 			// When balance amount is 0 - perform complete check out action.
 			var email = $("#gc-email").val();
 			var url = '/staff/checkout';
@@ -252,6 +254,16 @@ var RegistrationCardView = function(viewDom) {
 			"bill_number" : that.bill_number
 		};
 	};
+	// To show post charge modal
+	this.addNewButtonClicked = function() {
+		var postChargeModel = new PostChargeModel(that.reloadBillCardPage);
+		postChargeModel.initialize();
+		postChargeModel.params = {
+			"origin":views.BILLCARD,
+			"bill_number" : that.bill_number
+		};
+	};
+	
 	// Goto search screen with empty search results
 	this.goToSearchScreen = function() {
 		switchPage('main-page', 'search', '', 'page-main-second', 'move-from-left');

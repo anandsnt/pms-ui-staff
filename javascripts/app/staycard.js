@@ -8,7 +8,81 @@ var StayCard = function(viewDom){
     var currentConfirmNumber = $("#confirm_no").val();    
     var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
 	reservationDetails.initialize();
-   
+
+    if(sntapp.cordovaLoaded){
+      var options = {
+          successCallBack: function(data){
+            window.cardData = {
+              cardType: data.RVCardReadCardType || '',
+              expiry: data.RVCardReadExpDate || '',
+              cardHolderName: data.RVCardReadCardName || '',
+              getTokenFrom: {
+                'et2': data.RVCardReadTrack2,
+                'ksn': data.RVCardReadTrack2KSN
+              }
+            }
+
+            that.postCardSwipData();
+            $("#add-new-payment").trigger('click');
+          },
+          failureCallBack: function(errorObject){
+            sntapp.notification.showErrorMessage('not visible from failure');
+          }
+      };
+      sntapp.cardReader.startReader(options);
+    }
+
+    // demo
+    // $("#add-new-payment").trigger('click');
+    // this.postCardSwipData(); 
+  };
+
+  // lets post the 'et2' and 'ksn' data
+  // to get the token code from MLI
+  this.postCardSwipData = function(cardData) {
+    var cardData = window.cardData;
+    var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
+    var options = {
+      requestParameters: cardData.getTokenFrom,
+      successCallBack: function(token) {
+        window.injectSwipeCardData = function(cardData) {
+          window.cardData.token = token.data;
+          var cardData = window.cardData;
+
+          $('#payment-type').val( 'CC' );
+
+          var cards = {
+            'VA': 'VISA',
+            'MC': 'Master Card',
+            'DC': 'Diners Club',
+            'DS': 'Discover',
+            'JCB': 'Japan Credit Bureau',
+            'AX': 'American Express'
+          }
+          
+          var option = '<option value="'+window.cardData.cardType+'" data-image="images/visa.png">'+cards[window.cardData.cardType]+'</option>'
+          $('#payment-credit-type').append(option).val(window.cardData.cardType);
+
+          $('#card-number-set1').val( cardData.token );
+          $('#expiry-month').val( cardData.expiry.slice(-2) );
+          $('#expiry-year').val( cardData.expiry.substring(0, 2) );
+          $('#name-on-card').val( cardData.cardHolderName );
+
+          // inject the token as hidden field into form
+          // TODO: Fix Security Issue associated with input[type="hidden"]!
+          $('#new-payment').append('<input type="hidden" id="card-token" value="' + cardData.token + '">');
+
+          // Remove card data stored in window.cardData
+          window.cardData = {};
+        }
+      },
+      failureCallBack: function(error) {
+        sntapp.notification.showErrorMessage('failed on postCardSwipData ' + error);
+      }
+    }
+
+    var webservice = new WebServiceInterface();
+    webservice.postJSON(url, options);
   };
 
 
@@ -38,13 +112,15 @@ var StayCard = function(viewDom){
   	else if (this.viewParams["current-view"] === "room_upgrades_view"){
 
   		changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
-  	}
+  	} else if (this.viewParams["current-view"] === "search_view"){
+      changeInnerPage('inner-page', undefined, undefined, 'page-inner-first', 'move-from-right', false);
+    }
   		
-  	 
+
   };
 
-
-  this.pageshow = function(){
+this
+  .pageshow = function(){
     that.createScroll();
   };
 

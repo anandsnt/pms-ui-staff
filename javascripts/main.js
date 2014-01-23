@@ -132,7 +132,7 @@ function onOffSwitch() {
             });
 
             onOff.children(onOffInput + ':disabled').each(function(){
-                onOff.addClass.addClass(onOffDisabled);
+                onOff.addClass(onOffDisabled);
             });
         }
     });
@@ -196,7 +196,7 @@ function resizeInput() {
 }
 
 // Modal window
-function modalInit(content, closeAfter) {
+function modalInit(content, closeAfter, position, lock) {
 
     var $url = content,
         $modal = '<div id="modal" role="dialog" />',
@@ -214,7 +214,7 @@ function modalInit(content, closeAfter) {
     });
 
     // Close modal on click
-    $(document).on('click', '#modal-overlay, .modal-close', function(e){
+    $(document).on('click', '#modal-overlay:not(.locked), .modal-close', function(e){
         e.stopPropagation();
         removeModal();
     });
@@ -231,7 +231,7 @@ function modalInit(content, closeAfter) {
     function setModal(){
         if ($('#modal').length) 
         { 
-            $('#modal').empty(); 
+            $('#modal').removeClass('modal-show').empty();  
         }
         else 
         { 
@@ -243,6 +243,27 @@ function modalInit(content, closeAfter) {
             $($overlay).insertAfter('#modal'); 
         }
 
+        // Check if modal should be locked
+        if (lock)
+        {
+            $('#modal-overlay').addClass('locked');
+        }
+        else
+        {
+            $('#modal-overlay').removeClass('locked');
+        }
+
+        // Check if modal should be repositioned
+        if(position)
+        {
+            $('#modal').attr('data-position', position).draggable();
+        }
+        else
+        {
+            $('#modal').removeAttr('data-position');
+        }
+
+        // Display modal
         setTimeout(function() {
             $('#modal, #modal-overlay').addClass('modal-show');
         }, 150);
@@ -252,7 +273,7 @@ function modalInit(content, closeAfter) {
     function removeModal() {
         $('#modal, #modal-overlay').removeClass('modal-show'); 
         setTimeout(function() { 
-            $('#modal').empty();
+            $('#modal, #modal-overlay').remove();
         }, 150);
     }
 }
@@ -316,6 +337,14 @@ $(function($){
         styleCheckboxRadio();
     });
 
+    // Remove focus from readonly inputs
+    $(document).on('focus', 'input, textarea', function(){
+        var $readonly = $(this).attr('readonly');
+        if ($readonly) {
+            $(this).blur();
+        }
+    });
+
     // Check if selected value is placeholder value
     $(document).on('change', 'select:not(.styled)', function(e){
         e.stopImmediatePropagation();
@@ -357,9 +386,11 @@ $(function($){
 
         var $href = $(this).attr('href'),
             $action = $(this).closest('form').attr('action'),
-            $duration = $(this).attr('data-duration');
+            $duration = $(this).attr('data-duration'),
+            $position = $(this).attr('data-position'),
+            $lockScreen = $(this).attr('data-lock');
 
-        modalInit($href ? $href : $action, $duration);
+        modalInit($href ? $href : $action, $duration, $position, $lockScreen);
     }); 
 
     // Toggle hidden content
@@ -411,6 +442,11 @@ $(function($){
             $toggleContent.add(function(){ $('.container').removeClass($openClass).removeClass($closingClass); }, $delay);
         }
 
+        // Conversations toggle
+        if ($(this).parent('.has-conversation').length){
+            $(this).parent('.has-conversation').toggleClass('conversation-open');
+        }
+
         $($target).toggleClass('hidden');
         $toggleContent.start();
 
@@ -459,7 +495,4 @@ $(function($){
             $('#clear-query.visible').removeClass('visible');
         }
     });
-
-
-
 });
