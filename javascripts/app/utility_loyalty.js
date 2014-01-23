@@ -65,7 +65,7 @@ function fetchFailedOfSave(errorMessage, params){
 //populate the airline list for frequent flier program add new popup
 function addFFPSelectOptions(selector){
 	$.each(ffProgramsList.data, function(key, airline) {
-		var airlineOptions ='<option value="'+ airline.ff_value +'">' + airline.ff_description+ '</option>'
+		var airlineOptions ='<option value="'+ airline.ff_value +'">' + airline.ff_description+ '</option>';
 		$(selector).append(airlineOptions);
 	});
 };
@@ -73,7 +73,7 @@ function addFFPSelectOptions(selector){
 //populate the loyalty type list for hotel loyalty program add new popup
 function addHLPSelectOptions(selector){
 	$.each(hlProgramsList.data, function(key, loyaltyType) {
-		var programTypes ='<option value="'+ loyaltyType.hl_value +'">' + loyaltyType.hl_description+ '</option>'
+		var programTypes ='<option value="'+ loyaltyType.hl_value +'">' + loyaltyType.hl_description+ '</option>';
 		$(selector).append(programTypes);
 	});
 }
