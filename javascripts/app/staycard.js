@@ -12,25 +12,17 @@ var StayCard = function(viewDom){
     if(sntapp.cordovaLoaded){
       var options = {
           successCallBack: function(data){
-            alert( JSON.stringify(data) );
-
-            if(that.myDomElement.is(':visible')){
-              var cardData = {
-                cardType: data.RVCardReadCardType || '',
-                expiryMonth: '06',
-                expiryYear: '16',
-                cardHolderName: data.RVCardReadCardName || '',
-                getTokenFrom: {
-                  'et2': data.RVCardReadTrack2,
-                  'ksn': data.RVCardReadTrack2KSN
-                }
+            window.cardData = {
+              cardType: data.RVCardReadCardType || '',
+              expiry: data.RVCardReadExpDate || '',
+              cardHolderName: data.RVCardReadCardName || '',
+              getTokenFrom: {
+                'et2': data.RVCardReadTrack2,
+                'ksn': data.RVCardReadTrack2KSN
               }
-              that.postCardSwipData(cardData);
-            }
-            else{
-              sntapp.notification.showErrorMessage('not visible from success');
             }
 
+            that.postCardSwipData();
             $("#add-new-payment").trigger('click');
           },
           failureCallBack: function(errorObject){
@@ -38,30 +30,53 @@ var StayCard = function(viewDom){
           }
       };
       sntapp.cardReader.startReader(options);
-    } 
+    }
+
+    // demo
+    // $("#add-new-payment").trigger('click');
+    // this.postCardSwipData(); 
   };
 
   // lets post the 'et2' and 'ksn' data
   // to get the token code from MLI
   this.postCardSwipData = function(cardData) {
+    var cardData = window.cardData;
     var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
     var options = {
       requestParameters: cardData.getTokenFrom,
-      successCallBack: function(data) {
-        alert( JSON.stringify(data) );
+      successCallBack: function(token) {
+        window.injectSwipeCardData = function(cardData) {
+          window.cardData.token = token;
+          var cardData = window.cardData;
 
-        window.injectSwipeCardData = function() {
           $('#payment-type').val( 'CC' );
-          $('#payment-credit-type').val( cardData.cardType );
-          $('#card-number-set1').val('xxxx-xxxx-xxxx-' + data.substr(data.length - 4));
-          $('#expiry-month').val( cardData.expiryMonth );
-          $('#expiry-year').val( cardData.expiryYear );
+
+          var cards = {
+            'VA': 'VISA',
+            'MC': 'Master Card',
+            'DC': 'Diners Club',
+            'DS': 'Discover',
+            'JCB': 'Japan Credit Bureau',
+            'AX': 'American Express'
+          }
+          var option = '<option value="'+window.cardData.cardType+'" data-image="images/visa.png">'+cards[window.cardData.cardType]+'</option>'
+          $('#payment-credit-type').append(option).val(window.cardData.cardType);
+
+          $('#card-number-set1').val( cardData.token );
+          $('#expiry-month').val( cardData.expiry.slice(-2) );
+          $('#expiry-year').val( cardData.expiry.substring(0, 2) );
           $('#name-on-card').val( cardData.cardHolderName );
 
           // inject the token as hidden field into form
           // TODO: Fix Security Issue associated with input[type="hidden"]!
-          $('#new-payment').append('<input type="hidden" id="card-token" value="' + data + '">')
-        };
+          $('#new-payment').append('<input type="hidden" id="card-token" value="' + cardData.token + '">');
+
+          // Remove card data stored in window.cardData
+          window.cardData = {};
+        }
+      },
+      failureCallBack: function(error) {
+        sntapp.notification.showErrorMessage('failed on postCardSwipData ' + error);
       }
     }
 
