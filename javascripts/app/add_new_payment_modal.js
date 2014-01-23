@@ -10,23 +10,9 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
   		that.myDom.find('#new-payment #payment-type').on('change', that.filterPayments);
 		that.myDom.find('#new-payment #save_new_credit_card').on('click', that.saveNewPayment);
 
-		// Keep looking for "injectSwipeCardData"
-		// Once avaliable, execute it
-		// window.injectCardTimer = null;
-		// injectCard();
-
-		window.injectSwipeCardData();
-	};
-
-	// Keep looking for "injectSwipeCardData"
-	// Once avaliable, execute it
-	var injectCard = function() {
-		if (window.injectSwipeCardData) {
-			clearInterval(window.injectCardTimer);
-			window.injectSwipeCardData();
-		} else {
-			window.injectCardTimer = setInterval(injectCard, 200);
-		}
+		// if staff is trying to add a new card via 
+		// swiping it with device.
+		window.injectSwipeCardData && window.injectSwipeCardData();
 	};
 
 	this.modalInit = function(){
