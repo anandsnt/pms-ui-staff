@@ -46,7 +46,7 @@ var StayCard = function(viewDom){
       requestParameters: cardData.getTokenFrom,
       successCallBack: function(token) {
         window.injectSwipeCardData = function(cardData) {
-          window.cardData.token = token;
+          window.cardData.token = token.data;
           var cardData = window.cardData;
 
           $('#payment-type').val( 'CC' );
@@ -59,6 +59,7 @@ var StayCard = function(viewDom){
             'JCB': 'Japan Credit Bureau',
             'AX': 'American Express'
           }
+          
           var option = '<option value="'+window.cardData.cardType+'" data-image="images/visa.png">'+cards[window.cardData.cardType]+'</option>'
           $('#payment-credit-type').append(option).val(window.cardData.cardType);
 
