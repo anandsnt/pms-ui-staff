@@ -87,7 +87,6 @@ var ChangeStayDatesView = function(viewDom){
 
   this.getMyEvents = function(start, end, callback){
     var events = that.getEventSourceObject(that.checkinDateInCalender, that.checkoutDateInCalender);
-    console.log(JSON.stringify(events));
     callback(events);
 
   };
@@ -125,8 +124,8 @@ var ChangeStayDatesView = function(viewDom){
       var event = {};
       thisDate = new Date(this.date);
       event.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
-      event.start = this.date;
-      event.end = this.date;
+      event.start = thisDate;
+      event.end = thisDate;
       event.day = thisDate.getDate().toString();
 
       thisDate.setHours(0,0,0,0);
@@ -147,8 +146,8 @@ var ChangeStayDatesView = function(viewDom){
           var event = {};
           thisDate = new Date(this.date);
           event.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
-          event.start = this.date;
-          event.end = this.date;
+          event.start = thisDate;
+          event.end = thisDate;
           event.day = thisDate.getDate().toString();
           event.id = "check-out";
           event.className = "check-out split-view";
