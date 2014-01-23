@@ -12,6 +12,9 @@ var StayCard = function(viewDom){
     if(sntapp.cordovaLoaded){
       var options = {
           successCallBack: function(data){
+            //clear previous data
+            window.cardData = {}
+            // add new data
             window.cardData = {
               cardType: data.RVCardReadCardType || '',
               expiry: data.RVCardReadExpDate || '',
@@ -23,10 +26,9 @@ var StayCard = function(viewDom){
             }
 
             that.postCardSwipData();
-            $("#add-new-payment").trigger('click');
           },
           failureCallBack: function(errorObject){
-            sntapp.notification.showErrorMessage('not visible from failure');
+            sntapp.notification.showErrorMessage('Error occured (103): Bad Read, Please try again.');
           }
       };
       sntapp.cardReader.startReader(options);
@@ -39,18 +41,23 @@ var StayCard = function(viewDom){
 
   // lets post the 'et2' and 'ksn' data
   // to get the token code from MLI
-  this.postCardSwipData = function(cardData) {
+  this.postCardSwipData = function() {
     var cardData = window.cardData;
     var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
     var options = {
+      loader: 'BLOCKER',
       requestParameters: cardData.getTokenFrom,
       successCallBack: function(token) {
         window.injectSwipeCardData = function(cardData) {
+          // add token to card data
           window.cardData.token = token.data;
           var cardData = window.cardData;
 
+          // inject the values to payment modal
+          // inject payment type
           $('#payment-type').val( 'CC' );
 
+          // inject card type
           var cards = {
             'VA': 'VISA',
             'MC': 'Master Card',
@@ -59,22 +66,24 @@ var StayCard = function(viewDom){
             'JCB': 'Japan Credit Bureau',
             'AX': 'American Express'
           }
-          
           var option = '<option value="'+window.cardData.cardType+'" data-image="images/visa.png">'+cards[window.cardData.cardType]+'</option>'
           $('#payment-credit-type').append(option).val(window.cardData.cardType);
 
-          $('#card-number-set1').val( cardData.token );
+          // inject card number, exipry & name
+          $('#card-number-set1').val( 'xxxx-xxxx-xxxx-' + cardData.token.slice(-4) );
           $('#expiry-month').val( cardData.expiry.slice(-2) );
           $('#expiry-year').val( cardData.expiry.substring(0, 2) );
           $('#name-on-card').val( cardData.cardHolderName );
 
           // inject the token as hidden field into form
-          // TODO: Fix Security Issue associated with input[type="hidden"]!
+          // TODO: Fix Security issue associated with input[type="hidden"]
           $('#new-payment').append('<input type="hidden" id="card-token" value="' + cardData.token + '">');
 
           // Remove card data stored in window.cardData
           window.cardData = {};
-        }
+        };
+        // show the model
+        $("#add-new-payment").trigger('click');
       },
       failureCallBack: function(error) {
         sntapp.notification.showErrorMessage('failed on postCardSwipData ' + error);
