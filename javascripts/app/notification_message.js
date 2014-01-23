@@ -32,6 +32,7 @@ var NotificationMessage = function() {
 		location = location.split("#")[0];
 		//document.location = location + "#" + parent.attr("id") ;	
 		document.location = location + "#";
+		$("#reservation-content-4823374").scrollTop(0);
 
 	};
 	

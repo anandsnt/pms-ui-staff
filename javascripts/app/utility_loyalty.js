@@ -37,33 +37,31 @@ function fetchLoyaltyProgramData(url,type){
 
  // success function call of updateServerForNewLoyalty's ajax call
 function fetchCompletedOfUpdateServerForNewLoyalty(data, requestParameters) {
-	if(data.status == 'success'){
 		//Insert the response id to the new DOM element
-		requestParameters['successCallback'](data.data);		
-	}
-	else{
-		// the following was the old code present there.
-		/*if (type == 'FFP') {
-			$("#new-ffp .error-messages").html(response.errors.join('<br>')).show();					
-		} else if (type == 'HLP') {
-			$("#new-hlp .error-messages").html(response.errors.join('<br>')).show();
-		}	*/
-		sntapp.notification.showErrorList(data.errors, that.myDom);
-	}
+		requestParameters['successCallback'](data.data);	
+		var basemodal = new BaseModal();
+		basemodal.hide();
+	
 }
 
-function updateServerForNewLoyalty(postData, successCallback, type){
+function updateServerForNewLoyalty(postData, successCallback, type, myDomValue){
 	
    var webservice = new WebServiceInterface();
    var options = {
 		   requestParameters: postData,
 		   successCallBack: fetchCompletedOfUpdateServerForNewLoyalty,
-		   successCallBackParameters: {'type': type, 'successCallback': successCallback},
+		   failureCallBack: fetchFailedOfSave,
+		   successCallBackParameters: {'type': type, 'successCallback': successCallback, 'myDom': myDomValue},
+		   failureCallBackParameters: {'type': type, 'myDom': myDomValue}
    };
    var url = 'staff/user_memberships';
    webservice.postJSON(url, options);	
 }
-
+function fetchFailedOfSave(errorMessage, params){
+	sntapp.activityIndicator.hideActivityIndicator();
+	sntapp.notification.showErrorMessage("Error: " + errorMessage, params['myDom']);  
+	
+};
 //populate the airline list for frequent flier program add new popup
 function addFFPSelectOptions(selector){
 	$.each(ffProgramsList.data, function(key, airline) {
