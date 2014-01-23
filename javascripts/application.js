@@ -26,6 +26,7 @@
 
 // staff app scripts
 //= require_tree ./app/plugins
+
 //= require_tree ./app/signature
 
 //= require_tree ./app
