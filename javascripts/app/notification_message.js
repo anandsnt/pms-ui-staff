@@ -37,7 +37,9 @@ var NotificationMessage = function() {
 			}, 300);
 			$(window).scrollTop($('#notification-message').offset().top);
 		} else {
-			var element = $('#notification-message')[0];
+			// console.log(dom.attr("id"));
+			var element = dom.find('#notification-message')[0];
+			// console.log(viewScroll.scrollToElement);
 			var time = 2000;
 			viewScroll.scrollToElement(element, time);
 		}
