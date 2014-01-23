@@ -87,6 +87,7 @@ var ChangeStayDatesView = function(viewDom){
 
   this.getMyEvents = function(start, end, callback){
     var events = that.getEventSourceObject(that.checkinDateInCalender, that.checkoutDateInCalender);
+    console.log(JSON.stringify(events));
     callback(events);
 
   };
