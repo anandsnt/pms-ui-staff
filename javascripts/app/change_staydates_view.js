@@ -332,8 +332,8 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.confirmUpdatesClicked = function(element){
-    var checkinSelected = getDateString(new Date($('.fc-event.check-in').attr('data-date')));
-    var checkoutSelected = getDateString(new Date($('.fc-event.check-out').attr('data-date')));
+    var checkinSelected = getDateString(that.checkinDateInCalender);
+    var checkoutSelected = getDateString(that.checkoutDateInCalender);
 
     var roomSelected = that.myDom.find('#reservation-updates #room-number').text();
 
