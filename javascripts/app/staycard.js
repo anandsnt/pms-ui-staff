@@ -45,9 +45,11 @@ var StayCard = function(viewDom){
       loader: 'BLOCKER',
       requestParameters: cardData.getTokenFrom,
       successCallBack: function(token) {
+        // add token to card data
+        window.cardData.token = token.data;
+
+        //to delete
         window.injectSwipeCardData = function(cardData) {
-          // add token to card data
-          window.cardData.token = token.data;
           var cardData = window.cardData;
 
           // inject the values to payment modal
