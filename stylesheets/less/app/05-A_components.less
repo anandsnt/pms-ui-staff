@@ -1618,6 +1618,7 @@
 									font-weight: 600;
 									height: 50px;
 									min-width: 60px;
+									max-width: 120px;
 									padding: 0 5px;
 									.clickable;
 									.show;
@@ -1638,7 +1639,6 @@
 											margin-top: 30px;
 											width: 100%;
 											.show;
-										/*bottom: 5px; right: 5px;*/ 
 										}
 
 										&.day,
@@ -1678,7 +1678,8 @@
 								
 
 								&.active {
-									a { color: @textColor; }
+									a,
+									span { color: @textColor; }
 								}
 
 								&.expense {
@@ -1693,24 +1694,42 @@
 									}
 								}
 
-								/*&.check-in {
-									a.toggle,
-									div.no-expense {
-										color: @white;
-										background-color: @green;
-									}
-								}*/
-
-								&.check-out {
+								&.last {
 									margin-right: 10px;
 									padding-right: 10px;
-									border-right: 1px solid rgba(0,0,0,.1);
+									position: relative;
 
-									/*a.toggle,
+									&:after {
+										content: "";
+										position: absolute;
+										top: 0;
+										right: 0;
+										height: 50px;
+										border-right: 1px solid rgba(0,0,0,.1);
+									}
+								}
+
+								&.expense {
+									
+									a.toggle,
 									div.no-expense {
-										color: @white;
-										background-color: @red;
-									}*/
+
+										span { 
+											position: static;
+											bottom: auto;
+											right: auto;
+											line-height: 1em;
+											padding-right: 5px;
+											overflow: hidden;
+											white-space: nowrap;
+											text-overflow: ellipsis;
+											width: 100%;
+											.show;
+
+											&.expense {	margin-top: 5px; }
+											&.price {  margin-top: 14px; }
+										}
+									}
 								}
 
 								&:last-child {
