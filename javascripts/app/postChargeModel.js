@@ -6,6 +6,12 @@ var PostChargeModel = function(callBack) {
 	this.itemCompleteList = [];
 	this.currentList = [];
 	this.currentQuery = "";
+	this.action = "QTY";
+	this.isMinus = true;
+	this.number = "";
+	this.temp_action = "QTY";
+	this.temp_number = "";
+	this.is_undo = false;
 	
 	this.delegateEvents = function() {
 		
@@ -27,6 +33,7 @@ var PostChargeModel = function(callBack) {
   		that.myDom.find('#query').on('keyup', that.queryEntered);
   		that.myDom.find('#clear-query').on('click', that.clearResults);
 		that.myDom.find('#post').on('click', that.postCharge);
+		that.myDom.find('#numpad').on('click', that.clickedNumberPad);
 	};
 
 	this.modalInit = function() {
@@ -126,12 +133,15 @@ var PostChargeModel = function(callBack) {
 
 	// Selected item in charges to be posted list
 	this.clickItemListSummary = function(e) {
-		var element = $(e.target);
+		var element = $(e.target).closest('li');
 
 		if (!element.hasClass('selected')) {
-			$('#items-summary li.selected').removeClass('selected');
+			that.myDom.find('#items-summary li.selected').removeClass('selected');
 		}
 		element.toggleClass('selected');
+		
+		that.number = "";
+		that.is_undo = false;
 	};
 
 	// Add item to charges to be posted list
@@ -144,27 +154,34 @@ var PostChargeModel = function(callBack) {
 			e.preventDefault();
 			e.stopImmediatePropagation();
 	
-			// Count clicks
-			//element.data('count', 1 + (element.data('count') || 0 ));
-	
 			var $id = element.attr('data-id'),
 			$item = element.attr('data-item'),
 			$price = element.attr('data-price'),
+			$data_cc = element.attr('data-cc'),
 			$currency_code = getCurrencySymbol(element.attr('data-cc')),
-			$base = element.attr('data-base'),
-			$output = $item + ' <span class="count" data-count="1"/><span class="base">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">'+$currency_code+'<span class="value">' + $price + '</span></span>';
+			$base = element.attr('data-base');
+			
+			// To get count of the clicked item
+			var current_item_count = parseInt(that.getItemCount($id));
+			var is_item_present_in_item_summary = false;
+			
+			that.myDom.find("#items-summary li" ).each(function() {
+				if($id == $(this).attr('data-id')){
+					is_item_present_in_item_summary = true;
+					$price = $(this).find('.base').attr("data-unit-price");
+				} 
+			});
+			
+			var $output = $item + ' <span class="count" data-count="1"/><span class="base" data-unit-price="'+$price+'" data-cc="'+$data_cc+'">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">'+$currency_code+'<span class="value">' + $price + '</span></span>';
 	
 			// Update right side panel
 			if(that.myDom.find('#items-added.hidden')) {
 				that.myDom.find('#no-items-added').addClass('hidden');
 				that.myDom.find('#items-added.hidden').removeClass('hidden');
 			}
-			
-			// To get count of the clicked item
-			var current_item_count = that.getItemCount($id);
-			
+		
 			// First click on a list item - add item to item summary 
-			if (current_item_count == 0) {
+			if (!is_item_present_in_item_summary) {
 				
 				$('<span class="count" />').appendTo(element);
 	
@@ -186,7 +203,6 @@ var PostChargeModel = function(callBack) {
 				else{
 					that.myDom.find('#total-charge').removeAttr('class').addClass('offset-' + that.myDom.find('#items-summary li').length)
 				}
-				
 				that.updateItemCount($id,current_item_count+1);
 			}
 	
@@ -210,7 +226,6 @@ var PostChargeModel = function(callBack) {
 			viewScroll.scrollTo(0, parseInt($target));
 		}
 	};
-	
 	//To get count of item - paasing item Id.
 	this.getItemCount = function(itemId){
 		for(var i=0; i < that.itemCompleteList.length; i++){
@@ -220,20 +235,43 @@ var PostChargeModel = function(callBack) {
 			}
 		}
 	};
-	
+	//To get count of item - paasing item Id.
+	this.getItemUnitPrice = function(itemId){
+		for(var i=0; i < that.itemCompleteList.length; i++){
+			if(itemId == that.itemCompleteList[i].value){
+				var temp_unit_price = that.itemCompleteList[i].temp_unit_price;
+				return temp_unit_price;
+			}
+		}
+	};
 	//To update "item count" in items-listing and items-summary and Update Item List Array.
 	this.updateItemCount = function(id,value){
-		// Update Item List Array
+		// Update Item List Array with item count
 		for(var i=0; i < that.itemCompleteList.length; i++){
 			if(id == that.itemCompleteList[i].value){
 				that.itemCompleteList[i].count = value;
-				var current_item_count = that.itemCompleteList[i].count;
+				that.itemCompleteList[i].temp_unit_price = that.itemCompleteList[i].unit_price;
+				var current_item_count = parseInt(that.itemCompleteList[i].count);
 			}
 		}
-		// Update count in items-listing
-		that.myDom.find('#items-listing ul').find('a[data-id="' + id + '"] .count').text(current_item_count || 0);
-		// Update count in items-summary
-		if (current_item_count > '1') {
+		
+		if(current_item_count == 0) {
+			that.myDom.find('#items-summary ul').find('li[data-id="' + id + '"] .count').text("");
+			that.myDom.find('#items-listing ul').find('a[data-id="' + id + '"] .count').remove();
+		}
+		else if(current_item_count == 1) {
+			var element = that.myDom.find('#items-listing ul').find('a[data-id="' + id + '"]');
+			$('<span class="count" />').appendTo(element);
+			that.myDom.find('#items-listing ul').find('a[data-id="' + id + '"] .count').text(current_item_count);
+			that.myDom.find('#items-summary ul').find('li[data-id="' + id + '"] .count').text("");
+			that.myDom.find('#items-summary ul').find('li[data-id="' + id + '"] .count').attr('data-count',(current_item_count || 0));
+		}
+		else{
+			var element = that.myDom.find('#items-listing ul').find('a[data-id="' + id + '"]');
+			$('<span class="count" />').appendTo(element);
+			// Update count in items-listing
+			that.myDom.find('#items-listing ul').find('a[data-id="' + id + '"] .count').text(current_item_count || 0);
+			// Update count in items-summary
 			that.myDom.find('#items-summary ul').find('li[data-id="' + id + '"] .count').text('(' + (current_item_count || 0) + ')');
 			that.myDom.find('#items-summary ul').find('li[data-id="' + id + '"] .count').attr('data-count',(current_item_count || 0));
 		}
@@ -243,6 +281,21 @@ var PostChargeModel = function(callBack) {
 	this.updateItemPrice = function(id,item_count,unit_price){
 		var price = parseFloat(unit_price * item_count || 0).toFixed(2);
 		that.myDom.find('#items-summary ul').find('li[data-id="' + id + '"] .value').text(price);
+	};
+	
+	//To update "item amount" in items-summary
+	this.updateUnitPrice = function(id,unit_price,data_cc){
+		
+		// Update Item List Array with item unit price
+		for(var i=0; i < that.itemCompleteList.length; i++){
+			if(id == that.itemCompleteList[i].value){
+				that.itemCompleteList[i].temp_unit_price = unit_price;
+			}
+		}
+		
+		var unitPriceHtml = "at "+getCurrencySymbol(data_cc)+""+unit_price+" / unit";
+		that.myDom.find('#items-summary ul').find('li[data-id="' + id + '"] .base').text(unitPriceHtml);
+		that.myDom.find('#items-summary ul').find('li[data-id="' + id + '"] .base').attr("data-unit-price",unit_price);
 	};
 	
  	// To update "total price amount" in items-summary.
@@ -360,4 +413,144 @@ var PostChargeModel = function(callBack) {
 	this.fetchFailedOfPostCharge = function(errorMessage){
 		 sntapp.notification.showErrorMessage(errorMessage, that.myDom);	
 	};
-}; 
+	
+	// Number pad clicks
+	this.clickedNumberPad = function(e){
+		
+		var element = $(e.target);
+		var is_active_item_present = false;
+		
+		// Searching for item-summary for active item.
+		that.myDom.find("#items-summary li" ).each(function() {
+			if($(this).hasClass('selected')){
+			  	is_active_item_present = true;
+			  	that.active_item_count = $(this).find('.count').attr('data-count');
+			  	that.active_item_id = $(this).attr('data-id');
+			  	that.active_item_unit_price = $(this).find('.base').attr('data-unit-price');
+			  	that.active_item_data_cc = $(this).find('.base').attr('data-cc');
+			  	that.element_active_item = $(this);
+			}
+		});
+		
+		if(is_active_item_present && element.hasClass('button')){
+			
+			var buttonValue = element.val();
+			
+			switch(buttonValue){
+				case "0":
+					that.numberClicked("0");
+				  break;
+				case "1":
+					that.numberClicked("1");
+				  break;
+				case "2":
+					that.numberClicked("2");
+				  break;
+				case "3":
+					that.numberClicked("3");
+				  break;
+				case "4":
+					that.numberClicked("4");
+				  break;
+				case "5":
+					that.numberClicked("5");
+				  break;
+				case "6":
+					that.numberClicked("6");
+				  break;
+				case "7":
+					that.numberClicked("7");
+				  break;
+				case "8":
+					that.numberClicked("8");
+				  break;
+				case "9":
+					that.numberClicked("9");
+				  break;
+				case ".":
+					if(that.action == "PRICE" && that.number.indexOf('.') === -1){
+						that.number += ".";
+					}
+				  break;
+				case "QTY":
+					  that.myDom.find("#price").removeClass('selected');
+					  element.addClass('selected');
+					  that.action = "QTY";
+					  that.number = "";
+				  break;  
+				case "PR":
+					  that.myDom.find("#quantity").removeClass('selected');
+					  element.addClass('selected');
+					  that.action = "PRICE";
+					  that.number = "";
+				  break;
+				case "undo":
+					if(that.is_undo) that.undoButtonClick();
+				  break;
+				case "delete":
+					  that.updateItemCount(that.active_item_id,0);
+					  that.element_active_item.remove();
+					  that.updateTotalPrice();
+					  that.number = "";
+				  break;
+				case "+/-":
+					if(that.isMinus){
+						that.updateItemPrice(that.active_item_id,-1*that.active_item_count,that.active_item_unit_price);
+						that.isMinus = false;
+					}
+					else{
+						that.updateItemPrice(that.active_item_id,1*that.active_item_count,that.active_item_unit_price);
+						that.isMinus = true;
+					}
+					that.updateTotalPrice();
+				  break;  
+			}
+		}
+	};
+	
+	// On clicking Numbers
+	that.numberClicked = function(number){
+		
+		that.is_undo = true;
+		that.number += number;
+		
+		if(that.action == "QTY"){
+			
+			that.temp_number = that.getItemCount(that.active_item_id);
+			
+			that.updateItemCount(that.active_item_id,that.number);
+			that.updateItemPrice(that.active_item_id,that.number,that.active_item_unit_price);
+			that.updateTotalPrice();
+			that.temp_action = "QTY";
+		}
+		else if(that.action == "PRICE"){
+			
+			that.temp_number = that.getItemUnitPrice(that.active_item_id);
+			
+			that.active_item_unit_price = that.number;
+			that.updateUnitPrice(that.active_item_id,that.active_item_unit_price,that.active_item_data_cc);
+			that.updateItemPrice(that.active_item_id,that.active_item_count,that.active_item_unit_price);
+			that.updateTotalPrice();
+			that.temp_action = "PRICE";
+		}
+	};
+	
+	// On undo click
+	that.undoButtonClick = function(){
+		
+		that.number = that.temp_number;
+		that.is_undo = false;
+		
+		if(that.temp_action == "QTY"){
+			that.updateItemCount(that.active_item_id,that.temp_number);
+			that.updateItemPrice(that.active_item_id,that.temp_number,that.active_item_unit_price);
+			that.updateTotalPrice();
+		}
+		else if(that.temp_action == "PRICE"){
+			that.active_item_unit_price = that.temp_number;
+			that.updateUnitPrice(that.active_item_id,that.active_item_unit_price,that.active_item_data_cc);
+			that.updateItemPrice(that.active_item_id,that.active_item_count,that.active_item_unit_price);
+			that.updateTotalPrice();
+		}
+	};
+};
