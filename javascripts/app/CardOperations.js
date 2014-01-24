@@ -1,7 +1,6 @@
 var CardOperation = function(){
 	// class for handling operations with payment device
 	
-	this.errorCount = 0;
 	var that = this;
 	
 	// function for start reading from device 
@@ -50,7 +49,6 @@ var CardOperation = function(){
 			cordova.exec(
 						// if success call back require any parameters
 						function(data){
-							that.errorCount = 0; // resetting the error count
 							if(successCallBackParameters !== null){
 								successCallBack(data, successCallBackParameters);
 								that.callRecursively(options);
@@ -63,18 +61,14 @@ var CardOperation = function(){
 						}, 
 						// if failure/error call back require any parameters
 						function(error){
-							that.errorCount++;
 							if(failureCallBackParameters !== null){
 								failureCallBack(error, failureCallBackParameters);
 							}
 							else{
 								failureCallBack(error);
 							}
-							var secondsAfterStart = that.errorCount * 1000;
-							setTimeout(function(){
-								that.callRecursively(options);
-							}, secondsAfterStart);							
-							
+
+							that.callRecursively(options);
 						},
 						
 						// service name
