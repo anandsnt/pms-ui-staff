@@ -9,7 +9,7 @@ var HotelChargeCodesView = function(domRef){
   	var charge_codes_table = that.myDom.find('#charge_codes_table');
 	// we need to apply table sorter if the table has more than one row
 	if(charge_codes_table.find("tr").length > 1){
-		charge_codes_table.tablesorter({ headers: { 3:{sorter:false}, 4:{sorter:false}  } });	// to disable sorting in action table
+		charge_codes_table.tablesorter({ headers: { 0:{sorter:false} , 1:{sorter:false} , 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}  } });	// to disable sorting in action table
 	}
 	// to handle link with div - hide when charge code type is tax
 	that.myDom.on("change", that.handleLinkWith);

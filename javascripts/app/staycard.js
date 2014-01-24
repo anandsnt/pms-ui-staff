@@ -11,6 +11,7 @@ var StayCard = function(viewDom){
   };
 
   this.delegateEvents = function(partialViewRef){  
+
    	if(partialViewRef === undefined){
    		partialViewRef = $("#confirm_no").val();
    	};   	
@@ -112,7 +113,6 @@ this
   this.refreshReservationDetails = function(reservationId, sucessCallback){
     var currentReservationDom = that.myDom.find("[data-reservation-id='" + reservationId + "']").attr('id');
     that.loadReservationDetails("#" + currentReservationDom, sucessCallback);
-
 
   };
 
