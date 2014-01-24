@@ -9,29 +9,29 @@ var StayCard = function(viewDom){
     var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
     reservationDetails.initialize();
 
-    // if(sntapp.cordovaLoaded){
-    //   var options = {
-    //       successCallBack: function(data){
-    //         //clear previous data
-    //         window.cardData = {}
-    //         // add new data
-    //         window.cardData = {
-    //           cardType: data.RVCardReadCardType || '',
-    //           expiry: data.RVCardReadExpDate || '',
-    //           cardHolderName: data.RVCardReadCardName || '',
-    //           getTokenFrom: {
-    //             'et2': data.RVCardReadTrack2,
-    //             'ksn': data.RVCardReadTrack2KSN
-    //           }
-    //         }
-    //         that.postCardSwipData();
-    //       },
-    //       failureCallBack: function(errorObject){
-    //         sntapp.notification.showErrorMessage('Error occured (103): Bad Read, Please try again.');
-    //       }
-    //   };
-    //   sntapp.cardReader.startReader(options);
-    // }
+    if(sntapp.cordovaLoaded){
+      var options = {
+          successCallBack: function(data){
+            //clear previous data
+            window.cardData = {}
+            // add new data
+            window.cardData = {
+              cardType: data.RVCardReadCardType || '',
+              expiry: data.RVCardReadExpDate || '',
+              cardHolderName: data.RVCardReadCardName || '',
+              getTokenFrom: {
+                'et2': data.RVCardReadTrack2,
+                'ksn': data.RVCardReadTrack2KSN
+              }
+            }
+            that.postCardSwipData();
+          },
+          failureCallBack: function(errorObject){
+            sntapp.notification.showErrorMessage('Error occured (103): Bad Read, Please try again.');
+          }
+      };
+      sntapp.cardReader.startReader(options);
+    }
   };
 
   // lets post the 'et2' and 'ksn' data
@@ -89,7 +89,6 @@ var StayCard = function(viewDom){
     webservice.postJSON(url, options);
   };
 
-
    this.delegateEvents = function(partialViewRef){  
    	if(partialViewRef === undefined){
    		partialViewRef = $("#confirm_no").val();
@@ -102,8 +101,15 @@ var StayCard = function(viewDom){
   };
   
   this.changeAvathar = function(e){
-	  var img_src = getAvatharUrl($(this).val());
-	  $("#guest-card-header .guest-image img").attr("src", img_src);  
+	  var imgSrc = that.myDom.find('#guest-image').attr('src');
+    var imageName = imgSrc.split('/')[imgSrc.split('/').length-1];
+
+    for (var key in avatharImgs) {
+      if((avatharImgs[key]) == imageName){
+        $("#guest-card-header .guest-image img").attr("src", getAvatharUrl($(this).val()));  
+        return false;
+      }
+    }
   };
 
   

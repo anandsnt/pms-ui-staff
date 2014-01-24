@@ -120,6 +120,7 @@ function switchPage($type, $menuActiveItem, $prevPage, $nextPage, $transition){
 
 // Load inner page
 function changeInnerPage($type, $menuActiveItem, $prevPage, $nextPage, $transition, $emptyPrev){
+
     var $newScreen = new chainedAnimation(),
         $delay = 150;
 
