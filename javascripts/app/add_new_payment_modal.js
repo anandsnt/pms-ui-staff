@@ -102,7 +102,8 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			}
    	};
    	this.fetchFailedOfPayment = function(errorMessage){
-   		sntapp.notification.showErrorList(errorMessage, that.myDom);
+   		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
    		that.save_inprogress = false;
    	};    	
    	this.saveNewPayment = function(){
@@ -137,30 +138,6 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			alert(errorMessage);
 	  		return;
   		}
-		
-		// MOVED TO SERVER SIDE VALIDATION ONLY
-		// /* credit card validation */
-		// if (!checkCreditCard ($card_number, $payment_credit_type)) {
-		// 	    	$("#credit-card-number-error").html(ccErrors[ccErrorNo]).show();
-		// 	  		return false;
-		// 	  	}
-		// $("#new-payment .error").hide();
-		// if(($("#new-payment #payment-type").val()) == ""){
-		// 	$("#payment-type-error").html("Payment type is required").show();		
-		// 	return false;	
-		// 	    }else if($("#new-payment #payment-credit-type").val() == ""){ 
-		// 	$("#payment-credit-type-error").html("Credit Card type is required").show();	
-		// 	return false;			
-		// }else if($("#new-payment #card-number-set1").val() == ""){
-		// 	$("#credit-card-number-error").html("Credit Card number is required").show();	
-		// 	return false;			
-		// }else if($.trim($("#new-payment #expiry-month").val()) == "" || $.trim($("#new-payment #expiry-year").val()) == ""){
-		// 	$("#credit-card-expiry-error").html("Credit Card expiry is required").show();	
-		// 	return false;			
-		// }else if($.trim($("#new-payment #name-on-card").val()) == ""){
-		// 	$("#name-on-card-error").html("Card holder name is required").show();	
-		// 	return false;			
-		// }
 		
 		var $image = "<img src='/assets/"+$("#new-payment #payment-credit-type").val().toLowerCase()+".png' alt='"+$("#new-payment #payment-credit-type").val().toLowerCase()+"'>";	
 		

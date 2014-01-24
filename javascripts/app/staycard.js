@@ -9,8 +9,6 @@ var StayCard = function(viewDom){
     var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
     reservationDetails.initialize();
 
-    window.cardData = {'v':'a'};
-
     if(sntapp.cordovaLoaded){
       var options = {
           successCallBack: function(data){
@@ -49,36 +47,6 @@ var StayCard = function(viewDom){
         // add token to card data
         window.cardData.token = token.data;
 
-        //to delete
-        window.injectSwipeCardData = function(cardData) {
-          var cardData = window.cardData;
-
-          // inject the values to payment modal
-          // inject payment type
-          $('#payment-type').val( 'CC' );
-
-          // inject card type
-          var cards = {
-            'VA': 'VISA',
-            'MC': 'Master Card',
-            'DC': 'Diners Club',
-            'DS': 'Discover',
-            'JCB': 'Japan Credit Bureau',
-            'AX': 'American Express'
-          };
-          var option = '<option value="'+window.cardData.cardType+'" data-image="images/visa.png">'+cards[window.cardData.cardType]+'</option>';
-          $('#payment-credit-type').append(option).val(window.cardData.cardType);
-
-          // inject card number, exipry & name
-          $('#card-number-set1').val( 'xxxx-xxxx-xxxx-' + cardData.token.slice(-4) );
-          $('#expiry-month').val( cardData.expiry.slice(-2) );
-          $('#expiry-year').val( cardData.expiry.substring(0, 2) );
-          $('#name-on-card').val( cardData.cardHolderName );
-
-          // inject the token as hidden field into form
-          // TODO: Fix Security issue associated with input[type="hidden"]
-          $('#new-payment').append('<input type="hidden" id="card-token" value="' + cardData.token + '">');
-        };
         // show the model
         $("#add-new-payment").trigger('click');
       },
@@ -89,10 +57,11 @@ var StayCard = function(viewDom){
 
     var webservice = new WebServiceInterface();
     webservice.postJSON(url, options);
+	reservationDetails.initialize();
   };
 
+  this.delegateEvents = function(partialViewRef){  
 
-   this.delegateEvents = function(partialViewRef){  
    	if(partialViewRef === undefined){
    		partialViewRef = $("#confirm_no").val();
    	};   	
@@ -194,6 +163,7 @@ this
   this.refreshReservationDetails = function(reservationId, sucessCallback){
     var currentReservationDom = that.myDom.find("[data-reservation-id='" + reservationId + "']").attr('id');
     that.loadReservationDetails("#" + currentReservationDom, sucessCallback);
+
   };
 
   this.loadReservationDetails = function(currentReservationDom, sucessCallback){

@@ -93,17 +93,17 @@ var AddKeysModal = function(callBack) {
 	    var options = {
 			   requestParameters: data,
 			   successCallBack: that.fetchCompletedKeys,
+			   failureCallBack: that.fetchFailedOfSave,
 			   loader: 'NORMAL',
 	    };
 	    webservice.postJSON(url, options);
 	};
 	this.fetchCompletedKeys = function(data) {
-	  
-		if (data.status == "success") {
 			that.hide(callBack);
-		}
-		else{
-			sntapp.notification.showErrorList(data.errors, that.myDom);
-		}
    };
+   //key generation failure case
+   this.fetchFailedOfSave = function(errorMessage){
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+  };
 }; 

@@ -22,15 +22,17 @@ var ValidateOptEmailModal = function(){
 			   loader: 'BLOCKER',
 	    };
 	    webservice.putJSON(url, options);
-   		that.hide();
+   		
    		
    	};
    	this.fetchCompletedOfSaveEmail = function(data,successParams){
    		$("#gc-email").val(successParams['email']);
    		$("#contact-info #email").val(successParams['email']);
    		sntapp.notification.showSuccessMessage("Successfully Saved", that.myDom); 
+   		that.hide();
    	};
-   	this.fetchFailedOfSaveEmail = function(data){
-   		sntapp.notification.showErrorList(data.errors, that.myDom);
+   	this.fetchFailedOfSaveEmail = function(errorMessage){
+   		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
    	};
 };

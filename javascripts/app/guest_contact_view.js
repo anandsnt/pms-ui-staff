@@ -37,7 +37,6 @@ var GuestContactView = function(domRef) {
 		}
 	};
 	this.fetchCompletedOfSaveContactInfo = function(data){
-		if(data.status == 'success'){
 			that.$contactInfoChange = false;
 			// Update guest card header UI.
 			$("#gc-firstname").val($("#guest_firstname").val());
@@ -46,15 +45,20 @@ var GuestContactView = function(domRef) {
 			$("#gc-state").val($("#state").val());
 			$("#gc-phone").val($("#phone").val());
 			$("#gc-email").val($("#email").val());	
-			sntapp.notification.showSuccessMessage("Successfully Saved.", that.myDom); 
-		}
-		else{
-			that.$contactInfoChange = false;
-			sntapp.notification.showErrorList(data.errors, that.myDom); 
-		}
+			
+			var message_element = that.myDom.find("#notification-message-guest");
+			message_element.removeClass('notice success_message error_message');
+			message_element.html("");			
+			that.myDom.find("#notification-message-guest").slideDown(700, function() {});
+			$("#guest-contact").removeClass("error");
 	};
 	this.fetchFailedOfSaveContactInfo = function(errorMessage){
-		
+		that.$contactInfoChange = false;
+		var message_element = that.myDom.find("#notification-message-guest");
+		message_element.removeClass('success_message error_message').addClass("notice error_message");
+		message_element.html("Some error occured:"+ errorMessage);			
+		that.myDom.find("#notification-message-guest").slideDown(700, function() {});
+		$("#guest-contact").addClass("error");
 	};
 	this.saveContactInfo = function() {
 		

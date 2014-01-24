@@ -27,8 +27,17 @@ var PermissionView = function(domRef) {
 		var options = {
 			requestParameters : postData,
 			successCallBack : that.fetchCompletedOfSave,
+			failureCallBack: that.fetchFailedOfSave,
 			loader : "BLOCKER"
 		};
 		webservice.postJSON(url, options);
+	};
+	//show success message
+	this.fetchCompletedOfSave = function(successMessage){
+		sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);	
+	};
+	//show success message
+	this.fetchFailedOfSave = function(errorMessage){
+		sntapp.notification.showErrorMessage("Some error occured: " +errorMessage, that.myDom);	
 	};
 };

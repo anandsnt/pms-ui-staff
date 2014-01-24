@@ -34,8 +34,18 @@ var ReservationCardLoyaltyView = function(domRef){
    var url = 'staff/user_memberships/link_to_reservation';
    var options = {
 		   requestParameters: data,
+		   successCallBack: that.fetchCompletedOfSave,
+		  failureCallBack: that.fetchFailedOfSave,
    };
    webservice.postJSON(url, options);    
+  };
+  this.fetchFailedOfSave = function(errorMessage){
+	sntapp.activityIndicator.hideActivityIndicator();
+	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+  };
+  this.fetchCompletedOfSave = function(data){
+	sntapp.activityIndicator.hideActivityIndicator();
+	sntapp.notification.showSuccessMessage("Successfully Saved ", that.myDom);  
   };
 };
 
