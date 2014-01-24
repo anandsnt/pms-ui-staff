@@ -17,11 +17,15 @@ var RoomsView = function(domRef) {
 	//go to previous page withount any update in view
 	this.gotoPreviousPage = function() {
 		sntadminapp.gotoPreviousPage(that.viewParams);
+		that.myDom.html("");
+		
 	}; 
   
 	// To go back to rooms
   	this.goBackToPreviousView = function() {
  		sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
+		that.myDom.html("");
+
   	};
 
 	//to show preview of the image using file reader
