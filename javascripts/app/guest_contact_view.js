@@ -51,7 +51,6 @@ var GuestContactView = function(domRef) {
 			message_element.html("");			
 			that.myDom.find("#notification-message-guest").slideDown(700, function() {});
 			$("#guest-contact").removeClass("error");
-			// sntapp.notification.showSuccessMessage("Successfully Saved.", that.myDom); 
 	};
 	this.fetchFailedOfSaveContactInfo = function(errorMessage){
 		that.$contactInfoChange = false;
