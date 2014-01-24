@@ -15,14 +15,12 @@ var PostChargeModel = function(callBack) {
 			that.myDom.find("#select-bill-number").hide();
 			that.myDom.find(".h2.message").append(this.params.bill_number);
 		}
-
-		if (viewScroll) {
-			destroyViewScroll();
-		}
+		
 		setTimeout(function() {
 			createViewScroll('#items-listing');
 			createViewScroll('#items-summary');
 		}, 300);
+		
 		that.myDom.find("#items-listing").on("click", that.clickItemList);
 		that.myDom.find("#items-summary").on("click", that.clickItemListSummary);
 		that.myDom.find("#charge-groups").on("change", that.changedChargeGroup);
@@ -147,43 +145,28 @@ var PostChargeModel = function(callBack) {
 			e.stopImmediatePropagation();
 	
 			// Count clicks
-			element.data('count', 1 + (element.data('count') || 0 ));
+			//element.data('count', 1 + (element.data('count') || 0 ));
 	
 			var $id = element.attr('data-id'),
 			$item = element.attr('data-item'),
 			$price = element.attr('data-price'),
 			$currency_code = getCurrencySymbol(element.attr('data-cc')),
 			$base = element.attr('data-base'),
-			$output = $item + ' <span class="count" /><span class="base">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">'+$currency_code+'<span class="value">' + $price + '</span></span>';
+			$output = $item + ' <span class="count" data-count="1"/><span class="base">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">'+$currency_code+'<span class="value">' + $price + '</span></span>';
 	
 			// Update right side panel
-			if (that.myDom.find('#items-added.hidden')) {
+			if(that.myDom.find('#items-added.hidden')) {
 				that.myDom.find('#no-items-added').addClass('hidden');
 				that.myDom.find('#items-added.hidden').removeClass('hidden');
 			}
 			
-			// To set flag whether the list-item already clicked or not.
-			var is_item_selected = 0;
-			$("#items-summary li" ).each(function() {
-				var id = $(this).attr('data-id')
-			  	if(id == $id){
-			  		is_item_selected = 1;
-			  	} 
-			});
-			
 			// To get count of the clicked item
-			var current_item_count ;
-			for(var i=0; i < that.itemCompleteList.length; i++){
-				if($id == that.itemCompleteList[i].value){
-					that.itemCompleteList[i].count ++;
-					current_item_count = that.itemCompleteList[i].count;
-				}
-			}
-	
+			var current_item_count = that.getItemCount($id);
+			
 			// First click on a list item - add item to item summary 
-			if (!is_item_selected) {
+			if (current_item_count == 0) {
 				
-				$('<span class="count" />').appendTo(element).text(current_item_count || 0);
+				$('<span class="count" />').appendTo(element);
 	
 				// Add item to list
 				var items = [];
@@ -196,37 +179,26 @@ var PostChargeModel = function(callBack) {
 				}
 				createPageScroll('#items-summary');
 	
-				if (that.myDom.find('#items-summary li').length > '4') {
+				if(that.myDom.find('#items-summary li').length > '4') {
 					pageScroll.scrollTo(0, -(that.myDom.find('#items-summary li').length - 4) * 45);
 					that.myDom.find('#total-charge').removeAttr('class');
 				}
-				else {
+				else{
 					that.myDom.find('#total-charge').removeAttr('class').addClass('offset-' + that.myDom.find('#items-summary li').length)
 				}
+				
+				that.updateItemCount($id,current_item_count+1);
 			}
 	
 			// Other clicks - increase count and value
-			else {
-				
-				element.find('.count').text(current_item_count || 0);
-				$('#items-summary ul').find('li[data-id="' + $id + '"] .count').text(current_item_count || 0);
-	
-				// Update count
-				if (current_item_count > '1') {
-					$('#items-summary ul').find('li[data-id="' + $id + '"] .count').text('(' + (current_item_count || 0) + ')');
-				}
-	
-				// Update price
-				var $price = parseFloat($price * current_item_count || 0).toFixed(2);
-				$('#items-summary ul').find('li[data-id="' + $id + '"] .value').text($price);
+			else{
+				// Update item count
+				that.updateItemCount($id,current_item_count+1);
+				// Update item price
+				that.updateItemPrice($id,current_item_count+1,$price);
 			}
-	
-			// Update total charge price
-			var $totalPrice = 0;
-			$('#items-summary li .value').each(function() {
-				$totalPrice += parseFloat(1 * ($(this).text()));
-			});
-			$('#total-charge .value').text($totalPrice.toFixed(2));
+			// Update Total price
+			that.updateTotalPrice();
 	
 			// Set scrollers
 			var $style = that.myDom.find('#items-listing .wrapper').attr('style').split('transform: translate('), $translate = $style[1].split(')')[0], $current = $translate.split(',')[1], $target = $current.split('px')[0];
@@ -236,9 +208,51 @@ var PostChargeModel = function(callBack) {
 			}
 			createViewScroll('#items-listing');
 			viewScroll.scrollTo(0, parseInt($target));
-			
 		}
-
+	};
+	
+	//To get count of item - paasing item Id.
+	this.getItemCount = function(itemId){
+		for(var i=0; i < that.itemCompleteList.length; i++){
+			if(itemId == that.itemCompleteList[i].value){
+				var item_count = that.itemCompleteList[i].count;
+				return item_count;
+			}
+		}
+	};
+	
+	//To update "item count" in items-listing and items-summary and Update Item List Array.
+	this.updateItemCount = function(id,value){
+		// Update Item List Array
+		for(var i=0; i < that.itemCompleteList.length; i++){
+			if(id == that.itemCompleteList[i].value){
+				that.itemCompleteList[i].count = value;
+				var current_item_count = that.itemCompleteList[i].count;
+			}
+		}
+		// Update count in items-listing
+		that.myDom.find('#items-listing ul').find('a[data-id="' + id + '"] .count').text(current_item_count || 0);
+		// Update count in items-summary
+		if (current_item_count > '1') {
+			that.myDom.find('#items-summary ul').find('li[data-id="' + id + '"] .count').text('(' + (current_item_count || 0) + ')');
+			that.myDom.find('#items-summary ul').find('li[data-id="' + id + '"] .count').attr('data-count',(current_item_count || 0));
+		}
+	};
+	
+	//To update "item amount" in items-summary
+	this.updateItemPrice = function(id,item_count,unit_price){
+		var price = parseFloat(unit_price * item_count || 0).toFixed(2);
+		that.myDom.find('#items-summary ul').find('li[data-id="' + id + '"] .value').text(price);
+	};
+	
+ 	// To update "total price amount" in items-summary.
+	this.updateTotalPrice = function(){
+		// Update total charge price
+		var totalPrice = 0;
+		that.myDom.find('#items-summary li .value').each(function() {
+			totalPrice += parseFloat(1 * ($(this).text()));
+		});
+		that.myDom.find('#total-charge .value').text(totalPrice.toFixed(2));
 	};
 
 	// To handle charge groups filter
