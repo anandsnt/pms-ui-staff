@@ -26,7 +26,8 @@ var ConnectivityView = function(domRef){
 		    "pms_hotel_code": data.pms_hotel_code,
 		    "pms_chain_code": data.pms_chain_code
 	 };
-	 if(event.data == "save"){
+	 var type = event.data[0];
+	 if(type == "save"){
 	 	var url = '/admin/save_pms_connection_config';
 	 } else {
 	 	var url = '/admin/test_pms_connection';
@@ -37,11 +38,11 @@ var ConnectivityView = function(domRef){
 				requestParameters: data,
 				successCallBack: that.fetchCompletedOfSave,
 				failureCallBack: that.fetchFailedOfSave,
-				successCallBackParameters:{ "type": event.data},
-				failureCallBackParameters:{ "type": event.data},
+				successCallBackParameters:{ "type": type},
+				failureCallBackParameters:{ "type": type},
 				loader: 'blocker'
 	 };
-	 if(event.data == "save"){
+	 if(type == "save"){
 	 	 webservice.postJSON(url, options);	
 	 } else {
 	 	 webservice.getJSON(url, options);	
@@ -78,8 +79,8 @@ var ConnectivityView = function(domRef){
   	 return data;
   };
   // To handle success on save API
-  this.fetchCompletedOfSave = function(type) {
-  	if(type == "save"){
+  this.fetchCompletedOfSave = function(data, params) {
+  	if(params['type'] == "save"){
   		sntapp.notification.showSuccessMessage("Saved successfully", that.myDom);
   	} else {
   		sntapp.notification.showSuccessMessage("Connection Valid", that.myDom);
@@ -87,12 +88,12 @@ var ConnectivityView = function(domRef){
   		
   };
   // To handle failure on save API
-  this.fetchFailedOfSave = function(errorMessage, type){
+  this.fetchFailedOfSave = function(errorMessage, params){
   	
-  	if(type == "save"){
+  	if(params['type'] == "save"){
   		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   	} else {
-  		sntapp.notification.showErrorMessage("Connection Invalid", that.myDom);
+  		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   	}
   };
 };
