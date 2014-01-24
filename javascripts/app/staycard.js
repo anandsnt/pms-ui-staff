@@ -10,6 +10,7 @@ var StayCard = function(viewDom){
     reservationDetails.initialize();
   };
 
+
    this.delegateEvents = function(partialViewRef){  
    	if(partialViewRef === undefined){
    		partialViewRef = $("#confirm_no").val();
