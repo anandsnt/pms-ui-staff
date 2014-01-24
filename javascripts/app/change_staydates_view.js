@@ -1,6 +1,8 @@
 var ChangeStayDatesView = function(viewDom){
   BaseView.call(this);
   var that = this;
+  sdv = this;
+
   this.myDom = viewDom;
   this.reservation_id = getReservationId();
 
@@ -49,8 +51,9 @@ var ChangeStayDatesView = function(viewDom){
   this.calenderDatesFetchCompleted = function(calenderEvents){
 
     that.availableEvents = calenderEvents;
-    that.checkinDateInCalender = that.confirmedCheckinDate = new Date(calenderEvents.data.arrival_date);
-    that.checkoutDateInCalender = that.confirmedCheckoutDate = new Date(calenderEvents.data.dep_date);
+    that.checkinDateInCalender = that.confirmedCheckinDate = getDateObj(calenderEvents.data.arrival_date);
+    that.checkoutDateInCalender = that.confirmedCheckoutDate = getDateObj(calenderEvents.data.dep_date);
+  
     that.updateCalender(that.confirmedCheckinDate, that.confirmedCheckoutDate, that.confirmedCheckinDate);
   };
 
@@ -70,7 +73,15 @@ var ChangeStayDatesView = function(viewDom){
         disableResizing : true,
         contentHeight   : 320,
         weekMode    : 'fixed',
-        events : that.getMyEvents,
+        ignoreTimezone: false, // For ignoring timezone
+
+        eventSources: [
+             {
+                events:that.getMyEvents,
+                ignoreTimezone: false // For ignoring timezone
+             }
+        ],
+        
         // Set how many months are visible on display
         viewDisplay: function(view) {
           that.setupCalendarDates(view, checkinDate, checkoutDate);
@@ -87,6 +98,7 @@ var ChangeStayDatesView = function(viewDom){
 
   this.getMyEvents = function(start, end, callback){
     var events = that.getEventSourceObject(that.checkinDateInCalender, that.checkoutDateInCalender);
+    //console.log(JSON.stringify(events));
     callback(events);
 
   };
@@ -118,17 +130,20 @@ var ChangeStayDatesView = function(viewDom){
     var events = [];
     var currencyCode = calenderEvents.data.currency_code;
     var reservationStatus = calenderEvents.data.reservation_status;
-    checkinDate.setHours(0,0,0,0);
-    checkoutDate.setHours(0,0,0,0);
+
+    var thisDate;
     $(calenderEvents.data.available_dates).each(function(index){
       var event = {};
-      thisDate = new Date(this.date);
+      
+      //Fixing the timezone issue related with fullcalendar
+      thisDate = getDateObj(this.date);
+       
       event.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
       event.start = thisDate;
       event.end = thisDate;
       event.day = thisDate.getDate().toString();
 
-      thisDate.setHours(0,0,0,0);
+      
       //Event is check-in
       if(thisDate.getTime() == checkinDate.getTime()){
         event.id = "check-in";
@@ -144,7 +159,7 @@ var ChangeStayDatesView = function(viewDom){
           events.push(event);
           //checkout-event
           var event = {};
-          thisDate = new Date(this.date);
+          
           event.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
           event.start = thisDate;
           event.end = thisDate;
@@ -190,15 +205,11 @@ var ChangeStayDatesView = function(viewDom){
 
 
     var newDateSelected = event.start //$.fullCalendar.formatDate(event.start, 'yyyy-MM-dd');
-    var firstAvailableDate = new Date($('.fc-event:first').attr('data-date'));
-    var lastAvailableDate = new Date($('.fc-event:last').attr('data-date'));
-    checkinOrig.setHours(0,0,0,0);
-    checkoutOrig.setHours(0,0,0,0);
-    newDateSelected.setHours(0,0,0,0);
-    firstAvailableDate.setHours(0,0,0,0);
-    lastAvailableDate.setHours(0,0,0,0);
-    var currentBusinessDate = new Date(that.availableEvents.data.current_business_date);
-    currentBusinessDate.setHours(0,0,0,0);
+    var firstAvailableDate = getDateObj($('.fc-event:first').attr('data-date'));
+    var lastAvailableDate = getDateObj($('.fc-event:last').attr('data-date'));
+
+    var currentBusinessDate = getDateObj(that.availableEvents.data.current_business_date);
+
   
 
     var finalCheckin = "";
@@ -244,7 +255,7 @@ var ChangeStayDatesView = function(viewDom){
     that.checkinDateInCalender = checkinDate;
     that.checkoutDateInCalender = checkoutDate; 
 
-    $('#reservation-calendar').fullCalendar( 'gotoDate', focusDate.getFullYear(), focusDate.getMonth());
+    //$('#reservation-calendar').fullCalendar( 'gotoDate', focusDate.getFullYear(), focusDate.getMonth());
     $('#reservation-calendar').fullCalendar('removeEvents');
     $('#reservation-calendar').fullCalendar('refetchEvents').fullCalendar('renderEvents');
 
@@ -306,8 +317,8 @@ var ChangeStayDatesView = function(viewDom){
         checkinDay = 0,
         checkoutDay = 0;
     $(that.availableEvents.data.available_dates).each(function(index){
-      if(new Date(this.date) < new Date(reservationDetails['arrival_date']) ||
-               new Date(this.date) > new Date(reservationDetails['dep_date'])){
+      if(getDateObj(this.date) < getDateObj(reservationDetails['arrival_date']) ||
+               getDateObj(this.date) > getDateObj(reservationDetails['dep_date'])){
         return true;
       }
       totalRate = totalRate + parseInt(this.rate);

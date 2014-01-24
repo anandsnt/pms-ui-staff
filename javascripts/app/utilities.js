@@ -1,6 +1,12 @@
 
 var avathar_img_urls = ['/assets/avatar-male.png', '/assets/avatar-female.png', '/assets/avatar-trans.png'];
 
+function getDateObj(dateString){
+//TODO: Handle different conditions
+
+return new Date(dateString+"T00:00:00");
+}
+
 function getCurrentReservationDiv(){
 	var activeTimeline = $('#reservation-card').attr('data-current-timeliine');
 	var currentConfirmation = $("#"+activeTimeline+" #reservation-listing ul li.ui-state-active").attr("data-confirmation-num");
