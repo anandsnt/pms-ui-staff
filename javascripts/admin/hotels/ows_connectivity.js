@@ -5,7 +5,8 @@ var ConnectivityView = function(domRef){
   
   this.delegateEvents = function(){  	
   	that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView); 
-  	that.myDom.find('#save_connectivity').on('click', that.saveConnectivityDetails);
+  	that.myDom.find('#save_connectivity').on('click', ["save"], that.testOrSaveConnectivityDetails);
+  	that.myDom.find('#test_connectivity').on('click', ["test"], that.testOrSaveConnectivityDetails);
   	that.myDom.find('#access-url, #pms-channel-code, #pms-user-name, #pms-user-pwd, #pms-hotel-code, #pms-chain-code').on('change focusout blur', that.enableTestConnection);
   };
   
@@ -13,7 +14,7 @@ var ConnectivityView = function(domRef){
  	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
   // To save guest review
-  this.saveConnectivityDetails = function() {
+  this.testOrSaveConnectivityDetails = function(event) {
   	
   	var data = that.getData();
 	 
@@ -25,16 +26,27 @@ var ConnectivityView = function(domRef){
 		    "pms_hotel_code": data.pms_hotel_code,
 		    "pms_chain_code": data.pms_chain_code
 	 };
+	 if(event.data == "save"){
+	 	var url = '/admin/save_pms_connection_config';
+	 } else {
+	 	var url = '/admin/test_pms_connection';
+	 }
 	 
-	 var url = '/admin/post_pms_connection_config';
 	 var webservice = new WebServiceInterface();
 	 var options = { 
 				requestParameters: data,
 				successCallBack: that.fetchCompletedOfSave,
 				failureCallBack: that.fetchFailedOfSave,
+				successCallBackParameters:{ "type": event.data},
+				failureCallBackParameters:{ "type": event.data},
 				loader: 'blocker'
 	 };
-	 webservice.postJSON(url, options);	
+	 if(event.data == "save"){
+	 	 webservice.postJSON(url, options);	
+	 } else {
+	 	 webservice.getJSON(url, options);	
+	 }
+	
 	    
   };
   //enable test connection button
@@ -66,11 +78,21 @@ var ConnectivityView = function(domRef){
   	 return data;
   };
   // To handle success on save API
-  this.fetchCompletedOfSave = function(data) {
-  	sntapp.notification.showSuccessMessage("Saved successfully", that.myDom);
+  this.fetchCompletedOfSave = function(type) {
+  	if(type == "save"){
+  		sntapp.notification.showSuccessMessage("Saved successfully", that.myDom);
+  	} else {
+  		sntapp.notification.showSuccessMessage("Connection Valid", that.myDom);
+  	}
+  		
   };
   // To handle failure on save API
-  this.fetchFailedOfSave = function(errorMessage){
-  	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
+  this.fetchFailedOfSave = function(errorMessage, type){
+  	
+  	if(type == "save"){
+  		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
+  	} else {
+  		sntapp.notification.showErrorMessage("Connection Invalid", that.myDom);
+  	}
   };
 };
