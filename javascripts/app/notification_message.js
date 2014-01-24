@@ -108,7 +108,7 @@ var NotificationMessage = function() {
 		if(typeof dom == 'undefined')
 			dom = $('body');		
 		
-		this.hideMessage();
+		this.hideMessage(dom);
 		
 		
 		var htmlToAppend = message;
@@ -135,7 +135,7 @@ var NotificationMessage = function() {
 			
 		if (!shouldShowMessage(priority, "Error")) { return; };
 			
-		this.hideMessage();
+		this.hideMessage(dom);
 		
 		var htmlToAppend = errorMessage;
 		
@@ -150,24 +150,20 @@ var NotificationMessage = function() {
 	};
 	
 	// to close the message
-	this.hideMessage = function(){
-		dom = getDisplayDom();
+	this.hideMessage = function(dom){
+		// dom = getDisplayDom();
+		if(typeof dom == 'undefined')
+			dom = $('body');
         dom.find("#notification-message").slideUp({ 
         	duration : duration, 
         	complete : function(){
         		// var myElement = dom.find("#notification-message");
         		var myElement = dom.find("#notification-message");
-        		// if (myElement.queue( "fx" ).length <=1)   {
+        		 if (myElement.queue( "fx" ).length <=1)   {
         			myElement.removeClass('notice success_message error_message').html('');
-        		// }
+        		 }
         	}, 
         });
-        // $("#notification-message-guest").slideUp({ 
-        	// duration : duration, 
-        	// complete : function(){
-        			// $("#notification-message-guest").removeClass('notice success_message error_message').html('');
-        	// }, 
-        // });
         
 	};
 	
