@@ -66,20 +66,32 @@ var ValidateCheckinModal = function() {
 			}
 		}
 
-	    $.ajax({
-				type : "PUT",
-				url : 'staff/guest_cards/' + userId,
-				data : JSON.stringify($contactJsonObj),
-				async : false,
-				dataType : 'json',
-				contentType : 'application/json',
-				success : function() {
-				},
-				error : function() {
-				}
-		});
+	    // $.ajax({
+				// type : "PUT",
+				// url : 'staff/guest_cards/' + userId,
+				// data : JSON.stringify($contactJsonObj),
+				// async : false,
+				// dataType : 'json',
+				// contentType : 'application/json',
+				// success : function() {
+				// },
+				// error : function() {
+				// }
+		// });
+			var webservice = new WebServiceInterface();
+		    	
+		    var url = 'staff/guest_cards/' + userId; 
+		    var options = {
+					   requestParameters: JSON.stringify($contactJsonObj),
+					   successCallBack: that.fetchCompletedOfSave,
+					   failureCallBack: that.fetchFailedOfSave
+			};
+		    webservice.putJSON(url, options);
 		
-		// Update UI changes in Guest card header and Contact information.
+		
+	};
+    this.fetchCompletedOfSave = function(data, requestParameters){
+    	// Update UI changes in Guest card header and Contact information.
 		var guest_phone = $("#gc-phone").val();
 		var guest_email = $("#gc-email").val();
 
@@ -108,8 +120,11 @@ var ValidateCheckinModal = function() {
 	    	that.goToRegistrationCardView();
 	    }
 		that.hide();
-	};
-
+    };
+    this.fetchFailedOfSave = function(errorMessage){
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+    };
 	this.ignoreAndGotoCheckin = function(e) {
 		if(($.trim($('#room-number strong').text()) == "")||
 		  ($('#room-number').attr('data-room-status') != "READY") ||

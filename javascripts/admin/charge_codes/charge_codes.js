@@ -9,7 +9,7 @@ var HotelChargeCodesView = function(domRef){
   	var charge_codes_table = that.myDom.find('#charge_codes_table');
 	// we need to apply table sorter if the table has more than one row
 	if(charge_codes_table.find("tr").length > 1){
-		charge_codes_table.tablesorter({ headers: { 3:{sorter:false}, 4:{sorter:false}  } });	// to disable sorting in action table
+		charge_codes_table.tablesorter({ headers: { 0:{sorter:false} , 1:{sorter:false} , 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}  } });	// to disable sorting in action table
 	}
 	// to handle link with div - hide when charge code type is tax
 	that.myDom.on("change", that.handleLinkWith);
@@ -35,7 +35,7 @@ var HotelChargeCodesView = function(domRef){
   this.fetchCompletedOfImport = function(data,requestParams){
   	var url = "/admin/charge_codes/list";
    	viewParams = {};
-  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
   	sntapp.notification.showSuccessMessage("Imported Successfully", that.myDom);		
   	that.cancelFromAppendedDataInline(requestParams['event']);  
   };
@@ -93,7 +93,7 @@ var HotelChargeCodesView = function(domRef){
   	
   	var url = "/admin/charge_codes/list";
    	viewParams = {};
-  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
     sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
     that.cancelFromAppendedDataInline(requestParams['event']);  
   };
@@ -152,7 +152,7 @@ var HotelChargeCodesView = function(domRef){
   this.fetchCompletedOfDelete = function(data, successParams){
   	  var url = "/admin/charge_codes/list";
    	  viewParams = {};
-  	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+  	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
 	  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
   };
 };

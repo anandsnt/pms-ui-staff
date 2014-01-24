@@ -30,7 +30,12 @@ var RoomAssignmentView = function(viewDom){
   };
 
   this.executeLoadingAnimation = function(){
-    changeView("nested-view", undefined, "view-nested-first", "view-nested-second", "move-from-right", false); 
+
+    if(that.viewParams.from_view == views.BILLCARD){
+      changeView("nested-view", undefined, "view-nested-third", "view-nested-second", "move-from-left", false); 
+    }else{
+      changeView("nested-view", undefined, "view-nested-first", "view-nested-second", "move-from-right", false); 
+    }
 
   };
   //
@@ -316,6 +321,7 @@ var RoomAssignmentView = function(viewDom){
     var options = { requestParameters: postParams,
     				successCallBack: that.roomAssignmentSuccess,
     				successCallBackParameters: successCallBackParams,
+    				failureCallBack: that.fetchFailedOfSave,
     				loader: 'blocker'
     		};
     webservice.postJSON(url, options);
@@ -338,7 +344,10 @@ var RoomAssignmentView = function(viewDom){
     }
 
   };
-	
+  this.fetchFailedOfSave = function(errorMessage){
+	sntapp.activityIndicator.hideActivityIndicator();
+	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+  };
   this.backButtonClicked = function(e){
     e.preventDefault();
     that.gotoStayCard();
@@ -381,12 +390,16 @@ var RoomAssignmentView = function(viewDom){
            requestParameters: postParams,
            successCallBack: that.upgradeSuccess,
            successCallBackParameters: successCallBackParams,
+            failureCallBack: that.fetchFailedOfSave,
            loader: "BLOCKER"
     };
     webservice.postJSON(url, options);  
 
   };
-    
+  this.fetchFailedOfSave = function(errorMessage){
+	sntapp.activityIndicator.hideActivityIndicator();
+	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+  };  
   this.upgradeSuccess = function(data, requestParams){
 
     var staycardView = new StayCard($("#view-nested-first"));

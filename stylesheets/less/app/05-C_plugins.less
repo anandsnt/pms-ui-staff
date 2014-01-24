@@ -217,15 +217,30 @@
 				.actions {
 					text-align: center;
 					padding: 10px 0;
+					.float;
 
 					.button {
 						display: inline-block;
 						width: auto;
-						padding: 0 60px;
+						padding: 0 40px;
 
 						&.blank { 
 							padding: 0 20px 0 0; 
 							text-align: right; 
+						}
+					}
+
+					&.break-buttons {
+						padding: 0 20px;
+
+						.button {
+							&:first-child { margin-right: 10px;}
+							&.blank { 
+								margin: 10px auto 0 auto;
+								text-align: center;
+								padding: 0 40px;
+								.show; 
+							}
 						}
 					}
 				}

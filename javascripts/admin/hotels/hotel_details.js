@@ -5,6 +5,7 @@ var HotelDetailsView = function(domRef){
   var that = this;
   
   this.pageinit = function(){
+  	
     
   };
   this.delegateEvents = function(){  	
@@ -13,6 +14,7 @@ var HotelDetailsView = function(domRef){
   	that.myDom.find('#save_new_hotel').on('click', that.addNewHotel); 
   	that.myDom.find("#re-invite").on('click', that.reInvite);
   	that.myDom.find("#external-mappings").on('click', that.renderExternalMappings);
+  
   };
   // function to view external mappings 
   this.renderExternalMappings =  function(){
@@ -48,7 +50,7 @@ var HotelDetailsView = function(domRef){
   
   // success function of re-invite api call
   this.fetchCompletedOfReInvite = function(data){
-	  sntapp.notification.showSuccessMessage("Mail send succsfully.", that.myDom);
+	  sntapp.notification.showSuccessMessage("Mail send succesfully.", that.myDom);
   };
   
   // failure call of re-invite api call
@@ -127,19 +129,18 @@ var HotelDetailsView = function(domRef){
   };
   
   this.fetchCompletedOfSave = function(data){
-	  if(data.status == "success"){
-		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+	  if(data.status == "success"){		
+	  	if(that.currentView == "snt-admin-view"){  
+		  sntapp.fetchAndRenderView("/admin/hotels", that.viewParams.backDom, {}, 'None', {}, false);
+		}
 		  that.goBackToPreviousView();
-	  }	 
-	  else{
-		  sntapp.activityIndicator.hideActivityIndicator();
-		  sntapp.notification.showErrorList(data.errors, that.myDom);  
-	  }	  
+		  sntapp.notification.showSuccessMessage("Saved Successfully", that.viewParams.backDom);
+	  }
   };
   
   this.fetchFailedOfSave = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage);  
+	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
   };
   // add New hotel from snt admin 
   this.addNewHotel =  function(){
@@ -188,33 +189,15 @@ var HotelDetailsView = function(domRef){
 		   var webservice = new WebServiceInterface();
 		   var options = {
 				   requestParameters: data,
-				   successCallBack: that.fetchCompletedOfAddNewHotel,
+				   successCallBack: that.fetchCompletedOfSave,
+				   failureCallBack: that.fetchFailedOfSave,
 				    loader: "BLOCKER"
 				   
 		   };
 		   webservice.postJSON(url, options);
 	  
   };
-  this.fetchCompletedOfAddNewHotel = function(data){
-	  // success function of add new hotel api call
-	if(data.status == "success"){
-		$("#replacing-div-first").show();
-		$("#replacing-div-second").html("");
-		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showSuccessMessage("Successfully Saved. Please wait while it is being redirected to hotel list page..", that.myDom); 
-		sntapp.fetchAndRenderView("/admin/hotels", $("#replacing-div-first"), {}, 'None', {});
-	}
-	else{
-		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorList(data.errors, that.myDom);  
-	}
-  };
-  this.fetchFailedOfAddNewHotel = function(errorMessage){
-	// fail function of add new hotel api call
-	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
-  };
-  
+
   //Generating post data
   this.getInputData = function(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand,hotelChain, hotelCode, 
   	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime,

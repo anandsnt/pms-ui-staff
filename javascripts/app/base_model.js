@@ -6,8 +6,9 @@ BaseModal = function() {
     this.type = "GET";
     this.shouldShowWhenFetched = true;
     var that = this;
-    this.initialize = function(){
-        that.modalInit();
+    this.initialize = function(options){
+        that.modalInit(options);
+
         if(this.data == ""){
             that.shouldShowWhenFetched = true;
             this.fetchFromURL(that.type);
@@ -77,7 +78,6 @@ BaseModal = function() {
     };
 
     this.hide = function (callBack){
-
     	that.unbindCancelEvent();
     	that.unbindEvents();
         $('#modal, #modal-overlay').removeClass('modal-show'); 
