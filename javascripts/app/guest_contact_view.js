@@ -46,18 +46,20 @@ var GuestContactView = function(domRef) {
 			$("#gc-phone").val($("#phone").val());
 			$("#gc-email").val($("#email").val());	
 			
-			var message_element = dom.find("#notification-message-guest");
-			message_element.removeClass('success_message error_message').addClass("notice success_message");
-			message_element.html("Successfully Saved");			
-			dom.find("#notification-message-guest").slideDown(700, function() {});
+			var message_element = that.myDom.find("#notification-message-guest");
+			message_element.removeClass('notice success_message error_message');
+			message_element.html("");			
+			that.myDom.find("#notification-message-guest").slideDown(700, function() {});
+			$("#guest-contact").removeClass("error");
 			// sntapp.notification.showSuccessMessage("Successfully Saved.", that.myDom); 
 	};
 	this.fetchFailedOfSaveContactInfo = function(errorMessage){
 		that.$contactInfoChange = false;
-		var message_element = dom.find("#notification-message-guest");
+		var message_element = that.myDom.find("#notification-message-guest");
 		message_element.removeClass('success_message error_message').addClass("notice error_message");
 		message_element.html("Some error occured:"+ errorMessage);			
-		dom.find("#notification-message-guest").slideDown(700, function() {});
+		that.myDom.find("#notification-message-guest").slideDown(700, function() {});
+		$("#guest-contact").addClass("error");
 	};
 	this.saveContactInfo = function() {
 		

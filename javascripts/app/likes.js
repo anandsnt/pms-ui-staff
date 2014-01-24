@@ -80,17 +80,21 @@ var LikesView = function(domRef){
    };
    this.fetchCompletedOfSaveLikes = function(data){
 		that.$likeInfoChange = false;
-		var message_element = dom.find("#notification-message-guest");
-		message_element.removeClass('success_message error_message').addClass("success_message");
-		message_element.html("Successfully Saved");			
-		dom.find("#notification-message-guest").slideDown(700, function() {});
+		var message_element = that.myDom.find("#notification-message-guest");
+		message_element.removeClass('success_message error_message');
+		message_element.html("");			
+		that.myDom.find("#notification-message-guest").slideDown(700, function() {});
+		console.log(that.myDom);
+		$("#guest-like").removeClass("error");
    };
    this.fetchFailedOfSaveLikes = function(errorMessage){
 		that.$likeInfoChange = false;
-		var message_element = dom.find("#notification-message-guest");
-		message_element.removeClass('success_message error_message').addClass("error_message");
+		var message_element = that.myDom.find("#notification-message-guest");
+		message_element.removeClass('success_message error_message').addClass("notice error_message");
 		message_element.html("Some error occured:"+ errorMessage);			
-		dom.find("#notification-message-guest").slideDown(700, function() {});
+		that.myDom.find("#notification-message-guest").slideDown(700, function() {});
+		console.log(that.myDom);
+		$("#guest-like").addClass("error");
 	};
    this.handleLikeValueChanged = function(event){  	   
 	  
