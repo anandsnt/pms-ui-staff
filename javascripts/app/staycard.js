@@ -95,7 +95,7 @@ var StayCard = function(viewDom){
   };
 
 
-   this.delegateEvents = function(partialViewRef){  
+  this.delegateEvents = function(partialViewRef){  
    	if(partialViewRef === undefined){
    		partialViewRef = $("#confirm_no").val();
    	};   	
@@ -107,8 +107,15 @@ var StayCard = function(viewDom){
   };
   
   this.changeAvathar = function(e){
-	  var img_src = getAvatharUrl($(this).val());
-	  $("#guest-card-header .guest-image img").attr("src", img_src);  
+	  var imgSrc = that.myDom.find('#guest-image').attr('src');
+    var imageName = imgSrc.split('/')[imgSrc.split('/').length-1];
+
+    for (var key in avatharImgs) {
+      if((avatharImgs[key]) == imageName){
+        $("#guest-card-header .guest-image img").attr("src", getAvatharUrl($(this).val()));  
+        return false;
+      }
+    }
   };
 
   
