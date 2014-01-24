@@ -23,6 +23,7 @@ var reservationDetailsView = function(domRef){
   	
   	var reservationPaymentView = new ReservationPaymentView(that.myDom);
     reservationPaymentView.initialize();
+
     var reservationCardLoyaltyView = new ReservationCardLoyaltyView(that.myDom);
     reservationCardLoyaltyView.initialize();
     var reservationCardNotes = new reservationCardNotesView(that.myDom);

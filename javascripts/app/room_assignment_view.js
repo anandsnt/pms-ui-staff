@@ -30,7 +30,12 @@ var RoomAssignmentView = function(viewDom){
   };
 
   this.executeLoadingAnimation = function(){
-    changeView("nested-view", undefined, "view-nested-first", "view-nested-second", "move-from-right", false); 
+
+    if(that.viewParams.from_view == views.BILLCARD){
+      changeView("nested-view", undefined, "view-nested-third", "view-nested-second", "move-from-left", false); 
+    }else{
+      changeView("nested-view", undefined, "view-nested-first", "view-nested-second", "move-from-right", false); 
+    }
 
   };
   //

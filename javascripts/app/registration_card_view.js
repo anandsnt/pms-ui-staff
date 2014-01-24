@@ -124,11 +124,47 @@ var RegistrationCardView = function(viewDom) {
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
 	};
 
+	  this.gotoStayCard = function(){
+	sntapp.activityIndicator.showActivityIndicator("blocker");
+    changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
+  };
+
+  this.gotoBillCard = function(){
+      
+      var viewURL = "staff/reservation/bill_card";
+      var viewDom = $("#view-nested-third");
+      var params = {"reservation_id": that.reservation_id};
+      var nextViewParams = {"showanimation": true, "from-view" : views.ROOM_ASSIGNMENT};
+      sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams );
+  };
+
+  	this.goToRoomAssignmentView = function(){
+  		that.myDom.html("");
+  		if ($('#roomassignment_main').length){
+  			sntapp.activityIndicator.showActivityIndicator("blocker");
+    		changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);
+		}else{
+			var nextViewParams = {"next_view": views.BILLCARD, "from_view": views.BILLCARD};
+			sntapp.activityIndicator.showActivityIndicator("blocker");
+		    var viewURL = "staff/preferences/room_assignment";
+		    var viewDom = $("#view-nested-second");
+		    var reservation_id = getReservationId();
+		    var params = {"reservation_id": reservation_id};
+		    sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams);
+		}
+  	};
+
 	this.completeCheckin = function(e) {
 
 		e.stopPropagation();
 		e.preventDefault();
 		e.stopImmediatePropagation();
+		var roomStatus = $(e.target).attr('data-room-status');
+		var foStatus = $(e.target).attr('data-fo-status');
+		if(roomStatus != "READY" || foStatus != "VACANT"){
+			that.goToRoomAssignmentView();
+			return false;
+		}
 
 		var signature = JSON.stringify($("#signature").jSignature("getData", "native"));
 		var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked") ? 1 : 0;

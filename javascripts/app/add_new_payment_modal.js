@@ -4,19 +4,35 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
   	this.save_inprogess = false;
   	this.url = "staff/payments/addNewPayment";
   	this.$paymentTypes = [];
-  	
-  	this.delegateEvents = function(){
+
+  	this.delegateEvents = function(){ 		
   		that.getPaymentsList();
   		that.myDom.find('#new-payment #payment-type').on('change', that.filterPayments);
 		that.myDom.find('#new-payment #save_new_credit_card').on('click', that.saveNewPayment);
-
-		// if staff is trying to add a new card via 
-		// swiping it with device.
-		window.injectSwipeCardData && window.injectSwipeCardData();
 	};
 
-	this.modalInit = function(){
+	this.modalInit = function(options){
+		console.log(options);
+		that.carData = options.cardData ? options.cardData : {};
    	};
+
+   	// auto populate the new payment modal
+   	this.autoPopulate = function(cardData) {
+   		// card swipe, so its 'CC' anway
+   		$('#payment-type').val( 'CC' );
+
+   		// for rest check and apply
+   		carData.cardType && $('#payment-credit-type').val( carData.cardType );
+   		cardData.token && $('#card-number-set1').val( 'xxxx-xxxx-xxxx-' + cardData.token.slice(-4) );
+   		cardData.expiry && $('#expiry-month').val( cardData.expiry.slice(-2) );
+   		cardData.expiry && $('#expiry-year').val( cardData.expiry.substring(0, 2) );
+   		cardData.cardHolderName && $('#name-on-card').val( cardData.cardHolderName );
+
+		// inject the token as hidden field into form
+		// TODO: Fix Security issue associated with input[type="hidden"]
+		$('#new-payment').append('<input type="hidden" id="card-token" value="' + cardData.token + '">');
+   	};
+
    	this.fetchCompletedOfReservationPayment = function(data, requestParameters){
 			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
 			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
@@ -129,6 +145,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		    };
 		    var url = 'staff/payments/save_new_payment'; 
 		    var options = {
+		    		loader: 'blocker',
 				   requestParameters: data,
 				   successCallBack: that.fetchCompletedOfPayment,
 				   failureCallBack: that.fetchFailedOfPayment,
@@ -158,6 +175,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		    };		
 		    var url = 'staff/reservation/save_payment'; 
 		    var options = {
+		    			loader: 'blocker',
 					   requestParameters: data,
 					   successCallBack: that.fetchCompletedOfReservationPayment,
 					   failureCallBack: that.fetchFailedOfReservationPayment,
@@ -180,23 +198,29 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		};
 	    webservice.getJSON(url, options);	   
    };
+
+   // ok we got the payment types from server
    this.fetchCompletedOfGetPayment = function(data){
-	   that.$paymentTypes = data.data;
+		that.$paymentTypes = data.data;
+
+		// if we were initiated by a card swipe
+		// lets auto populate the modal
+		that.cardData && that.autoPopulate();
    };
    
-     this.filterPayments = function(e){
-  		var $selectedPaymentType = $("#new-payment #payment-type").val();
+	this.filterPayments = function(e){
+		var $selectedPaymentType = $("#new-payment #payment-type").val();
 		$paymentTypeValues = '';
 		$("#new-payment #payment-credit-type").find('option').remove().end();
 		$.each(that.$paymentTypes, function(key, value) {
-		    if(value.name == $selectedPaymentType){
-		    	$paymentTypeValues = '<option value="" data-image="">Select credit card</option>';
-		    	$("#payment-credit-type").append($paymentTypeValues);
-		    	$.each(value.values, function(paymentkey, paymentvalue) {
-		    		$paymentTypeValues = '<option value="'+paymentvalue.cardcode+'" data-image="images/visa.png">'+paymentvalue.cardname+'</option>';
-		    		$("#payment-credit-type").append($paymentTypeValues);
-		    	});
-		    }		    
+			if(value.name == $selectedPaymentType){
+				$paymentTypeValues = '<option value="" data-image="">Select credit card</option>';
+				$("#payment-credit-type").append($paymentTypeValues);
+				$.each(value.values, function(paymentkey, paymentvalue) {
+				$paymentTypeValues = '<option value="'+paymentvalue.cardcode+'" data-image="images/visa.png">'+paymentvalue.cardname+'</option>';
+				$("#payment-credit-type").append($paymentTypeValues);
+			});
+			}		    
 		});
-  };
+	};
 };
