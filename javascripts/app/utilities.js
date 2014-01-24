@@ -18,16 +18,16 @@ function getReservationId(){
 function getAvatharUrl(title){
 	//function to get avathar image url by giving title
 	var avathar_imgs = {
-			'mr.' : '/assets/avatar-male.png',
-			'mrs.': '/assets/avatar-female.png',
-			'miss.': '/assets/avatar-female.png',
-			'': '/assets/avatar-trans.png',
+			'mr.' : 'avatar-male.png',
+			'mrs.': 'avatar-female.png',
+			'miss.': 'avatar-female.png',
+			'': 'avatar-trans.png',
 	};
 	try{
 		if(($.trim(title).toLowerCase() == "mr.") || ($.trim(title).toLowerCase() == "mrs.") || ($.trim(title).toLowerCase() == "miss."))
-			return avathar_imgs[$.trim(title).toLowerCase()];
+			return (/assets/ + avathar_imgs[$.trim(title).toLowerCase()]);
 	    else
-	    	return avathar_imgs[''];
+	    	return (/assets/ + avathar_imgs['']);
 	}
 	catch (e) {
 		console.log(e.message);
