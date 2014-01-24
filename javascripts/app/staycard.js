@@ -113,9 +113,7 @@ this
   this.refreshReservationDetails = function(reservationId, sucessCallback){
     var currentReservationDom = that.myDom.find("[data-reservation-id='" + reservationId + "']").attr('id');
     that.loadReservationDetails("#" + currentReservationDom, sucessCallback);
-
-
-  }
+  };
 
   this.loadReservationDetails = function(currentReservationDom, sucessCallback){
     var confirmationNum = currentReservationDom.split("-")[1];
