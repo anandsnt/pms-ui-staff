@@ -9,6 +9,8 @@ var StayCard = function(viewDom){
     var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
     reservationDetails.initialize();
 
+    window.cardData = {'v':'a'};
+
     if(sntapp.cordovaLoaded){
       var options = {
           successCallBack: function(data){
@@ -73,9 +75,6 @@ var StayCard = function(viewDom){
           // inject the token as hidden field into form
           // TODO: Fix Security issue associated with input[type="hidden"]
           $('#new-payment').append('<input type="hidden" id="card-token" value="' + cardData.token + '">');
-
-          // Remove card data stored in window.cardData
-          window.cardData = {};
         };
         // show the model
         $("#add-new-payment").trigger('click');
