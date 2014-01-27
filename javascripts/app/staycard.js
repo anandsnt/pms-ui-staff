@@ -24,7 +24,7 @@ var StayCard = function(viewDom){
             that.postCardSwipData(swipedCardData);
           },
           failureCallBack: function(errorObject){
-            sntapp.notification.showErrorMessage('Error occured (103): Bad Read, Please try again.');
+            sntapp.notification.showErrorMessage('Could not read the card properly. Please try again.');
           }
       };
       sntapp.cardReader.startReader(options);
@@ -71,7 +71,7 @@ var StayCard = function(viewDom){
       requestParameters: cardData.getTokenFrom,
       successCallBack: _successCallBack,
       failureCallBack: function(error) {
-        sntapp.notification.showErrorMessage('failed on postCardSwipData ' + error);
+        sntapp.notification.showErrorMessage('Sorry we could not get a response from server. Please try again.');
       }
     };
 
