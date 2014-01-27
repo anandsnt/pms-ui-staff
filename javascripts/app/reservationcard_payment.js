@@ -11,6 +11,7 @@ var ReservationPaymentView = function(domRef){
   this.delegateEvents = function(){
   	that.myDom.find('#add-new-payment').on('click', that.addNewPaymentModal);
     that.myDom.find('#staycard_creditcard').on('change', that.setPaymentToReservation);
+    that.myDom.find("#select-card-from-list").on("click", that.showExistingPayments);
   };
   this.addNewPaymentModal = function(event, options){
     console.log(options);
@@ -20,6 +21,10 @@ var ReservationPaymentView = function(domRef){
   
   this.fetchCompletedOfSetPaymentToReservation = function(data){
 	// success function set payment to reservation's ajax call  
+  };
+  this.showExistingPayments = function(){
+  	var showExistingPaymentModal = new ShowExistingPaymentModal(that.myDom);
+    showExistingPaymentModal.initialize();
   };
   
   this.setPaymentToReservation = function(){
