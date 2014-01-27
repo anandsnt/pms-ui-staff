@@ -37,7 +37,7 @@ var StayCard = function(viewDom){
   this.postCardSwipData = function(swipedCardData) {
     var swipedCardData = swipedCardData;
 
-    var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
+    var url = 'http://10.7.1.17/staff/payments/tokenize';
 
     var _successCallBack = function(token) {
       // add token to card data
