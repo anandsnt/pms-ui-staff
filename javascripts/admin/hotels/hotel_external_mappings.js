@@ -4,6 +4,7 @@ var HotelExternalMappingsView = function(domRef){
   var that = this;
   this.externalMappings = [];
   
+  
   // to handle subview events
   this.delegateSubviewEvents = function(){ 
   	var ext_mapping_table = that.myDom.find('#external_mapping_table');
@@ -112,6 +113,7 @@ var HotelExternalMappingsView = function(domRef){
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
+			   failureCallBack: that.fetchFailedOfSave,
 			   successCallBackParameters:{ "event": event},
 			   loader:"BLOCKER"
 			   
@@ -121,11 +123,15 @@ var HotelExternalMappingsView = function(domRef){
   };
   //refreshing view with new data and showing message
   this.fetchCompletedOfSave = function(data, requestParams){
-  	
   	currentHotel = that.myDom.find("#selected_hotel").attr("data-hotel-id"); 	
   	var url = "/admin/external_mappings/"+currentHotel+"/list_mappings";
-   	viewParams = {};
-   	sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
-  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+   	viewParams = that.viewParams;
+  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
+  	sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+  };
+  //Handling failure
+  this.fetchFailedOfSave = function(errorMessage){
+	sntapp.activityIndicator.hideActivityIndicator();
+	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
   };
 };

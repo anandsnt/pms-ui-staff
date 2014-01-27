@@ -76,24 +76,18 @@ var GuestCardHLPView = function(domRef) {
 
 	//refreshing view with new data and showing message
 	this.fetchCompletedOfSave = function(data, requestParams) {
-
 		var url = "/admin/hotel/list_hlps/";
 		viewParams = {};
-		
-		if (data.status == "success") {
-			sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
-			sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
-			that.cancelFromAppendedDataInline(requestParams['event']);
-		} else {
-			sntapp.notification.showErrorList(data.errors, that.myDom);
-		}
+		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
+		sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+		that.cancelFromAppendedDataInline(requestParams['event']);
 	};
 
 	this.updateApi = function(event) {
 
 		var hlpId = that.myDom.find("form#edit-loyalty").attr("hlp_id");
 		var url = '/admin/hotel/update_hlp/' ;
-		var action = "ACTION_EDIT"
+		var action = "ACTION_EDIT";
 		that.makeAPICall(url , action, event);
 
 	};
@@ -101,7 +95,7 @@ var GuestCardHLPView = function(domRef) {
 	this.saveNewApi = function(event) {
 
 		var url = '/admin/hotel/save_hlp';
-		var action = "ACTION_SAVE"
+		var action = "ACTION_SAVE";
 		that.makeAPICall(url, action, event);
 
 
@@ -144,5 +138,5 @@ var GuestCardHLPView = function(domRef) {
 		}
 		
 
-	}
+	};
 };

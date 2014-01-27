@@ -414,6 +414,28 @@
 						padding: 0 20px;
 						.show;
 						.no-transition;
+
+						&.error,
+						&.warning {
+							padding-left: 30px;
+							position: relative;
+
+							&:after {
+								content: "!";
+								position: absolute;
+								top: 16px;
+								left: 10px;
+								font-size: 12px;
+								line-height: 14px;
+								text-align: center;
+								color: @white;
+								.square(14px);
+								#border-radius > .rounded(14px);
+							}
+						}
+
+						&.error:after { background: @red; }
+						&.warning:after { background: @yellow; }
 					}
 
 					&.ui-tabs-active {
@@ -425,6 +447,11 @@
 
 						a {
 							color: @textColor;
+
+							&.error,
+							&.warning {
+								&:after { top: 18px; }
+							}
 						}
 					}
 
@@ -470,6 +497,9 @@
 						padding-bottom: 10px;
 						margin-bottom: 20px;
 						border-bottom: 1px solid rgba(0,0,0,.1);
+						.float;
+
+						span { .pull-right; }
 					}
 					
 					.entry {
@@ -497,6 +527,8 @@
 					}
 
 					&.left {
+						#pixel-to-percent > .right-margin(80, 1888);
+
 						.entry {
 							&.radio-check {
 								.checkbox:nth-child(even),
@@ -513,8 +545,6 @@
 							}
 						}
 					}
-
-					&:first-child { #pixel-to-percent > .right-margin(80, 1888); }
 				}
 
 				/* Active items - payment & loyalty ***/
@@ -1201,11 +1231,10 @@
 					.faux-clickable;
 				}
 
+				.select,
 				.select-item {
 					height: 50px;
-				}
-				
-				.select {
+
 					select {  
 						padding-top: 13px;
 						height: 50px; 
@@ -1215,19 +1244,44 @@
 				/* Block details - Credit card **/
 				&.item-payment {
 
-					.select-item {
-						#pixel-to-percent > .width(930, 1070);
+					&.has-buttons {
+						.next-view,
+						.no-view { 
+							line-height: 48px; 
+							.calc-width(100, 150); /* %, px - 140 is the width of two buttons + 10px margin */ 
+
+							.card-logo,
+							span { margin-right: 10px; }
+						}
+					}	
+
+					&.has-button {
+						.next-view,
+						.no-view { 
+							line-height: 48px; 
+							.calc-width(100, 80); /* %, px - 70 is the width of one buttons + 10px margin */ 
+						}
 					}
 
 					.actions {
-						#pixel-to-percent > .width(120, 1070);
+						.button,
+						.add-new-button { 
+							margin-right: 10px;
+							.size(60px, 65px);
+							.pull-left;
 
-						.add-new-button { width: 100%;}
+							&.add-new-button {
+								line-height: 60px;
+								margin: 0;
+							}
+						}
 					}
 				}
 
 				/* Block details - room **/
 				&.item-room {
+
+					.next-view { line-height: 50px; }
 
 					.room-number,
 					.room-status { 
@@ -1564,6 +1618,7 @@
 									font-weight: 600;
 									height: 50px;
 									min-width: 60px;
+									max-width: 120px;
 									padding: 0 5px;
 									.clickable;
 									.show;
@@ -1584,7 +1639,6 @@
 											margin-top: 30px;
 											width: 100%;
 											.show;
-										/*bottom: 5px; right: 5px;*/ 
 										}
 
 										&.day,
@@ -1624,7 +1678,8 @@
 								
 
 								&.active {
-									a { color: @textColor; }
+									a,
+									span { color: @textColor; }
 								}
 
 								&.expense {
@@ -1639,24 +1694,42 @@
 									}
 								}
 
-								/*&.check-in {
-									a.toggle,
-									div.no-expense {
-										color: @white;
-										background-color: @green;
-									}
-								}*/
-
-								&.check-out {
+								&.last {
 									margin-right: 10px;
 									padding-right: 10px;
-									border-right: 1px solid rgba(0,0,0,.1);
+									position: relative;
 
-									/*a.toggle,
+									&:after {
+										content: "";
+										position: absolute;
+										top: 0;
+										right: 0;
+										height: 50px;
+										border-right: 1px solid rgba(0,0,0,.1);
+									}
+								}
+
+								&.expense {
+									
+									a.toggle,
 									div.no-expense {
-										color: @white;
-										background-color: @red;
-									}*/
+
+										span { 
+											position: static;
+											bottom: auto;
+											right: auto;
+											line-height: 1em;
+											padding-right: 5px;
+											overflow: hidden;
+											white-space: nowrap;
+											text-overflow: ellipsis;
+											width: 100%;
+											.show;
+
+											&.expense {	margin-top: 5px; }
+											&.price {  margin-top: 14px; }
+										}
+									}
 								}
 
 								&:last-child {

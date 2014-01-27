@@ -55,7 +55,7 @@ var app = function(){
     //Fetch from AJAX
     // On Success, invoke render_view
     // Show error message on failure
-    this.fetchAndRenderView = function(viewURL, viewDom, params, loader, nextViewParams) {
+    this.fetchAndRenderView = function(viewURL, viewDom, params, loader, nextViewParams, async) {
       
        if(typeof params === 'undefined'){
                params = {};
@@ -65,6 +65,9 @@ var app = function(){
        }  
        if(typeof nextViewParams === 'undefined'){
                nextViewParams = {};
+       }  
+       if(typeof async === 'undefined'){
+               async = true;
        }   
     /*
     If you intent to call changeView or changePage function for animating page loading, 
@@ -84,7 +87,7 @@ var app = function(){
             type: "GET",
             data: params,
             url: viewURL,
-            async: true,
+            async: async,
             success: function(data) { 
                 
                 that.renderView(data, viewDom, nextViewParams);                 
@@ -114,7 +117,7 @@ var app = function(){
     					successCallBack: that.fetchCompletedOfCordovaPlugins,
     					failureCallBack: that.fetchFailedOfCordovaPlugins,
     					loader: 'BLOCKER',
-    					}
+    				};
     		webservice.getHTML(url, options);
     	}	
     };

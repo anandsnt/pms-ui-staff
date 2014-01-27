@@ -18,7 +18,14 @@
 				text-transform: uppercase;
 				.show;
 
-				span { color: @grey4; }
+				span { 
+					color: @grey4; 
+
+					&.clear-value {
+						color: @red;
+						.pull-right;
+					}
+				}
 
 				&.checkbox,
 				&.radio {
@@ -139,6 +146,26 @@
 				left: 0; 
 				background: @white;
 			} 
+		}
+
+		&.error {
+			color: @red;
+			border-color: @softRed;
+		}
+
+		&.warning {
+			color: darken(@yellow, 30);
+			border: 1px solid @yellow;
+		}
+
+		&.success {
+			color: darken(@green, 20);
+			border-color: @green;
+		}
+
+		&.info {
+			color: darken(@blue, 20);
+			border-color: @blue;
 		}
 	}
 

@@ -27,7 +27,7 @@ var UserRolesView = function(domRef){
    	viewParams = {};
   	
   	if(data.status == "success"){
-  		  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+  		  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
 		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
 		  that.cancelFromAppendedDataInline(requestParams['event']);  
 	  }	 
@@ -36,18 +36,12 @@ var UserRolesView = function(domRef){
 	  }
   };
   //refreshing view with new data and showing message
-  this.fetchCompletedOfDelete = function(data){
+  this.fetchCompletedOfDelete = function(data, successParams){
   	
-  	var url = "/admin/roles";
-   	viewParams = {};
-  	
-  	if(data.status == "success"){
-  		  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
-		  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);		  
-	  }	 
-	  else{
-		  sntapp.notification.showErrorList(data.errors, that.myDom);  
-	  }
+  	 sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
+	 that.myDom.find("#roles_row_"+successParams['selectedId']).html("");
+	  //to clear the html for edit data.
+	  that.myDom.find(".edit-data").html("");
   };
   //function to update department
   this.updateApi = function(event){
