@@ -5,7 +5,7 @@ var RoomsView = function(domRef) {
 	
 	this.delegateEvents = function() {
 		that.myDom.find('#rooms').tablesorter();
-		that.myDom.find('.add-data-inline,.edit-data-inline').on('click', sntadminapp.gotoNextPage);
+		that.myDom.find('#add-new-button,.edit-data').on('click', sntadminapp.gotoNextPage);
 		that.myDom.find('#go_back,#cancel').on('click', that.goBackToPreviousView);
 		that.myDom.find('#room-picture').on('change', function(){
   			that.readURL(this);
@@ -18,12 +18,16 @@ var RoomsView = function(domRef) {
 	this.gotoPreviousPage = function() {
 		that.myDom.html("");
 		sntadminapp.gotoPreviousPage(that.viewParams);
+		that.myDom.html("");
+		
 	}; 
   
 	// To go back to rooms
   	this.goBackToPreviousView = function() {
   		that.myDom.html("");
  		sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
+		that.myDom.html("");
+
   	};
 
 	//to show preview of the image using file reader

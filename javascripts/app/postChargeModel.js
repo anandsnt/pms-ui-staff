@@ -398,7 +398,7 @@ var PostChargeModel = function(callBack) {
 			   loader: 'BLOCKER'
 	    };
 	    webservice.postJSON(url, options);
-	    that.hide();
+	    
 	};
 	
 	// success callback on post cahrges
@@ -407,6 +407,7 @@ var PostChargeModel = function(callBack) {
 		 if(that.origin == views.BILLCARD){
 		 	callBack(); //To Reload page on bill card
 		 }
+		 that.hide();
 	};
 	
 	// failure callback on post cahrges
@@ -417,7 +418,7 @@ var PostChargeModel = function(callBack) {
 	// Number pad clicks
 	this.clickedNumberPad = function(e){
 		
-		var element = $(e.target);
+		var element = $(e.target).closest('button');
 		var is_active_item_present = false;
 		
 		// Searching for item-summary for active item.
@@ -431,7 +432,7 @@ var PostChargeModel = function(callBack) {
 			  	that.element_active_item = $(this);
 			}
 		});
-		
+	
 		if(is_active_item_present && element.hasClass('button')){
 			
 			var buttonValue = element.val();

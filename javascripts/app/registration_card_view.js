@@ -42,7 +42,7 @@ var RegistrationCardView = function(viewDom) {
 		// To add active class to the first bill tab
 		that.myDom.find("#bills-tabs-nav li[bill_active='true']").addClass('active');
 
-//		alert( JSON.stringify(window.cardData) );
+
 	};
 
 	this.executeLoadingAnimation = function() {
