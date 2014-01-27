@@ -24,7 +24,7 @@ var StayCard = function(viewDom){
             that.postCardSwipData(swipedCardData);
           },
           failureCallBack: function(errorObject){
-            sntapp.notification.showErrorMessage('Error occured (103): Bad Read, Please try again.');
+            sntapp.notification.showErrorMessage('Could not read the card properly. Please try again.');
           }
       };
       sntapp.cardReader.startReader(options);
@@ -42,6 +42,9 @@ var StayCard = function(viewDom){
     var _successCallBack = function(token) {
       // add token to card data
       swipedCardData.token = token.data;
+
+
+      alert( $('#page-inner-first').find('div:first').attr('data-view') );
 
       // if addNewPaymentModal instance doen't exist, create it
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
@@ -68,16 +71,17 @@ var StayCard = function(viewDom){
 
     var options = {
       loader: 'BLOCKER',
-      requestParameters: cardData.getTokenFrom,
+      requestParameters: swipedCardData.getTokenFrom,
       successCallBack: _successCallBack,
       failureCallBack: function(error) {
-        sntapp.notification.showErrorMessage('failed on postCardSwipData ' + error);
+        sntapp.notification.showErrorMessage('Sorry we could not get a response from server. Please try again.');
       }
     };
 
-    var webservice = new WebServiceInterface();
-    webservice.postJSON(url, options);
-	reservationDetails.initialize();
+    // var webservice = new WebServiceInterface();
+    // webservice.postJSON(url, options);
+
+    _successCallBack();
   };
 
   this.delegateEvents = function(partialViewRef){  
