@@ -12,10 +12,7 @@ var StayCard = function(viewDom){
     if(sntapp.cordovaLoaded){
       var options = {
           successCallBack: function(data){
-            //clear previous data
-            window.cardData = {};
-            // add new data
-            window.cardData = {
+            var swipedCardData = {
               cardType: data.RVCardReadCardType || '',
               expiry: data.RVCardReadExpDate || '',
               cardHolderName: data.RVCardReadCardName || '',
@@ -23,8 +20,8 @@ var StayCard = function(viewDom){
                 'et2': data.RVCardReadTrack2,
                 'ksn': data.RVCardReadTrack2KSN
               }
-            };
-            that.postCardSwipData();
+            }
+            that.postCardSwipData(swipedCardData);
           },
           failureCallBack: function(errorObject){
             sntapp.notification.showErrorMessage('Error occured (103): Bad Read, Please try again.');
@@ -32,24 +29,47 @@ var StayCard = function(viewDom){
       };
       sntapp.cardReader.startReader(options);
     }
-  };
+  }
 
 
   // lets post the 'et2' and 'ksn' data
   // to get the token code from MLI
-  this.postCardSwipData = function() {
-    var cardData = window.cardData;
+  this.postCardSwipData = function(swipedCardData) {
+    var swipedCardData = swipedCardData;
+
     var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
+
+    var _successCallBack = function(token) {
+      // add token to card data
+      swipedCardData.token = token.data;
+
+      // if addNewPaymentModal instance doen't exist, create it
+      if ( !sntapp.getViewInst('addNewPaymentModal') ) {
+        sntapp.setViewInst('addNewPaymentModal', function() {
+          return new AddNewPaymentModal('staycard', that.myDom);
+        });
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').initialize();
+      } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
+
+        // if addNewPaymentModal instance exist, but the dom is removed
+        sntapp.updateViewInst('addNewPaymentModal', function() {
+          return new AddNewPaymentModal('staycard', that.myDom);
+        });
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').initialize();
+      } else {
+
+        // otherwise
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').populateSwipedCard();
+      }
+    };
+
     var options = {
       loader: 'BLOCKER',
       requestParameters: cardData.getTokenFrom,
-      successCallBack: function(token) {
-        // add token to card data
-        window.cardData.token = token.data;
-
-        // show the model
-        $("#add-new-payment").trigger('click');
-      },
+      successCallBack: _successCallBack,
       failureCallBack: function(error) {
         sntapp.notification.showErrorMessage('failed on postCardSwipData ' + error);
       }

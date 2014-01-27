@@ -4,53 +4,39 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
   	this.save_inprogess = false;
   	this.url = "staff/payments/addNewPayment";
   	this.$paymentTypes = [];
-  	
+  	this.fromPagePayment = fromPagePayment;
+
   	this.delegateEvents = function(){
   		that.getPaymentsList();
   		that.myDom.find('#new-payment #payment-type').on('change', that.filterPayments);
 		that.myDom.find('#new-payment #save_new_credit_card').on('click', that.saveNewPayment);
-
-		// window.injectSwipeCardData && window.injectSwipeCardData();
-		if (window.cardData) {
-			that.autoPopulate();
-		};
 	};
 
-	this.autoPopulate = function() {
-		console.log( 'gonna autoPopulate' );
-
-		var cardData = window.cardData;
-
-		alert( JSON.stringify(cardData) );
+	this.populateSwipedCard = function() {
+		var swipedCardData = this.swipedCardData;
 
 		// inject the values to payment modal
         // inject payment type
 		$('#payment-type').val( 'CC' );
 
-		// inject card type
-		var cards = {
-		  'VA': 'VISA',
-		  'MC': 'Master Card',
-		  'DC': 'Diners Club',
-		  'DS': 'Discover',
-		  'JCB': 'Japan Credit Bureau',
-		  'AX': 'American Express'
-		}
-		var option = '<option value="' + cardData.cardType + '" data-image="images/visa.png">' + cards[cardData.cardType] + '</option>'
-		$('#payment-credit-type').append(option).val(cardData.cardType);
+		// before filling the card type
+		that.filterPayments();
+		$('#payment-credit-type').val(swipedCardData.cardType);
+
 		// inject card number, exipry & name
-		$('#card-number-set1').val( 'xxxx-xxxx-xxxx-' + cardData.token.slice(-4) );
-		$('#expiry-month').val( cardData.expiry.slice(-2) );
-		$('#expiry-year').val( cardData.expiry.substring(0, 2) );
-		$('#name-on-card').val( cardData.cardHolderName );
+		$('#card-number-set1').val( 'xxxx-xxxx-xxxx-' + swipedCardData.token.slice(-4) );
+		$('#expiry-month').val( swipedCardData.expiry.slice(-2) );
+		$('#expiry-year').val( swipedCardData.expiry.substring(0, 2) );
+		$('#name-on-card').val( swipedCardData.cardHolderName );
 
 		// inject the token as hidden field into form
 		// TODO: Fix Security issue associated with input[type="hidden"]
-		$('#new-payment').append('<input type="hidden" id="card-token" value="' + cardData.token + '">');
+		$('#new-payment').append('<input type="hidden" id="card-token" value="' + swipedCardData.token + '">');
 	};
 
 	this.modalInit = function(){
    	};
+
    	this.fetchCompletedOfReservationPayment = function(data, requestParameters){
 			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
 			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
@@ -210,11 +196,15 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
    };
    this.fetchCompletedOfGetPayment = function(data){
 	   that.$paymentTypes = data.data;
+
+	   if (that.swipedCardData) {
+			that.populateSwipedCard();
+	   };
    };
    
-     this.filterPayments = function(e){
-  		var $selectedPaymentType = $("#new-payment #payment-type").val();
-		$paymentTypeValues = '';
+	 this.filterPayments = function(e){
+		var $selectedPaymentType = $("#new-payment #payment-type").val();
+		var $paymentTypeValues = '';
 		$("#new-payment #payment-credit-type").find('option').remove().end();
 		$.each(that.$paymentTypes, function(key, value) {
 		    if(value.name == $selectedPaymentType){
