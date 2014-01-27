@@ -20,8 +20,6 @@ var ItemsView = function(domRef) {
 			var webservice = new WebServiceInterface();
 			var options = {
 				requestParameters : postParams,
-				successCallBack : that.fetchCompletedOfSave,
-				failureCallBack : that.fetchFailedOfSave,
 				loader : "NONE"
 			};
 			var url = '/admin/items/toggle_favorite';
