@@ -24,7 +24,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		$('#payment-credit-type').val(swipedCardData.cardType);
 
 		// inject card number, exipry & name
-		$('#card-number-set1').val( 'xxxx-xxxx-xxxx-' + swipedCardData.token.slice(-4) );
+		//$('#card-number-set1').val( 'xxxx-xxxx-xxxx-' + swipedCardData.token.slice(-4) );
 		$('#expiry-month').val( swipedCardData.expiry.slice(-2) );
 		$('#expiry-year').val( swipedCardData.expiry.substring(0, 2) );
 		$('#name-on-card').val( swipedCardData.cardHolderName );

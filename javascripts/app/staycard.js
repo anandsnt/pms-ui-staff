@@ -44,6 +44,8 @@ var StayCard = function(viewDom){
       //swipedCardData.token = token.data;
       swipedCardData.token = 123456789;
 
+      alert( JSON.stringify(swipedCardData) );
+
       // if addNewPaymentModal instance doen't exist, create it
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
         sntapp.setViewInst('addNewPaymentModal', function() {
