@@ -398,7 +398,7 @@ var PostChargeModel = function(callBack) {
 			   loader: 'BLOCKER'
 	    };
 	    webservice.postJSON(url, options);
-	    that.hide();
+	    
 	};
 	
 	// success callback on post cahrges
@@ -407,6 +407,7 @@ var PostChargeModel = function(callBack) {
 		 if(that.origin == views.BILLCARD){
 		 	callBack(); //To Reload page on bill card
 		 }
+		 that.hide();
 	};
 	
 	// failure callback on post cahrges
