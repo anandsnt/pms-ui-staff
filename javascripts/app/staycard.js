@@ -42,7 +42,7 @@ var StayCard = function(viewDom){
     var _successCallBack = function(token) {
       // add token to card data
       //swipedCardData.token = token.data;
-      swipedCardData.token = 123456789;
+      swipedCardData.token = '123456789';
 
       alert( JSON.stringify(swipedCardData) );
 
