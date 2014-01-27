@@ -17,6 +17,7 @@ var HotelBrandsView = function(domRef){
 		var data = {'value': brandID, 'name':brandName, 'hotel_chain_id':  hotelChainId};
 	    var options = {
 				   successCallBack: that.fetchCompletedOfSave,
+				   failureCallBack: that.fetchFailedOfSave,
 				   requestParameters: data,
 				   successCallBackParameters:{ "event": event},
 	    		   loader: 'normal',
@@ -28,16 +29,16 @@ var HotelBrandsView = function(domRef){
 	this.fetchCompletedOfSave = function(data, requestParams){
 		var url = "/admin/hotel_brands";
 	   	viewParams = {};
-	  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
-	  	if(data.status == "success"){
-			  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
-			  that.cancelFromAppendedDataInline(requestParams['event']);  
-		  }	 
-		  else{
-			  sntapp.notification.showErrorList(data.errors, that.myDom);  
-		  }
+	  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
+		sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
+		that.cancelFromAppendedDataInline(requestParams['event']);  
 		
 	};
+	//Handling failure
+   this.fetchFailedOfSave = function(errorMessage){
+	 sntapp.activityIndicator.hideActivityIndicator();
+	 sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+   };
 	//Function save new brands
 	this.saveNewApi = function(event){
 		var brandName = $.trim(that.myDom.find("#brand-name").val());

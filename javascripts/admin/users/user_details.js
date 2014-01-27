@@ -23,7 +23,7 @@ var UserDetailsView = function(domRef){
    this.gotoPreviousPageWithUpdate = function() {
    	var url = "/admin/users";
    	viewParams = {};
-  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams, false);
     sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
   //update user
@@ -55,6 +55,7 @@ var UserDetailsView = function(domRef){
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
+			   failureCallBack: that.fetchFailedOfSave,
 			   loader:"BLOCKER"
 			   
 	};
@@ -89,25 +90,21 @@ var UserDetailsView = function(domRef){
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
+			   failureCallBack: that.fetchFailedOfSave,
 			   loader:"BLOCKER"
 	};
 	webservice.postJSON(url, options);	
   }; 
   //to do the actions after completeing server call
   this.fetchCompletedOfSave = function(data){
-	  if(data.status == "success"){
-		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
-		  that.gotoPreviousPageWithUpdate();
-	  }	 
-	  else{
-		  sntapp.activityIndicator.hideActivityIndicator();
-		  sntapp.notification.showErrorList(data.errors, that.myDom);  
-	  }	  
+  	that.gotoPreviousPageWithUpdate();
+    sntapp.notification.showSuccessMessage("Saved Successfully", that.viewParams.backDom);
+		  
   };
   //to do the actions on fail
   this.fetchFailedOfSave = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorList("Some error occured: " + errorMessage, that.myDom);  
+	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom); 
   };
   //to show preview of the image using file reader
   this.readURL = function(input) {

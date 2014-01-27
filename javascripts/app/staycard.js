@@ -31,6 +31,7 @@ var StayCard = function(viewDom){
     }
   }
 
+
   // lets post the 'et2' and 'ksn' data
   // to get the token code from MLI
   this.postCardSwipData = function(swipedCardData) {
@@ -76,9 +77,11 @@ var StayCard = function(viewDom){
 
     var webservice = new WebServiceInterface();
     webservice.postJSON(url, options);
+	reservationDetails.initialize();
   };
 
-   this.delegateEvents = function(partialViewRef){  
+  this.delegateEvents = function(partialViewRef){  
+
    	if(partialViewRef === undefined){
    		partialViewRef = $("#confirm_no").val();
    	};   	
@@ -181,8 +184,7 @@ this
     var currentReservationDom = that.myDom.find("[data-reservation-id='" + reservationId + "']").attr('id');
     that.loadReservationDetails("#" + currentReservationDom, sucessCallback);
 
-
-  }
+  };
 
   this.loadReservationDetails = function(currentReservationDom, sucessCallback){
     var confirmationNum = currentReservationDom.split("-")[1];

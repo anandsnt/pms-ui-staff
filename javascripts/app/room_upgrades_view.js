@@ -23,6 +23,7 @@ var RoomUpgradesView = function(viewDom){
   };
 
   this.executeLoadingAnimation = function(){
+    sntapp.activityIndicator.showActivityIndicator("blocker");
   	changeView("nested-view", "", "view-nested-first", "view-nested-second", "move-from-right", false); 
   };
 
@@ -73,6 +74,7 @@ var RoomUpgradesView = function(viewDom){
   			   requestParameters: postParams,
   			   successCallBack: that.upgradeSuccess,
   			   successCallBackParameters: successCallBackParams,
+  			   failureCallBack: that.fetchFailedOfSave,
   			   loader: "BLOCKER"
   	};
 	  webservice.postJSON(url, options);	
@@ -92,7 +94,10 @@ var RoomUpgradesView = function(viewDom){
     }
 
   };
-
+  this.fetchFailedOfSave = function(errorMessage){
+	sntapp.activityIndicator.hideActivityIndicator();
+	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+  };
   this.noThanksButtonCicked = function(e){     
   	  e.preventDefault(); 
       that.gotoBillCard(); 

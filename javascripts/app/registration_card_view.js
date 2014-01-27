@@ -42,27 +42,6 @@ var RegistrationCardView = function(viewDom) {
 		// To add active class to the first bill tab
 		that.myDom.find("#bills-tabs-nav li[bill_active='true']").addClass('active');
 
-		alert( JSON.stringify(window.cardData) );
-
-		if (window.cardData) {
-			that.autoPopulate();
-		};
-	};
-
-	this.autoPopulate = function() {
-		var cardData = window.cardData;
-
-		// inject card type
-		var cards = {
-		  'VA': 'VISA',
-		  'MC': 'Master Card',
-		  'DC': 'Diners Club',
-		  'DS': 'Discover',
-		  'JCB': 'Japan Credit Bureau',
-		  'AX': 'American Express'
-		}
-		var option = '<option value="' + cardData.cardType + '" data-image="images/visa.png">' + cards[cardData.cardType] + '</option>'
-		$('.select-item.credit-card select').append(option).val(cardData.cardType);
 	};
 
 	this.executeLoadingAnimation = function() {
@@ -214,31 +193,62 @@ var RegistrationCardView = function(viewDom) {
 				"signature" : signature,
 				"reservation_id" : that.reservation_id
 			};
-			$.ajax({
-				type : "POST",
-				url : '/staff/checkin',
-				data : data,
-				success : function(data) {
-					if (data.status == "success") {
-						that.openAddKeysModal();
-						if(data.is_promotions_and_email_set == "true"){
-							//To enable EMAIL OPT IN check button in guest card
-							$("#contact-info input#opt-in").prop("checked",true);
-						}
-						else{
-							//To disable EMAIL OPT IN check button in guest card
-    						$("#contact-info input#opt-in").prop("checked",false);
-						}
-					} 
-					else if (data.status == "failure") {
-						that.showErrorMessage(data.errors);
-					}
-				},
-				error : function() {
-				}
-			});
+			
+			
+			var webservice = new WebServiceInterface();
+		    	
+		    var url = '/staff/checkin' ; 
+		    var options = {
+					   requestParameters: data,
+					   successCallBack: that.fetchCompletedOfSave,
+					   failureCallBack: that.fetchFailedOfSave,
+					   successCallBackParameters:{ "is_promotions_and_email_set": is_promotions_and_email_set},
+			};
+		    webservice.postJSON(url, options);
+			
+			
+			
+			// $.ajax({
+				// type : "POST",
+				// url : '/staff/checkinb',
+				// data : data,
+				// success : function(data) {
+					// if (data.status == "success") {
+						// that.openAddKeysModal();
+						// if(data.is_promotions_and_email_set == "true"){
+							// //To enable EMAIL OPT IN check button in guest card
+							// $("#contact-info input#opt-in").prop("checked",true);
+						// }
+						// else{
+							// //To disable EMAIL OPT IN check button in guest card
+    						// $("#contact-info input#opt-in").prop("checked",false);
+						// }
+					// } 
+					// else if (data.status == "failure") {
+						// sntapp.activityIndicator.hideActivityIndicator();
+						// sntapp.notification.showErrorMessage("Some error occured: " + data.errors, that.myDom);  
+					// }
+				// },
+				// error : function() {
+				// }
+			// });
 		}
 	};
+	 this.fetchCompletedOfSave = function(data, requestParameters){
+	 	that.openAddKeysModal();
+		if(requestParameters['is_promotions_and_email_set'] == "true"){
+			//To enable EMAIL OPT IN check button in guest card
+			$("#contact-info input#opt-in").prop("checked",true);
+		}
+		else{
+			//To disable EMAIL OPT IN check button in guest card
+			$("#contact-info input#opt-in").prop("checked",false);
+		}	
+	 };
+	 this.fetchFailedOfSave = function(errorMessage){
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+	  };
 	this.clearSignature = function() {
 		that.myDom.find("#signature").jSignature("reset");
 	};
@@ -293,6 +303,7 @@ var RegistrationCardView = function(viewDom) {
 			var options = {
 				requestParameters : data,
 				successCallBack : that.fetchCompletedOfCompleteCheckout,
+				failureCallBack: that.fetchFailedOfSave,
 				loader : 'blocker'
 			};
 			webservice.postJSON(url, options);
