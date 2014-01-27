@@ -81,7 +81,6 @@ var StayCard = function(viewDom){
 
     var webservice = new WebServiceInterface();
     webservice.postJSON(url, options);
-	reservationDetails.initialize();
   };
 
   this.delegateEvents = function(partialViewRef){  
