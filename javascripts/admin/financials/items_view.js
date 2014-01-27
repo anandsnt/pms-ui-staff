@@ -33,7 +33,7 @@ var ItemsView = function(domRef) {
 
 	this.saveNewApi = function(event) {
 
-		var url = '';
+		var url = '/admin/items/save_item';
 		var action = "ACTION_SAVE"
 		that.makeAPICall(url, action, event);
 
@@ -42,7 +42,7 @@ var ItemsView = function(domRef) {
 	this.updateApi = function(event) {
 
 		var hlpId = that.myDom.find("form#edit-items").attr("item_id");
-		var url = '';
+		var url = '/admin/items/save_item';
 		var action = "ACTION_EDIT"
 		that.makeAPICall(url, action, event);
 
