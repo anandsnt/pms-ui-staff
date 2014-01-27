@@ -4,7 +4,7 @@ var avathar_img_urls = ['/assets/avatar-male.png', '/assets/avatar-female.png', 
 function getDateObj(dateString){
 //TODO: Handle different conditions
 
-return convertDateToUTC(new Date(dateString+"T00:00:00"));
+return convertDateToUTC(new Date(dateString));
 }
 
 function convertDateToUTC(date) { 
