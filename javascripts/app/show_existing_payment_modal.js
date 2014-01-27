@@ -1,11 +1,16 @@
 var ShowExistingPaymentModal = function(backView){
   	BaseModal.call(this);
   	var that = this;
-  	this.url = "/ui/show?haml_file=modals/existingPayments&json_input=reservation_payments/existingpayments.json&is_hash_map=true&is_partial=true";
+  	var reservation_id = getReservationId();
+  	this.url = "/staff/staycards/get_credit_cards?reservation_id="+reservation_id;
   	
   	this.delegateEvents = function(){
   		that.myDom.find(".existing_payments").on("click", that.saveSelectedPaymentToReservation);
 	};
+   /**
+	*   Click handler to update the clicked card to the selected reservation
+	*   @param {Object} event click event
+	*/
 	this.saveSelectedPaymentToReservation = function(event){
 		var reservation_id = getReservationId();
 		var element = $(event.target);
@@ -17,9 +22,9 @@ var ShowExistingPaymentModal = function(backView){
 		var webservice = new WebServiceInterface();
 	    var data = {
 	    		reservation_id : reservation_id,
-				value: selectedElement			   
+				user_payment_type_id: selectedElement			   
 	    };
-	    var url = 'urltoupdate'; 
+	    var url = '/staff/reservation/link_payment'; 
 	    var options = {
 			   requestParameters: data,
 			   successCallBack: that.fetchCompletedOfUpdate,
@@ -37,6 +42,11 @@ var ShowExistingPaymentModal = function(backView){
 	    };
 		webservice.postJSON(url, options);
 	};
+   /**
+    *   Callback on successful update
+    *   @param {Object} web service response
+    *   @param {Object} call back params
+    */
 	this.fetchCompletedOfUpdate = function(data, params){
 		
 		var replaceHtml = "<figure class='card-logo'>"+
@@ -45,10 +55,15 @@ var ShowExistingPaymentModal = function(backView){
 							"</span></span><span class='date'> Date <span class='value date'>"+
 							params['expiry']+
 							"</span>";
-	   
+	    backView.find("#select-card-from-list").html(replaceHtml);
 		that.hide();
 	};
+   /**
+    *   Callback on update failed
+    *   @param {Object} call back params
+    */
 	this.fetchFailedOfUpdate = function(errorMessage){
+		
 		sntapp.activityIndicator.hideActivityIndicator();
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
 	};
