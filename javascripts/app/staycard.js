@@ -37,11 +37,12 @@ var StayCard = function(viewDom){
   this.postCardSwipData = function(swipedCardData) {
     var swipedCardData = swipedCardData;
 
-    var url = 'http://10.7.1.17:8010/staff/payments/tokenize';
+    var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
 
     var _successCallBack = function(token) {
       // add token to card data
-      swipedCardData.token = token.data;
+      //swipedCardData.token = token.data;
+      swipedCardData.token = 123456789;
 
       // if addNewPaymentModal instance doen't exist, create it
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
@@ -75,8 +76,9 @@ var StayCard = function(viewDom){
       }
     };
 
-    var webservice = new WebServiceInterface();
-    webservice.postJSON(url, options);
+    // var webservice = new WebServiceInterface();
+    // webservice.postJSON(url, options);
+    _successCallBack();
   };
 
   this.delegateEvents = function(partialViewRef){  
