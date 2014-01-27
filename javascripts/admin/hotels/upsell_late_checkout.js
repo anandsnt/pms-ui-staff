@@ -51,12 +51,18 @@ var UpsellLateCheckoutView = function(domRef){
 	  var options = {
 			   requestParameters: postParams,
 			   successCallBack: that.fetchCompletedOfSave,
+			   failureCallBack: that.fetchFailedOfSave,
 			   loader: "BLOCKER"
 	  };
 	  webservice.postJSON(url, options);	  
 
   };
-  this.fetchCompletedOfSave = function(data){
-  	that.goBackToPreviousView();
+  // To handle success on save API
+  this.fetchCompletedOfSave = function() {
+  	sntapp.notification.showSuccessMessage("Saved successfully", that.myDom);
+  };
+  // To handle failure on save API
+  this.fetchFailedOfSave = function(errorMessage){
+  	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   };
 };

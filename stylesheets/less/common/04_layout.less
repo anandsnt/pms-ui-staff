@@ -49,11 +49,10 @@ body {
 				vertical-align: middle;
 				text-align: center;
 				overflow: hidden;
-				text-shadow: 1px 1px 0 rgba(0,0,0,.1);
+				background: @softRed;
 				.show;
 				.square(20px);
 				#border-radius > .rounded(20px);
-				.gradient(@redStart, @redEnd);
 			}
 
 			.active { 
@@ -86,7 +85,7 @@ body {
 		left: 0;
 		.square(100%);
 		background: transparent;
-		z-index: 9999;
+		z-index: 999999;
 	}
 
 	#loading-spinner {
@@ -114,8 +113,9 @@ body {
 
 /* Notices					==============================*/
 	.notice {
-		padding: 20px;
+		padding: 10px;
 		margin: 10px;
+		margin-bottom: 10px;
 		color: darken(@yellow, 30);
 		background: lighten(@yellow, 20);
 		border: 1px solid @yellow;

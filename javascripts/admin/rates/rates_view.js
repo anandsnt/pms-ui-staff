@@ -80,7 +80,7 @@ var RatesView = function(domRef) {
 
 		var url = "/admin/rates";
 		viewParams = {};
-		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
 		sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
 		that.cancelFromAppendedDataInline(requestParams['event']);
 	};
@@ -116,7 +116,7 @@ var RatesView = function(domRef) {
 	this.fetchCompletedOfImport = function(data, requestParams) {
 		var url = "/admin/rates";
 		viewParams = {};
-		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
 		sntapp.notification.showSuccessMessage("Imported Successfully", that.myDom);
 		that.cancelFromAppendedDataInline(requestParams['event']);
 	};

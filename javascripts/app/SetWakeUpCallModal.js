@@ -19,13 +19,12 @@ var SetWakeUpCallModal = function() {
 	};
 
 	this.fetchCompletedOfSetWakeUpCall = function(data, requestParameters){
-		if (data.status == "success") {
-			that.hide();
-			$("#reservation_card_wake_up_time").html(requestParameters['wakeUpTime']);
-		}
-		else{
-			sntapp.notification.showErrorList(data.errors, that.myDom);
-		}
+		that.hide();
+		$("#reservation_card_wake_up_time").html(requestParameters['wakeUpTime']);
+	};
+	this.fetchFailedOfSave = function(errorMessage){
+		sntapp.activityIndicator.hideActivityIndicator();
+	 	sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
 	};
 	
     //function to save wake up call
@@ -49,6 +48,7 @@ var SetWakeUpCallModal = function() {
 	    var options = {
 	    		requestParameters: data,
 				successCallBack: that.fetchCompletedOfSetWakeUpCall,
+				failureCallBack: that.fetchFailedOfSave,
 				successCallBackParameters: {'wakeUpTime': wakeUpTime},
 		};
 	    webservice.postJSON(url, options);
@@ -96,10 +96,9 @@ var SetWakeUpCallModal = function() {
 	};
 
 	this.fetchCompletedOfDeleteWakeUpCall = function(data){
-		if (data.status == "success") {
-			that.hide();
-			$("#reservation_card_wake_up_time").html("Not Set");
-		}		
+		that.hide();
+		$("#reservation_card_wake_up_time").html("Not Set");
+		sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
 	};
 	// function to delete wake up call
     this.deleteWakeUpCall = function() {
@@ -113,6 +112,7 @@ var SetWakeUpCallModal = function() {
 	    var options = {
 	    		requestParameters: data,
 				successCallBack: that.fetchCompletedOfDeleteWakeUpCall,
+				failureCallBack: that.fetchFailedOfSave,
 		};
 	    webservice.postJSON(url, options);
     	

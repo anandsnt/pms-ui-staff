@@ -24,28 +24,11 @@ var HotelDepartmentsView = function(domRef){
   	
   	var url = "/admin/departments";
    	viewParams = {};
-  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
-  	if(data.status == "success"){
-		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
-		  that.cancelFromAppendedDataInline(requestParams['event']);  
-	  }	 
-	  else{
-		  sntapp.notification.showErrorList(data.errors, that.myDom);  
-	  }
+  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams, false);
+    sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
+    that.cancelFromAppendedDataInline(requestParams['event']);  
   };
-  //refreshing view with new data and showing message
-  this.fetchCompletedOfDelete = function(data){
-  	
-  	var url = "/admin/departments";
-   	viewParams = {};
-  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
-  	if(data.status == "success"){
-		  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);		  
-	  }	 
-	  else{
-		  sntapp.notification.showErrorList(data.errors, that.myDom);  
-	  }
-  };
+  
   //function to update department
   this.updateApi = function(event){
   	var postData = {};
@@ -86,16 +69,10 @@ var HotelDepartmentsView = function(domRef){
   };
    //to remove deleted row and show message
   this.fetchCompletedOfDelete = function(data, successParams){
-  	  var url = "/admin/departments";
-   	  viewParams = {};
-  	  sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
-	  if(data.status == "success"){
-		  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
-		  that.myDom.find($("#user_row_"+successParams['selectedId'])).html("");
-	  }	 
-	  else{
-		  
-		  sntapp.notification.showErrorList(data.errors, that.myDom);  
-	  }	  
+	  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
+	  that.myDom.find("#department_row_"+successParams['selectedId']).html("");
+	  //to clear the html for edit data.
+	  that.myDom.find(".edit-data").html("");
+	  
   };
 };

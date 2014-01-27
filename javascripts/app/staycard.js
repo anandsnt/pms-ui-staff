@@ -7,11 +7,14 @@ var StayCard = function(viewDom){
     setUpStaycard(that.myDom);
     var currentConfirmNumber = $("#confirm_no").val();    
     var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
-	reservationDetails.initialize();
+    reservationDetails.initialize();
 
     if(sntapp.cordovaLoaded){
       var options = {
           successCallBack: function(data){
+            //clear previous data
+            window.cardData = {};
+            // add new data
             window.cardData = {
               cardType: data.RVCardReadCardType || '',
               expiry: data.RVCardReadExpDate || '',
@@ -20,73 +23,45 @@ var StayCard = function(viewDom){
                 'et2': data.RVCardReadTrack2,
                 'ksn': data.RVCardReadTrack2KSN
               }
-            }
-
+            };
             that.postCardSwipData();
-            $("#add-new-payment").trigger('click');
           },
           failureCallBack: function(errorObject){
-            sntapp.notification.showErrorMessage('not visible from failure');
+            sntapp.notification.showErrorMessage('Error occured (103): Bad Read, Please try again.');
           }
       };
       sntapp.cardReader.startReader(options);
     }
-
-    // demo
-    // $("#add-new-payment").trigger('click');
-    // this.postCardSwipData(); 
   };
+
 
   // lets post the 'et2' and 'ksn' data
   // to get the token code from MLI
-  this.postCardSwipData = function(cardData) {
+  this.postCardSwipData = function() {
     var cardData = window.cardData;
     var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
     var options = {
+      loader: 'BLOCKER',
       requestParameters: cardData.getTokenFrom,
       successCallBack: function(token) {
-        window.injectSwipeCardData = function(cardData) {
-          window.cardData.token = token.data;
-          var cardData = window.cardData;
+        // add token to card data
+        window.cardData.token = token.data;
 
-          $('#payment-type').val( 'CC' );
-
-          var cards = {
-            'VA': 'VISA',
-            'MC': 'Master Card',
-            'DC': 'Diners Club',
-            'DS': 'Discover',
-            'JCB': 'Japan Credit Bureau',
-            'AX': 'American Express'
-          }
-          
-          var option = '<option value="'+window.cardData.cardType+'" data-image="images/visa.png">'+cards[window.cardData.cardType]+'</option>'
-          $('#payment-credit-type').append(option).val(window.cardData.cardType);
-
-          $('#card-number-set1').val( cardData.token );
-          $('#expiry-month').val( cardData.expiry.slice(-2) );
-          $('#expiry-year').val( cardData.expiry.substring(0, 2) );
-          $('#name-on-card').val( cardData.cardHolderName );
-
-          // inject the token as hidden field into form
-          // TODO: Fix Security Issue associated with input[type="hidden"]!
-          $('#new-payment').append('<input type="hidden" id="card-token" value="' + cardData.token + '">');
-
-          // Remove card data stored in window.cardData
-          window.cardData = {};
-        }
+        // show the model
+        $("#add-new-payment").trigger('click');
       },
       failureCallBack: function(error) {
         sntapp.notification.showErrorMessage('failed on postCardSwipData ' + error);
       }
-    }
+    };
 
     var webservice = new WebServiceInterface();
     webservice.postJSON(url, options);
+	reservationDetails.initialize();
   };
 
+  this.delegateEvents = function(partialViewRef){  
 
-   this.delegateEvents = function(partialViewRef){  
    	if(partialViewRef === undefined){
    		partialViewRef = $("#confirm_no").val();
    	};   	
@@ -98,8 +73,15 @@ var StayCard = function(viewDom){
   };
   
   this.changeAvathar = function(e){
-	  var img_src = getAvatharUrl($(this).val());
-	  $("#guest-card-header .guest-image img").attr("src", img_src);  
+	  var imgSrc = that.myDom.find('#guest-image').attr('src');
+    var imageName = imgSrc.split('/')[imgSrc.split('/').length-1];
+
+    for (var key in avatharImgs) {
+      if((avatharImgs[key]) == imageName){
+        $("#guest-card-header .guest-image img").attr("src", getAvatharUrl($(this).val()));  
+        return false;
+      }
+    }
   };
 
   
@@ -182,8 +164,7 @@ this
     var currentReservationDom = that.myDom.find("[data-reservation-id='" + reservationId + "']").attr('id');
     that.loadReservationDetails("#" + currentReservationDom, sucessCallback);
 
-
-  }
+  };
 
   this.loadReservationDetails = function(currentReservationDom, sucessCallback){
     var confirmationNum = currentReservationDom.split("-")[1];
