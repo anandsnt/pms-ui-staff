@@ -43,6 +43,26 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find("#bills-tabs-nav li[bill_active='true']").addClass('active');
 
 		alert( JSON.stringify(window.cardData) );
+
+		if (window.cardData) {
+			that.autoPopulate();
+		};
+	};
+
+	this.autoPopulate = function() {
+		var cardData = window.cardData;
+
+		// inject card type
+		var cards = {
+		  'VA': 'VISA',
+		  'MC': 'Master Card',
+		  'DC': 'Diners Club',
+		  'DS': 'Discover',
+		  'JCB': 'Japan Credit Bureau',
+		  'AX': 'American Express'
+		}
+		var option = '<option value="' + cardData.cardType + '" data-image="images/visa.png">' + cards[cardData.cardType] + '</option>'
+		$('.select-item.credit-card select').append(option).val(cardData.cardType);
 	};
 
 	this.executeLoadingAnimation = function() {

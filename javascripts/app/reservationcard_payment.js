@@ -4,6 +4,8 @@ var ReservationPaymentView = function(domRef){
   this.myDom = domRef;  
   
   this.$paymentTypes = [];
+
+  this.parentView = '';
   	
   this.pageinit = function(){
     
@@ -13,9 +15,20 @@ var ReservationPaymentView = function(domRef){
     that.myDom.find('#staycard_creditcard').on('change', that.setPaymentToReservation);
   };
   this.addNewPaymentModal = function(event, options){
-    console.log(options);
-  	var addNewPaymentModal = new AddNewPaymentModal("reservation", that.myDom);
-    addNewPaymentModal.initialize();
+
+  	if ( !sntapp.getViewInst('addNewPaymentModal') ) {
+      sntapp.setViewInst('addNewPaymentModal', function() {
+        return new AddNewPaymentModal('staycard', that.myDom);
+      });
+      sntapp.getViewInst('addNewPaymentModal').initialize();
+    } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
+
+      // if addNewPaymentModal instance exist, but the dom is removed
+      sntapp.updateViewInst('addNewPaymentModal', function() {
+        return new AddNewPaymentModal('staycard', that.myDom);
+      });
+      sntapp.getViewInst('addNewPaymentModal').initialize();
+    }
   };
   
   this.fetchCompletedOfSetPaymentToReservation = function(data){

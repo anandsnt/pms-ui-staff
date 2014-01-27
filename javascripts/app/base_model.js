@@ -14,8 +14,10 @@ BaseModal = function() {
             this.fetchFromURL(that.type);
         }
     };
+
     this.modalInit = function(){
     };
+    
 	this.unbindCancelEvent = function(){
 		$('#modal-overlay, #modal-close, #cancel').off('click');
 	};
