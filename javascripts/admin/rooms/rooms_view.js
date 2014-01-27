@@ -5,7 +5,7 @@ var RoomsView = function(domRef) {
 	
 	this.delegateEvents = function() {
 		that.myDom.find('#rooms').tablesorter();
-		that.myDom.find('.add-data-inline,.edit-data-inline').on('click', sntadminapp.gotoNextPage);
+		that.myDom.find('#add-new-button,.edit-data').on('click', sntadminapp.gotoNextPage);
 		that.myDom.find('#go_back,#cancel').on('click', that.goBackToPreviousView);
 		that.myDom.find('#room-picture').on('change', function(){
   			that.readURL(this);
