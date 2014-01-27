@@ -41,10 +41,10 @@ var StayCard = function(viewDom){
 
     var _successCallBack = function(token) {
       // add token to card data
-      //swipedCardData.token = token.data;
-      swipedCardData.token = '123456789';
+      swipedCardData.token = token.data;
 
-      alert( JSON.stringify(swipedCardData) );
+
+      alert( $('#page-inner-first').find('div:first').attr('data-view') );
 
       // if addNewPaymentModal instance doen't exist, create it
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
@@ -79,8 +79,7 @@ var StayCard = function(viewDom){
     };
 
     // var webservice = new WebServiceInterface();
-    // webservice.postJSON(url, options);
-    _successCallBack();
+    webservice.postJSON(url, options);
   };
 
   this.delegateEvents = function(partialViewRef){  
