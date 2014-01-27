@@ -4,35 +4,53 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
   	this.save_inprogess = false;
   	this.url = "staff/payments/addNewPayment";
   	this.$paymentTypes = [];
-
-  	this.delegateEvents = function(){ 		
+  	
+  	this.delegateEvents = function(){
   		that.getPaymentsList();
   		that.myDom.find('#new-payment #payment-type').on('change', that.filterPayments);
 		that.myDom.find('#new-payment #save_new_credit_card').on('click', that.saveNewPayment);
+
+		// window.injectSwipeCardData && window.injectSwipeCardData();
+		if (window.cardData) {
+			that.autoPopulate();
+		};
 	};
 
-	this.modalInit = function(options){
-		console.log(options);
-		that.carData = options.cardData ? options.cardData : {};
-   	};
+	this.autoPopulate = function() {
+		console.log( 'gonna autoPopulate' );
 
-   	// auto populate the new payment modal
-   	this.autoPopulate = function(cardData) {
-   		// card swipe, so its 'CC' anway
-   		$('#payment-type').val( 'CC' );
+		var cardData = window.cardData;
 
-   		// for rest check and apply
-   		carData.cardType && $('#payment-credit-type').val( carData.cardType );
-   		cardData.token && $('#card-number-set1').val( 'xxxx-xxxx-xxxx-' + cardData.token.slice(-4) );
-   		cardData.expiry && $('#expiry-month').val( cardData.expiry.slice(-2) );
-   		cardData.expiry && $('#expiry-year').val( cardData.expiry.substring(0, 2) );
-   		cardData.cardHolderName && $('#name-on-card').val( cardData.cardHolderName );
+		alert( JSON.stringify(cardData) );
+
+		// inject the values to payment modal
+        // inject payment type
+		$('#payment-type').val( 'CC' );
+
+		// inject card type
+		var cards = {
+		  'VA': 'VISA',
+		  'MC': 'Master Card',
+		  'DC': 'Diners Club',
+		  'DS': 'Discover',
+		  'JCB': 'Japan Credit Bureau',
+		  'AX': 'American Express'
+		}
+		var option = '<option value="' + cardData.cardType + '" data-image="images/visa.png">' + cards[cardData.cardType] + '</option>'
+		$('#payment-credit-type').append(option).val(cardData.cardType);
+		// inject card number, exipry & name
+		$('#card-number-set1').val( 'xxxx-xxxx-xxxx-' + cardData.token.slice(-4) );
+		$('#expiry-month').val( cardData.expiry.slice(-2) );
+		$('#expiry-year').val( cardData.expiry.substring(0, 2) );
+		$('#name-on-card').val( cardData.cardHolderName );
 
 		// inject the token as hidden field into form
 		// TODO: Fix Security issue associated with input[type="hidden"]
 		$('#new-payment').append('<input type="hidden" id="card-token" value="' + cardData.token + '">');
-   	};
+	};
 
+	this.modalInit = function(){
+   	};
    	this.fetchCompletedOfReservationPayment = function(data, requestParameters){
 			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
 			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
@@ -75,16 +93,11 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			$("#payment_tab #credit_row"+data.id).removeClass("new-item");				
 			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+'.png';
 			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
-			that.hide(); 
-			if(typeof data.data.id !== 'undefined' && data.data.id !== ""){
-				that.fetchCompletedOfReservationPayment(data, requestParameters);
-			}
-			else{
-				sntapp.notification.showErrorMessage('ID is missing after payment method operation');
-			}
+			that.hide();
    	};
    	this.fetchFailedOfPayment = function(errorMessage){
-   		sntapp.notification.showErrorList(errorMessage, that.myDom);
+   		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
    		that.save_inprogress = false;
    	};    	
    	this.saveNewPayment = function(){
@@ -120,30 +133,6 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 	  		return;
   		}
 		
-		// MOVED TO SERVER SIDE VALIDATION ONLY
-		// /* credit card validation */
-		// if (!checkCreditCard ($card_number, $payment_credit_type)) {
-		// 	    	$("#credit-card-number-error").html(ccErrors[ccErrorNo]).show();
-		// 	  		return false;
-		// 	  	}
-		// $("#new-payment .error").hide();
-		// if(($("#new-payment #payment-type").val()) == ""){
-		// 	$("#payment-type-error").html("Payment type is required").show();		
-		// 	return false;	
-		// 	    }else if($("#new-payment #payment-credit-type").val() == ""){ 
-		// 	$("#payment-credit-type-error").html("Credit Card type is required").show();	
-		// 	return false;			
-		// }else if($("#new-payment #card-number-set1").val() == ""){
-		// 	$("#credit-card-number-error").html("Credit Card number is required").show();	
-		// 	return false;			
-		// }else if($.trim($("#new-payment #expiry-month").val()) == "" || $.trim($("#new-payment #expiry-year").val()) == ""){
-		// 	$("#credit-card-expiry-error").html("Credit Card expiry is required").show();	
-		// 	return false;			
-		// }else if($.trim($("#new-payment #name-on-card").val()) == ""){
-		// 	$("#name-on-card-error").html("Card holder name is required").show();	
-		// 	return false;			
-		// }
-		
 		var $image = "<img src='/assets/"+$("#new-payment #payment-credit-type").val().toLowerCase()+".png' alt='"+$("#new-payment #payment-credit-type").val().toLowerCase()+"'>";	
 		
 		$number = $card_number.substr($card_number.length - 4);
@@ -168,7 +157,6 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		    };
 		    var url = 'staff/payments/save_new_payment'; 
 		    var options = {
-		    		loader: 'blocker',
 				   requestParameters: data,
 				   successCallBack: that.fetchCompletedOfPayment,
 				   failureCallBack: that.fetchFailedOfPayment,
@@ -198,7 +186,6 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		    };		
 		    var url = 'staff/reservation/save_payment'; 
 		    var options = {
-		    			loader: 'blocker',
 					   requestParameters: data,
 					   successCallBack: that.fetchCompletedOfReservationPayment,
 					   failureCallBack: that.fetchFailedOfReservationPayment,
@@ -221,29 +208,23 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		};
 	    webservice.getJSON(url, options);	   
    };
-
-   // ok we got the payment types from server
    this.fetchCompletedOfGetPayment = function(data){
-		that.$paymentTypes = data.data;
-
-		// if we were initiated by a card swipe
-		// lets auto populate the modal
-		that.cardData && that.autoPopulate();
+	   that.$paymentTypes = data.data;
    };
    
-	this.filterPayments = function(e){
-		var $selectedPaymentType = $("#new-payment #payment-type").val();
+     this.filterPayments = function(e){
+  		var $selectedPaymentType = $("#new-payment #payment-type").val();
 		$paymentTypeValues = '';
 		$("#new-payment #payment-credit-type").find('option').remove().end();
 		$.each(that.$paymentTypes, function(key, value) {
-			if(value.name == $selectedPaymentType){
-				$paymentTypeValues = '<option value="" data-image="">Select credit card</option>';
-				$("#payment-credit-type").append($paymentTypeValues);
-				$.each(value.values, function(paymentkey, paymentvalue) {
-				$paymentTypeValues = '<option value="'+paymentvalue.cardcode+'" data-image="images/visa.png">'+paymentvalue.cardname+'</option>';
-				$("#payment-credit-type").append($paymentTypeValues);
-			});
-			}		    
+		    if(value.name == $selectedPaymentType){
+		    	$paymentTypeValues = '<option value="" data-image="">Select credit card</option>';
+		    	$("#payment-credit-type").append($paymentTypeValues);
+		    	$.each(value.values, function(paymentkey, paymentvalue) {
+		    		$paymentTypeValues = '<option value="'+paymentvalue.cardcode+'" data-image="images/visa.png">'+paymentvalue.cardname+'</option>';
+		    		$("#payment-credit-type").append($paymentTypeValues);
+		    	});
+		    }		    
 		});
-	};
+  };
 };

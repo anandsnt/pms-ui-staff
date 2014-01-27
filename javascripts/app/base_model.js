@@ -78,7 +78,6 @@ BaseModal = function() {
     };
 
     this.hide = function (callBack){
-
     	that.unbindCancelEvent();
     	that.unbindEvents();
         $('#modal, #modal-overlay').removeClass('modal-show'); 

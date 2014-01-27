@@ -57,10 +57,11 @@ var RoomAssignmentView = function(viewDom){
 
   //Fetches the non-filtered list of rooms.
   this.fetchRoomList = function(){
+    var currentReservation = $('#roomassignment-ref-id').val();
     var roomType = that.myDom.find('.reservation-header #room-type').attr('data-room-type');
-    var data = {};
+    var data = {"reservation_id": currentReservation};
     if(roomType != null && roomType!= undefined){
-      data = {"room_type": roomType};
+      data.roomType = roomType;
     }
     $.ajax({
         type:       'POST',
@@ -181,6 +182,7 @@ var RoomAssignmentView = function(viewDom){
     var filteredRoomList = [];
     var includeNotReady = false;
     var includeDueout = false;
+    var includePreAssigned = false;
 
     if(that.myDom.find($('#filter-not-ready')).is(':checked')){
       includeNotReady = true;
@@ -189,15 +191,22 @@ var RoomAssignmentView = function(viewDom){
     if(that.myDom.find($('#filter-dueout')).is(':checked')){
       includeDueout = true;
     }
+	
+    if(that.myDom.find($('#filter-preassigned')).is(':checked')){
+      includePreAssigned = true;
+    }
 
     for (var i = 0; i< roomList.length; i++){
-      if(roomList[i].fo_status === "VACANT" && roomList[i].room_status === "READY"){
+      if(roomList[i].fo_status === "VACANT" && roomList[i].room_status === "READY" && !roomList[i].is_preassigned){
         filteredRoomList.push(roomList[i]);
       }
       else if(includeDueout && roomList[i].fo_status === "DUEOUT"){
         filteredRoomList.push(roomList[i]);
       }
       else if(includeNotReady && roomList[i].room_status === "NOTREADY" && roomList[i].fo_status == "VACANT"){
+        filteredRoomList.push(roomList[i]);
+      }
+      else if(includePreAssigned && roomList[i].is_preassigned){
         filteredRoomList.push(roomList[i]);
       }
     }
@@ -216,6 +225,10 @@ var RoomAssignmentView = function(viewDom){
         // Always show color coding ( Red / Green - for Room status)
         if(filteredRoomList[i].room_status == "READY" && filteredRoomList[i].fo_status == "VACANT"){
           room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
+		  
+		  if(filteredRoomList[i].is_preassigned) {
+			  room_status_html += "<span class='room-preassignment'>"+filteredRoomList[i].last_name + " " + filteredRoomList[i].guarantee_type+"</span>";
+		  } 
         }
         else{
             room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
@@ -226,8 +239,8 @@ var RoomAssignmentView = function(viewDom){
         if(room_status_html != ""){
           var output = "<li><a id = 'room-list-item'"+
             "class='button white submit-value hover-hand' data-value='' >"+room_status_html+"</a></li>";
-          $('#rooms-available ul').append(output);      
-        }       
+          $('#rooms-available ul').append(output);    
+        }    
     }
     that.createRoomListScroll();
 
@@ -321,6 +334,7 @@ var RoomAssignmentView = function(viewDom){
     var options = { requestParameters: postParams,
     				successCallBack: that.roomAssignmentSuccess,
     				successCallBackParameters: successCallBackParams,
+    				failureCallBack: that.fetchFailedOfSave,
     				loader: 'blocker'
     		};
     webservice.postJSON(url, options);
@@ -343,7 +357,10 @@ var RoomAssignmentView = function(viewDom){
     }
 
   };
-	
+  this.fetchFailedOfSave = function(errorMessage){
+	sntapp.activityIndicator.hideActivityIndicator();
+	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+  };
   this.backButtonClicked = function(e){
     e.preventDefault();
     that.gotoStayCard();
@@ -386,12 +403,16 @@ var RoomAssignmentView = function(viewDom){
            requestParameters: postParams,
            successCallBack: that.upgradeSuccess,
            successCallBackParameters: successCallBackParams,
+            failureCallBack: that.fetchFailedOfSave,
            loader: "BLOCKER"
     };
     webservice.postJSON(url, options);  
 
   };
-    
+  this.fetchFailedOfSave = function(errorMessage){
+	sntapp.activityIndicator.hideActivityIndicator();
+	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+  };  
   this.upgradeSuccess = function(data, requestParams){
 
     var staycardView = new StayCard($("#view-nested-first"));

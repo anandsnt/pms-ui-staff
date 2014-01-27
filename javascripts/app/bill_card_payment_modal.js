@@ -33,7 +33,8 @@ var BillCardPaymentModal = function(callBack){
     this.fetchCompletedOfSubmitPayment = function(){
     	that.hide(callBack);
     };
-    this.fetchFailedOfSubmitPayment = function(){
-    	that.hide();
+    this.fetchFailedOfSubmitPayment = function(errorMessage){
+    	sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
     };
 };

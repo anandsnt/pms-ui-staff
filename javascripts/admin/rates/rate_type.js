@@ -30,7 +30,7 @@ var RateTypeListView = function(domRef){
 		var url = "/admin/hotel_rate_types";
 	   	viewParams = {};
 	  	if(data.status == "success"){
-	  		  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+	  		  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
 			  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
 			  that.cancelFromAppendedDataInline(requestParams['event']);  
 	    }

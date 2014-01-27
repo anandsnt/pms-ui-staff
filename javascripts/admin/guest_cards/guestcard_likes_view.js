@@ -294,15 +294,10 @@ var GuestCardLikesView = function(domRef){
 
   	  var url = "/admin/hotel_likes/get_hotel_likes";
    	  viewParams = {};
-
-  	  if(data.status == "success"){
-        sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
-  		  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
-  		  that.cancelFromAppendedDataInline(requestParams['event']);
-  	  }
-  	  else{
-  		  sntapp.notification.showErrorList(data.errors, that.myDom);
-  	  }
+      sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
+  	  sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+  	  that.cancelFromAppendedDataInline(requestParams['event']);
+  	 
   };
 
     this.saveNewsPaper = function(event, element){
@@ -333,17 +328,11 @@ var GuestCardLikesView = function(domRef){
 
   //refreshing view with new data and showing message
   this.newsPaperSaveComplete = function(data, requestParams){
-    var url = "/admin/hotel_likes/get_hotel_likes";
-    viewParams = {};
-
-    if(data.status == "success"){
-      sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+      var url = "/admin/hotel_likes/get_hotel_likes";
+      viewParams = {};
+      sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
       sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
       that.cancelFromAppendedDataInline(requestParams['event']);
-    }
-    else{
-      sntapp.notification.showErrorList(data.errors, that.myDom);
-    }
   };
 
 };

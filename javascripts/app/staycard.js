@@ -8,9 +8,60 @@ var StayCard = function(viewDom){
     var currentConfirmNumber = $("#confirm_no").val();    
     var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
     reservationDetails.initialize();
+
+    if(sntapp.cordovaLoaded){
+      var options = {
+          successCallBack: function(data){
+            //clear previous data
+            window.cardData = {};
+            // add new data
+            window.cardData = {
+              cardType: data.RVCardReadCardType || '',
+              expiry: data.RVCardReadExpDate || '',
+              cardHolderName: data.RVCardReadCardName || '',
+              getTokenFrom: {
+                'et2': data.RVCardReadTrack2,
+                'ksn': data.RVCardReadTrack2KSN
+              }
+            };
+            that.postCardSwipData();
+          },
+          failureCallBack: function(errorObject){
+            sntapp.notification.showErrorMessage('Error occured (103): Bad Read, Please try again.');
+          }
+      };
+      sntapp.cardReader.startReader(options);
+    }
   };
 
-   this.delegateEvents = function(partialViewRef){  
+
+  // lets post the 'et2' and 'ksn' data
+  // to get the token code from MLI
+  this.postCardSwipData = function() {
+    var cardData = window.cardData;
+    var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
+    var options = {
+      loader: 'BLOCKER',
+      requestParameters: cardData.getTokenFrom,
+      successCallBack: function(token) {
+        // add token to card data
+        window.cardData.token = token.data;
+
+        // show the model
+        $("#add-new-payment").trigger('click');
+      },
+      failureCallBack: function(error) {
+        sntapp.notification.showErrorMessage('failed on postCardSwipData ' + error);
+      }
+    };
+
+    var webservice = new WebServiceInterface();
+    webservice.postJSON(url, options);
+	reservationDetails.initialize();
+  };
+
+  this.delegateEvents = function(partialViewRef){  
+
    	if(partialViewRef === undefined){
    		partialViewRef = $("#confirm_no").val();
    	};   	
@@ -113,8 +164,7 @@ this
     var currentReservationDom = that.myDom.find("[data-reservation-id='" + reservationId + "']").attr('id');
     that.loadReservationDetails("#" + currentReservationDom, sucessCallback);
 
-
-  }
+  };
 
   this.loadReservationDetails = function(currentReservationDom, sucessCallback){
     var confirmationNum = currentReservationDom.split("-")[1];
