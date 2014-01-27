@@ -17,7 +17,6 @@ var ItemsView = function(domRef) {
 				"id" : itemId,
 				"set_active" : toggleStatus
 			};
-			console.log(JSON.stringify(postParams));
 			var webservice = new WebServiceInterface();
 			var options = {
 				requestParameters : postParams,
@@ -25,7 +24,7 @@ var ItemsView = function(domRef) {
 				failureCallBack : that.fetchFailedOfSave,
 				loader : "NONE"
 			};
-			var url = '';
+			var url = '/admin/items/toggle_favorite';
 			webservice.postJSON(url, options);
 			return true;
 		}, 100);
@@ -60,8 +59,6 @@ var ItemsView = function(domRef) {
 		postData.unit_price = that.myDom.find("#unit_price").val();
 		postData.charge_code = that.myDom.find("#charge_code").val();
 
-		console.log(JSON.stringify(postData));
-
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
@@ -75,7 +72,8 @@ var ItemsView = function(domRef) {
 		};
 		if (action == "ACTION_EDIT") {
 			webservice.putJSON(url, options);
-		} else if (action == "ACTION_SAVE") {
+		} 
+		else if (action == "ACTION_SAVE") {
 			webservice.postJSON(url, options);
 		}
 
@@ -83,7 +81,7 @@ var ItemsView = function(domRef) {
 	//refreshing view with new data and showing message
 	this.fetchCompletedOfSave = function(data, requestParams) {
 
-		var url = "";
+		var url = "/admin/items/get_items";
 		viewParams = {};
 
 		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
