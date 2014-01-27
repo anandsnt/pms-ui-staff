@@ -23,6 +23,7 @@ var RoomUpgradesView = function(viewDom){
   };
 
   this.executeLoadingAnimation = function(){
+    sntapp.activityIndicator.showActivityIndicator("blocker");
   	changeView("nested-view", "", "view-nested-first", "view-nested-second", "move-from-right", false); 
   };
 
