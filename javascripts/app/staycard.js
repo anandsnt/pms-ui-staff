@@ -78,8 +78,10 @@ var StayCard = function(viewDom){
       }
     };
 
-    var webservice = new WebServiceInterface();
-    webservice.postJSON(url, options);
+    // var webservice = new WebServiceInterface();
+    // webservice.postJSON(url, options);
+
+    _successCallBack();
   };
 
   this.delegateEvents = function(partialViewRef){  
