@@ -42,10 +42,9 @@ var ReservationPaymentView = function(domRef){
 	var selectedElement = that.myDom.find(this).attr("data-payment-id");
 	var webservice = new WebServiceInterface();
     var data = {
-    		reservation_id : reservation_id,
-			payment_id: selectedElement			   
+    		reservation_id : reservation_id	   
     };
-    var url = '/staff/payments/deleteCreditCard'; 
+    var url = '/urltodelete'; 
     var options = {
 		   requestParameters: data,
 		   successCallBack: that.fetchCompletedOfDelete,
