@@ -83,7 +83,7 @@ var ItemsView = function(domRef) {
 	//refreshing view with new data and showing message
 	this.fetchCompletedOfSave = function(data, requestParams) {
 
-		var url = "";
+		var url = "/admin/items/get_items";
 		viewParams = {};
 
 		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
