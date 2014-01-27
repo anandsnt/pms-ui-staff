@@ -44,7 +44,7 @@ var ReservationPaymentView = function(domRef){
     var data = {
     		reservation_id : reservation_id	   
     };
-    var url = '/urltodelete'; 
+    var url = '/staff/staycards/unlink_credit_card'; 
     var options = {
 		   requestParameters: data,
 		   successCallBack: that.fetchCompletedOfDelete,
