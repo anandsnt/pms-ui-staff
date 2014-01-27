@@ -78,7 +78,7 @@ var StayCard = function(viewDom){
       }
     };
 
-    // var webservice = new WebServiceInterface();
+    var webservice = new WebServiceInterface();
     webservice.postJSON(url, options);
   };
 
