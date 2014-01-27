@@ -57,32 +57,29 @@ var RoomAssignmentView = function(viewDom){
 
   //Fetches the non-filtered list of rooms.
   this.fetchRoomList = function(){
-    var currentReservation = $('#roomassignment-ref-id').val();
     var roomType = that.myDom.find('.reservation-header #room-type').attr('data-room-type');
-    var data = {"reservation_id": currentReservation};
+    var data = {};
     if(roomType != null && roomType!= undefined){
-      data.roomType = roomType;
+      data = {"room_type": roomType};
     }
-    $.ajax({
-        type:       'POST',
-        url:        "/staff/rooms/get_rooms",
-        data: data,
-        async: false,
-        dataType:   'json',
-        success: function(response){
-          if(response.status == "success"){
-            that.roomCompleteList = response.data;
-            that.applyFilters();
-          }else if(response.status == "failure"){
-            that.roomCompleteList = [];
-            //TODO: Handle failure cases
-          }
-        },
-        error: function(){
-          that.roomCompleteList = [];
-          //TODO: Handle failure cases
-        }
-    });
+    var url = "/staff/rooms/get_rooms";
+    var webservice = new WebServiceInterface(); 
+    var options = {
+      requestParameters: data,
+      successCallBack: that.roomListFetchCompleted,
+      failureCallBack: that.roomListFetchFailed,
+      loader: "BLOCKER"
+    };
+    webservice.postJSON(url, options);  
+  };
+
+  this.roomListFetchCompleted = function(response){
+    that.roomCompleteList = response.data;
+    that.applyFilters();
+  };
+
+  this.roomListFetchFailed = function(){
+    that.roomCompleteList = [];
   };
 
   this.clearFiltersClicked = function(e){

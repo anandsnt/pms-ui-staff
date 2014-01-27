@@ -18,12 +18,16 @@ var RoomsView = function(domRef) {
 	this.gotoPreviousPage = function() {
 		that.myDom.html("");
 		sntadminapp.gotoPreviousPage(that.viewParams);
+		that.myDom.html("");
+		
 	}; 
   
 	// To go back to rooms
   	this.goBackToPreviousView = function() {
   		that.myDom.html("");
  		sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
+		that.myDom.html("");
+
   	};
 
 	//to show preview of the image using file reader

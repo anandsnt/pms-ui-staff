@@ -52,15 +52,20 @@ console.log(postParams);
 		if(action == "ACTION_EDIT"){
 			postData.value = that.myDom.find("form#edit-items").attr("item_id");
 		}
-		postData.description = that.myDom.find("#item_desc").val();
+		if(action == "ACTION_SAVE"){
+			postData.is_favorite = that.myDom.find("#is_favorite").val();
+		}
+		postData.item_description = that.myDom.find("#item_desc").val();
 		postData.unit_price = that.myDom.find("#unit_price").val();
 		postData.charge_code = that.myDom.find("#charge_code").val();
-		postData.is_favorite = that.myDom.find("#is_favorite").val();
-console.log(postData);
+		
+console.log(JSON.stringify(postData));
+
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
 			successCallBack : that.fetchCompletedOfSave,
+			failureCallBack : that.fetchfailedOfSave,
 			successCallBackParameters : { "event" : event },
 			loader : "BLOCKER"
 
@@ -80,12 +85,12 @@ console.log(postData);
 		var url = "";
 		viewParams = {};
 		
-		if (data.status == "success") {
-			sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
-			sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
-			that.cancelFromAppendedDataInline(requestParams['event']);
-		} else {
-			sntapp.notification.showErrorList(data.errors, that.myDom);
-		}
+		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
+		sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+		that.cancelFromAppendedDataInline(requestParams['event']);
+	};
+	
+	this.fetchfailedOfSave = function(errorMessage) {
+		sntapp.notification.showErrorList(errorMessage, that.myDom);
 	};
 };
