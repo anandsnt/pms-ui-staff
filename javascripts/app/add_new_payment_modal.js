@@ -35,7 +35,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		  'DS': 'Discover',
 		  'JCB': 'Japan Credit Bureau',
 		  'AX': 'American Express'
-		}
+		};
 		var option = '<option value="' + cardData.cardType + '" data-image="images/visa.png">' + cards[cardData.cardType] + '</option>'
 		$('#payment-credit-type').append(option).val(cardData.cardType);
 		// inject card number, exipry & name
