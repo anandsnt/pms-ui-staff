@@ -29,6 +29,19 @@ var StayCard = function(viewDom){
       };
       sntapp.cardReader.startReader(options);
     }
+
+    // // DEBUG
+    // window.trigger = that.postCardSwipData;
+    // var swipedCardData = {
+    //   cardType: 'VA',
+    //   expiry: '1812',
+    //   cardHolderName: 'vijay',
+    //   getTokenFrom: {
+    //     'et2': 'dwadwadwadawdawd',
+    //     'ksn': 'dwa awd wadawdaw d wa'
+    //   }
+    // }
+    // that.postCardSwipData(swipedCardData);
   }
 
 
@@ -36,16 +49,17 @@ var StayCard = function(viewDom){
   // to get the token code from MLI
   this.postCardSwipData = function(swipedCardData) {
     var swipedCardData = swipedCardData;
+    
+    // add token to card data
+    swipedCardData.token = token.data;
+
+    // // DEBUG
+    // swipedCardData.token = '123456789';
 
     var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
 
-    var _successCallBack = function(token) {
-      // add token to card data
-      swipedCardData.token = token.data;
-
-
-      alert( $('#page-inner-first').find('div:first').attr('data-view') );
-
+    // respond to StayCardPage
+    var _stayCardResponse = function() {
       // if addNewPaymentModal instance doen't exist, create it
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
         sntapp.setViewInst('addNewPaymentModal', function() {
@@ -69,6 +83,68 @@ var StayCard = function(viewDom){
       }
     };
 
+    // respond to ViewBillPage
+    var _viewBillResponse = function() {
+      var billCardPaymentModal = new BillCardPaymentModal(that.reloadBillCardPage);
+           
+      billCardPaymentModal.params = {
+        "bill_number" : that.bill_number,
+        'swipedCardData': swipedCardData
+      };
+
+      billCardPaymentModal.initialize();
+    };
+
+    // respond to GuestCardBillPage
+    var _guestCreditCard = function() {
+      // if addNewPaymentModal instance doen't exist, create it
+      if ( !sntapp.getViewInst('addNewPaymentModal') ) {
+        sntapp.setViewInst('addNewPaymentModal', function() {
+          return new AddNewPaymentModal('guest', that.myDom);
+        });
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').initialize();
+      } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
+
+        // if addNewPaymentModal instance exist, but the dom is removed
+        sntapp.updateViewInst('addNewPaymentModal', function() {
+          return new AddNewPaymentModal('guest', that.myDom);
+        });
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').initialize();
+      } else {
+
+        // otherwise
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').populateSwipedCard();
+      }
+    };
+
+    var _successCallBack = function(token) {
+
+      // dirty trick to find the current page and react
+      switch(sntapp.currentPage){
+        case '':
+          console.log('respond to StayCardPage');
+          _stayCardResponse();
+          break;
+
+        case 'ViewBillPage':
+          console.log('respond to ViewBillPage');
+          _viewBillResponse();
+          break;
+
+        case 'GuestCardPage':
+          console.log('respond to GuestCardBillPage');
+          _guestCreditCard();
+          break;
+
+        default:
+          console.log('do nothing');
+          break;
+      }
+    };
+
     var options = {
       loader: 'BLOCKER',
       requestParameters: swipedCardData.getTokenFrom,
@@ -78,10 +154,11 @@ var StayCard = function(viewDom){
       }
     };
 
-    // var webservice = new WebServiceInterface();
-    // webservice.postJSON(url, options);
+    var webservice = new WebServiceInterface();
+    webservice.postJSON(url, options);
 
-    _successCallBack();
+    // // DEBUG
+    // _successCallBack();
   };
 
   this.delegateEvents = function(partialViewRef){  

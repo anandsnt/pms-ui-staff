@@ -124,10 +124,10 @@ var RegistrationCardView = function(viewDom) {
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
 	};
 
-	  this.gotoStayCard = function(){
-	sntapp.activityIndicator.showActivityIndicator("blocker");
-    changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
-  };
+	this.gotoStayCard = function(){
+		sntapp.activityIndicator.showActivityIndicator("blocker");
+		changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
+	};
 
   this.gotoBillCard = function(){
       
@@ -255,6 +255,7 @@ var RegistrationCardView = function(viewDom) {
 
 	this.gotoStayCard = function(e) {
 		e.preventDefault();
+		sntapp.currentPage = '';
 		//goBackToView("", "view-nested-third", "move-from-left");
 		var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
 		$($loader).prependTo('body').show();

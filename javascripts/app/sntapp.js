@@ -8,6 +8,8 @@ var app = function(){
     this.cardReader = null;
 
     this.DEBUG = true;
+    this.prevPage = ''; 
+    this.currentPage = ''; 
     
     this.getViewInstance = function(viewDom){
         var viewInstance;
