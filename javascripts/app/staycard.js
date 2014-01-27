@@ -37,11 +37,15 @@ var StayCard = function(viewDom){
   this.postCardSwipData = function(swipedCardData) {
     var swipedCardData = swipedCardData;
 
+    alert( JSON.stringify(swipedCardData) );
+
     var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
 
     var _successCallBack = function(token) {
       // add token to card data
       swipedCardData.token = token.data;
+
+      alert( JSON.stringify(swipedCardData) );
 
       // if addNewPaymentModal instance doen't exist, create it
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
