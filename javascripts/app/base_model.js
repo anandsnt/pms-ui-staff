@@ -14,8 +14,10 @@ BaseModal = function() {
             this.fetchFromURL(that.type);
         }
     };
+
     this.modalInit = function(){
     };
+    
 	this.unbindCancelEvent = function(){
 		$('#modal-overlay, #modal-close, #cancel').off('click');
 	};
@@ -78,7 +80,6 @@ BaseModal = function() {
     };
 
     this.hide = function (callBack){
-
     	that.unbindCancelEvent();
     	that.unbindEvents();
         $('#modal, #modal-overlay').removeClass('modal-show'); 

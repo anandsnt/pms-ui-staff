@@ -85,7 +85,7 @@ var reservationCardNotesView = function(domRef){
   };
   
   this.fetchErrorOfReservationNotes = function(errorMessage){
-	  sntapp.notitfication.showErrorMessage(errorMessage);
+	  sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   };
 };
 

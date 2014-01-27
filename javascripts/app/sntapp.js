@@ -6,6 +6,8 @@ var app = function(){
     this.browser = "other";
     this.cordovaLoaded = false;
     this.cardReader = null;
+
+    this.DEBUG = true;
     
     this.getViewInstance = function(viewDom){
         var viewInstance;
@@ -18,8 +20,6 @@ var app = function(){
             catch(e){
             }         
         }
-        
-        
         
         return viewInstance;
     };
@@ -55,7 +55,7 @@ var app = function(){
     //Fetch from AJAX
     // On Success, invoke render_view
     // Show error message on failure
-    this.fetchAndRenderView = function(viewURL, viewDom, params, loader, nextViewParams) {
+    this.fetchAndRenderView = function(viewURL, viewDom, params, loader, nextViewParams, async) {
       
        if(typeof params === 'undefined'){
                params = {};
@@ -65,6 +65,9 @@ var app = function(){
        }  
        if(typeof nextViewParams === 'undefined'){
                nextViewParams = {};
+       }  
+       if(typeof async === 'undefined'){
+               async = true;
        }   
     /*
     If you intent to call changeView or changePage function for animating page loading, 
@@ -84,7 +87,7 @@ var app = function(){
             type: "GET",
             data: params,
             url: viewURL,
-            async: true,
+            async: async,
             success: function(data) { 
                 
                 that.renderView(data, viewDom, nextViewParams);                 
@@ -114,7 +117,7 @@ var app = function(){
     					successCallBack: that.fetchCompletedOfCordovaPlugins,
     					failureCallBack: that.fetchFailedOfCordovaPlugins,
     					loader: 'BLOCKER',
-    					}
+    				};
     		webservice.getHTML(url, options);
     	}	
     };
@@ -129,6 +132,59 @@ var app = function(){
     // success function of coddova plugin's appending
     this.fetchFailedOfCordovaPlugins = function(errorMessage){    	
     	that.cordovaLoaded = false;
+    };
+
+
+
+    /**
+    *   A dict to keep reference to shared views
+    *   @dict
+    */
+    this.viewDict = {};
+
+    /**
+    *   A getter method to return the view instance
+    *   @param {String} name of the view instance
+    *   @return {Object} the matched view instance
+    *   @return {Boolean} false if the matched instance was not found
+    */
+    this.getViewInst = function(name) {
+        if ( this.viewDict[name] ) {
+            return this.viewDict[name];
+        } else {
+            console.log( 'Sorry ' + name + ' view instance was not found.' );
+            return false;
+        }
+    };
+
+    /**
+    *   A setter method to save new view instance
+    *   @param {String} name of the view instance
+    *   @param {Function} callback that will return the new instance
+    *   @return {Object} the view instance itself so that its easy to chain
+    *   @return {Boolean} false if the instance already exists
+    */
+    this.setViewInst = function(name, callback) {
+        if ( this.viewDict[name] ) {
+            console.log( 'Sorry ' + name + ' view instance already exists.' );
+            return false;
+        } else {
+            this.viewDict[name] = callback();
+            return this.viewDict[name];
+        }
+    };
+
+    /**
+    *   A setter method to update a view instance
+    *   @param {String} name of the view instance
+    *   @param {Function} callback that will return the new instance
+    *   @return {Object} the view instance itself so that its easy to chain
+    *   @return {Boolean} false if the instance already exists
+    */
+    this.updateViewInst = function(name, callback) {
+        delete this.viewDict[name];
+        this.viewDict[name] = callback();
+        return this.viewDict[name];
     };
     
 };

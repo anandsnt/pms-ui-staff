@@ -23,7 +23,6 @@ var reservationDetailsView = function(domRef){
   	
   	var reservationPaymentView = new ReservationPaymentView(that.myDom);
     reservationPaymentView.initialize();
-
     var reservationCardLoyaltyView = new ReservationCardLoyaltyView(that.myDom);
     reservationCardLoyaltyView.initialize();
     var reservationCardNotes = new reservationCardNotesView(that.myDom);
@@ -47,9 +46,19 @@ var reservationDetailsView = function(domRef){
 		var data = {"reservation_id": reservation_id, "selected_newspaper" :newspaperValue };
 		var webservice = new WebServiceInterface();
 		var options = {
-		  requestParameters: data
+		  requestParameters: data,
+		  successCallBack: that.fetchCompletedOfSave,
+		  failureCallBack: that.fetchFailedOfSave,
 		};
   		webservice.postJSON('/reservation/add_newspaper_preference', options);
+  };
+  this.fetchFailedOfSave = function(errorMessage){
+	sntapp.activityIndicator.hideActivityIndicator();
+	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+  };
+  this.fetchCompletedOfSave = function(data){
+	sntapp.activityIndicator.hideActivityIndicator();
+	sntapp.notification.showSuccessMessage("Successfully Saved ", that.myDom);  
   };
   this.setWakeUpCallModal = function(e){
 		if($(e.target).hasClass("feature-available")){	

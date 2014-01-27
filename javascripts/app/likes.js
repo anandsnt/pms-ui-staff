@@ -70,6 +70,7 @@ var LikesView = function(domRef){
 			var options = {
 				   requestParameters: JSON.stringify(jsonObj),
 				   successCallBack: that.fetchCompletedOfSaveLikes,
+				   failureCallBack: that.fetchFailedOfSaveLikes,
 				   loader: 'BLOCKER',
 		    };
 		    webservice.postJSON(url, options);
@@ -78,13 +79,23 @@ var LikesView = function(domRef){
 	     };
    };
    this.fetchCompletedOfSaveLikes = function(data){
-   		if(data.status == 'success'){
-   			that.$likeInfoChange = false;
-   			sntapp.notification.showSuccessMessage("Successfully Saved.", that.myDom); 
-   		}else{
-   			sntapp.notification.showErrorList(data.errors, that.myDom); 
-   		}
+		that.$likeInfoChange = false;
+		var message_element = that.myDom.find("#notification-message-guest");
+		message_element.removeClass('success_message error_message');
+		message_element.html("");			
+		that.myDom.find("#notification-message-guest").slideDown(700, function() {});
+		console.log(that.myDom);
+		$("#guest-like").removeClass("error");
    };
+   this.fetchFailedOfSaveLikes = function(errorMessage){
+		that.$likeInfoChange = false;
+		var message_element = that.myDom.find("#notification-message-guest");
+		message_element.removeClass('success_message error_message').addClass("notice error_message");
+		message_element.html("Some error occured:"+ errorMessage);			
+		that.myDom.find("#notification-message-guest").slideDown(700, function() {});
+		console.log(that.myDom);
+		$("#guest-like").addClass("error");
+	};
    this.handleLikeValueChanged = function(event){  	   
 	  
 		

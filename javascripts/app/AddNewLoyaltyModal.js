@@ -114,7 +114,7 @@ var AddNewLoyaltyModal = function(){
 	        
 	        updateSelectionUI($code,$type);
 	        
-	      }, "FFP");
+	      }, "FFP", that.myDom);
 	  }
 	  else if($program == "hlp"){
 	    newLoyalty.user_membership.membership_class = "HLP";
@@ -133,9 +133,8 @@ var AddNewLoyaltyModal = function(){
 	        
 	        updateSelectionUI($code,$type);
 	        
-	      }, "HLP");
+	      }, "HLP", that.myDom);
 	  }
 	  
-      that.hide();
     };
 };

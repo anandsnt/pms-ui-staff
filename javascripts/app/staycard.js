@@ -8,9 +8,81 @@ var StayCard = function(viewDom){
     var currentConfirmNumber = $("#confirm_no").val();    
     var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
     reservationDetails.initialize();
+
+    if(sntapp.cordovaLoaded){
+      var options = {
+          successCallBack: function(data){
+            var swipedCardData = {
+              cardType: data.RVCardReadCardType || '',
+              expiry: data.RVCardReadExpDate || '',
+              cardHolderName: data.RVCardReadCardName || '',
+              getTokenFrom: {
+                'et2': data.RVCardReadTrack2,
+                'ksn': data.RVCardReadTrack2KSN
+              }
+            }
+            that.postCardSwipData(swipedCardData);
+          },
+          failureCallBack: function(errorObject){
+            sntapp.notification.showErrorMessage('Could not read the card properly. Please try again.');
+          }
+      };
+      sntapp.cardReader.startReader(options);
+    }
+  }
+
+
+  // lets post the 'et2' and 'ksn' data
+  // to get the token code from MLI
+  this.postCardSwipData = function(swipedCardData) {
+    var swipedCardData = swipedCardData;
+
+    var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
+
+    var _successCallBack = function(token) {
+      // add token to card data
+      //swipedCardData.token = token.data;
+      swipedCardData.token = 123456789;
+
+      // if addNewPaymentModal instance doen't exist, create it
+      if ( !sntapp.getViewInst('addNewPaymentModal') ) {
+        sntapp.setViewInst('addNewPaymentModal', function() {
+          return new AddNewPaymentModal('staycard', that.myDom);
+        });
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').initialize();
+      } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
+
+        // if addNewPaymentModal instance exist, but the dom is removed
+        sntapp.updateViewInst('addNewPaymentModal', function() {
+          return new AddNewPaymentModal('staycard', that.myDom);
+        });
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').initialize();
+      } else {
+
+        // otherwise
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').populateSwipedCard();
+      }
+    };
+
+    var options = {
+      loader: 'BLOCKER',
+      requestParameters: swipedCardData.getTokenFrom,
+      successCallBack: _successCallBack,
+      failureCallBack: function(error) {
+        sntapp.notification.showErrorMessage('Sorry we could not get a response from server. Please try again.');
+      }
+    };
+
+    // var webservice = new WebServiceInterface();
+    // webservice.postJSON(url, options);
+    _successCallBack();
   };
 
-   this.delegateEvents = function(partialViewRef){  
+  this.delegateEvents = function(partialViewRef){  
+
    	if(partialViewRef === undefined){
    		partialViewRef = $("#confirm_no").val();
    	};   	
@@ -113,8 +185,7 @@ this
     var currentReservationDom = that.myDom.find("[data-reservation-id='" + reservationId + "']").attr('id');
     that.loadReservationDetails("#" + currentReservationDom, sucessCallback);
 
-
-  }
+  };
 
   this.loadReservationDetails = function(currentReservationDom, sucessCallback){
     var confirmationNum = currentReservationDom.split("-")[1];
