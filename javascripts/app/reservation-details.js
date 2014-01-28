@@ -119,7 +119,7 @@ var reservationDetailsView = function(domRef){
     };
     this.clickedViewBillButton = function(e){
     	sntapp.activityIndicator.showActivityIndicator("blocker");
-      sntapp.currentPage = 'ViewBillPage';  
+      sntapp.cardSwipeCurrView = 'GuestBillView';  
       	that.goToBillCardView("ViewBillButton");
     };
     this.clickedPostChargeButton = function(e){
