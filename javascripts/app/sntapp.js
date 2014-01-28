@@ -21,9 +21,7 @@ var app = function(){
         if(that.ismob){
             url = "/assets/app/plugins/fullcalendar-ipad.js";
         }
-        $.getScript(url, function(){
-            alert(url);
-        });
+        $.getScript(url);
     };
     
     this.getViewInstance = function(viewDom){
