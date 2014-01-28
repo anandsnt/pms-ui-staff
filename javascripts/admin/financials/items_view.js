@@ -4,7 +4,16 @@ var ItemsView = function(domRef) {
 	var that = this;
 
 	this.delegateSubviewEvents = function() {
-		that.myDom.find('#items').tablesorter();
+		that.myDom.find('#items').tablesorter({
+			headers : {
+				3 : {
+					sorter : false
+				},
+				4 : {
+					sorter : false
+				}
+			}
+		});
 		that.myDom.on('click', that.viewClickEventHandler);
 	};
 
@@ -35,7 +44,7 @@ var ItemsView = function(domRef) {
 	};
 
 	this.updateApi = function(event) {
-		var hlpId = that.myDom.find("form#edit-items").attr("item_id");
+
 		var url = '/admin/items/save_item';
 		var action = "ACTION_EDIT"
 		that.makeAPICall(url, action, event);
@@ -43,7 +52,7 @@ var ItemsView = function(domRef) {
 
 	this.makeAPICall = function(url, action, event) {
 		var postData = {};
-		
+
 		if (action == "ACTION_EDIT") {
 			postData.value = that.myDom.find("form#edit-items").attr("item_id");
 		}
@@ -66,6 +75,33 @@ var ItemsView = function(domRef) {
 		};
 		webservice.postJSON(url, options);
 	}
+	//function to delete items
+	this.deleteItem = function(event) {
+		event.preventDefault();
+		var postData = {};
+		var selectedId = $(event.target).attr("id");
+		if (selectedId == "delete") {
+			selectedId = that.myDom.find("#edit-items").attr("item_id");
+		}
+		var url = "/admin/items/" + selectedId + "/delete_item";
+		postData.id = selectedId;
+		var webservice = new WebServiceInterface();
+		var options = {
+			requestParameters : postData,
+			successCallBack : that.fetchCompletedOfDelete,
+			loader : "BLOCKER",
+			shouldShowSuccessMessage : "true",
+			successCallBackParameters : {
+				"selectedId" : selectedId
+			}
+		};
+		webservice.getJSON(url, options);
+	};
+	//to remove deleted row and show message
+	this.fetchCompletedOfDelete = function(data, successParams) {
+		sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
+		that.myDom.find("#item_row_" + successParams['selectedId']).remove();
+	};
 	//refreshing view with new data and showing message
 	this.fetchCompletedOfSave = function(data, requestParams) {
 
