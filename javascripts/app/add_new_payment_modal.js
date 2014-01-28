@@ -64,6 +64,18 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			var appendHtml = '<a id="delete_card" data-payment-id="'+data.data.id+'" class="button with-icon brand-colors">'+
 							 '<span class="icons icon-wallet"></span>Delete</a>';		
 			currentStayCardView.find(".payment_actions").append(appendHtml);
+			if(requestParameters["add_to_guest_card"] == "true"){
+				var	$add = 
+			        '<a id="credit_row"  credit_id='+data.data.id +' class="active-item float item-payment new-item credit-card-option-row' + data.data.id + ' ">'+
+			        '<figure class="card-logo">'+requestParameters['image']+'</figure><span class="number">'+
+			        'Ending with<span class="value number">'+requestParameters['number']+'</span></span>'+
+					'<span class="date">Date<span class="value date">'+requestParameters['expiry']+'</span>'+
+					'</span><span class="name">Name<span class="value name">'+requestParameters['cardHolderName']+'</span>'+
+					'</span></a>';
+				
+			    $("#payment_tab").prepend($add);
+			}
+				
 			that.hide();   			
 
    	};
@@ -193,7 +205,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 					   successCallBack: that.fetchCompletedOfReservationPayment,
 					   failureCallBack: that.fetchFailedOfReservationPayment,
 					   successCallBackParameters: {
-						   'number': $number, 
+						   'number': $number,'add_to_guest_card':add_to_guest_card 
 					   },
 			};
 		    webservice.postJSON(url, options);
