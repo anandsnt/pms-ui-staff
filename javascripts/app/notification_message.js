@@ -50,7 +50,7 @@ var NotificationMessage = function() {
 	this.showMessage = function(message, dom, message_class){
 	
 		var message_element = dom.find("#notification-message");
-		message_element.removeClass('success_message error_message').addClass(message_class);
+		message_element.removeClass('success error success_message error_message').addClass(message_class);
 		message_element.html(message);			
 		scrollToErrorArea(dom);			
 		dom.find("#notification-message").slideDown(duration, function() {});
