@@ -10,6 +10,9 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
   		that.getPaymentsList();
   		that.myDom.find('#new-payment #payment-type').on('change', that.filterPayments);
 		that.myDom.find('#new-payment #save_new_credit_card').on('click', that.saveNewPayment);
+		if(fromPagePayment != "guest"){
+			that.myDom.find("#add-in-guest-card").parent().parent().show();
+		}
 	};
 
 	this.populateSwipedCard = function() {
@@ -39,6 +42,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
    	};
 
    	this.fetchCompletedOfReservationPayment = function(data, requestParameters){
+   			that.save_inprogress = false;
 			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
 			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
 			$newPaymentOption =  "<option value='"+data.data.id+"'data-number='"+requestParameters['number']+"'"+
@@ -55,13 +59,18 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 								$("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val()+
 								"</span>";
 		    						
-			currentStayCardView.find("#selected-reservation-payment-div").html(replaceHtml);
+			currentStayCardView.find("#select-card-from-list").html(replaceHtml);
+			currentStayCardView.find("#add-new-payment").remove();
+			var appendHtml = '<a id="delete_card" data-payment-id="'+data.data.id+'" class="button with-icon brand-colors">'+
+							 '<span class="icons icon-wallet"></span>Delete</a>';		
+			that.myDom.find(".payment_actions").append(appendHtml);
 			that.hide();   			
 
    	};
    	this.fetchFailedOfReservationPayment = function(errorMessage){
-   		sntapp.notification.showErrorList(errorMessage, that.myDom);
    		that.save_inprogress = false;
+   		sntapp.notification.showErrorList(errorMessage, that.myDom);
+   		
    	};  
    	this.fetchCompletedOfPayment = function(data, requestParameters){
 			that.save_inprogress = false;
@@ -83,9 +92,10 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			that.hide();
    	};
    	this.fetchFailedOfPayment = function(errorMessage){
+   		that.save_inprogress = false;
    		sntapp.activityIndicator.hideActivityIndicator();
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
-   		that.save_inprogress = false;
+   		
    	};    	
    	this.saveNewPayment = function(){
    		if (that.save_inprogress == true) return false;
@@ -161,6 +171,11 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			var reservation_id = getReservationId();
 			that.save_inprogress = true;
 			var webservice = new WebServiceInterface();
+			var add_to_guest_card = "false";
+			if(that.myDom.find("#add-in-guest-card").parent().hasClass("checked")){
+				add_to_guest_card = "true";
+			}
+			
 		    var data = {
 				    reservation_id: reservation_id,
 					payment_type: $payment_type,
@@ -169,7 +184,8 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 				    credit_card: $card_type,
 				    card_expiry: $card_expiry,
 				    name_on_card: $name_on_card,
-				    mli_token: $card_token
+				    mli_token: $card_token,
+				    add_to_guest_card: add_to_guest_card
 		    };		
 		    var url = 'staff/reservation/save_payment'; 
 		    var options = {

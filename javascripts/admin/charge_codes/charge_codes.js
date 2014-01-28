@@ -43,8 +43,7 @@ var HotelChargeCodesView = function(domRef){
   this.handleLinkWith = function(event){
   
   	event.preventDefault();
-	var element = $(event.target);
-	var selectedElement = element.attr("id");
+	p
 	// checking for is the selected item is tax
 	if($('option:selected', that.myDom.find("#"+selectedElement)).attr('data-type') == "true")
 	 {
