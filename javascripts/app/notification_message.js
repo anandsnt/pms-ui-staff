@@ -93,8 +93,15 @@ var NotificationMessage = function() {
 	}; 
 	
 	// function for show success message
-	this.showSuccessMessage = function(message, dom, priority){
-		
+	//@param showMessage - used if we need to show the success message in some screens 
+	// even if we set the 'shouldShowSuccessMessage' param to false
+	this.showSuccessMessage = function(message, dom, priority, showMessage){
+		var htmlToAppend = message;
+		if(typeof showMessage === 'undefined'){
+              return;
+        }  else {
+        	that.showMessage(htmlToAppend, dom, 'notice success');
+        }
 		// only show success message if 'shouldShowSuccessMessage' is set to true
 		if(!this.shouldShowSuccessMessage) {return;}
 		
@@ -112,7 +119,7 @@ var NotificationMessage = function() {
 		this.hideMessage(dom);
 		
 		
-		var htmlToAppend = message;
+		
 		// dont show close button if false
 		if(this.shouldShowCloseButtonForSuccess == true) {
 			htmlToAppend = "<span class='close-btn'></span>" + htmlToAppend;
