@@ -1,64 +1,44 @@
-var ItemsView = function(domRef) {
-	BaseInlineView.call(this);
+var ItemsDetailsView = function(domRef) {
+	BaseView.call(this);
 	this.myDom = domRef;
+
 	var that = this;
 
-	this.delegateSubviewEvents = function() {
-		that.myDom.find('#items').tablesorter();
-		that.myDom.on('click', that.viewClickEventHandler);
+	this.pageinit = function() {
+
 	};
-
-	// To handle active/inactive ffps.
-	this.toggleButtonClicked = function(element) {
-		var itemId = element.closest('tr').attr('item-id');
-		setTimeout(function() {
-			var toggleStatus = element.parent().hasClass('on') ? "true" : "false";
-			var postParams = {
-				"id" : itemId,
-				"set_active" : toggleStatus
-			};
-			var webservice = new WebServiceInterface();
-			var options = {
-				requestParameters : postParams,
-				successCallBack : that.fetchCompletedOfSave,
-				failureCallBack : that.fetchFailedOfSave,
-				loader : "NONE"
-			};
-			var url = '/admin/items/toggle_favorite';
-			webservice.postJSON(url, options);
-			return true;
-		}, 100);
+	this.delegateEvents = function() {
+		that.myDom.find('#save').on('click', that.saveNewItem);
+		that.myDom.find('#go_back, #cancel').on('click', that.gotoPreviousPage);
+		that.myDom.find('#update').on('click', that.updateItem);
 	};
-
-	this.saveNewApi = function(event) {
-
+	//go to previous page withount any update in view
+	this.gotoPreviousPage = function() {
+		sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
+	};
+	//To save item
+	this.saveNewItem = function(event) {
 		var url = '/admin/items/save_item';
 		var action = "ACTION_SAVE"
 		that.makeAPICall(url, action, event);
-
 	};
-
-	this.updateApi = function(event) {
-
-		var hlpId = that.myDom.find("form#edit-items").attr("item_id");
+	//To edit item
+	this.updateItem = function(event) {
 		var url = '/admin/items/save_item';
 		var action = "ACTION_EDIT"
 		that.makeAPICall(url, action, event);
-
 	};
-
+	// API calls
 	this.makeAPICall = function(url, action, event) {
 		var postData = {};
+
 		if (action == "ACTION_EDIT") {
 			postData.value = that.myDom.find("form#edit-items").attr("item_id");
 		}
-		if (action == "ACTION_SAVE") {
-			postData.is_favorite = that.myDom.find("#is_favorite").val();
-		}
+		postData.is_favorite = (that.myDom.find("#is_favorite").val() == "on") ? "true" : "false";
 		postData.item_description = that.myDom.find("#item_desc").val();
 		postData.unit_price = that.myDom.find("#unit_price").val();
 		postData.charge_code = that.myDom.find("#charge_code").val();
-
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
@@ -70,26 +50,19 @@ var ItemsView = function(domRef) {
 			loader : "BLOCKER"
 
 		};
-		if (action == "ACTION_EDIT") {
-			webservice.putJSON(url, options);
-		} 
-		else if (action == "ACTION_SAVE") {
-			webservice.postJSON(url, options);
-		}
-
+		webservice.postJSON(url, options);
 	}
 	//refreshing view with new data and showing message
 	this.fetchCompletedOfSave = function(data, requestParams) {
 
 		var url = "/admin/items/get_items";
 		viewParams = {};
-
 		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
 		sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
-		that.cancelFromAppendedDataInline(requestParams['event']);
 	};
 
 	this.fetchfailedOfSave = function(errorMessage) {
 		sntapp.notification.showErrorList(errorMessage, that.myDom);
 	};
-};
+
+}; 

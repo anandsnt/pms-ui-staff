@@ -60,7 +60,7 @@ var RoomAssignmentView = function(viewDom){
     var roomType = that.myDom.find('.reservation-header #room-type').attr('data-room-type');
     var data = {};
     if(roomType != null && roomType!= undefined){
-      data = {"room_type": roomType};
+      data = {"room_type": roomType, "reservation_id": that.reservation_id};
     }
     var url = "/staff/rooms/get_rooms";
     var webservice = new WebServiceInterface(); 
@@ -78,8 +78,11 @@ var RoomAssignmentView = function(viewDom){
     that.applyFilters();
   };
 
-  this.roomListFetchFailed = function(){
+  this.roomListFetchFailed = function(errorMessage){
     that.roomCompleteList = [];
+    sntapp.activityIndicator.hideActivityIndicator();
+    sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+
   };
 
   this.clearFiltersClicked = function(e){
