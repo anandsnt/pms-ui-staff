@@ -40,17 +40,15 @@ var HotelListView = function(domRef){
     // click of reservation import via ftp
     else if(target.attr("name") == "reservation-import"){      
       var checkedStatus = target.is(':checked');
-      console.log(checkedStatus);
-      // isAlreadyTurnedOff will be true, if it checked
-      // show confirm if it is in off/unchecked stage
+      var confirmForReservationImport = null;
+
+      // checkedStatus will be true, if it checked
+      // show confirm if it is going turn on stage
       if(checkedStatus){
-        var confirmForReservationImport = confirm("Do NOT switch ON, until hotel mapping and setup is completed!, Do you want to proceed?");
-          if(!confirmForReservationImport){
-            event.preventDefault();
-          } 
+          confirmForReservationImport= confirm("Do NOT switch ON, until hotel mapping and setup is completed!, Do you want to proceed?");
       }
       
-      var data = {'hotel_id' :  };
+      var data = {'hotel_id' :  1};
       //TODO: Implement correct API
       var webservice = new WebServiceInterface();
       var url = '';
@@ -61,6 +59,9 @@ var HotelListView = function(domRef){
           successCallBackParameters:{ "event": event},
           loader: 'normal',
       };
+      if(!confirmForReservationImport){
+            return false;
+      } 
       return true;
     }     
     else if(target.hasClass('title') ){ // edit hotel details
