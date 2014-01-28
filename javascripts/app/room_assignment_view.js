@@ -78,8 +78,11 @@ var RoomAssignmentView = function(viewDom){
     that.applyFilters();
   };
 
-  this.roomListFetchFailed = function(){
+  this.roomListFetchFailed = function(errorMessage){
     that.roomCompleteList = [];
+    sntapp.activityIndicator.hideActivityIndicator();
+    sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+
   };
 
   this.clearFiltersClicked = function(e){

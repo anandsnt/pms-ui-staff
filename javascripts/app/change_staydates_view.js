@@ -1,8 +1,6 @@
 var ChangeStayDatesView = function(viewDom){
   BaseView.call(this);
   var that = this;
-  sdv = this;
-
   this.myDom = viewDom;
   this.reservation_id = getReservationId();
 
@@ -36,7 +34,7 @@ var ChangeStayDatesView = function(viewDom){
 
 
   this.fetchCalenderEvents = function(){
-    var url = "/staff/change_stay_dates/"+that.reservationId+"/calendar.json"
+    var url = "/staff/change_stay_dates/" + that.reservationId + "/calendar.json"
 
     //var url = 'sample_json/change_staydates/rooms_available.json';
     var webservice = new WebServiceInterface(); 
@@ -88,8 +86,6 @@ var ChangeStayDatesView = function(viewDom){
         },
         // Stay date has changed
         eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-         // $.datesChanged(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view);
-
           that.datesChanged(event, revertFunc);
         }
 
@@ -268,7 +264,7 @@ var ChangeStayDatesView = function(viewDom){
     var postParams = {"arrival_date": arrivalDate, "dep_date": departureDate};
     //var url = 'sample_json/change_staydates/reservation_updates.json';
 
-    var url = '/staff/change_stay_dates/'+that.reservationId+'/update.json';
+    var url = '/staff/change_stay_dates/' + that.reservationId + '/update.json';
     var webservice = new WebServiceInterface(); 
     var successCallBackParams = {
         'reservationId': that.reservationId,
@@ -325,7 +321,7 @@ var ChangeStayDatesView = function(viewDom){
       totalNights ++;
     });
 
-    avgRate = Math.round((totalRate/totalNights + 0.00001) * 100) / 100;
+    avgRate = Math.round((totalRate/totalNights + 0.00001  * 100) / 100;
     var currencySymbol = getCurrencySymbol(that.availableEvents.data.currency_code);
 
 
@@ -354,6 +350,7 @@ var ChangeStayDatesView = function(viewDom){
     var options = {
            requestParameters: postData,
            successCallBack: that.confirmDatesSuccess,
+           failureCallBack: that.confirmDateFailed,
            loader: "BLOCKER"
     };
     webservice.postJSON(url, options);  
@@ -365,6 +362,11 @@ var ChangeStayDatesView = function(viewDom){
     var staycardView = new StayCard($("#view-nested-first"));
     staycardView.refreshReservationDetails(that.reservationId, that.goBackToStaycard);
 
+  };
+
+  this.confirmDateFailed = function(errorMessage){
+    sntapp.activityIndicator.hideActivityIndicator();
+    sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
   };
 
   this.resetDatesClicked = function(element){
