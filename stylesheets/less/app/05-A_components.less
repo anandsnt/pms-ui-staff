@@ -119,13 +119,10 @@
 
 				li {
 					display: inline-block;
-					margin-right: 6.25%;
 					.square(25%);
+					margin-right: 6.25%;
 					max-width: 175px;
 					max-height: 175px;
-
-					&:first-child { margin: 0 6.25%; }
-					&:last-child { margin: 0; }
 
 					.button {
 						padding: 20px;
@@ -140,6 +137,8 @@
 							.show;
 						}
 					}
+
+					&:last-child { margin-right: 0; }
 				}
 			}
 
