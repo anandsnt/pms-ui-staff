@@ -1231,6 +1231,23 @@
 					.faux-clickable;
 				}
 
+				.next-view,
+				.no-view {
+					.value.text { 
+						font-size: 24px; 
+						line-height: 50px;
+						font-weight: 300; 
+						text-transform: none;
+						margin-left: 0;
+
+						&.empty { 
+							font-size: 16px;
+							font-style: italic; 
+							color: @grey3;
+						}
+					}
+				}
+
 				.select,
 				.select-item {
 					height: 50px;
@@ -1270,10 +1287,8 @@
 							.size(60px, 65px);
 							.pull-left;
 
-							&.add-new-button {
-								line-height: 60px;
-								margin: 0;
-							}
+							&.add-new-button { line-height: 60px; }
+							&:last-child { margin-right: 0; }
 						}
 					}
 				}
@@ -1315,18 +1330,6 @@
 						height: 50px;
 						padding: 0 10px;
 					}
-
-					.value.text { 
-						font-size: 24px; 
-						line-height: 50px;
-						font-weight: 300; 
-
-						&.empty { 
-							font-size: 16px;
-							font-style: italic; 
-							color: @grey3;
-						}
-					}
 				}
 
 				/* Block details - newspaper **/
@@ -1356,7 +1359,6 @@
 					
 					.next-view,
 					.no-view {
-						line-height: 40px;
 						background-position: 98% 53%;
 
 						.number {
