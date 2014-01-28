@@ -26,7 +26,6 @@
 
 // staff app scripts
 //= require_tree ./app/plugins
-//= stub ./app/plugins/fullcalendar-ipad
 
 //= require_tree ./app/signature
 
