@@ -124,10 +124,10 @@ var RegistrationCardView = function(viewDom) {
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
 	};
 
-	  this.gotoStayCard = function(){
-	sntapp.activityIndicator.showActivityIndicator("blocker");
-    changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
-  };
+	this.gotoStayCard = function(){
+		sntapp.activityIndicator.showActivityIndicator("blocker");
+		changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
+	};
 
   this.gotoBillCard = function(){
       
@@ -193,37 +193,69 @@ var RegistrationCardView = function(viewDom) {
 				"signature" : signature,
 				"reservation_id" : that.reservation_id
 			};
-			$.ajax({
-				type : "POST",
-				url : '/staff/checkin',
-				data : data,
-				success : function(data) {
-					if (data.status == "success") {
-						that.openAddKeysModal();
-						if(data.is_promotions_and_email_set == "true"){
-							//To enable EMAIL OPT IN check button in guest card
-							$("#contact-info input#opt-in").prop("checked",true);
-						}
-						else{
-							//To disable EMAIL OPT IN check button in guest card
-    						$("#contact-info input#opt-in").prop("checked",false);
-						}
-					} 
-					else if (data.status == "failure") {
-						that.showErrorMessage(data.errors);
-					}
-				},
-				error : function() {
-				}
-			});
+			
+			
+			var webservice = new WebServiceInterface();
+		    	
+		    var url = '/staff/checkin' ; 
+		    var options = {
+					   requestParameters: data,
+					   successCallBack: that.fetchCompletedOfSave,
+					   failureCallBack: that.fetchFailedOfSave,
+					   successCallBackParameters:{ "is_promotions_and_email_set": is_promotions_and_email_set},
+			};
+		    webservice.postJSON(url, options);
+			
+			
+			
+			// $.ajax({
+				// type : "POST",
+				// url : '/staff/checkinb',
+				// data : data,
+				// success : function(data) {
+					// if (data.status == "success") {
+						// that.openAddKeysModal();
+						// if(data.is_promotions_and_email_set == "true"){
+							// //To enable EMAIL OPT IN check button in guest card
+							// $("#contact-info input#opt-in").prop("checked",true);
+						// }
+						// else{
+							// //To disable EMAIL OPT IN check button in guest card
+    						// $("#contact-info input#opt-in").prop("checked",false);
+						// }
+					// } 
+					// else if (data.status == "failure") {
+						// sntapp.activityIndicator.hideActivityIndicator();
+						// sntapp.notification.showErrorMessage("Some error occured: " + data.errors, that.myDom);  
+					// }
+				// },
+				// error : function() {
+				// }
+			// });
 		}
 	};
+	 this.fetchCompletedOfSave = function(data, requestParameters){
+	 	that.openAddKeysModal();
+		if(requestParameters['is_promotions_and_email_set'] == "true"){
+			//To enable EMAIL OPT IN check button in guest card
+			$("#contact-info input#opt-in").prop("checked",true);
+		}
+		else{
+			//To disable EMAIL OPT IN check button in guest card
+			$("#contact-info input#opt-in").prop("checked",false);
+		}	
+	 };
+	 this.fetchFailedOfSave = function(errorMessage){
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+	  };
 	this.clearSignature = function() {
 		that.myDom.find("#signature").jSignature("reset");
 	};
 
 	this.gotoStayCard = function(e) {
 		e.preventDefault();
+		sntapp.currentPage = '';
 		//goBackToView("", "view-nested-third", "move-from-left");
 		var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
 		$($loader).prependTo('body').show();
@@ -272,6 +304,7 @@ var RegistrationCardView = function(viewDom) {
 			var options = {
 				requestParameters : data,
 				successCallBack : that.fetchCompletedOfCompleteCheckout,
+				failureCallBack: that.fetchFailedOfSave,
 				loader : 'blocker'
 			};
 			webservice.postJSON(url, options);

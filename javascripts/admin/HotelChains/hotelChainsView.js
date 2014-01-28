@@ -88,7 +88,13 @@ var HotelChainsView = function(domRef){
 		var emailT_C = $.trim(that.myDom.find("#email").val()); //T_C : terms & conditions
 		var terms_and_condtn = $.trim(that.myDom.find("#terms_and_condtn").val());
 		var import_frequency = $.trim(that.myDom.find("#import-frequency").val());
-		
+		// ftp details
+		var ftp_location = $.trim(that.myDom.find("#ftp-location").val());
+		var ftp_port = $.trim(that.myDom.find("#ftp-port").val());
+		var ftp_user = $.trim(that.myDom.find("#ftp-user").val());
+		var ftp_password = $.trim(that.myDom.find("#ftp-password").val());	
+		var ftp_respath = $.trim(that.myDom.find("#ftp-respath").val());
+			
 		var lovs = new Array();
 		// looping over list of values text boxes
 		that.myDom.find('input[name=lov]').each(function(){ 
@@ -117,8 +123,14 @@ var HotelChainsView = function(domRef){
 		data.terms_cond = terms_and_condtn;
 		data.lov = lovs;
 		data.import_frequency = import_frequency;
+		data.ftp_location = ftp_location;
+		data.ftp_port = ftp_port;
+		data.ftp_user = ftp_user;
+		data.ftp_password = ftp_password;		
+		data.ftp_respath = ftp_respath;	
 	    var options = {
 				   successCallBack: that.fetchCompletedOfSave,
+				   failureCallBack: that.fetchFailedOfSave,
 				   requestParameters: data,
 	    		   loader: 'normal',
 		};
@@ -137,6 +149,13 @@ var HotelChainsView = function(domRef){
 		var emailT_C = $.trim(that.myDom.find("#email").val()); //T_C : terms & conditions
 		var terms_and_condtn = $.trim(that.myDom.find("#terms_and_condtn").val());	
 		var import_frequency = $.trim(that.myDom.find("#import-frequency").val());
+		// ftp details
+		var ftp_location = $.trim(that.myDom.find("#ftp-location").val());
+		var ftp_port = $.trim(that.myDom.find("#ftp-port").val());
+		var ftp_user = $.trim(that.myDom.find("#ftp-user").val());
+		var ftp_password = $.trim(that.myDom.find("#ftp-password").val());	
+		var ftp_respath = $.trim(that.myDom.find("#ftp-respath").val());
+
 		var lovs = []; //list of values
 		// looping over list of values text boxes
 		that.myDom.find('input[name=lov]').each(function(){ 
@@ -165,8 +184,14 @@ var HotelChainsView = function(domRef){
 		data.terms_cond = terms_and_condtn;
 		data.lov = lovs;	
 		data.import_frequency = import_frequency;
+		data.ftp_location = ftp_location;
+		data.ftp_port = ftp_port;
+		data.ftp_user = ftp_user;
+		data.ftp_password = ftp_password;		
+		data.ftp_respath = ftp_respath;			
 	    var options = {
 				   successCallBack: that.fetchCompletedOfSave,
+				   failureCallBack: that.fetchFailedOfSave,
 				   requestParameters: data,
 	    		   loader: 'normal',
 		};
@@ -179,9 +204,14 @@ var HotelChainsView = function(domRef){
 		// update the view of listing the chain listing
 		viewParams = {};
 		var url = "/admin/hotel_chains";
-		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
-	    sntapp.notification.showSuccessMessage('Successfully updated');
+		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
+	    sntapp.notification.showSuccessMessage('Successfully Saved');
 		
-	};	
+	};
+	//Handling failure
+   this.fetchFailedOfSave = function(errorMessage){
+	 sntapp.activityIndicator.hideActivityIndicator();
+	 sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+   };
 
 };

@@ -7,15 +7,12 @@ var StayCard = function(viewDom){
     setUpStaycard(that.myDom);
     var currentConfirmNumber = $("#confirm_no").val();    
     var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
-	reservationDetails.initialize();
+    reservationDetails.initialize();
 
     if(sntapp.cordovaLoaded){
       var options = {
           successCallBack: function(data){
-            //clear previous data
-            window.cardData = {}
-            // add new data
-            window.cardData = {
+            var swipedCardData = {
               cardType: data.RVCardReadCardType || '',
               expiry: data.RVCardReadExpDate || '',
               cardHolderName: data.RVCardReadCardName || '',
@@ -24,78 +21,148 @@ var StayCard = function(viewDom){
                 'ksn': data.RVCardReadTrack2KSN
               }
             }
-
-            that.postCardSwipData();
+            that.postCardSwipData(swipedCardData);
           },
           failureCallBack: function(errorObject){
-            sntapp.notification.showErrorMessage('Error occured (103): Bad Read, Please try again.');
+            sntapp.notification.showErrorMessage('Could not read the card properly. Please try again.');
           }
       };
       sntapp.cardReader.startReader(options);
     }
 
-    // demo
-    // $("#add-new-payment").trigger('click');
-    // this.postCardSwipData(); 
-  };
+    // // DEBUG
+    // window.trigger = that.postCardSwipData;
+    // var swipedCardData = {
+    //   cardType: 'VA',
+    //   expiry: '1812',
+    //   cardHolderName: 'vijay',
+    //   getTokenFrom: {
+    //     'et2': 'dwadwadwadawdawd',
+    //     'ksn': 'dwa awd wadawdaw d wa'
+    //   }
+    // }
+    // that.postCardSwipData(swipedCardData);
+  }
+
 
   // lets post the 'et2' and 'ksn' data
   // to get the token code from MLI
-  this.postCardSwipData = function() {
-    var cardData = window.cardData;
+  this.postCardSwipData = function(swipedCardData) {
+    var swipedCardData = swipedCardData;
+    
+    // add token to card data
+    swipedCardData.token = token.data;
+
+    // // DEBUG
+    // swipedCardData.token = '123456789';
+
     var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
+
+    // respond to StayCardPage
+    var _stayCardResponse = function() {
+      // if addNewPaymentModal instance doen't exist, create it
+      if ( !sntapp.getViewInst('addNewPaymentModal') ) {
+        sntapp.setViewInst('addNewPaymentModal', function() {
+          return new AddNewPaymentModal('staycard', that.myDom);
+        });
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').initialize();
+      } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
+
+        // if addNewPaymentModal instance exist, but the dom is removed
+        sntapp.updateViewInst('addNewPaymentModal', function() {
+          return new AddNewPaymentModal('staycard', that.myDom);
+        });
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').initialize();
+      } else {
+
+        // otherwise
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').populateSwipedCard();
+      }
+    };
+
+    // respond to ViewBillPage
+    var _viewBillResponse = function() {
+      var billCardPaymentModal = new BillCardPaymentModal(that.reloadBillCardPage);
+           
+      billCardPaymentModal.params = {
+        "bill_number" : that.bill_number,
+        'swipedCardData': swipedCardData
+      };
+
+      billCardPaymentModal.initialize();
+    };
+
+    // respond to GuestCardBillPage
+    var _guestCreditCard = function() {
+      // if addNewPaymentModal instance doen't exist, create it
+      if ( !sntapp.getViewInst('addNewPaymentModal') ) {
+        sntapp.setViewInst('addNewPaymentModal', function() {
+          return new AddNewPaymentModal('guest', that.myDom);
+        });
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').initialize();
+      } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
+
+        // if addNewPaymentModal instance exist, but the dom is removed
+        sntapp.updateViewInst('addNewPaymentModal', function() {
+          return new AddNewPaymentModal('guest', that.myDom);
+        });
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').initialize();
+      } else {
+
+        // otherwise
+        sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
+        sntapp.getViewInst('addNewPaymentModal').populateSwipedCard();
+      }
+    };
+
+    var _successCallBack = function(token) {
+
+      // dirty trick to find the current page and react
+      switch(sntapp.currentPage){
+        case '':
+          console.log('respond to StayCardPage');
+          _stayCardResponse();
+          break;
+
+        case 'ViewBillPage':
+          console.log('respond to ViewBillPage');
+          _viewBillResponse();
+          break;
+
+        case 'GuestCardPage':
+          console.log('respond to GuestCardBillPage');
+          _guestCreditCard();
+          break;
+
+        default:
+          console.log('do nothing');
+          break;
+      }
+    };
+
     var options = {
       loader: 'BLOCKER',
-      requestParameters: cardData.getTokenFrom,
-      successCallBack: function(token) {
-        window.injectSwipeCardData = function(cardData) {
-          // add token to card data
-          window.cardData.token = token.data;
-          var cardData = window.cardData;
-
-          // inject the values to payment modal
-          // inject payment type
-          $('#payment-type').val( 'CC' );
-
-          // inject card type
-          var cards = {
-            'VA': 'VISA',
-            'MC': 'Master Card',
-            'DC': 'Diners Club',
-            'DS': 'Discover',
-            'JCB': 'Japan Credit Bureau',
-            'AX': 'American Express'
-          }
-          var option = '<option value="'+window.cardData.cardType+'" data-image="images/visa.png">'+cards[window.cardData.cardType]+'</option>'
-          $('#payment-credit-type').append(option).val(window.cardData.cardType);
-
-          // inject card number, exipry & name
-          $('#card-number-set1').val( 'xxxx-xxxx-xxxx-' + cardData.token.slice(-4) );
-          $('#expiry-month').val( cardData.expiry.slice(-2) );
-          $('#expiry-year').val( cardData.expiry.substring(0, 2) );
-          $('#name-on-card').val( cardData.cardHolderName );
-
-          // inject the token as hidden field into form
-          // TODO: Fix Security issue associated with input[type="hidden"]
-          $('#new-payment').append('<input type="hidden" id="card-token" value="' + cardData.token + '">');
-
-          // Remove card data stored in window.cardData
-          window.cardData = {};
-        };
-        // show the model
-        $("#add-new-payment").trigger('click');
-      },
+      requestParameters: swipedCardData.getTokenFrom,
+      successCallBack: _successCallBack,
       failureCallBack: function(error) {
-        sntapp.notification.showErrorMessage('failed on postCardSwipData ' + error);
+        sntapp.notification.showErrorMessage('Sorry we could not get a response from server. Please try again.');
       }
-    }
+    };
 
     var webservice = new WebServiceInterface();
     webservice.postJSON(url, options);
+
+    // // DEBUG
+    // _successCallBack();
   };
 
-
   this.delegateEvents = function(partialViewRef){  
+
    	if(partialViewRef === undefined){
    		partialViewRef = $("#confirm_no").val();
    	};   	
@@ -198,8 +265,7 @@ this
     var currentReservationDom = that.myDom.find("[data-reservation-id='" + reservationId + "']").attr('id');
     that.loadReservationDetails("#" + currentReservationDom, sucessCallback);
 
-
-  }
+  };
 
   this.loadReservationDetails = function(currentReservationDom, sucessCallback){
     var confirmationNum = currentReservationDom.split("-")[1];

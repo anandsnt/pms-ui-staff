@@ -5,7 +5,7 @@ var RoomsView = function(domRef) {
 	
 	this.delegateEvents = function() {
 		that.myDom.find('#rooms').tablesorter();
-		that.myDom.find('.add-data-inline,.edit-data-inline').on('click', sntadminapp.gotoNextPage);
+		that.myDom.find('#add-new-button,.edit-data').on('click', sntadminapp.gotoNextPage);
 		that.myDom.find('#go_back,#cancel').on('click', that.goBackToPreviousView);
 		that.myDom.find('#room-picture').on('change', function(){
   			that.readURL(this);
@@ -16,12 +16,18 @@ var RoomsView = function(domRef) {
 	
 	//go to previous page withount any update in view
 	this.gotoPreviousPage = function() {
+		that.myDom.html("");
 		sntadminapp.gotoPreviousPage(that.viewParams);
+		that.myDom.html("");
+		
 	}; 
   
 	// To go back to rooms
   	this.goBackToPreviousView = function() {
+  		that.myDom.html("");
  		sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
+		that.myDom.html("");
+
   	};
 
 	//to show preview of the image using file reader
@@ -115,6 +121,7 @@ var RoomsView = function(domRef) {
 		var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfSave,
+			   failureCallBack: that.fetchFailedOfSave,
 			   loader:"BLOCKER"
 			   
 	};
@@ -126,13 +133,15 @@ var RoomsView = function(domRef) {
 
 		var url = "/admin/hotel_rooms";
 		viewParams = {};
-		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams);
-		sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
+		sntapp.fetchAndRenderView(url, that.viewParams.backDom, {}, 'BLOCKER', viewParams, false);
+		sntapp.notification.showSuccessMessage("Saved Successfully", that.viewParams.backDom);
+		that.goBackToPreviousView();
 	};
 	
 	// To handle failure on save API
 	this.fetchFailedOfSave = function(errorMessage) {
-		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom); 
 	};
 
 };

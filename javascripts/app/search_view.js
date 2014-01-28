@@ -32,7 +32,7 @@ var Search  = function(domRef){
             if(that.myDomElement.is(':visible')){
               var errorCode = errorObject.RVErrorCode;
               var errorDesc = errorObject.RVErrorDesc;
-              sntapp.notification.showErrorMessage("Error occured (" + errorCode + "): " + errorDesc);
+              sntapp.notification.showErrorMessage('Could not read the card properly. Please try again.');
             }
             else{
               sntapp.notification.showErrorMessage('not visible from failure');
@@ -144,9 +144,15 @@ var Search  = function(domRef){
     var options = {
       loader: 'BLOCKER',
       requestParameters: data,
-      successCallBack: that.postCardSwipDataSuccess,
+      successCallBack: function() {
+        if (data.confirmation === 'nill' && data.id === 'nill') {
+          sntapp.notification.showErrorMessage('Sorry the reservation was not found.');
+        } else {
+          that.postCardSwipDataSuccess();
+        }
+      },
       failureCallBack: function (errorMessage){
-        sntapp.notification.showErrorMessage('Oops something went wrong with - ' + errorMessage);
+        sntapp.notification.showErrorMessage('Sorry we could not get a response from server. Please try again.');
       }
     }
     webservice.postJSON(url, options);

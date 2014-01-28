@@ -102,11 +102,13 @@ var setUpGuestcard = function(viewDom) {
 
 		// Show if hidden or open in less than 50% of screen height
 		if ($('#guest-card').height() == '90' || $('#guest-card').height() < $breakpoint) {
-			
+			sntapp.prevPage = sntapp.currentPage;
+			sntapp.currentPage = 'GuestCardPage';
 			$('#guest-card').addClass('open').animate({height: ($maxHeight-90)}, 300);
 		}
 		// Hide if open or shown in more than 50% of screen height
 		else {
+			sntapp.currentPage = sntapp.prevPage;
 			$('#guest-card').animate({height: '90px'}, 300, function(){
     			$(this).removeClass('open');
 			});

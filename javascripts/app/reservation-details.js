@@ -61,6 +61,7 @@ var reservationDetailsView = function(domRef) {
 	};
 	this.setWakeUpCallModal = function(e) {
 		if ($(e.target).hasClass("feature-available")) {
+
 			var setWakeUpCallModal = new SetWakeUpCallModal();
 			setWakeUpCallModal.params = {
 				"reservation_id" : that.reservation_id
