@@ -97,7 +97,7 @@ var reservationDetailsView = function(domRef) {
 			var qrCodeModel = new QrCodeModel();
 			qrCodeModel.initialize();
 		} 
-		else {
+		else{
 			var addKeysModal = new AddKeysModal();
 			addKeysModal.initialize();
 		}

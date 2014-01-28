@@ -161,6 +161,7 @@ var RegistrationCardView = function(viewDom) {
 		e.stopImmediatePropagation();
 		var roomStatus = $(e.target).attr('data-room-status');
 		var foStatus = $(e.target).attr('data-fo-status');
+		var is_show_qr_code = $(e.target).attr('data-qr-code');
 		if(roomStatus != "READY" || foStatus != "VACANT"){
 			that.goToRoomAssignmentView();
 			return false;
@@ -202,13 +203,23 @@ var RegistrationCardView = function(viewDom) {
 					   requestParameters: data,
 					   successCallBack: that.fetchCompletedOfSave,
 					   failureCallBack: that.fetchFailedOfSave,
-					   successCallBackParameters:{ "is_promotions_and_email_set": is_promotions_and_email_set},
+					   successCallBackParameters:{ "is_promotions_and_email_set": is_promotions_and_email_set,
+					   "is_show_qr_code": is_show_qr_code }
 			};
 		    webservice.postJSON(url, options);
 		}
 	};
 	 this.fetchCompletedOfSave = function(data, requestParameters){
-	 	that.openAddKeysModal();
+	 	
+	 	if(requestParameters['is_show_qr_code'] == "true"){
+	 		var selectKeyModel = new SelectKeyModel(that.showCheckinSuccessModal,that.openQrCodeModal);
+	 		selectKeyModel.initialize();
+	 	}
+	 	else{
+	 		// To show Modal for key generation
+	 		that.openAddKeysModal();
+	 	}
+	 	
 		if(requestParameters['is_promotions_and_email_set'] == "true"){
 			//To enable EMAIL OPT IN check button in guest card
 			$("#contact-info input#opt-in").prop("checked",true);
@@ -328,6 +339,11 @@ var RegistrationCardView = function(viewDom) {
 		addKeysModal.params = {
 			"source_page" : views.BILLCARD
 		};
+	};
+	// To show add qr code modal
+	this.openQrCodeModal = function(e) {
+		var qrCodeModel = new QrCodeModel();
+		qrCodeModel.initialize();
 	};
 	// To show success message after check in
 	this.showCheckinSuccessModal = function(e) {
