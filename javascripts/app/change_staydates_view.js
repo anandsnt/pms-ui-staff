@@ -115,8 +115,6 @@ var ChangeStayDatesView = function(viewDom){
       else {that.myDom.find('.fc-button-next').removeClass("fc-state-disabled");}
   }
 
-<<<<<<< HEAD
-
   this.getEventSourceObject = function(checkinDate, checkoutDate){
 
       var calenderEvents = that.availableEvents;
@@ -181,124 +179,8 @@ var ChangeStayDatesView = function(viewDom){
       });
       
       return events;
-=======
-
-  this.getEventSourceObject = function(checkinDate, checkoutDate){
-
-      var calenderEvents = that.availableEvents;
-      var events = [];
-      var currencyCode = calenderEvents.data.currency_code;
-      var reservationStatus = calenderEvents.data.reservation_status;
-
-      var thisDate;
-      var calEvt = {};
-      $(calenderEvents.data.available_dates).each(function(index){
-          calEvt = {};
-          //Fixing the timezone issue related with fullcalendar
-          thisDate = getDateObj(this.date);      
-          calEvt.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
-          calEvt.start = thisDate;
-          calEvt.end = thisDate;
-          calEvt.day = thisDate.getDate().toString();
-          
-          //Event is check-in
-          if(thisDate.getTime() == checkinDate.getTime()) {
-              calEvt.id = "check-in";
-              calEvt.className = "check-in";
-              if(reservationStatus != "CHECKEDIN" && reservationStatus != "CHECKING_OUT"){
-                  calEvt.startEditable = "true";
-              }
-              calEvt.durationEditable = "false";
-
-              //If check-in date and check-out dates are the same, show split view.
-              if(checkinDate.getTime() == checkoutDate.getTime()){
-                  calEvt.className = "check-in split-view";
-                  events.push(calEvt);
-                  //checkout-event
-                  calEvt = {};
-                  
-                  calEvt.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
-                  calEvt.start = thisDate;
-                  calEvt.end = thisDate;
-                  calEvt.day = thisDate.getDate().toString();
-                  calEvt.id = "check-out";
-                  calEvt.className = "check-out split-view";
-                  calEvt.startEditable = "true";
-                  calEvt.durationEditable = "false"
-              }
-
-          //mid-stay range
-          } else if((thisDate.getTime() > checkinDate.getTime()) && (thisDate.getTime() < checkoutDate.getTime())) {
-              calEvt.id = "availability";
-              calEvt.className = "mid-stay"
-          //Event is check-out
-          } else if(thisDate.getTime() == checkoutDate.getTime()) {
-              calEvt.id = "check-out";
-              calEvt.className = "check-out";
-              calEvt.startEditable = "true";
-              calEvt.durationEditable = "false"
-          //dates prior to check-in and dates after checkout
-          } else {
-              calEvt.id = "availability";
-              calEvt.className = "type-available"
-          }
-
-          events.push(calEvt);
-      });
-      
-      return events;
-
-
   };
 
-  this.datesChanged = function(event, revertFunc){
-      var newDateSelected = event.start;
-      var firstAvailableDate = getDateObj(that.myDom.find('.fc-event:first').attr('data-date'));
-      var lastAvailableDate = getDateObj(that.myDom.find('.fc-event:last').attr('data-date'));
-
-      var currentBusinessDate = getDateObj(that.availableEvents.data.current_business_date);
-      var finalCheckin = "";
-      var finalCheckout = "";
-
-      //Check the allowed drag and drop range. revert if not available
-      if(newDateSelected < firstAvailableDate || newDateSelected > lastAvailableDate){;
-          revertFunc();
-          return false;      
-      }
-
-      if(event.id == 'check-in') {
-          if(newDateSelected > that.checkoutDateInCalender){
-              revertFunc();
-              return false;
-          }
-          finalCheckin = newDateSelected;
-          finalCheckout = that.checkoutDateInCalender;
-          focusDate = finalCheckin;
-      } else if(event.id == "check-out") {
-          if(newDateSelected < that.checkinDateInCalender){
-              revertFunc();
-              return false;
-          }
-          if(newDateSelected.getTime() < currentBusinessDate.getTime()) {
-              revertFunc();
-              return false;
-          }
-
-          finalCheckin = that.checkinDateInCalender;
-          finalCheckout = newDateSelected;
-          focusDate = finalCheckout
-      }
-
-      //Refresh the calender with the new dates
-      that.refreshCalenderView(finalCheckin, finalCheckout, focusDate);
->>>>>>> eab4b765a1de133f36ef5c7d8930881345a0f16f
-
-      //Show the reservation updates for the selected date range
-      that.showReservationUpdates(finalCheckin, finalCheckout);
-
-  };
-
-<<<<<<< HEAD
   this.datesChanged = function(event, revertFunc){
       var newDateSelected = event.start;
       var firstAvailableDate = getDateObj(that.myDom.find('.fc-event:first').attr('data-date'));
@@ -345,115 +227,6 @@ var ChangeStayDatesView = function(viewDom){
 
   };
 
-  this.refreshCalenderView = function(checkinDate, checkoutDate, focusDate){
-      that.checkinDateInCalender = checkinDate;
-      that.checkoutDateInCalender = checkoutDate; 
-
-      //$('#reservation-calendar').fullCalendar( 'gotoDate', focusDate.getFullYear(), focusDate.getMonth());
-      that.myDom.find('#reservation-calendar').fullCalendar('removeEvents');
-      that.myDom.find('#reservation-calendar').fullCalendar('refetchEvents').fullCalendar('renderEvents');
-
-  };
-
-  this.showReservationUpdates = function(checkinDate, checkoutDate){
-      that.fadeinHeaderDates();
-      var arrivalDate = getDateString(checkinDate);
-      var departureDate = getDateString(checkoutDate);
-      var postParams = {"arrival_date": arrivalDate, "dep_date": departureDate};
-
-      var url = '/staff/change_stay_dates/' + that.reservationId + '/update.json';
-      var webservice = new WebServiceInterface(); 
-      var successCallBackParams = {
-          'reservationId': that.reservationId,
-          'arrival_date': checkinDate, 
-          'dep_date': checkoutDate
-      };
-      var options = {
-          requestParameters: postParams,
-          successCallBack: that.datesChangeSuccess,
-          failureCallBack: that.dateChangeFailure,
-          successCallBackParameters: successCallBackParams,
-          loader: "BLOCKER"
-      };
-      webservice.getJSON(url, options);  
-
-  };
-
-  this.dateChangeFailure = function(errorMsg){
-      sntapp.notification.showErrorList(errorMsg);
-
-      //Reset calender view
-      that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate, that.confirmedCheckinDate)
-      return false;
-
-  };
-
-  this.datesChangeSuccess = function(response, reservationDetails){
-      that.fadeoutHeaderDates();
-      if("room_available" == response.data.availability_status) {
-          that.myDom.find('#no-reservation-updates').addClass('hidden');
-          that.myDom.find('#reservation-updates.hidden').removeClass('hidden');
-          that.showRoomAvailableUpdates(reservationDetails);
-      } else if("room_type_available" == response.data.availability_status) {
-          that.showRoomList(response, reservationDetails);
-      } else if("not_available" == response.data.availability_status) {
-          that.showNoRoomsAvailableMessage();
-      }
-
-  };
-
-  this.showRoomAvailableUpdates = function(reservationDetails, roomNumber){
-
-      var roomSelected = (typeof roomNumber == 'undefined' ? that.myDom.find('#header-room-num').html(): roomNumber);
-      var totalNights = 0,
-          totalRate = 0,
-          avgRate = 0,
-          checkinDay = 0,
-          checkoutDay = 0;
-      that.myDom.find(that.availableEvents.data.available_dates).each(function(index){
-          if(getDateObj(this.date) < getDateObj(reservationDetails['arrival_date']) ||
-              getDateObj(this.date) > getDateObj(reservationDetails['dep_date'])){
-              return true;
-          }
-          totalRate = totalRate + parseInt(this.rate);
-          totalNights ++;
-      });
-
-      avgRate = Math.round(( totalRate/totalNights + 0.00001  * 100) / 100 );
-      var currencySymbol = getCurrencySymbol(that.availableEvents.data.currency_code);
-
-      // Update Dom values
-      that.myDom.find('#reservation-updates #room-number').text(roomSelected);
-      that.myDom.find('#reservation-updates #room-type').text(that.myDom.find('#room-type').text());
-      that.myDom.find('#reservation-updates #new-nights').text(totalNights);
-      that.myDom.find('#reservation-updates #new-check-in').text(getDateString(reservationDetails['arrival_date'], true));
-      that.myDom.find('#reservation-updates #new-check-out').text(getDateString(reservationDetails['dep_date'], true));
-      that.myDom.find('#reservation-updates #avg-daily-rate').text(currencySymbol + avgRate +" /");
-      that.myDom.find('#reservation-updates #total-stay-cost').text(currencySymbol + totalRate);
-      that.myDom.find('#reservation-updates #rate-desc').text(that.availableEvents.data.rate_desc);
-
-  };
-
-  this.confirmUpdatesClicked = function(element){
-      var checkinSelected = getDateString(that.checkinDateInCalender);
-      var checkoutSelected = getDateString(that.checkoutDateInCalender);
-
-      var roomSelected = that.myDom.find('#reservation-updates #room-number').text();
-      var postData = {"arrival_date": checkinSelected, "dep_date": checkoutSelected, "room_number": roomSelected};
-      var url = '/staff/change_stay_dates/'+ that.reservationId +'/confirm';
-      var webservice = new WebServiceInterface();  
-      var options = {
-             requestParameters: postData,
-             successCallBack: that.confirmDatesSuccess,
-             failureCallBack: that.failureCallBack,
-             loader: "BLOCKER"
-      };
-      webservice.postJSON(url, options);  
-      return false;
-
-  };
-
-=======
   this.refreshCalenderView = function(checkinDate, checkoutDate, focusDate){
       that.checkinDateInCalender = checkinDate;
       that.checkoutDateInCalender = checkoutDate; 
@@ -567,7 +340,7 @@ var ChangeStayDatesView = function(viewDom){
 
   };
 
->>>>>>> eab4b765a1de133f36ef5c7d8930881345a0f16f
+
   this.confirmDatesSuccess = function(){
       var staycardView = new StayCard($("#view-nested-first"));
       staycardView.refreshReservationDetails(that.reservationId, that.goBackToStaycard);
