@@ -20,9 +20,10 @@ var ReservationPaymentView = function(domRef){
   };
   
   this.myDomClickHandler = function(event){
-  	
+  	console.log("reached here ===");
   	var target = that.myDom.find(event.target);
   	if(target.attr("id") == "delete_card"){
+  		console.log("inside");
   		// that.myDom.find("#delete_card").unbind('click');
   		//that.myDom.find("#delete_card").on("click", that.deletePaymentFromReservation);
   		return that.deletePaymentFromReservation();
