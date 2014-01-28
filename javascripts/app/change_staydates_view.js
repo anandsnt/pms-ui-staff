@@ -285,19 +285,26 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.showRoomAvailableUpdates = function(reservationDetails, roomNumber){
-
+      var checkinTime = reservationDetails['arrival_date'].setHours(00,00,00);
+      var checkoutTime = reservationDetails['dep_date'].setHours(00,00,00);
+      var thisTime = "";
       var roomSelected = (typeof roomNumber == 'undefined' ? that.myDom.find('#header-room-num').html(): roomNumber);
       var totalNights = 0,
           totalRate = 0,
+          checkinRate = 0,
           avgRate = 0,
           checkinDay = 0,
           checkoutDay = 0;
       $(that.availableEvents.data.available_dates).each(function(index){
-          if(getDateObj(this.date) < getDateObj(reservationDetails['arrival_date']) ||
-              getDateObj(this.date) > getDateObj(reservationDetails['dep_date'])){
+          thisTime = getDateObj(this.date).setHours(00,00,00);
+          if(thisTime < checkinTime || thisTime >= checkoutTime){
               return true;
           }
 
+          if(this.date == getDateString(reservationDetails['arrival_date'])){
+              checkinRate = parseInt(this.rate);
+          }
+          console.log(checkinRate);
           totalRate = totalRate + parseInt(this.rate);
           totalNights ++;
       });
@@ -305,7 +312,7 @@ var ChangeStayDatesView = function(viewDom){
       if(totalNights > 0){
           avgRate = Math.round(( totalRate / totalNights + 0.00001)  * 100 / 100 );
       }else{
-        avgRate = totalRate;
+          avgRate = checkinRate;
       }
       var currencySymbol = getCurrencySymbol(that.availableEvents.data.currency_code);
 
