@@ -14,9 +14,22 @@ var ReservationPaymentView = function(domRef){
   	that.myDom.find('#add-new-payment').on('click', that.addNewPaymentModal);
     // that.myDom.find('#staycard_creditcard').on('change', that.setPaymentToReservation);
     that.myDom.find("#select-card-from-list").on("click", that.showExistingPayments);
-    that.myDom.find("#delete_card").on("click", that.deletePaymentFromReservation);
+    
+    that.myDom.on('click', that.myDomClickHandler);
     // payment-id
   };
+  
+  this.myDomClickHandler = function(event){
+  	console.log("reached here ===");
+  	var target = that.myDom.find(event.target);
+  	if(target.attr("id") == "delete_card"){
+  		console.log("inside");
+  		// that.myDom.find("#delete_card").unbind('click');
+  		//that.myDom.find("#delete_card").on("click", that.deletePaymentFromReservation);
+  		return that.deletePaymentFromReservation(target);
+  	}
+  };
+  
   this.addNewPaymentModal = function(event, options){
 
   	if ( !sntapp.getViewInst('addNewPaymentModal') ) {
@@ -37,9 +50,9 @@ var ReservationPaymentView = function(domRef){
   this.fetchCompletedOfSetPaymentToReservation = function(data){
 	// success function set payment to reservation's ajax call  
   };
-  this.deletePaymentFromReservation = function(){
+  this.deletePaymentFromReservation = function(target){
   	var reservation_id = getReservationId();
-	var selectedElement = that.myDom.find(this).attr("data-payment-id");
+	var selectedElement = target.attr("data-payment-id");
 	var webservice = new WebServiceInterface();
     var data = {
     		reservation_id : reservation_id,
