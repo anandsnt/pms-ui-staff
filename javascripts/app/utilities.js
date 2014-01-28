@@ -89,7 +89,7 @@ function getDateString(dateObj, showDay){
 	weekday[5]="Saturday";
 	weekday[6]="Sunday";
 
-	var month = dateObj.getMonth() + 1 + "";// > 9 ? ("0" + dateObj.getMonth()): dateObj.getMonth();
+	var month = dateObj.getMonth() + 1 + "";
 	if (month.length == 1){
         month = "0" + month;
     }
@@ -100,7 +100,7 @@ function getDateString(dateObj, showDay){
     }
 
     if(showDay == true){
-    	var dateString = weekday[dateObj.getDay()] + " " + dateObj.getFullYear() + "-" + month  + "-" + date ;
+    	var dateString = weekday[dateObj.getDay()] + " " + month + "-" + date  + "-" + dateObj.getFullYear();
     }else{
 		var dateString = dateObj.getFullYear() + "-" + month  + "-" + date ;
     }

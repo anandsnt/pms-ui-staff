@@ -35,7 +35,7 @@ var ItemsDetailsView = function(domRef) {
 		if (action == "ACTION_EDIT") {
 			postData.value = that.myDom.find("form#edit-items").attr("item_id");
 		}
-		postData.is_favorite = (that.myDom.find("#is_favorite").val() == "on") ? "true" : "false";
+		postData.is_favorite = that.myDom.find("#is_favorite").parent().hasClass('checked');
 		postData.item_description = that.myDom.find("#item_desc").val();
 		postData.unit_price = that.myDom.find("#unit_price").val();
 		postData.charge_code = that.myDom.find("#charge_code").val();
