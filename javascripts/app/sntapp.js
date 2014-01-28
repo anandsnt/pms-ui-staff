@@ -8,6 +8,22 @@ var app = function(){
     this.cardReader = null;
 
     this.DEBUG = true;
+    this.cardSwipePrevView = ''; 
+    this.cardSwipeCurrView = 'StayCard'; 
+    this.currentPage = ''; 
+
+    this.init = function(){
+        //that.loadFullCalendarPlugin();      
+    };
+
+    this.loadFullCalendarPlugin = function(){
+        var url = "";
+
+        if(that.ismob){
+            url = "/assets/app/plugins/fullcalendar-ipad.js";
+        }
+        $.getScript(url);
+    };
     
     this.getViewInstance = function(viewDom){
         var viewInstance;
@@ -134,8 +150,6 @@ var app = function(){
     	that.cordovaLoaded = false;
     };
 
-
-
     /**
     *   A dict to keep reference to shared views
     *   @dict
@@ -152,7 +166,6 @@ var app = function(){
         if ( this.viewDict[name] ) {
             return this.viewDict[name];
         } else {
-            console.log( 'Sorry ' + name + ' view instance was not found.' );
             return false;
         }
     };
@@ -166,8 +179,7 @@ var app = function(){
     */
     this.setViewInst = function(name, callback) {
         if ( this.viewDict[name] ) {
-            console.log( 'Sorry ' + name + ' view instance already exists.' );
-            return false;
+            that.updateViewInst(name, callback);
         } else {
             this.viewDict[name] = callback();
             return this.viewDict[name];
@@ -186,8 +198,24 @@ var app = function(){
         this.viewDict[name] = callback();
         return this.viewDict[name];
     };
-    
+
+
+    this.ismob = (function(navigator) { 
+      if( navigator.userAgent.match(/Android/i)
+         || navigator.userAgent.match(/webOS/i)
+         || navigator.userAgent.match(/iPhone/i)
+         || navigator.userAgent.match(/iPad/i)
+         || navigator.userAgent.match(/iPod/i)
+         || navigator.userAgent.match(/BlackBerry/i)
+         || navigator.userAgent.match(/Windows Phone/i)
+     ){
+        return true;
+      }
+     else {
+        return false;
+      }
+    })(navigator);    
 };
 
 sntapp = new app();
-
+sntapp.init();

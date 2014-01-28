@@ -42,6 +42,11 @@ var RegistrationCardView = function(viewDom) {
 		// To add active class to the first bill tab
 		that.myDom.find("#bills-tabs-nav li[bill_active='true']").addClass('active');
 
+
+		// A dirty hack to allow "this" instance to be refered from sntapp
+		sntapp.setViewInst('registrationCardView', function() {
+			return that;
+		});
 	};
 
 	this.executeLoadingAnimation = function() {
@@ -123,11 +128,6 @@ var RegistrationCardView = function(viewDom) {
 		};
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
 	};
-
-	  this.gotoStayCard = function(){
-	sntapp.activityIndicator.showActivityIndicator("blocker");
-    changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
-  };
 
   this.gotoBillCard = function(){
       
@@ -255,10 +255,10 @@ var RegistrationCardView = function(viewDom) {
 
 	this.gotoStayCard = function(e) {
 		e.preventDefault();
+		sntapp.cardSwipeCurrView = 'StayCardView';
 		//goBackToView("", "view-nested-third", "move-from-left");
 		var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
 		$($loader).prependTo('body').show();
-
 		changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);
 	};
 	this.goToRoomUpgradeView = function(e) {
@@ -317,10 +317,19 @@ var RegistrationCardView = function(viewDom) {
 	// To show payment modal
 	this.payButtonClicked = function() {
 		var billCardPaymentModal = new BillCardPaymentModal(that.reloadBillCardPage);
-		billCardPaymentModal.initialize();
+
 		billCardPaymentModal.params = {
 			"bill_number" : that.bill_number
 		};
+
+		// send swipedCardData to bill card payment modal
+		if (that.swipedCardData) {
+			billCardPaymentModal.params = {
+				"swipedCardData": that.swipedCardData
+			};
+		};
+
+		billCardPaymentModal.initialize();
 	};
 	// To show post charge modal
 	this.addNewButtonClicked = function() {

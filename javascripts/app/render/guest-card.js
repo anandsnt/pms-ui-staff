@@ -52,6 +52,8 @@ var setUpGuestcard = function(viewDom) {
 		create : function(event, ui) {
 			var $tab = ui.panel.attr('id');
 
+			console.log($tab);
+
 			// Set scroller
 			if (guestCardScroll) {
 				destroyGuestCardScroll();
@@ -64,6 +66,12 @@ var setUpGuestcard = function(viewDom) {
 		},
 		beforeActivate : function(event, ui) {
 			var $nextTab = ui.newPanel.attr('id');
+
+			if ('cc-payment' === $nextTab) {
+				sntapp.cardSwipeCurrView = 'GuestCardView';
+			} else {
+				sntapp.cardSwipeCurrView = '';
+			}
 
 			// Reset scroller
 			if (guestCardScroll) {
@@ -102,14 +110,18 @@ var setUpGuestcard = function(viewDom) {
 
 		// Show if hidden or open in less than 50% of screen height
 		if ($('#guest-card').height() == '90' || $('#guest-card').height() < $breakpoint) {
-			
 			$('#guest-card').addClass('open').animate({height: ($maxHeight-90)}, 300);
+
+			sntapp.cardSwipePrevView = sntapp.cardSwipeCurrView;
+			sntapp.cardSwipeCurrView = $('#cc-payment:visible').length ? 'GuestCardView' : '';
 		}
 		// Hide if open or shown in more than 50% of screen height
 		else {
 			$('#guest-card').animate({height: '90px'}, 300, function(){
     			$(this).removeClass('open');
 			});
+
+			sntapp.cardSwipeCurrView = sntapp.cardSwipePrevView;
 		}
 
 		// Refresh scrollers
