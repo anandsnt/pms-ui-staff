@@ -63,7 +63,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			currentStayCardView.find("#add-new-payment").remove();
 			var appendHtml = '<a id="delete_card" data-payment-id="'+data.data.id+'" class="button with-icon brand-colors">'+
 							 '<span class="icons icon-wallet"></span>Delete</a>';		
-			that.myDom.find(".payment_actions").append(appendHtml);
+			currentStayCardView.find(".payment_actions").append(appendHtml);
 			that.hide();   			
 
    	};
