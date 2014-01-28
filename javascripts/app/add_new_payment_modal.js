@@ -60,6 +60,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 								"</span>";
 		    						
 			currentStayCardView.find("#select-card-from-list").html(replaceHtml);
+			currentStayCardView.find("#add-new-payment").remove();
 			that.hide();   			
 
    	};
