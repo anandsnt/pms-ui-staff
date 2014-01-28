@@ -13,8 +13,8 @@ var BillCardPaymentModal = function(callBack){
 	
 	this.modalInit = function(){
 
-    // auto populate
-    if (that.swipedCardData) {
+    // update the card 
+    if (that.params.swipedCardData) {
       that.populateSwipedCard();
     };
   };

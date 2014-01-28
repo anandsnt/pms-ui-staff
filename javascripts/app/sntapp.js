@@ -8,22 +8,20 @@ var app = function(){
     this.cardReader = null;
 
     this.DEBUG = true;
-    this.prevPage = ''; 
+    this.cardSwipePrevView = ''; 
+    this.cardSwipeCurrView = 'StayCard'; 
     this.currentPage = ''; 
 
     this.init = function(){
-        //that.loadFullCalendarPlugin();      
+        that.loadFullCalendarPlugin();      
     };
 
     this.loadFullCalendarPlugin = function(){
         var url = "";
-
         if(that.ismob){
             url = "/assets/app/plugins/fullcalendar-ipad.js";
         }
-        $.getScript(url, function(){
-            alert(url);
-        });
+        $.getScript(url);
     };
     
     this.getViewInstance = function(viewDom){
@@ -167,7 +165,6 @@ var app = function(){
         if ( this.viewDict[name] ) {
             return this.viewDict[name];
         } else {
-            console.log( 'Sorry ' + name + ' view instance was not found.' );
             return false;
         }
     };
@@ -181,8 +178,7 @@ var app = function(){
     */
     this.setViewInst = function(name, callback) {
         if ( this.viewDict[name] ) {
-            console.log( 'Sorry ' + name + ' view instance already exists.' );
-            return false;
+            that.updateViewInst(name, callback);
         } else {
             this.viewDict[name] = callback();
             return this.viewDict[name];
@@ -201,6 +197,7 @@ var app = function(){
         this.viewDict[name] = callback();
         return this.viewDict[name];
     };
+
 
     this.ismob = (function(navigator) { 
       if( navigator.userAgent.match(/Android/i)
