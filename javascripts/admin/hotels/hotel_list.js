@@ -35,7 +35,7 @@ var HotelListView = function(domRef){
     var target = $(event.target);
     if(target.attr("id") == "add_new_hotel"){ // add new hotel  
       event.preventDefault();      
-      that.gotoNextPage(target);
+      return that.gotoNextPage(target);
     }
     // click of reservation import via ftp
     else if(target.attr("name") == "reservation-import"){      
@@ -66,22 +66,19 @@ var HotelListView = function(domRef){
       };
       webservice.postJSON(url, options);	 
       if(!confirmForReservationImport && checkedStatus){
-      	console.log('sdfsd');
             return false;
       } 
-      console.log("confirmForReservationImport " + confirmForReservationImport);
       return true;
     }     
     else if(target.hasClass('title') ){ // edit hotel details
       event.preventDefault();    
-      that.gotoNextPage(target);
+      return that.gotoNextPage(target);
     }
     // some case event click may be on child elements of 'a' with class title
-    else if(!jQuery.isEmptyObject(target.closest('a.title'))){
+    else if(target.closest('a.title').length){
       event.preventDefault();    
       target = target.closest('a.title');
-      console.log(target);
-      that.gotoNextPage(target);
+      return that.gotoNextPage(target);
     }
    
     return true;
