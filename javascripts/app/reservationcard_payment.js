@@ -14,9 +14,21 @@ var ReservationPaymentView = function(domRef){
   	that.myDom.find('#add-new-payment').on('click', that.addNewPaymentModal);
     // that.myDom.find('#staycard_creditcard').on('change', that.setPaymentToReservation);
     that.myDom.find("#select-card-from-list").on("click", that.showExistingPayments);
-    that.myDom.find("#delete_card").on("click", that.deletePaymentFromReservation);
+    
+    that.myDom.on('click', that.myDomClickHandler);
     // payment-id
   };
+  
+  this.myDomClickHandler = function(event){
+  	
+  	var target = that.myDom.find(event.target);
+  	if(target.attr("id") == "delete_card"){
+  		// that.myDom.find("#delete_card").unbind('click');
+  		//that.myDom.find("#delete_card").on("click", that.deletePaymentFromReservation);
+  		return that.deletePaymentFromReservation();
+  	}
+  };
+  
   this.addNewPaymentModal = function(event, options){
 
   	if ( !sntapp.getViewInst('addNewPaymentModal') ) {
