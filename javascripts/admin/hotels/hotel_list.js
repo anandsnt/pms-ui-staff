@@ -45,13 +45,18 @@ var HotelListView = function(domRef){
       // checkedStatus will be true, if it checked
       // show confirm if it is going turn on stage
       if(checkedStatus){
-          confirmForReservationImport= confirm("Do NOT switch ON, until hotel mapping and setup is completed!, Do you want to proceed?");
+          confirmForReservationImport = confirm("Do NOT switch ON, until hotel mapping and setup is completed!, Do you want to proceed?");
       }
+      var hotel_id = target.parents('tr:eq(0)').attr("data-hotel-id");
+      var is_res_import_on = "false";
+      if(!target.parent().hasClass("on")){
+      	is_res_import_on = "true";
+      } 
       
-      var data = {'hotel_id' :  1};
+      var data = {'hotel_id' :  hotel_id,  'is_res_import_on': is_res_import_on};
       //TODO: Implement correct API
       var webservice = new WebServiceInterface();
-      var url = '';
+      var url = '/admin/hotels/'+hotel_id+'/toggle_res_import_on';
       var options = {
           successCallBack: that.fetchCompletedOfSave,
           failureCallBack: that.fetchFailedOfSave,
@@ -59,16 +64,19 @@ var HotelListView = function(domRef){
           successCallBackParameters:{ "event": event},
           loader: 'normal',
       };
-      if(!confirmForReservationImport){
+      webservice.postJSON(url, options);	 
+      if(!confirmForReservationImport && checkedStatus){
+      	console.log('sdfsd');
             return false;
       } 
+      console.log("confirmForReservationImport " + confirmForReservationImport);
       return true;
     }     
     else if(target.hasClass('title') ){ // edit hotel details
       event.preventDefault();    
       that.gotoNextPage(target);
     }
-    // some case event click may be on child elements of a with class title
+    // some case event click may be on child elements of 'a' with class title
     else if(!jQuery.isEmptyObject(target.closest('a.title'))){
       event.preventDefault();    
       target = target.closest('a.title');
