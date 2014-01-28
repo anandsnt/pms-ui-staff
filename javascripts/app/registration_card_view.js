@@ -211,6 +211,8 @@ var RegistrationCardView = function(viewDom) {
 	};
 	 this.fetchCompletedOfSave = function(data, requestParameters){
 	 	
+	 	// If QR Code status enabled - First show select Key Modal
+		// Else show key genaration Modal
 	 	if(requestParameters['is_show_qr_code'] == "true"){
 	 		var selectKeyModel = new SelectKeyModel(that.showCheckinSuccessModal,that.openQrCodeModal);
 	 		selectKeyModel.initialize();
@@ -340,7 +342,7 @@ var RegistrationCardView = function(viewDom) {
 			"source_page" : views.BILLCARD
 		};
 	};
-	// To show add qr code modal
+	// To show QR code modal
 	this.openQrCodeModal = function(e) {
 		var qrCodeModel = new QrCodeModel();
 		qrCodeModel.initialize();

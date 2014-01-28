@@ -93,6 +93,8 @@ var reservationDetailsView = function(domRef) {
 	};
 
 	this.addKeysModal = function(e) {
+		// If QR Code status enabled - show QR Code Modal 
+		// Else show key genaration Modal
 		if ($(e.target).closest('a').attr("data-qr-code") == "true") {
 			var qrCodeModel = new QrCodeModel();
 			qrCodeModel.initialize();

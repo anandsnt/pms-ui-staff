@@ -1,3 +1,4 @@
+// Modal to show QR Code
 var QrCodeModel = function(callBack) {
 	BaseModal.call(this);
 	var that = this;
