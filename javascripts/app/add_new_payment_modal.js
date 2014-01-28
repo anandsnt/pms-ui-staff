@@ -35,6 +35,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 	};
 
 	this.modalInit = function(){
+		
    	};
 
    	this.fetchCompletedOfReservationPayment = function(data, requestParameters){
