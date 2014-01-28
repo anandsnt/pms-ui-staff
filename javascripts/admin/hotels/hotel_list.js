@@ -8,7 +8,7 @@ var HotelListView = function(domRef){
   BaseView.call(this);  
   this.myDom = domRef;  
   var that = this;
-
+	
   /**
   * Method used to perform initial operations on elemnents    
   */
@@ -21,7 +21,8 @@ var HotelListView = function(domRef){
   * A method to bind event against elements in view,    
   */
   this.delegateEvents = function(){ 
-  
+    // unbinding the previous object's event binding..
+  	that.myDom.unbind('click');
     that.myDom.on('click', that.domClickHandler);  	 
   };
 
