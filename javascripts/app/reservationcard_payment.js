@@ -26,7 +26,7 @@ var ReservationPaymentView = function(domRef){
   		console.log("inside");
   		// that.myDom.find("#delete_card").unbind('click');
   		//that.myDom.find("#delete_card").on("click", that.deletePaymentFromReservation);
-  		return that.deletePaymentFromReservation();
+  		return that.deletePaymentFromReservation(target);
   	}
   };
   
@@ -50,9 +50,9 @@ var ReservationPaymentView = function(domRef){
   this.fetchCompletedOfSetPaymentToReservation = function(data){
 	// success function set payment to reservation's ajax call  
   };
-  this.deletePaymentFromReservation = function(){
+  this.deletePaymentFromReservation = function(target){
   	var reservation_id = getReservationId();
-	var selectedElement = that.myDom.find(this).attr("data-payment-id");
+	var selectedElement = target.attr("data-payment-id");
 	var webservice = new WebServiceInterface();
     var data = {
     		reservation_id : reservation_id,
