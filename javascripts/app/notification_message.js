@@ -4,7 +4,7 @@ var NotificationMessage = function() {
 	this.showErrorLevel = "DEBUG";
 	
 	this.shouldShowErrorMessages = true;
-	this.shouldShowSuccessMessage = true;
+	this.shouldShowSuccessMessage = false;
 	
 	this.shouldShowCloseButtonForSuccess = true;
 	this.shouldShowCloseButtonForError = true;
