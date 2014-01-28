@@ -20,9 +20,11 @@ var HotelListView = function(domRef){
   /**
   * A method to bind event against elements in view,    
   */
-  this.delegateEvents = function(){   		
+  this.delegateEvents = function(){ 
+  
     that.myDom.on('click', that.domClickHandler);  	 
   };
+
 
 
   /**
@@ -31,36 +33,49 @@ var HotelListView = function(domRef){
   */
   this.domClickHandler = function(event){
     var target = $(event.target);
-    event.preventDefault();    
-    if(target.attr("id") == "add_new_hotel"){ // add new hotel    
-      that.gotoNextPage(target);
-    }
-    else if(target.hasClass('title') ){ // edit hotel details
-      that.gotoNextPage(target);
-    }
-    // some case event click may be on child elements of a with class title
-    else if(target.parents('.title')){
-      target = target.parents('.title:eq(0)');
+    if(target.attr("id") == "add_new_hotel"){ // add new hotel  
+      event.preventDefault();      
       that.gotoNextPage(target);
     }
     // click of reservation import via ftp
-    else if(target.attr("name") == "reservation-import"){
-      console.log(target.attr("name"));
-      var confirm = confirm("Do NOT switch ON, until hotel mapping and setup is completed!, Do you want to proceed?");
-      if(confirm){
-         /* var webservice = new WebServiceInterface();
-          var url = '';
-          var options = {
-
-          };*/
-
-
-        return true;
+    else if(target.attr("name") == "reservation-import"){      
+      var checkedStatus = target.is(':checked');
+      console.log(checkedStatus);
+      // isAlreadyTurnedOff will be true, if it checked
+      // show confirm if it is in off/unchecked stage
+      if(checkedStatus){
+        var confirmForReservationImport = confirm("Do NOT switch ON, until hotel mapping and setup is completed!, Do you want to proceed?");
+          if(!confirmForReservationImport){
+            event.preventDefault();
+          } 
       }
+      
+      var data = {'hotel_id' :  };
       //TODO: Implement correct API
-
-    }    
-    return false;
+      var webservice = new WebServiceInterface();
+      var url = '';
+      var options = {
+          successCallBack: that.fetchCompletedOfSave,
+          failureCallBack: that.fetchFailedOfSave,
+          requestParameters: data,
+          successCallBackParameters:{ "event": event},
+          loader: 'normal',
+      };
+      return true;
+    }     
+    else if(target.hasClass('title') ){ // edit hotel details
+      event.preventDefault();    
+      that.gotoNextPage(target);
+    }
+    // some case event click may be on child elements of a with class title
+    else if(!jQuery.isEmptyObject(target.closest('a.title'))){
+      event.preventDefault();    
+      target = target.closest('a.title');
+      console.log(target);
+      that.gotoNextPage(target);
+    }
+   
+    return true;
   };
 
   /**
