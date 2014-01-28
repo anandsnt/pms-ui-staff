@@ -13,6 +13,9 @@ var ItemsListView = function(domRef) {
 		that.myDom.find(".icon-delete").on('click', that.deleteItem);
 		that.myDom.find('#items').tablesorter({
 			headers : {
+				2 : {
+					sorter : false
+				},
 				3 : {
 					sorter : false
 				},
@@ -47,7 +50,7 @@ var ItemsListView = function(domRef) {
 			return true;
 		}, 100);
 	};
-	
+
 	//function to delete items
 	this.deleteItem = function(event) {
 		event.preventDefault();
@@ -70,4 +73,10 @@ var ItemsListView = function(domRef) {
 		};
 		webservice.getJSON(url, options);
 	};
-}; 
+	
+		//to remove deleted row and show message
+	this.fetchCompletedOfDelete = function(data, successParams) {
+		sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
+		that.myDom.find("#item_row_" + successParams['selectedId']).remove();
+	};
+};

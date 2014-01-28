@@ -24,7 +24,6 @@ var ItemsDetailsView = function(domRef) {
 	};
 	//To edit item
 	this.updateItem = function(event) {
-		var hlpId = that.myDom.find("form#edit-items").attr("item_id");
 		var url = '/admin/items/save_item';
 		var action = "ACTION_EDIT"
 		that.makeAPICall(url, action, event);
