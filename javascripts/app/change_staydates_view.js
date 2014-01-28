@@ -295,16 +295,21 @@ var ChangeStayDatesView = function(viewDom){
           avgRate = 0,
           checkinDay = 0,
           checkoutDay = 0;
-      that.myDom.find(that.availableEvents.data.available_dates).each(function(index){
+      $(that.availableEvents.data.available_dates).each(function(index){
           if(getDateObj(this.date) < getDateObj(reservationDetails['arrival_date']) ||
               getDateObj(this.date) > getDateObj(reservationDetails['dep_date'])){
               return true;
           }
+
           totalRate = totalRate + parseInt(this.rate);
           totalNights ++;
       });
 
-      avgRate = Math.round(( totalRate/totalNights + 0.00001  * 100) / 100 );
+      if(totalNights > 0){
+          avgRate = Math.round(( totalRate / totalNights + 0.00001)  * 100 / 100 );
+      }else{
+        avgRate = totalRate;
+      }
       var currencySymbol = getCurrencySymbol(that.availableEvents.data.currency_code);
 
       // Update Dom values
