@@ -12,6 +12,31 @@ var StayCard = function(viewDom){
     // ok we just entered staycard page
     sntapp.cardSwipeCurrView = 'StayCardView';
 
+    // Start listening to card swipes
+    this.initCardSwipe();
+
+    // // DEBUG
+    // if ( $('#reservation-card').find('#current:visible').length ) {
+    //   window.trigger = that.postCardSwipData;
+    //   var swipedCardData = {
+    //     cardType: 'VA',
+    //     expiry: '1812',
+    //     cardHolderName: 'vijay',
+    //     getTokenFrom: {
+    //       'et2': 'dwadwadwadawdawd',
+    //       'ksn': 'dwa awd wadawdaw d wa'
+    //     }
+    //   }
+    // };
+    
+    // A dirty hack to allow "this" instance to be refered from sntapp
+    sntapp.setViewInst('stayCardView', function() {
+      return that;
+    });
+  }
+
+  // Start listening to card swipes
+  this.initCardSwipe = function() {
     if(sntapp.cordovaLoaded){
       var options = {
           successCallBack: function(data){
@@ -35,22 +60,7 @@ var StayCard = function(viewDom){
         sntapp.cardReader.startReader(options);
       };
     }
-
-    // // DEBUG
-    // if ( $('#reservation-card').find('#current:visible').length ) {
-    //   window.trigger = that.postCardSwipData;
-    //   var swipedCardData = {
-    //     cardType: 'VA',
-    //     expiry: '1812',
-    //     cardHolderName: 'vijay',
-    //     getTokenFrom: {
-    //       'et2': 'dwadwadwadawdawd',
-    //       'ksn': 'dwa awd wadawdaw d wa'
-    //     }
-    //   }
-    // };
-    
-  }
+  };
 
 
   // lets post the 'et2' and 'ksn' data

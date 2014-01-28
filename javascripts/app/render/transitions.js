@@ -65,7 +65,7 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage, $transition, $
 
 // Switch main page
 function switchPage($type, $menuActiveItem, $prevPage, $nextPage, $transition){
-    
+    console.log($nextPage);
     
     var $switchScreen = new chainedAnimation(),
         $delay = 300;
@@ -181,7 +181,8 @@ function changeInnerPage($type, $menuActiveItem, $prevPage, $nextPage, $transiti
 
 // Load inner page view 
 function changeView($type, $menuActiveItem, $prevView, $nextView, $transition, $emptyPrev){
-    
+    console.log('changeView');
+
     var $newView = new chainedAnimation(),
         $delay = 150;
 
@@ -273,7 +274,7 @@ function goBackToView($menuActiveItem, $prevView, $transition){
     $('#main-menu a[data-page="' + $menuActiveItem + '"]').addClass('active');
 }
 
-$(function($){ 
+$(function($){
 
     // FastClick
     FastClick.attach(document.body);
@@ -396,6 +397,15 @@ $(function($){
         // Drawer item is already loaded, just switch to it
         else if ($(this).attr('data-href') == 'history' && !$(this).hasClass('active') && $reloadInDrawer == false)
         {
+
+            // ONLY FOR CARD SWIPE
+            // dirty hack to find if user is switching back to 
+            // search page and trigger its card swipe method
+            var toBeCurrent = $(this).data('page');
+            if ('search' === toBeCurrent) {
+                sntapp.viewDict['search'].initCardSwipe();
+            };
+
             var $next = $('#' + $activeMenuItem).closest('.main-page').attr('id');
             switchPage($transitionPage, $activeMenuItem, $previous, $next, 'move-from-left');
             
