@@ -205,33 +205,6 @@ var RegistrationCardView = function(viewDom) {
 					   successCallBackParameters:{ "is_promotions_and_email_set": is_promotions_and_email_set},
 			};
 		    webservice.postJSON(url, options);
-			
-			
-			
-			// $.ajax({
-				// type : "POST",
-				// url : '/staff/checkinb',
-				// data : data,
-				// success : function(data) {
-					// if (data.status == "success") {
-						// that.openAddKeysModal();
-						// if(data.is_promotions_and_email_set == "true"){
-							// //To enable EMAIL OPT IN check button in guest card
-							// $("#contact-info input#opt-in").prop("checked",true);
-						// }
-						// else{
-							// //To disable EMAIL OPT IN check button in guest card
-    						// $("#contact-info input#opt-in").prop("checked",false);
-						// }
-					// } 
-					// else if (data.status == "failure") {
-						// sntapp.activityIndicator.hideActivityIndicator();
-						// sntapp.notification.showErrorMessage("Some error occured: " + data.errors, that.myDom);  
-					// }
-				// },
-				// error : function() {
-				// }
-			// });
 		}
 	};
 	 this.fetchCompletedOfSave = function(data, requestParameters){
