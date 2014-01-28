@@ -9,7 +9,7 @@ var app = function(){
 
     this.DEBUG = true;
     this.prevPage = ''; 
-    this.currentPage = ''; 
+    this.currentPage = 'StayCard'; 
     
     this.getViewInstance = function(viewDom){
         var viewInstance;
