@@ -11,6 +11,16 @@ var ItemsListView = function(domRef) {
 		that.myDom.find('#add-new-button,.edit-data').on('click', sntadminapp.gotoNextPage);
 		that.myDom.find(".switch-button").on('click', that.toggleButtonClicked);
 		that.myDom.find(".icon-delete").on('click', that.deleteItem);
+		that.myDom.find('#items').tablesorter({
+			headers : {
+				3 : {
+					sorter : false
+				},
+				4 : {
+					sorter : false
+				}
+			}
+		});
 	};
 
 	this.goBackToPreviousView = function() {
