@@ -93,10 +93,11 @@ var reservationDetailsView = function(domRef) {
 	};
 
 	this.addKeysModal = function(e) {
-		if ($(e.target).attr("data-qr-code") == "true") {
+		if ($(e.target).closest('a').attr("data-qr-code") == "true") {
 			var qrCodeModel = new QrCodeModel();
 			qrCodeModel.initialize();
-		} else {
+		} 
+		else {
 			var addKeysModal = new AddKeysModal();
 			addKeysModal.initialize();
 		}
