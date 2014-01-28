@@ -224,7 +224,6 @@ var ChangeStayDatesView = function(viewDom){
 
       //Show the reservation updates for the selected date range
       that.showReservationUpdates(finalCheckin, finalCheckout);
-
   };
 
   this.refreshCalenderView = function(checkinDate, checkoutDate, focusDate){
@@ -304,7 +303,6 @@ var ChangeStayDatesView = function(viewDom){
           if(this.date == getDateString(reservationDetails['arrival_date'])){
               checkinRate = parseInt(this.rate);
           }
-          console.log(checkinRate);
           totalRate = totalRate + parseInt(this.rate);
           totalNights ++;
       });
@@ -346,7 +344,6 @@ var ChangeStayDatesView = function(viewDom){
       return false;
 
   };
-
 
   this.confirmDatesSuccess = function(){
       var staycardView = new StayCard($("#view-nested-first"));

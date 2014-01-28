@@ -15,7 +15,6 @@ function convertDateToUTC(date) {
 function getCurrentReservationDiv(){
 	var activeTimeline = $('#reservation-card').attr('data-current-timeliine');
 	var currentConfirmation = $("#"+activeTimeline+" #reservation-listing ul li.ui-state-active").attr("data-confirmation-num");
-	//console.log(currentConfirmation);
 	var currentReservationDiv = "reservation-"+currentConfirmation;
 	return currentReservationDiv;
 }
@@ -39,7 +38,6 @@ var avatharImgs = {
 function getAvatharUrl(title){
 	//function to get avathar image url by giving title
 	title = $.trim(title).toLowerCase().split('.')[0];
-	console.log(title);
 	try{
 		if((title == "mr") || (title == "mrs") || (title == "miss")|| (title == "ms"))
 			return (/assets/ + avatharImgs[title]);
@@ -79,15 +77,17 @@ function getCurrencySymbol(currenyCode){
 };
 
 function getDateString(dateObj, showDay){
+
 	var dateString = "";
 	var weekday = new Array(7);
-	weekday[0]="Monday";
-	weekday[1]="Tuesday";
-	weekday[2]="Wednesday";
-	weekday[3]="Thursday";
-	weekday[4]="Friday";
-	weekday[5]="Saturday";
-	weekday[6]="Sunday";
+	weekday[0]="Sunday";
+	weekday[1]="Monday";
+	weekday[2]="Tuesday";
+	weekday[3]="Wednesday";
+	weekday[4]="Thursday";
+	weekday[5]="Friday";
+	weekday[6]="Saturday";
+	
 
 	var month = dateObj.getMonth() + 1 + "";
 	if (month.length == 1){

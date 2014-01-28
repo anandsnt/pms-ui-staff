@@ -33,16 +33,11 @@ var reservationDetailsView = function(domRef) {
 
 	this.gotToChangeDatesScreen = function() {
 		sntapp.activityIndicator.showActivityIndicator("blocker");
-		var viewURL = "/staff/change_stay_date/show/";
-		var viewDom = $("#view-nested-second");
-		var reservation_id = getReservationId();
-		var params = {
-			"reservation_id" : reservation_id
-		};
-		var nextViewParams = {
-			"reservation_id" : reservation_id
-		};
-		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams);
+		var viewURL = "/staff/change_stay_dates/"+getReservationId();
+	    var viewDom = $("#view-nested-second");
+	    var reservation_id = getReservationId();
+	    var nextViewParams = {"reservation_id": reservation_id};
+	    sntapp.fetchAndRenderView(viewURL, viewDom, {}, 'NORMAL', nextViewParams);
 	};
 
 	this.setNewspaperPreferance = function(e) {
@@ -93,6 +88,8 @@ var reservationDetailsView = function(domRef) {
 	};
 
 	this.addKeysModal = function(e) {
+		// If QR Code status enabled - show QR Code Modal 
+		// Else show key genaration Modal
 		if ($(e.target).closest('a').attr("data-qr-code") == "true") {
 			var qrCodeModel = new QrCodeModel();
 			qrCodeModel.initialize();
