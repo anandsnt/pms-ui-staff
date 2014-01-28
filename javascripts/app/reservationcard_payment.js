@@ -42,7 +42,8 @@ var ReservationPaymentView = function(domRef){
 	var selectedElement = that.myDom.find(this).attr("data-payment-id");
 	var webservice = new WebServiceInterface();
     var data = {
-    		reservation_id : reservation_id	   
+    		reservation_id : reservation_id,
+    		guest_payment_type_id:   selectedElement
     };
     var url = '/staff/staycards/unlink_credit_card'; 
     var options = {
