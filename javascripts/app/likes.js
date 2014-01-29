@@ -107,13 +107,13 @@ var LikesView = function(domRef){
 		$totalFeatures = $("#totalfeatures").val();
 		for ( i = 0; i < $totalPreferences; i++) {
 			
-			that.myDom.find($('#pref_'+i)).on('change', function(event) {
+			that.myDom.find('input[name=pref_' + i + ']').on('change', function(event) {
 				that.$likeInfoChange = true;				
 			});		
 			
 		}
 		for ( j = 0; j < $totalFeatures; j++) {
-			that.myDom.find($('#feat_'+j)).on('change click', function(event) {
+			that.myDom.find('#feat_'+j).on('change click', function(event) {
 				that.$likeInfoChange = true;				
 			});				
 		}
