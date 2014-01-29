@@ -52,9 +52,9 @@ var StayCard = function(viewDom){
           }
       };
 
-      if ( $('#reservation-card').find('#current:visible').length ) {
-        sntapp.cardReader.startReader(options);
-      };
+      // start listening
+      sntapp.cardReader.startReader(options);
+
     }
   };
 
@@ -62,6 +62,13 @@ var StayCard = function(viewDom){
   // lets post the 'et2' and 'ksn' data
   // to get the token code from MLI
   this.postCardSwipData = function(swipedCardData) {
+
+    // only respond for current reservations
+    var $currResCard = $('#reservation-card > .reservation-tabs-nav li[aria-controls="current"]');
+    if ( 'true' != $currResCard.attr('aria-selected') ) {
+      return;
+    };
+
     var swipedCardData = swipedCardData;
 
     var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
