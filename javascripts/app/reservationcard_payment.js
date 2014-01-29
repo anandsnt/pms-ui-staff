@@ -29,11 +29,11 @@ var ReservationPaymentView = function(domRef){
   		//that.myDom.find("#delete_card").on("click", that.deletePaymentFromReservation);
   		return that.deletePaymentFromReservation(target);
   	}
-  	else if(target.parents().find("#delete_card").length){
-  		
-  		target = target.parents().find("#delete_card");
-  			return that.deletePaymentFromReservation(target);
-  	}
+  	else if(target.closest('#delete_card').length){
+      event.preventDefault();    
+      target = target.closest('#delete_card');
+      return that.deletePaymentFromReservation(target);;
+    }
   };
   
   this.addNewPaymentModal = function(event, options){

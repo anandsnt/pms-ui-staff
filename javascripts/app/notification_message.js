@@ -50,7 +50,7 @@ var NotificationMessage = function() {
 	this.showMessage = function(message, dom, message_class){
 	
 		var message_element = dom.find("#notification-message");
-		message_element.removeClass('success_message error_message').addClass(message_class);
+		message_element.removeClass('success error success_message error_message').addClass(message_class);
 		message_element.html(message);			
 		scrollToErrorArea(dom);			
 		dom.find("#notification-message").slideDown(duration, function() {});
@@ -92,9 +92,16 @@ var NotificationMessage = function() {
 		
 	}; 
 	
+	
+	
 	// function for show success message
-	this.showSuccessMessage = function(message, dom, priority){
-		
+	//@param showMessage - used if we need to show the success message in some screens 
+	// even if we set the 'shouldShowSuccessMessage' param to false
+	this.showSuccessMessage = function(message, dom, priority, showMessage){
+		var htmlToAppend = message;
+		if(typeof showMessage !== 'undefined'){
+        	that.showMessage(htmlToAppend, dom, 'notice success');
+        }
 		// only show success message if 'shouldShowSuccessMessage' is set to true
 		if(!this.shouldShowSuccessMessage) {return;}
 		
@@ -112,7 +119,7 @@ var NotificationMessage = function() {
 		this.hideMessage(dom);
 		
 		
-		var htmlToAppend = message;
+		
 		// dont show close button if false
 		if(this.shouldShowCloseButtonForSuccess == true) {
 			htmlToAppend = "<span class='close-btn'></span>" + htmlToAppend;
