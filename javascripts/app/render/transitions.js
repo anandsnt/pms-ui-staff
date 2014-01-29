@@ -64,9 +64,7 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage, $transition, $
 }
 
 // Switch main page
-function switchPage($type, $menuActiveItem, $prevPage, $nextPage, $transition){
-    console.log($nextPage);
-    
+function switchPage($type, $menuActiveItem, $prevPage, $nextPage, $transition){    
     var $switchScreen = new chainedAnimation(),
         $delay = 300;
     
@@ -87,6 +85,11 @@ function switchPage($type, $menuActiveItem, $prevPage, $nextPage, $transition){
         $('.inner-page').addClass('set-back');
         $('#' + $nextPage).addClass('page-current ' + $transition);
         $('#' + $prevPage).addClass('set-back');
+
+        // lets also call the pageShow method of the view
+        // reinitialize any methods for the view
+        var view = $('#' + $nextPage).find('div:first').data('view');
+        sntapp.getViewInst(view).pageshow();
     }, $delay);
 
     // Reset transition class & clear old screen
@@ -181,7 +184,6 @@ function changeInnerPage($type, $menuActiveItem, $prevPage, $nextPage, $transiti
 
 // Load inner page view 
 function changeView($type, $menuActiveItem, $prevView, $nextView, $transition, $emptyPrev){
-    console.log('changeView');
 
     var $newView = new chainedAnimation(),
         $delay = 150;
@@ -426,8 +428,16 @@ $(function($){
                     error: function(){
                         $('#loading').remove();
                     }
-                }).done(function(){  
-                    var viewInstance = sntapp.getViewInstance($('#'+$next));
+                }).done(function(){
+                    var viewInstance = null;
+                    var instName = $('#'+$next).find('div:first').data('view');
+
+                    if ( sntapp.getViewInst(instName) ) {
+                        viewInstance = sntapp.getViewInst(instName);
+                    } else {
+                        viewInstance = sntapp.getViewInstance($('#'+$next));
+                        sntapp.setViewInst(instName, viewInstance);
+                    };
 
                     if(typeof viewInstance !== "undefined"){
                         viewInstance.initialize();

@@ -52,8 +52,6 @@ var setUpGuestcard = function(viewDom) {
 		create : function(event, ui) {
 			var $tab = ui.panel.attr('id');
 
-			console.log($tab);
-
 			// Set scroller
 			if (guestCardScroll) {
 				destroyGuestCardScroll();
