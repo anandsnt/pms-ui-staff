@@ -186,6 +186,7 @@ var RegistrationCardView = function(viewDom) {
 			// To show pop up to add email adress when EMAIL OPT is enabled and guest email is blank.
 			var validateOptEmailModal = new ValidateOptEmailModal();
 			validateOptEmailModal.initialize();
+			return;
 		}
 		else {
 			var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
@@ -344,7 +345,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 	// To show QR code modal
 	this.openQrCodeModal = function(e) {
-		var qrCodeModel = new QrCodeModel();
+		var qrCodeModel = new QrCodeModel(that.goToSearchScreen);
 		qrCodeModel.initialize();
 	};
 	// To show success message after check in
