@@ -61,8 +61,8 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		    						
 			currentStayCardView.find("#select-card-from-list").html(replaceHtml);
 			currentStayCardView.find("#add-new-payment").remove();
-			var appendHtml = '<a id="delete_card" data-payment-id="'+data.data.id+'" class="button with-icon brand-colors">'+
-							 '<span class="icons icon-wallet"></span>Delete</a>';		
+			var appendHtml = '<a id="delete_card" data-payment-id="'+data.data.id+'" class="button with-icon red">'+
+								'<span class="icons icon-trash invert"></span>Remove</a>';
 			currentStayCardView.find(".payment_actions").append(appendHtml);
 			if(requestParameters["add_to_guest_card"] == "true"){
 				var	$add = 
