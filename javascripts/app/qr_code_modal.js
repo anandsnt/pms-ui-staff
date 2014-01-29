@@ -17,7 +17,7 @@ var QrCodeModel = function(callBack) {
    		that.resetStyle();
    		// To go back to search screen when close button clicked from registraion card.
 	   	if(that.myDom.find('#modal-close').attr('data-reservation-status') == "CHECKING_IN"){
-	   		that.hide(callBack);
+	   		callBack();
 	   	}
    };
    
