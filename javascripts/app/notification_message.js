@@ -92,14 +92,14 @@ var NotificationMessage = function() {
 		
 	}; 
 	
+	
+	
 	// function for show success message
 	//@param showMessage - used if we need to show the success message in some screens 
 	// even if we set the 'shouldShowSuccessMessage' param to false
 	this.showSuccessMessage = function(message, dom, priority, showMessage){
 		var htmlToAppend = message;
-		if(typeof showMessage === 'undefined'){
-              return;
-        }  else {
+		if(typeof showMessage !== 'undefined'){
         	that.showMessage(htmlToAppend, dom, 'notice success');
         }
 		// only show success message if 'shouldShowSuccessMessage' is set to true
