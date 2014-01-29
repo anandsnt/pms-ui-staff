@@ -5,16 +5,17 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
   	this.url = "staff/payments/addNewPayment";
   	this.$paymentTypes = [];
   	this.fromPagePayment = fromPagePayment;
-
+    //Delegate events
   	this.delegateEvents = function(){
   		that.getPaymentsList();
   		that.myDom.find('#new-payment #payment-type').on('change', that.filterPayments);
 		that.myDom.find('#new-payment #save_new_credit_card').on('click', that.saveNewPayment);
+		//To show checkbox add on guest card
 		if(fromPagePayment != "guest"){
 			that.myDom.find("#add-in-guest-card").parent().parent().show();
 		}
 	};
-
+    
 	this.populateSwipedCard = function() {
 		var swipedCardData = this.swipedCardData;
 
@@ -40,7 +41,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 	this.modalInit = function(){
 		
    	};
-
+    //Success call back after succesful addition of payment in reservation
    	this.fetchCompletedOfReservationPayment = function(data, requestParameters){
    			that.save_inprogress = false;
 			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
@@ -52,6 +53,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 							
 			currentStayCardView.find(".staycard-creditcard").append($newPaymentOption);
 			$('.staycard-creditcard').val(data.data.id);
+			//to populate newly added credit card in reservation card
 			var replaceHtml = "<figure class='card-logo'>"+
 								"<img src='/assets/"+$newImage+"' alt=''></figure>"+									
 								"<span class='number'>Ending with<span class='value number'>"+requestParameters['number']+							
@@ -61,9 +63,11 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		    						
 			currentStayCardView.find("#select-card-from-list").html(replaceHtml);
 			currentStayCardView.find("#add-new-payment").remove();
+			//to remove add button and show delete icon on succesfull addition of new credit card
 			var appendHtml = '<a id="delete_card" data-payment-id="'+data.data.id+'" class="button with-icon red">'+
 								'<span class="icons icon-trash invert"></span>Remove</a>';
 			currentStayCardView.find(".payment_actions").append(appendHtml);
+			//if add to guest card is on, then update guest card payment tab with new one
 			if(requestParameters["add_to_guest_card"] == "true"){
 				var	$add = 
 			        '<a id="credit_row"  credit_id='+data.data.id +' class="active-item float item-payment new-item credit-card-option-row' + data.data.id + ' ">'+
@@ -79,13 +83,16 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			that.hide();   			
 
    	};
+   	//failure call back
    	this.fetchFailedOfReservationPayment = function(errorMessage){
    		that.save_inprogress = false;
    		sntapp.notification.showErrorList(errorMessage, that.myDom);
    		
    	};  
+   	//Success call back after succesful addition of payment in guest card
    	this.fetchCompletedOfPayment = function(data, requestParameters){
 			that.save_inprogress = false;
+			// update guest card payment tab with new one
 			var	$add = 
 		        '<a id="credit_row"  credit_id='+data.data.id +' class="active-item float item-payment new-item credit-card-option-row' + data.data.id + ' ">'+
 		        '<figure class="card-logo">'+requestParameters['image']+'</figure><span class="number">'+
@@ -103,12 +110,14 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
 			that.hide();
    	};
+   	//failure call back
    	this.fetchFailedOfPayment = function(errorMessage){
    		that.save_inprogress = false;
    		sntapp.activityIndicator.hideActivityIndicator();
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
    		
    	};    	
+   	//save new payment
    	this.saveNewPayment = function(){
    		if (that.save_inprogress == true) return false;
 		var $payment_type = $("#new-payment #payment-type").val();
@@ -214,6 +223,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			refreshGuestCardScroll();
 		}, 300);
   };
+  // to get the payments list json to filter on change of payment type
    this.getPaymentsList = function(){
 		var webservice = new WebServiceInterface();
 	
@@ -223,6 +233,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		};
 	    webservice.getJSON(url, options);	   
    };
+   //success call back
    this.fetchCompletedOfGetPayment = function(data){
 	   that.$paymentTypes = data.data;
 
@@ -230,7 +241,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			that.populateSwipedCard();
 	   };
    };
-   
+    // Re render type of cards with the selected payment type
 	 this.filterPayments = function(e){
 		var $selectedPaymentType = $("#new-payment #payment-type").val();
 		var $paymentTypeValues = '';
