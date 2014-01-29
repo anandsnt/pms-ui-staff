@@ -345,7 +345,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 	// To show QR code modal
 	this.openQrCodeModal = function(e) {
-		var qrCodeModel = new QrCodeModel(that.goToSearchScreen);
+		var qrCodeModel = new QrCodeModel(that.showCheckinSuccessModal);
 		qrCodeModel.initialize();
 	};
 	// To show success message after check in

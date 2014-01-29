@@ -8,7 +8,7 @@ var SelectKeyModel = function(callBackForSuccess,callBackForQrCode) {
 	// show QR code Modal while click Show QR code.
 	// Show complete checkin message when click Key cut.
 	this.delegateEvents = function(){
-		that.myDom.find('#key-cut').on('click', callBackForSuccess);
-		that.myDom.find('#show-qr').on('click', callBackForQrCode);
+		that.myDom.find('#key-cut').on('click', that.hide(callBackForSuccess));
+		that.myDom.find('#show-qr').on('click', that.hide(callBackForQrCode));
 	}
 };
