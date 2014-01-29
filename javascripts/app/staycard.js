@@ -4,6 +4,7 @@ var StayCard = function(viewDom){
   this.myDom = viewDom;
   
   this.pageinit = function(){
+
     setUpStaycard(that.myDom);
     var currentConfirmNumber = $("#confirm_no").val();    
     var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
@@ -28,11 +29,6 @@ var StayCard = function(viewDom){
     //     }
     //   }
     // };
-    
-    // A dirty hack to allow "this" instance to be refered from sntapp
-    sntapp.setViewInst('stayCardView', function() {
-      return that;
-    });
   }
 
   // Start listening to card swipes
@@ -132,21 +128,22 @@ var StayCard = function(viewDom){
 
       // dirty trick to find the current page and react
       switch(sntapp.cardSwipeCurrView){
+        // respond to StayCardView
         case 'StayCardView':
-          console.log('respond to StayCardView');
           stayCardViewResponse();
           break;
 
+        //respond to GuestBillView
         case 'GuestBillView':
-          console.log('respond to GuestBillView');
           guestBillViewResponse();
           break;
 
+        //respond to GuestCardView
         case 'GuestCardView':
-          console.log('respond to GuestCardView');
           guestCardView();
           break;
 
+        // do nothing
         default:
           break;
       }

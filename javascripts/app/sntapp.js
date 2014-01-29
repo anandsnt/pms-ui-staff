@@ -180,7 +180,11 @@ var app = function(){
         if ( this.viewDict[name] ) {
             that.updateViewInst(name, callback);
         } else {
-            this.viewDict[name] = callback();
+            if ('function' === typeof callback) {
+                this.viewDict[name] = callback();
+            } else {
+                this.viewDict[name] = callback;
+            };
             return this.viewDict[name];
         }
     };
@@ -194,7 +198,11 @@ var app = function(){
     */
     this.updateViewInst = function(name, callback) {
         delete this.viewDict[name];
-        this.viewDict[name] = callback();
+        if ('function' === typeof callback) {
+            this.viewDict[name] = callback();
+        } else {
+            this.viewDict[name] = callback;
+        };
         return this.viewDict[name];
     };
 

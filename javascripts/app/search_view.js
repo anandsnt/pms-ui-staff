@@ -7,7 +7,6 @@ var Search  = function(domRef){
   this.fetchTerm = "";
     
   this.pageinit = function(){
-
     var type = that.myDomElement.find($('#search_list')).attr("data-search-type");
     /*preload the search results, 
     if navigated to search screen by clicking checking-in/checking-out/in-house options
@@ -28,6 +27,10 @@ var Search  = function(domRef){
 
     // // DEBUG
     // window.trigger = that.postCardSwipData;
+  };
+
+  this.pageshow = function() {
+    this.initCardSwipe();
   };
 
   // Start listening to card swipes
