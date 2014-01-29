@@ -83,7 +83,7 @@ var ConnectivityView = function(domRef){
   	if(params['type'] == "save"){
   		sntapp.notification.showSuccessMessage("Saved successfully", that.myDom);
   	} else {
-  		sntapp.notification.showSuccessMessage("Connection Valid", that.myDom);
+  		sntapp.notification.showSuccessMessage("Connection Valid", that.myDom, '', true);
   	}
   		
   };

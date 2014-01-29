@@ -13,7 +13,26 @@ var Search  = function(domRef){
     if navigated to search screen by clicking checking-in/checking-out/in-house options
     */
 
-    if(sntapp.browser == 'rv_native'){
+    // Start listening to card swipes
+    this.initCardSwipe();
+
+    if(type != "") {
+        var search_url = "search.json?status=" + type;
+        this.fetchSearchData(search_url, "",type);
+    }
+    
+    // A dirty hack to allow "this" instance to be refered from sntapp
+    sntapp.setViewInst('search', function() {
+      return that;
+    });
+
+    // // DEBUG
+    // window.trigger = that.postCardSwipData;
+  };
+
+  // Start listening to card swipes
+  this.initCardSwipe = function() {
+    if(sntapp.cordovaLoaded){
       var options = {
           successCallBack: function(data){ 
             if(that.myDomElement.is(':visible')){
@@ -41,11 +60,6 @@ var Search  = function(domRef){
       };
       sntapp.cardReader.startReader(options);     
     }
-    if(type != "") {
-        var search_url = "search.json?status=" + type;
-        this.fetchSearchData(search_url, "",type);
-    }
-    
   };
 
   this.delegateEvents = function(){  
@@ -144,11 +158,11 @@ var Search  = function(domRef){
     var options = {
       loader: 'BLOCKER',
       requestParameters: data,
-      successCallBack: function() {
+      successCallBack: function(response) {
         if (data.confirmation === 'nill' && data.id === 'nill') {
           sntapp.notification.showErrorMessage('Sorry the reservation was not found.');
         } else {
-          that.postCardSwipDataSuccess();
+          that.postCardSwipDataSuccess(response);
         }
       },
       failureCallBack: function (errorMessage){

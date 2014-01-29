@@ -13,12 +13,11 @@ var app = function(){
     this.currentPage = ''; 
 
     this.init = function(){
-        //that.loadFullCalendarPlugin();      
+        that.loadFullCalendarPlugin();      
     };
 
     this.loadFullCalendarPlugin = function(){
         var url = "";
-
         if(that.ismob){
             url = "/assets/app/plugins/fullcalendar-ipad.js";
         }
