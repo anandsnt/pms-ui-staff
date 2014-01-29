@@ -10,13 +10,20 @@ var QrCodeModel = function(callBack) {
 		$("#modal").addClass("ui-draggable");
 		$("#modal").attr("data-position","bottom-right");
 		that.myDom.find('#modal-close').on('click', that.closeButtonClicked);
+		$('#modal-overlay').on('click', that.resetStyle);
    };
    
    this.closeButtonClicked = function(e){
+   		that.resetStyle();
    		// To go back to search screen when close button clicked from registraion card.
 	   	if(that.myDom.find('#modal-close').attr('data-reservation-status') == "CHECKING_IN"){
-	   		callBack();
+	   		that.hide(callBack);
 	   	}
-   	
+   };
+   
+   this.resetStyle = function(e){
+   		// Re-Setting style and attributes to the modal.
+		$("#modal").removeClass("ui-draggable");
+		$("#modal").removeAttr("data-position");
    };
 };
