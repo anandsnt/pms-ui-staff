@@ -12,7 +12,7 @@ var HotelListView = function(domRef){
   /**
   * Method used to perform initial operations on elemnents    
   */
-  this.pageShow = function(){
+  this.pageinit = function(){
     that.myDom.find($('#hotels_list_table')).tablesorter();
   };
 
