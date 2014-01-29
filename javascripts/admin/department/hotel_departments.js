@@ -62,7 +62,6 @@ var HotelDepartmentsView = function(domRef){
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfDelete,
 			   loader:"BLOCKER",
-			   shouldShowSuccessMessage: "true",
 			   successCallBackParameters: {"selectedId": selectedId}
 	};
 	webservice.deleteJSON(url, options);
