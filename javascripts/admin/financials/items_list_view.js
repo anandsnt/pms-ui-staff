@@ -56,9 +56,6 @@ var ItemsListView = function(domRef) {
 		event.preventDefault();
 		var postData = {};
 		var selectedId = $(event.target).attr("id");
-		if (selectedId == "delete") {
-			selectedId = that.myDom.find("#edit-items").attr("item_id");
-		}
 		var url = "/admin/items/" + selectedId + "/delete_item";
 		postData.id = selectedId;
 		var webservice = new WebServiceInterface();

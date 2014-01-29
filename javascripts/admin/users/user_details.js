@@ -3,10 +3,17 @@ var UserDetailsView = function(domRef){
   this.myDom = domRef;
   this.fileContent ="";
   var that = this;
-  
-  this.pageinit = function(){
-   
+
+  this.pageshow = function(){
+    // removing auto filled data if it is add new user screen
+    if(that.myDom.find("#save_new_user").length){
+      that.myDom.find("#email").val();
+      that.myDom.find("#confirm-email").val();
+      that.myDom.find("#password").val();
+      that.myDom.find("#confirm-password").val();  
+    }     
   };
+
   this.delegateEvents = function(){  	
   	that.myDom.find($('#save_new_user')).on('click', that.saveNewUser);
   	that.myDom.find($('#go_back, #cancel')).on('click', that.gotoPreviousPage);
@@ -15,10 +22,12 @@ var UserDetailsView = function(domRef){
   		that.readURL(this);
   	});
   };  
+
   //go to previous page withount any update in view
   this.gotoPreviousPage = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
+
    //go to previous page with update in view - after adding new user or update user
    this.gotoPreviousPageWithUpdate = function() {
    	var url = "/admin/users";
@@ -26,6 +35,7 @@ var UserDetailsView = function(domRef){
   	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams, false);
     sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
+  
   //update user
   this.updateUser = function(){
   	var postData = {};
