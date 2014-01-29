@@ -62,7 +62,8 @@ var ItemsDetailsView = function(domRef) {
 	};
 
 	this.fetchfailedOfSave = function(errorMessage) {
-		sntapp.notification.showErrorList(errorMessage, that.myDom);
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
 	};
 
 }; 
