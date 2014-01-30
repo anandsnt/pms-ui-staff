@@ -71,7 +71,7 @@ function FastClick(layer) {
 
 
     /**
-     * Touchmove boundary, beyond which a click will be cancelled.
+     * Touchmove boundary, beyond which a click will be canceled.
      *
      * @type number
      */
@@ -122,7 +122,7 @@ function FastClick(layer) {
 
     // Hack is required for browsers that don't support Event#stopImmediatePropagation (e.g. Android 2)
     // which is how FastClick normally stops click events bubbling to callbacks registered on the FastClick
-    // layer when they are cancelled.
+    // layer when they are canceled.
     if (!Event.prototype.stopImmediatePropagation) {
         layer.removeEventListener = function(type, callback, capture) {
             var rmv = Node.prototype.removeEventListener;
@@ -620,7 +620,7 @@ FastClick.prototype.onMouse = function(event) {
 
 /**
  * On actual clicks, determine whether this is a touch-generated click, a click action occurring
- * naturally after a delay after a touch (which needs to be cancelled to avoid duplication), or
+ * naturally after a delay after a touch (which needs to be canceled to avoid duplication), or
  * an actual click which should be permitted.
  *
  * @param {Event} event
