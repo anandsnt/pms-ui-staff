@@ -119,21 +119,20 @@
 
 				li {
 					display: inline-block;
-					.square(25%);
-					margin-right: 6.25%;
-					max-width: 215px;
-					max-height: 175px;
+					margin-right: 20px;
+					.size(175px, 215px);
 
 					.button {
 						padding: 20px;
-						line-height: 1em;
+						line-height: 1.325em;
 						.square(100%);
 						.show;
 
 						strong {
 							font-size: 110px;
-							line-height: 110px;
+							line-height: 1.1em;
 							font-weight: 700;
+							overflow: hidden;
 							.show;
 						}
 					}
@@ -143,14 +142,15 @@
 			}
 
 			#stats-today {
+				.float;
+				
 				li {
-					width: 100%;
+					width: 50%;
 					color: @grey3;
 					text-align: center;
 					text-transform: uppercase;
 					padding-bottom: 40px;
 					margin: 0;
-					height: 112px;
 					.pull-left;
 
 					&:nth-child(1n+4) { padding-bottom: 0; }
@@ -168,7 +168,7 @@
 						&.orange { color: @orange; }
 					}
 				}
-				
+
 				&.upsell_on {
 					li {
 						width: 33.33%;

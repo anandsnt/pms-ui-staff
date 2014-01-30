@@ -493,6 +493,13 @@ var PostChargeModel = function(callBack) {
 					  that.element_active_item.remove();
 					  that.updateTotalPrice();
 					  that.number = "";
+					  
+					  var item_summary_item_length = that.myDom.find("#items-summary ul li").length;
+					  
+					  if(item_summary_item_length == "0"){
+					  		that.myDom.find("#no-items-added").removeClass('hidden');
+					  		that.myDom.find("#items-added").addClass('hidden');
+					  }
 				  break;
 				case "+/-":
 					if(that.isMinus){
