@@ -47,12 +47,16 @@ var LikesView = function(domRef){
 			$preference["type"] = "ROOM TYPE";
 			$preference["value"] = $('#roomtype').val();
 			jsonObj['preference'].push($preference);
-			for ( i = 0; i < $totalPreferences; i++) {
+			
+			for ( i = 0; i <  $totalPreferences; i++) {
 				$preference = {};
-				$preference["type"] = $("#pref_" + i).attr('prefname');
+				$preference["type"] = $('input[name="pref_' + i + '"]:checked').attr('prefname');//$("#pref_" + i).attr('prefname');
 				$preference["value"] = $('input[name="pref_' + i + '"]:checked').val();
+				console.log($preference);
 				jsonObj['preference'].push($preference);
+
 			}
+			
 	
 			for ( j = 0; j < $totalFeatures; j++) {
 				$feature = {};
