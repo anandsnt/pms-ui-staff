@@ -105,14 +105,15 @@ var HotelDetailsView = function(domRef){
   	    password = $.trim(that.myDom.find("#admin-pwd").val()),
   	    confirmPassword = $.trim(that.myDom.find("#admin-confirm-pwd").val()),
   	    zipcode = $.trim(that.myDom.find("#hotel-zipcode").val()),
-  	    numberOfRooms = $.trim(that.myDom.find("#hotel-rooms").val());
+  	    numberOfRooms = $.trim(that.myDom.find("#hotel-rooms").val()),
+  	    roverRegistration = $("#registration-for-rover input[type='radio']:checked").val(),
   	    hotelTimeZone = $.trim(that.myDom.find("#hotel-time-zone").val());
   	  
   	    	 				
 			var data = that.getInputData(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand,hotelChain, hotelCode, 
 									  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin,hotelCheckinPrimeTime, 
 									  	hotelCheckoutHour, hotelCheckoutMinutes,hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
-									  	password, confirmPassword, hotelTimeZone);
+									  	password, confirmPassword, hotelTimeZone,roverRegistration);
 			var url = '/admin/hotels/'+currentHotel;
 			var webservice = new WebServiceInterface();		
 			var options = {
