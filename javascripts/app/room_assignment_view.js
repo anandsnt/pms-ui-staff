@@ -12,7 +12,9 @@ var RoomAssignmentView = function(viewDom){
     this.createViewScroll();  
     //Get the list of rooms from the server.
     this.fetchRoomList();
-     
+
+    //pushing RoomAssignmentView instance sntapp.viewDict
+    sntapp.setViewInst('RoomAssignmentView', that);
   };   
 
   this.delegateEvents = function(){
@@ -42,7 +44,6 @@ var RoomAssignmentView = function(viewDom){
   this.createViewScroll = function(){
    // if (viewScroll) { destroyViewScroll(); }
       setTimeout(function(){
-   console.log("here");
 
         if (that.myDom.find($('#room-attributes')).length) { createViewScroll('#room-attributes'); }
         if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
