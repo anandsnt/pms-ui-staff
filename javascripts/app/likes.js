@@ -52,7 +52,6 @@ var LikesView = function(domRef){
 				$preference = {};
 				$preference["type"] = $('input[name="pref_' + i + '"]:checked').attr('prefname');//$("#pref_" + i).attr('prefname');
 				$preference["value"] = $('input[name="pref_' + i + '"]:checked').val();
-				console.log($preference);
 				jsonObj['preference'].push($preference);
 
 			}
@@ -113,7 +112,6 @@ var LikesView = function(domRef){
 		message_element.removeClass('success_message error_message').addClass("notice error_message");
 		message_element.html("Some error occured:"+ errorMessage);			
 		that.myDom.find("#notification-message-guest").slideDown(700, function() {});
-		console.log(that.myDom);
 		$("#guest-like").addClass("error");
 	};
    this.handleLikeValueChanged = function(event){  	   

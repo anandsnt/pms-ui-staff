@@ -21,9 +21,7 @@ var Search  = function(domRef){
     }
     
     // A dirty hack to allow "this" instance to be refered from sntapp
-    sntapp.setViewInst('Search', function() {
-      return that;
-    });
+    sntapp.setViewInst('Search', that);
 
     // // DEBUG
     // window.trigger = that.postCardSwipData;
@@ -380,7 +378,7 @@ var Search  = function(domRef){
         viewStatus = "departed";
       }else if(status == "CHECKING_OUT"){
         viewStatus = "check-out";
-      }else if(status == "CANCELLED"){
+      }else if(status == "CANCELED"){
         viewStatus = "cancel";
       }else if((status == "NOSHOW")||(status == "NOSHOW_CURRENT")){
         viewStatus = "no-show";
