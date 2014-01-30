@@ -52,7 +52,6 @@ var LikesView = function(domRef){
 				$preference = {};
 				$preference["type"] = $('input[name="pref_' + i + '"]:checked').attr('prefname');//$("#pref_" + i).attr('prefname');
 				$preference["value"] = $('input[name="pref_' + i + '"]:checked').val();
-				console.log($preference);
 				jsonObj['preference'].push($preference);
 
 			}
@@ -88,7 +87,23 @@ var LikesView = function(domRef){
 		message_element.removeClass('success_message error_message');
 		message_element.html("");			
 		that.myDom.find("#notification-message-guest").slideDown(700, function() {});
-		console.log(that.myDom);
+
+		if($("#roomassignment_main").length){
+			//sntapp.activityIndicator.showActivityIndicator("blocker");
+			var viewURL = "staff/preferences/room_assignment";
+			var viewDom = $("#view-nested-second");
+			var reservation_id = getReservationId();
+			var params = {
+				"reservation_id" : reservation_id
+			};
+
+			var viewInstance = sntapp.getViewInst('RoomAssignmentView');
+			var nextViewParams = {
+				"showanimation" : false,
+				"next_view" : viewInstance.viewParams['next_view']
+			};	
+			sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NONE', nextViewParams);	
+		}		
 		$("#guest-like").removeClass("error");
    };
    this.fetchFailedOfSaveLikes = function(errorMessage){
@@ -97,7 +112,6 @@ var LikesView = function(domRef){
 		message_element.removeClass('success_message error_message').addClass("notice error_message");
 		message_element.html("Some error occured:"+ errorMessage);			
 		that.myDom.find("#notification-message-guest").slideDown(700, function() {});
-		console.log(that.myDom);
 		$("#guest-like").addClass("error");
 	};
    this.handleLikeValueChanged = function(event){  	   
