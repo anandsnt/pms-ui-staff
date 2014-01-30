@@ -21,7 +21,7 @@ var Search  = function(domRef){
     }
     
     // A dirty hack to allow "this" instance to be refered from sntapp
-    sntapp.setViewInst('search', function() {
+    sntapp.setViewInst('Search', function() {
       return that;
     });
 
@@ -37,29 +37,36 @@ var Search  = function(domRef){
   this.initCardSwipe = function() {
     if(sntapp.cordovaLoaded){
       var options = {
-          successCallBack: function(data){ 
-            if(that.myDomElement.is(':visible')){
-              var url = '/staff/payments/search_by_cc';
-              var data = {
-                'et2': data.RVCardReadTrack2,
-                'ksn': data.RVCardReadTrack2KSN
-              }
-              that.postCardSwipData(url, data);
+          successCallBack: function(data){
+
+            // if this is not search do nothing
+            // TODO: support new pages when they are added
+            var activeMenu = $('#main-menu').find('a.active').data('page');
+            if ('search' != activeMenu) {
+              return;
+            };
+
+            var url = '/staff/payments/search_by_cc';
+            var data = {
+              'et2': data.RVCardReadTrack2,
+              'ksn': data.RVCardReadTrack2KSN
             }
-            else{
-              sntapp.notification.showErrorMessage('not visible from success');
-            }
+            that.postCardSwipData(url, data);
           },
           failureCallBack: function(errorObject){
-            if(that.myDomElement.is(':visible')){
-              var errorCode = errorObject.RVErrorCode;
-              var errorDesc = errorObject.RVErrorDesc;
-              // sntapp.notification.showErrorMessage('Could not read the card properly. Please try again.');
-              alert('Could not read the card properly. Please try again.');
-            }
-            else{
-              sntapp.notification.showErrorMessage('not visible from failure');
-            }
+
+            // if this is not search do nothing
+            // TODO: support new pages when they are added
+            var activeMenu = $('#main-menu').find('a.active').data('page');
+            if ('search' != activeMenu) {
+              return;
+            };
+
+            // Depricated: Notifications are now shown in inner views
+            // sntapp.notification.showErrorMessage('Could not read the card properly. Please try again.');
+
+            // Temporary fix
+            alert('Could not read the card properly. Please try again.');
           }
       };
       sntapp.cardReader.startReader(options);     
@@ -165,14 +172,22 @@ var Search  = function(domRef){
       successCallBack: function(response) {
 
         if (data.confirmation === 'nill' && data.id === 'nill') {
+
+          // Depricated: Notifications are now shown in inner views
           // sntapp.notification.showErrorMessage('Sorry the reservation was not found.');
+
+          // Temporary fix
           alert('Sorry the reservation was not found.');
         } else {
           that.postCardSwipDataSuccess(response);
         }
       },
       failureCallBack: function (errorMessage){
+
+        // Depricated: Notifications are now shown in inner views
         //sntapp.notification.showErrorMessage('Sorry we could not get a response from server. Please try again.');
+
+        // Temporary fix
         alert('Sorry we could not get a response from server. Please try again.');
       }
     }
