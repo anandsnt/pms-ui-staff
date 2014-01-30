@@ -56,7 +56,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			//to populate newly added credit card in reservation card
 			var replaceHtml = "<figure class='card-logo'>"+
 								"<img src='/assets/"+$newImage+"' alt=''></figure>"+									
-								"<span class='number'>Ending with<span class='value number'>"+requestParameters['number']+							
+								"<span class='number'>Ending with<span id='token-last-value' class='value number'>"+requestParameters['number']+							
 								"</span></span><span class='date'> Date <span class='value date'>"+
 								$("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val()+
 								"</span>";

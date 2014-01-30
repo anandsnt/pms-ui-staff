@@ -10,5 +10,7 @@ var SelectKeyModel = function(callBackForSuccess,callBackForQrCode) {
 	this.delegateEvents = function(){
 		that.myDom.find('#key-cut').on('click', callBackForSuccess);
 		that.myDom.find('#show-qr').on('click', callBackForQrCode);
+		that.myDom.find('#cancel').on('click', callBackForSuccess);
+		$('#modal-overlay').on('click', callBackForSuccess);
 	}
 };
