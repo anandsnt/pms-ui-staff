@@ -21,9 +21,7 @@ var Search  = function(domRef){
     }
     
     // A dirty hack to allow "this" instance to be refered from sntapp
-    sntapp.setViewInst('Search', function() {
-      return that;
-    });
+    sntapp.setViewInst('Search', that);
 
     // // DEBUG
     // window.trigger = that.postCardSwipData;
