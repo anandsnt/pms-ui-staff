@@ -36,6 +36,15 @@ var StayCard = function(viewDom){
     if(sntapp.cordovaLoaded){
       var options = {
           successCallBack: function(data){
+
+            // if this is not staycard do nothing
+            // TODO: can't match page to '' as there could be pages with no data-page
+            // TODO: support new pages when they are added
+            var activeMenu = $('#main-menu').find('a.active').data('page');
+            if ('dashboard' === activeMenu || 'search' === activeMenu) {
+              return;
+            };
+
             var swipedCardData = {
               cardType: data.RVCardReadCardType || '',
               expiry: data.RVCardReadExpDate || '',
@@ -48,6 +57,15 @@ var StayCard = function(viewDom){
             that.postCardSwipData(swipedCardData);
           },
           failureCallBack: function(errorObject){
+
+            // if this is not staycard do nothing
+            // TODO: can't match page to '' as there could be pages with no data-page
+            // TODO: support new pages when they are added
+            var activeMenu = $('#main-menu').find('a.active').data('page');
+            if ('dashboard' === activeMenu || 'search' === activeMenu) {
+              return;
+            };
+            
             sntapp.notification.showErrorMessage('Could not read the card properly. Please try again.');
           }
       };
@@ -75,14 +93,26 @@ var StayCard = function(viewDom){
 
     // respond to StayCardView
     var stayCardViewResponse = function() {
+
+      // if there is another card added already and
+      // its not the same card as we swiped
+      // remove thata card
+      // else do nothing
+      if ( $('#delete_card').length && $('#token-last-value').text() != swipedCardData.token.slice(-4) ) {
+        sntapp
+          .getViewInst('ReservationPaymentView')
+          .deletePaymentFromReservation( $('#delete_card') );
+      } else {
+        return;
+      }
+
       // if addNewPaymentModal instance doen't exist, create it
+      // else if addNewPaymentModal instance exist, but the dom is removed
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
         sntapp.setViewInst('addNewPaymentModal', function() {
           return new AddNewPaymentModal('staycard', that.myDom);
         });
       } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
-
-        // if addNewPaymentModal instance exist, but the dom is removed
         sntapp.updateViewInst('addNewPaymentModal', function() {
           return new AddNewPaymentModal('staycard', that.myDom);
         });
@@ -110,13 +140,12 @@ var StayCard = function(viewDom){
     // respond to GuestCardView
     var guestCardView = function() {
       // if addNewPaymentModal instance doen't exist, create it
+      // else if addNewPaymentModal instance exist, but the dom is removed
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
         sntapp.setViewInst('addNewPaymentModal', function() {
           return new AddNewPaymentModal('guest', that.myDom);
         });
       } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
-
-        // if addNewPaymentModal instance exist, but the dom is removed
         sntapp.updateViewInst('addNewPaymentModal', function() {
           return new AddNewPaymentModal('guest', that.myDom);
         });
