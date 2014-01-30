@@ -7,26 +7,21 @@ var AddKeysModal = function(callBack) {
 	this.delegateEvents = function() {
 
 		that.myDom.find('.radio').on('click', function() {
-			that.myDom.find($("#key_print_new,#key_print_additional")).removeClass("is-disabled");
-			that.myDom.find($("#key_print_new,#key_print_additional")).attr("disabled", false);
+			that.myDom.find("#key_print_new,#key_print_additional").removeClass("is-disabled");
+			that.myDom.find("#key_print_new,#key_print_additional").attr("disabled", false);
 		});
-		that.myDom.find($('#cancel')).on('click', that.hide);
-		that.myDom.find($('#key_print_new')).on('click', that.printNewKey);
-		$('#key_print_additional').on('click', that.printAdditionalKey);
+		that.myDom.find('#key_print_new').on('click', that.printNewKey);
+		that.myDom.find('#key_print_additional').on('click', that.printAdditionalKey);
 		var guestEmail = $("#change-name #gc-email").val();
 
 		if (guestEmail == "") {
-			$(".print_key_missing").show();
-		} else {
-			$(".print_key_missing").hide();
-			that.myDom.find($("#key-guest-email").val(guestEmail));
-			var keyEmailElement = $("#key-guest-email").length;
-
-			if (keyEmailElement > 0) {
-
-				that.myDom.find($("#print-keys")).removeClass("is-disabled");
-				$("input:radio").attr("disabled", false);
-			}
+			that.myDom.find(".print_key_missing").show();
+		}
+		else{
+			that.myDom.find(".print_key_missing").hide();
+			that.myDom.find("#key-guest-email").val(guestEmail);
+			that.myDom.find("#print-keys").removeClass("is-disabled");
+			that.myDom.find("input:radio").attr("disabled", false);
 		}
 		
 		// Hide key_print_additional button while coming from bill card.
@@ -47,7 +42,8 @@ var AddKeysModal = function(callBack) {
 			if (keyEmailElement > 0) {
 				key_guest_email = that.myDom.find(("#key-guest-email")).val();
 
-			} else {
+			}
+			else {
 				key_guest_email = $("#change-name #gc-email").val();
 			}
 			selected_key = $('input:radio[name="keys"]:checked').val();
@@ -59,7 +55,9 @@ var AddKeysModal = function(callBack) {
 			};
 
 			that.saveKey(data);
-		} else {
+		}
+		else {
+			that.myDom.find(".print_key_missing").show();
 			return false;
 		}
 
@@ -71,7 +69,8 @@ var AddKeysModal = function(callBack) {
 		if (validateEmail(guest_email)) {
 			if (keyEmailElement > 0) {
 				key_guest_email = that.myDom.find($("#key-guest-email")).val();
-			} else {
+			}
+			else {
 				key_guest_email = $("#change-name #gc-email").val();
 			}
 			selected_key = $('input:radio[name="keys"]:checked').val();
@@ -81,9 +80,10 @@ var AddKeysModal = function(callBack) {
 				"key" : selected_key,
 				"is_additional" : "true"
 			};
-			//data = JSON.stringify(data);
 			that.saveKey(data);
-		}else {
+		}
+		else {
+			that.myDom.find(".print_key_missing").show();
 			return false;
 		}
 	};
