@@ -9,7 +9,12 @@ var ReservationPaymentView = function(domRef){
   	
   this.pageinit = function(){
     
+    // A dirty hack to allow "this" instance to be refered from sntapp
+    sntapp.setViewInst('ReservationPaymentView', function() {
+      return that;
+    });
   };
+
   this.delegateEvents = function(){
   	that.myDom.find('#add-new-payment').on('click', that.addNewPaymentModal);
     // that.myDom.find('#staycard_creditcard').on('change', that.setPaymentToReservation);

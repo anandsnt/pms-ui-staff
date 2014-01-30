@@ -136,6 +136,12 @@ var app = function(){
     		webservice.getHTML(url, options);
     	}	
     };
+
+    // DEBUG: Autofill login details
+    this.autoFillLogin = function(email, pass) {
+        email && typeof email === 'string' && $('#email').val(email);
+        pass && typeof pass === 'string' && $('#password').val(pass)
+    };
     
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data){
