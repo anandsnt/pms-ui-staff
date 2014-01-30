@@ -22,6 +22,7 @@ var ChangeStayDatesView = function(viewDom){
       this.confirmedCheckoutDate = "";
       this.checkinDateInCalender = "";
       this.checkoutDateInCalender = "";
+      that.focusDateInCalendar = "";
       that.reservationId = that.viewParams.reservation_id;
       that.fetchCalenderEvents();
   };
@@ -51,6 +52,7 @@ var ChangeStayDatesView = function(viewDom){
       that.availableEvents = calenderEvents;
       that.checkinDateInCalender = that.confirmedCheckinDate = getDateObj(calenderEvents.data.arrival_date);
       that.checkoutDateInCalender = that.confirmedCheckoutDate = getDateObj(calenderEvents.data.dep_date);
+      that.focusDateInCalendar = that.confirmedCheckinDate;
       that.updateCalender(that.confirmedCheckinDate, that.confirmedCheckoutDate, that.confirmedCheckinDate);
   };
 
@@ -85,7 +87,7 @@ var ChangeStayDatesView = function(viewDom){
           },
           // Stay date has changed
           eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-              that.datesChanged(event, revertFunc);
+              that.datesChanged(event, revertFunc, view);
           }
 
       });
@@ -181,7 +183,7 @@ var ChangeStayDatesView = function(viewDom){
       return events;
   };
 
-  this.datesChanged = function(event, revertFunc){
+  this.datesChanged = function(event, revertFunc, view){
       var newDateSelected = event.start;
       var firstAvailableDate = getDateObj(that.myDom.find('.fc-event:first').attr('data-date'));
       var lastAvailableDate = getDateObj(that.myDom.find('.fc-event:last').attr('data-date'));
@@ -203,7 +205,6 @@ var ChangeStayDatesView = function(viewDom){
           }
           finalCheckin = newDateSelected;
           finalCheckout = that.checkoutDateInCalender;
-          focusDate = finalCheckin;
       } else if(event.id == "check-out") {
           if(newDateSelected < that.checkinDateInCalender){
               revertFunc();
@@ -216,23 +217,27 @@ var ChangeStayDatesView = function(viewDom){
 
           finalCheckin = that.checkinDateInCalender;
           finalCheckout = newDateSelected;
-          focusDate = finalCheckout
       }
 
+      that.focusDateInCalendar = new Date(view.start.getFullYear(), view.start.getMonth(), view.start.getDate());
       //Refresh the calender with the new dates
-      that.refreshCalenderView(finalCheckin, finalCheckout, focusDate);
+      that.refreshCalenderView(finalCheckin, finalCheckout);
 
       //Show the reservation updates for the selected date range
       that.showReservationUpdates(finalCheckin, finalCheckout);
   };
 
-  this.refreshCalenderView = function(checkinDate, checkoutDate, focusDate){
+  this.refreshCalenderView = function(checkinDate, checkoutDate){
       that.checkinDateInCalender = checkinDate;
       that.checkoutDateInCalender = checkoutDate; 
 
+
       //$('#reservation-calendar').fullCalendar( 'gotoDate', focusDate.getFullYear(), focusDate.getMonth());
-      that.myDom.find('#reservation-calendar').fullCalendar('removeEvents');
-      that.myDom.find('#reservation-calendar').fullCalendar('refetchEvents').fullCalendar('renderEvents');
+      /*that.myDom.find('#reservation-calendar').fullCalendar('removeEvents');
+      that.myDom.find('#reservation-calendar').fullCalendar('refetchEvents').fullCalendar('renderEvents');*/
+      $('#reservation-calendar').html("");
+      that.updateCalender(checkinDate, checkoutDate, that.focusDateInCalendar);
+
 
   };
 
@@ -264,7 +269,7 @@ var ChangeStayDatesView = function(viewDom){
       sntapp.notification.showErrorList(errorMsg);
 
       //Reset calender view
-      that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate, that.confirmedCheckinDate)
+      that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate)
       return false;
 
   };
@@ -355,7 +360,7 @@ var ChangeStayDatesView = function(viewDom){
       that.fadeinHeaderDates();
       that.myDom.find('#no-reservation-updates.hidden').removeClass('hidden');
       that.myDom.find('#reservation-updates').addClass('hidden');
-      that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate, that.confirmedCheckinDate)
+      that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate)
   };
 
   this.backButtonClicked = function(event){
