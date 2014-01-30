@@ -330,6 +330,7 @@ var RegistrationCardView = function(viewDom) {
 	
 	// Goto search screen with empty search results
 	this.goToSearchScreen = function() {
+		console.log("goToSearchScreen");
 		switchPage('main-page', 'search', '', 'page-main-second', 'move-from-left');
 		//Do not call 'initialize' method for this object. which results multiple event binding
 		var searchView = new Search();
@@ -350,6 +351,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 	// To show success message after check in
 	this.showCheckinSuccessModal = function(e) {
+		console.log("showCheckinSuccessModal");
 		var room_no = that.myDom.find('#registration-content').attr('data-room-number');
 		var message = $("#gc-firstname").val() + " " + $("#gc-lastname").val() + " IS CHECKED IN TO ROOM " + room_no;
 		that.showSuccessMessage(message, that.goToSearchScreen);
