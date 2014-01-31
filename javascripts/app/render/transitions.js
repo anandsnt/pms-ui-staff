@@ -404,7 +404,7 @@ $(function($){
             // dirty hack to find if user is switching back to 
             // search page and trigger its card swipe method
             var toBeCurrent = $(this).data('page');
-            if ('search' === toBeCurrent) {
+            if('search' === toBeCurrent){
                 sntapp.viewDict['Search'].initCardSwipe();
             };
 
