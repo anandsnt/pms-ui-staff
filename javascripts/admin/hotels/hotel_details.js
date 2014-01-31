@@ -67,6 +67,8 @@ var HotelDetailsView = function(domRef){
     	$('input[readonly="readonly"]').removeAttr("readonly");
     	//Since these values are calculated using gem file
     	$('#hotel-longitude, #hotel-latitude').attr("readonly", true);
+    	$(".registration-for-rover").remove();
+    	
     	
     }
   	else{
@@ -203,7 +205,7 @@ var HotelDetailsView = function(domRef){
   this.getInputData = function(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand,hotelChain, hotelCode, 
   	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime,
   	hotelCheckoutHour, hotelCheckoutMinutes,hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
-  	password, confirmPassword, hotelTimeZone){
+  	password, confirmPassword, hotelTimeZone,roverRegistration){
   	
   	if(that.currentView == "snt-admin-view"){
 	        	data = {
@@ -264,7 +266,8 @@ var HotelDetailsView = function(domRef){
 					default_currency: hotelCurrency,
 					hotel_brand:hotelBrand,
   	    			hotel_chain:hotelChain,
-					hotel_time_zone: hotelTimeZone
+					hotel_time_zone: hotelTimeZone,
+					required_signature_at:roverRegistration
 					} ;
 	        } 
 	        return data;
