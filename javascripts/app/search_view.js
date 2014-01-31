@@ -128,24 +128,24 @@ var Search  = function(domRef){
         }
         else{
           // To show no matches message while search guest with 0 results.
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"hidden open-modal-fix\">Or add a New Guest</span>.</li>');
               //TODO: verify implemention, rename function
               that.updateView();
         }
 
         // showing card swipe errors
         if (requestParams['swipe_error'] === 'INVALID_CARD') {
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-card"></span><strong class="h1">Invalid Credit Card</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"open-modal-fix\">add a New Guest</span>.</li>');
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-card"></span><strong class="h1">Invalid Credit Card</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"hidden open-modal-fix\">add a New Guest</span>.</li>');
           that.updateView();
         } else if(requestParams['swipe_error'] === 'NO_CONFIRM') {
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No Guest or Reservation Found</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"open-modal-fix\">add a New Guest</span>.</li>');
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No Guest or Reservation Found</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"hidden open-modal-fix\">add a New Guest</span>.</li>');
           that.updateView();
         };
       }   
   };
   
   this.fetchFailedOfFetchSearchData = function(){
-    $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"open-modal-fix\">Or add a New Guest</span>.</li>');
+    $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"hidden open-modal-fix\">Or add a New Guest</span>.</li>');
     //TODO: verify implemention, rename function
     that.updateView();    
   };
