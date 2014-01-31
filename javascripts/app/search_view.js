@@ -23,8 +23,8 @@ var Search  = function(domRef){
     // A dirty hack to allow "this" instance to be refered from sntapp
     sntapp.setViewInst('Search', that);
 
-    // DEBUG
-    window.trigger = that.postCardSwipData;
+    // // DEBUG
+    // window.trigger = that.postCardSwipData;
   };
 
   this.pageshow = function() {
@@ -48,7 +48,7 @@ var Search  = function(domRef){
             var data = {
               'et2': data.RVCardReadTrack2,
               'ksn': data.RVCardReadTrack2KSN
-            }
+            };
             that.postCardSwipData(url, data);
           },
           failureCallBack: function(errorObject){
@@ -136,6 +136,7 @@ var Search  = function(domRef){
         // showing card swipe errors
         if (requestParams['swipe_error'] === 'INVALID_CARD') {
           $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-card"></span><strong class="h1">Invalid Credit Card</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"hidden open-modal-fix\">add a New Guest</span>.</li>');
+
           that.updateView();
         } else if(requestParams['swipe_error'] === 'NO_CONFIRM') {
           $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No Guest or Reservation Found</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"hidden open-modal-fix\">add a New Guest</span>.</li>');
@@ -188,7 +189,7 @@ var Search  = function(domRef){
         // No reservation was not found
         that.fetchCompletedOfFetchSearchData( {'data': ''}, {'swipe_error': 'NO_CONFIRM'} );
       }
-    }
+    };
     webservice.postJSON(url, options);
   };
 
@@ -200,7 +201,7 @@ var Search  = function(domRef){
     var params = {
       'confirmation': response.data.confirmation,
       'id': response.data.id
-    }
+    };
     var loader = 'BLOCKER';
     var nextViewParams = {
       'showanimation': true,
@@ -384,7 +385,7 @@ var Search  = function(domRef){
         viewStatus = "no-show";
       }
       return viewStatus;
-    }
+    };
 
     //Map the room status to the view expected format
     this.getRoomStatusMapped = function(roomstatus, fostatus){
@@ -395,7 +396,7 @@ var Search  = function(domRef){
         mappedStatus = "not-ready";
       }
     return mappedStatus;
-    }
+    };
 
     this.updateView = function(){
       // Content update
