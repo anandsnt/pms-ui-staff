@@ -10,17 +10,75 @@ var reservationDetailsView = function(domRef) {
 		//this.is_show_qr_code = that.myDom.find("#reservation-card-room #add-keys").attr('data-qr-code');
 
 		that.myDom.find('#reservation_newspaper').on('change', that.setNewspaperPreferance);
-		that.myDom.find('#wakeup-time').on('click', that.setWakeUpCallModal);
-		that.myDom.find('#room-number').on('click', that.roomNumberClicked);
-		that.myDom.find('#reservation-card-room #add-keys').on('click', that.addKeysModal);
-		that.myDom.find('#upgrade-btn').on('click', that.roomUpgradesClicked);
-		that.myDom.find('.reservation-actions #reservation-checkout').on('click', that.clickedCheckoutButton);
-		that.myDom.find('#reservation-view-bill').on('click', that.clickedViewBillButton);
-		that.myDom.find('#post-charge').on('click', that.clickedPostChargeButton);
-		that.myDom.find('#stay-card-total-stay-cost').on('click', that.clickedTotalStayCost);
-		that.myDom.find('#reservation-checkin').on('click', that.validateEmailAndPhone);
-		that.myDom.find('#nights-btn').on('click', that.gotToChangeDatesScreen);
+		//unbind the previous object's event binding (currently object is not destorying/event is not unbinding).
+		that.myDom.unbind('click');
+		that.myDom.on('click', that.domClickHandler);
 	};
+	// function for closing the drawer if is open
+	that.closeGuestCardDrawer = function(){
+		if($("#guest-card").hasClass('open')) {
+			$('#guest-card .ui-resizable-handle').trigger('click');
+		}
+	};
+
+	this.domClickHandler = function(event){
+		var target = $(event.target);
+		var target_id = target.attr("id");
+		// if the click is on reservation card details and if the guest card drawer is open
+		that.closeGuestCardDrawer();
+		
+		switch(target_id){
+			case 'wakeup-time': {				
+				return that.setWakeUpCallModal(event);
+				break;
+			}
+			case 'room-number': {
+				return that.roomNumberClicked(event);
+				break;
+			}
+			case 'add-keys': {
+				//TODO: check parent's id
+				return that.addKeysModal(event);
+				break;
+			}
+			case 'upgrade-btn': {
+				return that.roomUpgradesClicked(event);
+				break;
+			}
+			case 'reservation-checkout': {
+				//TODO: check parent's class
+				return that.clickedCheckoutButton();
+				break;
+			}
+			case 'reservation-view-bill': {
+				return that.clickedViewBillButton(event);
+				break;
+			}
+			case 'post-charge': {
+				return that.clickedPostChargeButton();
+				break;
+			}
+			case 'stay-card-total-stay-cost': {
+				return that.clickedTotalStayCost();
+				break;
+			}
+			case 'reservation-checkin': {
+				return that.validateEmailAndPhone(event);
+				break;
+			}	
+			case 'nights-btn': {
+				return that.gotToChangeDatesScreen(event);
+				break;
+			}
+			//
+			default: {
+
+				break;
+			}
+		}
+	};
+
+		
 	this.initSubViews = function(partialViewRef) {
 
 		var reservationPaymentView = new ReservationPaymentView(that.myDom);
