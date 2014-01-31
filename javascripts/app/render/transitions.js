@@ -405,7 +405,7 @@ $(function($){
             // search page and trigger its card swipe method
             var toBeCurrent = $(this).data('page');
             if ('search' === toBeCurrent) {
-                sntapp.viewDict['search'].initCardSwipe();
+                sntapp.viewDict['Search'].initCardSwipe();
             };
 
             var $next = $('#' + $activeMenuItem).closest('.main-page').attr('id');
