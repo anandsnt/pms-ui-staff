@@ -23,8 +23,8 @@ var Search  = function(domRef){
     // A dirty hack to allow "this" instance to be refered from sntapp
     sntapp.setViewInst('Search', that);
 
-    // DEBUG
-    window.trigger = that.postCardSwipData;
+    // // DEBUG
+    // window.trigger = that.postCardSwipData;
   };
 
   this.pageshow = function() {
@@ -135,7 +135,7 @@ var Search  = function(domRef){
 
         // showing card swipe errors
         if (requestParams['swipe_error'] === 'INVALID_CARD') {
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-card"></span><strong class="h1">Invalid Credit Card</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"open-modal-fix\">add a New Guest</span>.</li>');
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-card"></span><strong class="h1 error">Invalid Credit Card</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"open-modal-fix\">add a New Guest</span>.</li>');
           that.updateView();
         } else if(requestParams['swipe_error'] === 'NO_CONFIRM') {
           $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No Guest or Reservation Found</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"open-modal-fix\">add a New Guest</span>.</li>');
