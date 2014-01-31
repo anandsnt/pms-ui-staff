@@ -8,11 +8,9 @@ var ReservationPaymentView = function(domRef){
   this.parentView = '';
   	
   this.pageinit = function(){
-    
+
     // A dirty hack to allow "this" instance to be refered from sntapp
-    sntapp.setViewInst('ReservationPaymentView', function() {
-      return that;
-    });
+    sntapp.setViewInst('ReservationPaymentView', that);
   };
 
   this.delegateEvents = function(){
