@@ -501,30 +501,29 @@ $(function($){
 /*
     START :: Auto logout after XX minutes
 */
-
  
 $(function() {
-	var timer;
-	
-	function reset_timer() {
-	  window.clearInterval(timer);
-	  set_timeout();
-	}
-	 
-	function set_timeout() {
-	  timer = setInterval(logout, 1000 * 1 * 60); // 15 mins
-	}
-	 
-	function logout(){
-	  $.get('/timeout.json', function(force_logout){
-	    if (force_logout) {
-	    	window.location = "/logout";
-	    }
-	  });
-	}
-	
-	set_timeout();
-	$(document).bind('mousemove click keypress scroll', reset_timer);
+  var timer;
+  
+  function reset_timer() {
+    window.clearInterval(timer);
+    set_timeout();
+  }
+   
+  function set_timeout() {
+    timer = setInterval(logout, 1000 * 1 * 60); // 1 mins
+  }
+   
+  function logout(){
+    $.get('/timeout.json', function(force_logout){
+      if (force_logout) {
+        window.location = "/logout";
+      }
+    });
+  }
+  
+  set_timeout();
+  $(document).bind('mousemove click keypress scroll', reset_timer);
 });
 
 /*
