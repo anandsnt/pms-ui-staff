@@ -29,10 +29,11 @@ var RegistrationCardView = function(viewDom) {
 		});
 
 		var reservation_status = that.myDom.find("#registration-content").attr("data-reservation-status");
-
+		that.myDom.find("#signature-pad").removeClass("hidden");
 		if (this.viewParams.clickedButton == "ViewBillButton") {
 			// To Display Guest Bill screen in detailed mode via ViewBillButton click.
 			that.myDom.find("#bill1-fees").removeClass("hidden");
+			that.myDom.find("#signature-pad").addClass("hidden");
 		}
 		if (this.viewParams.clickedButton == "CheckoutButton" || reservation_status == "CHECKING_OUT") {
 			// To show 'COMPLETE CHECK OUT' button when Reservation is DUE OUT,regardless of how it has been accessed.
