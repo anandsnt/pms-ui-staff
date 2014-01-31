@@ -21,12 +21,10 @@ var Search  = function(domRef){
     }
     
     // A dirty hack to allow "this" instance to be refered from sntapp
-    sntapp.setViewInst('Search', function() {
-      return that;
-    });
+    sntapp.setViewInst('Search', that);
 
-    // // DEBUG
-    // window.trigger = that.postCardSwipData;
+    // DEBUG
+    window.trigger = that.postCardSwipData;
   };
 
   this.pageshow = function() {
@@ -62,11 +60,8 @@ var Search  = function(domRef){
               return;
             };
 
-            // Depricated: Notifications are now shown in inner views
-            // sntapp.notification.showErrorMessage('Could not read the card properly. Please try again.');
-
-            // Temporary fix
-            alert('Could not read the card properly. Please try again.');
+            // Could not read the card properly
+            that.fetchCompletedOfFetchSearchData( {'data': ''}, {'swipe_error': 'INVALID_CARD'} );
           }
       };
       sntapp.cardReader.startReader(options);     
@@ -137,6 +132,15 @@ var Search  = function(domRef){
               //TODO: verify implemention, rename function
               that.updateView();
         }
+
+        // showing card swipe errors
+        if (requestParams['swipe_error'] === 'INVALID_CARD') {
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-card"></span><strong class="h1">Invalid Credit Card</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"open-modal-fix\">add a New Guest</span>.</li>');
+          that.updateView();
+        } else if(requestParams['swipe_error'] === 'NO_CONFIRM') {
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No Guest or Reservation Found</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"open-modal-fix\">add a New Guest</span>.</li>');
+          that.updateView();
+        };
       }   
   };
   
@@ -173,22 +177,16 @@ var Search  = function(domRef){
 
         if (data.confirmation === 'nill' && data.id === 'nill') {
 
-          // Depricated: Notifications are now shown in inner views
-          // sntapp.notification.showErrorMessage('Sorry the reservation was not found.');
-
-          // Temporary fix
-          alert('Sorry the reservation was not found.');
+          // No reservation was not found
+          that.fetchCompletedOfFetchSearchData( {'data': ''}, {'swipe_error': 'NO_CONFIRM'} );
         } else {
           that.postCardSwipDataSuccess(response);
         }
       },
       failureCallBack: function (errorMessage){
 
-        // Depricated: Notifications are now shown in inner views
-        //sntapp.notification.showErrorMessage('Sorry we could not get a response from server. Please try again.');
-
-        // Temporary fix
-        alert('Sorry we could not get a response from server. Please try again.');
+        // No reservation was not found
+        that.fetchCompletedOfFetchSearchData( {'data': ''}, {'swipe_error': 'NO_CONFIRM'} );
       }
     }
     webservice.postJSON(url, options);
@@ -380,7 +378,7 @@ var Search  = function(domRef){
         viewStatus = "departed";
       }else if(status == "CHECKING_OUT"){
         viewStatus = "check-out";
-      }else if(status == "CANCELLED"){
+      }else if(status == "CANCELED"){
         viewStatus = "cancel";
       }else if((status == "NOSHOW")||(status == "NOSHOW_CURRENT")){
         viewStatus = "no-show";

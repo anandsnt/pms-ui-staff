@@ -12,18 +12,7 @@ var app = function(){
     this.cardSwipeCurrView = 'StayCard'; 
     this.currentPage = ''; 
 
-    this.init = function(){
-        that.loadFullCalendarPlugin();      
-    };
-
-    this.loadFullCalendarPlugin = function(){
-        var url = "";
-        if(that.ismob){
-            url = "/assets/app/plugins/fullcalendar-ipad.js";
-        }
-        $.getScript(url);
-    };
-    
+   
     this.getViewInstance = function(viewDom){
         var viewInstance;
         var viewName = viewDom.find('div:first').attr('data-view');
@@ -231,4 +220,3 @@ var app = function(){
 };
 
 sntapp = new app();
-sntapp.init();

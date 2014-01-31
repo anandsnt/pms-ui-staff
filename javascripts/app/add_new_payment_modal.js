@@ -46,13 +46,6 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
    			that.save_inprogress = false;
 			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
 			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
-			$newPaymentOption =  "<option value='"+data.data.id+"'data-number='"+requestParameters['number']+"'"+
-			  "data-name='"+$("#new-payment #name-on-card").val()+"' data-image='"+$newImage+"' data-date='"+$newDate+ "'"+
-			  "data-card='"+$("#new-payment #payment-credit-type").val()+ "' class='credit-card-option-row" + data.data.id + "'>"+
-			 $("#new-payment #payment-credit-type").val()+" "+requestParameters['number']+" "+$("#new-payment #expiry-month").val()+"/"+$("#new-payment #expiry-year").val()+ "</option> ";    
-							
-			currentStayCardView.find(".staycard-creditcard").append($newPaymentOption);
-			$('.staycard-creditcard').val(data.data.id);
 			//to populate newly added credit card in reservation card
 			var replaceHtml = "<figure class='card-logo'>"+
 								"<img src='/assets/"+$newImage+"' alt=''></figure>"+									
