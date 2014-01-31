@@ -292,11 +292,34 @@
 				.masked-input {
 					color: @white;
 					
+					&[size="0"] {
+						max-width: 40px;
+						background-color: rgba(0,0,0,.1);
+					}
+
 					&.active {
-						padding: 0 10px;
+						padding: 0 5px;
 						color: @logoPrimary;
 						background-color: rgba(0,0,0,.1);
 					}
+
+					@iterations: 50;
+					.span-loop (@i) when (@i > 0) {
+						@width: @i+1;
+						@activeWidth: @i+2;
+					    &[size="@{i}"] {
+					        max-width: ~"@{i}em";
+
+					        &.active { max-width: ~"@{width}em"; }
+
+					        &.icons { 
+					        	max-width: ~"@{width}em"; 
+					        	&.active { max-width: ~"@{activeWidth}em"; }
+					        }
+					    }
+					    .span-loop(@i - 1);
+					}
+					.span-loop (@iterations);
 				}
 
 				.holder {
@@ -316,8 +339,8 @@
 							font-weight: 700;
 							clear: none;
 							.pull-left;
-							
-							&:first-child { margin-right: 10px;}
+
+							&:first-child { margin-right: 0;}
 						}
 					}
 
@@ -356,13 +379,23 @@
 					}
 
 					&.data {
-						height: 40px;
+						height: 35px;
 						margin-top: 0;
 
-						.masked-input {
-							padding-left: 30px;
-							margin-right: 20px;
+						.divider {
+							line-height: 35px;
+							margin-right: 10px;
 							.pull-left;
+						}
+
+						.masked-input {
+							margin-right: 20px;
+							line-height: 35px;
+							min-height: 35px;
+							.pull-left;
+
+							&.icons { padding-left: 30px; }
+							&.icon-gc-location { margin-right: 0; }
 						}
 					}
 				}
@@ -1695,6 +1728,7 @@
 									}
 								}
 
+								&.add-new,
 								&.last {
 									margin-right: 10px;
 									padding-right: 10px;
@@ -1736,6 +1770,8 @@
 								&:last-child {
 									margin-right: 0;
 									padding-right: 0;
+
+									&:after { .hide; } 
 								}
 							}
 						}
