@@ -516,7 +516,7 @@ function set_timeout() {
 function logout(){
   $.get('/timeout.json', function(force_logout){
     if (force_logout) {
-      // window.location = "http://10.5.0.53:3000/logout";
+      window.location = "/logout";
     }
   });
 }
