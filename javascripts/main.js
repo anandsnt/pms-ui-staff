@@ -497,6 +497,11 @@ $(function($){
     });
 });
 
+
+/*
+    START :: Auto logout after XX minutes
+*/
+
  
 $(function() {
 	var timer;
@@ -521,4 +526,8 @@ $(function() {
 	set_timeout();
 	$(document).bind('mousemove click keypress scroll', reset_timer);
 });
+
+/*
+    END :: Auto logout after XX minutes
+*/
 
