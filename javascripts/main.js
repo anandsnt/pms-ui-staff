@@ -497,6 +497,10 @@ $(function($){
     });
 });
 
+/*
+    START :: Auto logout after XX minutes
+*/
+
 var timer;
  
 $(function() {
@@ -510,7 +514,7 @@ function reset_timer() {
 }
  
 function set_timeout() {
-  timer=setInterval("logout()",1000*1*60); // 15 mins
+  timer=setInterval("logout()",1000*1*60); // 1 mins
 }
  
 function logout(){
@@ -520,3 +524,7 @@ function logout(){
     }
   });
 }
+
+/*
+    END :: Auto logout after XX minutes
+*/
