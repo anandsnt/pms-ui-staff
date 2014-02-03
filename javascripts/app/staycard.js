@@ -29,7 +29,7 @@ var StayCard = function(viewDom){
     //     }
     //   }
     // };
-  }
+  };
 
   // Start listening to card swipes
   this.initCardSwipe = function() {
@@ -53,7 +53,7 @@ var StayCard = function(viewDom){
                 'et2': data.RVCardReadTrack2,
                 'ksn': data.RVCardReadTrack2KSN
               }
-            }
+            };
             that.postCardSwipData(swipedCardData);
           },
           failureCallBack: function(errorObject){
@@ -207,12 +207,39 @@ var StayCard = function(viewDom){
    		partialViewRef = $("#confirm_no").val();
    	};   	
   	
-    that.myDom.find('#reservation-timeline li').on('click', that.reservationTimelineClicked);
-    that.myDom.find('#reservation-listing li').on('click', that.reservationListItemClicked);
+    //that.myDom.find('#reservation-timeline li').on('click', that.reservationTimelineClicked);
+    //that.myDom.find('#reservation-listing li').on('click', that.reservationListItemClicked);
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);  
     that.myDom.find('#title').on('change', that.changeAvathar);
+    // that.myDom.unbind('click');
+	that.myDom.find("#reservation-card *").on('click', that.domClickHandler);
   };
   
+  this.domClickHandler = function(event){
+  	  	
+  		var target = $(event.target);
+		var target_id = target.attr("id");
+		if(!target.is("#guest-card-content *"))
+		{
+			that.closeGuestCardDrawer();
+			switch(target_id){
+				case 'reservation-timeline li': {				
+					return that.reservationTimelineClicked(event);
+					break;
+				}
+				case 'reservation-listing li': {
+					return that.reservationListItemClicked(event);
+					break;
+				}
+			}
+		}
+	};
+  // function for closing the drawer if is open
+	that.closeGuestCardDrawer = function(){
+		if($("#guest-card").hasClass('open')) {
+			$('#guest-card .ui-resizable-handle').trigger('click');
+		}
+	};
   this.changeAvathar = function(e){
 	  var imgSrc = that.myDom.find('#guest-image').attr('src');
     var imageName = imgSrc.split('/')[imgSrc.split('/').length-1];
