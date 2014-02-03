@@ -1,8 +1,10 @@
+
 var HotelDetailsView = function(domRef) {
 	BaseView.call(this);
 	this.myDom = domRef;
 	this.currentView = $("body").attr("id");
 	var that = this;
+  this.fileContent = "";
 
 	this.pageinit = function() {
 
@@ -151,7 +153,7 @@ var HotelDetailsView = function(domRef) {
 				admin_password : password,
 				admin_password_confirmation : confirmPassword,
 				hotel_time_zone : hotelTimeZone,
-				auto_logout_delay : hotelAutoLogoutTime,
+				auto_logout_delay: hotelAutoLogoutTime,
 				mli_certificate : that.fileContent
 			};
 		} else {
