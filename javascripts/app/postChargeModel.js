@@ -95,6 +95,8 @@ var PostChargeModel = function(callBack) {
     			$.each(items, function(i,value){
 		            	that.myDom.find('#search-item-results').append(value).highlight(that.currentQuery);
 		        });
+		        createViewScroll('#items-listing');
+				viewScroll.scrollTo(0, 0);
 	        }
 	        else{
 	    		var html = "<div id='no-items-added' class='no-content'><strong class='h1'>No items found</strong></div>";
@@ -102,7 +104,8 @@ var PostChargeModel = function(callBack) {
 	        }
     	}
     	catch(e){
-	    	that.myDom.find('#search-item-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
+    			var html = "<div id='no-items-added' class='no-content'><strong class='h1'>No items found</strong></div>";
+	            that.myDom.find('#search-item-results').html(html);
 	    }
     };
     
@@ -336,6 +339,7 @@ var PostChargeModel = function(callBack) {
 			}
 		}
 		that.myDom.find("#items-listing ul").html(html);
+		createViewScroll('#items-listing');
 	};
 
 	// Filter : To show complete list
@@ -351,6 +355,7 @@ var PostChargeModel = function(callBack) {
 			html += '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + that.currentList[i].unit_price + '" data-item="' + that.currentList[i].item_name + '" data-is-favourite="' + that.currentList[i].is_favorite + '" data-id="' + that.currentList[i].value + '" data-charge-group="' + that.currentList[i].charge_group_value + '" data-cc="' + that.currentList[i].currency_code + '" data-base="unit" class="button white">' + that.currentList[i].item_name + '<span class="price"> '+currency_code+' <span class="value">' + that.currentList[i].unit_price + '</span></span>'+$count_html+'</a></li>';
 		}
 		that.myDom.find("#items-listing ul").html(html);
+		createViewScroll('#items-listing');
 	};
 
 	// Filter : To show selected charge group items
@@ -368,6 +373,7 @@ var PostChargeModel = function(callBack) {
 			}
 		}
 		that.myDom.find("#items-listing ul").html(html);
+		createViewScroll('#items-listing');
 	};
 	
 	// Post charge.
