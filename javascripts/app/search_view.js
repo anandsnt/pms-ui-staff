@@ -387,7 +387,8 @@ var Search  = function(domRef){
         $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="' + escapeNull(image) + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = showRoomStatus ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
         $viewStatus = guestStatusIcon ? '<span class="guest-status ' + escapeNull(guestStatusIcon) + '"></span>':'<span class="guest-status"></span>',
-    
+        $lateCheckoutStatus = escapeNull(lateCheckoutTime) == "" ? "": '<span class="late-checkout-time">'+escapeNull(lateCheckoutTime)+'</span>'
+        $guestViewIcons = '<div class="status">' + $viewStatus + $lateCheckoutStatus + '</div>'
         $output =
         '<a href="staff/staycards/staycard?confirmation=' + confirmation+'&id='+ escapeNull(id)+ '" class="guest-check-in link-item float" data-transition="inner-page">' +
             $image +
@@ -395,7 +396,7 @@ var Search  = function(domRef){
                 '<h2>' + escapeNull(lastname) + ', ' + escapeNull(firstname) + '</h2>' +
                 '<span class="confirmation">' + escapeNull(confirmation) + '</span>' + $location + $group +
             '</div>'+
-            $viewStatus + '<span class="late-checkout-time">'+escapeNull(lateCheckoutTime)+'</span>'+
+            $guestViewIcons +
             roomStatus + $roomAdditional +
         '</a>';
       return $output;
