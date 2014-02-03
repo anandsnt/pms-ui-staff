@@ -67,6 +67,8 @@ var RegistrationCardView = function(viewDom) {
 		///that.myDom.find(('.bill-tabs')).tabs();
 		// ui tabs
 		this.bill_number = that.myDom.find("#bills li.active").attr('data-bill-number');
+		//that.myDom.unbind('click');
+		//that.myDom.on('click', that.myDomClickHandler);
 		that.myDom.find('#checkin-button').on('click', that.completeCheckin);
 		that.myDom.find('#clear-signature').on('click', that.clearSignature);
 		that.myDom.find('#back-to-staycard').on('click', that.gotoStayCard);
@@ -75,6 +77,14 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find('#add-new-button').on('click', that.addNewButtonClicked);
 		that.myDom.find('#subscribe').on('click', that.subscribeCheckboxClicked);
 	};
+
+	// function to hanlde the click operation in the dom	
+	this.myDomClickHandler = function (event) {
+		// based on event's target elements we are calling the event operations
+		
+	};
+
+
     this.subscribeCheckboxClicked = function(e){
     	var guest_email = $("#contact-info #email").val();
     	

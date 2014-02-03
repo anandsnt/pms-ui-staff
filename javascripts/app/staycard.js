@@ -212,12 +212,12 @@ var StayCard = function(viewDom){
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);  
     that.myDom.find('#title').on('change', that.changeAvathar);
     // that.myDom.unbind('click');
-	that.myDom.find("#reservation-card *").on('click', that.domClickHandler);
+	  that.myDom.find("#reservation-card *").on('click', that.domClickHandler);
   };
   
   this.domClickHandler = function(event){
   	  	
-  		var target = $(event.target);
+    var target = $(event.target);
 		var target_id = target.attr("id");
 		if(!target.is("#guest-card-content *"))
 		{
@@ -240,6 +240,7 @@ var StayCard = function(viewDom){
 			$('#guest-card .ui-resizable-handle').trigger('click');
 		}
 	};
+
   this.changeAvathar = function(e){
 	  var imgSrc = that.myDom.find('#guest-image').attr('src');
     var imageName = imgSrc.split('/')[imgSrc.split('/').length-1];
