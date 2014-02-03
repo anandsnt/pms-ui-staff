@@ -18,11 +18,29 @@ var UserDetailsView = function(domRef){
   	that.myDom.find($('#save_new_user')).on('click', that.saveNewUser);
   	that.myDom.find($('#go_back, #cancel')).on('click', that.gotoPreviousPage);
   	that.myDom.find('#save').on('click', that.updateUser);
+  	that.myDom.find("#re-invite").on('click', that.reInvite);
   	that.myDom.find('#user-picture').on('change', function(){
   		that.readURL(this);
   	});
   };  
-
+  //function to re invite
+  this.reInvite = function(){
+	var url = '';
+	if(typeof url === 'undefined' || url === '#'){
+		return false;
+	}
+	var webservice = new WebServiceInterface();		
+	var data = {};
+	data.email = that.myDom.find('#email').val();
+	data.user_id = that.myDom.find("#edit-user").attr('user');  	
+	var options = {
+			   requestParameters: data,
+			   successCallBack: that.fetchCompletedOfReInvite,
+			   failureCallBack: that.fetchFailedOfReInvite,
+			   loader: "BLOCKER"
+	};
+	webservice.postJSON(url, options);	 
+  };
   //go to previous page withount any update in view
   this.gotoPreviousPage = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
@@ -115,6 +133,16 @@ var UserDetailsView = function(domRef){
   this.fetchFailedOfSave = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
 	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom); 
+  };
+  
+    // success function of re-invite api call
+  this.fetchCompletedOfReInvite = function(data){
+	  sntapp.notification.showSuccessMessage("Mail send succesfully.", that.myDom);
+  };
+  
+  // failure call of re-invite api call
+  this.fetchFailedOfReInvite = function(errorMessage){
+	  sntapp.notification.showErrorList("Some error occured.", that.myDom);  
   };
   //to show preview of the image using file reader
   this.readURL = function(input) {
