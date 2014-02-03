@@ -98,11 +98,7 @@ var StayCard = function(viewDom){
       // its not the same card as we swiped
       // remove thata card
       // else do nothing
-      if ( $('#delete_card').length && $('#token-last-value').text() != swipedCardData.token.slice(-4) ) {
-        sntapp
-          .getViewInst('ReservationPaymentView')
-          .deletePaymentFromReservation( $('#delete_card') );
-      } else {
+      if ( !($('#delete_card').length && $('#token-last-value').text() === swipedCardData.token.slice(-4)) ) {
         return;
       }
 
