@@ -15,7 +15,11 @@ var Search  = function(domRef){
     // Start listening to card swipes
     this.initCardSwipe();
 
-    if(type != "") {
+    if(type == "LATE_CHECKOUT") {
+        var search_url = "search.json?is_late_checkout_only=true";
+        this.fetchSearchData(search_url, "",type);
+    }
+    else if(type != "") {
         var search_url = "search.json?status=" + type;
         this.fetchSearchData(search_url, "",type);
     }
@@ -28,7 +32,23 @@ var Search  = function(domRef){
   };
 
   this.pageshow = function() {
+    that.updateLateCheckoutCount();
     this.initCardSwipe();
+  };
+
+  this.updateLateCheckoutCount = function(){
+    var url = '/staff/dashboard/late_checkout_count';
+    var webservice = new WebServiceInterface();   
+    var options = {
+           successCallBack: that.lateCheckoutCountFetched,
+           loader: "NONE"
+    };
+    webservice.getJSON(url, options);
+  };
+
+  this.lateCheckoutCountFetched = function(response){
+    that.myDomElement.find('#late-checkout-alert').text(response.data.late_checkout_count);
+
   };
 
   // Start listening to card swipes
@@ -69,10 +89,18 @@ var Search  = function(domRef){
   };
 
   this.delegateEvents = function(){  
-    that.myDomElement.find($('#query')).on('focus', that.callCapitalize);
-    that.myDomElement.find($('#query')).on('keyup', that.queryEntered);
-    that.myDomElement.find($('#search-form')).on('submit', that.submitSearchForm);
-    that.myDomElement.find($('#clear-query')).on('click', that.clearResults);
+    that.myDomElement.find('#query').on('focus', that.callCapitalize);
+    that.myDomElement.find('#query').on('keyup', that.queryEntered);
+    that.myDomElement.find('#search-form').on('submit', that.submitSearchForm);
+    that.myDomElement.find('#clear-query').on('click', that.clearResults);
+    that.myDomElement.find('#late-checkout-alert').on('click', that.latecheckoutSelected);
+  };
+
+  this.latecheckoutSelected = function(e){
+    e.preventDefault();
+    var search_url = "search.json?is_late_checkout_only=true";
+    that.fetchSearchData(search_url, "", "LATE_CHECKOUT");
+
   };
 
   //Clear Search Results 
@@ -99,21 +127,23 @@ var Search  = function(domRef){
   };
 
   this.fetchCompletedOfFetchSearchData = function(response, requestParams) {
+      var searchType = "";
       $("#search-results").empty().removeClass('hidden');
       $('#preloaded-results').addClass('hidden');
       $('#no-results').addClass('hidden');
       
       // set up reservation status
-      var reservation_status = "";
       var type = requestParams['type'];
       if(type == "DUEIN"){
-        reservation_status = "checking in";
+        searchType = "checking in";
       }
       else if(type == "DUEOUT"){
-        reservation_status = "checking out";
+        searchType = "checking out";
       }
       else if(type == "INHOUSE"){
-        reservation_status = "in house";
+        searchType = "in house";
+      }else if(type == "LATE_CHECKOUT"){
+        searchType = "opted for late checkout";
       }
       
       if(response.data.length > 0){
@@ -122,9 +152,9 @@ var Search  = function(domRef){
       }
       // No data in JSON file
       else if(response.data.length == 0){
-        if(reservation_status != ""){
+        if(searchType != ""){
           // When dashboard buttons with 0 guests are clicked, show search screen message - "No guests checking in/out/in house" 
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+reservation_status+'</strong></li>');
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+searchType+'</strong></li>');
         }
         else{
           // To show no matches message while search guest with 0 results.
