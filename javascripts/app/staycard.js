@@ -98,7 +98,8 @@ var StayCard = function(viewDom){
       // its not the same card as we swiped
       // remove thata card
       // else do nothing
-      if ( !($('#delete_card').length && $('#token-last-value').text() === swipedCardData.token.slice(-4)) ) {
+       if ( $('#delete_card').length && $('#token-last-value').text() === swipedCardData.token.slice(-4)) ) {
+        sntapp.notification.showErrorMessage('Card already assigned');
         return;
       }
 
