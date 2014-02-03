@@ -2,11 +2,13 @@ var Search  = function(domRef){
   BaseView.call(this);
   var that = this;
   this.myDomElement = domRef;
-  this.currentQuery = "";
-  this.fetchResults = [];
-  this.fetchTerm = "";
+
     
   this.pageinit = function(){
+
+    that.currentQuery = "";
+    that.fetchResults = [];
+    that.fetchTerm = "";
     var type = that.myDomElement.find($('#search_list')).attr("data-search-type");
     /*preload the search results, 
     if navigated to search screen by clicking checking-in/checking-out/in-house options
