@@ -163,6 +163,7 @@ var RegistrationCardView = function(viewDom) {
 		var roomStatus = $(e.target).attr('data-room-status');
 		var foStatus = $(e.target).attr('data-fo-status');
 		var is_show_qr_code = $(e.target).attr('data-qr-code');
+		var required_signature_at = $(e.target).attr('data-required-signature');
 		if(roomStatus != "READY" || foStatus != "VACANT"){
 			that.goToRoomAssignmentView();
 			return false;
@@ -172,9 +173,10 @@ var RegistrationCardView = function(viewDom) {
 		var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked") ? 1 : 0;
 		var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
 		var guest_email = $("#contact-info #email").val();
+	
 		var errorMessage = "";
 
-		if (signature == "[]")
+		if (signature == "[]" && required_signature_at == "CHECKIN")
 			errorMessage = "Signature is missing";
 		else if (!terms_and_conditions)
 			errorMessage = "Please check agree to the Terms & Conditions";
@@ -274,6 +276,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 	
 	this.completeCheckout =  function(e){
+		var required_signature_at = $(e.target).attr('data-required-signature');
 		var balance_amount = that.myDom.find("#balance-amount").attr("data-balance-amount");
 		if (balance_amount != 0) {
 			// When balance amount is not 0 - perform payment action.
@@ -282,12 +285,27 @@ var RegistrationCardView = function(viewDom) {
 		else {
 			// When balance amount is 0 - perform complete check out action.
 			var email = $("#gc-email").val();
+			var signature = JSON.stringify($("#signature").jSignature("getData", "native"));
+			var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked") ? 1 : 0;
+			var errorMessage = "";
+
+			if (signature == "[]" && required_signature_at == "CHECKIN")
+				errorMessage = "Signature is missing";
+			else if (!terms_and_conditions)
+				errorMessage = "Please check agree to the Terms & Conditions";
+	
+			if (errorMessage != "") {
+				that.showErrorMessage(errorMessage);
+				return;
+			}
 			var url = '/staff/checkout';
 			var webservice = new WebServiceInterface();
 			var data = {
 				"reservation_id" : that.reservation_id,
-				"email" : email
+				"email" : email,
+				"signature" : signature
 			};
+			console.log(data);
 			var options = {
 				requestParameters : data,
 				successCallBack : that.fetchCompletedOfCompleteCheckout,
