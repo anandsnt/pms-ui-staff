@@ -303,6 +303,7 @@ var GuestCardLikesView = function(domRef){
     this.saveNewsPaper = function(event, element){
       var postData = {};
       postData.news_paper = [];
+      postData.id = element.closest('form').attr("like_id");
       element.closest('form').find('#newspaper-options').find('label').each(function(index){
         if($(this).hasClass('checkbox')){
           var newsPaperItem = {};
@@ -310,12 +311,14 @@ var GuestCardLikesView = function(domRef){
           newsPaperItem.id = $(this).find('input').attr('data-id');
           newsPaperItem.name = $(this).find('#newspaper-name').text();
           newsPaperItem.is_checked = $(this).find('input').is(':checked') ? "true" : "false";
-          postData.news_paper.push(newsPaperItem);
+          
+          postData.custom_likes.push(newsPaperItem);
         }
       });
-
+console.log(postData);
       var webservice = new WebServiceInterface();
-      var url = '/admin/hotel_likes/save_news_paper';
+     // var url = '/admin/hotel_likes/save_news_paper';
+      var url = '/admin/hotel_likes/save_custom_likes';
       var options = {
            requestParameters: postData,
            successCallBack: that.newsPaperSaveComplete,
