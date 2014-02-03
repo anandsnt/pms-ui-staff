@@ -212,10 +212,10 @@ var StayCard = function(viewDom){
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);  
     that.myDom.find('#title').on('change', that.changeAvathar);
     // that.myDom.unbind('click');
-	that.myDom.find("#reservation-card *").on('click', that.domClickHandler);
+	that.myDom.find("#reservation-card *").on('click', that.reservationCardClickHandler);
   };
   
-  this.domClickHandler = function(event){
+  this.reservationCardClickHandler = function(event){
   	  	
   		var target = $(event.target);
 		var target_id = target.attr("id");
