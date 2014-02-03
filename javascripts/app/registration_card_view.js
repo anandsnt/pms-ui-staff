@@ -6,13 +6,13 @@ var RegistrationCardView = function(viewDom) {
 	this.url = "ui/checkinSuccess";
 
 	this.pageinit = function() {
-		
+
 		this.createHorizontalScroll();
-		
+
 		setTimeout(function() {
 			createViewScroll('#registration-content');
 		}, 300);
-		
+
 		var width = that.myDom.find("#signature").width();
 		that.myDom.find("#signature").jSignature({
 			height : 130,
@@ -29,10 +29,11 @@ var RegistrationCardView = function(viewDom) {
 		});
 
 		var reservation_status = that.myDom.find("#registration-content").attr("data-reservation-status");
-
+		that.myDom.find("#signature-pad").removeClass("hidden");
 		if (this.viewParams.clickedButton == "ViewBillButton") {
 			// To Display Guest Bill screen in detailed mode via ViewBillButton click.
 			that.myDom.find("#bill1-fees").removeClass("hidden");
+			that.myDom.find("#signature-pad").addClass("hidden");
 		}
 		if (this.viewParams.clickedButton == "CheckoutButton" || reservation_status == "CHECKING_OUT") {
 			// To show 'COMPLETE CHECK OUT' button when Reservation is DUE OUT,regardless of how it has been accessed.
@@ -41,7 +42,6 @@ var RegistrationCardView = function(viewDom) {
 		}
 		// To add active class to the first bill tab
 		that.myDom.find("#bills-tabs-nav li[bill_active='true']").addClass('active');
-
 
 		// A dirty hack to allow "this" instance to be refered from sntapp
 		sntapp.setViewInst('registrationCardView', function() {
@@ -75,29 +75,27 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find('#add-new-button').on('click', that.addNewButtonClicked);
 		that.myDom.find('#subscribe').on('click', that.subscribeCheckboxClicked);
 	};
-    this.subscribeCheckboxClicked = function(e){
-    	var guest_email = $("#contact-info #email").val();
-    	
-    	// To popup email opt modal when guest email field is empty.
-    	if((!$(e.target).parent().hasClass('checked')) && guest_email == ""){
+	this.subscribeCheckboxClicked = function(e) {
+		var guest_email = $("#contact-info #email").val();
+
+		// To popup email opt modal when guest email field is empty.
+		if ((!$(e.target).parent().hasClass('checked')) && guest_email == "") {
 			var validateOptEmailModal = new ValidateOptEmailModal();
 			validateOptEmailModal.initialize();
-    	}
-    	
-    };
+		}
+
+	};
 	this.createHorizontalScroll = function() {
 		$('#bills').tabs({
-			create:  function( event, ui ) {
-				var $tab = ui.panel.attr('id'),
-					$tabWidth = ui.panel.width(),
-					$scrollable = $('#' + $tab).find('.wrapper');
-					
+			create : function(event, ui) {
+				var $tab = ui.panel.attr('id'), $tabWidth = ui.panel.width(), $scrollable = $('#' + $tab).find('.wrapper');
+
 				var $itemsWidth = 0;
 				// To find total item's width - single item width + 5 (margin)
-				that.myDom.find(".wrapper li" ).each(function(i) {
-		  			$itemsWidth = $itemsWidth + $(this).width() +5;
+				that.myDom.find(".wrapper li").each(function(i) {
+					$itemsWidth = $itemsWidth + $(this).width() + 5;
 				});
-				
+
 				if ($itemsWidth > $tabWidth) {
 					$('#' + $tab + '-summary').css({
 						'padding-top' : '10px'
@@ -129,30 +127,40 @@ var RegistrationCardView = function(viewDom) {
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
 	};
 
-  this.gotoBillCard = function(){
-      
-      var viewURL = "staff/reservation/bill_card";
-      var viewDom = $("#view-nested-third");
-      var params = {"reservation_id": that.reservation_id};
-      var nextViewParams = {"showanimation": true, "from-view" : views.ROOM_ASSIGNMENT};
-      sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams );
-  };
+	this.gotoBillCard = function() {
 
-  	this.goToRoomAssignmentView = function(){
-  		that.myDom.html("");
-  		if ($('#roomassignment_main').length){
-  			sntapp.activityIndicator.showActivityIndicator("blocker");
-    		changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);
-		}else{
-			var nextViewParams = {"next_view": views.BILLCARD, "from_view": views.BILLCARD};
+		var viewURL = "staff/reservation/bill_card";
+		var viewDom = $("#view-nested-third");
+		var params = {
+			"reservation_id" : that.reservation_id
+		};
+		var nextViewParams = {
+			"showanimation" : true,
+			"from-view" : views.ROOM_ASSIGNMENT
+		};
+		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
+	};
+
+	this.goToRoomAssignmentView = function() {
+		that.myDom.html("");
+		if ($('#roomassignment_main').length) {
 			sntapp.activityIndicator.showActivityIndicator("blocker");
-		    var viewURL = "staff/preferences/room_assignment";
-		    var viewDom = $("#view-nested-second");
-		    var reservation_id = getReservationId();
-		    var params = {"reservation_id": reservation_id};
-		    sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams);
+			changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);
+		} else {
+			var nextViewParams = {
+				"next_view" : views.BILLCARD,
+				"from_view" : views.BILLCARD
+			};
+			sntapp.activityIndicator.showActivityIndicator("blocker");
+			var viewURL = "staff/preferences/room_assignment";
+			var viewDom = $("#view-nested-second");
+			var reservation_id = getReservationId();
+			var params = {
+				"reservation_id" : reservation_id
+			};
+			sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams);
 		}
-  	};
+	};
 
 	this.completeCheckin = function(e) {
 
@@ -162,7 +170,9 @@ var RegistrationCardView = function(viewDom) {
 		var roomStatus = $(e.target).attr('data-room-status');
 		var foStatus = $(e.target).attr('data-fo-status');
 		var is_show_qr_code = $(e.target).attr('data-qr-code');
-		if(roomStatus != "READY" || foStatus != "VACANT"){
+		var required_signature_at = $(e.target).attr('data-required-signature');
+		
+		if (roomStatus != "READY" || foStatus != "VACANT") {
 			that.goToRoomAssignmentView();
 			return false;
 		}
@@ -171,9 +181,10 @@ var RegistrationCardView = function(viewDom) {
 		var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked") ? 1 : 0;
 		var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
 		var guest_email = $("#contact-info #email").val();
+
 		var errorMessage = "";
 
-		if (signature == "[]")
+		if (signature == "[]" && required_signature_at == "CHECKIN")
 			errorMessage = "Signature is missing";
 		else if (!terms_and_conditions)
 			errorMessage = "Please check agree to the Terms & Conditions";
@@ -181,61 +192,58 @@ var RegistrationCardView = function(viewDom) {
 		if (errorMessage != "") {
 			that.showErrorMessage(errorMessage);
 			return;
-		}
-		else if(is_promotions_and_email_set && guest_email == ""){
+		} else if (is_promotions_and_email_set && guest_email == "") {
 			// To show pop up to add email adress when EMAIL OPT is enabled and guest email is blank.
 			var validateOptEmailModal = new ValidateOptEmailModal();
 			validateOptEmailModal.initialize();
 			return;
-		}
-		else {
+		} else {
 			var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
 			var data = {
 				"is_promotions_and_email_set" : is_promotions_and_email_set,
 				"signature" : signature,
 				"reservation_id" : that.reservation_id
 			};
-			
-			
+
 			var webservice = new WebServiceInterface();
-		    	
-		    var url = '/staff/checkin' ; 
-		    var options = {
-					   requestParameters: data,
-					   successCallBack: that.fetchCompletedOfSave,
-					   failureCallBack: that.fetchFailedOfSave,
-					   successCallBackParameters:{ "is_promotions_and_email_set": is_promotions_and_email_set,
-					   "is_show_qr_code": is_show_qr_code }
+
+			var url = '/staff/checkin';
+			var options = {
+				requestParameters : data,
+				successCallBack : that.fetchCompletedOfSave,
+				failureCallBack : that.fetchFailedOfSave,
+				successCallBackParameters : {
+					"is_promotions_and_email_set" : is_promotions_and_email_set,
+					"is_show_qr_code" : is_show_qr_code
+				}
 			};
-		    webservice.postJSON(url, options);
+			webservice.postJSON(url, options);
 		}
 	};
-	 this.fetchCompletedOfSave = function(data, requestParameters){
-	 	
-	 	// If QR Code status enabled - First show select Key Modal
+	this.fetchCompletedOfSave = function(data, requestParameters) {
+
+		// If QR Code status enabled - First show select Key Modal
 		// Else show key genaration Modal
-	 	if(requestParameters['is_show_qr_code'] == "true"){
-	 		var selectKeyModel = new SelectKeyModel(that.showCheckinSuccessModal,that.openQrCodeModal);
-	 		selectKeyModel.initialize();
-	 	}
-	 	else{
-	 		// To show Modal for key generation
-	 		that.openAddKeysModal();
-	 	}
-	 	
-		if(requestParameters['is_promotions_and_email_set'] == "true"){
-			//To enable EMAIL OPT IN check button in guest card
-			$("#contact-info input#opt-in").prop("checked",true);
+		if (requestParameters['is_show_qr_code'] == "true") {
+			var selectKeyModel = new SelectKeyModel(that.showCheckinSuccessModal, that.openQrCodeModal);
+			selectKeyModel.initialize();
+		} else {
+			// To show Modal for key generation
+			that.openAddKeysModal();
 		}
-		else{
+
+		if (requestParameters['is_promotions_and_email_set'] == "true") {
+			//To enable EMAIL OPT IN check button in guest card
+			$("#contact-info input#opt-in").prop("checked", true);
+		} else {
 			//To disable EMAIL OPT IN check button in guest card
-			$("#contact-info input#opt-in").prop("checked",false);
-		}	
-	 };
-	 this.fetchFailedOfSave = function(errorMessage){
+			$("#contact-info input#opt-in").prop("checked", false);
+		}
+	};
+	this.fetchFailedOfSave = function(errorMessage) {
 		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
-	  };
+		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);
+	};
 	this.clearSignature = function() {
 		that.myDom.find("#signature").jSignature("reset");
 	};
@@ -255,24 +263,27 @@ var RegistrationCardView = function(viewDom) {
 		$($loader).prependTo('body').show();
 		changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);
 	};
-    //function on click complete checkout button - If email is null then popup comes to enter email
+	//function on click complete checkout button - If email is null then popup comes to enter email
 	this.clickedCompleteCheckout = function(e) {
 		e.stopPropagation();
 		e.preventDefault();
 		e.stopImmediatePropagation();
-		
-		 var email = $("#gc-email").val();
-	  	 if(email == ""){
-	  	       	 var validateCheckoutModal = new ValidateCheckoutModal(that.completeCheckout, e);
-	  	       	 validateCheckoutModal.initialize();
-	  	       	 validateCheckoutModal.params = {"type": "NoEmail"};
-	  	 } else {
-	  		that.completeCheckout(e);
-	  	 }
-		
+
+		var email = $("#gc-email").val();
+		if (email == "") {
+			var validateCheckoutModal = new ValidateCheckoutModal(that.completeCheckout, e);
+			validateCheckoutModal.initialize();
+			validateCheckoutModal.params = {
+				"type" : "NoEmail"
+			};
+		} else {
+			that.completeCheckout(e);
+		}
+
 	};
-	
-	this.completeCheckout =  function(e){
+
+	this.completeCheckout = function(e) {
+		var required_signature_at = $(e.target).attr('data-required-signature');
 		var balance_amount = that.myDom.find("#balance-amount").attr("data-balance-amount");
 		if (balance_amount != 0) {
 			// When balance amount is not 0 - perform payment action.
@@ -281,16 +292,31 @@ var RegistrationCardView = function(viewDom) {
 		else {
 			// When balance amount is 0 - perform complete check out action.
 			var email = $("#gc-email").val();
+			var signature = JSON.stringify($("#signature").jSignature("getData", "native"));
+			var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked") ? 1 : 0;
+			var errorMessage = "";
+
+			if (signature == "[]" && required_signature_at == "CHECKOUT")
+				errorMessage = "Signature is missing";
+			else if (!terms_and_conditions)
+				errorMessage = "Please check agree to the Terms & Conditions";
+
+			if (errorMessage != "") {
+				that.showErrorMessage(errorMessage);
+				return;
+			}
 			var url = '/staff/checkout';
 			var webservice = new WebServiceInterface();
 			var data = {
 				"reservation_id" : that.reservation_id,
-				"email" : email
+				"email" : email,
+				"signature" : signature
 			};
+			console.log(data);
 			var options = {
 				requestParameters : data,
 				successCallBack : that.fetchCompletedOfCompleteCheckout,
-				failureCallBack: that.fetchFailedOfSave,
+				failureCallBack : that.fetchFailedOfSave,
 				loader : 'blocker'
 			};
 			webservice.postJSON(url, options);
@@ -312,7 +338,7 @@ var RegistrationCardView = function(viewDom) {
 		// send swipedCardData to bill card payment modal
 		if (that.swipedCardData) {
 			billCardPaymentModal.params = {
-				"swipedCardData": that.swipedCardData
+				"swipedCardData" : that.swipedCardData
 			};
 		};
 
@@ -323,11 +349,11 @@ var RegistrationCardView = function(viewDom) {
 		var postChargeModel = new PostChargeModel(that.reloadBillCardPage);
 		postChargeModel.initialize();
 		postChargeModel.params = {
-			"origin":views.BILLCARD,
+			"origin" : views.BILLCARD,
 			"bill_number" : that.bill_number
 		};
 	};
-	
+
 	// Goto search screen with empty search results
 	this.goToSearchScreen = function() {
 		console.log("goToSearchScreen");
