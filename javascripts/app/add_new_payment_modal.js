@@ -43,6 +43,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
    	};
     //Success call back after succesful addition of payment in reservation
    	this.fetchCompletedOfReservationPayment = function(data, requestParameters){
+
    			that.save_inprogress = false;
 			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
 			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
@@ -57,6 +58,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			currentStayCardView.find("#select-card-from-list").html(replaceHtml);
 			currentStayCardView.find("#add-new-payment").remove();
 			//to remove add button and show delete icon on succesfull addition of new credit card
+			$('#delete_card').remove();
 			var appendHtml = '<a id="delete_card" data-payment-id="'+data.data.id+'" class="button with-icon red">'+
 								'<span class="icons icon-trash invert"></span>Remove</a>';
 			currentStayCardView.find(".payment_actions").append(appendHtml);

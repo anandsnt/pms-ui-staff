@@ -16,7 +16,7 @@ var StayCard = function(viewDom){
     // Start listening to card swipes
     this.initCardSwipe();
 
-    // // DEBUG
+    // DEBUG
     // if ( $('#reservation-card').find('#current:visible').length ) {
     //   window.trigger = that.postCardSwipData;
     //   var swipedCardData = {
@@ -33,9 +33,10 @@ var StayCard = function(viewDom){
 
   // Start listening to card swipes
   this.initCardSwipe = function() {
-    if(sntapp.cordovaLoaded){
+    
       var options = {
           successCallBack: function(data){
+            console.log("Success call back from swipe in staycard");
 
             // if this is not staycard do nothing
             // TODO: can't match page to '' as there could be pages with no data-page
@@ -69,11 +70,13 @@ var StayCard = function(viewDom){
             sntapp.notification.showErrorMessage('Could not read the card properly. Please try again.');
           }
       };
-
+  console.log("SC PAYMENT INIT######");
+  console.log(JSON.stringify(sntapp));
+  console.log(sntapp.cardSwipeDebug);
       // start listening
-      sntapp.cardReader.startReader(options);
+      if(sntapp.cardSwipeDebug===true){ console.log("SC PAYMENT DB######"); sntapp.cardReader.startReaderDebug(options); }
 
-    }
+      if(sntapp.cordovaLoaded){ sntapp.cardReader.startReader(options); }
   };
 
 
@@ -89,23 +92,13 @@ var StayCard = function(viewDom){
 
     var swipedCardData = swipedCardData;
 
+//Please delete the explicit implementation.
     var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
 
     // respond to StayCardView
     var stayCardViewResponse = function() {
 
-      // if there is another card added already and
-      // its not the same card as we swiped
-      // remove thata card
-      // else do nothing
-      if ( $('#delete_card').length && $('#token-last-value').text() != swipedCardData.token.slice(-4) ) {
-        sntapp
-          .getViewInst('ReservationPaymentView')
-          .deletePaymentFromReservation( $('#delete_card') );
-      } else {
-        return;
-      }
-
+  
       // if addNewPaymentModal instance doen't exist, create it
       // else if addNewPaymentModal instance exist, but the dom is removed
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
@@ -159,9 +152,7 @@ var StayCard = function(viewDom){
       // add token to card data
       swipedCardData.token = token.data;
 
-      // // DEBUG
-      // swipedCardData.token = '123456789';
-
+      
       // dirty trick to find the current page and react
       switch(sntapp.cardSwipeCurrView){
         // respond to StayCardView
@@ -194,11 +185,20 @@ var StayCard = function(viewDom){
       }
     };
 
+   // // DEBUG
+   if (sntapp.cardSwipeDebug === true) { 
+    var token = {
+      'data' : "123456789312321321321"
+    }
+
+    successCallBackHandler(token); 
+    return;
+  }
+
     var webservice = new WebServiceInterface();
     webservice.postJSON(url, options);
 
-    // // DEBUG
-    // successCallBackHandler();
+    
   };
 
   this.delegateEvents = function(partialViewRef){  
