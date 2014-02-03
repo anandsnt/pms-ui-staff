@@ -331,7 +331,6 @@ $(function($){
         }
         // Load the dashboard when no hash
         else {
-            console.log("here");
             var $pageToShow = '/staff/dashboard/dashboard/';
             if($('body').attr('id') == 'app-page'){
                 $.ajax({

@@ -300,7 +300,7 @@ var Search  = function(domRef){
                   (escapeNull(value.confirmation).toString()).indexOf($query) >= 0)
               {
                   items.push($('<li />').html(
-                      that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
+                      that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip, value.late_checkout_time)
                   ));
               }
               
@@ -334,7 +334,7 @@ var Search  = function(domRef){
             $.each(response, function(i,value){
 
             items.push($('<li />').html(
-                        that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
+                        that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip, value.late_checkout_time)
                     ));
 
                     $('#search-results').append.apply($('#search-results'),items).highlight($query);
@@ -356,7 +356,7 @@ var Search  = function(domRef){
         };
     };
 
-    this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip){
+    this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip, lateCheckoutTime){
 
       var reservationStatusIcon = this.getReservationStatusMapped(reservation_status);
       var roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
@@ -390,7 +390,7 @@ var Search  = function(domRef){
                 '<h2>' + escapeNull(lastname) + ', ' + escapeNull(firstname) + '</h2>' +
                 '<span class="confirmation">' + escapeNull(confirmation) + '</span>' + $location + $group +
             '</div>'+
-            $viewStatus +
+            $viewStatus + '<span class="late-checkout-time">'+escapeNull(lateCheckoutTime)+'</span>'+
             roomStatus + $roomAdditional +
         '</a>';
       return $output;
