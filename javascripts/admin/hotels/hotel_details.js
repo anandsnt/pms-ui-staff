@@ -8,10 +8,10 @@ var HotelDetailsView = function(domRef){
   	
     
   };
-  this.delegateEvents = function(){  	
-  	that.myDom.find('#save').on('click', that.saveHotelDetails); 
+  this.delegateEvents = function(){  
+  	that.myDom.find('#save').on('click', ["update"], that.updateOrAddHotel);	
+  	that.myDom.find('#save_new_hotel').on('click', ["create"], that.updateOrAddHotel);	
   	that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView); 
-  	that.myDom.find('#save_new_hotel').on('click', that.addNewHotel); 
   	that.myDom.find("#re-invite").on('click', that.reInvite);
   	that.myDom.find("#external-mappings").on('click', that.renderExternalMappings);
   
@@ -74,9 +74,8 @@ var HotelDetailsView = function(domRef){
   		$(".re-invite").remove();
   	}
   }; 
-  
-
-  this.saveHotelDetails =  function(){
+  //to update or create new hotel
+  this.updateOrAddHotel = function(event){
   	var currentHotel = $(".currenthotel").attr("id");  	
   	var hotelName = $.trim(that.myDom.find("#hotel-name").val()),
   	    hotelCode = $.trim(that.myDom.find("#hotel-code").val()),
@@ -107,27 +106,35 @@ var HotelDetailsView = function(domRef){
   	    zipcode = $.trim(that.myDom.find("#hotel-zipcode").val()),
   	    numberOfRooms = $.trim(that.myDom.find("#hotel-rooms").val());
   	    hotelTimeZone = $.trim(that.myDom.find("#hotel-time-zone").val());
-  	  
+  	    hotelAutoLogoutTime = $.trim(that.myDom.find("#auto-logout").val());
   	    	 				
-			var data = that.getInputData(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand,hotelChain, hotelCode, 
-									  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin,hotelCheckinPrimeTime, 
-									  	hotelCheckoutHour, hotelCheckoutMinutes,hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
-									  	password, confirmPassword, hotelTimeZone);
-			var url = '/admin/hotels/'+currentHotel;
-			var webservice = new WebServiceInterface();		
-			var options = {
-					   requestParameters: data,
-					   successCallBack: that.fetchCompletedOfSave,
-					   failureCallBack: that.fetchFailedOfSave,
-					   loader: "BLOCKER"
-			};
-			webservice.putJSON(url, options);			
-			//webservice.performRequest(url, data, that.fetchCompletedOfAddNewHotel, that.fetchFailedOfSave, false, 'PUT');
-  	    	
-  	  
-	  		 
-  };
+		var data = that.getInputData(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand,hotelChain, hotelCode, 
+								  	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin,hotelCheckinPrimeTime, 
+								  	hotelCheckoutHour, hotelCheckoutMinutes,hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
+								  	password, confirmPassword, hotelTimeZone, hotelAutoLogoutTime);
+		var type = event.data[0];
+		if(type == "update"){
+		 	var url = '/admin/hotels/'+currentHotel;
+		} else {
+		 	var url = '/admin/hotels';
+		}						  	
+		
+		var webservice = new WebServiceInterface();		
+		var options = {
+				   requestParameters: data,
+				   successCallBack: that.fetchCompletedOfSave,
+				   failureCallBack: that.fetchFailedOfSave,
+				   loader: "BLOCKER"
+		};
+		if(type == "update"){
+		 	webservice.putJSON(url, options);	
+		} else {
+		 	webservice.postJSON(url, options);
+		}	
+		
+  }; 
   
+  //to handle success call back  
   this.fetchCompletedOfSave = function(data){
 	  if(data.status == "success"){		
 	  	if(that.currentView == "snt-admin-view"){  
@@ -137,72 +144,16 @@ var HotelDetailsView = function(domRef){
 		  sntapp.notification.showSuccessMessage("Saved Successfully", that.viewParams.backDom);
 	  }
   };
-  
+  // to handle failure call back
   this.fetchFailedOfSave = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
 	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
   };
-  // add New hotel from snt admin 
-  this.addNewHotel =  function(){
-  	
-  	
-  	var hotelName = $.trim(that.myDom.find("#hotel-name").val()),
-  	    hotelCode = $.trim(that.myDom.find("#hotel-code").val()),
-  	    hotelStreet = $.trim(that.myDom.find("#hotel-street").val()),
-  	    hotelPhone = $.trim(that.myDom.find("#hotel-phone").val()),
-  	    hotelCity = $.trim(that.myDom.find("#hotel-city").val()),
-  	    hotelState = $.trim(that.myDom.find("#hotel-state").val()),
-  	    hotelCountry = $.trim(that.myDom.find("#hotel-country").val()),
-  	    hotelCheckinHour = $.trim(that.myDom.find("#hotel-checkin-hour").val()),
-  	    hotelCheckinMin = $.trim(that.myDom.find("#hotel-checkin-minutes").val()),
-  	    hotelCheckinPrimeTime = $.trim(that.myDom.find("#hotel-checkin-primetime").val()),
-  	    hotelCheckoutHour = $.trim(that.myDom.find("#hotel-checkout-hour").val()),
-  	    hotelCheckoutMinutes = $.trim(that.myDom.find("#hotel-checkout-minutes").val()),
-  	    hotelCheckoutPrimeTime = $.trim(that.myDom.find("#hotel-checkout-primetime").val()),
-  	    hotelContactFirstName = $.trim(that.myDom.find("#contact-first-name").val()),
-  	    hotelContactLastName = $.trim(that.myDom.find("#contact-last-name").val()),
-  	    hotelContactEmail = $.trim(that.myDom.find("#contact-email").val()),
-  	    hotelContactPhone = $.trim(that.myDom.find("#contact-phone").val()),
-  	    hotelChain = $.trim(that.myDom.find("#hotel-chain").val()),
-  	    hotelBrand = $.trim(that.myDom.find("#hotel-brand").val()),
-  	    hotelCurrency = $.trim(that.myDom.find("#hotel-currency").val()),
-  	    adminEmail = $.trim(that.myDom.find("#admin-email").val()),
-  	    adminPhone = $.trim(that.myDom.find("#admin-phone").val()),
-  	    adminFirstName = $.trim(that.myDom.find("#admin-first-name").val()),
-  	    adminLastName = $.trim(that.myDom.find("#admin-last-name").val()),
-  	    password = $.trim(that.myDom.find("#admin-pwd").val()),
-  	    confirmPassword = $.trim(that.myDom.find("#admin-confirm-pwd").val()),
-  	    zipcode = $.trim(that.myDom.find("#hotel-zipcode").val()),
-  	    numberOfRooms = $.trim(that.myDom.find("#hotel-rooms").val());
-  	    hotelTimeZone = $.trim(that.myDom.find("#hotel-time-zone").val());
-  	    
-		
-	       var data = that.getInputData(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, 
-	    		   						hotelPhone, hotelBrand,hotelChain, hotelCode, 
-	    		   						numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, 
-	    		   						hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime,
-	    		   						hotelCheckoutHour, hotelCheckoutMinutes,hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, 
-	    		   						adminFirstName, adminLastName, 
-	    		   						password, confirmPassword, hotelTimeZone);
-		    
-	       var url = '/admin/hotels';
-		   var webservice = new WebServiceInterface();
-		   var options = {
-				   requestParameters: data,
-				   successCallBack: that.fetchCompletedOfSave,
-				   failureCallBack: that.fetchFailedOfSave,
-				    loader: "BLOCKER"
-				   
-		   };
-		   webservice.postJSON(url, options);
-	  
-  };
-
-  //Generating post data
+   //Generating post data
   this.getInputData = function(hotelName,  hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand,hotelChain, hotelCode, 
   	numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime,
   	hotelCheckoutHour, hotelCheckoutMinutes,hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, 
-  	password, confirmPassword, hotelTimeZone){
+  	password, confirmPassword, hotelTimeZone, hotelAutoLogoutTime){
   	
   	if(that.currentView == "snt-admin-view"){
 	        	data = {
@@ -234,8 +185,8 @@ var HotelDetailsView = function(domRef){
 				  	admin_last_name: adminLastName,
 					admin_password:password,
 					admin_password_confirmation:confirmPassword,
-					hotel_time_zone: hotelTimeZone
-					
+					hotel_time_zone: hotelTimeZone,
+					auto_logout_delay: hotelAutoLogoutTime
 					} ;
 	        }
 	        else 
@@ -263,7 +214,8 @@ var HotelDetailsView = function(domRef){
 					default_currency: hotelCurrency,
 					hotel_brand:hotelBrand,
   	    			hotel_chain:hotelChain,
-					hotel_time_zone: hotelTimeZone
+					hotel_time_zone: hotelTimeZone,
+					auto_logout_delay: hotelAutoLogoutTime
 					} ;
 	        } 
 	        return data;
