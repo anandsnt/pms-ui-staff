@@ -408,12 +408,19 @@ var PostChargeModel = function(callBack) {
 	};
 	
 	// success callback on post cahrges
-	this.fetchCompletedOfPostCharge = function(){
+	this.fetchCompletedOfPostCharge = function(response){
 		 sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
 		 if(that.origin == views.BILLCARD){
 		 	callBack(); //To Reload page on bill card
 		 }
 		 that.hide();
+		 
+		 // To update stay card balance amount
+		 var currentConfirmNumber = response.data.confirmation_number;
+		 var html = getCurrencySymbol(response.data.currency_code) +""+ response.data.total_balance_amount;
+		 $("#reservation-"+currentConfirmNumber+" .balance .h1").html("");
+		 $("#reservation-"+currentConfirmNumber+" .balance .h1").html(html);
+		 
 	};
 	
 	// failure callback on post cahrges

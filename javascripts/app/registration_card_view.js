@@ -64,8 +64,6 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.delegateEvents = function() {
-		///that.myDom.find(('.bill-tabs')).tabs();
-		// ui tabs
 		this.bill_number = that.myDom.find("#bills li.active").attr('data-bill-number');
 		that.myDom.find('#checkin-button').on('click', that.completeCheckin);
 		that.myDom.find('#clear-signature').on('click', that.clearSignature);
@@ -192,12 +190,14 @@ var RegistrationCardView = function(viewDom) {
 		if (errorMessage != "") {
 			that.showErrorMessage(errorMessage);
 			return;
-		} else if (is_promotions_and_email_set && guest_email == "") {
+		}
+		else if (is_promotions_and_email_set && guest_email == "") {
 			// To show pop up to add email adress when EMAIL OPT is enabled and guest email is blank.
 			var validateOptEmailModal = new ValidateOptEmailModal();
 			validateOptEmailModal.initialize();
 			return;
-		} else {
+		}
+		else {
 			var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
 			var data = {
 				"is_promotions_and_email_set" : is_promotions_and_email_set,
@@ -276,7 +276,8 @@ var RegistrationCardView = function(viewDom) {
 			validateCheckoutModal.params = {
 				"type" : "NoEmail"
 			};
-		} else {
+		}
+		else {
 			that.completeCheckout(e);
 		}
 
@@ -285,8 +286,8 @@ var RegistrationCardView = function(viewDom) {
 	this.completeCheckout = function(e) {
 		var required_signature_at = $(e.target).attr('data-required-signature');
 		var balance_amount = that.myDom.find("#balance-amount").attr("data-balance-amount");
-		if (balance_amount != 0) {
-			// When balance amount is not 0 - perform payment action.
+		if (balance_amount > 0) {
+			// When balance amount is greater than 0 - perform payment action.
 			that.payButtonClicked();
 		}
 		else {
@@ -298,7 +299,7 @@ var RegistrationCardView = function(viewDom) {
 
 			if (signature == "[]" && required_signature_at == "CHECKOUT")
 				errorMessage = "Signature is missing";
-			else if (!terms_and_conditions)
+			else if (!terms_and_conditions && required_signature_at == "CHECKOUT")
 				errorMessage = "Please check agree to the Terms & Conditions";
 
 			if (errorMessage != "") {
@@ -312,7 +313,6 @@ var RegistrationCardView = function(viewDom) {
 				"email" : email,
 				"signature" : signature
 			};
-			console.log(data);
 			var options = {
 				requestParameters : data,
 				successCallBack : that.fetchCompletedOfCompleteCheckout,
