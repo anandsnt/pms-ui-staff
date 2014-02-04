@@ -42,7 +42,9 @@ BaseModal = function() {
                     that.show();
                 }
             },
-            error: function(){
+            error: function(jqxhr, status, error){
+                //checking whether a user is logged in
+                if (jqxhr.status == "401") { sntapp.logout(); return;}
                 //TODO: Replace with the central mechanism for error handling
             }
         });

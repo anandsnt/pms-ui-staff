@@ -1,8 +1,10 @@
+
 var HotelDetailsView = function(domRef) {
 	BaseView.call(this);
 	this.myDom = domRef;
 	this.currentView = $("body").attr("id");
 	var that = this;
+    this.fileContent = "";
 
 	this.pageinit = function() {
 
@@ -13,6 +15,9 @@ var HotelDetailsView = function(domRef) {
 		that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView);
 		that.myDom.find("#re-invite").on('click', that.reInvite);
 		that.myDom.find("#external-mappings").on('click', that.renderExternalMappings);
+		that.myDom.find('#mli-certificate').on('change', function(){
+  			that.readCertificate(this);
+  		});
 
 	};
 	// function to view external mappings
@@ -74,18 +79,23 @@ var HotelDetailsView = function(domRef) {
 			$(".registration-for-rover").remove();
 
 		} else {
+			$("#mli-certificate-upload").remove();
 			$("#external-mappings").remove();
-			$(".re-invite").remove();
 		}
 	};
 	//to update or create new hotel
 	this.updateOrAddHotel = function(event) {
 		var currentHotel = $(".currenthotel").attr("id");
 		var hotelName = $.trim(that.myDom.find("#hotel-name").val()), hotelCode = $.trim(that.myDom.find("#hotel-code").val()), hotelStreet = $.trim(that.myDom.find("#hotel-street").val()), hotelPhone = $.trim(that.myDom.find("#hotel-phone").val()), hotelCity = $.trim(that.myDom.find("#hotel-city").val()), hotelState = $.trim(that.myDom.find("#hotel-state").val()), hotelCountry = $.trim(that.myDom.find("#hotel-country").val()), hotelCheckinHour = $.trim(that.myDom.find("#hotel-checkin-hour").val()), hotelCheckinMin = $.trim(that.myDom.find("#hotel-checkin-minutes").val()), hotelCheckinPrimeTime = $.trim(that.myDom.find("#hotel-checkin-primetime").val()), hotelCheckoutHour = $.trim(that.myDom.find("#hotel-checkout-hour").val()), hotelCheckoutMinutes = $.trim(that.myDom.find("#hotel-checkout-minutes").val()), hotelCheckoutPrimeTime = $.trim(that.myDom.find("#hotel-checkout-primetime").val()), hotelContactFirstName = $.trim(that.myDom.find("#contact-first-name").val()), hotelContactLastName = $.trim(that.myDom.find("#contact-last-name").val()), hotelContactEmail = $.trim(that.myDom.find("#contact-email").val()), hotelContactPhone = $.trim(that.myDom.find("#contact-phone").val()), hotelChain = $.trim(that.myDom.find("#hotel-chain").val()), hotelBrand = $.trim(that.myDom.find("#hotel-brand").val()), hotelCurrency = $.trim(that.myDom.find("#hotel-currency").val()), adminEmail = $.trim(that.myDom.find("#admin-email").val()), adminPhone = $.trim(that.myDom.find("#admin-phone").val()), adminFirstName = $.trim(that.myDom.find("#admin-first-name").val()), adminLastName = $.trim(that.myDom.find("#admin-last-name").val()), password = $.trim(that.myDom.find("#admin-pwd").val()), confirmPassword = $.trim(that.myDom.find("#admin-confirm-pwd").val()), zipcode = $.trim(that.myDom.find("#hotel-zipcode").val()), numberOfRooms = $.trim(that.myDom.find("#hotel-rooms").val()), roverRegistration = $("#registration-for-rover input[type='radio']:checked").val(), hotelTimeZone = $.trim(that.myDom.find("#hotel-time-zone").val());
-		hotelAutoLogoutTime = $.trim(that.myDom.find("#auto-logout").val());
+		var hotelAutoLogoutTime = $.trim(that.myDom.find("#auto-logout").val());
 
-		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration);
-		var url = '/admin/hotels/' + currentHotel;
+		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime);
+		var type = event.data[0];
+		 if(type == "create"){
+		 	var url = '/admin/hotels';
+		 } else {
+		 	var url = '/admin/hotels/' + currentHotel;
+		 }
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : data,
@@ -93,8 +103,11 @@ var HotelDetailsView = function(domRef) {
 			failureCallBack : that.fetchFailedOfSave,
 			loader : "BLOCKER"
 		};
-		webservice.putJSON(url, options);
-		//webservice.performRequest(url, data, that.fetchCompletedOfAddNewHotel, that.fetchFailedOfSave, false, 'PUT');
+		if(type == "create"){
+		 	webservice.postJSON(url, options);
+		 } else {
+		 	webservice.putJSON(url, options);
+		 }
 
 	};
 
@@ -114,7 +127,7 @@ var HotelDetailsView = function(domRef) {
 		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);
 	};
 	//Generating post data
-	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration) {
+	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime) {
 
 		if (that.currentView == "snt-admin-view") {
 			data = {
@@ -147,7 +160,8 @@ var HotelDetailsView = function(domRef) {
 				admin_password : password,
 				admin_password_confirmation : confirmPassword,
 				hotel_time_zone : hotelTimeZone,
-				auto_logout_delay : hotelAutoLogoutTime
+				auto_logout_delay: hotelAutoLogoutTime,
+				mli_certificate : that.fileContent
 			};
 		} else {
 			data = {
@@ -174,6 +188,7 @@ var HotelDetailsView = function(domRef) {
 			hotel_brand:hotelBrand,
 			hotel_chain:hotelChain,
 			hotel_time_zone: hotelTimeZone,
+			auto_logout_delay: hotelAutoLogoutTime,
 			required_signature_at:roverRegistration
 
 		} ;
@@ -184,4 +199,17 @@ this.gotoPreviousPage = function() {
 
 	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
 };
+
+this.readCertificate = function(input) {
+  	   //$('#file-preview').attr('changed', "changed");
+       if (input.files && input.files[0]) {
+           var reader = new FileReader();
+           reader.onload = function(e) {
+           		console.log(e.target.result);
+           	   //$('#file-preview').attr('src', e.target.result);
+               that.fileContent = e.target.result;
+           };
+           reader.readAsDataURL(input.files[0]);
+       }
+  };
 };

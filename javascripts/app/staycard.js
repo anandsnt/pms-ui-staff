@@ -184,14 +184,14 @@ var StayCard = function(viewDom){
     };
 
    // // DEBUG
-   if (sntapp.cardSwipeDebug === true) { 
+  /* if (sntapp.cardSwipeDebug === true) { 
     /*var token = {
       'data' : "123456789312321321321"
-    }*/
-
-    successCallBackHandler(token); 
+    }
+    console.log(JSON.stringify(swipedCardData));
+    successCallBackHandler(swipedCardData); 
     return;
-  }
+  }*/
 
     var webservice = new WebServiceInterface();
     webservice.postJSON(url, options);
@@ -358,7 +358,9 @@ this
               sucessCallback();
             }
         },
-        error : function() {
+        error : function(jqxhr, status, error){
+          //checking whether a user is logged in
+          if (jqxhr.status == "401") { sntapp.logout(); return;}
           //TODO: handle error display
         }
       });

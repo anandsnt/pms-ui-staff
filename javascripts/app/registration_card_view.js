@@ -29,20 +29,14 @@ var RegistrationCardView = function(viewDom) {
 		});
 
 		var reservation_status = that.myDom.find("#registration-content").attr("data-reservation-status");
-		that.myDom.find("#signature-pad").removeClass("hidden");
+		
 		if (this.viewParams.clickedButton == "ViewBillButton") {
 			// To Display Guest Bill screen in detailed mode via ViewBillButton click.
 			that.myDom.find("#bill1-fees").removeClass("hidden");
 			that.myDom.find("#signature-pad").addClass("hidden");
+			that.myDom.find("#complete-checkout-button").addClass("hidden");
 		}
-		if (this.viewParams.clickedButton == "CheckoutButton" || reservation_status == "CHECKING_OUT") {
-			// To show 'COMPLETE CHECK OUT' button when Reservation is DUE OUT,regardless of how it has been accessed.
-			// Always show 'COMPLETE CHECK OUT' button when click "CheckoutButton" in stay card.
-			that.myDom.find("#complete-checkout-button").removeClass("hidden");
-		}
-		// To add active class to the first bill tab
-		that.myDom.find("#bills-tabs-nav li[bill_active='true']").addClass('active');
-
+		
 		// A dirty hack to allow "this" instance to be refered from sntapp
 		sntapp.setViewInst('registrationCardView', function() {
 			return that;
@@ -121,6 +115,7 @@ var RegistrationCardView = function(viewDom) {
 			$('#guest-card .ui-resizable-handle').trigger('click');
 		}
 	};
+	
 	this.subscribeCheckboxClicked = function(e) {
 		var guest_email = $("#contact-info #email").val();
 
@@ -238,12 +233,14 @@ var RegistrationCardView = function(viewDom) {
 		if (errorMessage != "") {
 			that.showErrorMessage(errorMessage);
 			return;
-		} else if (is_promotions_and_email_set && guest_email == "") {
+		}
+		else if (is_promotions_and_email_set && guest_email == "") {
 			// To show pop up to add email adress when EMAIL OPT is enabled and guest email is blank.
 			var validateOptEmailModal = new ValidateOptEmailModal();
 			validateOptEmailModal.initialize();
 			return;
-		} else {
+		}
+		else {
 			var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
 			var data = {
 				"is_promotions_and_email_set" : is_promotions_and_email_set,
@@ -322,7 +319,8 @@ var RegistrationCardView = function(viewDom) {
 			validateCheckoutModal.params = {
 				"type" : "NoEmail"
 			};
-		} else {
+		}
+		else {
 			that.completeCheckout(e);
 		}
 
@@ -331,8 +329,8 @@ var RegistrationCardView = function(viewDom) {
 	this.completeCheckout = function(e) {
 		var required_signature_at = $(e.target).attr('data-required-signature');
 		var balance_amount = that.myDom.find("#balance-amount").attr("data-balance-amount");
-		if (balance_amount != 0) {
-			// When balance amount is not 0 - perform payment action.
+		if (balance_amount > 0) {
+			// When balance amount is greater than 0 - perform payment action.
 			that.payButtonClicked();
 		}
 		else {
@@ -344,7 +342,7 @@ var RegistrationCardView = function(viewDom) {
 
 			if (signature == "[]" && required_signature_at == "CHECKOUT")
 				errorMessage = "Signature is missing";
-			else if (!terms_and_conditions)
+			else if (!terms_and_conditions && required_signature_at == "CHECKOUT")
 				errorMessage = "Please check agree to the Terms & Conditions";
 
 			if (errorMessage != "") {
@@ -358,7 +356,6 @@ var RegistrationCardView = function(viewDom) {
 				"email" : email,
 				"signature" : signature
 			};
-			console.log(data);
 			var options = {
 				requestParameters : data,
 				successCallBack : that.fetchCompletedOfCompleteCheckout,
@@ -376,9 +373,9 @@ var RegistrationCardView = function(viewDom) {
 	// To show payment modal
 	this.payButtonClicked = function() {
 		var billCardPaymentModal = new BillCardPaymentModal(that.reloadBillCardPage);
-
+		var bill_number = that.myDom.find("#bills-tabs-nav li.ui-tabs-active").attr('data-bill-number');
 		billCardPaymentModal.params = {
-			"bill_number" : that.bill_number
+			"bill_number" : bill_number
 		};
 
 		// send swipedCardData to bill card payment modal
@@ -394,9 +391,10 @@ var RegistrationCardView = function(viewDom) {
 	this.addNewButtonClicked = function() {
 		var postChargeModel = new PostChargeModel(that.reloadBillCardPage);
 		postChargeModel.initialize();
+		var bill_number = that.myDom.find("#bills-tabs-nav li.ui-tabs-active").attr('data-bill-number');
 		postChargeModel.params = {
 			"origin" : views.BILLCARD,
-			"bill_number" : that.bill_number
+			"bill_number" : bill_number
 		};
 	};
 
