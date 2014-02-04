@@ -47,8 +47,7 @@ var RoomAssignmentView = function(viewDom){
       setTimeout(function(){
 
         if (that.myDom.find($('#room-attributes')).length) { createViewScroll('#room-attributes'); }
-        //if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
-        createViewScroll('#room-upgrades');
+        if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
       }, 2000);
   };
 
