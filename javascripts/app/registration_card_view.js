@@ -37,9 +37,6 @@ var RegistrationCardView = function(viewDom) {
 			that.myDom.find("#complete-checkout-button").addClass("hidden");
 		}
 		
-		// To add active class to the first bill tab
-		that.myDom.find("#bills-tabs-nav li[bill_active='true']").addClass('active');
-
 		// A dirty hack to allow "this" instance to be refered from sntapp
 		sntapp.setViewInst('registrationCardView', function() {
 			return that;
@@ -61,7 +58,6 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.delegateEvents = function() {
-		this.bill_number = that.myDom.find("#bills li.active").attr('data-bill-number');
 		that.myDom.find('#checkin-button').on('click', that.completeCheckin);
 		that.myDom.find('#clear-signature').on('click', that.clearSignature);
 		that.myDom.find('#back-to-staycard').on('click', that.gotoStayCard);
@@ -70,6 +66,7 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find('#add-new-button').on('click', that.addNewButtonClicked);
 		that.myDom.find('#subscribe').on('click', that.subscribeCheckboxClicked);
 	};
+	
 	this.subscribeCheckboxClicked = function(e) {
 		var guest_email = $("#contact-info #email").val();
 
@@ -327,9 +324,9 @@ var RegistrationCardView = function(viewDom) {
 	// To show payment modal
 	this.payButtonClicked = function() {
 		var billCardPaymentModal = new BillCardPaymentModal(that.reloadBillCardPage);
-
+		var bill_number = that.myDom.find("#bills-tabs-nav li.ui-tabs-active").attr('data-bill-number');
 		billCardPaymentModal.params = {
-			"bill_number" : that.bill_number
+			"bill_number" : bill_number
 		};
 
 		// send swipedCardData to bill card payment modal
@@ -345,9 +342,10 @@ var RegistrationCardView = function(viewDom) {
 	this.addNewButtonClicked = function() {
 		var postChargeModel = new PostChargeModel(that.reloadBillCardPage);
 		postChargeModel.initialize();
+		var bill_number = that.myDom.find("#bills-tabs-nav li.ui-tabs-active").attr('data-bill-number');
 		postChargeModel.params = {
 			"origin" : views.BILLCARD,
-			"bill_number" : that.bill_number
+			"bill_number" : bill_number
 		};
 	};
 
