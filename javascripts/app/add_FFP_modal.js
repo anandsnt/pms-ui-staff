@@ -7,9 +7,9 @@ var AddFFPModal = function(){
 		that.myDom.find('#new-ffp #save').on('click', that.addFFP);
 		that.myDom.find('#airline-ff-list').on('change', that.airlineChanged);
 		addFFPSelectOptions("#new-ffp #airline-ff-list");
-	}
+	};
 	this.modalInit = function(){
-    }
+   };
 	this.addFFP = function(event){
         event.preventDefault();
 		event.stopImmediatePropagation();
@@ -40,10 +40,10 @@ var AddFFPModal = function(){
 		newFFP.user_id = userId;
 		newFFP.guest_id = guestId;
 		newFFP.user_membership = {};
-		newFFP.user_membership.membership_class = "FFP"
+		newFFP.user_membership.membership_class = "FFP";
 		newFFP.user_membership.membership_type = $airline;
 		newFFP.user_membership.membership_card_number = $code;
-		newFFP.user_membership.membership_level = $level;
+		// newFFP.user_membership.membership_level = $level;
 
 		updateServerForNewLoyalty(newFFP, function(data){
 			updateFFPLoyaltyUI($airline,$code,$program,$name);
@@ -59,7 +59,7 @@ var AddFFPModal = function(){
 			$("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 			$("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');			
 	    }, "FFP");	    
-    }
+   };
   
     this.airlineChanged = function(event){
         event.preventDefault();
@@ -70,11 +70,11 @@ var AddFFPModal = function(){
 		$.each(ffProgramsList.data, function(key, airline) {
 			if(airline.ff_value == selectedAirlineType){
 				$.each(airline.levels, function(key, value) {
-					var ffOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>'
+					var ffOptions ='<option value="'+ value.membership_level +'">' + value.description+ '</option>';
 					$("#new-ffp #airline-ff-pgms").append(ffOptions);
 				});
 			}
 		});
-    }
+    };
   
-}
+};
