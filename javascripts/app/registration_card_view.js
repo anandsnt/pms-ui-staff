@@ -218,7 +218,7 @@ var RegistrationCardView = function(viewDom) {
 			return false;
 		}
 
-		var signature = JSON.stringify($("#signature").jSignature("getData", "native"));
+		var signature = JSON.stringify(that.myDom.find("#signature").jSignature("getData", "native"));
 		var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked") ? 1 : 0;
 		var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
 		var guest_email = $("#contact-info #email").val();
@@ -336,7 +336,7 @@ var RegistrationCardView = function(viewDom) {
 		else {
 			// When balance amount is 0 - perform complete check out action.
 			var email = $("#gc-email").val();
-			var signature = JSON.stringify($("#signature").jSignature("getData", "native"));
+			var signature = JSON.stringify(that.myDom.find("#signature").jSignature("getData", "native"));
 			var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked") ? 1 : 0;
 			var errorMessage = "";
 
@@ -367,7 +367,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.fetchCompletedOfCompleteCheckout = function(data) {
-		that.showErrorMessage(data.data, that.goToSearchScreen);
+		that.showSuccessMessage(data.data, that.goToSearchScreen);
 	};
 
 	// To show payment modal
