@@ -8752,6 +8752,9 @@
 				"cache": false,
 				"type": oSettings.sServerMethod,
 				"error": function (xhr, error, thrown) {
+
+        			//checking whether a user is logged in
+        			if (xhr.status == "401") { sntapp.logout(); return;}					
 					if ( error == "parsererror" ) {
 						oSettings.oApi._fnLog( oSettings, 0, "DataTables warning: JSON data from "+
 							"server could not be parsed. This is caused by a JSON formatting error." );
