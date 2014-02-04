@@ -43,6 +43,10 @@ var RegistrationCardView = function(viewDom) {
 		});
 	};
 
+	this.pageshow = function(){
+		sntapp.cardSwipeCurrView = 'GuestBillView';
+	};
+
 	this.executeLoadingAnimation = function() {
 		sntapp.activityIndicator.showActivityIndicator("blocker");
 		if (this.viewParams === undefined)
@@ -168,19 +172,7 @@ var RegistrationCardView = function(viewDom) {
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
 	};
 
-	this.gotoBillCard = function() {
 
-		var viewURL = "staff/reservation/bill_card";
-		var viewDom = $("#view-nested-third");
-		var params = {
-			"reservation_id" : that.reservation_id
-		};
-		var nextViewParams = {
-			"showanimation" : true,
-			"from-view" : views.ROOM_ASSIGNMENT
-		};
-		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
-	};
 
 	this.goToRoomAssignmentView = function() {
 		that.myDom.html("");

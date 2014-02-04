@@ -94,6 +94,7 @@ var StayCard = function(viewDom){
 
     // respond to StayCardView
     var stayCardViewResponse = function() {
+      console.log('stayCardViewResponse');
       // if addNewPaymentModal instance doen't exist, create it
       // else if addNewPaymentModal instance exist, but the dom is removed
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
@@ -112,21 +113,27 @@ var StayCard = function(viewDom){
 
     // respond to GuestBillView
     var guestBillViewResponse = function() {
-      var currentCardToken = $('#select-card-from-list').data('token');
+      console.log('guestBillViewResponse');
+      var currentCardToken = $('#select-card-from-list').attr('data-token');
 
       // if the guest uses a registered card, show bill payment modal
-      if (currentCardToken === swipedCardData.token.slice(-4)) {
+      console.log('swipedCardData.token.slice(-4) : ');
+      console.log(currentCardToken);
+      console.log(swipedCardData.token.slice(-4));
+      if (currentCardToken == swipedCardData.token.slice(-4)) {
         sntapp.getViewInst('registrationCardView').swipedCardData = swipedCardData;
         sntapp.getViewInst('registrationCardView').payButtonClicked();
       } else {
-
-        // show modal for adding a new card
-        stayCardViewResponse();
+        alert('Sorry, The swiped credit card is not associated with current reservation');
+         // sntapp.notification.showErrorMessage('You can only use card associated with current reservation');
+        
+        
       }
     };
 
     // respond to GuestCardView
     var guestCardView = function() {
+      console.log('guestCardView');
       // if addNewPaymentModal instance doen't exist, create it
       // else if addNewPaymentModal instance exist, but the dom is removed
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
