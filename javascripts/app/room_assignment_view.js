@@ -42,13 +42,14 @@ var RoomAssignmentView = function(viewDom){
   };
   //
   this.createViewScroll = function(){
+    console.log("20000 time");
    // if (viewScroll) { destroyViewScroll(); }
       setTimeout(function(){
 
         if (that.myDom.find($('#room-attributes')).length) { createViewScroll('#room-attributes'); }
         //if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
         createViewScroll('#room-upgrades');
-      }, 1000);
+      }, 20000);
   };
 
   //Scroll view creation for the the room list
