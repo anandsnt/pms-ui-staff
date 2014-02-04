@@ -7,6 +7,7 @@ var FailureModal = function(callBack) {
 		var message = this.params.message;
 		that.myDom.find('.message').html(message);
 		that.myDom.find('#modal-close').on('click',that.okButtonClicked);
+		$('#modal-overlay').on('click', that.okButtonClicked);
 	};
 	
 	this.okButtonClicked = function(){
