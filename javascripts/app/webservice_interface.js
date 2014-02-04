@@ -141,9 +141,6 @@ var WebServiceInterface = function(){
 	this.performRequest = function(requestUrl, requestParameters, loader, 
 			successCallBack, failureCallBack, successCallBackParameters, failureCallBackParameters, 
 			async, requestType, contentType, dataType){	
-
-	    console.log('performRequest reached');
-
        if(typeof requestParameters === 'undefined'){
                requestParameters = {};
        } 
