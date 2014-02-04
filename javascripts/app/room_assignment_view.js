@@ -47,7 +47,7 @@ var RoomAssignmentView = function(viewDom){
 
         if (that.myDom.find($('#room-attributes')).length) { createViewScroll('#room-attributes'); }
         if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
-      }, 700);
+      }, 1000);
   };
 
   //Scroll view creation for the the room list
