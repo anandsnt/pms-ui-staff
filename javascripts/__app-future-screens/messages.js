@@ -25,7 +25,8 @@ function loadMessage($this, $href){
                         $(this).html(data);
                     }).animate({opacity: 1}, 150);
                 },
-                error: function(){
+                error: function(jqxhr, status, error){
+                    if (jqxhr.status=="401") { sntapp.logout(); return;}
                     $('#loading').remove();
                     modalInit('modals/alerts/not-there-yet/');
                 }
@@ -74,7 +75,8 @@ function selectedMessages($this, $item){
                         $(this).html(data);
                     }).animate({opacity: 1}, 150);
                 },
-                error: function(){
+                error: function(jqxhr, status, error){
+                    if (jqxhr.status=="401") { sntapp.logout(); return;}
                     $('#loading').remove();
                     modalInit('modals/alerts/not-there-yet/');
                 }

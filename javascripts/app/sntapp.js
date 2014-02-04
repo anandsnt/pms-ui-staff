@@ -83,10 +83,6 @@ var app = function(){
         that.activityIndicator.showActivityIndicator(loader);
      
         
-        // if(shouldShowLoader){
-           // var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
-           // $($loader).prependTo('body').show();
-        // }
         $.ajax({
             type: "GET",
             data: params,
@@ -98,7 +94,9 @@ var app = function(){
                 that.activityIndicator.hideActivityIndicator();
                 
             },
-            error: function(){
+            error: function(jqxhr, status, error){
+                //checking whether a user is logged in
+                if (jqxhr.status == "401") { sntapp.logout(); return;}
                 that.notification.showErrorMessage('An error has occured while fetching the view' );
                 that.activityIndicator.hideActivityIndicator();
             }
@@ -201,6 +199,9 @@ var app = function(){
         return this.viewDict[name];
     };
 
+    this.logout = function(){
+        window.location = "/logout";
+    };
 
     this.ismob = (function(navigator) { 
       if( navigator.userAgent.match(/Android/i)
@@ -217,6 +218,8 @@ var app = function(){
         return false;
       }
     })(navigator);    
+
+
 };
 
 sntapp = new app();

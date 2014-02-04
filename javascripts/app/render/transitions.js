@@ -322,7 +322,9 @@ $(function($){
                         $(this).attr({'data-transition': $transition + ' reload-content'});
                     });
                 },
-                error: function(){
+                error: function(jqxhr, status, error){
+                    //checking whether a user is logged in
+                    if (jqxhr.status == "401") { sntapp.logout(); return;}
                 }
             });    
 
@@ -341,7 +343,9 @@ $(function($){
                     success: function(data){
                         $('#page-main-first').html(data);
                     },
-                    error: function(){
+                    error: function(jqxhr, status, error){
+                        //checking whether a user is logged in
+                        if (jqxhr.status == "401") { sntapp.logout(); return;}
                     }
                 });
             }
@@ -425,7 +429,8 @@ $(function($){
                     success: function(data){
                         $('#' + $next).html(data);
                     },
-                    error: function(){
+                    error: function(jqxhr, status, error){
+                        if (jqxhr.status=="401") { sntapp.logout(); return;}
                         $('#loading').remove();
                     }
                 }).done(function(){
