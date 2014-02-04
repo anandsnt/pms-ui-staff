@@ -136,9 +136,12 @@ var Search  = function(domRef){
         }
 
         // showing card swipe errors
-        if (requestParams['swipe_error'] === 'INVALID_CARD') {
+        if (requestParams['swipe_error'] === 'NO_GUEST') {
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"hidden open-modal-fix\">Or add a New Guest</span>.</li>');
+          that.updateView();
+        }
+        else if (requestParams['swipe_error'] === 'INVALID_CARD') {
           $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-card"></span><strong class="h1">Invalid Credit Card</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"hidden open-modal-fix\">add a New Guest</span>.</li>');
-
           that.updateView();
         } else if(requestParams['swipe_error'] === 'NO_CONFIRM') {
           $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No Guest or Reservation Found</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"hidden open-modal-fix\">add a New Guest</span>.</li>');
@@ -181,7 +184,7 @@ var Search  = function(domRef){
         if (data.confirmation === 'nill' && data.id === 'nill') {
 
           // No reservation was not found
-          that.fetchCompletedOfFetchSearchData( {'data': ''}, {'swipe_error': 'NO_CONFIRM'} );
+          that.fetchCompletedOfFetchSearchData( {'data': ''}, {'swipe_error': 'NO_GUEST'} );
         } else {
           that.postCardSwipDataSuccess(response);
         }
