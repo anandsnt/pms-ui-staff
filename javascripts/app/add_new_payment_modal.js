@@ -43,6 +43,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
    	};
     //Success call back after succesful addition of payment in reservation
    	this.fetchCompletedOfReservationPayment = function(data, requestParameters){
+
    			that.save_inprogress = false;
 			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+".png";	
 			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();

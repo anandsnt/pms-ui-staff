@@ -16,7 +16,7 @@ var StayCard = function(viewDom){
     // Start listening to card swipes
     this.initCardSwipe();
 
-    // // DEBUG
+    // DEBUG
     // if ( $('#reservation-card').find('#current:visible').length ) {
     //   window.trigger = that.postCardSwipData;
     //   var swipedCardData = {
@@ -29,13 +29,14 @@ var StayCard = function(viewDom){
     //     }
     //   }
     // };
-  }
+  };
 
   // Start listening to card swipes
   this.initCardSwipe = function() {
-    if(sntapp.cordovaLoaded){
+    
       var options = {
           successCallBack: function(data){
+            console.log("Success call back from swipe in staycard");
 
             // if this is not staycard do nothing
             // TODO: can't match page to '' as there could be pages with no data-page
@@ -44,7 +45,7 @@ var StayCard = function(viewDom){
             if ('dashboard' === activeMenu || 'search' === activeMenu) {
               return;
             };
-
+            console.log('data got in success call back (staycard): '+ JSON.stringify(data));
             var swipedCardData = {
               cardType: data.RVCardReadCardType || '',
               expiry: data.RVCardReadExpDate || '',
@@ -53,7 +54,7 @@ var StayCard = function(viewDom){
                 'et2': data.RVCardReadTrack2,
                 'ksn': data.RVCardReadTrack2KSN
               }
-            }
+            };
             that.postCardSwipData(swipedCardData);
           },
           failureCallBack: function(errorObject){
@@ -69,11 +70,10 @@ var StayCard = function(viewDom){
             sntapp.notification.showErrorMessage('Could not read the card properly. Please try again.');
           }
       };
-
       // start listening
-      sntapp.cardReader.startReader(options);
+      if(sntapp.cardSwipeDebug===true){ console.log("SC PAYMENT DB######"); sntapp.cardReader.startReaderDebug(options); }
 
-    }
+      if(sntapp.cordovaLoaded){ sntapp.cardReader.startReader(options); }
   };
 
 
@@ -89,20 +89,11 @@ var StayCard = function(viewDom){
 
     var swipedCardData = swipedCardData;
 
-    var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
+//Please delete the explicit implementation.
+    var url = '/staff/payments/tokenize';
 
     // respond to StayCardView
     var stayCardViewResponse = function() {
-
-      // if there is another card added already and
-      // its not the same card as we swiped
-      // remove thata card
-      // else do nothing
-       if ( $('#delete_card').length && $('#token-last-value').text() === swipedCardData.token.slice(-4))  {
-        sntapp.notification.showErrorMessage('Card already assigned');
-        return;
-      }
-
       // if addNewPaymentModal instance doen't exist, create it
       // else if addNewPaymentModal instance exist, but the dom is removed
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
@@ -156,9 +147,7 @@ var StayCard = function(viewDom){
       // add token to card data
       swipedCardData.token = token.data;
 
-      // // DEBUG
-      // swipedCardData.token = '123456789';
-
+      
       // dirty trick to find the current page and react
       switch(sntapp.cardSwipeCurrView){
         // respond to StayCardView
@@ -191,11 +180,20 @@ var StayCard = function(viewDom){
       }
     };
 
+   // // DEBUG
+  /* if (sntapp.cardSwipeDebug === true) { 
+    /*var token = {
+      'data' : "123456789312321321321"
+    }
+    console.log(JSON.stringify(swipedCardData));
+    successCallBackHandler(swipedCardData); 
+    return;
+  }*/
+
     var webservice = new WebServiceInterface();
     webservice.postJSON(url, options);
 
-    // // DEBUG
-    // successCallBackHandler();
+    
   };
 
   this.delegateEvents = function(partialViewRef){  
@@ -204,12 +202,41 @@ var StayCard = function(viewDom){
    		partialViewRef = $("#confirm_no").val();
    	};   	
   	
-    that.myDom.find('#reservation-timeline li').on('click', that.reservationTimelineClicked);
-    that.myDom.find('#reservation-listing li').on('click', that.reservationListItemClicked);
+    //that.myDom.find('#reservation-timeline li').on('click', that.reservationTimelineClicked);
+    //that.myDom.find('#reservation-listing li').on('click', that.reservationListItemClicked);
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);  
     that.myDom.find('#title').on('change', that.changeAvathar);
+    // that.myDom.unbind('click');
+	that.myDom.find("#reservation-card *").on('click', that.reservationCardClickHandler);
+
   };
   
+  this.reservationCardClickHandler = function(event){
+  	  	
+    var target = $(event.target);
+		var target_id = target.attr("id");
+		if(!target.is("#guest-card-content *"))
+		{
+			that.closeGuestCardDrawer();
+			switch(target_id){
+				case 'reservation-timeline li': {				
+					return that.reservationTimelineClicked(event);
+					break;
+				}
+				case 'reservation-listing li': {
+					return that.reservationListItemClicked(event);
+					break;
+				}
+			}
+		}
+	};
+  // function for closing the drawer if is open
+	that.closeGuestCardDrawer = function(){
+		if($("#guest-card").hasClass('open')) {
+			$('#guest-card .ui-resizable-handle').trigger('click');
+		}
+	};
+
   this.changeAvathar = function(e){
 	  var imgSrc = that.myDom.find('#guest-image').attr('src');
     var imageName = imgSrc.split('/')[imgSrc.split('/').length-1];

@@ -58,13 +58,62 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.delegateEvents = function() {
-		that.myDom.find('#checkin-button').on('click', that.completeCheckin);
-		that.myDom.find('#clear-signature').on('click', that.clearSignature);
-		that.myDom.find('#back-to-staycard').on('click', that.gotoStayCard);
-		that.myDom.find('#complete-checkout-button').on('click', that.clickedCompleteCheckout);
-		that.myDom.find('#pay-button').on('click', that.payButtonClicked);
-		that.myDom.find('#add-new-button').on('click', that.addNewButtonClicked);
-		that.myDom.find('#subscribe').on('click', that.subscribeCheckboxClicked);
+		///that.myDom.find(('.bill-tabs')).tabs();
+		// ui tabs
+		this.bill_number = that.myDom.find("#bills li.active").attr('data-bill-number');
+		that.myDom.unbind('click');
+		that.myDom.on('click', that.myDomClickHandler);
+		
+	};
+
+	// function to hanlde the click operation in the dom	
+	this.myDomClickHandler = function (event) {
+		// based on event's target elements we are calling the event operations
+		
+		
+		var target = $(event.target);
+		var target_id = target.attr("id");
+		if(!target.is("#guest-card-content *"))
+		{
+			that.closeGuestCardDrawer();
+			switch(target_id){
+				case 'checkin-button': {				
+					return that.completeCheckin(event);
+					break;
+				}
+				case 'clear-signature': {
+					return that.clearSignature(event);
+					break;
+				}
+				case 'back-to-staycard': {
+					return that.gotoStayCard(event);
+					break;
+				}
+				case 'complete-checkout-button': {
+					return that.clickedCompleteCheckout(event);
+					break;
+				}
+				case 'pay-button': {
+					return that.payButtonClicked();
+					break;
+				}
+				case 'add-new-button': {
+					return that.addNewButtonClicked();
+					break;
+				}
+				case 'subscribe': {
+					return that.subscribeCheckboxClicked(event);
+					break;
+				}
+			}
+		}
+	};
+
+     // function for closing the drawer if is open
+	that.closeGuestCardDrawer = function(){
+		if($("#guest-card").hasClass('open')) {
+			$('#guest-card .ui-resizable-handle').trigger('click');
+		}
 	};
 	
 	this.subscribeCheckboxClicked = function(e) {
@@ -236,9 +285,9 @@ var RegistrationCardView = function(viewDom) {
 	};
 	this.fetchFailedOfSave = function(errorMessage) {
 		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);
-	};
-	this.clearSignature = function() {
+		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+	  };
+	this.clearSignature = function(e) {
 		that.myDom.find("#signature").jSignature("reset");
 	};
 

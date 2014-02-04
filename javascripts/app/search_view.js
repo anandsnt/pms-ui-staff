@@ -35,7 +35,7 @@ var Search  = function(domRef){
 
   // Start listening to card swipes
   this.initCardSwipe = function() {
-    if(sntapp.cordovaLoaded){
+   
       var options = {
           successCallBack: function(data){
 
@@ -66,8 +66,12 @@ var Search  = function(domRef){
             that.fetchCompletedOfFetchSearchData( {'data': ''}, {'swipe_error': 'INVALID_CARD'} );
           }
       };
-      sntapp.cardReader.startReader(options);     
-    }
+
+      if (sntapp.cardSwipeDebug ===  true)  { sntapp.cardReader.startReaderDebug(options) } ;
+
+      if(sntapp.cordovaLoaded){ sntapp.cardReader.startReader(options) };     
+      
+    
   };
 
   this.delegateEvents = function(){  
