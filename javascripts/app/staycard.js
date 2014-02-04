@@ -93,7 +93,7 @@ var StayCard = function(viewDom){
     var swipedCardData = swipedCardData;
 
 //Please delete the explicit implementation.
-    var url = 'http://pms-dev.stayntouch.com/staff/payments/tokenize';
+    var url = '/staff/payments/tokenize';
 
     // respond to StayCardView
     var stayCardViewResponse = function() {
@@ -185,9 +185,9 @@ var StayCard = function(viewDom){
 
    // // DEBUG
    if (sntapp.cardSwipeDebug === true) { 
-    var token = {
+    /*var token = {
       'data' : "123456789312321321321"
-    }
+    }*/
 
     successCallBackHandler(token); 
     return;

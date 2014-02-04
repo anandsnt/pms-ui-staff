@@ -220,6 +220,6 @@ var app = function(){
 };
 
 sntapp = new app();
-//sntapp.cardReader = new CardOperation();
+sntapp.cardReader = new CardOperation();
 
-sntapp.cardSwipeDebug = false; // Mark it as true to debug cardSwype opertations
+sntapp.cardSwipeDebug = true; // Mark it as true to debug cardSwype opertations

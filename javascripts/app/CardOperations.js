@@ -17,8 +17,8 @@ var CardOperation = function(){
 			console.log("sucecss called");
 			var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 			var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
-			var carddata= { 'RVCardReadTrack2': 'dwadwadwadawdawd',
-          					'RVCardReadTrack2KSN': 'dwaawdwadawdawd wa'
+			var carddata= { 'RVCardReadTrack2': 'CDA1E3A2EB853964E4D4550151545BE1052CB17498A61E8FE5BB5D948BD3844EA78603B263D5E509',
+          					'RVCardReadTrack2KSN': '950067000000062002AF'
 						  };
 
 			if (typeof data != 'undefined'){ carddata = data;}
@@ -28,8 +28,7 @@ var CardOperation = function(){
 	}
 
 
-	this.startReader = function(options){		
-
+	this.startReader = function(options){
 		options['shouldCallRecursively'] = true;
 		that.listenForSingleSwipe(options);		
 	};
