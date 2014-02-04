@@ -45,7 +45,7 @@ var StayCard = function(viewDom){
             if ('dashboard' === activeMenu || 'search' === activeMenu) {
               return;
             };
-
+            console.log('data got in success call back (staycard): '+ JSON.stringify(data));
             var swipedCardData = {
               cardType: data.RVCardReadCardType || '',
               expiry: data.RVCardReadExpDate || '',
@@ -70,9 +70,6 @@ var StayCard = function(viewDom){
             sntapp.notification.showErrorMessage('Could not read the card properly. Please try again.');
           }
       };
-  console.log("SC PAYMENT INIT######");
-  console.log(JSON.stringify(sntapp));
-  console.log(sntapp.cardSwipeDebug);
       // start listening
       if(sntapp.cardSwipeDebug===true){ console.log("SC PAYMENT DB######"); sntapp.cardReader.startReaderDebug(options); }
 

@@ -203,6 +203,11 @@ var app = function(){
         window.location = "/logout";
     };
 
+    this.enableCardSwipeDebug = function(){
+        that.cardSwipeDebug = true; // Mark it as true to debug cardSwype opertations
+        that.cardReader = new CardOperation();
+    };
+
     this.ismob = (function(navigator) { 
       if( navigator.userAgent.match(/Android/i)
          || navigator.userAgent.match(/webOS/i)
@@ -223,6 +228,5 @@ var app = function(){
 };
 
 sntapp = new app();
-sntapp.cardReader = new CardOperation();
+//sntapp.enableCardSwipeDebug();
 
-sntapp.cardSwipeDebug = true; // Mark it as true to debug cardSwype opertations
