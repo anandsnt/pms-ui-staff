@@ -1055,7 +1055,9 @@ function EventManager(options, _sources) {
 						}
 						callback(events);
 					},
-					error: function() {
+					error: function(jqxhr, status, errorFn){
+        				//checking whether a user is logged in
+        				if (jqxhr.status == "401") { sntapp.logout(); return;}
 						applyAll(error, this, arguments);
 						callback();
 					},
