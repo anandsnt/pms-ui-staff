@@ -42,7 +42,7 @@ var RoomAssignmentView = function(viewDom){
   };
   //
   this.createViewScroll = function(){
-    console.log("2000 time");
+
    // if (viewScroll) { destroyViewScroll(); }
       setTimeout(function(){
 
