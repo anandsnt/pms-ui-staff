@@ -209,7 +209,8 @@ function modalInit(content, closeAfter, position, lock) {
             setModal();
             $('#modal').html(data);
         },
-        error: function(){
+        error: function(jqxhr, status, error){
+            if (jqxhr.status=="401") { sntapp.logout(); return;}
         }
     });
 

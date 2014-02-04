@@ -40,7 +40,9 @@ var DeleteLoyaltyModal = function(){
 			dataType: 'json',
 				success: function(data) {
 				},
-				error: function(){
+				error: function(jqxhr, status, error){
+        		//checking whether a user is logged in
+        		if (jqxhr.status == "401") { sntapp.logout(); return;}
 			}
 		});
 		that.hide();
