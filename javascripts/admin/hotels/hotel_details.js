@@ -1,8 +1,10 @@
+
 var HotelDetailsView = function(domRef) {
 	BaseView.call(this);
 	this.myDom = domRef;
 	this.currentView = $("body").attr("id");
 	var that = this;
+  this.fileContent = "";
 
 	this.pageinit = function() {
 
@@ -13,6 +15,9 @@ var HotelDetailsView = function(domRef) {
 		that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView);
 		that.myDom.find("#re-invite").on('click', that.reInvite);
 		that.myDom.find("#external-mappings").on('click', that.renderExternalMappings);
+		that.myDom.find('#mli-certificate').on('change', function(){
+  			that.readCertificate(this);
+  		});
 
 	};
 	// function to view external mappings
@@ -74,6 +79,7 @@ var HotelDetailsView = function(domRef) {
 			$(".registration-for-rover").remove();
 
 		} else {
+			$("#mli-certificate-upload").remove();
 			$("#external-mappings").remove();
 			$(".re-invite").remove();
 		}
@@ -147,7 +153,8 @@ var HotelDetailsView = function(domRef) {
 				admin_password : password,
 				admin_password_confirmation : confirmPassword,
 				hotel_time_zone : hotelTimeZone,
-				auto_logout_delay : hotelAutoLogoutTime
+				auto_logout_delay: hotelAutoLogoutTime,
+				mli_certificate : that.fileContent
 			};
 		} else {
 			data = {
@@ -184,4 +191,17 @@ this.gotoPreviousPage = function() {
 
 	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
 };
+
+this.readCertificate = function(input) {
+  	   //$('#file-preview').attr('changed', "changed");
+       if (input.files && input.files[0]) {
+           var reader = new FileReader();
+           reader.onload = function(e) {
+           		console.log(e.target.result);
+           	   //$('#file-preview').attr('src', e.target.result);
+               that.fileContent = e.target.result;
+           };
+           reader.readAsDataURL(input.files[0]);
+       }
+  };
 };
