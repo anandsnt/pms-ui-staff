@@ -9,6 +9,15 @@ $.fn.maximize = function(size) {
 
     this[size](max);
 };
+$(document).ready(function(){
+	if (localStorage.email) {
+		$("#email").val(localStorage.email);
+	}
+	$("#loginbutton").click(function(){
+		localStorage.email = $("#email").val();
+		$( "#login_form" ).submit();
+	});
+});
 
 // Chaining with intervals
 var chainedAnimation = function(){
@@ -52,7 +61,7 @@ var chainedAnimation = function(){
     },
     this.add = function(_function,_timeout){
         This.chain[This.chain.length] = {func : _function, time : _timeout};
-    }
+    };
 };
 
 // Custom checkbox and radios
