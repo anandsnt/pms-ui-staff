@@ -116,6 +116,16 @@ var UserDetailsView = function(domRef){
 	sntapp.activityIndicator.hideActivityIndicator();
 	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom); 
   };
+  
+    // success function of re-invite api call
+  this.fetchCompletedOfReInvite = function(data){
+	  sntapp.notification.showSuccessMessage("Mail send succesfully.", that.myDom);
+  };
+  
+  // failure call of re-invite api call
+  this.fetchFailedOfReInvite = function(errorMessage){
+	  sntapp.notification.showErrorList("Some error occured.", that.myDom);  
+  };
   //to show preview of the image using file reader
   this.readURL = function(input) {
   	   $('#file-preview').attr('changed', "changed");

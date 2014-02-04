@@ -8,7 +8,9 @@ function loadInlineForm($target, $item){
         success: function(data){
             $('.data-holder').html(data);
         },
-        error: function(){
+        error: function(jqxhr, status, error){
+            //checking whether a user is logged in
+            if (jqxhr.status == "401") { sntapp.logout(); return;}
             alert("Error!");
         }
     }).done(function(){  

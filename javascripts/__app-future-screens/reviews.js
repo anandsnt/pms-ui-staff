@@ -25,7 +25,8 @@ function loadReview($this, $href){
                         $(this).html(data);
                     }).animate({opacity: 1}, 150);
                 },
-                error: function(){
+                error: function(jqxhr, status, error){
+                    if (jqxhr.status=="401") { sntapp.logout(); return;}
                     $('#loading').remove();
                     modalInit('modals/alerts/not-there-yet/');
                 }
@@ -70,7 +71,9 @@ function selectedReviews($this, $item){
                         $(this).html(data);
                     }).animate({opacity: 1}, 150);
                 },
-                error: function(){
+                error: function(jqxhr, status, error){
+                    //checking whether a user is logged in
+                    if (jqxhr.status == "401") { sntapp.logout(); return;}
                     $('#loading').remove();
                     modalInit('modals/alerts/not-there-yet/');
                 }

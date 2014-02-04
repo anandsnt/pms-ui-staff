@@ -9,6 +9,15 @@ $.fn.maximize = function(size) {
 
     this[size](max);
 };
+$(document).ready(function(){
+	if (localStorage.email) {
+		$("#email").val(localStorage.email);
+	}
+	$("#loginbutton").click(function(){
+		localStorage.email = $("#email").val();
+		$( "#login_form" ).submit();
+	});
+});
 
 // Chaining with intervals
 var chainedAnimation = function(){
@@ -52,7 +61,7 @@ var chainedAnimation = function(){
     },
     this.add = function(_function,_timeout){
         This.chain[This.chain.length] = {func : _function, time : _timeout};
-    }
+    };
 };
 
 // Custom checkbox and radios
@@ -209,7 +218,8 @@ function modalInit(content, closeAfter, position, lock) {
             setModal();
             $('#modal').html(data);
         },
-        error: function(){
+        error: function(jqxhr, status, error){
+            if (jqxhr.status=="401") { sntapp.logout(); return;}
         }
     });
 
@@ -496,3 +506,37 @@ $(function($){
         }
     });
 });
+
+
+/*
+    START :: Auto logout after XX minutes
+*/
+/*
+$(function() {
+  var timer;
+  
+  function reset_timer() {
+    window.clearInterval(timer);
+    set_timeout();
+  }
+   
+  function set_timeout() {
+    timer = setInterval(logout, 1000 * 1 * 60); // 1 mins
+  }
+   
+  function logout(){
+    $.get('/timeout.json', function(force_logout){
+      if (force_logout) {
+        window.location = "/logout";
+      }
+    });
+  }
+  
+  set_timeout();
+  $(document).bind('mousemove click keypress scroll', reset_timer);
+});
+*/
+/*
+    END :: Auto logout after XX minutes
+*/
+

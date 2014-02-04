@@ -7,9 +7,9 @@ var AddHLPModal = function(){
 		that.myDom.find('#new-hlp #save').on('click', that.addHLP);
 		that.myDom.find('#hotel-loyalty-types').on('change', that.typeChanged);
 		addHLPSelectOptions("#new-hlp #hotel-loyalty-types");
-	}
+	};
 	this.modalInit = function(){
-    }
+   };
 	this.addHLP = function(event){
         event.preventDefault();
 		event.stopImmediatePropagation();
@@ -39,7 +39,7 @@ var AddHLPModal = function(){
 		newHLP.user_id = userId;
 		newHLP.guest_id = guestId;
 		newHLP.user_membership = {};
-		newHLP.user_membership.membership_class = "HLP"
+		newHLP.user_membership.membership_class = "HLP";
 		newHLP.user_membership.membership_type = $type;
 		newHLP.user_membership.membership_card_number = $code;
 		newHLP.user_membership.membership_level = $level;
@@ -61,20 +61,21 @@ var AddHLPModal = function(){
 			$("#stay-card-loyalty #loyalty option.program_new").attr('id',$loyaltyid);
 			$("#stay-card-loyalty #loyalty option#"+$loyaltyid).removeClass('program_new');
 	    }, "HLP");
-    }
+    };
   	this.typeChanged = function(event){
         event.preventDefault();
 		event.stopImmediatePropagation();
 		$("#new-hlp #hotel-loyalty-levels").html("");
 		$("#new-hlp #hotel-loyalty-levels").append('<option value="" selected="selected" class="placeholder">Select level</option>');
 		var selectedLoyaltyPgm = $("#new-hlp #hotel-loyalty-types").val();
+		that.myDom.find('#hlplevek').removeClass("hidden");
 		$.each(hlProgramsList.data, function(key, loyaltyPgm) {
 			if(loyaltyPgm.hl_value == selectedLoyaltyPgm){
 				$.each(loyaltyPgm.levels, function(key, value) {
-					var hlOptions ='<option value="'+ value.membership_level +'">' + value.membership_level+ '</option>'
+					var hlOptions ='<option value="'+ value.membership_level +'">' + value.membership_level+ '</option>';
 					$("#new-hlp #hotel-loyalty-levels").append(hlOptions);
 				});
 			}
 		});
-    }
-}
+   };
+};
