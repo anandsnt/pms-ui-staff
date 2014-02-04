@@ -79,6 +79,8 @@ var HotelDetailsView = function(domRef) {
 			$(".registration-for-rover").remove();
 
 		} else {
+			$('#mli-hotel-code').parent('.entry').remove();
+			$('#mli-chain-code').parent('.entry').remove();
 			$("#mli-certificate-upload").remove();
 			$("#external-mappings").remove();
 			$(".re-invite").remove();
@@ -123,8 +125,7 @@ var HotelDetailsView = function(domRef) {
 	};
 	//Generating post data
 	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, mliHotelCode, mliChainCode) {
-console.log(mliChainCode);
-console.log(mliHotelCode);
+
 		if (that.currentView == "snt-admin-view") {
 			data = {
 				hotel_name : hotelName,
