@@ -9,7 +9,6 @@ var StayCard = function(viewDom){
     var currentConfirmNumber = $("#confirm_no").val();    
     var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
     reservationDetails.initialize();
-
     // ok we just entered staycard page
     sntapp.cardSwipeCurrView = 'StayCardView';
 
@@ -79,11 +78,14 @@ var StayCard = function(viewDom){
   // to get the token code from MLI
   this.postCardSwipData = function(swipedCardData) {
 
-    // only respond for current reservations
-    var $currResCard = $('#reservation-card > .reservation-tabs-nav li[aria-controls="current"]');
-    if ( 'true' != $currResCard.attr('aria-selected') ) {
+
+    var currentReservationDiv = getCurrentReservationDiv();
+    var reservationStatus = $('#' +currentReservationDiv).data('reservation-status');
+    
+    // only respond for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations
+    if(['NOSHOW', 'CHECKEDOUT', 'CANCELED'].indexOf(reservationStatus) >= 0){
       return;
-    };
+    }
 
     var swipedCardData = swipedCardData;
 
