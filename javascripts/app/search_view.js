@@ -141,7 +141,6 @@ var Search  = function(domRef){
       $("#search-results").empty().removeClass('hidden');
       $('#preloaded-results').addClass('hidden');
       $('#no-results').addClass('hidden');
-      console.log(requestParams);
       // set up reservation status
       var type = typeof requestParams == "undefined" ? "" : requestParams['type'];
       if(type == "DUEIN"){
@@ -169,10 +168,10 @@ var Search  = function(domRef){
           $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"hidden open-modal-fix\">Or add a New Guest</span>.</li>');
           that.updateView();
         } else if (requestParams['swipe_error'] === 'INVALID_CARD') {
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-card"></span><strong class="h1">Invalid Credit Card</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"hidden open-modal-fix\">add a New Guest</span>.</li>');
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-card"></span><strong class="h1">Invalid Credit Card</strong><span class="h2">Try with another card or search Guests manually</li>');
           that.updateView();
         } else if(requestParams['swipe_error'] === 'NO_CONFIRM') {
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No Guest or Reservation Found</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"hidden open-modal-fix\">add a New Guest</span>.</li>');
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No Guest or Reservation Found</strong><span class="h2">Try with another card or search Guests manually </li>');
           that.updateView();
         } else if(searchType != ""){
           // When dashboard buttons with 0 guests are clicked, show search screen message - "No guests checking in/out/in house" 
