@@ -51,6 +51,8 @@ var RatesView = function(domRef) {
 			loader : "BLOCKER"
 		};
 		webservice.getJSON(url, options);
+
+		sntapp.notification.showMessageDuringLoading('Collecting rates data from PMS and adding to Rover...', that.myDom);
 	};
 
 	//function to add new rate
@@ -115,9 +117,18 @@ var RatesView = function(domRef) {
 	//refreshing view with new data and showing message after import
 	this.fetchCompletedOfImport = function(data, requestParams) {
 		var url = "/admin/rates";
+
+		var params = {
+		  callback: function() {
+		    sntapp.notification.msgDuringLoading = false;
+		    sntapp.notification.hideMessage(that.myDom, 700);
+		  }
+		}
+
 		viewParams = {};
-		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
-		sntapp.notification.showSuccessMessage("Imported Successfully", that.myDom);
+		sntapp.fetchAndRenderView(url, that.myDom, params, 'BLOCKER', viewParams, false);
 		that.cancelFromAppendedDataInline(requestParams['event']);
+
+		sntapp.notification.showMessageDuringLoading('Completed!', that.myDom);
 	};
 }; 
