@@ -390,6 +390,8 @@ var ChangeStayDatesView = function(viewDom){
 
       });
 
+      console.log("scroll issue test");
+
       // Set scrollers
       if (viewScroll) { destroyViewScroll(); }
       setTimeout(function(){
