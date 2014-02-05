@@ -38,7 +38,7 @@ var AddKeysModal = function(callBack) {
 		var reservation_id = getReservationId();
 		var keyEmailElement = $("#key-guest-email").length;
 		var guest_email = that.myDom.find(("#key-guest-email")).val();
-		if (validateEmail(guest_email)) {
+		if (keyEmailElement > 0) {
 			if (keyEmailElement > 0) {
 				key_guest_email = that.myDom.find(("#key-guest-email")).val();
 
@@ -66,7 +66,7 @@ var AddKeysModal = function(callBack) {
 		var reservation_id = getReservationId();
 		var keyEmailElement = $("#key-guest-email").length;
 		var guest_email = that.myDom.find(("#key-guest-email")).val();
-		if (validateEmail(guest_email)) {
+		if (keyEmailElement > 0) {
 			if (keyEmailElement > 0) {
 				key_guest_email = that.myDom.find($("#key-guest-email")).val();
 			}
