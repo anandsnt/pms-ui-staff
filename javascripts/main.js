@@ -307,6 +307,7 @@ $(function($){
     $(document).ajaxComplete(function() {
         styleCheckboxRadio();
         onOffSwitch();
+        setupFile();
     });
 
     // Styled checkbox groups
