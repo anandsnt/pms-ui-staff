@@ -27,7 +27,7 @@ var RoomAssignmentView = function(viewDom){
       //.change('focusout', that.filterByRoomType));
     //that.myDom.find('#room-assignment-button').on('click',that.backButtonClicked); 
     //that.myDom.find('#clear-filters-button').on('click',that.clearFiltersClicked); 
-    that.myDom.find("#room-assignment *").on('click', that.roomAssignmentClickHandler);
+    that.myDom.on('click', that.roomAssignmentClickHandler);
 
 
   };
@@ -37,9 +37,11 @@ var RoomAssignmentView = function(viewDom){
 		var target_id = target.attr("id");
 
 			that.closeGuestCardDrawer();
+			
 			switch(target_id){
 				
-				case 'room-upgrades ul li #upgrade-room-select': {				
+				case 'upgrade-room-select': {		
+					console.log('clcik event');		
 					return that.roomUpgradeSelected(event);
 					break;
 				}				
@@ -420,7 +422,7 @@ var RoomAssignmentView = function(viewDom){
     // var roomUpgradesView = new RoomUpgradesView();
     // roomUpgradesView.roomUpgradeSelected();
 
-    
+    console.log('from function');
     e.preventDefault();
     var upsellAmountId = $(this).attr('data-value');
     var roomNumberSelected = $(this).attr('data-room-number');
