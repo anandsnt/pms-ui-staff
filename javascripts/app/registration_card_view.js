@@ -66,8 +66,8 @@ var RegistrationCardView = function(viewDom) {
 		///that.myDom.find(('.bill-tabs')).tabs();
 		// ui tabs
 		this.bill_number = that.myDom.find("#bills li.active").attr('data-bill-number');
-		that.myDom.find("#guest-card-content").unbind('click');
-		that.myDom.find("#guest-card-content").on('click', that.myDomClickHandler);
+		that.myDom.unbind('click');
+		that.myDom.on('click', that.myDomClickHandler);
 		
 	};
 

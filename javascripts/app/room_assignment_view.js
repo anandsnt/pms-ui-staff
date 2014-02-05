@@ -36,13 +36,13 @@ var RoomAssignmentView = function(viewDom){
 			that.closeGuestCardDrawer();
       // case of upgrade-room-select button
       // which include click on both on the element and it's child element
-      if(getParentWithId(event, "#upgrade-room-select")) {
+      if(getParentWithSelector(event, "#upgrade-room-select")) {
         return that.roomUpgradeSelected (event);
       }
-      if(getParentWithId(event, "#room-assignment-button")){
+      if(getParentWithSelector(event, "#room-assignment-button")){
         return that.backButtonClicked(event);
       }      
-      if(getParentWithId(event, "#clear-filters-button")){
+      if(getParentWithSelector(event, "#clear-filters-button")){
         return that.clearFiltersClicked(event);
       }      
 
