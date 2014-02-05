@@ -37,17 +37,30 @@
 			background-position: 0 -600px;
 		}
 
-		&.icon-key {
-			background-position: 0 -735px;
-		}
-
 		&.icon-card {
-			background-position: 0 -941px;
+			background-position: 0 -720px;
 		}
 
 		@media @highdpi {
 			background-image: @iconNoContent2x;
 			background-size: 125px, 120px;
+		}
+	}
+
+/* Key icons			==================================*/
+	.icon-key {
+		background-image: @iconKey;
+		background-repeat: no-repeat;
+		background-position: 50% 0;
+		.show;
+
+		&.pending { background-position: 50% -400px; }
+		&.error { background-position: 50% -800px; }
+		&.success { background-position: 50% -1200px; }
+
+		@media @highdpi {
+			background-image: @iconKey2x;
+			background-size: 104px;
 		}
 	}
 

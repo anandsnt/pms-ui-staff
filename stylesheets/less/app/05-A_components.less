@@ -225,13 +225,26 @@
 				.highlight { color: @logoPrimary; }
 			}
 
-			.guest-status {
-				margin-top: 10px;
-				.square(30px);
+			.status {
+				width: 120px;
+				.pull-left;
+
+				.guest-status {
+					margin-top: 10px;
+					.square(30px);
+				}
+
+				.late-checkout-time {
+					font-weight: 600;
+					line-height: 50px;
+					text-transform: uppercase;
+					margin-left: 20px;
+					.pull-left;
+				}
 			}
 
 			.room-number {
-				margin: 7px 30px 7px 50px;
+				margin: 7px 20px;
 				.pull-left;
 
 				.highlight { 

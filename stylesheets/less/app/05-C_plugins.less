@@ -105,8 +105,12 @@
 				z-index: 9992;
 			}
 
-			&.show-qr { background: @blue; }
+			&.green { background: @green; }
+			&.red { background: @red; }
+			&.blue { background: @blue; }
 			&.dark-title { background: @gcard; }
+
+			&.show-qr { background: @blue; } /* DELETE WHEN KEY DELIVERY IS IMPLEMENTED */
 		}
 
 		.modal-content {
@@ -702,7 +706,198 @@
 				}
 			}
 
-			/* QR Code ***/
+			/* Key delivery form ***/
+			&.key-delivery {
+				padding: 0;
+				width: 670px;
+				#border-radius > .rounded();
+				.float;
+
+				#room-status,
+				#key-status {
+					position: relative;
+					padding: 20px;
+					text-align: center;
+					-webkit-box-sizing: content-box;
+					-moz-box-sizing: content-box; 
+					box-sizing: content-box;
+					.pull-left;
+					.calc-width(50, 40); /* %, px */
+
+					&.connecting { height: 260px; }
+					&.not-connected { height: 320px; }
+					&.connected { height: 420px; }
+					&.completed { height: 320px; }
+				}
+
+				#room-status {
+					color: @white;
+
+					.message { 
+						position: absolute;
+						top: 20px;
+						left: 0;
+						width: 100%;
+					}
+
+					h1 {
+						display: inline-block;
+  						vertical-align: middle;
+  						font-size: 30px;
+						line-height: 50px;
+						font-weight: 700;
+						
+						span { 
+							font-size: 72px;
+							font-weight: 100;
+							.show; 
+						}
+
+						&.icon-key { padding-top: 100px; }
+					}
+
+					&:before {
+						content: "";
+						display: inline-block;
+						height: 100%;
+						vertical-align: middle;
+						margin-right: -0.25em; /* Adjusts for spacing */
+					}
+
+					.number {
+						position: absolute;
+						left: 0;
+						bottom: 20px;
+						width: 100%;
+					}
+				}
+
+				#key-status {
+					.info {
+						color: @grey3;
+						font-size: 18px;
+						.show;
+					}
+
+					.action {
+						margin-bottom: 20px;
+
+						.info { padding: 60px 0;}
+
+						.button:last-child { margin-top: 10px; }
+					}
+
+					.qr-holder { 
+						position: absolute;
+						bottom: 20px;
+						left: 0;
+						width: 100%;
+
+						.info { margin-bottom: 10px; }
+
+						img {
+							width: 203px;
+							height: auto;
+						}
+					}
+
+					&.print-key {
+
+						.status { 
+							padding-top: 120px;
+							font-size: 14px;
+							.show; 
+
+							&.pending { 
+								color: @logoPrimary; 
+								margin-top: 40px;
+							}
+
+							&.error { 
+								color: @red; 
+								margin: 20px 0;
+							}
+							
+							&.success { 
+								color: @green; 
+								margin-top: 30px;
+							}
+						}
+
+						#print-keys {
+							margin-top: 20px;
+
+							label:not(.only-number) { text-align: left; }
+
+							.only-number {
+								.checkbox;
+								padding: 0;
+								line-height: 50px;
+								.pull-left;
+								.no-transition;
+
+								&.printed { .gradient(@greenStart, @greenEnd); }
+							}
+						}
+
+						&.connecting { 
+							.pending { #blink > .infinite(); }
+						}
+						
+						&.not-connected { 
+							.info { color: @red; }
+							.action { margin: 0; }						
+						}
+						
+						&.connected { 
+							.info { color: @green; }
+						}
+
+					}
+				}
+
+				&.check-in {
+					#room-status { background: @green; }
+					.scan-key { height: 420px; }
+					.key-sent { height: 340px; }
+
+					.print-key {
+						&.not-connected { 
+							.info { padding: 65px 0; }
+						}
+
+						&.completed { 
+							.info { padding: 65px 0; }
+						}
+					}
+				}
+
+				&.inhouse,
+				&.check-out,
+				&.late-check-out {
+					.scan-key { height: 340px; }
+					.print-key {
+						&.not-connected { 
+							.info { padding: 95px 0; }
+						}
+
+						&.completed { 
+							.info { padding: 95px 0; }
+						}
+					}
+
+					&.inhouse {
+						#room-status { background: @blue; }
+					}
+
+					&.check-out,
+					&.late-check-out {
+						#room-status { background: @red; }
+					}
+				}
+			}
+
+			/* QR Code - SHOULD BE DELETED WHEN KEY DELIVERY IS IMPLEMENTED ***/
 			&.show-qr {
 				width: 620px;
 				padding: 0;
@@ -813,8 +1008,8 @@
 		&[data-position="bottom-right"]{
 			top: auto;
 			left: auto;
-			bottom: 20px;
-			right: 20px;
+			bottom: 0;
+			right: 0;
 			-webkit-transform: translate3d(0, 0, 0);
 			-moz-transform: translate3d(0, 0, 0);
 			-ms-transform: translate3d(0, 0, 0);
