@@ -265,6 +265,10 @@ var RegistrationCardView = function(viewDom) {
 			// To show Modal for key generation
 			var addKeysModal = new AddKeysModal(that.goAndRefreshStayCard,that.goToSearchScreen);
 			addKeysModal.initialize();
+			addKeysModal.params = {
+				"origin" : views.BILLCARD,
+				"reservation-status" : that.myDom.find("#checkin-button").attr('data-reseravation-status')
+			};
 		}
 
 		if (requestParameters['is_promotions_and_email_set'] == "true") {

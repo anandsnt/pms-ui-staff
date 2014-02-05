@@ -8,6 +8,10 @@ var AddKeysModal = function(gotoStayCard,gotoSearch) {
 		that.myDom.find('#goto-staycard').on('click', that.clickedGotoStayCard);
 		that.myDom.find('#goto-search').on('click', that.clickedGotoSearch);
 		
+		if(this.params.origin == views.BILLCARD){
+			that.myDom.find('#modal-close').remove();
+		}
+		
 	};
 	this.modalInit = function() {
 

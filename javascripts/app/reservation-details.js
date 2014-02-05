@@ -155,6 +155,10 @@ var reservationDetailsView = function(domRef) {
 		else{
 			var addKeysModal = new AddKeysModal();
 			addKeysModal.initialize();
+			addKeysModal.params = {
+				"origin" : views.STAYCARD,
+				"reservation-status" : that.myDom.find("#add-keys").attr('data-reseravation-status')
+			};
 		}
 	};
 	this.roomUpgradesClicked = function(e) {
