@@ -422,7 +422,7 @@ $(function($){
 
         // Load next page/view or reload previous view before going back
         else if(!$(this).hasClass('active') && (!$(this).hasClass('back-button') || ($(this).hasClass('back-button') && $reloadOnBack == true)))
-        {
+        { console.log($href);
             $($loader).prependTo('body').show(function(){
                 $.ajax({
                     type:       'GET',
@@ -436,7 +436,37 @@ $(function($){
                         if (jqxhr.status=="401") { sntapp.logout(); return;}
                         $('#loading').remove();
                     }
-                }).done(function(){
+                }).done(function(data){
+                	//if($href == "")
+                	if(data[0] == "{"){
+                		var result = JSON.parse(data);
+                		if (result.status == 'failure') {
+                			console.log("failur oo")
+                			$('#loading').fadeOut(function(){
+                				sntapp.notification.showErrorMessage("Some error occured: " , $("#search"));
+                			});
+                			return false;
+                		} else {
+                			console.log("succs oo")
+                		}
+                	}
+                	 // var result = JSON.parse(data);
+// 
+// 
+// 
+                        // if (result.status == 'failure') {
+// 
+                            // console.log("done false");
+// 
+                            // return false;
+// 
+                        // } else {
+ // console.log("done else");
+// 
+                            // $('#' + $next).html(data);
+// 
+                        // }
+                	 console.log("done bottom");
                     var viewInstance = null;
                     var instName = $('#'+$next).find('div:first').data('view');
 
@@ -456,7 +486,8 @@ $(function($){
                         changePage($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reloadOnBack);
                     }
                     else if ($transitionPage.indexOf('inner-page') >= 0)
-                    {
+                    {alert("reached hee")
+                    console.log($transitionPage)
                        changeInnerPage($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reloadOnBack); 
                     }
                     else if ($transitionPage.indexOf('nested-view') >= 0)
