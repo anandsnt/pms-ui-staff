@@ -34,7 +34,7 @@ var RoomAssignmentView = function(viewDom){
   this.roomAssignmentClickHandler = function(event){
   	  	
   		var target = $(event.target);
-		var target_id = target.attr("id");
+		  var target_id = target.attr("id");
 
 			that.closeGuestCardDrawer();
 			switch(target_id){
