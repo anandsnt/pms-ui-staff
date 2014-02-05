@@ -83,6 +83,7 @@ var HotelDetailsView = function(domRef) {
 			$('#mli-chain-code').parent('.entry').remove();
 			$("#mli-certificate-upload").remove();
 			$("#external-mappings").remove();
+			that.myDom.find(".hotel-pms-type").remove();
 		}
 	};
 	//to update or create new hotel
@@ -93,7 +94,7 @@ var HotelDetailsView = function(domRef) {
 		var mliHotelCode = $('#mli-hotel-code').val();
 		var mliChainCode = $('#mli-chain-code').val();
 		var hotelAutoLogoutTime = $.trim(that.myDom.find("#auto-logout").val());
-		var hotelPmsType = $.trim(that.myDom.find("#hotel-pms-type").val());
+		var hotelPmsType = that.myDom.find("#hotel-pms-type").val();
 		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType);
 		var type = event.data[0];
     if(type == "create"){
