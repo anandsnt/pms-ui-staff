@@ -15,17 +15,18 @@ var reservationDetailsView = function(domRef) {
 		that.myDom.on('click', that.domClickHandler);
 	};
 	// function for closing the drawer if is open
-	/*that.closeGuestCardDrawer = function(){
+	that.closeGuestCardDrawer = function(){
 		if($("#guest-card").hasClass('open')) {
 			$('#guest-card .ui-resizable-handle').trigger('click');
 		}
-	};*/
+	};
 
 	this.domClickHandler = function(event){
 		/*var target = $(event.target).closest('a');
 		var target_id = target.attr("id");*/
+		
 		// if the click is on reservation card details and if the guest card drawer is open
-		// that.closeGuestCardDrawer();
+		 that.closeGuestCardDrawer();
 
 		// based on event's target elements we are calling the event operations
 	    if(getParentWithSelector(event, "#wakeup-time")) {

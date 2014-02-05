@@ -71,8 +71,16 @@ var RegistrationCardView = function(viewDom) {
 		
 	};
 
+	// function for closing the drawer if is open
+	this.closeGuestCardDrawer = function(){
+		if($("#guest-card").hasClass('open')) {
+			$('#guest-card .ui-resizable-handle').trigger('click');
+		}
+	};
+
 	// function to hanlde the click operation in the dom	
 	this.myDomClickHandler = function (event) {
+		that.closeGuestCardDrawer();
 		// based on event's target elements we are calling the event operations
 	    if(getParentWithSelector(event, "#checkin-button")) {
 	    	return that.completeCheckin(event);
@@ -94,42 +102,7 @@ var RegistrationCardView = function(viewDom) {
 	    }
 	    if(getParentWithSelector(event, "#subscribe")) {
 	    	return that.subscribeCheckboxClicked(event);
-	    }	    
-	    
-		/*if(!target.is("#guest-card-content *"))
-		{
-			that.closeGuestCardDrawer();
-			switch(target_id){
-				case 'checkin-button': {				
-					return that.completeCheckin(event);
-					break;
-				}
-				case 'clear-signature': {
-					return that.clearSignature(event);
-					break;
-				}
-				case 'back-to-staycard': {
-					return that.gotoStayCard(event);
-					break;
-				}
-				case 'complete-checkout-button': {
-					return that.clickedCompleteCheckout(event);
-					break;
-				}
-				case 'pay-button': {
-					return that.payButtonClicked();
-					break;
-				}
-				case 'add-new-button': {
-					return that.addNewButtonClicked();
-					break;
-				}
-				case 'subscribe': {
-					return that.subscribeCheckboxClicked(event);
-					break;
-				}
-			}
-		}*/
+	    }	    	    
 	};
 
      // function for closing the drawer if is open
