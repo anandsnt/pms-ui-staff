@@ -45,7 +45,7 @@ var HotelChargeCodesView = function(domRef){
   	event.preventDefault();
 	
 	// checking for is the selected item is tax
-	if($('option:selected', that.myDom.find("#"+selectedElement)).attr('data-type') == "true")
+	if($('option:selected', that.myDom.find("#charge-code-type")).attr('data-type') == "true")
 	 {
 	 	that.myDom.find("#link-with-set").hide();
 	 } else {
