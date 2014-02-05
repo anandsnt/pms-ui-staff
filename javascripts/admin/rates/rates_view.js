@@ -5,9 +5,23 @@ var RatesView = function(domRef) {
 
 	// to handle sub view events
 	this.delegateSubviewEvents = function() {
+		that.myDom.find('#rates').tablesorter();
+
 		that.myDom.on('change', that.viewChangeEventHandler);
 		that.myDom.on('click', that.viewClickEventHandler);
 	};
+
+	// pause/unpause sorting
+	this.pauseSorting = function(pause) {
+	  var dataTableHeaders = that.myDom.find('#rates thead th');
+
+	  if (pause) {
+	    dataTableHeaders.hide();
+	  } else {
+	    dataTableHeaders.show();
+	  };
+	};
+
 	this.appendUpdateInlineData = function(event) {
 		
 		event.preventDefault();

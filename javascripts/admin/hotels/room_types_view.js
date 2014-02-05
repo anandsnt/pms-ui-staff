@@ -5,8 +5,20 @@ var RoomTypesView = function(domRef){
   
   // to handle sub view events
   this.delegateSubviewEvents = function(){
+      that.myDom.find('#room-types').tablesorter();
   		that.myDom.on('change', that.viewChangeEventHandler);
   		that.myDom.on('click', that.viewClickEventHandler);
+  };
+
+  // pause/unpause sorting
+  this.pauseSorting = function(pause) {
+    var dataTableHeaders = that.myDom.find('#room-types thead th');
+
+    if (pause) {
+      dataTableHeaders.hide();
+    } else {
+      dataTableHeaders.show();
+    };
   };
    
   this.viewChangeEventHandler = function(event){  
@@ -14,12 +26,12 @@ var RoomTypesView = function(domRef){
 	   	if(element.parent().hasClass('file-upload')) {return that.readURL(event.target);}
   };
   
-  this.viewClickEventHandler = function(event){  
+  this.viewClickEventHandler = function(event){ 
 	   	var element = $(event.target);
 	   	if(element.hasClass('import')) {return that.importRooms(event);}
   };
   // To call import rooms API
-  this.importRooms = function(event) {  	
+  this.importRooms = function(event) {
   	var postData = {};
   	var url = '/admin/rooms/import';
   	var webservice = new WebServiceInterface();		
@@ -126,6 +138,7 @@ var RoomTypesView = function(domRef){
   this.fetchFailedOfSave = function(errorMessage){
   	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   };
+
   //refreshing view with new data and showing message after import
   this.fetchCompletedOfImport = function(data,requestParams){
   	var url = "/admin/room_types";
