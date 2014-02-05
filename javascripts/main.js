@@ -20,6 +20,11 @@ $(document).ready(function(){
 	if($('#login').is(':has(span.notice)')){
 		$("#loginStatus").css("display","block");
 	}
+	if($("#email").val()!=""){
+		$("#password").focus();
+	} else {
+		$("#email").focus();
+	}
 });
 
 // Chaining with intervals
