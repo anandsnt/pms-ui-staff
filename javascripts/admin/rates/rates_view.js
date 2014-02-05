@@ -5,7 +5,11 @@ var RatesView = function(domRef) {
 
 	// to handle sub view events
 	this.delegateSubviewEvents = function() {
-		that.myDom.find('#rates').tablesorter();
+		that.myDom.find('#rates').tablesorter({
+	      headers: {
+	        2:{sorter:false}
+	      }
+	    });
 
 		that.myDom.on('change', that.viewChangeEventHandler);
 		that.myDom.on('click', that.viewClickEventHandler);
