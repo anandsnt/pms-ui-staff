@@ -15,7 +15,7 @@ $(document).ready(function(){
 	}
 	$("#loginbutton").click(function(){
 		localStorage.email = $("#email").val();
-		$( "#login_form" ).submit();
+		$("#login-form").submit();
 	});
 });
 
