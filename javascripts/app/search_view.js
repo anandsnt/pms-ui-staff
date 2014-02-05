@@ -143,7 +143,7 @@ var Search  = function(domRef){
       $('#no-results').addClass('hidden');
       
       // set up reservation status
-      var type = requestParams['type'];
+      var type = typeof requestParams == undefined ? "" : requestParams['type'];
       if(type == "DUEIN"){
         searchType = "checking in";
       }
@@ -159,19 +159,10 @@ var Search  = function(domRef){
       if(response.data.length > 0){
         that.fetchResults = response.data;
         that.displayFilteredResults(that.fetchResults, that.currentQuery);
+        return false;
       }
       // No data in JSON file
       else if(response.data.length == 0){
-        if(searchType != ""){
-          // When dashboard buttons with 0 guests are clicked, show search screen message - "No guests checking in/out/in house" 
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+searchType+'</strong></li>');
-        }
-        else{
-          // To show no matches message while search guest with 0 results.
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"hidden open-modal-fix\">Or add a New Guest</span>.</li>');
-              //TODO: verify implemention, rename function
-              that.updateView();
-        }
 
         // showing card swipe errors
         if (requestParams['swipe_error'] === 'NO_GUEST') {
@@ -185,6 +176,17 @@ var Search  = function(domRef){
           $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No Guest or Reservation Found</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"hidden open-modal-fix\">add a New Guest</span>.</li>');
           that.updateView();
         };
+
+        if(searchType != ""){
+          // When dashboard buttons with 0 guests are clicked, show search screen message - "No guests checking in/out/in house" 
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+searchType+'</strong></li>');
+        }
+        else{
+          // To show no matches message while search guest with 0 results.
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"hidden open-modal-fix\">Or add a New Guest</span>.</li>');
+              //TODO: verify implemention, rename function
+              that.updateView();
+        }
       }   
   };
   
@@ -219,13 +221,12 @@ var Search  = function(domRef){
       requestParameters: data,
       successCallBack: function(response) {
 
-        if (data.confirmation === 'nill' && data.id === 'nill') {
-
-          // No reservation was not found
-          that.fetchCompletedOfFetchSearchData( {'data': ''}, {'swipe_error': 'NO_GUEST'} );
-        } else {
-          that.postCardSwipDataSuccess(response);
-        }
+          if(response.data.length == 0) {
+            that.fetchCompletedOfFetchSearchData(response, {'swipe_error': 'NO_GUEST'});
+            return false;
+          }else{
+            that.postCardSwipDataSuccess(response);
+          }
       },
       failureCallBack: function (errorMessage){
 
@@ -239,6 +240,12 @@ var Search  = function(domRef){
   // got the guest!
   // lets load his staycard right away! 
   this.postCardSwipDataSuccess = function(response) {
+
+    if(response.data.length > 1) {
+        that.fetchCompletedOfFetchSearchData(response);
+        return false;
+    }
+
     var viewURL = '/staff/staycards/staycard';
     var viewDom = $('#page-inner-first');
     var params = {
