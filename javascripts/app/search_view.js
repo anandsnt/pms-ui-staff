@@ -246,8 +246,8 @@ var Search  = function(domRef){
     var viewURL = '/staff/staycards/staycard';
     var viewDom = $('#page-inner-first');
     var params = {
-      'confirmation': response.data.confirmation,
-      'id': response.data.id
+      'confirmation': (response.data[0]).confirmation,
+      'id': (response.data[0]).id
     };
     var loader = 'BLOCKER';
     var nextViewParams = {
