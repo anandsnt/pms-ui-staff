@@ -22,7 +22,7 @@ var reservationDetailsView = function(domRef) {
 	};*/
 
 	this.domClickHandler = function(event){
-		var target = $(event.target);
+		var target = $(event.target).closest('a');
 		var target_id = target.attr("id");
 		// if the click is on reservation card details and if the guest card drawer is open
 		// that.closeGuestCardDrawer();

@@ -48,7 +48,7 @@ var GuestCardLikesView = function(domRef){
    //handle click events
    this.viewClickEventHandler = function(event){
       var element = $(event.target);
-
+	  if(element.hasClass('icon-delete')) return that.deleteFeature(element);
       if(element.hasClass('change-data')) return that.changeData(element);
       if(element.hasClass('add-new-option'))	return that.addNewOption(element, event);
       if(element.hasClass('add-new-checkbox'))
@@ -56,8 +56,28 @@ var GuestCardLikesView = function(domRef){
       if(element.hasClass('icon-add') && element.parent().hasClass('add-new-checkbox'))
         { return that.addNewNewspaper(element.parent());}
       return true;
+      
 
 
+   };
+   //To delete feature on click delet icon
+   this.deleteFeature = function(element){
+   		  var elementIdToDelete = element.attr("data-id");
+ 		  var postParams = {"id" : elementIdToDelete};
+
+          var webservice = new WebServiceInterface();
+          var options = {
+               requestParameters: postParams,
+               successCallBack : that.deleteSuccess,
+               successCallBackParameters:{ "element": element},
+               loader: "NONE"
+          };
+          var url = '/admin/hotel_likes/delete_feature';
+          webservice.postJSON(url, options);   	
+   };
+   //success calback of delete. Remove data from UI
+   this.deleteSuccess = function(data, params){
+   		params['element'].parent('.checkbox').remove();
    };
    //to handle keyup events- text box show new textbox on key up
    this.viewKeyupEventHandler = function(event){
@@ -128,7 +148,7 @@ var GuestCardLikesView = function(domRef){
           .removeAttr('class');
 
         // Now update with new value
-        var icons = '<span class="icons icon-delete" /><span class="icon-form icon-checkbox checked" />',
+        var icons = '<span class="icon-form icon-checkbox checked" />',
           input = element.parent().html(),
           text = '<div id="newspaper-name">'+element.val()+'</div>';
 
@@ -145,8 +165,8 @@ var GuestCardLikesView = function(domRef){
 
 
   this.deleteItem = function(event){
-      $(event.target).parent('.checkbox').remove();
-      return false;
+      // $(event.target).parent('.checkbox').remove();
+      // return false;
   };
 
 
