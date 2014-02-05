@@ -9,7 +9,6 @@ var StayCard = function(viewDom){
     var currentConfirmNumber = $("#confirm_no").val();    
     var reservationDetails = new reservationDetailsView($("#reservation-"+currentConfirmNumber));
     reservationDetails.initialize();
-
     // ok we just entered staycard page
     sntapp.cardSwipeCurrView = 'StayCardView';
 
@@ -36,7 +35,6 @@ var StayCard = function(viewDom){
     
       var options = {
           successCallBack: function(data){
-            console.log("Success call back from swipe in staycard");
 
             // if this is not staycard do nothing
             // TODO: can't match page to '' as there could be pages with no data-page
@@ -45,7 +43,6 @@ var StayCard = function(viewDom){
             if ('dashboard' === activeMenu || 'search' === activeMenu) {
               return;
             };
-            console.log('data got in success call back (staycard): '+ JSON.stringify(data));
             var swipedCardData = {
               cardType: data.RVCardReadCardType || '',
               expiry: data.RVCardReadExpDate || '',
@@ -71,7 +68,7 @@ var StayCard = function(viewDom){
           }
       };
       // start listening
-      if(sntapp.cardSwipeDebug===true){ console.log("SC PAYMENT DB######"); sntapp.cardReader.startReaderDebug(options); }
+      if(sntapp.cardSwipeDebug===true){sntapp.cardReader.startReaderDebug(options); }
 
       if(sntapp.cordovaLoaded){ sntapp.cardReader.startReader(options); }
   };
@@ -81,11 +78,14 @@ var StayCard = function(viewDom){
   // to get the token code from MLI
   this.postCardSwipData = function(swipedCardData) {
 
-    // only respond for current reservations
-    var $currResCard = $('#reservation-card > .reservation-tabs-nav li[aria-controls="current"]');
-    if ( 'true' != $currResCard.attr('aria-selected') ) {
+
+    var currentReservationDiv = getCurrentReservationDiv();
+    var reservationStatus = $('#' +currentReservationDiv).data('reservation-status');
+    
+    // only respond for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations
+    if(['NOSHOW', 'CHECKEDOUT', 'CANCELED'].indexOf(reservationStatus) >= 0){
       return;
-    };
+    }
 
     var swipedCardData = swipedCardData;
 
@@ -94,7 +94,6 @@ var StayCard = function(viewDom){
 
     // respond to StayCardView
     var stayCardViewResponse = function() {
-      console.log('stayCardViewResponse');
       // if addNewPaymentModal instance doen't exist, create it
       // else if addNewPaymentModal instance exist, but the dom is removed
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
@@ -113,13 +112,9 @@ var StayCard = function(viewDom){
 
     // respond to GuestBillView
     var guestBillViewResponse = function() {
-      console.log('guestBillViewResponse');
       var currentCardToken = $('#select-card-from-list').attr('data-token');
 
       // if the guest uses a registered card, show bill payment modal
-      console.log('swipedCardData.token.slice(-4) : ');
-      console.log(currentCardToken);
-      console.log(swipedCardData.token.slice(-4));
       if (currentCardToken == swipedCardData.token.slice(-4)) {
         sntapp.getViewInst('registrationCardView').swipedCardData = swipedCardData;
         sntapp.getViewInst('registrationCardView').payButtonClicked();
@@ -133,7 +128,6 @@ var StayCard = function(viewDom){
 
     // respond to GuestCardView
     var guestCardView = function() {
-      console.log('guestCardView');
       // if addNewPaymentModal instance doen't exist, create it
       // else if addNewPaymentModal instance exist, but the dom is removed
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
