@@ -526,7 +526,7 @@ $(function($){
     // Signing in
     $(document).one('submit', '#login-form', function(e){
         e.preventDefault();
-
+        localStorage.email = $("#email").val();
         var $signingIn = new chainedAnimation(),
             $delay = 300;
   
