@@ -19,19 +19,20 @@ var RoomTypesView = function(domRef){
 	   	if(element.hasClass('import')) {return that.importRooms(event);}
   };
   // To call import rooms API
-  this.importRooms = function(event) {
-  	
+  this.importRooms = function(event) {  	
   	var postData = {};
   	var url = '/admin/rooms/import';
-	var webservice = new WebServiceInterface();		
-	var options = {
-			   requestParameters: postData,
-			   successCallBack: that.fetchCompletedOfImport,
-			   successCallBackParameters:{ "event": event},
-			   failureCallBack: that.fetchFailedOfSave,
-			   loader:"BLOCKER"
-	};
-	webservice.getJSON(url, options);
+  	var webservice = new WebServiceInterface();		
+  	var options = {
+  			   requestParameters: postData,
+  			   successCallBack: that.fetchCompletedOfImport,
+  			   successCallBackParameters:{ "event": event},
+  			   failureCallBack: that.fetchFailedOfSave,
+  			   loader:"BLOCKER"
+  	};
+  	webservice.getJSON(url, options);
+
+    sntapp.notification.showMessageDuringLoading('Collecting rooms data from PMS and adding to Rover...', that.myDom);
   };
   //to show preview of the image using file reader
   this.readURL = function(input) {
@@ -128,10 +129,19 @@ var RoomTypesView = function(domRef){
   //refreshing view with new data and showing message after import
   this.fetchCompletedOfImport = function(data,requestParams){
   	var url = "/admin/room_types";
+
+    var params = {
+      callback: function() {
+        sntapp.notification.msgDuringLoading = false;
+        sntapp.notification.hideMessage(that.myDom, 700);
+      }
+    }
+
    	viewParams = {};
-  	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
-  	sntapp.notification.showSuccessMessage("Imported Successfully", that.myDom);		
+  	sntapp.fetchAndRenderView(url, that.myDom, params, 'BLOCKER', viewParams, false);
   	that.cancelFromAppendedDataInline(requestParams['event']);  
+
+    sntapp.notification.showMessageDuringLoading('Completed!', that.myDom);
   };
   
 };

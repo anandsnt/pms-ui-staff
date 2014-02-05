@@ -10,6 +10,8 @@ var NotificationMessage = function() {
 	this.shouldShowCloseButtonForError = true;
 	
 	this.levels =["DEBUG","INFO", "NORMAL", "IMPORTANT","CRITICAL"];
+
+	this.msgDuringLoading = false;
 	
 	
 		
@@ -158,12 +160,17 @@ var NotificationMessage = function() {
 	};
 	
 	// to close the message
-	this.hideMessage = function(dom){
+	this.hideMessage = function(dom, delay){
+
+		if (this.msgDuringLoading) {
+			return;
+		};
+
 		// dom = getDisplayDom();
 		if(typeof dom == 'undefined')
 			dom = $('body');
         dom.find("#notification-message").slideUp({ 
-        	duration : duration, 
+        	duration : delay || duration,
         	complete : function(){
         		// var myElement = dom.find("#notification-message");
         		var myElement = dom.find("#notification-message");
@@ -175,6 +182,9 @@ var NotificationMessage = function() {
         
 	};
 	
-	
+	this.showMessageDuringLoading = function(msg, dom) {
+		this.msgDuringLoading = true;
+		that.showMessage(msg, dom, 'notice success');
+	};
 	
 };
