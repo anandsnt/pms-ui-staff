@@ -15,8 +15,11 @@ $(document).ready(function(){
 	}
 	$("#loginbutton").click(function(){
 		localStorage.email = $("#email").val();
-		$( "#login_form" ).submit();
+		$("#login-form").submit();
 	});
+	if($('#login').is(':has(span.notice)')){
+		$("#loginStatus").css("display","block");
+	}
 });
 
 // Chaining with intervals
