@@ -63,12 +63,9 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.delegateEvents = function() {
-		///that.myDom.find(('.bill-tabs')).tabs();
-		// ui tabs
 		this.bill_number = that.myDom.find("#bills li.active").attr('data-bill-number');
 		that.myDom.unbind('click');
 		that.myDom.on('click', that.myDomClickHandler);
-		
 	};
 
 	// function to hanlde the click operation in the dom	
@@ -263,9 +260,11 @@ var RegistrationCardView = function(viewDom) {
 		if (requestParameters['is_show_qr_code'] == "true") {
 			var selectKeyModel = new SelectKeyModel(that.showCheckinSuccessModal, that.openQrCodeModal);
 			selectKeyModel.initialize();
-		} else {
+		}
+		else {
 			// To show Modal for key generation
-			that.openAddKeysModal();
+			var addKeysModal = new AddKeysModal(that.goAndRefreshStayCard,that.goToSearchScreen);
+			addKeysModal.initialize();
 		}
 
 		if (requestParameters['is_promotions_and_email_set'] == "true") {
@@ -285,13 +284,15 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.gotoStayCard = function(e) {
-		e.preventDefault();
-		sntapp.cardSwipeCurrView = 'StayCardView';
-		//goBackToView("", "view-nested-third", "move-from-left");
-		var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
-		$($loader).prependTo('body').show();
-		changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);
+		sntapp.activityIndicator.showActivityIndicator('blocker');
+      	changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);  
 	};
+	
+	this.goAndRefreshStayCard = function(e) {
+		var staycardView = new StayCard($("#view-nested-first"));
+      	staycardView.refreshReservationDetails(that.reservation_id, that.gotoStayCard);
+	};
+	
 	this.goToRoomUpgradeView = function(e) {
 		e.preventDefault();
 		//goBackToView("", "view-nested-third", "move-from-left");
@@ -398,14 +399,6 @@ var RegistrationCardView = function(viewDom) {
 		//Do not call 'initialize' method for this object. which results multiple event binding
 		var searchView = new Search();
 		searchView.clearResults();
-	};
-	// To show add keys modal
-	this.openAddKeysModal = function(e) {
-		var addKeysModal = new AddKeysModal(that.showCheckinSuccessModal);
-		addKeysModal.initialize();
-		addKeysModal.params = {
-			"source_page" : views.BILLCARD
-		};
 	};
 	// To show QR code modal
 	this.openQrCodeModal = function(e) {
