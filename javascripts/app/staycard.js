@@ -203,36 +203,28 @@ var StayCard = function(viewDom){
    		partialViewRef = $("#confirm_no").val();
    	};   	
   	
-    that.myDom.find('#reservation-timeline li').on('click', that.reservationTimelineClicked);
-    that.myDom.find('#reservation-listing li').on('click', that.reservationListItemClicked);
+    /*that.myDom.find('#reservation-timeline li').on('click', that.reservationTimelineClicked);
+    that.myDom.find('#reservation-listing li').on('click', that.reservationListItemClicked);*/
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);  
     that.myDom.find('#title').on('change', that.changeAvathar);
     // that.myDom.unbind('click');
-	//that.myDom.find("#reservation-card *").on('click', that.reservationCardClickHandler);
+	   that.myDom.find("#reservation-card").on('click', that.reservationCardClickHandler);
 
   };
   
   this.reservationCardClickHandler = function(event){
-  	  	
-    var target = $(event.target);
-		var target_id = target.attr("id");
-		if(!target.is("#guest-card-content *"))
-		{
-			that.closeGuestCardDrawer();
-			switch(target_id){
-				case 'reservation-timeline li': {				
-					return that.reservationTimelineClicked(event);
-					break;
-				}
-				case 'reservation-listing li': {
-					return that.reservationListItemClicked(event);
-					break;
-				}
-			}
-		}
+
+    that.closeGuestCardDrawer();
+    if(getParentWithSelector(event, "#reservation-timeline li")) {
+        return that.reservationTimelineClicked(event);
+    }
+    if(getParentWithSelector(event, "#reservation-listing li")) {
+        return that.reservationListItemClicked(event);
+    }    
+
 	};
   // function for closing the drawer if is open
-	that.closeGuestCardDrawer = function(){
+	this.closeGuestCardDrawer = function(){
 		if($("#guest-card").hasClass('open')) {
 			$('#guest-card .ui-resizable-handle').trigger('click');
 		}
@@ -297,18 +289,19 @@ this
   //workaround for populating the reservation details,
   //when user clicks on other timeline tabs
   this.reservationTimelineClicked = function(e){
-    var currentTimeline = $(this).attr('aria-controls');
+    var currentTimeline = $(e.target).attr('aria-controls');
     //No reservation details are added to the DOM
     if (!($("#" + currentTimeline).find('.reservation').length > 0)) {
-    	
-      $("#" + currentTimeline + ' #reservation-listing ul li').first().trigger("click");
+      $("#" + currentTimeline + ' #reservation-listing ul li').first().children().first().trigger("click");
     }
   };
 
   // Load reservation details
-  this.reservationListItemClicked = function(e){
-    var confirmationNumClicked = $(this).attr('data-confirmation-num');
-    var $href = $(this).find('a').attr('href');
+  this.reservationListItemClicked = function(event){
+    event.preventDefault();
+    var target = $(event.target);
+    var confirmationNumClicked = target.attr('data-confirmation-num');
+    var $href = target.find('a').attr('href');
 
     //get the current highlighted timeline
     //Not more than 5 resevation should be kept in DOM in a timeline.
