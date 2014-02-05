@@ -203,12 +203,12 @@ var StayCard = function(viewDom){
    		partialViewRef = $("#confirm_no").val();
    	};   	
   	
-    //that.myDom.find('#reservation-timeline li').on('click', that.reservationTimelineClicked);
-    //that.myDom.find('#reservation-listing li').on('click', that.reservationListItemClicked);
+    that.myDom.find('#reservation-timeline li').on('click', that.reservationTimelineClicked);
+    that.myDom.find('#reservation-listing li').on('click', that.reservationListItemClicked);
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);  
     that.myDom.find('#title').on('change', that.changeAvathar);
     // that.myDom.unbind('click');
-	that.myDom.find("#reservation-card *").on('click', that.reservationCardClickHandler);
+	//that.myDom.find("#reservation-card *").on('click', that.reservationCardClickHandler);
 
   };
   
