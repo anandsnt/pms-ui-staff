@@ -238,11 +238,12 @@ var Search  = function(domRef){
   // lets load his staycard right away! 
   this.postCardSwipDataSuccess = function(response) {
 
+    //IF more than one search results appear, show the search results
     if(response.data.length > 1) {
         that.fetchCompletedOfFetchSearchData(response);
         return false;
     }
-
+    //If only one search results, move to staycard
     var viewURL = '/staff/staycards/staycard';
     var viewDom = $('#page-inner-first');
     var params = {
