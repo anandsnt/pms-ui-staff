@@ -224,7 +224,7 @@ var StayCard = function(viewDom){
 
 	};
   // function for closing the drawer if is open
-	that.closeGuestCardDrawer = function(){
+	this.closeGuestCardDrawer = function(){
 		if($("#guest-card").hasClass('open')) {
 			$('#guest-card .ui-resizable-handle').trigger('click');
 		}
@@ -291,16 +291,13 @@ this
   this.reservationTimelineClicked = function(e){
     var currentTimeline = $(e.target).attr('aria-controls');
     //No reservation details are added to the DOM
-    console.log('reached reservationTimelineClicked');
     if (!($("#" + currentTimeline).find('.reservation').length > 0)) {
-    	console.log($("#" + currentTimeline + ' #reservation-listing ul li').first());
       $("#" + currentTimeline + ' #reservation-listing ul li').first().children().first().trigger("click");
     }
   };
 
   // Load reservation details
   this.reservationListItemClicked = function(event){
-    console.log('reached reservationListItemClicked');
     event.preventDefault();
     var target = $(event.target);
     var confirmationNumClicked = target.attr('data-confirmation-num');

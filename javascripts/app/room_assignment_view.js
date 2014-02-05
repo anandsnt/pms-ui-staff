@@ -20,13 +20,11 @@ var RoomAssignmentView = function(viewDom){
   this.delegateEvents = function(){
 	// Apply filters upon page load as there may be guest likes defaulted on the filters.
 
-    that.myDom.find($('#room-attributes .checkbox')
-      .change('focusout', that.filterOptionChecked));
+    that.myDom.find('#room-attributes .checkbox').change('focusout', that.filterOptionChecked);
     //that.myDom.find('#room-upgrades ul li #upgrade-room-select').on('click',that.roomUpgradeSelected);
     //that.myDom.find($('.rooms-listing #room-type-selectbox')
       //.change('focusout', that.filterByRoomType));
-    //that.myDom.find('#room-assignment-button').on('click',that.backButtonClicked); 
-    //that.myDom.find('#clear-filters-button').on('click',that.clearFiltersClicked); 
+
     that.myDom.unbind('click');
     that.myDom.on('click', that.roomAssignmentClickHandler);
 
