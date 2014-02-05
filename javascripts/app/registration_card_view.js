@@ -66,19 +66,37 @@ var RegistrationCardView = function(viewDom) {
 		///that.myDom.find(('.bill-tabs')).tabs();
 		// ui tabs
 		this.bill_number = that.myDom.find("#bills li.active").attr('data-bill-number');
-		that.myDom.unbind('click');
-		that.myDom.on('click', that.myDomClickHandler);
+		that.myDom.find("#guest-card-content").unbind('click');
+		that.myDom.find("#guest-card-content").on('click', that.myDomClickHandler);
 		
 	};
 
 	// function to hanlde the click operation in the dom	
 	this.myDomClickHandler = function (event) {
 		// based on event's target elements we are calling the event operations
-		
-		
-		var target = $(event.target);
-		var target_id = target.attr("id");
-		if(!target.is("#guest-card-content *"))
+	    if(getParentWithSelector(event, "#checkin-button")) {
+	    	return that.completeCheckin(event);
+	    }
+	    if(getParentWithSelector(event, "#clear-signature")) {
+	    	return that.clearSignature(event);
+	    }	    
+	    if(getParentWithSelector(event, "#back-to-staycard")) {
+	    	return that.gotoStayCard(event);
+	    }
+	    if(getParentWithSelector(event, "#complete-checkout-button")) {
+	    	return that.clickedCompleteCheckout(event);
+	    }
+	    if(getParentWithSelector(event, "#pay-button")) {
+	    	return that.payButtonClicked();
+	    }
+	    if(getParentWithSelector(event, "#add-new-button")) {
+	    	return that.addNewButtonClicked();
+	    }
+	    if(getParentWithSelector(event, "#subscribe")) {
+	    	return that.subscribeCheckboxClicked(event);
+	    }	    
+	    
+		/*if(!target.is("#guest-card-content *"))
 		{
 			that.closeGuestCardDrawer();
 			switch(target_id){
@@ -111,7 +129,7 @@ var RegistrationCardView = function(viewDom) {
 					break;
 				}
 			}
-		}
+		}*/
 	};
 
      // function for closing the drawer if is open

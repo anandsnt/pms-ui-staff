@@ -27,33 +27,25 @@ var RoomAssignmentView = function(viewDom){
       //.change('focusout', that.filterByRoomType));
     //that.myDom.find('#room-assignment-button').on('click',that.backButtonClicked); 
     //that.myDom.find('#clear-filters-button').on('click',that.clearFiltersClicked); 
+    that.myDom.unbind('click');
     that.myDom.on('click', that.roomAssignmentClickHandler);
 
 
   };
   this.roomAssignmentClickHandler = function(event){
-  	  	
-  		var target = $(event.target);
-		  var target_id = target.attr("id");
-
 			that.closeGuestCardDrawer();
-			
-			switch(target_id){
-				
-				case 'upgrade-room-select': {		
-					console.log('clcik event');		
-					return that.roomUpgradeSelected(event);
-					break;
-				}				
-				case 'room-assignment-button': {
-					return that.backButtonClicked(event);
-					break;
-				}
-				case 'clearbutton #clear-filters-button': {
-					return that.clearFiltersClicked(event);
-					break;
-				}
-			}
+      // case of upgrade-room-select button
+      // which include click on both on the element and it's child element
+      if(getParentWithId(event, "#upgrade-room-select")) {
+        return that.roomUpgradeSelected (event);
+      }
+      if(getParentWithId(event, "#room-assignment-button")){
+        return that.backButtonClicked(event);
+      }      
+      if(getParentWithId(event, "#clear-filters-button")){
+        return that.clearFiltersClicked(event);
+      }      
+
 
 	};
   // function for closing the drawer if is open
@@ -417,15 +409,13 @@ var RoomAssignmentView = function(viewDom){
   };
 
 
-  this.roomUpgradeSelected = function(e){
+  this.roomUpgradeSelected = function(event){
+    var target = $(event.target);
 
     // var roomUpgradesView = new RoomUpgradesView();
     // roomUpgradesView.roomUpgradeSelected();
-
-    console.log('from function');
-    e.preventDefault();
-    var upsellAmountId = $(this).attr('data-value');
-    var roomNumberSelected = $(this).attr('data-room-number');
+    var upsellAmountId = target.attr('data-value');
+    var roomNumberSelected = target.attr('data-room-number');
     var reservationId = that.reservation_id;
     var postParams = {"reservation_id": reservationId, "upsell_amount_id": upsellAmountId, "room_no": roomNumberSelected};
 
