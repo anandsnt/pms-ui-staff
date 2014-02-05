@@ -1,12 +1,13 @@
 var setUpStaycard = function(viewDom) {
 	// Reservation card tabs
-	viewDom.find($('.reservation-tabs1')).each(function() {
+	viewDom.find($('.reservation-tabs-timeline')).each(function() {
 		$(this).tabs({
 			beforeActivate : applayTabSettings
 		}).addClass('ui-tabs-vertical ui-helper-clearfix');
 	});
 
 	viewDom.find($('.reservation-tabs')).each(function() {
+
 		var activeTabIndex = 0;
 		var currentReservation = viewDom.find($('#confirm_no')).val();
 		var activeTimeline = $('#reservation-card').attr('data-current-timeliine');
