@@ -342,6 +342,9 @@ $(function($){
                     //timeout:    5000,
                     success: function(data){
                         $('#page-main-first').html(data);
+                        var dashboard = new Dashboard($('#dashboard'));
+                        dashboard.initialize();
+                        dashboard.pageshow();
                     },
                     error: function(jqxhr, status, error){
                         //checking whether a user is logged in

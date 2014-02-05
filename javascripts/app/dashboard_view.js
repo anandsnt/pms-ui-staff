@@ -18,6 +18,22 @@ var Dashboard = function(domRef){
   
   this.pageshow = function(){
   	that.showWelcomeMessage();
+    that.updateLateCheckoutCount();
+  };
+
+  this.updateLateCheckoutCount = function(){
+    var url = '/staff/dashboard/late_checkout_count';
+    var webservice = new WebServiceInterface();   
+    var options = {
+           successCallBack: that.lateCheckoutCountFetched,
+           loader: "NONE"
+    };
+    webservice.getJSON(url, options);
+  };
+
+  this.lateCheckoutCountFetched = function(response){
+    that.myDom.find('#late-checkout-alert').text(response.data.late_checkout_count);
+
   };
 
   this.showWelcomeMessage = function(e){

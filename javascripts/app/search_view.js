@@ -17,7 +17,11 @@ var Search  = function(domRef){
     // Start listening to card swipes
     this.initCardSwipe();
 
-    if(type != "") {
+    if(type == "LATE_CHECKOUT") {
+        var search_url = "search.json?is_late_checkout_only=true";
+        this.fetchSearchData(search_url, "",type);
+    }
+    else if(type != "") {
         var search_url = "search.json?status=" + type;
         this.fetchSearchData(search_url, "",type);
     }
@@ -29,8 +33,25 @@ var Search  = function(domRef){
     // window.trigger = that.postCardSwipData;
   };
 
+
   this.pageshow = function() {
+    that.updateLateCheckoutCount();
     this.initCardSwipe();
+  };
+
+  this.updateLateCheckoutCount = function(){
+    var url = '/staff/dashboard/late_checkout_count';
+    var webservice = new WebServiceInterface();   
+    var options = {
+           successCallBack: that.lateCheckoutCountFetched,
+           loader: "NONE"
+    };
+    webservice.getJSON(url, options);
+  };
+
+  this.lateCheckoutCountFetched = function(response){
+    that.myDomElement.find('#late-checkout-alert').text(response.data.late_checkout_count);
+
   };
 
   // Start listening to card swipes
@@ -75,10 +96,21 @@ var Search  = function(domRef){
   };
 
   this.delegateEvents = function(){  
-    that.myDomElement.find($('#query')).on('focus', that.callCapitalize);
-    that.myDomElement.find($('#query')).on('keyup', that.queryEntered);
-    that.myDomElement.find($('#search-form')).on('submit', that.submitSearchForm);
-    that.myDomElement.find($('#clear-query')).on('click', that.clearResults);
+    that.myDomElement.find('#query').on('focus', that.callCapitalize);
+    that.myDomElement.find('#query').on('keyup', that.queryEntered);
+    that.myDomElement.find('#search-form').on('submit', that.submitSearchForm);
+    that.myDomElement.find('#clear-query').on('click', that.clearResults);
+    that.myDomElement.find('#late-checkout-alert').on('click', that.latecheckoutSelected);
+  };
+
+  this.latecheckoutSelected = function(e){
+    e.preventDefault();
+    that.currentQuery = "";
+    that.fetchResults = [];
+    that.fetchTerm = "";
+    var search_url = "search.json?is_late_checkout_only=true";
+    that.fetchSearchData(search_url, "", "LATE_CHECKOUT");
+
   };
 
   //Clear Search Results 
@@ -105,21 +137,23 @@ var Search  = function(domRef){
   };
 
   this.fetchCompletedOfFetchSearchData = function(response, requestParams) {
+      var searchType = "";
       $("#search-results").empty().removeClass('hidden');
       $('#preloaded-results').addClass('hidden');
       $('#no-results').addClass('hidden');
       
       // set up reservation status
-      var reservation_status = "";
       var type = requestParams['type'];
       if(type == "DUEIN"){
-        reservation_status = "checking in";
+        searchType = "checking in";
       }
       else if(type == "DUEOUT"){
-        reservation_status = "checking out";
+        searchType = "checking out";
       }
       else if(type == "INHOUSE"){
-        reservation_status = "in house";
+        searchType = "in house";
+      }else if(type == "LATE_CHECKOUT"){
+        searchType = "opted for late checkout";
       }
       
       if(response.data.length > 0){
@@ -128,9 +162,9 @@ var Search  = function(domRef){
       }
       // No data in JSON file
       else if(response.data.length == 0){
-        if(reservation_status != ""){
+        if(searchType != ""){
           // When dashboard buttons with 0 guests are clicked, show search screen message - "No guests checking in/out/in house" 
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+reservation_status+'</strong></li>');
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+searchType+'</strong></li>');
         }
         else{
           // To show no matches message while search guest with 0 results.
@@ -279,7 +313,7 @@ var Search  = function(domRef){
                   (escapeNull(value.confirmation).toString()).indexOf($query) >= 0)
               {
                   items.push($('<li />').html(
-                      that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
+                      that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip, value.late_checkout_time, value.is_opted_late_checkout)
                   ));
               }
               
@@ -313,7 +347,7 @@ var Search  = function(domRef){
             $.each(response, function(i,value){
 
             items.push($('<li />').html(
-                        that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip)
+                        that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip, value.late_checkout_time, value.is_opted_late_checkout)
                     ));
 
                     $('#search-results').append.apply($('#search-results'),items).highlight($query);
@@ -335,9 +369,8 @@ var Search  = function(domRef){
         };
     };
 
-    this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip){
-
-      var reservationStatusIcon = this.getReservationStatusMapped(reservation_status);
+    this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip, lateCheckoutTime, isLateCheckoutOn){
+      var guestStatusIcon = this.getGuestStatusMapped(reservation_status, isLateCheckoutOn);
       var roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
       var roomstatusexplained = "";
       var roomStatus = "";
@@ -360,8 +393,9 @@ var Search  = function(domRef){
         $vip = vip ? '<span class="vip">VIP</span>' : '',
         $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="' + escapeNull(image) + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = showRoomStatus ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
-        $viewStatus = reservationStatusIcon ? '<span class="guest-status ' + escapeNull(reservationStatusIcon) + '"></span>':'<span class="guest-status"></span>',
-    
+        $viewStatus = guestStatusIcon ? '<span class="guest-status ' + escapeNull(guestStatusIcon) + '"></span>':'<span class="guest-status"></span>',
+        $lateCheckoutStatus = escapeNull(lateCheckoutTime) == "" ? "": '<span class="late-checkout-time">'+escapeNull(lateCheckoutTime)+'</span>'
+        $guestViewIcons = '<div class="status">' + $viewStatus + $lateCheckoutStatus + '</div>'
         $output =
         '<a href="staff/staycards/staycard?confirmation=' + confirmation+'&id='+ escapeNull(id)+ '" class="guest-check-in link-item float" data-transition="inner-page">' +
             $image +
@@ -369,15 +403,19 @@ var Search  = function(domRef){
                 '<h2>' + escapeNull(lastname) + ', ' + escapeNull(firstname) + '</h2>' +
                 '<span class="confirmation">' + escapeNull(confirmation) + '</span>' + $location + $group +
             '</div>'+
-            $viewStatus +
+            $guestViewIcons +
             roomStatus + $roomAdditional +
         '</a>';
       return $output;
     };
 
     //Map the reservation status to the view expected format
-    this.getReservationStatusMapped = function(status){
+    this.getGuestStatusMapped = function(status, isLateCheckoutOn){
       var viewStatus = "";
+      if(isLateCheckoutOn){
+        viewStatus = "late-check-out";
+        return viewStatus;
+      }
       if(status == "RESERVED"){
         viewStatus = "arrival";
       }else if(status == "CHECKING_IN"){
