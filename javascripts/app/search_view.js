@@ -141,9 +141,9 @@ var Search  = function(domRef){
       $("#search-results").empty().removeClass('hidden');
       $('#preloaded-results').addClass('hidden');
       $('#no-results').addClass('hidden');
-      
+      console.log(requestParams);
       // set up reservation status
-      var type = typeof requestParams == undefined ? "" : requestParams['type'];
+      var type = typeof requestParams == "undefined" ? "" : requestParams['type'];
       if(type == "DUEIN"){
         searchType = "checking in";
       }
