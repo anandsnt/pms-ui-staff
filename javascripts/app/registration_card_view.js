@@ -35,6 +35,7 @@ var RegistrationCardView = function(viewDom) {
 			that.myDom.find("#bill1-fees").removeClass("hidden");
 			that.myDom.find("#signature-pad").addClass("hidden");
 			that.myDom.find("#complete-checkout-button").addClass("hidden");
+			that.myDom.find("#terms-and-conditions").addClass("hidden");
 		}
 		
 		// A dirty hack to allow "this" instance to be refered from sntapp
