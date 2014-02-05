@@ -22,14 +22,44 @@ var RoomAssignmentView = function(viewDom){
 
     that.myDom.find($('#room-attributes .checkbox')
       .change('focusout', that.filterOptionChecked));
-    that.myDom.find('#room-upgrades ul li #upgrade-room-select').on('click',that.roomUpgradeSelected);
+    //that.myDom.find('#room-upgrades ul li #upgrade-room-select').on('click',that.roomUpgradeSelected);
     //that.myDom.find($('.rooms-listing #room-type-selectbox')
       //.change('focusout', that.filterByRoomType));
-    that.myDom.find('#room-assignment-button').on('click',that.backButtonClicked); 
-    that.myDom.find('#clear-filters-button').on('click',that.clearFiltersClicked); 
+    //that.myDom.find('#room-assignment-button').on('click',that.backButtonClicked); 
+    //that.myDom.find('#clear-filters-button').on('click',that.clearFiltersClicked); 
+    that.myDom.find("#room-assignment *").on('click', that.roomAssignmentClickHandler);
 
 
   };
+  this.roomAssignmentClickHandler = function(event){
+  	  	
+  		var target = $(event.target);
+		var target_id = target.attr("id");
+
+			that.closeGuestCardDrawer();
+			switch(target_id){
+				
+				case 'room-upgrades ul li #upgrade-room-select': {				
+					return that.roomUpgradeSelected(event);
+					break;
+				}				
+				case 'room-assignment-button': {
+					return that.backButtonClicked(event);
+					break;
+				}
+				case 'clearbutton #clear-filters-button': {
+					return that.clearFiltersClicked(event);
+					break;
+				}
+			}
+
+	};
+  // function for closing the drawer if is open
+	that.closeGuestCardDrawer = function(){
+		if($("#guest-card").hasClass('open')) {
+			$('#guest-card .ui-resizable-handle').trigger('click');
+		}
+	};
 
   this.executeLoadingAnimation = function(){
 

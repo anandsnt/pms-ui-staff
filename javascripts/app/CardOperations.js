@@ -1,3 +1,5 @@
+
+
 var CardOperation = function(){
 	// class for handling operations with payment device
 	
@@ -6,7 +8,27 @@ var CardOperation = function(){
 	// function for start reading from device 
 	// Note down: Currently it is recursive
 	
-	this.startReader = function(options){		
+	this.startReaderDebug = function(options){
+	//Simulating the card reader function for easy testing. May be removed in production.
+
+		coinstance = this; // Global instance to test from console.
+		that.callSuccess = function(data)
+		{
+			console.log("sucecss called");
+			var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
+			var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
+			var carddata= { 'RVCardReadTrack2': 'CDA1E3A2EB853964E4D4550151545BE1052CB17498A61E8FE5BB5D948BD3844EA78603B263D5E509',
+          					'RVCardReadTrack2KSN': '950067000000062002AF'
+						  };
+
+			if (typeof data != 'undefined'){ carddata = data;}
+			successCallBack(carddata, successCallBackParameters);
+		}
+
+	}
+
+
+	this.startReader = function(options){
 		options['shouldCallRecursively'] = true;
 		that.listenForSingleSwipe(options);		
 	};
