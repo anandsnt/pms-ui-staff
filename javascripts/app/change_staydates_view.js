@@ -266,7 +266,7 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.dateChangeFailure = function(errorMsg){
-      sntapp.notification.showErrorList(errorMsg);
+      sntapp.notification.showErrorMessage(errorMsg);
 
       //Reset calender view
       that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate)
@@ -389,6 +389,12 @@ var ChangeStayDatesView = function(viewDom){
           that.myDom.find('#change-room ul').append(roomListEntry);
 
       });
+
+      // Set scrollers
+      if (viewScroll) { destroyViewScroll(); }
+      setTimeout(function(){
+          createViewScroll('#change-room');
+      }, 300);
 
       that.myDom.find('#change-room ul li').on('click', that.roomListNumberSelected);
   };
