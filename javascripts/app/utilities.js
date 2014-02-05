@@ -7,6 +7,28 @@ function getDateObj(dateString){
 return convertDateToUTC(new Date(dateString));
 }
 
+// If given event target has a parent with given id, execute given event handler.
+function getParentWithSelector(event, selector) {
+
+	var obj = $(event.target), matched = false;
+
+	//selector can be different by id, class, or normal tag etc.	
+	//id checking eg. selector = '#div-first'
+	if(obj.is(selector)) {
+		matched = true;
+	}
+	// if no match found in our above check
+	if(!matched){
+		result = obj.parents(selector + ":eq(0)");
+		if(result.length) { 
+			obj=result; 
+			matched = true;
+		}
+	}
+	event.target = obj;
+	return matched;
+};
+
 function convertDateToUTC(date) { 
   return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
 }
