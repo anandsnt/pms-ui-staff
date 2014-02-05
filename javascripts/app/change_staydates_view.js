@@ -266,7 +266,7 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.dateChangeFailure = function(errorMsg){
-      sntapp.notification.showErrorMessage(errorMsg);
+      sntapp.notification.showErrorMessage(errorMsg, that.myDom);
 
       //Reset calender view
       that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate)
