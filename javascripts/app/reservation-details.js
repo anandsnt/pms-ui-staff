@@ -179,29 +179,32 @@ var reservationDetailsView = function(domRef) {
 	};
 
 	this.addKeysModal = function(e) {
+		var reservationStatus = that.myDom.find("#add-keys").attr('data-reseravation-status');
+		var keySettings = that.myDom.find("#add-keys").attr("data-key-settings");
 		
-		if ($(e.target).closest('a').attr("data-key-settings") == "qr_code_tablet") {
+		if(keySettings == "email"){
+			var addKeysModal = new AddKeysModal(reservationStatus);
+			addKeysModal.initialize();
+			addKeysModal.params = {
+				"origin" : views.STAYCARD
+			};
+		}
+
+		else if(keySettings == "qr_code_tablet") {
 			var qrCodeModel = new QrCodeModel();
 			qrCodeModel.initialize();
 		} 
-		else if($(e.target).closest('a').attr("data-key-settings") == "email"){
-			var addKeysModal = new AddKeysModal();
-			addKeysModal.initialize();
-			addKeysModal.params = {
-				"origin" : views.STAYCARD,
-				"reservation-status" : that.myDom.find("#add-keys").attr('data-reseravation-status')
-			};
-		}
-		else if($(e.target).closest('a').attr("data-key-settings") == "encode"){
+		else if(keySettings == "encode"){
 			var keyEncoderModal = new KeyEncoderModal();
 			keyEncoderModal.initialize();
 			keyEncoderModal.params = {
 				"origin" : views.STAYCARD,
-				"reservation-status" : that.myDom.find("#add-keys").attr('data-reseravation-status')
+				"reservationStatus" : reservationStatus
 			};
-			
-			//TODO RFID MODAL
 		}
+
+
+
 	};
 	this.roomUpgradesClicked = function(e) {
 

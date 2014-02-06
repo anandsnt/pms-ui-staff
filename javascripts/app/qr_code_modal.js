@@ -4,6 +4,7 @@ var QrCodeModel = function(callBack) {
 	var that = this;
 	this.reservation_id = getReservationId();
 	this.url = "staff/reservations/" + that.reservation_id + "/get_key_on_tablet";
+	this.url = "/ui/show?haml_file=modals/qrCodeModal&json_input=stay_card/key_qr_code.json&is_hash_map=true&is_partial=true";
 
 	this.delegateEvents = function() {
 		// Setting style and attributes to the modal.

@@ -6,7 +6,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.url = "/ui/show?haml_file=modals/keys/print_keys_common&json_input=stay_card/key_email.json&is_hash_map=true&is_partial=true";
 	
 	this.delegateEvents = function() {
-		
 		that.myDom.find('#try-again').on('click', that.showDeviceConnectingMessge);
 		that.myDom.find('#cancel').on('click', function(){ that.hide();});
 		
@@ -22,16 +21,29 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	};
 
 	this.modalDidShow = function() {
-		that.showDeviceConnectingMessge();
-		if(that.params.reservation-status == status.CHECKING_IN){
-			that.myDom.find('#print-key.modal').addClass('inhouse');
-			that.myDom.find('#room-status .message').text('In House');
-		}else{
-			that.myDom.find('#print-key.modal').addClass('check-in');
-			that.myDom.find('#room-status .message').text('Check in Complete')
 
+		that.showDeviceConnectingMessge();
+
+		if(that.params.reservationStatus == "CHECKING_IN") {
+			that.myDom.find('#print-key').addClass('check-in');
+			that.myDom.find('#room-status .message').text('Check in Complete');
+
+		} else if(that.params.reservationStatus == "CHECKEDIN") {
+			that.myDom.find('#print-key').addClass('inhouse');
+			that.myDom.find('#modal-close').addClass('blue');
+			that.myDom.find('#room-status .message').text('In House');
+
+		} else if(that.params.reservationStatus == "CHECKING_OUT") {
+			that.myDom.find('#print-key.modal').addClass('check-out');
+			that.myDom.find('#modal-close').addClass('red');
+			that.myDom.find('#room-status .message').text('Checking Out')
 		}
 
+		if(that.params.origin == views.BILLCARD){
+			that.myDom.find('#modal-close').remove();
+			$("#modal-overlay").css("pointer-events","none");
+			$("#modal-overlay").unbind( "click" );
+		}
 
 	};
 
