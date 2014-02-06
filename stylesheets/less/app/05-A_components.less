@@ -142,18 +142,18 @@
 			}
 
 			#stats-today {
+				text-align: center;
 				.float;
-				
+
 				li {
-					width: 50%;
 					color: @grey3;
 					text-align: center;
 					text-transform: uppercase;
-					padding-bottom: 40px;
-					margin: 0;
+					width: 215px;
 					.pull-left;
+					.show;
 
-					&:nth-child(1n+4) { padding-bottom: 0; }
+					&:first-child { margin-right: 255px; }
 
 					span {
 						font-size: 48px;
@@ -171,7 +171,12 @@
 
 				&.upsell_on {
 					li {
-						width: 33.33%;
+						padding-bottom: 40px;
+						margin: 0 20px 0 0;
+						.calc-width(33.33, 20); /* %, px */
+
+						&:nth-child(3n) { margin-right: 0; }
+						&:nth-child(1n+4) { padding-bottom: 0; }
 					}
 				}
 			}
