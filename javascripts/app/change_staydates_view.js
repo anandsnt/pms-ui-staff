@@ -331,7 +331,11 @@ var ChangeStayDatesView = function(viewDom){
       // Update Dom values
       that.myDom.find('#reservation-updates #room-number').text(roomSelected);
       that.myDom.find('#reservation-updates #room-type').text(that.myDom.find('#room-type').text());
-      that.myDom.find('#reservation-updates #new-nights').text(totalNights);
+      if(totalNights > 0){
+        that.myDom.find('#reservation-updates #new-nights').text(totalNights + ' nights');
+      } else {
+        that.myDom.find('#reservation-updates #new-nights').text('Day Use');
+      }
       that.myDom.find('#reservation-updates #new-check-in').text(getDateString(reservationDetails['arrival_date'], true));
       that.myDom.find('#reservation-updates #new-check-out').text(getDateString(reservationDetails['dep_date'], true));
       that.myDom.find('#reservation-updates #avg-daily-rate').text(currencySymbol + avgRate +" /");
