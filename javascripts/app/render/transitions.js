@@ -441,7 +441,7 @@ $(function($){
                 		var result = JSON.parse(data);
                 		if (result.status == 'failure') {
                 			$('#loading').fadeOut(function(){
-                				sntapp.notification.showErrorMessage("Some error occured: " , $("#search"));
+                				sntapp.notification.showErrorMessage("Error: "+result.errors , $("#search"));
                 			});
                 			return false;
                 		} 
