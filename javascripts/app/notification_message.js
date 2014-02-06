@@ -37,7 +37,10 @@ var NotificationMessage = function() {
 			dom.animate({
 				scrollTop: 0
 			}, 300);
-			$(window).scrollTop($('#notification-message').offset().top);
+
+			if ($('#notification-message').length) {
+				$(window).scrollTop($('#notification-message').offset().top);
+			};
 		} else {
 			// console.log(dom.attr("id"));
 			var element = dom.find('#notification-message')[0];
