@@ -1,7 +1,8 @@
-var AddKeysModal = function(reservation_status,gotoStayCard,gotoSearch) {
+var AddKeysModal = function(gotoStayCard,gotoSearch) {
 	BaseModal.call(this);
 	var that = this;
 	var reservation_id = getReservationId();
+	
 	//this.url = "staff/reservations/" + reservation_id + "/get_key_setup";
 	this.url = "/ui/show?haml_file=modals/addKeys&json_input=stay_card/key_email.json&is_hash_map=true&is_partial=true";
 	
