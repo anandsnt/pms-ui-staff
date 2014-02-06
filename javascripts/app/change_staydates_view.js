@@ -10,8 +10,14 @@ var ChangeStayDatesView = function(viewDom){
   this.delegateEvents = function(){  
       that.myDom.find('#changedates-back-btn').on('click',that.backButtonClicked);
       that.myDom.find('#reservation-details').on('click', that.reservationUpdateClickEvents);
+      that.myDom.unbind('click');
+      that.myDom.on('click', that.changeStayDatesClickHandler);
   };
-
+  
+  //change Stay dates dom click handler
+  this.changeStayDatesClickHandler = function(){
+  	 sntapp.notification.hideMessage(that.myDom);
+  };
   this.executeLoadingAnimation = function(){
       changeView("nested-view", "", "view-nested-first", "view-nested-second", "move-from-right", false); 
   };

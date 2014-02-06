@@ -32,6 +32,7 @@ var RoomAssignmentView = function(viewDom){
   };
   this.roomAssignmentClickHandler = function(event){
 			that.closeGuestCardDrawer();
+			sntapp.notification.hideMessage(that.myDom);
       // case of upgrade-room-select button
       // which include click on both on the element and it's child element
       if(getParentWithSelector(event, "#upgrade-room-select")) {
