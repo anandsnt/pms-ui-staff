@@ -255,20 +255,23 @@ var RegistrationCardView = function(viewDom) {
 	};
 	this.fetchCompletedOfSave = function(data, requestParameters) {
 
-		// If QR Code status enabled - First show select Key Modal
-		// Else show key genaration Modal
-		if (requestParameters['is_show_qr_code'] == "true") {
-			var selectKeyModel = new SelectKeyModel(that.showCheckinSuccessModal, that.openQrCodeModal);
-			selectKeyModel.initialize();
-		}
-		else {
-			// To show Modal for key generation
+		var dataKeySettings = that.myDom.find("#checkin-button").attr("data-key-settings");
+
+		if(dataKeySettings == "email"){
 			var addKeysModal = new AddKeysModal(that.goAndRefreshStayCard,that.goToSearchScreen);
 			addKeysModal.initialize();
 			addKeysModal.params = {
 				"origin" : views.BILLCARD,
 				"reservation-status" : that.myDom.find("#checkin-button").attr('data-reseravation-status')
 			};
+		}
+		else if ( dataKeySettings == "qr_code_tablet") {
+			var selectKeyModel = new SelectKeyModel(that.showCheckinSuccessModal, that.openQrCodeModal);
+			selectKeyModel.initialize();
+		}
+		else if(dataKeySettings == "encode"){
+			
+			
 		}
 
 		if (requestParameters['is_promotions_and_email_set'] == "true") {

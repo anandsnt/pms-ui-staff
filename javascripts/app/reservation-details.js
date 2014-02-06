@@ -146,19 +146,22 @@ var reservationDetailsView = function(domRef) {
 	};
 
 	this.addKeysModal = function(e) {
-		// If QR Code status enabled - show QR Code Modal 
-		// Else show key genaration Modal
-		if ($(e.target).closest('a').attr("data-qr-code") == "true") {
+		
+		if ($(e.target).closest('a').attr("data-key-settings") == "qr_code_tablet") {
 			var qrCodeModel = new QrCodeModel();
 			qrCodeModel.initialize();
 		} 
-		else{
+		else if($(e.target).closest('a').attr("data-key-settings") == "email"){
 			var addKeysModal = new AddKeysModal();
 			addKeysModal.initialize();
 			addKeysModal.params = {
 				"origin" : views.STAYCARD,
 				"reservation-status" : that.myDom.find("#add-keys").attr('data-reseravation-status')
 			};
+		}
+		else if($(e.target).closest('a').attr("data-key-settings") == "encode"){
+			
+			//TODO RFID MODAL
 		}
 	};
 	this.roomUpgradesClicked = function(e) {
