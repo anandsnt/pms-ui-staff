@@ -1636,7 +1636,6 @@
 					li {
 						display: inline-block;
 						margin: 5px 0 0 0;
-						padding: 10px 20px;
 						line-height: 1em;
 						vertical-align: middle;
 						min-width: 95px;
@@ -1648,16 +1647,38 @@
 
 						a {
 							color: @grey4;
-							font-weight: 600;
 							text-transform: uppercase;
-							
+							padding: 10px;
+							.float;
 							.show;
 							.no-transition;
 
-							span { 
-								font-size: 14px;
-								font-weight: 400;
-								.show;
+							.price {
+								font-weight: 600;
+								.pull-left;
+
+								span { 
+									font-size: 14px;
+									font-weight: 400;
+									.show;
+								}
+							}
+
+							.card-logo,
+							.payment {
+								font-size: 12px;
+								line-height: 12px;
+								margin-left: 30px;
+								text-align: right;
+								.pull-left;
+								.size(20px,40px);
+								.opacity(50);
+
+								img {
+									width: 100%;
+									height: auto;
+									margin-top: 2px;
+								}
 							}
 						}
 
@@ -1671,6 +1692,9 @@
 
 							a {
 								color: @textColor;
+
+								.card-logo,
+								.payment { .opacity(100); }
 							}
 						}
 					}
@@ -1993,6 +2017,7 @@
 								color: @grey3;
 
 								&.form { width: 80px; }
+								&.price { width: 160px; }
 							}
 
 							td {
@@ -2071,62 +2096,112 @@
 			/* Total Stay Fees ***/
 			.total-stay-fees {
 				margin-top: 10px;
+				.float;
 
 				.overview {
-					.toggle {
-						color: @textColor;
-						text-transform: uppercase;
+					text-transform: uppercase;
+					.pull-left;
+
+					.title {
 						display: inline-block;
-						padding-right: 30px;
+						text-align: right;
+						line-height: 14px;
+						margin-right: 5px;
 
-						&.with-rate {
-							line-height: 50px;
-							vertical-align: middle;
-							padding-right: 40px;
-
-							strong {
-								font-size: 30px;
-								line-height: 50px;
-								font-weight: 600;
-								vertical-align: middle;
-								padding: 0 10px;
-								color: @logoPrimary;
-							}
+						.label { 
+							width: 100%;
+							float: none;
+							.show; 
 						}
 					}
 
-					&.has-balance { 
-						display: inline-block;
-						.pull-left; 
-					}
-				}
-
-				.balance {
-					.pull-right;
-
+					.toggle,
 					p {
-						color: @textColor;
-						text-transform: uppercase;
 						display: inline-block;
-						line-height: 50px;
-						vertical-align: middle;
-						margin: 0;
+						color: @textColor;
+						margin-right: 10px;
+						padding-right: 25px;
+						background-position: 100% 50%;
 
-						strong {
-							font-size: 30px;
-							font-weight: 600;
-							line-height: 50px;
-							vertical-align: middle;
-							padding: 0 10px;
+						.value {
+							font-size: 36px;
+							font-weight: 400;
+							color: @logoPrimary;
 
 							&.red { color: @red; }
 							&.green { color: @green; }
 						}
 
+						&.with-rate { 
+							margin-top: 10px;
+							padding-top: 4px;
+							line-height: 36px; 
+							vertical-align: top;
+						}
 					}
+
+					p {
+						margin: 10px 10px 0 0;
+						padding-top: 4px;
+						line-height: 36px; 
+						vertical-align: top;
+
+						.value { color: @textColor; }
+					}
+
+					.button:nth-child(even) { margin-right: 5px; }
+				} 
+
+				.item-payment {
+					.pull-right;
+					.float;
+
+					h3 {
+						font-size: 21px;
+						font-weight: 600;
+						line-height: 60px;
+					}
+					
+					.next-view {
+						color: @textColor;
+						line-height: 48px;
+						padding: 5px 20px;
+						margin-right: 10px;
+						.clickable;
+						.pull-left;
+
+						.card-logo { margin-right: 20px; }
+						.number { margin-right: 10px; }
+						.date { margin-right: 0; }
+					}
+
+					.button {
+						.pull-left;
+						.size(60px, 65px);
+					}
+
+					/*.actions {
+						.button,
+						.add-new-button { 
+							margin-right: 10px;
+							.size(60px, 65px);
+							.pull-left;
+
+							&.add-new-button { line-height: 60px; }
+							&:last-child { margin-right: 0; }
+						}
+					}*/
+
+					/*.next-view {
+						.clickable;
+						display: inline-block;
+						margin-right: 5px;
+					}*/
 				}
 
 				.details {
+					clear: both;
+					padding-top: 10px;
 
 					/* Total stay fees table ***/
 					.total-fees {
@@ -2137,7 +2212,6 @@
 						table-layout: auto;
 						border-collapse: separate; 
 						border-spacing: 0 10px;
-						width: 100%;
 						margin: 0;
 
 						tr {
@@ -2199,7 +2273,7 @@
 
 			/* Complete registration */
 			.complete-registration {
-				margin-top: 20px;
+				margin-top: 40px;
 
 				h2 { margin-bottom: 10px; }
 
@@ -2212,6 +2286,8 @@
 						.show;
 
 						.icon-checkbox { top: 5px; }
+						
+						&.single { margin-top: 20px; }
 					}
 				}
 
