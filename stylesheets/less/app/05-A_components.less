@@ -146,12 +146,11 @@
 				.float;
 
 				li {
+					display: inline-block;
 					color: @grey3;
 					text-align: center;
 					text-transform: uppercase;
 					width: 215px;
-					.pull-left;
-					.show;
 
 					&:first-child { margin-right: 255px; }
 
@@ -174,6 +173,8 @@
 						padding-bottom: 40px;
 						margin: 0 20px 0 0;
 						.calc-width(33.33, 20); /* %, px */
+						.pull-left;
+						.show;
 
 						&:nth-child(3n) { margin-right: 0; }
 						&:nth-child(1n+4) { padding-bottom: 0; }
@@ -554,6 +555,13 @@
 					
 					.entry {
 						#pixel-to-percent > .width(432, 904);
+
+						input[size] {
+							text-align: center;
+							margin-right: 5px;
+
+							&:last-child { margin-right: 0; }
+						}
 						
 						&:nth-child(odd) { #pixel-to-percent > .right-margin(40, 904); }
 
@@ -1326,7 +1334,7 @@
 						.next-view,
 						.no-view { 
 							line-height: 48px; 
-							.calc-width(100, 80); /* %, px - 70 is the width of one buttons + 10px margin */ 
+							.calc-width(100, 75); /* %, px - 65 is the width of one buttons + 10px margin */ 
 						}
 					}
 
@@ -1367,7 +1375,7 @@
 
 					&.has-button {
 						.next-view,
-						.no-view { .calc-width(100, 80); /* %, px - 70 is the width of one buttons + 10px margin */ }
+						.no-view { .calc-width(100, 75); /* %, px - 65 is the width of one buttons + 10px margin */ }
 					}			
 				}
 
@@ -1409,6 +1417,7 @@
 					
 					.next-view,
 					.no-view {
+						line-height: 50px;
 						background-position: 98% 53%;
 
 						.number {
