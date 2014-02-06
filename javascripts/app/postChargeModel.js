@@ -119,23 +119,25 @@ var PostChargeModel = function(callBack) {
 	    }
 	};
 	
+	// success function call of .ajax in fetchItemList
+	this.fetchCompletedOfFetchItemList = function(response){
+		that.itemCompleteList = response.data.items;
+		for(var i = 0; i < that.itemCompleteList.length; i++){
+			that.itemCompleteList[i].count = 0;
+		}
+		that.currentList = that.itemCompleteList;
+	};
+
+
 	// To fetch items data from API , initializing count of each item - store locally.
 	this.fetchItemList = function() {
-		$.ajax({
-			type : "GET",
-			url: 'staff/items/'+that.reservation_id+'/get_items.json',
-			success : function(response) {
-				that.itemCompleteList = response.data.items;
-				for(var i=0;i<that.itemCompleteList.length;i++){
-					that.itemCompleteList[i].count = 0;
-				}
-				that.currentList = that.itemCompleteList;
-			},
-			error: function(jqxhr, status, error){
-        		//checking whether a user is logged in
-        		if (jqxhr.status == "401") { sntapp.logout(); return;}
-        	}
-		});
+		var webservice = new WebServiceInterface();	    	
+	    var url = '/staff/items/'+that.reservation_id+'/get_items.json'; 
+	    var options = {
+	    	loader: 'BLOCKER',
+			successCallBack: that.fetchCompletedOfFetchItemList
+		};
+	    webservice.getJSON(url, options);		
 	};
 
 	// Selected item in charges to be posted list

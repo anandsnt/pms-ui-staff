@@ -34,20 +34,6 @@ var ValidateCheckoutModal = function(callBack, callBackParam) {
 			return false;
 		}
 		else if(validateEmail(email)){
-
-		    // $.ajax({
-					// type : "PUT",
-					// url : 'staff/guest_cards/' + userId,
-					// data : JSON.stringify($contactJsonObj),
-					// async : false,
-					// dataType : 'json',
-					// contentType : 'application/json',
-					// success : function() {
-// 						
-					// },
-					// error : function() {
-					// }
-			// });
 			
 			
 			var webservice = new WebServiceInterface();

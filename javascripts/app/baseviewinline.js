@@ -93,7 +93,10 @@ var BaseInlineView = function(viewDom){
 				   successCallBackParameters : {'element': element},
 	    		   loader: 'normal',
 		};
-	    webservice.getHTML(url, options);	
+	    webservice.getHTML(url, options);
+
+	    // pause table sorting
+	    that.pauseSorting && this.pauseSorting(true);
 
 	    return true;
 	};  
@@ -135,6 +138,9 @@ var BaseInlineView = function(viewDom){
     };
     //Update data
     this.updateData = function(event){
+    	// unpause table sorting
+	    that.pauseSorting && that.pauseSorting(false);
+
     	that.updateApi(event);// Override this function to call the individual API
     };
     this.updateApi = function(event){
@@ -150,6 +156,9 @@ var BaseInlineView = function(viewDom){
 	// event to handle cancel button click in form
 	// Ask Sajith: If it is handling seperately in the view, then..
 	this.cancelFromAppendedDataInline = function(event){
+
+		// unpause table sorting
+	    that.pauseSorting && that.pauseSorting(false);
 
 		var element = $(event.target);
 		var containerTable = element.parents("table:eq(0)");

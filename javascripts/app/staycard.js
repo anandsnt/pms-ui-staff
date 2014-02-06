@@ -325,10 +325,44 @@ this
 
   };
 
+  // success function of LoadReservationDetails's ajax call
+  this.fetchCompletedOfLoadReservationDetails = function(data, params){
+    var confirmationNum = params['confirmationNum'];
+    var currentTimeline = params['currentTimeline'];
+    var sucessCallback = params['sucessCallback'];
+    var currentReservationDom = params['currentReservationDom'];
+
+    if ($(currentReservationDom).length > 0) {
+      $("#" +currentTimeline).find(currentReservationDom).remove();
+    }
+    $("#" + currentTimeline).append(data);         
+    createViewScroll("#reservation-content-"+confirmationNum);       
+    var reservationDetails = new reservationDetailsView($("#reservation-"+confirmationNum));
+    reservationDetails.initialize();
+    if(sucessCallback != undefined){
+      sucessCallback();
+    }
+  };
+
   this.loadReservationDetails = function(currentReservationDom, sucessCallback){
     var confirmationNum = currentReservationDom.split("-")[1];
     var currentTimeline = $('#reservation-timeline').find('.ui-state-active').attr('aria-controls');
-      //show loading indicator
+    var webservice = new WebServiceInterface();       
+    var url = "/staff/staycards/reservation_details?reservation=" + confirmationNum; 
+    var successCallBackParameters = {
+        'currentReservationDom': currentReservationDom,
+        'sucessCallback': sucessCallback,
+        'confirmationNum': confirmationNum,
+        'currentTimeline': currentTimeline
+    };
+    var options = {
+        loader: 'BLOCKER',
+        successCallBack: that.fetchCompletedOfLoadReservationDetails,
+        successCallBackParameters: successCallBackParameters
+    };
+    webservice.getHTML(url, options);  
+      
+     /* //show loading indicator
       sntapp.activityIndicator.showActivityIndicator("blocker");
       $.ajax({
         type : 'GET',
@@ -354,7 +388,7 @@ this
           if (jqxhr.status == "401") { sntapp.logout(); return;}
           //TODO: handle error display
         }
-      });
+      });*/
   };
 
   
