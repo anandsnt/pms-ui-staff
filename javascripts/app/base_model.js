@@ -18,6 +18,9 @@ BaseModal = function() {
     this.modalInit = function(){
     };
     
+    this.modalDidShow = function(){
+    };
+    
 	this.unbindCancelEvent = function(){
 		$('#modal-overlay, #modal-close, #cancel').off('click');
 	};

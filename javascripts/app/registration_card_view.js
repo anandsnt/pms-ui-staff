@@ -245,18 +245,18 @@ var RegistrationCardView = function(viewDom) {
 		var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
 		
 		if(keySettings == "email"){
-			var keyEmailModal = new KeyEmailModal(reservationStatus);
+			var keyEmailModal = new KeyEmailModal(that.goAndRefreshStayCard,that.goToSearchScreen);
 			keyEmailModal.initialize();
 			keyEmailModal.params = {
-				"origin" : views.STAYCARD,
+				"origin" : views.BILLCARD,
 				"reservationStatus" : reservationStatus
 			};
 		}
 		else if(keySettings == "qr_code_tablet") {
-			var keyQrCodeModel = new KeyQrCodeModel();
+			var keyQrCodeModel = new KeyQrCodeModel(that.goAndRefreshStayCard,that.goToSearchScreen);
 			keyQrCodeModel.initialize();
 			keyQrCodeModel.params = {
-				"origin" : views.STAYCARD,
+				"origin" : views.BILLCARD,
 				"reservationStatus" : reservationStatus
 			};
 		}

@@ -181,7 +181,7 @@ var reservationDetailsView = function(domRef) {
 		var keySettings = that.myDom.find("#add-keys").attr("data-key-settings");
 		
 		if(keySettings == "email"){
-			var keyEmailModal = new KeyEmailModal(reservationStatus);
+			var keyEmailModal = new KeyEmailModal();
 			keyEmailModal.initialize();
 			keyEmailModal.params = {
 				"origin" : views.STAYCARD,
@@ -205,9 +205,6 @@ var reservationDetailsView = function(domRef) {
 				"reservationStatus" : reservationStatus
 			};
 		}
-
-
-
 	};
 	this.roomUpgradesClicked = function(e) {
 
