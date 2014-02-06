@@ -1571,6 +1571,45 @@
 				left: 20px;
 			}
 
+			/* Billing information ***/
+			#billing-information {
+				clear: both;
+				padding: 0;
+				.show;
+
+				table {
+					width: 100%;
+					font-size: 14px;
+					line-height: 21px;
+					table-layout: fixed;
+					text-transform: uppercase;
+					border-collapse: collapse; 
+					margin: 0;
+
+					tr {
+
+						th,
+						td { padding: 5px 10px; }
+						
+						th {
+							font-weight: 600;
+							background: rgba(0,0,0,.05);
+
+							&:first-child { 
+								width: 80px;
+								#border-radius > .left-top(); 
+							}
+							&:nth-child(2) { width: 240px; }
+							&:nth-child(3) { width: 100px; }
+							&:last-child { #border-radius > .right-top(); }
+
+							
+							
+						}
+					}
+				}
+			}
+
 			/* Registration summary ***/
 			.registration-summary {
 				position: relative;
@@ -1579,6 +1618,15 @@
 				#bills-tabs-nav {
 					width: 100%;
 					height: 50px;
+
+					.toggle {
+						color: @textColor;
+						text-transform: uppercase;
+						line-height: 50px;
+						padding-right: 25px;
+						background-position: 100% 50%;
+						.pull-left;
+					}
 
 					ul,
 					.button {
