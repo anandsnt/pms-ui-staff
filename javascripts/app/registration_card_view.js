@@ -246,15 +246,20 @@ var RegistrationCardView = function(viewDom) {
 		var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
 		
 		if(dataKeySettings == "email"){
-			var addKeysModal = new AddKeysModal(reservationStatus,that.goAndRefreshStayCard,that.goToSearchScreen);
+			var addKeysModal = new AddKeysModal(that.goAndRefreshStayCard,that.goToSearchScreen);
 			addKeysModal.initialize();
 			addKeysModal.params = {
-				"origin" : views.BILLCARD
+				"origin" : views.BILLCARD,
+				"reservationStatus" : reservationStatus
 			};
 		}
 		else if(dataKeySettings == "qr_code_tablet") {
-			var selectKeyModel = new SelectKeyModel(that.showCheckinSuccessModal, that.openQrCodeModal);
-			selectKeyModel.initialize();
+			var qrCodeModel = new QrCodeModel(that.goAndRefreshStayCard,that.goToSearchScreen);
+			qrCodeModel.initialize();
+			qrCodeModel.params = {
+				"origin" : views.BILLCARD,
+				"reservationStatus" : reservationStatus
+			};
 		}
 		else if(dataKeySettings == "encode"){
 			

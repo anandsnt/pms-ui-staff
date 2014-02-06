@@ -186,12 +186,17 @@ var reservationDetailsView = function(domRef) {
 			var addKeysModal = new AddKeysModal(reservationStatus);
 			addKeysModal.initialize();
 			addKeysModal.params = {
-				"origin" : views.STAYCARD
+				"origin" : views.STAYCARD,
+				"reservationStatus" : reservationStatus
 			};
 		}
 		else if(keySettings == "qr_code_tablet") {
 			var qrCodeModel = new QrCodeModel();
 			qrCodeModel.initialize();
+			qrCodeModel.params = {
+				"origin" : views.STAYCARD,
+				"reservationStatus" : reservationStatus
+			};
 		} 
 		else if(keySettings == "encode"){
 			
