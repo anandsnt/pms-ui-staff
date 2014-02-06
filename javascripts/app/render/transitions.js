@@ -436,7 +436,16 @@ $(function($){
                         if (jqxhr.status=="401") { sntapp.logout(); return;}
                         $('#loading').remove();
                     }
-                }).done(function(){
+                }).done(function(data){
+                	if(data[0] == "{"){
+                		var result = JSON.parse(data);
+                		if (result.status == 'failure') {
+                			$('#loading').fadeOut(function(){
+                				sntapp.notification.showErrorMessage("Error: "+result.errors , $("#search"));
+                			});
+                			return false;
+                		} 
+                	}
                     var viewInstance = null;
                     var instName = $('#'+$next).find('div:first').data('view');
 
