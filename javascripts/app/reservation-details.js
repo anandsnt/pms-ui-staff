@@ -193,6 +193,12 @@ var reservationDetailsView = function(domRef) {
 			};
 		}
 		else if($(e.target).closest('a').attr("data-key-settings") == "encode"){
+			var keyEncoderModal = new KeyEncoderModal();
+			keyEncoderModal.initialize();
+			keyEncoderModal.params = {
+				"origin" : views.STAYCARD,
+				"reservation-status" : that.myDom.find("#add-keys").attr('data-reseravation-status')
+			};
 			
 			//TODO RFID MODAL
 		}
