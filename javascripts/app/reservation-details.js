@@ -15,19 +15,52 @@ var reservationDetailsView = function(domRef) {
 		that.myDom.on('click', that.domClickHandler);
 	};
 	// function for closing the drawer if is open
-	/*that.closeGuestCardDrawer = function(){
+	that.closeGuestCardDrawer = function(){
 		if($("#guest-card").hasClass('open')) {
 			$('#guest-card .ui-resizable-handle').trigger('click');
 		}
-	};*/
+	};
 
 	this.domClickHandler = function(event){
-		var target = $(event.target).closest('a');
-		var target_id = target.attr("id");
-		// if the click is on reservation card details and if the guest card drawer is open
-		// that.closeGuestCardDrawer();
+		/*var target = $(event.target).closest('a');
+		var target_id = target.attr("id");*/
 		
-		switch(target_id){
+		// if the click is on reservation card details and if the guest card drawer is open
+		 that.closeGuestCardDrawer();
+
+		// based on event's target elements we are calling the event operations
+	    if(getParentWithSelector(event, "#wakeup-time")) {
+	    	return that.setWakeUpCallModal(event);
+	    }
+	    if(getParentWithSelector(event, "#room-number")) {
+	    	return that.roomNumberClicked(event);
+	    }	    
+	    if(getParentWithSelector(event, "#add-keys")) {
+	    	return that.addKeysModal(event);
+	    }
+	    if(getParentWithSelector(event, "#upgrade-btn")) {
+	    	return that.roomUpgradesClicked(event);
+	    }
+	    if(getParentWithSelector(event, "#reservation-checkout")) {
+	    	return that.clickedCheckoutButton();
+	    }	    
+	    if(getParentWithSelector(event, "#reservation-view-bill")) {
+	    	return that.clickedViewBillButton(event);
+	    }
+	    if(getParentWithSelector(event, "#post-charge")) {
+	    	return that.clickedPostChargeButton();
+	    }	    
+	    if(getParentWithSelector(event, "#stay-card-total-stay-cost")) {
+	    	return that.clickedTotalStayCost();
+	    }	
+	    if(getParentWithSelector(event, "#reservation-checkin")) {
+	    	return that.validateEmailAndPhone(event);
+	    }	    
+	    if(getParentWithSelector(event, "#nights-btn")) {
+	    	return that.gotToChangeDatesScreen(event);
+	    }
+
+		/*switch(target_id){
 			case 'wakeup-time': {				
 				return that.setWakeUpCallModal(event);
 				break;
@@ -75,7 +108,7 @@ var reservationDetailsView = function(domRef) {
 
 				break;
 			}
-		}
+		}*/
 	};
 
 		

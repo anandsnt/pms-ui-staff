@@ -141,9 +141,8 @@ var Search  = function(domRef){
       $("#search-results").empty().removeClass('hidden');
       $('#preloaded-results').addClass('hidden');
       $('#no-results').addClass('hidden');
-      
       // set up reservation status
-      var type = typeof requestParams == undefined ? "" : requestParams['type'];
+      var type = typeof requestParams == "undefined" ? "" : requestParams['type'];
       if(type == "DUEIN"){
         searchType = "checking in";
       }
@@ -169,10 +168,10 @@ var Search  = function(domRef){
           $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"hidden open-modal-fix\">Or add a New Guest</span>.</li>');
           that.updateView();
         } else if (requestParams['swipe_error'] === 'INVALID_CARD') {
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-card"></span><strong class="h1">Invalid Credit Card</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"hidden open-modal-fix\">add a New Guest</span>.</li>');
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-card"></span><strong class="h1">Invalid Credit Card</strong><span class="h2">Try with another card or search Guests manually</li>');
           that.updateView();
         } else if(requestParams['swipe_error'] === 'NO_CONFIRM') {
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No Guest or Reservation Found</strong><span class="h2">Try with another card, search Guests manually or <span href=\"#\" class=\"hidden open-modal-fix\">add a New Guest</span>.</li>');
+          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No Guest or Reservation Found</strong><span class="h2">Try with another card or search Guests manually </li>');
           that.updateView();
         } else if(searchType != ""){
           // When dashboard buttons with 0 guests are clicked, show search screen message - "No guests checking in/out/in house" 
@@ -238,16 +237,17 @@ var Search  = function(domRef){
   // lets load his staycard right away! 
   this.postCardSwipDataSuccess = function(response) {
 
+    //IF more than one search results appear, show the search results
     if(response.data.length > 1) {
         that.fetchCompletedOfFetchSearchData(response);
         return false;
     }
-
+    //If only one search results, move to staycard
     var viewURL = '/staff/staycards/staycard';
     var viewDom = $('#page-inner-first');
     var params = {
-      'confirmation': response.data.confirmation,
-      'id': response.data.id
+      'confirmation': (response.data[0]).confirmation,
+      'id': (response.data[0]).id
     };
     var loader = 'BLOCKER';
     var nextViewParams = {

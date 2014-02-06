@@ -20,6 +20,11 @@ $(document).ready(function(){
 	if($('#login').is(':has(span.notice)')){
 		$("#loginStatus").css("display","block");
 	}
+	if($("#email").val()!=""){
+		$("#password").focus();
+	} else {
+		$("#email").focus();
+	}
 });
 
 // Chaining with intervals
@@ -153,15 +158,14 @@ function onOffSwitch() {
 // Custom file upload
 function setupFile(){
     var fileInput = $('input[type="file"]:not(.hidden)'),
-        label = '<span class="input">Choose file ...</span>',
-        button = '<button type="button" class="button inline blue">Attach file</button>';
+        label = '<span class="input">Choose file ...</span>';
 
     if (fileInput.length) {
         fileInput.each(function(){
             $(this)
                 .before(label)
                 .change(function(){
-                    $(this).parent('.file-upload').children('.input').text($(this).val());
+                    $(this).parent('.file-upload').children('.input').text($(this).val().replace('C:\\fakepath\\', ''));
                 });
         });
     };
@@ -302,6 +306,7 @@ $(function($){
     $(document).ajaxComplete(function() {
         styleCheckboxRadio();
         onOffSwitch();
+        setupFile();
     });
 
     // Styled checkbox groups
