@@ -188,6 +188,7 @@ var reservationDetailsView = function(domRef) {
 				"reservationStatus" : reservationStatus
 			};
 		}
+
 		else if(keySettings == "qr_code_tablet") {
 			var keyQrCodeModel = new KeyQrCodeModel();
 			keyQrCodeModel.initialize();
@@ -197,9 +198,16 @@ var reservationDetailsView = function(domRef) {
 			};
 		} 
 		else if(keySettings == "encode"){
-			
-			//TODO RFID MODAL
+			var keyEncoderModal = new KeyEncoderModal();
+			keyEncoderModal.initialize();
+			keyEncoderModal.params = {
+				"origin" : views.STAYCARD,
+				"reservationStatus" : reservationStatus
+			};
 		}
+
+
+
 	};
 	this.roomUpgradesClicked = function(e) {
 
