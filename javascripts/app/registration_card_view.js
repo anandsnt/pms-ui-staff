@@ -161,8 +161,6 @@ var RegistrationCardView = function(viewDom) {
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
 	};
 
-
-
 	this.goToRoomAssignmentView = function() {
 		that.myDom.html("");
 		if ($('#roomassignment_main').length) {
@@ -239,29 +237,30 @@ var RegistrationCardView = function(viewDom) {
 			webservice.postJSON(url, options);
 		}
 	};
+	
 	this.completeCheckinSuccess = function(data) {
 
-		var dataKeySettings = that.myDom.find("#checkin-button").attr("data-key-settings");
+		var keySettings = that.myDom.find("#checkin-button").attr("data-key-settings");
 		var reservationStatus = that.myDom.find("#checkin-button").attr('data-reseravation-status');
 		var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
 		
-		if(dataKeySettings == "email"){
-			var addKeysModal = new AddKeysModal(that.goAndRefreshStayCard,that.goToSearchScreen);
-			addKeysModal.initialize();
-			addKeysModal.params = {
-				"origin" : views.BILLCARD,
+		if(keySettings == "email"){
+			var keyEmailModal = new KeyEmailModal(reservationStatus);
+			keyEmailModal.initialize();
+			keyEmailModal.params = {
+				"origin" : views.STAYCARD,
 				"reservationStatus" : reservationStatus
 			};
 		}
-		else if(dataKeySettings == "qr_code_tablet") {
-			var qrCodeModel = new QrCodeModel(that.goAndRefreshStayCard,that.goToSearchScreen);
-			qrCodeModel.initialize();
-			qrCodeModel.params = {
-				"origin" : views.BILLCARD,
+		else if(keySettings == "qr_code_tablet") {
+			var keyQrCodeModel = new KeyQrCodeModel();
+			keyQrCodeModel.initialize();
+			keyQrCodeModel.params = {
+				"origin" : views.STAYCARD,
 				"reservationStatus" : reservationStatus
 			};
 		}
-		else if(dataKeySettings == "encode"){
+		else if(keySettings == "encode"){
 			
 			
 		}
@@ -269,7 +268,8 @@ var RegistrationCardView = function(viewDom) {
 		if (is_promotions_and_email_set) {
 			//To enable EMAIL OPT IN check button in guest card
 			$("#contact-info input#opt-in").prop("checked", true);
-		}else {
+		}
+		else {
 			//To disable EMAIL OPT IN check button in guest card
 			$("#contact-info input#opt-in").prop("checked", false);
 		}
@@ -398,18 +398,6 @@ var RegistrationCardView = function(viewDom) {
 		//Do not call 'initialize' method for this object. which results multiple event binding
 		var searchView = new Search();
 		searchView.clearResults();
-	};
-	// To show QR code modal
-	this.openQrCodeModal = function(e) {
-		var qrCodeModel = new QrCodeModel(that.showCheckinSuccessModal);
-		qrCodeModel.initialize();
-	};
-	// To show success message after check in
-	this.showCheckinSuccessModal = function(e) {
-		console.log("showCheckinSuccessModal");
-		var room_no = that.myDom.find('#registration-content').attr('data-room-number');
-		var message = $("#gc-firstname").val() + " " + $("#gc-lastname").val() + " IS CHECKED IN TO ROOM " + room_no;
-		that.showSuccessMessage(message, that.goToSearchScreen);
 	};
 
 };

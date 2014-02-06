@@ -7,8 +7,6 @@ var reservationDetailsView = function(domRef) {
 
 	};
 	this.delegateEvents = function() {
-		//this.is_show_qr_code = that.myDom.find("#reservation-card-room #add-keys").attr('data-qr-code');
-
 		that.myDom.find('#reservation_newspaper').on('change', that.setNewspaperPreferance);
 		//unbind the previous object's event binding (currently object is not destorying/event is not unbinding).
 		that.myDom.unbind('click');
@@ -183,17 +181,17 @@ var reservationDetailsView = function(domRef) {
 		var keySettings = that.myDom.find("#add-keys").attr("data-key-settings");
 		
 		if(keySettings == "email"){
-			var addKeysModal = new AddKeysModal(reservationStatus);
-			addKeysModal.initialize();
-			addKeysModal.params = {
+			var keyEmailModal = new KeyEmailModal(reservationStatus);
+			keyEmailModal.initialize();
+			keyEmailModal.params = {
 				"origin" : views.STAYCARD,
 				"reservationStatus" : reservationStatus
 			};
 		}
 		else if(keySettings == "qr_code_tablet") {
-			var qrCodeModel = new QrCodeModel();
-			qrCodeModel.initialize();
-			qrCodeModel.params = {
+			var keyQrCodeModel = new KeyQrCodeModel();
+			keyQrCodeModel.initialize();
+			keyQrCodeModel.params = {
 				"origin" : views.STAYCARD,
 				"reservationStatus" : reservationStatus
 			};
