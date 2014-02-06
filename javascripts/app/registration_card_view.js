@@ -191,7 +191,6 @@ var RegistrationCardView = function(viewDom) {
 		e.stopImmediatePropagation();
 		var roomStatus = $(e.target).attr('data-room-status');
 		var foStatus = $(e.target).attr('data-fo-status');
-		var is_show_qr_code = $(e.target).attr('data-qr-code');
 		var required_signature_at = $(e.target).attr('data-required-signature');
 		
 		if (roomStatus != "READY" || foStatus != "VACANT") {
@@ -222,7 +221,7 @@ var RegistrationCardView = function(viewDom) {
 			return;
 		}
 		else {
-			var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
+			
 			var data = {
 				"is_promotions_and_email_set" : is_promotions_and_email_set,
 				"signature" : signature,
@@ -234,29 +233,26 @@ var RegistrationCardView = function(viewDom) {
 			var url = '/staff/checkin';
 			var options = {
 				requestParameters : data,
-				successCallBack : that.fetchCompletedOfSave,
-				failureCallBack : that.fetchFailedOfSave,
-				successCallBackParameters : {
-					"is_promotions_and_email_set" : is_promotions_and_email_set,
-					"is_show_qr_code" : is_show_qr_code
-				}
+				successCallBack : that.completeCheckinSuccess,
+				failureCallBack : that.completeCheckinFailed,
 			};
 			webservice.postJSON(url, options);
 		}
 	};
-	this.fetchCompletedOfSave = function(data, requestParameters) {
+	this.completeCheckinSuccess = function(data) {
 
 		var dataKeySettings = that.myDom.find("#checkin-button").attr("data-key-settings");
-
+		var reservationStatus = that.myDom.find("#checkin-button").attr('data-reseravation-status');
+		var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
+		
 		if(dataKeySettings == "email"){
-			var addKeysModal = new AddKeysModal(that.goAndRefreshStayCard,that.goToSearchScreen);
+			var addKeysModal = new AddKeysModal(reservationStatus,that.goAndRefreshStayCard,that.goToSearchScreen);
 			addKeysModal.initialize();
 			addKeysModal.params = {
-				"origin" : views.BILLCARD,
-				"reservation-status" : that.myDom.find("#checkin-button").attr('data-reseravation-status')
+				"origin" : views.BILLCARD
 			};
 		}
-		else if ( dataKeySettings == "qr_code_tablet") {
+		else if(dataKeySettings == "qr_code_tablet") {
 			var selectKeyModel = new SelectKeyModel(that.showCheckinSuccessModal, that.openQrCodeModal);
 			selectKeyModel.initialize();
 		}
@@ -265,15 +261,15 @@ var RegistrationCardView = function(viewDom) {
 			
 		}
 
-		if (requestParameters['is_promotions_and_email_set'] == "true") {
+		if (is_promotions_and_email_set) {
 			//To enable EMAIL OPT IN check button in guest card
 			$("#contact-info input#opt-in").prop("checked", true);
-		} else {
+		}else {
 			//To disable EMAIL OPT IN check button in guest card
 			$("#contact-info input#opt-in").prop("checked", false);
 		}
 	};
-	this.fetchFailedOfSave = function(errorMessage) {
+	this.completeCheckinFailed = function(errorMessage) {
 		sntapp.activityIndicator.hideActivityIndicator();
 		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
 	  };
