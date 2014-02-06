@@ -27,8 +27,7 @@ var GuestContactView = function(domRef) {
 	};
 	
 
-	this.callSave = function(e) {
-		
+	this.callSave = function(e) {		
 		sntapp.notification.hideMessage();
 		if (!$(e.target).is("#contact-info *", "#guest-card-content")) {
 			if (that.$contactInfoChange) {
@@ -37,20 +36,20 @@ var GuestContactView = function(domRef) {
 		}
 	};
 	this.fetchCompletedOfSaveContactInfo = function(data){
-			that.$contactInfoChange = false;
-			// Update guest card header UI.
-			$("#gc-firstname").val($("#guest_firstname").val());
-			$("#gc-lastname").val($("#guest_lastname").val());
-			$("#gc-city").val($("#city").val());
-			$("#gc-state").val($("#state").val());
-			$("#gc-phone").val($("#phone").val());
-			$("#gc-email").val($("#email").val());	
-			
-			var message_element = that.myDom.find("#notification-message-guest");
-			message_element.removeClass('notice success_message error_message');
-			message_element.html("");			
-			that.myDom.find("#notification-message-guest").slideDown(700, function() {});
-			$("#guest-contact").removeClass("error");
+		that.$contactInfoChange = false;
+		// Update guest card header UI.
+		$("#gc-firstname").val($("#guest_firstname").val());
+		$("#gc-lastname").val($("#guest_lastname").val());
+		$("#gc-city").val($("#city").val());
+		$("#gc-state").val($("#state").val());
+		$("#gc-phone").val($("#phone").val());
+		$("#gc-email").val($("#email").val());	
+		
+		var message_element = that.myDom.find("#notification-message-guest");
+		message_element.removeClass('notice success_message error_message');
+		message_element.html("");			
+		that.myDom.find("#notification-message-guest").slideDown(700, function() {});
+		$("#guest-contact").removeClass("error");
 	};
 	this.fetchFailedOfSaveContactInfo = function(errorMessage){
 		that.$contactInfoChange = false;
@@ -95,8 +94,8 @@ var GuestContactView = function(domRef) {
 	};
 
 	//success function of renderContactInformation's ajax call
-	this.fetchCompletedOfRenderContactInformation = function(data){
-		console.log("in fetchCompletedOfRenderContactInformation");
+	this.fetchCompletedOfRenderContactInformation = function(response){
+		var data = response.data;
 		if (data.birthday != null) {
 			birthdate = data.birthday.split('-');
 			//data.birthday is in YYYY-MM-DD format. Changed to MM-DD-YYYY format.
@@ -138,15 +137,34 @@ var GuestContactView = function(domRef) {
 		that.myDom.find('#title, #guest_firstname, #guest_lastname, #works-at, #job-title, #guest-birthday, #passport-number,#passport-month, #passport-year, #nationality,#guest_nationality_div #nationality_status, #email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile, #opt-in').on('change', function(){
 			that.$contactInfoChange = true;
 		});
-		console.log("at the end of fetchCompletedOfRenderContactInformation");
+
+		sntapp.activityIndicator.hideActivityIndicator();
+		var guest_id = $("#guest_id").val();			    
+
+		var viewParams = {
+			"user_id" : $("#user_id").val()
+		};
+		sntapp.fetchAndRenderView('staff/preferences/likes', $("#likes"), viewParams);
+
+		sntapp.fetchAndRenderView('staff/payments/payment', $("#cc-payment"), viewParams);
+		//var reservation_id = getReservationId();
+		//viewParams = {"reservation_id" : reservation_id};
+		sntapp.fetchAndRenderView('staff/user_memberships', $("#loyalty"), viewParams);
+		setTimeout(function() {
+			refreshGuestCardScroll();
+		}, 300);		
 	};
 
-	this.renderContactInformation = function() {
-		console.log("in renderContactInformation");
-		$reservation_id = $("#reservation_id").val();
+	// failure function of renderContactInformation's ajax call
+	this.fetchFailedOfRenderContactInformation = function(errormMessage){
+		$guestCardClickTime = true;
+	};
 
+	// function used to fill the information in guest card
+	this.renderContactInformation = function() {
+		$reservation_id = $("#reservation_id").val();
 		var data = {
-			fakeDataToAvoidCache : new Date(),
+			fakeDataToAvoidCache : new Date(), // fakeDataToAvoidCache is iOS Safari fix
 			id : $reservation_id
 		};
 		var url = '/staff/guestcard/show.json';
@@ -157,99 +175,7 @@ var GuestContactView = function(domRef) {
 			   loader: 'BLOCKER',
 	    };		
 		var webservice = new WebServiceInterface();
-		webservice.getJSON(url, options);/*.done(function() {
-			console.log("in done");			
-			$('#loading').remove();
-			var guest_id = $("#guest_id").val();			    
-
-			var viewParams = {
-				"user_id" : $("#user_id").val()
-			};
-			sntapp.fetchAndRenderView('staff/preferences/likes', $("#likes"), viewParams);
-
-			sntapp.fetchAndRenderView('staff/payments/payment', $("#cc-payment"), viewParams);
-			//var reservation_id = getReservationId();
-			//viewParams = {"reservation_id" : reservation_id};
-			sntapp.fetchAndRenderView('staff/user_memberships', $("#loyalty"), viewParams);
-			setTimeout(function() {
-				refreshGuestCardScroll();
-			}, 300)
-		});*/
-		/*$.ajax({
-			type : "GET",
-			url : 'staff/guestcard/show.json',
-			data : {
-				fakeDataToAvoidCache : new Date(),
-				id : $reservation_id
-			}, // fakeDataToAvoidCache is iOS Safari fix
-			
-			success : function(data) {
-				
-				if (data.birthday != null) {
-					birthdate = data.birthday.split('-');
-					//data.birthday is in YYYY-MM-DD format. Changed to MM-DD-YYYY format.
-					birthday = birthdate[1] + "-" + birthdate[2] + "-" + birthdate[0];
-					that.myDom.find("#guest-birthday").val(birthday);
-				}
-				if (data.passport_expiry != null) {
-					passport_expiry = data.passport_expiry.split('-');
-					that.myDom.find("#passport-month").val(passport_expiry[1]);
-					that.myDom.find("#passport-year").val(passport_expiry[0].substring(2));
-				}
-				that.myDom.find("#title").val(data.title);
-				that.myDom.find("#guest_firstname").val(data.first_name);
-				that.myDom.find("#guest_lastname").val(data.last_name);
-				that.myDom.find("#works-at").val(data.works_at);
-				that.myDom.find("#job-title").val(data.job_title);
-				that.myDom.find("#nationality_status").val(data.nationality);
-				that.myDom.find("#passport-number").val(data.passport_number);
-				that.myDom.find("#nationality").val(data.nationality);
-				that.myDom.find("#email").val(data.email_address);
-				that.myDom.find("#streetname").val(data.address);
-				that.myDom.find("#city").val(data.city);
-				that.myDom.find("#postalcode").val(data.postal_code);
-				that.myDom.find("#state").val(data.state);
-				that.myDom.find("#countries_status").val(data.country);
-				that.myDom.find("#phone").val(data.phone);
-				that.myDom.find("#mobile").val(data.mobile);
-				if(data.is_opted_promotion_email == 'true'){
-					that.myDom.find("#opt-in").attr("checked","checked");
-				}
-				
-				$guestCardClickTime = false;
-				that.myDom.find('#countries_status, #guest_nationality_div #nationality_status, #language').on('change', 
-					function(){
-						that.$contactInfoChange = true;
-					}				
-				);
-				// to change flag - to save contact info only if any change happens.
-				that.myDom.find('#title, #guest_firstname, #guest_lastname, #works-at, #job-title, #guest-birthday, #passport-number,#passport-month, #passport-year, #nationality,#guest_nationality_div #nationality_status, #email, #streetname, #city, #postalcode, #state, #country, #phone, #mobile, #opt-in').on('change', function(){
-					that.$contactInfoChange = true;
-				});
-			},
-				error : function(jqxhr, status, error){
-        			//checking whether a user is logged in
-        			if (jqxhr.status == "401") { sntapp.logout(); return;}
-					$guestCardClickTime = true;
-				}
-			}).done(function() {
-				$('#loading').remove();
-				var guest_id = $("#guest_id").val();			    
-
-			var viewParams = {
-				"user_id" : $("#user_id").val()
-			};
-			sntapp.fetchAndRenderView('staff/preferences/likes', $("#likes"), viewParams);
-
-			sntapp.fetchAndRenderView('staff/payments/payment', $("#cc-payment"), viewParams);
-			//var reservation_id = getReservationId();
-			//viewParams = {"reservation_id" : reservation_id};
-			sntapp.fetchAndRenderView('staff/user_memberships', $("#loyalty"), viewParams);
-			setTimeout(function() {
-				refreshGuestCardScroll();
-			}, 300); 
-
-		}); */
+		webservice.getJSON(url, options);
 	};
 	this.dateSplit = function(dateToSplit) {
 		var splitDate = dateToSplit.split('-');
