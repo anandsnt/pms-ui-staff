@@ -11,7 +11,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.noOfErrorMethodCalled = 0;
 	this.maxSecForErrorCalling = 10000;
 	//TODO: Replace with actual URL
-	this.url = "/ui/show?haml_file=modals/keys/print_keys_common&json_input=keys/keys_encode.json&is_hash_map=true&is_partial=true";
+	this.url = "/ui/show?haml_file=modals/keys/_key_encode_modal&json_input=keys/keys_encode.json&is_hash_map=true&is_partial=true";
 	
 	this.delegateEvents = function() {
 		that.myDom.find('#try-again').on('click', that.showDeviceConnectingMessge);
@@ -67,21 +67,21 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			'failureCallBack': that.deviceNotConnected			
 		};
 
-		sntapp.cardReader.checkDeviceConnected(options);
-		/*setTimeout(function(){
+		//sntapp.cardReader.checkDeviceConnected(options);
+		setTimeout(function(){
 			that.deviceConnected();
-		}, 2000)*/
+		}, 2000)
 	};
 
 	this.deviceNotConnected = function(){
-		var secondsAfterCalled = 0;
+		/*var secondsAfterCalled = 0;
 		setTimeout(function(){
 			that.noOfErrorMethodCalled++;
 			secondsAfterCalled = that.noOfErrorMethodCalled * 1000;
 			if(secondsAfterCalled >= that.maxSecForErrorCalling){ //10seconds
 				return that.showDeviceConnectingMessge();
 			}
-		}, 1000);
+		}, 1000);*/
 		
 		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('not-connected');
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('error').text('Error connecting to Key Card Reader!');
