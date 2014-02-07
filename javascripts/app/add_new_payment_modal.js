@@ -19,6 +19,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 	this.populateSwipedCard = function() {
 		var swipedCardData = this.swipedCardData;
 
+		console.log(JSON.stringify(swipedCardData));
 		// inject the values to payment modal
         // inject payment type
 		$('#payment-type').val( 'CC' );

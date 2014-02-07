@@ -79,27 +79,30 @@ var HotelAdminView = function(domRef){
 		  sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
 	  }
   };
+
+  //success function of setNewHotel's ajax call
+  this.fetchCompletedOfSetNewHotel = function(data, requestParameters) {
+  	var hotel_name = requestParameters['hotel_name'];
+    $("#selected_hotel").html(hotel_name);
+    $('#change-hotel').toggleClass('open');
+    location.reload(true);
+  };
+
   this.setNewHotel = function(){
   	var hotel_id = $(this).attr("id");
   	var hotel_name = $(this).attr("name");
-  	$.ajax({
-		type : "POST",
-		url : '/admin/hotel_admin/update_current_hotel',	
-		data : {hotel_id:hotel_id},
-		dataType : 'json',
-		async:false,
-		success : function(data) {					
-			if (data.status == "success") {
-			    $("#selected_hotel").html(hotel_name);
-			    $('#change-hotel').toggleClass('open');
-			    location.reload(true);
-			}
-		},
-		error : function(jqxhr, status, error){
-        	//checking whether a user is logged in
-        	if (jqxhr.status == "401") { sntapp.logout(); return;}		
-		}
-	});
+	var webservice = new WebServiceInterface();
+	var data = { 'hotel_id': hotel_id };
+	var url = '/admin/hotel_admin/update_current_hotel';
+    var options = { 
+    				requestParameters: data,
+    				successCallBack: that.fetchCompletedOfSetNewHotel,
+    				failureCallBack: that.fetchFailedOfSubmitPayment,
+    				successCallBackParameters: { 'hotel_name': hotel_name},
+    				loader: 'blocker',
+    				async: false
+    			};
+    webservice.postJSON(url, options);  	
   };
   this.bookMarkAdded = function(bookMarkId){
   	var delegateBookMark = new DelegateBookMark();

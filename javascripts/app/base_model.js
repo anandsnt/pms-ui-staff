@@ -33,24 +33,29 @@ BaseModal = function() {
 	
     this.delegateEvents = function(){ };
     
-    this.fetchFromURL = function(type) {
-        // Get modal data
-        $.ajax({
-            type: type,
-            data: that.params,
-            url: that.url,
-            success: function(data) {
-            	that.data = data;
-                if(that.shouldShowWhenFetched){
-                    that.show();
-                }
-            },
-            error: function(jqxhr, status, error){
-                //checking whether a user is logged in
-                if (jqxhr.status == "401") { sntapp.logout(); return;}
-                //TODO: Replace with the central mechanism for error handling
-            }
-        });
+    //success function of fetchFromURL's ajax call
+    this.fetchCompletedOfFetchFromURL = function(data){
+        that.data = data;
+        if(that.shouldShowWhenFetched){
+            that.show();
+        }        
+    };    
+
+    // function for fetching the popup
+    this.fetchFromURL = function(type) {        
+        var options = {
+          loader: 'BLOCKER',
+          successCallBack : that.fetchCompletedOfFetchFromURL,
+          requestParameters: that.params
+        };
+        var url = that.url;
+        var webservice = new WebServiceInterface();
+        if(type == "GET"){
+            webservice.getHTML(url, options);        
+        }
+        else if(type == "POST"){
+            webservice.postHTML(url, options);
+        }
     };
 
     this.show = function(){

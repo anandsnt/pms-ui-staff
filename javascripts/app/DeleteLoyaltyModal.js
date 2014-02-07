@@ -34,17 +34,13 @@ var DeleteLoyaltyModal = function(){
 		if(FFPEmpty && HLPEmpty){
 			clearSelectionUI();
 		}
-		$.ajax({
-			type: "DELETE",
-			url: 'staff/user_memberships/' + $loyalty_id +'.json',
-			dataType: 'json',
-				success: function(data) {
-				},
-				error: function(jqxhr, status, error){
-        		//checking whether a user is logged in
-        		if (jqxhr.status == "401") { sntapp.logout(); return;}
-			}
-		});
+
+	    var options = {
+	      loader: 'BLOCKER'
+	    };
+	    var url = '/staff/user_memberships/' + $loyalty_id +'.json';
+	    var webservice = new WebServiceInterface();
+	    webservice.deleteJSON(url, options);
 		that.hide();
 	}
 }
