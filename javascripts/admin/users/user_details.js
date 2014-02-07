@@ -32,9 +32,8 @@ var UserDetailsView = function(domRef){
 	}
 	var webservice = new WebServiceInterface();		
 	var data = {};
-	data.email = that.myDom.find('#email').val();
-	data.user_id = that.myDom.find("#edit-user").attr('user');  	
-	console.log(data);
+	//data.email = that.myDom.find('#email').val();
+	data.id = that.myDom.find("#edit-user").attr('user');  	
 	var options = {
 			   requestParameters: data,
 			   successCallBack: that.fetchCompletedOfReInvite,
@@ -144,7 +143,7 @@ var UserDetailsView = function(domRef){
   
   // failure call of re-invite api call
   this.fetchFailedOfReInvite = function(errorMessage){
-	  sntapp.notification.showErrorList("Some error occured.", that.myDom);  
+	  sntapp.notification.showErrorList("Some error occured."+errorMessage, that.myDom);  
   };
   //to show preview of the image using file reader
   this.readURL = function(input) {
