@@ -2,29 +2,28 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	BaseModal.call(this);
 	var that = this;
 	var reservation_id = getReservationId();
+	//TODO: Replace with actual URL
 	this.url = "/ui/show?haml_file=modals/keys/print_keys_common&json_input=keys/keys_encode.json&is_hash_map=true&is_partial=true";
-	//this.url = "staff/reservations/" + reservation_id + "/get_key_on_email";
 	
 	this.delegateEvents = function() {
 		that.myDom.find('#try-again').on('click', that.showDeviceConnectingMessge);
-		that.myDom.find('#cancel').on('click', function(){that.hide()});
+		if(that.params.origin == views.BILLCARD){
+			that.myDom.find('#cancel-key-popup').on('click', that.showKeyPrintFailure);
+		}else{
+			that.myDom.find('#cancel-key-popup').on('click', function(){that.hide()});
+		}
 		that.myDom.find('#key1').on('click', that.key1Selected);
 		that.myDom.find('#key2').on('click', that.key2Selected);//
 		that.myDom.find('#create-key').on('click', that.keyCreateSelected);
 		that.myDom.find('#goto-staycard').on('click', that.clickedGotoStayCard);
 		that.myDom.find('#goto-search').on('click', that.clickedGotoSearch);
+		console.log("delegateEvents");
 
-		if(that.params.origin == views.BILLCARD){
-			that.myDom.find('#modal-close').remove();
-			$("#modal-overlay").unbind("click");
-			$("#modal-overlay").addClass("locked");
-		}
 	};
 
 	this.modalDidShow = function() {
 
 		that.showDeviceConnectingMessge();
-		console.log(that.params.reservationStatus);
 
 		if(that.params.reservationStatus == "CHECKING_IN") {
 			that.myDom.find('#print-key').addClass('check-in');
@@ -43,8 +42,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 
 		if(that.params.origin == views.BILLCARD){
 			that.myDom.find('#modal-close').remove();
-			$("#modal-overlay").css("pointer-events","none");
-			$("#modal-overlay").unbind( "click" );
+			$("#modal-overlay").unbind("click");
+			$("#modal-overlay").addClass("locked");
 		}
 
 	};
@@ -53,7 +52,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		that.myDom.find('#room-status, #key-status').removeClass('not-connected').addClass('connecting');
 		that.myDom.find('#key-status .status').removeClass('error').addClass('pending').text('Connecting to Key Card Reader ...');
 		that.myDom.find('#key-action').hide();
-		that.myDom.find('#change-page-action').hide();
+		that.myDom.find('#print-over-action').hide();
 		that.myDom.find('#print-keys').hide();
 
 		setTimeout(function(){
@@ -66,15 +65,14 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('error').text('Error connecting to Key Card Reader!');
 		that.myDom.find('#print-keys').hide();
 		that.myDom.find('#key-action').show();
-		that.myDom.find('#change-page-action').hide();
-
+		that.myDom.find('#print-over-action').hide();
 	};
 
 	this.deviceConnected = function(){
 		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('connected');
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Connected to Key Card Reader!');		
 		that.myDom.find('#key-action').hide();
-		that.myDom.find('#change-page-action').hide();
+		that.myDom.find('#print-over-action').hide();
 		that.myDom.find('#print-keys').show();
 		
 	};
@@ -138,17 +136,13 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		that.keyFetched = true;
 	    var reservationId = getReservationId();
 	    var postParams = {"reservation_id": reservationId, "key": that.numOfKeys, "is_additional": false};
-
+	    //TODO: Replace with the actual URL
 	    var url = '/ui/show?format=json&json_input=keys/fetch_encode_key.json';
 		var webservice = new WebServiceInterface();	
-	  	/*var successCallBackParams = {
-	  			'reservationId': reservationId,
-	  			'roomNumberSelected': roomNumberSelected, 
-	  	};*/	
+
 	  	var options = {
 	  			   requestParameters: postParams,
 	  			   successCallBack: that.keyFetchSuccess,
-	  			   //successCallBackParameters: requestParams,
 	  			   failureCallBack: that.keyFetchFailed,
 	  			   loader: "BLOCKER"
 	  	};
@@ -209,17 +203,29 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		that.myDom.find('#key-action').hide();
 		that.myDom.find('#print-keys').hide();
 		that.myDom.find('#room-status h1').addClass('icon-key');
-		that.myDom.find('#change-page-action').show();
+		that.myDom.find('#print-over-action').show();
+
+		if(that.params.origin == views.STAYCARD){
+			that.myDom.find('#print-over-action #cancel-key-popup').removeClass('hidden');
+			that.myDom.find('#print-over-action #goto-staycard').addClass('hidden');
+			that.myDom.find('#print-over-action #goto-search').addClass('hidden');
+		}
 
 	};
 
-	this.showKeyPrintFailure = function(){
+	this.showKeyPrintFailure = function(){ 
 		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('connected completed');
-		that.myDom.find('#key-status em').removeClass('pending success icon-key').addClass('info').text('Keys not printed!');		
+		that.myDom.find('#key-status em').removeClass('pending success icon-key').addClass('error').text('Keys not printed!');		
 		that.myDom.find('#key-action').hide();
 		that.myDom.find('#print-keys').hide();
 		that.myDom.find('#room-status h1').addClass('icon-key');
-		that.myDom.find('#change-page-action').show();
+		that.myDom.find('#print-over-action').show();
+
+		if(that.params.origin == views.STAYCARD){
+			that.myDom.find('#print-over-action #cancel-key-popup').removeClass('hidden');
+			that.myDom.find('#print-over-action #goto-staycard').addClass('hidden');
+			that.myDom.find('#print-over-action #goto-search').addClass('hidden');
+		}
 	};
 
 	// To handle Goto StayCard
