@@ -189,7 +189,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 
 				if(key == "key1"){
 					that.myDom.find('#key1').closest('label').addClass('printed');
-					that.myDom.find('#create-key')text('Print key 2');
+					that.myDom.find('#create-key').text('Print key 2');
 				} else if (key == "key2"){
 					that.myDom.find('#key2').closest('label').addClass('printed');
 				}
