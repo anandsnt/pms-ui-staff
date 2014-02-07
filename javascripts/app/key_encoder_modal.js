@@ -1,3 +1,8 @@
+/**
+*
+*
+*/
+
 var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	BaseModal.call(this);
 	var that = this;
@@ -26,7 +31,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.modalDidShow = function() {
 
 		that.showDeviceConnectingMessge();
-
+		//Apply color themes based on reservation Status
 		if(that.params.reservationStatus == "CHECKING_IN") {
 			that.myDom.find('#print-key').addClass('check-in');
 			that.myDom.find('#room-status .message').text('Check in Complete');
@@ -86,7 +91,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	};
 
 	this.deviceConnected = function(data){
-		alert(data);
 		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('connected');
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Connected to Key Card Reader!');		
 		that.myDom.find('#key-action').hide();
@@ -142,6 +146,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	};
 
 	this.keyCreateSelected = function(){
+		//On selecting the key create button for the first time, get the keys form API.
 		if(!that.keyFetched){
 			that.callKeyFetchAPI();
 			return true;
@@ -177,14 +182,14 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.writeKey = function(keyWriteData, key){
 
 		var options = {
+			//Cordova write success callback. If write sucess for all the keys, show key success message
+			//If keys left to print, call the cordova write key function
 			'successCallBack': function(data){
-				console.log(that.numOfKeys);
 				that.numOfKeys--;
 				if(that.numOfKeys == 0){
 					that.showKeyPrintSuccess();
 					return true;
 				}
-
 				if(key == "key1"){
 					that.myDom.find('#key1').closest('label').addClass('printed');
 					that.myDom.find('#create-key').text('Print key 2');
@@ -222,7 +227,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		that.myDom.find('#print-keys').hide();
 		that.myDom.find('#room-status h1').addClass('icon-key');
 		that.myDom.find('#print-over-action').show();
-
+		
+		//in billcard we show, the gotostaycard option and goto search options and hide the cancel option
 		if(that.params.origin == views.STAYCARD){
 			that.myDom.find('#print-over-action #cancel-key-popup').removeClass('hidden');
 			that.myDom.find('#print-over-action #goto-staycard').addClass('hidden');
@@ -239,6 +245,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		that.myDom.find('#room-status h1').addClass('icon-key');
 		that.myDom.find('#print-over-action').show();
 
+		//in billcard we show, the gotostaycard option and goto search options and hide the cancel option
 		if(that.params.origin == views.STAYCARD){
 			that.myDom.find('#print-over-action #cancel-key-popup').removeClass('hidden');
 			that.myDom.find('#print-over-action #goto-staycard').addClass('hidden');
