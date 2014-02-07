@@ -84,6 +84,7 @@ var HotelDetailsView = function(domRef) {
 			$("#mli-certificate-upload").remove();
 			$("#external-mappings").remove();
 			that.myDom.find(".hotel-pms-type").remove();
+			$(".re-invite").remove();
 		}
 	};
 	//to update or create new hotel

@@ -198,12 +198,14 @@ var reservationDetailsView = function(domRef) {
 			};
 		} 
 		else if(keySettings == "encode"){
+			/*
 			var keyEncoderModal = new KeyEncoderModal();
 			keyEncoderModal.initialize();
 			keyEncoderModal.params = {
 				"origin" : views.STAYCARD,
 				"reservationStatus" : reservationStatus
 			};
+			*/
 		}
 	};
 	this.roomUpgradesClicked = function(e) {

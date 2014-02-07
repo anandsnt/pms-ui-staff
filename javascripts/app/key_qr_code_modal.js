@@ -8,6 +8,7 @@ var KeyQrCodeModel = function(gotoStayCard,gotoSearch) {
 	this.delegateEvents = function() {
 		that.myDom.find('#goto-staycard').on('click', that.clickedGotoStayCard);
 		that.myDom.find('#goto-search').on('click', that.clickedGotoSearch);
+		$("#modal-overlay , #modal-close").on('click', that.closeButtonClicked);
 		
 		if(that.params.origin == views.BILLCARD){
 			that.myDom.find('#modal-close').remove();
@@ -51,6 +52,10 @@ var KeyQrCodeModel = function(gotoStayCard,gotoSearch) {
 	// To handle Goto Search
 	this.clickedGotoSearch = function() {
 		gotoSearch();
+		that.hide(that.resetStyle);
+	};
+	// To handle modal close
+	this.closeButtonClicked = function() {
 		that.hide(that.resetStyle);
 	};
 	// To Re-setting style and attributes of the modal.

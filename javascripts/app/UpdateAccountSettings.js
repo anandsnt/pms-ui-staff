@@ -8,40 +8,32 @@ var UpdateAccountSettings = function() {
 		that.myDom.find('#save-changes').on('click', that.saveAccountSettings);
 	};
 
+	//success function of saveAccountSettings ajax call
+	this.fetchCompletedOfSaveAccountSettings = function(data){
+		sntapp.notification.showSuccessMessage("Successfully Updated", that.myDom);
+		that.hide();
+	};
+	
 	this.saveAccountSettings = function() {
 		var changepwd = that.myDom.find($("#change-password")).val();
 		var confirmpwd = that.myDom.find($("#confirm-password")).val();
 		
 		if(changepwd == "" || confirmpwd == "") {
-			alert("Field cannot be empty.");
+			sntapp.notification.showErrorMessage("Field cannot be empty.", that.myDom);
 		} else if (changepwd != confirmpwd)  {
-			alert("Password does not match.");
+			sntapp.notification.showErrorMessage("Password does not match.", that.myDom);
 		} else {
 
 			var data = {"new_password" : changepwd };
-			$.ajax({
-				
-				type : "POST",
-				url : "admin/user/change_password",
-				data : data,
 
-				success : function(data) {
-					if (data.status == "success") {
-						that.hide();
-					}else if(data.status == "failure"){
-						try{
-							alert(data.errors[0]);
-						}catch(e){
-							that.hide();
-						}
-						
-					}
-				},
-				error : function(jqxhr, status, error){
-        			//checking whether a user is logged in
-        			if (jqxhr.status == "401") { sntapp.logout(); return;}
-				}
-			});
+		    var options = {
+		      loader: 'BLOCKER',
+		      successCallBack : that.fetchCompletedOfSaveAccountSettings,
+		      requestParameters: data
+		    };
+		    var url = '/admin/user/change_password';
+		    var webservice = new WebServiceInterface();
+		    webservice.postJSON(url, options);	
 
 		}
 		
