@@ -26,7 +26,7 @@ var UserDetailsView = function(domRef){
 
   //function to re invite
   this.reInvite = function(){
-	var url = '';
+	var url = 'admin/user/send_invitation';
 	if(typeof url === 'undefined' || url === '#'){
 		return false;
 	}
