@@ -17,12 +17,31 @@ var UserDetailsView = function(domRef){
   this.delegateEvents = function(){  	
   	that.myDom.find($('#save_new_user')).on('click', that.saveNewUser);
   	that.myDom.find($('#go_back, #cancel')).on('click', that.gotoPreviousPage);
+  	that.myDom.find("#re-invite").on('click', that.reInvite);
   	that.myDom.find('#save').on('click', that.updateUser);
   	that.myDom.find('#user-picture').on('change', function(){
   		that.readURL(this);
   	});
   };  
 
+  //function to re invite
+  this.reInvite = function(){
+	var url = '/admin/user/send_invitation';
+	if(typeof url === 'undefined' || url === '#'){
+		return false;
+	}
+	var webservice = new WebServiceInterface();		
+	var data = {};
+	//data.email = that.myDom.find('#email').val();
+	data.id = that.myDom.find("#edit-user").attr('user');  	
+	var options = {
+			   requestParameters: data,
+			   successCallBack: that.fetchCompletedOfReInvite,
+			   failureCallBack: that.fetchFailedOfReInvite,
+			   loader: "BLOCKER"
+	};
+	webservice.postJSON(url, options);	 
+  };
   //go to previous page withount any update in view
   this.gotoPreviousPage = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
@@ -124,7 +143,7 @@ var UserDetailsView = function(domRef){
   
   // failure call of re-invite api call
   this.fetchFailedOfReInvite = function(errorMessage){
-	  sntapp.notification.showErrorList("Some error occured.", that.myDom);  
+	  sntapp.notification.showErrorList("Some error occured."+errorMessage, that.myDom);  
   };
   //to show preview of the image using file reader
   this.readURL = function(input) {
