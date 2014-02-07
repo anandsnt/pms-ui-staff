@@ -260,8 +260,14 @@ var RegistrationCardView = function(viewDom) {
 				"reservationStatus" : reservationStatus
 			};
 		}
+		
 		else if(keySettings == "encode"){
-			
+			var keyEncoderModal = new KeyEncoderModal(that.goAndRefreshStayCard, that.goToSearchScreen);
+			keyEncoderModal.initialize();
+			keyEncoderModal.params = {
+				"origin" : views.BILLCARD,
+				"reservationStatus" : reservationStatus
+			};
 			
 		}
 

@@ -148,4 +148,13 @@ var CardOperation = function(){
 		that.callCordovaService(options);		
 		
 	};
+	/**
+	*
+	*/
+	// function to check device status
+	this.checkDeviceConnected = function(options){
+		options['service'] = "RVCardPlugin";
+		options['action'] = "checkDeviceConnectionStatus";		
+		that.callCordovaService(options);
+	};
 };
