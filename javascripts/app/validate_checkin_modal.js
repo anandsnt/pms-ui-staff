@@ -66,31 +66,19 @@ var ValidateCheckinModal = function() {
 			}
 		}
 
-	    // $.ajax({
-				// type : "PUT",
-				// url : 'staff/guest_cards/' + userId,
-				// data : JSON.stringify($contactJsonObj),
-				// async : false,
-				// dataType : 'json',
-				// contentType : 'application/json',
-				// success : function() {
-				// },
-				// error : function() {
-				// }
-		// });
-			var webservice = new WebServiceInterface();
-		    	
-		    var url = 'staff/guest_cards/' + userId; 
-		    var options = {
-					   requestParameters: JSON.stringify($contactJsonObj),
-					   successCallBack: that.fetchCompletedOfSave,
-					   failureCallBack: that.fetchFailedOfSave
-			};
-		    webservice.putJSON(url, options);
+		var webservice = new WebServiceInterface();
+	    	
+	    var url = 'staff/guest_cards/' + userId; 
+	    var options = {
+				   requestParameters: JSON.stringify($contactJsonObj),
+				   successCallBack: that.fetchCompletedOfSave,
+				   failureCallBack: that.fetchFailedOfSave
+		};
+	    webservice.putJSON(url, options);
 		
 		
 	};
-    this.fetchCompletedOfSave = function(data, requestParameters){
+    this.fetchCompletedOfSave = function(data){
     	// Update UI changes in Guest card header and Contact information.
 		var guest_phone = $("#gc-phone").val();
 		var guest_email = $("#gc-email").val();

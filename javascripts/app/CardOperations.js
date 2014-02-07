@@ -17,7 +17,8 @@ var CardOperation = function(){
 			console.log("sucecss called");
 			var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 			var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
-			var carddata= { 'RVCardReadTrack2': 'CDA1E3A2EB853964E4D4550151545BE1052CB17498A61E8FE5BB5D948BD3844EA78603B263D5E509',
+			var carddata= { 'RVCardReadCardType': 'AX',
+							'RVCardReadTrack2': 'CDA1E3A2EB853964E4D4550151545BE1052CB17498A61E8FE5BB5D948BD3844EA78603B263D5E509',
           					'RVCardReadTrack2KSN': '950067000000062002AF'
 						  };
 
@@ -26,6 +27,18 @@ var CardOperation = function(){
 		}
 
 	}
+	this.writeKeyDataDebug = function(options){
+		//Simulating the write function for easy testing. May be removed in production.
+		console.log("sucecss called in write key debug mode");
+		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
+		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
+		var mechineResponse= { };
+
+		setTimeout(function(){
+			successCallBack(mechineResponse, successCallBackParameters)
+		}, 1000)
+
+	}	
 
 
 	this.startReader = function(options){

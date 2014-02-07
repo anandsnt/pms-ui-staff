@@ -41,6 +41,7 @@ var NotificationMessage = function() {
 			if ($('#notification-message').length) {
 				$(window).scrollTop($('#notification-message').offset().top);
 			};
+
 		} else {
 			// console.log(dom.attr("id"));
 			var element = dom.find('#notification-message')[0];
@@ -72,7 +73,9 @@ var NotificationMessage = function() {
                priority = "DEBUG";
        }  
 		if (!shouldShowMessage(priority, "Error")) return;
-		dom = getDisplayDom();
+        if(typeof dom === "undefined"){
+        	dom = getDisplayDom();
+        }
 		var message = "";
 		if (errorMessages.length == 0) { 
 			message = "Sorry, an undefined error occured";
@@ -118,8 +121,9 @@ var NotificationMessage = function() {
 		if (!shouldShowMessage(priority, "Success")) return;
 		
 	
-		if(typeof dom == 'undefined')
-			dom = $('body');		
+        if(typeof dom === "undefined"){
+        	dom = getDisplayDom();
+        }		
 		
 		this.hideMessage(dom);
 		
