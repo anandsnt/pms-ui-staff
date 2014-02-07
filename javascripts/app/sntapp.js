@@ -88,7 +88,9 @@ var app = function(){
             data: params,
             url: viewURL,
             async: async,
-            success: function(data) { 
+            success: function(data) {
+
+                params.callback && params.callback();
                 
                 that.renderView(data, viewDom, nextViewParams);                 
                 that.activityIndicator.hideActivityIndicator();

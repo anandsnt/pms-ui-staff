@@ -10,8 +10,14 @@ var ChangeStayDatesView = function(viewDom){
   this.delegateEvents = function(){  
       that.myDom.find('#changedates-back-btn').on('click',that.backButtonClicked);
       that.myDom.find('#reservation-details').on('click', that.reservationUpdateClickEvents);
+      that.myDom.unbind('click');
+      that.myDom.on('click', that.changeStayDatesClickHandler);
   };
-
+  
+  //change Stay dates dom click handler
+  this.changeStayDatesClickHandler = function(){
+  	 sntapp.notification.hideMessage(that.myDom);
+  };
   this.executeLoadingAnimation = function(){
       changeView("nested-view", "", "view-nested-first", "view-nested-second", "move-from-right", false); 
   };
@@ -325,7 +331,11 @@ var ChangeStayDatesView = function(viewDom){
       // Update Dom values
       that.myDom.find('#reservation-updates #room-number').text(roomSelected);
       that.myDom.find('#reservation-updates #room-type').text(that.myDom.find('#room-type').text());
-      that.myDom.find('#reservation-updates #new-nights').text(totalNights);
+      if(totalNights > 0){
+        that.myDom.find('#reservation-updates #new-nights').text(totalNights + ' nights');
+      } else {
+        that.myDom.find('#reservation-updates #new-nights').text('Day Use');
+      }
       that.myDom.find('#reservation-updates #new-check-in').text(getDateString(reservationDetails['arrival_date'], true));
       that.myDom.find('#reservation-updates #new-check-out').text(getDateString(reservationDetails['dep_date'], true));
       that.myDom.find('#reservation-updates #avg-daily-rate').text(currencySymbol + avgRate +" /");

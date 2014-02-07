@@ -112,23 +112,29 @@ body {
 	}
 
 /* Notices					==============================*/
-	.notice {
+	.notice,
+	.success_message,
+	.error-message {
+		font-size: 14px;
+		line-height: 1.2em;
 		padding: 10px;
-		margin: 10px;
 		margin-bottom: 10px;
 		color: darken(@yellow, 30);
 		background: lighten(@yellow, 20);
 		border: 1px solid @yellow;
 		#border-radius > .rounded(3px);
+		.float;
 		.show;
 
-		&.error {
+		&.error,
+		&.error_message {
 			color: @red;
 			background: lighten(@softRed, 20);
 			border-color: @softRed;
 		}
 
-		&.success {
+		&.success,
+		&.success_message {
 			color: darken(@green, 20);
 			background: lighten(@green, 20);
 			border-color: @green;
@@ -149,6 +155,15 @@ body {
 			text-align: center;
 			.show;
 		}
+
+		.close-btn:after {
+			content: "×";
+			font-size: 20px;
+			margin-left: 12px;
+			width: auto;
+			cursor: pointer;
+			.pull-right;
+		}
 	}
 
 	.inline-error,
@@ -165,40 +180,6 @@ body {
 	.inline-success { color: @green; }
 	.inline-warning { color: darken(@yellow, 10); }
 	.inline-info { color: darken(@blue, 10); }
-
-	// System success & error message
-	.success_message,
-	.error_message {
-		padding: 10px;
-		margin: 0;
-		border-bottom: 1px solid;
-		font-size: 14px; 
-		line-height: 1em;
-		font-weight: 600;
-		text-align: center;
-		z-index: 11000;
-
-		.close-btn:after {
-			content: "×";
-			font-size: 20px;
-			margin-left: 12px;
-			width: auto;
-			cursor: pointer;
-			.pull-right;
-		}
-	}
-	
-	.success_message {	
-		border-color: @green;
-		background: lighten(@green, 20);
-		color: darken(@green, 20);
-	}
-
-	.error_message {
-		color: @red;
-		background: lighten(@softRed, 20);
-		border-color: @softRed;
-	}
 
 /* 6. IE
 ==========================================================*/

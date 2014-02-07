@@ -5,18 +5,37 @@ var HotelChargeCodesView = function(domRef){
   this.myDom = domRef;
   
   // to handle subview events
-  this.delegateSubviewEvents = function(){ 
-  	var charge_codes_table = that.myDom.find('#charge_codes_table');
-	// we need to apply table sorter if the table has more than one row
-	if(charge_codes_table.find("tr").length > 1){
-		charge_codes_table.tablesorter({ headers: { 0:{sorter:false} , 1:{sorter:false} , 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}  } });	// to disable sorting in action table
-	}
+  this.delegateSubviewEvents = function(){
+    that.myDom.find('#charge_codes_table').tablesorter({
+      headers: {
+        2:{sorter:false},
+        3:{sorter:false},
+        4:{sorter:false}
+      }
+    });
+
+ //  	var charge_codes_table = that.myDom.find('#charge_codes_table');
+	// // we need to apply table sorter if the table has more than one row
+	// if(charge_codes_table.find("tr").length > 1){
+	// 	charge_codes_table.tablesorter({ headers: { 0:{sorter:false} , 1:{sorter:false} , 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}  } });	// to disable sorting in action table
+	// }
 	// to handle link with div - hide when charge code type is tax
 	that.myDom.on("change", that.handleLinkWith);
 	that.myDom.find('#import-charge-codes').on("click", that.callImportApi);
 	
-  	
   };
+
+  // pause/unpause sorting
+  this.pauseSorting = function(pause) {
+    var dataTableHeaders = that.myDom.find('#charge_codes_table thead th');
+
+    if (pause) {
+      dataTableHeaders.hide();
+    } else {
+      dataTableHeaders.show();
+    };
+  };
+
   // to call import charge codes API
   this.callImportApi = function(event){
   	var postData = {};
