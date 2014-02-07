@@ -3,8 +3,7 @@ var KeyQrCodeModel = function(gotoStayCard,gotoSearch) {
 	BaseModal.call(this);
 	var that = this;
 	this.reservation_id = getReservationId();
-	//this.url = "staff/reservations/" + that.reservation_id + "/get_key_on_tablet";
-	this.url = "/ui/show?haml_file=modals/keys/keyQrCodeModal&json_input=stay_card/key_qr_code.json&is_hash_map=true&is_partial=true";
+	this.url = "staff/reservations/" + that.reservation_id + "/get_key_on_tablet";
 
 	this.delegateEvents = function() {
 		that.myDom.find('#goto-staycard').on('click', that.clickedGotoStayCard);
@@ -25,19 +24,17 @@ var KeyQrCodeModel = function(gotoStayCard,gotoSearch) {
 		
 		if(that.params.reservationStatus == "CHECKING_IN") {
 			that.myDom.find('.modal-content').addClass('check-in');
-			that.myDom.find('#room-status .message').text('Check in Complete');
+			that.myDom.find('#room-status .message#status').text('Check in Complete');
 
 		} else if(that.params.reservationStatus == "CHECKEDIN") {
 			that.myDom.find('.modal-content').addClass('inhouse');
 			that.myDom.find('#modal-close').addClass('blue');
-			that.myDom.find('#room-status .message').text('In House');
+			that.myDom.find('#room-status .message#status').text('In House');
 
 		} else if(that.params.reservationStatus == "CHECKING_OUT") {
 			that.myDom.find('.modal-content').addClass('check-out');
 			that.myDom.find('#modal-close').addClass('red');
-			that.myDom.find('#room-status .message').text('Checking Out');
-			// TODO Late checkout
-			var html = "Checking Out <br />2:30 PM";
+			that.myDom.find('#room-status .message#status').text('Checking Out');
 		}
 
 		if(that.params.origin == views.STAYCARD){

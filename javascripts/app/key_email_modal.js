@@ -2,10 +2,8 @@ var KeyEmailModal = function(gotoStayCard,gotoSearch) {
 	BaseModal.call(this);
 	var that = this;
 	var reservation_id = getReservationId();
-	
-	//this.url = "staff/reservations/" + reservation_id + "/get_key_setup";
-	this.url = "/ui/show?haml_file=modals/keys/keyEmailModal&json_input=stay_card/key_email.json&is_hash_map=true&is_partial=true";
-	
+	this.url = "staff/reservations/" + reservation_id + "/get_key_on_email";
+
 	this.delegateEvents = function() {
 		that.myDom.find('#goto-staycard').on('click', that.clickedGotoStayCard);
 		that.myDom.find('#goto-search').on('click', that.clickedGotoSearch);
@@ -16,23 +14,22 @@ var KeyEmailModal = function(gotoStayCard,gotoSearch) {
 			$("#modal-overlay").addClass("locked");
 		}
 	};
+	
 	this.modalDidShow = function() {
 		
 		if(that.params.reservationStatus == "CHECKING_IN") {
 			that.myDom.find('.modal-content').addClass('check-in');
-			that.myDom.find('#room-status .message').text('Check in Complete');
+			that.myDom.find('#room-status .message#status').text('Check in Complete');
 
 		} else if(that.params.reservationStatus == "CHECKEDIN") {
 			that.myDom.find('.modal-content').addClass('inhouse');
 			that.myDom.find('#modal-close').addClass('blue');
-			that.myDom.find('#room-status .message').text('In House');
+			that.myDom.find('#room-status .message#status').text('In House');
 
 		} else if(that.params.reservationStatus == "CHECKING_OUT") {
 			that.myDom.find('.modal-content').addClass('check-out');
 			that.myDom.find('#modal-close').addClass('red');
-			that.myDom.find('#room-status .message').text('Checking Out');
-			// TODO Late checkout
-			var html = "Checking Out <br />2:30 PM";
+			that.myDom.find('#room-status .message#status').text('Checking Out');
 		}
 		
 		if(that.params.origin == views.STAYCARD){
