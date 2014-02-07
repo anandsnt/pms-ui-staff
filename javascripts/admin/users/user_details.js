@@ -26,7 +26,7 @@ var UserDetailsView = function(domRef){
 
   //function to re invite
   this.reInvite = function(){
-	var url = 'admin/user/send_invitation';
+	var url = '/admin/user/send_invitation';
 	if(typeof url === 'undefined' || url === '#'){
 		return false;
 	}
@@ -34,6 +34,7 @@ var UserDetailsView = function(domRef){
 	var data = {};
 	data.email = that.myDom.find('#email').val();
 	data.user_id = that.myDom.find("#edit-user").attr('user');  	
+	console.log(data);
 	var options = {
 			   requestParameters: data,
 			   successCallBack: that.fetchCompletedOfReInvite,
