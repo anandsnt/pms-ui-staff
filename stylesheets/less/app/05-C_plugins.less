@@ -948,36 +948,52 @@
 					margin-bottom: 10px;
 					line-height: 50px;
 					vertical-align: middle;
-					white-space: nowrap;
-					overflow: hidden;
-					text-overflow: ellipsis;
 					.clickable;
+					.float;
 
-					> .primary:not(.value) {
-						position: absolute;
-						top: 0;
-						right: 0;
-						margin-right: 0;
+					.card-logo { 
+						margin: 10px 10px 0 0; 
+						.pull-left;
 					}
 
-					&.primary .value { font-weight: 600; }
-
-					&.item-payment {
-						figure { margin-top: 10px; }
+					> span {
 						
-						figure,
-						> span { margin-right: 20px; }
-					}
-
-					&.item-loyalty {
-						> span { 
+						&.number,
+						&.date,
+						&.name { 
 							margin-right: 20px; 
+							.pull-left;
+						}
 
-							&.name {
-								font-size: 14px;
-								color: @grey3;
+						&.number { width: 150px; }
+						&.date { width: 100px; }
+						&.name {
+							width: 220px;
+
+							.value {
+								width: 170px;
+								white-space: nowrap;
+								text-overflow: ellipsis;
+								overflow: hidden;
 							}
 						}
+
+						&.in-gc { 
+							width: 90px;
+							margin-right: 0;
+							.pull-right;
+						}
+
+						&.primary {
+							position: absolute;
+							top: 0;
+							right: 105px;
+							margin-right: 0;
+						}
+					}
+
+					&.primary {
+						.value { font-weight: 600; }
 					}
 				}
 			}
