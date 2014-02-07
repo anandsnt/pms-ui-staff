@@ -89,6 +89,7 @@ var ReservationPaymentView = function(domRef){
 							"</span>";
 	    that.myDom.find("#select-card-from-list").html(replaceHtml);
 	    that.myDom.find("#delete_card").remove();
+	    that.myDom.find("#add-new-payment").remove();
 	    that.myDom.find(".payment_actions").append('<a id="add-new-payment" class="add-new-button">+ Add</a>');
 	    that.delegateEvents();
 	};
