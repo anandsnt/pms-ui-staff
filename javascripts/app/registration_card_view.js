@@ -63,12 +63,9 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.delegateEvents = function() {
-		///that.myDom.find(('.bill-tabs')).tabs();
-		// ui tabs
 		this.bill_number = that.myDom.find("#bills li.active").attr('data-bill-number');
 		that.myDom.unbind('click');
 		that.myDom.on('click', that.myDomClickHandler);
-		
 	};
 
 	// function for closing the drawer if is open
@@ -164,8 +161,6 @@ var RegistrationCardView = function(viewDom) {
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
 	};
 
-
-
 	this.goToRoomAssignmentView = function() {
 		that.myDom.html("");
 		if ($('#roomassignment_main').length) {
@@ -194,7 +189,6 @@ var RegistrationCardView = function(viewDom) {
 		e.stopImmediatePropagation();
 		var roomStatus = $(e.target).attr('data-room-status');
 		var foStatus = $(e.target).attr('data-fo-status');
-		var is_show_qr_code = $(e.target).attr('data-qr-code');
 		var required_signature_at = $(e.target).attr('data-required-signature');
 		
 		if (roomStatus != "READY" || foStatus != "VACANT") {
@@ -225,7 +219,7 @@ var RegistrationCardView = function(viewDom) {
 			return;
 		}
 		else {
-			var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
+			
 			var data = {
 				"is_promotions_and_email_set" : is_promotions_and_email_set,
 				"signature" : signature,
@@ -237,37 +231,50 @@ var RegistrationCardView = function(viewDom) {
 			var url = '/staff/checkin';
 			var options = {
 				requestParameters : data,
-				successCallBack : that.fetchCompletedOfSave,
-				failureCallBack : that.fetchFailedOfSave,
-				successCallBackParameters : {
-					"is_promotions_and_email_set" : is_promotions_and_email_set,
-					"is_show_qr_code" : is_show_qr_code
-				}
+				successCallBack : that.completeCheckinSuccess,
+				failureCallBack : that.completeCheckinFailed,
 			};
 			webservice.postJSON(url, options);
 		}
 	};
-	this.fetchCompletedOfSave = function(data, requestParameters) {
+	
+	this.completeCheckinSuccess = function(data) {
 
-		// If QR Code status enabled - First show select Key Modal
-		// Else show key genaration Modal
-		if (requestParameters['is_show_qr_code'] == "true") {
-			var selectKeyModel = new SelectKeyModel(that.showCheckinSuccessModal, that.openQrCodeModal);
-			selectKeyModel.initialize();
-		} else {
-			// To show Modal for key generation
-			that.openAddKeysModal();
+		var keySettings = that.myDom.find("#checkin-button").attr("data-key-settings");
+		var reservationStatus = that.myDom.find("#checkin-button").attr('data-reseravation-status');
+		var is_promotions_and_email_set = that.myDom.find("#subscribe-via-email").hasClass("checked") ? 1 : 0;
+		
+		if(keySettings == "email"){
+			var keyEmailModal = new KeyEmailModal(that.goAndRefreshStayCard,that.goToSearchScreen);
+			keyEmailModal.initialize();
+			keyEmailModal.params = {
+				"origin" : views.BILLCARD,
+				"reservationStatus" : reservationStatus
+			};
+		}
+		else if(keySettings == "qr_code_tablet") {
+			var keyQrCodeModel = new KeyQrCodeModel(that.goAndRefreshStayCard,that.goToSearchScreen);
+			keyQrCodeModel.initialize();
+			keyQrCodeModel.params = {
+				"origin" : views.BILLCARD,
+				"reservationStatus" : reservationStatus
+			};
+		}
+		else if(keySettings == "encode"){
+			
+			
 		}
 
-		if (requestParameters['is_promotions_and_email_set'] == "true") {
+		if (is_promotions_and_email_set) {
 			//To enable EMAIL OPT IN check button in guest card
 			$("#contact-info input#opt-in").prop("checked", true);
-		} else {
+		}
+		else {
 			//To disable EMAIL OPT IN check button in guest card
 			$("#contact-info input#opt-in").prop("checked", false);
 		}
 	};
-	this.fetchFailedOfSave = function(errorMessage) {
+	this.completeCheckinFailed = function(errorMessage) {
 		sntapp.activityIndicator.hideActivityIndicator();
 		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
 	  };
@@ -276,13 +283,15 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.gotoStayCard = function(e) {
-		e.preventDefault();
-		sntapp.cardSwipeCurrView = 'StayCardView';
-		//goBackToView("", "view-nested-third", "move-from-left");
-		var $loader = '<div id="loading"><div id="loading-spinner" /></div>';
-		$($loader).prependTo('body').show();
-		changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);
+		sntapp.activityIndicator.showActivityIndicator('blocker');
+      	changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);  
 	};
+	
+	this.goAndRefreshStayCard = function(e) {
+		var staycardView = new StayCard($("#view-nested-first"));
+      	staycardView.refreshReservationDetails(that.reservation_id, that.gotoStayCard);
+	};
+	
 	this.goToRoomUpgradeView = function(e) {
 		e.preventDefault();
 		//goBackToView("", "view-nested-third", "move-from-left");
@@ -389,26 +398,6 @@ var RegistrationCardView = function(viewDom) {
 		//Do not call 'initialize' method for this object. which results multiple event binding
 		var searchView = new Search();
 		searchView.clearResults();
-	};
-	// To show add keys modal
-	this.openAddKeysModal = function(e) {
-		var addKeysModal = new AddKeysModal(that.showCheckinSuccessModal);
-		addKeysModal.initialize();
-		addKeysModal.params = {
-			"source_page" : views.BILLCARD
-		};
-	};
-	// To show QR code modal
-	this.openQrCodeModal = function(e) {
-		var qrCodeModel = new QrCodeModel(that.showCheckinSuccessModal);
-		qrCodeModel.initialize();
-	};
-	// To show success message after check in
-	this.showCheckinSuccessModal = function(e) {
-		console.log("showCheckinSuccessModal");
-		var room_no = that.myDom.find('#registration-content').attr('data-room-number');
-		var message = $("#gc-firstname").val() + " " + $("#gc-lastname").val() + " IS CHECKED IN TO ROOM " + room_no;
-		that.showSuccessMessage(message, that.goToSearchScreen);
 	};
 
 };
