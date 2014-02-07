@@ -7,8 +7,6 @@ var reservationDetailsView = function(domRef) {
 
 	};
 	this.delegateEvents = function() {
-		//this.is_show_qr_code = that.myDom.find("#reservation-card-room #add-keys").attr('data-qr-code');
-
 		that.myDom.find('#reservation_newspaper').on('change', that.setNewspaperPreferance);
 		//unbind the previous object's event binding (currently object is not destorying/event is not unbinding).
 		that.myDom.unbind('click');
@@ -179,15 +177,33 @@ var reservationDetailsView = function(domRef) {
 	};
 
 	this.addKeysModal = function(e) {
-		// If QR Code status enabled - show QR Code Modal 
-		// Else show key genaration Modal
-		if ($(e.target).closest('a').attr("data-qr-code") == "true") {
-			var qrCodeModel = new QrCodeModel();
-			qrCodeModel.initialize();
+		var reservationStatus = that.myDom.find("#add-keys").attr('data-reseravation-status');
+		var keySettings = that.myDom.find("#add-keys").attr("data-key-settings");
+		
+		if(keySettings == "email"){
+			var keyEmailModal = new KeyEmailModal();
+			keyEmailModal.initialize();
+			keyEmailModal.params = {
+				"origin" : views.STAYCARD,
+				"reservationStatus" : reservationStatus
+			};
+		}
+
+		else if(keySettings == "qr_code_tablet") {
+			var keyQrCodeModel = new KeyQrCodeModel();
+			keyQrCodeModel.initialize();
+			keyQrCodeModel.params = {
+				"origin" : views.STAYCARD,
+				"reservationStatus" : reservationStatus
+			};
 		} 
-		else{
-			var addKeysModal = new AddKeysModal();
-			addKeysModal.initialize();
+		else if(keySettings == "encode"){
+			var keyEncoderModal = new KeyEncoderModal();
+			keyEncoderModal.initialize();
+			keyEncoderModal.params = {
+				"origin" : views.STAYCARD,
+				"reservationStatus" : reservationStatus
+			};
 		}
 	};
 	this.roomUpgradesClicked = function(e) {
