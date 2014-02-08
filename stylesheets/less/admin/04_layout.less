@@ -56,10 +56,10 @@ body { overflow: hidden; }
             padding: 20px;
             height: 100%;
             background: @background;
-            #pixel-to-percent > .width( 1050, 1240 );
+            #pixel-to-percent > .width( 1020, 1240 );
 
-            &:not(.ui-tabs-panel) {
-                overflow-y: auto;
+            &:not(.ui-tabs-panel) { 
+                overflow: auto;
                 -webkit-overflow-scrolling: touch;
 
                 &::-webkit-scrollbar{ 
@@ -356,23 +356,23 @@ body { overflow: hidden; }
         background: @rcardTexture1;
         .pull-left;
         .box-shadow(inset -1px 0 2px rgba(0,0,0,.1));
-        #pixel-to-percent > .width( 190, 1240 );
+        #pixel-to-percent > .width( 220, 1240 );
 
         li {
             position: relative;
             line-height: 59px;
             margin: 0 0 0 20px;
             vertical-align: middle;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-
+            
             a { 
                 font-weight: 600;
                 text-transform: uppercase;
                 color: @grey4;
                 margin-right: 20px;
                 border-bottom: 1px solid rgba(0,0,0,.1);    
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
                 .no-transition;
                 .show;
 
