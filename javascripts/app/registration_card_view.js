@@ -6,7 +6,7 @@ var RegistrationCardView = function(viewDom) {
 	this.url = "ui/checkinSuccess";
 
 	this.pageinit = function() {
-console.log(that.myDom);
+
 		this.createHorizontalScroll();
 
 		setTimeout(function() {
@@ -42,6 +42,13 @@ console.log(that.myDom);
 		sntapp.setViewInst('registrationCardView', function() {
 			return that;
 		});
+		
+		var bill_status = {};
+		that.myDom.find("#bills-tabs-nav ul li").each(function() {
+			bill_status.number = $(this).attr('data-bill-number');
+			bill_status.status = $(this).hasClass('ui-tabs-active') ? 1 : 0;
+		});
+		console.log(bill_status);
 	};
 
 	this.pageshow = function(){
@@ -87,6 +94,9 @@ console.log(that.myDom);
 	    }	    
 	    if(getParentWithSelector(event, "#back-to-staycard")) {
 	    	return that.gotoStayCard(event);
+	    }
+	    if(getParentWithSelector(event, "#review-bill-button")) {
+	    	return that.clickedReviewBill(event);
 	    }
 	    if(getParentWithSelector(event, "#complete-checkout-button")) {
 	    	return that.clickedCompleteCheckout(event);
@@ -300,6 +310,23 @@ console.log(that.myDom);
 		$($loader).prependTo('body').show();
 		changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);
 	};
+	this.clickedReviewBill = function(e) {
+		
+		console.log("clickedReviewBill");
+		
+		var element = $(e.target).closect('button');
+		var bill_number = $(e.target).attr('data-bill-number');
+		
+		element.removeClass("red").addClass("grey");
+		element.unbind("click");
+		
+		// Switch to next bill which is not reviewd
+		var current_active = that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active");
+		current_active.addClass('reviewed');
+		that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active").next().not('.reviewed').addClass('ui-tabs-active');
+		current_active.removeCalss("ui-tabs-active");
+		
+	};
 	//function on click complete checkout button - If email is null then popup comes to enter email
 	this.clickedCompleteCheckout = function(e) {
 		e.stopPropagation();
@@ -321,43 +348,38 @@ console.log(that.myDom);
 	};
 
 	this.completeCheckout = function(e) {
+		
 		var required_signature_at = $(e.target).attr('data-required-signature');
-		var balance_amount = that.myDom.find("#balance-amount").attr("data-balance-amount");
-		if (balance_amount > 0) {
-			// When balance amount is greater than 0 - perform payment action.
-			that.payButtonClicked();
-		}
-		else {
-			// When balance amount is 0 - perform complete check out action.
-			var email = $("#gc-email").val();
-			var signature = JSON.stringify(that.myDom.find("#signature").jSignature("getData", "native"));
-			var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked") ? 1 : 0;
-			var errorMessage = "";
+		
+		var email = $("#gc-email").val();
+		var signature = JSON.stringify(that.myDom.find("#signature").jSignature("getData", "native"));
+		var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked") ? 1 : 0;
+		var errorMessage = "";
 
-			if (signature == "[]" && required_signature_at == "CHECKOUT")
-				errorMessage = "Signature is missing";
-			else if (!terms_and_conditions && required_signature_at == "CHECKOUT")
-				errorMessage = "Please check agree to the Terms & Conditions";
+		if (signature == "[]" && required_signature_at == "CHECKOUT")
+			errorMessage = "Signature is missing";
+		else if (!terms_and_conditions)
+			errorMessage = "Please check agree to the Terms & Conditions";
 
-			if (errorMessage != "") {
-				that.showErrorMessage(errorMessage);
-				return;
-			}
-			var url = '/staff/checkout';
-			var webservice = new WebServiceInterface();
-			var data = {
-				"reservation_id" : that.reservation_id,
-				"email" : email,
-				"signature" : signature
-			};
-			var options = {
-				requestParameters : data,
-				successCallBack : that.fetchCompletedOfCompleteCheckout,
-				failureCallBack : that.fetchFailedOfSave,
-				loader : 'blocker'
-			};
-			webservice.postJSON(url, options);
+		if (errorMessage != "") {
+			that.showErrorMessage(errorMessage);
+			return;
 		}
+		var url = '/staff/checkout';
+		var webservice = new WebServiceInterface();
+		var data = {
+			"reservation_id" : that.reservation_id,
+			"email" : email,
+			"signature" : signature
+		};
+		var options = {
+			requestParameters : data,
+			successCallBack : that.fetchCompletedOfCompleteCheckout,
+			failureCallBack : that.fetchFailedOfSave,
+			loader : 'blocker'
+		};
+		webservice.postJSON(url, options);
+		
 	};
 
 	this.fetchCompletedOfCompleteCheckout = function(data) {
