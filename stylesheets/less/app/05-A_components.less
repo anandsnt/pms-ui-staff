@@ -306,39 +306,29 @@
 				margin-left: 20px;
 				.calc-width(100, 150); /* %, px (50px img; 20px margin; 80px lobby icon */
 				.pull-left;
+				.float;
 				.show;
 
 				.masked-input {
 					color: @white;
-					
-					&[size="0"] {
-						max-width: 40px;
+					cursor: pointer;
+					clear: none;
+					padding: 0 5px;
+					margin-right: 5px;
+					.show;
+					.pull-left;
+					.transition;
+
+					&[data-size="0"] {
+						width: 20px;
 						background-color: rgba(0,0,0,.1);
 					}
 
 					&.active {
-						padding: 0 5px;
 						color: @logoPrimary;
 						background-color: rgba(0,0,0,.1);
+						margin-right: 5px;
 					}
-
-					@iterations: 50;
-					.span-loop (@i) when (@i > 0) {
-						@width: @i+1;
-						@activeWidth: @i+2;
-					    &[size="@{i}"] {
-					        max-width: ~"@{i}em";
-
-					        &.active { max-width: ~"@{width}em"; }
-
-					        &.icons { 
-					        	max-width: ~"@{width}em"; 
-					        	&.active { max-width: ~"@{activeWidth}em"; }
-					        }
-					    }
-					    .span-loop(@i - 1);
-					}
-					.span-loop (@iterations);
 				}
 
 				.holder {
@@ -356,10 +346,6 @@
 							line-height: 30px;
 							height: 30px;
 							font-weight: 700;
-							clear: none;
-							.pull-left;
-
-							&:first-child { margin-right: 0;}
 						}
 					}
 
@@ -401,20 +387,16 @@
 						height: 35px;
 						margin-top: 0;
 
-						.divider {
-							line-height: 35px;
-							margin-right: 10px;
-							.pull-left;
-						}
-
 						.masked-input {
-							margin-right: 20px;
 							line-height: 35px;
 							min-height: 35px;
-							.pull-left;
 
 							&.icons { padding-left: 30px; }
-							&.icon-gc-location { margin-right: 0; }
+							&.icon-gc-location { 
+								margin-right: 0; 
+
+								&[value=""] { margin-right: 5px; }
+							}
 						}
 					}
 				}
@@ -2451,6 +2433,13 @@
 				 			top: 0;
 				 			bottom: 0;
 				 			right: 0; 
+				 		}
+
+				 		&.no-content {
+				 			padding: 0;
+				 			#pixel-to-percent > .top-padding(350, 1536);
+
+				 			.h1 { margin: 0; }
 				 		}
 			 		}
 			 	}
