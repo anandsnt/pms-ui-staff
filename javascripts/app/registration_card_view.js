@@ -42,13 +42,14 @@ var RegistrationCardView = function(viewDom) {
 		sntapp.setViewInst('registrationCardView', function() {
 			return that;
 		});
-		
+		/*
 		var bill_status = {};
 		that.myDom.find("#bills-tabs-nav ul li").each(function() {
 			bill_status.number = $(this).attr('data-bill-number');
 			bill_status.status = $(this).hasClass('ui-tabs-active') ? 1 : 0;
 		});
 		console.log(bill_status);
+		*/
 	};
 
 	this.pageshow = function(){
@@ -109,6 +110,9 @@ var RegistrationCardView = function(viewDom) {
 	    }
 	    if(getParentWithSelector(event, "#subscribe")) {
 	    	return that.subscribeCheckboxClicked(event);
+	    }
+	    if(getParentWithSelector(event, "#removeCC")) {
+	    	return that.clickedRemoveCC(event);
 	    }	    	    
 	};
 
@@ -311,22 +315,69 @@ var RegistrationCardView = function(viewDom) {
 		changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);
 	};
 	this.clickedReviewBill = function(e) {
-		
+		e.stopPropagation();
+		e.preventDefault();
+		e.stopImmediatePropagation();
+
 		console.log("clickedReviewBill");
-		
-		var element = $(e.target).closect('button');
+		console.log(e);
+		var element = $(e.target).closest('button');
+		console.log(element);
 		var bill_number = $(e.target).attr('data-bill-number');
 		
 		element.removeClass("red").addClass("grey");
-		element.unbind("click");
+		element.attr("disabled","disabled");
 		
 		// Switch to next bill which is not reviewd
+		/*
+		that.myDom.find("#bills-tabs-nav ul li").each(function() {
+			var number = $(this).attr('data-bill-number');
+			var is_found = false;
+			if(number == bill_number){
+				$(this).addClass('reviewed');
+				is_found = true;
+			}
+			if(is_found){
+				if(!$(this).next().hasClass('reviewed')){
+					$(this).next().addClass('ui-tabs-active');
+					is_found =false;
+				}
+			}
+		});
+		*/
+		
 		var current_active = that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active");
 		current_active.addClass('reviewed');
-		that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active").next().not('.reviewed').addClass('ui-tabs-active');
-		current_active.removeCalss("ui-tabs-active");
+		
+		var next_tab = that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active").next();
+		next_tab.addClass('ui-tabs-active');
+		
+		var next_bill = next_number.attr('data-bill-number');
+		current_active.removeClass("ui-tabs-active");
+		that.myDom.find("#bill"+next_bill).show();
+		that.myDom.find("#bill"+bill_number).hide();
 		
 	};
+	
+	this.clickedRemoveCC = function(e) {
+		var reservation_id = getReservationId();
+		var selectedElement = $(e.target).attr("data-payment-id");
+		var webservice = new WebServiceInterface();
+	    var data = {
+	    		reservation_id : reservation_id,
+	    		guest_payment_type_id:   selectedElement
+	    };
+	    var url = '/staff/staycards/unlink_credit_card'; 
+	    var options = {
+			   requestParameters: data,
+			   successCallBack: that.fetchCompletedOfDelete,
+			   failureCallBack: that.fetchFailedOfDelete
+	    };
+	    console.log(data);
+		//webservice.postJSON(url, options);
+	};
+	
+	
 	//function on click complete checkout button - If email is null then popup comes to enter email
 	this.clickedCompleteCheckout = function(e) {
 		e.stopPropagation();
