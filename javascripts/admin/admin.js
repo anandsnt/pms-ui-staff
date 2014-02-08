@@ -18,15 +18,13 @@ function loadInlineForm($target, $item){
     });
 }
 
-// Refresh sortable block after item move or drop
+// Set sortable placeholder
 function refreshSortable(){
 	$('.sortable:visible').each(function(){
 		var $placeholder = $(this).attr('data-placeholder');
 
-		if (!$(this).children('li').length && $placeholder != null){
+		if (!$(this).children('li').length && $placeholder != null && !$(this).children('.placeholder').length){
 			$(this).addClass('empty').append('<span class="placeholder ui-state-disabled">' + $placeholder + '</span>');
-		} else {
-			$(this).removeClass('empty').find('.placeholder').remove();
 		}
 	});
 }
@@ -208,13 +206,14 @@ var setUpAdmin = function(viewDom, delegate) {
 							$('.movers .icons').removeClass('active');
 						}
 
-						refreshSortable();				
+						refreshSortable();	
+						$(this).removeClass('empty').children('.placeholder').remove();			
 					},
 					over: function(event, ui){
-						$('.placeholder.ui-state-disabled').addClass('over');
+						$(this).children('.placeholder.ui-state-disabled').addClass('over');
 					},
 					out: function(event, ui){
-						$('.placeholder.ui-state-disabled').removeClass('over');
+						$(this).children('.placeholder.ui-state-disabled').removeClass('over');
 					},
 					stop: function(event, ui){
 						ui.item.removeClass('selected').find('.icon-handle').removeClass('dragging');
@@ -259,12 +258,14 @@ var setUpAdmin = function(viewDom, delegate) {
 						$('.sortable:visible[data-type="source"] li.selected').animate({opacity: 0}, 300, function(){
             				$(this).detach().removeClass('selected').appendTo('.sortable:visible[data-type="target"]').animate({opacity: 1}, 300);
             				refreshSortable();
+            				$('.sortable:visible[data-type="target"]').removeClass('empty').children('.placeholder').remove();
         				});
 					break; 
 		            case "target":
 		            	$('.sortable:visible[data-type="target"] li.selected').animate({opacity: 0}, 300, function(){
             				$(this).detach().removeClass('selected').appendTo('.sortable:visible[data-type="source"]').animate({opacity: 1}, 300);
             				refreshSortable();
+            				$('.sortable:visible[data-type="source"]').removeClass('empty').children('.placeholder').remove();	
         				});
 		            break;
 		            default:
