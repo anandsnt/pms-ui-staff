@@ -20,7 +20,7 @@ function loadInlineForm($target, $item){
 
 // Refresh sortable block after item move or drop
 function refreshSortable(){
-	$('.boxes:visible').each(function(){
+	$('.sortable:visible').each(function(){
 		var $placeholder = $(this).attr('data-placeholder');
 
 		if (!$(this).children('li').length && $placeholder != null){
@@ -29,10 +29,6 @@ function refreshSortable(){
 			$(this).removeClass('empty').find('.placeholder').remove();
 		}
 	});
-
-	setTimeout(function() {
-		$('.boxes:visible').removeAttr('style').maximize('height');
-	}, 300);
 }
 
 function setDatepicker($minDate, $maxDate, $yearRangeStart, $yearRangeStop){
@@ -61,6 +57,17 @@ var setUpAdmin = function(viewDom, delegate) {
 
 	// Light page load animation
 		$('#content').css('opacity','0').delay(200).animate({opacity:1},400);
+
+	// Keep app in fullscreen mode
+	   var isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
+	   
+	   	if (isTablet) {
+			$('a:not(.nav-toggle):not(.edit-data-inline):not(.add-data-inline)').click(function(e){
+				e.preventDefault();
+
+				location.href = $(this).attr("href");		
+			});
+		}
 	
 	// Change hotel
 		$(document).on('click', '#change-hotel h1', function(e){
@@ -182,19 +189,18 @@ var setUpAdmin = function(viewDom, delegate) {
          	animateScroll       : true,
          	mouseWheelSpeed     : 50
      	});
-		
-		
-		
-		// Roles & permissions Drag & Drop UI
+
+	// Roles & permissions Drag & Drop UI
 		$(document).ajaxComplete(function() {
 			refreshSortable();
 			$('.sortable')
 				.sortable({ 
-					/*disabled: true,*/
 					connectWith: '.sortable',
 					cursor: 'move',
 					revert: true,
 					cancel: '.ui-state-disabled',
+					helper: 'clone',
+               		appendTo: 'body',
 					placeholder: 'ui-state-highlight',
 					receive: function(event, ui){
 						
@@ -203,6 +209,12 @@ var setUpAdmin = function(viewDom, delegate) {
 						}
 
 						refreshSortable();				
+					},
+					over: function(event, ui){
+						$('.placeholder.ui-state-disabled').addClass('over');
+					},
+					out: function(event, ui){
+						$('.placeholder.ui-state-disabled').removeClass('over');
 					},
 					stop: function(event, ui){
 						ui.item.removeClass('selected').find('.icon-handle').removeClass('dragging');
@@ -215,7 +227,7 @@ var setUpAdmin = function(viewDom, delegate) {
 		    		.mouseup(function(){ $(this).find('.icon-handle').removeClass('dragging'); });
 		});   		
       		
-   	 	// Select multiple items
+   	// Select multiple items
    	 	$(document).on('click', '.sortable li', function(){
 			$(this).toggleClass('selected');
 
@@ -233,7 +245,8 @@ var setUpAdmin = function(viewDom, delegate) {
 				else if ($holder == 'target') $('.to-target').removeClass('active');
 			}
 		});
-		// Move multiple items
+
+	// Move multiple items
 		$(document).on('click', '.movers .icons', function(e){
 			e.stopImmediatePropagation();
 
@@ -261,5 +274,4 @@ var setUpAdmin = function(viewDom, delegate) {
 				$(this).removeClass('active');			
 			}
 		});
-		
 };

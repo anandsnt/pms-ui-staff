@@ -174,45 +174,64 @@
         }
     }
 
+/* jQuery UI sortable       ==============================*/
+    .ui-sortable-helper:not(.ui-draggable-dragging) {
+        position: relative;
+        line-height: 40px;
+        padding: 0 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        .clickable;
+        .no-transition;
+
+        .icon-handle {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            .square(16px);
+            .show;
+        }                   
+    }
+
 /* jScrollPane              ==============================*/
-.jspContainer{
-    overflow: hidden;
-    position: relative;
-
-    .jspPane {
-        position: absolute;
-        width: 100% !important;
-    }
-
-    .jspVerticalBar {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        width: 5px;
-        height: 100%;
-        z-index: 999;
-    }
-
-    .jspHorizontalBar,
-    .jspCap,
-    .jspArrow,
-    .jspCorner { .hide; }
-
-    .jspTrack {
-        height: 100%;
+    .jspContainer{
+        overflow: hidden;
         position: relative;
 
-        .jspDrag {
+        .jspPane {
+            position: absolute;
+            width: 100% !important;
+        }
+
+        .jspVerticalBar {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 5px;
+            height: 100%;
+            z-index: 999;
+        }
+
+        .jspHorizontalBar,
+        .jspCap,
+        .jspArrow,
+        .jspCorner { .hide; }
+
+        .jspTrack {
             height: 100%;
             position: relative;
-            top: 0;
-            left: 0;
-            cursor: pointer;
-            .gradient (@logoGradientStart, @logoGradientEnd);
-            #border-radius > .rounded(5px);
+
+            .jspDrag {
+                height: 100%;
+                position: relative;
+                top: 0;
+                left: 0;
+                cursor: pointer;
+                .gradient (@logoGradientStart, @logoGradientEnd);
+                #border-radius > .rounded(5px);
+            }
         }
     }
-}
 
 
 /* 6. IE

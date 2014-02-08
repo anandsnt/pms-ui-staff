@@ -107,7 +107,8 @@
             .file-upload { background: @grey1; }
 
             input:not([size]),
-            select {  width: 100%; }
+            select,
+            textarea {  width: 100%; }
 
             input[size] {
                 text-align: center;
@@ -125,9 +126,8 @@
             /* Checkbox / Radio holder ***/
             .boxes {
                 padding: 20px;
-                max-height: 480px;
-                overflow: hidden;
                 background: @grey1;
+                overflow: hidden;
                 .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
                 #border-radius > .rounded();
                 .show;
@@ -138,8 +138,6 @@
                 .checkbox {
                     &:last-child { margin-bottom: 0; }
                 }
-
-                .jspPane { padding: 20px !important; }
 
                 .inline {
                     clear: none;
@@ -181,13 +179,6 @@
                     }
 
                     &:nth-child(4n) { margin-right: 0; }
-                }
-
-                &.locked {
-                    padding: 0 20px;
-                    background: transparent;
-                    .box-shadow(none);
-                    #border-radius > .rounded(0px);
                 }
 
                 /* 2 column lists ***/
@@ -315,18 +306,41 @@
 
                     /* Empty list ***/
                     &.empty {
-                        display: table;
                         width: 100%;
+                        position: relative;
+                        .show;
 
                         .placeholder{
                             color: @grey3;
                             font-style: italic;
                             text-align: center;
+                            line-height: 40px;
                             vertical-align: middle;
-                            display: table-cell;
+                            border: 1px dashed @grey2;
+                            .show;
+
+                            &.over {
+                                color: darken(@yellow, 10);
+                                background: lighten(@yellow, 20);
+                                border-color: @yellow;
+                            }
                         }
 
-                        &.ui-state-highlight { .hide; }
+                        .ui-state-highlight { 
+                            position: absolute;
+                            top: 20px;
+                            left: 20px;
+                            .calc-width(100, 40); /* %, px */
+                            .opacity(0); 
+                        }
+                    }
+
+                    /* Is sortable ***/
+                    &.sortable {
+                        overflow-y: auto;
+                        height: 480px;
+
+                        &.short-list { height: 240px; }
                     }
 
                     /* Sortable source list ***/
@@ -365,11 +379,20 @@
 
                     /* Locked list, not sortable ***/
                     &.locked {
+                        padding: 0 20px;
+                        background: transparent;
+                        height: 480px;
+                        overflow-y: auto;
+                        .box-shadow(none);
+                        #border-radius > .rounded(0px);
+
                         li {
                             cursor: default;
                             .faux-clickable;
                             background: @grey1;
                         }
+
+                        &.short-list { height: 240px; }
                     }
                 }
             }

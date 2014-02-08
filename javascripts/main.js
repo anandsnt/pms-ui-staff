@@ -1,14 +1,6 @@
 // Disable cache busting
 $.ajaxSetup({ cache: true });
 
-// Equal heights
-$.fn.maximize = function(size) {
-    var max = Math.max.apply(Math, jQuery.map(this, function (e) {
-        return jQuery(e).height();
-    }));
-
-    this[size](max);
-};
 $(document).ready(function(){
 	if (localStorage.email) {
 		$("#email").val(localStorage.email);
