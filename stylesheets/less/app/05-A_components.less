@@ -142,18 +142,17 @@
 			}
 
 			#stats-today {
+				text-align: center;
 				.float;
-				
+
 				li {
-					width: 50%;
+					display: inline-block;
 					color: @grey3;
 					text-align: center;
 					text-transform: uppercase;
-					padding-bottom: 40px;
-					margin: 0;
-					.pull-left;
+					width: 215px;
 
-					&:nth-child(1n+4) { padding-bottom: 0; }
+					&:first-child { margin-right: 255px; }
 
 					span {
 						font-size: 48px;
@@ -171,7 +170,14 @@
 
 				&.upsell_on {
 					li {
-						width: 33.33%;
+						padding-bottom: 40px;
+						margin: 0 20px 0 0;
+						.calc-width(33.33, 20); /* %, px */
+						.pull-left;
+						.show;
+
+						&:nth-child(3n) { margin-right: 0; }
+						&:nth-child(1n+4) { padding-bottom: 0; }
 					}
 				}
 			}
@@ -226,7 +232,7 @@
 			}
 
 			.status {
-				width: 120px;
+				width: 80px;
 				.pull-left;
 
 				.guest-status {
@@ -238,7 +244,7 @@
 					font-weight: 600;
 					line-height: 50px;
 					text-transform: uppercase;
-					margin-left: 20px;
+					margin-left: -80px;
 					.pull-left;
 				}
 			}
@@ -300,39 +306,29 @@
 				margin-left: 20px;
 				.calc-width(100, 150); /* %, px (50px img; 20px margin; 80px lobby icon */
 				.pull-left;
+				.float;
 				.show;
 
 				.masked-input {
 					color: @white;
-					
-					&[size="0"] {
-						max-width: 40px;
+					cursor: pointer;
+					clear: none;
+					padding: 0 5px;
+					margin-right: 5px;
+					.show;
+					.pull-left;
+					.transition;
+
+					&[data-size="0"] {
+						width: 20px;
 						background-color: rgba(0,0,0,.1);
 					}
 
 					&.active {
-						padding: 0 5px;
 						color: @logoPrimary;
 						background-color: rgba(0,0,0,.1);
+						margin-right: 5px;
 					}
-
-					@iterations: 50;
-					.span-loop (@i) when (@i > 0) {
-						@width: @i+1;
-						@activeWidth: @i+2;
-					    &[size="@{i}"] {
-					        max-width: ~"@{i}em";
-
-					        &.active { max-width: ~"@{width}em"; }
-
-					        &.icons { 
-					        	max-width: ~"@{width}em"; 
-					        	&.active { max-width: ~"@{activeWidth}em"; }
-					        }
-					    }
-					    .span-loop(@i - 1);
-					}
-					.span-loop (@iterations);
 				}
 
 				.holder {
@@ -350,10 +346,6 @@
 							line-height: 30px;
 							height: 30px;
 							font-weight: 700;
-							clear: none;
-							.pull-left;
-
-							&:first-child { margin-right: 0;}
 						}
 					}
 
@@ -395,20 +387,16 @@
 						height: 35px;
 						margin-top: 0;
 
-						.divider {
-							line-height: 35px;
-							margin-right: 10px;
-							.pull-left;
-						}
-
 						.masked-input {
-							margin-right: 20px;
 							line-height: 35px;
 							min-height: 35px;
-							.pull-left;
 
 							&.icons { padding-left: 30px; }
-							&.icon-gc-location { margin-right: 0; }
+							&.icon-gc-location { 
+								margin-right: 0; 
+
+								&[value=""] { margin-right: 5px; }
+							}
 						}
 					}
 				}
@@ -549,6 +537,13 @@
 					
 					.entry {
 						#pixel-to-percent > .width(432, 904);
+
+						input[size] {
+							text-align: center;
+							margin-right: 5px;
+
+							&:last-child { margin-right: 0; }
+						}
 						
 						&:nth-child(odd) { #pixel-to-percent > .right-margin(40, 904); }
 
@@ -1321,7 +1316,7 @@
 						.next-view,
 						.no-view { 
 							line-height: 48px; 
-							.calc-width(100, 80); /* %, px - 70 is the width of one buttons + 10px margin */ 
+							.calc-width(100, 75); /* %, px - 65 is the width of one buttons + 10px margin */ 
 						}
 					}
 
@@ -1362,7 +1357,7 @@
 
 					&.has-button {
 						.next-view,
-						.no-view { .calc-width(100, 80); /* %, px - 70 is the width of one buttons + 10px margin */ }
+						.no-view { .calc-width(100, 75); /* %, px - 65 is the width of one buttons + 10px margin */ }
 					}			
 				}
 
@@ -1404,6 +1399,7 @@
 					
 					.next-view,
 					.no-view {
+						line-height: 50px;
 						background-position: 98% 53%;
 
 						.number {
@@ -1557,6 +1553,45 @@
 				left: 20px;
 			}
 
+			/* Billing information ***/
+			#billing-information {
+				clear: both;
+				padding: 0;
+				.show;
+
+				table {
+					width: 100%;
+					font-size: 14px;
+					line-height: 21px;
+					table-layout: fixed;
+					text-transform: uppercase;
+					border-collapse: collapse; 
+					margin: 0;
+
+					tr {
+
+						th,
+						td { padding: 5px 10px; }
+						
+						th {
+							font-weight: 600;
+							background: rgba(0,0,0,.05);
+
+							&:first-child { 
+								width: 80px;
+								#border-radius > .left-top(); 
+							}
+							&:nth-child(2) { width: 240px; }
+							&:nth-child(3) { width: 100px; }
+							&:last-child { #border-radius > .right-top(); }
+
+							
+							
+						}
+					}
+				}
+			}
+
 			/* Registration summary ***/
 			.registration-summary {
 				position: relative;
@@ -1566,6 +1601,15 @@
 					width: 100%;
 					height: 50px;
 
+					.toggle {
+						color: @textColor;
+						text-transform: uppercase;
+						line-height: 50px;
+						padding-right: 25px;
+						background-position: 100% 50%;
+						.pull-left;
+					}
+
 					ul,
 					.button {
 						.pull-right;
@@ -1574,7 +1618,6 @@
 					li {
 						display: inline-block;
 						margin: 5px 0 0 0;
-						padding: 10px 20px;
 						line-height: 1em;
 						vertical-align: middle;
 						min-width: 95px;
@@ -1586,16 +1629,38 @@
 
 						a {
 							color: @grey4;
-							font-weight: 600;
 							text-transform: uppercase;
-							
+							padding: 10px;
+							.float;
 							.show;
 							.no-transition;
 
-							span { 
-								font-size: 14px;
-								font-weight: 400;
-								.show;
+							.price {
+								font-weight: 600;
+								.pull-left;
+
+								span { 
+									font-size: 14px;
+									font-weight: 400;
+									.show;
+								}
+							}
+
+							.card-logo,
+							.payment {
+								font-size: 12px;
+								line-height: 12px;
+								margin-left: 30px;
+								text-align: right;
+								.pull-left;
+								.size(20px,40px);
+								.opacity(50);
+
+								img {
+									width: 100%;
+									height: auto;
+									margin-top: 2px;
+								}
 							}
 						}
 
@@ -1609,6 +1674,9 @@
 
 							a {
 								color: @textColor;
+
+								.card-logo,
+								.payment { .opacity(100); }
 							}
 						}
 					}
@@ -1931,6 +1999,7 @@
 								color: @grey3;
 
 								&.form { width: 80px; }
+								&.price { width: 160px; }
 							}
 
 							td {
@@ -2009,62 +2078,112 @@
 			/* Total Stay Fees ***/
 			.total-stay-fees {
 				margin-top: 10px;
+				.float;
 
 				.overview {
-					.toggle {
-						color: @textColor;
-						text-transform: uppercase;
+					text-transform: uppercase;
+					.pull-left;
+
+					.title {
 						display: inline-block;
-						padding-right: 30px;
+						text-align: right;
+						line-height: 14px;
+						margin-right: 5px;
 
-						&.with-rate {
-							line-height: 50px;
-							vertical-align: middle;
-							padding-right: 40px;
-
-							strong {
-								font-size: 30px;
-								line-height: 50px;
-								font-weight: 600;
-								vertical-align: middle;
-								padding: 0 10px;
-								color: @logoPrimary;
-							}
+						.label { 
+							width: 100%;
+							float: none;
+							.show; 
 						}
 					}
 
-					&.has-balance { 
-						display: inline-block;
-						.pull-left; 
-					}
-				}
-
-				.balance {
-					.pull-right;
-
+					.toggle,
 					p {
-						color: @textColor;
-						text-transform: uppercase;
 						display: inline-block;
-						line-height: 50px;
-						vertical-align: middle;
-						margin: 0;
+						color: @textColor;
+						margin-right: 10px;
+						padding-right: 25px;
+						background-position: 100% 50%;
 
-						strong {
-							font-size: 30px;
-							font-weight: 600;
-							line-height: 50px;
-							vertical-align: middle;
-							padding: 0 10px;
+						.value {
+							font-size: 36px;
+							font-weight: 400;
+							color: @logoPrimary;
 
 							&.red { color: @red; }
 							&.green { color: @green; }
 						}
 
+						&.with-rate { 
+							margin-top: 10px;
+							padding-top: 4px;
+							line-height: 36px; 
+							vertical-align: top;
+						}
 					}
+
+					p {
+						margin: 10px 10px 0 0;
+						padding-top: 4px;
+						line-height: 36px; 
+						vertical-align: top;
+
+						.value { color: @textColor; }
+					}
+
+					.button:nth-child(even) { margin-right: 5px; }
+				} 
+
+				.item-payment {
+					.pull-right;
+					.float;
+
+					h3 {
+						font-size: 21px;
+						font-weight: 600;
+						line-height: 60px;
+					}
+					
+					.next-view {
+						color: @textColor;
+						line-height: 48px;
+						padding: 5px 20px;
+						margin-right: 10px;
+						.clickable;
+						.pull-left;
+
+						.card-logo { margin-right: 20px; }
+						.number { margin-right: 10px; }
+						.date { margin-right: 0; }
+					}
+
+					.button {
+						.pull-left;
+						.size(60px, 65px);
+					}
+
+					/*.actions {
+						.button,
+						.add-new-button { 
+							margin-right: 10px;
+							.size(60px, 65px);
+							.pull-left;
+
+							&.add-new-button { line-height: 60px; }
+							&:last-child { margin-right: 0; }
+						}
+					}*/
+
+					/*.next-view {
+						.clickable;
+						display: inline-block;
+						margin-right: 5px;
+					}*/
 				}
 
 				.details {
+					clear: both;
+					padding-top: 10px;
 
 					/* Total stay fees table ***/
 					.total-fees {
@@ -2075,7 +2194,6 @@
 						table-layout: auto;
 						border-collapse: separate; 
 						border-spacing: 0 10px;
-						width: 100%;
 						margin: 0;
 
 						tr {
@@ -2137,7 +2255,7 @@
 
 			/* Complete registration */
 			.complete-registration {
-				margin-top: 20px;
+				margin-top: 40px;
 
 				h2 { margin-bottom: 10px; }
 
@@ -2150,6 +2268,8 @@
 						.show;
 
 						.icon-checkbox { top: 5px; }
+
+						&.single { margin-top: 20px; }
 					}
 				}
 
@@ -2313,6 +2433,13 @@
 				 			top: 0;
 				 			bottom: 0;
 				 			right: 0; 
+				 		}
+
+				 		&.no-content {
+				 			padding: 0;
+				 			#pixel-to-percent > .top-padding(350, 1536);
+
+				 			.h1 { margin: 0; }
 				 		}
 			 		}
 			 	}

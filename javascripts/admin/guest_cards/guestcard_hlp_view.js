@@ -13,10 +13,14 @@ var GuestCardHLPView = function(domRef) {
 
 	//handle view click events
 	this.viewClickEventHandler = function(event) {
+    	if(getParentWithSelector(event, ".add-new-option")) {
+    		var element = $(event.target);
+        	return that.addNewOption(element, event);
+        }
+		/*
 		var element = $(event.target);
-
 		if (element.hasClass('add-new-option'))
-			return that.addNewOption(element, event);
+			return that.addNewOption(element, event);*/
 		return true;
 
 	};

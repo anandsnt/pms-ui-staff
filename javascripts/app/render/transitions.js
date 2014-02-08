@@ -285,6 +285,24 @@ $(function($){
     var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
 
     if ($isTablet) {
+        
+        // Enable content push
+        $("#app-page").css("height",window.innerHeight);
+
+        // Disable content push
+        $(document).on('focus', '[data-keyboard=lock]', function() {
+            window.scrollTo(0, 0);
+            if ($('#modal').length) { 
+                $('#modal').addClass('keyboard-lock');
+            }
+        }).on('focusout', '[data-keyboard=lock]', function(){
+            if ($('#modal').length) { 
+                $('#modal').removeClass('keyboard-lock');
+            }
+        });
+    }
+
+    if ($isTablet) {
         $("#app-page").css("height",window.innerHeight);
     }
 
@@ -436,7 +454,16 @@ $(function($){
                         if (jqxhr.status=="401") { sntapp.logout(); return;}
                         $('#loading').remove();
                     }
-                }).done(function(){
+                }).done(function(data){
+                	if(data[0] == "{"){
+                		var result = JSON.parse(data);
+                		if (result.status == 'failure') {
+                			$('#loading').fadeOut(function(){
+                				sntapp.notification.showErrorMessage("Error: "+result.errors , $("#search"));
+                			});
+                			return false;
+                		} 
+                	}
                     var viewInstance = null;
                     var instName = $('#'+$next).find('div:first').data('view');
 
@@ -500,7 +527,7 @@ $(function($){
 /*  Sign In / Sign Out        *************************************************/
     
     // Close drawer when clicked on content
-    $(document).on('click','.page, .nested-view, .page *, .nested-view *',function(e) {
+    $(document).on('click','.page, .nested-view',function(e) {
         var $sameScreen = new chainedAnimation(),
             $delay = 150;
 

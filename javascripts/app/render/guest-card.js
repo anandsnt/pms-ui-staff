@@ -25,7 +25,7 @@ var setUpGuestcard = function(viewDom) {
 	// Resizable guest card when not on tablet
 	var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null,
 		$maxHeight = $(window).height(),
-		$breakpoint = ($maxHeight/2);
+		$breakpoint = ($maxHeight/10);
 
 	if (!$isTablet) {
 		$(window).resize(function() {
