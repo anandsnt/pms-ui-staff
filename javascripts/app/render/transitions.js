@@ -281,31 +281,6 @@ $(function($){
     // FastClick
     FastClick.attach(document.body);
 
-    // Set height so that keyboard can push content up
-    var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
-
-    if ($isTablet) {
-        
-        // Enable content push
-        $("#app-page").css("height",window.innerHeight);
-
-        // Disable content push
-        $(document).on('focus', '[data-keyboard=lock]', function() {
-            window.scrollTo(0, 0);
-            if ($('#modal').length) { 
-                $('#modal').addClass('keyboard-lock');
-            }
-        }).on('focusout', '[data-keyboard=lock]', function(){
-            if ($('#modal').length) { 
-                $('#modal').removeClass('keyboard-lock');
-            }
-        });
-    }
-
-    if ($isTablet) {
-        $("#app-page").css("height",window.innerHeight);
-    }
-
 /*  Main screens        *******************************************************/
     
     // First main scren - check is it preloaded or hash from admin app exists

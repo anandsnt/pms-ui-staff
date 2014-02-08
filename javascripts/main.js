@@ -348,6 +348,26 @@ function modalInit(content, closeAfter, position, lock) {
 
 $(function($){ 
 
+    // iPad Virtual Keyboard screen scroll
+    var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
+
+    if ($isTablet) {
+        // Enable 
+        $("#app-page").css("height",window.innerHeight);
+
+        // Disable
+        $(document).on('focus', '[data-keyboard=lock]', function() {
+            window.scrollTo(0, 0);
+            if ($('#modal').length) { 
+                $('#modal').addClass('keyboard-lock');
+            }
+        }).on('focusout', '[data-keyboard=lock]', function(){
+            if ($('#modal').length) { 
+                $('#modal').removeClass('keyboard-lock');
+            }
+        });
+    }
+
     // Styled form elements - on load
     styleCheckboxRadio();
     onOffSwitch();   
