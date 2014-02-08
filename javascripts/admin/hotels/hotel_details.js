@@ -62,7 +62,7 @@ var HotelDetailsView = function(domRef) {
 
 	// failure call of re-invite api call
 	this.fetchFailedOfReInvite = function(errorMessage) {
-		sntapp.notification.showErrorList("Some error occured.", that.myDom);
+		sntapp.notification.showErrorList("Some error occured: " + errorMessage, that.myDom);
 	};
 
 	this.goBackToPreviousView = function() {
