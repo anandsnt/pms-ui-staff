@@ -32,7 +32,16 @@ var reservationCardNotesView = function(domRef){
 	    webservice.deleteJSON(url, options);
 	}
   };
+
+  // function for closing the drawer if is open
+  that.closeGuestCardDrawer = function(){
+	if($("#guest-card").hasClass('open')) {
+			$('#guest-card .ui-resizable-handle').trigger('click');
+	}
+  };
+
   this.saveReservationNotes = function(){
+  		that.closeGuestCardDrawer();
 	  	$notes = that.myDom.find("#post_notes textarea").val();
 		$topic = 1;
 		$reservation_id = getReservationId();

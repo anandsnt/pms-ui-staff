@@ -66,8 +66,12 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			'successCallBack': that.deviceConnected,
 			'failureCallBack': that.deviceNotConnected			
 		};
-
-		sntapp.cardReader.checkDeviceConnected(options);
+		if(sntapp.cardSwipeDebug){
+			sntapp.cardReader.checkDeviceConnectedDebug(options);
+		}
+		else{
+			sntapp.cardReader.checkDeviceConnected(options);
+		}
 		/*setTimeout(function(){
 			that.deviceConnected();
 		}, 2000)*/
@@ -75,22 +79,27 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 
 	this.deviceNotConnected = function(){
 		var secondsAfterCalled = 0;
+		that.noOfErrorMethodCalled++;
+		secondsAfterCalled = that.noOfErrorMethodCalled * 1000;		
 		setTimeout(function(){
-			that.noOfErrorMethodCalled++;
-			secondsAfterCalled = that.noOfErrorMethodCalled * 1000;
-			if(secondsAfterCalled >= that.maxSecForErrorCalling){ //10seconds
+
+			console.log(secondsAfterCalled);
+			if(secondsAfterCalled <= that.maxSecForErrorCalling){ //10seconds
 				return that.showDeviceConnectingMessge();
 			}
 		}, 1000);
-		
-		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('not-connected');
-		that.myDom.find('#key-status .status').removeClass('pending').addClass('error').text('Error connecting to Key Card Reader!');
-		that.myDom.find('#print-keys').hide();
-		that.myDom.find('#key-action').show();
-		that.myDom.find('#print-over-action').hide();
+
+		if(secondsAfterCalled > that.maxSecForErrorCalling){
+			that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('not-connected');
+			that.myDom.find('#key-status .status').removeClass('pending').addClass('error').text('Error connecting to Key Card Reader!');
+			that.myDom.find('#print-keys').hide();
+			that.myDom.find('#key-action').show();
+			that.myDom.find('#print-over-action').hide();
+		}
 	};
 
 	this.deviceConnected = function(data){
+
 		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('connected');
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Connected to Key Card Reader!');		
 		that.myDom.find('#key-action').hide();
@@ -180,11 +189,12 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	};
 
 	this.writeKey = function(keyWriteData, key){
-
+		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		var options = {
 			//Cordova write success callback. If write sucess for all the keys, show key success message
 			//If keys left to print, call the cordova write key function
 			'successCallBack': function(data){
+				sntapp.activityIndicator.hideActivityIndicator();
 				that.numOfKeys--;
 				if(that.numOfKeys == 0){
 					that.showKeyPrintSuccess();
@@ -199,7 +209,13 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 
 			},
 			'failureCallBack': function(){
-				that.showKeyPrintFailure();
+				sntapp.activityIndicator.hideActivityIndicator();
+				if(that.numOfKeys > 1){
+					that.myDom.find('#key-status .status').removeClass('pending').addClass('error').text('Print key failed, Please try again');
+				}
+				else {
+					that.showKeyPrintFailure();
+				}
 
 			},
 			arguments: ['ABCD', keyWriteData , '7009', '']
