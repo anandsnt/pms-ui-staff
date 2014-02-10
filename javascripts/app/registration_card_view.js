@@ -42,14 +42,6 @@ var RegistrationCardView = function(viewDom) {
 		sntapp.setViewInst('registrationCardView', function() {
 			return that;
 		});
-		/*
-		var bill_status = {};
-		that.myDom.find("#bills-tabs-nav ul li").each(function() {
-			bill_status.number = $(this).attr('data-bill-number');
-			bill_status.status = $(this).hasClass('ui-tabs-active') ? 1 : 0;
-		});
-		console.log(bill_status);
-		*/
 	};
 
 	this.pageshow = function(){
@@ -71,7 +63,6 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.delegateEvents = function() {
-		this.bill_number = that.myDom.find("#bills li.active").attr('data-bill-number');
 		that.myDom.unbind('click');
 		that.myDom.on('click', that.myDomClickHandler);
 	};
@@ -94,7 +85,8 @@ var RegistrationCardView = function(viewDom) {
 	    	return that.clearSignature(event);
 	    }	    
 	    if(getParentWithSelector(event, "#back-to-staycard")) {
-	    	return that.gotoStayCard(event);
+	    	return that.goAndRefreshStayCard(event);
+	    	//return that.gotoStayCard(event);
 	    }
 	    if(getParentWithSelector(event, "#review-bill-button")) {
 	    	return that.clickedReviewBill(event);
@@ -297,9 +289,8 @@ var RegistrationCardView = function(viewDom) {
 	};
 	this.completeCheckinFailed = function(errorMessage) {
 		sntapp.activityIndicator.hideActivityIndicator();
-		console.log(that.myDom);
 		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
-	  };
+	};
 	this.clearSignature = function(e) {
 		that.myDom.find("#signature").jSignature("reset");
 	};
@@ -321,52 +312,49 @@ var RegistrationCardView = function(viewDom) {
 		$($loader).prependTo('body').show();
 		changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);
 	};
+	//Review button clicks
 	this.clickedReviewBill = function(e) {
 		e.stopPropagation();
 		e.preventDefault();
 		e.stopImmediatePropagation();
 
-		console.log("clickedReviewBill");
-		console.log(e);
 		var element = $(e.target).closest('button');
-		console.log(element);
-		var bill_number = $(e.target).attr('data-bill-number');
-		
 		element.removeClass("red").addClass("grey");
 		element.attr("disabled","disabled");
 		
-		// Switch to next bill which is not reviewd
-		/*
+		// Switch to next bill which is not reviewed
+		
+		var current_tab = that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active");
+		var next_tab = that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active").next();
+		var current_bill_number = that.getActiveBillNumber();
+		current_tab.addClass('reviewed');
+		
+		// To find next tab - whcih is not reviewed yet
 		that.myDom.find("#bills-tabs-nav ul li").each(function() {
 			var number = $(this).attr('data-bill-number');
 			var is_found = false;
-			if(number == bill_number){
+			if(number == current_bill_number){
 				$(this).addClass('reviewed');
 				is_found = true;
 			}
 			if(is_found){
 				if(!$(this).next().hasClass('reviewed')){
-					$(this).next().addClass('ui-tabs-active');
+					next_tab = $(this).next();
 					is_found =false;
 				}
 			}
 		});
-		*/
+		console.log(next_tab);
 		
-		var current_active = that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active");
-		current_active.addClass('reviewed');
+		next_tab.addClass('ui-tabs-active ui-state-active');
+		current_tab.removeClass("ui-tabs-active ui-state-active");
+		var next_bill_number = next_tab.attr('data-bill-number');
+		console.log(next_bill_number);
 		
-		var next_tab = that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active").next();
-		next_tab.addClass('ui-tabs-active');
-		
-		var next_bill = next_number.attr('data-bill-number');
-		current_active.removeClass("ui-tabs-active");
-		that.myDom.find("#bill"+next_bill).show();
-		that.myDom.find("#bill"+bill_number).hide();
-		
+		that.myDom.find("#bill"+next_bill_number).show();
+		that.myDom.find("#bill"+current_bill_number).hide();
 	};
-	
-	// To remove payment method from bill
+	// To delete payment method from bill
 	this.clickedRemovePayment = function(e) {
 		var reservation_id = getReservationId();
 		var selectedElement = $(e.target).attr("data-payment-id");
@@ -383,11 +371,10 @@ var RegistrationCardView = function(viewDom) {
 			   successCallBack: that.fetchCompletedOfDelete,
 			   failureCallBack: that.fetchFailedOfDelete
 	    };
-	    console.log(data);
 		webservice.postJSON(url, options);
 	};
+	// Success of delete payment
 	this.fetchCompletedOfDelete = function(data){
-		
 		var replaceHtml = "<figure class='card-logo'>"+
 							"<img src='' alt=''></figure>"+									
 							"<span class='number'><span class='value number'>"+
@@ -397,12 +384,15 @@ var RegistrationCardView = function(viewDom) {
 	    that.myDom.find("#delete_card").remove();
 	    that.myDom.find("#add-new-payment").remove();
 	    that.myDom.find(".item-payment").append('<a id="add-new-payment" class="add-new-button">+ Add Payment Method</a>');
+	    
+	    // To update bill tab paymnt info
+	    var billTabHtml = '<figure class="card-logo"><img src="" alt="">'+
+							'<span class="number"></span></figure>';
+		that.myDom.find("#payment-info-"+that.getActiveBillNumber()).html("");		
+		that.myDom.find("#payment-info-"+that.getActiveBillNumber()).html(billTabHtml);				
 	    that.delegateEvents();
 	};
-   /**
-    *   Callback on update failed
-    *   @param {Object} call back params
-    */
+   	// Failure of delete payment
 	this.fetchFailedOfDelete = function(errorMessage){
 		sntapp.activityIndicator.hideActivityIndicator();
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
@@ -410,14 +400,10 @@ var RegistrationCardView = function(viewDom) {
 	
 	// To select credit card from bill
 	this.showExistingPayments = function(e) {
-		
-		console.log("showExistingPayments");
-		var dom = $("#bill"+that.getActiveBillNumber());
-		console.log(dom);
-		var showExistingPaymentModal = new ShowExistingPaymentModal(dom);
+		var domElement = $("#bill"+that.getActiveBillNumber());
+		var showExistingPaymentModal = new ShowExistingPaymentModal(domElement);
     	showExistingPaymentModal.initialize();
     	showExistingPaymentModal.params = {"bill_number":that.getActiveBillNumber(),"origin":views.BILLCARD};
-		
 	};
 	// To add new payment from bill card
 	this.addNewPaymentModal = function(event, options){
@@ -438,14 +424,14 @@ var RegistrationCardView = function(viewDom) {
 	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber()};
 	    }
   	};
-  	
-	//function on click complete checkout button - If email is null then popup comes to enter email
+	//function on click complete checkout button
 	this.clickedCompleteCheckout = function(e) {
 		e.stopPropagation();
 		e.preventDefault();
 		e.stopImmediatePropagation();
 
 		var email = $("#gc-email").val();
+		// If email is null then popup comes to enter email
 		if (email == "") {
 			var validateCheckoutModal = new ValidateCheckoutModal(that.completeCheckout, e);
 			validateCheckoutModal.initialize();
@@ -456,9 +442,8 @@ var RegistrationCardView = function(viewDom) {
 		else {
 			that.completeCheckout(e);
 		}
-
 	};
-
+	// Complete checkout operation
 	this.completeCheckout = function(e) {
 		
 		var required_signature_at = $(e.target).attr('data-required-signature');
@@ -487,54 +472,38 @@ var RegistrationCardView = function(viewDom) {
 		var options = {
 			requestParameters : data,
 			successCallBack : that.fetchCompletedOfCompleteCheckout,
-			failureCallBack : that.fetchFailedOfSave,
+			failureCallBack : that.fetchFailedOfCompleteCheckout,
 			loader : 'blocker'
 		};
 		webservice.postJSON(url, options);
-		
 	};
-
+	// Success of complete checkout
 	this.fetchCompletedOfCompleteCheckout = function(data) {
 		that.showSuccessMessage(data.data, that.goToSearchScreen);
 	};
-
-	// To show payment modal
-	this.payButtonClicked = function() {
-		var billCardPaymentModal = new BillCardPaymentModal(that.reloadBillCardPage);
-		var bill_number = that.myDom.find("#bills-tabs-nav li.ui-tabs-active").attr('data-bill-number');
-		billCardPaymentModal.params = {
-			"bill_number" : bill_number
-		};
-
-		// send swipedCardData to bill card payment modal
-		if (that.swipedCardData) {
-			billCardPaymentModal.params = {
-				"swipedCardData" : that.swipedCardData
-			};
-		};
-
-		billCardPaymentModal.initialize();
+	// Failure of complete checkout
+	this.fetchFailedOfCompleteCheckout = function(errorMessage) {
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
 	};
 	// To show post charge modal
 	this.addNewButtonClicked = function() {
 		var postChargeModel = new PostChargeModel(that.reloadBillCardPage);
 		postChargeModel.initialize();
-		var bill_number = that.myDom.find("#bills-tabs-nav li.ui-tabs-active").attr('data-bill-number');
+		var bill_number = that.getActiveBillNumber();
 		postChargeModel.params = {
 			"origin" : views.BILLCARD,
 			"bill_number" : bill_number
 		};
 	};
-
 	// Goto search screen with empty search results
 	this.goToSearchScreen = function() {
-		console.log("goToSearchScreen");
 		switchPage('main-page', 'search', '', 'page-main-second', 'move-from-left');
 		//Do not call 'initialize' method for this object. which results multiple event binding
 		var searchView = new Search();
 		searchView.clearResults();
 	};
-	
+	// To get current active bill's bill-number
 	this.getActiveBillNumber =  function() {
 		return that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active").attr('data-bill-number');
 	};

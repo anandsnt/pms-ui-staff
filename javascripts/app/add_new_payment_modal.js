@@ -67,7 +67,14 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			
 			
 			if(that.params["origin"] == views.BILLCARD){
-        		backView.find(".item-payment").append(appendHtml);
+        		currentStayCardView.find(".item-payment").append(appendHtml);
+        		
+        		// To update bill tab paymnt info
+	        	var billTabHtml = '<figure class="card-logo"><img src="/assets/'+$newImage+'" alt="">'+
+								'<span class="number">'+$endingWith+'</span></figure>';
+								
+				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html("");		
+				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html(billTabHtml);
 	        }
 	        else{			
 				currentStayCardView.find(".payment_actions").append(appendHtml);

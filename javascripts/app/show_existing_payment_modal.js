@@ -25,7 +25,6 @@ var ShowExistingPaymentModal = function(backView){
 				user_payment_type_id: selectedElement,
 				bill_number : that.params["bill_number"]			   
 	    };
-	    console.log(data);
 	    var url = '/staff/reservation/link_payment'; 
 	    var options = {
 			   requestParameters: data,
@@ -66,6 +65,13 @@ var ShowExistingPaymentModal = function(backView){
 							
         if(that.params["origin"] == views.BILLCARD){
         	backView.find(".item-payment").append(appendHtml);
+        	
+        	// To update bill tab paymnt info
+        	var billTabHtml = '<figure class="card-logo"><img src="/assets/'+params["image"]+'" alt="">'+
+							'<span class="number">'+params["number"]+'</span></figure>';
+							
+			$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html("");		
+			$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html(billTabHtml);	
         }
         else{
 			backView.find(".payment_actions").append(appendHtml);
