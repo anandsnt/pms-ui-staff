@@ -378,7 +378,7 @@ var RegistrationCardView = function(viewDom) {
 	        return new AddNewPaymentModal('staycard', that.myDom);
 	      });
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
-	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber()};
+	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
 	    } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
 	
 	      // if addNewPaymentModal instance exist, but the dom is removed
@@ -386,7 +386,7 @@ var RegistrationCardView = function(viewDom) {
 	        return new AddNewPaymentModal('staycard', that.myDom);
 	      });
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
-	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber()};
+	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
 	    }
   	};
 	//function on click complete checkout button
