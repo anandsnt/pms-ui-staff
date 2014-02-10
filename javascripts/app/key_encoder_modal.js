@@ -5,7 +5,7 @@
 
 var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	BaseModal.call(this);
-	var that = this;
+	that = this;
 	var reservation_id = getReservationId();
 
 	this.noOfErrorMethodCalled = 0;
@@ -18,10 +18,13 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	
 	this.delegateEvents = function() {
 		that.myDom.find('#try-again').on('click', that.showDeviceConnectingMessge);
+
 		if(that.params.origin == views.BILLCARD){
-			that.myDom.find('#cancel-key-popup').on('click', that.showKeyPrintFailure);
+			that.myDom.find('.cancel-key-popup').on('click', that.showKeyPrintFailure);
 		}else{
-			that.myDom.find('#cancel-key-popup').on('click', function(){that.hide()});
+			that.myDom.find('.cancel-key-popup').on('click', function(){
+				that.hide();
+			});
 		}
 		that.myDom.find('#key1').on('click', that.key1Selected);
 		that.myDom.find('#key2').on('click', that.key2Selected);//
@@ -181,8 +184,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		that.keyFetched = true;
 	    var reservationId = getReservationId();
 	    var postParams = {"reservation_id": reservationId, "key": that.numOfKeys, "is_additional": false};
-	    //TODO: Replace with the actual URL
-	    var url = '/ui/show?format=json&json_input=keys/fetch_encode_key.json';
+	    var url = '/staff/reservation/print_key'
+	    //var url = '/ui/show?format=json&json_input=keys/fetch_encode_key.json';
 		var webservice = new WebServiceInterface();	
 
 	  	var options = {
@@ -245,7 +248,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 
 	this.keyFetchFailed = function(errorMessage){
 		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+		sntapp.notification.showErrorMessage(errorMessage, that.myDom);  
 		that.showKeyPrintFailure();
 
 	};
@@ -260,7 +263,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		
 		//in billcard we show, the gotostaycard option and goto search options and hide the cancel option
 		if(that.params.origin == views.STAYCARD){
-			that.myDom.find('#print-over-action #cancel-key-popup').removeClass('hidden');
+			that.myDom.find('#print-over-action .cancel-key-popup').removeClass('hidden');
 			that.myDom.find('#print-over-action #goto-staycard').addClass('hidden');
 			that.myDom.find('#print-over-action #goto-search').addClass('hidden');
 		}
@@ -277,7 +280,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 
 		//in billcard we show, the gotostaycard option and goto search options and hide the cancel option
 		if(that.params.origin == views.STAYCARD){
-			that.myDom.find('#print-over-action #cancel-key-popup').removeClass('hidden');
+			that.myDom.find('#print-over-action .cancel-key-popup').removeClass('hidden');
 			that.myDom.find('#print-over-action #goto-staycard').addClass('hidden');
 			that.myDom.find('#print-over-action #goto-search').addClass('hidden');
 		}
