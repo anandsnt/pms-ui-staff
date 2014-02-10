@@ -60,9 +60,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		}
 
 		that.showDeviceConnectingMessge();
-
-
-
 	};
 
 	this.showDeviceConnectingMessge = function(){
