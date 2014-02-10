@@ -44,14 +44,14 @@ var RateTypeListView = function(domRef){
 			var is_system_defined = element.attr("is_system_defined");
 			if(typeof can_off !== 'undefined' || typeof is_system_defined !== 'undefined'){
 				if(can_off === "false"){
-					sntapp.notification.showErrorMessage('Rate Type cannot be deleted as it is already in use');
+					sntapp.notification.showErrorMessage('Rate Type cannot be switched off as it is already in use');
 					return false;
 				}
 
-				else if(is_system_defined === "true"){
-					sntapp.notification.showErrorMessage('Rate Type cannot be deleted as it is system defined');
-					return false;
-				}
+				// else if(is_system_defined === "true"){
+					// sntapp.notification.showErrorMessage('System defined Rate Type cannot be switched on / off');
+					// return false;
+				// }
 				
 				else{
 

@@ -69,17 +69,20 @@ var RoomAssignmentView = function(viewDom){
    // if (viewScroll) { destroyViewScroll(); }
       setTimeout(function(){
 
-        if (that.myDom.find($('#room-attributes')).length) { createViewScroll('#room-attributes'); }
-        if (that.myDom.find($('#room-upgrades')).length) { createViewScroll('#room-upgrades'); }
+        if (that.myDom.find('#room-attributes').length) { createViewScroll('#room-attributes'); }
+        if (that.myDom.find('#room-upgrades').length) { createViewScroll('#room-upgrades'); }
       }, 2000);
   };
 
   //Scroll view creation for the the room list
   this.createRoomListScroll = function(){
-    if (viewScroll) { destroyViewScroll(); }
+    if (viewScroll) { console.log("destroy");destroyViewScroll(); }
+    
     setTimeout(function(){
-      if (that.myDom.find($('#rooms-available')).length) { createViewScroll('#rooms-available'); }
-    }, 300);
+      if (that.myDom.find('#rooms-available').length) { 
+      	console.log("refresh");
+      	 createViewScroll('#rooms-available'); }
+    }, 1500);
   };
 
   //Fetches the non-filtered list of rooms.
@@ -244,32 +247,51 @@ var RoomAssignmentView = function(viewDom){
 
   this.displayRoomsList = function(filteredRoomList){
     $('#rooms-available ul').html("");
-
-    for (var i=0; i<filteredRoomList.length; i++){
-        var room_status_html ="" ;
-        
-        // Display FO status (VACANT, DUEOUT, etc) only when room-status = NOT-READY
-        // Always show color coding ( Red / Green - for Room status)
-        if(filteredRoomList[i].room_status == "READY" && filteredRoomList[i].fo_status == "VACANT"){
-          room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
-		  
-		  if(filteredRoomList[i].is_preassigned) {
-			  room_status_html += "<span class='room-preassignment'>"+filteredRoomList[i].last_name + " " + filteredRoomList[i].guarantee_type+"</span>";
-		  } 
-        }
-        else{
-            room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
-            "<span class='room-status not-ready' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].fo_status+" </span>";   
-        }
-
-        //Append the HTML to the UI.
-        if(room_status_html != ""){
-          var output = "<li><a id = 'room-list-item'"+
-            "class='button white submit-value hover-hand' data-value='' >"+room_status_html+"</a></li>";
-          $('#rooms-available ul').append(output);    
-        }    
+    if(filteredRoomList.length > 0)  {
+    	var appendHTML = '<ul class="wrapper"></ul>';
+    	that.myDom.find("#rooms-available").removeClass("no-content") ;     
+    	that.myDom.find("#rooms-available").addClass("scrollable") ; 
+		that.myDom.find("#rooms-available ul").remove();   
+    	that.myDom.find("#rooms-available span").remove();   
+    	that.myDom.find("#rooms-available strong").remove();     
+    	that.myDom.find("#rooms-available").append(appendHTML);   
+	    for (var i=0; i<filteredRoomList.length; i++){
+	        var room_status_html ="" ;
+	        
+	        // Display FO status (VACANT, DUEOUT, etc) only when room-status = NOT-READY
+	        // Always show color coding ( Red / Green - for Room status)
+	        if(filteredRoomList[i].room_status == "READY" && filteredRoomList[i].fo_status == "VACANT"){
+	          room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
+			  
+			  if(filteredRoomList[i].is_preassigned) {
+				  room_status_html += "<span class='room-preassignment'>"+filteredRoomList[i].last_name + " " + filteredRoomList[i].guarantee_type+"</span>";
+			  } 
+	        }
+	        else{
+	            room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
+	            "<span class='room-status not-ready' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].fo_status+" </span>";   
+	        }
+	
+	        //Append the HTML to the UI.
+	        if(room_status_html != ""){
+	          var output = "<li><a id = 'room-list-item'"+
+	            "class='button white submit-value hover-hand' data-value='' >"+room_status_html+"</a></li>";
+	          that.myDom.find('#rooms-available ul').append(output);    
+	        }  
+	    }
+	    that.createRoomListScroll();
+	} 
+    else {
+    	var appendHTML =   '<span class="icon-no-content icon-room"></span>'+
+    	                   '<strong class="h1">Unfortunately there are no rooms ready yet.'+
+    	                   'Try changing some of the filter criteria</strong>';
+    	that.myDom.find("#rooms-available").removeClass("scrollable") ;     
+    	that.myDom.find("#rooms-available").addClass("no-content") ;   
+    	that.myDom.find("#rooms-available ul").remove();              
+    	that.myDom.find("#rooms-available").append(appendHTML);   
+    	
     }
-    that.createRoomListScroll();
+    
 
     that.myDom.find('div.rooms-listing ul li a').on('click',that.updateRoomAssignment);
   };

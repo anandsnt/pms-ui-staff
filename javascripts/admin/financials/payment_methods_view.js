@@ -20,30 +20,22 @@ var PaymentMethodsView = function(domRef){
 
 		// check if we are process payment methods or credit card types
 		// choose the id, url & callback accordingly
-		var isPayment = element.closest('tr').attr('data-payment-id');
-		var id = isPayment ? isPayment : element.closest('tr').attr('data-credit-card-id');
+		var isPaymentType = element.closest('tr').attr('data-payment-id');
+		var isCreditCardType = element.closest('tr').attr('data-credit-card-id');
+		var id = isCreditCardType ? isCreditCardType : isPaymentType;
 
 	    //timeout added as a workaround - hasClass 'on' takes time to be applied
 	    setTimeout(function(){
 		  	var toggleStatus = element.parent().hasClass('on') ? "true" : "false";
 		    var postParams = {"id" : id, "set_active" : toggleStatus};
 
-		    var creditCardToggleSucess = function() {
-		    	if ('true' === toggleStatus) {
-		    		$('#credit_cards_types').fadeIn('fast');
-		    	} else {
-		    		$('#credit_cards_types').fadeOut('fast');
-		    	}
-		    };
-
 		    var webservice = new WebServiceInterface(); 
 		    var options = {
 		       requestParameters: postParams,
-		       loader: "NONE",
-		       successCallBack: creditCardToggleSucess
+		       loader: "NONE"
 		    };
 
-			var url = isPayment ? '/admin/hotel_payment_types' : '/admin/hotel_payment_types/activate_credit_card'; 
+			var url = isCreditCardType ? '/admin/hotel_payment_types/activate_credit_card' : '/admin/hotel_payment_types';
 			webservice.postJSON(url, options);
 		  	return true;
 	    }, 100);

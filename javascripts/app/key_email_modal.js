@@ -2,17 +2,13 @@ var KeyEmailModal = function(gotoStayCard,gotoSearch) {
 	BaseModal.call(this);
 	var that = this;
 	var reservation_id = getReservationId();
-	this.url = "staff/reservations/" + reservation_id + "/get_key_on_email";
+	this.url = "staff/reservations/" + reservation_id + "/get_key_setup_popup";
 
 	this.delegateEvents = function() {
 		that.myDom.find('#goto-staycard').on('click', that.clickedGotoStayCard);
 		that.myDom.find('#goto-search').on('click', that.clickedGotoSearch);
 		
-		if(that.params.origin == views.BILLCARD){
-			that.myDom.find('#modal-close').remove();
-			$("#modal-overlay").unbind("click");
-			$("#modal-overlay").addClass("locked");
-		}
+
 	};
 	
 	this.modalDidShow = function() {
@@ -30,6 +26,12 @@ var KeyEmailModal = function(gotoStayCard,gotoSearch) {
 			that.myDom.find('.modal-content').addClass('check-out');
 			that.myDom.find('#modal-close').addClass('red');
 			that.myDom.find('#room-status .message#status').text('Checking Out');
+		}
+
+		if(that.params.origin == views.BILLCARD){
+			that.myDom.find('#modal-close').remove();
+			$("#modal-overlay").unbind("click");
+			$("#modal-overlay").addClass("locked");
 		}
 		
 		if(that.params.origin == views.STAYCARD){

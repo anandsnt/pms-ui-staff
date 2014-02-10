@@ -10,11 +10,7 @@ var KeyQrCodeModel = function(gotoStayCard,gotoSearch) {
 		that.myDom.find('#goto-search').on('click', that.clickedGotoSearch);
 		$("#modal-overlay , #modal-close").on('click', that.closeButtonClicked);
 		
-		if(that.params.origin == views.BILLCARD){
-			that.myDom.find('#modal-close').remove();
-			$("#modal-overlay").unbind("click");
-			$("#modal-overlay").addClass("locked");
-		}
+
 	};
 	
 	this.modalDidShow = function() {
@@ -36,6 +32,12 @@ var KeyQrCodeModel = function(gotoStayCard,gotoSearch) {
 			that.myDom.find('.modal-content').addClass('check-out');
 			that.myDom.find('#modal-close').addClass('red');
 			that.myDom.find('#room-status .message#status').text('Checking Out');
+		}
+
+		if(that.params.origin == views.BILLCARD){
+			that.myDom.find('#modal-close').remove();
+			$("#modal-overlay").unbind("click");
+			$("#modal-overlay").addClass("locked");
 		}
 
 		if(that.params.origin == views.STAYCARD){

@@ -1,5 +1,3 @@
-
-
 var CardOperation = function(){
 	// class for handling operations with payment device
 	
@@ -147,5 +145,35 @@ var CardOperation = function(){
 		options['action'] = "cancelSwipeObservation";		
 		that.callCordovaService(options);		
 		
+	};	
+
+	/**
+	* method for checking the device connected status
+	* will call success call back with data as true if connected,
+	* otherwise false
+	*/
+	// function to check device status
+	this.checkDeviceConnected = function(options){
+		options['service'] = "RVCardPlugin";
+		options['action'] = "checkDeviceConnectionStatus";		
+		that.callCordovaService(options);
+	};
+
+	// debug mode of check device connection checking
+	// please check above method (checkDeviceConnected) for it's more description
+	this.checkDeviceConnectedDebug = function(options){
+		//Simulating the write function for easy testing. May be removed in production.
+		console.log("sucecss called in write key debug mode");
+		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
+		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
+		var deviceStatus = true;
+
+		setTimeout(function(){
+			if(deviceStatus)
+				successCallBack(deviceStatus, successCallBackParameters);
+			else
+				failureCallBack(deviceStatus, successCallBackParameters);
+		}, 1000)		
 	};
 };
