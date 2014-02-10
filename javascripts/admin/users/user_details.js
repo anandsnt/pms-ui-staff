@@ -41,6 +41,7 @@ var UserDetailsView = function(domRef){
 			   loader: "BLOCKER"
 	};
 	webservice.postJSON(url, options);	 
+	return false;
   };
   //go to previous page withount any update in view
   this.gotoPreviousPage = function() {
@@ -139,11 +140,13 @@ var UserDetailsView = function(domRef){
     // success function of re-invite api call
   this.fetchCompletedOfReInvite = function(data){
 	  sntapp.notification.showSuccessMessage("Mail send succesfully.", that.myDom);
+	  return false;
   };
   
   // failure call of re-invite api call
   this.fetchFailedOfReInvite = function(errorMessage){
 	  sntapp.notification.showErrorList("Some error occured."+errorMessage, that.myDom);  
+	  return false;
   };
   //to show preview of the image using file reader
   this.readURL = function(input) {

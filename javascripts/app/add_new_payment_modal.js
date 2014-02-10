@@ -136,19 +136,19 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		var errorMessage = "";
 		// Validation on Expiry date
 		// 1.card_expiry > today (MM/YY) 2. MM/YY valid i.e. MM 01-12, YY >13
-		if($expiry_month > 12 || $expiry_month < 1){
-			errorMessage = "Expiration date : Invalid month";
-		}
-		else if($expiry_year < curr_year){
-			errorMessage = "Expiration date : Invalid year";
-		}
-		else if($expiry_year == curr_year && $expiry_month < curr_month){
-			errorMessage = "Expiration date : Date expired";
-		}
-		if(errorMessage!=""){
-			alert(errorMessage);
-	  		return;
-  		}
+		// if($expiry_month > 12 || $expiry_month < 1){
+			// errorMessage = "Expiration date : Invalid month";
+		// }
+		// else if($expiry_year < curr_year){
+			// errorMessage = "Expiration date : Invalid year";
+		// }
+		// else if($expiry_year == curr_year && $expiry_month < curr_month){
+			// errorMessage = "Expiration date : Date expired";
+		// }
+		// if(errorMessage!=""){
+			// alert(errorMessage);
+	  		// return;
+  		// }
 		
 		var $image = "<img src='/assets/"+$("#new-payment #payment-credit-type").val().toLowerCase()+".png' alt='"+$("#new-payment #payment-credit-type").val().toLowerCase()+"'>";	
 		
