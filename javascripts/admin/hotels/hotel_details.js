@@ -53,16 +53,19 @@ var HotelDetailsView = function(domRef) {
 			loader : "BLOCKER"
 		};
 		webservice.postJSON(url, options);
+		return false;
 	};
 
 	// success function of re-invite api call
 	this.fetchCompletedOfReInvite = function(data) {
 		sntapp.notification.showSuccessMessage("Mail send succesfully.", that.myDom);
+		return false;
 	};
 
 	// failure call of re-invite api call
 	this.fetchFailedOfReInvite = function(errorMessage) {
-		sntapp.notification.showErrorList("Some error occured: " + errorMessage, that.myDom);
+		sntapp.notification.showErrorList("Some error occured:"+errorMessage, that.myDom);
+		return false;
 	};
 
 	this.goBackToPreviousView = function() {

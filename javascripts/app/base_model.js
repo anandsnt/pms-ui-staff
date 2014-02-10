@@ -85,9 +85,9 @@ BaseModal = function() {
         }, 0);
 
         $('#modal').html(that.data);
-        that.modalDidShow();
         that.delegateCancelEvent();
   		that.delegateEvents();
+        that.modalDidShow();
     };
 
     this.hide = function (callBack){

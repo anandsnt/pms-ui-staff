@@ -6,7 +6,6 @@ var RegistrationCardView = function(viewDom) {
 	this.url = "ui/checkinSuccess";
 
 	this.pageinit = function() {
-
 		this.createHorizontalScroll();
 
 		setTimeout(function() {
@@ -63,6 +62,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.delegateEvents = function() {
+		this.bill_number = that.myDom.find("#bills li.active").attr('data-bill-number');
 		that.myDom.unbind('click');
 		that.myDom.on('click', that.myDomClickHandler);
 	};
@@ -191,7 +191,7 @@ var RegistrationCardView = function(viewDom) {
 			var params = {
 				"reservation_id" : reservation_id
 			};
-			sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams);
+			sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
 		}
 	};
 
@@ -246,6 +246,7 @@ var RegistrationCardView = function(viewDom) {
 				requestParameters : data,
 				successCallBack : that.completeCheckinSuccess,
 				failureCallBack : that.completeCheckinFailed,
+				loader: "blocker"
 			};
 			webservice.postJSON(url, options);
 		}
@@ -273,8 +274,14 @@ var RegistrationCardView = function(viewDom) {
 				"reservationStatus" : reservationStatus
 			};
 		}
+		
 		else if(keySettings == "encode"){
-			
+			var keyEncoderModal = new KeyEncoderModal(that.goAndRefreshStayCard, that.goToSearchScreen);
+			keyEncoderModal.initialize();
+			keyEncoderModal.params = {
+				"origin" : views.BILLCARD,
+				"reservationStatus" : reservationStatus
+			};
 			
 		}
 
@@ -442,6 +449,7 @@ var RegistrationCardView = function(viewDom) {
 		else {
 			that.completeCheckout(e);
 		}
+
 	};
 	// Complete checkout operation
 	this.completeCheckout = function(e) {
@@ -496,6 +504,7 @@ var RegistrationCardView = function(viewDom) {
 			"bill_number" : bill_number
 		};
 	};
+
 	// Goto search screen with empty search results
 	this.goToSearchScreen = function() {
 		switchPage('main-page', 'search', '', 'page-main-second', 'move-from-left');
