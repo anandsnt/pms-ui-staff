@@ -9,213 +9,229 @@
 /* 5. COMPONENTS
 ==========================================================*/
 
-/* DataTables       ==============================*/
-  .dataTables_wrapper { position: relative; }
+/* DataTables               ==============================*/
+    .dataTables_wrapper { position: relative; }
 
-  table.dataTable {
+    table.dataTable {
 
-    td {
-      &.sorting_1,
-      &.sorting_2,
-      &.sorting_3 {
+        td {
+            &.sorting_1,
+            &.sorting_2,
+            &.sorting_3 {
 
-      }
-    }
-  }
-
-  /* No data ***/
-  .dataTables_empty {
-    text-align: center;
-    color: @red;
-  }
-
-  /* How many items ***/
-  .dataTables_length { 
-    .pull-left;
-
-    label { 
-      margin: 0; 
-      font-size: 16px;
-      line-height: 40px;
-
-      select {
-        display: inline;
-        margin: 0 5px;
-        width: 80px;
-        min-height: 40px;
-        height: 40px;
-      }
-    }
-  }
-
-  /* Search ***/
-  .dataTables_filter {
-    text-align: right;
-    .pull-right;
-
-    input {
-      padding-left: 30px;
-      background-image: @icons;
-      background-repeat: no-repeat;
-      background-position: 10px -85px;
-    }
-  }
-
-  /* Table information ***/
-  .dataTables_info {
-    clear: both;
-    .pull-left;
-  }
-
-  /* Pagination ***/
-  .dataTables_paginate {
-    font-size: 14px;
-    text-align: right;
-    .pull-right;
-
-    /* Prev/Next ***/
-    .paginate_disabled_previous,
-    .paginate_enabled_previous,
-    .paginate_disabled_next,
-    .paginate_enabled_next {
-      line-height: 40px;
-      vertical-align: middle;
-      .show;
-      .pull-left;
+            }
+        }
     }
 
-    .paginate_enabled_previous,
-    .paginate_enabled_next {
-      cursor: pointer;
-      color: @textColor;
-
-      &:hover { color: @logoPrimary; }
+    /* No data ***/
+    .dataTables_empty {
+        text-align: center;
+        color: @red;
     }
 
-    .paginate_disabled_previous,
-    .paginate_disabled_next {
-      cursor: default;
-      color: @grey3;
+    /* How many items ***/
+    .dataTables_length { 
+        .pull-left;
+
+        label { 
+            margin: 0; 
+            font-size: 16px;
+            line-height: 40px;
+
+            select {
+                display: inline;
+                margin: 0 5px;
+                width: 80px;
+                min-height: 40px;
+                height: 40px;
+            }
+        }
     }
 
-    .paginate_disabled_previous,
-    .paginate_enabled_previous { margin-right: 10px; }
+    /* Search ***/
+    .dataTables_filter {
+        text-align: right;
+        .pull-right;
 
-    /* Full number ***/
-    &.paging_full_numbers {
-      line-height: 40px;
-      vertical-align: middle;
+        input {
+            padding-left: 30px;
+            background-image: @icons;
+            background-repeat: no-repeat;
+            background-position: 10px -85px;
+        }
+    }
 
-      a {
-        cursor: pointer;
-        color: @textColor;
-        margin-right: 10px;
+    /* Table information ***/
+    .dataTables_info {
+        clear: both;
+        .pull-left;
+    }
 
-        &:hover { color: @logoPrimary; }
+    /* Pagination ***/
+    .dataTables_paginate {
+        font-size: 14px;
+        text-align: right;
+        .pull-right;
 
-        &.paginate_active,
-        &.paginate_button_disabled {
-          cursor: default;
-          color: @grey3;
-
-          &:hover { color: @grey3; }
+        /* Prev/Next ***/
+        .paginate_disabled_previous,
+        .paginate_enabled_previous,
+        .paginate_disabled_next,
+        .paginate_enabled_next {
+            line-height: 40px;
+            vertical-align: middle;
+            .show;
+            .pull-left;
         }
 
-        &.last { margin-right: 0; }
-      }
-      
-    }
-  }
+        .paginate_enabled_previous,
+        .paginate_enabled_next {
+            cursor: pointer;
+            color: @textColor;
 
-  /* Processing indicator ***/
-  .dataTables_processing {
-    background: @white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 240px;
-    height: 60px;
-    margin-left: -120px;
-    margin-top: -10px;
-    padding: 20px;
-    text-align: center;
-    color: @grey3;
-    font-style: italic;
-  }
+            &:hover { color: @logoPrimary; }
+        }
 
-  /* Sorting ***/
-  .sorting,
-  .sorting_asc,
-  .sorting_desc {
-    cursor: pointer;
-    padding-left: 30px !important;
-    background-image: @icons;
-    background-repeat: no-repeat;
+        .paginate_disabled_previous,
+        .paginate_disabled_next {
+            cursor: default;
+            color: @grey3;
+        }
 
-    &.sorting { background-position: 10px -185px; }
-    &.sorting_asc { background-position: 10px -235px; }
-    &.sorting_desc { background-position: 10px -285px; }
-  }
+        .paginate_disabled_previous,
+        .paginate_enabled_previous { margin-right: 10px; }
 
-  /* Scrolling ***/
-  .dataTables_scroll {
-    clear: both;
-  }
+        /* Full number ***/
+        &.paging_full_numbers {
+            line-height: 40px;
+            vertical-align: middle;
 
-  .dataTables_scrollBody {
-    *margin-top: -1px;
-    -webkit-overflow-scrolling: touch;
-  }
+            a {
+                cursor: pointer;
+                color: @textColor;
+                margin-right: 10px;
 
-/* jQuery UI datepicker   ==============================*/
-  .has-datepicker {
-    &.entry {
-      .ui-datepicker-trigger { top: 24px; }
-    }
-  }
+                &:hover { color: @logoPrimary; }
 
+                &.paginate_active,
+                &.paginate_button_disabled {
+                    cursor: default;
+                    color: @grey3;
 
+                    &:hover { color: @grey3; }
+                }
 
-/* jScrollPane        ==============================*/
-  .jspContainer{
-     overflow: hidden;
-     position: relative;
-    
-     .jspPane {
-       position: absolute;
-       width: 100% !important;
-     }
-    
-     .jspVerticalBar {
-       position: absolute;
-       top: 5px;
-       right: 5px;
-       width: 5px;
-       height: 100%;
-       z-index: 999;
-     }
-    
-     .jspHorizontalBar,
-     .jspCap,
-     .jspArrow,
-     .jspCorner { .hide; }
-    
-     .jspTrack {
-       height: 100%;
-       position: relative;
-    
-       .jspDrag {
-         height: 100%;
-         position: relative;
-         top: 0;
-         left: 0;
-         cursor: pointer;
-         .gradient (@logoGradientStart, @logoGradientEnd);
-         #border-radius > .rounded(5px);
-       }
-     }
+                &.last { margin-right: 0; }
+            }
+            
+        }
     }
 
+    /* Processing indicator ***/
+    .dataTables_processing {
+        background: @white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 240px;
+        height: 60px;
+        margin-left: -120px;
+        margin-top: -10px;
+        padding: 20px;
+        text-align: center;
+        color: @grey3;
+        font-style: italic;
+    }
+
+    /* Sorting ***/
+    .sorting,
+    .sorting_asc,
+    .sorting_desc {
+        cursor: pointer;
+        padding-left: 30px !important;
+        background-image: @icons;
+        background-repeat: no-repeat;
+
+        &.sorting { background-position: 10px -185px; }
+        &.sorting_asc { background-position: 10px -235px; }
+        &.sorting_desc { background-position: 10px -285px; }
+    }
+
+    /* Scrolling ***/
+    .dataTables_scroll {
+        clear: both;
+    }
+
+    .dataTables_scrollBody {
+        *margin-top: -1px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+/* jQuery UI datepicker     ==============================*/
+    .has-datepicker {
+        &.entry {
+            .ui-datepicker-trigger { top: 24px; }
+        }
+    }
+
+/* jQuery UI sortable       ==============================*/
+    .ui-sortable-helper:not(.ui-draggable-dragging) {
+        position: relative;
+        line-height: 40px;
+        padding: 0 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        .clickable;
+        .no-transition;
+
+        .icon-handle {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            .square(16px);
+            .show;
+        }                   
+    }
+
+/* jScrollPane              ==============================*/
+    .jspContainer{
+        overflow: hidden;
+        position: relative;
+
+        .jspPane {
+            position: absolute;
+            width: 100% !important;
+        }
+
+        .jspVerticalBar {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 5px;
+            height: 100%;
+            z-index: 999;
+        }
+
+        .jspHorizontalBar,
+        .jspCap,
+        .jspArrow,
+        .jspCorner { .hide; }
+
+        .jspTrack {
+            height: 100%;
+            position: relative;
+
+            .jspDrag {
+                height: 100%;
+                position: relative;
+                top: 0;
+                left: 0;
+                cursor: pointer;
+                .gradient (@logoGradientStart, @logoGradientEnd);
+                #border-radius > .rounded(5px);
+            }
+        }
+    }
 
 
 /* 6. IE

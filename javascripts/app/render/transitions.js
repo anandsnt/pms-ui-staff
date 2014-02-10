@@ -278,9 +278,6 @@ function goBackToView($menuActiveItem, $prevView, $transition){
 
 $(function($){
 
-    // FastClick
-    FastClick.attach(document.body);
-
 /*  Main screens        *******************************************************/
     
     // First main scren - check is it preloaded or hash from admin app exists
