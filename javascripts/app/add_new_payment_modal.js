@@ -63,7 +63,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			//to remove add button and show delete icon on succesfull addition of new credit card
 			currentStayCardView.find('#update_card').remove();
 			var appendHtml = '<a id="update_card" data-payment-id="'+data.data.id+'" class="button with-icon green">'+
-								'<span class="icons icon-trash invert"></span>Update CC</a>';
+								'<span class="icons icon-wallet invert"></span>Update CC</a>';
 			currentStayCardView.find(".payment_actions").append(appendHtml);
 			//if add to guest card is on, then update guest card payment tab with new one
 			if(requestParameters["add_to_guest_card"] == "true"){
