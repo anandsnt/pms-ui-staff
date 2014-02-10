@@ -111,9 +111,16 @@ var RegistrationCardView = function(viewDom) {
 	    if(getParentWithSelector(event, "#subscribe")) {
 	    	return that.subscribeCheckboxClicked(event);
 	    }
-	    if(getParentWithSelector(event, "#removeCC")) {
-	    	return that.clickedRemoveCC(event);
-	    }	    	    
+	    if(getParentWithSelector(event, "#delete_card")) {
+	    	return that.clickedRemovePayment(event);
+	    }
+	    if(getParentWithSelector(event, "#select-card-from-list")) {
+	    	return that.showExistingPayments(event);
+	    }
+	    if(getParentWithSelector(event, "#add-new-payment")) {
+	    	return that.addNewPaymentModal(event);
+	    }
+	    
 	};
 
      // function for closing the drawer if is open
@@ -359,13 +366,16 @@ var RegistrationCardView = function(viewDom) {
 		
 	};
 	
-	this.clickedRemoveCC = function(e) {
+	// To remove payment method from bill
+	this.clickedRemovePayment = function(e) {
 		var reservation_id = getReservationId();
 		var selectedElement = $(e.target).attr("data-payment-id");
+		var bill_number = that.getActiveBillNumber();
 		var webservice = new WebServiceInterface();
 	    var data = {
 	    		reservation_id : reservation_id,
-	    		guest_payment_type_id:   selectedElement
+	    		guest_payment_type_id:   selectedElement,
+	    		bill_number : bill_number
 	    };
 	    var url = '/staff/staycards/unlink_credit_card'; 
 	    var options = {
@@ -374,10 +384,61 @@ var RegistrationCardView = function(viewDom) {
 			   failureCallBack: that.fetchFailedOfDelete
 	    };
 	    console.log(data);
-		//webservice.postJSON(url, options);
+		webservice.postJSON(url, options);
+	};
+	this.fetchCompletedOfDelete = function(data){
+		
+		var replaceHtml = "<figure class='card-logo'>"+
+							"<img src='' alt=''></figure>"+									
+							"<span class='number'><span class='value number'>"+
+							"</span></span><span class='date'> <span class='value date'>"+
+							"</span>";
+	    that.myDom.find("#select-card-from-list").html(replaceHtml);
+	    that.myDom.find("#delete_card").remove();
+	    that.myDom.find("#add-new-payment").remove();
+	    that.myDom.find(".item-payment").append('<a id="add-new-payment" class="add-new-button">+ Add Payment Method</a>');
+	    that.delegateEvents();
+	};
+   /**
+    *   Callback on update failed
+    *   @param {Object} call back params
+    */
+	this.fetchFailedOfDelete = function(errorMessage){
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
 	};
 	
+	// To select credit card from bill
+	this.showExistingPayments = function(e) {
+		
+		console.log("showExistingPayments");
+		var dom = $("#bill"+that.getActiveBillNumber());
+		console.log(dom);
+		var showExistingPaymentModal = new ShowExistingPaymentModal(dom);
+    	showExistingPaymentModal.initialize();
+    	showExistingPaymentModal.params = {"bill_number":that.getActiveBillNumber(),"origin":views.BILLCARD};
+		
+	};
+	// To add new payment from bill card
+	this.addNewPaymentModal = function(event, options){
+
+	  	if ( !sntapp.getViewInst('addNewPaymentModal') ) {
+	      sntapp.setViewInst('addNewPaymentModal', function() {
+	        return new AddNewPaymentModal('staycard', that.myDom);
+	      });
+	      sntapp.getViewInst('addNewPaymentModal').initialize();
+	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber()};
+	    } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
 	
+	      // if addNewPaymentModal instance exist, but the dom is removed
+	      sntapp.updateViewInst('addNewPaymentModal', function() {
+	        return new AddNewPaymentModal('staycard', that.myDom);
+	      });
+	      sntapp.getViewInst('addNewPaymentModal').initialize();
+	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber()};
+	    }
+  	};
+  	
 	//function on click complete checkout button - If email is null then popup comes to enter email
 	this.clickedCompleteCheckout = function(e) {
 		e.stopPropagation();
@@ -472,6 +533,10 @@ var RegistrationCardView = function(viewDom) {
 		//Do not call 'initialize' method for this object. which results multiple event binding
 		var searchView = new Search();
 		searchView.clearResults();
+	};
+	
+	this.getActiveBillNumber =  function() {
+		return that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active").attr('data-bill-number');
 	};
 
 };

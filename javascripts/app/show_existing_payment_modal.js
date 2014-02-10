@@ -22,8 +22,10 @@ var ShowExistingPaymentModal = function(backView){
 		var webservice = new WebServiceInterface();
 	    var data = {
 	    		reservation_id : reservation_id,
-				user_payment_type_id: selectedElement			   
+				user_payment_type_id: selectedElement,
+				bill_number : that.params["bill_number"]			   
 	    };
+	    console.log(data);
 	    var url = '/staff/reservation/link_payment'; 
 	    var options = {
 			   requestParameters: data,
@@ -61,7 +63,13 @@ var ShowExistingPaymentModal = function(backView){
 		backView.find('#delete_card').remove();
 		var appendHtml = '<a id="delete_card" data-payment-id="'+data.data.id+'" class="button with-icon red">'+
 							'<span class="icons icon-trash invert"></span>Remove</a>';
-		backView.find(".payment_actions").append(appendHtml);
+							
+        if(that.params["origin"] == views.BILLCARD){
+        	backView.find(".item-payment").append(appendHtml);
+        }
+        else{
+			backView.find(".payment_actions").append(appendHtml);
+		}
 		that.hide();
 	};
    /**

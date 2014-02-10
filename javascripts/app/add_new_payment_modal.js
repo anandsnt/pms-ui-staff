@@ -64,7 +64,15 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			currentStayCardView.find('#delete_card').remove();
 			var appendHtml = '<a id="delete_card" data-payment-id="'+data.data.id+'" class="button with-icon red">'+
 								'<span class="icons icon-trash invert"></span>Remove</a>';
-			currentStayCardView.find(".payment_actions").append(appendHtml);
+			
+			
+			if(that.params["origin"] == views.BILLCARD){
+        		backView.find(".item-payment").append(appendHtml);
+	        }
+	        else{			
+				currentStayCardView.find(".payment_actions").append(appendHtml);
+			}
+			
 			//if add to guest card is on, then update guest card payment tab with new one
 			if(requestParameters["add_to_guest_card"] == "true"){
 				$image = "<img src='/assets/"+$newImage+"' alt=''>";
@@ -205,7 +213,8 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 				    card_expiry: $card_expiry,
 				    name_on_card: $name_on_card,
 				    mli_token: $card_token,
-				    add_to_guest_card: add_to_guest_card
+				    add_to_guest_card: add_to_guest_card,
+				    bill_number : that.params["bill_number"]
 		    };		
 		    var url = 'staff/reservation/save_payment'; 
 		    var options = {
