@@ -1,14 +1,9 @@
+// Orientation change 
+document.addEventListener('orientationchange', function (e) { $("#app-page").css("height",window.innerHeight); }, false);
+
 // Disable cache busting
 $.ajaxSetup({ cache: true });
 
-// Equal heights
-$.fn.maximize = function(size) {
-    var max = Math.max.apply(Math, jQuery.map(this, function (e) {
-        return jQuery(e).height();
-    }));
-
-    this[size](max);
-};
 $(document).ready(function(){
 	if (localStorage.email) {
 		$("#email").val(localStorage.email);
@@ -347,6 +342,9 @@ function modalInit(content, closeAfter, position, lock) {
 }
 
 $(function($){ 
+
+    // FastClick - eliminate the 300ms delay between a physical tap and the firing of a click event on mobile browsers
+    FastClick.attach(document.body);
 
     // iPad Virtual Keyboard screen scroll
     var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;

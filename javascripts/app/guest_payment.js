@@ -22,7 +22,7 @@ var GuestPaymentView = function(domRef){
 	var credit_id = element.attr("credit_id");
   	var setPaymentAsPrimaryModal = new SetPaymentAsPrimaryModal();
     setPaymentAsPrimaryModal.initialize();
-    setPaymentAsPrimaryModal.params = {"credit_id": credit_id};
+    setPaymentAsPrimaryModal.params = {"credit_id": credit_id, "myDom": that.myDom};
   };
   
   this.renderNewPaymentView = function(e){
