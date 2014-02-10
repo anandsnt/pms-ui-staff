@@ -155,7 +155,6 @@ var GuestCardLikesView = function(domRef){
           .attr('id', newID)
           .attr('class', 'checkbox-value')
           .appendTo(element);
-      console.log(that.myDom.find('#' + newID));
       that.myDom.find('#' + newID).focus();
       return false;
 
@@ -291,7 +290,6 @@ var GuestCardLikesView = function(domRef){
 		  show_on_room_setup = "true";
 	    }
 	    var selected = that.myDom.find("input[type='radio'][name='type']:checked");
-      console.log(selected.val());
 	    selectedType = "";
 		if (selected.length > 0) {
 		    selectedType = selected.val();
