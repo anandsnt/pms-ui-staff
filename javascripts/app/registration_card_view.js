@@ -440,7 +440,7 @@ var RegistrationCardView = function(viewDom) {
 		var email = $("#gc-email").val();
 		// If email is null then popup comes to enter email
 		if (email == "") {
-			var validateCheckoutModal = new ValidateCheckoutModal(that.completeCheckout, e);
+			var validateCheckoutModal = new ValidateCheckoutModal(that.completeCheckout,e);
 			validateCheckoutModal.initialize();
 			validateCheckoutModal.params = {
 				"type" : "NoEmail"
@@ -454,7 +454,7 @@ var RegistrationCardView = function(viewDom) {
 	// Complete checkout operation
 	this.completeCheckout = function(e) {
 		
-		var required_signature_at = $(e.target).attr('data-required-signature');
+		var required_signature_at = that.myDom.find("#complete-checkout-button").attr('data-required-signature');
 		
 		var email = $("#gc-email").val();
 		var signature = JSON.stringify(that.myDom.find("#signature").jSignature("getData", "native"));
