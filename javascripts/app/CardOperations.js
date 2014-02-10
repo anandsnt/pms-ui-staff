@@ -166,10 +166,14 @@ var CardOperation = function(){
 		console.log("sucecss called in write key debug mode");
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 		var deviceStatus = true;
 
 		setTimeout(function(){
-			successCallBack(deviceStatus, successCallBackParameters)
+			if(deviceStatus)
+				successCallBack(deviceStatus, successCallBackParameters);
+			else
+				failureCallBack(deviceStatus, successCallBackParameters);
 		}, 1000)		
 	};
 };
