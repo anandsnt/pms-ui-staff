@@ -10,8 +10,10 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 
 	this.noOfErrorMethodCalled = 0;
 	this.maxSecForErrorCalling = 10000;
-	//TODO: Replace with actual URL
-	this.url = "/ui/show?haml_file=modals/keys/_key_encode_modal&json_input=keys/keys_encode.json&is_hash_map=true&is_partial=true";
+
+	this.url = "/staff/reservations/" + reservation_id + "/get_key_setup_popup";
+
+	//this.url = "/ui/show?haml_file=modals/keys/_key_encode_modal&json_input=keys/keys_encode.json&is_hash_map=true&is_partial=true";
 	
 	this.delegateEvents = function() {
 		that.myDom.find('#try-again').on('click', that.showDeviceConnectingMessge);
