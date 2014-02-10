@@ -83,6 +83,8 @@ var AddHLPModal = function(){
 						var hlOptions ='<option value="'+ value.membership_level +'">' + value.membership_level+ '</option>';
 						$("#new-hlp #hotel-loyalty-levels").append(hlOptions);
 					});
+		        } else {
+		        	that.myDom.find('#hlplevek').addClass("hidden");
 		        }
 				
 			}
