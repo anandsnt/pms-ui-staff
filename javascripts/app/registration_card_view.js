@@ -205,7 +205,7 @@ var RegistrationCardView = function(viewDom) {
 		if (signature == "[]" && required_signature_at == "CHECKIN")
 			errorMessage = "Signature is missing";
 		else if (!terms_and_conditions)
-			errorMessage = "Please check agree to the Terms & Conditions";
+			errorMessage = "Please check the box to accept the charges";
 
 		if (errorMessage != "") {
 			that.showErrorMessage(errorMessage);
@@ -341,7 +341,7 @@ var RegistrationCardView = function(viewDom) {
 
 			if (signature == "[]" && required_signature_at == "CHECKOUT")
 				errorMessage = "Signature is missing";
-			else if (!terms_and_conditions && required_signature_at == "CHECKOUT")
+			else if (!terms_and_conditions)
 				errorMessage = "Please check agree to the Terms & Conditions";
 
 			if (errorMessage != "") {
