@@ -103,8 +103,9 @@ var RegistrationCardView = function(viewDom) {
 	    if(getParentWithSelector(event, "#subscribe")) {
 	    	return that.subscribeCheckboxClicked(event);
 	    }
-	    if(getParentWithSelector(event, "#delete_card")) {
-	    	return that.clickedRemovePayment(event);
+	    if(getParentWithSelector(event, "#update_card")) {
+	    	//return that.clickedRemovePayment(event);
+	    	return that.addNewPaymentModal(event);
 	    }
 	    if(getParentWithSelector(event, "#select-card-from-list")) {
 	    	return that.showExistingPayments(event);
@@ -360,49 +361,6 @@ var RegistrationCardView = function(viewDom) {
 		
 		that.myDom.find("#bill"+next_bill_number).show();
 		that.myDom.find("#bill"+current_bill_number).hide();
-	};
-	// To delete payment method from bill
-	this.clickedRemovePayment = function(e) {
-		var reservation_id = getReservationId();
-		var selectedElement = $(e.target).attr("data-payment-id");
-		var bill_number = that.getActiveBillNumber();
-		var webservice = new WebServiceInterface();
-	    var data = {
-	    		reservation_id : reservation_id,
-	    		guest_payment_type_id:   selectedElement,
-	    		bill_number : bill_number
-	    };
-	    var url = '/staff/staycards/unlink_credit_card'; 
-	    var options = {
-			   requestParameters: data,
-			   successCallBack: that.fetchCompletedOfDelete,
-			   failureCallBack: that.fetchFailedOfDelete
-	    };
-		webservice.postJSON(url, options);
-	};
-	// Success of delete payment
-	this.fetchCompletedOfDelete = function(data){
-		var replaceHtml = "<figure class='card-logo'>"+
-							"<img src='' alt=''></figure>"+									
-							"<span class='number'><span class='value number'>"+
-							"</span></span><span class='date'> <span class='value date'>"+
-							"</span>";
-	    that.myDom.find("#select-card-from-list").html(replaceHtml);
-	    that.myDom.find("#delete_card").remove();
-	    that.myDom.find("#add-new-payment").remove();
-	    that.myDom.find(".item-payment").append('<a id="add-new-payment" class="add-new-button">+ Add Payment Method</a>');
-	    
-	    // To update bill tab paymnt info
-	    var billTabHtml = '<figure class="card-logo"><img src="" alt="">'+
-							'<span class="number"></span></figure>';
-		that.myDom.find("#payment-info-"+that.getActiveBillNumber()).html("");		
-		that.myDom.find("#payment-info-"+that.getActiveBillNumber()).html(billTabHtml);				
-	    that.delegateEvents();
-	};
-   	// Failure of delete payment
-	this.fetchFailedOfDelete = function(errorMessage){
-		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
 	};
 	
 	// To select credit card from bill

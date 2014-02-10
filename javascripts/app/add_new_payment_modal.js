@@ -57,16 +57,17 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 								"</span></span><span class='date'> Date <span class='value date'>"+
 								$newDate+
 								"</span>";
-		    						
 			currentStayCardView.find("#select-card-from-list").html(replaceHtml);
 			currentStayCardView.find("#add-new-payment").remove();
 			//to remove add button and show delete icon on succesfull addition of new credit card
-			currentStayCardView.find('#delete_card').remove();
-			var appendHtml = '<a id="delete_card" data-payment-id="'+data.data.id+'" class="button with-icon red">'+
-								'<span class="icons icon-trash invert"></span>Remove</a>';
+			currentStayCardView.find('#update_card').remove();
+			var appendHtml = '<a id="update_card" data-payment-id="'+data.data.id+'" class="button with-icon green">'+
+								'<span class="icons icon-wallet"></span>Update CC</a>';
 			
 			
 			if(that.params["origin"] == views.BILLCARD){
+				
+				currentStayCardView.find("#select-card-from-list").removeClass('hidden');
         		currentStayCardView.find(".item-payment").append(appendHtml);
         		
         		// To update bill tab paymnt info
