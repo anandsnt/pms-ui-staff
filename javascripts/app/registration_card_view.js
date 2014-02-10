@@ -6,7 +6,6 @@ var RegistrationCardView = function(viewDom) {
 	this.url = "ui/checkinSuccess";
 
 	this.pageinit = function() {
-console.log(that.myDom);
 		this.createHorizontalScroll();
 
 		setTimeout(function() {
@@ -178,7 +177,7 @@ console.log(that.myDom);
 			var params = {
 				"reservation_id" : reservation_id
 			};
-			sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams);
+			sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
 		}
 	};
 
@@ -233,6 +232,7 @@ console.log(that.myDom);
 				requestParameters : data,
 				successCallBack : that.completeCheckinSuccess,
 				failureCallBack : that.completeCheckinFailed,
+				loader: "blocker"
 			};
 			webservice.postJSON(url, options);
 		}
@@ -260,8 +260,14 @@ console.log(that.myDom);
 				"reservationStatus" : reservationStatus
 			};
 		}
+		
 		else if(keySettings == "encode"){
-			
+			var keyEncoderModal = new KeyEncoderModal(that.goAndRefreshStayCard, that.goToSearchScreen);
+			keyEncoderModal.initialize();
+			keyEncoderModal.params = {
+				"origin" : views.BILLCARD,
+				"reservationStatus" : reservationStatus
+			};
 			
 		}
 
@@ -276,7 +282,6 @@ console.log(that.myDom);
 	};
 	this.completeCheckinFailed = function(errorMessage) {
 		sntapp.activityIndicator.hideActivityIndicator();
-		console.log(that.myDom);
 		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
 	  };
 	this.clearSignature = function(e) {
@@ -394,7 +399,6 @@ console.log(that.myDom);
 
 	// Goto search screen with empty search results
 	this.goToSearchScreen = function() {
-		console.log("goToSearchScreen");
 		switchPage('main-page', 'search', '', 'page-main-second', 'move-from-left');
 		//Do not call 'initialize' method for this object. which results multiple event binding
 		var searchView = new Search();
