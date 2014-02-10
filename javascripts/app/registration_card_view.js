@@ -34,6 +34,7 @@ var RegistrationCardView = function(viewDom) {
 			that.myDom.find("#bill1-fees").removeClass("hidden");
 			that.myDom.find("#signature-pad").addClass("hidden");
 			that.myDom.find("#complete-checkout-button").addClass("hidden");
+			that.myDom.find("#review-bill-button").addClass("hidden");
 			that.myDom.find("#terms-and-conditions").addClass("hidden");
 		}
 		
@@ -372,10 +373,10 @@ var RegistrationCardView = function(viewDom) {
 	};
 	// To add new payment from bill card
 	this.addNewPaymentModal = function(event, options){
-
+		var domElement = $("#bill"+that.getActiveBillNumber());
 	  	if ( !sntapp.getViewInst('addNewPaymentModal') ) {
 	      sntapp.setViewInst('addNewPaymentModal', function() {
-	        return new AddNewPaymentModal('staycard', that.myDom);
+	        return new AddNewPaymentModal('staycard', domElement);
 	      });
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
 	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
@@ -383,7 +384,7 @@ var RegistrationCardView = function(viewDom) {
 	
 	      // if addNewPaymentModal instance exist, but the dom is removed
 	      sntapp.updateViewInst('addNewPaymentModal', function() {
-	        return new AddNewPaymentModal('staycard', that.myDom);
+	        return new AddNewPaymentModal('staycard', domElement);
 	      });
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
 	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
