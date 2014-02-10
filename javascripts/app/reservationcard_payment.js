@@ -25,18 +25,21 @@ var ReservationPaymentView = function(domRef){
   this.myDomClickHandler = function(event){
   	
   	var target = that.myDom.find(event.target);
-  	
-  	if(target.attr("id") == "delete_card"){
-  		
-  		// that.myDom.find("#delete_card").unbind('click');
-  		//that.myDom.find("#delete_card").on("click", that.deletePaymentFromReservation);
-  		return that.deletePaymentFromReservation(target);
-  	}
-  	else if(target.closest('#delete_card').length){
-      event.preventDefault();    
-      target = target.closest('#delete_card');
-      return that.deletePaymentFromReservation(target);;
+  	if(getParentWithSelector(event, "#delete_card")) {
+  		event.preventDefault();
+        return that.addNewPaymentModal();
     }
+  	// if(target.attr("id") == "delete_card"){
+//   		
+  		// // that.myDom.find("#delete_card").unbind('click');
+  		// //that.myDom.find("#delete_card").on("click", that.deletePaymentFromReservation);
+  		// return that.addNewPaymentModal();
+  	// }
+  	// else if(target.closest('#delete_card').length){
+      // event.preventDefault();    
+      // target = target.closest('#delete_card');
+      // return that.addNewPaymentModal();;
+    // }
   };
   
   this.addNewPaymentModal = function(event, options){
