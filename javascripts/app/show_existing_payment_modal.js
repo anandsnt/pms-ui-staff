@@ -59,9 +59,10 @@ var ShowExistingPaymentModal = function(backView){
 	    backView.find("#select-card-from-list").html(replaceHtml);
 	    backView.find("#add-new-payment").remove();
 		//to remove add button and show delete icon on succesfull addition of new credit card
-		backView.find('#delete_card').remove();
-		var appendHtml = '<a id="delete_card" data-payment-id="'+data.data.id+'" class="button with-icon red">'+
-							'<span class="icons icon-trash invert"></span>Remove</a>';
+
+		backView.find('#update_card').remove();
+		var appendHtml = '<a id="update_card" data-payment-id="'+data.data.id+'" class="button with-icon green">'+
+							'<span class="icons icon-wallet invert"></span>Update CC</a>';
 							
         if(that.params["origin"] == views.BILLCARD){
         	backView.find(".item-payment").append(appendHtml);
@@ -76,6 +77,7 @@ var ShowExistingPaymentModal = function(backView){
         else{
 			backView.find(".payment_actions").append(appendHtml);
 		}
+
 		that.hide();
 	};
    /**

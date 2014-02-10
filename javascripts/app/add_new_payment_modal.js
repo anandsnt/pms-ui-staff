@@ -81,6 +81,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 				currentStayCardView.find(".payment_actions").append(appendHtml);
 			}
 			
+
 			//if add to guest card is on, then update guest card payment tab with new one
 			if(requestParameters["add_to_guest_card"] == "true"){
 				$image = "<img src='/assets/"+$newImage+"' alt=''>";
