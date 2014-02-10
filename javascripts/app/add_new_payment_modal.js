@@ -66,7 +66,6 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 			
 			
 			if(that.params["origin"] == views.BILLCARD){
-				console.log("Frm bill");
 				currentStayCardView.find("#select-card-from-list").removeClass('hidden');
         		currentStayCardView.find(".item-payment").append(appendHtml);
         		

@@ -34,7 +34,7 @@ var RegistrationCardView = function(viewDom) {
 			that.myDom.find("#bill1-fees").removeClass("hidden");
 			that.myDom.find("#signature-pad").addClass("hidden");
 			that.myDom.find("#complete-checkout-button").addClass("hidden");
-			that.myDom.find("#review-bill-button").addClass("hidden");
+			that.myDom.find(".review").addClass("hidden");
 			that.myDom.find("#terms-and-conditions").addClass("hidden");
 		}
 		
