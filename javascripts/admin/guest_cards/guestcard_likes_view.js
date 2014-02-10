@@ -3,43 +3,45 @@ var GuestCardLikesView = function(domRef){
   this.myDom = domRef;
   var that = this;
   var textOptionStart = 1;
-
+  var checkboxOptionStart = 48; 
   this.changeData = function(element){
   	var target = element.attr('data-type');
-	if (target != 'textbox'){
+  	if (target != 'textbox'){
 
-		// Hide previous and show new fields
-		that.myDom.find('.data-type:visible').addClass('hidden');
-		that.myDom.find('#entry-' + target).removeClass('hidden');
+  		// Hide previous and show new fields
+  		that.myDom.find('.data-type:visible').addClass('hidden');
+  		that.myDom.find('#entry-' + target).removeClass('hidden');
 
-		// Empty data from previous fields except those that are in DB already
-		that.myDom.find('.data-type:visible input:not(.predefined)').val('');
+  		// Empty data from previous fields except those that are in DB already
+  		that.myDom.find('.data-type:visible input:not(.predefined)').val('');
 
-		// Delete all dynamically added fileds which are now emtpy
-		that.myDom.find('.data-type:visible input.delete-option').parent('.entry').remove();
-	}
-	// If textbox, just hide visible data type option
-	else {
-		// Hide previous
-		that.myDom.find('.data-type:visible').addClass('hidden');
+  		// Delete all dynamically added fileds which are now emtpy
+  		that.myDom.find('.data-type:visible input.delete-option').parent('.entry').remove();
+  	}
+  	// If textbox, just hide visible data type option
+  	else {
+  		// Hide previous
+  		that.myDom.find('.data-type:visible').addClass('hidden');
 
-		// Empty data from previous fields except those that are in DB already
-		that.myDom.find('.data-type:visible input:not(.predefined)').val('');
+  		// Empty data from previous fields except those that are in DB already
+  		that.myDom.find('.data-type:visible input:not(.predefined)').val('');
 
-		// Delete all dynamically added fileds which are now emtpy
-		that.myDom.find('.data-type:visible input.delete-option').parent('.entry').remove();
-	}
+  		// Delete all dynamically added fileds which are now emtpy
+  		that.myDom.find('.data-type:visible input.delete-option').parent('.entry').remove();
+  	}
 
   };
   // To delete the textbox if value is null - Options values
    this.deleteOption = function(element){
-	   	if ($.trim(element.val()) == '')
-		{
-			element.parent('.entry').remove();
-		}
+	   if ($.trim(element.val()) == ''){
+  			element.parent('.entry').remove();
+  	 }
+     return false;
    };
   // to handle sub view events
-  this.delegateSubviewEvents = function(){
+  this.delegateSubviewEvents = function(){   
+    that.myDom.unbind('keyup');
+    that.myDom.unbind('focusout');
     that.myDom.on('click', that.viewClickEventHandler);
     // to remove text if value is null
     that.myDom.on('keyup', that.viewKeyupEventHandler);
@@ -47,50 +49,72 @@ var GuestCardLikesView = function(domRef){
    };
    //handle click events
    this.viewClickEventHandler = function(event){
-      var element = $(event.target);
-	  if(element.hasClass('icon-delete')) return that.deleteFeature(element);
-      if(element.hasClass('change-data')) return that.changeData(element);
-      if(element.hasClass('add-new-option'))	return that.addNewOption(element, event);
-      if(element.hasClass('add-new-checkbox'))
-        { return that.addNewNewspaper(element);}
-      if(element.hasClass('icon-add') && element.parent().hasClass('add-new-checkbox'))
-        { return that.addNewNewspaper(element.parent());}
-      return true;
-      
 
+    var element = that.myDom.find(event.target);
+
+	  if(element.hasClass('icon-delete')) return that.deleteFeature(element);
+
+    if(element.hasClass('change-data')) return that.changeData(element);
+
+    if(element.hasClass('add-new-option'))	{
+        return that.addNewOption(element, event);
+    }
+
+    if(getParentWithSelector(event, ".add-new-checkbox")) {  
+      element = that.myDom.find(event.target);
+      return that.addNewNewspaper(element);
+    }  
+   };
+
+   //to handle keyup events- text box show new textbox on key up
+   this.viewKeyupEventHandler = function(event){    
+
+   	  var element = that.myDom.find(event.target);
+      var code = event.keyCode || event.which;
+
+        if(element.hasClass('add-new-option')) { 
+          return that.addNewOption(element, event);     
+        }          
+        if(element.hasClass('delete-option')){          
+          return that.deleteOption(element);
+        }
 
    };
+
+   //to handle focusout event
+   this.viewFocusoutEventHandler = function(event){
+      var element = that.myDom.find(event.target);
+      if(element.hasClass('checkbox-value')) {
+        that.convertToCheckbox(element);
+        event.target = that.myDom.find('.add-new-checkbox');
+        return that.viewClickEventHandler(event);
+
+      }
+      if(element.hasClass('delete-option')){    
+          return that.deleteOption(element);
+      }      
+
+   };
+
    //To delete feature on click delet icon
    this.deleteFeature = function(element){
-   		  var elementIdToDelete = element.attr("data-id");
- 		  var postParams = {"id" : elementIdToDelete};
+      var elementIdToDelete = element.attr("data-id");
+      var postParams = {"id" : elementIdToDelete};
 
-          var webservice = new WebServiceInterface();
-          var options = {
-               requestParameters: postParams,
-               successCallBack : that.deleteSuccess,
-               successCallBackParameters:{ "element": element},
-               loader: "NONE"
-          };
-          var url = '/admin/hotel_likes/delete_feature';
-          webservice.postJSON(url, options);   	
+      var webservice = new WebServiceInterface();
+      var options = {
+           requestParameters: postParams,
+           successCallBack : that.deleteSuccess,
+           successCallBackParameters:{ "element": element},
+           loader: "NONE"
+      };
+      var url = '/admin/hotel_likes/delete_feature';
+      webservice.postJSON(url, options);    
    };
    //success calback of delete. Remove data from UI
    this.deleteSuccess = function(data, params){
-   		params['element'].parent('.checkbox').remove();
+      params['element'].parent('.checkbox').remove();
    };
-   //to handle keyup events- text box show new textbox on key up
-   this.viewKeyupEventHandler = function(event){
-   	  var element = $(event.target);
-   	  if(element.hasClass('delete-option'))
-      		return that.deleteOption(element);
-   };
-   //to handle focusout event
-   this.viewFocusoutEventHandler = function(event){
-      var element = $(event.target);
-      if(element.hasClass('checkbox-value')) return that.convertToCheckbox(element);
-   };
-
 
   this.toggleButtonClicked = function(element){
       var likeId = element.closest('tr').attr('data-like-id');
@@ -112,11 +136,12 @@ var GuestCardLikesView = function(domRef){
 
   // Add new checkbox option, step 1 - create text field
   this.addNewNewspaper = function(element){
-      var checkboxOptionStart = 48;
+      
       var type = element.attr('data-type'),
       deleteIcon = '<span class="icons icon-delete" />';
-
       checkboxOptionStart++;
+      var newID = type + '-option' + checkboxOptionStart
+      
 
       // Clone add new option
       element.clone().insertAfter(element);
@@ -127,11 +152,11 @@ var GuestCardLikesView = function(domRef){
       $('<input type="text" value="" />')
           .attr('name', type)
           .attr('data-id', "")
-          .attr('id', type + '-option' + checkboxOptionStart)
+          .attr('id', newID)
           .attr('class', 'checkbox-value')
           .appendTo(element);
-
-      return true;
+      that.myDom.find('#' + newID).focus();
+      return false;
 
   };
 
@@ -172,20 +197,20 @@ var GuestCardLikesView = function(domRef){
 
    this.addNewOption = function(element, event){
 	   	var type = element.attr('data-type');
+  		textOptionStart++;
 
-		textOptionStart++;
+  		element
+  			.clone() 											// Clone element
+  			.val('') 											// Clear value
+  			.attr('id', type + '-option' + textOptionStart) 	// Increment ID value
+  			.insertAfter(element.parent('.entry'))				// Insert after this one
+  			.wrap('<div class="entry" />');						// Wrap to div
 
-		element
-			.clone() 											// Clone element
-			.val('') 											// Clear value
-			.attr('id', type + '-option' + textOptionStart) 	// Increment ID value
-			.insertAfter(element.parent('.entry'))				// Insert after this one
-			.wrap('<div class="entry" />');						// Wrap to div
-
-		// Set new class
-		$('.add-new-option').unbind('click');
+  		// Set new class
+		  $('.add-new-option').unbind('click');
 	    element.removeClass('add-new-option').addClass('delete-option');
-
+      event.stopPropagation();
+      return false; // to prevent event bubbling
 
    };
 
@@ -248,14 +273,14 @@ var GuestCardLikesView = function(domRef){
     	//console.log(JSON.stringify(postData));// DELETE once API Integration is complete
 
     	var url = '/admin/hotel_likes/add_feature_type';
-		var webservice = new WebServiceInterface();
-		var options = {
-				   requestParameters: postData,
-				   successCallBack: that.fetchCompletedOfSave,
-				   successCallBackParameters:{ "event": event},
-				   loader:"BLOCKER"
+  		var webservice = new WebServiceInterface();
+  		var options = {
+  				   requestParameters: postData,
+  				   successCallBack: that.fetchCompletedOfSave,
+  				   successCallBackParameters:{ "event": event},
+  				   loader:"BLOCKER"
 
-		};
+  		};
 		webservice.putJSON(url, options);
 
     };

@@ -5,13 +5,14 @@ var SetWakeUpCallModal = function() {
 	this.myDom = "#modal";
 	this.url = "wakeup/wakeup_calls";
 	this.reservationId = getReservationId();
-	
+
 	this.delegateEvents = function() {
 		that.myDom.find('#set-wake-up-call #save-wakeup-call').on('click', that.saveWakeUpCall);
 		that.myDom.find('.switch-button#wakeupDate').on('click', that.onOffSwitchWakeupDate);
 		that.myDom.find('#set-wake-up-call #wake-up-hour, #set-wake-up-call #wake-up-minute, #set-wake-up-call #wake-up-primetime')	
 														.on('change', that.changedWakeUpTime);
 		that.myDom.find('#set-wake-up-call #delete-wakeup-call').on('click', that.deleteWakeUpCall);
+		
 	};
 
 	this.modalInit = function() {
@@ -41,7 +42,7 @@ var SetWakeUpCallModal = function() {
 			"wake_up_time" : wakeUpTime,
 			"day" : wakeUpday
 		};
-
+sntapp.activityIndicator.showActivityIndicator("blocker");
 		var webservice = new WebServiceInterface();
 		
 	    var url = 'wakeup/set_wakeup_calls'; 
@@ -83,14 +84,19 @@ var SetWakeUpCallModal = function() {
 		var wakeUpHour = that.myDom.find('#set-wake-up-call #wake-up-hour option:selected').val();
 		var wakeUpMinute = that.myDom.find('#set-wake-up-call #wake-up-minute option:selected').val();
 		var wakeUpPrimetime = that.myDom.find('#set-wake-up-call #wake-up-primetime option:selected').val();
-
+		var is_disable_delete = that.myDom.find('#delete-wakeup-call').attr("data-disabled-delete");
 		if((wakeUpHour == "")||(wakeUpMinute == "")||(wakeUpPrimetime == "")){
+			that.myDom.find("#save-wakeup-call").parent().addClass('is-disabled');
 			that.myDom.find("#save-wakeup-call").attr("disabled", true);
-			that.myDom.find("#delete-wakeup-call").attr("disabled", true);
+			//that.myDom.find("#delete-wakeup-call").attr("disabled", true);
 		}
-		else {
+		else if(is_disable_delete == "true"){
 			that.myDom.find("#save-wakeup-call").attr("disabled", false);
-			that.myDom.find("#delete-wakeup-call").attr("disabled", false);
+			//that.myDom.find("#delete-wakeup-call").attr("disabled", false);
+		}
+		else{
+			that.myDom.find("#save-wakeup-call").attr("disabled", false);
+			//that.myDom.find("#delete-wakeup-call").attr("disabled", false);
 		}
 
 	};
@@ -106,6 +112,7 @@ var SetWakeUpCallModal = function() {
     	var data = {
 			"reservation_id" : that.reservationId,
 		};
+		sntapp.activityIndicator.showActivityIndicator("blocker");
 		var webservice = new WebServiceInterface();
 		
 	    var url = 'wakeup/set_wakeup_calls'; 

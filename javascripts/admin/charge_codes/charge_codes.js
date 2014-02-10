@@ -8,9 +8,10 @@ var HotelChargeCodesView = function(domRef){
   this.delegateSubviewEvents = function(){
     that.myDom.find('#charge_codes_table').tablesorter({
       headers: {
-        2:{sorter:false},
+        1:{sorter:false},
         3:{sorter:false},
-        4:{sorter:false}
+        4:{sorter:false},
+        5:{sorter:false}
       }
     });
 

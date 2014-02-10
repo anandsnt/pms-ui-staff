@@ -16,6 +16,7 @@ var BaseInlineView = function(viewDom){
   
   this.delegateEvents = function(){
   	//console.log(that.myDom);
+  	that.myDom.unbind('click');
   	that.myDom.on('click', that.genericEventHandler);
 
   	//that.myDom.find('#add-new-button').on('click', that.addNewForm);

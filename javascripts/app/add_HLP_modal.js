@@ -66,15 +66,27 @@ var AddHLPModal = function(){
         event.preventDefault();
 		event.stopImmediatePropagation();
 		$("#new-hlp #hotel-loyalty-levels").html("");
-		$("#new-hlp #hotel-loyalty-levels").append('<option value="" selected="selected" class="placeholder">Select level</option>');
+		
 		var selectedLoyaltyPgm = $("#new-hlp #hotel-loyalty-types").val();
-		that.myDom.find('#hlplevek').removeClass("hidden");
+		
 		$.each(hlProgramsList.data, function(key, loyaltyPgm) {
+			
 			if(loyaltyPgm.hl_value == selectedLoyaltyPgm){
-				$.each(loyaltyPgm.levels, function(key, value) {
-					var hlOptions ='<option value="'+ value.membership_level +'">' + value.membership_level+ '</option>';
-					$("#new-hlp #hotel-loyalty-levels").append(hlOptions);
-				});
+				
+		        var pgmLevelsCount = loyaltyPgm.levels.length;
+		        console.log("reached here");
+		        console.log(pgmLevelsCount);
+		        if(pgmLevelsCount > 0){
+		        	that.myDom.find('#hlplevek').removeClass("hidden");
+		        	$("#new-hlp #hotel-loyalty-levels").append('<option value="" selected="selected" class="placeholder">Select level</option>');
+		        	$.each(loyaltyPgm.levels, function(key, value) {
+						var hlOptions ='<option value="'+ value.membership_level +'">' + value.membership_level+ '</option>';
+						$("#new-hlp #hotel-loyalty-levels").append(hlOptions);
+					});
+		        } else {
+		        	that.myDom.find('#hlplevek').addClass("hidden");
+		        }
+				
 			}
 		});
    };
