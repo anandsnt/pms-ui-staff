@@ -165,7 +165,7 @@ var PostChargeModel = function(callBack) {
 	
 			var $id = element.attr('data-id'),
 			$item = element.attr('data-item'),
-			$price = element.attr('data-price'),
+			$price = parseFloat(element.attr('data-price')).toFixed(2),
 			$data_cc = element.attr('data-cc'),
 			$currency_code = getCurrencySymbol(element.attr('data-cc')),
 			$base = element.attr('data-base');

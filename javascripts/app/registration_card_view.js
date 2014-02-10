@@ -6,7 +6,7 @@ var RegistrationCardView = function(viewDom) {
 	this.url = "ui/checkinSuccess";
 
 	this.pageinit = function() {
-
+console.log(that.myDom);
 		this.createHorizontalScroll();
 
 		setTimeout(function() {
@@ -282,6 +282,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 	this.completeCheckinFailed = function(errorMessage) {
 		sntapp.activityIndicator.hideActivityIndicator();
+		console.log(that.myDom);
 		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
 	  };
 	this.clearSignature = function(e) {

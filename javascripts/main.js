@@ -207,9 +207,60 @@ $.fn.updateStyledSelect = function() {
 };
 
 // Resize masked inputs
-function resizeInput() {
-    $(this).attr('size', $(this).val().length);
-}
+$.fn.autoGrowInput = function(o) {
+    o = $.extend({
+        maxWidth: 1000,
+        minWidth: 0,
+        comfortZone: 70
+    }, o);
+
+    this.filter('.masked-input').each(function(){
+        var input = $(this);
+
+        // Add data-size
+        input.attr('data-size', input.val().length);
+
+        var minWidth = o.minWidth || $(this).width(),
+            val = '',
+            testSubject = $('<tester/>').css({
+                position: 'absolute',
+                top: -9999,
+                left: -9999,
+                width: 'auto',
+                fontSize: input.css('fontSize'),
+                fontFamily: input.css('fontFamily'),
+                fontWeight: input.css('fontWeight'),
+                letterSpacing: input.css('letterSpacing'),
+                whiteSpace: 'nowrap'
+            });
+            check = function() {
+
+                if (val === (val = input.val())) {return;}
+
+                // Enter new content into testSubject
+                var escaped = val.replace(/&/g, '&amp;').replace(/\s/g,'&nbsp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                testSubject.html(escaped);
+
+                // Calculate new width + whether to change
+                var testerWidth = testSubject.width(),
+                    newWidth = (testerWidth + o.comfortZone) >= minWidth ? testerWidth + o.comfortZone : minWidth,
+                    currentWidth = input.width(),
+                    isValidWidthChange = (newWidth < currentWidth && newWidth >= minWidth)
+                                         || (newWidth > minWidth && newWidth < o.maxWidth);
+
+                // Animate width
+                if (isValidWidthChange) {
+                    input.width(newWidth);
+                }
+            };
+        testSubject.insertAfter(input);
+        $(this).bind('keyup blur update', check).bind('keydown', function() {
+            setTimeout(check);
+        });
+        check();
+    });
+    return this;
+};
 
 // Modal window
 function modalInit(content, closeAfter, position, lock) {
@@ -297,6 +348,26 @@ function modalInit(content, closeAfter, position, lock) {
 
 $(function($){ 
 
+    // iPad Virtual Keyboard screen scroll
+    var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
+
+    if ($isTablet) {
+        // Enable 
+        $("#app-page").css("height",window.innerHeight);
+
+        // Disable
+        $(document).on('focus', '[data-keyboard=lock]', function() {
+            window.scrollTo(0, 0);
+            if ($('#modal').length) { 
+                $('#modal').addClass('keyboard-lock');
+            }
+        }).on('focusout', '[data-keyboard=lock]', function(){
+            if ($('#modal').length) { 
+                $('#modal').removeClass('keyboard-lock');
+            }
+        });
+    }
+
     // Styled form elements - on load
     styleCheckboxRadio();
     onOffSwitch();   
@@ -380,8 +451,11 @@ $(function($){
 
     // Masked input
     $(document).ajaxComplete(function() {
-        if($('.masked-input').length)
-            $('.masked-input').keyup(resizeInput).each(resizeInput);
+        $('.masked-input').autoGrowInput({
+            comfortZone: 5,
+            minWidth: 20,
+            maxWidth: 300
+        });
     });
 
     // Resize masked inputs to match content width
@@ -389,12 +463,6 @@ $(function($){
         $(this).addClass('active');
     }).on('focusout', '.masked-input', function(){
         $(this).removeClass('active');
-    }).on('change', '.masked-input', function(e){
-        e.stopImmediatePropagation();
-        
-        // TODO - fire this when changes are actually saved, not just on value change
-        // Feedback on change
-        //modalInit('modals/alerts/changes-saved/', 1000);
     });
       
     // Dialog window

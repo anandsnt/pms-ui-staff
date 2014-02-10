@@ -2,7 +2,7 @@ var KeyEmailModal = function(gotoStayCard,gotoSearch) {
 	BaseModal.call(this);
 	var that = this;
 	var reservation_id = getReservationId();
-	this.url = "staff/reservations/" + reservation_id + "/get_key_on_email";
+	this.url = "staff/reservations/" + reservation_id + "/get_key_setup_popup";
 
 	this.delegateEvents = function() {
 		that.myDom.find('#goto-staycard').on('click', that.clickedGotoStayCard);

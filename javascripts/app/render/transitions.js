@@ -281,13 +281,6 @@ $(function($){
     // FastClick
     FastClick.attach(document.body);
 
-    // Set height so that keyboard can push content up
-    var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
-
-    if ($isTablet) {
-        $("#app-page").css("height",window.innerHeight);
-    }
-
 /*  Main screens        *******************************************************/
     
     // First main scren - check is it preloaded or hash from admin app exists
@@ -509,7 +502,7 @@ $(function($){
 /*  Sign In / Sign Out        *************************************************/
     
     // Close drawer when clicked on content
-    $(document).on('click','.page, .nested-view, .page *, .nested-view *',function(e) {
+    $(document).on('click','.page, .nested-view',function(e) {
         var $sameScreen = new chainedAnimation(),
             $delay = 150;
 
