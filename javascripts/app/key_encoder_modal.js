@@ -36,7 +36,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 
 	this.modalDidShow = function() {
 
-		that.showDeviceConnectingMessge();
 		//Apply color themes based on reservation Status
 		if(that.params.reservationStatus == "CHECKING_IN") {
 			that.myDom.find('#print-key').addClass('check-in');
@@ -53,11 +52,15 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			that.myDom.find('#room-status .message').text('Checking Out')
 		}
 
+		//Unbind the overlay click events for billcard popup.
 		if(that.params.origin == views.BILLCARD){
 			that.myDom.find('#modal-close').remove();
 			$("#modal-overlay").unbind("click");
 			$("#modal-overlay").addClass("locked");
 		}
+
+		that.showDeviceConnectingMessge();
+
 
 
 	};
