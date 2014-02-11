@@ -77,6 +77,7 @@ var RegistrationCardView = function(viewDom) {
 	// function to hanlde the click operation in the dom	
 	this.myDomClickHandler = function (event) {
 		that.closeGuestCardDrawer();
+		sntapp.notification.hideMessage(that.myDom);
 		// based on event's target elements we are calling the event operations
 	    if(getParentWithSelector(event, "#checkin-button")) {
 	    	return that.completeCheckin(event);
@@ -282,7 +283,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 	this.completeCheckinFailed = function(errorMessage) {
 		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+		sntapp.notification.showErrorMessage(errorMessage, that.myDom);  
 	  };
 	this.clearSignature = function(e) {
 		that.myDom.find("#signature").jSignature("reset");
@@ -363,6 +364,11 @@ var RegistrationCardView = function(viewDom) {
 			};
 			webservice.postJSON(url, options);
 		}
+	};
+
+	this.fetchFailedOfSave = function(errorMessage){
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage(errorMessage, that.myDom);  
 	};
 
 	this.fetchCompletedOfCompleteCheckout = function(data) {
