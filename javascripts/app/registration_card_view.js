@@ -4,7 +4,8 @@ var RegistrationCardView = function(viewDom) {
 	this.myDom = viewDom;
 	this.reservation_id = getReservationId();
 	this.url = "ui/checkinSuccess";
-
+    this.reviewStatus = [];
+    
 	this.pageinit = function() {
 		this.createHorizontalScroll();
 
@@ -41,6 +42,14 @@ var RegistrationCardView = function(viewDom) {
 		// A dirty hack to allow "this" instance to be refered from sntapp
 		sntapp.setViewInst('registrationCardView', function() {
 			return that;
+		});
+		
+		//Initializing review status list
+		that.myDom.find("#bills-tabs-nav ul li").each(function(i) {
+			var data = {};
+			data.review_status = 0;
+			data.bill_number = $(this).attr("data-bill-number");
+			that.reviewStatus.push(data);
 		});
 	};
 
@@ -331,37 +340,21 @@ var RegistrationCardView = function(viewDom) {
 		element.removeClass("red").addClass("grey");
 		element.attr("disabled","disabled");
 		
-		// Switch to next bill which is not reviewed
-		
-		var current_tab = that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active");
-		var next_tab = that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active").next();
+		// Updating current review status.
 		var current_bill_number = that.getActiveBillNumber();
-		current_tab.addClass('reviewed');
-		
-		// To find next tab - whcih is not reviewed yet
-		that.myDom.find("#bills-tabs-nav ul li").each(function() {
-			var number = $(this).attr('data-bill-number');
-			var is_found = false;
-			if(number == current_bill_number){
-				$(this).addClass('reviewed');
-				is_found = true;
+		for(var i=0; i < that.reviewStatus.length ; i++){
+			if(that.reviewStatus[i].bill_number == current_bill_number){
+				that.reviewStatus[i].review_status = 1;
 			}
-			if(is_found){
-				if(!$(this).next().hasClass('reviewed')){
-					next_tab = $(this).next();
-					is_found =false;
-				}
+		}
+		// To find next tab which is not reviewed before.
+		for(var i=0; i < that.reviewStatus.length ; i++){
+			if(that.reviewStatus[i].review_status == 0){
+				next_tab = that.myDom.find("#bills-tabs-nav ul li[data-bill-number = "+that.reviewStatus[i].bill_number+"]");
+				break;
 			}
-		});
-		console.log(next_tab);
-		
-		next_tab.addClass('ui-tabs-active ui-state-active');
-		current_tab.removeClass("ui-tabs-active ui-state-active");
-		var next_bill_number = next_tab.attr('data-bill-number');
-		console.log(next_bill_number);
-		
-		that.myDom.find("#bill"+next_bill_number).show();
-		that.myDom.find("#bill"+current_bill_number).hide();
+		}
+		next_tab.find('a').trigger('click');
 	};
 	
 	// To select credit card from bill
