@@ -377,7 +377,7 @@ var RegistrationCardView = function(viewDom) {
 		var domElement = $("#bill"+that.getActiveBillNumber());
 	  	if ( !sntapp.getViewInst('addNewPaymentModal') ) {
 	      sntapp.setViewInst('addNewPaymentModal', function() {
-	        return new AddNewPaymentModal('staycard', domElement);
+	        return new AddNewPaymentModal(views.BILLCARD, domElement);
 	      });
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
 	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
@@ -385,7 +385,7 @@ var RegistrationCardView = function(viewDom) {
 	
 	      // if addNewPaymentModal instance exist, but the dom is removed
 	      sntapp.updateViewInst('addNewPaymentModal', function() {
-	        return new AddNewPaymentModal('staycard', domElement);
+	        return new AddNewPaymentModal(views.BILLCARD, domElement);
 	      });
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
 	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
@@ -424,7 +424,7 @@ var RegistrationCardView = function(viewDom) {
 		if (signature == "[]" && required_signature_at == "CHECKOUT")
 			errorMessage = "Signature is missing";
 		else if (!terms_and_conditions)
-			errorMessage = "Please check agree to the Terms & Conditions";
+			errorMessage = "Please check the box to accept the charges";
 
 		if (errorMessage != "") {
 			that.showErrorMessage(errorMessage);
