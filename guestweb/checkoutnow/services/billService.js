@@ -3,14 +3,13 @@
 		var bills = {};
 
 		var fetch = function() {
-			var _this = this;
 			var deferred = $q.defer();
 
 			$http.get('/assets/fauxDB/billDetails.json')
 				.success(function(response) {
-					_this.bills = response;
-					deferred.resolve(_this.bills);
-				})
+					this.bills = response;
+					deferred.resolve(this.bills);
+				}.bind(this))
 				.error(function() {
 					deferred.reject();
 				});

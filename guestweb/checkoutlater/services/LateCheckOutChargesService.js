@@ -3,14 +3,13 @@
 		var charges = {};
 
 		var fetch = function() {
-			var _this = this;
 			var deferred = $q.defer();
 
 			$http.get('/assets/fauxDB/lateCheckOutCharges.json')
 				.success(function(response) {
-					_this.charges = response;
-					deferred.resolve(_this.charges);
-				})
+					this.charges = response;
+					deferred.resolve(this.charges);
+				}.bind(this))
 				.error(function() {
 					deferred.reject();
 				});
