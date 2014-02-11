@@ -12,6 +12,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.maxSecForErrorCalling = 10000;
 	this.key1Printed = false;
 	this.keyFetched = false;
+	this.numOfKeys = 0;
+
 	this.url = "/staff/reservations/" + reservation_id + "/get_key_setup_popup";
 
 	//this.url = "/ui/show?haml_file=modals/keys/_key_encode_modal&json_input=keys/keys_encode.json&is_hash_map=true&is_partial=true";
@@ -19,6 +21,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.delegateEvents = function() {
 		that.myDom.find('#try-again').on('click', that.showDeviceConnectingMessge);
 
+		that.params.origin = views.BILLCARD;
 		if(that.params.origin == views.BILLCARD){
 			that.myDom.find('.cancel-key-popup').on('click', that.showKeyPrintFailure);
 		}else{
@@ -70,7 +73,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		that.myDom.find('#print-keys').hide();
 
 		var options = {
-			'successCallBack': that.deviceConnected,
+			'successCallBack': that.deviceConnecionStatus,
 			'failureCallBack': that.deviceNotConnected			
 		};
 
@@ -99,7 +102,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			}
 
 		}, 1000);
-		
 
 		if(secondsAfterCalled > that.maxSecForErrorCalling){
 			that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('not-connected');
@@ -111,8 +113,11 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 
 	};
 
-	this.deviceConnected = function(data){
+	this.deviceConnecionStatus = function(data){
 
+		if(!data){
+			return that.deviceNotConnected();
+		}
 		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('connected');
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Connected to Key Card Reader!');		
 		that.myDom.find('#key-action').hide();
@@ -168,6 +173,9 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	};
 
 	this.keyCreateSelected = function(){
+		that.myDom.find('#key1').attr('disabled','disabled');
+		that.myDom.find('#key2').attr('disabled','disabled');
+
 		//On selecting the key create button for the first time, get the keys form API.
 		if(!that.keyFetched){
 			that.callKeyFetchAPI();
@@ -211,6 +219,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			//If keys left to print, call the cordova write key function
 			'successCallBack': function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
+				that.myDom.find('#key-status .status').removeClass('error').addClass('success').text('Connected to Key Card Reader!');
+
 				that.numOfKeys--;
 				if(that.numOfKeys == 0){
 					that.showKeyPrintSuccess();
@@ -228,14 +238,14 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			'failureCallBack': function(){
 				sntapp.activityIndicator.hideActivityIndicator();
 				if(that.numOfKeys > 0){
-					that.myDom.find('#key-status .status').removeClass('pending').addClass('error').text('Print key failed, Please try again');
+					that.myDom.find('#key-status .status').removeClass('success').addClass('error').text('Print key failed, Please try again');
 				}
 				else {
 					that.showKeyPrintFailure();
 				}
 
 			},
-			arguments: ['ABCD', keyWriteData , '7009', '']
+			arguments: [keyWriteData, '' , '7009', '']
 		};
 		if(sntapp.cardSwipeDebug){
 			sntapp.cardReader.writeKeyDataDebug(options);
@@ -255,7 +265,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 
 	this.showKeyPrintSuccess = function(){
 		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('connected completed');
-		that.myDom.find('#key-status em').removeClass('pending success icon-key').addClass('info').text('Keys printed!');		
+		that.myDom.find('#key-status em').removeClass('pending success icon-key status').addClass('info').text('Keys printed!');		
 		that.myDom.find('#key-action').hide();
 		that.myDom.find('#print-keys').hide();
 		that.myDom.find('#room-status h1').addClass('icon-key');
@@ -271,8 +281,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	};
 
 	this.showKeyPrintFailure = function(){ 
-		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('connected completed');
-		that.myDom.find('#key-status em').removeClass('pending success icon-key').addClass('error').text('Keys not printed!');		
+		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('not-connected completed');
+		that.myDom.find('#key-status em').removeClass('pending success icon-key status').addClass('info').text('Keys not printed!');		
 		that.myDom.find('#key-action').hide();
 		that.myDom.find('#print-keys').hide();
 		that.myDom.find('#room-status h1').addClass('icon-key');
