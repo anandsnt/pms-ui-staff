@@ -1,0 +1,109 @@
+<div class="jumbotron">
+	<div class="container ">
+		<!-- contentarea starts here-->
+		<div class="container-fluid">
+			<div class="container-fluid">
+				<div class="row headerrow">
+					<logo-image></logo-image>
+				</div>
+			</div>
+			<!-- top section starts here-->
+
+			<div class="row">
+				<div class="col-md-6 ">
+					<h1>{{bills.checkoutText}}</h1>
+					<p class="centeralign leadtext">
+						<span class="lightcontent">{{bills.balanceMessage}}</span>
+					</p>
+					<h1 class="balanceValue">{{ bills.currencyCode}}{{bills.balanceValue}}</h1>
+					<div>
+						<div class="viewbill">
+
+							<a ng-hide="showBill"  ng-click="showBill = true"><img src="assets/img/rightarrow.png" style="width:7% !important; height:auto !important; margin-top:-2%; " alt="" />&nbsp;&nbsp;{{bills.viewBillButtontext}}</a>
+							<a ng-show="showBill" ng-click="showBill = false"><img src="assets/img/downarrow.png" style="width:7% !important; height:auto !important; margin-top:-2%; " alt=""  />&nbsp;&nbsp;{{bills.viewBillButtontext}}</a>
+
+						</div>
+					</div>
+					<div ng-show="showBill">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0" class="viewbilltableview table " >
+
+							<thead >
+								<tr>
+									<td>
+									<div class="details">
+										<div class="room" >
+											{{bills.roomnumber}}
+										</div>
+										<span class="name" >{{bills.name}}</span> | <span class="name" >{{bills.location}}</span>
+									</div></td>
+								</tr>
+								<th width="80%">DESCRIPTION</th>
+								<th>FEEs</th>
+							</thead>
+							<tbody >
+								<tr ng-repeat= "bill in bills.data" style="background:#fcfcfc; border-bottom:5px solid #fff;">
+									<td >
+									<div class="date">
+										{{ bill.date }}
+									</div>
+									<div class="description" >
+										<span class="center-block">{{ bill.description }}</span>
+										<span class="center-block">{{ bill.tax.description }}</span>
+
+									</div>
+									<br />
+									</td>
+									<td>
+									<div>
+										&nbsp;
+									</div>
+									<div class="rate"  >
+										<span class="center-block">{{ bill.amount}}</span>
+										<span class="center-block">{{ bill.tax.amount }}</span>
+									</div>
+									<br />
+									</td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr class="total">
+									<td align="right" >{{bills.totalText}}</td>
+									<td >{{bills.totalValue}}</td>
+								</tr>
+								<tr class="total">
+									<td align="right" >{{bills.creditText}}</td>
+									<td>{{bills.creditValue}}</td>
+								</tr>
+								<tr class="total">
+									<td align="right" >{{bills.balanceText}}</td>
+									<td class="balance" >{{bills.balanceValue}}</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<a href="#checkOutNowSuccess">
+					<div class="col-xs-12 checkoutlater">
+						<div class="row">
+							Accept charges and check out
+						</div>
+						<div class="row  icontop">
+							<img src="assets/img/creditcard_icon.png"  width="104" height="102" alt=""/>
+						</div>
+					</div> </a>
+				</div>
+			</div>
+			<!-- top section ends here-->
+
+			<!-- checkoubtn section ends here-->
+
+			<div class="row">
+				<p class="italictext">
+					<em> The Credit Card on record will be charged</em>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
