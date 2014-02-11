@@ -4,7 +4,7 @@
 	var logoImage = function() {
 		return {
 		restrict : 'E',
-		templateUrl : "shared/directives/logoImagePartial.html"
+		templateUrl : "assets/shared/directives/logoImagePartial.html"
 	}
 	};
 
