@@ -36,6 +36,7 @@ var ZestCheckinConfiguration = function(domRef){
 	 var options = { 
 				requestParameters: data,
 				successCallBack: that.fetchCompletedOfSaveGuestCheckinConfig,
+				failureCallBack : that.fetchFailedOfSaveGuestCheckInConfig,
 				loader: 'blocker'
 	 };
 	 webservice.postJSON(url, options);	
@@ -44,6 +45,10 @@ var ZestCheckinConfiguration = function(domRef){
   // To handle success on save API
   this.fetchCompletedOfSaveGuestCheckinConfig = function(data) {
   	sntapp.notification.showSuccessMessage("Saved successfully", that.myDom);
+  };
+  // To handle success on save API
+  this.fetchFailedOfSaveGuestCheckInConfig = function(errorMessage) {
+  	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   };
   
 };

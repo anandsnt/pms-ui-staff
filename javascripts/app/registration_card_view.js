@@ -4,7 +4,8 @@ var RegistrationCardView = function(viewDom) {
 	this.myDom = viewDom;
 	this.reservation_id = getReservationId();
 	this.url = "ui/checkinSuccess";
-
+    this.reviewStatus = [];
+    
 	this.pageinit = function() {
 		this.createHorizontalScroll();
 
@@ -34,12 +35,21 @@ var RegistrationCardView = function(viewDom) {
 			that.myDom.find("#bill1-fees").removeClass("hidden");
 			that.myDom.find("#signature-pad").addClass("hidden");
 			that.myDom.find("#complete-checkout-button").addClass("hidden");
+			that.myDom.find(".review").addClass("hidden");
 			that.myDom.find("#terms-and-conditions").addClass("hidden");
 		}
 		
 		// A dirty hack to allow "this" instance to be refered from sntapp
 		sntapp.setViewInst('registrationCardView', function() {
 			return that;
+		});
+		
+		//Initializing review status list
+		that.myDom.find("#bills-tabs-nav ul li").each(function(i) {
+			var data = {};
+			data.review_status = 0;
+			data.bill_number = $(this).attr("data-bill-number");
+			that.reviewStatus.push(data);
 		});
 	};
 
@@ -58,11 +68,9 @@ var RegistrationCardView = function(viewDom) {
 			changeView("nested-view", "", "view-nested-first", "view-nested-third", "move-from-right", false);
 		else if ((this.viewParams["from-view"] === views.ROOM_ASSIGNMENT) || (this.viewParams["from-view"] === views.ROOM_UPGRADES))
 			changeView("nested-view", "", "view-nested-second", "view-nested-third", "move-from-right", false);
-
 	};
 
 	this.delegateEvents = function() {
-		this.bill_number = that.myDom.find("#bills li.active").attr('data-bill-number');
 		that.myDom.unbind('click');
 		that.myDom.on('click', that.myDomClickHandler);
 	};
@@ -86,7 +94,11 @@ var RegistrationCardView = function(viewDom) {
 	    	return that.clearSignature(event);
 	    }	    
 	    if(getParentWithSelector(event, "#back-to-staycard")) {
-	    	return that.gotoStayCard(event);
+	    	return that.goAndRefreshStayCard(event);
+	    	//return that.gotoStayCard(event);
+	    }
+	    if(getParentWithSelector(event, "#review-bill-button")) {
+	    	return that.clickedReviewBill(event);
 	    }
 	    if(getParentWithSelector(event, "#complete-checkout-button")) {
 	    	return that.clickedCompleteCheckout(event);
@@ -99,7 +111,18 @@ var RegistrationCardView = function(viewDom) {
 	    }
 	    if(getParentWithSelector(event, "#subscribe")) {
 	    	return that.subscribeCheckboxClicked(event);
-	    }	    	    
+	    }
+	    if(getParentWithSelector(event, "#update_card")) {
+	    	//return that.clickedRemovePayment(event);
+	    	return that.addNewPaymentModal(event);
+	    }
+	    if(getParentWithSelector(event, "#select-card-from-list")) {
+	    	return that.showExistingPayments(event);
+	    }
+	    if(getParentWithSelector(event, "#add-new-payment")) {
+	    	return that.addNewPaymentModal(event);
+	    }
+	    
 	};
 
      // function for closing the drawer if is open
@@ -283,8 +306,8 @@ var RegistrationCardView = function(viewDom) {
 	};
 	this.completeCheckinFailed = function(errorMessage) {
 		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorMessage(errorMessage, that.myDom);  
-	  };
+		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+	};
 	this.clearSignature = function(e) {
 		that.myDom.find("#signature").jSignature("reset");
 	};
@@ -306,15 +329,69 @@ var RegistrationCardView = function(viewDom) {
 		$($loader).prependTo('body').show();
 		changeView("nested-view", "", "view-nested-third", "view-nested-second", "move-from-left", false);
 	};
-	//function on click complete checkout button - If email is null then popup comes to enter email
+	//Review button clicks
+	this.clickedReviewBill = function(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		e.stopImmediatePropagation();
+
+		var element = $(e.target).closest('button');
+		element.removeClass("red").addClass("grey");
+		element.attr("disabled","disabled");
+		
+		// Updating current review status.
+		var current_bill_number = that.getActiveBillNumber();
+		for(var i=0; i < that.reviewStatus.length ; i++){
+			if(that.reviewStatus[i].bill_number == current_bill_number){
+				that.reviewStatus[i].review_status = 1;
+			}
+		}
+		// To find next tab which is not reviewed before.
+		for(var i=0; i < that.reviewStatus.length ; i++){
+			if(that.reviewStatus[i].review_status == 0){
+				next_tab = that.myDom.find("#bills-tabs-nav ul li[data-bill-number = "+that.reviewStatus[i].bill_number+"]");
+				break;
+			}
+		}
+		next_tab.find('a').trigger('click');
+	};
+	
+	// To select credit card from bill
+	this.showExistingPayments = function(e) {
+		var domElement = $("#bill"+that.getActiveBillNumber());
+		var showExistingPaymentModal = new ShowExistingPaymentModal(domElement);
+    	showExistingPaymentModal.initialize();
+    	showExistingPaymentModal.params = {"bill_number":that.getActiveBillNumber(),"origin":views.BILLCARD};
+	};
+	// To add new payment from bill card
+	this.addNewPaymentModal = function(event, options){
+		var domElement = $("#bill"+that.getActiveBillNumber());
+	  	if ( !sntapp.getViewInst('addNewPaymentModal') ) {
+	      sntapp.setViewInst('addNewPaymentModal', function() {
+	        return new AddNewPaymentModal('staycard', domElement);
+	      });
+	      sntapp.getViewInst('addNewPaymentModal').initialize();
+	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
+	    } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
+	
+	      // if addNewPaymentModal instance exist, but the dom is removed
+	      sntapp.updateViewInst('addNewPaymentModal', function() {
+	        return new AddNewPaymentModal('staycard', domElement);
+	      });
+	      sntapp.getViewInst('addNewPaymentModal').initialize();
+	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
+	    }
+  	};
+	//function on click complete checkout button
 	this.clickedCompleteCheckout = function(e) {
 		e.stopPropagation();
 		e.preventDefault();
 		e.stopImmediatePropagation();
 
 		var email = $("#gc-email").val();
+		// If email is null then popup comes to enter email
 		if (email == "") {
-			var validateCheckoutModal = new ValidateCheckoutModal(that.completeCheckout, e);
+			var validateCheckoutModal = new ValidateCheckoutModal(that.completeCheckout,e);
 			validateCheckoutModal.initialize();
 			validateCheckoutModal.params = {
 				"type" : "NoEmail"
@@ -325,78 +402,54 @@ var RegistrationCardView = function(viewDom) {
 		}
 
 	};
-
+	// Complete checkout operation
 	this.completeCheckout = function(e) {
-		var required_signature_at = $(e.target).attr('data-required-signature');
-		var balance_amount = that.myDom.find("#balance-amount").attr("data-balance-amount");
-		if (balance_amount > 0) {
-			// When balance amount is greater than 0 - perform payment action.
-			that.payButtonClicked();
+		
+		var required_signature_at = that.myDom.find("#complete-checkout-button").attr('data-required-signature');
+		
+		var email = $("#gc-email").val();
+		var signature = JSON.stringify(that.myDom.find("#signature").jSignature("getData", "native"));
+		var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked") ? 1 : 0;
+		var errorMessage = "";
+
+		if (signature == "[]" && required_signature_at == "CHECKOUT")
+			errorMessage = "Signature is missing";
+		else if (!terms_and_conditions)
+			errorMessage = "Please check agree to the Terms & Conditions";
+
+		if (errorMessage != "") {
+			that.showErrorMessage(errorMessage);
+			return;
 		}
-		else {
-			// When balance amount is 0 - perform complete check out action.
-			var email = $("#gc-email").val();
-			var signature = JSON.stringify(that.myDom.find("#signature").jSignature("getData", "native"));
-			var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked") ? 1 : 0;
-			var errorMessage = "";
-
-			if (signature == "[]" && required_signature_at == "CHECKOUT")
-				errorMessage = "Signature is missing";
-			else if (!terms_and_conditions)
-				errorMessage = "Please check the box to accept the charges";
-				
-			if (errorMessage != "") {
-				that.showErrorMessage(errorMessage);
-				return;
-			}
-			var url = '/staff/checkout';
-			var webservice = new WebServiceInterface();
-			var data = {
-				"reservation_id" : that.reservation_id,
-				"email" : email,
-				"signature" : signature
-			};
-			var options = {
-				requestParameters : data,
-				successCallBack : that.fetchCompletedOfCompleteCheckout,
-				failureCallBack : that.fetchFailedOfSave,
-				loader : 'blocker'
-			};
-			webservice.postJSON(url, options);
-		}
+		var url = '/staff/checkout';
+		var webservice = new WebServiceInterface();
+		var data = {
+			"reservation_id" : that.reservation_id,
+			"email" : email,
+			"signature" : signature
+		};
+		var options = {
+			requestParameters : data,
+			successCallBack : that.fetchCompletedOfCompleteCheckout,
+			failureCallBack : that.fetchFailedOfCompleteCheckout,
+			loader : 'blocker'
+		};
+		webservice.postJSON(url, options);
 	};
-
-	this.fetchFailedOfSave = function(errorMessage){
-		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorMessage(errorMessage, that.myDom);  
-	};
-
+	// Success of complete checkout
 	this.fetchCompletedOfCompleteCheckout = function(data) {
 		that.showSuccessMessage(data.data, that.goToSearchScreen);
 	};
-
-	// To show payment modal
-	this.payButtonClicked = function() {
-		var billCardPaymentModal = new BillCardPaymentModal(that.reloadBillCardPage);
-		var bill_number = that.myDom.find("#bills-tabs-nav li.ui-tabs-active").attr('data-bill-number');
-		billCardPaymentModal.params = {
-			"bill_number" : bill_number
-		};
-
-		// send swipedCardData to bill card payment modal
-		if (that.swipedCardData) {
-			billCardPaymentModal.params = {
-				"swipedCardData" : that.swipedCardData
-			};
-		};
-
-		billCardPaymentModal.initialize();
+	// Failure of complete checkout
+	this.fetchFailedOfCompleteCheckout = function(errorMessage) {
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
 	};
 	// To show post charge modal
 	this.addNewButtonClicked = function() {
 		var postChargeModel = new PostChargeModel(that.reloadBillCardPage);
 		postChargeModel.initialize();
-		var bill_number = that.myDom.find("#bills-tabs-nav li.ui-tabs-active").attr('data-bill-number');
+		var bill_number = that.getActiveBillNumber();
 		postChargeModel.params = {
 			"origin" : views.BILLCARD,
 			"bill_number" : bill_number
@@ -409,6 +462,10 @@ var RegistrationCardView = function(viewDom) {
 		//Do not call 'initialize' method for this object. which results multiple event binding
 		var searchView = new Search();
 		searchView.clearResults();
+	};
+	// To get current active bill's bill-number
+	this.getActiveBillNumber =  function() {
+		return that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active").attr('data-bill-number');
 	};
 
 };
