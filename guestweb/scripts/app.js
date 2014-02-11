@@ -40,8 +40,18 @@ snt.config(['$routeProvider', function($routeProvider) {
 	});
 }]);
 
-snt.controller('rootController', ['$scope','$attrs', 'UserService', function($scope,$attrs, UserService) {
-	alert("token------"+$attrs.token)
+snt.controller('rootController', ['$scope','$attrs', 'UserService','$location', function($scope,$attrs, UserService,$location) {
+	console.log($attrs)
+	alert("TOKEN------"+$attrs.token)
+	alert("ID------"+$attrs.reservationid	)
+	alert("TYPE------"+$attrs.checkouttype)
+
+
+	if ($attrs.checkouttype ==  "checkoutNow") 
+		$location.path('/checkOutNow')
+	else
+		//to do 
+
 	
 	UserService.fetch().then(function(user) {
 		$scope.user = user;
