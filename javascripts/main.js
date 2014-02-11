@@ -546,7 +546,7 @@ $(function($){
     $(document).on('click', '.nav-toggle', function(e) {
         e.preventDefault();
         e.stopImmediatePropagation();
-
+		$('#main-menu').show(); //Added to fix issue CICO-4328.
         var $toggleNavigation = new chainedAnimation(),
             $delay = 150,
             $menuOpen = 'menu-open',
