@@ -318,8 +318,17 @@ var RegistrationCardView = function(viewDom) {
 	};
 	
 	this.goAndRefreshStayCard = function(e) {
+		
 		var staycardView = new StayCard($("#view-nested-first"));
       	staycardView.refreshReservationDetails(that.reservation_id, that.gotoStayCard);
+      	
+      	// To update reservation card icon on reservation listing after : complete checkin -> keys -> goto staycard
+      	if(e === undefined){
+	      	var confirmation_num = getCurrentConfirmation();
+	      	var reservation_status = $("#reservation-"+confirmation_num).attr("data-reservation-status");
+      		var reservation_icon = "guest-status inhouse small-icon";
+      		$("#reservation-listing ul li[data-confirmation-num = "+confirmation_num+"] span.guest-status").removeClass().addClass(reservation_icon);
+		}
 	};
 	
 	this.goToRoomUpgradeView = function(e) {
