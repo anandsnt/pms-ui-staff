@@ -3,14 +3,13 @@
 		var details = {};
 
 		var fetch = function() {
-			var _this = this;
 			var deferred = $q.defer();
 
 			$http.get('/assets/fauxDB/confirmationPageDetails.json')
 				.success(function(response) {
-					_this.details = response;
-					deferred.resolve(_this.details);
-				})
+					this.details = response;
+					deferred.resolve(this.details);
+				}.bind(this))
 				.error(function() {
 					deferred.reject();
 				});

@@ -15,8 +15,8 @@ var ValidateCheckoutModal = function(callBack, callBackParam) {
 	};
 	//when clicks on ignore and go to checkout - do the actions for checkout
 	this.goToCheckout = function(){
-		callBack(callBackParam);
-		that.hide();
+		//callBack(callBackParam);
+		that.hide(callBack);
 	};
 	this.modalInit = function(callBack, callBackParam) {
 	};

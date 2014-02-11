@@ -3,14 +3,13 @@
 		var urls = {};
 
 		var fetch = function() {
-			var _this = this;
 			var deferred = $q.defer();
 
 			$http.get('assets/fauxDB/urls.json')
 				.success(function(response) {
-					_this.urls = response;
-					deferred.resolve(_this.urls);
-				})
+					this.urls = response;
+					deferred.resolve(this.urls);
+				}.bind(this))
 				.error(function() {
 					deferred.reject();
 				});

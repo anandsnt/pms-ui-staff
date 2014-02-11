@@ -116,13 +116,16 @@ var RoomAssignmentView = function(viewDom){
   };
 
   this.clearFiltersClicked = function(e){
+    console.log('clearFiltersClicked');
     var filteredRoomList = [];
     for (var i = 0; i< that.roomCompleteList.length; i++){
         if((that.roomCompleteList[i].room_status === "READY") &&
-         (that.roomCompleteList[i].fo_status === "VACANT")){
+         (that.roomCompleteList[i].fo_status === "VACANT") && !(that.roomCompleteList[i].is_preassigned)){
           filteredRoomList.push(that.roomCompleteList[i]); 
       }
     }
+
+    console.log(JSON.stringify(filteredRoomList));
     //Apply filters using due-out status, ready status.
     that.displayRoomsList(filteredRoomList);
   };
@@ -283,7 +286,7 @@ var RoomAssignmentView = function(viewDom){
 	} 
     else {
     	var appendHTML =   '<span class="icon-no-content icon-room"></span>'+
-    	                   '<strong class="h1">Unfortunately there are no rooms ready yet.'+
+    	                   '<strong class="h1">Unfortunately there are no rooms ready yet. '+
     	                   'Try changing some of the filter criteria</strong>';
     	that.myDom.find("#rooms-available").removeClass("scrollable") ;     
     	that.myDom.find("#rooms-available").addClass("no-content") ;   
