@@ -1,0 +1,11 @@
+<div class="jumbotron">
+	<div class="container">
+		<h1>Checkout later</h1>
+		<p>Select your new checkout time:</p>
+		<ul class="list-inline">
+			<li ng-repeat="charge in charges">
+				<a class="btn btn-primary btn-lg btn-success" role="button" href="#checkOutLaterSuccess/{{ charge.id }}"><span class="glyphicon glyphicon-star"></span> {{ charge.time | format12 }} for {{ charge.amount | currency }}</a>
+			</li>
+		</ul>
+	</div>
+</div>

@@ -1,0 +1,11 @@
+{
+	"date": "09-03-2013",
+	"time": "11.30am",
+	"roomnumber": "Room 139",
+	"readyMessageText": "Ready to check out?",
+	"checkoutTimeText": "Check-out time is 11.30am",
+	"buttonText": "Check out Now",
+	"checkoutMessagePart1": "Late check-out is not available.",
+	"checkoutMessagePart2": "Come back to this page to check",
+	"checkoutMessagePart3": "out at time before 11.30 am."
+}
