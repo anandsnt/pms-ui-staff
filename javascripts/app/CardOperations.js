@@ -177,13 +177,13 @@ var CardOperation = function(){
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
-		var deviceStatus = true;
+		var deviceStatus = false;
 
 		setTimeout(function(){
-			if(deviceStatus)
+			//if(deviceStatus)
 				successCallBack(deviceStatus, successCallBackParameters);
-			else
-				failureCallBack(deviceStatus, successCallBackParameters);
+			//else
+				//failureCallBack(deviceStatus, successCallBackParameters);
 		}, 1000)		
 	};
 };
