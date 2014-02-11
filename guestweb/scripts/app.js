@@ -41,7 +41,9 @@ snt.config(['$routeProvider', function($routeProvider) {
 	});
 }]);
 
-snt.controller('rootController', ['$scope', 'UserService', function($scope, UserService) {
+snt.controller('rootController', ['$scope','$attrs', 'UserService', function($scope,$attrs, UserService) {
+	alert("token------"+$attrs.token)
+	
 	UserService.fetch().then(function(user) {
 		$scope.user = user;
 	});
