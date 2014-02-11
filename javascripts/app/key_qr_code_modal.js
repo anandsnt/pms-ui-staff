@@ -9,8 +9,6 @@ var KeyQrCodeModel = function(gotoStayCard,gotoSearch) {
 		that.myDom.find('#goto-staycard').on('click', that.clickedGotoStayCard);
 		that.myDom.find('#goto-search').on('click', that.clickedGotoSearch);
 		$("#modal-overlay , #modal-close").on('click', that.closeButtonClicked);
-		
-
 	};
 	
 	this.modalDidShow = function() {

@@ -1,13 +1,12 @@
 /**
-*
+* 
 *
 */
 
 var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	BaseModal.call(this);
-	that = this;
+	var that = this;
 	var reservation_id = getReservationId();
-
 	this.noOfErrorMethodCalled = 0;
 	this.maxSecForErrorCalling = 10000;
 	this.key1Printed = false;
@@ -21,11 +20,11 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.delegateEvents = function() {
 		that.myDom.find('#try-again').on('click', that.showDeviceConnectingMessge);
 
-		that.params.origin = views.BILLCARD;
 		if(that.params.origin == views.BILLCARD){
 			that.myDom.find('.cancel-key-popup').on('click', that.showKeyPrintFailure);
 		}else{
 			that.myDom.find('.cancel-key-popup').on('click', function(){
+				that.cancelWriteOperation();
 				that.hide();
 			});
 		}
@@ -34,6 +33,32 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		that.myDom.find('#create-key').on('click', that.keyCreateSelected);
 		that.myDom.find('#goto-staycard').on('click', that.clickedGotoStayCard);
 		that.myDom.find('#goto-search').on('click', that.clickedGotoSearch);
+
+	};
+
+	/*
+	* method for cancelling the write operation
+	*/
+	this.cancelWriteOperation = function(){
+		var options = {
+			 'successCallBack': that.successCallbackOfCancelWriteOperation,
+			 'failureCallBack': that.failureCallbackOfCancelWriteOperation
+		};
+		sntapp.cardReader.cancelWriteOperation(options);
+	};
+
+	/*
+	* success call back of cancel write operation
+	*/
+	this.successCallbackOfCancelWriteOperation = function(data){
+
+	};
+
+
+	/*
+	* failure call back of cancel write operation
+	*/
+	this.failureCallbackOfCancelWriteOperation = function(errorObject){
 
 	};
 
@@ -66,6 +91,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	};
 
 	this.showDeviceConnectingMessge = function(){
+		
+
 		that.myDom.find('#room-status, #key-status').removeClass('not-connected').addClass('connecting');
 		that.myDom.find('#key-status .status').removeClass('error').addClass('pending').text('Connecting to Key Card Reader ...');
 		that.myDom.find('#key-action').hide();
@@ -104,6 +131,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		}, 1000);
 
 		if(secondsAfterCalled > that.maxSecForErrorCalling){
+			that.noOfErrorMethodCalled = 0;
 			that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('not-connected');
 			that.myDom.find('#key-status .status').removeClass('pending').addClass('error').text('Error connecting to Key Card Reader!');
 			that.myDom.find('#print-keys').hide();
@@ -294,6 +322,9 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			that.myDom.find('#print-over-action #goto-staycard').addClass('hidden');
 			that.myDom.find('#print-over-action #goto-search').addClass('hidden');
 		}
+
+		that.cancelWriteOperation();
+
 	};
 
 	// To handle Goto StayCard

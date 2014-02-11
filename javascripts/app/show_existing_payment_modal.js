@@ -22,7 +22,8 @@ var ShowExistingPaymentModal = function(backView){
 		var webservice = new WebServiceInterface();
 	    var data = {
 	    		reservation_id : reservation_id,
-				user_payment_type_id: selectedElement			   
+				user_payment_type_id: selectedElement,
+				bill_number : that.params["bill_number"]			   
 	    };
 	    var url = '/staff/reservation/link_payment'; 
 	    var options = {
@@ -58,10 +59,25 @@ var ShowExistingPaymentModal = function(backView){
 	    backView.find("#select-card-from-list").html(replaceHtml);
 	    backView.find("#add-new-payment").remove();
 		//to remove add button and show delete icon on succesfull addition of new credit card
+
 		backView.find('#update_card').remove();
 		var appendHtml = '<a id="update_card" data-payment-id="'+data.data.id+'" class="button with-icon green">'+
 							'<span class="icons icon-wallet invert"></span>Update CC</a>';
-		backView.find(".payment_actions").append(appendHtml);
+							
+        if(that.params["origin"] == views.BILLCARD){
+        	backView.find(".item-payment").append(appendHtml);
+        	
+        	// To update bill tab paymnt info
+        	var billTabHtml = '<figure class="card-logo"><img src="/assets/'+params["image"]+'" alt="">'+
+							'<span class="number">'+params["number"]+'</span></figure>';
+							
+			$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html("");		
+			$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html(billTabHtml);	
+        }
+        else{
+			backView.find(".payment_actions").append(appendHtml);
+		}
+
 		that.hide();
 	};
    /**

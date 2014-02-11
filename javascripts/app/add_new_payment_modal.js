@@ -57,14 +57,30 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 								"</span></span><span class='date'> Date <span class='value date'>"+
 								$newDate+
 								"</span>";
-		    						
 			currentStayCardView.find("#select-card-from-list").html(replaceHtml);
 			currentStayCardView.find("#add-new-payment").remove();
 			//to remove add button and show delete icon on succesfull addition of new credit card
 			currentStayCardView.find('#update_card').remove();
 			var appendHtml = '<a id="update_card" data-payment-id="'+data.data.id+'" class="button with-icon green">'+
-								'<span class="icons icon-wallet invert"></span>Update CC</a>';
-			currentStayCardView.find(".payment_actions").append(appendHtml);
+								'<span class="icons icon-wallet"></span>Update CC</a>';
+			
+			
+			if(that.params["origin"] == views.BILLCARD){
+				currentStayCardView.find("#select-card-from-list").removeClass('hidden');
+        		currentStayCardView.find(".item-payment").append(appendHtml);
+        		
+        		// To update bill tab paymnt info
+	        	var billTabHtml = '<figure class="card-logo"><img src="/assets/'+$newImage+'" alt="">'+
+								'<span class="number">'+$endingWith+'</span></figure>';
+								
+				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html("");		
+				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html(billTabHtml);
+	        }
+	        else{			
+				currentStayCardView.find(".payment_actions").append(appendHtml);
+			}
+			
+
 			//if add to guest card is on, then update guest card payment tab with new one
 			if(requestParameters["add_to_guest_card"] == "true"){
 				$image = "<img src='/assets/"+$newImage+"' alt=''>";
@@ -205,7 +221,8 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 				    card_expiry: $card_expiry,
 				    name_on_card: $name_on_card,
 				    mli_token: $card_token,
-				    add_to_guest_card: add_to_guest_card
+				    add_to_guest_card: add_to_guest_card,
+				    bill_number : that.params["bill_number"]
 		    };		
 		    var url = 'staff/reservation/save_payment'; 
 		    var options = {
