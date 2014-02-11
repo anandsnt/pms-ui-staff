@@ -140,7 +140,7 @@ var CardOperation = function(){
 	};
 	
 	// function for stop reading from device
-	this.stopReader = function(){
+	this.stopReader = function(options){
 		options['service'] = "RVCardPlugin";
 		options['action'] = "cancelSwipeObservation";		
 		that.callCordovaService(options);		
@@ -148,9 +148,19 @@ var CardOperation = function(){
 	};	
 
 	/**
+	* method for stop/cancel writing operation 
+	*/
+	this.cancelWriteOperation = function(options){
+		options['service'] = "RVCardPlugin";
+		options['action'] = "cancelWriteOperation";		
+		that.callCordovaService(options);			
+	};
+
+	/**
 	* method for checking the device connected status
-	* will call success call back with data as true if connected,
-	* otherwise false
+	* will call success call back if it is fail or connected (bit confusing?)
+	* success call back with data as false if disconnected
+	* success call back with data as true if connected	
 	*/
 	// function to check device status
 	this.checkDeviceConnected = function(options){
