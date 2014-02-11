@@ -21,7 +21,6 @@ snt.config(['$routeProvider', function($routeProvider) {
 		controller: 'checkOutConfirmationController'
 	});
 
-
 	$routeProvider.when('/checkOutNowSuccess', {
 		templateUrl: 'assets/checkoutnow/partials/checkOutNowSuccess.html'
 	});
