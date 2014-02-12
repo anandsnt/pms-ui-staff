@@ -125,13 +125,11 @@ var StayCard = function(viewDom){
       switch(sntapp.cardSwipeCurrView){
         // respond to StayCardView
         case 'StayCardView':
-          //stayCardViewResponse();
           respondToSwipe("staycard", that.myDom, {});
           break;
 
         //respond to GuestBillView
         case 'GuestBillView':
-          //guestBillViewResponse();
           //To get the current bill number we are re-using the bill card view object
           var regCardView = sntapp.getViewInst('registrationCardView');
           var domElement = $("#bill" + regCardView.getActiveBillNumber());
@@ -142,7 +140,6 @@ var StayCard = function(viewDom){
 
         //respond to GuestCardView
         case 'GuestCardView':
-          //guestCardView();
           respondToSwipe("guest", that.myDom, {});
 
           break;
