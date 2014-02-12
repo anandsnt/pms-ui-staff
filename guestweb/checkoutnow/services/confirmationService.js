@@ -1,18 +1,15 @@
 (function() {
-	var confirmationService = function($http, $q) {
+	var confirmationService = function($q,baseWebService) {
 		var details = {};
 
 		var fetch = function() {
 			var deferred = $q.defer();
 
-			$http.get('/assets/fauxDB/confirmationPageDetails.json')
-				.success(function(response) {
-					this.details = response;
-					deferred.resolve(this.details);
-				}.bind(this))
-				.error(function() {
-					deferred.reject();
-				});
+			baseWebService.fetch('/assets/fauxDB/confirmationPageDetails.json').then(function(response) {
+				this.details = response;
+				deferred.resolve(this.details);
+			});
+
 
 			return deferred.promise;
 		};
@@ -24,10 +21,10 @@
 	};
 
 	var dependencies = [
-		'$http',
-		'$q',
+		'$q','baseWebService',
 		confirmationService
 	];
 
 	snt.factory('confirmationService', dependencies);
 })();
+

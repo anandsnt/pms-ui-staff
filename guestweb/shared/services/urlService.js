@@ -1,19 +1,16 @@
 (function() {
-	var UrlService = function($http, $q) {
+	var UrlService = function( $q,baseWebService) {
 		var urls = {};
 
 		var fetch = function() {
 			var deferred = $q.defer();
 
-			$http.get('assets/fauxDB/urls.json')
-				.success(function(response) {
+
+			baseWebService.fetch('assets/fauxDB/urls.json').then(function(response) {
 					this.urls = response;
 					deferred.resolve(this.urls);
-				}.bind(this))
-				.error(function() {
-					deferred.reject();
-				});
-
+			});
+		
 			return deferred.promise;
 		};
 
@@ -24,8 +21,7 @@
 	};
 
 	var dependencies = [
-		'$http',
-		'$q',
+		'$q','baseWebService',
 		UrlService
 	];
 
