@@ -1,18 +1,15 @@
 (function() {
-	var BillService = function($http, $q) {
+	var BillService = function($http, $q,baseWebService) {
 		var bills = {};
 
 		var fetch = function() {
 			var deferred = $q.defer();
 
-			$http.get('/assets/fauxDB/billDetails.json')
-				.success(function(response) {
-					this.bills = response;
-					deferred.resolve(this.bills);
-				}.bind(this))
-				.error(function() {
-					deferred.reject();
-				});
+			baseWebService.fetch('/assets/fauxDB/billDetails.json').then(function(response) {
+				this.bills = response;
+				deferred.resolve(this.bills);
+			});
+		
 
 			return deferred.promise;
 		};
@@ -25,7 +22,7 @@
 
 	var dependencies = [
 		'$http',
-		'$q',
+		'$q','baseWebService',
 		BillService
 	];
 

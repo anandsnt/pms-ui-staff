@@ -1,14 +1,14 @@
 (function() {
-	var BaseService = function($http, $q) {
-		// var response = {};
+	var baseWebService = function($http, $q) {
+		var details = {};
 
 		var fetch = function(url) {
 			var deferred = $q.defer();
 
 			$http.get(url)
 				.success(function(response) {
-					// this.response = response;
-					deferred.resolve(response);
+					this.details = response;
+					deferred.resolve(this.details);
 				}.bind(this))
 				.error(function() {
 					deferred.reject();
@@ -18,7 +18,7 @@
 		};
 
 		return {
-			//urls: urls,
+			details: details,
 			fetch: fetch
 		}
 	};
@@ -26,8 +26,8 @@
 	var dependencies = [
 		'$http',
 		'$q',
-		BaseService
+		baseWebService
 	];
 
-	snt.factory('BaseService', dependencies);
+	snt.factory('baseWebService', dependencies);
 })();
