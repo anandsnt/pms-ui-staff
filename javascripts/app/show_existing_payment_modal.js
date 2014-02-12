@@ -68,11 +68,12 @@ var ShowExistingPaymentModal = function(backView){
         	backView.find(".item-payment").append(appendHtml);
         	
         	// To update bill tab paymnt info
-        	var billTabHtml = '<figure class="card-logo"><img src="/assets/'+params["image"]+'" alt="">'+
-							'<span class="number">'+params["number"]+'</span></figure>';
+        	var billTabHtml = '<img src="/assets/'+params["image"]+'" alt="">'+
+							'<span class="number">'+params["number"]+'</span>';
 							
 			$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html("");		
 			$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html(billTabHtml);	
+			$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).addClass('card-logo');
         }
         else{
 			backView.find(".payment_actions").append(appendHtml);

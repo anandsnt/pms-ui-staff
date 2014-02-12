@@ -5,6 +5,7 @@ var RegistrationCardView = function(viewDom) {
 	this.reservation_id = getReservationId();
 	this.url = "ui/checkinSuccess";
     this.reviewStatus = [];
+    this.isAllBillsReviewed = false;
     
 	this.pageinit = function() {
 		this.createHorizontalScroll();
@@ -355,16 +356,23 @@ var RegistrationCardView = function(viewDom) {
 				that.reviewStatus[i].review_status = 1;
 			}
 		}
-		// To find next tab which is not reviewed before.
+		
+		that.findNextBillToReview();
+		
+	};
+	// To find next tab which is not reviewed before.
+	this.findNextBillToReview = function() {
 		for(var i=0; i < that.reviewStatus.length ; i++){
 			if(that.reviewStatus[i].review_status == 0){
+				// when all bills reviewed and reached final bill
+				if(that.reviewStatus.length == (i+1)) that.isAllBillsReviewed = true;
+				
 				next_tab = that.myDom.find("#bills-tabs-nav ul li[data-bill-number = "+that.reviewStatus[i].bill_number+"]");
 				break;
 			}
 		}
 		next_tab.find('a').trigger('click');
 	};
-	
 	// To select credit card from bill
 	this.showExistingPayments = function(e) {
 		var domElement = $("#bill"+that.getActiveBillNumber());
@@ -413,6 +421,11 @@ var RegistrationCardView = function(viewDom) {
 	};
 	// Complete checkout operation
 	this.completeCheckout = function(e) {
+		
+		if(!that.isAllBillsReviewed){
+			that.findNextBillToReview();
+			return;
+		}
 		
 		var required_signature_at = that.myDom.find("#complete-checkout-button").attr('data-required-signature');
 		
