@@ -1,8 +1,7 @@
 
 (function() {
-	var checkOutConfirmationController = function($scope, confirmationService) {
-	
-
+	var checkOutConfirmationController = function($scope, confirmationService,$window) {
+		
 		confirmationService.fetch().then(function(details) {
 			$scope.details = details;
 		
@@ -12,7 +11,7 @@
 
 	var dependencies = [
 		'$scope',
-		'confirmationService',
+		'confirmationService','$window',
 		checkOutConfirmationController
 	];
 

@@ -34,24 +34,26 @@ snt.config(['$routeProvider', function($routeProvider) {
 		templateUrl: 'assets/checkoutlater/partials/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController'
 	})
+	$routeProvider.when('/authFailed', {
+		templateUrl: 'assets/shared/authenticationFailedView.html'
+	});
 
 	$routeProvider.otherwise({
 		redirectTo: '/'
 	});
 }]);
 
-snt.controller('rootController', ['$scope','$attrs', 'UserService','$location','authenticationService', function($scope,$attrs, UserService,$location,authenticationService) {
+snt.controller('rootController', ['$scope','$attrs', 'UserService','$location','$window','authenticationService', function($scope,$attrs, UserService,$location,$window,authenticationService) {
 
-	alert("TOKEN------"+$attrs.token+"\n\nID------"+$attrs.reservationid+"\n\nTYPE------"+$attrs.checkouttype)
-
-/* need to work on
+	/* need to work on
 
 	if ($attrs.checkouttype ==  "checkoutNow") 
 		$location.path('/checkOutNow')
 	else
 		//to do 
-*/
-
+		*/
+	if ($window.sessionStorage.token)
+	delete $window.sessionStorage.token
 	
 	UserService.fetch().then(function(user) {
 		$scope.user = user;
@@ -66,5 +68,37 @@ snt.controller('rootController', ['$scope','$attrs', 'UserService','$location','
 
 	authenticationService.setAuthenticationDetails(authenticationData)
 
+	$window.sessionStorage.token = authenticationData.token
+
+	alert($window.sessionStorage.token+"---sessionStorage token")
+
 	
 }]);
+
+
+snt.factory('authInterceptor', function ($rootScope, $q, $window,$location) {
+  return {
+    request: function (config) {
+      config.headers = config.headers || {};
+      if ($window.sessionStorage.token) {
+        config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
+      }
+      else{
+      	$location.path('/authFailed');
+      }
+      return config;
+    },
+    response: function (response) {
+    
+         if (response.status === 401) {
+        // handle the case where the user is not authenticated
+      }
+     
+      return response || $q.when(response);
+    }
+  };
+});
+
+snt.config(function ($httpProvider) {
+  $httpProvider.interceptors.push('authInterceptor');
+});
