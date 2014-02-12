@@ -1,5 +1,5 @@
 (function() {
-	var UserService = function($http, $q,baseWebService) {
+	var UserService = function( $q,baseWebService) {
 		var user = {};
 
 		var fetch = function() {
@@ -20,8 +20,7 @@
 	};
 
 	var dependencies = [
-		'$http',
-		'$q','baseWebService',
+	'$q','baseWebService',
 		UserService
 	];
 

@@ -1,5 +1,5 @@
 (function() {
-	var BillService = function($http, $q,baseWebService) {
+	var BillService = function($q,baseWebService) {
 		var bills = {};
 
 		var fetch = function() {
@@ -21,7 +21,6 @@
 	};
 
 	var dependencies = [
-		'$http',
 		'$q','baseWebService',
 		BillService
 	];

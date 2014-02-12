@@ -1,5 +1,5 @@
 (function() {
-	var confirmationService = function($http, $q,baseWebService) {
+	var confirmationService = function($q,baseWebService) {
 		var details = {};
 
 		var fetch = function() {
@@ -21,7 +21,6 @@
 	};
 
 	var dependencies = [
-		'$http',
 		'$q','baseWebService',
 		confirmationService
 	];

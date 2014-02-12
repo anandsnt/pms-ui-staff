@@ -1,5 +1,5 @@
 (function() {
-	var UrlService = function($http, $q,baseWebService) {
+	var UrlService = function( $q,baseWebService) {
 		var urls = {};
 
 		var fetch = function() {
@@ -21,7 +21,6 @@
 	};
 
 	var dependencies = [
-		'$http',
 		'$q','baseWebService',
 		UrlService
 	];
