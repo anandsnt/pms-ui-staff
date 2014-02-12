@@ -89,60 +89,32 @@ var StayCard = function(viewDom){
 
     var swipedCardData = swipedCardData;
 
-//Please delete the explicit implementation.
+    //Please delete the explicit implementation.
     var url = '/staff/payments/tokenize';
+    
+    /*
+    * Function for listening from swipe in staycard, guestcard, billcard
+    */
+    var respondToSwipe = function (fromPage, domElement, params){
 
-    // respond to StayCardView
-    var stayCardViewResponse = function() {
-      // if addNewPaymentModal instance doen't exist, create it
-      // else if addNewPaymentModal instance exist, but the dom is removed
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
-        sntapp.setViewInst('addNewPaymentModal', function() {
-          return new AddNewPaymentModal('staycard', that.myDom);
+         sntapp.setViewInst('addNewPaymentModal', function() {
+           return new AddNewPaymentModal(fromPage, domElement);
         });
       } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
-        sntapp.updateViewInst('addNewPaymentModal', function() {
-          return new AddNewPaymentModal('staycard', that.myDom);
+       // if addNewPaymentModal instance exist, but the dom is removed
+         sntapp.updateViewInst('addNewPaymentModal', function() {
+           return new AddNewPaymentModal(fromPage, domElement);
         });
       }
-
       sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
       sntapp.getViewInst('addNewPaymentModal').initialize();
-    };
-
-    // respond to GuestBillView
-    var guestBillViewResponse = function() {
-      var currentCardToken = $('#select-card-from-list').attr('data-token');
-
-      // if the guest uses a registered card, show bill payment modal
-      if (currentCardToken == swipedCardData.token.slice(-4)) {
-        sntapp.getViewInst('registrationCardView').swipedCardData = swipedCardData;
-        sntapp.getViewInst('registrationCardView').payButtonClicked();
-      } else {
-        alert('Sorry, The swiped credit card is not associated with current reservation');
-         // sntapp.notification.showErrorMessage('You can only use card associated with current reservation');
-        
-        
-      }
-    };
-
-    // respond to GuestCardView
-    var guestCardView = function() {
-      // if addNewPaymentModal instance doen't exist, create it
-      // else if addNewPaymentModal instance exist, but the dom is removed
-      if ( !sntapp.getViewInst('addNewPaymentModal') ) {
-        sntapp.setViewInst('addNewPaymentModal', function() {
-          return new AddNewPaymentModal('guest', that.myDom);
-        });
-      } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
-        sntapp.updateViewInst('addNewPaymentModal', function() {
-          return new AddNewPaymentModal('guest', that.myDom);
-        });
+      if(typeof params != "undefined"){
+        sntapp.getViewInst('addNewPaymentModal').params = params;
       }
 
-      sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
-      sntapp.getViewInst('addNewPaymentModal').initialize();
-    };
+
+    }
 
     var successCallBackHandler = function(token) {
       // add token to card data
@@ -153,23 +125,34 @@ var StayCard = function(viewDom){
       switch(sntapp.cardSwipeCurrView){
         // respond to StayCardView
         case 'StayCardView':
-          stayCardViewResponse();
+          //stayCardViewResponse();
+          respondToSwipe("staycard", that.myDom, {});
           break;
 
         //respond to GuestBillView
         case 'GuestBillView':
-          guestBillViewResponse();
+          //guestBillViewResponse();
+          //To get the current bill number we are re-using the bill card view object
+          var regCardView = sntapp.getViewInst('registrationCardView');
+          var domElement = $("#bill" + regCardView.getActiveBillNumber());
+          var params = { "bill_number" : regCardView.getActiveBillNumber(), "origin":views.BILLCARD};
+          respondToSwipe(views.BILLCARD, domElement, params);
+
           break;
 
         //respond to GuestCardView
         case 'GuestCardView':
-          guestCardView();
+          //guestCardView();
+          respondToSwipe("guest", that.myDom, {});
+
           break;
 
         // do nothing
         default:
           break;
       }
+
+
     };
 
     var options = {
@@ -180,16 +163,6 @@ var StayCard = function(viewDom){
         sntapp.notification.showErrorMessage('Sorry we could not get a response from server. Please try again.');
       }
     };
-
-   // // DEBUG
-  /* if (sntapp.cardSwipeDebug === true) { 
-    /*var token = {
-      'data' : "123456789312321321321"
-    }
-    console.log(JSON.stringify(swipedCardData));
-    successCallBackHandler(swipedCardData); 
-    return;
-  }*/
 
     var webservice = new WebServiceInterface();
     webservice.postJSON(url, options);
