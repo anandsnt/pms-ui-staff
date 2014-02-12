@@ -1,25 +1,33 @@
-<div class="jumbotron">
-	<div class="container">
-		<h1>Thank you</h1>
-		<p>The following will appear on your bill:</p>
-		<div class="table-responsive">
-			<table class="table">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Description</th>
-						<th>Amount</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>{{ lateCheckOut.id }}</td>
-						<td>Late checkout at {{ lateCheckOut.time | format12 }}</td>
-						<td>{{ lateCheckOut.amount | currency }}</td>
-					</tr>
-				</tbody>
-			</table>
+<div class="container backgroundbg">
+	<div class="container-fluid">
+		<div class="row headerrow">
+			<logo-image></logo-image>
 		</div>
-		<a class="btn btn-primary btn-lg btn-primary" role="button" href="/"><span class="glyphicon glyphicon-tower"></span> Return to home</a>
+	</div>
+
+	<!-- contentarea starts here-->
+	<div class="container">
+		<!-- top section starts here-->
+		<div class="row">
+			<div class="col-md-6 headtext">
+				Thank you.
+				<br>
+				The following will appear on your bill.
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-6 headtext">
+				<br>
+				<br>
+				Late Check Out ({{ lateCheckOut.time }}{{ lateCheckOut.ap }}) .... {{ lateCheckOut.amount | currency }}
+			</div>
+		</div>
+
+		<div class="row">
+			<p class="italictext">
+				<a href="#/" class="link-btn with-bg">Back to check-out screen</a>
+			</p>
+		</div>
 	</div>
 </div>

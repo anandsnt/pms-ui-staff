@@ -3,6 +3,8 @@
 		var charges = LateCheckOutChargesService.charges;
 		var id = $routeParams.id;
 
+		console.log(id)
+
 		// if no charges recorded (user tried to reload on success page)
 		// get him back to checkout later page
 		if (!charges.length) {

@@ -69,9 +69,6 @@ snt.controller('rootController', ['$scope','$attrs', 'UserService','$location','
 	authenticationService.setAuthenticationDetails(authenticationData)
 
 	$window.sessionStorage.token = authenticationData.token
-
-	alert($window.sessionStorage.token+"---sessionStorage token")
-
 	
 }]);
 

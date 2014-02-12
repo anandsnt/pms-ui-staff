@@ -11,54 +11,35 @@
 			<!-- top section starts here-->
 			<div class="row">
 				<div class="col-md-6 headtext">
-					{{details.readyMessageText}}
-					<p class="centeralign leadtext">
-						<span class="lightcontent">{{details.checkoutTimeText}}</span>
-					</p>
+					Select your new check-out time:
 				</div>
+
+				<br> <br> <br>
 
 				<!-- checkoubtn section starts here-->
 				<div class="col-md-6 no-padding">
-					<a href="#/checkoutBalance">
-						<div class=" col-xs-12 checkoutnow">
-							<div class="row">
-								{{details.buttonText}}
-							</div>
-							<div class="row  icontop">
-								<img src="assets/img/checkout_icon.png" width="104" height="102" alt=""/>
-							</div>
-						</div>
-					</a>
-					<a href="#/checkoutBalance">
-						<div class=" col-xs-12 checkoutnow">
-							<div class="row">
-								{{details.buttonText}}
-							</div>
-							<div class="row  icontop">
-								<img src="assets/img/checkout_icon.png" width="104" height="102" alt=""/>
-							</div>
-						</div>
-					</a>
-					<a href="#/checkoutBalance">
-						<div class=" col-xs-12 checkoutnow">
-							<div class="row">
-								{{details.buttonText}}
-							</div>
-							<div class="row  icontop">
-								<img src="assets/img/checkout_icon.png" width="104" height="102" alt=""/>
-							</div>
-						</div>
-					</a>
+					<table class="table late-checkout-options">
+						<td ng-repeat="charge in charges">
+							<a href="#/checkOutLaterSuccess/{{ charge.id }}">
+								<div class="col-xs-12 options {{ charge.class }}">
+									<div class="row">
+										{{ charge.time }} {{ charge.ap }}
+									</div>
+									<div class="row icontop">
+										for {{ charge.amount | currency }}
+									</div>
+								</div>
+							</a>
+						</td>
+					</table>
 				</div>
 			</div>
-		</div>
 
-		<h1>Checkout later</h1>
-		<p>Select your new checkout time:</p>
-		<ul class="list-inline">
-			<li ng-repeat="charge in charges">
-				<a class="btn btn-primary btn-lg btn-success" role="button" href="#checkOutLaterSuccess/{{ charge.id }}"><span class="glyphicon glyphicon-star"></span> {{ charge.time | format12 }} for {{ charge.amount | currency }}</a>
-			</li>
-		</ul>
+			<div class="row">
+				<p class="italictext">
+					<a href="#/" class="link-btn">No, thanks</a>
+				</p>
+			</div>
+		</div>
 	</div>
 </div>
