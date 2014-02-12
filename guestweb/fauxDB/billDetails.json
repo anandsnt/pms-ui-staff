@@ -1,6 +1,6 @@
 {
 	"checkoutText": "Checkout Now",
-	"balanceMessage": "Your current balance is",
+	"balanceMessage": "Your balance is:",
 	"balanceText" : "BALANCE",
 	"currencyCode": "$",
 	"balanceValue": "20",
