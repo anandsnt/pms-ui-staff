@@ -40,7 +40,7 @@ snt.config(['$routeProvider', function($routeProvider) {
 	});
 }]);
 
-snt.controller('rootController', ['$scope','$attrs', 'UserService','$location', function($scope,$attrs, UserService,$location) {
+snt.controller('rootController', ['$scope','$attrs', 'UserService','$location','authenticationService', function($scope,$attrs, UserService,$location,authenticationService) {
 
 	alert("TOKEN------"+$attrs.token+"\n\nID------"+$attrs.reservationid+"\n\nTYPE------"+$attrs.checkouttype)
 
@@ -56,4 +56,16 @@ snt.controller('rootController', ['$scope','$attrs', 'UserService','$location', 
 	UserService.fetch().then(function(user) {
 		$scope.user = user;
 	});
+
+	var authendicationData = {
+
+		"token":$attrs.token,
+		"reservationidID":$attrs.reservationid,
+		"checkoutType":$attrs.checkouttype
+	}
+
+	authenticationService.setAuthenticationDetails(authendicationData)
+	alert(authenticationService.reservationidID)
+
+	
 }]);
