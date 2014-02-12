@@ -1,4 +1,4 @@
-BaseModal = function() {
+var BaseModal = function() {
     this.url = "";
     this.data = "";
     this.myDom = ""; //This will be updated in show method, as the data is inserted into DOM only there.

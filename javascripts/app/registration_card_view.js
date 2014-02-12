@@ -318,8 +318,17 @@ var RegistrationCardView = function(viewDom) {
 	};
 	
 	this.goAndRefreshStayCard = function(e) {
+		
 		var staycardView = new StayCard($("#view-nested-first"));
       	staycardView.refreshReservationDetails(that.reservation_id, that.gotoStayCard);
+      	
+      	// To update reservation card icon on reservation listing after : complete checkin -> keys -> goto staycard
+      	if(e === undefined){
+	      	var confirmation_num = getCurrentConfirmation();
+	      	var reservation_status = $("#reservation-"+confirmation_num).attr("data-reservation-status");
+      		var reservation_icon = "guest-status inhouse small-icon";
+      		$("#reservation-listing ul li[data-confirmation-num = "+confirmation_num+"] span.guest-status").removeClass().addClass(reservation_icon);
+		}
 	};
 	
 	this.goToRoomUpgradeView = function(e) {
@@ -368,7 +377,7 @@ var RegistrationCardView = function(viewDom) {
 		var domElement = $("#bill"+that.getActiveBillNumber());
 	  	if ( !sntapp.getViewInst('addNewPaymentModal') ) {
 	      sntapp.setViewInst('addNewPaymentModal', function() {
-	        return new AddNewPaymentModal('staycard', domElement);
+	        return new AddNewPaymentModal(views.BILLCARD, domElement);
 	      });
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
 	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
@@ -376,7 +385,7 @@ var RegistrationCardView = function(viewDom) {
 	
 	      // if addNewPaymentModal instance exist, but the dom is removed
 	      sntapp.updateViewInst('addNewPaymentModal', function() {
-	        return new AddNewPaymentModal('staycard', domElement);
+	        return new AddNewPaymentModal(views.BILLCARD, domElement);
 	      });
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
 	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
@@ -415,7 +424,7 @@ var RegistrationCardView = function(viewDom) {
 		if (signature == "[]" && required_signature_at == "CHECKOUT")
 			errorMessage = "Signature is missing";
 		else if (!terms_and_conditions)
-			errorMessage = "Please check agree to the Terms & Conditions";
+			errorMessage = "Please check the box to accept the charges";
 
 		if (errorMessage != "") {
 			that.showErrorMessage(errorMessage);
