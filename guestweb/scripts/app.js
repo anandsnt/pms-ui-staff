@@ -41,16 +41,16 @@ snt.config(['$routeProvider', function($routeProvider) {
 }]);
 
 snt.controller('rootController', ['$scope','$attrs', 'UserService','$location', function($scope,$attrs, UserService,$location) {
-	console.log($attrs)
-	alert("TOKEN------"+$attrs.token)
-	alert("ID------"+$attrs.reservationid	)
-	alert("TYPE------"+$attrs.checkouttype)
 
+	alert("TOKEN------"+$attrs.token+"\n\nID------"+$attrs.reservationid+"\n\nTYPE------"+$attrs.checkouttype)
+
+/* need to work on
 
 	if ($attrs.checkouttype ==  "checkoutNow") 
 		$location.path('/checkOutNow')
 	else
 		//to do 
+*/
 
 	
 	UserService.fetch().then(function(user) {
