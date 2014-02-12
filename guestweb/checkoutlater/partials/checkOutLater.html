@@ -1,5 +1,58 @@
 <div class="jumbotron">
-	<div class="container">
+	<div class="container backgroundbg">
+		<div class="container-fluid">
+			<div class="row headerrow">
+				<logo-image></logo-image>
+			</div>
+		</div>
+
+		<!-- contentarea starts here-->
+		<div class="container">
+			<!-- top section starts here-->
+			<div class="row">
+				<div class="col-md-6 headtext">
+					{{details.readyMessageText}}
+					<p class="centeralign leadtext">
+						<span class="lightcontent">{{details.checkoutTimeText}}</span>
+					</p>
+				</div>
+
+				<!-- checkoubtn section starts here-->
+				<div class="col-md-6 no-padding">
+					<a href="#/checkoutBalance">
+						<div class=" col-xs-12 checkoutnow">
+							<div class="row">
+								{{details.buttonText}}
+							</div>
+							<div class="row  icontop">
+								<img src="assets/img/checkout_icon.png" width="104" height="102" alt=""/>
+							</div>
+						</div>
+					</a>
+					<a href="#/checkoutBalance">
+						<div class=" col-xs-12 checkoutnow">
+							<div class="row">
+								{{details.buttonText}}
+							</div>
+							<div class="row  icontop">
+								<img src="assets/img/checkout_icon.png" width="104" height="102" alt=""/>
+							</div>
+						</div>
+					</a>
+					<a href="#/checkoutBalance">
+						<div class=" col-xs-12 checkoutnow">
+							<div class="row">
+								{{details.buttonText}}
+							</div>
+							<div class="row  icontop">
+								<img src="assets/img/checkout_icon.png" width="104" height="102" alt=""/>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+
 		<h1>Checkout later</h1>
 		<p>Select your new checkout time:</p>
 		<ul class="list-inline">
