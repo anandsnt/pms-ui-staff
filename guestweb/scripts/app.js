@@ -57,15 +57,14 @@ snt.controller('rootController', ['$scope','$attrs', 'UserService','$location','
 		$scope.user = user;
 	});
 
-	var authendicationData = {
+	var authenticationData = {
 
-		"token":$attrs.token,
-		"reservationidID":$attrs.reservationid,
-		"checkoutType":$attrs.checkouttype
+		"token"				: $attrs.token,
+		"reservationidID"	: $attrs.reservationid,
+		"checkoutType"		: $attrs.checkouttype
 	}
 
-	authenticationService.setAuthenticationDetails(authendicationData)
-	alert(authenticationService.reservationidID)
+	authenticationService.setAuthenticationDetails(authenticationData)
 
 	
 }]);
