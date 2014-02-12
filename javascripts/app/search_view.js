@@ -10,17 +10,18 @@ var Search  = function(domRef){
     that.fetchResults = [];
     that.fetchTerm = "";
     var type = that.myDomElement.find($('#search_list')).attr("data-search-type");
+    
     /*preload the search results, 
-    if navigated to search screen by clicking checking-in/checking-out/in-house options
+    if navigated to search screen by clicking upsell late checkout option
     */
-
-    // Start listening to card swipes
-    this.initCardSwipe();
-
     if(type == "LATE_CHECKOUT") {
         var search_url = "search.json?is_late_checkout_only=true";
         this.fetchSearchData(search_url, "",type);
     }
+
+    /*preload the search results, 
+    if navigated to search screen by clicking checking-in/checking-out/in-house options
+    */
     else if(type != "") {
         var search_url = "search.json?status=" + type;
         this.fetchSearchData(search_url, "",type);
