@@ -70,11 +70,12 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
         		currentStayCardView.find(".item-payment").append(appendHtml);
         		
         		// To update bill tab paymnt info
-	        	var billTabHtml = '<figure class="card-logo"><img src="/assets/'+$newImage+'" alt="">'+
-								'<span class="number">'+$endingWith+'</span></figure>';
+	        	var billTabHtml = '<img src="/assets/'+$newImage+'" alt="">'+
+								'<span class="number">'+$endingWith+'</span>';
 								
 				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html("");		
 				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html(billTabHtml);
+				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).addClass('card-logo');
 	        }
 	        else{			
 				currentStayCardView.find(".payment_actions").append(appendHtml);
