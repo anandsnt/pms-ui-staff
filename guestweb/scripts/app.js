@@ -12,8 +12,8 @@ snt.config(['$routeProvider', function($routeProvider) {
 	});
 
 	$routeProvider.when('/checkoutBalance', {
-		templateUrl: 'assets/checkoutnow/partials/checkoutNow.html',
-		controller: 'checkOutNowController'
+		templateUrl: 'assets/checkoutnow/partials/checkoutBalance.html',
+		controller: 'checkOutBalanceController'
 	});
 
 	$routeProvider.when('/checkOutNow', {
