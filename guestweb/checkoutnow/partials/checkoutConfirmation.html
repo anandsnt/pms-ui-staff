@@ -14,39 +14,37 @@
 		<div class="container">
 			<!-- top section starts here-->
 
-			<div class="row">
-				<div class="col-md-6 headtext">
-					
+			<div class="row check-inout-wrapper">
+				<div class="col-md-6 headtext centeralign">
 					{{details.headerTitle}}
-					<p class="centeralign leadtext">
+					<p class="leadtext">
 						<span class="lightcontent">{{details.headersubTitle}} {{checkoutTime}}</span>
 					</p>
 				</div>
 				<!-- top section ends here-->
 				
 				<!-- checkoubtn section starts here-->
-				<div class="col-md-6">
-					<a href="#/checkoutBalance">
-					<div class=" col-xs-12 checkoutnow">
-						<div class="row">
-							{{details.buttonText}}
+				<div class="col-md-6 no-padding now-later-options no-screen-attach">
+					<div class="row">
+						<div class="col-xs-12 checkoutnow single">
+							<a href="#/checkoutBalance"></a>
+							<div class="row">
+								{{details.buttonText}}
+							</div>
+							<div class="row  icontop">
+								<img src="assets/img/checkout_icon.png" width="104" height="102" alt=""/>
+							</div>
 						</div>
-						<div class="row  icontop">
-
-							<img src="assets/img/checkout_icon.png" width="104" height="102" alt=""/>
-
-						</div>
-
-					</div> </a>
+					</div>
 				</div>
-</div>
+			</div>
 				<!-- checkoubtn section ends here-->
 
 				<div class="row" >
-					<p class="italictext" ng-show="true">
+					<p class="foot-text centeralign" ng-show="true">
 						<em> {{details.footerMessage1}}</em>
 					</p>
-					<p class="italictext secondtext">
+					<p class="foot-text centeralign second-in">
 						<em>{{details.footerMessage2}} {{checkoutTime}}.
 					</p>
 				</div>
