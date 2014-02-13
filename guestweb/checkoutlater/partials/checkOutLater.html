@@ -23,7 +23,12 @@
 							<a href="#/checkOutLaterSuccess/{{ charge.id }}">
 								<div class="col-xs-12 options {{ charge.class }}">
 									<div class="row">
-										{{ charge.time }} {{ charge.ap }}
+										<svg viewBox="0 0 300 300" preserveAspectRatio="none">
+											<circle cx="160" cy="120" r="110" stroke="white" stroke-width="4" fill="none"/>
+												<text x="50%" y="130" fill="white">
+													{{ charge.time }} {{ charge.ap }}
+												</text>
+										</svg> 
 									</div>
 									<div class="row icontop">
 										for {{ charge.amount | currency }}
