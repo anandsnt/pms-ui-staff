@@ -26,7 +26,7 @@ var GuestPaymentView = function(domRef){
   };
   
   this.renderNewPaymentView = function(e){
-  	var addNewPaymentModal = new AddNewPaymentModal("guest", $('#reservation-card'));
+  	var addNewPaymentModal = new AddNewPaymentModal("guest", that.myDom);
     addNewPaymentModal.initialize();  
   };
 };

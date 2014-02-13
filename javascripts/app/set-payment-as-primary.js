@@ -52,6 +52,9 @@ var SetPaymentAsPrimaryModal = function(){
 	    webservice.postJSON(url, options);	
     };
     this.fetchCompletedOfDeleteCreditCard = function(data){
+    	var currentCount = that.backDom.find("#payment_tab").attr("data-payment-count");
+		var newCount = 	parseInt(currentCount) + parseInt(1);
+		that.backDom.find("#payment_tab").attr("data-payment-count", newCount);	
     	var $credit_card_id = that.credit_id;
 		//$("#credit_row" + $credit_card_id).remove();
     	$(".credit-card-option-row" + $credit_card_id).remove();
