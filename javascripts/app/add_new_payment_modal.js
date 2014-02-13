@@ -111,7 +111,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 			var currentCount = backView.find("#payment_tab").attr("data-payment-count");
 			var newCount = 	parseInt(currentCount) + parseInt(1);
 			var primarySpan = "";
-			if(currentCount == 1){
+			if(currentCount == 0){
 				primarySpan = '<span id="primary_credit" class="primary"><span class="value primary">Primary</span></span>';
 			}
 			// update guest card payment tab with new one
