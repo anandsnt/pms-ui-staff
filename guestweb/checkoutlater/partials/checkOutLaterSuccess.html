@@ -1,0 +1,33 @@
+<div class="container backgroundbg">
+	<div class="container-fluid">
+		<div class="row headerrow">
+			<logo-image></logo-image>
+		</div>
+	</div>
+
+	<!-- contentarea starts here-->
+	<div class="container">
+		<!-- top section starts here-->
+		<div class="row">
+			<div class="col-md-6 headtext">
+				Thank you.
+				<br>
+				The following will appear on your bill.
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-6 headtext">
+				<br>
+				<br>
+				Late Check Out ({{ lateCheckOut.time }}{{ lateCheckOut.ap }}) .... {{ lateCheckOut.amount | currency }}
+			</div>
+		</div>
+
+		<div class="row">
+			<p class="italictext">
+				<a href="#/" class="link-btn with-bg">Back to check-out screen</a>
+			</p>
+		</div>
+	</div>
+</div>

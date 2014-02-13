@@ -1,0 +1,47 @@
+html,
+body {
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	-webkit-user-select: none;
+}
+
+#watch,
+#menu,
+#content,
+#sidebar {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background: #fff;
+}
+
+.anim #menu,
+.anim #content,
+.anim #sidebar {
+	transition: -webkit-transform 0.3s;
+}
+
+#content {
+	-webkit-transform: translateX(0);
+	z-index: 10;
+	box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+#menu,
+#sidebar {
+	z-index: 3;
+}
+
+#menu {
+	-webkit-transform: translateX(-100%);
+}
+
+#sidebar {
+	-webkit-transform: translateX(100%);
+}

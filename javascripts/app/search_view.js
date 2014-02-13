@@ -399,7 +399,7 @@ var Search  = function(domRef){
         $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="' + escapeNull(image) + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = showRoomStatus ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
         $viewStatus = guestStatusIcon ? '<span class="guest-status ' + escapeNull(guestStatusIcon) + '"></span>':'<span class="guest-status"></span>',
-        $lateCheckoutStatus = escapeNull(lateCheckoutTime) == "" ? "": '<span class="late-checkout-time">'+escapeNull(lateCheckoutTime)+'</span>'
+        $lateCheckoutStatus = (escapeNull(lateCheckoutTime) == "" || "CHECKEDOUT" == reservation_status) ? "": '<span class="late-checkout-time">'+escapeNull(lateCheckoutTime)+'</span>'
         $guestViewIcons = '<div class="status">' + $lateCheckoutStatus + $viewStatus + '</div>'
         $output =
         '<a href="staff/staycards/staycard?confirmation=' + confirmation+'&id='+ escapeNull(id)+ '" class="guest-check-in link-item float" data-transition="inner-page">' +
@@ -415,25 +415,25 @@ var Search  = function(domRef){
     };
 
     //Map the reservation status to the view expected format
-    this.getGuestStatusMapped = function(status, isLateCheckoutOn){
+    this.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn){
       var viewStatus = "";
-      if(isLateCheckoutOn){
+      if(isLateCheckoutOn && "CHECKEDOUT" != reservationStatus){
         viewStatus = "late-check-out";
         return viewStatus;
       }
-      if(status == "RESERVED"){
+      if("RESERVED" == reservationStatus){
         viewStatus = "arrival";
-      }else if(status == "CHECKING_IN"){
+      }else if("CHECKING_IN" == reservationStatus){
         viewStatus = "check-in";
-      }else if(status == "CHECKEDIN"){
+      }else if("CHECKEDIN" == reservationStatus){
         viewStatus = "inhouse";
-      }else if(status == "CHECKEDOUT"){
+      }else if("CHECKEDOUT" == reservationStatus){
         viewStatus = "departed";
-      }else if(status == "CHECKING_OUT"){
+      }else if("CHECKING_OUT" == reservationStatus){
         viewStatus = "check-out";
-      }else if(status == "CANCELED"){
+      }else if("CANCELED" == reservationStatus){
         viewStatus = "cancel";
-      }else if((status == "NOSHOW")||(status == "NOSHOW_CURRENT")){
+      }else if(("NOSHOW" == reservationStatus)||("NOSHOW_CURRENT" == reservationStatus)){
         viewStatus = "no-show";
       }
       return viewStatus;

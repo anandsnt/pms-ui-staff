@@ -1,0 +1,50 @@
+<div class="jumbotron">
+	<div class="container backgroundbg">
+		<div class="container-fluid">
+			<div class="row headerrow">
+				<logo-image></logo-image>
+			</div>
+		</div>
+
+		<!-- contentarea starts here-->
+		<div class="container">
+			<!-- top section starts here-->
+			<div class="row">
+				<div class="col-md-6 headtext">
+					Select your new check-out time:
+				</div>
+
+				<br> <br> <br>
+
+				<!-- checkoubtn section starts here-->
+				<div class="col-md-6 no-padding">
+					<table class="table late-checkout-options">
+						<td ng-repeat="charge in charges">
+							<a href="#/checkOutLaterSuccess/{{ charge.id }}">
+								<div class="col-xs-12 options {{ charge.class }}">
+									<div class="row">
+										<svg viewBox="0 0 300 300" preserveAspectRatio="none">
+											<circle cx="160" cy="120" r="110" stroke="white" stroke-width="4" fill="none"/>
+												<text x="50%" y="130" fill="white">
+													{{ charge.time }} {{ charge.ap }}
+												</text>
+										</svg> 
+									</div>
+									<div class="row icontop">
+										for {{ charge.amount | currency }}
+									</div>
+								</div>
+							</a>
+						</td>
+					</table>
+				</div>
+			</div>
+
+			<div class="row">
+				<p class="italictext">
+					<a href="#/" class="link-btn">No, thanks</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
