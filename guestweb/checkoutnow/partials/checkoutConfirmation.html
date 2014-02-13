@@ -6,7 +6,7 @@
 			<div class="row headerrow">
 				<logo-image></logo-image>
 				<div class=" headtext roomnumber centeralign">
-					{{details.roomnumber}}
+					{{details.roomType}} {{checkoutRoomnumber}}
 				</div>
 				
 			</div>
@@ -18,9 +18,9 @@
 			<div class="row">
 				<div class="col-md-6 headtext">
 					
-					{{details.readyMessageText}}
+					{{details.headerTitle}}
 					<p class="centeralign leadtext">
-						<span class="lightcontent">{{details.checkoutTimeText}}</span>
+						<span class="lightcontent">{{details.headersubTitle}} {{checkoutTime}}</span>
 					</p>
 				</div>
 				<!-- top section ends here-->
@@ -45,11 +45,10 @@
 
 				<div class="row" >
 					<p class="italictext" ng-show="true">
-						<em> {{details.checkoutMessagePart1}}</em>
+						<em> {{details.footerMessage1}}</em>
 					</p>
 					<p class="italictext secondtext">
-						<em>{{details.checkoutMessagePart2}}
-						{{details.checkoutMessagePart3}}</em>
+						<em>{{details.footerMessage2}} {{checkoutTime}}.
 					</p>
 				</div>
 

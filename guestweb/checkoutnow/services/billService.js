@@ -6,7 +6,7 @@
 		var fetchDisplayDetails = function() {
 			var deferred = $q.defer();
 
-			baseWebService.fetch('/assets/fauxDB/billDetails.json').then(function(response) {
+			baseWebService.fetch('/assets/fauxDB/billDisplayDetails.json').then(function(response) {
 				this.billDisplayDetails = response;
 				deferred.resolve(this.billDisplayDetails);
 			});

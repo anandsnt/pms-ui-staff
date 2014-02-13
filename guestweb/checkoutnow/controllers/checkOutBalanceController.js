@@ -8,8 +8,6 @@
 
 		BillService.fetchBillData().then(function(billData) {
 			$scope.billData = billData;
-
-			console.log(billData);
 		});
 
 		$scope.total = function() {
@@ -21,7 +19,7 @@
 			return amount;
 		};
 
-		$scope.viewBillImage = 'downarrow.png'
+		
 	};
 
 	var dependencies = [
