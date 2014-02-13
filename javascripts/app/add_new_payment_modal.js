@@ -84,6 +84,13 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 
 			//if add to guest card is on, then update guest card payment tab with new one
 			if(requestParameters["add_to_guest_card"] == "true"){
+				var currentCount = $("#payment_tab").attr("data-payment-count");
+				var newCount = 	parseInt(currentCount) + parseInt(1);
+				$("#payment_tab").attr("data-payment-count", newCount);	
+				var primarySpan = "";
+				if(currentCount == 0){
+					primarySpan = '<span id="primary_credit" class="primary"><span class="value primary">Primary</span></span>';
+				}
 				$image = "<img src='/assets/"+$newImage+"' alt=''>";
 				var	$add = 
 			        '<a id="credit_row"  credit_id='+data.data.id +' class="active-item float item-payment new-item credit-card-option-row' + data.data.id + ' ">'+
