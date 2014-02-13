@@ -52,6 +52,17 @@ var SetPaymentAsPrimaryModal = function(){
 	    webservice.postJSON(url, options);	
     };
     this.fetchCompletedOfDeleteCreditCard = function(data){
+    	$("#guest-credit").removeClass("error");
+    	
+    	var currentCount = that.backDom.find("#payment_tab").attr("data-payment-count");
+		var newCount = 	parseInt(currentCount) - parseInt(1);
+		if(newCount == 1){ //REFRESH view if only one more credit card left in guest card
+			var viewParams = {
+				"user_id" : $("#user_id").val()
+			};
+	    	sntapp.fetchAndRenderView('staff/payments/payment', $("#cc-payment"), viewParams);
+	    }
+		that.backDom.find("#payment_tab").attr("data-payment-count", newCount);	
     	var $credit_card_id = that.credit_id;
 		//$("#credit_row" + $credit_card_id).remove();
     	$(".credit-card-option-row" + $credit_card_id).remove();
@@ -60,7 +71,7 @@ var SetPaymentAsPrimaryModal = function(){
 		message_element.removeClass('notice success_message error_message');
 		message_element.html("");			
 		that.myDom.find("#notification-message-guest").slideDown(700, function() {});
-		$("#guest-credit").removeClass("error");
+		
     };
     this.deleteCreditCard = function(){
   		var $credit_card_id = that.credit_id;		

@@ -1,4 +1,4 @@
-var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
+var AddNewPaymentModal = function(fromPagePayment, backView){
   	BaseModal.call(this);
   	var that = this;
   	this.save_inprogess = false;
@@ -57,17 +57,17 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 								"</span></span><span class='date'> Date <span class='value date'>"+
 								$newDate+
 								"</span>";
-			currentStayCardView.find("#select-card-from-list").html(replaceHtml);
-			currentStayCardView.find("#add-new-payment").remove();
+			backView.find("#select-card-from-list").html(replaceHtml);
+			backView.find("#add-new-payment").remove();
 			//to remove add button and show delete icon on succesfull addition of new credit card
-			currentStayCardView.find('#update_card').remove();
+			backView.find('#update_card').remove();
 			var appendHtml = '<a id="update_card" data-payment-id="'+data.data.id+'" class="button with-icon green">'+
 								'<span class="icons icon-wallet"></span>Update CC</a>';
 			
 			
 			if(that.params["origin"] == views.BILLCARD){
-				currentStayCardView.find("#select-card-from-list").removeClass('hidden');
-        		currentStayCardView.find(".item-payment").append(appendHtml);
+				backView.find("#select-card-from-list").removeClass('hidden');
+        		backView.find(".item-payment").append(appendHtml);
         		
         		// To update bill tab paymnt info
 	        	var billTabHtml = '<img src="/assets/'+$newImage+'" alt="">'+
@@ -78,12 +78,19 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).addClass('card-logo');
 	        }
 	        else{			
-				currentStayCardView.find(".payment_actions").append(appendHtml);
+				backView.find(".payment_actions").append(appendHtml);
 			}
 			
 
 			//if add to guest card is on, then update guest card payment tab with new one
 			if(requestParameters["add_to_guest_card"] == "true"){
+				var currentCount = $("#payment_tab").attr("data-payment-count");
+				var newCount = 	parseInt(currentCount) + parseInt(1);
+				$("#payment_tab").attr("data-payment-count", newCount);	
+				var primarySpan = "";
+				if(currentCount == 0){
+					primarySpan = '<span id="primary_credit" class="primary"><span class="value primary">Primary</span></span>';
+				}
 				$image = "<img src='/assets/"+$newImage+"' alt=''>";
 				var	$add = 
 			        '<a id="credit_row"  credit_id='+data.data.id +' class="active-item float item-payment new-item credit-card-option-row' + data.data.id + ' ">'+
@@ -108,22 +115,30 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
    	//Success call back after succesful addition of payment in guest card
    	this.fetchCompletedOfPayment = function(data, requestParameters){
 			that.save_inprogress = false;
+			var currentCount = backView.find("#payment_tab").attr("data-payment-count");
+			var newCount = 	parseInt(currentCount) + parseInt(1);
+			var primarySpan = "";
+			if(currentCount == 0){
+				primarySpan = '<span id="primary_credit" class="primary"><span class="value primary">Primary</span></span>';
+			}
 			// update guest card payment tab with new one
 			var	$add = 
 		        '<a id="credit_row"  credit_id='+data.data.id +' class="active-item float item-payment new-item credit-card-option-row' + data.data.id + ' ">'+
 		        '<figure class="card-logo">'+requestParameters['image']+'</figure><span class="number">'+
 		        'Ending with<span class="value number">'+requestParameters['number']+'</span></span>'+
-				'<span class="date">Date<span class="value date">'+requestParameters['expiry']+'</span>'+
-				'</span><span class="name">Name<span class="value name">'+requestParameters['cardHolderName']+'</span>'+
-				'</span></a>';
+				'<span class="date">Date<span class="value date">'+requestParameters['expiry']+'</span></span>'+
+				'<span class="name">Name<span class="value name">'+requestParameters['cardHolderName']+'</span></span>'+
+				primarySpan+'</a>';
 			
-		    $("#payment_tab").prepend($add);
+		    backView.find("#payment_tab").prepend($add);
 			//TO DO: APPEND NEW CREDIT CARD ID IN THE NEW GENERATED CREDIT CARD - CHECK WITH ORIGINAL API
-			$("#payment_tab .new-item").attr("credit_id", data.id);
-			$("#payment_tab .new-item").attr("id", "credit_row"+data.id);
-			$("#payment_tab #credit_row"+data.id).removeClass("new-item");				
-			$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+'.png';
-			$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
+			backView.find("#payment_tab .new-item").attr("credit_id", data.id);
+			backView.find("#payment_tab .new-item").attr("id", "credit_row"+data.id);
+			backView.find("#payment_tab #credit_row"+data.id).removeClass("new-item");	
+			
+			backView.find("#payment_tab").attr("data-payment-count", newCount);	
+			//$newImage = $("#new-payment #payment-credit-type").val().toLowerCase()+'.png';
+			//$newDate = $("#new-payment #expiry-year").val()+"/"+$("#new-payment #expiry-month").val();
 			that.hide();
    	};
    	//failure call back
@@ -131,7 +146,6 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
    		that.save_inprogress = false;
    		sntapp.activityIndicator.hideActivityIndicator();
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
-   		
    	};    	
    	//save new payment
    	this.saveNewPayment = function(){
@@ -151,22 +165,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 		var curr_year  	= new Date().getFullYear()%100; // Last two digits of current year.
 		var curr_month  = new Date().getMonth()+1;
 		var errorMessage = "";
-		// Validation on Expiry date
-		// 1.card_expiry > today (MM/YY) 2. MM/YY valid i.e. MM 01-12, YY >13
-		// if($expiry_month > 12 || $expiry_month < 1){
-			// errorMessage = "Expiration date : Invalid month";
-		// }
-		// else if($expiry_year < curr_year){
-			// errorMessage = "Expiration date : Invalid year";
-		// }
-		// else if($expiry_year == curr_year && $expiry_month < curr_month){
-			// errorMessage = "Expiration date : Date expired";
-		// }
-		// if(errorMessage!=""){
-			// alert(errorMessage);
-	  		// return;
-  		// }
-		
+			
 		var $image = "<img src='/assets/"+$("#new-payment #payment-credit-type").val().toLowerCase()+".png' alt='"+$("#new-payment #payment-credit-type").val().toLowerCase()+"'>";	
 		
 		$number = $card_number.substr($card_number.length - 4);
@@ -199,7 +198,7 @@ var AddNewPaymentModal = function(fromPagePayment, currentStayCardView){
 					   'number': $number, 
 					   'expiry': $expiry,
 					   'cardHolderName': $cardHolderName,
-				   },
+				   }
 		    };
 			webservice.postJSON(url, options);
 			
