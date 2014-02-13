@@ -76,11 +76,10 @@ var RoomAssignmentView = function(viewDom){
 
   //Scroll view creation for the the room list
   this.createRoomListScroll = function(){
-    if (viewScroll) { console.log("destroy");destroyViewScroll(); }
+    if (viewScroll) { destroyViewScroll(); }
     
     setTimeout(function(){
       if (that.myDom.find('#rooms-available').length) { 
-      	console.log("refresh");
       	 createViewScroll('#rooms-available'); }
     }, 1500);
   };
@@ -116,7 +115,6 @@ var RoomAssignmentView = function(viewDom){
   };
 
   this.clearFiltersClicked = function(e){
-    console.log('clearFiltersClicked');
     var filteredRoomList = [];
     for (var i = 0; i< that.roomCompleteList.length; i++){
         if((that.roomCompleteList[i].room_status === "READY") &&
@@ -125,7 +123,6 @@ var RoomAssignmentView = function(viewDom){
       }
     }
 
-    console.log(JSON.stringify(filteredRoomList));
     //Apply filters using due-out status, ready status.
     that.displayRoomsList(filteredRoomList);
   };
