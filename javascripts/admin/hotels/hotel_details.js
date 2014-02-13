@@ -81,7 +81,7 @@ var HotelDetailsView = function(domRef) {
 
 	// failure call of re-invite api call
 	this.fetchFailedOfReInvite = function(errorMessage) {
-		sntapp.notification.showErrorList("Some error occured:"+errorMessage, that.myDom);
+		sntapp.notification.showErrorList("Error: "+errorMessage, that.myDom);
 		return false;
 	};
 
@@ -152,7 +152,7 @@ var HotelDetailsView = function(domRef) {
 	// to handle failure call back
 	this.fetchFailedOfSave = function(errorMessage) {
 		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
 	};
 	//Generating post data
 	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType) {

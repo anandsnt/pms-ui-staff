@@ -38,6 +38,6 @@ var PermissionView = function(domRef) {
 	};
 	//show success message
 	this.fetchFailedOfSave = function(errorMessage){
-		sntapp.notification.showErrorMessage("Some error occured: " +errorMessage, that.myDom);	
+		sntapp.notification.showErrorMessage("Error: " +errorMessage, that.myDom);	
 	};
 };
