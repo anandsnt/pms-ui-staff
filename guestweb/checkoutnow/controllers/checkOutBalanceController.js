@@ -1,5 +1,5 @@
 (function() {
-	var checkOutNowController = function($scope, BillService) {
+	var checkOutBalanceController = function($scope, BillService) {
 		$scope.showBill = false;
 
 		BillService.fetch().then(function(bills) {
@@ -21,8 +21,8 @@
 	var dependencies = [
 		'$scope',
 		'BillService',
-		checkOutNowController
+		checkOutBalanceController
 	];
 
-	snt.controller('checkOutNowController', dependencies);
+	snt.controller('checkOutBalanceController', dependencies);
 })();
