@@ -236,7 +236,6 @@ this
 
   //Create the scroll views for staycard
   this.createScroll = function(){
-
     var confirmNum = that.myDom.find($('#reservation_info')).attr('data-confirmation-num');
     $("div[id='reservation-listing']").each(function(index){
       createViewScroll("#"+ $(this).parent().attr('id')+" #"+ $(this).attr('id'));
@@ -263,6 +262,7 @@ this
     //No reservation details are added to the DOM
     if (!($("#" + currentTimeline).find('.reservation').length > 0)) {
       $("#" + currentTimeline + ' #reservation-listing ul li').first().children().first().trigger("click");
+      that.createScroll();
     }
   };
 
