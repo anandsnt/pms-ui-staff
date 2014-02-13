@@ -1,3 +1,4 @@
+
 var snt = angular.module('snt', ['ngRoute']);
 
 snt.config(['$routeProvider', function($routeProvider) {
@@ -43,7 +44,7 @@ snt.config(['$routeProvider', function($routeProvider) {
 	});
 }]);
 
-snt.controller('rootController', ['$scope','$attrs', 'UserService','$location','$window','authenticationService', function($scope,$attrs, UserService,$location,$window,authenticationService) {
+snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService','$location','$window','authenticationService', function($rootScope,$scope,$attrs, UserService,$location,$window,authenticationService) {
 
 	/* need to work on
 
@@ -54,10 +55,9 @@ snt.controller('rootController', ['$scope','$attrs', 'UserService','$location','
 		*/
 	if ($window.sessionStorage.token)
 	delete $window.sessionStorage.token
-	
-	UserService.fetch().then(function(user) {
-		$scope.user = user;
-	});
+
+
+	$rootScope.hotelName   = $attrs.hotelname
 
 	var authenticationData = {
 
@@ -67,8 +67,23 @@ snt.controller('rootController', ['$scope','$attrs', 'UserService','$location','
 	}
 
 	authenticationService.setAuthenticationDetails(authenticationData)
+	
+	UserService.fetch().then(function(userDetails) {
+
+		$rootScope.checkoutDate 		= userDetails.checkoutDate
+		$rootScope.checkoutTime 		= userDetails.checkoutTime
+		$rootScope.checkoutRoomnumber 	= userDetails.checkoutRoomnumber
+		$rootScope.userName 			= userDetails.userName
+		$rootScope.userLocation         = userDetails.userLocation
+	});
+
+	
 
 	$window.sessionStorage.token = authenticationData.token
+
+	
+
+
 	
 }]);
 
@@ -99,3 +114,11 @@ snt.factory('authInterceptor', function ($rootScope, $q, $window,$location) {
 snt.config(function ($httpProvider) {
   $httpProvider.interceptors.push('authInterceptor');
 });
+
+
+var hotelNamesEnum = { 
+					"Carlyl Suites Hotel"      : 1, 
+					"Trump International Hotel": 2, 
+					"Four Seasons Hotel"       : 3 
+				}
+    

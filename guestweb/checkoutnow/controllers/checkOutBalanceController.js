@@ -2,8 +2,12 @@
 	var checkOutBalanceController = function($scope, BillService) {
 		$scope.showBill = false;
 
-		BillService.fetch().then(function(bills) {
-			$scope.bills = bills;
+		BillService.fetchDisplayDetails().then(function(billDisplayDetails) {
+			$scope.billDisplayDetails = billDisplayDetails;
+		});
+
+		BillService.fetchBillData().then(function(billData) {
+			$scope.billData = billData;
 		});
 
 		$scope.total = function() {
@@ -15,7 +19,7 @@
 			return amount;
 		};
 
-		$scope.viewBillImage = 'downarrow.png'
+		
 	};
 
 	var dependencies = [
