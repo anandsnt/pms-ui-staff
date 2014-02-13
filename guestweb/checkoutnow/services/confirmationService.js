@@ -4,30 +4,27 @@
 		
 		var fetch = function() {
 			var deferred = $q.defer();
+            var url = ''
 
 			switch(hotelNamesEnum[$rootScope.hotelName]){
 
 				case 1:
-					baseWebService.fetch('/assets/fauxDB/confirmationPageDetails.json').then(function(response) {
-					this.details = response;
-					deferred.resolve(this.details);
-				    });
+                    url = '/assets/fauxDB/confirmationPageDetails.json';
 					break;
                 case 2:
-                    baseWebService.fetch('/assets/fauxDB/confirmationPageDetailsForAnotherHotel.json').then(function(response) {
-                    this.details = response;
-                    deferred.resolve(this.details);
-                    });
+                    
+                    url = '/assets/fauxDB/confirmationPageDetailsForAnotherHotel.json';
                     break;
 
 				default:
-					baseWebService.fetch('/assets/fauxDB/confirmationPageDetails.json.json').then(function(response) {
-				    this.details = response;
-				    deferred.resolve(this.details);
-			         });
-					break;
+                    url = '/assets/fauxDB/confirmationPageDetailsForAnotherHotel.json';
+                    break;
 
 			}
+            baseWebService.fetch(url).then(function(response) {
+                    this.details = response;
+                    deferred.resolve(this.details);
+                     });
 			
 
 			return deferred.promise;
