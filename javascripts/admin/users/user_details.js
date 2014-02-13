@@ -16,6 +16,7 @@ var UserDetailsView = function(domRef){
 
   this.delegateEvents = function(){  	
   	that.myDom.find($('#save_new_user')).on('click', that.saveNewUser);
+  	that.myDom.find($('#link_existing_user')).on('click', that.linkExistingUser);
   	that.myDom.find($('#go_back, #cancel')).on('click', that.gotoPreviousPage);
   	that.myDom.find("#re-invite").on('click', that.reInvite);
   	that.myDom.find('#save').on('click', that.updateUser);
@@ -92,6 +93,7 @@ var UserDetailsView = function(domRef){
 	};
 	webservice.putJSON(url, options);	
   };
+  
   //to save new user
   this.saveNewUser = function(){
   	var postData = {};
@@ -116,16 +118,34 @@ var UserDetailsView = function(domRef){
       });
       
   	var url = '/admin/users';
-	var webservice = new WebServiceInterface();
+    var webservice = new WebServiceInterface();
 	
-	var options = {
-			   requestParameters: postData,
-			   successCallBack: that.fetchCompletedOfSave,
-			   failureCallBack: that.fetchFailedOfSave,
-			   loader:"BLOCKER"
-	};
-	webservice.postJSON(url, options);	
+    var options = {
+      requestParameters: postData,
+      successCallBack: that.fetchCompletedOfSave,
+      failureCallBack: that.fetchFailedOfSave,
+      loader:"BLOCKER"
+    };
+    webservice.postJSON(url, options);
   }; 
+
+  //to link existing user
+  this.linkExistingUser = function(){
+  	var postData = {};
+  	postData.email = that.myDom.find("#email").val();
+
+  	var url = '/admin/users/link_existing';
+    var webservice = new WebServiceInterface();
+	
+    var options = {
+      requestParameters: postData,
+      successCallBack: that.fetchCompletedOfSave,
+      failureCallBack: that.fetchFailedOfSave,
+      loader:"BLOCKER"
+    };
+    webservice.postJSON(url, options);
+  }; 
+
   //to do the actions after completeing server call
   this.fetchCompletedOfSave = function(data){
   	that.gotoPreviousPageWithUpdate();
@@ -135,7 +155,7 @@ var UserDetailsView = function(domRef){
   //to do the actions on fail
   this.fetchFailedOfSave = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom); 
+	sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom); 
   };
   
     // success function of re-invite api call
