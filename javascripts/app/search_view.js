@@ -399,7 +399,7 @@ var Search  = function(domRef){
         $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="' + escapeNull(image) + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = showRoomStatus ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
         $viewStatus = guestStatusIcon ? '<span class="guest-status ' + escapeNull(guestStatusIcon) + '"></span>':'<span class="guest-status"></span>',
-        $lateCheckoutStatus = (escapeNull(lateCheckoutTime) == "" || "CHECKEDOUT" == reservation_status) ? "": '<span class="late-checkout-time">'+escapeNull(lateCheckoutTime)+'</span>'
+        $lateCheckoutStatus = (escapeNull(lateCheckoutTime) == "" || "CHECKING_OUT" == reservation_status) ? "": '<span class="late-checkout-time">'+escapeNull(lateCheckoutTime)+'</span>'
         $guestViewIcons = '<div class="status">' + $lateCheckoutStatus + $viewStatus + '</div>'
         $output =
         '<a href="staff/staycards/staycard?confirmation=' + confirmation+'&id='+ escapeNull(id)+ '" class="guest-check-in link-item float" data-transition="inner-page">' +
@@ -417,7 +417,7 @@ var Search  = function(domRef){
     //Map the reservation status to the view expected format
     this.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn){
       var viewStatus = "";
-      if(isLateCheckoutOn && "CHECKEDOUT" != reservationStatus){
+      if(isLateCheckoutOn && "CHECKING_OUT" == reservationStatus){
         viewStatus = "late-check-out";
         return viewStatus;
       }
