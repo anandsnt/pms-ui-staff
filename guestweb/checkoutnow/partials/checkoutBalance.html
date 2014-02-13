@@ -11,16 +11,16 @@
 
 			<div class="row">
 				<div class="col-md-6">
-					<p class="headtext">{{bills.checkoutText}}</p>
+					<p class="headtext">{{billDisplayDetails.checkoutText}}</p>
 					<p class="centeralign leadtext">
-						<span class="lightcontent">{{bills.balanceMessage}}</span>
+						<span class="lightcontent">{{billDisplayDetails.balanceMessage}}</span>
 					</p>
-					<h1 class="balanceValue">{{ bills.currencyCode}}{{bills.balanceValue}}</h1>
+					<h1 class="balanceValue">{{ billData.currencyCode}}{{billData.balanceValue}}</h1>
 					<div>
 						<div class="viewbill">
 
-							<a ng-hide="showBill"  ng-click="showBill = true"><img src="assets/img/rightarrow.png" style="width:7% !important; height:auto !important; margin-top:-2%; " alt="" />&nbsp;&nbsp;{{bills.viewBillButtontext}}</a>
-							<a ng-show="showBill" ng-click="showBill = false"><img src="assets/img/downarrow.png" style="width:7% !important; height:auto !important; margin-top:-2%; " alt=""  />&nbsp;&nbsp;{{bills.viewBillButtontext}}</a>
+							<a ng-hide="showBill"  ng-click="showBill = true"><img src="assets/img/rightarrow.png" style="width:7% !important; height:auto !important; margin-top:-2%; " alt="" />&nbsp;&nbsp;{{billDisplayDetails.viewBillButtontext}}</a>
+							<a ng-show="showBill" ng-click="showBill = false"><img src="assets/img/downarrow.png" style="width:7% !important; height:auto !important; margin-top:-2%; " alt=""  />&nbsp;&nbsp;{{billDisplayDetails.viewBillButtontext}}</a>
 
 						</div>
 					</div>
@@ -32,16 +32,16 @@
 									<td>
 									<div class="details">
 										<div class="room" >
-											{{bills.roomnumber}}
+											Room {{billData.roomnumber}}
 										</div>
-										<span class="name" >{{bills.name}}</span> | <span class="name" >{{bills.location}}</span>
+										<span class="name" >{{billData.username}}</span> | <span class="name" >{{billData.userlocation}}</span>
 									</div></td>
 								</tr>
 								<th width="80%">DESCRIPTION</th>
 								<th>FEEs</th>
 							</thead>
 							<tbody >
-								<tr ng-repeat= "bill in bills.data" style="background:#fcfcfc; border-bottom:5px solid #fff;">
+								<tr ng-repeat= "bill in billData.data" style="background:#fcfcfc; border-bottom:5px solid #fff;">
 									<td >
 									<div class="date">
 										{{ bill.date }}
@@ -67,16 +67,16 @@
 							</tbody>
 							<tfoot>
 								<tr class="total">
-									<td align="right" >{{bills.totalText}}</td>
-									<td >{{bills.totalValue}}</td>
+									<td align="right" >TOTAL</td>
+									<td >{{billData.totalamount}}</td>
 								</tr>
 								<tr class="total">
-									<td align="right" >{{bills.creditText}}</td>
-									<td>{{bills.creditValue}}</td>
+									<td align="right" >CREDIT</td>
+									<td>{{billData.creditamount}}</td>
 								</tr>
 								<tr class="total">
-									<td align="right" >{{bills.balanceText}}</td>
-									<td class="balance" >{{bills.balanceValue}}</td>
+									<td align="right" >BALNACE</td>
+									<td class="balance" >{{billData.balanceamount}}</td>
 								</tr>
 							</tfoot>
 						</table>

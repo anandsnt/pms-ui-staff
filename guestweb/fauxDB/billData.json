@@ -1,0 +1,37 @@
+{	
+	"currencycode" : "$",
+	"username"   : "Jose",
+	"userlocation" : "Dallas,TX",
+	"totalamount": "500",
+	"creditamount" : "-100",
+	"balanceamount": "400",
+	"roomnumber"	: "309",
+
+	"data": [
+		{
+			"date": "09-03-2013",
+			"description": "GUESTROOM: BEST RATE AVAILABLE",
+			"amount": "149.98",
+			"tax": {
+				"description": "MD SALES TAX",
+				"amount": "12.98"
+			}
+		}, {
+			"date": "09-03-2013",
+			"description": "PAY PER VIEW: TV",
+			"amount": "59.99",
+			"tax": {
+				"description": "MD SALES TAX",
+				"amount": "7.99"
+			}
+		}, {
+			"date": "09-03-2013",
+			"description": "SPA SESSION",
+			"amount": "199.99",
+			"tax": {
+				"description": "MD SALES TAX",
+				"amount": "9.99"
+			}
+		}
+	]
+}
