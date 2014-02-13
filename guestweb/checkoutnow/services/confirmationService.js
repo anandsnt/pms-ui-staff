@@ -1,15 +1,34 @@
 (function() {
-	var confirmationService = function($q,baseWebService) {
+	var confirmationService = function($rootScope,$q,baseWebService) {
 		var details = {};
-
+		
 		var fetch = function() {
 			var deferred = $q.defer();
 
-			baseWebService.fetch('/assets/fauxDB/confirmationPageDetails.json').then(function(response) {
-				this.details = response;
-				deferred.resolve(this.details);
-			});
+			switch(hotelNamesEnum[$rootScope.hotelName]){
 
+				case 1:
+					baseWebService.fetch('/assets/fauxDB/confirmationPageDetails.json').then(function(response) {
+					this.details = response;
+					deferred.resolve(this.details);
+				    });
+					break;
+                case 2:
+                    baseWebService.fetch('/assets/fauxDB/confirmationPageDetailsForAnotherHotel.json').then(function(response) {
+                    this.details = response;
+                    deferred.resolve(this.details);
+                    });
+                    break;
+
+				default:
+					baseWebService.fetch('/assets/fauxDB/confirmationPageDetails.json.json').then(function(response) {
+				    this.details = response;
+				    deferred.resolve(this.details);
+			         });
+					break;
+
+			}
+			
 
 			return deferred.promise;
 		};
@@ -21,6 +40,7 @@
 	};
 
 	var dependencies = [
+		'$rootScope',
 		'$q','baseWebService',
 		confirmationService
 	];

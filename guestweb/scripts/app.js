@@ -1,3 +1,4 @@
+
 var snt = angular.module('snt', ['ngRoute']);
 
 snt.config(['$routeProvider', function($routeProvider) {
@@ -55,6 +56,9 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	if ($window.sessionStorage.token)
 	delete $window.sessionStorage.token
 
+
+	$rootScope.hotelName   = $attrs.hotelname
+
 	var authenticationData = {
 
 		"token"				: $attrs.token,
@@ -110,3 +114,11 @@ snt.factory('authInterceptor', function ($rootScope, $q, $window,$location) {
 snt.config(function ($httpProvider) {
   $httpProvider.interceptors.push('authInterceptor');
 });
+
+
+var hotelNamesEnum = { 
+					"Carlyl Suites Hotel"      : 1, 
+					"Trump International Hotel": 2, 
+					"Four Seasons Hotel"       : 3 
+				}
+    
