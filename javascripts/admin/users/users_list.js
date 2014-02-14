@@ -2,17 +2,24 @@ var UsersListView = function(domRef){
   BaseView.call(this);  
   this.myDom = domRef; 
   var that = this;
+  this.currentView = $("body").attr("id");
+
   
   this.pageinit = function(){
+    if(that.currentView == 'hotel-admin-view'){
+      that.myDom.find('#go_back').hide();
+    }
    
   };
   this.delegateEvents = function(){  	
-  	that.myDom.find($('#users_list_table')).tablesorter({ headers: { 4:{sorter:false},5:{sorter:false} } });
-  	that.myDom.find($('#add_new_user')).on('click', sntadminapp.gotoNextPage);
-  	that.myDom.find($('.title')).on('click', sntadminapp.gotoNextPage);
+  	that.myDom.find('#users_list_table').tablesorter({ headers: { 4:{sorter:false},5:{sorter:false} } });
+  	that.myDom.find('#add_new_user').on('click', that.gotoNextPage);
+  	that.myDom.find('#find_existing_user').on('click', that.gotoNextPage);
+    that.myDom.find($('#go_back, #cancel')).on('click', that.gotoPreviousPage);
+    that.myDom.find('.title').on('click', that.gotoNextPage);
   	// to activate/inactivate user on clicks toggle button of users row
-  	that.myDom.find($(".activate-inactivate-button")).on('click', that.activateInactivateUser);
-  	that.myDom.find($(".icon-delete")).on('click', that.deleteUser);
+  	that.myDom.find(".activate-inactivate-button").on('click', that.activateInactivateUser);
+  	that.myDom.find(".icon-delete").on('click', that.deleteUser);
   };
   //activate/inactivate user
   this.activateInactivateUser = function(){
@@ -34,6 +41,33 @@ var UsersListView = function(domRef){
   this.goBackToPreviousView = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
+
+  this.gotoNextPage = function(e){
+    if (that.currentView == "snt-admin-view") {
+        e.preventDefault(); 
+        var href = $(this).attr("href");
+        var viewParams = {};
+        var backDom = $("#replacing-div-third");
+        backDom.hide();
+        var nextViewParams = {'backDom': backDom};
+         
+        if(href != undefined){
+          sntapp.fetchAndRenderView(href, $("#replacing-div-fourth"), viewParams, 'BLOCKER', nextViewParams);
+        }
+    }else{
+      console.log("hereeeeeeeeeeeeeeeeeee");
+      sntadminapp.gotoNextPage(e);
+    }
+
+
+  };
+
+  //go to previous page withount any update in view
+  this.gotoPreviousPage = function() {
+    that.myDom.html("");
+    sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
+  };
+
   //to delete user
   this.deleteUser = function(){
   	

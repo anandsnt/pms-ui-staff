@@ -15,11 +15,13 @@ var HotelDetailsView = function(domRef) {
 		that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView);
 		that.myDom.find("#re-invite").on('click', that.reInvite);
 		that.myDom.find("#external-mappings").on('click', that.renderExternalMappings);
+		that.myDom.find("#user-setup").on('click', that.renderUserSetup);
 		that.myDom.find('#mli-certificate').on('change', function(){
   			that.readCertificate(this);
   		});
 
 	};
+  
 	// function to view external mappings
 	this.renderExternalMappings = function() {
 		var backDom = that.myDom;
@@ -36,6 +38,21 @@ var HotelDetailsView = function(domRef) {
 		};
 		sntapp.fetchAndRenderView(url, replacingDiv, {}, 'BLOCKER', viewParams);
 	};
+  
+	// function to view user setup
+	this.renderUserSetup = function() {
+		var backDom = that.myDom;
+		var replacingDiv = $("#replacing-div-third");
+		backDom.hide();
+		replacingDiv.show();
+
+		var url = "/admin/users";
+		viewParams = {
+			'backDom' : backDom
+		};
+		sntapp.fetchAndRenderView(url, replacingDiv, {}, 'BLOCKER', viewParams);
+	};
+  
 	//function to re invite
 	this.reInvite = function() {
 		var url = 'admin/user/send_invitation';
@@ -64,7 +81,7 @@ var HotelDetailsView = function(domRef) {
 
 	// failure call of re-invite api call
 	this.fetchFailedOfReInvite = function(errorMessage) {
-		sntapp.notification.showErrorList("Some error occured:"+errorMessage, that.myDom);
+		sntapp.notification.showErrorList("Error: "+errorMessage, that.myDom);
 		return false;
 	};
 
@@ -135,7 +152,7 @@ var HotelDetailsView = function(domRef) {
 	// to handle failure call back
 	this.fetchFailedOfSave = function(errorMessage) {
 		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
 	};
 	//Generating post data
 	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType) {
