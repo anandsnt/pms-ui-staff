@@ -6,7 +6,7 @@
 		<div class="row headerrow">
 			<logo-image></logo-image>
 			<p class="roomnumber centeralign">
-				<span>Room 139</span>
+				<span>Room {{ roomnumber }}</span>
 			</p>
 		</div>
 	</div>
@@ -22,17 +22,21 @@
 			<div class="col-md-6 no-padding now-later-options">
 				<div class="row">
 					<div class="col-xs-6 checkoutnow">
-						<a href="#/checkOutNow"></a>
-						<div class="row"> Check out <br> now</div>
-						<div class="row icontop">
-							<img src="assets/img/checkout_icon.png" width="104" height="102" alt="">
+						<div class="rel-wrapper">
+							<a href="#/checkOutNow"></a>
+							<div class="row"> Check out <br> now</div>
+							<div class="row icontop">
+								<img src="assets/img/checkout_icon.png" width="104" height="102" alt="">
+							</div>
 						</div>
 					</div>
 					<div class="col-xs-6 checkoutlater">
-						<a href="#/checkOutLater"></a>
-						<div class="row">Check out<br> later</div>
-						<div class="row icontop">
-							<img src="assets/img/late-checkout_icon.png" width="104" height="102" alt=""/>
+						<div class="rel-wrapper">
+							<a href="#/checkOutLater"></a>
+							<div class="row">Check out<br> later</div>
+							<div class="row icontop">
+								<img src="assets/img/late-checkout_icon.png" width="104" height="102" alt=""/>
+							</div>
 						</div>
 					</div>
 				</div>

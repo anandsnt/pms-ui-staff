@@ -14,25 +14,25 @@
 					Select your new check-out time:
 				</div>
 
-
-
 				<!-- checkoubtn section starts here-->
 				<div class="col-md-6 no-padding top-margin now-later-options">
 					<div class="row">
 						<div ng-repeat="charge in charges" class="col-xs-6 later-options {{ charge.class }}">
-							<a ng-href="#/checkOutLaterSuccess/{{ charge.id }}"></a>
-							<div class="row">
-								<svg viewBox="0 0 300 300" preserveAspectRatio="none">
-									<circle cx="50%" cy="50%" r="45%" stroke="white" stroke-width="7" fill="none"/>
-										<text x="50%" y="65%" fill="white">
-											<tspan class="time">{{ charge.time }}</tspan>
-											<tspan class="ap">{{ charge.ap }}</tspan>
-										</text>
-								</svg> 
-							</div>
-							<div class="row late-charge">
-								<span class="for">for</span>
-								<span class="amount">{{ charge.amount | currency }}</span>
+							<div class="rel-wrapper">
+								<a ng-href="#/checkOutLaterSuccess/{{ charge.id }}"></a>
+								<div class="row">
+									<svg viewBox="0 0 300 300" preserveAspectRatio="none">
+										<circle cx="50%" cy="50%" r="45%" stroke="white" stroke-width="7" fill="none"/>
+											<text x="50%" y="65%" fill="white">
+												<tspan class="time">{{ charge.time }}</tspan>
+												<tspan class="ap">{{ charge.ap }}</tspan>
+											</text>
+									</svg> 
+								</div>
+								<div class="row late-charge">
+									<span class="for">for</span>
+									<span class="amount">{{ charge.amount | currency }}</span>
+								</div>
 							</div>
 						</div>
 					</div>

@@ -199,19 +199,21 @@ body {
 	}
 }
 
+.now-later-options .rel-wrapper {
+	position: relative;
+}
+
 .now-later-options .checkoutnow,
 .now-later-options .checkoutlater,
 .now-later-options .later-options {
 	display: table-cell;
-	position: relative;
-	line-height: 120%;
 	width: auto;
 	float: none;
+	padding: 0;
 }
 
 .now-later-options .checkoutnow,
 .now-later-options .checkoutlater {
-	padding: 40px 35px;
 	text-align: center;
 	font-family: 'Source Sans Pro', sans-serif;
 	font-weight: 200;
@@ -219,7 +221,12 @@ body {
 	line-height: 120%;
 }
 
-.now-later-options .later-options {
+.checkoutnow .rel-wrapper,
+.checkoutlater .rel-wrapper {
+	padding: 40px 35px;
+}
+
+.later-options .rel-wrapper {
 	padding: 50px 20px 45px;
 }
 

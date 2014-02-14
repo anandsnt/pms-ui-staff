@@ -72,7 +72,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 
 		$rootScope.checkoutDate 		= userDetails.checkoutDate
 		$rootScope.checkoutTime 		= userDetails.checkoutTime
-		$rootScope.checkoutRoomnumber 	= userDetails.checkoutRoomnumber
+		$rootScope.roomnumber       	= userDetails.roomnumber
 		$rootScope.userName 			= userDetails.userName
 		$rootScope.userLocation         = userDetails.userLocation
 	});
