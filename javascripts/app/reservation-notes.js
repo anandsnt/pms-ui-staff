@@ -78,7 +78,7 @@ var reservationCardNotesView = function(domRef){
 			'<img src="' + returnData.user_image + '" alt=""></figure>' + 
 			'<div class="note-title"><h4>' + returnData.username + '</h4>' + 
 			'<time datetime="2013-10-23 06:05:20"><span class="time">'+returnData.posted_time + 
-			'</span><span class="date"> '+returnData.posted_date+'</span>' + '</time><span class="topic">' + returnData.topic +
+			'</span><span class="date"> '+returnData.posted_date+'</span>' + '</time><span class="topic"> GENERAL' +
 			'<a id="delete_note" class="icons icon-trash" note_id="'+returnData.note_id+'">Delete post</a>'+
 			'</span></div><p>' + returnData.text + '</p></li>';	
 	    
