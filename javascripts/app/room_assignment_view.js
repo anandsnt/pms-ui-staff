@@ -110,7 +110,7 @@ var RoomAssignmentView = function(viewDom){
   this.roomListFetchFailed = function(errorMessage){
     that.roomCompleteList = [];
     sntapp.activityIndicator.hideActivityIndicator();
-    sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+    sntapp.notification.showErrorMessage(errorMessage, that.myDom);  
 
   };
 
@@ -408,7 +408,7 @@ var RoomAssignmentView = function(viewDom){
   };
   this.fetchFailedOfSave = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+	sntapp.notification.showErrorMessage(errorMessage, that.myDom);  
   };
   this.backButtonClicked = function(e){
     e.preventDefault();
@@ -458,7 +458,7 @@ var RoomAssignmentView = function(viewDom){
   };
   this.fetchFailedOfSave = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+	sntapp.notification.showErrorMessage(errorMessage, that.myDom);  
   };  
   this.upgradeSuccess = function(data, requestParams){
 
