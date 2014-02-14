@@ -44,7 +44,8 @@ var adminApp = function(){
   	
   	e.preventDefault();	
   	//sntadminapp.clearReplacingDiv();  	
-  	var href = $(this).attr("href");
+  	var href = $(e.target).attr("href");
+
   	var viewParams = {};
   	var backDom = $("#replacing-div-first");
   	backDom.hide();

@@ -42,7 +42,7 @@ var HotelDetailsView = function(domRef) {
 	// function to view user setup
 	this.renderUserSetup = function() {
 		var backDom = that.myDom;
-		var replacingDiv = $("#replacing-div-second");
+		var replacingDiv = $("#replacing-div-third");
 		backDom.hide();
 		replacingDiv.show();
 
