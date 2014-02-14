@@ -51,6 +51,9 @@
 	}
 }
 
+.top-margin {
+	margin-top: 20px !important;
+}
 
 .centeralign {
 	text-align: center !important;
@@ -66,6 +69,12 @@
 
 .normal-weight {
 	font-weight: 400 !important;
+}
+
+a,
+a:hover {
+	text-decoration: none;
+	color: #fff;
 }
 
 html,
@@ -191,6 +200,16 @@ body {
 }
 
 .now-later-options .checkoutnow,
+.now-later-options .checkoutlater,
+.now-later-options .later-options {
+	display: table-cell;
+	position: relative;
+	line-height: 120%;
+	width: auto;
+	float: none;
+}
+
+.now-later-options .checkoutnow,
 .now-later-options .checkoutlater {
 	padding: 40px 35px;
 	text-align: center;
@@ -198,8 +217,10 @@ body {
 	font-weight: 200;
 	font-size: 350%;
 	line-height: 120%;
-	display: table-cell;
-	position: relative;
+}
+
+.now-later-options .later-options {
+	padding: 50px 20px 45px;
 }
 
 .checkoutnow {
@@ -213,12 +234,25 @@ body {
 }
 
 .checkoutnow a,
-.checkoutlater a {
+.checkoutlater a,
+.later-options a {
 	position: absolute;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
+}
+
+.late-charge {
+	line-height: 1;
+	padding: 0;
+	text-transform: uppercase;
+	.for {
+		font-size: 15px;
+	}
+	.amount {
+		font-size: 25px;
+	}
 }
 
 .foot-text {
@@ -284,13 +318,18 @@ svg {
 	width: 100%;
 	height: 100%;
 	pointer-events: none;
-}
-
-text {
-	text-anchor: middle;
-	pointer-events: auto;
-	fill: currentColor;
-	text-align: center;
+	text {
+		text-anchor: middle;
+		pointer-events: auto;
+		fill: currentColor;
+		text-align: center;
+		.time {
+			font-size: 150px;
+		}
+		.ap {
+			font-size: 80px;
+		}
+	}
 }
 
 .amount {
@@ -448,7 +487,7 @@ text {
 	padding: 0;
 }
 
-.late-checkout-options .options {
+.late-checkout-options .later-options {
 	text-align: center;
 	color: #ffffff;
 	font-family: 'Source Sans Pro', sans-serif;
@@ -489,4 +528,8 @@ text {
 
 .guest-details {
 	padding: 20px 10px;
+}
+
+.v {
+	margin: 25px auto;
 }
