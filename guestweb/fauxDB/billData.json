@@ -1,5 +1,5 @@
 {	
-	"currencycode" : "$",
+	"currencyCode" : "$",
 	"username"   : "Jose",
 	"userlocation" : "Dallas,TX",
 	"totalamount": "500",
