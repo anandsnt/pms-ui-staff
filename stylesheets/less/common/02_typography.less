@@ -92,14 +92,24 @@
 		table-layout: fixed;
 		margin-bottom: 1em;
 
-		th,
-		td {
-			vertical-align: top;
-			white-space: nowrap;
-			text-align: left;
-		}
-	} 
+		tr {
+			th { white-space: nowrap; }
 
+			th,
+			td {
+				vertical-align: middle;
+				text-align: left;
+			}
+
+			&:not(.edit-data) {
+				th,
+				td {
+					text-overflow: ellipsis;
+					overflow: hidden;
+				}
+			}
+		}		
+	} 
 
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/

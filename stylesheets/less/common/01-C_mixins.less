@@ -211,6 +211,26 @@
 		background-repeat: repeat;
 	}
 
+	.faux-columns-gradient(@color1, @color2, @break: 50%, @stop: 100%) {
+		background-image: -moz-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
+		background-image: -ms-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
+		background-image: -webkit-gradient(linear, left top, right top, color-stop(0, @color1), color-stop(@break, @color1), color-stop(@break, @color2), color-stop(@stop, @color2));
+		background-image: -webkit-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
+		background-image: -o-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
+		background-image: linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
+		background-repeat: repeat;
+	}
+
+	/*.faux-columns-gradient(@image, @color1, @color2, @break: 50%, @stop: 100%) {
+		background-image: @image, -moz-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
+		background-image: @image, -ms-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
+		background-image: @image, -webkit-gradient(linear, left top, right top, color-stop(0, @color1), color-stop(@break, @color1), color-stop(@break, @color2), color-stop(@stop, @color2));
+		background-image: @image, -webkit-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
+		background-image: @image, -o-linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
+		background-image: @image, linear-gradient(left, @color1, @color1 @break, @color2 @break, @color2 @stop);
+		background-repeat: repeat;
+	}*/
+
 	/* Opacity			======================================*/
 	.opacity(@opacity: 100) {
 		opacity: @opacity / 100;
@@ -286,6 +306,13 @@
 		.no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
 	}
 
+	.extend-width(@percentage, @pixels) {
+		width: -webkit-calc(~"@{percentage}% + @{pixels}px");
+		width: -moz-calc(~"@{percentage}% + @{pixels}px");
+		width: calc(~"@{percentage}% + @{pixels}px");
+		.no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
+	}
+
 	#pixel-to-percent {
 
 		.height(@target, @context) {
@@ -338,6 +365,7 @@
 		-moz-backface-visibility: @value;
 		backface-visibility: @value;
   	}
+  	
 
 /* 5. COMPONENTS
 ==========================================================*/

@@ -41,6 +41,38 @@
 				#pixel-to-percent > .right-margin(40, 1200);
 			}
 		}
+
+		.entry {
+			.boxes {
+				.inline {
+					width: 22%;
+
+					&:nth-child(2n) { margin-right: auto; }
+                    &:nth-child(4n) { margin-right: 0; }
+				}
+			}
+		}
+
+		&.inline-form {
+			.holder {
+				&.right { margin-top: 0; }
+			}
+		}
+
+		&.single-field-form {
+            .entry {
+                width: 320px;
+                margin: 0 20px 0 0;
+
+                &:nth-of-type(odd):not(.full-width) { margin-right: 20px; }
+            }
+
+            .actions {
+                .button { 
+                    margin-right: 20px;
+                }
+            }
+        }
 	}
 
 /* 5. COMPONENTS

@@ -14,6 +14,13 @@ body { overflow: hidden; }
 
 .hidden { display: none !important; }
 
+.concealed {
+	color: transparent !important;
+	text-shadow: 0 0 5px @grey3;
+
+	&.large-font { text-shadow: 0 0 10px @grey3; }
+}
+
 /* 2. TYPOGRAPHY
 ==========================================================*/
 /* 3. GRAPHICAL ELEMENTS
@@ -809,6 +816,12 @@ body { overflow: hidden; }
 					font-size: 18px;
 					color: @textColor;
 					margin-left: 10px;
+
+					&.code {
+						font-size: 21px; 
+						font-weight: 300;
+						margin: 0;
+					}
 				}
 
 				&.primary {
@@ -838,15 +851,13 @@ body { overflow: hidden; }
 				line-height: 50px;
 
 				&.value.code { 
-					color: @textColor;
 					font-size: 24px; 
-					font-weight: 300;
-					margin: 0 5px 0 0; 
+					margin-right: 5px; 
 				}
 
 				&.number,
 				&.value.number { margin: 0; }	
-			}	
+			}
 		}
 	}
 
