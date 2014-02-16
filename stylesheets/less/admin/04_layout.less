@@ -455,12 +455,15 @@ body { overflow: hidden; }
             }
 
             &.import,
-            &.bulk-edit {
+            &.bulk-edit,
+            &.link {
                 color: @blue; 
                 .pull-left;
 
                 &:hover { color: darken(@blue, 10); }
             }
+
+            &.link { padding-left: 30px; }
 
             &.back { 
                 color: @textColor; 
