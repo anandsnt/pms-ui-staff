@@ -526,7 +526,7 @@ body { overflow: hidden; }
 
             &.activate,
             &.delete { text-align: center; }
-            &.activate { width: 100px; }
+            &.activate { width: 110px; }
             &.delete { width: 60px; }
         }
 
@@ -618,9 +618,13 @@ body { overflow: hidden; }
                         .box-shadow(none);
 
                         .data-holder {
-                            margin-top: -40px;
+                            margin-top: -60px;
                             
                             .form { padding: 0 20px; }
+
+                            &.move50 { margin-top: -50px; }
+                            &.move40 { margin-top: -40px; }
+                            &.move30 { margin-top: -30px; }
                         }
                     }
                 }
@@ -656,8 +660,14 @@ body { overflow: hidden; }
 
         th,
         td {
-            &.activate,
-            &.delete { width: 100px; }      
+            &.activate {  
+                width: 110px; 
+
+                &.long { width: 200px; }
+            }
+            
+
+            &.delete { width: 100px; } 
         }
         
         tbody {
