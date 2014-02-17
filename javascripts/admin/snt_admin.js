@@ -25,7 +25,8 @@ var SntAdminView = function(domRef){
   	$("#replacing-div-first").html("");
     $("#replacing-div-second").html("");
     $("#replacing-div-third").html("");
-    $("#replacing-div-first, #replacing-div-second, #replacing-div-third").removeClass("current");
+    $("#replacing-div-fourth").html("");
+    $("#replacing-div-first, #replacing-div-second, #replacing-div-third, #replacing-div-fourth").removeClass("current");
 	$("#replacing-div-first").show();
 	$($(this).attr("href")).show(); 
   };
