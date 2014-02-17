@@ -13,30 +13,30 @@ snt.config(['$routeProvider', function($routeProvider) {
 	});
 
 	$routeProvider.when('/checkoutBalance', {
-		templateUrl: 'assets/checkoutnow/partials/checkoutBalance.html',
+		templateUrl: '/assets/checkoutnow/partials/checkoutBalance.html',
 		controller: 'checkOutBalanceController'
 	});
 
 	$routeProvider.when('/checkOutNow', {
-		templateUrl: 'assets/checkoutnow/partials/checkoutConfirmation.html',
+		templateUrl: '/assets/checkoutnow/partials/checkoutConfirmation.html',
 		controller: 'checkOutConfirmationController'
 	});
 
 	$routeProvider.when('/checkOutNowSuccess', {
-		templateUrl: 'assets/checkoutnow/partials/checkOutNowSuccess.html'
+		templateUrl: '/assets/checkoutnow/partials/checkOutNowSuccess.html'
 	});
 
 	$routeProvider.when('/checkOutLater', {
-		templateUrl: 'assets/checkoutlater/partials/checkOutLater.html',
+		templateUrl: '/assets/checkoutlater/partials/checkOutLater.html',
 		controller: 'checkOutLaterController'
 	});
 
 	$routeProvider.when('/checkOutLaterSuccess/:id', {
-		templateUrl: 'assets/checkoutlater/partials/checkOutLaterSuccess.html',
+		templateUrl: '/assets/checkoutlater/partials/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController'
 	})
 	$routeProvider.when('/authFailed', {
-		templateUrl: 'assets/shared/authenticationFailedView.html'
+		templateUrl: '/assets/shared/authenticationFailedView.html'
 	});
 
 	$routeProvider.otherwise({
