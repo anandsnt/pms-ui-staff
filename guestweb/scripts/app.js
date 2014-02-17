@@ -46,27 +46,27 @@ snt.config(['$routeProvider', function($routeProvider) {
 
 snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService','$location','$window','authenticationService', function($rootScope,$scope,$attrs, UserService,$location,$window,authenticationService) {
 
-	/* need to work on
 
-	if ($attrs.checkouttype ==  "checkoutNow") 
+
+	if (!$attrs.isLateCheckoutAvailable ) 
 		$location.path('/checkOutNow')
-	else
-		//to do 
-		*/
+	
 	if ($window.sessionStorage.token)
 	delete $window.sessionStorage.token
 
-
+	$rootScope.reservationID  = $attrs.reservationD
 	$rootScope.hotelName     = $attrs.hotelName
 	$rootScope.userName      = $attrs.userName
 	$rootScope.checkoutDate  = $attrs.checkoutDate
 	$rootScope.checkoutTime  = $attrs.checkoutTime
-	$rootScope.userCity   		 = $attrs.city
-	$rootScope.userState    	 = $attrs.state
+	$rootScope.userCity   	 = $attrs.city
+	$rootScope.userState     = $attrs.state
 	$rootScope.roomNo        = $attrs.roomNo
 
-//if($attrs.token === "undefined")
-	$window.sessionStorage.token = $attrs.token
+if($attrs.accessToken === "undefined")
+	$window.sessionStorage.accessToken = $attrs.accessToken
+
+	
 
 console.log($attrs)
 
@@ -79,10 +79,13 @@ snt.factory('authInterceptor', function ($rootScope, $q, $window,$location) {
   return {
     request: function (config) {
       config.headers = config.headers || {};
-      if ($window.sessionStorage.token) {
-        config.headers.Authorization = 'access_token' + $window.sessionStorage.token;
+
+      if ($window.sessionStorage.accessToken) {
+      
+        config.headers.Authorization = 'access-token' + $window.sessionStorage.accessToken;
       }
       else{
+   
       	$location.path('/authFailed');
       }
       return config;
