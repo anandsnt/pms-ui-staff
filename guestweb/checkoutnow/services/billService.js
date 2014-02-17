@@ -17,7 +17,8 @@
 		var fetchBillData = function() {
 			var deferred = $q.defer();
 
-			baseWebService.fetch('/assets/fauxDB/billData.json').then(function(response) {
+			baseWebService.fetch('http://localhost:3003/guest_web/home/bill_details' ,{'reservation_id':'5' })
+			.then(function(response) {
 				this.bills = response;
 				deferred.resolve(this.bills);
 			});

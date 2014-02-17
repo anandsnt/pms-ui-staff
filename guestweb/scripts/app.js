@@ -57,29 +57,45 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	delete $window.sessionStorage.token
 
 
-	$rootScope.hotelName   = $attrs.hotelname
+	$rootScope.hotelName     = $attrs.hotelName
+	$rootScope.userName      = $attrs.userName
+	$rootScope.checkoutDate  = $attrs.checkoutDate
+	$rootScope.checkoutTime  = $attrs.checkoutTime
+	$rootScope.city   		 = $attrs.city
+	$rootScope.state    	 = $attrs.state
+	$rootScope.roomNo        = $attrs.roomNo
 
-	var authenticationData = {
+//if($attrs.token === "undefined")
+	$window.sessionStorage.token = $attrs.token
 
-		"token"				: $attrs.token,
-		"reservationidID"	: $attrs.reservationid,
-		"checkoutType"		: $attrs.checkouttype
-	}
+console.log($attrs)
 
-	authenticationService.setAuthenticationDetails(authenticationData)
+	// var authenticationData = {
+
+	// 	"token"				: $attrs.token,
+	// 	"reservationidID"	: $attrs.reservationid,
+	// 	"checkoutType"		: $attrs.checkouttype
+	// }
+
+
 	
-	UserService.fetch().then(function(userDetails) {
 
-		$rootScope.checkoutDate 		= userDetails.checkoutDate
-		$rootScope.checkoutTime 		= userDetails.checkoutTime
-		$rootScope.roomnumber       	= userDetails.roomnumber
-		$rootScope.userName 			= userDetails.userName
-		$rootScope.userLocation         = userDetails.userLocation
-	});
+ //    console.log($attrs)
+
+	// authenticationService.setAuthenticationDetails(authenticationData)
+	
+	// UserService.fetch().then(function(userDetails) {
+
+	// 	$rootScope.checkoutDate 		= userDetails.checkoutDate
+	// 	$rootScope.checkoutTime 		= userDetails.checkoutTime
+	// 	$rootScope.roomnumber       	= userDetails.roomnumber
+	// 	$rootScope.userName 			= userDetails.userName
+	// 	$rootScope.userLocation         = userDetails.userLocation
+	// });
 
 	
 
-	$window.sessionStorage.token = authenticationData.token
+	// $window.sessionStorage.token = authenticationData.token
 
 	
 
@@ -93,7 +109,7 @@ snt.factory('authInterceptor', function ($rootScope, $q, $window,$location) {
     request: function (config) {
       config.headers = config.headers || {};
       if ($window.sessionStorage.token) {
-        config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
+        config.headers.Authorization = 'authtoken' + $window.sessionStorage.token;
       }
       else{
       	$location.path('/authFailed');
