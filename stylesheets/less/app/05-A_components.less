@@ -161,6 +161,15 @@
 						color: @textColor;
 						.show;
 
+						&.no-data {
+							font-size: 16px;
+							padding: 16px 0;
+							color: @grey4;
+							text-transform: none;
+							font-weight: 400;
+							font-style: italic;
+						}
+
 						&.blue { color: @blue; }
 						&.green { color: @green; }
 						&.red { color: @red; }
@@ -301,6 +310,112 @@
 			position: relative;
 			height: 50px;
 
+			/*#guest-card-data {
+				height: 50px;
+				margin-left: 20px;
+				.calc-width(100, 150); /* %, px (50px img; 20px margin; 80px lobby icon 
+				.pull-left;
+				.show;
+
+				.masked-input {
+					color: @white;
+					cursor: pointer;
+					.show;
+					.pull-left;
+					.transition;
+
+					&:empty {
+						width: 20px;
+						background-color: rgba(0,0,0,.1);
+					}
+
+					&.active {
+						padding: 0 5px;
+						color: @logoPrimary;
+						background-color: rgba(0,0,0,.1);
+					}
+				}
+
+				.holder {
+					height: 30px;
+					width: 100%;
+					clear: both;
+					margin-top: -10px;
+					.float;
+					.show;
+
+					.entry {
+						.float;
+						.pull-left;
+
+						.masked-input {
+							margin-right: 10px;
+							font-size: 30px;
+							line-height: 40px;
+							height: 40px;
+							font-weight: 700;
+							clear: none;
+							.pull-left;
+						}
+					}
+
+					.switch-button,
+					.status { 
+						line-height: 30px;
+						vertical-align: middle;
+						text-transform: uppercase;
+						margin: 7px 0 0 20px; 
+						.pull-left;
+					}
+
+					.switch-button { 
+						width: 80px; 
+						text-shadow: none;
+						background: rgba(0,0,0,.1);
+						.box-shadow(none);
+						.show;
+
+						.value {
+							color: @white;
+							font-weight: 700;
+							.calc-width(100, 30);
+						}
+
+						.switch-icon {
+							.vip;
+							background: @grey2;
+						}
+
+						&.on {
+							.switch-icon { 
+								background: @yellow;
+							}
+						}
+					}
+
+					&.data {
+						height: 35px;
+						margin-top: 0;
+
+						.divider {
+							line-height: 35px;
+							margin-right: 10px;
+							.pull-left;
+						}
+
+						.masked-input {
+							margin-right: 20px;
+							line-height: 35px;
+							height: 35px;
+							.pull-left;
+
+							&.icons { padding-left: 30px; }
+							&.icon-gc-location { margin-right: 10px; }
+						}
+					}
+				}
+			} */
+
 			form {
 				height: 50px;
 				margin-left: 20px;
@@ -401,6 +516,125 @@
 					}
 				}
 			}
+
+			/*form {
+				height: 50px;
+				margin-left: 20px;
+				.calc-width(100, 150); /* %, px (50px img; 20px margin; 80px lobby icon
+				.pull-left;
+				.show;
+
+				.masked-input {
+					color: @white;
+
+					&[size="0"] {
+						max-width: 40px;
+						background-color: rgba(0,0,0,.1);
+					}
+
+					&.active {
+						padding: 0 5px;
+						color: @logoPrimary;
+						background-color: rgba(0,0,0,.1);
+					}
+
+					@iterations: 50;
+					.span-loop (@i) when (@i > 0) {
+						@width: @i+1;
+						@activeWidth: @i+2;
+					    &[size="@{i}"] {
+					        max-width: ~"@{i}em";
+
+					        &.active { max-width: ~"@{width}em"; }
+
+					        &.icons { 
+					        	max-width: ~"@{width}em"; 
+					        	&.active { max-width: ~"@{activeWidth}em"; }
+					        }
+					    }
+					    .span-loop(@i - 1);
+					}
+					.span-loop (@iterations);
+				}
+
+				.holder {
+					height: 30px;
+					width: 100%;
+					clear: both;
+					margin-top: -10px;
+					.show;
+
+					.entry {
+						.pull-left;
+
+						.masked-input {
+							font-size: 30px;
+							line-height: 30px;
+							height: 30px;
+							font-weight: 700;
+							clear: none;
+							.pull-left;
+
+							&:first-child { margin-right: 0;}
+						}
+					}
+
+					.switch-button,
+					.status { 
+						line-height: 30px;
+						vertical-align: middle;
+						text-transform: uppercase;
+						margin: 7px 0 0 20px; 
+						.pull-left;
+					}
+
+					.switch-button { 
+						width: 80px; 
+						text-shadow: none;
+						background: rgba(0,0,0,.1);
+						.box-shadow(none);
+						.show;
+
+						.value {
+							color: @white;
+							font-weight: 700;
+							.calc-width(100, 30);
+						}
+
+						.switch-icon {
+							.vip;
+							background: @grey2;
+						}
+
+						&.on {
+							.switch-icon { 
+								background: @yellow;
+							}
+						}
+					}
+
+					&.data {
+						height: 35px;
+						margin-top: 0;
+
+						.divider {
+							line-height: 35px;
+							margin-right: 10px;
+							.pull-left;
+						}
+
+						.masked-input {
+							margin-right: 20px;
+							line-height: 35px;
+							min-height: 35px;
+							.pull-left;
+
+							&.icons { padding-left: 30px; }
+							&.icon-gc-location { margin-right: 0; }
+						}
+					}
+				}
+			}*/
 
 			#close-guest-card,
 			.icon-show-conversations {
@@ -537,14 +771,14 @@
 					
 					.entry {
 						#pixel-to-percent > .width(432, 904);
-
+						
 						input[size] {
 							text-align: center;
 							margin-right: 5px;
 
 							&:last-child { margin-right: 0; }
 						}
-						
+
 						&:nth-child(odd) { #pixel-to-percent > .right-margin(40, 904); }
 
 						&.full-width,
@@ -1138,7 +1372,7 @@
 				font-size: 24px;
 				line-height: 50px;
 				text-align: center;
-				font-weight: 100;
+				font-weight: 300;
 				color: @red;
 				text-transform: uppercase;
 				margin-bottom: 10px;
@@ -1257,7 +1491,7 @@
 				/* Block contents ***/
 				.next-view {
 					color: @textColor;
-					line-height: 50px;
+					line-height: 40px;
 					padding: 5px 20px;
 					.clickable;
 
@@ -2134,6 +2368,40 @@
 					.button:nth-child(even) { margin-right: 5px; }
 				} 
 
+				.signature {
+					margin: 0 20px;
+					.pull-left;
+
+					.toggle {
+						color: @textColor;
+						text-transform: uppercase;
+						height: 60px;
+						padding: 10px 60px;
+						position: relative;
+						.clickable;
+
+						.icons {
+							position: absolute;
+							top: 15px;
+							left: 15px;
+							.size(24px, 30px);
+						}
+
+						.label { 
+							width: 100%;
+							float: none;
+							line-height: 14px;
+							.show; 
+						}
+
+						&.active { 
+							height: 70px; 
+							#border-radius > .bottom(0);
+							.box-shadow(1px 0 0 rgba(0,0,0,.15));
+						}
+					}
+				}
+
 				.item-payment {
 					.pull-right;
 					.float;
@@ -2161,24 +2429,6 @@
 						.pull-left;
 						.size(60px, 65px);
 					}
-
-					/*.actions {
-						.button,
-						.add-new-button { 
-							margin-right: 10px;
-							.size(60px, 65px);
-							.pull-left;
-
-							&.add-new-button { line-height: 60px; }
-							&:last-child { margin-right: 0; }
-						}
-					}*/
-
-					/*.next-view {
-						.clickable;
-						display: inline-block;
-						margin-right: 5px;
-					}*/
 				}
 
 				.details {
@@ -2211,6 +2461,8 @@
 
 								&.total-label { 
 									text-align: right; 
+
+									.button { margin-right: 5px; }
 								}
 
 								&.total-value { 
@@ -2250,12 +2502,22 @@
 							td { border-bottom: 0; }
 						}
 					}
+
+					/* Signature **/
+					.signature-wrapper {
+						margin-top: -10px;
+						padding: 20px;
+						text-align: center;
+						background: @white;
+						#border-radius > .rounded(0);
+						.box-shadow();
+					}
 				}
 			}
 
 			/* Complete registration */
 			.complete-registration {
-				margin-top: 20px;
+				margin-top: 10px;
 
 				h2 { margin-bottom: 10px; }
 
@@ -2436,8 +2698,8 @@
 				 		}
 
 				 		&.no-content {
-				 			padding: 78px 0 0 0;
-				 			/*#pixel-to-percent > .top-padding(350, 1536);*/
+				 			padding: 0;
+				 			#pixel-to-percent > .top-padding(350, 1536);
 
 				 			.h1 { margin: 0; }
 				 		}

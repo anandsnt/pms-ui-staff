@@ -30,11 +30,6 @@
 		}				
 	}
 
-/* Grid table 				==============================*/
-	.grid {
-		table-layout: auto;
-	}
-
 /* Form layouts 				==========================*/
 	.form {
 		.holder {
@@ -46,6 +41,39 @@
 				margin: 0 0 40px 0;
 			}
 		}
+
+		.entry {
+			.boxes {
+				.inline {
+					width: 44%;
+
+					&:nth-child(2n) { margin-right: 0; }
+                    &:nth-child(4n) { margin-right: auto; }
+				}
+			}
+		}
+
+		&.inline-form {
+			.holder {
+				&.left { margin-bottom: 20px; }
+				&.right { margin-top: 20px; }
+			}
+		}
+
+		&.single-field-form {
+            .entry {
+                width: 240px;
+                margin: 0 10px 0 0;
+
+                &:nth-of-type(odd):not(.full-width) { margin-right: 10px; }
+            }
+
+            .actions {
+                .button { 
+                    margin-right: 10px;
+                }
+            }
+        }
 	}
 
 /* 5. COMPONENTS
