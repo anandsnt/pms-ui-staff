@@ -3,7 +3,7 @@ var snt = angular.module('snt', ['ngRoute']);
 
 snt.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/', {
-		templateUrl: 'assets/landing/landing.html',
+		templateUrl: '/assets/landing/landing.html',
 		resolve: {
 			// load only when urls and user have been loadded
 			load: function(UrlService, UserService) {
