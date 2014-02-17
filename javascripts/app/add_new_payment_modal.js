@@ -40,9 +40,9 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 	this.modalInit = function(){
 		if(typeof that.swipedCardData != 'undefined' && Object.keys(that.swipedCardData).length != 0){
 			console.log("swipe");
-    		//that.params = {"card_action": "swipe"};
+    		that.params = {"card_action": "swipe"};
 		}else{
-    		//that.params = {"card_action": "manual_entry"};
+    		that.params = {"card_action": "manual_entry"};
 			console.log('not swipe');
 		}
 		
