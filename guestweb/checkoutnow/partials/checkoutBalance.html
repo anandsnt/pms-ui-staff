@@ -14,7 +14,7 @@
 					{{ billDisplayDetails.checkoutText }}
 					<p class="leadtext">
 						<span class="lightcontent">{{ billDisplayDetails.balanceMessage }}</span>
-						<span class="balancevalue">{{ billData.currencyCode}}{{billData.balanceamount}}</span>
+						<span class="balancevalue">{{ billData.currency}}{{billData.balance}}</span>
 					</p>
 
 					<div class="viewbill-toggle">
@@ -24,10 +24,10 @@
 
 					<div ng-show="showBill" class="showbill">
 						<div class="guest-details leftalign">
-							<span class="center-block normal-weight">Room {{ billData.roomnumber }}</span>
+							<span class="center-block normal-weight">Room {{ roomnumber }}</span>
 							<span class="center-block">{{ userName }} | {{ userLocation }}</span>
 						</div>
-						<table class="table leftalign">
+						<table class="table leftalign table-striped">
 							<thead>
 								<tr>
 									<th>Description</th>
@@ -35,31 +35,31 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr ng-repeat= "bill in billData.data">
+								<tr ng-repeat= "bill in billData.fee_details">
 									<td>
 										<span class="center-block">{{ bill.date }}</span>
-										<span class="center-block">{{ bill.description }}</span>
-										<span class="center-block">{{ bill.tax.description }}</span>
+										<span class="center-block">{{ bill.guest_room_text }}: <span class="guest-room-description{{$index%2}}">{{bill.guest_room_description}}</span></span>
+										<span class="center-block" ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.description }}</span>
 									</td>
 									<td>
 										<span class="center-block"> &nbsp; </span>
-										<span class="center-block">{{ bill.amount}}</span>
-										<span class="center-block">{{ bill.tax.amount }}</span>
+										<span class="center-block">{{ bill.guest_room_fees}}</span>
+										<span class="center-block"ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.amount }}</span>
 									</td>
 								</tr>
 							</tbody>
 							<tfoot>
 								<tr class="total">
 									<td align="right">TOTAL</td>
-									<td >{{billData.totalamount}}</td>
+									<td >{{billData.total_fees}}</td>
 								</tr>
 								<tr class="total">
 									<td align="right">CREDIT</td>
-									<td>{{billData.creditamount}}</td>
+									<td>{{billData.credits}}</td>
 								</tr>
 								<tr class="total">
-									<td align="right">BALNACE</td>
-									<td class="balance">{{billData.balanceamount}}</td>
+									<td align="right">BALANCE</td>
+									<td class="balance">{{billData.balance}}</td>
 								</tr>
 							</tfoot>	
 						</table>

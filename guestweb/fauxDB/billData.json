@@ -1,37 +1,119 @@
-{	
-	"currencyCode" : "$",
-	"username"   : "Jose",
-	"userlocation" : "Dallas,TX",
-	"totalamount": "500",
-	"creditamount" : "-100",
-	"balanceamount": "400",
-	"roomnumber"	: "309",
-
-	"data": [
-		{
-			"date": "09-03-2013",
-			"description": "GUESTROOM: BEST RATE AVAILABLE",
-			"amount": "149.98",
-			"tax": {
-				"description": "MD SALES TAX",
-				"amount": "12.98"
-			}
-		}, {
-			"date": "09-03-2013",
-			"description": "PAY PER VIEW: TV",
-			"amount": "59.99",
-			"tax": {
-				"description": "MD SALES TAX",
-				"amount": "7.99"
-			}
-		}, {
-			"date": "09-03-2013",
-			"description": "SPA SESSION",
-			"amount": "199.99",
-			"tax": {
-				"description": "MD SALES TAX",
-				"amount": "9.99"
-			}
-		}
-	]
+{
+    "username": "Jose",
+    "userlocation": "Dallas,TX",
+    "balance": "0.00",
+    "credits": "245.00",
+    "currency": "$",
+    "fee_details": [
+        {
+            "charge_details": [
+                {
+                    "amount": "100.00",
+                    "description": "Transient Room Revenue"
+                },
+                {
+                    "amount": "6.00",
+                    "description": "Room Tax - 6%"
+                },
+                {
+                    "amount": "4.00",
+                    "description": "Occupancy Tax- 4%"
+                },
+                {
+                    "amount": "25.00",
+                    "description": "Late checkout upsells"
+                },
+                {
+                    "amount": "100.00",
+                    "description": "Transient Room Revenue"
+                },
+                {
+                    "amount": "6.00",
+                    "description": "Room Tax - 6%"
+                },
+                {
+                    "amount": "4.00",
+                    "description": "Occupancy Tax- 4%"
+                }
+            ],
+            "date": "12-28-2013",
+            "guest_room_description": "DAYUSE",
+            "guest_room_fees": "100.00",
+            "guest_room_text": "Guest Room"
+        },
+        {
+            "charge_details": [
+                {
+                    "amount": "100.00",
+                    "description": "Transient Room Revenue"
+                },
+                {
+                    "amount": "6.00",
+                    "description": "Room Tax - 6%"
+                },
+                {
+                    "amount": "4.00",
+                    "description": "Occupancy Tax- 4%"
+                },
+                {
+                    "amount": "25.00",
+                    "description": "Late checkout upsells"
+                },
+                {
+                    "amount": "100.00",
+                    "description": "Transient Room Revenue"
+                },
+                {
+                    "amount": "6.00",
+                    "description": "Room Tax - 6%"
+                },
+                {
+                    "amount": "4.00",
+                    "description": "Occupancy Tax- 4%"
+                }
+            ],
+            "date": "12-05-2013",
+            "guest_room_description": "NIGHTUSE",
+            "guest_room_fees": "100.00",
+            "guest_room_text": "Guest Room"
+        },
+        
+        {
+            "charge_details": [
+                {
+                    "amount": "100.00",
+                    "description": "Transient Room Revenue"
+                },
+                {
+                    "amount": "6.00",
+                    "description": "Room Tax - 6%"
+                },
+                {
+                    "amount": "4.00",
+                    "description": "Occupancy Tax- 4%"
+                },
+                {
+                    "amount": "25.00",
+                    "description": "Late checkout upsells"
+                },
+                {
+                    "amount": "100.00",
+                    "description": "Transient Room Revenue"
+                },
+                {
+                    "amount": "6.00",
+                    "description": "Room Tax - 6%"
+                },
+                {
+                    "amount": "4.00",
+                    "description": "Occupancy Tax- 4%"
+                }
+            ],
+            "date": "31-05-2013",
+            "guest_room_description": "NIGHTUSE",
+            "guest_room_fees": "100.00",
+            "guest_room_text": "Guest Room"
+        }
+    ],
+    "total_fees": "245.00"
 }
