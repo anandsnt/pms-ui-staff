@@ -1,5 +1,5 @@
 (function() {
-	var BillService = function($q,baseWebService) {
+	var BillService = function($q,baseWebService,$rootScope) {
 		var bills = {};
 		var billDisplayDetails = {};
 
@@ -17,7 +17,9 @@
 		var fetchBillData = function() {
 			var deferred = $q.defer();
 
-			baseWebService.fetch('/guest_web/home/bill_details.json',{'reservation_id':'242'}).then(function(response) {
+	
+
+			baseWebService.fetch('/guest_web/home/bill_details.json',{'reservation_id':$rootScope.reservationID}).then(function(response) {
 				this.bills = response;
 				deferred.resolve(this.bills);
 
@@ -37,7 +39,7 @@
 	};
 
 	var dependencies = [
-		'$q','baseWebService',
+		'$q','baseWebService','$rootScope',
 		BillService
 	];
 
