@@ -6,8 +6,8 @@
 			var deferred = $q.defer();
 
 			$http.get(url,{
-    params: parameters
-}).success(function(response) {
+    		params: parameters
+			}).success(function(response) {
 					this.details = response;
 					deferred.resolve(this.details);
 				}.bind(this))

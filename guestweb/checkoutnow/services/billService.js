@@ -17,10 +17,11 @@
 		var fetchBillData = function() {
 			var deferred = $q.defer();
 
-			baseWebService.fetch('http://localhost:3003/guest_web/home/bill_details' ,{'reservation_id':'5' })
-			.then(function(response) {
+			baseWebService.fetch('/guest_web/home/bill_details.json',{'reservation_id':'242'}).then(function(response) {
 				this.bills = response;
 				deferred.resolve(this.bills);
+
+				console.log(response)
 			});
 		
 
