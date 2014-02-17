@@ -402,6 +402,11 @@ $(function($){
         onOffSwitch();
     });
 
+    $(document).on('change', 'select', function(e){
+        e.stopImmediatePropagation();
+        $(this).blur();
+    });
+
     $(document).on('change', 'select.styled', function(e){
         e.stopImmediatePropagation();
         $(this).updateStyledSelect();
