@@ -11,8 +11,9 @@
 		//fetch data to display
 		
 		BillService.fetchBillData().then(function(billData) {
-			$scope.billData = billData;
-			console.log(billData.fee_details[0].charge_details)
+			$scope.billData = billData.data.bill_details;
+
+		
 		});
 
 		$scope.total = function() {

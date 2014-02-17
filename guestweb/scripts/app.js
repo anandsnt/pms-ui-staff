@@ -61,43 +61,14 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.userName      = $attrs.userName
 	$rootScope.checkoutDate  = $attrs.checkoutDate
 	$rootScope.checkoutTime  = $attrs.checkoutTime
-	$rootScope.city   		 = $attrs.city
-	$rootScope.state    	 = $attrs.state
+	$rootScope.userCity   		 = $attrs.city
+	$rootScope.userState    	 = $attrs.state
 	$rootScope.roomNo        = $attrs.roomNo
 
 //if($attrs.token === "undefined")
 	$window.sessionStorage.token = $attrs.token
 
 console.log($attrs)
-
-	// var authenticationData = {
-
-	// 	"token"				: $attrs.token,
-	// 	"reservationidID"	: $attrs.reservationid,
-	// 	"checkoutType"		: $attrs.checkouttype
-	// }
-
-
-	
-
- //    console.log($attrs)
-
-	// authenticationService.setAuthenticationDetails(authenticationData)
-	
-	// UserService.fetch().then(function(userDetails) {
-
-	// 	$rootScope.checkoutDate 		= userDetails.checkoutDate
-	// 	$rootScope.checkoutTime 		= userDetails.checkoutTime
-	// 	$rootScope.roomnumber       	= userDetails.roomnumber
-	// 	$rootScope.userName 			= userDetails.userName
-	// 	$rootScope.userLocation         = userDetails.userLocation
-	// });
-
-	
-
-	// $window.sessionStorage.token = authenticationData.token
-
-	
 
 
 	
@@ -109,7 +80,7 @@ snt.factory('authInterceptor', function ($rootScope, $q, $window,$location) {
     request: function (config) {
       config.headers = config.headers || {};
       if ($window.sessionStorage.token) {
-        config.headers.Authorization = 'authtoken' + $window.sessionStorage.token;
+        config.headers.Authorization = 'access_token' + $window.sessionStorage.token;
       }
       else{
       	$location.path('/authFailed');
