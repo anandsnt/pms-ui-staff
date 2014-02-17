@@ -5,7 +5,7 @@
 		var fetch = function() {
 			var deferred = $q.defer();
 
-			$http.get('/assets/fauxDB/lateCheckOutCharges.json')
+			$http.get('/guest_web/get_late_checkout_charges.json')
 				.success(function(response) {
 					this.charges = response;
 					deferred.resolve(this.charges);
