@@ -52,9 +52,19 @@ var UserDetailsView = function(domRef){
 
    //go to previous page with update in view - after adding new user or update user
    this.gotoPreviousPageWithUpdate = function() {
+    that.myDom.html("");
    	var url = "/admin/users";
-   	viewParams = {};
-  	sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams, false);
+   	var viewParams = {};
+    var viewDom = {};
+    if(that.currentView == 'hotel-admin-view'){
+      viewParams = {}
+      viewDom = $("#replacing-div-first");
+    }else{
+      viewParams = {'backDom' : $("#replacing-div-second")};
+      viewDom = $("#replacing-div-third");
+    }
+
+  	sntapp.fetchAndRenderView(url, viewDom, {}, 'BLOCKER', viewParams, false);
     sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
   

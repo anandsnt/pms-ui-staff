@@ -4,10 +4,9 @@ var UsersListView = function(domRef){
   var that = this;
   this.currentView = $("body").attr("id");
 
-  
   this.pageinit = function(){
     if(that.currentView == 'hotel-admin-view'){
-      that.myDom.find('#go_back').hide();
+      that.myDom.find('#go_back, #find_existing_user').hide();
     }
    
   };
@@ -28,18 +27,15 @@ var UsersListView = function(domRef){
   	var selectedId = $(this).attr("user");// to get the current toggle user's id
     if($("#activate-inactivate-button_"+selectedId+" .switch-button").hasClass("on")) {
 		  postData.activity = "inactivate";
-	} else {
-		postData.activity = "activate";
-	}
+  	} else {
+  		postData.activity = "activate";
+  	}
   	postData.id = selectedId;
-	var webservice = new WebServiceInterface();		
-	var options = {
-			   requestParameters: postData
-	};
-	webservice.postJSON(url, options);	
-  };
-  this.goBackToPreviousView = function() {
-  	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
+  	var webservice = new WebServiceInterface();		
+  	var options = {
+  			   requestParameters: postData
+  	};
+  	webservice.postJSON(url, options);	
   };
 
   this.gotoNextPage = function(e){
@@ -55,10 +51,8 @@ var UsersListView = function(domRef){
           sntapp.fetchAndRenderView(href, $("#replacing-div-fourth"), viewParams, 'BLOCKER', nextViewParams);
         }
     }else{
-      console.log("hereeeeeeeeeeeeeeeeeee");
       sntadminapp.gotoNextPage(e);
     }
-
 
   };
 
@@ -75,14 +69,14 @@ var UsersListView = function(domRef){
   	var selectedId = $(this).attr("id");
   	var url = '/admin/users/'+selectedId;
   	postData.id = selectedId;
-	var webservice = new WebServiceInterface();		
-	var options = {
+  	var webservice = new WebServiceInterface();		
+  	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfDelete,
 			   loader:"BLOCKER",
 			   successCallBackParameters: {"selectedId": selectedId}
-	};
-	webservice.deleteJSON(url, options);
+	  };
+	  webservice.deleteJSON(url, options);
 	
 	
   }; 
@@ -92,8 +86,7 @@ var UsersListView = function(domRef){
 		  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
 		  that.myDom.find($("#user_row_"+successParams['selectedId'])).html("");
 	  }	 
-	  else{
-		  
+	  else{		  
 		  sntapp.notification.showErrorList(data.errors, that.myDom);  
 	  }	  
   };

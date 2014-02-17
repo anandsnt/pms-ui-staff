@@ -6,9 +6,6 @@ var HotelDetailsView = function(domRef) {
 	var that = this;
     this.fileContent = "";
 
-	this.pageinit = function() {
-
-	};
 	this.delegateEvents = function() {
 		that.myDom.find('#save').on('click', ["update"], that.updateOrAddHotel);
 		that.myDom.find('#save_new_hotel').on('click', ["create"], that.updateOrAddHotel);
@@ -118,11 +115,11 @@ var HotelDetailsView = function(domRef) {
 		var hotelPmsType = that.myDom.find("#hotel-pms-type").val();
 		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType);
 		var type = event.data[0];
-    if(type == "create"){
-      var url = '/admin/hotels';
-    } else {
-      var url = '/admin/hotels/' + currentHotel;
-    }
+	    if(type == "create"){
+	      var url = '/admin/hotels';
+	    } else {
+	      var url = '/admin/hotels/' + currentHotel;
+	    }
 
 		var webservice = new WebServiceInterface();
 		var options = {
