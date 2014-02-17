@@ -63,6 +63,9 @@
             background-position: 13px -838px; 
             &.active { background-position: 13px -938px; }
         }
+
+        &.icon-grid-expand { background-position: 17px -1075px; }
+        &.icon-grid-close { background-position: 17px -1125px;  }
     }
 
     .status {
@@ -110,6 +113,8 @@
         &.remove { background-position: 0 -535px; }
         &.back { background-position: 0 -585px; }
         &.import { background-position: 0 -987px; }
+        &.bulk-edit { background-position: 0 -1037px; }
+        &.link { background-position: 0 -1085px; }
 
         @media @highdpi {
             background-image: @icons2x;
@@ -141,6 +146,10 @@
             .gradient-with-image(@iconAdminMenu, @logoGradientStart, @logoGradientEnd); 
             background-repeat: no-repeat, repeat;
             background-position: 0 -50px, 0 0;
+
+            @media @highdpi {
+                .gradient-with-image(@iconAdminMenu2x, @logoGradientStart, @logoGradientEnd); 
+            }
         }
 
         &.in-quick-menu { background-position: 0 -50px; }

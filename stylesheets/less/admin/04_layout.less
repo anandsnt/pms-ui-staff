@@ -454,12 +454,16 @@ body { overflow: hidden; }
                 &:hover { color: darken(@red, 10); }
             }
 
-            &.import {
+            &.import,
+            &.bulk-edit,
+            &.link {
                 color: @blue; 
                 .pull-left;
 
                 &:hover { color: darken(@blue, 10); }
             }
+
+            &.link { padding-left: 30px; }
 
             &.back { 
                 color: @textColor; 
@@ -496,7 +500,7 @@ body { overflow: hidden; }
             line-height: 40px;
             font-weight: 600;
             text-transform: uppercase;
-            
+
             &.icon-setup-complete {
                 color: @green;
                 padding-left: 25px;
@@ -514,10 +518,16 @@ body { overflow: hidden; }
         width: 100%;
         border-collapse: separate; 
         border-spacing: 0 10px;
+        margin-top: -10px;
 
         th,
         td {
             padding: 0 20px;
+
+            &.activate,
+            &.delete { text-align: center; }
+            &.activate { width: 110px; }
+            &.delete { width: 60px; }
         }
 
         thead,
@@ -525,7 +535,6 @@ body { overflow: hidden; }
             td,
             th {
                 line-height: 40px;
-                vertical-align: middle;
                 background-color: rgba(0,0,0,.1);
             }
 
@@ -543,8 +552,8 @@ body { overflow: hidden; }
         tbody {
             tr {
                 td {
-                    line-height: 60px;
-                    vertical-align: middle;
+                    line-height: 1.2em;
+                    height: 60px;
                     background: @white;
                     .box-shadow(1px 1px 2px rgba(0,0,0,.1));
 
@@ -573,20 +582,27 @@ body { overflow: hidden; }
 
                     /* Larger font size for short data - room #, IATA etc. ***/
                     .number { 
-                        font-size: 24px; 
+                        font-size: 24px;
+                        margin: 5px 0; 
                         .show;
                     }
 
-                    /* On/off toggle td ***/
-                    &.activate {
-                        width: 100px;
-                        padding-top: 15px;
-                        line-height: 45px;
-                    }
-
                     /* Custom column styles for short content ***/
-                    &.abbr { width: 220px; }
+                    &.abbr { width: 60px; }
                     &.date { width: 160px; }
+
+                    /* On/off toggle td, Delete icon ***/
+                    &.activate,
+                    &.delete {
+                        .icon-delete,
+                        .switch-icon {
+                            margin: 0 auto;
+                            .show;
+                            .hide-text;
+                        }
+
+                        .icon-delete { margin: 5px auto; }
+                    }
 
                     &:first-child { #border-radius > .left(); }
                     &:last-child { #border-radius > .right(); }
@@ -595,7 +611,6 @@ body { overflow: hidden; }
                 /* Edit data row ***/
                 &.edit-data {
                     
-
                     td {
                         padding: 0;
                         line-height: 1em;
@@ -603,17 +618,22 @@ body { overflow: hidden; }
                         .box-shadow(none);
 
                         .data-holder {
-                            margin-top: -70px;
+                            margin-top: -60px;
                             
                             .form { padding: 0 20px; }
+
+                            &.move50 { margin-top: -50px; }
+                            &.move40 { margin-top: -40px; }
+                            &.move30 { margin-top: -30px; }
                         }
                     }
                 }
 
                 /* Hidden content when edit data row exists ***/
                 &.hide-content {
-                    td:not(.activate) {
+                    td {
                         visibility: hidden;
+                        height: 10px;
                         .box-shadow(none);
                     }
                 }
@@ -637,38 +657,37 @@ body { overflow: hidden; }
 
 /* Datatable                ==============================*/
     .datatable {
-        
-        tr:not(.edit-data){
-            th,
-            td {
-                &:not(.activate) {
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
 
-                &.activate {
-                    text-align: center;
-                }
+        th,
+        td {
+            &.activate {  
+                width: 110px; 
+
+                &.long { width: 200px; }
             }
+            
+
+            &.delete { width: 100px; } 
         }
         
         tbody {
             tr {
                 td {
+                    .box-shadow(2px 0 2px rgba(0,0,0,.1));
 
-                    /* Custom datatable styles - hotels list ***/
+                    /* Complex titles ***/
                     .title {
                         line-height: 21px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                         .show;
                     }
 
-                    .login { font-style: italic; }
-
-                    /* Delete icon ***/
-                    .icon-delete {
-                        margin: 0 auto 12px auto;
-                        .hide-text;
+                    .login { 
+                        font-style: italic; 
+                        font-size: 14px;
+                        color: @grey3;
                     }
                 }
 
@@ -685,18 +704,6 @@ body { overflow: hidden; }
                     }
                 }
             }
-            
-        }
-
-        /* Hide first column for datatables with ID values we don't need to show ***/
-        &.hide-id {
-            thead,
-            tbody {
-                tr {
-                    th:first-child,
-                    td:first-child:not([colspan]) { .hide; }
-                }
-            }
         }
     }
 
@@ -704,7 +711,3 @@ body { overflow: hidden; }
 ==========================================================*/
 /* 7. RESPONSIVE
 ==========================================================*/
-/***Added By Qburst *****/
-.notOverlap {
-  padding-right:63px;
-}

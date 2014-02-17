@@ -90,7 +90,7 @@ var SetPaymentAsPrimaryModal = function(){
     this.fetchFailedOfDeleteCreditCard = function(errorMessage){
     	var message_element = that.backDom.find("#notification-message-guest");
 		message_element.removeClass('success_message error_message').addClass("notice error_message");
-		message_element.html("Some error occured:"+ errorMessage);			
+		message_element.html("Error: "+ errorMessage);			
 		that.myDom.find("#notification-message-guest").slideDown(700, function() {});
 		$("#guest-credit").addClass("error");
     	sntapp.notification.showSuccessMessage('Payment method successfully deleted!');

@@ -101,8 +101,6 @@
 			&.red { background: @red; }
 			&.blue { background: @blue; }
 			&.dark-title { background: @gcard; }
-
-			&.show-qr { background: @blue; } /* DELETE WHEN KEY DELIVERY IS IMPLEMENTED */
 		}
 
 		.modal-content {
@@ -119,10 +117,11 @@
 			}
 
 			.message { 
-				margin: 10px 0 20px 0;
+				margin: 10px 0 20px 0; 
 				text-align: center;
 
-				.select {
+				.select,
+				.select-item {
 					display: inline-block;
 					margin: -5px 0 0 10px;
 					width: 50px;
@@ -550,7 +549,7 @@
 									right: 10px;
 									font-size: 24px;
 									line-height: 50px;
-									font-weight: 100;
+									font-weight: 300;
 								}
 							}
 						}
@@ -635,7 +634,7 @@
 
 						.price {
 							font-size: 30px;
-							font-weight: 100;
+							font-weight: 300;
 							.pull-right;
 						}
 						
@@ -741,7 +740,7 @@
 						
 						span { 
 							font-size: 72px;
-							font-weight: 100;
+							font-weight: 300;
 							.show; 
 						}
 
@@ -889,47 +888,6 @@
 				}
 			}
 
-			/* QR Code - SHOULD BE DELETED WHEN KEY DELIVERY IS IMPLEMENTED ***/
-			&.show-qr {
-				width: 620px;
-				padding: 0;
-				background: transparent;
-
-				#qr-code {
-					padding: 20px; 
-					color: @white;
-					background: @blue;
-					#border-radius > .rounded();
-					.float;
-
-					h1 {
-						font-size: 30px;
-						line-height: 60px;
-						font-weight: 100;
-						clear: none;
-						padding: 40px 0 0 130px;
-						.size(auto, auto);
-						.pull-left;
-
-						span { 
-							font-size: 72px;
-							.show; 
-						}
-					}
-
-					.qr-holder { 
-						margin-left: 40px;
-						text-align: center;
-						.pull-right;
-
-						img {
-							width: 203px;
-							height: auto;
-						}
-					}
-				}
-			}
-
 			/* CC modal ***/
 			&.card-content {
 				width: 840px; 
@@ -1011,7 +969,6 @@
 
 		&.keyboard-lock { .transform3d(-50%, -15%, 0); }
 
-
 		/* Custom positioning ***/
 		&[data-position="bottom-right"]{
 			top: auto;
@@ -1078,7 +1035,7 @@
 
 /* SignaturePad				==============================*/
 	#signature-pad {
-		height: 320px;
+		height: 300px;
 		overflow: hidden;
 		width: 100%;
 
@@ -1222,6 +1179,7 @@
 				.fc-event-title {
 					font-size: 12px;
 					vertical-align: bottom;
+					.concealed;
 				}
 			}
 

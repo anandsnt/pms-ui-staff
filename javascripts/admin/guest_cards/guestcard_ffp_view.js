@@ -4,7 +4,7 @@ var GuestCardFFPView = function(domRef) {
 	var that = this;
 	
 	this.delegateSubviewEvents = function(){
-    	that.myDom.find('#ffp').tablesorter();
+    	that.myDom.find('#ffp').tablesorter({ headers: { 2:{sorter:false} } });
    	};
 	// To handle active/inactive ffps.
 	this.toggleButtonClicked = function(element){

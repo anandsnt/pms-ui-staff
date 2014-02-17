@@ -141,7 +141,7 @@ var RoomsView = function(domRef) {
 	// To handle failure on save API
 	this.fetchFailedOfSave = function(errorMessage) {
 		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom); 
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom); 
 	};
 
 };

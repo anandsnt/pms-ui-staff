@@ -55,7 +55,7 @@ var GuestContactView = function(domRef) {
 		that.$contactInfoChange = false;
 		var message_element = that.myDom.find("#notification-message-guest");
 		message_element.removeClass('success_message error_message').addClass("notice error_message");
-		message_element.html("Some error occured:"+ errorMessage);			
+		message_element.html("Error: "+ errorMessage);			
 		that.myDom.find("#notification-message-guest").slideDown(700, function() {});
 		$("#guest-contact").addClass("error");
 	};

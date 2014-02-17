@@ -60,18 +60,32 @@ body {
 				pointer-events:none;
 			}
 
-			&:nth-child(6),
-			&:last-child {
+			&:last-child { border-bottom: 0; }
+
+			&#settings,
+			&#sign-out,
+			&#rover-info {
 				position: absolute;
 				left: 10px;
 			}
-			
-			&:nth-child(6) { bottom: 60px; }
 
-			&:last-child { 
+			&#settings { bottom: 110px; }
+			&#sign-out { bottom: 50px; }
+
+			&#rover-info {
 				bottom: 0;
-				border-bottom: 0; 
-			}
+				font-size: 11px;
+				line-height: 16px;
+				color: @white;
+				text-align: center;
+				text-transform: uppercase;
+				height: 40px;
+
+				img {
+					.size(auto, 60px);
+					.show;
+				}
+			}	
 		}	
 	}
 
@@ -85,7 +99,7 @@ body {
 		left: 0;
 		.square(100%);
 		background: transparent;
-		z-index: 999999;
+		z-index: 9999;
 	}
 
 	#loading-spinner {

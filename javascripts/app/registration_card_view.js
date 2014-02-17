@@ -307,7 +307,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 	this.completeCheckinFailed = function(errorMessage) {
 		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorMessage("Some error occured: " + errorMessage, that.myDom);  
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
 	};
 	this.clearSignature = function(e) {
 		that.myDom.find("#signature").jSignature("reset");
