@@ -1,5 +1,6 @@
 (function() {
 	var checkOutLaterController = function($scope, LateCheckOutChargesService) {
+		$scope.showBackButtonImage = true
 		LateCheckOutChargesService.fetch().then(function(charges) {
 			$scope.charges = charges;
 		});

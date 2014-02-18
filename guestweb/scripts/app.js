@@ -23,7 +23,8 @@ snt.config(['$routeProvider', function($routeProvider) {
 	});
 
 	$routeProvider.when('/checkOutNowSuccess', {
-		templateUrl: '/assets/checkoutnow/partials/checkOutNowSuccess.html'
+		templateUrl: '/assets/checkoutnow/partials/checkOutStatus.html',
+		controller: 'checkOutStatusController'
 	});
 
 	$routeProvider.when('/checkOutLater', {
