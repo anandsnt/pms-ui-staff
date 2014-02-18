@@ -5,8 +5,8 @@
 		var fetch = function() {
 			var deferred = $q.defer();
 			console.log('................');
-			alert('$rootScope.reservationID'+$rootScope.reservationID);
-			$http.get('/guest_web/get_late_checkout_charges.json',{'reservation_id':$rootScope.reservationID})
+		
+			$http.get('/guest_web/get_late_checkout_charges.json',{params:{'reservation_id':$rootScope.reservationID}})
 				.success(function(response) {
 					this.charges = response;
 					deferred.resolve(this.charges);

@@ -22,7 +22,8 @@
 			var reservation_id = '';
 			var url = '/guest_web/apply_late_checkout';
 			var data = {reservation_id: reservation_id};
-			$http.post(url, data).success(function(response){
+			$http.post(url,{
+    		params:data}).success(function(response){
 				deferred.resolve(response);
 			}).error(function(){
 				deferred.reject();
