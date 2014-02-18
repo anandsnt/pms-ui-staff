@@ -6,7 +6,7 @@
 		<div class="row headerrow">
 			<logo-image></logo-image>
 			<p class="roomnumber centeralign">
-				<span>Room {{ roomnumber }}</span>
+				<span>Room {{ roomNo }}</span>
 			</p>
 		</div>
 	</div>
@@ -16,7 +16,7 @@
 		<div class="row check-inout-wrapper">
 			<div class="col-md-6 headtext centeralign">
 				Ready to check out? 
-				<p class="centeralign leadtext">Check out time is at 11.30am. <strong>Request a late check-out if you need more time!</strong></p>
+				<p class="centeralign leadtext">Check out time is at {{checkoutTime}}. <strong>Request a late check-out if you need more time!</strong></p>
 			</div>
 
 			<div class="col-md-6 no-padding now-later-options">
@@ -45,7 +45,7 @@
 
 		<!-- top section ends here--> 
 		<div class="row">
-			<p class="centeralign foot-text"><em>Come back to this page to check out any time before 11.30am.<em></p>
+			<p class="centeralign foot-text"><em>Come back to this page to check out any time before {{checkoutTime}}.<em></p>
 		</div>
 	</div>
 </div>

@@ -1,0 +1,42 @@
+<div class="jumbotron">
+	<div class="container backgroundbg">
+		<div class="container-fluid">
+			<div class="row headerrow">
+				<logo-image></logo-image>
+			</div>
+		</div>
+
+		<!-- contentarea starts here-->
+		<div class="container">
+			<!-- top section starts here-->
+			
+			<div ng-hide="posted">
+				Posting data...
+			</div>
+			
+			<div ng-show="posted && !success">
+				Something went wrong...
+			</div>
+			
+			<div ng-show="posted && success">
+				<div class="row check-inout-wrapper">
+					<div class="col-md-12 headtext centeralign">
+						Thank you
+						<p class="leadtext">
+							<span class="lightcontent">The following will appear on your bill.</span>
+						</p>
+						<p class="latecheckout-charged centeralign">Late Check Out ({{ lateCheckOut.time | date : 'ha' }}) .... {{ lateCheckOut.amount | currency }}</p>
+					</div>
+				</div>
+	
+				<div class="row">
+					<p class="italictext">
+						<a href="#/" class="link-btn with-bg">Back to check-out screen</a>
+					</p>
+				</div>
+			</div>
+			
+			
+		</div>
+	</div>
+</div>
