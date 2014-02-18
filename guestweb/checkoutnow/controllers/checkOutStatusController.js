@@ -26,8 +26,6 @@
 			// $scope.lateCheckOut = response;
 			$scope.success = response.status ? true : false;
 			console.log($scope);
-
-			alert($scope.success)
 			
 		});
 
