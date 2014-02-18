@@ -16,6 +16,12 @@ var HotelDetailsView = function(domRef) {
 		that.myDom.find('#mli-certificate').on('change', function(){
   			that.readCertificate(this);
   		});
+  		// that.myDom.find('#notification-message').on('click', function(e){
+			// var target = $(e.target);
+			// if(target.hasClass("close-btn")){
+				// sntapp.notification.hideMessage(that.myDom);
+			// }
+	    // });
 
 	};
   
