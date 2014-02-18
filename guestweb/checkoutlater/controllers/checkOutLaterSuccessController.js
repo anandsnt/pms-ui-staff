@@ -1,5 +1,5 @@
 (function() {
-	var checkOutLaterSuccessController = function($scope, $http, $q, $routeParams, $location, LateCheckOutChargesService) {
+	var checkOutLaterSuccessController = function($scope, $http, $q, $routeParams, $location, LateCheckOutChargesService,$rootScope) {
 		var charges = LateCheckOutChargesService.charges;
 		var id = $routeParams.id;
 		
@@ -21,7 +21,7 @@
 			var deferred = $q.defer();
 			var reservation_id = '';
 			var url = '/guest_web/apply_late_checkout';
-			var data = {reservation_id: reservation_id};
+			var data = {reservation_id: $rootScope.reservationID};
 			$http.post(url,{
     		params:data}).success(function(response){
 				deferred.resolve(response);
@@ -48,6 +48,7 @@
 		'$routeParams',
 		'$location',
 		'LateCheckOutChargesService',
+		 '$rootScope',
 		checkOutLaterSuccessController
 	];
 
