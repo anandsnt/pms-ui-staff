@@ -29,17 +29,23 @@ var RoomKeyDeliveryView = function(domRef){
 	var key_system_id = "";
 	var key_access_url = "";
 	var key_access_port = "";
+  	var key_username = "";
+  	var key_password = "";
 	if(room_key_for_rover == "encode"){
 		key_system_id = that.myDom.find("#key-system-vendor").val();
 		key_access_url = that.myDom.find("#key-system-access-url").val();
 		key_access_port = that.myDom.find("#key-system-access-port").val();
+		key_username = that.myDom.find("#key-system-username").val();
+		key_password = that.myDom.find("#key-system-password").val();
 	} 
 	var data = {
 		    "room_key_delivery_for_guestzest_check_in": room_key_for_guest_zest,
 			"room_key_delivery_for_rover_check_in": room_key_for_rover,
 			"key_system_id": key_system_id,
 			"key_access_url": key_access_url,
-			"key_access_port": key_access_port
+			"key_access_port": key_access_port,
+      "key_username": key_username,
+      "key_password": key_password
 	};
 	
 	var url = '/admin/update_room_key_delivery_settings';
