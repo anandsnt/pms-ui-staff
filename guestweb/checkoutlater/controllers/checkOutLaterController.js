@@ -3,6 +3,7 @@
 		$scope.showBackButtonImage = true
 		LateCheckOutChargesService.fetch().then(function(charges) {
 			$scope.charges = charges;
+			console.log(charges)
 		});
 	};
 

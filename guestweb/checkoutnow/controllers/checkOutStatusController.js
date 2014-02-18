@@ -10,7 +10,7 @@
 		var posting = function() {
 			var deferred = $q.defer();
 			var reservation_id = '';
-			var url = '/guest_web/home/checkout_guest';
+			var url = '/guest_web/home/checkout_guest.json';
 			var data = {'reservation_id':$rootScope.reservationID};
 			$http.post(url, data).success(function(response){
 				deferred.resolve(response);
