@@ -3,6 +3,7 @@
 	var checkOutStatusController = function($scope, baseWebService,$q,$http,$rootScope) {
 //to be deleted
 	$scope.finalMessage = "Thank You for staying with us!"
+	$scope.errorMessage = ""
 	$scope.posted = false;
 
 
@@ -24,8 +25,10 @@
 		posting().then(function (response) {
 			$scope.posted = true;	
 			// $scope.lateCheckOut = response;
-			$scope.success = response.status ? true : false;
+			$scope.success = (response.status != "failure") ? true : false;
 			console.log($scope);
+
+			$scope.errorMessage = response.errors[0]
 			
 		});
 
