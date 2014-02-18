@@ -11,7 +11,7 @@ $(document).ready(function(){
 	$('html').on('click', function(e){
 		var target = $(e.target);
 		if(target.hasClass("close-btn")){
-			sntapp.notification.hideMessage();
+			sntapp.notification.hideMessage(target.closest("section"));
 		}
 	});
 });
