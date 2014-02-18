@@ -13,7 +13,7 @@
 				ap = 'PM';
 			};
 
-			return hh + ':' + mm + ' ' + ap;
+			return ap;
 		};
 	};
 
