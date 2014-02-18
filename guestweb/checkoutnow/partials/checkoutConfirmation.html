@@ -5,51 +5,49 @@
 		<div class="container-fluid">
 			<div class="row headerrow">
 				<logo-image></logo-image>
-				<div class=" headtext roomnumber centeralign">
-					{{details.roomnumber}}
-				</div>
-				
+				<p class="roomnumber centeralign">
+					<span>{{details.roomType}} {{roomNo}}</span>
+				</p>
 			</div>
 		</div>
 		<!-- contentarea starts here-->
 		<div class="container">
 			<!-- top section starts here-->
 
-			<div class="row">
-				<div class="col-md-6 headtext">
-					
-					{{details.readyMessageText}}
-					<p class="centeralign leadtext">
-						<span class="lightcontent">{{details.checkoutTimeText}}</span>
+			<div class="row check-inout-wrapper">
+				<div class="col-md-6 headtext centeralign">
+					{{details.headerTitle}}
+					<p class="leadtext">
+						<span class="lightcontent">{{details.headersubTitle}} {{checkoutTime}}</span>
 					</p>
 				</div>
 				<!-- top section ends here-->
 				
 				<!-- checkoubtn section starts here-->
-				<div class="col-md-6">
-					<a href="#/checkoutBalance">
-					<div class=" col-xs-12 checkoutnow">
-						<div class="row">
-							{{details.buttonText}}
+				<div class="col-md-6 no-padding now-later-options no-screen-attach">
+					<div class="row">
+						<div class="col-xs-12 checkoutnow single">
+							<div class="rel-wrapper">
+								<a href="#/checkoutBalance"></a>
+								<div class="row">
+									{{details.buttonText}}
+								</div>
+								<div class="row  icontop">
+									<img src="/assets/img/checkout_icon.png" width="104" height="102" alt=""/>
+								</div>
+							</div>
 						</div>
-						<div class="row  icontop">
-
-							<img src="assets/img/checkout_icon.png" width="104" height="102" alt=""/>
-
-						</div>
-
-					</div> </a>
+					</div>
 				</div>
-</div>
+			</div>
 				<!-- checkoubtn section ends here-->
 
 				<div class="row" >
-					<p class="italictext" ng-show="true">
-						<em> {{details.checkoutMessagePart1}}</em>
+					<p class="foot-text centeralign" ng-show="true">
+						<em> {{details.footerMessage1}}</em>
 					</p>
-					<p class="italictext secondtext">
-						<em>{{details.checkoutMessagePart2}}
-						{{details.checkoutMessagePart3}}</em>
+					<p class="foot-text centeralign second-in">
+						<em>{{details.footerMessage2}} {{checkoutTime}}.
 					</p>
 				</div>
 
