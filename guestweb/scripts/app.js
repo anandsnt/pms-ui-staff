@@ -63,10 +63,8 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.userState     = $attrs.state
 	$rootScope.roomNo        = $attrs.roomNo
 
-if($attrs.accessToken === "undefined")
-	$window.sessionStorage.accessToken = $attrs.accessToken
-
-	
+if($attrs.accessToken != "undefined")
+	$window.sessionStorage.accessToken = $attrs.accessToken	
 
 console.log($attrs)
 
@@ -82,7 +80,7 @@ snt.factory('authInterceptor', function ($rootScope, $q, $window,$location) {
 
       if ($window.sessionStorage.accessToken) {
       
-        config.headers.Authorization = 'access-token' + $window.sessionStorage.accessToken;
+        config.headers.Authorization = $window.sessionStorage.accessToken;
       }
       else{
    
