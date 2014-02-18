@@ -17,6 +17,7 @@ var RateTypeListView = function(domRef){
 		var options = {
 			   requestParameters: data,
 			   successCallBack: that.fetchCompletedOfSave,
+			   failureCallBack: that.fetchFailedOfSave,
 			   successCallBackParameters: {'event': event},		   
 			   loader: 'BLOCKER'
 	    };
@@ -96,9 +97,15 @@ var RateTypeListView = function(domRef){
 		var options = {
 			   requestParameters: data,
 			   successCallBack: that.fetchCompletedOfSave,
+			   failureCallBack: that.fetchFailedOfSave,
 			   successCallBackParameters: {'event': event},		   
 			   loader: 'BLOCKER'
 	    };
 	    webservice.postJSON(url, options);
 	};
+	//to do the actions on fail
+	  this.fetchFailedOfSave = function(errorMessage){
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom); 
+	  };
 };

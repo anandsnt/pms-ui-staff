@@ -1,11 +1,12 @@
 (function() {
-	var LateCheckOutChargesService = function($http, $q) {
+	var LateCheckOutChargesService = function($http, $q, $rootScope) {
 		var charges = {};
 
 		var fetch = function() {
 			var deferred = $q.defer();
-
-			$http.get('/assets/fauxDB/lateCheckOutCharges.json')
+			console.log('................');
+			alert('$rootScope.reservationID'+$rootScope.reservationID);
+			$http.get('/guest_web/get_late_checkout_charges.json',{'reservation_id':$rootScope.reservationID})
 				.success(function(response) {
 					this.charges = response;
 					deferred.resolve(this.charges);
@@ -26,6 +27,7 @@
 	var dependencies = [
 		'$http',
 		'$q',
+		'$rootScope',
 		LateCheckOutChargesService
 	];
 

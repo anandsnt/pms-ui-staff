@@ -110,6 +110,7 @@ var NotificationMessage = function() {
 	this.showSuccessMessage = function(message, dom, priority, showMessage){
 		var htmlToAppend = message;
 		if(typeof showMessage !== 'undefined'){
+			htmlToAppend = "<span class='close-btn'></span>" + htmlToAppend;
         	that.showMessage(htmlToAppend, dom, 'notice success');
         }
 		// only show success message if 'shouldShowSuccessMessage' is set to true

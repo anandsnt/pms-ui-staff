@@ -2,11 +2,27 @@
 	var baseWebService = function($http, $q) {
 		var details = {};
 
-		var fetch = function(url) {
+		var fetch = function(url,parameters) {
 			var deferred = $q.defer();
 
-			$http.get(url)
-				.success(function(response) {
+			$http.get(url,{
+    		params: parameters
+			}).success(function(response) {
+					this.details = response;
+					deferred.resolve(this.details);
+				}.bind(this))
+				.error(function() {
+					deferred.reject();
+				});
+
+			return deferred.promise;
+		};
+		var post = function(url,parameters) {
+			var deferred = $q.defer();
+
+			$http.post(url,{
+    		params: parameters
+			}).success(function(response) {
 					this.details = response;
 					deferred.resolve(this.details);
 				}.bind(this))
@@ -19,7 +35,8 @@
 
 		return {
 			details: details,
-			fetch: fetch
+			fetch: fetch,
+			post :post
 		}
 	};
 

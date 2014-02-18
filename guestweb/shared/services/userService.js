@@ -5,7 +5,7 @@
 		var fetch = function() {
 			var deferred = $q.defer();
 
-			baseWebService.fetch('assets/fauxDB/userDetails.json').then(function(response) {
+			baseWebService.fetch('/assets/fauxDB/userDetails.json').then(function(response) {
 					this.user = response;
 					deferred.resolve(this.user);
 			});
