@@ -55,7 +55,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	if ($window.sessionStorage.token)
 	delete $window.sessionStorage.token
 
-	$rootScope.reservationID  = $attrs.reservationD
+	$rootScope.reservationID  = $attrs.reservationID
 	$rootScope.hotelName     = $attrs.hotelName
 	$rootScope.userName      = $attrs.userName
 	$rootScope.checkoutDate  = $attrs.checkoutDate
