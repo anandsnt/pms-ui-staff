@@ -6,6 +6,7 @@
 			$scope.details = details;
 		
 		});
+		
 
 	};
 

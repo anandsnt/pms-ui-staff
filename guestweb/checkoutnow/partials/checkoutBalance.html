@@ -1,0 +1,98 @@
+<div class="jumbotron">
+	<div class="container ">
+		<!-- contentarea starts here-->
+		<div class="container">
+			<div class="container-fluid">
+				<div class="row headerrow">
+					<logo-image></logo-image>
+				</div>
+			</div>
+			<!-- top section starts here-->
+
+			<div class="row check-inout-wrapper">
+				<div class="col-md-6 centeralign headtext nopadding-onblock">
+					{{ billDisplayDetails.checkoutText }}
+					<p class="leadtext">
+						<span class="lightcontent">{{ billDisplayDetails.balanceMessage }}</span>
+						<span class="balancevalue">{{ billData.currency}}{{billData.balance}}</span>
+					</p>
+
+					<div class="viewbill-toggle">
+						<a ng-hide="showBill"  ng-click="showBill = true"><img src="/assets/img/rightarrow.png" alt="" />&nbsp;&nbsp;{{ billDisplayDetails.viewBillButtontext}}</a>
+						<a ng-show="showBill" ng-click="showBill = false"><img src="/assets/img/downarrow.png" alt=""  />&nbsp;&nbsp;{{ billDisplayDetails.viewBillButtontext}}</a>
+					</div>
+
+					<div ng-show="showBill" class="showbill">
+						<div class="guest-details leftalign">
+							<span class="center-block normal-weight">Room {{ roomNo }}</span>
+							<span class="center-block">{{ userName }} | {{ userCity }}, {{ userState }}</span>
+						</div>
+						<table class="table leftalign table-striped">
+							<thead>
+								<tr>
+									<th>Description</th>
+									<th>Fees</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat= "bill in billData.fee_details">
+									<td>
+										<span class="center-block">{{ bill.date }}</span>
+										<span class="center-block">{{ bill.guest_room_text }}: <span class="guest-room-description{{$index%2}}">{{bill.guest_room_description}}</span></span>
+										<span class="center-block" ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.description }}</span>
+									</td>
+									<td>
+										<span class="center-block"> &nbsp; </span>
+										<span class="center-block">{{ bill.guest_room_fees}}</span>
+										<span class="center-block"ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.amount }}</span>
+									</td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr class="total">
+									<td align="right">TOTAL</td>
+									<td >{{billData.total_fees}}</td>
+								</tr>
+								<tr class="total">
+									<td align="right">CREDIT</td>
+									<td>{{billData.credits}}</td>
+								</tr>
+								<tr class="total">
+									<td align="right">BALANCE</td>
+									<td class="balance">{{billData.balance}}</td>
+								</tr>
+							</tfoot>	
+						</table>
+					</div>
+
+				</div>
+
+				<div class="col-md-6 no-padding now-later-options no-screen-attach">
+					<div class="row">
+						<div class="col-xs-12 checkoutlater single">
+							<div class="rel-wrapper">
+								<a href="#/checkOutNowSuccess"></a>
+								<div class="row">
+									Accept charges and check out
+								</div>
+								<div class="row  icontop">
+									<img src="/assets/img/creditcard_icon.png" width="104" height="102" alt=""/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- top section ends here-->
+
+			<!-- checkoubtn section ends here-->
+
+			<div class="row">
+				<p class="foot-text centeralign">
+					<em> The Credit Card on record will be charged</em>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
