@@ -9,9 +9,17 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="headtext centeralign">
+					<div ng-hide="posted">
+				Posting data...
+			</div>
+			
+			<div ng-show="posted && !success">
+				Something went wrong...
+			</div>
+			
+			<div ng-show="posted && success" class="headtext centeralign">
 					{{finalMessage}}
-				</div>
+			</div>
 			</div>
 		</div>
 	</div>
