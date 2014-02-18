@@ -14,23 +14,6 @@ var RegistrationCardView = function(viewDom) {
 			createViewScroll('#registration-content');
 		}, 300);
 
-		var width = that.myDom.find("#signature").width();
-		that.myDom.find("#signature").jSignature({
-			height : 130,
-			width : width,
-			lineWidth : 1
-		});
-		that.myDom.find("#signature canvas").addClass('pad');
-
-		that.myDom.find("#signature").on('mouseover', function() {
-			viewScroll.disable();
-		});
-		that.myDom.find("#signature").on('mouseout', function() {
-			viewScroll.enable();
-		});
-
-		var reservation_status = that.myDom.find("#registration-content").attr("data-reservation-status");
-		
 		if (this.viewParams.clickedButton == "ViewBillButton") {
 			// To Display Guest Bill screen in detailed mode via ViewBillButton click.
 			that.myDom.find("#bill1-fees").removeClass("hidden");
@@ -56,6 +39,14 @@ var RegistrationCardView = function(viewDom) {
 
 	this.pageshow = function(){
 		sntapp.cardSwipeCurrView = 'GuestBillView';
+		// Enable signature pad
+		var width = that.myDom.find("#signature").width();
+		that.myDom.find("#signature").jSignature({
+			height : 130,
+			width : width,
+			lineWidth : 1
+		});
+		that.myDom.find("#signature canvas").addClass('pad');
 	};
 
 	this.executeLoadingAnimation = function() {
@@ -74,6 +65,12 @@ var RegistrationCardView = function(viewDom) {
 	this.delegateEvents = function() {
 		that.myDom.unbind('click');
 		that.myDom.on('click', that.myDomClickHandler);
+		that.myDom.find("#signature").on('mouseover', function() {
+			viewScroll.disable();
+		});
+		that.myDom.find("#signature").on('mouseout', function() {
+			viewScroll.enable();
+		});
 	};
 
 	// function for closing the drawer if is open
