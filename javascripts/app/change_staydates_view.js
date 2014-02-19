@@ -56,6 +56,9 @@ var ChangeStayDatesView = function(viewDom){
 
   this.calenderDatesFetchCompleted = function(calenderEvents){
       that.availableEvents = calenderEvents;
+      //TODO: Remove after API completed
+      that.availableEvents.data.is_rates_suppressed = "true";
+      that.availableEvents.data.text_rates_suppressed = "SR";      
       that.checkinDateInCalender = that.confirmedCheckinDate = getDateObj(calenderEvents.data.arrival_date);
       that.checkoutDateInCalender = that.confirmedCheckoutDate = getDateObj(calenderEvents.data.dep_date);
       that.focusDateInCalendar = that.confirmedCheckinDate;
@@ -135,8 +138,13 @@ var ChangeStayDatesView = function(viewDom){
       $(calenderEvents.data.available_dates).each(function(index){
           calEvt = {};
           //Fixing the timezone issue related with fullcalendar
-          thisDate = getDateObj(this.date);      
-          calEvt.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
+          thisDate = getDateObj(this.date); 
+
+          if(calenderEvents.data.is_rates_suppressed == "true"){
+            calEvt.title = calenderEvents.data.text_rates_suppressed;
+          } else {
+            calEvt.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
+          }   
           calEvt.start = thisDate;
           calEvt.end = thisDate;
           calEvt.day = thisDate.getDate().toString();
@@ -156,8 +164,11 @@ var ChangeStayDatesView = function(viewDom){
                   events.push(calEvt);
                   //checkout-event
                   calEvt = {};
-                  
-                  calEvt.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
+                  if(calenderEvents.data.is_rates_suppressed == "true"){
+                    calEvt.title = calenderEvents.data.text_rates_suppressed;
+                  } else {
+                    calEvt.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
+                  }   
                   calEvt.start = thisDate;
                   calEvt.end = thisDate;
                   calEvt.day = thisDate.getDate().toString();
@@ -298,6 +309,7 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.showRoomAvailableUpdates = function(reservationDetails, roomNumber){
+    console.log("showNoRoomsAvailableMessage"); 
       var checkinTime = reservationDetails['arrival_date'].setHours(00,00,00);
       var checkoutTime = reservationDetails['dep_date'].setHours(00,00,00);
       var thisTime = "";
@@ -326,7 +338,8 @@ var ChangeStayDatesView = function(viewDom){
       }else{
           avgRate = checkinRate;
       }
-      var currencySymbol = getCurrencySymbol(that.availableEvents.data.currency_code);
+
+      var currencySymbol = getCurrencySymbol(escapeNull(that.availableEvents.data.currency_code));
 
       // Update Dom values
       that.myDom.find('#reservation-updates #room-number').text(roomSelected);
@@ -338,8 +351,16 @@ var ChangeStayDatesView = function(viewDom){
       }
       that.myDom.find('#reservation-updates #new-check-in').text(getDateString(reservationDetails['arrival_date'], true));
       that.myDom.find('#reservation-updates #new-check-out').text(getDateString(reservationDetails['dep_date'], true));
-      that.myDom.find('#reservation-updates #avg-daily-rate').text(currencySymbol + avgRate +" /");
-      that.myDom.find('#reservation-updates #total-stay-cost').text(currencySymbol + totalRate);
+      console.log(that.availableEvents.data.is_rates_suppressed);
+      if(that.availableEvents.data.is_rates_suppressed == "true"){
+        console.log("case 1");
+        that.myDom.find('#reservation-updates #avg-daily-rate').text(that.availableEvents.data.text_rates_suppressed);
+        that.myDom.find('#reservation-updates #total-stay-cost').text("");
+      } else {
+        that.myDom.find('#reservation-updates #avg-daily-rate').text(currencySymbol + avgRate +" /");
+        that.myDom.find('#reservation-updates #total-stay-cost').text(currencySymbol + totalRate);
+      }
+
       that.myDom.find('#reservation-updates #rate-desc').text(escapeNull(that.availableEvents.data.rate_desc));
 
   };
