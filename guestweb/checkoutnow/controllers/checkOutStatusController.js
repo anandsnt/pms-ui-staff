@@ -1,41 +1,26 @@
 
 (function() {
-	var checkOutStatusController = function($scope, baseWebService,$q,$http,$rootScope) {
-//to be deleted
+	var checkOutStatusController = function($scope, baseWebService,$rootScope) {
+
 	$scope.finalMessage = "Thank You for staying with us!"
-	$scope.posted = false;
+	$scope.errorMessage = ""
 
 
 		$scope.posted = false;
-		var posting = function() {
-			var deferred = $q.defer();
-			var reservation_id = '';
-			var url = '/guest_web/home/checkout_guest.json';
-			var data = {'reservation_id':$rootScope.reservationID};
-			$http.post(url, data).success(function(response){
-				deferred.resolve(response);
-			}).error(function(){
-				deferred.reject();
-			});
-				
-			return deferred.promise;
-		}
-		
-		posting().then(function (response) {
-			$scope.posted = true;	
-			// $scope.lateCheckOut = response;
-			$scope.success = response.status ? true : false;
-			console.log($scope);
+		 var url = '/guest_web/home/checkout_guest.json';
+         var data = {'reservation_id':$rootScope.reservationID};
+	
+         baseWebService.post(url,data).then(function(response) {
+         $scope.posted = true;	
+		 $scope.success = (response.status != "failure") ? true : false;
+		 $scope.errorMessage = response.errors[0];
+                     });
 			
-		});
-
-
-
 	 };
 
 	var dependencies = [
 		'$scope',
-		'baseWebService','$q','$http','$rootScope',
+		'baseWebService','$rootScope',
 		checkOutStatusController
 	];
 
