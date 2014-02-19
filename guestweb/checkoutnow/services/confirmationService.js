@@ -1,15 +1,31 @@
 (function() {
-	var confirmationService = function($q,baseWebService) {
+	var confirmationService = function($rootScope,$q,baseWebService) {
 		var details = {};
-
+		
 		var fetch = function() {
 			var deferred = $q.defer();
+            var url = ''
 
-			baseWebService.fetch('/assets/fauxDB/confirmationPageDetails.json').then(function(response) {
-				this.details = response;
-				deferred.resolve(this.details);
-			});
+			switch(hotelNamesEnum[$rootScope.hotelName]){
 
+				case 1:
+                    url = '/assets/fauxDB/confirmationPageDetails.json';
+					break;
+                case 2:
+                    
+                    url = '/assets/fauxDB/confirmationPageDetailsForAnotherHotel.json';
+                    break;
+
+				default:
+                    url = '/assets/fauxDB/confirmationPageDetailsForAnotherHotel.json';
+                    break;
+
+			}
+            baseWebService.fetch(url).then(function(response) {
+                    this.details = response;
+                    deferred.resolve(this.details);
+                     });
+			
 
 			return deferred.promise;
 		};
@@ -21,6 +37,7 @@
 	};
 
 	var dependencies = [
+		'$rootScope',
 		'$q','baseWebService',
 		confirmationService
 	];

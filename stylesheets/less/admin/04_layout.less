@@ -510,6 +510,14 @@ body { overflow: hidden; }
                 color: @red;
                 padding-left: 25px;
             }
+
+            &.required {
+                color: @textColor;
+                font-weight: 400;
+                text-transform: none;
+
+                strong { color: @red; }
+            }
         }
     }
 
@@ -518,8 +526,7 @@ body { overflow: hidden; }
         width: 100%;
         border-collapse: separate; 
         border-spacing: 0 10px;
-        margin-top: -10px;
-
+        
         th,
         td {
             padding: 0 20px;
@@ -608,6 +615,15 @@ body { overflow: hidden; }
                     &:last-child { #border-radius > .right(); }
                 }
 
+                > td.nested-table {
+                    background: transparent;
+                    .box-shadow(none);
+
+                    .grid {
+                        margin: 0 0 0 20px;
+                    }
+                }
+
                 /* Edit data row ***/
                 &.edit-data {
                     
@@ -620,11 +636,27 @@ body { overflow: hidden; }
                         .data-holder {
                             margin-top: -60px;
                             
-                            .form { padding: 0 20px; }
+                            .form { 
+                                padding: 0 20px; 
+
+                                .entry {
+                                    .boxes { padding: 10px 20px; }
+                                }
+                            }
 
                             &.move50 { margin-top: -50px; }
                             &.move40 { margin-top: -40px; }
                             &.move30 { margin-top: -30px; }
+                        }
+                    }
+                   
+                    &:nth-child(2) {
+                        td {
+                            .data-holder { 
+                                &.move50,
+                                &.move40,
+                                &.move30 { margin-top: -60px; }
+                            }
                         }
                     }
                 }

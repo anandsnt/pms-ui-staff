@@ -8,13 +8,13 @@
 	}, {
 		"id": "2",
 		"class": "checkouttime2",
-		"time": "14",
+		"time": "2",
 		"ap": "PM",
 		"amount": "25"
 	}, {
 		"id": "3",
 		"class": "checkouttime3",
-		"time": "17",
+		"time": "5",
 		"ap": "PM",
 		"amount": "50"
 	}

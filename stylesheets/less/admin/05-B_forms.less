@@ -48,16 +48,20 @@
         }
 
         .holder {
-            margin-bottom: 20px;
+            margin-bottom: 40px;
             #pixel-to-percent > .width(580, 1200);
             .pull-left;
 
-            &.left {
-                #pixel-to-percent > .right-margin(40, 1200);
-            }
+            &.left { #pixel-to-percent > .right-margin(40, 1200); }
 
             &.full-width {
                 width: 100%;
+                float: none;
+                clear: both;
+            }
+
+            &.column {
+                margin-bottom: 20px;
                 float: none;
                 clear: both;
             }
@@ -95,6 +99,13 @@
                     line-height: 20px;
                     margin-bottom: 10px;
                     text-transform: none;
+
+                    label {
+                        font-size: 16px;
+                        line-height: 20px;
+                        margin-bottom: 10px;
+                        text-transform: none;
+                    }
                 }
 
                 &.status {
@@ -140,6 +151,11 @@
                 .radio,
                 .checkbox {
                     &:last-child { margin-bottom: 0; }
+                }
+
+                .radio-check {
+                    height: 20px;
+                    .float;
                 }
 
                 .inline {
@@ -446,6 +462,17 @@
                 border-top: 0;
                 padding: 0;
                 .pull-left;
+
+                &.float {
+                    &:before,
+                    &:after {
+                        height: 0px !important;
+                        .hide;
+                    }
+                    &:after {
+                        clear: none !important;;
+                    }
+                }
 
                 .button { 
                     height: 40px;

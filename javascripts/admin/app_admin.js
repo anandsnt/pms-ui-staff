@@ -8,7 +8,10 @@ $(document).ready(function(){
 		var sntAdmin = new SntAdminView($("#snt-admin-view"));
 		sntAdmin.initialize();
 	}
-	$('html').on('click', function(){
-		// sntapp.notification.hideMessage();
+	$('html').on('click', function(e){
+		var target = $(e.target);
+		if(target.hasClass("close-btn")){
+			sntapp.notification.hideMessage(target.closest("section"));
+		}
 	});
 });
