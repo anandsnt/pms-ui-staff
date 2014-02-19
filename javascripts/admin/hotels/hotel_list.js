@@ -42,7 +42,7 @@ var HotelListView = function(domRef){
       event.preventDefault();      
       return that.gotoNextPage(target);
     }
-    // click of reservation import via ftp
+    // click of reservation import via sftp
     else if(target.attr("name") == "reservation-import"){      
       var checkedStatus = target.is(':checked');
       var confirmForReservationImport = null;
