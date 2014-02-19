@@ -20,9 +20,8 @@
 		var post = function(url,parameters) {
 			var deferred = $q.defer();
 
-			$http.post(url,{
-    		params: parameters
-			}).success(function(response) {
+			$http.post(url, parameters
+			).success(function(response) {
 					this.details = response;
 					deferred.resolve(this.details);
 				}.bind(this))
