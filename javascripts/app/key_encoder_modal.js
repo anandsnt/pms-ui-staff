@@ -24,7 +24,9 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			that.myDom.find('.cancel-key-popup').on('click', that.showKeyPrintFailure);
 		}else{
 			that.myDom.find('.cancel-key-popup').on('click', function(){
-				that.cancelWriteOperation();
+				if(!sntapp.cardSwipeDebug){
+					that.cancelWriteOperation();
+				}
 				that.hide();
 			});
 		}
@@ -110,15 +112,15 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			'failureCallBack': that.deviceNotConnected			
 		};
 
-		/*if(sntapp.cardSwipeDebug){
+		if(sntapp.cardSwipeDebug){
 			sntapp.cardReader.checkDeviceConnectedDebug(options);
 		}
 		else{
 			sntapp.cardReader.checkDeviceConnected(options);
-		}*/
-		setTimeout(function(){
+		}
+		/*setTimeout(function(){
 			that.deviceConnecionStatus();
-		}, 2000)
+		}, 2000)*/
 	};
 
 	/*
@@ -157,7 +159,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* If device is connected, show status as connected in the popup.
 	*/
 	this.deviceConnecionStatus = function(data){
-		data = true;
 		if(!data){
 			return that.deviceNotConnected();
 		}
@@ -247,7 +248,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Call cordova service to get the UID
 	*/
 	that.getUID = function(){
-		console.log("getUID");
 		var options = {
 			'successCallBack': that.callKeyFetchAPI,
 			'failureCallBack': that.showKeyPrintFailure			
@@ -265,7 +265,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Calculate the keyWrite data from the API response and call the write key method for key writing.
 	*/
 	that.printKeys = function(){
-		console.log("calculate key");
 	    var keyPos = 0;
 	    if(that.key1Printed) keyPos = 1;
 	    
@@ -278,7 +277,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	    }else{
 	    	keyData.push(that.keyData.key_info[keyPos].t3)
 	    }
-	    console.log(Object.keys(that.keyData.key_info[keyPos]));
 
 	    keyData.push(Object.keys(that.keyData.key_info[keyPos])[0]);
 	    keyData.push(that.keyData.aid);
@@ -290,14 +288,12 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	    	that.writeKey(keyData, "key2");	
 	    }
 
-	    console.log(keyData);
 	};
 
 	/*
 	* Server call to fetch the key data.
 	*/
 	this.callKeyFetchAPI = function(userID){
-		console.log("call callKeyFetchAPI");
 
 		that.keyFetched = true;
 	    var reservationId = getReservationId();
@@ -306,8 +302,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	    	postParams.uid = userID
 	    }
 	    
-	    //var url = '/staff/reservation/print_key'
-	    var url = '/ui/show?format=json&json_input=keys/fetch_encode_key.json';
+	    var url = '/staff/reservation/print_key'
+	    //var url = '/ui/show?format=json&json_input=keys/fetch_encode_key.json';
 		var webservice = new WebServiceInterface();	
 
 	  	var options = {
