@@ -4,9 +4,11 @@ var snt = angular.module('snt', ['ngRoute']);
 snt.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/', {
 		templateUrl: '/assets/landing/landing.html',
+		controller: 'checkOutLandingController',
 		resolve: {
 			// load only when urls and user have been loadded
 			load: function(UrlService, UserService) {
+
 				return UrlService.fetch() && UserService.fetch();
 			}
 		}
@@ -62,8 +64,9 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.roomNo        = $attrs.roomNo
 	$rootScope.isLateCheckoutAvailable  = $attrs.isLateCheckoutAvailable
 
-if (!$rootScope.isLateCheckoutAvailable ) 
+if ($rootScope.isLateCheckoutAvailable === 'false') 
 		$location.path('/checkOutNow')
+
 
 if($attrs.accessToken != "undefined")
 	$window.sessionStorage.accessToken = $attrs.accessToken	
@@ -107,3 +110,18 @@ snt.config(function ($httpProvider) {
 
 
     
+
+(function() {
+	var checkOutLandingController = function($rootScope,$location) {
+
+	if ($rootScope.isLateCheckoutAvailable === 'false') 
+		 $location.path('/checkOutNow')
+};
+
+	var dependencies = [
+		'$rootScope','$location',
+		checkOutLandingController
+	];
+
+	snt.controller('checkOutLandingController', dependencies);
+})();
