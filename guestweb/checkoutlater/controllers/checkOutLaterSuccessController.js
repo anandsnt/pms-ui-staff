@@ -47,6 +47,7 @@
 		posting().then(function (response) {
 			$scope.posted = true;	
 			$scope.success = response.status ? true : false;
+
 		});
 		
 	};
