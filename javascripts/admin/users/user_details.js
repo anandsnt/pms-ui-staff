@@ -3,6 +3,8 @@ var UserDetailsView = function(domRef){
   this.myDom = domRef;
   this.fileContent ="";
   var that = this;
+  this.currentView = $("body").attr("id");
+  
 
   this.pageshow = function(){
     // removing auto filled data if it is add new user screen
@@ -63,7 +65,7 @@ var UserDetailsView = function(domRef){
       viewParams = {'backDom' : $("#replacing-div-second")};
       viewDom = $("#replacing-div-third");
     }
-
+    console.log(viewDom);
   	sntapp.fetchAndRenderView(url, viewDom, {}, 'BLOCKER', viewParams, false);
     sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
