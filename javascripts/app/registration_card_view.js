@@ -14,10 +14,11 @@ var RegistrationCardView = function(viewDom) {
 			createViewScroll('#registration-content');
 		}, 300);
 
-		var width = that.myDom.find("#signature").width();
+		var width = that.myDom.find("#signature-pad").width();
+		
 		that.myDom.find("#signature").jSignature({
 			height : 130,
-			width : width,
+			width : width-20,
 			lineWidth : 1
 		});
 		that.myDom.find("#signature canvas").addClass('pad');
