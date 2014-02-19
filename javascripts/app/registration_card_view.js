@@ -48,14 +48,6 @@ var RegistrationCardView = function(viewDom) {
 
 	this.pageshow = function(){
 		sntapp.cardSwipeCurrView = 'GuestBillView';
-		// Enable signature pad
-		var width = that.myDom.find("#signature").width();
-		that.myDom.find("#signature").jSignature({
-			height : 130,
-			width : width,
-			lineWidth : 1
-		});
-		that.myDom.find("#signature canvas").addClass('pad');
 	};
 
 	this.executeLoadingAnimation = function() {
