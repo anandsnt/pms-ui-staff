@@ -8,6 +8,7 @@ var Search  = function(domRef){
 
     that.currentQuery = "";
     that.fetchResults = [];
+    that.preloadedResults = [];
     that.fetchTerm = "";
     var type = that.myDomElement.find($('#search_list')).attr("data-search-type");
     
@@ -15,6 +16,7 @@ var Search  = function(domRef){
     if navigated to search screen by clicking upsell late checkout option
     */
     if(type == "LATE_CHECKOUT") {
+    	that.myDomElement.find("#no-results").html("");
         var search_url = "search.json?is_late_checkout_only=true";
         this.fetchSearchData(search_url, "",type);
     }
@@ -23,6 +25,30 @@ var Search  = function(domRef){
     if navigated to search screen by clicking checking-in/checking-out/in-house options
     */
     else if(type != "") {
+    	that.myDomElement.find("#no-results").html("");
+        if(type == "DUEIN"){
+	        searchTitle = "Checking In";
+	        var searchTitleHtml = that.myDomElement.find('#search-title').html();
+	    	var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
+	    	that.myDomElement.find('#search-title').html(newSearchTitleHtml);
+      	}
+        else if(type == "DUEOUT"){
+	        searchTitle = "Checking Out";
+	        var searchTitleHtml = that.myDomElement.find('#search-title').html();
+	    	var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
+	    	that.myDomElement.find('#search-title').html(newSearchTitleHtml);
+        }
+        else if(type == "INHOUSE"){
+	        searchTitle = "In House";
+	        var searchTitleHtml = that.myDomElement.find('#search-title').html();
+	    	var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
+	    	that.myDomElement.find('#search-title').html(newSearchTitleHtml);
+        }else if(type == "LATE_CHECKOUT"){
+	        searchTitle = "Late Checking Out";
+	        var searchTitleHtml = that.myDomElement.find('#search-title').html();
+	    	var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
+	    	that.myDomElement.find('#search-title').html(newSearchTitleHtml);
+       }
         var search_url = "search.json?status=" + type;
         this.fetchSearchData(search_url, "",type);
     }
@@ -108,6 +134,7 @@ var Search  = function(domRef){
     e.preventDefault();
     that.currentQuery = "";
     that.fetchResults = [];
+    that.preloadedResults = [];
     that.fetchTerm = "";
     var search_url = "search.json?is_late_checkout_only=true";
     that.fetchSearchData(search_url, "", "LATE_CHECKOUT");
@@ -123,6 +150,11 @@ var Search  = function(domRef){
 
     $('#query').val('');
     $('#search-results').empty().addClass('hidden');
+    var preloadedResultsCount = that.preloadedResults.length;
+    if(preloadedResultsCount > 0){
+    	$('#search-results').empty().removeClass('hidden');
+    	that.displayFilteredResults(that.preloadedResults, "");
+    }
     that.updateView();
     
   };
@@ -152,12 +184,16 @@ var Search  = function(domRef){
       }
       else if(type == "INHOUSE"){
         searchType = "in house";
-      }else if(type == "LATE_CHECKOUT"){
+      }
+      else if(type == "LATE_CHECKOUT"){
         searchType = "opted for late checkout";
       }
-      
+      //$(this).text().replace("contains", "hello everyone"); 
       if(response.data.length > 0){
         that.fetchResults = response.data;
+        if(type!=""){
+        	that.preloadedResults = response.data;
+        }
         that.displayFilteredResults(that.fetchResults, that.currentQuery);
         return false;
       }
@@ -261,6 +297,12 @@ var Search  = function(domRef){
 
    //when user focus on search text
   this.queryEntered = function(event){
+  	var searchTitleHtml = that.myDomElement.find('#search-title').html();
+	var newSearchTitleHtml = searchTitleHtml.replace("Checking In", "Search");
+	var newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out", "Search");
+	var newSearchTitleHtml = newSearchTitleHtml.replace("In House", "Search");
+	var newSearchTitleHtml = newSearchTitleHtml.replace("Late Checking Out", "Search");
+	that.myDomElement.find('#search-title').html(newSearchTitleHtml);
     that.currentQuery = $.trim($(this).val());
     // Clear button visibility toggle
     that.showHideClearQueryButton();
@@ -270,6 +312,11 @@ var Search  = function(domRef){
       that.fetchResults = [];
       that.fetchTerm = "";
       $('#search-results').empty().addClass('hidden');
+      var preloadedResultsCount = that.preloadedResults.length;
+	  if(preloadedResultsCount > 0){
+	    	$('#search-results').empty().removeClass('hidden');
+	    	that.displayFilteredResults(that.preloadedResults, "");
+	  }
       //TODO: verify working. Rename function
       that.updateView();
     return;
@@ -399,8 +446,8 @@ var Search  = function(domRef){
         $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="' + escapeNull(image) + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = showRoomStatus ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
         $viewStatus = guestStatusIcon ? '<span class="guest-status ' + escapeNull(guestStatusIcon) + '"></span>':'<span class="guest-status"></span>',
-        $lateCheckoutStatus = (escapeNull(lateCheckoutTime) == "" || "CHECKING_OUT" == reservation_status) ? "": '<span class="late-checkout-time">'+escapeNull(lateCheckoutTime)+'</span>'
-        $guestViewIcons = '<div class="status">' + $lateCheckoutStatus + $viewStatus + '</div>'
+        $lateCheckoutStatus = (escapeNull(lateCheckoutTime) == "" || "CHECKING_OUT" == reservation_status) ? "": '<span class="late-checkout-time">'+escapeNull(lateCheckoutTime)+'</span>',
+        $guestViewIcons = '<div class="status">' + $lateCheckoutStatus + $viewStatus + '</div>';
         $output =
         '<a href="staff/staycards/staycard?confirmation=' + confirmation+'&id='+ escapeNull(id)+ '" class="guest-check-in link-item float" data-transition="inner-page">' +
             $image +
