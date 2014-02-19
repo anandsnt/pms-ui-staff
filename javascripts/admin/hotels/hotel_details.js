@@ -107,6 +107,7 @@ var HotelDetailsView = function(domRef) {
 			$("#mli-certificate-upload").remove();
 			$("#external-mappings").remove();
 			that.myDom.find(".hotel-pms-type").remove();
+			that.myDom.find(".is-pms-tokenized").remove();
 			$(".re-invite").remove();
 		}
 	};
@@ -115,12 +116,17 @@ var HotelDetailsView = function(domRef) {
 		var currentHotel = $(".currenthotel").attr("id");
 		var hotelName = $.trim(that.myDom.find("#hotel-name").val()), hotelCode = $.trim(that.myDom.find("#hotel-code").val()), hotelStreet = $.trim(that.myDom.find("#hotel-street").val()), hotelPhone = $.trim(that.myDom.find("#hotel-phone").val()), hotelCity = $.trim(that.myDom.find("#hotel-city").val()), hotelState = $.trim(that.myDom.find("#hotel-state").val()), hotelCountry = $.trim(that.myDom.find("#hotel-country").val()), hotelCheckinHour = $.trim(that.myDom.find("#hotel-checkin-hour").val()), hotelCheckinMin = $.trim(that.myDom.find("#hotel-checkin-minutes").val()), hotelCheckinPrimeTime = $.trim(that.myDom.find("#hotel-checkin-primetime").val()), hotelCheckoutHour = $.trim(that.myDom.find("#hotel-checkout-hour").val()), hotelCheckoutMinutes = $.trim(that.myDom.find("#hotel-checkout-minutes").val()), hotelCheckoutPrimeTime = $.trim(that.myDom.find("#hotel-checkout-primetime").val()), hotelContactFirstName = $.trim(that.myDom.find("#contact-first-name").val()), hotelContactLastName = $.trim(that.myDom.find("#contact-last-name").val()), hotelContactEmail = $.trim(that.myDom.find("#contact-email").val()), hotelContactPhone = $.trim(that.myDom.find("#contact-phone").val()), hotelChain = $.trim(that.myDom.find("#hotel-chain").val()), hotelBrand = $.trim(that.myDom.find("#hotel-brand").val()), hotelCurrency = $.trim(that.myDom.find("#hotel-currency").val()), adminEmail = $.trim(that.myDom.find("#admin-email").val()), adminPhone = $.trim(that.myDom.find("#admin-phone").val()), adminFirstName = $.trim(that.myDom.find("#admin-first-name").val()), adminLastName = $.trim(that.myDom.find("#admin-last-name").val()), password = $.trim(that.myDom.find("#admin-pwd").val()), confirmPassword = $.trim(that.myDom.find("#admin-confirm-pwd").val()), zipcode = $.trim(that.myDom.find("#hotel-zipcode").val()), numberOfRooms = $.trim(that.myDom.find("#hotel-rooms").val()), roverRegistration = $("#registration-for-rover input[type='radio']:checked").val(), hotelTimeZone = $.trim(that.myDom.find("#hotel-time-zone").val());
 
+		isPmsTokenized = false;
+		if(that.myDom.find("#div-is-pms-tokenized").hasClass("on")){
+			isPmsTokenized = true;
+		}
+
 		var mliHotelCode = $('#mli-hotel-code').val();
 		var mliChainCode = $('#mli-chain-code').val();
 		var hotelFromAddress = $('#hotel_from_address').val();
 		var hotelAutoLogoutTime = $.trim(that.myDom.find("#auto-logout").val());
 		var hotelPmsType = that.myDom.find("#hotel-pms-type").val();
-		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress);
+		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized);
 		var type = event.data[0];
 	    if(type == "create"){
 	      var url = '/admin/hotels';
@@ -159,7 +165,7 @@ var HotelDetailsView = function(domRef) {
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
 	};
 	//Generating post data
-	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress) {
+	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized) {
 
 		if (that.currentView == "snt-admin-view") {
 			data = {
@@ -197,7 +203,8 @@ var HotelDetailsView = function(domRef) {
 				mli_hotel_code: mliHotelCode,
 				mli_chain_code: mliChainCode,
 				mli_certificate : that.fileContent,
-				hotel_from_address: hotelFromAddress
+				hotel_from_address: hotelFromAddress,
+				is_pms_tokenized: isPmsTokenized
 			};
 		} else {
 			data = {
