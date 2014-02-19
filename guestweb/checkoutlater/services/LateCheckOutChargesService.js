@@ -1,5 +1,5 @@
 (function() {
-	var LateCheckOutChargesService = function($http, $q, $rootScope) {
+	var LateCheckOutChargesService = function($http, $q, $rootScope,baseWebService) {
 		var charges = {};
 
 		var fetch = function() {
@@ -17,6 +17,16 @@
 
 			return deferred.promise;
 		};
+	//	var fetch = function() {
+	// 		var deferred = $q.defer();
+
+	// 		baseWebService.fetch('/guest_web/get_late_checkout_charges.json',{'reservation_id':$rootScope.reservationID}).then(function(response) {
+	// 			this.charges = response;
+	// 			deferred.resolve(this.charges);
+	// 		})
+
+	// 		return deferred.promise;
+	// 	};
 
 		return {
 			charges: charges,
@@ -27,7 +37,7 @@
 	var dependencies = [
 		'$http',
 		'$q',
-		'$rootScope',
+		'$rootScope','baseWebService',
 		LateCheckOutChargesService
 	];
 

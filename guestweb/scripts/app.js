@@ -106,9 +106,4 @@ snt.config(function ($httpProvider) {
 });
 
 
-var hotelNamesEnum = { 
-					"Carlyl Suites Hotel"      : 1, 
-					"Trump International Hotel": 2, 
-					"Four Seasons Hotel"       : 3 
-				}
     

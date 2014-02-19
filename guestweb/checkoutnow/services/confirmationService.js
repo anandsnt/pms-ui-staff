@@ -4,23 +4,8 @@
 		
 		var fetch = function() {
 			var deferred = $q.defer();
-            var url = ''
-
-			switch(hotelNamesEnum[$rootScope.hotelName]){
-
-				case 1:
-                    url = '/assets/fauxDB/confirmationPageDetails.json';
-					break;
-                case 2:
-                    
-                    url = '/assets/fauxDB/confirmationPageDetailsForAnotherHotel.json';
-                    break;
-
-				default:
-                    url = '/assets/fauxDB/confirmationPageDetailsForAnotherHotel.json';
-                    break;
-
-			}
+            var url = '/assets/fauxDB/confirmationPageDetails.json';
+	
             baseWebService.fetch(url).then(function(response) {
                     this.details = response;
                     deferred.resolve(this.details);
