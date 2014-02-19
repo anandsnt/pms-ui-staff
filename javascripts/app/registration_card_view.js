@@ -14,6 +14,15 @@ var RegistrationCardView = function(viewDom) {
 			createViewScroll('#registration-content');
 		}, 300);
 
+		var width = that.myDom.find("#signature-pad").width();
+		
+		that.myDom.find("#signature").jSignature({
+			height : 130,
+			width : width-20,
+			lineWidth : 1
+		});
+		that.myDom.find("#signature canvas").addClass('pad');
+
 		if (this.viewParams.clickedButton == "ViewBillButton") {
 			// To Display Guest Bill screen in detailed mode via ViewBillButton click.
 			that.myDom.find("#bill1-fees").removeClass("hidden");

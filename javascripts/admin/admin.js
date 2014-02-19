@@ -62,8 +62,6 @@ var setUpAdmin = function(viewDom, delegate) {
 	   	if (isTablet) {
 			$('a:not(.nav-toggle):not(.edit-data-inline):not(.add-data-inline)').click(function(e){
 				e.preventDefault();
-
-				location.href = $(this).attr("href");		
 			});
 		}
 	
