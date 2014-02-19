@@ -1,10 +1,16 @@
 (function() {
 	var checkOutLaterSuccessController = function($scope, $http, $q, $routeParams, $location, LateCheckOutChargesService,$rootScope) {
-		var charges = LateCheckOutChargesService.charges;
+		//var charges = LateCheckOutChargesService.charges;
+
+		LateCheckOutChargesService.fetch().then(function(response) {
+			charges= response;
+		});
+
 		var id = $routeParams.id;
 		
 		// if no charges recorded (user tried to reload on success page)
 		// get him back to checkout later page
+
 		if (!charges.length) {
 			$location.path('/checkOutLater');
 			return;

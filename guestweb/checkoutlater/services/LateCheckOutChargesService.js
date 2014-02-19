@@ -2,31 +2,31 @@
 	var LateCheckOutChargesService = function($http, $q, $rootScope,baseWebService) {
 		var charges = {};
 
+		// var fetch = function() {
+		// 	var deferred = $q.defer();
+		// 	console.log('................');
+		
+		// 	$http.get('/guest_web/get_late_checkout_charges.json',{params:{'reservation_id':$rootScope.reservationID}})
+		// 		.success(function(response) {
+		// 			this.charges = response;
+		// 			deferred.resolve(this.charges);
+		// 		}.bind(this))
+		// 		.error(function() {
+		// 			deferred.reject();
+		// 		});
+
+		// 	return deferred.promise;
+		// };
 		var fetch = function() {
 			var deferred = $q.defer();
-			console.log('................');
-		
-			$http.get('/guest_web/get_late_checkout_charges.json',{params:{'reservation_id':$rootScope.reservationID}})
-				.success(function(response) {
-					this.charges = response;
-					deferred.resolve(this.charges);
-				}.bind(this))
-				.error(function() {
-					deferred.reject();
-				});
+
+			baseWebService.fetch('/guest_web/get_late_checkout_charges.json',{'reservation_id':$rootScope.reservationID}).then(function(response) {
+				this.charges = response;
+				deferred.resolve(this.charges);
+			})
 
 			return deferred.promise;
 		};
-	//	var fetch = function() {
-	// 		var deferred = $q.defer();
-
-	// 		baseWebService.fetch('/guest_web/get_late_checkout_charges.json',{'reservation_id':$rootScope.reservationID}).then(function(response) {
-	// 			this.charges = response;
-	// 			deferred.resolve(this.charges);
-	// 		})
-
-	// 		return deferred.promise;
-	// 	};
 
 		return {
 			charges: charges,
