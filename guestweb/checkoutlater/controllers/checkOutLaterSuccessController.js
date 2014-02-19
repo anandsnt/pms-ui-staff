@@ -1,8 +1,11 @@
 (function() {
-	var checkOutLaterSuccessController = function($scope, $http, $q, $routeParams, $location, LateCheckOutChargesService,$rootScope) {
+	var checkOutLaterSuccessController = function($scope, $http, $q, $routeParams, $location, $rootScope, LateCheckOutChargesService) {
 		var charges = LateCheckOutChargesService.charges;
 		var id = $routeParams.id;
 		
+		$scope.reservationID = $rootScope.reservationID;
+		$scope.id = id;
+		console.log($rootScope.reservationID);
 		// if no charges recorded (user tried to reload on success page)
 		// get him back to checkout later page
 		if (!charges.length) {
@@ -18,12 +21,12 @@
 		
 		$scope.posted = false;
 		var posting = function() {
+			
 			var deferred = $q.defer();
-			var reservation_id = '';
+			var reservation_id = $scope.reservationID;
 			var url = '/guest_web/apply_late_checkout';
-			var data = {reservation_id: $rootScope.reservationID};
-			$http.post(url,{
-    		params:data}).success(function(response){
+			var data = {reservation_id: reservation_id, late_checkout_offer_id: $scope.id};
+			$http.post(url, data).success(function(response){
 				deferred.resolve(response);
 			}).error(function(){
 				deferred.reject();
@@ -47,8 +50,8 @@
 		'$q',
 		'$routeParams',
 		'$location',
+		'$rootScope',
 		'LateCheckOutChargesService',
-		 '$rootScope',
 		checkOutLaterSuccessController
 	];
 
