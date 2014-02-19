@@ -62,8 +62,9 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.roomNo        = $attrs.roomNo
 	$rootScope.isLateCheckoutAvailable  = $attrs.isLateCheckoutAvailable
 
-if (!$rootScope.isLateCheckoutAvailable ) 
+if ($rootScope.isLateCheckoutAvailable === 'false') 
 		$location.path('/checkOutNow')
+
 
 if($attrs.accessToken != "undefined")
 	$window.sessionStorage.accessToken = $attrs.accessToken	
