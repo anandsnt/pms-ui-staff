@@ -47,10 +47,6 @@ snt.config(['$routeProvider', function($routeProvider) {
 
 snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService','$location','$window','authenticationService', function($rootScope,$scope,$attrs, UserService,$location,$window,authenticationService) {
 
-
-
-	if (!$attrs.isLateCheckoutAvailable ) 
-		$location.path('/checkOutNow')
 	
 	if ($window.sessionStorage.token)
 	delete $window.sessionStorage.token
@@ -64,6 +60,10 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.userCity   	 = $attrs.city
 	$rootScope.userState     = $attrs.state
 	$rootScope.roomNo        = $attrs.roomNo
+	$rootScope.isLateCheckoutAvailable  = $attrs.isLateCheckoutAvailable
+
+if (!$rootScope.isLateCheckoutAvailable ) 
+		$location.path('/checkOutNow')
 
 if($attrs.accessToken != "undefined")
 	$window.sessionStorage.accessToken = $attrs.accessToken	
