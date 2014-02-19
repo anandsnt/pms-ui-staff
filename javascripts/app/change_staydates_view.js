@@ -57,8 +57,8 @@ var ChangeStayDatesView = function(viewDom){
   this.calenderDatesFetchCompleted = function(calenderEvents){
       that.availableEvents = calenderEvents;
       //TODO: Remove after API completed
-      that.availableEvents.data.is_rates_suppressed = "true";
-      that.availableEvents.data.text_rates_suppressed = "SR";      
+      //that.availableEvents.data.is_rates_suppressed = "true";
+      //that.availableEvents.data.text_rates_suppressed = "SR";      
       that.checkinDateInCalender = that.confirmedCheckinDate = getDateObj(calenderEvents.data.arrival_date);
       that.checkoutDateInCalender = that.confirmedCheckoutDate = getDateObj(calenderEvents.data.dep_date);
       that.focusDateInCalendar = that.confirmedCheckinDate;
