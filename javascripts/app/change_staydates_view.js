@@ -263,6 +263,7 @@ var ChangeStayDatesView = function(viewDom){
       var arrivalDate = getDateString(checkinDate);
       var departureDate = getDateString(checkoutDate);
       var postParams = {"arrival_date": arrivalDate, "dep_date": departureDate};
+      //var url = '/ui/show?format=json&json_input=change_staydates/reservation_updates.json';
 
       var url = '/staff/change_stay_dates/' + that.reservationId + '/update.json';
       var webservice = new WebServiceInterface(); 
@@ -309,7 +310,7 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.showRoomAvailableUpdates = function(reservationDetails, roomNumber){
-    console.log("showNoRoomsAvailableMessage"); 
+
       var checkinTime = reservationDetails['arrival_date'].setHours(00,00,00);
       var checkoutTime = reservationDetails['dep_date'].setHours(00,00,00);
       var thisTime = "";
@@ -322,13 +323,15 @@ var ChangeStayDatesView = function(viewDom){
           checkoutDay = 0;
       $(that.availableEvents.data.available_dates).each(function(index){
           thisTime = getDateObj(this.date).setHours(00,00,00);
-          if(thisTime < checkinTime || thisTime >= checkoutTime){
-              return true;
-          }
 
           if(this.date == getDateString(reservationDetails['arrival_date'])){
               checkinRate = escapeNull(this.rate) == "" ? "" : parseInt(this.rate);
           }
+
+          if(thisTime < checkinTime || thisTime >= checkoutTime){
+              return true;
+          }
+
           totalRate = totalRate + (escapeNull(this.rate) == "" ? "" : parseInt(this.rate));
           totalNights ++;
       });
@@ -336,7 +339,7 @@ var ChangeStayDatesView = function(viewDom){
       if(totalNights > 0){
           avgRate = Math.round(( totalRate / totalNights + 0.00001)  * 100 / 100 );
       }else{
-          avgRate = checkinRate;
+          avgRate = totalRate = checkinRate;
       }
 
       var currencySymbol = getCurrencySymbol(escapeNull(that.availableEvents.data.currency_code));
@@ -351,9 +354,8 @@ var ChangeStayDatesView = function(viewDom){
       }
       that.myDom.find('#reservation-updates #new-check-in').text(getDateString(reservationDetails['arrival_date'], true));
       that.myDom.find('#reservation-updates #new-check-out').text(getDateString(reservationDetails['dep_date'], true));
-      console.log(that.availableEvents.data.is_rates_suppressed);
+
       if(that.availableEvents.data.is_rates_suppressed == "true"){
-        console.log("case 1");
         that.myDom.find('#reservation-updates #avg-daily-rate').text(that.availableEvents.data.text_rates_suppressed);
         that.myDom.find('#reservation-updates #total-stay-cost').text("");
       } else {
