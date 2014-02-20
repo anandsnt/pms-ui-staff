@@ -258,9 +258,10 @@ this
   //workaround for populating the reservation details,
   //when user clicks on other timeline tabs
   this.reservationTimelineClicked = function(e){
-    var currentTimeline = $(e.target).attr('aria-controls');
+    var currentTimeline = $(e.target).attr('aria-controls');    
+    $('#reservation-card').attr('data-current-timeliine', currentTimeline); 
     //No reservation details are added to the DOM
-    if (!($("#" + currentTimeline).find('.reservation').length > 0)) {
+    if (!($("#" + currentTimeline).find('.reservation').length > 0)) {      
       $("#" + currentTimeline + ' #reservation-listing ul li').first().children().first().trigger("click");
       that.createScroll();
     }
@@ -330,35 +331,7 @@ this
         successCallBack: that.fetchCompletedOfLoadReservationDetails,
         successCallBackParameters: successCallBackParameters
     };
-    webservice.getHTML(url, options);  
-      
-     /* //show loading indicator
-      sntapp.activityIndicator.showActivityIndicator("blocker");
-      $.ajax({
-        type : 'GET',
-        url : "staff/staycards/reservation_details?reservation=" + confirmationNum,
-        dataType : 'html',
-        //async:false,
-
-        success : function(data) {  
-          sntapp.activityIndicator.hideActivityIndicator(); 
-            if ($(currentReservationDom).length > 0) {
-              $("#" +currentTimeline).find(currentReservationDom).remove();
-            }
-            $("#" + currentTimeline).append(data);         
-            createViewScroll("#reservation-content-"+confirmationNum);       
-            var reservationDetails = new reservationDetailsView($("#reservation-"+confirmationNum));
-            reservationDetails.initialize();
-            if(sucessCallback != undefined){
-              sucessCallback();
-            }
-        },
-        error : function(jqxhr, status, error){
-          //checking whether a user is logged in
-          if (jqxhr.status == "401") { sntapp.logout(); return;}
-          //TODO: handle error display
-        }
-      });*/
+    webservice.getHTML(url, options);        
   };
 
   
