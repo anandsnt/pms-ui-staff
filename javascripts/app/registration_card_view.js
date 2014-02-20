@@ -10,6 +10,7 @@ var RegistrationCardView = function(viewDom) {
 	this.pageinit = function() {
 		this.createHorizontalScroll();
 
+		if (viewScroll) { destroyViewScroll(); }
 		setTimeout(function() {
 			createViewScroll('#registration-content');
 		}, 300);
@@ -67,10 +68,14 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.unbind('click');
 		that.myDom.on('click', that.myDomClickHandler);
 		that.myDom.find("#signature").on('mouseover', function() {
-			viewScroll.disable();
+			for (var i = 0; i < viewScroll.length; i++) {
+	            viewScroll[i].disable();
+	        }
 		});
 		that.myDom.find("#signature").on('mouseout', function() {
-			viewScroll.enable();
+			for (var i = 0; i < viewScroll.length; i++) {
+	            viewScroll[i].enable();
+	        }
 		});
 	};
 
