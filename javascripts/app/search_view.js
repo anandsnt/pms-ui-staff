@@ -188,7 +188,7 @@ var Search  = function(domRef){
       else if(type == "LATE_CHECKOUT"){
         searchType = "opted for late checkout";
       }
-      //$(this).text().replace("contains", "hello everyone"); 
+
       if(response.data.length > 0){
         that.fetchResults = response.data;
         if(type!=""){
@@ -446,7 +446,7 @@ var Search  = function(domRef){
         $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="' + escapeNull(image) + '" />' + $vip +'</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip +'</figure>',
         $roomAdditional = showRoomStatus ? '<span class="room-status">' + roomstatusexplained + '</span>' : '',
         $viewStatus = guestStatusIcon ? '<span class="guest-status ' + escapeNull(guestStatusIcon) + '"></span>':'<span class="guest-status"></span>',
-        $lateCheckoutStatus = (escapeNull(lateCheckoutTime) == "" || "CHECKING_OUT" == reservation_status) ? "": '<span class="late-checkout-time">'+escapeNull(lateCheckoutTime)+'</span>',
+        $lateCheckoutStatus = (escapeNull(lateCheckoutTime) == "" || "CHECKING_OUT" != reservation_status) ? "": '<span class="late-checkout-time">'+escapeNull(lateCheckoutTime)+'</span>',
         $guestViewIcons = '<div class="status">' + $lateCheckoutStatus + $viewStatus + '</div>';
         $output =
         '<a href="staff/staycards/staycard?confirmation=' + confirmation+'&id='+ escapeNull(id)+ '" class="guest-check-in link-item float" data-transition="inner-page">' +
