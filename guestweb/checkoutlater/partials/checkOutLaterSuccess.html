@@ -26,14 +26,14 @@
 				<div ng-show="!returnHome && posted && success" class="col-md-12 headtext centeralign">
 					Thank you
 					<p class="leadtext">
-						<span class="lightcontent">The following will appear on your bill.</span>
+						<em class="lightcontent">The following will appear on your bill.</em>
 					</p>
 					<p class="latecheckout-charged centeralign">Late Check Out ({{ lateCheckOut.time | date : 'ha' }}) .... {{ lateCheckOut.amount | currency }}</p>
 				</div>
 			</div>
 
 			<div ng-show="returnHome || posted" class="row">
-				<p class="italictext">
+				<p >
 					<a href="#/checkOutNow" class="link-btn with-bg">Back to check-out screen</a>
 				</p>
 			</div>
