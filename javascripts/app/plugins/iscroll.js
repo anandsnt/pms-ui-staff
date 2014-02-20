@@ -253,7 +253,7 @@ function IScroll (el, options) {
 		startX: 0,
 		startY: 0,
 		scrollY: true,
-		directionLockThreshold: 5,
+		directionLockThreshold: 20,
 		momentum: true,
 
 		bounce: true,

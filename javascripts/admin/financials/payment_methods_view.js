@@ -11,7 +11,7 @@ var PaymentMethodsView = function(domRef){
 		var isOn = creditCard.find('.switch-button').hasClass('on');
 
 		if (!isOn) {
-			$('#credit_cards_types').hide();
+			//$('#credit_cards_types').hide();
 		};
 	};
 
@@ -23,15 +23,24 @@ var PaymentMethodsView = function(domRef){
 		var isPaymentType = element.closest('tr').attr('data-payment-id');
 		var isCreditCardType = element.closest('tr').attr('data-credit-card-id');
 		var id = isCreditCardType ? isCreditCardType : isPaymentType;
+		var type = isCreditCardType ? "creditcard" : "payment";
 
 	    //timeout added as a workaround - hasClass 'on' takes time to be applied
 	    setTimeout(function(){
 		  	var toggleStatus = element.parent().hasClass('on') ? "true" : "false";
 		    var postParams = {"id" : id, "set_active" : toggleStatus};
+		    if(id == "1" && type == "payment"){
+				if(that.myDom.find("#available-cards").hasClass("hidden")){
+					that.myDom.find("#available-cards").removeClass("hidden");
+				} else {
+					that.myDom.find("#available-cards").addClass("hidden");
+				}
+			}
 
 		    var webservice = new WebServiceInterface(); 
 		    var options = {
 		       requestParameters: postParams,
+		       successCallBack : that.fetchCompletedOfAction,
 		       loader: "NONE"
 		    };
 
@@ -40,6 +49,12 @@ var PaymentMethodsView = function(domRef){
 		  	return true;
 	    }, 100);
 	  
+	};
+	
+	// success function of re-invite api call
+	this.fetchCompletedOfAction = function(data, requestParameters) {
+		sntapp.notification.showSuccessMessage("Saved succesfully.", that.myDom);
+		return false;
 	};
 
   

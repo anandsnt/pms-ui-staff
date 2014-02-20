@@ -4,9 +4,11 @@ var snt = angular.module('snt', ['ngRoute']);
 snt.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/', {
 		templateUrl: '/assets/landing/landing.html',
+		controller: 'checkOutLandingController',
 		resolve: {
 			// load only when urls and user have been loadded
 			load: function(UrlService, UserService) {
+
 				return UrlService.fetch() && UserService.fetch();
 			}
 		}
@@ -47,10 +49,6 @@ snt.config(['$routeProvider', function($routeProvider) {
 
 snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService','$location','$window','authenticationService', function($rootScope,$scope,$attrs, UserService,$location,$window,authenticationService) {
 
-
-
-	if (!$attrs.isLateCheckoutAvailable ) 
-		$location.path('/checkOutNow')
 	
 	if ($window.sessionStorage.token)
 	delete $window.sessionStorage.token
@@ -64,6 +62,11 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.userCity   	 = $attrs.city
 	$rootScope.userState     = $attrs.state
 	$rootScope.roomNo        = $attrs.roomNo
+	$rootScope.isLateCheckoutAvailable  = $attrs.isLateCheckoutAvailable
+
+if ($rootScope.isLateCheckoutAvailable === 'false') 
+		$location.path('/checkOutNow')
+
 
 if($attrs.accessToken != "undefined")
 	$window.sessionStorage.accessToken = $attrs.accessToken	
@@ -106,9 +109,19 @@ snt.config(function ($httpProvider) {
 });
 
 
-var hotelNamesEnum = { 
-					"Carlyl Suites Hotel"      : 1, 
-					"Trump International Hotel": 2, 
-					"Four Seasons Hotel"       : 3 
-				}
     
+
+(function() {
+	var checkOutLandingController = function($rootScope,$location) {
+
+	if ($rootScope.isLateCheckoutAvailable === 'false') 
+		 $location.path('/checkOutNow')
+};
+
+	var dependencies = [
+		'$rootScope','$location',
+		checkOutLandingController
+	];
+
+	snt.controller('checkOutLandingController', dependencies);
+})();
