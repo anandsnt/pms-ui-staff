@@ -18,8 +18,6 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
     
 	this.populateSwipedCard = function() {
 		var swipedCardData = this.swipedCardData;
-
-		console.log(JSON.stringify(swipedCardData));
 		// inject the values to payment modal
         // inject payment type
 		$('#payment-type').val( 'CC' );
@@ -40,6 +38,13 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 	};
 
 	this.modalInit = function(){
+		if(typeof that.swipedCardData != 'undefined' && Object.keys(that.swipedCardData).length != 0){
+			console.log("swipe");
+    		that.params = {"card_action": "swipe"};
+		}else{
+    		that.params = {"card_action": "manual_entry"};
+			console.log('not swipe');
+		}
 		
    	};
     //Success call back after succesful addition of payment in reservation

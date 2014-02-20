@@ -49,7 +49,7 @@ var NotificationMessage = function() {
 				// console.log(viewScroll.scrollToElement);
 				var time = 2000;
 				// nasty bug in iPad - viewScroll undefined
-				viewScroll && viewScroll.scrollToElement(element, time);
+				viewScroll && viewScroll[i].scrollToElement(element, time);
 			}
 		}
 

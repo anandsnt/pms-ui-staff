@@ -403,13 +403,20 @@ $(function($){
     });
 
     $(document).on('change', 'select', function(e){
-        e.stopImmediatePropagation();
         $(this).blur();
     });
 
     $(document).on('change', 'select.styled', function(e){
-        e.stopImmediatePropagation();
         $(this).updateStyledSelect();
+    });
+
+    // Fix Chrome iOS scroller drop-down bug
+    $(document).on('focus', 'select[data-scroller]', function(e){
+        var $inScroller = eval($(this).attr('data-scroller'));
+        
+        for (var i = 0; i < $inScroller.length; i++) {
+            $inScroller[i].initiated = 0;
+        }
     });
 
     // Enable some parts of form

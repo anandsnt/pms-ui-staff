@@ -1,18 +1,19 @@
 
 (function() {
-	var checkOutConfirmationController = function($scope, confirmationService,$window) {
+	var checkOutConfirmationController = function($scope, confirmationService,$rootScope) {
 		
 		confirmationService.fetch().then(function(details) {
 			$scope.details = details;
 		
 		});
 		
+		$scope.footerMessage1 = $rootScope.isLateCheckoutAvailable ? 'Late check-out is not available.' :'' 
 
 	};
 
 	var dependencies = [
 		'$scope',
-		'confirmationService','$window',
+		'confirmationService','$rootScope',
 		checkOutConfirmationController
 	];
 
