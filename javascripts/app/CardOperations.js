@@ -177,7 +177,7 @@ var CardOperation = function(){
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
-		var deviceStatus = false;
+		var deviceStatus = true;
 		// we are simulating the process by calling the success call back after some time
 		setTimeout(function(){
 				successCallBack(deviceStatus, successCallBackParameters);
@@ -197,7 +197,7 @@ var CardOperation = function(){
 	// debug mode of retrieving the user id	
 	// please check above method (retrieveUserID) for further description
 	this.retrieveUserIDDebug = function(options){
-		var retUserID = "u!0867bddd"; //Sample ID
+		var retUserID = "CB94C49A"; //Sample ID
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		// we are simulating the process by calling the success call back after some time period
 		setTimeout(function(){
