@@ -96,7 +96,7 @@ var PostChargeModel = function(callBack) {
 		            	that.myDom.find('#search-item-results').append(value).highlight(that.currentQuery);
 		        });
 		        createViewScroll('#items-listing');
-				viewScroll.scrollTo(0, 0);
+				viewScroll[i].scrollTo(0, 0);
 	        }
 	        else{
 	    		var html = "<div id='no-items-added' class='no-content'><strong class='h1'>No items found</strong></div>";
@@ -232,7 +232,7 @@ var PostChargeModel = function(callBack) {
 				destroyViewScroll();
 			}
 			createViewScroll('#items-listing');
-			viewScroll.scrollTo(0, parseInt($target));
+			viewScroll[i].scrollTo(0, parseInt($target));
 		}
 	};
 	//To get count of item - paasing item Id.

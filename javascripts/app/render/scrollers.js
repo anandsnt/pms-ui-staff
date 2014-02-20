@@ -1,92 +1,115 @@
 // Scroll global variables
-var pageScroll,
-    viewScroll,
-    guestCardScroll,
-    conversationsScroll,
-    registrationScroll,
-    horizontalScroll;
+var pageScroll = new Array(),
+    viewScroll = new Array(),
+    guestCardScroll = new Array(),
+    conversationsScroll = new Array(),
+    registrationScroll = new Array(),
+    horizontalScroll = new Array();
 
 // Page scroll
     function createPageScroll($target){
-        pageScroll = new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' });
+        pageScroll.push(new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' }));
     }
     function destroyPageScroll(){
-        pageScroll.destroy();
-        pageScroll = null;
+        for (var i = 0; i < pageScroll.length; i++) {
+            pageScroll[i].destroy();
+        }
+        pageScroll.length = 0;
     }
     function refreshPageScroll(){
         setTimeout(function(){
-            pageScroll.refresh(); 
+            for (var i = 0; i < pageScroll.length; i++) {
+                pageScroll[i].refresh();
+            }
         }, 0);
     }
 
 // View scroll
     function createViewScroll($target){
-        viewScroll = new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' });
+        viewScroll.push(new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' }));
     }
     function destroyViewScroll(){
-        viewScroll.destroy();
-        viewScroll = null;
+        for (var i = 0; i < viewScroll.length; i++) {
+            viewScroll[i].destroy();
+        }
+        viewScroll.length = 0;
     }
     function refreshViewScroll(){
         setTimeout(function(){
-            viewScroll.refresh(); 
+            for (var i = 0; i < viewScroll.length; i++) {
+                viewScroll[i].refresh();
+            }
         }, 0);
     }
 
 // Guest card scroll
     function createGuestCardScroll($target){
-        guestCardScroll = new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' });
+        guestCardScroll.push(new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' }));
     }
     function destroyGuestCardScroll(){
-        guestCardScroll.destroy();
-        guestCardScroll = null;
+        for (var i = 0; i < guestCardScroll.length; i++) {
+            guestCardScroll[i].destroy();
+        }
+        guestCardScroll.length = 0;
     }
     function refreshGuestCardScroll(){
         setTimeout(function(){
-            guestCardScroll.refresh(); 
+            for (var i = 0; i < guestCardScroll.length; i++) {
+                guestCardScroll[i].refresh();
+            }
         }, 0);
     }
 
 // Guest card conversations scroll
     function createConversationsScroll($target){
-        conversationsScroll = new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' });
+        conversationsScroll.push(new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' }));
     }
     function destroyConversationsScroll(){
-        conversationsScroll.destroy();
-        conversationsScroll = null;
+        for (var i = 0; i < conversationsScroll.length; i++) {
+            conversationsScroll[i].destroy();
+        }
+        conversationsScroll.length = 0;
     }
     function refreshConversationsScroll(){
         setTimeout(function(){
-            conversationsScroll.refresh(); 
+            for (var i = 0; i < conversationsScroll.length; i++) {
+                conversationsScroll[i].refresh();
+            }
         }, 0);
     }
-    
 
 // Registration scroll
     function createRegistrationScroll($target){
-        registrationScroll = new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' });
+        registrationScroll.push(new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' }));
     }
     function destroyRegistrationScroll(){
-        registrationScroll.destroy();
-        registrationScroll = null;
+        for (var i = 0; i < registrationScroll.length; i++) {
+            registrationScroll[i].destroy();
+        }
+        registrationScroll.length = 0;
     }
     function refreshRegistrationScroll(){
         setTimeout(function(){
-            registrationScroll.refresh(); 
+            for (var i = 0; i < registrationScroll.length; i++) {
+                registrationScroll[i].refresh();
+            }
         }, 0);
     }
 
 // Horizontal scroll
     function createHorizontalScroll($target){
-        horizontalScroll = new IScroll($target, { mouseWheel: true, scrollX: true, scrollY: false, scrollbars: true, scrollbars: 'custom' });
+        horizontalScroll.push(new IScroll($target, { mouseWheel: true, scrollX: true, scrollY: false, scrollbars: true, scrollbars: 'custom' }));
     }
     function destroyHorizontalScroll(){
-        horizontalScroll.destroy();
-        horizontalScroll = null;
+        for (var i = 0; i < horizontalScroll.length; i++) {
+            horizontalScroll[i].destroy();
+        }
+        horizontalScroll.length = 0;
     }
     function refreshHorizontalScroll(){
         setTimeout(function(){
-            horizontalScroll.refresh(); 
+            for (var i = 0; i < horizontalScroll.length; i++) {
+                horizontalScroll[i].refresh();
+            }
         }, 0);
     }
