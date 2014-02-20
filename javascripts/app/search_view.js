@@ -150,10 +150,12 @@ var Search  = function(domRef){
 
     $('#query').val('');
     $('#search-results').empty().addClass('hidden');
-    var preloadedResultsCount = that.preloadedResults.length;
-    if(preloadedResultsCount > 0){
-    	$('#search-results').empty().removeClass('hidden');
-    	that.displayFilteredResults(that.preloadedResults, "");
+    if(typeof that.preloadedResults != "undefined"){
+      var preloadedResultsCount = that.preloadedResults.length;
+      if(preloadedResultsCount > 0){
+        $('#search-results').empty().removeClass('hidden');
+        that.displayFilteredResults(that.preloadedResults, "");
+      }
     }
     that.updateView();
     
