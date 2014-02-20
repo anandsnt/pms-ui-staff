@@ -25,8 +25,7 @@ function loadMessage($this, $href){
                         $(this).html(data);
                     }).animate({opacity: 1}, 150);
                 },
-                error: function(jqxhr, status, error){
-                    if (jqxhr.status=="401") { sntapp.logout(); return;}
+                error: function(){
                     $('#loading').remove();
                     modalInit('modals/alerts/not-there-yet/');
                 }
@@ -42,7 +41,9 @@ function loadMessage($this, $href){
 
                     // Message details start at bottom
                     var $starAt = $('#messages-guests-conversations .wrapper').height();
-                    viewScroll.scrollTo(0, parseInt(-$starAt), 10);
+                    for (var i = 0; i < viewScroll.length; i++) {
+                        viewScroll[i].scrollTo(0, parseInt(-$starAt), 10);
+                    }
                 }, 300);
             });
         });
@@ -75,8 +76,7 @@ function selectedMessages($this, $item){
                         $(this).html(data);
                     }).animate({opacity: 1}, 150);
                 },
-                error: function(jqxhr, status, error){
-                    if (jqxhr.status=="401") { sntapp.logout(); return;}
+                error: function(){
                     $('#loading').remove();
                     modalInit('modals/alerts/not-there-yet/');
                 }
@@ -129,7 +129,7 @@ function setDatepicker(){
 
 
 $(function($){ 
-	
+    
     // Filters
     $(document).on('click', '#messages .filters a', function(e){
         e.preventDefault();
@@ -191,6 +191,7 @@ $(function($){
 
     // Click on right side collapsed message
     $(document).on('click', '#messages .conversation li:not(:last-child):not(.conversation-break) .summary', function(e){
+        e.stopImmediatePropagation();
         $(this).parent('li').toggleClass('open');
 
         if ($('#messages-guests-conversations .wrapper').attr('style') !== undefined) {
@@ -202,7 +203,9 @@ $(function($){
             // Reset scroll and keep it on clicked item position
             if (viewScroll) { destroyViewScroll(); }
             createViewScroll('#messages-guests-conversations');
-            viewScroll.scrollTo(0, parseInt($target));
+            for (var i = 0; i < viewScroll.length; i++) {
+                viewScroll[i].scrollTo(0, parseInt($target));
+            }
         } else {
             // Reset scroll
             if (viewScroll) { destroyViewScroll(); }
@@ -235,7 +238,7 @@ $(function($){
         $('.listing').find('li.selected').addClass('unread');
     });
 
-	// TODO - fire feedbacks
+    // TODO - fire feedbacks
     $(document).on('click', '#messages #assign', function(e){
         e.stopImmediatePropagation();
         modalInit('modals/alerts/assigned/', 750);
