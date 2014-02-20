@@ -9,15 +9,15 @@
 				</div>
 			</div>
 			<div class="row">
-					<div ng-hide="posted" class="headtext centeralign" >
+					<div ng-hide="posted" class="headtext centeralign checkout-now-status" >
 				Posting data...
 			</div>
 			
-			<div ng-show="posted && !success" class="headtext centeralign">
+			<div ng-show="posted && !success" class="headtext centeralign checkout-now-status">
 				Something went wrong...
 			</div>
 			
-			<div ng-show="posted && success" class="headtext centeralign">
+			<div ng-show="posted && success" class="headtext centeralign checkout-now-status">
 					{{finalMessage}}
 			</div>
 			</div>
