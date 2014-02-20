@@ -1,27 +1,36 @@
 (function() {
+
 	var checkOutLaterSuccessController = function($scope, $http, $q, $routeParams, $location, $rootScope, LateCheckOutChargesService) {
 		var charges = LateCheckOutChargesService.charges;
 		var id = $routeParams.id;
 		
 		$scope.reservationID = $rootScope.reservationID;
 		$scope.id = id;
-		console.log($rootScope.reservationID);
+
+		// already opted for late checkout, send him home with a msg
+		$scope.returnHome = false;
+
+		// data has/being posted
+		$scope.posted = false;
+
+		// data posted sucessfully
+		$scope.success = false;
+
 		// if no charges recorded (user tried to reload on success page)
-		// get him back to checkout later page
+		// show a message and give him option to go home
 		if (!charges.length) {
-			$location.path('/checkOutLater');
+			$scope.returnHome = true;
 			return;
 		};
 		
+		// find the choosen option form list of options
 		$scope.lateCheckOut = _.find(charges, function(charge) {
 			if (id === charge.id) {
 				return charge;
 			};
 		});
 		
-		$scope.posted = false;
 		var posting = function() {
-			
 			var deferred = $q.defer();
 			var reservation_id = $scope.reservationID;
 			var url = '/guest_web/apply_late_checkout';
@@ -37,9 +46,8 @@
 		
 		posting().then(function (response) {
 			$scope.posted = true;	
-			// $scope.lateCheckOut = response;
 			$scope.success = response.status ? true : false;
-			console.log($scope);
+
 		});
 		
 	};
