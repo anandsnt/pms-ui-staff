@@ -1,6 +1,3 @@
-// Touch listeners
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
-
 // Load main page
 function changePage($type, $menuActiveItem, $prevPage, $nextPage, $transition, $emptyPrev){
 

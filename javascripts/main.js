@@ -1,5 +1,6 @@
-// Orientation change 
+// Orientation change and touchmove listeners
 document.addEventListener('orientationchange', function (e) { $("#app-page").css("height",window.innerHeight); }, false);
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 
 // Disable cache busting
 $.ajaxSetup({ cache: true });
@@ -350,10 +351,10 @@ $(function($){
     var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
 
     if ($isTablet) {
-        // Enable 
+        // Enable  keyboard
         $("#app-page").css("height",window.innerHeight);
 
-        // Disable
+        // Disable keyboard
         $(document).on('focus', '[data-keyboard=lock]', function() {
             window.scrollTo(0, 0);
             if ($('#modal').length) { 
@@ -364,6 +365,16 @@ $(function($){
                 $('#modal').removeClass('keyboard-lock');
             }
         });
+
+        // Enable touchmove on admin layouts
+        if (!$('body#app-page').length)
+        {
+            var contentHolder = document.getElementsByClassName('content');
+
+            for(var i = 0, j=contentHolder.length; i<j; i++){
+                contentHolder[i].addEventListener('touchmove', function(e){e.stopPropagation()}, false);
+            }
+        }
     }
 
     // Styled form elements - on load
