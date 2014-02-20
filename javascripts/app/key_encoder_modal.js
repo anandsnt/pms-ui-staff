@@ -282,8 +282,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	    }
 
 	    keyData.push(Object.keys(that.keyData.key_info[keyPos])[0]);
-	    keyData.push(that.keyData.aid);
-	    keyData.push(that.keyData.keyb);
+	    keyData.push(escapeNull(that.keyData.aid));
+	    keyData.push(escapeNull(that.keyData.keyb));
 
 	    if(keyPos == 0){
 	    	that.writeKey(keyData, "key1");	
