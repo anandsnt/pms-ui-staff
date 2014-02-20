@@ -128,7 +128,9 @@ $(function($){
 
         if (viewScroll) { destroyViewScroll(); }
         createViewScroll('#items-listing');
-        viewScroll.scrollTo(0, parseInt($target));
+        for (var i = 0; i < viewScroll.length; i++) {
+            viewScroll[i].scrollTo(0, parseInt($target));
+        }
     });   
 
     // Selected item in charges to be posted list

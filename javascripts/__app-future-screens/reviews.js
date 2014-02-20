@@ -25,8 +25,7 @@ function loadReview($this, $href){
                         $(this).html(data);
                     }).animate({opacity: 1}, 150);
                 },
-                error: function(jqxhr, status, error){
-                    if (jqxhr.status=="401") { sntapp.logout(); return;}
+                error: function(){
                     $('#loading').remove();
                     modalInit('modals/alerts/not-there-yet/');
                 }
@@ -71,9 +70,7 @@ function selectedReviews($this, $item){
                         $(this).html(data);
                     }).animate({opacity: 1}, 150);
                 },
-                error: function(jqxhr, status, error){
-                    //checking whether a user is logged in
-                    if (jqxhr.status == "401") { sntapp.logout(); return;}
+                error: function(){
                     $('#loading').remove();
                     modalInit('modals/alerts/not-there-yet/');
                 }
@@ -213,7 +210,9 @@ $(function($){
             // Reset scroll and keep it on clicked item position
             if (viewScroll) { destroyViewScroll(); }
             createViewScroll('#reviews-details');
-            viewScroll.scrollTo(0, parseInt($target));
+            for (var i = 0; i < viewScroll.length; i++) {
+                viewScroll[i].scrollTo(0, parseInt($target));
+            }
         } else {
             // Reset scroll
             if (viewScroll) { destroyViewScroll(); }

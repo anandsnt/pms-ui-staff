@@ -170,7 +170,7 @@ var CardOperation = function(){
 	};
 
 	// debug mode of check device connection checking
-	// please check above method (checkDeviceConnected) for it's more description
+	// please check above method (checkDeviceConnected) for further description
 	this.checkDeviceConnectedDebug = function(options){
 		//Simulating the write function for easy testing. May be removed in production.
 		console.log("sucecss called in write key debug mode");
@@ -178,12 +178,31 @@ var CardOperation = function(){
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 		var deviceStatus = false;
-
+		// we are simulating the process by calling the success call back after some time
 		setTimeout(function(){
-			//if(deviceStatus)
 				successCallBack(deviceStatus, successCallBackParameters);
-			//else
-				//failureCallBack(deviceStatus, successCallBackParameters);
 		}, 1000)		
 	};
+
+	/**
+	* method for retrieving the UID (User ID) from Card for Safe lock
+	* will call the success call back with user id
+	* if any error occured, will call the error call back
+	*/
+	this.retrieveUserID = function(options){
+		options['service'] = "RVCardPlugin";
+		options['action'] = "getCLCardUID";		
+		that.callCordovaService(options);		
+	};
+	// debug mode of retrieving the user id	
+	// please check above method (retrieveUserID) for further description
+	this.retrieveUserIDDebug = function(options){
+		var retUserID = "u!0867bddd"; //Sample ID
+		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
+		// we are simulating the process by calling the success call back after some time period
+		setTimeout(function(){
+			successCallBack(retUserID);
+		}, 1000)
+	};
+
 };
