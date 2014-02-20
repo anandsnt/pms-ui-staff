@@ -13,8 +13,9 @@ var KeyQrCodeModel = function(gotoStayCard,gotoSearch) {
 	
 	this.modalDidShow = function() {
 		
+		// Make it draggable
+		$("#modal").draggable();
 		// Setting style and attributes to the modal.
-		$("#modal").addClass("ui-draggable");
 		$("#modal").attr("data-position", "bottom-right");
 		
 		if(that.params.reservationStatus == "CHECKING_IN") {
@@ -60,8 +61,9 @@ var KeyQrCodeModel = function(gotoStayCard,gotoSearch) {
 	};
 	// To Re-setting style and attributes of the modal.
 	this.resetStyle = function(e) {
-		$("#modal-overlay").removeClass("locked");
-		$("#modal").removeClass("ui-draggable");
-		$("#modal").removeAttr("data-position");
+		$('#modal, #modal-overlay').removeClass('modal-show'); 
+        setTimeout(function() { 
+            $('#modal, #modal-overlay').remove();
+        }, 150);
 	};
 }; 
