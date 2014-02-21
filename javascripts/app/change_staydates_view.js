@@ -43,6 +43,7 @@ var ChangeStayDatesView = function(viewDom){
 
 
   this.fetchCalenderEvents = function(){
+      //var url = '/ui/show?format=json&json_input=change_staydates/rooms_available.json';
       var url = "/staff/change_stay_dates/" + that.reservationId + "/calendar.json"
       var webservice = new WebServiceInterface(); 
       var options = {
@@ -260,6 +261,19 @@ var ChangeStayDatesView = function(viewDom){
 
   this.showReservationUpdates = function(checkinDate, checkoutDate){
       that.fadeinHeaderDates();
+      var stayDatesCount = that.getStayDatesCount(checkinDate, checkoutDate);
+      console.log(stayDatesCount);
+      try{
+        if (stayDatesCount < that.availableEvents.data.available_dates[0].restriction_list[0].number_of_days){
+          console.log("minimum day count not met");
+          that.showRoomRestrictedMessage();
+          return false;
+        }
+      }catch(e){
+        console.log(e.message);
+      }
+      console.log("here");
+
       var arrivalDate = getDateString(checkinDate);
       var departureDate = getDateString(checkoutDate);
       var postParams = {"arrival_date": arrivalDate, "dep_date": departureDate};
@@ -283,6 +297,23 @@ var ChangeStayDatesView = function(viewDom){
 
   };
 
+  this.getStayDatesCount = function(checkinDate, checkoutDate){
+    var checkinTime = checkinDate.setHours(00,00,00);
+    var checkoutTime = checkoutDate.setHours(00,00,00);
+    var thisTime = "";
+    var totalNights = 0;
+    $(that.availableEvents.data.available_dates).each(function(index){
+        thisTime = getDateObj(this.date).setHours(00,00,00);
+        if(thisTime < checkinTime || thisTime >= checkoutTime){
+            return true;
+        }
+        totalNights ++;
+    });
+
+    return totalNights;
+
+  };
+
   this.dateChangeFailure = function(errorMsg){
       sntapp.notification.showErrorMessage(errorMsg, that.myDom);
 
@@ -296,14 +327,20 @@ var ChangeStayDatesView = function(viewDom){
       that.fadeoutHeaderDates();
       if("room_available" == response.data.availability_status) {
           that.myDom.find('#no-reservation-updates').addClass('hidden');
+          that.myDom.find('#room-restricted').addClass('hidden');
           that.myDom.find('#reservation-updates.hidden').removeClass('hidden');
+          
           that.showRoomAvailableUpdates(reservationDetails);
+      
       } else if("room_type_available" == response.data.availability_status) {
           that.myDom.find('#no-reservation-updates').addClass('hidden');
+          that.myDom.find('#room-restricted').addClass('hidden');
           that.myDom.find('#reservation-updates').addClass('hidden');
           that.myDom.find('#room-list.hidden').removeClass('hidden');
           that.showRoomList(response, reservationDetails);
+      
       } else if("not_available" == response.data.availability_status) {
+          that.myDom.find('#room-restricted').addClass('hidden');
           that.showNoRoomsAvailableMessage();
       }
 
@@ -442,6 +479,7 @@ var ChangeStayDatesView = function(viewDom){
 
       var roomSelected = $(e.target).find('#room-list-number').text();
       that.myDom.find('#room-list').addClass('hidden');
+      that.myDom.find('#room-restricted').addClass('hidden');
       that.myDom.find('#reservation-updates.hidden').removeClass('hidden');
 
       that.showRoomAvailableUpdates(reservationDetails, roomSelected);
@@ -451,7 +489,16 @@ var ChangeStayDatesView = function(viewDom){
       that.myDom.find('#room-list').addClass('hidden');  
       that.myDom.find('#reservation-updates').addClass('hidden');
       that.myDom.find('#no-reservation-updates').addClass('hidden');
+      that.myDom.find('#room-restricted').addClass('hidden');
       that.myDom.find('#room-locked.hidden').removeClass('hidden');
+  };
+
+  this.showRoomRestrictedMessage = function(){
+      that.myDom.find('#room-list').addClass('hidden');  
+      that.myDom.find('#reservation-updates').addClass('hidden');
+      that.myDom.find('#no-reservation-updates').addClass('hidden');
+      that.myDom.find('#room-restricted').removeClass('hidden');
+      that.myDom.find('#room-locked.hidden').addClass('hidden');
   };
 
   this.fadeinHeaderDates = function(){

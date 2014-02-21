@@ -25,12 +25,7 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find("#signature canvas").addClass('pad');
 
 		if (this.viewParams.clickedButton == "ViewBillButton") {
-			// To Display Guest Bill screen in detailed mode via ViewBillButton click.
-			that.myDom.find("#bill1-fees").removeClass("hidden");
-			that.myDom.find("#signature-pad").addClass("hidden");
-			that.myDom.find("#complete-checkout-button").addClass("hidden");
-			that.myDom.find(".review").addClass("hidden");
-			that.myDom.find("#terms-and-conditions").addClass("hidden");
+			that.renderedFromViewBillButton();
 		}
 		
 		// A dirty hack to allow "this" instance to be refered from sntapp
@@ -50,7 +45,16 @@ var RegistrationCardView = function(viewDom) {
 	this.pageshow = function(){
 		sntapp.cardSwipeCurrView = 'GuestBillView';
 	};
-
+	
+    // To Display Guest Bill screen in detailed mode via ViewBillButton click.
+	this.renderedFromViewBillButton =  function() {
+		that.myDom.find("#bill1-fees").removeClass("hidden");
+		that.myDom.find("#signature-pad").addClass("hidden");
+		that.myDom.find("#complete-checkout-button").addClass("hidden");
+		that.myDom.find(".review").addClass("hidden");
+		that.myDom.find("#terms-and-conditions").addClass("hidden");
+	};
+	
 	this.executeLoadingAnimation = function() {
 		sntapp.activityIndicator.showActivityIndicator("blocker");
 		if (this.viewParams === undefined)
@@ -175,7 +179,7 @@ var RegistrationCardView = function(viewDom) {
 			}
 		});
 	};
-	this.reloadBillCardPage = function() {
+	this.reloadBillCardPage = function(clickedFrom) {
 		var viewURL = "staff/reservation/bill_card";
 		var viewDom = $("#view-nested-third");
 		var params = {
@@ -186,6 +190,11 @@ var RegistrationCardView = function(viewDom) {
 			"current-view" : "staycard"
 		};
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
+		setTimeout(function() {
+				if(clickedFrom == "ViewBillButton") {
+					that.renderedFromViewBillButton();
+				}
+		}, 4000);
 	};
 
 	this.goToRoomAssignmentView = function() {
@@ -477,7 +486,9 @@ var RegistrationCardView = function(viewDom) {
 		var bill_number = that.getActiveBillNumber();
 		postChargeModel.params = {
 			"origin" : views.BILLCARD,
-			"bill_number" : bill_number
+			"bill_number" : bill_number,
+			"clickedFrom" : that.viewParams.clickedButton,
+			"callback" : that.renderedFromViewBillButton
 		};
 	};
 
