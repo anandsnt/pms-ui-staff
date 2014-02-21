@@ -188,7 +188,7 @@ var StayCard = function(viewDom){
     if(getParentWithSelector(event, "#reservation-timeline li")) {
         return that.reservationTimelineClicked(event);
     }
-    if(getParentWithSelector(event, "#reservation-listing li")) {
+    if(getParentWithSelector(event, "#reservation-listing li a")) {
         return that.reservationListItemClicked(event);
     }    
 
@@ -271,8 +271,8 @@ this
   this.reservationListItemClicked = function(event){
     event.preventDefault();
     var target = $(event.target);
-    var confirmationNumClicked = target.attr('data-confirmation-num');
-    var $href = target.find('a').attr('href');
+    var confirmationNumClicked = target.parents('li:eq(0)').attr('data-confirmation-num');
+    var $href = target.attr('href');
 
     //get the current highlighted timeline
     //Not more than 5 resevation should be kept in DOM in a timeline.
