@@ -65,7 +65,7 @@ var HotelExternalMappingsView = function(domRef){
 			    	mappingTypeValues = '<option value="" data-image="">Select value</option>';
 			    	$("#snt-value").append(mappingTypeValues);
 			    	$.each(value.sntvalues, function(mappingkey, mappingvalue) {
-			    		mappingTypeValues = '<option value="'+mappingvalue.value+'">'+mappingvalue.name+'</option>';
+			    		mappingTypeValues = '<option value="'+mappingvalue.name+'">'+mappingvalue.name+'</option>';
 			    		$("#snt-value").append(mappingTypeValues);
 			    	});
 			    }		    
