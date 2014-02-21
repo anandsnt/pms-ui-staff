@@ -18,6 +18,10 @@ var Search  = function(domRef){
     if(type == "LATE_CHECKOUT") {
     	that.myDomElement.find("#no-results").html("");
         var search_url = "search.json?is_late_checkout_only=true";
+        searchTitle = "Checking Out Late";
+        var searchTitleHtml = that.myDomElement.find('#search-title').html();
+        var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
+        that.myDomElement.find('#search-title').html(newSearchTitleHtml);
         this.fetchSearchData(search_url, "",type);
     }
 
@@ -43,12 +47,7 @@ var Search  = function(domRef){
 	        var searchTitleHtml = that.myDomElement.find('#search-title').html();
 	    	var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
 	    	that.myDomElement.find('#search-title').html(newSearchTitleHtml);
-        }else if(type == "LATE_CHECKOUT"){
-	        searchTitle = "Late Checking Out";
-	        var searchTitleHtml = that.myDomElement.find('#search-title').html();
-	    	var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
-	    	that.myDomElement.find('#search-title').html(newSearchTitleHtml);
-       }
+        }
         var search_url = "search.json?status=" + type;
         this.fetchSearchData(search_url, "",type);
     }
@@ -136,6 +135,10 @@ var Search  = function(domRef){
     that.fetchResults = [];
     that.preloadedResults = [];
     that.fetchTerm = "";
+    searchTitle = "Checking Out Late";
+    var searchTitleHtml = that.myDomElement.find('#search-title').html();
+    var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
+    that.myDomElement.find('#search-title').html(newSearchTitleHtml);
     var search_url = "search.json?is_late_checkout_only=true";
     that.fetchSearchData(search_url, "", "LATE_CHECKOUT");
 
@@ -148,9 +151,9 @@ var Search  = function(domRef){
     if(typeof e == "undefined"){
         var searchTitleHtml = $('#search_list #search-title').html();
         var newSearchTitleHtml = searchTitleHtml.replace("Checking In", "Search");
+        var newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out Late", "Search");
         var newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out", "Search");
         var newSearchTitleHtml = newSearchTitleHtml.replace("In House", "Search");
-        var newSearchTitleHtml = newSearchTitleHtml.replace("Late Checking Out", "Search");
         $('#search_list #search-title').html(newSearchTitleHtml);
     }
 
@@ -309,11 +312,12 @@ var Search  = function(domRef){
 
    //when user focus on search text
   this.queryEntered = function(event){
-  	var searchTitleHtml = that.myDomElement.find('#search-title').html();
+ 	var searchTitleHtml = that.myDomElement.find('#search-title').html();
 	var newSearchTitleHtml = searchTitleHtml.replace("Checking In", "Search");
+  var newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out Late", "Search");
 	var newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out", "Search");
 	var newSearchTitleHtml = newSearchTitleHtml.replace("In House", "Search");
-	var newSearchTitleHtml = newSearchTitleHtml.replace("Late Checking Out", "Search");
+
 	that.myDomElement.find('#search-title').html(newSearchTitleHtml);
     that.currentQuery = $.trim($(this).val());
     // Clear button visibility toggle
