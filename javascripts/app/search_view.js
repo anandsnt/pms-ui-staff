@@ -144,6 +144,16 @@ var Search  = function(domRef){
   //Clear Search Results 
   this.clearResults = function(e){
     //if the method is invoked from other views to clear search results, 'this', 'e' are undefined.
+    //Change the search heading to "Search"
+    if(typeof e == "undefined"){
+        var searchTitleHtml = $('#search_list #search-title').html();
+        var newSearchTitleHtml = searchTitleHtml.replace("Checking In", "Search");
+        var newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out", "Search");
+        var newSearchTitleHtml = newSearchTitleHtml.replace("In House", "Search");
+        var newSearchTitleHtml = newSearchTitleHtml.replace("Late Checking Out", "Search");
+        $('#search_list #search-title').html(newSearchTitleHtml);
+    }
+
     if($(this).hasClass('visible')){    
       $(this).removeClass('visible');
     }
