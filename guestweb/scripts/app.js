@@ -63,7 +63,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.userState     = $attrs.state
 	$rootScope.roomNo        = $attrs.roomNo
 	$rootScope.isLateCheckoutAvailable  = $attrs.isLateCheckoutAvailable
-	$rootScope.userMail      = $attrs.userMail
+	$rootScope.emailAddress      = $attrs.emailAddress
 
 if ($rootScope.isLateCheckoutAvailable === 'false') 
 		$location.path('/checkOutNow')
