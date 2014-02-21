@@ -43,6 +43,7 @@ var ChangeStayDatesView = function(viewDom){
 
 
   this.fetchCalenderEvents = function(){
+      console.log("fetch calendar");
       //var url = '/ui/show?format=json&json_input=change_staydates/rooms_available.json';
       var url = "/staff/change_stay_dates/" + that.reservationId + "/calendar.json"
       var webservice = new WebServiceInterface(); 
@@ -261,18 +262,10 @@ var ChangeStayDatesView = function(viewDom){
 
   this.showReservationUpdates = function(checkinDate, checkoutDate){
       that.fadeinHeaderDates();
-      var stayDatesCount = that.getStayDatesCount(checkinDate, checkoutDate);
-      console.log(stayDatesCount);
-      try{
-        if (stayDatesCount < that.availableEvents.data.available_dates[0].restriction_list[0].number_of_days){
-          console.log("minimum day count not met");
+      if(that.isStayRangeRestricted(checkinDate, checkoutDate)){
           that.showRoomRestrictedMessage();
           return false;
-        }
-      }catch(e){
-        console.log(e.message);
       }
-      console.log("here");
 
       var arrivalDate = getDateString(checkinDate);
       var departureDate = getDateString(checkoutDate);
@@ -297,20 +290,35 @@ var ChangeStayDatesView = function(viewDom){
 
   };
 
-  this.getStayDatesCount = function(checkinDate, checkoutDate){
+  this.isStayRangeRestricted = function(checkinDate, checkoutDate){
     var checkinTime = checkinDate.setHours(00,00,00);
     var checkoutTime = checkoutDate.setHours(00,00,00);
     var thisTime = "";
     var totalNights = 0;
+    var minNumOfStay = "";
     $(that.availableEvents.data.available_dates).each(function(index){
         thisTime = getDateObj(this.date).setHours(00,00,00);
+
+        if(this.date == getDateString(checkinDate)){
+            $(this.restriction_list).each(function(index){
+                if(this.restriction_type == "MINIMUM_LENGTH_OF_STAY"){
+                  minNumOfStay = this.number_of_days;
+                }
+            });
+        }
+
         if(thisTime < checkinTime || thisTime >= checkoutTime){
             return true;
         }
         totalNights ++;
     });
 
-    return totalNights;
+    if(totalNights < minNumOfStay){
+        return true;  
+    }else{
+      return false;
+    }
+
 
   };
 
