@@ -28,8 +28,6 @@
 			baseWebService.fetch('/guest_web/home/bill_details.json',{'reservation_id':$rootScope.reservationID}).then(function(response) {
 				this.bills = response;
 				deferred.resolve(this.bills);
-
-				console.log(response)
 			});
 			
 

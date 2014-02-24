@@ -78,10 +78,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	if($attrs.accessToken != "undefined")
 		$window.sessionStorage.accessToken = $attrs.accessToken	
 
-	console.log($attrs)
 
-
-	
 }]);
 
 
@@ -91,21 +88,21 @@ snt.factory('authInterceptor', function ($rootScope, $q, $window,$location) {
 			config.headers = config.headers || {};
 
 			if ($window.sessionStorage.accessToken) {
-				
+
 				config.headers.Authorization = $window.sessionStorage.accessToken;
 			}
 			else{
-				
+
 				$location.path('/authFailed');
 			}
 			return config;
 		},
 		response: function (response) {
-			
+
 			if (response.status === 401) {
         // handle the case where the user is not authenticated
     }
-    
+
     return response || $q.when(response);
 }
 };
