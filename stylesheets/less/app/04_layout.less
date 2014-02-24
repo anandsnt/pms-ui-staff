@@ -48,17 +48,6 @@ body { overflow: hidden; }
 				.show;
 			}
 
-			/* Page types ***/
-			/*&.main-page { 
-				left: .5%;
-				width: 99.5%;
-			}
-
-			&.inner-page {
-				left: 0;
-				width: 100%;
-			}*/
-
 			/* Visible pages ***/
 			&.page-current {
 				visibility: visible;
@@ -856,36 +845,38 @@ body { overflow: hidden; }
 
 /* No content				==============================*/
 	.no-content {
-		position: absolute;
-		width: 100%;
-		height: 100%;
+		display: table;
 		text-align: center;
 		color: @grey3;
-		.show;
-		#pixel-to-percent > .side-padding(400, 2048);
-		#pixel-to-percent > .top-padding(200, 1536);
+		padding: 0 20%;
+		.square(100%);
 
-		.h1 { 
-			font-size: 36px;
-			line-height: 36px;
-			font-weight: 700;
-			margin: 18px 0;
-		}
+		.info {
+			display: table-cell;
+			vertical-align: middle;
 
-		.h2 {
-			font-size: 24px;
-			line-height: 30px;
-			font-weight: 300;
-
-			strong { font-weight: 600; }
-
-			a { 
-				color: @green;
-				font-weight: 600;
+			.h1 { 
+				font-size: 36px;
+				line-height: 36px;
+				font-weight: 700;
+				margin: 18px 0;
 			}
-		}
 
-		.error { color: @red; }
+			.h2 {
+				font-size: 24px;
+				line-height: 30px;
+				font-weight: 300;
+
+				strong { font-weight: 600; }
+
+				a { 
+					color: @green;
+					font-weight: 600;
+				}
+			}
+
+			.error { color: @red; }
+		}
 
 		&#no-results {
 			visibility: visible;

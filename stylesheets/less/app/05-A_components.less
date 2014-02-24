@@ -208,7 +208,7 @@
 				margin: 0 40px 0 20px;
 				overflow: hidden;
 				text-overflow: ellipsis;
-				.calc-width(63, 40); /* %, px */
+				.calc-width(65, 40); /* %, px */
 				.pull-left;
 
 				h2 {
@@ -746,10 +746,6 @@
 				.wrapper { 
 					padding: 20px; 
 					position: relative;
-					
-					.no-content {
-						padding: 10% 20%;
-					}
 				}
 
 				/* Columns holder ***/
@@ -1292,6 +1288,7 @@
 				&.no-content { 
 					left: 0; 
 					width: 100%;
+					padding: 0 160px;
 				}
 			}
 		}
@@ -1815,8 +1812,8 @@
 								width: 80px;
 								#border-radius > .left-top(); 
 							}
-							&:nth-child(2) { width: 100px; }
-							&:nth-child(3) { width: 240px; }
+							&:nth-child(2) { width: 240px; }
+							&:nth-child(3) { width: 100px; }
 							&:last-child { #border-radius > .right-top(); }
 
 							
@@ -2698,10 +2695,13 @@
 				 		}
 
 				 		&.no-content {
-				 			padding: 0;
-				 			#pixel-to-percent > .top-padding(350, 1536);
+				 			padding: 0 40px;
+				 			.calc-width(100, 10); /* %, px */
 
-				 			.h1 { margin: 0; }
+				 			.h1 { 
+				 				font-size: 30px;
+				 				margin: 0; 
+				 			}
 				 		}
 			 		}
 			 	}
@@ -2794,11 +2794,10 @@
 			 	}
 
 			 	.iScrollVerticalScrollbar { .hide; }
-
-			 	&.no-content {
-			 		background: none;
-			 		#pixel-to-percent > .side-padding(100, 2048);
-			 		#pixel-to-percent > .top-padding(200, 1536);
+			 	
+			 	&.no-content { 
+			 		background: none; 
+			 		padding: 0;
 			 	}
 			}
 
@@ -2866,27 +2865,37 @@
 		.edit-reservation-content {
 			position: absolute;
 			overflow: hidden;
+			width: 100%;
 			.show;
-			.calc-width(100, 40);
-			.calc-height(100, 90);
+			.calc-height(100, 50);
+			.float;
+
+			.wrapper { 
+				padding: 20px; 
+				.float; 
+			}
 
 			.reservation-calendar,
 			.reservation-updates {
-				position: relative;
-			 	height: 100%;
+			 	height: 526px;
 			 	overflow: hidden;
 			 	.pull-left;
+			 	.show;
 			}
 
 			.reservation-calendar {
 				width: 490px;
 				padding-right: 20px;
-				.show;
+				overflow: hidden;
 
-				.notice { padding: 5px 10px; }
+				.notice { 
+					line-height: 1em;
+					padding: 10px; 
+					margin: 5px 0 10px 0;
+				}
 
 				#reservation-calendar-legend {
-					margin-top: 5px;
+					padding-top: 10px;
 					border-top: 1px solid rgba(0,0,0,.1);
 					.float;
 
@@ -2895,8 +2904,7 @@
 						line-height: 22px;
 						vertical-align: middle;
 						text-transform: uppercase;
-						padding: 4px 0;
-						margin-bottom: 5px;
+						margin-bottom: 10px;
 						.size(22px, 33%);
 						.pull-left;
 
@@ -2928,6 +2936,8 @@
 							&.availability { border: 2px solid @green; .background(); }
 						}
 
+						&:nth-child(4),
+						&:nth-child(5) { margin-bottom: 0; }
 						&:nth-child(5) { .size(22px, 66%); }
 					}
 				}
@@ -3055,9 +3065,8 @@
 						#fade > .out;
 					}
 
-					&.no-content {
+					&.no-content { 
 						position: static;
-						padding: 40% 15%;
 
 						.h1 { font-size: 30px; }
 					}
@@ -3357,7 +3366,6 @@
 	.social-lobby-content {
 
 		/* Scrollable area ***/
-		> .no-content { #pixel-to-percent > .top-padding(250, 1536); }
 		> .wrapper { padding: 20px; }
 
 		/* Posts timeline **/
@@ -3707,8 +3715,6 @@
 	.messages-content,
 	.reviews-content {
 		.float;
-
-		> .no-content { #pixel-to-percent > .top-padding(300, 1536); }
 
 		.content-left,
 		.content-right {
@@ -4208,10 +4214,6 @@
 				}
 			}
 
-			.no-content {
-				padding-top: 40%;
-			}
-
 			/* Various actions in conversation ***/
 			.actions {
 				padding-top: 10px;
@@ -4291,6 +4293,14 @@
 					font-size: 14px;
 					color: @grey3;
 					.show;
+				}
+			}
+
+			.no-content {
+				.info {
+					margin: 0;
+					padding: 0;
+					background: transparent;
 				}
 			}
 		}

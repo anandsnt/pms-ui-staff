@@ -130,7 +130,6 @@
 				}
 
 				&.notice { margin-top: 0; }
-				&.solo { margin: 0; }
 			}
 
 			.text:not(.value) {
@@ -564,13 +563,17 @@
 				}
 
 				.content-right {
+					position: relative;
 					padding: 20px;
 
 					.no-content {
 						position: static;
-						padding: 40% 15%;
+						.calc-height(100, 80); /* %, px */
 
-						.h1 { font-size: 24px; }
+						.h1 { 
+							font-size: 24px; 
+							margin: 0;
+						}
 					}
 
 					.scrollable { 

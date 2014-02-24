@@ -100,12 +100,12 @@ var PostChargeModel = function(callBack) {
 		        refreshVerticalScroll('#items-listing', 0);
 	        }
 	        else{
-	    		var html = "<div id='no-items-added' class='no-content'><strong class='h1'>No items found</strong></div>";
+	    		var html = "<div id='no-items-added' class='no-content'><div class='info'><strong class='h1'>No items found</strong></div></div>";
 	            that.myDom.find('#search-item-results').html(html);
 	        }
     	}
     	catch(e){
-    			var html = "<div id='no-items-added' class='no-content'><strong class='h1'>No items found</strong></div>";
+    			var html = "<div id='no-items-added' class='no-content'><div class='info'><strong class='h1'>No items found</strong></div></div>";
 	            that.myDom.find('#search-item-results').html(html);
 	    }
     };

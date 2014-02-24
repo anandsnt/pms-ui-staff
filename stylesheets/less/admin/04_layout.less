@@ -454,7 +454,8 @@ body { overflow: hidden; }
 
             &.import,
             &.bulk-edit,
-            &.link {
+            &.link,
+            &.email {
                 color: @blue; 
                 .pull-left;
 
@@ -528,6 +529,12 @@ body { overflow: hidden; }
         th,
         td {
             padding: 0 20px;
+
+            .checkbox,
+            .radio {
+                margin: -10px 0 0 -5px;
+                padding: 0;
+            }
 
             &.activate,
             &.delete { text-align: center; }

@@ -242,7 +242,7 @@ var RoomAssignmentView = function(viewDom){
     	var appendHTML = '<ul class="wrapper"></ul>';
     	that.myDom.find("#rooms-available").removeClass("no-content") ;     
     	that.myDom.find("#rooms-available").addClass("scrollable") ; 
-		that.myDom.find("#rooms-available ul").remove();   
+		  that.myDom.find("#rooms-available ul").remove();   
     	that.myDom.find("#rooms-available span").remove();   
     	that.myDom.find("#rooms-available strong").remove();     
     	that.myDom.find("#rooms-available").append(appendHTML);   
@@ -254,9 +254,9 @@ var RoomAssignmentView = function(viewDom){
 	        if(filteredRoomList[i].room_status == "READY" && filteredRoomList[i].fo_status == "VACANT"){
 	          room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
 			  
-			  if(filteredRoomList[i].is_preassigned) {
-				  room_status_html += "<span class='room-preassignment'>"+filteredRoomList[i].last_name + " " + filteredRoomList[i].guarantee_type+"</span>";
-			  } 
+    			  if(filteredRoomList[i].is_preassigned) {
+    				  room_status_html += "<span class='room-preassignment'>"+filteredRoomList[i].last_name + " " + filteredRoomList[i].guarantee_type+"</span>";
+    			  } 
 	        }
 	        else{
 	            room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
@@ -271,11 +271,13 @@ var RoomAssignmentView = function(viewDom){
 	        }  
 	    }
 	    that.createRoomListScroll();
-	} 
+	  } 
     else {
-    	var appendHTML =   '<span class="icon-no-content icon-room"></span>'+
-    	                   '<strong class="h1">Unfortunately there are no rooms ready yet. '+
-    	                   'Try changing some of the filter criteria</strong>';
+    	var appendHTML = '<div class="info">' +
+        '<span class="icon-no-content icon-room"></span>'+
+        '<strong class="h1">Unfortunately there are no rooms ready yet.</strong>'+
+        '<span class="h2">Try changing some of the filter criteria</span>' +
+        '</div>';
     	that.myDom.find("#rooms-available").removeClass("scrollable") ;     
     	that.myDom.find("#rooms-available").addClass("no-content") ;   
     	that.myDom.find("#rooms-available ul").remove();              
@@ -283,7 +285,6 @@ var RoomAssignmentView = function(viewDom){
     	
     }
     
-
     that.myDom.find('div.rooms-listing ul li a').on('click',that.updateRoomAssignment);
   };
 

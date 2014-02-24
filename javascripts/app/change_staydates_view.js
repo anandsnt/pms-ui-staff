@@ -34,8 +34,10 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.pageshow = function(){
-      that.fetchCalenderEvents();
+    that.fetchCalenderEvents();
 
+    // Set scrolling
+    createVerticalScroll('#edit-reservation-content');
   };
 
   this.reservationUpdateClickEvents = function(event){
@@ -103,9 +105,22 @@ var ChangeStayDatesView = function(viewDom){
           viewDisplay: function(view) {
               that.setupCalendarDates(view, checkinDate, checkoutDate);
           },
+          // Disable scroller on drag start 
+          eventDragStart: function( event, jsEvent, ui, view ) { 
+            disableVerticalScroll('#edit-reservation-content');
+          },
+          // Enable scroller on drag stop
+          eventDragStop: function( event, jsEvent, ui, view ) { 
+            enableVerticalScroll('#edit-reservation-content');
+          },
           // Stay date has changed
           eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
               that.datesChanged(event, revertFunc, view);
+
+              // Prevent scroll jumping
+              for (var i = 0; i < verticalScroll.length; i++) {
+                verticalScroll[i].initiated = 0;
+              }
           }
 
       });
@@ -475,9 +490,6 @@ var ChangeStayDatesView = function(viewDom){
 
       });
 
-      // Set scroller
-      createVerticalScroll('#change-room');
-      
       that.myDom.find('#change-room ul li').on('click', that.roomListNumberSelected);
   };
 

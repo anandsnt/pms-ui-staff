@@ -43,20 +43,9 @@ var NotificationMessage = function() {
 			};
 
 		} else {
-			// console.log(dom.attr("id"));
 			if (dom.find('#notification-message').length) {
-				var element = dom.find('#notification-message')[0];
-				var time = 2000;
-
-				
-
-				//refreshVerticalScroll(null, element);
-
-				// nasty bug in iPad - viewScroll undefined
-				/*for (var i = 0; i < viewScroll.length; i++) {
-		            viewScroll[i].scrollToElement(element, time);
-		        }*/
-				//viewScroll && viewScroll[i].scrollToElement(element, time);
+				// Refresh scroller
+   				refreshVerticalScroll('#edit-reservation-content');
 			}
 		}
 

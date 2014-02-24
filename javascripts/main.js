@@ -355,10 +355,10 @@ $(function($){
     var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
 
     if ($isTablet) {
-        // Enable  keyboard
-        $("#app-page").css("height",window.innerHeight);
+        // Enable keyboard to shift content to the top
+        $('body').css("height",window.innerHeight);
 
-        // Disable keyboard
+        // Disable keyboard content shifting
         $(document).on('focus', '[data-keyboard=lock]', function() {
             window.scrollTo(0, 0);
             if ($('#modal').length) { 
@@ -423,12 +423,11 @@ $(function($){
         $(this).updateStyledSelect();
     });
 
-    // Fix Chrome iOS scroller drop-down bug and force blur, Rover only
+    // Fix Chrome iOS scroller drop-down bug and force blur on change, Rover only
     if ($('body#app-page').length) {
         $(document).on('change', 'select', function(e){
             $(this).blur();
-        })
-        $(document).on('focus', 'select[data-scroller]', function(e){
+        }).on('focus', 'select', function(e){
             for (var i = 0; i < verticalScroll.length; i++) {
                 verticalScroll[i].initiated = 0;
             }
