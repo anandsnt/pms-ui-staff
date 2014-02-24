@@ -179,7 +179,7 @@ var RegistrationCardView = function(viewDom) {
 			}
 		});
 	};
-	this.reloadBillCardPage = function(clickedFrom) {
+	this.reloadBillCardPage = function() {
 		var viewURL = "staff/reservation/bill_card";
 		var viewDom = $("#view-nested-third");
 		var params = {
@@ -187,14 +187,10 @@ var RegistrationCardView = function(viewDom) {
 		};
 		var nextViewParams = {
 			"showanimation" : false,
-			"current-view" : "staycard"
+			"current-view" : "staycard",
+			"clickedButton" : that.viewParams.clickedButton
 		};
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'BLOCKER', nextViewParams);
-		setTimeout(function() {
-				if(clickedFrom == "ViewBillButton") {
-					that.renderedFromViewBillButton();
-				}
-		}, 4000);
 	};
 
 	this.goToRoomAssignmentView = function() {
@@ -486,9 +482,7 @@ var RegistrationCardView = function(viewDom) {
 		var bill_number = that.getActiveBillNumber();
 		postChargeModel.params = {
 			"origin" : views.BILLCARD,
-			"bill_number" : bill_number,
-			"clickedFrom" : that.viewParams.clickedButton,
-			"callback" : that.renderedFromViewBillButton
+			"bill_number" : bill_number
 		};
 	};
 
