@@ -389,8 +389,14 @@ $(function($){
         setupFile();
     });
 
+    // Styled form elements - on click
+    $(document).on('click', '.checkbox, .radio', function(e){
+        e.stopImmediatePropagation();
+        styleCheckboxRadio();
+    });
+
     // Styled checkbox groups
-   $(document).on('change', 'input:checkbox', function(e){
+    $(document).on('change', 'input:checkbox', function(e){
         var $group = $(this).attr('data-group'),
             $groupItem = 'input:checkbox[data-group='+$group+']';
 
@@ -401,34 +407,32 @@ $(function($){
             styleCheckboxRadio();
         }        
     });
-    
-    // Styled form elements - on click
-    $(document).on('click', '.checkbox, .radio', function(e){
-        e.stopImmediatePropagation();
-        styleCheckboxRadio();
-    });
 
+    // Styled on-off switch checkbox
     $(document).on('click', '.switch-button', function(e){
         e.stopImmediatePropagation();
         onOffSwitch();
     });
 
-    $(document).on('change', 'select', function(e){
-        $(this).blur();
-    });
-
+    // Styled select box
     $(document).on('change', 'select.styled', function(e){
         $(this).updateStyledSelect();
     });
 
-    // Fix Chrome iOS scroller drop-down bug
-    $(document).on('focus', 'select[data-scroller]', function(e){
-        var $inScroller = eval($(this).attr('data-scroller'));
-        
-        for (var i = 0; i < $inScroller.length; i++) {
-            $inScroller[i].initiated = 0;
-        }
-    });
+    // Fix Chrome iOS scroller drop-down bug and force blur, Rover only
+    if ($('body#app-page').length) {
+        $(document).on('change', 'select', function(e){
+            $(this).blur();
+        })
+        $(document).on('focus', 'select[data-scroller]', function(e){
+            for (var i = 0; i < verticalScroll.length; i++) {
+                verticalScroll[i].initiated = 0;
+            }
+            for (var i = 0; i < horizontalScroll.length; i++) {
+                horizontalScroll[i].initiated = 0;
+            }
+        });
+    } 
 
     // Enable some parts of form
     // TODO - fire this after valid email address is added, not on keyup!
@@ -557,12 +561,9 @@ $(function($){
         $($target).toggleClass('hidden');
         $toggleContent.start();
 
-        // Refresh scrolls is they exist
-        if (pageScroll) { refreshPageScroll(); }
-        if (viewScroll) { refreshViewScroll(); }
-        if (guestCardScroll) { refreshGuestCardScroll(); }
-        if (registrationScroll) { refreshRegistrationScroll(); }
-        if (horizontalScroll) { refreshHorizontalScroll(); }
+        // Refresh scrolls
+        refreshVerticalScroll();
+        refreshHorizontalScroll();
     });
 
     // Main menu toggle

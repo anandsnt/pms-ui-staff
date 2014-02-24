@@ -8,12 +8,8 @@ var RegistrationCardView = function(viewDom) {
     this.isAllBillsReviewed = false;
     
 	this.pageinit = function() {
-		this.createHorizontalScroll();
-
-		if (viewScroll) { destroyViewScroll(); }
-		setTimeout(function() {
-			createViewScroll('#registration-content');
-		}, 300);
+		this.setBillTabs();
+		createVerticalScroll('#registration-content');
 
 		var width = that.myDom.find("#signature-pad").width();
 		
@@ -72,14 +68,10 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.unbind('click');
 		that.myDom.on('click', that.myDomClickHandler);
 		that.myDom.find("#signature").on('mouseover', function() {
-			for (var i = 0; i < viewScroll.length; i++) {
-	            viewScroll[i].disable();
-	        }
+			disableVerticalScroll('#registration-content');
 		});
 		that.myDom.find("#signature").on('mouseout', function() {
-			for (var i = 0; i < viewScroll.length; i++) {
-	            viewScroll[i].enable();
-	        }
+			enableVerticalScroll('#registration-content');
 		});
 	};
 
@@ -150,32 +142,20 @@ var RegistrationCardView = function(viewDom) {
 		}
 
 	};
-	this.createHorizontalScroll = function() {
+	this.setBillTabs = function() {
 		$('#bills').tabs({
 			create : function(event, ui) {
-				var $tab = ui.panel.attr('id'), $tabWidth = ui.panel.width(), $scrollable = $('#' + $tab).find('.wrapper');
+				var $tab = ui.panel.attr('id'),
+					$scrollable = $('#' + $tab).find('.wrapper')
+					$itemsWidth = 0;
 
-				var $itemsWidth = 0;
-				// To find total item's width - single item width + 5 (margin)
-				that.myDom.find(".wrapper li").each(function(i) {
-					$itemsWidth = $itemsWidth + $(this).width() + 5;
+				// Set wrapper width for horizontal scroll
+				that.myDom.find('.wrapper li').each(function() {
+				    $itemsWidth += $(this).outerWidth(true);
 				});
+				$($scrollable).css('width', $itemsWidth + 5);
 
-				if ($itemsWidth > $tabWidth) {
-					$('#' + $tab + '-summary').css({
-						'padding-top' : '10px'
-					});
-					$($scrollable).css({
-						'width' : $itemsWidth + 'px'
-					});
-					if (horizontalScroll) {
-						destroyHorizontalScroll();
-					}
-					setTimeout(function() {
-						createHorizontalScroll('#' + $tab + '-summary');
-						refreshHorizontalScroll();
-					}, 600);
-				}
+				createHorizontalScroll('#' + $tab + '-summary');
 			}
 		});
 	};
@@ -340,7 +320,7 @@ var RegistrationCardView = function(viewDom) {
 	      	var confirmation_num = getCurrentConfirmation();
 	      	var reservation_status = $("#reservation-"+confirmation_num).attr("data-reservation-status");
       		var reservation_icon = "guest-status inhouse small-icon";
-      		$("#reservation-listing ul li[data-confirmation-num = "+confirmation_num+"] span.guest-status").removeClass().addClass(reservation_icon);
+      		$(".reservations-tabs ul li[data-confirmation-num = "+confirmation_num+"] span.guest-status").removeClass().addClass(reservation_icon);
 		}
 	};
 	

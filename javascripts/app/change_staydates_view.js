@@ -468,12 +468,9 @@ var ChangeStayDatesView = function(viewDom){
 
       });
 
-      // Set scrollers
-      if (viewScroll) { destroyViewScroll(); }
-      setTimeout(function(){
-          createViewScroll('#change-room');
-      }, 300);
-
+      // Set scroller
+      createVerticalScroll('#change-room');
+      
       that.myDom.find('#change-room ul li').on('click', that.roomListNumberSelected);
   };
 

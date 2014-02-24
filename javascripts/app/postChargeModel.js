@@ -21,14 +21,12 @@ var PostChargeModel = function(callBack) {
 			that.myDom.find("#select-bill-number").hide();
 			that.myDom.find(".h2.message").append(this.params.bill_number);
 		}
-		
-		if (viewScroll) { destroyViewScroll(); }
-		if (pageScroll) { destroyPageScroll(); }
-	    setTimeout(function(){
-	    	createViewScroll('#items-listing');
-	    	createPageScroll('#items-summary');
-	    }, 300);
-		
+
+		// Set scrollers
+		createVerticalScroll('#items-listing');
+		createVerticalScroll('#items-summary');
+	
+		// Events
 		that.myDom.find("#items-listing").on("click", that.clickItemList);
 		that.myDom.find("#items-summary").on("click", that.clickItemListSummary);
 		that.myDom.find("#charge-groups").on("change", that.changedChargeGroup);
@@ -97,12 +95,9 @@ var PostChargeModel = function(callBack) {
     			$.each(items, function(i,value){
 		            	that.myDom.find('#search-item-results').append(value).highlight(that.currentQuery);
 		        });
-		        if (viewScroll) { destroyViewScroll(); }
-		        for (var i = 0; i < viewScroll.length; i++) {
-		            viewScroll[i].scrollTo(0, 0);
-		        }
-		        //createViewScroll('#items-listing');
-				//viewScroll[i].scrollTo(0, 0);
+
+		        // Refresh scroll to top
+		        refreshVerticalScroll('#items-listing', 0);
 	        }
 	        else{
 	    		var html = "<div id='no-items-added' class='no-content'><strong class='h1'>No items found</strong></div>";
@@ -205,19 +200,13 @@ var PostChargeModel = function(callBack) {
 				items.push($('<li data-id="' + $id + '" />').html($output));
 				that.myDom.find('#items-summary ul').append.apply(that.myDom.find('#items-summary ul'), items);
 	
-				// Set scrollers & position charge total
-				if (pageScroll) { destroyPageScroll(); }
-				createPageScroll('#items-summary');
-	
 				if(that.myDom.find('#items-summary li').length > '4') {
-					for (var i = 0; i < pageScroll.length; i++) {
-	                    pageScroll[i].scrollTo(0, -(that.myDom.find('#items-summary li').length - 4) * 45); 
-	                }
-					//pageScroll.scrollTo(0, -(that.myDom.find('#items-summary li').length - 4) * 45);
+					// Refresh scroll to bottom
+		        	refreshVerticalScroll('#items-summary', -(that.myDom.find('#items-summary li').length - 4) * 50);
 					that.myDom.find('#total-charge').removeAttr('class');
 				}
-				else{
-					that.myDom.find('#total-charge').removeAttr('class').addClass('offset-' + that.myDom.find('#items-summary li').length)
+				else {
+					that.myDom.find('#total-charge').removeAttr('class').addClass('offset-' + that.myDom.find('#items-summary li').length);
 				}
 				that.updateItemCount($id,current_item_count+1);
 			}
@@ -232,15 +221,13 @@ var PostChargeModel = function(callBack) {
 			// Update Total price
 			that.updateTotalPrice();
 	
-			// Set scrollers
-			var $style = that.myDom.find('#items-listing .wrapper').attr('style').split('transform: translate('), $translate = $style[1].split(')')[0], $current = $translate.split(',')[1], $target = $current.split('px')[0];
-	
-			if (viewScroll) { destroyViewScroll(); }
-			createViewScroll('#items-listing');
-			for (var i = 0; i < viewScroll.length; i++) {
-	            viewScroll[i].scrollTo(0, parseInt($target));
-	        }
-			//viewScroll[i].scrollTo(0, parseInt($target));
+			// Refresh scroll
+			var $style = that.myDom.find('#items-listing .wrapper').attr('style').split('transform: translate('), 
+				$translate = $style[1].split(')')[0], 
+				$current = $translate.split(',')[1], 
+				$target = $current.split('px')[0];
+
+			refreshVerticalScroll('#items-listing', parseInt($target));
 		}
 	};
 	//To get count of item - paasing item Id.
@@ -353,8 +340,9 @@ var PostChargeModel = function(callBack) {
 			}
 		}
 		that.myDom.find("#items-listing ul").html(html);
-		if (viewScroll) { destroyViewScroll(); }
-		createViewScroll('#items-listing');
+
+		// Refresh scroll
+		refreshVerticalScroll('#items-listing');
 	};
 
 	// Filter : To show complete list
@@ -370,8 +358,9 @@ var PostChargeModel = function(callBack) {
 			html += '<li id="items-list"><a href="#" data-type="post-charge" data-price="' + that.currentList[i].unit_price + '" data-item="' + that.currentList[i].item_name + '" data-is-favourite="' + that.currentList[i].is_favorite + '" data-id="' + that.currentList[i].value + '" data-charge-group="' + that.currentList[i].charge_group_value + '" data-cc="' + that.currentList[i].currency_code + '" data-base="unit" class="button white">' + that.currentList[i].item_name + '<span class="price"> '+currency_code+' <span class="value">' + that.currentList[i].unit_price + '</span></span>'+$count_html+'</a></li>';
 		}
 		that.myDom.find("#items-listing ul").html(html);
-		if (viewScroll) { destroyViewScroll(); }
-		createViewScroll('#items-listing');
+		
+		// Refresh scroll
+		refreshVerticalScroll('#items-listing');
 	};
 
 	// Filter : To show selected charge group items
@@ -389,8 +378,9 @@ var PostChargeModel = function(callBack) {
 			}
 		}
 		that.myDom.find("#items-listing ul").html(html);
-		if (viewScroll) { destroyViewScroll(); }
-		createViewScroll('#items-listing');
+		
+		// Refresh scroll
+		refreshVerticalScroll('#items-listing');
 	};
 	
 	// Post charge.
@@ -529,6 +519,15 @@ var PostChargeModel = function(callBack) {
 					  if(item_summary_item_length == "0"){
 					  		that.myDom.find("#no-items-added").removeClass('hidden');
 					  		that.myDom.find("#items-added").addClass('hidden');
+					  }
+					  // Move scroller up
+					  else {
+					  	refreshVerticalScroll('#items-summary', -(that.myDom.find('#items-summary li').length - 1) * 50);
+					  }
+
+					  // Update text
+					  if(that.myDom.find('#items-summary li').length <= '4') {
+					  	that.myDom.find('#total-charge').removeAttr('class').addClass('offset-' + that.myDom.find('#items-summary li').length);
 					  }
 				  break;
 				case "+/-":

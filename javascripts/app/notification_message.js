@@ -46,12 +46,16 @@ var NotificationMessage = function() {
 			// console.log(dom.attr("id"));
 			if (dom.find('#notification-message').length) {
 				var element = dom.find('#notification-message')[0];
-				// console.log(viewScroll.scrollToElement);
 				var time = 2000;
+
+				
+
+				//refreshVerticalScroll(null, element);
+
 				// nasty bug in iPad - viewScroll undefined
-				for (var i = 0; i < viewScroll.length; i++) {
+				/*for (var i = 0; i < viewScroll.length; i++) {
 		            viewScroll[i].scrollToElement(element, time);
-		        }
+		        }*/
 				//viewScroll && viewScroll[i].scrollToElement(element, time);
 			}
 		}

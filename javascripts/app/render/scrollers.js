@@ -130,6 +130,7 @@ var pageScroll = new Array(),
         for (var i = 0; i < verticalScroll.length; i++) {
             var $activeScroller = String(verticalScroll[i].wrapper.id),
                 $currentScroller = $target.split('#')[1];
+            
             if($activeScroller == $currentScroller) {
                 verticalScroll[i].destroy();
                 verticalScroll.splice(i, 1);
@@ -153,9 +154,11 @@ var pageScroll = new Array(),
 
                         if ($startingPosition && typeof $startingPosition !== 'undefined') {
                             verticalScroll[i].scrollTo(0, $startingPosition, 10);
+
+                            console.log($currentScroller + " moved to " + $startingPosition);
                         }
 
-                        console.log($currentScroller + " moved to " + $startingPosition);
+                        console.log($currentScroller + " refreshed!");
                         break;
                     }
                 }
@@ -254,9 +257,10 @@ var pageScroll = new Array(),
 
                         if ($startingPosition && typeof $startingPosition !== 'undefined') {
                             horizontalScroll[i].scrollTo(0, $startingPosition, 10);
+                            console.log($currentScroller + " moved to " + $startingPosition);
                         }
 
-                        console.log($currentScroller + " moved to " + $startingPosition);
+                        console.log($currentScroller + " refreshed!");
                         break;
                     }
                 }

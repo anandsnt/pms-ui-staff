@@ -1,8 +1,11 @@
 var setUpStaycard = function(viewDom) {
+
 	// Reservation card tabs
 	viewDom.find($('.reservation-tabs-timeline')).each(function() {
 		$(this).tabs({
-			beforeActivate : applayTabSettings
+			beforeActivate: function (event, ui) {
+				applyTabSettings(event, ui);
+			}
 		}).addClass('ui-tabs-vertical ui-helper-clearfix');
 	});
 
@@ -11,7 +14,7 @@ var setUpStaycard = function(viewDom) {
 		var activeTabIndex = 0;
 		var currentReservation = viewDom.find($('#confirm_no')).val();
 		var activeTimeline = $('#reservation-card').attr('data-current-timeliine');
-		viewDom.find($("#"+activeTimeline+" #reservation-listing ul li")).each(function(index){
+		viewDom.find($("#"+activeTimeline+" .reservations-tabs ul li")).each(function(index){
 			if($(this).attr("data-confirmation-num") == currentReservation ){
 				activeTabIndex = index;
 			}
@@ -21,13 +24,19 @@ var setUpStaycard = function(viewDom) {
 		}
 		$(this).tabs({
 			active: activeTabIndex,
-			beforeActivate : applayTabSettings
+			beforeActivate: function (event, ui) {
+				applyTabSettings(event, ui);
+			}
 		}).addClass('ui-tabs-vertical ui-helper-clearfix');
 	});
 
-
-	var applayTabSettings = function(event, ui) {
-		var $prevTab = ui.oldPanel.attr('id'), $nextTab = ui.newPanel.attr('id'), $changeTab = new chainedAnimation(), $delay = 600;
+	// Change tabs
+	function applyTabSettings(event, ui) {
+		var $prevTab = ui.oldPanel.attr('id'), 
+			$nextTab = ui.newPanel.attr('id'),
+			$targetScroller = $('#' + $nextTab + ' > .scrollable').attr('id'),
+			$changeTab = new chainedAnimation(),
+			$delay = 600;
 
 		// Bring in new tab
 		$changeTab.add(function() {
@@ -49,7 +58,7 @@ var setUpStaycard = function(viewDom) {
 
 		$changeTab.start();
 
-		// Refresh scrollers
-		refreshViewScroll();
+		// Refresh all scrollers
+		refreshVerticalScroll();
 	}
 };

@@ -55,6 +55,9 @@ var Search  = function(domRef){
     // A dirty hack to allow "this" instance to be refered from sntapp
     sntapp.setViewInst('Search', that);
 
+    // Set scrolling
+    createVerticalScroll('#search');
+
     // // DEBUG
     // window.trigger = that.postCardSwipData;
   };
@@ -391,9 +394,8 @@ var Search  = function(domRef){
                 $('#search-results').append(value).highlight($query);
               });
 
-        // Set pageScroll
-      if (pageScroll) { destroyPageScroll(); }
-      createPageScroll('#search');
+        // Refresh scroll
+        refreshVerticalScroll('#search');
       }
       catch(e)
       {
@@ -421,9 +423,8 @@ var Search  = function(domRef){
                     $('#search-results').append.apply($('#search-results'),items).highlight($query);
             });
 
-          // Set pageScroll
-      if (pageScroll) { destroyPageScroll(); }
-      createPageScroll('#search');
+          // Refresh scroll
+          refreshVerticalScroll('#search');
         }
         catch(e)
         {
@@ -527,8 +528,7 @@ var Search  = function(domRef){
               $('#no-results').removeClass('hidden');
           }
       }
-      // Set pageScroll
-      if (pageScroll) { destroyPageScroll(); }
-      createPageScroll('#search');
+      // Refresh scrolling
+      refreshVerticalScroll('#search');
     };
 };

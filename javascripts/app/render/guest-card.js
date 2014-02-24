@@ -12,10 +12,9 @@ function resizableGuestCard($maxHeight){
 			}
 		},
 	    stop: function(event, ui) {
-	    	// Refresh scrollers
-	    	setTimeout(function(){
-		    	refreshGuestCardScroll();
-		    }, 300);
+	    	// Refresh scroller
+	    	var $tab = $('.card-content.scrollable:visible').attr('id');
+	    	refreshVerticalScroll('#' + $tab);
 	   	}
 	});
 }
@@ -53,13 +52,7 @@ var setUpGuestcard = function(viewDom) {
 			var $tab = ui.panel.attr('id');
 
 			// Set scroller
-			if (guestCardScroll) {
-				destroyGuestCardScroll();
-			}
-			setTimeout(function() {
-				createGuestCardScroll('#' + $tab);
-				refreshGuestCardScroll();
-			}, 300);
+			createVerticalScroll('#' + $tab);
 
 		},
 		beforeActivate : function(event, ui) {
@@ -72,13 +65,7 @@ var setUpGuestcard = function(viewDom) {
 			}
 
 			// Reset scroller
-			if (guestCardScroll) {
-				destroyGuestCardScroll();
-			}
-			setTimeout(function() {
-				createGuestCardScroll('#' + $nextTab);
-			}, 300);
-
+			createVerticalScroll('#' + $nextTab);
 		}
 	});
 
@@ -123,8 +110,14 @@ var setUpGuestcard = function(viewDom) {
 		}
 
 		// Refresh scrollers
-		setTimeout(function() {
-			refreshGuestCardScroll();
-		}, 300);
+		refreshVerticalScroll();
+	});
+
+	// Close guest card when nested view is clicked
+    $(document).on('click','.nested-view',function(e) {
+    	if ($('#guest-card').height() > '90')
+	    	$('#guest-card').animate({height: '90px'}, 300, function(){
+    			$(this).removeClass('open');
+			});
 	});
 };

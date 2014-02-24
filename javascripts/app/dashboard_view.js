@@ -4,12 +4,7 @@ var Dashboard = function(domRef){
   this.myDom = domRef;
 
   this.pageinit = function(){
-  	if (pageScroll) { destroyPageScroll(); }
-		setTimeout(function(){
-      if ($('#dashboard').length){
-	      	createPageScroll('#dashboard');
-        }
-	  	}, 300);
+  	createVerticalScroll('#dashboard');
   };
 
   this.delegateEvents = function(){
