@@ -249,7 +249,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Call cordova service to get the UID
 	*/
 	that.getUID = function(){
-		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Printing keys!');		
+		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Reading key!');		
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		var options = {
 			'successCallBack': that.callKeyFetchAPI,
@@ -298,6 +298,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	*/
 	this.callKeyFetchAPI = function(userID){
 		sntapp.activityIndicator.hideActivityIndicator();
+		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Getting key image!');		
 		that.keyFetched = true;
 	    var reservationId = getReservationId();
 	    var postParams = {"reservation_id": reservationId, "key": that.numOfKeys, "is_additional": false};
@@ -335,13 +336,13 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	*/
 	this.writeKey = function(keyWriteData, key){
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
-		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Printing keys!');				
+		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Writing key!');				
 		var options = {
 			//Cordova write success callback. If write sucess for all the keys, show key success message
 			//If keys left to print, call the cordova write key function
 			'successCallBack': function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
-				that.myDom.find('#key-status .status').removeClass('error').addClass('success').text('Key 1 printed!');
+				that.myDom.find('#key-status .status').removeClass('error').addClass('success').text('Key created!');
 
 				that.numOfKeys--;
 				if(that.numOfKeys == 0){
@@ -414,7 +415,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.showKeyPrintFailure = function(){ 
 		sntapp.activityIndicator.hideActivityIndicator();
 		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('not-connected completed');
-		that.myDom.find('#key-status em').removeClass('pending success icon-key status').addClass('info').text('Keys not printed!');		
+		that.myDom.find('#key-status em').removeClass('pending success icon-key status').addClass('info').text('Key creation failed!');		
 		that.myDom.find('#key-action').hide();
 		that.myDom.find('#print-keys').hide();
 		that.myDom.find('#room-status h1').addClass('icon-key');
