@@ -121,12 +121,12 @@ var reservationDetailsView = function(domRef) {
 	};
 
 	this.gotToChangeDatesScreen = function() {
-		sntapp.activityIndicator.showActivityIndicator("blocker");
+		
 		var viewURL = "/staff/change_stay_dates/"+getReservationId();
 	    var viewDom = $("#view-nested-second");
 	    var reservation_id = getReservationId();
 	    var nextViewParams = {"reservation_id": reservation_id};
-	    sntapp.fetchAndRenderView(viewURL, viewDom, {}, 'NORMAL', nextViewParams);
+	    sntapp.fetchAndRenderView(viewURL, viewDom, {}, 'blocker', nextViewParams);
 	};
 
 	this.setNewspaperPreferance = function(e) {
@@ -140,6 +140,7 @@ var reservationDetailsView = function(domRef) {
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : data
+
 		};
 		webservice.postJSON('/reservation/add_newspaper_preference', options);
 	};
@@ -166,14 +167,14 @@ var reservationDetailsView = function(domRef) {
 	};
 
 	this.goToRoomAssignmentView = function(nextViewParams) {
-		sntapp.activityIndicator.showActivityIndicator("blocker");
+		//sntapp.activityIndicator.showActivityIndicator("blocker");
 		var viewURL = "staff/preferences/room_assignment";
 		var viewDom = $("#view-nested-second");
 		var reservation_id = getReservationId();
 		var params = {
 			"reservation_id" : reservation_id
 		};
-		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams);
+		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'blocker', nextViewParams);
 	};
 
 	this.addKeysModal = function(e) {
@@ -219,18 +220,18 @@ var reservationDetailsView = function(domRef) {
 
 	};
 	this.goToRoomUpgradeView = function(nextViewParams) {
-		sntapp.activityIndicator.showActivityIndicator("blocker");
+		
 		var viewURL = "staff/reservations/room_upsell_options";
 		var viewDom = $("#view-nested-second");
 		var reservation_id = getReservationId();
 		var params = {
 			"reservation_id" : reservation_id
 		};
-		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams);
+		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'blocker', nextViewParams);
 	};
 
 	this.goToBillCardView = function(clickedButton) {
-		sntapp.activityIndicator.showActivityIndicator("blocker");
+		//sntapp.activityIndicator.showActivityIndicator("blocker");
 		var viewURL = "staff/reservation/bill_card";
 		//var viewURL = "ui/show?haml_file=staff/reservations/bill_card&json_input=registration_card/registration_card.json&is_hash_map=true&is_layout=false";
 		var viewDom = $("#view-nested-third");
@@ -242,13 +243,13 @@ var reservationDetailsView = function(domRef) {
 			"from-view" : views.STAYCARD,
 			"clickedButton" : clickedButton
 		};
-		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'NORMAL', nextViewParams);
+		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'blocker', nextViewParams);
 	};
 	this.clickedCheckoutButton = function() {
 		that.goToBillCardView("CheckoutButton");
 	};
 	this.clickedViewBillButton = function(e) {
-		sntapp.activityIndicator.showActivityIndicator("blocker");
+		//sntapp.activityIndicator.showActivityIndicator("blocker");
 		that.goToBillCardView("ViewBillButton");
 	};
 	this.clickedPostChargeButton = function(e) {
@@ -286,7 +287,7 @@ var reservationDetailsView = function(domRef) {
 			var nextViewParams = {
 				"next_view" : views.BILLCARD
 			};
-			sntapp.activityIndicator.showActivityIndicator("blocker");
+			//sntapp.activityIndicator.showActivityIndicator("blocker");
 			that.goToRoomAssignmentView(nextViewParams);
 		} else if ((that.myDom.find('#reservation-checkin').attr('data-force-upsell') == "true") && (that.myDom.find('#reservation-checkin').attr('data-upsell-available') == "true")) {
 
@@ -294,10 +295,10 @@ var reservationDetailsView = function(domRef) {
 				"showanimation" : true,
 				"next_view" : views.BILLCARD
 			};
-			sntapp.activityIndicator.showActivityIndicator("blocker");
+			//sntapp.activityIndicator.showActivityIndicator("blocker");
 			that.goToRoomUpgradeView(nextViewParams);
 		} else {
-			sntapp.activityIndicator.showActivityIndicator("blocker");
+			//sntapp.activityIndicator.showActivityIndicator("blocker");
 			that.goToBillCardView("CheckinButton");
 		}
 	};
