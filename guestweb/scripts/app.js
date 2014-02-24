@@ -51,7 +51,10 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 
 	
 	if ($window.sessionStorage.token)
-	delete $window.sessionStorage.token
+		delete $window.sessionStorage.token
+
+
+	//store basic details as rootscope variables
 
 	$rootScope.reservationID  = $attrs.reservationId
 
@@ -65,63 +68,63 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.isLateCheckoutAvailable  = $attrs.isLateCheckoutAvailable
 	$rootScope.emailAddress      = $attrs.emailAddress
 
-if ($rootScope.isLateCheckoutAvailable === 'false') 
+
+	//if late chekout is unavailable navigate to checkout now page
+
+	if ($rootScope.isLateCheckoutAvailable === 'false') 
 		$location.path('/checkOutNow')
 
 
-if($attrs.accessToken != "undefined")
-	$window.sessionStorage.accessToken = $attrs.accessToken	
-
-console.log($attrs)
+	if($attrs.accessToken != "undefined")
+		$window.sessionStorage.accessToken = $attrs.accessToken	
 
 
-	
 }]);
 
 
 snt.factory('authInterceptor', function ($rootScope, $q, $window,$location) {
-  return {
-    request: function (config) {
-      config.headers = config.headers || {};
+	return {
+		request: function (config) {
+			config.headers = config.headers || {};
 
-      if ($window.sessionStorage.accessToken) {
-      
-        config.headers.Authorization = $window.sessionStorage.accessToken;
-      }
-      else{
-   
-      	$location.path('/authFailed');
-      }
-      return config;
-    },
-    response: function (response) {
-    
-         if (response.status === 401) {
+			if ($window.sessionStorage.accessToken) {
+
+				config.headers.Authorization = $window.sessionStorage.accessToken;
+			}
+			else{
+
+				$location.path('/authFailed');
+			}
+			return config;
+		},
+		response: function (response) {
+
+			if (response.status === 401) {
         // handle the case where the user is not authenticated
-      }
-     
-      return response || $q.when(response);
     }
-  };
+
+    return response || $q.when(response);
+}
+};
 });
 
 snt.config(function ($httpProvider) {
-  $httpProvider.interceptors.push('authInterceptor');
+	$httpProvider.interceptors.push('authInterceptor');
 });
 
 
-    
+
 
 (function() {
 	var checkOutLandingController = function($rootScope,$location) {
 
-	if ($rootScope.isLateCheckoutAvailable === 'false') 
-		 $location.path('/checkOutNow')
-};
+		if ($rootScope.isLateCheckoutAvailable === 'false') 
+			$location.path('/checkOutNow')
+	};
 
 	var dependencies = [
-		'$rootScope','$location',
-		checkOutLandingController
+	'$rootScope','$location',
+	checkOutLandingController
 	];
 
 	snt.controller('checkOutLandingController', dependencies);

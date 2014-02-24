@@ -407,7 +407,6 @@ var PostChargeModel = function(callBack) {
 		var options = {
 			   requestParameters: data,
 			   successCallBack: that.fetchCompletedOfPostCharge,
-			   successCallBackParameters : {"clickedFrom": that.params.clickedFrom},
 			   failureCallBack: that.fetchFailedOfPostCharge,
 			   loader: 'BLOCKER'
 	    };
@@ -416,11 +415,11 @@ var PostChargeModel = function(callBack) {
 	};
 	
 	// success callback on post cahrges
-	this.fetchCompletedOfPostCharge = function(response,params){
+	this.fetchCompletedOfPostCharge = function(response){
 		 sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
 		 that.hide();
 		 if(that.origin == views.BILLCARD){
-		 	callBack(params['clickedFrom']); //To Reload page on bill card when coming from view bill button click
+		 	callBack(); //To Reload page on bill card 
 		 }
 		 // To update stay card balance amount
 		 var currentConfirmNumber = response.data.confirmation_number;

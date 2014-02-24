@@ -158,6 +158,10 @@ function setupFile(){
 
     if (fileInput.length) {
         fileInput.each(function(){
+			// Display custom label if provided
+			var customLabel = $(this).attr('label')			
+			if (customLabel) label = '<span class="input">' + customLabel + '</span>';
+			
             $(this)
                 .before(label)
                 .change(function(){
