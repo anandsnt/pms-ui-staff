@@ -66,22 +66,13 @@ var RoomAssignmentView = function(viewDom){
   //
   this.createViewScroll = function(){
 
-   // if (viewScroll) { destroyViewScroll(); }
-      setTimeout(function(){
-
-        if (that.myDom.find('#room-attributes').length) { createViewScroll('#room-attributes'); }
-        if (that.myDom.find('#room-upgrades').length) { createViewScroll('#room-upgrades'); }
-      }, 2000);
+    if (that.myDom.find('#room-attributes').length) { createVerticalScroll('#room-attributes'); }
+    if (that.myDom.find('#room-upgrades').length) { createVerticalScroll('#room-upgrades'); }
   };
 
   //Scroll view creation for the the room list
   this.createRoomListScroll = function(){
-    if (viewScroll) { destroyViewScroll(); }
-    
-    setTimeout(function(){
-      if (that.myDom.find('#rooms-available').length) { 
-      	 createViewScroll('#rooms-available'); }
-    }, 1500);
+    if (that.myDom.find('#rooms-available').length) { createVerticalScroll('#rooms-available'); }
   };
 
   //Fetches the non-filtered list of rooms.

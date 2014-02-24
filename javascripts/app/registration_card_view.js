@@ -149,12 +149,11 @@ var RegistrationCardView = function(viewDom) {
 					$scrollable = $('#' + $tab).find('.wrapper')
 					$itemsWidth = 0;
 
-				// Set wrapper width for horizontal scroll
-				that.myDom.find('.wrapper li').each(function() {
+				// Set wrapper width for horizontal scroll and calculate width
+				$("#" + $tab).find('.wrapper li').each(function() {
 				    $itemsWidth += $(this).outerWidth(true);
 				});
 				$($scrollable).css('width', $itemsWidth + 5);
-
 				createHorizontalScroll('#' + $tab + '-summary');
 			}
 		});
