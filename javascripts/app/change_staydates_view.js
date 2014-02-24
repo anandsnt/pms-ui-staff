@@ -16,7 +16,7 @@ var ChangeStayDatesView = function(viewDom){
   
   //change Stay dates dom click handler
   this.changeStayDatesClickHandler = function(){
-  	 sntapp.notification.hideMessage(that.myDom);
+     sntapp.notification.hideMessage(that.myDom);
   };
   this.executeLoadingAnimation = function(){
       changeView("nested-view", "", "view-nested-first", "view-nested-second", "move-from-right", false); 
@@ -30,7 +30,12 @@ var ChangeStayDatesView = function(viewDom){
       this.checkoutDateInCalender = "";
       that.focusDateInCalendar = "";
       that.reservationId = that.viewParams.reservation_id;
+      //that.fetchCalenderEvents();
+  };
+
+  this.pageshow = function(){
       that.fetchCalenderEvents();
+
   };
 
   this.reservationUpdateClickEvents = function(event){
@@ -45,12 +50,13 @@ var ChangeStayDatesView = function(viewDom){
   this.fetchCalenderEvents = function(){
       console.log("fetch calendar");
       //var url = '/ui/show?format=json&json_input=change_staydates/rooms_available.json';
-      var url = "/staff/change_stay_dates/" + that.reservationId + "/calendar.json"
+      var url = "/staff/change_stay_dates/" + that.reservationId + "/calendar.json";
+      sntapp.activityIndicator.showActivityIndicator('BLOCKER', 'loading-special');
       var webservice = new WebServiceInterface(); 
       var options = {
              successCallBack: that.calenderDatesFetchCompleted,
-             failureCallBack: that.failureCallBack,
-             loader: "BLOCKER"
+             failureCallBack: that.FetchCalendarFailed,
+             loader: "NONE"
       };
       webservice.getJSON(url, options);  
 
@@ -65,6 +71,7 @@ var ChangeStayDatesView = function(viewDom){
       that.checkoutDateInCalender = that.confirmedCheckoutDate = getDateObj(calenderEvents.data.dep_date);
       that.focusDateInCalendar = that.confirmedCheckinDate;
       that.updateCalender(that.confirmedCheckinDate, that.confirmedCheckoutDate, that.confirmedCheckinDate);
+      sntapp.activityIndicator.hideActivityIndicator('loading-special');
   };
 
   this.updateCalender = function(checkinDate, checkoutDate, focusDate){
@@ -423,7 +430,7 @@ var ChangeStayDatesView = function(viewDom){
       var options = {
              requestParameters: postData,
              successCallBack: that.confirmDatesSuccess,
-             failureCallBack: that.failureCallBack,
+             failureCallBack: that.confirmUpdatesFetchFailed,
              loader: "BLOCKER"
       };
       webservice.postJSON(url, options);  
@@ -519,7 +526,13 @@ var ChangeStayDatesView = function(viewDom){
       that.myDom.find('#edit-reservation .reservation-header').find('.data > .nights, .data > .date').css('opacity','.2');
   };
 
-  this.failureCallBack = function(errorMessage){
+  this.confirmUpdatesFetchFailed = function(errorMessage){
+      sntapp.activityIndicator.hideActivityIndicator();
+      sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
+  };
+
+  this.FetchCalendarFailed = function(errorMessage){
+      sntapp.activityIndicator.hideActivityIndicator('loading-special');
       sntapp.activityIndicator.hideActivityIndicator();
       sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
   };
