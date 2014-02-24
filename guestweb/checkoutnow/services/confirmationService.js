@@ -2,14 +2,16 @@
 	var confirmationService = function($rootScope,$q,baseWebService) {
 		var details = {};
 		
+		//fetch texts to be displayed
+		
 		var fetch = function() {
 			var deferred = $q.defer();
-            var url = '/assets/fauxDB/confirmationPageDetails.json';
-	
-            baseWebService.fetch(url).then(function(response) {
-                    this.details = response;
-                    deferred.resolve(this.details);
-                     });
+			var url = '/assets/fauxDB/confirmationPageDetails.json';
+			
+			baseWebService.fetch(url).then(function(response) {
+				this.details = response;
+				deferred.resolve(this.details);
+			});
 			
 
 			return deferred.promise;
@@ -22,9 +24,9 @@
 	};
 
 	var dependencies = [
-		'$rootScope',
-		'$q','baseWebService',
-		confirmationService
+	'$rootScope',
+	'$q','baseWebService',
+	confirmationService
 	];
 
 	snt.factory('confirmationService', dependencies);
