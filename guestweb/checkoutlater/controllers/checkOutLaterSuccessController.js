@@ -47,6 +47,11 @@
 		posting().then(function (response) {
 			$scope.posted = true;	
 			$scope.success = response.status ? true : false;
+		if($scope.success === true)
+			$rootScope.checkoutTime = $scope.lateCheckOut.time +' '+$scope.lateCheckOut.ap
+
+			console.log(lateCheckOut)
+		
 
 		});
 		
