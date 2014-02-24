@@ -56,8 +56,7 @@ var ZestCheckOutConfiguration = function(domRef){
   };
     // To handle success
   this.fetchCompletedOfSend = function(data) {
-  	console.log(data.message);
-  	 sntapp.notification.showSuccessMessage(data.message, that.myDom, '', true);
+  	 sntapp.notification.showSuccessMessage(data.data.message, that.myDom, '', true);
   };
 
 };
