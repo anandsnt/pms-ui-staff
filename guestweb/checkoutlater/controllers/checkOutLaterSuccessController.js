@@ -48,10 +48,8 @@
 			$scope.posted = true;	
 			$scope.success = response.status ? true : false;
 		if($scope.success === true)
-			$rootScope.checkoutTime = $scope.lateCheckOut.time +' '+$scope.lateCheckOut.ap
+			$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap
 
-			console.log(lateCheckOut)
-		
 
 		});
 		
