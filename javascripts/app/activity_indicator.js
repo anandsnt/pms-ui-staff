@@ -5,8 +5,6 @@ var ActivityIndicator = function() {
 	var that = this;
 	
 	this.showActivityIndicator = function(loaderType, loaderId) {
-		console.log("show");
-		console.log(loaderId);
 		var myLoaderId =loaderId;
 		//do nothing if none passed
 		if(loaderType.toUpperCase() == 'NONE'){
@@ -32,8 +30,6 @@ var ActivityIndicator = function() {
 	};
 	
 	this.hideActivityIndicator = function(loaderId) {
-		console.log("hide");
-		console.log(loaderId);
 		var myLoaderId =loaderId;
 		if(typeof loaderId === 'undefined' || $.trim(loaderId) === ''){
 			myLoaderId = that.defaultLoaderId;
