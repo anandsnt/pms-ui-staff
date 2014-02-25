@@ -2506,14 +2506,13 @@
 						padding: 20px;
 						text-align: center;
 						background: @white;
-						overflow: hidden; /* TEST! */
+						overflow: hidden;
 						#border-radius > .rounded(0);
 						.box-shadow();
 
-						/* TEST! */
 						img {
-						    margin-bottom: -175px;
-							width : 100%;
+							max-width: 100%;
+							.square(auto);
 						}
 					}
 				}
