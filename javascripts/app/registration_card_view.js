@@ -432,8 +432,8 @@ var RegistrationCardView = function(viewDom) {
 	// Complete checkout operation
 	this.completeCheckout = function(e) {
 		
+		that.findNextBillToReview();
 		if(!that.isAllBillsReviewed){
-			that.findNextBillToReview();
 			return;
 		}
 		
