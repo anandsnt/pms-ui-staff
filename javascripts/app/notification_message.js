@@ -44,8 +44,8 @@ var NotificationMessage = function() {
 
 		} else {
 			if (dom.find('#notification-message').length) {
-				// Refresh scroller
-   				refreshVerticalScroll('#edit-reservation-content');
+				// Refresh all scrollers
+   				refreshVerticalScroll();
 			}
 		}
 
