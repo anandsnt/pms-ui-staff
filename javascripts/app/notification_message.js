@@ -45,7 +45,7 @@ var NotificationMessage = function() {
 		} else {
 			if (dom.find('#notification-message').length) {
 				// Refresh all scrollers
-   				refreshVerticalScroll();
+   				refreshVerticalScroll('', '0');
 			}
 		}
 

@@ -62,6 +62,9 @@ var verticalScroll = new Array(),
             else {
                 for (var i = 0; i < verticalScroll.length; i++) {
                     verticalScroll[i].refresh();
+                    if ($startingPosition && typeof $startingPosition !== 'undefined') {
+                        verticalScroll[i].scrollTo(0, $startingPosition, 10);
+                    }
                 }
             }
         }, 300);
