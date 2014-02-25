@@ -2506,8 +2506,15 @@
 						padding: 20px;
 						text-align: center;
 						background: @white;
+						overflow: hidden; /* TEST! */
 						#border-radius > .rounded(0);
 						.box-shadow();
+
+						/* TEST! */
+						img {
+						    margin-bottom: -175px;
+							width : 100%;
+						}
 					}
 				}
 			}
@@ -4312,18 +4319,6 @@
 		}
 	}
 	
-// Added by QBurst - To fix design issue on view signature in bill card
-
-#bill-signature {
-  .signature-wrapper{
-    overflow : hidden;
-  }
-  img.signature-view {
-    margin-bottom: -175px;
-    width : 100%;
-  }
-}
-
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
