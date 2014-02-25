@@ -123,10 +123,15 @@ snt.config(function ($httpProvider) {
 
 (function() {
 	var checkOutLandingController = function($rootScope,$location) {
+		//if checkout is already done
 
-		if (!$rootScope.isLateCheckoutAvailable) 
+ 	if ($rootScope.isCheckedout) 
+		$location.path('/checkOutNowSuccess')
+
+	else if (!$rootScope.isLateCheckoutAvailable) 
 			$location.path('/checkOutNow')
 	};
+
 
 	var dependencies = [
 	'$rootScope','$location',

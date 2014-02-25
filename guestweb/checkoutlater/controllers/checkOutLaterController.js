@@ -1,7 +1,13 @@
 (function() {
 	var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location) {
 
-		if (!$rootScope.isLateCheckoutAvailable) 
+		//if chekout is already done
+		
+ 		if ($rootScope.isCheckedout) 
+		$location.path('/checkOutNowSuccess')
+
+	// if checkout later in unavailable
+		else if (!$rootScope.isLateCheckoutAvailable) 
 		 $location.path('/checkOutNow')
 	
 
