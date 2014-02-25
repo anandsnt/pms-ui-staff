@@ -32,22 +32,16 @@ var Search  = function(domRef){
     	that.myDomElement.find("#no-results").html("");
         if(type == "DUEIN"){
 	        searchTitle = "Checking In";
-	        var searchTitleHtml = that.myDomElement.find('#search-title').html();
-	    	var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
-	    	that.myDomElement.find('#search-title').html(newSearchTitleHtml);
       	}
         else if(type == "DUEOUT"){
 	        searchTitle = "Checking Out";
-	        var searchTitleHtml = that.myDomElement.find('#search-title').html();
-	    	var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
-	    	that.myDomElement.find('#search-title').html(newSearchTitleHtml);
         }
         else if(type == "INHOUSE"){
 	        searchTitle = "In House";
-	        var searchTitleHtml = that.myDomElement.find('#search-title').html();
-	    	var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
-	    	that.myDomElement.find('#search-title').html(newSearchTitleHtml);
         }
+        var searchTitleHtml = that.myDomElement.find('#search-title').html();
+    	var newSearchTitleHtml = searchTitleHtml.replace("Search", searchTitle);
+    	that.myDomElement.find('#search-title').html(newSearchTitleHtml);
         var search_url = "search.json?status=" + type;
         this.fetchSearchData(search_url, "",type);
     }
@@ -373,10 +367,12 @@ var Search  = function(domRef){
      };*/
 
      this.displayFilteredResults = function(searchResults, $query){
+     	
       if($query == ""){
         that.displaySearchResults(searchResults,$query);
         return false;
       }
+      sntapp.activityIndicator.showActivityIndicator('blocker', 'loader-html-appending');
       $('#search-results').html("");
       try
       {
@@ -400,6 +396,7 @@ var Search  = function(domRef){
         $.each(items, function(i,value){
                 $('#search-results').removeAttr('style').append(value).highlight($query);
               });
+       sntapp.activityIndicator.hideActivityIndicator('loader-html-appending');
 
         // Refresh scroll
         refreshVerticalScroll('#search');
@@ -414,10 +411,11 @@ var Search  = function(domRef){
       {
         $('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number</span></div></li>');
       }
-
+		
     };
 
     this.displaySearchResults = function(response, $query){
+    	sntapp.activityIndicator.showActivityIndicator('blocker', 'loader-html-appending');
       try
         {
             var items=[];
@@ -443,6 +441,7 @@ var Search  = function(domRef){
         {
           $('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number</span></div></li>');
         };
+        sntapp.activityIndicator.hideActivityIndicator('loader-html-appending');
     };
 
     this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip, lateCheckoutTime, isLateCheckoutOn){
