@@ -53,11 +53,9 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	if ($window.sessionStorage.token)
 		delete $window.sessionStorage.token
 
-
 	//store basic details as rootscope variables
 
 	$rootScope.reservationID  = $attrs.reservationId
-
 	$rootScope.hotelName     = $attrs.hotelName
 	$rootScope.userName      = $attrs.userName
 	$rootScope.checkoutDate  = $attrs.checkoutDate
@@ -65,19 +63,27 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.userCity   	 = $attrs.city
 	$rootScope.userState     = $attrs.state
 	$rootScope.roomNo        = $attrs.roomNo
-	$rootScope.isLateCheckoutAvailable  = $attrs.isLateCheckoutAvailable
-	$rootScope.emailAddress      = $attrs.emailAddress
+	$rootScope.isLateCheckoutAvailable  = ($attrs.isLateCheckoutAvailable  === 'true') ? true : false;
+	$rootScope.emailAddress    = $attrs.emailAddress
 
+	$rootScope.hotelPhone      = $attrs.hotelPhone
+	$rootScope.isCheckedout   = ($attrs.isCheckedout === 'true') ? true : false;
+
+
+	//if chekout is already done
+ 	if ($rootScope.isCheckedout) 
+		$location.path('/checkOutNowSuccess')
 
 	//if late chekout is unavailable navigate to checkout now page
 
-	if ($rootScope.isLateCheckoutAvailable === 'false') 
+	else if (!$rootScope.isLateCheckoutAvailable) 
 		$location.path('/checkOutNow')
 
 
 	if($attrs.accessToken != "undefined")
 		$window.sessionStorage.accessToken = $attrs.accessToken	
 
+	console.log($attrs)
 
 }]);
 
@@ -118,7 +124,7 @@ snt.config(function ($httpProvider) {
 (function() {
 	var checkOutLandingController = function($rootScope,$location) {
 
-		if ($rootScope.isLateCheckoutAvailable === 'false') 
+		if (!$rootScope.isLateCheckoutAvailable) 
 			$location.path('/checkOutNow')
 	};
 
