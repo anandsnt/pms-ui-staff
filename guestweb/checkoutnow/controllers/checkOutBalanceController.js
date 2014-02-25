@@ -1,5 +1,11 @@
 (function() {
-	var checkOutBalanceController = function($scope, BillService) {
+	var checkOutBalanceController = function($scope, BillService,$rootScope,$location) {
+
+		//if checkout is already done
+		
+ 		if ($rootScope.isCheckedout) 
+		$location.path('/checkOutNowSuccess')
+
 		$scope.showBill = false;
 
 		// fecth text details to display
@@ -22,7 +28,7 @@
 
 	var dependencies = [
 		'$scope',
-		'BillService',
+		'BillService','$rootScope','$location',
 		checkOutBalanceController
 	];
 
