@@ -9,18 +9,19 @@
 				</div>
 			</div>
 			<div class="row">
-					<div ng-hide="posted || isCheckoutCompleted" class="headtext centeralign checkout-now-status" >
-				Posting data...
+					<div ng-hide="posted || isCheckoutCompleted" class="checkout-status centeralign checkout-now-status" >
+				Your request is being processed, this may take a few seconds..... please wait!
 			</div>
 			
-			<div ng-show="posted && !success && !isCheckoutCompleted" class="headtext centeralign checkout-now-status">
-				Something went wrong...
+			<div ng-show="posted && !success && !isCheckoutCompleted" class="checkout-status centeralign checkout-now-status">
+				Something went wrong, complete your check out by going to or call our front desk. You can also call the hotel at {{hotelPhone}}.
 			</div>
 			
-			<div ng-show="posted && success && isCheckoutCompleted" class="leadtext centeralign checkout-now-status">
-					Check out is complete. A email with your bill details has been sent to {{emailAddress}}. Thank you for staying with us!
+			<div ng-show="posted && success && isCheckoutCompleted" class="checkout-status centeralign checkout-now-status">
+					Your check out is complete. An email with your bill details has been sent to {{emailAddress}}. Thank you for staying with us!
+					
 			</div>
-			<div ng-show="isCheckoutCompleted && !success" class="leadtext centeralign checkout-now-status">
+			<div ng-show="isCheckoutCompleted && !success" class="checkout-status centeralign checkout-now-status">
 					It appears you have already completed your check out. For further enquiries please contact the hotel at {{hotelPhone}}. Thank you!
 			</div>
 			</div>
