@@ -236,7 +236,7 @@ var RoomAssignmentView = function(viewDom){
     
   };
 
-  this.displayRoomsList = function(filteredRoomList){
+  /*this.displayRoomsList = function(filteredRoomList){
     $('#rooms-available ul').html("");
     if(filteredRoomList.length > 0)  {
     	var appendHTML = '<ul class="wrapper"></ul>';
@@ -283,6 +283,74 @@ var RoomAssignmentView = function(viewDom){
     	that.myDom.find("#rooms-available ul").remove();              
     	that.myDom.find("#rooms-available").append(appendHTML);   
     	
+    }
+    
+    that.myDom.find('div.rooms-listing ul li a').on('click',that.updateRoomAssignment);
+  };*/
+
+  this.displayRoomsList = function(filteredRoomList){
+
+    // Empty the wrapper
+    $('#rooms-available ul').empty();
+
+    // Has rooms
+    if(filteredRoomList.length > 0)  {
+      var appendHTML = '<ul class="wrapper"></ul>';
+
+      // Remove no-content and change classes
+      that.myDom.find("#rooms-available.no-content .info").remove();
+      that.myDom.find("#rooms-available .iScrollVerticalScrollbar").show();
+      that.myDom.find("#rooms-available").removeClass("no-content").addClass("scrollable");
+
+      // Append only if it doesn't exist already
+      if (!that.myDom.find("#rooms-available ul.wrapper").length) {
+        that.myDom.find("#rooms-available").append(appendHTML);
+      }
+      for (var i=0; i<filteredRoomList.length; i++){
+          var room_status_html ="" ;
+          
+          // Display FO status (VACANT, DUEOUT, etc) only when room-status = NOT-READY
+          // Always show color coding ( Red / Green - for Room status)
+          if(filteredRoomList[i].room_status == "READY" && filteredRoomList[i].fo_status == "VACANT"){
+            room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
+        
+            if(filteredRoomList[i].is_preassigned) {
+              room_status_html += "<span class='room-preassignment'>"+filteredRoomList[i].last_name + " " + filteredRoomList[i].guarantee_type+"</span>";
+            } 
+          }
+          else{
+              room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
+              "<span class='room-status not-ready' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].fo_status+" </span>";   
+          }
+  
+          //Append the HTML to the UI.
+          if(room_status_html != ""){
+            var output = "<li><a id = 'room-list-item'"+
+              "class='button white submit-value hover-hand' data-value='' >"+room_status_html+"</a></li>";
+            that.myDom.find('#rooms-available ul.wrapper').append(output);    
+          }  
+      }
+      that.createRoomListScroll();
+    } 
+
+    // No rooms
+    else {
+      var appendHTML = '<div class="info">' +
+        '<span class="icon-no-content icon-room"></span>'+
+        '<strong class="h1">Unfortunately there are no rooms ready yet.</strong>'+
+        '<span class="h2">Try changing some of the filter criteria</span>' +
+        '</div>';
+
+      // Empty wrapper and change classes
+      that.myDom.find("#rooms-available ul.wrapper").remove();
+      that.myDom.find("#rooms-available .iScrollVerticalScrollbar").hide();
+      that.myDom.find("#rooms-available").removeClass("scrollable").addClass("no-content");
+
+      // Append only if it doesn't exist already
+      if (!that.myDom.find("#rooms-available .info").length) {
+        that.myDom.find("#rooms-available").append(appendHTML);
+      }
+      
     }
     
     that.myDom.find('div.rooms-listing ul li a').on('click',that.updateRoomAssignment);
