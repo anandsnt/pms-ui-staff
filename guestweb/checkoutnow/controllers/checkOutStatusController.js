@@ -8,8 +8,10 @@
 	// data posted status
 	
 	$scope.posted = false;
-	$scope.isCheckoutCompleted= ($rootScope.isCheckedout === "true") ? true :false;
+	$scope.isCheckoutCompleted= $rootScope.isCheckedout;
 
+	// prevent chekout operation if user has already checked out
+	
 	if(!$scope.isCheckoutCompleted){
 	
 	var url = '/guest_web/home/checkout_guest.json';
@@ -21,8 +23,10 @@
     	
     	$scope.posted = true;	
     	$scope.success = (response.status != "failure") ? true : false;
+    	
     	if($scope.success)
-    		$rootScope.isCheckedout = $scope.isCheckoutCompleted = 'true';
+    		$rootScope.isCheckedout = $scope.isCheckoutCompleted = true;
+    	
     	$scope.errorMessage = response.errors[0];
     });
     
