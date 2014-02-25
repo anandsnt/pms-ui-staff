@@ -53,11 +53,9 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	if ($window.sessionStorage.token)
 		delete $window.sessionStorage.token
 
-
 	//store basic details as rootscope variables
 
 	$rootScope.reservationID  = $attrs.reservationId
-
 	$rootScope.hotelName     = $attrs.hotelName
 	$rootScope.userName      = $attrs.userName
 	$rootScope.checkoutDate  = $attrs.checkoutDate
@@ -66,12 +64,19 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.userState     = $attrs.state
 	$rootScope.roomNo        = $attrs.roomNo
 	$rootScope.isLateCheckoutAvailable  = $attrs.isLateCheckoutAvailable
-	$rootScope.emailAddress      = $attrs.emailAddress
+	$rootScope.emailAddress    = $attrs.emailAddress
 
+	$rootScope.hotelPhone      = $attrs.hotelPhone
+	$rootScope.isCheckedout   = $attrs.isCheckedout
+
+
+	//if chekout is already done
+ 	if ($rootScope.isCheckedout === 'true') 
+		$location.path('/checkOutNowSuccess')
 
 	//if late chekout is unavailable navigate to checkout now page
 
-	if ($rootScope.isLateCheckoutAvailable === 'false') 
+	else if ($rootScope.isLateCheckoutAvailable === 'false') 
 		$location.path('/checkOutNow')
 
 
