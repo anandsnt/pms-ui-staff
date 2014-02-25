@@ -1,23 +1,3 @@
-// Load inline form
-function loadInlineForm($target, $item){
-	$.ajax({
-        type:       'GET',
-        url:        $target,
-        dataType:   'html',
-        //timeout:    5000,
-        success: function(data){
-            $('.data-holder').html(data);
-        },
-        error: function(jqxhr, status, error){
-            //checking whether a user is logged in
-            if (jqxhr.status == "401") { sntapp.logout(); return;}
-            alert("Error!");
-        }
-    }).done(function(){  
-        $('.edit-data').fadeIn(300);
-    });
-}
-
 // Set sortable placeholder
 function refreshSortable(){
 	$('.sortable:visible').each(function(){
@@ -48,125 +28,153 @@ function setDatepicker($minDate, $maxDate, $yearRangeStart, $yearRangeStop){
     });
 }
 
+
+
 var setUpAdmin = function(viewDom, delegate) {
 // $(function($){ 
 	this.delegate = delegate;
 	var that = this;
+	var limit = 8;
+	var sortableIn = 0;
+	var dropOut = 0;
 
-	// Light page load animation
-		$('#content').css('opacity','0').delay(200).animate({opacity:1},400);
-
-	// Keep app in fullscreen mode
-	   var isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
-	   
-	   	if (isTablet) {
-			$('a:not(.nav-toggle):not(.edit-data-inline):not(.add-data-inline)').click(function(e){
-				e.preventDefault();
-			});
-		}
-	
-	// Change hotel
-		$(document).on('click', '#change-hotel h1', function(e){
-			$('#change-hotel').toggleClass('open');
-		});
-
-	// Quick menu
-		var sortableIn = 0;
-		var dropOut = 0;
-		var limit = 8;
-
+	var enableMenuIconDragging = function() {
 		$('.icon-admin-menu:not(.dropped):not(.admin-menu-group):not(.disabled)').draggable({
 			revert: 'invalid',
 			connectToSortable: '#quick-menu',
-	        helper: 'clone',
-	        start: function( event, ui ) {
-	        	$('#quick-menu').addClass('dragging');
-	        },
-	        stop: function( event, ui ) {
-	        	$('#quick-menu').removeClass('dragging');	        		
-	        }
-		});
-
-		$('#quick-menu').droppable({
-			drop: function( event, ui ) {
-				dropOut = 1;
-				$(this).removeClass('dragging').addClass('has-items');
-			}
-		}).sortable({
-			receive: function (event, ui) {
-				sortableIn = 1;
-	        	$(ui.item).addClass('moved').draggable('option', 'disabled', true);	        	
+	    	helper: 'clone',
+	    	start: function( event, ui ) {
+	    		dropOut = 0; //Initialise - if it is a drop, will be set to 1 in drop function
+	    		$('#quick-menu').addClass('dragging');
 	    	},
-	        over: function(event, ui){
-				sortableIn = 1;
-			},
-			out: function(event, ui){						
-				sortableIn = 0;
-				if(dropOut == 0){					
-					var bookMarkId = $(ui.item.context).attr("data-id");
-	        		that.delegate.bookMarkRemoved(bookMarkId);	        				
-	        		$("#bookmark_"+bookMarkId).hide();
-	        		$("#components_"+bookMarkId).removeClass('moved');
-				}
-				
-			},		
-			beforeStop: function(event, ui){
-				var bookMarkId = $(ui.item.context).attr("data-id")
-					bookMarkWidth = parseInt(ui.item.outerWidth()),
-					$items = $(this).children('.ui-draggable').length-1; // -1 because at this point item that's dropped out is still considered part of navigation
 
-				if (!ui.item.hasClass('in-quick-menu'))
+	    	stop: function( event, ui ) {
+	    		$('#quick-menu').removeClass('dragging');	        		
+	    	}
+		});
+	};
+
+	//Disable Dragging. Note: Quick menu items are not disabled with this.
+	var disableMenuIconDragging = function() {
+		$('.icon-admin-menu:not(.dropped):not(.draggable-disabled):not(.in-quick-menu)').draggable({
+			revert: true,
+			connectToSortable: null,
+			helper: null
+		});
+	};
+
+
+
+	// Light page load animation
+	$('#content').css('opacity','0').delay(200).animate({opacity:1},400);
+
+	// Keep app in fullscreen mode
+   	var isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
+   	if (isTablet) {
+		$('a:not(.nav-toggle):not(.edit-data-inline):not(.add-data-inline)').click(function(e){
+			e.preventDefault();
+		});
+	}
+	
+	// Change hotel
+	$(document).on('click', '#change-hotel h1', function(e){
+		$('#change-hotel').toggleClass('open');
+	});
+	
+	//Enable Dragging feature.
+	enableMenuIconDragging();
+	var $items = $('#quick-menu').children('.ui-draggable:visible').length;
+	if($items >= limit) {
+		disableMenuIconDragging();
+	}
+
+
+	//Make Quick Menu a droppable.
+	$('#quick-menu').droppable({
+		drop: function( event, ui ) {
+			dropOut = 1;
+			$(this).removeClass('dragging').addClass('has-items');
+		}
+	});
+
+	// Handle Quick Menu Sortable events.
+	$('#quick-menu').sortable({
+		receive: function (event, ui) {
+			sortableIn = 1;
+        	$(ui.item).addClass('moved').draggable('option', 'disabled', true);	        	
+    	},
+
+        over: function(event, ui){
+			sortableIn = 1;
+		},
+
+		out: function(event, ui){						
+			sortableIn = 0;
+			if(dropOut == 0){					
+				var bookMarkId = $(ui.item.context).attr("data-id");
+        		that.delegate.bookMarkRemoved(bookMarkId);	        				
+        		$("#bookmark_"+bookMarkId).hide();
+        		$("#components_"+bookMarkId).removeClass('moved').draggable('option', 'disabled', false);
+        		//after removing we need to enable dragging
+        		enableMenuIconDragging();
+			}
+		},
+
+		beforeStop: function(event, ui){
+			var bookMarkId = $(ui.item.context).attr("data-id");
+			var bookMarkWidth = parseInt(ui.item.outerWidth());
+			var $items = $(this).children('.ui-draggable:visible').length -1; // To avoid place holder 
+
+			if (!ui.item.hasClass('in-quick-menu'))
+			{
+				$(ui.item).css('width', bookMarkWidth + 10).addClass('in-quick-menu');
+			}
+
+			// TODO - pass bookMarkWidth as well so that in _quick_menu.html.haml 
+			// you can add "style" => "width:" + menu_components['width']
+
+			if(sortableIn ==1){
+        		that.delegate.bookMarkAdded(bookMarkId);
+				if($items >= limit)
 				{
-					$(ui.item).css('width', bookMarkWidth + 10).addClass('in-quick-menu');
+					//Disable dragging - QuickMenu is full
+					disableMenuIconDragging();
+        		}
+    		}
+			// Remove from quick navigation
+			else {
+
+				var $item = $(ui.item).text();
+				var bookMarkId = $(ui.item.context).attr("data-id");
+        		that.delegate.bookMarkRemoved(bookMarkId);
+        		//we need to convert it to it's old state
+				$("#bookmark_"+bookMarkId).hide();
+    			$("#components_"+bookMarkId).removeClass('moved').draggable('option', 'disabled', false);	        		
+
+       
+				$(ui.item).remove();
+
+
+				// When the last empty clone is left
+				if ($items == 1) {
+					$(this).removeClass('has-items');
 				}
 
-				// TODO - pass bookMarkWidth as well so that in _quick_menu.html.haml 
-				// you can add "style" => "width:" + menu_components['width']
-	        	that.delegate.bookMarkAdded(bookMarkId);
-
-				// Remove from quick navigation
-				if (sortableIn == 0){
-					var $item = $(ui.item).text();
-					var bookMarkId = $(ui.item.context).attr("data-id");
-	        		that.delegate.bookMarkRemoved(bookMarkId);
-					$(ui.item).remove();
-					$("#components_"+bookMarkId).removeClass('moved');
-					$('.icon-admin-menu:contains("' + $item + '")').draggable('option', 'disabled', false).removeClass('moved');
-
-					// When the last empty clone is left
-					if ($(this).children().length == 1) {
-						$(this).removeClass('has-items');
-					}
-
-					// If space is available, enable addition of new items (-1 because at this point item that's dropped out is still considered part of navigation)
-					if(($items-1) < limit)
-					{
-						$('.icon-admin-menu:not(.dropped):not(.draggable-disabled):not(.in-quick-menu)').draggable({
-							revert: 'invalid',
-							connectToSortable: '#quick-menu',
-					        helper: 'clone',
-					        start: function( event, ui ) {
-					        	$('#quick-menu').addClass('dragging');
-					        },
-					        stop: function( event, ui ) {
-					        	$('#quick-menu').removeClass('dragging');
-					        }
-						});
-					}
-				}
-				// Adding to quick navigation is disabled after limit is met
-				else {
-					if($items == limit)
-					{
-						$('.icon-admin-menu:not(.dropped):not(.draggable-disabled):not(.in-quick-menu)').draggable({
-							revert: true,
-							connectToSortable: null,
-							helper: null
-						});
-					}
+				// If space is available, enable addition of new items (-1 because at this point item that's dropped out is still considered part of navigation)
+				if(($items-1) < limit)
+				{
+					enableMenuIconDragging();
 				}
 			}
+			
+				
+				
+			}
 		});
+
+
+
+
 
 	// Dashboard tabs
 		$('.tabs').tabs({
@@ -273,4 +281,6 @@ var setUpAdmin = function(viewDom, delegate) {
 				$(this).removeClass('active');			
 			}
 		});
+
+	
 };
