@@ -67,11 +67,11 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.emailAddress    = $attrs.emailAddress
 
 	$rootScope.hotelPhone      = $attrs.hotelPhone
-	$rootScope.isCheckedout   = $attrs.isCheckedout
+	$rootScope.isCheckedout   = ($attrs.isCheckedout === 'true') ? true : false;
 
 
 	//if chekout is already done
- 	if ($rootScope.isCheckedout === 'true') 
+ 	if ($rootScope.isCheckedout) 
 		$location.path('/checkOutNowSuccess')
 
 	//if late chekout is unavailable navigate to checkout now page
