@@ -83,7 +83,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	if($attrs.accessToken != "undefined")
 		$window.sessionStorage.accessToken = $attrs.accessToken	
 
-
+	console.log($attrs)
 
 }]);
 

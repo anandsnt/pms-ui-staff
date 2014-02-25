@@ -11,16 +11,16 @@
 			<!-- top section starts here-->
 			
 			<div class="row check-inout-wrapper">
-				<div ng-show="returnHome" class="col-md-12 headtext centeralign">
-					Posting data...
+				<div ng-show="returnHome" class="col-md-12 leadtext centeralign">
+					Your request is being processed, this may take a few seconds..... please wait!
 				</div>
 
-				<div ng-hide="!returnHome && posted" class="col-md-12 headtext centeralign">
-					Posting data...
+				<div ng-hide="!returnHome && posted" class="col-md-12 leadtext centeralign">
+					Your request is being processed, this may take a few seconds..... please wait!
 				</div>
 
-				<div ng-show="!returnHome && posted && !success" class="col-md-12 headtext centeralign">
-					Something went wrong...
+				<div ng-show="!returnHome && posted && !success" class="col-md-12 leadtext centeralign">
+						Something went wrong, complete your check out by going to or call our front desk. You can also call the hotel at {{hotelPhone}}.
 				</div>
 
 				<div ng-show="!returnHome && posted && success" class="col-md-12 headtext centeralign">
