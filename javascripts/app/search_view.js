@@ -127,7 +127,7 @@ var Search  = function(domRef){
 
   this.delegateEvents = function(){  
     that.myDomElement.find('#query').on('focus', that.callCapitalize);
-    that.myDomElement.find('#query').on('keyup', that.queryEntered);
+    that.myDomElement.find('#query').on('keyup paste', that.queryEntered);
     that.myDomElement.find('#search-form').on('submit', that.submitSearchForm);
     that.myDomElement.find('#clear-query').on('click', that.clearResults);
     that.myDomElement.find('#late-checkout-alert').on('click', that.latecheckoutSelected);
