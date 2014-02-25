@@ -1,7 +1,7 @@
 (function() {
 	var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location) {
 
-		if ($rootScope.isLateCheckoutAvailable === 'false') 
+		if (!$rootScope.isLateCheckoutAvailable) 
 		 $location.path('/checkOutNow')
 	
 
