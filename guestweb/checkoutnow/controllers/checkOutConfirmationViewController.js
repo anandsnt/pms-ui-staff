@@ -8,8 +8,8 @@
 			$scope.details = details;
 			
 		});
-		
-		$scope.footerMessage1 = $rootScope.isLateCheckoutAvailable ? 'Late check-out is not available.' :'' 
+
+		$scope.footerMessage1 = !$rootScope.isLateCheckoutAvailable ? 'Late check-out is not available.' :'' 
 
 	};
 

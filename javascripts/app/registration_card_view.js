@@ -52,7 +52,9 @@ var RegistrationCardView = function(viewDom) {
 	};
 	
 	this.executeLoadingAnimation = function() {
-		sntapp.activityIndicator.showActivityIndicator("blocker");
+		if (!($('#loading').length)){
+			sntapp.activityIndicator.showActivityIndicator("blocker");
+		}
 		if (this.viewParams === undefined)
 			return;
 		if (this.viewParams["showanimation"] === false)
@@ -409,8 +411,8 @@ var RegistrationCardView = function(viewDom) {
 	// Complete checkout operation
 	this.completeCheckout = function(e) {
 		
+		that.findNextBillToReview();
 		if(!that.isAllBillsReviewed){
-			that.findNextBillToReview();
 			return;
 		}
 		
