@@ -43,16 +43,9 @@ var NotificationMessage = function() {
 			};
 
 		} else {
-			// console.log(dom.attr("id"));
 			if (dom.find('#notification-message').length) {
-				var element = dom.find('#notification-message')[0];
-				// console.log(viewScroll.scrollToElement);
-				var time = 2000;
-				// nasty bug in iPad - viewScroll undefined
-				for (var i = 0; i < viewScroll.length; i++) {
-		            viewScroll[i].scrollToElement(element, time);
-		        }
-				//viewScroll && viewScroll[i].scrollToElement(element, time);
+				// Refresh all scrollers
+   				refreshVerticalScroll('', '0');
 			}
 		}
 

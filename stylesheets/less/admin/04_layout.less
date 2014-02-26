@@ -454,7 +454,8 @@ body { overflow: hidden; }
 
             &.import,
             &.bulk-edit,
-            &.link {
+            &.link,
+            &.email {
                 color: @blue; 
                 .pull-left;
 
@@ -528,6 +529,12 @@ body { overflow: hidden; }
         th,
         td {
             padding: 0 20px;
+
+            > .checkbox,
+            > .radio {
+                margin: -10px 0 0 -5px;
+                padding: 0;
+            }
 
             &.activate,
             &.delete { text-align: center; }
@@ -634,13 +641,7 @@ body { overflow: hidden; }
                         .data-holder {
                             margin-top: -60px;
                             
-                            .form { 
-                                padding: 0 20px; 
-
-                                .entry {
-                                    .boxes { padding: 10px 20px; }
-                                }
-                            }
+                            .form {  padding: 0 20px; }
 
                             &.move50 { margin-top: -50px; }
                             &.move40 { margin-top: -40px; }

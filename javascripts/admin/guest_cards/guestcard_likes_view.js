@@ -245,7 +245,7 @@ var GuestCardLikesView = function(domRef){
 		}
 		var options = new Array();
 		var optionDiv = "";
-		if(selectedType == "selectbox")
+		if(selectedType == "dropdown")
 		{
 			optionDiv = "entry-select";
 		} else if(selectedType == "checkbox"){
@@ -253,7 +253,7 @@ var GuestCardLikesView = function(domRef){
 		}else if(selectedType == "radio"){
 			optionDiv = "entry-radio";
 		}
-		if(selectedType == "selectbox" || selectedType == "checkbox" || selectedType == "radio") {
+		if(selectedType == "dropdown" || selectedType == "checkbox" || selectedType == "radio") {
 			$("#"+optionDiv+" input[name=radio-option]").each(function(){
 			   id = $(this).attr("data-id");
 			   name = $(this).val();
@@ -296,7 +296,7 @@ var GuestCardLikesView = function(domRef){
 		}
 		var options = new Array();
 		var optionDiv = "";
-		if(selectedType == "selectbox")
+		if(selectedType == "dropdown")
 		{
 			optionDiv = "entry-select";
 		} else if(selectedType == "checkbox"){
@@ -304,7 +304,7 @@ var GuestCardLikesView = function(domRef){
 		}else if(selectedType == "radio"){
 			optionDiv = "entry-radio";
 		}
-		if(selectedType == "selectbox" || selectedType == "checkbox" || selectedType == "radio") {
+		if(selectedType == "dropdown" || selectedType == "checkbox" || selectedType == "radio") {
 			that.myDom.find("#"+optionDiv+" input[name=radio-option]").each(function(){
 			   id = $(this).attr("data-id");
 			   name = $(this).val();

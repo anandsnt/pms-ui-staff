@@ -2,8 +2,8 @@
 // searchResults.guests = [];
 
 // Capitalize first letter
-jQuery.fn.capitalize = function() {
-    $(this[0]).keyup(function(event) {
+$.fn.capitalize = function() {
+    $(this[0]).bind('keyup paste', function(event) {
         var box = event.target;
         var txt = $(this).val();
         var start = box.selectionStart;
