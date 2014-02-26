@@ -5,7 +5,7 @@ var Search  = function(domRef){
 
     
   this.pageinit = function(){
-	console.log("Search page init")
+	console.log("Search page init results")
     that.currentQuery = "";
     that.fetchResults = [];
     that.preloadedResults = [];
@@ -367,14 +367,12 @@ var Search  = function(domRef){
      };*/
 
      this.displayFilteredResults = function(searchResults, $query){
-     	 console.log("Display results")
       if($query == ""){
-      	console.log("Display results == query null")
         that.displaySearchResults(searchResults,$query);
         return false;
       }
       sntapp.activityIndicator.showActivityIndicator('blocker', 'loader-html-appending');
-      console.log("Reached here")
+      console.log("displayFilteredResults - show: " + $("#loader-html-appending").length)
       $('#search-results').html("");
       try
       {
@@ -399,7 +397,7 @@ var Search  = function(domRef){
                 $('#search-results').removeAttr('style').append(value).highlight($query);
               });
        sntapp.activityIndicator.hideActivityIndicator('loader-html-appending');
-
+		console.log("displayFilteredResults - hide: " + $("#loader-html-appending").length)
         // Refresh scroll
         refreshVerticalScroll('#search');
       }
@@ -418,6 +416,7 @@ var Search  = function(domRef){
 
     this.displaySearchResults = function(response, $query){
     	sntapp.activityIndicator.showActivityIndicator('blocker', 'loader-html-appending');
+    	console.log("displaySearchResults - show: " +$("#loader-html-appending").length);
       try
         {
             var items=[];
@@ -444,6 +443,7 @@ var Search  = function(domRef){
           $('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number</span></div></li>');
         };
         sntapp.activityIndicator.hideActivityIndicator('loader-html-appending');
+        console.log("displaySearchResults - hide: " + $("#loader-html-appending").length);
     };
 
     this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip, lateCheckoutTime, isLateCheckoutOn){
