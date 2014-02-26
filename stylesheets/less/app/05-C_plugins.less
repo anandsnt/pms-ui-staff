@@ -72,13 +72,6 @@
 		.transform3d(-50%, -50%, 0);
 		#border-radius > .rounded(3px);
 
-		#modal-close,
-		.modal-content {
-			.transformScale(0.7);
-			.opacity(0);
-			.transition;
-		}
-
 		#modal-close {
 			position: absolute;
 			top: -20px;
@@ -108,6 +101,9 @@
 			z-index: 9990;
 			.background(@white);
 			#border-radius > .rounded(3px);
+			.transformScale(0.7);
+			.opacity(0);
+			.transition;
 
 			.message,
 			.text {
@@ -964,8 +960,7 @@
 
 		&.modal-show { 
 			visibility: visible; 
-
-			#modal-close, 
+ 
 			.modal-content {
 				.transformScale(1);
 				.opacity(100);
