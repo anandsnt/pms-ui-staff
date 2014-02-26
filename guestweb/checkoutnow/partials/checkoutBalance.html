@@ -95,12 +95,14 @@
 		</div>
 
 						<!-- set up the modal to start hidden and fade in and out -->
-			<div id="myModal" class="modal fade" ng-hide="optionsAvailable">
+			<div id="myModal" class="modal">
 				<div class="modal-dialog">
 					<div class="modal-content">
+						 <div class="modal-header "> <button type="button" class="close" data-dismiss="modal">&times;</button></div>
 						<!-- dialog body -->
 						<div class="modal-body">
-							<div  class="col-md-12 alert-text centeralign" ng-hide="optionsAvailable">
+							
+							<div>
 								Something went wrong, complete your check out by going to or call our front desk. You can also call the hotel at {{hotelPhone}}.
 							</div>
 						</div>
