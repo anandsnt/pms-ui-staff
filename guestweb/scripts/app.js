@@ -119,6 +119,14 @@ snt.config(function ($httpProvider) {
 });
 
 
+snt.run(function($rootScope,$location,$http){
+    $rootScope.$on("$locationChangeStart", function(event, next, current) {
+    
+    if(next === current)
+    	$location.path('/')
+ 
+});
+});
 
 
 (function() {
