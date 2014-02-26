@@ -1,10 +1,16 @@
 (function() {
-	var checkOutBalanceController = function($scope, BillService,$rootScope,$location) {
+	var checkOutBalanceController = function($scope, BillService,$rootScope,$location,$route) {
 
 		//if checkout is already done
 		
  		if ($rootScope.isCheckedout) 
 		$location.path('/checkOutNowSuccess')
+
+		$('#myModal').modal('hide')
+
+		$scope.reloadPage=  function (){
+			 $route.reload();
+		}
 
 		$scope.showBill = false;
 
@@ -19,7 +25,14 @@
 		BillService.fetchBillData().then(function(billData) {
 			$scope.billData = billData.data.bill_details;
 
-		
+
+		if($scope.billData){
+			$scope.optionsAvailable = true;
+			$('#myModal').modal('hide')
+		}
+		else
+			$('#myModal').modal('show')
+			
 		});
 
 
@@ -28,7 +41,7 @@
 
 	var dependencies = [
 		'$scope',
-		'BillService','$rootScope','$location',
+		'BillService','$rootScope','$location','$route',
 		checkOutBalanceController
 	];
 

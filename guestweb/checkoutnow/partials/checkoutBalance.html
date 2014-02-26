@@ -9,7 +9,7 @@
 			</div>
 			<!-- top section starts here-->
 
-			<div class="row check-inout-wrapper">
+			<div class="row check-inout-wrapper" ng-show="optionsAvailable">
 				<div class="col-md-6 centeralign headtext nopadding-onblock">
 					{{ billDisplayDetails.checkoutText }}
 					<p class="leadtext">
@@ -88,11 +88,28 @@
 			<!-- checkoubtn section ends here-->
 
 			<div class="row">
-				<p class="foot-text  balance-footer centeralign">
+				<p class="foot-text  balance-footer centeralign" ng-show="optionsAvailable">
 					<em> The credit card on record will be charged</em>
 				</p>
 			</div>
 		</div>
+
+						<!-- set up the modal to start hidden and fade in and out -->
+			<div id="myModal" class="modal fade" ng-hide="optionsAvailable">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<!-- dialog body -->
+						<div class="modal-body">
+							<div  class="col-md-12 alert-text centeralign" ng-hide="optionsAvailable">
+								Something went wrong, complete your check out by going to or call our front desk. You can also call the hotel at {{hotelPhone}}.
+							</div>
+						</div>
+						<!-- dialog buttons -->
+						<div class="modal-footer"><button type="button" ng-click="reloadPage()" class="btn btn-primary">retry</button></div>
+					</div>
+				</div>
+			</div>
+
 	</div>
 </div>
 

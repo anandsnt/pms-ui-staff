@@ -29,6 +29,8 @@
 		// if no charges recorded (user tried to reload on success page)
 		// show a message and give him option to go home
 		if (!charges.length) {
+
+			$location.path('/')
 			$scope.returnHome = true;
 			return;
 		};
