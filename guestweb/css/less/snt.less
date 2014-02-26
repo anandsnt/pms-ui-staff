@@ -176,15 +176,15 @@ body {
   }
 }
 
-.lightcontent {
+.lightcontent ,.checkout-status{
   font-family: 'Source Sans Pro';
   font-weight: 200;
   color:#fff;
 }
 
-.leadtext {
+.leadtext ,.checkout-status{
   color: #fff;
-  padding: 8px 20px 0px;
+  padding: 8px 10px 0px;
   margin: 0;
 }
 
@@ -214,7 +214,8 @@ body {
 
 .now-later-options .checkoutnow,
 .now-later-options .checkoutlater,
-.now-later-options .later-options {
+.now-later-options .later-options ,
+.now-later-options .accept-charges-button {
   display: table-cell;
   width: auto;
   float: none;
@@ -222,7 +223,8 @@ body {
 }
 
 .now-later-options .checkoutnow,
-.now-later-options .checkoutlater {
+.now-later-options .checkoutlater,
+.now-later-options .accept-charges-button {
   text-align: center;
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 200;
@@ -231,7 +233,9 @@ body {
 }
 
 .checkoutnow .rel-wrapper,
-.checkoutlater .rel-wrapper {
+.checkoutlater .rel-wrapper,
+.accept-charges-button .rel-wrapper
+ {
   padding: 20px 10px;
 }
 
@@ -244,13 +248,14 @@ body {
   color: #ffffff; 
 }
 
-.checkoutlater {
+.checkoutlater,.accept-charges-button {
   background: #ffffff;
   color: #000000;
 }
 
 .checkoutnow a,
 .checkoutlater a,
+.accept-charges-button a,
 .later-options a {
   position: absolute;
   top: 0;
@@ -273,13 +278,16 @@ body {
 
 .foot-text {
   color: #fff;
-  padding: 15px 35px 0px;
+  padding: 10px 50px 0px;
   em {
     font-style: italic;
 
   }
   &.second-in {
     padding-top: 0;
+  }
+  &.balance-footer{
+    padding: 15px 26px !important;
   }
   font-family:'Source Sans Pro Light Italic' !important;
 }
@@ -499,9 +507,24 @@ svg {
 
 .checkout-now-status{
   
-   margin-top: 93px !important;
+   margin-top: 40px !important;
 }
 .latecheckout-charged{
   font-style:normal;
   font-weight: 500 !important;
+}
+
+
+.accept-charges-button{
+  
+  padding: 5px 40px !important;
+}
+
+.checkout-status{
+  
+  font-size : 30px !important;
+  font-weight: 300 !important;
+  line-height: 1.1 !important;
+  font-style: normal  !important;
+  
 }

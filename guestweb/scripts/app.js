@@ -51,10 +51,11 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 
 	
 	if ($window.sessionStorage.token)
-	delete $window.sessionStorage.token
+		delete $window.sessionStorage.token
+
+	//store basic details as rootscope variables
 
 	$rootScope.reservationID  = $attrs.reservationId
-
 	$rootScope.hotelName     = $attrs.hotelName
 	$rootScope.userName      = $attrs.userName
 	$rootScope.checkoutDate  = $attrs.checkoutDate
@@ -62,66 +63,79 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.userCity   	 = $attrs.city
 	$rootScope.userState     = $attrs.state
 	$rootScope.roomNo        = $attrs.roomNo
-	$rootScope.isLateCheckoutAvailable  = $attrs.isLateCheckoutAvailable
-	$rootScope.emailAddress      = $attrs.emailAddress
+	$rootScope.isLateCheckoutAvailable  = ($attrs.isLateCheckoutAvailable  === 'true') ? true : false;
+	$rootScope.emailAddress    = $attrs.emailAddress
 
-if ($rootScope.isLateCheckoutAvailable === 'false') 
+	$rootScope.hotelPhone      = $attrs.hotelPhone
+	$rootScope.isCheckedout   = ($attrs.isCheckedout === 'true') ? true : false;
+
+
+	//if chekout is already done
+ 	if ($rootScope.isCheckedout) 
+		$location.path('/checkOutNowSuccess')
+
+	//if late chekout is unavailable navigate to checkout now page
+
+	else if (!$rootScope.isLateCheckoutAvailable) 
 		$location.path('/checkOutNow')
 
 
-if($attrs.accessToken != "undefined")
-	$window.sessionStorage.accessToken = $attrs.accessToken	
+	if($attrs.accessToken != "undefined")
+		$window.sessionStorage.accessToken = $attrs.accessToken	
 
-console.log($attrs)
+	console.log($attrs)
 
-
-	
 }]);
 
 
 snt.factory('authInterceptor', function ($rootScope, $q, $window,$location) {
-  return {
-    request: function (config) {
-      config.headers = config.headers || {};
+	return {
+		request: function (config) {
+			config.headers = config.headers || {};
 
-      if ($window.sessionStorage.accessToken) {
-      
-        config.headers.Authorization = $window.sessionStorage.accessToken;
-      }
-      else{
-   
-      	$location.path('/authFailed');
-      }
-      return config;
-    },
-    response: function (response) {
-    
-         if (response.status === 401) {
+			if ($window.sessionStorage.accessToken) {
+
+				config.headers.Authorization = $window.sessionStorage.accessToken;
+			}
+			else{
+
+				$location.path('/authFailed');
+			}
+			return config;
+		},
+		response: function (response) {
+
+			if (response.status === 401) {
         // handle the case where the user is not authenticated
-      }
-     
-      return response || $q.when(response);
     }
-  };
+
+    return response || $q.when(response);
+}
+};
 });
 
 snt.config(function ($httpProvider) {
-  $httpProvider.interceptors.push('authInterceptor');
+	$httpProvider.interceptors.push('authInterceptor');
 });
 
 
-    
+
 
 (function() {
 	var checkOutLandingController = function($rootScope,$location) {
+		//if checkout is already done
 
-	if ($rootScope.isLateCheckoutAvailable === 'false') 
-		 $location.path('/checkOutNow')
-};
+ 	if ($rootScope.isCheckedout) 
+		$location.path('/checkOutNowSuccess')
+
+	else if (!$rootScope.isLateCheckoutAvailable) 
+			$location.path('/checkOutNow')
+	};
+
 
 	var dependencies = [
-		'$rootScope','$location',
-		checkOutLandingController
+	'$rootScope','$location',
+	checkOutLandingController
 	];
 
 	snt.controller('checkOutLandingController', dependencies);
