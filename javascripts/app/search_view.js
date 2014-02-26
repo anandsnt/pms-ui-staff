@@ -189,6 +189,8 @@ var Search  = function(domRef){
   };
 
   this.fetchCompletedOfFetchSearchData = function(response, requestParams) {
+  		sntapp.activityIndicator.hideActivityIndicator('get-json-web-calling');
+  		
       var searchType = "";
       $("#search-results").empty().removeAttr('style').removeClass('hidden');
       $('#preloaded-results').addClass('hidden');
@@ -252,14 +254,14 @@ var Search  = function(domRef){
     
     var webservice = new WebServiceInterface();
     var data = {fakeDataToAvoidCache: new Date()}; // fakeDataToAvoidCache is iOS Safari fix
-    var successCallBackParams = {'type': type};
+    var successCallBackParams = {'type': type};    
     var options = {
          requestParameters: data,
          successCallBack: that.fetchCompletedOfFetchSearchData,
          successCallBackParameters: successCallBackParams,
          failureCallBack: that.fetchFailedOfFetchSearchData,
-         loader: 'BLOCKER',
       }; 
+	sntapp.activityIndicator.showActivityIndicator('blocker', 'get-json-web-calling');      
     webservice.getJSON(url, options);
   
   };
