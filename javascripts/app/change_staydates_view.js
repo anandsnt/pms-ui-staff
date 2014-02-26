@@ -348,6 +348,7 @@ var ChangeStayDatesView = function(viewDom){
       if("room_available" == response.data.availability_status) {
           that.myDom.find('#no-reservation-updates').addClass('hidden');
           that.myDom.find('#room-restricted').addClass('hidden');
+          that.myDom.find('#room-list').addClass('hidden');
           that.myDom.find('#reservation-updates.hidden').removeClass('hidden');
           
           that.showRoomAvailableUpdates(reservationDetails);
