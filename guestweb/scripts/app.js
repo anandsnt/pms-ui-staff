@@ -119,11 +119,22 @@ snt.config(function ($httpProvider) {
 });
 
 
+snt.run(function($rootScope,$location,$http){
+    $rootScope.$on("$locationChangeStart", function(event, next, current) {
+    
+    if(next === current)
+    	$location.path('/')
+ 
+});
+});
 
 
 (function() {
 	var checkOutLandingController = function($rootScope,$location) {
 		//if checkout is already done
+
+		$('#myModal').modal('hide')
+		$(".modal-backdrop").remove()
 
  	if ($rootScope.isCheckedout) 
 		$location.path('/checkOutNowSuccess')
