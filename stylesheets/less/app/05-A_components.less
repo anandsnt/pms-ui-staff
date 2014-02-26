@@ -2945,6 +2945,7 @@
 					 		line-height: 40px;
 					 		padding: 10px 0;		
 					 		border-bottom: 1px solid rgba(0,0,0,.1);
+					 		.float;
 
 					 		.number {
 								font-size: 30px;
@@ -2952,9 +2953,17 @@
 								vertical-align: middle;
 								font-weight: 300;
 								margin-right: 20px; 
+								.pull-left;
 
 								strong { font-weight: 400; }
 							}
+
+							#rate-desc {
+								margin-top: 8px;
+								line-height: 1.2em;
+								.pull-left;
+							}
+							
 					 	}
 
 					 	.rooms {
@@ -2979,7 +2988,7 @@
 					 	&#unassign-room  { 
 					 		padding: 20px;
 					 		background: @white;
-					 		max-height: 320px;
+					 		max-height: 360px;
 							.box-shadow();
 					 		.calc-height(100, 80);
 
