@@ -49,6 +49,16 @@ var Search  = function(domRef){
     // A dirty hack to allow "this" instance to be refered from sntapp
     sntapp.setViewInst('Search', that);
 
+    // Set scrolling
+    createVerticalScroll('#search');
+
+    // Update no results display on resize
+    $(window).resize(function() {
+      if ($('#search-results .no-content').length) {
+        $('#search-results').css('height', $('#search').innerHeight());
+      }
+    });
+
     // // DEBUG
     // window.trigger = that.postCardSwipData;
   };
@@ -117,7 +127,7 @@ var Search  = function(domRef){
 
   this.delegateEvents = function(){  
     that.myDomElement.find('#query').on('focus', that.callCapitalize);
-    that.myDomElement.find('#query').on('keyup', that.queryEntered);
+    that.myDomElement.find('#query').on('keyup paste', that.queryEntered);
     that.myDomElement.find('#search-form').on('submit', that.submitSearchForm);
     that.myDomElement.find('#clear-query').on('click', that.clearResults);
     that.myDomElement.find('#late-checkout-alert').on('click', that.latecheckoutSelected);
@@ -180,7 +190,7 @@ var Search  = function(domRef){
 
   this.fetchCompletedOfFetchSearchData = function(response, requestParams) {
       var searchType = "";
-      $("#search-results").empty().removeClass('hidden');
+      $("#search-results").empty().removeAttr('style').removeClass('hidden');
       $('#preloaded-results').addClass('hidden');
       $('#no-results').addClass('hidden');
       // set up reservation status
@@ -211,21 +221,21 @@ var Search  = function(domRef){
 
         // showing card swipe errors
         if (requestParams['swipe_error'] === 'NO_GUEST') {
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"hidden open-modal-fix\">Or add a New Guest</span>.</li>');
+          $('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number.</span></div></li>');
           that.updateView();
         } else if (requestParams['swipe_error'] === 'INVALID_CARD') {
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-card"></span><strong class="h1">Invalid Credit Card</strong><span class="h2">Try with another card or search Guests manually</li>');
+          $('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-card"></span><strong class="h1">Invalid Credit Card</strong><span class="h2">Try with another card or search Guests manually.</span></div></li>');
           that.updateView();
         } else if(requestParams['swipe_error'] === 'NO_CONFIRM') {
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No Guest or Reservation Found</strong><span class="h2">Try with another card or search Guests manually </li>');
+          $('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span><strong class="h1">No Guest or Reservation Found</strong><span class="h2">Try with another card or search Guests manually.</span></div></li>');
           that.updateView();
         } else if(searchType != ""){
           // When dashboard buttons with 0 guests are clicked, show search screen message - "No guests checking in/out/in house" 
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+searchType+'</strong></li>');
+          $('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span><strong class="h1">No guests '+searchType+'</strong></span></div></li>');
         }
         else{
           // To show no matches message while search guest with 0 results.
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"hidden open-modal-fix\">Or add a New Guest</span>.</li>');
+          $('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number.</span></div></li>');
               //TODO: verify implemention, rename function
           that.updateView();
         }
@@ -233,7 +243,7 @@ var Search  = function(domRef){
   };
   
   this.fetchFailedOfFetchSearchData = function(){
-    $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number. <span href=\"#\" class=\"hidden open-modal-fix\">Or add a New Guest</span>.</li>');
+    $('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check that you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number.</span></div></li>');
     //TODO: verify implemention, rename function
     that.updateView();    
   };
@@ -384,23 +394,22 @@ var Search  = function(domRef){
           });
 
         $.each(items, function(i,value){
-                $('#search-results').append(value).highlight($query);
+                $('#search-results').removeAttr('style').append(value).highlight($query);
               });
        sntapp.activityIndicator.hideActivityIndicator('loader-html-appending');
 
-        // Set pageScroll
-      if (pageScroll) { destroyPageScroll(); }
-      createPageScroll('#search');
+        // Refresh scroll
+        refreshVerticalScroll('#search');
       }
       catch(e)
       {
-        $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
+        $('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span></div></li>');
       }
 
       // As this search filters JSON content, we need temp custom handling for no results scenario
       if ($('#search-results').is(':empty'))
       {
-        $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number</span></li>');
+        $('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number</span></div></li>');
       }
 		
     };
@@ -416,22 +425,21 @@ var Search  = function(domRef){
                         that.writeSearchResult(value.id,value.firstname,value.lastname,value.image,value.confirmation,value.reservation_status,value.room,value.roomstatus,value.fostatus,value.location,value.group,value.vip, value.late_checkout_time, value.is_opted_late_checkout)
                     ));
 
-                    $('#search-results').append.apply($('#search-results'),items).highlight($query);
+                    $('#search-results').removeAttr('style').append.apply($('#search-results'),items).highlight($query);
             });
 
-          // Set pageScroll
-      if (pageScroll) { destroyPageScroll(); }
-      createPageScroll('#search');
+          // Refresh scroll
+          refreshVerticalScroll('#search');
         }
         catch(e)
         {
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span></li>');
+          $('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span></div></li>');
         }
 
         // As this search filters JSON content, we need temp custom handling for no results scenario
         if ($('#search-results').is(':empty'))
         {
-          $('#search-results').html('<li class="no-content"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number</span></li>');
+          $('#search-results').css('height', $('#search').innerHeight()).html('<li class="no-content"><div class="info"><span class="icon-no-content icon-search"></span><strong class="h1">No matches</strong><span class="h2">Check you didn\'t mispell the <strong>Name</strong> or <strong>Group</strong>, or typed in the wrong <strong>Room </strong> or <strong>Confirmation</strong> number</span></div></li>');
         };
         sntapp.activityIndicator.hideActivityIndicator('loader-html-appending');
     };
@@ -526,8 +534,7 @@ var Search  = function(domRef){
               $('#no-results').removeClass('hidden');
           }
       }
-      // Set pageScroll
-      if (pageScroll) { destroyPageScroll(); }
-      createPageScroll('#search');
+      // Refresh scrolling
+      refreshVerticalScroll('#search');
     };
 };

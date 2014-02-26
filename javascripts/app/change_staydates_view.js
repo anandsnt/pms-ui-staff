@@ -34,8 +34,7 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.pageshow = function(){
-      that.fetchCalenderEvents();
-
+    that.fetchCalenderEvents();
   };
 
   this.reservationUpdateClickEvents = function(event){
@@ -43,9 +42,7 @@ var ChangeStayDatesView = function(viewDom){
       if(element.attr('id') == 'confirm-changes') return that.confirmUpdatesClicked(element);
       if(element.attr('id') == 'reset-dates')  return that.resetDatesClicked(element);
       return true;
-
   };
-
 
   this.fetchCalenderEvents = function(){
       console.log("fetch calendar");
@@ -59,7 +56,6 @@ var ChangeStayDatesView = function(viewDom){
              loader: "NONE"
       };
       webservice.getJSON(url, options);  
-
   };
 
   this.calenderDatesFetchCompleted = function(calenderEvents){
@@ -72,6 +68,9 @@ var ChangeStayDatesView = function(viewDom){
       that.focusDateInCalendar = that.confirmedCheckinDate;
       that.updateCalender(that.confirmedCheckinDate, that.confirmedCheckoutDate, that.confirmedCheckinDate);
       sntapp.activityIndicator.hideActivityIndicator('loading-special');
+
+      // Set scrolling
+      createVerticalScroll('#calendar-holder');
   };
 
   this.updateCalender = function(checkinDate, checkoutDate, focusDate){
@@ -103,9 +102,22 @@ var ChangeStayDatesView = function(viewDom){
           viewDisplay: function(view) {
               that.setupCalendarDates(view, checkinDate, checkoutDate);
           },
+          // Disable scroller on drag start 
+          eventDragStart: function( event, jsEvent, ui, view ) { 
+            disableVerticalScroll('#calendar-holder');
+          },
+          // Enable scroller on drag stop
+          eventDragStop: function( event, jsEvent, ui, view ) { 
+            enableVerticalScroll('#calendar-holder');
+          },
           // Stay date has changed
           eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
               that.datesChanged(event, revertFunc, view);
+
+              // Prevent scroll jumping
+              for (var i = 0; i < verticalScroll.length; i++) {
+                verticalScroll[i].initiated = 0;
+              }
           }
 
       });
@@ -257,14 +269,11 @@ var ChangeStayDatesView = function(viewDom){
       that.checkinDateInCalender = checkinDate;
       that.checkoutDateInCalender = checkoutDate; 
 
-
       //$('#reservation-calendar').fullCalendar( 'gotoDate', focusDate.getFullYear(), focusDate.getMonth());
       /*that.myDom.find('#reservation-calendar').fullCalendar('removeEvents');
       that.myDom.find('#reservation-calendar').fullCalendar('refetchEvents').fullCalendar('renderEvents');*/
       $('#reservation-calendar').html("");
       that.updateCalender(checkinDate, checkoutDate, that.focusDateInCalendar);
-
-
   };
 
   this.showReservationUpdates = function(checkinDate, checkoutDate){
@@ -294,7 +303,6 @@ var ChangeStayDatesView = function(viewDom){
           loader: "BLOCKER"
       };
       webservice.getJSON(url, options);  
-
   };
 
   this.isStayRangeRestricted = function(checkinDate, checkoutDate){
@@ -322,11 +330,9 @@ var ChangeStayDatesView = function(viewDom){
 
     if(totalNights < minNumOfStay){
         return true;  
-    }else{
+    } else {
       return false;
     }
-
-
   };
 
   this.dateChangeFailure = function(errorMsg){
@@ -335,7 +341,6 @@ var ChangeStayDatesView = function(viewDom){
       //Reset calender view
       that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate)
       return false;
-
   };
 
   this.datesChangeSuccess = function(response, reservationDetails){
@@ -417,6 +422,8 @@ var ChangeStayDatesView = function(viewDom){
 
       that.myDom.find('#reservation-updates #rate-desc').text(escapeNull(that.availableEvents.data.rate_desc));
 
+      // Add scroller
+      createVerticalScroll('#update-details');  
   };
 
   this.confirmUpdatesClicked = function(element){
@@ -475,13 +482,10 @@ var ChangeStayDatesView = function(viewDom){
 
       });
 
-      // Set scrollers
-      if (viewScroll) { destroyViewScroll(); }
-      setTimeout(function(){
-          createViewScroll('#change-room');
-      }, 300);
-
       that.myDom.find('#change-room ul li').on('click', that.roomListNumberSelected);
+
+      // Add scroller
+      createVerticalScroll('#change-room');
   };
 
   this.roomListNumberSelected = function(e){

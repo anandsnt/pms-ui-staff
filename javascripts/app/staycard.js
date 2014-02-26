@@ -32,53 +32,47 @@ var StayCard = function(viewDom){
 
   // Start listening to card swipes
   this.initCardSwipe = function() {
-    
-      var options = {
-          successCallBack: function(data){
+    var options = {
+        successCallBack: function(data){
+          // if this is not staycard do nothing
+          // TODO: can't match page to '' as there could be pages with no data-page
+          // TODO: support new pages when they are added
+          var activeMenu = $('#main-menu').find('a.active').data('page');
+          if ('dashboard' === activeMenu || 'search' === activeMenu) {
+            return;
+          };
+          var swipedCardData = {
+            cardType: data.RVCardReadCardType || '',
+            expiry: data.RVCardReadExpDate || '',
+            cardHolderName: data.RVCardReadCardName || '',
+            getTokenFrom: {
+              'et2': data.RVCardReadTrack2,
+              'ksn': data.RVCardReadTrack2KSN
+            }
+          };
+          that.postCardSwipData(swipedCardData);
+        },
+        failureCallBack: function(errorObject){
+          // if this is not staycard do nothing
+          // TODO: can't match page to '' as there could be pages with no data-page
+          // TODO: support new pages when they are added
+          var activeMenu = $('#main-menu').find('a.active').data('page');
+          if ('dashboard' === activeMenu || 'search' === activeMenu) {
+            return;
+          };
+          
+          sntapp.notification.showErrorMessage('Could not read the card properly. Please try again.');
+        }
+    };
+    // start listening
+    if(sntapp.cardSwipeDebug===true){sntapp.cardReader.startReaderDebug(options); }
 
-            // if this is not staycard do nothing
-            // TODO: can't match page to '' as there could be pages with no data-page
-            // TODO: support new pages when they are added
-            var activeMenu = $('#main-menu').find('a.active').data('page');
-            if ('dashboard' === activeMenu || 'search' === activeMenu) {
-              return;
-            };
-            var swipedCardData = {
-              cardType: data.RVCardReadCardType || '',
-              expiry: data.RVCardReadExpDate || '',
-              cardHolderName: data.RVCardReadCardName || '',
-              getTokenFrom: {
-                'et2': data.RVCardReadTrack2,
-                'ksn': data.RVCardReadTrack2KSN
-              }
-            };
-            that.postCardSwipData(swipedCardData);
-          },
-          failureCallBack: function(errorObject){
-
-            // if this is not staycard do nothing
-            // TODO: can't match page to '' as there could be pages with no data-page
-            // TODO: support new pages when they are added
-            var activeMenu = $('#main-menu').find('a.active').data('page');
-            if ('dashboard' === activeMenu || 'search' === activeMenu) {
-              return;
-            };
-            
-            sntapp.notification.showErrorMessage('Could not read the card properly. Please try again.');
-          }
-      };
-      // start listening
-      if(sntapp.cardSwipeDebug===true){sntapp.cardReader.startReaderDebug(options); }
-
-      if(sntapp.cordovaLoaded){ sntapp.cardReader.startReader(options); }
+    if(sntapp.cordovaLoaded){ sntapp.cardReader.startReader(options); }
   };
-
 
   // lets post the 'et2' and 'ksn' data
   // to get the token code from MLI
   this.postCardSwipData = function(swipedCardData) {
-
-
     var currentReservationDiv = getCurrentReservationDiv();
     var reservationStatus = $('#' +currentReservationDiv).data('reservation-status');
     
@@ -92,9 +86,7 @@ var StayCard = function(viewDom){
     //Please delete the explicit implementation.
     var url = '/staff/payments/tokenize';
     
-    /*
-    * Function for listening from swipe in staycard, guestcard, billcard
-    */
+    /* Function for listening from swipe in staycard, guestcard, billcard */
     var respondToSwipe = function (fromPage, domElement, params){
 
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
@@ -112,15 +104,12 @@ var StayCard = function(viewDom){
       if(typeof params != "undefined"){
         sntapp.getViewInst('addNewPaymentModal').params = params;
       }
-
-
     }
 
     var successCallBackHandler = function(token) {
       // add token to card data
       swipedCardData.token = token.data;
 
-      
       // dirty trick to find the current page and react
       switch(sntapp.cardSwipeCurrView){
         // respond to StayCardView
@@ -148,8 +137,6 @@ var StayCard = function(viewDom){
         default:
           break;
       }
-
-
     };
 
     var options = {
@@ -163,45 +150,49 @@ var StayCard = function(viewDom){
 
     var webservice = new WebServiceInterface();
     webservice.postJSON(url, options);
-
-    
   };
 
   this.delegateEvents = function(partialViewRef){  
 
-   	if(partialViewRef === undefined){
-   		partialViewRef = $("#confirm_no").val();
-   	};   	
-  	
+    if(partialViewRef === undefined){
+      partialViewRef = $("#confirm_no").val();
+    };    
+    
     /*that.myDom.find('#reservation-timeline li').on('click', that.reservationTimelineClicked);
-    that.myDom.find('#reservation-listing li').on('click', that.reservationListItemClicked);*/
+    that.myDom.find('.reservations-tabs li').on('click', that.reservationListItemClicked);*/
     that.myDom.find($('.masked-input')).on('focusout', that.guestDetailsEdited);  
     that.myDom.find('#title').on('change', that.changeAvathar);
     // that.myDom.unbind('click');
-	   that.myDom.find("#reservation-card").on('click', that.reservationCardClickHandler);
+    that.myDom.find("#reservation-card").on('click', that.reservationCardClickHandler);
 
   };
   
+  // Handlers to load data if none exist in DOM
   this.reservationCardClickHandler = function(event){
-
     that.closeGuestCardDrawer();
+    
+    // Change timeline
     if(getParentWithSelector(event, "#reservation-timeline li")) {
         return that.reservationTimelineClicked(event);
     }
-    if(getParentWithSelector(event, "#reservation-listing li a")) {
+
+    // Change reservation
+    if(getParentWithSelector(event, ".reservations-tabs li a")) {
         return that.reservationListItemClicked(event);
     }    
 
-	};
-  // function for closing the drawer if is open
-	this.closeGuestCardDrawer = function(){
-		if($("#guest-card").hasClass('open')) {
-			$('#guest-card .ui-resizable-handle').trigger('click');
-		}
-	};
+  };
 
+  // function for closing the drawer if is open
+  this.closeGuestCardDrawer = function(){
+    if($("#guest-card").hasClass('open')) {
+      $('#guest-card .ui-resizable-handle').trigger('click');
+    }
+  };
+
+  // Change avatar
   this.changeAvathar = function(e){
-	  var imgSrc = that.myDom.find('#guest-image').attr('src');
+    var imgSrc = that.myDom.find('#guest-image').attr('src');
     var imageName = imgSrc.split('/')[imgSrc.split('/').length-1];
 
     for (var key in avatharImgs) {
@@ -212,58 +203,52 @@ var StayCard = function(viewDom){
     }
   };
 
+  // Change screen actions
+  this.executeLoadingAnimation = function(){
+    if (this.viewParams === undefined) return;
+    if (this.viewParams["showanimation"] === false) return;
   
- this.executeLoadingAnimation = function(){
-  	if (this.viewParams === undefined) return;
-  	if (this.viewParams["showanimation"] === false) return;
-	
-	if (this.viewParams["current-view"] === "bill_card_view")
-  		changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);
-  	else if (this.viewParams["current-view"] === "room_upgrades_view"){
+    if (this.viewParams["current-view"] === "bill_card_view")
+      changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);
+    else if (this.viewParams["current-view"] === "room_upgrades_view"){
 
-  		changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
-  	} else if (this.viewParams["current-view"] === "search_view"){
+      changeView("nested-view", "", "view-nested-second", "view-nested-first", "move-from-left", false);
+    } else if (this.viewParams["current-view"] === "search_view"){
       changeInnerPage('inner-page', undefined, undefined, 'page-inner-first', 'move-from-right', false);
     }
-  		
-
   };
 
-this
-  .pageshow = function(){
-    that.createScroll();
-  };
-
-  //Create the scroll views for staycard
-  this.createScroll = function(){
-    var confirmNum = that.myDom.find($('#reservation_info')).attr('data-confirmation-num');
-    $("div[id='reservation-listing']").each(function(index){
-      createViewScroll("#"+ $(this).parent().attr('id')+" #"+ $(this).attr('id'));
+  // Create scrolls on pageshow
+  this.pageshow = function(){
+    // Create scrollers for all timelines
+    $(".reservations-tabs").each(function(index){
+      createVerticalScroll("#" + $(this).attr('id'));
     });
-    if ($('#reservation-content-'+ confirmNum).length){
-      createViewScroll('#reservation-content-'+ confirmNum);
-    }
 
+    // Create scroller for the visible reservation
+    var confirmNum = that.myDom.find($('#reservation_info')).attr('data-confirmation-num');
+    if ($('#reservation-content-'+ confirmNum).length){
+      createVerticalScroll('#reservation-content-'+ confirmNum);
+    }
   };
 
   this.initSubViews = function(){
-  	 
-  	partialViewRef = $("#confirm_no").val();
-  	setUpGuestcard(that.myDom);
-  	var guestContactView = new GuestContactView($("#contact-info"));
-  	guestContactView.pageinit();  	
+    partialViewRef = $("#confirm_no").val();
+    setUpGuestcard(that.myDom);
+    var guestContactView = new GuestContactView($("#contact-info"));
+    guestContactView.pageinit();    
   };
 
- 
-  //workaround for populating the reservation details,
-  //when user clicks on other timeline tabs
+  // Populate reservation details (if none exist in DOM for the selected timeline)
   this.reservationTimelineClicked = function(e){
     var currentTimeline = $(e.target).attr('aria-controls');    
     $('#reservation-card').attr('data-current-timeliine', currentTimeline); 
-    //No reservation details are added to the DOM
-    if (!($("#" + currentTimeline).find('.reservation').length > 0)) {      
-      $("#" + currentTimeline + ' #reservation-listing ul li').first().children().first().trigger("click");
-      that.createScroll();
+    
+    if (!($("#" + currentTimeline).find('.reservation').length > 0)) { 
+      var $firstReservation = $("#" + currentTimeline + ' .reservations-tabs li:first-child').find('a');
+        
+      // Load reservation details
+      $firstReservation.trigger("click");
     }
   };
 
@@ -274,45 +259,25 @@ this
     var confirmationNumClicked = target.parents('li:eq(0)').attr('data-confirmation-num');
     var $href = target.attr('href');
 
-    //get the current highlighted timeline
-    //Not more than 5 resevation should be kept in DOM in a timeline.
+    // get the current highlighted timeline (not more than 5 resevation should be kept in DOM in a timeline.)
     var currentTimeline = $('#reservation-timeline').find('.ui-state-active').attr('aria-controls');
     if ($('#' + currentTimeline + ' > div').length > 6 && !($($href).length > 0)) {
       $("#" + currentTimeline).find('div:nth-child(2)').remove();
     }
-    //get the reservation id.
+
+    // get the reservation id.
     var reservation = $href.split("-")[1];
 
-
-    //if div not present in DOM, make ajax request 
+    // if div not present in DOM, make ajax request 
     if (!($($href).length > 0)) {
       that.loadReservationDetails($href);
-    } 
+    }
   };
 
   this.refreshReservationDetails = function(reservationId, sucessCallback){
     var currentReservationDom = that.myDom.find("[data-reservation-id='" + reservationId + "']").attr('id');
     that.loadReservationDetails("#" + currentReservationDom, sucessCallback);
 
-  };
-
-  // success function of LoadReservationDetails's ajax call
-  this.fetchCompletedOfLoadReservationDetails = function(data, params){
-    var confirmationNum = params['confirmationNum'];
-    var currentTimeline = params['currentTimeline'];
-    var sucessCallback = params['sucessCallback'];
-    var currentReservationDom = params['currentReservationDom'];
-
-    if ($(currentReservationDom).length > 0) {
-      $("#" +currentTimeline).find(currentReservationDom).remove();
-    }
-    $("#" + currentTimeline).append(data);         
-    createViewScroll("#reservation-content-"+confirmationNum);       
-    var reservationDetails = new reservationDetailsView($("#reservation-"+confirmationNum));
-    reservationDetails.initialize();
-    if(sucessCallback != undefined){
-      sucessCallback();
-    }
   };
 
   this.loadReservationDetails = function(currentReservationDom, sucessCallback){
@@ -334,24 +299,46 @@ this
     webservice.getHTML(url, options);        
   };
 
-  
+  // success function of LoadReservationDetails's ajax call
+  this.fetchCompletedOfLoadReservationDetails = function(data, params){
+    var confirmationNum = params['confirmationNum'];
+    var currentTimeline = params['currentTimeline'];
+    var sucessCallback = params['sucessCallback'];
+    var currentReservationDom = params['currentReservationDom'];
+
+    // Clear up space for new data
+    if ($(currentReservationDom).length > 0) {
+      $("#" +currentTimeline).find(currentReservationDom).remove();
+    }
+
+    // Append new data and set scroller for it
+    $("#" + currentTimeline).append(data);      
+    createVerticalScroll('#reservation-content-'+ confirmationNum);    
+
+    var reservationDetails = new reservationDetailsView($("#reservation-"+confirmationNum));
+    reservationDetails.initialize();
+    if(sucessCallback != undefined){
+      sucessCallback();
+    }
+  };
+
   this.fetchCompletedUpdateGuestDetails = function(data){
-	  if(data.status == 'success'){
+    if(data.status == 'success'){
           $("#guest_firstname").val($guestFirstName);
           $("#guest_lastname").val($guestLastName);
           $("#city").val($guestCity);
           $("#state").val($guestState);
           $("#phone").val($guestPhone);
           $("#email").val($guestEmail);  
-	  }
-	  else{
-		sntapp.activityIndicator.hideActivityIndicator();
-		sntapp.notification.showErrorList(data.errors, that.myDom); 		  
-	  }
+    }
+    else{
+    sntapp.activityIndicator.hideActivityIndicator();
+    sntapp.notification.showErrorList(data.errors, that.myDom);       
+    }
   };
   this.fetchFailedUpdateGuestDetails = function(errorMessage){
-	sntapp.activityIndicator.hideActivityIndicator();
-	sntapp.notification.showErrorMessage(errorMessage, that.myDom); 	  
+  sntapp.activityIndicator.hideActivityIndicator();
+  sntapp.notification.showErrorMessage(errorMessage, that.myDom);     
   };
   
   this.updateGuestDetails = function(update_val, type){
@@ -368,9 +355,9 @@ this
     var url = 'staff/guest_cards/' + userId;
     var webservice = new WebServiceInterface();
     var options = {
-		   requestParameters: $guestCardJsonObj,
-		   successCallBack: that.fetchCompletedUpdateGuestDetails,
-		   failureCallBack: that.fetchFailedUpdateGuestDetails,		   
+       requestParameters: $guestCardJsonObj,
+       successCallBack: that.fetchCompletedUpdateGuestDetails,
+       failureCallBack: that.fetchFailedUpdateGuestDetails,      
     };
     webservice.putJSON(url, options);
 
