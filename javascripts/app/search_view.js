@@ -373,6 +373,7 @@ var Search  = function(domRef){
         return false;
       }
       sntapp.activityIndicator.showActivityIndicator('blocker', 'loader-html-appending');
+      console.log("Reached here")
       $('#search-results').html("");
       try
       {
