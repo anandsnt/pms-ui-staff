@@ -1,5 +1,5 @@
 (function() {
-	var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location) {
+	var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location,$window) {
 
 		//if chekout is already done
 		
@@ -12,15 +12,31 @@
 	
 
 		$scope.showBackButtonImage = true
+
+
+		$('#myModal').modal('hide')
+
+		//reload page
+
+		$scope.reloadPage=  function (){
+			  $window.location.reload();
+		}
+		
 		LateCheckOutChargesService.fetch().then(function(charges) {
 			$scope.charges = charges;
-			console.log(charges)
+
+
+			if(charges.length > 0)
+				$scope.optionsAvailable = true;
+			else
+				$('#myModal').modal('show')
+
 		});
 	};
 
 	var dependencies = [
 		'$scope',
-		'LateCheckOutChargesService','$rootScope','$location',
+		'LateCheckOutChargesService','$rootScope','$location','$window',
 		checkOutLaterController
 	];
 
