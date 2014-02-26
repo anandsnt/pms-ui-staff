@@ -125,6 +125,9 @@ snt.config(function ($httpProvider) {
 	var checkOutLandingController = function($rootScope,$location) {
 		//if checkout is already done
 
+		$('#myModal').modal('hide')
+		$(".modal-backdrop").remove()
+
  	if ($rootScope.isCheckedout) 
 		$location.path('/checkOutNowSuccess')
 
