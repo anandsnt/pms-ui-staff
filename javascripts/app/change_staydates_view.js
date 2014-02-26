@@ -349,6 +349,7 @@ var ChangeStayDatesView = function(viewDom){
           that.myDom.find('#no-reservation-updates').addClass('hidden');
           that.myDom.find('#room-restricted').addClass('hidden');
           that.myDom.find('#room-list').addClass('hidden');
+          that.myDom.find('#room-locked').addClass('hidden');
           that.myDom.find('#reservation-updates.hidden').removeClass('hidden');
           
           that.showRoomAvailableUpdates(reservationDetails);
@@ -357,6 +358,7 @@ var ChangeStayDatesView = function(viewDom){
           that.myDom.find('#no-reservation-updates').addClass('hidden');
           that.myDom.find('#room-restricted').addClass('hidden');
           that.myDom.find('#reservation-updates').addClass('hidden');
+          that.myDom.find('#room-locked').addClass('hidden');
           that.myDom.find('#room-list.hidden').removeClass('hidden');
           that.showRoomList(response, reservationDetails);
       
@@ -456,6 +458,9 @@ var ChangeStayDatesView = function(viewDom){
       that.fadeinHeaderDates();
       that.myDom.find('#no-reservation-updates.hidden').removeClass('hidden');
       that.myDom.find('#reservation-updates').addClass('hidden');
+      that.myDom.find('#room-list').addClass('hidden');
+      that.myDom.find('#room-locked').addClass('hidden');
+      that.myDom.find('#room-restricted').addClass('hidden');
       that.refreshCalenderView(that.confirmedCheckinDate, that.confirmedCheckoutDate)
   };
 
@@ -498,8 +503,10 @@ var ChangeStayDatesView = function(viewDom){
       };
 
       var roomSelected = $(e.target).find('#room-list-number').text();
+      that.myDom.find('#no-reservation-updates').addClass('hidden');
       that.myDom.find('#room-list').addClass('hidden');
       that.myDom.find('#room-restricted').addClass('hidden');
+      that.myDom.find('#room-locked').addClass('hidden');
       that.myDom.find('#reservation-updates.hidden').removeClass('hidden');
 
       that.showRoomAvailableUpdates(reservationDetails, roomSelected);
