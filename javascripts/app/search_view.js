@@ -367,8 +367,9 @@ var Search  = function(domRef){
      };*/
 
      this.displayFilteredResults = function(searchResults, $query){
-     	
+     	 console.log("Display results")
       if($query == ""){
+      	console.log("Display results == query null")
         that.displaySearchResults(searchResults,$query);
         return false;
       }
