@@ -235,7 +235,10 @@ $.fn.autoGrowInput = function(o) {
             });
             check = function() {
 
-                if (val === (val = input.val())) {return;}
+                if (val === (val = input.val())) { 
+                    input.attr('data-size', input.val().length);
+                    return; 
+                }
 
                 // Enter new content into testSubject
                 var escaped = val.replace(/&/g, '&amp;').replace(/\s/g,'&nbsp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -251,6 +254,7 @@ $.fn.autoGrowInput = function(o) {
                 // Animate width
                 if (isValidWidthChange) {
                     input.width(newWidth);
+                    input.attr('data-size', input.val().length);
                 }
             };
         testSubject.insertAfter(input);
