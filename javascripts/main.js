@@ -258,7 +258,7 @@ $.fn.autoGrowInput = function(o) {
                 }
             };
         testSubject.insertAfter(input);
-        $(this).bind('keyup paste blur update', check).bind('keydown', function() {
+        $(this).bind('keyup change paste blur update', check).bind('keydown', function() {
             setTimeout(check);
         });
         check();
@@ -443,7 +443,7 @@ $(function($){
 
     // Enable some parts of form
     // TODO - fire this after valid email address is added, not on keyup!
-    $(document).on('keyup paste', 'input[data-enable]', function(e){
+    $(document).on('keyup change paste', 'input[data-enable]', function(e){
         e.stopImmediatePropagation();
         var $target = $(this).attr('data-enable');
 
@@ -602,7 +602,7 @@ $(function($){
     });
 
     // Show clear search button
-    $(document).on('keyup paste', '#query', function(){
+    $(document).on('keyup change paste', '#query', function(){
         // Clear button visibility toggle
         if($.trim($('#query').val()) !== '') {
             $('#clear-query:not(.visible)').addClass('visible');
