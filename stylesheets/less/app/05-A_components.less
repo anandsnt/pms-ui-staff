@@ -13,26 +13,23 @@
 	#login-page {
 
 		.container {
-			position: static;
+			position: relative;
 			text-align: center;
-	   		width: 100%;
-
-	   		&:before {
-			  	content: "";
-			  	display: inline-block;
-			  	height: 100%; 
-				vertical-align: middle;
-			}
+	   		.square(100%);
 
 	   		#login {
-	   			text-align: left;
-	   			display: inline-block;
+	   			position: absolute;
+				top: 50%;
+				left: 50%;
+				text-align: left;
 	  			vertical-align: middle;
 				padding: 40px;
 				width: 540px;
+				margin: -220px 0 0 -270px;
 				.background(@white);
 				.box-shadow(0 0 5px rgba(0,0,0,.2));
 				#border-radius > .rounded();
+				.show;
                 
                 .support a {
 				    color: @textColor;
