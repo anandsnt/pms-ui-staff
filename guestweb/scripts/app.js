@@ -1,5 +1,5 @@
 
-var snt = angular.module('snt', ['ngRoute']);
+var snt = angular.module('snt',['ngRoute','ui.bootstrap']);
 
 snt.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/', {
@@ -119,6 +119,14 @@ snt.config(function ($httpProvider) {
 });
 
 
+snt.run(function($rootScope,$location,$http){
+    $rootScope.$on("$locationChangeStart", function(event, next, current) {
+    
+    if(next === current)
+    	$location.path('/')
+ 
+});
+});
 
 
 (function() {

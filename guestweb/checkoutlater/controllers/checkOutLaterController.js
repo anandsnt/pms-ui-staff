@@ -1,5 +1,5 @@
 (function() {
-	var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location,$window) {
+	var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location) {
 
 		//if chekout is already done
 		
@@ -12,31 +12,43 @@
 	
 
 		$scope.showBackButtonImage = true
+		$scope.showAlert = false;
 
-
-		$('#myModal').modal('hide')
 
 		//reload page
 
 		$scope.reloadPage=  function (){
-			  $window.location.reload();
+			  $scope.fetch();
 		}
+		$scope.closeAlert = function(){
+
+			$scope.showAlert = false
+		}
+
+
+		$scope.fetch = function(){
 		
 		LateCheckOutChargesService.fetch().then(function(charges) {
 			$scope.charges = charges;
 
 
-			if(charges.length > 0)
+			if($scope.charges.length > 0){
 				$scope.optionsAvailable = true;
+				$scope.hidePopup();
+
+			}
 			else
-				$('#myModal').modal('show')
+				$scope.showAlert = true;
 
 		});
+		}
+
+		$scope.fetch();
 	};
 
 	var dependencies = [
 		'$scope',
-		'LateCheckOutChargesService','$rootScope','$location','$window',
+		'LateCheckOutChargesService','$rootScope','$location',
 		checkOutLaterController
 	];
 
