@@ -1,5 +1,5 @@
 
-var snt = angular.module('snt', ['ngRoute']);
+var snt = angular.module('snt',['ngRoute','ui.bootstrap']);
 
 snt.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/', {
@@ -132,9 +132,6 @@ snt.run(function($rootScope,$location,$http){
 (function() {
 	var checkOutLandingController = function($rootScope,$location) {
 		//if checkout is already done
-
-		$('#myModal').modal('hide')
-		$(".modal-backdrop").remove()
 
  	if ($rootScope.isCheckedout) 
 		$location.path('/checkOutNowSuccess')
