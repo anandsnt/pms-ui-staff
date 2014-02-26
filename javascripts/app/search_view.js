@@ -5,7 +5,7 @@ var Search  = function(domRef){
 
     
   this.pageinit = function(){
-
+	console.log("Search page init")
     that.currentQuery = "";
     that.fetchResults = [];
     that.preloadedResults = [];
