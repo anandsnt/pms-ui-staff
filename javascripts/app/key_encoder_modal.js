@@ -19,15 +19,14 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	
 	this.delegateEvents = function() {
 		that.myDom.find('#try-again').on('click', that.showDeviceConnectingMessge);
-
 		if(that.params.origin == views.BILLCARD){
 			that.myDom.find('.cancel-key-popup').on('click', that.showKeyPrintFailure);
 		}else{
 			that.myDom.find('.cancel-key-popup').on('click', function(){
+				that.hide();
 				if(!sntapp.cardSwipeDebug){
 					that.cancelWriteOperation();
 				}
-				that.hide();
 			});
 		}
 		that.myDom.find('#key1').on('click', that.key1Selected);
@@ -47,7 +46,10 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			 'failureCallBack': that.failureCallbackOfCancelWriteOperation
 		};
 		if(!sntapp.cardSwipeDebug){
-			sntapp.cardReader.cancelWriteOperation(options);
+			try{
+				sntapp.cardReader.cancelWriteOperation(options);
+			}catch(e){
+			}
 		}
 	};
 
@@ -116,8 +118,12 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		if(sntapp.cardSwipeDebug){
 			sntapp.cardReader.checkDeviceConnectedDebug(options);
 		}
-		else{
-			sntapp.cardReader.checkDeviceConnected(options);
+		else {
+			try {
+				sntapp.cardReader.checkDeviceConnected(options);
+			} catch(e) {
+				that.deviceNotConnected();
+			}
 		}
 		/*setTimeout(function(){
 			that.deviceConnecionStatus();
