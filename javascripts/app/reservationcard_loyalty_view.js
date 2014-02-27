@@ -4,6 +4,7 @@ var ReservationCardLoyaltyView = function(domRef){
   this.myDom = domRef;
 
   this.pageinit = function(){
+    bindLoyaltyUtilFunctions();
   };
   this.delegateEvents = function(){
   	that.myDom.find('#add_new_loyalty_staycard').on('click', that.addNewLoyaltyModal);
