@@ -1,10 +1,1 @@
-var sntRover = angular.module('sntRover',[]);
-
-
-
-sntRover.controller('dashboardController',['$scope', function($scope){
-	$scope.goToSearch = function(){
-		alert("jjj")
-	};
-}]);
-
+var sntRover = angular.module('sntRover',['ui.router']);
