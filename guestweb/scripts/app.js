@@ -42,7 +42,7 @@ snt.config(['$routeProvider', function($routeProvider) {
 		templateUrl: '/assets/shared/authenticationFailedView.html'
 	});
 	$routeProvider.when('/serverError', {
-		templateUrl: '/assets/shared/serverErrorView .html',
+		templateUrl: '/assets/shared/serverErrorView.html',
 	});
 
 	$routeProvider.otherwise({
