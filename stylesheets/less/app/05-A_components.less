@@ -1707,8 +1707,7 @@
 								width: 80px;
 								#border-radius > .left-top(); 
 							}
-							&:nth-child(2) { width: 240px; }
-							&:nth-child(3) { width: 100px; }
+							&:nth-child(2) { width: 120px; }
 							&:last-child { #border-radius > .right-top(); }
 
 							
@@ -2411,22 +2410,16 @@
 							.show;
 
 							img { 
-								width: auto;
+								max-width: 100%;
 								max-height: 100%;
 							}
-							
+
 							&.signature-zest {
-								img { 
-									max-width: 100%; 
-									height: 100%; 
-								}
+								img { height: 100%; }
 							}
 
-							&.signature-rover { 
-								img { 
-									width: 100%; 
-									height: auto;
-								}
+							&.signature-rover {
+								img { height: auto; }
 							}
 						}
 					}
