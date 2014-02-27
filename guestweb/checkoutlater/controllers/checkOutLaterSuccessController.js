@@ -1,6 +1,16 @@
 (function() {
 
 	var checkOutLaterSuccessController = function($scope, $http, $q, $routeParams, $location, $rootScope, LateCheckOutChargesService) {
+		
+		//if chekout is already done
+		
+ 		if ($rootScope.isCheckedout) 
+		$location.path('/checkOutNowSuccess')
+
+		// if checkout later in unavailable
+		else if (!$rootScope.isLateCheckoutAvailable) 
+		 $location.path('/checkOutNow')
+		
 		var charges = LateCheckOutChargesService.charges;
 		var id = $routeParams.id;
 		
@@ -19,6 +29,8 @@
 		// if no charges recorded (user tried to reload on success page)
 		// show a message and give him option to go home
 		if (!charges.length) {
+
+			$location.path('/')
 			$scope.returnHome = true;
 			return;
 		};

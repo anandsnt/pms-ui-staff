@@ -27,8 +27,10 @@ var GuestContactView = function(domRef) {
 	};
 	
 
-	this.callSave = function(e) {		
-		sntapp.notification.hideMessage();
+	this.callSave = function(e) {	
+		var target = $(e.target);
+		var closestId = target.closest(".view-current").attr("id");
+		sntapp.notification.hideMessage($("#"+closestId));	
 		if (!$(e.target).is("#contact-info *", "#guest-card-content")) {
 			if (that.$contactInfoChange) {
 				that.saveContactInfo();
@@ -149,10 +151,7 @@ var GuestContactView = function(domRef) {
 		sntapp.fetchAndRenderView('staff/payments/payment', $("#cc-payment"), viewParams);
 		//var reservation_id = getReservationId();
 		//viewParams = {"reservation_id" : reservation_id};
-		sntapp.fetchAndRenderView('staff/user_memberships', $("#loyalty"), viewParams);
-		setTimeout(function() {
-			refreshGuestCardScroll();
-		}, 300);		
+		sntapp.fetchAndRenderView('staff/user_memberships', $("#loyalty"), viewParams);	
 	};
 
 	// failure function of renderContactInformation's ajax call

@@ -11,7 +11,6 @@ var LikesView = function(domRef){
   	
   this.handleLikeValueChanged();
   	
-  	//refreshGuestCardScroll();
   	// These two bindings is not coming under domref
   	$('html').on('click', that.callSaveLikes);    
   	$('#guest-contact, #guest-credit, #guest-loyalty').on('click', that.handleTabClick);      

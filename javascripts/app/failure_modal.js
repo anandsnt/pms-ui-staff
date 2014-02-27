@@ -6,7 +6,7 @@ var FailureModal = function(callBack) {
 	this.delegateEvents = function() {
 		var message = this.params.message;
 		that.myDom.find('.message').html(message);
-		that.myDom.find('#modal-close').on('click',that.okButtonClicked);
+		that.myDom.find('#modal-close,#ok').on('click',that.okButtonClicked);
 		$('#modal-overlay').on('click', that.okButtonClicked);
 	};
 	

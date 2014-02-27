@@ -239,10 +239,9 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 					   },
 			};
 		    webservice.postJSON(url, options);
-		} 	
-	    setTimeout(function() {
-			refreshGuestCardScroll();
-		}, 300);
+		} 
+
+		refreshVerticalScroll('#cc-payment');
   };
   // to get the payments list json to filter on change of payment type
    this.getPaymentsList = function(){

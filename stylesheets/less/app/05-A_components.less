@@ -746,10 +746,6 @@
 				.wrapper { 
 					padding: 20px; 
 					position: relative;
-					
-					.no-content {
-						padding: 10% 20%;
-					}
 				}
 
 				/* Columns holder ***/
@@ -1224,7 +1220,7 @@
 			}
 
 			/* Reservation tabs nav ***/
-			&#reservation-listing {
+			&.reservations-tabs {
 				z-index: 99;
 				background: @rcardTexture2;
 				#pixel-to-percent > .width(280, 1868); /* 2048-180 = 1868 */
@@ -1292,6 +1288,7 @@
 				&.no-content { 
 					left: 0; 
 					width: 100%;
+					padding: 0 160px;
 				}
 			}
 		}
@@ -1815,8 +1812,8 @@
 								width: 80px;
 								#border-radius > .left-top(); 
 							}
-							&:nth-child(2) { width: 100px; }
-							&:nth-child(3) { width: 240px; }
+							&:nth-child(2) { width: 240px; }
+							&:nth-child(3) { width: 100px; }
 							&:last-child { #border-radius > .right-top(); }
 
 							
@@ -2509,8 +2506,14 @@
 						padding: 20px;
 						text-align: center;
 						background: @white;
+						overflow: hidden;
 						#border-radius > .rounded(0);
 						.box-shadow();
+
+						img {
+							max-width: 100%;
+							.square(auto);
+						}
 					}
 				}
 			}
@@ -2698,10 +2701,19 @@
 				 		}
 
 				 		&.no-content {
-				 			padding: 0;
-				 			#pixel-to-percent > .top-padding(350, 1536);
+				 			padding: 0 40px;
+				 			.calc-width(100, 10); /* %, px */
 
-				 			.h1 { margin: 0; }
+				 			.h1 { 
+				 				font-size: 24px;
+				 				line-height: 26px;
+				 				margin: 0 0 12px 0;
+				 			}
+
+				 			.h2 {
+				 				font-size: 20px;
+				 				line-height: 24px;
+				 			}
 				 		}
 			 		}
 			 	}
@@ -2794,11 +2806,10 @@
 			 	}
 
 			 	.iScrollVerticalScrollbar { .hide; }
-
-			 	&.no-content {
-			 		background: none;
-			 		#pixel-to-percent > .side-padding(100, 2048);
-			 		#pixel-to-percent > .top-padding(200, 1536);
+			 	
+			 	&.no-content { 
+			 		background: none; 
+			 		padding: 0;
 			 	}
 			}
 
@@ -2864,29 +2875,41 @@
 	#edit-reservation {
 
 		.edit-reservation-content {
-			position: absolute;
-			overflow: hidden;
+			padding: 20px;
+			width: 100%;
 			.show;
-			.calc-width(100, 40);
-			.calc-height(100, 90);
+			.calc-height(100, 50);
+			.float;
 
 			.reservation-calendar,
 			.reservation-updates {
-				position: relative;
-			 	height: 100%;
+				height: 100%;
 			 	overflow: hidden;
 			 	.pull-left;
+			 	.show;
 			}
 
 			.reservation-calendar {
 				width: 490px;
 				padding-right: 20px;
-				.show;
+				overflow: hidden;
+				position: relative;
 
-				.notice { padding: 5px 10px; }
+				/* Scrollable area ***/
+				.iScrollVerticalScrollbar {
+		 			top: 0;
+		 			bottom: 0;
+		 			right: 7px; 
+		 		}
+
+				.notice { 
+					line-height: 1em;
+					padding: 10px; 
+					margin: 5px 0 10px 0;
+				}
 
 				#reservation-calendar-legend {
-					margin-top: 5px;
+					padding-top: 10px;
 					border-top: 1px solid rgba(0,0,0,.1);
 					.float;
 
@@ -2895,8 +2918,7 @@
 						line-height: 22px;
 						vertical-align: middle;
 						text-transform: uppercase;
-						padding: 4px 0;
-						margin-bottom: 5px;
+						margin-bottom: 10px;
 						.size(22px, 33%);
 						.pull-left;
 
@@ -2928,12 +2950,15 @@
 							&.availability { border: 2px solid @green; .background(); }
 						}
 
+						&:nth-child(4),
+						&:nth-child(5) { margin-bottom: 0; }
 						&:nth-child(5) { .size(22px, 66%); }
 					}
 				}
 			}
 
 			.reservation-updates {
+				position: relative;
 				background: rgba(0,0,0,.1);
 				.calc-width(100, 490);
 				#border-radius > .rounded();
@@ -2965,14 +2990,27 @@
 				 		}
 				 	}
 
-				 	.subheading { text-transform: uppercase; }
+				 	.subheading { 
+				 		font-weight: 600;
+				 		text-transform: uppercase; 
 
-				 	.details {
-				 		padding: 20px;
-				 		.faux-clickable;
+				 		.button.blank {
+				 			display: inline-block;
+				 			line-height: 22px;
+				 			padding: 0;
+				 			margin: -3px 0 0 3px;
+				 			width: auto;
+				 		}
+				 	}
 
-				 		.unnasign-from-guest {
-				 			white-space: normal;
+					.details {
+						position: absolute;
+						top: 60px;
+						left: 20px;
+						.calc-width(100, 40);
+						.show;
+
+						.unnasign-from-guest {
 				 			text-align: center;
 				 			margin-bottom: 20px;
 				 		}
@@ -3020,46 +3058,72 @@
 								strong { font-weight: 400; }
 							}
 					 	}
-				 	}
 
-				 	#change-room {
-				 		position: relative;
-				 		height: 340px;
-				 		margin-top: 10px;
-				 		padding-right: 10px;
+					 	.rooms {
+					 		li {
+					 			margin: 0 0 10px 0;
 
-				 		li {
-				 			margin: 0 5px 10px 0;
+					 			.button {
+						 			text-align: left;
 
-				 			.button {
-					 			text-align: left;
+						 			.room-number {
+										margin-right: 20px;
 
-					 			.room-number {
-									margin-right: 20px;
-
-					 				&.ready { color: @green; }
-									&.not-ready { color: @red; }
-					 			}
+						 				&.ready { color: @green; }
+										&.not-ready { color: @red; }
+						 			}
+						 		}
 					 		}
-				 		}
+					 	}
+					 	
+						/* Room is available / Unassign room from antoher guest ***/
+					 	&#update-details,
+					 	&#unassign-room  { 
+					 		padding: 20px;
+					 		background: @white;
+					 		max-height: 320px;
+							.box-shadow();
+					 		.calc-height(100, 80);
 
-				 		.iScrollVerticalScrollbar {
-				 			top: 0;
-				 			bottom: 0;
-				 			right: 0; 
-				 		}
-			 		}
+					 		.wrapper { padding-bottom: 20px; }
+							.iScrollVerticalScrollbar {
+					 			top: 10px;
+					 			bottom: 10px;
+					 			right: 10px; 
+					 		}
+						}
 
+						/* Room not availabile ***/
+						&#change-room {
+							top: 90px;
+							padding: 0 10px 0 0;
+							.calc-height(100, 110);
+
+							.iScrollVerticalScrollbar {
+					 			top: 0;
+					 			bottom: 0;
+					 			right: 0; 
+					 		}
+						}
+					}
+					
 				 	&.hidden {
 						.opacity(0);
 						#fade > .out;
 					}
 
-					&.no-content {
+					&.no-content { 
 						position: static;
-						padding: 40% 15%;
 
-						.h1 { font-size: 30px; }
+						.h1 { 
+							font-size: 24px;
+				 			line-height: 26px;
+						}
+
+						.h2 {
+			 				font-size: 20px;
+			 				line-height: 24px;
+			 			}
 					}
 				}
 			}
@@ -3357,7 +3421,6 @@
 	.social-lobby-content {
 
 		/* Scrollable area ***/
-		> .no-content { #pixel-to-percent > .top-padding(250, 1536); }
 		> .wrapper { padding: 20px; }
 
 		/* Posts timeline **/
@@ -3707,8 +3770,6 @@
 	.messages-content,
 	.reviews-content {
 		.float;
-
-		> .no-content { #pixel-to-percent > .top-padding(300, 1536); }
 
 		.content-left,
 		.content-right {
@@ -4208,10 +4269,6 @@
 				}
 			}
 
-			.no-content {
-				padding-top: 40%;
-			}
-
 			/* Various actions in conversation ***/
 			.actions {
 				padding-top: 10px;
@@ -4293,10 +4350,17 @@
 					.show;
 				}
 			}
+
+			.no-content {
+				.info {
+					margin: 0;
+					padding: 0;
+					background: transparent;
+				}
+			}
 		}
 	}
-
-
+	
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE

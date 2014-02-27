@@ -11,15 +11,17 @@ var reservationCardNotesView = function(domRef){
     
   };
   this.fetchCompletedOfDeleteReservationNotes = function(data, requestParameters){
-	if (data.status == "success") {
-		var noteId = requestParameters['note_id'];
-	    $("#notes li#note"+noteId).remove();
-		refreshViewScroll();
-		sntapp.notification.showSuccessMessage("Note deleted", that.myDom);
-	}	  
+		if (data.status == "success") {
+			var noteId = requestParameters['note_id'];
+		  $("#notes li#note"+noteId).remove();
+			sntapp.notification.showSuccessMessage("Note deleted", that.myDom);
+
+			// Refresh scroller
+			refreshVerticalScroll();
+		}	  
   };
   
-  this.deleteReservationNotes = function(e){
+	this.deleteReservationNotes = function(e){
   	var isDelete = $(e.target).hasClass('icon-trash');
   	if(isDelete){
 	  	var noteId= $(e.target).attr('note_id');
@@ -36,7 +38,7 @@ var reservationCardNotesView = function(domRef){
   // function for closing the drawer if is open
   that.closeGuestCardDrawer = function(){
 	if($("#guest-card").hasClass('open')) {
-			$('#guest-card .ui-resizable-handle').trigger('click');
+		$('#guest-card .ui-resizable-handle').trigger('click');
 	}
   };
 
@@ -83,10 +85,11 @@ var reservationCardNotesView = function(domRef){
 			'</span></div><p>' + returnData.text + '</p></li>';	
 	    
 		that.myDom.find(("#reservation-notes #notes")).prepend($newNote);
-		refreshViewScroll();
 		sntapp.notification.showSuccessMessage("Note posted", that.myDom);
 		$("#post_notes textarea").val("");
-		
+
+		// Refresh scroller
+		refreshVerticalScroll();		
 	}
 	else{
 		sntapp.notification.showErrorList(data.errors, that.myDom);
@@ -97,5 +100,3 @@ var reservationCardNotesView = function(domRef){
 	  sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   };
 };
-
-
