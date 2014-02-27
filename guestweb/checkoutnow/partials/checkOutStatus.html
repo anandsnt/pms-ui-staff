@@ -14,7 +14,8 @@
 			</div>
 			
 			<div ng-show="posted && !success && !isCheckoutCompleted" class="checkout-status centeralign checkout-now-status">
-				Something went wrong, complete your check out by going to or call our front desk. You can also call the hotel at {{hotelPhone}}.
+				<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check out at our front desk.</div>
+				 <div>You can also call the hotel at {{hotelPhone}}.</div>
 			</div>
 			
 			<div ng-show="posted && success && isCheckoutCompleted" class="checkout-status centeralign checkout-now-status">

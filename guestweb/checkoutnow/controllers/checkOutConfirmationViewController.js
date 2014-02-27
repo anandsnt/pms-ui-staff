@@ -2,8 +2,6 @@
 (function() {
 	var checkOutConfirmationController = function($scope, confirmationService,$rootScope,$location) {
 		
-		$('#myModal').modal('hide')
-		$(".modal-backdrop").remove()
 
 		//if checkout is already done
 

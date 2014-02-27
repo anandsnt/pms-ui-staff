@@ -95,23 +95,14 @@
 			</div>
 		</div>
 
-						<!-- set up the modal to start hidden and fade in and out -->
-			<div id="myModal" class="modal">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						 <div class="modal-header "> <button type="button" class="close" data-dismiss="modal">&times;</button></div>
-						<!-- dialog body -->
-						<div class="modal-body">
-							
-							<div>
-								Something went wrong, complete your check out by going to or call our front desk. You can also call the hotel at {{hotelPhone}}.
-							</div>
-						</div>
-						<!-- dialog buttons -->
-						<div class="modal-footer centeralign"><button type="button" ng-click="reloadPage()" class="btn btn-primary">Retry</button></div>
-					</div>
-				</div>
-			</div>
+<!--alert for error response -->
+		<alert close="closeAlert()" ng-show="showAlert">
+			Something went wrong, complete your check out by going to or call our front desk. You can also call the hotel at {{hotelPhone}}.
+			<br/><br/>
+			<div class="centeralign"><button type="button" ng-click="reloadPage()" class="btn btn-primary">Retry</button></div>
+		</alert>
+	
+
 
 	</div>
 </div>

@@ -12,21 +12,21 @@
 	
 
 		$scope.showBackButtonImage = true
+		$scope.showAlert = false;
 
-
-		$scope.hidePopup = function (){
-
-			$('#myModal').modal('hide')
-			$(".modal-backdrop").remove()
-		}
-
-		$scope.hidePopup();
 
 		//reload page
 
 		$scope.reloadPage=  function (){
+			  $scope.showAlert = false;
 			  $scope.fetch();
+
 		}
+		$scope.closeAlert = function(){
+
+			$scope.showAlert = false
+		}
+
 
 		$scope.fetch = function(){
 		
@@ -40,7 +40,7 @@
 
 			}
 			else
-				$('#myModal').modal('show')
+				$scope.showAlert = true;
 
 		});
 		}
