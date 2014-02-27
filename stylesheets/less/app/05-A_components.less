@@ -1707,8 +1707,7 @@
 								width: 80px;
 								#border-radius > .left-top(); 
 							}
-							&:nth-child(2) { width: 240px; }
-							&:nth-child(3) { width: 100px; }
+							&:nth-child(2) { width: 120px; }
 							&:last-child { #border-radius > .right-top(); }
 
 							
@@ -2396,18 +2395,32 @@
 					}
 
 					/* Signature **/
-					.signature-wrapper {
-						margin-top: -10px;
-						padding: 20px;
-						text-align: center;
+					&.signature-wrapper {
+						padding: 10px;
+						line-height: 1em;
 						background: @white;
-						overflow: hidden;
-						#border-radius > .rounded(0);
+						#border-radius > .rounded();
 						.box-shadow();
 
-						img {
-							max-width: 100%;
-							.square(auto);
+						figure {
+							background: #fff;
+							text-align: center;
+							overflow: hidden;
+							.size(200px, 100%);
+							.show;
+
+							img { 
+								max-width: 100%;
+								max-height: 100%;
+							}
+
+							&.signature-zest {
+								img { height: 100%; }
+							}
+
+							&.signature-rover {
+								img { height: auto; }
+							}
 						}
 					}
 				}

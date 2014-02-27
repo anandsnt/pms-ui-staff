@@ -7,13 +7,7 @@
 		$location.path('/checkOutNowSuccess')
 
 
-
-		$scope.reloadPage=  function (){
-			  $scope.fetch();
-		}
-
 		$scope.showBill = false;
-		$scope.showAlert = false;
 
 		// fecth text details to display
 
@@ -21,18 +15,9 @@
 			$scope.billDisplayDetails = billDisplayDetails;
 		});
 
-		$scope.closeAlert = function(){
-
-			$scope.showAlert = false
-		}
-
 
 		//fetch data to display
 
-		$scope.fetch = function (){
-
-
-		
 		BillService.fetchBillData().then(function(billData) {
 			$scope.billData = billData.data.bill_details;
 
@@ -40,13 +25,9 @@
 		if($scope.billData)
 		 	$scope.optionsAvailable = true;
 		else
-			$scope.showAlert = true;
+			$location.path('/serverError')
+	});
 		
-			
-		});
-
-	  }
-	  $scope.fetch();
 
 		
 	};
