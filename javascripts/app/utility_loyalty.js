@@ -1,12 +1,14 @@
-$(function() {
-	ffProgramsList = [];
-	hlProgramsList = [];
-  	var $url_ffp = 'staff/user_memberships/get_available_ffps.json';
-		$url_hlp = 'staff/user_memberships/get_available_hlps.json';
-				
-	fetchLoyaltyProgramData($url_ffp,'ffp');
-	fetchLoyaltyProgramData($url_hlp,'hlp');
-});
+function bindLoyaltyUtilFunctions(){
+	$(function() {
+		ffProgramsList = [];
+		hlProgramsList = [];
+	  	var $url_ffp = 'staff/user_memberships/get_available_ffps.json';
+			$url_hlp = 'staff/user_memberships/get_available_hlps.json';
+					
+		fetchLoyaltyProgramData($url_ffp,'ffp');
+		fetchLoyaltyProgramData($url_hlp,'hlp');
+	});
+} 
 
 var $selectedLoyaltyProgram ="";
 var $selectedLoyaltyType ="";
