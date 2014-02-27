@@ -121,12 +121,15 @@ snt.config(function ($httpProvider) {
 	$httpProvider.interceptors.push('authInterceptor');
 });
 
-
 snt.run(function($rootScope,$location,$http){
     $rootScope.$on("$locationChangeStart", function(event, next, current) {
     
-    if(next === current)
-    	$location.path('/')
+     if(next === current){
+     	 if (!$rootScope.isLateCheckoutAvailable) 
+		    $location.path('/checkOutNow')
+		else
+			$location.path('/')
+	}
  
 });
 });
