@@ -259,6 +259,12 @@
 		&:active { 
 			.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)");
 		}
+
+		&.no-auto-bind,
+		&.hover-hand {
+			&:hover,
+			&:active { .box-shadow(); }
+		}
 	}
 
 	.faux-clickable {

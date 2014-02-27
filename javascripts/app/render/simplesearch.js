@@ -3,7 +3,7 @@
 
 // Capitalize first letter
 $.fn.capitalize = function() {
-    $(this[0]).bind('keyup paste', function(event) {
+    $(this[0]).bind('keyup change paste', function(event) {
         var box = event.target;
         var txt = $(this).val();
         var start = box.selectionStart;

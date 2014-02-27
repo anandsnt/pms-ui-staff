@@ -18,7 +18,9 @@
 		//reload page
 
 		$scope.reloadPage=  function (){
+			  $scope.showAlert = false;
 			  $scope.fetch();
+
 		}
 		$scope.closeAlert = function(){
 
