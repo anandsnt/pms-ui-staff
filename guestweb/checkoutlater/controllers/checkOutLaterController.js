@@ -12,40 +12,19 @@
 	
 
 		$scope.showBackButtonImage = true
-		$scope.showAlert = false;
 
-
-		//reload page
-
-		$scope.reloadPage=  function (){
-			  $scope.showAlert = false;
-			  $scope.fetch();
-
-		}
-		$scope.closeAlert = function(){
-
-			$scope.showAlert = false
-		}
-
-
-		$scope.fetch = function(){
-		
 		LateCheckOutChargesService.fetch().then(function(charges) {
 			$scope.charges = charges;
 
 
-			if($scope.charges.length > 0){
+			if($scope.charges.length > 0)
 				$scope.optionsAvailable = true;
-				$scope.hidePopup();
-
-			}
 			else
-				$scope.showAlert = true;
+				$location.path('/serverError');
 
 		});
-		}
+		
 
-		$scope.fetch();
 	};
 
 	var dependencies = [
