@@ -17,6 +17,7 @@ var PostChargeModel = function(callBack) {
 		
 		// Append bill number on modal while click +ADD from bill card page.
 		this.origin = this.params.origin;
+				
 		if(this.origin == views.BILLCARD){
 			that.myDom.find("#select-bill-number").hide();
 			that.myDom.find(".h2.message").append(this.params.bill_number);
@@ -30,7 +31,7 @@ var PostChargeModel = function(callBack) {
 		that.myDom.find("#items-listing").on("click", that.clickItemList);
 		that.myDom.find("#items-summary").on("click", that.clickItemListSummary);
 		that.myDom.find("#charge-groups").on("change", that.changedChargeGroup);
-  		that.myDom.find('#query').on('keyup paste', that.queryEntered);
+  		that.myDom.find('#query').on('keyup change paste', that.queryEntered);
   		that.myDom.find('#clear-query').on('click', that.clearResults);
 		that.myDom.find('#post').on('click', that.postCharge);
 		that.myDom.find('#numpad').on('click', that.clickedNumberPad);
@@ -390,6 +391,9 @@ var PostChargeModel = function(callBack) {
 	    data.reservation_id = that.reservation_id;
 	    var bill_number = $("#select-bill-number").find('option:selected').val();
 	    
+		// Fetch the total balance unless originating from the bill card
+		data.fetch_total_balance = that.origin != views.BILLCARD;
+				
 	    data.bill_no = (that.params.bill_number === undefined) ? bill_number :that.params.bill_number;
 	    data.total = that.myDom.find("#total-charge .value").text();
 	    data.items = [];

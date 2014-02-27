@@ -10,6 +10,7 @@
 
 		$scope.reloadPage=  function (){
 			  $scope.fetch();
+			  $scope.showAlert = false;
 		}
 
 		$scope.showBill = false;
