@@ -69,10 +69,10 @@ var RegistrationCardView = function(viewDom) {
 	this.delegateEvents = function() {
 		that.myDom.unbind('click');
 		that.myDom.on('click', that.myDomClickHandler);
-		that.myDom.find("#signature").on('mouseover', function() {
+		that.myDom.find("#signature").on('mouseover touchstart', function() {
 			disableVerticalScroll('#registration-content');
 		});
-		that.myDom.find("#signature").on('mouseout', function() {
+		that.myDom.find("#signature").on('mouseout touchend', function() {
 			enableVerticalScroll('#registration-content');
 		});
 	};
