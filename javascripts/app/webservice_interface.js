@@ -150,8 +150,8 @@ var WebServiceInterface = function(){
        if(typeof successCallBack === 'undefined'){
                successCallBack = null;
        }       
-       if(typeof failCallBack === 'undefined'){
-               failCallBack = null;
+       if(typeof failureCallBack === 'undefined'){
+               failureCallBack = null;
        } 
        if(typeof async === 'undefined'){
                async = true;
