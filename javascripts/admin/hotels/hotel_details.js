@@ -94,19 +94,20 @@ var HotelDetailsView = function(domRef) {
 	this.pageshow = function() {
 		if (that.currentView == "snt-admin-view") {
 			//Since we are using the same page for hotel admin and snt admin. Some fields are non editable for hotel admin
-			$('input[readonly="readonly"]').removeAttr("readonly");
+			that.myDom.find('input[readonly="readonly"]').removeAttr("readonly");
 			//Since these values are calculated using gem file
-			$('#hotel-longitude, #hotel-latitude').attr("readonly", true);
-			$(".registration-for-rover").remove();
+			that.myDom.find('#hotel-longitude, #hotel-latitude').attr("readonly", true);
+			that.myDom.find(".registration-for-rover").remove();
+			that.myDom.find("#hotel-logo-div").remove();
 
 		} else {
-			$('#mli-hotel-code').parent('.entry').remove();
-			$('#mli-chain-code').parent('.entry').remove();
-			$("#mli-certificate-upload").remove();
-			$("#external-mappings").remove();
+			that.myDom.find('#mli-hotel-code').parent('.entry').remove();
+			that.myDom.find('#mli-chain-code').parent('.entry').remove();
+			that.myDom.find("#mli-certificate-upload").remove();
+			that.myDom.find("#external-mappings").remove();
 			that.myDom.find(".hotel-pms-type").remove();
 			that.myDom.find(".is-pms-tokenized").remove();
-			$(".re-invite").remove();
+			that.myDom.find(".re-invite").remove();
 		}
 	};
 	//to update or create new hotel
@@ -119,7 +120,7 @@ var HotelDetailsView = function(domRef) {
 			isPmsTokenized = true;
 		}
 
-		var mliHotelCode = $('#mli-hotel-code').val();
+		var mliHotelCode = that.myDom.find('#mli-hotel-code').val();
 		var mliChainCode = $('#mli-chain-code').val();
 		var hotelFromAddress = $('#hotel_from_address').val();
 		var hotelAutoLogoutTime = $.trim(that.myDom.find("#auto-logout").val());
@@ -249,14 +250,14 @@ this.gotoPreviousPage = function() {
 
 this.readCertificate = function(input, type) {
 		if(type == "logo"){
-			$('#hotel-logo-preview').attr('changed', "changed");
+			that.myDom.find('#hotel-logo-preview').attr('changed', "changed");
 		}  	
         if (input.files && input.files[0]) {
            var reader = new FileReader();
            reader.onload = function(e) {
            		//console.log(e.target.result);
            		if(type == "logo"){
-					$('#hotel-logo-preview').attr('src', e.target.result);
+					that.myDom.find('#hotel-logo-preview').attr('src', e.target.result);
 				} 
                that.fileContent = e.target.result;
            };
