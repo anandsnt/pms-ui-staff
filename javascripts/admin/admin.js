@@ -229,9 +229,19 @@ var setUpAdmin = function(viewDom, delegate) {
 
 
 
+	// Change hotel
+	$(document).on('click', '#change-hotel h1', function(e){
+		$('#change-hotel').toggleClass('open');
+	});
 
-
-
+	$('#content').css('opacity','0').delay(200).animate({opacity:1},400);
+// Keep app in fullscreen mode
+   	var isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
+   	if (isTablet) {
+		$('a:not(.nav-toggle):not(.edit-data-inline):not(.add-data-inline)').click(function(e){
+			e.preventDefault();
+		});
+	}	
 	// Dashboard tabs
 		$('.tabs').tabs({
 			beforeActivate: function( event, ui ) {
