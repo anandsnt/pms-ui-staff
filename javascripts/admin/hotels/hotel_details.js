@@ -16,14 +16,39 @@ var HotelDetailsView = function(domRef) {
 		that.myDom.find('#mli-certificate').on('change', function(){
   			that.readCertificate(this);
   		});
-  		// that.myDom.find('#notification-message').on('click', function(e){
-			// var target = $(e.target);
-			// if(target.hasClass("close-btn")){
-				// sntapp.notification.hideMessage(that.myDom);
-			// }
-	    // });
-
+		that.myDom.find('#test-mli-connectivity').on('click', that.testMliConnectivity);
 	};
+	
+    this.testMliConnectivity = function(event) {
+		var postData = {
+			"mli_chain_code": that.myDom.find("#mli-chain-code").val(),
+			"mli_hotel_code": that.myDom.find("#mli-hotel-code").val(),
+			"mli_pem_certificate": that.fileContent
+		};
+
+		var url = '/admin/hotels/test_mli_settings';
+	 
+		var webservice = new WebServiceInterface();
+		
+		var options = { 
+			requestParameters: postData,
+			successCallBack: that.fetchCompletedOfConnectionTest,
+			failureCallBack: that.fetchFailedOfConnectionTest,
+			loader: 'blocker'
+		};
+		
+		webservice.postJSON(url, options);    
+    };
+	
+    // To handle success on MLI connection test API
+    this.fetchCompletedOfConnectionTest = function(data, params) {
+    	sntapp.notification.showSuccessMessage("Connection Valid", that.myDom, '', true);  		
+    };
+	
+    // To handle failure on MLI connection test API
+    this.fetchFailedOfConnectionTest = function(errorMessage, params){
+    	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
+    };
   
 	// function to view external mappings
 	this.renderExternalMappings = function() {
