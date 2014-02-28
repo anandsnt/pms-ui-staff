@@ -131,7 +131,7 @@ var HotelExternalMappingsView = function(domRef){
   this.deleteItem = function(event){
   	event.preventDefault();
   	var postData = {};
-  	var selectedId = $(event.target).attr("id");
+  	var selectedId = that.myDom.find(event.target).attr("id");
   	var url = '/admin/external_mappings/'+selectedId+'/delete_mapping';
   	postData.value = selectedId;
 	var webservice = new WebServiceInterface();		
