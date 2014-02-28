@@ -126,4 +126,27 @@ var HotelExternalMappingsView = function(domRef){
 	sntapp.activityIndicator.hideActivityIndicator();
 	sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
   };
+  
+   //function to delete mapping
+  this.deleteItem = function(event){
+  	event.preventDefault();
+  	var postData = {};
+  	var selectedId = $(event.target).attr("id");
+  	var url = '/admin/external_mappings/'+selectedId+'/delete_mapping';
+  	postData.value = selectedId;
+	var webservice = new WebServiceInterface();		
+	var options = {
+			   requestParameters: postData,
+			   successCallBack: that.fetchCompletedOfDelete,
+			   loader:"BLOCKER",
+			   successCallBackParameters: {"selectedId": selectedId}
+	};
+	webservice.getJSON(url, options);
+  };
+   //to remove deleted row and show message
+  this.fetchCompletedOfDelete = function(data, successParams){
+	  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
+	  that.myDom.find("#mapping_row_"+successParams['selectedId']).html("");
+
+  };
 };
