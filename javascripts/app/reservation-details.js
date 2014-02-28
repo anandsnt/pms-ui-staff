@@ -1,11 +1,33 @@
 var reservationDetailsView = function(domRef) {
 	BaseView.call(this);
-	var that = this;
+	
 	this.myDom = domRef;
 	this.reservation_id = getReservationId();
+	var that = this;
 	this.pageinit = function() {
-
+		that.updateTimelineIcon();
 	};
+
+	this.updateTimelineIcon = function(){
+		var currentReservation = that.myDom.attr('id').split('-')[1];
+		var reservationStatus = that.myDom.data('reservation-status');
+		var guestStatusIcon = that.getGuestStatusMapped(reservationStatus);
+		var activeTimeline = $('#reservation-card').attr('data-current-timeliine');
+		$("#"+activeTimeline+" .reservations-tabs ul li").each(function(index){
+			if($(this).attr("data-confirmation-num") == currentReservation ){
+				var guestIconHtml = $(this).html();
+		        var guestIconHtmlMod = guestIconHtml.replace("arrival", guestStatusIcon);
+		        var guestIconHtmlMod = guestIconHtmlMod.replace("check-in", guestStatusIcon);
+		        var guestIconHtmlMod = guestIconHtmlMod.replace("inhouse", guestStatusIcon);
+		        var guestIconHtmlMod = guestIconHtmlMod.replace("departed", guestStatusIcon);
+		        var guestIconHtmlMod = guestIconHtmlMod.replace("check-out", guestStatusIcon);
+		        var guestIconHtmlMod = guestIconHtmlMod.replace("cancel", guestStatusIcon);
+		        var guestIconHtmlMod = guestIconHtmlMod.replace("no-show", guestStatusIcon);
+		        $(this).html(guestIconHtmlMod);
+			}
+		});
+	};
+
 	this.delegateEvents = function() {
 		that.myDom.find('#reservation_newspaper').on('change', that.setNewspaperPreferance);
 		//unbind the previous object's event binding (currently object is not destorying/event is not unbinding).
@@ -57,56 +79,6 @@ var reservationDetailsView = function(domRef) {
 	    if(getParentWithSelector(event, "#nights-btn")) {
 	    	return that.gotToChangeDatesScreen(event);
 	    }
-
-		/*switch(target_id){
-			case 'wakeup-time': {				
-				return that.setWakeUpCallModal(event);
-				break;
-			}
-			case 'room-number': {
-				return that.roomNumberClicked(event);
-				break;
-			}
-			case 'add-keys': {
-				//TODO: check parent's id
-				return that.addKeysModal(event);
-				break;
-			}
-			case 'upgrade-btn': {
-				return that.roomUpgradesClicked(event);
-				break;
-			}
-			case 'reservation-checkout': {
-				//TODO: check parent's class
-				return that.clickedCheckoutButton();
-				break;
-			}
-			case 'reservation-view-bill': {
-				return that.clickedViewBillButton(event);
-				break;
-			}
-			case 'post-charge': {
-				return that.clickedPostChargeButton();
-				break;
-			}
-			case 'stay-card-total-stay-cost': {
-				return that.clickedTotalStayCost();
-				break;
-			}
-			case 'reservation-checkin': {
-				return that.validateEmailAndPhone(event);
-				break;
-			}	
-			case 'nights-btn': {
-				return that.gotToChangeDatesScreen(event);
-				break;
-			}
-			//
-			default: {
-
-				break;
-			}
-		}*/
 	};
 
 		
@@ -301,6 +273,27 @@ var reservationDetailsView = function(domRef) {
 			//sntapp.activityIndicator.showActivityIndicator("blocker");
 			that.goToBillCardView("CheckinButton");
 		}
+	};
+
+	//Map the reservation status to the view expected format
+	this.getGuestStatusMapped = function(reservationStatus){
+		var viewStatus = "";
+		if("RESERVED" == reservationStatus){
+			viewStatus = "arrival";
+		}else if("CHECKING_IN" == reservationStatus){
+		    viewStatus = "check-in";
+		}else if("CHECKEDIN" == reservationStatus){
+		    viewStatus = "inhouse";
+		}else if("CHECKEDOUT" == reservationStatus){
+		    viewStatus = "departed";
+		}else if("CHECKING_OUT" == reservationStatus){
+		    viewStatus = "check-out";
+		}else if("CANCELED" == reservationStatus){
+		    viewStatus = "cancel";
+		}else if(("NOSHOW" == reservationStatus)||("NOSHOW_CURRENT" == reservationStatus)){
+		    viewStatus = "no-show";
+		}
+		return viewStatus;
 	};
 
 };
