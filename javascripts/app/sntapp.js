@@ -1,3 +1,11 @@
+var DEBUG_LEVEL = 5; 
+
+var is_level_higher = function(level){
+    return true;
+}
+function qlog(message, level){
+    //if (is_level_higher(level)) console.log(message);
+}
 
 var app = function(){
     var that = this;
@@ -209,6 +217,8 @@ var app = function(){
         that.cardSwipeDebug = true; // Mark it as true to debug cardSwype opertations
         that.cardReader = new CardOperation();
     };
+
+    
 
     this.ismob = (function(navigator) { 
       if( navigator.userAgent.match(/Android/i)
