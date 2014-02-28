@@ -6,6 +6,7 @@ var RegistrationCardView = function(viewDom) {
 	this.url = "ui/checkinSuccess";
     this.reviewStatus = [];
     this.isAllBillsReviewed = false;
+    this.isEarlyDepartureFlag = "false";
     
 	this.pageinit = function() {
 		this.setBillTabs();
@@ -395,6 +396,7 @@ var RegistrationCardView = function(viewDom) {
 		e.stopImmediatePropagation();
 
 		var email = $("#gc-email").val();
+
 		// If email is null then popup comes to enter email
 		if (email == "") {
 			var validateCheckoutModal = new ValidateCheckoutModal(that.completeCheckout,e);
@@ -416,8 +418,15 @@ var RegistrationCardView = function(viewDom) {
 			return;
 		}
 		
-		var required_signature_at = that.myDom.find("#complete-checkout-button").attr('data-required-signature');
+		// If reservation status in INHOUSE - show early checkout popup
+		var reservationStatus = that.myDom.find("#complete-checkout-button").attr('data-reseravation-status');
+		if(reservationStatus == "CHECKEDIN" && that.isEarlyDepartureFlag == "false"){
+			var earlyDepartureModal = new EarlyDepartureModal(that.completeCheckout,that);
+			earlyDepartureModal.initialize();
+			return;
+		}
 		
+		var required_signature_at = that.myDom.find("#complete-checkout-button").attr('data-required-signature');
 		var email = $("#gc-email").val();
 		var signature = JSON.stringify(that.myDom.find("#signature").jSignature("getData", "native"));
 		var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked") ? 1 : 0;
