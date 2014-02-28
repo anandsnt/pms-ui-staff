@@ -15,7 +15,7 @@ var HotelExternalMappingsView = function(domRef){
   	that.myDom.find('#go_back').on('click', that.goBack); 
   	that.myDom.on('change', that.filterExternalMappings); 
   	that.myDom.find('#add-new-external-mapping').on('click', that.addNewExternalMapping);
-  	that.myDom.find('.edit-data-inline-external-mapping').on('click', that.editExternalMapping);
+  	// that.myDom.find('.edit-data-inline-external-mapping').on('click', that.editExternalMapping);
   	// to get all external mappings to do internal filtering
   	//that.getAllExternalMappings();
   };
