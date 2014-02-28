@@ -9,11 +9,12 @@
     <script type="text/javascript" src="js/router.js"></script>
 	<script type="text/javascript" src="js/dashboardController.js"></script>
 	<script type="text/javascript" src="js/searchController.js"></script>
-	<body ng-app="sntRover">
-			common
-  		<button ui-sref="dashboard">Dashboard</button>
-    	<button ui-sref="search">Search</button>
-		<div ui-view></div>
+	<body ng-app="sntRover" id="app-page">
+		<div role="application" class="container">	common
+	  		<button ui-sref="dashboard">Dashboard</button>
+	    	<button ui-sref="search">Search</button>
+			<div ui-view></div>
+	    </div>		
 	</body>
 	
 
