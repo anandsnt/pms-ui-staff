@@ -7,7 +7,6 @@ var HotelDetailsView = function(domRef) {
     this.fileContent = "";
 
 	this.delegateEvents = function() {
-		console.log("delegate")
 		that.myDom.find('#save').on('click', ["update"], that.updateOrAddHotel);
 		that.myDom.find('#save_new_hotel').on('click', ["create"], that.updateOrAddHotel);
 		that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView);
@@ -93,9 +92,7 @@ var HotelDetailsView = function(domRef) {
 		that.myDom.html("");
 	};
 	this.pageshow = function() {
-		console.log("page show")
 		if (that.currentView == "snt-admin-view") {
-			console.log("snt admin view")
 			//Since we are using the same page for hotel admin and snt admin. Some fields are non editable for hotel admin
 			that.myDom.find('input[readonly="readonly"]').removeAttr("readonly");
 			//Since these values are calculated using gem file
@@ -104,7 +101,6 @@ var HotelDetailsView = function(domRef) {
 			that.myDom.find("#hotel-logo-div").remove();
 
 		} else {
-			console.log("hotel admin view")
 			that.myDom.find('#mli-hotel-code').parent('.entry').remove();
 			that.myDom.find('#mli-chain-code').parent('.entry').remove();
 			that.myDom.find("#mli-certificate-upload").remove();

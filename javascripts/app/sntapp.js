@@ -41,7 +41,6 @@ var app = function(){
         viewDom.addClass("current");
         
         var viewObject = that.getViewInstance(viewDom);
-          console.log("render vieww")
      // CR Sajith: if viewObject is undefined or nil, show a predefined error message & return.
         try{
 
@@ -49,7 +48,6 @@ var app = function(){
                 viewObject.viewParams = viewParams;
             }
             viewObject.initialize();
-            console.log("before page show")
             viewObject.pageshow();
 
         }
