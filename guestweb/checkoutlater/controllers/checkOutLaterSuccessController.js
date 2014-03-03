@@ -17,6 +17,8 @@
 		$scope.reservationID = $rootScope.reservationID;
 		$scope.id = id;
 
+		$rootScope.netWorkError = false;
+
 		// already opted for late checkout, send him home with a msg
 		$scope.returnHome = false;
 
@@ -41,8 +43,16 @@
 				return charge;
 			};
 		});
+		$rootScope.$watch('netWorkError',function(){
+
+			if($rootScope.netWorkError)
+				$scope.posted = true;
+		});
+
 		
 		var posting = function() {
+
+
 			var deferred = $q.defer();
 			var reservation_id = $scope.reservationID;
 			var url = '/guest_web/apply_late_checkout';
@@ -51,6 +61,7 @@
 				deferred.resolve(response);
 			}).error(function(){
 				deferred.reject();
+				$rootScope.netWorkError = true;
 			});
 				
 			return deferred.promise;
