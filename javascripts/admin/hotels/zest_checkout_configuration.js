@@ -63,6 +63,7 @@ var ZestCheckOutConfiguration = function(domRef){
   * Method for showing next page (based on href)
   */
   this.gotoNextPage =  function(event){  
+  		event.preventDefault();
   		var target = $(event.target);	  	
         var href = target.attr("href");
   	    var viewParams = {};	
