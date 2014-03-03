@@ -5,9 +5,20 @@
 				<logo-image></logo-image>
 			</div>
 		</div>
+		<!-- show posting message -->
+		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			Your request is being processed, this may take a few seconds..... please wait!
+		</div>
+
+		<!-- show error message -->
+
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+			<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check out at our front desk.</div>
+			<div>You can also call the hotel at {{hotelPhone}}.</div>
+		</div>
 
 		<!-- contentarea starts here-->
-		<div class="container">
+		<div class="container" ng-hide="isFetching || netWorkError">
 			<!-- top section starts here-->
 			<div class="row check-inout-wrapper">
 				<div class="col-md-6 headtext centeralign" ng-show="optionsAvailable">
@@ -23,10 +34,10 @@
 								<div class="row">
 									<svg viewBox="0 0 220 220" preserveAspectRatio="none">
 										<circle cx="50%" cy="50%" r="45%" stroke="white" stroke-width="7" fill="none"/>
-											<text x="50%" y="65%" fill="white">
-												<tspan class="time">{{ charge.time }}</tspan>
-												<tspan class="ap">{{ charge.ap }}</tspan>
-											</text>
+										<text x="50%" y="65%" fill="white">
+											<tspan class="time">{{ charge.time }}</tspan>
+											<tspan class="ap">{{ charge.ap }}</tspan>
+										</text>
 									</svg> 
 								</div>
 								<div class="row late-charge">
@@ -42,9 +53,9 @@
 			<div class="row">
 				<p class="centeralign  no-thanks" ng-show="optionsAvailable">
 					<a href="#/">no, thanks<a>
-				</p>
-			</div>
+					</p>
+				</div>
 
+			</div>
 		</div>
 	</div>
-</div>

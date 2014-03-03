@@ -6,16 +6,30 @@
 		//if checkout is already done
 
  		if ($rootScope.isCheckedout) 
-		$location.path('/checkOutNowSuccess')
+			$location.path('/checkOutNowSuccess');
+
+
+		$rootScope.netWorkError = false;
 
 		// fecth text details to display
 		
+		$scope.isFetching = true;
 		confirmationService.fetch().then(function(details) {
 			$scope.details = details;
+			$scope.isFetching = false;
+			$rootScope.netWorkError =false;
 			
 		});
 
-		$scope.footerMessage1 = !$rootScope.isLateCheckoutAvailable ? 'Late check-out is not available.' :'' 
+		//watch for any network errors
+
+		$rootScope.$watch('netWorkError',function(){
+
+			if($rootScope.netWorkError)
+				$scope.isFetching = false;
+		});
+
+		$scope.footerMessage1 = !$rootScope.isLateCheckoutAvailable ? 'Late check-out is not available.' :'' ;
 
 	};
 
