@@ -1,42 +1,50 @@
 (function() {
-	var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location,$window) {
+	var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location) {
 
-		//if chekout is already done
+	//if chekout is already done
 		
  		if ($rootScope.isCheckedout) 
-		$location.path('/checkOutNowSuccess')
+		 $location.path('/checkOutNowSuccess');
 
 	// if checkout later in unavailable
 		else if (!$rootScope.isLateCheckoutAvailable) 
-		 $location.path('/checkOutNow')
+		 $location.path('/checkOutNow');
 	
 
-		$scope.showBackButtonImage = true
+		$scope.showBackButtonImage = true;
+		$rootScope.netWorkError = false;
+		$rootScope.isFetching = true;
 
 
-		$('#myModal').modal('hide')
+	//watch for any network errors
 
-		//reload page
+		$rootScope.$watch('netWorkError',function(){
 
-		$scope.reloadPage=  function (){
-			  $window.location.reload();
-		}
-		
+			if($rootScope.netWorkError)
+				$scope.isFetching = false;
+		});
+
+    // fetch details
+
 		LateCheckOutChargesService.fetch().then(function(charges) {
 			$scope.charges = charges;
+			$rootScope.netWorkError = false;
+			$scope.isFetching = false;
 
 
-			if(charges.length > 0)
+			if($scope.charges.length > 0)
 				$scope.optionsAvailable = true;
 			else
-				$('#myModal').modal('show')
+				$location.path('/serverError');
 
 		});
+		
+
 	};
 
 	var dependencies = [
 		'$scope',
-		'LateCheckOutChargesService','$rootScope','$location','$window',
+		'LateCheckOutChargesService','$rootScope','$location',
 		checkOutLaterController
 	];
 

@@ -1,47 +1,54 @@
 (function() {
-	var checkOutBalanceController = function($scope, BillService,$rootScope,$location,$route) {
+	var checkOutBalanceController = function($scope, BillService,$rootScope,$location) {
 
 		//if checkout is already done
 		
  		if ($rootScope.isCheckedout) 
-		$location.path('/checkOutNowSuccess')
+		 $location.path('/checkOutNowSuccess');
 
-		$('#myModal').modal('hide')
-
-		$scope.reloadPage=  function (){
-			 $route.reload();
-		}
 
 		$scope.showBill = false;
+		$rootScope.netWorkError = false;
 
 		// fecth text details to display
 
+
+		$scope.isFetching = true;
+
 		BillService.fetchDisplayDetails().then(function(billDisplayDetails) {
 			$scope.billDisplayDetails = billDisplayDetails;
+			$scope.isFetching = false;
+			$rootScope.netWorkError =false;
 		});
 
+		//watch for any network errors
+
+		$rootScope.$watch('netWorkError',function(){
+
+			if($rootScope.netWorkError)
+				$scope.isFetching = false;
+		});
+
+
 		//fetch data to display
-		
+
 		BillService.fetchBillData().then(function(billData) {
 			$scope.billData = billData.data.bill_details;
 
 
-		if($scope.billData){
-			$scope.optionsAvailable = true;
-			$('#myModal').modal('hide')
-		}
+		if($scope.billData)
+		 	$scope.optionsAvailable = true;
 		else
-			$('#myModal').modal('show')
-			
-		});
-
+			$location.path('/serverError');
+	});
+		
 
 		
 	};
 
 	var dependencies = [
 		'$scope',
-		'BillService','$rootScope','$location','$route',
+		'BillService','$rootScope','$location',
 		checkOutBalanceController
 	];
 

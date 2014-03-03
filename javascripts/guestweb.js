@@ -4,6 +4,7 @@
 //=require ../guestweb/static/lib/js/bootstrap.min.js
 //=require ../guestweb/static/lib/js/angular.min.js
 //=require ../guestweb/static/lib/js/angular-route.js
+//=require ../guestweb/static/lib/js/ui-bootstrap-tpls-0.10.0.js
 //= require_tree ../guestweb/scripts
 //= require_tree ../guestweb/shared
 //= require_tree ../guestweb/checkoutlater

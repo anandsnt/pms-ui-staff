@@ -5,7 +5,6 @@ var Search  = function(domRef){
 
     
   this.pageinit = function(){
-
     that.currentQuery = "";
     that.fetchResults = [];
     that.preloadedResults = [];
@@ -189,6 +188,8 @@ var Search  = function(domRef){
   };
 
   this.fetchCompletedOfFetchSearchData = function(response, requestParams) {
+  		sntapp.activityIndicator.hideActivityIndicator('get-json-web-calling');
+  		
       var searchType = "";
       $("#search-results").empty().removeAttr('style').removeClass('hidden');
       $('#preloaded-results').addClass('hidden');
@@ -252,14 +253,14 @@ var Search  = function(domRef){
     
     var webservice = new WebServiceInterface();
     var data = {fakeDataToAvoidCache: new Date()}; // fakeDataToAvoidCache is iOS Safari fix
-    var successCallBackParams = {'type': type};
+    var successCallBackParams = {'type': type};    
     var options = {
          requestParameters: data,
          successCallBack: that.fetchCompletedOfFetchSearchData,
          successCallBackParameters: successCallBackParams,
          failureCallBack: that.fetchFailedOfFetchSearchData,
-         loader: 'BLOCKER',
       }; 
+	sntapp.activityIndicator.showActivityIndicator('blocker', 'get-json-web-calling');      
     webservice.getJSON(url, options);
   
   };
@@ -367,7 +368,6 @@ var Search  = function(domRef){
      };*/
 
      this.displayFilteredResults = function(searchResults, $query){
-     	
       if($query == ""){
         that.displaySearchResults(searchResults,$query);
         return false;
@@ -397,7 +397,6 @@ var Search  = function(domRef){
                 $('#search-results').removeAttr('style').append(value).highlight($query);
               });
        sntapp.activityIndicator.hideActivityIndicator('loader-html-appending');
-
         // Refresh scroll
         refreshVerticalScroll('#search');
       }

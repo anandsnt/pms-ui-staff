@@ -15,7 +15,7 @@ var HotelExternalMappingsView = function(domRef){
   	that.myDom.find('#go_back').on('click', that.goBack); 
   	that.myDom.on('change', that.filterExternalMappings); 
   	that.myDom.find('#add-new-external-mapping').on('click', that.addNewExternalMapping);
-  	that.myDom.find('.edit-data-inline-external-mapping').on('click', that.editExternalMapping);
+  	// that.myDom.find('.edit-data-inline-external-mapping').on('click', that.editExternalMapping);
   	// to get all external mappings to do internal filtering
   	//that.getAllExternalMappings();
   };
@@ -55,26 +55,18 @@ var HotelExternalMappingsView = function(domRef){
  	if(e.target.id == "mapping-type"){
  		
  		var selectedMappingType = that.myDom.find("#mapping-type").val();
- 		if(selectedMappingType != "VIP_EXCLUSION"){
- 			that.myDom.find(".sntvalue").show();
- 			that.myDom.find("#hideDiv").show();
- 			mappingTypeValues = '';
-			that.myDom.find("#snt-value").find('option').remove().end();
-			$.each(that.externalMappings, function(key, value) {
-			    if(value.name == selectedMappingType){
-			    	mappingTypeValues = '<option value="" data-image="">Select value</option>';
-			    	$("#snt-value").append(mappingTypeValues);
-			    	$.each(value.sntvalues, function(mappingkey, mappingvalue) {
-			    		mappingTypeValues = '<option value="'+mappingvalue.name+'">'+mappingvalue.name+'</option>';
-			    		$("#snt-value").append(mappingTypeValues);
-			    	});
-			    }		    
-			});
- 		} else {
- 			
- 			that.myDom.find("#hideDiv").hide();
- 			that.myDom.find(".sntvalue").hide();
- 		}
+		mappingTypeValues = '';
+		that.myDom.find("#snt-value").find('option').remove().end();
+		$.each(that.externalMappings, function(key, value) {
+			if(value.name == selectedMappingType){
+				mappingTypeValues = '<option value="" data-image="">Select value</option>';
+				$("#snt-value").append(mappingTypeValues);
+				$.each(value.sntvalues, function(mappingkey, mappingvalue) {
+					mappingTypeValues = '<option value="'+mappingvalue.name+'">'+mappingvalue.name+'</option>';
+					$("#snt-value").append(mappingTypeValues);
+				});
+			}		    
+		});
 		
  	}
   		
@@ -133,5 +125,28 @@ var HotelExternalMappingsView = function(domRef){
   this.fetchFailedOfSave = function(errorMessage){
 	sntapp.activityIndicator.hideActivityIndicator();
 	sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
+  };
+  
+   //function to delete mapping
+  this.deleteItem = function(event){
+  	event.preventDefault();
+  	var postData = {};
+  	var selectedId = that.myDom.find(event.target).attr("id");
+  	var url = '/admin/external_mappings/'+selectedId+'/delete_mapping';
+  	postData.value = selectedId;
+	var webservice = new WebServiceInterface();		
+	var options = {
+			   requestParameters: postData,
+			   successCallBack: that.fetchCompletedOfDelete,
+			   loader:"BLOCKER",
+			   successCallBackParameters: {"selectedId": selectedId}
+	};
+	webservice.getJSON(url, options);
+  };
+   //to remove deleted row and show message
+  this.fetchCompletedOfDelete = function(data, successParams){
+	  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
+	  that.myDom.find("#mapping_row_"+successParams['selectedId']).html("");
+
   };
 };

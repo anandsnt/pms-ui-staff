@@ -65,7 +65,6 @@ var UserDetailsView = function(domRef){
       viewParams = {'backDom' : $("#replacing-div-second")};
       viewDom = $("#replacing-div-third");
     }
-    console.log(viewDom);
   	sntapp.fetchAndRenderView(url, viewDom, {}, 'BLOCKER', viewParams, false);
     sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };

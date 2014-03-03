@@ -6,6 +6,7 @@ var RegistrationCardView = function(viewDom) {
 	this.url = "ui/checkinSuccess";
     this.reviewStatus = [];
     this.isAllBillsReviewed = false;
+    this.isEarlyDepartureFlag = "false";
     
 	this.pageinit = function() {
 		this.setBillTabs();
@@ -44,6 +45,7 @@ var RegistrationCardView = function(viewDom) {
 	
     // To Display Guest Bill screen in detailed mode via ViewBillButton click.
 	this.renderedFromViewBillButton =  function() {
+		that.myDom.find("#bill1-total-fees a").addClass("active");
 		that.myDom.find("#bill1-fees").removeClass("hidden");
 		that.myDom.find("#signature-pad").addClass("hidden");
 		that.myDom.find("#complete-checkout-button").addClass("hidden");
@@ -69,10 +71,10 @@ var RegistrationCardView = function(viewDom) {
 	this.delegateEvents = function() {
 		that.myDom.unbind('click');
 		that.myDom.on('click', that.myDomClickHandler);
-		that.myDom.find("#signature").on('mouseover', function() {
+		that.myDom.find("#signature").on('mouseover touchstart', function() {
 			disableVerticalScroll('#registration-content');
 		});
-		that.myDom.find("#signature").on('mouseout', function() {
+		that.myDom.find("#signature").on('mouseout touchend', function() {
 			enableVerticalScroll('#registration-content');
 		});
 	};
@@ -395,6 +397,7 @@ var RegistrationCardView = function(viewDom) {
 		e.stopImmediatePropagation();
 
 		var email = $("#gc-email").val();
+
 		// If email is null then popup comes to enter email
 		if (email == "") {
 			var validateCheckoutModal = new ValidateCheckoutModal(that.completeCheckout,e);
@@ -416,8 +419,15 @@ var RegistrationCardView = function(viewDom) {
 			return;
 		}
 		
-		var required_signature_at = that.myDom.find("#complete-checkout-button").attr('data-required-signature');
+		// If reservation status in INHOUSE - show early checkout popup
+		var reservationStatus = that.myDom.find("#complete-checkout-button").attr('data-reseravation-status');
+		if(reservationStatus == "CHECKEDIN" && that.isEarlyDepartureFlag == "false"){
+			var earlyDepartureModal = new EarlyDepartureModal(that.completeCheckout,that);
+			earlyDepartureModal.initialize();
+			return;
+		}
 		
+		var required_signature_at = that.myDom.find("#complete-checkout-button").attr('data-required-signature');
 		var email = $("#gc-email").val();
 		var signature = JSON.stringify(that.myDom.find("#signature").jSignature("getData", "native"));
 		var terms_and_conditions = that.myDom.find("#terms-and-conditions").hasClass("checked") ? 1 : 0;
