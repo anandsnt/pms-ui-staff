@@ -2,30 +2,31 @@
 
 <div class="jumbotron">
 
-<!-- show posting message -->
-	<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-		Your request is being processed, this may take a few seconds..... please wait!
-	</div>
 
-<!-- show error message -->
 
-	<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-		<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check out at our front desk.</div>
-		<div>You can also call the hotel at {{hotelPhone}}.</div>
-	</div>
-
-	<div class="container backgroundbg" ng-hide="isFetching || netWorkError">
+	<div class="container backgroundbg" >
 		<div class="container-fluid">
 			<div class="row headerrow">
 				<logo-image></logo-image>
-				<p class="roomnumber centeralign">
+				<p class="roomnumber centeralign" ng-hide="isFetching || netWorkError">
 					<span>{{details.roomType}} {{roomNo}}</span>
 				</p>
 			</div>
 		</div>
+		<!-- show posting message -->
+		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			Your request is being processed, this may take a few seconds..... please wait!
+		</div>
+
+		<!-- show error message -->
+
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+			<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check out at our front desk.</div>
+			<div>You can also call the hotel at {{hotelPhone}}.</div>
+		</div>
 
 		<!-- contentarea starts here-->
-		<div class="container">
+		<div class="container" ng-hide="isFetching || netWorkError">
 			<!-- top section starts here-->
 
 			<div class="row check-inout-wrapper">
