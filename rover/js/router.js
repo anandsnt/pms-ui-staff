@@ -8,7 +8,8 @@ sntRover.config([
 
 		$stateProvider.state('staff', {
 			url: '/staff',
-			templateUrl: 'partials/rover.html'
+			templateUrl: 'partials/rover.html',
+			controller: 'roverController'
 		});
 		
 		$stateProvider.state('dashboard', {
