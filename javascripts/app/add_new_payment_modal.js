@@ -35,6 +35,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 		// inject the token as hidden field into form
 		// TODO: Fix Security issue associated with input[type="hidden"]
 		$('#new-payment').append('<input type="hidden" id="card-token" value="' + swipedCardData.token + '">');
+		$('#new-payment').append('<input type="hidden" id="et2" value="' + swipedCardData.getTokenFrom.et2 + '">');
 	};
 
 	this.modalInit = function(){
@@ -166,6 +167,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 		var $card_expiry = $expiry_month && $expiry_year ? "20"+$expiry_year+"-"+$expiry_month+"-01" : "";
 		var $guest_id = $("#guest_id").val();
 		var $card_token = $('#card-token').val();
+		var $et2 = $('#et2').val();
 		
 		var curr_year  	= new Date().getFullYear()%100; // Last two digits of current year.
 		var curr_month  = new Date().getMonth()+1;
@@ -226,6 +228,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 				    card_expiry: $card_expiry,
 				    name_on_card: $name_on_card,
 				    mli_token: $card_token,
+				    et2: $et2,
 				    add_to_guest_card: add_to_guest_card,
 				    bill_number : that.params["bill_number"]
 		    };		
