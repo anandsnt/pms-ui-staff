@@ -14,7 +14,8 @@ sntRover.config([
 		
 		$stateProvider.state('rover.dashboard', {
 			url: '/dashboard',
-			templateUrl: 'partials/dashboard.html'
+			templateUrl: 'partials/dashboard.html',
+			controller: 'dashboardController'
 		});
 
 		// search state
