@@ -4,14 +4,7 @@ var snt = angular.module('snt',['ngRoute','ui.bootstrap']);
 snt.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/', {
 		templateUrl: '/assets/landing/landing.html',
-		controller: 'checkOutLandingController',
-		resolve: {
-			// load only when urls and user have been loadded
-			load: function(UrlService, UserService) {
-
-				return UrlService.fetch() && UserService.fetch();
-			}
-		}
+		controller: 'checkOutLandingController'
 	});
 
 	$routeProvider.when('/checkoutBalance', {
@@ -75,16 +68,10 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 
 	//if chekout is already done
  	if ($rootScope.isCheckedout) 
-		$location.path('/checkOutNowSuccess')
-
-	//if late chekout is unavailable navigate to checkout now page
-
-	else if (!$rootScope.isLateCheckoutAvailable) 
-		$location.path('/checkOutNow')
-
+		$location.path('/checkOutNowSuccess');
 
 	if($attrs.accessToken != "undefined")
-		$window.sessionStorage.accessToken = $attrs.accessToken	
+		$window.sessionStorage.accessToken = $attrs.accessToken	;
 
 	console.log($attrs)
 
@@ -117,16 +104,36 @@ snt.factory('authInterceptor', function ($rootScope, $q, $window,$location) {
 };
 });
 
+
+snt.factory('timeoutHttpIntercept', function ($rootScope, $q) {
+    return {
+      'request': function(config) {
+        config.timeout = 80000; // set timeout
+        return config;
+      }
+    };
+ });
+
 snt.config(function ($httpProvider) {
 	$httpProvider.interceptors.push('authInterceptor');
+	$httpProvider.interceptors.push('timeoutHttpIntercept');
 });
 
+
+
+// snt.config(function ($httpProvider) {
+// 	$httpProvider.interceptors.push('authInterceptor');
+// });
 
 snt.run(function($rootScope,$location,$http){
     $rootScope.$on("$locationChangeStart", function(event, next, current) {
     
-    if(next === current)
-    	$location.path('/')
+     if(next === current){
+     	 if (!$rootScope.isLateCheckoutAvailable) 
+		    $location.path('/checkOutNow')
+		else
+			$location.path('/')
+	}
  
 });
 });

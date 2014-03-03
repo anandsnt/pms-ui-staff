@@ -11,7 +11,7 @@
 			<!-- top section starts here-->
 			
 			<div class="row check-inout-wrapper">
-				<div ng-show="returnHome" class="col-md-12 checkout-status centeralign">
+				<div ng-show="returnHome && !netWorkError" class="col-md-12 checkout-status centeralign">
 					Your request is being processed, this may take a few seconds..... please wait!
 				</div>
 
@@ -19,11 +19,15 @@
 					Your request is being processed, this may take a few seconds..... please wait!
 				</div>
 
-				<div ng-show="!returnHome && posted && !success" class="col-md-12 checkout-status centeralign">
-						Something went wrong, complete your check out by going to or call our front desk. You can also call the hotel at {{hotelPhone}}.
+				<div ng-show="!returnHome && posted && !success && !netWorkError" class="col-md-12 checkout-status centeralign">
+					Something went wrong, complete your check out by going to or call our front desk. You can also call the hotel at {{hotelPhone}}.
 				</div>
 
-				<div ng-show="!returnHome && posted && success" class="col-md-12 headtext centeralign">
+				<div ng-show="netWorkError" class="col-md-12 checkout-status centeralign">
+					Something went wrong, complete your check out by going to or call our front desk. You can also call the hotel at {{hotelPhone}}.
+				</div>
+
+				<div ng-show="!returnHome && posted && success && !netWorkError" class="col-md-12 headtext centeralign">
 					Thank you
 					<p class="leadtext">
 						<em class="lightcontent">The following will appear on your bill.</em>
@@ -32,8 +36,8 @@
 				</div>
 			</div>
 
-			<div ng-show="returnHome || posted" class="row">
-				<p >
+			<div ng-show="returnHome || posted " class="row">
+				<p ng-hide="netWorkError || !success">
 					<a href="#/checkOutNow" class="link-btn with-bg">Back to check-out screen</a>
 				</p>
 			</div>
