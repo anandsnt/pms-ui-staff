@@ -46,11 +46,11 @@ var CheckoutGuests = function(domRef){
   	
   };
   //to handle success call back
-	this.fetchCompletedOfSave = function(data) {
+	this.fetchCompletedOfSend = function(data) {
 		sntapp.notification.showSuccessMessage(data.data.message, that.myDom, '', true);
 	};
 	// to handle failure call back
-	this.fetchFailedOfSave = function(errorMessage) {
+	this.fetchFailedOfSend = function(errorMessage) {
 		sntapp.activityIndicator.hideActivityIndicator();
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
 	};
