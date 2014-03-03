@@ -4,7 +4,7 @@
 		//if checkout is already done
 		
  		if ($rootScope.isCheckedout) 
-		$location.path('/checkOutNowSuccess')
+		 $location.path('/checkOutNowSuccess');
 
 
 		$scope.showBill = false;
@@ -20,6 +20,8 @@
 			$scope.isFetching = false;
 			$rootScope.netWorkError =false;
 		});
+
+		//watch for any network errors
 
 		$rootScope.$watch('netWorkError',function(){
 
@@ -37,7 +39,7 @@
 		if($scope.billData)
 		 	$scope.optionsAvailable = true;
 		else
-			$location.path('/serverError')
+			$location.path('/serverError');
 	});
 		
 

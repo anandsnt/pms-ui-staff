@@ -4,14 +4,7 @@ var snt = angular.module('snt',['ngRoute','ui.bootstrap']);
 snt.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/', {
 		templateUrl: '/assets/landing/landing.html',
-		controller: 'checkOutLandingController',
-		resolve: {
-			// load only when urls and user have been loadded
-			load: function(UrlService, UserService) {
-
-				return UrlService.fetch() && UserService.fetch();
-			}
-		}
+		controller: 'checkOutLandingController'
 	});
 
 	$routeProvider.when('/checkoutBalance', {
@@ -121,7 +114,7 @@ snt.factory('authInterceptor', function ($rootScope, $q, $window,$location) {
 snt.factory('timeoutHttpIntercept', function ($rootScope, $q) {
     return {
       'request': function(config) {
-        config.timeout = 10000;
+        config.timeout = 80000; // set timeout
         return config;
       }
     };

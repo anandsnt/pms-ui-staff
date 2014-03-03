@@ -6,8 +6,6 @@
 			var deferred = $q.defer();
 
 
-//alert("checking service")
-
 			$http.get(url,{
     		params: parameters
 			}).success(function(response) {
@@ -24,7 +22,6 @@
 		var post = function(url,parameters) {
 
 
-//alert("checking service")
 			var deferred = $q.defer();
 
 			$http.post(url, parameters

@@ -5,11 +5,11 @@
 		//if chekout is already done
 		
  		if ($rootScope.isCheckedout) 
-		$location.path('/checkOutNowSuccess')
+	    	$location.path('/checkOutNowSuccess');
 
 		// if checkout later in unavailable
 		else if (!$rootScope.isLateCheckoutAvailable) 
-		 $location.path('/checkOutNow')
+		 $location.path('/checkOutNow');
 		
 		var charges = LateCheckOutChargesService.charges;
 		var id = $routeParams.id;
@@ -43,6 +43,8 @@
 				return charge;
 			};
 		});
+
+		//watch for any network errors
 		$rootScope.$watch('netWorkError',function(){
 
 			if($rootScope.netWorkError)
