@@ -4,8 +4,13 @@ sntRover.config([
 	function($stateProvider, $urlRouterProvider) {
 
 		// dashboard state
-		$urlRouterProvider.otherwise('/dashboard')
+		$urlRouterProvider.otherwise('/staff')
 
+		$stateProvider.state('staff', {
+			url: '/staff',
+			templateUrl: 'partials/rover.html'
+		});
+		
 		$stateProvider.state('dashboard', {
 			url: '/dashboard',
 			templateUrl: 'partials/dashboard.html'
