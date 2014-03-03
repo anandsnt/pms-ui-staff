@@ -34,7 +34,7 @@ var CheckoutGuests = function(domRef){
 	});
 	var postParams = {};
 	postParams.reservations = reservation_ids;
-	var url = '/';
+	var url = '/admin/send_checkout_alert';
 	var webservice = new WebServiceInterface();
 	var options = {
 			   requestParameters: postParams,
