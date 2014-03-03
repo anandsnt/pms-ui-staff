@@ -19,8 +19,8 @@ sntRover.factory('Likes', function(){
 		}						
 	];
 
-	likes.user.room_type = {'id': 3};
-	
+	//likes.user.room_type = {'id': 3};
+
 	likes.room_types = [
 		{
 			'id': 1,

@@ -1,23 +1,25 @@
-<div id="guest-card-content">
-  <!-- Guest Card tabs navigation -->
-  <ul id="guest-card-tabs-nav" class="float">
-    <li>
-      <a id="guest-contact" ng-click="set_current('contact')"> Contact Information</a>
-    </li>
-    <li>
-      <a id="guest-like" ng-click="set_current('likes')"> Likes</a>
-    </li>
-    <li>
-      <a id="guest-credit"> Credit Cards & Payment</a>
-    </li>
-    <li>
-      <a id="guest-loyalty"> Loyalty</a>
-    </li>
-  </ul>
-</div>
+<div id="guest-card" class="open" role="complementary" style="height: 462px;">
+<div id="card-wrapper">
+  <div id="guest-card-content">
+    <!-- Guest Card tabs navigation -->
+    <ul id="guest-card-tabs-nav" class="float">
+      <li>
+        <a id="guest-contact" ng-click="set_current('contact')"> Contact Information</a>
+      </li>
+      <li>
+        <a id="guest-like" ng-click="set_current('likes')"> Likes</a>
+      </li>
+      <li>
+        <a id="guest-credit"> Credit Cards & Payment</a>
+      </li>
+      <li>
+        <a id="guest-loyalty"> Loyalty</a>
+      </li>
+    </ul>
+  </div>
 
 
-<form id="contact-info" class="card-content form scrollable" name="contact-info" ng-show="show_tab('contact')">
+  <form id="contact-info" class="card-content form scrollable" name="contact-info" ng-show="show_tab('contact')">
   <div class="wrapper float">
     <div class="entry full-width">
       <div id="notification-message-guest"></div>
@@ -95,7 +97,7 @@
       </option>
     </select>
     </div>
-  
+
   <div class="entry radio-check float">
   <label for="floor">
   FLOOR
@@ -215,4 +217,5 @@
 </div>
 <div id="likes" ng-show="show_tab('likes')">sdfdsf
 </div> -->
-      
+</div>      
+</div>

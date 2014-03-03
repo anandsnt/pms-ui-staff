@@ -22,12 +22,8 @@ sntRover.config([
 			templateUrl: 'partials/search.html',
 			controller: 'searchController'
 		});
-
-		$stateProvider.state('staycard', {
-			url: '/staycard',
-			templateUrl: 'partials/staycard.html'
-		});		
-		$stateProvider.state('staycard.guestcard', {
+	
+		$stateProvider.state('guestcard', {
 			url: '/guestcard',
 			templateUrl: 'partials/guestcard.html',
 			controller: 'guestCardController'
