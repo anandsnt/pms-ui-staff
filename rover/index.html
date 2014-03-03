@@ -7,50 +7,14 @@
 	<script type="text/javascript" src="js/lib/js/angular-ui-router.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/router.js"></script>
+    <script type="text/javascript" src="js/roverController.js"></script>
 	<script type="text/javascript" src="js/dashboardController.js"></script>
 	<script type="text/javascript" src="js/searchController.js"></script>
 	<body ng-app="sntRover" id="app-page">
-		
-
-		<div role="application" class="container ">	
-			<div class="page main-page page-current" id="page-main-first"><!-- Navbar -->
-				<button ui-sref="dashboard">Dashboard</button>
-		    	<button ui-sref="search">Search</button>
+		<div ng-controller="roverController" class="container">
 				<div ui-view></div>
-			</div>
-	  							
-		<!-- Main sidebar navigation -->
-			<nav id="main-menu" role = "navigation" style="display:block;">
-				<ul>
-					<li>
-						<a class="icon-menu icon-dashboard active" href= "#">Dashboard</a>
-					</li>
-					<li>
-						<a class="icon-menu icon-search " href= "#">Search</a>
-					</li>
-					<li >
-						<a class="icon-menu icon-social-lobby " href= "#">Social Lobby</a>
-					</li>
-					<li >
-						<a class="icon-menu icon-messages " href= "#">Messages</a>
-					</li>
-					<li >
-						<a class="icon-menu icon-reviews " href= "#">Reviews</a>
-					</li>
-					<li id="settings">
-						<a class="icon-menu icon-settings" href= "#">Settings</a>
-					</li>
-					<li id="sign-out">
-						<a class="icon-menu icon-sign-out" href = logout_url>Sign Out</a>
-					</li>
-					<li id="rover-info">
-						<img alt = "" src = "/assets/stayntouch.png" />Version 1.0
-					</li>
-				</ul>
-			</nav>
-	    </div>		
+		</div>		
+		
 	</body>
-	
-
 
 </html>
