@@ -16,13 +16,13 @@ sntRover.config([
 			url: '/dashborad',
 			templateUrl: 'partials/dashboard.html'
 		});
-/*
+
 		// search state
-		$stateProvider.state('search', {
+		$stateProvider.state('rover.search', {
 			url: '/search',
 			templateUrl: 'partials/search.html',
 			controller: 'searchController'
-		});*/
+		});
 
 		// let's redirect all undefined states to dashboard state
 		
