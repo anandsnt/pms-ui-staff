@@ -7,6 +7,7 @@ var HotelDetailsView = function(domRef) {
     this.fileContent = "";
 
 	this.delegateEvents = function() {
+		console.log("delegate")
 		that.myDom.find('#save').on('click', ["update"], that.updateOrAddHotel);
 		that.myDom.find('#save_new_hotel').on('click', ["create"], that.updateOrAddHotel);
 		that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView);
