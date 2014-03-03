@@ -1,7 +1,20 @@
 <!-- contentarea starts here-->
 
 <div class="jumbotron">
-	<div class="container backgroundbg">
+
+<!-- show posting message -->
+	<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+		Your request is being processed, this may take a few seconds..... please wait!
+	</div>
+
+<!-- show error message -->
+
+	<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+		<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check out at our front desk.</div>
+		<div>You can also call the hotel at {{hotelPhone}}.</div>
+	</div>
+
+	<div class="container backgroundbg" ng-hide="isPosting || netWorkError">
 		<div class="container-fluid">
 			<div class="row headerrow">
 				<logo-image></logo-image>
@@ -10,6 +23,7 @@
 				</p>
 			</div>
 		</div>
+
 		<!-- contentarea starts here-->
 		<div class="container">
 			<!-- top section starts here-->
@@ -41,18 +55,19 @@
 					</div>
 				</div>
 			</div>
-				<!-- checkoubtn section ends here-->
+			<!-- checkoubtn section ends here-->
 
-				<div class="row" >
-					<p class="foot-text centeralign" ng-show="true">
-						<em>{{footerMessage1}}</em>
-					</p>
-					<p class="foot-text centeralign second-in ">
-						<em>{{details.footerMessage2}} {{checkoutTime}}.</em>
-					</p>
-				</div>
+			<div class="row" >
+				<p class="foot-text centeralign" ng-show="true">
+					<em>{{footerMessage1}}</em>
+				</p>
+				<p class="foot-text centeralign second-in ">
+					<em>{{details.footerMessage2}} {{checkoutTime}}.</em>
+				</p>
+			</div>
 
 			
 
 		</div>
 	</div>
+</div>

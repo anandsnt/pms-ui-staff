@@ -117,9 +117,26 @@ snt.factory('authInterceptor', function ($rootScope, $q, $window,$location) {
 };
 });
 
+
+snt.factory('timeoutHttpIntercept', function ($rootScope, $q) {
+    return {
+      'request': function(config) {
+        config.timeout = 10000;
+        return config;
+      }
+    };
+ });
+
 snt.config(function ($httpProvider) {
 	$httpProvider.interceptors.push('authInterceptor');
+	$httpProvider.interceptors.push('timeoutHttpIntercept');
 });
+
+
+
+// snt.config(function ($httpProvider) {
+// 	$httpProvider.interceptors.push('authInterceptor');
+// });
 
 snt.run(function($rootScope,$location,$http){
     $rootScope.$on("$locationChangeStart", function(event, next, current) {
