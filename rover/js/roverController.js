@@ -1,4 +1,9 @@
-sntRover.controller('roverController',['$scope', function($scope){
-	 console.log("rover")
-}]);
+sntRover.controller('roverController',['$scope', '$state', function($scope, $state){
 
+	$scope.init = function () {
+		// preselect the current reservation group
+		
+    }
+
+    $scope.init();
+}]);
