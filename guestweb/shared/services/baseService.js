@@ -22,6 +22,9 @@
 			return deferred.promise;
 		};
 		var post = function(url,parameters) {
+
+
+//alert("checking service")
 			var deferred = $q.defer();
 
 			$http.post(url, parameters
@@ -31,6 +34,7 @@
 				}.bind(this))
 				.error(function() {
 					deferred.reject();
+					$rootScope.netWorkError = true;
 				});
 
 			return deferred.promise;
