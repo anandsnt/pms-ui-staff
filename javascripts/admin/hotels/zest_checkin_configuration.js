@@ -6,6 +6,7 @@ var ZestCheckinConfiguration = function(domRef){
   this.delegateEvents = function(){
   	that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView);
   	that.myDom.find('#save_guest_checkin').on('click', that.saveGuestCheckin);
+  	that.myDom.find('#send_email').on('click', that.sendCheckinNotificationMail);
   };
 
   this.goBackToPreviousView = function() {
@@ -44,6 +45,20 @@ var ZestCheckinConfiguration = function(domRef){
 	 webservice.postJSON(url, options);
 
   };
+
+  this.sendCheckinNotificationMail = function() {
+
+	 var url = '/admin/checkin_setups/notify_all_checkin_guests';
+	 var webservice = new WebServiceInterface();
+	 var options = {
+				failureCallBack : that.fetchFailedOfAction,
+				successCallBack: that.fetchCompletedOfSend,
+				loader: 'blocker'
+	 };
+	 webservice.getJSON(url, options);
+
+  };
+
   // To handle success on save API
   this.fetchCompletedOfSaveGuestCheckinConfig = function(data) {
   	sntapp.notification.showSuccessMessage("Saved successfully", that.myDom);
