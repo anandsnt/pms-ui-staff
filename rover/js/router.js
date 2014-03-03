@@ -4,15 +4,21 @@ sntRover.config([
 	function($stateProvider, $urlRouterProvider) {
 
 		// dashboard state
-		$urlRouterProvider.otherwise('/dashboard')
+		$urlRouterProvider.otherwise('/staff/dashborad')
 
-		$stateProvider.state('dashboard', {
-			url: '/dashboard',
+		$stateProvider.state('rover', {
+			url: '/staff',
+			templateUrl: 'partials/rover.html',
+			controller: 'roverController'
+		});
+		
+		$stateProvider.state('rover.dashboard', {
+			url: '/dashborad',
 			templateUrl: 'partials/dashboard.html'
 		});
 
 		// search state
-		$stateProvider.state('search', {
+		$stateProvider.state('rover.search', {
 			url: '/search',
 			templateUrl: 'partials/search.html',
 			controller: 'searchController'
