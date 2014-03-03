@@ -4,7 +4,7 @@ sntRover.config([
 	function($stateProvider, $urlRouterProvider) {
 
 		// dashboard state
-		$urlRouterProvider.otherwise('/staff/dashborad')
+		$urlRouterProvider.otherwise('/staff/dashboard')
 
 		$stateProvider.state('rover', {
 			url: '/staff',
@@ -13,22 +13,23 @@ sntRover.config([
 		});
 		
 		$stateProvider.state('rover.dashboard', {
-			url: '/dashborad',
+			url: '/dashboard',
 			templateUrl: 'partials/dashboard.html'
 		});
-/*
+
 		// search state
-		$stateProvider.state('search', {
+		$stateProvider.state('rover.search', {
 			url: '/search',
 			templateUrl: 'partials/search.html',
 			controller: 'searchController'
-		});*/	
+		});	
 		
 		$stateProvider.state('rover.staycard', {
 			url: '/staycard',
 			templateUrl: 'partials/staycard.html'
 		});
 		
+
 		// let's redirect all undefined states to dashboard state
 		
 	}
