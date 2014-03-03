@@ -4,7 +4,7 @@ sntRover.config([
 	function($stateProvider, $urlRouterProvider) {
 
 		// dashboard state
-		$urlRouterProvider.otherwise('/staff/dashboard')
+		$urlRouterProvider.otherwise('/staff/dashboard');
 
 		$stateProvider.state('rover', {
 			url: '/staff',
@@ -41,12 +41,6 @@ sntRover.config([
 	                }	              
 			}
 		});
-		
-		/*$stateProvider.state('rover.staycard.reservation_card', {
-			templateUrl: 'partials/reservation_card.html',
-			views: 'ReservationCard'
-		});	*/	
-		
 		// let's redirect all undefined states to dashboard state
 		
 	}
