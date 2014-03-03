@@ -18,6 +18,15 @@ sntRover.config([
 			controller: 'searchController'
 		});
 
+		$stateProvider.state('staycard', {
+			url: '/staycard',
+			templateUrl: 'partials/staycard.html'
+		});		
+		$stateProvider.state('staycard.guestcard', {
+			url: '/guestcard',
+			templateUrl: 'partials/guestcard.html',
+			controller: 'guestCardController'
+		});	
 		// let's redirect all undefined states to dashboard state
 		
 	}
