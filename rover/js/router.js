@@ -26,10 +26,27 @@ sntRover.config([
 		
 		$stateProvider.state('rover.staycard', {
 			url: '/staycard',
-			templateUrl: 'partials/staycard.html'
+			views: {	
+					'': {
+                    templateUrl: 'partials/staycard.html',
+                    controller: 'staycardController'
+                	},
+	                'reservation_card':{
+	                    templateUrl: 'partials/reservation_card.html',
+	                    controller: 'reservarionCardController'	                	
+	                },
+	                'reservation_listing':{
+	                    templateUrl: 'partials/reservation_listing.html',
+	                    controller: 'reservationListController'	                	
+	                }	              
+			}
 		});
 		
-
+		/*$stateProvider.state('rover.staycard.reservation_card', {
+			templateUrl: 'partials/reservation_card.html',
+			views: 'ReservationCard'
+		});	*/	
+		
 		// let's redirect all undefined states to dashboard state
 		
 	}
