@@ -12,6 +12,8 @@
 					<span>{{details.roomType}} {{roomNo}}</span>
 				</p>
 			</div>
+		<!-- horizontal line for bigger screens -->
+			<div class="horizontalLineTop"> </div>
 		</div>
 		<!-- show posting message -->
 		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
@@ -26,7 +28,7 @@
 		</div>
 
 		<!-- contentarea starts here-->
-		<div class="container" ng-hide="isFetching || netWorkError">
+		<div class="container horizontalBorder" ng-hide="isFetching || netWorkError">
 			<!-- top section starts here-->
 
 			<div class="row check-inout-wrapper">
@@ -41,15 +43,15 @@
 				<!-- checkoubtn section starts here-->
 				<div class="col-md-6 no-padding now-later-options no-screen-attach">
 					<div class="row">
-						<div class="col-xs-12 checkoutnow single">
-							<div class="rel-wrapper">
+						<div class="col-md-12 checkoutnow single">
+							<div class="rel-wrapper ">
 								<a href="#/checkoutBalance"></a>
-								<div class="row">
-									Check out<br/>now.
+								<div class="row icontop col-md-8">
+									Check out now.
 									<!-- {{details.buttonText}} -->
 								</div>
-								<div class="row  icontop">
-									<img src="/assets/img/checkout_icon.png" width="48" height="48" alt=""/>
+								<div class="row  icontop col-md-4" >
+									<img src="/assets/img/checkout_icon.png" width="60" height="60" alt=""/>
 								</div>
 							</div>
 						</div>
@@ -67,7 +69,8 @@
 				</p>
 			</div>
 
-			
+					<!-- horizontal line for bigger screens -->
+			<div class="horizontalLineBottom"> </div>
 
 		</div>
 	</div>
