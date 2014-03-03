@@ -3,7 +3,7 @@
 <div class="jumbotron">
 
 <!-- show posting message -->
-	<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+	<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
 		Your request is being processed, this may take a few seconds..... please wait!
 	</div>
 
@@ -14,7 +14,7 @@
 		<div>You can also call the hotel at {{hotelPhone}}.</div>
 	</div>
 
-	<div class="container backgroundbg" ng-hide="isPosting || netWorkError">
+	<div class="container backgroundbg" ng-hide="isFetching || netWorkError">
 		<div class="container-fluid">
 			<div class="row headerrow">
 				<logo-image></logo-image>

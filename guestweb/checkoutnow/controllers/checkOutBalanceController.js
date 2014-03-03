@@ -8,11 +8,23 @@
 
 
 		$scope.showBill = false;
+		$rootScope.netWorkError = false;
 
 		// fecth text details to display
 
+
+		$scope.isFetching = true;
+
 		BillService.fetchDisplayDetails().then(function(billDisplayDetails) {
 			$scope.billDisplayDetails = billDisplayDetails;
+			$scope.isFetching = false;
+			$rootScope.netWorkError =false;
+		});
+
+		$rootScope.$watch('netWorkError',function(){
+
+			if($rootScope.netWorkError)
+				$scope.isFetching = false;
 		});
 
 
