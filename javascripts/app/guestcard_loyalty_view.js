@@ -4,7 +4,7 @@ var GuestcardLoyaltyView = function(domRef){
   this.myDom = domRef;
 
   this.pageinit = function(){
-  	bindLoyaltyUtilFunctions();
+  	//bindLoyaltyUtilFunctions();
   }
   this.delegateEvents = function(){
   	that.myDom.find('#loyalty-tab #add-new-ffp').on('click', that.addFFPModal);

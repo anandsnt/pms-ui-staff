@@ -41,6 +41,9 @@ snt.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/authFailed', {
 		templateUrl: '/assets/shared/authenticationFailedView.html'
 	});
+	$routeProvider.when('/serverError', {
+		templateUrl: '/assets/shared/serverErrorView.html',
+	});
 
 	$routeProvider.otherwise({
 		redirectTo: '/'
