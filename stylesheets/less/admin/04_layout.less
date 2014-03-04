@@ -60,7 +60,6 @@ body { overflow: hidden; }
 
             &:not(.ui-tabs-panel) { 
                 overflow: auto;
-                -webkit-overflow-scrolling: touch;
 
                 &::-webkit-scrollbar{ 
                   margin-right: 5px;
@@ -77,6 +76,16 @@ body { overflow: hidden; }
             &.current {
                 background: @background;
                 z-index: 999;
+            }
+        }
+    }
+
+    /* Overflow for tablets only ***/
+    .touch {
+        #content {
+            .content:not(.ui-tabs-panel) { 
+                overflow-y: scroll;
+                -webkit-overflow-scrolling: touch;
             }
         }
     }
