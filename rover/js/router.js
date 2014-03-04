@@ -42,6 +42,13 @@ sntRover.config([
 	                }	              
 			}
 		});
+		
+		// search state
+		$stateProvider.state('rover.viewbill', {
+			url: '/viewbill',
+			templateUrl: 'partials/viewbill.html',
+			controller: 'viewbillController'
+		});
 		// let's redirect all undefined states to dashboard state
 		
 	}
