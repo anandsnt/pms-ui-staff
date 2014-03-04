@@ -238,8 +238,9 @@ var setUpAdmin = function(viewDom, delegate) {
 // Keep app in fullscreen mode
    	var isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
    	if (isTablet) {
-		$('a:not(.nav-toggle):not(.edit-data-inline):not(.add-data-inline)').click(function(e){
+		$('a:not(.nav-toggle):not(.edit-data-inline):not(.add-data-inline):not(.icon-admin-menu)').click(function(e){
 			e.preventDefault();
+			location.href = $(this).attr("href");
 		});
 	}	
 	// Dashboard tabs
