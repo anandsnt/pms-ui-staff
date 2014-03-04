@@ -1,4 +1,4 @@
-sntRover.controller('dashboardController',['$scope', function($scope){
+sntRover.controller('viewbillController',['$scope', function($scope){
 	
 	$scope.data = {
 		"firstname" : " Jos",
@@ -18,5 +18,3 @@ sntRover.controller('dashboardController',['$scope', function($scope){
 	}
 	
 }]);
-
-    
