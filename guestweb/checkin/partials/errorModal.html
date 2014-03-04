@@ -1,12 +1,14 @@
-<div class="modal-content">
-			
-			<br/><br/><br/><br/><br/><br/><br/><br/>
-			<div class="centeralign">
-			<p>We could not find your reservation.</p>
-           <p> Please check for typos, or call</p>
-         <u>{{hotelPhone}}.</u> 
-          <br/><br/><br/>
-			
-			<button type="button" ng-click="reloadPage()" class="btn btn-close">Close</button>
+<div class="modal-content modal-vertical-centered">
+
+
+	<div class="centeralign alert-box">
+		<img src="/assets/img/alert_icon.png"  alt="" width="43" height="40" class="alert-element"/>
+		<p >We could not find your reservation.</p>
+		<p> Please check for typos, or call</p>
+		<div class="alert-link">
+			<u>{{hotelPhone}}.</u> 
 		</div>
-		</div>
+
+		<button type="button" ng-click="closeDialog()" class="btn btn-close">CLOSE</button>
+	</div>
+</div>

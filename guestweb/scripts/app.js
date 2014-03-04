@@ -197,3 +197,7 @@ snt.filter('customizeLabelText', function () {
         return input.substring(0, 1) +" ' "+ input.substring(1, 2).toBold() +" ' "+ input.substring(2);
     }
 });
+
+
+
+
