@@ -39,20 +39,30 @@ snt.config(['$routeProvider', function($routeProvider) {
 	});
 
 	$routeProvider.when('/checkinConfirmation', {
-		templateUrl: '/assets/checkin/partials/checkinConfirmation.html',
+		templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
 		//controller : 'checkinConfirmationController'
 	});
 
-	$routeProvider.otherwise({
-		redirectTo: '/'
-	});
+//to be deleted and replaced by the code below
+$routeProvider.otherwise({
+redirectTo: '/checkinConfirmation'
+});
+
+
+// $routeProvider.otherwise({
+// redirectTo: '/'
+// });
 }]);
+
+
+
+
+
 
 snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService','$location','$window','authenticationService', function($rootScope,$scope,$attrs, UserService,$location,$window,authenticationService) {
 
 
 
-alert("cjbd")
 	
 	if ($window.sessionStorage.token)
 		delete $window.sessionStorage.token
