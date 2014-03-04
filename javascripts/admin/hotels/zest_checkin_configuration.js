@@ -7,8 +7,9 @@ var ZestCheckinConfiguration = function(domRef){
   	that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView);
   	that.myDom.find('#save_guest_checkin').on('click', that.saveGuestCheckin);
   	that.myDom.find('#send_email').on('click', that.sendCheckinNotificationMail);
+  	that.myDom.find('#listguests').on('click', that.gotoNextPage);
   };
-
+	
   this.goBackToPreviousView = function() {
  	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
@@ -66,6 +67,25 @@ var ZestCheckinConfiguration = function(domRef){
   // To handle success on save API
   this.fetchFailedOfSaveGuestCheckInConfig = function(errorMessage) {
   	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
+  };
+  /**
+  * Method for showing next page (based on href)
+  */
+  this.gotoNextPage =  function(event){  
+  		event.preventDefault();
+  		var target = $(event.target);	  	
+        var href = target.attr("href");
+  	    var viewParams = {};	
+	    var currentDiv = sntadminapp.getCurrentDiv();
+	    var nextDiv = sntadminapp.getReplacingDiv(currentDiv);  	
+	    var backDom = currentDiv;
+	  	var nextViewParams = {'backDom': backDom};
+	  
+	    if(typeof href !== 'undefined'){
+	  		sntapp.fetchAndRenderView(href, nextDiv, viewParams, 'BLOCKER', nextViewParams);
+	  		nextDiv.show();
+	  		backDom.hide();
+	    }
   };
 
 };
