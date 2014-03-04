@@ -1,4 +1,4 @@
-sntRover.controller('appController',['$scope', '$state', function($scope, $state){
+sntRover.controller('roomDetailsController',['$scope', '$state', function($scope, $state){
 
 	$scope.init = function () {
 		// preselect the current reservation group
@@ -6,4 +6,3 @@ sntRover.controller('appController',['$scope', '$state', function($scope, $state
 
     $scope.init();
 }]);
-
