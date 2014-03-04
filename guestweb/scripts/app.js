@@ -38,6 +38,11 @@ snt.config(['$routeProvider', function($routeProvider) {
 		templateUrl: '/assets/shared/serverErrorView.html',
 	});
 
+	$routeProvider.when('/checkinConfirmation', {
+		templateUrl: '/assets/checkin/partials/checkinConfirmation.html',
+		//controller : 'checkinConfirmationController'
+	});
+
 	$routeProvider.otherwise({
 		redirectTo: '/'
 	});
@@ -45,6 +50,9 @@ snt.config(['$routeProvider', function($routeProvider) {
 
 snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService','$location','$window','authenticationService', function($rootScope,$scope,$attrs, UserService,$location,$window,authenticationService) {
 
+
+
+alert("cjbd")
 	
 	if ($window.sessionStorage.token)
 		delete $window.sessionStorage.token
