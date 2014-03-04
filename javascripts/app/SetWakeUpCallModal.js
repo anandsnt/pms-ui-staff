@@ -24,7 +24,6 @@ var SetWakeUpCallModal = function() {
 		$("#reservation_card_wake_up_time").html(requestParameters['wakeUpTime']);
 	};
 	this.fetchFailedOfSave = function(errorMessage){
-		sntapp.activityIndicator.hideActivityIndicator();
 	 	sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
 	};
 	
@@ -42,7 +41,7 @@ var SetWakeUpCallModal = function() {
 			"wake_up_time" : wakeUpTime,
 			"day" : wakeUpday
 		};
-sntapp.activityIndicator.showActivityIndicator("blocker");
+
 		var webservice = new WebServiceInterface();
 		
 	    var url = 'wakeup/set_wakeup_calls'; 
@@ -51,6 +50,7 @@ sntapp.activityIndicator.showActivityIndicator("blocker");
 				successCallBack: that.fetchCompletedOfSetWakeUpCall,
 				failureCallBack: that.fetchFailedOfSave,
 				successCallBackParameters: {'wakeUpTime': wakeUpTime},
+				loader : "BLOCKER"
 		};
 	    webservice.postJSON(url, options);
 
@@ -112,7 +112,6 @@ sntapp.activityIndicator.showActivityIndicator("blocker");
     	var data = {
 			"reservation_id" : that.reservationId,
 		};
-		sntapp.activityIndicator.showActivityIndicator("blocker");
 		var webservice = new WebServiceInterface();
 		
 	    var url = 'wakeup/set_wakeup_calls'; 
@@ -120,6 +119,7 @@ sntapp.activityIndicator.showActivityIndicator("blocker");
 	    		requestParameters: data,
 				successCallBack: that.fetchCompletedOfDeleteWakeUpCall,
 				failureCallBack: that.fetchFailedOfSave,
+				loader : "BLOCKER"
 		};
 	    webservice.postJSON(url, options);
     	
