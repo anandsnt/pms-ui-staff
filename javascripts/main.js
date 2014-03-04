@@ -1,5 +1,5 @@
 // Orientation change and touchmove listeners
-document.addEventListener('orientationchange', function (e) { $("#app-page").css("height",window.innerHeight); }, false);
+document.addEventListener('orientationchange', function (e) { $('body').css("height",window.innerHeight); }, false);
 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 
 // Disable cache busting
