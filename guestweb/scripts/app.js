@@ -7,6 +7,9 @@ snt.config(['$routeProvider', function($routeProvider) {
 		controller: 'checkOutLandingController'
 	});
 
+
+	//checkout now routings
+
 	$routeProvider.when('/checkoutBalance', {
 		templateUrl: '/assets/checkoutnow/partials/checkoutBalance.html',
 		controller: 'checkOutBalanceController'
@@ -22,6 +25,8 @@ snt.config(['$routeProvider', function($routeProvider) {
 		controller: 'checkOutStatusController'
 	});
 
+	//checkout later routings
+
 	$routeProvider.when('/checkOutLater', {
 		templateUrl: '/assets/checkoutlater/partials/checkOutLater.html',
 		controller: 'checkOutLaterController'
@@ -31,6 +36,10 @@ snt.config(['$routeProvider', function($routeProvider) {
 		templateUrl: '/assets/checkoutlater/partials/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController'
 	})
+
+
+	// error routings 
+
 	$routeProvider.when('/authFailed', {
 		templateUrl: '/assets/shared/authenticationFailedView.html'
 	});
@@ -38,21 +47,31 @@ snt.config(['$routeProvider', function($routeProvider) {
 		templateUrl: '/assets/shared/serverErrorView.html',
 	});
 
+	//check in routings
+
 	$routeProvider.when('/checkinConfirmation', {
-		templateUrl: '/assets/checkin/partials/checkinConfirmation.html',
-		//controller : 'checkinConfirmationController'
+		templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
+		controller : 'checkInConfirmationViewController'
 	});
 
+
+	//to be deleted and replaced by the code below
 	$routeProvider.otherwise({
-		redirectTo: '/'
+		redirectTo: '/checkinConfirmation'
 	});
+
+
+	// $routeProvider.otherwise({
+	// 	redirectTo: '/'
+	// });
+
+
+
+
 }]);
 
 snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService','$location','$window','authenticationService', function($rootScope,$scope,$attrs, UserService,$location,$window,authenticationService) {
 
-
-
-alert("cjbd")
 	
 	if ($window.sessionStorage.token)
 		delete $window.sessionStorage.token
@@ -166,3 +185,10 @@ snt.run(function($rootScope,$location,$http){
 
 	snt.controller('checkOutLandingController', dependencies);
 })();
+
+
+snt.filter('customizeLabelText', function () {
+    return function (input, scope) {
+        return input.substring(0, 1) +" ' "+ input.substring(1, 2).toBold() +" ' "+ input.substring(2);
+    }
+});

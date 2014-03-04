@@ -1,1 +1,75 @@
-confirm
+<!-- contentarea starts here-->
+
+<div class="jumbotron">
+
+
+
+	<div class="container backgroundbg" >
+		<div class="container-fluid">
+			<div class="row headerrow">
+				<logo-image></logo-image>
+			</div>
+		</div>
+
+
+		<!-- show posting message 
+		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			Your request is being processed, this may take a few seconds..... please wait!
+		</div>
+
+		show error message 
+
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+			<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check out at our front desk.</div>
+			<div>You can also call the hotel at {{hotelPhone}}.</div>
+		</div>
+
+	-->
+
+		<!-- contentarea starts here-->
+		<div class="container" ng-hide="isFetching || netWorkError">
+			<!-- top section starts here-->
+
+			<div class="row check-inout-wrapper">
+				<div class="col-md-6 headtext centeralign">
+					Ready to check In ?
+					<p class="leadtext">
+						<span class="subTitletext">{{subtitle | customizeLabelText}}<strong>reservation details:</strong></span>
+					</p>
+				</div>
+				<!-- top section ends here-->
+				
+				<!-- checkoubtn section starts here-->
+				<div class="col-md-6 no-padding now-later-options no-screen-attach">
+					<div class="row">
+						<div class="col-xs-12 checkoutnow single">
+							<div class="rel-wrapper">
+								<a href="#/checkoutBalance"></a>
+								<div class="row">
+									Check out<br/>now.
+									<!-- {{details.buttonText}} -->
+								</div>
+								<div class="row  icontop">
+									<img src="/assets/img/checkout_icon.png" width="48" height="48" alt=""/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- checkoubtn section ends here-->
+
+			<div class="row" >
+				<p class="foot-text centeralign" ng-show="true">
+					<em>{{footerMessage1}}</em>
+				</p>
+				<p class="foot-text centeralign second-in ">
+					<em>{{details.footerMessage2}} {{checkoutTime}}.</em>
+				</p>
+			</div>
+
+			
+
+		</div>
+	</div>
+</div>
