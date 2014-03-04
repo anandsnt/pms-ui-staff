@@ -26,29 +26,48 @@ sntRover.config([
 		});	
 		
 		$stateProvider.state('rover.staycard', {
+			abstract : true,
 			url: '/staycard',
-			views: {	
-					'': {
-                    templateUrl: 'partials/staycard.html',
-                    controller: 'staycardController'
-                	},
-	                'reservation_card':{
-	                    templateUrl: 'partials/reservation_card.html',
-	                    controller: 'reservarionCardController'	                	
-	                },
-	                'reservation_listing':{
-	                    templateUrl: 'partials/reservation_listing.html',
-	                    controller: 'reservationListController'	                	
-	                }	              
+			templateUrl: 'partials/staycard.html',
+            controller: 'staycardController'
+        });
+
+        $stateProvider.state('rover.staycard.reservationcard', {
+        	abstract : true,
+			url: '/reservationcard',
+			templateUrl: 'partials/reservation_card.html',
+            controller: 'reservarionCardController'
+        });
+
+        $stateProvider.state('rover.staycard.reservationcard.all', {
+        	url: '',
+			views : { 'reservationList' :{
+				templateUrl : "partials/reservation_listing.html",
+				 controller: 'reservationListController'	
+			},
+			'reservationDetails' :{
+				templateUrl : "partials/reservation_details.html",
+				 controller: 'reservationDetailsController'	
+
+			},
+
 			}
-		});
+        });
+
 		
 		// search state
-		$stateProvider.state('rover.viewbill', {
+		$stateProvider.state('rover.staycard.viewbill', {
 			url: '/viewbill',
 			templateUrl: 'partials/viewbill.html',
 			controller: 'viewbillController'
 		});
+	
+		$stateProvider.state('guestcard', {
+			url: '/guestcard',
+			templateUrl: 'partials/guestcard.html',
+			controller: 'guestCardController'
+		});	
+
 		// let's redirect all undefined states to dashboard state
 		
 	}
