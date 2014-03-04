@@ -27,6 +27,8 @@ var adminApp = function(){
         }
     };
     this.gotoPreviousPage = function(viewParams, currentView) {
+    	console.log(viewParams['backDom']);
+    	console.log(currentView);
 	  /*if($("#replacing-div-second").html() != ""){
 		  $("#replacing-div-second").html("");
 		  $("#replacing-div-second").removeClass("current");	 
@@ -35,6 +37,7 @@ var adminApp = function(){
 	  	$("#replacing-div-first").html("");
 	  	$("#replacing-div-first").removeClass("current");
 	  }*/
+	  currentView.hide();
       currentView.removeClass("current");
       //currentView.html("");
 	  viewParams['backDom'].show();	
@@ -50,10 +53,12 @@ var adminApp = function(){
   	var backDom = $("#replacing-div-first");
   	backDom.hide();
   	var nextViewParams = {'backDom': backDom};
+  	$("#replacing-div-second").html("");
      
     if(href != undefined){
   		sntapp.fetchAndRenderView(href, $("#replacing-div-second"), viewParams, 'BLOCKER', nextViewParams);
     }
+    $("#replacing-div-second").show();
   };
   
   // function for get current focused div, mainly used for backDom assigning

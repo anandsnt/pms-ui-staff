@@ -50,8 +50,9 @@ var HotelAdminView = function(domRef){
   		
   		that.myDom.find("#content section.tab").hide(); 
   		viewParams = {'backDom': backDom};
-  		
+  		div.html("");
   		sntapp.fetchAndRenderView(url, div, {}, 'BLOCKER', viewParams);
+      div.show();
 	}	  
   };
 
