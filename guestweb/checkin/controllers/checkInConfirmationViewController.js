@@ -1,6 +1,6 @@
 
 (function() {
-	var checkInConfirmationViewController = function($scope,$modal,$rootScope) {
+	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$location) {
 
 
 		$scope.subtitle1 = "To provide you with the a ";
@@ -18,7 +18,9 @@
 		};
 
 		$scope.openDialog = function() {
-			var d = $modal.open($scope.opts);
+
+			$location.path('/checkinReservationDetails');
+			//var d = $modal.open($scope.opts);
 
 		};
   //to be used when authentication failded
@@ -28,7 +30,7 @@
 };
 
 		var dependencies = [
-		'$scope','$modal','$rootScope',
+		'$scope','$modal','$rootScope','$location',
 		checkInConfirmationViewController
 		];
 

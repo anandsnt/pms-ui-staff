@@ -54,6 +54,10 @@ snt.config(['$routeProvider', function($routeProvider) {
 		controller : 'checkInConfirmationViewController'
 	});
 
+	$routeProvider.when('/checkinReservationDetails', {
+		templateUrl: '/assets/checkin/partials/checkInReservationDetails.html',
+		controller : 'checkInReservationDetails'
+	});
 
 	//to be deleted and replaced by the code below
 	$routeProvider.otherwise({

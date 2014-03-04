@@ -1,11 +1,7 @@
 
 (function() {
-	var checkInConfirmationViewController = function($scope,$modal,$rootScope) {
+	var checkInReservationDetails = function($scope,$modal,$rootScope) {
 
-
-		$scope.subtitle1 = "To provide you with the a ";
-		$scope.subtitle2 = "secure check-in ";
-		$scope.subtitle3 = "process, please confirm the following";
 
  //setup options for modal
 
@@ -29,10 +25,10 @@
 
 		var dependencies = [
 		'$scope','$modal','$rootScope',
-		checkInConfirmationViewController
+		checkInReservationDetails
 		];
 
-		snt.controller('checkInConfirmationViewController', dependencies);
+		snt.controller('checkInReservationDetails', dependencies);
 		})();
 
 
