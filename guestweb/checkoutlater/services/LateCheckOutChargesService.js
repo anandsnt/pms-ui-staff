@@ -4,7 +4,6 @@
 
 		var fetch = function() {
 			var deferred = $q.defer();
-
 			$http.get('/guest_web/get_late_checkout_charges.json',{
     		params: {'reservation_id':$rootScope.reservationID}
 			})
@@ -14,6 +13,7 @@
 				}.bind(this))
 				.error(function() {
 					deferred.reject();
+					$rootScope.netWorkError = true;
 				});
 
 

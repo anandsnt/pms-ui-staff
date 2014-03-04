@@ -80,6 +80,7 @@ var BaseInlineView = function(viewDom){
 	    // this will check the tr's  'a' tag children with class edit-data-inline
 	  	// it is using 'a' tag's href for fetching the view
 		event.preventDefault();
+		console.log("appemdinline")
 		var element = $(event.target);
 		
 		var webservice = new WebServiceInterface();
