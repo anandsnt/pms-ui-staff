@@ -50,10 +50,12 @@ var adminApp = function(){
   	var backDom = $("#replacing-div-first");
   	backDom.hide();
   	var nextViewParams = {'backDom': backDom};
+  	$("#replacing-div-second").html("");
      
     if(href != undefined){
   		sntapp.fetchAndRenderView(href, $("#replacing-div-second"), viewParams, 'BLOCKER', nextViewParams);
     }
+    $("#replacing-div-second").show();
   };
   
   // function for get current focused div, mainly used for backDom assigning
