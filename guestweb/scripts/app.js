@@ -61,16 +61,21 @@ snt.config(['$routeProvider', function($routeProvider) {
 	});
 
 
-	// $routeProvider.otherwise({
-	// 	redirectTo: '/'
-	// });
 
-
-
-
+// $routeProvider.otherwise({
+// redirectTo: '/'
+// });
 }]);
 
+
+
+
+
+
+
+
 snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService','$location','$window','authenticationService', function($rootScope,$scope,$attrs, UserService,$location,$window,authenticationService) {
+
 
 	
 	if ($window.sessionStorage.token)
