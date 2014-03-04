@@ -224,7 +224,8 @@ padding: 0;
 
 .now-later-options .checkoutnow,
 .now-later-options .checkoutlater,
-.now-later-options .accept-charges-button {
+.now-later-options .accept-charges-button,
+.now-later-options .checkin {
 text-align: center;
 font-family: 'Source Sans Pro', sans-serif;
 font-weight: 200;
@@ -234,7 +235,8 @@ line-height: 100%;
 
 .checkoutnow .rel-wrapper,
 .checkoutlater .rel-wrapper,
-.accept-charges-button .rel-wrapper
+.accept-charges-button .rel-wrapper,
+.checkin .rel-wrapper
 {
 padding: 20px 10px;
 }
@@ -247,8 +249,10 @@ padding: 30px 20px 32px;
 background: #000000;
 color: #ffffff; 
 }
-
-.checkoutlater,.accept-charges-button {
+.checkin{
+  margin:0px 0px 10px 0px !important;
+}
+.checkoutlater,.accept-charges-button,.checkin {
 background: #ffffff;
 color: #000000;
 }
@@ -256,7 +260,8 @@ color: #000000;
 .checkoutnow a,
 .checkoutlater a,
 .accept-charges-button a,
-.later-options a {
+.later-options a,
+.checkin a {
 position: absolute;
 top: 0;
 right: 0;
@@ -663,7 +668,6 @@ padding:5px 8px 2px 0;
     font-family: 'Source Sans Pro';
     
     color: #fff;
-    margin-bottom: 5px;
 
 .lightcontent{
     font-size: 11px !important;
@@ -684,3 +688,11 @@ padding:5px 8px 2px 0;
   margin: 20px 25px 0px;
   border-bottom:1px solid #fff;
 }
+ .room_details {
+  color:#fff;
+   font-size:18px;
+   margin-bottom: 5px;
+ }
+ .room-desc{
+   margin:10px 0px;
+ }
