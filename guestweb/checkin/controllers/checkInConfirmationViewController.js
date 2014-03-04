@@ -4,7 +4,9 @@
 
 
 
-		$scope.subtitle = "To provide you with the a secure check-in process, please confirm the following";
+		$scope.subtitle1 = "To provide you with the a ";
+		$scope.subtitle2 = "secure check-in ";
+		$scope.subtitle3 = "process, please confirm the following";
 
 
 
