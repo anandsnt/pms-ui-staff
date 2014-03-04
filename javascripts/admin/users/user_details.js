@@ -48,7 +48,7 @@ var UserDetailsView = function(domRef){
   };
   //go to previous page withount any update in view
   this.gotoPreviousPage = function() {
-  	that.myDom.html("");
+  	//that.myDom.html("");
   	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
 

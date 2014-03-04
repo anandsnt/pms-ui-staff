@@ -27,6 +27,8 @@ var adminApp = function(){
         }
     };
     this.gotoPreviousPage = function(viewParams, currentView) {
+    	console.log(viewParams['backDom']);
+    	console.log(currentView);
 	  /*if($("#replacing-div-second").html() != ""){
 		  $("#replacing-div-second").html("");
 		  $("#replacing-div-second").removeClass("current");	 
@@ -35,6 +37,7 @@ var adminApp = function(){
 	  	$("#replacing-div-first").html("");
 	  	$("#replacing-div-first").removeClass("current");
 	  }*/
+	  currentView.hide();
       currentView.removeClass("current");
       //currentView.html("");
 	  viewParams['backDom'].show();	

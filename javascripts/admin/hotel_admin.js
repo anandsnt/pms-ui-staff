@@ -52,6 +52,7 @@ var HotelAdminView = function(domRef){
   		viewParams = {'backDom': backDom};
   		div.html("");
   		sntapp.fetchAndRenderView(url, div, {}, 'BLOCKER', viewParams);
+      div.show();
 	}	  
   };
 
