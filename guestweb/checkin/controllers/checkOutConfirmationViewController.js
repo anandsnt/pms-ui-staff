@@ -23,7 +23,7 @@
 		};
   //to be used when authentication failded
 
- 		 $scope.openDialog();
+ 		 // $scope.openDialog();
 
 };
 
