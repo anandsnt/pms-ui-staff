@@ -4,15 +4,29 @@
 		//if checkout is already done
 		
  		if ($rootScope.isCheckedout) 
-		$location.path('/checkOutNowSuccess')
+		 $location.path('/checkOutNowSuccess');
 
 
 		$scope.showBill = false;
+		$rootScope.netWorkError = false;
 
 		// fecth text details to display
 
+
+		$scope.isFetching = true;
+
 		BillService.fetchDisplayDetails().then(function(billDisplayDetails) {
 			$scope.billDisplayDetails = billDisplayDetails;
+			$scope.isFetching = false;
+			$rootScope.netWorkError =false;
+		});
+
+		//watch for any network errors
+
+		$rootScope.$watch('netWorkError',function(){
+
+			if($rootScope.netWorkError)
+				$scope.isFetching = false;
 		});
 
 
@@ -25,7 +39,7 @@
 		if($scope.billData)
 		 	$scope.optionsAvailable = true;
 		else
-			$location.path('/serverError')
+			$location.path('/serverError');
 	});
 		
 

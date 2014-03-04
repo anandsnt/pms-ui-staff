@@ -41,7 +41,6 @@ var app = function(){
         viewDom.addClass("current");
         
         var viewObject = that.getViewInstance(viewDom);
-        
      // CR Sajith: if viewObject is undefined or nil, show a predefined error message & return.
         try{
 
