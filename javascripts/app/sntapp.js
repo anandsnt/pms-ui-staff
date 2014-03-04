@@ -1,3 +1,11 @@
+var DEBUG_LEVEL = 5; 
+
+var is_level_higher = function(level){
+    return true;
+}
+function qlog(message, level){
+    //if (is_level_higher(level)) console.log(message);
+}
 
 var app = function(){
     var that = this;
@@ -33,7 +41,6 @@ var app = function(){
         viewDom.addClass("current");
         
         var viewObject = that.getViewInstance(viewDom);
-        
      // CR Sajith: if viewObject is undefined or nil, show a predefined error message & return.
         try{
 
@@ -209,6 +216,8 @@ var app = function(){
         that.cardSwipeDebug = true; // Mark it as true to debug cardSwype opertations
         that.cardReader = new CardOperation();
     };
+
+    
 
     this.ismob = (function(navigator) { 
       if( navigator.userAgent.match(/Android/i)
