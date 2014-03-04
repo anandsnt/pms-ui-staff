@@ -153,20 +153,19 @@ function onOffSwitch() {
 
 // Custom file upload
 function setupFile(){
-    var fileInput = $('input[type="file"]:not(.hidden)'),
+    var fileInput = $('input[type="file"]:not(.hidden)');
         label = '<span class="input">Choose file ...</span>';
-
     if (fileInput.length) {
         fileInput.each(function(){
 			// Display custom label if provided
 			var customLabel = $(this).attr('label')			
 			if (customLabel) label = '<span class="input">' + customLabel + '</span>';
-			
-            $(this)
-                .before(label)
-                .change(function(){
+			if(!$(this).siblings().hasClass('input')){
+            	$(this).before(label);
+            } 
+            $(this).change(function(){
                     $(this).parent('.file-upload').children('.input').text($(this).val().replace('C:\\fakepath\\', ''));
-                });
+            });
         });
     };
 };
