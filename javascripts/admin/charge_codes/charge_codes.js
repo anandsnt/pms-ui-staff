@@ -1,9 +1,9 @@
 var HotelChargeCodesView = function(domRef){
   BaseInlineView.call(this);  
   
-  that = this;
-  this.myDom = domRef;
   
+  this.myDom = domRef;
+  var that = this;
   // to handle subview events
   this.delegateSubviewEvents = function(){
     that.myDom.find('#charge_codes_table').tablesorter({
@@ -153,7 +153,7 @@ var HotelChargeCodesView = function(domRef){
   this.deleteItem = function(event){
   	event.preventDefault();
   	var postData = {};
-  	var selectedId = $(event.target).attr("id");
+  	var selectedId = that.myDom.find(event.target).attr("id");
   	
   	var url = '/admin/charge_codes/'+selectedId+'/delete';
   	postData.value = selectedId;
