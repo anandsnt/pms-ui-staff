@@ -76,8 +76,9 @@ var HotelAdminView = function(domRef){
 		  var viewParams = {'backDom': backDom};
 		  $(this).parents('section:eq(0)').hide();
 		  //viewURL, viewDom, params, shouldShowLoader, nextViewParams
-		  
-		  sntapp.fetchAndRenderView(url, $("#replacing-div-first"), {}, 'BLOCKER', viewParams);
+		  var div = $("#replacing-div-first");
+		  div.show();
+		  sntapp.fetchAndRenderView(url, div, {}, 'BLOCKER', viewParams);
 	  }
   };
 

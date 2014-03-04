@@ -237,8 +237,9 @@ var setUpAdmin = function(viewDom, delegate) {
 	$('#content').css('opacity','0').delay(200).animate({opacity:1},400);
 // Keep app in fullscreen mode
    	var isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
+   	
    	if (isTablet) {
-		$('a:not(.nav-toggle):not(.edit-data-inline):not(.add-data-inline)').click(function(e){
+		$('a:not(.nav-toggle):not(.edit-data-inline):not(.add-data-inline):not(.admin-left-nav)').click(function(e){
 			e.preventDefault();
 		});
 	}	
