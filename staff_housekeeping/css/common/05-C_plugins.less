@@ -1,0 +1,204 @@
+/* 1. ROOT
+==========================================================*/
+/* 2. TYPOGRAPHY
+==========================================================*/
+/* 3. GRAPHICAL ELEMENTS
+==========================================================*/
+/* 4. LAYOUT
+==========================================================*/
+/* 5. COMPONENTS
+==========================================================*/
+
+/* jQuery UI tabs			==============================*/
+	.ui-tabs {
+		position: relative;
+
+		.ui-tabs-nav {
+			li {
+				a {
+					cursor: pointer;
+				}
+
+				&.ui-tabs-active {
+					a { cursor: pointer; }
+				}
+
+				&.ui-tabs-active,
+				&.ui-state-disabled,
+				&.ui-tabs-loading {
+					a { cursor: text; }
+				}
+			}
+		}
+
+		.ui-tabs-panel {
+			.show;
+			background: transparent;
+		}
+	}
+
+/* jQuery UI datepicker		==============================*/
+	#ui-datepicker-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0,0,0,.5);
+		z-index: 999;
+	}
+
+	.has-datepicker {
+		position: relative;
+
+		.ui-datepicker-trigger {
+			position: absolute;
+			top: 0;
+			left: 0;
+			border: 0;
+			cursor: pointer;
+			background: transparent @calendar no-repeat 95% 12px;
+    		background-size: 20px;
+    		.hide-text;
+			.size(40px, 100%);
+
+			&:hover,
+			&:active { background-position: 95% -38px; }
+
+			@media @highdpi {
+				background-image: @calendar2x;
+			}			
+		}
+	}
+
+	.ui-datepicker {
+		top: 50% !important;
+		left: 50% !important;
+		padding: 10px;
+		margin: -185px 0 0 -240px;
+		width: 480px;
+		z-index: 9999 !important;
+		.background(@white);
+		.hide;
+
+		.ui-datepicker-header,
+		.ui-datepicker-calendar {
+			position: relative;
+			width: 100%;
+		}
+
+		.ui-datepicker-header {
+			height: 40px;
+			.faux-clickable;
+			#border-radius > .bottom(0);
+
+			.ui-datepicker-title {
+				font-size: 18px;
+				font-weight: 600;
+				line-height: 40px;
+				vertical-align: middle;
+				text-align: center;
+				text-transform: uppercase;
+
+				select {
+					font-weight: 400;
+					text-transform: none;
+					display: inline-block;
+					background: @white @selectArrow no-repeat 90% 50%;
+					background-size: 6px 4px;
+					.box-shadow(none);
+
+					&.ui-datepicker-month { 
+						width: 120px;
+						margin-right: 20px;
+					}
+
+					&.ui-datepicker-year {
+						width: 80px;
+					}
+				}			
+			}
+
+			.ui-datepicker-prev,
+			.ui-datepicker-next {
+				position: absolute;
+				top: 0;
+				overflow: hidden;
+				cursor: pointer;
+				.show;
+				.hide-text;
+				.square(40px);
+
+				&.ui-datepicker-prev { left: 0; }
+				&.ui-datepicker-next { right: 0; }
+				&.ui-state-disabled { .hide; }
+			}
+		}
+
+		.ui-datepicker-calendar {
+			margin: 0;
+			table-layout: fixed;
+			border-collapse: separate; 
+			border-spacing: 5px;
+
+			thead {
+				th {
+					color: @grey3;
+					font-weight: 600;
+					text-align: center;
+					text-transform: uppercase;
+					line-height: 30px;
+					vertical-align: middle;
+				}
+			}
+
+			tbody {
+				td {
+					text-align: center;
+					line-height: 50px;
+					vertical-align: middle;
+
+					a {
+						font-size: 18px;
+						font-weight: 600;
+						color: @textColor;
+						background: rgba(0,0,0,.05);
+						.show;
+
+						&.ui-state-active {
+							color: @white;
+							text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+							.gradient (@logoGradientStart, @logoGradientEnd);
+
+							&.ui-state-highlight { color: @white; }
+						}
+
+						&.ui-state-highlight {
+							color: @blue;
+						}
+					}
+
+					&.ui-state-disabled {
+						span {
+							color: @grey4;
+							background: rgba(0,0,0,.025);
+							.show;
+						}
+					}
+				}
+			}
+		}
+		
+		&.ui-datepicker-inline {
+			position: static;
+			top: auto !important;
+			left: auto !important;
+			margin: 0;
+			width: 100%;
+		}
+	}
+
+/* 6. IE
+==========================================================*/
+/* 7. RESPONSIVE
+==========================================================*/

@@ -1,0 +1,329 @@
+/* 1. ROOT
+==========================================================*/
+/* 2. TYPOGRAPHY
+==========================================================*/
+/* 3. GRAPHICAL ELEMENTS
+==========================================================*/
+
+/* Menu icons			==================================*/
+	.icon-menu {
+		background-image: @iconMenu;
+		background-repeat: no-repeat;
+		overflow: hidden;
+		.hide-text;
+		.square(60px);
+		.show;
+		.no-transition;
+
+		&.icon-dashboard { 
+			background-position: 0 -60px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -60px;}
+		}
+
+		&.icon-search { 
+			background-position: 0 -120px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -120px;}
+		}
+
+		&.icon-social-lobby {
+			background-position: 0 -180px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -180px;}
+		}
+
+		&.icon-messages {
+			background-position: 0 -240px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -240px;}
+		}
+
+		&.icon-reviews {
+			background-position: 0 -300px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -300px;}
+		}
+
+		&.icon-settings {
+			background-position: 0 -360px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -360px;}
+		}
+
+		&.icon-profile {
+			background-position: 0 -600px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -600px;}
+		}
+
+		&.icon-sign-out {
+			background-position: 0 -420px; 
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -420px;}
+		}
+
+		@media @highdpi {
+			background-image: @iconMenu2x;
+			background-size: 120px;
+		}
+	}
+
+/* Buttons				==================================*/
+	.button {
+		display: inline-block;
+		font-weight: 600;
+		line-height: 40px;
+		vertical-align: middle;
+		text-transform: uppercase;
+		text-align: center;
+		color: @white;
+		border: 0;
+		padding: 0 20px;
+		cursor: pointer;
+		text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+		#border-radius > .rounded(3px);
+		.box-shadow(inset 0 -1px 0 rgba(0,0,0,.2));
+		.transition;
+		
+		&:hover,
+		&:active { 
+			color: @white;
+			.box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.3)");
+		}
+
+		/* Button styles ***/
+		&.blank {
+			color: @grey3;
+			background: transparent;
+			text-shadow: none;
+			#border-radius > .rounded(0);
+			.box-shadow(none);
+
+			&:hover,
+			&:active { color: @logoPrimary; }
+
+			&.soft-red-text {
+				color: @softRed;
+
+				&:hover,
+				&:active { color: @softRed; }
+			}
+		}
+
+		/* Button colors ***/
+		&.green { 
+			.gradient (@greenStart, @greenEnd);
+
+			&:hover,
+			&:active { .gradient (@greenEnd, @greenStart); }
+		}
+
+		&.red { 
+			.gradient (@redStart, @redEnd);
+
+			&:hover,
+			&:active { .gradient (@redEnd, @redStart); }
+		}
+
+		&.soft-red { 
+			.gradient (@softRedStart, @softRedEnd);
+
+			&:hover,
+			&:active { .gradient (@softRedEnd, @softRedStart); }
+		}
+
+		&.blue { 
+			.gradient (@blueStart, @blueEnd);
+
+			&:hover,
+			&:active { .gradient (@blueEnd, @blueStart); }
+		}
+
+		&.purple {
+			.gradient (@purpleStart, @purpleEnd);
+
+			&:hover,
+			&:active { .gradient (@purpleEnd, @purpleStart); }
+		}
+
+		&.grey {
+			.gradient (#d1d1d1, @grey2);
+
+			&:hover,
+			&:active { .gradient (@grey2, #d1d1d1); }
+		}
+
+		&.white {
+			color: @textColor;
+			background-color: @white;
+			text-shadow: none;
+			.box-shadow();
+
+			&:hover,
+			&:active { .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)"); }
+
+			&.brand-text {
+				color: @logoPrimary;
+
+				&:hover,
+				&:active { color: darken(@logoPrimary, 10); }
+			}
+
+			&.blue-text {
+				color: @blue;
+
+				&:hover,
+				&:active { color: darken(@blue, 10); }
+			}
+
+			&.red-text {
+				color: @red;
+
+				&:hover,
+				&:active { color: darken(@red, 10); }
+			}
+
+			&.soft-red-text {
+				color: @softRed;
+
+				&:hover,
+				&:active { color: darken(@softRed, 10); }
+			}
+
+			&.green-text {
+				color: @green;
+
+				&:hover,
+				&:active { color: darken(@green, 10); }
+			}
+
+			&.grey-text {
+				color: @grey3;
+
+				&:hover,
+				&:active { color: grey4; }
+			}
+		}
+
+		/* Logo button ***/
+		&.brand-colors {
+			.gradient (@logoGradientStart, @logoGradientEnd);
+
+			&:hover,
+			&:active { .gradient (@logoGradientEnd, @logoGradientStart); }
+		}
+
+		/* Button with icon ***/
+		&.with-icon {
+			position: relative;
+			padding: 30px 0 0 0;
+			font-size: 12px;
+			line-height: 30px;
+			.size(60px,65px);
+
+			.icons {
+				position: absolute;
+				top: 15px;
+				left: 50%;
+				margin-left: -10px;
+				.show;
+				.square(20px);
+			}
+
+			&.only-icon {
+				.hide-text;
+
+				.icons {
+					top: 50%;
+					margin-top: -10px;
+				}
+			}
+		}
+	}
+
+	.add-new-button {
+		display: inline-block;
+		font-size: 14px;
+		font-weight: 600;
+		line-height: 50px;
+		vertical-align: middle;
+		text-transform: uppercase;
+		text-align: center;
+		color: @green;
+		padding: 0 10px;
+		border: 1px dashed rgba(0,0,0,.2);
+		#border-radius > .rounded(3px);
+
+		&:hover,
+		&:active {
+			color: @green;
+			border-color: @green;
+		}
+	}
+
+/* Arrow icons			==================================*/
+	.ui-datepicker-prev,
+	.ui-datepicker-next,
+	.fc-button-prev,
+	.fc-button-next {
+		background-position: 50% 14px;
+		background-repeat: no-repeat;
+
+		&.ui-datepicker-prev,
+		&.fc-button-prev { 
+			background-image: @arrowBlackLeft; 
+			
+			&:hover { background-image: @arrowLeft; }
+		}
+
+		&.ui-datepicker-next,
+		&.fc-button-next { 
+			background-image: @arrowBlackRight; 
+			
+			&:hover { background-image: @arrowRight; }
+		}
+
+		@media @highdpi {
+			background-size: 14px 14px;
+
+			&.ui-datepicker-prev,
+			&.fc-button-prev { 
+				background-image: @arrowBlackLeft2x; 
+
+				&:hover { background-image: @arrowLeft2x; }
+			}
+
+			&.ui-datepicker-next,
+			&.fc-button-next { 
+				background-image: @arrowBlackRight2x; 
+
+				&:hover { background-image: @arrowRight2x; }
+			}
+		}
+	}
+
+/* 4. LAYOUT
+==========================================================*/
+/* 5. COMPONENTS
+==========================================================*/
+/* 6. IE
+==========================================================*/
+/* 7. RESPONSIVE
+==========================================================*/
