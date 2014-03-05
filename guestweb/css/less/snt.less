@@ -264,6 +264,7 @@ top: 0;
 right: 0;
 bottom: 0;
 left: 0;
+z-index: 3;
 }
 
 .late-charge {
@@ -597,7 +598,7 @@ border-color:  #000000 !important;
 
 .now-later-options > .row  {
 
-			height: 200px !important;
+			min-height: 200px;
 	}
 
 @media screen and (min-width: 900px) {
@@ -719,13 +720,15 @@ border-color:  #000000 !important;
 	.checkoutnow.single .rel-wrapper,
 	.checkoutlater.single .rel-wrappe,
 	.accept-charges-button.single .rel-wrapper {
-		padding: 70px 10px 88px;
+		padding: 57px 10px 88px;
 	}
 
 	.checkoutnow.single .rel-wrapper .row,
 	.checkoutlater.single .rel-wrappe .row,
 	.accept-charges-button.single .rel-wrapper .row {
 		display: inline-block;
+		float: none;
+		width: auto;
 	}
 	
 	.foot-text {
