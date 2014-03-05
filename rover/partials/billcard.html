@@ -5,14 +5,14 @@
 		<!-- Drawer toggle -->
 		<a class="nav-toggle" > Menu</a>
 		<!-- Title -->
-		<h1 class="h2"> Dashboard <span> Logged in as <strong> {{header_data.firstname}}
-			{{header_data.lastname}} </strong> </span>
+		<h1 class="h2"> Dashboard <span> Logged in as <strong> {{ header_data.firstname }}
+			{{ header_data.lastname }} </strong> </span>
 		</h1>
 		<!-- Late checkout -->
-		<a id="late-checkout-alert" class="icons icon-alert late-check-out"> {{header_data.late_checkout}} </a>
+		<a id="late-checkout-alert" class="icons icon-alert late-check-out"> {{ header_data.late_checkout }} </a>
 		<div class="logo">
 			<img alt = "", src= "https://pms-dev.stayntouch.com/assets/logo.png" />
-			<em class="date"> {{header_data.date}} </em>
+			<em class="date"> {{ header_data.date }} </em>
 		</div>
 	</header>
 
@@ -25,17 +25,21 @@
 			<!-- Other header details -->
 			<div class="data">
 				<span class="room"> <span class="guest-status room">room</span>
-					<strong id="header-room-num" class="room-number ready"> {{data.room_number}}</strong>
-					<span id="room-type"> {{data.room_type}} </span>
+					<strong id="header-room-num" class="room-number ready"> {{ data.room_number }}</strong>
+					<span id="room-type"> {{ data.room_type }} </span>
 				</span>
 				<span class="nights">
-					<span class="guest-status nights"> </span> {{data.number_of_nights}} nights 
+					<span class="guest-status nights"> </span> {{ data.number_of_nights }} nights 
 				</span>
 				<span class="date">
-					<span class="guest-status small-icon check-in">check-in</span> Tuesday {{data.checkin_date}} 
+					<span class="guest-status small-icon check-in">check-in</span>
+					{{ data.checkin_date | date : 'EEEE' }}
+					{{ data.checkin_date | date : 'MM-dd-yyyy' }}
 				</span>
 				<span class="date">
-					<span class="guest-status small-icon check-out">check-out</span> Thursday {{data.checkout_date}} 
+					<span class="guest-status small-icon check-out">check-out</span> 
+					{{ data.checkout_date | date : 'EEEE' }}
+					{{ data.checkout_date | date : 'MM-dd-yyyy' }} 
 				</span>
 			</div>
 		</div>
