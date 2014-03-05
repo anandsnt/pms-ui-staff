@@ -1,29 +1,9 @@
-sntRover.controller('viewbillController',['$scope', function($scope){
+sntRover.controller('billcardController',['$scope', function($scope){
 	
 	$scope.status = true;
 	$scope.status1 = false;
 	
-	$scope.dates= [
-	                {
-	                    "date": "2013-03-12",
-	                    "amount": "149",
-	                    "rate_name": "Best Available Rate",
-	                    "rate_description": "This is the best rate for the season",
-	                    "room_type_name": "Superior Double King Deluxe",
-	                    "room_type_description": ""
-	                },
-	                {
-	                    "date": "2013-03-13",
-	                    "amount": "249",
-	                    "rate_name": "Best Available Rate",
-	                    "rate_description": "This is the best rate for the season",
-	                    "room_type_name": "Superior Double King Deluxe",
-	                    "room_type_description": ""
-	                }];
-	                
-	   
 	$scope.clicked = function(index){
-		
 		$scope.selecteIndex = index;
 	}
 	
@@ -33,6 +13,7 @@ sntRover.controller('viewbillController',['$scope', function($scope){
 		"late_checkout": "10",
 		"date":"feb 24, 2014"
 	};
+	
 	$scope.data = {
 	    "reservation_status": "CHECKING_IN",
 	    "room_number": "234",
