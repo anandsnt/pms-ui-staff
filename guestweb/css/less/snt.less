@@ -63,6 +63,10 @@ padding: 0 !important;
 }
 }
 
+.pad-rt-10 {
+	padding-right: 10px !important;
+}
+
 .top-margin {
 margin-top: 20px !important;
 }
@@ -690,7 +694,8 @@ border-color:  #000000 !important;
 	}
 
 	.now-later-options .checkoutnow .icontop img,
-	.now-later-options .checkoutlater .icontop img {
+	.now-later-options .checkoutlater .icontop img,
+	.now-later-options .accept-charges-button .icontop img {
 		width: 77px;
 		height: 77px;
 	}
@@ -700,8 +705,34 @@ border-color:  #000000 !important;
 	.accept-charges-button .rel-wrapper {
 		padding: 35px 10px;
 	}
+
+	.checkoutnow .rel-wrapper,
+	.checkoutlater .rel-wrapper,
+	.accept-charges-button .rel-wrapper {
+		padding: 35px 10px;
+	}
+
+	.now-later-options {
+		max-width: initial;
+	}
+
+	.checkoutnow.single .rel-wrapper,
+	.checkoutlater.single .rel-wrappe,
+	.accept-charges-button.single .rel-wrapper {
+		padding: 70px 10px 88px;
+	}
+
+	.checkoutnow.single .rel-wrapper .row,
+	.checkoutlater.single .rel-wrappe .row,
+	.accept-charges-button.single .rel-wrapper .row {
+		display: inline-block;
+	}
 	
 	.foot-text {
 		padding: 40px 50px 0px;
+	}
+
+	.balancevalue {
+		font-size: 44px;
 	}
 }
