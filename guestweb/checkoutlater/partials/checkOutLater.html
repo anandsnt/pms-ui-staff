@@ -20,7 +20,7 @@
 		<!-- contentarea starts here-->
 		<div class="container" ng-hide="isFetching || netWorkError">
 			<!-- top section starts here-->
-			<div class="row check-inout-wrapper">
+			<div class="row check-inout-wrapper late-options">
 				<div class="col-md-6 headtext centeralign" ng-show="optionsAvailable">
 					Select your new check-out time:
 				</div>
@@ -48,14 +48,13 @@
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<div class="row">
-				<p class="centeralign  no-thanks" ng-show="optionsAvailable">
-					<a href="#/">no, thanks<a>
+				<div class="row no-thanks">
+					<p class="centeralign  no-thanks" ng-show="optionsAvailable">
+						<a href="#/">no, thanks<a>
 					</p>
 				</div>
-
 			</div>
+
 		</div>
 	</div>
