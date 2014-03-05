@@ -63,14 +63,12 @@ snt.config(['$routeProvider', function($routeProvider) {
 		controller : 'checkInReservationDetails'
 	});
 
-	 $routeProvider.otherwise({
-		 redirectTo: '/checkinKeys'
-	 });
+
 
 	// //to be deleted and replaced by the code below
-	// $routeProvider.otherwise({
-		// redirectTo: '/checkinConfirmation'
-	// });
+ $routeProvider.otherwise({
+	 redirectTo: '/checkinConfirmation'
+ });
 
 
 
