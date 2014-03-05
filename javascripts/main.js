@@ -1,5 +1,5 @@
 // Orientation change and touchmove listeners
-document.addEventListener('orientationchange', function (e) { $("#app-page").css("height",window.innerHeight); }, false);
+document.addEventListener('orientationchange', function (e) { $('body').css("height",window.innerHeight); }, false);
 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 
 // Disable cache busting
@@ -359,7 +359,7 @@ $(function($){
 
     if ($isTablet) {
         // Enable keyboard to shift content to the top
-        $('body').css("height",window.innerHeight);
+        $('body:not(#login-page)').css('height',window.innerHeight);
 
         // Disable keyboard content shifting
         $(document).on('focus', '[data-keyboard=lock]', function() {
@@ -549,6 +549,14 @@ $(function($){
                 $(this).children('.icons').addClass('active');
                 $('.container').addClass($openClass); 
             }
+
+            // Check if there are other linked toggle buttons
+            if ($(this).hasClass('linked-toggle')){
+                $('.linked-toggle:visible').each(function(){
+                    $(this).addClass('active');
+                    $(this).children('.icons').addClass('active');
+                });
+            }
         }
         // Close
         else
@@ -557,6 +565,14 @@ $(function($){
             $(this).children('.icons').removeClass('active');
             $toggleContent.add(function(){ $('.container').addClass($closingClass); } );
             $toggleContent.add(function(){ $('.container').removeClass($openClass).removeClass($closingClass); }, $delay);
+
+            // Check if there are other linked toggle buttons
+            if ($(this).hasClass('linked-toggle')){
+                $('.linked-toggle.active:visible').each(function(){
+                    $(this).removeClass('active');
+                    $(this).children('.icons').removeClass('active');
+                });
+            }
         }
 
         // Conversations toggle
@@ -577,6 +593,7 @@ $(function($){
             // Rover 
             if (imageWidth == 2000) {
                 $($target + ' figure').addClass('signature-rover');
+                if (imageHeight == 400) { $($target + ' figure').addClass('larger'); }
             // Zest
             } else {
                 $($target + ' figure').addClass('signature-zest');
