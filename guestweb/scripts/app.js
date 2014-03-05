@@ -53,16 +53,24 @@ snt.config(['$routeProvider', function($routeProvider) {
 		templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
 		controller : 'checkInConfirmationViewController'
 	});
+	$routeProvider.when('/checkinKeys', {
+		templateUrl: '/assets/checkin/partials/checkInKeys.html',
+		controller : 'checkInKeysController'
+	});
 
 	$routeProvider.when('/checkinReservationDetails', {
 		templateUrl: '/assets/checkin/partials/checkInReservationDetails.html',
 		controller : 'checkInReservationDetails'
 	});
 
-	//to be deleted and replaced by the code below
-	$routeProvider.otherwise({
-		redirectTo: '/checkinConfirmation'
-	});
+	 $routeProvider.otherwise({
+		 redirectTo: '/checkinKeys'
+	 });
+
+	// //to be deleted and replaced by the code below
+	// $routeProvider.otherwise({
+		// redirectTo: '/checkinConfirmation'
+	// });
 
 
 
