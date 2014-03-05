@@ -1,15 +1,38 @@
 <!DOCTYPE html>
 <html id="housekeeping">
-	<!-- <link rel="stylesheet" type="text/css" href="css/styles_ng.css" /> -->
 	<script type="text/javascript" src="lib/js/less-1.4.1.min.js"></script>
 	<script type="text/javascript" src="lib/js/angular.min.js"></script>
 	
 	<script type="text/javascript" src="lib/js/angular-ui-router.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/router.js"></script>
-    <script type="text/javascript" src="js/controllers/roverController.js"></script>
+    <script type="text/javascript" src="js/controllers/appController.js"></script>
 	<script type="text/javascript" src="js/controllers/dashboardController.js"></script>
 	<script type="text/javascript" src="js/controllers/searchController.js"></script>
+	<script type="text/javascript" src="js/controllers/roomDetailsController.js"></script>
+	
+	<link rel="stylesheet/less" type="text/css" href="css/common/01-A_reset.less" />
+	<link rel="stylesheet/less" type="text/css" href="css/common/01-B_variables.less" />
+	<link rel="stylesheet/less" type="text/css" href="css/house/01-B_variables.less" />
+	<link rel="stylesheet/less" type="text/css" href="css/common/01-C_mixins.less" />
+	<link rel="stylesheet/less" type="text/css" href="css/common/01-D_mixins-animations.less" />
+	<link rel="stylesheet/less" type="text/css" href="css/common/02_typography.less" />
+	<link rel="stylesheet/less" type="text/css" href="css/common/03_graphics.less" />
+	<link rel="stylesheet/less" type="text/css" href="css/house/03_graphics.less" />
+	<link rel="stylesheet/less" type="text/css" href="css/common/04_layout.less" />
+	<link rel="stylesheet/less" type="text/css" href="css/house/04_layout.less" />
+	<!--common/componets.less is missing -->
+	<!-- <link rel="stylesheet/less" type="text/css" href="css/common/05-A_components.less" /> -->
+	<link rel="stylesheet/less" type="text/css" href="css/house/05-A_components.less" />
+	<link rel="stylesheet/less" type="text/css" href="css/common/05-B_forms.less" />
+	<link rel="stylesheet/less" type="text/css" href="css/common/05-C_plugins.less" />
+	<link rel="stylesheet/less" type="text/css" href="css/house/05-C_plugins.less" />
+	
+	<link rel="stylesheet/less" type="text/css" media="(min-width: 600px)" href="css/house/07-A_600.less" />
+	<link rel="stylesheet/less" type="text/css" media="(min-width: 768px)" href="css/house/07-B_768.less" />
+	<script type="text/javascript" src="lib/js/less-1.4.1.min.js"></script>
+	
+
 	<body ng-app="sntRover" id="house-page">
 		<div class="container">
 			<div ui-view></div>
