@@ -145,18 +145,13 @@ font-size: 30px;
 color: #fff;
 line-height:100%;
 }
-@media (min-width: 992px) {
-.headtext {
-padding-top: 70px;
-}
-}
 
 .jumbotron .check-inout-wrapper {
 padding-top: 10px;
 }
 
 .jumbotron .roomnumber {
-margin-bottom: 0;
+margin-bottom: 10px;
 }
 
 .jumbotron .roomnumber span {
@@ -559,4 +554,67 @@ border-color:  #000000 !important;
 
 .checkout-failure-text{
   margin-bottom:10px;
+}
+
+
+
+/* ----------------------- execusive styling for desktops and tablets portrait mode -------------------*/
+@media (min-width: 992px) {
+	.icontop {
+		padding-top: 20px;
+	}
+
+	.jumbotron p {
+		font-size: 24px !important;
+	}
+
+	.header {
+		padding-bottom: 45px;
+	}
+
+	.jumbotron .roomnumber {
+		margin-bottom: 20px;
+	}
+
+	.jumbotron .roomnumber span {
+		font-size: 43px;
+		padding: 0 35px;
+	}
+
+	.jumbotron .check-inout-wrapper {
+		border-top: 1px solid #fff;
+		border-bottom: 1px solid #fff;
+		padding: 50px 0 100px;
+	}
+
+	.jumbotron .headtext {
+		font-size: 44px;
+		padding-top: 25px;
+	}
+
+	.leadtext {
+		padding: 20px 20px 0px;
+	}
+
+	.now-later-options .checkoutnow,
+	.now-later-options .checkoutlater,
+	.now-later-options .accept-charges-button {
+		font-size: 44px;
+	}
+
+	.now-later-options .checkoutnow .icontop img,
+	.now-later-options .checkoutlater .icontop img {
+		width: 77px;
+		height: 77px;
+	}
+
+	.checkoutnow .rel-wrapper,
+	.checkoutlater .rel-wrapper,
+	.accept-charges-button .rel-wrapper {
+		padding: 35px 10px;
+	}
+	
+	.foot-text {
+		padding: 40px 50px 0px;
+	}
 }
