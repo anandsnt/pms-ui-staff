@@ -109,7 +109,13 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 
 	$rootScope.hotelPhone      = $attrs.hotelPhone
 	$rootScope.isCheckedout   = ($attrs.isCheckedout === 'true') ? true : false;
+	//$rootScope.isCheckin     =   ($attrs.isCheckin ==='true') ? true : false;
 
+
+	console.log($attrs.isCheckin)
+	//if checkin
+	if($attrs.isCheckin && !$rootScope.isCheckedout)
+		$location.path('/checkinConfirmation');
 
 	//if chekout is already done
  	if ($rootScope.isCheckedout) 
