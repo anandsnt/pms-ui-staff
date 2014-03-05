@@ -1,57 +1,113 @@
-<div id="page-main-second" class="page main-page page-current">
-	<div id="search_list" data-view="Search" data-search-type="DUEIN">
-		<!-- Navbar -->
-		<header role="banner" class="nav-bar float">
-			<!-- Drawer toggle -->
-			<a href="#main-nav" class="nav-toggle">Menus page</a>
-			<!-- Title -->
-			<h1 id="search-title" class="h2"> Checking In <span> Logged in as <strong> Admin
-				Staff </strong> </span></h1>
-			<!-- Late checkout -->
-			<a id="late-checkout-alert" class="icons icon-alert late-check-out">4</a>
-			<div class="logo">
-				<img src="/assets/logo.png" alt="">
-				<em class="date"> Tuesday, 31 December 2013 </em>
-
-			</div>
-		</header>
-		<form role="search" name="search-form" method="get" id="search-form" class="search-form form float" action="">
-			<div class="entry">
-				<a id="clear-query" class="icons icon-clear-search">Clear query</a>
-				<button type="submit" name="submit" class="icons icon-search">
-					Search
-				</button>
-				<input type="text" placeholder="Name, Group, Room No. or Confirmation No." name="query" id="query" autocomplete="false">
-			</div>
-			<!-- %button.button.blank{name: "advanced", type: "button"} Advanced search -->
-		</form>
-		<section role="main" id="search" class="content scrollable">
-			<div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
-				<div id="notification-message" style="display: none;"></div>
-				<ul id="search-results" class="search-results">
-
-					<ul>
-
-						<li ng-repeat="searchResults in results.data">
-							<a data-transition="inner-page" class="guest-check-in link-item float" ui-sref="rover.staycard">
-							<figure class="guest-image">
-								<img src="https://pms-dev.stayntouch.com/assets/avatar-trans.png">
-							</figure>
-							<div class="data">
-								<h2>{{searchResults.lastname}}, {{searchResults.firstname}}</h2>
-								<span class="confirmation">{{searchResults.confirmation}}</span>
-							</div>
-							<div class="status">
-								<span class="guest-status check-in"></span>
-							</div> <strong class="room-number not-ready"> </strong><span class="room-status"></span> </a>
-						</li>
-
-					</ul>
-			</div>
-			<div id="no-results" class="no-content hidden"></div>
-			<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
-				<div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 248px; transform: translate(0px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
-			</div>
-		</section>
-	</div>
-</div>
+<!-- Navbar -->
+<header class="nav-bar float" role="banner">
+   <!-- Menu toggle button / Back button  -->
+   <a href="#main-nav" class="nav-toggle">Menu</a>
+   <!-- Title -->
+   <h1 class="h2">Rooms</h1>
+   <!-- Filter / Checkout button  -->
+   <a href="#filter-rooms" class="button white with-icon only-icon toggle linked-toggle"><span class="icons icon-filter"></span>Filter rooms</a>
+</header>
+<!-- Search form -->
+<form method="get" action="http://stayntouch.perceptiveinteractive.com/house/rooms/" name="rooms-search" id="rooms-search" class="search-form" role="search">
+   <div class="entry">
+      <a href="#" id="clear-query" class="icons icon-clear-search">Clear query</a>
+      <button type="submit" name="submit" class="icons icon-search">Search</button>
+      <input name="query" id="query" placeholder="Enter Room Number" type="number" autocomplete="off" />
+   </div>
+</form>
+<!-- Rooms list -->
+<section id="rooms" class="content scrollable" role="main">
+   <ul class="wrapper">
+      <li>
+         <a href="room-details/?number=101&status=clean&guest=vacant" data-transition="inner-page">
+            <h2 class="room-number room-clean">101</h2>
+            <span class="room-status">Clean</span>
+            <span class="fo-status">Vacant</span>
+         </a>
+      </li>
+      <li>
+         <a href="room-details/?number=102&status=inspected&guest=occupied" data-transition="inner-page">
+            <h2 class="room-number room-occupied">102</h2>
+            <span class="room-status">Inspected</span>
+            <span class="fo-status">Occupied</span>
+         </a>
+      </li>
+      <li>
+         <a href="room-details/?number=103&status=dirty&guest=vacant" data-transition="inner-page">
+            <h2 class="room-number room-dirty">103</h2>
+            <span class="room-status">Dirty</span>
+            <span class="fo-status">Vacant</span>
+         </a>
+      </li>
+      <li>
+         <a href="room-details/?number=104&status=dirty&guest=vacant" data-transition="inner-page">
+            <h2 class="room-number room-dirty">104</h2>
+            <span class="room-status">Dirty</span>
+            <span class="fo-status">Vacant</span>
+         </a>
+      </li>
+      <li>
+         <a href="room-details/?number=105&status=clean&guest=occupied" data-transition="inner-page">
+            <h2 class="room-number room-occupied">105</h2>
+            <span class="room-status">Clean</span>
+            <span class="fo-status">Occupied</span>
+         </a>
+      </li>
+      <li>
+         <a href="room-details/?number=106&status=inspected&guest=due out" data-transition="inner-page">
+            <h2 class="room-number room-occupied">106</h2>
+            <span class="room-status">Inspected</span>
+            <span class="fo-status">Due Out</span>
+         </a>
+      </li>
+   </ul>
+</section>
+<!-- Rooms filters -->
+<section id="filter-rooms" class="content hidden">
+   <header class="nav-bar float" role="banner">
+      <h1 class="h2">Filter rooms</h1>
+      <a href="#filter-rooms" class="complete toggle linked-toggle">Done</a>
+   </header>
+   <div id="filter-options" class="content scrollable">
+      <div class="wrapper">
+         <div class="entry radio-check">
+            <label class="checkbox">
+            <span class="icon-form icon-checkbox"></span>
+            <input name="room-filters" id="show-occupied" value="show-occupied" type="checkbox">
+            Show Occupied
+            </label>
+         </div>
+         <div class="entry radio-check">
+            <label class="checkbox">
+            <span class="icon-form icon-checkbox"></span>
+            <input name="room-filters" id="show-due-out" value="show-due-out" type="checkbox">
+            Show Due Out
+            </label>
+         </div>
+         <div class="entry radio-check">
+            <label class="checkbox">
+            <span class="icon-form icon-checkbox"></span>
+            <input name="room-filters" id="show-dirty" value="show-dirty" type="checkbox">
+            Show Dirty
+            </label>
+         </div>
+         <div class="entry radio-check">
+            <label class="checkbox">
+            <span class="icon-form icon-checkbox"></span>
+            <input name="room-filters" id="show-clean" value="show-clean" type="checkbox">
+            Show Clean
+            </label>
+         </div>
+         <div class="entry radio-check">
+            <label class="checkbox">
+            <span class="icon-form icon-checkbox"></span>
+            <input name="room-filters" id="show-late-checkout" value="show-late-checkout" type="checkbox">
+            Show Late Check Out
+            </label>
+         </div>
+         <div class="action">
+            <button type="button" class="button blank clear-selection">Clear filters</button>
+         </div>
+      </div>
+   </div>
+</section>

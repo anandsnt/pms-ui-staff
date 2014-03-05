@@ -1,5 +1,4 @@
 hkRover.controller('dashboardController',['$scope', function($scope){
-	
 	$scope.data = {
 		"guests_duein": "144",
 		"guests_inhouse": "1",
@@ -7,8 +6,7 @@ hkRover.controller('dashboardController',['$scope', function($scope){
 		"rooms_occupied": "20",
 		"rooms_clean": "2",
 		"rooms_dirty": "23"
-	}
-	
+	}	
 }]);
 
     
