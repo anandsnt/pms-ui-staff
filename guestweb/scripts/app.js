@@ -109,7 +109,13 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 
 	$rootScope.hotelPhone      = $attrs.hotelPhone
 	$rootScope.isCheckedout   = ($attrs.isCheckedout === 'true') ? true : false;
+	$rootScope.isCheckin     =   ($attrs.isCheckin ==='true') ? true : false;
 
+
+	console.log($attrs.isCheckin)
+	//if checkin
+	if($attrs.isCheckin && !$rootScope.isCheckedout)
+		$location.path('/checkinConfirmation');
 
 	//if chekout is already done
  	if ($rootScope.isCheckedout) 
@@ -174,7 +180,10 @@ snt.run(function($rootScope,$location,$http){
     $rootScope.$on("$locationChangeStart", function(event, next, current) {
     
      if(next === current){
-     	 if (!$rootScope.isLateCheckoutAvailable) 
+     	
+		if($rootScope.isCheckin && !$rootScope.isCheckedout)
+			$location.path('/checkinConfirmation');
+     	 else if (!$rootScope.isLateCheckoutAvailable) 
 		    $location.path('/checkOutNow')
 		else
 			$location.path('/')
