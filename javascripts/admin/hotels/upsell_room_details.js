@@ -16,6 +16,7 @@ var UpsellRoomDetailsView = function(domRef){
   	 that.myDom.find('#cancel,#go_back').on('click', that.goBackToPreviousView); 
   };
   this.goBackToPreviousView = function() {
+    console.log("goBackToPreviousView");
   	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
   

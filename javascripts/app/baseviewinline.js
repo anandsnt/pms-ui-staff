@@ -30,7 +30,7 @@ var BaseInlineView = function(viewDom){
 	if(element.prop('tagName') == "A" && (element.hasClass('edit-data-inline'))) return that.appendInlineData(event);
 	if(element.parent().hasClass('switch-button')) {return that.toggleButtonClicked(element);}
 	if(element.attr('id') == "add-new-button") return that.addNewForm(event);
-	if(element.hasClass('icon-delete')) return that.deleteItem(event);
+	if(element.hasClass('delete_item')) return that.deleteItem(event);
 	
 
   };
@@ -80,6 +80,7 @@ var BaseInlineView = function(viewDom){
 	    // this will check the tr's  'a' tag children with class edit-data-inline
 	  	// it is using 'a' tag's href for fetching the view
 		event.preventDefault();
+		console.log("appemdinline")
 		var element = $(event.target);
 		
 		var webservice = new WebServiceInterface();
