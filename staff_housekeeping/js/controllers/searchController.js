@@ -1,4 +1,4 @@
-sntRover.controller('searchController',['$scope', function($scope){
+hkRover.controller('searchController',['$scope', function($scope){
 	 $scope.results = {
     "status": "success",
     "data": [

@@ -1,1 +1,1 @@
-var sntRover = angular.module('sntRover',['ui.router']);
+var hkRover = angular.module('hkRover',['ui.router']);

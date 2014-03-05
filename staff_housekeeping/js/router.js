@@ -1,4 +1,4 @@
-sntRover.config([
+hkRover.config([
 	'$stateProvider',
 	'$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider) {

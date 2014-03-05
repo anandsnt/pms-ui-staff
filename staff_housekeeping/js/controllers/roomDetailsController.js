@@ -1,4 +1,4 @@
-sntRover.controller('roomDetailsController',['$scope', '$state', function($scope, $state){
+hkRover.controller('roomDetailsController',['$scope', '$state', function($scope, $state){
 
 	$scope.init = function () {
 		// preselect the current reservation group
