@@ -237,8 +237,9 @@ var setUpAdmin = function(viewDom, delegate) {
 	$('#content').css('opacity','0').delay(200).animate({opacity:1},400);
 // Keep app in fullscreen mode
    	var isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
+   	
    	if (isTablet) {
-		$('a:not(.nav-toggle):not(.edit-data-inline):not(.add-data-inline)').click(function(e){
+		$('a:not(.nav-toggle):not(.edit-data-inline):not(.add-data-inline):not(.admin-left-nav)').click(function(e){
 			e.preventDefault();
 		});
 	}	
@@ -350,3 +351,40 @@ var setUpAdmin = function(viewDom, delegate) {
 
 	
 };
+//function to select/unselect emails => zest checkin and checkout
+function setupSelection(){
+	// Select all checkboxes 
+        $(document).on('click','#select-all', function(e) {
+            $('#guests').find(':checkbox').prop('checked', this.checked);
+        });
+
+        // Single checkbox click
+        $(document).on('click', 'input[type="checkbox"].guest' , function(e) {
+            var $rows = $('#guests > tbody > tr').length,
+                $selectedRows = $("input.guest:checked").length; 
+
+            // If some are unselected, deselect top checkbox
+            if($selectedRows < $rows) {
+                $('#select-all').prop('checked', false);
+            } else if($selectedRows == $rows) {
+                $('#select-all').prop('checked', true);
+            }
+        });
+
+        // Toggle button state on any checbox click
+        $(document).on('click', 'input[type="checkbox"]' , function(e) {           
+            var $selectedRows = $("input.guest:checked").length,
+                $disabledButton = ($selectedRows > 0) ? '' : 'disabled',
+                $buttonClass = ($selectedRows > 0) ? 'blue' :'grey';
+
+            if ($disabledButton){ 
+                $('#send-email.button').attr({
+                    'disabled'  : 'disabled',
+                    'class'     : 'button ' + $buttonClass
+                });
+            } else {
+                $('#send-email.button').removeAttr('disabled').attr('class', 'button ' + $buttonClass);
+            }
+
+        });
+}

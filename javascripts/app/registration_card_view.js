@@ -45,7 +45,8 @@ var RegistrationCardView = function(viewDom) {
 	
     // To Display Guest Bill screen in detailed mode via ViewBillButton click.
 	this.renderedFromViewBillButton =  function() {
-		that.myDom.find("#bill1-total-fees a").addClass("active");
+		//that.myDom.find("#bill1-total-fees a").addClass("active"); // Oh my, this is so wrong! Why would anyone want to add a class to every anchor in there!?!?
+		that.myDom.find("#bill1-total-fees .toggle:not(.signature-toggle)").addClass("active");
 		that.myDom.find("#bill1-fees").removeClass("hidden");
 		that.myDom.find("#signature-pad").addClass("hidden");
 		that.myDom.find("#complete-checkout-button").addClass("hidden");

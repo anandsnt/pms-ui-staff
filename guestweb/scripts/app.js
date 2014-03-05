@@ -68,16 +68,10 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 
 	//if chekout is already done
  	if ($rootScope.isCheckedout) 
-		$location.path('/checkOutNowSuccess')
-
-	//if late chekout is unavailable navigate to checkout now page
-
-	else if (!$rootScope.isLateCheckoutAvailable) 
-		$location.path('/checkOutNow')
-
+		$location.path('/checkOutNowSuccess');
 
 	if($attrs.accessToken != "undefined")
-		$window.sessionStorage.accessToken = $attrs.accessToken	
+		$window.sessionStorage.accessToken = $attrs.accessToken	;
 
 	console.log($attrs)
 
