@@ -1,5 +1,5 @@
 
-var snt = angular.module('snt',['ngRoute','ui.bootstrap']);
+var snt = angular.module('snt',['ngRoute','ui.bootstrap','pickadate']);
 
 snt.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/', {
@@ -53,6 +53,12 @@ snt.config(['$routeProvider', function($routeProvider) {
 		templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
 		controller : 'checkInConfirmationViewController'
 	});
+
+	$routeProvider.when('/checkinDatePicker', {
+		templateUrl: '/assets/checkin/partials/checkinDatePicker.html',
+		controller : 'checkinDatePickerController'
+	});
+
 	$routeProvider.when('/checkinKeys', {
 		templateUrl: '/assets/checkin/partials/checkInKeys.html',
 		controller : 'checkInKeysController'
@@ -180,7 +186,7 @@ snt.run(function($rootScope,$location,$http){
     $rootScope.$on("$locationChangeStart", function(event, next, current) {
     
      if(next === current){
-     	
+
 		if($rootScope.isCheckin && !$rootScope.isCheckedout)
 			$location.path('/checkinConfirmation');
      	 else if (!$rootScope.isLateCheckoutAvailable) 

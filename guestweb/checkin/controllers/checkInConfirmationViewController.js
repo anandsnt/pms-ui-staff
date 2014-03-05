@@ -23,6 +23,11 @@
 			//var d = $modal.open($scope.opts);
 
 		};
+
+		$scope.presentDatePicker = function(){
+
+			$location.path('/checkinDatePicker');
+		}
   //to be used when authentication failded
 
  		 // $scope.openDialog();
