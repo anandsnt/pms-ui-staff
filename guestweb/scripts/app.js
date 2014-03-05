@@ -59,6 +59,11 @@ snt.config(['$routeProvider', function($routeProvider) {
 		controller : 'checkInReservationDetails'
 	});
 
+	$routeProvider.when('/checkinUpgrade', {
+		templateUrl: '/assets/checkin/partials/checkinUpgradeRoom.html',
+	    controller : 'checkinUpgradeRoomContorller'
+	});
+
 	//to be deleted and replaced by the code below
 	$routeProvider.otherwise({
 		redirectTo: '/checkinConfirmation'
