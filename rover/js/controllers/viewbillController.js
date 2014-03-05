@@ -1,5 +1,38 @@
 sntRover.controller('viewbillController',['$scope', function($scope){
 	
+	$scope.status = true;
+	$scope.status1 = false;
+	
+	$scope.dates= [
+	                {
+	                    "date": "2013-03-12",
+	                    "amount": "149",
+	                    "rate_name": "Best Available Rate",
+	                    "rate_description": "This is the best rate for the season",
+	                    "room_type_name": "Superior Double King Deluxe",
+	                    "room_type_description": ""
+	                },
+	                {
+	                    "date": "2013-03-13",
+	                    "amount": "249",
+	                    "rate_name": "Best Available Rate",
+	                    "rate_description": "This is the best rate for the season",
+	                    "room_type_name": "Superior Double King Deluxe",
+	                    "room_type_description": ""
+	                }];
+	                
+	   
+	$scope.clicked = function(index){
+		
+		$scope.selecteIndex = index;
+	}
+	
+	$scope.header_data = {
+		"firstname" : " Jos",
+		"lastname":"Schaap",
+		"late_checkout": "10",
+		"date":"feb 24, 2014"
+	};
 	$scope.data = {
 	    "reservation_status": "CHECKING_IN",
 	    "room_number": "234",
@@ -47,21 +80,23 @@ sntRover.controller('viewbillController',['$scope', function($scope){
 	                    "room_type_description": ""
 	                }
 	            ],
-		   "addons": [
-	        {
-	            "title": "Packages",
-	            "package_type": "MULTI/INCL",
-	            "amount": "30",
-	            "expense_details": [
+	            "addons": [
 	                {
-	                    "is_inclusive": "true",
-	                    "price": "10",
-	                    "package": "parking"
-	                },
-	                {
-	                    "is_inclusive": "false",
-	                    "price": "50",
-	                    "package": "golf"
+	                    "title": "Packages",
+	                    "package_type": "MULTI/INCL",
+	                    "amount": "30",
+	                    "expense_details": [
+	                        {
+	                            "is_inclusive": "true",
+	                            "price": "10",
+	                            "package": "parking"
+	                        },
+	                        {
+	                            "is_inclusive": "false",
+	                            "price": "50",
+	                            "package": "golf"
+	                        }
+	                    ]
 	                }
 	            ],
 	            "group_items": [
@@ -143,8 +178,6 @@ sntRover.controller('viewbillController',['$scope', function($scope){
 	                    ]
 	                }
 	            ]
-	        }
-	    ]
-	}]
-	};
+	        }]
+		};
 }]);

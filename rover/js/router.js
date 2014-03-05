@@ -55,13 +55,28 @@ sntRover.config([
         });
 
 		
-		// search state
-		$stateProvider.state('rover.staycard.viewbill', {
-			url: '/viewbill',
+		// view bill state
+		$stateProvider.state('rover.staycard.billcard', {
+			abstract : true,
+			url: '/billcard',
 			templateUrl: 'partials/viewbill.html',
 			controller: 'viewbillController'
 		});
-	
+		
+	    $stateProvider.state('rover.staycard.billcard.all', {
+        	url: '',
+			views : {
+				'billcardDetails' :{
+					templateUrl : "partials/billcard_details.html",
+					 controller: 'billcardDetailsController'	
+				},
+				'signaturePanel' :{
+					templateUrl : "partials/signature.html",
+					 controller: 'signaturePanelController'	
+				},
+			}
+        });
+        
 		$stateProvider.state('guestcard', {
 			url: '/guestcard',
 			templateUrl: 'partials/guestcard.html',
