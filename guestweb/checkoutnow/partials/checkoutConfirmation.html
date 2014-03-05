@@ -8,12 +8,7 @@
 		<div class="container-fluid">
 			<div class="row headerrow">
 				<logo-image></logo-image>
-				<p class="roomnumber centeralign" ng-hide="isFetching || netWorkError">
-					<span>{{details.roomType}} {{roomNo}}</span>
-				</p>
 			</div>
-		<!-- horizontal line for bigger screens -->
-			<div class="horizontalLineTop"> </div>
 		</div>
 		<!-- show posting message -->
 		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
@@ -28,11 +23,14 @@
 		</div>
 
 		<!-- contentarea starts here-->
-		<div class="container horizontalBorder" ng-hide="isFetching || netWorkError">
+		<div class="container" ng-hide="isFetching || netWorkError">
 			<!-- top section starts here-->
 
 			<div class="row check-inout-wrapper">
 				<div class="col-md-6 headtext centeralign">
+					<p class="roomnumber centeralign" ng-hide="isFetching || netWorkError">
+						<span>{{details.roomType}} {{roomNo}}</span>
+					</p>
 					{{details.headerTitle}}
 					<p class="leadtext">
 						<span class="lightcontent">{{details.headersubTitle}} {{checkoutTime}}</span>
@@ -57,20 +55,17 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<!-- checkoubtn section ends here-->
 
-			<div class="row" >
-				<p class="foot-text centeralign" ng-show="true">
-					<em>{{footerMessage1}}</em>
-				</p>
-				<p class="foot-text centeralign second-in ">
-					<em>{{details.footerMessage2}} {{checkoutTime}}.</em>
-				</p>
-			</div>
+				<div class="row clearboth">
+					<p class="foot-text centeralign" ng-show="true">
+						<em>{{footerMessage1}}</em>
+					</p>
+					<p class="foot-text centeralign second-in ">
+						<em>{{details.footerMessage2}} {{checkoutTime}}.</em>
+					</p>
+				</div>
 
-					<!-- horizontal line for bigger screens -->
-			<div class="horizontalLineBottom"> </div>
+			</div>
 
 		</div>
 	</div>
