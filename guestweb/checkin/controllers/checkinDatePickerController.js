@@ -4,7 +4,7 @@
 
 
 
-        $scope.minDate = '2014-03-04';
+        $scope.minDate = '2013-12-25';
         $scope.maxDate = '2014-10-06';
 
 

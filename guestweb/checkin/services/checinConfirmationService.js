@@ -10,9 +10,12 @@
 			
 			var deferred = $q.defer();
 
-			var url = '/guest_web/home/checkout_guest.json';
+			var url = '/guest_web/search.json';
 	
 			baseWebService.post(url,data).then(function(response) {
+
+console.log(response)
+
 				this.responseData = response;
 				deferred.resolve(this.responseData);
 			});
