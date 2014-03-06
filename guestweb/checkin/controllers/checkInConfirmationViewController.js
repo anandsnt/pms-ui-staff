@@ -29,9 +29,12 @@
 					$rootScope.ShowupgradedLabel = false;
 					$rootScope.upgradesAvailable = true;
 					$rootScope.roomUpgradeheading = "Your Trip details";
+					$rootScope.reservationData = response;
+
+					//navigate to next page
 
 
-					$location.path('/checkinReservationDetails'); //navigate to next page
+					$location.path('/checkinReservationDetails'); 
 
 				}
 
