@@ -2,7 +2,7 @@
 (function() {
 	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$location,checinConfirmationService) {
 
- //setup options for modal
+ 		//setup options for modal
 
 		$scope.opts = {
 			backdrop: true,
@@ -14,21 +14,21 @@
 
 		$scope.nextButtonClicked = function() {
 
-			
+			var data = {'departureDate':$rootScope.departureDate,'creditCardDigits':$scope.cardDigits};
 
-
-			var data = {'departureDate':$rootScope.departureDate,'creditCardDigits':$scope.cardDigits}
 
 			checinConfirmationService.login(data).then(function(response) {
 
 				if(response.status === 'failure')
-					$modal.open($scope.opts);
+					$modal.open($scope.opts); // error modal popup
 				else
-					$location.path('/checkinReservationDetails');
+					$location.path('/checkinReservationDetails'); //navigate to next page
 
 			});
 
 		};
+
+		// navigate to calendar view
 
 		$scope.presentDatePicker = function(){
 
