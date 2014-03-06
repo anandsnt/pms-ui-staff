@@ -24,123 +24,102 @@
         }
 
         &#guest-info {
-            top: 164px;
-            .calc-height(100, 184); /* %, px */
+            top: 120px;
+            .calc-height(100, 120); /* %, px */
         }
     }
 
-/* Nav Bar 					==============================*/
-	.nav-bar{ 
-		height: 60px;
+/* Nav Bar                  ==============================*/
+    .nav-bar{ 
+        height: 60px;
 
-		.nav-toggle,
-		.back-button,
-		.toggle { top: 10px; }
+        .nav-toggle,
+        .back-button,
+        .toggle { top: 10px; }
 
-		h1 {
-			.h2;
-			line-height: 60px;
-		}
+        h1 {
+            .h2;
+            line-height: 60px;
+        }
 
-		.toggle {
+        .toggle {
             &.only-icon {
                 right: 10px;
             }
 
             &.complete { 
-            	right: 20px;
-            	font-size: 16px; 
+                right: 20px;
+                font-size: 16px; 
             }
         }
-	}
+    }
 
 /* 5. COMPONENTS
 ==========================================================*/
 
 /* Search bar               ==============================*/
-    .search-form {
-		height: 60px;
-		padding: 10px 20px;
+    .search-form { padding: 10px 20px; }   
 
-        .entry {
-            height: 40px;
+/* Dashboard page           ==============================*/
+    #dashboard {
+        .wrapper {
+            #pixel-to-percent > .side-padding( 128, 2048 );
 
-            .icon-search {
-                top: 12.5px;
-				right: 12.5px;
+            h2 {
+                margin: 60px 0 20px 0;
+                font-size: 48px;
+                line-height: 48px;
             }
 
-            #query {
-            	line-height: 40px;
-                min-height: 40px;
-            	.placeholder-text(16px, 40px, 400, @grey3);
-            }
+            #guests-today {
+                text-align: center;
+                padding-bottom: 40px;
+                border-bottom: 1px solid rgba(0,0,0,.1);
 
-            #clear-query {
-                top: 12.5px;
-				right: 12.5px;
-            }
-        }
-    }   
-
-/* Dashboard page 			==============================*/
-	#dashboard {
-		.wrapper {
-			#pixel-to-percent > .side-padding( 128, 2048 );
-
-			h2 {
-				margin: 60px 0 20px 0;
-				font-size: 48px;
-				line-height: 48px;
-			}
-
-			#guests-today {
-				text-align: center;
-				padding-bottom: 40px;
-				border-bottom: 1px solid rgba(0,0,0,.1);
-
-				li {
+                li {
                     display: inline-block;
-					margin-right: 10px;
-					float: none;
-					.size(175px, 215px);
+                    margin-right: 10px;
+                    float: none;
+                    .size(175px, 215px);
 
                     .button {
                         line-height: 1.325em;
-						.square(100%);
-						.show;
+                        .square(100%);
+                        .show;
 
                         strong {  font-size: 110px; }
                     }
                 }
-			}
+            }
 
-			#stats-today {
-				text-align: center;
-				.float;
+            #stats-today {
+                text-align: center;
+                .float;
 
-				li {
-					color: @grey3;
-					font-size: 16px;
+                li {
+                    color: @grey3;
+                    font-size: 16px;
                     line-height: 1.5em;
-					text-align: center;
-					text-transform: uppercase;
-					padding-bottom: 40px;
-					margin: 0 20px 0 0;
-					border-bottom: 0;
-					.calc-width(33.33, 20); /* %, px */
-					.pull-left;
-					.show;
+                    text-align: center;
+                    text-transform: uppercase;
+                    padding-bottom: 40px;
+                    margin: 0 20px 0 0;
+                    border-bottom: 0;
+                    .calc-width(33.33, 13.33); /* %, px */
+                    .pull-left;
+                    .show;
 
-					span {
-						font-size: 48px;
-						float: none;
-						font-weight: 300;
-					}
-				}
-			}
-		}
-	}
+                    span {
+                        font-size: 48px;
+                        float: none;
+                        font-weight: 300;
+                    }
+
+                    &:last-child { margin-right: 0; }
+                }
+            }
+        }
+    }
 
 /* Rooms page               ==============================*/
     
@@ -149,17 +128,15 @@
         .wrapper { padding: 0 20px; }
 
         li {
-        	margin-bottom: 16px;
+            margin-bottom: 10px;
 
-        	a {
-        		border-bottom: 0;
-        		.clickable;
+            a {
+                border-bottom: 0;
+                .clickable;
 
-        		.room-number { font-size: 36px; }
-
-        		.room-status,
-                .fo-status { font-size: 16px; }
-        	}
+                &:hover,
+                &:active { background-color: @white; }
+            }
         }
 
         .iScrollVerticalScrollbar { 
@@ -170,32 +147,32 @@
 
     /* Rooms filters ***/
     #filter-rooms {
-    	background: transparent;
+        .wrapper {
+            .float;
 
-    	.wrapper {
-    		margin: 0 20px;
-    		padding: 20px;
-    		background: @white;
+            .holder {
+                margin-right: 20px;
+                .calc-width(33.33, 13.33); /* %, px */
+                .pull-left;
 
-    		.entry {
-    			padding: 5px 0;
+                &:last-child { margin-right: 0; }
+            }
 
-    			.radio,
-            	.checkbox { 
-                	font-size: 16px;
-                	line-height: 40px;
-                	height: 40px;
-                	padding-left: 40px;
+            .entry {
+                .radio,
+                .checkbox { 
+                    line-height: 40px;
+                    height: 40px;
 
-                	.icon-form { 
-	                    top: 10px; 
-	                    left: 0;
-	                }
+                    .icon-form { 
+                        top: 10px; 
+                        left: 0;
+                    }
                 }
-    		}
-    	}
+            }
+        }
 
-    	.iScrollVerticalScrollbar { 
+        .iScrollVerticalScrollbar { 
             top: 0;
             bottom: 0;
         }
@@ -204,92 +181,54 @@
 /* Room details page        ==============================*/
 
     #room-details {
-    	#room-header {
-    		padding: 0 20px;
+        #room-header {
+            padding: 20px;
 
-    		h1 {
-    			font-size: 72px;
-    			line-height: 144px;
-    			padding-left: 92px;
-    		}
+            h1 {
+                font-size: 72px;
+                line-height: 80px;
+                padding-left: 92px;
+            }
 
-    		.select {
-    			margin: 50px 0;
-    			width: 40%;
+            .select {
+                margin: 18px 0;
+                width: 40%;
 
-    			select { 
+                select { 
                     line-height: 24px;
                     min-height: 44px;
                     height: 44px;
                 }
 
-                &:after { top: 7px; }			
-    		}
-    	}
+                &:after { top: 7px; }           
+            }
+        }
 
-    	#guest-info { 
-    		margin: 0 20px;
-    		.calc-width(100, 40);
+        #guest-info { 
 
-    		.wrapper {
-    			padding: 40px;
+            .wrapper {
+                .guest-image,
+                .checkout-guest { margin-top: 60px; }
 
-    			.data {
-                    .guest-image { .square(100px); }
+                .status { font-size: 26px; }
+            }
 
-                    h2 {
-                    	margin-bottom: .5em;
+            &.no-content {
+                .info {
+                    .icons { margin-top: -160px; }
 
-                    	.guest-status { margin-top: 10px; }
-
-                    	.name {
-                            font-size: 48px;
-                            line-height: 48px;
-                            vertical-align: top;
-                        }
+                    .h1 { 
+                        font-size: 36px;
+                        line-height: 36px;
+                        margin: 18px 0;
                     }
-
-                    .departure {
-                        font-size: 21px;
-                    }
-
-                    .checkout-guest {
-	                    padding-top: 40px;
-	                    margin-top: 40px;
-
-	                    h3 { .h2; }
-
-	                    .button {
-	                        margin: 40px auto;
-	                        line-height: 80px;
-	                        width: 50%;
-	                        font-size: 30px;
-	                        .show;
-	                    }
-	                }
                 }
-    		}
+            }
 
-    		&.no-content {
-    			.info {
-    				.icons { margin-top: -160px; }
-
-	    			.h1 { 
-						font-size: 36px;
-						line-height: 36px;
-						margin: 18px 0;
-					}
-				}
-    		}
-
-    		.iScrollVerticalScrollbar { 
-	            top: 20px;
-	            bottom: 20px;
-	            right: 10px;
-	        }
-    	} 
+            .iScrollVerticalScrollbar { right: 10px; }
+        }
     }
-
+    
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE

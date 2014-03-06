@@ -3,13 +3,13 @@
 body { overflow: hidden; }
 
 ::-webkit-selection {
-	background: transparent;
+    background: transparent;
 }
 ::-moz-selection{
-	background: transparent;
+    background: transparent;
 }
 ::selection{
-	background: transparent;
+    background: transparent;
 }
 
 .hidden { display: none !important; }
@@ -114,13 +114,13 @@ body { overflow: hidden; }
         }
 
         &#filter-options {
-            top: 50px;
-            .calc-height(100, 50); /* %, px */
+            top: 40px;
+            .calc-height(100, 40); /* %, px */
         }
 
         &#guest-info {
-            top: 70px;
-            .calc-height(100, 80); /* %, px */
+            top: 60px;
+            .calc-height(100, 60); /* %, px */
         }
     }
 
@@ -187,6 +187,22 @@ body { overflow: hidden; }
             .icon-toggle; 
         }
 
+        .clear-selection {
+            position: absolute;
+            top: 0;
+            left: 10px; 
+            color: @textColor;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 40px;
+            vertical-align: middle;
+            text-transform: uppercase;
+            padding: 0;
+
+            &:hover,
+            &:active { color: @logoPrimary; }
+        }
+
         .toggle {
             position: absolute;
             top: 0;
@@ -206,14 +222,15 @@ body { overflow: hidden; }
             }
 
             &.complete {
-                color: @textColor;
                 font-size: 14px;
                 font-weight: 600;
-                right: 10px;
                 line-height: 40px;
                 vertical-align: middle;
                 text-transform: uppercase;
+                right: 10px;
+                color: @textColor;
 
+                &:hover,
                 &:active { color: @logoPrimary; }
             }
         }
@@ -262,8 +279,8 @@ body { overflow: hidden; }
         text-size-adjust: none; 
 
         .wrapper {
-            /* Prevent elements to be highlighted on tap 
-            -webkit-tap-highlight-color: rgba(0,0,0,0); */
+            /* Prevent elements to be highlighted on tap */
+            -webkit-tap-highlight-color: rgba(0,0,0,0); 
 
             /* Put the scroller into the HW Compositing layer right from the start */
             -webkit-transform: translateZ(0);
