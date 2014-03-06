@@ -120,7 +120,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 
 	console.log($attrs.isCheckin)
 	//if checkin
-	if($attrs.isCheckin && !$rootScope.isCheckedout)
+	if(($attrs.isCheckin ==='true') && !$rootScope.isCheckedout)
 		$location.path('/checkinConfirmation');
 
 	//if chekout is already done
