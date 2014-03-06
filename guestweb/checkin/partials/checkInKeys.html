@@ -1,0 +1,74 @@
+<!-- contentarea starts here-->
+
+<div class="jumbotron">
+
+	<div class="container backgroundbg" >
+		<div class="container-fluid">
+			<div class="row headerrow">
+				<logo-image></logo-image>
+			</div>
+		</div>
+
+		<!-- show posting message
+		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+		Your request is being processed, this may take a few seconds..... please wait!
+		</div>
+
+		show error message
+
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+		<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check out at our front desk.</div>
+		<div>You can also call the hotel at {{hotelPhone}}.</div>
+		</div>
+
+		-->
+
+		<!-- contentarea starts here-->
+		<div class="container" ng-hide="isFetching || netWorkError">
+			<!-- top section starts here-->
+
+			<div class="row check-inout-wrapper">
+				<div class="col-md-6 headtext centeralign">
+					You're checked in!
+					<div class=" row  key-info">
+						<div class="col-xs-2" >
+						</div>
+						<div class="col-xs-4 key-image" >
+							<img src="/assets/img/keyicon_white.png" width="55" height="55" alt=""/>
+						</div>
+						<div class="col-xs-4 keys" >
+							<p >
+								Key Code For
+							</p>
+							<p >314
+								
+							</p>
+
+						</div>
+							<div class="col-xs-2" >
+						</div>
+					</div>
+					<div class="reservation-id centeralign">
+					<span class="normal-reservation">Reservation #: 324242</span>
+				</div>
+
+				</div>
+				<div class="qr-code-details">
+					<div class="col-md-6 ">
+
+						<div class="centeralign qr-code-image">
+							<img  src="/assets/img/qr-code.png" width="180" height="180" alt=""/>
+							<div class="qr-code-info">
+								1. Scan the QR code at kiosk located in the lobby.
+								<br />
+								2. The kiosk will dispense your key.
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- checkinbtn section ends here-->
+		</div>
+	</div>
+</div>
