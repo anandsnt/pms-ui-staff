@@ -38,45 +38,66 @@
 				<!-- top section ends here-->
 
 				<!-- <carousel interval="myInterval"> -->
-		<div class="carousel-view">		
-		<div class="col-md-6">
-				<carousel>
-					<slide ng-repeat="slide in slides" active="slide.active" >
-						<div class="centeralign">
-							<img ng-src="{{slide.room_type_image}}" style="height:200px;" />
-						</div>
-						<div class="upgrade-details">
-							<p class="bold-content">
-								{{slide.upgrade_room_type_name}}
-							</p>
-							<p class="bold-content amount">
-								$ {{slide.upsell_amount}}
-								<p="amount-per-night">
-									EXTRA
-									<br/>
-									PER NIGHT
-							</p>
-							</p>
-							<ul class="descriptions">
-								<li>
-									No of rooms:{{slide.no_of_rooms}}
-								</li>
-								<li>
-									{{slide.upgrade_room_description}}
-								</li>
-								<li>
-									Max adults:{{slide.max_adults}}
-								</li>
-								<li>
-									Max children: {{slide.max_children}}
-								</li>
+				<div class="carousel-view">
+					<div class="col-md-6">
+						<carousel>
+							<slide ng-repeat="slide in slides" active="slide.active" >
+								<div class="centeralign">
+									<img ng-src="{{slide.room_type_image}}" style="height:200px;" />
+								</div>
+								<div class="upgrade-details">
+									<div class="col-xs-12 room-info">
+									<div class="col-xs-9 ">
+										<p class="bold-content">
+										{{slide.upgrade_room_type_name}}
+									</p>
+										<div class="row rate-info">
 
-							</ul>
-						</div>
-					</slide>
-				</carousel>
+										<div  class="col-xs-3 amount">
+											${{slide.upsell_amount}}
+										</div>
 
-		</div>	</div>			
+										<div  class="col-xs-9 rate-desc">
+											<p>
+												EXTRA
+											</p>
+											<p>
+												PER NIGHT
+											</p>
+										</div>
+									</div>
+									</div>
+									<div class="col-xs-3 upgrades-btn">
+											<img  src="/assets/img/upgrade_icon.png" width="25" height="25" alt=""/>
+											<p>SELECT THIS <br /> UPGRADE</p>
+									</div>
+								</div>
+									<ul class="descriptions">
+										<li>
+											No of rooms:{{slide.no_of_rooms}}
+										</li>
+										<li>
+											{{slide.upgrade_room_description}}
+										</li>
+										<li>
+											Max adults:{{slide.max_adults}}
+										</li>
+										<li>
+											Max children: {{slide.max_children}}
+										</li>
+
+									</ul>
+								</div>
+							</slide>
+						</carousel>
+
+						<div class="proceed-to-checkin">
+							NO,THANKS. PROCEED TO <strong>CHECKIN</strong>
+								<img src="/assets/img/rightarrow.png" width="14" height="14" alt=""/>
+							
+						</div>
+					</div>
+				</div>
 
 			</div>
 			<!-- checkinbtn section ends here-->
