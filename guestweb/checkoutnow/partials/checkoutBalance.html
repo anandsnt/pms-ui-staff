@@ -45,8 +45,12 @@
 					<div class="showbill-wrap" ng-show="showBill" >
 						<div class="trans-rel-wrap">
 							<div class="showbill">
+								<div class="hotel-logo">
+									<img src="/assets/img/logo.png">
+								</div>
+
 								<div class="guest-details leftalign">
-									<span class="close" ng-click="showBill = false"></span>
+									<span class="close" ng-click="showBill = false"><img src="/assets/img/viewbill-close.png"></span>
 									<span class="center-block normal-weight">Room {{ roomNo }}</span>
 									<span class="center-block">{{ userName }} | {{ userCity }}, {{ userState }}</span>
 								</div>
