@@ -9,32 +9,32 @@ hkRover.config([
 		$stateProvider.state('hk', {
 			abstract : true,
 			url: '/staff_house',
-			templateUrl: 'partials/hk_main.html',
+			templateUrl: '/assets/partials/hk_main.html',
 			controller: 'appController'
 		});
 
 		$stateProvider.state('hk.navmain', {
 			abstract: true,
 			url: '',
-			templateUrl: 'partials/nav_main.html'
+			templateUrl: '/assets/partials/nav_main.html'
 		});
 	
 		$stateProvider.state('hk.navmain.dashboard', {
 			url: '/dashboard',
-			templateUrl: 'partials/dashboard.html',
+			templateUrl: '/assets/partials/dashboard.html',
 			controller: 'DashboardController'
 		});
 
 		// search state
 		$stateProvider.state('hk.navmain.search', {
 			url: '/search',
-			templateUrl: 'partials/search.html',
+			templateUrl: '/assets/partials/search.html',
 			controller: 'searchController'
 		});	
 
 		$stateProvider.state('hk.roomDetails', {
 			url: '/room_details',
-			templateUrl: 'partials/room_details.html',
+			templateUrl: '/assets/partials/room_details.html',
 			controller: 'roomDetailsController'
 		});
 		
