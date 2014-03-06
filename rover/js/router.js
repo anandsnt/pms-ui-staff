@@ -53,15 +53,33 @@ sntRover.config([
 
 			}
         });
-
 		
-		// search state
-		$stateProvider.state('rover.staycard.viewbill', {
-			url: '/viewbill',
-			templateUrl: 'partials/viewbill.html',
-			controller: 'viewbillController'
+		// view bill state
+		$stateProvider.state('rover.staycard.billcard', {
+			abstract : true,
+			url: '/billcard',
+			templateUrl: 'partials/billcard.html',
+			controller: 'billcardController'
 		});
-	
+		
+	    $stateProvider.state('rover.staycard.billcard.all', {
+        	url: '',
+			views : {
+				'billSummary' :{
+					templateUrl : "partials/bill_summary.html",
+					controller: 'billSummaryController'
+				},
+				'billTotalFees' :{	
+					templateUrl : "partials/bill_total_fees.html",
+					controller: 'billTotalFeesController'
+				},
+				'billSignature' :{
+					templateUrl : "partials/bill_signature.html",
+					controller: 'billSignatureController'
+				},
+			}
+        });
+        
 		$stateProvider.state('guestcard', {
 			url: '/guestcard',
 			templateUrl: 'partials/guestcard.html',
