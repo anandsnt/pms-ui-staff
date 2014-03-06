@@ -1,6 +1,6 @@
 
 (function() {
-  var checkinUpgradeRoomContorller = function($scope) {
+  var checkinUpgradeRoomContorller = function($scope,$location) {
 
 $scope.myInterval = 100;
   var slides = $scope.slides = 
@@ -43,7 +43,13 @@ $scope.myInterval = 100;
     },
 
 
-  ]
+  ];
+
+
+  $scope.upgradeClicked = function(){
+
+     $location.path('/checkinReservationDetails');
+  }
 
 
 
@@ -51,7 +57,7 @@ $scope.myInterval = 100;
 };
 
     var dependencies = [
-    '$scope',
+    '$scope','$location',
     checkinUpgradeRoomContorller
     ];
 

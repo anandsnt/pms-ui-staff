@@ -19,10 +19,21 @@
 
 			checinConfirmationService.login(data).then(function(response) {
 
+
 				if(response.status === 'failure')
 					$modal.open($scope.opts); // error modal popup
-				else
+				else{
+
+					// display options for room upgrade screen
+
+					$rootScope.ShowupgradedLabel = false;
+					$rootScope.upgradesAvailable = true;
+					$rootScope.roomUpgradeheading = "Your Trip details";
+
+
 					$location.path('/checkinReservationDetails'); //navigate to next page
+
+				}
 
 			});
 
