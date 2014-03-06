@@ -1,6 +1,6 @@
 
 (function() {
-  var checkinUpgradeRoomContorller = function($scope,$location,$rootScope) {
+  var checkinUpgradeRoomContorller = function($scope,$location,$rootScope,checkinRoomUpgradeService) {
 
 $scope.myInterval = 100;
   var slides = $scope.slides = 
@@ -46,18 +46,27 @@ $scope.myInterval = 100;
   ];
 
 
-  $scope.upgradeClicked = function(){
-       
-        $rootScope.upgradesAvailable = false;
-        $rootScope.ShowupgradedLabel = true;
-        $rootScope.roomUpgradeheading = "Your new Trip details";
-        $location.path('/checkinReservationDetails');
-  }
+       var data = {'reservation_id':$rootScope.reservationID};
 
-  $scope.noThanksClicked = function(){
+       checkinRoomUpgradeService.fetch(data).then(function(response) {
 
-       $location.path('/checkinKeys');
-  }
+            console.log(response)
+       });
+
+
+
+      $scope.upgradeClicked = function(){
+           
+            $rootScope.upgradesAvailable = false;
+            $rootScope.ShowupgradedLabel = true;
+            $rootScope.roomUpgradeheading = "Your new Trip details";
+            $location.path('/checkinReservationDetails');
+      }
+
+      $scope.noThanksClicked = function(){
+
+           $location.path('/checkinKeys');
+      }
 
 
 
@@ -65,7 +74,7 @@ $scope.myInterval = 100;
 };
 
     var dependencies = [
-    '$scope','$location','$rootScope',
+    '$scope','$location','$rootScope','checkinRoomUpgradeService',
     checkinUpgradeRoomContorller
     ];
 
