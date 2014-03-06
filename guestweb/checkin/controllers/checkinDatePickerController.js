@@ -1,4 +1,4 @@
- function checkinDatePickerController($scope, $rootScope,dateFilter,$filter) {
+ function checkinDatePickerController($scope, $rootScope,dateFilter,$filter,$location) {
         $scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
 
 
@@ -17,7 +17,13 @@
 
 			
 		});
-
+$scope.backBtnClick = function(){
+	$location.path('/checkinConfirmation');
+};
+$scope.doneBtnClick = function(){
+	
+	
+};
  }
 
 
