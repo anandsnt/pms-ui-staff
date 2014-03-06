@@ -1,5 +1,10 @@
 <div class="jumbotron">
-	<div class="container ">
+
+
+
+
+
+	<div class="container">
 		<!-- contentarea starts here-->
 		<div class="container">
 			<div class="container-fluid">
@@ -7,9 +12,23 @@
 					<logo-image></logo-image>
 				</div>
 			</div>
+
+
+
+			<!-- show posting message -->
+			<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+				Your request is being processed, this may take a few seconds..... please wait!
+			</div>
+
+			<!-- show error message -->
+
+			<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+				<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check out at our front desk.</div>
+				<div>You can also call the hotel at {{hotelPhone}}.</div>
+			</div>
 			<!-- top section starts here-->
 
-			<div class="row check-inout-wrapper" ng-show="optionsAvailable">
+			<div class="row check-inout-wrapper" ng-show="optionsAvailable && !isFetching && !netWorkError">
 				<div class="col-md-6 centeralign headtext nopadding-onblock">
 					{{ billDisplayDetails.checkoutText }}
 					<p class="leadtext">
@@ -89,7 +108,7 @@
 			<!-- checkoubtn section ends here-->
 
 			<div class="row">
-				<p class="foot-text  balance-footer centeralign" ng-show="optionsAvailable">
+				<p class="foot-text  balance-footer centeralign" ng-show="optionsAvailable && !netWorkError">
 					<em> The credit card on record will be charged</em>
 				</p>
 			</div>

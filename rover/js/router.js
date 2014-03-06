@@ -33,11 +33,6 @@ sntRover.config([
             controller: 'staycardController'
         });
 
-        $stateProvider.state('rover.staycard.billcard', {
-			url: '/viewbill',
-			templateUrl: 'partials/viewbill.html',
-            controller: 'viewbillController'
-        });
 
         $stateProvider.state('rover.staycard.reservationcard', {
         	abstract : true,
@@ -50,36 +45,28 @@ sntRover.config([
         	url: '/reservationdetails',
 			templateUrl: 'partials/reservation_details.html',
             controller: 'reservationDetailsController'
-        });                        
+        }); 
 
-       /* $stateProvider.state('rover.staycard.reservationcard.all', {
-        	url: '',
-			views : { 
-				'reservationList' :{
-					templateUrl : "partials/reservation_listing.html",
-				 	controller: 'reservationListController'	
-				},
-				'reservationDetails' :{
-					templateUrl : "partials/reservation_details.html",
-					controller: 'reservationDetailsController'	
-
-				},
-
-			}
+                               
+        $stateProvider.state('rover.staycard.billcard', {
+			url: '/billcard',
+			templateUrl: 'partials/billcard.html',
+            controller: 'billcardController'
         });
+       
+		// may be replaced with ng-include?
+	    /*$stateProvider.state('rover.staycard.billcard.all', {
+        	url: '',
+			views : {
+				'billDetails' :{
+					templateUrl : "partials/bill_details.html",
+					controller	: 'billDetailsController'
 
-        $stateProvider.state('rover.staycard.reservationcard.all.selectedReservation', {
-			url: '/:selected_reservation',
-            controller: function($scope, )
+				}
+			}
         });*/
-		// search state
-		/*$stateProvider.state('rover.staycard.viewbill', {
-			url: '/viewbill',
-			templateUrl: 'partials/viewbill.html',
-			controller: 'viewbillController'
-		});
-	
-		$stateProvider.state('guestcard', {
+        
+		/*$stateProvider.state('guestcard', {
 			url: '/guestcard',
 			templateUrl: 'partials/guestcard.html',
 			controller: 'guestCardController'

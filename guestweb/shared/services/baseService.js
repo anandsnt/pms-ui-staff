@@ -1,9 +1,10 @@
 (function() {
-	var baseWebService = function($http, $q) {
+	var baseWebService = function($http, $q,$rootScope) {
 		var details = {};
 
 		var fetch = function(url,parameters) {
 			var deferred = $q.defer();
+
 
 			$http.get(url,{
     		params: parameters
@@ -13,11 +14,14 @@
 				}.bind(this))
 				.error(function() {
 					deferred.reject();
+					$rootScope.netWorkError = true;
 				});
 
 			return deferred.promise;
 		};
 		var post = function(url,parameters) {
+
+
 			var deferred = $q.defer();
 
 			$http.post(url, parameters
@@ -27,6 +31,7 @@
 				}.bind(this))
 				.error(function() {
 					deferred.reject();
+					$rootScope.netWorkError = true;
 				});
 
 			return deferred.promise;
@@ -41,7 +46,7 @@
 
 	var dependencies = [
 		'$http',
-		'$q',
+		'$q','$rootScope',
 		baseWebService
 	];
 
