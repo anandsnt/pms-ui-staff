@@ -5,7 +5,7 @@ var reservationDetailsView = function(domRef) {
 	this.reservation_id = getReservationId();
 	var that = this;
 	this.pageinit = function() {
-		that.updateTimelineIcon();
+		//that.updateTimelineIcon();
 	};
 
 	this.updateTimelineIcon = function(){
