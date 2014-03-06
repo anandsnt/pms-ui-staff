@@ -651,8 +651,11 @@ border-color:  #000000 !important;
 }
 
 
-
 /* ----------------------- execusive styling for desktops and tablets portrait mode -------------------*/
+.bill-hotel-logo {
+	display: none;
+}
+
 @media (min-width: 992px) {
 	.icontop {
 		padding-top: 20px;
@@ -810,31 +813,28 @@ border-color:  #000000 !important;
 		}
 	}
 
-	.hotel-logo {
+	.bill-hotel-logo {
 		text-align: center;
-		img {
+		position: relative;
+		display: block;
+		> img {
 			width: 196px;
 			height: auto;
 			padding-bottom: 40px;
 		}
-	}
-	
-	.guest-details {
-		position: relative;
-	}
-
-	.guest-details .close {
-		position: absolute;
-		right: -70px;
-		top: -57px;
-		width: 30px;
-		height: 30px;
-		cursor: pointer;
-		overflow: hidden;
-		img {
-			float: left;
+		.close {
+			position: absolute;
+			right: -70px;
+			top: -57px;
 			width: 30px;
 			height: 30px;
+			cursor: pointer;
+			overflow: hidden;
+			img {
+				float: left;
+				width: 30px;
+				height: 30px;
+			}
 		}
 	}
 
