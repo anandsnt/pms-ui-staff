@@ -2,11 +2,6 @@
 (function() {
 	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$location) {
 
-
-		$scope.subtitle1 = "To provide you with the a ";
-		$scope.subtitle2 = "secure check-in ";
-		$scope.subtitle3 = "process, please confirm the following";
-
  //setup options for modal
 
 		$scope.opts = {
@@ -17,9 +12,11 @@
 
 		};
 
-		$scope.openDialog = function() {
+		$scope.nextButtonClicked = function() {
 
 			$location.path('/checkinReservationDetails');
+
+			//if failed
 			//var d = $modal.open($scope.opts);
 
 		};
@@ -28,9 +25,6 @@
 
 			$location.path('/checkinDatePicker');
 		}
-  //to be used when authentication failded
-
- 		 // $scope.openDialog();
 
 };
 
