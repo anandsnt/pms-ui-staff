@@ -1,6 +1,6 @@
 
 (function() {
-  var checkinUpgradeRoomContorller = function($scope,$location,$rootScope,checkinRoomUpgradeService) {
+  var checkinUpgradeRoomContorller = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService) {
 
 // $scope.myInterval = 100;
 //   var slides = $scope.slides = 
@@ -49,7 +49,7 @@
 
        var data = {'reservation_id':$rootScope.reservationID};
 
-       checkinRoomUpgradeService.fetch(data).then(function(response) {
+       checkinRoomUpgradeOptionsService.fetch(data).then(function(response) {
 
             console.log(response)
 
@@ -58,12 +58,28 @@
 
 
 
-      $scope.upgradeClicked = function(){
+      $scope.upgradeClicked = function(upgradeID){
+
+      
+
+       var data = {'reservation_id':$rootScope.reservationID,'upsell_amount_id':upgradeID};
+
+       checkinRoomUpgradeService.post(data).then(function(response) {
+
+            if(response.status === "failure")
+              alert("Error")
+            else
+            {
+               $rootScope.upgradesAvailable = false;
+               $rootScope.ShowupgradedLabel = true;
+               $rootScope.roomUpgradeheading = "Your new Trip details";
+               $location.path('/checkinReservationDetails');
+            }
+
+      
+       });
            
-            $rootScope.upgradesAvailable = false;
-            $rootScope.ShowupgradedLabel = true;
-            $rootScope.roomUpgradeheading = "Your new Trip details";
-            $location.path('/checkinReservationDetails');
+           
       }
 
       $scope.noThanksClicked = function(){
@@ -77,7 +93,7 @@
 };
 
     var dependencies = [
-    '$scope','$location','$rootScope','checkinRoomUpgradeService',
+    '$scope','$location','$rootScope','checkinRoomUpgradeOptionsService','checkinRoomUpgradeService',
     checkinUpgradeRoomContorller
     ];
 
