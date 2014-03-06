@@ -15,27 +15,27 @@
             <li>
                 <a href="#" class="button green">
                     <span class="icons check-in">Checking in</span>
-                    <strong> {{data.guests_duein}} </strong>
+                    <strong> {{data.due_in_count}} </strong>
                 </a>
             </li>
             <li>
                 <a href="#" class="button blue">
                     <span class="icons inhouse">In house</span>
-                    <strong> {{data.guests_inhouse}} </strong>
+                    <strong> {{data.inhouse_count}} </strong>
                 </a>
             </li>
             <li>
                 <a href="#" class="button red">
                     <span class="icons check-out">Checking out</span>
-                    <strong> {{data.guests_dueout}} </strong>
+                    <strong> {{data.due_out_count}} </strong>
                 </a>
             </li>       
         </ul>
         <h2>Rooms</h2>
         <ul id="stats-today">
-            <li>Occupied<span>{{data.rooms_occupied}}</span></li>
-            <li>Vacant (Clean)<span class="green">{{data.rooms_clean}}</span></li>
-            <li>Vacant (Dirty)<span class="red">{{data.rooms_dirty}}</span></li>
+            <li>Occupied<span>{{data.occupied}}</span></li>
+            <li>Vacant (Clean)<span class="green">{{data.vacant_clean_room_count}}</span></li>
+            <li>Vacant (Dirty)<span class="red">{{data.vacant_dirty_room_count}}</span></li>
         </ul>
     </div>
 </section>
