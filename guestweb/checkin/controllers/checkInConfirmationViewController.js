@@ -1,6 +1,6 @@
 
 (function() {
-	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$location) {
+	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$location,checinConfirmationService) {
 
  //setup options for modal
 
@@ -14,10 +14,19 @@
 
 		$scope.nextButtonClicked = function() {
 
-			$location.path('/checkinReservationDetails');
+			
 
-			//if failed
-			//var d = $modal.open($scope.opts);
+
+			var data = {'departureDate':$rootScope.departureDate,'creditCardDigits':$scope.cardDigits}
+
+			checinConfirmationService.login(data).then(function(response) {
+
+				if(response.status === 'failure')
+					$modal.open($scope.opts);
+				else
+					$location.path('/checkinReservationDetails');
+
+			});
 
 		};
 
@@ -29,7 +38,7 @@
 };
 
 		var dependencies = [
-		'$scope','$modal','$rootScope','$location',
+		'$scope','$modal','$rootScope','$location','checinConfirmationService',
 		checkInConfirmationViewController
 		];
 
