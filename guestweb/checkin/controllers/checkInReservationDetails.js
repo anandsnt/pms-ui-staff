@@ -1,30 +1,35 @@
 
 (function() {
-	var checkInReservationDetails = function($scope,$modal,$rootScope) {
+	var checkInReservationDetails = function($scope,$rootScope,$location) {
 
 
- //setup options for modal
+		$scope.heading = "Your Trip details";
 
-		$scope.opts = {
-			backdrop: true,
-			backdropClick: true,
-			templateUrl: '/assets/checkin/partials/errorModal.html',
-			controller: ModalInstanceCtrl,
+		$scope.ShowupgradedLabel = false;
 
-		};
+		$scope.upgradesAvailable = true;
 
-		$scope.openDialog = function() {
-			var d = $modal.open($scope.opts);
+		$scope.checkInButtonClicked = function(){
 
-		};
-  //to be used when authentication failded
+			if($scope.upgradesAvailable){
 
- 		 // $scope.openDialog();
+				$scope.upgradesAvailable = false;
+				$location.path('/checkinUpgrade');
+			}
+			else
+				$location.path('/checkinKeys');
+
+
+
+
+		}
+
+
 
 };
 
 		var dependencies = [
-		'$scope','$modal','$rootScope',
+		'$scope','$rootScope','$location',
 		checkInReservationDetails
 		];
 
@@ -32,12 +37,3 @@
 		})();
 
 
-// controller for the modal
-
-		var ModalInstanceCtrl = function ($scope, $modalInstance) {
-
-
-			$scope.closeDialog = function () {
-				$modalInstance.dismiss('cancel');
-			};
-};

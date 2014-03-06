@@ -1,13 +1,8 @@
 
 (function() {
-	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$location) {
+	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$location,checinConfirmationService) {
 
-
-		$scope.subtitle1 = "To provide you with the a ";
-		$scope.subtitle2 = "secure check-in ";
-		$scope.subtitle3 = "process, please confirm the following";
-
- //setup options for modal
+ 		//setup options for modal
 
 		$scope.opts = {
 			backdrop: true,
@@ -17,20 +12,33 @@
 
 		};
 
-		$scope.openDialog = function() {
+		$scope.nextButtonClicked = function() {
 
-			$location.path('/checkinReservationDetails');
-			//var d = $modal.open($scope.opts);
+			var data = {'departureDate':$rootScope.departureDate,'creditCardDigits':$scope.cardDigits};
+
+
+			checinConfirmationService.login(data).then(function(response) {
+
+				if(response.status === 'failure')
+					$modal.open($scope.opts); // error modal popup
+				else
+					$location.path('/checkinReservationDetails'); //navigate to next page
+
+			});
 
 		};
-  //to be used when authentication failded
 
- 		 // $scope.openDialog();
+		// navigate to calendar view
+
+		$scope.presentDatePicker = function(){
+
+			$location.path('/checkinDatePicker');
+		}
 
 };
 
 		var dependencies = [
-		'$scope','$modal','$rootScope','$location',
+		'$scope','$modal','$rootScope','$location','checinConfirmationService',
 		checkInConfirmationViewController
 		];
 
