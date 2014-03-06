@@ -18,46 +18,11 @@
 <!-- Rooms list -->
 <section id="rooms" class="content scrollable" role="main">
    <ul class="wrapper">
-      <li>
-         <a href="room-details/?number=101&status=clean&guest=vacant" data-transition="inner-page">
-            <h2 class="room-number room-clean">101</h2>
-            <span class="room-status">Clean</span>
-            <span class="fo-status">Vacant</span>
-         </a>
-      </li>
-      <li>
-         <a href="room-details/?number=102&status=inspected&guest=occupied" data-transition="inner-page">
-            <h2 class="room-number room-occupied">102</h2>
-            <span class="room-status">Inspected</span>
-            <span class="fo-status">Occupied</span>
-         </a>
-      </li>
-      <li>
-         <a href="room-details/?number=103&status=dirty&guest=vacant" data-transition="inner-page">
-            <h2 class="room-number room-dirty">103</h2>
-            <span class="room-status">Dirty</span>
-            <span class="fo-status">Vacant</span>
-         </a>
-      </li>
-      <li>
-         <a href="room-details/?number=104&status=dirty&guest=vacant" data-transition="inner-page">
-            <h2 class="room-number room-dirty">104</h2>
-            <span class="room-status">Dirty</span>
-            <span class="fo-status">Vacant</span>
-         </a>
-      </li>
-      <li>
-         <a href="room-details/?number=105&status=clean&guest=occupied" data-transition="inner-page">
-            <h2 class="room-number room-occupied">105</h2>
-            <span class="room-status">Clean</span>
-            <span class="fo-status">Occupied</span>
-         </a>
-      </li>
-      <li>
-         <a href="room-details/?number=106&status=inspected&guest=due out" data-transition="inner-page">
-            <h2 class="room-number room-occupied">106</h2>
-            <span class="room-status">Inspected</span>
-            <span class="fo-status">Due Out</span>
+      <li ng-repeat="room in data.rooms">
+         <a ui-sref="hk.roomDetails">
+            <h2 class="room-number room-clean">{{ room.room_number }}</h2>
+            <span class="room-status"> {{ room.hk_status }} </span>
+            <span class="fo-status"> {{ room.room_number }} </span>
          </a>
       </li>
    </ul>
