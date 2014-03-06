@@ -3,17 +3,18 @@
 	var checkInReservationDetails = function($scope,$rootScope,$location) {
 
 
-		$scope.heading = "Your Trip details";
+		
 
-		$scope.ShowupgradedLabel = false;
-
-		$scope.upgradesAvailable = true;
+		
 
 		$scope.checkInButtonClicked = function(){
 
-			if($scope.upgradesAvailable){
+		
+			if($rootScope.upgradesAvailable){
 
-				$scope.upgradesAvailable = false;
+				$rootScope.upgradesAvailable = false;
+				$rootScope.ShowupgradedLabel = true;
+				$rootScope.roomUpgradeheading = "Your new Trip details";
 				$location.path('/checkinUpgrade');
 			}
 			else
