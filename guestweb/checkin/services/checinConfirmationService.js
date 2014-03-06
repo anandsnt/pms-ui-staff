@@ -14,9 +14,9 @@
 	
 			baseWebService.post(url,data).then(function(response) {
 
-console.log(response)
 
-				this.responseData = response;
+
+				this.responseData = response.data;
 				deferred.resolve(this.responseData);
 			});
 			

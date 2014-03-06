@@ -30,7 +30,7 @@
 			<div class="row check-inout-wrapper">
 
 				<div class="reservation-id centeralign">
-					<span class="lightcontent">RESERVATION #324242</span>
+					<span class="lightcontent">RESERVATION #{{reservationID}}</span>
 				</div>
 				<div class="col-md-6" >
 
@@ -48,7 +48,7 @@
 								</div>
 
 								<div class="dateContent">
-									Jan. 23,2014
+									{{reservationData.arrival_date}}
 								</div>
 
 							</div>
@@ -58,7 +58,7 @@
 									DEPARTURE DATE
 								</div>
 								<div class="dateContent">
-									Jan. 23,2014
+									{{reservationData.departure_date}}
 								</div>
 
 							</div>
@@ -76,7 +76,7 @@
 								</div>
 							</div>
 							<div class="room_details">
-								Standard King Room
+								{{reservationData.room_type}}
 							</div>
 
 						</div>
@@ -87,7 +87,7 @@
 								</div>
 							</div>
 							<div class="room_details">
-								Best Available Rate
+								{{reservationData.room_rate}}
 							</div>
 
 						</div>
@@ -98,9 +98,14 @@
 								</div>
 							</div>
 							<div class="room_details">
-								$ 123
+								{{reservationData.currency}} {{reservationData.avg_rate}}
 							</div>
 
+						</div>
+						<div class="row">
+							 <input type="checkbox" ng-model="value1">
+							<div class="apply_charges">APPLY CHARGES TO MY CREDIT CARD ON FILE
+							</div>
 						</div>
 
 					</div>
@@ -117,7 +122,7 @@
 					<div class=" col-xs-12row">
 						<div class=" reservation-dates ">
 							<div class="lightcontent">
-								ERRORS? <u>CALL US.</u>
+								ERRORS? <u>CALL US AT  {{hotelPhone}}.</u>
 							</div>
 						</div>
 					</div>
