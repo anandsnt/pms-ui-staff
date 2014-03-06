@@ -1,11 +1,13 @@
-hkRover.service('DashboardService',['$http', '$q', function($http, $q){
+hkRover.service('HKSearchSrv',['$http', '$q', function($http, $q){
 
 	this.fetch = function(){
 		var deferred = $q.defer();
-		var url = '/house/dashboard.json';
+		var url = '/sample_json/staff_hk/hkSearch.json';
 
 		$http.get(url).success(function(response, status) {
-		    deferred.resolve(response.data);
+		    //deferred.resolve(response.data);
+		    deferred.resolve(response);
+
 		}).error(function(data, status) {
 		    deferred.reject(data);
 		});
