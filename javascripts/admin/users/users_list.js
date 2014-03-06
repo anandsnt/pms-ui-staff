@@ -46,9 +46,10 @@ var UsersListView = function(domRef){
         var backDom = $("#replacing-div-third");
         backDom.hide();
         var nextViewParams = {'backDom': backDom};
-         
+        var nextDiv = $("#replacing-div-fourth");
+        nextDiv.show();
         if(href != undefined){
-          sntapp.fetchAndRenderView(href, $("#replacing-div-fourth"), viewParams, 'BLOCKER', nextViewParams);
+          sntapp.fetchAndRenderView(href, nextDiv, viewParams, 'BLOCKER', nextViewParams);
         }
     }else{
       sntadminapp.gotoNextPage(e);
