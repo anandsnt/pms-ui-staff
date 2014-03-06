@@ -4,23 +4,25 @@ hkRover.config([
 	function($stateProvider, $urlRouterProvider) {
 
 		// let's redirect all undefined states to dashboard state
-		$urlRouterProvider.otherwise('/staff_house/navmain/dashboard');
+		$urlRouterProvider.otherwise('/staff_house/dashboard');
 
 		$stateProvider.state('hk', {
+			abstract : true,
 			url: '/staff_house',
 			templateUrl: 'partials/hk_main.html',
 			controller: 'appController'
 		});
 
 		$stateProvider.state('hk.navmain', {
-			url: '/navmain',
+			abstract: true,
+			url: '',
 			templateUrl: 'partials/nav_main.html'
 		});
 	
 		$stateProvider.state('hk.navmain.dashboard', {
 			url: '/dashboard',
 			templateUrl: 'partials/dashboard.html',
-			controller: 'dashboardController'
+			controller: 'DashboardController'
 		});
 
 		// search state
