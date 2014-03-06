@@ -83,3 +83,21 @@
 
     snt.controller('checkinUpgradeRoomContorller', dependencies);
     })();
+
+
+snt.directive("description", function ($compile) {
+    function createList(template) {
+        templ = template;
+        return templ;
+    }
+
+    return{
+        restrict:"E",
+        scope: {},
+        link:function (scope, element, attrs) {
+          
+            element.append(createList(attrs.template));
+            $compile(element.contents())(scope);
+        }
+    }
+})
