@@ -30,7 +30,7 @@
 			<div class="row check-inout-wrapper">
 
 				<div class="reservation-id centeralign">
-					<span class="lightcontent">RESERVATION #324242</span>
+					<span class="lightcontent">RESERVATION #{{reservationID}}</span>
 				</div>
 				<div class="col-md-6" >
 
@@ -101,6 +101,11 @@
 								{{reservationData.currency}} {{reservationData.avg_rate}}
 							</div>
 
+						</div>
+						<div class="row">
+							 <input type="checkbox" ng-model="value1">
+							<div class="apply_charges">APPLY CHARGES TO MY CREDIT CARD ON FILE
+							</div>
 						</div>
 
 					</div>
