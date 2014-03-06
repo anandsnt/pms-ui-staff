@@ -14,7 +14,7 @@
 
 		$scope.nextButtonClicked = function() {
 
-			var data = {'departureDate':$rootScope.departureDate,'creditCardDigits':$scope.cardDigits};
+			var data = {'departure_date':$rootScope.departureDate,'credit_card':$scope.cardDigits};
 
 
 			checinConfirmationService.login(data).then(function(response) {
