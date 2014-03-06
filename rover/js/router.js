@@ -65,18 +65,24 @@ sntRover.config([
 	    $stateProvider.state('rover.staycard.billcard.all', {
         	url: '',
 			views : {
-				'billSummary' :{
+				'billDetails' :{
+					templateUrl : "partials/bill_details.html",
+					controller	: 'billDetailsController'
+
+				}
+				/*
+				'billSummary' 	: {
 					templateUrl : "partials/bill_summary.html",
-					controller: 'billSummaryController'
+					controller  : 'billSummaryController'
 				},
-				'billTotalFees' :{	
+				'billTotalFees' : {	
 					templateUrl : "partials/bill_total_fees.html",
-					controller: 'billTotalFeesController'
+					controller  : 'billTotalFeesController'
 				},
-				'billSignature' :{
+				'billSignature' : {
 					templateUrl : "partials/bill_signature.html",
-					controller: 'billSignatureController'
-				},
+					controller  : 'billSignatureController'
+				},*/
 			}
         });
         
