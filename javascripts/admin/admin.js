@@ -206,7 +206,11 @@ var setUpAdmin = function(viewDom, delegate) {
 				var item = ui.item;
 				var data_id = item.attr("data-id");
 				item.attr("id", "bookmark_" + data_id); //Let us set Id for cloned item
-				//$(item).addClass('in-quick-menu');
+				
+				// initially it isn't calculating ui.item's outerwidth correctly.
+               	// adding has-items will help us to calculate that correctly
+               	$("#quick-menu").addClass('has-items');				
+
 				var bookMarkWidth = parseInt(ui.item.outerWidth());
 				that.delegate.bookMarkAdded(data_id);
 				addToBookMark(data_id);
