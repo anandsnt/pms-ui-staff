@@ -27,9 +27,15 @@
 					// display options for room upgrade screen
 
 					$rootScope.ShowupgradedLabel = false;
-					$rootScope.upgradesAvailable = true;
 					$rootScope.roomUpgradeheading = "Your Trip details";
 					$rootScope.reservationData = response.data;
+
+
+					//to be replaced by the code below
+
+					$rootScope.upgradesAvailable = true;
+					
+					//$rootScope.upgradesAvailable = (response.data.is_upgrades_available === "true") ? true :  false;
 
 					//navigate to next page
 
