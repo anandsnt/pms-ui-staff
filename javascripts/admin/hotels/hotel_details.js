@@ -21,7 +21,7 @@ var HotelDetailsView = function(domRef) {
 	  	});
 		that.myDom.find('#test-mli-connectivity').on('click', that.testMliConnectivity);
 	};
-	
+
     this.testMliConnectivity = function(event) {
 		var postData = {
 			"mli_chain_code": that.myDom.find("#mli-chain-code").val(),
@@ -30,29 +30,29 @@ var HotelDetailsView = function(domRef) {
 		};
 
 		var url = '/admin/hotels/test_mli_settings';
-	 
+
 		var webservice = new WebServiceInterface();
-		
-		var options = { 
+
+		var options = {
 			requestParameters: postData,
 			successCallBack: that.fetchCompletedOfConnectionTest,
 			failureCallBack: that.fetchFailedOfConnectionTest,
 			loader: 'blocker'
 		};
-		
-		webservice.postJSON(url, options);    
+
+		webservice.postJSON(url, options);
     };
-	
+
     // To handle success on MLI connection test API
     this.fetchCompletedOfConnectionTest = function(data, params) {
-    	sntapp.notification.showSuccessMessage("Connection Valid", that.myDom, '', true);  		
+    	sntapp.notification.showSuccessMessage("Connection Valid", that.myDom, '', true);
     };
-	
+
     // To handle failure on MLI connection test API
     this.fetchFailedOfConnectionTest = function(errorMessage, params){
     	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
     };
-  
+
 	// function to view external mappings
 	this.renderExternalMappings = function() {
 		var backDom = that.myDom;
@@ -69,7 +69,7 @@ var HotelDetailsView = function(domRef) {
 		};
 		sntapp.fetchAndRenderView(url, replacingDiv, {}, 'BLOCKER', viewParams);
 	};
-  
+
 	// function to view user setup
 	this.renderUserSetup = function() {
 		var backDom = that.myDom;
@@ -83,7 +83,7 @@ var HotelDetailsView = function(domRef) {
 		};
 		sntapp.fetchAndRenderView(url, replacingDiv, {}, 'BLOCKER', viewParams);
 	};
-  
+
 	//function to re invite
 	this.reInvite = function() {
 		var url = 'admin/user/send_invitation';
@@ -158,7 +158,7 @@ var HotelDetailsView = function(domRef) {
 		var hotel_logo = "";
 		if(that.myDom.find("#hotel-logo-preview").attr("changed") == "changed")
 	  		hotel_logo = that.myDom.find("#hotel-logo-preview").attr("src");
-	  	
+
 		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo);
 		var type = event.data[0];
 	    if(type == "create"){
@@ -185,6 +185,9 @@ var HotelDetailsView = function(domRef) {
 	//to handle success call back
 	this.fetchCompletedOfSave = function(data) {
 		if (data.status == "success") {
+
+			$("#selected_hotel").html(data.data.current_hotel);
+
 			if (that.currentView == "snt-admin-view") {
 				sntapp.fetchAndRenderView("/admin/hotels", that.viewParams.backDom, {}, 'None', {}, false);
 			}
@@ -281,14 +284,14 @@ this.gotoPreviousPage = function() {
 this.readCertificate = function(input, type) {
 		if(type == "logo"){
 			that.myDom.find('#hotel-logo-preview').attr('changed', "changed");
-		}  	
+		}
         if (input.files && input.files[0]) {
            var reader = new FileReader();
            reader.onload = function(e) {
            		//console.log(e.target.result);
            		if(type == "logo"){
 					that.myDom.find('#hotel-logo-preview').attr('src', e.target.result);
-				} 
+				}
                that.fileContent = e.target.result;
            };
            reader.readAsDataURL(input.files[0]);
