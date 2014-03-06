@@ -1,3 +1,3 @@
-//=require ../guestweb/static/lib/js
-//= require_tree ../guestweb/js
+//=require_tree ../staff_housekeeping/lib/js
+//= require_tree ../staff_housekeeping/js
 
