@@ -1,0 +1,3 @@
+sntRover.factory('ReservationList', function(){
+	
+});

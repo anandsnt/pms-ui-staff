@@ -1,8 +1,10 @@
 
 Reservation card
 <br />
-GO TO : <button ui-sref="rover.staycard.viewbill">View Bill</button>
+GO TO : <button ui-sref="rover.staycard.billcard">View Bill</button>
 
-<div ui-view="reservationList"> </div>
-<div ui-view="reservationDetails"> </div>
+<div ng-include="reservation_listing.html"></div>
+
+<!-- for loading reservation details -->
+<div ui-view></div>
 
