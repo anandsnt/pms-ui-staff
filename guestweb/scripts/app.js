@@ -112,6 +112,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.roomNo        = $attrs.roomNo
 	$rootScope.isLateCheckoutAvailable  = ($attrs.isLateCheckoutAvailable  === 'true') ? true : false;
 	$rootScope.emailAddress    = $attrs.emailAddress
+	$rootScope.hotelLogo      = $attrs.hotelLogo;
 
 	$rootScope.hotelPhone      = $attrs.hotelPhone
 	$rootScope.isCheckedout   = ($attrs.isCheckedout === 'true') ? true : false;
