@@ -40,6 +40,7 @@ sntRover.config([
         });
 
         $stateProvider.state('rover.staycard.reservationcard.all', {
+        	abstract : true,
         	url: '',
 			views : { 'reservationList' :{
 				templateUrl : "partials/reservation_listing.html",
@@ -53,7 +54,15 @@ sntRover.config([
 
 			}
         });
-		
+		 $stateProvider.state('rover.staycard.reservationcard.all.reservationList', {
+        	url: '',
+			views : { 'reservationPayment' :{
+				templateUrl : "partials/reservation_payment.html",
+				 controller: 'reservationPaymentController'	
+			}
+
+			}
+        });
 		// view bill state
 		$stateProvider.state('rover.staycard.billcard', {
 			abstract : true,
