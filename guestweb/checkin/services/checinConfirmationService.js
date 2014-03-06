@@ -16,7 +16,7 @@
 
 
 
-				this.responseData = response.data;
+				this.responseData = response;
 				deferred.resolve(this.responseData);
 			});
 			
