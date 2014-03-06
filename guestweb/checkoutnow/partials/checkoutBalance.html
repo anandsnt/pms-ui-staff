@@ -28,7 +28,7 @@
 			</div>
 			<!-- top section starts here-->
 
-			<div class="row check-inout-wrapper" ng-show="optionsAvailable && !isFetching && !netWorkError">
+			<div class="row check-inout-wrapper toggle-pos-rel" ng-show="optionsAvailable && !isFetching && !netWorkError">
 				<div class="col-md-6 centeralign headtext nopadding-onblock">
 					{{ billDisplayDetails.checkoutText }}
 					<p class="leadtext">
@@ -41,48 +41,56 @@
 						<a ng-show="showBill" ng-click="showBill = false"><img src="/assets/img/downarrow.png" alt=""  />&nbsp;&nbsp;{{ billDisplayDetails.viewBillButtontext}}</a>
 					</div>
 
-					<div ng-show="showBill" class="showbill">
-						<div class="guest-details leftalign">
-							<span class="center-block normal-weight">Room {{ roomNo }}</span>
-							<span class="center-block">{{ userName }} | {{ userCity }}, {{ userState }}</span>
+
+					<div class="showbill-wrap">
+						<div class="trans-rel-wrap">
+							<div ng-show="showBill" class="showbill">
+								<div class="guest-details leftalign">
+									<span class="close" ng-click="showBill = false"></span>
+									<span class="center-block normal-weight">Room {{ roomNo }}</span>
+									<span class="center-block">{{ userName }} | {{ userCity }}, {{ userState }}</span>
+								</div>
+								<table class="table leftalign table-striped">
+									<thead>
+										<tr>
+											<th>Description</th>
+											<th>Fees</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat= "bill in billData.fee_details">
+											<td>
+												<span class="center-block">{{ bill.date }}</span>
+												<span class="center-block">{{ bill.guest_room_text }}: <span class="guest-room-description{{$index%2}}">{{bill.guest_room_description}}</span></span>
+												<span class="center-block" ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.description }}</span>
+											</td>
+											<td>
+												<span class="center-block"> &nbsp; </span>
+												<span class="center-block">{{ bill.guest_room_fees}}</span>
+												<span class="center-block"ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.amount }}</span>
+											</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr class="total">
+											<td align="right">TOTAL</td>
+											<td >{{billData.total_fees}}</td>
+										</tr>
+										<tr class="total">
+											<td align="right">CREDIT</td>
+											<td>{{billData.credits}}</td>
+										</tr>
+										<tr class="total">
+											<td align="right">BALANCE</td>
+											<td class="balance">{{billData.balance}}</td>
+										</tr>
+									</tfoot>	
+								</table>
+							</div>
 						</div>
-						<table class="table leftalign table-striped">
-							<thead>
-								<tr>
-									<th>Description</th>
-									<th>Fees</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat= "bill in billData.fee_details">
-									<td>
-										<span class="center-block">{{ bill.date }}</span>
-										<span class="center-block">{{ bill.guest_room_text }}: <span class="guest-room-description{{$index%2}}">{{bill.guest_room_description}}</span></span>
-										<span class="center-block" ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.description }}</span>
-									</td>
-									<td>
-										<span class="center-block"> &nbsp; </span>
-										<span class="center-block">{{ bill.guest_room_fees}}</span>
-										<span class="center-block"ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.amount }}</span>
-									</td>
-								</tr>
-							</tbody>
-							<tfoot>
-								<tr class="total">
-									<td align="right">TOTAL</td>
-									<td >{{billData.total_fees}}</td>
-								</tr>
-								<tr class="total">
-									<td align="right">CREDIT</td>
-									<td>{{billData.credits}}</td>
-								</tr>
-								<tr class="total">
-									<td align="right">BALANCE</td>
-									<td class="balance">{{billData.balance}}</td>
-								</tr>
-							</tfoot>	
-						</table>
 					</div>
+
+					
 
 				</div>
 
