@@ -48,14 +48,14 @@ var UserDetailsView = function(domRef){
   };
   //go to previous page withount any update in view
   this.gotoPreviousPage = function() {
-  	that.myDom.html("");
+  	//that.myDom.html("");
   	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
 
    //go to previous page with update in view - after adding new user or update user
    this.gotoPreviousPageWithUpdate = function() {
     that.myDom.html("");
-   	var url = "/admin/users";
+   	var url = "/admin/users/";
    	var viewParams = {};
     var viewDom = {};
     if(that.currentView == 'hotel-admin-view'){

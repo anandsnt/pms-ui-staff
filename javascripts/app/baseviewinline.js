@@ -30,7 +30,7 @@ var BaseInlineView = function(viewDom){
 	if(element.prop('tagName') == "A" && (element.hasClass('edit-data-inline'))) return that.appendInlineData(event);
 	if(element.parent().hasClass('switch-button')) {return that.toggleButtonClicked(element);}
 	if(element.attr('id') == "add-new-button") return that.addNewForm(event);
-	if(element.hasClass('icon-delete')) return that.deleteItem(event);
+	if(element.hasClass('delete_item')) return that.deleteItem(event);
 	
 
   };

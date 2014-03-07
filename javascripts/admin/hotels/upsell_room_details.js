@@ -16,6 +16,7 @@ var UpsellRoomDetailsView = function(domRef){
   	 that.myDom.find('#cancel,#go_back').on('click', that.goBackToPreviousView); 
   };
   this.goBackToPreviousView = function() {
+    console.log("goBackToPreviousView");
   	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
   
@@ -92,6 +93,7 @@ var UpsellRoomDetailsView = function(domRef){
   	 
   	 data.upsell_setup = upsell_setup;
   	 data.upsell_amounts = upsell_amounts;
+     data.charge_code = that.myDom.find('#charge-code').val();
   	 data.upsell_room_levels = upsell_room_levels;
   	 console.log(JSON.stringify(data));
   	  var url = '/admin/room_upsells/update_upsell_options';

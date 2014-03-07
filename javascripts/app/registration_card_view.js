@@ -21,7 +21,7 @@ var RegistrationCardView = function(viewDom) {
 		});
 		that.myDom.find("#signature canvas").addClass('pad');
 
-		if (this.viewParams.clickedButton == "ViewBillButton") {
+		if (that.viewParams.clickedButton == "ViewBillButton" || that.viewParams.clickedButton == "TotalStayCost") {
 			that.renderedFromViewBillButton();
 		}
 		
@@ -45,7 +45,7 @@ var RegistrationCardView = function(viewDom) {
 	
     // To Display Guest Bill screen in detailed mode via ViewBillButton click.
 	this.renderedFromViewBillButton =  function() {
-		that.myDom.find("#bill1-total-fees a").addClass("active");
+		that.myDom.find("#bill1-total-fees .toggle:not(.signature-toggle)").addClass("active");
 		that.myDom.find("#bill1-fees").removeClass("hidden");
 		that.myDom.find("#signature-pad").addClass("hidden");
 		that.myDom.find("#complete-checkout-button").addClass("hidden");

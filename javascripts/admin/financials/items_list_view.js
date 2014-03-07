@@ -8,6 +8,7 @@ var ItemsListView = function(domRef) {
 	};
 
 	this.delegateEvents = function() {
+
 		that.myDom.find('#add-new-button,.edit-data').on('click', sntadminapp.gotoNextPage);
 		that.myDom.find(".switch-button").on('click', that.toggleButtonClicked);
 		that.myDom.find(".icon-delete").on('click', that.deleteItem);
@@ -55,13 +56,13 @@ var ItemsListView = function(domRef) {
 	this.deleteItem = function(event) {
 		event.preventDefault();
 		var postData = {};
-		var selectedId = $(event.target).attr("id");
+		var selectedId = $(event.target).attr("item_id");
 		var url = "/admin/items/" + selectedId + "/delete_item";
 		postData.id = selectedId;
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
-			successCallBack : that.fetchCompletedOfDelete,
+			successCallBack : that.fetchCompletedOfDeleteItem,
 			loader : "BLOCKER",
 			successCallBackParameters : {
 				"selectedId" : selectedId
@@ -71,8 +72,10 @@ var ItemsListView = function(domRef) {
 	};
 	
 		//to remove deleted row and show message
-	this.fetchCompletedOfDelete = function(data, successParams) {
+	this.fetchCompletedOfDeleteItem = function(data, successParams) {
 		sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
 		that.myDom.find("#item_row_" + successParams['selectedId']).remove();
+		return;
+		
 	};
 };

@@ -2,6 +2,17 @@
 var verticalScroll = new Array(),
     horizontalScroll = new Array();
 
+
+//added by shahul
+function getScrollObjectForDiv(obj){
+
+    for ( i in verticalScroll){
+        if ($(verticalScroll[i].wrapper).find(obj).length >0)
+            return verticalScroll[i];
+    }
+    return null;
+}
+
 // Vertical scroll
     function createVerticalScroll($target, $startingPosition){
         setTimeout(function(){
@@ -9,8 +20,9 @@ var verticalScroll = new Array(),
             destroyVerticalScroll($target);
 
             // Create new vertical scroll
-            verticalScroll.push(new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' }));
-            
+            var scrollObj = new IScroll($target, { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' });
+            verticalScroll.push(scrollObj);         
+
             // Move it to defined position, if one exists
             if ($startingPosition && typeof $startingPosition !== 'undefined') {
                 for (var i = 0; i < verticalScroll.length; i++) {
@@ -61,6 +73,7 @@ var verticalScroll = new Array(),
             // Refresh all available
             else {
                 for (var i = 0; i < verticalScroll.length; i++) {
+
                     verticalScroll[i].refresh();
                     if ($startingPosition && typeof $startingPosition !== 'undefined') {
                         verticalScroll[i].scrollTo(0, $startingPosition, 10);
