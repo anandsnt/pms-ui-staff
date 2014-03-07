@@ -16,7 +16,8 @@ hkRover.config([
 		$stateProvider.state('hk.navmain', {
 			abstract: true,
 			url: '',
-			templateUrl: '/assets/partials/nav_main.html'
+			templateUrl: '/assets/partials/nav_main.html',
+			controller: 'HKnavCtrl'
 		});
 	
 		$stateProvider.state('hk.navmain.dashboard', {
