@@ -12,22 +12,22 @@
 		</div>
 
 
-		<!-- show posting message 
-		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+	<!--	 show posting message -->
+		<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
 			Your request is being processed, this may take a few seconds..... please wait!
 		</div>
 
-		show error message 
+	<!--	show error message -->
 
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-			<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check out at our front desk.</div>
+			<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check in at our front desk.</div>
 			<div>You can also call the hotel at {{hotelPhone}}.</div>
 		</div>
 
-	-->
+	
 
 	<!-- contentarea starts here-->
-	<div class="container" ng-hide="isFetching || netWorkError">
+	<div class="container" ng-hide="isPosting || netWorkError">
 		<!-- top section starts here-->
 
 		<div class="row check-inout-wrapper">

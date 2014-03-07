@@ -12,12 +12,25 @@
 
 		};
 
+		$scope.isPosting 		 = false;
+		$rootScope.netWorkError  = false;
+
+		$rootScope.$watch('netWorkError',function(){
+
+			if($rootScope.netWorkError)
+				$scope.isPosting = false;
+		});
+
 		$scope.nextButtonClicked = function() {
+
 
 			var data = {'departure_date':$rootScope.departureDate,'credit_card':$scope.cardDigits,'reservation_id':$rootScope.reservationID};
 
 
+			$scope.isPosting 		 = true;
 			checinConfirmationService.login(data).then(function(response) {
+
+				$scope.isPosting 		 = false;
 
 
 				if(response.status === 'failure')
