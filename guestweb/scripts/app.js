@@ -74,16 +74,13 @@ snt.config(['$routeProvider', function($routeProvider) {
 	    controller : 'checkinUpgradeRoomContorller'
 	});
 
-	//to be deleted and replaced by the code below
 	$routeProvider.otherwise({
-		redirectTo: '/checkinConfirmation'
+		redirectTo: '/'
 	});
 
 
 
-// $routeProvider.otherwise({
-// redirectTo: '/'
-// });
+
 }]);
 
 
