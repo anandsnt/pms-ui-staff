@@ -6,8 +6,11 @@ function checkinDatePickerController($scope, $rootScope,dateFilter,$filter,$loca
 
         $scope.selectedDate = ($filter('date')($scope.date, 'M/d/yy'));
 
-        $scope.minDate = '2013-12-25';
-        $scope.maxDate = '2014-10-06';
+
+    // disable previous dates if needed.
+    
+       // $scope.minDate = $scope.date;
+       
 
 
         // format the selected date
