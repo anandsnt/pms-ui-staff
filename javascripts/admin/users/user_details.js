@@ -55,7 +55,7 @@ var UserDetailsView = function(domRef){
    //go to previous page with update in view - after adding new user or update user
    this.gotoPreviousPageWithUpdate = function() {
     that.myDom.html("");
-   	var url = "/admin/users";
+   	var url = "/admin/users/";
    	var viewParams = {};
     var viewDom = {};
     if(that.currentView == 'hotel-admin-view'){
