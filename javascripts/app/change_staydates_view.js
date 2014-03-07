@@ -164,7 +164,7 @@ var ChangeStayDatesView = function(viewDom){
           if(calenderEvents.data.is_rates_suppressed == "true"){
             calEvt.title = calenderEvents.data.text_rates_suppressed;
           } else {
-            calEvt.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
+            calEvt.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate).split('.')[0];
           }   
           calEvt.start = thisDate;
           calEvt.end = thisDate;
@@ -188,7 +188,7 @@ var ChangeStayDatesView = function(viewDom){
                   if(calenderEvents.data.is_rates_suppressed == "true"){
                     calEvt.title = calenderEvents.data.text_rates_suppressed;
                   } else {
-                    calEvt.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
+                    calEvt.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate).split('.')[0];
                   }   
                   calEvt.start = thisDate;
                   calEvt.end = thisDate;
