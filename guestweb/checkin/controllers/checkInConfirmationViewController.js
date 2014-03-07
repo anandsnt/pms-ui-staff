@@ -12,8 +12,13 @@
 
 		};
 
+		//set up flags related to webservice
+
 		$scope.isPosting 		 = false;
 		$rootScope.netWorkError  = false;
+
+
+		// watch for any change
 
 		$rootScope.$watch('netWorkError',function(){
 
@@ -21,13 +26,17 @@
 				$scope.isPosting = false;
 		});
 
+
+		//next button clicked actions
+
 		$scope.nextButtonClicked = function() {
 
 
 			var data = {'departure_date':$rootScope.departureDate,'credit_card':$scope.cardDigits,'reservation_id':$rootScope.reservationID};
-
-
 			$scope.isPosting 		 = true;
+
+		//call service
+		
 			checinConfirmationService.login(data).then(function(response) {
 
 				$scope.isPosting 		 = false;
