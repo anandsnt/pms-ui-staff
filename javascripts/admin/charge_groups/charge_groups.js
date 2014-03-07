@@ -67,9 +67,11 @@ var HotelChargeGroupsView = function(domRef){
   };
    //to remove deleted row and show message
   this.fetchCompletedOfDelete = function(data, successParams){
-	  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
-	  that.myDom.find($("#charge-group-row-"+successParams['selectedId'])).html("");
-	   //to clear the html for edit data.
-	  that.myDom.find(".edit-data").html("");
+	  
+	  var url = "/admin/charge_groups";
+   	  viewParams = {};
+  	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
+      sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);		
+     
   };
 };
