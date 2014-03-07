@@ -30,7 +30,7 @@
 			<div class="row check-inout-wrapper">
 
 				<div class="reservation-id centeralign">
-					<span class="lightcontent">RESERVATION #{{reservationID}}</span>
+					<span class="lightcontent">RESERVATION #{{reservationData.reservation_id}}</span>
 				</div>
 				<div class="col-md-6" >
 
@@ -67,7 +67,7 @@
 
 					<!-- top section ends here-->
 
-					<div class="col-xs-12 room-desc ">
+					<div class=" room-desc ">
 
 						<div class="row">
 							<div class=" reservation-dates">
@@ -102,16 +102,15 @@
 							</div>
 
 						</div>
-						<div class="row">
-							 <input type="checkbox" ng-model="value1">
-							<div class="apply_charges">APPLY CHARGES TO MY CREDIT CARD ON FILE
-							</div>
+						<div class="row applycharge">
+							 <input type="checkbox" ng-model="checked" >:&nbsp
+							APPLY CHARGES TO MY CREDIT CARD ON FILE
+							
 						</div>
 
-					</div>
-				</div>
+					</div></div>
 				<div class="col-md-6 ">
-					<div class="row now-later-options">
+					<div class="row now-later-options ">
 						<div class="col-xs-12 checkin ">
 							<div class="rel-wrapper" ng-click="checkInButtonClicked()">
 								Check in
@@ -127,7 +126,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			
 		</div>
 		<!-- checkinbtn section ends here-->
 	</div>

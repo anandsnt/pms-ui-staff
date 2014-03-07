@@ -12,12 +12,34 @@
 
 		};
 
+		//set up flags related to webservice
+
+		$scope.isPosting 		 = false;
+		$rootScope.netWorkError  = false;
+
+
+		// watch for any change
+
+		$rootScope.$watch('netWorkError',function(){
+
+			if($rootScope.netWorkError)
+				$scope.isPosting = false;
+		});
+
+
+		//next button clicked actions
+
 		$scope.nextButtonClicked = function() {
 
-			var data = {'departure_date':$rootScope.departureDate,'credit_card':$scope.cardDigits,'reservation_id':$rootScope.reservationID};
 
+			var data = {'departure_date':$rootScope.departureDate,'credit_card':$scope.cardDigits,'reservation_id':$rootScope.reservationID};
+			$scope.isPosting 		 = true;
+
+		//call service
 
 			checinConfirmationService.login(data).then(function(response) {
+
+				$scope.isPosting 		 = false;
 
 
 				if(response.status === 'failure')
@@ -27,9 +49,13 @@
 					// display options for room upgrade screen
 
 					$rootScope.ShowupgradedLabel = false;
-					$rootScope.upgradesAvailable = true;
 					$rootScope.roomUpgradeheading = "Your Trip details";
-					$rootScope.reservationData = response;
+					$rootScope.reservationData = response.data;
+
+
+					//to be replaced by the code below
+					
+					$rootScope.upgradesAvailable = (response.data.is_upgrades_available === "true") ? true :  false;
 
 					//navigate to next page
 
