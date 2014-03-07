@@ -46,51 +46,58 @@
 					<div class="showbill-wrap" ng-show="showBill" >
 						<div class="trans-rel-wrap">
 							<div class="showbill">
-								<div class="bill-hotel-logo">
-									<img src="/assets/img/logo.png">
+								
+								<div class="bill-contain-wrap">
 									<span class="close-bill" ng-click="showBill = false"><img src="/assets/img/viewbill-close.png"></span>
+									
+									<div class="bill-contain">
+										<div class="bill-hotel-logo">
+											<img src="/assets/img/logo.png">
+										</div>
+
+										<div class="guest-details leftalign">
+											<span class="center-block normal-weight">Room {{ roomNo }}</span>
+											<span class="center-block">{{ userName }} | {{ userCity }}, {{ userState }}</span>
+										</div>
+										<table class="table leftalign table-striped">
+											<thead>
+												<tr>
+													<th>Description</th>
+													<th>Fees</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat= "bill in billData.fee_details">
+													<td>
+														<span class="center-block">{{ bill.date }}</span>
+														<span class="center-block">{{ bill.guest_room_text }}: <span class="guest-room-description{{$index%2}}">{{bill.guest_room_description}}</span></span>
+														<span class="center-block" ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.description }}</span>
+													</td>
+													<td>
+														<span class="center-block"> &nbsp; </span>
+														<span class="center-block">{{ bill.guest_room_fees}}</span>
+														<span class="center-block"ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.amount }}</span>
+													</td>
+												</tr>
+											</tbody>
+											<tfoot>
+												<tr class="total">
+													<td align="right">TOTAL</td>
+													<td >{{billData.total_fees}}</td>
+												</tr>
+												<tr class="total">
+													<td align="right">CREDIT</td>
+													<td>{{billData.credits}}</td>
+												</tr>
+												<tr class="total">
+													<td align="right">BALANCE</td>
+													<td class="balance">{{billData.balance}}</td>
+												</tr>
+											</tfoot>	
+										</table>
+									</div>
 								</div>
 
-								<div class="guest-details leftalign">
-									<span class="center-block normal-weight">Room {{ roomNo }}</span>
-									<span class="center-block">{{ userName }} | {{ userCity }}, {{ userState }}</span>
-								</div>
-								<table class="table leftalign table-striped">
-									<thead>
-										<tr>
-											<th>Description</th>
-											<th>Fees</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr ng-repeat= "bill in billData.fee_details">
-											<td>
-												<span class="center-block">{{ bill.date }}</span>
-												<span class="center-block">{{ bill.guest_room_text }}: <span class="guest-room-description{{$index%2}}">{{bill.guest_room_description}}</span></span>
-												<span class="center-block" ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.description }}</span>
-											</td>
-											<td>
-												<span class="center-block"> &nbsp; </span>
-												<span class="center-block">{{ bill.guest_room_fees}}</span>
-												<span class="center-block"ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.amount }}</span>
-											</td>
-										</tr>
-									</tbody>
-									<tfoot>
-										<tr class="total">
-											<td align="right">TOTAL</td>
-											<td >{{billData.total_fees}}</td>
-										</tr>
-										<tr class="total">
-											<td align="right">CREDIT</td>
-											<td>{{billData.credits}}</td>
-										</tr>
-										<tr class="total">
-											<td align="right">BALANCE</td>
-											<td class="balance">{{billData.balance}}</td>
-										</tr>
-									</tfoot>	
-								</table>
 							</div>
 						</div>
 					</div>
