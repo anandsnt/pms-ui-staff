@@ -36,7 +36,7 @@
 			$scope.isPosting 		 = true;
 
 		//call service
-		
+
 			checinConfirmationService.login(data).then(function(response) {
 
 				$scope.isPosting 		 = false;
@@ -54,10 +54,8 @@
 
 
 					//to be replaced by the code below
-
-					$rootScope.upgradesAvailable = true;
 					
-					//$rootScope.upgradesAvailable = (response.data.is_upgrades_available === "true") ? true :  false;
+					$rootScope.upgradesAvailable = (response.data.is_upgrades_available === "true") ? true :  false;
 
 					//navigate to next page
 
