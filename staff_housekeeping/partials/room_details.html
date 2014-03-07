@@ -1,1 +1,29 @@
-Room details
+<!-- Navbar -->
+<header class="nav-bar float" role="banner">
+    <!-- Menu toggle button / Back button  -->
+    <a href="rooms/" class="back-button" data-transition="inner-page" data-href="history" data-page="rooms">Rooms</a>
+
+    <!-- Title -->
+    <h1 class="h2">Room Details</h1>
+</header>
+<!-- Rooms details -->
+<section id="room-details" class="content" role="main">
+    <header id="room-header" class="clean" role="banner">
+        <h1 class="icons icon-room">101</h1>
+        <div class="select">
+            <select id="house-status" name="house-status">
+                <option value="" disabled>Room status</option>
+                <option value="clean" selected>Clean</option>
+                <option value="dirty">Dirty</option>
+                <option value="pick-up">Pick-Up</option>
+                <option value="inspected">Inspected</option>
+            </select>
+        </div>
+    </header>
+    <div id="guest-info" class="no-content">
+        <div class="info">
+            <span class="icons icon-vacant"></span>
+            <strong class="h1">Room is vacant.</strong>
+        </div>
+    </div>
+</section>
