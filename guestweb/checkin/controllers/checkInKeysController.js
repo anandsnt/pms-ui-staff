@@ -24,6 +24,9 @@
 
 		baseWebService.post(url,data).then(function(response) {
 
+					if(response.status === "failure")
+						$rootScope.netWorkError  = true;
+
 					 $scope.isPosting = false;
 					 $scope.responseData =response;
 					 console.log(response)
