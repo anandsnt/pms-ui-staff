@@ -14,8 +14,7 @@ var UpsellLateCheckoutView = function(domRef){
   	 	that.myDom.find('#checkout-time-extended-to-3').attr("disabled", true);
   	 	that.myDom.find('#charge-for-checkout-3').attr("readonly", "readonly");
   	 }
-  	 that.myDom.find('#checkout-time-extended-to-2').attr("disabled", true);
-  	 	that.myDom.find('#charge-for-checkout-2').attr("readonly", "readonly");
+  	 
   };
    this.delegateEvents = function(){
 	   that.myDom.find('#save').on('click', that.saveHotelDetails);
