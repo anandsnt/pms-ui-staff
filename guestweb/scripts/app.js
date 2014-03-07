@@ -93,12 +93,10 @@ snt.config(['$routeProvider', function($routeProvider) {
 
 
 
-snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService','$location','$window','authenticationService', function($rootScope,$scope,$attrs, UserService,$location,$window,authenticationService) {
+snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService','$location','authenticationService', function($rootScope,$scope,$attrs, UserService,$location,authenticationService) {
 
 
-	
-	if ($window.sessionStorage.token)
-		delete $window.sessionStorage.token
+
 
 	//store basic details as rootscope variables
 
@@ -129,21 +127,22 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 		$location.path('/checkOutNowSuccess');
 
 	if($attrs.accessToken != "undefined")
-		$window.sessionStorage.accessToken = $attrs.accessToken	;
+		$rootScope.accessToken = $attrs.accessToken	;
 
 	console.log($attrs)
 
 }]);
 
+// to be deleted
 
-snt.factory('authInterceptor', function ($rootScope, $q, $window,$location) {
+snt.factory('authInterceptor', function ($rootScope, $q,$location) {
 	return {
 		request: function (config) {
 			config.headers = config.headers || {};
 
-			if ($window.sessionStorage.accessToken) {
+			if ($rootScope.accessToken) {
 
-				config.headers.Authorization = $window.sessionStorage.accessToken;
+				config.headers.Authorization = $rootScope.accessToken;
 			}
 			else{
 
