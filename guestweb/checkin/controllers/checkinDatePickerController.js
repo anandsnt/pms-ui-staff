@@ -1,4 +1,4 @@
- function checkinDatePickerController($scope, $rootScope,dateFilter,$filter,$location) {
+function checkinDatePickerController($scope, $rootScope,dateFilter,$filter,$location) {
         
 
 
@@ -6,12 +6,14 @@
 
         $scope.selectedDate = ($filter('date')($scope.date, 'M/d/yy'));
 
-        $scope.minDate = '2013-12-25';
-        $scope.maxDate = '2014-10-06';
+
+    // disable previous dates if needed.
+    
+       // $scope.minDate = $scope.date;
+       
 
 
-        //$rootScope.departureDate  =  ($filter('date')($scope.date, 'M/d/yy'));
-
+        // format the selected date
 
 		$scope.$watch('date',function(){
 
@@ -19,9 +21,16 @@
 
 			
 		});
+
+
+		// back button action
+
 		$scope.backBtnClick = function(){
 			$location.path('/checkinConfirmation');
 		};
+
+		// done button action
+
 		$scope.doneBtnClick = function(){
 			
 			$rootScope.departureDate = $scope.selectedDate;

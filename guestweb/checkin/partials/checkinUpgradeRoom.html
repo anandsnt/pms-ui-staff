@@ -9,19 +9,19 @@
 			</div>
 		</div>
 
-		<!-- show posting message
+<!--	 show posting message -->
 		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-		Your request is being processed, this may take a few seconds..... please wait!
+			Your request is being processed, this may take a few seconds..... please wait!
 		</div>
 
-		show error message
+	<!--	show error message -->
 
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-		<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check out at our front desk.</div>
-		<div>You can also call the hotel at {{hotelPhone}}.</div>
+			<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check in at our front desk.</div>
+			<div>You can also call the hotel at {{hotelPhone}}.</div>
 		</div>
 
-		-->
+	
 
 		<!-- contentarea starts here-->
 		<div class="container" ng-hide="isFetching || netWorkError">
@@ -43,9 +43,9 @@
 						<carousel>
 							<slide ng-repeat="slide in slides" active="slide.active" >
 								<div class="centeralign">
-									<img ng-src="{{slide.room_type_image}}" style="height:200px;" />
+									<img ng-src="{{slide.room_type_image}}" style="height:200px;"/>
 								</div>
-								<div class="upgrade-details">
+								<div class="upgrade-details" style="min-height:200px;">
 									<div class="col-xs-12 room-info">
 									<div class="col-xs-9 ">
 										<p class="bold-content">
@@ -53,11 +53,11 @@
 									</p>
 										<div class="row rate-info">
 
-										<div  class="col-xs-3 amount">
+										<div  class="col-xs-4 amount">
 											${{slide.upsell_amount}}
 										</div>
 
-										<div  class="col-xs-9 rate-desc">
+										<div  class="col-xs-8 rate-desc">
 											<p>
 												EXTRA
 											</p>
@@ -67,26 +67,15 @@
 										</div>
 									</div>
 									</div>
-									<div class="col-xs-3 upgrades-btn" ng-click="upgradeClicked()">
+									<div class="col-xs-3 upgrades-btn" ng-click="upgradeClicked(slide.upsell_amount_id)">
 											<img  src="/assets/img/upgrade_icon.png" width="25" height="25" alt=""/>
 											<p>SELECT THIS <br /> UPGRADE</p>
 									</div>
 								</div>
-									<ul class="descriptions">
-										<li>
-											No of rooms:{{slide.no_of_rooms}}
-										</li>
-										<li>
-											{{slide.upgrade_room_description}}
-										</li>
-										<li>
-											Max adults:{{slide.max_adults}}
-										</li>
-										<li>
-											Max children: {{slide.max_children}}
-										</li>
-
-									</ul>
+										<description template="{{slide.upgrade_room_description}}" class="description-details">
+											
+										</description>
+								
 								</div>
 							</slide>
 						</carousel>
