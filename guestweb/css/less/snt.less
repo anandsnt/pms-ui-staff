@@ -224,7 +224,8 @@ padding: 0;
 
 .now-later-options .checkoutnow,
 .now-later-options .checkoutlater,
-.now-later-options .accept-charges-button {
+.now-later-options .accept-charges-button,
+.now-later-options .checkin {
 text-align: center;
 font-family: 'Source Sans Pro', sans-serif;
 font-weight: 200;
@@ -234,7 +235,8 @@ line-height: 100%;
 
 .checkoutnow .rel-wrapper,
 .checkoutlater .rel-wrapper,
-.accept-charges-button .rel-wrapper
+.accept-charges-button .rel-wrapper,
+.checkin .rel-wrapper
 {
 padding: 20px 10px;
 }
@@ -243,12 +245,15 @@ padding: 20px 10px;
 padding: 30px 20px 32px;
 }
 
-.checkoutnow {
+.checkoutnow,.proceed-to-checkin {
 background: #000000;
 color: #ffffff; 
 }
-
-.checkoutlater,.accept-charges-button {
+.checkin{
+  margin:0px 0px 10px 0px !important;
+  cursor:pointer !important;
+}
+.checkoutlater,.accept-charges-button,.checkin {
 background: #ffffff;
 color: #000000;
 }
@@ -256,7 +261,8 @@ color: #000000;
 .checkoutnow a,
 .checkoutlater a,
 .accept-charges-button a,
-.later-options a {
+.later-options a,
+.checkin a {
 position: absolute;
 top: 0;
 right: 0;
@@ -399,8 +405,6 @@ text-transform:uppercase;
 background:#ffffff;
 color:#000000;
 }
-
-
 }
 
 
@@ -471,6 +475,13 @@ padding: 8px;
 margin: 10px 20px 0;
 text-transform: uppercase;
 font-weight: 500 !important;
+
+
+&.nextbtn{
+  margin: 20px 0px 0 !important;
+  font-size: 16px !important;
+  cursor:pointer;
+}
 }
 
 
@@ -544,12 +555,19 @@ bottom: 0;
 }
 }
 
+/*----------checkin starts here----------------------*/
 
-.alert{
-background-color: #7A613A !important;
-background-image: linear-gradient(to bottom, #D5B675, #7B6137);
-color: #000000 !important;
-margin : 0px 5px !important;
+
+.modal-content{
+	background-color: #fff !important;
+	color: #000000 !important;
+	margin : 0px 5px !important;
+	height: 250px !important;
+	border-radius: 0px !important;
+	border: 0px  !important;
+  	box-shadow:none !important;
+  	margin: 0px !important;
+  	line-height: 0.8 !important;
 }
 .btn-primary{
 background: #000000 !important;
@@ -559,4 +577,500 @@ border-color:  #000000 !important;
 
 .checkout-failure-text{
   margin-bottom:10px;
+}
+
+.subTitletext{
+    color: #FFFFFF;
+    padding: 20px 10px 0px 3px !important;
+    line-height: 0.3 !important;
+    font-size: 20px !important;
+    line-height: 1.3 !important;
+    font-size : 15px !important;
+   
+}
+
+.labelText{
+  color:#fff;
+  font-size:10px;
+  font-style: normal;
+}
+.textBox{
+  height:40px;
+}
+
+
+.reservation-details{
+ 
+  font-style: bold  !important;
+  font-weight: 500;
+
+
+}
+
+.btn-close{
+background: #787878 !important;
+color: #ffffff !important;
+border-color:  #bdbdbd !important;
+border-radius: 0px !important;
+width: 120px !important;
+font-size: 10px !important;
+}
+
+
+.alert-box{
+	
+	margin-top: 20px !important;
+	padding-top: 20px !important;
+} 
+.alert-element{
+	margin-top: 20px !important;
+	margin-bottom: 20px !important;
+}
+.alert-link{ 
+	color:#0030e2 !important;
+	margin-bottom: 25px !important;
+}
+
+.date-picker {
+    display: block;
+    position: relative;
+    text-align: right;
+    overflow: hidden;
+      height:40px;
+}
+
+.date-picker > input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 5em;
+    bottom: 0;
+    outline: none;
+}
+
+.calendar-button{
+padding:5px 8px 2px 0;
+	position:relative;
+  cursor:pointer;
+}
+
+.modal-dialog{
+ margin-top: 135px !important;
+ }
+
+ .row .reservation-id{
+ 
+    color: #fff;
+    margin-bottom: 5px;
+    font-size: 11px !important;
+ }
+
+.row .reservation-dates {
+
+    font-family: 'Source Sans Pro';
+    
+    color: #fff;
+
+.lightcontent{
+    font-size: 11px !important;
+    font-weight: 200;
+
+    }
+
+ .dateContent{
+      font-size: 16px !important;
+      font-weight: 500;
+      margin-top: 0px;
+      margin-bottom:7px;
+    }
+    
+ }
+.row .date-container{
+  
+  margin: 20px 25px 0px;
+  border-bottom:1px solid #fff;
+}
+ .room_details {
+  color:#fff;
+   font-size:18px;
+   margin-bottom: 5px;
+ }
+ .room-desc{
+   margin:10px 0px;
+ }
+
+.qr-code-details,.carousel-view{
+  
+
+.col-md-6 {
+  padding-left:0px !important ;
+  padding-right:0px !important ;
+  
+ }
+ .qr-code-image{
+  padding-top:10px; 
+  background: #ffffff !important ;
+  color: #000000 !important ;
+  padding-left:25px !important ;
+  padding-right:25px !important ;
+ .qr-code-info{
+    font-family: 'Source Sans Pro';
+     font-size:12px;
+     text-align:left !important ;
+     padding-top:10px;
+  }
+  }
+}
+.key-info{
+  .col-xs-4{
+  padding-left:0px !important ;
+  padding-right:5px !important ;
+  }
+.key-image,.keys{
+  padding-top:20px;
+  padding-bottom:10px;
+  p{
+   line-height: 0.9;
+    margin-bottom:0px !important ;
+    
+  }
+} 
+.key-image{
+  text-align:right;
+
+}
+.keys{
+  text-align:left;
+  p:first-child{
+   font-size:14px !important ;
+ }
+ p:last-child{
+   font-size:45px !important ;
+ }
+}
+}
+
+
+
+/*---------------- carousal ---------------------------*/
+.carousal{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.carousel-indicators{left:50%;}
+.carousel-indicators li {
+        background-size : 42px 22px;
+        width : 50px;
+        height: 50px;
+        border-radius : 0px;
+        text-indent : 0px;
+        background-repeat : no-repeat;
+        background-position : center;
+        cursor : pointer;
+      }
+
+
+
+.carousel-indicators{
+  
+  display : none !important;
+}
+
+.carousel-control.left, .carousel-control.right {
+    background-image: none !important;
+    font-size: 22px !important;
+    opacity: 0.5 !important;
+}
+
+.carousel-control {
+    height: 55% !important;
+    width: 5% !important;
+}
+.carousel-control .icon-next, .carousel-control .glyphicon-chevron-right {
+    right: 100% !important;
+}
+
+
+
+.carousel-control .icon-next:before {
+   content:url(../../img/right.png) !important;
+    width : 40px !important;
+    height : 40px !important;
+}
+.carousel-control .icon-prev:before {
+    content: url(../../img/left.png) !important;
+     width : 40px !important;
+      height : 40px !important;
+}
+
+/*---------------- carousal ends here---------------------------*/
+
+
+.upgrade-details{
+
+      background-color: #fff !important;
+      text-align: left !important;
+      font-family: 'Source Sans Pro';
+      font-weight: 300;
+      color:#000;
+      .col-xs-12{
+          padding-right:0px !important ;
+      }
+
+  .bold-content{
+      padding-top:10px !important ;
+      font-weight: 500 !important;
+      margin-bottom: 7px;
+  }
+
+  .descriptions{
+       margin: 0px !important;
+  }
+  .description-details{
+      padding-left : 0px !important;
+  }
+
+}
+
+  .amount-per-night{
+          font-size: 18px !important;
+          font-weight: 300 !important;
+      }
+
+.normal-reservation{
+  font-family: 'Source Sans Pro';
+  font-size : 16px !important;
+  font-weight: 500;
+  color:#fff;
+  margin-bottom: 0px;
+}
+
+
+.rate-info{
+
+  .amount{
+     padding-left:0px !important ;
+    font-size:30px !important ;
+  }
+  .rate-desc{
+    padding-top: 8px;
+    p{
+      font-size:12px !important;
+      
+    }
+   p:first-child{
+     margin-bottom:0px !important;
+ }
+  }
+}
+
+.row .applycharge{
+    color: #FFFFFF !important;
+    font-size: 10px !important;
+}
+  input[type=checkbox]
+{
+ /* Double-sized Checkboxes */
+ -ms-transform: scale(1.5); /* IE */
+ -moz-transform: scale(1.5); /* FF */
+ -webkit-transform: scale(1.5); /* Safari and Chrome */
+ -o-transform: scale(1.5); /* Opera */
+ padding: 10px;
+}
+.upgrade-details .upgrades-btn{
+
+  cursor: pointer;
+  background-color:#d8422f;
+  padding-left: 0 !important;
+  color:#fff !important;
+  margin-top:0px!important;
+  text-align:center;
+  height: 73px;
+    padding-top: 3px;
+  p{
+     font-size:10px !important;
+     width: 75px;
+     font-weight: 600;
+      
+  }
+  img{
+     margin: 6px 0 6px 20px ;
+  }
+}
+
+.proceed-to-checkin{
+    cursor: pointer;
+  font-size:14px!important ;
+  font-family: 'Source Sans Pro';
+  padding:5px 0px;
+  margin-top:10px;
+  text-align:right;
+  position:absolute;
+  bottom:-30;
+  left: 0;
+  width: 100%;
+}
+.apply_charges {
+    color: #FFFFFF;
+    font-size: 10px;
+    margin-bottom: 5px;
+    float :right;
+    
+}
+
+@media all and (max-width: 320px) {
+  .proceed-to-checkin{
+    position:fixed;
+    bottom:0;
+  }
+}
+.date-picker-ok,.date-picker-back{
+    cursor: pointer;
+}
+.date-picker-ok{
+  text-align:right;
+  color:#b59f64;
+}
+.date-picker-back{
+  
+  padding-left : 5px !important;
+  color:  #9c9c9c !important;
+  
+}
+.container .date-picker-header{
+  font-size:12px;
+  color: #fff !important;
+  background-color: #1f1e20 !important;
+  padding:15px 5px 5px 5px;
+}
+
+.departure-date{
+  font-size:14px !important;
+  p:first-child{
+    margin-bottom:0px !important;
+  color:#ac9557;
+  
+  }
+  p:last-child{
+    color:#fff;
+  }
+  
+}
+
+/* ------------------date -picker ---------------------*/
+
+.pickadate-header {
+  position: relative;
+}
+
+.pickadate {
+  font-family: 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;
+}
+
+.pickadate-main {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+}
+
+.pickadate a:visited, .pickadate a {
+  color: #666666;
+}
+
+.pickadate-cell {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.pickadate-cell li {
+  display: block;
+  float: left;
+  border: 1px solid #DCDCDC;
+  border-width: 0 1px 1px 0;
+  width: 14.285%;
+  padding: 1.3% 0 1.3% 0;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+.pickadate-cell li:nth-child(7n+0) {
+  border-right: 1px solid #DCDCDC;
+}
+
+.pickadate-cell li:nth-child(1),
+.pickadate-cell li:nth-child(8),
+.pickadate-cell li:nth-child(15),
+.pickadate-cell li:nth-child(22),
+.pickadate-cell li:nth-child(29),
+.pickadate-cell li:nth-child(36) {
+  border-left: 1px solid #DCDCDC;
+}
+.pickadate-cell .pickadate-disabled,.pickadate-cell .pickadate-enabled {
+  background-color: #7d6742;
+}
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #ac9557;
+}
+
+.pickadate-cell .pickadate-enabled {
+  cursor: pointer;
+  font-size: 12px;
+  color: #fff;
+}
+
+
+.pickadate-cell .pickadate-active {
+  background-color: #fff;
+}
+
+.pickadate-cell .pickadate-active {
+  color: #000;
+}
+
+.pickadate-cell .pickadate-head {
+  color:#fffefe;
+  text-transform: uppercase;
+  border-top: 0px ;
+  border-left: 0px !important;
+  border-right: 0px !important;
+}
+
+
+
+.pickadate-centered-heading {
+  text-transform: uppercase;
+  color:#fffefe;
+  font-weight: normal;
+  text-align: center;
+  font-size: 1em;
+  margin: 13px 0 13px 0;
+}
+
+.pickadate-controls {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+}
+
+.pickadate-controls .pickadate-next {
+  float: right;
+}
+
+.pickadate-controls a {
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+/* ------------------date -picker ends here-------------------------- */
+
+.upgrades-label{
+    
+    font-size: 11px !important;
+    font-weight: 600 !important;
 }
