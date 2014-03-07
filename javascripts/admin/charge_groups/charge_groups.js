@@ -22,7 +22,7 @@ var HotelChargeGroupsView = function(domRef){
   //refreshing view with new data and showing message
   this.fetchCompletedOfSave = function(data, requestParams){
   	
-  	var url = "/admin/charge_groups";
+  	var url = "/admin/charge_groups/";
    	viewParams = {};
   	sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
     sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);		
@@ -60,12 +60,13 @@ var HotelChargeGroupsView = function(domRef){
 	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfDelete,
+			   failureCallBack: that.fetchFailedOfDelete,
 			   loader:"BLOCKER",
 			   successCallBackParameters: {"selectedId": selectedId}
 	};
 	webservice.deleteJSON(url, options);
   };
-   //to remove deleted row and show message
+  // Success response of deletion
   this.fetchCompletedOfDelete = function(data, successParams){
 	  
 	  var url = "/admin/charge_groups";
@@ -73,5 +74,10 @@ var HotelChargeGroupsView = function(domRef){
   	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
       sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);		
      
+  };
+  // Failure response of deletion
+  this.fetchFailedOfDelete = function(errorMessage){
+  	  sntapp.notification.showErrorMessage(errorMessage, that.myDom);
+
   };
 };
