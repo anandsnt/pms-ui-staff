@@ -2402,25 +2402,19 @@
 						#border-radius > .rounded();
 						.box-shadow();
 
-						figure {
-							background: #fff;
+						.signature-image {
+							background-color: #fff;
 							text-align: center;
 							overflow: hidden;
+							background-position: center center;
+							background-repeat: no-repeat;
+							-webkit-background-size: contain;
+							-moz-background-size: contain;
+							-o-background-size: contain;
+							background-size: contain;
+							#border-radius > .rounded();
 							.size(200px, 100%);
 							.show;
-
-							img { 
-								max-width: 100%;
-								max-height: 100%;
-							}
-
-							&.signature-zest {
-								img { height: 100%; }
-							}
-
-							&.signature-rover {
-								img { height: auto; }
-							}
 						}
 					}
 				}
