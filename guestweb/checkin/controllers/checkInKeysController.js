@@ -6,7 +6,7 @@
   		//set up flags related to webservice
 
 		$scope.isPosting     = true;
-		$scope.netWorkError  = false;
+		$rootScope.netWorkError  = false;
 		$scope.responseData  = [];
 
 
