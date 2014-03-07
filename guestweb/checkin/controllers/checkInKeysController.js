@@ -24,9 +24,14 @@
 
 		baseWebService.post(url,data).then(function(response) {
 
+					if(response.status === "failure")
+						$rootScope.netWorkError  = true;
+
 					 $scope.isPosting = false;
-					 $scope.responseData =response;
-					 console.log(response)
+					 $scope.responseData =response.data;
+					 console.log(response);
+					 console.log("hi"+$scope.responseData.room_no);
+					  console.log("hi"+$scope.responseData.key_info);
 
 				});
 

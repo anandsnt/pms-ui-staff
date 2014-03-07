@@ -13,8 +13,9 @@
 			}
 			else
 				$location.path('/checkinKeys');
-		}
+		
 			}
+		}
 
 
 

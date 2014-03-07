@@ -21,6 +21,8 @@
 
             $scope.isFetching     = false;
             $scope.slides = response.data;
+
+
        });
 
        // watch for any change
@@ -34,12 +36,12 @@
 
       // upgrade button clicked
 
-      $scope.upgradeClicked = function(upgradeID){
+      $scope.upgradeClicked = function(upgradeID,roomNumber){
 
       
        $scope.isFetching          = true;
 
-       var data = {'reservation_id':$rootScope.reservationID,'upsell_amount_id':upgradeID};
+       var data = {'reservation_id':$rootScope.reservationID,'upsell_amount_id':upgradeID,'room_no':roomNumber};
 
        checkinRoomUpgradeService.post(data).then(function(response) {
 
