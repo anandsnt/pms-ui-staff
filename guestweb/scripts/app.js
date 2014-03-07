@@ -4,7 +4,8 @@ var snt = angular.module('snt',['ngRoute','ui.bootstrap','pickadate']);
 snt.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/', {
 		templateUrl: '/assets/landing/landing.html',
-		controller: 'checkOutLandingController'
+		controller: 'checkOutLandingController',
+		title: 'Checkout'
 	});
 
 
@@ -12,66 +13,78 @@ snt.config(['$routeProvider', function($routeProvider) {
 
 	$routeProvider.when('/checkoutBalance', {
 		templateUrl: '/assets/checkoutnow/partials/checkoutBalance.html',
-		controller: 'checkOutBalanceController'
+		controller: 'checkOutBalanceController',
+		title: 'Balance - Checkout Now'
 	});
 
 	$routeProvider.when('/checkOutNow', {
 		templateUrl: '/assets/checkoutnow/partials/checkoutConfirmation.html',
-		controller: 'checkOutConfirmationController'
+		controller: 'checkOutConfirmationController',
+		title: 'Confirm - Checkout Now'
 	});
 
 	$routeProvider.when('/checkOutNowSuccess', {
 		templateUrl: '/assets/checkoutnow/partials/checkOutStatus.html',
-		controller: 'checkOutStatusController'
+		controller: 'checkOutStatusController',
+		title: 'Success - Checkout Now'
 	});
 
 	//checkout later routings
 
 	$routeProvider.when('/checkOutLater', {
 		templateUrl: '/assets/checkoutlater/partials/checkOutLater.html',
-		controller: 'checkOutLaterController'
+		controller: 'checkOutLaterController',
+		title: 'Checkout Later'
 	});
 
 	$routeProvider.when('/checkOutLaterSuccess/:id', {
 		templateUrl: '/assets/checkoutlater/partials/checkOutLaterSuccess.html',
-		controller: 'checkOutLaterSuccessController'
+		controller: 'checkOutLaterSuccessController',
+		title: 'Success - Checkout Later'
 	})
 
 
 	// error routings 
 
 	$routeProvider.when('/authFailed', {
-		templateUrl: '/assets/shared/authenticationFailedView.html'
+		templateUrl: '/assets/shared/authenticationFailedView.html',
+		title: 'Login Failed'
 	});
 	$routeProvider.when('/serverError', {
 		templateUrl: '/assets/shared/serverErrorView.html',
+		title: 'Server Unreachable'
 	});
 
 	//check in routings
 
 	$routeProvider.when('/checkinConfirmation', {
 		templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
-		controller : 'checkInConfirmationViewController'
+		controller : 'checkInConfirmationViewController',
+		title: 'Check In'
 	});
 
 	$routeProvider.when('/checkinDatePicker', {
 		templateUrl: '/assets/checkin/partials/checkinDatePicker.html',
-		controller : 'checkinDatePickerController'
+		controller : 'checkinDatePickerController',
+		title: 'Pick Date - Check In'
 	});
 
 	$routeProvider.when('/checkinKeys', {
 		templateUrl: '/assets/checkin/partials/checkInKeys.html',
-		controller : 'checkInKeysController'
+		controller : 'checkInKeysController',
+		title: 'Keys - Check In'
 	});
 
 	$routeProvider.when('/checkinReservationDetails', {
 		templateUrl: '/assets/checkin/partials/checkInReservationDetails.html',
-		controller : 'checkInReservationDetails'
+		controller : 'checkInReservationDetails',
+		title: 'Details - Check In'
 	});
 
 	$routeProvider.when('/checkinUpgrade', {
 		templateUrl: '/assets/checkin/partials/checkinUpgradeRoom.html',
-	    controller : 'checkinUpgradeRoomContorller'
+	    controller : 'checkinUpgradeRoomContorller',
+	    title: 'Upgrade - Check In'
 	});
 
 	$routeProvider.otherwise({
@@ -179,20 +192,23 @@ snt.config(function ($httpProvider) {
 // 	$httpProvider.interceptors.push('authInterceptor');
 // });
 
-snt.run(function($rootScope,$location,$http){
-    $rootScope.$on("$locationChangeStart", function(event, next, current) {
-    
-     if(next === current){
+snt.run(function($rootScope, $location, $http){
 
-		if($rootScope.isCheckin && !$rootScope.isCheckedout)
-			$location.path('/checkinConfirmation');
-     	 else if (!$rootScope.isLateCheckoutAvailable) 
-		    $location.path('/checkOutNow')
-		else
-			$location.path('/')
-	}
- 
-});
+	$rootScope.$on("$routeChangeSuccess", function(event, currentRoute, previousRoute){
+		//Change page title, based on Route information
+		$rootScope.title = currentRoute.title;
+	});
+
+    $rootScope.$on("$locationChangeStart", function(event, next, current) {
+		if(next === current) {
+			if($rootScope.isCheckin && !$rootScope.isCheckedout)
+				$location.path('/checkinConfirmation');
+				 else if (!$rootScope.isLateCheckoutAvailable) 
+			    $location.path('/checkOutNow')
+			else
+				$location.path('/')
+		}
+	});
 });
 
 

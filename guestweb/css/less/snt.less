@@ -2,48 +2,48 @@
 /* 300 ***/
 @font-face {
 font-family: 'Source Sans Pro';
-src: url(/assets/sourcesanspro-light-webfont-66f1ca6e32a82e2cd9471b2d17100ce8.eot);
-src: url(/assets/sourcesanspro-light-webfont.eot?#iefix) format('embedded-opentype'), url(/assets/sourcesanspro-light-webfont-b4fecc0565ba747e3094bf7f0232b47e.woff) format('woff'), url(/assets/sourcesanspro-light-webfont-c94f98b39249e251c8fce44bbdd77373.ttf) format('truetype');
+src: asset-url('sourcesanspro-light-webfont.eot');
+src: asset-url('sourcesanspro-light-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-light-webfont.woff') format('woff'), asset-url('sourcesanspro-light-webfont.ttf') format('truetype');
 font-weight: 300;
 font-style: normal;
 }
 /*300 ***/
 @font-face {
 font-family: 'Source Sans Pro Light Italic';
-src: url(/assets/source-sans-pro.light-italic.eot);
-src: url(/assets/source-sans-pro.light-italic.eot?#iefix) format('embedded-opentype'), url(/assets/source-sans-pro.light-italic.woff) format('woff'), url(/assets/ssource-sans-pro.light-italic.ttf) format('truetype');
+src: asset-url('source-sans-pro.light-italic.eot');
+src: asset-url('source-sans-pro.light-italic.eot?#iefix') format('embedded-opentype'), asset-url('source-sans-pro.light-italic.woff') format('woff'), asset-url('ssource-sans-pro.light-italic.ttf') format('truetype');
 font-weight: 300;
 font-style: italic;
 }
 /* 400 ***/
 @font-face {
 font-family: 'Source Sans Pro';
-src: url(/assets/sourcesanspro-regular-webfont-e2c474f68b9b063f7fb6791f2943db72.eot);
-src: url(/assets/sourcesanspro-regular-webfont.eot?#iefix) format('embedded-opentype'), url(/assets/sourcesanspro-regular-webfont-c499c77f003f1ceae671feb62790316f.woff) format('woff'), url(/assets/sourcesanspro-regular-webfont-7096969a9b888b85706c317e6ee6f2ea.ttf) format('truetype');
+src: asset-url('sourcesanspro-regular-webfont.eot');
+src: asset-url('sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-regular-webfont.woff') format('woff'), asset-url('sourcesanspro-regular-webfont.ttf') format('truetype');
 font-weight: 400;
 font-style: normal;
 }
 /* 400 italic ***/
 @font-face {
 font-family: 'Source Sans Pro';
-src: url(/assets/sourcesanspro-italic-webfont-480442979f0ed884982421051c9b3df9.eot);
-src: url(/assets/sourcesanspro-italic-webfont.eot?#iefix) format('embedded-opentype'), url(/assets/sourcesanspro-italic-webfont-d15036804a9997981f744b9e74a888b3.woff) format('woff'), url(/assets/sourcesanspro-italic-webfont-3960d5f9eb8b438c15c8767860897938.ttf) format('truetype');
+src: asset-url('sourcesanspro-italic-webfont.eot');
+src: asset-url('sourcesanspro-italic-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-italic-webfont.woff') format('woff'), asset-url('sourcesanspro-italic-webfont.ttf') format('truetype');
 font-weight: 400;
 font-style: italic;
 }
 /* 600 ***/
 @font-face {
 font-family: 'Source Sans Pro';
-src: url(/assets/sourcesanspro-semibold-webfont-5d1497db62d5060b3489a48489d75e76.eot);
-src: url(/assets/sourcesanspro-semibold-webfont.eot?#iefix) format('embedded-opentype'), url(/assets/sourcesanspro-semibold-webfont-c1c5e0396bc8c606744a27fe23d0617a.woff) format('woff'), url(/assets/sourcesanspro-semibold-webfont-ee8e6cb639a8e54b091514ec0d2ef01f.ttf) format('truetype');
+src: asset-url('sourcesanspro-semibold-webfont.eot');
+src: asset-url('sourcesanspro-semibold-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-semibold-webfont.woff') format('woff'), asset-url('sourcesanspro-semibold-webfont.ttf') format('truetype');
 font-weight: 600;
 font-style: normal;
 }
 /* 700 ***/
 @font-face {
 font-family: 'Source Sans Pro';
-src: url(/assets/sourcesanspro-bold-webfont-6f1842719a0689525970ca9d5712ce09.eot);
-src: url(/assets/sourcesanspro-bold-webfont.eot?#iefix) format('embedded-opentype'), url(/assets/sourcesanspro-bold-webfont-fa43de1d07623845957114b7560f3fd4.woff) format('woff'), url(/assets/sourcesanspro-bold-webfont-4abba48777092a54f103819ab5f996b6.ttf) format('truetype');
+src: asset-url('sourcesanspro-bold-webfont.eot');
+src: asset-url('sourcesanspro-bold-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-bold-webfont.woff') format('woff'), asset-url('sourcesanspro-bold-webfont.ttf') format('truetype');
 font-weight: 700;
 font-style: normal;
 }
@@ -1163,6 +1163,10 @@ padding:5px 8px 2px 0;
 /* ----------------------- execusive styling for desktops and tablets portrait mode -------------------*/
 .bill-hotel-logo {
 	display: none;
+}
+
+body > div[ng-view] {
+  padding-bottom: 50px;
 }
 
 @media (min-width: 992px) {
