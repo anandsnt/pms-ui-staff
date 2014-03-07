@@ -591,9 +591,9 @@ $(function($){
             var imageWidth = testImage.naturalWidth;
 
             // Rover 
-            if (imageWidth == 2000) {
+            if (imageWidth > 1300) {
                 $($target + ' figure').addClass('signature-rover');
-                if (imageHeight == 400) { $($target + ' figure').addClass('larger'); }
+                if (imageHeight > 200) { $($target + ' figure').addClass('larger'); }
             // Zest
             } else {
                 $($target + ' figure').addClass('signature-zest');
