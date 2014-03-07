@@ -1,11 +1,8 @@
-sntRover.controller('billcardController',['$scope', function($scope){
-	
-	$scope.status = true;
-	$scope.status1 = false;
-	
+sntRover.controller('billcardController',['$scope','$location','$state', function($scope,$location,$state){
+	//$scope.$state = $state;
 	$scope.toggleBills = function(index){
 		$scope.selectedIndex = index;
-		console.log("toggleBills"+index);
+			 
 	}
 	
 	$scope.header_data = {
@@ -50,7 +47,7 @@ sntRover.controller('billcardController',['$scope', function($scope){
 	            "guest_or_company_name" :"Ryan Southerland",
 	            "days": [
 	                {
-	                    "date": "2013-03-12",
+	                    "date": "2013-03-1211111",
 	                    "amount": "149",
 	                    "rate_name": "Best Available Rate",
 	                    "rate_description": "This is the best rate for the season",
@@ -199,7 +196,7 @@ sntRover.controller('billcardController',['$scope', function($scope){
 	                {
 	                    "date": "2013-03-12",
 	                    "amount": "149",
-	                    "rate_name": "Best Available Rate",
+	                    "rate_name": "Best Available Rate2",
 	                    "rate_description": "This is the best rate for the season",
 	                    "room_type_name": "Superior Double King Deluxe",
 	                    "room_type_description": ""
@@ -330,5 +327,9 @@ sntRover.controller('billcardController',['$scope', function($scope){
 	        }
 	        
 	        ]
+		};
+		// Initially loading first bill
+		if ($scope.data.bills[0]) {
+				$location.path( '/staff/staycard/billcard/' + $scope.data.bills[0].bill_number );
 		};
 }]);

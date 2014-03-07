@@ -53,7 +53,13 @@ sntRover.config([
 			templateUrl: 'partials/billcard.html',
             controller: 'billcardController'
         });
-       
+        
+       	$stateProvider.state('rover.staycard.billcard.details', {
+			url: '/:billNo',
+			templateUrl : "partials/bill_details.html",
+			controller	: 'billDetailsController'
+        });
+        
 		// may be replaced with ng-include?
 	    /*$stateProvider.state('rover.staycard.billcard.all', {
         	url: '',

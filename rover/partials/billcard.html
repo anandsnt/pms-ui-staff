@@ -55,8 +55,8 @@
 						<!-- Billing instructions -->
 						<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
 
-							<li ng-repeat= "bills in data.bills" class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="bill1" aria-labelledby="ui-id-12" aria-selected="false">
-								<a ng-click="toggleBills($index)" class="ui-tabs-anchor" role="presentation" tabindex="-1">
+							<li ng-repeat= "bills in data.bills" ng-click="toggleBills($index)" ng-class="{ active:  $state.includes('rover.staycard.billcard.details', { billNo : bills.bill_number })}" class="ui-state-default ui-corner-top" >
+								<a ui-sref="rover.staycard.billcard.details({ billNo : bills.bill_number })" class="ui-tabs-anchor" role="presentation" tabindex="-1">
 									<div class="price">
 										<span>Bill #{{bills.bill_number}}</span>
 										$ {{bills.total_amount}}
@@ -71,7 +71,7 @@
 						</ul>
 					</div>
 						
-					<div ui-view="billDetails"> </div>
+					<div ui-view> </div>
 					
 				</div>
 			</div>
