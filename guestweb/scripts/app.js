@@ -194,9 +194,9 @@ snt.config(function ($httpProvider) {
 
 snt.run(function($rootScope, $location, $http){
 
-	$rootScope.$on("$routeChangeSuccess", function(currentRoute, previousRoute){
+	$rootScope.$on("$routeChangeSuccess", function(event, currentRoute, previousRoute){
 		//Change page title, based on Route information
-		$rootScope.title = $route.current.title;
+		$rootScope.title = currentRoute.title;
 	});
 
     $rootScope.$on("$locationChangeStart", function(event, next, current) {
