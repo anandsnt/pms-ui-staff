@@ -2,6 +2,26 @@
 (function() {
 	var checkOutStatusController = function($scope, baseWebService,$rootScope) {
 
+	
+		$scope.pageSuccess = true;
+
+		if($rootScope.isCheckedin){
+			$scope.pageSuccess = false;
+			$location.path('/checkinSuccess');
+		}
+		else if($rootScope.isCheckin){
+			$scope.pageSuccess = false;
+			$location.path('/checkinConfirmation');
+		}
+		else if($rootScope.isCheckedout){
+			$scope.pageSuccess = false;
+			$location.path('/checkOutNowSuccess');
+
+		}
+
+
+		if($scope.pageSuccess){
+
 		$scope.finalMessage = "Thank You for staying with us!";
 		$scope.errorMessage = "";
 
@@ -40,6 +60,8 @@
     	$scope.errorMessage = response.errors[0];
     });
     
+}
+
 }
 };
 

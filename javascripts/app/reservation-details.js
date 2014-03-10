@@ -1,9 +1,9 @@
 var reservationDetailsView = function(domRef) {
 	BaseView.call(this);
-	
+	var that = this;
 	this.myDom = domRef;
 	this.reservation_id = getReservationId();
-	var that = this;
+	
 	this.pageinit = function() {
 		that.updateTimelineIcon();
 	};
@@ -111,11 +111,11 @@ var reservationDetailsView = function(domRef) {
 	};
 	this.setWakeUpCallModal = function(e) {
 		if ($(e.target).hasClass("feature-available")) {
-
 			var setWakeUpCallModal = new SetWakeUpCallModal();
 			setWakeUpCallModal.params = {
 				"reservation_id" : that.reservation_id
 			};
+			setWakeUpCallModal.backDom = that.myDom;
 			setWakeUpCallModal.type = "POST";
 			setWakeUpCallModal.initialize();
 		} else {

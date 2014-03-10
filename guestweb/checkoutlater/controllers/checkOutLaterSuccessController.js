@@ -2,14 +2,28 @@
 
 	var checkOutLaterSuccessController = function($scope, $http, $q, $routeParams, $location, $rootScope, LateCheckOutChargesService) {
 		
-		//if chekout is already done
-		
- 		if ($rootScope.isCheckedout) 
-	    	$location.path('/checkOutNowSuccess');
+		$scope.pageSuccess = true;
 
-		// if checkout later in unavailable
-		else if (!$rootScope.isLateCheckoutAvailable) 
-		 $location.path('/checkOutNow');
+		if($rootScope.isCheckedin){
+			$scope.pageSuccess = false;
+			$location.path('/checkinSuccess');
+		}
+		else if($rootScope.isCheckin){
+			$scope.pageSuccess = false;
+			$location.path('/checkinConfirmation');
+		}
+		else if($rootScope.isCheckedout){
+			$scope.pageSuccess = false;
+			$location.path('/checkOutNowSuccess');
+		}
+		else if(!$rootScope.isLateCheckoutAvailable){
+			$scope.pageSuccess = false;
+			$location.path('/checkOutNow');
+		}
+
+
+
+	if($scope.pageSuccess){
 		
 		var charges = LateCheckOutChargesService.charges;
 		var id = $routeParams.id;
@@ -61,9 +75,16 @@
 			var data = {reservation_id: reservation_id, late_checkout_offer_id: $scope.id};
 			$http.post(url, data).success(function(response){
 				deferred.resolve(response);
+				console.log(response.status)
 			}).error(function(){
-				deferred.reject();
-				$rootScope.netWorkError = true;
+			
+			// prevent further late chekout later options 
+
+			if(response.status != "failure")
+				$rootScope.isLateCheckoutAvailable = false;
+
+			deferred.reject();
+			
 			});
 				
 			return deferred.promise;
@@ -77,6 +98,7 @@
 
 
 		});
+	}
 		
 	};
 
