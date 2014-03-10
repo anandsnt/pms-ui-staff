@@ -57,6 +57,7 @@
     	if($scope.success)
     		$rootScope.isCheckedout = $scope.isCheckoutCompleted = true;
     	
+    	
     	$scope.errorMessage = response.errors[0];
     });
     
