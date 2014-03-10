@@ -74,16 +74,16 @@
 			var url = '/guest_web/apply_late_checkout';
 			var data = {reservation_id: reservation_id, late_checkout_offer_id: $scope.id};
 			$http.post(url, data).success(function(response){
+
+				// prevent further late chekout later options 
+
+			if(response.status != "failure")
+				$rootScope.isLateCheckoutAvailable = false;
 				deferred.resolve(response);
 				console.log(response.status)
 			}).error(function(){
 			
-			// prevent further late chekout later options 
-
-			if(response.status != "failure")
-				$rootScope.isLateCheckoutAvailable = false;
-
-			deferred.reject();
+				deferred.reject();
 			
 			});
 				
