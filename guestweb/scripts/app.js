@@ -26,7 +26,7 @@ snt.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/checkOutNowSuccess', {
 		templateUrl: '/assets/checkoutnow/partials/checkOutStatus.html',
 		controller: 'checkOutStatusController',
-		title: 'Success - Checkout Now'
+		title: 'Status - Checkout Now'
 	});
 
 	//checkout later routings
@@ -40,7 +40,7 @@ snt.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/checkOutLaterSuccess/:id', {
 		templateUrl: '/assets/checkoutlater/partials/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
-		title: 'Success - Checkout Later'
+		title: 'Status - Checkout Later'
 	})
 
 
@@ -89,7 +89,7 @@ snt.config(['$routeProvider', function($routeProvider) {
 
 	$routeProvider.when('/checkinSuccess', {
 		templateUrl: '/assets/checkin/partials/checkinSuccess.html',
-	    title: 'Success - Check In'
+	    title: 'Status - Check In'
 	});
 	
 
