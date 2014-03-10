@@ -5,9 +5,52 @@ var UpsellLateCheckoutView = function(domRef){
 
   this.pageinit = function(){
   };
+  this.pageshow = function(){
+  	 if(that.myDom.find('#checkout-time-extended-to-1').val()=="" || that.myDom.find('#charge-for-checkout-1').val()==""){
+  	 	that.myDom.find('#checkout-time-extended-to-2').attr("disabled", true);
+  	 	that.myDom.find('#charge-for-checkout-2').attr("readonly", "readonly");
+  	 } 
+  	 if(that.myDom.find('#checkout-time-extended-to-2').val()=="" || that.myDom.find('#charge-for-checkout-2').val()==""){
+  	 	that.myDom.find('#checkout-time-extended-to-3').attr("disabled", true);
+  	 	that.myDom.find('#charge-for-checkout-3').attr("readonly", "readonly");
+  	 }
+  	 
+  };
    this.delegateEvents = function(){
 	   that.myDom.find('#save').on('click', that.saveHotelDetails);
 	   that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView);
+	   that.myDom.find('#checkout-time-extended-to-1').on('change', that.changeSecondLevel);
+	   that.myDom.find('#charge-for-checkout-1').on('change keydown', that.changeSecondLevel);
+	   that.myDom.find('#checkout-time-extended-to-2').on('change', that.changeThirdLevel);
+	   that.myDom.find('#charge-for-checkout-2').on('change keydown', that.changeThirdLevel);
+  };
+  this.changeSecondLevel = function(){
+  	 setTimeout(function(){
+	  	if(that.myDom.find('#checkout-time-extended-to-1').val()!="" && that.myDom.find('#charge-for-checkout-1').val()!=""){
+		   	that.myDom.find('#checkout-time-extended-to-2').attr("disabled", false);
+	  	 	that.myDom.find('#charge-for-checkout-2').removeAttr("readonly", "");	
+		} else {
+			that.myDom.find('#checkout-time-extended-to-2').attr("disabled", true);
+	  	 	that.myDom.find('#charge-for-checkout-2').attr("readonly", "readonly");
+	  	 	that.myDom.find('#checkout-time-extended-to-2').val("");
+	  	 	that.myDom.find('#charge-for-checkout-2').val("");
+	  	 	that.myDom.find('#checkout-time-extended-to-3').attr("disabled", true);
+	  	 	that.myDom.find('#charge-for-checkout-3').attr("readonly", "readonly");
+	  	 	that.myDom.find('#checkout-time-extended-to-3').val("");
+	  	 	that.myDom.find('#charge-for-checkout-3').val("");
+		}},400);
+  };
+  this.changeThirdLevel = function(){
+  	 setTimeout(function(){
+	  	if(that.myDom.find('#checkout-time-extended-to-2').val()!="" && that.myDom.find('#charge-for-checkout-2').val()!=""){
+		   	that.myDom.find('#checkout-time-extended-to-3').attr("disabled", false);
+	  	 	that.myDom.find('#charge-for-checkout-3').removeAttr("readonly", "");	
+		} else {
+			that.myDom.find('#checkout-time-extended-to-3').attr("disabled", true);
+	  	 	that.myDom.find('#charge-for-checkout-3').attr("readonly", "readonly");
+	  	 	that.myDom.find('#checkout-time-extended-to-3').val("");
+	  	 	that.myDom.find('#charge-for-checkout-3').val("");
+		}},400);
   };
   this.goBackToPreviousView = function() {
   	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
@@ -21,15 +64,44 @@ var UpsellLateCheckoutView = function(domRef){
 	  var is_late_checkout_set = "false", is_exclude_guests = "false";
 	  var allowed_late_checkout = "", sent_alert = "", currency_code = "";
 	  var charge_code = that.myDom.find('#charge-code').val();
-	  $("select[name='checkout-time-extended-to']").each(function(){
-		  hour = $("#checkout-time-extended-to-" + i).val();
+	  // $("select[name='checkout-time-extended-to']").each(function(){
+		  // hour = $("#checkout-time-extended-to-" + i).val();
+		  // primetime = "PM";
+		  // time = hour+" "+primetime;
+		  // charge = $("#charge-for-checkout-" + i).val();
+		  // if(time!="" && charge!=""){
+		  	// dict = {'time': time, 'charge': charge};
+		  // }
+// 		  	
+		  // extended_checkout.push(dict);
+		  // i = i + 1;
+	  // });
+	  	  hour = $("#checkout-time-extended-to-1").val();
 		  primetime = "PM";
 		  time = hour+" "+primetime;
-		  charge = $("#charge-for-checkout-" + i).val();
-		  dict = {'time': time, 'charge': charge};
-		  extended_checkout.push(dict);
-		  i = i + 1;
-	  });
+		  charge = $("#charge-for-checkout-1").val();
+		  if(hour!="" || charge!=""){
+		  	dict = {'time': time, 'charge': charge};
+		  	extended_checkout.push(dict);
+		  }
+		   hour = $("#checkout-time-extended-to-2").val();
+		  primetime = "PM";
+		  time = hour+" "+primetime;
+		  charge = $("#charge-for-checkout-2").val();
+		  if(hour!="" || charge!=""){
+		  	dict = {'time': time, 'charge': charge};
+		  	extended_checkout.push(dict);
+		  }
+		   hour = $("#checkout-time-extended-to-3").val();
+		  primetime = "PM";
+		  time = hour+" "+primetime;
+		  charge = $("#charge-for-checkout-3").val();
+		  if(hour!="" || charge!=""){
+		  	dict = {'time': time, 'charge': charge};
+		  	extended_checkout.push(dict);
+		  }
+		  	
+		  
 	  if($("#div-late-checkout-upsell").hasClass("on")) {
 		  is_late_checkout_set = "true";
 	  }

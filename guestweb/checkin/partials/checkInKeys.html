@@ -11,14 +11,15 @@
 
 		<!--- show posting message   -->
 		<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-		Your request is being processed, this may take a few seconds..... please wait!
+			<p class="msg-head">Your request is being processed.</p>
+			<p class="msg-body">This may take a few seconds..... please wait!</p>
 		</div>
 
 		<!-- show error message -->
 
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-		<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check in at our front desk.</div>
-		<div>You can also call the hotel at {{hotelPhone}}.</div>
+			<p class="msg-head">Our apologies, something went wrong, please complete your check in at our front desk.</p>
+			<p class="msg-body">You can also call the hotel at {{hotelPhone}}.</p>
 		</div>
 
 		
@@ -49,7 +50,7 @@
 						</div>
 					</div>
 					<div class="reservation-id centeralign">
-					<span class="normal-reservation">Reservation #: 324242</span>
+					<span class="normal-reservation">Reservation #: {{reservationData.reservation_id}}</span>
 				</div>
 
 				</div>
@@ -57,7 +58,8 @@
 					<div class="col-md-6 ">
 
 						<div class="centeralign qr-code-image">
-							<img  src="{{responseData.key_info}}" width="180" height="180" alt=""/>
+							<img src="data:image/png;base64, {{image|| responseData.key_info}}"
+							 width="180" height="180" alt="">
 							<div class="qr-code-info">
 								1. Scan the QR code at kiosk located in the lobby.
 								<br />

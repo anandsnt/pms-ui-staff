@@ -1,16 +1,38 @@
 
 (function() {
-	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$location,checinConfirmationService) {
+	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$location,checkinConfirmationService,checkinDetailsService) {
+
+		$scope.pageSuccess = true;
+
+		if($rootScope.isCheckedin){
+
+			$scope.pageSuccess = false;
+			$location.path('/checkinSuccess');
+		}
+		else if($rootScope.isCheckedout){
+
+			$scope.pageSuccess = false;
+			$location.path('/checkOutNowSuccess');
+		}
+		else if(!$rootScope.isCheckin){
+
+			$scope.pageSuccess = false;
+			$location.path('/');
+		}
 
  		//setup options for modal
 
-		$scope.opts = {
-			backdrop: true,
-			backdropClick: true,
-			templateUrl: '/assets/checkin/partials/errorModal.html',
-			controller: ModalInstanceCtrl,
+ 		$scope.opts = {
+ 			backdrop: true,
+ 			backdropClick: true,
+ 			templateUrl: '/assets/checkin/partials/errorModal.html',
+ 			controller: ModalInstanceCtrl,
 
-		};
+ 		};
+
+
+
+ 		if($scope.pageSuccess){
 
 		//set up flags related to webservice
 
@@ -37,12 +59,12 @@
 
 		//call service
 
-			checinConfirmationService.login(data).then(function(response) {
+		checkinConfirmationService.login(data).then(function(response) {
 
-				$scope.isPosting 		 = false;
+			$scope.isPosting 		 = false;
 
 
-				if(response.status === 'failure')
+			if(response.status === 'failure')
 					$modal.open($scope.opts); // error modal popup
 				else{
 
@@ -50,10 +72,9 @@
 
 					$rootScope.ShowupgradedLabel = false;
 					$rootScope.roomUpgradeheading = "Your Trip details";
-					$rootScope.reservationData = response.data;
 
-
-					//to be replaced by the code below
+					checkinDetailsService.setResponseData(response.data);
+					
 					
 					$rootScope.upgradesAvailable = (response.data.is_upgrades_available === "true") ? true :  false;
 
@@ -66,7 +87,7 @@
 
 			});
 
-		};
+	};
 
 		// navigate to calendar view
 
@@ -75,23 +96,25 @@
 			$location.path('/checkinDatePicker');
 		}
 
+	}
+
 };
 
-		var dependencies = [
-		'$scope','$modal','$rootScope','$location','checinConfirmationService',
-		checkInConfirmationViewController
-		];
+var dependencies = [
+'$scope','$modal','$rootScope','$location','checkinConfirmationService','checkinDetailsService',
+checkInConfirmationViewController
+];
 
-		snt.controller('checkInConfirmationViewController', dependencies);
-		})();
+snt.controller('checkInConfirmationViewController', dependencies);
+})();
 
 
 // controller for the modal
 
-		var ModalInstanceCtrl = function ($scope, $modalInstance) {
+var ModalInstanceCtrl = function ($scope, $modalInstance) {
 
 
-			$scope.closeDialog = function () {
-				$modalInstance.dismiss('cancel');
-			};
+	$scope.closeDialog = function () {
+		$modalInstance.dismiss('cancel');
+	};
 };

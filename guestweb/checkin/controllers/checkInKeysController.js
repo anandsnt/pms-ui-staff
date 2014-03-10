@@ -1,13 +1,34 @@
 
 (function() {
-  var checkInKeysController = function($scope,$rootScope,baseWebService) {
+	var checkInKeysController = function($scope,$rootScope,baseWebService,$location) {
 
+
+		$scope.pageSuccess = true;
+
+		if($rootScope.isCheckedin){
+
+			$scope.pageSuccess = false;
+			$location.path('/checkinSuccess');
+		}
+		else if($rootScope.isCheckedout){
+
+			$scope.pageSuccess = false;
+			$location.path('/checkOutNowSuccess');
+		}
+		else if(!$rootScope.isCheckin){
+
+			$scope.pageSuccess = false;
+			$location.path('/');
+		};
+
+
+		if($scope.pageSuccess){
 
   		//set up flags related to webservice
 
-		$scope.isPosting     = true;
-		$rootScope.netWorkError  = false;
-		$scope.responseData  = [];
+  		$scope.isPosting     = true;
+  		$rootScope.netWorkError  = false;
+  		$scope.responseData  = [];
 
 
 		// watch for any change
@@ -24,22 +45,26 @@
 
 		baseWebService.post(url,data).then(function(response) {
 
-					if(response.status === "failure")
-						$rootScope.netWorkError  = true;
+			if(response.status === "failure")
+				$rootScope.netWorkError  = true;
 
-					 $scope.isPosting = false;
-					 $scope.responseData =response;
-					 console.log(response)
+			$scope.isPosting = false;
+			$scope.responseData =response.data;
+			console.log(response);
+			console.log("hi"+$scope.responseData.room_no);
+			console.log("hi"+$scope.responseData.key_info);
 
-				});
+		});
+
+	}
 
 
 };
 
-    var dependencies = [
-    '$scope','$rootScope','baseWebService',
-    checkInKeysController
-    ];
+var dependencies = [
+'$scope','$rootScope','baseWebService','$location',
+checkInKeysController
+];
 
-    snt.controller('checkInKeysController', dependencies);
-    })();
+snt.controller('checkInKeysController', dependencies);
+})();
