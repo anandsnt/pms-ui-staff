@@ -49,7 +49,6 @@ var NotificationMessage = function() {
 
 			if (msg_div.length) {
 				// Refresh all scrollers
-				//added by shahul
 				var scroller = getScrollObjectForDiv(msg_div);
 				verticalScroll[i].scrollTo(0, 0, 10);
 				//scroller.scrollToElement('#message-display-area', '0s');
