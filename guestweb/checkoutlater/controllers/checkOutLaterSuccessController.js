@@ -75,9 +75,16 @@
 			var data = {reservation_id: reservation_id, late_checkout_offer_id: $scope.id};
 			$http.post(url, data).success(function(response){
 				deferred.resolve(response);
+				console.log(response.status)
 			}).error(function(){
-				deferred.reject();
-				$rootScope.netWorkError = true;
+			
+			// prevent further late chekout later options 
+
+			if(response.status != "failure")
+				$rootScope.isLateCheckoutAvailable = false;
+
+			deferred.reject();
+			
 			});
 				
 			return deferred.promise;
