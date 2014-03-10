@@ -103,7 +103,7 @@ var SetWakeUpCallModal = function() {
 
 	this.fetchCompletedOfDeleteWakeUpCall = function(data){
 		that.hide();
-		$("#reservation_card_wake_up_time").html("Not Set");
+		that.backDom.find("#reservation_card_wake_up_time").html("Not Set");
 		sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
 	};
 	// function to delete wake up call
