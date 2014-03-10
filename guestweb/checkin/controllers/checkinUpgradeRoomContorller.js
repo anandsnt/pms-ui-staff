@@ -2,14 +2,35 @@
 (function() {
   var checkinUpgradeRoomContorller = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService) {
 
-      
-       $scope.slides = [];
+
+    $scope.pageSuccess = true;
+
+    if($rootScope.isCheckedin){
+
+      $scope.pageSuccess = false;
+      $location.path('/checkinSuccess');
+    }
+    else if($rootScope.isCheckedout){
+
+      $scope.pageSuccess = false;
+      $location.path('/checkOutNowSuccess');
+    }
+    else if(!$rootScope.isCheckin){
+
+      $scope.pageSuccess = false;
+      $location.path('/');
+    };
+    
+
+    if($scope.pageSuccess){
+
+     $scope.slides = [];
 
 
        //set up flags related to webservice
 
-      $scope.isFetching     = false;
-      $rootScope.netWorkError  = false;
+       $scope.isFetching     = false;
+       $rootScope.netWorkError  = false;
 
 
        var data = {'reservation_id':$rootScope.reservationID};
@@ -19,26 +40,26 @@
 
        checkinRoomUpgradeOptionsService.fetch(data).then(function(response) {
 
-            $scope.isFetching     = false;
-            $scope.slides = response.data;
+        $scope.isFetching     = false;
+        $scope.slides = response.data;
 
 
-       });
+      });
 
        // watch for any change
 
        $rootScope.$watch('netWorkError',function(){
 
-           if($rootScope.netWorkError)
-                 $scope.isFetching = false;
-      });
+         if($rootScope.netWorkError)
+           $scope.isFetching = false;
+       });
 
 
       // upgrade button clicked
 
       $scope.upgradeClicked = function(upgradeID,roomNumber){
 
-      
+        
        $scope.isFetching          = true;
 
        var data = {'reservation_id':$rootScope.reservationID,'upsell_amount_id':upgradeID,'room_no':roomNumber};
@@ -46,57 +67,57 @@
        checkinRoomUpgradeService.post(data).then(function(response) {
 
 
-            $scope.isFetching     = false;
+        $scope.isFetching     = false;
 
-            if(response.status === "failure")
-              $rootScope.netWorkError  = true;
-            else
-            {
-               $rootScope.upgradesAvailable = false;
-               $rootScope.ShowupgradedLabel = true;
-               $rootScope.roomUpgradeheading = "Your new Trip details";
-               $location.path('/checkinReservationDetails');
-            }
+        if(response.status === "failure")
+          $rootScope.netWorkError  = true;
+        else
+        {
+         $rootScope.upgradesAvailable = false;
+         $rootScope.ShowupgradedLabel = true;
+         $rootScope.roomUpgradeheading = "Your new Trip details";
+         $location.path('/checkinReservationDetails');
+       }
 
-      
-       });
-           
-           
-      }
+       
+     });
+       
+       
+     }
 
-      $scope.noThanksClicked = function(){
+     $scope.noThanksClicked = function(){
 
-           $location.path('/checkinKeys');
-      }
+       $location.path('/checkinKeys');
+     }
+
+   }
 
 
+ };
 
+ var dependencies = [
+ '$scope','$location','$rootScope','checkinRoomUpgradeOptionsService','checkinRoomUpgradeService',
+ checkinUpgradeRoomContorller
+ ];
 
-};
-
-    var dependencies = [
-    '$scope','$location','$rootScope','checkinRoomUpgradeOptionsService','checkinRoomUpgradeService',
-    checkinUpgradeRoomContorller
-    ];
-
-    snt.controller('checkinUpgradeRoomContorller', dependencies);
-    })();
+ snt.controller('checkinUpgradeRoomContorller', dependencies);
+})();
 
 // Setup directive to compile html
 
 snt.directive("description", function ($compile) {
-    function createList(template) {
-        templ = template;
-        return templ;
-    }
+  function createList(template) {
+    templ = template;
+    return templ;
+  }
 
-    return{
-        restrict:"E",
-        scope: {},
-        link:function (scope, element, attrs) {
-          
-            element.append(createList(attrs.template));
-            $compile(element.contents())(scope);
-        }
+  return{
+    restrict:"E",
+    scope: {},
+    link:function (scope, element, attrs) {
+      
+      element.append(createList(attrs.template));
+      $compile(element.contents())(scope);
     }
+  }
 })

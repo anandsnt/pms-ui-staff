@@ -26,7 +26,7 @@ snt.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/checkOutNowSuccess', {
 		templateUrl: '/assets/checkoutnow/partials/checkOutStatus.html',
 		controller: 'checkOutStatusController',
-		title: 'Success - Checkout Now'
+		title: 'Status - Checkout Now'
 	});
 
 	//checkout later routings
@@ -40,7 +40,7 @@ snt.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.when('/checkOutLaterSuccess/:id', {
 		templateUrl: '/assets/checkoutlater/partials/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
-		title: 'Success - Checkout Later'
+		title: 'Status - Checkout Later'
 	})
 
 
@@ -87,6 +87,12 @@ snt.config(['$routeProvider', function($routeProvider) {
 	    title: 'Upgrade - Check In'
 	});
 
+	$routeProvider.when('/checkinSuccess', {
+		templateUrl: '/assets/checkin/partials/checkinSuccess.html',
+	    title: 'Status - Check In'
+	});
+	
+
 	$routeProvider.otherwise({
 		redirectTo: '/'
 	});
@@ -127,14 +133,35 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.isCheckin     =   ($attrs.isCheckin ==='true') ? true : false;
 
 
-	console.log($attrs.isCheckin)
-	//if checkin
-	if(($attrs.isCheckin ==='true') && !$rootScope.isCheckedout)
-		$location.path('/checkinConfirmation');
 
-	//if chekout is already done
- 	if ($rootScope.isCheckedout) 
+	//to be retrieved from server
+
+	$rootScope.isCheckedin  = false;
+
+
+	/////////////////////////////////////////////
+
+
+	// console.log($attrs.isCheckin)
+	// //if checkin
+	// if(($attrs.isCheckin ==='true') && !$rootScope.isCheckedout)
+	// 	$location.path('/checkinConfirmation');
+
+	// //if chekout is already done
+ // 	if ($rootScope.isCheckedout) 
+	// 	$location.path('/checkOutNowSuccess');
+   
+
+   	if($rootScope.isCheckedin)
+		$location.path('/checkinSuccess');
+	else if($rootScope.isCheckin)
+		$location.path('/checkinConfirmation');
+	else if($rootScope.isCheckedout)
 		$location.path('/checkOutNowSuccess');
+	else if(!$rootScope.isLateCheckoutAvailable)
+		$location.path('/checkOutNow');
+
+
 
 	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
@@ -188,10 +215,6 @@ snt.config(function ($httpProvider) {
 
 
 
-// snt.config(function ($httpProvider) {
-// 	$httpProvider.interceptors.push('authInterceptor');
-// });
-
 snt.run(function($rootScope, $location, $http){
 
 	$rootScope.$on("$routeChangeSuccess", function(event, currentRoute, previousRoute){
@@ -216,12 +239,15 @@ snt.run(function($rootScope, $location, $http){
 	var checkOutLandingController = function($rootScope,$location) {
 		//if checkout is already done
 
- 	if ($rootScope.isCheckedout) 
-		$location.path('/checkOutNowSuccess')
-
-	else if (!$rootScope.isLateCheckoutAvailable) 
-			$location.path('/checkOutNow')
-	};
+  	if($rootScope.isCheckedin)
+		$location.path('/checkinSuccess');
+	else if($rootScope.isCheckin)
+		$location.path('/checkinConfirmation');
+	else if($rootScope.isCheckedout)
+		$location.path('/checkOutNowSuccess');
+	else if(!$rootScope.isLateCheckoutAvailable)
+		$location.path('/checkOutNow');
+	}
 
 
 	var dependencies = [

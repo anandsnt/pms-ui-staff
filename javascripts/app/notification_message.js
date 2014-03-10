@@ -29,6 +29,8 @@ var NotificationMessage = function() {
 	};
 	
 	var scrollToErrorArea = function(dom) {
+		console.log(dom);	
+
 		//in admin screens div scroll and in rover scroll is generated using iscroll
 		//to handle selecting current app
 		var currentApp = $("body").attr("id");
@@ -43,9 +45,14 @@ var NotificationMessage = function() {
 			};
 
 		} else {
-			if (dom.find('#notification-message').length) {
+			var msg_div = dom.find('#notification-message');
+
+			if (msg_div.length) {
 				// Refresh all scrollers
-   				refreshVerticalScroll('', '0');
+				var scroller = getScrollObjectForDiv(msg_div);
+				verticalScroll[i].scrollTo(0, 0, 10);
+				//scroller.scrollToElement('#message-display-area', '0s');
+   				//refreshVerticalScroll('', '0');
 			}
 		}
 
@@ -55,7 +62,7 @@ var NotificationMessage = function() {
 	
 		var message_element = dom.find("#notification-message");
 		message_element.removeClass('success error success_message error_message').addClass(message_class);
-		message_element.html(message);			
+		message_element.html("<div id='message-display-area'>"+message+"</div>");			
 		scrollToErrorArea(dom);			
 		dom.find("#notification-message").slideDown(duration, function() {});
 				
