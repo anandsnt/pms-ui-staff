@@ -59,15 +59,43 @@
 											<span class="center-block normal-weight">Room {{ roomNo }}</span>
 											<span class="center-block">{{ userName }} | {{ userCity }}, {{ userState }}</span>
 										</div>
-										<table class="table leftalign table-striped">
+										<table class="table leftalign">
 											<thead>
 												<tr>
 													<th>Description</th>
 													<th>Fees</th>
 												</tr>
 											</thead>
-											<tbody>
-												<tr ng-repeat= "bill in billData.fee_details">
+											<tbody ng-repeat= "bill in billData.fee_details" >
+			
+													
+														<tr>
+															<td>
+																<span class="center-block">{{ bill.date }}</span>
+															</td>
+															<td>
+															</td>
+														</tr>
+														<tr>
+															<td>
+																	<span class="center-block">{{ bill.guest_room_text }}: <span class="guest-room-description{{$index%2}}">{{bill.guest_room_description}}</span></span>
+															</td>
+															<td>
+																	<span class="center-block">{{ bill.guest_room_fees}}</span>
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<span class="center-block" ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.description }}
+															</td>
+															<td>
+																<span class="center-block"ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.amount }}</span>
+															</td>
+														</tr>
+												
+
+
+<!-- 
 													<td>
 														<span class="center-block">{{ bill.date }}</span>
 														<span class="center-block">{{ bill.guest_room_text }}: <span class="guest-room-description{{$index%2}}">{{bill.guest_room_description}}</span></span>
@@ -77,8 +105,8 @@
 														<span class="center-block"> &nbsp; </span>
 														<span class="center-block">{{ bill.guest_room_fees}}</span>
 														<span class="center-block"ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.amount }}</span>
-													</td>
-												</tr>
+													</td> -->
+												
 											</tbody>
 											<tfoot>
 												<tr class="total">
