@@ -1,6 +1,6 @@
 
 (function() {
-	var checkOutStatusController = function($scope, baseWebService,$rootScope) {
+	var checkOutStatusController = function($scope, baseWebService,$rootScope,$location) {
 
 	
 		$scope.pageSuccess = true;
@@ -67,7 +67,7 @@
 
 var dependencies = [
 '$scope',
-'baseWebService','$rootScope',
+'baseWebService','$rootScope','$location',
 checkOutStatusController
 ];
 
