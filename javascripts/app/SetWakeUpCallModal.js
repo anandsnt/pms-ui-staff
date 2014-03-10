@@ -21,7 +21,7 @@ var SetWakeUpCallModal = function() {
 
 	this.fetchCompletedOfSetWakeUpCall = function(data, requestParameters){
 		that.hide();
-		$("#reservation_card_wake_up_time").html(requestParameters['wakeUpTime']);
+		that.backDom.find("#reservation_card_wake_up_time").html(requestParameters['wakeUpTime']);
 	};
 	this.fetchFailedOfSave = function(errorMessage){
 	 	sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
@@ -49,7 +49,7 @@ var SetWakeUpCallModal = function() {
 	    		requestParameters: data,
 				successCallBack: that.fetchCompletedOfSetWakeUpCall,
 				failureCallBack: that.fetchFailedOfSave,
-				successCallBackParameters: {'wakeUpTime': wakeUpTime},
+				successCallBackParameters: {'wakeUpTime': wakeUpTime},				
 				loader : "BLOCKER"
 		};
 	    webservice.postJSON(url, options);
