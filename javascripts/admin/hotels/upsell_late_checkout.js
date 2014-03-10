@@ -80,7 +80,7 @@ var UpsellLateCheckoutView = function(domRef){
 		  primetime = "PM";
 		  time = hour+" "+primetime;
 		  charge = $("#charge-for-checkout-1").val();
-		  if(time!="" || charge!=""){
+		  if(hour!="" || charge!=""){
 		  	dict = {'time': time, 'charge': charge};
 		  	extended_checkout.push(dict);
 		  }
@@ -88,7 +88,7 @@ var UpsellLateCheckoutView = function(domRef){
 		  primetime = "PM";
 		  time = hour+" "+primetime;
 		  charge = $("#charge-for-checkout-2").val();
-		  if(time!="" || charge!=""){
+		  if(hour!="" || charge!=""){
 		  	dict = {'time': time, 'charge': charge};
 		  	extended_checkout.push(dict);
 		  }
@@ -96,7 +96,7 @@ var UpsellLateCheckoutView = function(domRef){
 		  primetime = "PM";
 		  time = hour+" "+primetime;
 		  charge = $("#charge-for-checkout-3").val();
-		  if(time!="" || charge!=""){
+		  if(hour!="" || charge!=""){
 		  	dict = {'time': time, 'charge': charge};
 		  	extended_checkout.push(dict);
 		  }
