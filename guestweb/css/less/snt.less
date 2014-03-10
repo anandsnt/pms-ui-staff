@@ -418,6 +418,29 @@ color:#000000;
 }
 }
 
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+  
+    padding: 1px !important;
+    padding-left : 12px !important;
+    background-color: #fcfcfc !important;
+   
+}
+.table {
+
+    width: 95% !important;
+}
+
+.table > tbody + tbody {
+    border-top:20px solid #fff !important;
+}
+.table > thead + tbody{
+    border-top:10px solid #fff !important;
+}
+.table > tbody + tfoot{
+    border-top:20px solid #fff !important;
+}
+
+
 
 .total {
 color:#9b9b9b;
@@ -504,6 +527,10 @@ font-weight: 500 !important;
 }
 }
 
+@media screen and (min-width: 0px) and (max-width: 990px) {
+ .close-bill { display: none; }  /* hide it on small screens */
+}
+
 
 /* show bill */
 .showbill {
@@ -526,9 +553,10 @@ margin: 25px auto;
 }
 
 
-.guest-room-description0{
+.guest-room-description{
 color : #FF6600 !important;
 }
+
 
 .no-thanks{
 font-weight:normal !important;
