@@ -1,6 +1,26 @@
 (function() {
 	var checkOutBalanceController = function($scope, BillService,$rootScope,$location) {
 
+		
+		$scope.pageSuccess = true;
+
+		if($rootScope.isCheckedin){
+			$scope.pageSuccess = false;
+			$location.path('/checkinSuccess');
+		}
+		else if($rootScope.isCheckin){
+			$scope.pageSuccess = false;
+			$location.path('/checkinConfirmation');
+		}
+		else if($rootScope.isCheckedout){
+			$scope.pageSuccess = false;
+			$location.path('/checkOutNowSuccess');
+
+		}
+
+
+		if($scope.pageSuccess){
+
 		//if checkout is already done
 		
  		if ($rootScope.isCheckedout) 
@@ -42,7 +62,7 @@
 			$location.path('/serverError');
 	});
 		
-
+	}
 		
 	};
 

@@ -2,14 +2,28 @@
 
 	var checkOutLaterSuccessController = function($scope, $http, $q, $routeParams, $location, $rootScope, LateCheckOutChargesService) {
 		
-		//if chekout is already done
-		
- 		if ($rootScope.isCheckedout) 
-	    	$location.path('/checkOutNowSuccess');
+		$scope.pageSuccess = true;
 
-		// if checkout later in unavailable
-		else if (!$rootScope.isLateCheckoutAvailable) 
-		 $location.path('/checkOutNow');
+		if($rootScope.isCheckedin){
+			$scope.pageSuccess = false;
+			$location.path('/checkinSuccess');
+		}
+		else if($rootScope.isCheckin){
+			$scope.pageSuccess = false;
+			$location.path('/checkinConfirmation');
+		}
+		else if($rootScope.isCheckedout){
+			$scope.pageSuccess = false;
+			$location.path('/checkOutNowSuccess');
+		}
+		else if(!$rootScope.isLateCheckoutAvailable){
+			$scope.pageSuccess = false;
+			$location.path('/checkOutNow');
+		}
+
+
+
+	if($scope.pageSuccess){
 		
 		var charges = LateCheckOutChargesService.charges;
 		var id = $routeParams.id;
@@ -77,6 +91,7 @@
 
 
 		});
+	}
 		
 	};
 
