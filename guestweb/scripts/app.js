@@ -87,6 +87,12 @@ snt.config(['$routeProvider', function($routeProvider) {
 	    title: 'Upgrade - Check In'
 	});
 
+	$routeProvider.when('/checkinSuccess', {
+		templateUrl: '/assets/checkin/partials/checkinSuccess.html',
+	    title: 'Success - Check In'
+	});
+	
+
 	$routeProvider.otherwise({
 		redirectTo: '/'
 	});

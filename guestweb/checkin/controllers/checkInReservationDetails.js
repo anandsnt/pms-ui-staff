@@ -1,8 +1,11 @@
 
 (function() {
-	var checkInReservationDetails = function($scope,$rootScope,$location) {
+	var checkInReservationDetails = function($scope,$rootScope,$location,checkinDetailsService) {
 
 		$scope.checked = false;
+
+		$scope.reservationData = checkinDetailsService.getResponseData();
+
 		$scope.checkInButtonClicked = function(){
 
 
@@ -22,7 +25,7 @@
 };
 
 		var dependencies = [
-		'$scope','$rootScope','$location',
+		'$scope','$rootScope','$location','checkinDetailsService',
 		checkInReservationDetails
 		];
 

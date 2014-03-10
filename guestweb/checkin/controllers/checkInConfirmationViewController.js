@@ -1,6 +1,6 @@
 
 (function() {
-	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$location,checinConfirmationService) {
+	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$location,checkinConfirmationService,checkinDetailsService) {
 
  		//setup options for modal
 
@@ -37,7 +37,7 @@
 
 		//call service
 
-			checinConfirmationService.login(data).then(function(response) {
+			checkinConfirmationService.login(data).then(function(response) {
 
 				$scope.isPosting 		 = false;
 
@@ -50,10 +50,9 @@
 
 					$rootScope.ShowupgradedLabel = false;
 					$rootScope.roomUpgradeheading = "Your Trip details";
-					$rootScope.reservationData = response.data;
 
-
-					//to be replaced by the code below
+					checkinDetailsService.setResponseData(response.data);
+				
 					
 					$rootScope.upgradesAvailable = (response.data.is_upgrades_available === "true") ? true :  false;
 
@@ -78,7 +77,7 @@
 };
 
 		var dependencies = [
-		'$scope','$modal','$rootScope','$location','checinConfirmationService',
+		'$scope','$modal','$rootScope','$location','checkinConfirmationService','checkinDetailsService',
 		checkInConfirmationViewController
 		];
 
