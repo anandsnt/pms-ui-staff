@@ -79,10 +79,15 @@
 
 			if(response.status != "failure")
 				$rootScope.isLateCheckoutAvailable = false;
+			else
+				$rootScope.netWorkError = true;
+				
 				deferred.resolve(response);
-				console.log(response.status)
+				
+
 			}).error(function(){
-			
+				
+				$rootScope.netWorkError = true;
 				deferred.reject();
 			
 			});
