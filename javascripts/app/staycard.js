@@ -14,20 +14,6 @@ var StayCard = function(viewDom){
 
     // Start listening to card swipes
     this.initCardSwipe();
-
-    // DEBUG
-    // if ( $('#reservation-card').find('#current:visible').length ) {
-    //   window.trigger = that.postCardSwipData;
-    //   var swipedCardData = {
-    //     cardType: 'VA',
-    //     expiry: '1812',
-    //     cardHolderName: 'vijay',
-    //     getTokenFrom: {
-    //       'et2': 'dwadwadwadawdawd',
-    //       'ksn': 'dwa awd wadawdaw d wa'
-    //     }
-    //   }
-    // };
   };
 
   // Start listening to card swipes
@@ -114,7 +100,8 @@ var StayCard = function(viewDom){
       switch(sntapp.cardSwipeCurrView){
         // respond to StayCardView
         case 'StayCardView':
-          respondToSwipe("staycard", that.myDom, {});
+        var confirmationNum = getCurrentConfirmation();
+          respondToSwipe("staycard", $("#reservation-"+confirmationNum), {});
           break;
 
         //respond to GuestBillView
@@ -124,12 +111,11 @@ var StayCard = function(viewDom){
           var domElement = $("#bill" + regCardView.getActiveBillNumber());
           var params = { "bill_number" : regCardView.getActiveBillNumber(), "origin":views.BILLCARD};
           respondToSwipe(views.BILLCARD, domElement, params);
-
           break;
 
         //respond to GuestCardView
         case 'GuestCardView':
-          respondToSwipe("guest", that.myDom, {});
+          respondToSwipe("guest", $("#cc-payment"), {});
 
           break;
 
