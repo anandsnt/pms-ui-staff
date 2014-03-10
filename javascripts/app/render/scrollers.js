@@ -2,8 +2,6 @@
 var verticalScroll = new Array(),
     horizontalScroll = new Array();
 
-
-//added by shahul
 function getScrollObjectForDiv(obj){
 
     for ( i in verticalScroll){
