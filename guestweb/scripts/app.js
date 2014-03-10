@@ -133,14 +133,35 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.isCheckin     =   ($attrs.isCheckin ==='true') ? true : false;
 
 
-	console.log($attrs.isCheckin)
-	//if checkin
-	if(($attrs.isCheckin ==='true') && !$rootScope.isCheckedout)
-		$location.path('/checkinConfirmation');
 
-	//if chekout is already done
- 	if ($rootScope.isCheckedout) 
+	//to be retrieved from server
+
+	$rootScope.isCheckedin  = false;
+
+
+	/////////////////////////////////////////////
+
+
+	// console.log($attrs.isCheckin)
+	// //if checkin
+	// if(($attrs.isCheckin ==='true') && !$rootScope.isCheckedout)
+	// 	$location.path('/checkinConfirmation');
+
+	// //if chekout is already done
+ // 	if ($rootScope.isCheckedout) 
+	// 	$location.path('/checkOutNowSuccess');
+   
+
+   	if($rootScope.isCheckedin)
+		$location.path('/checkinSuccess');
+	else if($rootScope.isCheckin)
+		$location.path('/checkinConfirmation');
+	else if($rootScope.isCheckedout)
 		$location.path('/checkOutNowSuccess');
+	else if(!$rootScope.isLateCheckoutAvailable)
+		$location.path('/checkOutNow');
+
+
 
 	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
@@ -194,10 +215,6 @@ snt.config(function ($httpProvider) {
 
 
 
-// snt.config(function ($httpProvider) {
-// 	$httpProvider.interceptors.push('authInterceptor');
-// });
-
 snt.run(function($rootScope, $location, $http){
 
 	$rootScope.$on("$routeChangeSuccess", function(event, currentRoute, previousRoute){
@@ -222,12 +239,15 @@ snt.run(function($rootScope, $location, $http){
 	var checkOutLandingController = function($rootScope,$location) {
 		//if checkout is already done
 
- 	if ($rootScope.isCheckedout) 
-		$location.path('/checkOutNowSuccess')
-
-	else if (!$rootScope.isLateCheckoutAvailable) 
-			$location.path('/checkOutNow')
-	};
+  	if($rootScope.isCheckedin)
+		$location.path('/checkinSuccess');
+	else if($rootScope.isCheckin)
+		$location.path('/checkinConfirmation');
+	else if($rootScope.isCheckedout)
+		$location.path('/checkOutNowSuccess');
+	else if(!$rootScope.isLateCheckoutAvailable)
+		$location.path('/checkOutNow');
+	}
 
 
 	var dependencies = [

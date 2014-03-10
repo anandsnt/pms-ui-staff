@@ -1,10 +1,28 @@
 function checkinDatePickerController($scope, $rootScope,dateFilter,$filter,$location) {
-        
+	
+	$scope.pageSuccess = true;
 
+	if($rootScope.isCheckedin){
 
-        $scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
+		$scope.pageSuccess = false;
+		$location.path('/checkinSuccess');
+	}
+	else if($rootScope.isCheckedout){
 
-        $scope.selectedDate = ($filter('date')($scope.date, 'M/d/yy'));
+		$scope.pageSuccess = false;
+		$location.path('/checkOutNowSuccess');
+	}
+	else if(!$rootScope.isCheckin){
+
+		$scope.pageSuccess = false;
+		$location.path('/');
+	}
+
+	if($scope.pageSuccess){
+
+		$scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
+
+		$scope.selectedDate = ($filter('date')($scope.date, 'M/d/yy'));
 
 
     // disable previous dates if needed.
@@ -15,12 +33,12 @@ function checkinDatePickerController($scope, $rootScope,dateFilter,$filter,$loca
 
         // format the selected date
 
-		$scope.$watch('date',function(){
+        $scope.$watch('date',function(){
 
-		 	 $scope.selectedDate  = ($filter('date')($scope.date, 'M/d/yy'));
+        	$scope.selectedDate  = ($filter('date')($scope.date, 'M/d/yy'));
 
-			
-		});
+        	
+        });
 
 
 		// back button action
@@ -36,6 +54,7 @@ function checkinDatePickerController($scope, $rootScope,dateFilter,$filter,$loca
 			$rootScope.departureDate = $scope.selectedDate;
 			$location.path('/checkinConfirmation');
 		};
- }
+	}
+}
 
 
