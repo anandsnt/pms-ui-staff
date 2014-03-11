@@ -198,6 +198,7 @@ margin: 0 auto;
 }
 .now-later-options > .row {
 display: table;
+table-layout: fixed;
 width: 100%;
 }
 @media (max-width: 480px) {
@@ -209,6 +210,13 @@ min-width: initial;
 .now-later-options.no-screen-attach {
 margin: 0 10px;
 }
+}
+
+@media (max-width: 900px) {
+.checkout-later-back-button{
+  
+  display:none;
+  }
 }
 
 .now-later-options .rel-wrapper {
@@ -225,7 +233,7 @@ padding: 0;
 }
 
 .now-later-options .later-options {
-  width: auto;
+  width: 33%;
 }
 
 .now-later-options .checkoutnow,
@@ -1188,7 +1196,25 @@ padding:5px 8px 2px 0;
 
 
 
+
+
+
 /* ----------------------- execusive styling for desktops and tablets portrait mode -------------------*/
+.with-back-btn {
+  overflow: hidden;
+  img {
+    float: left;
+  }
+  span {
+    font-size: 30px;
+    padding: 0px 0 0 25px;
+    float: left;
+    font-family: 'Source Sans Pro';
+    line-height: 1;
+    font-weight: 200;
+  }
+}
+
 .bill-hotel-logo {
   display: none;
 }
@@ -1198,6 +1224,12 @@ body > div[ng-view] {
 }
 
 @media (min-width: 992px) {
+  .remove-scroll {
+    height: 100%;
+    padding: 0;
+    overflow: hidden;
+  }
+  
   .icontop {
     padding-top: 20px;
   }

@@ -1,6 +1,6 @@
 
 (function() {
-	var checkOutStatusController = function($scope, baseWebService,$rootScope) {
+	var checkOutStatusController = function($scope, baseWebService,$rootScope,$location) {
 
 	
 		$scope.pageSuccess = true;
@@ -57,6 +57,7 @@
     	if($scope.success)
     		$rootScope.isCheckedout = $scope.isCheckoutCompleted = true;
     	
+    	
     	$scope.errorMessage = response.errors[0];
     });
     
@@ -67,7 +68,7 @@
 
 var dependencies = [
 '$scope',
-'baseWebService','$rootScope',
+'baseWebService','$rootScope','$location',
 checkOutStatusController
 ];
 
