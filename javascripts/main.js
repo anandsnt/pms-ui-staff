@@ -583,23 +583,6 @@ $(function($){
         $($target).toggleClass('hidden');
         $toggleContent.start();
 
-        // Signature toggle - fetch image dimensions and apply class (do it only once)
-        if ($(this).hasClass('signature-toggle') && $(this).hasClass('active') && !$($target + ' figure').attr('class')) {
-            var signatureImage = $($target).find('img.signature-image');
-            var testImage = new Image();
-            testImage.src = signatureImage.attr("src");
-            var imageWidth = testImage.naturalWidth;
-
-            // Rover 
-            if (imageWidth == 2000) {
-                $($target + ' figure').addClass('signature-rover');
-                if (imageHeight == 400) { $($target + ' figure').addClass('larger'); }
-            // Zest
-            } else {
-                $($target + ' figure').addClass('signature-zest');
-            }
-        }
-
         // Refresh scrolls
         refreshVerticalScroll();
         refreshHorizontalScroll();

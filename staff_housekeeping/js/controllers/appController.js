@@ -1,9 +1,14 @@
 hkRover.controller('appController',['$scope', '$state', function($scope, $state){
 
-	$scope.init = function () {
-		// preselect the current reservation group
-    }
+    $scope.menuOpen = false;
 
-    $scope.init();
+    $scope.$on("navToggled", function(){
+        $scope.menuOpen = !$scope.menuOpen;
+    });
+    
+    $scope.getMenuClass = function(){
+        return $scope.menuOpen ? "menu-open" : "";
+    };
+    
 }]);
 

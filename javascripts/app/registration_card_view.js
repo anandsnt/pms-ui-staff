@@ -148,6 +148,10 @@ var RegistrationCardView = function(viewDom) {
 	};
 	this.setBillTabs = function() {
 		$('#bills').tabs({
+		 	beforeActivate: function(event, ui){
+               // Refresh scrolls when siwtching between tabs
+               refreshVerticalScroll('#registration-content', 0);                        
+            },
 			create : function(event, ui) {
 				var $tab = ui.panel.attr('id'),
 					$scrollable = $('#' + $tab).find('.wrapper')
