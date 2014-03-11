@@ -113,11 +113,4 @@ var setUpGuestcard = function(viewDom) {
 		refreshVerticalScroll();
 	});
 
-	// Close guest card when nested view is clicked
-    $(document).on('click','.nested-view',function(e) {
-    	if ($('#guest-card').height() > '90')
-	    	$('#guest-card').animate({height: '90px'}, 300, function(){
-    			$(this).removeClass('open');
-			});
-	});
 };

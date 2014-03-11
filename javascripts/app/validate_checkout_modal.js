@@ -56,8 +56,7 @@ var ValidateCheckoutModal = function(callBack, callBackParam) {
 				$("#email").val($("#validate #guest-email").val());
 			}
 		
-			requestParameters['callBack'](requestParameters['callBackParam']);
-			that.hide();
+			that.hide(requestParameters['callBack']);
     };
     this.fetchFailedOfSave = function(errorMessage){
 		sntapp.activityIndicator.hideActivityIndicator();
