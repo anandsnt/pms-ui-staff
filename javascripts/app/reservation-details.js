@@ -1,9 +1,9 @@
 var reservationDetailsView = function(domRef) {
 	BaseView.call(this);
-	
+	var that = this;
 	this.myDom = domRef;
 	this.reservation_id = getReservationId();
-	var that = this;
+	
 	this.pageinit = function() {
 		that.updateTimelineIcon();
 	};
@@ -15,15 +15,8 @@ var reservationDetailsView = function(domRef) {
 		var activeTimeline = $('#reservation-card').attr('data-current-timeliine');
 		$("#"+activeTimeline+" .reservations-tabs ul li").each(function(index){
 			if($(this).attr("data-confirmation-num") == currentReservation ){
-				var guestIconHtml = $(this).html();
-		        var guestIconHtmlMod = guestIconHtml.replace("arrival", guestStatusIcon);
-		        var guestIconHtmlMod = guestIconHtmlMod.replace("check-in", guestStatusIcon);
-		        var guestIconHtmlMod = guestIconHtmlMod.replace("inhouse", guestStatusIcon);
-		        var guestIconHtmlMod = guestIconHtmlMod.replace("departed", guestStatusIcon);
-		        var guestIconHtmlMod = guestIconHtmlMod.replace("check-out", guestStatusIcon);
-		        var guestIconHtmlMod = guestIconHtmlMod.replace("cancel", guestStatusIcon);
-		        var guestIconHtmlMod = guestIconHtmlMod.replace("no-show", guestStatusIcon);
-		        $(this).html(guestIconHtmlMod);
+				var guestIconHtml = $(this).find('span.guest-status');
+				guestIconHtml.attr('class','guest-status small-icon '+guestStatusIcon);
 			}
 		});
 	};
@@ -118,11 +111,11 @@ var reservationDetailsView = function(domRef) {
 	};
 	this.setWakeUpCallModal = function(e) {
 		if ($(e.target).hasClass("feature-available")) {
-
 			var setWakeUpCallModal = new SetWakeUpCallModal();
 			setWakeUpCallModal.params = {
 				"reservation_id" : that.reservation_id
 			};
+			setWakeUpCallModal.backDom = that.myDom;
 			setWakeUpCallModal.type = "POST";
 			setWakeUpCallModal.initialize();
 		} else {

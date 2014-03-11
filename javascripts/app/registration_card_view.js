@@ -21,7 +21,7 @@ var RegistrationCardView = function(viewDom) {
 		});
 		that.myDom.find("#signature canvas").addClass('pad');
 
-		if (this.viewParams.clickedButton == "ViewBillButton") {
+		if (that.viewParams.clickedButton == "ViewBillButton" || that.viewParams.clickedButton == "TotalStayCost") {
 			that.renderedFromViewBillButton();
 		}
 		
@@ -45,7 +45,6 @@ var RegistrationCardView = function(viewDom) {
 	
     // To Display Guest Bill screen in detailed mode via ViewBillButton click.
 	this.renderedFromViewBillButton =  function() {
-		//that.myDom.find("#bill1-total-fees a").addClass("active"); // Oh my, this is so wrong! Why would anyone want to add a class to every anchor in there!?!?
 		that.myDom.find("#bill1-total-fees .toggle:not(.signature-toggle)").addClass("active");
 		that.myDom.find("#bill1-fees").removeClass("hidden");
 		that.myDom.find("#signature-pad").addClass("hidden");
@@ -149,6 +148,10 @@ var RegistrationCardView = function(viewDom) {
 	};
 	this.setBillTabs = function() {
 		$('#bills').tabs({
+		 	beforeActivate: function(event, ui){
+               // Refresh scrolls when siwtching between tabs
+               refreshVerticalScroll('#registration-content', 0);                        
+            },
 			create : function(event, ui) {
 				var $tab = ui.panel.attr('id'),
 					$scrollable = $('#' + $tab).find('.wrapper')

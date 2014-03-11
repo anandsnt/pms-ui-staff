@@ -29,9 +29,10 @@ var ZestCheckinConfiguration = function(domRef){
 	 var alert_time_hour = that.myDom.find("#checkin-alert-time-hour").val();
 	 var alert_time_minute = that.myDom.find("#checkin-alert-time-minute").val();
 	 var alert_time_prime_time = that.myDom.find("#hotel-checkin-primetime").val();
-	 var alert_time = alert_time_hour+":"+alert_time_minute;
-	 
-
+	 var alert_time = ""
+	 if(alert_time_hour != "" && alert_time_minute != "") {
+	 	alert_time = alert_time_hour+":"+alert_time_minute;
+	 }
 	 var data = {
 		    "checkin_alert_message": guest_checkin_alert,
 		    "is_send_alert": is_send_alert,

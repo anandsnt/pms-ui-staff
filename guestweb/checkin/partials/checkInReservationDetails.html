@@ -1,0 +1,122 @@
+<!-- contentarea starts here-->
+
+<div class="jumbotron">
+
+	<div class="container backgroundbg" >
+		<div class="container-fluid">
+			<div class="row headerrow">
+				<logo-image></logo-image>
+			</div>
+		</div>
+
+	
+
+		<!-- contentarea starts here-->
+		<div class="container" ng-hide="isFetching || netWorkError">
+			<!-- top section starts here-->
+
+			<div class="row check-inout-wrapper">
+
+				<div class="reservation-id centeralign">
+					<span class="lightcontent">RESERVATION #{{reservationData.reservation_id}}</span>
+				</div>
+				<div class="col-md-6" >
+
+					<div class=" headtext centeralign">
+
+						{{roomUpgradeheading}}
+
+					</div>
+					<div class=" date-container">
+						<div class="row">
+							<div class="col-xs-6 reservation-dates centeralign">
+
+								<div class="lightcontent">
+									ARRIVAL DATE
+								</div>
+
+								<div class="dateContent">
+									{{reservationData.arrival_date}}
+								</div>
+
+							</div>
+							<div class="col-xs-6  reservation-dates centeralign">
+
+								<div class="lightcontent">
+									DEPARTURE DATE
+								</div>
+								<div class="dateContent">
+									{{reservationData.departure_date}}
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<!-- top section ends here-->
+
+					<div class=" room-desc ">
+
+						<div class="row">
+							<div class=" reservation-dates">
+								<div class="lightcontent">
+									ROOM TYPE <span class="upgrades-label" ng-show="ShowupgradedLabel">UPGRADED!</span>
+								</div>
+							</div>
+							<div class="room_details">
+								{{reservationData.room_type}}
+							</div>
+
+						</div>
+						<div class="row">
+							<div class=" reservation-dates">
+								<div class="lightcontent">
+									RATE
+								</div>
+							</div>
+							<div class="room_details">
+								{{reservationData.room_rate}}
+							</div>
+
+						</div>
+						<div class="row">
+							<div class=" reservation-dates ">
+								<div class="lightcontent">
+									AVERAGE RATE PER NIGHT
+								</div>
+							</div>
+							<div class="room_details">
+								{{reservationData.currency}} {{reservationData.avg_rate}}
+							</div>
+
+						</div>
+						<div class="row applycharge">
+							 <input type="checkbox" ng-model="checked" >:&nbsp
+							APPLY CHARGES TO MY CREDIT CARD ON FILE
+							
+						</div>
+
+					</div></div>
+				<div class="col-md-6 ">
+					<div class="row now-later-options ">
+						<div class="col-xs-12 checkin ">
+							<div class="rel-wrapper" ng-click="checkInButtonClicked()">
+								Check in
+								<img src="/assets/img/checkin_icon.png" width="60" height="60" alt=""/>
+							</div>
+						</div>
+					</div>
+					<div class=" col-xs-12row">
+						<div class=" reservation-dates ">
+							<div class="lightcontent">
+								ERRORS? <u>CALL US AT  {{hotelPhone}}.</u>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+		</div>
+		<!-- checkinbtn section ends here-->
+	</div>
+
+</div>

@@ -184,13 +184,16 @@ var HotelDetailsView = function(domRef) {
 
 	//to handle success call back
 	this.fetchCompletedOfSave = function(data) {
-		if (data.status == "success") {
 
+		if (that.currentView == "snt-admin-view") {
+			var url = "/admin/hotels/";
+			viewParams = {};
+			sntapp.fetchAndRenderView(url, that.viewParams.backDom, {}, 'BLOCKER', viewParams, false);
+			that.goBackToPreviousView();
+			sntapp.notification.showSuccessMessage("Saved Successfully", that.viewParams.backDom);
+		}
+		else{
 			$("#selected_hotel").html(data.data.current_hotel);
-
-			if (that.currentView == "snt-admin-view") {
-				sntapp.fetchAndRenderView("/admin/hotels", that.viewParams.backDom, {}, 'None', {}, false);
-			}
 			that.goBackToPreviousView();
 			sntapp.notification.showSuccessMessage("Saved Successfully", that.viewParams.backDom);
 		}
