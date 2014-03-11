@@ -158,8 +158,9 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 		$location.path('/checkinConfirmation');
 	else if($rootScope.isCheckedout)
 		$location.path('/checkOutNowSuccess');
-	else if(!$rootScope.isLateCheckoutAvailable)
+	else if($attrs.isLateCheckoutAvailable  === 'false')
 		$location.path('/checkOutNow');
+	
 
 
 
