@@ -212,6 +212,13 @@ margin: 0 10px;
 }
 }
 
+@media (max-width: 900px) {
+.checkout-later-back-button{
+  
+  display:none;
+  }
+}
+
 .now-later-options .rel-wrapper {
 position: relative;
 }
@@ -225,9 +232,6 @@ float: none;
 padding: 0;
 }
 
-.now-later-options .later-options {
-  width: 33%;
-}
 
 .now-later-options .checkoutnow,
 .now-later-options .checkoutlater,
@@ -292,7 +296,7 @@ z-index: 3;
 
 .foot-text {
 color: #fff;
-padding: 10px 50px 0px;
+padding: 10px 10px 0px;
 em {
 font-style: italic;
 
@@ -1222,6 +1226,7 @@ body > div[ng-view] {
     padding: 0;
     overflow: hidden;
   }
+  .hide-in-desktop { display: none !important; }   
   
   .icontop {
     padding-top: 20px;
