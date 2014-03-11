@@ -33,14 +33,12 @@ var ValidateCheckoutModal = function(callBack, callBackParam) {
 			alert("Please enter email");
 			return false;
 		}
-		else if(validateEmail(email)){
-			
-			
+		else if(validateEmail(email)){			
 			var webservice = new WebServiceInterface();
 		    	
 		    var url = 'staff/guest_cards/' + userId; 
 		    var options = {
-					   requestParameters: JSON.stringify($contactJsonObj),
+					   requestParameters: $contactJsonObj,
 					   successCallBack: that.fetchCompletedOfSave,
 					   failureCallBack: that.fetchFailedOfSave,
 					   successCallBackParameters:{ "callBack": callBack, 'callBackParam':callBackParam}
@@ -58,8 +56,7 @@ var ValidateCheckoutModal = function(callBack, callBackParam) {
 				$("#email").val($("#validate #guest-email").val());
 			}
 		
-			requestParameters['callBack'](requestParameters['callBackParam']);
-			that.hide();
+			that.hide(requestParameters['callBack']);
     };
     this.fetchFailedOfSave = function(errorMessage){
 		sntapp.activityIndicator.hideActivityIndicator();

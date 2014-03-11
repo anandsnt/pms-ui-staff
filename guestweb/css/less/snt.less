@@ -212,6 +212,13 @@ margin: 0 10px;
 }
 }
 
+@media (max-width: 900px) {
+.checkout-later-back-button{
+  
+  display:none;
+  }
+}
+
 .now-later-options .rel-wrapper {
 position: relative;
 }
@@ -225,9 +232,6 @@ float: none;
 padding: 0;
 }
 
-.now-later-options .later-options {
-  width: 33%;
-}
 
 .now-later-options .checkoutnow,
 .now-later-options .checkoutlater,
@@ -292,13 +296,13 @@ z-index: 3;
 
 .foot-text {
 color: #fff;
-padding: 10px 50px 0px;
+padding: 10px 10px 0px;
 em {
 font-style: italic;
 
 }
 &.second-in {
-padding-top: 0;
+padding: 0px 50px !important;
 }
 &.balance-footer{
 padding: 15px 26px !important;
@@ -1193,6 +1197,33 @@ padding:5px 8px 2px 0;
 
 
 /* ----------------------- execusive styling for desktops and tablets portrait mode -------------------*/
+.checkout-status,
+.checkout-status p {
+  font-family: 'Source Sans Pro';
+}
+
+.checkout-status {
+  padding: 10px 0 20px;
+}
+
+.checkout-status .msg-head {
+  font-weight: 300;
+  font-size: 22px !important;
+  padding: 0 5% 0;
+}
+
+.checkout-status .msg-body {
+  font-weight: 300;
+  font-size: 20px !important;
+  padding: 10px 10% 0;
+}
+
+.checkout-status .msg-foot {
+  font-weight: 400;
+  font-size: 22px !important;
+  padding: 10px 5% 0;
+}
+
 .with-back-btn {
   overflow: hidden;
   img {
@@ -1217,6 +1248,13 @@ body > div[ng-view] {
 }
 
 @media (min-width: 992px) {
+  .remove-scroll {
+    height: 100%;
+    padding: 0;
+    overflow: hidden;
+  }
+  .hide-in-desktop { display: none !important; }   
+  
   .icontop {
     padding-top: 20px;
   }
@@ -1241,11 +1279,11 @@ body > div[ng-view] {
   .jumbotron .check-inout-wrapper {
     border-top: 1px solid #fff;
     border-bottom: 1px solid #fff;
-    padding: 50px 0 100px;
+    padding: 45px 0 80px;
   }
 
   .jumbotron .check-inout-wrapper.late-options {
-    padding: 50px 0 60px;
+    padding: 45px 0 60px;
   }
 
   .jumbotron .headtext {
@@ -1366,13 +1404,13 @@ body > div[ng-view] {
     top: 40px;
     left: 50%;
     width: 500px;
+    height: 75%;
     margin-left: -255px;
   }
 
   .bill-contain-wrap {
     position: relative;
-    height: 80vh;
-    max-height: 80vh;
+    height: 99.9%;
   }
 
   .bill-contain {
@@ -1428,19 +1466,16 @@ body > div[ng-view] {
   }
 
   .checkout-status .msg-head {
-    font-weight: 300;
     font-size: 35px !important;
     padding: 0 5% 0;
   }
 
   .checkout-status .msg-body {
-    font-weight: 300;
     font-size: 25px !important;
     padding: 30px 30% 0;
   }
 
   .checkout-status .msg-foot {
-    font-weight: 400;
     font-size: 35px !important;
     padding: 55px 5% 0;
   }

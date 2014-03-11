@@ -125,11 +125,30 @@ var Search  = function(domRef){
   };
 
   this.delegateEvents = function(){  
+    var event_type = 'click';
+    if ('ontouchstart' in document.documentElement) { //device supports touch, for keyboard bug fix
+      event_type = 'touchstart';
+    }
+
+    that.myDomElement.find('#query').on(event_type, that.setFocusToSearch);
+    that.myDomElement.find('#search-form').on(event_type, that.setFocusToSearch);
+    that.myDomElement.find('#search-form .entry button[name=submit]').on(event_type, that.setFocusToSearch);
+    that.myDomElement.find('#search-form.entry').on(event_type, that.setFocusToSearch); 
+    that.myDomElement.find('#clear-query').on(event_type, that.clearResults); 
+
     that.myDomElement.find('#query').on('focus', that.callCapitalize);
     that.myDomElement.find('#query').on('keyup paste', that.queryEntered);
     that.myDomElement.find('#search-form').on('submit', that.submitSearchForm);
-    that.myDomElement.find('#clear-query').on('click', that.clearResults);
+
+    
     that.myDomElement.find('#late-checkout-alert').on('click', that.latecheckoutSelected);
+
+  };
+
+  this.setFocusToSearch = function(event){
+    that.myDomElement.find('#query').focus();
+    event.stopImmediatePropagation();
+    event.stopPropagation();
   };
 
   this.latecheckoutSelected = function(e){
@@ -173,6 +192,8 @@ var Search  = function(domRef){
         that.displayFilteredResults(that.preloadedResults, "");
       }
     }
+    event.stopImmediatePropagation();
+    event.stopPropagation();    
     that.updateView();
     
   };
@@ -317,13 +338,13 @@ var Search  = function(domRef){
 
    //when user focus on search text
   this.queryEntered = function(event){
- 	var searchTitleHtml = that.myDomElement.find('#search-title').html();
-	var newSearchTitleHtml = searchTitleHtml.replace("Checking In", "Search");
-  var newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out Late", "Search");
-	var newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out", "Search");
-	var newSearchTitleHtml = newSearchTitleHtml.replace("In House", "Search");
+   	var searchTitleHtml = that.myDomElement.find('#search-title').html();
+  	var newSearchTitleHtml = searchTitleHtml.replace("Checking In", "Search");
+    newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out Late", "Search");
+  	newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out", "Search");
+  	newSearchTitleHtml = newSearchTitleHtml.replace("In House", "Search");
 
-	that.myDomElement.find('#search-title').html(newSearchTitleHtml);
+	   that.myDomElement.find('#search-title').html(newSearchTitleHtml);
     that.currentQuery = $.trim($(this).val());
     // Clear button visibility toggle
     that.showHideClearQueryButton();
