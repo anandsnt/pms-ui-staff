@@ -39,7 +39,7 @@ hkRover.controller('roomDetailsController',['$scope', '$state', '$stateParams', 
 	$scope.updateHKStatus = function(){
 		console.log("here");
 		console.log($scope.currentHKStatus.value);
-		HKRoomDetailsSrv.updateHKStatus($scope.data.room_details.current_room_no, $scope.currentHKStatus.value).then(function(data) {
+		HKRoomDetailsSrv.updateHKStatus($scope.data.room_details.current_room_no, $scope.currentHKStatus.description).then(function(data) {
 			console.log("update done");
 		});
 	};
