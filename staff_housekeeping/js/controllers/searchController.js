@@ -26,5 +26,7 @@ hkRover.controller('searchController',['$scope', 'HKSearchSrv', '$state', functi
 
 	}
 
+	console.log($scope.filterOpen);
+
 }]);
 

@@ -5,7 +5,7 @@
    <!-- Title -->
    <h1 class="h2">Rooms</h1>
    <!-- Filter / Checkout button  -->
-   <a href="#filter-rooms" class="button white with-icon only-icon toggle linked-toggle"><span class="icons icon-filter"></span>Filter rooms</a>
+   <a ng-click="$emit('filterRoomsClicked')" class="button white with-icon only-icon toggle linked-toggle"><span class="icons icon-filter"></span>Filter rooms</a>
 </header>
 <!-- Search form -->
 <form class="search-form" role="search">
@@ -29,55 +29,55 @@
    </ul>
 </section>
 <!-- Rooms filters -->
-<section id="filter-rooms" class="content hidden">
-   <header class="nav-bar float" role="banner">
+<section class="content hidden" id="filter-rooms">
+   <header role="banner" class="nav-bar float">
       <h1 class="h2">Filter rooms</h1>
-      <button type="button" id="clear-filters" class="button blank clear-selection hidden">Clear</button>
-      <a href="#filter-rooms" class="complete toggle linked-toggle">Done</a>
+      <button class="button blank clear-selection hidden" id="clear-filters" type="button">Clear</button>
+      <a class="complete toggle linked-toggle" href="#filter-rooms">Done</a>
    </header>
-   <div id="filter-options" class="content scrollable">
-      <div class="wrapper">
+   <div class="content scrollable" id="filter-options">
+      <div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
          <div class="holder">
             <strong class="title">Housekeeping</strong>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters1" value="room-filters1" type="checkbox">
+               <input type="checkbox" value="room-filters1" id="room-filters1" name="room-filters">
                Show Dirty
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters2" value="room-filters2" type="checkbox">
+               <input type="checkbox" value="room-filters2" id="room-filters2" name="room-filters">
                Show Pickup
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters3" value="room-filters3" type="checkbox">
+               <input type="checkbox" value="room-filters3" id="room-filters3" name="room-filters">
                Show Clean
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters4" value="room-filters4" type="checkbox">
+               <input type="checkbox" value="room-filters4" id="room-filters4" name="room-filters">
                Show Inspected
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters5" value="room-filters6" type="checkbox">
+               <input type="checkbox" value="room-filters6" id="room-filters5" name="room-filters">
                Show Out of Order
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters7" value="room-filters7" type="checkbox">
+               <input type="checkbox" value="room-filters7" id="room-filters7" name="room-filters">
                Show Out of Service
                </label>
             </div>
@@ -87,14 +87,14 @@
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters8" value="room-filters8" type="checkbox">
+               <input type="checkbox" value="room-filters8" id="room-filters8" name="room-filters">
                Show Vacant
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters9" value="room-filters9" type="checkbox">
+               <input type="checkbox" value="room-filters9" id="room-filters9" name="room-filters">
                Show Occupied
                </label>
             </div>
@@ -104,81 +104,84 @@
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters10" value="room-filters10" type="checkbox">
+               <input type="checkbox" value="room-filters10" id="room-filters10" name="room-filters">
                Show Stayover
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters11" value="room-filters11" type="checkbox">
+               <input type="checkbox" value="room-filters11" id="room-filters11" name="room-filters">
                Show Not Reserved
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters12" value="room-filters12" type="checkbox">
+               <input type="checkbox" value="room-filters12" id="room-filters12" name="room-filters">
                Show Arrival
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters13" value="room-filters13" type="checkbox">
+               <input type="checkbox" value="room-filters13" id="room-filters13" name="room-filters">
                Show Arrived
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters14" value="room-filters14" type="checkbox">
+               <input type="checkbox" value="room-filters14" id="room-filters14" name="room-filters">
                Show Arrived / Due Out
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters15" value="room-filters15" type="checkbox">
+               <input type="checkbox" value="room-filters15" id="room-filters15" name="room-filters">
                Show Arrived / Departed
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters16" value="room-filters16" type="checkbox">
+               <input type="checkbox" value="room-filters16" id="room-filters16" name="room-filters">
                Show Due Out
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters17" value="room-filters17" type="checkbox">
+               <input type="checkbox" value="room-filters17" id="room-filters17" name="room-filters">
                Show Due Out / Arrival
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters18" value="room-filters18" type="checkbox">
+               <input type="checkbox" value="room-filters18" id="room-filters18" name="room-filters">
                Departed
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters19" value="room-filters19" type="checkbox">
+               <input type="checkbox" value="room-filters19" id="room-filters19" name="room-filters">
                Departed / Arrival
                </label>
             </div>
             <div class="entry radio-check">
                <label class="checkbox">
                <span class="icon-form icon-checkbox"></span>
-               <input name="room-filters" id="room-filters20" value="room-filters20" type="checkbox">
+               <input type="checkbox" value="room-filters20" id="room-filters20" name="room-filters">
                Departed / Arrived
                </label>
             </div>
          </div>
+      </div>
+      <div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
+         <div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 123px; transform: translate(0px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
       </div>
    </div>
 </section>
