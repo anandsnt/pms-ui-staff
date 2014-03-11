@@ -11,7 +11,12 @@ hkRover.controller('roomDetailsController',['$scope', '$state', '$stateParams', 
 
 	HKRoomDetailsSrv.fetch($stateParams.id).then(function(data) {
 	    $scope.data = data;
-		$scope.currentHKStatus = $scope.data.room_details.hk_status_list[1];
+
+		_.each($scope.data.room_details.hk_status_list, function(hkStatusDict) { 
+		    if(hkStatusDict.value == $scope.data.room_details.current_hk_status){
+		    	$scope.currentHKStatus = hkStatusDict;
+		    }
+		});
 		
 		if(($scope.data.room_details.current_hk_status == "Clean" || $scope.data.room_details.current_hk_status == "Inspected")
 			&& $scope.data.room_details.is_occupied == "false"){
@@ -27,7 +32,8 @@ hkRover.controller('roomDetailsController',['$scope', '$state', '$stateParams', 
 		}else {
 			$scope.isDefaultRoomColor = true;
 		}
-		$scope.guestViewStatus = getGuestStatusMapped($scope.data.room_details.reservation_status)
+
+		$scope.guestViewStatus = getGuestStatusMapped($scope.data.room_details.reservation_status);
 	});
 	
 
