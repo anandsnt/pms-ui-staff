@@ -1,6 +1,26 @@
 
 (function() {
-	var checkOutStatusController = function($scope, baseWebService,$rootScope) {
+	var checkOutStatusController = function($scope, baseWebService,$rootScope,$location) {
+
+	
+		$scope.pageSuccess = true;
+
+		if($rootScope.isCheckedin){
+			$scope.pageSuccess = false;
+			$location.path('/checkinSuccess');
+		}
+		else if($rootScope.isCheckin){
+			$scope.pageSuccess = false;
+			$location.path('/checkinConfirmation');
+		}
+		else if($rootScope.isCheckedout){
+			$scope.pageSuccess = false;
+			$location.path('/checkOutNowSuccess');
+
+		}
+
+
+		if($scope.pageSuccess){
 
 		$scope.finalMessage = "Thank You for staying with us!";
 		$scope.errorMessage = "";
@@ -37,15 +57,18 @@
     	if($scope.success)
     		$rootScope.isCheckedout = $scope.isCheckoutCompleted = true;
     	
+    	
     	$scope.errorMessage = response.errors[0];
     });
     
+}
+
 }
 };
 
 var dependencies = [
 '$scope',
-'baseWebService','$rootScope',
+'baseWebService','$rootScope','$location',
 checkOutStatusController
 ];
 

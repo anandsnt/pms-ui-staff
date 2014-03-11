@@ -12,22 +12,23 @@
 		</div>
 
 
-		<!-- show posting message 
-		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-			Your request is being processed, this may take a few seconds..... please wait!
+	<!--	 show posting message -->
+		<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			<p class="msg-head">Your request is being processed.</p>
+			<p class="msg-body">This may take a few seconds..... please wait!</p>
 		</div>
 
-		show error message 
+	<!--	show error message -->
 
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-			<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check out at our front desk.</div>
-			<div>You can also call the hotel at {{hotelPhone}}.</div>
+		<p class="msg-head">Our apologies, something went wrong, please complete your check in at our front desk.</p>
+		<p class="msg-body">You can also call the hotel at {{hotelPhone}}.</p>
 		</div>
 
-	-->
+	
 
 	<!-- contentarea starts here-->
-	<div class="container" ng-hide="isFetching || netWorkError">
+	<div class="container" ng-hide="isPosting || netWorkError">
 		<!-- top section starts here-->
 
 		<div class="row check-inout-wrapper">
@@ -53,14 +54,14 @@
 						<em class="labelText">DEPARTURE DATE</em>
 
 						<span class="date-picker" ng-click="presentDatePicker()" >
-							<input type="text " class = "col-xs-12 textBox" placeholder="MM/DD/YYYY"  ng-model="departureDate"/> 
+							<input type="text " class = "col-xs-12 textBox" placeholder="MM/DD/YYYY"  ng-model="departureDate" /> 
 							<img src="/assets/img/calender_icon.png"  alt="" width="40" height="35" class="calendar-button"/></span>
 
 						</div>
 						<br />
 						<div class="row">
 							<em class="labelText">LAST 4 DIGITS OF CREDIT CARD USED</em>
-							<input type="number " ng-model="cardDigits" class = "col-xs-12 textBox" /> 
+							<input type="number " ng-model="cardDigits" class = "col-xs-12 textBox" maxlength="4"/> 
 						</div>
 						<a  class="link-btn with-bg nextbtn" ng-click="nextButtonClicked()">NEXT</a>
 					</div>

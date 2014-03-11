@@ -3,10 +3,25 @@
 	var checkOutConfirmationController = function($scope, confirmationService,$rootScope,$location) {
 		
 
-		//if checkout is already done
+		
+		$scope.pageSuccess = true;
 
- 		if ($rootScope.isCheckedout) 
+		if($rootScope.isCheckedin){
+			$scope.pageSuccess = false;
+			$location.path('/checkinSuccess');
+		}
+		else if($rootScope.isCheckin){
+			$scope.pageSuccess = false;
+			$location.path('/checkinConfirmation');
+		}
+		else if($rootScope.isCheckedout){
+			$scope.pageSuccess = false;
 			$location.path('/checkOutNowSuccess');
+
+		}
+
+
+		if($scope.pageSuccess){
 
 
 		$rootScope.netWorkError = false;
@@ -31,6 +46,7 @@
 
 		$scope.footerMessage1 = !$rootScope.isLateCheckoutAvailable ? 'Late check-out is not available.' :'' ;
 
+	    }
 	};
 
 	var dependencies = [

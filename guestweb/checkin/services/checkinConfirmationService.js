@@ -1,5 +1,5 @@
 (function() {
-	var checinConfirmationService = function($q,baseWebService,$rootScope) {
+	var checkinConfirmationService = function($q,baseWebService,$rootScope) {
 		
 		var responseData = {};
 
@@ -16,7 +16,7 @@
 
 
 
-				this.responseData = response.data;
+				this.responseData = response;
 				deferred.resolve(this.responseData);
 			});
 			
@@ -33,8 +33,8 @@
 
 	var dependencies = [
 	'$q','baseWebService','$rootScope',
-	checinConfirmationService
+	checkinConfirmationService
 	];
 
-	snt.factory('checinConfirmationService', dependencies);
+	snt.factory('checkinConfirmationService', dependencies);
 })();

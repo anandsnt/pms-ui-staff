@@ -2,54 +2,58 @@
 /* 300 ***/
 @font-face {
 font-family: 'Source Sans Pro';
-src: url(/assets/sourcesanspro-light-webfont-66f1ca6e32a82e2cd9471b2d17100ce8.eot);
-src: url(/assets/sourcesanspro-light-webfont.eot?#iefix) format('embedded-opentype'), url(/assets/sourcesanspro-light-webfont-b4fecc0565ba747e3094bf7f0232b47e.woff) format('woff'), url(/assets/sourcesanspro-light-webfont-c94f98b39249e251c8fce44bbdd77373.ttf) format('truetype');
+src: asset-url('sourcesanspro-light-webfont.eot');
+src: asset-url('sourcesanspro-light-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-light-webfont.woff') format('woff'), asset-url('sourcesanspro-light-webfont.ttf') format('truetype');
 font-weight: 300;
 font-style: normal;
 }
 /*300 ***/
 @font-face {
 font-family: 'Source Sans Pro Light Italic';
-src: url(/assets/source-sans-pro.light-italic.eot);
-src: url(/assets/source-sans-pro.light-italic.eot?#iefix) format('embedded-opentype'), url(/assets/source-sans-pro.light-italic.woff) format('woff'), url(/assets/ssource-sans-pro.light-italic.ttf) format('truetype');
+src: asset-url('source-sans-pro.light-italic.eot');
+src: asset-url('source-sans-pro.light-italic.eot?#iefix') format('embedded-opentype'), asset-url('source-sans-pro.light-italic.woff') format('woff'), asset-url('ssource-sans-pro.light-italic.ttf') format('truetype');
 font-weight: 300;
 font-style: italic;
 }
 /* 400 ***/
 @font-face {
 font-family: 'Source Sans Pro';
-src: url(/assets/sourcesanspro-regular-webfont-e2c474f68b9b063f7fb6791f2943db72.eot);
-src: url(/assets/sourcesanspro-regular-webfont.eot?#iefix) format('embedded-opentype'), url(/assets/sourcesanspro-regular-webfont-c499c77f003f1ceae671feb62790316f.woff) format('woff'), url(/assets/sourcesanspro-regular-webfont-7096969a9b888b85706c317e6ee6f2ea.ttf) format('truetype');
+src: asset-url('sourcesanspro-regular-webfont.eot');
+src: asset-url('sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-regular-webfont.woff') format('woff'), asset-url('sourcesanspro-regular-webfont.ttf') format('truetype');
 font-weight: 400;
 font-style: normal;
 }
 /* 400 italic ***/
 @font-face {
 font-family: 'Source Sans Pro';
-src: url(/assets/sourcesanspro-italic-webfont-480442979f0ed884982421051c9b3df9.eot);
-src: url(/assets/sourcesanspro-italic-webfont.eot?#iefix) format('embedded-opentype'), url(/assets/sourcesanspro-italic-webfont-d15036804a9997981f744b9e74a888b3.woff) format('woff'), url(/assets/sourcesanspro-italic-webfont-3960d5f9eb8b438c15c8767860897938.ttf) format('truetype');
+src: asset-url('sourcesanspro-italic-webfont.eot');
+src: asset-url('sourcesanspro-italic-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-italic-webfont.woff') format('woff'), asset-url('sourcesanspro-italic-webfont.ttf') format('truetype');
 font-weight: 400;
 font-style: italic;
 }
 /* 600 ***/
 @font-face {
 font-family: 'Source Sans Pro';
-src: url(/assets/sourcesanspro-semibold-webfont-5d1497db62d5060b3489a48489d75e76.eot);
-src: url(/assets/sourcesanspro-semibold-webfont.eot?#iefix) format('embedded-opentype'), url(/assets/sourcesanspro-semibold-webfont-c1c5e0396bc8c606744a27fe23d0617a.woff) format('woff'), url(/assets/sourcesanspro-semibold-webfont-ee8e6cb639a8e54b091514ec0d2ef01f.ttf) format('truetype');
+src: asset-url('sourcesanspro-semibold-webfont.eot');
+src: asset-url('sourcesanspro-semibold-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-semibold-webfont.woff') format('woff'), asset-url('sourcesanspro-semibold-webfont.ttf') format('truetype');
 font-weight: 600;
 font-style: normal;
 }
 /* 700 ***/
 @font-face {
 font-family: 'Source Sans Pro';
-src: url(/assets/sourcesanspro-bold-webfont-6f1842719a0689525970ca9d5712ce09.eot);
-src: url(/assets/sourcesanspro-bold-webfont.eot?#iefix) format('embedded-opentype'), url(/assets/sourcesanspro-bold-webfont-fa43de1d07623845957114b7560f3fd4.woff) format('woff'), url(/assets/sourcesanspro-bold-webfont-4abba48777092a54f103819ab5f996b6.ttf) format('truetype');
+src: asset-url('sourcesanspro-bold-webfont.eot');
+src: asset-url('sourcesanspro-bold-webfont.eot?#iefix') format('embedded-opentype'), asset-url('sourcesanspro-bold-webfont.woff') format('woff'), asset-url('sourcesanspro-bold-webfont.ttf') format('truetype');
 font-weight: 700;
 font-style: normal;
 }
 
 
 /* helper classes */
+.clearboth {
+  clear: both !important;
+}
+
 .no-padding {
 padding: 0 !important;
 }
@@ -57,6 +61,10 @@ padding: 0 !important;
 .nopadding-onblock {
 padding: 0 !important;
 }
+}
+
+.pad-rt-10 {
+  padding-right: 10px !important;
 }
 
 .top-margin {
@@ -145,18 +153,13 @@ font-size: 30px;
 color: #fff;
 line-height:100%;
 }
-@media (min-width: 992px) {
-.headtext {
-padding-top: 70px;
-}
-}
 
 .jumbotron .check-inout-wrapper {
 padding-top: 10px;
 }
 
 .jumbotron .roomnumber {
-margin-bottom: 0;
+margin-bottom: 10px;
 }
 
 .jumbotron .roomnumber span {
@@ -190,11 +193,12 @@ margin: 0;
 
 .now-later-options {
 max-width: 440px;
-min-width: 220px;
+min-width: 220px !important;
 margin: 0 auto;
 }
 .now-later-options > .row {
 display: table;
+table-layout: fixed;
 width: 100%;
 }
 @media (max-width: 480px) {
@@ -214,12 +218,15 @@ position: relative;
 
 .now-later-options .checkoutnow,
 .now-later-options .checkoutlater,
-.now-later-options .later-options ,
+.now-later-options .later-options,
 .now-later-options .accept-charges-button {
 display: table-cell;
-width: auto;
 float: none;
 padding: 0;
+}
+
+.now-later-options .later-options {
+  width: 33%;
 }
 
 .now-later-options .checkoutnow,
@@ -268,18 +275,19 @@ top: 0;
 right: 0;
 bottom: 0;
 left: 0;
+z-index: 3;
 }
 
 .late-charge {
-line-height: 1;
-padding: 0;
-text-transform: uppercase;
-.for {
-font-size: 15px;
-}
-.amount {
-font-size: 25px;
-}
+  line-height: 1;
+  padding: 0;
+  text-transform: uppercase;
+  .for {
+    font-size: 15px;
+  }
+  .amount {
+    font-size: 25px;
+  }
 }
 
 .foot-text {
@@ -335,21 +343,25 @@ background: #121212;
 }
 
 svg {
-width: 100%;
-height: 100%;
-pointer-events: none;
-text {
-text-anchor: middle;
-pointer-events: auto;
-fill: currentColor;
-text-align: center;
-.time {
-font-size: 80px;
-}
-.ap {
-font-size: 50px;
-}
-}
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  text {
+    text-anchor: middle;
+    pointer-events: auto;
+    fill: currentColor;
+    text-align: center;
+    .time, .ap {
+      font-family: 'Source Sans Pro';
+      letter-spacing: -2px;
+    }
+    .time {
+      font-size: 80px;
+    }
+    .ap {
+      font-size: 50px;
+    }
+  }
 }
 
 .amount {
@@ -407,6 +419,29 @@ color:#000000;
 }
 }
 
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+  
+    padding: 1px !important;
+    padding-left : 12px !important;
+    background-color: #fcfcfc !important;
+   
+}
+.table {
+
+    width: 95% !important;
+}
+
+.table > tbody + tbody {
+    border-top:20px solid #fff !important;
+}
+.table > thead + tbody{
+    border-top:10px solid #fff !important;
+}
+.table > tbody + tfoot{
+    border-top:20px solid #fff !important;
+}
+
+
 
 .total {
 color:#9b9b9b;
@@ -441,6 +476,15 @@ margin-top: -11px;
 @media (max-width: 480px) {
 .backbtn  img{
 width:60%;
+}
+.rel-wrapper .col-md-8{
+  padding:0% 70px !important;
+  margin:0;
+}
+
+.rel-wrapper .col-md-4{
+  padding-top: 5%;
+  margin:0;
 }
 }
 
@@ -484,6 +528,10 @@ font-weight: 500 !important;
 }
 }
 
+@media screen and (min-width: 0px) and (max-width: 990px) {
+ .close-bill { display: none; }  /* hide it on small screens */
+}
+
 
 /* show bill */
 .showbill {
@@ -506,9 +554,10 @@ margin: 25px auto;
 }
 
 
-.guest-room-description0{
+.guest-room-description{
 color : #FF6600 !important;
 }
+
 
 .no-thanks{
 font-weight:normal !important;
@@ -523,12 +572,6 @@ margin-top: 40px !important;
 .latecheckout-charged{
 font-style:normal;
 font-weight: 500 !important;
-}
-
-
-.accept-charges-button{
-
-padding: 5px 40px !important;
 }
 
 .checkout-status{
@@ -559,15 +602,15 @@ bottom: 0;
 
 
 .modal-content{
-	background-color: #fff !important;
-	color: #000000 !important;
-	margin : 0px 5px !important;
-	height: 250px !important;
-	border-radius: 0px !important;
-	border: 0px  !important;
-  	box-shadow:none !important;
-  	margin: 0px !important;
-  	line-height: 0.8 !important;
+  background-color: #fff !important;
+  color: #000000 !important;
+  margin : 0px 5px !important;
+  height: 250px !important;
+  border-radius: 0px !important;
+  border: 0px  !important;
+    box-shadow:none !important;
+    margin: 0px !important;
+    line-height: 0.8 !important;
 }
 .btn-primary{
 background: #000000 !important;
@@ -577,6 +620,79 @@ border-color:  #000000 !important;
 
 .checkout-failure-text{
   margin-bottom:10px;
+}
+
+/* media queries */
+@media (max-width: 900px) {
+.horizontalLineTop,.horizontalLineBottom {
+    display: none !important;
+}
+
+}
+
+.horizontalLineTop,.horizontalLineBottom {
+  height: 1px;
+  border: 0;
+  background-color: white;
+  
+}
+.horizontalLineTop{
+  margin: 5px 25px 35px;
+}
+.horizontalLineBottom {
+  margin: 75px 25px 60px;
+}  
+
+.now-later-options > .row  {
+
+      min-height: 200px;
+  }
+
+@media screen and (min-width: 900px) {
+  .logoImage{
+
+  width: 270px !important;
+  height: 75px !important;
+  
+  }
+  .headtext{
+   font-size:37px  !important;
+  }
+  .leadtext{
+   font-size:20px  !important;
+   font-family: 'Source Sans Pro'  !important;
+  }
+  .lightcontent{
+     font-weight: 400 !important;
+  }
+  
+  .foot-text {
+
+  padding: 40px 50px 0px !important;;
+  }
+  &.second-in {
+  padding-top: 0 !important;
+  }
+  
+  .rel-wrapper .col-md-8{
+  padding-tip: 0  !important;
+  margin:0;
+  }
+
+}
+.rel-wrapper{
+  width:100%;
+  padding:0;
+  margin:0;
+}
+.rel-wrapper .col-md-8{
+  margin:0;
+  padding-top: 10%;
+}
+
+.rel-wrapper .col-md-4{
+  padding-top: 5%;
+  margin:0;
 }
 
 .subTitletext{
@@ -618,17 +734,17 @@ font-size: 10px !important;
 
 
 .alert-box{
-	
-	margin-top: 20px !important;
-	padding-top: 20px !important;
+  
+  margin-top: 20px !important;
+  padding-top: 20px !important;
 } 
 .alert-element{
-	margin-top: 20px !important;
-	margin-bottom: 20px !important;
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
 }
 .alert-link{ 
-	color:#0030e2 !important;
-	margin-bottom: 25px !important;
+  color:#0030e2 !important;
+  margin-bottom: 25px !important;
 }
 
 .date-picker {
@@ -650,7 +766,7 @@ font-size: 10px !important;
 
 .calendar-button{
 padding:5px 8px 2px 0;
-	position:relative;
+  position:relative;
   cursor:pointer;
 }
 
@@ -666,22 +782,17 @@ padding:5px 8px 2px 0;
  }
 
 .row .reservation-dates {
-
     font-family: 'Source Sans Pro';
-    
     color: #fff;
-
-.lightcontent{
-    font-size: 11px !important;
-    font-weight: 200;
-
+  .lightcontent {
+      font-size: 11px !important;
+      font-weight: 200;
     }
-
- .dateContent{
-      font-size: 16px !important;
-      font-weight: 500;
-      margin-top: 0px;
-      margin-bottom:7px;
+  .dateContent{
+    font-size: 16px !important;
+    font-weight: 500;
+    margin-top: 0px;
+    margin-bottom:7px;
     }
     
  }
@@ -780,7 +891,7 @@ padding:5px 8px 2px 0;
 .carousel-control.left, .carousel-control.right {
     background-image: none !important;
     font-size: 22px !important;
-    opacity: 1.0 !important;
+    opacity: 0.5 !important;
 }
 
 .carousel-control {
@@ -794,12 +905,12 @@ padding:5px 8px 2px 0;
 
 
 .carousel-control .icon-next:before {
-   content:url(../../img/right.png) !important;
+   content:url(img/right.png) !important;
     width : 40px !important;
     height : 40px !important;
 }
 .carousel-control .icon-prev:before {
-    content: url(../../img/left.png) !important;
+    content: url(img/left.png) !important;
      width : 40px !important;
       height : 40px !important;
 }
@@ -826,6 +937,9 @@ padding:5px 8px 2px 0;
 
   .descriptions{
        margin: 0px !important;
+  }
+  .description-details{
+      padding-left : 0px !important;
   }
 
 }
@@ -860,6 +974,20 @@ padding:5px 8px 2px 0;
      margin-bottom:0px !important;
  }
   }
+}
+
+.row .applycharge{
+    color: #FFFFFF !important;
+    font-size: 10px !important;
+}
+  input[type=checkbox]
+{
+ /* Double-sized Checkboxes */
+ -ms-transform: scale(1.5); /* IE */
+ -moz-transform: scale(1.5); /* FF */
+ -webkit-transform: scale(1.5); /* Safari and Chrome */
+ -o-transform: scale(1.5); /* Opera */
+ padding: 10px;
 }
 .upgrade-details .upgrades-btn{
 
@@ -923,7 +1051,7 @@ padding:5px 8px 2px 0;
 }
 .container .date-picker-header{
   font-size:12px;
-  color: #fff !imporatnt;
+  color: #fff !important;
   background-color: #1f1e20 !important;
   padding:15px 5px 5px 5px;
 }
@@ -1056,4 +1184,276 @@ padding:5px 8px 2px 0;
     
     font-size: 11px !important;
     font-weight: 600 !important;
+}
+
+
+
+
+
+
+
+/* ----------------------- execusive styling for desktops and tablets portrait mode -------------------*/
+.with-back-btn {
+  overflow: hidden;
+  img {
+    float: left;
+  }
+  span {
+    font-size: 30px;
+    padding: 0px 0 0 25px;
+    float: left;
+    font-family: 'Source Sans Pro';
+    line-height: 1;
+    font-weight: 200;
+  }
+}
+
+.bill-hotel-logo {
+  display: none;
+}
+
+body > div[ng-view] {
+  padding-bottom: 50px;
+}
+
+@media (min-width: 992px) {
+  .remove-scroll {
+    height: 100%;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .icontop {
+    padding-top: 20px;
+  }
+
+  .jumbotron p {
+    font-size: 24px !important;
+  }
+
+  .header {
+    padding-bottom: 45px;
+  }
+
+  .jumbotron .roomnumber {
+    margin-bottom: 20px;
+  }
+
+  .jumbotron .roomnumber span {
+    font-size: 43px;
+    padding: 0 35px;
+  }
+
+  .jumbotron .check-inout-wrapper {
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    padding: 50px 0 100px;
+  }
+
+  .jumbotron .check-inout-wrapper.late-options {
+    padding: 50px 0 60px;
+  }
+
+  .jumbotron .headtext {
+    font-size: 44px;
+    padding-top: 25px;
+  }
+
+  .leadtext {
+    padding: 20px 20px 0px;
+  }
+
+  .now-later-options .checkoutnow,
+  .now-later-options .checkoutlater,
+  .now-later-options .accept-charges-button {
+    font-size: 44px;
+  }
+
+  .now-later-options .checkoutnow .icontop img,
+  .now-later-options .checkoutlater .icontop img,
+  .now-later-options .accept-charges-button .icontop img {
+    width: 77px;
+    height: 77px;
+  }
+
+  .checkoutnow .rel-wrapper,
+  .checkoutlater .rel-wrapper,
+  .accept-charges-button .rel-wrapper {
+    padding: 35px 10px;
+  }
+
+  .checkoutnow .rel-wrapper,
+  .checkoutlater .rel-wrapper,
+  .accept-charges-button .rel-wrapper {
+    padding: 35px 10px;
+  }
+
+  .now-later-options {
+    max-width: initial;
+  }
+
+  .checkoutnow.single .rel-wrapper,
+  .checkoutlater.single .rel-wrapper {
+    padding: 57px 10px 88px;
+  }
+
+  .accept-charges-button.single .rel-wrapper {
+    padding: 27px 70px 30px;
+  }
+
+  .checkoutnow.single .rel-wrapper .row,
+  .checkoutlater.single .rel-wrappe .row,
+  .accept-charges-button.single .rel-wrapper .row {
+    display: inline-block;
+    float: none;
+    width: auto;
+  }
+  
+  .foot-text {
+    padding: 40px 50px 0px;
+  }
+
+  .balancevalue {
+    font-size: 44px;
+  }
+
+  .pad-hz-24 {
+    padding: 0 24px !important;
+  }
+
+  .later-options .rel-wrapper {
+    padding: 45px 0 45px;
+  }
+
+  .late-charge {
+    padding: 0 10px;
+    .for {
+      font-size: 20px;
+    }
+    .amount {
+      font-size: 40px;
+    }
+  }
+
+  .no-thanks-wrap {
+    clear: both;
+    float:right;
+    width: 50%;
+    padding-top: 60px;
+  }
+
+  .jumbotron .extra-head-pad {
+    padding: 105px 75px;
+  }
+
+  /* viewbill styling */
+  .jumbotron .toggle-pos-rel {
+    position: static;
+  }
+
+  .showbill-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 50;
+  }
+
+  .trans-rel-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .showbill-wrap .showbill {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    width: 500px;
+    margin-left: -255px;
+  }
+
+  .bill-contain-wrap {
+    position: relative;
+    height: 80vh;
+    max-height: 80vh;
+  }
+
+  .bill-contain {
+    padding: 42px 55px;
+    height: 99.9%;
+    overflow-x: hidden;
+    overflow-y: auto; 
+    span, th, td {
+      font-size: 18px;
+    }
+  }
+
+  .close-bill {
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    z-index: 5;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    overflow: hidden;
+    img {
+      float: left;
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  .bill-hotel-logo {
+    text-align: center;
+    position: relative;
+    display: block;
+    > img {
+      width: 196px;
+      height: auto;
+      padding-bottom: 40px;
+    }
+  }
+
+  .jumbotron .headtext {
+    width: 58%;
+  }
+
+  .now-later-options {
+    max-width: 487px;
+    width: 42% !important;
+  }
+
+  .checkout-status {
+    padding: 100px 0 200px;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+  }
+
+  .checkout-status .msg-head {
+    font-weight: 300;
+    font-size: 35px !important;
+    padding: 0 5% 0;
+  }
+
+  .checkout-status .msg-body {
+    font-weight: 300;
+    font-size: 25px !important;
+    padding: 30px 30% 0;
+  }
+
+  .checkout-status .msg-foot {
+    font-weight: 400;
+    font-size: 35px !important;
+    padding: 55px 5% 0;
+  }
+
+  .link-btn.with-bg {
+    margin-top: 76px;
+    font-size: 23px;
+  }
+
 }
