@@ -26,13 +26,13 @@
  		if ($rootScope.isCheckedout) 
 		 $location.path('/checkOutNowSuccess');
 
-
+		// showBill flag and its reference in $rootScope
 		$scope.showBill = false;
+		$rootScope.showBill = $scope.showBill;
+
 		$rootScope.netWorkError = false;
 
 		// fecth text details to display
-
-
 		$scope.isFetching = true;
 
 		BillService.fetchDisplayDetails().then(function(billDisplayDetails) {

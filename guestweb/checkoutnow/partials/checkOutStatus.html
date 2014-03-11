@@ -9,7 +9,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div ng-hide="posted || isCheckoutCompleted || netWorkError" class="checkout-status centeralign checkout-now-status" >
+				<div ng-hide="posted || isCheckoutCompleted || netWorkError || isCheckedout" class="checkout-status centeralign checkout-now-status" >
 					<p class="msg-head">Your request is being processed.</p>
 					<p class="msg-body">This may take a few seconds..... please wait!</p>
 				</div>
@@ -30,7 +30,7 @@
 					<p class="msg-foot">Thank you for staying with us!</p>
 				</div>
 
-				<div ng-show="isCheckoutCompleted && !success" class="checkout-status centeralign checkout-now-status">
+				<div ng-show="isCheckedout" class="checkout-status centeralign checkout-now-status">
 					<p class="msg-head">It appears you have already completed your check out.</p>
 					<p class="msg-body">For further enquiries please contact the hotel at {{hotelPhone}}.</p>
 					<p class="msg-foot">Thank you!</p>
