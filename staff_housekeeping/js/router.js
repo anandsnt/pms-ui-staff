@@ -34,7 +34,7 @@ hkRover.config([
 		});	
 
 		$stateProvider.state('hk.roomDetails', {
-			url: '/room_details',
+			url: '/room_details/:id',
 			templateUrl: '/assets/partials/room_details.html',
 			controller: 'roomDetailsController'
 		});

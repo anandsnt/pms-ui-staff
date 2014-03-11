@@ -19,8 +19,8 @@
 <section id="rooms" class="content scrollable" role="main">
    <ul class="wrapper" ng-repeat="room in data.rooms | filter:query">
       <li>
-         <a ui-sref="hk.roomDetails" ng-class="{'room-clean': isCleanVacant(room.hk_status, room.is_occupied), 'room-dirty': isDirtyVacant(room.hk_status, room.is_occupied), 'room-out': isOutofOrder(room.hk_status), 'with-image': room.is_occupied == 'true'}">  
-            <h2 class="room-number">{{ room.room_number }}</h2>
+         <a ng-click="goToRoomDetails(room.id)" ng-class="{'room-clean': isCleanVacant(room.hk_status, room.is_occupied), 'room-dirty': isDirtyVacant(room.hk_status, room.is_occupied), 'room-out': isOutofOrder(room.hk_status), 'with-image': room.is_occupied == 'true'}">  
+            <h2 class="room-number">{{ room.room_no}}</h2>
             <span class="room-status">{{ room.hk_status }}</span>
             <span class="fo-status">{{ room.room_reservation_status }}</span>
             <figure class="guest-image"><img src="{{ room.avtar_src }}" alt="" /></figure>

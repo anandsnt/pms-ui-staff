@@ -7,9 +7,6 @@ hkRover.controller('DashboardController',['$scope', 'DashboardService',  functio
 }]);
 
 hkRover.controller('HKRootCtrl',['$rootScope', '$scope', function($rootScope, $scope){
-	
-	//$scope.menuOpen = "Sajith sajith2";
-	$scope.sajith = "Sajith";
 	$scope.menuOpen = false;
 	
 	$scope.$on("navc", function(event){

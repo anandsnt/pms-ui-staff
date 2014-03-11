@@ -1,4 +1,4 @@
-hkRover.controller('searchController',['$scope', 'HKSearchSrv', function($scope, HKSearchSrv){
+hkRover.controller('searchController',['$scope', 'HKSearchSrv', '$state', function($scope, HKSearchSrv, $state){
 	HKSearchSrv.fetch().then(function(messages) {
 	      $scope.data = messages;
 	});
@@ -16,6 +16,14 @@ hkRover.controller('searchController',['$scope', 'HKSearchSrv', function($scope,
 	$scope.isOutofOrder = function(roomHkStatus){
 		if(roomHkStatus == 'Out of Order' || roomHkStatus == 'Out of Service')
 			return true;
+	}
+
+	$scope.goToRoomDetails = function(id){
+		// preselect the current reservation group
+		$state.go('hk.roomDetails', {
+			id: id
+		});
+
 	}
 
 }]);

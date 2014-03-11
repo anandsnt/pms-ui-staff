@@ -1,8 +1,9 @@
-hkRover.controller('roomDetailsController',['$scope', '$state', function($scope, $state){
+hkRover.controller('roomDetailsController',['$scope', '$state', '$stateParams', 'HKRoomDetailsSrv',  
+					function($scope, $state, $stateParams, HKRoomDetailsSrv){
+	
+	HKRoomDetailsSrv.fetch($stateParams.id).then(function(data) {
+	    $scope.data = data;
+	});
 
-	$scope.init = function () {
-		// preselect the current reservation group
-    }
 
-    $scope.init();
 }]);

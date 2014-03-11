@@ -1,13 +1,11 @@
-hkRover.service('HKSearchSrv',['$http', '$q', function($http, $q){
+hkRover.service('HKRoomDetailsSrv',['$http', '$q', function($http, $q){
 
-	this.fetch = function(){
+	this.fetch = function(id){
 		var deferred = $q.defer();
-		var url = '/house/search.json';
+		var url = '/house/room/' + id + '.json';
 
 		$http.get(url).success(function(response, status) {
-		    //deferred.resolve(response.data);
 		    deferred.resolve(response.data);
-		    console.log(response.data.rooms[0].room_no);
 
 		}).error(function(data, status) {
 		    deferred.reject(data);
