@@ -4,23 +4,38 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
 
 // Disable cache busting
 $.ajaxSetup({ cache: true });
-
 $(document).ready(function(){
 	if (localStorage.email) {
 		$("#email").val(localStorage.email);
 	}
 	$("#loginbutton").click(function(){
-		localStorage.email = $("#email").val();
 		$("#login-form").submit();
 	});
+    $("#login-form").submit(function(){
+        localStorage.email = $("#email").val();
+        return true;        
+    });
+
+
 	if($('#login').is(':has(span.notice)')){
 		$("#loginStatus").css("display","block");
 	}
-	if($("#email").val()!=""){
+	/*if($.trim($("#email").val()) != ""){
 		$("#password").focus();
 	} else {
 		$("#email").focus();
-	}
+	}*/
+  $("#login-form").ready(function(){  
+        if('ontouchstart' in document.documentElement) { 
+            $("#email").on('touchstart', function(){
+                $("#email").focus();
+            });                        
+            $("#password").on('touchstart', function(){
+                $("#password").focus();
+            }); 
+        } 
+    });
+
 });
 
 // Chaining with intervals
