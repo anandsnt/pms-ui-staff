@@ -37,7 +37,7 @@ var reservationCardNotesView = function(domRef){
 
   // function for closing the drawer if is open
   that.closeGuestCardDrawer = function(){
-	if($("#guest-card").hasClass('open')) {
+	if($('#guest-card').height() > '90') {
 		$('#guest-card .ui-resizable-handle').trigger('click');
 	}
   };

@@ -171,8 +171,8 @@ var StayCard = function(viewDom){
 
   // function for closing the drawer if is open
   this.closeGuestCardDrawer = function(){
-    if($("#guest-card").hasClass('open')) {
-      $('#guest-card .ui-resizable-handle').trigger('click');
+    if($('#guest-card').height() > '90') {
+      	$('#guest-card .ui-resizable-handle').trigger('click');
     }
   };
 
