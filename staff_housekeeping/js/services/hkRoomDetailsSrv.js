@@ -15,7 +15,7 @@ hkRover.service('HKRoomDetailsSrv',['$http', '$q', function($http, $q){
 
 	this.updateHKStatus = function(roomNo, hkStatus){
 		var deferred = $q.defer();
-		var url = '/house/change_house_keeping_status';
+		var url = '/house/change_house_keeping_status.json';
 		var postData = {'house_keeping_status' : hkStatus, 'room_no': roomNo}
 
 		$http({
