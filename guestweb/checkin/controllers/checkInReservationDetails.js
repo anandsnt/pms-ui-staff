@@ -31,15 +31,27 @@
 			$scope.checkInButtonClicked = function(){
 
 
-				if($scope.checked){
+				
 					if($rootScope.upgradesAvailable){
 
 						$location.path('/checkinUpgrade');
 					}
-					else
-						$location.path('/checkinKeys');
+					else{
+
+
+						if($rootScope.ShowupgradedLabel){
+							
+							if ($scope.checked)
+								$location.path('/checkinKeys');
+
+					   }
+					   else
+					   		$location.path('/checkinKeys');
+
+
+					}
 					
-				}
+				
 			}
 
 		}
