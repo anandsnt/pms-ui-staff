@@ -76,9 +76,9 @@
 															<td>
 															</td>
 														</tr>
-														<tr>
+														<tr ng-show="{{bill.guest_room_text}}">
 															<td>
-																	<span class="center-block">{{ bill.guest_room_text }}: <span class="guest-room-description">{{bill.guest_room_description}}</span></span>
+																	<span class="center-block">{{ bill.guest_room_text}}:<span class="guest-room-description">{{bill.guest_room_description}}</span></span>
 															</td>
 															<td>
 																	<span class="center-block">{{ bill.guest_room_fees}}</span>
@@ -93,19 +93,6 @@
 															</td>
 														</tr>
 												
-
-
-<!-- 
-													<td>
-														<span class="center-block">{{ bill.date }}</span>
-														<span class="center-block">{{ bill.guest_room_text }}: <span class="guest-room-description{{$index%2}}">{{bill.guest_room_description}}</span></span>
-														<span class="center-block" ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.description }}</span>
-													</td>
-													<td>
-														<span class="center-block"> &nbsp; </span>
-														<span class="center-block">{{ bill.guest_room_fees}}</span>
-														<span class="center-block"ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.amount }}</span>
-													</td> -->
 												
 											</tbody>
 											<tfoot>
