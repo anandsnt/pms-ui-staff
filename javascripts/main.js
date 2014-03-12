@@ -20,18 +20,18 @@ $(document).ready(function(){
 	if($('#login').is(':has(span.notice)')){
 		$("#loginStatus").css("display","block");
 	}
-	/*if($.trim($("#email").val()) != ""){
-		$("#password").focus();
+	if($.trim($("#email").val()) != ""){
+		$("#password").click();
 	} else {
-		$("#email").focus();
-	}*/
-  $("#login-form").ready(function(){  
+		$("#email").click();
+	}
+    $("#login-form").ready(function(){  
         if('ontouchstart' in document.documentElement) { 
             $("#email").on('touchstart', function(){
-                $("#email").focus();
+                $("#email").click();
             });                        
             $("#password").on('touchstart', function(){
-                $("#password").focus();
+                $("#password").click();                
             }); 
         } 
     });
