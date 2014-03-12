@@ -4,7 +4,7 @@
 		
 
 		
-		$scope.pageSuccess = true;
+		
 
 		if($rootScope.isCheckedin){
 			$scope.pageSuccess = false;
@@ -19,6 +19,8 @@
 			$location.path('/checkOutNowSuccess');
 
 		}
+		else
+			$scope.pageSuccess = true;
 
 
 		if($scope.pageSuccess){
