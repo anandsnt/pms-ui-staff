@@ -47,12 +47,14 @@
 
 			if(response.status === "failure")
 				$rootScope.netWorkError  = true;
+			else{
+				$rootScope.isCheckedin = true;
+				$scope.responseData =response.data;
+			}
 
 			$scope.isPosting = false;
-			$scope.responseData =response.data;
-			console.log(response);
-			console.log("hi"+$scope.responseData.room_no);
-			console.log("hi"+$scope.responseData.key_info);
+			
+
 
 		});
 
