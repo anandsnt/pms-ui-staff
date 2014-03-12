@@ -16,22 +16,33 @@ $(document).ready(function(){
         return true;        
     });
 
-
 	if($('#login').is(':has(span.notice)')){
 		$("#loginStatus").css("display","block");
 	}
-	if($.trim($("#email").val()) != ""){
-		$("#password").click();
-	} else {
-		$("#email").click();
-	}
     $("#login-form").ready(function(){  
+        var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;  
+        //for keyboard not raising issue in Ipad/android tabs
+        // in tabs especially in IPad .focus is creating the pblm of not showing keyboard        
+        if(!$isTablet){             
+            if($.trim($("#email").val()) != ""){
+                $("#password").focus();
+            } else {
+                $("#email").focus();
+            } 
+        }
+        else{
+            if($.trim($("#email").val()) != ""){
+                $("#password").click();
+            } else {
+                $("#email").click();
+            }             
+        }
         if('ontouchstart' in document.documentElement) { 
             $("#email").on('touchstart', function(){
                 $("#email").click();
             });                        
             $("#password").on('touchstart', function(){
-                $("#password").click();                
+                $("#password").click();              
             }); 
         } 
     });
