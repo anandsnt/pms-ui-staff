@@ -1,6 +1,6 @@
 
 (function() {
-	var checkInKeysController = function($scope,$rootScope,baseWebService,$location) {
+	var checkInKeysController = function($scope,$rootScope,baseWebService,$location,checkinDetailsService) {
 
 
 		$scope.pageSuccess = true;
@@ -29,6 +29,9 @@
   		$scope.isPosting     = true;
   		$rootScope.netWorkError  = false;
   		$scope.responseData  = [];
+
+
+  		$scope.reservationData = checkinDetailsService.getResponseData();
 
 
 		// watch for any change
@@ -64,7 +67,7 @@
 };
 
 var dependencies = [
-'$scope','$rootScope','baseWebService','$location',
+'$scope','$rootScope','baseWebService','$location','checkinDetailsService',
 checkInKeysController
 ];
 
