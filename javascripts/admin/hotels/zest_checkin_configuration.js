@@ -26,13 +26,19 @@ var ZestCheckinConfiguration = function(domRef){
 	  	  var is_notify = "true";
 	 }
 	 var guest_checkin_alert = that.myDom.find("#guest-checkin-alert").val();
-	 var alert_time = that.myDom.find("#checkin-alert-time").val();
-
+	 var alert_time_hour = that.myDom.find("#checkin-alert-time-hour").val();
+	 var alert_time_minute = that.myDom.find("#checkin-alert-time-minute").val();
+	 var alert_time_prime_time = that.myDom.find("#hotel-checkin-primetime").val();
+	 var alert_time = ""
+	 if(alert_time_hour != "" && alert_time_minute != "") {
+	 	alert_time = alert_time_hour+":"+alert_time_minute;
+	 }
 	 var data = {
 		    "checkin_alert_message": guest_checkin_alert,
 		    "is_send_alert": is_send_alert,
 		    "checkin_alert_time": alert_time,
-		    "is_notify_on_room_ready": is_notify
+		    "is_notify_on_room_ready": is_notify,
+		    "prime_time":alert_time_prime_time
 	 };
 
 	 var url = '/admin/checkin_setups/save_setup';

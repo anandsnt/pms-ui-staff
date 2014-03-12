@@ -302,7 +302,7 @@ font-style: italic;
 
 }
 &.second-in {
-padding-top: 0;
+padding: 0px 50px !important;
 }
 &.balance-footer{
 padding: 15px 26px !important;
@@ -468,6 +468,7 @@ color:#000000;
 margin: 0 auto;
 width: 65%;
 max-width: 346px;
+max-height: 50px;
 }
 
 .backbtn {
@@ -895,7 +896,7 @@ padding:5px 8px 2px 0;
 .carousel-control.left, .carousel-control.right {
     background-image: none !important;
     font-size: 22px !important;
-    opacity: 0.5 !important;
+    opacity: 0.8 !important;
 }
 
 .carousel-control {
@@ -904,17 +905,22 @@ padding:5px 8px 2px 0;
 }
 .carousel-control .icon-next, .carousel-control .glyphicon-chevron-right {
     right: 100% !important;
+  
+}
+.carousel-control .icon-next ,.carousel-control .icon-prev, .carousel-control .glyphicon-chevron-right ,
+.carousel-control .glyphicon-chevron-left{
+   top: 40% !important;
+  
 }
 
 
-
 .carousel-control .icon-next:before {
-   content:url(img/right.png) !important;
+   content:url(/assets/img/right.png) !important;
     width : 40px !important;
     height : 40px !important;
 }
 .carousel-control .icon-prev:before {
-    content: url(img/left.png) !important;
+    content: url(/assets/img/left.png) !important;
      width : 40px !important;
       height : 40px !important;
 }
@@ -1197,6 +1203,33 @@ padding:5px 8px 2px 0;
 
 
 /* ----------------------- execusive styling for desktops and tablets portrait mode -------------------*/
+.checkout-status,
+.checkout-status p {
+  font-family: 'Source Sans Pro';
+}
+
+.checkout-status {
+  padding: 10px 0 20px;
+}
+
+.checkout-status .msg-head {
+  font-weight: 300;
+  font-size: 22px !important;
+  padding: 0 5% 0;
+}
+
+.checkout-status .msg-body {
+  font-weight: 300;
+  font-size: 20px !important;
+  padding: 10px 10% 0;
+}
+
+.checkout-status .msg-foot {
+  font-weight: 400;
+  font-size: 22px !important;
+  padding: 10px 5% 0;
+}
+
 .with-back-btn {
   overflow: hidden;
   img {
@@ -1377,13 +1410,13 @@ body > div[ng-view] {
     top: 40px;
     left: 50%;
     width: 500px;
+    height: 75%;
     margin-left: -255px;
   }
 
   .bill-contain-wrap {
     position: relative;
-    height: 80vh;
-    max-height: 80vh;
+    height: 99.9%;
   }
 
   .bill-contain {
@@ -1394,6 +1427,20 @@ body > div[ng-view] {
     span, th, td {
       font-size: 18px;
     }
+  }
+
+  .bill-contain::-webkit-scrollbar {
+    -webkit-appearance: scrollbarthumb-vertical;
+    width: 4px;
+  }
+
+  .bill-contain::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, .3);
+  }
+
+  .bill-contain::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, .5);
   }
 
   .close-bill {
@@ -1439,19 +1486,16 @@ body > div[ng-view] {
   }
 
   .checkout-status .msg-head {
-    font-weight: 300;
     font-size: 35px !important;
     padding: 0 5% 0;
   }
 
   .checkout-status .msg-body {
-    font-weight: 300;
     font-size: 25px !important;
     padding: 30px 30% 0;
   }
 
   .checkout-status .msg-foot {
-    font-weight: 400;
     font-size: 35px !important;
     padding: 55px 5% 0;
   }

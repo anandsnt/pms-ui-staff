@@ -44,9 +44,9 @@
 						<carousel>
 							<slide ng-repeat="slide in slides" active="slide.active" >
 								<div class="centeralign">
-									<img ng-src="{{slide.room_type_image}}" style="height:200px;"/>
+									<img ng-src="{{(slide.room_type_image.length > 0) ? slide.room_type_image : 'room-image.png'}}" err-Src="/assets/img/image_not_available.png" style="height:200px;width:100%;"/>
 								</div>
-								<div class="upgrade-details" style="min-height:200px;">
+								<div class="upgrade-details" style="min-height:250px;">
 									<div class="col-xs-12 room-info">
 									<div class="col-xs-9 ">
 										<p class="bold-content">

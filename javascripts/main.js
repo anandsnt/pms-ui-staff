@@ -4,23 +4,49 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
 
 // Disable cache busting
 $.ajaxSetup({ cache: true });
-
 $(document).ready(function(){
 	if (localStorage.email) {
 		$("#email").val(localStorage.email);
 	}
 	$("#loginbutton").click(function(){
-		localStorage.email = $("#email").val();
 		$("#login-form").submit();
 	});
+    $("#login-form").submit(function(){
+        localStorage.email = $("#email").val();
+        return true;        
+    });
+
 	if($('#login').is(':has(span.notice)')){
 		$("#loginStatus").css("display","block");
 	}
-	if($("#email").val()!=""){
-		$("#password").focus();
-	} else {
-		$("#email").focus();
-	}
+    $("#login-form").ready(function(){  
+        var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;  
+        //for keyboard not raising issue in Ipad/android tabs
+        // in tabs especially in IPad .focus is creating the pblm of not showing keyboard        
+        if(!$isTablet){             
+            if($.trim($("#email").val()) != ""){
+                $("#password").focus();
+            } else {
+                $("#email").focus();
+            } 
+        }
+        else{
+            if($.trim($("#email").val()) != ""){
+                $("#password").click();
+            } else {
+                $("#email").click();
+            }             
+        }
+        if('ontouchstart' in document.documentElement) { 
+            $("#email").on('touchstart', function(){
+                $("#email").click();
+            });                        
+            $("#password").on('touchstart', function(){
+                $("#password").click();              
+            }); 
+        } 
+    });
+
 });
 
 // Chaining with intervals

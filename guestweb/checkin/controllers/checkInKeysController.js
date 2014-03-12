@@ -1,6 +1,6 @@
 
 (function() {
-	var checkInKeysController = function($scope,$rootScope,baseWebService,$location) {
+	var checkInKeysController = function($scope,$rootScope,baseWebService,$location,checkinDetailsService) {
 
 
 		$scope.pageSuccess = true;
@@ -31,6 +31,9 @@
   		$scope.responseData  = [];
 
 
+  		$scope.reservationData = checkinDetailsService.getResponseData();
+
+
 		// watch for any change
 
 		$rootScope.$watch('netWorkError',function(){
@@ -47,12 +50,14 @@
 
 			if(response.status === "failure")
 				$rootScope.netWorkError  = true;
+			else{
+				$rootScope.isCheckedin = true;
+				$scope.responseData =response.data;
+			}
 
 			$scope.isPosting = false;
-			$scope.responseData =response.data;
-			console.log(response);
-			console.log("hi"+$scope.responseData.room_no);
-			console.log("hi"+$scope.responseData.key_info);
+			
+
 
 		});
 
@@ -62,7 +67,7 @@
 };
 
 var dependencies = [
-'$scope','$rootScope','baseWebService','$location',
+'$scope','$rootScope','baseWebService','$location','checkinDetailsService',
 checkInKeysController
 ];
 
