@@ -34,6 +34,7 @@ hkRover.controller('roomDetailsController',['$scope', '$state', '$stateParams', 
 		}
 
 		$scope.guestViewStatus = getGuestStatusMapped($scope.data.room_details.reservation_status);
+		console.log($scope.data.room_details.reservation_status);
 	});
 
 	$scope.updateHKStatus = function(){
