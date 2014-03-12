@@ -16,7 +16,14 @@ var ChangeStayDatesView = function(viewDom){
   
   //change Stay dates dom click handler
   this.changeStayDatesClickHandler = function(){
+  	 that.closeGuestCardDrawer();
      sntapp.notification.hideMessage(that.myDom);
+  };
+  // function for closing the drawer if is open
+  this.closeGuestCardDrawer = function(){
+		if($('#guest-card').height() > '90') {
+			$('#guest-card .ui-resizable-handle').trigger('click');
+		}
   };
   this.executeLoadingAnimation = function(){
       changeView("nested-view", "", "view-nested-first", "view-nested-second", "move-from-right", false); 
