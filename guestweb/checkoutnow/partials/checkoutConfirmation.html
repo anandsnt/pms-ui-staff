@@ -24,7 +24,7 @@
 		</div>
 
 		<!-- contentarea starts here-->
-		<div class="container" ng-hide="isFetching || netWorkError">
+		<div class="container" ng-hide="isFetching || netWorkError || !pageSuccess">
 			<!-- top section starts here-->
 
 			<div class="row check-inout-wrapper">
@@ -63,7 +63,7 @@
 							<div class="rel-wrapper">
 								<a href="#/checkoutBalance"></a>
 								<div class="row">
-									Check out<br/>now.
+									Check out<br class="hide-in-desktop"/> now.
 									<!-- {{details.buttonText}} -->
 								</div>
 								<div class="row  icontop">
@@ -73,15 +73,15 @@
 						</div>
 					</div>
 
-				<div class="row clearboth">
-					<p class="foot-text centeralign" ng-show="true">
-						<em>{{footerMessage1}}</em>
-					</p>
-					<p class="foot-text centeralign second-in ">
-						<em>{{details.footerMessage2}} {{checkoutTime}}.</em>
-					</p>
-				</div>
+			</div>
 
+			<div class="row clearboth">
+				<p class="foot-text centeralign" ng-show="true">
+						<em>{{footerMessage1}}</em>
+				</p>
+				<p class="foot-text centeralign second-in ">
+					<em>{{details.footerMessage2}} {{checkoutTime}}.</em>
+				</p>
 			</div>
 
 		</div>
