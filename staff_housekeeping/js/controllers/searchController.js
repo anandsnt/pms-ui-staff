@@ -1,6 +1,10 @@
 hkRover.controller('searchController',['$scope', 'HKSearchSrv', '$state', function($scope, HKSearchSrv, $state){
+	$scope.roomListFetchComplete = false;
+	$scope.isFilterHidden = true;
+
 	HKSearchSrv.fetch().then(function(messages) {
-	      $scope.data = messages;
+			$scope.roomListFetchComplete = true;
+	        $scope.data = messages;
 	});
 
 	$scope.isCleanVacant = function(roomHkStatus, isRoomOccupied){
@@ -26,7 +30,11 @@ hkRover.controller('searchController',['$scope', 'HKSearchSrv', '$state', functi
 
 	}
 
-	console.log($scope.filterOpen);
+	$scope.filterRoomsClicked = function(){
+		$scope.isFilterHidden = !$scope.isFilterHidden;
+		$scope.$emit('filterRoomsClicked');
+	}
+
 
 }]);
 

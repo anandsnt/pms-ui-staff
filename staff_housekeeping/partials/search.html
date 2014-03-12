@@ -5,7 +5,7 @@
    <!-- Title -->
    <h1 class="h2">Rooms</h1>
    <!-- Filter / Checkout button  -->
-   <a ng-click="$emit('filterRoomsClicked')" class="button white with-icon only-icon toggle linked-toggle"><span class="icons icon-filter"></span>Filter rooms</a>
+   <a ng-click="filterRoomsClicked()" class="button white with-icon only-icon toggle linked-toggle"><span class="icons icon-filter"></span>Filter rooms</a>
 </header>
 <!-- Search form -->
 <form class="search-form" role="search">
@@ -16,9 +16,9 @@
    </div>
 </form>
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" role="main">
-   <ul class="wrapper" ng-repeat="room in data.rooms | filter:query">
-      <li>
+<section id="rooms" class="content scrollable" ng-iscroll = "rooms">
+   <ul class="wrapper">
+      <li ng-repeat="room in data.rooms | filter:query" >
          <a ng-click="goToRoomDetails(room.id)" ng-class="{'room-clean': isCleanVacant(room.hk_status, room.is_occupied), 'room-dirty': isDirtyVacant(room.hk_status, room.is_occupied), 'room-out': isOutofOrder(room.hk_status), 'with-image': room.is_occupied == 'true'}">  
             <h2 class="room-number">{{ room.room_no}}</h2>
             <span class="room-status">{{ room.hk_status }}</span>
@@ -29,7 +29,7 @@
    </ul>
 </section>
 <!-- Rooms filters -->
-<section class="content hidden" id="filter-rooms">
+<section class="content hidden" ng-class = "{'hidden': isFilterHidden}" id="filter-rooms">
    <header role="banner" class="nav-bar float">
       <h1 class="h2">Filter rooms</h1>
       <button class="button blank clear-selection hidden" id="clear-filters" type="button">Clear</button>
