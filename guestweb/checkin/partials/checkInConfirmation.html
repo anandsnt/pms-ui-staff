@@ -28,7 +28,7 @@
 	
 
 	<!-- contentarea starts here-->
-	<div class="container" ng-hide="isPosting || netWorkError">
+	<div class="container" ng-hide="isPosting || netWorkError || isResponseSuccess">
 		<!-- top section starts here-->
 
 		<div class="row check-inout-wrapper">
@@ -61,7 +61,7 @@
 						<br />
 						<div class="row">
 							<em class="labelText">LAST 4 DIGITS OF CREDIT CARD USED</em>
-							<input type="number " ng-model="cardDigits" class = "col-xs-12 textBox" maxlength="4"/> 
+							<input type="password" ng-model="cardDigits" class = "col-xs-12 textBox" maxlength="4"/> 
 						</div>
 						<a  class="link-btn with-bg nextbtn" ng-click="nextButtonClicked()">NEXT</a>
 					</div>
