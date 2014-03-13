@@ -232,22 +232,32 @@ snt.run(function($rootScope, $location, $http){
 
 
 (function() {
-	var checkOutLandingController = function($rootScope,$location) {
+	var checkOutLandingController = function($rootScope,$location,$scope) {
 		//if checkout is already done
 
-	if($rootScope.isCheckedin &&  !$rootScope.isActiveToken)
+	if($rootScope.isCheckedin &&  !$rootScope.isActiveToken){
+		$scope.pageSuccess = false;
 		$location.path('/checkinSuccess');
-	else if($rootScope.isCheckin)
+	}
+	else if($rootScope.isCheckin){
+		$scope.pageSuccess = false;
 		$location.path('/checkinConfirmation');
-	else if($rootScope.isCheckedout)
+	}
+	else if($rootScope.isCheckedout){
+		$scope.pageSuccess = false;
 		$location.path('/checkOutNowSuccess');
-	else if(!$rootScope.isLateCheckoutAvailable)
+	}
+	else if(!$rootScope.isLateCheckoutAvailable){
+		$scope.pageSuccess = false;
 		$location.path('/checkOutNow');
+	}
+	else
+		$scope.pageSuccess = true;
 	}
 
 
 	var dependencies = [
-	'$rootScope','$location',
+	'$rootScope','$location','$scope',
 	checkOutLandingController
 	];
 
