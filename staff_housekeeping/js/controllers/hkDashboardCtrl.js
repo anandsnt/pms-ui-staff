@@ -1,6 +1,6 @@
-hkRover.controller('DashboardController',['$scope', 'DashboardService',  function($scope, DashboardService){
+hkRover.controller('HKDashboardCtrl',['$scope', 'hkDashboardSrv',  function($scope, hkDashboardSrv){
 
-	DashboardService.fetch().then(function(messages) {
+	hkDashboardSrv.fetch().then(function(messages) {
         $scope.data = messages;
 	});
 
@@ -10,10 +10,7 @@ hkRover.controller('HKRootCtrl',['$rootScope', '$scope', function($rootScope, $s
 	$scope.menuOpen = false;
 	
 	$scope.$on("navc", function(event){
-		console.log("In navc function");
 		$scope.menuOpen = $scope.menuOpen ? false : true;
-		$scope.sajith ="testsaj";
-		console.log($scope.menuOpen);
 	
 	})
 

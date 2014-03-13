@@ -1,4 +1,4 @@
-hkRover.controller('searchController',['$scope', 'HKSearchSrv', '$state', function($scope, HKSearchSrv, $state){
+hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($scope, HKSearchSrv, $state){
 	$scope.isFilterHidden = true;
 	$scope.query = '';
 	$scope.newTerm = "clean";
@@ -7,6 +7,7 @@ hkRover.controller('searchController',['$scope', 'HKSearchSrv', '$state', functi
 	if($scope.data == ''){
 		HKSearchSrv.fetch().then(function(data) {
 		        $scope.data = data;
+		        $scope.$parent.myScroll['rooms'].refresh();
 		});	
 	}
 

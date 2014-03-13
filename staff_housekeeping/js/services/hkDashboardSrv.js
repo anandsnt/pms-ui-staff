@@ -1,4 +1,4 @@
-hkRover.service('DashboardService',['$http', '$q', function($http, $q){
+hkRover.service('hkDashboardSrv',['$http', '$q', function($http, $q){
 
 	this.fetch = function(){
 		var deferred = $q.defer();
@@ -11,6 +11,4 @@ hkRover.service('DashboardService',['$http', '$q', function($http, $q){
 		});
 		return deferred.promise;
 	}
-
-
 }]);

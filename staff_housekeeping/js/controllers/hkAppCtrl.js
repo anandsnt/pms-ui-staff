@@ -1,4 +1,4 @@
-hkRover.controller('appController',['$scope', '$state', function($scope, $state){
+hkRover.controller('HKappCtrl',['$scope', '$state', function($scope, $state){
 
     $scope.menuOpen = false;
     $scope.filterOpen = false;

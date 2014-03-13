@@ -1,4 +1,4 @@
-hkRover.controller('roomDetailsController',['$scope', '$state', '$stateParams', 'HKRoomDetailsSrv',  
+hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKRoomDetailsSrv',  
 					function($scope, $state, $stateParams, HKRoomDetailsSrv){
 	
 	$scope.isCleanVacant = false;
