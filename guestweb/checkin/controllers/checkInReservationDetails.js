@@ -4,8 +4,9 @@
 		
 
 		$scope.pageSuccess = true;
+		
 
-		if($rootScope.isCheckedin){
+		if($rootScope.isCheckedin &&  !$rootScope.isActiveToken){
 
 			$scope.pageSuccess = false;
 			$location.path('/checkinSuccess');
@@ -27,15 +28,23 @@
 			$scope.checked = false;
 
 			$scope.reservationData = checkinDetailsService.getResponseData();
+
+			$scope.checkInButtonOpacity = ($rootScope.checkedApplyCharges) ? 1: 0.5;
+
+
 			
 			// check if checkbox is checked and then disable it
 
 			$scope.$watch('checked',function(){
 
 				if($scope.checked){
+
+					$scope.checkInButtonOpacity = 1.0;
 					$rootScope.checkedApplyCharges = true;
 
 				}
+				else
+					$scope.checkInButtonOpacity = 0.5;
 			});
 
 
