@@ -1,13 +1,12 @@
 hkRover.controller('searchController',['$scope', 'HKSearchSrv', '$state', function($scope, HKSearchSrv, $state){
-	$scope.roomListFetchComplete = false;
 	$scope.isFilterHidden = true;
 	$scope.query = '';
 	$scope.newTerm = "clean";
+	
 	$scope.data = HKSearchSrv.roomList;
 	if($scope.data == ''){
-		HKSearchSrv.fetch().then(function(messages) {
-				$scope.roomListFetchComplete = true;
-		        $scope.data = messages;
+		HKSearchSrv.fetch().then(function(data) {
+		        $scope.data = data;
 		});	
 	}
 
