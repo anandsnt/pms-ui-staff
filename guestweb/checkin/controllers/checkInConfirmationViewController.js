@@ -4,6 +4,8 @@
 
 		$scope.pageSuccess = true;
 
+		$rootScope.checkedApplyCharges = false;
+
 		if($rootScope.isCheckedin){
 
 			$scope.pageSuccess = false;

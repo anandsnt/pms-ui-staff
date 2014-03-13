@@ -41,7 +41,11 @@
        checkinRoomUpgradeOptionsService.fetch(data).then(function(response) {
 
         $scope.isFetching     = false;
-        $scope.slides = response.data;
+        
+        if(response.status === 'failure')
+          $rootScope.netWorkError = true;
+        else
+          $scope.slides = response.data;
 
 
       });
