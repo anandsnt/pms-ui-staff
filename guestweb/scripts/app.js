@@ -235,7 +235,7 @@ snt.run(function($rootScope, $location, $http){
 	var checkOutLandingController = function($rootScope,$location) {
 		//if checkout is already done
 
-	if($rootScope.isCheckin &&  !$rootScope.isActiveToken)
+	if($rootScope.isCheckedin &&  !$rootScope.isActiveToken)
 		$location.path('/checkinSuccess');
 	else if($rootScope.isCheckin)
 		$location.path('/checkinConfirmation');
