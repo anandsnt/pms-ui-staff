@@ -27,20 +27,40 @@
 			$scope.checked = false;
 
 			$scope.reservationData = checkinDetailsService.getResponseData();
+			
+			// check if checkbox is checked and then disable it
+
+			$scope.$watch('checked',function(){
+
+				if($scope.checked){
+					$rootScope.checkedApplyCharges = true;
+
+				}
+			});
+
 
 			$scope.checkInButtonClicked = function(){
 
+		
 
-				if($scope.checked){
+
+			if($scope.checked){
+
+					// if room upgrades are available
+
 					if($rootScope.upgradesAvailable){
 
 						$location.path('/checkinUpgrade');
 					}
-					else
+					else{
+
 						$location.path('/checkinKeys');
+					}
+		
 					
-				}
-			}
+					}
+		    }
+			
 
 		}
 
