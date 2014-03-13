@@ -10,8 +10,7 @@ hkRover.controller('searchController',['$scope', 'HKSearchSrv', '$state', functi
 		        $scope.data = messages;
 		});	
 	}
-	$scope.chck = true;
-	
+
 	$scope.currentFilters = {	
 							"dirty" : true,
 							"pickup": true,
@@ -34,10 +33,15 @@ hkRover.controller('searchController',['$scope', 'HKSearchSrv', '$state', functi
 							"departed_arrived" : true
 							}
 
-	console.log($scope.currentFilters.dirty);
 
-	$scope.myfilter = function(room){
+	$scope.ApplyFilters = function(room){
+
+		//Filter by search term
+		if((room.room_no).indexOf($scope.query) < 0) {
+			return false;
+		}
 		
+		//Filter by status in filter section
 		if (($scope.currentFilters.dirty === false) && (room.hk_status.value === "DIRTY")) {
 			return false;
 		}
@@ -62,37 +66,37 @@ hkRover.controller('searchController',['$scope', 'HKSearchSrv', '$state', functi
 		if (($scope.currentFilters.occupied === false) && (room.is_occupied === "true")) {
 			return false;
 		}
-		if (($scope.currentFilters.stayover === false) && (room.room_reservation_status === "stay over")) {
+		if (($scope.currentFilters.stayover === false) && (room.room_reservation_status === "Stayover")) {
 			return false;
 		}
-		if (($scope.currentFilters.not_reserved === false) && (room.room_reservation_status === "not reserved")) {
+		if (($scope.currentFilters.not_reserved === false) && (room.room_reservation_status === "Not Reserved")) {
 			return false;
 		}
-		if (($scope.currentFilters.arrival === false) && (room.room_reservation_status === "arrival")) {
+		if (($scope.currentFilters.arrival === false) && (room.room_reservation_status === "Arrival")) {
 			return false;
 		}
-		if (($scope.currentFilters.arrived === false) && (room.room_reservation_status === "arrived")) {
+		if (($scope.currentFilters.arrived === false) && (room.room_reservation_status === "Arrived")) {
 			return false;
 		}
-		if (($scope.currentFilters.arrived_dueout === false) && (room.room_reservation_status === "arrived/dueout")) {
+		if (($scope.currentFilters.arrived_dueout === false) && (room.room_reservation_status === "Arrived / Due Out")) {
 			return false;
 		}
-		if (($scope.currentFilters.arrived_departed === false) && (room.room_reservation_status === "arrived/departed")) {
+		if (($scope.currentFilters.arrived_departed === false) && (room.room_reservation_status === "Arrived / Departed")) {
 			return false;
 		}
-		if (($scope.currentFilters.dueout === false) && (room.room_reservation_status === "dueout")) {
+		if (($scope.currentFilters.dueout === false) && (room.room_reservation_status === "Due Out")) {
 			return false;
 		}
-		if (($scope.currentFilters.dueout_arrival === false) && (room.room_reservation_status === "dueout/arrival")) {
+		if (($scope.currentFilters.dueout_arrival === false) && (room.room_reservation_status === "Due Out / Arrival")) {
 			return false;
 		}
-		if (($scope.currentFilters.departed === false) && (room.room_reservation_status === "departed")) {
+		if (($scope.currentFilters.departed === false) && (room.room_reservation_status === "Departed")) {
 			return false;
 		}
-		if (($scope.currentFilters.departed_arrival === false) && (room.room_reservation_status === "departed/arrival")) {
+		if (($scope.currentFilters.departed_arrival === false) && (room.room_reservation_status === "Departed / Arrival")) {
 			return false;
 		}
-		if (($scope.currentFilters.departed_arrived === false) && (room.room_reservation_status === "departed/arrived")) {
+		if (($scope.currentFilters.departed_arrived === false) && (room.room_reservation_status === "Departed / Arrived")) {
 			return false;
 		}
 
