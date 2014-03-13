@@ -224,6 +224,37 @@
 		}
 	}
 
+/* Menu toggle			==================================*/
+	.icon-toggle {
+		background-color: @logoGradientStart;
+		background-image: @iconMenu, @darkTexture;
+		background-repeat: no-repeat, repeat;
+		background-position: -10px -10px, 0 0;
+		overflow: hidden;
+		.hide-text;
+		.square(40px);
+		#border-radius > .right();
+		.box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
+		.show;
+		.no-transition;
+		.pull-left;
+
+		&:hover,
+		&.active { background-position: -70px -10px, 0 0; }
+
+		&#back-arrow {
+			background-position: -12px -490px, 0 0;
+
+			&:hover,
+			&.active { background-position: -72px -490px, 0 0; }
+		}
+
+		@media @highdpi {
+			background-image: @iconMenu2x, @darkTexture;
+			background-size: 120px, 60px;
+		}
+	}
+
 /* Arrow icons			==================================*/
 	.has-arrow {
 		background-position: 95% 50%;
@@ -307,38 +338,7 @@
 		}
 	}
 
-/* Menu toggle			==================================*/
-	.icon-toggle {
-		background-color: @logoGradientStart;
-		background-image: @iconMenu, @darkTexture;
-		background-repeat: no-repeat, repeat;
-		background-position: -10px -10px, 0 0;
-		overflow: hidden;
-		.hide-text;
-		.square(40px);
-		#border-radius > .right();
-		.box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
-		.show;
-		.no-transition;
-		.pull-left;
-
-		&:hover,
-		&.active { background-position: -70px -10px, 0 0; }
-
-		&#back-arrow {
-			background-position: -12px -490px, 0 0;
-
-			&:hover,
-			&.active { background-position: -72px -490px, 0 0; }
-		}
-
-		@media @highdpi {
-			background-image: @iconMenu2x, @darkTexture;
-			background-size: 120px, 60px;
-		}
-	}
-
-/* Back buttone			==================================*/
+/* Back button			==================================*/
 	.back-button:not(.button):not(.switch) {
 		color: @logoPrimary;
 		text-transform: uppercase;
