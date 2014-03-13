@@ -10,178 +10,180 @@
 <!-- Search form -->
 <form class="search-form" role="search">
    <div class="entry">
-      <a href="#" id="clear-query" class="icons icon-clear-search">Clear query</a>
+      <a id="clear-query" ng-show="query != ''" class="icons icon-clear-search visible" ng-click = "query = ''">Clear query</a>
       <button type="submit" class="icons icon-search">Search</button>
-      <input name="query" id="query" ng-model="query" placeholder="Enter Room Number" type="number" autocomplete="off" />
+      <input name="query" id="query" ng-model="query" placeholder="Enter Room Number" type="text" autocomplete="off" />
    </div>
 </form>
 <!-- Rooms list -->
 <section id="rooms" class="content scrollable" ng-iscroll = "rooms">
    <ul class="wrapper">
-      <li ng-repeat="room in data.rooms | filter:query" >
-         <a ng-click="goToRoomDetails(room.id)" ng-class="{'room-clean': isCleanVacant(room.hk_status, room.is_occupied), 'room-dirty': isDirtyVacant(room.hk_status, room.is_occupied), 'room-out': isOutofOrder(room.hk_status), 'with-image': room.is_occupied == 'true'}">  
+      <li ng-repeat="room in data.rooms | filter: ApplyFilters" >
+         <a ng-click="goToRoomDetails(room.id)" ng-class="{'room-clean': isCleanVacant(room.hk_status.value, room.is_occupied), 'room-dirty': isDirtyVacant(room.hk_status.value, room.is_occupied), 'room-out': isOutofOrder(room.hk_status.value), 'with-image': room.is_occupied == 'true'}">  
             <h2 class="room-number">{{ room.room_no}}</h2>
-            <span class="room-status">{{ room.hk_status }}</span>
+            <span class="room-status">{{ room.hk_status.description }}</span>
             <span class="fo-status">{{ room.room_reservation_status }}</span>
-            <figure class="guest-image"><img src="{{ room.avtar_src }}" alt="" /></figure>
+            <figure ng-show="room.is_occupied == 'true'" class="guest-image">
+               <span ng-show="room.is_vip == 'true'" class="vip">VIP</span>
+               <img src="{{room.avatar_src}}" alt="" />
+            </figure>
          </a>
       </li>
    </ul>
 </section>
 <!-- Rooms filters -->
-<section class="content hidden" ng-class = "{'hidden': isFilterHidden}" id="filter-rooms">
+<section class="content" ng-class = "{'hidden': isFilterHidden, 'filter-show': !(isFilterHidden)}" id="filter-rooms">
+
    <header role="banner" class="nav-bar float">
-      <h1 class="h2">Filter rooms</h1>
-      <button class="button blank clear-selection hidden" id="clear-filters" type="button">Clear</button>
-      <a class="complete toggle linked-toggle" href="#filter-rooms">Done</a>
-   </header>
-   <div class="content scrollable" id="filter-options">
-      <div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
-         <div class="holder">
-            <strong class="title">Housekeeping</strong>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters1" id="room-filters1" name="room-filters">
-               Show Dirty
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters2" id="room-filters2" name="room-filters">
-               Show Pickup
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters3" id="room-filters3" name="room-filters">
-               Show Clean
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters4" id="room-filters4" name="room-filters">
-               Show Inspected
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters6" id="room-filters5" name="room-filters">
-               Show Out of Order
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters7" id="room-filters7" name="room-filters">
-               Show Out of Service
-               </label>
-            </div>
-         </div>
-         <div class="holder">
-            <strong class="title">Reservation</strong>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters8" id="room-filters8" name="room-filters">
-               Show Vacant
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters9" id="room-filters9" name="room-filters">
-               Show Occupied
-               </label>
-            </div>
-         </div>
-         <div class="holder">
-            <strong class="title">Front Office Status</strong>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters10" id="room-filters10" name="room-filters">
-               Show Stayover
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters11" id="room-filters11" name="room-filters">
-               Show Not Reserved
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters12" id="room-filters12" name="room-filters">
-               Show Arrival
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters13" id="room-filters13" name="room-filters">
-               Show Arrived
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters14" id="room-filters14" name="room-filters">
-               Show Arrived / Due Out
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters15" id="room-filters15" name="room-filters">
-               Show Arrived / Departed
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters16" id="room-filters16" name="room-filters">
-               Show Due Out
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters17" id="room-filters17" name="room-filters">
-               Show Due Out / Arrival
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters18" id="room-filters18" name="room-filters">
-               Departed
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters19" id="room-filters19" name="room-filters">
-               Departed / Arrival
-               </label>
-            </div>
-            <div class="entry radio-check">
-               <label class="checkbox">
-               <span class="icon-form icon-checkbox"></span>
-               <input type="checkbox" value="room-filters20" id="room-filters20" name="room-filters">
-               Departed / Arrived
-               </label>
-            </div>
-         </div>
-      </div>
-      <div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
-         <div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 123px; transform: translate(0px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
-      </div>
-   </div>
+       <h1 class="h2">Filter rooms</h1>
+       <button class="button blank clear-selection hidden" id="clear-filters" type="button">Clear</button>
+       <a class="complete toggle linked-toggle" ng-click="filterRoomsClicked()">Done</a>
+    </header>
+    <div class="content scrollable" id="filter-options">
+       <div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+          <div class="holder">
+             <strong class="title">Housekeeping</strong>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dirty}"></span>
+                    <input type="checkbox" ng-model="currentFilters.dirty" name="room-filters">
+                    Show Dirty
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.pickup}"></span>
+                    <input type="checkbox" ng-model="currentFilters.pickup" name="room-filters">
+                    Show Pickup
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.clean}"></span>
+                    <input type="checkbox" ng-model="currentFilters.clean" name="room-filters">
+                    Show Clean
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.inspected}"></span>
+                    <input type="checkbox" ng-model="currentFilters.inspected" name="room-filters">
+                    Show Inspected
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.out_of_order}"></span>
+                    <input type="checkbox" ng-model="currentFilters.out_of_order" name="room-filters">
+                    Show Out of Order
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.out_of_service}"></span>
+                    <input type="checkbox" ng-model="currentFilters.out_of_service" name="room-filters">
+                    Show Out of Service
+                </label>
+             </div>
+          </div>
+          <div class="holder">
+             <strong class="title">Reservation</strong>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.vacant}"></span>
+                    <input type="checkbox" ng-model="currentFilters.vacant" name="room-filters">
+                    Show Vacant
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.occupied}"></span>
+                    <input type="checkbox" ng-model="currentFilters.occupied" name="room-filters">
+                    Show Occupied
+                </label>
+             </div>
+          </div>
+          <div class="holder">
+             <strong class="title">Front Office Status</strong>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.stayover}"></span>
+                    <input type="checkbox" ng-model="currentFilters.stayover" name="room-filters">
+                    Show Stayover
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.not_reserved}"></span>
+                    <input type="checkbox" ng-model="currentFilters.not_reserved" name="room-filters">
+                    Show Not Reserved
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.arrival}"></span>
+                    <input type="checkbox" ng-model="currentFilters.arrival" name="room-filters">
+                    Show Arrival
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.arrived}"></span>
+                    <input type="checkbox" ng-model="currentFilters.arrived" name="room-filters">
+                    Show Arrived
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.arrived_dueout}"></span>
+                    <input type="checkbox" ng-model="currentFilters.arrived_dueout" name="room-filters">
+                    Show Arrived / Due Out
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.arrived_departed}"></span>
+                    <input type="checkbox" ng-model="currentFilters.arrived_departed" name="room-filters">
+                    Show Arrived / Departed
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dueout}"></span>
+                    <input type="checkbox" ng-model="currentFilters.dueout" name="room-filters">
+                    Show Due Out
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dueout_arrival}"></span>
+                    <input type="checkbox" ng-model="currentFilters.dueout_arrival" name="room-filters">
+                    Show Due Out / Arrival
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.departed}"></span>
+                    <input type="checkbox" ng-model="currentFilters.departed" name="room-filters">
+                    Departed
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.departed_arrival}"></span>
+                    <input type="checkbox" ng-model="currentFilters.departed_arrival" name="room-filters">
+                    Departed / Arrival
+                </label>
+             </div>
+             <div class="entry radio-check">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.departed_arrived}"></span>
+                    <input type="checkbox" ng-model="currentFilters.departed_arrived" name="room-filters">
+                    Departed / Arrived
+                </label>
+             </div>
+          </div>
+       </div>
+    </div>  
 </section>
+
