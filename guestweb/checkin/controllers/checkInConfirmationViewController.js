@@ -6,7 +6,7 @@
 
 		$rootScope.checkedApplyCharges = false;
 
-		if($rootScope.isCheckedin){
+		if($rootScope.isCheckedin &&  !$rootScope.isActiveToken){
 
 			$scope.pageSuccess = false;
 			$location.path('/checkinSuccess');
