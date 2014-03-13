@@ -25,12 +25,13 @@
 
 		if($scope.pageSuccess){
 
-			$scope.checked = false;
+			$scope.checked =  ($rootScope.ShowupgradedLabel) ? true:false;
+
+
 
 			$scope.reservationData = checkinDetailsService.getResponseData();
 
-			$scope.checkInButtonOpacity = ($rootScope.checkedApplyCharges) ? 1: 0.5;
-
+			
 
 			
 			// check if checkbox is checked and then disable it
@@ -43,10 +44,13 @@
 					$rootScope.checkedApplyCharges = true;
 
 				}
-				else
+				else{
 					$scope.checkInButtonOpacity = 0.5;
+					$rootScope.checkedApplyCharges = false;
+				}
 			});
 
+			$scope.checkInButtonOpacity = ($rootScope.ShowupgradedLabel) ? 1.0 : 0.5;
 
 			$scope.checkInButtonClicked = function(){
 
