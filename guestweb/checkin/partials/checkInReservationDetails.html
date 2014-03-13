@@ -91,13 +91,13 @@
 
 						</div>
 						<div class="row applycharge">
-							 <input type="checkbox" ng-model="checked" >:&nbsp
+							 <input type="checkbox" ng-model="checked"  ng-checked="checkedApplyCharges">&nbsp
 							APPLY CHARGES TO MY CREDIT CARD ON FILE
 							
 						</div>
 
 					</div></div>
-				<div class="col-md-6 ">
+				<div class="col-md-6 " ng-disabled="!checkedApplyCharges">
 					<div class="row now-later-options ">
 						<div class="col-xs-12 checkin ">
 							<div class="rel-wrapper" ng-click="checkInButtonClicked()">
