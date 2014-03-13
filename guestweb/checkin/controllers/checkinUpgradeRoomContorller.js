@@ -120,4 +120,16 @@ snt.directive("description", function ($compile) {
       $compile(element.contents())(scope);
     }
   }
-})
+});
+
+// Setup directive to handle image not found case
+
+snt.directive('errSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      element.bind('error', function() {
+        element.attr('src', attrs.errSrc);
+      });
+    }
+  }
+});
