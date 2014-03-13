@@ -133,6 +133,21 @@ hkRover.controller('searchController',['$scope', 'HKSearchSrv', '$state', functi
 		$scope.$emit('filterRoomsClicked');
 	}
 
+	$scope.isFilterChcked = function(){
+		for(var p in $scope.currentFilters) {
+		    if($scope.currentFilters[p] === true) {
+		        return true;
+		    }
+		}
+	}
+
+	$scope.clearFilters = function(){
+		for(var p in $scope.currentFilters) {
+			$scope.currentFilters[p] = false
+		}
+	}
+
+
 
 }]);
 
