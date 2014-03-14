@@ -5,7 +5,11 @@ hkRover.service('HKRoomDetailsSrv',['$http', '$q', function($http, $q){
 		var url = '/house/room/' + id + '.json';
 
 		$http.get(url).success(function(response, status) {
-		    deferred.resolve(response.data);
+			if(response.status == "success"){
+		    	deferred.resolve(response.data);
+		    }else{
+		    	console.log("error");
+		    }
 
 		}).error(function(response, status) {
 		    deferred.reject(response);
