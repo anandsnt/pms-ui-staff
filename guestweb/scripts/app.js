@@ -133,14 +133,16 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.isCheckin     =   ($attrs.isCheckin ==='true') ? true : false;
 	$rootScope.isActiveToken  =   ($attrs.isActiveToken ==='true') ? true : false;
 
-	$rootScope.reservationStatus = $attrs.reservationStatus;
-	$rootScope.isCheckedin  = ($attrs.reservationStatus ==='CHECKEDIN')? true :false;
-	$rootScope.isActiveToken   = ($attrs.isActiveToken ==='true') ? true : false;
+	$rootScope.reservationStatusCheckedIn = ($attrs.reservationStatus ==='CHECKEDIN')? true :false;
+
+	$rootScope.isActiveToken = ($attrs.isActiveToken ==='true') ? true : false;
+
+	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken)
 
 
    	// page navigatons if any of following conditions happpens
 
-   	if($attrs.reservationStatus ==='CHECKEDIN')
+   	if(($attrs.reservationStatus ==='CHECKEDIN') && ($attrs.isActiveToken ==='false'))
 		$location.path('/checkinSuccess');
 	else if($rootScope.isCheckin)
 		$location.path('/checkinConfirmation');
