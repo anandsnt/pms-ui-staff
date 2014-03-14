@@ -134,20 +134,13 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.isActiveToken  =   ($attrs.isActiveToken ==='true') ? true : false;
 
 	$rootScope.reservationStatus = $attrs.reservationStatus;
-
-
-
-	//to be retrieved from server
-
 	$rootScope.isCheckedin  = ($attrs.reservationStatus ==='CHECKEDIN')? true :false;
 	$rootScope.isActiveToken   = ($attrs.isActiveToken ==='true') ? true : false;
 
 
-	/////////////////////////////////////////////
-	
-   
+   	// page navigatons if any of following conditions happpens
 
-   	if(($attrs.reservationStatus ==='CHECKEDIN') && ($attrs.isActiveToken ==='false'))
+   	if($attrs.reservationStatus ==='CHECKEDIN')
 		$location.path('/checkinSuccess');
 	else if($rootScope.isCheckin)
 		$location.path('/checkinConfirmation');
@@ -235,7 +228,7 @@ snt.run(function($rootScope, $location, $http){
 	var checkOutLandingController = function($rootScope,$location,$scope) {
 		//if checkout is already done
 
-	if($rootScope.isCheckedin &&  !$rootScope.isActiveToken){
+	if($rootScope.isCheckedin){
 		$scope.pageSuccess = false;
 		$location.path('/checkinSuccess');
 	}

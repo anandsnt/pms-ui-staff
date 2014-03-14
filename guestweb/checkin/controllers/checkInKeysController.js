@@ -7,7 +7,7 @@
 		
 		// page navigatons if any of following conditions happpens
 
-		if($rootScope.isCheckedin &&  !$rootScope.isActiveToken){
+		if($rootScope.isCheckedin){
 
 			$scope.pageSuccess = false;
 			$location.path('/checkinSuccess');
