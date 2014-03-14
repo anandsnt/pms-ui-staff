@@ -9,7 +9,7 @@ var ZestCheckinConfiguration = function(domRef){
   	that.myDom.find('#send_email').on('click', that.sendCheckinNotificationMail);
   	that.myDom.find('#listguests').on('click', that.gotoNextPage);
   };
-	
+
   this.goBackToPreviousView = function() {
  	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
@@ -29,6 +29,7 @@ var ZestCheckinConfiguration = function(domRef){
 	 var alert_time_hour = that.myDom.find("#checkin-alert-time-hour").val();
 	 var alert_time_minute = that.myDom.find("#checkin-alert-time-minute").val();
 	 var alert_time_prime_time = that.myDom.find("#hotel-checkin-primetime").val();
+	 var require_cc_for_checkout_email =  that.myDom.find("#require_cc").is(":checked");
 	 var alert_time = ""
 	 if(alert_time_hour != "" && alert_time_minute != "") {
 	 	alert_time = alert_time_hour+":"+alert_time_minute;
@@ -38,7 +39,8 @@ var ZestCheckinConfiguration = function(domRef){
 		    "is_send_alert": is_send_alert,
 		    "checkin_alert_time": alert_time,
 		    "is_notify_on_room_ready": is_notify,
-		    "prime_time":alert_time_prime_time
+		    "prime_time":alert_time_prime_time,
+		    "require_cc_for_checkout_email" : require_cc_for_checkout_email
 	 };
 
 	 var url = '/admin/checkin_setups/save_setup';
@@ -77,16 +79,16 @@ var ZestCheckinConfiguration = function(domRef){
   /**
   * Method for showing next page (based on href)
   */
-  this.gotoNextPage =  function(event){  
+  this.gotoNextPage =  function(event){
   		event.preventDefault();
-  		var target = $(event.target);	  	
+  		var target = $(event.target);
         var href = target.attr("href");
-  	    var viewParams = {};	
+  	    var viewParams = {};
 	    var currentDiv = sntadminapp.getCurrentDiv();
-	    var nextDiv = sntadminapp.getReplacingDiv(currentDiv);  	
+	    var nextDiv = sntadminapp.getReplacingDiv(currentDiv);
 	    var backDom = currentDiv;
 	  	var nextViewParams = {'backDom': backDom};
-	  
+
 	    if(typeof href !== 'undefined'){
 	  		sntapp.fetchAndRenderView(href, nextDiv, viewParams, 'BLOCKER', nextViewParams);
 	  		nextDiv.show();
