@@ -2,6 +2,8 @@ function checkinDatePickerController($scope, $rootScope,dateFilter,$filter,$loca
 	
 	$scope.pageSuccess = true;
 
+	// page navigatons if any of following conditions happpens
+
 	if($rootScope.isCheckedin &&  !$rootScope.isActiveToken){
 
 		$scope.pageSuccess = false;

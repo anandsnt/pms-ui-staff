@@ -5,6 +5,7 @@
 
 		$scope.pageSuccess = true;
 		
+// page navigatons if any of following conditions happpens
 
 		if($rootScope.isCheckedin &&  !$rootScope.isActiveToken){
 
@@ -25,6 +26,8 @@
 
 		if($scope.pageSuccess){
 
+			//check if checkbox was already checked (before going to upgrades)
+
 			$scope.checked =  ($rootScope.ShowupgradedLabel) ? true:false;
 
 
@@ -34,44 +37,34 @@
 			
 
 			
-			// check if checkbox is checked and then disable it
+			// check if checkbox is checked and  enable/disable checkin button 
 
 			$scope.$watch('checked',function(){
 
-				if($scope.checked){
-
-					$scope.checkInButtonOpacity = 1.0;
+				if($scope.checked)
 					$rootScope.checkedApplyCharges = true;
-
-				}
-				else{
-					$scope.checkInButtonOpacity = 0.5;
+				else
 					$rootScope.checkedApplyCharges = false;
-				}
+				
 			});
-
-			$scope.checkInButtonOpacity = ($rootScope.ShowupgradedLabel) ? 1.0 : 0.5;
 
 			$scope.checkInButtonClicked = function(){
 
-		
+						if($scope.checked){
 
+							// if room upgrades are available
 
-			if($scope.checked){
+							if($rootScope.upgradesAvailable){
 
-					// if room upgrades are available
+								$location.path('/checkinUpgrade');
+							}
+							else{
 
-					if($rootScope.upgradesAvailable){
-
-						$location.path('/checkinUpgrade');
-					}
-					else{
-
-						$location.path('/checkinKeys');
-					}
-		
-					
-					}
+								$location.path('/checkinKeys');
+							}
+				
+							
+						}
 		    }
 			
 
