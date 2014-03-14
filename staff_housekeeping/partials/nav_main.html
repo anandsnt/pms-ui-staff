@@ -3,7 +3,7 @@
    <ul>
       <li><a ui-sref="hk.navmain.dashboard" class="icon-menu icon-dashboard" ng-click="$emit('navToggled')" ng-class="{ active: $state.includes('hk.navmain.dashboard') }">Dashboard</a></li>
       <li><a ui-sref="hk.navmain.search" class="icon-menu icon-rooms" ng-click="$emit('navToggled')" ng-class="{ active: $state.includes('hk.navmain.search')}">Rooms</a></li>
-      <li id="sign-out"><a class="icon-menu icon-sign-out">Sign Out</a></li>
+      <li id="sign-out"><a href= "/house/logout" class="icon-menu icon-sign-out">Sign Out</a></li>
       <li id="rover-info">
          <img src="../assets/stayntouch.png" alt="" />
          Version 1.0
