@@ -18,12 +18,14 @@ var ZestCheckOutConfiguration = function(domRef){
 
 	 var alert_time_hour = that.myDom.find("#sent-checkout-notification-hour").val();
 	 var alert_time_minute =  that.myDom.find("#sent-checkout-notification-minute").val();
+	 var require_cc_for_checkout_email =  that.myDom.find("#require_cc").is(":checked");
    var checkout_email_alert_time = ""
    if (alert_time_hour != "" && alert_time_minute != ""){
 	   checkout_email_alert_time = alert_time_hour+":"+alert_time_minute;
    }
 	 var data = {
-		    "checkout_email_alert_time": checkout_email_alert_time
+		    "checkout_email_alert_time": checkout_email_alert_time,
+		    "require_cc_for_checkout_email" : require_cc_for_checkout_email
 	 };
 
 	 var url = '/admin/save_checkout_settings';
@@ -65,16 +67,16 @@ var ZestCheckOutConfiguration = function(domRef){
   /**
   * Method for showing next page (based on href)
   */
-  this.gotoNextPage =  function(event){  
+  this.gotoNextPage =  function(event){
   		event.preventDefault();
-  		var target = $(event.target);	  	
+  		var target = $(event.target);
         var href = target.attr("href");
-  	    var viewParams = {};	
+  	    var viewParams = {};
 	    var currentDiv = sntadminapp.getCurrentDiv();
-	    var nextDiv = sntadminapp.getReplacingDiv(currentDiv);  	
+	    var nextDiv = sntadminapp.getReplacingDiv(currentDiv);
 	    var backDom = currentDiv;
 	  	var nextViewParams = {'backDom': backDom};
-	  
+
 	    if(typeof href !== 'undefined'){
 	  		sntapp.fetchAndRenderView(href, nextDiv, viewParams, 'BLOCKER', nextViewParams);
 	  		nextDiv.show();
