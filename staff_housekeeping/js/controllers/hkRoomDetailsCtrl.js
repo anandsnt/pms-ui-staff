@@ -11,11 +11,10 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 
 
 	$scope.$emit('hideNavMenu');
-	$scope.$emit('toggleLoader');
-
-
+	
+	$scope.$emit('showLoader');
 	HKRoomDetailsSrv.fetch($stateParams.id).then(function(data) {
-		$scope.$emit('toggleLoader');
+		$scope.$emit('hideLoader');
 	    $scope.data = data;
 
 		_.each($scope.data.room_details.hk_status_list, function(hkStatusDict) { 

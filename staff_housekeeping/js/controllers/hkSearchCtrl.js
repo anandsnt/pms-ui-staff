@@ -4,9 +4,9 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 	$scope.data = HKSearchSrv.roomList;
 
 	if($scope.data == ''){
-		$scope.$emit('toggleLoader');
+		$scope.$emit('showLoader');
 		HKSearchSrv.fetch().then(function(data) {
-				$scope.$emit('toggleLoader');
+				$scope.$emit('hideLoader');
 		        $scope.data = data;
 		        $scope.$parent.myScroll['rooms'].refresh();
 		});	

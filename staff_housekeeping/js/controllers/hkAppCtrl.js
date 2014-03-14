@@ -15,7 +15,11 @@ hkRover.controller('HKappCtrl',['$scope', '$state', function($scope, $state){
     	$scope.filterOpen = !$scope.filterOpen;
     });
 
-    $scope.$on("toggleLoader", function(){
+    $scope.$on("showLoader", function(){
+        $scope.hasLoader = !$scope.hasLoader;
+    });
+
+    $scope.$on("hideLoader", function(){
         $scope.hasLoader = !$scope.hasLoader;
     });
     
