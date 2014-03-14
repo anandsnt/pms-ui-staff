@@ -8,7 +8,7 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 	$scope.isDefaultRoomColor = false;
 	$scope.isRoomOccupied = false;
 	$scope.guestViewStatus = "";
-
+	$scope.$emit('hideNavMenu');
 	$scope.$emit('toggleLoader');
 	HKRoomDetailsSrv.fetch($stateParams.id).then(function(data) {
 		$scope.$emit('toggleLoader');

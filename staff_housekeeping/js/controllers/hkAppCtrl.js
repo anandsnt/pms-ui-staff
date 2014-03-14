@@ -7,6 +7,10 @@ hkRover.controller('HKappCtrl',['$scope', '$state', function($scope, $state){
         $scope.menuOpen = !$scope.menuOpen;
     });
 
+    $scope.$on("hideNavMenu", function(){
+        $scope.menuOpen = false;
+    });
+
     $scope.$on("filterRoomsClicked", function(){
     	$scope.filterOpen = !$scope.filterOpen;
     });
