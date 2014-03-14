@@ -9,7 +9,9 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 	$scope.isRoomOccupied = false;
 	$scope.guestViewStatus = "";
 
+	$scope.$emit('toggleLoader');
 	HKRoomDetailsSrv.fetch($stateParams.id).then(function(data) {
+		$scope.$emit('toggleLoader');
 	    $scope.data = data;
 
 		_.each($scope.data.room_details.hk_status_list, function(hkStatusDict) { 
@@ -35,15 +37,10 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 
 		$scope.guestViewStatus = getGuestStatusMapped($scope.data.room_details.reservation_status);
 
-		console.log($scope.data.room_details.reservation_status);
-		console.log($scope.data.room_details.current_hk_status);
-		console.log($scope.data.room_details.current_room_reservation_status);
-		console.log($scope.data.room_details.is_occupied);
 		
 	});
 
 	$scope.updateHKStatus = function(){
-		console.log($scope.currentHKStatus.value);
 		HKRoomDetailsSrv.updateHKStatus($scope.data.room_details.current_room_no, $scope.currentHKStatus.description).then(function(data) {
 			console.log("update done");
 		});

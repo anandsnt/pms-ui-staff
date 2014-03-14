@@ -1,5 +1,5 @@
 hkRover.controller('HKappCtrl',['$scope', '$state', function($scope, $state){
-
+    $scope.hasLoader = false;
     $scope.menuOpen = false;
     $scope.filterOpen = false;
 
@@ -9,6 +9,10 @@ hkRover.controller('HKappCtrl',['$scope', '$state', function($scope, $state){
 
     $scope.$on("filterRoomsClicked", function(){
     	$scope.filterOpen = !$scope.filterOpen;
+    });
+
+    $scope.$on("toggleLoader", function(){
+        $scope.hasLoader = !$scope.hasLoader;
     });
     
     $scope.isMenuOpen = function(){
