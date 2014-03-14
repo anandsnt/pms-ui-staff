@@ -8,8 +8,12 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 	$scope.isDefaultRoomColor = false;
 	$scope.isRoomOccupied = false;
 	$scope.guestViewStatus = "";
+
+
 	$scope.$emit('hideNavMenu');
 	$scope.$emit('toggleLoader');
+
+
 	HKRoomDetailsSrv.fetch($stateParams.id).then(function(data) {
 		$scope.$emit('toggleLoader');
 	    $scope.data = data;
@@ -20,25 +24,28 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 		    }
 		});
 		
-		if(($scope.data.room_details.current_hk_status == "CLEAN" || $scope.data.room_details.current_hk_status == "INSPECTED")
-			&& $scope.data.room_details.is_occupied == "false"){
-			$scope.isCleanVacant = true;
-		}else if($scope.data.room_details.current_hk_status == "DIRTY"
-			&& $scope.data.room_details.is_occupied == "false") {
-			$scope.isDirtyVacant = true;
-		}else if(($scope.data.room_details.current_hk_status == "OO") ||
-			 ($scope.data.room_details.current_hk_status == "OS")) {
-			$scope.isOutOfService = true;
-		}else if($scope.data.room_details.current_hk_status == "PICKUP") {
-			$scope.isPickup = true;
-		}else {
-			$scope.isDefaultRoomColor = true;
-		}
-
 		$scope.guestViewStatus = getGuestStatusMapped($scope.data.room_details.reservation_status);
-
 		
 	});
+
+	$scope.getHeaderColorClasses = function(roomHkStatus, isRoomOccupied){
+
+		if((roomHkStatus == "CLEAN" || roomHkStatus == "INSPECTED")
+			&& isRoomOccupied == "false"){
+			return "inspected-clean";
+		}
+		if(roomHkStatus == "DIRTY" && isRoomOccupied == "false") {
+			return "dirty"
+		}
+		if((roomHkStatus == "OO") || (roomHkStatus== "OS")) {
+			return "";
+		}if(roomHkStatus == "PICKUP") {
+			return "pickup"
+		}
+
+		return "occupied"
+		
+	}
 
 	$scope.updateHKStatus = function(){
 		HKRoomDetailsSrv.updateHKStatus($scope.data.room_details.current_room_no, $scope.currentHKStatus.description).then(function(data) {
