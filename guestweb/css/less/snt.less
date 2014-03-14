@@ -1066,12 +1066,6 @@ padding:5px 8px 2px 0;
   color:  #9c9c9c !important;
   
 }
-.container .date-picker-header{
-  font-size:12px;
-  color: #fff !important;
-  background-color: #1f1e20 !important;
-  padding:15px 5px 5px 5px;
-}
 
 .departure-date{
   font-size:14px !important;
@@ -1536,6 +1530,45 @@ body > div[ng-view] {
   display: none;
 }
 
+/* date picker styles */
+.date-picker-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0,0,0,0.5);
+}
+
+.date-picker-wrap {
+  background-color: #7a613a !important;
+  background-image: url('../../img/bg-white.png');
+  background-repeat: repeat-x;
+  background-image: -webkit-gradient(linear, top bottom, from(#d5b675), to(#7b6137));
+  background-image: -webkit-linear-gradient(top, #d5b675, #7b6137);
+  background-image: -moz-linear-gradient(top, #d5b675, #7b6137);
+  background-image: -ms-linear-gradient(top, #d5b675, #7b6137);
+  background-image: -o-linear-gradient(top, #d5b675, #7b6137);
+  background-image: linear-gradient(to bottom, #d5b675, #7b6137);
+  max-width: 460px;
+  height: 100%;
+  margin: auto;
+  padding: 40px;
+}
+.date-picker-header{
+  font-size: 12px;
+  color: #fff;
+  background-color: #1f1e20;
+  padding: 15px 5px 5px 5px;
+}
+
+
+@media (max-width: 420px) {
+  .date-picker-wrap {
+    padding: 0;
+  }
+}
+
 @media (min-width: 992px) {
   .pad-lf-60 {
     padding-left: 60px !important;
@@ -1553,8 +1586,35 @@ body > div[ng-view] {
     font-size: 17px;
   }
 
-  .modal-dialog {
-    width: 420px;
+  .modal .modal-dialog {
+    max-width: 420px;
+  }
+
+  .modal .modal-dialog p,
+  .modal .modal-dialog .alert-link {
+    font-size: 24px;
+  }
+
+  .modal .modal-content {
+    height: auto !important;
+  }
+
+  .alert-element {
+    padding: 20px 0;
+    width: 65px;
+    height: auto;
+  }
+
+  .alert-link {
+    padding-bottom: 15px;
+  }
+
+  .modal .btn-close {
+    font-size: 20px !important;
+    padding: 20px 0;
+    min-width: 210px;
+    line-height: 1;
+    margin-bottom: 60px;
   }
 
   .jumbotron .checkin-wrapper {
