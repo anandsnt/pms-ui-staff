@@ -1,9 +1,8 @@
 hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($scope, HKSearchSrv, $state){
 	$scope.isFilterHidden = true;
 	$scope.query = '';
-	$scope.newTerm = "clean";
-	
 	$scope.data = HKSearchSrv.roomList;
+
 	if($scope.data == ''){
 		$scope.$emit('toggleLoader');
 		HKSearchSrv.fetch().then(function(data) {
@@ -12,6 +11,22 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		        $scope.$parent.myScroll['rooms'].refresh();
 		});	
 	}
+
+	$scope.getRoomColorClasses = function(roomHkStatus, isRoomOccupied){
+
+		if((roomHkStatus == 'INSPECTED' || roomHkStatus == 'CLEAN') && isRoomOccupied == 'false'){
+			return "room-clean";
+		}
+		if((roomHkStatus == 'DIRTY' || roomHkStatus == 'PICKUP') && isRoomOccupied == 'false') {
+			return "room-dirty";
+		}
+		if(roomHkStatus == 'OO' || roomHkStatus == 'OS'){
+			return "room-out";
+		}
+		return "";
+
+	};
+
 
 	$scope.currentFilters = {	
 							"dirty" : true,
@@ -34,7 +49,6 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 							"departed_arrival" : true,
 							"departed_arrived" : true
 							}
-
 
 	$scope.ApplyFilters = function(room){
 
@@ -103,23 +117,6 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		}
 
 		return true;
-	}
-
-	$scope.isCleanVacant = function(roomHkStatus, isRoomOccupied){
-		if((roomHkStatus == 'INSPECTED' || roomHkStatus == 'CLEAN') && isRoomOccupied == 'false'){
-			return true;
-
-		}
-	}
-
-	$scope.isDirtyVacant = function(roomHkStatus, isRoomOccupied){
-		if((roomHkStatus == 'DIRTY' || roomHkStatus == 'PICKUP') && isRoomOccupied == 'false')
-			return true;
-	}
-
-	$scope.isOutofOrder = function(roomHkStatus){
-		if(roomHkStatus == 'OO' || roomHkStatus == 'OS')
-			return true;
 	}
 
 	$scope.filterRoomsClicked = function(){
