@@ -86,7 +86,7 @@
 								</div>
 							</div>
 							<div class="room_details">
-								{{reservationData.currency}} {{reservationData.avg_rate}}
+								{{reservationData.currency}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' }}
 							</div>
 
 						</div>
@@ -97,17 +97,23 @@
 						</div>
 
 					</div></div>
-				<div class="col-md-6 " ng-disabled="!checkedApplyCharges">
+				<div class="col-md-6 ">
+
+					<!--- checkin button -->
+					
+					<button class="col-md-6 checkin-button" ng-disabled="!checkedApplyCharges" ng-click="checkInButtonClicked()">
 					<div class="row now-later-options ">
-						<div class="col-xs-12 checkin ">
-							<div class="rel-wrapper" ng-click="checkInButtonClicked()">
+						<div class="checkin ">
+							<div class="rel-wrapper" >
 								Check in
 								<img src="/assets/img/checkin_icon.png" width="60" height="60" alt=""/>
 							</div>
 						</div>
+					</button>
 					</div>
-					<div class=" col-xs-12row">
-						<div class=" reservation-dates ">
+
+					<div class=" col-xs-12 row">
+						<div class="error-callus reservation-dates ">
 							<div class="lightcontent">
 								ERRORS? <u>CALL US AT  {{hotelPhone}}.</u>
 							</div>
