@@ -16,9 +16,12 @@ var ZestCheckOutConfiguration = function(domRef){
   // To save checkin configuration
   this.saveGuestCheckOut = function() {
 
-
-	 var checkout_email_alert_time = that.myDom.find("#sent-checkout-notification-email").val();
-
+	 var alert_time_hour = that.myDom.find("#sent-checkout-notification-hour").val();
+	 var alert_time_minute =  that.myDom.find("#sent-checkout-notification-minute").val();
+   var checkout_email_alert_time = ""
+   if (alert_time_hour != "" && alert_time_minute != ""){
+	   checkout_email_alert_time = alert_time_hour+":"+alert_time_minute;
+   }
 	 var data = {
 		    "checkout_email_alert_time": checkout_email_alert_time
 	 };

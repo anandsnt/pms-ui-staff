@@ -9,4 +9,4 @@
 //= require_tree ../guestweb/shared
 //= require_tree ../guestweb/checkoutlater
 //= require_tree ../guestweb/checkoutnow
-
+//= require_tree ../guestweb/checkin

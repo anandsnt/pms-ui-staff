@@ -4,23 +4,49 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
 
 // Disable cache busting
 $.ajaxSetup({ cache: true });
-
 $(document).ready(function(){
 	if (localStorage.email) {
 		$("#email").val(localStorage.email);
 	}
 	$("#loginbutton").click(function(){
-		localStorage.email = $("#email").val();
 		$("#login-form").submit();
 	});
+    $("#login-form").submit(function(){
+        localStorage.email = $("#email").val();
+        return true;        
+    });
+
 	if($('#login').is(':has(span.notice)')){
 		$("#loginStatus").css("display","block");
 	}
-	if($("#email").val()!=""){
-		$("#password").focus();
-	} else {
-		$("#email").focus();
-	}
+    $("#login-form").ready(function(){  
+        var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;  
+        //for keyboard not raising issue in Ipad/android tabs
+        // in tabs especially in IPad .focus is creating the pblm of not showing keyboard        
+        if(!$isTablet){             
+            if($.trim($("#email").val()) != ""){
+                $("#password").focus();
+            } else {
+                $("#email").focus();
+            } 
+        }
+        else{
+            if($.trim($("#email").val()) != ""){
+                $("#password").click();
+            } else {
+                $("#email").click();
+            }             
+        }
+        if('ontouchstart' in document.documentElement) { 
+            $("#email").on('touchstart', function(){
+                $("#email").click();
+            });                        
+            $("#password").on('touchstart', function(){
+                $("#password").click();              
+            }); 
+        } 
+    });
+
 });
 
 // Chaining with intervals
@@ -582,23 +608,6 @@ $(function($){
 
         $($target).toggleClass('hidden');
         $toggleContent.start();
-
-        // Signature toggle - fetch image dimensions and apply class (do it only once)
-        if ($(this).hasClass('signature-toggle') && $(this).hasClass('active') && !$($target + ' figure').attr('class')) {
-            var signatureImage = $($target).find('img.signature-image');
-            var testImage = new Image();
-            testImage.src = signatureImage.attr("src");
-            var imageWidth = testImage.naturalWidth;
-
-            // Rover 
-            if (imageWidth == 2000) {
-                $($target + ' figure').addClass('signature-rover');
-                if (imageHeight == 400) { $($target + ' figure').addClass('larger'); }
-            // Zest
-            } else {
-                $($target + ' figure').addClass('signature-zest');
-            }
-        }
 
         // Refresh scrolls
         refreshVerticalScroll();

@@ -74,22 +74,21 @@ var UsersListView = function(domRef){
   	var options = {
 			   requestParameters: postData,
 			   successCallBack: that.fetchCompletedOfDelete,
-			   loader:"BLOCKER",
-			   successCallBackParameters: {"selectedId": selectedId}
+			   failureCallBack: that.fetchFailedOfDelete,
+			   loader:"BLOCKER"
 	  };
 	  webservice.deleteJSON(url, options);
 	
-	
   }; 
-  //to remove deleted row and show messa
-  this.fetchCompletedOfDelete = function(data, successParams){
-	  if(data.status == "success"){
-		  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
-		  that.myDom.find($("#user_row_"+successParams['selectedId'])).html("");
-	  }	 
-	  else{		  
-		  sntapp.notification.showErrorList(data.errors, that.myDom);  
-	  }	  
+  //success of delete message
+  this.fetchCompletedOfDelete = function(){
+	  sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
+  	  var url = "/admin/users/";
+	  viewParams = {};
+	  sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
   };
-  
+  //failure of delete message
+  this.fetchFailedOfDelete = function(errorMessage){
+	  sntapp.notification.showErrorList("Error: " + errorMessage, that.myDom);  
+  };
 };

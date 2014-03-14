@@ -16,7 +16,14 @@ var ChangeStayDatesView = function(viewDom){
   
   //change Stay dates dom click handler
   this.changeStayDatesClickHandler = function(){
+  	 that.closeGuestCardDrawer();
      sntapp.notification.hideMessage(that.myDom);
+  };
+  // function for closing the drawer if is open
+  this.closeGuestCardDrawer = function(){
+		if($('#guest-card').height() > '90') {
+			$('#guest-card .ui-resizable-handle').trigger('click');
+		}
   };
   this.executeLoadingAnimation = function(){
       changeView("nested-view", "", "view-nested-first", "view-nested-second", "move-from-right", false); 
@@ -164,7 +171,7 @@ var ChangeStayDatesView = function(viewDom){
           if(calenderEvents.data.is_rates_suppressed == "true"){
             calEvt.title = calenderEvents.data.text_rates_suppressed;
           } else {
-            calEvt.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
+            calEvt.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate).split('.')[0];
           }   
           calEvt.start = thisDate;
           calEvt.end = thisDate;
@@ -188,7 +195,7 @@ var ChangeStayDatesView = function(viewDom){
                   if(calenderEvents.data.is_rates_suppressed == "true"){
                     calEvt.title = calenderEvents.data.text_rates_suppressed;
                   } else {
-                    calEvt.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate);
+                    calEvt.title = getCurrencySymbol(currencyCode) + escapeNull(this.rate).split('.')[0];
                   }   
                   calEvt.start = thisDate;
                   calEvt.end = thisDate;

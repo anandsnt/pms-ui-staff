@@ -70,12 +70,11 @@ var ValidateCheckinModal = function() {
 	    	
 	    var url = 'staff/guest_cards/' + userId; 
 	    var options = {
-				   requestParameters: JSON.stringify($contactJsonObj),
+				   requestParameters: $contactJsonObj,
 				   successCallBack: that.fetchCompletedOfSave,
 				   failureCallBack: that.fetchFailedOfSave
 		};
 	    webservice.putJSON(url, options);
-		
 		
 	};
     this.fetchCompletedOfSave = function(data){

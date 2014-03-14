@@ -1,18 +1,38 @@
 (function() {
 	var checkOutBalanceController = function($scope, BillService,$rootScope,$location) {
 
+		
+		$scope.pageSuccess = true;
+
+		if($rootScope.isCheckedin){
+			$scope.pageSuccess = false;
+			$location.path('/checkinSuccess');
+		}
+		else if($rootScope.isCheckin){
+			$scope.pageSuccess = false;
+			$location.path('/checkinConfirmation');
+		}
+		else if($rootScope.isCheckedout){
+			$scope.pageSuccess = false;
+			$location.path('/checkOutNowSuccess');
+
+		}
+
+
+		if($scope.pageSuccess){
+
 		//if checkout is already done
 		
  		if ($rootScope.isCheckedout) 
 		 $location.path('/checkOutNowSuccess');
 
-
+		// showBill flag and its reference in $rootScope
 		$scope.showBill = false;
+		$rootScope.showBill = $scope.showBill;
+
 		$rootScope.netWorkError = false;
 
 		// fecth text details to display
-
-
 		$scope.isFetching = true;
 
 		BillService.fetchDisplayDetails().then(function(billDisplayDetails) {
@@ -42,7 +62,7 @@
 			$location.path('/serverError');
 	});
 		
-
+	}
 		
 	};
 

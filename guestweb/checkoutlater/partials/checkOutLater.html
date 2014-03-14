@@ -2,26 +2,27 @@
 	<div class="container backgroundbg">
 		<div class="container-fluid">
 			<div class="row headerrow">
-				<logo-image></logo-image>
+				<logo-image-back></logo-image-back>
 			</div>
 		</div>
 		<!-- show posting message -->
 		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-			Your request is being processed, this may take a few seconds..... please wait!
+			<p class="msg-head">Your request is being processed.</p>
+			<p class="msg-body">This may take a few seconds..... please wait!</p>
 		</div>
 
 		<!-- show error message -->
 
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-			<div class="checkout-failure-text">Our apologies, something went wrong, please complete your check out at our front desk.</div>
-			<div>You can also call the hotel at {{hotelPhone}}.</div>
+			<p class="msg-head">Our apologies, something went wrong, please complete your check out at our front desk.</p>
+			<p class="msg-body">You can also call the hotel at {{hotelPhone}}.</p>
 		</div>
 
 		<!-- contentarea starts here-->
 		<div class="container" ng-hide="isFetching || netWorkError">
 			<!-- top section starts here-->
-			<div class="row check-inout-wrapper">
-				<div class="col-md-6 headtext centeralign" ng-show="optionsAvailable">
+			<div class="row check-inout-wrapper late-options">
+				<div class="col-md-6 headtext centeralign extra-head-pad" ng-show="optionsAvailable">
 					Select your new check-out time:
 				</div>
 
@@ -31,11 +32,11 @@
 						<div ng-repeat="charge in charges" class="col-xs-6 later-options {{ charge.class }}">
 							<div class="rel-wrapper">
 								<a ng-href="#/checkOutLaterSuccess/{{ charge.id }}"></a>
-								<div class="row">
+								<div class="row pad-hz-24">
 									<svg viewBox="0 0 220 220" preserveAspectRatio="none">
-										<circle cx="50%" cy="50%" r="45%" stroke="white" stroke-width="7" fill="none"/>
-										<text x="50%" y="65%" fill="white">
-											<tspan class="time">{{ charge.time }}</tspan>
+										<circle cx="50%" cy="50%" r="40%" stroke="white" stroke-width="7" fill="none"/>
+										<text x="50%" y="60%" fill="white">
+											<tspan class="time">{{ charge.time | number }}</tspan>
 											<tspan class="ap">{{ charge.ap }}</tspan>
 										</text>
 									</svg> 
@@ -48,14 +49,13 @@
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<div class="row">
-				<p class="centeralign  no-thanks" ng-show="optionsAvailable">
-					<a href="#/">no, thanks<a>
+				<div class="row no-thanks-wrap">
+					<p class="centeralign no-thanks" ng-show="optionsAvailable">
+						<a href="#/">no, thanks</a>
 					</p>
 				</div>
-
 			</div>
+
 		</div>
 	</div>
