@@ -38,7 +38,7 @@
 				
 				.logo {
 					margin: 0 auto;
-					.size(28px,125px);
+					.size(35px,158px);
 					.show;
 				}
 
@@ -2229,6 +2229,10 @@
 						margin-right: 10px;
 						padding-right: 25px;
 						background-position: 100% 50%;
+						max-width: 270px;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;						
 
 						.value {
 							font-size: 36px;
@@ -2688,6 +2692,7 @@
 			 				line-height: 21px;
 			 				margin: 0 0 5px 0;
 			 				color: @grey4;
+			 				min-height: 21px;
 			 				#border-radius > .top(0);
 			 				.box-shadow(none);
 			 			}
