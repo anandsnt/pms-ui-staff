@@ -122,14 +122,6 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 			return true;
 	}
 
-	$scope.goToRoomDetails = function(id){
-		// preselect the current reservation group
-		$state.go('hk.roomDetails', {
-			id: id
-		});
-
-	}
-
 	$scope.filterRoomsClicked = function(){
 		$scope.isFilterHidden = !$scope.isFilterHidden;
 		$scope.$emit('filterRoomsClicked');

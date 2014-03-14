@@ -19,7 +19,7 @@
 <section id="rooms" class="content scrollable" ng-iscroll = "rooms">
    <ul class="wrapper">
       <li ng-repeat="room in data.rooms | filter: ApplyFilters" >
-         <a ng-click="goToRoomDetails(room.id)" ng-class="{'room-clean': isCleanVacant(room.hk_status.value, room.is_occupied), 'room-dirty': isDirtyVacant(room.hk_status.value, room.is_occupied), 'room-out': isOutofOrder(room.hk_status.value), 'with-image': room.is_occupied == 'true'}">  
+         <a ui-sref="hk.roomDetails({id: room.id})" ng-class="{'room-clean': isCleanVacant(room.hk_status.value, room.is_occupied), 'room-dirty': isDirtyVacant(room.hk_status.value, room.is_occupied), 'room-out': isOutofOrder(room.hk_status.value), 'with-image': room.is_occupied == 'true'}">  
             <h2 class="room-number">{{ room.room_no}}</h2>
             <span class="room-status">{{ room.hk_status.description }}</span>
             <span class="fo-status">{{ room.room_reservation_status }}</span>
