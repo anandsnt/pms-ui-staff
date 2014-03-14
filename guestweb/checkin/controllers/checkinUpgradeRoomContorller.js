@@ -1,6 +1,6 @@
 
 (function() {
-  var checkinUpgradeRoomContorller = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService) {
+  var checkinUpgradeRoomContorller = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService,checkinDetailsService) {
 
 
     $scope.pageSuccess = true;
@@ -41,7 +41,11 @@
        checkinRoomUpgradeOptionsService.fetch(data).then(function(response) {
 
         $scope.isFetching     = false;
-        $scope.slides = response.data;
+
+        if(response.status === 'failure')
+          $rootScope.netWorkError = true;
+        else
+          $scope.slides = response.data;
 
 
       });
@@ -76,6 +80,9 @@
          $rootScope.upgradesAvailable = false;
          $rootScope.ShowupgradedLabel = true;
          $rootScope.roomUpgradeheading = "Your new Trip details";
+
+         checkinDetailsService.setResponseData(response.data);
+         
          $location.path('/checkinReservationDetails');
        }
 
@@ -96,7 +103,7 @@
  };
 
  var dependencies = [
- '$scope','$location','$rootScope','checkinRoomUpgradeOptionsService','checkinRoomUpgradeService',
+ '$scope','$location','$rootScope','checkinRoomUpgradeOptionsService','checkinRoomUpgradeService','checkinDetailsService',
  checkinUpgradeRoomContorller
  ];
 
