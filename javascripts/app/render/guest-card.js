@@ -94,7 +94,7 @@ var setUpGuestcard = function(viewDom) {
 	$(document).on('click', '#guest-card .ui-resizable-handle', function() {
 
 		// Show if hidden or open in less than 50% of screen height
-		if ($('#guest-card').height() == '90' || $('#guest-card').height() < $breakpoint) {
+		if ($('#guest-card').height() <= '90' || $('#guest-card').height() < $breakpoint) {
 			$('#guest-card').addClass('open').animate({height: ($maxHeight-90)}, 300);
 
 			sntapp.cardSwipePrevView = sntapp.cardSwipeCurrView;
@@ -102,10 +102,8 @@ var setUpGuestcard = function(viewDom) {
 		}
 		// Hide if open or shown in more than 50% of screen height
 		else {
-			$('#guest-card').animate({height: '90px'}, 300, function(){
-    			$(this).removeClass('open');
-			});
-
+			$('#guest-card').animate({height: '90px'}, 300);
+			
 			sntapp.cardSwipeCurrView = sntapp.cardSwipePrevView;
 		}
 
