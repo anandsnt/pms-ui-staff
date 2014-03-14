@@ -4,6 +4,13 @@
 
 		$scope.pageSuccess = true;
 
+		//uncheck checkbox in reservation details page
+
+		$rootScope.checkedApplyCharges = false;
+
+		// page navigatons if any of following conditions happpens
+
+
 		if($rootScope.isCheckedin){
 
 			$scope.pageSuccess = false;
