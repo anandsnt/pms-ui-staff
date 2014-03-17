@@ -34,7 +34,7 @@
 
 			$scope.reservationData = checkinDetailsService.getResponseData();
 
-			
+			$rootScope.confirmationNumber = $scope.reservationData.confirm_no;
 
 			
 			// check if checkbox is checked and  enable/disable checkin button 
