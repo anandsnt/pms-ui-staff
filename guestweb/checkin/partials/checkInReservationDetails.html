@@ -13,21 +13,22 @@
 		<div class="container">
 			<!-- top section starts here-->
 
-			<div class="row check-inout-wrapper">
+			<div class="row checkin-wrapper">
+
+				<div class="col-md-6 pad-rt-60">
 
 				<div class="reservation-id centeralign">
-					<span class="lightcontent">RESERVATION #{{reservationData.confirm_no}}</span>
+					<span class="res-conf-no">RESERVATION #{{reservationData.confirm_no}}</span>
 				</div>
-				<div class="col-md-6" >
 
-					<div class=" headtext centeralign">
+					<div class="chekin-heading centeralign">
 
 						{{roomUpgradeheading}}
 
 					</div>
-					<div class=" date-container">
+					<div class="date-container">
 						<div class="row">
-							<div class="col-xs-6 reservation-dates centeralign">
+							<div class="col-xs-6 reservation-dates leftalign">
 
 								<div class="lightcontent">
 									ARRIVAL DATE
@@ -38,7 +39,7 @@
 								</div>
 
 							</div>
-							<div class="col-xs-6  reservation-dates centeralign">
+							<div class="col-xs-6  reservation-dates rightalign">
 
 								<div class="lightcontent">
 									DEPARTURE DATE
@@ -53,7 +54,7 @@
 
 					<!-- top section ends here-->
 
-					<div class=" room-desc ">
+					<div class="date-container no-border">
 
 						<div class="row">
 							<div class=" reservation-dates">
@@ -91,32 +92,28 @@
 						<div class="row applycharge">
 							 <input type="checkbox" ng-model="checked"  ng-checked="checkedApplyCharges">&nbsp
 							APPLY CHARGES TO MY CREDIT CARD ON FILE
-							
 						</div>
 
 					</div></div>
-				<div class="col-md-6 ">
 
-					<!--- checkin button -->
-					
-					<button class="col-md-6 checkin-button" ng-disabled="!checkedApplyCharges" ng-click="checkInButtonClicked()">
-					<div class="row now-later-options ">
-						<div class="checkin ">
-							<div class="rel-wrapper" >
-								Check in
-								<img src="/assets/img/checkin_icon.png" width="60" height="60" alt=""/>
-							</div>
-						</div>
-					</button>
+					<div class="verti-ruler"></div>
+
+					<div class="col-md-6 pad-lf-60">					
+						<button class="checkin-button" ng-disabled="!checkedApplyCharges" ng-click="checkInButtonClicked()">
+							<span>Check in</span>
+							<img src="/assets/img/checkin_icon.png" width="60" height="60" alt=""/>
+						</button>
 					</div>
 
-					<div class=" col-xs-12 row">
-						<div class="error-callus reservation-dates ">
-							<div class="lightcontent">
-								ERRORS? <u>CALL US AT  {{hotelPhone}}.</u>
-							</div>
+				</div>
+
+				<div class="row checkin-wrapper no-top-margin">
+					<div class="col-md-6 error-callus">
+						<div class="lightcontent">
+							ERRORS? <u>CALL US AT  {{hotelPhone}}.</u>
 						</div>
 					</div>
+					<div class="verti-ruler"></div>
 				</div>
 			
 		</div>

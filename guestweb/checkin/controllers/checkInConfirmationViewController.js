@@ -71,7 +71,7 @@
 
 						$rootScope.ShowupgradedLabel = false;
 						$rootScope.roomUpgradeheading = "Your Trip details";
-						$scope.isResponseSuccess         = true;
+						$scope.isResponseSuccess = true;
 
 						checkinDetailsService.setResponseData(response.data);
 						

@@ -79,12 +79,20 @@ text-align: center !important;
 text-align: left !important;
 }
 
+.rightalign {
+text-align: right !important;
+}
+
 .pos-relative {
 position: relative !important;
 }
 
 .normal-weight {
 font-weight: 400 !important;
+}
+
+.no-border {
+  border: 0 none !important;
 }
 
 a,
@@ -673,13 +681,9 @@ border-color:  #000000 !important;
    font-size:20px  !important;
    font-family: 'Source Sans Pro'  !important;
   }
-  .lightcontent{
-     font-weight: 400 !important;
-  }
-  
-  .foot-text {
 
-  padding: 40px 50px 0px !important;;
+  .foot-text {
+    padding: 40px 50px 0px !important;;
   }
   &.second-in {
   padding-top: 0 !important;
@@ -796,27 +800,35 @@ padding:5px 8px 2px 0;
 .row .reservation-dates {
     font-family: 'Source Sans Pro';
     color: #fff;
-  .lightcontent {
-      font-size: 11px !important;
-      font-weight: 200;
+    .lightcontent {
+      font-size: 18px;
+      font-weight: 400;
+      color: #e9d6af;
     }
   .dateContent{
-    font-size: 16px !important;
+    font-size: 24px;
     font-weight: 500;
     margin-top: 0px;
     margin-bottom:7px;
     }
-    
  }
+
+ .row .lightcontent {
+    font-size: 18px;
+    color: #e9d6af;
+  }
+
 .row .date-container{
   
-  margin: 20px 25px 0px;
+  margin: 20px 0 0px;
   border-bottom:1px solid #fff;
 }
  .room_details {
-  color:#fff;
-   font-size:18px;
-   margin-bottom: 5px;
+  font-size: 24px;
+  font-family: 'Source Sans Pro';
+  font-weight: 400;
+  padding-bottom: 10px;
+  color: #fff;
  }
  .room-desc{
    margin:10px 0px;
@@ -993,10 +1005,12 @@ padding:5px 8px 2px 0;
   }
 }
 
-.row .applycharge{
-    color: #FFFFFF !important;
-    font-size: 10px !important;
+.row .applycharge {
+    color: #e9d6af;
+    font-size: 15px;
 }
+
+
   input[type=checkbox]
 {
  /* Double-sized Checkboxes */
@@ -1200,14 +1214,31 @@ padding:5px 8px 2px 0;
 
 
 .checkin-button{
-  
-  padding: 0px !important;
-  margin: 0px !important;
-  min-width: 300px !important;
-  background-color: #fff !important;
+  padding: 40px ;
+  margin: 15px 0 0;
+  min-width: 100%;
+  background-color: #fff;
+  border: 0;
+  span {
+    font-size: 48px;
+    font-family: 'Source Sans Pro';
+    font-weight: 200;
+    margin-right: 10px;
+  }
+  img {
+    width: 68px;
+    height: 68px;
+    margin-top: -18px;
+    margin-left: 10px;
+  }
 }
+@media(max-width: 320px) {
+  .checkin-button {
+    padding: 40px 10px;
+  }
+}
+
 .error-callus{
-  
   margin-top: 10px;
 }
 
@@ -1562,14 +1593,43 @@ body > div[ng-view] {
   padding: 15px 5px 5px 5px;
 }
 
-
 @media (max-width: 420px) {
   .date-picker-wrap {
     padding: 0;
   }
 }
 
+.res-conf-no {
+  color: #e9d6af;
+  font-size: 18px;
+  font-family: 'Source Sans Pro';
+}
+
+.chekin-heading {
+  color: #fff;
+  font-size: 44px;
+  font-family: 'Source Sans Pro';
+  font-weight: 200;
+}
+
 @media (min-width: 992px) {
+  .row .reservation-dates {
+    font-size: 18px;
+    padding: 0;
+  }
+
+  .error-callus {
+    margin-top: 60px;
+  }
+
+  .room-desc {
+    margin: 20px 25px 0px;
+  }
+
+  .checkin-button {
+    margin:154px 0 0 ;
+  }
+
   .pad-lf-60 {
     padding-left: 60px !important;
   }
@@ -1618,10 +1678,14 @@ body > div[ng-view] {
   }
 
   .jumbotron .checkin-wrapper {
-    margin: 55px auto !important;
+    margin: 55px auto 0 !important;
     padding: 20px 0;
     position: relative;
     max-width: 870px;
+  }
+
+  .jumbotron .no-top-margin {
+    margin-top: 0 !important;
   }
 
   .jumbotron .checkin-wrapper .headtext {
