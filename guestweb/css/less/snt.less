@@ -711,13 +711,27 @@ border-color:  #000000 !important;
 }
 
 .subTitletext{
-    color: #FFFFFF;
-    padding: 20px 10px 0px 3px !important;
-    line-height: 0.3 !important;
-    font-size: 20px !important;
-    line-height: 1.3 !important;
-    font-size : 15px !important;
-   
+  color: #fff;
+  padding: 20px 10px 0px 3px !important;
+  line-height: 0.3 !important;
+  font-size: 20px !important;
+  line-height: 1.3 !important;
+  font-size : 15px !important;
+}
+
+.jumbotron .simpleSubText {
+  color: #fff;
+  padding: 0;
+  line-height: 1.3;
+  font-size: 24px !important;
+  font-family: 'Source Sans Pro';
+  font-weight: 200;
+  text-align: center;
+}
+@media (max-width: 420px) {
+  .jumbotron .simpleSubText {
+    font-size: 19px !important;
+  }
 }
 
 .labelText{
@@ -827,7 +841,7 @@ padding:5px 8px 2px 0;
   font-size: 24px;
   font-family: 'Source Sans Pro';
   font-weight: 400;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
   color: #fff;
  }
  .room-desc{
@@ -889,59 +903,68 @@ padding:5px 8px 2px 0;
 
 /*---------------- carousal ---------------------------*/
 .carousal{
-    padding-left: 0px !important;
-    padding-right: 0px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
 }
 
 .carousel-indicators{left:50%;}
 .carousel-indicators li {
-        background-size : 42px 22px;
-        width : 50px;
-        height: 50px;
-        border-radius : 0px;
-        text-indent : 0px;
-        background-repeat : no-repeat;
-        background-position : center;
-        cursor : pointer;
-      }
-
-
+  background-size : 42px 22px;
+  width : 50px;
+  height: 50px;
+  border-radius : 0px;
+  text-indent : 0px;
+  background-repeat : no-repeat;
+  background-position : center;
+  cursor : pointer;
+}
 
 .carousel-indicators{
-  
   display : none !important;
 }
 
-.carousel-control.left, .carousel-control.right {
-    background-image: none !important;
-    font-size: 22px !important;
-    opacity: 0.8 !important;
+.carousel .carousel-control {
+  height: 37px;
+  width: 37px;
+  top: 19%;
 }
 
-.carousel-control {
-    height: 55% !important;
-    width: 5% !important;
-}
-.carousel-control .icon-next, .carousel-control .glyphicon-chevron-right {
-    right: 100% !important;
-  
-}
-.carousel-control .icon-next ,.carousel-control .icon-prev, .carousel-control .glyphicon-chevron-right ,
-.carousel-control .glyphicon-chevron-left{
-   top: 40% !important;
-  
+.carousel .carousel-control span {
+  height: 37px;
+  width: 37px;
+  margin: 0;
+  position: static;
 }
 
+.carousel-control.left,
+.carousel-control.right {
+  background-image: none !important;
+  opacity: 1;
+}
+
+.carousel-control.left {
+  left: -37px;
+}
+
+.carousel-control.right {
+  right: -37px !important;
+}
 
 .carousel-control .icon-next:before {
-   content:url(/assets/img/right.png) !important;
-    width : 40px !important;
-    height : 40px !important;
+  content:url(/assets/img/right.png) !important;
 }
+
 .carousel-control .icon-prev:before {
-    content: url(/assets/img/left.png) !important;
-     width : 40px !important;
-      height : 40px !important;
+  content: url(/assets/img/left.png) !important;
+}
+
+@media (max-width: 800px) {
+  .carousel-control.left {
+    left: 0;
+  }
+  .carousel-control.right {
+    right: 0 !important;
+  }
 }
 
 /*---------------- carousal ends here---------------------------*/
@@ -961,6 +984,7 @@ padding:5px 8px 2px 0;
   .bold-content{
       padding-top:10px !important ;
       font-weight: 500 !important;
+      font-size: 18px !important;
       margin-bottom: 7px;
   }
 
@@ -969,6 +993,8 @@ padding:5px 8px 2px 0;
   }
   .description-details{
       padding-left : 0px !important;
+      font-size: 15px;
+      font-weight: 400;
   }
 
 }
@@ -987,21 +1013,26 @@ padding:5px 8px 2px 0;
 }
 
 
-.rate-info{
-
+.rate-info {
   .amount{
-     padding-left:0px !important ;
-    font-size:30px !important ;
+    padding: 0;
+    font-size: 30px;
+    font-weight: 500;
   }
   .rate-desc{
     padding-top: 8px;
     p{
-      font-size:12px !important;
-      
+      font-size: 13px !important;
+      font-weight: 400;
     }
-   p:first-child{
-     margin-bottom:0px !important;
- }
+    p:first-child{
+      margin-bottom: 0px !important;
+    }
+  }
+}
+@media (max-width: 360px) {
+  .rate-info .amount {
+    font-size: 25px;
   }
 }
 
@@ -1021,38 +1052,43 @@ padding:5px 8px 2px 0;
  padding: 10px;
 }
 .upgrade-details .upgrades-btn{
-
   cursor: pointer;
   background-color:#d8422f;
-  padding-left: 0 !important;
-  color:#fff !important;
-  margin-top:0px!important;
+  color: #fff !important;
+  margin-top: 0px!important;
   text-align:center;
-  height: 73px;
-    padding-top: 3px;
+  height: 95px;
+  padding: 13px 0 0;
   p{
-     font-size:10px !important;
-     width: 75px;
-     font-weight: 600;
-      
+    font-size: 11px !important;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   img{
-     margin: 6px 0 6px 20px ;
+    width: 34px;
+    height: 34px;
   }
 }
 
-.proceed-to-checkin{
-    cursor: pointer;
-  font-size:14px!important ;
+.proceed-to-checkin {
+  cursor: pointer;
+  line-height: 1;
+  font-size:17px;
   font-family: 'Source Sans Pro';
-  padding:5px 0px;
-  margin-top:10px;
+  padding: 20px 20px 15px;
+  margin-top: 15px;
   text-align:right;
-  position:absolute;
-  bottom:-30;
+  position: absolute;
+  bottom: 0;
   left: 0;
-  width: 100%;
+  right: 0;
+  img {
+    width: 14px;
+    margin: -1px 0 0 10px;
+  }
 }
+
 .apply_charges {
     color: #FFFFFF;
     font-size: 10px;
@@ -1062,7 +1098,7 @@ padding:5px 8px 2px 0;
 }
 
 @media all and (max-width: 990px) {
-  .proceed-to-checkin{
+  .proceed-to-checkin {
     position:fixed;
     bottom:0;
   }
@@ -1611,6 +1647,11 @@ body > div[ng-view] {
   font-family: 'Source Sans Pro';
   font-weight: 200;
 }
+@media (max-width: 420px) {
+  .chekin-heading {
+    font-size: 35px;
+  }
+}
 
 @media (min-width: 992px) {
   .row .reservation-dates {
@@ -1681,7 +1722,7 @@ body > div[ng-view] {
     margin: 55px auto 0 !important;
     padding: 20px 0;
     position: relative;
-    max-width: 870px;
+    max-width: 890px;
   }
 
   .jumbotron .no-top-margin {
@@ -1702,5 +1743,10 @@ body > div[ng-view] {
     width: 1px;
     background: #fff;
     overflow: hidden;
+  }
+
+  .proceed-to-checkin {
+    position: static;
+    border-radius: 10px;
   }
 }
