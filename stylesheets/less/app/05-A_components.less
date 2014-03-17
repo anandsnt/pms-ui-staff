@@ -9,6 +9,7 @@
 /* 5. COMPONENTS
 ==========================================================*/
 
+
 /* Login page 				==============================*/
 	#login-page {
 
@@ -38,7 +39,7 @@
 				
 				.logo {
 					margin: 0 auto;
-					.size(28px,125px);
+					.size(35px,158px);
 					.show;
 				}
 
@@ -326,10 +327,11 @@
 					.transition;
 
 					&[data-size="0"] {
-						width: 20px;
+						width: 30px;
 						background-color: rgba(0,0,0,.1);
 
 						&.icons { width: 50px; }
+
 						&:active { background-color: rgba(0,0,0,.2); }
 					}
 
@@ -411,125 +413,6 @@
 					}
 				}
 			}
-
-			/*form {
-				height: 50px;
-				margin-left: 20px;
-				.calc-width(100, 150); /* %, px (50px img; 20px margin; 80px lobby icon
-				.pull-left;
-				.show;
-
-				.masked-input {
-					color: @white;
-
-					&[size="0"] {
-						max-width: 40px;
-						background-color: rgba(0,0,0,.1);
-					}
-
-					&.active {
-						padding: 0 5px;
-						color: @logoPrimary;
-						background-color: rgba(0,0,0,.1);
-					}
-
-					@iterations: 50;
-					.span-loop (@i) when (@i > 0) {
-						@width: @i+1;
-						@activeWidth: @i+2;
-					    &[size="@{i}"] {
-					        max-width: ~"@{i}em";
-
-					        &.active { max-width: ~"@{width}em"; }
-
-					        &.icons { 
-					        	max-width: ~"@{width}em"; 
-					        	&.active { max-width: ~"@{activeWidth}em"; }
-					        }
-					    }
-					    .span-loop(@i - 1);
-					}
-					.span-loop (@iterations);
-				}
-
-				.holder {
-					height: 30px;
-					width: 100%;
-					clear: both;
-					margin-top: -10px;
-					.show;
-
-					.entry {
-						.pull-left;
-
-						.masked-input {
-							font-size: 30px;
-							line-height: 30px;
-							height: 30px;
-							font-weight: 700;
-							clear: none;
-							.pull-left;
-
-							&:first-child { margin-right: 0;}
-						}
-					}
-
-					.switch-button,
-					.status { 
-						line-height: 30px;
-						vertical-align: middle;
-						text-transform: uppercase;
-						margin: 7px 0 0 20px; 
-						.pull-left;
-					}
-
-					.switch-button { 
-						width: 80px; 
-						text-shadow: none;
-						background: rgba(0,0,0,.1);
-						.box-shadow(none);
-						.show;
-
-						.value {
-							color: @white;
-							font-weight: 700;
-							.calc-width(100, 30);
-						}
-
-						.switch-icon {
-							.vip;
-							background: @grey2;
-						}
-
-						&.on {
-							.switch-icon { 
-								background: @yellow;
-							}
-						}
-					}
-
-					&.data {
-						height: 35px;
-						margin-top: 0;
-
-						.divider {
-							line-height: 35px;
-							margin-right: 10px;
-							.pull-left;
-						}
-
-						.masked-input {
-							margin-right: 20px;
-							line-height: 35px;
-							min-height: 35px;
-							.pull-left;
-
-							&.icons { padding-left: 30px; }
-							&.icon-gc-location { margin-right: 0; }
-						}
-					}
-				}
-			}*/
 
 			#close-guest-card,
 			.icon-show-conversations {
@@ -1704,14 +1587,11 @@
 							background: rgba(0,0,0,.05);
 
 							&:first-child { 
-								width: 80px;
+								width: 120px;
 								#border-radius > .left-top(); 
 							}
 							&:nth-child(2) { width: 120px; }
 							&:last-child { #border-radius > .right-top(); }
-
-							
-							
 						}
 					}
 				}
@@ -2229,6 +2109,10 @@
 						margin-right: 10px;
 						padding-right: 25px;
 						background-position: 100% 50%;
+						max-width: 270px;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;						
 
 						.value {
 							font-size: 36px;
@@ -2396,30 +2280,28 @@
 
 					/* Signature **/
 					&.signature-wrapper {
+						display: table;
+						table-layout: fixed;
 						padding: 10px;
 						line-height: 1em;
 						background: @white;
 						#border-radius > .rounded();
+						.size(200px, 100%);
 						.box-shadow();
 
 						figure {
-							background: #fff;
+							background-color: #fff;
+							display: table-cell;
+							vertical-align: middle;
 							text-align: center;
 							overflow: hidden;
 							.size(200px, 100%);
-							.show;
 
 							img { 
 								max-width: 100%;
 								max-height: 100%;
-							}
-
-							&.signature-zest {
-								img { height: 100%; }
-							}
-
-							&.signature-rover {
-								img { height: auto; }
+								height: auto;
+								
 							}
 						}
 					}
@@ -2647,6 +2529,7 @@
 			 		padding: 0;
 			 		margin: 10px;
 			 		background: @white;
+			 		min-height: 110px;
 			 		#border-radius > .rounded();
 			 		.box-shadow();
 
@@ -2689,6 +2572,7 @@
 			 				line-height: 21px;
 			 				margin: 0 0 5px 0;
 			 				color: @grey4;
+			 				min-height: 21px;
 			 				#border-radius > .top(0);
 			 				.box-shadow(none);
 			 			}
@@ -2972,8 +2856,7 @@
 								margin-top: 8px;
 								line-height: 1.2em;
 								.pull-left;
-							}
-							
+							}	
 					 	}
 
 					 	.rooms {

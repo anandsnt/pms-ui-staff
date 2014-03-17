@@ -28,7 +28,12 @@ var RoomUpgradesView = function(viewDom){
   };
 
 	this.createViewScroll = function(){
-    createHorizontalScroll('#room-upgrades');
+    // We need to calculate width of the horizontal list based on number of items
+    var $scrollable = that.myDom.find('#room-upgrades .wrapper'),
+      $items = that.myDom.find('#room-upgrades .wrapper > li').size(),
+      $itemsWidth = ($items * 460) + 10; // * 460 is single item width, + 10 is padding
+      $($scrollable).css({ 'width' : $itemsWidth + 'px' });
+      createHorizontalScroll('#room-upgrades');
   };
 
 

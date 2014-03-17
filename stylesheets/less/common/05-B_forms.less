@@ -252,21 +252,31 @@ label {
     }
 
     .file-preview {
+        line-height: 100px;
+        vertical-align: middle;
         background: @grey1;
         .square(100px);
         .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
         #border-radius > .rounded();
         .pull-right;
-    }
 
-    span.file-preview {
-        font-size: 12px;
-        line-height: 18px;
-        padding-top: 32px;
-        vertical-align: middle;
-        text-transform: uppercase;
-        text-align: center;
-        color: @grey3;
+        img {
+            width: 100%;
+            height: auto;
+            max-height: 100px;
+            vertical-align: middle;
+            #border-radius > .rounded();
+        }
+
+        em {
+            font-size: 12px;
+            line-height: 18px;
+            padding-top: 32px;
+            text-transform: uppercase;
+            text-align: center;
+            color: @grey3;
+            .show;
+        }
     }
 
 /* Styled selectboxes           ==========================*/
