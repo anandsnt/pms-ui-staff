@@ -9,13 +9,13 @@ admin.config([
 		$stateProvider.state('admin', {
 			//abstract: true,
 			url: '/admin',
-			templateUrl: 'partials/landing.html',
+			templateUrl: 'views/landing.html',
 			controller: 'adminController'
 		});
 
 		$stateProvider.state('admin.dashboard', {
 			url: '/dashboard',
-			templateUrl: 'partials/dashboard.html',
+			templateUrl: 'views/dashboard.html',
 			controller: 'dashboardController'
 		});
 
