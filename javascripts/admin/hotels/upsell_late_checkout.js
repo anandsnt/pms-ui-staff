@@ -17,6 +17,8 @@ var UpsellLateCheckoutView = function(domRef){
   	 
   };
    this.delegateEvents = function(){
+   		// To unbind all events that happened - CICO-5474 fix
+  		that.myDom.on('load').unbind("click");
 	   that.myDom.find('#save').on('click', that.saveHotelDetails);
 	   that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView);
 	   that.myDom.find('#checkout-time-extended-to-1').on('change', that.changeSecondLevel);

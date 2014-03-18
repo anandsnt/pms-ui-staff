@@ -44,7 +44,7 @@ snt.config(['$routeProvider', function($routeProvider) {
 	})
 
 
-	// error routings 
+	// error routings
 
 	$routeProvider.when('/authFailed', {
 		templateUrl: '/assets/shared/authenticationFailedView.html',
@@ -91,7 +91,7 @@ snt.config(['$routeProvider', function($routeProvider) {
 		templateUrl: '/assets/checkin/partials/checkinSuccess.html',
 	    title: 'Status - Check In'
 	});
-	
+
 
 	$routeProvider.otherwise({
 		redirectTo: '/'
@@ -132,7 +132,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.isCheckedout  = ($attrs.isCheckedout === 'true') ? true : false;
 	$rootScope.isCheckin     =   ($attrs.isCheckin ==='true') ? true : false;
 
-
+	$rootScope.reservationStatusCheckedIn = ($attrs.reservationStatus ==='CHECKIN')? true :false;
 
 	//to be retrieved from server
 
@@ -142,8 +142,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	/////////////////////////////////////////////
 
    
-
-   	if($rootScope.isCheckedin)
+   	if(($attrs.reservationStatus ==='CHECKIN') && ($attrs.isActiveToken ==='false'))
 		$location.path('/checkinSuccess');
 	else if($rootScope.isCheckin)
 		$location.path('/checkinConfirmation');
@@ -151,14 +150,12 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 		$location.path('/checkOutNowSuccess');
 	else if($attrs.isLateCheckoutAvailable  === 'false')
 		$location.path('/checkOutNow');
-	
+
 
 
 
 	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
-
-	console.log($attrs);
 
 }]);
 
@@ -218,7 +215,7 @@ snt.run(function($rootScope, $location, $http){
 		if(next === current) {
 			if($rootScope.isCheckin && !$rootScope.isCheckedout)
 				$location.path('/checkinConfirmation');
-				 else if (!$rootScope.isLateCheckoutAvailable) 
+				 else if (!$rootScope.isLateCheckoutAvailable)
 			    $location.path('/checkOutNow');
 			else
 				$location.path('/');
