@@ -1,9 +1,9 @@
 hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($scope, HKSearchSrv, $state){
-	$scope.isFilterHidden = true;
+	$scope.isFilterHidden = false;
 	$scope.query = '';
-	$scope.data = HKSearchSrv.roomList;
+	//$scope.data = HKSearchSrv.roomList;
 
-	if($scope.data == ''){
+	//if($scope.data == ''){
 		$scope.$emit('showLoader');
 		HKSearchSrv.fetch().then(function(data) {
 				$scope.$emit('hideLoader');
@@ -14,7 +14,7 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 			$scope.$emit('hideLoader');
 
 		});	
-	}
+	//}
 
 	$scope.getRoomColorClasses = function(roomHkStatus, isRoomOccupied){
 
@@ -122,12 +122,7 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 
 		return true;
 	}
-
-	$scope.filterRoomsClicked = function(){
-		$scope.isFilterHidden = !$scope.isFilterHidden;
-		$scope.$emit('filterRoomsClicked');
-	}
-
+	
 	$scope.isFilterChcked = function(){
 		for(var p in $scope.currentFilters) {
 		    if($scope.currentFilters[p] === true) {

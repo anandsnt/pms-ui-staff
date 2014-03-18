@@ -5,7 +5,7 @@
    <!-- Title -->
    <h1 class="h2">Rooms</h1>
    <!-- Filter / Checkout button  -->
-   <a ng-click="filterRoomsClicked()" class="button white with-icon only-icon toggle linked-toggle"><span class="icons icon-filter"></span>Filter rooms</a>
+   <a ng-click="$emit('showFilterScreen')" class="button white with-icon only-icon toggle linked-toggle"><span class="icons icon-filter"></span>Filter rooms</a>
 </header>
 <!-- Search form -->
 <form class="search-form" role="search">
@@ -32,15 +32,15 @@
    </ul>
 </section>
 <!-- Rooms filters -->
-<section class="content" ng-class = "{'hidden': isFilterHidden, 'filter-show': !(isFilterHidden)}" id="filter-rooms">
+<section class="content" id="filter-rooms">
 
    <header role="banner" class="nav-bar float">
        <h1 class="h2">Filter rooms</h1>
        <button id="clear-filters" class="button blank clear-selection" ng-show = "isFilterChcked()" ng-click = "clearFilters()" type="button">Clear</button>
-       <a class="complete toggle linked-toggle" ng-click="filterRoomsClicked()">Done</a>
+       <a class="complete toggle linked-toggle" ng-click="$emit('dismissFilterScreen')">Done</a>
     </header>
     <div class="content scrollable" id="filter-options" ng-iscroll = "rooms">
-       <div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+       <div class="wrapper" >
           <div class="holder">
              <strong class="title">Housekeeping</strong>
              <div class="entry radio-check">
