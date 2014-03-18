@@ -21,6 +21,9 @@ var CheckoutGuests = function(domRef){
 
   this.goBackToPreviousView = function() {
  	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
+ 	var url = "/admin/get_checkout_settings";
+	viewParams = that.viewParams['checkinParams'];
+	sntapp.fetchAndRenderView(url, that.viewParams['backDom'], {}, 'BLOCKER', viewParams);
   };
   //to send email to all selected guests
   this.sendEmail = function(event){
