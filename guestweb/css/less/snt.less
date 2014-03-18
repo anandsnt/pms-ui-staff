@@ -848,28 +848,26 @@ padding:5px 8px 2px 0;
    margin:10px 0px;
  }
 
-.qr-code-details,.carousel-view{
-  
-
-.col-md-6 {
-  padding-left:0px !important ;
-  padding-right:0px !important ;
-  
- }
- .qr-code-image{
-  padding-top:10px; 
-  background: #ffffff !important ;
-  color: #000000 !important ;
-  padding-left:25px !important ;
-  padding-right:25px !important ;
- .qr-code-info{
-    font-family: 'Source Sans Pro';
-     font-size:12px;
-     text-align:left !important ;
-     padding-top:10px;
+.qr-code-image {
+  padding: 20px 10px 10px; 
+  background: #fff;
+  border-radius: 10px;
+  img {
+    max-width: 100%;
   }
+  .qr-code-info {
+    font-family: 'Source Sans Pro';
+    font-size:15px;
+    padding: 15px 0 0 30px;
+    text-align: left;
   }
 }
+@media (max-width: 420px) {
+  .qr-code-image .qr-code-info {
+    padding: 15px 0 0 0;
+  }
+}
+
 .key-info{
   .col-xs-4{
   padding-left:0px !important ;
@@ -1653,6 +1651,43 @@ body > div[ng-view] {
   }
 }
 
+.key-wrap {
+  text-align: center;
+  vertical-align: middle;
+
+  .key-for {
+    display: inline-block;
+    padding: 20px 0 20px;
+    margin: 0;
+    font-family: 'Source Sans Pro';
+    line-height: 1;
+    color: #fff;
+    font-weight: 400;
+    text-align: left;
+    overflow: hidden;
+  }
+
+  .key-for-image {
+    width: 82px;
+    margin-top: 7px;
+    float: left;
+  }
+
+  .key-for-txt {
+    display: block;
+    font-size: 24px;
+    margin-left: 92px;
+  }
+
+  .key-for-room {
+    display: block;
+    font-size: 80px;
+    font-weight: 100;
+    margin-left: 92px;
+  }
+}
+
+/* responsive starts here */
 @media (min-width: 992px) {
   .row .reservation-dates {
     font-size: 18px;
