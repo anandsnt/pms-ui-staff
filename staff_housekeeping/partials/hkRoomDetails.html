@@ -8,7 +8,7 @@
     </header>
     <!-- Rooms details -->
     <section id="room-details" class="content">
-        <header id="room-header" class = "{{getHeaderColorClasses(data.room_details.current_hk_status, data.room_details.is_occupied)}}">
+        <header id="room-header" ng-class= "{'inspected-clean': isCleanVacant, 'dirty': isDirtyVacant, '': isOutOfService, 'pickup': isPickup, 'occupied': isDefaultRoomColor}">
             <h1 class="icons icon-room">{{data.room_details.current_room_no}}</h1>
             <div class="select">
                 <select ng-model="currentHKStatus"

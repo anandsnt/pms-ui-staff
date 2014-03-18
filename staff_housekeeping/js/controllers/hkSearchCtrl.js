@@ -9,6 +9,10 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 				$scope.$emit('hideLoader');
 		        $scope.data = data;
 		        $scope.$parent.myScroll['rooms'].refresh();
+		}, function(){
+			console.log("fetch failed");
+			$scope.$emit('hideLoader');
+
 		});	
 	}
 
