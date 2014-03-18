@@ -8,6 +8,8 @@ var UpsellRoomDetailsView = function(domRef){
   };
   
   this.delegateEvents = function(){  
+  	// To unbind all events that happened - CICO-5474 fix
+  	that.myDom.on('load').unbind("click");
      that.myDom.find('#upsell_level .sortable-list').sortable({
         connectWith: '#upsell_level .sortable-list'
      });
