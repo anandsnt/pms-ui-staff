@@ -31,6 +31,14 @@ hkRover.controller('HKappCtrl',['$scope', '$state', function($scope, $state){
         return $scope.filterOpen ? true : false;
     };
 
+    $scope.$on("dismissFilterScreen", function(){
+        $scope.filterOpen = false;
+    });
+                
+    $scope.$on("showFilterScreen",function(){
+        $scope.filterOpen = true;
+    });
+
     
 }]);
 

@@ -1,17 +1,22 @@
 hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($scope, HKSearchSrv, $state){
-	$scope.isFilterHidden = true;
+	$scope.isFilterHidden = false;
 	$scope.query = '';
-	$scope.data = HKSearchSrv.roomList;
-    
-	if($scope.data == ''){
+
+	//$scope.data = HKSearchSrv.roomList;
+
+	//if($scope.data == ''){
 		$scope.$emit('showLoader');
 		HKSearchSrv.fetch().then(function(data) {
 				$scope.$emit('hideLoader');
 		        $scope.data = data;
+				$scope.refreshScroll();
 		        //$scope.$parent.myScroll['rooms'].refresh();
-		        $scope.refreshScroll();
+		}, function(){
+			console.log("fetch failed");
+			$scope.$emit('hideLoader');
+
 		});	
-	}
+	//}
 	
 	// To fix scroll issue on search screen
 	// TODO : Create directive for iScroll
@@ -22,7 +27,7 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 			currentScroll.scrollTo(0, 0, 200);
 		}, 100); 
 	};
-
+	
 	$scope.getRoomColorClasses = function(roomHkStatus, isRoomOccupied){
 
 		if((roomHkStatus == 'INSPECTED' || roomHkStatus == 'CLEAN') && isRoomOccupied == 'false'){
@@ -129,12 +134,7 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 
 		return true;
 	}
-
-	$scope.filterRoomsClicked = function(){
-		$scope.isFilterHidden = !$scope.isFilterHidden;
-		$scope.$emit('filterRoomsClicked');
-	}
-
+	
 	$scope.isFilterChcked = function(){
 		for(var p in $scope.currentFilters) {
 		    if($scope.currentFilters[p] === true) {
