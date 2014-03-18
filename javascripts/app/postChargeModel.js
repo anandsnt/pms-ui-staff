@@ -14,7 +14,8 @@ var PostChargeModel = function(callBack) {
 	this.is_undo = false;
 	
 	this.delegateEvents = function() {
-		
+		// Initially Load favourite items.
+		this.showFavouriteItems();
 		// Append bill number on modal while click +ADD from bill card page.
 		this.origin = this.params.origin;
 				
@@ -126,6 +127,7 @@ var PostChargeModel = function(callBack) {
 		that.itemCompleteList = response.data.items;
 		for(var i = 0; i < that.itemCompleteList.length; i++){
 			that.itemCompleteList[i].count = 0;
+			that.itemCompleteList[i].unit_price = parseFloat(that.itemCompleteList[i].unit_price).toFixed(2)
 		}
 		that.currentList = that.itemCompleteList;
 	};
