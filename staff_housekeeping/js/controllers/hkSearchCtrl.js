@@ -2,15 +2,26 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 	$scope.isFilterHidden = true;
 	$scope.query = '';
 	$scope.data = HKSearchSrv.roomList;
-
+    
 	if($scope.data == ''){
 		$scope.$emit('showLoader');
 		HKSearchSrv.fetch().then(function(data) {
 				$scope.$emit('hideLoader');
 		        $scope.data = data;
-		        $scope.$parent.myScroll['rooms'].refresh();
+		        //$scope.$parent.myScroll['rooms'].refresh();
+		        $scope.refreshScroll();
 		});	
 	}
+	
+	// To fix scroll issue on search screen
+	// TODO : Create directive for iScroll
+    var currentScroll = new iScroll('rooms');
+	$scope.refreshScroll = function() {
+		setTimeout(function () { 
+			currentScroll.refresh();
+			currentScroll.scrollTo(0, 0, 200);
+		}, 100); 
+	};
 
 	$scope.getRoomColorClasses = function(roomHkStatus, isRoomOccupied){
 

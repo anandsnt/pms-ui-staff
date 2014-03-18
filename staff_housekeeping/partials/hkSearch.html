@@ -12,11 +12,11 @@
    <div class="entry">
       <a id="clear-query" ng-show="query != ''" class="icons icon-clear-search visible" ng-click = "query = ''">Clear query</a>
       <button type="submit" class="icons icon-search">Search</button>
-      <input name="query" id="query" ng-model="query" placeholder="Enter Room Number" type="text" autocomplete="off" />
+      <input name="query" id="query" ng-model="query" placeholder="Enter Room Number" type="text" autocomplete="off" ng-keypress="refreshScroll()"/>
    </div>
 </form>
 <!-- Rooms list -->
-<section id="rooms" class="content scrollable" ng-iscroll = "rooms">
+<section id="rooms" class="content scrollable" ng-iscroll="rooms">
    <ul class="wrapper">
       <li ng-repeat="room in data.rooms | filter: ApplyFilters" >
          <a ui-sref="hk.roomDetails({id: room.id})" ng-class="{'with-image': room.is_occupied == 'true'}" class = "{{getRoomColorClasses(room.hk_status.value, room.is_occupied)}}">  
