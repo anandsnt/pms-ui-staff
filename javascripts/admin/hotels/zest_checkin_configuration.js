@@ -89,7 +89,7 @@ var ZestCheckinConfiguration = function(domRef){
 	    var currentDiv = sntadminapp.getCurrentDiv();
 	    var nextDiv = sntadminapp.getReplacingDiv(currentDiv);
 	    var backDom = currentDiv;
-	  	var nextViewParams = {'backDom': backDom};
+	  	var nextViewParams = {'backDom': backDom, 'checkinParams': that.viewParams};
 
 	    if(typeof href !== 'undefined'){
 	  		sntapp.fetchAndRenderView(href, nextDiv, viewParams, 'BLOCKER', nextViewParams);
