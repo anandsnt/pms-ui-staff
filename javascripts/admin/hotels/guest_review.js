@@ -3,7 +3,9 @@ var GuestReviewView = function(domRef){
   this.myDom = domRef; 
   var that = this;
   
-  this.delegateEvents = function(){  	
+  this.delegateEvents = function(){  
+  	// To unbind all events that happened - CICO-5474 fix
+  	that.myDom.on('load').unbind("click");
   	that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView); 
   	that.myDom.find('#save_guest_review').on('click', that.saveGuestReviews);
   };

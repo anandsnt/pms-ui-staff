@@ -44,7 +44,7 @@ snt.config(['$routeProvider', function($routeProvider) {
 	})
 
 
-	// error routings 
+	// error routings
 
 	$routeProvider.when('/authFailed', {
 		templateUrl: '/assets/shared/authenticationFailedView.html',
@@ -91,7 +91,7 @@ snt.config(['$routeProvider', function($routeProvider) {
 		templateUrl: '/assets/checkin/partials/checkinSuccess.html',
 	    title: 'Status - Check In'
 	});
-	
+
 
 	$routeProvider.otherwise({
 		redirectTo: '/'
@@ -116,43 +116,33 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 
 	//store basic details as rootscope variables
 
-	$rootScope.reservationID  = $attrs.reservationId
-	$rootScope.hotelName     = $attrs.hotelName
-	$rootScope.userName      = $attrs.userName
-	$rootScope.checkoutDate  = $attrs.checkoutDate
-	$rootScope.checkoutTime  = $attrs.checkoutTime
-	$rootScope.userCity   	 = $attrs.city
-	$rootScope.userState     = $attrs.state
-	$rootScope.roomNo        = $attrs.roomNo
+	$rootScope.reservationID = $attrs.reservationId;
+	$rootScope.hotelName     = $attrs.hotelName;
+	$rootScope.userName      = $attrs.userName;
+	$rootScope.checkoutDate  = $attrs.checkoutDate;
+	$rootScope.checkoutTime  = $attrs.checkoutTime;
+	$rootScope.userCity   	 = $attrs.city;
+	$rootScope.userState     = $attrs.state;
+	$rootScope.roomNo        = $attrs.roomNo;
 	$rootScope.isLateCheckoutAvailable  = ($attrs.isLateCheckoutAvailable  === 'true') ? true : false;
-	$rootScope.emailAddress    = $attrs.emailAddress
-	$rootScope.hotelLogo      = $attrs.hotelLogo;
+	$rootScope.emailAddress  = $attrs.emailAddress;
+	$rootScope.hotelLogo     = $attrs.hotelLogo;
 
-	$rootScope.hotelPhone      = $attrs.hotelPhone
-	$rootScope.isCheckedout   = ($attrs.isCheckedout === 'true') ? true : false;
+	$rootScope.hotelPhone    = $attrs.hotelPhone
+	$rootScope.isCheckedout  = ($attrs.isCheckedout === 'true') ? true : false;
 	$rootScope.isCheckin     =   ($attrs.isCheckin ==='true') ? true : false;
+	$rootScope.isActiveToken  =   ($attrs.isActiveToken ==='true') ? true : false;
+
+	$rootScope.reservationStatusCheckedIn = ($attrs.reservationStatus ==='CHECKIN')? true :false;
+
+	$rootScope.isActiveToken = ($attrs.isActiveToken ==='true') ? true : false;
+
+	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken)
 
 
+   	// page navigatons if any of following conditions happpens
 
-	//to be retrieved from server
-
-	$rootScope.isCheckedin  = false;
-
-
-	/////////////////////////////////////////////
-
-
-	// console.log($attrs.isCheckin)
-	// //if checkin
-	// if(($attrs.isCheckin ==='true') && !$rootScope.isCheckedout)
-	// 	$location.path('/checkinConfirmation');
-
-	// //if chekout is already done
- // 	if ($rootScope.isCheckedout) 
-	// 	$location.path('/checkOutNowSuccess');
-   
-
-   	if($rootScope.isCheckedin)
+   	if(($attrs.reservationStatus ==='CHECKIN') && ($attrs.isActiveToken ==='false'))
 		$location.path('/checkinSuccess');
 	else if($rootScope.isCheckin)
 		$location.path('/checkinConfirmation');
@@ -160,14 +150,14 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 		$location.path('/checkOutNowSuccess');
 	else if($attrs.isLateCheckoutAvailable  === 'false')
 		$location.path('/checkOutNow');
-	
+
 
 
 
 	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
 
-	console.log($attrs)
+	console.log($attrs);
 
 }]);
 
@@ -227,32 +217,42 @@ snt.run(function($rootScope, $location, $http){
 		if(next === current) {
 			if($rootScope.isCheckin && !$rootScope.isCheckedout)
 				$location.path('/checkinConfirmation');
-				 else if (!$rootScope.isLateCheckoutAvailable) 
-			    $location.path('/checkOutNow')
+				 else if (!$rootScope.isLateCheckoutAvailable)
+			    $location.path('/checkOutNow');
 			else
-				$location.path('/')
+				$location.path('/');
 		}
 	});
 });
 
 
 (function() {
-	var checkOutLandingController = function($rootScope,$location) {
+	var checkOutLandingController = function($rootScope,$location,$scope) {
 		//if checkout is already done
 
-  	if($rootScope.isCheckedin)
+	if($rootScope.isCheckedin){
+		$scope.pageSuccess = false;
 		$location.path('/checkinSuccess');
-	else if($rootScope.isCheckin)
+	}
+	else if($rootScope.isCheckin){
+		$scope.pageSuccess = false;
 		$location.path('/checkinConfirmation');
-	else if($rootScope.isCheckedout)
+	}
+	else if($rootScope.isCheckedout){
+		$scope.pageSuccess = false;
 		$location.path('/checkOutNowSuccess');
-	else if(!$rootScope.isLateCheckoutAvailable)
+	}
+	else if(!$rootScope.isLateCheckoutAvailable){
+		$scope.pageSuccess = false;
 		$location.path('/checkOutNow');
+	}
+	else
+		$scope.pageSuccess = true;
 	}
 
 
 	var dependencies = [
-	'$rootScope','$location',
+	'$rootScope','$location','$scope',
 	checkOutLandingController
 	];
 

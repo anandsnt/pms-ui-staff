@@ -4,6 +4,8 @@ var SocialLobbyView = function(domRef){
   var that = this;
   
   this.delegateEvents = function(){  	
+  	// To unbind all events that happened - CICO-5474 fix
+  	that.myDom.on('load').unbind("click");
   	that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView); 
   	that.myDom.find('#save_social_lobby').on('click', that.saveSocialLobby); 
   };

@@ -1,6 +1,6 @@
 
 (function() {
-  var checkinUpgradeRoomContorller = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService) {
+  var checkinUpgradeRoomContorller = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService,checkinDetailsService) {
 
 
     $scope.pageSuccess = true;
@@ -19,7 +19,13 @@
 
       $scope.pageSuccess = false;
       $location.path('/');
-    };
+    }
+    else if(!$rootScope.upgradesAvailable){
+
+      $scope.pageSuccess = false;
+      $location.path('/checkinReservationDetails');
+      
+    }
     
 
     if($scope.pageSuccess){
@@ -41,7 +47,11 @@
        checkinRoomUpgradeOptionsService.fetch(data).then(function(response) {
 
         $scope.isFetching     = false;
-        $scope.slides = response.data;
+
+        if(response.status === 'failure')
+          $rootScope.netWorkError = true;
+        else
+          $scope.slides = response.data;
 
 
       });
@@ -76,6 +86,9 @@
          $rootScope.upgradesAvailable = false;
          $rootScope.ShowupgradedLabel = true;
          $rootScope.roomUpgradeheading = "Your new Trip details";
+
+         checkinDetailsService.setResponseData(response.data);
+         
          $location.path('/checkinReservationDetails');
        }
 
@@ -96,7 +109,7 @@
  };
 
  var dependencies = [
- '$scope','$location','$rootScope','checkinRoomUpgradeOptionsService','checkinRoomUpgradeService',
+ '$scope','$location','$rootScope','checkinRoomUpgradeOptionsService','checkinRoomUpgradeService','checkinDetailsService',
  checkinUpgradeRoomContorller
  ];
 
@@ -120,4 +133,16 @@ snt.directive("description", function ($compile) {
       $compile(element.contents())(scope);
     }
   }
-})
+});
+
+// Setup directive to handle image not found case
+
+snt.directive('errSrc', function() {
+  return {
+    link: function(scope, element, attrs) {
+      element.bind('error', function() {
+        element.attr('src', attrs.errSrc);
+      });
+    }
+  }
+});

@@ -13,7 +13,6 @@
 /* 2. TYPOGRAPHY
 ==========================================================*/
 @import "less/common/02_typography.less"; 
-@import "less/app/02_typography.less"; 
 
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/
@@ -27,6 +26,7 @@
 
 /* 5. COMPONENTS
 ==========================================================*/
+@import "less/common/05-A_components.less";
 @import "less/app/05-A_components.less";
 
 @import "less/common/05-B_forms.less";
@@ -41,23 +41,3 @@
 
 /* 7. MEDIA QUERIES
 ==========================================================*/
-
-/* iPads (landscape)		 			  ================*/
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
-	@import "less/app/07-A_ipad-landscape.less";
-}
-
-/* iPads (portrait)		 				  ================*/
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
-	@import "less/app/07-B_ipad-portrait.less";
-}
-
-/* 2x				======================================*/
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-	@import "less/app/07-C_2x.less";
-}
-
-/* Desktop			======================================*/
-@media only screen and (min-width : 1224px) {
-	@import "less/app/07-D_desktop.less";
-}

@@ -9,16 +9,14 @@
 			</div>
 		</div>
 
-	
-
 		<!-- contentarea starts here-->
-		<div class="container" ng-hide="isFetching || netWorkError">
+		<div class="container">
 			<!-- top section starts here-->
 
 			<div class="row check-inout-wrapper">
 
 				<div class="reservation-id centeralign">
-					<span class="lightcontent">RESERVATION #{{reservationData.reservation_id}}</span>
+					<span class="lightcontent">RESERVATION #{{confirmationNumber}}</span>
 				</div>
 				<div class="col-md-6" >
 
@@ -68,7 +66,7 @@
 							</div>
 
 						</div>
-						<div class="row">
+						<div class="row" ng-show="!!reservationData.room_rate.length">
 							<div class=" reservation-dates">
 								<div class="lightcontent">
 									RATE
@@ -86,28 +84,34 @@
 								</div>
 							</div>
 							<div class="room_details">
-								{{reservationData.currency}} {{reservationData.avg_rate}}
+								{{reservationData.currency}} {{ (reservationData.is_rate_suppressed === 'false')? reservationData.avg_rate : '0.00' }}
 							</div>
 
 						</div>
 						<div class="row applycharge">
-							 <input type="checkbox" ng-model="checked" >:&nbsp
+							 <input type="checkbox" ng-model="checked"  ng-checked="checkedApplyCharges">&nbsp
 							APPLY CHARGES TO MY CREDIT CARD ON FILE
 							
 						</div>
 
 					</div></div>
 				<div class="col-md-6 ">
+
+					<!--- checkin button -->
+					
+					<button class="col-md-6 checkin-button" ng-disabled="!checkedApplyCharges" ng-click="checkInButtonClicked()">
 					<div class="row now-later-options ">
-						<div class="col-xs-12 checkin ">
-							<div class="rel-wrapper" ng-click="checkInButtonClicked()">
+						<div class="checkin ">
+							<div class="rel-wrapper" >
 								Check in
 								<img src="/assets/img/checkin_icon.png" width="60" height="60" alt=""/>
 							</div>
 						</div>
+					</button>
 					</div>
-					<div class=" col-xs-12row">
-						<div class=" reservation-dates ">
+
+					<div class=" col-xs-12 row">
+						<div class="error-callus reservation-dates ">
 							<div class="lightcontent">
 								ERRORS? <u>CALL US AT  {{hotelPhone}}.</u>
 							</div>
