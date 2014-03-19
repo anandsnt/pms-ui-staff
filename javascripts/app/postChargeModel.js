@@ -185,7 +185,7 @@ var PostChargeModel = function(callBack) {
 				} 
 			});
 			
-			var $output = $item + ' <span class="count" data-count="1"/><span class="base" data-unit-price="'+$price+'" data-cc="'+$data_cc+'">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">'+$currency_code+'<span class="value">' + $price + '</span></span>';
+			var $output = $item + ' <span class="count" data-count="1"/><span class="base" data-unit-price="'+$price+'" data-cc="'+$data_cc+'">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">'+$currency_code+' <span class="value">' + $price + '</span></span>';
 	
 			// Update right side panel
 			if(that.myDom.find('#items-added.hidden')) {
@@ -197,7 +197,8 @@ var PostChargeModel = function(callBack) {
 			if (!is_item_present_in_item_summary) {
 				
 				$('<span class="count" />').appendTo(element);
-	
+				var totalChargeHTML = "Total <span class='price'>"+$currency_code+" <span class='value'>0</span></span>";
+				that.myDom.find('#total-charge').html(totalChargeHTML);
 				// Add item to list
 				var items = [];
 				items.push($('<li data-id="' + $id + '" />').html($output));
