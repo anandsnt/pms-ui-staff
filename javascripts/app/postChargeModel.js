@@ -430,9 +430,10 @@ var PostChargeModel = function(callBack) {
 		 }
 		 // To update stay card balance amount
 		 var currentConfirmNumber = response.data.confirmation_number;
-		 var html = getCurrencySymbol(response.data.currency_code) +""+ response.data.total_balance_amount;
+		 var html = getCurrencySymbol(response.data.currency_code) +" "+ response.data.total_balance_amount;
 		 $("#reservation-"+currentConfirmNumber+" .balance .h1").html("");
 		 $("#reservation-"+currentConfirmNumber+" .balance .h1").html(html);
+		 if(response.data.total_balance_amount > 0) $("#reservation-"+currentConfirmNumber+" .balance .h1").removeClass('green').addClass('red');
 		 
 	};
 	
