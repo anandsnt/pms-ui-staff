@@ -1,1 +1,19 @@
-Dashboard
+ <!-- Listing & details holders -->
+   <!--<section id="load-listing" class="content content-holder"></section>
+   <section id="load-details" class="content content-holder"></section>-->
+   <!-- Dashboard tabs - Hotel & Staff -->
+   <section id="dashboard-hotel" class="content">
+      <header class="content-title float">
+         <h2>{{selectecMenu.menu_name}}</h2>
+      </header>
+      <ul class="dashboard-items float">
+
+         <li ng-repeat="submenu in selectecMenu.components">
+
+            <a data-type="load-listing" class="icon-admin-menu {{submenu.icon_class}}" ui-sref={{submenu.state}}>{{submenu.name}}</a>
+            <a class="text" data-type="load-listing" href="{{submenu.action_path}}">{{submenu.name}}</a>
+         </li>
+
+      </ul>      
+   </section>
+
