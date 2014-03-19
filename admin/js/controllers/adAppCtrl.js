@@ -2,7 +2,7 @@ admin.controller('ADAppCtrl',['$scope', 'ADDashboardSrv', function($scope, ADDas
 
 	$scope.data = ADDashboardSrv.fetch();
 	
-	$scope.selectecMenu = $scope.data.menus[0];
+	$scope.selectedMenu = $scope.data.menus[0];
 
 	//function to change the selected menu
 	//index is the array position
