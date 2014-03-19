@@ -6,9 +6,9 @@ admin.controller('ADAppCtrl',['$scope', 'ADDashboardSrv', function($scope, ADDas
 
 	//function to change the selected menu
 	//index is the array position
-	$scope.setSeletectedMenu = function(index)	{
+	$scope.setSelectedMenu = function(index)	{
 		if(index < $scope.data.menus.length){
-			$scope.selectecMenu = $scope.data.menus[index];
+			$scope.selectedMenu = $scope.data.menus[index];
 		}
 	};
 
