@@ -70,7 +70,7 @@
 						// display options for room upgrade screen
 
 						$rootScope.ShowupgradedLabel = false;
-						$rootScope.roomUpgradeheading = "Your Trip details";
+						$rootScope.roomUpgradeheading = "Your trip details";
 						$scope.isResponseSuccess = true;
 
 						checkinDetailsService.setResponseData(response.data);
