@@ -7,7 +7,7 @@ admin.config([
 		$urlRouterProvider.otherwise('/admin/dashboard');
 
 		$stateProvider.state('admin', {
-			//abstract: true,
+			abstract: true,
 			url: '/admin',
 			templateUrl: '/assets/partials/adApp.html',
 			controller: 'ADAppCtrl'
@@ -17,6 +17,13 @@ admin.config([
 			url: '/dashboard',
 			templateUrl: '/assets/partials/dashboard/adDashboard.html',
 			controller: 'ADDashboardCtrl'
+
+		});
+
+		$stateProvider.state('admin.hoteldetails', {
+			templateUrl: '/assets/partials/hotel/hotelDetails.html',
+			controller: 'ADHotelDetailsCtrl',
+			url : '/hoteldetails'
 		});
 
 		
