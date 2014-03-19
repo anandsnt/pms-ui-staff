@@ -19,7 +19,7 @@
 <section id="rooms" class="content scrollable">
    <ul class="wrapper">
       <li ng-repeat="room in data.rooms | filter: ApplyFilters" >
-         <a ui-sref="hk.roomDetails({id: room.id})" ng-class="{'with-image': room.is_occupied == 'true'}" class = "{{getRoomColorClasses(room.hk_status.value, room.is_occupied)}}">  
+         <a ui-sref="hk.roomDetails({id: room.id})" ng-class="{'with-image': room.is_occupied == 'true'}" class = "{{getRoomColorClasses(room.hk_status.value, room.is_occupied, room.is_ready)}}">  
             <h2 class="room-number">{{ room.room_no}}</h2>
             <span class="room-status">{{ room.hk_status.description }}</span>
             <span class="fo-status">{{ room.room_reservation_status }}</span>

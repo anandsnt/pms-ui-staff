@@ -28,9 +28,9 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		}, 100); 
 	};
 	
-	$scope.getRoomColorClasses = function(roomHkStatus, isRoomOccupied){
+	$scope.getRoomColorClasses = function(roomHkStatus, isRoomOccupied, isReady){
 
-		if((roomHkStatus == 'INSPECTED' || roomHkStatus == 'CLEAN') && isRoomOccupied == 'false'){
+		if(isReady == 'true'){
 			return "room-clean";
 		}
 		if((roomHkStatus == 'DIRTY' || roomHkStatus == 'PICKUP') && isRoomOccupied == 'false') {
