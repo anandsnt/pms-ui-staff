@@ -133,13 +133,10 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.isCheckin     =   ($attrs.isCheckin ==='true') ? true : false;
 
 	$rootScope.reservationStatusCheckedIn = ($attrs.reservationStatus ==='CHECKIN')? true :false;
-
-	//to be retrieved from server
-
-	$rootScope.isCheckedin  = false;
-
-
-	/////////////////////////////////////////////
+  
+ 	$rootScope.isActiveToken = ($attrs.isActiveToken ==='true') ? true : false;
+  
+ 	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken)
 
    
    	if(($attrs.reservationStatus ==='CHECKIN') && ($attrs.isActiveToken ==='false'))
@@ -152,7 +149,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 		$location.path('/checkOutNow');
 
 
-
+console.log($attrs)
 
 	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
@@ -213,12 +210,18 @@ snt.run(function($rootScope, $location, $http){
 
     $rootScope.$on("$locationChangeStart", function(event, next, current) {
 		if(next === current) {
-			if($rootScope.isCheckin && !$rootScope.isCheckedout)
+		if($rootScope.isCheckedin)
+			$location.path('/checkinSuccess');
+		else if($rootScope.isCheckedout)
+			$location.path('/checkOutNowSuccess');
+		else if($rootScope.isCheckin && !$rootScope.isCheckedout)
 				$location.path('/checkinConfirmation');
-				 else if (!$rootScope.isLateCheckoutAvailable)
+		else if (!$rootScope.isLateCheckoutAvailable)
 			    $location.path('/checkOutNow');
-			else
+			else{
 				$location.path('/');
+
+			}
 		}
 	});
 });
