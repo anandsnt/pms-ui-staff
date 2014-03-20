@@ -8,6 +8,11 @@
 
 		$rootScope.checkedApplyCharges = false;
 
+
+
+
+		$scope.minDate  = dateFilter(new Date(), 'yyyy-MM-dd');
+
 		// page navigatons if any of following conditions happpens
 
 
