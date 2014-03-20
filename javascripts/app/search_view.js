@@ -192,8 +192,10 @@ var Search  = function(domRef){
         that.displayFilteredResults(that.preloadedResults, "");
       }
     }
-    event.stopImmediatePropagation();
-    event.stopPropagation();    
+    if(typeof e != "undefined"){
+	    e.stopImmediatePropagation();
+	    e.stopPropagation();    
+	}
     that.updateView();
     
   };

@@ -14,7 +14,8 @@ var PostChargeModel = function(callBack) {
 	this.is_undo = false;
 	
 	this.delegateEvents = function() {
-		
+		// Initially Load favourite items.
+		this.showFavouriteItems();
 		// Append bill number on modal while click +ADD from bill card page.
 		this.origin = this.params.origin;
 				
@@ -126,6 +127,7 @@ var PostChargeModel = function(callBack) {
 		that.itemCompleteList = response.data.items;
 		for(var i = 0; i < that.itemCompleteList.length; i++){
 			that.itemCompleteList[i].count = 0;
+			that.itemCompleteList[i].unit_price = parseFloat(that.itemCompleteList[i].unit_price).toFixed(2)
 		}
 		that.currentList = that.itemCompleteList;
 	};
@@ -183,7 +185,7 @@ var PostChargeModel = function(callBack) {
 				} 
 			});
 			
-			var $output = $item + ' <span class="count" data-count="1"/><span class="base" data-unit-price="'+$price+'" data-cc="'+$data_cc+'">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">'+$currency_code+'<span class="value">' + $price + '</span></span>';
+			var $output = $item + ' <span class="count" data-count="1"/><span class="base" data-unit-price="'+$price+'" data-cc="'+$data_cc+'">at ' + $currency_code + $price + ' / ' + $base + '</span><span class="price">'+$currency_code+' <span class="value">' + $price + '</span></span>';
 	
 			// Update right side panel
 			if(that.myDom.find('#items-added.hidden')) {
@@ -195,7 +197,8 @@ var PostChargeModel = function(callBack) {
 			if (!is_item_present_in_item_summary) {
 				
 				$('<span class="count" />').appendTo(element);
-	
+				var totalChargeHTML = "Total <span class='price'>"+$currency_code+" <span class='value'>0</span></span>";
+				that.myDom.find('#total-charge').html(totalChargeHTML);
 				// Add item to list
 				var items = [];
 				items.push($('<li data-id="' + $id + '" />').html($output));
@@ -427,9 +430,10 @@ var PostChargeModel = function(callBack) {
 		 }
 		 // To update stay card balance amount
 		 var currentConfirmNumber = response.data.confirmation_number;
-		 var html = getCurrencySymbol(response.data.currency_code) +""+ response.data.total_balance_amount;
+		 var html = getCurrencySymbol(response.data.currency_code) +" "+ response.data.total_balance_amount;
 		 $("#reservation-"+currentConfirmNumber+" .balance .h1").html("");
 		 $("#reservation-"+currentConfirmNumber+" .balance .h1").html(html);
+		 if(response.data.total_balance_amount > 0) $("#reservation-"+currentConfirmNumber+" .balance .h1").removeClass('green').addClass('red');
 		 
 	};
 	
