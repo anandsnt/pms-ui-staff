@@ -1,6 +1,6 @@
 
 (function() {
-	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$location,checkinConfirmationService,checkinDetailsService) {
+	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$location, dateFilter, $filter, checkinConfirmationService,checkinDetailsService) {
 
 		$scope.pageSuccess = true;
 
@@ -41,75 +41,80 @@
 
  		if($scope.pageSuccess){
 
-		//set up flags related to webservice
-
-		$scope.isPosting 		 = false;
-		$rootScope.netWorkError  = false;
-
-
-		// watch for any change
-
-		$rootScope.$watch('netWorkError',function(){
-
-			if($rootScope.netWorkError)
-				$scope.isPosting = false;
-		});
-
-
-		//next button clicked actions
-
-		$scope.nextButtonClicked = function() {
-
-
-			var data = {'departure_date':$rootScope.departureDate,'credit_card':$scope.cardDigits,'reservation_id':$rootScope.reservationID};
-			$scope.isPosting 		 = true;
-
-		//call service
-
-		checkinConfirmationService.login(data).then(function(response) {
-
+			//set up flags related to webservice
 			$scope.isPosting 		 = false;
+			$rootScope.netWorkError  = false;
 
 
-			if(response.status === 'failure')
-					$modal.open($scope.opts); // error modal popup
-				else{
-
-					// display options for room upgrade screen
-
-					$rootScope.ShowupgradedLabel = false;
-					$rootScope.roomUpgradeheading = "Your Trip details";
-					$scope.isResponseSuccess         = true;
-
-					checkinDetailsService.setResponseData(response.data);
-					
-					
-					$rootScope.upgradesAvailable = (response.data.is_upgrades_available === "true") ? true :  false;
-
-					//navigate to next page
-
-
-					$location.path('/checkinReservationDetails'); 
-
-				}
-
+			// watch for any change
+			$rootScope.$watch('netWorkError',function(){
+				if($rootScope.netWorkError)
+					$scope.isPosting = false;
 			});
 
+
+			//next button clicked actions
+			$scope.nextButtonClicked = function() {
+				var data = {'departure_date':$rootScope.departureDate,'credit_card':$scope.cardDigits,'reservation_id':$rootScope.reservationID};
+				$scope.isPosting 		 = true;
+
+				//call service
+				checkinConfirmationService.login(data).then(function(response) {
+					$scope.isPosting = false;
+
+					if(response.status === 'failure') {
+						$modal.open($scope.opts); // error modal popup
+					}
+					else{
+
+						// display options for room upgrade screen
+
+						$rootScope.ShowupgradedLabel = false;
+						$rootScope.roomUpgradeheading = "Your trip details";
+						$scope.isResponseSuccess = true;
+
+						checkinDetailsService.setResponseData(response.data);
+						
+						
+						$rootScope.upgradesAvailable = (response.data.is_upgrades_available === "true") ? true :  false;
+
+						//navigate to next page
+
+
+						$location.path('/checkinReservationDetails'); 
+
+					}
+				});
+			};
+
+
+			// moved date picker controller logic
+			$scope.isCalender = false;
+
+			$scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
+			$scope.selectedDate = ($filter('date')($scope.date, 'M/d/yy'));
+
+			$scope.$watch('date',function(){
+				$scope.selectedDate = ($filter('date')($scope.date, 'M/d/yy'));
+			});
+
+			$scope.showCalender = function(){
+				$scope.isCalender = true;
+			};
+
+			$scope.closeCalender = function(){
+				$scope.isCalender = false;
+			};
+
+			$scope.dateChoosen = function(){
+				$rootScope.departureDate = $scope.selectedDate;
+				$scope.closeCalender();
+			};
+		}
 	};
 
-		// navigate to calendar view
-
-		$scope.presentDatePicker = function(){
-
-			$location.path('/checkinDatePicker');
-		}
-
-	}
-
-};
-
 var dependencies = [
-'$scope','$modal','$rootScope','$location','checkinConfirmationService','checkinDetailsService',
+'$scope','$modal','$rootScope','$location', 'dateFilter', '$filter', 'checkinConfirmationService','checkinDetailsService',
 checkInConfirmationViewController
 ];
 
