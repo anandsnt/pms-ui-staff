@@ -1,6 +1,14 @@
-admin.controller('ADAppCtrl',['$scope', 'ADDashboardSrv', function($scope, ADDashboardSrv){
+admin.controller('ADAppCtrl',['$rootScope','$scope', 'ADDashboardSrv', function($rootScope,$scope, ADDashboardSrv){
 
-	$scope.data = ADDashboardSrv.fetch();
+    //$scope.data = ADDashboardSrv.fetch();
+	if($rootScope.admin_role == "hotel-admin" ){
+		$scope.data = ADDashboardSrv.fetch();
+		$scope.isAdmin =  true;
+	}	
+	else{
+		 $scope.data = ADDashboardSrv.fetchSNT();
+		 $scope.isAdmin =  false;
+	}
 	
 	$scope.selectedMenu = $scope.data.menus[0];
 
@@ -11,8 +19,7 @@ admin.controller('ADAppCtrl',['$scope', 'ADDashboardSrv', function($scope, ADDas
 			$scope.selectedMenu = $scope.data.menus[index];
 		}
 	};
-
-	
+ 
 }]);
 
     
