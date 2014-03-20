@@ -24,7 +24,7 @@
 
 				<tbody>
 					<tr id="user_row_2" ng-repeat="user in data.users">
-						<td><a href="/admin/users/2/edit" class="title">{{user.full_name}} </a></td>
+						<td><a  ng-click="UserCtrl(user.id, 'admin.useredit')" class="title">{{user.full_name}} </a></td>
 						<td> {{user.email}}  </td>
 						<td>{{user.department}}</td>
 						<td><span class="login">{{user.last_login}} </span></td>

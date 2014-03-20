@@ -31,6 +31,12 @@ admin.config([
 			controller: 'ADUserListCtrl',
 			url : '/users'
 		});
+		
+		$stateProvider.state('admin.useredit', {
+			templateUrl: '/assets/partials/users/adUserEdit.html',
+			controller: 'ADUserListCtrl',
+			url : '/useredit'
+		});
 
 		
 		

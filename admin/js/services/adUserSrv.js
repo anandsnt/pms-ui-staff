@@ -2,7 +2,7 @@ admin.service('ADUserSrv',['$http', '$q', function($http, $q){
 	
 	var _this = this;
 	_this.userList = "";
-	
+	//To fetch users list
 	this.fetch = function(){
 		var deferred = $q.defer();
 		var url = '/admin/users.json';
