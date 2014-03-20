@@ -332,5 +332,59 @@ admin.service('ADDashboardSrv',['$http', '$q', function($http, $q){
 		return this.data;
 	};
 
-
+	this.fetchSNT = function(){
+		this.data = {"menus":[
+							{
+								"menu_id":1, 
+								"menu_name":"Hotels", 
+								"header_name":"Hotels", 
+								"components":[
+									{
+										"id":1, 
+										"name":"Hotels", 
+										"state": "admin.hoteldetails", 
+										"action_path":"/admin/hotels/1/", 
+										"is_group":false, 
+										"icon_class":"icon-hotel", 
+										"sub_components":[], 
+										"is_bookmarked":false
+									},
+					                {
+					                    "id": 2,
+					                    "name": "Chains",
+					                    "action_path": "/admin/users",
+					                    "is_group": false,
+					                    "icon_class": "icon-user",
+					                    "sub_components": [],
+					                    "is_bookmarked": false,
+					                    "state":"admin.hoteldetails"
+					                },
+					                {
+					                    "id": 3,
+					                    "name": "Brands",
+					                    "action_path": "/admin/departments",
+					                    "is_group": false,
+					                    "icon_class": "icon-admin-menu icon-departments",
+					                    "sub_components": [],
+					                    "is_bookmarked": false,
+					                    "state":"admin.hoteldetails"
+					                }
+								]
+							},
+							{
+								"menu_id":2, 
+								"menu_name":"Dashboard", 
+								"header_name":"Dashboard", 
+								"components":[]
+							},
+							{
+								"menu_id":4, 
+								"menu_name":"Configuration", 
+								"header_name":"Configuration", 
+								"components":[]
+							}
+						]
+					};
+		return this.data;
+	};
 }]);
