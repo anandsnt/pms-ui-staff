@@ -33,7 +33,8 @@ var StayCard = function(viewDom){
             cardHolderName: data.RVCardReadCardName || '',
             getTokenFrom: {
               'et2': data.RVCardReadTrack2,
-              'ksn': data.RVCardReadTrack2KSN
+              'ksn': data.RVCardReadTrack2KSN,
+              'pan': data.RVCardReadMaskedPAN
             }
           };
           that.postCardSwipData(swipedCardData);
@@ -171,8 +172,8 @@ var StayCard = function(viewDom){
 
   // function for closing the drawer if is open
   this.closeGuestCardDrawer = function(){
-    if($("#guest-card").hasClass('open')) {
-      $('#guest-card .ui-resizable-handle').trigger('click');
+    if($('#guest-card').height() > '90') {
+      	$('#guest-card .ui-resizable-handle').trigger('click');
     }
   };
 
