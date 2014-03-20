@@ -27,7 +27,7 @@ admin.service('ADDashboardSrv',['$http', '$q', function($http, $q){
 					                    "icon_class": "icon-user",
 					                    "sub_components": [],
 					                    "is_bookmarked": false,
-					                    "state":"admin.hoteldetails"
+					                    "state":"admin.users"
 					                },
 					                {
 					                    "id": 3,

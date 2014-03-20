@@ -25,6 +25,12 @@ admin.config([
 			controller: 'ADHotelDetailsCtrl',
 			url : '/hoteldetails'
 		});
+		
+		$stateProvider.state('admin.users', {
+			templateUrl: '/assets/partials/users/adUserList.html',
+			controller: 'ADUserListCtrl',
+			url : '/users'
+		});
 
 		
 		
