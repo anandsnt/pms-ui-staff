@@ -8,6 +8,13 @@
 
 		$rootScope.checkedApplyCharges = false;
 
+
+
+
+
+		$scope.minDate  = dateFilter(new Date(), 'yyyy-MM-dd');
+		$scope.cardDigits = '';
+
 		// page navigatons if any of following conditions happpens
 
 
@@ -92,10 +99,10 @@
 			$scope.isCalender = false;
 
 			$scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
-			$scope.selectedDate = ($filter('date')($scope.date, 'M/d/yy'));
+			$scope.selectedDate = ($filter('date')($scope.date, 'MM/dd/yyyy'));
 
 			$scope.$watch('date',function(){
-				$scope.selectedDate = ($filter('date')($scope.date, 'M/d/yy'));
+				$scope.selectedDate = ($filter('date')($scope.date, 'MM/dd/yyyy'));
 			});
 
 			$scope.showCalender = function(){
