@@ -4,7 +4,5 @@ admin.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state,
 	
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
-	console.log('new state');
-	console.log(JSON.stringify($rootScope.$state));
 	
 }]);
