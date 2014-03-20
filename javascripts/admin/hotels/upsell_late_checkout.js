@@ -112,9 +112,9 @@ var UpsellLateCheckoutView = function(domRef){
 	  	  is_exclude_guests = "true";
 	  }
 	  var sent_alert_hour = that.myDom.find("#sent-alert-to-all-guests-hour").val();
-	  var sent_alert_minute = that.myDom.find("#sent-alert-to-all-guests-minute").val();
+	  var sent_alert_minute = that.myDom.find("#sent-alert-to-all-guests-minute").val() || "00";	  
 	  var currency_code = $("#currency-code").val();
-	  var sent_alert = sent_alert_hour+":"+sent_alert_minute;
+	  var sent_alert = sent_alert_hour ? sent_alert_hour+":"+sent_alert_minute : "";
 	  var postParams = {};
 	  postParams.is_late_checkout_set = is_late_checkout_set;
 	  postParams.allowed_late_checkout = allowed_late_checkout;
