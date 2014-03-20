@@ -48,6 +48,7 @@
 
 
 			<div class="col-md-6 pad-lf-60">
+				<form >
 				<div class="row">
 					<em class="labelText">DEPARTURE DATE</em>
 					<span class="date-picker" ng-click="showCalender()" >
@@ -59,8 +60,10 @@
 					<em class="labelText">LAST 4 DIGITS OF CREDIT CARD USED</em>
 					<input type="password" ng-model="cardDigits" class = "col-xs-12 textBox" maxlength="4"/> 
 				</div>
-
-				<a  class="link-btn with-bg nextbtn" ng-click="nextButtonClicked()">NEXT</a>
+				<input type="submit" class="col-xs-12 textBox  link-btn with-bg nextbtn" ng-click="nextButtonClicked()" value="NEXT"/>
+				
+				
+				</form>
 			</div>
 		</div>
 			<!-- checkinbtn section ends here-->
