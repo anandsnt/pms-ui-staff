@@ -149,7 +149,10 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		}
 	}
 
-
+	$scope.clearSearch = function(){
+		$scope.query = '';
+		$scope.refreshScroll();
+	}
 
 }]);
 
