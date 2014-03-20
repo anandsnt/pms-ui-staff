@@ -25,7 +25,7 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		setTimeout(function () { 
 			currentScroll.refresh();
 			currentScroll.scrollTo(0, 0, 200);
-		}, 100); 
+		}, 100);
 	};
 	
 	$scope.getRoomColorClasses = function(roomHkStatus, isRoomOccupied, isReady){
@@ -147,9 +147,13 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		for(var p in $scope.currentFilters) {
 			$scope.currentFilters[p] = false
 		}
+		$scope.refreshScroll();
 	}
 
-
+	$scope.clearSearch = function(){
+		$scope.query = '';
+		$scope.refreshScroll();
+	}
 
 }]);
 
