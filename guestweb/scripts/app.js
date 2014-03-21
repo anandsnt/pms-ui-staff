@@ -51,6 +51,8 @@ console.log($attrs)
 	// Theming process
 
 
+//$rootScope.buttonShape = ($attrs.hotelName === 'yotel') ?  'Hexagon' : 'circle';
+
 $rootScope.buttonShape = 'Hexagon'; // yotel
 $rootScope.hotelLogo =   '/assets/img/Yotel/yotel-logo.png';
 
