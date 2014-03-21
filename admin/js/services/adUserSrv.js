@@ -20,6 +20,25 @@ admin.service('ADUserSrv',['$http', '$q', function($http, $q){
 		});
 		return deferred.promise;
 	};
+	//To fetch users list
+	this.getUserDetails = function(id){
+		var deferred = $q.defer();
+		var url = '/admin/users/'+id+'/edit.json';
+
+		
+		$http.get(url).success(function(response, status) {
+		//	if(response.status == "success"){
+			    _this.userDetails = response.user_id;
+			    deferred.resolve(_this.userDetails);
+			//}else{
+				//console.log("error");
+			//}
+			
+		}).error(function(data, status) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 
 
 }]);
