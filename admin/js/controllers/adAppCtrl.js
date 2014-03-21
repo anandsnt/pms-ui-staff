@@ -1,5 +1,5 @@
 
-admin.controller('ADAppCtrl',['$scope', 'ADAppSrv', function($scope, ADAppSrv){
+admin.controller('ADAppCtrl',['$scope', '$rootScope','ADAppSrv', function($scope, $rootScope, ADAppSrv){
 
 	if($rootScope.admin_role == "hotel-admin" ){
 		$scope.isAdmin =  true;
