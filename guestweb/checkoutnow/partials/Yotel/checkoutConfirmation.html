@@ -1,0 +1,72 @@
+<!-- contentarea starts here-->
+
+<div class="jumbotron">
+
+
+
+	<div class="container backgroundbg" >
+		<div class="container-fluid">
+			<div class="row headerrow">
+				<logo-image></logo-image>
+			</div>
+		</div>
+		<!-- show posting message -->
+		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+			<p class="msg-head">Your request is being processed.</p>
+			<p class="msg-body">This may take a few seconds..... please wait!</p>
+		</div>
+
+		<!-- show error message -->
+
+		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+			<p class="msg-head">Our apologies, something went wrong, please complete your check out at our front desk.</p>
+			<p class="msg-body">You can also call the hotel at {{hotelPhone}}.</p>
+		</div>
+
+		<!-- contentarea starts here-->
+		<div class="container" ng-hide="isFetching || netWorkError || !pageSuccess">
+			<!-- top section starts here-->
+
+			<div class="row check-inout-wrapper">
+				<div class="col-md-6 headtext centeralign">
+					<p class="roomnumber centeralign" ng-hide="isFetching || netWorkError">
+						<span>CABIN {{roomNo}}</span>
+					</p>
+					Ready to check out?
+					<p class="leadtext checkout-time-container">
+						<span class="lightcontent chekout-time">Your new check-out time is {{checkoutTime}}</span>
+					</p>
+				</div>
+				<!-- top section ends here-->
+				
+				<!-- checkoubtn section starts here-->
+				<div class="col-md-6 no-padding now-later-options no-screen-attach">
+				<div class="row">
+						<div class="col-xs-12 checkoutnow single">
+							<div class="rel-wrapper">
+								<a href="#/checkoutBalance"></a>
+								<div class="row">
+									Check out<br class="hide-in-desktop"/> now.
+									<!-- {{details.buttonText}} -->
+								</div>
+								<div class="row  icontop">
+									<img src="{{checkoutnowImage}}" width="48" height="48" alt=""/>
+								</div>
+							</div>
+						</div>
+					</div>
+
+			</div>
+
+			<div class="row clearboth">
+				<p class="foot-text centeralign" ng-show="true">
+						<em class = "base-text">Late check-out is not available.</em>
+				</p>
+				<p class="foot-text centeralign second-in ">
+					<em class = "base-text">Come back to this page to check out any time before {{checkoutTime}}.</em>
+				</p>
+			</div>
+
+		</div>
+	</div>
+</div>

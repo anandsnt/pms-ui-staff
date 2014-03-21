@@ -34,16 +34,17 @@
 								<a ng-href="#/checkOutLaterSuccess/{{ charge.id }}"></a>
 								<div class="row pad-hz-24">
 
-									<svg viewBox="0 0 220 220" preserveAspectRatio="none" >
-										<circle cx="50%" cy="50%" r="40%" stroke="white" stroke-width="7" fill="none"/>
-										<text x="50%" y="60%" fill="white">
+									<svg viewBox="0 0 280 350" preserveAspectRatio="none" >
+										
+										<polygon fill="none" stroke="white" stroke-width="10" 
+										points="120,75  228,137.5 228,262.5
+										120,325 12,262.6 12,137.5" />
+										<text x="40%" y="65%" fill="white">
 											<tspan class="time">{{ charge.time | number }}</tspan>
 											<tspan class="ap">{{ charge.ap }}</tspan>
 										</text>
-									</svg> 
 
-									
-									
+									</svg>
 								
 								</div>
 								<div class="row late-charge">
