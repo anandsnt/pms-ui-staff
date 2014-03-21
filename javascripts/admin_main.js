@@ -6,6 +6,6 @@
 //=require ../admin/lib/js/iscroll.js
 //=require ../admin/adApp.js
 //=require ../admin/adRouter.js
-//=require_tree ../admin/js/controllers
 //=require_tree ../admin/js/services
+//=require_tree ../admin/js/controllers
 

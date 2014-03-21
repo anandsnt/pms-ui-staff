@@ -19,7 +19,13 @@
 
       $scope.pageSuccess = false;
       $location.path('/');
-    };
+    }
+    else if(!$rootScope.upgradesAvailable){
+
+      $scope.pageSuccess = false;
+      $location.path('/checkinReservationDetails');
+      
+    }
     
 
     if($scope.pageSuccess){

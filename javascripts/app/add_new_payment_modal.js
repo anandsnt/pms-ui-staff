@@ -37,6 +37,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 		$('#new-payment').append('<input type="hidden" id="card-token" value="' + swipedCardData.token + '">');
 		$('#new-payment').append('<input type="hidden" id="et2" value="' + swipedCardData.getTokenFrom.et2 + '">');
 		$('#new-payment').append('<input type="hidden" id="ksn" value="' + swipedCardData.getTokenFrom.ksn + '">');
+		$('#new-payment').append('<input type="hidden" id="pan" value="' + swipedCardData.getTokenFrom.pan + '">');
 	};
 
 	this.modalInit = function(){
@@ -170,6 +171,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 		var $card_token = $('#card-token').val();
 		var $et2 = $('#et2').val();
 		var $ksn = $('#ksn').val();
+		var $pan = $('#pan').val();
 		
 		var curr_year  	= new Date().getFullYear()%100; // Last two digits of current year.
 		var curr_month  = new Date().getMonth()+1;
@@ -232,6 +234,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 				    mli_token: $card_token,
 				    et2: $et2,
 					ksn: $ksn,
+					pan: $pan,
 				    add_to_guest_card: add_to_guest_card,
 				    bill_number : that.params["bill_number"]
 		    };		

@@ -1,4 +1,12 @@
+
 admin.controller('ADAppCtrl',['$scope', 'ADAppSrv', function($scope, ADAppSrv){
+
+	if($rootScope.admin_role == "hotel-admin" ){
+		$scope.isAdmin =  true;
+	}	
+	else{
+		$scope.isAdmin =  false;
+	}
 
 	ADAppSrv.fetch().then(function(data) {
 		console.log("final success");
@@ -17,8 +25,7 @@ admin.controller('ADAppCtrl',['$scope', 'ADAppSrv', function($scope, ADAppSrv){
 			$scope.selectedMenu = $scope.data.menus[index];
 		}
 	};
-
-	
+ 
 }]);
 
     

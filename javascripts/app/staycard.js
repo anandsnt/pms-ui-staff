@@ -33,7 +33,8 @@ var StayCard = function(viewDom){
             cardHolderName: data.RVCardReadCardName || '',
             getTokenFrom: {
               'et2': data.RVCardReadTrack2,
-              'ksn': data.RVCardReadTrack2KSN
+              'ksn': data.RVCardReadTrack2KSN,
+              'pan': data.RVCardReadMaskedPAN
             }
           };
           that.postCardSwipData(swipedCardData);

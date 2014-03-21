@@ -82,14 +82,14 @@ function addHLPSelectOptions(selector){
 }
 
 function updateHLPLoyaltyUI($type,$code,$level,$name){
-	
+	var level = ($level === undefined) ? "" : $level;
 	var $number = $code.slice(-4); // Get last 4 digits of code.
 	var $value  = ($type).toLowerCase()+"-"+$number;
 	
 	var $html = "<a loyaltytype='hotel' loyaltyid='' id='' class='active-item item-loyalty float program_new'>"+
       "<span class='value code'>"+$type+"</span>"+
       "<span class='value number'>"+$code+"</span>"+
-      "<span class='value name'>"+$level+"</span></a>";
+      "<span class='value name'>"+level+"</span></a>";
       
     $("#loyalty-hlp").append($html);
     

@@ -259,7 +259,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		var options = {
 			'successCallBack': that.callKeyFetchAPI,
-			'failureCallBack': that.showKeyPrintFailure			
+			'failureCallBack': that.showUIDFetchFailedMsg			
 		};
 
 		if(sntapp.cardSwipeDebug){
@@ -268,6 +268,11 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		else{
 			sntapp.cardReader.retrieveUserID(options);
 		}		
+	};
+
+	that.showUIDFetchFailedMsg = function(){
+		var message = 'Unable to read the key!';
+		that.showKeyPrintFailure(message);
 	};
 
 	/*
@@ -370,7 +375,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 					that.myDom.find('#key-status .status').removeClass('success').addClass('error').text('Print key failed, Please try again');
 				}
 				else {
-					that.showKeyPrintFailure();
+					var message = 'Key creation failed!';
+					that.showKeyPrintFailure(message);
 				}
 
 			},
@@ -391,7 +397,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.keyFetchFailed = function(errorMessage){
 		sntapp.activityIndicator.hideActivityIndicator();
 		sntapp.notification.showErrorMessage(errorMessage, that.myDom);  
-		that.showKeyPrintFailure();
+		var message = 'Key creation failed!';
+		that.showKeyPrintFailure(message);
 
 	};
 
@@ -418,10 +425,13 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	/*
 	* Show the key print failure message
 	*/ 
-	this.showKeyPrintFailure = function(){ 
+	this.showKeyPrintFailure = function(message){ 
+		if(typeof message == 'undefined'){
+			var message = 'Key creation failed!';
+		}
 		sntapp.activityIndicator.hideActivityIndicator();
 		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('not-connected completed');
-		that.myDom.find('#key-status em').removeClass('pending success icon-key status').addClass('info').text('Key creation failed!');		
+		that.myDom.find('#key-status em').removeClass('pending success icon-key status').addClass('info').text(message);		
 		that.myDom.find('#key-action').hide();
 		that.myDom.find('#print-keys').hide();
 		that.myDom.find('#room-status h1').addClass('icon-key');
