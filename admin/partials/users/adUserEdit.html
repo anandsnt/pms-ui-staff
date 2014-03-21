@@ -1,1 +1,201 @@
-user edit
+<section id="replacing-div-first" class="content current ">
+<div data-view="UserDetailsView">
+<header class="content-title float">
+<h2>Edit User</h2>
+<a id="go_back" data-type="load-details" class="action back">Back</a>
+</header>
+<form user="2" id="edit-user" class="form float">
+<div id="notification-message"></div>
+<fieldset class="holder left">
+<div class="form-title">
+<h3>
+<span>User</span>
+details
+</h3>
+<em class="status">
+Fields marked with
+<strong>*</strong>
+are mandatory!
+</em>
+</div>
+<div class="entry">
+<label for="first-name">
+First name
+<strong>*</strong>
+</label>
+<input type="text" value="Admin" required="yes" placeholder="Enter first name" name="first-name" id="first-name">
+</div>
+
+<div class="entry">
+<label for="last-name">
+Last name
+<strong>*</strong>
+</label>
+<input type="text" value="Staff" required="yes" placeholder="Enter last name" name="last-name" id="last-name">
+</div>
+
+<div class="entry full-width">
+<label for="department">
+Department
+</label>
+<div class="select">
+<select name="department" id="department" class="placeholder">
+<option value="">
+Department
+</option><option value="3">
+Housekeeping
+</option>
+<option value="5">
+IT
+</option>
+<option value="6">
+Front Desk
+</option>
+<option value="20">
+Concierge
+</option>
+<option value="21">
+Engineering
+</option>
+<option value="36">
+One test
+</option>
+<option value="37">
+Two test
+</option>
+<option value="38">
+Three test
+</option>
+
+</select>
+</div>
+</div>
+
+<div></div>
+<div class="entry">
+<label for="job-title">
+Job Title
+<strong>*</strong>
+</label>
+<input type="text" value="" required="yes" placeholder="Enter job title" name="job-title" id="job-title">
+</div>
+
+<div class="entry">
+<label for="phone">
+Phone
+</label>
+<input type="text" value="" required="no" placeholder="Enter phone" name="phone" id="phone">
+</div>
+
+<div class="entry full-width">
+<label for="user-picture">
+Picture
+</label>
+<div class="file-upload with-preview">
+<span class="input">Choose file ...</span><input type="file" name="user-picture" label="Choose file ..." id="user-picture">
+<button type="button" class="button brand-colors">Choose file</button>
+
+</div>
+<span class="file-preview">
+<img src="http://d81ca00c1e165587be3d-4d1e022461cbaa577307930af1386d20.r4.cf2.rackcdn.com/CHA/Users/staff_details/66/avatars/original/base64.txt?1393511183" id="file-preview" alt="">
+</span>
+</div>
+
+</fieldset>
+<fieldset class="holder right">
+<div class="form-title">
+<h3>
+<span>User</span>
+credentials
+</h3>
+<em class="status">
+<strong>All fields are mandatory!</strong>
+</em>
+</div>
+<div class="entry full-width">
+<label for="email">
+Email
+<strong>*</strong>
+</label>
+<input type="text" value="hoteladmin@hotel.com" required="yes" placeholder="Enter email address" name="email" id="email" autocomplete="off">
+</div>
+
+<div class="entry full-width">
+<label for="confirm-email">
+Re-type email
+<strong>*</strong>
+</label>
+<input type="text" value="hoteladmin@hotel.com" required="yes" placeholder="Enter email address" name="re-email" id="confirm-email" autocomplete="off">
+</div>
+
+<div class="entry full-width">
+<label for="password">
+Password
+<strong>*</strong>
+</label>
+<input type="password" required="yes" placeholder="Enter password" name="password" id="password" autocomplete="off">
+</div>
+
+<div class="entry full-width">
+<label for="confirm-password">
+Re-type password
+<strong>*</strong>
+</label>
+<input type="password" required="yes" placeholder="Confirm password" name="re-password" id="confirm-password" autocomplete="off">
+</div>
+
+<!-- Activation Status -->
+<div class="entry re-invite">
+<label>
+Activation Status
+</label>
+<div>ACTIVATED</div>
+</div>
+<div class="entry re-invite">
+<label>
+<button id="re-invite" disabled="disabled" class="button grey">Re-Invite</button>
+</label>
+</div>
+
+</fieldset>
+<fieldset class="holder full-width">
+<div class="form-title">
+<h3>
+<span>User</span>
+roles
+</h3>
+<em class="status">
+<span>User can have multiple roles</span>
+</em>
+</div>
+<div class="entry has-sortable">
+<label>Assigned Roles</label>
+<ul id="assigned-roles" data-type="target" data-placeholder="Drop a role here to assign it to the user" class="boxes sortable empty ui-sortable short-list">
+<li id="2"><span class="icons icon-handle"></span>
+<span class="icons icon-handle"></span>
+hotel_admin
+</li>
+</ul>
+</div>
+<div class="entry movers">
+<span data-type="target" class="icons icon-mover-right to-target">Assign role(s)</span>
+<span data-type="source" class="icons icon-mover-left to-source">Unassign role(s)</span>
+</div>
+<div class="entry has-sortable">
+<label>Not Assigned Roles</label>
+<ul data-type="source" data-placeholder="To remove a role for the user simply drop it here" class="boxes sortable ui-sortable short-list">
+<li id="3"><span class="icons icon-handle"></span>
+<span class="icons icon-handle"></span>
+hotel_staff
+</li>
+</ul>
+</div>
+
+</fieldset>
+<div class="actions float">
+<button type="button" id="cancel" class="button blank add-data-inline">Cancel</button>
+<button type="button" id="save" class="button green add-data-inline">Save changes</button>
+</div>
+</form>
+</div>
+</section>
