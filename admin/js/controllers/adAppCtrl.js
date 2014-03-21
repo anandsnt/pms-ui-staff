@@ -1,9 +1,21 @@
-admin.controller('ADAppCtrl',['$scope', 'ADDashboardSrv', function($scope, ADDashboardSrv){
 
-	$scope.data = ADDashboardSrv.fetch();
-	
-	$scope.currentIndex = 0;
-	$scope.selectedMenu = $scope.data.menus[0];
+admin.controller('ADAppCtrl',['$scope', '$rootScope','ADAppSrv', function($scope, $rootScope, ADAppSrv){
+
+	if($rootScope.admin_role == "hotel-admin" ){
+		$scope.isAdmin =  true;
+	}	
+	else{
+		$scope.isAdmin =  false;
+	}
+
+	ADAppSrv.fetch().then(function(data) {
+		$scope.currentIndex = 0;
+		$scope.data = data;
+		$scope.selectedMenu = $scope.data.menus[0];
+
+	},function(){
+		console.log("error controller");
+	});	
 
 	
 	//function to change the selected menu
@@ -14,8 +26,7 @@ admin.controller('ADAppCtrl',['$scope', 'ADDashboardSrv', function($scope, ADDas
 			$scope.currentIndex = index;
 		}
 	};
-
-	
+ 
 }]);
 
     

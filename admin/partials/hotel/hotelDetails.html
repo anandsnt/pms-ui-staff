@@ -176,7 +176,7 @@
 			<div class="select select-col col1-3">
 				<select name="hotel-checkin-hour" id="hotel-checkin-hour" class="styled">
 					<option value="" data-text="Not set" class="placeholder">HH</option>
-					<option ng-repeat="i in [1, 12] | makeRange" value="{{i}}">
+					<option ng-repeat="i in [1, 12] | makeRange" value="{{i}}" ng-selected="i==data.check_in_time.hour" >
 						{{i}}
 					</option>
 

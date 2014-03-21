@@ -3,9 +3,7 @@ var admin = angular.module('admin',['ui.router', 'ng-iscroll']);
 admin.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
 	
 	$rootScope.$state = $state;
-	$rootScope.$stateParams = $stateParams;
-
-	
+	$rootScope.$stateParams = $stateParams;	
 }]);
 
 
@@ -14,6 +12,7 @@ admin.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state,
 admin.filter('makeRange', function() {
     return function(input) {
         var lowBound, highBound;
+        var step = 1;
         switch (input.length) {
         case 1:
             lowBound = 0;
@@ -23,12 +22,28 @@ admin.filter('makeRange', function() {
             lowBound = parseInt(input[0]);
             highBound = parseInt(input[1]);
             break;
+        case 3:
+            lowBound = parseInt(input[0]);
+            highBound = parseInt(input[1]);
+            step = parseInt(input[2]); 
+            break;            
         default:
             return input;
         }
         var result = [];
-        for (var i = lowBound; i <= highBound; i++)
+        for (var i = lowBound; i <= highBound; i+=step){
             result.push(i);
+
+        }
         return result;
     };
- });
+ });	
+
+admin.controller('rootController', ['$rootScope','$scope','$attrs','$location', function($rootScope,$scope,$attrs, $location) {
+
+	//store basic details as rootscope variables
+
+	$rootScope.admin_role = $attrs.adminRole;
+
+}]);
+
