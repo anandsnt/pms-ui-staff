@@ -1064,18 +1064,36 @@
 			#border-radius > .rounded();
 			.pull-right;
 
-			.check-out-time {
+			.time {
 				font-size: 24px;
 				line-height: 50px;
 				text-align: center;
 				font-weight: 300;
-				color: @red;
 				text-transform: uppercase;
-				margin-bottom: 10px;
-				border: 1px solid @yellow;
-				background-color: lighten(@yellow, 20);
-				#border-radius > .rounded(3px);
+				border: 1px solid;
 				.show;
+
+				&.check-in { 
+					margin-bottom: 10px;
+					color: @green; 
+					border-color: rgba(137,189,85,.3);
+					background-color: rgba(137,189,85,.1);
+				}
+
+				&.check-out {
+					color: @red; 
+
+					border-color: rgba(230,56,56,.2);
+					background-color: rgba(230,56,56,.05);
+				}
+
+				&.late-check-out {
+					color: @red;
+					
+					border-color: @yellow;
+					background-color: lighten(@yellow, 20);
+					#border-radius > .rounded(3px);
+				}
 			}
 
 			.balance {
