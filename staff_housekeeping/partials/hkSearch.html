@@ -10,7 +10,7 @@
 <!-- Search form -->
 <form class="search-form" role="search">
    <div class="entry">
-      <a id="clear-query" ng-show="query != ''" class="icons icon-clear-search visible" ng-click = "query = ''">Clear query</a>
+      <a id="clear-query" ng-show="query != ''" class="icons icon-clear-search visible" ng-click = "clearSearch()">Clear query</a>
       <button type="submit" class="icons icon-search">Search</button>
       <input name="query" id="query" ng-model="query" placeholder="Enter Room Number" type="text" autocomplete="off" ng-keypress="refreshScroll()"/>
    </div>
