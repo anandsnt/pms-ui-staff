@@ -1,0 +1,181 @@
+@charset: "utf-8";
+@font-face {
+    font-family: 'VAGRounded-Light';
+    src: asset-url('/assets/VAGRounded-Light.eot?') format('eot'), 
+    asset-url('/assets/VAGRounded-Light.woff') format('woff'), 
+    asset-url('/assets/VAGRounded-Light.ttf') format('truetype'), 
+    asset-url('/assets/VAGRounded-Light.svg#VAGRounded-Light') format('svg');
+}
+
+
+
+body {
+    background: url(/assets/img/Yotel/yotel-bg-small.png) #5e305e repeat top left !important;
+    background: url(/assets/img/Yotel/yotel-bg-big.png) #5e305e repeat top left !important;
+}
+
+.lightcontent {
+    font-family: 'VAGRounded-Light' !important;
+}
+.checkoutnow, .proceed-to-checkin {
+    background: #ac9d38;
+    color: #ffffff;
+}
+.jumbotron {
+    .roomnumber {
+        span {
+            border-radius: 0.25em;
+        }
+    }
+    .check-inout-wrapper {
+        border-top: none !important;
+    }
+}
+.no-thanks {
+    text-transform: uppercase;
+}
+.logo-bg {
+    background: #fff;
+}
+
+
+.container-fluid {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+.img-responsive.img-center {
+    margin: 0 auto;
+    max-height: 50px;
+    max-width: 150px;
+    width: 65%;
+    padding: 5px;
+}
+.with-back-btn {
+    img {
+        float: left;
+        padding-left: 5px;
+        padding-top: 10px;
+        padding-top: 0px !important;
+        padding-top: 0px !important;
+    }
+}
+
+.base-text {
+    font-style: normal !important;
+    font-size: 15px;
+}
+.foot-text, .jumbotron .headtext {
+    font-family: 'VAGRounded-Light' !important;
+}
+.checkout-later-text {
+    color: #5e305e;
+}
+.accept-charges-button {
+    .rel-wrapper {
+        padding: 20px 37px;
+    }
+}
+
+.now-later-options .checkoutnow,
+ .now-later-options .checkoutlater, 
+ .now-later-options .accept-charges-button, 
+ .now-later-options .checkin {
+    text-align: center;
+    font-family: 'VAGRounded-Light' !important;
+    font-weight: 200;
+    font-size: 30px;
+    line-height: 100%;
+}
+.showbill-wrap {
+    .showbill {
+        font-family: 'Source Sans Pro' !important;
+    }
+}
+.checkout-status, .checkout-status p {
+    font-family: 'VAGRounded-Light' !important;
+    padding: 0 !important;
+}
+.checkout-status {
+    .msg-head {
+        font-size: 20px !important;
+    }
+    .msg-body {
+    font-size: 15px !important;
+    }
+    .msg-foot {
+    font-size: 18px !important;
+    }
+}
+
+
+svg {
+    text {
+        .time {
+            font-size: 90px;
+            font-family: 'VAGRounded-Light' !important;
+        }
+        .ap {
+            font-size: 60px;
+            font-family: 'VAGRounded-Light' !important;
+        }
+    }
+}
+
+
+.late-charge {
+    .for {
+        font-size: 14px;
+        font-family: 'VAGRounded-Light' !important;
+    }
+    .amount {
+        font-size: 20px;
+        font-family: 'VAGRounded-Light' !important;
+    }
+}
+
+/* media queries */
+
+
+
+@media (max-width: 900px) {
+
+    .backbtn{
+        visibility: hidden !important;
+    }
+}
+
+
+@media (min-width: 900px) {
+  body {
+    background: url(/assets/img/Yotel/yotel-bg-big.png) #5e305e repeat top left !important;
+  }
+    .backbtn {
+  
+    margin-top: -50px !important;
+    }
+    .with-back-btn img {
+  
+    padding-top: 0px !important;
+    }
+
+
+}
+
+@media (min-width: 1000px) {
+.container {
+    width: 900px !important;
+}
+.backbtn {
+  
+    margin-top: -50px !important;
+    }
+.with-back-btn img {
+  
+    padding-top: 0px !important;
+    }
+
+
+}
+
