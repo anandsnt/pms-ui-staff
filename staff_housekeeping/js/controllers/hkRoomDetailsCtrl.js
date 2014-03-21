@@ -39,9 +39,11 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 	$scope.calculateColorCodes = function(){
 		$scope.initColorCodes();
 
-		if($scope.data.room_details.is_ready == "true"){
- 			$scope.isCleanVacant = true;
- 		}else if($scope.data.room_details.current_hk_status == "DIRTY"
+		if(($scope.data.room_details.current_hk_status == "CLEAN" || $scope.data.room_details.current_hk_status == "INSPECTED")
+			&& $scope.data.room_details.is_occupied == "false"){
+			$scope.isCleanVacant = true;
+		}
+		else if($scope.data.room_details.current_hk_status == "DIRTY"
  			&& $scope.data.room_details.is_occupied == "false") {
  			$scope.isDirtyVacant = true;
  		}else if(($scope.data.room_details.current_hk_status == "OO") ||
