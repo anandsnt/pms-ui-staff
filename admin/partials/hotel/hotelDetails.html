@@ -5,7 +5,7 @@
 		<a id="go_back" data-type="load-details" class="action back">Back</a>
 	</header> 
 	<form  name="edit-hotel" method="post" id="edit-hotel" class="form float" ng-iscroll="edit-hotel">
-		
+
 		<!-- Added notification message div to show the error message -->
 		<div id="notification-message"></div>
 		<fieldset class="holder left">
@@ -20,13 +20,10 @@
 					are mandatory!
 				</em>
 			</div>
-			<div class="entry">
-				<label for="hotel-name">
-					Name
-					<strong>*</strong>
-				</label>
-				<input type="text" value="{{data.hotel_name}}" required="yes" placeholder="Enter hotel name" name="hotel-name" id="hotel-name">
-			</div>
+			<!-- <div ad-Textbox></div> -->
+			<ad-textbox value="data.hotel_name" name = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes"></ad-textbox>
+			<ad-checkbox isChecked="true" label = "Force Upsell" required = "yes"></ad-textbox>
+
 
 			<div class="entry">
 				<label for="hotel-code">
@@ -1003,7 +1000,7 @@
 </fieldset>
 <div class="actions float">
 	<button type="button" id="cancel" class="button blank">Cancel</button>
-	<button type="button" id="save" class="button green">Save Changes</button>
+	<button type="button" id="save" class="button green" ng-click= "callSave()">Save Changes</button>
 
 </div>
 
