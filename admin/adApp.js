@@ -31,8 +31,10 @@ admin.filter('makeRange', function() {
             return input;
         }
         var result = [];
+        var number = "";
         for (var i = lowBound; i <= highBound; i+=step){
-            result.push(i);
+        	number = i > 9 ? "" + i: "0" + i;
+            result.push(number);
 
         }
         return result;
