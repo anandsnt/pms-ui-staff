@@ -3,7 +3,7 @@
    <!-- Menu toggle button / Back button  -->
    <a class="nav-toggle" ng-click="$emit('navToggled')">Menu</a>
    <!-- Title -->
-   <h1 class="h2">Rooms</h1>
+   <h1 class="h2">Rooms Status</h1>
    <!-- Filter / Checkout button  -->
    <a ng-click="$emit('showFilterScreen')" class="button white with-icon only-icon toggle linked-toggle"><span class="icons icon-filter"></span>Filter rooms</a>
 </header>
@@ -165,21 +165,21 @@
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.departed}"></span>
                     <input type="checkbox" ng-model="currentFilters.departed" name="room-filters">
-                    Departed
+                    Show Departed
                 </label>
              </div>
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.departed_arrival}"></span>
                     <input type="checkbox" ng-model="currentFilters.departed_arrival" name="room-filters">
-                    Departed / Arrival
+                    Show Departed / Arrival
                 </label>
              </div>
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.departed_arrived}"></span>
                     <input type="checkbox" ng-model="currentFilters.departed_arrived" name="room-filters">
-                    Departed / Arrived
+                    Show Departed / Arrived
                 </label>
              </div>
           </div>
