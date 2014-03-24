@@ -2,7 +2,7 @@
 <div id="admin-header" class="float" role="navigation">
 	
    <!-- Switch hotel dropdown : HOTEL ADMIN-->
-   <div id="change-hotel" ng-show ="isAdmin">
+   <div id="change-hotel" ng-show ="isHotelAdmin">
       <h1>Dupont Circle Hotel</h1>
       <dl class="dropdown">
          <dt>Change hotel:</dt>
@@ -14,7 +14,7 @@
    </div>
    
    <!-- For SNT ADMIN header -->
-  	<ul id="admin-menu" class="float" ng-hide ="isAdmin" >
+  	<ul id="admin-menu" class="float" ng-hide ="isHotelAdmin" >
 		<li>
 			<a href="/admin/hotels/new" class="icon-admin-menu icon-new-hotel ui-draggable">Add new hotel</a>
 		</li>
