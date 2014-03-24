@@ -34,18 +34,8 @@
 								<a ng-href="#/checkOutLaterSuccess/{{ charge.id }}"></a>
 								<div class="row pad-hz-24">
 
-									<svg viewBox="0 0 220 220" preserveAspectRatio="none" >
-										<circle cx="50%" cy="50%" r="40%" stroke="white" stroke-width="7" fill="none"/>
-										<text x="50%" y="60%" fill="white">
-											<tspan class="time">{{ charge.time | number }}</tspan>
-											<tspan class="ap">{{ charge.ap }}</tspan>
-										</text>
-									</svg> 
-
-									
-									
-								
-								</div>
+									<div class="circle-text"><div><span class="time">{{ charge.time | number }}</span><span class="ap">{{ charge.ap }}</span></div></div>
+									</div>
 								<div class="row late-charge">
 									<span class="for">for</span>
 									<span class="amount">{{ charge.amount | currency }}</span>
@@ -58,6 +48,8 @@
 				<div class="row no-thanks-wrap">
 					<p class="centeralign no-thanks" ng-show="optionsAvailable">
 						<a href="#/">no, thanks</a>
+
+
 					</p>
 				</div>
 			</div>
