@@ -31,15 +31,15 @@
 
 			<div class="row check-inout-wrapper toggle-pos-rel" ng-show="optionsAvailable && !isFetching && !netWorkError">
 				<div class="col-md-6 centeralign headtext nopadding-onblock toggle-pos-rel">
-					{{ billDisplayDetails.checkoutText }}
+					Check-Out
 					<p class="leadtext balance-container">
-						<span class="lightcontent chekout-time">{{ billDisplayDetails.balanceMessage }}</span>
+						<span class="lightcontent chekout-time">Your balance is:</span>
 						<span class="balancevalue">{{ billData.currency}}{{billData.balance}}</span>
 					</p>
 
 					<div class="viewbill-toggle">
-						<a ng-hide="showBill"  ng-click="showBill = true"><img src="/assets/img/rightarrow.png" alt="" />&nbsp;&nbsp;{{ billDisplayDetails.viewBillButtontext}}</a>
-						<a ng-show="showBill" ng-click="showBill = false"><img src="/assets/img/downarrow.png" alt=""  />&nbsp;&nbsp;{{ billDisplayDetails.viewBillButtontext}}</a>
+						<a ng-hide="showBill"  ng-click="showBill = true"><img src="/assets/img/rightarrow.png" alt="" />&nbsp;&nbsp;VIEW BILL</a>
+						<a ng-show="showBill" ng-click="showBill = false"><img src="/assets/img/downarrow.png" alt=""  />&nbsp;&nbsp;VIEW BILL</a>
 					</div>
 
 
@@ -130,7 +130,7 @@
 									Accept charges and check out
 								</div>
 								<div class="row  icontop">
-									<img src="{{acceptChargesImage}}" width="48" height="48" alt=""/>
+									<img src="/assets/img/creditcard_icon.png" width="48" height="48" alt=""/>
 								</div>
 							</div>
 						</div>

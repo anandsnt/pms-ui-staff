@@ -1,6 +1,6 @@
 
 (function() {
-	var checkOutConfirmationController = function($scope, confirmationService,$rootScope,$location) {
+	var checkOutConfirmationController = function($scope,$rootScope,$location) {
 		
 
 		
@@ -28,16 +28,6 @@
 
 		$rootScope.netWorkError = false;
 
-		// fecth text details to display
-		
-		$scope.isFetching = true;
-		confirmationService.fetch().then(function(details) {
-			$scope.details = details;
-			$scope.isFetching = false;
-			$rootScope.netWorkError =false;
-			
-		});
-
 		//watch for any network errors
 
 		$rootScope.$watch('netWorkError',function(){
@@ -52,8 +42,7 @@
 	};
 
 	var dependencies = [
-	'$scope',
-	'confirmationService','$rootScope','$location',
+	'$scope','$rootScope','$location',
 	checkOutConfirmationController
 	];
 

@@ -51,26 +51,6 @@ console.log($attrs)
 	// Theming process
 
 
-//$rootScope.buttonShape = ($attrs.hotelName === 'yotel') ?  'Hexagon' : 'circle';
-
-$rootScope.buttonShape = 'Hexagon'; // yotel
-$rootScope.hotelLogo =   '/assets/img/Yotel/yotel-logo.png';
-
-if($rootScope.buttonShape == 'circle'){
-
-	$rootScope.checkoutnowImage= '/assets/img/checkout_icon.png';
-	$rootScope.lateCheckoutnowImage= '/assets/img/late-checkout_icon.png';
-	$rootScope.acceptChargesImage= '/assets/img/creditcard_icon.png';
-
-
-}
-else{
-
-	$rootScope.checkoutnowImage= '/assets/img/Yotel/checkout_now-Icon_hex.png';
-	$rootScope.lateCheckoutnowImage= '/assets/img/Yotel/checkout_later_icon_hex.png';
-	$rootScope.acceptChargesImage= '/assets/img/Yotel/charges_icon_hex.png';
-}
-
 
 
 }]);

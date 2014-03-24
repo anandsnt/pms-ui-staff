@@ -30,11 +30,11 @@
 			<div class="row check-inout-wrapper">
 				<div class="col-md-6 headtext centeralign">
 					<p class="roomnumber centeralign" ng-hide="isFetching || netWorkError">
-						<span>{{details.roomType}} {{roomNo}}</span>
+						<span>Room {{roomNo}}</span>
 					</p>
-					{{details.headerTitle}}
+					Ready to check out?
 					<p class="leadtext checkout-time-container">
-						<span class="lightcontent chekout-time">{{details.headersubTitle}} {{checkoutTime}}</span>
+						<span class="lightcontent chekout-time">Check-out time is {{checkoutTime}}</span>
 					</p>
 				</div>
 				<!-- top section ends here-->
@@ -50,7 +50,7 @@
 									<!-- {{details.buttonText}} -->
 								</div>
 								<div class="row  icontop">
-									<img src="{{checkoutnowImage}}" width="48" height="48" alt=""/>
+									<img src="/assets/img/checkout_icon.png" width="48" height="48" alt=""/>
 								</div>
 							</div>
 						</div>
@@ -60,10 +60,10 @@
 
 			<div class="row clearboth">
 				<p class="foot-text centeralign" ng-show="true">
-						<em class = "base-text">{{footerMessage1}}</em>
+						<em class = "base-text">Late check-out is not available.</em>
 				</p>
 				<p class="foot-text centeralign second-in ">
-					<em class = "base-text">{{details.footerMessage2}} {{checkoutTime}}.</em>
+					<em class = "base-text">Come back to this page to check out at any time before {{checkoutTime}}.</em>
 				</p>
 			</div>
 
