@@ -63,7 +63,7 @@
 											<thead>
 												<tr>
 													<th>Description</th>
-													<th>Fees</th>
+													<th class="right-text">Fees</th>
 												</tr>
 											</thead>
 											<tbody ng-repeat= "bill in billData.fee_details" >
@@ -77,10 +77,10 @@
 															</td>
 														</tr>
 														<tr ng-show="{{bill.guest_room_text.length > 0}}">
-															<td>
+															<td >
 																	<span class="center-block">{{ bill.guest_room_text}}:<span class="guest-room-description">{{bill.guest_room_description}}</span></span>
 															</td>
-															<td>
+															<td class="right-text">
 																	<span class="center-block">{{ bill.guest_room_fees}}</span>
 															</td>
 														</tr>
@@ -88,7 +88,7 @@
 															<td>
 																<span class="center-block" ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.description }}
 															</td>
-															<td>
+															<td class="right-text">
 																<span class="center-block"ng-repeat="amountDetails in bill.charge_details">{{ amountDetails.amount }}</span>
 															</td>
 														</tr>
@@ -98,15 +98,15 @@
 											<tfoot>
 												<tr class="total">
 													<td align="center">TOTAL</td>
-													<td >{{billData.total_fees}}</td>
+													<td class="right-text" >{{billData.total_fees}}</td>
 												</tr>
 												<tr class="total">
 													<td align="center">CREDIT</td>
-													<td>{{billData.credits}}</td>
+													<td class="right-text" >{{billData.credits}}</td>
 												</tr>
 												<tr class="total">
 													<td align="center">BALANCE</td>
-													<td class="balance">{{billData.balance}}</td>
+													<td class="balance right-text">{{billData.balance}}</td>
 												</tr>
 											</tfoot>	
 										</table>
@@ -139,7 +139,7 @@
 
 				<div class="row clearboth">
 					<p class="foot-text  balance-footer centeralign" ng-show="optionsAvailable && !netWorkError">
-						<em class = "base-text"> The credit card on record will be charged</em>
+						<em class = "base-text"> The credit card on record will be charged.</em>
 					</p>
 				</div>
 			</div>
