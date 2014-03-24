@@ -1,0 +1,435 @@
+/* 1. ROOT
+==========================================================*/
+/* 2. TYPOGRAPHY
+==========================================================*/
+/* 3. GRAPHICAL ELEMENTS
+==========================================================*/
+/* 4. LAYOUT
+==========================================================*/
+/* 5. COMPONENTS
+==========================================================*/
+
+/* Dashboard page           ==============================*/
+    #dashboard {
+        .wrapper {
+            padding: 20px;
+
+            h2 {
+                margin: 10px 0 20px;
+                font-size: 24px;
+                line-height: 24px;
+                text-align: center;
+                font-weight: 300;
+            }
+
+            #guests-today {
+                margin-bottom: 30px;
+                .float;
+
+                li {
+                    text-align: center;
+                    margin: 0 10px 0 0;
+                    .calc-width(33.3333, 6.6666);
+                    .pull-left;
+
+                    .button {
+                        padding: 15px 10px 10px 10px;
+                        .show;
+
+                        .icons { 
+                            margin: 0 auto 5px auto;
+                            .square(30px);
+                            .hide-text; 
+                        }
+
+                        strong {
+                            font-size: 36px;
+                        }
+                    }
+
+                    &:last-child { margin-right: 0; }
+                }
+            }
+
+            #stats-today {
+                li {
+                    font-size: 14px;
+                    line-height: 36px;
+                    padding-bottom: 5px;
+                    margin-bottom: 5px;
+                    color: @grey3;
+                    text-transform: uppercase;
+                    display: block;
+                    border-bottom: 1px solid rgba(0,0,0,.1);
+                    em {
+                        font-style: normal;
+                        white-space: nowrap;
+                        .pull-left;
+                    }
+                    span {
+                        font-size: 36px;
+                        line-height: 1em;
+                        color: @textColor;
+                        .show;
+                        margin-left: 60%;
+                        text-align: right;
+
+                        &.green { color: @green; }
+                        &.red { color: @red; }
+                    }
+
+                    &:last-child {
+                        padding-bottom: 0;
+                        margin-bottom: 0;
+                        border-bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+
+/* Rooms page               ==============================*/
+    
+    /* Rooms listing ***/
+    #rooms {
+        z-index: -1;
+
+        li {
+            margin: 0;
+            
+            a {
+                color: @textColor;
+                padding: 0 50px 0 10px;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                border-bottom: 1px solid rgba(0,0,0,.1);
+                background-color: @white;
+                .show;
+                .float;
+
+                .room-number {
+                    font-size: 30px;
+                    line-height: 50px;
+                    vertical-align: middle;
+                    font-weight: 700;
+                    width: 70px;
+                    .show;
+                    .pull-left;
+                }
+
+                .room-status,
+                .fo-status {
+                    display: inline-block;
+                    color: @grey3;
+                    font-size: 13px;
+                    font-weight: 400; 
+                    font-style: italic;
+                    line-height: 50px;
+                    overflow: hidden;
+                    .pull-left;
+                }
+
+                .room-status { .calc-width(45, 35); }
+                .fo-status {  .calc-width(55, 35); }
+
+                &.with-image {
+                    position: relative;
+
+                    .guest-image {
+                        position: absolute;
+                        top: 5px;
+                        right: 10px;
+                        background: @grey1;
+                        #border-radius > .rounded(40px);
+                        .square(40px);
+
+                        .vip {
+                            position: absolute;
+                            bottom: 0;
+                            right: 0;
+                            font-size: 9px;
+                            line-height: 16px;
+                            .square(16px);
+                            #border-radius > .rounded(16px);       
+                        }
+
+                        img {
+                            width: 100%;
+                            height: auto;
+                            #border-radius > .rounded(40px);
+                        }
+                    }
+                }
+
+                &.room-clean { 
+                    .room-number { color: @green; }
+                }
+
+                &.room-dirty { 
+                    .room-number { color: @red; }
+                }
+
+                &.room-out {
+                    .room-number { color: @grey3; }
+                }
+
+                &:hover,
+                &:active {
+                    background-color: rgba(0,0,0,.02);
+                }
+            }
+        }
+
+        .iScrollVerticalScrollbar { 
+            top: 5px;
+            bottom: 5px;
+        }
+    }
+
+    /* Rooms filters ***/
+    #filter-rooms {
+        z-index: 199;
+        background: @white;
+
+        .nav-bar {
+            h2 {
+                margin: 30px 0 10px;
+                font-size: 24px;
+                line-height: 24px;
+                text-align: center;
+                font-weight: 300;
+            }
+        }
+
+        .wrapper {
+            padding: 20px 10px;
+
+            .holder {
+                margin-bottom: 20px;
+
+                .title {
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    margin-bottom: 10px;
+                }
+
+                .entry {
+                    padding: 5px 0;
+                    margin-bottom: 0;
+                    border-bottom: 1px solid rgba(0,0,0,.1);
+                    .show;
+
+                    .radio,
+                    .checkbox { 
+                        font-size: 14px;
+                        line-height: 30px;
+                        height: 30px;
+                        padding-left: 30px;
+                        margin-bottom: 0;
+                        float: none; 
+                        width: 100%;
+                        .show;
+
+                        .icon-form { 
+                            top: 5px; 
+                            left: 0;
+                        }
+                    }
+
+                    &:first-child { padding-top: 0; }
+                }
+            }
+        }
+
+        &.hidden { display: block !important; }
+    }
+
+/* Room details page        ==============================*/
+
+    #room-details {
+        #room-header {
+            padding: 0 10px;
+            color: @white;
+            background: @grey3;
+            .float;
+
+            h1 {
+                display: inline-block;
+                font-size: 36px;
+                line-height: 60px;
+                vertical-align: middle;
+                padding-left: 46px;
+                font-weight: 600;
+                .pull-left;
+            }
+
+            .select {
+                margin: 10px 0;
+                width: 50%;
+                .pull-right;
+
+                select { 
+                    line-height: 20px;
+                    min-height: 40px;
+                    height: 40px;
+                }
+            }
+
+            &.occupied { background: @blue; }
+            &.inspected-clean { background: @green; }
+            &.pickup { background: @orange; }
+            &.dirty { background: @red; }
+        }
+
+        #fo-status {
+            padding: 10px 0;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(0,0,0,.1);
+            width: 100%;
+            z-index: 99;
+            .show;
+        }
+
+        #guest-info {
+            background-color: @white;
+
+            .wrapper {
+                padding: 0 10px;   
+
+                .guest-image {
+                    position: relative;
+                    margin: 30px auto 20px auto;
+                    background: @grey1;
+                    #border-radius > .rounded(64px);
+                    .square(64px);
+
+                    .vip {
+                        position: absolute;
+                        bottom: 0;
+                        right: 0;
+                    }
+
+                    img {
+                        width: 100%;
+                        height: auto;
+                        #border-radius > .rounded(64px);
+                    }
+                }
+
+                h2 {
+                    font-weight: 300;
+                    text-align: center;
+                    margin: 0;
+                    .show;
+
+                    .guest-status {
+                        display: inline-block;
+                        background-color: rgba(0,0,0,.15);
+                        margin-right: 5px;
+                        .square(30px);
+
+                        &.check-out,
+                        &.late-check-out { background-color: @red; }
+                        &.inhouse { background-color: @blue; }
+                    }
+
+                    .name {
+                        font-size: 30px;
+                        line-height: 30px;
+                        vertical-align: top;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                    }
+                }
+
+                .status {
+                    font-size: 18px;
+                    line-height: 1.2em;
+                    text-align: center;
+                    .show;
+
+                    strong { font-weight: 600; }
+
+                    &.today { color: @red; }
+                }
+
+                .checkout-guest {
+                    padding-top: 20px;
+                    margin-top: 30px;
+                    border-top: 1px solid rgba(0,0,0,.1);
+
+                    strong {
+                        text-transform: uppercase;
+                        text-align: center;
+                        font-weight: 600;
+                        .show;
+                    }
+
+                    .button {
+                        margin-top: 10px;
+                        line-height: 50px;
+                        width: 100%;
+                        .show;
+                    }
+                }             
+            }
+
+            .iScrollVerticalScrollbar { 
+                top: 10px;
+                bottom: 10px;
+            }
+
+            &.no-content {
+                position: relative;
+                display: table;
+                margin: 0;
+                background: transparent;
+                text-align: center;
+                color: @grey3;
+                padding: 0 20%;
+                .square(100%);
+                .box-shadow(none);
+
+                .info {
+                    display: table-cell;
+                    vertical-align: middle;
+
+                    .icons { margin-top: -80px; }
+
+                    .h1 { 
+                        font-size: 24px;
+                        line-height: 1.5em;
+                        font-weight: 700;
+                        margin: 0;
+                    }
+                }
+            }
+        }   
+    }
+
+/* 6. IE
+==========================================================*/
+/* 7. RESPONSIVE
+==========================================================*/
+
+
+/* 7. iscroll overrides
+==========================================================*/
+#rooms > div {
+    top: 5px !important;
+    bottom: 5px !important;
+    right: 5px !important;
+    width: 4px !important;
+}
+
+#rooms > div > div {
+    background: #ffb319 !important;
+    -webkit-border-radius: 4px !important;
+    -moz-border-radius: 4px !important;
+    border-radius: 4px !important;
+    border: none !important;
+}
