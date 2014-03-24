@@ -25,12 +25,15 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		setTimeout(function () { 
 			currentScroll.refresh();
 			currentScroll.scrollTo(0, 0, 200);
-		}, 100); 
+		}, 100);
 	};
 	
 	$scope.getRoomColorClasses = function(roomHkStatus, isRoomOccupied, isReady){
 
-		if(isReady == 'true'){
+/*		if(isReady == 'true'){
+			return "room-clean";
+		}*/
+		if((roomHkStatus == 'CLEAN' || roomHkStatus == 'INSPECTED') && isRoomOccupied == 'false') {
 			return "room-clean";
 		}
 		if((roomHkStatus == 'DIRTY' || roomHkStatus == 'PICKUP') && isRoomOccupied == 'false') {
@@ -147,9 +150,13 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		for(var p in $scope.currentFilters) {
 			$scope.currentFilters[p] = false
 		}
+		$scope.refreshScroll();
 	}
 
-
+	$scope.clearSearch = function(){
+		$scope.query = '';
+		$scope.refreshScroll();
+	}
 
 }]);
 
