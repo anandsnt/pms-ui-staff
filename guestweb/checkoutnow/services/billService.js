@@ -24,7 +24,6 @@
 		return {
 			bills: bills,
 			billDisplayDetails : billDisplayDetails,
-			fetchDisplayDetails: fetchDisplayDetails,
 			fetchBillData :fetchBillData
 		}
 	};
