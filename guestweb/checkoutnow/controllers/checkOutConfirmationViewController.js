@@ -26,16 +26,8 @@
 		if($scope.pageSuccess){
 
 
-		$rootScope.netWorkError = false;
 
-		//watch for any network errors
-
-		$rootScope.$watch('netWorkError',function(){
-
-			if($rootScope.netWorkError)
-				$scope.isFetching = false;
-		});
-
+		
 		$scope.footerMessage1 = !$rootScope.isLateCheckoutAvailable ? 'Late check-out is not available.' :'' ;
 
 	    }
