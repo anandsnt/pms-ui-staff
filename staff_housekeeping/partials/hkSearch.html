@@ -37,7 +37,7 @@
    <header role="banner" class="nav-bar float">
        <h1 class="h2">Filter rooms</h1>
        <button id="clear-filters" class="button blank clear-selection" ng-show = "isFilterChcked()" ng-click = "clearFilters()" type="button">Clear</button>
-       <a class="complete toggle linked-toggle" ng-click="$emit('dismissFilterScreen')">Done</a>
+       <a class="complete toggle linked-toggle" ng-click="filterDoneButtonPressed()">Done</a>
     </header>
     <div class="content scrollable" id="filter-options" ng-iscroll = "rooms">
        <div class="wrapper" >

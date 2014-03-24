@@ -146,6 +146,12 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		}
 	}
 
+	$scope.filterDoneButtonPressed = function(){
+		$scope.refreshScroll();
+		$scope.$emit('dismissFilterScreen');
+
+	};
+
 	$scope.clearFilters = function(){
 		for(var p in $scope.currentFilters) {
 			$scope.currentFilters[p] = false
