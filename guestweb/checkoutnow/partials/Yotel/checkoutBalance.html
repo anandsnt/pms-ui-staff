@@ -57,7 +57,7 @@
 
 										<div class="guest-details leftalign">
 											<span class="center-block normal-weight">CABIN {{ roomNo }}</span>
-											<span class="center-block">{{ userName }} | {{ userCity }}, {{ userState }}</span>
+											<span class="center-block">{{ userName }}<span ng-show="userCity.length > 0 || userState.length > 0"> | </span> {{ userCity }}<span ng-show="userCity.length > 0 && userState.length > 0">,</span> {{ userState }}</span>
 										</div>
 										<table class="table leftalign">
 											<thead>
