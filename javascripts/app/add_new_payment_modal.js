@@ -74,6 +74,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 			
 			
 			if(that.params["origin"] == views.BILLCARD){
+				backView.find("#payment-type-text").remove();
 				backView.find("#select-card-from-list").removeClass('hidden');
         		backView.find(".item-payment").append(appendHtml);
         		
@@ -209,7 +210,8 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 					   'number': $number, 
 					   'expiry': $expiry,
 					   'cardHolderName': $cardHolderName,
-				   }
+				   },
+				   loader: "blocker"
 		    };
 			webservice.postJSON(url, options);
 			
@@ -246,6 +248,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 					   successCallBackParameters: {
 						   'number': $number,'add_to_guest_card':add_to_guest_card 
 					   },
+					   loader: "blocker"
 			};
 		    webservice.postJSON(url, options);
 		} 
