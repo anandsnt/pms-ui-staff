@@ -5,7 +5,7 @@
 	<div id="content" class="tabs float" role="main" data-tabs="dashboard-tabs">
 	   <!-- Dashboard tabs navigation -->
 	   <ul id="tabs-menu" class="float">
-	      <li ng-repeat="menu in data.menus" ng-click="setSelectedMenu($index)"><a>{{menu.menu_name}}</a></li>
+	      <li ng-repeat="menu in data.menus" ng-click="setSelectedMenu($index)" ui-sref='admin.dashboard'><a>{{menu.menu_name}}</a></li>
 	   </ul>
 		<div ui-view></div>
 	</div>

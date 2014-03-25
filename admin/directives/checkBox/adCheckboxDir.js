@@ -8,7 +8,7 @@ admin.directive('adCheckbox', function($timeout) {
 	        required : '@required',
             isChecked: '@isChecked'
 	    },
-    	templateUrl: '../../assets/partials/directives/adCheckbox.html' 
+    	templateUrl: '../../assets/directives/checkBox/adCheckbox.html' 
     };
 
 });
