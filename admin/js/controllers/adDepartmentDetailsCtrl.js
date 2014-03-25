@@ -5,8 +5,6 @@ admin.controller('ADDepartmentDetailsCtrl',['$scope', '$state', 'ADDepartmentSrv
 			"name": $scope.departmentName,
 			"value": $scope.value
 		};
-		console.log("+++==========++++");
-		console.log(data);
 		ADDepartmentSrv.postDepartmentDetails(data).then(function(data) {
 			
 		}, function(){

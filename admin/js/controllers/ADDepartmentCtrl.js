@@ -38,20 +38,34 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state',   function($scope, 
 		};	
 	
 	$scope.currentClickedElement = -1;
+	$scope.addFormView = false;
 	$scope.editDepartments = function(index, department)	{
 			$scope.currentClickedElement = index;
 	};
+	$scope.addNew = function(index, department)	{
+			$scope.addFormView = true;
+	};
+	
 	//Function to get the template for edit url
 	$scope.getTemplateUrl = function(index, department){
-		 if($scope.currentClickedElement == index){
-		 	$scope.value = department.value;
-		 	$scope.departmentName = department.name;
-		 	return "/assets/partials/departments/adDepartmentsEdit.html";
-		 } 
+		if(index!="undefined" && department!="undefined"){
+			if($scope.currentClickedElement == index){
+			 	$scope.value = department.value;
+			 	$scope.departmentName = department.name;
+			 	return "/assets/partials/departments/adDepartmentsEdit.html";
+			 } 
+		}
+		if(index == "" && department == ""){
+			$scope.value = department.value;
+			 	$scope.departmentName = "";
+			 	return "/assets/partials/departments/adDepartmentsAdd.html";
+		}
+		 
 	};
 	//Previous view if clicked cancel
 	$scope.clickCancel = function(){
 		$scope.currentClickedElement = -1;
+		$scope.addFormView = false;
 	};
 		
 		
