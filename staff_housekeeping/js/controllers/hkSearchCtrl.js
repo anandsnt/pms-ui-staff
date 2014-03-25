@@ -113,16 +113,16 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		if (($scope.currentFilters.arrived === false) && (room.room_reservation_status === "Arrived")) {
 			return false;
 		}
-		if (($scope.currentFilters.arrived_dueout === false) && (room.room_reservation_status === "Arrived / Due Out")) {
+		if (($scope.currentFilters.arrived_dueout === false) && (room.room_reservation_status === "Arrived / Due out")) {
 			return false;
 		}
 		if (($scope.currentFilters.arrived_departed === false) && (room.room_reservation_status === "Arrived / Departed")) {
 			return false;
 		}
-		if (($scope.currentFilters.dueout === false) && (room.room_reservation_status === "Due Out")) {
+		if (($scope.currentFilters.dueout === false) && (room.room_reservation_status === "Due out")) {
 			return false;
 		}
-		if (($scope.currentFilters.dueout_arrival === false) && (room.room_reservation_status === "Due Out / Arrival")) {
+		if (($scope.currentFilters.dueout_arrival === false) && (room.room_reservation_status === "Due out / Arrival")) {
 			return false;
 		}
 		if (($scope.currentFilters.departed === false) && (room.room_reservation_status === "Departed")) {
@@ -145,6 +145,12 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		    }
 		}
 	}
+
+	$scope.filterDoneButtonPressed = function(){
+		$scope.refreshScroll();
+		$scope.$emit('dismissFilterScreen');
+
+	};
 
 	$scope.clearFilters = function(){
 		for(var p in $scope.currentFilters) {
