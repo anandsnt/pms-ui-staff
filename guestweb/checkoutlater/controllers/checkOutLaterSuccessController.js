@@ -100,7 +100,7 @@
 			$scope.success = response.status ? true : false;
 		if($scope.success === true){
 			$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap
-			$rootScope.checkoutTimessage = "Your new check-out time is ";
+			$rootScope.checkoutTimessage = "Your new check out time is ";
 		}
 		});
 	}
