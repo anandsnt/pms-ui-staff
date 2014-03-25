@@ -1,1 +1,1009 @@
-Hotel Details of Yotel
+
+<div id="wrapper" class="content current" >
+	<header class="content-title float">
+		<h2>Edit Hotel</h2>
+		<a id="go_back" data-type="load-details" class="action back">Back</a>
+	</header> 
+	<form  name="edit-hotel" method="post" id="edit-hotel" class="form float" ng-iscroll="edit-hotel">
+
+		<!-- Added notification message div to show the error message -->
+		<div id="notification-message"></div>
+		<fieldset class="holder left">
+			<div class="form-title">
+				<h3>
+					<span>Hotel</span>
+					Name and Location
+				</h3>
+				<em class="status">
+					Fields marked with
+					<strong>*</strong>
+					are mandatory!
+				</em>
+			</div>
+			<!-- <div ad-Textbox></div> -->
+			<ad-textbox value="data.hotel_name" name = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes"></ad-textbox>
+			<ad-checkbox isChecked="true" label = "Force Upsell" required = "yes"></ad-textbox>
+
+
+			<div class="entry">
+				<label for="hotel-code">
+					Hotel Code
+					<strong>*</strong>
+				</label>
+				<input type="text" value="{{data.hotel_code}}" required="yes" readonly="readonly" placeholder="Enter hotel short name" name="hotel-code" id="hotel-code">
+			</div>
+
+			<div class="entry">
+				<label for="hotel-street">
+					Street
+					<strong>*</strong>
+				</label>
+				<input type="text" value="{{data.street}}" required="yes" placeholder="Enter hotel street" name="hotel-street" id="hotel-street">
+			</div>
+
+			<div class="entry">
+				<label for="hotel-phone">
+					Phone
+					<strong>*</strong>
+				</label>
+				<input type="text" value="{{data.phone}}" required="yes" placeholder="Enter hotel phone number" name="hotel-phone" id="hotel-phone">
+			</div>
+
+			<div class="entry">
+				<label for="hotel-city">
+					City
+					<strong>*</strong>
+				</label>
+				<input type="text" value="{{data.city}}" required="yes" placeholder="Enter city name" name="hotel-city" id="hotel-city">
+			</div>
+
+			<div class="entry">
+				<label for="hotel-state">
+					State
+				</label>
+				<input type="text" value="{{data.state}}" required="" placeholder="Enter state name" name="hotel-state" id="hotel-state">
+			</div>
+
+			<div class="entry">
+				<label for="hotel-zipcode">
+					ZipCode
+					<strong>*</strong>
+				</label>
+				<input type="text" value="{{data.zipcode}}" required="yes" placeholder="Enter zip code" name="hotel-zipcode" id="hotel-zipcode">
+			</div>
+
+			<div class="entry">
+				<label for="hotel-country">
+					Country
+					<strong>*</strong>
+				</label>
+				<div class="select">
+					<select name="hotel-country" id="hotel-country" class="placeholder">
+						<option value="">
+							Country
+						</option>
+						<option ng-model="country.id" ng-repeat="country in data.countries" value="{{country.id}}" ng-selected="country.id==data.country">
+							{{country.name}}
+						</option>
+
+				</select>
+			</div>
+		</div>
+
+		<div class="entry">
+			<label for="hotel-longitude">
+				Longitude
+			</label>
+			<input type="text" value="{{data.longitude}}" required="" readonly="readonly" placeholder="Enter hotel longitude" name="hotel-longitude" id="hotel-longitude">
+		</div>
+
+		<div class="entry">
+			<label for="hotel-latitude">
+				Latitude
+			</label>
+			<input type="text" value="{{data.latitude}}" required="" readonly="readonly" placeholder="Enter hotel latitude" name="hotel-latitude" id="hotel-latitude">
+		</div>
+
+
+		<div class="entry full-width registration-for-rover">
+			<label for="rover">
+				Rover Registration
+			</label>
+			<div id="registration-for-rover" class="boxes">
+				<label class="radio" ng-class="{checked: data.required_signature_at == 'CHECKIN'}">
+					<span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'CHECKIN'}"></span>
+					<input type="radio" value="CHECKIN" name="rover" id="type1" class="change-data" checked="checked">
+					Require Signature at Check In
+				</label>
+				<label class="radio" ng-class="{checked: data.required_signature_at == 'CHECKOUT'}">
+					<span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'CHECKOUT'}"></span>
+					<input type="radio" value="CHECKOUT" name="rover" id="type2" class="change-data">
+					Require Signature at Check Out
+				</label>
+				<label class="radio" ng-class="{checked: data.required_signature_at == 'NO_SIGNATURE'}">
+					<span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'NO_SIGNATURE'}"></span>
+					<input type="radio" value="NO_SIGNATURE" name="rover" id="type3" class="change-data">
+					No Signature Required
+				</label>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset class="holder right">
+		<div class="form-title">
+			<h3>
+				<span>Hotel</span>
+				Details
+			</h3>
+			<em class="status">
+				Fields marked with
+				<strong>*</strong>
+				are mandatory!
+			</em>
+		</div>
+		<div class="entry">
+			<label for="hotel-rooms">
+				Number of rooms
+			</label>
+			<input type="text" value="{{data.number_of_rooms}}" readonly="readonly" placeholder="Type number" name="hotel-rooms" id="hotel-rooms">
+		</div>
+
+		<div class="entry">
+			<label for="hotel-currency">
+				Hotel Currency
+				<strong>*</strong>
+			</label>
+			<div class="select">
+				<select name="hotel-currency" id="hotel-currency" class="placeholder">
+					<option value="">
+						Hotel Currency
+					</option>
+					<option ng-repeat="currency in data.currency_list" value="{{currency.id}}">
+						{{currency.code}}
+					</option>
+
+			</select>
+		</div>
+	</div>
+
+	<div class="entry">
+		<label>
+			Checkin time
+		</label>
+		<div class="entry full-width float">
+			<div class="select select-col col1-3">
+				<select name="hotel-checkin-hour" id="hotel-checkin-hour" class="styled">
+					<option value="" data-text="Not set" class="placeholder">HH</option>
+					<option ng-repeat="i in [1, 12] | makeRange" value="{{i}}" ng-selected="i==data.check_in_time.hour" >
+						{{i}}
+					</option>
+
+				</select>
+			</div>
+			<div class="select select-col col1-3">
+				<select name="hotel-checkin-minute" id="hotel-checkin-minutes">
+					<option value="" data-text="Not set" class="placeholder">MM</option>
+					<option value="00" selected="">
+						00
+					</option>
+					<option value="15">
+						15
+					</option>
+					<option value="30">
+						30
+					</option>
+					<option value="45">
+						45
+					</option>
+				</select>
+			</div>
+			<div class="select select-col col1-3">
+				<select name="hotel-checkin-primetime" id="hotel-checkin-primetime" class="styled">
+					<option value="AM" selected="">AM</option>
+					<option value="PM">PM</option>
+				</select>
+			</div>
+		</div>
+
+	</div>
+	<div class="entry">
+		<label>
+			Checkout time
+		</label>
+		<div class="entry full-width float">
+			<div class="select select-col col1-3">
+				<select name="hotel-checkout-hour" id="hotel-checkout-hour" class="styled">
+					<option value="" data-text="Not set" class="placeholder">HH</option>
+					<option value="01" selected="">
+						01
+					</option>
+					<option value="02">
+						02
+					</option>
+					<option value="03">
+						03
+					</option>
+					<option value="04">
+						04
+					</option>
+					<option value="05">
+						05
+					</option>
+					<option value="06">
+						06
+					</option>
+					<option value="07">
+						07
+					</option>
+					<option value="08">
+						08
+					</option>
+					<option value="09">
+						09
+					</option>
+					<option value="10">
+						10
+					</option>
+					<option value="11">
+						11
+					</option>
+					<option value="12">
+						12
+					</option>
+				</select>
+			</div>
+			<div class="select select-col col1-3">
+				<select name="hotel-checkout-minute" id="hotel-checkout-minutes">
+					<option value="" data-text="Not set" class="placeholder">MM</option>
+					<option value="00" selected="">
+						00
+					</option>
+					<option value="15">
+						15
+					</option>
+					<option value="30">
+						30
+					</option>
+					<option value="45">
+						45
+					</option>
+				</select>
+			</div>
+			<div class="select select-col col1-3">
+				<select name="hotel-checkout-primetime" id="hotel-checkout-primetime" class="styled">
+					<option value="AM">AM</option>
+					<option value="PM" selected="">PM</option>
+				</select>
+			</div>
+		</div>
+
+	</div>
+	<div class="entry">
+		<label for="hotel-chain">
+			Hotel chain
+			<strong>*</strong>
+		</label>
+		<div class="select">
+			<select name="hotel-chain" id="hotel-chain" class="placeholder">
+				<option value="">
+					Hotel chain
+				</option><option value="21">
+				123
+			</option>
+			<option value="11">
+				aa
+			</option>
+			<option value="3">
+				Admin Chain
+			</option>
+			<option value="18">
+				ASDF
+			</option>
+			<option value="16">
+				BETHESDA
+			</option>
+			<option value="10">
+				chain abc
+			</option>
+			<option value="38">
+				chain demo
+			</option>
+			<option value="39">
+				chain demo 1
+			</option>
+			<option value="40">
+				chain demo 11
+			</option>
+			<option value="41">
+				chain demo 118
+			</option>
+			<option value="47">
+				Chain Five
+			</option>
+			<option value="46">
+				Chain Four
+			</option>
+			<option value="19">
+				chain name
+			</option>
+			<option value="45">
+				Chain Three
+			</option>
+			<option value="2">
+				Chain Two
+			</option>
+			<option value="56">
+				CHAS
+			</option>
+			<option value="26">
+				CHN
+			</option>
+			<option value="42">
+				DEMO
+			</option>
+			<option value="23">
+				DEMO CHAIN
+			</option>
+			<option value="24">
+				DEMO CHAIN 2
+			</option>
+			<option value="25">
+				DEMO CHAIN THREE
+			</option>
+			<option value="53">
+				EMPCHN
+			</option>
+			<option value="22">
+				fdghdfgh
+			</option>
+			<option value="4">
+				fghfghfgh updated
+			</option>
+			<option value="61">
+				Hiranandani Hotels Group
+			</option>
+			<option value="5">
+				Hotel Chain A101
+			</option>
+			<option value="44">
+				JOS HOTELS
+			</option>
+			<option value="72">
+				Micros Systems Inc.
+			</option>
+			<option value="20">
+				mnd
+			</option>
+			<option value="67">
+				NOFTP
+			</option>
+			<option value="36">
+				qqq
+			</option>
+			<option value="68">
+				REFRESH1
+			</option>
+			<option value="70">
+				shiju-chain name
+			</option>
+			<option value="73">
+				SNTCHN
+			</option>
+			<option value="1" selected="">
+				StayNTouch Demo Chain
+			</option>
+			<option value="43">
+				test chain
+			</option>
+			<option value="65">
+				Test Chain 001
+			</option>
+			<option value="57">
+				TST
+			</option>
+			<option value="69">
+				WORKING
+			</option>
+			<option value="71">
+				Yotel Hotels
+			</option>
+			<option value="52">
+				ZOEHotels
+			</option>
+
+		</select>
+	</div>
+</div>
+
+<div class="entry">
+	<label for="hotel-brand">
+		Hotel brand
+	</label>
+	<div class="select">
+		<select name="hotel-brand" id="hotel-brand" class="placeholder">
+			<option value="">
+				Hotel brand
+			</option><option value="15">
+			001 chain
+		</option>
+		<option value="17" selected="">
+			Beer hotels
+		</option>
+		<option value="5">
+			Brand For Chain One Edited
+		</option>
+		<option value="1">
+			Brand One
+		</option>
+		<option value="3">
+			Brand Three
+		</option>
+		<option value="2">
+			Brand Two
+		</option>
+		<option value="20">
+			Fidelio Technologies
+		</option>
+		<option value="11">
+			qqq brand
+		</option>
+		<option value="4">
+			qwqw
+		</option>
+		<option value="6">
+			test
+		</option>
+		<option value="12">
+			Test 123456789
+		</option>
+		<option value="18">
+			test 56
+		</option>
+		<option value="10">
+			Test brand 987
+		</option>
+		<option value="9">
+			Test Chain brand 001
+		</option>
+		<option value="8">
+			Test test test test
+		</option>
+
+	</select>
+</div>
+</div>
+
+<div class="entry">
+	<label for="hotel-time-zone">
+		Hotel Time Zone
+		<strong>*</strong>
+	</label>
+	<div class="select">
+		<select name="hotel-time-zone" id="hotel-time-zone" class="placeholder">
+			<option value="">
+				Hotel Time Zone
+			</option><option value="American Samoa">
+			American Samoa
+		</option>
+		<option value="International Date Line West">
+			International Date Line West
+		</option>
+		<option value="Midway Island">
+			Midway Island
+		</option>
+		<option value="Hawaii">
+			Hawaii
+		</option>
+		<option value="Alaska">
+			Alaska
+		</option>
+		<option value="Pacific Time (US &amp; Canada)">
+			Pacific Time (US &amp; Canada)
+		</option>
+		<option value="Tijuana">
+			Tijuana
+		</option>
+		<option value="Arizona">
+			Arizona
+		</option>
+		<option value="Chihuahua">
+			Chihuahua
+		</option>
+		<option value="Mazatlan">
+			Mazatlan
+		</option>
+		<option value="Mountain Time (US &amp; Canada)">
+			Mountain Time (US &amp; Canada)
+		</option>
+		<option value="Central America">
+			Central America
+		</option>
+		<option value="Central Time (US &amp; Canada)">
+			Central Time (US &amp; Canada)
+		</option>
+		<option value="Guadalajara">
+			Guadalajara
+		</option>
+		<option value="Mexico City">
+			Mexico City
+		</option>
+		<option value="Monterrey">
+			Monterrey
+		</option>
+		<option value="Saskatchewan">
+			Saskatchewan
+		</option>
+		<option value="Bogota">
+			Bogota
+		</option>
+		<option value="Eastern Time (US &amp; Canada)" selected="">
+			Eastern Time (US &amp; Canada)
+		</option>
+		<option value="Indiana (East)">
+			Indiana (East)
+		</option>
+		<option value="Lima">
+			Lima
+		</option>
+		<option value="Quito">
+			Quito
+		</option>
+		<option value="Caracas">
+			Caracas
+		</option>
+		<option value="Atlantic Time (Canada)">
+			Atlantic Time (Canada)
+		</option>
+		<option value="Georgetown">
+			Georgetown
+		</option>
+		<option value="La Paz">
+			La Paz
+		</option>
+		<option value="Santiago">
+			Santiago
+		</option>
+		<option value="Newfoundland">
+			Newfoundland
+		</option>
+		<option value="Brasilia">
+			Brasilia
+		</option>
+		<option value="Buenos Aires">
+			Buenos Aires
+		</option>
+		<option value="Greenland">
+			Greenland
+		</option>
+		<option value="Mid-Atlantic">
+			Mid-Atlantic
+		</option>
+		<option value="Azores">
+			Azores
+		</option>
+		<option value="Cape Verde Is.">
+			Cape Verde Is.
+		</option>
+		<option value="Casablanca">
+			Casablanca
+		</option>
+		<option value="Dublin">
+			Dublin
+		</option>
+		<option value="Edinburgh">
+			Edinburgh
+		</option>
+		<option value="Lisbon">
+			Lisbon
+		</option>
+		<option value="London">
+			London
+		</option>
+		<option value="Monrovia">
+			Monrovia
+		</option>
+		<option value="UTC">
+			UTC
+		</option>
+		<option value="Amsterdam">
+			Amsterdam
+		</option>
+		<option value="Belgrade">
+			Belgrade
+		</option>
+		<option value="Berlin">
+			Berlin
+		</option>
+		<option value="Bern">
+			Bern
+		</option>
+		<option value="Bratislava">
+			Bratislava
+		</option>
+		<option value="Brussels">
+			Brussels
+		</option>
+		<option value="Budapest">
+			Budapest
+		</option>
+		<option value="Copenhagen">
+			Copenhagen
+		</option>
+		<option value="Ljubljana">
+			Ljubljana
+		</option>
+		<option value="Madrid">
+			Madrid
+		</option>
+		<option value="Paris">
+			Paris
+		</option>
+		<option value="Prague">
+			Prague
+		</option>
+		<option value="Rome">
+			Rome
+		</option>
+		<option value="Sarajevo">
+			Sarajevo
+		</option>
+		<option value="Skopje">
+			Skopje
+		</option>
+		<option value="Stockholm">
+			Stockholm
+		</option>
+		<option value="Vienna">
+			Vienna
+		</option>
+		<option value="Warsaw">
+			Warsaw
+		</option>
+		<option value="West Central Africa">
+			West Central Africa
+		</option>
+		<option value="Zagreb">
+			Zagreb
+		</option>
+		<option value="Athens">
+			Athens
+		</option>
+		<option value="Bucharest">
+			Bucharest
+		</option>
+		<option value="Cairo">
+			Cairo
+		</option>
+		<option value="Harare">
+			Harare
+		</option>
+		<option value="Helsinki">
+			Helsinki
+		</option>
+		<option value="Istanbul">
+			Istanbul
+		</option>
+		<option value="Jerusalem">
+			Jerusalem
+		</option>
+		<option value="Kyiv">
+			Kyiv
+		</option>
+		<option value="Pretoria">
+			Pretoria
+		</option>
+		<option value="Riga">
+			Riga
+		</option>
+		<option value="Sofia">
+			Sofia
+		</option>
+		<option value="Tallinn">
+			Tallinn
+		</option>
+		<option value="Vilnius">
+			Vilnius
+		</option>
+		<option value="Baghdad">
+			Baghdad
+		</option>
+		<option value="Kuwait">
+			Kuwait
+		</option>
+		<option value="Minsk">
+			Minsk
+		</option>
+		<option value="Nairobi">
+			Nairobi
+		</option>
+		<option value="Riyadh">
+			Riyadh
+		</option>
+		<option value="Tehran">
+			Tehran
+		</option>
+		<option value="Abu Dhabi">
+			Abu Dhabi
+		</option>
+		<option value="Baku">
+			Baku
+		</option>
+		<option value="Moscow">
+			Moscow
+		</option>
+		<option value="Muscat">
+			Muscat
+		</option>
+		<option value="St. Petersburg">
+			St. Petersburg
+		</option>
+		<option value="Tbilisi">
+			Tbilisi
+		</option>
+		<option value="Volgograd">
+			Volgograd
+		</option>
+		<option value="Yerevan">
+			Yerevan
+		</option>
+		<option value="Kabul">
+			Kabul
+		</option>
+		<option value="Islamabad">
+			Islamabad
+		</option>
+		<option value="Karachi">
+			Karachi
+		</option>
+		<option value="Tashkent">
+			Tashkent
+		</option>
+		<option value="Chennai">
+			Chennai
+		</option>
+		<option value="Kolkata">
+			Kolkata
+		</option>
+		<option value="Mumbai">
+			Mumbai
+		</option>
+		<option value="New Delhi">
+			New Delhi
+		</option>
+		<option value="Sri Jayawardenepura">
+			Sri Jayawardenepura
+		</option>
+		<option value="Kathmandu">
+			Kathmandu
+		</option>
+		<option value="Almaty">
+			Almaty
+		</option>
+		<option value="Astana">
+			Astana
+		</option>
+		<option value="Dhaka">
+			Dhaka
+		</option>
+		<option value="Ekaterinburg">
+			Ekaterinburg
+		</option>
+		<option value="Rangoon">
+			Rangoon
+		</option>
+		<option value="Bangkok">
+			Bangkok
+		</option>
+		<option value="Hanoi">
+			Hanoi
+		</option>
+		<option value="Jakarta">
+			Jakarta
+		</option>
+		<option value="Novosibirsk">
+			Novosibirsk
+		</option>
+		<option value="Beijing">
+			Beijing
+		</option>
+		<option value="Chongqing">
+			Chongqing
+		</option>
+		<option value="Hong Kong">
+			Hong Kong
+		</option>
+		<option value="Krasnoyarsk">
+			Krasnoyarsk
+		</option>
+		<option value="Kuala Lumpur">
+			Kuala Lumpur
+		</option>
+		<option value="Perth">
+			Perth
+		</option>
+		<option value="Singapore">
+			Singapore
+		</option>
+		<option value="Taipei">
+			Taipei
+		</option>
+		<option value="Ulaan Bataar">
+			Ulaan Bataar
+		</option>
+		<option value="Urumqi">
+			Urumqi
+		</option>
+		<option value="Irkutsk">
+			Irkutsk
+		</option>
+		<option value="Osaka">
+			Osaka
+		</option>
+		<option value="Sapporo">
+			Sapporo
+		</option>
+		<option value="Seoul">
+			Seoul
+		</option>
+		<option value="Tokyo">
+			Tokyo
+		</option>
+		<option value="Adelaide">
+			Adelaide
+		</option>
+		<option value="Darwin">
+			Darwin
+		</option>
+		<option value="Brisbane">
+			Brisbane
+		</option>
+		<option value="Canberra">
+			Canberra
+		</option>
+		<option value="Guam">
+			Guam
+		</option>
+		<option value="Hobart">
+			Hobart
+		</option>
+		<option value="Melbourne">
+			Melbourne
+		</option>
+		<option value="Port Moresby">
+			Port Moresby
+		</option>
+		<option value="Sydney">
+			Sydney
+		</option>
+		<option value="Yakutsk">
+			Yakutsk
+		</option>
+		<option value="New Caledonia">
+			New Caledonia
+		</option>
+		<option value="Vladivostok">
+			Vladivostok
+		</option>
+		<option value="Auckland">
+			Auckland
+		</option>
+		<option value="Fiji">
+			Fiji
+		</option>
+		<option value="Kamchatka">
+			Kamchatka
+		</option>
+		<option value="Magadan">
+			Magadan
+		</option>
+		<option value="Marshall Is.">
+			Marshall Is.
+		</option>
+		<option value="Solomon Is.">
+			Solomon Is.
+		</option>
+		<option value="Wellington">
+			Wellington
+		</option>
+		<option value="Nuku'alofa">
+			Nuku'alofa
+		</option>
+		<option value="Samoa">
+			Samoa
+		</option>
+		<option value="Tokelau Is.">
+			Tokelau Is.
+		</option>
+
+	</select>
+</div>
+</div>
+
+
+
+
+
+<div class="entry">
+	<label for="auto-logout">
+		Auto logout delay [Minutes]
+		<strong>*</strong>
+	</label>
+	<input type="text" value="60" required="yes" placeholder="Enter auto logout delay" name="auto-logout" id="auto-logout">
+</div>
+
+<div class="entry">
+	<label for="hotel_from_address">
+		EMAIL DOMAIN AND FROM ADDRESS FOR GUESTS
+	</label>
+	<input type="text" value="reservations@dozerqa.stayntouch.com" placeholder="Enter Email domain and from address for GUEST" name="hotel_from_address" id="hotel_from_address">
+</div>
+
+<div id="hotel-logo-div" class="entry full-width">
+	<label for="hotel-logo">
+		Hotel Logo Image
+	</label>
+	<div class="file-upload with-preview">
+		<span class="input">Choose file ...</span><input type="file" name="hotel-logo" id="hotel-logo">
+		<button type="button" class="button brand-colors">Choose file</button>
+
+	</div>
+	<span class="file-preview">
+		<img src="http://d81ca00c1e165587be3d-4d1e022461cbaa577307930af1386d20.r4.cf2.rackcdn.com/CHA/DOZERQA/hotels/1/icons/original/logo20140317013903.png" id="hotel-logo-preview" alt="">
+	</span>
+</div>
+
+</fieldset>
+<fieldset class="holder left">
+	<div class="form-title">
+		<h3>
+			<span>Hotel</span>
+			Main Contact
+		</h3>
+		<em class="status">
+			Fields marked with
+			<strong>*</strong>
+			are mandatory!
+		</em>
+	</div>
+	<div class="entry">
+		<label for="contact-first-name">
+			First Name
+			<strong>*</strong>
+		</label>
+		<input type="text" value="Hotel" required="yes" placeholder="Enter first name" name="contact-first-name" id="contact-first-name">
+	</div>
+
+	<div class="entry">
+		<label for="contact-last-name">
+			Last Name
+			<strong>*</strong>
+		</label>
+		<input type="text" value="Contact" required="yes" placeholder="Enter last name" name="contact-last-name" id="contact-last-name">
+	</div>
+
+	<div class="entry">
+		<label for="contact-email">
+			Email
+			<strong>*</strong>
+		</label>
+		<input type="text" value="Hotel@test1.com" required="yes" placeholder="Enter email" name="contact-email" id="contact-email">
+	</div>
+
+	<div class="entry">
+		<label for="contact-phone">
+			Phone
+			<strong>*</strong>
+		</label>
+		<input type="text" value="21223123" required="yes" placeholder="Enter phone number" name="contact-phone" id="contact-phone">
+	</div>
+
+
+</fieldset>
+<div class="actions float">
+	<button type="button" id="cancel" class="button blank">Cancel</button>
+	<button type="button" id="save" class="button green" ng-click= "callSave()">Save Changes</button>
+
+</div>
+
+</form>
+
+</div>

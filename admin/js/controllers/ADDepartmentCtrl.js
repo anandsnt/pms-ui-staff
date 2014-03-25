@@ -50,9 +50,8 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state',   function($scope, 
 		 } 
 	};
 	
-	$scope.saveDepartment = function(){
-		console.log($scope.departmentName);
-	};
+	
+		
 		
 
 }]);
