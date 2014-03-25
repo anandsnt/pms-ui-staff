@@ -32,7 +32,7 @@
                         <span class="name">{{ data.room_details.guest_name }}</span>
                     </h2>
                     <em class="status" ng-hide="data.room_details.reservation_status == 'CHECKING_OUT'">Due Out {{data.room_details.dept_date}}</em>
-                    <em class="status today" ng-show="data.room_details.reservation_status == 'CHECKING_OUT'">Due Out today</em>
+                    <em class="status today" ng-show="data.room_details.reservation_status == 'CHECKING_OUT'">Due Out today<span ng-show="data.room_details.is_late_checkout == 'true'"> ({{data.room_details.late_checkout_time}}) </span></em>
                 </div>
             </div>
         </span>
