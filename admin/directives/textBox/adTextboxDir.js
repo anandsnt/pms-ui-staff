@@ -11,7 +11,7 @@ admin.directive('adTextbox', function($timeout) {
 	        required : '@required',
 	        label_required: '@label_required'
 	    },
-    	templateUrl: '../../assets/partials/directives/adTextbox.html' 
+    	templateUrl: '../../assets/directives/textBox/adTextbox.html' 
     };
 
 });

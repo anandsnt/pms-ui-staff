@@ -10,17 +10,17 @@ admin.controller('ADUserListCtrl',['$scope', '$state','$stateParams', 'ADUserSrv
 	
 	
 		
-	// $scope.UserCtrl = function(id, editstate){
+	$scope.UserCtrl = function(id, editstate){
 	 	 // $state.go(editstate);
-	 	 // ADUserSrv.getUserDetails(id).then(function(data) {
-		        // $scope.data = data;
-		        // console.log( $scope.data )
-		        // //$scope.$parent.myScroll['rooms'].refresh();
-		// }, function(){
-			// console.log("fetch failed");
-// 	
-		// });	
-	// };
+	 	 ADUserSrv.getUserDetails(id).then(function(data) {
+		        $scope.data = data;
+		        console.log( $scope.data )
+		        //$scope.$parent.myScroll['rooms'].refresh();
+		}, function(){
+			console.log("fetch failed");
+	
+		});	
+	};
 	
 		
 
