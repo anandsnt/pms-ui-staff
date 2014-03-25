@@ -1,14 +1,18 @@
-<!--<div ng-include="'/assets/partials/dashboard/adLeftNavbar.html'"></div>-->
-<div ng-include="'/assets/partials/dashboard/adBanner.html'"></div>
-<div ng-include="'/assets/partials/dashboard/adHeader.html'"></div>
-<!-- Hotel Admin content -->
-<div id="content" class="tabs float" role="main" data-tabs="dashboard-tabs">
-   <!-- Dashboard tabs navigation -->
-   <ul id="tabs-menu" class="float">
-      <li ng-repeat="menu in data.menus" ng-click="setSelectedMenu($index)"><a>{{menu.menu_name}}</a></li>
-   </ul>
-	<div ui-view></div>
-  
+
+<div class="container" ng-class="{'menu-open': isMenuOpen()}" >
+	<div ng-include="'/assets/partials/dashboard/adBanner.html'"></div>
+	<div ng-include="'/assets/partials/dashboard/adHeader.html'"></div>
+	<!-- Hotel Admin content -->
+	<div id="content" class="tabs float" role="main" data-tabs="dashboard-tabs">
+	   <!-- Dashboard tabs navigation -->
+	   <ul id="tabs-menu" class="float">
+	      <li ng-repeat="menu in data.menus" ng-click="setSelectedMenu($index)"><a>{{menu.menu_name}}</a></li>
+	   </ul>
+		<div ui-view></div>
+	</div>
 </div>
+
+<!--  Left nav bar - Drawer --->
+<div ng-include="'/assets/partials/dashboard/adLeftNavbar.html'"></div>
 
 
