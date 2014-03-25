@@ -10,8 +10,26 @@ var ZestCheckOutConfiguration = function(domRef){
   	that.myDom.find('#save_guest_checkout').on('click', that.saveGuestCheckOut);
   	that.myDom.find('#send_email').on('click', that.sendNotificationMail);
   	that.myDom.find('#listguests').on('click', that.gotoNextPage);
+  	that.myDom.find('#send-checkout-staff-alert').on('click', that.handleStaffAlertToggle);
   };
 
+ this.pageshow = function(){
+  	that.showHideDiv();
+  };
+  //To handle staff alert toggle actions
+  this.handleStaffAlertToggle = function(){
+  	setTimeout(function() {
+  		that.showHideDiv();
+  	}, 400);// timeout is to complete toggle action
+  };
+  //To show/hide options
+  this.showHideDiv = function(){
+      if(that.myDom.find('#send-checkout-staff-alert').parent().hasClass("on")){
+      	that.myDom.find('#options').show();
+      } else {
+      	that.myDom.find('#options').hide();
+      }
+  };
   this.goBackToPreviousView = function() {
  	sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
   };
@@ -21,13 +39,28 @@ var ZestCheckOutConfiguration = function(domRef){
 	 var alert_time_hour = that.myDom.find("#sent-checkout-notification-hour").val();
 	 var alert_time_minute =  that.myDom.find("#sent-checkout-notification-minute").val();
 	 var require_cc_for_checkout_email =  that.myDom.find("#require_cc").is(":checked");
-   var checkout_email_alert_time = ""
-   if (alert_time_hour != "" && alert_time_minute != ""){
-	   checkout_email_alert_time = alert_time_hour+":"+alert_time_minute;
-   }
+	 var checkout_email_alert_time = "";
+	 if (alert_time_hour != "" && alert_time_minute != ""){
+	  checkout_email_alert_time = alert_time_hour+":"+alert_time_minute;
+	 }
+	 var is_send_checkout_staff_alert = "false";
+	 if(that.myDom.find('#send-checkout-staff-alert').parent().hasClass("on")){
+	     is_send_checkout_staff_alert = "true";
+	 }
+	 var checkout_staff_alert_option = "";
+	 if(that.myDom.find('#all').parent().hasClass("checked")){
+	 	checkout_staff_alert_option = "all";
+	 }
+	  if(that.myDom.find('#notsuccess').parent().hasClass("checked")){
+	 	checkout_staff_alert_option = "not_success";
+	 }
+	 var staffEmail = that.myDom.find('#staff-email-accounts').val();
 	 var data = {
 		    "checkout_email_alert_time": checkout_email_alert_time,
-		    "require_cc_for_checkout_email" : require_cc_for_checkout_email
+		    "require_cc_for_checkout_email" : require_cc_for_checkout_email,
+		    "is_send_checkout_staff_alert": is_send_checkout_staff_alert,
+		    "checkout_staff_alert_option": checkout_staff_alert_option,
+		    "emails": staffEmail 
 	 };
 
 	 var url = '/admin/save_checkout_settings';
