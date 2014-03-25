@@ -55,7 +55,7 @@ snt.config(['$routeProvider', function($routeProvider) {
 	//check in routings
 
 	$routeProvider.when('/checkinConfirmation', {
-		templateUrl: '/assets/checkin/partials/Yotel/checkInConfirmation.html',
+		templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
 		controller : 'checkInConfirmationViewController',
 		title: 'Check In'
 	});
@@ -67,25 +67,25 @@ snt.config(['$routeProvider', function($routeProvider) {
 	// });
 
 	$routeProvider.when('/checkinKeys', {
-		templateUrl: '/assets/checkin/partials/Yotel/checkInKeys.html',
+		templateUrl: '/assets/checkin/partials/checkInKeys.html',
 		controller : 'checkInKeysController',
 		title: 'Keys - Check In'
 	});
 
 	$routeProvider.when('/checkinReservationDetails', {
-		templateUrl: '/assets/checkin/partials/Yotel/checkInReservationDetails.html',
+		templateUrl: '/assets/checkin/partials/checkInReservationDetails.html',
 		controller : 'checkInReservationDetails',
 		title: 'Details - Check In'
 	});
 
 	$routeProvider.when('/checkinUpgrade', {
-		templateUrl: '/assets/checkin/partials/Yotel/checkinUpgradeRoom.html',
+		templateUrl: '/assets/checkin/partials/checkinUpgradeRoom.html',
 	    controller : 'checkinUpgradeRoomContorller',
 	    title: 'Upgrade - Check In'
 	});
 
 	$routeProvider.when('/checkinSuccess', {
-		templateUrl: '/assets/checkin/partials/Yotel/checkinSuccess.html',
+		templateUrl: '/assets/checkin/partials/checkinSuccess.html',
 	    title: 'Status - Check In'
 	});
 
