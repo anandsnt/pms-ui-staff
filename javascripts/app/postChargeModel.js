@@ -40,10 +40,6 @@ var PostChargeModel = function(callBack) {
 	this.modalInit = function() {
 		this.fetchItemList();
 	};
-	this.modalDidShow = function(){
-		// Initially Load favourite items.
-		that.showFavouriteItems();
-    };
  	//Clear Search Results 
   	this.clearResults = function(e){
 	    //if the method is invoked from other views to clear search results, 'this', 'e' are undefined.
