@@ -9,10 +9,13 @@ admin.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state,
 
 //range function as filter
 //usage examples 
+
 admin.filter('makeRange', function() {
     return function(input) {
         var lowBound, highBound;
         var step = 1;
+        //in some cases we need 0 or combination of 0 to the front
+        var appendingString = "";
         switch (input.length) {
         case 1:
             lowBound = 0;
@@ -26,7 +29,12 @@ admin.filter('makeRange', function() {
             lowBound = parseInt(input[0]);
             highBound = parseInt(input[1]);
             step = parseInt(input[2]); 
-            break;            
+            break; 
+        case 4:
+            lowBound = parseInt(input[0]);
+            highBound = parseInt(input[1]);
+            step = parseInt(input[2]); 
+            break;                     
         default:
             return input;
         }

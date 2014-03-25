@@ -11,8 +11,7 @@ admin.controller('ADAppCtrl',['$scope', '$rootScope','ADAppSrv', function($scope
 	}
 
 	ADAppSrv.fetch().then(function(data) {
-		console.log("final success");
-		//success
+		$scope.currentIndex = 0;
 		$scope.data = data;
 		$scope.selectedMenu = $scope.data.menus[0];
 
@@ -20,11 +19,13 @@ admin.controller('ADAppCtrl',['$scope', '$rootScope','ADAppSrv', function($scope
 		console.log("error controller");
 	});	
 
+	
 	//function to change the selected menu
 	//index is the array position
 	$scope.setSelectedMenu = function(index)	{
 		if(index < $scope.data.menus.length){
 			$scope.selectedMenu = $scope.data.menus[index];
+			$scope.currentIndex = index;
 		}
 	};
 	
