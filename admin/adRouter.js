@@ -37,6 +37,13 @@ admin.config([
 			controller: 'ADUserListCtrl',
 			url : '/useredit'
 		});
+		
+		$stateProvider.state('admin.departments', {
+			templateUrl: '/assets/partials/departments/adDepartmentsList.html',
+			controller: 'ADDepartmentListCtrl',
+			url : '/departments'
+		});
+		
 
 		
 		
