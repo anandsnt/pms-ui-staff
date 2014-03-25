@@ -37,15 +37,12 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state',   function($scope, 
 		    ]
 		};	
 	
-	$scope.currentClickedElement = '-1';
-	$scope.editDepartments = function(index)	{
-		
+	$scope.currentClickedElement = -1;
+	$scope.editDepartments = function(index, department)	{
 			$scope.currentClickedElement = index;
-		
 	};
 	//Function to get the template for edit url
 	$scope.getTemplateUrl = function(index, department){
-		
 		 if($scope.currentClickedElement == index){
 		 	$scope.value = department.value;
 		 	$scope.departmentName = department.name;
