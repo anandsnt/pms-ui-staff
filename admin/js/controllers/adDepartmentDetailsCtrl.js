@@ -1,6 +1,21 @@
-admin.controller('ADDepartmentDetailsCtrl',['$scope', '$state',   function($scope, $state){
+admin.controller('ADDepartmentDetailsCtrl',['$scope', '$state', 'ADDepartmentSrv',   function($scope, $state, ADDepartmentSrv){
 	
 	$scope.saveDepartment = function(){
-		console.log($scope.departmentName);
+		var data = {
+			"name": $scope.departmentName,
+			"value": $scope.value
+		};
+		console.log("+++==========++++");
+		console.log(data);
+		ADDepartmentSrv.postDepartmentDetails(data).then(function(data) {
+			
+		}, function(){
+			console.log("post failed");
+	
+		});	
+		
 	};
+	
+	
+	
 }]);

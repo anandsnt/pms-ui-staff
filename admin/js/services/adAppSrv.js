@@ -10,7 +10,7 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADB
 		    deferred.reject(data);
 		});	
 		return deferred.promise;
-	}
+	};
 
 
 }]);

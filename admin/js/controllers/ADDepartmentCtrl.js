@@ -49,8 +49,10 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state',   function($scope, 
 		 	return "/assets/partials/departments/adDepartmentsEdit.html";
 		 } 
 	};
-	
-	
+	//Previous view if clicked cancel
+	$scope.clickCancel = function(){
+		$scope.currentClickedElement = -1;
+	};
 		
 		
 
