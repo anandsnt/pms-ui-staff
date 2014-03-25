@@ -3,7 +3,7 @@
    <!-- Menu toggle button / Back button  -->
    <a class="nav-toggle" ng-click="$emit('navToggled')">Menu</a>
    <!-- Title -->
-   <h1 class="h2">Rooms</h1>
+   <h1 class="h2">Rooms Status</h1>
    <!-- Filter / Checkout button  -->
    <a ng-click="$emit('showFilterScreen')" class="button white with-icon only-icon toggle linked-toggle"><span class="icons icon-filter"></span>Filter rooms</a>
 </header>
@@ -37,12 +37,12 @@
    <header role="banner" class="nav-bar float">
        <h1 class="h2">Filter rooms</h1>
        <button id="clear-filters" class="button blank clear-selection" ng-show = "isFilterChcked()" ng-click = "clearFilters()" type="button">Clear</button>
-       <a class="complete toggle linked-toggle" ng-click="$emit('dismissFilterScreen')">Done</a>
+       <a class="complete toggle linked-toggle" ng-click="filterDoneButtonPressed()">Done</a>
     </header>
-    <div class="content scrollable" id="filter-options" ng-iscroll = "rooms">
+    <div class="content scrollable" id="filter-options" ng-iscroll = "rooms" ng-iscroll-form = "true">
        <div class="wrapper" >
           <div class="holder">
-             <strong class="title">Housekeeping</strong>
+             <strong class="title">Housekeeping Status</strong>
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dirty}"></span>
@@ -87,7 +87,7 @@
              </div>
           </div>
           <div class="holder">
-             <strong class="title">Reservation</strong>
+             <strong class="title">Reservation Status</strong>
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.vacant}"></span>
@@ -133,20 +133,28 @@
                     Show Arrived
                 </label>
              </div>
-             <div class="entry radio-check">
+             <!-- <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.arrived_dueout}"></span>
                     <input type="checkbox" ng-model="currentFilters.arrived_dueout" name="room-filters">
                     Show Arrived / Due Out
                 </label>
-             </div>
+             </div> -->
+
              <div class="entry radio-check">
                 <label class="checkbox">
-                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.arrived_departed}"></span>
-                    <input type="checkbox" ng-model="currentFilters.arrived_departed" name="room-filters">
-                    Show Arrived / Departed
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dayuse}"></span>
+                    <input type="checkbox" ng-model="currentFilters.dayuse" name="room-filters">
+                    Show Day Use
                 </label>
              </div>
+           <!--   <div class="entry radio-check">
+              <label class="checkbox">
+                  <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.arrived_departed}"></span>
+                  <input type="checkbox" ng-model="currentFilters.arrived_departed" name="room-filters">
+                  Show Arrived / Departed
+              </label>
+           </div> -->
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dueout}"></span>
@@ -154,34 +162,34 @@
                     Show Due Out
                 </label>
              </div>
-             <div class="entry radio-check">
-                <label class="checkbox">
-                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dueout_arrival}"></span>
-                    <input type="checkbox" ng-model="currentFilters.dueout_arrival" name="room-filters">
-                    Show Due Out / Arrival
-                </label>
-             </div>
+           <!--   <div class="entry radio-check">
+              <label class="checkbox">
+                  <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dueout_arrival}"></span>
+                  <input type="checkbox" ng-model="currentFilters.dueout_arrival" name="room-filters">
+                  Show Due Out / Arrival
+              </label>
+           </div> -->
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.departed}"></span>
                     <input type="checkbox" ng-model="currentFilters.departed" name="room-filters">
-                    Departed
+                    Show Departed
                 </label>
              </div>
-             <div class="entry radio-check">
+             <!-- <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.departed_arrival}"></span>
                     <input type="checkbox" ng-model="currentFilters.departed_arrival" name="room-filters">
-                    Departed / Arrival
+                    Show Departed / Arrival
                 </label>
              </div>
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.departed_arrived}"></span>
                     <input type="checkbox" ng-model="currentFilters.departed_arrived" name="room-filters">
-                    Departed / Arrived
+                    Show Departed / Arrived
                 </label>
-             </div>
+             </div> -->
           </div>
        </div>
     </div>  
