@@ -20,7 +20,9 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 	
 	// To fix scroll issue on search screen
 	// TODO : Create directive for iScroll
-    var currentScroll = new iScroll('rooms');
+    var currentScroll = new iScroll('rooms', {
+    	scrollbarClass: 'myScrollbar'
+    });
 	$scope.refreshScroll = function() {
 		setTimeout(function () { 
 			currentScroll.refresh();
