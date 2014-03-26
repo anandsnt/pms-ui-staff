@@ -2,10 +2,10 @@
 admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', function($scope, $rootScope,adChainsSrv){
 	
 	$scope.menuOpen = false;
-	$scope.chainsArray = [];
+	$scope.chainsList = [];
 
 	adChainsSrv.fetch().then(function(data) {
-		$scope.chainsArray = data;
+		$scope.chainsList = data;
 
 	},function(){
 		console.log("error controller");
