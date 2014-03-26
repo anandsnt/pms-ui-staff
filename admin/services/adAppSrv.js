@@ -2,12 +2,17 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADB
 
 	this.fetch = function(){
 		var deferred = $q.defer();
+		console.log("started");
 		var url = '/admin/settings/menu_items.json';	
-		ADBaseWebSrv.getJSON(url).then(function(data) {
-		    deferred.resolve(data);
-		},function(data){
-		    deferred.reject(data);
-		});	
+		
+		var fetchSuccess = function(data){
+			deferred.resolve(data);
+		};
+		var fetchFailed = function(data){
+			deferred.reject(data);
+		};
+		
+		ADBaseWebSrv.getJSON(url).then(fetchSuccess, fetchFailed);
 		return deferred.promise;
 	};
 
