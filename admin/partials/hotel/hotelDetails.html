@@ -21,33 +21,14 @@
 				</em>
 			</div>
 			<!-- <div ad-Textbox></div> -->
-			<ad-textbox value="data.hotel_name" name = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes"></ad-textbox>
-			<ad-checkbox isChecked="true" label = "Force Upsell" required = "yes"></ad-textbox>
+			<ad-textbox value="data.hotel_name" name = "hotel-name" id = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes"></ad-textbox>
+			<ad-textbox value="data.hotel_code" name = "hotel-code" id = "hotel-code" label = "Name" placeholder = "Enter hotel name" required = "yes" readonly="readonly"></ad-textbox>
 
+			<ad-textbox label="Street" value="data.street" required="yes" placeholder="Enter hotel street" name="hotel-street" id="hotel-street"></ad-textbox>
 
-			<div class="entry">
-				<label for="hotel-code">
-					Hotel Code
-					<strong>*</strong>
-				</label>
-				<input type="text" value="{{data.hotel_code}}" required="yes" readonly="readonly" placeholder="Enter hotel short name" name="hotel-code" id="hotel-code">
-			</div>
-
-			<div class="entry">
-				<label for="hotel-street">
-					Street
-					<strong>*</strong>
-				</label>
-				<input type="text" value="{{data.street}}" required="yes" placeholder="Enter hotel street" name="hotel-street" id="hotel-street">
-			</div>
-
-			<div class="entry">
-				<label for="hotel-phone">
-					Phone
-					<strong>*</strong>
-				</label>
-				<input type="text" value="{{data.phone}}" required="yes" placeholder="Enter hotel phone number" name="hotel-phone" id="hotel-phone">
-			</div>
+			<ad-textbox label="Phone" value="data.phone" required="yes" placeholder="Enter hotel phone number" name="hotel-phone" id="hotel-phone"></ad-textbox>
+			
+			<ad-textbox label="Phone" value="data.phone" required="yes" placeholder="Enter hotel phone number" name="hotel-phone" id="hotel-phone"></ad-textbox>
 
 			<div class="entry">
 				<label for="hotel-city">
@@ -173,7 +154,7 @@
 			<div class="select select-col col1-3">
 				<select name="hotel-checkin-hour" id="hotel-checkin-hour" class="styled">
 					<option value="" data-text="Not set" class="placeholder">HH</option>
-					<option ng-repeat="i in [1, 12] | makeRange" value="{{i}}" ng-selected="i==data.check_in_time.hour" >
+					<option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==data.check_in_time.hour" >
 						{{i}}
 					</option>
 
@@ -182,18 +163,10 @@
 			<div class="select select-col col1-3">
 				<select name="hotel-checkin-minute" id="hotel-checkin-minutes">
 					<option value="" data-text="Not set" class="placeholder">MM</option>
-					<option value="00" selected="">
-						00
-					</option>
-					<option value="15">
-						15
-					</option>
-					<option value="30">
-						30
-					</option>
-					<option value="45">
-						45
-					</option>
+					<option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==data.check_in_time.minute" >
+						{{i}}
+					</option>					
+
 				</select>
 			</div>
 			<div class="select select-col col1-3">
@@ -213,58 +186,16 @@
 			<div class="select select-col col1-3">
 				<select name="hotel-checkout-hour" id="hotel-checkout-hour" class="styled">
 					<option value="" data-text="Not set" class="placeholder">HH</option>
-					<option value="01" selected="">
-						01
-					</option>
-					<option value="02">
-						02
-					</option>
-					<option value="03">
-						03
-					</option>
-					<option value="04">
-						04
-					</option>
-					<option value="05">
-						05
-					</option>
-					<option value="06">
-						06
-					</option>
-					<option value="07">
-						07
-					</option>
-					<option value="08">
-						08
-					</option>
-					<option value="09">
-						09
-					</option>
-					<option value="10">
-						10
-					</option>
-					<option value="11">
-						11
-					</option>
-					<option value="12">
-						12
-					</option>
+						<option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-model="i" ng-selected="i==data.check_out_time.hour" >
+							{{i}}
+						</option>				
 				</select>
 			</div>
 			<div class="select select-col col1-3">
 				<select name="hotel-checkout-minute" id="hotel-checkout-minutes">
-					<option value="" data-text="Not set" class="placeholder">MM</option>
-					<option value="00" selected="">
-						00
-					</option>
-					<option value="15">
-						15
-					</option>
-					<option value="30">
-						30
-					</option>
-					<option value="45">
-						45
+					<option value="" data-text="Not set" class="placeholder">MM</option>					
+					<option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-model="i" ng-selected="i==data.check_out_time.minute" >
+						{{i}}
 					</option>
 				</select>
 			</div>
@@ -286,129 +217,10 @@
 			<select name="hotel-chain" id="hotel-chain" class="placeholder">
 				<option value="">
 					Hotel chain
-				</option><option value="21">
-				123
-			</option>
-			<option value="11">
-				aa
-			</option>
-			<option value="3">
-				Admin Chain
-			</option>
-			<option value="18">
-				ASDF
-			</option>
-			<option value="16">
-				BETHESDA
-			</option>
-			<option value="10">
-				chain abc
-			</option>
-			<option value="38">
-				chain demo
-			</option>
-			<option value="39">
-				chain demo 1
-			</option>
-			<option value="40">
-				chain demo 11
-			</option>
-			<option value="41">
-				chain demo 118
-			</option>
-			<option value="47">
-				Chain Five
-			</option>
-			<option value="46">
-				Chain Four
-			</option>
-			<option value="19">
-				chain name
-			</option>
-			<option value="45">
-				Chain Three
-			</option>
-			<option value="2">
-				Chain Two
-			</option>
-			<option value="56">
-				CHAS
-			</option>
-			<option value="26">
-				CHN
-			</option>
-			<option value="42">
-				DEMO
-			</option>
-			<option value="23">
-				DEMO CHAIN
-			</option>
-			<option value="24">
-				DEMO CHAIN 2
-			</option>
-			<option value="25">
-				DEMO CHAIN THREE
-			</option>
-			<option value="53">
-				EMPCHN
-			</option>
-			<option value="22">
-				fdghdfgh
-			</option>
-			<option value="4">
-				fghfghfgh updated
-			</option>
-			<option value="61">
-				Hiranandani Hotels Group
-			</option>
-			<option value="5">
-				Hotel Chain A101
-			</option>
-			<option value="44">
-				JOS HOTELS
-			</option>
-			<option value="72">
-				Micros Systems Inc.
-			</option>
-			<option value="20">
-				mnd
-			</option>
-			<option value="67">
-				NOFTP
-			</option>
-			<option value="36">
-				qqq
-			</option>
-			<option value="68">
-				REFRESH1
-			</option>
-			<option value="70">
-				shiju-chain name
-			</option>
-			<option value="73">
-				SNTCHN
-			</option>
-			<option value="1" selected="">
-				StayNTouch Demo Chain
-			</option>
-			<option value="43">
-				test chain
-			</option>
-			<option value="65">
-				Test Chain 001
-			</option>
-			<option value="57">
-				TST
-			</option>
-			<option value="69">
-				WORKING
-			</option>
-			<option value="71">
-				Yotel Hotels
-			</option>
-			<option value="52">
-				ZOEHotels
-			</option>
+				</option>
+				<option ng-repeat="chain in data.chains" value="{{chain.id}}" ng-model="chain.id" ng-selected="chain.id==data.hotel_chain" >
+					{{chain.name}}
+				</option>
 
 		</select>
 	</div>
@@ -422,52 +234,10 @@
 		<select name="hotel-brand" id="hotel-brand" class="placeholder">
 			<option value="">
 				Hotel brand
-			</option><option value="15">
-			001 chain
-		</option>
-		<option value="17" selected="">
-			Beer hotels
-		</option>
-		<option value="5">
-			Brand For Chain One Edited
-		</option>
-		<option value="1">
-			Brand One
-		</option>
-		<option value="3">
-			Brand Three
-		</option>
-		<option value="2">
-			Brand Two
-		</option>
-		<option value="20">
-			Fidelio Technologies
-		</option>
-		<option value="11">
-			qqq brand
-		</option>
-		<option value="4">
-			qwqw
-		</option>
-		<option value="6">
-			test
-		</option>
-		<option value="12">
-			Test 123456789
-		</option>
-		<option value="18">
-			test 56
-		</option>
-		<option value="10">
-			Test brand 987
-		</option>
-		<option value="9">
-			Test Chain brand 001
-		</option>
-		<option value="8">
-			Test test test test
-		</option>
-
+			</option>
+			<option ng-repeat="brand in data.brands" ng-model="brand.id" value="brand.id" ng-selected="brand.id==data.hotel_brand">
+				{{brand.name}}
+			</option>
 	</select>
 </div>
 </div>
@@ -484,435 +254,10 @@
 			</option><option value="American Samoa">
 			American Samoa
 		</option>
-		<option value="International Date Line West">
-			International Date Line West
+		<option ng-repeat="timezone in data.time_zones" value="timezone.value" ng-model="timezone.value" ng-seletected="timezone.value==data.hotel_time_zone">
+			{{timezone.value}}
 		</option>
-		<option value="Midway Island">
-			Midway Island
-		</option>
-		<option value="Hawaii">
-			Hawaii
-		</option>
-		<option value="Alaska">
-			Alaska
-		</option>
-		<option value="Pacific Time (US &amp; Canada)">
-			Pacific Time (US &amp; Canada)
-		</option>
-		<option value="Tijuana">
-			Tijuana
-		</option>
-		<option value="Arizona">
-			Arizona
-		</option>
-		<option value="Chihuahua">
-			Chihuahua
-		</option>
-		<option value="Mazatlan">
-			Mazatlan
-		</option>
-		<option value="Mountain Time (US &amp; Canada)">
-			Mountain Time (US &amp; Canada)
-		</option>
-		<option value="Central America">
-			Central America
-		</option>
-		<option value="Central Time (US &amp; Canada)">
-			Central Time (US &amp; Canada)
-		</option>
-		<option value="Guadalajara">
-			Guadalajara
-		</option>
-		<option value="Mexico City">
-			Mexico City
-		</option>
-		<option value="Monterrey">
-			Monterrey
-		</option>
-		<option value="Saskatchewan">
-			Saskatchewan
-		</option>
-		<option value="Bogota">
-			Bogota
-		</option>
-		<option value="Eastern Time (US &amp; Canada)" selected="">
-			Eastern Time (US &amp; Canada)
-		</option>
-		<option value="Indiana (East)">
-			Indiana (East)
-		</option>
-		<option value="Lima">
-			Lima
-		</option>
-		<option value="Quito">
-			Quito
-		</option>
-		<option value="Caracas">
-			Caracas
-		</option>
-		<option value="Atlantic Time (Canada)">
-			Atlantic Time (Canada)
-		</option>
-		<option value="Georgetown">
-			Georgetown
-		</option>
-		<option value="La Paz">
-			La Paz
-		</option>
-		<option value="Santiago">
-			Santiago
-		</option>
-		<option value="Newfoundland">
-			Newfoundland
-		</option>
-		<option value="Brasilia">
-			Brasilia
-		</option>
-		<option value="Buenos Aires">
-			Buenos Aires
-		</option>
-		<option value="Greenland">
-			Greenland
-		</option>
-		<option value="Mid-Atlantic">
-			Mid-Atlantic
-		</option>
-		<option value="Azores">
-			Azores
-		</option>
-		<option value="Cape Verde Is.">
-			Cape Verde Is.
-		</option>
-		<option value="Casablanca">
-			Casablanca
-		</option>
-		<option value="Dublin">
-			Dublin
-		</option>
-		<option value="Edinburgh">
-			Edinburgh
-		</option>
-		<option value="Lisbon">
-			Lisbon
-		</option>
-		<option value="London">
-			London
-		</option>
-		<option value="Monrovia">
-			Monrovia
-		</option>
-		<option value="UTC">
-			UTC
-		</option>
-		<option value="Amsterdam">
-			Amsterdam
-		</option>
-		<option value="Belgrade">
-			Belgrade
-		</option>
-		<option value="Berlin">
-			Berlin
-		</option>
-		<option value="Bern">
-			Bern
-		</option>
-		<option value="Bratislava">
-			Bratislava
-		</option>
-		<option value="Brussels">
-			Brussels
-		</option>
-		<option value="Budapest">
-			Budapest
-		</option>
-		<option value="Copenhagen">
-			Copenhagen
-		</option>
-		<option value="Ljubljana">
-			Ljubljana
-		</option>
-		<option value="Madrid">
-			Madrid
-		</option>
-		<option value="Paris">
-			Paris
-		</option>
-		<option value="Prague">
-			Prague
-		</option>
-		<option value="Rome">
-			Rome
-		</option>
-		<option value="Sarajevo">
-			Sarajevo
-		</option>
-		<option value="Skopje">
-			Skopje
-		</option>
-		<option value="Stockholm">
-			Stockholm
-		</option>
-		<option value="Vienna">
-			Vienna
-		</option>
-		<option value="Warsaw">
-			Warsaw
-		</option>
-		<option value="West Central Africa">
-			West Central Africa
-		</option>
-		<option value="Zagreb">
-			Zagreb
-		</option>
-		<option value="Athens">
-			Athens
-		</option>
-		<option value="Bucharest">
-			Bucharest
-		</option>
-		<option value="Cairo">
-			Cairo
-		</option>
-		<option value="Harare">
-			Harare
-		</option>
-		<option value="Helsinki">
-			Helsinki
-		</option>
-		<option value="Istanbul">
-			Istanbul
-		</option>
-		<option value="Jerusalem">
-			Jerusalem
-		</option>
-		<option value="Kyiv">
-			Kyiv
-		</option>
-		<option value="Pretoria">
-			Pretoria
-		</option>
-		<option value="Riga">
-			Riga
-		</option>
-		<option value="Sofia">
-			Sofia
-		</option>
-		<option value="Tallinn">
-			Tallinn
-		</option>
-		<option value="Vilnius">
-			Vilnius
-		</option>
-		<option value="Baghdad">
-			Baghdad
-		</option>
-		<option value="Kuwait">
-			Kuwait
-		</option>
-		<option value="Minsk">
-			Minsk
-		</option>
-		<option value="Nairobi">
-			Nairobi
-		</option>
-		<option value="Riyadh">
-			Riyadh
-		</option>
-		<option value="Tehran">
-			Tehran
-		</option>
-		<option value="Abu Dhabi">
-			Abu Dhabi
-		</option>
-		<option value="Baku">
-			Baku
-		</option>
-		<option value="Moscow">
-			Moscow
-		</option>
-		<option value="Muscat">
-			Muscat
-		</option>
-		<option value="St. Petersburg">
-			St. Petersburg
-		</option>
-		<option value="Tbilisi">
-			Tbilisi
-		</option>
-		<option value="Volgograd">
-			Volgograd
-		</option>
-		<option value="Yerevan">
-			Yerevan
-		</option>
-		<option value="Kabul">
-			Kabul
-		</option>
-		<option value="Islamabad">
-			Islamabad
-		</option>
-		<option value="Karachi">
-			Karachi
-		</option>
-		<option value="Tashkent">
-			Tashkent
-		</option>
-		<option value="Chennai">
-			Chennai
-		</option>
-		<option value="Kolkata">
-			Kolkata
-		</option>
-		<option value="Mumbai">
-			Mumbai
-		</option>
-		<option value="New Delhi">
-			New Delhi
-		</option>
-		<option value="Sri Jayawardenepura">
-			Sri Jayawardenepura
-		</option>
-		<option value="Kathmandu">
-			Kathmandu
-		</option>
-		<option value="Almaty">
-			Almaty
-		</option>
-		<option value="Astana">
-			Astana
-		</option>
-		<option value="Dhaka">
-			Dhaka
-		</option>
-		<option value="Ekaterinburg">
-			Ekaterinburg
-		</option>
-		<option value="Rangoon">
-			Rangoon
-		</option>
-		<option value="Bangkok">
-			Bangkok
-		</option>
-		<option value="Hanoi">
-			Hanoi
-		</option>
-		<option value="Jakarta">
-			Jakarta
-		</option>
-		<option value="Novosibirsk">
-			Novosibirsk
-		</option>
-		<option value="Beijing">
-			Beijing
-		</option>
-		<option value="Chongqing">
-			Chongqing
-		</option>
-		<option value="Hong Kong">
-			Hong Kong
-		</option>
-		<option value="Krasnoyarsk">
-			Krasnoyarsk
-		</option>
-		<option value="Kuala Lumpur">
-			Kuala Lumpur
-		</option>
-		<option value="Perth">
-			Perth
-		</option>
-		<option value="Singapore">
-			Singapore
-		</option>
-		<option value="Taipei">
-			Taipei
-		</option>
-		<option value="Ulaan Bataar">
-			Ulaan Bataar
-		</option>
-		<option value="Urumqi">
-			Urumqi
-		</option>
-		<option value="Irkutsk">
-			Irkutsk
-		</option>
-		<option value="Osaka">
-			Osaka
-		</option>
-		<option value="Sapporo">
-			Sapporo
-		</option>
-		<option value="Seoul">
-			Seoul
-		</option>
-		<option value="Tokyo">
-			Tokyo
-		</option>
-		<option value="Adelaide">
-			Adelaide
-		</option>
-		<option value="Darwin">
-			Darwin
-		</option>
-		<option value="Brisbane">
-			Brisbane
-		</option>
-		<option value="Canberra">
-			Canberra
-		</option>
-		<option value="Guam">
-			Guam
-		</option>
-		<option value="Hobart">
-			Hobart
-		</option>
-		<option value="Melbourne">
-			Melbourne
-		</option>
-		<option value="Port Moresby">
-			Port Moresby
-		</option>
-		<option value="Sydney">
-			Sydney
-		</option>
-		<option value="Yakutsk">
-			Yakutsk
-		</option>
-		<option value="New Caledonia">
-			New Caledonia
-		</option>
-		<option value="Vladivostok">
-			Vladivostok
-		</option>
-		<option value="Auckland">
-			Auckland
-		</option>
-		<option value="Fiji">
-			Fiji
-		</option>
-		<option value="Kamchatka">
-			Kamchatka
-		</option>
-		<option value="Magadan">
-			Magadan
-		</option>
-		<option value="Marshall Is.">
-			Marshall Is.
-		</option>
-		<option value="Solomon Is.">
-			Solomon Is.
-		</option>
-		<option value="Wellington">
-			Wellington
-		</option>
-		<option value="Nuku'alofa">
-			Nuku'alofa
-		</option>
-		<option value="Samoa">
-			Samoa
-		</option>
-		<option value="Tokelau Is.">
-			Tokelau Is.
-		</option>
+		
 
 	</select>
 </div>
@@ -927,14 +272,14 @@
 		Auto logout delay [Minutes]
 		<strong>*</strong>
 	</label>
-	<input type="text" value="60" required="yes" placeholder="Enter auto logout delay" name="auto-logout" id="auto-logout">
+	<input type="text" value="{{data.auto_logout_delay}}" required="yes" placeholder="Enter auto logout delay" name="auto-logout" id="auto-logout">
 </div>
 
 <div class="entry">
 	<label for="hotel_from_address">
 		EMAIL DOMAIN AND FROM ADDRESS FOR GUESTS
 	</label>
-	<input type="text" value="reservations@dozerqa.stayntouch.com" placeholder="Enter Email domain and from address for GUEST" name="hotel_from_address" id="hotel_from_address">
+	<input type="text" value="{{data.hotel_from_address}}" placeholder="Enter Email domain and from address for GUEST" name="hotel_from_address" id="hotel_from_address">
 </div>
 
 <div id="hotel-logo-div" class="entry full-width">
@@ -947,7 +292,7 @@
 
 	</div>
 	<span class="file-preview">
-		<img src="http://d81ca00c1e165587be3d-4d1e022461cbaa577307930af1386d20.r4.cf2.rackcdn.com/CHA/DOZERQA/hotels/1/icons/original/logo20140317013903.png" id="hotel-logo-preview" alt="">
+		<img src="{{data.hotel_logo}}" id="hotel-logo-preview" alt="" height="112" width="auto">
 	</span>
 </div>
 
@@ -969,7 +314,7 @@
 			First Name
 			<strong>*</strong>
 		</label>
-		<input type="text" value="Hotel" required="yes" placeholder="Enter first name" name="contact-first-name" id="contact-first-name">
+		<input type="text" required="yes" placeholder="Enter first name" name="contact-first-name" id="contact-first-name" value="{{data.contact_first_name}}">
 	</div>
 
 	<div class="entry">
@@ -977,7 +322,7 @@
 			Last Name
 			<strong>*</strong>
 		</label>
-		<input type="text" value="Contact" required="yes" placeholder="Enter last name" name="contact-last-name" id="contact-last-name">
+		<input type="text" required="yes" placeholder="Enter last name" name="contact-last-name" id="contact-last-name" value="{{data.contact_last_name}}">
 	</div>
 
 	<div class="entry">
@@ -985,7 +330,7 @@
 			Email
 			<strong>*</strong>
 		</label>
-		<input type="text" value="Hotel@test1.com" required="yes" placeholder="Enter email" name="contact-email" id="contact-email">
+		<input type="text" value="{{data.contact_email}}" required="yes" placeholder="Enter email" name="contact-email" id="contact-email">
 	</div>
 
 	<div class="entry">
@@ -993,7 +338,7 @@
 			Phone
 			<strong>*</strong>
 		</label>
-		<input type="text" value="21223123" required="yes" placeholder="Enter phone number" name="contact-phone" id="contact-phone">
+		<input type="text" value="{{data.contact_phone}}" required="yes" placeholder="Enter phone number" name="contact-phone" id="contact-phone">
 	</div>
 
 
