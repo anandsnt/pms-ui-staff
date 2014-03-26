@@ -10,6 +10,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.noOfErrorMethodCalled = 0;
 	this.maxSecForErrorCalling = 10000;
 	this.key1Printed = false;
+	this.key1Fetched = false;
 	this.numOfKeys = 0;
 
 	this.url = "/staff/reservations/" + reservation_id + "/get_key_setup_popup";
@@ -303,15 +304,18 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		sntapp.activityIndicator.hideActivityIndicator();
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Getting key image!');		
 	    var reservationId = getReservationId();
-	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": false};
+
+	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": true};
+	    if(!that.key1Fetched){
+	    	that.key1Fetched = true;
+	    	var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": false};
+	    }
 	    if(typeof uID !== 'undefined'){
 	    	postParams.uid = uID;
 	    }else{
 	    	postParams.uid = "";
 
 	    }
-
-
 	    var url = '/staff/reservation/print_key'
 	    //var url = '/ui/show?format=json&json_input=keys/fetch_encode_key.json';
 		var webservice = new WebServiceInterface();	
