@@ -255,7 +255,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Call cordova service to get the UID
 	*/
 	that.getUID = function(){
-		console.log("get UID");
+		alert("get UID");
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Reading key!');		
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		var options = {
@@ -287,16 +287,15 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	    //keyData = [key, keyType/vendor , AID , keyb]
 
 	    //Safelock key
-	    if(Object.keys(that.keyData.key_info[keyPos])[0] == "base64"){
-	    	keyData.push(that.keyData.key_info[keyPos].base64)
+	    if(Object.keys(that.keyData.key_info[0])[0] == "base64"){
+	    	keyData.push(that.keyData.key_info[0].base64)
 	    }else{
-	    	keyData.push(that.keyData.key_info[keyPos].t3)
+	    	keyData.push(that.keyData.key_info[0].t3)
 	    }
 
-	    keyData.push(Object.keys(that.keyData.key_info[keyPos])[0]);
+	    keyData.push(Object.keys(that.keyData.key_info[0])[0]);
 	    keyData.push(escapeNull(that.keyData.aid));
 	    keyData.push(escapeNull(that.keyData.keyb));
-
 	    if(keyPos == 0){
 	    	that.writeKey(keyData, "key1");	
 	    }else if (keyPos == 1){
@@ -309,7 +308,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Server call to fetch the key data.
 	*/
 	this.callKeyFetchAPI = function(uID){
-		console.log("call key fetch API");
+		alert("call key fetch API");
 		sntapp.activityIndicator.hideActivityIndicator();
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Getting key image!');		
 		//that.keyFetched = true;
@@ -341,7 +340,10 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Success callback for key fetching
 	*/
 	this.keyFetchSuccess = function(response, requestParams){
-		that.keyData = response.data
+		alert("key fetching success");
+		
+		that.keyData = response.data;
+		alert(JSON.stringify(response.data));
 		that.printKeys();	
 
 	};
@@ -350,6 +352,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Calls the cordova service to write the keys
 	*/
 	this.writeKey = function(keyWriteData, key){
+		alert("write key");
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Writing key!');				
 		var options = {
