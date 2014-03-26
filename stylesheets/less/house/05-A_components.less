@@ -55,23 +55,28 @@
                 li {
                     font-size: 14px;
                     line-height: 36px;
-                    vertical-align: middle;
                     padding-bottom: 5px;
                     margin-bottom: 5px;
                     color: @grey3;
                     text-transform: uppercase;
-                    width: 100%;
+                    display: block;
                     border-bottom: 1px solid rgba(0,0,0,.1);
-
+                    em {
+                        font-style: normal;
+                        white-space: nowrap;
+                        .pull-left;
+                    }
                     span {
                         font-size: 36px;
                         line-height: 1em;
                         color: @textColor;
                         .show;
-                        .pull-right;
+                        margin-left: 60%;
+                        text-align: right;
 
                         &.green { color: @green; }
                         &.red { color: @red; }
+                        &.grey { color: @grey3; }
                     }
 
                     &:last-child {
@@ -200,6 +205,7 @@
 
         .wrapper {
             padding: 20px 10px;
+            right: 0;
 
             .holder {
                 margin-bottom: 20px;
@@ -411,3 +417,30 @@
 ==========================================================*/
 /* 7. RESPONSIVE
 ==========================================================*/
+
+
+/* 7. iscroll overrides
+==========================================================*/
+#rooms .myScrollbarV,
+#filter-rooms .myScrollbarV {
+    position: absolute;
+    z-index: 100;
+    width: 5px;
+    top: 5px;
+    bottom: 5px;
+    right: 5px;
+}
+
+#rooms .myScrollbarV > div,
+#filter-rooms .myScrollbarV > div {
+    position: absolute;
+    z-index: 100;
+    background: #ffb319;
+    width: 100%;
+    border: none;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-background-clip: padding-box;
+    box-sizing: border-box;
+}

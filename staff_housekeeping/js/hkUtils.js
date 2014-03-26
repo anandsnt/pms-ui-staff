@@ -1,5 +1,14 @@
-getGuestStatusMapped = function(reservationStatus){
+/** Method for getting the guest status icon class
+  @return the guest status icon class  
+*/
+getGuestStatusMapped = function(reservationStatus, isLateCheckout){
     var viewStatus = "";
+    //If the guest is opted for late checkout
+    if(isLateCheckout == "true"){
+        return "late-check-out";
+    }
+
+    //Determine the guest status class based on the reservation status
     if("RESERVED" == reservationStatus){
         viewStatus = "arrival";
     }else if("CHECKING_IN" == reservationStatus){

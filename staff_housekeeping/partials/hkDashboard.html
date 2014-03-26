@@ -33,9 +33,22 @@
         </ul>
         <h2>Rooms</h2>
         <ul id="stats-today">
-            <li>Occupied<span>{{data.occupied}}</span></li>
-            <li>Vacant (Clean)<span class="green">{{data.vacant_clean_room_count}}</span></li>
-            <li>Vacant (Dirty)<span class="red">{{data.vacant_dirty_room_count}}</span></li>
+            <li>
+                <em>Occupied</em>
+                <span>{{data.occupied}}</span>
+            </li>
+            <li>
+                <em>Vacant (Clean)</em>
+                <span class="green">{{data.vacant_clean_room_count}}</span>
+            </li>
+            <li>
+                <em>Vacant (Dirty)</em>
+                <span class="red">{{data.vacant_dirty_room_count}}</span>
+            </li>
+            <li>
+                <em>Out Of Order / Service</em>
+                <span class="grey">{{data.out_of_order_rooms_count}}</span>
+            </li>
         </ul>
     </div>
 </section>
