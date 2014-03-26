@@ -10,7 +10,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.noOfErrorMethodCalled = 0;
 	this.maxSecForErrorCalling = 10000;
 	this.key1Printed = false;
-	this.keyFetched = false;
+	//this.keyFetched = false;
 	this.numOfKeys = 0;
 
 	this.url = "/staff/reservations/" + reservation_id + "/get_key_setup_popup";
@@ -31,7 +31,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		}
 		that.myDom.find('#key1').on('click', that.key1Selected);
 		that.myDom.find('#key2').on('click', that.key2Selected);//
-		that.myDom.find('#create-key').on('click', that.keyCreateSelected);
+		that.myDom.find('#create-key').on('click', that.keyCreateBtnClicked);
 		that.myDom.find('#goto-staycard').on('click', that.clickedGotoStayCard);
 		that.myDom.find('#goto-search').on('click', that.clickedGotoSearch);
 
@@ -178,13 +178,13 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	};
 
 	/*
-	* User selected the key1 option. Handles the key color changes
+	* User Clicked the key1 option. Handles the key color changes
 	*/
 	this.key1Selected = function(event){
 		var keyElem = $(event.target); 
 		var createKeyBtn = that.myDom.find('#create-key');
 
-		//Unselect key1
+		//Unselect key1 - change the color
 		if(keyElem.closest('label').hasClass('checked')){
 			keyElem.closest('label').removeClass('checked');
 			createKeyBtn.removeClass('green').addClass('grey');
@@ -234,20 +234,20 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* If the key type is safelock, we need to retieve the UID from the card 
 	* and pass it to the API while fetching the keys.
 	*/
-	this.keyCreateSelected = function(){
+	this.keyCreateBtnClicked = function(){
 		that.myDom.find('#key1').attr('disabled','disabled');
 		that.myDom.find('#key2').attr('disabled','disabled');
 
 		//On selecting the key create button for the first time, get the keys form API.
-		if(!that.keyFetched){
-			if(that.myDom.find('#print-key').attr('data-retrieve-uid') == "true"){
-				that.getUID();
-			}else{
-				that.callKeyFetchAPI();
-			}	
-			return true;
-		}
-		that.printKeys();
+		//if(!that.keyFetched){
+		if(that.myDom.find('#print-key').attr('data-retrieve-uid') == "true"){
+			that.getUID();
+		}else{
+			that.callKeyFetchAPI();
+		}	
+		return true;
+		//}
+		//that.printKeys();
 			
 	};
 
@@ -255,6 +255,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Call cordova service to get the UID
 	*/
 	that.getUID = function(){
+		console.log("get UID");
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Reading key!');		
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		var options = {
@@ -307,18 +308,21 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	/*
 	* Server call to fetch the key data.
 	*/
-	this.callKeyFetchAPI = function(userID){
+	this.callKeyFetchAPI = function(uID){
+		console.log("call key fetch API");
 		sntapp.activityIndicator.hideActivityIndicator();
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Getting key image!');		
-		that.keyFetched = true;
+		//that.keyFetched = true;
 	    var reservationId = getReservationId();
-	    var postParams = {"reservation_id": reservationId, "key": that.numOfKeys, "is_additional": false};
-	    if(typeof userID !== 'undefined'){
-	    	postParams.uid = userID;
+	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": false};
+	    if(typeof uID !== 'undefined'){
+	    	postParams.uid = uID;
 	    }else{
 	    	postParams.uid = "";
 
 	    }
+
+	    console.log(postParams);
 
 	    var url = '/staff/reservation/print_key'
 	    //var url = '/ui/show?format=json&json_input=keys/fetch_encode_key.json';
@@ -349,8 +353,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Writing key!');				
 		var options = {
-			//Cordova write success callback. If write sucess for all the keys, show key success message
-			//If keys left to print, call the cordova write key function
+			//Cordova write success callback. If all the keys were written sucessfully, show key success message
+			//If keys left to print, call the cordova write key function to write the pending key
 			'successCallBack': function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
 				that.myDom.find('#key-status .status').removeClass('error').addClass('success').text('Key created!');
