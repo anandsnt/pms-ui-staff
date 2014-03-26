@@ -65,7 +65,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 	$scope.currentClickedElement = -1;
 
-	$scope.editDepartments = function(index, department)	{
+	$scope.editChain = function(index, id)	{
 			$scope.currentClickedElement = index;
 			$scope.formTitle = 'Edit StayNTouch Demo Chain';
 			$scope.isAddmode = false;
