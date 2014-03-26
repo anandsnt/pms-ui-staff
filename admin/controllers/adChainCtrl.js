@@ -3,6 +3,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	
 	// $scope.menuOpen = false;
 	$scope.chainsList = [];
+	$scope.editData   = {};
 
 	$scope.isAddmode = false;
 	$scope.isEditmode = false;
@@ -29,8 +30,9 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 					
 			adChainsSrv.edit(id+1).then(function(data) {
+				$scope.editData   = data;
 				console.log(data)
-
+	
 			},function(){
 				console.log("error controller");
 			});	

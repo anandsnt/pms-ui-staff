@@ -20,7 +20,7 @@
 					Chain Code
 					<strong>*</strong>
 				</label>
-				<input type="text" value="" required="yes" placeholder="Enter chain code" name="hotel-code" id="hotel-code">
+				<input type="text" value="" required="yes" placeholder="Enter chain code" name="hotel-code" ng-model="editData.hotel_code">
 			</div>
 
 			<div class="entry full-width">
@@ -28,7 +28,7 @@
 					Import Frequency [Minutes]
 					<strong>*</strong>
 				</label>
-				<input type="text" value="" required="yes" placeholder="Enter import frequency" name="import-frequency" id="import-frequency">
+				<input type="text" value="" required="yes" placeholder="Enter import frequency" name="import-frequency" ng-model="editData.import_frequency">
 			</div>
 
 		</fieldset>
@@ -38,7 +38,7 @@
 					Chain Name
 					<strong>*</strong>
 				</label>
-				<input type="text" value="" required="yes" placeholder="Enter chain name" name="chain-name" id="chain-name">
+				<input type="text" value="" required="yes" placeholder="Enter chain name" name="chain-name" ng-model="editData.name">
 			</div>
 
 		</fieldset>
@@ -53,21 +53,21 @@
 				<label for="sftp-location">
 					SFTP Location
 				</label>
-				<input type="text" value="" required="no" placeholder="Enter SFTP Location" name="sftp-location" id="sftp-location">
+				<input type="text" value="" required="no" placeholder="Enter SFTP Location" name="sftp-location" ng-model="editData.sftp_location">
 			</div>
 
 			<div class="entry full-width">
 				<label for="sftp-port">
 					SFTP Port
 				</label>
-				<input type="text" value="" required="no" placeholder="Enter SFTP Port" name="sftp-port" id="sftp-port">
+				<input type="text" value="" required="no" placeholder="Enter SFTP Port" name="sftp-port" ng-model="editData.sftp_port">
 			</div>
 
 			<div class="entry full-width">
 				<label for="sftp-user">
 					SFTP User
 				</label>
-				<input type="text" value="" required="no" placeholder="Enter SFTP User" name="sftp-user" id="sftp-user">
+				<input type="text" value="" required="no" placeholder="Enter SFTP User" name="sftp-user" ng-model="editData.sftp_user">
 			</div>
 
 		</fieldset>
@@ -76,14 +76,14 @@
 				<label for="sftp-password">
 					SFTP Password
 				</label>
-				<input type="password" value="" required="no" placeholder="Enter SFTP Password" name="sftp-password" id="sftp-password">
+				<input type="password" value="" required="no" placeholder="Enter SFTP Password" name="sftp-password"  ng-model="editData.sftp_password">
 			</div>
 
 			<div class="entry full-width">
 				<label for="sftp-respath">
 					SFTP Respath
 				</label>
-				<input type="text" value="" required="no" placeholder="Enter SFTP Respath" name="sftp-respath" id="sftp-respath">
+				<input type="text" value="" required="no" placeholder="Enter SFTP Respath" name="sftp-respath" ng-model="editData.sftp_respath">
 			</div>
 
 		</fieldset>
@@ -98,14 +98,14 @@
 				<label for="program-name">
 					Program Name
 				</label>
-				<input type="text" value="" required="no" placeholder="Enter Program Name" name="program-name" id="program-name">
+				<input type="text" value="" required="no" placeholder="Enter Program Name" name="program-name" ng-model="editData.loyalty_program_name">
 			</div>
 
 			<div class="entry full-width">
 				<label for="program-code">
 					Program Code
 				</label>
-				<input type="text" value="" required="no" placeholder="Enter Program Code" name="program-code" id="program-code">
+				<input type="text" value="" required="no" placeholder="Enter Program Code" name="program-code" ng-model="editData.loyalty_program_code">
 			</div>
 
 		</fieldset>
@@ -132,14 +132,14 @@
 				<label for="phone">
 					CONTACT PHONE FOR T&amp;C
 				</label>
-				<input type="text" value="" required="" placeholder="Enter phone number" name="phone" id="phone">
+				<input type="text" value="" required="" placeholder="Enter phone number" name="phone" ng-model="editData.terms_cond_phone">
 			</div>
 
 			<div class="entry full-width">
 				<label for="terms_and_condtn">
 					Terms &amp; Conditions
 				</label>
-				<textarea value="" type="" required="" placeholder="Enter Terms &amp; Conditions" name="terms_and_condtn" id="terms_and_condtn" class="full-width"></textarea>
+				<textarea value="" type="" required="" placeholder="Enter Terms &amp; Conditions" name="terms_and_condtn" ng-model="editData.terms_cond" class="full-width"></textarea>
 			</div>
 
 		</fieldset>
@@ -148,7 +148,7 @@
 				<label for="email">
 					CONTACT EMAIL FOR T&amp;C
 				</label>
-				<input type="text" value="" required="" placeholder="Enter e-mail" name="email" id="email">
+				<input type="text" value="" required="" placeholder="Enter e-mail" name="email" ng-model="editData.terms_cond_email">
 			</div>
 
 		</fieldset>
