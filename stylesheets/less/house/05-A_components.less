@@ -13,6 +13,7 @@
     #dashboard {
         .wrapper {
             padding: 20px;
+            right: 0;
 
             h2 {
                 margin: 10px 0 20px;
@@ -284,6 +285,19 @@
             &.dirty { background: @red; }
         }
 
+        #room-details-content {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        #room-content-wrapper {
+            width: 100%;
+            bottom: 0;
+        }
+
         #fo-status {
             padding: 10px 0;
             text-align: center;
@@ -297,6 +311,7 @@
 
         #guest-info {
             background-color: @white;
+            padding-bottom: 30px;
 
             .wrapper {
                 padding: 0 10px;   
@@ -400,7 +415,13 @@
                     display: table-cell;
                     vertical-align: middle;
 
-                    .icons { margin-top: -80px; }
+                    .icons {
+                        margin-top: -80px;
+
+                        @media (orientation: landscape) {
+                            margin-top: 0;
+                        }
+                    }
 
                     .h1 { 
                         font-size: 24px;
@@ -421,6 +442,7 @@
 
 /* 7. iscroll overrides
 ==========================================================*/
+#dashboard .myScrollbarV,
 #rooms .myScrollbarV,
 #filter-rooms .myScrollbarV {
     position: absolute;
@@ -431,6 +453,7 @@
     right: 5px;
 }
 
+#dashboard .myScrollbarV > div,
 #rooms .myScrollbarV > div,
 #filter-rooms .myScrollbarV > div {
     position: absolute;

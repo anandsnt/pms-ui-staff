@@ -43,6 +43,8 @@ body { overflow: hidden; }
             .content {
                 position: absolute;
                 left: 0;
+                right: 0;
+                bottom: 0;
                 width: 100%;
                 overflow: hidden;
                 .show;
@@ -102,13 +104,11 @@ body { overflow: hidden; }
 
     .content:not(#login) {
         top: 40px;
-        .calc-height(100, 40); /* %, px */
 
         /** Rooms screen ***/
         &#rooms {
             top: 90px;
             z-index: 10;
-            .calc-height(100, 90); /* %, px */
         }
 
         &#filter-rooms {
@@ -122,12 +122,10 @@ body { overflow: hidden; }
 
         &#filter-options {
             top: 40px;
-            .calc-height(100, 40); /* %, px */
         }
 
         &#guest-info {
             top: 60px;
-            .calc-height(100, 60); /* %, px */
         }
     }
 
@@ -250,7 +248,11 @@ body { overflow: hidden; }
             position: absolute;
             top: 0;
             left: 0; 
-            .icon-back; 
+            .icon-back;
+            
+            @media @highdpi {
+                background-position: -70px -490px;
+            }
         }
 
 
