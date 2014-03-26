@@ -8,8 +8,14 @@ admin.directive('adTextbox', function($timeout) {
 	        name : '@name',
             label: '@label',
 	        placeholder : '@placeholder',
-	        required : '@required'
+	        required : '@required',
+            id : '@id'
 	    },
+        compile: function(element, attrs){
+            console.log('in compile function');
+            attrs.readonly = (typeof attrs.readonly == 'undefined' ) ? 'no': 'yes';
+            attrs.required = (typeof attrs.required == 'undefined' ) ? 'no': 'yes';            
+        },
     	templateUrl: '../../assets/partials/directives/adTextbox.html' 
     };
 
