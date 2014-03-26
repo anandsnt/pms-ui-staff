@@ -13,7 +13,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	});	
 
 
-	
+			$scope.isAddmode = false;
+			$scope.isEditmode = false;
     
  	// $scope.isMenuOpen = function(){
   //       return $scope.menuOpen ? true : false;
@@ -33,25 +34,61 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			
 	};
 
+	$scope.addNew = function(){
+		$scope.formTitle = 'Add';	
+		$scope.isAddmode = true;
+		$scope.isEditmode = false;
+	}
 
-		//Function to get the template for edit url
-	$scope.getTemplateUrl = function(index,name){
-		if(index!="undefined" && name != "undefined"){
-		
-			if($scope.currentClickedElement == index){
+	$scope.getAddChainTemplateUrl = function(){
 
-				$scope.formTitle ='Edit StayNTouch Demo Chain';
-			 	// $scope.value = department.value;
-			 	// $scope.departmentName = department.name;
-			 	return "/assets/partials/chains/adChainForm.html";
-			 } 
-		}
-		if(index == ""	){
-				$scope.formTitle = 'Add';
-			 	return "/assets/partials/chains/adChainForm.html";
-		}
-		 
+			
+			
+			return "/assets/partials/chains/adChainForm.html";
+
+	}
+	$scope.getEditChainTemplateUrl = function(index,name){
+
+			
+			
+			return "/assets/partials/chains/adChainForm.html";
+
+	}
+	$scope.cancelClicked = function (){
+
+	if($scope.isAddmode)
+		$scope.isAddmode = false;
+	else if($scope.isEditmode)
+		$scope.isEditmode = false;
+
+	}
+
+	$scope.currentClickedElement = -1;
+
+	$scope.editDepartments = function(index, department)	{
+			$scope.currentClickedElement = index;
+			$scope.formTitle = 'Edit StayNTouch Demo Chain';
+			$scope.isAddmode = false;
+			$scope.isEditmode = true;
 	};
+
+	$scope.saveClicked = function(){
+
+
+		if($scope.isAddmode)
+			alert("add mode")
+		else
+			alert("edit mode")
+	}
+
+	
+// remaining
+
+// 1.get chain list api
+// 2.add chain api
+// 3.edit mode api
+// 4. update mode api 
+
 
 }]);
 
