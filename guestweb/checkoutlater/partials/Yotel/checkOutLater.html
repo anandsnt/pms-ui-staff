@@ -7,15 +7,23 @@
 		</div>
 		<!-- show posting message -->
 		<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-			<p class="msg-head">Your request is being processed.</p>
-			<p class="msg-body">This may take a few seconds..... please wait!</p>
+			<p class="msg-head">
+				Your request is being processed.
+			</p>
+			<p class="msg-body">
+				This may take a few seconds..... please wait!
+			</p>
 		</div>
 
 		<!-- show error message -->
 
 		<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-			<p class="msg-head">Our apologies, something went wrong, please complete your check out at our front desk.</p>
-			<p class="msg-body">You can also call the hotel at {{hotelPhone}}.</p>
+			<p class="msg-head">
+				Our apologies, something went wrong, please complete your check out at our front desk.
+			</p>
+			<p class="msg-body">
+				You can also call the hotel at {{hotelPhone}}.
+			</p>
 		</div>
 
 		<!-- contentarea starts here-->
@@ -23,7 +31,7 @@
 			<!-- top section starts here-->
 			<div class="row check-inout-wrapper late-options">
 				<div class="col-md-6 headtext centeralign extra-head-pad" ng-show="optionsAvailable">
-					Select your new check-out time:
+					Select your new check out time:
 				</div>
 
 				<!-- checkoubtn section starts here-->
@@ -31,13 +39,26 @@
 					<div class="row">
 						<div ng-repeat="charge in charges" class="col-xs-6 later-options {{ charge.class }}">
 							<div class="rel-wrapper">
-								<a ng-href="#/checkOutLaterSuccess/{{ charge.id }}"></a>
-								<div class="row pad-hz-24">
 
-									<div class="circle-text"><div><span class="time">{{ charge.time | number }}</span><span class="ap">{{ charge.ap }}</span></div></div>
+								<a ng-href="#/checkOutLaterSuccess/{{ charge.id }}"></a>
+								<div class="hexagon-wrapper">
+									<div class="row pad-hz-24 ">
+										<div class="hex-bg">
+											<text x="40%" y="65%" fill="white">
+												<tspan class="time">
+													{{ charge.time | number }}
+												</tspan>
+												<tspan class="ap">
+													{{ charge.ap }}
+												</tspan>
+											</text>
+										</div>
+
 									</div>
+								</div>
 								<div class="row late-charge">
 									<span class="for">for</span>
+									<br />
 									<span class="amount">{{ charge.amount | currency }}</span>
 								</div>
 							</div>
@@ -48,8 +69,6 @@
 				<div class="row no-thanks-wrap">
 					<p class="centeralign no-thanks" ng-show="optionsAvailable">
 						<a href="#/">no, thanks</a>
-
-
 					</p>
 				</div>
 			</div>
