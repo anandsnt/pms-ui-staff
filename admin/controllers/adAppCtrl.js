@@ -1,11 +1,13 @@
 
 admin.controller('ADAppCtrl',['$scope', '$rootScope','ADAppSrv', function($scope, $rootScope, ADAppSrv){
-
+	
+	$scope.menuOpen = false;
+	
 	if($rootScope.admin_role == "hotel-admin" ){
-		$scope.isAdmin =  true;
+		$scope.isHotelAdmin =  true;
 	}	
 	else{
-		$scope.isAdmin =  false;
+		$scope.isHotelAdmin =  false;
 	}
 
 	ADAppSrv.fetch().then(function(data) {
@@ -26,7 +28,14 @@ admin.controller('ADAppCtrl',['$scope', '$rootScope','ADAppSrv', function($scope
 			$scope.currentIndex = index;
 		}
 	};
- 
+	
+	$scope.$on("navToggled", function(){
+        $scope.menuOpen = !$scope.menuOpen;
+    });
+    
+ 	$scope.isMenuOpen = function(){
+        return $scope.menuOpen ? true : false;
+    };
 }]);
 
     

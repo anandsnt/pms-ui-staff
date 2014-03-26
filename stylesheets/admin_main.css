@@ -9,5 +9,5 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
 
- *= require '../admin/lib/css/admin_ng.css'
+ *= require '../admin/lib/css/admin_ng.css.less'
  */

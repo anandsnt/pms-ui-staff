@@ -32,11 +32,24 @@ admin.config([
 			url : '/users'
 		});
 		
-		$stateProvider.state('admin.useredit', {
+		// $stateProvider.state('admin.useredit', {
+			// templateUrl: '/assets/partials/users/adUserEdit.html',
+			// controller: 'ADUserListCtrl',
+			// url : '/useredit'
+		// });
+		
+		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserEdit.html',
 			controller: 'ADUserListCtrl',
-			url : '/useredit'
+			url : '/user/:page'
 		});
+		
+		$stateProvider.state('admin.departments', {
+			templateUrl: '/assets/partials/departments/adDepartmentsList.html',
+			controller: 'ADDepartmentListCtrl',
+			url : '/departments'
+		});
+		
 
 		
 		
