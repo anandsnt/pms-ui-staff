@@ -287,7 +287,7 @@
 
         #room-details-content {
             position: absolute;
-            top: 60px;
+            top: 0px;
             left: 0;
             right: 0;
             bottom: 0;
@@ -295,8 +295,14 @@
 
         #room-content-wrapper {
             width: 100%;
-            bottom: 0;
+            height: 100%;
+
+            &.autoheight {
+                height: auto;
+            }
         }
+
+
 
         #fo-status {
             padding: 10px 0;
@@ -312,6 +318,7 @@
         #guest-info {
             background-color: @white;
             padding-bottom: 30px;
+            height: 100%;
 
             .wrapper {
                 padding: 0 10px;   
@@ -444,7 +451,8 @@
 ==========================================================*/
 #dashboard .myScrollbarV,
 #rooms .myScrollbarV,
-#filter-rooms .myScrollbarV {
+#filter-rooms .myScrollbarV,
+#room-details-content .myScrollbarV {
     position: absolute;
     z-index: 100;
     width: 5px;
@@ -455,7 +463,8 @@
 
 #dashboard .myScrollbarV > div,
 #rooms .myScrollbarV > div,
-#filter-rooms .myScrollbarV > div {
+#filter-rooms .myScrollbarV > div, 
+#room-details-content .myScrollbarV > div {
     position: absolute;
     z-index: 100;
     background: #ffb319;
