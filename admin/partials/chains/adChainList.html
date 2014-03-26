@@ -19,7 +19,7 @@
 	<table id="brands" class="grid" >
 		<tbody>
 			<tr ng-repeat="chain in chainsList">
-				<td width="90%" ng-click="editChain($index,chain.id)" ng-hide="currentClickedElement == $index && isEditmode">
+				<td width="90%" ng-click="editSelected($index)" ng-hide="currentClickedElement == $index && isEditmode">
 					<a  data-colspan="2" class="edit-data-inline">
 						{{chain.name}}
 					</a>
@@ -27,7 +27,7 @@
 				<td width="10%" ng-hide="currentClickedElement == $index && isEditmode">
 					<em></em>
 				</td>
-				<td colspan="2" ng-include="getEditChainTemplateUrl($index,chain.name)" ng-show="currentClickedElement == $index && isEditmode"></td>
+				<td colspan="2" ng-include="getEditChainTemplateUrl($index)" ng-show="currentClickedElement == $index && isEditmode"></td>
 			</tr>
 
 

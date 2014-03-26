@@ -4,6 +4,9 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	// $scope.menuOpen = false;
 	$scope.chainsList = [];
 
+	$scope.isAddmode = false;
+	$scope.isEditmode = false;
+
 
 	adChainsSrv.fetch().then(function(data) {
 		$scope.chainsList = data.chain_list;
@@ -13,24 +16,24 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	});	
 
 
-			$scope.isAddmode = false;
-			$scope.isEditmode = false;
-    
- 	// $scope.isMenuOpen = function(){
-  //       return $scope.menuOpen ? true : false;
-  //   };
-
-
-    $scope.addNew = function(index, department)	{
-			$scope.showAddChainForm = true;
-			
-	};
-
-
     $scope.currentClickedElement = -1;
 	$scope.addFormView = false;
-	$scope.editDepartments = function(index, department)	{
-			$scope.currentClickedElement = index;
+
+	$scope.editSelected = function(id)	{
+
+			$scope.formTitle = 'Edit StayNTouch Demo Chain ';	
+			$scope.isAddmode = false;
+			$scope.isEditmode = true;
+	
+			$scope.currentClickedElement = id;
+
+					
+			adChainsSrv.edit(id+1).then(function(data) {
+				console.log(data)
+
+			},function(){
+				console.log("error controller");
+			});	
 			
 	};
 
@@ -84,10 +87,10 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	
 // remaining
 
-// 1.get chain list api
-// 2.add chain api
-// 3.edit mode api
-// 4. update mode api 
+
+// 1.add chain api
+// 2.edit mode api
+// 3. update mode api 
 
 
 }]);
