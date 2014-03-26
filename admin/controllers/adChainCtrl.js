@@ -6,7 +6,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 
 	adChainsSrv.fetch().then(function(data) {
-		$scope.chainsList = data;
+		$scope.chainsList = data.chain_list;
 
 	},function(){
 		console.log("error controller");
