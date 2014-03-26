@@ -9,9 +9,11 @@ admin.directive('adTextbox', function($timeout) {
             label: '@label',
 	        placeholder : '@placeholder',
 	        required : '@required',
-	        label_required: '@label_required'
+            id : '@id',
+            label_required: '@label_required'
 	    },
-    	templateUrl: '../../assets/directives/textBox/adTextbox.html' 
-    };
+    	templateUrl: '../../assets/directives/textBox/adTextbox.html'  
+	        
+	    }
 
 });
