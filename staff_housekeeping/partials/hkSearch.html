@@ -19,7 +19,7 @@
 <section id="rooms" class="content scrollable">
    <ul class="wrapper">
       <li ng-repeat="room in data.rooms | filter: ApplyFilters" >
-         <a ui-sref="hk.roomDetails({id: room.id})" ng-class="{'with-image': room.is_occupied == 'true'}" class = "{{getRoomColorClasses(room.hk_status.value, room.is_occupied, room.is_ready)}}">  
+         <a ng-class="{'with-image': room.is_occupied == 'true'}" class = "{{getRoomColorClasses(room.hk_status.value, room.is_occupied, room.is_ready)}}" ng-click = "roomListItemClicked(room)">  
             <h2 class="room-number">{{ room.room_no}}</h2>
             <span class="room-status">{{ room.hk_status.description }}</span>
             <span class="fo-status">{{ room.room_reservation_status }}</span>
@@ -133,13 +133,6 @@
                     Show Arrived
                 </label>
              </div>
-             <!-- <div class="entry radio-check">
-                <label class="checkbox">
-                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.arrived_dueout}"></span>
-                    <input type="checkbox" ng-model="currentFilters.arrived_dueout" name="room-filters">
-                    Show Arrived / Due Out
-                </label>
-             </div> -->
 
              <div class="entry radio-check">
                 <label class="checkbox">
@@ -148,13 +141,7 @@
                     Show Day Use
                 </label>
              </div>
-           <!--   <div class="entry radio-check">
-              <label class="checkbox">
-                  <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.arrived_departed}"></span>
-                  <input type="checkbox" ng-model="currentFilters.arrived_departed" name="room-filters">
-                  Show Arrived / Departed
-              </label>
-           </div> -->
+
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dueout}"></span>
@@ -162,13 +149,7 @@
                     Show Due Out
                 </label>
              </div>
-           <!--   <div class="entry radio-check">
-              <label class="checkbox">
-                  <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dueout_arrival}"></span>
-                  <input type="checkbox" ng-model="currentFilters.dueout_arrival" name="room-filters">
-                  Show Due Out / Arrival
-              </label>
-           </div> -->
+
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.departed}"></span>
@@ -176,20 +157,6 @@
                     Show Departed
                 </label>
              </div>
-             <!-- <div class="entry radio-check">
-                <label class="checkbox">
-                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.departed_arrival}"></span>
-                    <input type="checkbox" ng-model="currentFilters.departed_arrival" name="room-filters">
-                    Show Departed / Arrival
-                </label>
-             </div>
-             <div class="entry radio-check">
-                <label class="checkbox">
-                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.departed_arrived}"></span>
-                    <input type="checkbox" ng-model="currentFilters.departed_arrived" name="room-filters">
-                    Show Departed / Arrived
-                </label>
-             </div> -->
           </div>
        </div>
     </div>  
