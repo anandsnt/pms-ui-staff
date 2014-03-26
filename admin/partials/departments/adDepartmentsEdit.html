@@ -1,13 +1,13 @@
-<td colspan="2">
-<div class="data-holder">
+
+<div class="data-holder" ng-controller="ADDepartmentDetailsCtrl">
 
 	<form class="form single-field-form float">
+		<!-- <ad-textbox value="departmentName" name = "department-name" label = "Name" placeholder = "Enter hotel name" required = "yes" label_required = "no"></ad-textbox> -->
 		<div class="entry">
 			<input type="text" ng-model="departmentName" value="{{departmentName}}"  placeholder="Enter department" name="department-name" id="department-name">
 		</div>
-
 		<div class="actions float">
-			<button type="button" id="cancel" class="button blank edit-data-inline" >
+			<button type="button" id="cancel" class="button blank edit-data-inline" ng-click="clickCancel()">
 				Cancel
 			</button>
 			<button type="button" id="update" class="button green edit-data-inline" ng-click="saveDepartment()">
@@ -19,4 +19,4 @@
 		</div>
 
 	</form>
-</div></td>
+</div>

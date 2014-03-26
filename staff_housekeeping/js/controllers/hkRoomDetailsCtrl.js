@@ -26,7 +26,8 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 		});
 
 		$scope.calculateColorCodes();		
-		$scope.guestViewStatus = getGuestStatusMapped($scope.data.room_details.reservation_status);
+		$scope.guestViewStatus = getGuestStatusMapped($scope.data.room_details.reservation_status,
+													 $scope.data.room_details.is_late_checkout);
 		
 	}, function(){
 		console.log('fetch failed');

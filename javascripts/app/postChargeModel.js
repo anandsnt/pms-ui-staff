@@ -40,10 +40,6 @@ var PostChargeModel = function(callBack) {
 	this.modalInit = function() {
 		this.fetchItemList();
 	};
-	this.modalDidShow = function(){
-		// Initially Load favourite items.
-		that.showFavouriteItems();
-    };
  	//Clear Search Results 
   	this.clearResults = function(e){
 	    //if the method is invoked from other views to clear search results, 'this', 'e' are undefined.
@@ -406,7 +402,8 @@ var PostChargeModel = function(callBack) {
 	    that.myDom.find("#items-summary li" ).each(function() {
 	    	var obj ={
 	    		"value" : $(this).attr('data-id'),
-	    		"amount" : $(this).find('.value').text()
+	    		"amount" : $(this).find('.value').text(),
+	    		"quantity" : $(this).find('.count').attr('data-count')
 	    	};
 			data.items.push(obj);
 		});

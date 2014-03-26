@@ -5,50 +5,24 @@
 			<span class="count"> (
 				8
 				) </span>
-			<a id="add-new-button" href="/admin/departments/new" class="action add">Add new</a>
+			<a id="add-new-button" class="action add" ng-click="addNew()">Add new</a>
+			
 		</header>
-
+		<div id="new-form-holder" ng-show="addFormView" ng-include="getTemplateUrl('','')"></div>
+		
 		<div id="notification-message"></div>
 		<div id="new-form-holder"></div>
 		<table id="brands" class="grid">
-			<tbody  ng-repeat="department in data.departments">
-				<tr id="department_row_3" ng-hide="currentClickedElement == $index" > 
-					<td ng-click="editDepartments($index)"><a data-item="3" data-colspan="2" class="edit-data-inline"> {{department.name}} </a></td>
-					<td class="delete"><a id="3" class="icons icon-delete large-icon delete_item"></a></td>
+			<tbody>
+				<tr ng-repeat="department in data.departments" > 
+					<td ng-click="editDepartments($index,department)" ng-hide="currentClickedElement == $index" >
+						<a data-item="3" data-colspan="2" class="edit-data-inline"> {{department.name}} </a>
+					</td>
+					<td class="delete" ng-hide="currentClickedElement == $index" >
+						<a id="3" class="icons icon-delete large-icon delete_item"></a>
+					</td>
+					<td colspan="2" ng-include="getTemplateUrl($index,department)"></td>
 				</tr>
-				
-				
-				<tr ng-show="currentClickedElement == $index" ng-include="getTemplateUrl($index, department)">
-					
-				</tr>
-				
-				
-				
-				<!-- <tr ng-show="currentClickedElement == $index" id="edit-department-details" department_id="3" class="edit-data">
-					<td colspan="2">
-					<div class="data-holder">
-						
-						<form class="form single-field-form float">
-							<div class="entry">
-								<input type="text" value="Housekeeping" placeholder="Enter department" name="department-name" id="department-name">
-							</div>
-
-							<div class="actions float">
-								<button type="button" id="cancel" class="button blank edit-data-inline">
-									Cancel
-								</button>
-								<button type="button" id="update" class="button green edit-data-inline">
-									Save changes
-								</button>
-								<button type="button" id="delete" class="button red edit-data-inline">
-									Delete
-								</button>
-							</div>
-
-						</form>
-					</div></td>
-				</tr> -->
-
 			</tbody>
 		</table>
 	</div>

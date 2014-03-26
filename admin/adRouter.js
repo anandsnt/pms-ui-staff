@@ -31,11 +31,24 @@ admin.config([
 			controller: 'ADUserListCtrl',
 			url : '/users'
 		});
+
+		$stateProvider.state('admin.chains', {
+			templateUrl: '/assets/partials/chains/adChainList.html',
+			controller: 'ADChainListCtrl',
+			url : '/chains'
+		});
+
 		
-		$stateProvider.state('admin.useredit', {
+		// $stateProvider.state('admin.useredit', {
+			// templateUrl: '/assets/partials/users/adUserEdit.html',
+			// controller: 'ADUserListCtrl',
+			// url : '/useredit'
+		// });
+		
+		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserEdit.html',
 			controller: 'ADUserListCtrl',
-			url : '/useredit'
+			url : '/user/:page'
 		});
 		
 		$stateProvider.state('admin.departments', {
