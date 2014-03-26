@@ -10,7 +10,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.noOfErrorMethodCalled = 0;
 	this.maxSecForErrorCalling = 10000;
 	this.key1Printed = false;
-	//this.keyFetched = false;
 	this.numOfKeys = 0;
 
 	this.url = "/staff/reservations/" + reservation_id + "/get_key_setup_popup";
@@ -125,9 +124,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 				that.deviceNotConnected();
 			}
 		}
-		/*setTimeout(function(){
-			that.deviceConnecionStatus();
-		}, 2000)*/
+
 	};
 
 	/*
@@ -239,15 +236,12 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		that.myDom.find('#key2').attr('disabled','disabled');
 
 		//On selecting the key create button for the first time, get the keys form API.
-		//if(!that.keyFetched){
 		if(that.myDom.find('#print-key').attr('data-retrieve-uid') == "true"){
 			that.getUID();
 		}else{
 			that.callKeyFetchAPI();
 		}	
 		return true;
-		//}
-		//that.printKeys();
 			
 	};
 
@@ -255,7 +249,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Call cordova service to get the UID
 	*/
 	that.getUID = function(){
-		alert("get UID");
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Reading key!');		
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		var options = {
@@ -284,7 +277,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	    if(that.key1Printed) keyPos = 1;
 	    
 	    var keyData = [];
-	    //keyData = [key, keyType/vendor , AID , keyb]
 
 	    //Safelock key
 	    if(Object.keys(that.keyData.key_info[0])[0] == "base64"){
@@ -308,10 +300,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Server call to fetch the key data.
 	*/
 	this.callKeyFetchAPI = function(uID){
-		alert("call key fetch API");
 		sntapp.activityIndicator.hideActivityIndicator();
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Getting key image!');		
-		//that.keyFetched = true;
 	    var reservationId = getReservationId();
 	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": false};
 	    if(typeof uID !== 'undefined'){
@@ -321,7 +311,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 
 	    }
 
-	    console.log(postParams);
 
 	    var url = '/staff/reservation/print_key'
 	    //var url = '/ui/show?format=json&json_input=keys/fetch_encode_key.json';
@@ -340,10 +329,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Success callback for key fetching
 	*/
 	this.keyFetchSuccess = function(response, requestParams){
-		alert("key fetching success");
-		
 		that.keyData = response.data;
-		alert(JSON.stringify(response.data));
 		that.printKeys();	
 
 	};
@@ -352,7 +338,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* Calls the cordova service to write the keys
 	*/
 	this.writeKey = function(keyWriteData, key){
-		alert("write key");
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Writing key!');				
 		var options = {
