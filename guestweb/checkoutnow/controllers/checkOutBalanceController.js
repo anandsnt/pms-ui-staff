@@ -32,14 +32,9 @@
 
 		$rootScope.netWorkError = false;
 
-		// fecth text details to display
+	
 		$scope.isFetching = true;
 
-		BillService.fetchDisplayDetails().then(function(billDisplayDetails) {
-			$scope.billDisplayDetails = billDisplayDetails;
-			$scope.isFetching = false;
-			$rootScope.netWorkError =false;
-		});
 
 		//watch for any network errors
 
@@ -54,6 +49,7 @@
 
 		BillService.fetchBillData().then(function(billData) {
 			$scope.billData = billData.data.bill_details;
+			$scope.isFetching = false;
 
 
 		if($scope.billData)
