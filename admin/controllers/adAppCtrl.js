@@ -36,6 +36,14 @@ admin.controller('ADAppCtrl',['$scope', '$rootScope','ADAppSrv', function($scope
  	$scope.isMenuOpen = function(){
         return $scope.menuOpen ? true : false;
     };
+
+    $scope.$on("showLoader", function(){
+        $scope.hasLoader = true;
+    });
+
+    $scope.$on("hideLoader", function(){
+        $scope.hasLoader = false;
+    });    
 }]);
 
     
