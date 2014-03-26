@@ -4,12 +4,12 @@
 //=require ../admin/lib/js/angular-ui-router.js
 //=require ../admin/lib/js/ng-iscroll.js
 //=require ../admin/lib/js/iscroll.js
+//=require ../admin/lib/js/ng-table.js
 //=require ../admin/adApp.js
 //=require ../admin/adRouter.js
 //=require_tree ../admin/controllers
 //=require_tree ../admin/directives
 //=require_tree ../admin/services
-
 
 
 

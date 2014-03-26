@@ -22,6 +22,30 @@ admin.controller('ADHotelListCtrl',['$scope', '$state','$stateParams', 'ADHotelL
 		});	
 	};
 	
+	$scope.toggleClicked = function(index, hotelId, is_res_import_on){
+		
+		// checkedStatus will be true, if it checked
+      	// show confirm if it is going turn on stage
+      	if(is_res_import_on == 'false'){
+          	var confirmForReservationImport = confirm("Do NOT switch ON, until hotel mapping and setup is completed!, Do you want to proceed?");
+      	}	
+      	var data = {'hotel_id' :  hotelId,  'is_res_import_on': is_res_import_on};
+      	
+      	var fetchSuccess = function(){
+			if(is_res_import_on == "true"){
+				$scope.data.hotels[index].is_res_import_on = 'false';
+			}
+			else{
+				$scope.data.hotels[index].is_res_import_on = 'true';
+			}
+		};
+		
+		var fetchFailed = function(){
+			console.log("fetchFailed");
+		};
+		
+		ADHotelListSrv.postReservationImportToggle(data).then(fetchSuccess, fetchFailed);
+	};
 		
 
 }]);
