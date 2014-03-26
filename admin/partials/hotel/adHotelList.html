@@ -1,0 +1,46 @@
+<section id="replacing-div-first" class="content current">
+	<div id="edit_hotel" data-view="HotelListView">
+		<!-- Hotels list -->
+		<section>
+			<header class="content-title float">
+				<h2>Hotels</h2>
+				<span class="count">(63)</span>
+				<a id="add_new_hotel" href="/admin/hotels/new" class="action add">Add new</a>
+			</header>
+			<div id="notification-message"></div>
+			<table id="hotels_list_table" class="grid datatable">
+				<thead>
+					<tr role="row">
+						<th width="35%" class="sorting"> Hotel </th>
+						<th width="" class="sorting"> Room </th>
+						<th width="" class="sorting"> Chain </th>
+						<th width="" class="sorting"> Brand </th>
+						<th width="" class="activate long"> Reservation Import </th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr data-hotel-id="34" ng-repeat="hotel in data.values">
+						<td><a href="/admin/hotels/34/edit" class="title"> <strong> America Inn </strong> <em> Stanford
+						,
+						CA </em> </a></td>
+						<td><span class="number"> 100 </span></td>
+						<td> StayNTouch Demo Chain </td>
+						<td> Brand One </td>
+						<td class="activate long">
+							<div class="entry">
+								<label for="reservation-import-1"></label>
+								<div class="switch-button single">
+									<input type="checkbox" name="reservation-import" id="reservation-import-1">
+									<span class="switch-icon"></span>
+	
+								</div>
+							</div>
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+		</section>
+	</div>
+</section>
