@@ -1,0 +1,29 @@
+<section id="replacing-div-first" class="content current">
+	<div data-view="HotelDepartmentsView">
+		<header class="content-title float">
+			<h2> Departments </h2>
+			<span class="count"> (
+				8
+				) </span>
+			<a id="add-new-button" class="action add" ng-click="addNew()">Add new</a>
+			
+		</header>
+		<div id="new-form-holder" ng-show="addFormView" ng-include="getTemplateUrl('','')"></div>
+		
+		<div id="notification-message"></div>
+		<div id="new-form-holder"></div>
+		<table id="brands" class="grid">
+			<tbody>
+				<tr ng-repeat="department in data.departments" > 
+					<td ng-click="editDepartments($index,department)" ng-hide="currentClickedElement == $index" >
+						<a data-item="3" data-colspan="2" class="edit-data-inline"> {{department.name}} </a>
+					</td>
+					<td class="delete" ng-hide="currentClickedElement == $index" >
+						<a id="3" class="icons icon-delete large-icon delete_item"></a>
+					</td>
+					<td colspan="2" ng-include="getTemplateUrl($index,department)"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

@@ -245,6 +245,7 @@ var setUpAdmin = function(viewDom, delegate) {
    	if (isTablet) {
 		$('a:not(.nav-toggle):not(.edit-data-inline):not(.add-data-inline):not(.admin-left-nav)').click(function(e){
 			e.preventDefault();
+			location.href = $(this).attr("href");
 		});
 	}	
 	// Dashboard tabs
