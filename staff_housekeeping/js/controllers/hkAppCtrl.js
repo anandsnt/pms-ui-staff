@@ -1,4 +1,4 @@
-hkRover.controller('HKappCtrl',['$scope', '$state', function($scope, $state){
+hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', function($rootScope, $scope, $state){
     $scope.hasLoader = false;
     $scope.menuOpen = false;
     $scope.filterOpen = false;
@@ -39,6 +39,12 @@ hkRover.controller('HKappCtrl',['$scope', '$state', function($scope, $state){
         $scope.filterOpen = true;
     });
 
+    // few global setting for iscrolls
+    // add a custom class 'myScrollbarV'
+    // for vertical scroll the class name will be 'myScrollbarV'
+    $rootScope.myScrollOptions = {
+        scrollbarClass: 'myScrollbar'
+    };
     
 }]);
 

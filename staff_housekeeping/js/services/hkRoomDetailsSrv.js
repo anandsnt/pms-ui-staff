@@ -8,7 +8,7 @@ hkRover.service('HKRoomDetailsSrv',['$http', '$q', function($http, $q){
 			if(response.status == "success"){
 		    	deferred.resolve(response.data);
 		    }else{
-		    	console.log("error");
+		    	deferred.reject(response);
 		    }
 
 		}).error(function(response, status) {
@@ -27,8 +27,11 @@ hkRover.service('HKRoomDetailsSrv',['$http', '$q', function($http, $q){
             method: "POST",
             data: postData,
         }).success(function (response, status) {
-        	console.log("success");
-        	deferred.resolve(response.data);
+			if(response.status == "success"){
+        		deferred.resolve(response.data);
+        	}else{
+        		deferred.reject(response);
+        	}
         }).error(function (response, status) {
 		    deferred.reject(response);
         });
