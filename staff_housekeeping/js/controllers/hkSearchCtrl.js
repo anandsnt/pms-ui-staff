@@ -44,6 +44,19 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		return "";
 
 	};
+	/*
+	Function invoked when user selects a room from the room list
+	*/
+	$scope.roomListItemClicked = function(room){
+		//If the room is Out_of_order or out_of_service, room details should not be displayed
+		if(room.hk_status.value == 'OO' || room.hk_status.value == 'OS'){
+			return false;
+		}
+		$state.go('hk.roomDetails', {
+				id: room.id
+		});
+
+	};
 
 
 	$scope.currentFilters = {	
