@@ -1,0 +1,36 @@
+<section id="replacing-div-first" class="content current"><div data-view="HotelChainsView">
+<header class="content-title float">
+<h2>
+Chains
+</h2>
+<span class="count">
+(
+43
+)
+</span>
+<a id="add-new-button" href="/admin/hotel_chains/new" class="action add">Add new</a>
+</header>
+
+<div id="notification-message"></div>
+<div id="new-form-holder"></div>
+<table id="brands" class="grid">
+<tbody>
+<tr ng-repeat="chain in chainsArray">
+<td width="90%">
+<a href="/admin/hotel_chains/1/edit" data-colspan="2" class="edit-data-inline">
+{{chain.name}}
+</a>
+</td>
+<td width="10%">
+<em></em>
+</td>
+</tr>
+
+
+
+
+
+</tbody>
+</table>
+</div>
+</section>

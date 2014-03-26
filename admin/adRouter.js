@@ -31,6 +31,13 @@ admin.config([
 			controller: 'ADUserListCtrl',
 			url : '/users'
 		});
+
+		$stateProvider.state('admin.chains', {
+			templateUrl: '/assets/partials/chains/adChainList.html',
+			controller: 'ADChainListCtrl',
+			url : '/chains'
+		});
+
 		
 		// $stateProvider.state('admin.useredit', {
 			// templateUrl: '/assets/partials/users/adUserEdit.html',
