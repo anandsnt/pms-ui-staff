@@ -12,10 +12,26 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 >>>>>>> e057443769811a15b0d39f58e14f47b71f72e2d2
 	
 	if($stateParams.action == "add"){
-		$scope.data = {};
+		var fetchSuccess = function(data){
+			$scope.data = data;
+		};
+		
+		var fetchFailed = function(){
+			console.log("fetchFailed");
+		};
+		ADHotelDetailsSrv.fetchAddData().then(fetchSuccess, fetchFailed);
 	}
 	else if($stateParams.action == "edit"){
-		$scope.data = ADHotelDetailsSrv.fetch();
+		
+		var fetchSuccess = function(data){
+			$scope.data = data;
+		};
+		
+		var fetchFailed = function(){
+			console.log("fetchFailed");
+		};
+		
+		ADHotelDetailsSrv.fetchEditData($stateParams.id).then(fetchSuccess, fetchFailed);
 		$scope.isEdit = true;
 	}
 	

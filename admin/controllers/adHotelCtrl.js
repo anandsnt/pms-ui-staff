@@ -8,8 +8,6 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 
 	});	
 	
-	
-		
 	$scope.HotelCtrl = function(id, editstate){
 		
 		$scope.hotelId = id;
@@ -25,6 +23,7 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 	
 		});	
 	};
+	
 	
 	$scope.toggleClicked = function(index){
 		
