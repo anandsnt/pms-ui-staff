@@ -61,7 +61,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		$scope.editData   = {};
 
 
-		$scope.editData.lov  = [{'value':'','name':'frfr'}];
+		$scope.editData.lov  = [{'value':'','name':''}];
 
 		$scope.formTitle = 'Add';	
 		$scope.isAddmode = true;
