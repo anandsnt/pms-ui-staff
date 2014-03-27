@@ -1,6 +1,6 @@
 
 (function() {
-	var checkOutConfirmationController = function($scope, confirmationService,$rootScope,$location) {
+	var checkOutConfirmationController = function($scope,$rootScope,$location) {
 		
 
 		
@@ -25,35 +25,15 @@
 
 		if($scope.pageSuccess){
 
-
-		$rootScope.netWorkError = false;
-
-		// fecth text details to display
+		$scope.checkoutTimessage = $rootScope.checkoutTimessage ? $rootScope.checkoutTimessage:"Check out time is ";
 		
-		$scope.isFetching = true;
-		confirmationService.fetch().then(function(details) {
-			$scope.details = details;
-			$scope.isFetching = false;
-			$rootScope.netWorkError =false;
-			
-		});
-
-		//watch for any network errors
-
-		$rootScope.$watch('netWorkError',function(){
-
-			if($rootScope.netWorkError)
-				$scope.isFetching = false;
-		});
-
-		$scope.footerMessage1 = !$rootScope.isLateCheckoutAvailable ? 'Late check-out is not available.' :'' ;
+		$scope.footerMessage1 = !$rootScope.isLateCheckoutAvailable ? 'Late check out is not available.' :'' ;
 
 	    }
 	};
 
 	var dependencies = [
-	'$scope',
-	'confirmationService','$rootScope','$location',
+	'$scope','$rootScope','$location',
 	checkOutConfirmationController
 	];
 

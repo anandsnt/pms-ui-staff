@@ -1,10 +1,28 @@
-hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', function($rootScope, $scope, $state){
+hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', '$log', function($rootScope, $scope, $state){
     $scope.hasLoader = false;
     $scope.menuOpen = false;
     $scope.filterOpen = false;
 
     $scope.$on("navToggled", function(){
         $scope.menuOpen = !$scope.menuOpen;
+    });
+
+    //when state change start happens, we need to show the activity activator to prevent further clicking
+    //this will happen when prefetch the data
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) { 
+        // Show a loading message until promises are not resolved
+        $scope.$emit('showLoader');        
+    });
+
+    $rootScope.$on('$stateChangeSuccess', function(e, curr, prev) { 
+        // Hide loading message
+        $scope.$emit('hideLoader');
+    }); 
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error){
+        // Hide loading message
+        $scope.$emit('hideLoader');
+        //TODO: Log the error in proper way
+        
     });
 
     $scope.$on("hideNavMenu", function(){
@@ -19,7 +37,7 @@ hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', function($root
         $scope.hasLoader = !$scope.hasLoader;
     });
 
-    $scope.$on("hideLoader", function(){
+    $scope.$on("hideLoader", function(){        
         $scope.hasLoader = !$scope.hasLoader;
     });
     

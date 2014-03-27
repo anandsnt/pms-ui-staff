@@ -12,7 +12,7 @@
 
 
 
-		//$scope.minDate  = dateFilter(new Date(), 'yyyy-MM-dd');
+		$scope.minDate  = dateFilter(new Date(), 'yyyy-MM-dd');
 		$scope.cardDigits = '';
 
 		// page navigatons if any of following conditions happpens
