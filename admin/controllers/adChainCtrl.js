@@ -30,16 +30,17 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 	// inline edit
 
-	$scope.editSelected = function(id)	{
+	$scope.editSelected = function(index,id)	{
+
 
 		$scope.formTitle = 'Edit StayNTouch Demo Chain ';	
 		$scope.isAddmode = false;
 
 
-		$scope.currentClickedElement = id;
+		$scope.currentClickedElement = index;
 
 
-		adChainsSrv.edit(id+1).then(function(data) {
+		adChainsSrv.edit(id).then(function(data) {
 			$scope.editData   = data;
 
 			if($scope.editData.lov.length === 0)
