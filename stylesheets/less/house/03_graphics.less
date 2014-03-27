@@ -88,22 +88,12 @@
         .show;
         .no-transition;
 
-        @media @highdpi {
-            background-image: @icons2x;
-            background-size: 120px;
-        }
-
         @media only screen and (min-width: 600px) and (min-device-width: 533px) {
             background-color: @logoGradientStart;
             background-image: @iconMenu, @darkTexture;
             background-repeat: no-repeat, repeat;
             #border-radius > .right();
             .box-shadow(inset 0 -2px 0 rgba(0,0,0,.2));
-
-            @media @highdpi {
-                background-image: @iconMenu2x, @darkTexture;
-                background-size: 120px, 60px;
-            }
         }
     }
 

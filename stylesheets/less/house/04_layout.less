@@ -1,6 +1,11 @@
 /* 1. ROOT
 ==========================================================*/
-body { overflow: hidden; }
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
 
 ::-webkit-selection {
     background: transparent;
@@ -190,10 +195,6 @@ body { overflow: hidden; }
             top: 0;
             left: 0;
             .icon-toggle;
-
-            @media @highdpi {
-                background-position: -71px -11px;
-            }
         }
 
         .clear-selection {
@@ -249,10 +250,6 @@ body { overflow: hidden; }
             top: 0;
             left: 0; 
             .icon-back;
-            
-            @media @highdpi {
-                background-position: -70px -490px;
-            }
         }
 
 
