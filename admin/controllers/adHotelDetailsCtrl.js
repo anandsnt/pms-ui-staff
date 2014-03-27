@@ -1,15 +1,7 @@
-<<<<<<< HEAD
-admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv','$stateParams', 
-	function($rootScope, $scope, ADHotelDetailsSrv,$stateParams){
-	$scope.data = ADHotelDetailsSrv.fetch();
-	$scope.isAdminSnt = false;
-	$scope.hotel_id = $stateParams.id;
-	console.log($stateParams.id)
-=======
+
 admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv','$stateParams', function($rootScope, $scope, ADHotelDetailsSrv, $stateParams){
 	$scope.isAdminSnt = false;
 	$scope.isEdit = false;
->>>>>>> e057443769811a15b0d39f58e14f47b71f72e2d2
 	
 	if($stateParams.action == "add"){
 		var fetchSuccess = function(data){

@@ -10,7 +10,7 @@
 		<div id="notification-message"></div>
 		<fieldset class="holder left">
 			<div class="form-title">
-				<h3><span>Hotel</span> Name and Location </h3>
+				<h3><span>Hotel</span> name and location </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
 		
@@ -18,7 +18,7 @@
 			<!-- <div ad-Textbox></div> -->
 			<ad-textbox value="data.hotel_name" name = "hotel-name" id = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes" ></ad-textbox>
 			
-			<ad-textbox value="data.hotel_code" name = "hotel-code" id = "hotel-code" label = "Code" placeholder = "Enter hotel name" required = "yes" readonly="readonly"></ad-textbox>
+			<ad-textbox value="data.hotel_code" name = "hotel-code" id = "hotel-code" label = "Hotel Code" placeholder = "Enter hotel name" required = "yes" readonly="readonly"></ad-textbox>
 
 			<ad-textbox label="Street" value="data.street" required="yes" placeholder="Enter hotel street" name="hotel-street" id="hotel-street"></ad-textbox>
 
@@ -77,7 +77,7 @@
 		</fieldset>
 		<fieldset class="holder right">
 			<div class="form-title">
-				<h3><span>Hotel</span> Details </h3>
+				<h3><span>Hotel</span> details </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
 			<div class="entry">
@@ -205,7 +205,7 @@
 				<input type="text" value="{{data.hotel_from_address}}" placeholder="Enter Email domain and from address for GUEST" name="hotel_from_address" id="hotel_from_address">
 			</div>
 
-			<div id="hotel-logo-div" class="entry full-width">
+			<div id="hotel-logo-div" class="entry full-width" ng-hide="isAdminSnt">
 				<label for="hotel-logo"> Hotel Logo Image </label>
 				<div class="file-upload with-preview">
 					<span class="input">Choose file ...</span>
@@ -291,7 +291,7 @@
 				Save Changes
 			</button>
 
-			<button type="button" ui-sref="admin.mapping({hotel_id:hotel_id})"  ng-show="isAdminSnt" class="button green">
+			<button type="button" ui-sref="admin.mapping({hotel_id:hotel_id})"  ng-show="isAdminSnt && isEdit" class="button green">
 
 				Mappings
 			</button>
