@@ -36,4 +36,22 @@ admin.service('adChainsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, 
 	};
 
 
+
+	this.update = function(index,data){
+		
+	var deferred = $q.defer();
+
+		var url = '/admin/hotel_chains/'+index;	
+		
+		ADBaseWebSrv.putJSON(url,data).then(function(data) {
+				deferred.resolve(data);
+			},function(data){
+			deferred.reject(data);
+			
+			});
+		return deferred.promise;
+	};
+
+
+
 }]);
