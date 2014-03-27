@@ -137,26 +137,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 	$scope.addNewoption = function(){
 
-
-// var count = 0;
-// console.log($scope.editData.lov)
-
-//  angular.forEach($scope.editData.lov,function(value,index){
-            
-
-            	
-
-//                 if(value.name.length ===0){
-//                 	alert(count)
-//                 	count++;
-//                 	if(count == 2)
-//                 	$scope.addNewoption = false;
-//             	}
-//                 else
-//                 	$scope.addNewoption = true;
-//             });
-
-// 		 if($scope.addNewoption)
+	if($scope.editData.lov[$scope.editData.lov.length-1].name.length >0 || $scope.editData.lov.length==1)
 			$scope.editData.lov.push({'value':'','name':''});
 
 	}
