@@ -31,6 +31,9 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 					
 			adChainsSrv.edit(id+1).then(function(data) {
 				$scope.editData   = data;
+
+				if($scope.editData.lov.length === 0)
+					$scope.editData.lov.push({'value':'','name':''});
 				$scope.isEditmode = true;
 				console.log(data)
 	
@@ -44,7 +47,10 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 
 		$scope.editData   = {};
-		
+
+
+		$scope.editData.lov  = [{'value':'','name':''}];
+
 		$scope.formTitle = 'Add';	
 		$scope.isAddmode = true;
 		$scope.isEditmode = false;
@@ -91,6 +97,13 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			alert("edit mode")
 	}
 
+
+	$scope.addNewoption = function(){
+
+		if($scope.editData.lov.length <= 5)
+			$scope.editData.lov.push({'value':'','name':''});
+
+	}
 	
 // remaining
 
