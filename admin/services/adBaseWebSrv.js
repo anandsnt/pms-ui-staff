@@ -39,6 +39,7 @@ admin.service('ADBaseWebSrv',['$http', '$q', function($http, $q){
 			if(typeof params == "undefined"){
 				params = "";
 			}
+			console.log('1111111');
 			$http.put(url, params).success(function(response, status) {
 				if(response.status == "success"){
 			    	deferred.resolve(response.data);
