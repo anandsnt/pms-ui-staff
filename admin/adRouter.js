@@ -1,4 +1,4 @@
-admin.config([
+admin.config([	
 	'$stateProvider',
 	'$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider) {
@@ -57,8 +57,11 @@ admin.config([
 			url : '/departments'
 		});
 		
-
-		
+		$stateProvider.state('admin.hotels', {
+			templateUrl: '/assets/partials/hotel/adHotelList.html',
+			controller: 'ADHotelListCtrl',
+			url : '/hotels'
+		});
 		
 	}
 ]);
