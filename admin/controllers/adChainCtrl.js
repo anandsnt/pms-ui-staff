@@ -77,6 +77,21 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  		return "/assets/partials/chains/adChainForm.html";
 
  	}
+ 	$scope.addNewChain = function (){
+
+
+ 		adChainsSrv.post($scope.editData).then(function(data) {
+		
+			console.log(data)
+			$scope.fetchHotelChains();
+			$scope.isAddmode = false;
+
+		},function(){
+			console.log("error controller");
+			$scope.isAddmode = false;
+		});	
+
+ 	}
 
 
  	$scope.updateChain = function(id){
@@ -114,7 +129,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 
 		if($scope.isAddmode)
-			alert("add mode")
+			$scope.addNewChain();
 		else
 			$scope.updateChain($scope.currentClickedElement);
 	}
