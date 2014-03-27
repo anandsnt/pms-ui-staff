@@ -33,7 +33,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	$scope.editSelected = function(index,id)	{
 
 
-		$scope.formTitle = 'Edit StayNTouch Demo Chain ';	
+			
 		$scope.isAddmode = false;
 
 
@@ -43,6 +43,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 		adChainsSrv.edit(id).then(function(data) {
 			$scope.editData   = data;
+			$scope.formTitle = 'Edit'+' '+$scope.editData.name;
 
 			if($scope.editData.lov.length === 0)
 				$scope.editData.lov.push({'value':'','name':''});
@@ -98,6 +99,12 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
  	$scope.updateChain = function(id){
 
+
+angular.forEach($scope.editData.lov,function(item, index) {
+  if (item.name == "") { // not divisible by two, remove.
+    $scope.editData.lov.splice(index, 1);
+  }
+});
 
  		adChainsSrv.update(id,$scope.editData).then(function(data) {
 		
