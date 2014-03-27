@@ -2,14 +2,13 @@
 <div id="admin-header" class="float" role="navigation">
 	
    <!-- Switch hotel dropdown : HOTEL ADMIN-->
-   <div id="change-hotel" ng-show ="isHotelAdmin">
-      <h1>Dupont Circle Hotel</h1>
+   <div id="change-hotel" ng-show ="isHotelAdmin" class="{{hotelListOpen}}" ng-click="isHotelListOpen()" >
+      <h1>{{data.current_hotel}}</h1>
       <dl class="dropdown">
          <dt>Change hotel:</dt>
-         <dd><a href="#">Leela Palaces Hotels &amp; Resorts</a></dd>
-         <dd><a href="#">Vivanta by Taj</a></dd>
-         <dd><a href="#">Blue Sydney</a></dd>
-         <dd><a href="#">Holiday Inn &amp; Resorts</a></dd>
+         <dd ng-repeat="hotels in data.hotel_list">
+         	<a ng-click="redirectToHotel(hotels.hotel_id)">{{hotels.hotel_name}}</a>
+         </dd>
       </dl>
    </div>
    

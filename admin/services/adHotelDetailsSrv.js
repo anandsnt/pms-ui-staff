@@ -3,7 +3,7 @@ admin.service('ADHotelDetailsSrv',['$http', '$q', function($http, $q){
 	var _this = this;
 
 	this.fetch = function(){
-		this.data = {
+		_this.data = {
         "id": 1,
         "chains": [
             {

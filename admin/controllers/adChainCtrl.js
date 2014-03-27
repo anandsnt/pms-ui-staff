@@ -164,9 +164,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 // remaining
 
 
-// 1.add chain api
-// 2.edit mode api
-// 3. update mode api 
+// implement base webservice
 
 
 }]);
