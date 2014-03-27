@@ -139,20 +139,13 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 	$scope.addNewoption = function(index){
 
-	if( $scope.editData.lov.length>2){
-		if(index != $scope.editData.lov.length-1){
 
 
-			$scope.editData.lov.pop({'value':'','name':''});
-		}
-	}
-
-
-	if($scope.editData.lov[$scope.editData.lov.length-1].name.length >0 || $scope.editData.lov.length==1)
+	if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length==1))
 			$scope.editData.lov.push({'value':'','name':''});
 
-	}
 	
+	}
 // remaining
 
 
