@@ -257,6 +257,14 @@
         #room-header {
             padding: 0 10px;
             color: @white;
+            float: left;
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
             background: @grey3;
             .float;
 
@@ -320,11 +328,10 @@
 
         #guest-info {
             background-color: @white;
-            padding-bottom: 30px;
             height: 100%;
 
             .wrapper {
-                padding: 0 10px;   
+                padding: 60px 10px 0;   
 
                 .guest-image {
                     position: relative;
@@ -412,25 +419,23 @@
 
             &.no-content {
                 position: relative;
-                display: table;
                 margin: 0;
                 background: transparent;
                 text-align: center;
                 color: @grey3;
-                padding: 0 20%;
                 .square(100%);
                 .box-shadow(none);
+                min-height: 230px;
 
                 .info {
-                    display: table-cell;
-                    vertical-align: middle;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: 50%;
+                    margin-top: -40px; 
 
-                    .icons {
-                        margin-top: -80px;
-
-                        @media (orientation: landscape) {
-                            margin-top: 0;
-                        }
+                    @media (orientation: landscape) {
+                        margin-top: -24px;
                     }
 
                     .h1 { 

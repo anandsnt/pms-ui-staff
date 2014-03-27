@@ -85,6 +85,14 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 			$scope.$emit('hideLoader');
 		});
 	};
+
+
+	// stop bounce effect only on the room-details
+	var roomDetailsEl = document.getElementById( '#room-details' );
+	angular.element( roomDetailsEl )
+		.bind( 'ontouchmove', function(e) {
+			e.stopPropagation();
+		});
 	
 
 }]);
