@@ -1,5 +1,6 @@
-admin.controller('ADDepartmentListCtrl',['$scope', '$state',   function($scope, $state){
-	
+admin.controller('ADDepartmentListCtrl',['$scope', '$state',  function($scope, $state){
+
+	$scope.errorMessage = '';
 	$scope.data = {
 		    "departments": [
 		        {
@@ -62,12 +63,16 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state',   function($scope, 
 		}
 		 
 	};
+    $scope.$on("showErrorMessage", function($event, errorMessage){
+    	$event.stopPropagation();
+    	$scope.errorMessage = errorMessage;
+        
+    });
+		
 	//Previous view if clicked cancel
 	$scope.clickCancel = function(){
 		$scope.currentClickedElement = -1;
 		$scope.addFormView = false;
-	};
-		
-		
+	};			
 
 }]);
