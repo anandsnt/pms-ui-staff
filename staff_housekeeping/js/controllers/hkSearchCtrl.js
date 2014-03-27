@@ -39,6 +39,7 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 	*	But scroll-to-top won't work.
 	*/
 	var roomsEl = document.getElementById( 'rooms' );
+	var filterOptionsEl = document.getElementById( 'filter-options' );
 
 	$scope.refreshScroll = function() {
 		roomsEl.scrollTop = 0;
@@ -46,6 +47,12 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 
 	// stop browser bounce while swiping on rooms element
 	angular.element( roomsEl )
+		.bind( 'ontouchmove', function(e) {
+			e.stopPropagation();
+		});
+
+	// stop browser bounce while swiping on filter-options element
+	angular.element( filterOptionsEl )
 		.bind( 'ontouchmove', function(e) {
 			e.stopPropagation();
 		});

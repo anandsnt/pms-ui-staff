@@ -139,12 +139,8 @@ body {
         }
 
         &#filter-rooms {
-            top: 100%;
+            top: 0;
             height: 100%;
-
-            &.filter-show { /* Added by Qburst */
-                top: 0;
-            }
         }
 
         &#filter-options {
@@ -179,7 +175,9 @@ body {
         &.filter-rooms-open {
             .search-form,
             #rooms { #fade > .out(); }
-            #filter-rooms { #move > #element > .top(showRoomFilters);  }
+            #filter-rooms {
+                display: block;
+            }
         }
 
         &.filter-rooms-closing {
