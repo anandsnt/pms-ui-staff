@@ -11,39 +11,22 @@
 					<h3><span>User</span> details </h3>
 					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 				</div>
-				<div class="entry">
-					<label for="first-name"> First name <strong>*</strong> </label>
-					<input type="text" value="Admin" required="yes" placeholder="Enter first name" name="first-name" id="first-name">
-				</div>
-
-				<div class="entry">
-					<label for="last-name"> Last name <strong>*</strong> </label>
-					<input type="text" value="Staff" required="yes" placeholder="Enter last name" name="last-name" id="last-name">
-				</div>
-
+				<ad-textbox value="data.first_name" name = "first-name" id = "first-name" label = "First Name" placeholder = "Enter first name" required = "yes" ></ad-textbox>
+				<ad-textbox value="data.last_name" name = "last-name" id = "last-name" label = "Last Name" placeholder = "Enter last name" required = "yes" ></ad-textbox>
 				<div class="entry full-width">
 					<label for="department"> Department </label>
 					<div class="select">
-						<select name="department" id="department" class="placeholder">
-							<option value=""> Department </option><option value="3"> Housekeeping </option>
-							<option value="5"> IT </option>
-							<option value="6"> Front Desk </option>
-							<option value="20"> Concierge </option>
-							<option value="21"> Engineering </option>
-							<option value="36"> One test </option>
-							<option value="37"> Two test </option>
-							<option value="38"> Three test </option>
-
+						<select name="department" id="department" class="placeholder" >
+							<option value="{{}}" ng-repeat="department in data.departments">
+								{{department.name}}
+							</option>
 						</select>
 					</div>
 				</div>
 
 				<div></div>
-				<div class="entry">
-					<label for="job-title"> Job Title <strong>*</strong> </label>
-					<input type="text" value="" required="yes" placeholder="Enter job title" name="job-title" id="job-title">
-				</div>
-
+				<ad-textbox value="data.job_title" name = "job-title" id = "job-title" label = "Job title" placeholder = "Enter job title" required = "yes" ></ad-textbox>
+				
 				<div class="entry">
 					<label for="phone"> Phone </label>
 					<input type="text" value="" required="no" placeholder="Enter phone" name="phone" id="phone">

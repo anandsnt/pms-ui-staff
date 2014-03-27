@@ -1,4 +1,4 @@
-admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv', function($rootScope, $scope, ADHotelDetailsSrv){
+admin.controller('ADHotelDetailsCtrl', ['$state', '$rootScope', '$scope', 'ADHotelDetailsSrv', function($state, $rootScope, $scope, ADHotelDetailsSrv){
 	$scope.data = ADHotelDetailsSrv.fetch();
 	$scope.isAdminSnt = false;
 	
@@ -25,7 +25,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	};
 	
 	$scope.clickedUserSetup = function(){
-		console.log("clickedUserSetup");
+		$state.go("admin.users");
 	};
 	
 	$scope.clickedCancel = function(){
