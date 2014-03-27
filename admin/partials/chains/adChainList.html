@@ -12,7 +12,7 @@
 	</header>
 
 	<div id="notification-message"></div>
-	<div id="new-form-holder" ng-show="isAddmode" ng-include="getAddChainTemplateUrl()">
+	<div id="new-form-holder" ng-show="isAddmode" ng-include="getTemplateUrl()">
 	
 
 	</div>
@@ -27,7 +27,7 @@
 				<td width="10%" ng-hide="currentClickedElement == $index && isEditmode">
 					<em></em>
 				</td>
-				<td colspan="2" ng-include="getEditChainTemplateUrl($index)" ng-show="currentClickedElement == $index && isEditmode"></td>
+				<td colspan="2" ng-include="getTemplateUrl()" ng-show="currentClickedElement == $index && isEditmode"></td>
 			</tr>
 
 

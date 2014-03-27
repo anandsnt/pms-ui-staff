@@ -115,8 +115,9 @@
 					<label for="select-option1">
 						Levels
 					</label>
-					<div class="entry" ng-repeat="x in editData.lov">
-						<input type="text"  placeholder="Add new option" name="lov" ng-click="addNewoption()" data-type="select" class="add-new-option">
+					<div class="entry" ng-repeat="lov in editData.lov">
+						<input type="text"  placeholder="Add new option" name="lov" ng-click="addNewoption()" data-type="select" class="add-new-option"
+						ng-model="lov.name">
 					</div>
 				</div>
 			</div>
