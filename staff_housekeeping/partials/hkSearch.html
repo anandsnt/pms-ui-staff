@@ -74,14 +74,14 @@
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.out_of_order}"></span>
-                    <input type="checkbox" ng-model="currentFilters.out_of_order" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.out_of_order" name="room-filters" ng-click = "checkboxClicked('out_of_order')">
                     Show Out of Order
                 </label>
              </div>
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.out_of_service}"></span>
-                    <input type="checkbox" ng-model="currentFilters.out_of_service" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.out_of_service" name="room-filters" ng-click = "checkboxClicked('out_of_service')">
                     Show Out of Service
                 </label>
              </div>
@@ -91,14 +91,14 @@
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.vacant}"></span>
-                    <input type="checkbox" ng-model="currentFilters.vacant" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.vacant" name="room-filters" ng-click = "checkboxClicked('vacant')">
                     Show Vacant
                 </label>
              </div>
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.occupied}"></span>
-                    <input type="checkbox" ng-model="currentFilters.occupied" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.occupied" name="room-filters" ng-click = "checkboxClicked('occupied')">
                     Show Occupied
                 </label>
              </div>
@@ -108,28 +108,28 @@
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.stayover}"></span>
-                    <input type="checkbox" ng-model="currentFilters.stayover" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.stayover" name="room-filters" ng-click = "checkboxClicked('stayover')">
                     Show Stayover
                 </label>
              </div>
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.not_reserved}"></span>
-                    <input type="checkbox" ng-model="currentFilters.not_reserved" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.not_reserved" name="room-filters" ng-click = "checkboxClicked('not_reserved')">
                     Show Not Reserved
                 </label>
              </div>
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.arrival}"></span>
-                    <input type="checkbox" ng-model="currentFilters.arrival" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.arrival" name="room-filters" ng-click = "checkboxClicked('arrival')" ng-click = "checkboxClicked('arrival')">
                     Show Arrival
                 </label>
              </div>
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.arrived}"></span>
-                    <input type="checkbox" ng-model="currentFilters.arrived" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.arrived" name="room-filters" ng-click = "checkboxClicked('arrived')">
                     Show Arrived
                 </label>
              </div>
@@ -137,7 +137,7 @@
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dayuse}"></span>
-                    <input type="checkbox" ng-model="currentFilters.dayuse" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.dayuse" name="room-filters" ng-click = "checkboxClicked('dayuse')">
                     Show Day Use
                 </label>
              </div>
@@ -145,7 +145,7 @@
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dueout}"></span>
-                    <input type="checkbox" ng-model="currentFilters.dueout" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.dueout" name="room-filters" ng-click = "checkboxClicked('dueout')">
                     Show Due Out
                 </label>
              </div>
@@ -153,7 +153,7 @@
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.departed}"></span>
-                    <input type="checkbox" ng-model="currentFilters.departed" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.departed" name="room-filters" ng-click = "checkboxClicked('departed')">
                     Show Departed
                 </label>
              </div>
