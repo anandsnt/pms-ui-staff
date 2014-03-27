@@ -16,14 +16,20 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	$scope.fetchHotelChains = function(){
 
 
-		$scope.invokeApi(adChainsSrv.fetch, {}, function(data) {
+
+
+		var fetchChainsSuccessCallback = function(data) {
+			$scope.$emit('hideLoader');
 			$scope.$emit('hideLoader');
 			$scope.chainsList = data.chain_list;
-
-		}, function(){
+		};
+		var fetchChainsFailCallback = function(){
+			$scope.$emit('hideLoader');
 			$scope.$emit('hideLoader');
 			console.log("error controller");
-		});
+		};
+
+		$scope.invokeApi(adChainsSrv.fetch, {},fetchChainsSuccessCallback, fetchChainsFailCallback);
 
 	}
 
@@ -39,7 +45,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	$scope.editSelected = function(index,id)	{
 
 
-			
+		
 		$scope.isAddmode = false;
 
 
@@ -49,7 +55,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 		var editID = { 'editID' : id }
 
-		$scope.invokeApi(adChainsSrv.edit,editID, function(data) {
+
+		var editChainSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.editData   = data;
 			$scope.formTitle = 'Edit'+' '+$scope.editData.name;
@@ -58,11 +65,14 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 				$scope.editData.lov.push({'value':'','name':''});
 			$scope.isEditmode = true;
 			console.log(data)
-
-		}, function(){
+		};
+		var editChainsFailCallback = function(){
+			$scope.$emit('hideLoader');
 			$scope.$emit('hideLoader');
 			console.log("error controller");
-		});
+		};
+
+		$scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback,editChainsFailCallback);
 
 
 
@@ -95,17 +105,20 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  	$scope.addNewChain = function (){
 
 
- 		$scope.invokeApi(adChainsSrv.post,$scope.editData, function(data) {
-			$scope.$emit('hideLoader');
-				console.log(data)
-			$scope.fetchHotelChains();
-			$scope.isAddmode = false;
+ 		var addChainSuccessCallback = function(data) {
+ 			$scope.$emit('hideLoader');
+ 			console.log(data)
+ 			$scope.fetchHotelChains();
+ 			$scope.isAddmode = false;
 
-		}, function(){
-			$scope.$emit('hideLoader');
-			$scope.isAddmode = false;
-			console.log("error controller");
-		});
+ 		};
+ 		var addChainFailCallback = function(){
+ 			$scope.$emit('hideLoader');
+ 			$scope.isAddmode = false;
+ 			console.log("error controller");
+ 		};
+
+ 		$scope.invokeApi(adChainsSrv.post,$scope.editData, addChainSuccessCallback,addChainFailCallback);
 
 
  	}
@@ -114,36 +127,31 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  	$scope.updateChain = function(id){
 
 
-		angular.forEach($scope.editData.lov,function(item, index) {
+ 		angular.forEach($scope.editData.lov,function(item, index) {
 		  if (item.name == "") { // not divisible by two, remove.
-		    $scope.editData.lov.splice(index, 1);
+		  	$scope.editData.lov.splice(index, 1);
 		  }
 		});
 
-		var updateData = {'id' : id ,'updateData' :$scope.editData }
+ 		var updateData = {'id' : id ,'updateData' :$scope.editData }
 
- 		$scope.invokeApi(adChainsSrv.update,updateData, function(data) {
-			$scope.$emit('hideLoader');
-				console.log(data)
-			$scope.fetchHotelChains();
-			$scope.isEditmode = false;
 
-		}, function(){
-			$scope.$emit('hideLoader');
-			$scope.isEditmode = false;
-			console.log("error controller");
-		});
+ 		var updateChainSuccessCallback = function(data) {
+ 			$scope.$emit('hideLoader');
+ 			console.log(data)
+ 			$scope.fetchHotelChains();
+ 			$scope.isEditmode = false;
+ 		};
+ 		var updateChainFailCallback = function(){
+ 			$scope.$emit('hideLoader');
+ 			$scope.isEditmode = false;
+ 			console.log("error controller");
+ 		};
 
- 	// 	adChainsSrv.update(id,$scope.editData).then(function(data) {
-		
-		// 	console.log(data)
-		// 	$scope.fetchHotelChains();
-		// 	$scope.isEditmode = false;
 
-		// },function(){
-		// 	console.log("error controller");
-		// 	$scope.isEditmode = false;
-		// });	
+ 		$scope.invokeApi(adChainsSrv.update,updateData,updateChainSuccessCallback,updateChainFailCallback);
+
+ 		
 
 
  	}
@@ -176,10 +184,10 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 
 
-	if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length==1))
+		if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length==1))
 			$scope.editData.lov.push({'value':'','name':''});
 
-	
+		
 	}
 // remaining
 
