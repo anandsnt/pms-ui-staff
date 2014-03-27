@@ -1,6 +1,9 @@
-admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv', function($rootScope, $scope, ADHotelDetailsSrv){
+admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv','$stateParams', 
+	function($rootScope, $scope, ADHotelDetailsSrv,$stateParams){
 	$scope.data = ADHotelDetailsSrv.fetch();
 	$scope.isAdminSnt = false;
+	$scope.hotel_id = $stateParams.id;
+	console.log($stateParams.id)
 	
 	$scope.World = "cntrl World";
 	$scope.akhila = "cntrl akhila";

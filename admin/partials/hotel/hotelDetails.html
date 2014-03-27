@@ -13,6 +13,8 @@
 				<h3><span>Hotel</span> Name and Location </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
+		
+		
 			<!-- <div ad-Textbox></div> -->
 			<ad-textbox value="data.hotel_name" name = "hotel-name" id = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes" ></ad-textbox>
 			
@@ -290,7 +292,7 @@
 			<button type="button" ng-click="clickedSave()" class="button green">
 				Save Changes
 			</button>
-			<button type="button" ng-click="clickedExternalMapping()" ng-show="isAdminSnt" class="button green">
+			<button type="button" ui-sref="admin.mapping({hotel_id:hotel_id})"  ng-show="isAdminSnt" class="button green">
 				Mappings
 			</button>
 			<button type="button" ng-click="clickedUserSetup()" ng-show="isAdminSnt" class="button green">

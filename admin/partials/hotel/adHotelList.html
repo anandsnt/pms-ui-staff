@@ -22,7 +22,7 @@
 				<tbody>
 					<tr data-hotel-id="{{hotel.id}}" ng-repeat="hotel in data.hotels">
 						<td>
-							<a ui-sref="admin.hoteldetails" ng-click="HotelCtrl(hotel.id, 'admin.hoteledit')"  class="title">
+							<a ui-sref="admin.hoteldetails({id:hotel.id})" ng-click="HotelCtrl(hotel.id, 'admin.hoteledit')"  class="title">
 								 <strong> {{hotel.hotel_name}} </strong>
 								 <em> {{hotel.city}} , {{hotel.state}} </em>
 							</a>

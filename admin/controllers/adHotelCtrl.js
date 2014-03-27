@@ -1,4 +1,4 @@
-admin.controller('ADHotelListCtrl',['$scope', '$state','$stateParams', 'ADHotelListSrv',  function($scope, $state, $stateParams, ADHotelListSrv){
+admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADHotelListSrv',  function($scope, $state,$rootScope, $stateParams, ADHotelListSrv){
 	
 	ADHotelListSrv.fetch().then(function(data) {
 	        $scope.data = data;
@@ -11,6 +11,10 @@ admin.controller('ADHotelListCtrl',['$scope', '$state','$stateParams', 'ADHotelL
 	
 		
 	$scope.HotelCtrl = function(id, editstate){
+		
+		$scope.hotelId = id;
+		console.log("$scope.hotelId")
+		console.log($scope.hotelId )
 	 	 // $state.go(editstate);
 	 	 ADHotelListSrv.getHotelDetails(id).then(function(data) {
 		        $scope.data = data;
