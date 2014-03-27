@@ -81,38 +81,18 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
  	$scope.updateChain = function(id){
 
- 	// 	var updatedData = {};
-		// updatedData.name = $scope.editData.name;
-		// updatedData.hotel_code = $scope.editData.hotel_code;
-		// updatedData.loyalty_program_name = $scope.editData.loyalty_program_name;
-		// updatedData.loyalty_program_code = $scope.editData.loyalty_program_code;
-		// updatedData.terms_cond_phone = $scope.editData.terms_cond_phone;
-		// updatedData.terms_cond_email = $scope.editData.terms_cond_email;
-		// updatedData.terms_cond = $scope.editData.terms_cond;
-		// updatedData.lov = $scope.editData.lov;	
-		// updatedData.import_frequency = $scope.editData.import_frequency;
-		// updatedData.sftp_location = $scope.editData.sftp_location;
-		// updatedData.sftp_port = $scope.editData.sftp_port;
-		// updatedData.sftp_user = $scope.editData.sftp_user;
-		// updatedData.sftp_password = $scope.editData.sftp_password;		
-		// updatedData.sftp_respath = $scope.editData.sftp_respath;		
-
-
-		
-		// var options = {
-			
-		// 		   requestParameters: updatedData,
-	    	
-		// };
 
  		adChainsSrv.update(id+1,$scope.editData).then(function(data) {
 		
 			console.log(data)
 			$scope.fetchHotelChains();
+			$scope.isEditmode = false;
 
 		},function(){
 			console.log("error controller");
+			$scope.isEditmode = false;
 		});	
+
 
  	}
 
