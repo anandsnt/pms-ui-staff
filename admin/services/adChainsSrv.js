@@ -20,11 +20,13 @@ admin.service('adChainsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, 
 
 
 
-	this.edit = function(index){
+	this.edit = function(data){
+
+	var editID = data.editID;
 		
 	var deferred = $q.defer();
 
-		var url = '/admin/hotel_chains/'+index+'/edit.json';	
+		var url = '/admin/hotel_chains/'+editID+'/edit.json';	
 		
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 				deferred.resolve(data);
@@ -37,13 +39,21 @@ admin.service('adChainsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, 
 
 
 
-	this.update = function(index,data){
+	this.update = function(data){
+
+
+
+
+	var id  = data.id;
+	var updateData = data.updateData;
+
+
 		
 	var deferred = $q.defer();
 
-		var url = '/admin/hotel_chains/'+index;	
+		var url = '/admin/hotel_chains/'+id;	
 		
-		ADBaseWebSrv.putJSON(url,data).then(function(data) {
+		ADBaseWebSrv.putJSON(url,updateData).then(function(data) {
 				deferred.resolve(data);
 			},function(data){
 			deferred.reject(data);
