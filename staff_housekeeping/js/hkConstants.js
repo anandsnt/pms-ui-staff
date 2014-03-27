@@ -21,3 +21,9 @@ roomResStatus = {
     "departedArrival": "Departed / Arrival",
     "departedArrived": "Departed / Arrived"
 }
+
+ROUTES = {
+    "dashboard": "dashboard",
+    "search": "search",
+    "roomDetails": "room_details"
+}
