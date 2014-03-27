@@ -27,11 +27,11 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 		$scope.formTitle = 'Edit StayNTouch Demo Chain ';	
 		$scope.isAddmode = false;
-		
-		
+
+
 		$scope.currentClickedElement = id;
 
-		
+
 		adChainsSrv.edit(id+1).then(function(data) {
 			$scope.editData   = data;
 
@@ -39,11 +39,11 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 				$scope.editData.lov.push({'value':'','name':''});
 			$scope.isEditmode = true;
 			console.log(data)
-			
+
 		},function(){
 			console.log("error controller");
 		});	
-		
+
 	};
 
 	//add button clicked
@@ -54,7 +54,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		$scope.editData   = {};
 
 
-		$scope.editData.lov  = [{'value':'','name':''}];
+		$scope.editData.lov  = [{'value':'','name':'frfr'}];
 
 		$scope.formTitle = 'Add';	
 		$scope.isAddmode = true;
@@ -65,13 +65,13 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
  	$scope.getTemplateUrl = function(){
 
- 		
- 		
+
+
  		return "/assets/partials/chains/adChainForm.html";
 
  	}
 
- 	
+
 
 
 	// form actions
@@ -98,7 +98,26 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 	$scope.addNewoption = function(){
 
-		if($scope.editData.lov.length <= 5)
+
+// var count = 0;
+// console.log($scope.editData.lov)
+
+//  angular.forEach($scope.editData.lov,function(value,index){
+            
+
+            	
+
+//                 if(value.name.length ===0){
+//                 	alert(count)
+//                 	count++;
+//                 	if(count == 2)
+//                 	$scope.addNewoption = false;
+//             	}
+//                 else
+//                 	$scope.addNewoption = true;
+//             });
+
+// 		 if($scope.addNewoption)
 			$scope.editData.lov.push({'value':'','name':''});
 
 	}
