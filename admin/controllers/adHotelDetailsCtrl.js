@@ -1,9 +1,16 @@
-admin.controller('ADHotelDetailsCtrl', ['$scope', 'ADHotelDetailsSrv', function($scope, ADHotelDetailsSrv){
+admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv', function($rootScope, $scope, ADHotelDetailsSrv){
 	$scope.data = ADHotelDetailsSrv.fetch();
+	$scope.isAdminSnt = false;
+	
 	$scope.World = "cntrl World";
 	$scope.akhila = "cntrl akhila";
 	$scope.foo = {name: "Umur"};
 
+	console.log($rootScope.adminRole);
+	
+	if($rootScope.adminRole == "snt-admin"){
+		$scope.isAdminSnt = true;
+	}
 
 	$scope.clickedTestMliConnectivity = function(){
 		console.log("clickedTestMliConnectivity");
