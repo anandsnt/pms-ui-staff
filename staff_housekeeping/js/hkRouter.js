@@ -21,20 +21,20 @@ hkRover.config([
 		});
 	
 		$stateProvider.state('hk.navmain.dashboard', {
-			url: '/dashboard',
+			url: '/' + ROUTES.dashboard,
 			templateUrl: '/assets/partials/hkDashboard.html',
 			controller: 'HKDashboardCtrl'
 		});
 
 		// search state
 		$stateProvider.state('hk.navmain.search', {
-			url: '/search',
+			url: '/' + ROUTES.search,
 			templateUrl: '/assets/partials/hkSearch.html',
 			controller: 'HKSearchCtrl'
 		});	
 
 		$stateProvider.state('hk.roomDetails', {
-			url: '/room_details/:id',
+			url: '/' + ROUTES.roomDetails + '/:id',
 			templateUrl: '/assets/partials/hkRoomDetails.html',
 			controller: 'HKRoomDetailsCtrl'
 		});

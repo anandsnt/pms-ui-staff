@@ -46,28 +46,28 @@
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.dirty}"></span>
-                    <input type="checkbox" ng-model="currentFilters.dirty" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.dirty" name="room-filters" ng-click = "checkboxClicked('dirty')">
                     Show Dirty
                 </label>
              </div>
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.pickup}"></span>
-                    <input type="checkbox" ng-model="currentFilters.pickup" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.pickup" name="room-filters" ng-click = "checkboxClicked('pickup')">
                     Show Pickup
                 </label>
              </div>
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.clean}"></span>
-                    <input type="checkbox" ng-model="currentFilters.clean" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.clean" name="room-filters" ng-click = "checkboxClicked('clean')">
                     Show Clean
                 </label>
              </div>
              <div class="entry radio-check">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.inspected}"></span>
-                    <input type="checkbox" ng-model="currentFilters.inspected" name="room-filters">
+                    <input type="checkbox" ng-model="currentFilters.inspected" name="room-filters" ng-click = "checkboxClicked('inspected')">
                     Show Inspected
                 </label>
              </div>
