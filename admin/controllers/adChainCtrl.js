@@ -38,6 +38,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 
 		$scope.currentClickedElement = index;
+		$scope.editId = id;
 
 
 		adChainsSrv.edit(id).then(function(data) {
@@ -98,7 +99,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  	$scope.updateChain = function(id){
 
 
- 		adChainsSrv.update(id+1,$scope.editData).then(function(data) {
+ 		adChainsSrv.update(id,$scope.editData).then(function(data) {
 		
 			console.log(data)
 			$scope.fetchHotelChains();
@@ -132,11 +133,20 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		if($scope.isAddmode)
 			$scope.addNewChain();
 		else
-			$scope.updateChain($scope.currentClickedElement);
+			$scope.updateChain($scope.editId);
 	}
 
 
-	$scope.addNewoption = function(){
+	$scope.addNewoption = function(index){
+
+	if( $scope.editData.lov.length>2){
+		if(index != $scope.editData.lov.length-1){
+
+
+			$scope.editData.lov.pop({'value':'','name':''});
+		}
+	}
+
 
 	if($scope.editData.lov[$scope.editData.lov.length-1].name.length >0 || $scope.editData.lov.length==1)
 			$scope.editData.lov.push({'value':'','name':''});
