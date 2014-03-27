@@ -1,4 +1,4 @@
-admin.config([	
+admin.config([
 	'$stateProvider',
 	'$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider) {
@@ -31,24 +31,11 @@ admin.config([
 			controller: 'ADUserListCtrl',
 			url : '/users'
 		});
-
-		$stateProvider.state('admin.chains', {
-			templateUrl: '/assets/partials/chains/adChainList.html',
-			controller: 'ADChainListCtrl',
-			url : '/chains'
-		});
-
 		
-		// $stateProvider.state('admin.useredit', {
-			// templateUrl: '/assets/partials/users/adUserEdit.html',
-			// controller: 'ADUserListCtrl',
-			// url : '/useredit'
-		// });
-		
-		$stateProvider.state('admin.userdetails', {
+		$stateProvider.state('admin.useredit', {
 			templateUrl: '/assets/partials/users/adUserEdit.html',
 			controller: 'ADUserListCtrl',
-			url : '/user/:page'
+			url : '/useredit'
 		});
 		
 		$stateProvider.state('admin.departments', {
@@ -57,11 +44,8 @@ admin.config([
 			url : '/departments'
 		});
 		
-		$stateProvider.state('admin.hotels', {
-			templateUrl: '/assets/partials/hotel/adHotelList.html',
-			controller: 'ADHotelListCtrl',
-			url : '/hotels'
-		});
+
+		
 		
 	}
 ]);
