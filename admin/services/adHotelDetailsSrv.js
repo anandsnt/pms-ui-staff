@@ -1,4 +1,4 @@
-admin.service('ADHotelDetailsSrv',['$http', '$q', function($http, $q){
+admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
 	
 	var _this = this;
 
@@ -1865,7 +1865,51 @@ admin.service('ADHotelDetailsSrv',['$http', '$q', function($http, $q){
     	};
     	return _this.data;
 	}
-		
+	this.fetchAddData = function(){
+		var deferred = $q.defer();
+		var url = '/admin/hotels/new.json';	
+		//var url = '/sample_json/ng_admin/adSntApp.json';
+		ADBaseWebSrv.getJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};	
+	this.fetchEditData = function(hotel_id){
+		var deferred = $q.defer();
+		var url = '/admin/hotels/'+hotel_id+'/edit.json';	
+		//var url = '/sample_json/ng_admin/adSntApp.json';
+		ADBaseWebSrv.getJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};	
+	this.addNewHotelDeatils = function(data){
 
+		var deferred = $q.defer();
+		var url = '/admin/hotels/';	
+
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+	this.updateHotelDeatils = function(data){
+
+		var deferred = $q.defer();
+		var url = '/admin/hotels/';	
+
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
 
 }]);
