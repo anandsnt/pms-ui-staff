@@ -1,8 +1,8 @@
-hkRover.controller('HKDashboardCtrl',['$scope', 'hkDashboardSrv',  function($scope, hkDashboardSrv){
-
-	hkDashboardSrv.fetch().then(function(messages) {
+hkRover.controller('HKDashboardCtrl',['$scope', 'dashboardData',  function($scope, dashboardData){
+	/*hkDashboardSrv.fetch().then(function(messages) {
         $scope.data = messages;
-	});
+	});*/
+	$scope.data = dashboardData;
 
 }]);
 

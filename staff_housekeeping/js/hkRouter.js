@@ -23,7 +23,13 @@ hkRover.config([
 		$stateProvider.state('hk.navmain.dashboard', {
 			url: '/dashboard',
 			templateUrl: '/assets/partials/hkDashboard.html',
-			controller: 'HKDashboardCtrl'
+			controller: 'HKDashboardCtrl',
+			// prefetch the data before showing the template
+			resolve: {
+				dashboardData: function(hkDashboardSrv) {
+					return hkDashboardSrv.fetch();
+				}
+			}
 		});
 
 		// search state
