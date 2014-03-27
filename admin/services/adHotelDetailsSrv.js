@@ -1876,9 +1876,9 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', function($http
 		});	
 		return deferred.promise;
 	};	
-	this.fetchEditData = function(hotel_id){
+	this.fetchEditData = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/hotels/'+hotel_id+'/edit.json';	
+		var url = '/admin/hotels/'+data.id+'/edit.json';	
 		//var url = '/sample_json/ng_admin/adSntApp.json';
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -1888,7 +1888,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', function($http
 		return deferred.promise;
 	};	
 	this.addNewHotelDeatils = function(data){
-
+console.log(data);
 		var deferred = $q.defer();
 		var url = '/admin/hotels/';	
 
@@ -1900,7 +1900,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', function($http
 		return deferred.promise;
 	};
 	this.updateHotelDeatils = function(data){
-console.log(data);
+
 		var deferred = $q.defer();
 		var url = '/admin/hotels/'+data.id;	
 

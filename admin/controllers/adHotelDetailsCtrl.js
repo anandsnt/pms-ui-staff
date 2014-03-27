@@ -2,28 +2,33 @@
 admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv','$stateParams', function($rootScope, $scope, ADHotelDetailsSrv, $stateParams){
 	$scope.isAdminSnt = false;
 	$scope.isEdit = false;
+	BaseCtrl.call(this, $scope);
 	
 	if($stateParams.action == "add"){
 		var fetchSuccess = function(data){
 			$scope.data = data;
+			$scope.$emit('hideLoader');
 		};
 		
 		var fetchFailed = function(){
 			console.log("fetchFailed");
+			$scope.$emit('hideLoader');
 		};
-		ADHotelDetailsSrv.fetchAddData().then(fetchSuccess, fetchFailed);
+		
+		$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess, fetchFailed);
 	}
 	else if($stateParams.action == "edit"){
 		
 		var fetchSuccess = function(data){
 			$scope.data = data;
+			$scope.$emit('hideLoader');
 		};
 		
 		var fetchFailed = function(){
 			console.log("fetchFailed");
+			$scope.$emit('hideLoader');
 		};
-		
-		ADHotelDetailsSrv.fetchEditData($stateParams.id).then(fetchSuccess, fetchFailed);
+		$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess, fetchFailed);
 		$scope.isEdit = true;
 	}
 	
@@ -39,10 +44,12 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		
 		var fetchSuccess = function(){
 			console.log("post successfully");
+			$scope.$emit('hideLoader');
 		};
 		
 		var fetchFailed = function(){
 			console.log("fetchFailed");
+			$scope.$emit('hideLoader');
 		};
 		
 		if($scope.isEdit) ADHotelDetailsSrv.updateHotelDeatils($scope.data).then(fetchSuccess, fetchFailed);
