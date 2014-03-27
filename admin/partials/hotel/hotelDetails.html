@@ -22,8 +22,6 @@
 
 			<ad-textbox label="Phone" value="data.phone" required="yes" placeholder="Enter hotel phone number" name="hotel-phone" id="hotel-phone"></ad-textbox>
 
-			<ad-textbox label="Phone" value="data.phone" required="yes" placeholder="Enter hotel phone number" name="hotel-phone" id="hotel-phone"></ad-textbox>
-
 			<div class="entry">
 				<label for="hotel-city"> City <strong>*</strong> </label>
 				<input type="text" value="{{data.city}}" required="yes" placeholder="Enter city name" name="hotel-city" id="hotel-city">
@@ -60,7 +58,7 @@
 				<input type="text" value="{{data.latitude}}" required="" readonly="readonly" placeholder="Enter hotel latitude" name="hotel-latitude" id="hotel-latitude">
 			</div>
 
-			<div class="entry full-width registration-for-rover">
+			<div class="entry full-width registration-for-rover" ng-hide="isAdminSnt">
 				<label for="rover"> Rover Registration </label>
 				<div id="registration-for-rover" class="boxes">
 					<label class="radio" ng-class="{checked: data.required_signature_at == 'CHECKIN'}"> <span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'CHECKIN'}"></span>
@@ -82,7 +80,7 @@
 			</div>
 			<div class="entry">
 				<label for="hotel-rooms"> Number of rooms </label>
-				<input type="text" value="{{data.number_of_rooms}}" readonly="readonly" placeholder="Type number" name="hotel-rooms" id="hotel-rooms">
+				<input type="text" value="{{data.number_of_rooms}}" placeholder="Type number" name="hotel-rooms" id="hotel-rooms">
 			</div>
 
 			<div class="entry">
@@ -171,27 +169,26 @@
 				<label for="hotel-time-zone"> Hotel Time Zone <strong>*</strong> </label>
 				<div class="select">
 					<select name="hotel-time-zone" id="hotel-time-zone" class="placeholder">
-						<option value=""> Hotel Time Zone </option><option value="American Samoa"> American Samoa </option>
+						<option value=""> Hotel Time Zone </option>
+						<option value="American Samoa"> American Samoa </option>
 						<option ng-repeat="timezone in data.time_zones" value="timezone.value" ng-model="timezone.value" ng-seletected="timezone.value==data.hotel_time_zone"> {{timezone.value}} </option>
-
 					</select>
 				</div>
 			</div>
-
 			<div class="entry hotel-pms-type" ng-show="isAdminSnt">
 				<label for="hotel-pms-type"> PMS Type </label>
 				<div class="select">
 					<select name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
-						<option value=""> PMS Type </option><option value="OWS" selected=""> Opera Web Service </option>
-
+						<option value=""> PMS Type </option>
+						<option ng-repeat="pms_types in data.pms_types" value="pms_types.value" ng-model="pms_types.value" ng-seletected="pms_types.value==data.hotel_pms_type"> {{pms_types.value}} </option>
 					</select>
 				</div>
 			</div>
 
 			<div class="entry is-pms-tokenized">
 				<label for="is-pms-tokenized">PMS Tokenized</label>
-				<div id="div-is-pms-tokenized" class="switch-button single">
-					<input type="checkbox" value="" name="is-pms-tokenized" id="is-pms-tokenized">
+				<div id="div-is-pms-tokenized" class="switch-button single" ng-class="{ on : data.is_pms_tokenized == 'true' }" ng-click="toggleClicked()">
+					<input type="checkbox" value="{{data.is_pms_tokenized}}" name="is-pms-tokenized" id="is-pms-tokenized">
 					<span class="switch-icon"></span>
 				</div>
 			</div>
@@ -246,6 +243,7 @@
 			</div>
 
 		</fieldset>
+		
 		<fieldset class="holder right" ng-show="isAdminSnt">
 			<div class="form-title">
 				<h3><span>Hotel</span> MLI Settings </h3>
@@ -253,12 +251,12 @@
 			</div>
 			<div class="entry">
 				<label for="mli-hotel-code"> MLI hotel code </label>
-				<input type="text" value="" placeholder="Enter MLI hotel code" name="mli-hotel-code" id="mli-hotel-code">
+				<input type="text" value="{{data.mli_hotel_code}}" placeholder="Enter MLI hotel code" name="mli-hotel-code" id="mli-hotel-code">
 			</div>
 
 			<div class="entry">
 				<label for="mli-chain-code"> MLI chain code </label>
-				<input type="text" value="" placeholder="Enter MLI chain code" name="mli-chain-code" id="mli-chain-code">
+				<input type="text" value="{{data.mli_chain_code}}" placeholder="Enter MLI chain code" name="mli-chain-code" id="mli-chain-code">
 			</div>
 
 			<div id="mli-certificate-upload" class="entry full-width">
@@ -269,12 +267,12 @@
 					<button type="button" class="button brand-colors">
 						Attach Certificate
 					</button>
-
 				</div>
 			</div>
+			
 			<div class="entry full-width">
 				<label for="mli-access-url"> MLI Access URL </label>
-				<input type="text" value="https://tv1var.merchantlink.com:8184" readonly="true" name="mli-access-url" id="mli-access-url">
+				<input type="text" value="{{data.mli_access_url}}" readonly="true" name="mli-access-url" id="mli-access-url" readonly>
 			</div>
 
 			<button type="button" id="test-mli-connectivity" ng-click="clickedTestMliConnectivity()" class="button blue">
@@ -290,10 +288,10 @@
 			<button type="button" ng-click="clickedSave()" class="button green">
 				Save Changes
 			</button>
-			<button type="button" ng-click="clickedExternalMapping()" ng-show="isAdminSnt" class="button green">
+			<button type="button" ng-click="clickedExternalMapping()" ng-show="isAdminSnt && isEdit" class="button green">
 				Mappings
 			</button>
-			<button type="button" ng-click="clickedUserSetup()" ng-show="isAdminSnt" class="button green">
+			<button type="button" ng-click="clickedUserSetup()" ng-show="isAdminSnt && isEdit" class="button green">
 				User Setup
 			</button>
 		</div>
