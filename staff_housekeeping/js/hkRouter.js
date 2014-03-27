@@ -42,7 +42,13 @@ hkRover.config([
 		$stateProvider.state('hk.roomDetails', {
 			url: '/' + ROUTES.roomDetails + '/:id',
 			templateUrl: '/assets/partials/hkRoomDetails.html',
-			controller: 'HKRoomDetailsCtrl'
+			controller: 'HKRoomDetailsCtrl',
+			// prefetch the data before showing the template
+			resolve: {
+				roomDetailsData: function(HKRoomDetailsSrv, $stateParams) {
+					return HKRoomDetailsSrv.fetch($stateParams.id);
+				}
+			}
 		});
 		
 		
