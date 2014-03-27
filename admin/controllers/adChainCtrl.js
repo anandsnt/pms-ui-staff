@@ -24,13 +24,14 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 			$scope.formTitle = 'Edit StayNTouch Demo Chain ';	
 			$scope.isAddmode = false;
-			$scope.isEditmode = true;
+			
 	
 			$scope.currentClickedElement = id;
 
 					
 			adChainsSrv.edit(id+1).then(function(data) {
 				$scope.editData   = data;
+				$scope.isEditmode = true;
 				console.log(data)
 	
 			},function(){
@@ -40,6 +41,10 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	};
 
 	$scope.addNew = function(){
+
+
+		$scope.editData   = {};
+		
 		$scope.formTitle = 'Add';	
 		$scope.isAddmode = true;
 		$scope.isEditmode = false;
