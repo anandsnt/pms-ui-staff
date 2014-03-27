@@ -10,12 +10,19 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 	// fetch chain list
 
-	adChainsSrv.fetch().then(function(data) {
-		$scope.chainsList = data.chain_list;
 
-	},function(){
-		console.log("error controller");
-	});	
+	$scope.fetchHotelChains = function(){
+
+		adChainsSrv.fetch().then(function(data) {
+			$scope.chainsList = data.chain_list;
+
+		},function(){
+			console.log("error controller");
+		});	
+	}
+
+	
+	$scope.fetchHotelChains();
 
 
 	$scope.currentClickedElement = -1;
@@ -101,6 +108,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  		adChainsSrv.update(id+1,$scope.editData).then(function(data) {
 		
 			console.log(data)
+			$scope.fetchHotelChains();
 
 		},function(){
 			console.log("error controller");
