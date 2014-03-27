@@ -14,7 +14,6 @@ admin.controller('ADAppCtrl',['$scope', '$rootScope','ADAppSrv', function($scope
 		$scope.currentIndex = 0;
 		$scope.data = data;
 		$scope.selectedMenu = $scope.data.menus[0];
-
 	},function(){
 		console.log("error controller");
 	});	
