@@ -69,6 +69,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.delegateEvents = function() {
+		var current_bill_number = that.getActiveBillNumber();
 		that.myDom.unbind('click');
 		that.myDom.on('click', that.myDomClickHandler);
 		that.myDom.find("#signature").on('mouseover touchstart', function() {
@@ -77,6 +78,7 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find("#signature").on('mouseout touchend', function() {
 			enableVerticalScroll('#registration-content');
 		});
+		that.myDom.find('#move_to_bill'+current_bill_number).on('change', that.moveToAnotherBill());
 	};
 
 	// function for closing the drawer if is open
@@ -491,6 +493,27 @@ var RegistrationCardView = function(viewDom) {
 	// To get current active bill's bill-number
 	this.getActiveBillNumber =  function() {
 		return that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active").attr('data-bill-number');
+	};
+
+	this.moveToAnotherBill = function(e) {
+		var current_bill_number = that.getActiveBillNumber();
+		console.log("clicked move to bill....."+current_bill_number);
+		var billValue = that.myDom.find('#move_to_bill'+current_bill_number).val();
+		var previousBillValue = current_bill_number;
+		var reservation_id = getReservationId();
+
+		var data = {
+			"reservation_id" : reservation_id,
+			"to_bill" : billValue,
+			"from_bill" : previousBillValue,
+			"transaction_id" : 
+		};
+		var webservice = new WebServiceInterface();
+		var options = {
+			requestParameters : data
+
+		};
+		webservice.postJSON('/staff/bills/transfer_transaction', options);
 	};
 
 };
