@@ -4,9 +4,25 @@ admin.controller('ADHotelDetailsCtrl', ['$scope', 'ADHotelDetailsSrv', function(
 	$scope.akhila = "cntrl akhila";
 	$scope.foo = {name: "Umur"};
 
-	$scope.callSave = function(){
-		console.log("callSave");
-		console.log($scope.data.hotel_name);
-	}
+
+	$scope.clickedTestMliConnectivity = function(){
+		console.log("clickedTestMliConnectivity");
+	};
+	
+	$scope.clickedSave = function(){
+		console.log("clickedSave");
+	};
+	
+	$scope.clickedExternalMapping = function(){
+		console.log("clickedExternalMapping");
+	};
+	
+	$scope.clickedUserSetup = function(){
+		console.log("clickedUserSetup");
+	};
+	
+	$scope.clickedCancel = function(){
+		console.log("clickedCancel");
+	};
 
 }]);

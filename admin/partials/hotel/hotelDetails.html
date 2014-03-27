@@ -257,17 +257,17 @@
 				<input type="text" value="https://tv1var.merchantlink.com:8184" readonly="true" name="mli-access-url" id="mli-access-url">
 			</div>
 
-			<button type="button" id="test-mli-connectivity" class="button blue">
+			<button type="button" id="test-mli-connectivity" ng-click="clickedTestMliConnectivity()" class="button blue">
 				Test MLI Connectivity
 			</button>
 
 		</fieldset>
 		
 		<div class="actions float">
-			<button type="button" id="cancel" class="button blank">Cancel</button>
-			<button type="button" id="save" class="button green">Save Changes</button>
-			<button type="button" id="external-mappings" class="button green">Mappings</button>
-			<button type="button" id="user-setup" class="button green">User Setup</button>
+			<button type="button" ng-click="clickedCancel()" class="button blank">Cancel</button>
+			<button type="button" ng-click="clickedSave()" class="button green">Save Changes</button>
+			<button type="button" ng-click="clickedExternalMapping()" class="button green">Mappings</button>
+			<button type="button" ng-click="clickedUserSetup()" class="button green">User Setup</button>
 		</div>
 
 	</form>
