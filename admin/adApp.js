@@ -71,6 +71,7 @@ admin.controller('rootController', ['$rootScope','$scope','$attrs','$location', 
 	//store basic details as rootscope variables
 
 	$rootScope.admin_role = $attrs.adminRole;
+	$rootScope.adminRole = $attrs.adminRole;
 
 }]);
 
