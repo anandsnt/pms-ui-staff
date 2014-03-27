@@ -15,6 +15,13 @@ hkRover.controller('HKDashboardCtrl',['$scope', 'dashboardData',  function($scop
 	});*/
 	$scope.data = dashboardData;
 
+	// stop bounce effect only on the login container
+	var dashboardEl = document.getElementById( '#dashboard' );
+	angular.element( dashboardEl )
+		.bind( 'ontouchmove', function(e) {
+			e.stopPropagation();
+		});
+
 }]);
 
 hkRover.controller('HKRootCtrl',['$rootScope', '$scope', function($rootScope, $scope){
