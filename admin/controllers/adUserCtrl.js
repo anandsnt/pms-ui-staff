@@ -1,12 +1,15 @@
 admin.controller('ADUserListCtrl',['$scope', '$state','$stateParams', 'ADUserSrv',  function($scope, $state, $stateParams, ADUserSrv){
+	$scope.ListCtrl();
+	$scope.ListCtrl = function(){
+		ADUserSrv.fetch().then(function(data) {
+		        $scope.data = data;
+		        //$scope.$parent.myScroll['rooms'].refresh();
+		}, function(){
+			console.log("fetch failed");
 	
-	ADUserSrv.fetch().then(function(data) {
-	        $scope.data = data;
-	        //$scope.$parent.myScroll['rooms'].refresh();
-	}, function(){
-		console.log("fetch failed");
-
-	});	
+		});	
+	};
+	
 	
 	
 		
