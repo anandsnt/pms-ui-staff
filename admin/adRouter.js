@@ -62,6 +62,12 @@ admin.config([
 			controller: 'ADHotelListCtrl',
 			url : '/hotels'
 		});
+
+		$stateProvider.state('admin.brands', {
+			templateUrl: '/assets/partials/hotel/adBrandList.html',
+			controller: 'ADBrandListCtrl',
+			url : '/brands'
+		});
 		
 	}
 ]);
