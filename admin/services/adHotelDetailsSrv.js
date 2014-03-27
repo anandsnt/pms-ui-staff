@@ -1900,9 +1900,9 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', function($http
 		return deferred.promise;
 	};
 	this.updateHotelDeatils = function(data){
-
+console.log(data);
 		var deferred = $q.defer();
-		var url = '/admin/hotels/';	
+		var url = '/admin/hotels/'+data.id;	
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);

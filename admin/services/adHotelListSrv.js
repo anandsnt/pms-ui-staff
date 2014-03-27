@@ -21,6 +21,7 @@ admin.service('ADHotelListSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 		return deferred.promise;
 	};
 	//To fetch users list
+	
 	this.getHotelDetails = function(id){
 		var deferred = $q.defer();
 		var url = '/admin/hotels/'+id+'/edit.json';
@@ -39,6 +40,7 @@ admin.service('ADHotelListSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 		});
 		return deferred.promise;
 	};
+	
 
 	this.postReservationImportToggle = function(data){
 		var deferred = $q.defer();
