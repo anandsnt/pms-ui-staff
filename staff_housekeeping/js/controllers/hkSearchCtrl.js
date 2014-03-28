@@ -50,8 +50,10 @@ hkRover.controller('HKSearchCtrl',
 			e.stopPropagation();
 		});
 
-	$scope.refreshScroll = function(toPos) {		
-		if ( NaN !== parseInt(toPos) ) {
+	$scope.refreshScroll = function(toPos) {	
+		if ( isNaN(parseInt(toPos)) ) {
+			roomsEl.scrollTop = 0;
+		} else {
 			localStorage.removeItem('roomListScrollTopPos');
 
 			// must delay untill DOM is ready to jump
@@ -60,8 +62,6 @@ hkRover.controller('HKSearchCtrl',
 				console.log(toPos);
 				roomsEl.scrollTop = toPos;
 			}, 100);
-		} else {
-			roomsEl.scrollTop = 0;
 		}
 	};
 
@@ -115,7 +115,8 @@ hkRover.controller('HKSearchCtrl',
 
 		// since filter is applied after the user press 'DONE'
 		// the $digest loop only begins then. This freezes DOM,
-		// User may hit 'DONE' again, so for just-in-cases
+		// User may hit 'DONE' again
+		// TODO: better filter method needed
 		if ($scope.filterOpen) {
 			$scope.$emit('dismissFilterScreen');
 		};
