@@ -5,7 +5,7 @@
 			<a id="go_back" data-type="load-details" class="action back" ui-sref='admin.users'>Back</a>
 		</header>
 		<form user="2" id="edit-user" class="form float">
-			<div id="notification-message"></div>
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<fieldset class="holder left">
 				<div class="form-title">
 					<h3><span>User</span> details </h3>
@@ -16,8 +16,8 @@
 				<div class="entry full-width">
 					<label for="department"> Department </label>
 					<div class="select">
-						<select name="department" id="department" class="placeholder" >
-							<option value="{{}}" ng-repeat="department in data.departments">
+						<select name="department" ng-model="data.user_department" id="department" class="placeholder" >
+							<option value="{{department.value}}" ng-repeat="department in data.departments">
 								{{department.name}}
 							</option>
 						</select>
@@ -48,23 +48,23 @@
 					<h3><span>User</span> credentials </h3>
 					<em class="status"> <strong>All fields are mandatory!</strong> </em>
 				</div>
-				<ad-textbox value="data.email" name = "email" id = "email" label = "Email" placeholder = "Enter email address" required = "yes" class="full-width" ></ad-textbox>
-				<ad-textbox value="data.email1" name = "re-email" id = "re-email" label = "Re-type email" placeholder = "Enter email address" required = "yes" class="full-width" ></ad-textbox>
+				<ad-textbox value="data.email" name = "email" id = "email" label = "Email" placeholder = "Enter email address" required = "yes" styleclass="full-width" ></ad-textbox>
+				<ad-textbox value="data.confirm_email" name = "re-email" id = "re-email" label = "Re-type email" placeholder = "Enter email address" required = "yes" styleclass="full-width" ></ad-textbox>
 
 				
 
 				<div class="entry full-width">
 					<label for="password"> Password <strong>*</strong> </label>
-					<input type="password" ng-model="data.pwd" required="yes" placeholder="Enter password" name="password" id="password" autocomplete="off">
+					<input type="password" ng-model="data.password" required="yes" placeholder="Enter password" name="password" id="password" autocomplete="off">
 				</div>
 
 				<div class="entry full-width">
 					<label for="confirm-password"> Re-type password <strong>*</strong> </label>
-					<input type="password" required="yes" placeholder="Confirm password" name="re-password" id="confirm-password" autocomplete="off">
+					<input type="password" ng-model="data.confirm_password" required="yes" placeholder="Confirm password" name="re-password" id="confirm-password" autocomplete="off">
 				</div>
 
 				<!-- Activation Status -->
-				<div class="entry re-invite">
+				<div class="entry re-invite" ng-show="mod == 'edit'">
 					<label> Activation Status </label>
 					<div ng-show="data.is_activated == 'true'">
 						ACTIVATED
@@ -73,7 +73,7 @@
 						PENDING
 					</div>
 				</div>
-				<div class="entry re-invite">
+				<div class="entry re-invite" ng-show="mod == 'edit'">
 					<label>
 						<button id="re-invite" disabled="disabled" class="button" ng-class="{'green': data.is_activated == 'false', 'grey': data.is_activated == 'true'}">
 							Re-Invite
