@@ -191,7 +191,11 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	}
 
 
-	$scope.addNewoption = function(index){
+
+
+// on focus event create new option if focussed field is last
+
+	$scope.onFocus = function(index){
 
 
 
@@ -199,6 +203,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 			$scope.newOptionAvailable = true;
 
+			// exclude first two fields
 
 			if($scope.editData.lov.length > 2){
 
@@ -218,7 +223,19 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		}
 		
 	}
-	$scope.removeOption = function(index){
+// if content is deleted fully remove the input field
+
+	$scope.textChanged = function(index){
+
+		if($scope.editData.lov.length>1){
+			if($scope.editData.lov[index].name == "")
+				$scope.editData.lov.splice(index, 1);
+		}
+	}
+
+// on blur check for blank fields and delete
+
+	$scope.onBlur = function(index){
 
 
 
@@ -238,22 +255,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 		}
 	}
-	//alert(id)
 
-		// if($scope.editData.lov.length > 2){
-
-		// angular.forEach($scope.editData.lov,function(item, index) {
-		// 		if (item.name == "" && id != $scope.editData.length-2) {
-		// 		//	alert(id+"wd"+$scope.editData.length-1)
-		// 			$scope.editData.lov.splice(index, 1);
-		// 		}
-		// 	});
-		// }
-		
-// remaining
-
-
-// levels  ???
 
 
 
