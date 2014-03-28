@@ -1,29 +1,17 @@
 admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADHotelListSrv',  function($scope, $state,$rootScope, $stateParams, ADHotelListSrv){
+	BaseCtrl.call(this, $scope);
 	
-	ADHotelListSrv.fetch().then(function(data) {
-	        $scope.data = data;
-	        //$scope.$parent.myScroll['rooms'].refresh();
-	}, function(){
-		console.log("fetch failed");
-
-	});	
-	
-	$scope.HotelCtrl = function(id, editstate){
-		
-		$scope.hotelId = id;
-		console.log("$scope.hotelId")
-		console.log($scope.hotelId )
-	 	 // $state.go(editstate);
-	 	 ADHotelListSrv.getHotelDetails(id).then(function(data) {
-		        $scope.data = data;
-		        console.log( $scope.data )
-		        //$scope.$parent.myScroll['rooms'].refresh();
-		}, function(){
-			console.log("fetch failed");
-	
-		});	
+	var fetchSuccess = function(data){
+		$scope.data = data;
+		$scope.$emit('hideLoader');
 	};
 	
+	var fetchFailed = function(){
+		console.log("fetchFailed");
+		$scope.$emit('hideLoader');
+	};
+	
+	$scope.invokeApi(ADHotelListSrv.fetch, {}, fetchSuccess, fetchFailed);
 	
 	$scope.toggleClicked = function(index){
 		
@@ -35,15 +23,15 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
       	var is_res_import_on = $scope.data.hotels[index].is_res_import_on == 'true' ? false : true;
       	var data = {'hotel_id' :  $scope.data.hotels[index].id,  'is_res_import_on': is_res_import_on };
       	
-      	var fetchSuccess = function(){
+      	var postSuccess = function(){
       		$scope.data.hotels[index].is_res_import_on = ($scope.data.hotels[index].is_res_import_on == 'true') ? 'false' : 'true';
 		};
 		
-		var fetchFailed = function(){
+		var postFailed = function(){
 			console.log("fetchFailed");
 		};
 		
-		ADHotelListSrv.postReservationImportToggle(data).then(fetchSuccess, fetchFailed);
+		$scope.invokeApi(ADHotelListSrv.postReservationImportToggle, data, postSuccess, postFailed);
 	};
 		
 

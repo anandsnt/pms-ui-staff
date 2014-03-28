@@ -5,9 +5,9 @@
 			<header class="content-title float">
 				<h2>Hotels</h2>
 				<span class="count">({{data.hotels.length}})</span>
-				<a id="add_new_hotel" ui-sref="admin.hoteldetails({action:'add'})" class="action add">Add new</a>
+				<a ui-sref="admin.hoteldetails({action:'add'})" class="action add">Add new</a>
 			</header>
-			<div id="notification-message"></div>
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div> 
 			<table id="hotels_list_table" class="grid datatable">
 				<thead>
 					<tr role="row">
@@ -22,7 +22,6 @@
 				<tbody>
 					<tr data-hotel-id="{{hotel.id}}" ng-repeat="hotel in data.hotels">
 						<td>
-
 							<a ui-sref="admin.hoteldetails({action:'edit',id:hotel.id})" class="title">
 								 <strong> {{hotel.hotel_name}} </strong>
 								 <em> {{hotel.city}} , {{hotel.state}} </em>
@@ -41,8 +40,8 @@
 							</div>
 						</td>
 					</tr>
-
 				</tbody>
+				
 			</table>
 		</section>
 	</div>

@@ -6,8 +6,8 @@
 	</header>
 	<form  name="edit-hotel" method="post" id="edit-hotel" class="form float" >
 
-		<!-- Added notification message div to show the error message -->
-		<div id="notification-message"></div>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div> 
+		
 		<fieldset class="holder left">
 			<div class="form-title">
 				<h3><span>Hotel</span> name and location </h3>
@@ -62,7 +62,7 @@
 
 			<div class="entry full-width registration-for-rover" ng-hide="isAdminSnt">
 				<label for="rover"> Rover Registration </label>
-				<div id="registration-for-rover" class="boxes">
+				<div ng-model="data.required_signature_at" id="registration-for-rover" class="boxes">
 					<label class="radio" ng-class="{checked: data.required_signature_at == 'CHECKIN'}"> <span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'CHECKIN'}"></span>
 						<input type="radio" value="CHECKIN" name="rover" id="type1" class="change-data" checked="checked">
 						Require Signature at Check In </label>
@@ -209,7 +209,6 @@
 					<button type="button" class="button brand-colors">
 						Choose file
 					</button>
-
 				</div>
 				<span class="file-preview"> <img src="{{data.hotel_logo}}" id="hotel-logo-preview" alt="" height="112" width="auto"> </span>
 			</div>
@@ -286,9 +285,7 @@
 			<button type="button" ng-click="clickedSave()" class="button green">
 				Save Changes
 			</button>
-
 			<button type="button" ui-sref="admin.mapping({id:id})"  ng-show="isAdminSnt && isEdit" class="button green">
-
 				Mappings
 			</button>
 			<button type="button" ng-click="clickedUserSetup()" ng-show="isAdminSnt && isEdit" class="button green">

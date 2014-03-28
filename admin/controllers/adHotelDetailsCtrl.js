@@ -2,7 +2,6 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.isAdminSnt = false;
 	$scope.isEdit = false;
 	$scope.id = $stateParams.id;
-	console.log( "$stateParams.id",$stateParams.id);
 	BaseCtrl.call(this, $scope);
 	
 	if($stateParams.action == "add"){
@@ -19,6 +18,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess, fetchFailed);
 	}
 	else if($stateParams.action == "edit"){
+		$scope.isEdit = true;
 		
 		var fetchSuccess = function(data){
 			$scope.data = data;
@@ -30,7 +30,6 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			$scope.$emit('hideLoader');
 		};
 		$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess, fetchFailed);
-		$scope.isEdit = true;
 	}
 	
 	if($rootScope.adminRole == "snt-admin"){
