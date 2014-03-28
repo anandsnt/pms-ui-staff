@@ -5,7 +5,7 @@
 			<header class="content-title float">
 				<h2>External Mappings</h2>
 				<span class="count">(3)</span>
-				<a id="add_new_hotel" ui-sref="" class="action add">Add new</a>
+				<a id="add_new_hotel" ui-sref="" class="action add" ng-click="addNew()">Add new</a>
 			</header>
 			<div id="notification-message"></div>
 			<table id="external_mapping_table" class="grid datatable">
@@ -18,14 +18,16 @@
 					</tr>
 				</thead>
 
-				<tbody>
-				
-					<tr ng-repeat="mapping in data.mapping">
-					
-						<td width="30%" ><a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.mapping_type}}</a></td>
-						<td width="25%" ><a data-item="3" data-colspan="2" class="edit-data-inline">{mapping.snt_value}}</a></td>
-						<td width="25%"><a data-item="3" data-colspan="2" class="edit-data-inline">{mapping.external_value}}</a></td>
-						<td class="delete" width="10%"><a id="3" class="icons icon-delete large-icon delete_item"></a></td>
+				<tbody ng-repeat="mapping in data.mapping">
+
+					<tr ng-repeat="mapping_value in mapping.mapping_values">
+
+						<td width="30%"><a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.mapping_type}}</a></td>
+
+						<td width="25%"><a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.snt_value}}</a></td>
+						<td width="25%"><a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.external_value}}</a></td>
+
+						<td class="delete" ng-hide="currentClickedElement == $index" width="10%"><a id="3" class="icons icon-delete large-icon delete_item"></a></td>
 					</tr>
 
 				</tbody>

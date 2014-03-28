@@ -61,9 +61,9 @@ admin.config([
 		});
 		
 		$stateProvider.state('admin.mapping', {
-			templateUrl: '/assets/partials/hotel/externalMapping.html',
+			templateUrl: '/assets/partials/mapping/adExternalMapping.html',
 			controller: 'ADMappingCtrl',
-			url : '/mapping/:hotel_id'
+			url : '/mapping/:id'
 		});
 	}
 ]);

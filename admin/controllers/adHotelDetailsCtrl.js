@@ -1,6 +1,7 @@
 admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv','$stateParams', function($rootScope, $scope, ADHotelDetailsSrv, $stateParams){
 	$scope.isAdminSnt = false;
-	$scope.isEdit = false;	
+	$scope.isEdit = false;
+	$scope.id = $stateParams.id;
 	BaseCtrl.call(this, $scope);
 	
 	if($stateParams.action == "add"){
