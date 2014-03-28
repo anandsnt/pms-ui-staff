@@ -10,7 +10,10 @@
 <!-- Search form -->
 <form class="search-form" role="search">
    <div class="entry">
-      <a id="clear-query" ng-show="query != ''" class="icons icon-clear-search visible" ng-click = "clearSearch()">Clear query</a>
+   	<div class="closebtn" ng-show="query != ''" ng-click = "clearSearch()" >
+      <a id="clear-query" class="icons icon-clear-search visible"  ng-click = "$emit('clearSearch()')">Clear query</a>
+      </div>
+      
       <button type="submit" class="icons icon-search">Search</button>
       <input name="query" id="query" ng-model="query" placeholder="Enter Room Number" type="text" autocomplete="off" ng-keypress="refreshScroll()"/>
    </div>
@@ -32,14 +35,14 @@
    </ul>
 </section>
 <!-- Rooms filters -->
-<section class="content" id="filter-rooms">
+<section class="content" id="filter-rooms" ng-show = "filterOpen">
 
    <header role="banner" class="nav-bar float">
        <h1 class="h2">Filter rooms</h1>
        <button id="clear-filters" class="button blank clear-selection" ng-show = "isFilterChcked()" ng-click = "clearFilters()" type="button">Clear</button>
        <a class="complete toggle linked-toggle" ng-click="filterDoneButtonPressed()">Done</a>
     </header>
-    <div class="content scrollable" id="filter-options" ng-iscroll = "rooms" ng-iscroll-form = "true">
+    <div class="content scrollable" id="filter-options">
        <div class="wrapper" >
           <div class="holder">
              <strong class="title">Housekeeping Status</strong>

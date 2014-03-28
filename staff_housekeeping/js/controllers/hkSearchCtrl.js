@@ -26,18 +26,39 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		}
 	});
 
-	// To fix scroll issue on search screen
-	// TODO : Create directive for iScroll
-    var currentScroll = new iScroll('rooms', {
-    	scrollbarClass: 'myScrollbar'
-    });
+
+
+	/** 
+	*	Keep the room element reference
+	*	
+	*	Note: I know directive blah blah, but this is an issue that directive can't solve.
+	*	Or I am just too lazy to think directive way. OK TODO, myself
+	*	
+	*	Issue: Ditched ng-iscroll and using -webkit-overflow-scroll,
+	*	to get that awesome unmatachable momentum scrolling in iPhone.
+	*	But scroll-to-top won't work.
+	*/
+	var roomsEl = document.getElementById( 'rooms' );
+	var filterOptionsEl = document.getElementById( 'filter-options' );
+
 	$scope.refreshScroll = function() {
-		setTimeout(function () { 
-			currentScroll.refresh();
-			currentScroll.scrollTo(0, 0, 200);
-		}, 100);
+		roomsEl.scrollTop = 0;
 	};
+
+	// stop browser bounce while swiping on rooms element
+	angular.element( roomsEl )
+		.bind( 'ontouchmove', function(e) {
+			e.stopPropagation();
+		});
+
+	// stop browser bounce while swiping on filter-options element
+	angular.element( filterOptionsEl )
+		.bind( 'ontouchmove', function(e) {
+			e.stopPropagation();
+		});
 	
+
+
 	//Retrun the room color classes
 	$scope.getRoomColorClasses = function(roomHkStatus, isRoomOccupied, isReady){
 
