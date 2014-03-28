@@ -20,11 +20,9 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 		var fetchChainsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
-			$scope.$emit('hideLoader');
 			$scope.chainsList = data.chain_list;
 		};
 		var fetchChainsFailCallback = function(){
-			$scope.$emit('hideLoader');
 			$scope.$emit('hideLoader');
 			console.log("error controller");
 		};
@@ -68,7 +66,6 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		};
 		var editChainsFailCallback = function(){
 			$scope.$emit('hideLoader');
-			$scope.$emit('hideLoader');
 			console.log("error controller");
 		};
 
@@ -102,8 +99,22 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  		return "/assets/partials/chains/adChainForm.html";
 
  	}
+
+ 	// add new chain
+
  	$scope.addNewChain = function (){
 
+ 		var lovNames = [];
+ 		angular.forEach($scope.editData.lov,function(item, index) {
+		  if (item.name == "") {
+		  	$scope.editData.lov.splice(index, 1);
+		  }
+		  else{
+		  	lovNames.push(item.name)
+		  }
+		});
+		$scope.editData.lov = lovNames;
+		console.log(lovNames)
 
  		var addChainSuccessCallback = function(data) {
  			$scope.$emit('hideLoader');
@@ -123,12 +134,13 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
  	}
 
+ 	// update existing chain
 
  	$scope.updateChain = function(id){
 
 
  		angular.forEach($scope.editData.lov,function(item, index) {
-		  if (item.name == "") { // not divisible by two, remove.
+		  if (item.name == "") {
 		  	$scope.editData.lov.splice(index, 1);
 		  }
 		});
@@ -138,7 +150,6 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
  		var updateChainSuccessCallback = function(data) {
  			$scope.$emit('hideLoader');
- 			console.log(data)
  			$scope.fetchHotelChains();
  			$scope.isEditmode = false;
  		};
@@ -192,7 +203,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 // remaining
 
 
-// implement base webservice
+// levels  ???
+
 
 
 }]);
