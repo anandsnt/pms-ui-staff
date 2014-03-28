@@ -1,28 +1,17 @@
 admin.service('ADMappingSrv', ['$http', '$q', 'ADBaseWebSrv',
 function($http, $q, ADBaseWebSrv) {
 
-	var _this = this;
-	_this.mappingList = "";
-	//To fetch mappingList
-	this.fetch = function(hotel_id) {
+	this.fetch = function(data){
 		var deferred = $q.defer();
-		var url = "/admin/external_mappings/"+hotel_id+"/new_mappings.json";
-
-		$http.get(url).success(function(response, status) {
-			if (response.status == "success") {
-				_this.mappingList = response.data;
-				deferred.resolve(_this.mappingList);
-			} else {
-				console.log("error");
-			}
-
-		}).error(function(data, status) {
-			deferred.reject(data);
-		});
+		var url = "/admin/external_mappings/"+data.id+"/list_mappings.json";
+		//var url = '/admin/hotels/new.json';	
+		//var url = '/sample_json/ng_admin/adSntApp.json';
+		ADBaseWebSrv.getJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
 		return deferred.promise;
-	};
-	
-	
-	
+	};	
 
 }]); 

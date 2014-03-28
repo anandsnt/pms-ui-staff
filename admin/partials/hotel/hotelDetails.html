@@ -14,7 +14,7 @@
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
 		
-		
+
 			<!-- <div ad-Textbox></div> -->
 			<ad-textbox value="data.hotel_name" name = "hotel-name" id = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes" ></ad-textbox>
 			
@@ -282,7 +282,6 @@
 			</button>
 
 		</fieldset>
-
 		<div class="actions float">
 			<button type="button" ng-click="clickedCancel()" class="button blank">
 				Cancel
@@ -291,7 +290,7 @@
 				Save Changes
 			</button>
 
-			<button type="button" ui-sref="admin.mapping({hotel_id:hotel_id})"  ng-show="isAdminSnt && isEdit" class="button green">
+			<button type="button" ui-sref="admin.mapping({id:id})"  ng-show="isAdminSnt && isEdit" class="button green">
 
 				Mappings
 			</button>
