@@ -2,12 +2,17 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 	
 	BaseCtrl.call(this, $scope);
 	$scope.mod = "";
+   /**
+    *   Failure callback function
+    *   @param {String} errorMessage from server
+    */
 	$scope.failureCallback = function(errorMessage){
 		$scope.$emit('hideLoader');
-		console.log(errorMessage);
 		$scope.errorMessage = errorMessage;
 	};
-	
+	/**
+    *   save user deatils
+    */
 	$scope.saveUserDetails = function(){
 		var params = $scope.data;
 		var data = {
@@ -26,20 +31,18 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 			$scope.$emit('hideLoader');
 		};
 		if($scope.mod == "add"){
-			console.log("============add data=============");
 			$scope.invokeApi(ADUserSrv.saveUserDetails, data , successCallback, $scope.failureCallback);
 		} else {
 			data.user_id = params.user_id;
-			console.log("============New data=============");
-			console.log(data);
 			$scope.invokeApi(ADUserSrv.updateUserDetails, data , successCallback, $scope.failureCallback);
 		}
-		
-		
 	};
-	
+	/**
+    * To render edit screen - 
+    * @param {string} the id of the clicked user
+    * 
+    */
 	$scope.userDetailsEdit = function(id){
-		console.log("++++++++++++++EDIT++++++++++++++");
 		var successCallbackRender = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data;
@@ -47,28 +50,26 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 		};
 		$scope.invokeApi(ADUserSrv.getUserDetails, {'id':id} , successCallbackRender, $scope.failureCallback);
 	};
-	
+	/**
+    * To render add screen
+    */
 	$scope.userDetailsAdd = function(){
-		console.log("++++++++++++++ADD++++++++++++++");
 	 	var successCallbackRender = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data;
 		};	
 	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender, $scope.failureCallback);	
 	};
-	
+    /**
+    * To set mod of operation - add/edit
+    */
 	var id = $stateParams.id;
 	if(id == ""){
 		$scope.mod = "add";
 		$scope.userDetailsAdd();
 	} else {
-			console.log(".............++++++++++++++edit++++++++++++++");
 		$scope.mod = "edit";
 		$scope.userDetailsEdit(id);
 	}
-	
-	
-	
-	
 
 }]);

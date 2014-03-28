@@ -39,11 +39,7 @@ admin.config([
 		});
 
 		
-		// $stateProvider.state('admin.useredit', {
-			// templateUrl: '/assets/partials/users/adUserEdit.html',
-			// controller: 'ADUserListCtrl',
-			// url : '/useredit'
-		// });
+		
 		$stateProvider.state('admin.userlist', {
 			templateUrl: '/assets/partials/users/adUserList.html',
 			controller: 'ADUserListCtrl',
@@ -51,7 +47,7 @@ admin.config([
 		});
 		
 		$stateProvider.state('admin.userdetails', {
-			templateUrl: '/assets/partials/users/adUserEdit.html',
+			templateUrl: '/assets/partials/users/adUserDetails.html',
 			controller: 'ADUserDetailsCtrl',
 			url : '/user/:page/:id'
 		});
@@ -69,6 +65,13 @@ admin.config([
 			templateUrl: '/assets/partials/mapping/adExternalMapping.html',
 			controller: 'ADMappingCtrl',
 			url : '/mapping/:id'
+		});
+		
+		
+		$stateProvider.state('admin.mappingdetails', {
+			templateUrl: '/assets/partials/mapping/adExternalMappingDetails.html',
+			controller: 'ADMappingDetailsCtrl',
+			url : '/mappingdetails/:action/:id'
 		});
 	}
 ]);

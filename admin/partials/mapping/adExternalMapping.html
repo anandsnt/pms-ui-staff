@@ -5,7 +5,8 @@
 			<header class="content-title float">
 				<h2>External Mappings</h2>
 				<span class="count">(3)</span>
-				<a id="add_new_hotel" ui-sref="" class="action add" ng-click="addNew()">Add new</a>
+			
+				<a id="add_new_hotel" ui-sref="admin.mappingdetails({action:'add',id:id})" class="action add" >Add new</a>
 			</header>
 			<div id="notification-message"></div>
 			<table id="external_mapping_table" class="grid datatable">
@@ -22,7 +23,7 @@
 
 					<tr ng-repeat="mapping_value in mapping.mapping_values">
 
-						<td width="30%"><a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.mapping_type}}</a></td>
+						<td width="30%"><a ui-sref="admin.mappingdetails({action:'edit',id:mapping_value.value})" data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.mapping_type}}</a></td>
 
 						<td width="25%"><a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.snt_value}}</a></td>
 						<td width="25%"><a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.external_value}}</a></td>

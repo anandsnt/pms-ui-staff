@@ -160,7 +160,7 @@
 				<div class="select">
 					<select ng-model="data.hotel_brand" name="hotel-brand" id="hotel-brand" class="placeholder">
 						<option value=""> Hotel brand </option>
-						<option ng-repeat="brand in data.brands" value="brand.id" ng-selected="brand.id==data.hotel_brand"> {{brand.name}} </option>
+						<option ng-repeat="brand in data.brands" value="{{brand.id}}" ng-selected="brand.id==data.hotel_brand"> {{brand.name}} </option>
 					</select>
 				</div>
 			</div>
@@ -179,7 +179,7 @@
 				<div class="select">
 					<select ng-model="data.hotel_pms_type" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
 						<option value=""> PMS Type </option>
-						<option ng-repeat="pms_types in data.pms_types" value="pms_types.value" ng-seletected="pms_types.value==data.hotel_pms_type"> {{pms_types.value}} </option>
+						<option ng-repeat="pms_types in data.pms_types" value="{{pms_types.value}}" ng-seletected="pms_types.value==data.hotel_pms_type"> {{pms_types.value}} </option>
 					</select>
 				</div>
 			</div>
