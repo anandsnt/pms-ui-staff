@@ -22,9 +22,10 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			$scope.$emit('hideLoader');
 			$scope.chainsList = data.chain_list;
 		};
-		var fetchChainsFailCallback = function(){
+		var fetchChainsFailCallback = function(errorMessage){
 			$scope.$emit('hideLoader');
 			console.log("error controller");
+			$scope.errorMessage = errorMessage[0];
 		};
 
 		$scope.invokeApi(adChainsSrv.fetch, {},fetchChainsSuccessCallback, fetchChainsFailCallback);
@@ -45,6 +46,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 		
 		$scope.isAddmode = false;
+		$scope.errorMessage ="";
 
 
 		$scope.currentClickedElement = index;
@@ -64,9 +66,10 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			$scope.isEditmode = true;
 			console.log(data)
 		};
-		var editChainsFailCallback = function(){
+		var editChainsFailCallback = function(errorMessage){
 			$scope.$emit('hideLoader');
 			console.log("error controller");
+			$scope.errorMessage = errorMessage[0];
 		};
 
 		$scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback,editChainsFailCallback);
@@ -81,6 +84,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 
 		$scope.editData   = {};
+		$scope.errorMessage ="";
 
 
 		$scope.editData.lov  = [{'value':'','name':''}];
@@ -123,10 +127,10 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  			$scope.isAddmode = false;
 
  		};
- 		var addChainFailCallback = function(){
+ 		var addChainFailCallback = function(errorMessage){
  			$scope.$emit('hideLoader');
- 			$scope.isAddmode = false;
  			console.log("error controller");
+ 			$scope.errorMessage = errorMessage[0];
  		};
 
  		$scope.invokeApi(adChainsSrv.post,$scope.editData, addChainSuccessCallback,addChainFailCallback);
@@ -153,10 +157,10 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  			$scope.fetchHotelChains();
  			$scope.isEditmode = false;
  		};
- 		var updateChainFailCallback = function(){
+ 		var updateChainFailCallback = function(errorMessage){
  			$scope.$emit('hideLoader');
- 			$scope.isEditmode = false;
  			console.log("error controller");
+ 			$scope.errorMessage = errorMessage[0];
  		};
 
 
