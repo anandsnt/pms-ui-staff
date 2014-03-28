@@ -82,17 +82,56 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		var url = 'admin/users';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
-			console.log('in success');
 		    deferred.resolve(data);
 		},function(data){
-			console.log('in error');
-			console.log('sdfd');
-			console.log(JSON.stringify(data));
 		    deferred.reject(data);
 		});	
 		return deferred.promise;
 		
 	};
+	this.activateInactivate = function(data){
+		
+		var deferred = $q.defer();
+		var url = '/admin/users/toggle_activation';
+
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+		
+	};
+	this.deleteUser = function(data){
+		
+		var deferred = $q.defer();
+		var url = '/admin/users/'+data.id;
+
+		ADBaseWebSrv.deleteJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+		
+	};
+	this.linkExistingUser = function(data){
+		
+		var deferred = $q.defer();
+		var url = '/admin/users/link_existing';
+
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+		
+	};
+	
+	
+	
+	
 
 
 }]);

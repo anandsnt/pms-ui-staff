@@ -61,9 +61,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		else ADHotelDetailsSrv.addNewHotelDeatils(data).then(fetchSuccess, fetchFailed);
 
 	};
-	$scope.clickedUserSetup = function(){
-		$state.go("admin.users");
-	};
+	
 	
 	$scope.clickedCancel = function(){
 		console.log("clickedCancel");
