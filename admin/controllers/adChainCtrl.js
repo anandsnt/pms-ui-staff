@@ -225,7 +225,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 		 if($scope.editData.lov.length >2){
 		angular.forEach($scope.editData.lov,function(item, index) {
-		  if (item.name == "" && index < $scope.editData.lov.length ) {
+		  if (item.name == "" && index < $scope.editData.lov.length-1 ) {
+		 // 	alert(index)
 		  	// $scope.editData.lov.splice(index, 1);
 		  	$scope.optionAvailable = false;
 		  }
