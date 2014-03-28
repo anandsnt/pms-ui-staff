@@ -9,10 +9,13 @@ hkRover.controller('HKSearchCtrl',
 	//Fetch the roomlist
 	$scope.$emit('showLoader');
 	HKSearchSrv.fetch().then(function(data) {
-			$scope.$emit('hideLoader');
-	        
-	        $scope.data = data;
-			$scope.refreshScroll();
+		$scope.$emit('hideLoader');
+        $scope.data = data;
+
+        // scroll to the previous room list scroll position
+        var toPos = localStorage.getItem( 'roomListScrollTopPos' );
+        $scope.refreshScroll( toPos );
+
 	}, function(){
 		console.log("fetch failed");
 		$scope.$emit('hideLoader');
@@ -35,10 +38,6 @@ hkRover.controller('HKSearchCtrl',
 	var roomsEl = document.getElementById( 'rooms' );
 	var filterOptionsEl = document.getElementById( 'filter-options' );
 
-	$scope.refreshScroll = function() {
-		roomsEl.scrollTop = 0;
-	};
-
 	// stop browser bounce while swiping on rooms element
 	angular.element( roomsEl )
 		.bind( 'ontouchmove', function(e) {
@@ -50,8 +49,21 @@ hkRover.controller('HKSearchCtrl',
 		.bind( 'ontouchmove', function(e) {
 			e.stopPropagation();
 		});
-	
 
+	$scope.refreshScroll = function(toPos) {		
+		if ( NaN !== parseInt(toPos) ) {
+			localStorage.removeItem('roomListScrollTopPos');
+
+			// must delay untill DOM is ready to jump
+			$timeout(function() {
+				console.log(roomsEl);
+				console.log(toPos);
+				roomsEl.scrollTop = toPos;
+			}, 100);
+		} else {
+			roomsEl.scrollTop = 0;
+		}
+	};
 
 	//Retrun the room color classes
 	$scope.getRoomColorClasses = function(roomHkStatus, isRoomOccupied, isReady){
@@ -78,6 +90,9 @@ hkRover.controller('HKSearchCtrl',
 		$state.go('hk.roomDetails', {
 			id: room.id
 		});
+
+		// store the current room list scroll position
+		localStorage.setItem('roomListScrollTopPos', roomsEl.scrollTop);
 	};
 
 
