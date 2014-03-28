@@ -78,7 +78,7 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find("#signature").on('mouseout touchend', function() {
 			enableVerticalScroll('#registration-content');
 		});
-		that.myDom.find('#move_to_bill'+current_bill_number).on('change', that.moveToAnotherBill());
+		that.myDom.find('#move_to_bill_'+current_bill_number).on('change', that.moveToAnotherBill);
 	};
 
 	// function for closing the drawer if is open
@@ -496,22 +496,20 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.moveToAnotherBill = function(e) {
-		var current_bill_number = that.getActiveBillNumber();
-		console.log("clicked move to bill....."+current_bill_number);
-		var billValue = that.myDom.find('#move_to_bill'+current_bill_number).val();
+		var current_bill_number = that.getActiveBillNumber;
+		var billValue = that.myDom.find('#move_to_bill_'+current_bill_number).val();
 		var previousBillValue = current_bill_number;
 		var reservation_id = getReservationId();
-
+		var transaction_id = "<get the transaction id>";
 		var data = {
 			"reservation_id" : reservation_id,
 			"to_bill" : billValue,
 			"from_bill" : previousBillValue,
-			"transaction_id" : 
+			"transaction_id" : transaction_id
 		};
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : data
-
 		};
 		webservice.postJSON('/staff/bills/transfer_transaction', options);
 	};
