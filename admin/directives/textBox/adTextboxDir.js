@@ -9,7 +9,9 @@ admin.directive('adTextbox', function($timeout) {
             label: '@label',
 	        placeholder : '@placeholder',
 	        required : '@required',
-            id : '@id'
+            id : '@id',
+            styleclass: '@styleclass',
+            inputtype: '@inputtype'
 	    },
     	templateUrl: '../../assets/directives/textBox/adTextbox.html'  
 	        
