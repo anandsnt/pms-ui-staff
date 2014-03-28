@@ -148,8 +148,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  				$scope.editData.lov.splice(index, 1);
  			}
  			if (item.value == "") {
- 				 var value = parseInt($scope.editData.lov[index-1].value)+1;
- 				 item.value = value.toString();;
+ 				 delete item.value;
  			}
  		});
 
