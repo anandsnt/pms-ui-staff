@@ -27,8 +27,10 @@ admin.service('ADUserSrv',['$http', '$q', function($http, $q){
 
 		
 		$http.get(url).success(function(response, status) {
+			console.log("=================");
+			console.log((response.data));
 		//	if(response.status == "success"){
-			    _this.userDetails = response.user_id;
+			    _this.userDetails = response.data;
 			    deferred.resolve(_this.userDetails);
 			//}else{
 				//console.log("error");
