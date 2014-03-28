@@ -50,19 +50,17 @@ hkRover.controller('HKSearchCtrl',
 			e.stopPropagation();
 		});
 
-	$scope.refreshScroll = function(toPos) {	
+	$scope.refreshScroll = function(toPos) {
 		if ( isNaN(parseInt(toPos)) ) {
-			roomsEl.scrollTop = 0;
+			var toPos = 0;
 		} else {
 			localStorage.removeItem('roomListScrollTopPos');
-
-			// must delay untill DOM is ready to jump
-			$timeout(function() {
-				console.log(roomsEl);
-				console.log(toPos);
-				roomsEl.scrollTop = toPos;
-			}, 100);
 		}
+
+		// must delay untill DOM is ready to jump
+		$timeout(function() {
+			roomsEl.scrollTop = toPos;
+		}, 100);
 	};
 
 	//Retrun the room color classes
