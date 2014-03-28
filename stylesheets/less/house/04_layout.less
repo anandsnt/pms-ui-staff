@@ -43,6 +43,11 @@ body {
             overflow: hidden;
             z-index: 1;
             .background(@white);
+
+            /* nav open close transitions */
+            -webkit-transition: -webkit-transform 0.3s ease;
+            -moz-transition: -moz-transform 0.3s ease;
+            transition: transform 0.3s ease;
             
             /* Page inner container ***/
             .content {
@@ -160,7 +165,9 @@ body {
         &.menu-open {
             .page-current,
             .page-locked {
-                #move > #page > .left();
+                -webkit-transform: translateX(80px);
+                -moz-transform: translateX(80px);
+                transform: translateX(80px);
             }           
         }
        
@@ -174,18 +181,10 @@ body {
         /* Page transitions - room filters ***/
         &.filter-rooms-open {
             .search-form,
-            #rooms { #fade > .out(); }
             #filter-rooms {
                 display: block;
             }
-        }
-
-        &.filter-rooms-closing {
-            .search-form,
-            #rooms { #fade > .in(); }
-            #filter-rooms { #move > #element > .top(hideRoomFilters);  }
-        } 
-       
+        }       
 
         /* Page transitions - loading, signing in and out ***/
         &.loading {

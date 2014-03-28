@@ -1,4 +1,8 @@
-hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($scope, HKSearchSrv, $state){
+
+hkRover.controller('HKSearchCtrl',
+	[
+		'$scope', 'HKSearchSrv', '$state', '$timeout',
+	function($scope, HKSearchSrv, $state, $timeout){
 	$scope.isFilterHidden = false;
 	$scope.query = '';
 
@@ -6,12 +10,12 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 	$scope.$emit('showLoader');
 	HKSearchSrv.fetch().then(function(data) {
 			$scope.$emit('hideLoader');
+	        
 	        $scope.data = data;
 			$scope.refreshScroll();
 	}, function(){
 		console.log("fetch failed");
 		$scope.$emit('hideLoader');
-
 	});	
 
 	$scope.currentFilters = HKSearchSrv.currentFilters;
@@ -28,16 +32,6 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 
 
 
-	/** 
-	*	Keep the room element reference
-	*	
-	*	Note: I know directive blah blah, but this is an issue that directive can't solve.
-	*	Or I am just too lazy to think directive way. OK TODO, myself
-	*	
-	*	Issue: Ditched ng-iscroll and using -webkit-overflow-scroll,
-	*	to get that awesome unmatachable momentum scrolling in iPhone.
-	*	But scroll-to-top won't work.
-	*/
 	var roomsEl = document.getElementById( 'rooms' );
 	var filterOptionsEl = document.getElementById( 'filter-options' );
 
@@ -82,19 +76,35 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 	*/
 	$scope.roomListItemClicked = function(room){
 		$state.go('hk.roomDetails', {
-				id: room.id
+			id: room.id
 		});
 	};
-
 
 
 	/**
 	*  Function to Update the filter service on changing the filter state
 	*  @param {string} name of the filter to be updated
 	*/
-	$scope.checkboxClicked = function(option){
-		HKSearchSrv.currentFilters[option] = !HKSearchSrv.currentFilters[option];	
+	$scope.checkboxClicked = function(item){
+		HKSearchSrv.toggleFilter( item );	
 	}
+
+
+	/**
+	*  A method to handle the filter done button
+	*  Refresh the room list scroll
+	*  Emits a call to dismiss the filter screen
+	*/	
+	$scope.filterDoneButtonPressed = function(){
+		$scope.refreshScroll();
+
+		// since filter is applied after the user press 'DONE'
+		// the $digest loop only begins then. This freezes DOM,
+		// User may hit 'DONE' again, so for just-in-cases
+		if ($scope.filterOpen) {
+			$scope.$emit('dismissFilterScreen');
+		};
+	};
 
 
 	/**
@@ -109,7 +119,13 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 			if((room.room_no).indexOf($scope.query) >= 0) return true;
 			return false;
 		}
-		
+
+		// while the user is choosing the filter
+		// do NOT process anymore yet, cost too much $digest cycles
+		if ($scope.filterOpen) {
+			return false;
+		};
+
 		//Filter by status in filter section, HK_STATUS
 		if($scope.isAnyFilterTrue(['dirty','pickup','clean','inspected','out_of_order','out_of_service'])){
 
@@ -184,6 +200,7 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 			return false;
 		}
 		return true;
+		
 	}
 	
 	/**
@@ -196,6 +213,7 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		        return true;
 		    }
 		}
+
 		return false;
 	}
 
@@ -209,20 +227,10 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 			if($scope.currentFilters[filterArray[f]] === true){
 				return true;
 			}
-		}		
+		}
+
 		return false
 	}
-
-	/**
-	*  A method to handle the filter done button
-	*  Refresh the room list scroll
-	*  Emits a call to dismiss the filter screen
-	*/	
-	$scope.filterDoneButtonPressed = function(){
-		$scope.refreshScroll();
-		$scope.$emit('dismissFilterScreen');
-
-	};
 
 	/**
 	*  A method to uncheck all the filter options
