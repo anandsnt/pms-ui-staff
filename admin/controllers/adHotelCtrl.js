@@ -13,6 +13,11 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 	
 	$scope.invokeApi(ADHotelListSrv.fetch, {}, fetchSuccess, fetchFailed);
 	
+	/**
+    *   A post method to update ReservationImport for a hotel
+    *   @param {String} index value for the hotel list item.
+    */
+   
 	$scope.toggleClicked = function(index){
 		
 		// checkedStatus will be true, if it checked
@@ -25,10 +30,12 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
       	
       	var postSuccess = function(){
       		$scope.data.hotels[index].is_res_import_on = ($scope.data.hotels[index].is_res_import_on == 'true') ? 'false' : 'true';
+			$scope.$emit('hideLoader');
 		};
 		
 		var postFailed = function(){
 			console.log("fetchFailed");
+			$scope.$emit('hideLoader');
 		};
 		
 		$scope.invokeApi(ADHotelListSrv.postReservationImportToggle, data, postSuccess, postFailed);

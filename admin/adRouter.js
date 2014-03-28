@@ -39,16 +39,17 @@ admin.config([
 		});
 
 		
-		// $stateProvider.state('admin.useredit', {
-			// templateUrl: '/assets/partials/users/adUserEdit.html',
-			// controller: 'ADUserListCtrl',
-			// url : '/useredit'
-		// });
+		
+		$stateProvider.state('admin.userlist', {
+			templateUrl: '/assets/partials/users/adUserList.html',
+			controller: 'ADUserListCtrl',
+			url : '/users'
+		});
 		
 		$stateProvider.state('admin.userdetails', {
-			templateUrl: '/assets/partials/users/adUserEdit.html',
-			controller: 'ADUserListCtrl',
-			url : '/user/:page'
+			templateUrl: '/assets/partials/users/adUserDetails.html',
+			controller: 'ADUserDetailsCtrl',
+			url : '/user/:page/:id'
 		});
 		
 
