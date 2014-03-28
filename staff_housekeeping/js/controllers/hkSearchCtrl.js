@@ -224,14 +224,17 @@ hkRover.controller('HKSearchCtrl',
 	*   A method to determine if any filter checked
 	*   @return {Boolean} false if none of the filter is checked
 	*/
-	$scope.isFilterChcked = function(){
-		for(var f in $scope.currentFilters) {
+	$scope.isFilterChcked = function() {
+		var ret = false;
+
+		for (var f in $scope.currentFilters) {
 		    if($scope.currentFilters[f] === true) {
-		        return true;
+		        ret = true;
+		        break;
 		    }
 		}
 
-		return false;
+		return ret;
 	}
 
 	/**
@@ -240,13 +243,16 @@ hkRover.controller('HKSearchCtrl',
 	*  @return {Boolean} true if any filter is set to true
 	*/
 	$scope.isAnyFilterTrue = function(filterArray){
-		for(var f in filterArray) {
-			if($scope.currentFilters[filterArray[f]] === true){
-				return true;
-			}
-		}
+		var ret = false;
 
-		return false
+		for (var i = 0, j = filterArray.length; i < j; i++) {
+			if($scope.currentFilters[filterArray[i]] === true){
+				ret = true;
+				break;
+			}
+		};
+
+		return ret;
 	}
 
 	/**
