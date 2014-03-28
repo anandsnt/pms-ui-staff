@@ -102,8 +102,16 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  		return "/assets/partials/chains/adChainForm.html";
 
  	}
+
+ 	// add new chain
+
  	$scope.addNewChain = function (){
 
+ 		angular.forEach($scope.editData.lov,function(item, index) {
+		  if (item.name == "") {
+		  	$scope.editData.lov.splice(index, 1);
+		  }
+		});
 
  		var addChainSuccessCallback = function(data) {
  			$scope.$emit('hideLoader');
@@ -123,12 +131,13 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
  	}
 
+ 	// update existing chain
 
  	$scope.updateChain = function(id){
 
 
  		angular.forEach($scope.editData.lov,function(item, index) {
-		  if (item.name == "") { // not divisible by two, remove.
+		  if (item.name == "") {
 		  	$scope.editData.lov.splice(index, 1);
 		  }
 		});
@@ -192,7 +201,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 // remaining
 
 
-// implement base webservice
+// levels  ???
+
 
 
 }]);
