@@ -1,4 +1,5 @@
-admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv','$stateParams', function($rootScope, $scope, ADHotelDetailsSrv, $stateParams){
+admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv','$stateParams','$state', function($rootScope, $scope, ADHotelDetailsSrv, $stateParams, $state){
+
 	$scope.isAdminSnt = false;
 	$scope.isEdit = false;
 	$scope.id = $stateParams.id;
@@ -52,11 +53,16 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			$scope.$emit('hideLoader');
 		};
 	
+
 		var unwanted_keys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display"];
 		var data = dclone($scope.data, unwanted_keys);
 		console.log(data);
 		if($scope.isEdit) ADHotelDetailsSrv.updateHotelDeatils(data).then(fetchSuccess, fetchFailed);
 		else ADHotelDetailsSrv.addNewHotelDeatils(data).then(fetchSuccess, fetchFailed);
+
+	};
+	$scope.clickedUserSetup = function(){
+		$state.go("admin.users");
 	};
 	
 	$scope.clickedCancel = function(){

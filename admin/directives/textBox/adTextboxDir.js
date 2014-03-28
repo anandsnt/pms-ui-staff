@@ -15,6 +15,6 @@ admin.directive('adTextbox', function($timeout) {
 	    },
     	templateUrl: '../../assets/directives/textBox/adTextbox.html'  
 	        
-	    }
+	   };
 
 });

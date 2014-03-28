@@ -4,8 +4,8 @@
 		<section>
 			<header class="content-title float">
 				<h2>Users</h2>
-				<span class="count">(17)</span>
-				<a id="add_new_user" class="action add" ui-sref="admin.userdetails({ page: 'add' })">Add New</a>
+				<span class="count">({{data.users.length}})</span>
+				<a id="add_new_user" class="action add" ui-sref="admin.userdetails({ page: 'add', id: '' })">Add New</a>
 				<a id="find_existing_user" href="/admin/users/find_existing" class="action link" style="display: none;">Link Existing</a>
 				<a id="go_back" data-type="load-details" class="action back" style="display: none;">Back</a>
 			</header>
@@ -24,12 +24,24 @@
 
 				<tbody>
 					<tr id="user_row_2" ng-repeat="user in data.users">
-						<td><a ui-sref="admin.userdetails({ page: 'edit' })" ng-click="UserCtrl(user.id, 'admin.useredit')" class="title">{{user.full_name}} </a></td>
+						<td><a ui-sref="admin.userdetails({ page: 'edit', id: user.id})"  class="title">{{user.full_name}} </a></td>
 						<td> {{user.email}}  </td>
 						<td>{{user.department}}</td>
 						<td><span class="login">{{user.last_login}} </span></td>
-						<td user="2" id="activate-inactivate-button_2" class="activate activate-inactivate-button"></td>
-						<td class="delete"></td>
+						<td user="2" id="activate-inactivate-button_2" class="activate activate-inactivate-button">
+							<div class="entry">
+								<label for=""></label>
+								<div class="switch-button single" ng-class="{ on : user.is_active == 'true' }">
+								<input type="checkbox" value="" name="" id="">
+								<span class="switch-icon"></span>
+								
+								</div>
+								</div>
+							
+						</td>
+						<td class="delete">
+							<a id="165" class="icons icon-delete large-icon">Delete this user</a>							
+						</td>
 					</tr>
 					
 

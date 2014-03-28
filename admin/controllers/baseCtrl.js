@@ -27,5 +27,5 @@ function BaseCtrl($scope){
 		
 		return serviceApi(params).then(successCallback, failureCallback);
 		
-	}
+	};
 }
