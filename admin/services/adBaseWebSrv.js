@@ -1,3 +1,15 @@
+//To fix the issue with csrf token in ajax requests
+admin.config(function($httpProvider) {
+  $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+  var m = document.getElementsByTagName('meta');
+  for (var i in m) {
+    if (m[i].name == 'csrf-token') {
+	  $httpProvider.defaults.headers.common['X-CSRF-Token'] = m[i].content;
+	  break;
+	}
+  }
+});
+
 admin.service('ADBaseWebSrv',['$http', '$q', function($http, $q){
 
 	return {
@@ -11,7 +23,7 @@ admin.service('ADBaseWebSrv',['$http', '$q', function($http, $q){
 				if(response.status == "success"){
 			    	deferred.resolve(response.data);
 				}else{
-			    	deferred.reject(response.data);
+			    	deferred.reject(response.errors);
 				}
 			}).error(function(data, status) {
 				if(status == 406){ // 406- Network error
@@ -39,12 +51,11 @@ admin.service('ADBaseWebSrv',['$http', '$q', function($http, $q){
 			if(typeof params == "undefined"){
 				params = "";
 			}
-			console.log('1111111');
 			$http.put(url, params).success(function(response, status) {
 				if(response.status == "success"){
 			    	deferred.resolve(response.data);
 				}else{
-			    	deferred.reject(response.data);
+			    	deferred.reject(response.errors);
 				}
 			}).error(function(data, status) {
 			    if(status == 406){ // 406- Network error
@@ -75,7 +86,7 @@ admin.service('ADBaseWebSrv',['$http', '$q', function($http, $q){
 				if(response.status == "success"){
 			    	deferred.resolve(response.data);
 				}else{
-			    	deferred.reject(response.data);
+			    	deferred.reject(response.errors);
 				}
 			}).error(function(data, status) {
 			    if(status == 406){ // 406- Network error
@@ -106,7 +117,7 @@ admin.service('ADBaseWebSrv',['$http', '$q', function($http, $q){
 				if(response.status == "success"){
 			    	deferred.resolve(response.data);
 				}else{
-			    	deferred.reject(response.data);
+			    	deferred.reject(response.errors);
 				}
 			}).error(function(data, status) {
 			    if(status == 406){ // 406- Network error

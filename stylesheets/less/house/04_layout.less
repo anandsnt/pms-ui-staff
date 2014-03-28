@@ -43,6 +43,8 @@ body { overflow: hidden; }
             .content {
                 position: absolute;
                 left: 0;
+                right: 0;
+                bottom: 0;
                 width: 100%;
                 overflow: hidden;
                 .show;
@@ -102,13 +104,11 @@ body { overflow: hidden; }
 
     .content:not(#login) {
         top: 40px;
-        .calc-height(100, 40); /* %, px */
 
         /** Rooms screen ***/
         &#rooms {
             top: 90px;
             z-index: 10;
-            .calc-height(100, 90); /* %, px */
         }
 
         &#filter-rooms {
@@ -122,12 +122,10 @@ body { overflow: hidden; }
 
         &#filter-options {
             top: 40px;
-            .calc-height(100, 40); /* %, px */
         }
 
         &#guest-info {
             top: 60px;
-            .calc-height(100, 60); /* %, px */
         }
     }
 
@@ -250,7 +248,11 @@ body { overflow: hidden; }
             position: absolute;
             top: 0;
             left: 0; 
-            .icon-back; 
+            .icon-back;
+            
+            @media @highdpi {
+                background-position: -70px -490px;
+            }
         }
 
 
@@ -323,7 +325,17 @@ body { overflow: hidden; }
                 left: 10px;
                 z-index: 99;
             }
-
+            
+        //.closebtn Added by Qburst    
+      .closebtn{
+              background:transparent;
+              width:50px;
+              height:30px;
+              position: absolute;
+              z-index: 99;
+              right: 4px;
+               
+            }
             #query {
                 position: absolute;
                 top: 0;
@@ -348,8 +360,10 @@ body { overflow: hidden; }
             #clear-query {
                 position: absolute;
                 top: 7.5px;
-                right: 12.5px;
-                z-index: 99;
+                //right: 12.5px;
+                 right: 8.5px;//Added by Qburst
+                 //z-index: 99;
+                z-index: 100;//Added by Qburst
                 background-color: @grey2; 
                 visibility: hidden;
                 .hide-text;
