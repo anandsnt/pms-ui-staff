@@ -2,22 +2,30 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 	$scope.isFilterHidden = false;
 	$scope.query = '';
 
-	//$scope.data = HKSearchSrv.roomList;
-
-	//if($scope.data == ''){
-		$scope.$emit('showLoader');
-		HKSearchSrv.fetch().then(function(data) {
-				$scope.$emit('hideLoader');
-		        $scope.data = data;
-				$scope.refreshScroll();
-		        //$scope.$parent.myScroll['rooms'].refresh();
-		}, function(){
-			console.log("fetch failed");
+	//Fetch the roomlist
+	$scope.$emit('showLoader');
+	HKSearchSrv.fetch().then(function(data) {
 			$scope.$emit('hideLoader');
+	        $scope.data = data;
+			$scope.refreshScroll();
+	}, function(){
+		console.log("fetch failed");
+		$scope.$emit('hideLoader');
 
-		});	
-	//}
-	
+	});	
+
+	$scope.currentFilters = HKSearchSrv.currentFilters;
+
+	/** The filters should be re initialized in we are navigating from dashborad to search
+	*   In back navigation (From room details to search), we would retain the filters.
+	*/
+	$scope.$on('$locationChangeStart', function(event, next, current) { 
+		var currentState = current.split('/')[next.split('/').length-1]; 
+		if(currentState == ROUTES.dashboard){
+			$scope.currentFilters = HKSearchSrv.initFilters();	
+		}
+	});
+
 	// To fix scroll issue on search screen
 	// TODO : Create directive for iScroll
     var currentScroll = new iScroll('rooms', {
@@ -30,6 +38,7 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		}, 100);
 	};
 	
+	//Retrun the room color classes
 	$scope.getRoomColorClasses = function(roomHkStatus, isRoomOccupied, isReady){
 
 		if((roomHkStatus == 'CLEAN' || roomHkStatus == 'INSPECTED') && isRoomOccupied == 'false') {
@@ -45,25 +54,38 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 
 	};
 
+	/**
+	*  Function invoked when user selects a room from the room list
+	*  @param {dict} room selected  
+	*  Change the state to room details
+	*/
+	$scope.roomListItemClicked = function(room){
+		//If the room is Out_of_order or out_of_service, room details should not be displayed
+		if(room.hk_status.value == 'OO' || room.hk_status.value == 'OS'){
+			return false;
+		}
+		$state.go('hk.roomDetails', {
+				id: room.id
+		});
 
-	$scope.currentFilters = {	
-							"dirty" : false,
-							"pickup": false,
-							"clean" : false,
-							"inspected" : false,
-							"out_of_order" : false,
-							"out_of_service" : false,
-							"vacant" : false,
-							"occupied" : false,
-							"stayover" : false,
-							"not_reserved" : false,
-							"arrival" : false,
-							"arrived" : false,
-							"dueout" : false,
-							"departed" : false,
-							"dayuse": false
-							}
+	};
 
+
+
+	/**
+	*  Function to Update the filter service on changing the filter state
+	*  @param {string} name of the filter to be updated
+	*/
+	$scope.checkboxClicked = function(option){
+		HKSearchSrv.currentFilters[option] = !HKSearchSrv.currentFilters[option];	
+	}
+
+
+	/**
+	*  Filter Function for filtering our the room list
+	*  @param {dict} room to be filtered  
+	*  @return {Boolean} true if room matches the filter criteria
+	*/
 	$scope.ApplyFilters = function(room){
 		//If search term is available ignore the filter options
 		if($scope.query !== ""){
@@ -148,6 +170,10 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		return true;
 	}
 	
+	/**
+	*   A method to determine if any filter checked
+	*   @return {Boolean} false if none of the filter is checked
+	*/
 	$scope.isFilterChcked = function(){
 		for(var f in $scope.currentFilters) {
 		    if($scope.currentFilters[f] === true) {
@@ -157,28 +183,34 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		return false;
 	}
 
-	/* Check if any filter in the given set is set to true
-	   @return true if any filter is set to true
-	   @return false if no filter is true
+	/**
+	*  A method to check if any filter in the given set is set to true
+	*  @param {Array} filter arry to be evaluated
+	*  @return {Boolean} true if any filter is set to true
 	*/
 	$scope.isAnyFilterTrue = function(filterArray){
 		for(var f in filterArray) {
 			if($scope.currentFilters[filterArray[f]] === true){
 				return true;
 			}
-		}
-		
+		}		
 		return false
-
 	}
 
-
+	/**
+	*  A method to handle the filter done button
+	*  Refresh the room list scroll
+	*  Emits a call to dismiss the filter screen
+	*/	
 	$scope.filterDoneButtonPressed = function(){
 		$scope.refreshScroll();
 		$scope.$emit('dismissFilterScreen');
 
 	};
 
+	/**
+	*  A method to uncheck all the filter options
+	*/
 	$scope.clearFilters = function(){
 		for(var p in $scope.currentFilters) {
 			$scope.currentFilters[p] = false
@@ -186,6 +218,9 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		$scope.refreshScroll();
 	}
 
+	/**
+	*  A method to clear the search term
+	*/
 	$scope.clearSearch = function(){
 		$scope.query = '';
 		$scope.refreshScroll();

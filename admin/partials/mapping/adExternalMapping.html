@@ -1,0 +1,37 @@
+<section id="replacing-div-first" class="content current">
+	<div id="selected_hotel" data-view="HotelExternalMappingsView">
+		<!-- Hotels list -->
+		<section>
+			<header class="content-title float">
+				<h2>External Mappings</h2>
+				<span class="count">(3)</span>
+				<a id="add_new_hotel" ui-sref="" class="action add" ng-click="addNew()">Add new</a>
+			</header>
+			<div id="notification-message"></div>
+			<table id="external_mapping_table" class="grid datatable">
+				<thead>
+					<tr role="row">
+						<th width="30%" class="sorting"> Mapping Type </th>
+						<th width="25%" class="sorting"> SNT Value </th>
+						<th width="25%" class="sorting"> External Value </th>
+						<th width="10%" class="activate long"> Delete </th>
+					</tr>
+				</thead>
+
+				<tbody ng-repeat="mapping in data.mapping">
+
+					<tr ng-repeat="mapping_value in mapping.mapping_values">
+
+						<td width="30%"><a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.mapping_type}}</a></td>
+
+						<td width="25%"><a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.snt_value}}</a></td>
+						<td width="25%"><a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.external_value}}</a></td>
+
+						<td class="delete" ng-hide="currentClickedElement == $index" width="10%"><a id="3" class="icons icon-delete large-icon delete_item"></a></td>
+					</tr>
+
+				</tbody>
+			</table>
+		</section>
+	</div>
+</section>

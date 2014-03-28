@@ -21,22 +21,34 @@ hkRover.config([
 		});
 	
 		$stateProvider.state('hk.navmain.dashboard', {
-			url: '/dashboard',
+			url: '/' + ROUTES.dashboard,
 			templateUrl: '/assets/partials/hkDashboard.html',
-			controller: 'HKDashboardCtrl'
+			controller: 'HKDashboardCtrl',
+			// prefetch the data before showing the template
+			resolve: {
+				dashboardData: function(hkDashboardSrv) {
+					return hkDashboardSrv.fetch();
+				}
+			}
 		});
 
 		// search state
 		$stateProvider.state('hk.navmain.search', {
-			url: '/search',
+			url: '/' + ROUTES.search,
 			templateUrl: '/assets/partials/hkSearch.html',
 			controller: 'HKSearchCtrl'
 		});	
 
 		$stateProvider.state('hk.roomDetails', {
-			url: '/room_details/:id',
+			url: '/' + ROUTES.roomDetails + '/:id',
 			templateUrl: '/assets/partials/hkRoomDetails.html',
-			controller: 'HKRoomDetailsCtrl'
+			controller: 'HKRoomDetailsCtrl',
+			// prefetch the data before showing the template
+			resolve: {
+				roomDetailsData: function(HKRoomDetailsSrv, $stateParams) {
+					return HKRoomDetailsSrv.fetch($stateParams.id);
+				}
+			}
 		});
 		
 		

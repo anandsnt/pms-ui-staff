@@ -1,12 +1,37 @@
-admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv', function($rootScope, $scope, ADHotelDetailsSrv){
-	$scope.data = ADHotelDetailsSrv.fetch();
-	$scope.isAdminSnt = false;
-	
-	$scope.World = "cntrl World";
-	$scope.akhila = "cntrl akhila";
-	$scope.foo = {name: "Umur"};
+admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv','$stateParams','$state', function($rootScope, $scope, ADHotelDetailsSrv, $stateParams, $state){
 
-	console.log($rootScope.adminRole);
+	$scope.isAdminSnt = false;
+	$scope.isEdit = false;
+	$scope.id = $stateParams.id;
+	BaseCtrl.call(this, $scope);
+	
+	if($stateParams.action == "add"){
+		var fetchSuccess = function(data){
+			$scope.data = data;
+			$scope.$emit('hideLoader');
+		};
+		
+		var fetchFailed = function(){
+			console.log("fetchFailed");
+			$scope.$emit('hideLoader');
+		};
+		
+		$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess, fetchFailed);
+	}
+	else if($stateParams.action == "edit"){
+		$scope.isEdit = true;
+		
+		var fetchSuccess = function(data){
+			$scope.data = data;
+			$scope.$emit('hideLoader');
+		};
+		
+		var fetchFailed = function(){
+			console.log("fetchFailed");
+			$scope.$emit('hideLoader');
+		};
+		$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess, fetchFailed);
+	}
 	
 	if($rootScope.adminRole == "snt-admin"){
 		$scope.isAdminSnt = true;
@@ -17,19 +42,35 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	};
 	
 	$scope.clickedSave = function(){
-		console.log("clickedSave");
-	};
+		
+		var fetchSuccess = function(){
+			console.log("post successfully");
+			$scope.$emit('hideLoader');
+		};
+		
+		var fetchFailed = function(){
+			console.log("fetchFailed");
+			$scope.$emit('hideLoader');
+		};
 	
-	$scope.clickedExternalMapping = function(){
-		console.log("clickedExternalMapping");
+
+		var unwanted_keys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display"];
+		var data = dclone($scope.data, unwanted_keys);
+		console.log(data);
+		if($scope.isEdit) ADHotelDetailsSrv.updateHotelDeatils(data).then(fetchSuccess, fetchFailed);
+		else ADHotelDetailsSrv.addNewHotelDeatils(data).then(fetchSuccess, fetchFailed);
+
 	};
-	
 	$scope.clickedUserSetup = function(){
-		console.log("clickedUserSetup");
+		$state.go("admin.users");
 	};
 	
 	$scope.clickedCancel = function(){
 		console.log("clickedCancel");
+	};
+	
+	$scope.toggleClicked = function(){
+		$scope.data.is_pms_tokenized = ($scope.data.is_pms_tokenized == 'true') ? 'false' : 'true';
 	};
 
 }]);

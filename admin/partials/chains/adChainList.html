@@ -12,22 +12,22 @@
 	</header>
 
 	<div id="notification-message"></div>
-	<div id="new-form-holder" ng-show="showAddChainForm" ng-include="getTemplateUrl('','')">
+	<div id="new-form-holder" ng-show="isAddmode" ng-include="getTemplateUrl()">
 	
 
 	</div>
 	<table id="brands" class="grid" >
 		<tbody>
 			<tr ng-repeat="chain in chainsList">
-				<td width="90%" ng-click="editDepartments($index,department)" ng-hide="currentClickedElement == $index">
+				<td width="90%" ng-click="editSelected($index,chain.value)" ng-hide="currentClickedElement == $index && isEditmode">
 					<a  data-colspan="2" class="edit-data-inline">
 						{{chain.name}}
 					</a>
 				</td>
-				<td width="10%" ng-hide="currentClickedElement == $index">
+				<td width="10%" ng-hide="currentClickedElement == $index && isEditmode">
 					<em></em>
 				</td>
-				<td colspan="2" ng-include="getTemplateUrl($index,chain.name)" ng-show="currentClickedElement == $index"></td>
+				<td colspan="2" ng-include="getTemplateUrl()" ng-show="currentClickedElement == $index && isEditmode"></td>
 			</tr>
 
 

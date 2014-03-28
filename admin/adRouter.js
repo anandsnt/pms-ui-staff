@@ -21,9 +21,9 @@ admin.config([
 		});
 
 		$stateProvider.state('admin.hoteldetails', {
-			templateUrl: '/assets/partials/hotel/hotelDetails.html',
+			templateUrl: '/assets/partials/hotel/adHotelDetails.html',
 			controller: 'ADHotelDetailsCtrl',
-			url : '/hoteldetails'
+			url : '/hoteldetails/:action/:id'
 		});
 		
 		$stateProvider.state('admin.users', {
@@ -39,23 +39,21 @@ admin.config([
 		});
 
 		
-		// $stateProvider.state('admin.useredit', {
-			// templateUrl: '/assets/partials/users/adUserEdit.html',
-			// controller: 'ADUserListCtrl',
-			// url : '/useredit'
-		// });
+		
+		$stateProvider.state('admin.userlist', {
+			templateUrl: '/assets/partials/users/adUserList.html',
+			controller: 'ADUserListCtrl',
+			url : '/users'
+		});
 		
 		$stateProvider.state('admin.userdetails', {
-			templateUrl: '/assets/partials/users/adUserEdit.html',
-			controller: 'ADUserListCtrl',
-			url : '/user/:page'
+			templateUrl: '/assets/partials/users/adUserDetails.html',
+			controller: 'ADUserDetailsCtrl',
+			url : '/user/:page/:id'
 		});
 		
-		$stateProvider.state('admin.departments', {
-			templateUrl: '/assets/partials/departments/adDepartmentsList.html',
-			controller: 'ADDepartmentListCtrl',
-			url : '/departments'
-		});
+
+
 		
 		$stateProvider.state('admin.hotels', {
 			templateUrl: '/assets/partials/hotel/adHotelList.html',
@@ -69,5 +67,10 @@ admin.config([
 			url : '/brands'
 		});
 		
+		$stateProvider.state('admin.mapping', {
+			templateUrl: '/assets/partials/mapping/adExternalMapping.html',
+			controller: 'ADMappingCtrl',
+			url : '/mapping/:id'
+		});
 	}
 ]);

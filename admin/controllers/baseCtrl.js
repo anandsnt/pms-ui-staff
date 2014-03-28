@@ -6,21 +6,26 @@ function BaseCtrl($scope){
 
 	$scope.fetchedFailed = function(errorMessage){
 		$scope.$emit('hideLoader');
-		if(typeof $scope.errorMessage !== 'undefined'){ 
+		if($scope.hasOwnProperty("errorMessage")){ 
 			$scope.errorMessage = errorMessage;
 		}
 		else {
-			$scope.$emit("showErrorMessage", [errorMessage]);
+			$scope.$emit("showErrorMessage", 'Error Messae');
 		}
 	};
 
 
-	$scope.executeApi = function(serviceApi, params, successCallback, failureCallback){
-		$scope.$emit('showLoader');
+	$scope.invokeApi = function(serviceApi, params, successCallback, failureCallback, loaderType){
+		//loaderType options are "BLOCKER", "NONE"
+		if(typeof loaderType === 'undefined')
+			loaderType = 'BLOCKER';
+		if(loaderType.toUpperCase() == 'BLOCKER')
+			$scope.$emit('showLoader');
+
 		successCallback = (typeof successCallback ==='undefined') ? $scope.fetchedCompleted : successCallback;
 		failureCallback = (typeof failureCallback ==='undefined') ? $scope.fetchedFailed : failureCallback;
 		
 		return serviceApi(params).then(successCallback, failureCallback);
 		
-	}
+	};
 }

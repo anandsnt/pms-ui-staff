@@ -1,164 +1,129 @@
+<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 <div style="display: block;" id="add-new" class="edit-data">
-		<div class="data-holder" >
+	<div class="data-holder" >
 		
-	<!-- Add chain -->
-	<form class="form inline-form float">
-		<div class="form-title">
-			<h3>
-				<span></span>
-				{{formTitle}}
-			</h3>
-			<em class="status">
-				Fields marked with
-				<strong>*</strong>
-				are mandatory!
-			</em>
-		</div>
-		<fieldset class="holder left float">
-			<div class="entry full-width">
-				<label for="hotel-code">
-					Chain Code
+		<!-- Add chain -->
+		<form class="form inline-form float">
+			<div class="form-title">
+				<h3>
+					<span></span>
+					{{formTitle}}
+				</h3>
+				<em class="status">
+					Fields marked with
 					<strong>*</strong>
-				</label>
-				<input type="text" value="" required="yes" placeholder="Enter chain code" name="hotel-code" id="hotel-code">
+					are mandatory!
+				</em>
 			</div>
+			<fieldset class="holder left float">
 
-			<div class="entry full-width">
-				<label for="import-frequency">
-					Import Frequency [Minutes]
-					<strong>*</strong>
-				</label>
-				<input type="text" value="" required="yes" placeholder="Enter import frequency" name="import-frequency" id="import-frequency">
+
+				<!-- hotel code -->
+
+				<ad-textbox value="editData.hotel_code"   label = "Chain Code" placeholder = "Enter chain code" required = "yes" styleclass="full-width"></ad-textbox>
+				<!--  import freaquency -->
+				<ad-textbox value="editData.import_frequency"   label = "Import Frequency" placeholder = "Enter import frequency" required = "yes" styleclass="full-width"></ad-textbox>
+
+			</fieldset>
+			<fieldset class="holder right float">
+				<!-- name  -->
+
+				<ad-textbox value="editData.name"   label = "Chain Name" placeholder = "Enter chain name" required = "yes" styleclass="full-width"></ad-textbox>
+
+			</fieldset>
+			<div class="form-title">
+				<h3>
+					<span></span>
+					SFTP Settings
+				</h3>
 			</div>
+			<fieldset class="holder left float">
 
-		</fieldset>
-		<fieldset class="holder right float">
-			<div class="entry full-width">
-				<label for="chain-name">
-					Chain Name
-					<strong>*</strong>
-				</label>
-				<input type="text" value="" required="yes" placeholder="Enter chain name" name="chain-name" id="chain-name">
+				<!-- sftp location -->
+
+				<ad-textbox value="editData.sftp_location"   label = "SFTP Location" placeholder = "Enter SFTP Location"  styleclass="full-width"></ad-textbox>
+
+				<!-- sftp port -->
+
+				<ad-textbox value="editData.sftp_port"   label = "SFTP Port" placeholder = "Enter SFTP port"  styleclass="full-width"></ad-textbox>
+
+				<!-- sftp user -->
+
+				<ad-textbox value="editData.sftp_user"   label = "SFTP user" placeholder = "Enter SFTP User"  styleclass="full-width"></ad-textbox>
+
+			</fieldset>
+			<fieldset class="holder right float">
+
+				<!--  sftp password-->
+				<ad-textbox inputtype="password" value="editData.sftp_password"   label = "SFTP Password" placeholder = "Enter SFTP Password"  styleclass="full-width"></ad-textbox>
+
+				<!--  sftp respath-->
+				<ad-textbox value="editData.sftp_respath"   label = "SFTP Respath" placeholder = "Enter SFTP Respath"  styleclass="full-width"></ad-textbox>
+
+			</fieldset>
+			<div class="form-title">
+				<h3>
+					<span></span>
+					Setup Loyalty
+				</h3>
 			</div>
+			<fieldset class="holder left float">
+				<!-- program name -->
+				<ad-textbox value="editData.loyalty_program_name"   label = "Program Name" placeholder = "Enter Program Name"  styleclass="full-width"></ad-textbox>
+				<!--  program code-->
 
-		</fieldset>
-		<div class="form-title">
-			<h3>
-				<span></span>
-				SFTP Settings
-			</h3>
-		</div>
-		<fieldset class="holder left float">
-			<div class="entry full-width">
-				<label for="sftp-location">
-					SFTP Location
-				</label>
-				<input type="text" value="" required="no" placeholder="Enter SFTP Location" name="sftp-location" id="sftp-location">
-			</div>
+				<ad-textbox value="editData.loyalty_program_code"   label = "Program Code" placeholder = "Enter Program Code"  styleclass="full-width"></ad-textbox>
 
-			<div class="entry full-width">
-				<label for="sftp-port">
-					SFTP Port
-				</label>
-				<input type="text" value="" required="no" placeholder="Enter SFTP Port" name="sftp-port" id="sftp-port">
-			</div>
 
-			<div class="entry full-width">
-				<label for="sftp-user">
-					SFTP User
-				</label>
-				<input type="text" value="" required="no" placeholder="Enter SFTP User" name="sftp-user" id="sftp-user">
-			</div>
-
-		</fieldset>
-		<fieldset class="holder right float">
-			<div class="entry full-width">
-				<label for="sftp-password">
-					SFTP Password
-				</label>
-				<input type="password" value="" required="no" placeholder="Enter SFTP Password" name="sftp-password" id="sftp-password">
-			</div>
-
-			<div class="entry full-width">
-				<label for="sftp-respath">
-					SFTP Respath
-				</label>
-				<input type="text" value="" required="no" placeholder="Enter SFTP Respath" name="sftp-respath" id="sftp-respath">
-			</div>
-
-		</fieldset>
-		<div class="form-title">
-			<h3>
-				<span></span>
-				Setup Loyalty
-			</h3>
-		</div>
-		<fieldset class="holder left float">
-			<div class="entry full-width">
-				<label for="program-name">
-					Program Name
-				</label>
-				<input type="text" value="" required="no" placeholder="Enter Program Name" name="program-name" id="program-name">
-			</div>
-
-			<div class="entry full-width">
-				<label for="program-code">
-					Program Code
-				</label>
-				<input type="text" value="" required="no" placeholder="Enter Program Code" name="program-code" id="program-code">
-			</div>
-
-		</fieldset>
-		<fieldset class="holder right float">
-			<div id="entry-select" class="data-type">
-				<div class="entry full-width">
-					<label for="select-option1">
-						Levels
-					</label>
-					<div class="entry">
-						<input type="text" value="" placeholder="Add new option" name="lov" id="select-option1" data-type="select" class="add-new-option">
+			</fieldset>
+			<fieldset class="holder right float">
+				<div id="entry-select" class="data-type">
+					<div class="entry full-width">
+						<label for="select-option1">
+							Levels
+						</label>
+						<div class="entry" ng-repeat="lov in editData.lov">
+							<input type="text"  placeholder="Add new option" name="lov" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="select" class="add-new-option"
+							ng-model="lov.name" >
+							<input type="text" ng-model="lov.value" ng-hide="true">
+						</div>
 					</div>
 				</div>
+			</fieldset>
+			<div class="form-title">
+				<h3>
+					<span></span>
+					Setup Terms and Conditions
+				</h3>
 			</div>
-		</fieldset>
-		<div class="form-title">
-			<h3>
-				<span></span>
-				Setup Terms and Conditions
-			</h3>
-		</div>
-		<fieldset class="holder left float">
-			<div class="entry full-width">
-				<label for="phone">
-					CONTACT PHONE FOR T&amp;C
-				</label>
-				<input type="text" value="" required="" placeholder="Enter phone number" name="phone" id="phone">
+			<fieldset class="holder left float">
+				<!-- t&c phone -->
+				<ad-textbox value="editData.terms_cond_phone"   label = "CONTACT PHONE FOR T&amp;C" placeholder = "Enter phone number"  styleclass="full-width"></ad-textbox>
+
+				<div class="entry full-width">
+					<label for="terms_and_condtn">
+						Terms &amp; Conditions
+					</label>
+					<textarea value="" type="" required="" placeholder="Enter Terms &amp; Conditions" name="terms_and_condtn" ng-model="editData.terms_cond" class="full-width"></textarea>
+				</div>
+
+
+
+
+			</fieldset>
+			<fieldset class="holder right float">
+				<!-- t&c email -->
+
+				<ad-textbox value="editData.terms_cond_email"   label = "CONTACT EMAIL FOR T&amp;C" placeholder = "Enter e-mail"  styleclass="full-width"></ad-textbox>
+
+			</fieldset>
+
+			<div class="actions float">
+				<button type="button" ng-click="cancelClicked()" class="button blank edit-data-inline">Cancel</button>
+				<button type="button" id="save" class="button green edit-data-inline" ng-click="saveClicked()">Save changes</button>
 			</div>
 
-			<div class="entry full-width">
-				<label for="terms_and_condtn">
-					Terms &amp; Conditions
-				</label>
-				<textarea value="" type="" required="" placeholder="Enter Terms &amp; Conditions" name="terms_and_condtn" id="terms_and_condtn" class="full-width"></textarea>
-			</div>
-
-		</fieldset>
-		<fieldset class="holder right float">
-			<div class="entry full-width">
-				<label for="email">
-					CONTACT EMAIL FOR T&amp;C
-				</label>
-				<input type="text" value="" required="" placeholder="Enter e-mail" name="email" id="email">
-			</div>
-
-		</fieldset>
-
-		<div class="actions float">
-			<button type="button" ng-click="showAddChainForm = false" class="button blank edit-data-inline">Cancel</button>
-			<button type="button" id="save" class="button green edit-data-inline">Save changes</button>
-		</div>
-
-	</form>
-</div>
+		</form>
+	</div>
 </div>
 

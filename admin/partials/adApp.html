@@ -1,4 +1,4 @@
-<div ng-show="hasLoader" id="loading"><div id="loading-spinner" /></div></div> 	
+<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 	
 <div class="container" ng-class="{'menu-open': isMenuOpen()}" >
 	<div ng-include="'/assets/partials/dashboard/adBanner.html'"></div>
 	<div ng-include="'/assets/partials/dashboard/adHeader.html'"></div>
@@ -6,7 +6,7 @@
 	<div id="content" class="tabs float" role="main" data-tabs="dashboard-tabs">
 	   <!-- Dashboard tabs navigation -->
 	   <ul id="tabs-menu" class="float">
-	      <li ng-repeat="menu in data.menus" ng-click="setSelectedMenu($index)" ng-class="{active: currentIndex==$index}"><a ui-sref='admin.dashboard'>{{menu.menu_name}}</a></li>
+	      <li ng-repeat="menu in data.menus" ng-class="{active: menu.menu_name==stateparam(id)}"><a ui-sref='admin.dashboard'>{{menu.menu_name}}</a></li>
 	   </ul>
 		<div ui-view></div>
 	</div>
