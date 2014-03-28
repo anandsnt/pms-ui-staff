@@ -13,6 +13,7 @@
             <h1 class="icons icon-room">{{data.room_details.current_room_no}}</h1>
             <div class="select">
                 <select ng-model="currentHKStatus"
+                    ng-disabled="shouldDisable()"
                     ng-options="opt as opt.description for opt in data.room_details.hk_status_list" ng-change="updateHKStatus()">
                     <option value="" disabled>Room status</option>
                 </select>

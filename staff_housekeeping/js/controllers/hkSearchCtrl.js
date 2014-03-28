@@ -81,14 +81,9 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 	*  Change the state to room details
 	*/
 	$scope.roomListItemClicked = function(room){
-		//If the room is Out_of_order or out_of_service, room details should not be displayed
-		if(room.hk_status.value == 'OO' || room.hk_status.value == 'OS'){
-			return false;
-		}
 		$state.go('hk.roomDetails', {
 				id: room.id
 		});
-
 	};
 
 
