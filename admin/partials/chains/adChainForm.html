@@ -1,4 +1,4 @@
-<div style="display: block;" id="add-new" class="edit-data">
+<div style="display: block;border-bottom:none" id="add-new" class="edit-data">
 	<div class="data-holder" >
 		
 		<!-- Add chain -->
@@ -82,7 +82,7 @@
 							Levels
 						</label>
 						<div class="entry" ng-repeat="lov in editData.lov">
-							<input type="text"  placeholder="Add new option" name="lov" ng-click="addNewoption($index)" data-type="select" class="add-new-option"
+							<input type="text"  placeholder="Add new option" name="lov" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="select" class="add-new-option"
 							ng-model="lov.name" >
 							<input type="text" ng-model="lov.value" ng-hide="true">
 						</div>
