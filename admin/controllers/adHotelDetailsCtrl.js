@@ -36,9 +36,25 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	if($rootScope.adminRole == "snt-admin"){
 		$scope.isAdminSnt = true;
 	}
-
+	
 	$scope.clickedTestMliConnectivity = function(){
-		console.log("clickedTestMliConnectivity");
+		console.log("clickedTestMliConnectivity"+$scope.fileread);
+		
+		var postData = {
+			"mli_chain_code": $scope.data.mli_chain_code,
+			"mli_hotel_code": $scope.data.mli_chain_code,
+			"mli_pem_certificate": $scope.value
+		};
+		var postSuccess = function(){
+			console.log("post successfully");
+			$scope.$emit('hideLoader');
+		};
+		
+		var postFailed = function(){
+			console.log("fetchFailed");
+			$scope.$emit('hideLoader');
+		};
+		ADHotelDetailsSrv.testMliConnectivity(postData).then(postSuccess, postFailed);
 	};
 	
 	$scope.clickedSave = function(){
@@ -54,9 +70,9 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		};
 	
 
-		var unwanted_keys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display"];
+		var unwanted_keys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo"];
 		var data = dclone($scope.data, unwanted_keys);
-		console.log(data);
+		
 		if($scope.isEdit) ADHotelDetailsSrv.updateHotelDeatils(data).then(fetchSuccess, fetchFailed);
 		else ADHotelDetailsSrv.addNewHotelDeatils(data).then(fetchSuccess, fetchFailed);
 
