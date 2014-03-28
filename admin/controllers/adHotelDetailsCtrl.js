@@ -6,6 +6,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	BaseCtrl.call(this, $scope);
 	
 	if($stateParams.action == "add"){
+		$scope.title = "Add Hotel";
 		var fetchSuccess = function(data){
 			$scope.data = data;
 			$scope.$emit('hideLoader');
@@ -20,7 +21,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	}
 	else if($stateParams.action == "edit"){
 		$scope.isEdit = true;
-		
+		$scope.title = "Edit Hotel";
 		var fetchSuccess = function(data){
 			$scope.data = data;
 			$scope.$emit('hideLoader');
@@ -54,7 +55,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			console.log("fetchFailed");
 			$scope.$emit('hideLoader');
 		};
-		ADHotelDetailsSrv.testMliConnectivity(postData).then(postSuccess, postFailed);
+		$scope.invokeApi(ADHotelDetailsSrv.testMliConnectivity, postData, postSuccess, postFailed);
 	};
 	
 	$scope.clickedSave = function(){
@@ -73,8 +74,8 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		var unwanted_keys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo"];
 		var data = dclone($scope.data, unwanted_keys);
 		
-		if($scope.isEdit) ADHotelDetailsSrv.updateHotelDeatils(data).then(fetchSuccess, fetchFailed);
-		else ADHotelDetailsSrv.addNewHotelDeatils(data).then(fetchSuccess, fetchFailed);
+		if($scope.isEdit) $scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, fetchSuccess, fetchFailed);
+		else $scope.invokeApi(ADHotelDetailsSrv.addNewHotelDeatils, data, fetchSuccess, fetchFailed);
 
 	};
 	$scope.clickedUserSetup = function(){
