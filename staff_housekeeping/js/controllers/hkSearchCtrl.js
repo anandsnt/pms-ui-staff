@@ -3,8 +3,11 @@ hkRover.controller('HKSearchCtrl',
 	[
 		'$scope', 'HKSearchSrv', '$state', '$timeout',
 	function($scope, HKSearchSrv, $state, $timeout){
-	$scope.isFilterHidden = false;
+
 	$scope.query = '';
+
+	// make sure any previous open filter is not showing
+	$scope.$emit('dismissFilterScreen');
 
 	//Fetch the roomlist
 	$scope.$emit('showLoader');
