@@ -1,4 +1,3 @@
-
 admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsSrv','$stateParams', function($rootScope, $scope, ADHotelDetailsSrv, $stateParams){
 	$scope.isAdminSnt = false;
 	$scope.isEdit = false;
@@ -51,9 +50,12 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			console.log("fetchFailed");
 			$scope.$emit('hideLoader');
 		};
-		
-		if($scope.isEdit) ADHotelDetailsSrv.updateHotelDeatils($scope.data).then(fetchSuccess, fetchFailed);
-		else ADHotelDetailsSrv.addNewHotelDeatils($scope.data).then(fetchSuccess, fetchFailed);
+	
+		var unwanted_keys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types"];
+		var data = dclone($scope.data, unwanted_keys);
+		console.log(data);
+		if($scope.isEdit) ADHotelDetailsSrv.updateHotelDeatils(data).then(fetchSuccess, fetchFailed);
+		else ADHotelDetailsSrv.addNewHotelDeatils(data).then(fetchSuccess, fetchFailed);
 	};
 	
 	$scope.clickedCancel = function(){

@@ -1888,7 +1888,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', function($http
 		return deferred.promise;
 	};	
 	this.addNewHotelDeatils = function(data){
-console.log(data);
+
 		var deferred = $q.defer();
 		var url = '/admin/hotels/';	
 
