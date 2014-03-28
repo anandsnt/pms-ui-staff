@@ -187,7 +187,7 @@
 				</div>
 			</div>
 
-			<div class="entry is-pms-tokenized">
+			<div class="entry is-pms-tokenized" ng-show="isAdminSnt">
 				<label for="is-pms-tokenized">PMS Tokenized</label>
 				<div id="div-is-pms-tokenized" class="switch-button single" ng-class="{ on : data.is_pms_tokenized == 'true' }" ng-click="toggleClicked()">
 					<input type="checkbox" value="{{data.is_pms_tokenized}}" name="is-pms-tokenized" id="is-pms-tokenized">
