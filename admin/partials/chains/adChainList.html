@@ -11,7 +11,7 @@
 		<a id="add-new-button" ng-click="addNew()" class="action add">Add new</a>
 	</header>
 
-	<div id="notification-message"></div>
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<div id="new-form-holder" ng-show="isAddmode" ng-include="getTemplateUrl()">
 	
 

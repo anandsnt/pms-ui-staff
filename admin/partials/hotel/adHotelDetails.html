@@ -1,7 +1,7 @@
 <div id="wrapper" class="content current" >
 	<div id="notification-message" ng-show="errorMessage!=''">{{errorMessage}}</div>
 	<header class="content-title float">
-		<h2>Edit Hotel</h2>
+		<h2>{{title}}</h2>
 		<a id="go_back" data-type="load-details" class="action back">Back</a>
 	</header>
 	<form  name="edit-hotel" method="post" id="edit-hotel" class="form float" >
@@ -160,7 +160,7 @@
 				<div class="select">
 					<select ng-model="data.hotel_brand" name="hotel-brand" id="hotel-brand" class="placeholder">
 						<option value=""> Hotel brand </option>
-						<option ng-repeat="brand in data.brands" value="brand.id" ng-selected="brand.id==data.hotel_brand"> {{brand.name}} </option>
+						<option ng-repeat="brand in data.brands" value="{{brand.id}}" ng-selected="brand.id==data.hotel_brand"> {{brand.name}} </option>
 					</select>
 				</div>
 			</div>
@@ -179,7 +179,7 @@
 				<div class="select">
 					<select ng-model="data.hotel_pms_type" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
 						<option value=""> PMS Type </option>
-						<option ng-repeat="pms_types in data.pms_types" value="pms_types.value" ng-seletected="pms_types.value==data.hotel_pms_type"> {{pms_types.value}} </option>
+						<option ng-repeat="pms_types in data.pms_types" value="{{pms_types.value}}" ng-seletected="pms_types.value==data.hotel_pms_type"> {{pms_types.value}} </option>
 					</select>
 				</div>
 			</div>
@@ -214,6 +214,7 @@
 				<span class="file-preview"> <img src="{{data.hotel_logo}}" id="hotel-logo-preview" alt="" height="112" width="auto"> </span>
 			</div>
 
+			
 		</fieldset>
 		<fieldset class="holder left">
 			<div class="form-title">
@@ -257,16 +258,9 @@
 				<input type="text" value="{{data.mli_chain_code}}" placeholder="Enter MLI chain code" name="mli-chain-code" id="mli-chain-code">
 			</div>
 
-			<div id="mli-certificate-upload" class="entry full-width">
-				<label for="certificate"> MLI Token Certificate </label>
-				<div class="file-upload">
-					<span class="input">Choose file ...</span>
-					<input type="file" name="certificate" id="mli-certificate">
-					<button type="button" class="button brand-colors">
-						Attach Certificate
-					</button>
-				</div>
-			</div>
+
+			
+			<ad-fileread label = "MLI Token Certificate" name="Attach Certificate" ></ad-fileread>
 			
 			<div class="entry full-width">
 				<label for="mli-access-url"> MLI Access URL </label>
