@@ -197,8 +197,16 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 		if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length==1))
 			$scope.editData.lov.push({'value':'','name':''});
+		else{
+			// if($scope.editData.lov[$scope.editData.lov.length-1].name =="")
+			// 	$scope.editData.lov.splice($scope.editData.lov.length-1, 1);
+		angular.forEach($scope.editData.lov,function(item, index) {
+		  if (item.name == "") {
+		  	$scope.editData.lov.splice(index, 1);
+		  }
+		});
 
-		
+		}
 	}
 // remaining
 
