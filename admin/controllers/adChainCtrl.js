@@ -195,8 +195,6 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 
 
-
-
 		if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length==1)){
 
 			$scope.newOptionAvailable = true;
@@ -206,12 +204,10 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 				angular.forEach($scope.editData.lov,function(item, index) {
 					if (item.name == "" && index < $scope.editData.lov.length-1 ) {
-		
-		  	 $scope.editData.lov.splice(index, 1);
-		  	$scope.newOptionAvailable = false;
+						$scope.newOptionAvailable = false;
 
-		  }
-		});
+					}
+				});
 
 			}
 
@@ -220,16 +216,40 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 
 		}
-		else{
+		
+	}
+	$scope.removeOption = function(index){
 
-			angular.forEach($scope.editData.lov,function(item, index) {
-				if (item.name == "") {
-					$scope.editData.lov.splice(index, 1);
+
+
+		if($scope.editData.lov.length>1){
+
+
+			if($scope.editData.lov[index].name == "")
+				$scope.editData.lov.splice(index, 1);
+
+			angular.forEach($scope.editData.lov,function(item, i) {
+				if (item.name == "" && i != $scope.editData.lov.length-1) {
+					$scope.editData.lov.splice(i, 1);
 				}
 			});
 
+
+
 		}
 	}
+	//alert(id)
+
+		// if($scope.editData.lov.length > 2){
+
+		// angular.forEach($scope.editData.lov,function(item, index) {
+		// 		if (item.name == "" && id != $scope.editData.length-2) {
+		// 		//	alert(id+"wd"+$scope.editData.length-1)
+		// 			$scope.editData.lov.splice(index, 1);
+		// 		}
+		// 	});
+		// }
+		
 // remaining
 
 
