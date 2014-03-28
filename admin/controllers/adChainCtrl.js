@@ -106,15 +106,15 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
  		var lovNames = [];
  		angular.forEach($scope.editData.lov,function(item, index) {
-		  if (item.name == "") {
-		  	$scope.editData.lov.splice(index, 1);
-		  }
-		  else{
-		  	lovNames.push(item.name)
-		  }
-		});
-		$scope.editData.lov = lovNames;
-		console.log(lovNames)
+ 			if (item.name == "") {
+ 				$scope.editData.lov.splice(index, 1);
+ 			}
+ 			else{
+ 				lovNames.push(item.name)
+ 			}
+ 		});
+ 		$scope.editData.lov = lovNames;
+ 		console.log(lovNames)
 
  		var addChainSuccessCallback = function(data) {
  			$scope.$emit('hideLoader');
@@ -140,10 +140,10 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 
  		angular.forEach($scope.editData.lov,function(item, index) {
-		  if (item.name == "") {
-		  	$scope.editData.lov.splice(index, 1);
-		  }
-		});
+ 			if (item.name == "") {
+ 				$scope.editData.lov.splice(index, 1);
+ 			}
+ 		});
 
  		var updateData = {'id' : id ,'updateData' :$scope.editData }
 
@@ -199,57 +199,34 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 		if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length==1)){
 
-		// if($scope.editData.lov.length >2){
-		// angular.forEach($scope.editData.lov,function(item, index) {
-		//   if (item.name == "") {
-		//   	$scope.editData.lov.splice(index, 1);
-		//   }
-		// });
-	// }
+			$scope.newOptionAvailable = true;
 
-		// angular.forEach($scope.editData.lov,function(item, index) {
-		//   if (item.name == "") {
-		//   	$scope.editData.lov.splice(index, 1);
-		//   }
-		// });
 
-		// if($scope.editData.lov.length >2){
+			if($scope.editData.lov.length > 2){
 
-		// angular.forEach($scope.editData.lov,function(item, index) {
-		//   if (item.name == "" && index < $scope.editData.lov.legth-2) {
-		//   	$scope.editData.lov.splice(index, 1);
-		// 	  }
-		// 	});
-		// }
-		$scope.optionAvailable = true;
+				angular.forEach($scope.editData.lov,function(item, index) {
+					if (item.name == "" && index < $scope.editData.lov.length-1 ) {
+		
+		  	 $scope.editData.lov.splice(index, 1);
+		  	$scope.newOptionAvailable = false;
 
-		 if($scope.editData.lov.length >2){
-		angular.forEach($scope.editData.lov,function(item, index) {
-		  if (item.name == "" && index < $scope.editData.lov.length-1 ) {
-		 // 	alert(index)
-		  	// $scope.editData.lov.splice(index, 1);
-		  	$scope.optionAvailable = false;
 		  }
 		});
-		}
 
-		if($scope.optionAvailable)
-			$scope.editData.lov.push({'value':'','name':''});
+			}
+
+			if($scope.newOptionAvailable)
+				$scope.editData.lov.push({'value':'','name':''});
 
 
 		}
 		else{
 
-			if($scope.editData.lov[index].name == "")
-			$scope.editData.lov.splice(index, 1);
-			// if($scope.editData.lov[$scope.editData.lov.length-1].name =="")
-			// 	$scope.editData.lov.splice($scope.editData.lov.length-1, 1);
-		
-		angular.forEach($scope.editData.lov,function(item, index) {
-		  if (item.name == "") {
-		  	$scope.editData.lov.splice(index, 1);
-		  }
-		});
+			angular.forEach($scope.editData.lov,function(item, index) {
+				if (item.name == "") {
+					$scope.editData.lov.splice(index, 1);
+				}
+			});
 
 		}
 	}
