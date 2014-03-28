@@ -25,7 +25,15 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		var fetchChainsFailCallback = function(errorMessage){
 			$scope.$emit('hideLoader');
 			console.log("error controller");
-			$scope.errorMessage = errorMessage[0];
+
+			angular.forEach(errorMessage,function(error,index) {
+
+				if(index ==0)
+					$scope.errorMessage = error;
+				else
+					$scope.errorMessage += ','+ error;
+			});
+			
 		};
 
 		$scope.invokeApi(adChainsSrv.fetch, {},fetchChainsSuccessCallback, fetchChainsFailCallback);
@@ -69,7 +77,14 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		var editChainsFailCallback = function(errorMessage){
 			$scope.$emit('hideLoader');
 			console.log("error controller");
-			$scope.errorMessage = errorMessage[0];
+					
+			angular.forEach(errorMessage,function(error,index) {
+
+				if(index ==0)
+					$scope.errorMessage = error;
+				else
+					$scope.errorMessage += ','+ error;
+			});
 		};
 
 		$scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback,editChainsFailCallback);
@@ -130,7 +145,14 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  		var addChainFailCallback = function(errorMessage){
  			$scope.$emit('hideLoader');
  			console.log("error controller");
- 			$scope.errorMessage = errorMessage[0];
+ 					
+			angular.forEach(errorMessage,function(error,index) {
+
+				if(index ==0)
+					$scope.errorMessage = error;
+				else
+					$scope.errorMessage += ','+ error;
+			});
  		};
 
  		$scope.invokeApi(adChainsSrv.post,$scope.editData, addChainSuccessCallback,addChainFailCallback);
@@ -163,7 +185,15 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  		var updateChainFailCallback = function(errorMessage){
  			$scope.$emit('hideLoader');
  			console.log("error controller");
- 			$scope.errorMessage = errorMessage[0];
+
+ 					
+			angular.forEach(errorMessage,function(error,index) {
+
+				if(index ==0)
+					$scope.errorMessage = error;
+				else
+					$scope.errorMessage += ','+ error;
+			});
  		};
 
 
