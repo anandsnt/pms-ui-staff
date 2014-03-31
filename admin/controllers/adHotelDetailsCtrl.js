@@ -6,6 +6,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	
+	//To add new hotel view
 	if($stateParams.action == "add"){
 		$scope.title = "Add Hotel";
 		
@@ -13,13 +14,10 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			$scope.data = data;
 			$scope.$emit('hideLoader');
 		};
-		var fetchFailed = function(errorMessage){
-			$scope.$emit('hideLoader');
-			$scope.errorMessage = errorMessage ;
-		};
 		
-		$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess, fetchFailed);
+		$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess);
 	}
+	// To edit existing hotel view
 	else if($stateParams.action == "edit"){
 		$scope.isEdit = true;
 		$scope.title = "Edit Hotel";
@@ -28,14 +26,10 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			$scope.data = data;
 			$scope.$emit('hideLoader');
 		};
-		var fetchFailed = function(errorMessage){
-			$scope.$emit('hideLoader');
-			$scope.errorMessage = errorMessage ;
-		};
 		
-		$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess, fetchFailed);
+		$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess);
 	}
-	
+	// To set flag for SNT admin
 	if($rootScope.adminRole == "snt-admin"){
 		$scope.isAdminSnt = true;
 	}
@@ -59,8 +53,8 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
     */
 	$scope.clickedSave = function(){
 		
-		var unwanted_keys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo"];
-		var data = dclone($scope.data, unwanted_keys);
+		var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo"];
+		var data = dclone($scope.data, unwantedKeys);
 		
 		if($scope.isEdit) $scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data);
 		else $scope.invokeApi(ADHotelDetailsSrv.addNewHotelDeatils, data);
