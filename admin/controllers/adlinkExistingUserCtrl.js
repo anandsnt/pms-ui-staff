@@ -1,20 +1,12 @@
 admin.controller('ADLinkExistingUserCtrl',['$scope', '$state','$stateParams', 'ADUserSrv',  function($scope, $state, $stateParams, ADUserSrv){
 	BaseCtrl.call(this, $scope);
 	$scope.data = {};
-	$scope.hotel_id = $stateParams.id;
-   /**
-    *   Failure callback function
-    *   @param {String} errorMessage from server
-    */
-	$scope.failureCallback = function(errorMessage){
-		$scope.$emit('hideLoader');
-		$scope.errorMessage = errorMessage;
-	};
+	$scope.hotelId = $stateParams.id;
    /**
     * To Activate/Inactivate user
     * @param {string} user id 
     * @param {string} current status of the user
-    * @param {num} current index
+    * @param {num} current index of user
     */ 
 	$scope.linkExistingUser = function(){
 		var data = $scope.data;
@@ -22,7 +14,7 @@ admin.controller('ADLinkExistingUserCtrl',['$scope', '$state','$stateParams', 'A
 			$scope.$emit('hideLoader');
 			$state.go('admin.users', { id: $stateParams.id });			
 		};
-		$scope.invokeApi(ADUserSrv.linkExistingUser, data , successCallback, $scope.failureCallback);
+		$scope.invokeApi(ADUserSrv.linkExistingUser, data , successCallback);
 	};	
 
 }]);

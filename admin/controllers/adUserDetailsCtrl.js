@@ -3,27 +3,19 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 	BaseCtrl.call(this, $scope);
 	$scope.mod = "";
 	$scope.image = "";
-   /**
-    *   Failure callback function
-    *   @param {String} errorMessage from server
-    */
-	$scope.failureCallback = function(errorMessage){
-		$scope.$emit('hideLoader');
-		$scope.errorMessage = errorMessage;
-	};
 	/**
-    *   save user deatils
+    *   save user details
     */
 	$scope.saveUserDetails = function(){
 		var params = $scope.data;
 		
-		var unwanted_keys = [];
+		var unwantedKeys = [];
 		if($scope.image.indexOf("data:")!= -1){
-			unwanted_keys = ["departments", "roles"];
+			unwantedKeys = ["departments", "roles"];
 		} else {
-			unwanted_keys = ["departments", "roles", "user_photo"];
+			unwantedKeys = ["departments", "roles", "user_photo"];
 		}
-		var data = dclone($scope.data, unwanted_keys);
+		var data = dclone($scope.data, unwantedKeys);
 		// Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
 		if($scope.image.indexOf("data:")!= -1){
 			data.user_photo = $scope.image;
@@ -33,10 +25,10 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 			$state.go('admin.users', { id: $stateParams.id });
 		};
 		if($scope.mod == "add"){
-			$scope.invokeApi(ADUserSrv.saveUserDetails, data , successCallback, $scope.failureCallback);
+			$scope.invokeApi(ADUserSrv.saveUserDetails, data , successCallback);
 		} else {
 			data.user_id = params.user_id;
-			$scope.invokeApi(ADUserSrv.updateUserDetails, data , successCallback, $scope.failureCallback);
+			$scope.invokeApi(ADUserSrv.updateUserDetails, data , successCallback);
 		}
 	};
 	/**
@@ -51,7 +43,7 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 			$scope.image = data.user_photo;
 			$scope.data.confirm_email = $scope.data.email;
 		};
-		$scope.invokeApi(ADUserSrv.getUserDetails, {'id':id} , successCallbackRender, $scope.failureCallback);
+		$scope.invokeApi(ADUserSrv.getUserDetails, {'id':id} , successCallbackRender);
 	};
 	/**
     * To render add screen
@@ -61,7 +53,7 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 			$scope.$emit('hideLoader');
 			$scope.data = data;
 		};	
-	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender, $scope.failureCallback);	
+	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);	
 	};
     /**
     * To set mod of operation - add/edit
