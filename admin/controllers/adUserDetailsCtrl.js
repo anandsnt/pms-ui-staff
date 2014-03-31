@@ -24,6 +24,7 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 			unwanted_keys = ["departments", "roles", "user_photo"];
 		}
 		var data = dclone($scope.data, unwanted_keys);
+		// Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
 		if($scope.image.indexOf("data:")!= -1){
 			data.user_photo = $scope.image;
 		}

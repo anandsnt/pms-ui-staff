@@ -61,6 +61,9 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$state','$stateParams
 		};
 		$scope.invokeApi(ADUserSrv.deleteUser, data , $scope.successCallback, $scope.failureCallback);
 	};	
+	/**
+    * Handle back action
+    */ 
 	$scope.clickBack = function(){
 		$state.go("admin.hoteldetails");
 	};
