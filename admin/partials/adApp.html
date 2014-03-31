@@ -4,9 +4,11 @@
 	<div ng-include="'/assets/partials/dashboard/adHeader.html'"></div>
 	<!-- Hotel Admin content -->
 	<div id="content" class="tabs float" role="main" data-tabs="dashboard-tabs">
+		sdfgsgfh
+		{{$stateParams.menu}}
 	   <!-- Dashboard tabs navigation -->
 	   <ul id="tabs-menu" class="float">
-	      <li ng-repeat="menu in data.menus" ng-click="setSelectedMenu($index)" ng-class="{active: $index==currentIndex}"><a ui-sref='admin.dashboard'>{{menu.menu_name}}</a></li>
+	      <li ng-repeat="menu in data.menus" ng-class="{active: $index==$stateParams.menu}"><a ui-sref='admin.dashboard({menu:$index})'>{{menu.menu_name}}</a></li>
 	   </ul>
 		<div ui-view></div>
 	</div>

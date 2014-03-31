@@ -30,7 +30,7 @@ admin.service('ADBaseWebSrv',['$http', '$q', '$window', function($http, $q, $win
 		httpMethod(url, params).success(function(response, status) {
 			if(response.status == "success"){
 		    	deferred.resolve(response.data);
-			}else{
+			}else{				
 		    	deferred.reject(response.errors);
 			}
 		}).error(function(response, status) {
@@ -41,6 +41,7 @@ admin.service('ADBaseWebSrv',['$http', '$q', '$window', function($http, $q, $win
 				deferred.reject(response.errors);
 			}
 			else if(status == 401){ // 401- Unauthorized
+				console.log('lets redirect');
 				// so lets redirect to login page
 				$window.location.href = '/login' ;
 			}else{

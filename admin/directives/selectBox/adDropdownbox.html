@@ -1,0 +1,14 @@
+<div class='entry'>
+  <label for='{{id}}'>{{label}}</label>
+  <strong ng-show = "required=='yes'">*</strong>
+  <div class='select'>
+    <select>
+      <option value="">
+        {{labelInDropDown}}
+      </option>
+      <option ng-repeat='row in list' value='row.labelInDropDown' ng-model='row.labelInDropDown' ng-selected='row.labelInDropDown==selected_drop_down' >
+        {{row.optionDisplayParam}}
+      </option>
+    </select>
+  </div>
+</div>

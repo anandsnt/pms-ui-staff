@@ -4,7 +4,7 @@ admin.config([
 	function($stateProvider, $urlRouterProvider) {
 
 		// dashboard state
-		$urlRouterProvider.otherwise('/admin/dashboard');
+		$urlRouterProvider.otherwise('/admin/dashboard/0');
 
 		$stateProvider.state('admin', {
 			abstract: true,
@@ -14,7 +14,7 @@ admin.config([
 		});
 
 		$stateProvider.state('admin.dashboard', {
-			url: '/dashboard',
+			url: '/dashboard/:menu',
 			templateUrl: '/assets/partials/dashboard/adDashboard.html',
 			controller: 'ADDashboardCtrl'
 
