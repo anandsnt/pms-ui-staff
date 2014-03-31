@@ -8,12 +8,12 @@ background: url(/assets/img/Galleria/bg.png) repeat top left !important;
     color: #513d4f;
 }
 
-.checkoutlater, .accept-charges-button, .checkin {
+.checkoutlater, .checkin {
     background: none repeat scroll 0 0 #513d4f;
     color: #fff;
 }
 
-.checkoutnow-icon,.checkoutlater-icon{
+.checkoutnow-icon,.checkoutlater-icon,.accept-charges-icon,.checkout-now-white-icon{
 	width:100% !important;
 	height:49px !important;
 	
@@ -30,6 +30,12 @@ background: url(/assets/img/Galleria/bg.png) repeat top left !important;
 	background: url(/assets/img/Galleria/checkoutlater_smalll.png) top center no-repeat !important;
 }
 
+.checkout-now-white-icon{
+	background: url(/assets/img/Galleria/checkout-now_icon-white.png) top center no-repeat !important;
+}
+.accept-charges-icon{
+	background: url(/assets/img/Galleria/charges_icon.png) top center no-repeat !important;
+}
 
 .jumbotron .roomnumber span {
     background: none repeat scroll 0 0 #134b52;
@@ -51,6 +57,21 @@ background: url(/assets/img/Galleria/bg.png) repeat top left !important;
     margin-top: 50px;
 }
 
+.col-xs-12.checkoutnow.single {
+    background: none repeat scroll 0 0 #513d4f;
+    color: #fff;
+}
+
+.col-xs-12.accept-charges-button.single {
+    background-color: none repeat scroll 0 0 #fff;
+}
+
+.row.checkout-later-text.accept-charges-text {
+    color: #513d4f;
+}
+.guest-room-description {
+    color: #000 !important;
+}
 /* Desktop only */
 
 @media (min-width: 990px) {
@@ -66,9 +87,16 @@ background: url(/assets/img/Galleria/bg.png) repeat top left !important;
 
 @media (max-width: 990px) {
 
-.no-thanks {
+.no-thanks-text{
   
     color: #134b52 !important;
+}
+
+.row.checkout-later-text.accept-charges-text{
+
+	padding-left:30px;
+	padding-right:30px;
+	
 }
 
 
