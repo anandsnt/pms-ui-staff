@@ -64,7 +64,7 @@ admin.config([
 
 		$stateProvider.state('admin.brands', {
 			templateUrl: '/assets/partials/brands/adBrandList.html',
-			controller: 'ADBrandListCtrl',
+			controller: 'ADBrandCtrl',
 			url : '/brands'
 		});
 		
