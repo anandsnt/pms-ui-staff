@@ -1,5 +1,5 @@
-<section id="replacing-div-first" class="content current">
-	<div id="edit_hotel" data-view="HotelListView">
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
+	<div data-view="HotelListView">
 		<!-- Hotels list -->
 		<section>
 			<header class="content-title float">
@@ -7,7 +7,7 @@
 				<span class="count">({{data.hotels.length}})</span>
 				<a ui-sref="admin.hoteldetails({action:'add'})" class="action add">Add new</a>
 			</header>
-			<div ng-include="'/assets/partials/common/notification_message.html'"></div> 
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<table id="hotels_list_table" class="grid datatable">
 				<thead>
 					<tr role="row">

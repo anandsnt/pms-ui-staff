@@ -1,5 +1,7 @@
 admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
-	// To fetch data for Add New hotel view
+	/**
+    *   An getter method to add deatils for a new hotel.
+    */
 	this.fetchAddData = function(){
 		var deferred = $q.defer();
 		var url = '/admin/hotels/new.json';	
@@ -11,7 +13,10 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', function($http
 		});	
 		return deferred.promise;
 	};	
-	// To fetch data for Edit hotel view
+	/**
+    *   An getter method to edit deatils for an existing hotel.
+    *   @param {Object} data - deatils of the hotel with hotel id.
+    */
 	this.fetchEditData = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/hotels/'+data.id+'/edit.json';	
@@ -23,7 +28,10 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', function($http
 		});	
 		return deferred.promise;
 	};	
-	// To POST data for Add new hotel
+	/**
+    *   An post method to add deatils of a new hotel.
+    *   @param {Object} data - deatils of the hotel.
+    */
 	this.addNewHotelDeatils = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/hotels';	
@@ -35,7 +43,10 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', function($http
 		});	
 		return deferred.promise;
 	};
-	// To UPDATE data for edit hotel
+	/**
+    *   An update method to edit deatils of a hotel.
+    *   @param {Object} data - deatils of a hotel.
+    */
 	this.updateHotelDeatils = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/hotels/'+data.id;	
@@ -47,5 +58,19 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', function($http
 		});	
 		return deferred.promise;
 	};
+	/**
+    *   A post method to test Mli Connectivity for a hotel.
+    *   @param {Object} data for Mli Connectivity for the hotel.
+    */
+	this.testMliConnectivity = function(data){
+		var deferred = $q.defer();
+		var url = '/admin/hotels/test_mli_settings';	
 
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
 }]);

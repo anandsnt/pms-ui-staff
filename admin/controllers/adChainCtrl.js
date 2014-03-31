@@ -25,14 +25,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		var fetchChainsFailCallback = function(errorMessage){
 			$scope.$emit('hideLoader');
 			console.log("error controller");
-
-			angular.forEach(errorMessage,function(error,index) {
-
-				if(index ==0)
-					$scope.errorMessage = error;
-				else
-					$scope.errorMessage += ','+ error;
-			});
+			$scope.errorMessage = errorMessage;
+			
 			
 		};
 
@@ -77,14 +71,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		var editChainsFailCallback = function(errorMessage){
 			$scope.$emit('hideLoader');
 			console.log("error controller");
-					
-			angular.forEach(errorMessage,function(error,index) {
-
-				if(index ==0)
-					$scope.errorMessage = error;
-				else
-					$scope.errorMessage += ','+ error;
-			});
+			$scope.errorMessage = errorMessage;
+			
 		};
 
 		$scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback,editChainsFailCallback);
@@ -145,14 +133,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  		var addChainFailCallback = function(errorMessage){
  			$scope.$emit('hideLoader');
  			console.log("error controller");
- 					
-			angular.forEach(errorMessage,function(error,index) {
-
-				if(index ==0)
-					$scope.errorMessage = error;
-				else
-					$scope.errorMessage += ','+ error;
-			});
+ 			$scope.errorMessage = errorMessage;
+				
  		};
 
  		$scope.invokeApi(adChainsSrv.post,$scope.editData, addChainSuccessCallback,addChainFailCallback);
@@ -185,15 +167,8 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  		var updateChainFailCallback = function(errorMessage){
  			$scope.$emit('hideLoader');
  			console.log("error controller");
-
- 					
-			angular.forEach(errorMessage,function(error,index) {
-
-				if(index ==0)
-					$scope.errorMessage = error;
-				else
-					$scope.errorMessage += ','+ error;
-			});
+ 			$scope.errorMessage = errorMessage;
+			
  		};
 
 
