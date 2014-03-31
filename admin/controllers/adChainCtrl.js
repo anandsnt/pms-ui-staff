@@ -32,7 +32,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 		$scope.invokeApi(adChainsSrv.fetch, {},fetchChainsSuccessCallback, fetchChainsFailCallback);
 
-	}
+	};
 
 	
 	$scope.fetchHotelChains();
@@ -95,7 +95,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		$scope.formTitle = 'Add';	
 		$scope.isAddmode = true;
 		$scope.isEditmode = false;
-	}
+	};
 
  	// template for add/edit
 
@@ -105,7 +105,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
  		return "/assets/partials/chains/adChainForm.html";
 
- 	}
+ 	};
 
  	// add new chain
 
@@ -140,7 +140,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  		$scope.invokeApi(adChainsSrv.post,$scope.editData, addChainSuccessCallback,addChainFailCallback);
 
 
- 	}
+ 	};
 
  	// update existing chain
 
@@ -177,7 +177,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  		
 
 
- 	}
+ 	};
 
 
 
@@ -190,7 +190,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		else if($scope.isEditmode)
 			$scope.isEditmode = false;
 
-	}
+	};
 
 
 	$scope.saveClicked = function(){
@@ -200,7 +200,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			$scope.addNewChain();
 		else
 			$scope.updateChain($scope.editId);
-	}
+	};
 
 
 
@@ -234,7 +234,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 		}
 		
-	}
+	};
 // if content is deleted fully remove the input field
 
 	$scope.textChanged = function(index){
@@ -243,7 +243,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			if($scope.editData.lov[index].name == "")
 				$scope.editData.lov.splice(index, 1);
 		}
-	}
+	};
 
 // on blur check for blank fields and delete
 
@@ -266,7 +266,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 
 		}
-	}
+	};
 
 
 

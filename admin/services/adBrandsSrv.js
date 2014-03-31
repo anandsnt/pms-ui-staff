@@ -13,7 +13,23 @@ admin.service('adBrandsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, 
 		return deferred.promise;
 	};	
 
-	this.edit = function(data){
+	this.addRender = function(){
+
+	
+		var deferred = $q.defer();
+
+		var url = '/admin/hotel_brands/new.json';	
+		
+		ADBaseWebSrv.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+			
+		});
+		return deferred.promise;
+	};
+
+	this.editRender = function(data){
 
 		var editID = data.editID;
 		
@@ -32,12 +48,12 @@ admin.service('adBrandsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, 
 
 	this.update = function(data){
 
-		var id  = data.id;
-		var updateData = data.updateData;
+		var id  = data.value;
+		
 		var deferred = $q.defer();
 		var url = '/admin/hotel_brands/'+id;	
 		
-		ADBaseWebSrv.putJSON(url,updateData).then(function(data) {
+		ADBaseWebSrv.putJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);

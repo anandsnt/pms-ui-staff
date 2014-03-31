@@ -10,11 +10,8 @@
 		</span>
 		<a id="add-new-button" ng-click="addNew()" class="action add">Add new</a>
 	</header>
-
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<div id="new-form-holder" ng-show="isAddmode" ng-include="getTemplateUrl()">
-	
-
 	</div>
 	<table id="brands" class="grid" >
 		<tbody>
@@ -29,14 +26,8 @@
 				</td>
 				<td colspan="2" ng-include="getTemplateUrl()" ng-show="currentClickedElement == $index && isEditmode"></td>
 			</tr>
-
-
-
-
-
 		</tbody>
 	</table>
-
 </div>
 </section>
 
