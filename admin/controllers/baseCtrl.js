@@ -4,13 +4,18 @@ function BaseCtrl($scope){
 		$scope.$emit('hideLoader');
 	};
 
+	$scope.clearErrorMessage = function(){
+		$scope.errorMessage = '';
+	}
+
 	$scope.fetchedFailed = function(errorMessage){
+		
 		$scope.$emit('hideLoader');
 		if($scope.hasOwnProperty("errorMessage")){ 
 			$scope.errorMessage = errorMessage;
 		}
 		else {
-			$scope.$emit("showErrorMessage", 'Error Messae');
+			$scope.$emit("showErrorMessage", errorMessage);
 		}
 	};
 

@@ -7,6 +7,7 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
     *   @param {String} errorMessage from server
     */
 	$scope.failureCallback = function(errorMessage){
+		console.log('in failure call back');
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = errorMessage;
 	};
