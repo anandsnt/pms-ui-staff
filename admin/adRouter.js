@@ -29,7 +29,7 @@ admin.config([
 		$stateProvider.state('admin.users', {
 			templateUrl: '/assets/partials/users/adUserList.html',
 			controller: 'ADUserListCtrl',
-			url : '/users'
+			url : '/users/:id'
 		});
 
 		$stateProvider.state('admin.chains', {
@@ -40,11 +40,7 @@ admin.config([
 
 		
 		
-		$stateProvider.state('admin.userlist', {
-			templateUrl: '/assets/partials/users/adUserList.html',
-			controller: 'ADUserListCtrl',
-			url : '/users'
-		});
+		
 		
 		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserDetails.html',
@@ -52,6 +48,11 @@ admin.config([
 			url : '/user/:page/:id'
 		});
 		
+		$stateProvider.state('admin.linkexisting', {
+			templateUrl: '/assets/partials/users/adLinkExistingUser.html',
+			controller: 'ADLinkExistingUserCtrl',
+			url : '/linkexisting/:id'
+		});
 
 
 		

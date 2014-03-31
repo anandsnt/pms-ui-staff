@@ -22,9 +22,12 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			$scope.$emit('hideLoader');
 			$scope.chainsList = data.chain_list;
 		};
-		var fetchChainsFailCallback = function(){
+		var fetchChainsFailCallback = function(errorMessage){
 			$scope.$emit('hideLoader');
 			console.log("error controller");
+			$scope.errorMessage = errorMessage;
+			
+			
 		};
 
 		$scope.invokeApi(adChainsSrv.fetch, {},fetchChainsSuccessCallback, fetchChainsFailCallback);
@@ -45,6 +48,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 		
 		$scope.isAddmode = false;
+		$scope.errorMessage ="";
 
 
 		$scope.currentClickedElement = index;
@@ -64,9 +68,11 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			$scope.isEditmode = true;
 			console.log(data)
 		};
-		var editChainsFailCallback = function(){
+		var editChainsFailCallback = function(errorMessage){
 			$scope.$emit('hideLoader');
 			console.log("error controller");
+			$scope.errorMessage = errorMessage;
+			
 		};
 
 		$scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback,editChainsFailCallback);
@@ -81,6 +87,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 
 		$scope.editData   = {};
+		$scope.errorMessage ="";
 
 
 		$scope.editData.lov  = [{'value':'','name':''}];
@@ -106,15 +113,15 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
  		var lovNames = [];
  		angular.forEach($scope.editData.lov,function(item, index) {
-		  if (item.name == "") {
-		  	$scope.editData.lov.splice(index, 1);
-		  }
-		  else{
-		  	lovNames.push(item.name)
-		  }
-		});
-		$scope.editData.lov = lovNames;
-		console.log(lovNames)
+ 			if (item.name == "") {
+ 				$scope.editData.lov.splice(index, 1);
+ 			}
+ 			else{
+ 				lovNames.push(item.name)
+ 			}
+ 		});
+ 		$scope.editData.lov = lovNames;
+ 		console.log(lovNames)
 
  		var addChainSuccessCallback = function(data) {
  			$scope.$emit('hideLoader');
@@ -123,10 +130,11 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  			$scope.isAddmode = false;
 
  		};
- 		var addChainFailCallback = function(){
+ 		var addChainFailCallback = function(errorMessage){
  			$scope.$emit('hideLoader');
- 			$scope.isAddmode = false;
  			console.log("error controller");
+ 			$scope.errorMessage = errorMessage;
+				
  		};
 
  		$scope.invokeApi(adChainsSrv.post,$scope.editData, addChainSuccessCallback,addChainFailCallback);
@@ -140,10 +148,13 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 
 
  		angular.forEach($scope.editData.lov,function(item, index) {
-		  if (item.name == "") {
-		  	$scope.editData.lov.splice(index, 1);
-		  }
-		});
+ 			if (item.name == "") {
+ 				$scope.editData.lov.splice(index, 1);
+ 			}
+ 			if (item.value == "") {
+ 				 delete item.value;
+ 			}
+ 		});
 
  		var updateData = {'id' : id ,'updateData' :$scope.editData }
 
@@ -153,10 +164,11 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  			$scope.fetchHotelChains();
  			$scope.isEditmode = false;
  		};
- 		var updateChainFailCallback = function(){
+ 		var updateChainFailCallback = function(errorMessage){
  			$scope.$emit('hideLoader');
- 			$scope.isEditmode = false;
  			console.log("error controller");
+ 			$scope.errorMessage = errorMessage;
+			
  		};
 
 
@@ -191,19 +203,71 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 	}
 
 
-	$scope.addNewoption = function(index){
+
+
+// on focus event create new option if focussed field is last
+
+	$scope.onFocus = function(index){
 
 
 
-		if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length==1))
-			$scope.editData.lov.push({'value':'','name':''});
+		if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length==1)){
 
+			$scope.newOptionAvailable = true;
+
+			// exclude first two fields
+
+			if($scope.editData.lov.length > 2){
+
+				angular.forEach($scope.editData.lov,function(item, index) {
+					if (item.name == "" && index < $scope.editData.lov.length-1 ) {
+						$scope.newOptionAvailable = false;
+
+					}
+				});
+
+			}
+
+			if($scope.newOptionAvailable)
+				$scope.editData.lov.push({'value':'','name':''});
+
+
+		}
 		
 	}
-// remaining
+// if content is deleted fully remove the input field
+
+	$scope.textChanged = function(index){
+
+		if($scope.editData.lov.length>1){
+			if($scope.editData.lov[index].name == "")
+				$scope.editData.lov.splice(index, 1);
+		}
+	}
+
+// on blur check for blank fields and delete
+
+	$scope.onBlur = function(index){
 
 
-// levels  ???
+
+		if($scope.editData.lov.length>1){
+
+
+			if($scope.editData.lov[index].name == "")
+				$scope.editData.lov.splice(index, 1);
+
+			angular.forEach($scope.editData.lov,function(item, i) {
+				if (item.name == "" && i != $scope.editData.lov.length-1) {
+					$scope.editData.lov.splice(i, 1);
+				}
+			});
+
+
+
+		}
+	}
+
 
 
 

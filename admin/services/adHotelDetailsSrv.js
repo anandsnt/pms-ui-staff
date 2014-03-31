@@ -47,5 +47,16 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', function($http
 		});	
 		return deferred.promise;
 	};
+	// Post testMliConnectivity
+	this.testMliConnectivity = function(data){
+		var deferred = $q.defer();
+		var url = '/admin/hotels/test_mli_settings';	
 
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
 }]);
