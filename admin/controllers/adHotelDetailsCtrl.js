@@ -40,6 +40,9 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		$scope.isAdminSnt = true;
 	}
 	
+	/**
+    *   A post method for Test MliConnectivity for a hotel
+    */
 	$scope.clickedTestMliConnectivity = function(){
 
 		var postData = {
@@ -51,6 +54,9 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		$scope.invokeApi(ADHotelDetailsSrv.testMliConnectivity, postData);
 	};
 	
+	/**
+    *   A post method for Add New and UPDATE Existing hotel details.
+    */
 	$scope.clickedSave = function(){
 		
 		var unwanted_keys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo"];
@@ -60,6 +66,9 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		else $scope.invokeApi(ADHotelDetailsSrv.addNewHotelDeatils, data);
 	};
 	
+	/**
+    *   Method to toggle data for 'is_pms_tokenized' as true/false.
+    */
 	$scope.toggleClicked = function(){
 		$scope.data.is_pms_tokenized = ($scope.data.is_pms_tokenized == 'true') ? 'false' : 'true';
 	};
