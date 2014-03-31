@@ -2,6 +2,7 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 	
 	BaseCtrl.call(this, $scope);
 	$scope.mod = "";
+	$scope.image = "";
    /**
     *   Failure callback function
     *   @param {String} errorMessage from server
@@ -15,8 +16,17 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
     */
 	$scope.saveUserDetails = function(){
 		var params = $scope.data;
-		var unwanted_keys = ["departments", "roles", "user_photo"];
+		
+		var unwanted_keys = [];
+		if($scope.image.indexOf("data:")!= -1){
+			unwanted_keys = ["departments", "roles"];
+		} else {
+			unwanted_keys = ["departments", "roles", "user_photo"];
+		}
 		var data = dclone($scope.data, unwanted_keys);
+		if($scope.image.indexOf("data:")!= -1){
+			data.user_photo = $scope.image;
+		}
 		var successCallback = function(data){
 			$scope.$emit('hideLoader');
 		};
@@ -36,6 +46,7 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 		var successCallbackRender = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data;
+			$scope.image = data.user_photo;
 			$scope.data.confirm_email = $scope.data.email;
 		};
 		$scope.invokeApi(ADUserSrv.getUserDetails, {'id':id} , successCallbackRender, $scope.failureCallback);

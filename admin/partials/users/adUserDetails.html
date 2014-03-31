@@ -31,13 +31,12 @@
 					<label for="user-picture"> Picture </label>
 					<div class="file-upload with-preview">
 						<span class="input">Choose file ...</span>
-						<input type="file" name="user-picture" label="Choose file ..." id="user-picture">
+						<input type="file" ng-model="image" accept="image/*" app-filereader />
 						<button type="button" class="button brand-colors">
-							Choose file
-						</button>
-
+							 Choose file
+						</button> 
 					</div>
-					<span class="file-preview"> <img src="http://d81ca00c1e165587be3d-4d1e022461cbaa577307930af1386d20.r4.cf2.rackcdn.com/CHA/Users/staff_details/66/avatars/original/base64.txt?1393511183" id="file-preview" alt=""> </span>
+					<span class="file-preview"> <img ng-src="{{image}}" id="file-preview" alt=""> </span>
 				</div>
 
 			</fieldset>
