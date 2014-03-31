@@ -27,16 +27,10 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 	$scope.addFormView = false;
 
 	$scope.editSelected = function(index,id)	{
-
-
-		
 		$scope.isAddmode = false;
 		$scope.errorMessage ="";
-
-
 		$scope.currentClickedElement = index;
 		$scope.editId = id;
-
 
 		var editID = { 'editID' : id }
 
@@ -107,14 +101,11 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
  		};
 
  		$scope.invokeApi(adBrandsSrv.post,$scope.editData, addBrandSuccessCallback,addBrandFailCallback);
-
-
  	}
 
  	// update existing Brand
 
  	$scope.updateBrand = function(id){
-
 
  		angular.forEach($scope.editData.lov,function(item, index) {
  			if (item.name == "") {
@@ -127,7 +118,6 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 
  		var updateData = {'id' : id ,'updateData' :$scope.editData }
 
-
  		var updateBrandSuccessCallback = function(data) {
  			$scope.$emit('hideLoader');
  			$scope.fetchHotelBrands();
@@ -139,12 +129,7 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
  			$scope.errorMessage = errorMessage[0];
  		};
 
-
  		$scope.invokeApi(adBrandsSrv.update,updateData,updateBrandSuccessCallback,updateBrandFailCallback);
-
- 		
-
-
  	}
 
 
@@ -152,18 +137,14 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 	// form actions
 
 	$scope.cancelClicked = function (){
-
 		if($scope.isAddmode)
 			$scope.isAddmode = false;
 		else if($scope.isEditmode)
 			$scope.isEditmode = false;
-
 	}
 
 
 	$scope.saveClicked = function(){
-
-
 		if($scope.isAddmode)
 			$scope.addNewBrand();
 		else
@@ -176,9 +157,6 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 // on focus event create new option if focussed field is last
 
 	$scope.onFocus = function(index){
-
-
-
 		if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length==1)){
 
 			$scope.newOptionAvailable = true;
@@ -190,7 +168,6 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 				angular.forEach($scope.editData.lov,function(item, index) {
 					if (item.name == "" && index < $scope.editData.lov.length-1 ) {
 						$scope.newOptionAvailable = false;
-
 					}
 				});
 
@@ -198,8 +175,6 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 
 			if($scope.newOptionAvailable)
 				$scope.editData.lov.push({'value':'','name':''});
-
-
 		}
 		
 	}
@@ -217,11 +192,7 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 
 	$scope.onBlur = function(index){
 
-
-
 		if($scope.editData.lov.length>1){
-
-
 			if($scope.editData.lov[index].name == "")
 				$scope.editData.lov.splice(index, 1);
 
@@ -230,9 +201,6 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 					$scope.editData.lov.splice(i, 1);
 				}
 			});
-
-
-
 		}
 	}
 }
