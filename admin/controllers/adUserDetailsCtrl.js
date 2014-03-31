@@ -30,6 +30,7 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 		}
 		var successCallback = function(data){
 			$scope.$emit('hideLoader');
+			$state.go('admin.users', { id: $stateParams.id });
 		};
 		if($scope.mod == "add"){
 			$scope.invokeApi(ADUserSrv.saveUserDetails, data , successCallback, $scope.failureCallback);

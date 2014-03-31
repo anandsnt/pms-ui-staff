@@ -1,4 +1,4 @@
-admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $state){
+admin.controller('ADBrandListCtrl',['$scope', '$state', 'adBrandsSrv',  function($scope, $state, adBrandsSrv){
 	BaseCtrl.call(this, $scope);
 
 	$scope.brandsList = [];
@@ -17,7 +17,7 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 			$scope.errorMessage = errorMessage[0];
 		};
 		$scope.invokeApi(adBrandsSrv.fetch, {},fetchBrandsSuccessCallback, fetchBrandsFailCallback);
-	}
+	};
 
 	$scope.fetchHotelBrands();
 	$scope.currentClickedElement = -1;
@@ -60,13 +60,13 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 		$scope.formTitle = 'Add';	
 		$scope.isAddmode = true;
 		$scope.isEditmode = false;
-	}
+	};
 
  	// template for add/edit
 
  	$scope.getTemplateUrl = function(){
  		return "/assets/partials/brands/adBrandForm.html";
- 	}
+ 	};
 
  	// add new brand
 
@@ -98,7 +98,7 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
  		};
 
  		$scope.invokeApi(adBrandsSrv.post,$scope.editData, addBrandSuccessCallback,addBrandFailCallback);
- 	}
+ 	};
 
  	// update existing Brand
 
@@ -127,7 +127,7 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
  		};
 
  		$scope.invokeApi(adBrandsSrv.update,updateData,updateBrandSuccessCallback,updateBrandFailCallback);
- 	}
+ 	};
 
 
 
@@ -138,7 +138,7 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 			$scope.isAddmode = false;
 		else if($scope.isEditmode)
 			$scope.isEditmode = false;
-	}
+	};
 
 
 	$scope.saveClicked = function(){
@@ -146,7 +146,7 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 			$scope.addNewBrand();
 		else
 			$scope.updateBrand($scope.editId);
-	}
+	};
 
 
 
@@ -174,7 +174,7 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 				$scope.editData.lov.push({'value':'','name':''});
 		}
 		
-	}
+	};
 // if content is deleted fully remove the input field
 
 	$scope.textChanged = function(index){
@@ -183,7 +183,7 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 			if($scope.editData.lov[index].name == "")
 				$scope.editData.lov.splice(index, 1);
 		}
-	}
+	};
 
 // on blur check for blank fields and delete
 
@@ -199,5 +199,5 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 				}
 			});
 		}
-	}
-}
+	};
+}]);
