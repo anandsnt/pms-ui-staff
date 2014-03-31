@@ -1,20 +1,24 @@
-admin.controller('ADBrandListCtrl',['$scope', '$state', 'adBrandsSrv',  function($scope, $state, adBrandsSrv){
+admin.controller('ADBrandListCtrl',['$scope', '$rootScope','adBrandsSrv', function($scope, $rootScope,adBrandsSrv){
+
 	BaseCtrl.call(this, $scope);
 
-	$scope.brandsList = [];
+	$scope.data = [];
 	$scope.editData   = {};
 
 	$scope.isAddmode = false;
 	$scope.isEditmode = false;
 
 	$scope.fetchHotelBrands = function(){
+		console.log("::::::::::::::::::::")
 		var fetchBrandsSuccessCallback = function(data) {
+			console.log("recahed")
 			$scope.$emit('hideLoader');
-			$scope.brandsList = data.brand_list;
+			$scope.data = data.brand_list;
 		};
 		var fetchBrandsFailCallback = function(errorMessage){
 			$scope.$emit('hideLoader');
-			$scope.errorMessage = errorMessage[0];
+			console.log("error controller");
+			$scope.errorMessage = errorMessage;
 		};
 		$scope.invokeApi(adBrandsSrv.fetch, {},fetchBrandsSuccessCallback, fetchBrandsFailCallback);
 	};
@@ -64,9 +68,9 @@ admin.controller('ADBrandListCtrl',['$scope', '$state', 'adBrandsSrv',  function
 
  	// template for add/edit
 
- 	$scope.getTemplateUrl = function(){
- 		return "/assets/partials/brands/adBrandForm.html";
- 	};
+ 	// $scope.getTemplateUrl = function(){
+ 		// return "/assets/partials/brands/adBrandForm.html";
+ 	// };
 
  	// add new brand
 
@@ -199,5 +203,7 @@ admin.controller('ADBrandListCtrl',['$scope', '$state', 'adBrandsSrv',  function
 				}
 			});
 		}
+
 	};
+
 }]);
