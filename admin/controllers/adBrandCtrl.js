@@ -1,4 +1,4 @@
-admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $state){
+admin.controller('ADBrandListCtrl',['$scope', '$rootScope','adBrandsSrv', function($scope, $rootScope,adBrandsSrv){
 	BaseCtrl.call(this, $scope);
 
 	$scope.brandsList = [];
@@ -15,7 +15,7 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 		var fetchBrandsFailCallback = function(errorMessage){
 			$scope.$emit('hideLoader');
 			console.log("error controller");
-			$scope.errorMessage = errorMessage[0];
+			$scope.errorMessage = errorMessage;
 		};
 
 		$scope.invokeApi(adBrandsSrv.fetch, {},fetchBrandsSuccessCallback, fetchBrandsFailCallback);
@@ -203,4 +203,4 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 			});
 		}
 	}
-}
+}]);

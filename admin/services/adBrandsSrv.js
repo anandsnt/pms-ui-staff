@@ -1,4 +1,4 @@
-admin.service('adBrandSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
+admin.service('adBrandsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
 	this.fetch = function(){
 	
 		var deferred = $q.defer();
