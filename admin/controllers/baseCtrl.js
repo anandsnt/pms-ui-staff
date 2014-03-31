@@ -6,7 +6,7 @@ function BaseCtrl($scope){
 
 	$scope.clearErrorMessage = function(){
 		$scope.errorMessage = '';
-	}
+	};
 
 	$scope.fetchedFailed = function(errorMessage){
 		
