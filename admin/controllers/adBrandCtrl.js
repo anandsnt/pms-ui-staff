@@ -14,12 +14,9 @@ admin.controller('ADBrandListCtrl',['$scope', '$state',   function($scope, $stat
 		};
 		var fetchBrandsFailCallback = function(errorMessage){
 			$scope.$emit('hideLoader');
-			console.log("error controller");
 			$scope.errorMessage = errorMessage[0];
 		};
-
 		$scope.invokeApi(adBrandsSrv.fetch, {},fetchBrandsSuccessCallback, fetchBrandsFailCallback);
-
 	}
 
 	$scope.fetchHotelBrands();
