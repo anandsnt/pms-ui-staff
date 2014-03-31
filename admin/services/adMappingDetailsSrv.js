@@ -17,7 +17,7 @@ function($http, $q, ADBaseWebSrv) {
 	this.fetchEditData = function(data) {
 		var deferred = $q.defer();
 		var url = "/admin/external_mappings/" + data.id + "/edit_mapping.json";
-console.log(url)
+		console.log(url)
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
