@@ -105,14 +105,20 @@
                     padding-bottom: 40px;
                     margin: 0 20px 0 0;
                     border-bottom: 0;
-                    .calc-width(33.33, 13.33); /* %, px */
+                    .calc-width(24.33, 13.33); /* %, px */ /* Modified by Qburst to show 4 status in a row*/ 
                     .pull-left;
                     .show;
+
+                    em {
+                        float: none;
+                    }
 
                     span {
                         font-size: 48px;
                         float: none;
                         font-weight: 300;
+                        text-align: center;
+                        margin: 0;
                     }
 
                     &:last-child { margin-right: 0; }
@@ -215,8 +221,6 @@
 
             &.no-content {
                 .info {
-                    .icons { margin-top: -160px; }
-
                     .h1 { 
                         font-size: 36px;
                         line-height: 36px;

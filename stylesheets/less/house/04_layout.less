@@ -1,6 +1,11 @@
 /* 1. ROOT
 ==========================================================*/
-body { overflow: hidden; }
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
 
 ::-webkit-selection {
     background: transparent;
@@ -38,14 +43,43 @@ body { overflow: hidden; }
             overflow: hidden;
             z-index: 1;
             .background(@white);
+
+            /* nav open close transitions */
+            -webkit-transition: -webkit-transform 0.3s ease;
+            -moz-transition: -moz-transform 0.3s ease;
+            transition: transform 0.3s ease;
             
             /* Page inner container ***/
             .content {
                 position: absolute;
                 left: 0;
+                right: 0;
+                bottom: 0;
                 width: 100%;
-                overflow: hidden;
                 .show;
+
+                /* emulating native scroll */
+                overflow: hidden;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                /**/
+                &::-webkit-scrollbar {
+                  -webkit-appearance: scrollbarthumb-vertical;
+                  width: 4px;
+                }
+                /**/
+                &::-webkit-scrollbar-track {
+                  background: transparent none;
+                }
+                /**/
+                &::-webkit-scrollbar-thumb {
+                  border-radius: 4px;
+                  background-color: rgba(0, 0, 0, .3);
+                }
+                /**/
+                &::-webkit-scrollbar-thumb:hover {
+                  background-color: rgba(0, 0, 0, .5);
+                }
             }
 
             /* Visible pages ***/
@@ -102,31 +136,24 @@ body { overflow: hidden; }
 
     .content:not(#login) {
         top: 40px;
-        .calc-height(100, 40); /* %, px */
 
         /** Rooms screen ***/
         &#rooms {
             top: 90px;
-            .calc-height(100, 90); /* %, px */
+            z-index: 10;
         }
 
         &#filter-rooms {
-            top: 100%;
+            top: 0;
             height: 100%;
-
-            &.filter-show { /* Added by Qburst */
-                top: 0;
-            }
         }
 
         &#filter-options {
             top: 40px;
-            .calc-height(100, 40); /* %, px */
         }
 
         &#guest-info {
             top: 60px;
-            .calc-height(100, 60); /* %, px */
         }
     }
 
@@ -138,7 +165,9 @@ body { overflow: hidden; }
         &.menu-open {
             .page-current,
             .page-locked {
-                #move > #page > .left();
+                -webkit-transform: translateX(80px);
+                -moz-transform: translateX(80px);
+                transform: translateX(80px);
             }           
         }
        
@@ -152,16 +181,10 @@ body { overflow: hidden; }
         /* Page transitions - room filters ***/
         &.filter-rooms-open {
             .search-form,
-            #rooms { #fade > .out(); }
-            #filter-rooms { #move > #element > .top(showRoomFilters);  }
-        }
-
-        &.filter-rooms-closing {
-            .search-form,
-            #rooms { #fade > .in(); }
-            #filter-rooms { #move > #element > .top(hideRoomFilters);  }
-        } 
-       
+            #filter-rooms {
+                display: block;
+            }
+        }       
 
         /* Page transitions - loading, signing in and out ***/
         &.loading {
@@ -190,7 +213,7 @@ body { overflow: hidden; }
             position: absolute;
             top: 0;
             left: 0;
-            .icon-toggle; 
+            .icon-toggle;
         }
 
         .clear-selection {
@@ -245,7 +268,7 @@ body { overflow: hidden; }
             position: absolute;
             top: 0;
             left: 0; 
-            .icon-back; 
+            .icon-back;
         }
 
 
@@ -318,7 +341,17 @@ body { overflow: hidden; }
                 left: 10px;
                 z-index: 99;
             }
-
+            
+        //.closebtn Added by Qburst    
+      .closebtn{
+              background:transparent;
+              width:50px;
+              height:30px;
+              position: absolute;
+              z-index: 99;
+              right: 4px;
+               
+            }
             #query {
                 position: absolute;
                 top: 0;
@@ -343,8 +376,10 @@ body { overflow: hidden; }
             #clear-query {
                 position: absolute;
                 top: 7.5px;
-                right: 12.5px;
-                z-index: 99;
+                //right: 12.5px;
+                 right: 8.5px;//Added by Qburst
+                 //z-index: 99;
+                z-index: 100;//Added by Qburst
                 background-color: @grey2; 
                 visibility: hidden;
                 .hide-text;
