@@ -35,16 +35,13 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		    deferred.reject(data);
 		});	
 		return deferred.promise;
-		
-		
-		
-		
-		
-		
 	};
+   /**
+    * To view add new user screen
+    * @param {object} id of the clicked hotel
+    * @return {object} departments array
+    */
 	this.getAddNewDetails = function(data){
-		
-		
 		var id = data.id;
 		var deferred = $q.defer();
 		var url = '/admin/users/new.json';
@@ -55,14 +52,12 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		    deferred.reject(data);
 		});	
 		return deferred.promise;
-		
-		
-		
-		
-		
 	};
-	
-	
+	/**
+    * To update user details 
+    * @param {object} data - data to be updated
+    * @return {object} 
+    */
 	this.updateUserDetails = function(data){
 		
 		var deferred = $q.defer();
@@ -76,6 +71,11 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		return deferred.promise;
 		
 	};
+	/**
+    * To add new user details 
+    * @param {object} data - data to be added
+    * @return {object} 
+    */
 	this.saveUserDetails = function(data){
 		
 		var deferred = $q.defer();
@@ -89,6 +89,11 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		return deferred.promise;
 		
 	};
+	/**
+    * To activate/inactivate user
+    * @param {object} data - data to activate/inactivate
+    * @return {object} 
+    */
 	this.activateInactivate = function(data){
 		
 		var deferred = $q.defer();
@@ -102,6 +107,11 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		return deferred.promise;
 		
 	};
+	/**
+    * To delete user
+    * @param {object} data - data to delete
+    * @return {object} 
+    */
 	this.deleteUser = function(data){
 		
 		var deferred = $q.defer();
@@ -115,6 +125,11 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		return deferred.promise;
 		
 	};
+	/**
+    * To link existing user
+    * @param {object} data - data to link existing user
+    * @return {object} 
+    */
 	this.linkExistingUser = function(data){
 		
 		var deferred = $q.defer();
@@ -128,10 +143,4 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		return deferred.promise;
 		
 	};
-	
-	
-	
-	
-
-
 }]);
