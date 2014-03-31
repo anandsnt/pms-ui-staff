@@ -3,15 +3,24 @@ background: url(/assets/img/Galleria/bg.png) repeat top left !important;
 
 }
 
-.checkoutnow, .proceed-to-checkin {
+.checkoutnow {
     background: none repeat scroll 0 0 #fff;
     color: #513d4f;
 }
 
+.checkoutlater, .accept-charges-button,.checkin{
+    background: none repeat scroll 0 0 #513d4f;
+    color: #fff;
+}
+
+.checkoutnow-icon,.checkoutlater-icon{
+	width:100% !important;
+	height:49px !important;
+	margin-top:10px !important;
+}
+
 .checkoutnow-icon{
-	width:48 px;
-	height:48 px;
-	background: url(/assets/img/Galleria/checkout-now_icon.png) no-repeat !important;
+  background: url(/assets/img/Galleria/checkout-now_icon.png) top center no-repeat !important;
 }
 
 
@@ -21,12 +30,13 @@ background: url(/assets/img/Galleria/bg.png) repeat top left !important;
 }
 
 .date-picker-header{
-  
   background-color: #134b52;
- 
 }
 
 .date-picker-ok{
+  padding-top: 18px;
+  background: url(/assets/img/Galleria/tick-white-small.png) 25px 0px no-repeat !important;
+
   color:#fff;
 }
 .date-picker-wrap{
@@ -38,8 +48,9 @@ background: url(/assets/img/Galleria/bg.png) repeat top left !important;
 .pickadate-cell .pickadate-disabled a {
   color: #134b52;
 }
-.link-btn.with-bg.nextbtn{
+.link-btn.with-bg.nextbtn,.proceed-to-checkin{
   background: #513d4f;
+  color:#fff;
 }
 .departure-date{
    p:first-child{
@@ -48,6 +59,127 @@ background: url(/assets/img/Galleria/bg.png) repeat top left !important;
   
 }
 
-.row .reservation-dates .lightcontent, .res-conf-no , .row .applycharge, .error-callus .row .lightcontent{
+.row .reservation-dates .lightcontent, .res-conf-no , .row .applycharge,  .row .lightcontent{
   color:#134b52 !important;
 }
+
+
+
+.checkoutlater-icon{
+	background: url(/assets/img/Galleria/checkoutlater_smalll.png) top center no-repeat !important;
+}
+
+
+
+
+.jumbotron .roomnumber span {
+    background: none repeat scroll 0 0 #134b52;
+ }
+
+
+.checkouttime1 {
+    background: none repeat scroll 0 0 #877185;
+}
+.checkouttime2 {
+    background: none repeat scroll 0 0 #705b6e;
+}
+.checkouttime3 {
+    background: none repeat scroll 0 0 #513d4f;
+}
+
+.no-thanks {
+    font-size: 25px !important;
+    margin-top: 50px;
+}
+
+.upgrade-details .upgrades-btn{
+  
+    background-color:#fba000;
+
+}
+.upgrades-label{
+  color:#513d4f;
+}
+
+
+/* Desktop only */
+
+@media (min-width: 990px) {
+
+.checkout-text{
+    padding: 20px 44px 0;
+}
+
+}
+
+/* smartphone only */
+
+
+@media (max-width: 990px) {
+  
+  .checkin-width {
+   
+    margin: 0 auto !important;
+    max-width: 570px;
+    text-align: center;
+}
+
+.no-thanks {
+  
+    color: #134b52 !important;
+}
+ .checkin{
+    background: url(/assets/img/Galleria/checkin-white-icon-large.png)   85% 45%  no-repeat  #513d4f !important;
+    span{
+       margin-left: -60px;
+    }
+  }
+
+}
+@media (max-width: 480px) {
+  .checkin{
+    background: url(/assets/img/Galleria/checkin-white-icon-small.png)   80% 30%  no-repeat  #513d4f !important;
+    span{
+       margin-left: -60px;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+.proceed-to-checkin{
+     background: none repeat scroll 0 0 #fff;
+    color: #513d4f;
+}
+
+   .checkin-width {
+      margin-top:20%;
+      //margin: 0 auto !important;
+      max-width: 570px;
+      text-align: center;
+    }
+  .checkin-button {
+    padding: 30px;
+    
+  }
+
+.checkin{
+    background: url(/assets/img/Galleria/checkin-white-icon-large.png) 80% center no-repeat  #513d4f !important;
+      span{
+         margin-left: -84px;
+      }
+  }
+
+  
+   .line-top{
+   border-top:1px solid white;
+   margin-bottom:40px;
+ }
+ .line-bottom{
+   border-bottom:1px solid white;
+     margin-top:40px;
+
+ }
+}
+
+
+
