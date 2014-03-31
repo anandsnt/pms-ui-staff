@@ -7,7 +7,7 @@
 //=require ../admin/lib/js/ng-table.js
 //=require ../admin/adApp.js
 //=require ../admin/adRouter.js
-//=require ../admin/adUtilities.js
+//=require ../admin/adUtils.js
 //=require_tree ../admin/controllers
 //=require_tree ../admin/directives
 //=require_tree ../admin/services

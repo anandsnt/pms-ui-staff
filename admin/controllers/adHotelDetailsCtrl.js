@@ -3,18 +3,19 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.isAdminSnt = false;
 	$scope.isEdit = false;
 	$scope.id = $stateParams.id;
+	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	
 	if($stateParams.action == "add"){
 		$scope.title = "Add Hotel";
+		
 		var fetchSuccess = function(data){
 			$scope.data = data;
 			$scope.$emit('hideLoader');
 		};
-		
-		var fetchFailed = function(){
-			console.log("fetchFailed");
+		var fetchFailed = function(errorMessage){
 			$scope.$emit('hideLoader');
+			$scope.errorMessage = errorMessage ;
 		};
 		
 		$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess, fetchFailed);
@@ -22,15 +23,16 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	else if($stateParams.action == "edit"){
 		$scope.isEdit = true;
 		$scope.title = "Edit Hotel";
+		
 		var fetchSuccess = function(data){
 			$scope.data = data;
 			$scope.$emit('hideLoader');
 		};
-		
-		var fetchFailed = function(){
-			console.log("fetchFailed");
+		var fetchFailed = function(errorMessage){
 			$scope.$emit('hideLoader');
+			$scope.errorMessage = errorMessage ;
 		};
+		
 		$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess, fetchFailed);
 	}
 	
@@ -38,52 +40,35 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		$scope.isAdminSnt = true;
 	}
 	
+	/**
+    *   A post method for Test MliConnectivity for a hotel
+    */
 	$scope.clickedTestMliConnectivity = function(){
-		console.log("clickedTestMliConnectivity"+$scope.fileread);
-		
+
 		var postData = {
 			"mli_chain_code": $scope.data.mli_chain_code,
-			"mli_hotel_code": $scope.data.mli_chain_code,
-			"mli_pem_certificate": $scope.value
-		};
-		var postSuccess = function(){
-			console.log("post successfully");
-			$scope.$emit('hideLoader');
+			"mli_hotel_code": $scope.data.mli_hotel_code,
+			"mli_pem_certificate": $scope.certificate
 		};
 		
-		var postFailed = function(){
-			console.log("fetchFailed");
-			$scope.$emit('hideLoader');
-		};
-		$scope.invokeApi(ADHotelDetailsSrv.testMliConnectivity, postData, postSuccess, postFailed);
+		$scope.invokeApi(ADHotelDetailsSrv.testMliConnectivity, postData);
 	};
 	
+	/**
+    *   A post method for Add New and UPDATE Existing hotel details.
+    */
 	$scope.clickedSave = function(){
 		
-		var fetchSuccess = function(){
-			console.log("post successfully");
-			$scope.$emit('hideLoader');
-		};
-		
-		var fetchFailed = function(){
-			console.log("fetchFailed");
-			$scope.$emit('hideLoader');
-		};
-	
-
 		var unwanted_keys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo"];
 		var data = dclone($scope.data, unwanted_keys);
 		
-		if($scope.isEdit) $scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, fetchSuccess, fetchFailed);
-		else $scope.invokeApi(ADHotelDetailsSrv.addNewHotelDeatils, data, fetchSuccess, fetchFailed);
-
+		if($scope.isEdit) $scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data);
+		else $scope.invokeApi(ADHotelDetailsSrv.addNewHotelDeatils, data);
 	};
 	
-	
-	$scope.clickedCancel = function(){
-		console.log("clickedCancel");
-	};
-	
+	/**
+    *   Method to toggle data for 'is_pms_tokenized' as true/false.
+    */
 	$scope.toggleClicked = function(){
 		$scope.data.is_pms_tokenized = ($scope.data.is_pms_tokenized == 'true') ? 'false' : 'true';
 	};

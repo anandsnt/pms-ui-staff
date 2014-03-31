@@ -1,14 +1,15 @@
 admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADHotelListSrv',  function($scope, $state,$rootScope, $stateParams, ADHotelListSrv){
 	BaseCtrl.call(this, $scope);
+	$scope.errorMessage = '';
 	
 	var fetchSuccess = function(data){
 		$scope.data = data;
 		$scope.$emit('hideLoader');
 	};
 	
-	var fetchFailed = function(){
-		console.log("fetchFailed");
+	var fetchFailed = function(errorMessage){
 		$scope.$emit('hideLoader');
+		$scope.errorMessage = errorMessage ;
 	};
 	
 	$scope.invokeApi(ADHotelListSrv.fetch, {}, fetchSuccess, fetchFailed);
@@ -33,9 +34,9 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 			$scope.$emit('hideLoader');
 		};
 		
-		var postFailed = function(){
-			console.log("fetchFailed");
+		var postFailed = function(errorMessage){
 			$scope.$emit('hideLoader');
+			$scope.errorMessage = errorMessage ;
 		};
 		
 		$scope.invokeApi(ADHotelListSrv.postReservationImportToggle, data, postSuccess, postFailed);
