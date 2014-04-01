@@ -3,7 +3,11 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state',  function($scope, $
 	$scope.errorMessage = '';
 	
 	$scope.listDepartments = function(){
-		
+		var successCallbackFetch = function(data){
+			$scope.$emit('hideLoader');
+			$scope.data = data;
+		};
+		$scope.invokeApi(ADDepartmentSrv.fetch, {} , successCallbackFetch);	
 	};
 	
 	// $scope.data = {
