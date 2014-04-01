@@ -79,5 +79,12 @@ admin.config([
 			controller: 'ADDepartmentListCtrl',
 			url : '/departments'
 		});
+
+		$stateProvider.state('admin.upselllatecheckout', {
+			templateUrl: '/assets/partials/upsellLatecheckout/upsellLatecheckout.html',
+			controller: 'ADUpsellLateCheckoutCtrl',
+			url : '/upselllatecheckout'
+		});
+		
 	}
 ]);
