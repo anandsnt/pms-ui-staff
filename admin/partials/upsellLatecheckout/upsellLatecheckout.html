@@ -36,7 +36,7 @@
 					<label for="number-of-late-checkout">
 						Number of Late Check Out's Allowed
 					</label>
-					<input type="text" value="200" required="" placeholder="Type number" name="number-of-late-checkout" id="number-of-late-checkout">
+					<input type="text" ng-model="upsellData.allowed_late_checkout" required="" placeholder="Type number" name="number-of-late-checkout" id="number-of-late-checkout">
 				</div>
 
 				<div class="entry">
@@ -47,8 +47,8 @@
 						<div class="select select-col col1-3">
 							<select name="hotel-checkout-hour" id="sent-alert-to-all-guests-hour" class="styled">
 								<option value="" data-text="Not set" class="placeholder">HH</option>
-								<option value="01">
-									01
+								<option ng-repeat="hour in hours" ng-model="hour">
+									{{hour}}
 								</option>
 
 							</select>
@@ -56,10 +56,9 @@
 						<div class="select select-col col1-3">
 							<select name="hotel-checkout-minute" id="sent-alert-to-all-guests-minute">
 								<option value="" data-text="Not set" class="placeholder">MM</option>
-								<option value="00" selected="">
-									00
+								<option ng-repeat="minute in minutes" ng-model="minute">
+									{{minute}}
 								</option>
-
 							</select>
 						</div>
 						<div class="select select-col col1-3">
@@ -81,9 +80,12 @@
 						<select name="charge-code" id="charge-code" class="placeholder">
 							<option value="">
 								Charge Code
-							</option><option value="27">
-							1000 Transient Room Revenue
+							</option>
+
+						<option	ng-repeat="chargecode in upsellData.charge_codes" value="chargecode.name">
+						{{chargecode.value}}
 						</option>
+					
 
 
 					</select>
@@ -101,9 +103,9 @@
 					<div class="select select-col col1-3">
 						<select name="checkout-time-extended-to" id="checkout-time-extended-to-1" class="styled">
 							<option value="" data-text="Not set" class="placeholder">HH</option>
-							<option value="01">
-								01
-							</option>
+							<option ng-repeat="hour in hours" ng-model="hour">
+									{{hour}}
+								</option>
 
 						</select>
 					</div>
@@ -120,7 +122,7 @@
 				<label for="charge-for-checkout-1">
 					Charge [$]
 				</label>
-				<input type="text" value="10.0" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-1">
+				<input type="text" ng-model="upsellData.extended_checkout_charge_0.charge" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-1">
 			</div>
 
 			<div class="entry">
@@ -131,9 +133,9 @@
 					<div class="select select-col col1-3">
 						<select name="checkout-time-extended-to" id="checkout-time-extended-to-2" class="styled">
 							<option value="" data-text="Not set" class="placeholder">HH</option>
-							<option value="01">
-								01
-							</option>
+							<option ng-repeat="hour in hours" ng-model="hour">
+									{{hour}}
+								</option>
 
 						</select>
 					</div>
@@ -150,7 +152,7 @@
 				<label for="charge-for-checkout-2">
 					Charge [$]
 				</label>
-				<input type="text" value="20.0" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-2">
+				<input type="text" ng-model="upsellData.extended_checkout_charge_1.charge" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-2">
 			</div>
 
 			<div class="entry">
@@ -161,9 +163,9 @@
 					<div class="select select-col col1-3">
 						<select name="checkout-time-extended-to" id="checkout-time-extended-to-3" class="styled">
 							<option value="" data-text="Not set" class="placeholder">HH</option>
-							<option value="01">
-								01
-							</option>
+							<option ng-repeat="hour in hours" ng-model="hour">
+									{{hour}}
+								</option>
 
 						</select>
 					</div>
@@ -180,7 +182,7 @@
 				<label for="charge-for-checkout-3">
 					Charge [$]
 				</label>
-				<input type="text" value="30.0" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-3">
+				<input type="text" ng-model="upsellData.extended_checkout_charge_2.charge" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-3">
 			</div>
 
 		</fieldset>
