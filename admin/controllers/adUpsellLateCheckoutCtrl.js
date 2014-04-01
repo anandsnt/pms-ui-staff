@@ -1,20 +1,18 @@
-admin.controller('ADUpsellLateCheckoutCtrl',['$scope','adUpsellLatecheckoutService',  function($scope,adUpsellLatecheckoutService){
+admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adUpsellLatecheckoutService',  function($scope,$rootScope,$state,adUpsellLatecheckoutService){
 	BaseCtrl.call(this, $scope);
 	$scope.upsellData = {};
-	//$scope.hotelId = $stateParams.id;
+
    /**
-    * To Activate/Inactivate user
-    * @param {string} user id 
-    * @param {string} current status of the user
-    * @param {num} current index of user
+    * To fetch upsell details
+    *
     */ 
 
     $scope.fetchUpsellDetails = function(){
+
 		var fetchUpsellDetailsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.upsellData = data;
-			// $scope.onStatus = ($scope.upsellData.is_late_checkout_set === "true") ? "on" : "";
-			// $scope.checkedStatus = ($scope.upsellData.is_exclude_guests === "true")? "checked" : "";
+			
 		};
 		$scope.invokeApi(adUpsellLatecheckoutService.fetch, {},fetchUpsellDetailsSuccessCallback);
 	};
@@ -25,23 +23,62 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','adUpsellLatecheckoutServi
 	$scope.minutes = ["00","15","30","45"];
 
 
-
+	/**
+    * To handle switch actions
+    *
+    */ 
 
 	$scope.switchClicked = function(){
 
-		if($scope.upsellData.is_late_checkout_set === 'true')
-			$scope.upsellData.is_late_checkout_set = 'false';
-		else
-			$scope.upsellData.is_late_checkout_set = 'true';
+	$scope.upsellData.is_late_checkout_set =  ($scope.upsellData.is_late_checkout_set === 'true')?'false':'true';
 		
 	}
-	$scope.checkBoxClicked = function(){
-		//$scope.checkedStatus = ($scope.checkedStatus != "checked") ? "checked" : "";
 
-		if($scope.upsellData.is_exclude_guests === 'true')
-			$scope.upsellData.is_exclude_guests = 'false';
-		else
-			$scope.upsellData.is_exclude_guests = 'true';
+	/**
+    * To handle checkbox actions
+    *
+    */ 
+
+	$scope.checkBoxClicked = function(){
+		
+	$scope.upsellData.is_exclude_guests = ($scope.upsellData.is_exclude_guests === 'true')?'false':'true';
+
 	}
+
+
+
+
+	/**
+    * To handle cancel button action
+    *
+    */ 
+
+	$scope.cancelClick = function(){
+
+		$state.go( 'admin.dashboard', {menu:2});
+		
+	}
+
+	/**
+    * To handle save button action
+    *
+    */ 
+
+	$scope.saveClick = function(){
+
+
+
+ 		var updateData = {'updateData' :$scope.upsellData };
+ 		var updateChainSuccessCallback = function(data) {
+ 			$scope.$emit('hideLoader');
+ 			$state.go( 'admin.dashboard', {menu:2});
+ 		};
+ 		$scope.invokeApi(adUpsellLatecheckoutService.update,updateData,updateChainSuccessCallback);
+ 	
+	
+		
+	
+	}
+	
 
 }]);
