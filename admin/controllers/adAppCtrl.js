@@ -8,7 +8,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', funct
 	//when there is an occured while trying to access any menu details, we need to show that errors
 	$scope.errorMessage = '';
 
-	if($rootScope.admin_role == "hotel-admin" ){
+	if($rootScope.adminRole == "hotel-admin" ){
 		$scope.isHotelAdmin =  true;
 	}	
 	else{
@@ -19,7 +19,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', funct
 		$scope.currentIndex = 0;
 		$scope.data = data;
 		$scope.selectedMenu = $scope.data.menus[0];		
-	}
+	};
 
 	$scope.invokeApi(ADAppSrv.fetch, {}, $scope.successCallbackOfMenuLoading);
 
