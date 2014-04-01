@@ -6,13 +6,16 @@ admin.directive('adDropdown', function($timeout) {
       	scope: {
             divStyle: '@divStyle',
 	        selboxStyle : '@selboxStyle',
+            divClass: '@divClass',
+            selboxClass : '@selboxClass',            
             required: '@required',
             id: '@id',
             labelInDropDown: '@labelInDropDown',
-            list:'@list'
-
+            list:'=list',
+            name:'@name',
+            selectedId:'=selectedId'
 	    },
-    	templateUrl: '../../assets/directives/checkBox/adCheckbox.html' 
+    	templateUrl: '../../assets/directives/selectBox/adDropdownbox.html' 
     };
 
 });
