@@ -1,17 +1,27 @@
-hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($scope, HKSearchSrv, $state){
-	$scope.isFilterHidden = false;
+
+hkRover.controller('HKSearchCtrl',
+	[
+		'$scope', 'HKSearchSrv', '$state', '$timeout',
+	function($scope, HKSearchSrv, $state, $timeout){
+
 	$scope.query = '';
+
+	// make sure any previous open filter is not showing
+	$scope.$emit('dismissFilterScreen');
 
 	//Fetch the roomlist
 	$scope.$emit('showLoader');
 	HKSearchSrv.fetch().then(function(data) {
-			$scope.$emit('hideLoader');
-	        $scope.data = data;
-			$scope.refreshScroll();
+		$scope.$emit('hideLoader');
+        $scope.data = data;
+
+        // scroll to the previous room list scroll position
+        var toPos = localStorage.getItem( 'roomListScrollTopPos' );
+        $scope.refreshScroll( toPos );
+
 	}, function(){
 		console.log("fetch failed");
 		$scope.$emit('hideLoader');
-
 	});	
 
 	$scope.currentFilters = HKSearchSrv.currentFilters;
@@ -26,18 +36,36 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 		}
 	});
 
-	// To fix scroll issue on search screen
-	// TODO : Create directive for iScroll
-    var currentScroll = new iScroll('rooms', {
-    	scrollbarClass: 'myScrollbar'
-    });
-	$scope.refreshScroll = function() {
-		setTimeout(function () { 
-			currentScroll.refresh();
-			currentScroll.scrollTo(0, 0, 200);
+
+
+	var roomsEl = document.getElementById( 'rooms' );
+	var filterOptionsEl = document.getElementById( 'filter-options' );
+
+	// stop browser bounce while swiping on rooms element
+	angular.element( roomsEl )
+		.bind( 'ontouchmove', function(e) {
+			e.stopPropagation();
+		});
+
+	// stop browser bounce while swiping on filter-options element
+	angular.element( filterOptionsEl )
+		.bind( 'ontouchmove', function(e) {
+			e.stopPropagation();
+		});
+
+	$scope.refreshScroll = function(toPos) {
+		if ( isNaN(parseInt(toPos)) ) {
+			var toPos = 0;
+		} else {
+			localStorage.removeItem('roomListScrollTopPos');
+		}
+
+		// must delay untill DOM is ready to jump
+		$timeout(function() {
+			roomsEl.scrollTop = toPos;
 		}, 100);
 	};
-	
+
 	//Retrun the room color classes
 	$scope.getRoomColorClasses = function(roomHkStatus, isRoomOccupied, isReady){
 
@@ -60,25 +88,40 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 	*  Change the state to room details
 	*/
 	$scope.roomListItemClicked = function(room){
-		//If the room is Out_of_order or out_of_service, room details should not be displayed
-		if(room.hk_status.value == 'OO' || room.hk_status.value == 'OS'){
-			return false;
-		}
 		$state.go('hk.roomDetails', {
-				id: room.id
+			id: room.id
 		});
 
+		// store the current room list scroll position
+		localStorage.setItem('roomListScrollTopPos', roomsEl.scrollTop);
 	};
-
 
 
 	/**
 	*  Function to Update the filter service on changing the filter state
 	*  @param {string} name of the filter to be updated
 	*/
-	$scope.checkboxClicked = function(option){
-		HKSearchSrv.currentFilters[option] = !HKSearchSrv.currentFilters[option];	
+	$scope.checkboxClicked = function(item){
+		HKSearchSrv.toggleFilter( item );	
 	}
+
+
+	/**
+	*  A method to handle the filter done button
+	*  Refresh the room list scroll
+	*  Emits a call to dismiss the filter screen
+	*/	
+	$scope.filterDoneButtonPressed = function(){
+		$scope.refreshScroll();
+
+		// since filter is applied after the user press 'DONE'
+		// the $digest loop only begins then. This freezes DOM,
+		// User may hit 'DONE' again
+		// TODO: better filter method needed
+		if ($scope.filterOpen) {
+			$scope.$emit('dismissFilterScreen');
+		};
+	};
 
 
 	/**
@@ -93,7 +136,13 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 			if((room.room_no).indexOf($scope.query) >= 0) return true;
 			return false;
 		}
-		
+
+		// while the user is choosing the filter
+		// do NOT process anymore yet, cost too much $digest cycles
+		if ($scope.filterOpen) {
+			return false;
+		};
+
 		//Filter by status in filter section, HK_STATUS
 		if($scope.isAnyFilterTrue(['dirty','pickup','clean','inspected','out_of_order','out_of_service'])){
 
@@ -168,19 +217,24 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 			return false;
 		}
 		return true;
+		
 	}
 	
 	/**
 	*   A method to determine if any filter checked
 	*   @return {Boolean} false if none of the filter is checked
 	*/
-	$scope.isFilterChcked = function(){
-		for(var f in $scope.currentFilters) {
+	$scope.isFilterChcked = function() {
+		var ret = false;
+
+		for (var f in $scope.currentFilters) {
 		    if($scope.currentFilters[f] === true) {
-		        return true;
+		        ret = true;
+		        break;
 		    }
 		}
-		return false;
+
+		return ret;
 	}
 
 	/**
@@ -189,24 +243,17 @@ hkRover.controller('HKSearchCtrl',['$scope', 'HKSearchSrv', '$state', function($
 	*  @return {Boolean} true if any filter is set to true
 	*/
 	$scope.isAnyFilterTrue = function(filterArray){
-		for(var f in filterArray) {
-			if($scope.currentFilters[filterArray[f]] === true){
-				return true;
+		var ret = false;
+
+		for (var i = 0, j = filterArray.length; i < j; i++) {
+			if($scope.currentFilters[filterArray[i]] === true){
+				ret = true;
+				break;
 			}
-		}		
-		return false
+		};
+
+		return ret;
 	}
-
-	/**
-	*  A method to handle the filter done button
-	*  Refresh the room list scroll
-	*  Emits a call to dismiss the filter screen
-	*/	
-	$scope.filterDoneButtonPressed = function(){
-		$scope.refreshScroll();
-		$scope.$emit('dismissFilterScreen');
-
-	};
 
 	/**
 	*  A method to uncheck all the filter options

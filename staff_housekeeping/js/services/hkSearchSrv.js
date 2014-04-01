@@ -1,6 +1,5 @@
 hkRover.service('HKSearchSrv',['$http', '$q', function($http, $q){
-	
-	var _this = this;
+
 	this.roomList = "";
 	
 	this.initFilters = function(){
@@ -24,25 +23,30 @@ hkRover.service('HKSearchSrv',['$http', '$q', function($http, $q){
 	}
 
 	this.currentFilters = this.initFilters();
-
 	
 	this.fetch = function(){
 		var deferred = $q.defer();
 		var url = '/house/search.json';
 		
-		$http.get(url).success(function(response, status) {
-			if(response.status == "success"){
-			    _this.roomList = response.data;
-			    deferred.resolve(_this.roomList);
-			}else{
-				console.log("error");
-			}
-			
-		}).error(function(data, status) {
-		    deferred.reject(data);
-		});
+		$http.get(url)
+			.success(function(response, status) {
+				if(response.status == "success"){
+				    this.roomList = response.data;
+				    deferred.resolve(this.roomList);
+				}else{
+					console.log( 'Server request failed' );
+				}
+				
+			}.bind(this))
+			.error(function(data, status) {
+			    deferred.reject(data);
+			});
+
 		return deferred.promise;
 	}
 
+	this.toggleFilter = function(item) {
+		this.currentFilters[item] = !this.currentFilters[item];
+	};
 
 }]);

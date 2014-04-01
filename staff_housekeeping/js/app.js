@@ -1,4 +1,4 @@
-var hkRover = angular.module('hkRover',['ui.router','ngAnimate', 'ng-iscroll']);
+var hkRover = angular.module('hkRover',['ui.router','ngAnimate', 'ngTouch']);
 
 hkRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
 

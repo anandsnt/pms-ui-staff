@@ -1,6 +1,13 @@
 // Orientation change and touchmove listeners
 document.addEventListener('orientationchange', function (e) { $('body').css("height",window.innerHeight); }, false);
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+/**
+*   DO NOT USE THIS - CANT SCROLL ANY SCREEENS IN IPHONE!!!!
+*   
+*   Rather stop it on required element - that includes a scroll!!
+*
+*   document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+*/
 
 // Disable cache busting
 $.ajaxSetup({ cache: true });
@@ -19,7 +26,13 @@ $(document).ready(function(){
 	if($('#login').is(':has(span.notice)')){
 		$("#loginStatus").css("display","block");
 	}
-    $("#login-form").ready(function(){  
+    $("#login-form").ready(function(){
+
+        // stop bounce effect only on the login container
+        $( '#login-page .container' ).on('touchmove', function (e) {
+            e.stopPropagation();
+        });
+
         var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;  
         //for keyboard not raising issue in Ipad/android tabs
         // in tabs especially in IPad .focus is creating the pblm of not showing keyboard        

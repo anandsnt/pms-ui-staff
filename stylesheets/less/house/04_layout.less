@@ -1,6 +1,11 @@
 /* 1. ROOT
 ==========================================================*/
-body { overflow: hidden; }
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
 
 ::-webkit-selection {
     background: transparent;
@@ -38,6 +43,11 @@ body { overflow: hidden; }
             overflow: hidden;
             z-index: 1;
             .background(@white);
+
+            /* nav open close transitions */
+            -webkit-transition: -webkit-transform 0.3s ease;
+            -moz-transition: -moz-transform 0.3s ease;
+            transition: transform 0.3s ease;
             
             /* Page inner container ***/
             .content {
@@ -46,8 +56,30 @@ body { overflow: hidden; }
                 right: 0;
                 bottom: 0;
                 width: 100%;
-                overflow: hidden;
                 .show;
+
+                /* emulating native scroll */
+                overflow: hidden;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                /**/
+                &::-webkit-scrollbar {
+                  -webkit-appearance: scrollbarthumb-vertical;
+                  width: 4px;
+                }
+                /**/
+                &::-webkit-scrollbar-track {
+                  background: transparent none;
+                }
+                /**/
+                &::-webkit-scrollbar-thumb {
+                  border-radius: 4px;
+                  background-color: rgba(0, 0, 0, .3);
+                }
+                /**/
+                &::-webkit-scrollbar-thumb:hover {
+                  background-color: rgba(0, 0, 0, .5);
+                }
             }
 
             /* Visible pages ***/
@@ -112,12 +144,8 @@ body { overflow: hidden; }
         }
 
         &#filter-rooms {
-            top: 100%;
+            top: 0;
             height: 100%;
-
-            &.filter-show { /* Added by Qburst */
-                top: 0;
-            }
         }
 
         &#filter-options {
@@ -137,7 +165,9 @@ body { overflow: hidden; }
         &.menu-open {
             .page-current,
             .page-locked {
-                #move > #page > .left();
+                -webkit-transform: translateX(80px);
+                -moz-transform: translateX(80px);
+                transform: translateX(80px);
             }           
         }
        
@@ -151,16 +181,10 @@ body { overflow: hidden; }
         /* Page transitions - room filters ***/
         &.filter-rooms-open {
             .search-form,
-            #rooms { #fade > .out(); }
-            #filter-rooms { #move > #element > .top(showRoomFilters);  }
-        }
-
-        &.filter-rooms-closing {
-            .search-form,
-            #rooms { #fade > .in(); }
-            #filter-rooms { #move > #element > .top(hideRoomFilters);  }
-        } 
-       
+            #filter-rooms {
+                display: block;
+            }
+        }       
 
         /* Page transitions - loading, signing in and out ***/
         &.loading {
@@ -190,10 +214,6 @@ body { overflow: hidden; }
             top: 0;
             left: 0;
             .icon-toggle;
-
-            @media @highdpi {
-                background-position: -71px -11px;
-            }
         }
 
         .clear-selection {
@@ -249,10 +269,6 @@ body { overflow: hidden; }
             top: 0;
             left: 0; 
             .icon-back;
-            
-            @media @highdpi {
-                background-position: -70px -490px;
-            }
         }
 
 
