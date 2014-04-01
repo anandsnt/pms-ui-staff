@@ -1,782 +1,194 @@
 <section id="replacing-div-first" class="content current"><div data-view="UpsellLateCheckoutView">
-<section>
-<header class="content-title float">
-<h2>Late Checkout Upsell</h2>
-<a id="go_back" data-type="load-details" class="action back">Back</a>
-</header>
-<div id="notification-message"></div>
-<form name="upsell-late-checkout" method="post" id="upsell-late-checkout" class="form float" action="">
-<div class="form-title full-width">
-<h3>
-<span>Late Checkout</span>
-Upsell
-</h3>
-</div>
-<fieldset class="holder left">
-<div></div>
-<div class="entry">
-<label for="late-checkout-upsell">Late Checkout Upsell</label>
-<div id="div-late-checkout-upsell" class="switch-button single on">
-<input type="checkbox" value="10" name="late-checkout-upsell" id="late-checkout-upsell" checked="checked">
-<span class="switch-icon"></span>
+	<section>
+		<header class="content-title float">
+			<h2>Late Checkout Upsell</h2>
+			<a id="go_back" data-type="load-details" class="action back">Back</a>
+		</header>
+		<div id="notification-message"></div>
+		<form name="upsell-late-checkout" method="post" id="upsell-late-checkout" class="form float" action="">
+			<div class="form-title full-width">
+				<h3>
+					<span>Late Checkout</span>
+					Upsell
+				</h3>
+			</div>
+			<fieldset class="holder left">
+				<div></div>
+				<div class="entry">
+					<label for="late-checkout-upsell">Late Checkout Upsell</label>
+					<div id="div-late-checkout-upsell" class="switch-button single on">
+						<input type="checkbox" value="10" name="late-checkout-upsell" id="late-checkout-upsell" checked="checked">
+						<span class="switch-icon"></span>
 
-</div>
-</div>
+					</div>
+				</div>
 
-<div class="entry radio-check">
-<label class="checkbox">
-<span class="icon-form icon-checkbox"></span>
-<label for="exclude-guest-pre-allocated-room">Exclude guests in pre allocated rooms</label>
-<input type="checkbox" value="testing" name="exclude-guest-pre-allocated-room" id="exclude-guest-pre-allocated-room">
+				<div class="entry radio-check">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox"></span>
+						<label for="exclude-guest-pre-allocated-room">Exclude guests in pre allocated rooms</label>
+						<input type="checkbox" value="testing" name="exclude-guest-pre-allocated-room" id="exclude-guest-pre-allocated-room">
 
-</label>
-</div>
+					</label>
+				</div>
 
-<div class="entry">
-<label for="number-of-late-checkout">
-Number of Late Check Out's Allowed
-</label>
-<input type="text" value="200" required="" placeholder="Type number" name="number-of-late-checkout" id="number-of-late-checkout">
-</div>
+				<div class="entry">
+					<label for="number-of-late-checkout">
+						Number of Late Check Out's Allowed
+					</label>
+					<input type="text" value="200" required="" placeholder="Type number" name="number-of-late-checkout" id="number-of-late-checkout">
+				</div>
 
-<div class="entry">
-<label>
-Send Upsell alert to all guests [AM]
-</label>
-<div class="entry full-width float">
-<div class="select select-col col1-3">
-<select name="hotel-checkout-hour" id="sent-alert-to-all-guests-hour" class="styled">
-<option value="" data-text="Not set" class="placeholder">HH</option>
-<option value="01">
-01
-</option>
-<option value="02">
-02
-</option>
-<option value="03">
-03
-</option>
-<option value="04">
-04
-</option>
-<option value="05">
-05
-</option>
-<option value="06">
-06
-</option>
-<option value="07">
-07
-</option>
-<option value="08">
-08
-</option>
-<option value="09" selected="">
-09
-</option>
-<option value="10">
-10
-</option>
-<option value="11">
-11
-</option>
-<option value="12">
-12
-</option>
-</select>
-</div>
-<div class="select select-col col1-3">
-<select name="hotel-checkout-minute" id="sent-alert-to-all-guests-minute">
-<option value="" data-text="Not set" class="placeholder">MM</option>
-<option value="00" selected="">
-00
-</option>
-<option value="15">
-15
-</option>
-<option value="30">
-30
-</option>
-<option value="45">
-45
-</option>
-</select>
-</div>
-<div class="select select-col col1-3">
-<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
-<option value="AM" selected="">AM</option>
-<option value="PM">PM</option>
-</select>
-</div>
-</div>
+				<div class="entry">
+					<label>
+						Send Upsell alert to all guests [AM]
+					</label>
+					<div class="entry full-width float">
+						<div class="select select-col col1-3">
+							<select name="hotel-checkout-hour" id="sent-alert-to-all-guests-hour" class="styled">
+								<option value="" data-text="Not set" class="placeholder">HH</option>
+								<option value="01">
+									01
+								</option>
 
-</div>
-<!-- = render :partial => "admin/shared/textbox", :locals => {:data => {"id"=> "sent-alert-to-all-guests", "name" => "sent-alert-to-all-guests", "placeholder" => "Enter time", "required" => "", "value" => "#{@sent_alert}", "maxlength" => "", "label_text" => "Send Upsell alert to all guests [AM]"}} -->
-<div class="entry">
-<label for="charge-code">
-Charge Code
-<strong>*</strong>
-</label>
-<div class="select">
-<select name="charge-code" id="charge-code" class="placeholder">
-<option value="">
-Charge Code
-</option><option value="27">
-1000 Transient Room Revenue
-</option>
-<option value="28">
-1001 Room Tax Inclusive
-</option>
-<option value="29">
-1002 Room and Breakfast Inclusive
-</option>
-<option value="30">
-1003 Dinner AP
-</option>
-<option value="31">
-1008 Group Room Charge
-</option>
-<option value="32">
-1010 Group Room Revenue
-</option>
-<option value="33">
-1011 Room Fee
-</option>
-<option value="34">
-1012 Room Revenue no Tax
-</option>
-<option value="35">
-1015 Group Room Revenue- Leisure
-</option>
-<option value="36">
-1016 Room Revenue with Service Charge
-</option>
-<option value="37">
-1017 FB Revenue with Room Rev Generate
-</option>
-<option value="38">
-1019 Package Room Revenue
-</option>
-<option value="39">
-1040 Package - Low Season
-</option>
-<option value="40">
-1050 ADJ- Transient Room Revenue
-</option>
-<option value="41">
-1100 Transient No Show Revenue
-</option>
-<option value="42">
-1150 ADJ- Transient No Show Revenue
-</option>
-<option value="43">
-1200 Group Room Revenue
-</option>
-<option value="44">
-1210 Inclusive Room Revenue
-</option>
-<option value="45">
-1215 Accommodations with Tax Types
-</option>
-<option value="46">
-1250 ADJ- Group Room Revenue
-</option>
-<option value="47">
-1260 ADJ- Inclusive Room Revenue
-</option>
-<option value="48">
-1270 Resort Fee
-</option>
-<option value="49">
-1271 Resort Fee Tax
-</option>
-<option value="50">
-1300 Group No Show Revenue
-</option>
-<option value="51">
-1350 ADJ- Group No Show Revenue
-</option>
-<option value="52">
-2000 Lobby Bar Food
-</option>
-<option value="53">
-2002 RollAway Bed
-</option>
-<option value="54">
-2003 Breakfast (10% Incl)
-</option>
-<option value="55">
-2010 Lobby Bar Beverage
-</option>
-<option value="56">
-2020 Lobby Bar Miscellaneous
-</option>
-<option value="57">
-2021 Restaurant  (Exclusive)
-</option>
-<option value="60">
-2060 ADJ- Lobby Bar Beverage
-</option>
-<option value="61">
-2064 Internet Connection
-</option>
-<option value="62">
-2065 Bruch Charge
-</option>
-<option value="63">
-2070 ADJ- Lobby Bar Miscellaneous
-</option>
-<option value="64">
-2080 ADJ- Lobby Bar Gratuity
-</option>
-<option value="65">
-2100 Room Service Food
-</option>
-<option value="67">
-2120 Room Service Delivery
-</option>
-<option value="70">
-2160 ADJ- Room Service Beverage
-</option>
-<option value="72">
-2180 ADJ- Room Service Gratuity
-</option>
-<option value="73">
-2200 Restaurant Food
-</option>
-<option value="74">
-2210 Restaurant Beverage
-</option>
-<option value="75">
-2215 IFC Restaurant Charge
-</option>
-<option value="76">
-2220 Restaurant Gratuity
-</option>
-<option value="77">
-2250 ADJ- Restaurant Food
-</option>
-<option value="78">
-2260 ADJ- Restaurant Beverage
-</option>
-<option value="79">
-2270 ADJ- Restaurant Gratuity
-</option>
-<option value="80">
-2300 Minibar-Food
-</option>
-<option value="81">
-2310 Minibar- Beverage
-</option>
-<option value="82">
-2320 Minibar - Miscellaneous
-</option>
-<option value="83">
-2350 ADJ- Minibar Food
-</option>
-<option value="85">
-2370 ADJ- Minibar Miscellaneous
-</option>
-<option value="86">
-2500 Banquet Food &amp; Beverage
-</option>
-<option value="88">
-2520 Banquet Audio Visual
-</option>
-<option value="89">
-2530 Banquet Room Rental
-</option>
-<option value="90">
-2560 Gift Shop
-</option>
-<option value="91">
-2601 Allowance with Service Charge
-</option>
-<option value="92">
-2650 ADJ- Banquet Charges
-</option>
-<option value="93">
-3000 Fax
-</option>
-<option value="94">
-3010 Copies
-</option>
-<option value="95">
-3020 Shipping
-</option>
-<option value="96">
-3030 Secretarial Services
-</option>
-<option value="97">
-3050 ADJ- Business Center
-</option>
-<option value="98">
-4000 Local Telephone
-</option>
-<option value="99">
-4010 Long Distance Telephone
-</option>
-<option value="100">
-4020 Internet Access
-</option>
-<option value="101">
-4050 ADJ- Local Telephone
-</option>
-<option value="102">
-4060 ADJ- Long Distance Telephone
-</option>
-<option value="103">
-4070 ADJ- Internet Access
-</option>
-<option value="104">
-4500 Mini Bar
-</option>
-<option value="105">
-5000 Golf Greens Fees
-</option>
-<option value="106">
-5005 Tax 10%
-</option>
-<option value="107">
-5010 Cart Fee
-</option>
-<option value="108">
-5020 Golf Rental Shoes/ Clubs
-</option>
-<option value="109">
-5050 ADJ- Golf Greens Fees
-</option>
-<option value="110">
-5060 ADJ- Cart Fee
-</option>
-<option value="111">
-5070 ADJ- Rental Shoes/ Clubs
-</option>
-<option value="112">
-6000 Rollaway
-</option>
-<option value="113">
-6010 Mini Refrigerator
-</option>
-<option value="114">
-6020 Microswave
-</option>
-<option value="115">
-6030 Laundry
-</option>
-<option value="116">
-6040 In Room Movie
-</option>
-<option value="117">
-6050 ADJ- Rollaway/ Refridgerator/ Microwave
-</option>
-<option value="118" selected="">
-6060 Late checkout charge
-</option>
-<option value="119">
-6080 ADJ- Laundry
-</option>
-<option value="120">
-6090 ADJ- In Room Movie
-</option>
-<option value="121">
-7000 Old Balanace Conversion
-</option>
-<option value="122">
-7010 A/R Credit Card Transfer
-</option>
-<option value="123">
-7020 Cash Drop
-</option>
-<option value="124">
-7030 Check Drop
-</option>
-<option value="125">
-7040 Currency Exchange Paid Out
-</option>
-<option value="126">
-7050 Check Exchange Paid Out
-</option>
-<option value="127">
-7070 Accommodation Tax
-</option>
-<option value="128">
-7070I Owner Revenue Posting
-</option>
-<option value="129">
-7080I Travel Agent Commission
-</option>
-<option value="130">
-7500 Package
-</option>
-<option value="131">
-7510 Paid Out
-</option>
-<option value="132">
-8000 F&amp;B Tax  (4%)
-</option>
-<option value="133">
-8004 Package Profilt- F&amp;B
-</option>
-<option value="134">
-8050 ADJ- F&amp;B Tax (4%)
-</option>
-<option value="135">
-8101 Service Charge 15%
-</option>
-<option value="136">
-8210 Sales Tax- (6%)
-</option>
-<option value="137">
-8260 ADJ- Sales Tax- 6%
-</option>
-<option value="138">
-8300 Room Tax - 6%
-</option>
-<option value="139">
-8310 Occupancy Tax- 4%
-</option>
-<option value="140">
-8330 Banquet Tax
-</option>
-<option value="141">
-8350 ADJ- Room Tax 6%
-</option>
-<option value="142">
-8360 ADJ- Occupancy Tax 4%
-</option>
-<option value="143">
-8363 0% Tax
-</option>
-<option value="144">
-8501 ADJ- Lift Tickets
-</option>
-<option value="145">
-8502 ADJ- Ski Rentals
-</option>
-<option value="146">
-8503 ADJ- Ski School
-</option>
-<option value="147">
-8601 Lift Tickets
-</option>
-<option value="148">
-8602 Ski Rentals
-</option>
-<option value="149">
-8603 Ski School
-</option>
-<option value="150">
-8890 Tax 5% Exclusive
-</option>
-<option value="151">
-9200 Package Profit
-</option>
-<option value="152">
-9206 Package Profit A (Service Charge 15%)
-</option>
-<option value="153">
-9250 Package Loss
-</option>
-<option value="154">
-9251 Parking
-</option>
-<option value="155">
-9255 Package Loss A (Servie Charge 15%)
-</option>
-<option value="156">
-9010 Cash
-</option>
-<option value="157">
-9000 Cash
-</option>
-<option value="158">
-9020 Visa
-</option>
-<option value="159">
-9026 American Express
-</option>
-<option value="160">
-9040 Master Card
-</option>
-<option value="161">
-9050 Discover
-</option>
-<option value="162">
-9055 Diners Club
-</option>
-<option value="163">
-9150 Deposit Transfer
-</option>
-<option value="164">
-9205 DIrect Bank Deposit
-</option>
-<option value="165">
-9001 F&amp;B Cash
-</option>
-<option value="166">
-9005 AR Cash
-</option>
-<option value="167">
-9015 Traveller's Check
-</option>
-<option value="168">
-9100 DIrect Bill
-</option>
-<option value="169">
-9160 Pre Paid Commission
-</option>
-<option value="170">
-9300 Package
-</option>
-<option value="186">
-6666 
-</option>
-<option value="196">
-2222 Nicki Test
-</option>
-<option value="197">
-1111 Room
-</option>
-<option value="201">
-18893 Test
-</option>
-<option value="206">
-2030 Lobby Bar Gratuity
-</option>
-<option value="207">
-2050 ADJ- Lobby Bar Food
-</option>
-<option value="208">
-2110 Room Service Beverage
-</option>
-<option value="209">
-2130 Room Service Gratuity
-</option>
-<option value="210">
-2150 ADJ- Room Service Food
-</option>
-<option value="211">
-2170 ADJ- Room Service Delivery
-</option>
-<option value="214">
-9899 Test for Jos
-</option>
-<option value="215">
-1500 Upgrade Charge
-</option>
-<option value="216">
-1501 Adj Upgrade Charge
-</option>
-<option value="326">
-1005 Upgrade Charge
-</option>
-<option value="327">
-2360 ADJ- Minibar Beverage
-</option>
-<option value="328">
-2510 Banquet Entertainment
-</option>
+							</select>
+						</div>
+						<div class="select select-col col1-3">
+							<select name="hotel-checkout-minute" id="sent-alert-to-all-guests-minute">
+								<option value="" data-text="Not set" class="placeholder">MM</option>
+								<option value="00" selected="">
+									00
+								</option>
 
-</select>
-</div>
-</div>
+							</select>
+						</div>
+						<div class="select select-col col1-3">
+							<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
+								<option value="AM" selected="">AM</option>
+								<option value="PM">PM</option>
+							</select>
+						</div>
+					</div>
 
-</fieldset>
-<fieldset class="holder right">
-<div></div>
-<div class="entry">
-<label>
-CheckOut Time extended to [PM]
-</label>
-<div class="entry full-width float">
-<div class="select select-col col1-3">
-<select name="checkout-time-extended-to" id="checkout-time-extended-to-1" class="styled">
-<option value="" data-text="Not set" class="placeholder">HH</option>
-<option value="01">
-01
-</option>
-<option value="02" selected="">
-02
-</option>
-<option value="03">
-03
-</option>
-<option value="04">
-04
-</option>
-<option value="05">
-05
-</option>
-<option value="06">
-06
-</option>
-<option value="07">
-07
-</option>
-<option value="08">
-08
-</option>
-<option value="09">
-09
-</option>
-<option value="10">
-10
-</option>
-<option value="11">
-11
-</option>
-<option value="12">
-12
-</option>
-</select>
-</div>
-<div class="select select-col col1-3">
-<select name="primetime" disabled="disabled" class="styled">
-<option value="AM">AM</option>
-<option value="PM" selected="">PM</option>
-</select>
-</div>
-</div>
+				</div>
+				<!-- = render :partial => "admin/shared/textbox", :locals => {:data => {"id"=> "sent-alert-to-all-guests", "name" => "sent-alert-to-all-guests", "placeholder" => "Enter time", "required" => "", "value" => "#{@sent_alert}", "maxlength" => "", "label_text" => "Send Upsell alert to all guests [AM]"}} -->
+				<div class="entry">
+					<label for="charge-code">
+						Charge Code
+						<strong>*</strong>
+					</label>
+					<div class="select">
+						<select name="charge-code" id="charge-code" class="placeholder">
+							<option value="">
+								Charge Code
+							</option><option value="27">
+							1000 Transient Room Revenue
+						</option>
 
-</div>
-<div class="entry">
-<label for="charge-for-checkout-1">
-Charge [$]
-</label>
-<input type="text" value="10.0" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-1">
-</div>
 
-<div class="entry">
-<label>
-CheckOut Time extended to [PM]
-</label>
-<div class="entry full-width float">
-<div class="select select-col col1-3">
-<select name="checkout-time-extended-to" id="checkout-time-extended-to-2" class="styled">
-<option value="" data-text="Not set" class="placeholder">HH</option>
-<option value="01">
-01
-</option>
-<option value="02">
-02
-</option>
-<option value="03">
-03
-</option>
-<option value="04" selected="">
-04
-</option>
-<option value="05">
-05
-</option>
-<option value="06">
-06
-</option>
-<option value="07">
-07
-</option>
-<option value="08">
-08
-</option>
-<option value="09">
-09
-</option>
-<option value="10">
-10
-</option>
-<option value="11">
-11
-</option>
-<option value="12">
-12
-</option>
-</select>
-</div>
-<div class="select select-col col1-3">
-<select name="primetime" disabled="disabled" class="styled">
-<option value="AM">AM</option>
-<option value="PM" selected="">PM</option>
-</select>
-</div>
-</div>
+					</select>
+				</div>
+			</div>
 
-</div>
-<div class="entry">
-<label for="charge-for-checkout-2">
-Charge [$]
-</label>
-<input type="text" value="20.0" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-2">
-</div>
+		</fieldset>
+		<fieldset class="holder right">
+			<div></div>
+			<div class="entry">
+				<label>
+					CheckOut Time extended to [PM]
+				</label>
+				<div class="entry full-width float">
+					<div class="select select-col col1-3">
+						<select name="checkout-time-extended-to" id="checkout-time-extended-to-1" class="styled">
+							<option value="" data-text="Not set" class="placeholder">HH</option>
+							<option value="01">
+								01
+							</option>
 
-<div class="entry">
-<label>
-CheckOut Time extended to [PM]
-</label>
-<div class="entry full-width float">
-<div class="select select-col col1-3">
-<select name="checkout-time-extended-to" id="checkout-time-extended-to-3" class="styled">
-<option value="" data-text="Not set" class="placeholder">HH</option>
-<option value="01">
-01
-</option>
-<option value="02">
-02
-</option>
-<option value="03">
-03
-</option>
-<option value="04">
-04
-</option>
-<option value="05">
-05
-</option>
-<option value="06">
-06
-</option>
-<option value="07" selected="">
-07
-</option>
-<option value="08">
-08
-</option>
-<option value="09">
-09
-</option>
-<option value="10">
-10
-</option>
-<option value="11">
-11
-</option>
-<option value="12">
-12
-</option>
-</select>
-</div>
-<div class="select select-col col1-3">
-<select name="primetime" disabled="disabled" class="styled">
-<option value="AM">AM</option>
-<option value="PM" selected="">PM</option>
-</select>
-</div>
-</div>
+						</select>
+					</div>
+					<div class="select select-col col1-3">
+						<select name="primetime" disabled="disabled" class="styled">
+							<option value="AM">AM</option>
+							<option value="PM" selected="">PM</option>
+						</select>
+					</div>
+				</div>
 
-</div>
-<div class="entry">
-<label for="charge-for-checkout-3">
-Charge [$]
-</label>
-<input type="text" value="30.0" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-3">
-</div>
+			</div>
+			<div class="entry">
+				<label for="charge-for-checkout-1">
+					Charge [$]
+				</label>
+				<input type="text" value="10.0" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-1">
+			</div>
 
-</fieldset>
-<div class="actions float">
-<button type="button" id="cancel" class="button blank">Cancel</button>
-<button type="button" id="save" class="button green">Save changes</button>
-</div>
-</form>
+			<div class="entry">
+				<label>
+					CheckOut Time extended to [PM]
+				</label>
+				<div class="entry full-width float">
+					<div class="select select-col col1-3">
+						<select name="checkout-time-extended-to" id="checkout-time-extended-to-2" class="styled">
+							<option value="" data-text="Not set" class="placeholder">HH</option>
+							<option value="01">
+								01
+							</option>
+
+						</select>
+					</div>
+					<div class="select select-col col1-3">
+						<select name="primetime" disabled="disabled" class="styled">
+							<option value="AM">AM</option>
+							<option value="PM" selected="">PM</option>
+						</select>
+					</div>
+				</div>
+
+			</div>
+			<div class="entry">
+				<label for="charge-for-checkout-2">
+					Charge [$]
+				</label>
+				<input type="text" value="20.0" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-2">
+			</div>
+
+			<div class="entry">
+				<label>
+					CheckOut Time extended to [PM]
+				</label>
+				<div class="entry full-width float">
+					<div class="select select-col col1-3">
+						<select name="checkout-time-extended-to" id="checkout-time-extended-to-3" class="styled">
+							<option value="" data-text="Not set" class="placeholder">HH</option>
+							<option value="01">
+								01
+							</option>
+
+						</select>
+					</div>
+					<div class="select select-col col1-3">
+						<select name="primetime" disabled="disabled" class="styled">
+							<option value="AM">AM</option>
+							<option value="PM" selected="">PM</option>
+						</select>
+					</div>
+				</div>
+
+			</div>
+			<div class="entry">
+				<label for="charge-for-checkout-3">
+					Charge [$]
+				</label>
+				<input type="text" value="30.0" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-3">
+			</div>
+
+		</fieldset>
+		<div class="actions float">
+			<button type="button" id="cancel" class="button blank">Cancel</button>
+			<button type="button" id="save" class="button green">Save changes</button>
+		</div>
+	</form>
 </section>
 </div>
 </section>
