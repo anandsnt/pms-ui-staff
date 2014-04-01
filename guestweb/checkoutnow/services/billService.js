@@ -4,20 +4,7 @@
 		var billDisplayDetails = {};
 
 
-		//fetch texts to be displayed
-
-		var fetchDisplayDetails = function() {
-			
-			var deferred = $q.defer();
-
-			baseWebService.fetch('/assets/fauxDB/billDisplayDetails.json').then(function(response) {
-				this.billDisplayDetails = response;
-				deferred.resolve(this.billDisplayDetails);
-			});
-			
-
-			return deferred.promise;
-		};
+	
 
 		//fetch bill details
 
@@ -37,7 +24,6 @@
 		return {
 			bills: bills,
 			billDisplayDetails : billDisplayDetails,
-			fetchDisplayDetails: fetchDisplayDetails,
 			fetchBillData :fetchBillData
 		}
 	};

@@ -1,8 +1,13 @@
 
 admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', function($state, $scope, $rootScope, ADAppSrv){
 	
+	$scope.errorMessage = '';
+	BaseCtrl.call(this, $scope);
 	$scope.menuOpen = false;
 	$scope.hotelListOpen = '';
+
+	//when there is an occured while trying to access any menu details, we need to show that errors
+	
 	
 	if($rootScope.admin_role == "hotel-admin" ){
 		$scope.isHotelAdmin =  true;
@@ -11,24 +16,30 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', funct
 		$scope.isHotelAdmin =  false;
 	}
 
-	ADAppSrv.fetch().then(function(data) {
-		$scope.currentIndex = 0;
+	$scope.successCallbackOfMenuLoading = function(data){
+		//$scope.currentIndex = 0;
 		$scope.data = data;
-		$scope.selectedMenu = $scope.data.menus[0];
+		$scope.selectedMenu = $scope.data.menus[0];		
+	}
 
-	},function(){
-		console.log("error controller");
-	});	
+	$scope.invokeApi(ADAppSrv.fetch, {}, $scope.successCallbackOfMenuLoading);
+
+	// if there is any error occured 
+    $scope.$on("showErrorMessage", function($event, errorMessage){
+    	$event.stopPropagation();
+    	$scope.errorMessage = errorMessage;
+        
+    });
 
 	
 	//function to change the selected menu
 	//index is the array position
-	$scope.setSelectedMenu = function(index)	{
+	/*$scope.setSelectedMenu = function(index)	{
 		if(index < $scope.data.menus.length){
 			$scope.selectedMenu = $scope.data.menus[index];
 			$scope.currentIndex = index;
 		}
-	};
+	};*/
 	
 	$scope.$on("navToggled", function(){
         $scope.menuOpen = !$scope.menuOpen;

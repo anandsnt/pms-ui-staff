@@ -1,132 +1,71 @@
-admin.service('ADBaseWebSrv',['$http', '$q', function($http, $q){
+//To fix the issue with csrf token in ajax requests
+admin.config(function($httpProvider) {
+  $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+  var m = document.getElementsByTagName('meta');
+  for (var i in m) {
+    if (m[i].name == 'csrf-token') {
+	  $httpProvider.defaults.headers.common['X-CSRF-Token'] = m[i].content;
+	  break;
+	}
+  }
+});
 
-	return {
-	    getJSON: function(url, params){
-			var deferred = $q.defer();
-			if(typeof params == "undefined"){
-				params = "";
+
+admin.service('ADBaseWebSrv',['$http', '$q', '$window', function($http, $q, $window){
+
+    /**
+    *   A http requester method for calling webservice
+    *   @param {function} function of the method to call like $http.get, $http.put..
+    *   @param {string} webservice url
+    *   @param {Object} data for webservice
+    *   @return {promise}
+    */	
+
+	this.callWebService = function(httpMethod, url, params){
+		var deferred = $q.defer();
+		if(typeof params == "undefined"){
+			params = "";
+		}
+		//Sample params {params:{fname: "fname", lname: "lname"}}
+		httpMethod(url, params).success(function(response, status) {
+			if(response.status == "success"){
+		    	deferred.resolve(response.data);
+			}else{				
+		    	deferred.reject(response.errors);
 			}
-			//Sample params {params:{fname: "fname", lname: "lname"}}
-			$http.get(url, params).success(function(response, status) {
-				if(response.status == "success"){
-			    	deferred.resolve(response.data);
-				}else{
-			    	deferred.reject(response.data);
-				}
-			}).error(function(data, status) {
-				if(status == 406){ // 406- Network error
-					console.log("Network error");
-					deferred.reject(data);
-				}
-				else if(status == 500){ // 500- Internal Server Error
-					console.log("Internal Server Error");
-					deferred.reject(data);
-				}
-				else if(status == 401){ // 401- Unauthorized
-					console.log("Unauthorized");
-					//To do redirect
-				}else{
-					deferred.reject(data);
-				}
-			    
-			});
-			return deferred.promise;
-
-	   },
-	    
-	   putJSON: function(url, params){
-			var deferred = $q.defer();
-			if(typeof params == "undefined"){
-				params = "";
+		}).error(function(response, status) {
+			if(status == 406){ // 406- Network error
+				deferred.reject(response.errors);
 			}
-			console.log('1111111');
-			$http.put(url, params).success(function(response, status) {
-				if(response.status == "success"){
-			    	deferred.resolve(response.data);
-				}else{
-			    	deferred.reject(response.data);
-				}
-			}).error(function(data, status) {
-			    if(status == 406){ // 406- Network error
-					console.log("Network error");
-					deferred.reject(data);
-				}
-				else if(status == 500){ // 500- Internal Server Error
-					console.log("Internal Server Error");
-					deferred.reject(data);
-				}
-				else if(status == 401){ // 401- Unauthorized
-					console.log("Unauthorized");
-					//To do redirect
-				}else{
-					deferred.reject(data);
-				}
-			});
-			return deferred.promise;
-
-	    },
-	    
-	   postJSON: function(url, params){
-			var deferred = $q.defer();
-			if(typeof params == "undefined"){
-				params = "";
+			else if(status == 500){ // 500- Internal Server Error
+				deferred.reject(response.errors);
 			}
-			$http.post(url, params).success(function(response, status) {
-				if(response.status == "success"){
-			    	deferred.resolve(response.data);
-				}else{
-			    	deferred.reject(response.data);
-				}
-			}).error(function(data, status) {
-			    if(status == 406){ // 406- Network error
-					console.log("Network error");
-					deferred.reject(data);
-				}
-				else if(status == 500){ // 500- Internal Server Error
-					console.log("Internal Server Error");
-					deferred.reject(data);
-				}
-				else if(status == 401){ // 401- Unauthorized
-					console.log("Unauthorized");
-					//To do redirect
-				}else{
-					deferred.reject(data);
-				}
-			});
-			return deferred.promise;
-
-	    },
-	    
-	   deleteJSON: function(url, params){
-			var deferred = $q.defer();
-			if(typeof params == "undefined"){
-				params = "";
+			else if(status == 401){ // 401- Unauthorized
+				console.log('lets redirect');
+				// so lets redirect to login page
+				$window.location.href = '/logout' ;
+			}else{
+				deferred.reject(response.errors);
 			}
-			$http.delete(url, params).success(function(response, status) {
-				if(response.status == "success"){
-			    	deferred.resolve(response.data);
-				}else{
-			    	deferred.reject(response.data);
-				}
-			}).error(function(data, status) {
-			    if(status == 406){ // 406- Network error
-					console.log("Network error");
-					deferred.reject(data);
-				}
-				else if(status == 500){ // 500- Internal Server Error
-					console.log("Internal Server Error");
-					deferred.reject(data);
-				}
-				else if(status == 401){ // 401- Unauthorized
-					console.log("Unauthorized");
-					//To do redirect
-				}else{
-					deferred.reject(data);
-				}
-			});
-			return deferred.promise;
-
-	    }
+		    
+		});
+		return deferred.promise;	    	
 	};
+
+   	this.getJSON = function(url, params){	
+    	return this.callWebService($http.get, url, params);
+   	};
+    
+   	this.putJSON = function(url, params){
+   		return this.callWebService($http.put, url, params);
+   	};
+    
+   	this.postJSON = function(url, params){
+   		return this.callWebService($http.post, url, params);
+   	};
+    
+   	this.deleteJSON = function(url, params){
+   		return this.callWebService($http.delete, url, params);
+   	};
 
 }]);

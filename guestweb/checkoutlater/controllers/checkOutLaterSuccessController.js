@@ -98,10 +98,10 @@
 		posting().then(function (response) {
 			$scope.posted = true;	
 			$scope.success = response.status ? true : false;
-		if($scope.success === true)
+		if($scope.success === true){
 			$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap
-
-
+			$rootScope.checkoutTimessage = "Your new check out time is ";
+		}
 		});
 	}
 		

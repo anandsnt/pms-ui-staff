@@ -1,10 +1,12 @@
 var admin = angular.module('admin',['ui.router', 'ng-iscroll']);
 
-admin.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
+admin.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {
 	
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;	
+	
 }]);
+
 
 // function to add zeros(0) infront of a number, like 09 for 9 or 007 for 7
 function getLengthChangedNumber(lengthWanted, number){
@@ -69,8 +71,6 @@ admin.filter('makeRange', function() {
 admin.controller('rootController', ['$rootScope','$scope','$attrs','$location', function($rootScope,$scope,$attrs, $location) {
 
 	//store basic details as rootscope variables
-
-	$rootScope.admin_role = $attrs.adminRole;
 	$rootScope.adminRole = $attrs.adminRole;
 
 }]);

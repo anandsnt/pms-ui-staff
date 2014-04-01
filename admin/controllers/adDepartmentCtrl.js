@@ -1,42 +1,48 @@
-admin.controller('ADDepartmentListCtrl',['$scope', '$state',   function($scope, $state){
+admin.controller('ADDepartmentListCtrl',['$scope', '$state',  function($scope, $state){
 	
-	$scope.data = {
-		    "departments": [
-		        {
-		            "value": "3",
-		            "name": "Housekeeping"
-		        },
-		        {
-		            "value": "5",
-		            "name": "IT"
-		        },
-		        {
-		            "value": "6",
-		            "name": "Front Desk"
-		        },
-		        {
-		            "value": "20",
-		            "name": "Concierge"
-		        },
-		        {
-		            "value": "21",
-		            "name": "Engineering"
-		        },
-		        {
-		            "value": "36",
-		            "name": "One test"
-		        },
-		        {
-		            "value": "37",
-		            "name": "Two test"
-		        },
-		        {
-		            "value": "38",
-		            "name": "Three test"
-		        }
-		    ]
-		};	
+	$scope.errorMessage = '';
 	
+	$scope.listDepartments = function(){
+		
+	};
+	
+	// $scope.data = {
+		    // "departments": [
+		        // {
+		            // "value": "3",
+		            // "name": "Housekeeping"
+		        // },
+		        // {
+		            // "value": "5",
+		            // "name": "IT"
+		        // },
+		        // {
+		            // "value": "6",
+		            // "name": "Front Desk"
+		        // },
+		        // {
+		            // "value": "20",
+		            // "name": "Concierge"
+		        // },
+		        // {
+		            // "value": "21",
+		            // "name": "Engineering"
+		        // },
+		        // {
+		            // "value": "36",
+		            // "name": "One test"
+		        // },
+		        // {
+		            // "value": "37",
+		            // "name": "Two test"
+		        // },
+		        // {
+		            // "value": "38",
+		            // "name": "Three test"
+		        // }
+		    // ]
+		// };	
+	$scope.listDepartments(); 
 	$scope.currentClickedElement = -1;
 	$scope.addFormView = false;
 	$scope.editDepartments = function(index, department)	{
@@ -62,12 +68,16 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state',   function($scope, 
 		}
 		 
 	};
+    $scope.$on("showErrorMessage", function($event, errorMessage){
+    	$event.stopPropagation();
+    	$scope.errorMessage = errorMessage;
+        
+    });
+		
 	//Previous view if clicked cancel
 	$scope.clickCancel = function(){
 		$scope.currentClickedElement = -1;
 		$scope.addFormView = false;
-	};
-		
-		
+	};			
 
 }]);

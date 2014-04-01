@@ -1,5 +1,5 @@
-hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKRoomDetailsSrv',  
-					function($scope, $state, $stateParams, HKRoomDetailsSrv){
+hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKRoomDetailsSrv', 'roomDetailsData', 
+					function($scope, $state, $stateParams, HKRoomDetailsSrv, roomDetailsData){
 	
 	$scope.initColorCodes = function(){
 		$scope.isCleanVacant = false;
@@ -13,9 +13,25 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 	$scope.initColorCodes();
 	$scope.guestViewStatus = "";
 	$scope.$emit('hideNavMenu');
-	$scope.$emit('showLoader');
+	//$scope.$emit('showLoader');
 
-	HKRoomDetailsSrv.fetch($stateParams.id).then(function(data) {
+
+	$scope.data = roomDetailsData;
+
+	$scope.shouldDisable = function() {
+		var stat = $scope.data.room_details.current_hk_status;
+		return stat === 'OO' || stat === 'OS' ? true : false;
+	};
+
+	_.each($scope.data.room_details.hk_status_list, function(hkStatusDict) { 
+	    if(hkStatusDict.value == $scope.data.room_details.current_hk_status){
+	    	$scope.currentHKStatus = hkStatusDict;
+	    }
+	});
+
+		
+
+	/*HKRoomDetailsSrv.fetch($stateParams.id).then(function(data) {
 		$scope.$emit('hideLoader');
 	    $scope.data = data;
 
@@ -33,7 +49,7 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 		console.log('fetch failed');
 		$scope.$emit('hideLoader');
 
-	});
+	});*/
 
 
 
@@ -58,6 +74,10 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 
 	}
 
+	$scope.calculateColorCodes();		
+	$scope.guestViewStatus = getGuestStatusMapped($scope.data.room_details.reservation_status,
+												 $scope.data.room_details.is_late_checkout);
+
 	$scope.updateHKStatus = function(){	
 		$scope.$emit('showLoader');	
 		HKRoomDetailsSrv.updateHKStatus($scope.data.room_details.current_room_no, $scope.currentHKStatus.id).then(function(data) {
@@ -70,6 +90,14 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 			$scope.$emit('hideLoader');
 		});
 	};
+
+
+	// stop bounce effect only on the room-details
+	var roomDetailsEl = document.getElementById( '#room-details' );
+	angular.element( roomDetailsEl )
+		.bind( 'ontouchmove', function(e) {
+			e.stopPropagation();
+		});
 	
 
 }]);

@@ -1,4 +1,4 @@
-<section id="replacing-div-first" class="content current">
+<section id="replacing-div-first" class="content current" ng-click='closeErrorMessage()'>
 	<div data-view="HotelDepartmentsView">
 		<header class="content-title float">
 			<h2> Departments </h2>
@@ -9,8 +9,7 @@
 			
 		</header>
 		<div id="new-form-holder" ng-show="addFormView" ng-include="getTemplateUrl('','')"></div>
-		
-		<div id="notification-message"></div>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div id="new-form-holder"></div>
 		<table id="brands" class="grid">
 			<tbody>

@@ -4,7 +4,7 @@ admin.config([
 	function($stateProvider, $urlRouterProvider) {
 
 		// dashboard state
-		$urlRouterProvider.otherwise('/admin/dashboard');
+		$urlRouterProvider.otherwise('/admin/dashboard/0');
 
 		$stateProvider.state('admin', {
 			abstract: true,
@@ -14,22 +14,22 @@ admin.config([
 		});
 
 		$stateProvider.state('admin.dashboard', {
-			url: '/dashboard',
+			url: '/dashboard/:menu',
 			templateUrl: '/assets/partials/dashboard/adDashboard.html',
 			controller: 'ADDashboardCtrl'
 
 		});
 
 		$stateProvider.state('admin.hoteldetails', {
-			templateUrl: '/assets/partials/hotel/hotelDetails.html',
+			templateUrl: '/assets/partials/hotel/adHotelDetails.html',
 			controller: 'ADHotelDetailsCtrl',
-			url : '/hoteldetails'
+			url : '/hoteldetails/:action/:id'
 		});
 		
 		$stateProvider.state('admin.users', {
 			templateUrl: '/assets/partials/users/adUserList.html',
 			controller: 'ADUserListCtrl',
-			url : '/users'
+			url : '/users/:id'
 		});
 
 		$stateProvider.state('admin.chains', {
@@ -37,24 +37,17 @@ admin.config([
 			controller: 'ADChainListCtrl',
 			url : '/chains'
 		});
-
-		
-		// $stateProvider.state('admin.useredit', {
-			// templateUrl: '/assets/partials/users/adUserEdit.html',
-			// controller: 'ADUserListCtrl',
-			// url : '/useredit'
-		// });
 		
 		$stateProvider.state('admin.userdetails', {
-			templateUrl: '/assets/partials/users/adUserEdit.html',
-			controller: 'ADUserListCtrl',
-			url : '/user/:page'
+			templateUrl: '/assets/partials/users/adUserDetails.html',
+			controller: 'ADUserDetailsCtrl',
+			url : '/user/:page/:id'
 		});
 		
-		$stateProvider.state('admin.departments', {
-			templateUrl: '/assets/partials/departments/adDepartmentsList.html',
-			controller: 'ADDepartmentListCtrl',
-			url : '/departments'
+		$stateProvider.state('admin.linkexisting', {
+			templateUrl: '/assets/partials/users/adLinkExistingUser.html',
+			controller: 'ADLinkExistingUserCtrl',
+			url : '/linkexisting/:id'
 		});
 		
 		$stateProvider.state('admin.hotels', {
@@ -62,6 +55,29 @@ admin.config([
 			controller: 'ADHotelListCtrl',
 			url : '/hotels'
 		});
+
+		$stateProvider.state('admin.brands', {
+			templateUrl: '/assets/partials/brands/adBrandList.html',
+			controller: 'ADBrandCtrl',
+			url : '/brands'
+		});
 		
+		$stateProvider.state('admin.mapping', {
+			templateUrl: '/assets/partials/mapping/adExternalMapping.html',
+			controller: 'ADMappingCtrl',
+			url : '/mapping/:id'
+		});
+		
+		$stateProvider.state('admin.mappingdetails', {
+			templateUrl: '/assets/partials/mapping/adExternalMappingDetails.html',
+			controller: 'ADMappingDetailsCtrl',
+			url : '/mappingdetails/:action/:id'
+		});
+		
+		$stateProvider.state('admin.departments', {
+			templateUrl: '/assets/partials/departments/adDepartmentsList.html',
+			controller: 'ADDepartmentListCtrl',
+			url : '/departments'
+		});
 	}
 ]);
