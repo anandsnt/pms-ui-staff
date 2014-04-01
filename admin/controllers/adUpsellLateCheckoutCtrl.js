@@ -66,9 +66,22 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
 
 	$scope.saveClick = function(){
 
+		// console.log($scope.upsellData)
 
+		var updateData = 
+		{
+		'is_late_checkout_set' :$scope.upsellData.is_late_checkout_set,
+		'allowed_late_checkout':$scope.upsellData.allowed_late_checkout,
+		'is_exclude_guests':$scope.upsellData.is_exclude_guests,
+		'sent_alert':$scope.upsellData.sent_alert,
+		'alert_minute':$scope.upsellData.alert_minute,
+		'selected_charge_code':$scope.upsellData.selected_charge_code,
+		'extended_checkout_charge_0':$scope.upsellData.extended_checkout_charge_0,
+		'extended_checkout_charge_1':$scope.upsellData.extended_checkout_charge_1,
+		'extended_checkout_charge_2':$scope.upsellData.extended_checkout_charge_2,
+		'charge_codes':$scope.upsellData.charge_code
 
- 		var updateData = {'updateData' :$scope.upsellData };
+		 };
  		var updateChainSuccessCallback = function(data) {
  			$scope.$emit('hideLoader');
  			$state.go( 'admin.dashboard', {menu:2});
