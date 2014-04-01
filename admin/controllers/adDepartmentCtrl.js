@@ -1,43 +1,48 @@
 admin.controller('ADDepartmentListCtrl',['$scope', '$state',  function($scope, $state){
-
-	$scope.errorMessage = '';
-	$scope.data = {
-		    "departments": [
-		        {
-		            "value": "3",
-		            "name": "Housekeeping"
-		        },
-		        {
-		            "value": "5",
-		            "name": "IT"
-		        },
-		        {
-		            "value": "6",
-		            "name": "Front Desk"
-		        },
-		        {
-		            "value": "20",
-		            "name": "Concierge"
-		        },
-		        {
-		            "value": "21",
-		            "name": "Engineering"
-		        },
-		        {
-		            "value": "36",
-		            "name": "One test"
-		        },
-		        {
-		            "value": "37",
-		            "name": "Two test"
-		        },
-		        {
-		            "value": "38",
-		            "name": "Three test"
-		        }
-		    ]
-		};	
 	
+	$scope.errorMessage = '';
+	
+	$scope.listDepartments = function(){
+		
+	};
+	
+	// $scope.data = {
+		    // "departments": [
+		        // {
+		            // "value": "3",
+		            // "name": "Housekeeping"
+		        // },
+		        // {
+		            // "value": "5",
+		            // "name": "IT"
+		        // },
+		        // {
+		            // "value": "6",
+		            // "name": "Front Desk"
+		        // },
+		        // {
+		            // "value": "20",
+		            // "name": "Concierge"
+		        // },
+		        // {
+		            // "value": "21",
+		            // "name": "Engineering"
+		        // },
+		        // {
+		            // "value": "36",
+		            // "name": "One test"
+		        // },
+		        // {
+		            // "value": "37",
+		            // "name": "Two test"
+		        // },
+		        // {
+		            // "value": "38",
+		            // "name": "Three test"
+		        // }
+		    // ]
+		// };	
+	$scope.listDepartments(); 
 	$scope.currentClickedElement = -1;
 	$scope.addFormView = false;
 	$scope.editDepartments = function(index, department)	{

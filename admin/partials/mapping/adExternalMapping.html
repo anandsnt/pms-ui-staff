@@ -1,13 +1,14 @@
-<section id="replacing-div-first" class="content current">
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
 	<div id="selected_hotel" data-view="HotelExternalMappingsView">
 		<!-- Hotels list -->
 		<section>
 			<header class="content-title float">
 				<h2>External Mappings</h2>
-				<span class="count">(3)</span>
+				<span class="count">({{data.mapping.length}})</span>
 
-				<a id="add_new_hotel" ui-sref="admin.mappingdetails({action:'add',id:id})" class="action add" >Add new</a>
-				<a id="go_back" data-type="load-details" class="action back">Back</a>
+				<a ng-click="addNew()" class="action add" >Add new</a>
+				<a class="action back">Back</a>
+				
 				<div class="filters">
 					<div class="filter hidden"></div>
 					<div class="filter hidden"></div>
@@ -17,8 +18,7 @@
 							<div class="select">
 								<select   ng-model="data.mapping_type" name="hotel-chain" id="hotel-chain" class="placeholder">
 									<option value=""> Filter By Chain </option>
-									<option selected="" ng-repeat="mapping in data.mapping"> {{mapping.mapping_type}} </option>
-
+									<option ng-selected="mapping === data.mapping_type" ng-repeat="mapping in data.mapping">{{mapping.mapping_type}}</option>
 								</select>
 							</div>
 						</div>
@@ -27,8 +27,11 @@
 				</div>
 
 			</header>
-			<div id="notification-message"></div>
-			<table id="external_mapping_table" class="grid datatable">
+			
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div> 
+			<div id="new-form-holder" ng-show="isAdd" ng-include="getTemplateUrl()"></div>
+			<table class="grid ">
+				
 				<thead>
 					<tr role="row">
 						<th width="30%" class="sorting"> Mapping Type </th>
@@ -37,20 +40,29 @@
 						<th width="10%" class="activate long"> Delete </th>
 					</tr>
 				</thead>
-
+				
 				<tbody ng-repeat="mapping in data.mapping">
 
 					<tr ng-repeat="mapping_value in mapping.mapping_values">
-
-						<td width="30%"><a ui-sref="admin.mappingdetails({action:'edit',id:mapping_value.value})" data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.mapping_type}}</a></td>
-
-						<td width="25%"><a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.snt_value}}</a></td>
-						<td width="25%"><a data-item="3" data-colspan="2" class="edit-data-inline"> {{mapping_value.external_value}}</a></td>
-						<td class="delete" ng-hide="currentClickedElement == $index" width="10%"><a id="3" class="icons icon-delete large-icon delete_item"></a></td>
+						<td width="30%" ng-click="editSelected($index,mapping_value.value)" ng-hide="currentClickedElement == $index && isEdit">
+							<a  data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.mapping_type}}</a>
+						</td>
+						<td width="25%" ng-hide="currentClickedElement == $index && isEdit">
+							<a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.snt_value}}</a>
+						</td>
+						<td width="25%" ng-hide="currentClickedElement == $index && isEdit">
+							<a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.external_value}}</a>
+						</td>
+						<td class="delete" ng-hide="currentClickedElement == $index && isEdit" width="10%">
+							<a id="3" class="icons icon-delete large-icon delete_item"></a>
+						</td>
+						
+						<td colspan="4" ng-include="getTemplateUrl()" ng-show="currentClickedElement == $index && isEdit"></td>
 					</tr>
 
 				</tbody>
 			</table>
+			
 		</section>
 	</div>
 </section>

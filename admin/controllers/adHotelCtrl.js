@@ -23,11 +23,11 @@ admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParam
 		
 		// checkedStatus will be true, if it checked
       	// show confirm if it is going turn on stage
-      	if(is_res_import_on == 'false'){
+      	if($scope.data.hotels[index].is_res_import_on == 'false'){
           	var confirmForReservationImport = confirm("Do NOT switch ON, until hotel mapping and setup is completed!, Do you want to proceed?");
-      	}	
-      	var is_res_import_on = $scope.data.hotels[index].is_res_import_on == 'true' ? false : true;
-      	var data = {'hotel_id' :  $scope.data.hotels[index].id,  'is_res_import_on': is_res_import_on };
+      	}
+      	var isResImportOn = $scope.data.hotels[index].is_res_import_on == 'true' ? false : true;
+      	var data = {'hotel_id' :  $scope.data.hotels[index].id,  'is_res_import_on': isResImportOn };
       	
       	var postSuccess = function(){
       		$scope.data.hotels[index].is_res_import_on = ($scope.data.hotels[index].is_res_import_on == 'true') ? 'false' : 'true';

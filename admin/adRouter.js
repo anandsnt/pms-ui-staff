@@ -37,10 +37,6 @@ admin.config([
 			controller: 'ADChainListCtrl',
 			url : '/chains'
 		});
-
-		
-		
-		
 		
 		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserDetails.html',
@@ -53,13 +49,17 @@ admin.config([
 			controller: 'ADLinkExistingUserCtrl',
 			url : '/linkexisting/:id'
 		});
-
-
 		
 		$stateProvider.state('admin.hotels', {
 			templateUrl: '/assets/partials/hotel/adHotelList.html',
 			controller: 'ADHotelListCtrl',
 			url : '/hotels'
+		});
+
+		$stateProvider.state('admin.brands', {
+			templateUrl: '/assets/partials/brands/adBrandList.html',
+			controller: 'ADBrandCtrl',
+			url : '/brands'
 		});
 		
 		$stateProvider.state('admin.mapping', {
@@ -68,11 +68,16 @@ admin.config([
 			url : '/mapping/:id'
 		});
 		
-		
 		$stateProvider.state('admin.mappingdetails', {
 			templateUrl: '/assets/partials/mapping/adExternalMappingDetails.html',
 			controller: 'ADMappingDetailsCtrl',
 			url : '/mappingdetails/:action/:id'
+		});
+		
+		$stateProvider.state('admin.departments', {
+			templateUrl: '/assets/partials/departments/adDepartmentsList.html',
+			controller: 'ADDepartmentListCtrl',
+			url : '/departments'
 		});
 	}
 ]);

@@ -1,7 +1,7 @@
 <!-- Navbar -->
 <header class="nav-bar float" role="banner">
    <!-- Menu toggle button / Back button  -->
-   <a class="nav-toggle" ng-click="$emit('navToggled')">Menu</a>
+   <a class="nav-toggle" ng-click="toggleMainNav()">Menu</a>
    <!-- Title -->
    <h1 class="h2">Rooms Status</h1>
    <!-- Filter / Checkout button  -->
@@ -15,9 +15,11 @@
       </div>
       
       <button type="submit" class="icons icon-search">Search</button>
-      <input name="query" id="query" ng-model="query" placeholder="Enter Room Number" type="text" autocomplete="off" ng-keypress="refreshScroll()"/>
+      <input name="query" id="query" ng-model="query" placeholder="Enter Room Number" type="text" autocomplete="off" ng-keydown="refreshScroll()"
+>
    </div>
 </form>
+
 <!-- Rooms list -->
 <section id="rooms" class="content scrollable">
    <ul class="wrapper">
@@ -34,6 +36,7 @@
       </li>
    </ul>
 </section>
+
 <!-- Rooms filters -->
 <section class="content" id="filter-rooms" ng-show = "filterOpen">
 
@@ -42,7 +45,7 @@
        <button id="clear-filters" class="button blank clear-selection" ng-show = "isFilterChcked()" ng-click = "clearFilters()" type="button">Clear</button>
        <a class="complete toggle linked-toggle" ng-click="filterDoneButtonPressed()">Done</a>
     </header>
-    <div class="content scrollable" id="filter-options" ng-iscroll = "rooms" ng-iscroll-form = "true">
+    <div class="content scrollable" id="filter-options">
        <div class="wrapper" >
           <div class="holder">
              <strong class="title">Housekeeping Status</strong>

@@ -43,14 +43,14 @@ admin.service('ADBaseWebSrv',['$http', '$q', '$window', function($http, $q, $win
 			else if(status == 401){ // 401- Unauthorized
 				console.log('lets redirect');
 				// so lets redirect to login page
-				$window.location.href = '/login' ;
+				$window.location.href = '/logout' ;
 			}else{
 				deferred.reject(response.errors);
 			}
 		    
 		});
 		return deferred.promise;	    	
-	}	
+	};
 
    	this.getJSON = function(url, params){	
     	return this.callWebService($http.get, url, params);
