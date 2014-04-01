@@ -418,7 +418,6 @@ var ChangeStayDatesView = function(viewDom){
       var roomStatus = that.myDom.find('.reservation-header .room').attr('data-room-status');
       var reservStatus = that.myDom.find('.reservation-header .room').attr('data-reserv-status'); 
       var roomColorClass = getRoomColorClass(reservStatus, roomStatus, foStatus);
-      that.myDom.find('#reservation-updates #room-number').removeClass();
       that.myDom.find('#reservation-updates #room-number').addClass(roomColorClass);
       //display room type
       that.myDom.find('#reservation-updates #room-type').text(that.myDom.find('#room-type').text());
