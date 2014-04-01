@@ -13,8 +13,8 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','adUpsellLatecheckoutServi
 		var fetchUpsellDetailsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.upsellData = data;
-			$scope.onStatus = ($scope.upsellData.is_late_checkout_set === "true") ? "on" : "";
-			$scope.checkedStatus = ($scope.upsellData.is_exclude_guests === "true")? "checked" : "";
+			// $scope.onStatus = ($scope.upsellData.is_late_checkout_set === "true") ? "on" : "";
+			// $scope.checkedStatus = ($scope.upsellData.is_exclude_guests === "true")? "checked" : "";
 		};
 		$scope.invokeApi(adUpsellLatecheckoutService.fetch, {},fetchUpsellDetailsSuccessCallback);
 	};
@@ -28,10 +28,20 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','adUpsellLatecheckoutServi
 
 
 	$scope.switchClicked = function(){
-		$scope.onStatus = ($scope.onStatus != "on") ? "on" : "";
+
+		if($scope.upsellData.is_late_checkout_set === 'true')
+			$scope.upsellData.is_late_checkout_set = 'false';
+		else
+			$scope.upsellData.is_late_checkout_set = 'true';
+		
 	}
 	$scope.checkBoxClicked = function(){
-		$scope.checkedStatus = ($scope.checkedStatus != "checked") ? "checked" : "";
+		//$scope.checkedStatus = ($scope.checkedStatus != "checked") ? "checked" : "";
+
+		if($scope.upsellData.is_exclude_guests === 'true')
+			$scope.upsellData.is_exclude_guests = 'false';
+		else
+			$scope.upsellData.is_exclude_guests = 'true';
 	}
 
 }]);
