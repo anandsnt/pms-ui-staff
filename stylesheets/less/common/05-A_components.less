@@ -12,14 +12,41 @@
 /* Login page 				==============================*/
 	#login-page {
 		.container {
-			overflow: auto;
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			
+			/* emulating native scroll */
+			overflow: hidden;
+			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
+			/**/
+			&::-webkit-scrollbar {
+			  -webkit-appearance: scrollbarthumb-vertical;
+			  width: 4px;
+			}
+			/**/
+			&::-webkit-scrollbar-track {
+			  background: transparent none;
+			}
+			/**/
+			&::-webkit-scrollbar-thumb {
+			  border-radius: 4px;
+			  background-color: rgba(0, 0, 0, .3);
+			}
+			/**/
+			&::-webkit-scrollbar-thumb:hover {
+			  background-color: rgba(0, 0, 0, .5);
+			}
 
 			#login {
 				text-align: left;
 		  		vertical-align: middle;
 				padding: 20px;
-				height: 100%;
-				overflow: auto;
+				height: auto;
+				min-height: 100%;
 				.background(@white);
 				.show;
 
@@ -94,6 +121,7 @@
 					width: 540px;
 					margin: -220px 0 0 -270px;
 					height: auto;
+					min-height: initial;
 					overflow: hidden;
 					.box-shadow(0 0 5px rgba(0,0,0,.2));
 					#border-radius > .rounded();

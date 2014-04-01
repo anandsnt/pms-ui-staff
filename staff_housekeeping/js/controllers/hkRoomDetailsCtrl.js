@@ -18,6 +18,11 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 
 	$scope.data = roomDetailsData;
 
+	$scope.shouldDisable = function() {
+		var stat = $scope.data.room_details.current_hk_status;
+		return stat === 'OO' || stat === 'OS' ? true : false;
+	};
+
 	_.each($scope.data.room_details.hk_status_list, function(hkStatusDict) { 
 	    if(hkStatusDict.value == $scope.data.room_details.current_hk_status){
 	    	$scope.currentHKStatus = hkStatusDict;
@@ -85,6 +90,14 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 			$scope.$emit('hideLoader');
 		});
 	};
+
+
+	// stop bounce effect only on the room-details
+	var roomDetailsEl = document.getElementById( '#room-details' );
+	angular.element( roomDetailsEl )
+		.bind( 'ontouchmove', function(e) {
+			e.stopPropagation();
+		});
 	
 
 }]);
