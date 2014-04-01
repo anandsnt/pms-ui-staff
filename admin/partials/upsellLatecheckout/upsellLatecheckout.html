@@ -14,18 +14,18 @@
 			</div>
 			<fieldset class="holder left">
 				<div></div>
-				<div class="entry">
+				<div class="entry" ng-click="switchClicked()">
 					<label for="late-checkout-upsell">Late Checkout Upsell</label>
-					<div id="div-late-checkout-upsell" class="switch-button single on">
+					<div id="div-late-checkout-upsell" class="switch-button single {{onStatus}}">
 						<input type="checkbox" value="10" name="late-checkout-upsell" id="late-checkout-upsell" checked="checked">
 						<span class="switch-icon"></span>
 
 					</div>
 				</div>
 
-				<div class="entry radio-check">
+				<div class="entry radio-check" ng-click="checkBoxClicked()">
 					<label class="checkbox">
-						<span class="icon-form icon-checkbox"></span>
+						<span class="icon-form icon-checkbox {{checkedStatus}}"></span>
 						<label for="exclude-guest-pre-allocated-room">Exclude guests in pre allocated rooms</label>
 						<input type="checkbox" value="testing" name="exclude-guest-pre-allocated-room" id="exclude-guest-pre-allocated-room">
 
