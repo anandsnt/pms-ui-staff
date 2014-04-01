@@ -6,7 +6,7 @@
 				<h2>External Mappings</h2>
 				<span class="count">({{data.mapping.length}})</span>
 
-				<a ng-click="addNew()" class="action add" >Add new</a>
+				<a ng-click="addNew()" ng-show="addFormView" class="action add" >Add new</a>
 				<a class="action back">Back</a>
 				
 				<div class="filters">
@@ -16,7 +16,7 @@
 						<div class="entry">
 							<label for="hotel-chain"> </label>
 							<div class="select">
-								<select   ng-model="data.mapping_type" name="hotel-chain" id="hotel-chain" class="placeholder">
+								<select ng-model="data.mapping_type" name="hotel-chain" id="hotel-chain" class="placeholder">
 									<option value=""> Filter By Chain </option>
 									<option ng-selected="mapping === data.mapping_type" ng-repeat="mapping in data.mapping">{{mapping.mapping_type}}</option>
 								</select>
@@ -44,20 +44,19 @@
 				<tbody ng-repeat="mapping in data.mapping">
 
 					<tr ng-repeat="mapping_value in mapping.mapping_values">
-						<td width="30%" ng-click="editSelected($index,mapping_value.value)" ng-hide="currentClickedElement == $index && isEdit">
+						<td width="30%" ng-click="editSelected(mapping_value.value)" ng-hide="currentClickedElement == mapping_value.value && isEdit" name="{{$index}}">
 							<a  data-item="3" data-colspan="2" class="edit-data-inline">{{mapping.mapping_type}}</a>
 						</td>
-						<td width="25%" ng-hide="currentClickedElement == $index && isEdit">
+						<td width="25%" ng-hide="currentClickedElement == mapping_value.value && isEdit">
 							<a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.snt_value}}</a>
 						</td>
-						<td width="25%" ng-hide="currentClickedElement == $index && isEdit">
+						<td width="25%" ng-hide="currentClickedElement == mapping_value.value && isEdit">
 							<a data-item="3" data-colspan="2" class="edit-data-inline">{{mapping_value.external_value}}</a>
 						</td>
-						<td class="delete" ng-hide="currentClickedElement == $index && isEdit" width="10%">
-							<a id="3" class="icons icon-delete large-icon delete_item"></a>
+						<td class="delete" ng-click="clickedDelete(mapping_value.value)" ng-hide="currentClickedElement == mapping_value.value && isEdit" width="10%">
+							<a class="icons icon-delete large-icon delete_item"></a>
 						</td>
-						
-						<td colspan="4" ng-include="getTemplateUrl()" ng-show="currentClickedElement == $index && isEdit"></td>
+						<td colspan="4" ng-include="getTemplateUrl()" ng-show="currentClickedElement == mapping_value.value && isEdit"></td>
 					</tr>
 
 				</tbody>

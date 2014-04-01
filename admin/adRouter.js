@@ -74,11 +74,12 @@ admin.config([
 			url : '/mapping/:id'
 		});
 		
-		
+		/*
 		$stateProvider.state('admin.mappingdetails', {
 			templateUrl: '/assets/partials/mapping/adExternalMappingDetails.html',
 			controller: 'ADMappingDetailsCtrl',
 			url : '/mappingdetails/:action/:id'
 		});
+		*/
 	}
 ]);

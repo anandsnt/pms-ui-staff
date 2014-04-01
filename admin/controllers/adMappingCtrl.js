@@ -2,73 +2,146 @@ admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappin
 	
 	BaseCtrl.call(this, $scope);
 	$scope.id = $stateParams.id
+	$scope.editData   = {};
+	$scope.editData.sntValues = [];
+	$scope.currentClickedElement = -1;
+	/*
+    * Variables set to show/hide forms.
+    */
 	$scope.isEdit = false;
 	$scope.isAdd = false;
-	$scope.editData   = {};
-	$scope.currentClickedElement = -1;
 	$scope.addFormView = false;
-	
 	
 	var fetchSuccess = function(data){
 		$scope.data = data;
 		$scope.$emit('hideLoader');
+		
+		// Set Flag to disable Add new.
+		if($scope.data.disable_mappings) $scope.addFormView = false;
+		else $scope.addFormView = true;
 	};
 	
-	$scope.invokeApi(ADMappingSrv.fetch, {'id':$scope.id}, fetchSuccess);
+	$scope.invokeApi(ADMappingSrv.fetchMappingList, {'id':$scope.id}, fetchSuccess);
 	
-	$scope.editSelected = function(index,id)	{
+	/*
+    * Function to render edit screen with mapping data.
+    * @param {id} id of the mapping item.
+    */
+	$scope.editSelected = function(id)	{
 		
 		$scope.errorMessage ="";
-		$scope.currentClickedElement = index;
+		$scope.currentClickedElement = id;
 		$scope.editId = id;
 
 		var data = { 'editId' : id }
 
 		var editMappingSuccessCallback = function(data) {
-			
-			console.log(data);
 			$scope.$emit('hideLoader');
 			$scope.editData = data;
-			$scope.formTitle = 'Edit'+' '+$scope.editData.name;
 			$scope.isEdit = true;
 			$scope.isAdd = false;
+			
+			// Initial loading data to SNT VALUES dropdown.
+			angular.forEach($scope.editData.mapping_type,function(item, index) {
+	       		if (item.name == $scope.editData.selected_mapping_type) {
+	       			$scope.editData.sntValues = item.sntvalues;
+			 	}
+       		});
 		};
-		var editMappingFailureCallback = function(errorMessage) {
-			console.log("errr"+errorMessage);
-			$scope.$emit('hideLoader');
-		};
-		
-		$scope.invokeApi(ADMappingSrv.editMapping, data, editMappingSuccessCallback ,editMappingFailureCallback );
+		$scope.invokeApi(ADMappingSrv.fetchEditMapping, data, editMappingSuccessCallback );
 	};
-	
-	// template for add/edit
+	/*
+    * Function to render template for add/edit screens.
+    */
  	$scope.getTemplateUrl = function(){
  		return "/assets/partials/mapping/adExternalMappingDetails.html";
  	};
- 	
- 	
+ 	/*
+    * Function to render Add screen with mapping data.
+    */
  	$scope.addNew = function(){
-		// fetch add data
-		$scope.editData = {};
-		$scope.errorMessage = "";
-		$scope.isAdd = true;
-		$scope.isEdit = false;
+ 		var addMappingSuccessCallback = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.editData = data;
+			$scope.isAdd = true;
+			$scope.isEdit = false;
+		};
+		$scope.invokeApi(ADMappingSrv.fetchAddMapping, { 'hotelId': $scope.data.hotel_id }, addMappingSuccessCallback );
 	};
-	
-	
-	
-	$scope.clickedCancel = function (){
-
+	/*
+    * To close inline tabs on cancel/save clicks
+    */
+	$scope.closeInlineTab = function (){
 		if($scope.isAdd)
 			$scope.isAdd = false;
 		else if($scope.isEdit)
 			$scope.isEdit = false;
-			
 	};
-
-
-	$scope.saveClicked = function(){
+	/*
+    * To handle save button click.
+    */
+	$scope.clickedSave = function(){
 		
-	};
+		var successSaveCallback = function(data){
+			
+			$scope.$emit('hideLoader');
+			
+			// To update scope data with added item
+			var newData = {
+                    "value": data.value,
+                    "snt_value": postData.snt_value,
+                    "external_value": postData.external_value
+            };
+			angular.forEach($scope.data.mapping,function(item, index) {
+	       		if (item.mapping_type == postData.mapping_type) {
+	       			$scope.data.mapping[index].mapping_values.push(newData);
+			 	}
+	       	});
+			$scope.closeInlineTab();
+		};
+		
+		var postData = {};
+			postData.mapping_type = $scope.editData.mappingValue; 
+			postData.snt_value =  $scope.editData.snt_value; 
+			postData.external_value =  $scope.editData.external_value; 
+			postData.hotel_id =  $scope.data.hotel_id;
+			
+			// editId passed only when editing the item.
+			if($scope.isEdit) postData.value =  $scope.editId;
 
+		$scope.invokeApi(ADMappingSrv.saveMapping, postData, successSaveCallback);
+	};
+   	/*
+    * Function to handle delete button click.
+    * @param {mappingId} mappingId of the mapping item.
+    */
+	$scope.clickedDelete = function(mappingId){
+		
+		var successDeletionCallback = function(){
+			$scope.$emit('hideLoader');
+			// delete data from scope
+			angular.forEach($scope.data.mapping,function(item1, index1) {
+				angular.forEach(item1.mapping_values,function(item2, index2) {
+		 			if (item2.value == mappingId) {
+		 				item1.mapping_values.splice(index2, 1);
+		 			}
+ 				});
+ 			});
+		};
+		
+		$scope.invokeApi(ADMappingSrv.deleteMapping, {'value':mappingId }, successDeletionCallback);
+	};
+	/*
+    * Function to handle data change in 'Mapping type'.
+    * Data is injected to sntValues based on 'Mapping type' values.
+    */
+	$scope.$watch('editData.mappingValue', function() {
+       $scope.editData.sntValues = [];
+       angular.forEach($scope.editData.mapping_type,function(item, index) {
+       		if (item.name == $scope.editData.mappingValue) {
+       			$scope.editData.sntValues = item.sntvalues;
+		 	}
+       });
+   	});
+   	
 }]);
