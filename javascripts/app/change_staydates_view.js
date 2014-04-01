@@ -413,7 +413,16 @@ var ChangeStayDatesView = function(viewDom){
 
       // Update Dom values
       that.myDom.find('#reservation-updates #room-number').text(roomSelected);
+      //Apply the room color class
+      var foStatus = that.myDom.find('.reservation-header .room').attr('data-fostatus');
+      var roomStatus = that.myDom.find('.reservation-header .room').attr('data-room-status');
+      var reservStatus = that.myDom.find('.reservation-header .room').attr('data-reserv-status'); 
+      var roomColorClass = getRoomColorClass(reservStatus, roomStatus, foStatus);
+      that.myDom.find('#reservation-updates #room-number').removeClass();
+      that.myDom.find('#reservation-updates #room-number').addClass(roomColorClass);
+      //display room type
       that.myDom.find('#reservation-updates #room-type').text(that.myDom.find('#room-type').text());
+      //Display nights
       if(totalNights > 0){
         that.myDom.find('#reservation-updates #new-nights').text(totalNights + ' nights');
       } else {
