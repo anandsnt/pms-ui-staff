@@ -2,9 +2,11 @@
 	<section>
 		<header class="content-title float">
 			<h2>Late Checkout Upsell</h2>
-			<a id="go_back" data-type="load-details" class="action back">Back</a>
+			<a id="go_back" data-type="load-details" class="action back" ng-click="cancelClick()">Back</a>
 		</header>
-		<div id="notification-message"></div>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div id="new-form-holder" ng-show="isAddmode" ng-include="getTemplateUrl()">
+		</div>
 		<form name="upsell-late-checkout" method="post" id="upsell-late-checkout" class="form float" action="">
 			<div class="form-title full-width">
 				<h3>
@@ -51,14 +53,14 @@
 								<option style="display:none" value="">HH</option>
 							</select>
 
-							
+
 						</div>
 						<!-- alert minute -->
 						<div class="select select-col col1-3">
 							<select ng-options="minute for minute  in minutes" ng-model="upsellData.alert_minute">
 								<option style="display:none" value="">HH</option>
 							</select>
-							
+
 						</div>
 						<div class="select select-col col1-3">
 							<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
@@ -76,7 +78,7 @@
 						<strong>*</strong>
 					</label>
 					<div class="select">
-						
+
 						<select ng-options="chargecode.name as chargecode.value for chargecode  in upsellData.charge_codes" ng-model="upsellData.selected_charge_code">
 							<option style="display:none" value="">Charge Code</option>
 						</select>
@@ -92,7 +94,7 @@
 					</label>
 					<div class="entry full-width float">
 						<div class="select select-col col1-3">
-							
+
 							<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_0.time">
 								<option style="display:none" value="">HH</option>
 							</select>
@@ -108,7 +110,7 @@
 					</div>
 
 				</div>
-				
+
 
 				<ad-textbox value="upsellData.extended_checkout_charge_0.charge"   label = "Charge [$]" placeholder = "Enter charge" ></ad-textbox>
 
@@ -119,7 +121,7 @@
 					</label>
 					<div class="entry full-width float">
 						<div class="select select-col col1-3">
-							
+
 							<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_1.time">
 								<option style="display:none" value="">HH</option>
 							</select>
@@ -134,7 +136,7 @@
 					</div>
 
 				</div>
-				
+
 				<ad-textbox value="upsellData.extended_checkout_charge_1.charge"   label = "Charge [$]" placeholder = "Enter charge" ></ad-textbox>
 
 				<div class="entry">
@@ -143,7 +145,7 @@
 					</label>
 					<div class="entry full-width float">
 						<div class="select select-col col1-3">
-							
+
 							<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_2.time">
 								<option style="display:none" value="">HH</option>
 							</select>
@@ -158,7 +160,7 @@
 					</div>
 
 				</div>
-				
+
 				<ad-textbox value="upsellData.extended_checkout_charge_2.charge"   label = "Charge [$]" placeholder = "Enter charge" ></ad-textbox>
 
 			</fieldset>

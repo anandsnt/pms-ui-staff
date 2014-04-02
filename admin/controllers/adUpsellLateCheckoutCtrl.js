@@ -1,20 +1,18 @@
 admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adUpsellLatecheckoutService',  function($scope,$rootScope,$state,adUpsellLatecheckoutService){
+	
 	BaseCtrl.call(this, $scope);
 	$scope.upsellData = {};
-	$scope.chargecode = {};
 
    /**
     * To fetch upsell details
     *
     */ 
-
     $scope.fetchUpsellDetails = function(){
 
 		var fetchUpsellDetailsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.upsellData = data;
 
-		
 		};
 		$scope.invokeApi(adUpsellLatecheckoutService.fetch, {},fetchUpsellDetailsSuccessCallback);
 	};
@@ -47,9 +45,6 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
 
 	}
 
-
-
-
 	/**
     * To handle cancel button action
     *
@@ -68,8 +63,6 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
 
 	$scope.saveClick = function(){
 
-		// console.log($scope.upsellData)
-
 		var updateData = 
 		{
 		'is_late_checkout_set' :$scope.upsellData.is_late_checkout_set,
@@ -87,9 +80,6 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
  			$state.go( 'admin.dashboard', {menu:2});
  		};
  		$scope.invokeApi(adUpsellLatecheckoutService.update,updateData,updateChainSuccessCallback);
- 	
-	
-		
 	
 	}
 	

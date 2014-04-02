@@ -20,7 +20,7 @@ admin.service('adUpsellLatecheckoutService',['$http', '$q', 'ADBaseWebSrv', func
 
 	 /*
     * To update the upsell details
-    * 
+    * @param {object} new upsell details
     */
 	this.update = function(data){
 		var updateData = data;
