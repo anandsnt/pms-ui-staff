@@ -138,3 +138,16 @@ function getDateString(dateObj, showDay){
 	return dateString;
 
 };
+
+var getRoomColorClass = function(reservationStatus, roomStatus, foStatus){
+	var roomColorClass = "";
+	if(reservationStatus == "CHECKING_IN"){
+		if(roomStatus == "READY" && foStatus == "VACANT"){
+			roomColorClass = "ready";
+		} else {
+			roomColorClass = "not-ready";
+		}
+
+	}
+	return roomColorClass;
+}
