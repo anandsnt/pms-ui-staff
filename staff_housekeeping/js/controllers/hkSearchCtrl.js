@@ -128,6 +128,10 @@ hkRover.controller('HKSearchCtrl',
 		if ($scope.filterOpen) {
 			$scope.$emit('dismissFilterScreen');
 		};
+
+		// save the current edited filter to HKSearchSrv
+		// so that they can exist even after HKSearchCtrl init
+		HKSearchSrv.currentFilters = $scope.currentFilters;
 	};
 
 	/**
