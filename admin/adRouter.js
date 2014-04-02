@@ -73,7 +73,11 @@ admin.config([
 			controller: 'ADMappingCtrl',
 			url : '/mapping/:id'
 		});
-
+		$stateProvider.state('admin.ffp', {
+			templateUrl: '/assets/partials/frequentFlyerProgram/adFFPList.html',
+			controller: 'ADFrequentFlyerProgramCtrl',
+			url : '/ffp'
+		});
 		
 		$stateProvider.state('admin.departments', {
 			templateUrl: '/assets/partials/departments/adDepartmentsList.html',
