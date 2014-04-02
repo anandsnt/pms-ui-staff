@@ -59,17 +59,21 @@ admin.controller('ADRoomUpsellCtrl',['$scope','$rootScope','$state','adRoomUpsel
     	
     	// $scope.setUpLateCheckoutArray();
 
-    	// var updateData = 
-    	// {
-    	// 	'is_late_checkout_set' :$scope.upsellData.is_late_checkout_set,
-    	// 	'allowed_late_checkout':$scope.upsellData.allowed_late_checkout,
-    	// 	'is_exclude_guests':$scope.upsellData.is_exclude_guests,
-    	// 	'sent_alert':$scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute,
-    	// 	'extended_checkout_charge':$scope.chekoutchargesArray,
-    	// 	'charge_code':$scope.upsellData.selected_charge_code
+    	var updateData = 
+    	{
 
-    	// };
-    	var updateData = $scope.upsellData;
+    		'is_force_upsell':$scope.upsellData.upsell_setup.is_force_upsell,
+    		'is_one_night_only':$scope.upsellData.upsell_setup.is_one_night_only,
+    		'is_upsell_on':$scope.upsellData.upsell_setup.is_upsell_on,
+
+    		'total_upsell_target_amount':$scope.upsellData.upsell_setup.total_upsell_target_amount,
+    		'total_upsell_target_rooms':$scope.upsellData.upsell_setup.total_upsell_target_rooms,
+    		'charge_code':$scope.upsellData.selected_charge_code,
+    		 'upsell_amounts' : $scope.upsellData.upsell_amounts,
+    		 'upsell_room_levels' : $scope.upsellData.upsell_room_levels
+
+    	};
+    	//var updateData = $scope.upsellData;
     	var updateChainSuccessCallback = function(data) {
     		$scope.$emit('hideLoader');
     	};
