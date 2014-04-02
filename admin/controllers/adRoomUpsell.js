@@ -21,29 +21,49 @@ function($scope, $rootScope, $state, adRoomUpsellService) {
 		$scope.invokeApi(adRoomUpsellService.fetch, {}, fetchRoomUpsellDetailsSuccessCallback);
 	};
 
-	
+	$scope.fetchUpsellDetails();
 
+	/**
+	 * To handle drop success event
+	 *
+	 */
 	$scope.dropSuccessHandler = function($event, index, array) {
 		array.splice(index, 1);
 	};
+	/**
+	 * To handle on drop event
+	 *
+	 */
 
 	$scope.onDrop = function($event, $data, array) {
 		
 		array.push($data);
 	};
-	$scope.fetchUpsellDetails();
+
+	/**
+	 * To handle switch 
+	 *
+	 */
 
 	$scope.switchClicked = function() {
 
 		$scope.upsellData.upsell_setup.is_upsell_on = ($scope.upsellData.upsell_setup.is_upsell_on === 'true') ? 'false' : 'true';
 
 	};
+	/**
+	 * To handle checkbox action 
+	 *
+	 */
 
 	$scope.oneNightcheckBoxClicked = function() {
 
 		$scope.upsellData.upsell_setup.is_one_night_only = ($scope.upsellData.upsell_setup.is_one_night_only === 'true') ? 'false' : 'true';
 
 	};
+	/**
+	 * To handle checkbox action 
+	 *
+	 */
 
 	$scope.forceUpsellcheckBoxClicked = function() {
 
@@ -63,25 +83,12 @@ function($scope, $rootScope, $state, adRoomUpsellService) {
 		});
 
 	};
+	/**
+	 * To handle save button action
+	 *
+	 */
 
 	$scope.saveClick = function() {
-
-		// $scope.setUpLateCheckoutArray();
-
-		// var updateData = {
-
-		// 	'is_force_upsell' : $scope.upsellData.upsell_setup.is_force_upsell,
-		// 	'is_one_night_only' : $scope.upsellData.upsell_setup.is_one_night_only,
-		// 	'is_upsell_on' : $scope.upsellData.upsell_setup.is_upsell_on,
-
-		// 	'total_upsell_target_amount' : $scope.upsellData.upsell_setup.total_upsell_target_amount,
-		// 	'total_upsell_target_rooms' : $scope.upsellData.upsell_setup.total_upsell_target_rooms,
-		// 	'charge_code' : $scope.upsellData.selected_charge_code,
-		// 	'upsell_amounts' : $scope.upsellData.upsell_amounts,
-		// 	'upsell_room_levels' : $scope.upsellData.upsell_room_levels
-
-		// };
-
 
   	 var upsell_setup = {};
   	 var data = {};
@@ -97,10 +104,7 @@ function($scope, $rootScope, $state, adRoomUpsellService) {
   	 data.upsell_amounts = $scope.upsellData.upsell_amounts;
      data.charge_code = $scope.upsellData.selected_charge_code
   	 data.upsell_room_levels = $scope.upsellData.upsell_room_levels;
-  	 console.log(JSON.stringify(data));
-
-
-		//var updateData = $scope.upsellData;
+		
 		var updateChainSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 		};
