@@ -23,6 +23,12 @@ admin.config([
 		$stateProvider.state('admin.hoteldetails', {
 			templateUrl: '/assets/partials/hotel/adHotelDetails.html',
 			controller: 'ADHotelDetailsCtrl',
+			url : '/hoteldetails/edit'
+		});
+		
+		$stateProvider.state('admin.snthoteldetails', {
+			templateUrl: '/assets/partials/hotel/adHotelDetails.html',
+			controller: 'ADHotelDetailsCtrl',
 			url : '/hoteldetails/:action/:id'
 		});
 		
@@ -73,11 +79,10 @@ admin.config([
 			controller: 'ADMappingCtrl',
 			url : '/mapping/:id'
 		});
-
-		$stateProvider.state('admin.mappingdetails', {
-			templateUrl: '/assets/partials/mapping/adExternalMappingDetails.html',
-			controller: 'ADMappingDetailsCtrl',
-			url : '/mappingdetails/:action/:id'
+		$stateProvider.state('admin.ffp', {
+			templateUrl: '/assets/partials/frequentFlyerProgram/adFFPList.html',
+			controller: 'ADFrequentFlyerProgramCtrl',
+			url : '/ffp'
 		});
 		
 		$stateProvider.state('admin.departments', {
@@ -92,10 +97,16 @@ admin.config([
 			url : '/upselllatecheckout'
 		});
 		
+
 		$stateProvider.state('admin.hotelLoyaltyProgram', {
 			templateUrl: '/assets/partials/hotelLoyalty/hotelLoyaltyList.html',
 			controller: 'ADHotelLoyaltyCtrl',
 			url : '/hotelloyalty'
+		});
+		$stateProvider.state('admin.roomupsell', {
+			templateUrl: '/assets/partials/roomUpsell/roomUpsell.html',
+			controller: 'ADRoomUpsellCtrl',
+			url : '/roomupsell'
 		});
 
 	}

@@ -18,9 +18,9 @@
 				<div></div>
 
 				<!-- Switch -->
-				<div class="entry" ng-click="switchClicked()">
+				<div class="entry">
 					<label for="late-checkout-upsell">Late Checkout Upsell</label>
-					<div id="div-late-checkout-upsell" class="switch-button single" ng-class="{ on : upsellData.is_late_checkout_set === 'true' }">
+					<div id="div-late-checkout-upsell" class="switch-button single" ng-class="{ on : upsellData.is_late_checkout_set === 'true' }"  ng-click="switchClicked()">
 						<input type="checkbox" value="10" name="late-checkout-upsell" id="late-checkout-upsell">
 						<span class="switch-icon"></span>
 
@@ -28,11 +28,11 @@
 				</div>
 
 				<!-- Checkbox -->
-				<div class="entry radio-check" ng-click="checkBoxClicked()">
+				<div class="entry radio-check">
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.is_exclude_guests === 'true' }"></span>
 						<label for="exclude-guest-pre-allocated-room">Exclude guests in pre allocated rooms</label>
-						<input type="checkbox" value="testing" name="exclude-guest-pre-allocated-room" id="exclude-guest-pre-allocated-room">
+						<input type="checkbox" value="testing" name="exclude-guest-pre-allocated-room" id="exclude-guest-pre-allocated-room" ng-click="checkBoxClicked()">
 
 					</label>
 				</div>
