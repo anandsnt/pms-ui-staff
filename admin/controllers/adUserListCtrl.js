@@ -42,13 +42,18 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$state','$stateParams
 	};	
    /**
     * To delete user
+    * @param {int} index of the selected user
     * @param {string} user id 
     */ 
-	$scope.deleteUser = function(userId){
+	$scope.deleteUser = function(index, userId){
 		var data = {
 			"id": userId
 		};
-		$scope.invokeApi(ADUserSrv.deleteUser, data );
+		var successDelete = function(){
+			$scope.$emit('hideLoader');
+			$scope.data.users.splice(index, 1);
+		};
+		$scope.invokeApi(ADUserSrv.deleteUser, data, successDelete );
 	};	
 	/**
     * Handle back action
