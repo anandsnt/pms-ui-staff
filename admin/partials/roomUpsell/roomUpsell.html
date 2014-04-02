@@ -7,14 +7,17 @@
 		<div id="notification-message"></div>
 		<form name="upsell_rooms" method="post" id="upsell_rooms" class="form float" action="">
 			<fieldset class="holder column">
-				<div class="entry">
+	
+				<div class="entry" ng-click="switchClicked()">
 					<label for="upsell-rooms">Upsell Rooms</label>
-					<div id="div-upsell-rooms" class="switch-button single on">
-						<input type="checkbox" value="10" name="upsell-rooms" id="upsell-rooms" checked="checked">
+					<div id="div-upsell-rooms" class="switch-button single" ng-class="{ on : upsellData.upsell_setup.is_upsell_on === 'true' }">
+						<input type="checkbox"  name="upsell-rooms" id="upsell-rooms">
 						<span class="switch-icon"></span>
 
 					</div>
 				</div>
+
+
 
 			</fieldset>
 			<fieldset class="holder left">
@@ -38,23 +41,30 @@
 					<input type="text" ng-model="upsellData.upsell_setup.total_upsell_target_rooms" name="daily-upsell-target-rooms" id="daily-upsell-target-rooms">
 				</div>
 
-				<div class="entry radio-check">
+		
+
+				<!-- Checkbox -->
+				<div class="entry radio-check" ng-click="oneNightcheckBoxClicked()">
 					<label class="checkbox">
-						<span class="icon-form icon-checkbox"></span>
+						<span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.upsell_setup.is_one_night_only === 'true' }"></span>
 						Upsell 1 Night Stays Only
-						<input type="checkbox" name="upsell_for_one_night" id="upsell_for_one_night">
+						<input type="checkbox"  />
 
 					</label>
 				</div>
 
-				<div class="entry radio-check">
-					<label class="checkbox inline checked">
-						<span class="icon-form icon-checkbox checked"></span>
+
+
+					<!-- Checkbox -->
+				<div class="entry radio-check" ng-click="forceUpsellcheckBoxClicked()">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.upsell_setup.is_force_upsell === 'true' }"></span>
 						Force Upsell
-						<input type="checkbox" value="true" name="force_upsell" id="force_upsell" checked="checked">
+						<input type="checkbox"  />
 
 					</label>
 				</div>
+
 
 			</fieldset>
 			<fieldset class="holder right">
@@ -99,15 +109,11 @@
 						<strong>*</strong>
 					</label>
 					<div class="select">
-						<select name="charge-code" id="charge-code" class="placeholder">
-							<option value="">
-								Charge Code
-							</option>
-							<option value="328">
-								2510 Banquet Entertainment
-							</option>
 
+						<select ng-options="chargecode.name as chargecode.value for chargecode  in upsellData.charge_codes" ng-model="upsellData.selected_charge_code">
+							<option style="display:none" value="">Charge Code</option>
 						</select>
+
 					</div>
 				</div>
 
@@ -123,44 +129,32 @@
 				<div id="upsell_level" class="float">
 					<div class="entry has-sortable col3">
 						<label>
-							Level
-							1
+							Level 1
 						</label>
+						
 						<ul id="level_1" data-placeholder="Drop here for Level 1" class="boxes sortable ui-sortable">
-							<li value="6" name="level_id" id="level_id"><span class="icons icon-handle"></span>
-								Standard Room- King Bed
-							</li>
+							<li ng-repeat="level1 in upsellData.upsell_room_levels[0].room_types"
+							ng-model="level1.room_type_id"id="level_id"><span class="icons icon-handle"> </span>{{level1.room_type_name}}</li>
 						</ul>
+
 					</div>
 					<div class="entry has-sortable col3">
 						<label>
-							Level
-							2
+							Level 2
 						</label>
 						<ul id="level_2" data-placeholder="Drop here for Level 2" class="boxes sortable ui-sortable">
-							<li value="7" name="level_id" id="level_id"><span class="icons icon-handle"></span>
-								Standard Room- Double Beds
-							</li>
-							<li value="1" name="level_id" id="level_id"><span class="icons icon-handle"></span>
-								2 Bedroom Suites SEA
-							</li>
-							<li value="2" name="level_id" id="level_id"><span class="icons icon-handle"></span>
-								Deluxe Room
-							</li>
+							<li ng-repeat="level2 in upsellData.upsell_room_levels[1].room_types"
+							ng-model="level2.room_type_id"id="level_id"><span class="icons icon-handle"> </span>{{level2.room_type_name}}</li>
 						</ul>
 					</div>
 					<div class="entry has-sortable col3">
 						<label>
-							Level
-							3
+							Level 3
 						</label>
+					
 						<ul id="level_3" data-placeholder="Drop here for Level 3" class="boxes sortable ui-sortable">
-							<li value="4" name="level_id" id="level_id"><span class="icons icon-handle"></span>
-								Junior Suite
-							</li>
-							<li value="3" name="level_id" id="level_id"><span class="icons icon-handle"></span>
-								Deluxe Twin
-							</li>
+							<li ng-repeat="level3 in upsellData.upsell_room_levels[2].room_types"
+							ng-model="level3.room_type_id"id="level_id"><span class="icons icon-handle"> </span>{{level3.room_type_name}}</li>
 						</ul>
 					</div>
 				</div>

@@ -22,5 +22,26 @@ admin.controller('ADRoomUpsellCtrl',['$scope','$rootScope','$state','adRoomUpsel
 
     $scope.fetchUpsellDetails();
 
+     $scope.switchClicked = function(){
+
+    	$scope.upsellData.upsell_setup.is_upsell_on =  ($scope.upsellData.upsell_setup.is_upsell_on === 'true')?'false':'true';
+
+    };
+
+
+    $scope.oneNightcheckBoxClicked = function(){
+
+    	$scope.upsellData.upsell_setup.is_one_night_only = ($scope.upsellData.upsell_setup.is_one_night_only === 'true')?'false':'true';
+
+    };
+
+    $scope.forceUpsellcheckBoxClicked = function(){
+
+    	$scope.upsellData.upsell_setup.is_force_upsell = ($scope.upsellData.upsell_setup.is_force_upsell === 'true')?'false':'true';
+
+    };
+
+   
+
 
 }]);
