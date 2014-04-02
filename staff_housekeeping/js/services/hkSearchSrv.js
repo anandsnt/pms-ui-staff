@@ -41,7 +41,7 @@ hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $wi
 			.error(function(response, status) {
 			    if(status == 401){ // 401- Unauthorized
 	    			// so lets redirect to login page
-					$window.location.href = '/logout' ;
+					$window.location.href = '/house/logout' ;
 	    		}else{
 	    			deferred.reject(response);
 	    		}
