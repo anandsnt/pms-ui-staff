@@ -93,9 +93,9 @@ admin.config([
 		});
 		
 		$stateProvider.state('admin.roomupsell', {
-			templateUrl: '/assets/partials/upsellLatecheckout/upsellLatecheckout.html',
-			controller: 'ADUpsellLateCheckoutCtrl',
-			url : '/upselllatecheckout'
+			templateUrl: '/assets/partials/roomUpsell/roomUpsell.html',
+			controller: 'ADRoomUpsellCtrl',
+			url : '/roomupsell'
 		});
 
 	}
