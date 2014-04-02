@@ -5,75 +5,96 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 	$scope.hotelLoyaltyData = {};
 	$scope.isAddMode = false;
    /*
-    * To fetch list of departments
+    * To fetch list of hotel loyalty
     */
 	$scope.listHotelLoyaltyPrograms = function(){
 		var successCallbackFetch = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data;
 			$scope.currentClickedElement = -1;
+		
 			$scope.isAddMode = false;
 		};
 		$scope.invokeApi(ADHotelLoyaltySrv.fetch, {} , successCallbackFetch);	
 	};
-	//To list departments
+	//To list hotel loyalty
 	$scope.listHotelLoyaltyPrograms(); 
    /*
-    * To render edit department screen
-    * @param {index} index of selected department
-    * @param {id} id of the department
+    * To render edit hotel loyalty screen
+    * @param {index} index of selected hotel loyalty
+    * @param {id} id of the hotel loyalty
     */	
-	$scope.editDepartments = function(index, id)	{
-		$scope.departmentData={};
+	$scope.editHotelLoyalty = function(index, id)	{
+		$scope.hotelLoyaltyData={};
 		$scope.currentClickedElement = index;
 		$scope.isAddMode = false;
 	 	var successCallbackRender = function(data){	
-	 		$scope.departmentData = data;
+	 		$scope.hotelLoyaltyData = data;
+	 		 		if($scope.hotelLoyaltyData.levels.length === 0)
+			$scope.hotelLoyaltyData.levels.push({'value':'','name':''});
 	 		$scope.$emit('hideLoader');
 	 	};
+
 	 	var data = {"id":id };
-	 	$scope.invokeApi(ADDepartmentSrv.getDepartmentDetails, data , successCallbackRender);    
+	 	$scope.invokeApi(ADHotelLoyaltySrv.getHotelLoyaltyDetails, data , successCallbackRender);    
 	};
    /*
-    * Render add department screen
+    * Render add hotel loyalty screen
     */
 	$scope.addNewHotelLoyalty = function()	{
-			$scope.editData   = {};
+		$scope.hotelLoyaltyData   = {};
 		$scope.hotelLoyaltyData={};
 		$scope.currentClickedElement = "new";
-		$scope.editData.lov  = [{'value':'','name':''}];
+		$scope.hotelLoyaltyData.levels  = [{'value':'','name':''}];
 		$scope.isAddMode = true;
 	};
    /*
     * To get the template of edit screen
-    * @param {int} index of the selected department
-    * @param {string} id of the department
+    * @param {int} index of the selected hotel loyalty
+    * @param {string} id of the hotel loyalty
     */
 	$scope.getTemplateUrl = function(index, id){
-		if(typeof index === "undefined" || typeof id === "undefined") return "";
-		if($scope.currentClickedElement == index){ 
-			 	return "/assets/partials/departments/adDepartmentsEdit.html";
-		}
+		 if(typeof index === "undefined" || typeof id === "undefined") return "";
+		 if($scope.currentClickedElement == index){ 
+			 	return "/assets/partials/hotelLoyalty/adHotelLoyaltyAdd.html";
+		 }
 	};
   /*
-   * To save/update department details
+   * To save/update hotel loyalty details
    */
-   $scope.saveDepartment = function(){
+   $scope.saveHotelLoyalty = function(){
+   	
+   		var lovNames = [];
+ 		angular.forEach($scope.hotelLoyaltyData.levels,function(item, index) {
+ 			if (item.name == "") {
+ 				$scope.hotelLoyaltyData.levels.splice(index, 1);
+ 			}
+ 			else{
+ 				if($scope.isAddMode){
+ 					dict = { 'name': item.name};
+ 				} else {
+ 					dict = { 'name': item.name, 'value': item.value};
+ 				}
+ 				lovNames.push(dict);
+ 			}
+ 		});
+   	
+   		$scope.hotelLoyaltyData.levels = lovNames;
     	var successCallbackSave = function(data){
     		$scope.$emit('hideLoader');
 			if($scope.isAddMode){
 				// To add new data to scope
-    			$scope.data.departments.push(data);
+    			$scope.data.hotel_loyalty_program.push(data);
 	    	} else {
 	    		//To update data with new value
-	    		$scope.data.departments[parseInt($scope.currentClickedElement)].name = $scope.departmentData.name;
+	    		$scope.data.hotel_loyalty_program[parseInt($scope.currentClickedElement)].name = $scope.hotelLoyaltyData.name;
 	    	}
     		$scope.currentClickedElement = -1;
     	};
     	if($scope.isAddMode){
-    		$scope.invokeApi(ADDepartmentSrv.saveDepartment, $scope.departmentData , successCallbackSave);
+    		$scope.invokeApi(ADHotelLoyaltySrv.saveHotelLoyalty, $scope.hotelLoyaltyData , successCallbackSave);
     	} else {
-    		$scope.invokeApi(ADDepartmentSrv.updateDepartment, $scope.departmentData , successCallbackSave);
+    		$scope.invokeApi(ADHotelLoyaltySrv.updateHotelLoyalty, $scope.hotelLoyaltyData , successCallbackSave);
     	}
     };
    /*
@@ -82,67 +103,66 @@ admin.controller('ADHotelLoyaltyCtrl',['$scope', '$state', 'ADHotelLoyaltySrv', 
 	$scope.clickCancel = function(){
 		$scope.currentClickedElement = -1;
 	};	
-   /*
-    * To delete department
-    * @param {int} index of the selected department
-    * @param {string} id of the selected department
-    */		
-	$scope.deleteDepartment = function(index, id){
-		var successCallbackDelete = function(data){	
-	 		$scope.$emit('hideLoader');
-	 		$scope.data.departments.splice(index, 1);
-	 	};
-		$scope.invokeApi(ADDepartmentSrv.deleteDepartment, id , successCallbackDelete);
-	};
-	
-	
-	
-	
-	
-	
+	/**
+    * To Activate/Inactivate hotel loyalty
+    * @param {string} hotel loyalty id 
+    * @param {string} current status of the hotel loyalty
+    * @param {num} current index
+    */ 
+	$scope.activateInactivate = function(loyaltyId, currentStatus, index){
+		var nextStatus = (currentStatus == "true" ? "false" : "true");
+		var data = {
+			"set_active": nextStatus,
+			"value": loyaltyId
+		};
+		var successCallbackActivateInactivate = function(data){
+			$scope.data.hotel_loyalty_program[index].is_active = (currentStatus == "true" ? "false" : "true");
+			$scope.$emit('hideLoader');
+		};
+		$scope.invokeApi(ADHotelLoyaltySrv.activateInactivate, data , successCallbackActivateInactivate);
+	};	
 	/*
-    * To handle focus event on lov levels
+    * To handle focus event on hotel loyalty levels
     */
 	$scope.onFocus = function(index){
-		if((index === $scope.editData.lov.length-1) || ($scope.editData.lov.length==1)){
+		if((index === $scope.hotelLoyaltyData.levels.length-1) || ($scope.hotelLoyaltyData.levels.length==1)){
 			$scope.newOptionAvailable = true;
 			// exclude first two fields
-			if($scope.editData.lov.length > 2){
-				angular.forEach($scope.editData.lov,function(item, index) {
-					if (item.name == "" && index < $scope.editData.lov.length-1 ) {
+			if($scope.hotelLoyaltyData.levels.length > 2){
+				angular.forEach($scope.hotelLoyaltyData.levels,function(item, index) {
+					if (item.name == "" && index < $scope.hotelLoyaltyData.levels.length-1 ) {
 						$scope.newOptionAvailable = false;
 					}
 				});
 			}
 			if($scope.newOptionAvailable)
-				$scope.editData.lov.push({'value':'','name':''});
+				$scope.hotelLoyaltyData.levels.push({'value':'','name':''});
 		}
 	};
    /*
-    * To handle text change on lov levels
+    * To handle text change on hotel loyalty levels
     */
 	$scope.textChanged = function(index){
 
-		if($scope.editData.lov.length>1){
-			if($scope.editData.lov[index].name == "")
-				$scope.editData.lov.splice(index, 1);
+		if($scope.hotelLoyaltyData.levels.length>1){
+			if($scope.hotelLoyaltyData.levels[index].name == "")
+				$scope.hotelLoyaltyData.levels.splice(index, 1);
 		}
 	};
    /*
-    * To handle blur event on lov levels
+    * To handle blur event on hotel loyalty levels
     */
 	$scope.onBlur = function(index){
-		if($scope.editData.lov.length>1){
-			if($scope.editData.lov[index].name == "")
-				$scope.editData.lov.splice(index, 1);
-			angular.forEach($scope.editData.lov,function(item, i) {
-				if (item.name == "" && i != $scope.editData.lov.length-1) {
-					$scope.editData.lov.splice(i, 1);
+		if($scope.hotelLoyaltyData.levels.length>1){
+			if($scope.hotelLoyaltyData.levels[index].name == "")
+				$scope.hotelLoyaltyData.levels.splice(index, 1);
+			angular.forEach($scope.hotelLoyaltyData.levels,function(item, i) {
+				if (item.name == "" && i != $scope.hotelLoyaltyData.levels.length-1) {
+					$scope.hotelLoyaltyData.levels.splice(i, 1);
 				}
 			});
 		}
 	};
-	
 	
 }]);
 
