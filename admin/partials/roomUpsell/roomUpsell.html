@@ -1,169 +1,142 @@
-<section id="replacing-div-first" class="content current"><div id="upsell_room_details" data-view="UpsellRoomDetailsView">
-	<section>
-		<header class="content-title float">
-			<h2>Daily Upsell Setup</h2>
-			<a id="go_back" data-type="load-details" class="action back">Back</a>
-		</header>
-		<div id="notification-message"></div>
-		<form name="upsell_rooms" method="post" id="upsell_rooms" class="form float" action="">
-			<fieldset class="holder column">
-	
-				<div class="entry" ng-click="switchClicked()">
-					<label for="upsell-rooms">Upsell Rooms</label>
-					<div id="div-upsell-rooms" class="switch-button single" ng-class="{ on : upsellData.upsell_setup.is_upsell_on === 'true' }">
-						<input type="checkbox"  name="upsell-rooms" id="upsell-rooms">
-						<span class="switch-icon"></span>
+<section id="replacing-div-first" class="content current">
+	<div id="upsell_room_details" data-view="UpsellRoomDetailsView">
+		<section>
+			<header class="content-title float">
+				<h2>Daily Upsell Setup</h2>
+				<a id="go_back" data-type="load-details" class="action back">Back</a>
+			</header>
+			<div id="notification-message"></div>
+			<form name="upsell_rooms" method="post" id="upsell_rooms" class="form float" action="">
+				<fieldset class="holder column">
 
+					<div class="entry" ng-click="switchClicked()">
+						<label for="upsell-rooms">Upsell Rooms</label>
+						<div id="div-upsell-rooms" class="switch-button single" ng-class="{ on : upsellData.upsell_setup.is_upsell_on === 'true' }">
+							<input type="checkbox"  name="upsell-rooms" id="upsell-rooms">
+							<span class="switch-icon"></span>
+
+						</div>
 					</div>
-				</div>
 
+				</fieldset>
+				<fieldset class="holder left">
+					<div class="form-title">
+						<h3><span>Daily Upsell</span> Targets </h3>
+					</div>
+					<div class="entry">
+						<label for="daily-upsell-targets-amount"> Target [{{currency_code}}] </label>
+						<input type="text" ng-model="upsellData.upsell_setup.total_upsell_target_amount" name="daily-upsell-targets-amount" id="daily-upsell-targets-amount">
+					</div>
 
-
-			</fieldset>
-			<fieldset class="holder left">
-				<div class="form-title">
-					<h3>
-						<span>Daily Upsell</span>
-						Targets
-					</h3>
-				</div>
-				<div class="entry">
-					<label for="daily-upsell-targets-amount">
-						Target [{{currency_code}}]
-					</label>
-					<input type="text" ng-model="upsellData.upsell_setup.total_upsell_target_amount" name="daily-upsell-targets-amount" id="daily-upsell-targets-amount">
-				</div>
-
-				<div class="entry">
-					<label for="daily-upsell-target-rooms">
-						Rooms
-					</label>
-					<input type="text" ng-model="upsellData.upsell_setup.total_upsell_target_rooms" name="daily-upsell-target-rooms" id="daily-upsell-target-rooms">
-				</div>
-
-		
-
-				<!-- Checkbox -->
-				<div class="entry radio-check" ng-click="oneNightcheckBoxClicked()">
-					<label class="checkbox">
-						<span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.upsell_setup.is_one_night_only === 'true' }"></span>
-						Upsell 1 Night Stays Only
-						<input type="checkbox"  />
-
-					</label>
-				</div>
-
-
+					<div class="entry">
+						<label for="daily-upsell-target-rooms"> Rooms </label>
+						<input type="text" ng-model="upsellData.upsell_setup.total_upsell_target_rooms" name="daily-upsell-target-rooms" id="daily-upsell-target-rooms">
+					</div>
 
 					<!-- Checkbox -->
-				<div class="entry radio-check" ng-click="forceUpsellcheckBoxClicked()">
-					<label class="checkbox">
-						<span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.upsell_setup.is_force_upsell === 'true' }"></span>
-						Force Upsell
-						<input type="checkbox"  />
-
-					</label>
-				</div>
-
-
-			</fieldset>
-			<fieldset class="holder right">
-				<div class="form-title">
-					<h3>
-						<span>Daily Upsell</span>
-						Room Level Targets
-					</h3>
-				</div>
-				<input type="hidden" value="1" name="level_from_0" id="level_from_0">
-				<input type="hidden" value="2" name="level_to_0" id="level_to_0">
-				<div class="entry">
-					<label for="upsell_amounts_0">
-						Level 1 to 2  p/night [{{currency_code}}]
-					</label>
-					<input type="text" ng-model="upsellData.upsell_amounts[0].amount" name="upsell-amounts" id="upsell_amounts_0">
-				</div>
-
-				<input type="hidden" value="1" name="level_from_1" id="level_from_1">
-				<input type="hidden" value="3" name="level_to_1" id="level_to_1">
-				<div class="entry">
-					<label for="upsell_amounts_1">
-						Level 1 to 3  p/night [{{currency_code}}]
-					</label>
-					<input type="text" ng-model="upsellData.upsell_amounts[1].amount" name="upsell-amounts" id="upsell_amounts_1">
-				</div>
-
-				<input type="hidden" value="2" name="level_from_2" id="level_from_2">
-				<input type="hidden" value="3" name="level_to_2" id="level_to_2">
-				<div class="entry">
-					<label for="upsell_amounts_2">
-						Level 2 to 3  p/night [{{currency_code}}]
-					</label>
-					<input type="text" ng-model="upsellData.upsell_amounts[2].amount" name="upsell-amounts" id="upsell_amounts_2">
-				</div>
-
-				<input type="hidden" value="3" name="upsell_amounts_count" id="upsell_amounts_count">
-				<input type="hidden" value="3" name="total_level_count" id="total_level_count">
-				<div class="entry">
-					<label for="charge-code">
-						Charge Code
-						<strong>*</strong>
-					</label>
-					<div class="select">
-
-						<select ng-options="chargecode.name as chargecode.value for chargecode  in upsellData.charge_codes" ng-model="upsellData.selected_charge_code">
-							<option style="display:none" value="">Charge Code</option>
-						</select>
-
-					</div>
-				</div>
-
-			</fieldset>
-			<div class="entry"></div>
-			<fieldset class="holder full-width">
-				<div class="form-title">
-					<h3>
-						<span>Daily Upsell</span>
-						Levels
-					</h3>
-				</div>
-				<div id="upsell_level" class="float">
-					<div class="entry has-sortable col3">
-						<label>
-							Level 1
+					<div class="entry radio-check" ng-click="oneNightcheckBoxClicked()">
+						<label class="checkbox"> <span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.upsell_setup.is_one_night_only === 'true' }"></span> Upsell 1 Night Stays Only
+							<input type="checkbox"  />
 						</label>
-						
-						<ul id="level_1" data-placeholder="Drop here for Level 1" class="boxes sortable ui-sortable">
-							<li ng-repeat="level1 in upsellData.upsell_room_levels[0].room_types"
-							ng-model="level1.room_type_id"id="level_id"><span class="icons icon-handle"> </span>{{level1.room_type_name}}</li>
-						</ul>
+					</div>
 
-					</div>
-					<div class="entry has-sortable col3">
-						<label>
-							Level 2
+					<!-- Checkbox -->
+					<div class="entry radio-check" ng-click="forceUpsellcheckBoxClicked()">
+						<label class="checkbox"> <span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.upsell_setup.is_force_upsell === 'true' }"></span> Force Upsell
+							<input type="checkbox"  />
 						</label>
-						<ul id="level_2" data-placeholder="Drop here for Level 2" class="boxes sortable ui-sortable">
-							<li ng-repeat="level2 in upsellData.upsell_room_levels[1].room_types"
-							ng-model="level2.room_type_id"id="level_id"><span class="icons icon-handle"> </span>{{level2.room_type_name}}</li>
-						</ul>
 					</div>
-					<div class="entry has-sortable col3">
-						<label>
-							Level 3
-						</label>
-					
-						<ul id="level_3" data-placeholder="Drop here for Level 3" class="boxes sortable ui-sortable">
-							<li ng-repeat="level3 in upsellData.upsell_room_levels[2].room_types"
-							ng-model="level3.room_type_id"id="level_id"><span class="icons icon-handle"> </span>{{level3.room_type_name}}</li>
-						</ul>
+
+				</fieldset>
+				<fieldset class="holder right">
+					<div class="form-title">
+						<h3><span>Daily Upsell</span> Room Level Targets </h3>
 					</div>
+					<input type="hidden" value="1" name="level_from_0" id="level_from_0">
+					<input type="hidden" value="2" name="level_to_0" id="level_to_0">
+					<div class="entry">
+						<label for="upsell_amounts_0"> Level 1 to 2  p/night [{{currency_code}}] </label>
+						<input type="text" ng-model="upsellData.upsell_amounts[0].amount" name="upsell-amounts" id="upsell_amounts_0">
+					</div>
+
+					<input type="hidden" value="1" name="level_from_1" id="level_from_1">
+					<input type="hidden" value="3" name="level_to_1" id="level_to_1">
+					<div class="entry">
+						<label for="upsell_amounts_1"> Level 1 to 3  p/night [{{currency_code}}] </label>
+						<input type="text" ng-model="upsellData.upsell_amounts[1].amount" name="upsell-amounts" id="upsell_amounts_1">
+					</div>
+
+					<input type="hidden" value="2" name="level_from_2" id="level_from_2">
+					<input type="hidden" value="3" name="level_to_2" id="level_to_2">
+					<div class="entry">
+						<label for="upsell_amounts_2"> Level 2 to 3  p/night [{{currency_code}}] </label>
+						<input type="text" ng-model="upsellData.upsell_amounts[2].amount" name="upsell-amounts" id="upsell_amounts_2">
+					</div>
+
+					<input type="hidden" value="3" name="upsell_amounts_count" id="upsell_amounts_count">
+					<input type="hidden" value="3" name="total_level_count" id="total_level_count">
+					<div class="entry">
+						<label for="charge-code"> Charge Code <strong>*</strong> </label>
+						<div class="select">
+
+							<select ng-options="chargecode.name as chargecode.value for chargecode  in upsellData.charge_codes" ng-model="upsellData.selected_charge_code">
+								<option style="display:none" value="">Charge Code</option>
+							</select>
+
+						</div>
+					</div>
+
+				</fieldset>
+				<div class="entry"></div>
+				<fieldset class="holder full-width">
+					<div class="form-title">
+						<h3><span>Daily Upsell</span> Levels </h3>
+					</div>
+					<div id="upsell_level" class="float">
+						<div class="entry has-sortable col3">
+							<label> Level 1 </label>
+
+							<ul ui-on-Drop="onDrop($event,$data,levelOne)" id="level_1" data-placeholder="Drop here for Level 1" class="boxes sortable ui-sortable">
+								<li ui-draggable="true" drag="level1"
+								on-drop-success="dropSuccessHandler($event,$index,levelOne)"ng-repeat="level1 in levelOne"
+								ng-model="level1.room_type_id"id="level_id">
+									<span class="icons icon-handle"> </span>{{level1.room_type_name}}
+								</li>
+							</ul>
+
+						</div>
+						<div class="entry has-sortable col3">
+							<label> Level 2 </label>
+							<ul ui-on-Drop="onDrop($event,$data,levelTwo)" id="level_2" data-placeholder="Drop here for Level 2" class="boxes sortable ui-sortable">
+								<li ui-draggable="true" drag="level2"
+								on-drop-success="dropSuccessHandler($event,$index,levelTwo)"ng-repeat="level2 in levelTwo"
+								ng-model="level2.room_type_id"id="level_id">
+									<span class="icons icon-handle"> </span>{{level2.room_type_name}}
+								</li>
+							</ul>
+						</div>
+						<div class="entry has-sortable col3">
+							<label> Level 3 </label>
+
+							<ul ui-on-Drop="onDrop($event,$data,levelThree)" id="level_3" data-placeholder="Drop here for Level 3" class="boxes sortable ui-sortable">
+								<li ui-draggable="true" drag="level3"
+								on-drop-success="dropSuccessHandler($event,$index,levelThree)"ng-repeat="level3 in levelThree"
+								ng-model="level3.room_type_id"id="level_id">
+									<span class="icons icon-handle"> </span>{{level3.room_type_name}}
+								</li>
+							</ul>
+						</div>
+					</div>
+				</fieldset>
+				<div class="actions">
+					<button type="button" ng-click="cancelClick()" class="button blank">
+						Cancel
+					</button>
+					<button type="button" ng-click="saveClick()" class="button green">
+						Save changes
+					</button>
 				</div>
-			</fieldset>
-			<div class="actions">
-				<button type="button" ng-click="cancelClick()" class="button blank">Cancel</button>
-				<button type="button" ng-click="saveClick()" class="button green">Save changes</button>
-			</div>
-		</form>
-	</section>
-</div>
+			</form>
+		</section>
+	</div>
 </section>
