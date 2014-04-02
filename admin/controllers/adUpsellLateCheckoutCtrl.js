@@ -12,6 +12,9 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
     	var fetchUpsellDetailsSuccessCallback = function(data) {
     		$scope.$emit('hideLoader');
     		$scope.upsellData = data;
+    		$scope.chekoutchargesArray = [$scope.upsellData.extended_checkout_charge_0,
+    		    						  $scope.upsellData.extended_checkout_charge_1,
+    		    						  $scope.upsellData.extended_checkout_charge_2];
     		$scope.startWatching();
 
     	};
@@ -32,7 +35,7 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
     $scope.switchClicked = function(){
 
     	$scope.upsellData.is_late_checkout_set =  ($scope.upsellData.is_late_checkout_set === 'true')?'false':'true';
-    	
+
     }
 
 	/**
@@ -41,7 +44,7 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
     */ 
 
     $scope.checkBoxClicked = function(){
-    	
+
     	$scope.upsellData.is_exclude_guests = ($scope.upsellData.is_exclude_guests === 'true')?'false':'true';
 
     }
@@ -64,8 +67,10 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
     		$scope.upsellData.extended_checkout_charge_2.charge = "";
     		$scope.upsellData.extended_checkout_charge_2.time = "";
 
+    		$scope.chekoutchargesArray.splice(2,1);
+    		$scope.chekoutchargesArray.splice(1,1);
     	}
-    	
+
 
     }, true);
 
@@ -75,12 +80,14 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
     */ 
 
     $scope.$watch('upsellData.extended_checkout_charge_1.charge', function(newValue, oldValue){
-    	
+
     	if($scope.upsellData.extended_checkout_charge_1.charge.length ===0){
     		$scope.upsellData.extended_checkout_charge_2.charge = "";
     		$scope.upsellData.extended_checkout_charge_2.time = "";
+
+    		$scope.chekoutchargesArray.splice(2,1);
     	}
-    	
+
 
     }, true);
 }
@@ -94,7 +101,7 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
     $scope.cancelClick = function(){
 
     	$state.go( 'admin.dashboard', {menu:2});
-    	
+
     }
 
 	/**
@@ -104,15 +111,16 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
 
     $scope.saveClick = function(){
 
+
+
+
     	var updateData = 
     	{
     		'is_late_checkout_set' :$scope.upsellData.is_late_checkout_set,
     		'allowed_late_checkout':$scope.upsellData.allowed_late_checkout,
     		'is_exclude_guests':$scope.upsellData.is_exclude_guests,
     		'sent_alert':$scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute,
-    		'extended_checkout_charge_0':$scope.upsellData.extended_checkout_charge_0,
-    		'extended_checkout_charge_1':$scope.upsellData.extended_checkout_charge_1,
-    		'extended_checkout_charge_2':$scope.upsellData.extended_checkout_charge_2,
+    		'extended_checkout_charge':$scope.chekoutchargesArray,
     		'charge_code':$scope.upsellData.selected_charge_code
 
     	};
@@ -121,8 +129,8 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
     		$state.go( 'admin.dashboard', {menu:2});
     	};
     	$scope.invokeApi(adUpsellLatecheckoutService.update,updateData,updateChainSuccessCallback);
-    	
+
     }
-    
+
 
 }]);
