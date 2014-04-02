@@ -68,24 +68,43 @@ function($scope, $rootScope, $state, adRoomUpsellService) {
 
 		// $scope.setUpLateCheckoutArray();
 
-		var updateData = {
+		// var updateData = {
 
-			'is_force_upsell' : $scope.upsellData.upsell_setup.is_force_upsell,
-			'is_one_night_only' : $scope.upsellData.upsell_setup.is_one_night_only,
-			'is_upsell_on' : $scope.upsellData.upsell_setup.is_upsell_on,
+		// 	'is_force_upsell' : $scope.upsellData.upsell_setup.is_force_upsell,
+		// 	'is_one_night_only' : $scope.upsellData.upsell_setup.is_one_night_only,
+		// 	'is_upsell_on' : $scope.upsellData.upsell_setup.is_upsell_on,
 
-			'total_upsell_target_amount' : $scope.upsellData.upsell_setup.total_upsell_target_amount,
-			'total_upsell_target_rooms' : $scope.upsellData.upsell_setup.total_upsell_target_rooms,
-			'charge_code' : $scope.upsellData.selected_charge_code,
-			'upsell_amounts' : $scope.upsellData.upsell_amounts,
-			'upsell_room_levels' : $scope.upsellData.upsell_room_levels
+		// 	'total_upsell_target_amount' : $scope.upsellData.upsell_setup.total_upsell_target_amount,
+		// 	'total_upsell_target_rooms' : $scope.upsellData.upsell_setup.total_upsell_target_rooms,
+		// 	'charge_code' : $scope.upsellData.selected_charge_code,
+		// 	'upsell_amounts' : $scope.upsellData.upsell_amounts,
+		// 	'upsell_room_levels' : $scope.upsellData.upsell_room_levels
 
-		};
+		// };
+
+
+  	 var upsell_setup = {};
+  	 var data = {};
+  	 
+  	 upsell_setup.is_force_upsell = $scope.upsellData.upsell_setup.is_force_upsell;
+  	 upsell_setup.is_one_night_only = $scope.upsellData.upsell_setup.is_one_night_only;
+  	 upsell_setup.is_upsell_on = $scope.upsellData.upsell_setup.is_upsell_on;
+  	 upsell_setup.total_upsell_target_amount = $scope.upsellData.upsell_setup.total_upsell_target_amount;
+  	 upsell_setup.total_upsell_target_rooms = $scope.upsellData.upsell_setup.total_upsell_target_rooms;
+
+  	 data.upsell_setup = upsell_setup;
+  	
+  	 data.upsell_amounts = $scope.upsellData.upsell_amounts;
+     data.charge_code = $scope.upsellData.selected_charge_code
+  	 data.upsell_room_levels = $scope.upsellData.upsell_room_levels;
+  	 console.log(JSON.stringify(data));
+
+
 		//var updateData = $scope.upsellData;
 		var updateChainSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(adRoomUpsellService.update, updateData, updateChainSuccessCallback);
+		$scope.invokeApi(adRoomUpsellService.update, data, updateChainSuccessCallback);
 
 	};
 
