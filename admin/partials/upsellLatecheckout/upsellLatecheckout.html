@@ -14,6 +14,8 @@
 			</div>
 			<fieldset class="holder left">
 				<div></div>
+
+				<!-- Switch -->
 				<div class="entry" ng-click="switchClicked()">
 					<label for="late-checkout-upsell">Late Checkout Upsell</label>
 					<div id="div-late-checkout-upsell" class="switch-button single" ng-class="{ on : upsellData.is_late_checkout_set === 'true' }">
@@ -23,6 +25,7 @@
 					</div>
 				</div>
 
+				<!-- Checkbox -->
 				<div class="entry radio-check" ng-click="checkBoxClicked()">
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.is_exclude_guests === 'true' }"></span>
@@ -32,43 +35,31 @@
 					</label>
 				</div>
 
-				<div class="entry">
-					<label for="number-of-late-checkout">
-						Number of Late Check Out's Allowed
-					</label>
-					<input type="text" ng-model="upsellData.allowed_late_checkout" required="" placeholder="Type number" name="number-of-late-checkout" id="number-of-late-checkout">
-				</div>
+				<ad-textbox value="upsellData.allowed_late_checkout"   label = "Number of Late Check Out's Allowed" placeholder = "Type number" ></ad-textbox>
+
 
 				<div class="entry">
 					<label>
 						Send Upsell alert to all guests [AM]
 					</label>
 					<div class="entry full-width float">
+
+						<!-- alert hour -->
 						<div class="select select-col col1-3">
 
-							   <select ng-options="hour for hour  in hours" ng-model="upsellData.alert_hour">
-							    <option style="display:none" value="">HH</option>
-							    </select>
-
-							<!-- <select name="hotel-checkout-hour" id="sent-alert-to-all-guests-hour" class="styled" >
-								<option value="" data-text="Not set" class="placeholder">HH</option>
-								<option ng-repeat="hour in hours" ng-model="hour">
-									{{hour}}
-								</option>
-
-							</select> -->
-						</div>
-						<div class="select select-col col1-3">
-							 <select ng-options="minute for minute  in minutes" ng-model="upsellData.alert_minute">
-							    <option style="display:none" value="">HH</option>
-							    </select>
-							<!-- <select name="hotel-checkout-minute" id="sent-alert-to-all-guests-minute">
-								<option value="" data-text="Not set" class="placeholder">MM</option>
-								<option ng-repeat="minute in minutes" ng-model="minute">
-									{{minute}}
-								</option>
+							<select ng-options="hour for hour  in hours" ng-model="upsellData.alert_hour">
+								<option style="display:none" value="">HH</option>
 							</select>
- -->						</div>
+
+							
+						</div>
+						<!-- alert minute -->
+						<div class="select select-col col1-3">
+							<select ng-options="minute for minute  in minutes" ng-model="upsellData.alert_minute">
+								<option style="display:none" value="">HH</option>
+							</select>
+							
+						</div>
 						<div class="select select-col col1-3">
 							<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
 								<option value="AM" selected="">AM</option>
@@ -78,143 +69,104 @@
 					</div>
 
 				</div>
-				<!-- = render :partial => "admin/shared/textbox", :locals => {:data => {"id"=> "sent-alert-to-all-guests", "name" => "sent-alert-to-all-guests", "placeholder" => "Enter time", "required" => "", "value" => "#{@sent_alert}", "maxlength" => "", "label_text" => "Send Upsell alert to all guests [AM]"}} -->
+				<!-- charge code -->
 				<div class="entry">
 					<label for="charge-code">
 						Charge Code
 						<strong>*</strong>
 					</label>
 					<div class="select">
-					<!-- 	<select name="charge-code" id="charge-code" class="placeholder">
-							<option value="">
-								Charge Code
-							</option>
-
-						<option	ng-repeat="chargecode in upsellData.charge_codes" value="chargecode.name">
-						{{chargecode.value}}
-						</option>
-					
-
-
-					</select> -->
-						 <select ng-options="chargecode.name as chargecode.value for chargecode  in upsellData.charge_codes" ng-model="upsellData.selected_charge_code">
-							    <option style="display:none" value="">Charge Code</option>
-							    </select>
-				</div>
-			</div>
-
-		</fieldset>
-		<fieldset class="holder right">
-			<div></div>
-			<div class="entry">
-				<label>
-					CheckOut Time extended to [PM]
-				</label>
-				<div class="entry full-width float">
-					<div class="select select-col col1-3">
-						<!-- <select name="checkout-time-extended-to" id="checkout-time-extended-to-1" class="styled">
-							<option value="" data-text="Not set" class="placeholder">HH</option>
-							<option ng-repeat="hour in hours" ng-model="hour">
-									{{hour}}
-								</option>
-
-						</select> -->
- 						<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_0.time">
-							    <option style="display:none" value="">HH</option>
-							    </select>
-
-
-					</div>
-					<div class="select select-col col1-3">
-						<select name="primetime" disabled="disabled" class="styled">
-							<option value="AM">AM</option>
-							<option value="PM" selected="">PM</option>
+						
+						<select ng-options="chargecode.name as chargecode.value for chargecode  in upsellData.charge_codes" ng-model="upsellData.selected_charge_code">
+							<option style="display:none" value="">Charge Code</option>
 						</select>
 					</div>
 				</div>
 
-			</div>
-			<div class="entry">
-				<label for="charge-for-checkout-1">
-					Charge [$]
-				</label>
-				<input type="text" ng-model="upsellData.extended_checkout_charge_0.charge" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-1">
-			</div>
+			</fieldset>
+			<fieldset class="holder right">
+				<div></div>
+				<div class="entry">
+					<label>
+						CheckOut Time extended to [PM]
+					</label>
+					<div class="entry full-width float">
+						<div class="select select-col col1-3">
+							
+							<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_0.time">
+								<option style="display:none" value="">HH</option>
+							</select>
 
-			<div class="entry">
-				<label>
-					CheckOut Time extended to [PM]
-				</label>
-				<div class="entry full-width float">
-					<div class="select select-col col1-3">
-						<!-- <select name="checkout-time-extended-to" id="checkout-time-extended-to-2" class="styled">
-							<option value="" data-text="Not set" class="placeholder">HH</option>
-							<option ng-repeat="hour in hours" ng-model="hour">
-									{{hour}}
-								</option>
 
-						</select> -->
-						<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_1.time">
-							    <option style="display:none" value="">HH</option>
-							    </select>
-
+						</div>
+						<div class="select select-col col1-3">
+							<select name="primetime" disabled="disabled" class="styled">
+								<option value="AM">AM</option>
+								<option value="PM" selected="">PM</option>
+							</select>
+						</div>
 					</div>
-					<div class="select select-col col1-3">
-						<select name="primetime" disabled="disabled" class="styled">
-							<option value="AM">AM</option>
-							<option value="PM" selected="">PM</option>
-						</select>
-					</div>
+
 				</div>
+				
 
-			</div>
-			<div class="entry">
-				<label for="charge-for-checkout-2">
-					Charge [$]
-				</label>
-				<input type="text" ng-model="upsellData.extended_checkout_charge_1.charge" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-2">
-			</div>
+				<ad-textbox value="upsellData.extended_checkout_charge_0.charge"   label = "Charge [$]" placeholder = "Enter charge" ></ad-textbox>
 
-			<div class="entry">
-				<label>
-					CheckOut Time extended to [PM]
-				</label>
-				<div class="entry full-width float">
-					<div class="select select-col col1-3">
-					<!-- 	<select name="checkout-time-extended-to" id="checkout-time-extended-to-3" class="styled">
-							<option value="" data-text="Not set" class="placeholder">HH</option>
-							<option ng-repeat="hour in hours" ng-model="hour">
-									{{hour}}
-								</option>
 
-						</select> -->
-						<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_2.time">
-							    <option style="display:none" value="">HH</option>
-							    </select>
+				<div class="entry">
+					<label>
+						CheckOut Time extended to [PM]
+					</label>
+					<div class="entry full-width float">
+						<div class="select select-col col1-3">
+							
+							<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_1.time">
+								<option style="display:none" value="">HH</option>
+							</select>
 
+						</div>
+						<div class="select select-col col1-3">
+							<select name="primetime" disabled="disabled" class="styled">
+								<option value="AM">AM</option>
+								<option value="PM" selected="">PM</option>
+							</select>
+						</div>
 					</div>
-					<div class="select select-col col1-3">
-						<select name="primetime" disabled="disabled" class="styled">
-							<option value="AM">AM</option>
-							<option value="PM" selected="">PM</option>
-						</select>
-					</div>
+
 				</div>
+				
+				<ad-textbox value="upsellData.extended_checkout_charge_1.charge"   label = "Charge [$]" placeholder = "Enter charge" ></ad-textbox>
 
-			</div>
-			<div class="entry">
-				<label for="charge-for-checkout-3">
-					Charge [$]
-				</label>
-				<input type="text" ng-model="upsellData.extended_checkout_charge_2.charge" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" id="charge-for-checkout-3">
-			</div>
+				<div class="entry">
+					<label>
+						CheckOut Time extended to [PM]
+					</label>
+					<div class="entry full-width float">
+						<div class="select select-col col1-3">
+							
+							<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_2.time">
+								<option style="display:none" value="">HH</option>
+							</select>
 
-		</fieldset>
-		<div class="actions float">
-			<button type="button" id="cancel" class="button blank" ng-click="cancelClick()">Cancel</button>
-			<button type="button" id="save" class="button green" ng-click="saveClick()">Save changes</button>
-		</div>
-	</form>
-</section>
+						</div>
+						<div class="select select-col col1-3">
+							<select name="primetime" disabled="disabled" class="styled">
+								<option value="AM">AM</option>
+								<option value="PM" selected="">PM</option>
+							</select>
+						</div>
+					</div>
+
+				</div>
+				
+				<ad-textbox value="upsellData.extended_checkout_charge_2.charge"   label = "Charge [$]" placeholder = "Enter charge" ></ad-textbox>
+
+			</fieldset>
+			<div class="actions float">
+				<button type="button" id="cancel" class="button blank" ng-click="cancelClick()">Cancel</button>
+				<button type="button" id="save" class="button green" ng-click="saveClick()">Save changes</button>
+			</div>
+		</form>
+	</section>
 </div>
 </section>
