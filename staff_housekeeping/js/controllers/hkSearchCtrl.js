@@ -14,6 +14,11 @@ hkRover.controller('HKSearchCtrl',
 	HKSearchSrv.fetch().then(function(data) {
 		$scope.$emit('hideLoader');
         $scope.data = data;
+        for (var i = 0; i < data.rooms.length; i ++){
+			data.rooms[i].display_room = true;
+        }
+
+        $scope.calculateFilters();
 
         // scroll to the previous room list scroll position
         var toPos = localStorage.getItem( 'roomListScrollTopPos' );
@@ -54,6 +59,10 @@ hkRover.controller('HKSearchCtrl',
 		});
 
 	$scope.refreshScroll = function(toPos) {
+		if ( roomsEl.scrollTop === toPos ) {
+			return;
+		};
+
 		if ( isNaN(parseInt(toPos)) ) {
 			var toPos = 0;
 		} else {
@@ -112,112 +121,168 @@ hkRover.controller('HKSearchCtrl',
 	*  Emits a call to dismiss the filter screen
 	*/	
 	$scope.filterDoneButtonPressed = function(){
-		$scope.refreshScroll();
+		$scope.calculateFilters();
 
-		// since filter is applied after the user press 'DONE'
-		// the $digest loop only begins then. This freezes DOM,
-		// User may hit 'DONE' again
-		// TODO: better filter method needed
+		$scope.refreshScroll();
+		
 		if ($scope.filterOpen) {
 			$scope.$emit('dismissFilterScreen');
 		};
 	};
 
+	/**
+	*  A method which checks the filter option status and see if the room should be displayed
+	*/
+	$scope.calculateFilters = function() {
+
+		for (var i = 0, j = $scope.data.rooms.length; i < j; i++) {
+			var room = $scope.data.rooms[i];
+
+			//Filter by status in filter section, HK_STATUS
+			if($scope.isAnyFilterTrue(['dirty','pickup','clean','inspected','out_of_order','out_of_service'])){
+
+				if (($scope.currentFilters.dirty === false) && (room.hk_status.value === "DIRTY")) {
+					room.display_room = false;
+					continue;
+				}
+				if (($scope.currentFilters.pickup === false) && (room.hk_status.value === "PICKUP")) {
+					room.display_room = false;
+					continue;
+				}
+				if (($scope.currentFilters.clean === false) && (room.hk_status.value === "CLEAN")) {
+					room.display_room = false;
+					continue;
+				}
+				if (($scope.currentFilters.inspected === false) && (room.hk_status.value === "INSPECTED")) {
+					room.display_room = false;
+					continue;
+				}
+				if (($scope.currentFilters.out_of_order === false) && (room.hk_status.value === "OO")) {
+					room.display_room = false;
+					continue;
+				}
+				if (($scope.currentFilters.out_of_service === false) && (room.hk_status.value === "OS")) {
+					room.display_room = false;
+					continue;
+				}
+			}
+
+			//Filter by status in filter section, OCCUPANCY_STATUS
+			if ($scope.isAnyFilterTrue(["vacant","occupied"])){
+				if (($scope.currentFilters.vacant === false) && (room.is_occupied === "false")) {
+					room.display_room = false;
+					continue;
+				}
+
+				if (($scope.currentFilters.occupied === false) && (room.is_occupied === "true")) {
+					room.display_room = false;
+					continue;
+				}
+			}
+
+			//Filter by status in filter section, ROOM_RESERVATION_STATUS
+			// For this status, pass the test, if any condition applies.
+			if ($scope.isAnyFilterTrue(['stayover', 'not_reserved', 'arrival', 'arrived', 'dueout', 'departed', 'dayuse'])){
+
+				if (($scope.currentFilters.stayover === true) && 
+					(room.room_reservation_status.indexOf("Stayover") >= 0)) {
+					room.display_room = true;
+					continue;
+				}
+
+				if (($scope.currentFilters.not_reserved === true) && 
+					(room.room_reservation_status.indexOf("Not Reserved") >= 0)) {
+					room.display_room = true;
+					continue;
+				}
+				if (($scope.currentFilters.arrival === true) && 
+					(room.room_reservation_status.indexOf("Arrival") >= 0)) {
+					room.display_room = true;
+					continue;
+				}
+				if (($scope.currentFilters.arrived === true) && 
+					(room.room_reservation_status.indexOf("Arrived") >= 0)) {
+					room.display_room = true;
+					continue;
+				}
+
+				if (($scope.currentFilters.dueout === true) && 
+					(room.room_reservation_status.indexOf("Due out") >= 0)) {
+					room.display_room = true;
+					continue;
+				}
+
+				if (($scope.currentFilters.departed === true) && 
+					(room.room_reservation_status.indexOf("Departed") >= 0)) {
+					
+					room.display_room = true;
+					continue;
+				}
+
+				if (($scope.currentFilters.dayuse === true) && 
+					(room.room_reservation_status.indexOf("Day use") >= 0)) {
+					room.display_room = true;
+					continue;
+				}
+
+				room.display_room = false;
+					continue;
+
+			}
+
+			room.display_room = true;
+
+		}
+	};
+
+
 
 	/**
 	*  Filter Function for filtering our the room list
-	*  @param {dict} room to be filtered  
-	*  @return {Boolean} true if room matches the filter criteria
 	*/
-	$scope.ApplyFilters = function(room){
-		//If search term is available ignore the filter options
-		if($scope.query !== ""){
-			//Filter by search term
-			if((room.room_no).indexOf($scope.query) >= 0) return true;
-			return false;
-		}
+	$scope.filterByQuery = function(){
 
-		// while the user is choosing the filter
-		// do NOT process anymore yet, cost too much $digest cycles
-		if ($scope.filterOpen) {
-			return false;
-		};
+		// since no filer we will have to
+		// loop through all rooms
+		for (var i = 0, j = $scope.data.rooms.length; i < j; i++) {
+			var room = $scope.data.rooms[i]
+			var roomNo = room.room_no.toUpperCase();
 
-		//Filter by status in filter section, HK_STATUS
-		if($scope.isAnyFilterTrue(['dirty','pickup','clean','inspected','out_of_order','out_of_service'])){
+			// if the query is empty
+			// apply any filter options
+			// and return
+			if ( !$scope.query ) {
+				$scope.calculateFilters();
+				break;
+				return;
+			};
 
-			if (($scope.currentFilters.dirty === false) && (room.hk_status.value === "DIRTY")) {
-				return false;
-			}
-			if (($scope.currentFilters.pickup === false) && (room.hk_status.value === "PICKUP")) {
-				return false;
-			}
-			if (($scope.currentFilters.clean === false) && (room.hk_status.value === "CLEAN")) {
-				return false;
-			}
-			if (($scope.currentFilters.inspected === false) && (room.hk_status.value === "INSPECTED")) {
-				return false;
-			}
-			if (($scope.currentFilters.out_of_order === false) && (room.hk_status.value === "OO")) {
-				return false;
-			}
-			if (($scope.currentFilters.out_of_service === false) && (room.hk_status.value === "OS")) {
-				return false;
+			// let remove any changed applied by filter
+			// show all rooms
+			room.display_room = true;
+
+			// now match the room no and
+			// and show hide as required
+			if ( roomNo.indexOf($scope.query.toUpperCase()) ) {
+				room.display_room = true;
+			} else {
+				room.display_room = false;
 			}
 		}
 
-		//Filter by status in filter section, OCCUPANCY_STATUS
-		if ($scope.isAnyFilterTrue(["vacant","occupied"])){
-			if (($scope.currentFilters.vacant === false) && (room.is_occupied === "false")) {
-				return false;
-			}
+		// refresh scroll when all ok
+		$scope.refreshScroll();
+	}
 
-			if (($scope.currentFilters.occupied === false) && (room.is_occupied === "true")) {
-				return false;
-			}
-		}
+	/**
+	*  A method to clear the search term
+	*/
+	$scope.clearSearch = function(){
+		$scope.query = '';
 
-		//Filter by status in filter section, ROOM_RESERVATION_STATUS
-		// For this status, pass the test, if any condition applies.
-		if ($scope.isAnyFilterTrue(['stayover', 'not_reserved', 'arrival', 'arrived', 'dueout', 'departed', 'dayuse'])){
-
-			if (($scope.currentFilters.stayover === true) && 
-				(room.room_reservation_status.indexOf("Stayover") >= 0)) {
-				return true;
-			}
-
-			if (($scope.currentFilters.not_reserved === true) && 
-				(room.room_reservation_status.indexOf("Not Reserved") >= 0)) {
-				return true;
-			}
-			if (($scope.currentFilters.arrival === true) && 
-				(room.room_reservation_status.indexOf("Arrival") >= 0)) {
-				return true;
-			}
-			if (($scope.currentFilters.arrived === true) && 
-				(room.room_reservation_status.indexOf("Arrived") >= 0)) {
-				return true;
-			}
-
-			if (($scope.currentFilters.dueout === true) && 
-				(room.room_reservation_status.indexOf("Due out") >= 0)) {
-				return true;
-			}
-
-			if (($scope.currentFilters.departed === true) && 
-				(room.room_reservation_status.indexOf("Departed") >= 0)) {
-				return true;
-			}
-
-			if (($scope.currentFilters.dayuse === true) && 
-				(room.room_reservation_status.indexOf("Day use") >= 0)) {
-				return true;
-			}
-
-			return false;
-		}
-		return true;
-		
+		// call the filter again maually
+		// can't help it
+		$scope.filterByQuery();
 	}
 	
 	/**
@@ -265,13 +330,4 @@ hkRover.controller('HKSearchCtrl',
 		$scope.refreshScroll();
 	}
 
-	/**
-	*  A method to clear the search term
-	*/
-	$scope.clearSearch = function(){
-		$scope.query = '';
-		$scope.refreshScroll();
-	}
-
 }]);
-
