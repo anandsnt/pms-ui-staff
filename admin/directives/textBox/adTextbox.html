@@ -4,5 +4,5 @@
 		<strong ng-show = "required=='yes'">*</strong>
 	</label>
 	
-	<input type="{{inputtype}}" value="{{value}}" ng-model="value" placeholder="{{placeholder}}" id="{{id}}" name="{{name}}" ng-readonly="1==2">
+	<input type="{{inputtype}}" value="{{value}}" ng-model="value" placeholder="{{placeholder}}" id="{{id}}" name="{{name}}" ng-readonly="{{readonly=='yes'}}" ng-required="required=='yes'" ng-maxlength="{{maxlength?maxlength:false}}">
 </div>

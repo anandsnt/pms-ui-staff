@@ -1,0 +1,357 @@
+<section class="content current"><!-- Edit Room -->
+	<div data-view="RoomsView">
+
+
+		<div class="data-holder">
+			<header class="content-title float">
+				<h2>
+					Edit Room
+					<span>
+						{{data.room_number}}
+					</span>
+				</h2>
+				<a ng-click="goBack()" id="go_back" data-type="load-details" class="action back">Back to Rooms</a>
+			</header>
+			<div id="notification-message"></div>
+			<form name="edit-room" id="edit-room" data-room-id="{{data.room_id}}" class="form float">
+				<fieldset class="holder left">
+					<div class="form-title">
+						<h3>
+							<span>Room</span>
+							details
+						</h3>
+						<em class="status">
+							<strong>All fields are mandatory!</strong>
+						</em>
+					</div>
+					<ad-textbox value="data.room_number" name="room-number" id="room-number" label="Number" placeholder="Enter hotel name" required="yes" maxlength=10></ad-textbox>	
+
+					<ad-dropdown div-class='full-width' label-in-drop-down='Select room type' label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id'></ad-dropdown>
+
+					
+				<div class="entry full-width">
+					<label for="room-picture">
+						Image
+						<strong>*</strong>
+					</label>
+					<div class="file-upload with-preview">
+						<span class="input">Choose file ...</span><input type="file" name="room-picture" id="room-picture">
+						<button type="button" class="button brand-colors">Replace image</button>
+					</div>
+					<span class="file-preview">
+						<img src="{{data.room_image}}" id="file-preview" alt="">
+					</span>
+				</div>
+			</fieldset>
+			<fieldset class="holder right">
+				<!-- Room Features -->
+				<div class="form-title">
+					<h3>
+						<span>Room</span>
+						Features
+					</h3>
+					<em class="status">
+						<span>Select Features that apply to this room.</span>
+					</em>
+				</div>
+				<div class="entry full-width">
+					<div id="room-features" class="boxes col2">
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="features1"></label>
+								<input type="checkbox" value="POOL VIEW" name="1" id="features1">
+								POOL VIEW
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="features16"></label>
+								<input type="checkbox" value="BALCONY" name="16" id="features16">
+								BALCONY
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="features144"></label>
+								<input type="checkbox" value="CONNECTING ROOM" name="144" id="features144">
+								CONNECTING ROOM
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox checked">
+								<span class="icon-form icon-checkbox checked"></span>
+								<label for="features145"></label>
+								<input type="checkbox" value="SPA" name="145" id="features145" checked="checked">
+								SPA
+							</label>
+						</div>
+
+					</div>
+				</div>
+				<!-- Room Likes -->
+			</fieldset>
+			<fieldset class="holder right">
+				<div class="form-title">
+					<h3>
+						<span>Room</span>
+						Likes
+					</h3>
+					<em class="status">
+						<span>Select Likes that apply to this room.</span>
+					</em>
+				</div>
+				<div class="entry full-width">
+					<div id="room-likes" class="boxes col2">
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="FLOOR"></label>
+								<input type="checkbox" value="HIGH FLOOR" name="138" id="FLOOR" data-group="FLOOR">
+								HIGH FLOOR
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="FLOOR"></label>
+								<input type="checkbox" value="LOW FLOOR" name="139" id="FLOOR" data-group="FLOOR">
+								LOW FLOOR
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="ELEVATOR"></label>
+								<input type="checkbox" value="NEAR ELEVATOR" name="140" id="ELEVATOR" data-group="ELEVATOR">
+								NEAR ELEVATOR
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="ELEVATOR"></label>
+								<input type="checkbox" value="AWAY FROM ELEVATOR" name="141" id="ELEVATOR" data-group="ELEVATOR">
+								AWAY FROM ELEVATOR
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox checked">
+								<span class="icon-form icon-checkbox checked"></span>
+								<label for="SMOKING"></label>
+								<input type="checkbox" value="SMOKING" name="10" id="SMOKING" data-group="SMOKING" checked="checked">
+								SMOKING
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="SMOKING"></label>
+								<input type="checkbox" value="NON-SMOKING" name="11" id="SMOKING" data-group="SMOKING">
+								NON-SMOKING
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="Test"></label>
+								<input type="checkbox" value="a" name="28" id="Test" data-group="Test">
+								a
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="Test"></label>
+								<input type="checkbox" value="b" name="29" id="Test" data-group="Test">
+								b
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="Building"></label>
+								<input type="checkbox" value="Tower" name="48" id="Building" data-group="Building">
+								Tower
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="Building"></label>
+								<input type="checkbox" value="Down" name="49" id="Building" data-group="Building">
+								Down
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="New like"></label>
+								<input type="checkbox" value="1" name="52" id="New like" data-group="New like">
+								1
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="New like"></label>
+								<input type="checkbox" value="2" name="53" id="New like" data-group="New like">
+								2
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="New like"></label>
+								<input type="checkbox" value="3" name="54" id="New like" data-group="New like">
+								3
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="New like"></label>
+								<input type="checkbox" value="4" name="55" id="New like" data-group="New like">
+								4
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="test12389787989798797987979"></label>
+								<input type="checkbox" value="1" name="60" id="test12389787989798797987979" data-group="test12389787989798797987979">
+								1
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="test12389787989798797987979"></label>
+								<input type="checkbox" value="2" name="61" id="test12389787989798797987979" data-group="test12389787989798797987979">
+								2
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="aaaaa"></label>
+								<input type="checkbox" value="asdasd" name="69" id="aaaaa" data-group="aaaaa">
+								asdasd
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="aaaaa"></label>
+								<input type="checkbox" value="asd" name="70" id="aaaaa" data-group="aaaaa">
+								asd
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="aaaaa"></label>
+								<input type="checkbox" value="342" name="71" id="aaaaa" data-group="aaaaa">
+								342
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="Jos Likes"></label>
+								<input type="checkbox" value="Beer" name="91" id="Jos Likes" data-group="Jos Likes">
+								Beer
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="Jos Likes"></label>
+								<input type="checkbox" value="Craftbeer" name="92" id="Jos Likes" data-group="Jos Likes">
+								Craftbeer
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="Category 3"></label>
+								<input type="checkbox" value="opt 1" name="101" id="Category 3" data-group="Category 3">
+								opt 1
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="Category 3"></label>
+								<input type="checkbox" value="opt 2" name="102" id="Category 3" data-group="Category 3">
+								opt 2
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="Craftbeer Preference"></label>
+								<input type="checkbox" value="IPA" name="103" id="Craftbeer Preference" data-group="Craftbeer Preference">
+								IPA
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="Craftbeer Preference"></label>
+								<input type="checkbox" value="Tripple" name="104" id="Craftbeer Preference" data-group="Craftbeer Preference">
+								Tripple
+							</label>
+						</div>
+
+						<div class="entry radio-check">
+							<label class="checkbox">
+								<span class="icon-form icon-checkbox"></span>
+								<label for="Craftbeer Preference"></label>
+								<input type="checkbox" value="Dubble" name="105" id="Craftbeer Preference" data-group="Craftbeer Preference">
+								Dubble
+							</label>
+						</div>
+
+					</div>
+				</div>
+			</fieldset>
+			<div class="actions float">
+				<button type="button" id="cancel" class="button blank add-data-inline">Cancel</button>
+				<button type="button" id="update" class="button green add-data-inline">Save changes</button>
+			</div>
+		</form>
+	</div>
+
+
+</div>
+</section>

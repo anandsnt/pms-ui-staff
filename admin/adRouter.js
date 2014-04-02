@@ -79,5 +79,17 @@ admin.config([
 			controller: 'ADDepartmentListCtrl',
 			url : '/departments'
 		});
+
+
+		$stateProvider.state('admin.rooms', {
+			templateUrl: '/assets/partials/rooms/adRoomList.html',
+			controller: 'adRoomListCtrl',
+			url : '/rooms'
+		});		
+		$stateProvider.state('admin.roomdetails', {
+			templateUrl: '/assets/partials/rooms/adRoomDetails.html',
+			controller: 'adRoomDetailsCtrl',
+			url : '/roomdetails/:roomId'
+		});
 	}
 ]);
