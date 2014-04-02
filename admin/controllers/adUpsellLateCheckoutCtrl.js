@@ -114,6 +114,13 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
 
     $scope.saveClick = function(){
 
+    	// if($scope.upsellData.extended_checkout_charge_0.time.length < 3){
+
+	    // 	$scope.chekoutchargesArray[0].time = $scope.upsellData.extended_checkout_charge_0.time +" "+ "PM";
+	    // 	$scope.chekoutchargesArray[1].time = $scope.upsellData.extended_checkout_charge_1.time +" "+ "PM";
+	    // 	$scope.chekoutchargesArray[2].time = $scope.upsellData.extended_checkout_charge_2.time +" "+ "PM";
+     //    }
+
     	var updateData = 
     	{
     		'is_late_checkout_set' :$scope.upsellData.is_late_checkout_set,
@@ -126,7 +133,6 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
     	};
     	var updateChainSuccessCallback = function(data) {
     		$scope.$emit('hideLoader');
-    		$state.go( 'admin.dashboard', {menu:2});
     	};
     	$scope.invokeApi(adUpsellLatecheckoutService.update,updateData,updateChainSuccessCallback);
 
