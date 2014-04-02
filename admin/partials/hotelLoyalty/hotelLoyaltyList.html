@@ -1,0 +1,29 @@
+<section id="replacing-div-first" class="content current">
+	<div data-view="GuestCardHLPView">
+		<header class="content-title float">
+			<h2> Hotel Loyalty Programs </h2>
+			<span class="count"> (
+				{{data.hotel_loyalty_program.length}}
+				) </span>
+			<a id="add-new-button" class="action add" ng-click="addNewHotelLoyalty()">Add new</a>
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/hotelLoyalty/adHotelLoyaltyAdd.html'"></div>
+		<div id="new-form-holder"></div>
+		<table id="loyalty" class="grid">
+			<tbody>
+				<tr ng-repeat="hotelLoyalty in data.hotel_loyalty_program">
+					<td><a class="edit-data-inline"> {{hotelLoyalty.name}} </a></td>
+					<td class="activate">
+					<div class="entry">
+						<label for="1"></label>
+						<div class="switch-button single" ng-class="{ on : hotelLoyalty.is_active == 'true' }">
+							<input type="checkbox" checked="checked">
+							<span class="switch-icon"></span>
+						</div>
+					</div></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>
