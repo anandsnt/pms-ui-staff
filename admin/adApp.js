@@ -72,6 +72,7 @@ admin.controller('rootController', ['$rootScope','$scope','$attrs','$location', 
 
 	//store basic details as rootscope variables
 	$rootScope.adminRole = $attrs.adminRole;
+	$rootScope.hotelId = $attrs.hotelId;
 
 }]);
 

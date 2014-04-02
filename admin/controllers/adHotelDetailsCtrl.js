@@ -6,34 +6,41 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	
-	//To add new hotel view
-	if($stateParams.action == "add"){
-		$scope.title = "Add Hotel";
-		
-		var fetchSuccess = function(data){
-			$scope.data = data;
-			$scope.$emit('hideLoader');
-		};
-		
-		$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess);
-	}
-	// To edit existing hotel view
-	else if($stateParams.action == "edit"){
-		$scope.isEdit = true;
-		$scope.title = "Edit Hotel";
-		
-		var fetchSuccess = function(data){
-			$scope.data = data;
-			$scope.$emit('hideLoader');
-		};
-		
-		$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess);
-	}
-	// To set flag for SNT admin
 	if($rootScope.adminRole == "snt-admin"){
 		$scope.isAdminSnt = true;
-	}
+		// SNT Admin -To add new hotel view
+		if($stateParams.action == "add"){
+			$scope.title = "Add Hotel";
+			
+			var fetchSuccess = function(data){
+				$scope.data = data;
+				$scope.$emit('hideLoader');
+			};
+			
+			$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess);
+		}
+		// SNT Admin -To edit existing hotel view
+		else if($stateParams.action == "edit"){
+			$scope.isEdit = true;
+			$scope.title = "Edit Hotel";
+			
+			var fetchSuccess = function(data){
+				$scope.data = data;
+				$scope.$emit('hideLoader');
+			};
+			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess);
+		}
 	
+	}
+	else if($rootScope.adminRole == "hotel-admin"){
+		// Hotel Admin -To Edit current hotel view
+		$scope.title = "Edit Hotel";
+		var fetchSuccess = function(data){
+			$scope.data = data;
+			$scope.$emit('hideLoader');
+		};
+		$scope.invokeApi(ADHotelDetailsSrv.hotelAdminfetchEditData, {}, fetchSuccess);
+	}
 	/**
     *   A post method for Test MliConnectivity for a hotel
     */
@@ -66,5 +73,12 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.toggleClicked = function(){
 		$scope.data.is_pms_tokenized = ($scope.data.is_pms_tokenized == 'true') ? 'false' : 'true';
 	};
-
+	/**
+    *   Method to go back to previous state.
+    */
+	$scope.back = function(){
+		if($scope.isAdminSnt) $state.go("admin.hotels");
+		else $state.go('admin.dashboard', {menu: 0});
+	};
+	
 }]);
