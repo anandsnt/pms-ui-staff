@@ -32,7 +32,6 @@ admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappin
 		$scope.errorMessage ="";
 		$scope.currentClickedElement = id;
 		$scope.editId = id;
-
 		var data = { 'editId' : id }
 
 		var editMappingSuccessCallback = function(data) {
@@ -92,23 +91,21 @@ admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappin
                     "snt_value": postData.snt_value,
                     "external_value": postData.external_value
             };
+            
 			angular.forEach($scope.data.mapping,function(item, index) {
-	       		if (item.mapping_type == postData.mapping_type) {
+	       		if (item.mapping_type == postData.mapping_value) {
 	       			$scope.data.mapping[index].mapping_values.push(newData);
 			 	}
 	       	});
 			$scope.closeInlineTab();
 		};
 		
-		var postData = {};
-			postData.mapping_type = $scope.editData.mappingValue; 
-			postData.snt_value =  $scope.editData.snt_value; 
-			postData.external_value =  $scope.editData.external_value; 
-			postData.hotel_id =  $scope.data.hotel_id;
-			
-			// editId passed only when editing the item.
-			if($scope.isEdit) postData.value =  $scope.editId;
-
+		var unwantedKeys = ["mapping_type","sntValues","selected_mapping_type","selected_snt_value" ];
+		var postData = dclone($scope.editData, unwantedKeys);
+		postData.hotel_id = $scope.data.hotel_id;
+		
+		if($scope.isEdit) postData.value = $scope.editId;
+		
 		$scope.invokeApi(ADMappingSrv.saveMapping, postData, successSaveCallback);
 	};
    	/*
@@ -135,10 +132,10 @@ admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappin
     * Function to handle data change in 'Mapping type'.
     * Data is injected to sntValues based on 'Mapping type' values.
     */
-	$scope.$watch('editData.mappingValue', function() {
+	$scope.$watch('editData.mapping_value', function() {
        $scope.editData.sntValues = [];
        angular.forEach($scope.editData.mapping_type,function(item, index) {
-       		if (item.name == $scope.editData.mappingValue) {
+       		if (item.name == $scope.editData.mapping_value) {
        			$scope.editData.sntValues = item.sntvalues;
 		 	}
        });

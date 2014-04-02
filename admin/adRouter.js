@@ -97,6 +97,12 @@ admin.config([
 			url : '/upselllatecheckout'
 		});
 		
+
+		$stateProvider.state('admin.hotelLoyaltyProgram', {
+			templateUrl: '/assets/partials/hotelLoyalty/hotelLoyaltyList.html',
+			controller: 'ADHotelLoyaltyCtrl',
+			url : '/hotelloyalty'
+		});
 		$stateProvider.state('admin.roomupsell', {
 			templateUrl: '/assets/partials/roomUpsell/roomUpsell.html',
 			controller: 'ADRoomUpsellCtrl',

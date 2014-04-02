@@ -1,7 +1,5 @@
 admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
 	
-	var _this = this;
-	_this.userList = "";
    /**
     * To fetch the list of users
     * @return {object} users list json
