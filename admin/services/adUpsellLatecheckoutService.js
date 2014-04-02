@@ -27,7 +27,7 @@ admin.service('adUpsellLatecheckoutService',['$http', '$q', 'ADBaseWebSrv', func
 		var deferred = $q.defer();
 		var url = '/admin/hotel/update_late_checkout_setup';	
 		
-		ADBaseWebSrv.putJSON(url,updateData).then(function(data) {
+		ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
