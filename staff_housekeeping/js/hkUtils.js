@@ -28,8 +28,3 @@ getGuestStatusMapped = function(reservationStatus, isLateCheckout){
     return viewStatus;
 
 }
-
-doLogout = function(){
-    $window.location.href = '/logout' ;
-
-}

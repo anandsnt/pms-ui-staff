@@ -1,4 +1,4 @@
-hkRover.service('HKRoomDetailsSrv',['$http', '$q', function($http, $q){
+hkRover.service('HKRoomDetailsSrv',['$http', '$q', '$window', function($http, $q, $window){
 
 	this.fetch = function(id){
 		var deferred = $q.defer();
@@ -14,7 +14,7 @@ hkRover.service('HKRoomDetailsSrv',['$http', '$q', function($http, $q){
 		}).error(function(response, status) {
 			if(status == 401){ // 401- Unauthorized
 				// so lets redirect to login page
-				doLogout();
+				$window.location.href = '/logout' ;
 			}else{
 				deferred.reject(response);
 			}
@@ -40,7 +40,7 @@ hkRover.service('HKRoomDetailsSrv',['$http', '$q', function($http, $q){
         }).error(function (response, status) {
 		    if(status == 401){ // 401- Unauthorized
     			// so lets redirect to login page
-    			doLogout();
+				$window.location.href = '/logout' ;
     		}else{
     			deferred.reject(response);
     		}

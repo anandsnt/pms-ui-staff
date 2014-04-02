@@ -1,4 +1,4 @@
-hkRover.service('HKSearchSrv',['$http', '$q', function($http, $q){
+hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $window){
 
 	this.roomList = "";
 	
@@ -41,7 +41,7 @@ hkRover.service('HKSearchSrv',['$http', '$q', function($http, $q){
 			.error(function(response, status) {
 			    if(status == 401){ // 401- Unauthorized
 	    			// so lets redirect to login page
-	    			doLogout();
+					$window.location.href = '/logout' ;
 	    		}else{
 	    			deferred.reject(response);
 	    		}
