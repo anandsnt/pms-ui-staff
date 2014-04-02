@@ -34,6 +34,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	}
 	else if($rootScope.adminRole == "hotel-admin"){
 		// Hotel Admin -To Edit current hotel view
+		$scope.isEdit = true;
 		$scope.title = "Edit Hotel";
 		var fetchSuccess = function(data){
 			$scope.data = data;
@@ -59,12 +60,20 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
     *   A post method for Add New and UPDATE Existing hotel details.
     */
 	$scope.clickedSave = function(){
-		
-		var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo"];
-		var data = dclone($scope.data, unwantedKeys);
-		
-		if($scope.isEdit) $scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data);
-		else $scope.invokeApi(ADHotelDetailsSrv.addNewHotelDeatils, data);
+		// SNT Admin - To save Add/Edit data
+		if($scope.isAdminSnt){
+			var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo"];
+			var data = dclone($scope.data, unwantedKeys);
+			
+			if($scope.isEdit) $scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data);
+			else $scope.invokeApi(ADHotelDetailsSrv.addNewHotelDeatils, data);
+		}
+		// Hotel Admin -To save Edit data
+		else{
+			var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_list","menus"];
+			var data = dclone($scope.data, unwantedKeys);
+			$scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data);
+		}
 	};
 	
 	/**
