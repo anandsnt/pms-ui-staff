@@ -1,7 +1,7 @@
 admin.service('adUpsellLatecheckoutService',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
    /*
-    * To fetch chains list
-    * @return {object} chains list
+    * To fetch late checkout upsell details
+    * @return {object}late checkout upsell details
     */	
 
 
