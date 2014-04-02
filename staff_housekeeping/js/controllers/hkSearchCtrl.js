@@ -264,8 +264,7 @@ hkRover.controller('HKSearchCtrl',
 			// now match the room no and
 			// and show hide as required
 			// must match first occurance of the search query
-			var pattern = new RegExp( '^' + $scope.query.toUpperCase() );
-			if ( pattern.test(roomNo) ) {
+			if ( (roomNo).indexOf($scope.query.toUpperCase()) === 0 ) {
 				room.display_room = true;
 			} else {
 				room.display_room = false;
