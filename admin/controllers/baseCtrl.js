@@ -1,4 +1,4 @@
-function BaseCtrl($scope){
+function BaseCtrl($scope){	
 
 	$scope.fetchedCompleted = function(data){
 		$scope.$emit('hideLoader');
@@ -8,10 +8,15 @@ function BaseCtrl($scope){
 		$scope.errorMessage = '';
 	};
 
+	$scope.showErrorMessage = function(errorMessage){
+		
+	};
+
 	$scope.fetchedFailed = function(errorMessage){
 		
 		$scope.$emit('hideLoader');
 		if($scope.hasOwnProperty("errorMessage")){ 
+			console.log(errorMessage);
 			$scope.errorMessage = errorMessage;
 		}
 		else {

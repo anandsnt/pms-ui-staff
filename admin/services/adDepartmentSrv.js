@@ -15,6 +15,11 @@ admin.service('ADDepartmentSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
 		});	
 		return deferred.promise;
 	};
+   /*
+    * To save new department
+    * @param {array} data of the new department
+    * @return {object} status and new id of new department
+    */
 	this.saveDepartment = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/departments';	
@@ -26,6 +31,11 @@ admin.service('ADDepartmentSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
 		});	
 		return deferred.promise;
 	};
+   /*
+    * To get the details of the selected department
+    * @param {array} selected department id
+    * @return {object} selected department details
+    */
 	this.getDepartmentDetails = function(data){
 		var deferred = $q.defer();
 		var id = data.id;
@@ -38,7 +48,11 @@ admin.service('ADDepartmentSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
 		});	
 		return deferred.promise;
 	};
-	
+   /*
+    * To update department data
+    * @param {array} data of the modified department
+    * @return {object} status of updated department
+    */
 	this.updateDepartment = function(data){
 
 		var deferred = $q.defer();
@@ -51,6 +65,11 @@ admin.service('ADDepartmentSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
 		});	
 		return deferred.promise;
 	};
+   /*
+    * To delete the seleceted department
+    * @param {int} id of the selected department
+    * @return {object} status of delete
+    */
 	this.deleteDepartment = function(id){
 		var deferred = $q.defer();
 		var url = '/admin/departments/'+id;	
@@ -61,8 +80,5 @@ admin.service('ADDepartmentSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
 		    deferred.reject(data);
 		});	
 		return deferred.promise;
-		
 	};
-
-
 }]);
