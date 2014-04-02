@@ -74,7 +74,7 @@ admin.config([
 			url : '/mapping/:id'
 		});
 		$stateProvider.state('admin.ffp', {
-			templateUrl: '/assets/partials/guestCards/frequentFlyerProgram/adFFPList.html',
+			templateUrl: '/assets/partials/frequentFlyerProgram/adFFPList.html',
 			controller: 'ADFrequentFlyerProgramCtrl',
 			url : '/ffp'
 		});
