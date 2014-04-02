@@ -22,18 +22,18 @@ admin.service('adRoomUpsellService',['$q', 'ADBaseWebSrv', function( $q, ADBaseW
     * To update the upsell details
     * @param {object} new upsell details
     */
-	// this.update = function(data){
-	// 	var updateData = data;
-	// 	var deferred = $q.defer();
-	// 	var url = '/admin/hotel/update_late_checkout_setup';	
+	 this.update = function(data){
+	 	var updateData = data;
+		var deferred = $q.defer();
+	 	var url = '/admin/room_upsells/update_upsell_options';	
 		
-	// 	ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
-	// 		deferred.resolve(data);
-	// 	},function(data){
-	// 		deferred.reject(data);
-	// 	});
-	// 	return deferred.promise;
-	// };
+	 	ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
+	 		deferred.resolve(data);
+	 	},function(data){
+	 		deferred.reject(data);
+	 	});
+	 	return deferred.promise;
+	 };
 
 
    }]);

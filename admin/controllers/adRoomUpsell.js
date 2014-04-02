@@ -41,6 +41,42 @@ admin.controller('ADRoomUpsellCtrl',['$scope','$rootScope','$state','adRoomUpsel
 
     };
 
+
+    /**
+    * To handle cancel button action
+    *
+    */ 
+
+    $scope.cancelClick = function(){
+
+    	$state.go( 'admin.dashboard', {menu:2});
+
+    };
+
+
+     $scope.saveClick = function(){
+
+    	
+    	// $scope.setUpLateCheckoutArray();
+
+    	// var updateData = 
+    	// {
+    	// 	'is_late_checkout_set' :$scope.upsellData.is_late_checkout_set,
+    	// 	'allowed_late_checkout':$scope.upsellData.allowed_late_checkout,
+    	// 	'is_exclude_guests':$scope.upsellData.is_exclude_guests,
+    	// 	'sent_alert':$scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute,
+    	// 	'extended_checkout_charge':$scope.chekoutchargesArray,
+    	// 	'charge_code':$scope.upsellData.selected_charge_code
+
+    	// };
+    	var updateData = $scope.upsellData;
+    	var updateChainSuccessCallback = function(data) {
+    		$scope.$emit('hideLoader');
+    	};
+    	$scope.invokeApi(adRoomUpsellService.update,updateData,updateChainSuccessCallback);
+
+    };
+
    
 
 
