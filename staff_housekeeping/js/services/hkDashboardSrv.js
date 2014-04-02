@@ -15,7 +15,7 @@ hkRover.service('hkDashboardSrv',['$http', '$q', '$window', function($http, $q, 
 		}).error(function(response, status) {
 			if(status == 401){ // 401- Unauthorized
 				// so lets redirect to login page
-				$window.location.href = '/logout' ;
+				$window.location.href = '/house/logout' ;
 			}else{
 				deferred.reject(response);
 			}
