@@ -23,15 +23,10 @@
 					<div class="form-title">
 						<h3><span>Daily Upsell</span> Targets </h3>
 					</div>
-					<div class="entry">
-						<label for="daily-upsell-targets-amount"> Target [{{currency_code}}] </label>
-						<input type="text" ng-model="upsellData.upsell_setup.total_upsell_target_amount" name="daily-upsell-targets-amount" id="daily-upsell-targets-amount">
-					</div>
 
-					<div class="entry">
-						<label for="daily-upsell-target-rooms"> Rooms </label>
-						<input type="text" ng-model="upsellData.upsell_setup.total_upsell_target_rooms" name="daily-upsell-target-rooms" id="daily-upsell-target-rooms">
-					</div>
+					<ad-textbox value="upsellData.upsell_setup.total_upsell_target_amount"   label = "Target [{{currency_code}}]" ></ad-textbox>
+
+					<ad-textbox value="upsellData.upsell_setup.total_upsell_target_rooms"   label = "Rooms" ></ad-textbox>
 
 					<!-- Checkbox -->
 					<div class="entry radio-check" >
@@ -54,24 +49,20 @@
 					</div>
 					<input type="hidden" value="1" name="level_from_0" id="level_from_0">
 					<input type="hidden" value="2" name="level_to_0" id="level_to_0">
-					<div class="entry">
-						<label for="upsell_amounts_0"> Level 1 to 2  p/night [{{currency_code}}] </label>
-						<input type="text" ng-model="upsellData.upsell_amounts[0].amount" name="upsell-amounts" id="upsell_amounts_0">
-					</div>
+					
+
+
+					<ad-textbox value="upsellData.upsell_amounts[0].amount"   label = "Level 1 to 2  p/night [{{currency_code}}]" ></ad-textbox>
 
 					<input type="hidden" value="1" name="level_from_1" id="level_from_1">
 					<input type="hidden" value="3" name="level_to_1" id="level_to_1">
-					<div class="entry">
-						<label for="upsell_amounts_1"> Level 1 to 3  p/night [{{currency_code}}] </label>
-						<input type="text" ng-model="upsellData.upsell_amounts[1].amount" name="upsell-amounts" id="upsell_amounts_1">
-					</div>
+
+					<ad-textbox value="upsellData.upsell_amounts[1].amount"   label = "Level 1 to 3  p/night [{{currency_code}}]" ></ad-textbox>
 
 					<input type="hidden" value="2" name="level_from_2" id="level_from_2">
 					<input type="hidden" value="3" name="level_to_2" id="level_to_2">
-					<div class="entry">
-						<label for="upsell_amounts_2"> Level 2 to 3  p/night [{{currency_code}}] </label>
-						<input type="text" ng-model="upsellData.upsell_amounts[2].amount" name="upsell-amounts" id="upsell_amounts_2">
-					</div>
+
+					<ad-textbox value="upsellData.upsell_amounts[2].amount"   label = "Level 2 to 3  p/night [{{currency_code}}]" ></ad-textbox>
 
 					<input type="hidden" value="3" name="upsell_amounts_count" id="upsell_amounts_count">
 					<input type="hidden" value="3" name="total_level_count" id="total_level_count">
@@ -100,43 +91,43 @@
 								<li ui-draggable="true" drag="level1"
 								on-drop-success="dropSuccessHandler($event,$index,levelOne)"ng-repeat="level1 in levelOne"
 								ng-model="level1.room_type_id"id="level_id">
-									<span class="icons icon-handle"> </span>{{level1.room_type_name}}
-								</li>
-							</ul>
+								<span class="icons icon-handle"> </span>{{level1.room_type_name}}
+							</li>
+						</ul>
 
-						</div>
-						<div class="entry has-sortable col3">
-							<label> Level 2 </label>
-							<ul ui-on-Drop="onDrop($event,$data,levelTwo)" id="level_2" data-placeholder="Drop here for Level 2" class="boxes sortable ui-sortable">
-								<li ui-draggable="true" drag="level2"
-								on-drop-success="dropSuccessHandler($event,$index,levelTwo)"ng-repeat="level2 in levelTwo"
-								ng-model="level2.room_type_id"id="level_id">
-									<span class="icons icon-handle"> </span>{{level2.room_type_name}}
-								</li>
-							</ul>
-						</div>
-						<div class="entry has-sortable col3">
-							<label> Level 3 </label>
-
-							<ul ui-on-Drop="onDrop($event,$data,levelThree)" id="level_3" data-placeholder="Drop here for Level 3" class="boxes sortable ui-sortable">
-								<li ui-draggable="true" drag="level3"
-								on-drop-success="dropSuccessHandler($event,$index,levelThree)"ng-repeat="level3 in levelThree"
-								ng-model="level3.room_type_id"id="level_id">
-									<span class="icons icon-handle"> </span>{{level3.room_type_name}}
-								</li>
-							</ul>
-						</div>
 					</div>
-				</fieldset>
-				<div class="actions">
-					<button type="button" ng-click="cancelClick()" class="button blank">
-						Cancel
-					</button>
-					<button type="button" ng-click="saveClick()" class="button green">
-						Save changes
-					</button>
+					<div class="entry has-sortable col3">
+						<label> Level 2 </label>
+						<ul ui-on-Drop="onDrop($event,$data,levelTwo)" id="level_2" data-placeholder="Drop here for Level 2" class="boxes sortable ui-sortable">
+							<li ui-draggable="true" drag="level2"
+							on-drop-success="dropSuccessHandler($event,$index,levelTwo)"ng-repeat="level2 in levelTwo"
+							ng-model="level2.room_type_id"id="level_id">
+							<span class="icons icon-handle"> </span>{{level2.room_type_name}}
+						</li>
+					</ul>
 				</div>
-			</form>
-		</section>
+				<div class="entry has-sortable col3">
+					<label> Level 3 </label>
+
+					<ul ui-on-Drop="onDrop($event,$data,levelThree)" id="level_3" data-placeholder="Drop here for Level 3" class="boxes sortable ui-sortable">
+						<li ui-draggable="true" drag="level3"
+						on-drop-success="dropSuccessHandler($event,$index,levelThree)"ng-repeat="level3 in levelThree"
+						ng-model="level3.room_type_id"id="level_id">
+						<span class="icons icon-handle"> </span>{{level3.room_type_name}}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</fieldset>
+	<div class="actions">
+		<button type="button" ng-click="cancelClick()" class="button blank">
+			Cancel
+		</button>
+		<button type="button" ng-click="saveClick()" class="button green">
+			Save changes
+		</button>
 	</div>
+</form>
+</section>
+</div>
 </section>
