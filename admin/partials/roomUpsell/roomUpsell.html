@@ -8,10 +8,10 @@
 		<form name="upsell_rooms" method="post" id="upsell_rooms" class="form float" action="">
 			<fieldset class="holder column">
 	
-				<div class="entry" ng-click="switchClicked()">
+				<div class="entry">
 					<label for="upsell-rooms">Upsell Rooms</label>
 					<div id="div-upsell-rooms" class="switch-button single" ng-class="{ on : upsellData.upsell_setup.is_upsell_on === 'true' }">
-						<input type="checkbox"  name="upsell-rooms" id="upsell-rooms">
+						<input type="checkbox"  name="upsell-rooms" id="upsell-rooms" ng-click="switchClicked()">
 						<span class="switch-icon"></span>
 
 					</div>
@@ -44,11 +44,11 @@
 		
 
 				<!-- Checkbox -->
-				<div class="entry radio-check" ng-click="oneNightcheckBoxClicked()">
+				<div class="entry radio-check" >
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.upsell_setup.is_one_night_only === 'true' }"></span>
 						Upsell 1 Night Stays Only
-						<input type="checkbox"  />
+						<input type="checkbox" ng-click="oneNightcheckBoxClicked()" />
 
 					</label>
 				</div>
@@ -56,11 +56,11 @@
 
 
 					<!-- Checkbox -->
-				<div class="entry radio-check" ng-click="forceUpsellcheckBoxClicked()">
+				<div class="entry radio-check" >
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.upsell_setup.is_force_upsell === 'true' }"></span>
 						Force Upsell
-						<input type="checkbox"  />
+						<input type="checkbox"  ng-click="forceUpsellcheckBoxClicked()"/>
 
 					</label>
 				</div>
