@@ -56,10 +56,6 @@ hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', '$log', functi
         return $scope.filterOpen;
     };
 
-    $scope.ishasLoader = function(){
-        return $scope.hasLoader;
-    };
-
     $scope.$on("dismissFilterScreen", function(){
         $scope.filterOpen = false;
     });
