@@ -38,8 +38,13 @@ hkRover.service('HKSearchSrv',['$http', '$q', function($http, $q){
 				}
 				
 			}.bind(this))
-			.error(function(data, status) {
-			    deferred.reject(data);
+			.error(function(response, status) {
+			    if(status == 401){ // 401- Unauthorized
+	    			// so lets redirect to login page
+	    			doLogout();
+	    		}else{
+	    			deferred.reject(response);
+	    		}
 			});
 
 		return deferred.promise;
