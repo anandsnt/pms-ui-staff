@@ -23,6 +23,12 @@ admin.config([
 		$stateProvider.state('admin.hoteldetails', {
 			templateUrl: '/assets/partials/hotel/adHotelDetails.html',
 			controller: 'ADHotelDetailsCtrl',
+			url : '/hoteldetails/edit'
+		});
+		
+		$stateProvider.state('admin.snthoteldetails', {
+			templateUrl: '/assets/partials/hotel/adHotelDetails.html',
+			controller: 'ADHotelDetailsCtrl',
 			url : '/hoteldetails/:action/:id'
 		});
 		
