@@ -58,15 +58,15 @@
 
 			<div class="entry full-width registration-for-rover" ng-hide="isAdminSnt">
 				<label for="rover"> Rover Registration </label>
-				<div ng-model="data.required_signature_at" id="registration-for-rover" class="boxes">
+				<div  id="registration-for-rover" class="boxes">
 					<label class="radio" ng-class="{checked: data.required_signature_at == 'CHECKIN'}"> <span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'CHECKIN'}"></span>
-						<input type="radio" value="CHECKIN" name="rover" id="type1" class="change-data" checked="checked">
+						<input ng-model="data.required_signature_at" type="radio" value="CHECKIN" name="rover" id="type1" class="change-data" checked="checked">
 						Require Signature at Check In </label>
 					<label class="radio" ng-class="{checked: data.required_signature_at == 'CHECKOUT'}"> <span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'CHECKOUT'}"></span>
-						<input type="radio" value="CHECKOUT" name="rover" id="type2" class="change-data">
+						<input ng-model="data.required_signature_at" type="radio" value="CHECKOUT" name="rover" id="type2" class="change-data">
 						Require Signature at Check Out </label>
 					<label class="radio" ng-class="{checked: data.required_signature_at == 'NO_SIGNATURE'}"> <span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'NO_SIGNATURE'}"></span>
-						<input type="radio" value="NO_SIGNATURE" name="rover" id="type3" class="change-data">
+						<input ng-model="data.required_signature_at"type="radio" value="NO_SIGNATURE" name="rover" id="type3" class="change-data">
 						No Signature Required </label>
 				</div>
 			</div>
