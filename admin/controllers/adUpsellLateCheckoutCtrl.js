@@ -1,6 +1,7 @@
 admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adUpsellLatecheckoutService',  function($scope,$rootScope,$state,adUpsellLatecheckoutService){
 	BaseCtrl.call(this, $scope);
 	$scope.upsellData = {};
+	$scope.chargecode = {};
 
    /**
     * To fetch upsell details
@@ -12,7 +13,8 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
 		var fetchUpsellDetailsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.upsellData = data;
-			
+
+		
 		};
 		$scope.invokeApi(adUpsellLatecheckoutService.fetch, {},fetchUpsellDetailsSuccessCallback);
 	};
@@ -73,13 +75,11 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
 		'is_late_checkout_set' :$scope.upsellData.is_late_checkout_set,
 		'allowed_late_checkout':$scope.upsellData.allowed_late_checkout,
 		'is_exclude_guests':$scope.upsellData.is_exclude_guests,
-		'sent_alert':$scope.upsellData.sent_alert,
-		'alert_minute':$scope.upsellData.alert_minute,
-		'selected_charge_code':$scope.upsellData.selected_charge_code,
+		'sent_alert':$scope.upsellData.alert_hour+':'+$scope.upsellData.alert_minute,
 		'extended_checkout_charge_0':$scope.upsellData.extended_checkout_charge_0,
 		'extended_checkout_charge_1':$scope.upsellData.extended_checkout_charge_1,
 		'extended_checkout_charge_2':$scope.upsellData.extended_checkout_charge_2,
-		'charge_codes':$scope.upsellData.charge_code
+		'charge_code':$scope.upsellData.selected_charge_code
 
 		 };
  		var updateChainSuccessCallback = function(data) {

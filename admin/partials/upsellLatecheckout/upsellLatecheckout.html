@@ -45,22 +45,30 @@
 					</label>
 					<div class="entry full-width float">
 						<div class="select select-col col1-3">
-							<select name="hotel-checkout-hour" id="sent-alert-to-all-guests-hour" class="styled" >
+
+							   <select ng-options="hour for hour  in hours" ng-model="upsellData.alert_hour">
+							    <option style="display:none" value="">HH</option>
+							    </select>
+
+							<!-- <select name="hotel-checkout-hour" id="sent-alert-to-all-guests-hour" class="styled" >
 								<option value="" data-text="Not set" class="placeholder">HH</option>
 								<option ng-repeat="hour in hours" ng-model="hour">
 									{{hour}}
 								</option>
 
-							</select>
+							</select> -->
 						</div>
 						<div class="select select-col col1-3">
-							<select name="hotel-checkout-minute" id="sent-alert-to-all-guests-minute">
+							 <select ng-options="minute for minute  in minutes" ng-model="upsellData.alert_minute">
+							    <option style="display:none" value="">HH</option>
+							    </select>
+							<!-- <select name="hotel-checkout-minute" id="sent-alert-to-all-guests-minute">
 								<option value="" data-text="Not set" class="placeholder">MM</option>
 								<option ng-repeat="minute in minutes" ng-model="minute">
 									{{minute}}
 								</option>
 							</select>
-						</div>
+ -->						</div>
 						<div class="select select-col col1-3">
 							<select name="hotel-checkout-primetime" disabled="disabled" class="styled">
 								<option value="AM" selected="">AM</option>
@@ -77,7 +85,7 @@
 						<strong>*</strong>
 					</label>
 					<div class="select">
-						<select name="charge-code" id="charge-code" class="placeholder">
+					<!-- 	<select name="charge-code" id="charge-code" class="placeholder">
 							<option value="">
 								Charge Code
 							</option>
@@ -88,7 +96,10 @@
 					
 
 
-					</select>
+					</select> -->
+						 <select ng-options="chargecode.name as chargecode.value for chargecode  in upsellData.charge_codes" ng-model="upsellData.selected_charge_code">
+							    <option style="display:none" value="">Charge Code</option>
+							    </select>
 				</div>
 			</div>
 
@@ -101,13 +112,18 @@
 				</label>
 				<div class="entry full-width float">
 					<div class="select select-col col1-3">
-						<select name="checkout-time-extended-to" id="checkout-time-extended-to-1" class="styled">
+						<!-- <select name="checkout-time-extended-to" id="checkout-time-extended-to-1" class="styled">
 							<option value="" data-text="Not set" class="placeholder">HH</option>
 							<option ng-repeat="hour in hours" ng-model="hour">
 									{{hour}}
 								</option>
 
-						</select>
+						</select> -->
+ 						<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_0.time">
+							    <option style="display:none" value="">HH</option>
+							    </select>
+
+
 					</div>
 					<div class="select select-col col1-3">
 						<select name="primetime" disabled="disabled" class="styled">
@@ -131,13 +147,17 @@
 				</label>
 				<div class="entry full-width float">
 					<div class="select select-col col1-3">
-						<select name="checkout-time-extended-to" id="checkout-time-extended-to-2" class="styled">
+						<!-- <select name="checkout-time-extended-to" id="checkout-time-extended-to-2" class="styled">
 							<option value="" data-text="Not set" class="placeholder">HH</option>
 							<option ng-repeat="hour in hours" ng-model="hour">
 									{{hour}}
 								</option>
 
-						</select>
+						</select> -->
+						<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_1.time">
+							    <option style="display:none" value="">HH</option>
+							    </select>
+
 					</div>
 					<div class="select select-col col1-3">
 						<select name="primetime" disabled="disabled" class="styled">
@@ -161,13 +181,17 @@
 				</label>
 				<div class="entry full-width float">
 					<div class="select select-col col1-3">
-						<select name="checkout-time-extended-to" id="checkout-time-extended-to-3" class="styled">
+					<!-- 	<select name="checkout-time-extended-to" id="checkout-time-extended-to-3" class="styled">
 							<option value="" data-text="Not set" class="placeholder">HH</option>
 							<option ng-repeat="hour in hours" ng-model="hour">
 									{{hour}}
 								</option>
 
-						</select>
+						</select> -->
+						<select ng-options="hour for hour  in hours" ng-model="upsellData.extended_checkout_charge_2.time">
+							    <option style="display:none" value="">HH</option>
+							    </select>
+
 					</div>
 					<div class="select select-col col1-3">
 						<select name="primetime" disabled="disabled" class="styled">
