@@ -1,175 +1,175 @@
 <section id="replacing-div-first" class="content current"><div id="upsell_room_details" data-view="UpsellRoomDetailsView">
-<section>
-<header class="content-title float">
-<h2>Daily Upsell Setup</h2>
-<a id="go_back" data-type="load-details" class="action back">Back</a>
-</header>
-<div id="notification-message"></div>
-<form name="upsell_rooms" method="post" id="upsell_rooms" class="form float" action="">
-<fieldset class="holder column">
-<div class="entry">
-<label for="upsell-rooms">Upsell Rooms</label>
-<div id="div-upsell-rooms" class="switch-button single on">
-<input type="checkbox" value="10" name="upsell-rooms" id="upsell-rooms" checked="checked">
-<span class="switch-icon"></span>
+	<section>
+		<header class="content-title float">
+			<h2>Daily Upsell Setup</h2>
+			<a id="go_back" data-type="load-details" class="action back">Back</a>
+		</header>
+		<div id="notification-message"></div>
+		<form name="upsell_rooms" method="post" id="upsell_rooms" class="form float" action="">
+			<fieldset class="holder column">
+				<div class="entry">
+					<label for="upsell-rooms">Upsell Rooms</label>
+					<div id="div-upsell-rooms" class="switch-button single on">
+						<input type="checkbox" value="10" name="upsell-rooms" id="upsell-rooms" checked="checked">
+						<span class="switch-icon"></span>
 
-</div>
-</div>
+					</div>
+				</div>
 
-</fieldset>
-<fieldset class="holder left">
-<div class="form-title">
-<h3>
-<span>Daily Upsell</span>
-Targets
-</h3>
-</div>
-<div class="entry">
-<label for="daily-upsell-targets-amount">
-Target [{{currency_code}}]
-</label>
-<input type="text" value="1000.00" name="daily-upsell-targets-amount" id="daily-upsell-targets-amount">
-</div>
+			</fieldset>
+			<fieldset class="holder left">
+				<div class="form-title">
+					<h3>
+						<span>Daily Upsell</span>
+						Targets
+					</h3>
+				</div>
+				<div class="entry">
+					<label for="daily-upsell-targets-amount">
+						Target [{{currency_code}}]
+					</label>
+					<input type="text" ng-model="upsellData.upsell_setup.total_upsell_target_amount" name="daily-upsell-targets-amount" id="daily-upsell-targets-amount">
+				</div>
 
-<div class="entry">
-<label for="daily-upsell-target-rooms">
-Rooms
-</label>
-<input type="text" value="300" name="daily-upsell-target-rooms" id="daily-upsell-target-rooms">
-</div>
+				<div class="entry">
+					<label for="daily-upsell-target-rooms">
+						Rooms
+					</label>
+					<input type="text" ng-model="upsellData.upsell_setup.total_upsell_target_rooms" name="daily-upsell-target-rooms" id="daily-upsell-target-rooms">
+				</div>
 
-<div class="entry radio-check">
-<label class="checkbox">
-<span class="icon-form icon-checkbox"></span>
-Upsell 1 Night Stays Only
-<input type="checkbox" name="upsell_for_one_night" id="upsell_for_one_night">
+				<div class="entry radio-check">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox"></span>
+						Upsell 1 Night Stays Only
+						<input type="checkbox" name="upsell_for_one_night" id="upsell_for_one_night">
 
-</label>
-</div>
+					</label>
+				</div>
 
-<div class="entry radio-check">
-<label class="checkbox inline checked">
-<span class="icon-form icon-checkbox checked"></span>
-Force Upsell
-<input type="checkbox" value="true" name="force_upsell" id="force_upsell" checked="checked">
+				<div class="entry radio-check">
+					<label class="checkbox inline checked">
+						<span class="icon-form icon-checkbox checked"></span>
+						Force Upsell
+						<input type="checkbox" value="true" name="force_upsell" id="force_upsell" checked="checked">
 
-</label>
-</div>
+					</label>
+				</div>
 
-</fieldset>
-<fieldset class="holder right">
-<div class="form-title">
-<h3>
-<span>Daily Upsell</span>
-Room Level Targets
-</h3>
-</div>
-<input type="hidden" value="1" name="level_from_0" id="level_from_0">
-<input type="hidden" value="2" name="level_to_0" id="level_to_0">
-<div class="entry">
-<label for="upsell_amounts_0">
-Level 1 to 2  p/night [{{currency_code}}]
-</label>
-<input type="text" value="25.00" name="upsell-amounts" id="upsell_amounts_0">
-</div>
+			</fieldset>
+			<fieldset class="holder right">
+				<div class="form-title">
+					<h3>
+						<span>Daily Upsell</span>
+						Room Level Targets
+					</h3>
+				</div>
+				<input type="hidden" value="1" name="level_from_0" id="level_from_0">
+				<input type="hidden" value="2" name="level_to_0" id="level_to_0">
+				<div class="entry">
+					<label for="upsell_amounts_0">
+						Level 1 to 2  p/night [{{currency_code}}]
+					</label>
+					<input type="text" ng-model="upsellData.upsell_amounts[0].amount" name="upsell-amounts" id="upsell_amounts_0">
+				</div>
 
-<input type="hidden" value="1" name="level_from_1" id="level_from_1">
-<input type="hidden" value="3" name="level_to_1" id="level_to_1">
-<div class="entry">
-<label for="upsell_amounts_1">
-Level 1 to 3  p/night [{{currency_code}}]
-</label>
-<input type="text" value="50.00" name="upsell-amounts" id="upsell_amounts_1">
-</div>
+				<input type="hidden" value="1" name="level_from_1" id="level_from_1">
+				<input type="hidden" value="3" name="level_to_1" id="level_to_1">
+				<div class="entry">
+					<label for="upsell_amounts_1">
+						Level 1 to 3  p/night [{{currency_code}}]
+					</label>
+					<input type="text" ng-model="upsellData.upsell_amounts[1].amount" name="upsell-amounts" id="upsell_amounts_1">
+				</div>
 
-<input type="hidden" value="2" name="level_from_2" id="level_from_2">
-<input type="hidden" value="3" name="level_to_2" id="level_to_2">
-<div class="entry">
-<label for="upsell_amounts_2">
-Level 2 to 3  p/night [{{currency_code}}]
-</label>
-<input type="text" value="75.00" name="upsell-amounts" id="upsell_amounts_2">
-</div>
+				<input type="hidden" value="2" name="level_from_2" id="level_from_2">
+				<input type="hidden" value="3" name="level_to_2" id="level_to_2">
+				<div class="entry">
+					<label for="upsell_amounts_2">
+						Level 2 to 3  p/night [{{currency_code}}]
+					</label>
+					<input type="text" ng-model="upsellData.upsell_amounts[2].amount" name="upsell-amounts" id="upsell_amounts_2">
+				</div>
 
-<input type="hidden" value="3" name="upsell_amounts_count" id="upsell_amounts_count">
-<input type="hidden" value="3" name="total_level_count" id="total_level_count">
-<div class="entry">
-<label for="charge-code">
-Charge Code
-<strong>*</strong>
-</label>
-<div class="select">
-<select name="charge-code" id="charge-code" class="placeholder">
-<option value="">
-Charge Code
-</option>
-<option value="328">
-2510 Banquet Entertainment
-</option>
+				<input type="hidden" value="3" name="upsell_amounts_count" id="upsell_amounts_count">
+				<input type="hidden" value="3" name="total_level_count" id="total_level_count">
+				<div class="entry">
+					<label for="charge-code">
+						Charge Code
+						<strong>*</strong>
+					</label>
+					<div class="select">
+						<select name="charge-code" id="charge-code" class="placeholder">
+							<option value="">
+								Charge Code
+							</option>
+							<option value="328">
+								2510 Banquet Entertainment
+							</option>
 
-</select>
-</div>
-</div>
+						</select>
+					</div>
+				</div>
 
-</fieldset>
-<div class="entry"></div>
-<fieldset class="holder full-width">
-<div class="form-title">
-<h3>
-<span>Daily Upsell</span>
-Levels
-</h3>
-</div>
-<div id="upsell_level" class="float">
-<div class="entry has-sortable col3">
-<label>
-Level
-1
-</label>
-<ul id="level_1" data-placeholder="Drop here for Level 1" class="boxes sortable ui-sortable">
-<li value="6" name="level_id" id="level_id"><span class="icons icon-handle"></span>
-Standard Room- King Bed
-</li>
-</ul>
-</div>
-<div class="entry has-sortable col3">
-<label>
-Level
-2
-</label>
-<ul id="level_2" data-placeholder="Drop here for Level 2" class="boxes sortable ui-sortable">
-<li value="7" name="level_id" id="level_id"><span class="icons icon-handle"></span>
-Standard Room- Double Beds
-</li>
-<li value="1" name="level_id" id="level_id"><span class="icons icon-handle"></span>
-2 Bedroom Suites SEA
-</li>
-<li value="2" name="level_id" id="level_id"><span class="icons icon-handle"></span>
-Deluxe Room
-</li>
-</ul>
-</div>
-<div class="entry has-sortable col3">
-<label>
-Level
-3
-</label>
-<ul id="level_3" data-placeholder="Drop here for Level 3" class="boxes sortable ui-sortable">
-<li value="4" name="level_id" id="level_id"><span class="icons icon-handle"></span>
-Junior Suite
-</li>
-<li value="3" name="level_id" id="level_id"><span class="icons icon-handle"></span>
-Deluxe Twin
-</li>
-</ul>
-</div>
-</div>
-</fieldset>
-<div class="actions">
-<button type="button" id="cancel" class="button blank">Cancel</button>
-<button type="button" id="save" class="button green">Save changes</button>
-</div>
-</form>
-</section>
+			</fieldset>
+			<div class="entry"></div>
+			<fieldset class="holder full-width">
+				<div class="form-title">
+					<h3>
+						<span>Daily Upsell</span>
+						Levels
+					</h3>
+				</div>
+				<div id="upsell_level" class="float">
+					<div class="entry has-sortable col3">
+						<label>
+							Level
+							1
+						</label>
+						<ul id="level_1" data-placeholder="Drop here for Level 1" class="boxes sortable ui-sortable">
+							<li value="6" name="level_id" id="level_id"><span class="icons icon-handle"></span>
+								Standard Room- King Bed
+							</li>
+						</ul>
+					</div>
+					<div class="entry has-sortable col3">
+						<label>
+							Level
+							2
+						</label>
+						<ul id="level_2" data-placeholder="Drop here for Level 2" class="boxes sortable ui-sortable">
+							<li value="7" name="level_id" id="level_id"><span class="icons icon-handle"></span>
+								Standard Room- Double Beds
+							</li>
+							<li value="1" name="level_id" id="level_id"><span class="icons icon-handle"></span>
+								2 Bedroom Suites SEA
+							</li>
+							<li value="2" name="level_id" id="level_id"><span class="icons icon-handle"></span>
+								Deluxe Room
+							</li>
+						</ul>
+					</div>
+					<div class="entry has-sortable col3">
+						<label>
+							Level
+							3
+						</label>
+						<ul id="level_3" data-placeholder="Drop here for Level 3" class="boxes sortable ui-sortable">
+							<li value="4" name="level_id" id="level_id"><span class="icons icon-handle"></span>
+								Junior Suite
+							</li>
+							<li value="3" name="level_id" id="level_id"><span class="icons icon-handle"></span>
+								Deluxe Twin
+							</li>
+						</ul>
+					</div>
+				</div>
+			</fieldset>
+			<div class="actions">
+				<button type="button" id="cancel" class="button blank">Cancel</button>
+				<button type="button" id="save" class="button green">Save changes</button>
+			</div>
+		</form>
+	</section>
 </div>
 </section>
