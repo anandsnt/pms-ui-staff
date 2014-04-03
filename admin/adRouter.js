@@ -108,6 +108,13 @@ admin.config([
 			controller: 'ADRoomUpsellCtrl',
 			url : '/roomupsell'
 		});
+		
+		$stateProvider.state('admin.roomtypes', {
+			templateUrl: '/assets/partials/roomTypes/roomTypesList.html',
+			controller: 'ADRoomTypesCtrl',
+			url : '/roomtypes'
+		});
+		
 
 	}
 ]);
