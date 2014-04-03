@@ -3,6 +3,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.roomTypeData = {};
+	$scope.image = "";
    /*
     * To fetch list of departments
     */
@@ -47,6 +48,12 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		$scope.currentClickedElement = index;
 	 	var successCallbackRender = function(data){	
 	 		$scope.roomTypeData = data;
+	 		if(data.image_of_room_type == ""){
+	 			$scope.image = "/assets/preview_image.png";
+	 		} else {
+	 			$scope.image = data.image_of_room_type;
+	 		}
+	 		
 	 		$scope.$emit('hideLoader');
 	 	};
 	 	var data = {"id":id };
@@ -67,23 +74,34 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
   /*
    * To save/update department details
    */
-   $scope.saveDepartment = function(){
-    	var successCallbackSave = function(data){
-    		$scope.$emit('hideLoader');
-			if($scope.isAddMode){
-				// To add new data to scope
-    			$scope.data.departments.push(data);
-	    	} else {
-	    		//To update data with new value
-	    		$scope.data.departments[parseInt($scope.currentClickedElement)].name = $scope.departmentData.name;
-	    	}
-    		$scope.currentClickedElement = -1;
-    	};
-    	if($scope.isAddMode){
-    		$scope.invokeApi(ADDepartmentSrv.saveDepartment, $scope.departmentData , successCallbackSave);
-    	} else {
-    		$scope.invokeApi(ADDepartmentSrv.updateDepartment, $scope.departmentData , successCallbackSave);
-    	}
+   $scope.saveRoomTypes = function(){
+
+   	
+   		if($scope.image.indexOf("data:")== -1){
+			unwantedKeys = ["image_of_room_type"];
+		}
+		var data = dclone($scope.roomTypeData, unwantedKeys);
+		if($scope.image.indexOf("data:") == -1){
+			console.log("jjjjjjjjjjjjjj")
+			data.image_of_room_type = $scope.image;
+		}
+		 	console.log(data);
+    	// var successCallbackSave = function(data){
+    		// $scope.$emit('hideLoader');
+			// if($scope.isAddMode){
+				// // To add new data to scope
+    			// $scope.data.departments.push(data);
+	    	// } else {
+	    		// //To update data with new value
+	    		// $scope.data.departments[parseInt($scope.currentClickedElement)].name = $scope.departmentData.name;
+	    	// }
+    		// $scope.currentClickedElement = -1;
+    	// };
+    	// if($scope.isAddMode){
+    		// $scope.invokeApi(ADDepartmentSrv.saveDepartment, $scope.departmentData , successCallbackSave);
+    	// } else {
+    		// $scope.invokeApi(ADDepartmentSrv.updateDepartment, $scope.departmentData , successCallbackSave);
+    	// }
     };
    /*
     * To handle click event
