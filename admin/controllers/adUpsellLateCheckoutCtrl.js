@@ -25,7 +25,7 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
 
     $scope.fetchUpsellDetails();
 
-    $scope.hours = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+    $scope.hours = ["HH","01","02","03","04","05","06","07","08","09","10","11","12"];
     $scope.minutes = ["00","15","30","45"];
 
 
@@ -125,6 +125,31 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
 
 
     }, true);
+    
+     $scope.$watch('upsellData.extended_checkout_charge_0.time', function(newValue, oldValue){
+
+    	$scope.setUpLateCheckoutArray();
+
+    	if($scope.upsellData.extended_checkout_charge_0.time === "HH"){
+
+    		if($scope.upsellData.extended_checkout_charge_2){
+    			$scope.upsellData.extended_checkout_charge_2.charge = "";
+    			$scope.upsellData.extended_checkout_charge_2.time = "";
+    			$scope.chekoutchargesArray.splice(2,1);
+    		}
+
+    		if($scope.upsellData.extended_checkout_charge_1){
+    			$scope.upsellData.extended_checkout_charge_1.charge = "";
+    			$scope.upsellData.extended_checkout_charge_1.time = "";
+    			$scope.chekoutchargesArray.splice(1,1);
+    		}
+    		
+    		
+    		
+    	}
+
+
+    }, true);
 }
 $scope.startWatchingCheckoutcharge1 = function(){
 
@@ -144,6 +169,23 @@ $scope.startWatchingCheckoutcharge1 = function(){
     			$scope.chekoutchargesArray.splice(2,1);
     		}
 
+    		
+    	}
+
+
+    }, true);
+    
+     $scope.$watch('upsellData.extended_checkout_charge_1.time', function(newValue, oldValue){
+
+    	$scope.setUpLateCheckoutArray();
+
+    	if($scope.upsellData.extended_checkout_charge_1.time === "HH"){
+
+    		if($scope.upsellData.extended_checkout_charge_2){
+    			$scope.upsellData.extended_checkout_charge_2.charge = "";
+    			$scope.upsellData.extended_checkout_charge_2.time = "";
+    			$scope.chekoutchargesArray.splice(2,1);
+    		}   		
     		
     	}
 
