@@ -1,6 +1,6 @@
 admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSrv){
    /*
-    * To fetch late checkout upsell details
+    * To fetch hotel likes
     * @return {object}late checkout upsell details
     */	
 
