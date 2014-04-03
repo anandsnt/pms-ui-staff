@@ -108,6 +108,11 @@ admin.config([
 			controller: 'ADRoomUpsellCtrl',
 			url : '/roomupsell'
 		});
-
+		
+		$stateProvider.state('admin.roomKeyDelivery', {
+			templateUrl: '/assets/partials/roomKeyDelivery/roomKeyDelivery.html',
+			controller: 'ADRoomKeyDeliveryCtrl',
+			url : '/roomKeyDelivery'
+		});
 	}
 ]);

@@ -1,0 +1,26 @@
+admin.controller('ADRoomKeyDeliveryCtrl',['$state', '$scope', 'ADRoomKeyDeliverySrv', function($state, $scope, ADRoomKeyDeliverySrv){
+	
+	BaseCtrl.call(this, $scope);
+	
+	var fetchSuccess = function(data){
+		$scope.data = data;
+		$scope.$emit('hideLoader');
+		
+		console.log($scope.data);
+	};
+	
+	$scope.invokeApi(ADRoomKeyDeliverySrv.fetch, {}, fetchSuccess);
+	/*
+    * To handle save button click.
+    */
+	$scope.save = function(){
+		
+		var unwantedKeys = ["selected_key_system","key_systems"];
+		var data = dclone($scope.data, unwantedKeys);
+		console.log(data);
+		$scope.invokeApi(ADRoomKeyDeliverySrv.update, data);
+		
+	};
+	
+	
+}]);
