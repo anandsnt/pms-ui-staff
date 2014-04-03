@@ -1,6 +1,6 @@
 hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $window){
 
-	this.roomList = "";
+	this.roomList = {};
 	
 	this.initFilters = function(){
 		return {	
@@ -39,7 +39,8 @@ hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $wi
 				
 			}.bind(this))
 			.error(function(response, status) {
-			    if(status == 401){ // 401- Unauthorized
+			    if(status == 401){ 
+			    	// 401- Unauthorized
 	    			// so lets redirect to login page
 					$window.location.href = '/house/logout' ;
 	    		}else{
@@ -52,6 +53,14 @@ hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $wi
 
 	this.toggleFilter = function(item) {
 		this.currentFilters[item] = !this.currentFilters[item];
+	};
+
+	this.isListEmpty = function() {
+		if( this.roomList && this.roomList.rooms && this.roomList.rooms.length ) {
+			return false;
+		} else {
+			return true;
+		}
 	};
 
 }]);

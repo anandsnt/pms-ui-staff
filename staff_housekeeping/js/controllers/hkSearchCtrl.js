@@ -1,46 +1,55 @@
 
 hkRover.controller('HKSearchCtrl',
 	[
-		'$scope', 'HKSearchSrv', '$state', '$timeout',
-	function($scope, HKSearchSrv, $state, $timeout){
+		'$scope',
+		'HKSearchSrv',
+		'$state',
+		'$timeout',
+		'fetchedRoomList',
+	function($scope, HKSearchSrv, $state, $timeout, fetchedRoomList){
 
 	$scope.query = '';
 
 	// make sure any previous open filter is not showing
 	$scope.$emit('dismissFilterScreen');
 
-	//Fetch the roomlist
-	$scope.$emit('showLoader');
-	HKSearchSrv.fetch().then(function(data) {
-		$scope.$emit('hideLoader');
+	var afterFetch = function(data) {
         $scope.data = data;
-        for (var i = 0; i < data.rooms.length; i ++){
-			data.rooms[i].display_room = true;
-        }
 
         $scope.calculateFilters();
 
         // scroll to the previous room list scroll position
         var toPos = localStorage.getItem( 'roomListScrollTopPos' );
         $scope.refreshScroll( toPos );
+	};
 
-	}, function(){
-		console.log("fetch failed");
-		$scope.$emit('hideLoader');
-	});	
+	//Fetch the roomlist if necessary
+	if ( HKSearchSrv.isListEmpty() ) {
+		$scope.$emit('showLoader');
+		HKSearchSrv.fetch().then(function(data) {
+			$scope.$emit('hideLoader');
+			afterFetch( data );
+		}, function() {
+			console.log("fetch failed");
+			$scope.$emit('hideLoader');
+		});	
+	} else {
+		$timeout(function() {
+			afterFetch( fetchedRoomList );
+		}, 1);
+	}
 
 	$scope.currentFilters = HKSearchSrv.currentFilters;
 
 	/** The filters should be re initialized in we are navigating from dashborad to search
 	*   In back navigation (From room details to search), we would retain the filters.
 	*/
-	$scope.$on('$locationChangeStart', function(event, next, current) { 
+	$scope.$on('$locationChangeStart', function(event, next, current) {
 		var currentState = current.split('/')[next.split('/').length-1]; 
 		if(currentState == ROUTES.dashboard){
 			$scope.currentFilters = HKSearchSrv.initFilters();	
 		}
 	});
-
 
 
 	var roomsEl = document.getElementById( 'rooms' );
@@ -141,6 +150,10 @@ hkRover.controller('HKSearchCtrl',
 
 		for (var i = 0, j = $scope.data.rooms.length; i < j; i++) {
 			var room = $scope.data.rooms[i];
+
+			// lets set this so that we can avoid
+			// double looping when search page loads
+			room.display_room = true;
 
 			//Filter by status in filter section, HK_STATUS
 			if($scope.isAnyFilterTrue(['dirty','pickup','clean','inspected','out_of_order','out_of_service'])){

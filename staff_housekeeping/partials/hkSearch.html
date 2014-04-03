@@ -23,7 +23,7 @@
 <!-- Rooms list -->
 <section id="rooms" class="content scrollable">
    <ul class="wrapper">
-      <li ng-repeat="room in data.rooms" ng-show="room.display_room">
+      <li ng-repeat="room in data.rooms" ng-show="room.display_room" >
          <a ng-class="{'with-image': room.is_occupied == 'true'}" class = "{{getRoomColorClasses(room.hk_status.value, room.is_occupied, room.is_ready)}}" ng-click = "roomListItemClicked(room)">  
             <h2 class="room-number">{{ room.room_no}}</h2>
             <span class="room-status">{{ room.hk_status.description }}</span>

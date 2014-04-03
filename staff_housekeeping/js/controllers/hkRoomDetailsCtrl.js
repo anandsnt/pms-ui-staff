@@ -1,5 +1,12 @@
-hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKRoomDetailsSrv', 'roomDetailsData', 
-					function($scope, $state, $stateParams, HKRoomDetailsSrv, roomDetailsData){
+hkRover.controller('HKRoomDetailsCtrl',
+	[
+		'$scope',
+		'$state',
+		'$stateParams',
+		'HKRoomDetailsSrv',
+		'roomDetailsData',
+		'HKSearchSrv',
+		function($scope, $state, $stateParams, HKRoomDetailsSrv, roomDetailsData, HKSearchSrv) {
 	
 	$scope.initColorCodes = function(){
 		$scope.isCleanVacant = false;
