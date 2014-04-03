@@ -15,9 +15,10 @@
 	<table id="likes" class="grid">
 		<tbody>
 			<tr  ng-repeat="like in  likeList.likes">
-				<td>
+				<td ng-click="editSelected($index,chain.value)" ng-hide="currentClickedElement == $index && isEditmode">
 					{{like.name}} <em ng-show="{{like.is_system_defined === 'true'}}">(system defined)</em>
 				</td>
+				<td colspan="2" ng-include="getTemplateUrl()" ng-show="currentClickedElement == $index && isEditmode"></td>
 				<td class="activate">
 					<div class="entry">
 						<label></label>
