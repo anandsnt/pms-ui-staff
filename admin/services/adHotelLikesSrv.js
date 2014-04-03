@@ -18,22 +18,22 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
 	};
 
 
-	 // /*
-  //   * To update the upsell details
-  //   * @param {object} new upsell details
-  //   */
-	 // this.update = function(data){
-	 // 	var updateData = data;
-		// var deferred = $q.defer();
-	 // 	var url = '/admin/room_upsells/update_upsell_options';	
+	  /*
+     * To add new feature
+     * @param {object} new upsell details
+     */
+	  this.addNewFeature = function(data){
+	  	var updateData = data;
+		 var deferred = $q.defer();
+	  	var url = '/admin/hotel_likes/add_feature_type';	
 		
-	 // 	ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
-	 // 		deferred.resolve(data);
-	 // 	},function(data){
-	 // 		deferred.reject(data);
-	 // 	});
-	 // 	return deferred.promise;
-	 // };
+	  	ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
+	  		deferred.resolve(data);
+	  	},function(data){
+	  		deferred.reject(data);
+	  	});
+	  	return deferred.promise;
+	};
 
 
    }]);

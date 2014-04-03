@@ -35,7 +35,7 @@ function($scope, $state, ADHotelLikesSrv) {
 
 		//on success
 
-		$scope.likeListArray[index].is_active = ($scope.likeListArray[index].is_active ==='true') ? 'false':'true';
+		$scope.likeList.likes[index].is_active = ($scope.likeList.likes[index].is_active ==='true') ? 'false':'true';
 	}
 
 	 /*
@@ -44,19 +44,6 @@ function($scope, $state, ADHotelLikesSrv) {
  	$scope.getAddNewTemplateUrl = function(){
  		return "/assets/partials/Likes/adNewLike.html";
  	};
-
-
- 	$scope.addCancelCliked   = function(){
-
- 		$scope.isAddmode = false;
- 	}
-
- 	$scope.addSaveCliked   = function(){
-
- 		console.log($scope.likeData)
-
- 		$scope.isAddmode = false;
- 	}
  	
 
  	$scope.$watch('likeData.type',function(){
@@ -88,6 +75,30 @@ function($scope, $state, ADHotelLikesSrv) {
     
          }
     });
+
+
+    $scope.addCancelCliked   = function(){
+
+        $scope.isAddmode = false;
+    }
+
+    $scope.addSaveCliked   = function(){
+
+        console.log($scope.likeData)
+
+       
+
+        var newLikesSuccessCallback = function(data) {
+            $scope.$emit('hideLoader');
+            $scope.likeList = data;
+            $scope.isAddmode = false;
+
+        };
+        $scope.invokeApi(ADHotelLikesSrv.addNewFeature, $scope.likeData, newLikesSuccessCallback);
+        
+
+
+    }
 
 
 	
