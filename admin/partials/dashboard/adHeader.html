@@ -15,14 +15,14 @@
    <!-- For SNT ADMIN header -->
   	<ul id="admin-menu" class="float" ng-hide ="isHotelAdmin" >
 		<li>
-			<a href="/admin/hotels/new" class="icon-admin-menu icon-new-hotel ui-draggable">Add new hotel</a>
+			<a ui-sref="admin.snthoteldetails({action:'add'})" class="icon-admin-menu icon-new-hotel ui-draggable">Add new hotel</a>
 		</li>
 		<li>
-			<a href="#" class="icon-admin-menu icon-clone-hotel ui-draggable">Clone hotel</a>
+			<a class="icon-admin-menu icon-clone-hotel ui-draggable">Clone hotel</a>
 		</li>
 	</ul>
    
    <!-- Quick navigation -->
-   <nav id="quick-menu" class="active" role="navigation"></nav>
+   <nav id="quick-menu" class="active" role="navigation"></nav>	
    
 </div>
