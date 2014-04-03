@@ -35,5 +35,22 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
 	  	return deferred.promise;
 	};
 
+	  /*
+     * To handle switch toggle
+     * @param {object} new upsell details
+     */
+	  this.toggleSwitch = function(data){
+	  	var updateData = data;
+		 var deferred = $q.defer();
+	  	var url = '/admin/hotel_likes/activate_feature';	
+		
+	  	ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
+	  		deferred.resolve(data);
+	  	},function(data){
+	  		deferred.reject(data);
+	  	});
+	  	return deferred.promise;
+	};
+
 
    }]);

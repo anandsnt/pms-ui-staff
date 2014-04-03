@@ -34,8 +34,17 @@ function($scope, $state, ADHotelLikesSrv) {
 	$scope.switchClicked = function(index){
 
 		//on success
+         var toggleSwitchLikesSuccessCallback = function(data) {
+            $scope.$emit('hideLoader');
+            $scope.fetchHotelLikes();
+           
+        };
+         $scope.likeList.likes[index].is_active = ($scope.likeList.likes[index].is_active ==='true') ? 'false':'true';
+        var data = {'id' : $scope.likeList.likes[index].id,'set_active' : $scope.likeList.likes[index].is_active}
+        $scope.invokeApi(ADHotelLikesSrv.toggleSwitch,data, toggleSwitchLikesSuccessCallback);
 
-		$scope.likeList.likes[index].is_active = ($scope.likeList.likes[index].is_active ==='true') ? 'false':'true';
+
+		
 	}
 
 	 /*
@@ -92,6 +101,7 @@ function($scope, $state, ADHotelLikesSrv) {
             $scope.$emit('hideLoader');
             $scope.likeList = data;
             $scope.isAddmode = false;
+            $scope.fetchHotelLikes();
 
         };
         $scope.invokeApi(ADHotelLikesSrv.addNewFeature, $scope.likeData, newLikesSuccessCallback);
