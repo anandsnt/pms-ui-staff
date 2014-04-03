@@ -82,15 +82,17 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
     $scope.startWatching = function(){
 
     	$scope.$watch('upsellData', function(newValue, oldValue){
+  		
+            if(!$scope.upsellData.extended_checkout_charge_0) 
+                $scope.upsellData.extended_checkout_charge_0 = { 'time':'HH','charge':''};
+            if(!$scope.upsellData.extended_checkout_charge_1)
+                $scope.upsellData.extended_checkout_charge_1 = { 'time':'HH','charge':''};
+            if(!$scope.upsellData.extended_checkout_charge_2)
+                 $scope.upsellData.extended_checkout_charge_2 = { 'time':'HH','charge':''};
 
-
-    		if($scope.upsellData.extended_checkout_charge_0)
-    			$scope.startWatchingCheckoutcharge0();
-    		 if($scope.upsellData.extended_checkout_charge_1)
-    			$scope.startWatchingCheckoutcharge1();  
-
-    			
-
+                $scope.startWatchingCheckoutcharge0();
+             
+                $scope.startWatchingCheckoutcharge1();
     	});
     }
 
@@ -101,55 +103,36 @@ admin.controller('ADUpsellLateCheckoutCtrl',['$scope','$rootScope','$state','adU
     *
     */ 
 
-    $scope.$watch('upsellData.extended_checkout_charge_0.charge', function(newValue, oldValue){
+    $scope.$watch('upsellData.extended_checkout_charge_0', function(newValue, oldValue){
 
     	$scope.setUpLateCheckoutArray();
 
-    	if($scope.upsellData.extended_checkout_charge_0.charge.length ===0){
+    	if($scope.upsellData.extended_checkout_charge_0.charge.length ===0 || $scope.upsellData.extended_checkout_charge_0.time === "HH"){
 
     		if($scope.upsellData.extended_checkout_charge_2){
     			$scope.upsellData.extended_checkout_charge_2.charge = "";
-    			$scope.upsellData.extended_checkout_charge_2.time = "";
+    			$scope.upsellData.extended_checkout_charge_2.time = "HH";
     			$scope.chekoutchargesArray.splice(2,1);
     		}
 
     		if($scope.upsellData.extended_checkout_charge_1){
     			$scope.upsellData.extended_checkout_charge_1.charge = "";
-    			$scope.upsellData.extended_checkout_charge_1.time = "";
+    			$scope.upsellData.extended_checkout_charge_1.time = "HH";
     			$scope.chekoutchargesArray.splice(1,1);
     		}
     		
-    		
+    		$scope.disableThirdOption = true;
+            $scope.disableSecondOption = true;
     		
     	}
+        else if($scope.upsellData.extended_checkout_charge_0.charge.length > 0 && $scope.upsellData.extended_checkout_charge_0.time != "HH")
+            $scope.disableSecondOption = false;
+        
 
 
     }, true);
     
-     $scope.$watch('upsellData.extended_checkout_charge_0.time', function(newValue, oldValue){
-
-    	$scope.setUpLateCheckoutArray();
-
-    	if($scope.upsellData.extended_checkout_charge_0.time === "HH"){
-
-    		if($scope.upsellData.extended_checkout_charge_2){
-    			$scope.upsellData.extended_checkout_charge_2.charge = "";
-    			$scope.upsellData.extended_checkout_charge_2.time = "";
-    			$scope.chekoutchargesArray.splice(2,1);
-    		}
-
-    		if($scope.upsellData.extended_checkout_charge_1){
-    			$scope.upsellData.extended_checkout_charge_1.charge = "";
-    			$scope.upsellData.extended_checkout_charge_1.time = "";
-    			$scope.chekoutchargesArray.splice(1,1);
-    		}
-    		
-    		
-    		
-    	}
-
-
-    }, true);
+   
 }
 $scope.startWatchingCheckoutcharge1 = function(){
 
@@ -159,38 +142,25 @@ $scope.startWatchingCheckoutcharge1 = function(){
     */ 
     $scope.setUpLateCheckoutArray();
 
-    $scope.$watch('upsellData.extended_checkout_charge_1.charge', function(newValue, oldValue){
+    $scope.$watch('upsellData.extended_checkout_charge_1', function(newValue, oldValue){
 
-    	if($scope.upsellData.extended_checkout_charge_1.charge.length ===0){
+    	if($scope.upsellData.extended_checkout_charge_1.charge.length ===0 || $scope.upsellData.extended_checkout_charge_1.time === "HH"){
     		
     		if($scope.upsellData.extended_checkout_charge_2){
     			$scope.upsellData.extended_checkout_charge_2.charge = "";
-    			$scope.upsellData.extended_checkout_charge_2.time = "";
+    			$scope.upsellData.extended_checkout_charge_2.time = "HH";
     			$scope.chekoutchargesArray.splice(2,1);
     		}
+            $scope.disableThirdOption = true;
 
     		
     	}
+        else if($scope.upsellData.extended_checkout_charge_1.charge.length > 0 && $scope.upsellData.extended_checkout_charge_1.time != "HH")
+            $scope.disableThirdOption = false;       
 
 
     }, true);
     
-     $scope.$watch('upsellData.extended_checkout_charge_1.time', function(newValue, oldValue){
-
-    	$scope.setUpLateCheckoutArray();
-
-    	if($scope.upsellData.extended_checkout_charge_1.time === "HH"){
-
-    		if($scope.upsellData.extended_checkout_charge_2){
-    			$scope.upsellData.extended_checkout_charge_2.charge = "";
-    			$scope.upsellData.extended_checkout_charge_2.time = "";
-    			$scope.chekoutchargesArray.splice(2,1);
-    		}   		
-    		
-    	}
-
-
-    }, true);
 };
 
 
