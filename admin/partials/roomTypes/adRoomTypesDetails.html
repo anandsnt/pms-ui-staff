@@ -1,15 +1,17 @@
 <div class="data-holder">
 	<form room_type_id="1" id="edit-room-type" class="form inline-form float">
 		<div class="form-title">
-			<h3><span>Edit</span> {{roomTypeData.room_type_name}} </h3>
+			<h3><span>Edit</span> ffggf {{roomTypeData.room_type_name}} </h3>
 			<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 		</div>
 		<fieldset class="holder left float">
-			<div class="entry full-width">
+			
+			<ad-textbox styleclass="full-width" value="roomTypeData.room_type_name" name = "room-type-name" id = "room-type-name" label = "Room Type Name" placeholder = "Enter Room Type" required = "yes" ></ad-textbox>
+			
+			<!-- <div class="entry full-width">
 				<label for="room-type-name"> Name <strong>*</strong> </label>
 				<input type="text" value="2 Bedroom Suites SEA" required="yes" placeholder="Enter room type name" name="room-type-name" id="room-type-name">
-			</div>
-
+			</div> -->
 			<div class="entry full-width">
 				<label for="room-type-description"> StayNTouch Description </label>
 				<textarea value="Two Bedroom Suite with Pool View" type="" rows="4" required="no" placeholder="Enter StayNTouch Description" name="room-type-description" id="room-type-description" class="full-width">Two Bedroom Suite with Pool View</textarea>
