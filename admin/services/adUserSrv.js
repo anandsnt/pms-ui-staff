@@ -141,6 +141,11 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		return deferred.promise;
 		
 	};
+   /**
+    * To send invitation mail
+    * @param {object} data - user id
+    * @return {object}  status
+    */
 	this.sendInvitation = function(data){
 		var deferred = $q.defer();
 		var url = '/admin/user/send_invitation';

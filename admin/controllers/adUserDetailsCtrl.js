@@ -144,6 +144,10 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 		$scope.mod = "edit";
 		$scope.userDetailsEdit(id);
 	}
+   /*
+    * Function to send invitation
+    * @param {int} user id
+    */
 	$scope.sendInvitation = function(userId){
 		var data = {"id": userId};
 	 	$scope.invokeApi(ADUserSrv.sendInvitation,  data);	
