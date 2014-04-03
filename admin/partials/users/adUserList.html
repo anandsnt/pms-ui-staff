@@ -7,45 +7,28 @@
 				<span class="count">({{data.users.length}})</span>
 				<a id="add_new_user" class="action add" ui-sref="admin.userdetails({ page: 'add', id: '' })">Add New</a>
 				<a id="find_existing_user" class="action link" ng-show="isAdminSnt" ui-sref="admin.linkexisting({id:hotel_id})" >Link Existing</a>
-				<a id="go_back" data-type="load-details" class="action back" ng-show="isAdminSnt" ui-sref="admin.hoteldetails({action:'edit',id:hotel_id})">Back</a>
+				<a id="go_back" data-type="load-details" class="action back" ng-show="isAdminSnt" ui-sref="admin.snthoteldetails({action:'edit',id:hotel_id})">Back</a>
 			</header>
-			<div id="notification-message"></div>
-			<table id="users_list_table" class="grid datatable">
-				<thead>
-					<tr role="row">
-						<th width="25%" class="sorting"> Name </th>
-						<th width="25%" class="sorting"> Email </th>
-						<th width="" class="sorting"> Department </th>
-						<th width="" class="sorting"> Last login </th>
-						<th width="" class="activate"> Active </th>
-						<th width="" class="delete"> Delete </th>
-					</tr>
-				</thead>
-
-				<tbody>
-					<tr id="user_row_2" ng-repeat="user in data.users">
-						<td><a ui-sref="admin.userdetails({ page: 'edit', id: user.id})"  class="title">{{user.full_name}} </a></td>
-						<td> {{user.email}}  </td>
-						<td>{{user.department}}</td>
-						<td><span class="login">{{user.last_login}} </span></td>
-						<td user="2" id="activate-inactivate-button_2" class="activate activate-inactivate-button">
-							<div class="entry">
-								<label for=""></label>
-								<div class="switch-button single" ng-class="{ on : user.is_active == 'true' }" ng-click="activateInactivate(user.id, user.is_active, $index)">
-								<input type="checkbox" value="" name="" id="">
-								<span class="switch-icon"></span>
-								
-								</div>
-								</div>
-							
-						</td>
-						<td class="delete">
-							<a id="165" class="icons icon-delete large-icon" ng-click="deleteUser(user.id)">Delete this user</a>							
-						</td>
-					</tr>
-					
-
-				</tbody>
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<table id="users_list_table" class="grid datatable table" ng-table="tableParams">
+				<tr ng-repeat="user in $data">
+					<td  data-title="'Name'" sortable="'full_name'"><a ui-sref="admin.userdetails({ page: 'edit', id: user.id})"  class="title">{{user.full_name}} </a></td>
+					<td data-title="'Email'" sortable="'email'"> {{user.email}}  </td>
+					<td data-title="'Department'" sortable="'department'">{{user.department}}</td>
+					<td data-title="'Last Login'" sortable="'last_login'"><span class="login">{{user.last_login}} </span></td>
+					<td data-title="'Active'" user="2" id="activate-inactivate-button_2"  class="activate activate-inactivate-button">
+						<div class="entry" ng-show="user.can_delete">
+							<label for=""></label>
+							<div class="switch-button single" ng-class="{ on : user.is_active == 'true' }" ng-click="activateInactivate(user.id, user.is_active, $index)">
+							<input type="checkbox" value="" name="" id="">
+							<span class="switch-icon"></span>
+							</div>
+							</div>
+					</td>
+					<td data-title="'Delete'" class="delete" >
+						<a id="165" ng-show="user.can_delete" class="icons icon-delete large-icon" ng-click="deleteUser($index, user.id)">Delete this user</a>							
+					</td>
+				</tr>
 			</table>
 		</section>
 	</div>

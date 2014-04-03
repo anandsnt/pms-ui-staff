@@ -1,4 +1,6 @@
-var admin = angular.module('admin',['ui.router', 'ng-iscroll']);
+
+var admin = angular.module('admin',['ui.router', 'ng-iscroll','ngDragDrop','ngTable']);
+
 
 admin.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {
 	
@@ -72,6 +74,7 @@ admin.controller('rootController', ['$rootScope','$scope','$attrs','$location', 
 
 	//store basic details as rootscope variables
 	$rootScope.adminRole = $attrs.adminRole;
+	$rootScope.hotelId = $attrs.hotelId;
 
 }]);
 

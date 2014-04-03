@@ -6,34 +6,43 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	
-	//To add new hotel view
-	if($stateParams.action == "add"){
-		$scope.title = "Add Hotel";
-		
-		var fetchSuccess = function(data){
-			$scope.data = data;
-			$scope.$emit('hideLoader');
-		};
-		
-		$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess);
-	}
-	// To edit existing hotel view
-	else if($stateParams.action == "edit"){
-		$scope.isEdit = true;
-		$scope.title = "Edit Hotel";
-		
-		var fetchSuccess = function(data){
-			$scope.data = data;
-			$scope.$emit('hideLoader');
-		};
-		
-		$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess);
-	}
-	// To set flag for SNT admin
 	if($rootScope.adminRole == "snt-admin"){
 		$scope.isAdminSnt = true;
-	}
+		// SNT Admin -To add new hotel view
+		if($stateParams.action == "add"){
+			$scope.title = "Add Hotel";
+			
+			var fetchSuccess = function(data){
+				$scope.data = data;
+				$scope.$emit('hideLoader');
+			};
+			
+			$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess);
+		}
+		// SNT Admin -To edit existing hotel view
+		else if($stateParams.action == "edit"){
+			$scope.isEdit = true;
+			$scope.title = "Edit Hotel";
+			
+			var fetchSuccess = function(data){
+				$scope.data = data;
+				$scope.$emit('hideLoader');
+			};
+			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess);
+		}
 	
+	}
+	else if($rootScope.adminRole == "hotel-admin"){
+		// Hotel Admin -To Edit current hotel view
+		$scope.isEdit = true;
+		$scope.title = "Edit Hotel";
+		var fetchSuccess = function(data){
+			$scope.data = data;
+			$scope.$emit('hideLoader');
+			$scope.hotelLogoPrefetched = data.hotel_logo;
+		};
+		$scope.invokeApi(ADHotelDetailsSrv.hotelAdminfetchEditData, {}, fetchSuccess);
+	}
 	/**
     *   A post method for Test MliConnectivity for a hotel
     */
@@ -52,12 +61,23 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
     *   A post method for Add New and UPDATE Existing hotel details.
     */
 	$scope.clickedSave = function(){
-		
-		var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo"];
-		var data = dclone($scope.data, unwantedKeys);
-		
-		if($scope.isEdit) $scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data);
-		else $scope.invokeApi(ADHotelDetailsSrv.addNewHotelDeatils, data);
+		// SNT Admin - To save Add/Edit data
+		if($scope.isAdminSnt){
+			var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo"];
+			var data = dclone($scope.data, unwantedKeys);
+			
+			if($scope.isEdit) $scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data);
+			else $scope.invokeApi(ADHotelDetailsSrv.addNewHotelDeatils, data);
+		}
+		// Hotel Admin -To save Edit data
+		else{
+			var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","hotel_pms_type","is_pms_tokenized","signature_display","hotel_list","menus","mli_hotel_code","mli_chain_code","mli_access_url"];
+			var data = dclone($scope.data, unwantedKeys);
+			if($scope.hotelLogoPrefetched == data.hotel_logo){ 
+				data.hotel_logo = "";
+			}
+			$scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data);
+		}
 	};
 	
 	/**
@@ -66,5 +86,12 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.toggleClicked = function(){
 		$scope.data.is_pms_tokenized = ($scope.data.is_pms_tokenized == 'true') ? 'false' : 'true';
 	};
-
+	/**
+    *   Method to go back to previous state.
+    */
+	$scope.back = function(){
+		if($scope.isAdminSnt) $state.go("admin.hotels");
+		else $state.go('admin.dashboard', {menu: 0});
+	};
+	
 }]);

@@ -1,7 +1,5 @@
 admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
 	
-	var _this = this;
-	_this.userList = "";
    /**
     * To fetch the list of users
     * @return {object} users list json
@@ -61,7 +59,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 	this.updateUserDetails = function(data){
 		
 		var deferred = $q.defer();
-		var url = 'admin/users/'+data.user_id;
+		var url = '/admin/users/'+data.user_id;
 
 		ADBaseWebSrv.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
@@ -79,7 +77,7 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 	this.saveUserDetails = function(data){
 		
 		var deferred = $q.defer();
-		var url = 'admin/users';
+		var url = '/admin/users';
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
@@ -142,5 +140,16 @@ admin.service('ADUserSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, AD
 		});	
 		return deferred.promise;
 		
+	};
+	this.sendInvitation = function(data){
+		var deferred = $q.defer();
+		var url = '/admin/user/send_invitation';
+
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
 	};
 }]);

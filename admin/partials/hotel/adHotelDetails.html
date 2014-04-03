@@ -1,7 +1,7 @@
 <div id="wrapper" class="content current" ng-click="clearErrorMessage()" >
 	<header class="content-title float">
 		<h2>{{title}}</h2>
-		<a ui-sref="admin.hotels" class="action back">Back</a>
+		<a ng-click ="back()" class="action back">Back</a>
 	</header>
 	<form class="form float" >
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div> 
@@ -58,15 +58,15 @@
 
 			<div class="entry full-width registration-for-rover" ng-hide="isAdminSnt">
 				<label for="rover"> Rover Registration </label>
-				<div ng-model="data.required_signature_at" id="registration-for-rover" class="boxes">
+				<div  id="registration-for-rover" class="boxes">
 					<label class="radio" ng-class="{checked: data.required_signature_at == 'CHECKIN'}"> <span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'CHECKIN'}"></span>
-						<input type="radio" value="CHECKIN" name="rover" id="type1" class="change-data" checked="checked">
+						<input ng-model="data.required_signature_at" type="radio" value="CHECKIN" name="rover" id="type1" class="change-data" checked="checked">
 						Require Signature at Check In </label>
 					<label class="radio" ng-class="{checked: data.required_signature_at == 'CHECKOUT'}"> <span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'CHECKOUT'}"></span>
-						<input type="radio" value="CHECKOUT" name="rover" id="type2" class="change-data">
+						<input ng-model="data.required_signature_at" type="radio" value="CHECKOUT" name="rover" id="type2" class="change-data">
 						Require Signature at Check Out </label>
 					<label class="radio" ng-class="{checked: data.required_signature_at == 'NO_SIGNATURE'}"> <span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'NO_SIGNATURE'}"></span>
-						<input type="radio" value="NO_SIGNATURE" name="rover" id="type3" class="change-data">
+						<input ng-model="data.required_signature_at"type="radio" value="NO_SIGNATURE" name="rover" id="type3" class="change-data">
 						No Signature Required </label>
 				</div>
 			</div>
@@ -202,13 +202,12 @@
 				<label for="hotel-logo"> Hotel Logo Image </label>
 				<div class="file-upload with-preview">
 					<span class="input">Choose file ...</span>
-					<input type="file" name="hotel-logo" id="hotel-logo">
 					<input type="file" ng-model="data.hotel_logo" accept="image/*" app-filereader />
 					<button type="button" class="button brand-colors">
 						Choose file
 					</button>
 				</div>
-				<span class="file-preview"> <img src="{{data.hotel_logo}}" id="hotel-logo-preview" alt="" height="112" width="auto"> </span>
+				<span class="file-preview"> <img src="{{data.hotel_logo}}" alt="" height="112" width="auto"> </span>
 			</div>
 			
 		</fieldset>
@@ -280,13 +279,13 @@
 		</fieldset>
 
 		<div class="actions float">
-			<button type="button" ui-sref="admin.hotels" class="button blank">
+			<button type="button" ng-click ="back()" class="button blank">
 				Cancel
 			</button>
 			<button type="button" ng-click="clickedSave()" class="button green">
 				Save Changes
 			</button>
-			<button type="button" ui-sref="admin.mapping({id:id})"  ng-show="isAdminSnt && isEdit" class="button green">
+			<button type="button" ui-sref="admin.mapping({hotelId:id})"  ng-show="isAdminSnt && isEdit" class="button green">
 				Mappings
 			</button>
 			<button type="button" ui-sref="admin.users({id:id})" ng-show="isAdminSnt && isEdit" class="button green">

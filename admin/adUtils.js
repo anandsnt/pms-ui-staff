@@ -12,7 +12,6 @@ var dclone = function(object, unwanted_keys){
 };
 
 
-
 /*
 * Currency mappings
 */
@@ -71,4 +70,5 @@ var CurrencyInfoMappings = {
 var getCurrencySign = function(currencyCode) {
   return CurrencyInfoMappings[currencyCode][1];
 };
+
 

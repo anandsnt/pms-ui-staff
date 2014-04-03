@@ -10,7 +10,6 @@
       <ul class="dashboard-items float">
 
          <li ng-repeat="submenu in selectedMenu.components">
-
             <a data-type="load-listing" class="icon-admin-menu {{submenu.icon_class}}" ui-sref={{submenu.state}}>{{submenu.name}}</a>
             <a class="text" data-type="load-listing" href="{{submenu.action_path}}" ui-sref={{submenu.state}}>{{submenu.name}}</a>
          </li>

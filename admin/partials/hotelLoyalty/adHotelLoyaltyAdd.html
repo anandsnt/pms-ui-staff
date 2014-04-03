@@ -1,0 +1,38 @@
+
+	<!-- Add new Hotel Loyalty Program -->
+	<div style="display: block;" id="add-new" class="edit-data">
+		<div class="data-holder">
+			<form id="add-loyalty" class="form inline-form float">
+				<div class="form-title">
+					<h3><span>Add new</span> Hotel Loyalty Program </h3>
+					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+				</div>
+				<fieldset class="holder left float">
+					<ad-textbox inputtype="text" value="hotelLoyaltyData.name" 
+						label = "Name" placeholder = "Enter program name"  
+						styleclass="full-width" required="yes"></ad-textbox>
+					<ad-textbox inputtype="text" value="hotelLoyaltyData.code" 
+						label = "Code" placeholder = "Enter program code"  
+						styleclass="full-width" required="yes"></ad-textbox>
+				</fieldset>
+				<fieldset class="holder right float">
+					<div class="entry full-width">
+						<label for="loyalty-option1"> Levels </label>
+						<div class="entry" ng-repeat="level in hotelLoyaltyData.levels">
+							<input type="text"  placeholder="Add new option" name="lov" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="select" class="add-new-option"
+							ng-model="level.name" >
+							<input type="text" ng-model="level.value" ng-hide="true">
+						</div>
+					</div>
+				</fieldset>
+				<div class="actions float">
+					<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()">
+						Cancel
+					</button>
+					<button type="button" id="save" class="button green" ng-click="saveHotelLoyalty()">
+						Save changes
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
