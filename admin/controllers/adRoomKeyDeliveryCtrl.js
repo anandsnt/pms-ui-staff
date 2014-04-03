@@ -14,6 +14,7 @@ admin.controller('ADRoomKeyDeliveryCtrl',['$state', '$scope', 'ADRoomKeyDelivery
 	$scope.save = function(){
 		var unwantedKeys = ["selected_key_system","key_systems"];
 		var data = dclone($scope.data, unwantedKeys);
+		data.key_system_id = $scope.data.selected_key_system;
 		$scope.invokeApi(ADRoomKeyDeliverySrv.update, data);
 	};
 	
