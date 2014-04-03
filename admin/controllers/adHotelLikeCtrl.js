@@ -27,6 +27,9 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
    * To render add screen
    */
    $scope.addNew = function(){
+
+      $scope.likeTitle  ="Add New";
+      $scope.likeSubtitle ="Like category";
       $scope.likeData   = {};
       $scope.likeData.type = "textbox"
       $scope.likeData.options =[{'name':''}];
@@ -77,7 +80,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
    */
    $scope.editSelected = function(index,id,rowName)    {
 
-
+      
       $scope.currentClickedElement = index;
     //   if(rowName === "ROOM FEATURE"){
 
@@ -127,6 +130,8 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
         $scope.$emit('hideLoader');
         $scope.likeData = data;
         $scope.isEditmode = true;
+        $scope.likeTitle  ="Edit";
+        $scope.likeSubtitle =$scope.likeData.name;
     };      
     $scope.invokeApi(ADHotelLikesSrv.edit,editID,editLikeSuccessCallback);
 }
@@ -242,7 +247,7 @@ $scope.$watch('likeData.type',function(){
             $scope.fetchHotelLikes();
 
         };
-        $scope.invokeApi(ADHotelLikesSrv.addNewFeature, $scope.likeData, newLikesSuccessCallback);
+        $scope.invokeApi(ADHotelLikesSrv.addEditNewFeature, $scope.likeData, newLikesSuccessCallback);
         
 
 
