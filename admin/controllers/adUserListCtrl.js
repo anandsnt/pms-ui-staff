@@ -1,4 +1,4 @@
-admin.controller('ADUserListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADUserSrv',  function($scope, $rootScope, $state, $stateParams, ADUserSrv){
+admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$stateParams', 'ADUserSrv', 'ngTableParams','$filter',  function($scope, $rootScope, $q, $state, $stateParams, ADUserSrv, ngTableParams, $filter){
 	BaseCtrl.call(this, $scope);
 	$scope.hotel_id = $stateParams.id;
 	$scope.isAdminSnt = false;
@@ -15,9 +15,29 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$state','$stateParams
 		var successCallbackFetch = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data;
+			
+		    // REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
+		    $scope.tableParams = new ngTableParams({
+		        page: 1,            // show first page
+		        count: $scope.data.users.length,    // count per page - Need to change when on pagination implemntation
+		        sorting: {
+		            name: 'asc'     // initial sorting
+		        }
+		    }, {
+		        total: $scope.data.users.length, // length of data
+		        getData: function($defer, params) {
+		            // use build-in angular filter
+		            var orderedData = params.sorting() ?
+		                                $filter('orderBy')($scope.data.users, params.orderBy()) :
+		                                $scope.data.users;
+		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+		        }
+		    });
+			
 		};
 		$scope.invokeApi(ADUserSrv.fetch, {} , successCallbackFetch);	
 	};
+	
    /**
     * Invoking function to list users
     */
@@ -42,13 +62,18 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$state','$stateParams
 	};	
    /**
     * To delete user
+    * @param {int} index of the selected user
     * @param {string} user id 
     */ 
-	$scope.deleteUser = function(userId){
+	$scope.deleteUser = function(index, userId){
 		var data = {
 			"id": userId
 		};
-		$scope.invokeApi(ADUserSrv.deleteUser, data );
+		var successDelete = function(){
+			$scope.$emit('hideLoader');
+			$scope.data.users.splice(index, 1);
+		};
+		$scope.invokeApi(ADUserSrv.deleteUser, data, successDelete );
 	};	
 	/**
     * Handle back action

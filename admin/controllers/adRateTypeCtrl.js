@@ -8,11 +8,8 @@ function($scope, $rootScope, ADRateTypeSrv) {
 		$scope.$emit('hideLoader');
 	};
 	
-	var fetchFailed = function(){
-		console.log("fetchFailed");
-		$scope.$emit('hideLoader');
-	};
+
 	
-	$scope.invokeApi(ADRateTypeSrv.fetch, {}, fetchSuccess, fetchFailed);
+	$scope.invokeApi(ADRateTypeSrv.fetch, {}, fetchSuccess);
 		
 }]); 

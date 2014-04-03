@@ -14,7 +14,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', function($http
 		return deferred.promise;
 	};	
 	/**
-    *   An getter method to edit deatils for an existing hotel.
+    *   An getter method to edit deatils for an existing hotel for SNT Admin
     *   @param {Object} data - deatils of the hotel with hotel id.
     */
 	this.fetchEditData = function(data){
@@ -28,6 +28,21 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', function($http
 		});	
 		return deferred.promise;
 	};	
+	/**
+    *   An getter method to edit deatils for an existing hotel for Hotel Admin
+    *   @param {Object} data - deatils of the hotel with hotel id.
+    */
+	this.hotelAdminfetchEditData = function(data){
+		var deferred = $q.defer();
+		var url = '/admin/hotels/edit.json';
+		
+		ADBaseWebSrv.getJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
 	/**
     *   An post method to add deatils of a new hotel.
     *   @param {Object} data - deatils of the hotel.

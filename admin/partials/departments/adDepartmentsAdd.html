@@ -1,6 +1,6 @@
 
-	<div style="display: block;" id="add-new" class="edit-data">
-		<div class="data-holder">
+	<div style="display: block;" id="add-new" class="edit-data" >
+		<div class="data-holder"> 
 			<!-- Edit Department -->
 			<form class="form inline-form float">
 				<div class="form-title">
@@ -8,22 +8,18 @@
 					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 				</div>
 				<fieldset class="holder left float">
-					<div class="entry">
-						<label for="department-name"> Name <strong>*</strong> </label>
-						<input type="text" value="" required="yes" placeholder="Enter department" name="department-name" id="department-name">
-					</div>
-
+					<ad-textbox inputtype="text" value="departmentData.name" 
+						label = "Name" placeholder = "Enter Department"  
+						styleclass="full-width"></ad-textbox>
 				</fieldset>
-
 				<div class="actions float">
 					<button type="button" id="cancel" class="button blank edit-data-inline" ng-click="clickCancel()">
 						Cancel
 					</button>
-					<button type="button" id="save" class="button green edit-data-inline">
+					<button type="button" id="save" class="button green edit-data-inline" ng-click="saveDepartment()">
 						Save changes
 					</button>
 				</div>
-
 			</form>
 		</div>
 	</div>
