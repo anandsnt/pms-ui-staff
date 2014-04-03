@@ -59,14 +59,6 @@ function($scope, $state, ADHotelLikesSrv) {
  	};
 
      /*
-    * To fetch the template for chains details add/edit screens
-    */
-    $scope.getEditTemplateUrl = function(){
-        return "/assets/partials/Likes/adNewLike.html";
-    };
-
-
-     /*
    * To render edit screen
    * @param {int} index index of selected chain
    * @paran {string} id - chain id
@@ -76,17 +68,20 @@ function($scope, $state, ADHotelLikesSrv) {
         $scope.isEditmode = true;
         // $scope.isAddmode = false;
          $scope.currentClickedElement = index;
-        // $scope.editId = id;
-        // var editID = { 'editID' : id };
-        // var editChainSuccessCallback = function(data) {
-        //     $scope.$emit('hideLoader');
-        //     // $scope.editData   = data;
-        //     // $scope.formTitle = 'Edit'+' '+$scope.editData.name;
-        //     // if($scope.editData.lov.length === 0)
-        //     //     $scope.editData.lov.push({'value':'','name':''});
-        //     $scope.isEditmode = true;
-        // };      
-        // $scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback);
+        $scope.editId = id;
+        var editID = { 'editID' : id };
+        var editChainSuccessCallback = function(data) {
+            $scope.$emit('hideLoader');
+            // $scope.editData   = data;
+            // $scope.formTitle = 'Edit'+' '+$scope.editData.name;
+            // if($scope.editData.lov.length === 0)
+            //     $scope.editData.lov.push({'value':'','name':''});
+            console.log(data);
+            $scope.likeData = data;
+
+            $scope.isEditmode = true;
+        };      
+        $scope.invokeApi(ADHotelLikesSrv.edit,editID,editChainSuccessCallback);
     };
  	
 
