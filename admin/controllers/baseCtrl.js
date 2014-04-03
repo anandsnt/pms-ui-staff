@@ -13,10 +13,8 @@ function BaseCtrl($scope){
 	};
 
 	$scope.fetchedFailed = function(errorMessage){
-		
 		$scope.$emit('hideLoader');
-		if($scope.hasOwnProperty("errorMessage")){ 
-			console.log(errorMessage);
+		if($scope.hasOwnProperty("errorMessage")){ 	
 			$scope.errorMessage = errorMessage;
 		}
 		else {
