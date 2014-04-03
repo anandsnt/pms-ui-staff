@@ -7,7 +7,7 @@
 				<span class="count">({{data.mapping.length}})</span>
 
 				<a ng-click="addNew()" ng-show="addFormView" class="action add" >Add new</a>
-				<a class="action back">Back</a>
+				<a class="action back" ui-sref="admin.snthoteldetails({action:'edit',id: hotelId})">Back</a>
 				
 				<div class="filters">
 					<div class="filter hidden"></div>
