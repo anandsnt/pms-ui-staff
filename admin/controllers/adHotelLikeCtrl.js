@@ -1,92 +1,182 @@
 admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
-function($scope, $state, ADHotelLikesSrv) {
+    function($scope, $state, ADHotelLikesSrv) {
 
-	BaseCtrl.call(this, $scope);
-	$scope.likeList = {};
-    $scope.likeData   = {};
-    $scope.likeData.type = "textbox"
+       BaseCtrl.call(this, $scope);
+       $scope.likeList = {};
+       $scope.likeData   = {};
+       $scope.likeData.type = "textbox"
+       $scope.isAddmode = false;
+       $scope.isEditmode = false;
+       $scope.currentClickedElement = -1;
 
 		/**
 	 * To fetch upsell details
 	 *
 	 */
-	$scope.fetchHotelLikes = function() {
-		var fetchHotelLikesSuccessCallback = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.likeList = data;
-   		};
-		$scope.invokeApi(ADHotelLikesSrv.fetch, {}, fetchHotelLikesSuccessCallback);
-	};
+    $scope.fetchHotelLikes = function() {
+      var fetchHotelLikesSuccessCallback = function(data) {
+         $scope.$emit('hideLoader');
+         $scope.likeList = data;
+     };
+     $scope.invokeApi(ADHotelLikesSrv.fetch, {}, fetchHotelLikesSuccessCallback);
+ };
 
-	$scope.fetchHotelLikes();
+ $scope.fetchHotelLikes();
 
 	/*
    * To render add screen
    */
-	$scope.addNew = function(){
-		$scope.likeData   = {};
-        $scope.likeData.type = "textbox"
-        $scope.likeData.options =[{'name':''}];
-		$scope.isAddmode = true;
-	};
+   $scope.addNew = function(){
+
+      $scope.likeTitle  ="Add New";
+      $scope.likeSubtitle ="Like category";
+      $scope.likeData   = {};
+      $scope.likeData.type = "textbox"
+      $scope.likeData.options =[{'name':''}];
+      $scope.isAddmode = true;
+  };
 	 /*
     * To handle switch
     */
-	$scope.switchClicked = function(index){
+    $scope.switchClicked = function(index){
 
 		//on success
-         var toggleSwitchLikesSuccessCallback = function(data) {
-            $scope.$emit('hideLoader');
-            $scope.fetchHotelLikes();
-           
-        };
-         $scope.likeList.likes[index].is_active = ($scope.likeList.likes[index].is_active ==='true') ? 'false':'true';
-        var data = {'id' : $scope.likeList.likes[index].id,'set_active' : $scope.likeList.likes[index].is_active}
-        $scope.invokeApi(ADHotelLikesSrv.toggleSwitch,data, toggleSwitchLikesSuccessCallback);
+       var toggleSwitchLikesSuccessCallback = function(data) {
+        $scope.$emit('hideLoader');
+        $scope.fetchHotelLikes();
+
+    };
+    $scope.likeList.likes[index].is_active = ($scope.likeList.likes[index].is_active ==='true') ? 'false':'true';
+    var data = {'id' : $scope.likeList.likes[index].id,'set_active' : $scope.likeList.likes[index].is_active}
+    $scope.invokeApi(ADHotelLikesSrv.toggleSwitch,data, toggleSwitchLikesSuccessCallback);
 
 
-		
-	}
+
+}
 
 	 /*
     * To fetch the template for chains details add/edit screens
     */
- 	$scope.getAddNewTemplateUrl = function(){
- 		return "/assets/partials/Likes/adNewLike.html";
- 	};
- 	
+    $scope.getTemplateUrl = function(rowName){
 
- 	$scope.$watch('likeData.type',function(){
+        if(rowName === "ROOM FEATURE")
+            return "/assets/partials/Likes/adRoomFeatureEdit.html";
+        // else if(rowName === "FLOOR")
+        //     return "/assets/partials/chains/adChainForm.html";
+        // else if(rowName === "SMOKING")
+        //     return "/assets/partials/chains/adChainForm.html";
+        // else if(rowName === "ELEVATOR")
+        //     return "/assets/partials/chains/adChainForm.html";
+        else if(rowName === "NEWSPAPER")
+            return "/assets/partials/Likes/adNewsPaperEdit.html";
+        else            
+           return "/assets/partials/Likes/adNewLike.html";
+   };
 
-        if($scope.likeData.type === "textbox"){
-             $scope.showTextBox = true;
-             $scope.showRadio = false;
-             $scope.showDropDown = false;
-             $scope.showCheckbox = false;
-         }
-        else if ($scope.likeData.type ==="radio"){
-             $scope.showRadio = true;
-             $scope.showTextBox = false
-             $scope.showDropDown = false;
-             $scope.showCheckbox = false;
+     /*
+   * To render edit screen
+   * @param {int} index index of selected chain
+   * @paran {string} id - chain id
+   */
+   $scope.editSelected = function(index,id,rowName)    {
 
-             $scope.likeData.options =[{'name':''},{'name':''}];
+      
+      $scope.currentClickedElement = index;
+    //   if(rowName === "ROOM FEATURE"){
 
-         }
-        else if ($scope.likeData.type === "dropdown"){
-             $scope.showDropDown = true;
-             $scope.showTextBox = false
-             $scope.showRadio = false;
-             $scope.showCheckbox = false;
-         }
-        else{
-             $scope.showCheckbox = true;
-             $scope.showTextBox = false
-             $scope.showRadio = false;
-             $scope.showDropDown = false;
-    
-         }
-    });
+    //     $scope.isEditmode = true;
+
+
+
+    //    var editID = { 'editID' : 1 };
+    //    var editRoomSuccessCallback = function(data) {
+    //     $scope.$emit('hideLoader');
+    //     $scope.likeData = data;
+    //     $scope.isEditmode = true;
+    // };      
+    // $scope.invokeApi(ADHotelLikesSrv.editRoom,editID,editRoomSuccessCallback);
+
+       
+
+
+    // }
+    if(rowName === "FLOOR")
+    {
+       $scope.isEditmode = false;
+   }
+   else if(rowName === "SMOKING")
+   {
+       $scope.isEditmode = false;
+   }
+   else if(rowName === "ELEVATOR")
+   {
+       $scope.isEditmode = false;
+   }
+ 
+   else{
+
+      $scope.showNewsPaperOption = false;
+      $scope.showNewRoomOption = false;
+
+       $scope.isEditmode = true;
+
+       $scope.editId = id;
+       if(rowName === "ROOM FEATURE")
+        editID = 1;
+      if(rowName === "NEWSPAPER")
+        editID = 5;
+       var editID = { 'editID' : id };
+       var editLikeSuccessCallback = function(data) {
+        $scope.$emit('hideLoader');
+        $scope.likeData = data;
+        $scope.isEditmode = true;
+        $scope.likeTitle  ="Edit";
+        $scope.likeSubtitle =$scope.likeData.name;
+    };      
+    $scope.invokeApi(ADHotelLikesSrv.edit,editID,editLikeSuccessCallback);
+}
+};
+
+
+$scope.showNewNewsPaperOption = function(){
+    $scope.showNewsPaperOption = true;
+}
+
+$scope.shownewInputRoomOption = function(){
+    $scope.showNewRoomOption = true;
+}
+
+$scope.$watch('likeData.type',function(){
+
+    if($scope.likeData.type === "textbox"){
+       $scope.showTextBox = true;
+       $scope.showRadio = false;
+       $scope.showDropDown = false;
+       $scope.showCheckbox = false;
+   }
+   else if ($scope.likeData.type ==="radio"){
+       $scope.showRadio = true;
+       $scope.showTextBox = false
+       $scope.showDropDown = false;
+       $scope.showCheckbox = false;
+
+       $scope.likeData.options =[{'name':''},{'name':''}];
+
+   }
+   else if ($scope.likeData.type === "dropdown"){
+       $scope.showDropDown = true;
+       $scope.showTextBox = false
+       $scope.showRadio = false;
+       $scope.showCheckbox = false;
+   }
+   else{
+       $scope.showCheckbox = true;
+       $scope.showTextBox = false
+       $scope.showRadio = false;
+       $scope.showDropDown = false;
+
+   }
+});
 
      /*
     * To handle focus event on lov levels
@@ -125,29 +215,30 @@ function($scope, $state, ADHotelLikesSrv) {
                 $scope.likeData.options.splice(index, 1);
             angular.forEach($scope.likeData.options,function(item, i) {
                 if (item.name == "" && i != $scope.likeData.options.length-1) {
-                   $scope.likeData.options.splice(i, 1);
-                }
-            });
+                 $scope.likeData.options.splice(i, 1);
+             }
+         });
         }
     };
 
 
-    $scope.addCancelCliked   = function(){
+    $scope.cancelCliked   = function(){
 
         $scope.isAddmode = false;
+        $scope.isEditmode = false;
     }
 
     $scope.addSaveCliked   = function(){
 
         console.log($scope.likeData)
 
-         angular.forEach($scope.likeData.options,function(item, index) {
+        angular.forEach($scope.likeData.options,function(item, index) {
             if (item.name == "") {
-               $scope.likeData.options.splice(index, 1);
-            }
-           
-        });
-       
+             $scope.likeData.options.splice(index, 1);
+         }
+
+     });
+
 
         var newLikesSuccessCallback = function(data) {
             $scope.$emit('hideLoader');
@@ -156,13 +247,13 @@ function($scope, $state, ADHotelLikesSrv) {
             $scope.fetchHotelLikes();
 
         };
-        $scope.invokeApi(ADHotelLikesSrv.addNewFeature, $scope.likeData, newLikesSuccessCallback);
+        $scope.invokeApi(ADHotelLikesSrv.addEditNewFeature, $scope.likeData, newLikesSuccessCallback);
         
 
 
     }
 
 
-	
+
 
 }]);	

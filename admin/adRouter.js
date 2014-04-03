@@ -110,6 +110,7 @@ admin.config([
 			url : '/roomupsell'
 		});
 		
+
 		$stateProvider.state('admin.roomtypes', {
 			templateUrl: '/assets/partials/roomTypes/adRoomTypesList.html',
 			controller: 'ADRoomTypesCtrl',
@@ -118,6 +119,13 @@ admin.config([
 		
 
 
+
+
+		$stateProvider.state('admin.roomKeyDelivery', {
+			templateUrl: '/assets/partials/roomKeyDelivery/roomKeyDelivery.html',
+			controller: 'ADRoomKeyDeliveryCtrl',
+			url : '/roomKeyDelivery'
+		});
 
 
 		$stateProvider.state('admin.rooms', {
@@ -137,6 +145,5 @@ admin.config([
 			url : '/likes'
 
 		});
-
 	}
 ]);
