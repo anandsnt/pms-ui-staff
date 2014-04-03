@@ -91,6 +91,7 @@ admin.config([
 			url : '/departments'
 		});
 
+
 		$stateProvider.state('admin.upselllatecheckout', {
 			templateUrl: '/assets/partials/upsellLatecheckout/upsellLatecheckout.html',
 			controller: 'ADUpsellLateCheckoutCtrl',
@@ -107,6 +108,19 @@ admin.config([
 			templateUrl: '/assets/partials/roomUpsell/roomUpsell.html',
 			controller: 'ADRoomUpsellCtrl',
 			url : '/roomupsell'
+		});
+
+
+
+		$stateProvider.state('admin.rooms', {
+			templateUrl: '/assets/partials/rooms/adRoomList.html',
+			controller: 'adRoomListCtrl',
+			url : '/rooms'
+		});		
+		$stateProvider.state('admin.roomdetails', {
+			templateUrl: '/assets/partials/rooms/adRoomDetails.html',
+			controller: 'adRoomDetailsCtrl',
+			url : '/roomdetails/:roomId'
 		});
 
 	}
