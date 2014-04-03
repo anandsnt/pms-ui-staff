@@ -10,6 +10,7 @@ admin.directive('adDropdown', function($timeout) {
             selboxClass : '@selboxClass',            
             required: '@required',
             id: '@id',
+            label:'@label',
             labelInDropDown: '@labelInDropDown',
             list:'=list',
             name:'@name',

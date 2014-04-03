@@ -1,8 +1,10 @@
-<div class='entry' ng-class="{{div-class}}" ng-style="{{div-style}}">
-  <label for='{{id}}'>{{label}}</label>
-  <strong ng-show = "required=='yes'">*</strong>
+
+<div class='entry {{divClass}}'  ng-style="{{divStyle}}">
+  <label for='{{id}}' ng-hide="label.length==0">{{label}}<strong ng-show = "required=='yes'"> * </strong></label>
+  
   <div class='select'>
-    <select id="{{id}}" name="{{name}}" ng-class="{{sel-class}}" ng-style="{{sel-style}}">
+
+    <select id="{{id}}" name="{{name}}" class="{{selClass}}" ng-style="{{sel-style}}" ng-required="required=='yes'">
       <option value="">
         {{labelInDropDown}}
       </option>
