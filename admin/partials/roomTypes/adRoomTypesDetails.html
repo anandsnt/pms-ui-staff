@@ -15,20 +15,34 @@
 		<fieldset class="holder right float">
 			<ad-textbox value="roomTypeData.room_type_code" name = "room-type-code" id = "room-type-code" label = "Code" placeholder = "Enter Room Type Code" required = "yes" ></ad-textbox>
             <ad-textbox value="roomTypeData.max_occupancy" name = "max-occupancy" id = "max-occupancy" label = "Max Occupancy " placeholder = "Enter Max Occupancy" required = "" ></ad-textbox>
-			<div class="entry full-width">
+			 
+			 <div class="entry full-width">
 				<label for="room-type-picture"> Picture </label>
 				<div class="file-upload with-preview">
-					<input type="file" ng-model="image" accept="image/*" app-filereader />
+					<input type="file" ng-model="roomTypeData.image_of_room_type" accept="image/*" app-filereader />
 					<button type="button" class="button brand-colors">
 						Choose file
 					</button> 
 				</div>
-				<span class="file-preview"><img ng-src="{{image}}" id="file-preview" alt=""> </span>
-			</div>
+				<span class="file-preview"><img ng-src="{{roomTypeData.image_of_room_type}}" id="file-preview" alt=""> </span>
+			</div> 
+			
+			<!-- <div class="entry full-width">
+					<label for="user-picture"> Picture </label>
+					<div class="file-upload with-preview">
+						<span class="input">Choose file ...</span>
+						<input type="file" ng-model="image" accept="image/*" app-filereader />
+						<button type="button" class="button brand-colors">
+							 Choose file
+						</button> 
+					</div>
+					<span class="file-preview"> <img ng-src="{{image}}" id="file-preview" alt=""> </span>
+				</div> -->
+
 			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_pseudo_room_type" label="Room is a pseudo room type"></ad-checkbox>
 		</fieldset>
 		<div class="actions float">
-			<button type="button" id="cancel" class="button blank add-data-inline">
+			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()">
 				Cancel
 			</button>
 			<button type="button" like-type="common" id="update" class="button green add-data-inline" ng-click="saveRoomTypes()">

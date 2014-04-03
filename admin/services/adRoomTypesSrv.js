@@ -1,7 +1,7 @@
 admin.service('ADRoomTypesSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
    /**
-    * To fetch the list of users
-    * @return {object} users list json
+    * To fetch the list of room types
+    * @return {object} room types list json
     */
 	this.fetch = function(){
 		
@@ -15,26 +15,11 @@ admin.service('ADRoomTypesSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 		});	
 		return deferred.promise;
 	};
+  
    /*
-    * To save new department
-    * @param {array} data of the new department
-    * @return {object} status and new id of new department
-    */
-	this.saveDepartment = function(data){
-		var deferred = $q.defer();
-		var url = '/admin/departments';	
-
-		ADBaseWebSrv.postJSON(url, data).then(function(data) {
-		    deferred.resolve(data);
-		},function(data){
-		    deferred.reject(data);
-		});	
-		return deferred.promise;
-	};
-   /*
-    * To get the details of the selected department
-    * @param {array} selected department id
-    * @return {object} selected department details
+    * To get the details of the selected room type
+    * @param {array} selected room type id
+    * @return {object} selected room type details
     */
 	this.getRoomTypeDetails = function(data){
 		var deferred = $q.defer();
@@ -49,15 +34,14 @@ admin.service('ADRoomTypesSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 		return deferred.promise;
 	};
    /*
-    * To update department data
-    * @param {array} data of the modified department
-    * @return {object} status of updated department
+    * To update room types data
+    * @param {array} data of the modified room type
+    * @return {object} status of updated room type
     */
-	this.updateDepartment = function(data){
+	this.updateRoomTypes = function(data){
 
 		var deferred = $q.defer();
-		var url = '/admin/departments/'+data.value;	
-
+		var url = '/admin/room_types/'+data.room_type_id;	
 		ADBaseWebSrv.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
@@ -66,15 +50,14 @@ admin.service('ADRoomTypesSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 		return deferred.promise;
 	};
    /*
-    * To delete the seleceted department
-    * @param {int} id of the selected department
-    * @return {object} status of delete
+    * To import room
+    * @return {object} status of import
     */
-	this.deleteDepartment = function(id){
+	this.importFromPms = function(){
 		var deferred = $q.defer();
-		var url = '/admin/departments/'+id;	
+		var url = '/admin/rooms/import';	
 
-		ADBaseWebSrv.deleteJSON(url).then(function(data) {
+		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);

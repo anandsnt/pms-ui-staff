@@ -3,9 +3,10 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.roomTypeData = {};
-	$scope.image = "";
+	
+
    /*
-    * To fetch list of departments
+    * To fetch list of room types
     */
 	$scope.listRoomTypes = function(){
 		var successCallbackFetch = function(data){
@@ -27,34 +28,29 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		            var orderedData = params.sorting() ?
 		                                $filter('orderBy')($scope.data.room_types, params.orderBy()) :
 		                                $scope.data.room_types;
+		                              
+		            $scope.orderedData =  orderedData;
+		            
+		                       
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
 		    });
-			
-			
-			
 		};
 		$scope.invokeApi(ADRoomTypesSrv.fetch, {} , successCallbackFetch);	
 	};
-	//To list departments
+	//To list room types
 	$scope.listRoomTypes(); 
    /*
-    * To render edit department screen
-    * @param {index} index of selected department
-    * @param {id} id of the department
+    * To render edit room types screen
+    * @param {index} index of selected room type
+    * @param {id} id of the room type
     */	
 	$scope.editRoomTypes = function(index, id)	{
 		$scope.departmentData={};
 		$scope.currentClickedElement = index;
 	 	var successCallbackRender = function(data){	
-	 		$scope.roomTypeData = data;
-	 		if(data.image_of_room_type == ""){
-	 			$scope.image = "/assets/preview_image.png";
-	 		} else {
-	 			$scope.image = data.image_of_room_type;
-	 		}
-	 		
 	 		$scope.$emit('hideLoader');
+	 		$scope.roomTypeData = data;
 	 	};
 	 	var data = {"id":id };
 	 	$scope.invokeApi(ADRoomTypesSrv.getRoomTypeDetails, data , successCallbackRender);    
@@ -62,8 +58,8 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
    
    /*
     * To get the template of edit screen
-    * @param {int} index of the selected department
-    * @param {string} id of the department
+    * @param {int} index of the selected room type
+    * @param {string} id of the room type
     */
 	$scope.getTemplateUrl = function(index, id){
 		if(typeof index === "undefined" || typeof id === "undefined") return "";
@@ -72,36 +68,30 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		}
 	};
   /*
-   * To save/update department details
+   * To save/update room type details
    */
    $scope.saveRoomTypes = function(){
-
-   	
-   		if($scope.image.indexOf("data:")== -1){
+		
+		var unwantedKeys = [];
+		console.log($scope.roomTypeData);
+		if($scope.roomTypeData.image_of_room_type.indexOf("data:")!= -1){
+		} else {
 			unwantedKeys = ["image_of_room_type"];
 		}
-		var data = dclone($scope.roomTypeData, unwantedKeys);
-		if($scope.image.indexOf("data:") == -1){
-			console.log("jjjjjjjjjjjjjj")
-			data.image_of_room_type = $scope.image;
-		}
-		 	console.log(data);
-    	// var successCallbackSave = function(data){
-    		// $scope.$emit('hideLoader');
-			// if($scope.isAddMode){
-				// // To add new data to scope
-    			// $scope.data.departments.push(data);
-	    	// } else {
-	    		// //To update data with new value
-	    		// $scope.data.departments[parseInt($scope.currentClickedElement)].name = $scope.departmentData.name;
-	    	// }
-    		// $scope.currentClickedElement = -1;
-    	// };
-    	// if($scope.isAddMode){
-    		// $scope.invokeApi(ADDepartmentSrv.saveDepartment, $scope.departmentData , successCallbackSave);
-    	// } else {
-    		// $scope.invokeApi(ADDepartmentSrv.updateDepartment, $scope.departmentData , successCallbackSave);
-    	// }
+		 var data = dclone($scope.roomTypeData, unwantedKeys);
+		 
+    	var successCallbackSave = function(data){
+    		$scope.$emit('hideLoader');
+    		$scope.currentClickedElement = -1;
+			$scope.listRoomTypes(); 
+	    		//To update data with new value
+	    		// console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>"+$scope.currentClickedElement+$scope.data.room_types[parseInt($scope.currentClickedElement)].name);
+	    		 // $scope.data.room_types[parseInt($scope.currentClickedElement)].name = $scope.roomTypeData.room_type_name;
+	    		 //== $scope.data.room_types[parseInt($scope.currentClickedElement)].code = $scope.roomTypeData.room_type_code;
+	    	
+    		
+    	};
+    	$scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data , successCallbackSave);
     };
    /*
     * To handle click event
@@ -114,12 +104,12 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     * @param {int} index of the selected department
     * @param {string} id of the selected department
     */		
-	$scope.deleteDepartment = function(index, id){
-		var successCallbackDelete = function(data){	
+	$scope.importFromPms = function(){
+		var successCallbackImport = function(data){	
 	 		$scope.$emit('hideLoader');
-	 		$scope.data.departments.splice(index, 1);
+	 		// $scope.data.departments.splice(index, 1);
 	 	};
-		$scope.invokeApi(ADDepartmentSrv.deleteDepartment, id , successCallbackDelete);
+		$scope.invokeApi(ADRoomTypesSrv.importFromPms, '' , successCallbackImport);
 	};
 }]);
 
