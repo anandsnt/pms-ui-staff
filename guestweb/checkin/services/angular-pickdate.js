@@ -109,7 +109,7 @@
               var className = "", date = allDates[i];
 
               if ( dateFilter(date, 'M') !== currentMonth.toString() ) {
-                className = 'pickadate-disabled pickadate-outofrange-disabled'
+                className = 'pickadate-disabled pickadate-outofrange-disabled';
               } else if (date < scope.minDate || date > scope.maxDate) {
                 className = 'pickadate-disabled';
               } else if (indexOf.call(disabledDates, date) >= 0) {

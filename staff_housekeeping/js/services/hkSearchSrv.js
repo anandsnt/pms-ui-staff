@@ -1,4 +1,4 @@
-hkRover.service('HKSearchSrv',['$http', '$q', function($http, $q){
+hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $window){
 
 	this.roomList = "";
 	
@@ -38,8 +38,13 @@ hkRover.service('HKSearchSrv',['$http', '$q', function($http, $q){
 				}
 				
 			}.bind(this))
-			.error(function(data, status) {
-			    deferred.reject(data);
+			.error(function(response, status) {
+			    if(status == 401){ // 401- Unauthorized
+	    			// so lets redirect to login page
+					$window.location.href = '/house/logout' ;
+	    		}else{
+	    			deferred.reject(response);
+	    		}
 			});
 
 		return deferred.promise;
