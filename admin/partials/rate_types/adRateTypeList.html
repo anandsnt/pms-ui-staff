@@ -1,0 +1,43 @@
+<section id="replacing-div-first" class="content current">
+	<div data-view="RateTypeListView">
+		<header class="content-title float">
+			<h2> Rate Types </h2>
+			<span class="count"> (
+				8
+				) </span>
+			<a id="add-new-button" ui-sref="admin.ratetypedetails({action:'add'})" class="action add">Add new</a>
+		</header>
+
+		<div id="notification-message" style="display: none;"></div>
+		
+	
+		<div id="new-form-holder"></div>
+		
+
+		<table id="rate-types" class="grid">
+			<tbody ng-repeat = "ratetypes in data">
+				<tr data-rate-type-id="{{ratetypes.id}}">
+			
+					<td><strong>hjk
+						{{ratetypes.name}}</strong>
+						
+						
+						<em>{{ratetypes.id}}</em></td>
+					<td ><strong>{{ratetypes.rate_count}}</strong></td>
+					<td class="activate">
+					<div class="entry">
+						<label></label>
+						<div id="" class="switch-button single">
+							<input type="checkbox" value="" name="" is_system_defined="true" can_off="true">
+							<span class="switch-icon"></span>
+
+						</div>
+					</div></td>
+				</tr>
+
+				
+
+			</tbody>
+		</table>
+	</div>
+</section>

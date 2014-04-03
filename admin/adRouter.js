@@ -79,5 +79,15 @@ admin.config([
 			controller: 'ADDepartmentListCtrl',
 			url : '/departments'
 		});
+		$stateProvider.state('admin.ratetypes', {
+			templateUrl: '/assets/partials/rate_types/adRateTypeList.html',
+			controller: 'ADRateTypeCtrl',
+			url : '/ratetypes'
+		});
+		$stateProvider.state('admin.ratetypedetails', {
+			templateUrl: '/assets/partials/rate_types/adRateTypeDetails.html',
+			controller: 'ADRateTypeCtrl',
+			url : '/ratetypes'
+		});
 	}
 ]);
