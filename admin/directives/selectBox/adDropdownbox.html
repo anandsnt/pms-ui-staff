@@ -4,11 +4,11 @@
   
   <div class='select'>
 
-    <select id="{{id}}" name="{{name}}" class="{{selClass}}" ng-style="{{sel-style}}" ng-required="required=='yes'">
+    <select id="{{id}}" name="{{name}}" class="{{selClass}}" ng-style="{{sel-style}}" ng-required="required=='yes'" ng-model='selectedId'>
       <option value="">
         {{labelInDropDown}}
       </option>
-      <option ng-repeat='row in list' value='{{row.value}}' ng-model='row.value' ng-selected="row.value==selectedId" >
+      <option ng-repeat='row in list' value='{{row.value}}'  ng-selected="row.value==selectedId" >
         {{row.name}}
       </option>
     </select>

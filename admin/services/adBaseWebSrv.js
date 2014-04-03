@@ -30,15 +30,19 @@ admin.service('ADBaseWebSrv',['$http', '$q', '$window', function($http, $q, $win
 		httpMethod(url, params).success(function(response, status) {
 			if(response.status == "success"){
 		    	deferred.resolve(response.data);
-			}else{				
+			}else{
+				// please note the type of error expecting is array
 		    	deferred.reject(response.errors);
 			}
 		}).error(function(response, status) {
+			// please note the type of error expecting is array
+			// so form error as array if you modifying it
 			if(status == 406){ // 406- Network error
 				deferred.reject(response.errors);
 			}
 			else if(status == 500){ // 500- Internal Server Error
-				deferred.reject(response.errors);
+
+				deferred.reject(['Internal server error occured']);
 			}
 			else if(status == 401){ // 401- Unauthorized
 				console.log('lets redirect');
