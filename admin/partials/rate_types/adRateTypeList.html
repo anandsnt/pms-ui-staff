@@ -2,28 +2,21 @@
 	<div data-view="RateTypeListView">
 		<header class="content-title float">
 			<h2> Rate Types </h2>
-			<span class="count"> (
-				8
-				) </span>
-			<a id="add-new-button" ui-sref="admin.ratetypedetails({action:'add'})" class="action add">Add new</a>
+			<span class="count"> ({{data.rate_types.length}})</span>
+			<a id="add-new-button" class="action add" ng-click="addNew()">Add new</a>
 		</header>
 
-		<div id="notification-message" style="display: none;"></div>
-		
-	
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/rate_types/adRateTypeAdd.html'"></div>
+
 		<div id="new-form-holder"></div>
-		
 
 		<table id="rate-types" class="grid">
-			<tbody ng-repeat = "ratetypes in data">
-				<tr data-rate-type-id="{{ratetypes.id}}">
-			
-					<td><strong>hjk
-						{{ratetypes.name}}</strong>
-						
-						
-						<em>{{ratetypes.id}}</em></td>
-					<td ><strong>{{ratetypes.rate_count}}</strong></td>
+
+			<tbody>
+				<tr data-rate-type-id="1">
+					<td><strong>Rack Rates</strong><em>(System defined)</em></td>
+					<td></td>
 					<td class="activate">
 					<div class="entry">
 						<label></label>
@@ -35,7 +28,54 @@
 					</div></td>
 				</tr>
 
-				
+				<tr data-rate-type-id="4">
+					<td><strong>Consortia Rates</strong><em>(System defined)</em></td>
+					<td></td>
+					<td class="activate">
+					<div class="entry">
+						<label></label>
+						<div id="" class="switch-button single">
+							<input type="checkbox" value="" name="" is_system_defined="true" can_off="true">
+							<span class="switch-icon"></span>
+
+						</div>
+					</div></td>
+				</tr>
+
+				<tr data-rate-type-id="7">
+					<td><strong>Package Rates</strong><em>(System defined)</em></td>
+					<td></td>
+					<td class="activate">
+					<div class="entry">
+						<label></label>
+						<div id="" class="switch-button single">
+							<input type="checkbox" value="" name="" is_system_defined="true" can_off="true">
+							<span class="switch-icon"></span>
+
+						</div>
+					</div></td>
+				</tr>
+
+				<tr data-rate-type-id="10">
+					<td ng-click = "editRateTypes(1,10)" ng-hide="currentClickedElement == 1">
+						<a class="edit-data-inline"> test rate 2 </a>
+					</td>
+					
+					<td class="delete"  ng-hide="currentClickedElement == 1"><a id="3" class="icons icon-delete large-icon delete_item" ></a></td>
+
+					<td class="activate" ng-hide="currentClickedElement == 1">
+						<div class="entry">
+						<label></label>
+						<div id="" class="switch-button single">
+							<input type="checkbox" value="" name="" is_system_defined="false" can_off="true">
+							<span class="switch-icon"></span>
+
+						</div>
+					</div></td>
+					
+					<td colspan="3" ng-include="getTemplateUrl(1,10)"></td>
+
+				</tr>
 
 			</tbody>
 		</table>

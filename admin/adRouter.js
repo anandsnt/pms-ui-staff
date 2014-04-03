@@ -96,11 +96,7 @@ admin.config([
 			controller: 'ADRateTypeCtrl',
 			url : '/ratetypes'
 		});
-		$stateProvider.state('admin.ratetypedetails', {
-			templateUrl: '/assets/partials/rate_types/adRateTypeDetails.html',
-			controller: 'ADRateTypeCtrl',
-			url : '/ratetypes'
-		});
+
 
 
 		$stateProvider.state('admin.upselllatecheckout', {

@@ -1,0 +1,29 @@
+<div class="data-holder">
+	<form class="form inline-form float">
+		<fieldset class="holder left float">
+			<ad-textbox inputtype="text" value="rateTypeData.name"
+			label = " Rate type" required = "yes" placeholder = "Enter rate type"
+			></ad-textbox>
+
+			<ad-textbox inputtype="text" value="rateTypeData.description"
+			label = "Description" required = "yes" placeholder = "Enter rate description"
+			styleclass="full-width"></ad-textbox>
+
+		</fieldset>
+
+		<div class="actions float">
+			<button type="button" id="cancel" class="button blank edit-data-inline"  ng-click="clickCancel()">
+				Cancel
+			</button>
+			<button type="button" id="save" class="button green edit-data-inline" ng-click="saveRateType()">
+				Save changes
+			</button>
+
+			<button type="button" id="delete" class="button red edit-data-inline"  ng-click="deleteRateType(currentClickedElement, rateTypeData.id)">
+				Delete
+			</button>
+		</div>
+
+	</form>
+</div>
+
