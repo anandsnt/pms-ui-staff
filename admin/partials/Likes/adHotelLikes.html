@@ -6,11 +6,11 @@
 		<span class="count">
 			({{likeList.likes.length}})
 		</span>
-		<a id="add-new-button" href="/ui/show?haml_file=admin/hotel_likes/add_like&amp;json_input=hotel_likes/likes_list.json&amp;is_hash_map=true&amp;is_partial=true" class="action add">Add new</a>
+		<a id="add-new-button" class="action add" ng-click="addNew()">Add new</a>
 	</header>
 
 	<div id="notification-message" style="display: none;"></div>
-	<div id="new-form-holder">
+	<div id="new-form-holder" ng-show="isAddmode" ng-include="getAddNewTemplateUrl()">
 	</div>
 	<table id="likes" class="grid">
 		<tbody>

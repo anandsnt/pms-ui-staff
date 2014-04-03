@@ -20,13 +20,49 @@ function($scope, $state, ADHotelLikesSrv) {
 
 	$scope.fetchHotelLikes();
 
-
+	/*
+   * To render add screen
+   */
+	$scope.addNew = function(){
+		$scope.likeData   = {};
+		$scope.likeData.type = "textbox"
+		$scope.isAddmode = true;
+	};
+	 /*
+    * To handle switch
+    */
 	$scope.switchClicked = function(index){
 
 		//on success
 
 		$scope.likeListArray[index].is_active = ($scope.likeListArray[index].is_active ==='true') ? 'false':'true';
 	}
+
+	 /*
+    * To fetch the template for chains details add/edit screens
+    */
+ 	$scope.getAddNewTemplateUrl = function(){
+ 		return "/assets/partials/Likes/adNewLike.html";
+ 	};
+
+
+ 	$scope.addCancelCliked   = function(){
+
+ 		$scope.isAddmode = false;
+ 	}
+
+ 	$scope.addSaveCliked   = function(){
+
+ 		console.log($scope.likeData)
+
+ 		$scope.isAddmode = false;
+ 	}
+ 	
+
+ 	$scope.typeChanged = function(id){
+
+ 		alert(id)
+ 	}
 
 
 
