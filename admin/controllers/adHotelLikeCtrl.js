@@ -112,6 +112,9 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
  
    else{
 
+      $scope.showNewsPaperOption = false;
+      $scope.showNewRoomOption = false;
+
        $scope.isEditmode = true;
 
        $scope.editId = id;
@@ -129,6 +132,14 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
 }
 };
 
+
+$scope.showNewNewsPaperOption = function(){
+    $scope.showNewsPaperOption = true;
+}
+
+$scope.shownewInputRoomOption = function(){
+    $scope.showNewRoomOption = true;
+}
 
 $scope.$watch('likeData.type',function(){
 

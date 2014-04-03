@@ -17,10 +17,16 @@
 					<div id="newspaper-name">{{option.name}}</div>
 				</label>
 				
-				<label data-type="newspaper" class="add-new-checkbox inline">
-					<span class="icons icon-add"></span>
+				<label data-type="newspaper" class="add-new-checkbox inline"  ng-hide="showNewsPaperOption" ng-click="showNewNewsPaperOption()">
+					<span class="icons icon-add" ></span>
 					Add new option
+					
 				</label>
+				<label data-type="newspaper" class="add-new-checkbox inline" ng-show="showNewsPaperOption">
+				<input type="text" value="" name="newspaper" data-id="" id="newspaper-option52" class="checkbox-value">
+				</label>
+				
+
 			</div>
 		</div>
 		<div class="actions float">
