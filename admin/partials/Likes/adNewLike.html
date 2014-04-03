@@ -30,9 +30,6 @@
 
 					</label>
 				</div>
-
-
-
 				<div class="entry full-width">
 					<label>
 						Type
@@ -69,6 +66,48 @@
 						</label>
 
 
+					</div>
+				</div>
+			</fieldset>
+
+			<fieldset class="holder right float">
+				<!-- Radio data type -->
+				<div id="entry-radio" class="data-type" ng-show="showRadio">
+					<div class="entry full-width">
+						<label for="radio-option1">
+							Options
+							<strong>*</strong>
+						</label>
+						<div class="entry">
+							<input type="text" value="" placeholder="First option" name="radio-option" id="radio-option1">
+						</div>
+						<div class="entry">
+							<input type="text" value="" placeholder="Second option" name="radio-option" id="radio-option2">
+						</div>
+					</div>
+				</div>
+				<!-- Select data type -->
+				<div id="entry-select" class="data-type" ng-show="showDropDown">
+					<div class="entry full-width">
+						<label for="select-option1">
+							Options
+							<strong>*</strong>
+						</label>
+						<div class="entry">
+							<input type="text" value="" placeholder="Add new option" name="radio-option" id="select-option1" data-type="dropdown" class="add-new-option">
+						</div>
+					</div>
+				</div>
+				<!-- Checkbox data type -->
+				<div id="entry-checkbox" class="data-type" ng-show="showCheckbox">
+					<div class="entry full-width">
+						<label for="checkbox-option1">
+							Options
+							<strong>*</strong>
+						</label>
+						<div class="entry">
+							<input type="text" value="" placeholder="Add new option" name="radio-option" id="checkbox-option1" data-type="checkbox" class="add-new-option">
+						</div>
 					</div>
 				</div>
 			</fieldset>

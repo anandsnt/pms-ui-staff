@@ -3,6 +3,8 @@ function($scope, $state, ADHotelLikesSrv) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.likeList = {};
+    $scope.likeData   = {};
+    $scope.likeData.type = "textbox"
 
 		/**
 	 * To fetch upsell details
@@ -12,9 +14,7 @@ function($scope, $state, ADHotelLikesSrv) {
 		var fetchHotelLikesSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.likeList = data;
-			console.log(data)
-			
-		};
+   		};
 		$scope.invokeApi(ADHotelLikesSrv.fetch, {}, fetchHotelLikesSuccessCallback);
 	};
 
@@ -25,7 +25,7 @@ function($scope, $state, ADHotelLikesSrv) {
    */
 	$scope.addNew = function(){
 		$scope.likeData   = {};
-		$scope.likeData.type = "textbox"
+         $scope.likeData.type = "textbox"
 		$scope.isAddmode = true;
 	};
 	 /*
@@ -59,54 +59,37 @@ function($scope, $state, ADHotelLikesSrv) {
  	}
  	
 
- 	$scope.typeChanged = function(id){
+ 	$scope.$watch('likeData.type',function(){
 
- 		alert(id)
- 	}
+        if($scope.likeData.type === "textbox"){
+             $scope.showTextBox = true;
+             $scope.showRadio = false;
+             $scope.showDropDown = false;
+             $scope.showCheckbox = false;
+         }
+        else if ($scope.likeData.type ==="radio"){
+             $scope.showRadio = true;
+             $scope.showTextBox = false
+             $scope.showDropDown = false;
+             $scope.showCheckbox = false;
+
+         }
+        else if ($scope.likeData.type === "dropdown"){
+             $scope.showDropDown = true;
+             $scope.showTextBox = false
+             $scope.showRadio = false;
+             $scope.showCheckbox = false;
+         }
+        else{
+             $scope.showCheckbox = true;
+             $scope.showTextBox = false
+             $scope.showRadio = false;
+             $scope.showDropDown = false;
+    
+         }
+    });
 
 
-
-
-	$scope.likeList = {
-    "likes": [
-        {
-            "id": 1,
-            "name": "ROOM FEATURE",
-            "is_system_defined": "false",
-            "is_active": "true"
-        },
-        {
-            "id": 2,
-            "name": "FLOOR",
-            "is_system_defined": "true",
-            "is_active": "false"
-        },
-        {
-            "id": 3,
-            "name": "SMOKING",
-            "is_system_defined": "true",
-            "is_active": "true"
-        },
-        {
-            "id": 4,
-            "name": "ELEVATOR",
-            "is_system_defined": "true",
-            "is_active": "false"
-        },
-        {
-            "id": 5,
-            "name": "NEWSPAPER",
-            "is_system_defined": "false",
-            "is_active": "false"
-        },
-        {
-            "id": 6,
-            "name": "ROOM TYPE",
-            "is_system_defined": "false",
-            "is_active": "false"
-        }
-    ]
-}
-	$scope.likeListArray = $scope.likeList.likes;
+	
 
 }]);	
