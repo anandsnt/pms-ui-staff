@@ -1,0 +1,127 @@
+<section id="replacing-div-first" class="content current " ng-click="clearErrorMessage()">
+	<div data-view="UserDetailsView">
+		<header class="content-title float">
+			<h2 ng-show="mod == 'edit'">Edit User</h2>
+			<h2 ng-show="mod == 'add'">Add User</h2>
+			<a id="go_back" data-type="load-details" class="action back" ui-sref='admin.users'>Back</a>
+		</header>
+		<form user="2" id="edit-user" class="form float">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<fieldset class="holder left">
+				<div class="form-title">
+					<h3><span>User</span> details </h3>
+					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+				</div>
+				<ad-textbox value="data.first_name" name = "first-name" id = "first-name" label = "First Name" placeholder = "Enter first name" required = "yes" ></ad-textbox>
+				<ad-textbox value="data.last_name" name = "last-name" id = "last-name" label = "Last Name" placeholder = "Enter last name" required = "yes" ></ad-textbox>
+				{{data.user_department}}
+				<ad-dropdown id="department" class="full-width" label-in-drop-down="Department" list="data.departments" selected-Id='data.user_department' >
+
+				</ad-dropdown> 
+				<!--<div class="entry full-width">
+					<label for="department"> Department </label>
+					<div class="select">
+						<select name="department" ng-model="data.user_department" id="department" class="placeholder" >
+							<option value="{{department.value}}" ng-repeat="department in data.departments"> {{department.name}} </option>
+						</select>
+					</div>
+				</div> -->
+
+				
+				<ad-textbox value="data.job_title" name = "job-title" id = "job-title" label = "Job title" placeholder = "Enter job title" required = "yes" ></ad-textbox>
+				<ad-textbox value="data.phone" name = "phone" id = "phone" label = "Phone" placeholder = "Enter phone" required = "no" ></ad-textbox>
+
+				<div class="entry full-width">
+					<label for="user-picture"> Picture </label>
+					<div class="file-upload with-preview">
+						<span class="input">Choose file ...</span>
+						<input type="file" ng-model="image" accept="image/*" app-filereader />
+						<button type="button" class="button brand-colors">
+							 Choose file
+						</button> 
+					</div>
+					<span class="file-preview"> <img ng-src="{{image}}" id="file-preview" alt=""> </span>
+				</div>
+
+			</fieldset>
+			<fieldset class="holder right">
+				<div class="form-title">
+					<h3><span>User</span> credentials </h3>
+					<em class="status"> <strong>All fields are mandatory!</strong> </em>
+				</div>
+				<ad-textbox value="data.email" name = "email" id = "email" label = "Email" placeholder = "Enter email address" required = "yes" styleclass="full-width" ></ad-textbox>
+				<ad-textbox value="data.confirm_email" name = "re-email" id = "re-email" label = "Re-type email" placeholder = "Enter email address" required = "yes" styleclass="full-width" ></ad-textbox>
+
+				<div class="entry full-width">
+					<label for="password"> Password <strong>*</strong> </label>
+					<input type="password" ng-model="data.password" required="yes" placeholder="Enter password" name="password" id="password" autocomplete="off">
+				</div>
+
+				<div class="entry full-width">
+					<label for="confirm-password"> Re-type password <strong>*</strong> </label>
+					<input type="password" ng-model="data.confirm_password" required="yes" placeholder="Confirm password" name="re-password" id="confirm-password" autocomplete="off">
+				</div>
+
+				<!-- Activation Status -->
+				<div class="entry re-invite" ng-show="mod == 'edit'">
+					<label> Activation Status </label>
+					<div ng-show="data.is_activated == 'true'">
+						ACTIVATED
+					</div>
+					<div ng-show="data.is_activated == 'false'">
+						PENDING
+					</div>
+				</div>
+				<div class="entry re-invite" ng-show="mod == 'edit'">
+					<label>
+						<button id="re-invite" disabled="disabled" class="button" ng-class="{'green': data.is_activated == 'false', 'grey': data.is_activated == 'true'}">
+							Re-Invite
+						</button> </label>
+				</div>
+
+			</fieldset>
+
+			<fieldset class="holder full-width">
+				<!-- Needs in future -->
+				<!-- <div class="form-title">
+				<h3><span>User</span> roles </h3>
+				<em class="status"> <span>User can have multiple roles</span> </em>
+				</div>
+				<div class="entry has-sortable">
+				<label>Assigned Roles</label>
+				<ul id="assigned-roles" data-type="target" data-placeholder="Drop a role here to assign it to the user" class="boxes sortable empty ui-sortable short-list">
+				<li id="2">
+				<span class="icons icon-handle"></span>
+				<span class="icons icon-handle"></span>
+				hotel_admin
+				</li>
+				</ul>
+				</div> -->
+
+				<!--<div class="entry movers">
+				<span data-type="target" class="icons icon-mover-right to-target">Assign role(s)</span>
+				<span data-type="source" class="icons icon-mover-left to-source">Unassign role(s)</span>
+				</div>
+				<div class="entry has-sortable">
+				<label>Not Assigned Roles</label>
+				<ul data-type="source" data-placeholder="To remove a role for the user simply drop it here" class="boxes sortable ui-sortable short-list">
+				<li id="3">
+				<span class="icons icon-handle"></span>
+				<span class="icons icon-handle"></span>
+				hotel_staff
+				</li>
+				</ul>
+				</div> -->
+
+			</fieldset>
+			<div class="actions float">
+				<button type="button" id="cancel" class="button blank add-data-inline">
+					Cancel
+				</button>
+				<button type="button" id="save" class="button green add-data-inline" ng-click="saveUserDetails()">
+					Save changes
+				</button>
+			</div>
+		</form>
+	</div>
+</section>

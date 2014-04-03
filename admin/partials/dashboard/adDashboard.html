@@ -1,0 +1,20 @@
+ <!-- Listing & details holders -->
+   <!--<section id="load-listing" class="content content-holder"></section>
+   <section id="load-details" class="content content-holder"></section>-->
+   <!-- Dashboard tabs - Hotel & Staff -->
+   <section id="dashboard-hotel" class="content">
+      <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+      <header class="content-title float">
+         <h2>{{selectedMenu.menu_name}} setup</h2>
+      </header>
+      <ul class="dashboard-items float">
+
+         <li ng-repeat="submenu in selectedMenu.components">
+
+            <a data-type="load-listing" class="icon-admin-menu {{submenu.icon_class}}" ui-sref={{submenu.state}}>{{submenu.name}}</a>
+            <a class="text" data-type="load-listing" href="{{submenu.action_path}}" ui-sref={{submenu.state}}>{{submenu.name}}</a>
+         </li>
+
+      </ul>      
+   </section>
+
