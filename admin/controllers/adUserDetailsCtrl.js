@@ -144,5 +144,9 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 		$scope.mod = "edit";
 		$scope.userDetailsEdit(id);
 	}
+	$scope.sendInvitation = function(userId){
+		var data = {"id": userId};
+	 	$scope.invokeApi(ADUserSrv.sendInvitation,  data);	
+	};
 
 }]);
