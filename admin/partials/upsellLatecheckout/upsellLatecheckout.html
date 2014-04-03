@@ -112,7 +112,7 @@
 				</div>
 
 
-				<ad-textbox value="upsellData.extended_checkout_charge_0.charge"   label = "Charge [{{currency_code}}]" placeholder = "Enter charge" ></ad-textbox>
+				<ad-textbox value="upsellData.extended_checkout_charge_0.charge"   label = "Charge [{{currency_code}}]" placeholder = "Enter charge"  ></ad-textbox>
 
 
 				<div class="entry">
@@ -136,15 +136,7 @@
 					</div>
 
 				</div>
-
-
-
-				<div class="entry">
-					<label for="charge-for-checkout-1">
-						Charge [{{currency_code}}]
-					</label>
-					<input type="text" ng-model="upsellData.extended_checkout_charge_1.charge" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" ng-disabled="disableSecondOption">
-				</div>
+				<ad-textbox value="upsellData.extended_checkout_charge_1.charge"   label = "Charge [{{currency_code}}]" placeholder = "Enter charge" disabled="disableSecondOption" ></ad-textbox>
 
 
 				<div class="entry">
@@ -169,12 +161,10 @@
 				</div>
 
 
-				<div class="entry">
-					<label for="charge-for-checkout-2">
-						Charge [{{currency_code}}]
-					</label>
-					<input type="text" ng-model="upsellData.extended_checkout_charge_2.charge" required="" placeholder="Enter charge" name="charge-for-checkout" maxlength="5" ng-disabled="disableThirdOption">
-				</div>
+				<ad-textbox value="upsellData.extended_checkout_charge_2.charge"   label = "Charge [{{currency_code}}]" placeholder = "Enter charge" disabled="disableThirdOption" >
+				</ad-textbox>
+
+	
 
 			</fieldset>
 			<div class="actions float">
