@@ -25,7 +25,8 @@ function($scope, $state, ADHotelLikesSrv) {
    */
 	$scope.addNew = function(){
 		$scope.likeData   = {};
-         $scope.likeData.type = "textbox"
+        $scope.likeData.type = "textbox"
+        $scope.likeData.options =[{'name':''}];
 		$scope.isAddmode = true;
 	};
 	 /*
@@ -69,6 +70,8 @@ function($scope, $state, ADHotelLikesSrv) {
              $scope.showDropDown = false;
              $scope.showCheckbox = false;
 
+             $scope.likeData.options =[{'name':''},{'name':''}];
+
          }
         else if ($scope.likeData.type === "dropdown"){
              $scope.showDropDown = true;
@@ -85,6 +88,49 @@ function($scope, $state, ADHotelLikesSrv) {
          }
     });
 
+     /*
+    * To handle focus event on lov levels
+    */
+    $scope.onFocus = function(index){
+        if((index === $scope.likeData.options.length-1) || ($scope.likeData.options.length==1)){
+            $scope.newOptionAvailable = true;
+            // exclude first two fields
+            if($scope.likeData.options.length > 2){
+                angular.forEach($scope.likeData.options,function(item, index) {
+                    if (item.name == "" && index < $scope.likeData.options.length-1 ) {
+                        $scope.newOptionAvailable = false;
+                    }
+                });
+            }
+            if($scope.newOptionAvailable)
+                $scope.likeData.options.push({'name':''});
+        }
+    };
+   /*
+    * To handle text change on lov levels
+    */
+    $scope.textChanged = function(index){
+
+        if($scope.likeData.options.length>1){
+            if($scope.likeData.options[index].name == "")
+                $scope.likeData.options.splice(index, 1);
+        }
+    };
+   /*
+    * To handle blur event on lov levels
+    */
+    $scope.onBlur = function(index){
+        if($scope.likeData.options.length>1){
+            if($scope.likeData.options[index].name == "")
+                $scope.likeData.options.splice(index, 1);
+            angular.forEach($scope.likeData.options,function(item, i) {
+                if (item.name == "" && i != $scope.likeData.options.length-1) {
+                   $scope.likeData.options.splice(i, 1);
+                }
+            });
+        }
+    };
+
 
     $scope.addCancelCliked   = function(){
 
@@ -95,6 +141,12 @@ function($scope, $state, ADHotelLikesSrv) {
 
         console.log($scope.likeData)
 
+         angular.forEach($scope.likeData.options,function(item, index) {
+            if (item.name == "") {
+               $scope.likeData.options.splice(index, 1);
+            }
+           
+        });
        
 
         var newLikesSuccessCallback = function(data) {

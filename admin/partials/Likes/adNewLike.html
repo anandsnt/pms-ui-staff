@@ -79,16 +79,16 @@
 							<strong>*</strong>
 						</label>
 						<div class="entry">
-							<input type="text" value="" placeholder="First option" name="radio-option" id="radio-option1">
+							<input type="text" ng-model="likeData.options[0].name" placeholder="First option" name="radio-option" id="radio-option1">
 						</div>
 						<div class="entry">
-							<input type="text" value="" placeholder="Second option" name="radio-option" id="radio-option2">
+							<input type="text" ng-model="likeData.options[1].name" placeholder="Second option" name="radio-option" id="radio-option2">
 						</div>
 					</div>
 				</div>
 				<!-- Select data type -->
 				<div id="entry-select" class="data-type" ng-show="showDropDown">
-					<div class="entry full-width">
+					<!-- <div class="entry full-width">
 						<label for="select-option1">
 							Options
 							<strong>*</strong>
@@ -96,17 +96,40 @@
 						<div class="entry">
 							<input type="text" value="" placeholder="Add new option" name="radio-option" id="select-option1" data-type="dropdown" class="add-new-option">
 						</div>
+					</div> -->
+
+		
+
+
+					<div class="entry full-width">
+						<label for="select-option1">
+							Options
+						</label>
+						<div class="entry" ng-repeat="option in likeData.options">
+							<input type="text"  placeholder="Add new option" name="radio-option" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="dropdown" class="add-new-option"
+							ng-model="option.name" >
+						</div>
 					</div>
+
 				</div>
 				<!-- Checkbox data type -->
 				<div id="entry-checkbox" class="data-type" ng-show="showCheckbox">
 					<div class="entry full-width">
-						<label for="checkbox-option1">
+				<!-- 		<label for="checkbox-option1">
 							Options
 							<strong>*</strong>
 						</label>
 						<div class="entry">
 							<input type="text" value="" placeholder="Add new option" name="radio-option" id="checkbox-option1" data-type="checkbox" class="add-new-option">
+						</div>
+					</div> -->
+					<div class="entry full-width">
+						<label for="select-option1">
+							Options
+						</label>
+						<div class="entry" ng-repeat="option in likeData.options">
+							<input type="text"  placeholder="Add new option" name="radio-option" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="dropdown" class="add-new-option"
+							ng-model="option.name" >
 						</div>
 					</div>
 				</div>
