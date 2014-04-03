@@ -109,5 +109,11 @@ admin.config([
 			url : '/roomupsell'
 		});
 
+		$stateProvider.state('admin.hotellikes', {
+			templateUrl: '/assets/partials/Likes/adHotelLikes.html',
+			controller: 'ADHotelLikesCtrl',
+			url : '/likess'
+		});
+
 	}
 ]);
