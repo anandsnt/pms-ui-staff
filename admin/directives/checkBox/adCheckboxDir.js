@@ -6,7 +6,8 @@ admin.directive('adCheckbox', function($timeout) {
       	scope: {
             label: '@label',
 	        required : '@required',
-            isChecked: '@isChecked'
+            isChecked: '=isChecked',
+            parentLabelClass: '@parentLabelClass'
 	    },
     	templateUrl: '../../assets/directives/checkBox/adCheckbox.html' 
     };
