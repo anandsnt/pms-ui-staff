@@ -6,28 +6,20 @@
 			<span class="count">({{data.frequent_flyer_program.length}})</span>
 		</header>
 		<div id="notification-message"></div>
-		<table id="ffp" class="grid datatable">
-			<thead>
-				<tr role="row">
-					<th width="" class="sorting"> Airline </th>
-					<th width="" class="sorting"> Program name </th>
-					<th width="" class="activate"> Active </th>
-				</tr>
-			</thead>
-
-			<tbody ng-repeat = "ffp in data.frequent_flyer_program">
+		<table id="ffp" class="grid datatable table" ng-table="tableParams">
+			<tbody ng-repeat = "ffp in $data">
 				<tr ffp-id="{{ffp.id}}">
-					<td><strong> {{ffp.airline}} </strong></td>
-					<td>{{ffp.program_name}} </td>
-					<td class="activate">
-					<div class="entry" >
-						<label for="AA"></label>
-						<div class="switch-button single"  ng-class="{ on : ffp.is_active == 'true' }" ng-click="toggleClicked($index)">
-							<input type="checkbox" value="{{ffp.airline}}" name="{{ffp.airline}}" id="{{ffp.airline}}">
-							<span class="switch-icon"></span>
-
+					<td data-title="'Airline'" sortable="'airline'"><strong> {{ffp.airline}} </strong></td>
+					<td data-title="'Program name'" sortable="'program_name'">{{ffp.program_name}} </td>
+					<td data-title="'Active'" class="activate">
+						<div class="entry" >
+							<label for="AA"></label>
+							<div class="switch-button single"  ng-class="{ on : ffp.is_active == 'true' }" ng-click="toggleClicked($index)">
+								<input type="checkbox" value="{{ffp.airline}}" name="{{ffp.airline}}" id="{{ffp.airline}}">
+								<span class="switch-icon"></span>
+							</div>
 						</div>
-					</div></td>
+					</td>
 				</tr>
 
 			</tbody>
