@@ -122,6 +122,7 @@ admin.config([
 			templateUrl: '/assets/partials/rooms/adRoomDetails.html',
 			controller: 'adRoomDetailsCtrl',
 			url : '/roomdetails/:roomId'
+		});
 
 		$stateProvider.state('admin.hotellikes', {
 			templateUrl: '/assets/partials/Likes/adHotelLikes.html',
