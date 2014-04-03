@@ -10,7 +10,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		$scope.isAdminSnt = true;
 		// SNT Admin -To add new hotel view
 		if($stateParams.action == "add"){
-			$scope.title = "Add Hotel";
+			$scope.title = "Add New Hotel";
 			
 			var fetchSuccess = function(data){
 				$scope.data = data;
