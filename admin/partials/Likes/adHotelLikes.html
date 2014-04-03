@@ -4,9 +4,7 @@
 			Likes
 		</h2>
 		<span class="count">
-			(
-			17
-			)
+			({{likeList.likes.length}})
 		</span>
 		<a id="add-new-button" href="/ui/show?haml_file=admin/hotel_likes/add_like&amp;json_input=hotel_likes/likes_list.json&amp;is_hash_map=true&amp;is_partial=true" class="action add">Add new</a>
 	</header>
@@ -16,17 +14,15 @@
 	</div>
 	<table id="likes" class="grid">
 		<tbody>
-			<tr data-like-id="1">
+			<tr  ng-repeat="like in  likeList.likes">
 				<td>
-					<a href="/admin/hotel_likes/1/edit_hotel_likes" class="edit-data-inline">
-						ROOM FEATURE
-					</a>
+					{{like.name}} <em ng-show="{{like.is_system_defined === 'true'}}">(system defined)</em>
 				</td>
 				<td class="activate">
 					<div class="entry">
 						<label></label>
-						<div id="" class="switch-button single on">
-							<input type="checkbox" value="" name="" checked="checked">
+						<div  class="switch-button single" ng-class="{ on :like.is_active === 'true' }">
+							<input type="checkbox"  name="upsell-rooms" id="upsell-rooms" ng-click="switchClicked($index)">
 							<span class="switch-icon"></span>
 
 						</div>
@@ -34,26 +30,6 @@
 
 				</td>
 			</tr>
-
-			<tr data-like-id="2">
-				<td>
-					<strong>FLOOR</strong>
-					<em>(System defined)</em>
-				</td>
-				<td class="activate">
-					<div class="entry">
-						<label></label>
-						<div id="" class="switch-button single on">
-							<input type="checkbox" value="" name="" checked="checked">
-							<span class="switch-icon"></span>
-
-						</div>
-					</div>
-
-				</td>
-			</tr>
-
-			
 		</tbody>
 	</table>
 </div>
