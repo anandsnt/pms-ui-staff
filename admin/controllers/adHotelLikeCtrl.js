@@ -5,6 +5,9 @@ function($scope, $state, ADHotelLikesSrv) {
 	$scope.likeList = {};
     $scope.likeData   = {};
     $scope.likeData.type = "textbox"
+    $scope.isAddmode = false;
+    $scope.isEditmode = false;
+    $scope.currentClickedElement = -1;
 
 		/**
 	 * To fetch upsell details
@@ -54,6 +57,37 @@ function($scope, $state, ADHotelLikesSrv) {
  	$scope.getAddNewTemplateUrl = function(){
  		return "/assets/partials/Likes/adNewLike.html";
  	};
+
+     /*
+    * To fetch the template for chains details add/edit screens
+    */
+    $scope.getEditTemplateUrl = function(){
+        return "/assets/partials/Likes/adNewLike.html";
+    };
+
+
+     /*
+   * To render edit screen
+   * @param {int} index index of selected chain
+   * @paran {string} id - chain id
+   */
+    $scope.editSelected = function(index,id)    {
+
+        $scope.isEditmode = true;
+        // $scope.isAddmode = false;
+         $scope.currentClickedElement = index;
+        // $scope.editId = id;
+        // var editID = { 'editID' : id };
+        // var editChainSuccessCallback = function(data) {
+        //     $scope.$emit('hideLoader');
+        //     // $scope.editData   = data;
+        //     // $scope.formTitle = 'Edit'+' '+$scope.editData.name;
+        //     // if($scope.editData.lov.length === 0)
+        //     //     $scope.editData.lov.push({'value':'','name':''});
+        //     $scope.isEditmode = true;
+        // };      
+        // $scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback);
+    };
  	
 
  	$scope.$watch('likeData.type',function(){
@@ -135,6 +169,7 @@ function($scope, $state, ADHotelLikesSrv) {
     $scope.addCancelCliked   = function(){
 
         $scope.isAddmode = false;
+        $scope.isEditmode = false;
     }
 
     $scope.addSaveCliked   = function(){
