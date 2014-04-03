@@ -12,7 +12,7 @@
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<table id="users_list_table" class="grid datatable table" ng-table="tableParams">
 				<tr ng-repeat="user in $data">
-					<td  data-title="'Name'" sortable="'full_name'">{{user.full_name}}</td>
+					<td  data-title="'Name'" sortable="'full_name'"><a ui-sref="admin.userdetails({ page: 'edit', id: user.id})"  class="title">{{user.full_name}} </a></td>
 					<td data-title="'Email'" sortable="'email'"> {{user.email}}  </td>
 					<td data-title="'Department'" sortable="'department'">{{user.department}}</td>
 					<td data-title="'Last Login'" sortable="'last_login'"><span class="login">{{user.last_login}} </span></td>

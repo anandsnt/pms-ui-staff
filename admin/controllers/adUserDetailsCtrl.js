@@ -3,20 +3,26 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 	BaseCtrl.call(this, $scope);
 	$scope.mod = "";
 	$scope.image = "";
-
-
-
 	/** functions & variables related to drag & drop **/
 	$scope.selectedUnassignedRole = -1;
 	$scope.selectedAssignedRole = -1;
-
+   /*
+    * Handle action when clicked on assigned role
+    * @param {int} index of the clicked role
+    */
 	$scope.clickedOnAssignedRole = function(index){
 		$scope.selectedAssignedRole = index;
-	}
+	};
+   /*
+    * Handle action when clicked on un assigned role
+    * @param {int} index of the clicked role
+    */
 	$scope.clickedOnUnassignedRole = function(index){
 		$scope.selectedUnassignedRole = index;
-	}	
-
+	};	
+   /*
+    * Handle action when clicked on right arrow button
+    */
 	$scope.leftToRight = function(){
 		var index = $scope.selectedAssignedRole;
 		if(index == -1){
@@ -24,23 +30,26 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 		}
 		var newElement = $scope.assignedRoles[index];
 		$scope.unAssignedRoles.push(newElement);
+		var newElement = $scope.unAssignedRoles[index];	
 		$scope.assignedRoles.splice(index, 1);
 		$scope.selectedAssignedRole = -1;
-	}
-
+	};
+   /*
+    * Handle action when clicked on left arrow button
+    */
 	$scope.rightToleft = function(){
 		var index = $scope.selectedUnassignedRole;
 		if(index == -1){
 			return;
-		}		
-		var newElement = $scope.unAssignedRoles[index];
+		}	
+		var newElement = $scope.unAssignedRoles[index];	
 		$scope.assignedRoles.push(newElement);
 		$scope.unAssignedRoles.splice(index, 1);
 		$scope.selectedUnassignedRole = -1;
 	};
-
+   
 	$scope.$on("ANGULAR_DRAG_START", function(sendchaneel){
-		console.log(sendchaneel);
+		// console.log(sendchaneel);
 	});
 	
 	/**
@@ -54,14 +63,9 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 	 * To handle on drop event
 	 *
 	 */
-
-	$scope.onDrop = function($event, $data, array) {		
+	$scope.onDrop = function($event, $data, array) {	
 		array.push($data);
 	};
-
-
-
-
 	/**
     *   save user details
     */
@@ -73,6 +77,12 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 		} else {
 			unwantedKeys = ["departments", "roles", "user_photo"];
 		}
+		var userRoles = [];
+		$scope.assignedRoles.forEach(function(entry) {
+    		userRoles.push(entry.value);
+		});
+		
+		$scope.data.user_roles = userRoles;
 		var data = dclone($scope.data, unwantedKeys);
 		// Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
 		if($scope.image.indexOf("data:")!= -1){
@@ -96,11 +106,18 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
     */
 	$scope.userDetailsEdit = function(id){
 		var successCallbackRender = function(data){
+			$scope.assignedRoles = [];
 			$scope.$emit('hideLoader');
 			$scope.data = data;
+			$scope.unAssignedRoles = $scope.data.roles;
 			$scope.image = data.user_photo;
 			$scope.data.confirm_email = $scope.data.email;
-			
+			$scope.data.roles.forEach(function(entry, index) {
+	    		if ( $scope.data.user_roles.indexOf(entry.value ) > -1 ){
+	   			 	$scope.assignedRoles.push(entry);
+	   			 	$scope.unAssignedRoles.splice(index, 1);
+	    		}
+			});
 		};
 		$scope.invokeApi(ADUserSrv.getUserDetails, {'id':id} , successCallbackRender);
 	};
@@ -116,10 +133,6 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 		};	
 	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);	
 	};
-
-
-
-
     /**
     * To set mod of operation - add/edit
     */
