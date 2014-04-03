@@ -32,6 +32,14 @@ hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $wi
 			.success(function(response, status) {
 				if(response.status == "success"){
 				    this.roomList = response.data;
+
+				    for (var i = 0, j = this.roomList.rooms.length; i < j; i++) {
+				    	var room = this.roomList.rooms[i];
+				    	
+				    	room.is_occupied = room.is_occupied == 'true' ? true : false;
+				    	room.is_vip = room.is_vip == 'true' ? true : false;
+				    }
+
 				    deferred.resolve(this.roomList);
 				}else{
 					console.log( 'Server request failed' );

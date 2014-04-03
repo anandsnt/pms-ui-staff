@@ -24,12 +24,12 @@
 <section id="rooms" class="content scrollable">
    <ul class="wrapper">
       <li ng-repeat="room in data.rooms" ng-show="room.display_room" >
-         <a ng-class="{'with-image': room.is_occupied == 'true'}" class = "{{getRoomColorClasses(room.hk_status.value, room.is_occupied, room.is_ready)}}" ng-click = "roomListItemClicked(room)">  
+         <a ng-class="{'with-image': room.is_occupied}" class = "{{getRoomColorClasses(room.hk_status.value, room.is_occupied, room.is_ready)}}" ng-click = "roomListItemClicked(room)">
             <h2 class="room-number">{{ room.room_no}}</h2>
             <span class="room-status">{{ room.hk_status.description }}</span>
             <span class="fo-status">{{ room.room_reservation_status }}</span>
-            <figure ng-show="room.is_occupied == 'true'" class="guest-image">
-               <span ng-show="room.is_vip == 'true'" class="vip">VIP</span>
+            <figure ng-show="room.is_occupied" class="guest-image">
+               <span ng-show="room.is_vip" class="vip">VIP</span>
                <img src="{{room.avatar_src}}" alt="" />
             </figure>
          </a>
