@@ -45,7 +45,7 @@ admin.service('adRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
     * @return {object} status 
     */
 	this.update = function(data){
-		var id  = data.id;
+		var id  = data.room_id;
 		var updateData = data.updateData;
 		var deferred = $q.defer();
 		var url = '/admin/hotel_rooms/'+id;	
