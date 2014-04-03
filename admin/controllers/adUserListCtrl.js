@@ -1,6 +1,6 @@
 admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$stateParams', 'ADUserSrv', 'ngTableParams','$filter',  function($scope, $rootScope, $q, $state, $stateParams, ADUserSrv, ngTableParams, $filter){
 	BaseCtrl.call(this, $scope);
-	$scope.hotel_id = $stateParams.id;
+	$scope.hotelId = $stateParams.id;
 	$scope.isAdminSnt = false;
    /**
     * To check whether logged in user is sntadmin or hoteladmin
