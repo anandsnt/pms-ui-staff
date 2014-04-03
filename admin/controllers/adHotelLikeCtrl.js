@@ -41,14 +41,14 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
        var toggleSwitchLikesSuccessCallback = function(data) {
         $scope.$emit('hideLoader');
         $scope.fetchHotelLikes();
-        
+
     };
     $scope.likeList.likes[index].is_active = ($scope.likeList.likes[index].is_active ==='true') ? 'false':'true';
     var data = {'id' : $scope.likeList.likes[index].id,'set_active' : $scope.likeList.likes[index].is_active}
     $scope.invokeApi(ADHotelLikesSrv.toggleSwitch,data, toggleSwitchLikesSuccessCallback);
 
 
-    
+
 }
 
 	 /*
@@ -77,15 +77,27 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
    */
    $scope.editSelected = function(index,id,rowName)    {
 
-    
+
       $scope.currentClickedElement = index;
-      if(rowName === "ROOM FEATURE"){
+    //   if(rowName === "ROOM FEATURE"){
 
-        $scope.isEditmode = true;
-        
+    //     $scope.isEditmode = true;
 
-    }
-    else if(rowName === "FLOOR")
+
+
+    //    var editID = { 'editID' : 1 };
+    //    var editRoomSuccessCallback = function(data) {
+    //     $scope.$emit('hideLoader');
+    //     $scope.likeData = data;
+    //     $scope.isEditmode = true;
+    // };      
+    // $scope.invokeApi(ADHotelLikesSrv.editRoom,editID,editRoomSuccessCallback);
+
+       
+
+
+    // }
+    if(rowName === "FLOOR")
     {
        $scope.isEditmode = false;
    }
@@ -97,23 +109,23 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
    {
        $scope.isEditmode = false;
    }
-   else if(rowName === "NEWSPAPER")
-   {
-       $scope.isEditmode = true;
-       
-   }
+ 
    else{
 
        $scope.isEditmode = true;
 
        $scope.editId = id;
+       if(rowName === "ROOM FEATURE")
+        editID = 1;
+      if(rowName === "NEWSPAPER")
+        editID = 5;
        var editID = { 'editID' : id };
-       var editChainSuccessCallback = function(data) {
+       var editLikeSuccessCallback = function(data) {
         $scope.$emit('hideLoader');
         $scope.likeData = data;
         $scope.isEditmode = true;
     };      
-    $scope.invokeApi(ADHotelLikesSrv.edit,editID,editChainSuccessCallback);
+    $scope.invokeApi(ADHotelLikesSrv.edit,editID,editLikeSuccessCallback);
 }
 };
 
@@ -146,7 +158,7 @@ $scope.$watch('likeData.type',function(){
        $scope.showTextBox = false
        $scope.showRadio = false;
        $scope.showDropDown = false;
-       
+
    }
 });
 
@@ -208,9 +220,9 @@ $scope.$watch('likeData.type',function(){
             if (item.name == "") {
              $scope.likeData.options.splice(index, 1);
          }
-         
+
      });
-        
+
 
         var newLikesSuccessCallback = function(data) {
             $scope.$emit('hideLoader');
@@ -226,6 +238,6 @@ $scope.$watch('likeData.type',function(){
     }
 
 
-    
+
 
 }]);	

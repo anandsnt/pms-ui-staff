@@ -71,4 +71,24 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
 	};
 
 
+	 /*
+    * To get the details of the chain
+    * @param {object} chain id
+    * @return {object} chain data
+    */
+	this.editRoom = function(data){
+		var editID = data.editID;
+		var deferred = $q.defer();
+		var url = '/admin/hotel_likes/'+editID+'/edit_hotel_likes.json';	
+		
+
+		ADBaseWebSrv.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+
    }]);
