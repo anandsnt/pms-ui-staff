@@ -138,3 +138,12 @@ function getDateString(dateObj, showDay){
 	return dateString;
 
 };
+
+function isEmpty(dict) {
+   for(var key in dict) {
+      if (dict.hasOwnProperty(key)) {
+         return false;
+      }
+   }
+   return true;
+}

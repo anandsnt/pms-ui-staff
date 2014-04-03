@@ -69,7 +69,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 			backView.find("#add-new-payment").remove();
 			//to remove add button and show delete icon on succesfull addition of new credit card
 			backView.find('#update_card').remove();
-			var appendHtml = '<a id="update_card" data-payment-id="'+data.data.id+'" class="button with-icon green">'+
+			var appendHtml = '<a id="update_card" class="button with-icon green">'+
 								'<span class="icons icon-wallet"></span>Update CC</a>';
 			
 			
@@ -158,6 +158,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
    	};    	
    	//save new payment
    	this.saveNewPayment = function(){
+
    		if (that.save_inprogress == true) return false;
 		var $payment_type = $("#new-payment #payment-type").val();
 		var $payment_credit_type = $("#new-payment #payment-credit-type").val();
@@ -185,6 +186,28 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 		$cardHolderName = $("#new-payment #name-on-card").val();
 		
 		var user_id = $("#user_id").val();
+		var reservationStatus = $('#registration-content').attr('data-reservation-status');
+		
+		refreshVerticalScroll('#cc-payment');
+		//If it is a check-in reservation using card swipe from registration card, 
+		//do not update the server with card details. 
+		//Instead, save the details locally and pass the information while cheking in 
+		if(reservationStatus == "CHECKING_IN" && fromPagePayment == views.BILLCARD && sntapp.paymentTypeSwipe){
+			var params =  {'number': $number,'add_to_guest_card':add_to_guest_card}
+		    var data = {
+				payment_type: $payment_type,
+			    credit_card: $card_type,
+			    card_expiry: $card_expiry,
+			    name_on_card: $name_on_card,
+			    mli_token: $card_token,
+			    et2: $et2,
+				ksn: $ksn,
+				pan: $pan
+		    };
+		    sntapp.regCardData = data;
+			that.fetchCompletedOfReservationPayment('', params);
+			return false;
+		}
 		
 		if(fromPagePayment == "guest"){
 			
@@ -253,7 +276,6 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 		    webservice.postJSON(url, options);
 		} 
 
-		refreshVerticalScroll('#cc-payment');
   };
   // to get the payments list json to filter on change of payment type
    this.getPaymentsList = function(){

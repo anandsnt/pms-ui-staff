@@ -26,6 +26,7 @@ var GuestPaymentView = function(domRef){
   };
   
   this.renderNewPaymentView = function(e){
+    sntapp.paymentTypeSwipe = false;
   	var addNewPaymentModal = new AddNewPaymentModal("guest", that.myDom);
     addNewPaymentModal.initialize();  
   };
