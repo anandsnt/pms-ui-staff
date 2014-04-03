@@ -73,6 +73,25 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
            return "/assets/partials/Likes/adNewLike.html";
    };
 
+
+
+   $scope.checkBoxClicked = function(index){
+
+   // console.log($scope.likeData.news_papers[index])
+
+    //alert($scope.likeData.news_papers[index].is_checked+index)
+
+
+      $scope.likeData.news_papers[index].is_checked = ($scope.likeData.news_papers[index].is_checked === 'true') ? 'false' :'true';
+      // alert($scope.likeData.news_papers[index].is_checked)
+   }
+
+   $scope.checkBoxDeleteClicked = function(index){
+
+
+      $scope.likeData.news_papers.splice(index,1);
+    
+   }
      /*
    * To render edit screen
    * @param {int} index index of selected chain
