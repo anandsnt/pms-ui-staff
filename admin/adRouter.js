@@ -77,7 +77,7 @@ admin.config([
 		$stateProvider.state('admin.mapping', {
 			templateUrl: '/assets/partials/mapping/adExternalMapping.html',
 			controller: 'ADMappingCtrl',
-			url : '/mapping/:id'
+			url : '/mapping/:hotelId'
 		});
 		$stateProvider.state('admin.ffp', {
 			templateUrl: '/assets/partials/frequentFlyerProgram/adFFPList.html',

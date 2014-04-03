@@ -1,7 +1,7 @@
 admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappingSrv', function($scope, $state, $stateParams, ADMappingSrv) {
 	
 	BaseCtrl.call(this, $scope);
-	$scope.id = $stateParams.id
+	$scope.hotelId = $stateParams.hotelId
 	$scope.editData   = {};
 	$scope.editData.sntValues = [];
 	$scope.currentClickedElement = -1;
@@ -21,7 +21,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappin
 		else $scope.addFormView = true;
 	};
 	
-	$scope.invokeApi(ADMappingSrv.fetchMappingList, {'id':$scope.id}, fetchSuccess);
+	$scope.invokeApi(ADMappingSrv.fetchMappingList, {'id':$scope.hotelId}, fetchSuccess);
 	
 	/*
     * Function to render edit screen with mapping data.
