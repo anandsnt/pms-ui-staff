@@ -36,10 +36,10 @@ admin.service('ADRoomTypesSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
     * @param {array} selected department id
     * @return {object} selected department details
     */
-	this.getDepartmentDetails = function(data){
+	this.getRoomTypeDetails = function(data){
 		var deferred = $q.defer();
 		var id = data.id;
-		var url = '/admin/departments/'+id+'/edit.json';	
+		var url = '/admin/room_types/'+id+'/edit.json';	
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);

@@ -2,7 +2,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
-	$scope.departmentData = {};
+	$scope.roomTypeData = {};
    /*
     * To fetch list of departments
     */
@@ -42,16 +42,15 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     * @param {index} index of selected department
     * @param {id} id of the department
     */	
-	$scope.editDepartments = function(index, id)	{
+	$scope.editRoomTypes = function(index, id)	{
 		$scope.departmentData={};
 		$scope.currentClickedElement = index;
-		$scope.isAddMode = false;
 	 	var successCallbackRender = function(data){	
-	 		$scope.departmentData = data;
+	 		$scope.roomTypeData = data;
 	 		$scope.$emit('hideLoader');
 	 	};
 	 	var data = {"id":id };
-	 	$scope.invokeApi(ADDepartmentSrv.getDepartmentDetails, data , successCallbackRender);    
+	 	$scope.invokeApi(ADRoomTypesSrv.getRoomTypeDetails, data , successCallbackRender);    
 	};
    
    /*
@@ -62,7 +61,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	$scope.getTemplateUrl = function(index, id){
 		if(typeof index === "undefined" || typeof id === "undefined") return "";
 		if($scope.currentClickedElement == index){ 
-			 	return "/assets/partials/departments/adDepartmentsEdit.html";
+			 	return "/assets/partials/roomTypes/adRoomTypesDetails.html";
 		}
 	};
   /*

@@ -1,0 +1,57 @@
+<div class="data-holder">
+	<form room_type_id="1" id="edit-room-type" class="form inline-form float">
+		<div class="form-title">
+			<h3><span>Edit</span> {{roomTypeData.room_type_name}} </h3>
+			<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+		</div>
+		<fieldset class="holder left float">
+			<div class="entry full-width">
+				<label for="room-type-name"> Name <strong>*</strong> </label>
+				<input type="text" value="2 Bedroom Suites SEA" required="yes" placeholder="Enter room type name" name="room-type-name" id="room-type-name">
+			</div>
+
+			<div class="entry full-width">
+				<label for="room-type-description"> StayNTouch Description </label>
+				<textarea value="Two Bedroom Suite with Pool View" type="" rows="4" required="no" placeholder="Enter StayNTouch Description" name="room-type-description" id="room-type-description" class="full-width">Two Bedroom Suite with Pool View</textarea>
+			</div>
+
+		</fieldset>
+		<fieldset class="holder right float">
+			<div class="entry">
+				<label for="room-type-code"> Code <strong>*</strong> </label>
+				<input type="text" value="2STE" required="yes" placeholder="Enter room type code" name="room-type-code" id="room-type-code">
+			</div>
+
+			<div class="entry">
+				<label for="room-type-max-occupancy"> Max Occupancy </label>
+				<input type="text" value="" required="no" placeholder="Enter Max Occupancy" name="room-type-max-occupancy" id="room-type-max-occupancy">
+			</div>
+
+			<div class="entry full-width">
+				<label for="room-type-picture"> Picture </label>
+				<div class="file-upload with-preview">
+					<input type="file" name="room-type-picture" id="room-type-picture">
+					<button type="button" class="button brand-colors">
+						Choose file
+					</button>
+
+				</div>
+				<span class="file-preview"> <img src="http://d81ca00c1e165587be3d-4d1e022461cbaa577307930af1386d20.r4.cf2.rackcdn.com/CHA/DOZERQA/room_types/1/images/thumb/image20140228005457.png?1393570498" id="file-preview" alt=""> </span>
+			</div>
+			<div class="entry full-width radio-check">
+				<label class="checkbox"> <span class="icon-form icon-checkbox"></span> Room is a pseudo room type
+					<input type="checkbox" id="is-pseudo-room-type">
+				</label>
+			</div>
+
+		</fieldset>
+		<div class="actions float">
+			<button type="button" id="cancel" class="button blank add-data-inline">
+				Cancel
+			</button>
+			<button type="button" like-type="common" id="update" class="button green add-data-inline">
+				Save changes
+			</button>
+		</div>
+	</form>
+</div>

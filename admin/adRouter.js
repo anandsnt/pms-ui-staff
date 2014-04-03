@@ -110,7 +110,7 @@ admin.config([
 		});
 		
 		$stateProvider.state('admin.roomtypes', {
-			templateUrl: '/assets/partials/roomTypes/roomTypesList.html',
+			templateUrl: '/assets/partials/roomTypes/adRoomTypesList.html',
 			controller: 'ADRoomTypesCtrl',
 			url : '/roomtypes'
 		});
