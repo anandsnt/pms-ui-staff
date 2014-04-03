@@ -22,7 +22,7 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
      * To add new feature
      * @param {object} new upsell details
      */
-	  this.addNewFeature = function(data){
+	  this.addEditNewFeature = function(data){
 	  	var updateData = data;
 		 var deferred = $q.defer();
 	  	var url = '/admin/hotel_likes/add_feature_type';	
