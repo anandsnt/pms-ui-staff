@@ -11,7 +11,9 @@
   cursor: pointer;
 }
 .ng-table th.sortable div {
-  padding-right: 18px;
+  padding-top:2px;
+  padding-left: 15px;
+  text-align:left;
   position: relative;
 }
 .ng-table th.sortable div:after,
@@ -21,7 +23,7 @@
   border-style: solid;
   border-color: #000 transparent;
   visibility: visible;
-  right: 8px;
+  left: 0px;
   top: 50%;
   position: absolute;
   opacity: .3;
