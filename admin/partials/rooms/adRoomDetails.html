@@ -54,43 +54,10 @@
 						<span>Select Features that apply to this room.</span>
 					</em>
 				</div>
+
 				<div class="entry full-width">
 					<div id="room-features" class="boxes col2">
-						<div class="entry radio-check">
-							<label class="checkbox">
-								<span class="icon-form icon-checkbox"></span>
-								<label for="features1"></label>
-								<input type="checkbox" value="POOL VIEW" name="1" id="features1">
-								POOL VIEW
-							</label>
-						</div>
-
-						<div class="entry radio-check">
-							<label class="checkbox">
-								<span class="icon-form icon-checkbox"></span>
-								<label for="features16"></label>
-								<input type="checkbox" value="BALCONY" name="16" id="features16">
-								BALCONY
-							</label>
-						</div>
-
-						<div class="entry radio-check">
-							<label class="checkbox">
-								<span class="icon-form icon-checkbox"></span>
-								<label for="features144"></label>
-								<input type="checkbox" value="CONNECTING ROOM" name="144" id="features144">
-								CONNECTING ROOM
-							</label>
-						</div>
-
-						<div class="entry radio-check">
-							<label class="checkbox checked">
-								<span class="icon-form icon-checkbox checked"></span>
-								<label for="features145"></label>
-								<input type="checkbox" value="SPA" name="145" id="features145" checked="checked">
-								SPA
-							</label>
-						</div>
+							<ad-checkbox ng-repeat="room_feature in room_features" is-checked="room_feature.selected" label="{{room_feature.name}}"></ad-checkbox>
 
 					</div>
 				</div>
@@ -108,6 +75,15 @@
 				</div>
 				<div class="entry full-width">
 					<div id="room-likes" class="boxes col2">
+						<div class="entry radio-check" ng-repeat="room_like in data.room_likes">
+							<label class="checkbox" ng-class="{checked: data.active_room_likes.indexOf(room_like.value)>=0}">
+								<span class="icon-form icon-checkbox" ng-class="{checked: data.active_room_features.indexOf(room_like.value)>=0}"></span>
+								<label for="features{{$index}}"></label>
+								<input type="checkbox" value="{{room_like.value}}" id="features{{$index}}" ng-selected="data.active_room_features.indexOf(room_like.value)>=0" ng-model="room_like.value">							
+								{{room_like.name}}
+							</label>
+						</div>
+
 						<div class="entry radio-check">
 							<label class="checkbox">
 								<span class="icon-form icon-checkbox"></span>
@@ -347,7 +323,7 @@
 			</fieldset>
 			<div class="actions float">
 				<button type="button" id="cancel" class="button blank add-data-inline">Cancel</button>
-				<button type="button" id="update" class="button green add-data-inline">Save changes</button>
+				<button type="button" id="update" class="button green add-data-inline" ng-click="updateRoomDetails()">Save changes</button>
 			</div>
 		</form>
 	</div>
