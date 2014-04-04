@@ -1,0 +1,43 @@
+<section class="content current">
+	<div>
+	<section>
+		<header class="content-title float">
+			<h2>
+				Rooms
+			</h2>
+			<span class="count">
+				( {{data.total_number_of_rooms}} )
+			<span class="status">
+				{{data.number_of_rooms_configured}} of {{data.total_number_of_rooms}} Licensed Rooms Configured
+			</span>
+		</header>
+
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<table id="rooms" class="grid datatable">
+			<thead>
+				<tr role="row">
+					<th width="40%" class="sorting">
+						Room Number
+					</th>
+					<th width="60%" class="sorting">
+						Room Type
+					</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr ng-repeat="room in data.rooms" room-id="{{room.room_id}}">
+					<td>
+						<a ui-sref='admin.roomdetails({roomId:room.room_id})' class="number edit-data">
+							{{room.room_number}}
+						</a>
+					</td>
+					<td>
+						{{room.room_type}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+</div>
+</section>
