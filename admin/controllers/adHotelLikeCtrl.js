@@ -285,6 +285,9 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
 
 
       if($scope.isAddmode){
+
+        delete $scope.likeData.newfeature;
+        delete $scope.likeData.is_system_defined;
         var newLikesSuccessCallback = function(data) {
 
 
@@ -300,7 +303,8 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
       }
       else{
 
-
+        delete $scope.likeData.newfeature;
+        delete $scope.likeData.is_system_defined;
        console.log($scope.likeData)
 
        var updateLikesSuccessCallback = function(data) {
@@ -319,8 +323,8 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
 
     $scope.customLikeSave= function(){
 
-
-      console.log($scope.likeData);
+      var data = {'custom_likes' : $scope.likeData.news_papers,'id':$scope.likeData.id}
+      console.log(data);
 
 
       delete $scope.likeData.newfeature;
@@ -330,7 +334,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
         $scope.fetchHotelLikes();
 
       };
-      $scope.invokeApi(ADHotelLikesSrv.customLikeSave, $scope.likeData, saveCustomLikesSuccessCallback);
+      $scope.invokeApi(ADHotelLikesSrv.customLikeSave, data, saveCustomLikesSuccessCallback);
 
 
     }
