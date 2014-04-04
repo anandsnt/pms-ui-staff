@@ -91,6 +91,7 @@ admin.config([
 			url : '/departments'
 		});
 
+
 		$stateProvider.state('admin.upselllatecheckout', {
 			templateUrl: '/assets/partials/upsellLatecheckout/upsellLatecheckout.html',
 			controller: 'ADUpsellLateCheckoutCtrl',
@@ -108,6 +109,41 @@ admin.config([
 			controller: 'ADRoomUpsellCtrl',
 			url : '/roomupsell'
 		});
+		
 
+		$stateProvider.state('admin.roomtypes', {
+			templateUrl: '/assets/partials/roomTypes/adRoomTypesList.html',
+			controller: 'ADRoomTypesCtrl',
+			url : '/roomtypes'
+		});
+		
+
+
+
+
+		$stateProvider.state('admin.roomKeyDelivery', {
+			templateUrl: '/assets/partials/roomKeyDelivery/roomKeyDelivery.html',
+			controller: 'ADRoomKeyDeliveryCtrl',
+			url : '/roomKeyDelivery'
+		});
+
+
+		$stateProvider.state('admin.rooms', {
+			templateUrl: '/assets/partials/rooms/adRoomList.html',
+			controller: 'adRoomListCtrl',
+			url : '/rooms'
+		});		
+		$stateProvider.state('admin.roomdetails', {
+			templateUrl: '/assets/partials/rooms/adRoomDetails.html',
+			controller: 'adRoomDetailsCtrl',
+			url : '/roomdetails/:roomId'
+		});
+
+		$stateProvider.state('admin.hotellikes', {
+			templateUrl: '/assets/partials/Likes/adHotelLikes.html',
+			controller: 'ADHotelLikesCtrl',
+			url : '/likes'
+
+		});
 	}
 ]);
