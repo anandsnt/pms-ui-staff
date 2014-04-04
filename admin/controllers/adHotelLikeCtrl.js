@@ -61,6 +61,9 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
     */
     $scope.getTemplateUrl = function(rowName){
 
+
+      if(rowName === "ROOM TYPE")
+          return "/assets/partials/Likes/adRoomTypeEdit.html";
       if(rowName === "ROOM FEATURE")
         return "/assets/partials/Likes/adRoomFeatureEdit.html";
 
@@ -116,6 +119,13 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
     $scope.isEditmode = true;
 
     $scope.editId = id;
+
+    if(rowName === "ROOM TYPE"){
+
+      editID = 6;
+    }
+
+
     if(rowName === "ROOM FEATURE"){
 
       editID = 1;
@@ -304,7 +314,6 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
       else{
 
         delete $scope.likeData.newfeature;
-        delete $scope.likeData.is_system_defined;
        console.log($scope.likeData)
 
        var updateLikesSuccessCallback = function(data) {
