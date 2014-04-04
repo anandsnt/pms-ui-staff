@@ -1,4 +1,4 @@
-admin.controller('adRoomDetailsCtrl', ['$scope','adRoomSrv', '$state', '$stateParams', function($scope, adRoomSrv, $state, $stateParams){
+admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$stateParams', function($scope, ADRoomSrv, $state, $stateParams){
 	/*
 	* Controller class for Room Details
 	*/
@@ -74,7 +74,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','adRoomSrv', '$state', '$statePa
 	};
 
 	//getting the room details
-	$scope.invokeApi(adRoomSrv.roomDetails, {'roomId': roomId}, fetchSuccessOfRoomDetails, fetchFailedOfRoomDetails);	
+	$scope.invokeApi(ADRoomSrv.roomDetails, {'roomId': roomId}, fetchSuccessOfRoomDetails, fetchFailedOfRoomDetails);	
 
 	/*
 	* method for go back to previous stage, it is always room listing	
@@ -112,7 +112,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','adRoomSrv', '$state', '$statePa
 		if($scope.data.room_image.indexOf("data:")!= -1){
 			postData.room_image = $scope.data.room_image;
 		}
-		$scope.invokeApi(adRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);	
+		$scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);	
 	}
 
 	/**
