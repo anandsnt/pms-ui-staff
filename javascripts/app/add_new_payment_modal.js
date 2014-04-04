@@ -110,8 +110,8 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 					'</span></a>';
 				
 			    $("#payment_tab").prepend($add);
-			}
-				
+			}			
+			this.paymentTypeSwipe = false;	
 			that.hide();   			
 
    	};
