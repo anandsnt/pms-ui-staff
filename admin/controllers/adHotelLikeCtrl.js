@@ -255,6 +255,23 @@ $scope.$watch('likeData.type',function(){
     }
 
 
+     $scope.customLikeSave= function(){
+
+
+      console.log($scope.likeData)
+
+        var saveCustomLikesSuccessCallback = function(data) {
+            $scope.isEditmode = false;
+            $scope.fetchHotelLikes();
+
+        };
+        $scope.invokeApi(ADHotelLikesSrv.customLikeSave, $scope.likeData, saveCustomLikesSuccessCallback);
+      
+
+     }
+
+
+
 
 
 }]);	
