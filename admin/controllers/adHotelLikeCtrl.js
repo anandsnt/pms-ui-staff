@@ -285,6 +285,9 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
 
 
       if($scope.isAddmode){
+
+        delete $scope.likeData.newfeature;
+        delete $scope.likeData.is_system_defined;
         var newLikesSuccessCallback = function(data) {
 
 
