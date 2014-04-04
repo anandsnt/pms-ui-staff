@@ -133,7 +133,7 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 		};	
 	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);	
 	};
-    /**
+   /**
     * To set mod of operation - add/edit
     */
 	var id = $stateParams.id;
