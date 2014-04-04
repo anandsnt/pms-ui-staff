@@ -98,10 +98,11 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
 
     var checkBoxDeleteCallback = function(data) {
       $scope.$emit('hideLoader');
+      $scope.likeData.news_papers.splice(index,1);
      };    
     var editID = id;  
     $scope.invokeApi(ADHotelLikesSrv.deleteChecbox,editID,checkBoxDeleteCallback);
-    $scope.likeData.news_papers.splice(index,1);
+  
     
   }
      /*
