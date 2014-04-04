@@ -1,4 +1,4 @@
-admin.service('adRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
+admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
    /*
 	* service class for room related operations
 	*/
