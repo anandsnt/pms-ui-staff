@@ -15,22 +15,6 @@ admin.service('ADChargeGroupsSrv',['$http', '$q', 'ADBaseWebSrv', function($http
 		return deferred.promise;
 	};
 	/*
-    * Service function to render edit charge group screen
-    * @return {object}.
-    */
-	this.edit = function(data){
-
-		var deferred = $q.defer();
-		var url = '/admin/charge_groups/'+data.editId+'/edit';
-		
-		ADBaseWebSrv.getJSON(url).then(function(data) {
-			deferred.resolve(data);
-		},function(data){
-			deferred.reject(data);
-		});
-		return deferred.promise;
-	};
-	/*
     * Service function to update charge group
     * @return {object} status of update
     */
@@ -55,7 +39,7 @@ admin.service('ADChargeGroupsSrv',['$http', '$q', 'ADBaseWebSrv', function($http
 		var deferred = $q.defer();
 		var url = '/admin/charge_groups/'+data.value;
 		
-		ADBaseWebSrv.postJSON(url,data).then(function(data) {
+		ADBaseWebSrv.putJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
@@ -78,6 +62,5 @@ admin.service('ADChargeGroupsSrv',['$http', '$q', 'ADBaseWebSrv', function($http
 		});
 		return deferred.promise;
 	};
-
 	
 }]);

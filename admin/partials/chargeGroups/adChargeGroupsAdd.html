@@ -6,21 +6,15 @@
 			<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 		</div>
 		<fieldset class="holder left float">
-			<div class="entry">
-				<label for="charge-group-name"> Name <strong>*</strong> </label>
-				<input type="text" value="" required="yes" placeholder="Enter charge group" name="charge-group-name" id="charge-group-name">
-			</div>
-
+			<ad-textbox value="data.name" name = "item-name" label = "Name" placeholder = "Enter charge group" required = "yes"></ad-textbox>
 		</fieldset>
-
 		<div class="actions float">
-			<button type="button" ng-click="closeAddNew()" class="button blank edit-data-inline">
+			<button type="button" ng-click="clickedCancel()" class="button blank edit-data-inline">
 				Cancel
 			</button>
 			<button type="button" ng-click="saveAddNew()" class="button green edit-data-inline">
 				Save changes
 			</button>
 		</div>
-
 	</form>
 </div>
