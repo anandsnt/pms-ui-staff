@@ -10,20 +10,23 @@
 		<div class="entry full-width float">
 			<label>Options</label>
 			<div id="newspaper-options" class="boxes">
+
 				<label class="checkbox inline" ng-repeat="option in likeData.news_papers">
-					<span data-id="1" class="icons icon-delete"></span>
-					<span class="icon-form icon-checkbox checked"></span>
-					<input type="checkbox" value="POOL VIEW" name="newspaper" data-id="1" checked="checked">
+					<span data-id="1" class="icons icon-delete" ng-click="checkBoxDeleteClicked($index)"></span>
+					<span class="icon-form icon-checkbox" ng-class="{ checked : option.is_checked === 'true' }"></span>
+					<input type="checkbox" value="POOL VIEW" name="newspaper" data-id="1" ng-click="checkBoxClicked($index)">
 					<div id="newspaper-name">{{option.name}}</div>
 				</label>
 
-				<label data-type="newspaper" class="add-new-checkbox inline" ng-hide="showNewRoomOption" ng-click="shownewInputRoomOption()">
+				<label class="inline" ng-show="showNewRoomOption"> 
+					<input  ng-model="likeData.newfeature"/>
+				</label> 
+
+				<label data-type="newspaper" class="add-new-checkbox inline" ng-click="shownewInputRoomOption()">
 					<span class="icons icon-add"></span>
 					Add new option
 				</label> 
-				<label data-type="newspaper" class="add-new-checkbox inline" ng-show="showNewRoomOption">
-					<input type="text" value="" name="newspaper" data-id="" id="newspaper-option52" class="checkbox-value" ng-show="showNewsPaperOption" >
-				</label>
+				
 
 
 
@@ -31,7 +34,7 @@
 		</div>
 		<div class="actions float">
 			<button type="button"  ng-click="cancelCliked()" class="button blank edit-data-inline">Cancel</button>
-			<button type="button" like-type="newspaper" id="update" class="button green edit-data-inline">Save changes</button>
+			<button type="button" like-type="newspaper" ng-click="customLikeSave()" class="button green edit-data-inline">Save changes</button>
 		</div>
 	</form>
 </div>
