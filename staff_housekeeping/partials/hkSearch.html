@@ -23,7 +23,7 @@
 <!-- Rooms list -->
 <section id="rooms" class="content scrollable">
    <ul class="wrapper">
-      <li ng-repeat="room in data.rooms" ng-if="room.display_room" ng-click = "roomListItemClicked(room)">
+      <li ng-repeat="room in rooms" ng-if="room.display_room" ng-click = "roomListItemClicked(room)">
          <a class = "{{ room.roomStatusClass }}">
             <h2 class="room-number">{{ room.room_no }}</h2>
             <figure class="guest-image">

@@ -14,20 +14,45 @@ hkRover.controller('HKSearchCtrl',
 	$scope.$emit('dismissFilterScreen');
 
 	var afterFetch = function(data) {
-        $scope.data = data;
 
-        $scope.calculateFilters();
+		// making unique copies of array
+		// slicing same array not good.
+		// say thanks to underscore.js
+		var smallPart = _.compact( data.rooms );
+		var restPart  = _.compact( data.rooms );
 
-        // scroll to the previous room list scroll position
-        var toPos = localStorage.getItem( 'roomListScrollTopPos' );
-        $scope.refreshScroll( toPos );
+		// smaller part consisit of enogh rooms
+		// that will fill in the screen
+		smallPart = smallPart.slice( 0, 20 );
+		restPart  = restPart.slice( 20 );
+
+		// first load the small part
+        $scope.rooms = smallPart;
+
+        // load the rest after a small delay
+        $timeout(function() {
+
+        	// push the rest of the rooms into $scope.rooms
+        	// remember slicing is only happening on the Ctrl and not on Srv
+        	$scope.rooms.push.apply( $scope.rooms, restPart );
+
+        	// apply the filter
+        	$scope.calculateFilters();
+
+        	// scroll to the previous room list scroll position
+        	var toPos = localStorage.getItem( 'roomListScrollTopPos' );
+        	$scope.refreshScroll( toPos );
+
+        	// finally hide the loaded
+        	// in almost every case this will not block UX
+        	$scope.$emit( 'hideLoader' );
+        }, 100);
 	};
 
 	//Fetch the roomlist if necessary
 	if ( HKSearchSrv.isListEmpty() ) {
 		$scope.$emit('showLoader');
 		HKSearchSrv.fetch().then(function(data) {
-			$scope.$emit('hideLoader');
 			afterFetch( data );
 		}, function() {
 			console.log("fetch failed");
@@ -35,6 +60,11 @@ hkRover.controller('HKSearchCtrl',
 		});	
 	} else {
 		$timeout(function() {
+
+			// show loader as we will be slicing the rooms
+			// in smaller and bigger parts and show smaller first
+			// and rest after a delay
+			$scope.$emit('showLoader');
 			afterFetch( fetchedRoomList );
 		}, 1);
 	}
@@ -132,8 +162,8 @@ hkRover.controller('HKSearchCtrl',
 	*/
 	$scope.calculateFilters = function() {
 
-		for (var i = 0, j = $scope.data.rooms.length; i < j; i++) {
-			var room = $scope.data.rooms[i];
+		for (var i = 0, j = $scope.rooms.length; i < j; i++) {
+			var room = $scope.rooms[i];
 
 			//Filter by status in filter section, HK_STATUS
 			if($scope.isAnyFilterTrue(['dirty','pickup','clean','inspected','out_of_order','out_of_service'])){
@@ -233,8 +263,8 @@ hkRover.controller('HKSearchCtrl',
 
 		// since no filer we will have to
 		// loop through all rooms
-		for (var i = 0, j = $scope.data.rooms.length; i < j; i++) {
-			var room = $scope.data.rooms[i]
+		for (var i = 0, j = $scope.rooms.length; i < j; i++) {
+			var room = $scope.rooms[i]
 			var roomNo = room.room_no.toUpperCase();
 
 			// if the query is empty
