@@ -320,6 +320,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
     $scope.customLikeSave= function(){
 
 
+      var data = {'custom_likes' : $scope.likeData.news_papers,'id':$scope.likeData.id}
       console.log($scope.likeData);
 
 
@@ -330,7 +331,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
         $scope.fetchHotelLikes();
 
       };
-      $scope.invokeApi(ADHotelLikesSrv.customLikeSave, $scope.likeData, saveCustomLikesSuccessCallback);
+      $scope.invokeApi(ADHotelLikesSrv.customLikeSave, data, saveCustomLikesSuccessCallback);
 
 
     }
