@@ -133,5 +133,17 @@ admin.config([
 			url : '/likes'
 
 		});
+		
+		$stateProvider.state('admin.chargeGroups', {
+			templateUrl: '/assets/partials/chargeGroups/adChargeGroups.html',
+			controller: 'ADChargeGroupsCtrl',
+			url : '/chargeGroups'
+		});
+		
+		$stateProvider.state('admin.paymentMethods', {
+			templateUrl: '/assets/partials/paymentMethods/adPaymentMethods.html',
+			controller: 'ADPaymentMethodsCtrl',
+			url : '/paymentMethods'
+		});
 	}
 ]);
