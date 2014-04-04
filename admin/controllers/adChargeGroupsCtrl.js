@@ -6,7 +6,7 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', function($
 	$scope.isAddmode = false;
 	$scope.isEditmode = false;
 	$scope.addFormView = false;
-	$scope.isShowAddNew = false;
+	//$scope.isShowAddNew = false;
     /*
     * To fetch charge groups list
     */
@@ -38,7 +38,7 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', function($
 	$scope.getTemplateUrl = function(index, id){
 		if(typeof index === "undefined" || typeof id === "undefined") return "";
 		if($scope.currentClickedElement == index){ 
-			 	return "/assets/partials/departments/adDepartmentsEdit.html";
+			 	return "/assets/partials/chargeGroups/adChargeGroupsEdit.html";
 		}
 	};
 	/*
@@ -48,13 +48,14 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', function($
 		$scope.currentClickedElement = -1;
 	};	
 	$scope.addNewClicked = function(){
-		$scope.isShowAddNew = true;
+		//$scope.isShowAddNew = true;
+		$scope.currentClickedElement = 'new';
 	};
 	$scope.closeAddNew = function(){
-		$scope.isShowAddNew = false;
+		//$scope.isShowAddNew = false;
 	};
   	$scope.saveAddNew = function(){
-		$scope.isShowAddNew = false;
+		//$scope.isShowAddNew = false;
 	};
 	
 	
