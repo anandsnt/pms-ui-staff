@@ -117,7 +117,7 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
     * @return {object} status 
     */
     this.customLikeSave = function(data){
-    	var updateData = data.updateData;
+    	var updateData = data;
     	var deferred = $q.defer();
     	var url = '/admin/hotel_likes/save_custom_likes';	
     	
