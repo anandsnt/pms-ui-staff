@@ -90,7 +90,13 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
    */
 
 
-   $scope.checkBoxDeleteClicked = function(index){
+   $scope.checkBoxDeleteClicked = function(index,id){
+
+    var checkBoxDeleteCallback = function(data) {
+      $scope.$emit('hideLoader');
+     };    
+    var editID = id;  
+    $scope.invokeApi(ADHotelLikesSrv.deleteChecbox,editID,checkBoxDeleteCallback);
 
 
     $scope.likeData.news_papers.splice(index,1);

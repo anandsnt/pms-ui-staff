@@ -12,9 +12,9 @@
 			<div id="newspaper-options" class="boxes">
 
 				<label class="checkbox inline" ng-repeat="option in likeData.news_papers">
-					<span data-id="1" class="icons icon-delete" ng-click="checkBoxDeleteClicked($index)"></span>
+					<span data-id="1" class="icons icon-delete" ng-click="checkBoxDeleteClicked($index,option.id)" ng-show="option.id.length"></span>
 					<span class="icon-form icon-checkbox" ng-class="{ checked : option.is_checked === 'true' }"></span>
-					<input type="checkbox" value="POOL VIEW" name="newspaper" data-id="1" ng-click="checkBoxClicked($index)">
+					<input type="checkbox"  name="newspaper" data-id="1" ng-click="checkBoxClicked($index)">
 					<div id="newspaper-name">{{option.name}}</div>
 				</label>
 
