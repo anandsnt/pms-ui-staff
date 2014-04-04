@@ -35,9 +35,19 @@ hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $wi
 
 				    for (var i = 0, j = this.roomList.rooms.length; i < j; i++) {
 				    	var room = this.roomList.rooms[i];
+
+				    	// lets set this so that we can avoid
+				    	room.display_room = true;
+
+				    	// reduce scope search
+				    	room.description = room.hk_status.description
 				    	
 				    	room.is_occupied = room.is_occupied == 'true' ? true : false;
 				    	room.is_vip = room.is_vip == 'true' ? true : false;
+
+				    	// single calculate the class required
+				    	// will require additional call from details page
+				    	room.roomStatusClass = this.setRoomStatusClass(room);
 				    }
 
 				    deferred.resolve(this.roomList);
@@ -69,6 +79,42 @@ hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $wi
 		} else {
 			return true;
 		}
+	};
+
+	// Moved from ctrl to srv as this is calculated only once
+	// keept as msg so that it can be called from crtl if needed
+	this.setRoomStatusClass = function(room){
+
+		if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED') && !room.is_occupied) {
+			return 'room-clean';
+		}
+		if((room.hk_status.value == 'DIRTY' || room.hk_status.value == 'PICKUP') && !room.is_occupied) {
+			return 'room-dirty';
+		}
+		if(room.hk_status.value == 'OO' || room.hk_status.value == 'OS'){
+			return 'room-out';
+		}
+		return '';
+	};
+
+	// when user edit the room on details page
+	// update that on the room list
+	this.updateHKStatus = function(updatedRoom) {
+		var newValue = updatedRoom.current_hk_status;
+
+		var newDescription = newValue.toLowerCase();
+		var fChar          = newDescription[0].toUpperCase();
+		var rChar          = newDescription.slice(1);
+		newDescription     = fChar + rChar;
+
+		var matchedRoom = _.find(this.roomList.rooms, function(room) {
+			return parseInt(room.id) === updatedRoom.id;
+		});
+
+		matchedRoom.hk_status.value       = newValue;
+		matchedRoom.hk_status.description = newDescription;
+		matchedRoom.description           = newDescription;
+		matchedRoom.roomStatusClass       = this.setRoomStatusClass(matchedRoom);
 	};
 
 }]);

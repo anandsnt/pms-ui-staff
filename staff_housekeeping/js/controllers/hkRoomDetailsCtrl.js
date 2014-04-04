@@ -91,6 +91,9 @@ hkRover.controller('HKRoomDetailsCtrl',
 			$scope.$emit('hideLoader');
 			$scope.data.room_details.current_hk_status = $scope.currentHKStatus.value;
 			$scope.calculateColorCodes();
+
+			HKSearchSrv.updateHKStatus( $scope.data.room_details );
+
 			console.log("update done");
 		}, function(){
 			console.log('update failed');
