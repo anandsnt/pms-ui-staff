@@ -3,47 +3,29 @@
 		<header class="content-title float">
 			<h2> Charge Groups </h2>
 			<span class="count"> (
-				8
+				{{data.charge_groups.length}}
 				) </span>
-			<a id="add-new-button" href="/admin/charge_groups/new" class="action add">Add new</a>
+			<a class="action add" ng-click="addNewClicked()">Add new</a>
 		</header>
 
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		
+		<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/chargeGroups/adChargeGroupsAdd.html'"></div>		
 		<div id="new-form-holder"></div>
-		<table id="chargegroups" class="grid">
+		
+		<table class="grid">
 			<tbody>
-				<tr id="charge-group-row-1">
-					<td><a href="/admin/charge_groups/1/edit" data-item="1" data-colspan="2" class="edit-data-inline"> Parking </a></td>
-					<td class="delete"><a id="1" class="icons icon-delete large-icon delete_item"></a></td>
+				
+				<tr ng-repeat="item in data.charge_groups" > 
+					<td ng-click="editItem($index,item.value)" ng-hide="currentClickedElement == $index">
+						<a data-item="1" data-colspan="2" class="edit-data-inline">{{item.name}} </a>
+					</td>
+					<td class="delete" ng-click="clickedDelete(item.value)" ng-hide="currentClickedElement == $index">
+						<a class="icons icon-delete large-icon delete_item"></a>
+					</td>
+					<td colspan="2" ng-include="getTemplateUrl($index,item.value)"></td>
 				</tr>
-				<tr id="charge-group-row-3">
-					<td><a href="/admin/charge_groups/3/edit" data-item="3" data-colspan="2" class="edit-data-inline"> Minibar </a></td>
-					<td class="delete"><a id="3" class="icons icon-delete large-icon delete_item"></a></td>
-				</tr>
-				<tr id="charge-group-row-4">
-					<td><a href="/admin/charge_groups/4/edit" data-item="4" data-colspan="2" class="edit-data-inline"> Food &amp; Beverage </a></td>
-					<td class="delete"><a id="4" class="icons icon-delete large-icon delete_item"></a></td>
-				</tr>
-				<tr id="charge-group-row-5">
-					<td><a href="/admin/charge_groups/5/edit" data-item="5" data-colspan="2" class="edit-data-inline"> Miscellaneous </a></td>
-					<td class="delete"><a id="5" class="icons icon-delete large-icon delete_item"></a></td>
-				</tr>
-				<tr id="charge-group-row-25">
-					<td><a href="/admin/charge_groups/25/edit" data-item="25" data-colspan="2" class="edit-data-inline"> Payments </a></td>
-					<td class="delete"><a id="25" class="icons icon-delete large-icon delete_item"></a></td>
-				</tr>
-				<tr id="charge-group-row-65">
-					<td><a href="/admin/charge_groups/65/edit" data-item="65" data-colspan="2" class="edit-data-inline"> One test </a></td>
-					<td class="delete"><a id="65" class="icons icon-delete large-icon delete_item"></a></td>
-				</tr>
-				<tr id="charge-group-row-66">
-					<td><a href="/admin/charge_groups/66/edit" data-item="66" data-colspan="2" class="edit-data-inline"> Two test </a></td>
-					<td class="delete"><a id="66" class="icons icon-delete large-icon delete_item"></a></td>
-				</tr>
-				<tr id="charge-group-row-67">
-					<td><a href="/admin/charge_groups/67/edit" data-item="67" data-colspan="2" class="edit-data-inline"> Three test </a></td>
-					<td class="delete"><a id="67" class="icons icon-delete large-icon delete_item"></a></td>
-				</tr>
+				
 			</tbody>
 		</table>
 	</div>
