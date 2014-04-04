@@ -241,6 +241,9 @@ $scope.$watch('likeData.type',function(){
       }
       else{
 
+        alert("efre")
+       console.log($scope.likeData)
+
          var updateLikesSuccessCallback = function(data) {
             $scope.isEditmode = false;
             $scope.fetchHotelLikes();
