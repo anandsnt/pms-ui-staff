@@ -13,26 +13,15 @@
 		</header>
 
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<table id="rooms" class="grid datatable">
-			<thead>
-				<tr role="row">
-					<th width="40%" class="sorting">
-						Room Number
-					</th>
-					<th width="60%" class="sorting">
-						Room Type
-					</th>
-				</tr>
-			</thead>
-
+		<table id="rooms" class="grid datatable" ng-table="roomList">
 			<tbody>
-				<tr ng-repeat="room in data.rooms" room-id="{{room.room_id}}">
-					<td>
+				<tr ng-repeat="room in $data" room-id="{{room.room_id}}">
+					<td data-title="'Room Number'" sortable="'room_number'">
 						<a ui-sref='admin.roomdetails({roomId:room.room_id})' class="number edit-data">
 							{{room.room_number}}
 						</a>
 					</td>
-					<td>
+					<td data-title="'Room Type'" sortable="'room_type'">
 						{{room.room_type}}
 					</td>
 				</tr>
