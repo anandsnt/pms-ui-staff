@@ -54,6 +54,24 @@ admin.controller('adRoomDetailsCtrl', ['$scope','adRoomSrv', '$state', '$statePa
 		$scope.errorMessage = errorMessage ;
 	};
 	
+	/*
+	* function to do operation on room likes after selecting one.
+	* param {string} group name
+	* index {integer} position of the element in array
+	*/
+	$scope.changed = function(groupName, index){
+		for(var i = 0; i < $scope.data.room_likes.length; i++){
+			if($scope.data.room_likes[i].group_name == groupName){
+				for(var j = 0; j < $scope.data.room_likes[i].options.length; j++){
+					if(j !== index){
+						$scope.data.room_likes[i].options[j].selected = false;
+					}
+				}
+				
+			}
+
+		}		
+	};
 
 	//getting the room details
 	$scope.invokeApi(adRoomSrv.roomDetails, {'roomId': roomId}, fetchSuccessOfRoomDetails, fetchFailedOfRoomDetails);	
