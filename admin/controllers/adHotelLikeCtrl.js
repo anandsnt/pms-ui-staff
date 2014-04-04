@@ -61,12 +61,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
 
         if(rowName === "ROOM FEATURE")
             return "/assets/partials/Likes/adRoomFeatureEdit.html";
-        // else if(rowName === "FLOOR")
-        //     return "/assets/partials/chains/adChainForm.html";
-        // else if(rowName === "SMOKING")
-        //     return "/assets/partials/chains/adChainForm.html";
-        // else if(rowName === "ELEVATOR")
-        //     return "/assets/partials/chains/adChainForm.html";
+
         else if(rowName === "NEWSPAPER")
             return "/assets/partials/Likes/adNewsPaperEdit.html";
         else            
@@ -77,13 +72,9 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
 
    $scope.checkBoxClicked = function(index){
 
-   // console.log($scope.likeData.news_papers[index])
 
-    //alert($scope.likeData.news_papers[index].is_checked+index)
-
-
-      $scope.likeData.news_papers[index].is_checked = ($scope.likeData.news_papers[index].is_checked === 'true') ? 'false' :'true';
-      // alert($scope.likeData.news_papers[index].is_checked)
+        $scope.likeData.news_papers[index].is_checked = ($scope.likeData.news_papers[index].is_checked === 'true') ? 'false' :'true';
+      
    }
 
    $scope.checkBoxDeleteClicked = function(index){
@@ -97,38 +88,12 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
    * @param {int} index index of selected chain
    * @paran {string} id - chain id
    */
-   $scope.editSelected = function(index,id,rowName)    {
+   $scope.editSelected = function(index,id,rowName,isSystemDefined)    {
 
       
       $scope.currentClickedElement = index;
-    //   if(rowName === "ROOM FEATURE"){
-
-    //     $scope.isEditmode = true;
-
-
-
-    //    var editID = { 'editID' : 1 };
-    //    var editRoomSuccessCallback = function(data) {
-    //     $scope.$emit('hideLoader');
-    //     $scope.likeData = data;
-    //     $scope.isEditmode = true;
-    // };      
-    // $scope.invokeApi(ADHotelLikesSrv.editRoom,editID,editRoomSuccessCallback);
-
-       
-
-
-    // }
-    if(rowName === "FLOOR")
-    {
-       $scope.isEditmode = false;
-   }
-   else if(rowName === "SMOKING")
-   {
-       $scope.isEditmode = false;
-   }
-   else if(rowName === "ELEVATOR")
-   {
+  
+    if(isSystemDefined === 'true'){
        $scope.isEditmode = false;
    }
  
