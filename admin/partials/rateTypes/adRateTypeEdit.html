@@ -1,7 +1,10 @@
 <div class="data-holder">
 	<form class="form inline-form float">
+		<div class="form-title">
+			<h3><span>Edit </span>{{rateTypeData.name}} </h3>
+			<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+		</div>
 		<fieldset class="holder left float">
-			{{rateTypeData.data}}
 			<ad-textbox inputtype="text" value="rateTypeData.name"
 			label = " Rate type" required = "yes" placeholder = "Enter rate type"
 			></ad-textbox>

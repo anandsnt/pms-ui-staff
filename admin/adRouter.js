@@ -93,7 +93,7 @@ admin.config([
 
 
 		$stateProvider.state('admin.ratetypes', {
-			templateUrl: '/assets/partials/rate_types/adRateTypeList.html',
+			templateUrl: '/assets/partials/rateTypes/adRateTypeList.html',
 			controller: 'ADRateTypeCtrl',
 			url : '/ratetypes'
 		});

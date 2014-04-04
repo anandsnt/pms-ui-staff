@@ -1,13 +1,12 @@
-admin.service('ADRateTypeSrv', ['$http', '$q', 'ADBaseWebSrv',
-function($http, $q, ADBaseWebSrv) {
+admin.service('ADRateTypeSrv', ['$http', '$q', 'ADBaseWebSrvV2',
+function($http, $q, ADBaseWebSrvV2) {
 
 	this.fetch = function() {
 		var deferred = $q.defer();
 
-		var url = " /sample_json/ng_admin/rate_types.json";
-		//var url = "/api/admin/rate_types.json";
-		ADBaseWebSrv.getJSON(url).then(function(data) {
-	
+		//var url = " /sample_json/ng_admin/rate_types.json";
+		var url = "/api/admin/rate_types.json";
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
@@ -23,7 +22,7 @@ function($http, $q, ADBaseWebSrv) {
 		var deferred = $q.defer();
 		var url = "/api/admin/rate_types/" + data.id + "/activate";
 
-		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
@@ -39,7 +38,7 @@ function($http, $q, ADBaseWebSrv) {
 		var deferred = $q.defer();
 		var url = '/api/admin/rate_types';
 
-		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
@@ -57,7 +56,7 @@ function($http, $q, ADBaseWebSrv) {
 		var deferred = $q.defer();
 		var url = '/api/admin/rate_types/' + data.id;
 
-		ADBaseWebSrv.putJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
@@ -72,10 +71,10 @@ function($http, $q, ADBaseWebSrv) {
 	this.getRateTypesDetails = function(data) {
 		var deferred = $q.defer();
 		var id = data.id;
-		var url = "/sample_json/ng_admin/edit_rate_types.json"
-		//var url = '/api/admin/rate_types/' + id+".json";
+		//var url = "/sample_json/ng_admin/edit_rate_types.json"
+		var url = '/api/admin/rate_types/' + id+".json";
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
@@ -93,7 +92,7 @@ function($http, $q, ADBaseWebSrv) {
 
 		var url = '/api/admin/rate_types/' + id;
 
-		ADBaseWebSrv.deleteJSON(url).then(function(data) {
+		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
