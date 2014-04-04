@@ -91,4 +91,23 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
 	};
 
 
+
+	 /*
+    * To update the chain details
+    * @param {object} chain id
+    * @return {object} status 
+    */
+	this.update = function(data){
+		var updateData = data.updateData;
+		var deferred = $q.defer();
+		var url = '/admin/hotel_likes/add_feature_type';	
+		
+		ADBaseWebSrv.putJSON(url,updateData).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
    }]);

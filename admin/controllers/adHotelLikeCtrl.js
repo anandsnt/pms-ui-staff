@@ -34,6 +34,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
       $scope.likeData.type = "textbox"
       $scope.likeData.options =[{'name':''}];
       $scope.isAddmode = true;
+      $scope.isEditmode = false;
   };
 	 /*
     * To handle switch
@@ -92,6 +93,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
 
       
       $scope.currentClickedElement = index;
+      $scope.isAddmode = false;
   
     if(isSystemDefined === 'true'){
        $scope.isEditmode = false;
@@ -214,8 +216,6 @@ $scope.$watch('likeData.type',function(){
 
     $scope.addSaveCliked   = function(){
 
-        console.log($scope.likeData)
-
         angular.forEach($scope.likeData.options,function(item, index) {
             if (item.name == "") {
              $scope.likeData.options.splice(index, 1);
@@ -224,7 +224,12 @@ $scope.$watch('likeData.type',function(){
      });
 
 
+
+        if($scope.isAddmode){
         var newLikesSuccessCallback = function(data) {
+
+
+
             $scope.$emit('hideLoader');
             $scope.likeList = data;
             $scope.isAddmode = false;
@@ -233,7 +238,16 @@ $scope.$watch('likeData.type',function(){
         };
         $scope.invokeApi(ADHotelLikesSrv.addEditNewFeature, $scope.likeData, newLikesSuccessCallback);
         
+      }
+      else{
 
+         var updateLikesSuccessCallback = function(data) {
+            $scope.isEditmode = false;
+            $scope.fetchHotelLikes();
+
+        };
+        $scope.invokeApi(ADHotelLikesSrv.update, $scope.likeData, updateLikesSuccessCallback);
+      }
 
     }
 
