@@ -11,10 +11,10 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
    $scope.newfeature ="";
 
 		/**
-	 * To fetch upsell details
+	 * To fetch hotel likes
 	 *
 	 */
-   $scope.fetchHotelLikes = function() {
+  $scope.fetchHotelLikes = function() {
     var fetchHotelLikesSuccessCallback = function(data) {
      $scope.$emit('hideLoader');
      $scope.likeList = data;
@@ -71,15 +71,23 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
    };
 
 
+   /*
+    * To handle checkbox click actions
+    */
 
-   $scope.checkBoxClicked = function(index){
+    $scope.checkBoxClicked = function(index){
 
 
-    $scope.likeData.news_papers[index].is_checked = ($scope.likeData.news_papers[index].is_checked === 'true') ? 'false' :'true';
-    
-  }
+      $scope.likeData.news_papers[index].is_checked = ($scope.likeData.news_papers[index].is_checked === 'true') ? 'false' :'true';
 
-  $scope.checkBoxDeleteClicked = function(index){
+    }
+
+  /*
+   * To handle checkbox delete actions
+   */
+
+
+   $scope.checkBoxDeleteClicked = function(index){
 
 
     $scope.likeData.news_papers.splice(index,1);
@@ -92,7 +100,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
    */
    $scope.editSelected = function(index,id,rowName,isSystemDefined)    {
 
-    
+
     $scope.currentClickedElement = index;
     $scope.isAddmode = false;
     
@@ -109,7 +117,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
 
     $scope.editId = id;
     if(rowName === "ROOM FEATURE"){
-      
+
       editID = 1;
     }
     if(rowName === "NEWSPAPER")
@@ -127,81 +135,89 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
     $scope.invokeApi(ADHotelLikesSrv.edit,editID,editLikeSuccessCallback);
   }
 };
+    /*
+   * To handle new newspaper option
+   */
+
+   $scope.showNewNewsPaperOption = function(){
 
 
-$scope.showNewNewsPaperOption = function(){
-  
-
- if($scope.showNewsPaperOption){
-
-   
-  if($scope.likeData.newfeature.length !=0){
-    
-    $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature,'is_checked':'true'});
-    $scope.likeData.newfeature ="";
-  }
-}
-else{
-  
- $scope.showNewsPaperOption = true;
- $scope.likeData.newfeature ="";
-}
-}
-
-$scope.shownewInputRoomOption = function(){
+     if($scope.showNewsPaperOption){
 
 
+      if($scope.likeData.newfeature.length !=0){
 
-  if($scope.showNewRoomOption){
+        $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature,'is_checked':'true'});
+        $scope.likeData.newfeature ="";
+      }
+    }
+    else{
 
-    if($scope.likeData.newfeature.length !=0){
-      
-      $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature,'is_checked':'true'});
+     $scope.showNewsPaperOption = true;
+     $scope.likeData.newfeature ="";
+   }
+ }
+
+  /*
+   * To handle new room feature option
+   */
+
+   $scope.shownewInputRoomOption = function(){
+
+
+
+    if($scope.showNewRoomOption){
+
+      if($scope.likeData.newfeature.length !=0){
+
+        $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature,'is_checked':'true'});
+        $scope.likeData.newfeature ="";
+      }
+    }
+    else{
+
+      $scope.showNewRoomOption = true;
       $scope.likeData.newfeature ="";
     }
   }
-  else{
-    
-    $scope.showNewRoomOption = true;
-    $scope.likeData.newfeature ="";
-  }
-}
 
+ /*
+   * To watch type for add/edit form
+   */
+   $scope.$watch('likeData.type',function(){
 
-$scope.$watch('likeData.type',function(){
+    if($scope.likeData.type === "textbox"){
+     $scope.showTextBox = true;
+     $scope.showRadio = false;
+     $scope.showDropDown = false;
+     $scope.showCheckbox = false;
+   }
+   else if ($scope.likeData.type ==="radio"){
+     $scope.showRadio = true;
+     $scope.showTextBox = false
+     $scope.showDropDown = false;
+     $scope.showCheckbox = false;
 
-  if($scope.likeData.type === "textbox"){
-   $scope.showTextBox = true;
-   $scope.showRadio = false;
-   $scope.showDropDown = false;
-   $scope.showCheckbox = false;
- }
- else if ($scope.likeData.type ==="radio"){
-   $scope.showRadio = true;
-   $scope.showTextBox = false
-   $scope.showDropDown = false;
-   $scope.showCheckbox = false;
+     $scope.likeData.options =[{'name':''},{'name':''}];
 
-   $scope.likeData.options =[{'name':''},{'name':''}];
+   }
+   else if ($scope.likeData.type === "dropdown"){
+     $scope.showDropDown = true;
+     $scope.showTextBox = false
+     $scope.showRadio = false;
+     $scope.showCheckbox = false;
+   }
+   else{
+     $scope.showCheckbox = true;
+     $scope.showTextBox = false
+     $scope.showRadio = false;
+     $scope.showDropDown = false;
 
- }
- else if ($scope.likeData.type === "dropdown"){
-   $scope.showDropDown = true;
-   $scope.showTextBox = false
-   $scope.showRadio = false;
-   $scope.showCheckbox = false;
- }
- else{
-   $scope.showCheckbox = true;
-   $scope.showTextBox = false
-   $scope.showRadio = false;
-   $scope.showDropDown = false;
-
- }
-});
+   }
+ });
 
      /*
-    * To handle focus event on lov levels
+    * To handle focus event for types
     */
     $scope.onFocus = function(index){
       if((index === $scope.likeData.options.length-1) || ($scope.likeData.options.length==1)){
@@ -219,7 +235,7 @@ $scope.$watch('likeData.type',function(){
           }
         };
    /*
-    * To handle text change on lov levels
+    * To handle text change on types
     */
     $scope.textChanged = function(index){
 
@@ -229,7 +245,7 @@ $scope.$watch('likeData.type',function(){
       }
     };
    /*
-    * To handle blur event on lov levels
+    * To handle blur event on types
     */
     $scope.onBlur = function(index){
       if($scope.likeData.options.length>1){
@@ -242,13 +258,20 @@ $scope.$watch('likeData.type',function(){
        });
       }
     };
-
+    /*
+    * To handle cancel click
+    */
 
     $scope.cancelCliked   = function(){
 
       $scope.isAddmode = false;
       $scope.isEditmode = false;
     }
+
+
+    /*
+    * To handle save
+    */
 
     $scope.addSaveCliked   = function(){
 
@@ -272,12 +295,12 @@ $scope.$watch('likeData.type',function(){
           $scope.fetchHotelLikes();
 
         };
-        $scope.invokeApi(ADHotelLikesSrv.addEditNewFeature, $scope.likeData, newLikesSuccessCallback);
+        $scope.invokeApi(ADHotelLikesSrv.addNewFeature, $scope.likeData, newLikesSuccessCallback);
         
       }
       else{
 
-        
+
        console.log($scope.likeData)
 
        var updateLikesSuccessCallback = function(data) {
@@ -289,28 +312,31 @@ $scope.$watch('likeData.type',function(){
     }
 
   }
+    /*
+    * To handle custom save
+    */
 
 
-  $scope.customLikeSave= function(){
+    $scope.customLikeSave= function(){
 
 
-    console.log($scope.likeData);
+      console.log($scope.likeData);
 
 
-    delete $scope.likeData.newfeature;
+      delete $scope.likeData.newfeature;
 
-    var saveCustomLikesSuccessCallback = function(data) {
-      $scope.isEditmode = false;
-      $scope.fetchHotelLikes();
+      var saveCustomLikesSuccessCallback = function(data) {
+        $scope.isEditmode = false;
+        $scope.fetchHotelLikes();
 
-    };
-    $scope.invokeApi(ADHotelLikesSrv.customLikeSave, $scope.likeData, saveCustomLikesSuccessCallback);
-    
-
-  }
+      };
+      $scope.invokeApi(ADHotelLikesSrv.customLikeSave, $scope.likeData, saveCustomLikesSuccessCallback);
 
 
+    }
 
 
 
-}]);	
+
+
+  }]);	
