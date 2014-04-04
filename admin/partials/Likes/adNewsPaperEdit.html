@@ -9,18 +9,9 @@
 		</div>
 		<div class="entry full-width float">
 			<label>Options</label>
-			<div id="newspaper-options" class="boxes">
-				
-		<!-- 		<label class="checkbox inline" ng-repeat="option in likeData.news_papers">
-					<span data-id="30" class="icons icon-delete"></span>
-					<span class="icon-form icon-checkbox checked"></span>
-					<input type="checkbox" value="Frankfurter Allgemeine" name="newspaper" data-id="30" checked="checked">
-					<div id="newspaper-name">{{option.name}}</div>
-				</label> -->
-				
-
+			<div id="newspaper-options" class="boxes">		
 				<label class="checkbox inline" ng-repeat="option in likeData.news_papers">
-					<span  class="icons icon-delete" ng-click="checkBoxDeleteClicked($index)"></span>
+					<span data-id="1" class="icons icon-delete" ng-click="checkBoxDeleteClicked($index,option.id)" ng-show="option.id.length"></span>
 					<span class="icon-form icon-checkbox" ng-class="{ checked : option.is_checked === 'true' }"></span>
 					<input type="checkbox"  name="newspaper"  ng-click="checkBoxClicked($index)">
 					<div id="newspaper-name">{{option.name}}</div>

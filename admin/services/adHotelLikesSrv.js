@@ -130,4 +130,25 @@ admin.service('ADHotelLikesSrv',['$q', 'ADBaseWebSrv', function( $q, ADBaseWebSr
     };
 
 
+     /*
+    * To delete the like options
+    * @param {object} like id
+    * @return {object} status 
+    */
+    this.deleteChecbox = function(id){
+        var updateData = {'id':id};
+        var deferred = $q.defer();
+        var url = '/admin/hotel_likes/delete_feature';   
+        
+        ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
+            deferred.resolve(data);
+        },function(data){
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    
+
+
 }]);
