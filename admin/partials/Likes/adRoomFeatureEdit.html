@@ -11,17 +11,6 @@
 			<label>Options</label>
 			<div id="newspaper-options" class="boxes">
 
-
-				<!-- 	<div class="entry radio-check">
-					<label class="checkbox">
-						<span class="icon-form icon-checkbox" ng-class="{ checked : upsellData.is_exclude_guests === 'true' }"></span>
-						<label for="exclude-guest-pre-allocated-room">Exclude guests in pre allocated rooms</label>
-						<input type="checkbox" value="testing" name="exclude-guest-pre-allocated-room" id="exclude-guest-pre-allocated-room" ng-click="checkBoxClicked()">
-
-					</label>
-				</div> -->
-
-
 				<label class="checkbox inline" ng-repeat="option in likeData.news_papers">
 					<span data-id="1" class="icons icon-delete" ng-click="checkBoxDeleteClicked($index)"></span>
 					<span class="icon-form icon-checkbox" ng-class="{ checked : option.is_checked === 'true' }"></span>
@@ -29,13 +18,15 @@
 					<div id="newspaper-name">{{option.name}}</div>
 				</label>
 
-				<label data-type="newspaper" class="add-new-checkbox inline" ng-hide="showNewRoomOption" ng-click="shownewInputRoomOption()">
+				<label class="inline" ng-show="showNewRoomOption"> 
+					<input  ng-model="likeData.newfeature"/>
+				</label> 
+
+				<label data-type="newspaper" class="add-new-checkbox inline" ng-click="shownewInputRoomOption()">
 					<span class="icons icon-add"></span>
 					Add new option
 				</label> 
-				<label data-type="newspaper" class="add-new-checkbox inline" ng-show="showNewRoomOption">
-					<input type="text" value="" name="newspaper" data-id="" id="newspaper-option52" class="checkbox-value" ng-show="showNewsPaperOption" >
-				</label>
+				
 
 
 
