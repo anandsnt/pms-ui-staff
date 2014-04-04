@@ -303,7 +303,8 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
       }
       else{
 
-
+        delete $scope.likeData.newfeature;
+        delete $scope.likeData.is_system_defined;
        console.log($scope.likeData)
 
        var updateLikesSuccessCallback = function(data) {
@@ -322,9 +323,8 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
 
     $scope.customLikeSave= function(){
 
-
       var data = {'custom_likes' : $scope.likeData.news_papers,'id':$scope.likeData.id}
-      console.log($scope.likeData);
+      console.log(data);
 
 
       delete $scope.likeData.newfeature;
