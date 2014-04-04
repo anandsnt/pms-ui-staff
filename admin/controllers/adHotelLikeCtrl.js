@@ -332,6 +332,12 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
 
     $scope.customLikeSave= function(){
 
+      if($scope.likeData.newfeature.length !=0){
+
+        $scope.likeData.news_papers.push({'name':$scope.likeData.newfeature,'is_checked':'true'});
+        $scope.likeData.newfeature ="";
+      }
+
       var data = {'custom_likes' : $scope.likeData.news_papers,'id':$scope.likeData.id}
       console.log(data);
 
