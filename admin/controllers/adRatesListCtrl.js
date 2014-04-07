@@ -19,7 +19,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ngTablePa
 			// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		    $scope.tableParams = new ngTableParams({
 		        page: 1,            // show first page
-		        count: $scope.data.length,    // count per page - Need to change when on pagination implemntation
+		        count: 3,    // count per page - Need to change when on pagination implemntation
 		        sorting: {
 		            name: 'asc'     // initial sorting
 		        }

@@ -12,18 +12,18 @@
 			<tbody>
 				<tr ng-repeat="rate in $data" ng-class = "{'inactive': !rate.status}"> 
 					<td data-title="'Name'" sortable="'name'" >
-						{{rate.name}}
+						<strong>{{rate.name}}</strong>
 					</td>
 					<td data-title="'Based on'" sortable="'based_on'">
 						{{rate.based_on}}
 					</td>
 					<td data-title="'Type'" sortable="'rate_type'">
-						{{rate.rate_type}}
+						<strong>{{rate.rate_type}}</strong>
 					</td>
 					<td data-title="'Date Ranges'">
 						{{rate.date_range_count}}
 					</td>
-					<td data-title="'Status'" sortable="'status'">
+					<td data-title="'Status'" sortable="'status'" class ="active">
 						{{rate.status? 'ACTIVE' : 'INACTIVE'}}
 					</td>
 					<!-- <td data-title="'Room Type'" colspan="2" ng-include="getTemplateUrl($index,rate.id)" ng-show="currentClickedElement == $index"></td> -->
