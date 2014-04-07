@@ -146,6 +146,7 @@ admin.config([
 
 		});
 
+
 		$stateProvider.state('admin.items', {
 			templateUrl: '/assets/partials/items/adItemList.html',
 			controller: 'ADItemListCtrl',
@@ -157,5 +158,19 @@ admin.config([
 			controller: 'ADItemDetailsCtrl',
 			url : '/itemdetails/:itemid'
 		});				
+
+		
+		$stateProvider.state('admin.chargeGroups', {
+			templateUrl: '/assets/partials/chargeGroups/adChargeGroups.html',
+			controller: 'ADChargeGroupsCtrl',
+			url : '/chargeGroups'
+		});
+		
+		$stateProvider.state('admin.paymentMethods', {
+			templateUrl: '/assets/partials/paymentMethods/adPaymentMethods.html',
+			controller: 'ADPaymentMethodsCtrl',
+			url : '/paymentMethods'
+		});
+
 	}
 ]);

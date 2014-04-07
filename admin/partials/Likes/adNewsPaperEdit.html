@@ -11,14 +11,12 @@
 			<label>Options</label>
 			<div id="newspaper-options" class="boxes">		
 				<label class="checkbox inline" ng-repeat="option in likeData.news_papers">
-					<span data-id="1" class="icons icon-delete" ng-click="checkBoxDeleteClicked($index,option.id)" ng-show="option.id.length"></span>
-					<span class="icon-form icon-checkbox" ng-class="{ checked : option.is_checked === 'true' }"></span>
-					<input type="checkbox"  name="newspaper"  ng-click="checkBoxClicked($index)">
-					<div id="newspaper-name">{{option.name}}</div>
+					
+					<ad-checkboxgrp delete-action="checkBoxDeleteClicked($index,option.id)" toggle="checkBoxClicked($index)" label="{{option.name}}" is-checked="option.is_checked" option-id="option.id"></ad-checkboxgrp>
 				</label>
 
 				<label class="inline" ng-show="showNewsPaperOption"> 
-				<input  ng-model="likeData.newfeature"/>
+					<input  ng-model="likeData.newfeature"/>
 				</label> 
 
 				<label data-type="newspaper" class="add-new-checkbox inline"  ng-click="showNewNewsPaperOption()">
