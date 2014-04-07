@@ -3,6 +3,7 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 	BaseCtrl.call(this, $scope);
 	$scope.mod = "";
 	$scope.image = "";
+	$scope.$emit("changedSelectedMenu", 0);
 	/** functions & variables related to drag & drop **/
 	$scope.selectedUnassignedRole = -1;
 	$scope.selectedAssignedRole = -1;

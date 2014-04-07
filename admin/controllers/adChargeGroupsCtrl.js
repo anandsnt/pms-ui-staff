@@ -1,6 +1,7 @@
 admin.controller('ADChargeGroupsCtrl',['$scope', 'ADChargeGroupsSrv', function($scope, ADChargeGroupsSrv){
 
 	BaseCtrl.call(this, $scope);
+	$scope.$emit("changedSelectedMenu", 5);
 	$scope.currentClickedElement = -1;
     /*
     * To fetch charge groups list
