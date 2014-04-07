@@ -9,6 +9,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     * To fetch list of room types
     */
 	$scope.listRoomTypes = function(){
+		console.log("upto list room type");
 		var successCallbackFetch = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data;
@@ -30,7 +31,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		                                $scope.data.room_types;
 		                              
 		            $scope.orderedData =  orderedData;
-		            
+		            // console.log($scope.orderedData);
 		                       
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
@@ -82,14 +83,10 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 		 
     	var successCallbackSave = function(data){
     		$scope.$emit('hideLoader');
+    		//Since the list is ordered. Update the ordered data
+    		$scope.orderedData[parseInt($scope.currentClickedElement)].name = $scope.roomTypeData.room_type_name;
+    		$scope.orderedData[parseInt($scope.currentClickedElement)].code = $scope.roomTypeData.room_type_code;
     		$scope.currentClickedElement = -1;
-			$scope.listRoomTypes(); 
-	    		//To update data with new value
-	    		// console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>"+$scope.currentClickedElement+$scope.data.room_types[parseInt($scope.currentClickedElement)].name);
-	    		 // $scope.data.room_types[parseInt($scope.currentClickedElement)].name = $scope.roomTypeData.room_type_name;
-	    		 //== $scope.data.room_types[parseInt($scope.currentClickedElement)].code = $scope.roomTypeData.room_type_code;
-	    	
-    		
     	};
     	$scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data , successCallbackSave);
     };
