@@ -5,15 +5,15 @@
 				Charge Codes
 			</h2>
 			<span class="count">
-				(
-				152
-				)
+				({{charge_codes.length}})
 			</span>
-			<a id="add-new-button" href="/admin/charge_codes/new" class="action add">Add new</a>
+			<a id="add-new-button" ng-click="addNewClicked()" class="action add">Add new</a>
 			<a id="import-charge-codes" class="action import">IMPORT FROM PMS</a>
 		</header>
 
-		<div id="notification-message"></div>
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<div id="new-form-holder" ng-show="isAddmode" ng-include="getCodeTemplateUrl()">
+	</div>
 		<div id="new-form-holder"></div>
 		<table id="charge_codes_table" class="grid datatable">
 			<thead>

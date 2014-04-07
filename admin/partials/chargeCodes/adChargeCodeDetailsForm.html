@@ -1,0 +1,93 @@
+<div style="display: block;" id="add-new" class="edit-data">
+	<div class="data-holder">
+		<!-- Add Charge Code -->
+		<form class="form inline-form float">
+			<fieldset class="holder left">
+				<div class="form-title">
+					<h3>
+						<span>Charge Code</span>
+						details
+					</h3>
+					<em class="status">
+						Fields marked with
+						<strong>*</strong>
+						are mandatory!
+					</em>
+				</div>
+				<div class="entry full-width">
+					<label for="charge-code">
+						Charge Code
+						<strong>*</strong>
+					</label>
+					<input type="text" value="" required="yes" placeholder="Enter charge code" name="charge-code" maxlength="10" id="charge-code">
+				</div>
+
+				<div class="entry full-width">
+					<label for="description">
+						Description
+					</label>
+					<textarea value="" type="" maxlength="200" id="description" class="full-width"></textarea>
+				</div>
+
+				<div class="entry full-width">
+					<label for="charge-group">
+						Charge Group
+					</label>
+					<div class="select">
+			
+
+					<select ng-model="charge_groups.value"  ng-options=" (charge_groups.value) as (charge_groups.group_name) for charge_groups in new_data.charge_groups" class="placeholder">
+                    <option value="">Charge Group</option>
+					</select>
+
+				</div>
+			</div>
+
+			<div class="entry full-width">
+				<label for="charge-code-type">
+					Charge Code type
+					<strong>*</strong>
+				</label>
+				<div class="select">
+			
+				<select ng-model="charge_groups.value"  ng-options=" (charge_groups.value) as (charge_groups.charge_code_type_name) for charge_groups in new_data.charge_code_types" class="placeholder">
+                    <option value="">Charge Code type</option>
+					</select>
+			</div>
+		</div>
+
+	</fieldset>
+	<!-- to hide the chrage codes if type is TAX. Since we need to show the charge codes on change type -->
+	<fieldset id="link-with-set" class="holder right">
+		<div class="form-title">
+			<h3>
+				<span>Charge code</span>
+				Link with
+			</h3>
+		</div>
+		<div class="entry full-width">
+			<div id="room-key-for-rover" class="boxes">
+				<div class="entry radio-check" ng-repeat="link in new_data.link_with">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox"></span>
+						<label for="link-with-1"></label>
+						<input type="checkbox" ng-model="link.value" id="link-with-1">
+						{{link.name}}
+					</label>
+				</div>
+
+				
+
+			</div>
+			<input type="hidden" value="5" name="total_link_with" id="total_link_with">
+		</div>
+	</fieldset>
+
+	<div class="actions float">
+		<button type="button" id="cancel" class="button blank edit-data-inline">Cancel</button>
+		<button type="button" id="save" class="button green edit-data-inline">Save changes</button>
+	</div>
+
+</form>
+</div>
+</div>

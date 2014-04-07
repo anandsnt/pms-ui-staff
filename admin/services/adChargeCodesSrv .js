@@ -28,5 +28,22 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 		});	
 		return deferred.promise;
 	};
+
+
+
+	this.fetchNewDetails = function(){
+		var deferred = $q.defer();
+		var url = '/admin/charge_codes/new';
+		
+		ADBaseWebSrv.getJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+
+
+	
 	
 }]);
