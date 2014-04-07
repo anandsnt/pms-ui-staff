@@ -99,7 +99,7 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 		var unwantedKeys = ["charge_code_types", "charge_groups", "selected_link_with"];
 		var data = dclone($scope.prefetchData, unwantedKeys);
 		console.log((data));
-		$scope.invokeApi(ADChargeCodesSrv.save, $scope.prefetchData, saveSuccessCallback);
+		$scope.invokeApi(ADChargeCodesSrv.save, data, saveSuccessCallback);
  	};
  	/*
     * To handle cancel button click.

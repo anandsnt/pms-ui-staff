@@ -24,13 +24,10 @@
 				<div class="entry full-width">
 					<div id="room-key-for-rover" class="boxes">
 						<div class="entry radio-check" ng-repeat="link in prefetchData.link_with">
-							<label class="checkbox">
-								<span class="icon-form icon-checkbox"></span>
-								<label for="link-with-1"></label>
+							<label class="checkbox" ng-class="{ checked : link.is_checked === 'true' }">
 								<span class="icon-form icon-checkbox" ng-class="{ checked : link.is_checked === 'true' }"></span>
 								<label for="link-with-1"></label>
 								<input type="checkbox"  ng-click="link.is_checked =(link.is_checked  === 'true')? 'false':'true'">
-								<input type="checkbox" ng-model="link.value" id="link-with-1">
 								{{link.name}}
 							</label>
 						</div>

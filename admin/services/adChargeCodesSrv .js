@@ -63,7 +63,7 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 		var deferred = $q.defer();
 		var url = '/admin/charge_codes/save';
 		
-		ADBaseWebSrv.postJSON(url).then(function(data) {
+		ADBaseWebSrv.postJSON(url,data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
