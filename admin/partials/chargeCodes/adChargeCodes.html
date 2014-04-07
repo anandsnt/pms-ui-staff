@@ -1,0 +1,72 @@
+<section id="replacing-div-first" class="content current">
+	<div data-view="HotelChargeCodesView">
+		<header class="content-title float">
+			<h2>
+				Charge Codes
+			</h2>
+			<span class="count">
+				(
+				152
+				)
+			</span>
+			<a id="add-new-button" href="/admin/charge_codes/new" class="action add">Add new</a>
+			<a id="import-charge-codes" class="action import">IMPORT FROM PMS</a>
+		</header>
+
+		<div id="notification-message"></div>
+		<div id="new-form-holder"></div>
+		<table id="charge_codes_table" class="grid datatable">
+			<thead>
+				<tr role="row">
+					<th width="" class="sorting">
+						Code
+					</th>
+					<th width="20%" class="">
+						Description
+					</th>
+					<th width="20%" class="sorting">
+						Group
+					</th>
+					<th width="20%" class="">
+						Type
+					</th>
+					<th width="" class="">
+						Link With
+					</th>
+					<th width="" class="delete">
+						Delete
+					</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr ng-repeat="data in charge_codes">
+					<td ng-click="">
+						
+							{{data.charge_code}}
+						
+					</td>
+					<td>
+						{{data.description}}
+					</td>
+					<td>
+						{{data.charge_group}}
+					</td>
+					<td>
+						{{data.charge_code_type}}
+					</td>
+					<td>
+						{{data.link_with}}
+					</td>
+					<td class="delete">
+						<a class="icons icon-delete large-icon delete_item"></a>
+					</td>
+				</tr>
+
+			
+		
+				
+			</tbody>
+		</table>
+	</div>
+</section>

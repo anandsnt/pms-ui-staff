@@ -157,5 +157,11 @@ admin.config([
 			controller: 'ADPaymentMethodsCtrl',
 			url : '/paymentMethods'
 		});
+
+		$stateProvider.state('admin.chargeCodes', {
+			templateUrl: '/assets/partials/chargeCodes/adChargeCodes.html',
+			controller: 'ADChargeCodesCtrl',
+			url : '/chargeCodes'
+		});
 	}
 ]);
