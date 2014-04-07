@@ -13,8 +13,13 @@ hkRover.service('hkDashboardSrv',['$http', '$q', function($http, $q){
 				console.log("error");
 			}
 		}).error(function(data, status) {
-			//$scope.$emit('hideLoader');
-		    deferred.reject(data);
+			 if(status == 401) { 
+		    	// 401- Unauthorized
+				// so lets redirect to login page
+				$window.location.href = '/house/logout' ;
+			}else{
+				deferred.reject(response);
+			}
 		});
 		return deferred.promise;
 	}
