@@ -8,29 +8,19 @@
 				<a ui-sref="admin.snthoteldetails({action:'add'})" class="action add">Add new</a>
 			</header>
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<table id="hotels_list_table" class="grid datatable">
-				<thead>
-					<tr role="row">
-						<th width="35%" class="sorting"> Hotel </th>
-						<th width="" class="sorting"> Room </th>
-						<th width="" class="sorting"> Chain </th>
-						<th width="" class="sorting"> Brand </th>
-						<th width="" class="activate long"> Reservation Import </th>
-					</tr>
-				</thead>
-
+			<table class="grid datatable table" ng-table="tableParams">
 				<tbody>
-					<tr data-hotel-id="{{hotel.id}}" ng-repeat="hotel in data.hotels">
-						<td>
+					<tr data-hotel-id="{{hotel.id}}" ng-repeat="hotel in $data">
+						<td data-title="'Hotel'" sortable="'hotel_name'">
 							<a ui-sref="admin.snthoteldetails({action:'edit',id:hotel.id})" class="title">
 								 <strong> {{hotel.hotel_name}} </strong>
 								 <em> {{hotel.city}} , {{hotel.state}} </em>
 							</a>
 						</td>
-						<td><span class="number"> {{hotel.number_of_rooms}} </span></td>
-						<td> {{hotel.chain_name}} </td>
-						<td> {{hotel.brand_name}} </td>
-						<td class="activate long">
+						<td data-title="'Room'" sortable="'number_of_rooms'"><span class="number"> {{hotel.number_of_rooms}} </span></td>
+						<td data-title="'Chain'" sortable="'chain_name'"> {{hotel.chain_name}} </td>
+						<td data-title="'Brand'" sortable="'brand_name'"> {{hotel.brand_name}} </td>
+						<td data-title="'Reservation Import'" class="activate long">
 							<div class="entry">
 								<label for="reservation-import-1"></label>
 								<div class="switch-button single" ng-class="{ on : hotel.is_res_import_on == 'true' }" ng-click="toggleClicked($index)">

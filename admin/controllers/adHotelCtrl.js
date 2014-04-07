@@ -1,9 +1,27 @@
-admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADHotelListSrv',  function($scope, $state,$rootScope, $stateParams, ADHotelListSrv){
+admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADHotelListSrv','ngTableParams', '$filter',  function($scope, $state,$rootScope, $stateParams, ADHotelListSrv, ngTableParams, $filter){
 	BaseCtrl.call(this, $scope);
 	
 	var fetchSuccess = function(data){
 		$scope.data = data;
 		$scope.$emit('hideLoader');
+		
+		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
+	    $scope.tableParams = new ngTableParams({
+	        page: 1,            // show first page
+	        count: $scope.data.hotels.length,    // count per page - Need to change when on pagination implemntation
+	        sorting: {
+	            name: 'asc'     // initial sorting
+	        }
+	    }, {
+	        total: $scope.data.hotels.length, // length of data
+	        getData: function($defer, params) {
+	            // use build-in angular filter
+	            var orderedData = params.sorting() ?
+	                                $filter('orderBy')($scope.data.hotels, params.orderBy()) :
+	                                $scope.data.hotels;
+	            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+	        }
+	    });
 	};
 	
 	$scope.invokeApi(ADHotelListSrv.fetch, {}, fetchSuccess);
