@@ -28,7 +28,7 @@ admin.service('ADBaseWebSrvV2',['$http', '$q', '$window', function($http, $q, $w
 		}
 		//Sample params {params:{fname: "fname", lname: "lname"}}
 		httpMethod(url, params).success(function(response, status) {
-	    	deferred.resolve(response);
+	    	deferred.resolve(response.results);
 		}).error(function(errors, status) {
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
