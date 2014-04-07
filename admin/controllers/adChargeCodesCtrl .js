@@ -96,9 +96,9 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 			if($scope.isAdd) $scope.isAdd = false;
  			if($scope.isEdit) $scope.isEdit = false;
 		};
-		var unwantedKeys = ["charge_code_types", "charge_groups", "link_with"];
+		var unwantedKeys = ["charge_code_types", "charge_groups", "selected_link_with"];
 		var data = dclone($scope.prefetchData, unwantedKeys);
-		console.log(data);
+		console.log((data));
 		$scope.invokeApi(ADChargeCodesSrv.save, $scope.prefetchData, saveSuccessCallback);
  	};
  	/*
