@@ -17,7 +17,7 @@
 
 				<tr data-rate-type-id="{{ratetype.id}}">
 
-					<td ng-show="ratetype.system_defined ===true"><strong>{{ratetype.name}}</strong><em>(System defined)</em></td>
+					<td ng-show="ratetype.system_defined ===true"><strong>{{ratetype.name}}</strong><em> (System defined)</em></td>
 
 					<td ng-hide="ratetype.system_defined ===true || currentClickedElement == $index" ng-click = "editRateTypes($index,ratetype.id)"><a class="edit-data-inline">{{ratetype.name}}</a></td>
 

@@ -36,6 +36,7 @@ function($scope, $rootScope, ADRateTypeSrv) {
 		$scope.isAddMode = false;
 		var successCallbackRender = function(data) {
 			$scope.rateTypeData = data;
+			$scope.rateTypeData.title = $scope.rateTypeData.name;
 			$scope.$emit('hideLoader');
 		};
 		
@@ -84,12 +85,15 @@ function($scope, $rootScope, ADRateTypeSrv) {
 			$scope.$emit('hideLoader');
 			if ($scope.isAddMode) {
 				// To add new data to scope
-				$scope.data.rate_types.push(data);
-			} else {
-				
+				$scope.data.push(data);
+				var l = $scope.data.length;
+				$scope.data[l - 1].name = $scope.rateTypeData.name;
+				$scope.data[l - 1].description = $scope.rateTypeData.description;
+				$scope.data[l - 1].rate_count = 0;
+			} else {				
 				//To update data with new value
-				$scope.data.rate_types[parseInt($scope.currentClickedElement)].name = $scope.rateTypeData.name;
-				$scope.data.rate_types[parseInt($scope.currentClickedElement)].description = $scope.rateTypeData.description;
+				$scope.data[parseInt($scope.currentClickedElement)].name = $scope.rateTypeData.name;
+				$scope.data[parseInt($scope.currentClickedElement)].description = $scope.rateTypeData.description;
 
 			}
 			$scope.currentClickedElement = -1;
@@ -117,7 +121,7 @@ function($scope, $rootScope, ADRateTypeSrv) {
 	$scope.deleteRateType = function(index, id) {
 		var successCallbackDelete = function(data) {
 			$scope.$emit('hideLoader');
-			$scope.data.rate_types.splice(index, 1);
+			$scope.data.splice(index, 1);
 		};
 		$scope.invokeApi(ADRateTypeSrv.deleteRateType, id, successCallbackDelete);
 	};

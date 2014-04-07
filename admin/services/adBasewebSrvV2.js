@@ -28,16 +28,12 @@ admin.service('ADBaseWebSrvV2',['$http', '$q', '$window', function($http, $q, $w
 		}
 		//Sample params {params:{fname: "fname", lname: "lname"}}
 		httpMethod(url, params).success(function(response, status) {
-			console.log("base");
-			console.log(status);
 	    	deferred.resolve(response);
-		}).error(function(response, status) {
-			console.log("error");
-			console.log(status);
+		}).error(function(errors, status) {
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
 			if(status == 406){ // 406- Network error
-				deferred.reject(response.errors);
+				deferred.reject(errors);
 			}
 			else if(status == 500){ // 500- Internal Server Error
 				deferred.reject(['Internal server error occured']);
@@ -47,7 +43,7 @@ admin.service('ADBaseWebSrvV2',['$http', '$q', '$window', function($http, $q, $w
 				// so lets redirect to login page
 				$window.location.href = '/logout' ;
 			}else{
-				deferred.reject(response.errors);
+				deferred.reject(errors);
 			}
 		    
 		});
