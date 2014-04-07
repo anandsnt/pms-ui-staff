@@ -1,0 +1,34 @@
+<section class="content current" ng-click='clearErrorMessage()'>
+	<div>
+		<header class="content-title float">
+			<h2> Rates </h2>
+			<span class="count"> ({{data.length}}) </span>
+			<a class="action add" ng-click="addNewRate()">Add new</a>
+			<a class="action import" ng-click="importFromPms()">IMPORT FROM PMS</a>
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div id="new-form-holder"></div>
+		<table class="grid" ng-table="tableParams">
+			<tbody>
+				<tr ng-repeat="rate in $data" ng-class = "{'inactive': !rate.status}"> 
+					<td data-title="'Name'" sortable="'name'" >
+						{{rate.name}}
+					</td>
+					<td data-title="'Based on'" sortable="'based_on'">
+						{{rate.based_on}}
+					</td>
+					<td data-title="'Type'" sortable="'rate_type'">
+						{{rate.rate_type}}
+					</td>
+					<td data-title="'Date Ranges'">
+						{{rate.date_range_count}}
+					</td>
+					<td data-title="'Status'" sortable="'status'">
+						{{rate.status? 'ACTIVE' : 'INACTIVE'}}
+					</td>
+					<!-- <td data-title="'Room Type'" colspan="2" ng-include="getTemplateUrl($index,rate.id)" ng-show="currentClickedElement == $index"></td> -->
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

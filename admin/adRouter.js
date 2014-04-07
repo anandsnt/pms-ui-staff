@@ -91,6 +91,11 @@ admin.config([
 			url : '/departments'
 		});
 
+		$stateProvider.state('admin.rates', {
+			templateUrl: '/assets/partials/rates/adRatesList.html',
+			controller: 'ADRatesListCtrl',
+			url : '/rates'
+		});
 
 		$stateProvider.state('admin.ratetypes', {
 			templateUrl: '/assets/partials/rateTypes/adRateTypeList.html',
