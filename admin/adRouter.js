@@ -157,5 +157,10 @@ admin.config([
 			controller: 'ADPaymentMethodsCtrl',
 			url : '/paymentMethods'
 		});
+		$stateProvider.state('admin.externalPmsConnectivity', {
+			templateUrl: '/assets/partials/externalPms/adExternalPmsConnectivity.html',
+			controller: 'ADExternalPmsConnectivityCtrl',
+			url : '/externalPmsConnectivity'
+		});
 	}
 ]);

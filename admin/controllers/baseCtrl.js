@@ -6,6 +6,7 @@ function BaseCtrl($scope){
 
 	$scope.clearErrorMessage = function(){
 		$scope.errorMessage = '';
+		$scope.successMessage = '';
 	};
 
 	$scope.showErrorMessage = function(errorMessage){
@@ -16,6 +17,7 @@ function BaseCtrl($scope){
 		$scope.$emit('hideLoader');
 		if($scope.hasOwnProperty("errorMessage")){ 	
 			$scope.errorMessage = errorMessage;
+			$scope.successMessage = '';
 		}
 		else {
 			$scope.$emit("showErrorMessage", errorMessage);
