@@ -145,5 +145,17 @@ admin.config([
 			url : '/likes'
 
 		});
+
+		$stateProvider.state('admin.items', {
+			templateUrl: '/assets/partials/items/adItemList.html',
+			controller: 'ADItemListCtrl',
+			url : '/items'
+		});	
+
+		$stateProvider.state('admin.itemdetails', {
+			templateUrl: '/assets/partials/items/adItemDetails.html',
+			controller: 'ADItemDetailsCtrl',
+			url : '/itemdetails/:itemid'
+		});				
 	}
 ]);
