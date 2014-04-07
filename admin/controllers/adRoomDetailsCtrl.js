@@ -1,4 +1,4 @@
-admin.controller('adRoomDetailsCtrl', ['$scope','adRoomSrv', '$state', '$stateParams', function($scope, adRoomSrv, $state, $stateParams){
+admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$stateParams', function($scope, ADRoomSrv, $state, $stateParams){
 	/*
 	* Controller class for Room Details
 	*/
@@ -54,9 +54,27 @@ admin.controller('adRoomDetailsCtrl', ['$scope','adRoomSrv', '$state', '$statePa
 		$scope.errorMessage = errorMessage ;
 	};
 	
+	/*
+	* function to do operation on room likes after selecting one.
+	* param {string} group name
+	* index {integer} position of the element in array
+	*/
+	$scope.changed = function(groupName, index){
+		for(var i = 0; i < $scope.data.room_likes.length; i++){
+			if($scope.data.room_likes[i].group_name == groupName){
+				for(var j = 0; j < $scope.data.room_likes[i].options.length; j++){
+					if(j !== index){
+						$scope.data.room_likes[i].options[j].selected = false;
+					}
+				}
+				
+			}
+
+		}		
+	};
 
 	//getting the room details
-	$scope.invokeApi(adRoomSrv.roomDetails, {'roomId': roomId}, fetchSuccessOfRoomDetails, fetchFailedOfRoomDetails);	
+	$scope.invokeApi(ADRoomSrv.roomDetails, {'roomId': roomId}, fetchSuccessOfRoomDetails, fetchFailedOfRoomDetails);	
 
 	/*
 	* method for go back to previous stage, it is always room listing	
@@ -94,7 +112,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','adRoomSrv', '$state', '$statePa
 		if($scope.data.room_image.indexOf("data:")!= -1){
 			postData.room_image = $scope.data.room_image;
 		}
-		$scope.invokeApi(adRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);	
+		$scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);	
 	}
 
 	/**

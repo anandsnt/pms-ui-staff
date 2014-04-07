@@ -1,6 +1,7 @@
 admin.controller('ADRoomKeyDeliveryCtrl',['$state', '$scope', 'ADRoomKeyDeliverySrv', function($state, $scope, ADRoomKeyDeliverySrv){
 	
 	BaseCtrl.call(this, $scope);
+	$scope.isRoverCheckinRFID = false;
 	
 	var fetchSuccess = function(data){
 		$scope.data = data;
@@ -12,10 +13,20 @@ admin.controller('ADRoomKeyDeliveryCtrl',['$state', '$scope', 'ADRoomKeyDelivery
     * To handle save button click.
     */
 	$scope.save = function(){
-		var unwantedKeys = ["selected_key_system","key_systems"];
+		var unwantedKeys = ["key_systems"];
 		var data = dclone($scope.data, unwantedKeys);
-		data.key_system_id = $scope.data.selected_key_system;
 		$scope.invokeApi(ADRoomKeyDeliverySrv.update, data);
 	};
-	
+	/*
+    * To hide/show settings details as per room_key_delivery_for_rover_check_in.
+    */
+	$scope.$watch('data.room_key_delivery_for_rover_check_in', function() {
+       if($scope.data.room_key_delivery_for_rover_check_in == "encode"){
+       		$scope.isRoverCheckinRFID = true;
+       }
+       else{
+       		$scope.isRoverCheckinRFID = false;
+       }
+   	});
+   	
 }]);
