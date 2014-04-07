@@ -42,16 +42,8 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 		$location.path('/checkOutNow');
 
 
-console.log($attrs)
-
 	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
-
-
-
-	// Theming process
-
-
 
 
 }]);
