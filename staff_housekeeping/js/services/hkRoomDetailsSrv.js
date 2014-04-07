@@ -1,4 +1,4 @@
-hkRover.service('HKRoomDetailsSrv',['$http', '$q', function($http, $q){
+hkRover.service('HKRoomDetailsSrv',['$http', '$q', '$window', function($http, $q, $window){
 
 	this.fetch = function(id){
 		var deferred = $q.defer();

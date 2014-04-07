@@ -1,4 +1,4 @@
-hkRover.service('hkDashboardSrv',['$http', '$q', function($http, $q){
+hkRover.service('hkDashboardSrv',['$http', '$q', '$window', function($http, $q, $window){
 
 	
 	this.fetch = function(){
