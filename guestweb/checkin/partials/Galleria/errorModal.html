@@ -6,8 +6,7 @@
 		<p >We could not find your reservation.</p>
 		<p> Please check for typos, or call</p>
 		<div class="alert-link">
-			<u>{{hotelPhone}}.</u> 
-		</div>
+			<a href="tel: {{hotelPhone}}"class="alert-link-tag"><u>{{hotelPhone}}.</u></a>
 
 		<button type="button" ng-click="closeDialog()" class="btn btn-close">CLOSE</button>
 	</div>
