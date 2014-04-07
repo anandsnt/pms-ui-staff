@@ -30,19 +30,31 @@
 				<div class="col-md-6 no-padding top-margin now-later-options" ng-show="optionsAvailable">
 					<div class="row">
 						<div ng-repeat="charge in charges" class="col-xs-6 later-options {{ charge.class }}">
+							
 							<div class="rel-wrapper">
-								<a ng-href="#/checkOutLaterSuccess/{{ charge.id }}"></a>
-								<div class="row pad-hz-24">
 
-									<div class="circle-text"><div><span class="time">{{ charge.time | number }}</span><span class="ap">{{ charge.ap }}</span></div></div>
+								 <a ng-href="#/checkOutLaterSuccess/{{ charge.id }}"></a> 
+								<div class="circle-wrapper">
+									<div class="row pad-hz-24 ">
+										<div class="circle-bg">
+											<text x="40%" y="65%" fill="white">
+												<tspan class="time">
+													{{ charge.time | number }}
+												</tspan>
+												<tspan class="ap">
+													{{ charge.ap }}
+												</tspan>
+											</text>
+										</div>
+
 									</div>
+								</div>
 								<div class="row late-charge">
 									<span class="for">for</span><br/>
 									<span class="amount" ng-hide="charge.amount.toString().length>2">${{charge.amount| number:2}}</span>
 									<span class="amount" ng-show="charge.amount.toString().length>2">${{charge.amount| number:0}}</span>
-
-									
 								</div>
+							</div>
 							</div>
 						</div>
 					</div>
