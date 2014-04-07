@@ -18,8 +18,10 @@ var StayCard = function(viewDom){
 
   // Start listening to card swipes
   this.initCardSwipe = function() {
+    sntapp.paymentTypeSwipe = false;
     var options = {
         successCallBack: function(data){
+          sntapp.paymentTypeSwipe = true;
           // if this is not staycard do nothing
           // TODO: can't match page to '' as there could be pages with no data-page
           // TODO: support new pages when they are added
