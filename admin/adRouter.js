@@ -145,6 +145,20 @@ admin.config([
 			url : '/likes'
 
 		});
+
+
+		$stateProvider.state('admin.items', {
+			templateUrl: '/assets/partials/items/adItemList.html',
+			controller: 'ADItemListCtrl',
+			url : '/items'
+		});	
+
+		$stateProvider.state('admin.itemdetails', {
+			templateUrl: '/assets/partials/items/adItemDetails.html',
+			controller: 'ADItemDetailsCtrl',
+			url : '/itemdetails/:itemid'
+		});				
+
 		
 		$stateProvider.state('admin.chargeGroups', {
 			templateUrl: '/assets/partials/chargeGroups/adChargeGroups.html',
@@ -163,5 +177,12 @@ admin.config([
 			controller: 'ADChargeCodesCtrl',
 			url : '/chargeCodes'
 		});
+		
+		$stateProvider.state('admin.externalPmsConnectivity', {
+			templateUrl: '/assets/partials/externalPms/adExternalPmsConnectivity.html',
+			controller: 'ADExternalPmsConnectivityCtrl',
+			url : '/externalPmsConnectivity'
+		});
+
 	}
 ]);

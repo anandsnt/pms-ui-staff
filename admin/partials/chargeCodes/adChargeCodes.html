@@ -12,8 +12,7 @@
 		</header>
 
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	<div id="new-form-holder" ng-show="isAddmode" ng-include="getCodeTemplateUrl()">
-	</div>
+	<div id="new-form-holder" ng-show="isAddmode" ng-include="getCodeTemplateUrl()"></div>
 		<div id="new-form-holder"></div>
 		<table id="charge_codes_table" class="grid datatable">
 			<thead>
@@ -42,9 +41,7 @@
 			<tbody>
 				<tr ng-repeat="data in charge_codes">
 					<td ng-click="">
-						
-							{{data.charge_code}}
-						
+						{{data.charge_code}}
 					</td>
 					<td>
 						{{data.description}}
@@ -62,10 +59,6 @@
 						<a class="icons icon-delete large-icon delete_item" ng-click="deleteItem(data.value)">data.value</a>
 					</td>
 				</tr>
-
-			
-		
-				
 			</tbody>
 		</table>
 	</div>

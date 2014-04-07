@@ -14,12 +14,12 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 		});	
 		return deferred.promise;
 	};
-	
-
+	/**
+    *   A delete method to delete the charge code item.
+    */
 	this.deleteItem = function(data){
-		var value = data.value;
 		var deferred = $q.defer();
-		var url = '/admin/charge_codes/'+value+'/delete';
+		var url = '/admin/charge_codes/'+data.value+'/delete';
 		
 		ADBaseWebSrv.getJSON(url,data).then(function(data) {
 		    deferred.resolve(data);
@@ -28,9 +28,9 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 		});	
 		return deferred.promise;
 	};
-
-
-
+	/**
+    *   A getter method to return add new the charge codes data.
+    */
 	this.fetchNewDetails = function(){
 		var deferred = $q.defer();
 		var url = '/admin/charge_codes/new';
@@ -43,7 +43,4 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 		return deferred.promise;
 	};
 
-
-	
-	
 }]);
