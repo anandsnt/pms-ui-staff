@@ -7,8 +7,13 @@ admin.directive('adCheckbox', function($timeout) {
             label: '@label',
 	        required : '@required',
             isChecked: '=isChecked',
-            parentLabelClass: '@parentLabelClass'
+            parentLabelClass: '@parentLabelClass',
+            divClass: '@divClass',
+            change: '=change',
+            datagroup: '@datagroup',
+            index: '@index'
 	    },
+        
     	templateUrl: '../../assets/directives/checkBox/adCheckbox.html' 
     };
 

@@ -116,11 +116,23 @@ admin.config([
 			url : '/roomupsell'
 		});
 		
+
+		$stateProvider.state('admin.roomtypes', {
+			templateUrl: '/assets/partials/roomTypes/adRoomTypesList.html',
+			controller: 'ADRoomTypesCtrl',
+			url : '/roomtypes'
+		});
+		
+
+
+
+
 		$stateProvider.state('admin.roomKeyDelivery', {
 			templateUrl: '/assets/partials/roomKeyDelivery/roomKeyDelivery.html',
 			controller: 'ADRoomKeyDeliveryCtrl',
 			url : '/roomKeyDelivery'
 		});
+
 
 		$stateProvider.state('admin.rooms', {
 			templateUrl: '/assets/partials/rooms/adRoomList.html',
@@ -138,6 +150,18 @@ admin.config([
 			controller: 'ADHotelLikesCtrl',
 			url : '/likes'
 
+		});
+		
+		$stateProvider.state('admin.chargeGroups', {
+			templateUrl: '/assets/partials/chargeGroups/adChargeGroups.html',
+			controller: 'ADChargeGroupsCtrl',
+			url : '/chargeGroups'
+		});
+		
+		$stateProvider.state('admin.paymentMethods', {
+			templateUrl: '/assets/partials/paymentMethods/adPaymentMethods.html',
+			controller: 'ADPaymentMethodsCtrl',
+			url : '/paymentMethods'
 		});
 	}
 ]);

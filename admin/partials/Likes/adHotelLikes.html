@@ -9,7 +9,7 @@
 		<a id="add-new-button" class="action add" ng-click="addNew()">Add new</a>
 	</header>
 
-	<div id="notification-message" style="display: none;"></div>
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<div id="new-form-holder" ng-show="isAddmode" ng-include="getTemplateUrl()">
 	</div>
 	<table id="likes" class="grid">
