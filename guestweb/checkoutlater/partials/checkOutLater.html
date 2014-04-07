@@ -37,8 +37,9 @@
 									<div class="circle-text"><div><span class="time">{{ charge.time | number }}</span><span class="ap">{{ charge.ap }}</span></div></div>
 									</div>
 								<div class="row late-charge">
-									<span class="for">for</span>
-									<span class="amount">{{ charge.amount | currency }}</span>
+									<span class="for">for</span><br/>
+									<span class="amount" ng-hide="charge.amount.toString().length>2">${{charge.amount| number:2}}</span>
+									<span class="amount" ng-show="charge.amount.toString().length>2">${{charge.amount| number:0}}</span>
 								</div>
 							</div>
 						</div>
