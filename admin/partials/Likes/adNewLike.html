@@ -13,13 +13,8 @@
 				</em>
 			</div>
 			<fieldset class="holder left float">
-				<div class="entry full-width">
-					<label for="category-name">
-						name
-						<strong>*</strong>
-					</label>
-					<input type="text" ng-model="likeData.name" required="yes" placeholder="Enter category name" name="category-name" id="category-name">
-				</div>
+
+				<ad-textbox value="likeData.name"   label = "name" placeholder = "Enter category name" required = "yes" styleclass="full-width"></ad-textbox>
 
 				<!-- Checkbox -->
 				<div class="entry full-width radio-check">
@@ -74,16 +69,15 @@
 				<!-- Radio data type -->
 				<div id="entry-radio" class="data-type" ng-show="showRadio">
 					<div class="entry full-width">
-						<label for="radio-option1">
+					 	<label for="radio-option1">
 							Options
 							<strong>*</strong>
 						</label>
-						<div class="entry">
-							<input type="text" ng-model="likeData.options[0].name" placeholder="First option" name="radio-option" id="radio-option1">
-						</div>
-						<div class="entry">
-							<input type="text" ng-model="likeData.options[1].name" placeholder="Second option" name="radio-option" id="radio-option2">
-						</div>
+				
+						<ad-textbox value="likeData.options[0].name"    placeholder = "First option"  ></ad-textbox>
+						<ad-textbox value="likeData.options[1].name"    placeholder = "Second option" ></ad-textbox>
+
+				
 					</div>
 				</div>
 				<!-- Select data type -->
