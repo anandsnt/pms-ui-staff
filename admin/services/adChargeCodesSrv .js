@@ -31,7 +31,7 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 	/**
     *   A getter method to return add new the charge codes data.
     */
-	this.fetchNewDetails = function(){
+	this.fetchAddData = function(){
 		var deferred = $q.defer();
 		var url = '/admin/charge_codes/new';
 		
@@ -42,5 +42,37 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 		});	
 		return deferred.promise;
 	};
+	/**
+    *   A getter method to return add new the charge codes data.
+    */
+	this.fetchEditData = function(data){
+		var deferred = $q.defer();
+		var url = '/admin/charge_codes/'+data.editId+'/edit.json';
+		
+		ADBaseWebSrv.getJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+	/**
+    *   A post method to add/edit the charge codes data.
+    */
+	this.save = function(data){
+		var deferred = $q.defer();
+		var url = '/admin/charge_codes/save';
+		
+		ADBaseWebSrv.postJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+	
+	
+	
+	
 
 }]);
