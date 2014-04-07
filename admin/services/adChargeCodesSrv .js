@@ -1,7 +1,7 @@
 admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
 	
 	/**
-    *   A getter method to return the charge group list
+    *   A getter method to return the charge codes list
     */
 	this.fetch = function(){
 		var deferred = $q.defer();
@@ -15,5 +15,18 @@ admin.service('ADChargeCodesSrv',['$http', '$q', 'ADBaseWebSrv', function($http,
 		return deferred.promise;
 	};
 	
+
+	this.deleteItem = function(data){
+		var value = data.value;
+		var deferred = $q.defer();
+		var url = '/admin/charge_codes/'+value+'/delete';
+		
+		ADBaseWebSrv.getJSON(url,data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
 	
 }]);
