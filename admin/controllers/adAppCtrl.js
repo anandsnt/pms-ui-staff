@@ -1,10 +1,11 @@
 
-admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', function($state, $scope, $rootScope, ADAppSrv){
+admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$stateParams', function($state, $scope, $rootScope, ADAppSrv, $stateParams ){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.menuOpen = false;
 	$scope.hotelListOpen = '';
+	$scope.selectedIndex = -1;
 
 	//when there is an occured while trying to access any menu details, we need to show that errors
 
@@ -22,8 +23,14 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', funct
 		//$scope.currentIndex = 0;
 		$scope.data = data;
 		$scope.selectedMenu = $scope.data.menus[0];		
+		
 	};
-
+	
+	$scope.$on("changedSelectedMenu", function(event, menu){
+		console.log('in changedSleectedmenu');
+		$scope.selectedIndex = menu;
+	});
+	
 	$scope.invokeApi(ADAppSrv.fetch, {}, $scope.successCallbackOfMenuLoading);
 
 	// if there is any error occured 
