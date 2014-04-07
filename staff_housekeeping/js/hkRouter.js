@@ -36,7 +36,12 @@ hkRover.config([
 		$stateProvider.state('hk.navmain.search', {
 			url: '/' + ROUTES.search,
 			templateUrl: '/assets/partials/hkSearch.html',
-			controller: 'HKSearchCtrl'
+			controller: 'HKSearchCtrl',
+			resolve: {
+				fetchedRoomList: function(HKSearchSrv) {
+					return HKSearchSrv.roomList;
+				}
+			}
 		});	
 
 		$stateProvider.state('hk.roomDetails', {
