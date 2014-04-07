@@ -99,6 +99,11 @@
               dates             = [],
               today             = dateFilter(new Date(), 'yyyy-MM-dd');
 
+            // Add an extra row if needed to make the calendar to have 6 rows
+            if (allDates.length / 7 < 6) {
+              allDates = allDates.concat(dateUtils.dateRange(1, 8, allDates[allDates.length - 1]));
+            }
+
             var nextMonthInitialDate = new Date(initialDate);
             nextMonthInitialDate.setMonth(currentMonth);
 
@@ -108,9 +113,7 @@
             for (var i = 0; i < allDates.length; i++) {
               var className = "", date = allDates[i];
 
-              if ( dateFilter(date, 'M') !== currentMonth.toString() ) {
-                className = 'pickadate-disabled pickadate-outofrange-disabled';
-              } else if (date < scope.minDate || date > scope.maxDate) {
+              if (date < scope.minDate || date > scope.maxDate || dateFilter(date, 'M') !== currentMonth.toString()) {
                 className = 'pickadate-disabled';
               } else if (indexOf.call(disabledDates, date) >= 0) {
                 className = 'pickadate-disabled pickadate-unavailable';

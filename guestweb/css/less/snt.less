@@ -1125,6 +1125,7 @@ padding:5px 8px 2px 0;
     cursor: pointer;
 }
 .date-picker-ok{
+  
   text-align:right;
   color:#b59f64;
 }
@@ -1200,10 +1201,7 @@ padding:5px 8px 2px 0;
 .pickadate-cell li:nth-child(36) {
   border-left: 1px solid #DCDCDC;
 }
-
-.pickadate-cell .pickadate-disabled,
-.pickadate-cell .pickadate-disabled,
-.pickadate-cell .pickadate-enabled {
+.pickadate-cell .pickadate-disabled,.pickadate-cell .pickadate-enabled {
   background-color: #7d6742;
 }
 .pickadate-cell .pickadate-disabled,
@@ -1219,7 +1217,7 @@ padding:5px 8px 2px 0;
 
 
 .pickadate-cell .pickadate-active {
-  background-color: #fff;
+  background-color: #fff !important;
 }
 
 .pickadate-cell .pickadate-active {
@@ -1233,6 +1231,8 @@ padding:5px 8px 2px 0;
   border-left: 0px !important;
   border-right: 0px !important;
 }
+
+
 
 .pickadate-centered-heading {
   text-transform: uppercase;
@@ -1256,26 +1256,6 @@ padding:5px 8px 2px 0;
 .pickadate-controls a {
   text-decoration: none;
   font-size: 0.9em;
-}
-
-
-// must not be changed
-// must only be update for different hotel
-.pickadate-cell .pickadate-outofrange-disabled, 
-.pickadate-cell .pickadate-outofrange-disabled a,
-.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled,
-.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled a,
-.pickadate-cell .pickadate-active.pickadate-outofrange-disabled,
-.pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
-  // date must be hidden
-  // user must not see or select it
-  color: #7d6742;
-  color: transparent;
-  background-color: #7d6742;
-  cursor: default;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
 }
 
 /* ------------------date -picker ends here-------------------------- */
@@ -1810,6 +1790,7 @@ body > div[ng-view] {
   }
 
   .jumbotron .checkin-wrapper {
+
     margin: 55px auto 0 !important;
     padding: 20px 0;
     position: relative;
@@ -1834,6 +1815,7 @@ body > div[ng-view] {
     width: 1px;
     background: #fff;
     overflow: hidden;
+    
   }
 
   .proceed-to-checkin {
