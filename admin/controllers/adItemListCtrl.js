@@ -1,16 +1,14 @@
 admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$filter', function($scope, ADItemSrv, ngTableParams, $filter){
-	/*
+   /*
 	* Controller class for Room List
 	*/
-
 	$scope.errorMessage = '';
-
-	
 	//inheriting from base controller
 	BaseCtrl.call(this, $scope);
-	
-
-
+   /*
+    * Success call back of fetch
+    * @param {object} items list
+    */
 	var fetchSuccessOfItemList = function(data){
 		$scope.$emit('hideLoader');
 		$scope.data = data;
@@ -34,12 +32,8 @@ admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$fil
 		
 	};
 	
-	var fetchFailedOfItemList = function(errorMessage){
-		$scope.$emit('hideLoader');
-		$scope.errorMessage = errorMessage ;
-	};
-	
-	$scope.invokeApi(ADItemSrv.fetchItemList, {}, fetchSuccessOfItemList, fetchFailedOfItemList);	
+	//To list items
+	$scope.invokeApi(ADItemSrv.fetchItemList, {}, fetchSuccessOfItemList);	
 
 	/*
 	* function for toggle the favourite status
@@ -50,15 +44,16 @@ admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$fil
 	$scope.toggleFavourite = function(itemId, isFavourite){
 		$scope.invokeApi(ADItemSrv.toggleFavourite, {'item_id': itemId, 'toggle_status': isFavourite});
 	};
-
+   /*
+    * Function to delete item
+    * @param {int} index of the item
+    * @param {string} id of the selected item
+    */
 	$scope.deleteItem = function(index, id){	
 		
 		var successCallBack = function(){
-			console.log(index);
-			console.log(JSON.stringify($scope.data.items[index]));
 			$scope.$emit('hideLoader');
 			$scope.data.items.splice(index, 1);	
-			console.log(JSON.stringify($scope.data.items[index]));	
 			$scope.itemList = new ngTableParams({
 		        page: 1,            // show first page
 		        count: $scope.data.items.length,    // count per page - Need to change when on pagination implemntation
@@ -75,8 +70,7 @@ admin.controller('ADItemListCtrl', ['$scope','ADItemSrv', 'ngTableParams', '$fil
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
 		    });						
-		}
+		};
 		$scope.invokeApi(ADItemSrv.deleteItem, {'item_id': id}, successCallBack);		
-	}
-
+	};
 }]);
