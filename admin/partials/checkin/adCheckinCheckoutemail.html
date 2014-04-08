@@ -1,67 +1,33 @@
-<section id="replacing-div-second" class="content current" style="display: block;"><div data-view="CheckoutGuests">
-	<header class="content-title float">
-		<h2>{{emailTitle}}</h2>
-		<a id="go_back" data-type="load-details" class="action back" ng-click="backActionFromEmail()">Back to setup</a>
-	</header>
+	<section id="replacing-div-second" class="content current" style="display: block;"><div data-view="CheckoutGuests">
+		<header class="content-title float">
+			<h2>{{emailTitle}}</h2>
+			<a id="go_back" data-type="load-details" class="action back" ng-click="backActionFromEmail()">Back to setup</a>
+		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	<form name="zest-checkout-send-email" method="post" id="zest-checkout-send-email" class="form with-grid float" action="http://stayntouch.perceptiveinteractive.com/admin-hotel/zest-checkout/send-email/">
-		<!-- <table id="guests" data-count="20" class="grid datatable">
-			<thead>
-				<tr>
-					<th width="50px">
-						<ad-checkbox is-checked="selectAllOption" ng-click="toggleAllOptions()"></ad-checkbox>	
-					</th>
-					<th class="sorting">Name</th>
-					<th class="sorting">Guest Email</th>
-					<th width="120px" class="sorting">Room</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="emailData in emailDatas">
-					<td>
+		<form name="zest-checkout-send-email" method="post" id="zest-checkout-send-email" class="form with-grid float" action="http://stayntouch.perceptiveinteractive.com/admin-hotel/zest-checkout/send-email/">
+			
+			<table id="guests" class="grid datatable table" ng-table="tableParams">
+				<tr ng-repeat="emailData in $data">
+					<td width="30" style="text-align: left" header="'ng-table/headers/checkbox.html'">
 						<ad-checkbox is-checked="emailData.is_selected" ></ad-checkbox>	
 					</td>
-					<td>
-						<strong>
-							{{emailData.first_name}}
-							{{emailData.last_name}}
-						</strong>
-					</td>
-					<td>
-						{{emailData.email}}
-					</td>
-					<td>
-						<span class="number">
-							{{emailData.room_number}}
-						</span>
-					</td>
-				</tr>
-
-			</tbody>
-		</table> -->
-
-		<table id="guests" class="grid datatable table" ng-table="tableParams">
-			<tr ng-repeat="emailData in $data">
-					  <td width="30" style="text-align: left" header="'ng-table/headers/checkbox.html'">
-            	    <ad-checkbox is-checked="emailData.is_selected" ></ad-checkbox>	
-           		 	</td>
 					<td data-title="'Name'" sortable="'first_name'"><a ui-sref="admin.userdetails({ page: 'edit', id: user.id})"  class="title">{{emailData.first_name}}&nbsp;{{emailData.last_name}} </a></td>
 					<td data-title="'Email'" sortable="'email'"> {{emailData.email}}  </td>
 					<td data-title="'Room'" sortable="'room_number'">{{emailData.room_number}}</td>
-				
+					
 				</tr>
 
-		</table>
+			</table>
 
-	<script type="text/ng-template" id="ng-table/headers/checkbox.html">
-        	<ad-checkbox is-checked="selectAllOption" ng-click="toggleAllOptions()"></ad-checkbox>	
-    </script>
+			<script type="text/ng-template" id="ng-table/headers/checkbox.html">
+			<ad-checkbox is-checked="selectAllOption" ng-click="toggleAllOptions()"></ad-checkbox>	
+			</script>
 
 
-		<div class="actions float">
-			<button type="button" ng-click="backActionFromEmail()" class="button blank">Cancel</button>
-			<button type="button" ng-click="sendMailClicked()" ng-disabled="disableSave" class="button grey">Send checkout email</button>
-		</div>
-	</form>
-</div>
-</section>
+			<div class="actions float">
+				<button type="button" ng-click="backActionFromEmail()" class="button blank">Cancel</button>
+				<button type="button" ng-click="sendMailClicked()" ng-disabled="disableSave" class="button grey">Send checkout email</button>
+			</div>
+		</form>
+	</div>
+	</section>
