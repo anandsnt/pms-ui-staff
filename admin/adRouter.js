@@ -186,9 +186,9 @@ admin.config([
 		});
 
 		$stateProvider.state('admin.checkout', {
-			templateUrl: '/assets/partials/externalPms/adExternalPmsConnectivity.html',
-			controller: 'ADExternalPmsConnectivityCtrl',
-			url : '/externalPmsConnectivity'
+			templateUrl: '/assets/partials/checkout/adCheckout.html',
+			controller: 'ADCheckoutCtrl',
+			url : '/checkout'
 		});
 
 
