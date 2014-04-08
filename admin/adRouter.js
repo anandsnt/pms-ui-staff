@@ -178,5 +178,11 @@ admin.config([
 			url : '/externalPmsConnectivity'
 		});
 
+		$stateProvider.state('admin.hotelannouncementsettings', {
+			templateUrl: '/assets/partials/hotelAnnouncementSettings/hotelAnnounceSettings.html',
+			controller: 'ADHotelAnnouncementSettingsCtrl',
+			url : '/hotelannouncementsettings'
+		});		
+
 	}
 ]);
