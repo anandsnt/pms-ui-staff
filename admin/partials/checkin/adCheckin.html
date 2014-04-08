@@ -8,15 +8,15 @@
 	<form style="overflow-y:auto;" class="form float">
 		<fieldset class="holder left">
 
-			<ad-toggle-button is-checked="checkinData.is_send_alert" label="Send Check In Alert"></ad-toggle-button>
+			<ad-toggle-button is-checked="checkinData.is_send_alert_flag" label="Send Check In Alert"></ad-toggle-button>
 
 	
 	
 
-			<ad-checkbox is-checked="checkinData.is_notify_on_room_ready" label="Notify Guest When Room is Ready &amp; Vacant" div-class="full-width"></ad-checkbox>	
+			<ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="Notify Guest When Room is Ready &amp; Vacant" div-class="full-width"></ad-checkbox>	
 
 		
-			<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email" label="Only if Reservation is CC guaranteed" div-class="full-width"></ad-checkbox>	
+			<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email_flag" label="Only if Reservation is CC guaranteed" div-class="full-width"></ad-checkbox>	
 
 			<div class="entry">
 				<label>
@@ -55,7 +55,7 @@
 		<fieldset class="holder right">
 	
 
-			<ad-toggle-button is-checked="checkinData.is_send_checkin_staff_alert" label="Web Check In staff alert"></ad-toggle-button>
+			<ad-toggle-button is-checked="checkinData.is_send_checkin_staff_alert_flag" label="Web Check In staff alert"></ad-toggle-button>
 
 			<div id="options" class="entry full-width">
 
