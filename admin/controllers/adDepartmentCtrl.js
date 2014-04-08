@@ -89,6 +89,7 @@ admin.controller('ADDepartmentListCtrl',['$scope', '$state', 'ADDepartmentSrv', 
 		var successCallbackDelete = function(data){	
 	 		$scope.$emit('hideLoader');
 	 		$scope.data.departments.splice(index, 1);
+	 		$scope.currentClickedElement = -1;
 	 	};
 		$scope.invokeApi(ADDepartmentSrv.deleteDepartment, id , successCallbackDelete);
 	};
