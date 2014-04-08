@@ -178,5 +178,21 @@ admin.config([
 			url : '/externalPmsConnectivity'
 		});
 
+
+		$stateProvider.state('admin.checkin', {
+			templateUrl: '/assets/partials/externalPms/adExternalPmsConnectivity.html',
+			controller: 'ADExternalPmsConnectivityCtrl',
+			url : '/externalPmsConnectivity'
+		});
+
+		$stateProvider.state('admin.checkout', {
+			templateUrl: '/assets/partials/externalPms/adExternalPmsConnectivity.html',
+			controller: 'ADExternalPmsConnectivityCtrl',
+			url : '/externalPmsConnectivity'
+		});
+
+
+
+
 	}
 ]);
