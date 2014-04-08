@@ -88,6 +88,20 @@ admin.controller('ADCheckinCtrl',['$scope','adCheckinSrv', function($scope,adChe
     	
     }
 
+
+     $scope.$watch('emailDatas',function(){
+
+    	$scope.disableSave = true;
+    	angular.forEach($scope.emailDatas,function(item, index) {
+ 			  if(item.is_selected){
+ 			  
+ 			  	$scope.disableSave = false;
+ 			  }
+ 		});
+
+
+    }, true);
+
     $scope.backActionFromEmail = function(){
     	$scope.showingEmailOptions = false;
     }

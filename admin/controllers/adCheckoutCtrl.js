@@ -63,11 +63,15 @@ admin.controller('ADCheckoutCtrl',['$scope','adCheckoutSrv', function($scope,adC
     }
 
 
+
+
+
     $scope.showSendEmailOptions = function(){
 
     	$scope.showingEmailOptions = true;
     	$scope.emailTitle = 'Guests Checking Out';
     	$scope.selectAllOption = false;
+    	$scope.disableSave = true;
 
 
     	 var fetchEmailListSuccessCallback = function(data) {
@@ -83,6 +87,21 @@ admin.controller('ADCheckoutCtrl',['$scope','adCheckoutSrv', function($scope,adC
     	$scope.invokeApi(adCheckoutSrv.fetchEmailList, {},fetchEmailListSuccessCallback);
     	
     }
+
+
+     $scope.$watch('emailDatas',function(){
+
+    	$scope.disableSave = true;
+    	angular.forEach($scope.emailDatas,function(item, index) {
+ 			  if(item.is_selected){
+ 			  
+ 			  	$scope.disableSave = false;
+ 			  }
+ 		});
+
+
+    }, true);
+
 
     $scope.backActionFromEmail = function(){
     	$scope.showingEmailOptions = false;
