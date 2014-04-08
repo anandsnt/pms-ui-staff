@@ -10,23 +10,13 @@
 
 			<ad-toggle-button is-checked="checkinData.is_send_alert" label="Send Check In Alert"></ad-toggle-button>
 
-			<div class="entry full-width radio-check">
-				<label class="checkbox inline checked">
-					<span class="icon-form icon-checkbox checked"></span>
-					Notify Guest When Room is Ready &amp; Vacant
-					<input type="checkbox" name="notify-guest" id="notify-guest" checked="checked">
+	
+	
 
-				</label>
-			</div>
+			<ad-checkbox is-checked="checkinData.is_notify_on_room_ready" label="Notify Guest When Room is Ready &amp; Vacant" div-class="full-width"></ad-checkbox>	
 
-			<div class="entry full-width radio-check">
-				<label class="checkbox">
-					<span class="icon-form icon-checkbox"></span>
-					Only if Reservation is CC guaranteed
-					<input type="checkbox" name="notify-guest" id="require_cc">
-
-				</label>
-			</div>
+		
+			<ad-checkbox is-checked="checkinData.require_cc_for_checkin_email" label="Only if Reservation is CC guaranteed" div-class="full-width"></ad-checkbox>	
 
 			<div class="entry">
 				<label>
@@ -48,10 +38,12 @@
 
 					</div>
 					<div class="select select-col col1-3">
-						<select name="hotel-checkin-primetime" id="hotel-checkin-primetime" class="styled">
-							<option value="AM" selected="">AM</option>
-							<option value="PM">PM</option>
+
+						
+
+						<select ng-options="primeTime for primeTime  in primeTimes" ng-model="checkinData.checkin_alert_primetime">
 						</select>
+
 					</div>
 				</div>
 
@@ -66,16 +58,21 @@
 			<ad-toggle-button is-checked="checkinData.is_send_checkin_staff_alert" label="Web Check In staff alert"></ad-toggle-button>
 
 			<div id="options" class="entry full-width">
-				<label class="radio">
-					<span class="icon-form icon-radio"></span>
-					<input type="radio" value="all" required="" name="type" id="all" data-type="textbox" class="change-data">
-					All
-				</label>
-				<label class="radio">
-					<span class="icon-form icon-radio"></span>
-					<input type="radio" value="notsuccess" required="" name="type" id="notsuccess" data-type="radio" class="change-data">
-					Only when check in is NOT successful
-				</label>
+
+					<label class="radio" ng-class="{checked:checkinData.checkin_staff_alert_option == 'all'}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_staff_alert_option == 'all'}"></span>
+							<input type="radio" ng-model="checkinData.checkin_staff_alert_option" value="all" class="change-data">
+							All
+							
+						</label>
+
+					<label class="radio" ng-class="{checked:checkinData.checkin_staff_alert_option == 'not_success'}">
+							<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_staff_alert_option == 'not_success'}"></span>
+							<input type="radio" ng-model="checkinData.checkin_staff_alert_option" value="not_success" class="change-data">
+							Only when check in is NOT successful
+							
+					</label>
+
 			</div>
 			<div class="entry full-width">
 
@@ -87,7 +84,7 @@
 		</fieldset>
 		<div class="actions float">
 			<button type="button" id="cancel" class="button blank add-data-inline">Cancel</button>
-			<button type="button" id="save_guest_checkin" class="button green">Save changes</button>
+			<button type="button" ng-click="saveCheckin()" class="button green">Save changes</button>
 		</div>
 	</form>
 </div>
