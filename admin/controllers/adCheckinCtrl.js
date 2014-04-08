@@ -74,7 +74,9 @@ admin.controller('ADCheckinCtrl',['$scope','adCheckinSrv', function($scope,adChe
 
     	 var fetchEmailListSuccessCallback = function(data) {
     		$scope.$emit('hideLoader');
-    		$scope.emailDatas  = data;
+    		$scope.emailDatas  = data.due_out_guests;
+
+    		console.log($scope.emailDatas)
     	}
     	$scope.invokeApi(adCheckinSrv.fetchEmailList, {},fetchEmailListSuccessCallback);
     	

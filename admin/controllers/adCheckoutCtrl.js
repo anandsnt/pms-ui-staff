@@ -71,7 +71,7 @@ admin.controller('ADCheckoutCtrl',['$scope','adCheckoutSrv', function($scope,adC
 
     	 var fetchEmailListSuccessCallback = function(data) {
     		$scope.$emit('hideLoader');
-    		$scope.emailDatas  = data;
+    		$scope.emailDatas  = data.due_out_guests;
     	}
     	$scope.invokeApi(adCheckoutSrv.fetchEmailList, {},fetchEmailListSuccessCallback);
     	
