@@ -59,8 +59,6 @@ admin.config([
 			controller: 'ADLinkExistingUserCtrl',
 			url : '/linkexisting/:id'
 		});
-
-
 		
 		$stateProvider.state('admin.hotels', {
 			templateUrl: '/assets/partials/hotel/adHotelList.html',
@@ -110,16 +108,11 @@ admin.config([
 			url : '/roomupsell'
 		});
 		
-
 		$stateProvider.state('admin.roomtypes', {
 			templateUrl: '/assets/partials/roomTypes/adRoomTypesList.html',
 			controller: 'ADRoomTypesCtrl',
 			url : '/roomtypes'
 		});
-		
-
-
-
 
 		$stateProvider.state('admin.roomKeyDelivery', {
 			templateUrl: '/assets/partials/roomKeyDelivery/roomKeyDelivery.html',
@@ -179,10 +172,16 @@ admin.config([
 		});
 
 		$stateProvider.state('admin.hotelannouncementsettings', {
-			templateUrl: '/assets/partials/hotelAnnouncementSettings/hotelAnnounceSettings.html',
+			templateUrl: '/assets/partials/hotelAnnouncementSettings/adHotelAnnounceSettings.html',
 			controller: 'ADHotelAnnouncementSettingsCtrl',
 			url : '/hotelannouncementsettings'
-		});		
+		});	
+
+		$stateProvider.state('admin.sociallobbysettings', {
+			templateUrl: '/assets/partials/hotelSocialLobbySettings/adHotelSocialLobbySettings.html',
+			controller: 'ADSocialLobbySettingsCtrl',
+			url : '/sociallobbysettings'
+		});			
 
 	}
 ]);
