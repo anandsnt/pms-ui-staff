@@ -37,6 +37,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 			if($scope.editData.lov.length === 0)
 				$scope.editData.lov.push({'value':'','name':''});
 			$scope.isEditmode = true;
+			$scope.uploadPlaceholder = ($scope.editDataca_certificate_exists)  ? 'Certificate Attached' :'Choose file ...';
 		};		
 		$scope.invokeApi(adChainsSrv.edit,editID,editChainSuccessCallback);
 	};
@@ -50,6 +51,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
 		$scope.formTitle = 'Add';	
 		$scope.isAddmode = true;
 		$scope.isEditmode = false;
+		$scope.uploadPlaceholder = 'Choose file ...';
 	};
    /*
     * To fetch the template for chains details add/edit screens
@@ -92,6 +94,12 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  			}
  		});
  		var updateData = {'id' : id ,'updateData' :$scope.editData };
+
+
+
+
+ 		console.log($scope)
+
  		var updateChainSuccessCallback = function(data) {
  			$scope.$emit('hideLoader');
  			$scope.fetchHotelChains();
