@@ -119,8 +119,6 @@ admin.config([
 		
 
 
-
-
 		$stateProvider.state('admin.roomKeyDelivery', {
 			templateUrl: '/assets/partials/roomKeyDelivery/roomKeyDelivery.html',
 			controller: 'ADRoomKeyDeliveryCtrl',
