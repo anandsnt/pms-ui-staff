@@ -1,11 +1,11 @@
-<section id="replacing-div-first" class="content current">
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
 	<div data-view="GuestCardFFPView">
 		<!-- FFP list -->
 		<header class="content-title float">
 			<h2>Frequent Flyer Programs</h2>
 			<span class="count">({{data.frequent_flyer_program.length}})</span>
 		</header>
-		<div id="notification-message"></div>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<table id="ffp" class="grid datatable table" ng-table="tableParams">
 			<tbody ng-repeat = "ffp in $data">
 				<tr ffp-id="{{ffp.id}}">
