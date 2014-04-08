@@ -180,9 +180,9 @@ admin.config([
 
 
 		$stateProvider.state('admin.checkin', {
-			templateUrl: '/assets/partials/externalPms/adExternalPmsConnectivity.html',
-			controller: 'ADExternalPmsConnectivityCtrl',
-			url : '/externalPmsConnectivity'
+			templateUrl: '/assets/partials/checkin/adCheckin.html',
+			controller: 'ADCheckinCtrl',
+			url : '/checkin'
 		});
 
 		$stateProvider.state('admin.checkout', {
