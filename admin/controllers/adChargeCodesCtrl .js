@@ -3,7 +3,6 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
 	$scope.currentClickedElement = -1;
-	$scope.charge_codes = [];
 	$scope.isAdd = false;
 	$scope.isEdit = false;
 	$scope.isTaxSelected = false;
@@ -15,7 +14,6 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 		var fetchSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.data = data;
-			$scope.charge_codes = $scope.data.charge_codes;
 			
 			// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		    $scope.tableParams = new ngTableParams({
@@ -85,7 +83,7 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 			$scope.fetchChargeCodes();
 		};
 		var data = {'value' : value};
-		$scope.invokeApi(ADChargeCodesSrv.deleteItem, data,deleteSuccessCallback);
+		$scope.invokeApi(ADChargeCodesSrv.deleteItem, data, deleteSuccessCallback);
  	};
  	/*
     * To handle save button click.
@@ -98,14 +96,12 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 		};
 		var unwantedKeys = ["charge_code_types", "charge_groups", "selected_link_with"];
 		var data = dclone($scope.prefetchData, unwantedKeys);
-		console.log((data));
 		$scope.invokeApi(ADChargeCodesSrv.save, data, saveSuccessCallback);
  	};
  	/*
     * To handle cancel button click.
     */
  	$scope.clickedCancel = function(){
- 		
  		if($scope.isAdd) $scope.isAdd = false;
  		if($scope.isEdit) $scope.isEdit = false;
  	};
