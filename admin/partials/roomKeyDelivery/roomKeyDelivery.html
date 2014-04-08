@@ -1,0 +1,90 @@
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()" >
+	<div data-view="RoomKeyDeliveryView">
+		<header class="content-title float">
+			<h2>Room Key Delivery Setup</h2>
+			<a ui-sref="admin.dashboard({menu:4})" data-type="load-details" class="action back">Back</a>
+		</header>
+		
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		
+		<form style="overflow-y:auto;" name="room-delivery-view" method="post" class="form float">
+			
+			<fieldset class="holder left">
+				<div class="form-title">
+					<h3><span>Zest</span> check in's </h3>
+				</div>
+				
+				<div class="entry full-width">
+					<div class="boxes">
+						<label class="radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'email'}">
+							<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'email'}"></span>
+							<input ng-model="data.room_key_delivery_for_guestzest_check_in" type="radio" value="email" name="guest-zest" id="type1" class="change-data">
+							Delivery QR code for room key via email
+						</label>
+						<label class="radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'smartphone'}">
+							<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'smartphone'}"></span>
+							<input ng-model="data.room_key_delivery_for_guestzest_check_in" type="radio" value="smartphone" name="guest-zest" id="type2" class="change-data">
+							Deliver QR code to GuestZest App on Guests Smartphone
+						</label>
+						<label class="radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'front_desk'}">
+							<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_guestzest_check_in == 'front_desk'}"></span>
+							<input ng-model="data.room_key_delivery_for_guestzest_check_in" type="radio" value="front_desk" name="guest-zest" id="type3" class="change-data">
+							Deliver message to guest to pick up key from front desk
+						</label>
+					</div>
+				</div>
+				
+			</fieldset>
+			
+			<fieldset class="holder right">
+				<div class="form-title">
+					<h3><span>Rover</span> check in's </h3>
+				</div>
+				
+				<div class="entry full-width">
+					<div class="boxes">
+						<label class="radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'email'}">
+							<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'email'}"></span>
+							<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="email" name="guest-zest" id="type1" class="change-data">
+							Deliver QR code for room key via email
+						</label>
+						<label class="radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'encode'}">
+							<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'encode'}"></span>
+							<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="encode" name="guest-zest" id="type2" class="change-data">
+							Make Key from RFID reader at Tablet
+						</label>
+						<label class="radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'qr_code_tablet'}">
+							<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'qr_code_tablet'}"></span>
+							<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="qr_code_tablet" name="guest-zest" id="type3" class="change-data">
+							Show QR code for room key on Tablet
+						</label>
+					</div>
+				</div>
+				
+			</fieldset>
+			
+			<div class="entry full-width" ng-show="isRoverCheckinRFID">
+				
+				<ad-dropdown label="Room Key System Vendor" label-in-drop-down="Room Key System Vendor" list="data.key_systems" selected-Id='data.selected_key_system' required = "yes"></ad-dropdown>
+
+	    		<ad-textbox value="data.key_access_url" label = "Key System Access URL" placeholder = "Enter Key System Access URL" required = "yes" ></ad-textbox>
+
+				<ad-textbox value="data.key_access_port" label = "Key System Access Port" placeholder = "Enter Key System Access Port" required = "" ></ad-textbox>
+	    		
+	    		<ad-textbox value="data.key_username" label = "Key System Username" placeholder = "Enter Key System Username" required = "" ></ad-textbox>
+
+	    		<ad-textbox value="data.key_password" inputtype="password" label = "Key System Password" placeholder = "Enter Key System Password" required = "" ></ad-textbox>
+
+			</div>
+			
+			<div class="actions float">
+				<button type="button" ui-sref="admin.dashboard({menu:4})" class="button blank add-data-inline">
+					Cancel
+				</button>
+				<button type="button" ng-click="save()" class="button green">
+					Save changes
+				</button>
+			</div>
+		</form>
+	</div>
+</section>

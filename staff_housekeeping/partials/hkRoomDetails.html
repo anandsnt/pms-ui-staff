@@ -8,43 +8,40 @@
     </header>
     <!-- Rooms details -->
     <section id="room-details" class="content">
+
         <header id="room-header" ng-class= "{'inspected-clean': isCleanVacant, 'dirty': isDirtyVacant, '': isOutOfService, 'pickup': isPickup, 'occupied': isDefaultRoomColor}">
             <h1 class="icons icon-room">{{data.room_details.current_room_no}}</h1>
             <div class="select">
                 <select ng-model="currentHKStatus"
+                    ng-disabled="shouldDisable()"
                     ng-options="opt as opt.description for opt in data.room_details.hk_status_list" ng-change="updateHKStatus()">
                     <option value="" disabled>Room status</option>
                 </select>
-                
             </div>
         </header>
-        
-        <span ng-show="data.room_details.is_occupied == 'true'">
-            <div class="content" id="guest-info">
-              <div class="wrapper">
-                    <span id="fo-status">{{ data.room_details.current_room_reservation_status }}</span>
-                    <figure class="guest-image">
-                        <img alt="" src="{{ data.room_details.avatar_src }}">
-                        <span ng-show="data.room_details.is_vip == 'true'" class="vip">VIP</span>            
-                    </figure>
-                    <h2>
-                        <span class="guest-status {{guestViewStatus}}"></span>
-                        <span class="name">{{ data.room_details.guest_name }}</span>
-                    </h2>
-                    <em class="status" ng-hide="data.room_details.reservation_status == 'CHECKING_OUT'">Due Out {{data.room_details.dept_date}}</em>
-                    <em class="status today" ng-show="data.room_details.reservation_status == 'CHECKING_OUT'">Due Out today<span ng-show="data.room_details.is_late_checkout == 'true'"> ({{data.room_details.late_checkout_time}}) </span></em>
-                </div>
+
+        <div id="guest-info" ng-show="data.room_details.is_occupied == 'true'">
+            <div class="wrapper">
+                  <span id="fo-status">{{ data.room_details.current_room_reservation_status }}</span>
+                  <figure class="guest-image">
+                      <img alt="" src="{{ data.room_details.avatar_src }}">
+                      <span ng-show="data.room_details.is_vip == 'true'" class="vip">VIP</span>            
+                  </figure>
+                  <h2>
+                      <span class="guest-status {{guestViewStatus}}"></span>
+                      <span class="name">{{ data.room_details.guest_name }}</span>
+                  </h2>
+                  <em class="status" ng-hide="data.room_details.reservation_status == 'CHECKING_OUT'">Due Out {{data.room_details.dept_date}}</em>
+                  <em class="status today" ng-show="data.room_details.reservation_status == 'CHECKING_OUT'">Due Out today<span ng-show="data.room_details.is_late_checkout == 'true'"> ({{data.room_details.late_checkout_time}}) </span></em>
+              </div>
+        </div>
+
+        <div id="guest-info" class="no-content" ng-show="data.room_details.is_occupied == 'false'">
+            <div class="info">
+                <span class="icons icon-vacant"></span>
+                <strong class="h1">Room is vacant.</strong>
             </div>
-        </span>
-        <span ng-hide="data.room_details.is_occupied == 'true'">
-            <div id="guest-info" class="no-content">
-                <div class="info">
-                    <span class="icons icon-vacant"></span>
-                    <strong class="h1">Room is vacant.</strong>
-                </div>
-            </div>    
-        </span>
-        
+        </div>     
         
     </section>
 </div>

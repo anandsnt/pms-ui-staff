@@ -1,0 +1,12 @@
+<div ng-show="successMessage!=''" ng-class="{notice: successMessage!=''}" class='success success_message' ng-switch on="successMessage.length">
+
+	<span ng-switch-when="1">
+			{{successMessage[0]}}
+	</span>
+	<ul ng-switch-default>
+		<li ng-repeat="message in successMessage">
+			{{message}}
+		</li>
+	</ul>	
+
+</div>

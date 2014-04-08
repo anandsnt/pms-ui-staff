@@ -1,16 +1,17 @@
 
-<div class="data-holder" ng-controller="ADDepartmentDetailsCtrl">
+<div class="data-holder" >
 
 	<form class="form single-field-form float">
-		 <ad-textbox value="departmentName" name = "department-name" label = "Name" placeholder = "Enter hotel name" required = "yes"></ad-textbox>
+		 <ad-textbox value="departmentData.name" name = "department-name" label = "" placeholder = "Enter hotel name" required = "yes"></ad-textbox>
+		
 		<div class="actions float">
 			<button type="button" id="cancel" class="button blank edit-data-inline" ng-click="clickCancel()">
 				Cancel
 			</button>
-			<button type="button" id="update" class="button green edit-data-inline" ng-click="saveDepartment()">
+			<button type="button" id="update" class="button green edit-data-inline" ng-click="saveDepartment()" >
 				Save changes
 			</button>
-			<button type="button" id="delete" class="button red edit-data-inline">
+			<button type="button" id="delete" class="button red edit-data-inline" ng-click="deleteDepartment(currentClickedElement, departmentData.value)">
 				Delete
 			</button>
 		</div>

@@ -1,50 +1,54 @@
-admin.controller('ADHotelListCtrl',['$scope', '$state','$stateParams', 'ADHotelListSrv',  function($scope, $state, $stateParams, ADHotelListSrv){
-	
-	ADHotelListSrv.fetch().then(function(data) {
-	        $scope.data = data;
-	        //$scope.$parent.myScroll['rooms'].refresh();
-	}, function(){
-		console.log("fetch failed");
-
-	});	
-	
-	
+admin.controller('ADHotelListCtrl',['$scope','$rootScope', '$state','$stateParams', 'ADHotelListSrv','ngTableParams', '$filter',  function($scope, $state,$rootScope, $stateParams, ADHotelListSrv, ngTableParams, $filter){
+	BaseCtrl.call(this, $scope);
+	$scope.$emit("changedSelectedMenu", 0);
+	var fetchSuccess = function(data){
+		$scope.data = data;
+		$scope.$emit('hideLoader');
 		
-	$scope.HotelCtrl = function(id, editstate){
-	 	 // $state.go(editstate);
-	 	 ADHotelListSrv.getHotelDetails(id).then(function(data) {
-		        $scope.data = data;
-		        console.log( $scope.data )
-		        //$scope.$parent.myScroll['rooms'].refresh();
-		}, function(){
-			console.log("fetch failed");
-	
-		});	
+		// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
+	    $scope.tableParams = new ngTableParams({
+	        page: 1,            // show first page
+	        count: $scope.data.hotels.length,    // count per page - Need to change when on pagination implemntation
+	        sorting: {
+	            name: 'asc'     // initial sorting
+	        }
+	    }, {
+	        total: $scope.data.hotels.length, // length of data
+	        getData: function($defer, params) {
+	            // use build-in angular filter
+	            var orderedData = params.sorting() ?
+	                                $filter('orderBy')($scope.data.hotels, params.orderBy()) :
+	                                $scope.data.hotels;
+	            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+	        }
+	    });
 	};
 	
-	$scope.toggleClicked = function(index, hotelId, is_res_import_on){
-		
-		// checkedStatus will be true, if it checked
+	$scope.invokeApi(ADHotelListSrv.fetch, {}, fetchSuccess);
+	
+	/**
+    *   A post method to update ReservationImport for a hotel
+    *   @param {String} index value for the hotel list item.
+    */
+   
+	$scope.toggleClicked = function(index){
+		var confirmForReservationImport = true;
       	// show confirm if it is going turn on stage
-      	if(is_res_import_on == 'false'){
-          	var confirmForReservationImport = confirm("Do NOT switch ON, until hotel mapping and setup is completed!, Do you want to proceed?");
-      	}	
-      	var data = {'hotel_id' :  hotelId,  'is_res_import_on': is_res_import_on};
-      	
-      	var fetchSuccess = function(){
-			if(is_res_import_on == "true"){
-				$scope.data.hotels[index].is_res_import_on = 'false';
-			}
-			else{
-				$scope.data.hotels[index].is_res_import_on = 'true';
-			}
-		};
-		
-		var fetchFailed = function(){
-			console.log("fetchFailed");
-		};
-		
-		ADHotelListSrv.postReservationImportToggle(data).then(fetchSuccess, fetchFailed);
+      	if($scope.data.hotels[index].is_res_import_on == 'false'){
+          	confirmForReservationImport = confirm("Do NOT switch ON, until hotel mapping and setup is completed!, Do you want to proceed?");
+      	}
+      	// If pressed OK button proceed toggle action ON.
+      	// Toggle OFF action perform without confirm box.
+      	if(confirmForReservationImport){
+	      	var isResImportOn = $scope.data.hotels[index].is_res_import_on == 'true' ? false : true;
+	      	var data = {'hotel_id' :  $scope.data.hotels[index].id,  'is_res_import_on': isResImportOn };
+	      	
+	      	var postSuccess = function(){
+	      		$scope.data.hotels[index].is_res_import_on = ($scope.data.hotels[index].is_res_import_on == 'true') ? 'false' : 'true';
+				$scope.$emit('hideLoader');
+			};
+			$scope.invokeApi(ADHotelListSrv.postReservationImportToggle, data, postSuccess);
+		}
 	};
 		
 

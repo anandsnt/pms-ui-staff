@@ -1,16 +1,26 @@
-function BaseCtrl($scope){
-
+function BaseCtrl($scope){	
+    
 	$scope.fetchedCompleted = function(data){
 		$scope.$emit('hideLoader');
 	};
 
+	$scope.clearErrorMessage = function(){
+		$scope.errorMessage = '';
+		$scope.successMessage = '';
+	};
+	$scope.clearErrorMessage();
+	$scope.showErrorMessage = function(errorMessage){
+		
+	};
+
 	$scope.fetchedFailed = function(errorMessage){
 		$scope.$emit('hideLoader');
-		if($scope.hasOwnProperty("errorMessage")){ 
+		if($scope.hasOwnProperty("errorMessage")){ 	
 			$scope.errorMessage = errorMessage;
+			$scope.successMessage = '';
 		}
 		else {
-			$scope.$emit("showErrorMessage", 'Error Messae');
+			$scope.$emit("showErrorMessage", errorMessage);
 		}
 	};
 
@@ -27,5 +37,5 @@ function BaseCtrl($scope){
 		
 		return serviceApi(params).then(successCallback, failureCallback);
 		
-	}
+	};
 }
