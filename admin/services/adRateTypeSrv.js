@@ -7,7 +7,7 @@ function($http, $q, ADBaseWebSrvV2) {
 		//var url = " /sample_json/ng_admin/rate_types.json";
 		var url = "/api/admin/rate_types.json";
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-			deferred.resolve(data);
+			deferred.resolve(data.results);
 		}, function(data) {
 			deferred.reject(data);
 		});

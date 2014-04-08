@@ -7,9 +7,6 @@ function($scope, $rootScope, ADRateTypeSrv) {
 
 	var fetchSuccess = function(data) {
 		$scope.data = data;
-		console.log("fetchSuccess");
-		console.log($scope.data);
-		//console.log($scope.data.rate_types);
 		$scope.$emit('hideLoader');
 	};
 
@@ -36,7 +33,6 @@ function($scope, $rootScope, ADRateTypeSrv) {
 		$scope.isAddMode = false;
 		var successCallbackRender = function(data) {
 			$scope.rateTypeData = data;
-			$scope.rateTypeData.title = $scope.rateTypeData.name;
 			$scope.$emit('hideLoader');
 		};
 		
@@ -87,22 +83,17 @@ function($scope, $rootScope, ADRateTypeSrv) {
 				// To add new data to scope
 				$scope.data.push(data);
 				var l = $scope.data.length;
-				$scope.data[l - 1].name = $scope.rateTypeData.name;
-				$scope.data[l - 1].description = $scope.rateTypeData.description;
-				$scope.data[l - 1].rate_count = 0;
+				$scope.data[(l - 1)].name = $scope.rateTypeData.name;
+				$scope.data[(l - 1)].rate_count = 0;
 			} else {				
 				//To update data with new value
 				$scope.data[parseInt($scope.currentClickedElement)].name = $scope.rateTypeData.name;
-				$scope.data[parseInt($scope.currentClickedElement)].description = $scope.rateTypeData.description;
-
 			}
 			$scope.currentClickedElement = -1;
 		};
 		if ($scope.isAddMode) {
-			console.log($scope.rateTypeData)
 			$scope.invokeApi(ADRateTypeSrv.saveRateType, $scope.rateTypeData, successCallbackSave);
 		} else {
-			console.log($scope.rateTypeData)
 			$scope.invokeApi(ADRateTypeSrv.updateRateType, $scope.rateTypeData, successCallbackSave);
 		}
 	};
@@ -122,6 +113,7 @@ function($scope, $rootScope, ADRateTypeSrv) {
 		var successCallbackDelete = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.data.splice(index, 1);
+			$scope.currentClickedElement = -1;
 		};
 		$scope.invokeApi(ADRateTypeSrv.deleteRateType, id, successCallbackDelete);
 	};
