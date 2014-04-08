@@ -65,9 +65,13 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		if($scope.isAdminSnt){
 			var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo"];
 			var data = dclone($scope.data, unwantedKeys);
+			var postSuccess = function(){
+				$scope.$emit('hideLoader');
+				$state.go("admin.hotels");
+			};
 			
-			if($scope.isEdit) $scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data);
-			else $scope.invokeApi(ADHotelDetailsSrv.addNewHotelDeatils, data);
+			if($scope.isEdit) $scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, postSuccess);
+			else $scope.invokeApi(ADHotelDetailsSrv.addNewHotelDeatils, data, postSuccess);
 		}
 		// Hotel Admin -To save Edit data
 		else{
@@ -76,7 +80,11 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			if($scope.hotelLogoPrefetched == data.hotel_logo){ 
 				data.hotel_logo = "";
 			}
-			$scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data);
+			var postSuccess = function(){
+				$scope.$emit('hideLoader');
+				$state.go('admin.dashboard', {menu: 0});
+			};
+			$scope.invokeApi(ADHotelDetailsSrv.updateHotelDeatils, data, postSuccess);
 		}
 	};
 	
