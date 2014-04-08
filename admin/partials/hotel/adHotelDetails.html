@@ -8,7 +8,7 @@
 		
 		<fieldset class="holder left">
 			<div class="form-title">
-				<h3><span>Hotel</span> name and location </h3>
+				<h3><span>Hotel</span> Name and Location </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
 		
@@ -75,7 +75,7 @@
 		
 		<fieldset class="holder right">
 			<div class="form-title">
-				<h3><span>Hotel</span> details </h3>
+				<h3><span>Hotel</span> Details </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
 			<div class="entry">
@@ -208,6 +208,13 @@
 					</button>
 				</div>
 				<span class="file-preview"> <img src="{{data.hotel_logo}}" alt="" height="112" width="auto"> </span>
+			</div>
+			<div class="entry full-width radio-check">
+				<label ng-model="data.checkin_to_inspected_rooms_only" class="checkbox" ng-class="{ checked : data.checkin_to_inspected_rooms_only == 'true' }">
+					<span class="icon-form icon-checkbox" ng-class="{ checked : data.checkin_to_inspected_rooms_only == 'true' }"></span>
+					Check in to inspected rooms only
+					<input type="checkbox" ng-click="data.checkin_to_inspected_rooms_only =(data.checkin_to_inspected_rooms_only  === 'true')? 'false':'true'">
+				</label>
 			</div>
 			
 		</fieldset>

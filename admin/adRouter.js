@@ -172,6 +172,12 @@ admin.config([
 			url : '/paymentMethods'
 		});
 
+		$stateProvider.state('admin.chargeCodes', {
+			templateUrl: '/assets/partials/chargeCodes/adChargeCodes.html',
+			controller: 'ADChargeCodesCtrl',
+			url : '/chargeCodes'
+		});
+		
 		$stateProvider.state('admin.externalPmsConnectivity', {
 			templateUrl: '/assets/partials/externalPms/adExternalPmsConnectivity.html',
 			controller: 'ADExternalPmsConnectivityCtrl',
