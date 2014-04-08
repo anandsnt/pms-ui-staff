@@ -1,0 +1,55 @@
+<section id="replacing-div-second" class="content current" style="display: block;"><div data-view="CheckoutGuests">
+	<header class="content-title float">
+		<h2>{{emailTitle}}</h2>
+		<a id="go_back" data-type="load-details" class="action back" ng-click="backActionFromEmail()">Back to setup</a>
+	</header>
+	<div id="notification-message"></div>
+	<form name="zest-checkout-send-email" method="post" id="zest-checkout-send-email" class="form with-grid float" action="http://stayntouch.perceptiveinteractive.com/admin-hotel/zest-checkout/send-email/">
+		<table id="guests" data-count="20" class="grid datatable">
+			<thead>
+				<tr>
+					<th width="50px">
+						<label id="select-all-guests" class="checkbox">
+							<span class="icon-form icon-checkbox"></span>
+							<input type="checkbox" value="Select All" name="select-all" id="select-all">
+						</label>
+					</th>
+					<th class="sorting">Name</th>
+					<th class="sorting">Guest Email</th>
+					<th width="120px" class="sorting">Room</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="emailData in emailDatas">
+					<td>
+						<label class="checkbox">
+							<span class="icon-form icon-checkbox"></span>
+							<input type="checkbox"  name="guests" class="guest">
+						</label>
+					</td>
+					<td>
+						<strong>
+							{{emailData.first_name}}
+							{{emailData.last_name}}
+						</strong>
+					</td>
+					<td>
+						{{emailData.email}}
+					</td>
+					<td>
+						<span class="number">
+							{{emailData.room_number}}
+						</span>
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+
+		<div class="actions float">
+			<button type="button" id="cancel" class="button blank">Cancel</button>
+			<button type="button" id="send-email" disabled="" class="button grey">Send checkout email</button>
+		</div>
+	</form>
+</div>
+</section>

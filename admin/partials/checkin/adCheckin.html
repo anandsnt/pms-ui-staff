@@ -1,11 +1,12 @@
-<section id="replacing-div-first" class="content current"><div data-view="ZestCheckinConfiguration">
+
+<section id="replacing-div-second" class="content current"><div data-view="ZestCheckinConfiguration" ng-hide="showingEmailOptions">
 	<header class="content-title float">
 		<h2>Guest Checkin Setup</h2>
-		<a id="listguests" href="/admin/get_due_in_guests" data-type="load-details" class="action email">Send Checkin Email</a>
+		<a ng-click="sendEmail()" data-type="load-details" class="action email">Send Checkin Email</a>
 		<a id="go_back" data-type="load-details" class="action back">Back</a>
 	</header>
-	<div id="notification-message"></div>
-	<form style="overflow-y:auto;" class="form float">
+	<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
+		<form style="overflow-y:auto;" class="form float" >
 		<fieldset class="holder left">
 
 			<ad-toggle-button is-checked="checkinData.is_send_alert_flag" label="Send Check In Alert"></ad-toggle-button>
@@ -89,3 +90,5 @@
 	</form>
 </div>
 </section>
+
+<div ng-include="'/assets/partials/checkin/adCheckinCheckoutemail.html'" ng-show="showingEmailOptions"></div>

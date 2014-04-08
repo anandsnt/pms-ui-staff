@@ -1,10 +1,10 @@
-<section id="replacing-div-first" class="content current" style="display: block;"><div data-view="ZestCheckOutConfiguration">
+<section id="replacing-div-first" class="content current" style="display: block;" ng-hide="showingEmailOptions"><div data-view="ZestCheckOutConfiguration">
 	<header class="content-title float">
 		<h2>Guest Checkout Setup</h2>
-		<a id="listguests" href="/admin/get_due_out_guests" data-type="load-details" class="action email">Send checkout email</a>
+		<a ng-click="sendEmail()"  data-type="load-details" class="action email">Send checkout email</a>
 		<a id="go_back" data-type="load-details" class="action back">Back</a>
 	</header>
-	<div id="notification-message"></div>
+	<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
 	<form style="overflow-y:auto;" name="edit-social-lobby" method="post" class="form float">
 		<fieldset class="holder column">
 			<div class="entry">
@@ -71,3 +71,5 @@
 	</form>
 </div>
 </section>
+
+<div ng-include="'/assets/partials/checkin/adCheckinCheckoutemail.html'" ng-show="showingEmailOptions"></div>

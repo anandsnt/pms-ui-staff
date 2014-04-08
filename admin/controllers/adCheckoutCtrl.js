@@ -2,6 +2,8 @@ admin.controller('ADCheckoutCtrl',['$scope','adCheckoutSrv', function($scope,adC
 
 	BaseCtrl.call(this, $scope);
 	$scope.checkoutData = {};
+	$scope.showingEmailOptions = false;
+	$scope.emailDatas = {};
 
 
 
@@ -58,6 +60,25 @@ admin.controller('ADCheckoutCtrl',['$scope','adCheckoutSrv', function($scope,adC
     	}
     	$scope.invokeApi(adCheckoutSrv.save, uploadData,saveCheckinDetailsSuccessCallback);
 
+    }
+
+
+    $scope.sendEmail = function(){
+
+    	$scope.showingEmailOptions = true;
+    	$scope.emailTitle = 'Guests Checking In';
+
+
+    	 var fetchEmailListSuccessCallback = function(data) {
+    		$scope.$emit('hideLoader');
+    		$scope.emailDatas  = data;
+    	}
+    	$scope.invokeApi(adCheckoutSrv.fetchEmailList, {},fetchEmailListSuccessCallback);
+    	
+    }
+
+    $scope.backActionFromEmail = function(){
+    	$scope.showingEmailOptions = false;
     }
 
 

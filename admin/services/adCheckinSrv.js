@@ -31,4 +31,22 @@ admin.service('adCheckinSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q,
 		return deferred.promise;
 	};
 
+
+	 /*
+    * To retrive checkin email list 
+    * 
+    */	
+	this.fetchEmailList = function(data){
+		var deferred = $q.defer();
+		var url = '/admin/get_due_in_guests.json';
+			
+		
+		ADBaseWebSrv.getJSON(url,data).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 }]);

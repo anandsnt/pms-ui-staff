@@ -2,6 +2,8 @@ admin.controller('ADCheckinCtrl',['$scope','adCheckinSrv', function($scope,adChe
 
 	BaseCtrl.call(this, $scope);
 	$scope.checkinData = {};
+	$scope.showingEmailOptions = false;
+	$scope.emailDatas = {};
 	
    /*
     * To fetch checkin details
@@ -63,6 +65,24 @@ admin.controller('ADCheckinCtrl',['$scope','adCheckinSrv', function($scope,adChe
 
     }
 
+
+    $scope.sendEmail = function(){
+
+    	$scope.showingEmailOptions = true;
+    	$scope.emailTitle = 'Guests Checking In';
+
+
+    	 var fetchEmailListSuccessCallback = function(data) {
+    		$scope.$emit('hideLoader');
+    		$scope.emailDatas  = data;
+    	}
+    	$scope.invokeApi(adCheckinSrv.fetchEmailList, {},fetchEmailListSuccessCallback);
+    	
+    }
+
+    $scope.backActionFromEmail = function(){
+    	$scope.showingEmailOptions = false;
+    }
 
 
 }]);
