@@ -1,4 +1,4 @@
-admin.controller('ADCheckinCtrl',['$scope','adCheckinSrv', function($scope,adCheckinSrv){
+admin.controller('ADCheckinCtrl',['$scope','adCheckinSrv','$state', function($scope,adCheckinSrv,$state){
 
 	BaseCtrl.call(this, $scope);
 	$scope.checkinData = {};
@@ -153,5 +153,12 @@ admin.controller('ADCheckinCtrl',['$scope','adCheckinSrv', function($scope,adChe
     	
     }
 
+
+      $scope.gotToDashboard = function(){
+
+            $state.go('admin.dashboard', {
+            menu : 1
+        });
+    }
 
 }]);

@@ -1,4 +1,4 @@
-admin.controller('ADCheckoutCtrl',['$scope','adCheckoutSrv', function($scope,adCheckoutSrv){
+admin.controller('ADCheckoutCtrl',['$scope','adCheckoutSrv','$state', function($scope,adCheckoutSrv,$state){
 
 	BaseCtrl.call(this, $scope);
 	$scope.checkoutData = {};
@@ -153,6 +153,13 @@ admin.controller('ADCheckoutCtrl',['$scope','adCheckoutSrv', function($scope,adC
     	
     }
 
+
+    $scope.gotToDashboard = function(){
+
+    		$state.go('admin.dashboard', {
+			menu : 1
+		});
+    }
 
 
 }]);
