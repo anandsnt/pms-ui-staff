@@ -1,16 +1,18 @@
 login.service('loginSrv',['$http', '$q', function($http, $q){
-	this.addItem = function(data){
+	this.addItem = function(data, successCallback, failureCallBack){
 		console.log(data);
 		
 		var deferred = $q.defer();
 		
 		//Sample params {params:{fname: "fname", lname: "lname"}}
-		$http.post("/sessions", data).success(function(response, status) {
+		$http.post("/login/submit", data).success(function(response, status) {
 			if(response.status == "success"){
-		    	deferred.resolve(response.data);
+		    	//deferred.resolve(response.data);
+		    	successCallback(response.data);
 			}else{
 				// please note the type of error expecting is array
-		    	deferred.reject(response.errors);
+		    	//deferred.reject(response.errors);
+		    	failureCallBack(response.data);
 			}
 		}).error(function(response, status) {
 			// please note the type of error expecting is array

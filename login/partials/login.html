@@ -1,6 +1,14 @@
 <div class='content' id='login'>
 	<img alt="" class="logo" src="/assets/logo.png" />
-	<span class='notice error' id='loginStatus'>Please Enter Password</span>
+	<span  class='notice error'>ffffffffffffffff</span>
+	<span class='notice error' >
+		;;;{{errorMessage}}fgjhghjghjhgjk
+		<ul>
+			<li ng-repeat="message in errorMessage">
+				{{message}}fghfghfgghj
+			</li>
+		</ul>	
+	</span>
 
 	<form accept-charset="UTF-8" ng-submit="submit()" autocomplete="off" class="form" id="login-form" method="post" name="login-form">
 		<div style="margin:0;padding:0;display:inline">
@@ -13,7 +21,7 @@
 		</div>
 		<div class='entry float'>
 			<label for='password'>Password</label>
-			<input autocomplete='off' id='password' ng-model="data.pwd" name='password' placeholder='Enter your password' type='password' value=''>
+			<input autocomplete='off' id='password' ng-model="data.password" name='password' placeholder='Enter your password' type='password' value=''>
 		</div>
 		<div class='entry float'>
 			<button class='button green' id='loginbutton' name='commit' type='submit' value='login'>
