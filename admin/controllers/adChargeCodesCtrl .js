@@ -5,7 +5,6 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 	$scope.currentClickedElement = -1;
 	$scope.isAdd = false;
 	$scope.isEdit = false;
-	$scope.isTaxSelected = false;
 	
 	/*
     * To fetch charge code list
@@ -81,6 +80,12 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
  		var deleteSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.fetchChargeCodes();
+			// delete data from scope
+			angular.forEach($scope.data.charge_codes,function(item, index) {
+	 			if (item.value == value) {
+	 				$scope.data.charge_codes.splice(index, 1);
+	 			}
+ 			});
 		};
 		var data = {'value' : value};
 		$scope.invokeApi(ADChargeCodesSrv.deleteItem, data, deleteSuccessCallback);
@@ -93,10 +98,22 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 			$scope.$emit('hideLoader');
 			if($scope.isAdd) $scope.isAdd = false;
  			if($scope.isEdit) $scope.isEdit = false;
+ 			$scope.fetchChargeCodes();
 		};
-		var unwantedKeys = ["charge_code_types", "charge_groups", "selected_link_with"];
-		var data = dclone($scope.prefetchData, unwantedKeys);
-		$scope.invokeApi(ADChargeCodesSrv.save, data, saveSuccessCallback);
+		// To create Charge code Link with list frm scope.
+		var selected_link_with = [];
+		angular.forEach($scope.prefetchData.link_with,function(item, index) {
+ 			if (item.is_checked == 'true') {
+ 				selected_link_with.push(item.value);
+ 			}
+		});
+		var unwantedKeys = ["charge_code_types", "charge_groups", "link_with"];
+		var postData = dclone($scope.prefetchData, unwantedKeys);
+		//Include Charge code Link with List when selected_charge_code_type is not "TAX".
+		if($scope.prefetchData.selected_charge_code_type != "1"){
+			postData.selected_link_with = selected_link_with;
+		}
+		$scope.invokeApi(ADChargeCodesSrv.save, postData, saveSuccessCallback);
  	};
  	/*
     * To handle cancel button click.
@@ -106,14 +123,15 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
  		if($scope.isEdit) $scope.isEdit = false;
  	};
  	/*
-    * Function to handle data change in 'Mapping type'.
-    * Data is injected to sntValues based on 'Mapping type' values.
+    * To handle import from PMS button click.
     */
+ 	$scope.importFromPmsClicked = function(){
+ 		var importSuccessCallback = function() {
+			$scope.$emit('hideLoader');
+			$scope.fetchChargeCodes();
+		};
+		$scope.invokeApi(ADChargeCodesSrv.importData, {}, importSuccessCallback);
+ 	};
    
-   	/*
-	$scope.$watch('prefetchData.selected_charge_code_type', function() {
-       if($scope.prefetchData.selected_charge_code_type == 'tax') alert("sASDAS");
-   	});
-	*/
 }]);
 

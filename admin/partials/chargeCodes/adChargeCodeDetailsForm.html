@@ -17,7 +17,7 @@
 
 			</fieldset>
 			<!-- to hide the chrage codes if type is TAX. Since we need to show the charge codes on change type -->
-			<fieldset ng-hide="isTaxSelected" class="holder right">
+			<fieldset ng-hide="prefetchData.selected_charge_code_type == '1'" class="holder right">
 				<div class="form-title">
 					<h3><span>Charge code</span> Link with </h3>
 				</div>
