@@ -12,9 +12,8 @@ hkRover.service('hkDashboardSrv',['$http', '$q', '$window', function($http, $q, 
 			}else{
 				console.log("error");
 			}
-		}).error(function(data, status) {
-			 if(status == 401) { 
-		    	// 401- Unauthorized
+		}).error(function(response, status) {
+			if(status == 401){ // 401- Unauthorized
 				// so lets redirect to login page
 				$window.location.href = '/house/logout' ;
 			}else{

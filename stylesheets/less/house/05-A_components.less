@@ -100,8 +100,16 @@
             }
 
             #guests-today {
+                margin-bottom: 30px;
+                display: table;
+                width: 100%;
+                .float;
 
                 li {
+                    text-align: center;
+                    display: table-cell;
+                    table-layout: fixed;
+                    padding: 0 5px;
                     .button {
                         padding: 20px;
 
@@ -130,18 +138,35 @@
     #rooms {
         li {           
             a {
-                color: @textColor;
-                padding: 0 20px;
+                padding: 0 10px 0 10px;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                border-bottom: 1px solid rgba(0,0,0,.1);
+                background-color: @white;
+                position: relative;
+                .show;
+                .float;
 
-                .room-number,
-                .room-status,
-                .fo-status { line-height: 60px; }
-
-                .room-number { 
-                    font-size: 36px;
-                    width: 120px; 
+                .room-number {
+                    font-size: 30px;
+                    line-height: 50px;
+                    vertical-align: middle;
+                    font-weight: 700;
+                    width: 70px;
+                    .show;
+                    .pull-left;
                 }
-                
+
+                .room-stats-wrap {
+                    display: block;
+                    overflow: hidden;
+                    position: absolute;
+                    top: 0;
+                    left: 90px;
+                    right: 50px;
+                }
+
                 .room-status,
                 .fo-status {
                     font-size: 16px;
@@ -150,13 +175,50 @@
                     font-weight: 600;
                 }
 
-                .room-stats-wrap {
-                    left: 150px;
+                .room-status {
+                     width: 50%;
+                 }
+
+                 @media (max-width: 319px) {
+                    .room-stats-wrap {
+                        clear: both;
+                        position: static;
+                        padding: 3px 0 10px;
+                    }
+
+                    .room-status,
+                    .fo-status {
+                        width: 49%;
+                        line-height: 1;
+                    }
+
+                    .fo-status {
+                        text-align: right;
+                        .pull-right;
+                    }
                 }
 
-                &.with-image {
-                    .guest-image {
-                        top: 10px;
+                .guest-image {
+                    position: relative;
+                    top: 5px;
+                    .pull-right;
+                    #border-radius > .rounded(40px);
+                    .square(40px);
+
+                    .vip {
+                        position: absolute;
+                        bottom: 0;
+                        right: 0;
+                        font-size: 9px;
+                        line-height: 16px;
+                        .square(16px);
+                        #border-radius > .rounded(16px);       
+                    }
+
+                    img {
+                        width: 100%;
+                        height: auto;
+                        #border-radius > .rounded(40px);
                     }
                 }
             }
@@ -185,7 +247,73 @@
 
     #room-details {
         #room-header {
-            padding: 20px 10px;
+            padding: 0 10px;
+            color: @white;
+            float: left;
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
+            background: @grey3;
+            .float;
+
+            h1 {
+                display: inline-block;
+                font-size: 36px;
+                line-height: 60px;
+                vertical-align: middle;
+                padding-left: 46px;
+                font-weight: 600;
+                .pull-left;
+            }
+
+            .select {
+                margin: 10px 0;
+                width: 50%;
+                .pull-right;
+
+                select { 
+                    line-height: 20px;
+                    min-height: 40px;
+                    height: 40px;
+                }
+            }
+
+            @media (max-width: 319px) {
+                h1 {
+                    float: none;
+                    text-align: center;
+                    display: block;
+                    background-position-x: center !important;
+                    padding-left: 60px;
+                }
+
+                .select {
+                    float: none;
+                    width: 100%;
+                }
+            }
+
+            &.occupied { background: @blue; }
+            &.inspected-clean { background: @green; }
+            &.pickup { background: @orange; }
+            &.dirty { background: @red; }
+        }
+
+        #room-details-content {
+            position: absolute;
+            top: 0px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        #room-content-wrapper {
+            width: 100%;
+            height: 100%;
 
             h1 { font-size: 48px; }
         }
@@ -234,7 +362,55 @@
                 top: 20px;
                 bottom: 20px;
             }
-        }
+
+            &.no-content {
+                position: relative;
+                margin: 0;
+                padding: 60px 10px 0;
+                min-height: 230px;
+                background: transparent;
+                text-align: center;
+                color: @grey3;
+                .square(100%);
+                .box-shadow(none);
+
+                .info {
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: 50%;
+                    margin-top: -40px; 
+
+                    @media (orientation: landscape) {
+                        margin-top: -24px;
+                    }
+
+                    .h1 { 
+                        font-size: 24px;
+                        line-height: 1.5em;
+                        font-weight: 700;
+                        margin: 0;
+                    }
+                }
+            }
+
+            @media (max-width: 319px) {
+                .wrapper {
+                    padding: 120px 10px 0;
+                }
+
+                &.no-content {
+                    padding: 120px 10px 0;
+                }
+            }
+
+            @media (max-height: 319px) {
+                &.no-content .info {
+                    position: static;
+                    margin: 50px 0;
+                }
+            }
+        }   
     }
 
 /* 6. IE
