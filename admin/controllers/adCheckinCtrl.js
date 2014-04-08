@@ -13,13 +13,13 @@
 
         $scope.init();
         
-        
+
        /*
         * To fetch checkin details
         */
         $scope.fetchCheckinDetails = function(){
           var fetchCheckinDetailsSuccessCallback = function(data) {
-             
+
             $scope.$emit('hideLoader');
             $scope.checkinData = data;
 
@@ -27,11 +27,11 @@
             $scope.checkinData.is_send_checkin_staff_alert_flag = ($scope.checkinData.is_send_checkin_staff_alert === 'true') ? true:false;
             $scope.checkinData.is_notify_on_room_ready_flag = ($scope.checkinData.is_send_alert === 'true') ? true:false;
             $scope.checkinData.require_cc_for_checkin_email_flag = ($scope.checkinData.require_cc_for_checkin_email=== 'true') ? true:false;
-            
+
                 //to be confirmed 
-                
+
                 $scope.checkinData.checkin_alert_primetime = (!$scope.checkinData.checkin_alert_primetime)? "AM":$scope.checkinData.checkin_alert_primetime;
-                
+
             };
             $scope.invokeApi(adCheckinSrv.fetch, {},fetchCheckinDetailsSuccessCallback);
         };
@@ -62,8 +62,8 @@
             'is_send_alert':$scope.checkinData.is_send_alert,
             'is_send_checkin_staff_alert':$scope.checkinData.is_send_checkin_staff_alert,
             'prime_time':$scope.checkinData.checkin_alert_primetime,
-            'checkin_alert_time':$scope.checkinData.checkin_alert_time_hour+":"+$scope.checkinData.checkin_alert_time_minute
-
+            'checkin_alert_time':$scope.checkinData.checkin_alert_time_hour+":"+$scope.checkinData.checkin_alert_time_minute,
+            'require_cc_for_checkin_email' : $scope.checkinData.require_cc_for_checkin_email
 
 
         }
@@ -129,7 +129,7 @@
         	$scope.disableSave = true;
         	angular.forEach($scope.emailDatas,function(item, index) {
               if(item.is_selected){
-                  
+
                  $scope.disableSave = false;
              }
          });
@@ -174,22 +174,22 @@
 
         $scope.sendMailClicked = function(){
 
-           
+
         	reservations = [];
 
         	angular.forEach($scope.emailDatas,function(item, index) {
              if(item.is_selected)
                reservations.push(item.reservation_id)
        });
-         
+
         	var emailSendingData = {'reservations' : reservations}
 
           var sendMailClikedSuccessCallback = function(data) {
               $scope.$emit('hideLoader');
-              
+
           }
           $scope.invokeApi(adCheckinSrv.sendMail, emailSendingData,sendMailClikedSuccessCallback);
-          
+
       }
 
 

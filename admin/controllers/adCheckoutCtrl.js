@@ -45,7 +45,7 @@
             	    $scope.checkoutData.is_send_checkout_staff_alert = ($scope.is_send_checkout_staff_alert_flag) ? 'true':'false';
         			$scope.checkoutData.require_cc_for_checkout_email = ($scope.require_cc_for_checkout_email_flag) ? 'true':'false';
         			$scope.checkoutData.include_cash_reservations = ($scope.include_cash_reservationsy_flag) ?'true':'false';
-        			
+
 
         			var uploadData = {
 
@@ -54,7 +54,7 @@
         				'emails':$scope.checkoutData.emails,
         				'include_cash_reservations':$scope.checkoutData.include_cash_reservations,
         				 'is_send_checkout_staff_alert':$scope.checkoutData.is_send_checkout_staff_alert,
-        				'require_cc_for_checkout_email':$scope.require_cc_for_checkout_email
+        				'require_cc_for_checkout_email':$scope.checkoutData.include_cash_reservations
 
         			}
 
@@ -118,7 +118,7 @@
              $scope.$watch('emailDatas',function(){
 
             	$scope.disableSave = true;
-               
+
             	angular.forEach($scope.emailDatas,function(item, index) {
          			  if(item.is_selected){
          			  
