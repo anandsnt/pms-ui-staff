@@ -1,5 +1,5 @@
 <section id="replacing-div-first" class="content current " ng-click="clearErrorMessage()">
-	<div data-view="UserDetailsView">
+	<div>
 		<header class="content-title float">
 			<h2 ng-show="mod == 'edit'">Edit User</h2>
 			<h2 ng-show="mod == 'add'">Add New User</h2>
@@ -14,7 +14,7 @@
 				</div>
 				<ad-textbox value="data.first_name" name = "first-name" id = "first-name" label = "First Name" placeholder = "Enter first name" required = "yes" ></ad-textbox>
 				<ad-textbox value="data.last_name" name = "last-name" id = "last-name" label = "Last Name" placeholder = "Enter last name" required = "yes" ></ad-textbox>
-				<ad-dropdown id="department" div-class="full-width" label-in-drop-down="Department" list="data.departments" selected-Id='data.user_department' >
+				<ad-dropdown id="department" label="Department" div-class="full-width" label-in-drop-down="Department" list="data.departments" selected-Id='data.user_department' >
 				</ad-dropdown>
 				<div></div>
 				<ad-textbox value="data.job_title" name = "job-title" id = "job-title" label = "Job title" placeholder = "Enter job title" required = "yes" ></ad-textbox>
