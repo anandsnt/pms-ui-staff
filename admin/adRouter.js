@@ -43,10 +43,7 @@ admin.config([
 			controller: 'ADChainListCtrl',
 			url : '/chains'
 		});
-
-		
-		
-		
+			
 		
 		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserDetails.html',
@@ -183,5 +180,10 @@ admin.config([
 			url : '/sociallobbysettings'
 		});			
 
+		$stateProvider.state('admin.guestreviewsetup', {
+			templateUrl: '/assets/partials/reviews_setups/adGuestReviewSetup.html',
+			controller: 'ADGuestReviewSetupCtrl',
+			url : '/guestreviewsetup'
+		});	
 	}
 ]);

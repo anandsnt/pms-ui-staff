@@ -5,7 +5,7 @@ admin.service('ADSocialLobbySrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSr
 	*/
 
    /*
-    * getter method to Socail Lobby
+    * getter method to get Socail Lobby details
     * @return {object} Socail Lobby details
     */	
 	this.fetchSettingsDetails = function(){	

@@ -4,6 +4,7 @@ admin.directive('adToggleButton', function($timeout) {
     	restrict: 'E',
         replace: 'true',
       	scope: {
+      		label: '@label',
             isChecked: '=isChecked',
             divClass: '@divClass'
 	    },

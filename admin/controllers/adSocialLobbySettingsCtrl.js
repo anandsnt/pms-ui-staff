@@ -1,5 +1,8 @@
 admin.controller('ADSocialLobbySettingsCtrl', ['$scope', '$state', 'ADSocialLobbySrv', function($scope, $state, ADSocialLobbySrv){
 
+   	/*
+	* controller class for social lobby settings
+	*/	
 	BaseCtrl.call(this, $scope);
 	$scope.errorMessage = '';
 
