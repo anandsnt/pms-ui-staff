@@ -48,4 +48,23 @@ admin.service('adCheckoutSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q
 		return deferred.promise;
 	};
 
+
+	/*
+	 * To retrive checkin email list 
+    * 
+    */	
+	this.sendMail = function(data){
+		var deferred = $q.defer();
+		var url = '/admin/send_checkout_alert';
+			
+		
+		ADBaseWebSrv.postJSON(url,data).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+	
+
 }]);

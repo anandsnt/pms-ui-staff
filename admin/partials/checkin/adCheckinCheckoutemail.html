@@ -3,16 +3,13 @@
 		<h2>{{emailTitle}}</h2>
 		<a id="go_back" data-type="load-details" class="action back" ng-click="backActionFromEmail()">Back to setup</a>
 	</header>
-	<div id="notification-message"></div>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<form name="zest-checkout-send-email" method="post" id="zest-checkout-send-email" class="form with-grid float" action="http://stayntouch.perceptiveinteractive.com/admin-hotel/zest-checkout/send-email/">
 		<table id="guests" data-count="20" class="grid datatable">
 			<thead>
 				<tr>
 					<th width="50px">
-						<label id="select-all-guests" class="checkbox">
-							<span class="icon-form icon-checkbox"></span>
-							<input type="checkbox" value="Select All" name="select-all" id="select-all">
-						</label>
+						<ad-checkbox is-checked="selectAllOption" ng-click="toggleAllOptions()"></ad-checkbox>	
 					</th>
 					<th class="sorting">Name</th>
 					<th class="sorting">Guest Email</th>
@@ -22,10 +19,7 @@
 			<tbody>
 				<tr ng-repeat="emailData in emailDatas">
 					<td>
-						<label class="checkbox">
-							<span class="icon-form icon-checkbox"></span>
-							<input type="checkbox"  name="guests" class="guest">
-						</label>
+						<ad-checkbox is-checked="emailData.is_selected" ></ad-checkbox>	
 					</td>
 					<td>
 						<strong>
@@ -48,7 +42,7 @@
 
 		<div class="actions float">
 			<button type="button" id="cancel" class="button blank">Cancel</button>
-			<button type="button" id="send-email" disabled="" class="button grey">Send checkout email</button>
+			<button type="button" ng-click="sendMailClicked()"  class="button grey">Send checkout email</button>
 		</div>
 	</form>
 </div>

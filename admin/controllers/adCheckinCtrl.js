@@ -66,17 +66,23 @@ admin.controller('ADCheckinCtrl',['$scope','adCheckinSrv', function($scope,adChe
     }
 
 
-    $scope.sendEmail = function(){
+    $scope.showSendEmailOptions = function(){
 
     	$scope.showingEmailOptions = true;
     	$scope.emailTitle = 'Guests Checking In';
+    	$scope.selectAllOption = false;
 
 
     	 var fetchEmailListSuccessCallback = function(data) {
     		$scope.$emit('hideLoader');
     		$scope.emailDatas  = data.due_out_guests;
 
-    		console.log($scope.emailDatas)
+    	angular.forEach($scope.emailDatas,function(item, index) {
+ 			   item.is_selected = false;
+ 		});
+
+		console.log($scope.emailDatas)
+
     	}
     	$scope.invokeApi(adCheckinSrv.fetchEmailList, {},fetchEmailListSuccessCallback);
     	
@@ -84,6 +90,53 @@ admin.controller('ADCheckinCtrl',['$scope','adCheckinSrv', function($scope,adChe
 
     $scope.backActionFromEmail = function(){
     	$scope.showingEmailOptions = false;
+    }
+
+
+
+
+    $scope.toggleAllOptions = function(){
+
+    	$scope.selectAllOption = $scope.selectAllOption ? false:true;
+
+    	if($scope.selectAllOption){
+
+    			angular.forEach($scope.emailDatas,function(item, index) {
+ 			   item.is_selected = true;
+ 			});
+
+
+    	}
+    	else{
+
+    			angular.forEach($scope.emailDatas,function(item, index) {
+ 			   item.is_selected = false;
+ 			});
+
+
+    	}
+    }
+
+   
+
+    $scope.sendMailClicked = function(){
+
+ 
+    	reservations = [];
+
+    	angular.forEach($scope.emailDatas,function(item, index) {
+ 			   if(item.is_selected)
+ 			   	 reservations.push(item.reservation_id)
+ 		});
+ 		
+    	var emailSendingData = {'reservations' : reservations}
+
+    	 var sendMailClikedSuccessCallback = function(data) {
+    		$scope.$emit('hideLoader');
+   
+    	}
+    	$scope.invokeApi(adCheckinSrv.sendMail, emailSendingData,sendMailClikedSuccessCallback);
+    	
     }
 
 
