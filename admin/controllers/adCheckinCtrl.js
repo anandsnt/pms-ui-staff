@@ -1,4 +1,4 @@
-admin.controller('ADCheckinCtrl',['$scope','adCheckinSrv','$state', function($scope,adCheckinSrv,$state){
+admin.controller('ADCheckinCtrl',['$scope','adCheckinSrv','$state','ngTableParams','$filter', function($scope,adCheckinSrv,$state,ngTableParams,$filter){
 
 	BaseCtrl.call(this, $scope);
 	$scope.checkinData = {};
@@ -79,6 +79,26 @@ admin.controller('ADCheckinCtrl',['$scope','adCheckinSrv','$state', function($sc
 
     	angular.forEach($scope.emailDatas,function(item, index) {
  			   item.is_selected = false;
+
+
+                // REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
+            $scope.tableParams = new ngTableParams({
+                page: 1,            // show first page
+                count: $scope.emailDatas.length,    // count per page - Need to change when on pagination implemntation
+                sorting: {
+                    name: 'asc'     // initial sorting
+                }
+            }, {
+                total: $scope.emailDatas.length, // length of data
+                getData: function($defer, params) {
+                    // use build-in angular filter
+                    var orderedData = params.sorting() ?
+                                        $filter('orderBy')($scope.emailDatas, params.orderBy()) :
+                                        $scope.emailDatas;
+                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                }
+            });
+
  		});
 
 		console.log($scope.emailDatas)
