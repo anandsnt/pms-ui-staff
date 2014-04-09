@@ -1,8 +1,8 @@
 
-	<section id="replacing-div-second" class="content current"><div data-view="ZestCheckinConfiguration" ng-hide="showingEmailOptions">
+	<section id="replacing-div-second" class="content current"><div data-view="ZestCheckinConfiguration" >
 		<header class="content-title float">
 			<h2>Guest Checkin Setup</h2>
-			<a ng-click="showSendEmailOptions()" data-type="load-details" class="action email">Send Checkin Email</a>
+			<a ui-sref="admin.checkinCheckoutEmail({ from: 'checkin'})" class="action email">Send Checkin Email</a>
 			<a ng-click="gotToDashboard()" data-type="load-details" class="action back">Back</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
@@ -82,5 +82,3 @@
 		</form>
 	</div>
 	</section>
-
-	<div ng-include="'/assets/partials/checkin/adCheckinCheckoutemail.html'" ng-show="showingEmailOptions"></div>

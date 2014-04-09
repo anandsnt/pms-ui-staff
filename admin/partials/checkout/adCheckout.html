@@ -1,7 +1,7 @@
-	<section id="replacing-div-first" class="content current" style="display: block;" ng-hide="showingEmailOptions"><div data-view="ZestCheckOutConfiguration">
+	<section id="replacing-div-first" class="content current" style="display: block;"><div data-view="ZestCheckOutConfiguration">
 		<header class="content-title float">
 			<h2>Guest Checkout Setup</h2>
-			<a ng-click="showSendEmailOptions()"  data-type="load-details" class="action email">Send checkout email</a>
+			<a ui-sref="admin.checkinCheckoutEmail({from:'checkoutt'})" class="action email">Send Checkout Email</a>
 			<a ng-click="gotToDashboard()" data-type="load-details" class="action back">Back</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
@@ -71,5 +71,3 @@
 		</form>
 	</div>
 	</section>
-
-	<div ng-include="'/assets/partials/checkin/adCheckinCheckoutemail.html'" ng-show="showingEmailOptions"></div>

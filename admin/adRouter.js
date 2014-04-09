@@ -192,6 +192,13 @@ admin.config([
 		});
 
 
+		$stateProvider.state('admin.checkinCheckoutEmail', {
+			templateUrl: '/assets/partials/emailList/adCheckinCheckoutemail.html',
+			controller: 'ADCheckinCheckoutCtrl',
+			url : '/checkinCheckoutEmail/:from'
+		});
+
+
 
 
 	}
