@@ -1,5 +1,6 @@
 hkRover.controller('HKDashboardCtrl',['$scope', 'dashboardData',  function($scope, dashboardData){
 
+	//dashboradData is prefetched in the router using resolve method.
 	$scope.data = dashboardData;
 
 	// stop bounce effect only on the login container
@@ -9,14 +10,6 @@ hkRover.controller('HKDashboardCtrl',['$scope', 'dashboardData',  function($scop
 			e.stopPropagation();
 		});
 
-}]);
-
-hkRover.controller('HKRootCtrl',['$rootScope', '$scope', function($rootScope, $scope){
-	$scope.menuOpen = false;
-	
-	$scope.$on("navc", function(event){
-		$scope.menuOpen = $scope.menuOpen ? false : true;
-	})
 }]);
 
     
