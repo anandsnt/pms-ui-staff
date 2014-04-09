@@ -6,9 +6,9 @@
 			<a class="action add" ng-click="addNewRate()">Add new</a>
 			<a class="action import" ng-click="importFromPms()">IMPORT FROM PMS</a>
 			<div class = "select">
-				<select class = "table-filter" ng-model="rateType"
-				    ng-options="opt.name for opt in rateTypeList">
-				    <option value="" disabled>Filter by Rate Type</option>
+				<select class = "table-filter" ng-model="filterType"
+				    ng-options="opt.name for opt in filterList">
+				    <option value="">Filter by Rate Type</option>
 				</select>
 			</div>
 		</header>
@@ -19,7 +19,7 @@
 		<span class="count-entries">Entries</span>
 		<div class = "table-search">
 			<span>Search</span>
-			<input type="text" ng-model="searchTerm" ng-enter = "searchClicked()"></input>
+			<input type="text" ng-model="searchTerm" ng-enter = "searchEntered()"></input>
 		</div>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div id="new-form-holder"></div>
@@ -46,7 +46,7 @@
 			</tbody>
 		</table>
 		<!--end -->
-		
+
 		<!--Custom pagination footer goes here-->
 		<script type="text/ng-template" id="custom/pager">
 			<ul class="pager ng-cloak">
