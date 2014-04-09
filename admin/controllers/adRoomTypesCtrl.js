@@ -52,6 +52,12 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	 	var successCallbackRender = function(data){	
 	 		$scope.$emit('hideLoader');
 	 		$scope.roomTypeData = data;
+	 		if($scope.roomTypeData.is_pseudo_room_type == "true" || $scope.roomTypeData.is_pseudo_room_type == true){
+	 			$scope.roomTypeData.is_pseudo_room_type = true;
+	 		}
+	 		else{
+	 			$scope.roomTypeData.is_pseudo_room_type = false;
+	 		}
 	 	};
 	 	var data = {"id":id };
 	 	$scope.invokeApi(ADRoomTypesSrv.getRoomTypeDetails, data , successCallbackRender);    
@@ -104,6 +110,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	$scope.importFromPms = function(){
 		var successCallbackImport = function(data){	
 	 		$scope.$emit('hideLoader');
+	 		$scope.listRoomTypes();
 	 		// $scope.data.departments.splice(index, 1);
 	 	};
 		$scope.invokeApi(ADRoomTypesSrv.importFromPms, '' , successCallbackImport);
