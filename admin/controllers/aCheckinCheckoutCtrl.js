@@ -40,7 +40,7 @@
                 var fetchEmailListFailuerCallback = function(data) {
                      $scope.isLoading = false;
                     $scope.$emit('hideLoader');
-                  }
+                 };
 
                 var fetchEmailListSuccessCallback = function(data) {
                      $scope.isLoading = false;
@@ -70,11 +70,11 @@
                       });
 
                       });
-          }
+          };
           $scope.emailDatas =[];
           $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, {'id':$scope.isFromCheckin ? 'checkin' : 'checkout'},fetchEmailListSuccessCallback,fetchEmailListFailuerCallback);
 
-          }
+          };
           $scope.showSendEmailOptions();
 
 
@@ -103,7 +103,7 @@
             
                  return status;
 
-            }
+            };
 
              /*
             * To wall if all options are selcted 
@@ -120,8 +120,8 @@
               $scope.backActionFromEmail = function(){
               	 $state.go('admin.checkin');
           
-              }
-               /*
+              };
+             /*
               * To toggle options
               *
               */
@@ -137,7 +137,7 @@
                        item.is_selected =selectedStatus;
                    }); 
 
-                }      
+                }     
 
                /*
               * To send mail
