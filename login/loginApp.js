@@ -7,7 +7,9 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', functio
 	 $scope.data = {};
 	 $scope.errorMessage = "";
 	 $scope.successCallback = function(data){
+	 	console.log(data.token);
 	 	if(data.token!=''){
+	 		console.log(":::::::::::::::::reset pwd:::::::::::::::")
 	 		$state.go('resetpassword', {token: data.token});
 	 	} else {
 	 		$window.location.href = data.redirect_url;
@@ -31,11 +33,11 @@ login.controller('resetCtrl',['$scope', 'resetSrv', '$window', '$state', '$state
 	 console.log($stateParams.token);
 	 $scope.errorMessage = "";
 	 $scope.successCallback = function(data){
-	 	if(data.token!=''){
-	 		$state.go('resetpassword');
-	 	} else {
+	 	// if(data.token!=''){
+	 		// $state.go('resetpassword');
+	 	// } else {
 	 		$window.location.href = data.redirect_url;
-	 	}
+	 	// }
 	 	 //$state.go('resetpassword');
 	 	 // $window.location.href = data.redirect_url;
 	 	// console.log(data);

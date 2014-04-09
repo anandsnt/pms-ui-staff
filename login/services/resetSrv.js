@@ -5,7 +5,7 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 		var deferred = $q.defer();
 		
 		
-		$http.post("/login/submit", data).success(function(response, status) {
+		$http.put("/admin/password_resets/"+data.token+"/admin_update.json", data).success(function(response, status) {
 			if(response.status == "success"){
 		    	//deferred.resolve(response.data);
 		    	successCallback(response.data);
