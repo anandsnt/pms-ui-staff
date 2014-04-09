@@ -182,5 +182,28 @@ admin.config([
 			url : '/externalPmsConnectivity'
 		});
 
+
+		$stateProvider.state('admin.checkin', {
+			templateUrl: '/assets/partials/checkin/adCheckin.html',
+			controller: 'ADCheckinCtrl',
+			url : '/checkin'
+		});
+
+		$stateProvider.state('admin.checkout', {
+			templateUrl: '/assets/partials/checkout/adCheckout.html',
+			controller: 'ADCheckoutCtrl',
+			url : '/checkout'
+		});
+
+
+		$stateProvider.state('admin.checkinCheckoutEmail', {
+			templateUrl: '/assets/partials/emailList/adCheckinCheckoutemail.html',
+			controller: 'ADCheckinCheckoutCtrl',
+			url : '/checkinCheckoutEmail/:from'
+		});
+
+
+
+
 	}
 ]);
