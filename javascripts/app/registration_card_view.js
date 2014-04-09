@@ -7,6 +7,7 @@ var RegistrationCardView = function(viewDom) {
     this.reviewStatus = [];
     this.isAllBillsReviewed = false;
     this.isEarlyDepartureFlag = "false";
+    sntapp.cardData = {};
     
 	this.pageinit = function() {
 		this.setBillTabs();
@@ -117,6 +118,7 @@ var RegistrationCardView = function(viewDom) {
 	    	return that.subscribeCheckboxClicked(event);
 	    }
 	    if(getParentWithSelector(event, "#update_card")) {
+	    	sntapp.paymentTypeSwipe = false;
 	    	//return that.clickedRemovePayment(event);
 	    	return that.addNewPaymentModal(event);
 	    }
@@ -124,6 +126,7 @@ var RegistrationCardView = function(viewDom) {
 	    	return that.showExistingPayments(event);
 	    }
 	    if(getParentWithSelector(event, "#add-new-payment")) {
+			sntapp.paymentTypeSwipe = false;
 	    	return that.addNewPaymentModal(event);
 	    }
 	    
@@ -237,12 +240,25 @@ var RegistrationCardView = function(viewDom) {
 			validateOptEmailModal.initialize();
 			return;
 		}
+
+		else if (isEmpty(sntapp.regCardData)){
+			var message = "Please enter the credit card details before you checkin";
+			that.showErrorMessage(message);
+			return false;
+		}
 		else {
-			
 			var data = {
 				"is_promotions_and_email_set" : is_promotions_and_email_set,
 				"signature" : signature,
-				"reservation_id" : that.reservation_id
+				"reservation_id" : that.reservation_id,
+				"payment_type": sntapp.regCardData.payment_type,
+				"mli_token": sntapp.regCardData.mli_token,
+				"et2": sntapp.regCardData.et2,
+				"ksn": sntapp.regCardData.ksn,
+				"pan": sntapp.regCardData.pan,
+				"name_on_card": sntapp.regCardData.name_on_card,
+				"card_expiry": sntapp.regCardData.card_expiry,	
+				"credit_card" : sntapp.regCardData.credit_card 			
 			};
 
 			var webservice = new WebServiceInterface();
@@ -259,6 +275,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 	
 	this.completeCheckinSuccess = function(data) {
+		console.log("completeCheckinSuccess");
 
 		var keySettings = that.myDom.find("#checkin-button").attr("data-key-settings");
 		var reservationStatus = that.myDom.find("#checkin-button").attr('data-reseravation-status');
