@@ -31,6 +31,7 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
 		            var orderedData = params.sorting() ?
 		                                $filter('orderBy')($scope.data.users, params.orderBy()) :
 		                                $scope.data.users;
+		            $scope.orderedData = orderedData;
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
 		    });
@@ -72,7 +73,9 @@ admin.controller('ADUserListCtrl',['$scope','$rootScope', '$q' ,'$state','$state
 		};
 		var successDelete = function(){
 			$scope.$emit('hideLoader');
-			$scope.data.users.splice(index, 1);
+			$scope.orderedData.splice(index, 1);
+			//Since splice not working in sorted data. Need to find a correct solution
+			$scope.listUsers(); 
 		};
 		$scope.invokeApi(ADUserSrv.deleteUser, data, successDelete );
 	};	

@@ -28,7 +28,7 @@
 						</div>
 					</td>
 				</tr>
-				<tr ng-show="payment.description == 'Credit Card'">
+				<tr ng-show="payment.description == 'Credit Card' && payment.is_active == 'true'">
 					<td colspan="3" class="nested-table">
 						<table id="credit_cards_types" class="grid">
 							<tbody>
