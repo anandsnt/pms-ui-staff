@@ -10,12 +10,12 @@
 			
 			<table id="guests" class="grid datatable table" ng-table="tableParams">
 				<tr ng-repeat="emailData in $data">
-					<td width="30" style="text-align: left" header="'ng-table/headers/checkbox.html'">
+					<td header-class="width-10" style="text-align: left" header="'ng-table/headers/checkbox.html'">
 						<ad-checkbox is-checked="emailData.is_selected" ></ad-checkbox>	
 					</td>
-					<td data-title="'Name'" sortable="'first_name'"><a ui-sref="admin.userdetails({ page: 'edit', id: user.id})"  class="title">{{emailData.first_name}}&nbsp;{{emailData.last_name}} </a></td>
-					<td data-title="'guest Email'" sortable="'email'"> {{emailData.email}}  </td>
-					<td data-title="'Room'" sortable="'room_number'">{{emailData.room_number}}</td>
+					<td header-class="width-40" data-title="'Name'" sortable="'first_name'"><a ui-sref="admin.userdetails({ page: 'edit', id: user.id})"  class="title">{{emailData.first_name}}&nbsp;{{emailData.last_name}} </a></td>
+					<td header-class="width-40" data-title="'guest Email'" sortable="'email'"> {{emailData.email}}  </td>
+					<td header-class="width-10" data-title="'Room'" sortable="'room_number'"><span class="number"> {{emailData.room_number}} </span></td>
 					
 				</tr>
 
