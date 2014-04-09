@@ -1,5 +1,5 @@
 
-admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$stateParams', function($state, $scope, $rootScope, ADAppSrv, $stateParams ){
+admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$stateParams', '$window', function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window ){
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
@@ -72,9 +72,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
     };
     $scope.redirectToHotel = function(hotel_id){
     	ADAppSrv.redirectToHotel(hotel_id).then(function(data) {
-    		console.log("reached");
-			$state.go("admin.dashboard");
-	
+    		$window.location.href = "/admin";
 		},function(){
 			console.log("error controller");
 		});	
