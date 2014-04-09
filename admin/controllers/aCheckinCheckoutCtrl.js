@@ -158,7 +158,7 @@
 
             var sendMailClikedSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
-                console.log(data)
+
                 $scope.successMessage = data.message;
 
             }
