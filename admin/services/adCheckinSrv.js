@@ -17,7 +17,7 @@
 
 		 /*
 	    * To save checkin
-	    * 
+	    * @param {object} checkin details
 	    */	
 		this.save = function(data){
 			var deferred = $q.defer();

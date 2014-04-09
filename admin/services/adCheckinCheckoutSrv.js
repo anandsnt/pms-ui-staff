@@ -2,7 +2,7 @@
 	 
 
 		 /*
-	    * To retrive checkin email list 
+	    * To retrive  email list 
 	    * 
 	    */	
 		this.fetchEmailList = function(data){
@@ -24,8 +24,8 @@
 		};
 
 		/*
-		 * To retrive checkin email list 
-	    * 
+		 * To send  email
+		 *@param {object} emails 
 	    */	
 		this.sendMail = function(emailData){
 			var deferred = $q.defer();

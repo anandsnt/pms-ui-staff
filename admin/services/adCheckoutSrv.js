@@ -17,7 +17,7 @@
 
 		 /*
 	    * To save checkout
-	    * 
+	    *  @param {object} checkout details
 	    */	
 		this.save = function(data){
 			var deferred = $q.defer();
