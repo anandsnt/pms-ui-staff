@@ -1,0 +1,43 @@
+<nav id="main-menu" style="display: block;" >
+	
+	<!-- For Hotel Admin -->
+	<ul ng-show ="isHotelAdmin" >
+		<li>
+			<a ng-click="$emit('navToggled')" href="/staff" class="icon-menu icon-dashboard">Dashboard</a>
+		</li>
+		<li>
+			<a ng-click="$emit('navToggled')" class="icon-menu icon-search">Search</a>
+		</li>
+		<li class="hidden">
+			<a ng-click="$emit('navToggled')" class="icon-menu icon-social-lobby ">Social Lobby</a>
+		</li>
+		<li class="hidden">
+			<a ng-click="$emit('navToggled')" class="icon-menu icon-messages ">Messages</a>
+		</li>
+		<li class="hidden">
+			<a ng-click="$emit('navToggled')" class="icon-menu icon-reviews ">Reviews</a>
+		</li>
+		<li id="settings">
+			<a ng-click="$emit('navToggled')" class="active icon-menu icon-settings">Settings</a>
+		</li>
+		<li id="sign-out">
+			<a ng-click="$emit('navToggled')" href="/logout" class="icon-menu icon-sign-out">Sign Out</a>
+		</li>
+		<li id="rover-info">
+			<img src="../assets/stayntouch.png" alt="">
+			Version 1.0
+		</li>
+	</ul>
+
+	<!-- For SNT Admin -->
+	<ul ng-hide ="isHotelAdmin" >
+		<li id="sign-out">
+			<a ng-click="$emit('navToggled')" href= "/logout" class="icon-menu icon-sign-out">Sign Out</a>
+		</li>
+		<li id="rover-info">
+			<img src="../assets/stayntouch.png" alt="" />
+			Version 1.0
+		</li>
+	</ul>
+
+</nav>

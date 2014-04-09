@@ -233,8 +233,12 @@ var app = function(){
      else {
         return false;
       }
-    })(navigator);    
+    })(navigator);  
 
+    //Stores the card data in a 
+    this.regCardData = {}; 
+    //Flag to check if a payment done via card swipe 
+    this.paymentTypeSwipe = false;
 
 };
 

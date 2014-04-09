@@ -1,5 +1,12 @@
-hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKRoomDetailsSrv', 'roomDetailsData', 
-					function($scope, $state, $stateParams, HKRoomDetailsSrv, roomDetailsData){
+hkRover.controller('HKRoomDetailsCtrl',
+	[
+		'$scope',
+		'$state',
+		'$stateParams',
+		'HKRoomDetailsSrv',
+		'roomDetailsData',
+		'HKSearchSrv',
+		function($scope, $state, $stateParams, HKRoomDetailsSrv, roomDetailsData, HKSearchSrv) {
 	
 	$scope.initColorCodes = function(){
 		$scope.isCleanVacant = false;
@@ -84,6 +91,9 @@ hkRover.controller('HKRoomDetailsCtrl',['$scope', '$state', '$stateParams', 'HKR
 			$scope.$emit('hideLoader');
 			$scope.data.room_details.current_hk_status = $scope.currentHKStatus.value;
 			$scope.calculateColorCodes();
+
+			HKSearchSrv.updateHKStatus( $scope.data.room_details );
+
 			console.log("update done");
 		}, function(){
 			console.log('update failed');

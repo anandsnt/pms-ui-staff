@@ -1,0 +1,38 @@
+<div class="data-holder move50">
+	<!-- Edit Like -->
+	<form like_id="5" id="edit-like" class="form inline-form float">
+		<div class="form-title">
+			<h3>
+				<span>Edit</span>
+				Newspaper
+			</h3>
+		</div>
+		<div class="entry full-width float">
+			<label>Options</label>
+			<div id="newspaper-options" class="boxes">		
+				<label class="checkbox inline" ng-repeat="option in likeData.news_papers">
+					
+					<ad-checkboxgrp delete-action="checkBoxDeleteClicked($index,option.id)" toggle="checkBoxClicked($index)" label="{{option.name}}" is-checked="option.is_checked" option-id="option.id"></ad-checkboxgrp>
+				</label>
+
+				<label class="inline" ng-show="showNewsPaperOption"> 
+					<input  ng-model="likeData.newfeature"/>
+				</label> 
+
+				<label data-type="newspaper" class="add-new-checkbox inline"  ng-click="showNewNewsPaperOption()">
+					<span class="icons icon-add" ></span>
+					Add new option
+					
+				</label>
+				
+
+				
+
+			</div>
+		</div>
+		<div class="actions float">
+			<button type="button"  ng-click="cancelCliked()" class="button blank edit-data-inline">Cancel</button>
+			<button type="button" like-type="newspaper" ng-click="customLikeSave()" class="button green edit-data-inline">Save changes</button>
+		</div>
+	</form>
+</div>
