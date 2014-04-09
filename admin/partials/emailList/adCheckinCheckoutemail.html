@@ -36,7 +36,9 @@
 
 			<div class="actions float">
 				<button type="button" ng-click="backActionFromEmail()" class="button blank">Cancel</button>
-				<button type="button" ng-click="sendMailClicked()" ng-disabled="disableSave" class="button grey">Send checkout email</button>
+				<button type="button" ng-disabled="disableSave" class="button grey" ng-show="disableSave">{{saveButtonTitle}}</button>
+
+			<button type="button" ng-disabled="disableSave" ng-click="sendMailClicked()" class="button blue" ng-hide="disableSave">{{saveButtonTitle}}</button>
 			</div>
 		</form>
 	</div>
