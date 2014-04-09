@@ -1,66 +1,80 @@
-admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
+admin.controller('ADRulesRestrictionCtrl', [
+  '$scope',
+  '$state',
+  'ADHotelLikesSrv',
   function($scope, $state, ADHotelLikesSrv) {
 
+    $scope.init = function(){
+      BaseCtrl.call(this, $scope);
+      $scope.ruleList = {};
+      $scope.likeData   = {};
+      $scope.likeData.type = "textbox"
+      $scope.isAddmode = false;
+      $scope.isEditmode = false;
+      $scope.currentClickedElement = -1;
+      $scope.newfeature ="";
+    }
 
-  $scope.init = function(){
+    $scope.init();
 
-   BaseCtrl.call(this, $scope);
-   $scope.likeList = {};
-   $scope.likeData   = {};
-   $scope.likeData.type = "textbox"
-   $scope.isAddmode = false;
-   $scope.isEditmode = false;
-   $scope.currentClickedElement = -1;
-   $scope.newfeature ="";
- }
- $scope.init();
+    /**
+    * To fetch hotel likes
+    */
+    $scope.fetchRulesRestrictions = function() {
+      var fetchHotelLikesSuccessCallback = function(data) {
+        $scope.$emit('hideLoader');
+        $scope.ruleList = data;
+      };
 
-		/**
-	 * To fetch hotel likes
-	 *
-	 */
-  $scope.fetchHotelLikes = function() {
-    var fetchHotelLikesSuccessCallback = function(data) {
-     $scope.$emit('hideLoader');
-     $scope.likeList = data;
-     console.log( $scope.likeList );
-   };
-   $scope.invokeApi(ADHotelLikesSrv.fetch, {}, fetchHotelLikesSuccessCallback);
- };
+      //$scope.invokeApi(ADHotelLikesSrv.fetch, {}, fetchHotelLikesSuccessCallback);
 
- $scope.fetchHotelLikes();
+      // TESTING 
+      $scope.$emit('hideLoader');
+      $scope.ruleList = {
+        "rules": [
+          {
+            "id": 1,
+            "value": "CLOSED",
+            "description": "Closed",
+            "activated": true
+          }, {
+            "id": 2,
+            "value": "CLOSED_ARRIVAL",
+            "description": "Closed to Arrival",
+            "activated": true
+          }, {
+            "id": 3,
+            "value": "CLOSED_DEPARTURE",
+            "description": "Closed to Departure",
+            "activated": false
+          }
+        ]
+      }
 
-	/*
-   * To render add screen
-   */
-   $scope.addNew = function(){
+    };
 
-    $scope.likeTitle  ="Add New";
-    $scope.likeSubtitle ="Like category";
-    $scope.likeData   = {};
-    $scope.likeData.type = "textbox"
-    $scope.likeData.options =[{'name':''}];
-    $scope.isAddmode = true;
-    $scope.isEditmode = false;
-  };
-	 /*
+    $scope.fetchRulesRestrictions();
+
+    /*
     * To handle switch
     */
     $scope.switchClicked = function(index){
 
-		//on success
-   var toggleSwitchLikesSuccessCallback = function(data) {
-    $scope.$emit('hideLoader');
-    $scope.fetchHotelLikes();
+      //on success
+      var toggleSwitchLikesSuccessCallback = function(data) {
+        $scope.$emit('hideLoader');
+        $scope.fetchHotelLikes();
+      };
 
-  };
-  $scope.likeList.likes[index].is_active = ($scope.likeList.likes[index].is_active ==='true') ? 'false':'true';
-  var data = {'id' : $scope.likeList.likes[index].id,'set_active' : $scope.likeList.likes[index].is_active}
-  $scope.invokeApi(ADHotelLikesSrv.toggleSwitch,data, toggleSwitchLikesSuccessCallback);
+      $scope.ruleList.rules[index].is_active = ($scope.ruleList.rules[index].is_active ==='true') ? 'false':'true';
 
+      var data = {
+        'id': $scope.ruleList.rules[index].id,
+        'set_active': $scope.ruleList.rules[index].is_active
+      }
 
-
-}
+      $scope.invokeApi(ADHotelLikesSrv.toggleSwitch, data, toggleSwitchLikesSuccessCallback);
+    }
 
 	 /*
     * To fetch the template for chains details add/edit screens
@@ -306,7 +320,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
         var newLikesSuccessCallback = function(data) {
 
           $scope.$emit('hideLoader');
-          $scope.likeList = data;
+          $scope.ruleList = data;
           $scope.isAddmode = false;
           $scope.fetchHotelLikes();
 

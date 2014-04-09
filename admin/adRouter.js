@@ -182,5 +182,13 @@ admin.config([
 			url : '/externalPmsConnectivity'
 		});
 
+
+
+		$stateProvider.state('admin.rulesRestrictions', {
+			templateUrl: '/assets/partials/rates/adRulesRestriction.html',
+			controller: 'ADRulesRestrictionCtrl',
+			url : '/restriction_types'
+		});
+
 	}
 ]);
