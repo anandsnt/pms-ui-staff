@@ -63,7 +63,7 @@
 
                     });
         }
-
+        $scope.emailDatas =[];
         $scope.invokeApi(adCheckinCheckoutSrv.fetchEmailList, {'id':$scope.isFromCheckin ? 'checkin' : 'checkout'},fetchEmailListSuccessCallback);
 
         }
