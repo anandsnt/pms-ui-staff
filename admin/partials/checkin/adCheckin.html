@@ -52,7 +52,7 @@
 
 				<ad-toggle-button is-checked="checkinData.is_send_checkin_staff_alert_flag" label="Web Check In staff alert"></ad-toggle-button>
 
-				<div id="options" class="entry full-width">
+				<div id="options" class="entry full-width" ng-hide="hideAlertOption">
 
 					<label class="radio" ng-class="{checked:checkinData.checkin_staff_alert_option == 'all'}">
 						<span class="icon-form icon-radio " ng-class="{checked:checkinData.checkin_staff_alert_option == 'all'}"></span>
