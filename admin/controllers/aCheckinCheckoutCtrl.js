@@ -30,10 +30,15 @@
 
               $scope.showSendEmailOptions = function(){
 
-                if($scope.isFromCheckin)
+                if($scope.isFromCheckin){
               	 $scope.emailTitle = 'Guests Checking In';
-                else if($scope.isFromCheckOut)
+                 $scope.saveButtonTitle = 'SEND WEB CHECKIN INVITES';
+
+                }
+                else if($scope.isFromCheckOut){
                   $scope.emailTitle = 'Guests Checking Out';
+                   $scope.saveButtonTitle = 'SEND CHECKOUT EMAIL';
+                }
 
               	$scope.selectAllOption = false;
 
@@ -118,7 +123,10 @@
 
             });
               $scope.backActionFromEmail = function(){
+                if($scope.isFromCheckin)
               	 $state.go('admin.checkin');
+                else if($scope.isFromCheckOut)
+                 $state.go('admin.checkout');
           
               }
                /*
