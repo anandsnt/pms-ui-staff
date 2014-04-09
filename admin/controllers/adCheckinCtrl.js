@@ -2,7 +2,6 @@
         
         $scope.errorMessage = '';
 
-
       	BaseCtrl.call(this, $scope);
 
           $scope.init = function(){
@@ -13,7 +12,7 @@
           }
 
           $scope.init();
-          
+      
 
          /*
           * To fetch checkin details
