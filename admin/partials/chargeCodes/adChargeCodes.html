@@ -1,0 +1,49 @@
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
+	<div>
+		<header class="content-title float">
+			<h2>
+				Charge Codes
+			</h2>
+			<span class="count">
+				({{data.charge_codes.length}})
+			</span>
+			<a ng-click="addNewClicked()" class="action add">Add new</a>
+			<a ng-show="data.is_connected_to_pms =='true'"  ng-click="importFromPmsClicked()" class="action import">IMPORT FROM PMS</a>
+		</header>
+
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<div id="new-form-holder" ng-show="isAdd" ng-include="getTemplateUrl()"></div>
+		<div id="new-form-holder"></div>
+		<table class="grid datatable" ng-table="tableParams">
+			<tbody>
+				<tr ng-repeat="item in $data">
+					<td data-title="'Code'" sortable="'charge_code'" ng-click="editSelected($index, item.value)" ng-hide="currentClickedElement == $index && isEdit">
+						<a data-colspan="1" class="edit-data-inline">
+							{{item.charge_code}}
+						</a>
+					</td>
+					<td header-class="text-left width-20"   header-class="text-left" data-title="'Description'" ng-hide="currentClickedElement == $index && isEdit">
+						{{item.description}}
+					</td>
+					<td header-class="width-20" data-title="'Group'" sortable="'charge_group'" ng-hide="currentClickedElement == $index && isEdit" >
+						{{item.charge_group}}
+					</td>
+					<td header-class="text-left width-20" header-class="text-center" data-title="'Type'" ng-hide="currentClickedElement == $index && isEdit">
+						{{item.charge_code_type}}
+					</td>
+					<td header-class="text-left" data-title="'Link With'"  ng-hide="currentClickedElement == $index && isEdit">
+						<div class="linkwith" ng-repeat="link in item.link_with">
+							{{link}}
+						</div>
+					</td>
+					<td data-title="'Delete'"  class="delete" ng-hide="currentClickedElement == $index && isEdit">
+						<a class="icons icon-delete large-icon delete_item" ng-click="deleteItem(item.value)">item.value</a>
+					</td>
+					
+					<td colspan="6" ng-include="getTemplateUrl()" ng-show="currentClickedElement == $index && isEdit"></td>
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>
