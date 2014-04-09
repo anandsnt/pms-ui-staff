@@ -1,16 +1,15 @@
 <div class='content' id='login'>
 	<img alt="" class="logo" src="/assets/logo.png" />
-	<span  class='notice error'>ffffffffffffffff</span>
-	<span class='notice error' >
-		;;;{{errorMessage}}fgjhghjghjhgjk
+
+	<span class='notice error' ng-show="errorMessage!=''" >
 		<ul>
 			<li ng-repeat="message in errorMessage">
-				{{message}}fghfghfgghj
+				{{message}}
 			</li>
 		</ul>	
 	</span>
 
-	<form accept-charset="UTF-8" ng-submit="submit()" autocomplete="off" class="form" id="login-form" method="post" name="login-form">
+	<form accept-charset="UTF-8" ng-submit="submit()" autocomplete="off" class="form" id="login-form" method="post" name="login-form" novalidate>
 		<div style="margin:0;padding:0;display:inline">
 			<input name="utf8" type="hidden" value="" />
 			<input name="authenticity_token" type="hidden" value="" />

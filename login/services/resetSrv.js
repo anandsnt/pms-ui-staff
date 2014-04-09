@@ -1,10 +1,10 @@
-login.service('loginSrv',['$http', '$q', function($http, $q){
-	this.login = function(data, successCallback, failureCallBack){
+login.service('resetSrv',['$http', '$q', function($http, $q){
+	this.resetPassword = function(data, successCallback, failureCallBack){
 		console.log(data);
 		
 		var deferred = $q.defer();
 		
-		//Sample params {params:{fname: "fname", lname: "lname"}}
+		
 		$http.post("/login/submit", data).success(function(response, status) {
 			if(response.status == "success"){
 		    	//deferred.resolve(response.data);
@@ -22,7 +22,7 @@ login.service('loginSrv',['$http', '$q', function($http, $q){
 			}
 			else if(status == 500){ // 500- Internal Server Error
 
-				deferred.reject(['Internal server error occured']);
+				failureCallBack(['Internal server error occured']);
 			}
 			else if(status == 401){ // 401- Unauthorized
 				console.log('lets redirect');
