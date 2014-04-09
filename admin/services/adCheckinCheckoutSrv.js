@@ -10,9 +10,9 @@
 			var deferred = $q.defer();
 
 			var url ="";
-			if(data.id = 'checkin')
-			   url = '/admin/get_due_in_guests.json';
-			else if(data.id = 'checkout')
+			if(data.id === 'checkin')
+			    url = '/admin/get_due_in_guests.json';
+			else if(data.id === 'checkout')
 				url = '/admin/get_due_out_guests.json';
 			
 			ADBaseWebSrv.getJSON(url,data).then(function(data) {
@@ -32,9 +32,9 @@
 
 
 			var url ="";
-			if(emailData.id = 'checkin')
+			if(emailData.id === 'checkin')
 			   url = '/admin/checkin_setups/notify_all_checkin_guests';
-			else if(data.id = 'checkout')
+			else if(emailData.id === 'checkout')
 				url =  '/admin/send_checkout_alert';
 			
 			var data = emailData.data;
