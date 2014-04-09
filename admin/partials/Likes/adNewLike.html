@@ -1,0 +1,118 @@
+<div style="display: block;" id="add-new" class="edit-data">
+	<div class="data-holder">
+		<form id="add-like" class="form inline-form float">
+			<div class="form-title">
+				<h3>
+					<span>{{likeTitle}}</span>
+					{{likeSubtitle}}
+				</h3>
+				<em class="status">
+					Fields marked with
+					<strong>*</strong>
+					are mandatory!
+				</em>
+			</div>
+			<fieldset class="holder left float">
+
+				<ad-textbox value="likeData.name"   label = "name" placeholder = "Enter category name" required = "yes" styleclass="full-width"></ad-textbox>
+
+				<!-- Checkbox -->
+				<div class="entry full-width radio-check">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox" ng-class="{ checked : likeData.show_on_room_setup === 'true' }"></span>
+						<label>Show on room assignment filter/room setup</label>
+						<input type="checkbox" ng-click="likeData.show_on_room_setup =(likeData.show_on_room_setup === 'true')? 'fasle':'true'">
+
+					</label>
+				</div>
+				<div class="entry full-width">
+					<label>
+						Type
+						<strong>*</strong>
+					</label>
+					<div class="boxes">
+						<label class="radio" ng-class="{checked:likeData.type == 'textbox'}">
+							<span class="icon-form icon-radio " ng-class="{checked:likeData.type == 'textbox'}"></span>
+							<input type="radio" ng-model="likeData.type" value="textbox" class="change-data" checked='checked'>
+							Text value
+							<span>(Textbox)</span>
+						</label>
+
+						<label class="radio" ng-class="{checked:likeData.type == 'radio'}">
+							<span class="icon-form icon-radio " ng-class="{checked:likeData.type == 'radio'}"></span>
+							<input type="radio" ng-model="likeData.type" value="radio" class="change-data" >
+							One selection / Two options
+							<span>(Radio button list)</span>
+						</label>
+
+						<label class="radio" ng-class="{checked:likeData.type == 'dropdown'}">
+							<span class="icon-form icon-radio " ng-class="{checked:likeData.type == 'dropdown'}"></span>
+							<input type="radio" ng-model="likeData.type" value="dropdown" class="change-data" >
+							One selection / Multiple options
+							<span>(Selectbox)</span>
+						</label>
+
+
+						<label class="radio" ng-class="{checked:likeData.type == 'checkbox'}">
+							<span class="icon-form icon-radio " ng-class="{checked:likeData.type == 'checkbox'}"></span>
+							<input type="radio" ng-model="likeData.type" value="checkbox" class="change-data" >
+							Multiple options / Multiple selections
+							<span>(Checkbox list)</span>
+						</label>
+
+
+					</div>
+				</div>
+			</fieldset>
+
+			<fieldset class="holder right float">
+				<!-- Radio data type -->
+				<div id="entry-radio" class="data-type" ng-show="showRadio">
+					<div class="entry full-width">
+					 	<label for="radio-option1">
+							Options
+							<strong>*</strong>
+						</label>
+				
+						<ad-textbox value="likeData.options[0].name"    placeholder = "First option"  ></ad-textbox>
+						<ad-textbox value="likeData.options[1].name"    placeholder = "Second option" ></ad-textbox>
+
+				
+					</div>
+				</div>
+				<!-- Select data type -->
+				<div id="entry-select" class="data-type" ng-show="showDropDown">
+					<div class="entry full-width">
+						<label for="select-option1">
+							Options
+						</label>
+						<div class="entry" ng-repeat="option in likeData.options">
+							<input type="text"  placeholder="Add new option" name="radio-option" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="dropdown" class="add-new-option"
+							ng-model="option.name" >
+						</div>
+					</div>
+
+				</div>
+				<!-- Checkbox data type -->
+				<div id="entry-checkbox" class="data-type" ng-show="showCheckbox">
+					<div class="entry full-width">
+						<div class="entry full-width">
+						<label for="select-option1">
+							Options
+						</label>
+						<div class="entry" ng-repeat="option in likeData.options">
+							<input type="text"  placeholder="Add new option" name="radio-option" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="dropdown" class="add-new-option"
+							ng-model="option.name" >
+						</div>
+					</div>
+				</div>
+			</fieldset>
+
+
+			<div class="actions float">
+				<button type="button" ng-click="cancelCliked()" class="button blank add-data-inline">Cancel</button>
+				<button type="button" like-type="common" ng-click="addSaveCliked()" class="button green add-data-inline">Save changes</button>
+			</div>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,30 @@
+<section id="replacing-div-fourth" class="content current">
+	<div data-view="UserDetailsView">
+		<header class="content-title float">
+			<h2>Link Existing User</h2>
+			<a id="go_back" data-type="load-details" class="action back" ui-sref="admin.users({id:hotelId})">Back</a>
+		</header>
+		<form name="link-existing-user" method="post" id="add-user" class="form float">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<fieldset class="holder left">
+				<div class="form-title">
+					<h3><span>Find User</span></h3>
+					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+				</div>
+				<div class="entry full-width">
+					<label for="email"> Email <strong>*</strong> </label>
+					<input type="text" required="yes" placeholder="Enter email address" name="email" ng-model="data.email" autocomplete="off">
+				</div>
+
+			</fieldset>
+			<div class="actions float">
+				<button type="button" id="cancel" class="button blank add-data-inline" ui-sref="admin.users({id:hotelId})">
+					Cancel
+				</button>
+				<button type="button" id="link_existing_user" class="button green add-data-inline" ng-click="linkExistingUser()">
+					Link Existing User
+				</button>
+			</div>
+		</form>
+	</div>
+</section>
