@@ -20,7 +20,8 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 	$rootScope.emailAddress  = $attrs.emailAddress;
 	$rootScope.hotelLogo     = $attrs.hotelLogo;
 
-	$rootScope.hotelPhone    = $attrs.hotelPhone
+	$rootScope.hotelPhone    = $attrs.hotelPhone;
+	$rootScope.businessDate  = $attrs.businessDate;
 	$rootScope.isCheckedout  = ($attrs.isCheckedout === 'true') ? true : false;
 	$rootScope.isCheckin     =   ($attrs.isCheckin ==='true') ? true : false;
 
@@ -41,15 +42,9 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService',
 		$location.path('/checkOutNow');
 
 
-console.log($attrs)
 
 	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
-
-
-
-	// Theming process
-
 
 
 
