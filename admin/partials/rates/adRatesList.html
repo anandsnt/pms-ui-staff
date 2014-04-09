@@ -5,22 +5,23 @@
 			<span class="count"> ({{data.length}}) </span>
 			<a class="action add" ng-click="addNewRate()">Add new</a>
 			<a class="action import" ng-click="importFromPms()">IMPORT FROM PMS</a>
-			<select ng-model="rateTypeSelected"
-			    ng-options="opt.name for opt in rateTypeList" ng-change="rateTypeChanged()">
+			<select ng-model="rateType"
+			    ng-options="opt.name for opt in rateTypeList">
 			    <option value="" disabled>Filter by Rate Type</option>
 			</select>
 			<input type="text" ng-model="searchTerm"></input>
+			<button ng-click = "searchClicked()">Go</button>
 		</header>
 			<select ng-model="displyCount"
-				    ng-options="opt for opt in displayCountList" ng-change="displayCountChanged()">
-				    <option value="" disabled>Room count</option>
+				    ng-options="opt for opt in displayCountList">
+				    <option value="">Room count</option>
 			</select>
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<div id="new-form-holder"></div>
+					<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+					<div id="new-form-holder"></div>
 		<table class="grid" ng-table="tableParams">
 			<tbody>
 				<tr ng-repeat="rate in $data" ng-class = "{'inactive': !rate.status}"> 
-					<td data-title="'Name'" sortable="'name'" >
+					<td data-title="'Name'" sortable="'rate'" >
 						<strong>{{rate.name}}</strong>
 					</td>
 					<td data-title="'Based on'" sortable="'based_on'">
@@ -32,14 +33,14 @@
 					<td data-title="'Date Ranges'">
 						{{rate.date_range_count}}
 					</td>
-					<td data-title="'Status'" sortable="'status'" class ="active">
-						{{rate.status? 'ACTIVE' : 'INACTIVE'}}
+					<td data-title="'Status'" sortable="'status'" class ="status">
+						{{rate.status ? 'ACTIVE' : 'INACTIVE'}}
 					</td>
 				</tr>
 			</tbody>
-		</table>
+					</table>
 
-		<div id="paginationwrap">
+		<!-- <div id="paginationwrap">
 			<div class="entrycount">Showing 1 to 10 17 entries</div>
 				<div class="pagination">
 					<a ng-show = "currentPage>1" ng-click = "paginate('0')" class="page">First</a>
@@ -50,6 +51,6 @@
 					<a ng-show = "currentPage<numOfPages" ng-click = "paginate(numOfPages)" class="page active">Last</a>
 				</div>
 			<br clear="all">
-		</div>
+		</div> -->
 	</div>
 </section>
