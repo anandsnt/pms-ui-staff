@@ -5,7 +5,7 @@ function($http, $q, ADBaseWebSrvV2) {
 		var deferred = $q.defer();
 
 		//var url = " /sample_json/ng_admin/rate_types.json";
-		var url = "/api/admin/rate_types.json";
+		var url = "/api/rate_types.json";
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data.results);
 		}, function(data) {
@@ -20,7 +20,7 @@ function($http, $q, ADBaseWebSrvV2) {
 	 */
 	this.postRateTypeToggle = function(data) {
 		var deferred = $q.defer();
-		var url = "/api/admin/rate_types/" + data.id + "/activate";
+		var url = "/api/rate_types/" + data.id + "/activate";
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
@@ -36,7 +36,7 @@ function($http, $q, ADBaseWebSrvV2) {
 	 */
 	this.saveRateType = function(data) {
 		var deferred = $q.defer();
-		var url = '/api/admin/rate_types';
+		var url = '/api/rate_types';
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
@@ -54,7 +54,7 @@ function($http, $q, ADBaseWebSrvV2) {
 	this.updateRateType = function(data) {
 
 		var deferred = $q.defer();
-		var url = '/api/admin/rate_types/' + data.id;
+		var url = '/api/rate_types/' + data.id;
 
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 			deferred.resolve(data);
@@ -72,7 +72,7 @@ function($http, $q, ADBaseWebSrvV2) {
 		var deferred = $q.defer();
 		var id = data.id;
 		//var url = "/sample_json/ng_admin/edit_rate_types.json"
-		var url = '/api/admin/rate_types/' + id+".json";
+		var url = '/api/rate_types/' + id+".json";
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -90,7 +90,7 @@ function($http, $q, ADBaseWebSrvV2) {
 	this.deleteRateType = function(id) {
 		var deferred = $q.defer();
 
-		var url = '/api/admin/rate_types/' + id;
+		var url = '/api/rate_types/' + id;
 
 		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);

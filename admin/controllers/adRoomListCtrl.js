@@ -1,4 +1,4 @@
-admin.controller('adRoomListCtrl', ['$scope','adRoomSrv', 'ngTableParams', '$filter', function($scope, adRoomSrv, ngTableParams, $filter){
+admin.controller('adRoomListCtrl', ['$scope','ADRoomSrv', 'ngTableParams', '$filter', function($scope, ADRoomSrv, ngTableParams, $filter){
 	/*
 	* Controller class for Room List
 	*/
@@ -38,7 +38,7 @@ admin.controller('adRoomListCtrl', ['$scope','adRoomSrv', 'ngTableParams', '$fil
 		$scope.errorMessage = errorMessage ;
 	};
 	
-	$scope.invokeApi(adRoomSrv.fetchRoomList, {}, fetchSuccessOfRoomList, fetchFailedOfRoomList);	
+	$scope.invokeApi(ADRoomSrv.fetchRoomList, {}, fetchSuccessOfRoomList, fetchFailedOfRoomList);	
 
 
 }]);

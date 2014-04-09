@@ -7,7 +7,7 @@
 			{{$stateParams.menu}}
 	   <!-- Dashboard tabs navigation -->
 	   <ul id="tabs-menu" class="float">
-	      <li ng-repeat="menu in data.menus" ng-class="{active: $index==selectedIndex}"><a ui-sref='admin.dashboard({menu:$index})'>{{menu.menu_name}}</a></li>
+	      <li ng-repeat="menu in data.menus" ng-class="{'ui-state-default ui-corner-top ui-tabs-active ui-state-active': $index==selectedIndex}"><a ui-sref='admin.dashboard({menu:$index})'>{{menu.menu_name}}</a></li>
 	   </ul>
 		<div ui-view></div>
 	</div>

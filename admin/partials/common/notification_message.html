@@ -1,4 +1,4 @@
-<div id="notification-message" ng-show="errorMessage!=''" ng-class="{notice: errorMessage!=''}" class='error error_message' ng-switch on="errorMessage.length">
+<div ng-show="errorMessage!=''" ng-class="{notice: errorMessage!=''}" class='error error_message' ng-switch on="errorMessage.length">
 
 	<span ng-switch-when="1">
 			{{errorMessage[0]}}
@@ -8,5 +8,6 @@
 			{{message}}
 		</li>
 	</ul>	
+	<span class="close-btn" ng-click="clearErrorMessage()"></span>
 
 </div>

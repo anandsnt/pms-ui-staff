@@ -1,4 +1,4 @@
-admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUserSrv',  function($scope, $state, $stateParams, ADUserSrv){
+admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUserSrv', '$rootScope', function($scope, $state, $stateParams, ADUserSrv, $rootScope){
 	
 	BaseCtrl.call(this, $scope);
 	$scope.mod = "";
@@ -7,6 +7,12 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 	/** functions & variables related to drag & drop **/
 	$scope.selectedUnassignedRole = -1;
 	$scope.selectedAssignedRole = -1;
+   /**
+    * To check whether logged in user is sntadmin or hoteladmin
+    */	
+	if($rootScope.adminRole == "snt-admin"){
+		$scope.isAdminSnt = true;
+	}
    /*
     * Handle action when clicked on assigned role
     * @param {int} index of the clicked role
@@ -111,7 +117,11 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 			$scope.$emit('hideLoader');
 			$scope.data = data;
 			$scope.unAssignedRoles = $scope.data.roles;
-			$scope.image = data.user_photo;
+			if(data.user_photo == ""){
+				$scope.image = "/assets/preview_image.png";
+			} else {
+				$scope.image = data.user_photo;
+			}
 			$scope.data.confirm_email = $scope.data.email;
 			$scope.data.roles.forEach(function(entry, index) {
 	    		if ( $scope.data.user_roles.indexOf(entry.value ) > -1 ){
@@ -131,6 +141,7 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 			$scope.data = data;
 			$scope.unAssignedRoles = $scope.data.roles;
 			$scope.assignedRoles = [];
+			$scope.image = "/assets/preview_image.png";
 		};	
 	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);	
 	};

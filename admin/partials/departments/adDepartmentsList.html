@@ -12,7 +12,7 @@
 		<div id="new-form-holder"></div>
 		<table id="brands" class="grid">
 			<tbody>
-				<tr ng-repeat="department in data.departments" > 
+				<tr ng-repeat="department in data.departments" ng-class="{'edit-data': currentClickedElement == $index}"> 
 					<td ng-click="editDepartments($index,department.value)" ng-hide="currentClickedElement == $index" >
 						<a data-item="3" data-colspan="2" class="edit-data-inline">{{department.name}} </a>
 					</td>
