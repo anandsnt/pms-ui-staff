@@ -4,7 +4,9 @@
 			<a id="go_back" data-type="load-details" class="action back" ng-click="backActionFromEmail()">Back to setup</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<form name="zest-checkout-send-email" method="post" id="zest-checkout-send-email" class="form with-grid float" action="http://stayntouch.perceptiveinteractive.com/admin-hotel/zest-checkout/send-email/">
+		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+		
+		<form name="zest-checkout-send-email" method="post" id="zest-checkout-send-email" class="form with-grid float" action="">
 			
 			<table id="guests" class="grid datatable table" ng-table="tableParams">
 				<tr ng-repeat="emailData in $data">
@@ -20,7 +22,15 @@
 			</table>
 
 			<script type="text/ng-template" id="ng-table/headers/checkbox.html">
-			<ad-checkbox is-checked="selectAllOption" ng-click="toggleAllOptions()"></ad-checkbox>	
+			
+		<div class="entry radio-check">
+		<label class="checkbox" ng-class="{'checked': isAllOptionsSelected()}">
+		<span class="icon-form icon-checkbox" ng-class="{'checked': isAllOptionsSelected()}"></span>	
+		<input type="checkbox" ng-checked="isAllOptionsSelected()" ng-click="toggleAllOptions()">
+		<strong ng-show = "required=='yes'">*</strong>
+	    </label>
+		</div>
+
 			</script>
 
 
