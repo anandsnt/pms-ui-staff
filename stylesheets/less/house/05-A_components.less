@@ -13,6 +13,7 @@
     #dashboard {
         .wrapper {
             padding: 20px;
+            right: 0;
 
             h2 {
                 margin: 10px 0 20px;
@@ -55,23 +56,28 @@
                 li {
                     font-size: 14px;
                     line-height: 36px;
-                    vertical-align: middle;
                     padding-bottom: 5px;
                     margin-bottom: 5px;
                     color: @grey3;
                     text-transform: uppercase;
-                    width: 100%;
+                    display: block;
                     border-bottom: 1px solid rgba(0,0,0,.1);
-
+                    em {
+                        font-style: normal;
+                        white-space: nowrap;
+                        .pull-left;
+                    }
                     span {
                         font-size: 36px;
                         line-height: 1em;
                         color: @textColor;
                         .show;
-                        .pull-right;
+                        margin-left: 60%;
+                        text-align: right;
 
                         &.green { color: @green; }
                         &.red { color: @red; }
+                        &.grey { color: @grey3; }
                     }
 
                     &:last-child {
@@ -187,6 +193,8 @@
     #filter-rooms {
         z-index: 199;
         background: @white;
+        overflow: hidden;
+        display: none;
 
         .nav-bar {
             h2 {
@@ -199,7 +207,9 @@
         }
 
         .wrapper {
+            min-height: 100%;
             padding: 20px 10px;
+            right: 0;
 
             .holder {
                 margin-bottom: 20px;
@@ -247,6 +257,14 @@
         #room-header {
             padding: 0 10px;
             color: @white;
+            float: left;
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
             background: @grey3;
             .float;
 
@@ -278,6 +296,25 @@
             &.dirty { background: @red; }
         }
 
+        #room-details-content {
+            position: absolute;
+            top: 0px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        #room-content-wrapper {
+            width: 100%;
+            height: 100%;
+
+            &.autoheight {
+                height: auto;
+            }
+        }
+
+
+
         #fo-status {
             padding: 10px 0;
             text-align: center;
@@ -291,9 +328,11 @@
 
         #guest-info {
             background-color: @white;
+            height: 100%;
+            min-height: 100%;
 
             .wrapper {
-                padding: 0 10px;   
+                padding: 60px 10px 0;   
 
                 .guest-image {
                     position: relative;
@@ -381,20 +420,24 @@
 
             &.no-content {
                 position: relative;
-                display: table;
                 margin: 0;
                 background: transparent;
                 text-align: center;
                 color: @grey3;
-                padding: 0 20%;
                 .square(100%);
                 .box-shadow(none);
+                min-height: 230px;
 
                 .info {
-                    display: table-cell;
-                    vertical-align: middle;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: 50%;
+                    margin-top: -40px; 
 
-                    .icons { margin-top: -80px; }
+                    @media (orientation: landscape) {
+                        margin-top: -24px;
+                    }
 
                     .h1 { 
                         font-size: 24px;
@@ -411,3 +454,34 @@
 ==========================================================*/
 /* 7. RESPONSIVE
 ==========================================================*/
+
+
+/* 7. iscroll overrides
+==========================================================*/
+#dashboard .myScrollbarV,
+#rooms .myScrollbarV,
+#filter-rooms .myScrollbarV,
+#room-details-content .myScrollbarV {
+    position: absolute;
+    z-index: 100;
+    width: 5px;
+    top: 5px;
+    bottom: 5px;
+    right: 5px;
+}
+
+#dashboard .myScrollbarV > div,
+#rooms .myScrollbarV > div,
+#filter-rooms .myScrollbarV > div, 
+#room-details-content .myScrollbarV > div {
+    position: absolute;
+    z-index: 100;
+    background: #ffb319;
+    width: 100%;
+    border: none;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-background-clip: padding-box;
+    box-sizing: border-box;
+}

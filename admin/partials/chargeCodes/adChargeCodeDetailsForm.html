@@ -1,0 +1,45 @@
+<div style="display: block;" id="add-new" class="edit-data">
+	<div class="data-holder">
+		<form class="form inline-form float">
+			<fieldset class="holder left">
+				<div class="form-title">
+					<h3><span>Charge Code</span> details </h3>
+					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+				</div>
+				
+				<ad-textbox value="prefetchData.charge_code" label = "Charge Code" placeholder = "Enter charge code" required = "yes" styleclass="full-width" ></ad-textbox>
+
+				<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="prefetchData.description" label = "Description " placeholder = "Enter Description"></ad-textarea>
+
+				<ad-dropdown label="Charge Group" label-in-drop-down="Charge Group" list="prefetchData.charge_groups" selected-Id='prefetchData.selected_charge_group' required = "" div-class="full-width"></ad-dropdown>
+
+				<ad-dropdown label="Charge Code type" label-in-drop-down="Charge Code type" list="prefetchData.charge_code_types" selected-Id='prefetchData.selected_charge_code_type' required = "yes" div-class="full-width"></ad-dropdown>
+
+			</fieldset>
+			<!-- to hide the chrage codes if type is TAX. Since we need to show the charge codes on change type -->
+			<fieldset ng-hide="prefetchData.selected_charge_code_type == '1'" class="holder right">
+				<div class="form-title">
+					<h3><span>Charge code</span> Link with </h3>
+				</div>
+				<div class="entry full-width">
+					<div id="room-key-for-rover" class="boxes">
+						<div class="entry radio-check" ng-repeat="link in prefetchData.link_with">
+							<label class="checkbox" ng-class="{ checked : link.is_checked === 'true' }">
+								<span class="icon-form icon-checkbox" ng-class="{ checked : link.is_checked === 'true' }"></span>
+								<label for="link-with-1"></label>
+								<input type="checkbox"  ng-click="link.is_checked =(link.is_checked  === 'true')? 'false':'true'">
+								{{link.name}}
+							</label>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+
+			<div class="actions float">
+				<button type="button" ng-click="clickedCancel()" class="button blank edit-data-inline">Cancel</button>
+				<button type="button" ng-click="clickedSave()" class="button green edit-data-inline">Save changes</button>
+			</div>
+
+		</form>
+	</div>
+</div>

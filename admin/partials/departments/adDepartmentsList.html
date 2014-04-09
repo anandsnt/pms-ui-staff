@@ -1,0 +1,27 @@
+<section id="replacing-div-first" class="content current" ng-click='clearErrorMessage()'>
+	
+	<div data-view="HotelDepartmentsView">
+		<header class="content-title float">
+			<h2> Departments </h2>
+			<span class="count"> ({{data.departments.length}}) </span>
+			<a id="add-new-button" class="action add" ng-click="addNew()">Add new</a>
+			
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/departments/adDepartmentsAdd.html'"></div>		
+		<div id="new-form-holder"></div>
+		<table id="brands" class="grid">
+			<tbody>
+				<tr ng-repeat="department in data.departments" ng-class="{'edit-data': currentClickedElement == $index}"> 
+					<td ng-click="editDepartments($index,department.value)" ng-hide="currentClickedElement == $index" >
+						<a data-item="3" data-colspan="2" class="edit-data-inline">{{department.name}} </a>
+					</td>
+					<td class="delete" ng-hide="currentClickedElement == $index" >
+						<a id="3" class="icons icon-delete large-icon delete_item" ng-click="deleteDepartment($index, department.value)"></a>
+					</td>
+					<td colspan="2" ng-include="getTemplateUrl($index,department.value)"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

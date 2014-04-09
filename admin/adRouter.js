@@ -1,10 +1,10 @@
-admin.config([
+admin.config([	
 	'$stateProvider',
 	'$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider) {
 
 		// dashboard state
-		$urlRouterProvider.otherwise('/admin/dashboard');
+		$urlRouterProvider.otherwise('/admin/dashboard/0');
 
 		$stateProvider.state('admin', {
 			abstract: true,
@@ -14,31 +14,173 @@ admin.config([
 		});
 
 		$stateProvider.state('admin.dashboard', {
-			url: '/dashboard',
+			url: '/dashboard/:menu',
 			templateUrl: '/assets/partials/dashboard/adDashboard.html',
 			controller: 'ADDashboardCtrl'
 
 		});
 
 		$stateProvider.state('admin.hoteldetails', {
-			templateUrl: '/assets/partials/hotel/hotelDetails.html',
+			templateUrl: '/assets/partials/hotel/adHotelDetails.html',
 			controller: 'ADHotelDetailsCtrl',
-			url : '/hoteldetails'
+			url : '/hoteldetails/edit'
+		});
+		
+		$stateProvider.state('admin.snthoteldetails', {
+			templateUrl: '/assets/partials/hotel/adHotelDetails.html',
+			controller: 'ADHotelDetailsCtrl',
+			url : '/hoteldetails/:action/:id'
 		});
 		
 		$stateProvider.state('admin.users', {
 			templateUrl: '/assets/partials/users/adUserList.html',
 			controller: 'ADUserListCtrl',
-			url : '/users'
+			url : '/users/:id'
 		});
-		
-		$stateProvider.state('admin.useredit', {
-			templateUrl: '/assets/partials/users/adUserEdit.html',
-			controller: 'ADUserListCtrl',
-			url : '/useredit'
+
+		$stateProvider.state('admin.chains', {
+			templateUrl: '/assets/partials/chains/adChainList.html',
+			controller: 'ADChainListCtrl',
+			url : '/chains'
 		});
 
 		
 		
+		
+		
+		$stateProvider.state('admin.userdetails', {
+			templateUrl: '/assets/partials/users/adUserDetails.html',
+			controller: 'ADUserDetailsCtrl',
+			url : '/user/:page/:id'
+		});
+		
+		$stateProvider.state('admin.linkexisting', {
+			templateUrl: '/assets/partials/users/adLinkExistingUser.html',
+			controller: 'ADLinkExistingUserCtrl',
+			url : '/linkexisting/:id'
+		});
+
+
+		
+		$stateProvider.state('admin.hotels', {
+			templateUrl: '/assets/partials/hotel/adHotelList.html',
+			controller: 'ADHotelListCtrl',
+			url : '/hotels'
+		});
+
+		$stateProvider.state('admin.brands', {
+			templateUrl: '/assets/partials/brands/adBrandList.html',
+			controller: 'ADBrandCtrl',
+			url : '/brands'
+		});
+		
+		$stateProvider.state('admin.mapping', {
+			templateUrl: '/assets/partials/mapping/adExternalMapping.html',
+			controller: 'ADMappingCtrl',
+			url : '/mapping/:hotelId'
+		});
+		$stateProvider.state('admin.ffp', {
+			templateUrl: '/assets/partials/frequentFlyerProgram/adFFPList.html',
+			controller: 'ADFrequentFlyerProgramCtrl',
+			url : '/ffp'
+		});
+		
+		$stateProvider.state('admin.departments', {
+			templateUrl: '/assets/partials/departments/adDepartmentsList.html',
+			controller: 'ADDepartmentListCtrl',
+			url : '/departments'
+		});
+
+
+		$stateProvider.state('admin.upselllatecheckout', {
+			templateUrl: '/assets/partials/upsellLatecheckout/upsellLatecheckout.html',
+			controller: 'ADUpsellLateCheckoutCtrl',
+			url : '/upselllatecheckout'
+		});
+		
+
+		$stateProvider.state('admin.hotelLoyaltyProgram', {
+			templateUrl: '/assets/partials/hotelLoyalty/hotelLoyaltyList.html',
+			controller: 'ADHotelLoyaltyCtrl',
+			url : '/hotelloyalty'
+		});
+		$stateProvider.state('admin.roomupsell', {
+			templateUrl: '/assets/partials/roomUpsell/roomUpsell.html',
+			controller: 'ADRoomUpsellCtrl',
+			url : '/roomupsell'
+		});
+		
+
+		$stateProvider.state('admin.roomtypes', {
+			templateUrl: '/assets/partials/roomTypes/adRoomTypesList.html',
+			controller: 'ADRoomTypesCtrl',
+			url : '/roomtypes'
+		});
+		
+
+
+		$stateProvider.state('admin.roomKeyDelivery', {
+			templateUrl: '/assets/partials/roomKeyDelivery/roomKeyDelivery.html',
+			controller: 'ADRoomKeyDeliveryCtrl',
+			url : '/roomKeyDelivery'
+		});
+
+
+		$stateProvider.state('admin.rooms', {
+			templateUrl: '/assets/partials/rooms/adRoomList.html',
+			controller: 'adRoomListCtrl',
+			url : '/rooms'
+		});		
+		$stateProvider.state('admin.roomdetails', {
+			templateUrl: '/assets/partials/rooms/adRoomDetails.html',
+			controller: 'adRoomDetailsCtrl',
+			url : '/roomdetails/:roomId'
+		});
+
+		$stateProvider.state('admin.hotellikes', {
+			templateUrl: '/assets/partials/Likes/adHotelLikes.html',
+			controller: 'ADHotelLikesCtrl',
+			url : '/likes'
+
+		});
+
+
+		$stateProvider.state('admin.items', {
+			templateUrl: '/assets/partials/items/adItemList.html',
+			controller: 'ADItemListCtrl',
+			url : '/items'
+		});	
+
+		$stateProvider.state('admin.itemdetails', {
+			templateUrl: '/assets/partials/items/adItemDetails.html',
+			controller: 'ADItemDetailsCtrl',
+			url : '/itemdetails/:itemid'
+		});				
+
+		
+		$stateProvider.state('admin.chargeGroups', {
+			templateUrl: '/assets/partials/chargeGroups/adChargeGroups.html',
+			controller: 'ADChargeGroupsCtrl',
+			url : '/chargeGroups'
+		});
+		
+		$stateProvider.state('admin.paymentMethods', {
+			templateUrl: '/assets/partials/paymentMethods/adPaymentMethods.html',
+			controller: 'ADPaymentMethodsCtrl',
+			url : '/paymentMethods'
+		});
+
+		$stateProvider.state('admin.chargeCodes', {
+			templateUrl: '/assets/partials/chargeCodes/adChargeCodes.html',
+			controller: 'ADChargeCodesCtrl',
+			url : '/chargeCodes'
+		});
+		
+		$stateProvider.state('admin.externalPmsConnectivity', {
+			templateUrl: '/assets/partials/externalPms/adExternalPmsConnectivity.html',
+			controller: 'ADExternalPmsConnectivityCtrl',
+			url : '/externalPmsConnectivity'
+		});
+
 	}
 ]);

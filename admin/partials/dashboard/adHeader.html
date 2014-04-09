@@ -2,28 +2,27 @@
 <div id="admin-header" class="float" role="navigation">
 	
    <!-- Switch hotel dropdown : HOTEL ADMIN-->
-   <div id="change-hotel" ng-show ="isAdmin">
-      <h1>Dupont Circle Hotel</h1>
+   <div id="change-hotel" ng-show ="isHotelAdmin" class="{{hotelListOpen}}" ng-click="isHotelListOpen()" >
+      <h1>{{data.current_hotel}}</h1>
       <dl class="dropdown">
          <dt>Change hotel:</dt>
-         <dd><a href="#">Leela Palaces Hotels &amp; Resorts</a></dd>
-         <dd><a href="#">Vivanta by Taj</a></dd>
-         <dd><a href="#">Blue Sydney</a></dd>
-         <dd><a href="#">Holiday Inn &amp; Resorts</a></dd>
+         <dd ng-repeat="hotels in data.hotel_list">
+         	<a ng-click="redirectToHotel(hotels.hotel_id)">{{hotels.hotel_name}}</a>
+         </dd>
       </dl>
    </div>
    
    <!-- For SNT ADMIN header -->
-  	<ul id="admin-menu" class="float" ng-hide ="isAdmin" >
+  	<ul id="admin-menu" class="float" ng-hide ="isHotelAdmin" >
 		<li>
-			<a href="/admin/hotels/new" class="icon-admin-menu icon-new-hotel ui-draggable">Add new hotel</a>
+			<a ui-sref="admin.snthoteldetails({action:'add'})" class="icon-admin-menu icon-new-hotel ui-draggable">Add new hotel</a>
 		</li>
 		<li>
-			<a href="#" class="icon-admin-menu icon-clone-hotel ui-draggable">Clone hotel</a>
+			<a class="icon-admin-menu icon-clone-hotel ui-draggable">Clone hotel</a>
 		</li>
 	</ul>
    
    <!-- Quick navigation -->
-   <nav id="quick-menu" class="active" role="navigation"></nav>
+   <nav id="quick-menu" class="active" role="navigation"></nav>	
    
 </div>

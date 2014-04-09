@@ -81,14 +81,14 @@
 						$scope.isResponseSuccess = true;
 
 						checkinDetailsService.setResponseData(response.data);
-						
-						
+
+
 						$rootScope.upgradesAvailable = (response.data.is_upgrades_available === "true") ? true :  false;
 
 						//navigate to next page
 
 
-						$location.path('/checkinReservationDetails'); 
+						$location.path('/checkinReservationDetails');
 
 					}
 				});
