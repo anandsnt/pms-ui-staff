@@ -1,0 +1,43 @@
+	<section id="replacing-div-second" class="content current" style="display: block;"><div data-view="CheckoutGuests">
+		<header class="content-title float">
+			<h2>{{emailTitle}}</h2>
+			<a id="go_back" data-type="load-details" class="action back" ng-click="backActionFromEmail()">Back to setup</a>
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+		
+		<form name="zest-checkout-send-email" method="post" id="zest-checkout-send-email" class="form with-grid float" action="">
+			
+			<table id="guests" class="grid datatable table" ng-table="tableParams">
+				<tr ng-repeat="emailData in $data">
+					<td width="30" style="text-align: left" header="'ng-table/headers/checkbox.html'">
+						<ad-checkbox is-checked="emailData.is_selected" ></ad-checkbox>	
+					</td>
+					<td data-title="'Name'" sortable="'first_name'"><a ui-sref="admin.userdetails({ page: 'edit', id: user.id})"  class="title">{{emailData.first_name}}&nbsp;{{emailData.last_name}} </a></td>
+					<td data-title="'guest Email'" sortable="'email'"> {{emailData.email}}  </td>
+					<td data-title="'Room'" sortable="'room_number'">{{emailData.room_number}}</td>
+					
+				</tr>
+
+			</table>
+
+			<script type="text/ng-template" id="ng-table/headers/checkbox.html">
+			
+		<div class="entry radio-check">
+		<label class="checkbox" ng-class="{'checked': isAllOptionsSelected()}">
+		<span class="icon-form icon-checkbox" ng-class="{'checked': isAllOptionsSelected()}"></span>	
+		<input type="checkbox" ng-checked="isAllOptionsSelected()" ng-click="toggleAllOptions()">
+		<strong ng-show = "required=='yes'">*</strong>
+	    </label>
+		</div>
+
+			</script>
+
+
+			<div class="actions float">
+				<button type="button" ng-click="backActionFromEmail()" class="button blank">Cancel</button>
+				<button type="button" ng-click="sendMailClicked()" ng-disabled="disableSave" class="button grey">Send checkout email</button>
+			</div>
+		</form>
+	</div>
+	</section>
