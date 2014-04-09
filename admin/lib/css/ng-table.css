@@ -43,7 +43,7 @@
 }
 .ng-table th.sortable.sort-desc,
 .ng-table th.sortable.sort-asc {
-  background-color: rgba(141, 192, 219, 0.25);
+  /*background-color: rgba(141, 192, 219, 0.25);*/
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
 }
 .ng-table th.sortable.sort-desc div:after,
@@ -135,4 +135,34 @@
   .ng-table-responsive tr {
     display: block;
   }
+}
+/*
+ * ng-table custom header classes.
+ */
+.ng-table th.text-right {
+    text-align: right;
+}
+.ng-table th.text-left {
+    text-align: left;
+}
+.ng-table th.text-center {
+    text-align: center;
+}
+.ng-table th.width-5 {
+    width: 5%;
+}
+.ng-table th.width-10 {
+    width: 10%;
+}
+.ng-table th.width-20 {
+    width: 20%;
+}
+.ng-table th.width-25 {
+    width: 25%;
+}
+.ng-table th.width-70 {
+    width: 70%;
+}
+.ng-table th.width-30 {
+    width: 30%;
 }

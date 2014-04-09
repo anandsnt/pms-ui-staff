@@ -22,7 +22,6 @@ admin.directive('appFilereader', function(
                 });
 
                 function readFile(file) {
-                	console.log("upto here");
                     var deferred = $q.defer();
 
                     var reader = new FileReader();

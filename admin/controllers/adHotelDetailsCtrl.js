@@ -5,8 +5,10 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.id = $stateParams.id;
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
+	$scope.readOnly = "no";
 	
 	if($rootScope.adminRole == "snt-admin"){
+		
 		$scope.isAdminSnt = true;
 		// SNT Admin -To add new hotel view
 		if($stateParams.action == "add"){
@@ -15,6 +17,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			var fetchSuccess = function(data){
 				$scope.data = data;
 				$scope.$emit('hideLoader');
+				
 			};
 			
 			$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess);
@@ -23,7 +26,6 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		else if($stateParams.action == "edit"){
 			$scope.isEdit = true;
 			$scope.title = "Edit Hotel";
-			
 			var fetchSuccess = function(data){
 				$scope.data = data;
 				$scope.$emit('hideLoader');
@@ -36,6 +38,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		// Hotel Admin -To Edit current hotel view
 		$scope.isEdit = true;
 		$scope.title = "Edit Hotel";
+		$scope.readOnly = "yes";
 		var fetchSuccess = function(data){
 			$scope.data = data;
 			$scope.$emit('hideLoader');
