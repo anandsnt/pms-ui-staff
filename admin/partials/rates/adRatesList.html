@@ -5,26 +5,32 @@
 			<span class="count"> ({{data.length}}) </span>
 			<a class="action add" ng-click="addNewRate()">Add new</a>
 			<a class="action import" ng-click="importFromPms()">IMPORT FROM PMS</a>
-			<select ng-model="rateType"
-			    ng-options="opt.name for opt in rateTypeList">
-			    <option value="" disabled>Filter by Rate Type</option>
-			</select>
-			<input type="text" ng-model="searchTerm"></input>
-			<button ng-click = "searchClicked()">Go</button>
+			<div class = "select">
+				<select class = "table-filter" ng-model="rateType"
+				    ng-options="opt.name for opt in rateTypeList">
+				    <option value="" disabled>Filter by Rate Type</option>
+				</select>
+			</div>
 		</header>
-			<select ng-model="displyCount"
-				    ng-options="opt for opt in displayCountList">
-				    <option value="">Room count</option>
-			</select>
-					<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-					<div id="new-form-holder"></div>
-		<table class="grid" ng-table="tableParams">
+		<span class="count-show">Show</span>
+		<select class = "table-count" ng-model="displyCount"
+			    ng-options="opt for opt in displayCountList">
+		</select>
+		<span class="count-entries">Entries</span>
+		<div class = "table-search">
+			<span>Search</span>
+			<input type="text" ng-model="searchTerm" ng-enter = "searchClicked()"></input>
+		</div>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div id="new-form-holder"></div>
+		<!--ng-table component -->
+		<table class="grid" ng-table="tableParams" template-pagination="custom/pager">
 			<tbody>
 				<tr ng-repeat="rate in $data" ng-class = "{'inactive': !rate.status}"> 
 					<td data-title="'Name'" sortable="'rate'" >
 						<strong>{{rate.name}}</strong>
 					</td>
-					<td data-title="'Based on'" sortable="'based_on'">
+					<td data-title="'Based on'"  sortable="'based_on'">
 						{{rate.based_on.name}}
 					</td>
 					<td data-title="'Type'" sortable="'rate_type'">
@@ -38,19 +44,22 @@
 					</td>
 				</tr>
 			</tbody>
-					</table>
-
-		<!-- <div id="paginationwrap">
-			<div class="entrycount">Showing 1 to 10 17 entries</div>
-				<div class="pagination">
-					<a ng-show = "currentPage>1" ng-click = "paginate('0')" class="page">First</a>
-					<a ng-show = "currentPage>1" ng-click = "paginate(currentPage - 2)" class="page">Prev</a>
-					<a ng-show = "currentPage>1" ng-click = "paginate(currentPage - 1)" class="page">{{currentPage - 1}}</a>
-					<a ng-show = "currentPage<numOfPages || currentPage>1" ng-click = "paginate(currentPage)" class="page active">{{currentPage}}</a>
-					<a ng-show = "currentPage<numOfPages" ng-click = "paginate(currentPage+1)" class="page active">Next</a>
-					<a ng-show = "currentPage<numOfPages" ng-click = "paginate(numOfPages)" class="page active">Last</a>
-				</div>
-			<br clear="all">
-		</div> -->
+		</table>
+		<!--end -->
+		
+		<!--Custom pagination footer goes here-->
+		<script type="text/ng-template" id="custom/pager">
+			<ul class="pager ng-cloak">
+              	<li ng-repeat="page in pages"
+                    ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                    ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+	                <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
+	                <a ng-click="params.page(page.number)">{{page.number}}</a>
+	                <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+              	</li>
+            </ul>
+		</script>
+		<!--end-->
 	</div>
 </section>
+

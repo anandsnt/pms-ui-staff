@@ -3,8 +3,8 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ngTablePa
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.roomTypeData = {};
-	$scope.displayCountList = [1, 2, 3, 4, 5];
-	$scope.displyCount = 2;
+	$scope.displayCountList = [10, 25, 50, 100];
+	$scope.displyCount = 10;
 	$scope.rateType = "";
 	$scope.searchTerm = "";
 	/**
@@ -26,17 +26,14 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ngTablePa
 	});
 
 	$scope.$watch("rateType", function () {
-		console.log("change");
 		$scope.tableParams.reload();
 	});
 
 	$scope.searchClicked = function() {
-		console.log($scope.searchTerm);
 		$scope.tableParams.reload();
 	}
 
 	$scope.getTableData = function($defer, params){
-		console.log(JSON.stringify(params.sorting()));
     	var getParams = {};
 		getParams.per_page = $scope.displyCount;
 		getParams.page = params.page();
