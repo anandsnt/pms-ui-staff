@@ -79,12 +79,12 @@
 				<div class="entry has-sortable">
 					<label>Assigned Roles</label>
 					<ul id="assigned-roles" data-type="target" data-placeholder="Drop a role here to assign it to the user" class="boxes sortable empty ui-sortable short-list" ui-on-Drop="onDrop($event,$data,assignedRoles)">
-
 						<li ng-repeat="role in assignedRoles" ui-draggable="true" drag="role" on-drop-success="dropSuccessHandler($event,$index,assignedRoles)" ng-click="clickedOnAssignedRole($index)" ng-class='{selected: selectedAssignedRole == $index}' drag-enter-class='ui-state-highlight'>
 							<span class="icons icon-handle"></span>
 							<span class="icons icon-handle"></span>
 							{{role.name}}
 						</li>
+						<span class="placeholder ui-state-disabled"  ng-show="assignedRoles.length == 0">Drop a role here to assign it to the user</span>
 					</ul>
 				</div>
 
@@ -97,6 +97,7 @@
 					<ul data-type="source" data-placeholder="To remove a role for the user simply drop it here" class="boxes sortable ui-sortable short-list"
 					ui-on-Drop="onDrop($event,$data,unAssignedRoles)"
 					>
+					
 						<li ng-repeat="role in unAssignedRoles" ui-draggable="true" drag="role" on-drop-success="dropSuccessHandler($event,$index,unAssignedRoles)" ng-click="clickedOnUnassignedRole($index)" ng-class='{selected: selectedUnassignedRole == $index}'>
 							<span class="icons icon-handle"></span>
 							<span class="icons icon-handle"></span>
