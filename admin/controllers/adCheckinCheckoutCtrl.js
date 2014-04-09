@@ -1,6 +1,6 @@
-  admin.controller('ADCheckinCheckoutCtrl',['$scope','adCheckinCheckoutSrv','$state','ngTableParams','$filter','$stateParams',function($scope,adCheckinCheckoutSrv,$state,ngTableParams,$filter,$stateParams){
+admin.controller('ADCheckinCheckoutCtrl',['$scope','adCheckinCheckoutSrv','$state','ngTableParams','$filter','$stateParams',function($scope,adCheckinCheckoutSrv,$state,ngTableParams,$filter,$stateParams){
 
-/*
+ /*
   * To retrieve previous state
   */
 
@@ -21,7 +21,7 @@
 
   $scope.init();
 
-/*
+ /*
   * To show email list
   *
   */

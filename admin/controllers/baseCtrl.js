@@ -8,7 +8,7 @@ function BaseCtrl($scope){
 		$scope.errorMessage = '';
 		$scope.successMessage = '';
 	};
-	
+	$scope.clearErrorMessage();
 	$scope.showErrorMessage = function(errorMessage){
 		
 	};
