@@ -11,8 +11,11 @@ var GuestPaymentView = function(domRef){
     if(clickedElement.hasClass("active-item")){ 
       that.renderSetAsPrimary(clickedElement);
     }
-    else if(clickedElement.parent().hasClass("active-item") || clickedElement.parent().parent().hasClass("active-item")){
+    else if(clickedElement.parent().hasClass("active-item")){
       that.renderSetAsPrimary(clickedElement.parent());
+    }
+    else if(clickedElement.parent().parent().hasClass("active-item")){
+      that.renderSetAsPrimary(clickedElement.parent().parent());
     }
     else if(clickedElement.hasClass("add-new-button") || clickedElement.parent().hasClass("add-new-button")){
       that.renderNewPaymentView();
