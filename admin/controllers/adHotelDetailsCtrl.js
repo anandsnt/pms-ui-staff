@@ -18,6 +18,8 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			var fetchSuccess = function(data){
 				$scope.data = data;
 				$scope.$emit('hideLoader');
+					$scope.data.check_in_primetime ="AM";
+					$scope.data.check_out_primetime = "AM";
 			};
 			
 			$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess);
@@ -32,6 +34,14 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 				console.log(data.mli_pem_certificate_loaded);
 				if(data.mli_pem_certificate_loaded){
 					$scope.fileName = "Certificate Attached";
+				}
+				if($scope.data.check_in_time.primetime == "" || typeof $scope.data.check_in_time.primetime === 'undefined'){
+					$scope.data.check_in_time.primetime = "AM";
+					$scope.data.check_in_primetime ="AM";
+				}
+				if($scope.data.check_out_time.primetime == "" || typeof $scope.data.check_out_time.primetime === 'undefined'){
+					$scope.data.check_out_time.primetime = "AM";
+					$scope.data.check_out_primetime = "AM";
 				}
 			};
 			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess);
