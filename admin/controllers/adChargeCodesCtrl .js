@@ -97,15 +97,17 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
  	$scope.clickedSave = function(){
  		var saveSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
-			// $scope.orderedData[parseInt($scope.currentClickedElement)].charge_code = $scope.prefetchData.charge_code;
-    		// $scope.orderedData[parseInt($scope.currentClickedElement)].description = $scope.prefetchData.description;
-    		// $scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = $scope.prefetchData.description;
-    		// $scope.orderedData[parseInt($scope.currentClickedElement)].description = $scope.prefetchData.description;
-    		// $scope.orderedData[parseInt($scope.currentClickedElement)].description = $scope.prefetchData.description;
+			if($scope.isEdit){
+				$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code = data.charge_code;
+	    		$scope.orderedData[parseInt($scope.currentClickedElement)].description = data.description;
+	    		$scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
+	    		$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
+	    		$scope.orderedData[parseInt($scope.currentClickedElement)].link_with = data.link_with;
+			}
+			
     		$scope.currentClickedElement = -1;
 			if($scope.isAdd) $scope.isAdd = false;
  			if($scope.isEdit) $scope.isEdit = false;
- 			// $scope.fetchChargeCodes();
 		};
 		// To create Charge code Link with list frm scope.
 		var selected_link_with = [];
