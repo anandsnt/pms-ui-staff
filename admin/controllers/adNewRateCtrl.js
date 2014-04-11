@@ -18,7 +18,9 @@ $scope.init = function(){
    */
 
 $scope.clickedStep =  function(index){
+
 	$scope.currentRateStepIndex = index;
+
 };
   /*
    	* to be updated from child classes 
@@ -39,10 +41,14 @@ $scope.$on("updateIndex", function(e,value){
     }
 	}
 
-	$scope.currentRateStepIndex = value;
+	$scope.clickedStep(parseInt(value));
 
 });
+  $scope.$watch('currentRateStepIndex', function () {
 
+  	$scope.currentRateStepIndex =$scope.currentRateStepIndex;
+    
+    });
   /*
    	* to include template
 	*/

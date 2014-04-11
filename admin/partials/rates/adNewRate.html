@@ -3,14 +3,11 @@
 		<h2>Add New rate</h2>
 		<a class="action back">Back to rates</a>
 	</header>
-
-	{{currentRateStepIndex}}
-
 	<table class="grid">
-		<tr ng-repeat ="step in currentStepIndexList" ng-click="clickedStep($index)" >{{$index}}
+		<tr ng-repeat ="step in currentStepIndexList">
 			<td ng-include="includeTemplate($index)" colspan="2" ng-show="currentRateStepIndex === $index"></td>
 			<td width="90%" ng-hide="currentRateStepIndex === $index"><em>Rate</em>&nbsp;{{step}}</td>
-			<td ng-hide="currentRateStepIndex === $index">>></td>
+			<td ng-hide="currentRateStepIndex === $index" ng-click="clickedStep($index)">>></td>
 		</tr>
 	</table>
 
