@@ -103,6 +103,9 @@ admin.controller('ADChargeCodesCtrl',['$scope', 'ADChargeCodesSrv','ngTableParam
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].charge_group = data.charge_group;
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].charge_code_type = data.charge_code_type;
 	    		$scope.orderedData[parseInt($scope.currentClickedElement)].link_with = data.link_with;
+			} else {
+				$scope.fetchChargeCodes();
+				// $scope.orderedData.push(data);
 			}
 			
     		$scope.currentClickedElement = -1;
