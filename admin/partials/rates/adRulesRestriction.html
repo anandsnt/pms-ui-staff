@@ -18,7 +18,7 @@
 			<tbody>
 				<tr ng-repeat="item in  ruleList">
 					<td header-class="width-70"  data-title="'Description'" sortable="'description'" ng-click="editRoomTypes($index, item.description)" ng-hide="currentClickedElement == $index" >
-						{{ item.description }} <em ng-show="item.is_system_defined">(system defined)</em>
+						{{ item.description }} <em ng-show="!item.editable">(system defined)</em>
 					</td>
 
 					<td data-title="'Toggle'" header-class=" width-30" class="activate text-left" ng-hide="currentClickedElement == $index" >

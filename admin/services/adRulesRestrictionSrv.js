@@ -12,7 +12,7 @@ admin.service('ADRulesRestrictionSrv',
       */	
       this.fetch = function(params) {
         var deferred = $q.defer(),
-            url      = '/api/admin/restriction_types',
+            url      = '/api/restriction_types',
             params   = params || {};
 
         ADBaseWebSrvV2.getJSON(url, params)
@@ -36,7 +36,7 @@ admin.service('ADRulesRestrictionSrv',
         var deferred = $q.defer(),
             id = data.id,
             params = { 'status': data.status },
-            url = '/api/admin/restriction_types/' + id + '/activate';
+            url = '/api/restriction_types/' + id + '/activate';
 
         ADBaseWebSrvV2.postJSON(url, params)
           .then(function(data) {

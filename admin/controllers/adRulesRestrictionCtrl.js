@@ -7,12 +7,6 @@ admin.controller('ADRulesRestrictionCtrl', [
     $scope.init = function(){
       BaseCtrl.call(this, $scope);
       $scope.ruleList = {};
-      $scope.likeData   = {};
-      $scope.likeData.type = "textbox"
-      $scope.isAddmode = false;
-      $scope.isEditmode = false;
-      $scope.currentClickedElement = -1;
-      $scope.newfeature = '';
     }
 
     $scope.init();
