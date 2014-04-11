@@ -5,6 +5,7 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 	$scope.image = "";
 	$scope.$emit("changedSelectedMenu", 0);
 	$scope.hotelId = $stateParams.hotelId;
+	$scope.fileName = "Choose File....";
 	/** functions & variables related to drag & drop **/
 	$scope.selectedUnassignedRole = -1;
 	$scope.selectedAssignedRole = -1;

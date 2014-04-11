@@ -108,9 +108,11 @@
 					</div>
 					<div class="select select-col col1-3">
 						<select ng-model="data.check_in_primetime" class="styled">
-							<option ng-selected="data.check_in_time.primetime == 'AM' || data.check_in_time.primetime.length == 0 || !isEdit">AM</option>
-							<option ng-selected="data.check_in_time.primetime == 'PM'">PM</option>
+							<!-- || data.check_in_time.primetime.length == '' || data.check_in_time.primetime.length == 0  || !isEdit -->
+							<option ng-selected="data.check_in_time.primetime == 'AM'" value="AM">AM</option>
+							<option ng-selected="data.check_in_time.primetime == 'PM'" value="PM">PM</option>
 						</select>
+						
 					</div>
 
 				</div>
@@ -132,9 +134,9 @@
 						</select>
 					</div>
 					<div class="select select-col col1-3">
-						<select ng-model="data.check_out_primetime" name="hotel-checkout-primetime" id="hotel-checkout-primetime" class="styled">
-							<option ng-selected="data.check_out_time.primetime == 'AM' || data.check_out_time.primetime.length == 0 || !isEdit">AM</option>
-							<option ng-selected="data.check_out_time.primetime == 'PM'">PM</option>
+						<select ng-model="data.check_out_primetime" class="styled">
+							<option ng-selected="data.check_out_time.primetime == 'AM'" value="AM">AM</option>
+							<option ng-selected="data.check_out_time.primetime == 'PM'" value="PM">PM</option>
 						</select>
 					</div>
 				</div>
