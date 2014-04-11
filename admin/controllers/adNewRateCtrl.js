@@ -4,7 +4,7 @@ admin.controller('ADAddnewRate', ['$scope', function($scope) {
 	$scope.init = function(){
 	BaseCtrl.call(this, $scope);
 	$scope.currentIndex = -1;
-	$scope.addNewRateSteps = ["Details","Type","Range"];
+	$scope.addNewRateSteps = ["Details"];
 
     }
     $scope.init();
@@ -12,6 +12,21 @@ admin.controller('ADAddnewRate', ['$scope', function($scope) {
     $scope.clickedStep =  function(index){
 
     	$scope.currentIndex = index;
+
+    }
+
+    $scope.save = function(index){
+
+    	if(index == 0){
+    	$scope.currentIndex =1;
+    	$scope.addNewRateSteps.push("Type");
+    	
+    	
+    	}
+    	else if(index ==1){
+    	$scope.addNewRateSteps.push("Range");
+    	$scope.currentIndex=2;
+    	}
 
     }
 

@@ -1,5 +1,5 @@
 
-	<form class="form float" >
+	<form class="form float" ng-controller="ADaddRatesDetailCtrl">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
 		<fieldset class="holder full-width">
@@ -72,7 +72,7 @@
 			<button type="button" ui-sref="admin.rates" class="button blank add-data-inline">
 				Cancel
 			</button>
-			<button type="button" id="save" class="button  brand-colors" >
+			<button type="button" ng-click="saveStep1()" class="button  brand-colors" >
 				Step 2 - Select Room Types
 			</button>
 		</div>

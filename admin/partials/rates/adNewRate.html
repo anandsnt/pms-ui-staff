@@ -8,7 +8,7 @@
 		<tr ng-repeat ="step in addNewRateSteps" ng-click="clickedStep($index)" >
 			<td ng-include="includeTemplate($index)" colspan="2" ng-show="currentIndex === $index"></td>
 			<td width="90%" ng-hide="currentIndex === $index"><em>Rate</em>&nbsp;{{step}}</td>
-			<td ng-hide="currentIndex === $index">>></td>
+			<td ng-hide="currentIndex === $index">>> {{currentIndex}}{{$index}}</td>
 		</tr>
 	</table>
 
