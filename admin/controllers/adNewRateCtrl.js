@@ -18,14 +18,16 @@ admin.controller('ADAddnewRate', ['$scope', function($scope) {
     $scope.save = function(index){
 
     	if(index == 0){
-    	$scope.currentIndex =1;
-    	$scope.addNewRateSteps.push("Type");
-    	
-    	
+    	if($scope.addNewRateSteps.length< 2){
+	    	$scope.currentIndex =1;
+	    	$scope.addNewRateSteps.push("Type");
+  		 }
     	}
     	else if(index ==1){
-    	$scope.addNewRateSteps.push("Range");
-    	$scope.currentIndex=2;
+    	if($scope.addNewRateSteps.length< 3){
+	    	$scope.addNewRateSteps.push("Range");
+	    	$scope.currentIndex=2;
+	    }
     	}
 
     }
@@ -43,12 +45,6 @@ admin.controller('ADAddnewRate', ['$scope', function($scope) {
 			 	return "/assets/partials/rates/adRatesAddRange.html";
 			  break;
 		}
-
-   
-
     }
-
-	
-
 
 }]);

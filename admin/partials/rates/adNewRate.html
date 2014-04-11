@@ -4,6 +4,8 @@
 		<a class="action back">Back to rates</a>
 	</header>
 
+	{{currentIndex}}
+
 	<table class="grid">
 		<tr ng-repeat ="step in addNewRateSteps" ng-click="clickedStep($index)" >
 			<td ng-include="includeTemplate($index)" colspan="2" ng-show="currentIndex === $index"></td>
