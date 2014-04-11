@@ -6,7 +6,8 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.readOnly = "no";
-	
+	$scope.fileName = "Choose File....";
+	$scope.certificate = "";
 	if($rootScope.adminRole == "snt-admin"){
 		
 		$scope.isAdminSnt = true;
@@ -17,7 +18,6 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			var fetchSuccess = function(data){
 				$scope.data = data;
 				$scope.$emit('hideLoader');
-				
 			};
 			
 			$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess);
@@ -29,6 +29,10 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			var fetchSuccess = function(data){
 				$scope.data = data;
 				$scope.$emit('hideLoader');
+				console.log(data.mli_pem_certificate_loaded);
+				if(data.mli_pem_certificate_loaded){
+					$scope.fileName = "Certificate Attached";
+				}
 			};
 			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id':$stateParams.id}, fetchSuccess);
 		}
@@ -68,6 +72,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 		if($scope.isAdminSnt){
 			var unwantedKeys = ["time_zones","brands","chains","check_in_time","check_out_time","countries","currency_list","pms_types","signature_display","hotel_logo"];
 			var data = dclone($scope.data, unwantedKeys);
+			data.mli_certificate = $scope.certificate;
 			var postSuccess = function(){
 				$scope.$emit('hideLoader');
 				$state.go("admin.hotels");

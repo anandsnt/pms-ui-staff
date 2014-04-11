@@ -193,7 +193,7 @@
 			</div>
 
 			<div class="entry">
-				<label for="hotel_from_address"> EMAIL DOMAIN AND FROM ADDRESS FOR GUESTS </label>
+				<label for="hotel_from_address"> EMAIL DOMAIN AND FROM ADDRESS FOR GUESTS <strong>*</strong></label>
 				<input type="text" ng-model="data.hotel_from_address" value="{{data.hotel_from_address}}" placeholder="Enter Email domain and from address for GUEST" name="hotel_from_address" id="hotel_from_address">
 			</div>
 
@@ -265,7 +265,7 @@
 					 MLI Token Certificate
 				</label>
 				<div class="file-upload">
-					<span class="input">Choose file ...</span>
+					<span class="input">{{fileName}}</span>
 					<input type="file" ng-model="certificate" accept="*" app-filereader />
 					<button type="button" class="button brand-colors">
 						Attach Certificate
