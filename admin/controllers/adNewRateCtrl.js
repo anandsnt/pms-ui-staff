@@ -3,38 +3,44 @@ admin.controller('ADAddnewRate', ['$scope', function($scope) {
 
 	$scope.init = function(){
 	BaseCtrl.call(this, $scope);
-	$scope.currentIndex = -1;
-	$scope.addNewRateSteps = ["Details"];
+		$scope.currentRateStepIndex = -1;
+		$scope.currentStepIndexList = ["Details"];
 
     }
+
     $scope.init();
 
     $scope.clickedStep =  function(index){
 
-    	$scope.currentIndex = index;
+    	$scope.currentRateStepIndex = index;
 
     }
 
-    $scope.save = function(index){
-
-    	if(index == 0){
-    	if($scope.addNewRateSteps.length< 2){
-	    	$scope.currentIndex =1;
-	    	$scope.addNewRateSteps.push("Type");
+    $scope.$on("updateIndex", function(e,value){
+   
+    	if(value == 1){
+    	if($scope.currentStepIndexList.length< 2){
+	    	
+	    	$scope.currentStepIndexList.push("Type");
   		 }
     	}
-    	else if(index ==1){
-    	if($scope.addNewRateSteps.length< 3){
-	    	$scope.addNewRateSteps.push("Range");
-	    	$scope.currentIndex=2;
+    	else if(value ==2){
+    	if($scope.currentStepIndexList.length< 3){
+	    	$scope.currentStepIndexList.push("Range");
+	    	
 	    }
     	}
 
-    }
+    	$scope.currentRateStepIndex = value;
+
+    });
+
+
+
 
     $scope.includeTemplate = function(index){
 
-	    switch ($scope.currentIndex){
+	    switch (index){
 			case 0:
 			  return "/assets/partials/rates/adRatesAddDetails.html";
 			  break;
