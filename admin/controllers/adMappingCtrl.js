@@ -84,7 +84,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappin
 		var successSaveCallback = function(data){
 			
 			$scope.$emit('hideLoader');
-			
+			if($scope.isAdd) $scope.data.total_count ++ ;
 			// To update scope data with added item
 			var newData = {
                     "value": data.value,
@@ -116,6 +116,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappin
 		
 		var successDeletionCallback = function(){
 			$scope.$emit('hideLoader');
+			$scope.data.total_count -- ;
 			// delete data from scope
 			angular.forEach($scope.data.mapping,function(item1, index1) {
 				angular.forEach(item1.mapping_values,function(item2, index2) {

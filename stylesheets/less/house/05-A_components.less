@@ -25,13 +25,15 @@
 
             #guests-today {
                 margin-bottom: 30px;
+                display: table;
+                width: 100%;
                 .float;
 
                 li {
                     text-align: center;
-                    margin: 0 10px 0 0;
-                    .calc-width(33.3333, 6.6666);
-                    .pull-left;
+                    display: table-cell;
+                    table-layout: fixed;
+                    padding: 0 5px;
 
                     .button {
                         padding: 15px 10px 10px 10px;
@@ -101,12 +103,13 @@
             
             a {
                 color: @textColor;
-                padding: 0 50px 0 10px;
+                padding: 0 10px 0 10px;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 border-bottom: 1px solid rgba(0,0,0,.1);
                 background-color: @white;
+                position: relative;
                 .show;
                 .float;
 
@@ -118,6 +121,15 @@
                     width: 70px;
                     .show;
                     .pull-left;
+                }
+
+                .room-stats-wrap {
+                    display: block;
+                    overflow: hidden;
+                    position: absolute;
+                    top: 0;
+                    left: 90px;
+                    right: 50px;
                 }
 
                 .room-status,
@@ -132,35 +144,50 @@
                     .pull-left;
                 }
 
-                .room-status { .calc-width(45, 35); }
-                .fo-status {  .calc-width(55, 35); }
+                .room-status {
+                     width: 50%;
+                 }
 
-                &.with-image {
+                 @media (max-width: 319px) {
+                    .room-stats-wrap {
+                        clear: both;
+                        position: static;
+                        padding: 3px 0 10px;
+                    }
+
+                    .room-status,
+                    .fo-status {
+                        width: 49%;
+                        line-height: 1;
+                    }
+
+                    .fo-status {
+                        text-align: right;
+                        .pull-right;
+                    }
+                }
+
+                .guest-image {
                     position: relative;
+                    top: 5px;
+                    .pull-right;
+                    #border-radius > .rounded(40px);
+                    .square(40px);
 
-                    .guest-image {
+                    .vip {
                         position: absolute;
-                        top: 5px;
-                        right: 10px;
-                        background: @grey1;
+                        bottom: 0;
+                        right: 0;
+                        font-size: 9px;
+                        line-height: 16px;
+                        .square(16px);
+                        #border-radius > .rounded(16px);       
+                    }
+
+                    img {
+                        width: 100%;
+                        height: auto;
                         #border-radius > .rounded(40px);
-                        .square(40px);
-
-                        .vip {
-                            position: absolute;
-                            bottom: 0;
-                            right: 0;
-                            font-size: 9px;
-                            line-height: 16px;
-                            .square(16px);
-                            #border-radius > .rounded(16px);       
-                        }
-
-                        img {
-                            width: 100%;
-                            height: auto;
-                            #border-radius > .rounded(40px);
-                        }
                     }
                 }
 
@@ -287,6 +314,21 @@
                     line-height: 20px;
                     min-height: 40px;
                     height: 40px;
+                }
+            }
+
+            @media (max-width: 319px) {
+                h1 {
+                    float: none;
+                    text-align: center;
+                    display: block;
+                    background-position-x: center !important;
+                    padding-left: 60px;
+                }
+
+                .select {
+                    float: none;
+                    width: 100%;
                 }
             }
 
@@ -421,12 +463,13 @@
             &.no-content {
                 position: relative;
                 margin: 0;
+                padding: 60px 10px 0;
+                min-height: 230px;
                 background: transparent;
                 text-align: center;
                 color: @grey3;
                 .square(100%);
                 .box-shadow(none);
-                min-height: 230px;
 
                 .info {
                     position: absolute;
@@ -445,6 +488,23 @@
                         font-weight: 700;
                         margin: 0;
                     }
+                }
+            }
+
+            @media (max-width: 319px) {
+                .wrapper {
+                    padding: 120px 10px 0;
+                }
+
+                &.no-content {
+                    padding: 120px 10px 0;
+                }
+            }
+
+            @media (max-height: 319px) {
+                &.no-content .info {
+                    position: static;
+                    margin: 50px 0;
                 }
             }
         }   

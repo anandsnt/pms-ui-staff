@@ -5,7 +5,8 @@ admin.directive('adToggleButton', function($timeout) {
         replace: 'true',
       	scope: {
             isChecked: '=isChecked',
-            divClass: '@divClass'
+            divClass: '@divClass',
+            label: '@label'
 	    },
         
     	templateUrl: '../../assets/directives/toggle/adToggleButton.html' 

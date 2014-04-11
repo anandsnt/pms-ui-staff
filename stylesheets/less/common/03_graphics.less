@@ -169,6 +169,20 @@
 			&:hover,
 			&:active { .gradient (@grey2, #d1d1d1); }
 		}
+		&.yellow-btn {
+			background-color: #F8E26E;
+			text-shadow: none;
+			.box-shadow();
+
+			&:hover,
+			&:active { .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,.15)"); }
+			&.red-text-btn {
+				color: @red;
+				&:hover,
+				&:active { color: darken(@red, 10); }
+			}
+
+		}
 
 		&.white {
 			color: @textColor;

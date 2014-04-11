@@ -28,7 +28,7 @@ admin.controller('ADExternalPmsConnectivityCtrl',['$scope','$rootScope','$state'
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = "";
 		//Success message to show connection valid
-		$scope.successMessage = ["Connection Valid"];
+		$scope.successMessage = "Connection Valid";
 	};
    /*
     * Function to test connectivity details
