@@ -27,6 +27,7 @@ var ReservationPaymentView = function(domRef){
   	var target = that.myDom.find(event.target);
   	if(getParentWithSelector(event, "#update_card")) {
   		event.preventDefault();
+        sntapp.paymentTypeSwipe = false;
         return that.addNewPaymentModal();
     }
   };
