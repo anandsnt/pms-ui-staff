@@ -54,7 +54,7 @@ admin.controller('ADCheckoutCtrl',['$scope','adCheckoutSrv','$state', function($
 				'emails':$scope.checkoutData.emails,
 				'include_cash_reservations':$scope.checkoutData.include_cash_reservations,
 				 'is_send_checkout_staff_alert':$scope.checkoutData.is_send_checkout_staff_alert,
-				'require_cc_for_checkout_email':$scope.checkoutData.include_cash_reservations
+				'require_cc_for_checkout_email':$scope.require_cc_for_checkout_email_flag
 			};
 
         var saveCheckoutDetailsFailureCallback = function(data) {

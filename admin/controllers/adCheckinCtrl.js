@@ -10,6 +10,7 @@
           $scope.minutes = ["00","15","30","45"];
           $scope.primeTimes = ["AM","PM"];
           $scope.isLoading = true;
+          $scope.hideAlertOption = false;
       };
 
       $scope.init();
@@ -32,6 +33,11 @@
           $scope.checkinData.is_send_checkin_staff_alert_flag = ($scope.checkinData.is_send_checkin_staff_alert === 'true') ? true:false;
           $scope.checkinData.is_notify_on_room_ready_flag = ($scope.checkinData.is_send_alert === 'true') ? true:false;
           $scope.checkinData.require_cc_for_checkin_email_flag = ($scope.checkinData.require_cc_for_checkin_email=== 'true') ? true:false;
+
+
+          $scope.$watch('checkinData.is_send_checkin_staff_alert_flag',function(){
+             $scope.hideAlertOption = $scope.checkinData.is_send_checkin_staff_alert_flag ? false : true;
+          })
               //to be confirmed 
               $scope.checkinData.checkin_alert_primetime = (!$scope.checkinData.checkin_alert_primetime)? "AM":$scope.checkinData.checkin_alert_primetime;
           };
