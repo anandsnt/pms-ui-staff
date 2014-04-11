@@ -4,14 +4,20 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 	$scope.mod = "";
 	$scope.image = "";
 	$scope.$emit("changedSelectedMenu", 0);
+	$scope.hotelId = $stateParams.hotelId;
+	$scope.fileName = "Choose File....";
 	/** functions & variables related to drag & drop **/
 	$scope.selectedUnassignedRole = -1;
 	$scope.selectedAssignedRole = -1;
    /**
     * To check whether logged in user is sntadmin or hoteladmin
     */	
+   // $scope.BackAction = $scope.hotelId;
 	if($rootScope.adminRole == "snt-admin"){
 		$scope.isAdminSnt = true;
+		 $scope.BackAction = "admin.users({id:"+$scope.hotelId+"})";
+	} else {
+		 $scope.BackAction = "admin.users";
 	}
    /*
     * Handle action when clicked on assigned role
