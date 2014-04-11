@@ -45,7 +45,5 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ngTablePa
 		
 	$scope.loadTable();
 
-
-
 }]);
 

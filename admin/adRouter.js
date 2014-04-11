@@ -193,5 +193,11 @@ admin.config([
 			url : '/externalPmsConnectivity'
 		});
 
+		$stateProvider.state('admin.addRate', {
+			templateUrl: '/assets/partials/rates/adNewRate.html',
+		    controller: 'ADAddnewRate',
+			url : '/addNewRate'
+		});
+
 	}
 ]);
