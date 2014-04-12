@@ -37,7 +37,7 @@ admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  funct
 	$scope.fetchData = function(){
 		
 		var fetchRateTypesSuccessCallback = function(data){
-			$scope.rateTypes = data.results;
+			$scope.rateTypes = data;
 			$scope.$emit('hideLoader');
 		};
 		var fetchRateTypesFailureCallback = function(data){
