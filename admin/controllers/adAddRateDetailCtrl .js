@@ -5,8 +5,34 @@ admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  funct
 		$scope.basedOn = [];
 		$scope.basedOnRateList = [];
 		$scope.basedOnRateTypeSelected = '';
+		$scope.rateTypeselected ='';
+		$scope.rate_name = '';
+		$scope.rate_description = '';
+	
+		$scope.step1Data = {
+			'name':$scope.rate_name,
+			'type':$scope.rateTypeselected,
+			'basedOn':'',
+			'description':$scope.rate_description
+		};
 	}
 	$scope.init();
+
+
+	$scope.allFieldsFilled = function(){
+
+		if($scope.rate_name && $scope.rate_description && $scope.rateTypeselected){
+
+		if(($scope.rate_name.length > 0) && ($scope.rate_description.length > 0)
+			&&  ($scope.rateTypeselected.length > 0)){
+			return false;
+		}
+		}
+		else{
+			return true;
+		}
+	};
+
 
 	$scope.fetchData = function(){
 		
@@ -14,7 +40,10 @@ admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  funct
 			$scope.rateTypes = data.results;
 			$scope.$emit('hideLoader');
 		};
-		$scope.invokeApi(ADRatesAddDetailsSrv.fetchRateTypes, {},fetchRateTypesSuccessCallback);	
+		var fetchRateTypesFailureCallback = function(data){
+			$scope.$emit('hideLoader');
+		};
+		$scope.invokeApi(ADRatesAddDetailsSrv.fetchRateTypes, {},fetchRateTypesSuccessCallback,fetchRateTypesFailureCallback);	
 
 		var fetchBasedOnSuccessCallback = function(data){
 			$scope.basedOn=data.results;
@@ -26,7 +55,10 @@ admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  funct
  		});
 
 		};
-		$scope.invokeApi(ADRatesAddDetailsSrv.fetchBasedOnTypes, {},fetchBasedOnSuccessCallback);	
+		var fetchBasedOnFailureCallback = function(data){
+			$scope.$emit('hideLoader');
+		};
+		$scope.invokeApi(ADRatesAddDetailsSrv.fetchBasedOnTypes, {},fetchBasedOnSuccessCallback,fetchBasedOnFailureCallback);	
 	}	
 
 	$scope.fetchData();
