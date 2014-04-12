@@ -3,6 +3,8 @@ admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  funct
 	$scope.init = function(){
 		$scope.rateTypes = [];
 		$scope.basedOn = [];
+		$scope.basedOnRateList = [];
+		$scope.basedOnRateTypeSelected = '';
 	}
 	$scope.init();
 
@@ -17,6 +19,12 @@ admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  funct
 		var fetchBasedOnSuccessCallback = function(data){
 			$scope.basedOn=data.results;
 			$scope.$emit('hideLoader');
+			angular.forEach($scope.basedOn,function(item, index) {
+ 			if (item.rate_type !== null) {
+ 				$scope.basedOnRateList.push(item);
+ 			}
+ 		});
+
 		};
 		$scope.invokeApi(ADRatesAddDetailsSrv.fetchBasedOnTypes, {},fetchBasedOnSuccessCallback);	
 	}	
