@@ -1,0 +1,55 @@
+		<div ng-controller="ADAddRateRoomTypeCtrl">
+			<form user="2"  class="form float form_add_new_rate">
+
+				<fieldset class="holder full-width">
+					<div class="form-title">
+						<h3>
+							<span>Room</span>
+							types
+						</h3>
+						<em class="status">
+							<span>Assign at least 1 room type</span>
+						</em>
+					</div>
+					<div class="entry has-sortable">
+						<label class="center_align"><em class="rate_roomtype_text assigned_room_text">Assigned Room Types</em></label>
+
+						<ul class="boxes sortable empty ui-sortable short-list" data-type="target" ui-on-Drop="onDrop($event,$data,assignedRoomTypes)">
+							<li  ng-repeat="roomtype in assignedRoomTypes"
+							ui-draggable="true" drag="roomtype"
+							on-drop-success="dropSuccessHandler($event,$index,assignedRoomTypes)"									><span class="icons icon-handle"></span>
+							<span class="icons icon-handle"></span>
+							
+							{{roomtype.name}}
+						</li> 
+					</ul>
+
+				</div>
+				<div class="entry movers">
+					<span class="icons icon-mover-right to-target" data-type="target">Assign role(s)</span>
+					<span class="icons icon-mover-left to-source" data-type="source">Unassign role(s)</span>
+				</div>
+				<div class="entry has-sortable">
+					<label class="center_align"><em class="rate_roomtype_text">Not Assigned Room Types</em></label>
+
+					<ul class="boxes sortable ui-sortable short-list"  ui-on-Drop="onDrop($event,$data,nonAssignedroomTypes)" >
+
+						<li ng-repeat="roomtype in nonAssignedroomTypes" ui-draggable="true" drag="roomtype"
+						on-drop-success="dropSuccessHandler($event,$index,nonAssignedroomTypes)"><span class="icons icon-handle"
+						></span>
+						<span class="icons icon-handle"></span>
+						{{roomtype.name}}
+					</li>
+				</ul>
+			</div>
+
+		</fieldset>
+		<div class="actions float">
+			<button type="button" id="cancel" class="button blank add-data-inline">Cancel</button>
+			<button type="button" id="send-email"  class="button grey" ng-hide="anyRoomSelected()" ng-disabled="true" >Step 3 - Set date range</button>
+			<button type="button" ng-click="saveStep2()" " class="button  brand-colors" ng-show="anyRoomSelected()">
+			Step 3 - Set date range
+			</button>
+		</div>
+	</form>
+</div>
