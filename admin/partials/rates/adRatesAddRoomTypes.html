@@ -14,7 +14,7 @@
 					<div class="entry has-sortable">
 						<label class="center_align"><em class="rate_roomtype_text assigned_room_text">Assigned Room Types</em></label>
 
-						<ul class="boxes sortable empty ui-sortable short-list" ui-on-Drop="onDrop($event,$data,assignedRoomTypes)">
+						<ul class="boxes sortable empty ui-sortable short-list" data-type="target" ui-on-Drop="onDrop($event,$data,assignedRoomTypes)">
 							<li  ng-repeat="roomtype in assignedRoomTypes"
 							ui-draggable="true" drag="roomtype"
 							on-drop-success="dropSuccessHandler($event,$index,assignedRoomTypes)"									><span class="icons icon-handle"></span>
@@ -32,7 +32,7 @@
 				<div class="entry has-sortable">
 					<label class="center_align"><em class="rate_roomtype_text">Not Assigned Room Types</em></label>
 
-					<ul class="boxes sortable ui-sortable short-list" ui-on-Drop="onDrop($event,$data,nonAssignedroomTypes)" >
+					<ul class="boxes sortable ui-sortable short-list"  ui-on-Drop="onDrop($event,$data,nonAssignedroomTypes)" >
 
 						<li ng-repeat="roomtype in nonAssignedroomTypes" ui-draggable="true" drag="roomtype"
 						on-drop-success="dropSuccessHandler($event,$index,nonAssignedroomTypes)"><span class="icons icon-handle"
