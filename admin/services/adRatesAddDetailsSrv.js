@@ -35,12 +35,15 @@ function($q, ADBaseWebSrvV2) {
 	}
 
 
-	this.updateNewRate = function(data) {
+	this.updateNewRate = function(param) {
 
-		var data = data.updatedData;
-		var id = data.id;
+
+		var data = param.updatedData;
+		var id = param.rateId;
+
 		var deferred = $q.defer();
-		var url = "/api/rates/id";
+		var url = "/api/rates/"+param.rateId;
+
 		ADBaseWebSrvV2.putJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {

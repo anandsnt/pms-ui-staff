@@ -97,7 +97,7 @@ admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  funct
 		else{
 
 		 var updatedData = {'updatedData': data,
-							'id':$scope.newRateId
+							'rateId':$scope.newRateId
 						 };
 		 $scope.invokeApi(ADRatesAddDetailsSrv.updateNewRate,updatedData,createNewRateSuccessCallback,createNewRateFailureCallback);	
 	     }	
