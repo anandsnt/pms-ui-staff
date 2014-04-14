@@ -24,7 +24,7 @@
    
    <!-- Quick navigation -->
    <nav id="quick-menu" class="active" ng-class="{'has-items': bookMarks.length>0}" role="navigation" ui-on-Drop="onDrop($event,$data,bookMarks)"> 
-   	
+   	{{bookMarks.length}}
 
    	<!-- <ul class="boxes sortable empty ui-sortable short-list" ui-on-Drop="onDrop($event,$data,bookMarks)">
 						 <li ng-repeat="bookmark in data.bookmarks"  drag-enter-class='ui-state-highlight'>
