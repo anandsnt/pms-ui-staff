@@ -35,10 +35,11 @@ admin.service('ADRulesRestrictionSrv',
       this.toggleSwitch = function(data) {
         var deferred = $q.defer(),
             id = data.id,
-            params = { 'status': data.status },
+            data = { 'status': data.status },
             url = '/api/restriction_types/' + id + '/activate';
+            '/api/restriction_types/:id/activate'
 
-        ADBaseWebSrvV2.postJSON(url, params)
+        ADBaseWebSrvV2.postJSON(url, data)
           .then(function(data) {
             deferred.resolve(data);
           },function(data){
