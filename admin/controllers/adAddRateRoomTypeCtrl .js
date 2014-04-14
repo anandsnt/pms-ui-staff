@@ -40,6 +40,14 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv',  fun
 		array.push($data);
 	};
 
+	$scope.anyRoomSelected = function(){
+
+		if($scope.assignedRoomTypes.length >0)
+			return true;
+		else
+			return false;
+	}
+
 
 }]);
 
