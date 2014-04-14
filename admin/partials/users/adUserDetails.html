@@ -3,7 +3,7 @@
 		<header class="content-title float">
 			<h2 ng-show="mod == 'edit'">Edit User</h2>
 			<h2 ng-show="mod == 'add'">Add New User</h2>
-			<a id="go_back" data-type="load-details" class="action back" ui-sref='admin.users'>Back</a>
+			<a id="go_back" data-type="load-details" class="action back" ui-sref='{{BackAction}}'>Back</a>
 		</header>
 		<form user="2" id="edit-user" class="form float">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -23,7 +23,7 @@
 				<div class="entry full-width">
 					<label for="user-picture"> Picture </label>
 					<div class="file-upload with-preview">
-						<span class="input">Choose file ...</span>
+						<span class="input">{{fileName}}</span>
 						<input type="file" ng-model="image" accept="image/*" app-filereader />
 						<button type="button" class="button brand-colors">
 							 Choose file

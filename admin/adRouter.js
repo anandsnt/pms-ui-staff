@@ -51,7 +51,7 @@ admin.config([
 		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserDetails.html',
 			controller: 'ADUserDetailsCtrl',
-			url : '/user/:page/:id'
+			url : '/user/:page/:id/:hotelId'
 		});
 		
 		$stateProvider.state('admin.linkexisting', {
@@ -193,10 +193,32 @@ admin.config([
 			url : '/externalPmsConnectivity'
 		});
 
+
 		$stateProvider.state('admin.addRate', {
 			templateUrl: '/assets/partials/rates/adNewRate.html',
 		    controller: 'ADAddnewRate',
 			url : '/addNewRate'
+		});
+
+
+
+		$stateProvider.state('admin.checkin', {
+			templateUrl: '/assets/partials/checkin/adCheckin.html',
+			controller: 'ADCheckinCtrl',
+			url : '/checkin'
+		});
+
+		$stateProvider.state('admin.checkout', {
+			templateUrl: '/assets/partials/checkout/adCheckout.html',
+			controller: 'ADCheckoutCtrl',
+			url : '/checkout'
+		});
+
+
+		$stateProvider.state('admin.checkinCheckoutEmail', {
+			templateUrl: '/assets/partials/emailList/adCheckinCheckoutemail.html',
+			controller: 'ADCheckinCheckoutCtrl',
+			url : '/checkinCheckoutEmail/:from'
 		});
 
 	}
