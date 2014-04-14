@@ -10,6 +10,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	//when there is an occured while trying to access any menu details, we need to show that errors
 
 	$scope.errorMessage = '';
+	$scope.bookMarks = [];
 
 	if($rootScope.adminRole == "hotel-admin" ){
 
@@ -23,12 +24,13 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 		//$scope.currentIndex = 0;
 		$scope.data = data;
 		$scope.selectedMenu = $scope.data.menus[0];		
-		
+		$scope.bookMarks = $scope.data.bookmarks;
 	};
 	
 	$scope.$on("changedSelectedMenu", function(event, menu){
 		console.log('in changedSleectedmenu');
 		$scope.selectedIndex = menu;
+		
 	});
 	
 	$scope.invokeApi(ADAppSrv.fetch, {}, $scope.successCallbackOfMenuLoading);
@@ -77,7 +79,22 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 			console.log("error controller");
 		});	
     };
+$scope.dropSuccessHandler = function(){
+   	alert("jphme");
+  };
+   // $scope.onDrop = function(a,b,c){
+//    	
+   	// console.log(a+"-----"+b+"-----"+c)
+    // $scop.bookMarks.push(c);
+    // console.log($scope.bookMarks);
+   // };
+   	$scope.onDrop = function($event, $data, array) {
+		
+		array.push($data);
+		console.log($scope.bookMarks);
+	};
 
+   
 }]);
 
     

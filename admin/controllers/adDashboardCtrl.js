@@ -5,7 +5,12 @@ admin.controller('ADDashboardCtrl',['$scope', '$state', '$stateParams', function
 		$scope.selectedMenu = $scope.data.menus[$stateParams.menu];
 	}
 
-
+   $scope.dropSuccessHandler = function(){
+   	alert("jphme")
+   }
+   $scope.onDrop = function(){
+   	alert("onDrop")
+   }
 	
 }]);
 

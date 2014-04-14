@@ -7,10 +7,10 @@
       <header class="content-title float">
          <h2>{{selectedMenu.menu_name}} setup</h2>
       </header>
-      <ul class="dashboard-items float">
+      <ul class="dashboard-items float" ui-on-Drop="onDrop()" >
 
-         <li ng-repeat="submenu in selectedMenu.components">
-            <a data-type="load-listing" class="icon-admin-menu {{submenu.icon_class}}" ui-sref={{submenu.state}}>{{submenu.name}}</a>
+         <li ng-repeat="submenu in selectedMenu.components" ui-draggable="true" on-drop-success="dropSuccessHandler()"drag="submenu">
+            <a data-type="load-listing" class="icon-admin-menu {{submenu.icon_class}}" ui-sref="{{submenu.state}}">{{submenu.name}}</a>
             <a class="text" data-type="load-listing" href="{{submenu.action_path}}" ui-sref={{submenu.state}}>{{submenu.name}}</a>
          </li>
 

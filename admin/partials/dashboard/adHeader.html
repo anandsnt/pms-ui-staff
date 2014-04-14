@@ -23,6 +23,21 @@
 	</ul>
    
    <!-- Quick navigation -->
-   <nav id="quick-menu" class="active" role="navigation"></nav>	
+   <nav id="quick-menu" class="active" role="navigation" ui-on-Drop="onDrop($event,$data,bookMarks)"> 
+   	
+   
+   	<!-- <ul class="boxes sortable empty ui-sortable short-list" ui-on-Drop="onDrop($event,$data,bookMarks)">
+						 <li ng-repeat="bookmark in data.bookmarks"  drag-enter-class='ui-state-highlight'>
+						 
+						</li> 
+					</ul> 
+   	 -->
+   	
+   	
+		<a class="icon-admin-menu icon-chain ui-draggable in-quick-menu" ng-repeat="bookmark in bookMarks">
+			{{bookmark.name}}
+		</a> 
+   	
+   </nav>	
    
 </div>
