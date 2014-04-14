@@ -83,7 +83,8 @@ admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  funct
 
 
 		var createNewRateSuccessCallback = function(data){
-			console.log(data);
+			
+			$scope.newRateId = data.id;
 			$scope.isFirstTime = false;
 			$scope.$emit('hideLoader');
 			$scope.$emit("updateIndex","1");
@@ -93,7 +94,14 @@ admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  funct
 		};
 		if($scope.isFirstTime)
 		 $scope.invokeApi(ADRatesAddDetailsSrv.createNewRate,data,createNewRateSuccessCallback,createNewRateFailureCallback);	
-	 }	
+		else{
+
+		 var updatedData = {'updatedData': data,
+							'id':$scope.newRateId
+						 };
+		 $scope.invokeApi(ADRatesAddDetailsSrv.updateNewRate,updatedData,createNewRateSuccessCallback,createNewRateFailureCallback);	
+	     }	
+	}
 
 
 }]);
