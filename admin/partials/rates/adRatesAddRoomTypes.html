@@ -1,41 +1,54 @@
-	<div ng-controller="ADAddRateRoomTypeCtrl">
-		<form user="2"  class="form float form_add_new_rate">
-		
-					<fieldset class="holder full-width">
-						<div class="form-title">
-							<h3>
-								<span>Room</span>
-								types
-							</h3>
-							<em class="status">
-								<span>Assign at least 1 room type</span>
-							</em>
-						</div>
-						<div class="entry has-sortable">
-							<label class="center_align"><em class="rate_roomtype_text assigned_room_text">Assigned Room Types</em></label>
-							<ul class="boxes sortable empty ui-sortable short-list" data-placeholder="Drop a role here to assign it to the user" data-type="target" id="assigned-roles">
-								<li id="2"><span class="icons icon-handle"></span>
-									<span class="icons icon-handle"></span>
-									hotel_admin
-								</li>
-							</ul>
-						</div>
-						<div class="entry movers">
-							<span class="icons icon-mover-right to-target" data-type="target">Assign role(s)</span>
-							<span class="icons icon-mover-left to-source" data-type="source">Unassign role(s)</span>
-						</div>
-						<div class="entry has-sortable">
-							<label class="center_align"><em class="rate_roomtype_text">Not Assigned Room Types</em></label>
-							<ul class="boxes sortable ui-sortable short-list" data-placeholder="To remove a role for the user simply drop it here" data-type="source">
-								<li id="3"><span class="icons icon-handle"></span>
-									<span class="icons icon-handle"></span>
-									hotel_staff
-								</li>
-							</ul>
-						</div>
+		<div ng-controller="ADAddRateRoomTypeCtrl">
+			<form user="2"  class="form float form_add_new_rate">
 
-					</fieldset>
-		
+				<fieldset class="holder full-width">
+					<div class="form-title">
+						<h3>
+							<span>Room</span>
+							types
+						</h3>
+						<em class="status">
+							<span>Assign at least 1 room type</span>
+						</em>
+					</div>
+					<div class="entry has-sortable">
+						<label class="center_align"><em class="rate_roomtype_text assigned_room_text">Assigned Room Types</em></label>
+
+						<ul ui-on-Drop="onDrop($event,$data,assignedRoomTypes)" data-placeholder="Drop a role here to assign it to the user" data-type="target" id="assigned-roles">
+
+							<li  ng-repeat="roomtype in assignedRoomTypes"
+
+							ui-draggable="true" drag="roomtype"
+							on-drop-success="dropSuccessHandler($event,$index,assignedRoomTypes)"									><span class="icons icon-handle"></span>
+							<span class="icons icon-handle"></span>
+
+						</li> 
+
+
+
+					</ul>
+
+				</div>
+				<div class="entry movers">
+					<span class="icons icon-mover-right to-target" data-type="target">Assign role(s)</span>
+					<span class="icons icon-mover-left to-source" data-type="source">Unassign role(s)</span>
+				</div>
+				<div class="entry has-sortable">
+					<label class="center_align"><em class="rate_roomtype_text">Not Assigned Room Types</em></label>
+
+					<ul class="boxes sortable ui-sortable short-list" ui-on-Drop="onDrop($event,$data,roomTypes)" >
+
+						<li ng-repeat="roomtype in roomTypes" ui-draggable="true" drag="roomtype"
+							on-drop-success="dropSuccessHandler($event,$index,roomTypes)"><span class="icons icon-handle"
+								></span>
+							<span class="icons icon-handle"></span>
+							{{roomtype.name}}
+						</li>
+					</ul>
+				</div>
+
+			</fieldset>
+			
 
 
 
