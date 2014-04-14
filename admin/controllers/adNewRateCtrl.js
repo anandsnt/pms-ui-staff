@@ -61,7 +61,7 @@ $scope.includeTemplate = function(index){
 		  return "/assets/partials/rates/adRatesAddDetails.html";
 		  break;
 		case 1:
-			return "/assets/partials/rates/adRatesAddTypes.html";
+			return "/assets/partials/rates/adRatesAddRoomTypes.html";
 		  break;
 		 case 2:
 		 	return "/assets/partials/rates/adRatesAddRange.html";

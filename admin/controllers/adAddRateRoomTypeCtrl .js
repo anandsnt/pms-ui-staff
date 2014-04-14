@@ -1,4 +1,4 @@
-admin.controller('ADAddRateTypeCtrl',['$scope',  function($scope){
+admin.controller('ADAddRateRoomTypeCtrl',['$scope',  function($scope){
 
 
 
