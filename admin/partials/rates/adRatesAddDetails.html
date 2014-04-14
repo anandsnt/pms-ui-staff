@@ -40,11 +40,11 @@
 						<div class="entry">
 							<label ng-class="{'basedon_option_hidden': basedOnRateTypeSelected.length === 0}"><strong>*</strong> </label>
 							<div class="select select-col col1-3">
-									<select  class="styled">
+								<select  class="styled" ng-model="plusMinus">
 									<option value="+">+</option>
 									<option value="-">-</option>
 								</select>
-								</select>
+							
 							</div>
 						</div>
 
@@ -53,7 +53,7 @@
 							<label ng-class="{'basedon_option_hidden': basedOnRateTypeSelected.length === 0}"><strong>*</strong> </label>
 
 							<div class=" select-col col1-3" >
-								<ad-textbox inputtype="text" value="value" styleclass = "col1-3"
+								<ad-textbox inputtype="text" value="basedOnText" styleclass = "col1-3"
 								label = "" placeholder = "" style=" width: 66px;"
 								></ad-textbox>
 							</div>
@@ -62,7 +62,7 @@
 							<div class="entry">
 							<label ng-class="{'basedon_option_hidden': basedOnRateTypeSelected.length === 0}"><strong>*</strong> </label>
 							<div class="select select-col col1-3">
-								<select class="styled">
+								<select class="styled" ng-model="rateType">
 									<option value="amount" >$</option>
 									<option value="percentage">%</option>
 								</select>

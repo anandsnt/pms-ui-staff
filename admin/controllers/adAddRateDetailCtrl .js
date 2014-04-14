@@ -8,6 +8,9 @@ admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  funct
 		$scope.rateTypeselected ='';
 		$scope.rate_name = '';
 		$scope.rate_description = '';
+		$scope.plusMinus ='+';
+		$scope.basedOnText ='';
+		$scope.rateType = 'amount';
 	
 		$scope.step1Data = {
 			'name':$scope.rate_name,
@@ -48,11 +51,11 @@ admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  funct
 		var fetchBasedOnSuccessCallback = function(data){
 			$scope.basedOn=data.results;
 			$scope.$emit('hideLoader');
-			angular.forEach($scope.basedOn,function(item, index) {
- 			if (item.rate_type !== null) {
- 				$scope.basedOnRateList.push(item);
- 			}
- 		});
+			// angular.forEach($scope.basedOn,function(item, index) {
+ 		// 	if (item.rate_type !== null) {
+ 		// 		$scope.basedOnRateList.push(item);
+ 		// 	}
+ 		// });
 
 		};
 		var fetchBasedOnFailureCallback = function(data){
