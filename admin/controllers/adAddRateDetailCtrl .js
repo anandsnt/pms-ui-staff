@@ -69,15 +69,15 @@ admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  funct
 
 	$scope.saveStep1 = function(){
 
+		var amount = $scope.based_on_plus_minus + $scope.based_on_value;
 		var data = 
 		{   'name': $scope.rate_name,
 			'description': $scope.rate_description,
 			'rate_type_id': $scope.rateTypeselected.id,
 			'based_on_rate_id': $scope.basedOnRateTypeSelected.id,
 			'based_on_type': $scope.based_on_type,
-			'based_on_value': $scope.based_on_value
+			'based_on_value': amount
 		};
-
 
 		//createNewRate
 
