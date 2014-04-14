@@ -1,12 +1,12 @@
 admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv',  function($scope,ADRatesAddRoomTypeSrv){
 
-	$scope.roomTypes = [];
+	$scope.nonAssignedroomTypes = [];
 	$scope.assignedRoomTypes = [];
 
 	$scope.fetchData = function(){
 		
 		var fetchRoomTypesSuccessCallback = function(data){
-			$scope.roomTypes = data.results;
+			$scope.nonAssignedroomTypes = data.results;
 			$scope.$emit('hideLoader');
 		};
 		var fetchRoomTypesFailureCallback = function(data){
@@ -20,6 +20,24 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv',  fun
 	$scope.saveStep2 = function(){
 		$scope.$emit("updateIndex","2");
 		
+	};
+
+	/**
+	 * To handle drop success event
+	 *
+	 */
+	$scope.dropSuccessHandler = function($event, index, array) {
+		array.splice(index, 1);
+	};
+	/**
+	 * To handle on drop event
+	 *
+	 */
+
+	$scope.onDrop = function($event, $data, array) {
+
+		
+		array.push($data);
 	};
 
 

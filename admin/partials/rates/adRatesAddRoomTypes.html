@@ -14,18 +14,14 @@
 					<div class="entry has-sortable">
 						<label class="center_align"><em class="rate_roomtype_text assigned_room_text">Assigned Room Types</em></label>
 
-						<ul ui-on-Drop="onDrop($event,$data,assignedRoomTypes)" data-placeholder="Drop a role here to assign it to the user" data-type="target" id="assigned-roles">
-
+						<ul class="boxes sortable empty ui-sortable short-list" ui-on-Drop="onDrop($event,$data,assignedRoomTypes)">
 							<li  ng-repeat="roomtype in assignedRoomTypes"
-
 							ui-draggable="true" drag="roomtype"
 							on-drop-success="dropSuccessHandler($event,$index,assignedRoomTypes)"									><span class="icons icon-handle"></span>
 							<span class="icons icon-handle"></span>
-
+							
+							{{roomtype.name}}
 						</li> 
-
-
-
 					</ul>
 
 				</div>
@@ -36,25 +32,21 @@
 				<div class="entry has-sortable">
 					<label class="center_align"><em class="rate_roomtype_text">Not Assigned Room Types</em></label>
 
-					<ul class="boxes sortable ui-sortable short-list" ui-on-Drop="onDrop($event,$data,roomTypes)" >
+					<ul class="boxes sortable ui-sortable short-list" ui-on-Drop="onDrop($event,$data,nonAssignedroomTypes)" >
 
-						<li ng-repeat="roomtype in roomTypes" ui-draggable="true" drag="roomtype"
-							on-drop-success="dropSuccessHandler($event,$index,roomTypes)"><span class="icons icon-handle"
-								></span>
-							<span class="icons icon-handle"></span>
-							{{roomtype.name}}
-						</li>
-					</ul>
-				</div>
-
-			</fieldset>
-			
-
-
-
-			<div class="actions float">
-				<button type="button" id="cancel" class="button blank add-data-inline">Cancel</button>
-				<button type="button" id="send-email"  class="button grey" ng-click="saveStep2()" >Step 3 - Set date range</button>
+						<li ng-repeat="roomtype in nonAssignedroomTypes" ui-draggable="true" drag="roomtype"
+						on-drop-success="dropSuccessHandler($event,$index,nonAssignedroomTypes)"><span class="icons icon-handle"
+						></span>
+						<span class="icons icon-handle"></span>
+						{{roomtype.name}}
+					</li>
+				</ul>
 			</div>
-		</form>
-	</div>
+
+		</fieldset>
+		<div class="actions float">
+			<button type="button" id="cancel" class="button blank add-data-inline">Cancel</button>
+			<button type="button" id="send-email"  class="button grey" ng-click="saveStep2()" >Step 3 - Set date range</button>
+		</div>
+	</form>
+</div>
