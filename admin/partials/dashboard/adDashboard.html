@@ -9,9 +9,9 @@
       </header>
       <ul class="dashboard-items float" ui-on-Drop="onDrop()" >
 
-         <li ng-repeat="submenu in selectedMenu.components" ui-draggable="true" on-drop-success="dropSuccessHandler()"drag="submenu">
-            <a data-type="load-listing" class="icon-admin-menu {{submenu.icon_class}}" ui-sref="{{submenu.state}}">{{submenu.name}}</a>
-            <a class="text" data-type="load-listing" href="{{submenu.action_path}}" ui-sref={{submenu.state}}>{{submenu.name}}</a>
+         <li ng-repeat="submenu in selectedMenu.components" ui-draggable="{{bookMarksCount < 9}}" data-drag="{{bookMarksCount < 9}}" on-drop-success="dropSuccessHandler($event, $index, submenu)" drag="submenu">
+            <a data-type="load-listing" class="icon-admin-menu {{submenu.icon_class}}" ng-class="{'moved': submenu.is_bookmarked == true}" ui-sref="{{submenu.state}}">{{submenu.name}}</a>
+            <a class="text" data-type="load-listing" href="{{submenu.action_path}}" ui-sref={{submenu.state}}>{{submenu.name}}--{{bookMarksCount}}</a>
          </li>
 
       </ul>      

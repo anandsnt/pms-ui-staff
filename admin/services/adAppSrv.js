@@ -31,6 +31,21 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADB
 		return deferred.promise;
 		
 	};
+	
+	this.bookMarkItem = function(data){
+		var deferred = $q.defer();
+		var url = '/admin/user_admin_bookmark';	
+		
+		var fetchSuccess = function(data){
+			deferred.resolve(data);
+		};
+		var fetchFailed = function(data){
+			deferred.reject(data);
+		};
+		
+		ADBaseWebSrv.postJSON(url, data).then(fetchSuccess, fetchFailed);
+		return deferred.promise;
+	};
 
 
 }]);

@@ -11,6 +11,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 
 	$scope.errorMessage = '';
 	$scope.bookMarks = [];
+	$scope.bookMarksCount = '';
 
 	if($rootScope.adminRole == "hotel-admin" ){
 
@@ -25,6 +26,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 		$scope.data = data;
 		$scope.selectedMenu = $scope.data.menus[0];		
 		$scope.bookMarks = $scope.data.bookmarks;
+		$scope.bookMarksCount = $scope.data.bookmark_count;
 	};
 	
 	$scope.$on("changedSelectedMenu", function(event, menu){
@@ -79,19 +81,19 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 			console.log("error controller");
 		});	
     };
-$scope.dropSuccessHandler = function(){
-   	alert("jphme");
-  };
-   // $scope.onDrop = function(a,b,c){
-//    	
-   	// console.log(a+"-----"+b+"-----"+c)
-    // $scop.bookMarks.push(c);
-    // console.log($scope.bookMarks);
-   // };
+   
+	 $scope.dropSuccessHandler = function($event, index, array){
+	   	 var successCallbackOfBookMark = function(){
+	   	 	$scope.$emit('hideLoader');
+	    	array.is_bookmarked = true;
+	    	$scope.bookMarksCount = $scope.data.bookmark_count + 1;
+	    };
+   		var data = {id: array.id};
+   		$scope.invokeApi(ADAppSrv.bookMarkItem, data, successCallbackOfBookMark);
+  	};
+
    	$scope.onDrop = function($event, $data, array) {
-		
 		array.push($data);
-		console.log($scope.bookMarks);
 	};
 
    
