@@ -7,10 +7,10 @@
       <header class="content-title float">
          <h2>{{selectedMenu.menu_name}} setup</h2>
       </header>
-      <ul class="dashboard-items float" ui-on-Drop="onDrop()" >
+      <ul class="dashboard-items float"  >
 
-         <li ng-repeat="submenu in selectedMenu.components" ui-draggable="{{bookMarksCount < 9}}" data-drag="{{bookMarksCount < 9}}" on-drop-success="dropSuccessHandler($event, $index, submenu)" drag="submenu">
-            <a data-type="load-listing" class="icon-admin-menu {{submenu.icon_class}}" ng-class="{'moved': submenu.is_bookmarked == true}" ui-sref="{{submenu.state}}">{{submenu.name}}</a>
+         <li ng-repeat="submenu in selectedMenu.components" >
+            <a data-type="load-listing" ui-draggable="{{bookMarksCount < 8}}" on-drop-success="dropSuccessHandler($event, $index, submenu)" drag="submenu" class="icon-admin-menu {{submenu.icon_class}}" ng-class="{'moved': submenu.is_bookmarked == true}" ui-sref="{{submenu.state}}">{{submenu.name}}</a>
             <a class="text" data-type="load-listing" href="{{submenu.action_path}}" ui-sref={{submenu.state}}>{{submenu.name}}--{{bookMarksCount}}</a>
          </li>
 

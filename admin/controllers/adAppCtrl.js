@@ -82,6 +82,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 		});	
     };
    
+
 	 $scope.dropSuccessHandler = function($event, index, array){
 	   	 var successCallbackOfBookMark = function(){
 	   	 	$scope.$emit('hideLoader');
@@ -93,7 +94,12 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
   	};
 
    	$scope.onDrop = function($event, $data, array) {
-		array.push($data);
+   		if($scope.bookMarksCount <=8){
+   			array.push($data);
+   		} else {
+   			console.log("nnnnnnn");
+   		}
+		
 	};
 
    
