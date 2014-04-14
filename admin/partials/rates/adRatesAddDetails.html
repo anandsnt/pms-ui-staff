@@ -32,7 +32,7 @@
 						<div class="entry">
 							<label> Based On </label>
 							<div class="select">
-								<select class="placeholder" ng-options="basedOnrateType.rate_type for basedOnrateType in basedOnRateList" ng-model="basedOnRateTypeSelected">
+								<select class="placeholder" ng-options="basedOnrateType.name for basedOnrateType in basedOn" ng-model="basedOnRateTypeSelected">
 								<option style="display:none" value="">select rate</option>	
 								</select>
 							</div>
@@ -63,7 +63,8 @@
 							<label ng-class="{'basedon_option_hidden': basedOnRateTypeSelected.length === 0}"><strong>*</strong> </label>
 							<div class="select select-col col1-3">
 								<select class="styled">
-									<option value="$" >$</option>
+									<option value="amount" >$</option>
+									<option value="percentage">%</option>
 								</select>
 							</div>
 						</div>
