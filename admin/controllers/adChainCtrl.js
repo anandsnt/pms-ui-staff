@@ -86,7 +86,7 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  			$scope.errorMessage = errorMessage;
  			$scope.editData.lov = oldLov;
  		}
- 		$scope.invokeApi(adChainsSrv.post,$scope.editData, addChainSuccessCallback, addChainFailureCallback);
+ 		$scope.invokeApi(adChainsSrv.post, $scope.editData, addChainSuccessCallback, addChainFailureCallback);
 
  	};
    /*

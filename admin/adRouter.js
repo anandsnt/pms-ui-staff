@@ -51,7 +51,7 @@ admin.config([
 		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserDetails.html',
 			controller: 'ADUserDetailsCtrl',
-			url : '/user/:page/:id'
+			url : '/user/:page/:id/:hotelId'
 		});
 		
 		$stateProvider.state('admin.linkexisting', {

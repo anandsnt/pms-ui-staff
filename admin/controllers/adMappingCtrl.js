@@ -32,7 +32,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappin
 		$scope.errorMessage ="";
 		$scope.currentClickedElement = id;
 		$scope.editId = id;
-		var data = { 'editId' : id }
+		var data = { 'editId' : id };
 
 		var editMappingSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
