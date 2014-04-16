@@ -8,6 +8,9 @@ $scope.init = function(){
 	$scope.currentStepIndexList = ["Details"];
 	$scope.currentRateStepIndex = 0;
 
+	// $scope.currentStepIndexList.push("Type");
+	//  $scope.currentRateStepIndex = 1;
+
 };
  /*
 	* init function
