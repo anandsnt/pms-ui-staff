@@ -8,13 +8,13 @@
 		
 		<fieldset class="holder left">
 			<div class="form-title">
-				<h3><span>Hotel</span> name and location </h3>
+				<h3><span>Hotel</span> Name and Location </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
 		
 	    	<ad-textbox value="data.hotel_name" name = "hotel-name" id = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes" ></ad-textbox>
 			
-			<ad-textbox value="data.hotel_code" name = "hotel-code" id = "hotel-code" label = "Hotel Code" placeholder = "Enter hotel name" required = "yes" readonly="readonly"></ad-textbox>
+			<ad-textbox value="data.hotel_code" name = "hotel-code" id = "hotel-code" label = "Hotel Code" placeholder = "Enter hotel name" required = "yes" readonly="{{readOnly}}"></ad-textbox>
 
 			<ad-textbox label="Street" value="data.street" required="yes" placeholder="Enter hotel street" name="hotel-street" id="hotel-street"></ad-textbox>
 
@@ -48,12 +48,12 @@
 
 			<div class="entry">
 				<label for="hotel-longitude"> Longitude </label>
-				<input type="text" ng-model="data.longitude" value="{{data.longitude}}" required="" readonly="readonly" placeholder="Enter hotel longitude" name="hotel-longitude" id="hotel-longitude">
+				<input type="text" ng-model="data.longitude" value="{{data.longitude}}" required="" readonly="readonly" placeholder="Enter hotel longitude" name="hotel-longitude">
 			</div>
 
 			<div class="entry">
 				<label for="hotel-latitude"> Latitude </label>
-				<input type="text" ng-model="data.latitude" value="{{data.latitude}}" required="" readonly="readonly" placeholder="Enter hotel latitude" name="hotel-latitude" id="hotel-latitude">
+				<input type="text" ng-model="data.latitude" value="{{data.latitude}}" required="" readonly="readonly" placeholder="Enter hotel latitude" name="hotel-latitude" >
 			</div>
 
 			<div class="entry full-width registration-for-rover" ng-hide="isAdminSnt">
@@ -75,13 +75,11 @@
 		
 		<fieldset class="holder right">
 			<div class="form-title">
-				<h3><span>Hotel</span> details </h3>
+				<h3><span>Hotel</span> Details </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
-			<div class="entry">
-				<label for="hotel-rooms"> Number of rooms </label>
-				<input type="text" ng-model="data.number_of_rooms" value="{{data.number_of_rooms}}" placeholder="Type number" name="hotel-rooms" id="hotel-rooms">
-			</div>
+			
+			<ad-textbox value="data.number_of_rooms" label = "Number of rooms" placeholder = "Type number" readonly="{{readOnly}}"></ad-textbox>
 
 			<div class="entry">
 				<label for="hotel-currency"> Hotel Currency <strong>*</strong> </label>
@@ -109,11 +107,14 @@
 						</select>
 					</div>
 					<div class="select select-col col1-3">
-						<select ng-model="data.check_in_primetime" name="hotel-checkin-primetime" id="hotel-checkin-primetime" class="styled">
-							<option value="AM" ng-selected="data.check_in_time.primetime == 'AM'">AM</option>
-							<option value="PM" ng-selected="data.check_in_time.primetime == 'PM'">PM</option>
+						<select ng-model="data.check_in_primetime" class="styled">
+							<!-- || data.check_in_time.primetime.length == '' || data.check_in_time.primetime.length == 0  || !isEdit -->
+							<option ng-selected="data.check_in_time.primetime == 'AM'" value="AM">AM</option>
+							<option ng-selected="data.check_in_time.primetime == 'PM'" value="PM">PM</option>
 						</select>
+						
 					</div>
+
 				</div>
 
 			</div>
@@ -133,9 +134,9 @@
 						</select>
 					</div>
 					<div class="select select-col col1-3">
-						<select ng-model="data.check_out_primetime" name="hotel-checkout-primetime" id="hotel-checkout-primetime" class="styled">
-							<option value="AM" ng-selected="data.check_out_time.primetime == 'AM'">AM</option>
-							<option value="PM" ng-selected="data.check_out_time.primetime == 'PM'">PM</option>
+						<select ng-model="data.check_out_primetime" class="styled">
+							<option ng-selected="data.check_out_time.primetime == 'AM'" value="AM">AM</option>
+							<option ng-selected="data.check_out_time.primetime == 'PM'" value="PM">PM</option>
 						</select>
 					</div>
 				</div>
@@ -194,7 +195,7 @@
 			</div>
 
 			<div class="entry">
-				<label for="hotel_from_address"> EMAIL DOMAIN AND FROM ADDRESS FOR GUESTS </label>
+				<label for="hotel_from_address"> EMAIL DOMAIN AND FROM ADDRESS FOR GUESTS <strong>*</strong></label>
 				<input type="text" ng-model="data.hotel_from_address" value="{{data.hotel_from_address}}" placeholder="Enter Email domain and from address for GUEST" name="hotel_from_address" id="hotel_from_address">
 			</div>
 
@@ -208,6 +209,13 @@
 					</button>
 				</div>
 				<span class="file-preview"> <img src="{{data.hotel_logo}}" alt="" height="112" width="auto"> </span>
+			</div>
+			<div class="entry full-width radio-check">
+				<label ng-model="data.checkin_to_inspected_rooms_only" class="checkbox" ng-class="{ checked : data.checkin_to_inspected_rooms_only == 'true' }">
+					<span class="icon-form icon-checkbox" ng-class="{ checked : data.checkin_to_inspected_rooms_only == 'true' }"></span>
+					Check in to inspected rooms only
+					<input type="checkbox" ng-click="data.checkin_to_inspected_rooms_only =(data.checkin_to_inspected_rooms_only  === 'true')? 'false':'true'">
+				</label>
 			</div>
 			
 		</fieldset>
@@ -259,8 +267,8 @@
 					 MLI Token Certificate
 				</label>
 				<div class="file-upload">
-					<span class="input">Choose file ...</span>
-					<input type="file" ng-model="certificate" accept="image/*" app-filereader />
+					<span class="input">{{fileName}}</span>
+					<input type="file" ng-model="certificate" accept="*" app-filereader />
 					<button type="button" class="button brand-colors">
 						Attach Certificate
 					</button>

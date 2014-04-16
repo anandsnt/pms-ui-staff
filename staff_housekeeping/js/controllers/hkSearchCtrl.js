@@ -1,41 +1,85 @@
 
 hkRover.controller('HKSearchCtrl',
 	[
-		'$scope', 'HKSearchSrv', '$state', '$timeout',
-	function($scope, HKSearchSrv, $state, $timeout){
+		'$scope',
+		'HKSearchSrv',
+		'$state',
+		'$timeout',
+		'fetchedRoomList',
+	function($scope, HKSearchSrv, $state, $timeout, fetchedRoomList){
 
 	$scope.query = '';
 
 	// make sure any previous open filter is not showing
 	$scope.$emit('dismissFilterScreen');
 
-	//Fetch the roomlist
-	$scope.$emit('showLoader');
-	HKSearchSrv.fetch().then(function(data) {
-		$scope.$emit('hideLoader');
-        $scope.data = data;
+	var afterFetch = function(data) {
 
-        // scroll to the previous room list scroll position
-        var toPos = localStorage.getItem( 'roomListScrollTopPos' );
-        $scope.refreshScroll( toPos );
+		// making unique copies of array
+		// slicing same array not good.
+		// say thanks to underscore.js
+		var smallPart = _.compact( data.rooms );
+		var restPart  = _.compact( data.rooms );
 
-	}, function(){
-		console.log("fetch failed");
-		$scope.$emit('hideLoader');
-	});	
+		// smaller part consisit of enogh rooms
+		// that will fill in the screen
+		smallPart = smallPart.slice( 0, 20 );
+		restPart  = restPart.slice( 20 );
+
+		// first load the small part
+        $scope.rooms = smallPart;
+
+        // load the rest after a small delay
+        $timeout(function() {
+
+        	// push the rest of the rooms into $scope.rooms
+        	// remember slicing is only happening on the Ctrl and not on Srv
+        	$scope.rooms.push.apply( $scope.rooms, restPart );
+
+        	// apply the filter
+        	$scope.calculateFilters();
+
+        	// scroll to the previous room list scroll position
+        	var toPos = localStorage.getItem( 'roomListScrollTopPos' );
+        	$scope.refreshScroll( toPos );
+
+        	// finally hide the loaded
+        	// in almost every case this will not block UX
+        	$scope.$emit( 'hideLoader' );
+        }, 100);
+	};
+
+	//Fetch the roomlist if necessary
+	if ( HKSearchSrv.isListEmpty() ) {
+		$scope.$emit('showLoader');
+		HKSearchSrv.fetch().then(function(data) {
+			afterFetch( data );
+		}, function() {
+			console.log("fetch failed");
+			$scope.$emit('hideLoader');
+		});	
+	} else {
+		$timeout(function() {
+
+			// show loader as we will be slicing the rooms
+			// in smaller and bigger parts and show smaller first
+			// and rest after a delay
+			$scope.$emit('showLoader');
+			afterFetch( fetchedRoomList );
+		}, 1);
+	}
 
 	$scope.currentFilters = HKSearchSrv.currentFilters;
 
 	/** The filters should be re initialized in we are navigating from dashborad to search
 	*   In back navigation (From room details to search), we would retain the filters.
 	*/
-	$scope.$on('$locationChangeStart', function(event, next, current) { 
+	$scope.$on('$locationChangeStart', function(event, next, current) {
 		var currentState = current.split('/')[next.split('/').length-1]; 
 		if(currentState == ROUTES.dashboard){
 			$scope.currentFilters = HKSearchSrv.initFilters();	
 		}
 	});
-
 
 
 	var roomsEl = document.getElementById( 'rooms' );
@@ -54,6 +98,10 @@ hkRover.controller('HKSearchCtrl',
 		});
 
 	$scope.refreshScroll = function(toPos) {
+		if ( roomsEl.scrollTop === toPos ) {
+			return;
+		};
+
 		if ( isNaN(parseInt(toPos)) ) {
 			var toPos = 0;
 		} else {
@@ -64,22 +112,6 @@ hkRover.controller('HKSearchCtrl',
 		$timeout(function() {
 			roomsEl.scrollTop = toPos;
 		}, 100);
-	};
-
-	//Retrun the room color classes
-	$scope.getRoomColorClasses = function(roomHkStatus, isRoomOccupied, isReady){
-
-		if((roomHkStatus == 'CLEAN' || roomHkStatus == 'INSPECTED') && isRoomOccupied == 'false') {
-			return "room-clean";
-		}
-		if((roomHkStatus == 'DIRTY' || roomHkStatus == 'PICKUP') && isRoomOccupied == 'false') {
-			return "room-dirty";
-		}
-		if(roomHkStatus == 'OO' || roomHkStatus == 'OS'){
-			return "room-out";
-		}
-		return "";
-
 	};
 
 	/**
@@ -112,112 +144,165 @@ hkRover.controller('HKSearchCtrl',
 	*  Emits a call to dismiss the filter screen
 	*/	
 	$scope.filterDoneButtonPressed = function(){
-		$scope.refreshScroll();
+		$scope.calculateFilters();
 
-		// since filter is applied after the user press 'DONE'
-		// the $digest loop only begins then. This freezes DOM,
-		// User may hit 'DONE' again
-		// TODO: better filter method needed
+		$scope.refreshScroll();
+		
 		if ($scope.filterOpen) {
 			$scope.$emit('dismissFilterScreen');
 		};
+
+		// save the current edited filter to HKSearchSrv
+		// so that they can exist even after HKSearchCtrl init
+		HKSearchSrv.currentFilters = $scope.currentFilters;
 	};
+
+	/**
+	*  A method which checks the filter option status and see if the room should be displayed
+	*/
+	$scope.calculateFilters = function() {
+
+		for (var i = 0, j = $scope.rooms.length; i < j; i++) {
+			var room = $scope.rooms[i];
+
+			//Filter by status in filter section, HK_STATUS
+			if($scope.isAnyFilterTrue(['dirty','pickup','clean','inspected','out_of_order','out_of_service'])){
+
+				if ( !$scope.currentFilters.dirty && (room.hk_status.value === "DIRTY") ) {
+					room.display_room = false;
+					continue;
+				}
+				if ( !$scope.currentFilters.pickup && (room.hk_status.value === "PICKUP") ) {
+					room.display_room = false;
+					continue;
+				}
+				if ( !$scope.currentFilters.clean && (room.hk_status.value === "CLEAN") ) {
+					room.display_room = false;
+					continue;
+				}
+				if ( !$scope.currentFilters.inspected && (room.hk_status.value === "INSPECTED") ) {
+					room.display_room = false;
+					continue;
+				}
+				if ( !$scope.currentFilters.out_of_order && (room.hk_status.value === "OO") ) {
+					room.display_room = false;
+					continue;
+				}
+				if ( !$scope.currentFilters.out_of_service && (room.hk_status.value === "OS") ) {
+					room.display_room = false;
+					continue;
+				}
+			}
+
+			//Filter by status in filter section, OCCUPANCY_STATUS
+			if ($scope.isAnyFilterTrue(["vacant","occupied"])){
+				if ( !$scope.currentFilters.vacant && !room.is_occupied ) {
+					room.display_room = false;
+					continue;
+				}
+
+				if ( !$scope.currentFilters.occupied && room.is_occupied ) {
+					room.display_room = false;
+					continue;
+				}
+			}
+
+			//Filter by status in filter section, ROOM_RESERVATION_STATUS
+			// For this status, pass the test, if any condition applies.
+			if ($scope.isAnyFilterTrue(['stayover', 'not_reserved', 'arrival', 'arrived', 'dueout', 'departed', 'dayuse'])){
+
+				if ( $scope.currentFilters.stayover && room.room_reservation_status.indexOf("Stayover") >= 0 ) {
+					room.display_room = true;
+					continue;
+				}
+
+				if ( $scope.currentFilters.not_reserved && room.room_reservation_status.indexOf("Not Reserved") >= 0 ) {
+					room.display_room = true;
+					continue;
+				}
+				if ( $scope.currentFilters.arrival && room.room_reservation_status.indexOf("Arrival") >= 0 ) {
+					room.display_room = true;
+					continue;
+				}
+				if ( $scope.currentFilters.arrived && room.room_reservation_status.indexOf("Arrived") >= 0 ) {
+					room.display_room = true;
+					continue;
+				}
+
+				if ( $scope.currentFilters.dueout && room.room_reservation_status.indexOf("Due out") >= 0 ) {
+					room.display_room = true;
+					continue;
+				}
+
+				if ( $scope.currentFilters.departed && room.room_reservation_status.indexOf("Departed") >= 0 ) {
+					room.display_room = true;
+					continue;
+				}
+
+				if ( $scope.currentFilters.dayuse && room.room_reservation_status.indexOf("Day use") >= 0 ) {
+					room.display_room = true;
+					continue;
+				}
+
+				room.display_room = false;
+				continue;
+
+			}
+
+			room.display_room = true;
+
+		}
+	};
+
 
 
 	/**
 	*  Filter Function for filtering our the room list
-	*  @param {dict} room to be filtered  
-	*  @return {Boolean} true if room matches the filter criteria
 	*/
-	$scope.ApplyFilters = function(room){
-		//If search term is available ignore the filter options
-		if($scope.query !== ""){
-			//Filter by search term
-			if((room.room_no).indexOf($scope.query) >= 0) return true;
-			return false;
-		}
+	$scope.filterByQuery = function(){
 
-		// while the user is choosing the filter
-		// do NOT process anymore yet, cost too much $digest cycles
-		if ($scope.filterOpen) {
-			return false;
-		};
+		// since no filer we will have to
+		// loop through all rooms
+		for (var i = 0, j = $scope.rooms.length; i < j; i++) {
+			var room = $scope.rooms[i]
+			var roomNo = room.room_no.toUpperCase();
 
-		//Filter by status in filter section, HK_STATUS
-		if($scope.isAnyFilterTrue(['dirty','pickup','clean','inspected','out_of_order','out_of_service'])){
+			// if the query is empty
+			// apply any filter options
+			// and return
+			if ( !$scope.query ) {
+				$scope.calculateFilters();
+				break;
+				return;
+			};
 
-			if (($scope.currentFilters.dirty === false) && (room.hk_status.value === "DIRTY")) {
-				return false;
-			}
-			if (($scope.currentFilters.pickup === false) && (room.hk_status.value === "PICKUP")) {
-				return false;
-			}
-			if (($scope.currentFilters.clean === false) && (room.hk_status.value === "CLEAN")) {
-				return false;
-			}
-			if (($scope.currentFilters.inspected === false) && (room.hk_status.value === "INSPECTED")) {
-				return false;
-			}
-			if (($scope.currentFilters.out_of_order === false) && (room.hk_status.value === "OO")) {
-				return false;
-			}
-			if (($scope.currentFilters.out_of_service === false) && (room.hk_status.value === "OS")) {
-				return false;
+			// let remove any changed applied by filter
+			// show all rooms
+			room.display_room = true;
+
+			// now match the room no and
+			// and show hide as required
+			// must match first occurance of the search query
+			if ( (roomNo).indexOf($scope.query.toUpperCase()) === 0 ) {
+				room.display_room = true;
+			} else {
+				room.display_room = false;
 			}
 		}
 
-		//Filter by status in filter section, OCCUPANCY_STATUS
-		if ($scope.isAnyFilterTrue(["vacant","occupied"])){
-			if (($scope.currentFilters.vacant === false) && (room.is_occupied === "false")) {
-				return false;
-			}
+		// refresh scroll when all ok
+		$scope.refreshScroll();
+	}
 
-			if (($scope.currentFilters.occupied === false) && (room.is_occupied === "true")) {
-				return false;
-			}
-		}
+	/**
+	*  A method to clear the search term
+	*/
+	$scope.clearSearch = function(){
+		$scope.query = '';
 
-		//Filter by status in filter section, ROOM_RESERVATION_STATUS
-		// For this status, pass the test, if any condition applies.
-		if ($scope.isAnyFilterTrue(['stayover', 'not_reserved', 'arrival', 'arrived', 'dueout', 'departed', 'dayuse'])){
-
-			if (($scope.currentFilters.stayover === true) && 
-				(room.room_reservation_status.indexOf("Stayover") >= 0)) {
-				return true;
-			}
-
-			if (($scope.currentFilters.not_reserved === true) && 
-				(room.room_reservation_status.indexOf("Not Reserved") >= 0)) {
-				return true;
-			}
-			if (($scope.currentFilters.arrival === true) && 
-				(room.room_reservation_status.indexOf("Arrival") >= 0)) {
-				return true;
-			}
-			if (($scope.currentFilters.arrived === true) && 
-				(room.room_reservation_status.indexOf("Arrived") >= 0)) {
-				return true;
-			}
-
-			if (($scope.currentFilters.dueout === true) && 
-				(room.room_reservation_status.indexOf("Due out") >= 0)) {
-				return true;
-			}
-
-			if (($scope.currentFilters.departed === true) && 
-				(room.room_reservation_status.indexOf("Departed") >= 0)) {
-				return true;
-			}
-
-			if (($scope.currentFilters.dayuse === true) && 
-				(room.room_reservation_status.indexOf("Day use") >= 0)) {
-				return true;
-			}
-
-			return false;
-		}
-		return true;
-		
+		// call the filter again maually
+		// can't help it
+		$scope.filterByQuery();
 	}
 	
 	/**
@@ -265,13 +350,4 @@ hkRover.controller('HKSearchCtrl',
 		$scope.refreshScroll();
 	}
 
-	/**
-	*  A method to clear the search term
-	*/
-	$scope.clearSearch = function(){
-		$scope.query = '';
-		$scope.refreshScroll();
-	}
-
 }]);
-

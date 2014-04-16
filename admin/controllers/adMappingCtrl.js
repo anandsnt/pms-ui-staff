@@ -1,7 +1,7 @@
 admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappingSrv', function($scope, $state, $stateParams, ADMappingSrv) {
 	
 	BaseCtrl.call(this, $scope);
-	$scope.hotelId = $stateParams.hotelId
+	$scope.hotelId = $stateParams.hotelId;
 	$scope.editData   = {};
 	$scope.editData.sntValues = [];
 	$scope.currentClickedElement = -1;
@@ -32,14 +32,17 @@ admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappin
 		$scope.errorMessage ="";
 		$scope.currentClickedElement = id;
 		$scope.editId = id;
-		var data = { 'editId' : id }
+		var data = { 'editId' : id };
 
 		var editMappingSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.editData = data;
+			$scope.editData.mapping_value = data.selected_mapping_type;
+			$scope.editData.snt_value = data.selected_snt_value;
+			$scope.editData.external_value = data.external_value;
+			$scope.editData.value = data.value;
 			$scope.isEdit = true;
 			$scope.isAdd = false;
-			
 			// Initial loading data to SNT VALUES dropdown.
 			angular.forEach($scope.editData.mapping_type,function(item, index) {
 	       		if (item.name == $scope.editData.selected_mapping_type) {
@@ -84,7 +87,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappin
 		var successSaveCallback = function(data){
 			
 			$scope.$emit('hideLoader');
-			
+			if($scope.isAdd) $scope.data.total_count ++ ;
 			// To update scope data with added item
 			var newData = {
                     "value": data.value,
@@ -98,6 +101,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappin
 			 	}
 	       	});
 			$scope.closeInlineTab();
+			$scope.invokeApi(ADMappingSrv.fetchMappingList, {'id':$scope.hotelId}, fetchSuccess);
 		};
 		
 		var unwantedKeys = ["mapping_type","sntValues","selected_mapping_type","selected_snt_value" ];
@@ -116,6 +120,7 @@ admin.controller('ADMappingCtrl', ['$scope', '$state', '$stateParams', 'ADMappin
 		
 		var successDeletionCallback = function(){
 			$scope.$emit('hideLoader');
+			$scope.data.total_count -- ;
 			// delete data from scope
 			angular.forEach($scope.data.mapping,function(item1, index1) {
 				angular.forEach(item1.mapping_values,function(item2, index2) {

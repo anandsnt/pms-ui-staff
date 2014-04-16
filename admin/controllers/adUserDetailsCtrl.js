@@ -1,12 +1,24 @@
-admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUserSrv',  function($scope, $state, $stateParams, ADUserSrv){
+admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUserSrv', '$rootScope', function($scope, $state, $stateParams, ADUserSrv, $rootScope){
 	
 	BaseCtrl.call(this, $scope);
 	$scope.mod = "";
 	$scope.image = "";
 	$scope.$emit("changedSelectedMenu", 0);
+	$scope.hotelId = $stateParams.hotelId;
+	$scope.fileName = "Choose File....";
 	/** functions & variables related to drag & drop **/
 	$scope.selectedUnassignedRole = -1;
 	$scope.selectedAssignedRole = -1;
+   /**
+    * To check whether logged in user is sntadmin or hoteladmin
+    */	
+   // $scope.BackAction = $scope.hotelId;
+	if($rootScope.adminRole == "snt-admin"){
+		$scope.isAdminSnt = true;
+		 $scope.BackAction = "admin.users({id:"+$scope.hotelId+"})";
+	} else {
+		 $scope.BackAction = "admin.users";
+	}
    /*
     * Handle action when clicked on assigned role
     * @param {int} index of the clicked role
@@ -91,7 +103,7 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 		}
 		var successCallback = function(data){
 			$scope.$emit('hideLoader');
-			$state.go('admin.users', { id: $stateParams.id });
+			$state.go('admin.users', { id: $stateParams.hotelId });
 		};
 		if($scope.mod == "add"){
 			$scope.invokeApi(ADUserSrv.saveUserDetails, data , successCallback);
@@ -111,7 +123,11 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 			$scope.$emit('hideLoader');
 			$scope.data = data;
 			$scope.unAssignedRoles = $scope.data.roles;
-			$scope.image = data.user_photo;
+			if(data.user_photo == ""){
+				$scope.image = "/assets/preview_image.png";
+			} else {
+				$scope.image = data.user_photo;
+			}
 			$scope.data.confirm_email = $scope.data.email;
 			$scope.data.roles.forEach(function(entry, index) {
 	    		if ( $scope.data.user_roles.indexOf(entry.value ) > -1 ){
@@ -131,6 +147,7 @@ admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUser
 			$scope.data = data;
 			$scope.unAssignedRoles = $scope.data.roles;
 			$scope.assignedRoles = [];
+			$scope.image = "/assets/preview_image.png";
 		};	
 	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '' , successCallbackRender);	
 	};

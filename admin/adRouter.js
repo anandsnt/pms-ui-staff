@@ -48,7 +48,7 @@ admin.config([
 		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserDetails.html',
 			controller: 'ADUserDetailsCtrl',
-			url : '/user/:page/:id'
+			url : '/user/:page/:id/:hotelId'
 		});
 		
 		$stateProvider.state('admin.linkexisting', {
@@ -111,6 +111,7 @@ admin.config([
 			url : '/roomtypes'
 		});
 
+
 		$stateProvider.state('admin.roomKeyDelivery', {
 			templateUrl: '/assets/partials/roomKeyDelivery/roomKeyDelivery.html',
 			controller: 'ADRoomKeyDeliveryCtrl',
@@ -162,11 +163,18 @@ admin.config([
 			url : '/paymentMethods'
 		});
 
+		$stateProvider.state('admin.chargeCodes', {
+			templateUrl: '/assets/partials/chargeCodes/adChargeCodes.html',
+			controller: 'ADChargeCodesCtrl',
+			url : '/chargeCodes'
+		});
+		
 		$stateProvider.state('admin.externalPmsConnectivity', {
 			templateUrl: '/assets/partials/externalPms/adExternalPmsConnectivity.html',
 			controller: 'ADExternalPmsConnectivityCtrl',
 			url : '/externalPmsConnectivity'
 		});
+
 
 		$stateProvider.state('admin.hotelannouncementsettings', {
 			templateUrl: '/assets/partials/hotelAnnouncementSettings/adHotelAnnounceSettings.html',
@@ -185,5 +193,28 @@ admin.config([
 			controller: 'ADGuestReviewSetupCtrl',
 			url : '/guestreviewsetup'
 		});	
+
+
+		$stateProvider.state('admin.checkin', {
+			templateUrl: '/assets/partials/checkin/adCheckin.html',
+			controller: 'ADCheckinCtrl',
+			url : '/checkin'
+		});
+
+		$stateProvider.state('admin.checkout', {
+			templateUrl: '/assets/partials/checkout/adCheckout.html',
+			controller: 'ADCheckoutCtrl',
+			url : '/checkout'
+		});
+
+
+		$stateProvider.state('admin.checkinCheckoutEmail', {
+			templateUrl: '/assets/partials/emailList/adCheckinCheckoutemail.html',
+			controller: 'ADCheckinCheckoutCtrl',
+			url : '/checkinCheckoutEmail/:from'
+		});
+
+
+
 	}
 ]);

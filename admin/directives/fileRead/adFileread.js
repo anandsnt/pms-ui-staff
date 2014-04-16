@@ -22,7 +22,8 @@ admin.directive('appFilereader', function(
                 });
 
                 function readFile(file) {
-                	console.log("upto here");
+                	console.log("Read file");
+                	
                     var deferred = $q.defer();
 
                     var reader = new FileReader();
@@ -33,7 +34,8 @@ admin.directive('appFilereader', function(
                         deferred.reject(e);
                     };
                     reader.readAsDataURL(file);
-
+                    scope.fileName = file.name;
+								
                     return deferred.promise;
                 }
 

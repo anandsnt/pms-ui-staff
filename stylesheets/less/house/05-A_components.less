@@ -6,84 +6,126 @@
 ==========================================================*/
 /* 4. LAYOUT
 ==========================================================*/
+
+/* Screen positioning       ==============================*/
+    .content:not(#login) {
+        top: 60px;
+        .calc-height(100, 60); /* %, px */
+
+        /** Rooms screen ***/
+        &#rooms {
+            top: 120px;
+            .calc-height(100, 120); /* %, px */
+        }
+
+        &#filter-options {
+            top: 60px;
+            .calc-height(100, 60); /* %, px */
+        }
+
+        &#guest-info {
+            top: 100px;
+            .calc-height(100, 100); /* %, px */
+        }
+    }
+
+/* Nav Bar                  ==============================*/
+    .nav-bar{ 
+        height: 60px;
+
+        .nav-toggle,
+        .back-button,
+        .clear-selection,
+        .toggle, { top: 10px; }
+
+        h1 {
+            .h2;
+            line-height: 60px;
+        }
+
+        .clear-selection {
+            left: 20px; 
+            font-size: 16px; 
+        }
+
+        .toggle {
+            &.only-icon {
+                right: 10px;
+            }
+
+            &.complete { 
+                right: 20px;
+                font-size: 16px; 
+            }
+        }
+    }
+
 /* 5. COMPONENTS
 ==========================================================*/
+
+/* Search bar               ==============================*/
+    .search-form {
+        height: 60px;
+
+        .entry {
+            height: 40px;
+
+            .icon-search {
+                top: 12.5px;
+                right: 12.5px;
+            }
+
+            #query {
+                line-height: 40px;
+                min-height: 40px;
+                .placeholder-text(16px, 40px, 400, @grey3);
+            }
+
+            #clear-query {
+                top: 12.5px;
+                right: 12.5px;
+            }
+        }
+    }   
 
 /* Dashboard page           ==============================*/
     #dashboard {
         .wrapper {
-            padding: 20px;
-            right: 0;
+            padding: 40px 40px 20px 40px;
 
             h2 {
-                margin: 10px 0 20px;
-                font-size: 24px;
-                line-height: 24px;
-                text-align: center;
-                font-weight: 300;
+                margin: 20px 0;
+                font-size: 30px;
+                line-height: 30px;
             }
 
             #guests-today {
                 margin-bottom: 30px;
+                display: table;
+                width: 100%;
                 .float;
 
                 li {
                     text-align: center;
-                    margin: 0 10px 0 0;
-                    .calc-width(33.3333, 6.6666);
-                    .pull-left;
-
+                    display: table-cell;
+                    table-layout: fixed;
+                    padding: 0 5px;
                     .button {
-                        padding: 15px 10px 10px 10px;
-                        .show;
+                        padding: 20px;
 
                         .icons { 
-                            margin: 0 auto 5px auto;
-                            .square(30px);
-                            .hide-text; 
+                            margin: 0;
+                            background: transparent;
+                            text-indent: 0;
+                            width: 100%;
                         }
 
                         strong {
-                            font-size: 36px;
+                            font-size: 72px;
+                            line-height: 1.1em;
+                            overflow: hidden;
+                            .show;
                         }
-                    }
-
-                    &:last-child { margin-right: 0; }
-                }
-            }
-
-            #stats-today {
-                li {
-                    font-size: 14px;
-                    line-height: 36px;
-                    padding-bottom: 5px;
-                    margin-bottom: 5px;
-                    color: @grey3;
-                    text-transform: uppercase;
-                    display: block;
-                    border-bottom: 1px solid rgba(0,0,0,.1);
-                    em {
-                        font-style: normal;
-                        white-space: nowrap;
-                        .pull-left;
-                    }
-                    span {
-                        font-size: 36px;
-                        line-height: 1em;
-                        color: @textColor;
-                        .show;
-                        margin-left: 60%;
-                        text-align: right;
-
-                        &.green { color: @green; }
-                        &.red { color: @red; }
-                        &.grey { color: @grey3; }
-                    }
-
-                    &:last-child {
-                        padding-bottom: 0;
-                        margin-bottom: 0;
-                        border-bottom: 0;
                     }
                 }
             }
@@ -94,19 +136,15 @@
     
     /* Rooms listing ***/
     #rooms {
-        z-index: -1;
-
-        li {
-            margin: 0;
-            
+        li {           
             a {
-                color: @textColor;
-                padding: 0 50px 0 10px;
+                padding: 0 10px 0 10px;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 border-bottom: 1px solid rgba(0,0,0,.1);
                 background-color: @white;
+                position: relative;
                 .show;
                 .float;
 
@@ -120,135 +158,89 @@
                     .pull-left;
                 }
 
-                .room-status,
-                .fo-status {
-                    display: inline-block;
-                    color: @grey3;
-                    font-size: 13px;
-                    font-weight: 400; 
-                    font-style: italic;
-                    line-height: 50px;
+                .room-stats-wrap {
+                    display: block;
                     overflow: hidden;
-                    .pull-left;
+                    position: absolute;
+                    top: 0;
+                    left: 90px;
+                    right: 50px;
                 }
 
-                .room-status { .calc-width(45, 35); }
-                .fo-status {  .calc-width(55, 35); }
+                .room-status,
+                .fo-status {
+                    font-size: 16px;
+                    font-style: normal;
+                    text-transform: uppercase;
+                    font-weight: 600;
+                }
 
-                &.with-image {
-                    position: relative;
+                .room-status {
+                     width: 50%;
+                 }
 
-                    .guest-image {
-                        position: absolute;
-                        top: 5px;
-                        right: 10px;
-                        background: @grey1;
-                        #border-radius > .rounded(40px);
-                        .square(40px);
+                 @media (max-width: 319px) {
+                    .room-stats-wrap {
+                        clear: both;
+                        position: static;
+                        padding: 3px 0 10px;
+                    }
 
-                        .vip {
-                            position: absolute;
-                            bottom: 0;
-                            right: 0;
-                            font-size: 9px;
-                            line-height: 16px;
-                            .square(16px);
-                            #border-radius > .rounded(16px);       
-                        }
+                    .room-status,
+                    .fo-status {
+                        width: 49%;
+                        line-height: 1;
+                    }
 
-                        img {
-                            width: 100%;
-                            height: auto;
-                            #border-radius > .rounded(40px);
-                        }
+                    .fo-status {
+                        text-align: right;
+                        .pull-right;
                     }
                 }
 
-                &.room-clean { 
-                    .room-number { color: @green; }
-                }
+                .guest-image {
+                    position: relative;
+                    top: 5px;
+                    .pull-right;
+                    #border-radius > .rounded(40px);
+                    .square(40px);
 
-                &.room-dirty { 
-                    .room-number { color: @red; }
-                }
+                    .vip {
+                        position: absolute;
+                        bottom: 0;
+                        right: 0;
+                        font-size: 9px;
+                        line-height: 16px;
+                        .square(16px);
+                        #border-radius > .rounded(16px);       
+                    }
 
-                &.room-out {
-                    .room-number { color: @grey3; }
-                }
-
-                &:hover,
-                &:active {
-                    background-color: rgba(0,0,0,.02);
+                    img {
+                        width: 100%;
+                        height: auto;
+                        #border-radius > .rounded(40px);
+                    }
                 }
             }
-        }
-
-        .iScrollVerticalScrollbar { 
-            top: 5px;
-            bottom: 5px;
         }
     }
 
     /* Rooms filters ***/
     #filter-rooms {
-        z-index: 199;
-        background: @white;
-        overflow: hidden;
-        display: none;
-
-        .nav-bar {
-            h2 {
-                margin: 30px 0 10px;
-                font-size: 24px;
-                line-height: 24px;
-                text-align: center;
-                font-weight: 300;
-            }
-        }
-
         .wrapper {
-            min-height: 100%;
-            padding: 20px 10px;
-            right: 0;
-
+            padding: 20px;
+        
             .holder {
-                margin-bottom: 20px;
+                margin-bottom: 30px;
 
-                .title {
-                    font-weight: 600;
-                    text-transform: uppercase;
-                    margin-bottom: 10px;
-                }
+                .title { margin-bottom: 20px; }
 
                 .entry {
-                    padding: 5px 0;
-                    margin-bottom: 0;
-                    border-bottom: 1px solid rgba(0,0,0,.1);
-                    .show;
-
                     .radio,
-                    .checkbox { 
-                        font-size: 14px;
-                        line-height: 30px;
-                        height: 30px;
-                        padding-left: 30px;
-                        margin-bottom: 0;
-                        float: none; 
-                        width: 100%;
-                        .show;
-
-                        .icon-form { 
-                            top: 5px; 
-                            left: 0;
-                        }
-                    }
-
-                    &:first-child { padding-top: 0; }
+                    .checkbox { font-size: 16px; }
                 }
             }
         }
-
-        &.hidden { display: block !important; }
     }
 
 /* Room details page        ==============================*/
@@ -290,6 +282,21 @@
                 }
             }
 
+            @media (max-width: 319px) {
+                h1 {
+                    float: none;
+                    text-align: center;
+                    display: block;
+                    background-position-x: center !important;
+                    padding-left: 60px;
+                }
+
+                .select {
+                    float: none;
+                    width: 100%;
+                }
+            }
+
             &.occupied { background: @blue; }
             &.inspected-clean { background: @green; }
             &.pickup { background: @orange; }
@@ -308,125 +315,64 @@
             width: 100%;
             height: 100%;
 
-            &.autoheight {
-                height: auto;
-            }
+            h1 { font-size: 48px; }
         }
 
-
-
-        #fo-status {
-            padding: 10px 0;
-            text-align: center;
-            text-transform: uppercase;
-            font-weight: 600;
-            border-bottom: 1px solid rgba(0,0,0,.1);
-            width: 100%;
-            z-index: 99;
-            .show;
+        #fo-status { 
+            font-size: 18px;
+            padding: 20px 0; 
         }
 
         #guest-info {
-            background-color: @white;
-            height: 100%;
-            min-height: 100%;
+            .wrapper { 
+                padding: 0 40px; 
 
-            .wrapper {
-                padding: 60px 10px 0;   
-
-                .guest-image {
-                    position: relative;
-                    margin: 30px auto 20px auto;
-                    background: @grey1;
-                    #border-radius > .rounded(64px);
-                    .square(64px);
-
-                    .vip {
-                        position: absolute;
-                        bottom: 0;
-                        right: 0;
-                    }
-
-                    img {
-                        width: 100%;
-                        height: auto;
-                        #border-radius > .rounded(64px);
-                    }
+                .guest-image { 
+                    margin-top: 40px;
+                    .square(128px); 
                 }
 
                 h2 {
-                    font-weight: 300;
-                    text-align: center;
-                    margin: 0;
-                    .show;
-
-                    .guest-status {
-                        display: inline-block;
-                        background-color: rgba(0,0,0,.15);
-                        margin-right: 5px;
-                        .square(30px);
-
-                        &.check-out,
-                        &.late-check-out { background-color: @red; }
-                        &.inhouse { background-color: @blue; }
-                    }
+                    .guest-status { margin: 5px 10px 0 0; }
 
                     .name {
-                        font-size: 30px;
-                        line-height: 30px;
+                        font-size: 44px;
+                        line-height: 44px;
                         vertical-align: top;
-                        white-space: nowrap;
-                        text-overflow: ellipsis;
-                        overflow: hidden;
                     }
                 }
 
-                .status {
-                    font-size: 18px;
-                    line-height: 1.2em;
-                    text-align: center;
-                    .show;
-
-                    strong { font-weight: 600; }
-
-                    &.today { color: @red; }
-                }
+                .status {  font-size: 21px; }
 
                 .checkout-guest {
-                    padding-top: 20px;
-                    margin-top: 30px;
-                    border-top: 1px solid rgba(0,0,0,.1);
+                    margin-top: 40px;
 
-                    strong {
-                        text-transform: uppercase;
-                        text-align: center;
-                        font-weight: 600;
-                        .show;
-                    }
+                    strong { font-size: 18px; }
 
                     .button {
-                        margin-top: 10px;
-                        line-height: 50px;
-                        width: 100%;
+                        margin: 20px auto;
+                        line-height: 60px;
+                        font-size: 21px;
                         .show;
                     }
-                }             
+                }
             }
 
             .iScrollVerticalScrollbar { 
-                top: 10px;
-                bottom: 10px;
+                top: 20px;
+                bottom: 20px;
             }
 
             &.no-content {
                 position: relative;
                 margin: 0;
+                padding: 60px 10px 0;
+                min-height: 230px;
                 background: transparent;
                 text-align: center;
                 color: @grey3;
                 .square(100%);
                 .box-shadow(none);
-                min-height: 230px;
 
                 .info {
                     position: absolute;
@@ -447,6 +393,23 @@
                     }
                 }
             }
+
+            @media (max-width: 319px) {
+                .wrapper {
+                    padding: 120px 10px 0;
+                }
+
+                &.no-content {
+                    padding: 120px 10px 0;
+                }
+            }
+
+            @media (max-height: 319px) {
+                &.no-content .info {
+                    position: static;
+                    margin: 50px 0;
+                }
+            }
         }   
     }
 
@@ -454,34 +417,3 @@
 ==========================================================*/
 /* 7. RESPONSIVE
 ==========================================================*/
-
-
-/* 7. iscroll overrides
-==========================================================*/
-#dashboard .myScrollbarV,
-#rooms .myScrollbarV,
-#filter-rooms .myScrollbarV,
-#room-details-content .myScrollbarV {
-    position: absolute;
-    z-index: 100;
-    width: 5px;
-    top: 5px;
-    bottom: 5px;
-    right: 5px;
-}
-
-#dashboard .myScrollbarV > div,
-#rooms .myScrollbarV > div,
-#filter-rooms .myScrollbarV > div, 
-#room-details-content .myScrollbarV > div {
-    position: absolute;
-    z-index: 100;
-    background: #ffb319;
-    width: 100%;
-    border: none;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    -webkit-background-clip: padding-box;
-    box-sizing: border-box;
-}

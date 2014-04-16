@@ -63,8 +63,9 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
     * To save new chain
     */
  	$scope.addNewChain = function (){
+
  		var lovNames = [];
- 		angular.forEach($scope.editData.lov,function(item, index) {
+ 		angular.forEach($scope.editData.lov, function(item, index) {
  			if (item.name == "") {
  				$scope.editData.lov.splice(index, 1);
  			}
@@ -72,13 +73,28 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  				lovNames.push(item.name);
  			}
  		});
+ 		var oldLov = $scope.editData.lov;
  		$scope.editData.lov = lovNames;
  		var addChainSuccessCallback = function(data) {
  			$scope.$emit('hideLoader');
  			$scope.fetchHotelChains();
  			$scope.isAddmode = false;
+ 			
  		};
- 		$scope.invokeApi(adChainsSrv.post,$scope.editData, addChainSuccessCallback);
+ 		var addChainFailureCallback = function(errorMessage){
+ 			$scope.$emit('hideLoader');
+ 			$scope.errorMessage = errorMessage;
+
+ 			if(oldLov.length > 0){
+ 				$scope.editData.lov = oldLov;
+ 			}
+ 			//if the length is zero, we are reverting to initial one
+ 			else{
+ 				$scope.editData.lov = [{'value':'','name':''}];
+ 			}
+ 		}
+ 		$scope.invokeApi(adChainsSrv.post, $scope.editData, addChainSuccessCallback, addChainFailureCallback);
+
  	};
    /*
     * To update chain details
@@ -93,19 +109,27 @@ admin.controller('ADChainListCtrl',['$scope', '$rootScope','adChainsSrv', functi
  				 delete item.value;
  			}
  		});
+
  		var updateData = {'id' : id ,'updateData' :$scope.editData };
 
 
 
 
- 		console.log($scope)
+ 		var updateChainFailureCallback = function(errorMessage){
+ 			$scope.$emit('hideLoader');
+ 			$scope.errorMessage = errorMessage;
+
+			if($scope.editData.lov.length === 0)
+				$scope.editData.lov = [{'value':'','name':''}];
+ 	
+ 		}
 
  		var updateChainSuccessCallback = function(data) {
  			$scope.$emit('hideLoader');
  			$scope.fetchHotelChains();
  			$scope.isEditmode = false;
  		};
- 		$scope.invokeApi(adChainsSrv.update,updateData,updateChainSuccessCallback);
+ 		$scope.invokeApi(adChainsSrv.update, updateData, updateChainSuccessCallback, updateChainFailureCallback);
  	};
    /*
     * To handle cancel click event
