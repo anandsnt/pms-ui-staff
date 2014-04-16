@@ -35,6 +35,8 @@
 //= require main
 //= require ./app/sntapp
 
+//= require ./reports
+
 (function() {
     var method;
     var noop = function noop() {};
