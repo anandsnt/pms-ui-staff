@@ -3,11 +3,14 @@
 	<div ng-include="'/assets/partials/dashboard/adBanner.html'"></div>
 	<div ng-include="'/assets/partials/dashboard/adHeader.html'"></div>
 	<!-- Hotel Admin content -->
-	<div id="content" class="tabs float" role="main" data-tabs="dashboard-tabs">
-
-	   <ul id="tabs-menu" class="float">
-	      <li ng-repeat="menu in data.menus" ng-class="{'ui-state-default ui-corner-top ui-tabs-active ui-state-active': $index==selectedIndex}"><a ui-sref='admin.dashboard({menu:$index})'>{{menu.menu_name}}</a></li>
-	   </ul>
+	<div id="content" class="tabs float" role="main" data-tabs="dashboard-tabs">	
+	   <!-- Dashboard tabs navigation -->
+	   <div id="tabs-menu" ng-iscroll="tabs_menu"  ng-iscroll-delay="500">
+	   	
+		   <ul style="width: 100%;">
+		      <li ng-repeat="menu in data.menus" ng-class="{'ui-state-default ui-corner-top ui-tabs-active ui-state-active': $index==selectedIndex}"><a ui-sref='admin.dashboard({menu:$index})'>{{menu.menu_name}}</a></li>
+		   </ul>
+		</div>
 		<div ui-view></div>
 	</div>
 

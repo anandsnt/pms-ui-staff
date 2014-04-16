@@ -96,10 +96,10 @@
 			</div>
 			<fieldset class="holder left float">
 				<!-- program name -->
-				<ad-textbox value="editData.name"   label = "Program Name" placeholder = "Enter Program Name"  styleclass="full-width"></ad-textbox>
+				<ad-textbox value="editData.loyalty_program_name"   label = "Program Name" placeholder = "Enter Program Name"  styleclass="full-width"></ad-textbox>
 				<!--  program code-->
 
-				<ad-textbox value="editData.code"   label = "Program Code" placeholder = "Enter Program Code"  styleclass="full-width"></ad-textbox>
+				<ad-textbox value="editData.loyalty_program_code"   label = "Program Code" placeholder = "Enter Program Code"  styleclass="full-width"></ad-textbox>
 
 
 			</fieldset>
@@ -109,9 +109,9 @@
 						<label for="select-option1">
 							Levels
 						</label>
-						<div class="entry" ng-repeat="lov in editData.lov">
+						<div class="entry" ng-repeat="lov in editData.lov track by $index">
 							<input type="text"  placeholder="Add new option" name="lov" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="select" class="add-new-option"
-							ng-model="lov.name" >
+							ng-model="lov.name" value="{{lov.name}}" >
 							<input type="text" ng-model="lov.value" ng-hide="true">
 						</div>
 					</div>
