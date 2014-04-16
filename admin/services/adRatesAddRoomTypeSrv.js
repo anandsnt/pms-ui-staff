@@ -12,4 +12,18 @@ function($q, ADBaseWebSrvV2) {
 		return deferred.promise;
 	};
 
+	this.saveRoomTypes = function(updateData) {
+
+		var data = updateData.room_type_ids;
+		console.log(data)
+		var id   = updateData.id;
+		var deferred = $q.defer();
+		var url = "/api/"+id+"/room_types";
+		ADBaseWebSrvV2.putJSON(url,data).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 }]);

@@ -20,7 +20,24 @@
 	$scope.fetchData();
 
 	$scope.saveStep2 = function(){
-		$scope.$emit("updateIndex","2");
+		
+		var assignedRoomArray =[];
+		angular.forEach($scope.assignedRoomTypes, function(item){
+			   assignedRoomArray.push(item.id);
+			 });
+		var data = {
+			'room_type_ids': assignedRoomArray,
+			'id' : $scope.newRateId
+		};
+		var saveRoomTypesSuccessCallback = function(data){
+			$scope.$emit('hideLoader');
+			$scope.$emit("updateIndex","2");
+		};
+		var saveRoomTypesFailureCallback = function(data){
+			$scope.$emit('hideLoader');
+		};
+		$scope.invokeApi(ADRatesAddRoomTypeSrv.saveRoomTypes,data,saveRoomTypesSuccessCallback,saveRoomTypesFailureCallback);
+		
 		
 	};
 

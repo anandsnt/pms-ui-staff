@@ -4,9 +4,10 @@ admin.controller('ADAddnewRate', ['$scope', function($scope) {
 $scope.init = function(){
 
 	BaseCtrl.call(this, $scope);
-	$scope.currentStepIndexList = ["Details","Type"];
-	$scope.currentRateStepIndex = 1;
+	$scope.currentStepIndexList = ["Details"];
+	$scope.currentRateStepIndex = 0;
 	$scope.errorMessage = '';
+	$scope.newRateId = '';
 };
  /*
 	* init function
@@ -18,21 +19,32 @@ $scope.init = function(){
 $scope.clickedStep =  function(index){
 	$scope.currentRateStepIndex = index;
 };
+//   /*
+//    	* to be updated from child classes 
+// 	*/
+// $scope.$on("updateRateId", function(e,value){
+
+// 	$scope.newRateId = value;
+// });
   /*
    	* to be updated from child classes 
 	*/
 $scope.$on("updateIndex", function(e,value){
-	if(value == 1){
+	if(value.id == 1){
+		console.log(value)
+	$scope.newRateId= value.rateId;
 	if($scope.currentStepIndexList.length< 2){	
     	$scope.currentStepIndexList.push("Type");
 		 }
+		 $scope.clickedStep(parseInt(value.id));
 	}
 	else if(value ==2){
 	if($scope.currentStepIndexList.length< 3){
     	$scope.currentStepIndexList.push("Range");   	
     }
+    $scope.clickedStep(parseInt(value));
 	}
-	$scope.clickedStep(parseInt(value));
+	
 });
   $scope.$watch('currentRateStepIndex', function () {
   	$scope.currentRateStepIndex =$scope.currentRateStepIndex;
