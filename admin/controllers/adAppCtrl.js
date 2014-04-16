@@ -7,6 +7,15 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	$scope.hotelListOpen = '';
 	$scope.selectedIndex = -1;
 
+	//scroller options
+	$scope.$parent.myScrollOptions = {
+        snap: false,
+        bounce: true,
+        vScroll: true,
+        vScrollbar: true,
+       hideScrollbar: false
+    };
+     
 	//when there is an occured while trying to access any menu details, we need to show that errors
 
 	$scope.errorMessage = '';
