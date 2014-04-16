@@ -46,6 +46,21 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADB
 		ADBaseWebSrv.postJSON(url, data).then(fetchSuccess, fetchFailed);
 		return deferred.promise;
 	};
+	this.removeBookMarkItem = function(id){
+		var deferred = $q.defer();
+		var url = '/admin/user_admin_bookmark/'+id;	
+		
+		var fetchSuccess = function(data){
+			deferred.resolve(data);
+		};
+		var fetchFailed = function(data){
+			deferred.reject(data);
+		};
+		
+		ADBaseWebSrv.deleteJSON(url).then(fetchSuccess, fetchFailed);
+		return deferred.promise;
+	};
+	
 
 
 }]);

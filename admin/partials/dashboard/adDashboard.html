@@ -10,8 +10,8 @@
       <ul class="dashboard-items float"  >
 
          <li ng-repeat="submenu in selectedMenu.components" >
-            <a data-type="load-listing" ui-draggable="{{bookMarksCount < 8}}" on-drop-success="dropSuccessHandler($event, $index, submenu)" drag="submenu" class="icon-admin-menu {{submenu.icon_class}}" ng-class="{'moved': submenu.is_bookmarked == true}" ui-sref="{{submenu.state}}">{{submenu.name}}</a>
-            <a class="text" data-type="load-listing" href="{{submenu.action_path}}" ui-sref={{submenu.state}}>{{submenu.name}}--{{bookMarksCount}}</a>
+            <a data-type="load-listing" ui-draggable="{{bookMarksCount < 8 && submenu.is_bookmarked == false}}" on-drop-success="dropSuccessHandler($event, $index, submenu)" drag="submenu" class="icon-admin-menu {{submenu.icon_class}}" ng-class="{'moved': submenu.is_bookmarked == true}" ui-sref="{{submenu.state}}" drag-channel="mydropchannel" drag-start="test()">{{submenu.name}}</a>
+            <a class="text" data-type="load-listing" href="{{submenu.action_path}}" ui-sref={{submenu.state}}>{{submenu.name}}</a>
          </li>
 
       </ul>      
