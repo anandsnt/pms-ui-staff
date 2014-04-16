@@ -517,7 +517,8 @@ var RegistrationCardView = function(viewDom) {
 		var billValue = that.myDom.find('#move_to_bill_'+current_bill_number).val();
 		var previousBillValue = current_bill_number;
 		var reservation_id = getReservationId();
-		var transaction_id = "<get the transaction id>";
+		
+		var transaction_id = that.myDom.find('#move_to_bill_'+current_bill_number).attr('data-transaction_id');
 		var data = {
 			"reservation_id" : reservation_id,
 			"to_bill" : billValue,
