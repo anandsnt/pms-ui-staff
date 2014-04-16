@@ -31,7 +31,7 @@
           $scope.checkinData = data;
           $scope.checkinData.is_send_alert_flag = ($scope.checkinData.is_send_alert === 'true') ? true:false;
           $scope.checkinData.is_send_checkin_staff_alert_flag = ($scope.checkinData.is_send_checkin_staff_alert === 'true') ? true:false;
-          $scope.checkinData.is_notify_on_room_ready_flag = ($scope.checkinData.is_send_alert === 'true') ? true:false;
+          $scope.checkinData.is_notify_on_room_ready_flag = ($scope.checkinData.is_notify_on_room_ready === 'true') ? true:false;
           $scope.checkinData.require_cc_for_checkin_email_flag = ($scope.checkinData.require_cc_for_checkin_email=== 'true') ? true:false;
 
 
@@ -55,7 +55,7 @@
 
          $scope.checkinData.is_send_alert = ($scope.checkinData.is_send_alert_flag) ? 'true':'false';
          $scope.checkinData.is_send_checkin_staff_alert = ($scope.checkinData.is_send_checkin_staff_alert_flag) ? 'true':'false';
-         $scope.checkinData.is_notify_on_room_ready = ($scope.checkinData.is_send_alert_flag) ?'true':'false';
+         $scope.checkinData.is_notify_on_room_ready = ($scope.checkinData.is_notify_on_room_ready_flag) ?'true':'false';
          $scope.checkinData.require_cc_for_checkin_email = ($scope.checkinData.require_cc_for_checkin_email_flag) ? 'true':'false';
 
          var uploadData = {
