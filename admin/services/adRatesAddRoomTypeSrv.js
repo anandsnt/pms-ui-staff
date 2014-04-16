@@ -14,7 +14,7 @@ function($q, ADBaseWebSrvV2) {
 
 	this.saveRoomTypes = function(updateData) {
 
-		var data = {'room_type_ids':updateData.room_type_ids};
+		var data = {'room_type_ids':JSON.stringify(updateData.room_type_ids)};
 		var id   = updateData.id;
 		var deferred = $q.defer();
 		var url = "/api/rates/"+id+"/room_types";
