@@ -23,7 +23,7 @@
 		
 		var assignedRoomArray =[];
 		angular.forEach($scope.assignedRoomTypes, function(item){
-			   assignedRoomArray.push(item.id.toString());
+			   assignedRoomArray.push(item.id);
 			 });
 		var data = {
 			'room_type_ids': assignedRoomArray,
