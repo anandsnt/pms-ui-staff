@@ -4,8 +4,8 @@ admin.controller('ADAddnewRate', ['$scope', function($scope) {
 $scope.init = function(){
 
 	BaseCtrl.call(this, $scope);
-	$scope.currentStepIndexList = ["Details"];
-	$scope.currentRateStepIndex = 0;
+	$scope.currentStepIndexList = ["Details","Type"];
+	$scope.currentRateStepIndex = 1;
 	$scope.errorMessage = '';
 };
  /*
