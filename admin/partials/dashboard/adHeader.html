@@ -25,23 +25,9 @@
    <!-- Quick navigation -->
   
    <nav id="quick-menu" drop-channel="mydropchannel" ng-class="{'has-items': bookMarks.length>0, 'dragging': dragStart}" role="navigation" ui-on-Drop="onDrop($event,$data,bookMarks)" > 
-
-   	<!-- <ul class="boxes sortable empty ui-sortable short-list" ui-on-Drop="onDrop($event,$data,bookMarks)">
-						 <li ng-repeat="bookmark in data.bookmarks"  drag-enter-class='ui-state-highlight'>
-						 
-						</li> 
-					</ul> 
-   	 -->
-   	
    	<a class="icon-admin-menu ui-draggable in-quick-menu {{bookmark.icon_class}}" ui-sref="{{bookmark.state}}" style="display: block; width: 169px;" ng-repeat="bookmark in bookMarks" ui-draggable="true" drag="bookMarks" on-drop-success="dropSuccessRemoveHandler($event, $index, bookMarks)">
-{{bookmark.name}}
-</a>
-   	
-   	
-		<!-- <a class="icon-admin-menu icon-chain ui-draggable in-quick-menu" ng-repeat="bookmark in bookMarks">
-			{{bookmark.name}}
-		</a>  -->
-   	
+		{{bookmark.name}}
+	</a>
    </nav>	
    
 </div>
