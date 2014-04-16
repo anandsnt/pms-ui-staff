@@ -1,6 +1,9 @@
 admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
 function($q, ADBaseWebSrvV2) {
 
+  /*
+	* To fetch rate types
+	*/
 	this.fetchRateTypes = function() {
 		var deferred = $q.defer();
 		var url = "/api/rate_types/active.json";
@@ -11,7 +14,9 @@ function($q, ADBaseWebSrvV2) {
 		});
 		return deferred.promise;
 	};
-
+  /*
+	* To fetch based on details
+	*/
 	this.fetchBasedOnTypes = function() {
 		var deferred = $q.defer();
 		var url = "/api/rates.json";
@@ -22,7 +27,9 @@ function($q, ADBaseWebSrvV2) {
 		});
 		return deferred.promise;
 	};
-
+  /*
+	* To create new rate
+	*/
 	this.createNewRate = function(data) {
 		var deferred = $q.defer();
 		var url = "/api/rates";
@@ -32,11 +39,12 @@ function($q, ADBaseWebSrvV2) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
-	}
-
+	};
+  /*
+	* To update new rate
+	*/
 
 	this.updateNewRate = function(param) {
-
 
 		var data = param.updatedData;
 		var id = param.rateId;
@@ -50,11 +58,5 @@ function($q, ADBaseWebSrvV2) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
-	}
-
-	
-
-
-
-
+	};
 }]);

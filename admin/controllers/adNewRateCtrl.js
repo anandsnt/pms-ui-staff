@@ -4,55 +4,40 @@ admin.controller('ADAddnewRate', ['$scope', function($scope) {
 $scope.init = function(){
 
 	BaseCtrl.call(this, $scope);
-	
 	$scope.currentStepIndexList = ["Details"];
 	$scope.currentRateStepIndex = 0;
-
-	// $scope.currentStepIndexList.push("Type");
-	//  $scope.currentRateStepIndex = 1;
-
+	$scope.errorMessage = '';
 };
  /*
 	* init function
 	*/
     $scope.init();
-
  /*
-   * init function
+   * click action to switch between steps
    */
-
 $scope.clickedStep =  function(index){
-
 	$scope.currentRateStepIndex = index;
-
 };
   /*
    	* to be updated from child classes 
 	*/
-
 $scope.$on("updateIndex", function(e,value){
-
 	if(value == 1){
-	if($scope.currentStepIndexList.length< 2){
-    	
+	if($scope.currentStepIndexList.length< 2){	
     	$scope.currentStepIndexList.push("Type");
 		 }
 	}
 	else if(value ==2){
 	if($scope.currentStepIndexList.length< 3){
-    	$scope.currentStepIndexList.push("Range");
-    	
+    	$scope.currentStepIndexList.push("Range");   	
     }
 	}
-
 	$scope.clickedStep(parseInt(value));
-
 });
   $scope.$watch('currentRateStepIndex', function () {
-
   	$scope.currentRateStepIndex =$scope.currentRateStepIndex;
-    
-    });
+ });
+  
   /*
    	* to include template
 	*/
