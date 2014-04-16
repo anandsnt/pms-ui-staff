@@ -17,7 +17,7 @@
 						<ul class="boxes sortable empty ui-sortable short-list" data-type="target" ui-on-Drop="onDrop($event,$data,assignedRoomTypes)">
 							<li  ng-repeat="roomtype in assignedRoomTypes"
 							ui-draggable="true" drag="roomtype"
-							on-drop-success="dropSuccessHandler($event,$index,assignedRoomTypes)"									><span class="icons icon-handle"></span>
+							on-drop-success="dropSuccessHandler($event,$index,assignedRoomTypes)"									ng-click="assignedRoomSelected($index)"><span class="icons icon-handle"></span>
 							<span class="icons icon-handle"></span>
 							
 							{{roomtype.name}}
@@ -27,12 +27,16 @@
 				</div>
 			
 				<div class="entry movers rates_mover" >
-					<span class="top_mover" style="display: block;"><span class="icons icon-mover-right to-target" data-type="target">Assign room(s)</span>
-					<span class="icons icon-mover-left to-source" data-type="source">Unassign room(s)</span></span>
+					<span class="top_mover" >
+					<span class="icons icon-mover-right to-target" data-type="target" ng-click="topMoverightClicked()">Assign room(s)</span>
+					<span class="icons icon-mover-left to-source" data-type="source"
+					ng-click="topMoveleftClicked()">Unassign room(s)</span>
+				    </span>
 
-
-					<span><span class="icons icon-mover-right to-target" data-type="target">Assign room(s)</span>
-					<span class="icons icon-mover-left to-source" data-type="source">Unassign room(s)</span></span>
+					<span>
+					<span class="icons icon-mover-right to-target red_mover" data-type="target" ng-click="bottomMoverightClicked()">Assign room(s)</span>
+					<span class="icons icon-mover-left to-source green_mover" data-type="source" ng-click="bottomMoveleftClicked()">Unassign room(s)</span>
+				    </span>
 				</div>
 
 				<div class="entry has-sortable">
@@ -41,7 +45,7 @@
 					<ul class="boxes sortable ui-sortable short-list"  ui-on-Drop="onDrop($event,$data,nonAssignedroomTypes)" >
 
 						<li ng-repeat="roomtype in nonAssignedroomTypes" ui-draggable="true" drag="roomtype"
-						on-drop-success="dropSuccessHandler($event,$index,nonAssignedroomTypes)"><span class="icons icon-handle"
+						on-drop-success="dropSuccessHandler($event,$index,nonAssignedroomTypes)" ng-click="unAssignedRoomSelected($index)"><span class="icons icon-handle"
 						></span>
 						<span class="icons icon-handle"></span>
 						{{roomtype.name}}
