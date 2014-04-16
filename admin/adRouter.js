@@ -43,10 +43,7 @@ admin.config([
 			controller: 'ADChainListCtrl',
 			url : '/chains'
 		});
-
-		
-		
-		
+			
 		
 		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserDetails.html',
@@ -59,8 +56,6 @@ admin.config([
 			controller: 'ADLinkExistingUserCtrl',
 			url : '/linkexisting/:id'
 		});
-
-
 		
 		$stateProvider.state('admin.hotels', {
 			templateUrl: '/assets/partials/hotel/adHotelList.html',
@@ -110,13 +105,11 @@ admin.config([
 			url : '/roomupsell'
 		});
 		
-
 		$stateProvider.state('admin.roomtypes', {
 			templateUrl: '/assets/partials/roomTypes/adRoomTypesList.html',
 			controller: 'ADRoomTypesCtrl',
 			url : '/roomtypes'
 		});
-		
 
 
 		$stateProvider.state('admin.roomKeyDelivery', {
@@ -183,6 +176,25 @@ admin.config([
 		});
 
 
+		$stateProvider.state('admin.hotelannouncementsettings', {
+			templateUrl: '/assets/partials/hotelAnnouncementSettings/adHotelAnnounceSettings.html',
+			controller: 'ADHotelAnnouncementSettingsCtrl',
+			url : '/hotelannouncementsettings'
+		});	
+
+		$stateProvider.state('admin.sociallobbysettings', {
+			templateUrl: '/assets/partials/hotelSocialLobbySettings/adHotelSocialLobbySettings.html',
+			controller: 'ADSocialLobbySettingsCtrl',
+			url : '/sociallobbysettings'
+		});			
+
+		$stateProvider.state('admin.guestreviewsetup', {
+			templateUrl: '/assets/partials/reviews_setups/adGuestReviewSetup.html',
+			controller: 'ADGuestReviewSetupCtrl',
+			url : '/guestreviewsetup'
+		});	
+
+
 		$stateProvider.state('admin.checkin', {
 			templateUrl: '/assets/partials/checkin/adCheckin.html',
 			controller: 'ADCheckinCtrl',
@@ -201,7 +213,6 @@ admin.config([
 			controller: 'ADCheckinCheckoutCtrl',
 			url : '/checkinCheckoutEmail/:from'
 		});
-
 
 
 

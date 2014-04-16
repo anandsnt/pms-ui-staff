@@ -12,7 +12,8 @@ admin.directive('adTextarea', function($timeout) {
             id : '@id',
             divClass: '@divClass',
             textAreaClass: '@textAreaClass',
-            rows: '@rows'
+            rows: '@rows',
+            maxlength: '@maxlength'
 	    },
     	templateUrl: '../../assets/directives/textArea/adTextArea.html'  
 	        
