@@ -84,27 +84,26 @@ $scope.saveStep1 = function(){
 	var createNewRateSuccessCallback = function(data){
 		$scope.newRateId = data.id;
 		$scope.isFirstTime = false;
-		console.log($scope.newRateId)
 		$scope.$emit('hideLoader');
 		$scope.$emit("updateIndex",{'id':'1','rateId':$scope.newRateId});
 	};
 	var createNewRateFailureCallback = function(data){
 		$scope.$emit('hideLoader');
 	};
-	var createUpdateRateSuccessCallback = function(data){
+	var updateRateSuccessCallback = function(data){
 		$scope.$emit('hideLoader');
 		$scope.$emit("updateIndex",{'id':'1','rateId':$scope.newRateId});
 	};
-	var createUpdateRateFailureCallback = function(data){
+	var updateRateFailureCallback = function(data){
 		$scope.$emit('hideLoader');
 	};
 	if($scope.isFirstTime)
-	 $scope.invokeApi(ADRatesAddDetailsSrv.createNewRate,data,createUpdateRateSuccessCallback,createUpdateRateFailureCallback);	
+	 $scope.invokeApi(ADRatesAddDetailsSrv.createNewRate,data,createNewRateSuccessCallback,createNewRateFailureCallback);	
 	else{
 	 var updatedData = {'updatedData': data,
 						'rateId':$scope.newRateId
 					 };
-	 $scope.invokeApi(ADRatesAddDetailsSrv.updateNewRate,updatedData,createNewRateSuccessCallback,createNewRateFailureCallback);	
+	 $scope.invokeApi(ADRatesAddDetailsSrv.updateNewRate,updatedData,updateRateSuccessCallback,updateRateFailureCallback);	
      }	
 };
 }]);
