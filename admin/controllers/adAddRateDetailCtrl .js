@@ -84,6 +84,7 @@ $scope.saveStep1 = function(){
 	var createNewRateSuccessCallback = function(data){
 		$scope.newRateId = data.id;
 		$scope.isFirstTime = false;
+		console.log($scope.newRateId)
 		$scope.$emit('hideLoader');
 		$scope.$emit("updateIndex",{'id':'1','rateId':$scope.newRateId});
 	};
