@@ -15,7 +15,6 @@ function($q, ADBaseWebSrvV2) {
 	this.saveRoomTypes = function(updateData) {
 
 		var data = updateData.room_type_ids;
-		console.log(data)
 		var id   = updateData.id;
 		var deferred = $q.defer();
 		var url = "/api/"+id+"/room_types";
