@@ -6,6 +6,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
 
    BaseCtrl.call(this, $scope);
    $scope.likeList = {};
+   $scope.likeList.likes =[];
    $scope.likeData   = {};
    $scope.likeData.type = "textbox"
    $scope.isAddmode = false;
@@ -215,7 +216,10 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
      $scope.showDropDown = false;
      $scope.showCheckbox = false;
 
-     $scope.likeData.options =[{'name':''},{'name':''}];
+     if($scope.likeData.options.length == 0)
+      $scope.likeData.options =[{'name':''},{'name':''}];
+    else if($scope.likeData.options.length === 1)
+      $scope.likeData.options.push({'name':''});
 
    }
    else if ($scope.likeData.type === "dropdown"){
