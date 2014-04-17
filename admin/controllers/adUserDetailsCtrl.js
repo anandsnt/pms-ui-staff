@@ -1,4 +1,4 @@
-admin.controller('ADUserDetailsCtrl',['$scope', '$state','$stateParams', 'ADUserSrv', '$rootScope', function($scope, $state, $stateParams, ADUserSrv, $rootScope){
+admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUserSrv', '$rootScope', function($scope, $state, $stateParams, ADUserSrv, $rootScope){
 	
 	BaseCtrl.call(this, $scope);
 	$scope.mod = "";
