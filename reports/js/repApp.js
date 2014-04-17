@@ -11,7 +11,7 @@ reports.controller('reporstList', [
 
 		$scope.fetch = function() {
 			var deferred = $q.defer();
-			var url = '/api/reports.json';
+			var url = '/api/reports';
 				
 			$http.get(url)
 				.success(function(response, status) {
