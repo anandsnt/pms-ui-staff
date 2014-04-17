@@ -79,7 +79,10 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find("#signature").on('mouseout touchend', function() {
 			enableVerticalScroll('#registration-content');
 		});
-		that.myDom.find('#move_to_bill_'+current_bill_number).on('change', that.moveToAnotherBill);
+		// that.myDom.find('#move_to_bill_'+current_bill_number).on('change', that.moveToAnotherBill);
+		
+		that.myDom.find('.movetobill').on('change', that.moveToAnotherBill);
+		
 	};
 
 	// function for closing the drawer if is open
@@ -172,6 +175,7 @@ var RegistrationCardView = function(viewDom) {
 		});
 	};
 	this.reloadBillCardPage = function() {
+
 		var viewURL = "staff/reservation/bill_card";
 		var viewDom = $("#view-nested-third");
 		var params = {
@@ -511,9 +515,10 @@ var RegistrationCardView = function(viewDom) {
 	this.getActiveBillNumber =  function() {
 		return that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active").attr('data-bill-number');
 	};
-
+	
 	this.moveToAnotherBill = function(e) {
-		var current_bill_number = that.getActiveBillNumber;
+
+		var current_bill_number = that.getActiveBillNumber();
 		var billValue = that.myDom.find('#move_to_bill_'+current_bill_number).val();
 		var previousBillValue = current_bill_number;
 		var reservation_id = getReservationId();
@@ -527,7 +532,8 @@ var RegistrationCardView = function(viewDom) {
 		};
 		var webservice = new WebServiceInterface();
 		var options = {
-			requestParameters : data
+			requestParameters : data,
+			successCallBack : that.reloadBillCardPage
 		};
 		webservice.postJSON('/staff/bills/transfer_transaction', options);
 	};
