@@ -19,13 +19,7 @@ $scope.init = function(){
 $scope.clickedStep =  function(index){
 	$scope.currentRateStepIndex = index;
 };
-//   /*
-//    	* to be updated from child classes 
-// 	*/
-// $scope.$on("updateRateId", function(e,value){
 
-// 	$scope.newRateId = value;
-// });
   /*
    	* to be updated from child classes 
 	*/
