@@ -19,10 +19,10 @@ function($q, ADBaseWebSrvV2) {
     * Service function to rates
     * @return {object} rates
     */
-	this.fetchBasedOnTypes = function() {
+	this.fetchBasedOnTypes = function(data) {
 		var deferred = $q.defer();
 		var url = "/api/rates.json";
-		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);

@@ -59,7 +59,15 @@ $scope.fetchData = function(){
 	var fetchBasedOnFailureCallback = function(data){
 		$scope.$emit('hideLoader');
 	};
-	$scope.invokeApi(ADRatesAddDetailsSrv.fetchBasedOnTypes, {},fetchBasedOnSuccessCallback,fetchBasedOnFailureCallback);	
+	var getParams ={
+		'page':'1',
+		'per_page':'1000',
+		 'query':'',
+		 'sort_dir':'asc',
+		 'sort_field':''
+		};
+
+	$scope.invokeApi(ADRatesAddDetailsSrv.fetchBasedOnTypes, getParams,fetchBasedOnSuccessCallback,fetchBasedOnFailureCallback);	
 }	
 
 $scope.fetchData();
