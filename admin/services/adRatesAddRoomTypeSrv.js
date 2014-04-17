@@ -1,6 +1,10 @@
 admin.service('ADRatesAddRoomTypeSrv', ['$q', 'ADBaseWebSrvV2',
 function($q, ADBaseWebSrvV2) {
 
+   /*
+    * Service function to fetch room types
+    * @return {object} room types
+    */
 	this.fetchRoomTypes = function() {
 		var deferred = $q.defer();
 		var url = "/api/room_types.json";
@@ -11,6 +15,10 @@ function($q, ADBaseWebSrvV2) {
 		});
 		return deferred.promise;
 	};
+   /*
+    * Service function to save room types
+    * @params {object} room type ids
+    */
 
 	this.saveRoomTypes = function(updateData) {
 

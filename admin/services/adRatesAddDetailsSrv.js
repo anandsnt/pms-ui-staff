@@ -1,9 +1,10 @@
 admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
 function($q, ADBaseWebSrvV2) {
 
-  /*
-	* To fetch rate types
-	*/
+   /*
+    * Service function to fetch rate types
+    * @return {object} rate types
+    */
 	this.fetchRateTypes = function() {
 		var deferred = $q.defer();
 		var url = "/api/rate_types/active.json";
@@ -15,8 +16,9 @@ function($q, ADBaseWebSrvV2) {
 		return deferred.promise;
 	};
   /*
-	* To fetch based on details
-	*/
+    * Service function to rates
+    * @return {object} rates
+    */
 	this.fetchBasedOnTypes = function() {
 		var deferred = $q.defer();
 		var url = "/api/rates.json";
@@ -28,7 +30,8 @@ function($q, ADBaseWebSrvV2) {
 		return deferred.promise;
 	};
   /*
-	* To create new rate
+	* Service function to create new rate
+	* @params {object} rates details
 	*/
 	this.createNewRate = function(data) {
 		var deferred = $q.defer();
@@ -41,9 +44,9 @@ function($q, ADBaseWebSrvV2) {
 		return deferred.promise;
 	};
   /*
-	* To update new rate
+	* Service function to update new rate
+	* @params {object} rates details
 	*/
-
 	this.updateNewRate = function(param) {
 
 		var data = param.updatedData;
