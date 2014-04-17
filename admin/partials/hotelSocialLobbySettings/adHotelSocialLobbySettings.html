@@ -1,0 +1,27 @@
+<section  class="content current" style="display: block;" ng-click="clearErrorMessage()">
+	<div>
+		<header class="content-title float">
+			<h2>Social Lobby Setup</h2>
+			<a id="go_back" data-type="load-details" class="action back" ng-click="goBack()"> Back</a>
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<form style="overflow-y:auto;" name="edit-social-lobby" method="post" class="form float">
+			<fieldset class="holder column">
+				<div></div>
+				<ad-checkbox is-checked="data.is_social_lobby_on" label="Social Lobby" name="social-lobby" id="social-lobby"></ad-checkbox>
+				
+				<ad-checkbox is-checked="data.is_my_group_on" label="My group" name="my-group" id="my-group"></ad-checkbox>
+
+				<ad-dropdown label="Arrival Grace Days" label-in-drop-down="Arrival Grace Days" list="arrival_grace_days_list" selected-Id='data.arrival_grace_days'  id="arrival-grace-days"></ad-dropdown>
+
+				<ad-dropdown label="Departure Grace Days" label-in-drop-down="Departure Grace Days" list="departure_grace_days_list" selected-Id='data.departure_grace_days'  id="departure-grace-days"></ad-dropdown>
+				
+				
+			</fieldset>
+			<div class="actions float">
+				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()">Cancel</button>
+				<button type="button" id="save_social_lobby" class="button green" ng-click="save()">Save changes</button>
+			</div>
+		</form>
+	</div>
+</section>

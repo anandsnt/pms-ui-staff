@@ -1,13 +1,16 @@
 <div ng-show="errorMessage!=''" ng-class="{notice: errorMessage!=''}" class='error error_message' ng-switch on="errorMessage.length">
-
+	Error: 
+	<span class="close-btn" ng-click="clearErrorMessage()"></span>
 	<span ng-switch-when="1">
 			{{errorMessage[0]}}
 	</span>
-	<ul ng-switch-default>
-		<li ng-repeat="message in errorMessage">
+	<span ng-switch-default>
+		
+		<span ng-repeat-start="message in errorMessage">{{message}}, </span>
+		<span ng-repeat-end="">
 			{{message}}
-		</li>
-	</ul>	
-	<span class="close-btn" ng-click="clearErrorMessage()"></span>
+		</span>
+	</span>	
+	
 
 </div>

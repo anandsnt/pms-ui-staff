@@ -350,7 +350,13 @@ body { overflow: hidden; }
 
 /* Admin left side menu     ==============================*/
     #tabs-menu {
-        position: relative;
+        /* replaced by qburst, for adding iscroll to left side menu
+        * removed position: relative tag
+        */
+        position:absolute !important; 
+        top: 0px; 
+        bottom: 0px; 
+        
         height: 100%;
         background: @rcardTexture1;
         .pull-left;
@@ -358,12 +364,12 @@ body { overflow: hidden; }
         #pixel-to-percent > .width( 220, 1240 );
 
         li {
-            position: relative;
+            /* removed position: relative tag for adding iscroll by qbusrt*/
             line-height: 59px;
             margin: 0 0 0 20px;
             vertical-align: middle;
             
-            a { 
+           a { 
                 font-weight: 600;
                 text-transform: uppercase;
                 color: @grey4;
