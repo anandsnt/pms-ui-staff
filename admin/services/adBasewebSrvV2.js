@@ -26,11 +26,16 @@ admin.service('ADBaseWebSrvV2',['$http', '$q', '$window', function($http, $q, $w
 			params = "";
 		}
 		//Sample params {params:{fname: "fname", lname: "lname"}}
-		$http({
-		    url: url, 
-		    method: httpMethod,
-		    params: params
-		}).success(function(response, status) {
+		var dict = {};
+		dict.url = url;
+		dict.method = httpMethod;
+		if(httpMethod == 'GET'){
+			dict.params = params
+		}
+		else{
+			dict.data = params;
+		}
+		$http(dict).success(function(response, status) {
 	    	deferred.resolve(response);
 		}).error(function(errors, status) {
 			// please note the type of error expecting is array
