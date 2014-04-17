@@ -37,6 +37,7 @@ reports.controller('reporstList', [
 				
 			$http.get(url)
 				.success(function(response, status) {
+					console.log( response );
 					deferred.resolve(response);
 				})
 				.error(function(response, status) {
@@ -59,43 +60,12 @@ reports.controller('reporstList', [
 
 			return deferred.promise;
 		};
-
-		$scope.fetchFilters = function(id) {
-			var deferred = $q.defer();
-			var url = '/api/reports/' + id;
-
-			$http.get(url)
-				.success(function(response, status) {
-					deferred.resolve(response);
-				})
-				.error(function(response, status) {
-					// please note the type of error expecting is array
-					// so form error as array if you modifying it
-					if(status == 406){ // 406- Network error
-						deferred.reject(errors);
-					}
-					else if(status == 500){ // 500- Internal Server Error
-						deferred.reject(['Internal server error occured']);
-					}
-					else if(status == 401){ // 401- Unauthorized
-						console.log('lets redirect');
-						// so lets redirect to login page
-						$window.location.href = '/logout' ;
-					}else{
-						deferred.reject(errors);
-					}
-				});
-
-			return deferred.promise;
-		};
-
-		$scope.fetchFilters()
-			.then(function(response) {
-
-			});
 
 		$scope.fetch()
 			.then(function(response) {
+				sntapp.activityIndicator.hideActivityIndicator();
+				$scope.showReports = true;
+
 				$scope.list = response.results;
 				$scope.listCount = response.total_count;
 
@@ -103,21 +73,6 @@ reports.controller('reporstList', [
 
 					// include show_filter
 					$scope.list[i]['show_filter'] = false;
-
-					// search filter rules
-					$scope.fetchFilters( $scope.list[i]['id'] )
-						.then(function(response) {
-
-							sntapp.activityIndicator.hideActivityIndicator();
-							$scope.showReports = true;
-
-							// var report = _.find($scope.list, function(item) {
-							// 	return item.name === response.name;
-							// });
-
-							// report.filters = response.filters;
-							// report.sort_fields = response.sort_fields;
-						});
 				};
 			});
 
@@ -141,8 +96,6 @@ reports.controller('reporstList', [
 			var transactionType = _.find(item.filters, function(filter) {
 				return filter.value = 'CICO';
 			});
-
-			console.log(item);
 
 			return transactionType ? true : false;
 		};
