@@ -31,7 +31,6 @@ $scope.clickedStep =  function(index){
 	*/
 $scope.$on("updateIndex", function(e,value){
 	if(value.id == 1){
-		console.log(value)
 	$scope.newRateId= value.rateId;
 	if($scope.currentStepIndexList.length< 2){	
     	$scope.currentStepIndexList.push("Type");
