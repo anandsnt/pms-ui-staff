@@ -1,4 +1,23 @@
-var reports = angular.module('reports', ['ngAnimate']);
+var reports = angular.module('reports', []);
+
+reports.filter('splitName', function() {
+	return function(input, option) {
+		if ( !input ) {
+			return;
+		};
+
+		var name = input.split(' by ')[0];
+		var by   = 'by ' + input.split(' by ')[1] + (input.split(' by ')[2] ? ' by ' + input.split(' by ')[2] : '');
+
+		if ( option === 'name' ) {
+			return name;
+		};
+
+		if ( option === 'by' ) {
+			return by;
+		};
+	};
+});
 
 reports.controller('reporstList', [
 	'$http',
