@@ -24,6 +24,7 @@ admin.controller('ADHotelLikesCtrl', ['$scope', '$state', 'ADHotelLikesSrv',
     var fetchHotelLikesSuccessCallback = function(data) {
      $scope.$emit('hideLoader');
      $scope.likeList = data;
+     console.log( $scope.likeList );
    };
    $scope.invokeApi(ADHotelLikesSrv.fetch, {}, fetchHotelLikesSuccessCallback);
  };

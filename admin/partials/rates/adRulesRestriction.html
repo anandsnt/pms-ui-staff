@@ -1,0 +1,42 @@
+<section id="replacing-div-first"
+			class="content current">
+
+	<div data-view="GuestCardLikesView">
+		<header class="content-title float">
+			<h2>
+				Rules & Restrictions
+			</h2>
+		</header>
+
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+		<div id="new-form-holder"
+				ng-show="isAddmode"
+				ng-include="getTemplateUrl()"></div>
+
+		<table id="rules" class="grid" ng-table="tableParams">
+			<tbody>
+				<tr ng-repeat="item in  ruleList">
+					<td header-class="width-70"  data-title="'Description'" sortable="'description'" ng-click="editRoomTypes($index, item.description)" ng-hide="currentClickedElement == $index" >
+						{{ item.description }} <em ng-show="!item.editable">(system defined)</em>
+					</td>
+
+					<td data-title="'Toggle'" header-class=" width-30" class="activate text-left" ng-hide="currentClickedElement == $index" >
+						<div class="entry">
+							<label></label>
+							<div class="switch-button single"
+									ng-class="{ on: item.activated }">
+								<input type = "checkbox"
+										id = "upsell-rooms"
+										name = "upsell-rooms"
+										ng-click = "switchClicked($index)">
+								<span class="switch-icon"></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+</section>

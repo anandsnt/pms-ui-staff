@@ -188,10 +188,19 @@ admin.config([
 
 
 
+
 		$stateProvider.state('admin.addRate', {
 			templateUrl: '/assets/partials/rates/adNewRate.html',
 		    controller: 'ADAddnewRate',
 			url : '/addNewRate'
+		});
+
+
+
+		$stateProvider.state('admin.rulesRestrictions', {
+			templateUrl: '/assets/partials/rates/adRulesRestriction.html',
+			controller: 'ADRulesRestrictionCtrl',
+			url : '/restriction_types'
 		});
 
 

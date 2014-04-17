@@ -3,6 +3,7 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADB
 	this.fetch = function(){
 		var deferred = $q.defer();
 		var url = '/admin/settings/menu_items.json';	
+		// var url = '/sample_json/menu_items.json';
 		
 		var fetchSuccess = function(data){
 			deferred.resolve(data);
@@ -30,6 +31,36 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADB
 		return deferred.promise;
 		
 	};
+	
+	this.bookMarkItem = function(data){
+		var deferred = $q.defer();
+		var url = '/admin/user_admin_bookmark';	
+		
+		var fetchSuccess = function(data){
+			deferred.resolve(data);
+		};
+		var fetchFailed = function(data){
+			deferred.reject(data);
+		};
+		
+		ADBaseWebSrv.postJSON(url, data).then(fetchSuccess, fetchFailed);
+		return deferred.promise;
+	};
+	this.removeBookMarkItem = function(id){
+		var deferred = $q.defer();
+		var url = '/admin/user_admin_bookmark/'+id;	
+		
+		var fetchSuccess = function(data){
+			deferred.resolve(data);
+		};
+		var fetchFailed = function(data){
+			deferred.reject(data);
+		};
+		
+		ADBaseWebSrv.deleteJSON(url).then(fetchSuccess, fetchFailed);
+		return deferred.promise;
+	};
+	
 
 
 }]);
