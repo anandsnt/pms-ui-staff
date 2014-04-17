@@ -20,92 +20,68 @@ reports.filter('splitName', function() {
 });
 
 reports.controller('reporstList', [
-	'$http',
-	'$q',
 	'$scope',
-	function($http, $q, $scope) {
+	'RepFetchSrv',
+	'RepUserSrv',
+	function($scope, RepFetchSrv, RepUserSrv) {
 
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 
 		$scope.showReports = false;
-		$scope.list = [];
-		$scope.listCount = 0;
+		$scope.reportList  = [];
+		$scope.listCount   = 0;
+		$scope.userList    = [];
 
-		$scope.fetch = function() {
-			var deferred = $q.defer();
-			var url = '/api/reports';
-				
-			$http.get(url)
-				.success(function(response, status) {
-					console.log( response );
-					deferred.resolve(response);
-				})
-				.error(function(response, status) {
-					// please note the type of error expecting is array
-					// so form error as array if you modifying it
-					if(status == 406){ // 406- Network error
-						deferred.reject(errors);
-					}
-					else if(status == 500){ // 500- Internal Server Error
-						deferred.reject(['Internal server error occured']);
-					}
-					else if(status == 401){ // 401- Unauthorized
-						console.log('lets redirect');
-						// so lets redirect to login page
-						$window.location.href = '/logout' ;
-					}else{
-						deferred.reject(errors);
-					}
-				});
-
-			return deferred.promise;
-		};
-
-		$scope.fetch()
+		// fetch the reports list with the filters to be used
+		RepFetchSrv.fetch()
 			.then(function(response) {
 				sntapp.activityIndicator.hideActivityIndicator();
 				$scope.showReports = true;
 
-				$scope.list = response.results;
+				$scope.reportList = response.results;
 				$scope.listCount = response.total_count;
 
-				for (var i = 0, j = $scope.list.length; i < j; i++) {
+				var hasDateFilter, hasCicoFilter, hasUserFilter;
+				for (var i = 0, j = $scope.reportList.length; i < j; i++) {
 
 					// include show_filter
-					$scope.list[i]['show_filter'] = false;
+					$scope.reportList[i]['show_filter'] = false;
+
+					// has date filter
+					hasDateFilter = _.find($scope.reportList[i]['filters'], function(item) {
+						return item.value === 'DATE_RANGE';
+					});
+					$scope.reportList[i]['hasDateFilter'] = hasDateFilter ? true : false;
+
+					// has cico filter
+					hasCicoFilter = _.find($scope.reportList[i]['filters'], function(item) {
+						return item.value === 'CICO';
+					});
+					$scope.reportList[i]['hasCicoFilter'] = hasCicoFilter ? true : false;
+
+					// has user filter
+					hasUserFilter = _.find($scope.reportList[i]['filters'], function(item) {
+						return item.value === 'USER';
+					});
+					$scope.reportList[i]['hasUserFilter'] = hasUserFilter ? true : false;
 				};
+			});
+
+		// fetch the users list
+		RepUserSrv.fetch()
+			.then(function(response) {
+				sntapp.activityIndicator.hideActivityIndicator();
+				$scope.showReports = true;
+
+				$scope.userList = response;
+
+				console.log( $scope.userList );
 			});
 
 		// show hide filter
 		$scope.toggleFilter = function() {
 			// DO NOT flip as scuh could endup in infinite $digest loop
 			this.item.show_filter = this.item.show_filter ? false : true; 
-		};
-
-		// show date range
-		$scope.hasDateRange = function(item) {
-			var dateRange = _.find(item.filters, function(filter) {
-				return filter.value = 'DATE_RANGE';
-			});
-
-			return dateRange ? true : false;
-		};
-
-		// show tranction type
-		$scope.hasTransactionType = function(item) {
-			var transactionType = _.find(item.filters, function(filter) {
-				return filter.value = 'CICO';
-			});
-
-			return transactionType ? true : false;
-		};
-
-		$scope.hasStaff = function(item) {
-			var staff = _.find(item.filters, function(filter) {
-				return filter.value = 'STAFF';
-			});
-
-			return staff ? true : false;
 		};
 	}
 ]);
