@@ -176,6 +176,12 @@ admin.config([
 		});
 
 
+		$stateProvider.state('admin.rulesRestrictions', {
+			templateUrl: '/assets/partials/rates/adRulesRestriction.html',
+			controller: 'ADRulesRestrictionCtrl',
+			url : '/restriction_types'
+		});
+
 		$stateProvider.state('admin.hotelannouncementsettings', {
 			templateUrl: '/assets/partials/hotelAnnouncementSettings/adHotelAnnounceSettings.html',
 			controller: 'ADHotelAnnouncementSettingsCtrl',
@@ -213,8 +219,6 @@ admin.config([
 			controller: 'ADCheckinCheckoutCtrl',
 			url : '/checkinCheckoutEmail/:from'
 		});
-
-
-
+	
 	}
 ]);
