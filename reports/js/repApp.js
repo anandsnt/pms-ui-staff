@@ -62,6 +62,17 @@ reports.controller('reporstList', [
 		$scope.fetch().then(function(response) {
 			$scope.list = response.results;
 			$scope.listCount = response.total_count;
+
+			// include show_filter
+			for (var i = 0, j = $scope.list.length; i < j; i++) {
+				$scope.list[i]['show_filter'] = false;
+			};
 		});
+
+		// show hide filter
+		$scope.toggleFilter = function() {
+			// DO NOT flip as scuh could endup in infinite $digest loop
+			this.item.show_filter = this.item.show_filter ? false : true; 
+		};
 	}
 ]);
