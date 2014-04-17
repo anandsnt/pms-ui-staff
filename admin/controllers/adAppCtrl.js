@@ -6,6 +6,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	$scope.menuOpen = false;
 	$scope.hotelListOpen = '';
 	$scope.selectedIndex = -1;
+	$scope.dragStart = false;
 
 	//scroller options
 	$scope.$parent.myScrollOptions = {
@@ -19,6 +20,8 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	//when there is an occured while trying to access any menu details, we need to show that errors
 
 	$scope.errorMessage = '';
+	$scope.bookMarks = [];
+	$scope.bookMarksCount = '';
 
 	if($rootScope.adminRole == "hotel-admin" ){
 
@@ -32,12 +35,14 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 		//$scope.currentIndex = 0;
 		$scope.data = data;
 		$scope.selectedMenu = $scope.data.menus[0];		
-		
+		$scope.bookMarks = $scope.data.bookmarks;
+		$scope.bookMarksCount = $scope.data.bookmark_count;
 	};
 	
 	$scope.$on("changedSelectedMenu", function(event, menu){
 		console.log('in changedSleectedmenu');
 		$scope.selectedIndex = menu;
+		
 	});
 	
 	$scope.invokeApi(ADAppSrv.fetch, {}, $scope.successCallbackOfMenuLoading);
@@ -86,7 +91,60 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 			console.log("error controller");
 		});	
     };
+   
 
+	 $scope.dropSuccessHandler = function($event, index, array){
+	   	 var successCallbackOfBookMark = function(){
+	   	 	$scope.$emit('hideLoader');
+	    	array.is_bookmarked = true;
+	    	$scope.bookMarksCount = parseInt($scope.bookMarksCount) + parseInt(1);
+	    };
+   		var data = {id: array.id};
+   		$scope.invokeApi(ADAppSrv.bookMarkItem, data, successCallbackOfBookMark);
+  	};
+
+   	$scope.onDrop = function($event, $data, array) {
+   		if($scope.bookMarksCount <=8){
+   			array.push($data);
+   		} else {
+   			
+   		}
+		
+	};
+	$scope.onDropRemoveBookMark = function($event, $data, array) {
+
+	};
+	$scope.dropSuccessRemoveHandler = function($event, index, array){
+		
+		var id = array[index].id;
+	   	 var successCallbackOfBookMarkRemove = function(){
+	   	 	$scope.$emit('hideLoader');
+	   	 	array.splice(index, 1);
+	    	// array.is_bookmarked = false;
+	    
+			angular.forEach($scope.data.menus,function(item, ind) {
+				angular.forEach(item.components,function(componentItem, componentIndex) {
+					if(componentItem.id == id){
+						componentItem.is_bookmarked = false;
+					}
+				});
+			});
+	    	$scope.bookMarksCount = parseInt($scope.bookMarksCount) - parseInt(1);
+	    };
+   		
+   		$scope.invokeApi(ADAppSrv.removeBookMarkItem, id, successCallbackOfBookMarkRemove);
+  	};
+  	$scope.$on("ANGULAR_DRAG_END", function(){
+		$scope.dragStart = false;
+		$scope.$apply();
+		console.log($scope.dragStart);
+	}); 	
+ 	$scope.$on("ANGULAR_DRAG_START", function(){
+		$scope.dragStart = true;
+		$scope.$apply();
+		console.log($scope.dragStart);
+	});
+   
 }]);
 
     
