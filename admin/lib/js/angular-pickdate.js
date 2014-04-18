@@ -56,15 +56,16 @@
           var minDate       = scope.minDate && dateUtils.stringToDate(scope.minDate),
               maxDate       = scope.maxDate && dateUtils.stringToDate(scope.maxDate),
               disabledDates = scope.disabledDates || [],
-              
-
+         
+          /*
+          * check if month is present or next 
+          */
+   
           currentDate   = new Date();
           if(!scope.isCurrentMonth){
             currentDate.setDate(1);
             currentDate.setMonth(currentDate.getMonth() +1);
           }
-
-          //currentDate   = scope.date;
 
           scope.dayNames    = $locale.DATETIME_FORMATS['SHORTDAY'];
           scope.currentDate = currentDate;
@@ -126,7 +127,9 @@
             scope.render(currentDate);
           };
 
-
+          /*
+          * set up data to be displayed
+          */
           scope.years = [];
           scope.yearSelected = currentDate.getFullYear();
           for(year=2014;year<=2100;year++){
@@ -165,8 +168,9 @@
             scope.monthSelected = scope.months[month];
           };
 
-          
-        
+          /*
+          * watch for any change in year
+          */       
 
           scope.$watch('yearSelected',function(){
             currentDate.setDate(1);
@@ -174,6 +178,9 @@
             scope.render(currentDate);
           })
        
+          /*
+          * initial set up of month
+          */ 
          
           var currentMonth = currentDate.getMonth(); 
           
@@ -182,6 +189,9 @@
             if(scope.months[i].value== currentMonth)
               scope.monthSelected = scope.months[i]; 
           };
+           /*
+          * watch for any change in month
+          */ 
 
           scope.$watch('monthSelected.value',function(){     
              currentDate.setDate(1);
