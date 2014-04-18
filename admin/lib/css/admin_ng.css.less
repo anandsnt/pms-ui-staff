@@ -105,3 +105,176 @@ height: 271px;
 	
 	margin-top:20px;
 }
+
+
+/* ------------------date -picker ---------------------*/
+
+.pickadate-header {
+  position: relative;
+}
+
+.pickadate {
+  font-family: 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;
+}
+
+.pickadate-main {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+}
+
+.pickadate a:visited, .pickadate a {
+  color: #666666;
+}
+
+.pickadate-cell {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.pickadate-cell li {
+  display: block;
+  float: left;
+  border-left: 2px solid #D3D3D3;
+  border-right: 2px solid #D3D3D3;
+  width: 14.285%;
+  padding: 2.3%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+    margin-bottom: 0.5em !important;
+
+}
+
+.pickadate-cell li:nth-child(7n+0) {
+  border-right: 2px solid #D3D3D3;
+}
+
+.pickadate-cell li:nth-child(1),
+.pickadate-cell li:nth-child(8),
+.pickadate-cell li:nth-child(15),
+.pickadate-cell li:nth-child(22),
+.pickadate-cell li:nth-child(29),
+.pickadate-cell li:nth-child(36) {
+  border-left: 2px solid #D3D3D3;
+}
+
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-enabled,
+.pickadate-cell .pickadate-outofrange-disabled {
+  background-color: #f0f0f0;
+}
+
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #ac9557;
+}
+
+.pickadate-cell .pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-outofrange-disabled a,
+.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled a {
+
+  
+  color: transparent;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.pickadate-cell .pickadate-enabled {
+  cursor: pointer;
+  font-size: 12px;
+  color: #000;
+}
+
+
+.pickadate-cell .pickadate-active {
+  color: blue !important;
+}
+
+.pickadate-cell .pickadate-active {
+  color: #000;
+}
+
+.pickadate-cell .pickadate-head {
+  color:#000;
+  text-transform: uppercase;
+  border-top: 0px ;
+  border-left: 0px !important;
+  border-right: 0px !important;
+}
+
+.pickadate-centered-heading {
+  text-transform: uppercase;
+  color:#000;
+  font-weight: normal;
+  text-align: center;
+  font-size: 1em;
+  margin: 13px 0 13px 0;
+}
+
+.pickadate-controls {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+}
+
+.pickadate-controls .pickadate-next {
+  float: right;
+}
+
+.pickadate-controls a {
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.pickadate-cell .pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-outofrange-disabled a,
+.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled a,
+.pickadate-cell .pickadate-active.pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
+
+  color: gray;
+  color: transparent;
+
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+.date-picker-bg{
+	
+	width:50%;
+  background-color:#D3D3D3;
+  opacity:0.5;
+  padding:10px;
+}
+.pickadate_select{
+  width:140px;
+  padding-right:14px;
+  margin-left:40px;
+}
+.float_left{
+float:left;
+
+}
+.calendar_top_panel{
+  background-color:white;
+  height:46px;
+}
+.pickadate-prev,.pickadate-next{
+  
+  width:30px;
+  padding:15px 5px !important;
+}
+.pickadate-body{
+  margin-top:10px;
+
+}
+/*------------------date -picker ends here-------------------------- */
