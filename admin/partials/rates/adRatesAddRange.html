@@ -1,11 +1,25 @@
 <div ng-controller="ADAddRateRangeCtrl">
+<div>
 <div class="date-picker-bg">
 	<div class="date-picker-wrap">
 	   <div class="col-xs-12">
-	      <div pickadate="" ng-model="date" min-date="minDate" max-date="maxDate"></div>
+	      <div pickadate="" ng-model="nextMonthDate" min-date="nextMonthDateFormated" max-date="maxDate" date="nextMonthDate"></div>
 	   </div>
 	</div>
 </div>
+<div class="date-picker-bg">
+	<div class="date-picker-wrap">
+	   <div class="col-xs-12">
+	      <div pickadate="" ng-model="thisMonthDate" min-date="date" max-date="maxDate" date="date"></div>
+	   </div>
+	</div>
+</div>
+
+
 </div>
 
 <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+</div>
+
