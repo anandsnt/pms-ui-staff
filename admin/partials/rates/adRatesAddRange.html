@@ -1,5 +1,6 @@
 <div ng-controller="ADAddRateRangeCtrl">
-<div>
+<div class="date_picker_conatiner">
+<span class="center_align">To</span>
 <div class="date-picker-bg">
 	<div class="date-picker-wrap">
 	   <div class="col-xs-12">
@@ -7,6 +8,7 @@
 	   </div>
 	</div>
 </div>
+<span class="center_align">From</span>
 <div class="date-picker-bg">
 	<div class="date-picker-wrap">
 	   <div class="col-xs-12">
@@ -19,13 +21,24 @@
 </div>
 <br/>
 	
-
-<fieldset class="holder" ng-repeat="set in Sets track by $index">
-		<ad-textbox value="set.setName"  style="float:left;"></ad-textbox>
+<div class="date_field_set_container">
+<fieldset class="holder" ng-repeat="set in Sets track by $index" style="margin:10px;">
+		<ad-textbox value="set.setName"  style="float:left;margin-right:60px;"></ad-textbox>
 
 		<ad-checkbox ng-repeat="day in set.days" is-checked="day.checked" label="{{day.name}}" style="float:left;width:75px;margin-left:10px;" div-class="full-width" ng-click="checkboxClicked($index,$parent.$index)"></ad-checkbox>	
 
-		<button ng-show="$index === Sets.length-1 " ng-click="addNewSet($index)">Add<button>
-		<button ng-hide=" $index === Sets.length-1 " ng-click="deleteSet($index)">Delete<button>
+		<button ng-show="$index === Sets.length-1 " ng-click="addNewSet($index)"style="margin-left:50px;">Add</button>
+		<button ng-hide=" $index === Sets.length-1 " ng-click="deleteSet($index)"style="margin-left:50px;">Delete</button>
+	
 </fieldset>
+</div>
+<div class="actions float center_align">
+	<button type="button" ui-sref="admin.rates" class="button blank add-data-inline">
+		Cancel
+	</button>
+	<button type="button" ng-click="saveStep3()" ng-disabled="allFieldsFilled()" class="button  brand-colors" ng-hide="allFieldsFilled()">
+		Step 4 - Configure Rate
+	</button>
+	<button type="button" id="send-email" disabled="" class="button grey" ng-show="allFieldsFilled()">Step 4 - Configure Rate</button>
+</div>
 </div>

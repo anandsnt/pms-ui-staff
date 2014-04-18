@@ -1,7 +1,8 @@
 admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter',function($scope,$filter,dateFilter){
 
 	$scope.saveStep3 = function(){
-		$scope.save(2);
+		$scope.$emit("updateIndex","3");
+
 	};
 
  /*
@@ -56,16 +57,14 @@ admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter',function(
 
    	if($scope.Sets.length <7){
    		var newSet = {};
-   		newSet.setName = "Set"+" "+(index+2);
+   		newSet.setName = "";
    		var checkedDays = [];
  	/*
    * check if any day has already been checked,if else check it in new set
    */
    angular.forEach($scope.Sets, function(set, key){
-   	console.log(set.days);
+   
    	angular.forEach(set.days, function(day, key){
-   		console.log(day.checked);
-   		console.log(day.name);
    		if(day.checked)
    			checkedDays.push(day.name);
    	});
@@ -109,4 +108,25 @@ admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter',function(
    	});
    	$scope.Sets[SetIndex].days[dayIndex].checked = temp;
    }
+
+
+   $scope.allFieldsFilled  = function(){
+
+   		var anyOneDayisChecked = false;
+   		angular.forEach($scope.Sets, function(set, key){
+   		angular.forEach(set.days, function(day, key){
+   			if(day.checked)
+   				anyOneDayisChecked = true;
+   		});
+   		});
+
+   		if($scope.date && $scope.nextMonthDateFormated && anyOneDayisChecked){
+     			if($scope.date <= $scope.nextMonthDateFormated)
+     			  return false;
+     			else
+     			  return true;
+   		}
+   		else
+   			return true;
+   };
 }]);

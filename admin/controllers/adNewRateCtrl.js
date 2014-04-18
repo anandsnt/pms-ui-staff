@@ -4,7 +4,7 @@ admin.controller('ADAddnewRate', ['$scope', function($scope) {
 $scope.init = function(){
 
 	BaseCtrl.call(this, $scope);
-	$scope.currentStepIndexList = ["Details"]
+	$scope.currentStepIndexList = ["Details"];
 	$scope.currentRateStepIndex = 0;
 	$scope.errorMessage = '';
 	$scope.newRateId = '';
@@ -34,6 +34,11 @@ $scope.$on("updateIndex", function(e,value){
 	else if(value ==2){
 	if($scope.currentStepIndexList.length< 3){
     	$scope.currentStepIndexList.push("Range");   	
+    }
+	}
+    else if(value ==3){
+	if($scope.currentStepIndexList.length< 4){
+    	$scope.currentStepIndexList[2] = "Configure";   	
     }
     $scope.clickedStep(parseInt(value));
 	}
