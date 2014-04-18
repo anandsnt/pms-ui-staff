@@ -48,14 +48,23 @@
           date: '=ngModel',
           minDate: '=',
           maxDate: '=',
-          disabledDates: '='
+          disabledDates: '=',
+          isCurrentMonth: '='
         },
         templateUrl:'../../assets/directives/Calendar/adCalendar.html' ,
             link: function(scope, element, attrs, ngModel)  {
           var minDate       = scope.minDate && dateUtils.stringToDate(scope.minDate),
               maxDate       = scope.maxDate && dateUtils.stringToDate(scope.maxDate),
               disabledDates = scope.disabledDates || [],
-              currentDate   = scope.date;
+              
+
+          currentDate   = new Date();
+          if(!scope.isCurrentMonth){
+            currentDate.setDate(1);
+            currentDate.setMonth(currentDate.getMonth() +1);
+          }
+
+          //currentDate   = scope.date;
 
           scope.dayNames    = $locale.DATETIME_FORMATS['SHORTDAY'];
           scope.currentDate = currentDate;
