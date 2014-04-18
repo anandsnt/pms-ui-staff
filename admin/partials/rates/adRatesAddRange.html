@@ -17,9 +17,15 @@
 
 
 </div>
+<br/>
+	
 
-<br/><br/><br/><br/><br/><br/><br/><br/><br/>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<fieldset class="holder" ng-repeat="set in Sets track by $index">
+		<ad-textbox value="set.setName"  style="float:left;"></ad-textbox>
+
+		<ad-checkbox ng-repeat="day in set.days" is-checked="day.checked" label="{{day.name}}" style="float:left;width:75px;margin-left:10px;" div-class="full-width" ng-click="checkboxClicked($index,$parent.$index)"></ad-checkbox>	
+
+		<button ng-show="$index === Sets.length-1 " ng-click="addNewSet($index)">Add<button>
+		<button ng-hide=" $index === Sets.length-1 " ng-click="deleteSet($index)">Delete<button>
+</fieldset>
 </div>
-
