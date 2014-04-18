@@ -21,11 +21,11 @@ admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter',function(
 
  $scope.$watch('nextMonthDateFormated',function(){
 
- 	console.log($scope.nextMonthDate)
+ 	console.log($scope.nextMonthDateFormated)
  })
 
  $scope.$watch('date',function(){
 
- 	console.log($scope.thisMonthDate)
+ 	console.log($scope.date)
  })
 }]);

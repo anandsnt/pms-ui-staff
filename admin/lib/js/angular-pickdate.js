@@ -126,30 +126,13 @@
             scope.render(currentDate);
           };
 
-          scope.changeMonth = function (offset) {
-            // If the current date is January 31th, setting the month to date.getMonth() + 1
-            // sets the date to March the 3rd, since the date object adds 30 days to the current
-            // date. Settings the date to the 2nd day of the month is a workaround to prevent this
-            // behaviour
-            currentDate.setDate(1);
-            currentDate.setMonth(currentDate.getMonth() + offset);
-            scope.render(currentDate);
-          };
 
           scope.years = [];
           scope.yearSelected = currentDate.getFullYear();
-        
-
-          scope.$watch('yearSelected',function(){
-            currentDate.setDate(1);
-            currentDate.setFullYear(scope.yearSelected);
-            scope.render(currentDate);
-          })
-       
-          
           for(year=2014;year<=2100;year++){
             scope.years.push(year);
           };
+          scope.weekDays = ['SU','MO','TUE','WE','TH','FR','SA'];
 
           scope.months=[{'name':'January','value':'0'},
                         {'name':'February','value':'1'},
@@ -165,6 +148,33 @@
                         {'name':'December','value':'11'}]
 
           scope.monthSelected = {'name':'January','value':'0'};
+
+          scope.changeMonth = function (offset) {
+            // If the current date is January 31th, setting the month to date.getMonth() + 1
+            // sets the date to March the 3rd, since the date object adds 30 days to the current
+            // date. Settings the date to the 2nd day of the month is a workaround to prevent this
+            // behaviour
+            currentDate.setDate(1);
+            currentDate.setMonth(currentDate.getMonth() + offset);
+            scope.render(currentDate);
+
+            var year  = currentDate.getFullYear();
+            scope.yearSelected =year;
+
+            var month = currentDate.getMonth();
+            scope.monthSelected = scope.months[month];
+          };
+
+          
+        
+
+          scope.$watch('yearSelected',function(){
+            currentDate.setDate(1);
+            currentDate.setFullYear(scope.yearSelected);
+            scope.render(currentDate);
+          })
+       
+         
           var currentMonth = currentDate.getMonth(); 
           
           for(i=0;i<=scope.months.length-1;i++){
@@ -173,8 +183,7 @@
               scope.monthSelected = scope.months[i]; 
           };
 
-          scope.$watch('monthSelected',function(){
-         
+          scope.$watch('monthSelected.value',function(){     
              currentDate.setDate(1);
              currentDate.setMonth(scope.monthSelected.value);
              scope.render(currentDate);
