@@ -1,25 +1,14 @@
-<form class="" ng-controller="ADAddRateRangeCtrl">
+<form class="form" ng-controller="ADAddRateRangeCtrl">
 	<div ng-include="'/assets/partials/common/notification_message.html'">
 	</div>
 	<fieldset class="holder full-width">
 		<div class="form-title">
-			<h3><span>Rate</span>Range</h3>
+			<h3><span>Rate</span>&nbsp;Range</h3>
 		</div>
 	</fieldset>
 
-<div class="date_picker_conatiner">
-<div class="date-picker-bg_right">	
-<div class="center_align">To</div>
-<div class="date-picker-bg">
-	<div class="date-picker-wrap">
-	   <div class="col-xs-12">
-	      <div pickadate="" ng-model="nextMonthDateFormated" min-date="nextMonthDateFormated" max-date="maxDate" date="nextMonthDate" is-current-month="false"></div>
-	   </div>
-	</div>
-</div>
-</div>
-<div class="date-picker-bg_left">	
-<div class="center_align">From</div>
+<fieldset class="holder left">
+<div class="center_align"><em>From</em> {{date | date:'MMM dd,y'}}</div>
 <div class="date-picker-bg">
 	<div class="date-picker-wrap">
 	   <div class="col-xs-12">
@@ -27,11 +16,17 @@
 	   </div>
 	</div>
 </div>
+</fieldset>
+<fieldset class="holder right">
+<div class="center_align"><em>To </em>{{nextMonthDateFormated | date:'MMM dd,y'}}</div>
+<div class="date-picker-bg">
+	<div class="date-picker-wrap">
+	   <div class="col-xs-12">
+	      <div pickadate="" ng-model="nextMonthDateFormated" min-date="nextMonthDateFormated" max-date="maxDate" date="nextMonthDate" is-current-month="false"></div>
+	   </div>
+	</div>
 </div>
-
-</div>
-
-	
+</fieldset>
 <div class="date_field_set_container">
 <fieldset class="holder" ng-repeat="set in Sets track by $index" style="margin:10px;">
 		<ad-textbox value="set.setName"  style="float:left;margin-right:60px;"></ad-textbox>
