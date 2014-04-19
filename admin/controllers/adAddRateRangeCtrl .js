@@ -1,8 +1,42 @@
-admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter',function($scope,$filter,dateFilter){
+admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter','ADRatesRangeSrv',function($scope,$filter,dateFilter,ADRatesRangeSrv){
 
 	$scope.saveStep3 = function(){
-		$scope.$emit("updateIndex","3");
 
+
+      var setData = [];
+
+angular.forEach($scope.Sets, function(set, key){
+      var setDetails ={};
+      setDetails.name = set.setName;
+      setDetails.monday = set.days[0].checked;
+      setDetails.tuesday = set.days[1].checked;
+      setDetails.wednesday = set.days[2].checked;
+      setDetails.thursday = set.days[3].checked;
+      setDetails.friday = set.days[4].checked;
+      setDetails.saturday = set.days[5].checked;
+      setDetails.sunday = set.days[6].checked;
+
+      setData.push(setDetails);
+
+});
+      var dateRangeData = 
+      {
+      'id': $scope.newRateId ,
+      'data':{  
+            'begin_date': $scope.date,
+            'end_date': $scope.nextMonthDateFormated,
+            'sets': setData
+             }
+      };
+
+   var postDateRangeSuccessCallback = function(){
+      $scope.$emit('hideLoader');
+      $scope.$emit("updateIndex","3");
+   };
+   var postDateRangeFailureCallback = function(){
+      $scope.$emit('hideLoader');
+   };
+   $scope.invokeApi(ADRatesRangeSrv.postDateRange,dateRangeData,postDateRangeSuccessCallback,postDateRangeFailureCallback);   
 	};
 
  /*
