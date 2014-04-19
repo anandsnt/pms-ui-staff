@@ -122,8 +122,11 @@
           };
 
           scope.dateClicked = function(dateObj){
-            scope.isDateSelected = true;
-            scope.setDate(dateObj);
+           
+            if(dateObj.className != "pickadate-disabled"){
+              scope.isDateSelected = true;
+              scope.setDate(dateObj);
+            }
           };
 
           ngModel.$render = function () {
