@@ -1,6 +1,15 @@
-<div ng-controller="ADAddRateRangeCtrl">
+<form class="" ng-controller="ADAddRateRangeCtrl">
+	<div ng-include="'/assets/partials/common/notification_message.html'">
+	</div>
+	<fieldset class="holder full-width">
+		<div class="form-title">
+			<h3><span>Rate</span>Range</h3>
+		</div>
+	</fieldset>
+
 <div class="date_picker_conatiner">
-<span class="center_align">To</span>
+<div class="date-picker-bg_right">	
+<div class="center_align">To</div>
 <div class="date-picker-bg">
 	<div class="date-picker-wrap">
 	   <div class="col-xs-12">
@@ -8,7 +17,9 @@
 	   </div>
 	</div>
 </div>
-<span class="center_align">From</span>
+</div>
+<div class="date-picker-bg_left">	
+<div class="center_align">From</div>
 <div class="date-picker-bg">
 	<div class="date-picker-wrap">
 	   <div class="col-xs-12">
@@ -16,10 +27,10 @@
 	   </div>
 	</div>
 </div>
-
+</div>
 
 </div>
-<br/>
+
 	
 <div class="date_field_set_container">
 <fieldset class="holder" ng-repeat="set in Sets track by $index" style="margin:10px;">
@@ -41,4 +52,4 @@
 	</button>
 	<button type="button" id="send-email" disabled="" class="button grey" ng-show="allFieldsFilled()">Step 4 - Configure Rate</button>
 </div>
-</div>
+</form>
