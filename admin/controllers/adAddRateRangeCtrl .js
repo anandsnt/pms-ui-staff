@@ -73,13 +73,14 @@ admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter',function(
    	});
 
    });
-   newSet.days =[{'name':'SUN','checked':true},
+   newSet.days =[
    {'name':'MON','checked':true},
    {'name':'TUE','checked':true},
    {'name':'WED','checked':true},
    {'name':'THU','checked':true},
    {'name':'FRI','checked':true},
-   {'name':'SAT','checked':true}];
+   {'name':'SAT','checked':true},
+   {'name':'SUN','checked':true}];
 
    angular.forEach(checkedDays, function(uncheckedDay, key){
    	angular.forEach(newSet.days, function(day, key){
