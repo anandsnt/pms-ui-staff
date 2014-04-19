@@ -11,6 +11,9 @@ admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter',function(
 
    $scope.setUpData = function(){
 
+         $scope.isFromDateSelected = false;
+         $scope.isToDateSelected   = false;
+
 	   	$scope.Sets = 
 		   	[{"setName":"Set 1",
 		   	'days':[
@@ -120,7 +123,7 @@ admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter',function(
    		});
    		});
 
-   		if($scope.date && $scope.nextMonthDateFormated && anyOneDayisChecked){
+   		if($scope.isFromDateSelected && $scope.isToDateSelected && anyOneDayisChecked){
      			if($scope.date <= $scope.nextMonthDateFormated)
      			  return false;
      			else

@@ -49,7 +49,8 @@
           minDate: '=',
           maxDate: '=',
           disabledDates: '=',
-          isCurrentMonth: '='
+          isCurrentMonth: '=',
+          isDateSelected: '='
         },
         templateUrl:'../../assets/directives/Calendar/adCalendar.html' ,
             link: function(scope, element, attrs, ngModel)  {
@@ -112,9 +113,17 @@
             scope.dates = dates;
           };
 
+       
+
           scope.setDate = function(dateObj) {
+            
             if (isDateDisabled(dateObj)) return;
             ngModel.$setViewValue(dateObj.date);
+          };
+
+          scope.dateClicked = function(dateObj){
+            scope.isDateSelected = true;
+            scope.setDate(dateObj);
           };
 
           ngModel.$render = function () {
@@ -130,6 +139,7 @@
           /*
           * set up data to be displayed
           */
+          scope.todayDate = dateFilter(new Date(), 'yyyy-MM-dd');
           scope.years = [];
           scope.yearSelected = currentDate.getFullYear();
           for(year=2014;year<=2100;year++){
@@ -202,6 +212,7 @@
           function isDateDisabled(dateObj) {
             return (/pickadate-disabled/.test(dateObj.className));
           }
+
         }
       };
     }]);
