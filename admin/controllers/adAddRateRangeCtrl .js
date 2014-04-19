@@ -14,13 +14,13 @@ admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter',function(
 	   	$scope.Sets = 
 		   	[{"setName":"Set 1",
 		   	'days':[
-			   	{'name':'SUN','checked':true},
 			   	{'name':'MON','checked':true},
 			   	{'name':'TUE','checked':true},
 			   	{'name':'WED','checked':true},
 			   	{'name':'THU','checked':true},
 			   	{'name':'FRI','checked':true},
-			   	{'name':'SAT','checked':true}
+			   	{'name':'SAT','checked':true},
+               {'name':'SUN','checked':true}
 		   	]}];
 	   	$scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
 	   	$scope.minDate =$scope.date;

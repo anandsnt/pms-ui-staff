@@ -28,13 +28,12 @@
 </div>
 </fieldset>
 
-<table>
+<table class="date_range_set_table">
 <tr ng-repeat="set in Sets">
-	<td>
-		<ad-textbox value="set.setName"  style="float:left;margin-right:60px;width:100px;"></ad-textbox>
+	<td width="10%">
+		<ad-textbox value="set.setName" style="width:150px;"></ad-textbox>
 	</td>
-	<td>
-
+	<td width="70%" style="padding-left:60px;">
 		 <ad-checkbox style="float:left;width:60px;margin:5px;" ng-repeat="day in set.days" is-checked="day.checked" label="{{day.name}}"  ng-click="checkboxClicked($index,$parent.$index)"></ad-checkbox>	
 	</td>
 	<td>
