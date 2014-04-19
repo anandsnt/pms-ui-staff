@@ -1,7 +1,7 @@
 <form class="form" ng-controller="ADAddRateRangeCtrl">
 	<div ng-include="'/assets/partials/common/notification_message.html'">
 	</div>
-	<fieldset class="holder full-width">
+	<fieldset class="holder full-width" style="margin-bottom:20px;">
 		<div class="form-title">
 			<h3><span>Rate</span>&nbsp;Range</h3>
 		</div>
@@ -27,17 +27,22 @@
 	</div>
 </div>
 </fieldset>
-<div class="date_field_set_container">
-<fieldset class="holder" ng-repeat="set in Sets track by $index" style="margin:10px;">
-		<ad-textbox value="set.setName"  style="float:left;margin-right:60px;"></ad-textbox>
 
-		<ad-checkbox ng-repeat="day in set.days" is-checked="day.checked" label="{{day.name}}" style="float:left;width:75px;margin-left:10px;" div-class="full-width" ng-click="checkboxClicked($index,$parent.$index)"></ad-checkbox>	
+<table>
+<tr ng-repeat="set in Sets">
+	<td>
+		<ad-textbox value="set.setName"  style="float:left;margin-right:60px;width:100px;"></ad-textbox>
+	</td>
+	<td>
 
-		<button ng-show="$index === Sets.length-1 " ng-click="addNewSet($index)"style="margin-left:50px;">Add</button>
-		<button ng-hide=" $index === Sets.length-1 " ng-click="deleteSet($index)"style="margin-left:50px;">Delete</button>
-	
-</fieldset>
-</div>
+		 <ad-checkbox style="float:left;width:60px;margin:5px;" ng-repeat="day in set.days" is-checked="day.checked" label="{{day.name}}"  ng-click="checkboxClicked($index,$parent.$index)"></ad-checkbox>	
+	</td>
+	<td>
+		<button ng-show="$index === Sets.length-1 " ng-click="addNewSet($index)"style="margin-left:50px;float:right;">Add</button>
+		<button ng-hide=" $index === Sets.length-1 " ng-click="deleteSet($index)"style="margin-left:50px;float:right;">Delete</button>
+	</td>
+<tr>
+</table>
 <div class="actions float center_align">
 	<button type="button" ui-sref="admin.rates" class="button blank add-data-inline">
 		Cancel
