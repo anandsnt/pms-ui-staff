@@ -12,7 +12,8 @@ $scope.init = function(){
 	$scope.based_on_value ='';
 	$scope.based_on_type = 'amount';
 	$scope.isFirstTime = true;
-
+	$scope.errorMessage = "";
+	
 	$scope.step1Data = {
 		'name':$scope.rate_name,
 		'type':$scope.rateTypeselected,
@@ -114,6 +115,7 @@ $scope.saveStep1 = function(){
 	};
 	var createNewRateFailureCallback = function(data){
 		$scope.$emit('hideLoader');
+		$scope.errorMessage = data;
 	};
 	var updateRateSuccessCallback = function(data){
 		$scope.$emit('hideLoader');
@@ -121,6 +123,7 @@ $scope.saveStep1 = function(){
 	};
 	var updateRateFailureCallback = function(data){
 		$scope.$emit('hideLoader');
+		$scope.errorMessage = data;
 	};
 	if($scope.isFirstTime)
 	 $scope.invokeApi(ADRatesAddDetailsSrv.createNewRate,data,createNewRateSuccessCallback,createNewRateFailureCallback);	
