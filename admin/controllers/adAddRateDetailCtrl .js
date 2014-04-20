@@ -68,6 +68,19 @@ $scope.fetchData = function(){
 		};
 
 	$scope.invokeApi(ADRatesAddDetailsSrv.fetchBasedOnTypes, getParams,fetchBasedOnSuccessCallback,fetchBasedOnFailureCallback);	
+
+	// to be done
+	var fetchHotelSettingsSuccessCallback = function(data){
+		console.log(data)
+		$scope.currenyCode =data.currency.symbol;
+		$scope.$emit('hideLoader');
+	};
+	var fetchHotelSettingsFailureCallback = function(data){
+		$scope.$emit('hideLoader');
+	};
+
+	$scope.invokeApi(ADRatesAddDetailsSrv.fetchHotelSettings,{},fetchHotelSettingsSuccessCallback,fetchHotelSettingsFailureCallback);	
+	
 }	
 
 $scope.fetchData();

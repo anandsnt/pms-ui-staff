@@ -29,6 +29,26 @@ function($q, ADBaseWebSrvV2) {
 		});
 		return deferred.promise;
 	};
+
+	/*
+    * Service function to fetch HotelSettings
+    * @return {object} HotelSettings
+    */
+	this.fetchHotelSettings = function() {
+		var deferred = $q.defer();
+		var url = "/api/hotel_settings";
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+
+	
+
+
   /*
 	* Service function to create new rate
 	* @params {object} rates details
