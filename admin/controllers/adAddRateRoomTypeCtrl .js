@@ -94,26 +94,29 @@
 	 */
 
 	$scope.topMoverightClicked = function(){
-		
-		if($scope.selectedAssignedRoomIndex != -1){
-			var temp = $scope.assignedRoomTypes[$scope.selectedAssignedRoomIndex];
-			$scope.nonAssignedroomTypes.push(temp)
-			$scope.assignedRoomTypes.splice($scope.selectedAssignedRoomIndex,1);
-			$scope.selectedAssignedRoomIndex =-1;
-		 }
-	};
-   /*
-	 * To handle click action for selected room type 
-	 *
-	 */
-	$scope.topMoveleftClicked = function(){
-		
+
 		if($scope.selectedUnAssignedRoomIndex != -1){
 			var temp = $scope.nonAssignedroomTypes[$scope.selectedUnAssignedRoomIndex];
 			$scope.assignedRoomTypes.push(temp)
 			$scope.nonAssignedroomTypes.splice($scope.selectedUnAssignedRoomIndex,1);
 			$scope.selectedUnAssignedRoomIndex =-1;
 	    }
+		
+		
+	};
+   /*
+	 * To handle click action for selected room type 
+	 *
+	 */
+	$scope.topMoveleftClicked = function(){
+		if($scope.selectedAssignedRoomIndex != -1){
+			var temp = $scope.assignedRoomTypes[$scope.selectedAssignedRoomIndex];
+			$scope.nonAssignedroomTypes.push(temp)
+			$scope.assignedRoomTypes.splice($scope.selectedAssignedRoomIndex,1);
+			$scope.selectedAssignedRoomIndex =-1;
+		 }
+		
+	
 	};
    /*
 	 * To handle click action to move all assigned room types 
@@ -122,26 +125,29 @@
 
 	$scope.bottomMoverightClicked = function(){
 
-		if($scope.assignedRoomTypes.length>0){
-			angular.forEach($scope.assignedRoomTypes, function(item){
-			   $scope.nonAssignedroomTypes.push(item);
-			 });
-			$scope.assignedRoomTypes = [];
-		}
-	};
-   /*
-	 * To handle click action to move all unassigned room types 
-	 *
-	 */
-	$scope.bottomMoveleftClicked = function(){
-
 		if($scope.nonAssignedroomTypes.length>0){
 			angular.forEach($scope.nonAssignedroomTypes, function(item){
 	        $scope.assignedRoomTypes.push(item);
 	 });
 			$scope.nonAssignedroomTypes = [];
 		}
+	
+
+		
 	};
+   /*
+	 * To handle click action to move all unassigned room types 
+	 *
+	 */
+	$scope.bottomMoveleftClicked = function(){
+		if($scope.assignedRoomTypes.length>0){
+			angular.forEach($scope.assignedRoomTypes, function(item){
+			   $scope.nonAssignedroomTypes.push(item);
+			 });
+			$scope.assignedRoomTypes = [];
+		}
+
+		};
 
 	}]);
 
