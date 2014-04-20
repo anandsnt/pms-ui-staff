@@ -78,7 +78,7 @@ $scope.fetchData();
 
 $scope.saveStep1 = function(){
 
-	var amount = $scope.based_on_plus_minus + $scope.based_on_value;
+	var amount = parseInt($scope.based_on_plus_minus + $scope.based_on_value);
 
 	if($scope.basedOnRateTypeSelected)
 		var basedOn_id = $scope.basedOnRateTypeSelected.id;
