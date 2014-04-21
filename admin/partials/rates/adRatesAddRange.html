@@ -12,7 +12,7 @@
 <div class="date-picker-bg">
 	<div class="date-picker-wrap">
 	   <div class="col-xs-12">
-	      <div pickadate="" ng-model="date" min-date="date" max-date="maxDate" date="date" is-current-month="true" is-date-selected="isFromDateSelected"></div>
+	      <div pickadate="" ng-model="date" min-date="minDate" max-date="maxDate" date="date" is-current-month="true" is-date-selected="isFromDateSelected"></div>
 	   </div>
 	</div>
 </div>
@@ -37,8 +37,9 @@
 		 <ad-checkbox style="float:left;width:60px;margin:5px;" ng-repeat="day in set.days" is-checked="day.checked" label="{{day.name}}"  ng-click="checkboxClicked($index,$parent.$index)"></ad-checkbox>	
 	</td>
 	<td>
-		<button ng-show="$index === Sets.length-1 " ng-click="addNewSet($index)"style="margin-left:50px;float:right;">Add</button>
-		<button ng-hide=" $index === Sets.length-1 " ng-click="deleteSet($index)"style="margin-left:50px;float:right;">Delete</button>
+		<img src="/assets/plus_small.png" ng-click="addNewSet($index)" ng-show="$index === Sets.length-1 " style="float:right;"/>
+		<img src="/assets/close_small.png" ng-hide=" $index === Sets.length-1 " ng-click="deleteSet($index)"style="float:right;">
+		
 	</td>
 <tr>
 </table>

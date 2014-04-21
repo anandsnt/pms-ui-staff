@@ -60,13 +60,14 @@ angular.forEach($scope.Sets, function(set, key){
                {'name':'SUN','checked':true}
 		   	]}];
 	   	$scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
-	   	$scope.minDate =$scope.date;
+	   	$scope.minDate =dateFilter(new Date(), 'yyyy-MM-dd');;
 	   	$scope.thisMonthDate = new Date();
 	   	currentDate   = new Date();
 	   	currentDate.setDate(1);
 	   	currentDate.setMonth(currentDate.getMonth() +1);
 	   	$scope.nextMonthDate = currentDate;
 	   	$scope.nextMonthDateFormated = dateFilter(currentDate, 'yyyy-MM-dd');
+         $scope.nextMonthMinDate = dateFilter(currentDate, 'yyyy-MM-dd');
    };
    $scope.setUpData();
 
