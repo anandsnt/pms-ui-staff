@@ -195,6 +195,7 @@ $scope.startWatchingCheckoutcharge1 = function(){
     		'charge_code':$scope.upsellData.selected_charge_code
 
     	};
+    	
     	var updateChainSuccessCallback = function(data) {
     		$scope.$emit('hideLoader');
     	};
