@@ -34,13 +34,13 @@ admin.controller('ADRulesRestrictionCtrl', [
 
       //on success
       var toggleSwitchLikesSuccessCallback = function(data) {
-        $scope.ruleList[index].activated = !$scope.ruleList[index].activated;
+        $scope.ruleList[index].activated = $scope.ruleList[index].activated ? false : true;
         $scope.$emit('hideLoader');
       };
 
       var data = {
         'id': $scope.ruleList[index].id,
-        'status': !$scope.ruleList[index].activated
+        'status': $scope.ruleList[index].activated ? false : true
       }
 
       $scope.invokeApi(ADRulesRestrictionSrv.toggleSwitch, data, toggleSwitchLikesSuccessCallback);
