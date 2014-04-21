@@ -78,8 +78,9 @@
 				</div>
 				<div class="entry has-sortable">
 					<label>Assigned Roles</label>
-					<ul id="assigned-roles" data-placeholder="Drop a role here to assign it to the user" class="boxes sortable empty short-list" data-drop="true" ng-model='assignedRoles' jqyoui-droppable="{multiple:true}" >
-						<li ng-repeat="role in assignedRoles" >
+					<ul id="assigned-roles" data-placeholder="Drop a role here to assign it to the user" class="boxes sortable empty short-list" data-drop="true" ng-model='assignedRoles' jqyoui-droppable="{multiple:true}" style="overflow: visible !important;">
+						<li ng-repeat="role in assignedRoles" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="assignedRoles" jqyoui-draggable="{index: {{$index}}, placeholder:true, animate:'true'}" ng-hide="!role.name" ng-class="{selected: selectedAssignedRole == $index}" ng-click="selectAssignedRole($index)"
+						>
 							<span class="icons icon-handle"></span>
 							<span class="icons icon-handle"></span>
 							{{role.name}}
@@ -94,9 +95,9 @@
 				</div>
 				<div class="entry has-sortable" >
 					<label>Not Assigned Roles</label>
-					<ul data-placeholder="To remove a role for the user simply drop it here" class="boxes sortable short-list"  >
+					<ul data-placeholder="To remove a role for the user simply drop it here" class="boxes sortable short-list"  style="overflow: visible !important;" data-drop="true" ng-model='unAssignedRoles' jqyoui-droppable="{multiple:true}">
 					
-						<li ng-repeat="role in unAssignedRoles" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="unAssignedRoles" jqyoui-draggable="{index: {{$index}}, placeholder:true,animate:true}" ng-hide="!role.name">
+						<li ng-repeat="role in unAssignedRoles" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="unAssignedRoles" jqyoui-draggable="{index: {{$index}}, placeholder:true, animate:'true'}" ng-hide="!role.name" ng-class="{selected: selectedUnAssignedRole == $index}" ng-click="selectUnAssignedRole($index)">
 							<span class="icons icon-handle"></span>
 							<span class="icons icon-handle"></span>
 							{{role.name}}

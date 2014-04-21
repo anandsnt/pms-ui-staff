@@ -23,14 +23,14 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
     * Handle action when clicked on assigned role
     * @param {int} index of the clicked role
     */
-	$scope.clickedOnAssignedRole = function(index){
+	$scope.selectAssignedRole = function(index){
 		$scope.selectedAssignedRole = index;
 	};
    /*
     * Handle action when clicked on un assigned role
     * @param {int} index of the clicked role
     */
-	$scope.clickedOnUnassignedRole = function(index){
+	$scope.selectUnAssignedRole = function(index){
 		$scope.selectedUnassignedRole = index;
 	};	
    /*
@@ -60,25 +60,7 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 		$scope.unAssignedRoles.splice(index, 1);
 		$scope.selectedUnassignedRole = -1;
 	};
-   
-	$scope.$on("ANGULAR_DRAG_START", function(sendchaneel){
-		// console.log(sendchaneel);
-	});
-	
-	/**
-	 * To handle drop success event
-	 *
-	 */
-	$scope.dropSuccessHandler = function($event, index, array) {
-		array.splice(index, 1);
-	};
-	/**
-	 * To handle on drop event
-	 *
-	 */
-	$scope.onDrop = function($event, $data, array) {	
-		array.push($data);
-	};
+
 	/**
     *   save user details
     */
@@ -91,9 +73,12 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 			unwantedKeys = ["departments", "roles", "user_photo"];
 		}
 		var userRoles = [];
-		$scope.assignedRoles.forEach(function(entry) {
-    		userRoles.push(entry.value);
-		});
+		for(var j = 0; j < $scope.assignedRoles.length; j++){
+	 		if($scope.assignedRoles[j].value != ""){
+	 			userRoles.push($scope.assignedRoles[j].value);	
+	 		}
+	 	}
+		
 		
 		$scope.data.user_roles = userRoles;
 		var data = dclone($scope.data, unwantedKeys);
@@ -122,19 +107,26 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 			$scope.assignedRoles = [];
 			$scope.$emit('hideLoader');
 			$scope.data = data;
-			$scope.unAssignedRoles = $scope.data.roles;
+			$scope.unAssignedRoles = JSON.parse(JSON.stringify($scope.data.roles));
 			if(data.user_photo == ""){
 				$scope.image = "/assets/preview_image.png";
 			} else {
 				$scope.image = data.user_photo;
 			}
 			$scope.data.confirm_email = $scope.data.email;
-			$scope.data.roles.forEach(function(entry, index) {
-	    		if ( $scope.data.user_roles.indexOf(entry.value ) > -1 ){
-	   			 	$scope.assignedRoles.push(entry);
-	   			 	$scope.unAssignedRoles.splice(index, 1);
+
+			for(var i = 0; i < $scope.data.roles.length; i++) {				
+				if ( $scope.data.user_roles.indexOf($scope.data.roles[i].value ) != -1 ){
+	   			 	$scope.assignedRoles.push($scope.data.roles[i]);
+	   			 	for(var j = 0; j < $scope.unAssignedRoles.length; j++){
+	   			 		if($scope.unAssignedRoles[j].value == $scope.data.roles[i].value){
+	   			 			$scope.unAssignedRoles.splice(j, 1);		
+	   			 		}
+	   			 	}
+	   			 	
+	   			
 	    		}
-			});
+			}
 		};
 		$scope.invokeApi(ADUserSrv.getUserDetails, {'id':id} , successCallbackRender);
 	};

@@ -2,11 +2,9 @@
 var admin = angular.module('admin',['ui.router', 'ng-iscroll','ngDragDrop','ngTable']);
 
 
-admin.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {
-	
+admin.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {	
 	$rootScope.$state = $state;
-	$rootScope.$stateParams = $stateParams;	
-	
+	$rootScope.$stateParams = $stateParams;
 }]);
 
 
