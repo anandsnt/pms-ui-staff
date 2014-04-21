@@ -30,10 +30,10 @@ reports.controller('reporstList', [
 
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 
-		$scope.showCal = true;
+		$scope.isCal     = false;
 		$scope.showReports = false;
 		$scope.reportList  = [];
-		$scope.reportCount   = 0;
+		$scope.reportCount = 0;
 		$scope.userList    = [];
 
 		// fetch the reports list with the filters to be used
@@ -78,14 +78,17 @@ reports.controller('reporstList', [
 				$scope.showReports = true;
 
 				$scope.userList = response;
-
-				console.log( $scope.userList );
 			});
 
 		// show hide filter
 		$scope.toggleFilter = function() {
 			// DO NOT flip as scuh could endup in infinite $digest loop
 			this.item.show_filter = this.item.show_filter ? false : true; 
+		};
+
+		// show cal
+		$scope.showCal = function() {
+			$scope.isCal = $scope.isCal ? false : true; 
 		};
 	}
 ]);
