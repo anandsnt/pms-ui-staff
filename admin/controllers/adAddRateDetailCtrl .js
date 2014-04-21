@@ -1,6 +1,7 @@
 admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  function($scope,ADRatesAddDetailsSrv){
 
 $scope.init = function(){
+	BaseCtrl.call(this, $scope);
 	$scope.rateTypes = [];
 	$scope.basedOn = [];
 	$scope.basedOnRateList = [];
@@ -12,7 +13,8 @@ $scope.init = function(){
 	$scope.based_on_value ='';
 	$scope.based_on_type = 'amount';
 	$scope.isFirstTime = true;
-
+	$scope.errorMessage = "";
+	
 	$scope.step1Data = {
 		'name':$scope.rate_name,
 		'type':$scope.rateTypeselected,
@@ -59,7 +61,28 @@ $scope.fetchData = function(){
 	var fetchBasedOnFailureCallback = function(data){
 		$scope.$emit('hideLoader');
 	};
-	$scope.invokeApi(ADRatesAddDetailsSrv.fetchBasedOnTypes, {},fetchBasedOnSuccessCallback,fetchBasedOnFailureCallback);	
+	var getParams ={
+		'page':'1',
+		'per_page':'1000',
+		 'query':'',
+		 'sort_dir':'asc',
+		 'sort_field':''
+		};
+
+	$scope.invokeApi(ADRatesAddDetailsSrv.fetchBasedOnTypes, getParams,fetchBasedOnSuccessCallback,fetchBasedOnFailureCallback);	
+
+	// to be done
+	var fetchHotelSettingsSuccessCallback = function(data){
+		console.log(data)
+		$scope.currenyCode =data.currency.symbol;
+		$scope.$emit('hideLoader');
+	};
+	var fetchHotelSettingsFailureCallback = function(data){
+		$scope.$emit('hideLoader');
+	};
+
+	$scope.invokeApi(ADRatesAddDetailsSrv.fetchHotelSettings,{},fetchHotelSettingsSuccessCallback,fetchHotelSettingsFailureCallback);	
+	
 }	
 
 $scope.fetchData();
@@ -70,7 +93,7 @@ $scope.fetchData();
 
 $scope.saveStep1 = function(){
 
-	var amount = $scope.based_on_plus_minus + $scope.based_on_value;
+	var amount = parseInt($scope.based_on_plus_minus + $scope.based_on_value);
 
 	if($scope.basedOnRateTypeSelected)
 		var basedOn_id = $scope.basedOnRateTypeSelected.id;
@@ -93,6 +116,7 @@ $scope.saveStep1 = function(){
 	};
 	var createNewRateFailureCallback = function(data){
 		$scope.$emit('hideLoader');
+		$scope.errorMessage = data;
 	};
 	var updateRateSuccessCallback = function(data){
 		$scope.$emit('hideLoader');
@@ -100,6 +124,7 @@ $scope.saveStep1 = function(){
 	};
 	var updateRateFailureCallback = function(data){
 		$scope.$emit('hideLoader');
+		$scope.errorMessage = data;
 	};
 	if($scope.isFirstTime)
 	 $scope.invokeApi(ADRatesAddDetailsSrv.createNewRate,data,createNewRateSuccessCallback,createNewRateFailureCallback);	

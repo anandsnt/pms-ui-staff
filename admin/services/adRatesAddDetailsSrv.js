@@ -7,7 +7,7 @@ function($q, ADBaseWebSrvV2) {
     */
 	this.fetchRateTypes = function() {
 		var deferred = $q.defer();
-		var url = "/api/rate_types/active.json";
+		var url = "/api/rate_types/active";
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
@@ -19,9 +19,24 @@ function($q, ADBaseWebSrvV2) {
     * Service function to rates
     * @return {object} rates
     */
-	this.fetchBasedOnTypes = function() {
+	this.fetchBasedOnTypes = function(data) {
 		var deferred = $q.defer();
-		var url = "/api/rates.json";
+		var url = "/api/rates";
+		ADBaseWebSrvV2.getJSON(url,data).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	/*
+    * Service function to fetch HotelSettings
+    * @return {object} HotelSettings
+    */
+	this.fetchHotelSettings = function() {
+		var deferred = $q.defer();
+		var url = "/api/hotel_settings";
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
@@ -29,6 +44,11 @@ function($q, ADBaseWebSrvV2) {
 		});
 		return deferred.promise;
 	};
+
+
+	
+
+
   /*
 	* Service function to create new rate
 	* @params {object} rates details

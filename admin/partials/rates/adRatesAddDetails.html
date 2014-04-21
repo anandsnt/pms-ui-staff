@@ -2,7 +2,7 @@
 <form class="form float form_add_new_rate" ng-controller="ADaddRatesDetailCtrl">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-	<fieldset class="holder full-width">
+	<fieldset class="holder full-width" style="margin-bottom:0px;">
 		<div class="form-title">
 			<h3><span>Rate</span> Details </h3>
 			<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
@@ -35,12 +35,7 @@
 			</div>
 			<div class="entry"> 
 
-				<label ng-class="{'basedon_option_hidden': !basedOnRateTypeSelected}" class="float_right"><strong>*</strong> </label>
-				<label ng-class="{'basedon_option_hidden': !basedOnRateTypeSelected}"class="float_right"><strong>*</strong> </label>
-				<label ng-class="{'basedon_option_hidden': !basedOnRateTypeSelected}" class="float_right"><strong>*</strong> </label>
-
-
-				<div class="select select-col col1-3">
+					<div class="select select-col col1-3 actions_margin_top">
 					
 					<select  class="styled" ng-model="based_on_plus_minus">
 						<option value="+">+</option>
@@ -48,7 +43,7 @@
 					</select>
 
 				</div>
-				<div class=" select-col col1-3" >
+				<div class=" select-col col1-3 actions_margin_top" >
 					<ad-textbox inputtype="text" value="based_on_value" styleclass = "col1-3"
 					label = "" placeholder = "" style=" width: 66px;"
 					></ad-textbox>
