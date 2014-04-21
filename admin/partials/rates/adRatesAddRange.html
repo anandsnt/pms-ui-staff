@@ -8,21 +8,21 @@
 	</fieldset>
 
 <fieldset class="holder left">
-<div class="center_align"><em>From</em>&nbsp;<span ng-show="isFromDateSelected">{{date | date:'MMM dd,y'}}</span></div>
+<div class="center_align"><em>From</em>&nbsp;<span ng-show="isFromDateSelected">{{fromDate | date:'MMM dd,y'}}</span></div>
 <div class="date-picker-bg">
 	<div class="date-picker-wrap">
 	   <div class="col-xs-12">
-	      <div pickadate="" ng-model="date" min-date="minDate" max-date="maxDate" date="date" is-current-month="true" is-date-selected="isFromDateSelected"></div>
+	      <div pickadate="" ng-model="fromDate" min-date="fromMinDate" max-date="maxDate" date="date" is-current-month="true" is-date-selected="isFromDateSelected"></div>
 	   </div>
 	</div>
 </div>
 </fieldset>
 <fieldset class="holder right">
-<div class="center_align"><em>To </em>&nbsp;<span ng-show="isToDateSelected">{{nextMonthDateFormated | date:'MMM dd,y'}}</span></div>
+<div class="center_align"><em>To </em>&nbsp;<span ng-show="isToDateSelected">{{toMonthDateFormated | date:'MMM dd,y'}}</span></div>
 <div class="date-picker-bg">
 	<div class="date-picker-wrap">
 	   <div class="col-xs-12">
-	      <div pickadate="" ng-model="nextMonthDateFormated" min-date="date" max-date="maxDate" date="nextMonthDate" is-current-month="false" is-date-selected="isToDateSelected"></div>
+	      <div pickadate="" ng-model="toMonthDateFormated" min-date="fromMinDate" max-date="maxDate" date="toMonthDate" is-current-month="false" is-date-selected="isToDateSelected"></div>
 	   </div>
 	</div>
 </div>
