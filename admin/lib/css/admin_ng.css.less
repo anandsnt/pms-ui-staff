@@ -92,13 +92,28 @@ height: 271px;
 }
 
 .green_mover{
-	background-color:#58d316 !important;
+
 	background-position: 13px -1232px !important;
 }
 .red_mover{
-	background-color:#F80000   !important;
-	background-position: 13px -1183px !important;
+  background-position: 13px -1183px !important;
+}
+.red_mover,.green_mover{
+	  background-image: url("/assets/admin/admin-icons.png");
+    background-repeat: no-repeat;
+    height:40px !important;
 
+}
+.red_gradient {
+   
+  background-color: #dd0500;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e76e3a), to(#dd0500));
+  background: -moz-linear-gradient(top, #e76e3a 0%, #dd0500 100%);
+}
+.green_gradient {
+  background-color: #58d316;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#88d702), to(#58d316));
+  background: -moz-linear-gradient(top, #88d702 0%, #58d316 100%);
 }
 
 .actions_margin_top{
@@ -109,6 +124,12 @@ height: 271px;
   cursor:pointer;
 }
 
+.icons_rates {
+    background-image: url("/assets/admin/admin-icons.png");
+    background-repeat: no-repeat;
+    border: 0 none;
+    display: block;
+}
 
 
 /* ------------------date -picker ---------------------*/
@@ -323,5 +344,7 @@ border-color: #f1f1f1;
 }
 
 /*------------------date -picker ends here-------------------------- */
+
+
 
 
