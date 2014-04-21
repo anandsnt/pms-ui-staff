@@ -1,6 +1,7 @@
 admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  function($scope,ADRatesAddDetailsSrv){
 
 $scope.init = function(){
+	BaseCtrl.call(this, $scope);
 	$scope.rateTypes = [];
 	$scope.basedOn = [];
 	$scope.basedOnRateList = [];
