@@ -10,7 +10,6 @@ reports.factory('RepUserSrv', [
 				
 			$http.get(url)
 				.success(function(response, status) {
-					console.log(response);
 					deferred.resolve(response);
 				})
 				.error(function(response, status) {

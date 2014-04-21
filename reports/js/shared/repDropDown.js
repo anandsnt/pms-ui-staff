@@ -1,4 +1,4 @@
-reports.directive('repDropdown', function($timeout) {
+reports.directive('repdropdown', function($timeout) {
 
     return {
     	restrict: 'AE',

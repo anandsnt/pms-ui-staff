@@ -4165,6 +4165,7 @@
 				}
 
 				select { height: 40px; }
+				select.multiple { height: 100px; }
 
 				.date-range {
 					width: 340px;
@@ -4528,6 +4529,158 @@
 			}
 		}
 	}
+
+
+	.customDatePicker {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0,0,0,0.7);
+		z-index: 100000;
+		width: 100%;
+		height: 100%;
+	}
+
+
+	.customDatePicker .pickadate {
+		position: absolute;
+		background: #fcfcfc repeat;
+		background-image: @textureImage;
+		top: 84% !important;
+		left: 50% !important;
+		padding: 10px;
+		margin: -185px 0 0 -240px;
+		width: 480px;
+		z-index: 444444;
+	}
+
+	.pickadate-header {
+		position: relative;
+		line-height: 40px;
+		background: #fff;
+	}
+
+	.pickadate-main {
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		text-align: center;
+		font-size: 12px;
+	}
+
+	.pickadate a:visited, .pickadate a {
+		color: #666666;
+	}
+
+	.pickadate-cell {
+		overflow: hidden;
+		margin: 0;
+		padding: 0;
+	}
+
+	.pickadate-cell li {
+		display: block;
+		float: left;
+		border: 1px solid #DCDCDC;
+		border-width: 0 1px 1px 0;
+		width: 14.285%;
+		padding: 1.3% 0 1.3% 0;
+		margin: 0;
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+	}
+
+	.pickadate-cell li:nth-child(7n+0) {
+		border-right: 1px solid #DCDCDC;
+	}
+
+	.pickadate-cell li:nth-child(1),
+	.pickadate-cell li:nth-child(8),
+	.pickadate-cell li:nth-child(15),
+	.pickadate-cell li:nth-child(22),
+	.pickadate-cell li:nth-child(29),
+	.pickadate-cell li:nth-child(36) {
+		border-left: 1px solid #DCDCDC;
+	}
+
+	.pickadate-cell .pickadate-disabled,
+	.pickadate-cell .pickadate-disabled a {
+		color: #DCDCDC;
+	}
+
+	.pickadate-cell .pickadate-enabled {
+		cursor: pointer;
+		font-size: 12px;
+		color: #666666;
+	}
+
+	.pickadate-cell .pickadate-today {
+		background-color: #eaeaea;
+	}
+
+	.pickadate-cell .pickadate-active {
+		background-color: #b52a00;
+	}
+
+	.pickadate-cell .pickadate-active {
+		color: white;
+	}
+
+	.pickadate-cell .pickadate-head {
+		border-top: 1px solid #DCDCDC;
+		background: #f3f3f3;
+	}
+
+	.pickadate-cell .pickadate-head:nth-child(1),
+	.pickadate-cell .pickadate-head:nth-child(7) {
+		background: #f3f3f3;
+	}
+
+	.pickadate-centered-heading {
+		font-size: 18px;
+		font-weight: 600;
+		line-height: 40px;
+		vertical-align: middle;
+		text-align: center;
+		text-transform: uppercase;
+	}
+
+	.pickadate-controls {
+		position: absolute;
+		z-index: 10;
+		width: 100%;
+	}
+
+	.pickadate-controls .pickadate-prev,
+	.pickadate-controls .pickadate-next {
+		overflow: hidden;
+		cursor: pointer;
+		display: block;
+		text-indent: -9999px;
+		width: 40px;
+		height: 40px;
+		background-position:  50% 14px;
+		background-repeat: no-repeat;
+	}
+
+	.pickadate-controls .pickadate-prev {
+		float: left;
+		background-image: @arrowBlackLeft;
+	}
+
+	.pickadate-controls .pickadate-next {
+		float: right;
+		background-image: @arrowBlackRight;
+	}
+
+	.pickadate-controls a {
+		text-decoration: none;
+		font-size: 0.9em;
+	}
+
 	
 		
 /* 6. IE
