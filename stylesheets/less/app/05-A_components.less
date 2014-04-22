@@ -4108,6 +4108,7 @@
 		li {
 			padding: 0;
 			.clickable;
+			overflow: visible;
 
 			.toggle-filter {
 				color: @textColor;
@@ -4149,7 +4150,6 @@
 
 			.configure-report {
 				background-color: @grey1;
-		  		overflow: hidden;
 		  		margin: 0 15px 15px 15px;
 		  		padding: 15px;
 				#border-radius > .rounded();
@@ -4186,7 +4186,7 @@
 						}
 					}
 
-					span {
+					.span-to {
 						color: @grey3;
 						font-size: 14px;
 						text-transform: uppercase;
@@ -4532,90 +4532,102 @@
 
 
 
-	.customDatePicker {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background: rgba(0,0,0,0.7);
-		z-index: 100000;
-		width: 100%;
-		height: 100%;
-	}
-
-	.customDatePicker .pickadate {
-		position: absolute;
-		background: #fcfcfc repeat;
-		background-image: @textureImage;
+	.datepicker {
+		position: fixed !important;
+		padding: 10px;
+		width: 400px !important;
 		top: 50% !important;
 		left: 50% !important;
-		padding: 10px 10px 6px 10px;
-		margin: -170px 0 0 -240px;
-		width: 480px;
-		z-index: 444444;
+		margin: -200px 0 0 -175px !important;
+		background-image: @textureImage;
+		background-repeat: repeat;
+		z-index: 666;
 	}
 
-	.pickadate-header {
-		position: relative;
-		line-height: 40px;
+	.datepicker table {
+		border-collapse: collapse;
+		margin-bottom: 0;
+	}
+
+	.datepicker thead .text-center th {
 		background: #fff;
 	}
 
-	.pickadate-main {
-		margin: 0;
-		padding: 0;
-		width: 100%;
+	.datepicker thead .dow {
+		color: #9d9d9d;
+		font-weight: 600;
 		text-align: center;
-		font-size: 12px;
+		text-transform: uppercase;
+		line-height: 30px;
+		vertical-align: middle;
 	}
 
-	.pickadate a:visited, .pickadate a {
-		color: #666666;
-	}
-
-	.pickadate-cell {
-		overflow: hidden;
-		margin: 0;
-		padding: 0;
-	}
-
-	.pickadate-cell li {
+	.datepicker th .btn {
 		display: block;
-		float: left;
+		width: 100%;
+		height: 100%;
+		background: none;
 		border: 0;
-		width: 13.542%;
-		margin: 0 4px 4px 0;
+		cursor: pointer;
+	}
+
+	.datepicker th .btn-block {
 		font-size: 18px;
 		font-weight: 600;
-		line-height: 45px;
+		line-height: 40px;
+		vertical-align: middle;
+		text-align: center;
+		text-transform: uppercase;
+	}
+
+	.datepicker th .glyphicon {
+		width: 13px;
+		height: 13px;
+		display: block;
+		margin: 0 auto;
+	}
+
+	.glyphicon-chevron-left {
+		background-image: @arrowBlackLeft;
+		background-repeat: none;
+	}
+
+	.glyphicon-chevron-right {
+		background-image: @arrowBlackRight;
+		background-repeat: none;
+	}
+
+	
+
+	.datepicker td {
+		border: 0;
+		padding: 2px 3px;
+	}
+
+	.datepicker td .btn {
+		background: none;
+		border: 0;
+	}
+
+	.datepicker td .btn span {
+		border: 0;
+		display: block;
+		font-size: 18px;
+		font-weight: 600;
+		line-height: 40px;
+		height: 100%;
 		color: #202225;
 		background: rgba(0,0,0,0.05);
-		box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		-webkit-box-sizing: border-box;
+		cursor: pointer;
 	}
 
-	.pickadate-cell li:nth-child(7n+0) {
-		margin: 0 0 4px 0;
-	}
-
-	.pickadate-cell .pickadate-disabled,
-	.pickadate-cell .pickadate-disabled a {
+	.datepicker td .btn:disabled span {
 		color: #d8d8d8;
 		background: rgba(0,0,0,0.025);
+		cursor: default;
 	}
 
-	.pickadate-cell .pickadate-enabled {
-		cursor: pointer;
-		color: #202225;
-	}
-
-	.pickadate-cell .pickadate-today {
-		color: #82c3de;
-	}
-
-	.pickadate-cell .pickadate-active {
+	.datepicker td .btn.btn-primary span {
 		color: #fcfcfc;
 		text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
 		background-image: -moz-linear-gradient(top, #ffb319, #ff860d);
@@ -4626,64 +4638,6 @@
 		background-image: linear-gradient(top, #ffb319, #ff860d);
 		background-color: #ffa114;
 		background-repeat: repeat;
-	}
-
-	.pickadate-cell .pickadate-outofrange-disabled,
-	.pickadate-cell .pickadate-outofrange-disabled a {
-		background: none;
-		color: transparent;
-		font-size: 1px;
-	}
-
-	.pickadate-cell .pickadate-head {
-		font-weight: 600;
-		line-height: 35px;
-		font-size: 16px;
-		color: #9d9d9d;
-		background: none;
-		border: 0;
-	}
-
-	.pickadate-centered-heading {
-		font-size: 18px;
-		font-weight: 600;
-		line-height: 40px;
-		vertical-align: middle;
-		text-align: center;
-		text-transform: uppercase;
-	}
-
-	.pickadate-controls {
-		position: absolute;
-		z-index: 10;
-		width: 100%;
-	}
-
-	.pickadate-controls .pickadate-prev,
-	.pickadate-controls .pickadate-next {
-		overflow: hidden;
-		cursor: pointer;
-		display: block;
-		text-indent: -9999px;
-		width: 40px;
-		height: 40px;
-		background-position:  50% 14px;
-		background-repeat: no-repeat;
-	}
-
-	.pickadate-controls .pickadate-prev {
-		float: left;
-		background-image: @arrowBlackLeft;
-	}
-
-	.pickadate-controls .pickadate-next {
-		float: right;
-		background-image: @arrowBlackRight;
-	}
-
-	.pickadate-controls a {
-		text-decoration: none;
-		font-size: 0.9em;
 	}
 
 	

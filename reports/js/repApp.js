@@ -1,7 +1,16 @@
-// create iscroll
-createVerticalScroll('#reports');
 
-var reports = angular.module('reports', ['pickadate']);
+var reports = angular.module('reports', ['ngSanitize', 'mgcrea.ngStrap.datepicker']);
+
+reports.config([
+	'$datepickerProvider',
+	function($datepickerProvider) {
+		angular.extend($datepickerProvider.defaults, {
+			dateFormat: 'MM/dd/yyyy',
+			startWeek: 0,
+			autoclose: true
+		});
+	}
+]);
 
 reports.filter('splitName', function() {
 	return function(input, option) {
@@ -30,7 +39,14 @@ reports.controller('reporstList', [
 
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 
+		// get today's date
+		var t = new Date();
+		var today = t.getMonth() + '-' + t.getDate() + '-' + t.getFullYear();
 		$scope.isCal     = false;
+		$scope.minDate   = '';
+		$scope.maxDate   = today;
+		$scope.currCal   = '';
+
 		$scope.showReports = false;
 		$scope.reportList  = [];
 		$scope.reportCount = 0;
@@ -68,6 +84,10 @@ reports.controller('reporstList', [
 						return item.value === 'USER';
 					});
 					$scope.reportList[i]['hasUserFilter'] = hasUserFilter ? true : false;
+
+					// for date filters
+					$scope.reportList[i].today = new Date();
+					$scope.reportList[i].allowedUntilDate = new Date();
 				};
 			});
 
@@ -86,19 +106,112 @@ reports.controller('reporstList', [
 			this.item.show_filter = this.item.show_filter ? false : true; 
 		};
 
-		// show cal
-		$scope.showCal = function() {
-			$scope.isCal = $scope.isCal ? false : true; 
-		};
 	}
 ]);
 
 reports.controller('reportItemCtrl', [
 	'$scope',
 	function($scope) {
-
-		$scope.genReport = function() {
-			console.log( $scope.$parent.item.chosenUsers );
-		};
+		
 	}
 ]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+reports.factory('RepFetchSrv', [
+	'$http',
+	'$q',
+	function($http, $q) {
+		var factory = {};
+
+		factory.fetch = function() {
+			var deferred = $q.defer();
+			var url = '/api/reports';
+				
+			$http.get(url)
+				.success(function(response, status) {
+					deferred.resolve(response);
+				})
+				.error(function(response, status) {
+					// please note the type of error expecting is array
+					// so form error as array if you modifying it
+					if(status == 406){ // 406- Network error
+						deferred.reject(errors);
+					}
+					else if(status == 500){ // 500- Internal Server Error
+						deferred.reject(['Internal server error occured']);
+					}
+					else if(status == 401){ // 401- Unauthorized
+						console.log('lets redirect');
+						// so lets redirect to login page
+						$window.location.href = '/logout' ;
+					}else{
+						deferred.reject(errors);
+					}
+				});
+
+			return deferred.promise;
+		};
+
+		return factory;
+	}
+]);
+
+
+reports.factory('RepUserSrv', [
+	'$http',
+	'$q',
+	function($http, $q) {
+		var factory = {};
+
+		factory.fetch = function() {
+			var deferred = $q.defer();
+			var url = '/api/users/active';
+				
+			$http.get(url)
+				.success(function(response, status) {
+					deferred.resolve(response);
+				})
+				.error(function(response, status) {
+					// please note the type of error expecting is array
+					// so form error as array if you modifying it
+					if(status == 406){ // 406- Network error
+						deferred.reject(errors);
+					}
+					else if(status == 500){ // 500- Internal Server Error
+						deferred.reject(['Internal server error occured']);
+					}
+					else if(status == 401){ // 401- Unauthorized
+						console.log('lets redirect');
+						// so lets redirect to login page
+						$window.location.href = '/logout' ;
+					}else{
+						deferred.reject(errors);
+					}
+				});
+
+			return deferred.promise;
+		};
+
+		return factory;
+	}
+]);
+
+
+
+// need manual bootstraping app
+angular.bootstrap( angular.element('#reports'), ['reports'] );
+
+// create iscroll
+createVerticalScroll( '#reports', {} );
