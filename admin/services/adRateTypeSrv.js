@@ -4,7 +4,6 @@ function($http, $q, ADBaseWebSrvV2) {
 	this.fetch = function() {
 		var deferred = $q.defer();
 
-		//var url = " /sample_json/ng_admin/rate_types.json";
 		var url = "/api/rate_types.json";
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data.results);
@@ -18,11 +17,11 @@ function($http, $q, ADBaseWebSrvV2) {
 	 *   A post method to update Rate type for a hotel
 	 *   @param {Object} data for the Rate type list item details.
 	 */
-	this.postRateTypeToggle = function(data) {
+	this.postRateTypeToggle = function(param) {
 		var deferred = $q.defer();
-		var url = "/api/rate_types/" + data.id + "/activate";
+		var url = "/api/rate_types/" + param.id + "/activate";
 
-		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, param).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
@@ -34,11 +33,11 @@ function($http, $q, ADBaseWebSrvV2) {
 	 * @param {array} data of the new RateType
 	 * @return {object} status and new id of new RateType
 	 */
-	this.saveRateType = function(data) {
+	this.saveRateType = function(param) {
 		var deferred = $q.defer();
 		var url = '/api/rate_types';
 
-		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, param).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
@@ -51,12 +50,12 @@ function($http, $q, ADBaseWebSrvV2) {
 	 * @param {array} data of the modified RateType
 	 * @return {object} status of updated RateType
 	 */
-	this.updateRateType = function(data) {
+	this.updateRateType = function(param) {
 
 		var deferred = $q.defer();
-		var url = '/api/rate_types/' + data.id;
+		var url = '/api/rate_types/' + param.id;
 
-		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.putJSON(url, param).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
@@ -68,10 +67,9 @@ function($http, $q, ADBaseWebSrvV2) {
 	 * @param {array} selected rate type id
 	 * @return {object} selected rate type details
 	 */
-	this.getRateTypesDetails = function(data) {
+	this.getRateTypesDetails = function(param) {
 		var deferred = $q.defer();
-		var id = data.id;
-		//var url = "/sample_json/ng_admin/edit_rate_types.json"
+		var id = param.id;
 		var url = '/api/rate_types/' + id+".json";
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {

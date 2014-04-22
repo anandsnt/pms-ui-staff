@@ -5,7 +5,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 	$scope.rateTypeData = {};
 	$scope.isAddMode = false;
 	$scope.rate = "";
-	$scope.mouseEntered = false; 
+	$scope.mouseEnterPopover = false; 
 
 
 	var fetchSuccess = function(data) {
@@ -130,30 +130,35 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 		$scope.invokeApi(ADRateTypeSrv.deleteRateType, id, deleteRateSuccess);
 	};
 
+	/**
+	* To fetch and display the rate popover
+	* @param {int} index of the selected rate type
+	* @param {string} id of the selected rate type
+	* @param {string} number of rates available for the rate type
+	*/
 	$scope.showRates = function(index, rateTypeId, rateCount){
 		if(rateCount <= 0) return false;
-		console.log(rateTypeId);
-
 		var rateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.rate = data;
-			console.log(data);
-		console.log(JSON.stringify($scope.rate.results[0]));
-		$scope.mouseEntered = true; 
-
+			$scope.mouseEnterPopover = true; 
 		};
-		if(!$scope.mouseEntered){
+		if(!$scope.mouseEnterPopover){
 			$scope.rate = "";
 			$scope.currentHoverElement = index;
 			$scope.invokeApi(ADRatesSrv.fetchRates, {'rate_type_id': rateTypeId}, rateFetchSuccess);
 		}
 	};
 
+	/**
+	* To handle the popover state. Reset the 
+	* @param {int} index of the selected rate type
+	* @param {string} id of the selected rate type
+	* @param {string} number of rates available for the rate type
+	*/
 	$scope.mouseLeavePopover = function(){
-		console.log("mouseLeavePopover");
 		$scope.rate = "";
-
-		$scope.mouseEntered = false; 
+		$scope.mouseEnterPopover = false; 
 	}
 
 
