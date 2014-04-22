@@ -137,7 +137,7 @@
 	 });
 			$scope.nonAssignedroomTypes = [];
 		}
-	
+		$scope.selectedUnAssignedRoomIndex =-1;
 
 		
 	};
@@ -152,6 +152,7 @@
 			 });
 			$scope.assignedRoomTypes = [];
 		}
+		$scope.selectedAssignedRoomIndex =-1;
 
 		};
 
