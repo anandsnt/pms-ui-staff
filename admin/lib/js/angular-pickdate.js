@@ -148,7 +148,7 @@
           for(year=2014;year<=2100;year++){
             scope.years.push(year);
           };
-          scope.weekDays = ['SU','MO','TUE','WE','TH','FR','SA'];
+          scope.weekDays = ['SU','MO','TU','WE','TH','FR','SA'];
 
           scope.months=[{'name':'January','value':'0'},
                         {'name':'February','value':'1'},
