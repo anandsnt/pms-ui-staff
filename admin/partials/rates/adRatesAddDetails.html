@@ -1,7 +1,5 @@
-
 <form class="form float form_add_new_rate" ng-controller="ADaddRatesDetailCtrl">
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-
 	<fieldset class="holder full-width" style="margin-bottom:0px;">
 		<div class="form-title">
 			<h3><span>Rate</span> Details </h3>
@@ -22,7 +20,6 @@
 				</div>
 			</div>
 		</fieldset>
-
 		<fieldset class="holder right">
 			<div></div>
 			<div class="entry">
@@ -34,14 +31,11 @@
 				</div>
 			</div>
 			<div class="entry"> 
-
-					<div class="select select-col col1-3 actions_margin_top">
-					
+					<div class="select select-col col1-3 actions_margin_top">			
 					<select  class="styled" ng-model="based_on_plus_minus">
 						<option value="+">+</option>
 						<option value="-">-</option>
 					</select>
-
 				</div>
 				<div class=" select-col col1-3 actions_margin_top" >
 					<ad-textbox inputtype="text" value="based_on_value" styleclass = "col1-3"
@@ -50,27 +44,24 @@
 				</div>
 				<div class="select select-col col1-3">
 					<select class="styled" ng-model="based_on_type">
-						<option value="amount" >$</option>
+						<option value="amount" >{{currenyCode}}</option>
 						<option value="percent">%</option>
 					</select>
 				</div>
 			</div>
 		</div>
-
 	</fieldset>
 </fieldset>
 <fieldset class="full-width">
 	<ad-textarea rows="2" div-class="full-width" text-area-class="full-width" value="rate_description" label = "Description " placeholder = "Enter rate description" required="true"></ad-textarea>
 </fieldset>
-
 <div class="actions float actions_margin_top">
 	<button type="button" ui-sref="admin.rates" class="button blank add-data-inline">
 		Cancel
 	</button>
-	<button type="button" ng-click="saveStep1()" ng-disabled="allFieldsFilled()" class="button  brand-colors" ng-hide="allFieldsFilled()">
+	<button type="button" ng-click="saveStep1()" ng-disabled="allFieldsFilled()" class="button  brand-colors" ng-hide="allFieldsnotFilled()">
 		Step 2 - Select Room Types
 	</button>
-	<button type="button" id="send-email" disabled="" class="button grey" ng-show="allFieldsFilled()">Step 2 - Select Room Types</button>
+	<button type="button" id="send-email" disabled="" class="button grey" ng-show="allFieldsnotFilled()">Step 2 - Select Room Types</button>
 </div>
-
 </form>
