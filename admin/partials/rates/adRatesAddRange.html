@@ -39,9 +39,8 @@
 		 <ad-checkbox style="float:left;width:60px;margin:5px;" ng-repeat="day in set.days" is-checked="day.checked" label="{{day.name}}"  ng-click="checkboxClicked($index,$parent.$index)"></ad-checkbox>	
 	</td>
 	<td>
-		<img src="/assets/plus_small.png" ng-click="addNewSet($index)" ng-show="$index === Sets.length-1 " style="float:right;"/>
-		<img src="/assets/close_small.png" ng-hide=" $index === Sets.length-1 " ng-click="deleteSet($index)"style="float:right;">
-		
+		<span class="icons plus_small"  ng-show="$index === Sets.length-1" ng-click="addNewSet($index)">&nbsp;</span>
+		<span class="icons delete_small" ng-hide="$index === Sets.length-1"ng-click="deleteSet($index)">&nbsp;</span>		
 	</td>
 <tr>
 </table>
