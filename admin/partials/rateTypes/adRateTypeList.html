@@ -13,15 +13,27 @@
 
 		<table id="rate-types" class="grid">
 
-			<tbody ng-repeat = "ratetype in data">
+			<tbody>
 
-				<tr data-rate-type-id="{{ratetype.id}}">
+				<tr ng-repeat = "ratetype in data" data-rate-type-id="{{ratetype.id}}">
 
-					<td ng-show="ratetype.system_defined ===true"><strong>{{ratetype.name}}</strong><em> (System defined)</em></td>
+					<td width = "50%" ng-show="ratetype.system_defined ===true"><strong>{{ratetype.name}}</strong><em> (System defined)</em></td>
 
-					<td ng-hide="ratetype.system_defined ===true || currentClickedElement == $index" ng-click = "editRateTypes($index,ratetype.id)"><a class="edit-data-inline">{{ratetype.name}}</a></td>
+					<td ng-hide="ratetype.system_defined ===true || currentClickedElement == $index" ng-click = "editRateTypes($index,ratetype.id)"><a class="edit-data-inline">{{ratetype.name}} </a>
+					</td>
 
-					<td ng-hide="currentClickedElement == $index"><em>{{ratetype.rate_count}} rates</em></td>
+					<td ng-hide="currentClickedElement == $index">
+						<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, ratetype.id, ratetype.rate_count)" ng-mouseleave="mouseLeavePopover()">
+							<em>{{ratetype.rate_count}} rates</em>
+							<div ng-show = "rate.total_count > 0" class="tooltip">
+								<div class="title">{{rate.total_count}} {{rate.results[0].rate_type.name}}</div>
+								<ul ng-include="getPopoverTemplate($index,ratetype.id)">
+									
+								</ul>
+							</div>
+							
+						</span>
+					</td>
 					<td class="delete"  ng-hide="currentClickedElement ==$index"><a ng-hide="ratetype.system_defined ===true" id="3" ng-click="deleteRateType($index,ratetype.id)" class="icons icon-delete large-icon delete_item"  ></a></td>
 
 					<td class="activate" ng-hide="currentClickedElement == $index" >

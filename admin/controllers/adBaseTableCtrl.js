@@ -6,6 +6,8 @@ function ADBaseTableCtrl($scope, ngTableParams){
     $scope.rateType = "";
     $scope.searchTerm = "";
     $scope.filterType = {};
+    $scope.totalCount = 1;
+    $scope.totalPage = 1;
 
     $scope.$watch("displyCount", function () {
     	$scope.tableParams.reload();
@@ -43,19 +45,4 @@ function ADBaseTableCtrl($scope, ngTableParams){
 
     };
 
-    $scope.loadTable = function(){
-
-    	$scope.tableParams = new ngTableParams({
-    	        page: 1,  // show first page
-    	        count: $scope.displyCount, // count per page 
-    	        sorting: {
-    	            rate: 'asc' // initial sorting
-    	        }
-    	    }, {
-    	        total: 0, // length of data
-    	        getData: $scope.fetchTableData
-    	    }
-    	);
-
-    }
 }
