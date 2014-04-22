@@ -79,7 +79,6 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find("#signature").on('mouseout touchend', function() {
 			enableVerticalScroll('#registration-content');
 		});
-		// that.myDom.find('#move_to_bill_'+current_bill_number).on('change', that.moveToAnotherBill);
 		
 		that.myDom.find('.movetobill').on('change', that.moveToAnotherBill);
 		
@@ -518,18 +517,20 @@ var RegistrationCardView = function(viewDom) {
 	
 	this.moveToAnotherBill = function(e) {
 
+		var element = $(e.target);
+
 		var current_bill_number = that.getActiveBillNumber();
-		var billValue = that.myDom.find('#move_to_bill_'+current_bill_number).val();
-		var previousBillValue = current_bill_number;
+		var to_bill_number = element.val();
 		var reservation_id = getReservationId();
+		var transaction_id = element.attr('data-transaction_id');
 		
-		var transaction_id = that.myDom.find('#move_to_bill_'+current_bill_number).attr('data-transaction_id');
 		var data = {
 			"reservation_id" : reservation_id,
-			"to_bill" : billValue,
-			"from_bill" : previousBillValue,
+			"to_bill" : to_bill_number,
+			"from_bill" : current_bill_number,
 			"transaction_id" : transaction_id
 		};
+		
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : data,
