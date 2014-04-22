@@ -34,7 +34,6 @@ admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSe
 	*/
 	var successCallbackOfSaveDetails = function(data){
 		$scope.$emit('hideLoader');		
-		$scope.goBack();
 	};
 
 	$scope.save = function(){

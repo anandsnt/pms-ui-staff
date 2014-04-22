@@ -68,5 +68,32 @@ login.controller('resetCtrl',['$scope', 'resetSrv', '$window', '$state', '$state
 	};
 
 }]);
+/*
+ * Activate User Controller 
+ */
+login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$stateParams', function($scope, resetSrv, $window, $state, $stateParams){
+	 $scope.data = {};
+	 $scope.data.token = $stateParams.token;
+	 $scope.data.user  = $stateParams.user;
+	 $scope.errorMessage = "";
+	 /*
+	  * Redirect to specific url on success
+	  * @param {object} status and redirect url
+	  */
+	 $scope.successCallback = function(data){
+	 	$window.location.href = data.redirect_url;
+	 };
+	 $scope.failureCallBack = function(errorMessage){
+	 	$scope.errorMessage = errorMessage;
+	 };
+	 /*
+	  * Submit action reset password
+	  */
+	 $scope.submit = function() {
+	 	console.log($scope.data);
+		 resetSrv.activateUser($scope.data, $scope.successCallback, $scope.failureCallBack);
+	};
+
+}]);
 
 

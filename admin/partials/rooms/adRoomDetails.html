@@ -5,7 +5,7 @@
 				<h2>
 					Edit Room
 					<span>
-						{{data.room_number}}
+						{{roomNumber}}
 					</span>
 				</h2>
 				<a ng-click="goBack()" id="go_back" data-type="load-details" class="action back">Back to Rooms</a>
@@ -33,7 +33,8 @@
 						<strong>*</strong>
 					</label>
 					<div class="file-upload with-preview">
-						<span class="input">Choose file ...</span><input ng-model="data.room_image" type="file" accept="image/*" name="room-picture" id="room-picture" value="{{data.room_image}}" app-filereader>
+						<span class="input">{{fileName}}</span>
+						<input ng-model="data.room_image" type="file" accept="image/*" name="room-picture" id="room-picture" value="{{data.room_image}}" app-filereader>
 						<button type="button" class="button brand-colors" >Replace image</button>
 					</div>
 					<span class="file-preview">

@@ -3,6 +3,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	* Controller class for Room Details
 	*/
 	$scope.errorMessage = '';	
+	$scope.fileName = "Choose File....";
 	
 	//inheriting from base controller
 	BaseCtrl.call(this, $scope);
@@ -21,7 +22,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	var fetchSuccessOfRoomDetails = function(data){
 		$scope.$emit('hideLoader');
 		$scope.data = data;	
-
+		$scope.roomNumber = $scope.data.room_number;
 		/* 
 		* adding the seletected attribute on room feature here
 		* which will be used in template for adding class if it the selected attribute is true
