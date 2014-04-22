@@ -17,6 +17,12 @@ login.config([
 			templateUrl: '/assets/partials/reset.html',
 			controller: 'resetCtrl'
 		});
+		
+		$stateProvider.state('activateuser', {
+			url: '/activate/:token/:user',
+			templateUrl: '/assets/partials/activate.html',
+			controller: 'activateCtrl'
+		});
 
 	}
 ]);
