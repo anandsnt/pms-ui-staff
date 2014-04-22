@@ -33,7 +33,6 @@ admin.controller('ADSocialLobbySettingsCtrl', ['$scope', '$state', 'ADSocialLobb
 	*/
 	var successCallbackOfSaveDetails = function(data){
 		$scope.$emit('hideLoader');		
-		$scope.goBack();
 	};
 
 	$scope.save = function(){

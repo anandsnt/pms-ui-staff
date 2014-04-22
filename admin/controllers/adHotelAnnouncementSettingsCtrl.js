@@ -24,7 +24,6 @@ admin.controller('ADHotelAnnouncementSettingsCtrl', ['$scope', '$state', 'ADHote
 	*/
 	var successCallbackOfSaveDetails = function(data){
 		$scope.$emit('hideLoader');		
-		$scope.goBack();
 	};
 
 	$scope.save = function(){
