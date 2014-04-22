@@ -6,7 +6,7 @@ login.controller('loginRootCtrl', ['$scope', function($scope){
  * Login Controller - Handles login and local storage on succesfull login
  * Redirects to specific ur on succesfull login
  */
-login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', function($scope, loginSrv, $window, $state){
+login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'accountActivationHandler', function($scope, loginSrv, $window, $state, accountActivationHandler){
 	 $scope.data = {};
 
 	 if(localStorage.email!=""){
@@ -16,6 +16,7 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', functio
 	 	document.getElementById("email").focus();
 	 }
 	 $scope.errorMessage = "";
+	 $scope.errorMessage = accountActivationHandler.getErrorMessage();
 	 /*
 	  * successCallback of login action
 	  * @param {object} status of login and data
@@ -71,11 +72,21 @@ login.controller('resetCtrl',['$scope', 'resetSrv', '$window', '$state', '$state
 /*
  * Activate User Controller 
  */
-login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$stateParams', function($scope, resetSrv, $window, $state, $stateParams){
+login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$stateParams', 'accountActivationHandler', function($scope, resetSrv, $window, $state, $stateParams, accountActivationHandler){
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 	 $scope.data.user  = $stateParams.user;
 	 $scope.errorMessage = "";
+	 
+	 /*
+	  * Redirect to specific url on success
+	  * @param {object} status and redirect url
+	  */
+	 $scope.failureCallBackToken = function(data){
+	 	accountActivationHandler.setErrorMessage("hhhhhhhhhhhhhhhhhhhh");
+	 	$window.location.href = data.redirect_url;
+	 };
+	 
 	 /*
 	  * Redirect to specific url on success
 	  * @param {object} status and redirect url
@@ -86,6 +97,7 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 	 $scope.failureCallBack = function(errorMessage){
 	 	$scope.errorMessage = errorMessage;
 	 };
+	 resetSrv.checkTokenStatus($scope.data, $scope.successCallback, $scope.failureCallBackToken);
 	 /*
 	  * Submit action reset password
 	  */
@@ -96,4 +108,13 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 
 }]);
 
+login.service('accountActivationHandler', function() {
+	this.errorMessage = "";
+	this.setErrorMessage = function(errorMessage) {
+		this.errorMessage = errorMessage;
+	};
+	this.getErrorMessage = function(errorMessage) {
+		return this.errorMessage;
+	};
+});
 
