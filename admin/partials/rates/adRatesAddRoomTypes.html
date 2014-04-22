@@ -14,10 +14,11 @@
 					<div class="entry has-sortable">
 					<label class="center_align"><em class="rate_roomtype_text">Not Assigned Room Types</em></label>
 
-					<ul class="boxes sortable ui-sortable short-list"  ui-on-Drop="onDrop($event,$data,nonAssignedroomTypes)" >
+					<ul class="boxes sortable ui-sortable short-list"  ui-on-Drop="onDrop($event,$data,nonAssignedroomTypes)" data-type="source">
 
 						<li ng-repeat="roomtype in nonAssignedroomTypes" ui-draggable="true" drag="roomtype"
-						on-drop-success="dropSuccessHandler($event,$index,nonAssignedroomTypes)" ng-click="unAssignedRoomSelected($index)"><span class="icons icon-handle"
+						on-drop-success="dropSuccessHandler($event,$index,nonAssignedroomTypes)" ng-click="unAssignedRoomSelected($index)"
+						ng-class='{selected: selectedUnAssignedRoomIndex === $index}' drag-enter-class="ui-state-highlight"><span class="icons icon-handle"
 						></span>
 						<span class="icons icon-handle"></span>
 						{{roomtype.name}}
@@ -28,14 +29,16 @@
 			
 				<div class="entry movers rates_mover" >
 					<span class="top_mover" >
-					<span class="icons icon-mover-right to-target" data-type="target" ng-click="topMoverightClicked()">unassign room(s)</span>
+					<span class="icons icon-mover-right to-target" data-type="target" ng-click="topMoverightClicked()"
+					 ng-class="{active: selectedUnAssignedRoomIndex!=-1}" data-type="source">unassign room(s)</span>
 					<span class="icons icon-mover-left to-source" data-type="source"
-					ng-click="topMoveleftClicked()">Assign room(s)</span>
+					ng-click="topMoveleftClicked()"ng-class="{active: selectedAssignedRoomIndex!=-1}">Assign room(s)</span>
 				    </span>
 
 					<span>
 					<div class="red_gradient icons">
-					<span class="to-target red_mover icons_a" data-type="target" ng-click="bottomMoverightClicked()">unassign room(s)</span>
+					<span class="to-target red_mover icons_a" data-type="target" ng-click="bottomMoverightClicked()"
+					>unassign room(s)</span>
 					</div>
 					<div class="green_gradient icons">
 					<span class="to-source green_mover icons_a" data-type="source" ng-click="bottomMoveleftClicked()">Assign room(s)</span>
@@ -47,10 +50,11 @@
 						<label class="center_align">
 							<span class="assigned_room_text">Assigned Room Types</span></label>
 
-						<ul class="boxes sortable empty ui-sortable short-list" data-type="target" ui-on-Drop="onDrop($event,$data,assignedRoomTypes)">
+						<ul class="boxes sortable empty ui-sortable short-list" data-type="target" ui-on-Drop="onDrop($event,$data,assignedRoomTypes)" data-type="target">
 							<li  ng-repeat="roomtype in assignedRoomTypes"
 							ui-draggable="true" drag="roomtype"
-							on-drop-success="dropSuccessHandler($event,$index,assignedRoomTypes)"									ng-click="assignedRoomSelected($index)"><span class="icons icon-handle"></span>
+							on-drop-success="dropSuccessHandler($event,$index,assignedRoomTypes)"									ng-click="assignedRoomSelected($index)"
+							ng-class='{selected: selectedAssignedRoomIndex === $index}'><span class="icons icon-handle"></span>
 							<span class="icons icon-handle"></span>
 							
 							{{roomtype.name}}

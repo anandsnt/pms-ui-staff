@@ -71,9 +71,9 @@ $scope.fetchData = function(){
 
 	$scope.invokeApi(ADRatesAddDetailsSrv.fetchBasedOnTypes, getParams,fetchBasedOnSuccessCallback,fetchBasedOnFailureCallback);	
 
-	// to be done
+	
 	var fetchHotelSettingsSuccessCallback = function(data){
-		console.log(data)
+		console.log(data.currency.symbol)
 		$scope.currenyCode =data.currency.symbol;
 		$scope.$emit('hideLoader');
 	};

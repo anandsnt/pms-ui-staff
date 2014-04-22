@@ -76,6 +76,9 @@
 	 */
 
 	$scope.assignedRoomSelected = function(index){
+		if(index === $scope.selectedAssignedRoomIndex)
+			$scope.selectedAssignedRoomIndex =-1;
+		else
 			$scope.selectedAssignedRoomIndex =index;
 		
 	}
@@ -85,6 +88,9 @@
 	 */
 
 	$scope.unAssignedRoomSelected = function(index){
+		if(index === $scope.selectedUnAssignedRoomIndex)
+			$scope.selectedUnAssignedRoomIndex =-1;
+		else
 		$scope.selectedUnAssignedRoomIndex =index;
 
 	}
