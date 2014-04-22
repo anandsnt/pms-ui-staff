@@ -27,7 +27,7 @@ $scope.init();
    * check if fields are not null
    */
 
-$scope.allFieldsFilled = function(){
+$scope.allFieldsnotFilled = function(){
 	if($scope.rate_name && $scope.rate_description && $scope.rateTypeselected){
 	if(($scope.rate_name.length > 0) && ($scope.rate_description.length > 0)
 		&&  ($scope.rateTypeselected.length > 0)){
@@ -73,7 +73,6 @@ $scope.fetchData = function(){
 
 	
 	var fetchHotelSettingsSuccessCallback = function(data){
-		console.log(data.currency.symbol)
 		$scope.currenyCode =data.currency.symbol;
 		$scope.$emit('hideLoader');
 	};
