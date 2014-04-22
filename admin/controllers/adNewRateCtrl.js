@@ -33,7 +33,7 @@ $scope.$on("updateIndex", function(e,value){
 	}
 	else if(value ==2){
 	if($scope.currentStepIndexList.length< 3){
-    	$scope.currentStepIndexList.push("Range"); 
+    	$scope.currentStepIndexList.push("Configure"); 
     	$scope.clickedStep(parseInt(value));   	
     }
 	}
