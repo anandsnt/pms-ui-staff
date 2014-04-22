@@ -79,8 +79,7 @@
 				<div class="entry has-sortable">
 					<label>Assigned Roles</label>
 					<ul id="assigned-roles" data-placeholder="Drop a role here to assign it to the user" class="boxes sortable empty short-list" data-drop="true" ng-model='assignedRoles' jqyoui-droppable="{multiple:true}" style="overflow: visible !important;">
-						<li ng-repeat="role in assignedRoles" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="assignedRoles" jqyoui-draggable="{index: {{$index}}, placeholder:true, animate:'true'}" ng-hide="!role.name" ng-class="{selected: selectedAssignedRole == $index}" ng-click="selectAssignedRole($index)"
-						>
+						<li ng-repeat="role in assignedRoles" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="assignedRoles" jqyoui-draggable="{index: {{$index}}, placeholder:true, animate:'true'}" ng-hide="!role.name" ng-class="{selected: selectedAssignedRole == $index}" ng-click="selectAssignedRole($index)"	>
 							<span class="icons icon-handle"></span>
 							<span class="icons icon-handle"></span>
 							{{role.name}}

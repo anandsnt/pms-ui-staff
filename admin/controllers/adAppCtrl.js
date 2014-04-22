@@ -6,8 +6,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	$scope.menuOpen = false;
 	$scope.hotelListOpen = '';
 	$scope.selectedIndex = -1;
-	$scope.dragStart = false;
-
+	$scope.test = [];
 	//scroller options
 	$scope.$parent.myScrollOptions = {
         snap: false,
@@ -34,14 +33,21 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	$scope.successCallbackOfMenuLoading = function(data){
 		//$scope.currentIndex = 0;
 		$scope.data = data;
-		$scope.selectedMenu = $scope.data.menus[0];		
+		$scope.selectedMenu = $scope.data.menus[0];	
+		$scope.test = JSON.parse(JSON.stringify($scope.selectedMenu.components));
 		$scope.bookMarks = $scope.data.bookmarks;
+		// $scope.bookMarks.forEach(function(entry, index){
+			// entry.isWebServiceCalled = true;
+		// });
+		// console.log("==============");
+		// console.log(JSON.stringify($scope.bookMarks));
 		$scope.bookMarksCount = $scope.data.bookmark_count;
 	};
 	
 	$scope.$on("changedSelectedMenu", function(event, menu){
 		console.log('in changedSleectedmenu');
 		$scope.selectedIndex = menu;
+		
 		
 	});
 	
@@ -91,60 +97,41 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 			console.log("error controller");
 		});	
     };
-   
 
-	 $scope.dropSuccessHandler = function($event, index, array){
-	   	 var successCallbackOfBookMark = function(){
-	   	 	$scope.$emit('hideLoader');
-	    	array.is_bookmarked = true;
-	    	$scope.bookMarksCount = parseInt($scope.bookMarksCount) + parseInt(1);
-	    };
-   		var data = {id: array.id};
-   		$scope.invokeApi(ADAppSrv.bookMarkItem, data, successCallbackOfBookMark);
-  	};
 
-   	$scope.onDrop = function($event, $data, array) {
-   		if($scope.bookMarksCount <=8){
-   			array.push($data);
-   		} else {
-   			
-   		}
-		
+   	$scope.onDrop = function(event,ui) {
+   		// if($scope.bookMarksCount <=8){
+   			// array.push($data);
+   		// } else {
+//    			
+   		// }
+   		console.log("==========++====");
+		  console.log(JSON.stringify($scope.bookMarks));
+		console.log("jphme")
+		 console.log(JSON.stringify(ui));
+		   angular.forEach($scope.bookMarks,function(bookmark,key){
+		  	  dropEl = angular.element(this);
+		  	  console.log(">>>>>>>>>>>>>>>>>>+++++++++++++++++++++++++=")
+		  	console.log(dropEl)
+		  });
+		 
+		 
+		// console.log(ui.draggable)
+		// ui.draggable.addClass("moved")
 	};
-	$scope.onDropRemoveBookMark = function($event, $data, array) {
+	
+   	// $scope.onOver = function(event,ui, title) {
+   		// // if($scope.bookMarksCount <=8){
+   			// // array.push($data);
+   		// // } else {
+// //    			
+   		// // }
+   		// console.log("==========++====");
+		 // console.log(JSON.stringify(title));
+		 // console.log(JSON.stringify(ui.helper.prevObject));
+// 	
+	// };	
 
-	};
-	$scope.dropSuccessRemoveHandler = function($event, index, array){
-		
-		var id = array[index].id;
-	   	 var successCallbackOfBookMarkRemove = function(){
-	   	 	$scope.$emit('hideLoader');
-	   	 	array.splice(index, 1);
-	    	// array.is_bookmarked = false;
-	    
-			angular.forEach($scope.data.menus,function(item, ind) {
-				angular.forEach(item.components,function(componentItem, componentIndex) {
-					if(componentItem.id == id){
-						componentItem.is_bookmarked = false;
-					}
-				});
-			});
-	    	$scope.bookMarksCount = parseInt($scope.bookMarksCount) - parseInt(1);
-	    };
-   		
-   		$scope.invokeApi(ADAppSrv.removeBookMarkItem, id, successCallbackOfBookMarkRemove);
-  	};
-  	$scope.$on("ANGULAR_DRAG_END", function(){
-		$scope.dragStart = false;
-		$scope.$apply();
-		console.log($scope.dragStart);
-	}); 	
- 	$scope.$on("ANGULAR_DRAG_START", function(){
-		$scope.dragStart = true;
-		$scope.$apply();
-		console.log($scope.dragStart);
-	});
-   
 }]);
 
     

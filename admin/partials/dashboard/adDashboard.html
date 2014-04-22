@@ -2,7 +2,7 @@
    <!--<section id="load-listing" class="content content-holder"></section>
    <section id="load-details" class="content content-holder"></section>-->
    <!-- Dashboard tabs - Hotel & Staff -->
-   <section id="dashboard-hotel" class="content">
+   <section id="dashboard-hotel" class="content" style="overflow: visible !important;">
       <div ng-include="'/assets/partials/common/notification_message.html'"></div>
       <header class="content-title float">
          <h2>{{selectedMenu.menu_name}} setup</h2>
@@ -10,7 +10,7 @@
       <ul class="dashboard-items float"  >
 
          <li ng-repeat="submenu in selectedMenu.components" >
-            <a data-type="load-listing" ui-draggable="{{bookMarksCount < 8 && submenu.is_bookmarked == false}}" on-drop-success="dropSuccessHandler($event, $index, submenu)" drag="submenu" class="icon-admin-menu {{submenu.icon_class}}" ng-class="{'moved': submenu.is_bookmarked == true}" ui-sref="{{submenu.state}}" drag-channel="mydropchannel" drag-start="test()">{{submenu.name}}</a>
+            <a data-type="load-listing"  ng-model="test" class="icon-admin-menu {{submenu.icon_class}}" data-drag="true" data-jqyoui-options="{revert: 'invalid',  helper: 'clone'}" jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true'}" ng-class="{'moved': submenu.is_bookmarked == true}"  >{{submenu.name}}</a>
             <a class="text" data-type="load-listing" href="{{submenu.action_path}}" ui-sref={{submenu.state}}>{{submenu.name}}</a>
          </li>
 
