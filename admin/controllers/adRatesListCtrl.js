@@ -3,6 +3,8 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ngTablePa
 	$scope.errorMessage = '';
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
+	$scope.isConnectedToPMS = true;
+
 	/**
     * To fetch all rate types
     */
@@ -18,6 +20,8 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ngTablePa
 		var fetchSuccessOfItemList = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data.results;
+			$scope.totalCount = data.total_count;
+			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
         	params.total(data.total_count);
             // use build-in angular filter
     
@@ -44,6 +48,17 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ngTablePa
 	}
 		
 	$scope.loadTable();
+
+	$scope.importFromPms = function(){
+		var fetchSuccessOfItemList = function(data){
+			$scope.$emit('hideLoader');
+			console.log("sucess");
+		};
+		$scope.invokeApi(ADRatesSrv.importRates, {}, fetchSuccessOfItemList);	
+		console.log("importFromPms");
+		//TODO: call import API
+	}
+
 
 }]);
 

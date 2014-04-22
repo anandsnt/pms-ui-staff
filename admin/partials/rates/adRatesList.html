@@ -4,7 +4,7 @@
 			<h2> Rates </h2>
 			<span class="count"> ({{data.length}}) </span>
 			<a class="action add" ui-sref="admin.addRate">Add new</a>
-			<a class="action import" ng-click="importFromPms()">IMPORT FROM PMS</a>
+			<a ng-show = "isConnectedToPMS" class="action import" ng-click="importFromPms()">IMPORT FROM PMS</a>
 			<div class = "select">
 				<select class = "table-filter" ng-model="filterType"
 				    ng-options="opt.name for opt in filterList">
@@ -12,6 +12,7 @@
 				</select>
 			</div>
 		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<span class="count-show">Show</span>
 		<select class = "table-count" ng-model="displyCount"
 			    ng-options="opt for opt in displayCountList">
@@ -21,7 +22,6 @@
 			<span>Search</span>
 			<input type="text" ng-model="searchTerm" ng-enter = "searchEntered()"></input>
 		</div>
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div id="new-form-holder"></div>
 		<!--ng-table component -->
 		<table class="grid" ng-table="tableParams" template-pagination="custom/pager">
@@ -51,12 +51,15 @@
 		<script type="text/ng-template" id="custom/pager">
 			<ul class="pager ng-cloak">
               	<li ng-repeat="page in pages"
-                    ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
-                    ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
-	                <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
-	                <a ng-click="params.page(page.number)">{{page.number}}</a>
-	                <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
-              	</li>
+	                ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+	                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+	                <a ng-switch-when="prev" ng-click="params.page(1)">&laquo; First</a>
+	                <a ng-switch-when="prev" ng-click="params.page(page.number)" >Previous</a>
+	                <a ng-switch-when="prev" ng-click="params.page(page.number)">{{page.number}}</a>
+	                <a ng-switch-when="next" ng-click="params.page(page.number)">{{page.number}}</a>
+	                <a ng-switch-when="next" ng-click="params.page(page.number)" >Next</a>
+	                <a ng-switch-when="next" ng-click="params.page(totalPage)">Last &raquo;</a>
+	          	</li>
             </ul>
 		</script>
 		<!--end-->
