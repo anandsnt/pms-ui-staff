@@ -62,7 +62,7 @@
 							</div>
 						</span>
 					</td>
-					<td data-title="'Status'" sortable="'status'" class ="status">
+					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': rate.status}">
 						{{rate.status ? 'ACTIVE' : 'INACTIVE'}}
 					</td>
 				</tr>
