@@ -99,7 +99,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	* @param {string} number of rates available for the rate type
 	*/
 	$scope.showDateRanges = function(index, id, fetchKey, dateCount){
-		if(dateCount == "") return false;
+		if(dateCount == 0) return false;
 		var dateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.popoverRates = data;
