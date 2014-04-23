@@ -125,7 +125,6 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	}
 
 	$scope.getBasedOnPopoverTemplate = function(index, id) {
-		console.log("get popover");
 		if (typeof index === "undefined" || typeof id === "undefined"){
 			return "";
 		}
@@ -135,7 +134,6 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	}; 
 
 	$scope.getRateTypePopoverTemplate = function(index, id) {
-		console.log("get popover");
 		if (typeof index === "undefined" || typeof id === "undefined"){
 			return "";
 		}
