@@ -1,11 +1,11 @@
-<section id="replacing-div-first" class="content current">
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
 	<div id="upsell_room_details" data-view="UpsellRoomDetailsView">
 		<section>
 			<header class="content-title float">
 				<h2>Daily Upsell Setup</h2>
 				<a id="go_back" data-type="load-details" ng-click="cancelClick()" class="action back">Back</a>
 			</header>
-			<div id="notification-message"></div>
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<form name="upsell_rooms" method="post" id="upsell_rooms" class="form float" action="">
 				<fieldset class="holder column">
 
@@ -66,6 +66,7 @@
 
 					<input type="hidden" value="3" name="upsell_amounts_count" id="upsell_amounts_count">
 					<input type="hidden" value="3" name="total_level_count" id="total_level_count">
+					
 					<div class="entry">
 						<label for="charge-code"> Charge Code <strong>*</strong> </label>
 						<div class="select">
