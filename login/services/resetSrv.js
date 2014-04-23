@@ -90,30 +90,21 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 		});
 		return deferred.promise;
 	};
+   /*
+    * To check the token status
+    * @param object of data
+    * @param string success callback
+    * @param string failure callback
+    */
 	this.checkTokenStatus = function(data, successCallback, failureCallBack){
 		
 		var deferred = $q.defer();
 		
 		var url = "";
-		// if(data.user == "admin"){
-			// url = "/admin/password_resets/"+data.token+"/admin_update.json";
-		// } else if(data.user == "staff"){
-			// url = "/staff/password_resets/"+data.token+"/staff_update.json";
-		// }
-		// if(data.user == "admin"){
-			// url = "/admin/password_resets/"+data.token+"/admin_update.json";
-		// } else if(data.user == "staff"){
-			// url = "/staff/password_resets/"+data.token+"/staff_update.json";
-		// }
 
 		var url = "/"+data.user+"/password_resets/validate_token.json";
 		$http.post(url, data).success(function(response, status) {
-			if(response.status == "success"){
-		    	//deferred.resolve(response.data);
-		    	successCallback(response.data);
-			}else{
-				// please note the type of error expecting is array
-		    	//deferred.reject(response.errors);
+			if(response.status != "success"){
 		    	failureCallBack(response.errors);
 			}
 		}).error(function(response, status) {
@@ -136,6 +127,19 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 		    
 		});
 		return deferred.promise;
+	};
+	/*
+	 * To set error message if user is already activated or token expired.
+	 */
+	this.errorMessage = "";
+	this.setErrorMessage = function(errorMessage) {
+		this.errorMessage = errorMessage;
+	};
+   /*
+    * To get error message if user is already activated or token expired.
+    */
+	this.getErrorMessage = function(errorMessage) {
+		return this.errorMessage;
 	};
 	
 }]);

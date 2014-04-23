@@ -1,12 +1,13 @@
 var login = angular.module('login',['ui.router', 'ng-iscroll']);
 
 login.controller('loginRootCtrl', ['$scope', function($scope){
+	$scope.hasLoader = false;
 }]);
 /*
  * Login Controller - Handles login and local storage on succesfull login
  * Redirects to specific ur on succesfull login
  */
-login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'accountActivationHandler', function($scope, loginSrv, $window, $state, accountActivationHandler){
+login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'resetSrv', function($scope, loginSrv, $window, $state, resetSrv){
 	 $scope.data = {};
 
 	 if(localStorage.email!=""){
@@ -16,7 +17,7 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'accoun
 	 	document.getElementById("email").focus();
 	 }
 	 $scope.errorMessage = "";
-	 $scope.errorMessage = accountActivationHandler.getErrorMessage();
+	 $scope.errorMessage = resetSrv.getErrorMessage();
 	 /*
 	  * successCallback of login action
 	  * @param {object} status of login and data
@@ -45,7 +46,7 @@ login.controller('loginCtrl',['$scope', 'loginSrv', '$window', '$state', 'accoun
 
 }]);
 /*
- * Reset Password Controller 
+ * Reset Password Controller - First time login of snt admin
  */
 login.controller('resetCtrl',['$scope', 'resetSrv', '$window', '$state', '$stateParams', function($scope, resetSrv, $window, $state, $stateParams){
 	 $scope.data = {};
@@ -56,6 +57,7 @@ login.controller('resetCtrl',['$scope', 'resetSrv', '$window', '$state', '$state
 	  * @param {object} status and redirect url
 	  */
 	 $scope.successCallback = function(data){
+	 	$scope.hasLoader = false;
 	 	$window.location.href = data.redirect_url;
 	 };
 	 $scope.failureCallBack = function(errorMessage){
@@ -65,14 +67,15 @@ login.controller('resetCtrl',['$scope', 'resetSrv', '$window', '$state', '$state
 	  * Submit action reset password
 	  */
 	 $scope.submit = function() {
+	 	$scope.hasLoader = true;
 		resetSrv.resetPassword($scope.data, $scope.successCallback, $scope.failureCallBack);
 	};
 
 }]);
 /*
- * Activate User Controller 
+ * Activate User Controller - Activate user when clicks on activation link in mail
  */
-login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$stateParams', 'accountActivationHandler', function($scope, resetSrv, $window, $state, $stateParams, accountActivationHandler){
+login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$stateParams', function($scope, resetSrv, $window, $state, $stateParams){
 	 $scope.data = {};
 	 $scope.data.token = $stateParams.token;
 	 $scope.data.user  = $stateParams.user;
@@ -82,39 +85,33 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 	  * Redirect to specific url on success
 	  * @param {object} status and redirect url
 	  */
-	 $scope.failureCallBackToken = function(data){
-	 	accountActivationHandler.setErrorMessage("hhhhhhhhhhhhhhhhhhhh");
-	 	$window.location.href = data.redirect_url;
+	 $scope.failureCallBackToken = function(errorMessage){
+	 	resetSrv.setErrorMessage(errorMessage);
+	    $state.go('login');
 	 };
-	 
 	 /*
 	  * Redirect to specific url on success
 	  * @param {object} status and redirect url
 	  */
 	 $scope.successCallback = function(data){
+	 	$scope.hasLoader = false;
 	 	$window.location.href = data.redirect_url;
 	 };
+	/*
+	 * Failur callback
+	 */
 	 $scope.failureCallBack = function(errorMessage){
 	 	$scope.errorMessage = errorMessage;
 	 };
-	 resetSrv.checkTokenStatus($scope.data, $scope.successCallback, $scope.failureCallBackToken);
+	 resetSrv.checkTokenStatus($scope.data, "", $scope.failureCallBackToken);
 	 /*
-	  * Submit action reset password
+	  * Submit action activate user
 	  */
 	 $scope.submit = function() {
-	 	console.log($scope.data);
+	 	 $scope.hasLoader = true;
 		 resetSrv.activateUser($scope.data, $scope.successCallback, $scope.failureCallBack);
 	};
 
 }]);
 
-login.service('accountActivationHandler', function() {
-	this.errorMessage = "";
-	this.setErrorMessage = function(errorMessage) {
-		this.errorMessage = errorMessage;
-	};
-	this.getErrorMessage = function(errorMessage) {
-		return this.errorMessage;
-	};
-});
 
