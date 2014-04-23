@@ -60,11 +60,10 @@ $scope.$on("updateIndex", function(e,value){
     }
 	}
     else if(value ==3){
+    if($scope.currentStepIndexList[2].title === 'Range')
+    	  $scope.currentStepIndexList.splice(2,1);
     $scope.showAddNewDateRangeOptions = false;
-
 		var getDateRangeIds = ADRatesRangeSrv.getDateRangeIds();
-		var nextContents= [];
-
 		angular.forEach(getDateRangeIds, function(value, key){
        	var id =value;
 		 var nextContent = {
@@ -72,15 +71,17 @@ $scope.$on("updateIndex", function(e,value){
 							'type' : 'Configure',
 							'id'   : id
 							};
-		nextContents.push(nextContent);	
+	   	$scope.isAlreadyIncurrentStepIndexList = false;
+		angular.forEach($scope.currentStepIndexList, function(stepValue, key){
 
-   		  });
-		angular.forEach(nextContents, function(value, key){
-			$scope.currentStepIndexList.push(value);
+		if(stepValue.id == nextContent.id){
+			$scope.isAlreadyIncurrentStepIndexList = true;
+		}
 		});
-	
-		if($scope.currentStepIndexList[2].title === 'Range')
-    	  $scope.currentStepIndexList.splice(2,1);
+		if(!$scope.isAlreadyIncurrentStepIndexList)
+		   $scope.currentStepIndexList.push(nextContent);
+
+   		  });	
 
     	$scope.clickedStep($scope.currentStepIndexList.length-1);  	
     
