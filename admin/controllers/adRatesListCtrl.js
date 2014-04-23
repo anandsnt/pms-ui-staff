@@ -30,9 +30,9 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
 			$scope.$emit('hideLoader');
-			$scope.data = data.results;
 			$scope.totalCount = data.total_count;
 			$scope.totalPage = Math.ceil(data.total_count/$scope.displyCount);
+			$scope.data = data.results;
 			$scope.currentPage = params.page();
         	params.total(data.total_count);
             // use build-in angular filter

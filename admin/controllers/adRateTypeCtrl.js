@@ -141,7 +141,6 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 		var rateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.popoverRates = data;
-			console.log(data);
 			$scope.mouseEnterPopover = true; 
 		};
 
@@ -149,7 +148,6 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 		if(!$scope.mouseEnterPopover){
 			$scope.popoverRates = "";
 			$scope.currentHoverElement = index;
-			console.log("here");
 			$scope.invokeApi(ADRatesSrv.fetchRates, {'rate_type_id': rateTypeId}, rateFetchSuccess);
 		}
 

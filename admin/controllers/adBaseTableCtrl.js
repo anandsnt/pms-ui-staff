@@ -10,7 +10,7 @@ function ADBaseTableCtrl($scope, ngTableParams){
     $scope.totalPage = 1;
     $scope.startCount = 1;
     $scope.endCount = 1;
-    $scope.currentPage = 1;
+    $scope.currentPage = 0;
     $scope.data = [];
 
     $scope.$watch("displyCount", function () {
