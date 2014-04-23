@@ -7,8 +7,11 @@
 	<table class="grid">
 		<tr ng-repeat ="step in currentStepIndexList">
 			<td ng-include="includeTemplate($index)" colspan="2" ng-show="currentRateStepIndex === $index"></td>
-			<td width="90%" ng-hide="currentRateStepIndex === $index" ><em>Rate</em>&nbsp;{{step}}</td>
-			<td width="5%" ng-hide="currentRateStepIndex === $index" ng-click="clickedStep($index)" align="right" style="text-align:right !important;" class="cursor_pointer"><img src="/assets/arrow-down.png"/></td>
+			<td width="90%" ng-hide="currentRateStepIndex === $index" ><em>Rate</em>&nbsp;{{step.title}}</td>
+			<td width="5%" ng-hide="currentRateStepIndex === $index" ng-click="clickedStep($index,step.id)" align="right" style="text-align:right !important;" class="cursor_pointer"><img src="/assets/arrow-down.png"/></td>
 		</tr>
 	</table>
+	<div ng-show="showAddNewDateRangeOptions" ng-include="'/assets/partials/rates/adRatesAddRange.html'"></div>
+	<div class="center_align" ng-hide="hideAddNewDateRange()"> <button ng-click="addNewDateRange()">Add new Date Range</button>
+
 </div>
