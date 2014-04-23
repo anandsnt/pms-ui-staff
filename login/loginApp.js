@@ -61,6 +61,7 @@ login.controller('resetCtrl',['$scope', 'resetSrv', '$window', '$state', '$state
 	 	$window.location.href = data.redirect_url;
 	 };
 	 $scope.failureCallBack = function(errorMessage){
+	 	$scope.hasLoader = false;
 	 	$scope.errorMessage = errorMessage;
 	 };
 	 /*
@@ -101,6 +102,7 @@ login.controller('activateCtrl',['$scope', 'resetSrv', '$window', '$state', '$st
 	 * Failur callback
 	 */
 	 $scope.failureCallBack = function(errorMessage){
+	 	$scope.hasLoader = false;
 	 	$scope.errorMessage = errorMessage;
 	 };
 	 resetSrv.checkTokenStatus($scope.data, "", $scope.failureCallBackToken);
