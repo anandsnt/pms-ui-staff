@@ -33,9 +33,9 @@ $scope.$on("updateIndex", function(e,value){
 	}
 	else if(value ==2){
 	if($scope.currentStepIndexList.length< 3){
-    	$scope.currentStepIndexList.push("Range"); 
-    	$scope.clickedStep(parseInt(value));   	
+    	$scope.currentStepIndexList.push("Configure"); 	 	
     }
+    $scope.clickedStep(parseInt(value));  
 	}
     else if(value ==3){
 	if($scope.currentStepIndexList.length< 4){
