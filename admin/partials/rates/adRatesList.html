@@ -4,24 +4,37 @@
 			<h2> Rates </h2>
 			<span class="count"> ({{data.length}}) </span>
 			<a class="action add" ui-sref="admin.addRate">Add new</a>
-			<a ng-show = "isConnectedToPMS" class="action import" ng-click="importFromPms()">IMPORT FROM PMS</a>
-			<div class = "select">
-				<select class = "table-filter" ng-model="filterType"
-				    ng-options="opt.name for opt in filterList">
-				    <option value="">Filter by Rate Type</option>
-				</select>
+
+			<a class="action import" ng-click="importFromPms()">IMPORT FROM PMS</a>
+
+			<div class="filters">
+				<div class="filter select">
+					<div class="entry">
+						<div class="select">
+							<select class="placeholder" ng-model="filterType" ng-options="opt.name for opt in filterList">
+								<option value="">Filter by Rate Type</option>
+							</select>
+						</div>
+					</div>
+
+				</div>
 			</div>
 		</header>
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		
 		<span class="count-show">Show</span>
-		<select class = "table-count" ng-model="displyCount"
-			    ng-options="opt for opt in displayCountList">
-		</select>
-		<span class="count-entries">Entries</span>
-		<div class = "table-search">
-			<span>Search</span>
-			<input type="text" ng-model="searchTerm" ng-enter = "searchEntered()"></input>
+		<div class="select table-count">
+			<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
 		</div>
+		<span class="count-entries">entries</span>
+			
+		<div class="entry table-search">
+			<span class="search-text">Search</span>
+			<span class="icons icon-search" name="submit" type="submit"></span>
+	    	<input type="search" ng-model="searchTerm" ng-enter = "searchEntered()" autocomplete="off" placeholder="" />
+	    </div>
+		
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
 		<div id="new-form-holder"></div>
 		<!--ng-table component -->
 		<table class="grid" ng-table="tableParams" template-pagination="custom/pager">
@@ -82,8 +95,5 @@
 	</div>
 </section>
 
-	<div id="new-form-holder" ng-show="isAddmode" ng-include="getAddRateTemplateUrl()">
-
-
-
+<div id="new-form-holder" ng-show="isAddmode" ng-include="getAddRateTemplateUrl()">
 
