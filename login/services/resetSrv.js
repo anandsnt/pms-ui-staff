@@ -9,7 +9,7 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 		
 		var deferred = $q.defer();
 		
-		$http.put("/admin/password_resets/"+data.token+"/admin_update.json", data).success(function(response, status) {
+		$http.put("/api/password_resets/"+data.token+"/update.json", data).success(function(response, status) {
 			if(response.status == "success"){
 		    	//deferred.resolve(response.data);
 		    	successCallback(response.data);
@@ -53,12 +53,8 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 		
 		var deferred = $q.defer();
 		
-		var url = "";
-		if(data.user == "admin"){
-			url = "/admin/password_resets/"+data.token+"/admin_update.json";
-		} else if(data.user == "staff"){
-			url = "/staff/password_resets/"+data.token+"/staff_update.json";
-		}
+		var url = "/api/password_resets/"+data.token+"/update.json";
+		
 		
 		$http.put(url, data).success(function(response, status) {
 			if(response.status == "success"){
@@ -102,7 +98,7 @@ login.service('resetSrv',['$http', '$q', function($http, $q){
 		
 		var url = "";
 
-		var url = "/"+data.user+"/password_resets/validate_token.json";
+		var url = "/api/password_resets/validate_token.json";
 		$http.post(url, data).success(function(response, status) {
 			if(response.status != "success"){
 		    	failureCallBack(response.errors);
