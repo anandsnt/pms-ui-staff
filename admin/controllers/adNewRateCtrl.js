@@ -26,7 +26,7 @@ $scope.clickedStep =  function(index,id){
 	$scope.currentRateStepIndex = index;
 	if(parseInt(id)){
 
-		console.log(14);
+		console.log(id);
 	}
 };
 
@@ -61,8 +61,6 @@ $scope.$on("updateIndex", function(e,value){
 	}
     else if(value ==3){
     $scope.showAddNewDateRangeOptions = false;
-
-
 
 		var getDateRangeIds = ADRatesRangeSrv.getDateRangeIds();
 		var nextContents= [];
@@ -119,7 +117,7 @@ $scope.includeTemplate = function(index){
 		case 1:
 			return "/assets/partials/rates/adRatesAddRoomTypes.html";
 		  break;
-		 case 2:
+		 default:
 		 	if($scope.currentStepIndexList[2].title === "Configure")
 		 	  return "/assets/partials/rates/adRatesAddConfigure.html";
 		 	else
