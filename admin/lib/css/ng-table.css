@@ -154,6 +154,9 @@
 .ng-table th.width-10 {
     width: 10%;
 }
+.ng-table th.width-15 {
+    width: 15%;
+}
 .ng-table th.width-20 {
     width: 20%;
 }
