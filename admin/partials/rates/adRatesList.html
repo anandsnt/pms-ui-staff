@@ -1,0 +1,70 @@
+<section class="content current" ng-click='clearErrorMessage()'>
+	<div>
+		<header class="content-title float">
+			<h2> Rates </h2>
+			<span class="count"> ({{data.length}}) </span>
+			<a class="action add" ui-sref="admin.addRate">Add new</a>
+			<a class="action import" ng-click="importFromPms()">IMPORT FROM PMS</a>
+			<div class = "select">
+				<select class = "table-filter" ng-model="filterType"
+				    ng-options="opt.name for opt in filterList">
+				    <option value="">Filter by Rate Type</option>
+				</select>
+			</div>
+		</header>
+		<span class="count-show">Show</span>
+		<select class = "table-count" ng-model="displyCount"
+			    ng-options="opt for opt in displayCountList">
+		</select>
+		<span class="count-entries">Entries</span>
+		<div class = "table-search">
+			<span>Search</span>
+			<input type="text" ng-model="searchTerm" ng-enter = "searchEntered()"></input>
+		</div>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div id="new-form-holder"></div>
+		<!--ng-table component -->
+		<table class="grid" ng-table="tableParams" template-pagination="custom/pager">
+			<tbody>
+				<tr ng-repeat="rate in $data" ng-class = "{'inactive': !rate.status}"> 
+					<td data-title="'Name'" sortable="'rate'" >
+						<strong>{{rate.name}}</strong>
+					</td>
+					<td data-title="'Based on'"  sortable="'based_on'">
+						{{rate.based_on.name}}
+					</td>
+					<td data-title="'Type'" sortable="'rate_type'">
+						<strong>{{rate.rate_type.name}}</strong>
+					</td>
+					<td data-title="'Date Ranges'">
+						{{rate.date_range_count}}
+					</td>
+					<td data-title="'Status'" sortable="'status'" class ="status">
+						{{rate.status ? 'ACTIVE' : 'INACTIVE'}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<!--end -->
+
+		<!--Custom pagination footer goes here-->
+		<script type="text/ng-template" id="custom/pager">
+			<ul class="pager ng-cloak">
+              	<li ng-repeat="page in pages"
+                    ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
+                    ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+	                <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
+	                <a ng-click="params.page(page.number)">{{page.number}}</a>
+	                <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
+              	</li>
+            </ul>
+		</script>
+		<!--end-->
+	</div>
+</section>
+
+	<div id="new-form-holder" ng-show="isAddmode" ng-include="getAddRateTemplateUrl()">
+
+
+
+
