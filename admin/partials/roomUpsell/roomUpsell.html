@@ -106,8 +106,10 @@
 				</div>
 				<div class="entry has-sortable col3">
 					<label> Level 3 </label>
-					<ul data-placeholder="Drop here for Level 3" class="boxes sortable empty short-list" data-drop="true" ng-model='levelThree' jqyoui-droppable="{multiple:true}" style="overflow: visible !important;">
-						<span class="icons icon-handle"> </span>{{level3.room_type_name}}
+					<ul data-placeholder="Drop here for Level 3" class="boxes sortable empty short-list" data-drop="true" ng-model='levelThree' jqyoui-droppable="{multiple:true}" style="overflow: visible !important;" >
+						<li ng-repeat="level3 in levelThree" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="levelThree" jqyoui-draggable="{index: {{$index}}, placeholder:true, animate:'true'}" ng-hide="!level3.room_type_name" >
+							<span class="icons icon-handle"> </span>{{level3.room_type_name}}
+						</li>
 					</li>
 				</ul>
 			</div>
