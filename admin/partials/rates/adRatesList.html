@@ -18,25 +18,21 @@
 
 				</div>
 			</div>
-
 		</header>
-		
 		
 		<span class="count-show">Show</span>
 		<div class="select table-count">
-			<select class = "table-count" ng-model="displyCount"
+			<select ng-model="displyCount"
 			ng-options="opt for opt in displayCountList"></select>
 		</div>
-		<span class="count-entries">Entries</span>
+		<span class="count-entries">entries</span>
+			
+		<div class="entry table-search float-right">
+			<span class="search-text float-left">Search</span>
+			<span class="icons icon-search left-item" name="submit" type="submit"></span>
+	    	<input type="search" ng-model="searchTerm" ng-enter = "searchEntered()" autocomplete="off" placeholder="" />
+	    </div>
 		
-		
-		<div class="dataTables_filter table-search">
-		  <label>
-		    Search:
-		    <input type="text" ng-model="searchTerm" ng-enter = "searchEntered()"/>
-		  </label>
-		</div>
-
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div id="new-form-holder"></div>
 		<!--ng-table component -->
