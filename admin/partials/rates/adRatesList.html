@@ -57,8 +57,8 @@
 							<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getRateTypePopoverTemplate($index,rate.rate_type.id)">				</div>
 						</span>
 					</td>
-					<td data-title="'Date Ranges'" header-class="width-15">
-						<span class= "tooltip-wrapper" ng-mouseenter="showDateRanges($index, rate.id,'rate_id', rate.date_range_count)" ng-mouseleave="mouseLeavePopover()">
+					<td data-title="'Date Ranges'" header-class="width-15" class = "center_align">
+						<span class= "tooltip-wrapper " ng-mouseenter="showDateRanges($index, rate.id,'rate_id', rate.date_range_count)" ng-mouseleave="mouseLeavePopover()">
 						{{rate.date_range_count}}
 							<div ng-show = "rate.date_range_count > 0" class="tooltip" ng-include="getdateRangeTemplate($index,rate.id)">
 						</span>
