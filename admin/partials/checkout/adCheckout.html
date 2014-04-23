@@ -1,4 +1,4 @@
-	<section id="replacing-div-first" class="content current" style="display: block;" ng-hide="isLoading"><div data-view="ZestCheckOutConfiguration">
+	<section id="replacing-div-first" class="content current" style="display: block;" ng-hide="isLoading" ng-click="clearErrorMessage()"><div data-view="ZestCheckOutConfiguration">
 		<header class="content-title float">
 			<h2>Guest Checkout Setup</h2>
 			<a ui-sref="admin.checkinCheckoutEmail({from:'checkout'})" class="action email">Send Checkout Email</a>
@@ -44,7 +44,7 @@
 
 				
 
-				<div id="options" class="entry full-width">
+				<div id="options" class="entry full-width" ng-show="is_send_checkout_staff_alert_flag">
 					
 					<label class="radio" ng-class="{checked:checkoutData.checkout_staff_alert_option == 'all'}">
 						<span class="icon-form icon-radio " ng-class="{checked:checkoutData.checkout_staff_alert_option == 'all'}"></span>

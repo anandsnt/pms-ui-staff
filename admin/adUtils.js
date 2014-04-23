@@ -84,4 +84,12 @@ var getCurrencySign = function(currencyCode) {
     return CurrencyInfoMappings[currencyCode][1];
 };
 
+/**
+* A public method to check if the given object is empty.
+* @param {object} is the object to be checked
+*/
+function isEmpty(obj) {
+    return Object.keys(obj).length === 0;
+}
+
 

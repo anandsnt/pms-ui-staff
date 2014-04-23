@@ -1,6 +1,7 @@
 admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  function($scope,ADRatesAddDetailsSrv){
 
 $scope.init = function(){
+	BaseCtrl.call(this, $scope);
 	$scope.rateTypes = [];
 	$scope.basedOn = [];
 	$scope.basedOnRateList = [];
@@ -12,7 +13,8 @@ $scope.init = function(){
 	$scope.based_on_value ='';
 	$scope.based_on_type = 'amount';
 	$scope.isFirstTime = true;
-
+	$scope.errorMessage = "";
+	
 	$scope.step1Data = {
 		'name':$scope.rate_name,
 		'type':$scope.rateTypeselected,
@@ -25,7 +27,7 @@ $scope.init();
    * check if fields are not null
    */
 
-$scope.allFieldsFilled = function(){
+$scope.allFieldsnotFilled = function(){
 	if($scope.rate_name && $scope.rate_description && $scope.rateTypeselected){
 	if(($scope.rate_name.length > 0) && ($scope.rate_description.length > 0)
 		&&  ($scope.rateTypeselected.length > 0)){
@@ -59,7 +61,27 @@ $scope.fetchData = function(){
 	var fetchBasedOnFailureCallback = function(data){
 		$scope.$emit('hideLoader');
 	};
-	$scope.invokeApi(ADRatesAddDetailsSrv.fetchBasedOnTypes, {},fetchBasedOnSuccessCallback,fetchBasedOnFailureCallback);	
+	var getParams ={
+		'page':'1',
+		'per_page':'1000',
+		 'query':'',
+		 'sort_dir':'asc',
+		 'sort_field':''
+		};
+
+	$scope.invokeApi(ADRatesAddDetailsSrv.fetchBasedOnTypes, getParams,fetchBasedOnSuccessCallback,fetchBasedOnFailureCallback);	
+
+	
+	var fetchHotelSettingsSuccessCallback = function(data){
+		$scope.currenyCode =data.currency.symbol;
+		$scope.$emit('hideLoader');
+	};
+	var fetchHotelSettingsFailureCallback = function(data){
+		$scope.$emit('hideLoader');
+	};
+
+	$scope.invokeApi(ADRatesAddDetailsSrv.fetchHotelSettings,{},fetchHotelSettingsSuccessCallback,fetchHotelSettingsFailureCallback);	
+	
 }	
 
 $scope.fetchData();
@@ -70,12 +92,16 @@ $scope.fetchData();
 
 $scope.saveStep1 = function(){
 
-	var amount = $scope.based_on_plus_minus + $scope.based_on_value;
+	var amount = parseInt($scope.based_on_plus_minus + $scope.based_on_value);
+
+	if($scope.basedOnRateTypeSelected)
+		var basedOn_id = $scope.basedOnRateTypeSelected.id;
+
 	var data = 
 	{   'name': $scope.rate_name,
 		'description': $scope.rate_description,
 		'rate_type_id': $scope.rateTypeselected.id,
-		'based_on_rate_id': $scope.basedOnRateTypeSelected.id,
+		'based_on_rate_id': basedOn_id,
 		'based_on_type': $scope.based_on_type,
 		'based_on_value': amount
 	};
@@ -85,25 +111,27 @@ $scope.saveStep1 = function(){
 		$scope.newRateId = data.id;
 		$scope.isFirstTime = false;
 		$scope.$emit('hideLoader');
-		$scope.$emit("updateIndex","1");
+		$scope.$emit("updateIndex",{'id':'1','rateId':$scope.newRateId});
 	};
 	var createNewRateFailureCallback = function(data){
 		$scope.$emit('hideLoader');
+		$scope.errorMessage = data;
 	};
-	var createUpdateRateSuccessCallback = function(data){
+	var updateRateSuccessCallback = function(data){
 		$scope.$emit('hideLoader');
-		$scope.$emit("updateIndex","1");
+		$scope.$emit("updateIndex",{'id':'1','rateId':$scope.newRateId});
 	};
-	var createUpdateRateFailureCallback = function(data){
+	var updateRateFailureCallback = function(data){
 		$scope.$emit('hideLoader');
+		$scope.errorMessage = data;
 	};
 	if($scope.isFirstTime)
-	 $scope.invokeApi(ADRatesAddDetailsSrv.createNewRate,data,createUpdateRateSuccessCallback,createUpdateRateFailureCallback);	
+	 $scope.invokeApi(ADRatesAddDetailsSrv.createNewRate,data,createNewRateSuccessCallback,createNewRateFailureCallback);	
 	else{
 	 var updatedData = {'updatedData': data,
 						'rateId':$scope.newRateId
 					 };
-	 $scope.invokeApi(ADRatesAddDetailsSrv.updateNewRate,updatedData,createNewRateSuccessCallback,createNewRateFailureCallback);	
+	 $scope.invokeApi(ADRatesAddDetailsSrv.updateNewRate,updatedData,updateRateSuccessCallback,updateRateFailureCallback);	
      }	
 };
 }]);

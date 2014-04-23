@@ -1,5 +1,5 @@
 <div class="entry" ng-class="styleclass">
-	<label ng-hide="label.length ==0">
+	<label ng-hide="label.length ==0 || !label">
 		{{label}}
 		<strong ng-show = "required=='yes'">*</strong>
 	</label>

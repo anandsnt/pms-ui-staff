@@ -20,18 +20,25 @@ admin.service('ADBaseWebSrvV2',['$http', '$q', '$window', function($http, $q, $w
     *   @param {Object} data for webservice
     *   @return {promise}
     */	
-	this.callWebService = function(httpMethod, url, params){
+	this.callWebService = function(httpMethod, url, params, data){
 		var deferred = $q.defer();
 		if(typeof params == "undefined"){
 			params = "";
 		}
+		
 		//Sample params {params:{fname: "fname", lname: "lname"}}
-		$http({
-		    url: url, 
-		    method: httpMethod,
-		    params: params
-		}).success(function(response, status) {
-	    	deferred.resolve(response);
+		var httpDict = {};
+ 		httpDict.url = url;
+ 		httpDict.method = httpMethod;
+ 		if(httpMethod == 'GET' || httpMethod == 'DELETE'){
+ 			httpDict.params = params;
+ 		}
+ 		else if(httpMethod == 'POST' || httpMethod == 'PUT'){
+ 			httpDict.data = params;
+  		};
+ 	 			
+		$http(httpDict).success(function(response, status) {
+	    	deferred.resolve(response)
 		}).error(function(errors, status) {
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
@@ -53,20 +60,19 @@ admin.service('ADBaseWebSrvV2',['$http', '$q', '$window', function($http, $q, $w
 		return deferred.promise;	    	
 	};
 
-   	this.getJSON = function(url, params){
-
+   	this.getJSON = function(url, params) {
     	return this.callWebService("GET", url, params);
    	};
     
-   	this.putJSON = function(url, params){
+   	this.putJSON = function(url, params) {
    		return this.callWebService("PUT", url, params);
    	};
     
-   	this.postJSON = function(url, params){
-   		return this.callWebService("POST", url, params);
+   	this.postJSON = function(url, data) {
+   		return this.callWebService("POST", url, data);
    	};
     
-   	this.deleteJSON = function(url, params){
+   	this.deleteJSON = function(url, params) {
    		return this.callWebService("DELETE", url, params);
    	};
 
