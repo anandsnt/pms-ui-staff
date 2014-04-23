@@ -15,8 +15,7 @@ function ADBaseTableCtrl($scope, ngTableParams){
 
     $scope.$watch("displyCount", function () {
         $scope.tableParams.count($scope.displyCount);
-        $scope.tableParams.page(1);
-    	$scope.tableParams.reload();
+        $scope.reloadTable();
     });
 
     $scope.$watch("data", function () {
@@ -32,6 +31,11 @@ function ADBaseTableCtrl($scope, ngTableParams){
     $scope.searchEntered = function() {
         $scope.tableParams.page(1);
     	$scope.tableParams.reload();
+    };
+
+    $scope.reloadTable = function(){
+        $scope.tableParams.page(1);
+        $scope.tableParams.reload();
     };
 
     $scope.filterFetchSuccess = function(data){

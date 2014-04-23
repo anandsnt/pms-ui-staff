@@ -35,8 +35,6 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 			$scope.data = data.results;
 			$scope.currentPage = params.page();
         	params.total(data.total_count);
-            // use build-in angular filter
-    
             $defer.resolve($scope.data);
 		};
 		$scope.invokeApi(ADRatesSrv.fetchRates, getParams, fetchSuccessOfItemList);	
@@ -44,7 +42,6 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 
 
 	$scope.loadTable = function(){
-
 		$scope.tableParams = new ngTableParams({
 		        page: 1,  // show first page
 		        count: $scope.displyCount, // count per page 
@@ -60,6 +57,9 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		
 	$scope.loadTable();
 
+	/**
+	* To import the PMS rates
+	*/
 	$scope.importFromPms = function(){
 		var fetchSuccessOfItemList = function(data){
 			$scope.$emit('hideLoader');
@@ -124,33 +124,24 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		$scope.mouseEnterPopover = false; 
 	}
 
-	$scope.getBasedOnPopoverTemplate = function(index, id) {
+	/**
+	* To fetch the popover template for Based on popover
+	* @param {int} index of the selected rate type
+	* @param {int} id of the selected rate type
+	*/
+	$scope.getPopoverTemplate = function(index, id, type) {
 		if (typeof index === "undefined" || typeof id === "undefined"){
 			return "";
 		}
 		if ($scope.currentHoverElement == index) {
-			return "/assets/partials/rates/adRatePopover.html";
+			if(type == 'basedOn')
+				return "/assets/partials/rates/adRatePopover.html";
+			if(type == 'rateType')
+				return "/assets/partials/rates/adRateTypePopover.html";
+			if(type == 'dateRange')
+				return "/assets/partials/rates/adDateRangePopover.html";
 		}
 	}; 
-
-	$scope.getRateTypePopoverTemplate = function(index, id) {
-		if (typeof index === "undefined" || typeof id === "undefined"){
-			return "";
-		}
-		if ($scope.currentHoverElement == index) {
-			return "/assets/partials/rates/adRateTypePopover.html";
-		}
-	};
-
-	$scope.getdateRangeTemplate = function(index, id) {
-		if (typeof index === "undefined" || typeof id === "undefined")
-			return "";
-
-		if ($scope.currentHoverElement == index) {
-			return "/assets/partials/rates/adDateRangePopover.html";
-		}
-	};
-
 
 }]);
 
