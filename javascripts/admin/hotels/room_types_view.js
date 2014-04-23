@@ -73,6 +73,10 @@ var RoomTypesView = function(domRef){
   	if(that.myDom.find("#is-pseudo-room-type").parent("label:eq(0)").hasClass("checked")) {
 	    postData.is_pseudo_room_type = "true";
 	}
+    postData.is_suite = "false";
+    if(that.myDom.find("#is-suite").parent("label:eq(0)").hasClass("checked")) {
+      postData.is_suite = "true";
+  }
 	
   	// to handle image uploaded or not
   	if(that.myDom.find("#file-preview").attr("changed") == "changed")
@@ -116,6 +120,10 @@ var RoomTypesView = function(domRef){
   	if(that.myDom.find("#is-pseudo-room-type").parent("label:eq(0)").hasClass("checked")) {
 	    postData.is_pseudo_room_type = "true";
 	}
+    postData.is_suite = "false";
+    if(that.myDom.find("#is-suite").parent("label:eq(0)").hasClass("checked")) {
+      postData.is_suite = "true";
+  }
 	
   	// to handle image uploaded or not
   	if(that.myDom.find("#file-preview").attr("changed") == "changed")
