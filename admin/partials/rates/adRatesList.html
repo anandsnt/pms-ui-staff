@@ -34,32 +34,20 @@
 					<td data-title="'Based on'"  sortable="'based_on'" header-class="width-25">
 						<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, rate.based_on.id, 'based_on_rate_id', rate.based_on.name)" ng-mouseleave="mouseLeavePopover()">
 							{{rate.based_on.name}}
-							<div ng-show = "popoverRates.total_count > 0" class="tooltip">
-								<div class="title">{{popoverRates.total_count}} Rate Based on {{popoverRates.results[0].based_on.name}}</div>
-								<ul ng-include="getPopoverTemplate($index,rate.based_on.id)">
-																		
-								</ul>
+							<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getBasedOnPopoverTemplate($index,rate.based_on.id)">
 							</div>
 						</span>
 					</td>
 					<td data-title="'Type'" sortable="'rate_type'" header-class="width-25">
 						<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, rate.rate_type.id,'rate_type_id', rate.rate_type.name)" ng-mouseleave="mouseLeavePopover()">
 							<strong>{{rate.rate_type.name}}</strong>
-							<div ng-show = "popoverRates.total_count > 0" class="tooltip">
-								<div class="title">{{popoverRates.total_count}} {{popoverRates.results[0].rate_type.name}}</div>
-								<ul ng-include="getPopoverTemplate($index,rate.rate_type.id)">
-								</ul>
-							</div>
+							<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getRateTypePopoverTemplate($index,rate.rate_type.id)">				</div>
 						</span>
 					</td>
 					<td data-title="'Date Ranges'" header-class="width-15">
 						<span class= "tooltip-wrapper" ng-mouseenter="showDateRanges($index, rate.id,'rate_id', rate.date_range_count)" ng-mouseleave="mouseLeavePopover()">
 						{{rate.date_range_count}}
-						<div ng-show = "rate.date_range_count > 0" class="tooltip">
-							<div class="title">{{rate.name}} - Rate date ranges</div>
-								<ul ng-include="getdateRangeTemplate($index,rate.id)">
-								</ul>
-							</div>
+							<div ng-show = "rate.date_range_count > 0" class="tooltip" ng-include="getdateRangeTemplate($index,rate.id)">
 						</span>
 					</td>
 					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': rate.status}" header-class="width-10">

@@ -124,21 +124,32 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		$scope.mouseEnterPopover = false; 
 	}
 
-	$scope.getPopoverTemplate = function(index, id) {
-		if (typeof index === "undefined" || typeof id === "undefined")
+	$scope.getBasedOnPopoverTemplate = function(index, id) {
+		console.log("get popover");
+		if (typeof index === "undefined" || typeof id === "undefined"){
 			return "";
-
+		}
 		if ($scope.currentHoverElement == index) {
 			return "/assets/partials/rates/adRatePopover.html";
 		}
 	}; 
+
+	$scope.getRateTypePopoverTemplate = function(index, id) {
+		console.log("get popover");
+		if (typeof index === "undefined" || typeof id === "undefined"){
+			return "";
+		}
+		if ($scope.currentHoverElement == index) {
+			return "/assets/partials/rates/adRateTypePopover.html";
+		}
+	};
 
 	$scope.getdateRangeTemplate = function(index, id) {
 		if (typeof index === "undefined" || typeof id === "undefined")
 			return "";
 
 		if ($scope.currentHoverElement == index) {
-			return "/assets/partials/rates/addateRangePopover.html";
+			return "/assets/partials/rates/adDateRangePopover.html";
 		}
 	};
 
