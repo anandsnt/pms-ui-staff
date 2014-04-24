@@ -6,6 +6,16 @@ var reportContent = createVerticalScroll( '#report-content', {} );
 
 var reports = angular.module('reports', ['ngAnimate', 'ngSanitize', 'mgcrea.ngStrap.datepicker']);
 
+reports.filter('todate', [function() {
+	return function(input) {
+		if(!input) {
+			return;
+		}
+
+		return input.getFullYear() + '-' + input.getMonth() + '-' + input.getDate()
+	}
+}]);
+
 reports.config([
 	'$datepickerProvider',
 	function($datepickerProvider) {
@@ -54,7 +64,6 @@ reports.controller('reporstList', [
 				for (var i = 0, j = $scope.reportList.length; i < j; i++) {
 
 					// add report icon class
-
 					if ($scope.reportList[i]['title'] == 'Upsell') {
 						$scope.reportList[i]['reportIconCls'] = 'icon-upsell';
 					} else if ($scope.reportList[i]['title'] == 'Late Check Out') {
@@ -151,13 +160,45 @@ reports.controller('reportDetails', [
 
 		// common methods to do things after fetch report
 		var afterFetch = function(response) {
-			// fill in data for ng-grid
+
+			console.log( response );
+
+			// fill in data into seperate props
 			$scope.totals = response.totals;
 			$scope.headers = response.headers;
 			$scope.results = response.results;
 
+
+
+			// for hard coding styles for report headers
+			// if the header count is greater than 4
+			// split it up into two parts
+			// NOTE: this implementation may need mutation if in future style changes
+			// NOTE: this implementation also effects template, depending on design
+
+			// making unique copies of array
+			// slicing same array not good.
+			// say thanks to underscore.js
+			$scope.firstHalf = _.compact( $scope.totals );
+			$scope.restHalf  = _.compact( $scope.totals );
+
+			// now lets slice it half and half in order that each have atmost 4
+			$scope.firstHalf = $scope.firstHalf.slice( 0, 4 );
+			$scope.restHalf  = $scope.restHalf.slice( 4 );
+
+			// track the total count
 			$scope.totalCount = response.total_count;
 			$scope.currCount = response.results.length;
+
+			// now applying some very special and bizzare
+			// cosmetic effects for CICO only
+			// NOTE: direct dependecy on template
+			if ( $scope.chosenReport.title === 'Check In / Check Out' ) {
+				$scope.firstHalf[0]['class'] = 'green';
+				$scope.restHalf[0]['class'] = 'red';
+			};
+
+
 
 			// hide the loading indicator
 			sntapp.activityIndicator.hideActivityIndicator();
@@ -197,11 +238,48 @@ reports.controller('reportDetails', [
 			// let show the loading indicator
 			sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 
+			// let save the report id
+			$scope.reportID = id;
+
 			// we already know which user has chosen
 			$scope.chosenReport = item;
 
-			// let save the report id
-			$scope.reportID = id;
+			// now the dirty parts 
+			// keep track of the transcation type for UI
+			if ($scope.chosenReport.chosenCico === 'BOTH') {
+				$scope.transcationTypes = 'check In, Check Out';
+			} else if ($scope.chosenReport.chosenCico === 'IN') {
+				$scope.transcationTypes = 'check In';
+			} else if ($scope.chosenReport.chosenCico === 'OUT') {
+				$scope.transcationTypes = 'check OUT';
+			}
+
+
+			// another dirty part
+			// keep track of the Users chosen for UI
+			// if there is just one user
+			if (typeof $scope.chosenReport.chosenUsers === 'number') {
+				// first find the full name
+				var name = _.find($scope.userList, function(user) {
+					console.log( user );
+					return user.id === $scope.chosenReport.chosenUsers;
+				});
+
+				$scope.userNames = name.full_name || false;
+			} else {
+				// if there are more than one user
+				for (var i = 0, j = $scope.chosenReport.chosenUsers.length; i < j; i++) {
+
+					// first find the full name
+					var name = _.find($scope.userList, function(user) {
+						return user.id === $scope.chosenReport.chosenUsers[i];
+					});
+
+					$scope.userNames += name.full_name + (i < j ? ', ' : '');
+				};
+			}
+
+
 
 			// make calls to the data service with passed down args
 			RepFetchReportsSrv.fetch( id, params )

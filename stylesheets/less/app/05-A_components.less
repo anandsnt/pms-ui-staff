@@ -4471,16 +4471,22 @@
 				&.col2 {
 					width: 50%;
 					clear: none;
-					.pull-left;
+					float: left;
 
 					&:nth-child(2) {
 						li { 
-							.pull-right; 
+							float: none;
 
-							&:last-child { margin-right: 20px; }
-							&:first-child { margin-right: 0; }
+							&:last-child { margin-right: 0; }
 						}
 					}
+				}
+
+				&.left-align {
+					text-align: left;
+				}
+				&.right-align {
+					text-align: right;
 				}
 			}
 		}
@@ -4514,6 +4520,10 @@
 					td {
 						background: @white;
 						padding: 10px;
+
+						&.bold {
+							font-weight: bold;
+						}
 					}
 				}
 
