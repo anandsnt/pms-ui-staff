@@ -47,6 +47,7 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv', fun
     $scope.saveSetFailureCallback = function(errorMessage){
     	 $scope.$emit('hideLoader');
     	 $scope.errorMessage = errorMessage;
+    	 $scope.$emit("errorReceived",errorMessage);
     };
     $scope.cancelClick = function(){
     	$scope.currentClickedSet = -1;
@@ -60,6 +61,17 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv', fun
     	
     	$scope.invokeApi(ADRatesConfigureSrv.saveSet, $scope.updateData, $scope.saveSetSuccessCallback, $scope.saveSetFailureCallback);
     	
+    };
+    $scope.moveAllSingleToDouble = function(index){
+    	 angular.forEach($scope.data.sets[index].room_types, function(value, key){
+			 value.double = value.single;
+		 });
+    };
+    $scope.moveSingleToDouble = function(parentIndex, index){
+    	$scope.data.sets[parentIndex].room_types[index].double = $scope.data.sets[parentIndex].room_types[index].single;
+    };
+    $scope.deleteSet = function(id){
+    	console.log("++++++++++++++"+id)
     };
  
 }]);
