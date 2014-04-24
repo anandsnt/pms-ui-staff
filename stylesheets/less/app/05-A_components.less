@@ -4236,7 +4236,6 @@
 		color: @white;
 		background: @gcard @gcardTexture;
 		text-align: left;
-		overflow: hidden;
 		.float;
 		.show;
 
@@ -4289,7 +4288,7 @@
 				}
 			}
 
-			span {
+			.span-to {
 				color: @grey3;
 				font-size: 14px;
 				text-transform: uppercase;
@@ -4387,9 +4386,13 @@
 	}
 
 	#report-details {
+		background-color: #fcfcfc;
+		background-image: @textureImage;
+		background-repeat: repeat;
 
 		&.content.stay-card-inner{
-			top: 91px;	
+			top: 91px;
+			.calc-height(100, 91); /* %, px */
 		}
 
 		.report-header {
@@ -4484,7 +4487,7 @@
 
 		.report-content {
 			position: relative;
-			.calc-height(100, 180); /* %, px */
+			.calc-height(100, 177); /* %, px */
 
 			> .wrapper { padding: 0 20px 20px 20px; }
 			> .iScrollVerticalScrollbar { 
@@ -4527,6 +4530,38 @@
 							span { color: @textColor; }
 
 							&:last-child { text-align: right; }
+
+							.pagination {
+								text-align: right;
+								margin-top: 10px;
+								li {
+									display: inline-block;
+									color: #fcfcfc;
+									cursor: pointer;
+									padding: 2px 9px;
+									margin: 0 3px;
+									background: #ffb319;
+									border-radius: 3px;
+									-webkit-box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+									-moz-box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+									box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+								}
+								.active {
+									color: #202225;
+									background: #ddd;
+									-webkit-box-shadow: inset 1px 1px 1px rgba(0,0,0,.3);
+									-moz-box-shadow: inset 1px 1px 1px rgba(0,0,0,.3);
+									box-shadow: inset 1px 1px 1px rgba(0,0,0,.3);
+									cursor: default
+								}
+								.title {
+									color: #9d9d9d;
+									background: none;
+									-webkit-box-shadow: none;
+									-moz-box-shadow: none;
+									box-shadow: none;
+								}
+							}
 						}
 					}
 				}
@@ -4545,7 +4580,17 @@
 		margin: -200px 0 0 -175px !important;
 		background-image: @textureImage;
 		background-repeat: repeat;
-		z-index: 666;
+		z-index: 999666;
+	}
+
+	.datepicker-mask {
+		background: rgba(0, 0, 0, 0.41);
+		position: fixed;
+		top: 0 !important;
+		left: 0 !important;
+		right: 0;
+		bottom: 0;
+		z-index: 666999;
 	}
 
 	.datepicker table {

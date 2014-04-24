@@ -1,9 +1,10 @@
 
 // create iscroll
 var reportScroll = createVerticalScroll( '#reports', {} );
-// refreshVerticalScroll
+var reportContent = createVerticalScroll( '#report-content', {} );
 
-var reports = angular.module('reports', ['ngAnimate', 'ngSanitize', 'mgcrea.ngStrap.datepicker']);
+
+var reports = angular.module('reports', ['ngAnimate', 'ngSanitize', 'mgcrea.ngStrap.datepicker', 'ngGrid']);
 
 reports.config([
 	'$datepickerProvider',
@@ -11,30 +12,11 @@ reports.config([
 		angular.extend($datepickerProvider.defaults, {
 			dateFormat: 'yyyy/MM/dd',
 			startWeek: 0,
-			autoclose: true
+			autoclose: true,
+			container: 'body'
 		});
 	}
 ]);
-
-
-reports.filter('splitName', function() {
-	return function(input, option) {
-		if ( !input ) {
-			return;
-		};
-
-		var name = input.split(' by ')[0];
-		var by   = 'by ' + input.split(' by ')[1] + (input.split(' by ')[2] ? ' by ' + input.split(' by ')[2] : '');
-
-		if ( option === 'name' ) {
-			return name;
-		};
-
-		if ( option === 'by' ) {
-			return by;
-		};
-	};
-});
 
 reports.controller('reporstList', [
 	'$scope',
@@ -49,18 +31,14 @@ reports.controller('reporstList', [
 
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 
-		// get today's date
-		var t = new Date();
-		var today = t.getMonth() + '-' + t.getDate() + '-' + t.getFullYear();
-		$scope.isCal     = false;
-		$scope.minDate   = '';
-		$scope.maxDate   = today;
-		$scope.currCal   = '';
-
 		$scope.showReports = false;
 		$scope.reportList  = [];
 		$scope.reportCount = 0;
 		$scope.userList    = [];
+
+		// lets fix the results per page to, user can't edit this for now
+		// 25 is the current number set by backend server
+		$rootScope.resultsPerPage = 25;
 
 		// fetch the reports list with the filters to be used
 		RepFetchSrv.fetch()
@@ -92,7 +70,7 @@ reports.controller('reporstList', [
 					$scope.reportList[i]['hasCicoFilter'] = hasCicoFilter ? true : false;
 					if (hasCicoFilter) {
 						$scope.reportList[i]['cicoOptions'] = [
-							{value: 'BOTH', label: 'Show only Check Ins and  Check Outs'},
+							{value: 'BOTH', label: 'Show Check Ins and  Check Outs'},
 							{value: 'IN', label: 'Show only Check Ins'},
 							{value: 'OUT', label: 'Show only Check Outs'}
 						]
@@ -134,10 +112,10 @@ reports.controller('reporstList', [
 				to_date: this.item.untilDate,
 				user_ids: this.item.chosenUsers,
 				checked_in: this.item.chosenCico === 'IN' || this.item.chosenCico === 'BOTH',
-				checked_out: this.item.chosenCico === 'OUT' || this.item.chosenCico === 'BOTH'
+				checked_out: this.item.chosenCico === 'OUT' || this.item.chosenCico === 'BOTH',
+				page: 1,
+				per_page: $rootScope.resultsPerPage
 			}
-
-			console.log( this.item.fromDate )
 
 			// emit that the user wish to see report details
 			$rootScope.$emit( 'report.submit', this.item, this.item.id, params );
@@ -161,6 +139,50 @@ reports.controller('reportDetails', [
 				$scope.userList = response;
 			});
 
+		// common methods to do things after fetch report
+		var afterFetch = function(response) {
+			// fill in data for ng-grid
+			$scope.totals = response.totals;
+			$scope.headers = response.headers;
+			$scope.results = response.results;
+
+			$scope.totalCount = response.total_count;
+			$scope.currCount = response.results.length;
+
+			// hide the loading indicator
+			sntapp.activityIndicator.hideActivityIndicator();
+
+			// lets slide in the details view
+			$rootScope.showReportDetails = true;
+
+			// refesh the report scroll
+			refreshVerticalScroll( reportContent );
+		};
+
+		// we are gonna need to drop some pagination
+		// this is done only once when the report details is loaded
+		// and when user updated the filters
+		var calPagination = function(response) {
+			$scope.pagination = [];
+			if (response.results.length < response.total_count) {
+				var pages = Math.floor( response.total_count / response.results.length );
+				var extra = response.total_count % response.results.length;
+
+				if (extra > 0) {
+					pages++;
+				};
+
+				for (var i = 1; i <= pages; i++) {
+					$scope.pagination.push({
+						no: i,
+						active: i === 1 ? true : false
+					})
+				};
+
+				console.log($scope.pagination);
+			};
+		};
+
 		// listen for report submit form dashboard view
 		var submitBind = $rootScope.$on('report.submit', function(event, item, id, params) {	
 
@@ -170,17 +192,14 @@ reports.controller('reportDetails', [
 			// we already know which user has chosen
 			$scope.chosenReport = item;
 
+			// let save the report id
+			$scope.reportID = id;
+
 			// make calls to the data service with passed down args
 			RepFetchReportsSrv.fetch( id, params )
 				.then(function(response) {
-
-					console.log( response );
-
-					// hide the loading indicator
-					sntapp.activityIndicator.hideActivityIndicator();
-
-					// lets slide in the details view
-					$rootScope.showReportDetails = true;
+					afterFetch( response );
+					calPagination( response );
 				});
 		});
 
@@ -190,6 +209,67 @@ reports.controller('reportDetails', [
 		// back btn 
 		$scope.returnBack = function() {
 			$rootScope.showReportDetails = false;
+		};
+
+		// fetch next page on pagination change
+		$scope.fetchNextPage = function() {
+
+			// user tried to reload the current page
+			if (this.page.active) {
+				return;
+			};
+
+			// change the current active number
+			var currPage = _.find($scope.pagination, function(page) {
+				return page.active === true
+			});
+			currPage.active = false;
+			this.page.active = true;
+
+			var params = {
+				from_date: $scope.chosenReport.fromDate,
+				to_date: $scope.chosenReport.untilDate,
+				user_ids: $scope.chosenReport.chosenUsers,
+				checked_in: $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'BOTH',
+				checked_out: $scope.chosenReport.chosenCico === 'OUT' || $scope.chosenReport.chosenCico === 'BOTH',
+				page: this.page.no,
+				per_page: $rootScope.resultsPerPage
+			}
+
+			// let show the loading indicator
+			sntapp.activityIndicator.showActivityIndicator('BLOCKER');
+
+			// and make the call
+			RepFetchReportsSrv.fetch( $scope.reportID, params )
+				.then(function(response) {
+					afterFetch( response );
+				});
+		};
+
+		// fetch the updated result based on the filter changes
+		$scope.fetchUpdatedReport = function() {
+
+			// now sice we are gonna update the filter
+			// we are gonna start from page one
+			var params = {
+				from_date: $scope.chosenReport.fromDate,
+				to_date: $scope.chosenReport.untilDate,
+				user_ids: $scope.chosenReport.chosenUsers,
+				checked_in: $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'BOTH',
+				checked_out: $scope.chosenReport.chosenCico === 'OUT' || $scope.chosenReport.chosenCico === 'BOTH',
+				page: 1,
+				per_page: $rootScope.resultsPerPage
+			}
+
+			// let show the loading indicator
+			sntapp.activityIndicator.showActivityIndicator('BLOCKER');
+
+			// and make the call
+			RepFetchReportsSrv.fetch( $scope.reportID, params )
+				.then(function(response) {
+					afterFetch( response );
+					calPagination( response );
+				});
 		};
 	}
 ]);
@@ -210,7 +290,8 @@ reports.controller('reportDetails', [
 reports.factory('RepFetchSrv', [
 	'$http',
 	'$q',
-	function($http, $q) {
+	'$window',
+	function($http, $q, $window) {
 		var factory = {};
 
 		factory.fetch = function() {
@@ -233,7 +314,7 @@ reports.factory('RepFetchSrv', [
 					else if(status == 401){ // 401- Unauthorized
 						console.log('lets redirect');
 						// so lets redirect to login page
-						$window.location.href = '/logout' ;
+						$window.location.href = '/logout';
 					}else{
 						deferred.reject(errors);
 					}
@@ -250,7 +331,8 @@ reports.factory('RepFetchSrv', [
 reports.factory('RepUserSrv', [
 	'$http',
 	'$q',
-	function($http, $q) {
+	'$window',
+	function($http, $q, $window) {
 		var factory = {};
 
 		factory.users = [];
