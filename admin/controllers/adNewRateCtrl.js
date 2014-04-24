@@ -1,13 +1,20 @@
-admin.controller('ADAddnewRate', ['$scope', function($scope) {
+admin.controller('ADAddnewRate', ['$scope','ADRatesRangeSrv', function($scope,ADRatesRangeSrv) {
 	
 
 $scope.init = function(){
 
 	BaseCtrl.call(this, $scope);
-	$scope.currentStepIndexList = ["Details","we","Configure"];
-	$scope.currentRateStepIndex = 2;
+
+	var initialContent = {
+							'title': 'Details',
+							'type' : 'Details',
+							'id'   : 'Details'
+						};
+	$scope.currentStepIndexList = [initialContent];
+	$scope.currentRateStepIndex = 0;
 	$scope.errorMessage = '';
 	$scope.newRateId = '';
+	$scope.showAddNewDateRangeOptions =false;
 };
  /*
 	* init function
@@ -16,36 +23,85 @@ $scope.init = function(){
  /*
    * click action to switch between steps
    */
-$scope.clickedStep =  function(index){
+$scope.clickedStep =  function(index,id){
 	$scope.currentRateStepIndex = index;
+	if(parseInt(id)){
+
+		console.log(id);
+	}
 };
 
   /*
    	* to be updated from child classes 
 	*/
 $scope.$on("updateIndex", function(e,value){
+	var nextContent = {}
 	if(value.id == 1){
 	$scope.newRateId= value.rateId;
 	if($scope.currentStepIndexList.length< 2){	
-    	$scope.currentStepIndexList.push("Type");
+
+	    nextContent = {
+							'title': 'Type',
+							'type' : 'Type',
+							'id'   : 'Type'
+						};
+    	$scope.currentStepIndexList.push(nextContent);
 		 }
 		 $scope.clickedStep(parseInt(value.id));
 	}
 	else if(value ==2){
 	if($scope.currentStepIndexList.length< 3){
-    	$scope.currentStepIndexList.push("Range"); 
+    	nextContent = {
+							'title': 'Range',
+							'type' : 'Range',
+							'id'   : 'Range'
+						};
+    	$scope.currentStepIndexList.push(nextContent);
     	$scope.clickedStep(parseInt(value));   	
     }
 	}
     else if(value ==3){
-	if($scope.currentStepIndexList.length< 4){
-    	$scope.currentStepIndexList[2] = "Configure"; 
-    	$scope.clickedStep(2);  	
-    }
+    if($scope.currentStepIndexList[2].title === 'Range')
+    	  $scope.currentStepIndexList.splice(2,1);
+    $scope.showAddNewDateRangeOptions = false;
+		var getDateRangeIds = ADRatesRangeSrv.getDateRangeIds();
+		angular.forEach(getDateRangeIds, function(value, key){
+       	var id =value;
+		 var nextContent = {
+							'title': 'Configure',
+							'type' : 'Configure',
+							'id'   : id
+							};
+	   	$scope.isAlreadyIncurrentStepIndexList = false;
+		angular.forEach($scope.currentStepIndexList, function(stepValue, key){
+
+		if(stepValue.id == nextContent.id){
+			$scope.isAlreadyIncurrentStepIndexList = true;
+		}
+		});
+		if(!$scope.isAlreadyIncurrentStepIndexList)
+		   $scope.currentStepIndexList.push(nextContent);
+
+   		  });	
+
+    	$scope.clickedStep($scope.currentStepIndexList.length-1);  	
+    
 	}
 
 	
 });
+
+$scope.hideAddNewDateRange = function(){
+
+	if($scope.currentStepIndexList.length >= 3){
+		if(parseInt($scope.currentStepIndexList[2].id))
+			return false;
+		else
+		return true;
+	}
+	else
+		return true;
+}
   $scope.$watch('currentRateStepIndex', function () {
   	$scope.currentRateStepIndex =$scope.currentRateStepIndex;
  });
@@ -63,13 +119,17 @@ $scope.includeTemplate = function(index){
 		case 1:
 			return "/assets/partials/rates/adRatesAddRoomTypes.html";
 		  break;
-		 case 2:
-		 	if($scope.currentStepIndexList[2] === "Configure")
+		 default:
+		 	if($scope.currentStepIndexList[2].title === "Configure")
 		 	  return "/assets/partials/rates/adRatesAddConfigure.html";
 		 	else
 		 	  return "/assets/partials/rates/adRatesAddRange.html";	
 		  break;
 	};
 };
+
+$scope.addNewDateRange =  function(){
+	 $scope.showAddNewDateRangeOptions = true;
+}
 
 }]);

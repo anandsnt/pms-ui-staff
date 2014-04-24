@@ -36,11 +36,12 @@
 		<ad-textbox value="set.setName" style="width:150px;"></ad-textbox>
 	</td>
 	<td width="70%" style="padding-left:60px;">
-		 <ad-checkbox style="float:left;width:60px;margin:5px;" ng-repeat="day in set.days" is-checked="day.checked" label="{{day.name}}"  ng-click="checkboxClicked($index,$parent.$index)"></ad-checkbox>	
+		
+		 <ad-checkboxtext-left style="float:left;width:60px;margin:5px;" ng-repeat="day in set.days" is-checked="day.checked" label="{{day.name}}"  ng-click="checkboxClicked($index,$parent.$index)" width="70px"></ad-checkboxtext-left>	
 	</td>
 	<td>
-		<span class="icons plus_small"  ng-show="$index === Sets.length-1" ng-click="addNewSet($index)">&nbsp;</span>
-		<span class="icons delete_small" ng-hide="$index === Sets.length-1"ng-click="deleteSet($index)">&nbsp;</span>		
+		<a class="icons icon-add" ng-show="$index === Sets.length-1" ng-click="addNewSet($index)"></a>
+		<a class="icons icon-delete  delete_item" ng-hide="$index === Sets.length-1"ng-click="deleteSet($index)"></a>	
 	</td>
 <tr>
 </table>

@@ -12,6 +12,7 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     	// $scope.sets = data;
     };
     $scope.setCurrentClickedSet = function(index){
+    	console.log("=============="+index);
     	$scope.currentClickedSet = index;
     };
     

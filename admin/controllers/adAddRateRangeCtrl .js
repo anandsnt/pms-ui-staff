@@ -66,7 +66,9 @@ admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter','ADRatesR
 
       var postDateRangeSuccessCallback = function(){
          $scope.$emit('hideLoader');
+         $scope.showAddNewDateRangeOptions = false;
          $scope.$emit("updateIndex","3");
+      
       };
       var postDateRangeFailureCallback = function(){
          $scope.$emit('hideLoader');

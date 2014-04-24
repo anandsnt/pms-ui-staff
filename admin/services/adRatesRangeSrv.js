@@ -1,6 +1,11 @@
 admin.service('ADRatesRangeSrv', ['$q', 'ADBaseWebSrvV2',
 function($q, ADBaseWebSrvV2) {
 
+
+	var dateRangeIDs = [];
+	this.getDateRangeIds = function(){
+		return dateRangeIDs;
+	};
   
    /*
     * Service function to save date range
@@ -15,6 +20,7 @@ function($q, ADBaseWebSrvV2) {
 
 		var url = "/api/rates/"+id+"/rate_date_ranges";
 		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
+			dateRangeIDs.push(data.id);
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);

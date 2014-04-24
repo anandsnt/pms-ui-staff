@@ -1,9 +1,12 @@
-admin.controller('ADRateTypeCtrl', ['$scope', '$rootScope', 'ADRateTypeSrv',
-function($scope, $rootScope, ADRateTypeSrv) {
+admin.controller('ADRateTypeCtrl', ['$scope', '$rootScope', 'ADRateTypeSrv', 'ADRatesSrv',
+function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
 	$scope.rateTypeData = {};
 	$scope.isAddMode = false;
+	$scope.rate = "";
+	$scope.mouseEnterPopover = false; 
+
 
 	var fetchSuccess = function(data) {
 		$scope.data = data;
@@ -52,6 +55,15 @@ function($scope, $rootScope, ADRateTypeSrv) {
 			return "";
 		if ($scope.currentClickedElement == index) {
 			return "/assets/partials/rateTypes/adRateTypeEdit.html";
+		}
+	};
+
+	$scope.getPopoverTemplate = function(index, id) {
+		if ( typeof index === "undefined" || typeof id === "undefined")
+			return "";
+
+		if ($scope.currentHoverElement == index) {
+			return "/assets/partials/rateTypes/adRateTypePopover.html";
 		}
 	};
 	/**
@@ -110,11 +122,44 @@ function($scope, $rootScope, ADRateTypeSrv) {
 	* @param {string} id of the selected rate types
 	*/
 	$scope.deleteRateType = function(index, id) {
-		var successCallbackDelete = function(data) {
+		var deleteRateSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.data.splice(index, 1);
 			$scope.currentClickedElement = -1;
 		};
-		$scope.invokeApi(ADRateTypeSrv.deleteRateType, id, successCallbackDelete);
+		$scope.invokeApi(ADRateTypeSrv.deleteRateType, id, deleteRateSuccess);
 	};
+
+	/**
+	* To fetch and display the rate popover
+	* @param {int} index of the selected rate type
+	* @param {string} id of the selected rate type
+	* @param {string} number of rates available for the rate type
+	*/
+	$scope.showRates = function(index, rateTypeId, rateCount){
+		if(rateCount <= 0) return false;
+		var rateFetchSuccess = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.rate = data;
+			$scope.mouseEnterPopover = true; 
+		};
+		if(!$scope.mouseEnterPopover){
+			$scope.rate = "";
+			$scope.currentHoverElement = index;
+			$scope.invokeApi(ADRatesSrv.fetchRates, {'rate_type_id': rateTypeId}, rateFetchSuccess);
+		}
+	};
+
+	/**
+	* To handle the popover state. Reset the 
+	* @param {int} index of the selected rate type
+	* @param {string} id of the selected rate type
+	* @param {string} number of rates available for the rate type
+	*/
+	$scope.mouseLeavePopover = function(){
+		$scope.rate = "";
+		$scope.mouseEnterPopover = false; 
+	}
+
+
 }]);

@@ -17,15 +17,15 @@
 		<td  width="5%"> <ad-checkbox style="float:left;width:60px;margin:5px;" is-checked="set.sunday" label=""></ad-checkbox>	</td>
 		<td width="5%"><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)"> </td>
 	</tr>
-	</tr>
-	
+
+		</table>
 <table class="grid" ng-show="currentClickedSet == $index" >
 	<tr>
 		<td>	</td><td>Single	</td><td>	</td><td>	Double</td><td>	EXTRA ADULT</td><td>CHILD	</td><td>	DISTRIBUTE</td>
 	</tr>
 	<tr ng-repeat="roomtypes in data.room_rates">
 		<td width="13%">{{roomtypes.name}}</td>
-		<td width="13%"><ad-textbox value="roomtypes.single" style="width:150px;"></ad-textbox></td>
+		<td width="13%"><input type="text" value="{{roomtypes.single}}"><!-- <ad-textbox value="roomtypes.single" style="width:150px;"></ad-textbox>--></td>
 		<td width="8%"> >> </td>
 		<td width="13%"><ad-textbox value="roomtypes.double" style="width:150px;"></ad-textbox></td>
 		<td width="13%"><ad-textbox value="roomtypes.extra_adult" style="width:150px;"></ad-textbox></td>
@@ -34,6 +34,6 @@
 	</tr>
 	<tr><td><input type="button" value="Save" ng-click="saveSet()" /></td></tr>
 		</table>
-		</table>
+	
 		
 

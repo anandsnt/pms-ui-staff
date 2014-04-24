@@ -821,9 +821,122 @@ display: inline;
     padding:3px 10px 0 0;
     }
 
-.table-search input{
-    min-height: 30px !important;
+    .table-search input{
+        min-height: 30px !important;
     }
+
+/* TOOLTIP */ 
+.tooltip-wrapper {
+    margin: 0px 0px;
+    padding: 15px 10px;
+    position: relative;
+    text-align: center;
+    -webkit-transform: translateZ(0); /* webkit flicker fix */
+    -webkit-font-smoothing: antialiased; /* webkit text rendering fix */
+
+    &:hover .tooltip {
+        opacity: 1;
+        pointer-events: auto;
+        -webkit-transform: translateY(0px);
+           -moz-transform: translateY(0px);
+            -ms-transform: translateY(0px);
+             -o-transform: translateY(0px);
+                transform: translateY(0px);
+    }
+    .tooltip {
+        background: #fff;
+        top: 25%;
+        color: #fff;
+        display: block;
+        left: 100%;
+        margin-bottom: 0px;
+        opacity: 0;
+        padding: 0px;
+        pointer-events: none;
+        position: absolute;
+        width: 100%;
+        min-width:150px;
+        text-align:left;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        box-shadow: 2px 2px 1px #e0e0e0;
+
+        li {
+            font-size:14px !important;
+            padding:3px 14px !important;;
+            list-style:none;
+            background:#f5f5f5;
+            color:#000;
+            margin:0px !important;
+            cursor:pointer;
+            &:hover {
+                color:#F6991B;
+            }
+        }
+
+        .title {
+            background:#f8a219;
+            font-size:14px !important;
+            padding:8px 14px 8px 14px !important;
+            -webkit-border-top-left-radius: 5px;
+            -webkit-border-top-right-radius: 5px;
+            -moz-border-radius-topleft: 5px;
+            -moz-border-radius-topright: 5px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        /* This bridges the gap so you can mouse into the tooltip without it disappearing */
+        &:before {
+            bottom: -14px;
+            content: " ";
+            display: block;
+            height: 12px;
+            left: -5px;
+            position: absolute;
+            width: 100%;
+        }
+
+        /* CSS Triangles */
+        &:after {
+            border-left: solid transparent 8px;
+            border-right: solid transparent 8px;
+            border-top: solid #f8a219 8px;
+            bottom: 0px;
+            top:12px;
+            content: " ";
+            height: 0;
+            left: 0%;
+            margin-left: -12px;
+            position: absolute;
+            width: 0;
+            transform:rotate(90deg);
+            -ms-transform:rotate(90deg); /* IE 9 */
+            -webkit-transform:rotate(90deg); /* Opera, Chrome, and Safari */
+        } 
+    }
+}
+  
+
+
+
+/* IE can just show/hide with no transition */
+.lte8 .tooltip-wrapper .tooltip {
+    display: none;
+}
+
+.lte8 .tooltip-wrapper:hover .tooltip {
+    display: block;
+}
+
+#rate-types table tr:not(.edit-data) th, table tr:not(.edit-data) td{
+    overflow: visible !important;
+}
+
+#rate-types table tr:not(.edit-data) th, table tr:not(.edit-data) td{
+    overflow: visible !important;
+}
+
 
 
 /* 6. IE
