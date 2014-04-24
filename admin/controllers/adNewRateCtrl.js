@@ -59,7 +59,8 @@ $scope.$on("updateIndex", function(e,value){
 	else if(value ==2){
 	if($scope.currentStepIndexList.length< 3){
     	nextContent = {
-							'title': 'Range',
+							'title': 'Date',
+							'subtitle': 'Range',
 							'type' : 'Range',
 							'id'   : 'Range'
 						};
@@ -68,7 +69,7 @@ $scope.$on("updateIndex", function(e,value){
     }
 	}
     else if(value ==3){
-    if($scope.currentStepIndexList[2].title === 'Range')
+    if($scope.currentStepIndexList[2].title === 'Date')
     	  $scope.currentStepIndexList.splice(2,1);
     $scope.showAddNewDateRangeOptions = false;
 		var getDateRangeData = ADRatesRangeSrv.getDateRangeData();
