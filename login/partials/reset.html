@@ -1,7 +1,13 @@
 <div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 	
 <div id="login" class="content">
 	<img src="/assets/logo.png" class="logo" alt="">
-
+	<span class='notice error' ng-show="errorMessage!=''" >
+		<ul>
+			<li ng-repeat="message in errorMessage">
+				{{message}}
+			</li>
+		</ul>	
+	</span>
 	<form method="post" id="forget_pswd" ng-submit="submit()" class="form forget_pswd" accept-charset="UTF-8" novalidate>
 		
 		<div class="entry float">
