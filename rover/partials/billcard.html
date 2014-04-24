@@ -1,0 +1,80 @@
+
+<div class="nested-view view-current">
+	<!-- Nav bar -->
+	<header class="nav-bar float" role = "banner">
+		<!-- Drawer toggle -->
+		<a class="nav-toggle" > Menu</a>
+		<!-- Title -->
+		<h1 class="h2"> Dashboard <span> Logged in as <strong> {{ header_data.firstname }}
+			{{ header_data.lastname }} </strong> </span>
+		</h1>
+		<!-- Late checkout -->
+		<a id="late-checkout-alert" class="icons icon-alert late-check-out"> {{ header_data.late_checkout }} </a>
+		<div class="logo">
+			<img alt = "", src= "https://pms-dev.stayntouch.com/assets/logo.png" />
+			<em class="date"> {{ header_data.date }} </em>
+		</div>
+	</header>
+
+	<section id="registration-details" class="content stay-card-inner check-in">
+		<!-- Reservation Header -->
+		<div class="reservation-header">
+			<div class="actions back">
+				<a class="back-button prev-view" ui-sref="rover.staycard.reservationcard.all">BACK</a>
+			</div>
+			<!-- Other header details -->
+			<div class="data">
+				<span class="room"> <span class="guest-status room">room</span>
+					<strong id="header-room-num" class="room-number ready"> {{ data.room_number }}</strong>
+					<span id="room-type"> {{ data.room_type }} </span>
+				</span>
+				<span class="nights">
+					<span class="guest-status nights"> </span> {{ data.number_of_nights }} nights 
+				</span>
+				<span class="date">
+					<span class="guest-status small-icon check-in">check-in</span>
+					{{ data.checkin_date | date : 'EEEE' }}
+					{{ data.checkin_date | date : 'MM-dd-yyyy' }}
+				</span>
+				<span class="date">
+					<span class="guest-status small-icon check-out">check-out</span> 
+					{{ data.checkout_date | date : 'EEEE' }}
+					{{ data.checkout_date | date : 'MM-dd-yyyy' }} 
+				</span>
+			</div>
+		</div>
+		
+		<!-- Registration Content -->
+		<div id="registration-content" data-room-number="1039" data-reservation-status="CHECKING_IN" class="registration-content scrollable">
+			<div class="wrapper">
+				<div id="notification-message"></div>
+				<!-- Rate & Bill Summary -->
+				<div id="bills" class="registration-summary ui-tabs ui-widget ui-widget-content ui-corner-all">
+					<!-- Bills summary tabs navigation -->
+					<div id="bills-tabs-nav" class="float bill-tabs">
+						<!-- Billing instructions -->
+						<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+
+							<li ng-repeat= "bills in data.bills" ng-click="toggleBills($index)" ng-class="{ active:  $state.includes('rover.staycard.billcard.details', { billNo : bills.bill_number })}" class="ui-state-default ui-corner-top" >
+								<a ui-sref="rover.staycard.billcard.details({ billNo : bills.bill_number })" class="ui-tabs-anchor" role="presentation" tabindex="-1">
+									<div class="price">
+										<span>Bill #{{bills.bill_number}}</span>
+										$ {{bills.total_amount}}
+									</div>
+									<figure id="payment-info-1" class="card-logo">
+										<img src="/assets/mc.png" alt="">
+										<span class="number"> {{bills.credit_card_details.card_number}} </span>
+									</figure>
+								</a>
+							</li>
+								
+						</ul>
+					</div>
+						
+					<div ui-view> </div>
+					
+				</div>
+			</div>
+		</div>
+	</section>
+</div>

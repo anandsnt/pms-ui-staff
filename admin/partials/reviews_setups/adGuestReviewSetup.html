@@ -1,0 +1,23 @@
+<section class="content current" ng-click="clearErrorMessage()">
+	<div>
+		<header class="content-title float">
+			<h2>Guest Review Setup</h2>
+			<a id="go_back" data-type="load-details" class="action back" ng-click="goBack()">Back</a>
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<form style="overflow-y:auto;" name="edit-guest-review" method="post" class="form float">
+			<fieldset class="holder column">
+				<ad-toggle-button label="Guest Reviews" div-class="full-width" is-checked="data.is_guest_reviews_on" ></ad-toggle-button>
+
+				<ad-textbox value="data.number_of_reviews"   label = "Number of reviews" placeholder = "Enter Number of reviews" name="number-of-reviews" id="number-of-reviews"></ad-textbox>
+
+				<ad-dropdown label="Rating limit" list="rating_list" selected-Id='data.rating_limit'  id="rating-limit"></ad-dropdown>
+
+			</fieldset>
+			<div class="actions float">
+				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()">Cancel</button>
+				<button type="button" id="save_guest_review" class="button green" ng-click="save()">Save changes</button>
+			</div>
+		</form>
+	</div>
+</section>

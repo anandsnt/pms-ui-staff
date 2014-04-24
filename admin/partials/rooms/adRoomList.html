@@ -1,0 +1,32 @@
+<section class="content current" ng-click="clearErrorMessage()">
+	<div>
+	<section>
+		<header class="content-title float">
+			<h2>
+				Rooms
+			</h2>
+			<span class="count">
+				( {{data.rooms.length}} )
+			<span class="status">
+				{{data.number_of_rooms_configured}} of {{data.total_number_of_rooms}} Licensed Rooms Configured
+			</span>
+		</header>
+
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<table id="rooms" class="grid datatable" ng-table="roomList">
+			<tbody>
+				<tr ng-repeat="room in $data" room-id="{{room.room_id}}">
+					<td data-title="'Room Number'" sortable="'room_number'">
+						<a ui-sref='admin.roomdetails({roomId:room.room_id})' class="number edit-data">
+							{{room.room_number}}
+						</a>
+					</td>
+					<td data-title="'Room Type'" sortable="'room_type'">
+						{{room.room_type}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</section>
+</div>
+</section>

@@ -1,0 +1,16 @@
+
+<div class='entry {{divClass}}'  ng-style="{{divStyle}}">
+  <label for='{{id}}' ng-hide="label.length==0">{{label}}<strong ng-show = "required=='yes'"> * </strong></label>
+  
+  <div class='select'>
+
+    <select id="{{id}}" name="{{name}}" class="{{selboxClass}}" ng-style="{{sel-style}}" ng-required="required=='yes'" ng-model='selectedId'>
+      <option value="" ng-hide="labelInDropDown.length===0 || !labelInDropDown">
+        {{labelInDropDown}}
+      </option>
+      <option ng-repeat='row in list' value='{{row.value}}'  ng-selected="row.value==selectedId" >
+        {{row.name}}
+      </option>
+    </select>
+  </div>
+</div>
