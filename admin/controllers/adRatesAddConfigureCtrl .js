@@ -1,16 +1,16 @@
 admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv', function($scope, ADRatesConfigureSrv){
    $scope.sets = "";
    $scope.currentClickedSet = 0;
- 	
+   
+
+ 	var dateRangeId = $scope.$parent.step.id;
     $scope.fetchSetsInDateRangeSuccessCallback = function(data){
     	$scope.$emit('hideLoader');
     	$scope.data = data;
-    	console.log("+++++++++++++++++++++++++jphme++++++++++++++++++++");
-    	console.log(data.room_types);
     	 angular.forEach($scope.data.sets, function(value, key){
 			 value.room_types = data.room_types;
 		 });
-		 var	unwantedKeys = ["room_types"];
+		 var unwantedKeys = ["room_types"];
 		$scope.data = dclone($scope.data, unwantedKeys);
     	console.log(JSON.stringify($scope.data));
     };
@@ -36,7 +36,7 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv', fun
 		// };
     $scope.fetchData = function(){
     	
-    	$scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, {},$scope.fetchSetsInDateRangeSuccessCallback,$scope.fetchSetsInDateRangeFailureCallback);	
+    	$scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, {"id":dateRangeId},$scope.fetchSetsInDateRangeSuccessCallback,$scope.fetchSetsInDateRangeFailureCallback);	
 		// $scope.invokeApi(ADRatesAddRoomTypeSrv.fetchRoomTypes, {}, $scope.fetchRoomTypesSuccessCallback, $scope.fetchRoomTypesFailureCallback);	
     	
     };
@@ -72,6 +72,20 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv', fun
     };
     $scope.deleteSet = function(id){
     	console.log("++++++++++++++"+id)
+    };
+    $scope.checkFieldEntered = function(index){
+    	var enableSetUpdateButton = false;
+    	 angular.forEach($scope.data.sets[index].room_types, function(value, key){
+			 console.log(value.single);
+			 if(!value.single || value.single ==="" ){
+			 	enableSetUpdateButton =true;
+			 }
+			 	
+			 
+		 });
+		 
+		 return enableSetUpdateButton;
+		
     };
  
 }]);

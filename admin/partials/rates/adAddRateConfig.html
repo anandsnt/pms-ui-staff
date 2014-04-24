@@ -36,8 +36,10 @@
 	<tr>
 		<td width="13%">	</td><td width="13%">	</td><td width="8%" ng-click="moveAllSingleToDouble($index)"> >> </td><td width="13%">	</td><td width="13%">	</td><td width="13%">	</td><td width="8%">	</td>
 	</tr>
-	<tr><td colspan="7"><input type="button" value="Save" ng-click="saveSet($index)" /><input type="button" value="Cancel" ng-click="cancelClick()" /></td></tr>
+	<tr><td colspan="7"><input type="button" value="Save Set" ng-click="saveSet($index)" ng-disabled="checkFieldEntered($index)" class="button  brand-colors"/><input type="button" value="Quick Fill" /></td></tr>
 </table>
+
+
 
 	
 		
