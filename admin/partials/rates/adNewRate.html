@@ -23,6 +23,10 @@
 		</tr>
 	</table>
 	<div ng-show="showAddNewDateRangeOptions" ng-include="'/assets/partials/rates/adRatesAddRange.html'"></div>
-	<div class="center_align" ng-hide="hideAddNewDateRange()"> <button ng-click="addNewDateRange()">Add new Date Range</button>
+
+     <div ng-click="addNewDateRange()" class="center_align add_new_date_range_container"> 
+      <a class="icons icon-add">
+      	<span>Add new Date Range</span>
+      </a>
 
 </div>
