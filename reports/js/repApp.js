@@ -43,8 +43,6 @@ reports.controller('reporstList', [
 		// fetch the reports list with the filters to be used
 		RepFetchSrv.fetch()
 			.then(function(response) {
-				console.log( response );
-
 				sntapp.activityIndicator.hideActivityIndicator();
 				$scope.showReports = true;
 
@@ -190,8 +188,6 @@ reports.controller('reportDetails', [
 						active: i === 1 ? true : false
 					})
 				};
-
-				console.log($scope.pagination);
 			};
 		};
 
@@ -405,7 +401,6 @@ reports.factory('RepFetchReportsSrv', [
 			$http.get(url, { params: params })
 				.success(function(response, status) {
 					deferred.resolve(response);
-					console.log( response );
 				})
 				.error(function(response, status) {
 					// please note the type of error expecting is array
