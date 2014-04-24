@@ -1,11 +1,18 @@
-admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADRatesAddRoomTypeSrv', function($scope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv){
+admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv', function($scope, ADRatesConfigureSrv){
    $scope.sets = "";
-   $scope.currentClickedSet = -1;
+   $scope.currentClickedSet = 0;
  	
     $scope.fetchSetsInDateRangeSuccessCallback = function(data){
     	$scope.$emit('hideLoader');
     	$scope.data = data;
-    	
+    	console.log("+++++++++++++++++++++++++jphme++++++++++++++++++++");
+    	console.log(data.room_types);
+    	 angular.forEach($scope.data.sets, function(value, key){
+			 value.room_types = data.room_types;
+		 });
+		 var	unwantedKeys = ["room_types"];
+		$scope.data = dclone($scope.data, unwantedKeys);
+    	console.log(JSON.stringify($scope.data));
     };
     $scope.fetchSetsInDateRangeFailureCallback = function(errorMessage){
     	$scope.$emit('hideLoader');
@@ -17,26 +24,42 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     };
     
   
-    $scope.fetchRoomTypesSuccessCallback = function(data){
-			$scope.data.room_rates = data.results;
-			// angular.forEach($scope.data.sets, function(value, key){
-           		// value.room_types = $scope.data.room_rates;
-     		// });
-			$scope.$emit('hideLoader');
-		};
-		$scope.fetchRoomTypesFailureCallback = function(data){
-			$scope.$emit('hideLoader');
-		};
+    // $scope.fetchRoomTypesSuccessCallback = function(data){
+			// $scope.data.room_rates = data.results;
+			// // angular.forEach($scope.data.sets, function(value, key){
+           		// // value.room_types = $scope.data.room_rates;
+     		// // });
+			// $scope.$emit('hideLoader');
+		// };
+		// $scope.fetchRoomTypesFailureCallback = function(data){
+			// $scope.$emit('hideLoader');
+		// };
     $scope.fetchData = function(){
     	
     	$scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, {},$scope.fetchSetsInDateRangeSuccessCallback,$scope.fetchSetsInDateRangeFailureCallback);	
-		$scope.invokeApi(ADRatesAddRoomTypeSrv.fetchRoomTypes, {}, $scope.fetchRoomTypesSuccessCallback, $scope.fetchRoomTypesFailureCallback);	
+		// $scope.invokeApi(ADRatesAddRoomTypeSrv.fetchRoomTypes, {}, $scope.fetchRoomTypesSuccessCallback, $scope.fetchRoomTypesFailureCallback);	
     	
     };
     $scope.fetchData();
+    $scope.saveSetSuccessCallback = function(){
+    	 $scope.$emit('hideLoader');
+    };
+    $scope.saveSetFailureCallback = function(errorMessage){
+    	 $scope.$emit('hideLoader');
+    	 $scope.errorMessage = errorMessage;
+    };
+    $scope.cancelClick = function(){
+    	$scope.currentClickedSet = -1;
+    };
     $scope.saveSet = function(index){
-    	console.log(JSON.stringify($scope.data.sets[index]));
-    	console.log(JSON.stringify($scope.data.room_rates));
+
+    	var	unwantedKeys = ["room_types"];
+    	var setData = dclone($scope.data.sets[index], unwantedKeys);
+    	$scope.updateData = setData;
+    	$scope.updateData.room_rates = $scope.data.sets[index].room_types;
+    	
+    	$scope.invokeApi(ADRatesConfigureSrv.saveSet, $scope.updateData, $scope.saveSetSuccessCallback, $scope.saveSetFailureCallback);
+    	
     };
  
 }]);
