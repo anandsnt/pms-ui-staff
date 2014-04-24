@@ -12,14 +12,11 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv', fun
 		 });
 		 var unwantedKeys = ["room_types"];
 		$scope.data = dclone($scope.data, unwantedKeys);
-    	console.log(JSON.stringify($scope.data));
     };
     $scope.fetchSetsInDateRangeFailureCallback = function(errorMessage){
     	$scope.$emit('hideLoader');
-    	// $scope.sets = data;
     };
     $scope.setCurrentClickedSet = function(index){
-    	console.log("=============="+index);
     	$scope.currentClickedSet = index;
     };
     
@@ -58,7 +55,6 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv', fun
     	var setData = dclone($scope.data.sets[index], unwantedKeys);
     	$scope.updateData = setData;
     	$scope.updateData.room_rates = $scope.data.sets[index].room_types;
-    	
     	$scope.invokeApi(ADRatesConfigureSrv.saveSet, $scope.updateData, $scope.saveSetSuccessCallback, $scope.saveSetFailureCallback);
     	
     };
@@ -76,7 +72,6 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv', fun
     $scope.checkFieldEntered = function(index){
     	var enableSetUpdateButton = false;
     	 angular.forEach($scope.data.sets[index].room_types, function(value, key){
-			 console.log(value.single);
 			 if(!value.single || value.single ==="" ){
 			 	enableSetUpdateButton =true;
 			 }
