@@ -1,10 +1,12 @@
-<div ng-controller="ADRatesAddConfigureCtrl">
+<form class="form form-rate-config">
+<div ng-controller="ADRatesAddConfigureCtrl" style="width:100%;">
 
 	<table>
 		<tr ng-repeat="set in data.sets">
-			<td ng-include="'/assets/partials/rates/adAddRateConfig.html'"></td>
+			<td ng-include="'/assets/partials/rates/adAddRateConfig.html'" style="padding:0px !important;"></td>
 		</tr>
 	</table>
+
 	<div class="actions float">
 				<button class="button blank add-data-inline" id="cancel" type="button" ng-click="cancelClick()">
 					Cancel
@@ -14,3 +16,5 @@
 				</button>
 			</div>
 </div>
+</form>
+
