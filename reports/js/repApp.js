@@ -36,6 +36,7 @@ reports.controller('reporstList', [
 	'RepFetchReportsSrv',
 	function($scope, $rootScope, RepFetchSrv, RepUserSrv, RepFetchReportsSrv) {
 
+
 		// hide the details page
 		$rootScope.showReportDetails = false;
 
@@ -161,8 +162,6 @@ reports.controller('reportDetails', [
 		// common methods to do things after fetch report
 		var afterFetch = function(response) {
 
-			console.log( response );
-
 			// fill in data into seperate props
 			$scope.totals = response.totals;
 			$scope.headers = response.headers;
@@ -191,11 +190,15 @@ reports.controller('reportDetails', [
 			$scope.currCount = response.results.length;
 
 			// now applying some very special and bizzare
-			// cosmetic effects for CICO only
+			// cosmetic effects for reprots only
 			// NOTE: direct dependecy on template
 			if ( $scope.chosenReport.title === 'Check In / Check Out' ) {
 				$scope.firstHalf[0]['class'] = 'green';
 				$scope.restHalf[0]['class'] = 'red';
+			} else {
+				// NOTE: as per todays style this applies to
+				// 'Upsell' and 'Late Check Out' only
+				$scope.firstHalf[1]['class'] = 'orange';
 			};
 
 
@@ -261,7 +264,6 @@ reports.controller('reportDetails', [
 			if (typeof $scope.chosenReport.chosenUsers === 'number') {
 				// first find the full name
 				var name = _.find($scope.userList, function(user) {
-					console.log( user );
 					return user.id === $scope.chosenReport.chosenUsers;
 				});
 
