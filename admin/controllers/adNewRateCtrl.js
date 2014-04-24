@@ -20,6 +20,7 @@ $scope.init = function(){
 	* init function
 	*/
     $scope.init();
+
  /*
    * click action to switch between steps
    */
@@ -32,6 +33,7 @@ $scope.clickedStep =  function(index,id){
 };
 
 $scope.$on("errorReceived", function(e,value){
+	
 	$scope.errorMessage = value;
 });
   /*
@@ -137,6 +139,8 @@ $scope.includeTemplate = function(index){
 
 $scope.addNewDateRange =  function(){
 	 $scope.showAddNewDateRangeOptions = true;
+	 $scope.$broadcast ('resetCalendar');
+	 $scope.currentRateStepIndex =-1;
 }
 
 }]);
