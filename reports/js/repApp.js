@@ -391,7 +391,8 @@ reports.factory('RepUserSrv', [
 reports.factory('RepFetchReportsSrv', [
 	'$http',
 	'$q',
-	function($http, $q) {
+	'$window',
+	function($http, $q, $window) {
 		var factory = {};
 
 		factory.fetch = function(id, params) {
