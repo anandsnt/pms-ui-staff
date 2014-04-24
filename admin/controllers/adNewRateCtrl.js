@@ -6,7 +6,8 @@ $scope.init = function(){
 	BaseCtrl.call(this, $scope);
 
 	var initialContent = {
-							'title': 'Details',
+							'title': 'Rate',
+							'subtitle':'Details',
 							'type' : 'Details',
 							'id'   : 'Details'
 						};
@@ -20,6 +21,7 @@ $scope.init = function(){
 	* init function
 	*/
     $scope.init();
+
  /*
    * click action to switch between steps
    */
@@ -31,6 +33,10 @@ $scope.clickedStep =  function(index,id){
 	}
 };
 
+$scope.$on("errorReceived", function(e,value){
+	
+	$scope.errorMessage = value;
+});
   /*
    	* to be updated from child classes 
 	*/
@@ -41,7 +47,8 @@ $scope.$on("updateIndex", function(e,value){
 	if($scope.currentStepIndexList.length< 2){	
 
 	    nextContent = {
-							'title': 'Type',
+							'title': 'Room',
+							'subtitle':'Types',
 							'type' : 'Type',
 							'id'   : 'Type'
 						};
@@ -64,13 +71,17 @@ $scope.$on("updateIndex", function(e,value){
     if($scope.currentStepIndexList[2].title === 'Range')
     	  $scope.currentStepIndexList.splice(2,1);
     $scope.showAddNewDateRangeOptions = false;
-		var getDateRangeIds = ADRatesRangeSrv.getDateRangeIds();
-		angular.forEach(getDateRangeIds, function(value, key){
-       	var id =value;
+		var getDateRangeData = ADRatesRangeSrv.getDateRangeData();
+
+		angular.forEach(getDateRangeData, function(value, key){
+		
+   
 		 var nextContent = {
 							'title': 'Configure',
 							'type' : 'Configure',
-							'id'   : id
+							'id'   : value.id,
+							'begin_date' : value.data.begin_date,
+							'end_date':value.data.end_date
 							};
 	   	$scope.isAlreadyIncurrentStepIndexList = false;
 		angular.forEach($scope.currentStepIndexList, function(stepValue, key){
@@ -83,7 +94,7 @@ $scope.$on("updateIndex", function(e,value){
 		   $scope.currentStepIndexList.push(nextContent);
 
    		  });	
-
+	
     	$scope.clickedStep($scope.currentStepIndexList.length-1);  	
     
 	}
@@ -130,6 +141,8 @@ $scope.includeTemplate = function(index){
 
 $scope.addNewDateRange =  function(){
 	 $scope.showAddNewDateRangeOptions = true;
+	 $scope.$broadcast ('resetCalendar');
+	 $scope.currentRateStepIndex =-1;
 }
 
 }]);

@@ -1,5 +1,3 @@
-
-
 <table class="grid">
 	<tr>
 		
@@ -24,25 +22,32 @@
 		<td  width="5%"> <ad-checkbox style="float:left;width:60px;margin:5px;" is-checked="set.saturday" label=""></ad-checkbox>	</td>
 		<td width="6%">SUN </td>
 		<td  width="5%"> <ad-checkbox style="float:left;width:60px;margin:5px;" is-checked="set.sunday" label=""></ad-checkbox>	</td>
-		<td width="5%"><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)"> </td>
+		<td width="5%"><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)" ng-hide="currentClickedSet == $index"> </td>
 	</tr>
 
 		</table>
-<table class="grid" ng-show="currentClickedSet == $index" >
+<table ng-show="currentClickedSet == $index" border="1">
 	<tr>
-		<td>	</td><td>Single	</td><td>	</td><td>	Double</td><td>	EXTRA ADULT</td><td>CHILD	</td><td>	DISTRIBUTE</td>
+		<td width="13%">	</td><td width="13%">Single	</td><td width="8%">	</td><td width="13%">	Double</td><td width="13%">	EXTRA ADULT</td><td width="13%">CHILD	</td><td width="8%">	DISTRIBUTE</td>
 	</tr>
-	<tr ng-repeat="roomtypes in data.room_rates">
+	
+	<tr ng-repeat="roomtypes in set.room_types">
 		<td width="13%">{{roomtypes.name}}</td>
 		<td width="13%"><ad-textbox value="roomtypes.single" style="width:150px;"></ad-textbox></td>
-		<td width="8%"> >> </td>
+		<td width="8%" ng-click="moveSingleToDouble($parent.$index,$index)"> >> </td>
 		<td width="13%"><ad-textbox value="roomtypes.double" style="width:150px;"></ad-textbox></td>
 		<td width="13%"><ad-textbox value="roomtypes.extra_adult" style="width:150px;"></ad-textbox></td>
 		<td width="13%"><ad-textbox value="roomtypes.child" style="width:150px;"></ad-textbox></td>
 		<td width="8%"><ad-checkbox style="float:left;width:60px;margin:5px;" is-checked="roomtypes.distribute" label=""></ad-checkbox></td>
 	</tr>
-	<tr><td><input type="button" value="Save" ng-click="saveSet($index)" /></td></tr>
-		</table>
+	<tr>
+		<td width="13%">	</td><td width="13%">	</td><td width="8%" ng-click="moveAllSingleToDouble($index)"> >> </td><td width="13%">	</td><td width="13%">	</td><td width="13%">	</td><td width="8%">	</td>
+	</tr>
+	<tr><td colspan="7"><input type="button" value="Save Set" ng-click="saveSet($index)" ng-disabled="checkFieldEntered($index)" class="button  brand-colors"/><input type="button" value="Quick Fill" /></td></tr>
+</table>
+
+
+
 	
 		
 
