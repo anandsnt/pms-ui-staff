@@ -6,7 +6,7 @@
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<table class="grid">
 		<tr ng-repeat ="step in currentStepIndexList">
-			<td ng-include="includeTemplate($index)" colspan="2" ng-show="currentRateStepIndex === $index"></td>
+			<td style="padding-right: 3px; padding-left:5px;" ng-include="includeTemplate($index)" colspan="2" ng-show="currentRateStepIndex === $index"></td>
 			<td width="90%" ng-hide="currentRateStepIndex === $index" ><em>Rate</em>&nbsp;{{step.title}}</td>
 			<td width="5%" ng-hide="currentRateStepIndex === $index" ng-click="clickedStep($index,step.id)" align="right" style="text-align:right !important;" class="cursor_pointer"><img src="/assets/arrow-down.png"/></td>
 		</tr>
@@ -15,3 +15,4 @@
 	<div class="center_align" ng-hide="hideAddNewDateRange()"> <button ng-click="addNewDateRange()">Add new Date Range</button>
 
 </div>
+
