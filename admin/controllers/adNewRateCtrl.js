@@ -6,7 +6,8 @@ $scope.init = function(){
 	BaseCtrl.call(this, $scope);
 
 	var initialContent = {
-							'title': 'Details',
+							'title': 'Rate',
+							'subtitle':'Details',
 							'type' : 'Details',
 							'id'   : 'Details'
 						};
@@ -46,7 +47,8 @@ $scope.$on("updateIndex", function(e,value){
 	if($scope.currentStepIndexList.length< 2){	
 
 	    nextContent = {
-							'title': 'Type',
+							'title': 'Room',
+							'subtitle':'Types',
 							'type' : 'Type',
 							'id'   : 'Type'
 						};

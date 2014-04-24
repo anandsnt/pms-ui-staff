@@ -1,7 +1,7 @@
 <form class="form" ng-controller="ADAddRateRangeCtrl">
 	<fieldset class="holder full-width" style="margin-bottom:20px;">
 		<div class="form-title">
-			<h3><span>Rate</span>&nbsp;Range</h3>
+			<h3><span>Date</span>&nbsp;Range</h3>
 		</div>
 	</fieldset>
 
@@ -37,8 +37,8 @@
 		 <ad-checkboxtext-left class="rate_range_checkbox" ng-repeat="day in set.days" is-checked="day.checked" label="{{day.name}}"  ng-click="checkboxClicked($index,$parent.$index)" width="70px"></ad-checkboxtext-left>	
 	</td>
 	<td>
-		<a class="icons icon-add" ng-show="$index === Sets.length-1" ng-click="addNewSet($index)"></a>
-		<a class="icons icon-delete  delete_item" ng-hide="$index === Sets.length-1"ng-click="deleteSet($index)"></a>	
+		<a class="icons icon-add" ng-show="($index === Sets.length-1) && !($index ==6)" ng-click="addNewSet($index)"></a>
+		<a class="icons icon-delete  delete_item" ng-hide="($index === Sets.length-1) && !($index ==6)"ng-click="deleteSet($index)"></a>	
 	</td>
 <tr>
 </table>

@@ -9,7 +9,9 @@
 			<td style="padding-right: 3px; padding-left:5px;" ng-include="includeTemplate($index)" colspan="2" ng-show="currentRateStepIndex === $index"></td>
 			<td width="90%" ng-hide="currentRateStepIndex === $index" >
 				<span ng-hide="step.title === 'Configure'">
-				<em>Rate</em>&nbsp;{{step.title}}
+				
+					<em class="rate_step_title">{{step.title}}</em>&nbsp;<span class="italic_text">{{step.subtitle}}</span>
+			
 				</span>
 				<span ng-show="step.title === 'Configure'">
 	            <span  class="italic_text">{{step.begin_date | date:'MMM dd,y'}}</span>
