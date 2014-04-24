@@ -58,6 +58,12 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	 		else{
 	 			$scope.roomTypeData.is_pseudo_room_type = false;
 	 		}
+	 		if($scope.roomTypeData.is_suite == "true" || $scope.roomTypeData.is_suite == true){
+	 			$scope.roomTypeData.is_suite = true;
+	 		}
+	 		else{
+	 			$scope.roomTypeData.is_suite = false;
+	 		}
 	 	};
 	 	var data = {"id":id };
 	 	$scope.invokeApi(ADRoomTypesSrv.getRoomTypeDetails, data , successCallbackRender);    
