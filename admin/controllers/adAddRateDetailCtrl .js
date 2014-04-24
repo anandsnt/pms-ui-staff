@@ -85,7 +85,7 @@ $scope.saveStep1 = function(){
 	};
 	var createNewRateFailureCallback = function(data){
 		$scope.$emit('hideLoader');
-		$scope.errorMessage = data;
+		$scope.$emit("errorReceived",data);
 	};
 	var updateRateSuccessCallback = function(data){
 		$scope.$emit('hideLoader');
@@ -93,7 +93,7 @@ $scope.saveStep1 = function(){
 	};
 	var updateRateFailureCallback = function(data){
 		$scope.$emit('hideLoader');
-		$scope.errorMessage = data;
+		$scope.$emit("errorReceived",data);
 	};
 	if($scope.isFirstTime)
 	 $scope.invokeApi(ADRatesAddDetailsSrv.createNewRate,data,createNewRateSuccessCallback,createNewRateFailureCallback);	

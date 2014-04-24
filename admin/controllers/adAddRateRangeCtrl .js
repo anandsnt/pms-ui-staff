@@ -70,8 +70,9 @@ admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter','ADRatesR
          $scope.$emit("updateIndex","3");
       
       };
-      var postDateRangeFailureCallback = function(){
+      var postDateRangeFailureCallback = function(data){
          $scope.$emit('hideLoader');
+         $scope.$emit("errorReceived",data);
       };
       $scope.invokeApi(ADRatesRangeSrv.postDateRange,dateRangeData,postDateRangeSuccessCallback,postDateRangeFailureCallback);   
    };

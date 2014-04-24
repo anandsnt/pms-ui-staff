@@ -1,29 +1,28 @@
 admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
 function($q, ADBaseWebSrvV2) {
 
-	var addRatesDetailsData = {};
+	this.addRatesDetailsData = {};
+	var that = this;
 
-	  /*
+  /*
     * Service function to fetch rate types
     * @return {object} rate types
     */
 	this.fetchRateTypes = function() {
-		this.addDetailsData = {};
-		var deferred = $q.defer();
 
-	  /*
+	var deferred = $q.defer();
+  /*
     * Service function to fetch HotelSettings
     * @return {object} HotelSettings
     */
 	this.fetchHotelSettings = function() {
 		var url = "/api/hotel_settings";
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-			addRatesDetailsData.hotel_settings = data;
-			deferred.resolve(addRatesDetailsData);
+			that.addRatesDetailsData.hotel_settings = data;
+			deferred.resolve(that.addRatesDetailsData);
 		}, function(data) {
 			deferred.reject(data);
 		});
-		return deferred.promise;
 	};
 
   /*
@@ -40,26 +39,23 @@ function($q, ADBaseWebSrvV2) {
 			 'sort_field':''
 		};
 		ADBaseWebSrvV2.getJSON(url,data).then(function(data) {
-			addRatesDetailsData.based_on = data;
+			that.addRatesDetailsData.based_on = data;
 			this.fetchHotelSettings();
 			
 		}, function(data) {
 			deferred.reject(data);
 		});
-		return deferred.promise;
 	};
 
 		var url = "/api/rate_types/active";
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-			addRatesDetailsData.rate_types = data;
+			that.addRatesDetailsData.rate_types = data;
 			this.fetchBasedOnTypes();
 		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
 	};
-
-	
 
 
   /*
