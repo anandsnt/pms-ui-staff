@@ -4,7 +4,7 @@ var reportScroll = createVerticalScroll( '#reports', {} );
 var reportContent = createVerticalScroll( '#report-content', {} );
 
 
-var reports = angular.module('reports', ['ngAnimate', 'ngSanitize', 'mgcrea.ngStrap.datepicker', 'ngGrid']);
+var reports = angular.module('reports', ['ngAnimate', 'ngSanitize', 'mgcrea.ngStrap.datepicker']);
 
 reports.config([
 	'$datepickerProvider',
@@ -51,8 +51,20 @@ reports.controller('reporstList', [
 				$scope.reportList = response.results;
 				$scope.reportCount = response.total_count;
 
+				// looping through results to add more features
 				var hasDateFilter, hasCicoFilter, hasUserFilter, hasSortDate, hasSortUser;
 				for (var i = 0, j = $scope.reportList.length; i < j; i++) {
+
+					// add report icon class
+
+					if ($scope.reportList[i]['title'] == 'Upsell') {
+						$scope.reportList[i]['reportIconCls'] = 'icon-upsell';
+					} else if ($scope.reportList[i]['title'] == 'Late Check Out') {
+						$scope.reportList[i]['reportIconCls'] = 'icon-late-check-out';
+					} else {
+						// lets have cico icon as
+						$scope.reportList[i]['reportIconCls'] = 'icon-check-in-check-out';
+					}
 
 					// include show_filter
 					$scope.reportList[i]['show_filter'] = false;
