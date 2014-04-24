@@ -1,3 +1,8 @@
-<div ng-controller="ADAddRateRangeCtrl">
-	Configure
+<div ng-controller="ADRatesAddConfigureCtrl">
+
+	<table>
+		<tr ng-repeat="set in data.sets">
+			<td ng-include="'/assets/partials/rates/adAddRateConfig.html'"></td>
+		</tr>
+	</table>
 </div>

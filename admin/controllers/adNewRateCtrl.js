@@ -4,6 +4,7 @@ admin.controller('ADAddnewRate', ['$scope','ADRatesRangeSrv', function($scope,AD
 $scope.init = function(){
 
 	BaseCtrl.call(this, $scope);
+
 	var initialContent = {
 							'title': 'Details',
 							'type' : 'Details',

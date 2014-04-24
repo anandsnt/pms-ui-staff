@@ -67,16 +67,7 @@
 					<input type="hidden" value="3" name="upsell_amounts_count" id="upsell_amounts_count">
 					<input type="hidden" value="3" name="total_level_count" id="total_level_count">
 					
-					<div class="entry">
-						<label for="charge-code"> Charge Code <strong>*</strong> </label>
-						<div class="select">
-
-							<select ng-options="chargecode.name as chargecode.value for chargecode  in upsellData.charge_codes" ng-model="upsellData.selected_charge_code">
-								<option style="display:none" value="">Charge Code</option>
-							</select>
-
-						</div>
-					</div>
+					<ad-dropdown label="Charge Code" label-in-drop-down="Charge Code" list="upsellData.charge_codes" selected-Id='upsellData.selected_charge_code' required='yes'></ad-dropdown>
 
 				</fieldset>
 				<div class="entry"></div>

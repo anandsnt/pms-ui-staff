@@ -1,0 +1,39 @@
+<table class="grid">
+	<tr>
+		<td width="15%"><span class="icons delete_small" >&nbsp;</span><ad-textbox value="set.name" style="width:150px;"></ad-textbox></td>
+		<td width="6%">MON</td>
+		<td width="5%"> <ad-checkbox style="float:left;width:60px;margin:5px;" is-checked="set.monday" label=""></ad-checkbox>	</td>
+		<td width="6%">TUE</td>
+		<td  width="5%"> <ad-checkbox style="float:left;width:60px;margin:5px;" is-checked="set.tuesday" label=""></ad-checkbox>	</td>
+		<td width="6%">WED</td>
+		<td  width="5%"> <ad-checkbox style="float:left;width:60px;margin:5px;" is-checked="set.wednesday" label=""></ad-checkbox>	</td>
+		<td width="6%">TH </td>
+		<td  width="5%"> <ad-checkbox style="float:left;width:60px;margin:5px;" is-checked="set.thursday" label=""></ad-checkbox>	</td>
+		<td width="6%">FRI</td>
+		<td  width="5%"> <ad-checkbox style="float:left;width:60px;margin:5px;" is-checked="set.friday" label=""></ad-checkbox>	</td>
+		<td width="6%">SAT</td>
+		<td  width="5%"> <ad-checkbox style="float:left;width:60px;margin:5px;" is-checked="set.saturday" label=""></ad-checkbox>	</td>
+		<td width="6%">SUN </td>
+		<td  width="5%"> <ad-checkbox style="float:left;width:60px;margin:5px;" is-checked="set.sunday" label=""></ad-checkbox>	</td>
+		<td width="5%"><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)"> </td>
+	</tr>
+
+		</table>
+<table class="grid" ng-show="currentClickedSet == $index" >
+	<tr>
+		<td>	</td><td>Single	</td><td>	</td><td>	Double</td><td>	EXTRA ADULT</td><td>CHILD	</td><td>	DISTRIBUTE</td>
+	</tr>
+	<tr ng-repeat="roomtypes in data.room_rates">
+		<td width="13%">{{roomtypes.name}}</td>
+		<td width="13%"><ad-textbox value="roomtypes.single" style="width:150px;"></ad-textbox></td>
+		<td width="8%"> >> </td>
+		<td width="13%"><ad-textbox value="roomtypes.double" style="width:150px;"></ad-textbox></td>
+		<td width="13%"><ad-textbox value="roomtypes.extra_adult" style="width:150px;"></ad-textbox></td>
+		<td width="13%"><ad-textbox value="roomtypes.child" style="width:150px;"></ad-textbox></td>
+		<td width="8%"><ad-checkbox style="float:left;width:60px;margin:5px;" is-checked="roomtypes.distribute" label=""></ad-checkbox></td>
+	</tr>
+	<tr><td><input type="button" value="Save" ng-click="saveSet($index)" /></td></tr>
+		</table>
+	
+		
+
