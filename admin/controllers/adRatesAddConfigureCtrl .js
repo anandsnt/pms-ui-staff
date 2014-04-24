@@ -1,4 +1,4 @@
-admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADRatesAddRoomTypeSrv', function($scope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv){
+admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADRatesAddRoomTypeSrv','ngDialog', function($scope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ngDialog){
    $scope.sets = "";
    $scope.currentClickedSet = -1;
  	
@@ -38,5 +38,12 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     	console.log(JSON.stringify($scope.data.sets[index]));
     	console.log(JSON.stringify($scope.data.room_rates));
     };
- 
+    
+    $scope.popupCalendar = function(){
+    	ngDialog.open({
+    		 template: '/assets/partials/rates/adDateRangeModal.html',
+    		 controller: 'adDateRangeModalCtrl',
+			 className: 'ngdialog-theme-default calendar-modal'
+    	});
+    };
 }]);

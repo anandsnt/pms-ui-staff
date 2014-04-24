@@ -7,6 +7,7 @@
 //=require ../admin/lib/js/iscroll.js
 //=require ../admin/lib/js/ng-table.js
 //=require ../admin/lib/js/angular-pickdate.js
+//=require ../admin/lib/js/ngDialog.min.js
 //=require ../admin/adApp.js
 //=require ../admin/adRouter.js
 //=require ../admin/adUtils.js
