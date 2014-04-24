@@ -80,12 +80,14 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv', fun
 			 if(!value.single || value.single ==="" ){
 			 	enableSetUpdateButton =true;
 			 }
-			 	
-			 
 		 });
-		 
 		 return enableSetUpdateButton;
 		
+    };
+    $scope.saveWholeData = function(){
+    	 angular.forEach($scope.data.sets, function(value, key){
+			 $scope.saveSet(key);
+		 });
     };
  
 }]);
