@@ -32,6 +32,7 @@ $scope.clickedStep =  function(index,id){
 };
 
 $scope.$on("errorReceived", function(e,value){
+	
 	$scope.errorMessage = value;
 });
   /*
