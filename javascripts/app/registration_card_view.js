@@ -8,6 +8,9 @@ var RegistrationCardView = function(viewDom) {
     this.isAllBillsReviewed = false;
     this.isEarlyDepartureFlag = "false";
     sntapp.cardData = {};
+
+    //Stores the card data to process while check-in
+    sntapp.regCardData = {};
     
 	this.pageinit = function() {
 		this.setBillTabs();
@@ -205,7 +208,6 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.completeCheckin = function(e) {
-
 		e.stopPropagation();
 		e.preventDefault();
 		e.stopImmediatePropagation();
@@ -240,9 +242,8 @@ var RegistrationCardView = function(viewDom) {
 			validateOptEmailModal.initialize();
 			return;
 		}
-
-		else if (isEmpty(sntapp.regCardData)){
-			var message = "Please enter the credit card details before you checkin";
+		else if (isEmpty(sntapp.regCardData) && that.myDom.find('#payment').attr('data-payment-type') == 'CC'){
+			var message = "Please swipe the credit card before you checkin";
 			that.showErrorMessage(message);
 			return false;
 		}
