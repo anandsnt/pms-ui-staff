@@ -25,14 +25,14 @@
 	</tr>
 	<tr ng-repeat="roomtypes in data.room_rates">
 		<td width="13%">{{roomtypes.name}}</td>
-		<td width="13%"><input type="text" value="{{roomtypes.single}}"><!-- <ad-textbox value="roomtypes.single" style="width:150px;"></ad-textbox>--></td>
+		<td width="13%"><ad-textbox value="roomtypes.single" style="width:150px;"></ad-textbox></td>
 		<td width="8%"> >> </td>
 		<td width="13%"><ad-textbox value="roomtypes.double" style="width:150px;"></ad-textbox></td>
 		<td width="13%"><ad-textbox value="roomtypes.extra_adult" style="width:150px;"></ad-textbox></td>
 		<td width="13%"><ad-textbox value="roomtypes.child" style="width:150px;"></ad-textbox></td>
 		<td width="8%"><ad-checkbox style="float:left;width:60px;margin:5px;" is-checked="roomtypes.distribute" label=""></ad-checkbox></td>
 	</tr>
-	<tr><td><input type="button" value="Save" ng-click="saveSet()" /></td></tr>
+	<tr><td><input type="button" value="Save" ng-click="saveSet($index)" /></td></tr>
 		</table>
 	
 		

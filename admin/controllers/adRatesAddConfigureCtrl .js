@@ -34,8 +34,9 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     	
     };
     $scope.fetchData();
-    $scope.saveSet = function(){
-    	console.log(JSON.stringify($scope.data));
+    $scope.saveSet = function(index){
+    	console.log(JSON.stringify($scope.data.sets[index]));
+    	console.log(JSON.stringify($scope.data.room_rates));
     };
  
 }]);
