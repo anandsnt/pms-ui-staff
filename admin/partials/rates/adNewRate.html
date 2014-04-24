@@ -7,7 +7,18 @@
 	<table class="grid">
 		<tr ng-repeat ="step in currentStepIndexList">
 			<td ng-include="includeTemplate($index)" colspan="2" ng-show="currentRateStepIndex === $index"></td>
-			<td width="90%" ng-hide="currentRateStepIndex === $index" ><em>Rate</em>&nbsp;{{step.title}}</td>
+			<td width="90%" ng-hide="currentRateStepIndex === $index" >
+				<span ng-hide="step.title === 'Configure'">
+				<em>Rate</em>&nbsp;{{step.title}}
+				</span>
+				<span ng-show="step.title === 'Configure'">
+				<em>From</em>&nbsp;
+	            <span  class="italic_text">{{step.begin_date | date:'MMM dd,y'}}</span>
+	            <em>To</em>&nbsp;
+	            <span  class="italic_text">{{step.end_date | date:'MMM dd,y'}}</span>
+
+				</span>
+			</td>
 			<td width="5%" ng-hide="currentRateStepIndex === $index" ng-click="clickedStep($index,step.id)" align="right" style="text-align:right !important;" class="cursor_pointer"><img src="/assets/arrow-down.png"/></td>
 		</tr>
 	</table>
