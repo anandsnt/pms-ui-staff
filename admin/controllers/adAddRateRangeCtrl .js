@@ -34,6 +34,11 @@ admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter','ADRatesR
 
    $scope.setUpData();
 
+   $scope.$on('resetCalendar', function(e) {  
+        $scope.setUpData();            
+    });
+
+
  /*
    * to save rate range
    */

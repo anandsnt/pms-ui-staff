@@ -20,6 +20,7 @@ $scope.init = function(){
 	* init function
 	*/
     $scope.init();
+
  /*
    * click action to switch between steps
    */
@@ -138,6 +139,8 @@ $scope.includeTemplate = function(index){
 
 $scope.addNewDateRange =  function(){
 	 $scope.showAddNewDateRangeOptions = true;
+	 $scope.$broadcast ('resetCalendar');
+	 $scope.currentRateStepIndex =-1;
 }
 
 }]);
