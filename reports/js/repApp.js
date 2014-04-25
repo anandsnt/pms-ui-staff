@@ -102,10 +102,16 @@ reports.controller('reporstList', [
                     });
                     $scope.reportList[i]['hasUserFilter'] = hasUserFilter ? true : false;
 
-                    // for date filters
+                    // sort by options
+                    $scope.reportList[i].sortByOptions = $scope.reportList[i]['sort_fields']
+
+
+                    // for managing date filters limits
                     $scope.reportList[i].today = new Date();
                     $scope.reportList[i].allowedUntilDate = new Date();
 
+                    // add sort by
+                    console.log( $scope.reportList[i].sort_fields );
                 };
             });
 
@@ -165,6 +171,7 @@ reports.controller('reporstList', [
                 user_ids: this.item.chosenUsers || '',
                 checked_in: getProperCICOVal('checked_in'),
                 checked_out: getProperCICOVal('checked_out'),
+                sort_field: this.item.chosenSortBy || '',
                 page: 1,
                 per_page: $rootScope.resultsPerPage
             }
@@ -369,6 +376,7 @@ reports.controller('reportDetails', [
                 user_ids: $scope.chosenReport.chosenUsers,
                 checked_in: $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'BOTH',
                 checked_out: $scope.chosenReport.chosenCico === 'OUT' || $scope.chosenReport.chosenCico === 'BOTH',
+                sort_field: $scope.chosenReport.chosenSortBy || '',
                 page: this.page.no,
                 per_page: $rootScope.resultsPerPage
             }
