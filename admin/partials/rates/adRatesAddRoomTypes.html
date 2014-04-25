@@ -13,15 +13,15 @@
 			<div class="entry has-sortable">
 				<label class="center_align"><em class="rate_roomtype_text">Available Room Types</em></label>
 
-				<ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true" ng-model="nonAssignedroomTypes">
+				<ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true" ng-model="nonAssignedroomTypes" style="overflow: visible !important;" jqyoui-droppable="{multiple:true}">
 
 					<li ng-repeat = "roomtype in nonAssignedroomTypes" 
 
 						data-drag = "true"
 						ng-model = "nonAssignedroomTypes"
-						jqyoui-draggable ="{index: {{$index}}, placeholder: false, animate: 'true'}"
+						jqyoui-draggable ="{index: {{$index}}, placeholder: false, animate: 'true', onOver: 'reachedUnAssignedRoomTypes'}"
 
-						ng-click = "unAssignedRoomSelected($index)"
+						ng-click = "unAssignedRoomSelected($event, $index)"
 						ng-class = '{selected: selectedUnAssignedRoomIndex === $index}' 
 						>
 
@@ -52,10 +52,14 @@
 		<div class="entry has-sortable">
 			<label class="center_align">
 				<span class="assigned_room_text">Assigned Room Types</span></label>
-				<ul class="boxes sortable empty ui-sortable short-list" data-type="target" 
-					data-drop="true" ng-model="assignedRoomTypes" >
+				<ul class="boxes sortable ui-sortable short-list" 
+					data-type="target" 
+					data-drop="true" 
+					ng-model="assignedRoomTypes"  
+					style="overflow: visible !important;" 
+					jqyoui-droppable="{multiple:true, onOver: 'reachedAssignedRoomTypes'}">
 					<li ng-repeat="roomtype in assignedRoomTypes"
-					ng-click="assignedRoomSelected($index)"
+					ng-click="assignedRoomSelected($event,$index)"
 					ng-class='{selected: selectedAssignedRoomIndex === $index}'
 					
 					data-drag = "true"
