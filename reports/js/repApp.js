@@ -121,8 +121,6 @@ reports.controller('reporstList', [
 
         $scope.genReport = function() {
 
-        	console.log(  $filter('date')(this.item.fromDate, 'yyyy/MM/dd') )
-
             if ( !this.item.fromDate || !this.item.untilDate ) {
                 return;
             };
