@@ -127,12 +127,44 @@ reports.controller('reporstList', [
 		};
 
 		$scope.genReport = function() {
+
+			if ( !this.item.fromDate || !this.item.untilDate ) {
+				return;
+			};
+
+			// auto correct the CICO value;
+			var getProperCICOVal = function(type) {
+
+				// only do this for this report
+				// I know this is ugly :(
+				if ( this.item.title !== 'Check In / Check Out' ) {
+					return;
+				};
+
+				// if user has not chosen anything
+				// both 'checked_in' & 'checked_out' must be true
+				if ( !this.item.chosenCico ) {
+					this.item.chosenCico = 'BOTH'
+					return true;
+				};
+
+				// for 'checked_in'
+				if (type === 'checked_in') {
+					return this.item.chosenCico === 'IN' || this.item.chosenCico === 'BOTH';
+				};
+
+				// for 'checked_out'
+				if (type === 'checked_out') {
+					return this.item.chosenCico === 'OUT' || this.item.chosenCico === 'BOTH';
+				};
+			}.bind(this);
+
 			var params = {
 				from_date: this.item.fromDate,
 				to_date: this.item.untilDate,
-				user_ids: this.item.chosenUsers,
-				checked_in: this.item.chosenCico === 'IN' || this.item.chosenCico === 'BOTH',
-				checked_out: this.item.chosenCico === 'OUT' || this.item.chosenCico === 'BOTH',
+				user_ids: this.item.chosenUsers || '',
+				checked_in: getProperCICOVal('checked_in'),
+				checked_out: getProperCICOVal('checked_out'),
 				page: 1,
 				per_page: $rootScope.resultsPerPage
 			}
@@ -175,6 +207,10 @@ reports.controller('reportDetails', [
 			// NOTE: this implementation may need mutation if in future style changes
 			// NOTE: this implementation also effects template, depending on design
 
+			// discard previous values
+			$scope.firstHalf = [];
+			$scope.firstHalf = [];
+
 			// making unique copies of array
 			// slicing same array not good.
 			// say thanks to underscore.js
@@ -185,23 +221,30 @@ reports.controller('reportDetails', [
 			$scope.firstHalf = $scope.firstHalf.slice( 0, 4 );
 			$scope.restHalf  = $scope.restHalf.slice( 4 );
 
-			// track the total count
-			$scope.totalCount = response.total_count;
-			$scope.currCount = response.results.length;
-
 			// now applying some very special and bizzare
 			// cosmetic effects for reprots only
 			// NOTE: direct dependecy on template
 			if ( $scope.chosenReport.title === 'Check In / Check Out' ) {
-				$scope.firstHalf[0]['class'] = 'green';
-				$scope.restHalf[0]['class'] = 'red';
+				if ( $scope.firstHalf[0] ) {
+					$scope.firstHalf[0]['class'] = 'green';
+				};
+
+				if ( $scope.restHalf[0] ) {
+					$scope.restHalf[0]['class'] = 'red';
+				};
 			} else {
 				// NOTE: as per todays style this applies to
 				// 'Upsell' and 'Late Check Out' only
-				$scope.firstHalf[1]['class'] = 'orange';
+				if ( $scope.firstHalf[1] ) {
+					$scope.firstHalf[1]['class'] = 'orange';
+				};
 			};
 
 
+
+			// track the total count
+			$scope.totalCount = response.total_count;
+			$scope.currCount = response.results.length;
 
 			// hide the loading indicator
 			sntapp.activityIndicator.hideActivityIndicator();
@@ -261,27 +304,28 @@ reports.controller('reportDetails', [
 			// another dirty part
 			// keep track of the Users chosen for UI
 			// if there is just one user
-			if (typeof $scope.chosenReport.chosenUsers === 'number') {
-				// first find the full name
-				var name = _.find($scope.userList, function(user) {
-					return user.id === $scope.chosenReport.chosenUsers;
-				});
-
-				$scope.userNames = name.full_name || false;
-			} else {
-				// if there are more than one user
-				for (var i = 0, j = $scope.chosenReport.chosenUsers.length; i < j; i++) {
-
+			if ( $scope.chosenReport.chosenUsers ) {
+				if (typeof $scope.chosenReport.chosenUsers === 'number') {
 					// first find the full name
 					var name = _.find($scope.userList, function(user) {
-						return user.id === $scope.chosenReport.chosenUsers[i];
+						return user.id === $scope.chosenReport.chosenUsers;
 					});
 
-					$scope.userNames += name.full_name + (i < j ? ', ' : '');
-				};
-			}
+					$scope.userNames = name.full_name || false;
+				} else {
+					// if there are more than one user
+					for (var i = 0, j = $scope.chosenReport.chosenUsers.length; i < j; i++) {
 
+						// first find the full name
+						var name = _.find($scope.userList, function(user) {
+							return user.id === $scope.chosenReport.chosenUsers[i];
+						});
 
+						$scope.userNames += name.full_name + (i < j ? ', ' : '');
+					};
+				}
+			};
+			
 
 			// make calls to the data service with passed down args
 			RepFetchReportsSrv.fetch( id, params )
