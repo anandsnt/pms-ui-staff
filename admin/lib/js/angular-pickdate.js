@@ -62,12 +62,7 @@
           * check if month is present or next 
           */
    
-          currentDate   = new Date();
-          if(!scope.isCurrentMonth){
-            currentDate.setDate(1);
-            currentDate.setMonth(currentDate.getMonth() +1);
-          }
-
+          currentDate   = new Date(scope.date);
           scope.dayNames    = $locale.DATETIME_FORMATS['SHORTDAY'];
           scope.currentDate = currentDate;
 

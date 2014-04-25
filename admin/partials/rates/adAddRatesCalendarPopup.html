@@ -1,4 +1,5 @@
 <form class="form grey-texture-bg-color">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<fieldset class="holder full-width grey-texture-bg-color" style="margin-bottom:0px;">
 		<div class="form-title">
 			<h3><span>Date</span>&nbsp;Range Update</h3>
@@ -27,8 +28,8 @@
 </div>
 </fieldset>
 <div class="actions float">
-				<button class="button blank add-data-inline ngdialog-close" type="button">Cancel</button>
-				<button class="button green" ng-click="updateClicked()" type="button">Save changes</button>
+				<button class="button blank add-data-inline" type="button" ng-click="cancelClicked()">Cancel</button>
+				<button class="button green" ng-click="updateClicked()" type="button">Update Date Range</button>
 			</div>
 <br clear="all">
 </form>
