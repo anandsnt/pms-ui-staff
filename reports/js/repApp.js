@@ -120,7 +120,6 @@ reports.controller('reporstList', [
         };
 
         $scope.genReport = function() {
-
             if ( !this.item.fromDate || !this.item.untilDate ) {
                 return;
             };
@@ -220,8 +219,17 @@ reports.controller('reportDetails', [
             // cosmetic effects for reprots only
             // NOTE: direct dependecy on template
             if ( $scope.chosenReport.title === 'Check In / Check Out' ) {
+            	console.log( $scope.chosenReport.chosenCico );
+
                 if ( $scope.firstHalf[0] ) {
                     $scope.firstHalf[0]['class'] = 'green';
+
+                    // extra hack
+                    // if the chosenCico is 'OUT'
+                    // class must be 'red'
+                    if ( $scope.chosenReport.chosenCico === 'OUT' ) {
+                    	$scope.firstHalf[0]['class'] = 'red';
+                    }
                 };
 
                 if ( $scope.restHalf[0] ) {
@@ -385,8 +393,8 @@ reports.controller('reportDetails', [
             // now sice we are gonna update the filter
             // we are gonna start from page one
             var params = {
-                from_date: $scope.chosenReport.fromDate,
-                to_date: $scope.chosenReport.untilDate,
+                from_date: $filter('date')($scope.chosenReport.fromDate, 'yyyy/MM/dd'),
+                to_date: $filter('date')($scope.chosenReport.untilDate, 'yyyy/MM/dd'),
                 user_ids: $scope.chosenReport.chosenUsers,
                 checked_in: $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'BOTH',
                 checked_out: $scope.chosenReport.chosenCico === 'OUT' || $scope.chosenReport.chosenCico === 'BOTH',
