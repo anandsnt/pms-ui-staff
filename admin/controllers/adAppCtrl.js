@@ -6,6 +6,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	BaseCtrl.call(this, $scope);
 	$scope.menuOpen = false;
 	$scope.hotelListOpen = '';
+
 	$scope.dragStart = false;
 	$scope.selectedIndex = 0;	
 	$scope.dropedElementsModel = []; // model used for drag & drop feature, used for droping menu items displaying area
@@ -159,7 +160,6 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	};
 	
 	$scope.$on("changedSelectedMenu", function(event, menu){
-		console.log('in changedSleectedmenu');
 		$scope.selectedIndex = menu;		
 	});
 
@@ -210,8 +210,6 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 			console.log("error controller");
 		});	
     };
-   
-   
 }]);
 
     
