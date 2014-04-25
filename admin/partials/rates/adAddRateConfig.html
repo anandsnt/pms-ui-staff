@@ -1,22 +1,30 @@
-<span class="icons" ng-click="popupCalendar()">calendar</span>
-<table width="100%" >
+<div class="config-wrapper">
+	<ul>		
+		<li>
+			<span  class="italic_text">{{step.begin_date | date:'MMMM dd,y'}}</span>
+	        <span style="margin:0 5px;">to</span>
+	        <span  class="italic_text">{{step.end_date | date:'MMMM dd,y'}}</span>
+		</li>
+		<li><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)" ng-hide="currentClickedSet == $index"> </li>
+		<li><span class="icons" ng-click="popupCalendar()">calendar</span></li>		
+	</ul>
+	<ul class="date-wrapper">
+		<li style="width:30px;"><span class="icons delete_small" ng-click="deleteSet(set.id)" >&nbsp;</span></li>
+		<li><ad-textbox value="set.name" style="width:150px; margin-top:10px;"></ad-textbox></li>
+		<li>
+			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.monday" label="MON"></ad-checkboxtext-left>
+			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.tuesday" label="TUE"></ad-checkboxtext-left>
+			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.wednesday" label="WED"></ad-checkboxtext-left>
+			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.thursday" label="THU"></ad-checkboxtext-left>
+			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.friday" label="FRI"></ad-checkboxtext-left>
+			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.saturday" label="SAT"></ad-checkboxtext-left>
+			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.sunday" label="SUN"></ad-checkboxtext-left>
+		</li>
+		<li><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)" ng-hide="currentClickedSet == $index"> </li>
+	</ul>
 
-	<tr>
-		<td width="5%" align="left" style="padding:0px !important;"><span class="icons delete_small" ng-click="deleteSet(set.id, $index)" >&nbsp;</span></td>
-		<td width="20%" align="left" style="align: left; display: inline;"><ad-textbox value="set.name" style="width:150px; margin-top:10px;"></ad-textbox></td>
-		<td width= "75%" align="left" style="margin-top:0px;">
-			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.monday" label="MON" width="70px"></ad-checkboxtext-left>
-			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.tuesday" label="TUE" width="70px"></ad-checkboxtext-left>
-			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.wednesday" label="WED" width="70px"></ad-checkboxtext-left>
-			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.thursday" label="THU" width="70px"></ad-checkboxtext-left>
-			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.friday" label="FRI" width="70px"></ad-checkboxtext-left>
-			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.saturday" label="SAT" width="70px"></ad-checkboxtext-left>
-			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.sunday" label="SUN" width="70px"></ad-checkboxtext-left>
-		</td>
-		<td width="5%" align="right"><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)" ng-hide="currentClickedSet == $index"> </td>
-	</tr>
 
-		</table>
+</div>
 <table ng-show="currentClickedSet == $index" border="1">
 	<tr>
 		<td width="13%">	</td><td width="13%">Single	</td><td width="8%">	</td><td width="13%">	Double</td><td width="13%">	EXTRA ADULT</td><td width="13%">CHILD	</td><td width="8%">	DISTRIBUTE</td>
