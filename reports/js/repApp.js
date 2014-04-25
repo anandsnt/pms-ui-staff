@@ -109,9 +109,6 @@ reports.controller('reporstList', [
                     // for managing date filters limits
                     $scope.reportList[i].today = new Date();
                     $scope.reportList[i].allowedUntilDate = new Date();
-
-                    // add sort by
-                    console.log( $scope.reportList[i].sort_fields );
                 };
             });
 
