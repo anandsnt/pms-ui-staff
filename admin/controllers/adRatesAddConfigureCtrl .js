@@ -94,6 +94,11 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     	 	} 	
 			
 		 });
+		 if(enableSetUpdateButton){
+		 	$scope.data.sets[index].isEnabled = true;
+		 } else {
+		 	$scope.data.sets[index].isEnabled = false;
+		 }
 		 return enableSetUpdateButton;
 		
     };
