@@ -17,6 +17,7 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     	$scope.data = data;
     	 angular.forEach($scope.data.sets, function(value, key){
 			 value.room_types = data.room_types;
+			 value.isSaved = false;
 		 });
 		 var unwantedKeys = ["room_types"];
 		$scope.data = dclone($scope.data, unwantedKeys);
@@ -38,9 +39,7 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     	
     };
     $scope.fetchData();
-    $scope.saveSetSuccessCallback = function(){
-    	 $scope.$emit('hideLoader');
-    };
+    
     $scope.saveSetFailureCallback = function(errorMessage){
     	 $scope.$emit('hideLoader');
     	 $scope.errorMessage = errorMessage;
@@ -50,12 +49,15 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     	$scope.currentClickedSet = -1;
     };
     $scope.saveSet = function(index){
-
+		var saveSetSuccessCallback = function(){
+	    	 $scope.$emit('hideLoader');
+	    	 $scope.data.sets[index].isSaved = true;
+	    };
     	var	unwantedKeys = ["room_types"];
     	var setData = dclone($scope.data.sets[index], unwantedKeys);
     	$scope.updateData = setData;
     	$scope.updateData.room_rates = $scope.data.sets[index].room_types;
-    	$scope.invokeApi(ADRatesConfigureSrv.saveSet, $scope.updateData, $scope.saveSetSuccessCallback, $scope.saveSetFailureCallback);
+    	$scope.invokeApi(ADRatesConfigureSrv.saveSet, $scope.updateData, saveSetSuccessCallback, $scope.saveSetFailureCallback);
     	
     };
     $scope.moveAllSingleToDouble = function(index){
