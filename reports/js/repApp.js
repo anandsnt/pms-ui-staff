@@ -193,8 +193,6 @@ reports.controller('reportDetails', [
             $scope.headers = response.headers;
             $scope.results = response.results;
 
-
-
             // for hard coding styles for report headers
             // if the header count is greater than 4
             // split it up into two parts
@@ -219,8 +217,6 @@ reports.controller('reportDetails', [
             // cosmetic effects for reprots only
             // NOTE: direct dependecy on template
             if ( $scope.chosenReport.title === 'Check In / Check Out' ) {
-            	console.log( $scope.chosenReport.chosenCico );
-
                 if ( $scope.firstHalf[0] ) {
                     $scope.firstHalf[0]['class'] = 'green';
 
@@ -240,10 +236,21 @@ reports.controller('reportDetails', [
                 // 'Upsell' and 'Late Check Out' only
                 if ( $scope.firstHalf[1] ) {
                     $scope.firstHalf[1]['class'] = 'orange';
+
+                    // hack to add $ currency in front
+                    $scope.firstHalf[1]['value'] = '$' + $scope.firstHalf[1]['value'];
                 };
             };
 
-
+            // hack to add curency $ symbol in front of values
+            var resultItem, resultItemLast; 
+            if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
+            	for (var i = 0, j = $scope.results.length; i < j; i++) {
+            		resultItem = $scope.results[i];
+            		resultItemLast = resultItem[resultItem.length - 1];
+            		resultItemLast = '$' + resultItemLast;
+            	};
+            }
 
             // track the total count
             $scope.totalCount = response.total_count;
