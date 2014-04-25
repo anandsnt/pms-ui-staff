@@ -13,7 +13,7 @@
 			<div class="entry has-sortable">
 				<label class="center_align"><em class="rate_roomtype_text">Available Room Types</em></label>
 
-				<ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true" ng-model="nonAssignedroomTypes" style="overflow: visible !important;" jqyoui-droppable="{multiple:true}">
+				<ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true" ng-model="nonAssignedroomTypes" style="overflow-y: scroll !important;" jqyoui-droppable="{multiple:true}">
 
 					<li ng-repeat = "roomtype in nonAssignedroomTypes" 
 
@@ -56,7 +56,7 @@
 					data-type="target" 
 					data-drop="true" 
 					ng-model="assignedRoomTypes"  
-					style="overflow: visible !important;" 
+					style="overflow-y: scroll !important;" 
 					jqyoui-droppable="{multiple:true, onOver: 'reachedAssignedRoomTypes'}">
 					<li ng-repeat="roomtype in assignedRoomTypes"
 					ng-click="assignedRoomSelected($event,$index)"
