@@ -89,11 +89,11 @@ height: 271px;
     display:block;
 }
 
-.green_mover{
+.red_mover{
 
   background-position: 13px -1232px !important;
 }
-.red_mover{
+.green_mover{
   background-position: 13px -1183px !important;
 }
 .red_mover,.green_mover{
@@ -134,7 +134,36 @@ height: 271px;
 .delete_small{
    background-position: 13px -542px !important;
 }
+.add_new_date_range_container{
+  border:1px dashed #929292;
+  height:54px; 
+  padding-top:15px;
 
+  span{
+    color: #89BD55;
+    display: inline-block;
+    padding-left: 15px;
+    width: 200px;
+  }
+  a{
+    margin-left:40%;
+  }
+}
+.rate_range_checkbox{
+  float:left;
+  width:60px;
+  margin:5px;
+  padding-top: 10px;
+}
+.date_range_checkbox_td{
+  padding-left:60px;
+}
+.italic_text{
+  font-style: italic;
+}
+.rate_step_title{
+  font-size:16px !important;
+}
 /* ------------------date -picker ---------------------*/
 .pickdate-cell-bg{
   background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05);
@@ -333,18 +362,18 @@ border-width: 1px 0;
 border-color: #f1f1f1;
 height: 410px;
 }
-.date_range_set_table tr,td{
- box-shadow: none !important;
 
-}
-.date_range_set_table tr{
-  
-border-style: solid;
-border-width: 1px 0;
-border-color: #f1f1f1;
-}
 .date_range_set_table{
   margin-bottom:0px;
+  width:100%;
+  tr,td{
+    box-shadow: none !important;
+  }
+  tr{
+    border-style: solid;
+    border-width: 1px 0;
+    border-color: #f1f1f1;
+  }
 }
 .pickadate-cell .current-date{
   color: #66CCFF !important;
@@ -352,6 +381,65 @@ border-color: #f1f1f1;
 
 /*------------------date -picker ends here-------------------------- */
 
+.form-rate-config {
+    width:100%; 
+    padding-left:0px; 
+    padding-right:0px; 
+    box-shadow:none !important;
+}
+
+.form-rate-config tr td {
+    box-shadow:none !important;
+    padding: 0 0;
+}
+
+.date-wrapper {
+     list-style: none outside none;
+     margin: 0px;
+     padding: 0px;
+}
+
+.date-wrapper li {
+    display: inline-block;
+    margin: 0px;
+    vertical-align: middle;
+
+    .icon-group {
+        width:120px; 
+        float:right;
+    }
+}
 
 
 
+.rate-config{
+    margin: 20px 0 0 20px;
+    #ratetable td input{
+        width: 140px;
+    }
+    #ratetable td.room-type{
+        text-align:right !important;
+    } 
+
+}
+
+
+.right-arrow-grey{
+   background-position: 13px -797px;
+   cursor: pointer;
+}
+
+.right-arrow-green{
+   background-position: 13px -1349px;
+   cursor: pointer;
+   
+}
+.icon-calendar{
+   background-position: 13px -1400px;
+}
+.icon-rate-fill{
+   background-position: 13px -1451px;
+}
+.icon-rate-search{
+   background-position: 13px -1501px;
+}

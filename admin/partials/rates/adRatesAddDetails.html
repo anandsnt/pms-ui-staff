@@ -1,5 +1,4 @@
-<form class="form float form_add_new_rate" ng-controller="ADaddRatesDetailCtrl">
-	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+<form class="form float form_add_new_rate" ng-controller="ADaddRatesDetailCtrl" >
 	<fieldset class="holder full-width" style="margin-bottom:0px;">
 		<div class="form-title">
 			<h3><span>Rate</span> Details </h3>
@@ -14,7 +13,7 @@
 			<div class="entry">
 				<label>Type <strong>*</strong> </label>
 				<div class="select">
-					<select class="placeholder" ng-options="rateType.name for rateType in rateTypes" ng-model="rateTypeselected">
+					<select class="placeholder" ng-options="rateType.name for rateType in rateTypesDetails.rate_types" ng-model="rateTypeselected">
 						<option value="">select Rate Type</option>		
 					</select>
 				</div>
@@ -25,7 +24,7 @@
 			<div class="entry">
 				<label> Based On </label>
 				<div class="select">
-					<select class="placeholder" ng-options="basedOnrateType.name for basedOnrateType in basedOn" ng-model="basedOnRateTypeSelected">
+					<select class="placeholder" ng-options="basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results" ng-model="basedOnRateTypeSelected">
 						<option value="">select rate</option>	
 					</select>
 				</div>
@@ -44,7 +43,7 @@
 				</div>
 				<div class="select select-col col1-3">
 					<select class="styled" ng-model="based_on_type">
-						<option value="amount" >{{currenyCode}}</option>
+						<option value="amount" >{{rateTypesDetails.hotel_settings.currency.symbol}}</option>
 						<option value="percent">%</option>
 					</select>
 				</div>
