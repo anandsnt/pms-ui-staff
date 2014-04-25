@@ -4181,8 +4181,18 @@
 						input {
 							width: 140px;
 							border: 0;
-							background-color: transparent;
+							cursor: pointer;
+							background: transparent @calendar no-repeat 95% 12px;
 							.box-shadow(none);
+							-webkit-transition: none;
+							-moz-transition: none;
+							-ms-transition: none;
+							-o-transition: none;
+							transition: none;
+
+							&:hover {
+								background-position: 95% -38px;
+							}
 						}
 					}
 
@@ -4283,8 +4293,18 @@
 				input {
 					width: 140px;
 					border: 0;
-					background-color: transparent;
+					cursor: pointer;
+					background: transparent @calendar no-repeat 95% 12px;
 					.box-shadow(none);
+					-webkit-transition: none;
+					-moz-transition: none;
+					-ms-transition: none;
+					-o-transition: none;
+					transition: none;
+
+					&:hover {
+						background-position: 95% -38px;
+					}
 				}
 			}
 
