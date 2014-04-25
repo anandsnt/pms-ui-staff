@@ -1,7 +1,6 @@
 admin.controller('ADDateRangeModalCtrl',['$scope','$filter','dateFilter','ADRatesConfigureSrv','ngDialog', function($scope,$filter,dateFilter,ADRatesConfigureSrv,ngDialog){
-
+	BaseCtrl.call(this, $scope);
       var dateDict =ADRatesConfigureSrv.getCurrentSetData();
-      console.log(dateDict)
        $scope.setUpData = function(){
 
          $scope.isFromDateSelected = true;
@@ -20,11 +19,25 @@ admin.controller('ADDateRangeModalCtrl',['$scope','$filter','dateFilter','ADRate
 
    $scope.setUpData();
    $scope.updateClicked = function(){
-    dateDict.begin_date = $scope.fromDate;
-    dateDict.end_date =  $scope.toMonthDateFormated;
+	   	var successUpdateRange =function(){
+	   		$scope.$emit('hideLoader');
+		    dateDict.begin_date = $scope.fromDate;
+		    dateDict.end_date =  $scope.toMonthDateFormated;
+		    ADRatesConfigureSrv.setCurrentSetData(dateDict);
+		    ngDialog.close();
+	   };
+	   var failureUpdateRange =function(){
+		   $scope.$emit('hideLoader');
+	   };
+	   var data = {
+	   	 "begin_date": $scope.fromDate,
+	   	 "end_date":$scope.toMonthDateFormated
+	   };
+	   $scope.invokeApi(ADRatesConfigureSrv.updateDateRange,data,successUpdateRange,failureUpdateRange);
+   };
+   $scope.cancelClicked = function(){
+     ngDialog.close();
 
-    ADRatesConfigureSrv.setCurrentSetData(dateDict);
-      ngDialog.close();
-   }
+   };
 
 }]);
