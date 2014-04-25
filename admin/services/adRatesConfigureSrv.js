@@ -1,5 +1,14 @@
 admin.service('ADRatesConfigureSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
 	
+	this.currentSetData = {};
+	this.setCurrentSetData = function(data){
+		alert("efe")
+		this.currentSetData =data;
+	};
+	this.getCurrentSetData = function(data){
+		return this.currentSetData;
+	};
+
 	this.fetchSetsInDateRange = function(data) {
 		var deferred = $q.defer();
 

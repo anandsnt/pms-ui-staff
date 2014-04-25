@@ -3,7 +3,7 @@
 	<div style="float:right;">
 	<label class="checkbox {{parentLabelClass}}" ng-class="{'checked': isChecked}" >
 		<span class="icon-form icon-checkbox" ng-class="{'checked': isChecked}"></span>	
-		<input type="checkbox" ng-model="isChecked" ng-change='change(datagroup,index)'>
+		<input type="checkbox" ng-model="isChecked" ng-disabled="isDisabled" ng-change='change(datagroup,index)'>
 		<strong ng-show = "required=='yes'">*</strong>
 	</label>
 	</div>
