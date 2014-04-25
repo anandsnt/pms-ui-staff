@@ -11,7 +11,7 @@
 	<br clear="all"/>
 	</ul>
 	<ul class="date-wrapper" ng-class="{actions: currentClickedSet == $index}" style="padding-right: 15px;">
-		<li style="width:30px;" ng-show="currentClickedSet == $index"><span class="icons delete_small" ng-click="deleteSet(set.id)" >&nbsp;</span></li>
+		<li style="width:30px;" ng-show="currentClickedSet == $index"><span class="icons delete_small" ng-click="deleteSet(set.id, $index)" >&nbsp;</span></li>
 		<li ng-show="currentClickedSet == $index"><ad-textbox value="set.name" style="width:150px; margin-top:10px;"></ad-textbox></li>
 		<li ng-show="currentClickedSet == $index">
 			<ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.monday" ng-click="toggleDays($index, 'monday')" label="MON"></ad-checkboxtext-left>
@@ -35,7 +35,7 @@
 		
 	</ul>
 	<ul class="date-wrapper" style="margin-left:31px;">
-		<li style="width:30px;" ng-hide="currentClickedSet == $index"><span class="icons delete_small" ng-click="deleteSet(set.id)" >&nbsp;</span></li>
+		<li style="width:30px;" ng-hide="currentClickedSet == $index"><span class="icons delete_small" ng-click="deleteSet(set.id, $index)" >&nbsp;</span></li>
 		<li style="width:150px;" ng-hide="currentClickedSet == $index">{{set.name}}</li>
 		<li ng-hide="currentClickedSet == $index">
 			<ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.monday" is-disabled="true" ng-click="toggleDays($index, 'monday')" label="MON"></ad-checkboxtext-left>
@@ -92,8 +92,8 @@
 	    	<span style="padding-right:20px;">
 	    		<button type="button" class="button blue">QUICK FILL</button>
 	    	</span>
-	    	<button type="button" class="button green" ng-click="saveSet($index)" ng-hide="set.isSaved">SAVE&nbsp;SET</button>
-	    	<button type="button" class="button green" ng-click="saveSet($index)" ng-show="set.isSaved">UPDATE&nbsp;SET</button>
+	    	<button type="button" class="button green" ng-click="saveSet($index)" ng-hide="set.isSaved" ng-disabled="checkFieldEntered($index)">SAVE&nbsp;SET</button>
+	    	<button type="button" class="button green" ng-click="saveSet($index)" ng-show="set.isSaved" ng-disabled="checkFieldEntered($index)">UPDATE&nbsp;SET</button>
 	    </td>
 
 	     </tr>
