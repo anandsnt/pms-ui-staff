@@ -156,10 +156,7 @@ admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter','ADRatesR
    		});
     
    		if($scope.isFromDateSelected && $scope.isToDateSelected && anyOneDayisChecked){
-     			if($scope.fromDate <= $scope.toMonthDateFormated)
-     			  return false;
-     			else
-     			  return true;
+     			  return false;	
    		}
    		else
    			return true;
