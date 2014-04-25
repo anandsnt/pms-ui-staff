@@ -7,6 +7,10 @@ function($q, ADBaseWebSrvV2) {
 		return dateRangeIDs;
 	};
 
+	this.emptyDateRangeData = function(){
+		 dateRangeDataArray = [];
+	};
+
 	this.getDateRangeData = function(){
 		return dateRangeDataArray;
 	};
