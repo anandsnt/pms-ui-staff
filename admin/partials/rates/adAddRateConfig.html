@@ -1,6 +1,6 @@
 <div class="config-wrapper">
 	<ul style="padding-left: 20px;">		
-		<li style="width:97%; float:left;" ng-show="currentClickedSet == $index">
+		<li style="width:98.5%; float:left;" ng-show="currentClickedSet == $index">
 			<span  class="italic_text">{{step.begin_date | date:'MMMM dd,y'}}</span>
 	        <span style="margin:0 5px;">to</span>
 	        <span  class="italic_text">{{step.end_date | date:'MMMM dd,y'}}</span>
@@ -34,7 +34,7 @@
 		</li>
 		
 	</ul>
-	<ul class="date-wrapper">
+	<ul class="date-wrapper" style="margin-left:31px;">
 		<li style="width:30px;" ng-hide="currentClickedSet == $index"><span class="icons delete_small" ng-click="deleteSet(set.id)" >&nbsp;</span></li>
 		<li style="width:150px;" ng-hide="currentClickedSet == $index">{{set.name}}</li>
 		<li ng-hide="currentClickedSet == $index">
@@ -54,17 +54,17 @@
 </div>
 
 <div class="rate-config" >
-	<table width="100%" border="0" cellspacing="0" cellpadding="0" id="ratetable" ng-show="currentClickedSet == $index">
+	<table width="100%" border="0" align="right" cellspacing="0" cellpadding="0" id="ratetable" ng-show="currentClickedSet == $index">
 	  <tr>
-	    <td width="14%" align="right">&nbsp;</td>
+	    <td width="20%" align="right">&nbsp;</td>
 	    <td width="2%">&nbsp;</td>
-	    <td width="14%" align="left">Single ({{data.currency_symbol}})</td>
+	    <td width="16%" align="left">Single ({{data.currency_symbol}})</td>
 	    <td width="4%" align="center">&nbsp;</td>
-	    <td width="14%" align="left">Double ({{data.currency_symbol}})</td>
+	    <td width="16%" align="left">Double ({{data.currency_symbol}})</td>
 	    <td width="4%" align="center">&nbsp;</td>
-	    <td width="14%" align="left">Extra Adult (+{{data.currency_symbol}})</td>
+	    <td width="16%" align="left">Extra Adult (+{{data.currency_symbol}})</td>
 	    <td width="4%" align="center">&nbsp;</td>
-	    <td width="14%" align="left">Child (+{{data.currency_symbol}})</td>
+	    <td width="16%" align="left">Child (+{{data.currency_symbol}})</td>
 	    <td width="4%" align="center">&nbsp;</td>
 	    
 	     </tr>
@@ -82,16 +82,18 @@
 	    
 	  </tr>
 	  <tr>
-	    <td width="14%" align="right">&nbsp;</td>
+	    <td width="20%" align="right">&nbsp;</td>
 	    <td width="2%">&nbsp;</td>
-	    <td width="14%" align="left">&nbsp;</td>
+	    <td width="16%" align="left">&nbsp;</td>
 	    <td width="4%" align="center"><span class="icons right-arrow-green" ng-click="moveAllSingleToDouble($index)">&nbsp;</span></td>
-	    <td width="14%" align="left">&nbsp;</td>
+	    <td width="16%" align="left">&nbsp;</td>
 	    <td width="4%" align="center">&nbsp;</td>
-	    <td width="14%" align="left">&nbsp;</td>
 	    <td width="4%" align="center">&nbsp;</td>
-	    <td width="14%" align="left"><button type="button" class="button blue">QUICK FILL</button></td>
-	    <td width="15%" align="center" colspan="2"><button type="button" class="button green" ng-click="saveSet($index)">SAVE&nbsp;SET</button></td>
+	    <td width="16%" align="left"><button type="button" class="button blue">QUICK FILL</button></td>
+	    <td width="15%" align="center" colspan="2">
+	    	<button type="button" class="button green" ng-click="saveSet($index)" ng-hide="set.isSaved">SAVE&nbsp;SET</button>
+	    	<button type="button" class="button green" ng-click="saveSet($index)" ng-show="set.isSaved">UPDATE&nbsp;SET</button>
+	    </td>
 
 	     </tr>
 	   
