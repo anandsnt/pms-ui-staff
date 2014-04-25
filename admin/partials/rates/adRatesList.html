@@ -74,7 +74,8 @@
 		<!--Custom pagination footer goes here-->
 		<script type="text/ng-template" id="custom/pager">
 			<div class = "pager">
-				<span>Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+				<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+				<span ng-show="totalCount==0">Showing 0 items</span>
 				<ul class="ng-cloak">
 	              	<li ng-repeat="page in pages"
 		                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
