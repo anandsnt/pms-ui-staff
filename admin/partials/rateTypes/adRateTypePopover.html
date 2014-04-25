@@ -1,1 +1,4 @@
-<li ng-repeat = "rate in rate.results" ui-sref="admin.addRate({ id: rate.id })">{{rate.name}}</li>
+<div class="title">{{popoverRates.total_count}} {{popoverRates.results[0].rate_type.name}}</div>
+<ul>
+	<li ng-repeat = "rate in popoverRates.results" ui-sref="admin.addRate({ id: rate.id })">{{rate.name}}</li>
+</ul>

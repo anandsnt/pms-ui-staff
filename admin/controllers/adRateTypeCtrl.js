@@ -4,7 +4,7 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 	BaseCtrl.call(this, $scope);
 	$scope.rateTypeData = {};
 	$scope.isAddMode = false;
-	$scope.rate = "";
+	$scope.popoverRates = "";
 	$scope.mouseEnterPopover = false; 
 
 
@@ -140,24 +140,24 @@ function($scope, $rootScope, ADRateTypeSrv, ADRatesSrv) {
 		if(rateCount <= 0) return false;
 		var rateFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
-			$scope.rate = data;
+			$scope.popoverRates = data;
 			$scope.mouseEnterPopover = true; 
 		};
+
+		//Fetch the rates only when we enter the popover area.
 		if(!$scope.mouseEnterPopover){
-			$scope.rate = "";
+			$scope.popoverRates = "";
 			$scope.currentHoverElement = index;
 			$scope.invokeApi(ADRatesSrv.fetchRates, {'rate_type_id': rateTypeId}, rateFetchSuccess);
 		}
+
 	};
 
 	/**
-	* To handle the popover state. Reset the 
-	* @param {int} index of the selected rate type
-	* @param {string} id of the selected rate type
-	* @param {string} number of rates available for the rate type
+	* To handle the popover state. Reset the flag, rates dict while leaving the popover area
 	*/
 	$scope.mouseLeavePopover = function(){
-		$scope.rate = "";
+		$scope.popoverRates = "";
 		$scope.mouseEnterPopover = false; 
 	}
 

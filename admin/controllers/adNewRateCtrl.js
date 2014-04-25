@@ -58,6 +58,7 @@ $scope.$on("updateIndex", function(e,value){
 	}
 	else if(value ==2){
 	if($scope.currentStepIndexList.length< 3){
+
     	nextContent = {
 							'title': 'Date',
 							'subtitle': 'Range',
@@ -65,8 +66,8 @@ $scope.$on("updateIndex", function(e,value){
 							'id'   : 'Range'
 						};
     	$scope.currentStepIndexList.push(nextContent);
-    	$scope.clickedStep(parseInt(value));   	
     }
+    $scope.clickedStep(parseInt(value));  
 	}
     else if(value ==3){
     if($scope.currentStepIndexList[2].title === 'Date')

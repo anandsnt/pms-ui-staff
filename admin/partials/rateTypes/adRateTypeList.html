@@ -25,13 +25,8 @@
 					<td ng-hide="currentClickedElement == $index">
 						<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, ratetype.id, ratetype.rate_count)" ng-mouseleave="mouseLeavePopover()">
 							<em>{{ratetype.rate_count}} rates</em>
-							<div ng-show = "rate.total_count > 0" class="tooltip">
-								<div class="title">{{rate.total_count}} {{rate.results[0].rate_type.name}}</div>
-								<ul ng-include="getPopoverTemplate($index,ratetype.id)">
-									
-								</ul>
+							<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getPopoverTemplate($index,ratetype.id)">								
 							</div>
-							
 						</span>
 					</td>
 					<td class="delete"  ng-hide="currentClickedElement ==$index"><a ng-hide="ratetype.system_defined ===true" id="3" ng-click="deleteRateType($index,ratetype.id)" class="icons icon-delete large-icon delete_item"  ></a></td>

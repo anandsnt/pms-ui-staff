@@ -37,4 +37,16 @@ function($http, $q, ADBaseWebSrvV2) {
 		return deferred.promise;
 	};
 
+	this.fetchDateRanges = function(params) {
+		var deferred = $q.defer();
+
+		var url = "/api/rates/" + params.rate_id + "/rate_date_ranges";
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 }]);
