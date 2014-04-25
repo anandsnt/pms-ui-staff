@@ -21,7 +21,9 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     	$scope.currentClickedSet = index;
     };
     
-  
+    $scope.unsetCurrentClickedSet = function(index){
+    	$scope.currentClickedSet = -1;
+    };
 
     $scope.fetchData = function(){
     	$scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, {"id":dateRangeId},$scope.fetchSetsInDateRangeSuccessCallback,$scope.fetchSetsInDateRangeFailureCallback);	
