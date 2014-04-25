@@ -243,12 +243,9 @@ reports.controller('reportDetails', [
             };
 
             // hack to add curency $ symbol in front of values
-            var resultItem, resultItemLast; 
             if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
             	for (var i = 0, j = $scope.results.length; i < j; i++) {
-            		resultItem = $scope.results[i];
-            		resultItemLast = resultItem[resultItem.length - 1];
-            		resultItemLast = '$' + resultItemLast;
+            		$scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
             	};
             }
 
