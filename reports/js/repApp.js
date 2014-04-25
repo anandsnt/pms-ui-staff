@@ -249,6 +249,10 @@ reports.controller('reportDetails', [
             	};
             }
 
+            // hack to set the colspan for reports details tfoot
+            $scope.leftColSpan  = $scope.chosenReport.title === 'Check In / Check Out' ? 4 : 2;
+            $scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' ? 5 : 2;
+
             // track the total count
             $scope.totalCount = response.total_count;
             $scope.currCount = response.results.length;
