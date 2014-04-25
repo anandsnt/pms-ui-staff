@@ -429,7 +429,7 @@ reports.factory('RepUserSrv', [
 			var deferred = $q.defer();
 
 			// if we have already fetched the user list already
-			if ( this.users.length ) {
+			if ( this.users && this.users.length ) {
 				deferred.resolve( this.users );
 				return deferred.promise;
 			};
