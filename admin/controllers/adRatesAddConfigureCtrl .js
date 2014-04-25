@@ -2,6 +2,13 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
    $scope.sets = "";
    $scope.currentClickedSet = 0;
    $scope.selectedCalendarInitialData = {};
+
+    ADRatesConfigureSrv.setCurrentSetData($scope.$parent.step);
+    $scope.$parent.step = ADRatesConfigureSrv.getCurrentSetData();
+
+     $scope.$on('dateRangeUpdated', function(event,data) {
+        $scope.$parent.step = data;
+     });
    
 
  	var dateRangeId = $scope.$parent.step.id;
@@ -10,6 +17,7 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     	$scope.data = data;
     	 angular.forEach($scope.data.sets, function(value, key){
 			 value.room_types = data.room_types;
+			 value.isSaved = false;
 		 });
 		 var unwantedKeys = ["room_types"];
 		$scope.data = dclone($scope.data, unwantedKeys);
@@ -21,7 +29,9 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     	$scope.currentClickedSet = index;
     };
     
-  
+    $scope.unsetCurrentClickedSet = function(index){
+    	$scope.currentClickedSet = -1;
+    };
 
     $scope.fetchData = function(){
     	$scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, {"id":dateRangeId},$scope.fetchSetsInDateRangeSuccessCallback,$scope.fetchSetsInDateRangeFailureCallback);	
@@ -29,9 +39,7 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     	
     };
     $scope.fetchData();
-    $scope.saveSetSuccessCallback = function(){
-    	 $scope.$emit('hideLoader');
-    };
+    
     $scope.saveSetFailureCallback = function(errorMessage){
     	 $scope.$emit('hideLoader');
     	 $scope.errorMessage = errorMessage;
@@ -41,12 +49,15 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     	$scope.currentClickedSet = -1;
     };
     $scope.saveSet = function(index){
-
+		var saveSetSuccessCallback = function(){
+	    	 $scope.$emit('hideLoader');
+	    	 $scope.data.sets[index].isSaved = true;
+	    };
     	var	unwantedKeys = ["room_types"];
     	var setData = dclone($scope.data.sets[index], unwantedKeys);
     	$scope.updateData = setData;
     	$scope.updateData.room_rates = $scope.data.sets[index].room_types;
-    	$scope.invokeApi(ADRatesConfigureSrv.saveSet, $scope.updateData, $scope.saveSetSuccessCallback, $scope.saveSetFailureCallback);
+    	$scope.invokeApi(ADRatesConfigureSrv.saveSet, $scope.updateData, saveSetSuccessCallback, $scope.saveSetFailureCallback);
     	
     };
     $scope.moveAllSingleToDouble = function(index){
@@ -97,8 +108,7 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     
     $scope.popupCalendar = function(){
 
-        ADRatesConfigureSrv.setCurrentSetData({'begin_date':$scope.step.begin_date,
-                                                'end_date':$scope.step.end_date});
+     
     	ngDialog.open({
     		 template: '/assets/partials/rates/adAddRatesCalendarPopup.html',
     		 controller: 'ADDateRangeModalCtrl',
