@@ -1,12 +1,17 @@
-
 admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$stateParams', '$window', function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window ){
 	
+	//when there is an occured while trying to access any menu details, we need to show that errors
 	$scope.errorMessage = '';
+
 	BaseCtrl.call(this, $scope);
 	$scope.menuOpen = false;
 	$scope.hotelListOpen = '';
-	$scope.selectedIndex = -1;
 	$scope.dragStart = false;
+	$scope.selectedIndex = 0;	
+	$scope.dropedElementsModel = []; // model used for drag & drop feature, used for droping menu items displaying area
+
+	//for preventing drag & drop operations turning into click
+	var lastDropedTime = '';
 
 	//scroller options
 	$scope.$parent.myScrollOptions = {
@@ -14,36 +19,160 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
         bounce: true,
         vScroll: true,
         vScrollbar: true,
-       hideScrollbar: false
+        hideScrollbar: false
     };
      
-	//when there is an occured while trying to access any menu details, we need to show that errors
-
-	$scope.errorMessage = '';
 	$scope.bookMarks = [];
-	$scope.bookMarksCount = '';
 
 	if($rootScope.adminRole == "hotel-admin" ){
-
 		$scope.isHotelAdmin =  true;
 	}	
 	else{
 		$scope.isHotelAdmin =  false;
 	}
 
-	$scope.successCallbackOfMenuLoading = function(data){
-		//$scope.currentIndex = 0;
-		$scope.data = data;
-		$scope.selectedMenu = $scope.data.menus[0];		
-		$scope.bookMarks = $scope.data.bookmarks;
-		$scope.bookMarksCount = $scope.data.bookmark_count;
+	$scope.isDragging = false;
+
+	//on drag start we need to show a dotted border on bookmark area
+	$scope.onDragStart = function(){
+		$scope.isDragging = true;
+	}
+
+	//on drag stop we need to hide the dotted border on bookmark area
+	$scope.onDragStop = function(){
+		$scope.isDragging = false;
+
+		//also we are taking the lastDropedTime to preventing click after drag stop operation
+		lastDropedTime = new Date();			
+	}	
+
+	//function to copy the ids of bookmark to a new array
+	var copyBookmarkIds = function(arrayToCopy){
+		for(var i = 0; i < $scope.bookMarks.length; i++){
+			arrayToCopy.push($scope.bookMarks[i].id);			
+		}
+	};
+
+	//function to change bookmark status after dropping
+	var updateBookmarkStatus = function(){
+		for(var i = 0; i < $scope.data.menus.length; i++){
+			for(var j = 0; j < $scope.data.menus[i].components.length; j++){
+				if($scope.bookmarkIdList.indexOf($scope.data.menus[i].components[j].id) == -1){						
+					$scope.data.menus[i].components[j].is_bookmarked = false;							
+				}	
+				else{
+					$scope.data.menus[i].components[j].is_bookmarked = true;							
+				}					
+			}
+		}
+	};
+
+	//drop function on menu item listing
+	$scope.onDropingMenuItemListing = function(event, ui) {
+		var index = -1;
+
+		//successcallback of removing menu item
+	   	var successCallbackOfRemovingBookMark = function(){
+	   	 	$scope.$emit('hideLoader');
+
+	   	 	if(index != -1){
+	    		$scope.bookmarkIdList.splice(index, 1);
+	    		index = -1;
+	    	}
+	    	updateBookmarkStatus();			    	   	
+	    };
+
+
+	    
+		var copiedBookMarkIds = [];		
+		copyBookmarkIds(copiedBookMarkIds);
+
+	    if($scope.bookMarks.length <= $scope.bookmarkIdList.length){
+	    	for(var i = 0; i < $scope.bookmarkIdList.length; i++){	
+	    		//checking bookmarked id's in copiedBookark id's, if it is no, call web service	    		
+	    		if(copiedBookMarkIds.indexOf($scope.bookmarkIdList[i]) == -1){
+	    			index = i;
+	    			var data = {id: $scope.bookmarkIdList[i]};
+   					$scope.invokeApi(ADAppSrv.removeBookMarkItem, data, successCallbackOfRemovingBookMark);
+	    		}
+	    	}
+	    }
+   		
+	};
+	
+	//drop function on boomark menu item listing
+	$scope.onDropAtBookmarkArea = function(event, ui) {		
+		var index = -1;
+	   	var successCallbackOfBookMark = function(){
+	   	 	$scope.$emit('hideLoader');
+	   	 	if(index != -1){
+	    		$scope.bookmarkIdList.push($scope.bookMarks[index].id);
+	    		index = -1;
+				updateBookmarkStatus();
+	    	}	
+	    };
+
+		var copiedBookMarkIds = [];	
+		copyBookmarkIds(copiedBookMarkIds);
+	
+	    if($scope.bookMarks.length > $scope.bookmarkIdList.length){
+	    	for(var i = 0; i < $scope.bookMarks.length; i++){
+
+	    		// if the newly added bookmark is not in the old copy then we have to web service and add it to the old array
+	    		if($scope.bookmarkIdList.indexOf($scope.bookMarks[i].id) == -1){
+	    			index = i;
+	    			var data = {id: $scope.bookMarks[i].id};
+   					$scope.invokeApi(ADAppSrv.bookMarkItem, data, successCallbackOfBookMark);
+	    		}
+	    	}
+	    }
+   		
+	};
+
+	/*
+	* function for handling click operation on menu item
+	* Here is a special case
+	* After drag operation, click event is firing. Inorder to prevent that
+	* we will check the lastDropedTime with click event fired time.
+	* if it is less than a predefined time, it will not fire click event, otherwise fire	
+	*/
+	$scope.clickedMenuItem = function($event, stateToGo){
+		var currentTime = new Date();
+		if(lastDropedTime != '' && typeof lastDropedTime == 'object'){
+			var diff = currentTime - lastDropedTime;				
+			if(diff <= 400){
+				$event.preventDefault();
+				$event.stopImmediatePropagation();
+				$event.stopPropagation();				
+				lastDropedTime = '';
+				return false;
+			}
+			else{
+				lastDropedTime = '';
+				$state.go(stateToGo);
+			}
+		}
+		else{
+			lastDropedTime = '';
+			$state.go(stateToGo);
+		}
 	};
 	
 	$scope.$on("changedSelectedMenu", function(event, menu){
 		console.log('in changedSleectedmenu');
-		$scope.selectedIndex = menu;
-		
+		$scope.selectedIndex = menu;		
 	});
+
+	$scope.successCallbackOfMenuLoading = function(data){
+		//$scope.currentIndex = 0;
+		$scope.data = data;
+		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];			
+		$scope.bookMarks = $scope.data.bookmarks;
+		
+		$scope.bookmarkIdList = [];
+		for(var i = 0; i < $scope.data.bookmarks.length; i++)
+			$scope.bookmarkIdList.push($scope.data.bookmarks[i].id);
+	};
 	
 	$scope.invokeApi(ADAppSrv.fetch, {}, $scope.successCallbackOfMenuLoading);
 
@@ -53,16 +182,6 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
     	$scope.errorMessage = errorMessage;
         
     });
-
-	
-	//function to change the selected menu
-	//index is the array position
-	/*$scope.setSelectedMenu = function(index)	{
-		if(index < $scope.data.menus.length){
-			$scope.selectedMenu = $scope.data.menus[index];
-			$scope.currentIndex = index;
-		}
-	};*/
 	
 	$scope.$on("navToggled", function(){
         $scope.menuOpen = !$scope.menuOpen;
@@ -92,58 +211,6 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 		});	
     };
    
-
-	 $scope.dropSuccessHandler = function($event, index, array){
-	   	 var successCallbackOfBookMark = function(){
-	   	 	$scope.$emit('hideLoader');
-	    	array.is_bookmarked = true;
-	    	$scope.bookMarksCount = parseInt($scope.bookMarksCount) + parseInt(1);
-	    };
-   		var data = {id: array.id};
-   		$scope.invokeApi(ADAppSrv.bookMarkItem, data, successCallbackOfBookMark);
-  	};
-
-   	$scope.onDrop = function($event, $data, array) {
-   		if($scope.bookMarksCount <=8){
-   			array.push($data);
-   		} else {
-   			
-   		}
-		
-	};
-	$scope.onDropRemoveBookMark = function($event, $data, array) {
-
-	};
-	$scope.dropSuccessRemoveHandler = function($event, index, array){
-		
-		var id = array[index].id;
-	   	 var successCallbackOfBookMarkRemove = function(){
-	   	 	$scope.$emit('hideLoader');
-	   	 	array.splice(index, 1);
-	    	// array.is_bookmarked = false;
-	    
-			angular.forEach($scope.data.menus,function(item, ind) {
-				angular.forEach(item.components,function(componentItem, componentIndex) {
-					if(componentItem.id == id){
-						componentItem.is_bookmarked = false;
-					}
-				});
-			});
-	    	$scope.bookMarksCount = parseInt($scope.bookMarksCount) - parseInt(1);
-	    };
-   		
-   		$scope.invokeApi(ADAppSrv.removeBookMarkItem, id, successCallbackOfBookMarkRemove);
-  	};
-  	$scope.$on("ANGULAR_DRAG_END", function(){
-		$scope.dragStart = false;
-		$scope.$apply();
-		console.log($scope.dragStart);
-	}); 	
- 	$scope.$on("ANGULAR_DRAG_START", function(){
-		$scope.dragStart = true;
-		$scope.$apply();
-		console.log($scope.dragStart);
-	});
    
 }]);
 

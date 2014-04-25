@@ -9,6 +9,9 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 	/** functions & variables related to drag & drop **/
 	$scope.selectedUnassignedRole = -1;
 	$scope.selectedAssignedRole = -1;
+	$scope.justDropped = -1;
+	var lastDropedTime = '';
+
    /**
     * To check whether logged in user is sntadmin or hoteladmin
     */	
@@ -19,19 +22,46 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 	} else {
 		 $scope.BackAction = "admin.users";
 	}
+
    /*
     * Handle action when clicked on assigned role
     * @param {int} index of the clicked role
     */
-	$scope.selectAssignedRole = function(index){
-		$scope.selectedAssignedRole = index;
+	$scope.selectAssignedRole = function($event, index){
+		if(lastDropedTime == ''){
+			$scope.selectedAssignedRole = index;			
+		}
+		else if(typeof lastDropedTime == 'object') { //means date
+			var currentTime = new Date();
+			var diff = currentTime - lastDropedTime;
+			if(diff <= 100){
+				$event.preventDefault();				
+			}
+			else{
+				lastDropedTime = '';
+			}
+
+		}
 	};
    /*
     * Handle action when clicked on un assigned role
     * @param {int} index of the clicked role
     */
-	$scope.selectUnAssignedRole = function(index){
-		$scope.selectedUnassignedRole = index;
+	$scope.selectUnAssignedRole = function($event, index){
+		if(lastDropedTime == ''){
+			$scope.selectedUnassignedRole = index;			
+		}
+		else if(typeof lastDropedTime == 'object') { //means date
+			var currentTime = new Date();
+			var diff = currentTime - lastDropedTime;
+			if(diff <= 100){
+				$event.preventDefault();				
+			}
+			else{
+				lastDropedTime = '';
+			}
+
+		}				
 	};	
    /*
     * Handle action when clicked on right arrow button
@@ -86,10 +116,12 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 		if($scope.image.indexOf("data:")!= -1){
 			data.user_photo = $scope.image;
 		}
+
 		var successCallback = function(data){
 			$scope.$emit('hideLoader');
 			$state.go('admin.users', { id: $stateParams.hotelId });
 		};
+
 		if($scope.mod == "add"){
 			$scope.invokeApi(ADUserSrv.saveUserDetails, data , successCallback);
 		} else {
@@ -162,5 +194,15 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 		var data = {"id": userId};
 	 	$scope.invokeApi(ADUserSrv.sendInvitation,  data);	
 	};
+
+	$scope.reachedUnAssignedRoles = function(event, ui){
+		$scope.selectedAssignedRole = -1;
+		lastDropedTime = new Date();
+	}
+
+	$scope.reachedAssignedRoles = function(event, ui){
+		$scope.selectedUnassignedRole = -1;	
+		lastDropedTime = new Date();
+	}
 
 }]);
