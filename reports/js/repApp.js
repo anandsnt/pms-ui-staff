@@ -6,16 +6,6 @@ var reportContent = createVerticalScroll( '#report-content', {} );
 
 var reports = angular.module('reports', ['ngAnimate', 'ngSanitize', 'mgcrea.ngStrap.datepicker']);
 
-reports.filter('todate', [function() {
-    return function(input) {
-        if(!input) {
-            return;
-        }
-
-        return input.getFullYear() + '-' + input.getMonth() + '-' + input.getDate()
-    }
-}]);
-
 reports.config([
     '$datepickerProvider',
     function($datepickerProvider) {
@@ -35,7 +25,6 @@ reports.controller('reporstList', [
     'RepUserSrv',
     'RepFetchReportsSrv',
     function($scope, $rootScope, RepFetchSrv, RepUserSrv, RepFetchReportsSrv) {
-
 
         // hide the details page
         $rootScope.showReportDetails = false;
