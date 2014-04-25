@@ -6,7 +6,7 @@
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<table class="grid">
 		<tr ng-repeat ="step in currentStepIndexList">
-			<td ng-include="includeTemplate($index)" colspan="2" ng-show="currentRateStepIndex === $index"></td>
+			<td style="padding-right: 3px; padding-left:5px;" ng-include="includeTemplate($index)" colspan="2" ng-show="currentRateStepIndex === $index"></td>
 			<td width="90%" ng-hide="currentRateStepIndex === $index" >
 				<span ng-hide="step.title === 'Configure'">
 				
@@ -24,7 +24,7 @@
 		</tr>
 	</table>
 	<div ng-show="showAddNewDateRangeOptions" ng-include="'/assets/partials/rates/adRatesAddRange.html'"></div>
-	
+
   <div ng-click="addNewDateRange()" ng-hide="hideAddNewDateRange()" class="center_align add_new_date_range_container"> 
       <a class="icons icon-add">
       	<span>NEW DATE RANGE</span>

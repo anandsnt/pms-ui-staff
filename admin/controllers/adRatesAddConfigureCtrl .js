@@ -1,4 +1,4 @@
-admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv', function($scope, ADRatesConfigureSrv){
+admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADRatesAddRoomTypeSrv','ngDialog', function($scope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ngDialog){
    $scope.sets = "";
    $scope.currentClickedSet = 0;
    
@@ -12,30 +12,17 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv', fun
 		 });
 		 var unwantedKeys = ["room_types"];
 		$scope.data = dclone($scope.data, unwantedKeys);
-    	console.log(JSON.stringify($scope.data));
     };
     $scope.fetchSetsInDateRangeFailureCallback = function(errorMessage){
     	$scope.$emit('hideLoader');
-    	// $scope.sets = data;
     };
     $scope.setCurrentClickedSet = function(index){
-    	console.log("=============="+index);
     	$scope.currentClickedSet = index;
     };
     
   
-    // $scope.fetchRoomTypesSuccessCallback = function(data){
-			// $scope.data.room_rates = data.results;
-			// // angular.forEach($scope.data.sets, function(value, key){
-           		// // value.room_types = $scope.data.room_rates;
-     		// // });
-			// $scope.$emit('hideLoader');
-		// };
-		// $scope.fetchRoomTypesFailureCallback = function(data){
-			// $scope.$emit('hideLoader');
-		// };
+
     $scope.fetchData = function(){
-    	
     	$scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, {"id":dateRangeId},$scope.fetchSetsInDateRangeSuccessCallback,$scope.fetchSetsInDateRangeFailureCallback);	
 		// $scope.invokeApi(ADRatesAddRoomTypeSrv.fetchRoomTypes, {}, $scope.fetchRoomTypesSuccessCallback, $scope.fetchRoomTypesFailureCallback);	
     	
@@ -58,7 +45,6 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv', fun
     	var setData = dclone($scope.data.sets[index], unwantedKeys);
     	$scope.updateData = setData;
     	$scope.updateData.room_rates = $scope.data.sets[index].room_types;
-    	
     	$scope.invokeApi(ADRatesConfigureSrv.saveSet, $scope.updateData, $scope.saveSetSuccessCallback, $scope.saveSetFailureCallback);
     	
     };
@@ -70,22 +56,50 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv', fun
     $scope.moveSingleToDouble = function(parentIndex, index){
     	$scope.data.sets[parentIndex].room_types[index].double = $scope.data.sets[parentIndex].room_types[index].single;
     };
-    $scope.deleteSet = function(id){
-    	console.log("++++++++++++++"+id)
+    $scope.deleteSet = function(id, index){
+    	var successDeleteCallBack = function(){
+    		$scope.$emit('hideLoader');
+    		var sets = $scope.data.sets;
+    		$scope.data.sets.splice(index, 1);
+    	};
+    	$scope.invokeApi(ADRatesConfigureSrv.deleteSet,id, successDeleteCallBack );	
     };
     $scope.checkFieldEntered = function(index){
     	var enableSetUpdateButton = false;
-    	 angular.forEach($scope.data.sets[index].room_types, function(value, key){
-			 console.log(value.single);
-			 if(!value.single || value.single ==="" ){
-			 	enableSetUpdateButton =true;
-			 }
-			 	
-			 
+    	
+    	 angular.forEach($scope.data.sets[index].room_types, function(value, key){    	 	
+    	 	if(value.hasOwnProperty("single") && value.single != ""){
+    	 		enableSetUpdateButton = true;
+    	 	}  
+    	 	if(value.hasOwnProperty("double") && value.double != ""){
+    	 		enableSetUpdateButton = true;
+    	 	} 
+    	 	if(value.hasOwnProperty("extra_adult") && value.extra_adult != ""){
+    	 		enableSetUpdateButton = true;
+    	 	} 	 
+    	 	if(value.hasOwnProperty("child") && value.child != ""){
+    	 		enableSetUpdateButton = true;
+    	 	} 	
+			
 		 });
-		 
 		 return enableSetUpdateButton;
 		
     };
+
+    $scope.saveWholeData = function(){
+    	 angular.forEach($scope.data.sets, function(value, key){
+			 $scope.saveSet(key);
+		 });
+    };
  
+
+    
+    $scope.popupCalendar = function(){
+    	ngDialog.open({
+    		 template: '/assets/partials/rates/adDateRangeModal.html',
+    		 controller: 'adDateRangeModalCtrl',
+			 className: 'ngdialog-theme-default calendar-modal'
+    	});
+    };
+
 }]);

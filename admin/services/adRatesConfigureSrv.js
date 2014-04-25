@@ -24,5 +24,17 @@ admin.service('ADRatesConfigureSrv',['$http', '$q', 'ADBaseWebSrvV2', function($
 		});
 		return deferred.promise;
 	};
+	this.deleteSet = function(id){
+		
+		var deferred = $q.defer();
+		var url = "/api/rate_sets/"+id;
+		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+
+	};
   
 }]);
