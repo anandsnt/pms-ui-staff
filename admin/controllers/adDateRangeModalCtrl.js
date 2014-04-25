@@ -25,6 +25,10 @@ admin.controller('ADDateRangeModalCtrl',['$scope','$filter','dateFilter','ADRate
 
     ADRatesConfigureSrv.setCurrentSetData(dateDict);
       ngDialog.close();
-   }
+   };
+   $scope.cancelClicked = function(){
+     ngDialog.close();
+
+   };
 
 }]);
