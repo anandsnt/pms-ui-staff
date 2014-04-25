@@ -4,14 +4,14 @@
 			<span  class="italic_text">{{step.begin_date | date:'MMMM dd,y'}}</span>
 	        <span style="margin:0 5px;">to</span>
 	        <span  class="italic_text">{{step.end_date | date:'MMMM dd,y'}}</span>
-	        <span style="float:right"><img src="/assets/arrow-up.png" ng-click="unsetCurrentClickedSet($index)" ></span>
+	        <span style="float:right" class="cursor-hand"><img src="/assets/arrow-up.png" ng-click="unsetCurrentClickedSet($index)" ></span>
 
 		</li>
 		
 	<br clear="all"/>
 	</ul>
 	<ul class="date-wrapper" ng-class="{actions: currentClickedSet == $index}" style="padding-right: 15px;">
-		<li style="width:30px;" ng-show="currentClickedSet == $index"><span class="icons delete_small" ng-click="deleteSet(set.id)" >&nbsp;</span></li>
+		<li style="width:30px;" ng-show="currentClickedSet == $index"><span class="icons delete_small cursor-hand" ng-click="deleteSet(set.id)" >&nbsp;</span></li>
 		<li ng-show="currentClickedSet == $index"><ad-textbox value="set.name" style="width:150px; margin-top:10px;"></ad-textbox></li>
 		<li ng-show="currentClickedSet == $index">
 			<ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.monday" ng-click="toggleDays($index, 'monday')" label="MON"></ad-checkboxtext-left>
@@ -47,7 +47,7 @@
 			<ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.sunday" is-disabled="true" ng-click="toggleDays($index, 'sunday')" label="SUN"></ad-checkboxtext-left>
 		</li>
 		<li ng-hide="currentClickedSet == $index" style="width:3%; float:right;">
-	        <span ><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)"></span>
+	        <span class="cursor-hand"><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)"></span>
 		</li>
 		
 	</ul>

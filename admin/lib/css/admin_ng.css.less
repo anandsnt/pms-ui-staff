@@ -393,17 +393,16 @@ height: 410px;
     padding: 0 0;
 }
 
-.config-wrapper{
-    text-transform:uppercase;
-}
 
 .date-wrapper {
+    text-transform:uppercase;
     list-style: none outside none;
     margin: 0px;
     padding: 0px;
 }
 
 .date-wrapper li {
+    position: relative;
     display: inline-block;
     margin: 0px;
     vertical-align: middle;
@@ -414,6 +413,14 @@ height: 410px;
     }
 }
 
+.overlay-disabled {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 2000;
+    background: none repeat scroll 0 0 #000000;
+}
 
 
 .rate-config{
@@ -450,4 +457,12 @@ height: 410px;
 .icon-rate-search{
    background-position: 13px -1501px;
    cursor: pointer;
+}
+
+.cursor-hand{
+    cursor: pointer;
+}
+
+.item-disabled{
+    opacity: 0.3;
 }
