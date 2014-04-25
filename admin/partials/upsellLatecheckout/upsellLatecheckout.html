@@ -1,4 +1,4 @@
-<section id="replacing-div-first" class="content current"><div data-view="UpsellLateCheckoutView">
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()"><div data-view="UpsellLateCheckoutView">
 	<section>
 		<header class="content-title float">
 			<h2>Late Checkout Upsell</h2>
@@ -71,19 +71,9 @@
 					</div>
 
 				</div>
+				
 				<!-- charge code -->
-				<div class="entry">
-					<label for="charge-code">
-						Charge Code
-						<strong>*</strong>
-					</label>
-					<div class="select">
-
-						<select ng-options="chargecode.name as chargecode.value for chargecode  in upsellData.charge_codes" ng-model="upsellData.selected_charge_code">
-							<option style="display:none" value="">Charge Code</option>
-						</select>
-					</div>
-				</div>
+				<ad-dropdown label="Charge Code" label-in-drop-down="Charge Code" list="upsellData.charge_codes" selected-Id='upsellData.selected_charge_code' required='yes'></ad-dropdown>
 
 			</fieldset>
 			<fieldset class="holder right">

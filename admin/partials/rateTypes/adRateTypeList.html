@@ -1,0 +1,51 @@
+<section id="replacing-div-first" class="content current" ng-click='clearErrorMessage()'>
+	<div data-view="RateTypeListView">
+		<header class="content-title float">
+			<h2> Rate Types </h2>
+			<span class="count"> ({{data.length}})</span>
+			<a id="add-new-button" class="action add" ng-click="addNew()">Add new</a>
+		</header>
+
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div id="new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/rateTypes/adRateTypeAdd.html'"></div>
+
+		<div id="new-form-holder"></div>
+
+		<table id="rate-types" class="grid">
+
+			<tbody>
+
+				<tr ng-repeat = "ratetype in data" data-rate-type-id="{{ratetype.id}}">
+
+					<td width = "50%" ng-show="ratetype.system_defined ===true"><strong>{{ratetype.name}}</strong><em> (System defined)</em></td>
+
+					<td ng-hide="ratetype.system_defined ===true || currentClickedElement == $index" ng-click = "editRateTypes($index,ratetype.id)"><a class="edit-data-inline">{{ratetype.name}} </a>
+					</td>
+
+					<td ng-hide="currentClickedElement == $index">
+						<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, ratetype.id, ratetype.rate_count)" ng-mouseleave="mouseLeavePopover()">
+							<em>{{ratetype.rate_count}} rates</em>
+							<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getPopoverTemplate($index,ratetype.id)">								
+							</div>
+						</span>
+					</td>
+					<td class="delete"  ng-hide="currentClickedElement ==$index"><a ng-hide="ratetype.system_defined ===true" id="3" ng-click="deleteRateType($index,ratetype.id)" class="icons icon-delete large-icon delete_item"  ></a></td>
+
+					<td class="activate" ng-hide="currentClickedElement == $index" >
+						<div class="entry" >
+						<label ></label>
+						<div class="switch-button single"  ng-class="{ on : ratetype.activated}" ng-click="toggleClicked($index)">
+							<input type="checkbox" is_system_defined="ratetype.system_defined"  value="" name="" id="">
+							<span class="switch-icon"></span>
+
+						</div>
+					</div></td>
+
+					<td colspan="4" ng-include="getTemplateUrl($index,ratetype.id)"></td>
+
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+</section>
