@@ -1815,7 +1815,7 @@
 							padding: 10px;
 							border-right: 1px solid rgba(0,0,0,.1);
 							background-position: 98% 50%;
-							#pixel-to-percent > .width(1700, 1926);
+							#pixel-to-percent > .width(1926, 1926);
 							.pull-left;
 
 							.price {
@@ -1893,7 +1893,7 @@
 							clear: both;
 							padding: 10px 10px 20px 10px;
 							border-right: 1px solid rgba(0,0,0,.1);
-							#pixel-to-percent > .width(1700, 1926);
+							#pixel-to-percent > .width(1926, 1926);
 							.show;
 
 							.rate-details,
@@ -2048,7 +2048,7 @@
 						margin-right: 10px;
 						padding-right: 25px;
 						background-position: 100% 50%;
-						max-width: 270px;
+						max-width: 360px;
 						overflow: hidden;
 						text-overflow: ellipsis;
 						white-space: nowrap;						
@@ -2090,7 +2090,7 @@
 						color: @textColor;
 						text-transform: uppercase;
 						height: 60px;
-						padding: 10px 60px;
+						padding: 10px 45px;
 						position: relative;
 						.clickable;
 
@@ -2166,6 +2166,7 @@
 								font-weight: 600;
 
 								&.action { width: 60px; }
+								&.action-select { width: 80px; }
 							}
 
 							td {
@@ -2221,13 +2222,14 @@
 					&.signature-wrapper {
 						display: table;
 						table-layout: fixed;
-						padding: 10px;
+						position:relative;
+						padding: 10px 10px 40px;
 						line-height: 1em;
 						background: @white;
 						#border-radius > .rounded();
 						.size(200px, 100%);
 						.box-shadow();
-
+            
 						figure {
 							background-color: #fff;
 							display: table-cell;
@@ -2243,6 +2245,13 @@
 								
 							}
 						}
+						.signature-date {
+               bottom: 10px;
+               left: 0;
+               position: absolute;
+               text-align: center;
+               width: 100%;
+            }
 					}
 				}
 			}
