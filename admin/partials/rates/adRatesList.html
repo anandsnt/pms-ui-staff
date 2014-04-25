@@ -20,6 +20,8 @@
 				</div>
 			</div>
 		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		
 		
 		<span class="count-show">Show</span>
 		<div class="select table-count">
@@ -33,7 +35,6 @@
 	    	<input type="search" ng-model="searchTerm" ng-enter = "searchEntered()" autocomplete="off" placeholder="" />
 	    </div>
 		
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
 		<div id="new-form-holder"></div>
 		<!--ng-table component -->
