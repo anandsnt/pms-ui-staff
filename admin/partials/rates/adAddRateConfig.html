@@ -88,9 +88,10 @@
 	    <td width="4%" align="center"><span class="icons right-arrow-green" ng-click="moveAllSingleToDouble($index)">&nbsp;</span></td>
 	    <td width="16%" align="left">&nbsp;</td>
 	    <td width="4%" align="center">&nbsp;</td>
-	    <td width="4%" align="center">&nbsp;</td>
-	    <td width="16%" align="left"><button type="button" class="button blue">QUICK FILL</button></td>
-	    <td width="15%" align="center" colspan="2">
+	    <td width="15%" style="text-align:right;" colspan="3">
+	    	<span style="padding-right:20px;">
+	    		<button type="button" class="button blue">QUICK FILL</button>
+	    	</span>
 	    	<button type="button" class="button green" ng-click="saveSet($index)" ng-hide="set.isSaved">SAVE&nbsp;SET</button>
 	    	<button type="button" class="button green" ng-click="saveSet($index)" ng-show="set.isSaved">UPDATE&nbsp;SET</button>
 	    </td>

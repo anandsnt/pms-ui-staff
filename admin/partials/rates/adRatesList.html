@@ -5,7 +5,7 @@
 			<span class="count"> ({{totalCount}}) </span>
 			<a class="action add" ui-sref="admin.addRate">Add new</a>
 
-			<a class="action import" ng-click="importFromPms()">IMPORT FROM PMS</a>
+			<a class="action import" ng-click="importFromPms()" ng-show="isConnectedToPMS">IMPORT FROM PMS</a>
 
 			<div class="filters">
 				<div class="filter select">
