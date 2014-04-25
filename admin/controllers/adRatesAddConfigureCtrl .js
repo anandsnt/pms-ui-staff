@@ -2,6 +2,13 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
    $scope.sets = "";
    $scope.currentClickedSet = 0;
    $scope.selectedCalendarInitialData = {};
+
+    ADRatesConfigureSrv.setCurrentSetData($scope.$parent.step);
+    $scope.$parent.step = ADRatesConfigureSrv.getCurrentSetData();
+
+     $scope.$on('dateRangeUpdated', function(event,data) {
+        $scope.$parent.step = data;
+     });
    
 
  	var dateRangeId = $scope.$parent.step.id;
@@ -97,8 +104,7 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     
     $scope.popupCalendar = function(){
 
-        ADRatesConfigureSrv.setCurrentSetData({'begin_date':$scope.step.begin_date,
-                                                'end_date':$scope.step.end_date});
+     
     	ngDialog.open({
     		 template: '/assets/partials/rates/adAddRatesCalendarPopup.html',
     		 controller: 'ADDateRangeModalCtrl',
