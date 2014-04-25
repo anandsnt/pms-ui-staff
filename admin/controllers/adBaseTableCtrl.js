@@ -14,11 +14,11 @@ function ADBaseTableCtrl($scope, ngTableParams){
     $scope.data = [];
 
     $scope.$watch("displyCount", function () {
-        $scope.tableParams.page(1);
-    	$scope.tableParams.reload();
+        $scope.tableParams.count($scope.displyCount);
+        $scope.reloadTable();
     });
 
-    $scope.$watch("currentPage", function () {
+    $scope.$watch("data", function () {
         $scope.startCount = (($scope.currentPage - 1) * $scope.displyCount )+ 1;
         $scope.endCount = $scope.startCount + $scope.data.length - 1;
     });
@@ -31,6 +31,11 @@ function ADBaseTableCtrl($scope, ngTableParams){
     $scope.searchEntered = function() {
         $scope.tableParams.page(1);
     	$scope.tableParams.reload();
+    };
+
+    $scope.reloadTable = function(){
+        $scope.tableParams.page(1);
+        $scope.tableParams.reload();
     };
 
     $scope.filterFetchSuccess = function(data){
