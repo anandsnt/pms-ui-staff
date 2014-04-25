@@ -12,7 +12,9 @@
 	</ul>
 	<ul class="date-wrapper" ng-class="{actions: currentClickedSet == $index}" style="padding-right: 15px;">
 
+
 		<li style="width:30px;" ng-show="currentClickedSet == $index"><span class="icons delete_small cursor-hand" ng-click="deleteSet(set.id, $index)" >&nbsp;</span></li>
+
 
 		<li ng-show="currentClickedSet == $index"><ad-textbox value="set.name" style="width:150px; margin-top:10px;"></ad-textbox></li>
 		<li ng-show="currentClickedSet == $index">
