@@ -62,11 +62,16 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     };
     $scope.moveAllSingleToDouble = function(index){
     	 angular.forEach($scope.data.sets[index].room_types, function(value, key){
-			 value.double = value.single;
+			 
+			 if(value.hasOwnProperty("single") && value.single != ""){
+			 	value.double = value.single;
+			 }
 		 });
     };
     $scope.moveSingleToDouble = function(parentIndex, index){
-    	$scope.data.sets[parentIndex].room_types[index].double = $scope.data.sets[parentIndex].room_types[index].single;
+    	if($scope.data.sets[parentIndex].room_types[index].single!= "" && $scope.data.sets[parentIndex].room_types[index].hasOwnProperty("single")){
+    		$scope.data.sets[parentIndex].room_types[index].double = $scope.data.sets[parentIndex].room_types[index].single;
+   		}
     };
     $scope.deleteSet = function(id, index){
     	var successDeleteCallBack = function(){
@@ -79,7 +84,8 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     $scope.checkFieldEntered = function(index){
     	var enableSetUpdateButton = false;
     	
-    	 angular.forEach($scope.data.sets[index].room_types, function(value, key){    	 	
+    	 angular.forEach($scope.data.sets[index].room_types, function(value, key){  
+    	 	  	 	
     	 	if(value.hasOwnProperty("single") && value.single != ""){
     	 		enableSetUpdateButton = true;
     	 	}  
