@@ -27,13 +27,18 @@ admin.service('ADBaseWebSrvV2',['$http', '$q', '$window', function($http, $q, $w
 		}
 		
 		//Sample params {params:{fname: "fname", lname: "lname"}}
-		$http({
-		    url: url, 
-		    method: httpMethod,
-		    params: params,
-		    data: data,
-		}).success(function(response, status) {
-	    	deferred.resolve(response);
+		var httpDict = {};
+ 		httpDict.url = url;
+ 		httpDict.method = httpMethod;
+ 		if(httpMethod == 'GET' || httpMethod == 'DELETE'){
+ 			httpDict.params = params;
+ 		}
+ 		else if(httpMethod == 'POST' || httpMethod == 'PUT'){
+ 			httpDict.data = params;
+  		};
+ 	 			
+		$http(httpDict).success(function(response, status) {
+	    	deferred.resolve(response)
 		}).error(function(errors, status) {
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
@@ -64,7 +69,7 @@ admin.service('ADBaseWebSrvV2',['$http', '$q', '$window', function($http, $q, $w
    	};
     
    	this.postJSON = function(url, data) {
-   		return this.callWebService("POST", url, {}, data);
+   		return this.callWebService("POST", url, data);
    	};
     
    	this.deleteJSON = function(url, params) {

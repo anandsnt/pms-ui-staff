@@ -8,16 +8,28 @@ function ADBaseTableCtrl($scope, ngTableParams){
     $scope.filterType = {};
     $scope.totalCount = 1;
     $scope.totalPage = 1;
+    $scope.startCount = 1;
+    $scope.endCount = 1;
+    $scope.currentPage = 0;
+    $scope.data = [];
 
     $scope.$watch("displyCount", function () {
+        $scope.tableParams.page(1);
     	$scope.tableParams.reload();
+    });
+
+    $scope.$watch("currentPage", function () {
+        $scope.startCount = (($scope.currentPage - 1) * $scope.displyCount )+ 1;
+        $scope.endCount = $scope.startCount + $scope.data.length - 1;
     });
 
     $scope.$watch("filterType", function () {
-    	$scope.tableParams.reload();
+        $scope.tableParams.page(1);
+    	$scope.tableParams.reload();       
     });
 
     $scope.searchEntered = function() {
+        $scope.tableParams.page(1);
     	$scope.tableParams.reload();
     };
 
