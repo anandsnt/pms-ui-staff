@@ -92,8 +92,8 @@
 	    	<span style="padding-right:20px;">
 	    		<button type="button" class="button blue">QUICK FILL</button>
 	    	</span>
-	    	<button type="button" class="button" ng-click="saveSet($index)" ng-hide="set.isSaved" ng-disabled="checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">SAVE&nbsp;SET</button>
-	    	<button type="button" class="button green" ng-click="saveSet($index)" ng-show="set.isSaved" ng-disabled="checkFieldEntered($index)">UPDATE&nbsp;SET</button>
+	    	<button type="button" class="button" ng-click="saveSet($index)" ng-hide="!set.isSaved" ng-disabled="checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">SAVE&nbsp;SET</button>
+	    	<button type="button" class="button" ng-click="saveSet($index)" ng-show="!set.isSaved" ng-disabled="checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">UPDATE&nbsp;SET</button>
 	    </td>
 
 	     </tr>
