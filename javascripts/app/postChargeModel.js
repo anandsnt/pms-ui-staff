@@ -31,7 +31,7 @@ var PostChargeModel = function(callBack) {
 		that.myDom.find("#items-listing").on("click", that.clickItemList);
 		that.myDom.find("#items-summary").on("click", that.clickItemListSummary);
 		that.myDom.find("#charge-groups").on("change", that.changedChargeGroup);
-  		that.myDom.find('#query').on('keyup change paste', that.queryEntered);
+  		that.myDom.find('#query').on('keyup paste', that.queryEntered);
   		that.myDom.find('#clear-query').on('click', that.clearResults);
 		that.myDom.find('#post').on('click', that.postCharge);
 		that.myDom.find('#numpad').on('click', that.clickedNumberPad);
