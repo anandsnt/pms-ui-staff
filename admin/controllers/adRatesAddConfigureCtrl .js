@@ -105,6 +105,12 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
 			 className: 'ngdialog-theme-default calendar-modal'
     	});
     };
+    $scope.toggleDays =  function(index, mod){
+    	angular.forEach($scope.data.sets, function(value, key){
+			 	$scope.data.sets[key][mod] =  false;
+		 });
+		 $scope.data.sets[index][mod] =  true;
+    };
 
 }]);
 
