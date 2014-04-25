@@ -177,9 +177,10 @@ reports.controller('reporstList', [
 reports.controller('reportDetails', [
     '$scope',
     '$rootScope',
+    '$filter',
     'RepUserSrv',
     'RepFetchReportsSrv',
-    function($scope, $rootScope, RepUserSrv, RepFetchReportsSrv) {
+    function($scope, $rootScope, $filter, RepUserSrv, RepFetchReportsSrv) {
 
         // track the user list
         RepUserSrv.fetch()
