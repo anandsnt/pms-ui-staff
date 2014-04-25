@@ -15,6 +15,7 @@ admin.controller('ADDateRangeModalCtrl',['$scope','$filter','dateFilter','ADRate
         $scope.toMonthDate = currentDate;
         $scope.toMonthDateFormated = dateDict.end_date;;
          $scope.toMonthMinDate = dateFilter(currentDate, 'yyyy-MM-dd');
+         $scope.errorMessage='';
    };
 
    $scope.setUpData();
@@ -26,8 +27,9 @@ admin.controller('ADDateRangeModalCtrl',['$scope','$filter','dateFilter','ADRate
 		    ADRatesConfigureSrv.setCurrentSetData(dateDict);
 		    ngDialog.close();
 	   };
-	   var failureUpdateRange =function(){
+	   var failureUpdateRange =function(data){
 		   $scope.$emit('hideLoader');
+       $scope.errorMessage = data;
 	   };
 	   var data = {
 	   	 "begin_date": $scope.fromDate,
