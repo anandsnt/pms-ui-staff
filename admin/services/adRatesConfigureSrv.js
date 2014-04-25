@@ -1,9 +1,9 @@
-admin.service('ADRatesConfigureSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
+admin.service('ADRatesConfigureSrv',['$http', '$q', 'ADBaseWebSrvV2','$rootScope', function($http, $q, ADBaseWebSrvV2,$rootScope){
 	
 	this.currentSetData = {};
 	this.setCurrentSetData = function(data){
-		alert("efe")
 		this.currentSetData =data;
+		 $rootScope.$broadcast('dateRangeUpdated',this.currentSetData);
 	};
 	this.getCurrentSetData = function(data){
 		return this.currentSetData;

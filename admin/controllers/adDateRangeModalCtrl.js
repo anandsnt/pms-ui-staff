@@ -1,6 +1,7 @@
-admin.controller('ADDateRangeModalCtrl',['$scope','$filter','dateFilter','ADRatesConfigureSrv', function($scope,$filter,dateFilter,ADRatesConfigureSrv){
+admin.controller('ADDateRangeModalCtrl',['$scope','$filter','dateFilter','ADRatesConfigureSrv','ngDialog', function($scope,$filter,dateFilter,ADRatesConfigureSrv,ngDialog){
 
       var dateDict =ADRatesConfigureSrv.getCurrentSetData();
+      console.log(dateDict)
        $scope.setUpData = function(){
 
          $scope.isFromDateSelected = true;
@@ -18,4 +19,12 @@ admin.controller('ADDateRangeModalCtrl',['$scope','$filter','dateFilter','ADRate
    };
 
    $scope.setUpData();
+   $scope.updateClicked = function(){
+    dateDict.begin_date = $scope.fromDate;
+    dateDict.end_date =  $scope.toMonthDateFormated;
+
+    ADRatesConfigureSrv.setCurrentSetData(dateDict);
+      ngDialog.close();
+   }
+
 }]);
