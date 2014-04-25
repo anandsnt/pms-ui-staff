@@ -12,38 +12,65 @@
 		<li style="width:30px;"><span class="icons delete_small" ng-click="deleteSet(set.id)" >&nbsp;</span></li>
 		<li><ad-textbox value="set.name" style="width:150px; margin-top:10px;"></ad-textbox></li>
 		<li>
-			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.monday" label="MON"></ad-checkboxtext-left>
-			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.tuesday" label="TUE"></ad-checkboxtext-left>
-			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.wednesday" label="WED"></ad-checkboxtext-left>
-			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.thursday" label="THU"></ad-checkboxtext-left>
-			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.friday" label="FRI"></ad-checkboxtext-left>
-			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.saturday" label="SAT"></ad-checkboxtext-left>
-			<ad-checkboxtext-left style="float:left;width:60px;margin:5px;" is-checked="set.sunday" label="SUN"></ad-checkboxtext-left>
+			<ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.monday" label="MON"></ad-checkboxtext-left>
+			<ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.tuesday" label="TUE"></ad-checkboxtext-left>
+			<ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.wednesday" label="WED"></ad-checkboxtext-left>
+			<ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.thursday" label="THU"></ad-checkboxtext-left>
+			<ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.friday" label="FRI"></ad-checkboxtext-left>
+			<ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.saturday" label="SAT"></ad-checkboxtext-left>
+			<ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.sunday" label="SUN"></ad-checkboxtext-left>
 		</li>
 		<li><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)" ng-hide="currentClickedSet == $index"> </li>
 	</ul>
 
 
 </div>
-<table ng-show="currentClickedSet == $index" border="1">
-	<tr>
-		<td width="13%">	</td><td width="13%">Single	</td><td width="8%">	</td><td width="13%">	Double</td><td width="13%">	EXTRA ADULT</td><td width="13%">CHILD	</td><td width="8%">	DISTRIBUTE</td>
-	</tr>
-	
-	<tr ng-repeat="roomtypes in set.room_types">
-		<td width="13%">{{roomtypes.name}}</td>
-		<td width="13%"><ad-textbox value="roomtypes.single" style="width:150px;"></ad-textbox></td>
-		<td width="8%" ng-click="moveSingleToDouble($parent.$index,$index)"> >> </td>
-		<td width="13%"><ad-textbox value="roomtypes.double" style="width:150px;"></ad-textbox></td>
-		<td width="13%"><ad-textbox value="roomtypes.extra_adult" style="width:150px;"></ad-textbox></td>
-		<td width="13%"><ad-textbox value="roomtypes.child" style="width:150px;"></ad-textbox></td>
-		<td width="8%"><ad-checkbox style="float:left;width:60px;margin:5px;" is-checked="roomtypes.distribute" label=""></ad-checkbox></td>
-	</tr>
-	<tr>
-		<td width="13%">	</td><td width="13%">	</td><td width="8%" ng-click="moveAllSingleToDouble($index)"> >> </td><td width="13%">	</td><td width="13%">	</td><td width="13%">	</td><td width="8%">	</td>
-	</tr>
-	<tr><td colspan="7"><input type="button" value="Save Set" ng-click="saveSet($index)" ng-disabled="!checkFieldEntered($index)" class="button  brand-colors"/><input type="button" value="Quick Fill" /></td></tr>
-</table>
+
+<div class="rate-config">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0" id="ratetable">
+	  <tr>
+	    <td width="14%" align="right">&nbsp;</td>
+	    <td width="2%">&nbsp;</td>
+	    <td width="14%" align="left">Single</td>
+	    <td width="4%" align="center">&nbsp;</td>
+	    <td width="14%" align="left">Double</td>
+	    <td width="4%" align="center">&nbsp;</td>
+	    <td width="14%" align="left">Extra Adult (+$)</td>
+	    <td width="4%" align="center">&nbsp;</td>
+	    <td width="14%" align="left">Child (+$)</td>
+	    <td width="4%" align="center">&nbsp;</td>
+	    <td width="10%" align="center">Distribute</td>
+	     </tr>
+	  <tr ng-repeat="roomtypes in set.room_types">
+	    <td align="right" class="room-type">{{roomtypes.name}}</td>
+	    <td align="center">&nbsp;</td>
+	    <td align="left"><div class ="entry"><input type="text" value="{{roomtypes.single}}" ng-model="roomtypes.single"></input></div></td>
+	    <td align="center"><span class="icons delete_small">&nbsp;</span></td>
+	    <td align="left"><div class ="entry"><input type="text" value="{{roomtypes.double}}" ng-model="roomtypes.double"></div></td>
+	    <td align="center">&nbsp;</td>
+	    <td align="left"><div class ="entry"><input type="text" value="{{roomtypes.extra_adult}}" ng-model="roomtypes.extra_adult"></div></td>
+	    <td align="center">&nbsp;</td>
+	    <td align="left"><div class ="entry"><input type="text" value="{{roomtypes.child}}" ng-model="roomtypes.child"></div></td>
+	    <td align="center">&nbsp;</td>
+	    <td align="center"><ad-checkbox is-checked="roomtypes.distribute" label=""></td>
+	  </tr>
+	  <tr>
+	    <td width="14%" align="right">&nbsp;</td>
+	    <td width="2%">&nbsp;</td>
+	    <td width="14%" align="left">&nbsp;</td>
+	    <td width="4%" align="center"><span class="icons delete_small">&nbsp;</span></td>
+	    <td width="14%" align="left">&nbsp;</td>
+	    <td width="4%" align="center">&nbsp;</td>
+	    <td width="14%" align="left">&nbsp;</td>
+	    <td width="4%" align="center">&nbsp;</td>
+	    <td width="14%" align="left">&nbsp;</td>
+	    <td width="4%" align="center">&nbsp;</td>
+	    <td width="10%" align="center">&nbsp;</td>
+	     </tr>
+	   
+	</table>
+</div>
+
 
 
 
