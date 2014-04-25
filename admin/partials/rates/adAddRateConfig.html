@@ -31,15 +31,15 @@
 	  <tr>
 	    <td width="14%" align="right">&nbsp;</td>
 	    <td width="2%">&nbsp;</td>
-	    <td width="14%" align="left">Single</td>
+	    <td width="14%" align="left">Single ({{set.currency_symbol}})</td>
 	    <td width="4%" align="center">&nbsp;</td>
-	    <td width="14%" align="left">Double</td>
+	    <td width="14%" align="left">Double ({{set.currency_symbol}})</td>
 	    <td width="4%" align="center">&nbsp;</td>
-	    <td width="14%" align="left">Extra Adult (+$)</td>
+	    <td width="14%" align="left">Extra Adult (+${{set.currency_symbol}})</td>
 	    <td width="4%" align="center">&nbsp;</td>
-	    <td width="14%" align="left">Child (+$)</td>
+	    <td width="14%" align="left">Child (+${{set.currency_symbol}})</td>
 	    <td width="4%" align="center">&nbsp;</td>
-	    <td width="10%" align="center">Distribute</td>
+	    
 	     </tr>
 	  <tr ng-repeat="roomtypes in set.room_types">
 	    <td align="right" class="room-type">{{roomtypes.name}}</td>
@@ -52,7 +52,7 @@
 	    <td align="center">&nbsp;</td>
 	    <td align="left"><div class ="entry"><input type="text" value="{{roomtypes.child}}" ng-model="roomtypes.child"></div></td>
 	    <td align="center">&nbsp;</td>
-	    <td align="center"><ad-checkbox is-checked="roomtypes.distribute" label=""></td>
+	    
 	  </tr>
 	  <tr>
 	    <td width="14%" align="right">&nbsp;</td>
@@ -65,7 +65,7 @@
 	    <td width="4%" align="center">&nbsp;</td>
 	    <td width="14%" align="left">&nbsp;</td>
 	    <td width="4%" align="center">&nbsp;</td>
-	    <td width="10%" align="center">&nbsp;</td>
+	    
 	     </tr>
 	   
 	</table>
