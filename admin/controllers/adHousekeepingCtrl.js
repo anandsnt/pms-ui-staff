@@ -1,4 +1,4 @@
-admin.controller('adHousekeepingCtrl',['$state', '$scope', 'ADRoomKeyDeliverySrv', function($state, $scope, ADRoomKeyDeliverySrv){
+admin.controller('adHousekeepingCtrl',['$state', '$scope', 'ADHousekeepingSrv', function($state, $scope, ADHousekeepingSrv){
 	
 	BaseCtrl.call(this, $scope);
 	$scope.isRoverCheckinRFID = false;
@@ -6,28 +6,26 @@ admin.controller('adHousekeepingCtrl',['$state', '$scope', 'ADRoomKeyDeliverySrv
 	var fetchSuccess = function(data){
 		$scope.data = data;
 		$scope.$emit('hideLoader');
+		$scope.watchInspectedStatus();
 	};
-	$scope.invokeApi(ADRoomKeyDeliverySrv.fetch, {}, fetchSuccess);
+	$scope.invokeApi(ADHousekeepingSrv.fetch, {}, fetchSuccess);
 	
 
 	/*
     * To handle save button click.
     */
 	$scope.save = function(){
-		var unwantedKeys = ["key_systems"];
-		var data = dclone($scope.data, unwantedKeys);
-		$scope.invokeApi(ADRoomKeyDeliverySrv.update, data);
+		$scope.invokeApi(ADHousekeepingSrv.update, data);
 	};
-	/*
-    * To hide/show settings details as per room_key_delivery_for_rover_check_in.
-    */
-	$scope.$watch('data.room_key_delivery_for_rover_check_in', function() {
-       if($scope.data.room_key_delivery_for_rover_check_in == "encode"){
-       		$scope.isRoverCheckinRFID = true;
-       }
-       else{
-       		$scope.isRoverCheckinRFID = false;
-       }
-   	});
+
+	$scope.watchInspectedStatus = function(){
+		$scope.$watch('data.use_inspected', function() {
+	       if(!$scope.data.use_inspected){
+	       		$scope.data.checkin_to_inspected_rooms_only = false;
+	       }
+	       
+	   	});
+	};
+	
    	
 }]);
