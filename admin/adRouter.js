@@ -241,5 +241,11 @@ admin.config([
 			url : '/checkinCheckoutEmail/:from'
 		});
 
+		$stateProvider.state('admin.marketSegments', {
+			templateUrl: '/assets/partials/chargeGroups/adChargeGroups.html',
+			controller: 'ADChargeGroupsCtrl',
+			url : '/marketSegments'
+		});
+
 	}
 ]);
