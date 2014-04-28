@@ -10,10 +10,9 @@
 //=require ../shared/lib/js/ngDialog.min.js
 
 
-//=require ../rover/app.js
-//=require ../rover/router.js
+//=require ../rover/rvApp.js
+//=require ../rover/rvRouter.js
 //=require_tree ../rover/controllers
-//=require_tree ../rover/directives
 //=require_tree ../rover/services
 
 
