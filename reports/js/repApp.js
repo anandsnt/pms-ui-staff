@@ -6,16 +6,6 @@ var reportContent = createVerticalScroll( '#report-content', {} );
 
 var reports = angular.module('reports', ['ngAnimate', 'ngSanitize', 'mgcrea.ngStrap.datepicker']);
 
-reports.filter('todate', [function() {
-    return function(input) {
-        if(!input) {
-            return;
-        }
-
-        return input.getFullYear() + '-' + input.getMonth() + '-' + input.getDate()
-    }
-}]);
-
 reports.config([
     '$datepickerProvider',
     function($datepickerProvider) {
@@ -31,11 +21,11 @@ reports.config([
 reports.controller('reporstList', [
     '$scope',
     '$rootScope',
+    '$filter',
     'RepFetchSrv',
     'RepUserSrv',
     'RepFetchReportsSrv',
-    function($scope, $rootScope, RepFetchSrv, RepUserSrv, RepFetchReportsSrv) {
-
+    function($scope, $rootScope, $filter, RepFetchSrv, RepUserSrv, RepFetchReportsSrv) {
 
         // hide the details page
         $rootScope.showReportDetails = false;
@@ -102,10 +92,13 @@ reports.controller('reporstList', [
                     });
                     $scope.reportList[i]['hasUserFilter'] = hasUserFilter ? true : false;
 
-                    // for date filters
+                    // sort by options
+                    $scope.reportList[i].sortByOptions = $scope.reportList[i]['sort_fields']
+
+
+                    // for managing date filters limits
                     $scope.reportList[i].today = new Date();
                     $scope.reportList[i].allowedUntilDate = new Date();
-
                 };
             });
 
@@ -127,6 +120,8 @@ reports.controller('reporstList', [
         };
 
         $scope.genReport = function() {
+
+        	console.log(  $filter('date')(this.item.fromDate, 'yyyy/MM/dd') )
 
             if ( !this.item.fromDate || !this.item.untilDate ) {
                 return;
@@ -160,11 +155,12 @@ reports.controller('reporstList', [
             }.bind(this);
 
             var params = {
-                from_date: this.item.fromDate,
-                to_date: this.item.untilDate,
+                from_date: $filter('date')(this.item.fromDate, 'yyyy/MM/dd'),
+                to_date: $filter('date')(this.item.untilDate, 'yyyy/MM/dd'),
                 user_ids: this.item.chosenUsers || '',
                 checked_in: getProperCICOVal('checked_in'),
                 checked_out: getProperCICOVal('checked_out'),
+                sort_field: this.item.chosenSortBy || '',
                 page: 1,
                 per_page: $rootScope.resultsPerPage
             }
@@ -181,9 +177,10 @@ reports.controller('reporstList', [
 reports.controller('reportDetails', [
     '$scope',
     '$rootScope',
+    '$filter',
     'RepUserSrv',
     'RepFetchReportsSrv',
-    function($scope, $rootScope, RepUserSrv, RepFetchReportsSrv) {
+    function($scope, $rootScope, $filter, RepUserSrv, RepFetchReportsSrv) {
 
         // track the user list
         RepUserSrv.fetch()
@@ -364,11 +361,12 @@ reports.controller('reportDetails', [
             this.page.active = true;
 
             var params = {
-                from_date: $scope.chosenReport.fromDate,
-                to_date: $scope.chosenReport.untilDate,
+                from_date: $filter('date')($scope.chosenReport.fromDate, 'yyyy/MM/dd'),
+                to_date: $filter('date')($scope.chosenReport.untilDate, 'yyyy/MM/dd'),
                 user_ids: $scope.chosenReport.chosenUsers,
                 checked_in: $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'BOTH',
                 checked_out: $scope.chosenReport.chosenCico === 'OUT' || $scope.chosenReport.chosenCico === 'BOTH',
+                sort_field: $scope.chosenReport.chosenSortBy || '',
                 page: this.page.no,
                 per_page: $rootScope.resultsPerPage
             }

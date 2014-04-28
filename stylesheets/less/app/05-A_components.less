@@ -4635,7 +4635,8 @@
 	.datepicker {
 		position: fixed !important;
 		padding: 10px;
-		width: 400px !important;
+		width: 480px !important;
+		max-width: initial !important;
 		top: 50% !important;
 		left: 50% !important;
 		margin: -200px 0 0 -175px !important;
@@ -4707,8 +4708,6 @@
 		background-repeat: none;
 	}
 
-	
-
 	.datepicker td {
 		border: 0;
 		padding: 2px 3px;
@@ -4748,6 +4747,10 @@
 		background-image: linear-gradient(top, #ffb319, #ff860d);
 		background-color: #ffa114;
 		background-repeat: repeat;
+	}
+
+	.datepicker td .btn span.text-muted {
+		display: none;
 	}
 
 	

@@ -46,7 +46,8 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADB
 		ADBaseWebSrv.postJSON(url, data).then(fetchSuccess, fetchFailed);
 		return deferred.promise;
 	};
-	this.removeBookMarkItem = function(id){
+	this.removeBookMarkItem = function(data){
+		var id = data.id;
 		var deferred = $q.defer();
 		var url = '/admin/user_admin_bookmark/'+id;	
 		

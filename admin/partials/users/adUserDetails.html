@@ -76,10 +76,36 @@
 					<h3><span>User</span> roles </h3>
 					<em class="status"> <span>User can have multiple roles</span> </em>
 				</div>
+
+
+
 				<div class="entry has-sortable">
 					<label>Assigned Roles</label>
-					<ul id="assigned-roles" data-type="target" data-placeholder="Drop a role here to assign it to the user" class="boxes sortable empty ui-sortable short-list" ui-on-Drop="onDrop($event,$data,assignedRoles)">
-						<li ng-repeat="role in assignedRoles" ui-draggable="true" drag="role" on-drop-success="dropSuccessHandler($event,$index,assignedRoles)" ng-click="clickedOnAssignedRole($index)" ng-class='{selected: selectedAssignedRole == $index}' drag-enter-class='ui-state-highlight'>
+					<ul id="assigned-roles" 
+					data-placeholder="Drop a role here to assign it to the user"
+
+					data-jqyoui-options="{accept: '.acceptable_roles'}"
+					
+					class="boxes sortable empty short-list" data-drop="true" 
+					ng-model='assignedRoles' 
+
+					jqyoui-droppable="{multiple:true, onOver: 'reachedAssignedRoles'}" 
+
+					style="overflow: visible !important;" data-type="target">
+
+						<li ng-repeat="role in assignedRoles" 
+						class="acceptable_roles"
+
+						data-drag="true" data-jqyoui-options="{revert: 'invalid'}"
+						ng-model="assignedRoles" 
+
+						jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true'}" 
+						ng-hide="!role.name" 
+
+						ng-class="{selected: selectedAssignedRole == $index, justDropped: justDropped == $index}" 
+
+						ng-click="selectAssignedRole($event, $index)">
+
 							<span class="icons icon-handle"></span>
 							<span class="icons icon-handle"></span>
 							{{role.name}}
@@ -88,17 +114,35 @@
 					</ul>
 				</div>
 
+
 				<div class="entry movers">
 					<span data-type="target" class="icons icon-mover-right to-target" ng-click="leftToRight()" ng-class="{active: selectedAssignedRole!=-1}">Assign role(s)</span>
 					<span data-type="source" class="icons icon-mover-left to-source" ng-click="rightToleft()" ng-class="{active: selectedUnassignedRole!=-1}">Unassign role(s)</span>
 				</div>
-				<div class="entry has-sortable">
+
+
+
+				<div class="entry has-sortable" >
 					<label>Not Assigned Roles</label>
-					<ul data-type="source" data-placeholder="To remove a role for the user simply drop it here" class="boxes sortable ui-sortable short-list"
-					ui-on-Drop="onDrop($event,$data,unAssignedRoles)"
-					>
+					<ul data-placeholder="To remove a role for the user simply drop it here" 
+
+					class="boxes sortable short-list"  style="overflow: visible !important;" 
+					data-drop="true" ng-model='unAssignedRoles' 
+
+					data-jqyoui-options="{accept: '.acceptable_roles'}"
+					jqyoui-droppable="{multiple:true, onOver: 'reachedUnAssignedRoles' }" data-type="source">
 					
-						<li ng-repeat="role in unAssignedRoles" ui-draggable="true" drag="role" on-drop-success="dropSuccessHandler($event,$index,unAssignedRoles)" ng-click="clickedOnUnassignedRole($index)" ng-class='{selected: selectedUnassignedRole == $index}'>
+						<li ng-repeat="role in unAssignedRoles" 
+						class="acceptable_roles"
+						data-drag="true" data-jqyoui-options="{revert: 'invalid'}" 
+
+						ng-model="unAssignedRoles" 
+
+						jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true'}" 
+
+						ng-hide="!role.name" ng-class="{selected: selectedUnassignedRole == $index}" 
+
+						ng-click="selectUnAssignedRole($event, $index)">
 							<span class="icons icon-handle"></span>
 							<span class="icons icon-handle"></span>
 							{{role.name}}
