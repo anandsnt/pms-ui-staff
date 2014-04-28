@@ -21,7 +21,7 @@ admin.service('ADMaintenanceReasonsSrv',['$http', '$q', 'ADBaseWebSrvV2', functi
 	this.save = function(data){
 
 		var deferred = $q.defer();
-		var url = '/admin/charge_groups';
+		var url = '/api/maintenance_reasons';
 		
 		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);
