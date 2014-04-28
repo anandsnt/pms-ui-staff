@@ -9,27 +9,27 @@ sntRover.config([
 		$stateProvider.state('rover', {
 			abstract: true,
 			url: '/staff',
-			templateUrl: 'partials/rover.html',
+			templateUrl: '/assets/partials/rover.html',
 			controller: 'roverController'
 		});
 		
 		$stateProvider.state('rover.dashboard', {
 			url: '/dashboard',
-			templateUrl: 'partials/dashboard.html',
+			templateUrl: '/assets/partials/dashboard.html',
 			controller: 'dashboardController'
 		});
 
 		// search state
 		$stateProvider.state('rover.search', {
 			url: '/search',
-			templateUrl: 'partials/search.html',
+			templateUrl: '/assets/partials/search.html',
 			controller: 'searchController'
 		});	
 		
 		$stateProvider.state('rover.staycard', {
 			abstract : true,
 			url: '/staycard',
-			templateUrl: 'partials/staycard.html',
+			templateUrl: '/assets/partials/staycard.html',
             controller: 'staycardController'
         });
 
@@ -43,20 +43,20 @@ sntRover.config([
 
         $stateProvider.state('rover.staycard.reservationcard.reservationdetails', {
         	url: '/reservationdetails',
-			templateUrl: 'partials/reservation_details.html',
+			templateUrl: '/assets/partials/reservation_details.html',
             controller: 'reservationDetailsController'
         }); 
 
                                
         $stateProvider.state('rover.staycard.billcard', {
 			url: '/billcard',
-			templateUrl: 'partials/billcard.html',
+			templateUrl: '/assets/partials/billcard.html',
             controller: 'billcardController'
         });
         
        	$stateProvider.state('rover.staycard.billcard.details', {
 			url: '/:billNo',
-			templateUrl : "partials/bill_details.html",
+			templateUrl : "/assets/partials/bill_details.html",
 			controller	: 'billDetailsController'
         });
         
