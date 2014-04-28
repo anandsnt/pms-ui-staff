@@ -37,7 +37,7 @@ sntRover.config([
         $stateProvider.state('rover.staycard.reservationcard', {
         	abstract : true,
 			url: '/reservationcard',
-			templateUrl: 'partials/reservation_card.html',
+			templateUrl: '/assets/partials/reservation_card.html',
             controller: 'reservarionCardController'
         });
 
