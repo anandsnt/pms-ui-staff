@@ -3,8 +3,8 @@
 
 	<!-- Navbar -->
 	<header class="nav-bar float" role = "banner">
-		<!-- Drawer toggle -->
-		<a class="nav-toggle" href="#main-nav"> Menu</a>
+		<!-- Drawer toggle 
+		<a class="nav-toggle active" ng-click="$emit('navToggled')" ng-class="{'active': true}">Menu</a>-->
 		<!-- Title -->
 		<h1 class="h2"> Dashboard <span><strong> {{userDetails.first_name}}
 			{{userDetails.last_name}} </strong> | <em class="date"> {{userDetails.business_date | date:'EEEE, d MMMM y'}}</em></span>

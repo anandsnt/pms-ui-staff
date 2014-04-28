@@ -11,17 +11,17 @@ this.dashboardDetails = {};
 
    this.fetchDashboardDetails = function(){
 		var deferred = $q.defer();
-
+		var self = this;
 
    /*
     * To fetch user details
     * @return {object} user details
     */	
-		 this.fetchdashboardDetails = function(){
-			var url = 'staff/header_info.json'
+		 self.fetchdashboardDetails = function(){
+			var url = '/staff/header_info.json'
 			RVBaseWebSrv.getJSON(url).then(function(data) {
 				that.dashboardDetails.userDetails = data;
-				this.fetchlateCheckoutDetails();
+				self.fetchlateCheckoutDetails();
 			},function(errorMessage){
 				deferred.reject(errorMessage);
 			});
@@ -32,8 +32,8 @@ this.dashboardDetails = {};
     * @return {object}late checkout details
     */
 
-		 this.fetchlateCheckoutDetails = function(){
-			var url = 'staff/dashboard/late_checkout_count.json';	
+		 self.fetchlateCheckoutDetails = function(){
+			var url = '/staff/dashboard/late_checkout_count.json';	
 			
 			RVBaseWebSrv.getJSON(url).then(function(data) {
 				that.dashboardDetails.lateCheckoutDetails = data;
@@ -50,7 +50,7 @@ this.dashboardDetails = {};
 		
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 			that.dashboardDetails.dashboardData = data;
-			this.fetchdashboardDetails();
+			self.fetchdashboardDetails();
 		},function(errorMessage){
 			deferred.reject(errorMessage);
 		});
