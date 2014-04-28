@@ -70,7 +70,6 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
     */
 	$scope.clickedDelete = function(id){
 		var successDeletionCallback = function(){
-			console.log("deleted succsss");
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			// delete data from scope
