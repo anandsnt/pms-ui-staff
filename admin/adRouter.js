@@ -241,7 +241,7 @@ admin.config([
 			url : '/checkinCheckoutEmail/:from'
 		});
 		
-		$stateProvider.state('admin.MaintenanceReasons', {
+		$stateProvider.state('admin.maintenanceReasons', {
 			templateUrl: '/assets/partials/maintenanceReasons/adMaintenanceReasons.html',
 			controller: 'ADMaintenanceReasonsCtrl',
 			url : '/maintenanceReasons'
