@@ -9,7 +9,7 @@ sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv', function
 		"checking_in":"1",
 		"checking_out":"1",
 		"in_house":"1",
-		"guest_review_score":"7",
+		"guest_review_score":"23",
 		"currency_code" :"$",
 		"upsell_target":"9",
 		"actual_target":"9",
