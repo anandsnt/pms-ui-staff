@@ -1,0 +1,54 @@
+<form class="form" ng-controller="ADAddRateRangeCtrl">
+	<fieldset class="holder full-width" style="margin-bottom:20px;">
+		<div class="form-title">
+			<h3><span>Date</span>&nbsp;Range</h3>
+		</div>
+	</fieldset>
+
+<fieldset class="holder left">
+<div class="center_align"><em>From</em>&nbsp;
+	<span ng-show="isFromDateSelected" class="italic_text">{{fromDate | date:'MMMM dd,y'}}</span></div>
+<div class="date-picker-bg">
+	<div class="date-picker-wrap">
+	   <div class="col-xs-12">
+	      <div pickadate="" ng-model="fromDate" min-date="fromMinDate" max-date="maxDate" date="date" is-current-month="true" is-date-selected="isFromDateSelected"></div>
+	   </div>
+	</div>
+</div>
+</fieldset>
+<fieldset class="holder right">
+<div class="center_align"><em>To </em>&nbsp;
+	<span ng-show="isToDateSelected" class="italic_text">{{toMonthDateFormated | date:'MMMM dd,y'}}</span></div>
+<div class="date-picker-bg">
+	<div class="date-picker-wrap">
+	   <div class="col-xs-12">
+	      <div pickadate="" ng-model="toMonthDateFormated" min-date="fromMinDate" max-date="maxDate" date="toMonthDate" is-current-month="false" is-date-selected="isToDateSelected"></div>
+	   </div>
+	</div>
+</div>
+</fieldset>
+
+<table class="date_range_set_table">
+<tr ng-repeat="set in Sets">
+	<td width="20%">
+		<ad-textbox value="set.setName" style="width:150px;"></ad-textbox>
+	</td>
+	<td width="70%" class="date_range_checkbox_td">
+		 <ad-checkboxtext-left class="rate_range_checkbox" ng-repeat="day in set.days" is-checked="day.checked" label="{{day.name}}"  ng-click="checkboxClicked($index,$parent.$index)" width="70px"></ad-checkboxtext-left>	
+	</td>
+	<td>
+		<a class="icons icon-add" ng-show="($index === Sets.length-1) && !($index ==6)" ng-click="addNewSet($index)"></a>
+		<a class="icons icon-delete  delete_item" ng-hide="($index === Sets.length-1) && !($index ==6)"ng-click="deleteSet($index)"></a>	
+	</td>
+<tr>
+</table>
+<div class="actions float center_align">
+	<button type="button" ui-sref="admin.rates" class="button blank add-data-inline">
+		Cancel
+	</button>
+	<button type="button" ng-click="saveStep3()" ng-disabled="allFieldsFilled()" class="button  brand-colors" ng-hide="allFieldsFilled()">
+		Step 4 - Configure Rate
+	</button>
+	<button type="button" id="send-email" disabled="" class="button grey" ng-show="allFieldsFilled()">Step 4 - Configure Rate</button>
+</div>
+</form>

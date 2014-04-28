@@ -2,14 +2,8 @@ admin.controller('ADDashboardCtrl',['$scope', '$state', '$stateParams', function
 	
 	$scope.$emit("changedSelectedMenu", $stateParams.menu);
 	if(typeof $scope.data !== 'undefined'){
-		$scope.selectedMenu = $scope.data.menus[$stateParams.menu];
+		$scope.selectedMenu = $scope.data.menus[$stateParams.menu];		
 	}
-
-  
-   // $scope.onDrop = function(){
-   	// alert("onDrop")
-   // }
-	
 }]);
 
     
