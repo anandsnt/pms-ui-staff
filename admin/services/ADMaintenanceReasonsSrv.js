@@ -1,4 +1,4 @@
-admin.service('ADMaintenanceReasonsSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
+admin.service('ADMaintenanceReasonsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
 	
 	/**
     *   A getter method to return the charge group list
@@ -7,7 +7,7 @@ admin.service('ADMaintenanceReasonsSrv',['$http', '$q', 'ADBaseWebSrv', function
 		var deferred = $q.defer();
 		var url = '/api/maintenance_reasons.json';
 		
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -23,7 +23,7 @@ admin.service('ADMaintenanceReasonsSrv',['$http', '$q', 'ADBaseWebSrv', function
 		var deferred = $q.defer();
 		var url = '/admin/charge_groups';
 		
-		ADBaseWebSrv.postJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
@@ -37,9 +37,9 @@ admin.service('ADMaintenanceReasonsSrv',['$http', '$q', 'ADBaseWebSrv', function
 	this.update = function(data){
 
 		var deferred = $q.defer();
-		var url = '/api/maintenance_reasons/'+data.id;
+		var url = '/api/maintenance_reasons/'+data.value;
 		
-		ADBaseWebSrv.putJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.putJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
@@ -53,9 +53,9 @@ admin.service('ADMaintenanceReasonsSrv',['$http', '$q', 'ADBaseWebSrv', function
 	this.deleteItem = function(data){
 
 		var deferred = $q.defer();
-		var url = '/api/maintenance_reasons/'+data.id;
+		var url = '/api/maintenance_reasons/'+data.value;
 		
-		ADBaseWebSrv.deleteJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);

@@ -1,4 +1,4 @@
-admin.controller('ADChargeGroupsCtrl',['$scope', 'ADMaintenanceReasonsSrv', function($scope, ADMaintenanceReasonsSrv){
+admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv', function($scope, ADMaintenanceReasonsSrv){
 
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 5);
@@ -50,7 +50,7 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADMaintenanceReasonsSrv', func
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			$scope.data.name = "";
-			$scope.data.charge_groups.push(data);
+			$scope.data.maintenance_reasons.push(data);
 		};
   		$scope.invokeApi(ADMaintenanceReasonsSrv.save, { 'name' : $scope.data.name }, postSuccess);
 	};
@@ -62,7 +62,7 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADMaintenanceReasonsSrv', func
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
- 		var data = $scope.data.charge_groups[$scope.currentClickedElement];
+ 		var data = $scope.data.maintenance_reasons[$scope.currentClickedElement];
   		$scope.invokeApi(ADMaintenanceReasonsSrv.update, data, postSuccess);
    	};
    	/*
@@ -70,12 +70,13 @@ admin.controller('ADChargeGroupsCtrl',['$scope', 'ADMaintenanceReasonsSrv', func
     */
 	$scope.clickedDelete = function(id){
 		var successDeletionCallback = function(){
+			console.log("deleted succsss");
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			// delete data from scope
-			angular.forEach($scope.data.charge_groups,function(item, index) {
+			angular.forEach($scope.data.maintenance_reasons,function(item, index) {
 	 			if (item.value == id) {
-	 				$scope.data.charge_groups.splice(index, 1);
+	 				$scope.data.maintenance_reasons.splice(index, 1);
 	 			}
  			});
 		};
