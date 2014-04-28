@@ -1,7 +1,7 @@
 admin.service('ADMaintenanceReasonsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
 	
 	/**
-    *   A getter method to return the charge group list
+    *   A getter method to return the Maintenance Reason list
     */
 	this.fetch = function(){
 		var deferred = $q.defer();
@@ -15,7 +15,7 @@ admin.service('ADMaintenanceReasonsSrv',['$http', '$q', 'ADBaseWebSrvV2', functi
 		return deferred.promise;
 	};
 	/*
-    * Service function to update charge group
+    * Service function to update Maintenance Reason
     * @return {object} status of update
     */
 	this.save = function(data){
@@ -31,7 +31,7 @@ admin.service('ADMaintenanceReasonsSrv',['$http', '$q', 'ADBaseWebSrvV2', functi
 		return deferred.promise;
 	};
 	/*
-    * Service function to update charge group.
+    * Service function to update Maintenance Reason.
     * @return {object} status of update
     */
 	this.update = function(data){
@@ -47,7 +47,7 @@ admin.service('ADMaintenanceReasonsSrv',['$http', '$q', 'ADBaseWebSrvV2', functi
 		return deferred.promise;
 	};
 	/*
-    * Service function to delete charge group item.
+    * Service function to delete Maintenance Reason item.
     * @return {object} status of deletion
     */
 	this.deleteItem = function(data){

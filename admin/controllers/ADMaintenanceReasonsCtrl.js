@@ -4,7 +4,7 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 	$scope.$emit("changedSelectedMenu", 5);
 	$scope.currentClickedElement = -1;
     /*
-    * To fetch charge groups list
+    * To fetch Maintenance Reasons list
     */
 	var fetchSuccessCallback = function(data) {
 		$scope.$emit('hideLoader');
@@ -14,8 +14,8 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 	
     /*
     * To render edit screen
-    * @param {int} index index of selected charge groups
-    * @paran {string} id - charge groups id
+    * @param {int} index index of selected Maintenance Reasons
+    * @paran {string} id - Maintenance Reasons id
     */
 	$scope.editItem = function(index)	{
 		$scope.currentClickedElement = index;
