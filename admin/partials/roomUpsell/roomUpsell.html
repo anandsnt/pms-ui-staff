@@ -1,11 +1,11 @@
-<section id="replacing-div-first" class="content current">
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
 	<div id="upsell_room_details" data-view="UpsellRoomDetailsView">
 		<section>
 			<header class="content-title float">
 				<h2>Daily Upsell Setup</h2>
 				<a id="go_back" data-type="load-details" ng-click="cancelClick()" class="action back">Back</a>
 			</header>
-			<div id="notification-message"></div>
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<form name="upsell_rooms" method="post" id="upsell_rooms" class="form float" action="">
 				<fieldset class="holder column">
 
@@ -66,16 +66,8 @@
 
 					<input type="hidden" value="3" name="upsell_amounts_count" id="upsell_amounts_count">
 					<input type="hidden" value="3" name="total_level_count" id="total_level_count">
-					<div class="entry">
-						<label for="charge-code"> Charge Code <strong>*</strong> </label>
-						<div class="select">
-
-							<select ng-options="chargecode.name as chargecode.value for chargecode  in upsellData.charge_codes" ng-model="upsellData.selected_charge_code">
-								<option style="display:none" value="">Charge Code</option>
-							</select>
-
-						</div>
-					</div>
+					
+					<ad-dropdown label="Charge Code" label-in-drop-down="Charge Code" list="upsellData.charge_codes" selected-Id='upsellData.selected_charge_code' required='yes'></ad-dropdown>
 
 				</fieldset>
 				<div class="entry"></div>
@@ -83,40 +75,54 @@
 					<div class="form-title">
 						<h3><span>Daily Upsell</span> Levels </h3>
 					</div>
-					<div id="upsell_level" class="float">
+					<div id="upsell_level" class="float" >
 						<div class="entry has-sortable col3">
 							<label> Level 1 </label>
 
-							<ul ui-on-Drop="onDrop($event,$data,levelOne)" id="level_1" data-placeholder="Drop here for Level 1" class="boxes sortable ui-sortable">
-								<li ui-draggable="true" drag="level1"
-								on-drop-success="dropSuccessHandler($event,$index,levelOne)"ng-repeat="level1 in levelOne"
-								ng-model="level1.room_type_id"id="level_id">
+							<ul id="level_1" data-placeholder="Drop here for Level 1" class="boxes sortable empty short-list" data-drop="true" jqyoui-droppable="{multiple:true}" ng-model="levelOne" data-jqyoui-options="{accept: '.acceptable_room_upsell_level'}" style="overflow: visible !important;">
+								<li ng-repeat="level1 in levelOne"
+								ng-model="levelOne" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" 
+								jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true'}" 
+								class='acceptable_room_upsell_level'
+								ng-hide="!level1.room_type_name">
 								<span class="icons icon-handle"> </span>{{level1.room_type_name}}
 							</li>
 						</ul>
 
+
 					</div>
 					<div class="entry has-sortable col3">
 						<label> Level 2 </label>
-						<ul ui-on-Drop="onDrop($event,$data,levelTwo)" id="level_2" data-placeholder="Drop here for Level 2" class="boxes sortable ui-sortable">
-							<li ui-draggable="true" drag="level2"
-							on-drop-success="dropSuccessHandler($event,$index,levelTwo)"ng-repeat="level2 in levelTwo"
-							ng-model="level2.room_type_id"id="level_id">
+						<ul id="level_2" data-placeholder="Drop here for Level 2" class="boxes sortable empty short-list" data-drop="true" jqyoui-droppable="{multiple:true}" ng-model="levelTwo" style="overflow: visible !important;" data-jqyoui-options="{accept: '.acceptable_room_upsell_level'}">
+							<li ng-repeat="level2 in levelTwo"
+							ng-model="levelTwo" 
+							data-drag="true"
+							data-jqyoui-options="{revert: 'invalid'}" 
+							jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true'}" 
+							class='acceptable_room_upsell_level'
+							ng-hide="!level2.room_type_name">
 							<span class="icons icon-handle"> </span>{{level2.room_type_name}}
-						</li>
-					</ul>
-				</div>
+							</li>
+						</ul>
+					</div>
+
+
+					
 				<div class="entry has-sortable col3">
 					<label> Level 3 </label>
 
-					<ul ui-on-Drop="onDrop($event,$data,levelThree)" id="level_3" data-placeholder="Drop here for Level 3" class="boxes sortable ui-sortable">
-						<li ui-draggable="true" drag="level3"
-						on-drop-success="dropSuccessHandler($event,$index,levelThree)"ng-repeat="level3 in levelThree"
-						ng-model="level3.room_type_id"id="level_id">
+
+					<ul id="level_3" data-placeholder="Drop here for Level 3" class="boxes sortable empty short-list" data-drop="true" jqyoui-droppable="{multiple:true}" ng-model="levelThree" style="overflow: visible !important;" data-jqyoui-options="{accept: '.acceptable_room_upsell_level'}">
+						<li data-drag="true" 
+						ng-repeat="level3 in levelThree"
+						ng-model="levelThree" data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true'}" 
+						class='acceptable_room_upsell_level'
+						ng-hide="!level3.room_type_name">
 						<span class="icons icon-handle"> </span>{{level3.room_type_name}}
-					</li>
-				</ul>
-			</div>
+
+						</li>
+					</ul>
+				</div>
 		</div>
 	</fieldset>
 	<div class="actions">

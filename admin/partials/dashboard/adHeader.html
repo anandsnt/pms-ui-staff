@@ -23,6 +23,34 @@
 	</ul>
    
    <!-- Quick navigation -->
-   <nav id="quick-menu" class="active" role="navigation"></nav>	
+
+   
+   <nav data-place="quickmenu" id="quick-menu" 
+         ng-class="{'has-items': bookMarks.length>0, 'dragging': isDragging==true}" 
+         role="navigation" data-drop="true" 
+
+         ng-model='bookMarks' 
+         jqyoui-droppable="{multiple:true, onDrop: 'onDropAtBookmarkArea'}" 
+
+         data-jqyoui-options="{accept: '.icon-admin-menu'}"
+         style="overflow: visible !important;"> 
+
+   	<a class="icon-admin-menu in-quick-menu {{bookmark.icon_class}}"  
+         style="display: block; width: 169px;"
+
+         ng-repeat="bookmark in bookMarks" 
+         data-drag="true" 
+         data-jqyoui-options="{revert: 'invalid'}" 
+
+         jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true', onStart: 'onDragStart', onStop: 'onDragStop'}"
+
+         ng-model="bookMarks" 
+         ng-hide="!bookmark.name" ng-click="clickedMenuItem($event, bookmark.state)">
+
+		    {{bookmark.name}}
+          
+	   </a>
+
+   </nav>	
    
 </div>

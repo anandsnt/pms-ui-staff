@@ -11,4 +11,7 @@
 
  *= require '../admin/lib/css/admin_ng.css.less'
  *= require '../admin/lib/css/ng-table.css'
+ *= require '../admin/lib/css/ngDialog.css'
+ *= require '../admin/lib/css/ngDialog-theme-default.css'
+ *= require '../admin/lib/css/ngDialog-theme-plain.css'
  */

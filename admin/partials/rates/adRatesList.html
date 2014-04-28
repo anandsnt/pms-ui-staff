@@ -1,0 +1,101 @@
+<section class="content current" ng-click='clearErrorMessage()'>
+	<div>
+		<header class="content-title float">
+			<h2> Rates </h2>
+			<span class="count"> ({{totalCount}}) </span>
+			<a class="action add" ui-sref="admin.addRate" ng-hide="isConnectedToPMS">Add new</a>
+
+			<a class="action import" ng-click="importFromPms()" ng-show="isConnectedToPMS">IMPORT FROM PMS</a>
+
+			<div class="filters">
+				<div class="filter select">
+					<div class="entry">
+						<div class="select">
+							<select class="placeholder" ng-model="filterType" ng-options="opt.name for opt in filterList">
+								<option value="">Filter by Rate Type</option>
+							</select>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		
+		
+		<span class="count-show">Show</span>
+		<div class="select table-count">
+			<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
+		</div>
+		<span class="count-entries">entries</span>
+			
+		<div class="entry table-search">
+			<span class="search-text">Search</span>
+			<span class="icons icon-search" name="submit" type="submit"></span>
+	    	<input type="search" ng-model="searchTerm" ng-enter = "searchEntered()" autocomplete="off" placeholder="" />
+	    </div>
+		
+
+		<div id="new-form-holder"></div>
+		<!--ng-table component -->
+		<table class="grid" ng-table="tableParams" template-pagination="custom/pager">
+			<tbody>
+				<tr ng-repeat="rate in $data" ng-class = "{'inactive': !rate.status}"> 
+					<td data-title="'Name'" sortable="'rate'" header-class="width-25">
+						<strong>{{rate.name}}</strong>
+					</td>
+
+					<td data-title="'Based on'"  sortable="'based_on'" header-class="width-25">
+						<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, rate.based_on.id, 'based_on_rate_id', rate.based_on.name)" ng-mouseleave="mouseLeavePopover()">
+							{{rate.based_on.name}}
+							<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getPopoverTemplate($index,rate.based_on.id, 'basedOn')">
+							</div>
+						</span>
+					</td>
+					<td data-title="'Type'" sortable="'rate_type'" header-class="width-25">
+						<span class= "tooltip-wrapper" ng-mouseenter="showRates($index, rate.rate_type.id,'rate_type_id', rate.rate_type.name)" ng-mouseleave="mouseLeavePopover()">
+							<strong>{{rate.rate_type.name}}</strong>
+							<div ng-show = "popoverRates.total_count > 0" class="tooltip" ng-include="getPopoverTemplate($index,rate.rate_type.id, 'rateType')">				</div>
+						</span>
+					</td>
+					<td data-title="'Date Ranges'" header-class="width-15" class = "center_align">
+						<span class= "tooltip-wrapper " ng-mouseenter="showDateRanges($index, rate.id,'rate_id', rate.date_range_count)" ng-mouseleave="mouseLeavePopover()">
+						{{rate.date_range_count}}
+							<div ng-show = "rate.date_range_count > 0" class="tooltip" ng-include="getPopoverTemplate($index, rate.id, 'dateRange')">
+						</span>
+					</td>
+					<td data-title="'Status'" sortable="'status'" ng-class = "{'green': rate.status}" header-class="width-10">
+						{{rate.status ? 'ACTIVE' : 'INACTIVE'}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<!--end -->
+
+		<!--Custom pagination footer goes here-->
+		<script type="text/ng-template" id="custom/pager">
+			<div class = "pager">
+				<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+				<span ng-show="totalCount==0">Showing 0 items</span>
+				<ul class="ng-cloak">
+	              	<li ng-repeat="page in pages"
+		                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+		                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+	
+		                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+		                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+		                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+		                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+		          	</li>
+	            </ul>
+	        </div>
+		</script>
+		<!--end-->
+	</div>
+</section>
+
+<div id="new-form-holder" ng-show="isAddmode" ng-include="getAddRateTemplateUrl()">
+

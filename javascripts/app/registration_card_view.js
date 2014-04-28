@@ -8,6 +8,9 @@ var RegistrationCardView = function(viewDom) {
     this.isAllBillsReviewed = false;
     this.isEarlyDepartureFlag = "false";
     sntapp.cardData = {};
+
+    //Stores the card data to process while check-in
+    sntapp.regCardData = {};
     
 	this.pageinit = function() {
 		this.setBillTabs();
@@ -78,6 +81,8 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find("#signature").on('mouseout touchend', function() {
 			enableVerticalScroll('#registration-content');
 		});
+		
+		that.myDom.find('.movetobill').on('change', that.moveToAnotherBill);
 	};
 
 	// function for closing the drawer if is open
@@ -205,7 +210,6 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.completeCheckin = function(e) {
-
 		e.stopPropagation();
 		e.preventDefault();
 		e.stopImmediatePropagation();
@@ -240,9 +244,8 @@ var RegistrationCardView = function(viewDom) {
 			validateOptEmailModal.initialize();
 			return;
 		}
-
-		else if (isEmpty(sntapp.regCardData)){
-			var message = "Please enter the credit card details before you checkin";
+		else if (isEmpty(sntapp.regCardData) && that.myDom.find('#payment').attr('data-payment-type') == 'CC'){
+			var message = "Please swipe the credit card before you checkin";
 			that.showErrorMessage(message);
 			return false;
 		}
@@ -508,6 +511,30 @@ var RegistrationCardView = function(viewDom) {
 	// To get current active bill's bill-number
 	this.getActiveBillNumber =  function() {
 		return that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active").attr('data-bill-number');
+	};
+
+	this.moveToAnotherBill = function(e) {
+
+		var element = $(e.target);
+
+		var current_bill_number = that.getActiveBillNumber();
+		var to_bill_number = element.val();
+		var reservation_id = getReservationId();
+		var transaction_id = element.attr('data-transaction_id');
+
+		var data = {
+			"reservation_id" : reservation_id,
+			"to_bill" : to_bill_number,
+			"from_bill" : current_bill_number,
+			"transaction_id" : transaction_id
+		};
+
+		var webservice = new WebServiceInterface();
+		var options = {
+			requestParameters : data,
+			successCallBack : that.reloadBillCardPage
+		};
+		webservice.postJSON('/staff/bills/transfer_transaction', options);
 	};
 
 };
