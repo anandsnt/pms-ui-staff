@@ -1,9 +1,11 @@
+
 sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv','dashBoarddata', function($scope,RVDashboardSrv,dashBoarddata){
 
  	$scope.dashboardData = dashBoarddata.dashboardData;
  	$scope.userDetails   = dashBoarddata.userDetails;
 	$scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
  	$scope.currencySymbol=getCurrencySign(dashBoarddata.userDetails.currency_code);	
+
 
 
    $scope.init =  function(){
@@ -25,7 +27,6 @@ sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv','dashBoar
 
    };
    $scope.init();
-
 	
 }]);
 
