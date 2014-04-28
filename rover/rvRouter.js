@@ -55,8 +55,8 @@ sntRover.config([
         });
          $stateProvider.state('rover.staycard.roomassignment', {
 			url: '/roomassignment',
-			templateUrl: '/assets/partials/roomAssignment/roomAssignment.html',
-            controller: 'roomAssignmentController'
+			templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
+            controller: 'RVroomAssignmentController'
         });
         
        	$stateProvider.state('rover.staycard.billcard.details', {
