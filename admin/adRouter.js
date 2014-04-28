@@ -86,6 +86,17 @@ admin.config([
 			url : '/departments'
 		});
 
+		$stateProvider.state('admin.rates', {
+			templateUrl: '/assets/partials/rates/adRatesList.html',
+			controller: 'ADRatesListCtrl',
+			url : '/rates'
+		});
+
+		$stateProvider.state('admin.ratetypes', {
+			templateUrl: '/assets/partials/rateTypes/adRateTypeList.html',
+			controller: 'ADRateTypeCtrl',
+			url : '/ratetypes'
+		});
 
 		$stateProvider.state('admin.upselllatecheckout', {
 			templateUrl: '/assets/partials/upsellLatecheckout/upsellLatecheckout.html',
@@ -176,11 +187,22 @@ admin.config([
 		});
 
 
+
+
+		$stateProvider.state('admin.addRate', {
+			templateUrl: '/assets/partials/rates/adNewRate.html',
+		    controller: 'ADAddnewRate',
+			url : '/addNewRate'
+		});
+
+
+
 		$stateProvider.state('admin.rulesRestrictions', {
 			templateUrl: '/assets/partials/rates/adRulesRestriction.html',
 			controller: 'ADRulesRestrictionCtrl',
 			url : '/restriction_types'
 		});
+
 
 		$stateProvider.state('admin.hotelannouncementsettings', {
 			templateUrl: '/assets/partials/hotelAnnouncementSettings/adHotelAnnounceSettings.html',
@@ -199,7 +221,6 @@ admin.config([
 			controller: 'ADGuestReviewSetupCtrl',
 			url : '/guestreviewsetup'
 		});	
-
 
 		$stateProvider.state('admin.checkin', {
 			templateUrl: '/assets/partials/checkin/adCheckin.html',

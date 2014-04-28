@@ -180,9 +180,18 @@
 
 					&.ui-state-disabled {
 						span {
-							color: @grey4;
+							color: @grey2;
+							font-weight: 600;
 							background: rgba(0,0,0,.025);
 							.show;
+						}
+					}
+
+					&.date-range-selected {
+						a {
+							color: @white;
+							text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+							.gradient (@logoGradientStart, @logoGradientEnd);
 						}
 					}
 				}
@@ -195,6 +204,29 @@
 			left: auto !important;
 			margin: 0;
 			width: 100%;
+		}
+
+		&.ui-datepicker-multi-2 {
+			width: 980px !important;
+			margin-left: -480px;
+
+			.ui-datepicker-group {
+				width: 480px;
+				.pull-left;
+			}
+
+			.ui-datepicker-buttonpane {
+				clear: both;
+				width: 100%;
+				.show;
+
+				.ui-datepicker-current { .hide; }
+				
+				.ui-datepicker-close {
+					.button;
+					.green;
+				}
+			}
 		}
 	}
 
