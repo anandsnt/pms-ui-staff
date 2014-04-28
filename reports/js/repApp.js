@@ -8,7 +8,7 @@ var reports = angular.module('reports', ['ngAnimate', 'ngSanitize', 'mgcrea.ngSt
 
 reports.config([
     '$datepickerProvider',
-    function($datepickerProvider) {
+    function($datepickerProvider, $rootScope) {
         angular.extend($datepickerProvider.defaults, {
             dateFormat: 'yyyy/MM/dd',
             startWeek: 0,
@@ -97,8 +97,20 @@ reports.controller('reporstList', [
 
 
                     // for managing date filters limits
-                    $scope.reportList[i].today = new Date();
-                    $scope.reportList[i].allowedUntilDate = new Date();
+                    // use the business dates
+                    // UPDATE: depricated due to next set of comments/lines of code
+                    $scope.reportList[i].today = new Date( $rootScope.businessDate );
+                    $scope.reportList[i].allowedUntilDate = new Date( $rootScope.businessDate );
+
+                    // set the default values for until date to business date
+                    // plus calender will open in the corresponding month, rather than today
+                    $scope.reportList[i].untilDate = $rootScope.businessDate
+
+                    // HACK: set the default value for from date to a week ago from business date
+                    // so that calender will open in the corresponding month, rather than today
+                    var today = new Date( $rootScope.businessDate );
+                    var weekAgo = today.setDate(today.getDate() - 7);
+                    $scope.reportList[i].fromDate = weekAgo;
                 };
             });
 
