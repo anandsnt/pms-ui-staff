@@ -12,8 +12,10 @@
 
 //=require ../rover/rvApp.js
 //=require ../rover/rvRouter.js
+//=require ../shared/lib/js/baseCtrl.js
 //=require_tree ../rover/controllers
 //=require_tree ../rover/services
+
 
 
 
