@@ -13,18 +13,18 @@
 
 		<div id="new-form-holder" ng-show="isAddMode" ng-include="getTemplateUrl()"></div>
 
-		<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode || isEditMode">
+		<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode">
 			<tbody>
 				<tr ng-repeat="item in  addonList">
-					<td header-class="width-30"  data-title="'Name'" sortable="'name'" ng-click="editSingle()" ng-hide="currentClickedElement == $index" >
+					<td header-class="width-30"  data-title="'Name'" sortable="'name'" ng-click="editSingle()" ng-hide="currentClickedAddon == $index" >
 						<a class="edit-data-inline">{{ item.name }}</a>
 					</td>
 
-					<td header-class="width-40"  data-title="'Description'" sortable="'description'" ng-hide="currentClickedElement == $index" >	
+					<td header-class="width-40"  data-title="'Description'" sortable="'description'" ng-hide="currentClickedAddon == $index" >	
 						{{ item.description }}
 					</td>
 
-					<td data-title="'Toggle'" header-class=" width-30" class="activate text-left" ng-hide="currentClickedElement == $index" >
+					<td data-title="'Toggle'" header-class=" width-30" class="activate text-left" ng-hide="currentClickedAddon == $index" >
 						<div class="entry">
 							<label></label>
 							<div class="switch-button single"
@@ -37,6 +37,8 @@
 							</div>
 						</div>
 					</td>
+
+					<td colspan="3" ng-include="getTemplateUrl($index,room_types.id)" ng-show="currentClickedAddon == $index"></td>
 				</tr>
 			</tbody>
 		</table>

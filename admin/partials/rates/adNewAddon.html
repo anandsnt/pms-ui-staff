@@ -15,7 +15,7 @@
 			
 			<fieldset class="holder left float">
 				<ad-textbox styleclass="full-width"
-					value="newAddon.name"
+					value="singleAddon.name"
 					name="new-addon-name"
 					id="new-addon-name"
 					label="Name"
@@ -25,7 +25,7 @@
 				<ad-textarea rows="4"
 					div-class="full-width"
 					text-area-class="full-width"
-					value="newAddon.description"
+					value="singleAddon.description"
 					name="new-addon-desc"
 					id="new-addon-desc"
 					label="Description"
@@ -34,14 +34,14 @@
 
 				<div class="entry full-width radio-check">
 					<label class="checkbox">
-						<span class="icon-form icon-checkbox" ng-class="{ checked : newAddon.bestseller }"></span>
+						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.bestseller }"></span>
 						<label>Is it a best seller?</label>
-						<input type="checkbox" ng-model="newAddon.bestseller">
+						<input type="checkbox" ng-model="singleAddon.bestseller">
 					</label>
 				</div>
 
 				<ad-textbox styleclass="full-width"
-					value="newAddon.charge_group_id"
+					value="singleAddon.charge_group_id"
 					name="new-addon-charge-group-id"
 					id="new-addon-charge-group-id"
 					label="Charge group"
@@ -49,7 +49,7 @@
 					required="yes"></ad-textbox>
 
 				<ad-textbox styleclass="full-width"
-					value="newAddon.charge_code_id"
+					value="singleAddon.charge_code_id"
 					name="new-addon-charge-code-id"
 					id="new-addon-charge-code-id"
 					label="Charge code"
@@ -64,12 +64,12 @@
 						From Date
 						<strong>*</strong>
 					</label>
-					<input type="text" ng-model="newAddon.begin_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="showFromDate = true">
+					<input type="text" ng-model="singleAddon.begin_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="showFromDate = true">
 					<div class="date-picker-fixed" ng-show="showFromDate" ng-click="showFromDate = false">
 						<div class="date-picker-bg">
 							<div class="date-picker-wrap">
 								<div class="col-xs-12">
-									<div pickadate="" ng-model="newAddon.begin_date" min-date="minDate" max-date="maxDate" is-current-month="true" is-date-selected="isFromDateSelected"></div>
+									<div pickadate="" ng-model="singleAddon.begin_date" min-date="minDate" max-date="maxDate" is-current-month="true" is-date-selected="isFromDateSelected"></div>
 								</div>
 							</div>
 						</div>
@@ -80,12 +80,12 @@
 						To Date
 						<strong>*</strong>
 					</label>
-					<input type="text" ng-model="newAddon.end_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="showToDate = true">
+					<input type="text" ng-model="singleAddon.end_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="showToDate = true">
 					<div class="date-picker-fixed" ng-show="showToDate" ng-click="showToDate = false">
 						<div class="date-picker-bg">
 							<div class="date-picker-wrap">
 								<div class="col-xs-12">
-									<div pickadate="" ng-model="newAddon.end_date" min-date="minDate" max-date="maxDate" is-current-month="true" is-date-selected="isFromDateSelected"></div>
+									<div pickadate="" ng-model="singleAddon.end_date" min-date="minDate" max-date="maxDate" is-current-month="true" is-date-selected="isFromDateSelected"></div>
 								</div>
 							</div>
 						</div>
@@ -93,7 +93,7 @@
 				</div>								
 
 				<ad-textbox styleclass="full-width"
-					value="newAddon.amount"
+					value="singleAddon.amount"
 					name="new-addon-amount"
 					id="new-addon-amount"
 					label="Amount"
@@ -101,7 +101,7 @@
 					required="yes"></ad-textbox>
 
 				<ad-textbox styleclass="full-width"
-					value="newAddon.amount_type_id"
+					value="singleAddon.amount_type_id"
 					name="new-addon-charge-code-id"
 					id="new-addon-charge-code-id"
 					label="Amount type"
@@ -109,7 +109,7 @@
 					required="yes"></ad-textbox>
 
 				<ad-textbox styleclass="full-width"
-					value="newAddon.post_type_id"
+					value="singleAddon.post_type_id"
 					name="new-addon-post-type-id"
 					id="new-addon-post-type-id"
 					label="Post type"
@@ -118,9 +118,9 @@
 
 				<div class="entry full-width radio-check">
 					<label class="checkbox">
-						<span class="icon-form icon-checkbox" ng-class="{ checked : newAddon.rate_code_only }"></span>
+						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
 						<label>Is it rate code only?</label>
-						<input type="checkbox" ng-model="newAddon.rate_code_only">
+						<input type="checkbox" ng-model="singleAddon.rate_code_only">
 					</label>
 				</div>
 			</fieldset>
