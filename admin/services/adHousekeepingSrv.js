@@ -6,10 +6,10 @@ admin.service('ADHousekeepingSrv',['$http', '$q', 'ADBaseWebSrvV2', function($ht
 	this.fetch = function(){
 		var deferred = $q.defer();
 		//var url = '/admin/get_room_key_delivery_settings.json';	
-		var url = '/sample_json/hotel_admin/housekeeping.json';	
+		var url = '/api/hotel_settings';	
 		
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-			deferred.resolve(data);
+			deferred.resolve(data.housekeeping);
 		}, function(data) {
 			deferred.reject(data);
 		});
@@ -21,7 +21,7 @@ admin.service('ADHousekeepingSrv',['$http', '$q', 'ADBaseWebSrvV2', function($ht
     */
 	this.update = function(data){
 		var deferred = $q.defer();
-		var url = '/admin/update_room_key_delivery_settings';	
+		var url = '/api/hotel_settings/change_settings';	
 		
 		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);

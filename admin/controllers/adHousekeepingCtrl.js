@@ -1,4 +1,4 @@
-admin.controller('adHousekeepingCtrl',['$state', '$scope', 'ADHousekeepingSrv', function($state, $scope, ADHousekeepingSrv){
+admin.controller('adHousekeepingCtrl',['$state', '$scope', 'ADHousekeepingSrv', '$state', function($state, $scope, ADHousekeepingSrv, $state){
 	
 	BaseCtrl.call(this, $scope);
 	$scope.isRoverCheckinRFID = false;
@@ -15,13 +15,20 @@ admin.controller('adHousekeepingCtrl',['$state', '$scope', 'ADHousekeepingSrv', 
     * To handle save button click.
     */
 	$scope.save = function(){
-		$scope.invokeApi(ADHousekeepingSrv.update, data);
+		var successCallbackSave = function(data) {
+			$scope.$emit('hideLoader');
+			$state.go('admin.dashboard', {
+				menu: 4
+			});
+		};
+
+		$scope.invokeApi(ADHousekeepingSrv.update, $scope.data, successCallbackSave);
 	};
 
 	$scope.watchInspectedStatus = function(){
 		$scope.$watch('data.use_inspected', function() {
 	       if(!$scope.data.use_inspected){
-	       		$scope.data.checkin_to_inspected_rooms_only = false;
+	       		$scope.data.checkin_inspected_only = false;
 	       }
 	       
 	   	});
