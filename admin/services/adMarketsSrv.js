@@ -18,7 +18,7 @@ admin.service('ADMarketsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
     */
 	this.toggleUsedMarkets = function(data){
 		var deferred = $q.defer();
-		var url = '/api/use_markets';
+		var url = '/api/market_segments/use_markets';
 		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){

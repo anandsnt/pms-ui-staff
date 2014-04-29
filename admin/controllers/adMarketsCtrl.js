@@ -9,7 +9,6 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', function($scope, ADM
 	var fetchSuccessCallback = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.data = data;
-		$scope.data.is_use_markets = true;
 	};
 	$scope.invokeApi(ADMarketsSrv.fetch, {},fetchSuccessCallback);
 	/*
