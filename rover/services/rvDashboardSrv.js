@@ -1,5 +1,23 @@
 sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', function( $q, RVBaseWebSrv){
 
+ /*
+    * To fetch user details
+    * @return {object} user details
+    */	
+this.fetchuserInfo = function(){
+		var deferred = $q.defer();
+		var url =  '/api/rover_header_info.json';	
+		
+		RVBaseWebSrv.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+};
+
+
+
 this.dashboardDetails = {};
 	var that = this;
 
