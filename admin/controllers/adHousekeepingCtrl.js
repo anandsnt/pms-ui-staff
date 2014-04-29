@@ -1,14 +1,14 @@
-admin.controller('adHousekeepingCtrl',['$state', '$scope', 'ADHousekeepingSrv', '$state', function($state, $scope, ADHousekeepingSrv, $state){
+admin.controller('adHousekeepingCtrl',['$state', '$scope', 'ADHotelSettingsSrv', '$state', function($state, $scope, ADHotelSettingsSrv, $state){
 	
 	BaseCtrl.call(this, $scope);
 	$scope.isRoverCheckinRFID = false;
 	console.log("here");
 	var fetchSuccess = function(data){
-		$scope.data = data;
+		$scope.data = data.housekeeping;
 		$scope.$emit('hideLoader');
 		$scope.watchInspectedStatus();
 	};
-	$scope.invokeApi(ADHousekeepingSrv.fetch, {}, fetchSuccess);
+	$scope.invokeApi(ADHotelSettingsSrv.fetch, {}, fetchSuccess);
 	
 
 	/*
@@ -21,8 +21,10 @@ admin.controller('adHousekeepingCtrl',['$state', '$scope', 'ADHousekeepingSrv', 
 				menu: 4
 			});
 		};
+		var dict = {};
+		dict.housekeeping = $scope.data;
 
-		$scope.invokeApi(ADHousekeepingSrv.update, $scope.data, successCallbackSave);
+		$scope.invokeApi(ADHotelSettingsSrv.update, dict, successCallbackSave);
 	};
 
 	$scope.watchInspectedStatus = function(){
