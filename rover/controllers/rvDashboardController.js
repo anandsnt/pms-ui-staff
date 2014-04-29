@@ -1,6 +1,12 @@
-sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv', function($scope,RVDashboardSrv){
-	
-	
+
+sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv','dashBoarddata', function($scope,RVDashboardSrv,dashBoarddata){
+
+ 	$scope.dashboardData = dashBoarddata.dashboardData;
+ 	$scope.userDetails   = dashBoarddata.userDetails;
+	$scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
+ 	$scope.currencySymbol=getCurrencySign(dashBoarddata.userDetails.currency_code);	
+
+
 
    $scope.init =  function(){
 
@@ -21,27 +27,6 @@ sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv', function
 
    };
    $scope.init();
-
-	/*
-   * fetch details
-   */
-	$scope.fetchData = function(){
-		
-		var fetchDashboardDetailsSuccessCallback = function(data){
-			$scope.dashboardData = data.dashboardData;
-			$scope.userDetails   = data.userDetails;
-			$scope.lateCheckoutDetails = data.lateCheckoutDetails;
-			$scope.currencySymbol=getCurrencySign(data.userDetails.currency_code);
-			$scope.$emit('hideLoader');
-		};
-		var fetchDashboardDetailsFailureCallback = function(data){
-			$scope.$emit('hideLoader');
-		};
-		$scope.invokeApi(RVDashboardSrv.fetchDashboardDetails, {},fetchDashboardDetailsSuccessCallback,fetchDashboardDetailsFailureCallback);	
-		
-	};
-	
-	$scope.fetchData();
 	
 }]);
 
