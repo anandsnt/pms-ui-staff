@@ -241,10 +241,10 @@ admin.config([
 			url : '/checkinCheckoutEmail/:from'
 		});
 
-		$stateProvider.state('admin.marketSegments', {
-			templateUrl: '/assets/partials/chargeGroups/adChargeGroups.html',
-			controller: 'ADChargeGroupsCtrl',
-			url : '/marketSegments'
+		$stateProvider.state('admin.markets', {
+			templateUrl: '/assets/partials/markets/adMarkets.html',
+			controller: 'ADMarketsCtrl',
+			url : '/markets'
 		});
 
 	}
