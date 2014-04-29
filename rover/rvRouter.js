@@ -15,8 +15,13 @@ sntRover.config([
 		
 		$stateProvider.state('rover.dashboard', {
 			url: '/dashboard',
-			templateUrl: '/assets/partials/rvDashboard.html',
-			controller: 'RVdashboardController'
+			templateUrl: '/assets/partials/dashboard/rvDashboard.html',
+			controller: 'RVdashboardController',
+			resolve: {
+				dashBoarddata: function(RVDashboardSrv) {
+					return RVDashboardSrv.fetchDashboardDetails();
+				}
+			}
 		});
 
 		// search state
@@ -37,13 +42,13 @@ sntRover.config([
         $stateProvider.state('rover.staycard.reservationcard', {
         	abstract : true,
 			url: '/reservationcard',
-			templateUrl: 'partials/reservation_card.html',
+			templateUrl: '/assets/partials/reservationCard/reservation_card.html',
             controller: 'reservarionCardController'
         });
 
         $stateProvider.state('rover.staycard.reservationcard.reservationdetails', {
         	url: '/reservationdetails',
-			templateUrl: '/assets/partials/reservation_details.html',
+			templateUrl: '/assets/partials/reservationCard/reservation_details.html',
             controller: 'reservationDetailsController'
         }); 
 
@@ -52,6 +57,11 @@ sntRover.config([
 			url: '/billcard',
 			templateUrl: '/assets/partials/billcard.html',
             controller: 'billcardController'
+        });
+         $stateProvider.state('rover.staycard.roomassignment', {
+			url: '/roomassignment',
+			templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
+            controller: 'RVroomAssignmentController'
         });
         
        	$stateProvider.state('rover.staycard.billcard.details', {
