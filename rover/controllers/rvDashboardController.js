@@ -1,6 +1,7 @@
 
 sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv','dashBoarddata','$rootScope', function($scope,RVDashboardSrv,dashBoarddata,$rootScope){
 
+ 
  	$scope.dashboardData = dashBoarddata.dashboardData;
  	$scope.userDetails   = dashBoarddata.userDetails;
 	$scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;

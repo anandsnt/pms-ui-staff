@@ -35,6 +35,11 @@ $scope.init();
    * left menu actions
    */
 
+$scope.$on("onStateChange", function(e,value){
+    
+   $scope.leftMenuSelected(value);
+});
+
 $scope.leftMenuSelected = function(menu){
 if(menu === 'Dashboard'){
     $scope.isDashBoardActive = true;
