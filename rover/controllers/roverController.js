@@ -1,7 +1,19 @@
 sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window', function($rootScope, $scope, $state,$window){
 
 	$scope.init = function () {
-
+  $scope.slide = '';
+  
+  $rootScope.$on('$stateChangeStart', function(){
+    $scope.slide = $scope.slide || 'slide-left';
+    
+  });
+   $rootScope.$on('$stateChangeEnd', function(){
+    $scope.slide = '';
+    
+  });
+  
+  
+  
  $rootScope.adminRole = '';
  $rootScope.$watch('adminRole',function(){
 
@@ -9,12 +21,12 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
             $scope.isHotelAdmin =  true;
          if($rootScope.adminRole == "Hotel staff" )
             $scope.isHotelStaff =  true;
-     })
+    });
 
 	BaseCtrl.call(this, $scope);
 	$scope.menuOpen = false;
 		
-    }
+   };
 
     $scope.init();
     $scope.$on("navToggled", function(){
