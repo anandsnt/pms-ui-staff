@@ -2,8 +2,6 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 
 $scope.init = function () {
     BaseCtrl.call(this, $scope);
-    $scope.isDashBoardActive = true;
-    $scope.isSearchActive = false;
     $rootScope.adminRole = '';
 
 /*
@@ -31,25 +29,7 @@ $scope.init = function () {
 }
 
 $scope.init();
-/*
-   * left menu actions
-   */
 
-$scope.$on("onStateChange", function(e,value){
-    
-   $scope.leftMenuSelected(value);
-});
-
-$scope.leftMenuSelected = function(menu){
-if(menu === 'Dashboard'){
-    $scope.isDashBoardActive = true;
-    $scope.isSearchActive = false
-}
-else if(menu === 'Search'){
-    $scope.isSearchActive    = true;
-    $scope.isDashBoardActive = false;
-}
-};
 
 $scope.$on("navToggled", function(){
   $scope.menuOpen = !$scope.menuOpen;
