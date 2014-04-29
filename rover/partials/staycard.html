@@ -17,7 +17,8 @@
 			<!-- Nav bar -->
 			<header role="banner" class="nav-bar float">
 				<!-- Drawer toggle -->
-				<a id="back-arrow" href="#main-nav" class="nav-toggle">Menu</a>
+				<a id="back-arrow" class="nav-toggle" ng-click="$emit('navToggled')" ng-class="{'active': true}">Menu</a>
+		
 				<!-- Title -->
 				<h1 class="h2"> Stay Card <span> <strong> Admin
 					Staff </strong> | <em class="date"> Monday, 31 March 2014 </em> </span></h1>
