@@ -1,4 +1,4 @@
-admin.service('ADMarketsSrv',['$http', '$q', 'ADBaseWebSrv2', function($http, $q, ADBaseWebSrv2){
+admin.service('ADMarketsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
 	
 	/**
     *   A getter method to return the markets list
@@ -6,8 +6,20 @@ admin.service('ADMarketsSrv',['$http', '$q', 'ADBaseWebSrv2', function($http, $q
 	this.fetch = function(){
 		var deferred = $q.defer();
 		var url = '/api/market_segments.json';
-		
-		ADBaseWebSrv2.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+	/**
+    *   A post method to enable/disable markets
+    */
+	this.toggleUsedMarkets = function(data){
+		var deferred = $q.defer();
+		var url = '/api/use_markets';
+		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -23,7 +35,7 @@ admin.service('ADMarketsSrv',['$http', '$q', 'ADBaseWebSrv2', function($http, $q
 		var deferred = $q.defer();
 		var url = '/api/market_segments';
 		
-		ADBaseWebSrv2.postJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
@@ -39,7 +51,7 @@ admin.service('ADMarketsSrv',['$http', '$q', 'ADBaseWebSrv2', function($http, $q
 		var deferred = $q.defer();
 		var url = '/api/market_segments/'+data.value;
 		
-		ADBaseWebSrv2.putJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.putJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
@@ -55,7 +67,7 @@ admin.service('ADMarketsSrv',['$http', '$q', 'ADBaseWebSrv2', function($http, $q
 		var deferred = $q.defer();
 		var url = '/api/market_segments/'+data.value;
 		
-		ADBaseWebSrv2.deleteJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.deleteJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);

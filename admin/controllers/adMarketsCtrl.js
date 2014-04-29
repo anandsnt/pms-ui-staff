@@ -1,7 +1,7 @@
 admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', function($scope, ADMarketsSrv){
 
 	BaseCtrl.call(this, $scope);
-	$scope.$emit("changedSelectedMenu", 5);
+	$scope.$emit("changedSelectedMenu", 7);
 	$scope.currentClickedElement = -1;
     /*
     * To fetch charge markets list
@@ -9,9 +9,16 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', function($scope, ADM
 	var fetchSuccessCallback = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.data = data;
+		$scope.data.is_use_markets = true;
 	};
 	$scope.invokeApi(ADMarketsSrv.fetch, {},fetchSuccessCallback);
-	
+	/*
+    * To handle nable/disable of use markets
+    */
+	$scope.clickedUsedMarkets = function(){
+		console.log($scope.data.is_use_markets);
+		$scope.invokeApi(ADMarketsSrv.toggleUsedMarkets, {'is_use_markets':$scope.data.is_use_markets });
+	};
     /*
     * To render edit screen
     * @param {int} index index of selected markets
@@ -57,12 +64,14 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', function($scope, ADM
 	/*
     * To handle save button in edit box.
     */
-   	$scope.updateItem = function(){
+   	$scope.updateItem = function(index){
    		var postSuccess = function(data){
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
- 		var data = $scope.data.markets[$scope.currentClickedElement];
+		if(index == undefined) var data = $scope.data.markets[$scope.currentClickedElement];
+		else var data = $scope.data.markets[index];
+		
   		$scope.invokeApi(ADMarketsSrv.update, data, postSuccess);
    	};
    	/*
