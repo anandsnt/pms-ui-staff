@@ -1,7 +1,16 @@
-sntRover.controller('roverController',['$rootScope', '$scope', '$state', function($rootScope, $scope, $state){
+sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window', function($rootScope, $scope, $state,$window){
 
 	$scope.init = function () {
-		
+
+ $rootScope.adminRole = '';
+ $rootScope.$watch('adminRole',function(){
+
+        if($rootScope.adminRole == "Hotel admin" )
+            $scope.isHotelAdmin =  true;
+         if($rootScope.adminRole == "Hotel staff" )
+            $scope.isHotelStaff =  true;
+     })
+
 	BaseCtrl.call(this, $scope);
 	$scope.menuOpen = false;
 		
@@ -15,6 +24,7 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state', functio
  	$scope.isMenuOpen = function(){
         return $scope.menuOpen ? true : false;
     };
+
 
     //when state change start happens, we need to show the activity activator to prevent further clicking
     //this will happen when prefetch the data
@@ -35,5 +45,12 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state', functio
         $scope.$emit('hideLoader');
         //TODO: Log the error in proper way
     });
+
+    $scope.settingsClicked = function(){
+        if($scope.isHotelAdmin)
+           $window.location.href = "/admin";
+       else if($scope.isHotelStaff)
+            alert("Staff");
+    }
 
 }]);

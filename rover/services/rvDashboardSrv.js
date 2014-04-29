@@ -17,8 +17,8 @@ this.dashboardDetails = {};
     * To fetch user details
     * @return {object} user details
     */	
-		 self.fetchdashboardDetails = function(){
-			var url = '/staff/header_info.json'
+		 self.fetchuserDetails = function(){
+			var url = '/api/rover_header_info.json'
 			RVBaseWebSrv.getJSON(url).then(function(data) {
 				that.dashboardDetails.userDetails = data;
 				self.fetchlateCheckoutDetails();
@@ -45,12 +45,12 @@ this.dashboardDetails = {};
 		};
 		
 
-		var url = '/staff/dashboard.json';
+		var url = '/api/hotel_statistics.json';
 			
 		
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 			that.dashboardDetails.dashboardData = data;
-			self.fetchdashboardDetails();
+			self.fetchuserDetails();
 		},function(errorMessage){
 			deferred.reject(errorMessage);
 		});
