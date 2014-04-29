@@ -55,8 +55,8 @@ hkRover.controller('HKSearchCtrl',
 	if ( HKSearchSrv.isListEmpty() ) {
 		$scope.$emit('showLoader');
 		HKSearchSrv.fetch().then(function(data) {
-			$scope.showPickup = data.show_pickup;
-			$scope.showInspected = data.show_inspected;
+			$scope.showPickup = data.use_pickup;
+			$scope.showInspected = data.use_inspected;
 			afterFetch( data );
 		}, function() {
 			console.log("fetch failed");
