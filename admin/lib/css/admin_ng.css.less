@@ -313,8 +313,26 @@ height: 271px;
   -moz-user-select: none;
   user-select: none;
 }
+
+.date-picker-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999666;
+
+  .date-picker-bg {
+    max-width: 450px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -225px 0 0 -217px;
+  }
+}
+
 .date-picker-bg{
-  
   background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
   padding:10px;
   margin:5px;

@@ -1,0 +1,143 @@
+<div style="display: block;" id="add-new" class="edit-data">
+	<div class="data-holder">
+		<form id="add-like" class="form inline-form float">
+			<div class="form-title">
+				<h3>
+					<span>{{likeTitle}}</span>
+					{{likeSubtitle}}
+				</h3>
+				<em class="status">
+					Fields marked with
+					<strong>*</strong>
+					are mandatory!
+				</em>
+			</div>
+			
+			<fieldset class="holder left float">
+				<ad-textbox styleclass="full-width"
+					value="newAddon.name"
+					name="new-addon-name"
+					id="new-addon-name"
+					label="Name"
+					placeholder="Enter the addon name"
+					required="yes"></ad-textbox>
+
+				<ad-textarea rows="4"
+					div-class="full-width"
+					text-area-class="full-width"
+					value="newAddon.description"
+					name="new-addon-desc"
+					id="new-addon-desc"
+					label="Description"
+					placeholder="Enter the addon description"
+					required="yes"></ad-textarea>
+
+				<div class="entry full-width radio-check">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox" ng-class="{ checked : newAddon.bestseller }"></span>
+						<label>Is it a best seller?</label>
+						<input type="checkbox" ng-model="newAddon.bestseller">
+					</label>
+				</div>
+
+				<ad-textbox styleclass="full-width"
+					value="newAddon.charge_group_id"
+					name="new-addon-charge-group-id"
+					id="new-addon-charge-group-id"
+					label="Charge group"
+					placeholder="Enter the charge group id"
+					required="yes"></ad-textbox>
+
+				<ad-textbox styleclass="full-width"
+					value="newAddon.charge_code_id"
+					name="new-addon-charge-code-id"
+					id="new-addon-charge-code-id"
+					label="Charge code"
+					placeholder="Enter the charge code id"
+					required="yes"></ad-textbox>
+			</fieldset>
+
+
+			<fieldset class="holder right float">
+				<div class="entry">
+					<label>
+						From Date
+						<strong>*</strong>
+					</label>
+					<input type="text" ng-model="newAddon.begin_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="showFromDate = true">
+					<div class="date-picker-fixed" ng-show="showFromDate" ng-click="showFromDate = false">
+						<div class="date-picker-bg">
+							<div class="date-picker-wrap">
+								<div class="col-xs-12">
+									<div pickadate="" ng-model="newAddon.begin_date" min-date="minDate" max-date="maxDate" is-current-month="true" is-date-selected="isFromDateSelected"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="entry">
+					<label>
+						To Date
+						<strong>*</strong>
+					</label>
+					<input type="text" ng-model="newAddon.end_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="showToDate = true">
+					<div class="date-picker-fixed" ng-show="showToDate" ng-click="showToDate = false">
+						<div class="date-picker-bg">
+							<div class="date-picker-wrap">
+								<div class="col-xs-12">
+									<div pickadate="" ng-model="newAddon.end_date" min-date="minDate" max-date="maxDate" is-current-month="true" is-date-selected="isFromDateSelected"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>								
+
+				<ad-textbox styleclass="full-width"
+					value="newAddon.amount"
+					name="new-addon-amount"
+					id="new-addon-amount"
+					label="Amount"
+					placeholder="Enter the amount"
+					required="yes"></ad-textbox>
+
+				<ad-textbox styleclass="full-width"
+					value="newAddon.amount_type_id"
+					name="new-addon-charge-code-id"
+					id="new-addon-charge-code-id"
+					label="Amount type"
+					placeholder="Enter the amount type id"
+					required="yes"></ad-textbox>
+
+				<ad-textbox styleclass="full-width"
+					value="newAddon.post_type_id"
+					name="new-addon-post-type-id"
+					id="new-addon-post-type-id"
+					label="Post type"
+					placeholder="Enter the post type id"
+					required="yes"></ad-textbox>
+
+				<div class="entry full-width radio-check">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox" ng-class="{ checked : newAddon.rate_code_only }"></span>
+						<label>Is it rate code only?</label>
+						<input type="checkbox" ng-model="newAddon.rate_code_only">
+					</label>
+				</div>
+			</fieldset>
+
+
+			<div class="actions float">
+				<button type="button"
+					id="cancel"
+					class="button blank add-data-inline"
+					ng-click="cancelCliked()">Cancel</button>
+				<button type="button"
+					like-type="common"
+					id="update"
+					class="button green add-data-inline"
+					ng-click="addUpdateAddon()">Save changes</button>
+			</div>
+
+		</form>
+	</div>
+</div>
