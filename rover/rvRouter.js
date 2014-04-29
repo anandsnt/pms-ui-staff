@@ -70,6 +70,12 @@ sntRover.config([
 			controller	: 'billDetailsController'
         });
         
+        // $stateProvider.state('rover.staycard.billcard.details', {
+			// url: '/:billNo',
+			// templateUrl : "/assets/partials/bill_details.html",
+			// controller	: 'billDetailsController'
+        // });
+        
 		// may be replaced with ng-include?
 	    /*$stateProvider.state('rover.staycard.billcard.all', {
         	url: '',

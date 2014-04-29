@@ -1,21 +1,47 @@
-sntRover.controller('guestCardController', ['$scope', 'Likes', function($scope, Likes){
+sntRover.controller('guestCardController', ['$scope', 'Likes', '$window', function($scope, Likes, $window){
 	
-	$scope.current = 'contact-info';
+	$scope.current = 'guest-contact';
 
-	$scope.newspapers = Likes.newspaper;
+	console.log($window.innerHeight);
+
+	console.log($(window).height());
 	
-	$scope.set_current = function(div){
+	$scope.guestCardTabSwitch = function(div){
 		$scope.current = div;
 	};
-
-	$scope.show_tab = function(showDiv){
-		if(showDiv == $scope.current){
-			$scope.current = showDiv;
-			return true;
-		}
-		return false;
+	
+	$scope.guestCardToggle = function(){
+		
+		
+		var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null,
+			$maxHeight = $window.innerHeight,
+			$breakpoint = ($maxHeight/10);
+	
+		if (!$isTablet) {
+			$(window).resize(function() {
+		    	$maxHeight = $(window).height();
+	
+		    	// Resize guest card if too big
+		    	if ($('#guest-card').hasClass('open') && $('#guest-card').height() > ($maxHeight-90))
+		    	{
+		    		$('#guest-card').css({'height':$maxHeight-90+'px'});
+		    	}
+	
+		    	// Close guest card if too small
+		    	if ($('#guest-card').height() < 90)
+		    	{
+		    		$('#guest-card').removeClass('open').css({'height':90+'px'});
+		    	}
+	
+		    	resizableGuestCard($maxHeight);
+			});
+	}
+		
+		
+		
 	};
 
+	
 
 
 }]);

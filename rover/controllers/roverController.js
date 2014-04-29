@@ -1,19 +1,27 @@
 sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window', function($rootScope, $scope, $state,$window){
 
 	$scope.init = function () {
-  $scope.slide = '';
+  $scope.parentObj = {};
+  
+  $scope.parentObj.slide = 'slide-left';
   
   $rootScope.$on('$stateChangeStart', function(){
-    $scope.slide = $scope.slide || 'slide-left';
-    
+  	console.log("jpppppppppppppppppppppppppppppppp")
+    $scope.parentObj.slide = $scope.parentObj.slide || 'slide-left';
   });
    $rootScope.$on('$stateChangeEnd', function(){
-    $scope.slide = '';
+    $scope.parentObj.slide = '';
     
   });
   
   
   
+
+
+$scope.isDashBoardActive = true;
+$scope.isSearchActive = false;
+
+
  $rootScope.adminRole = '';
  $rootScope.$watch('adminRole',function(){
 
@@ -21,7 +29,11 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
             $scope.isHotelAdmin =  true;
          if($rootScope.adminRole == "Hotel staff" )
             $scope.isHotelStaff =  true;
+
     });
+
+
+
 
 	BaseCtrl.call(this, $scope);
 	$scope.menuOpen = false;
@@ -29,6 +41,24 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
    };
 
     $scope.init();
+
+
+    $scope.leftMenuSelected = function(menu){
+
+        if(menu === 'Dashboard'){
+            $scope.isDashBoardActive = true;
+            $scope.isSearchActive = false
+        }
+        else if(menu === 'Search'){
+            $scope.isSearchActive    = true;
+            $scope.isDashBoardActive = false;
+        }
+
+
+    };
+
+
+
     $scope.$on("navToggled", function(){
         $scope.menuOpen = !$scope.menuOpen;
     });
@@ -45,7 +75,7 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
         $scope.$emit('showLoader');
 
         // if menu is open, close it
-        $scope.isMenuOpen() && $scope.toggleMainNav();
+        $scope.isMenuOpen();
     });
 
     $rootScope.$on('$stateChangeSuccess', function(e, curr, prev) { 
@@ -63,6 +93,6 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
            $window.location.href = "/admin";
        else if($scope.isHotelStaff)
             alert("Staff");
-    }
+    };
 
 }]);
