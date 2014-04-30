@@ -20,7 +20,7 @@ $scope.init = function () {
     var fetchUserInfoFailureCallback = function(data){
         $scope.$emit('hideLoader');
     };
-    $scope.invokeApi(RVDashboardSrv.fetchuserInfo,{},fetchUserInfoSuccessCallback,fetchUserInfoFailureCallback);  
+    $scope.invokeApi(RVDashboardSrv.fetchUserInfo,{},fetchUserInfoSuccessCallback,fetchUserInfoFailureCallback);  
 
     }   
 
