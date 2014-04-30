@@ -42,13 +42,13 @@ sntRover.config([
         $stateProvider.state('rover.staycard.reservationcard', {
         	abstract : true,
 			url: '/reservationcard',
-			templateUrl: '/assets/partials/reservationCard/reservation_card.html',
-            controller: 'reservarionCardController'
+			templateUrl: '/assets/partials/reservationCard/rvReservationCard.html',
+            controller: 'reservationCardController'
         });
 
         $stateProvider.state('rover.staycard.reservationcard.reservationdetails', {
         	url: '/reservationdetails',
-			templateUrl: '/assets/partials/reservationCard/reservation_details.html',
+			templateUrl: '/assets/partials/reservationCard/rvReservationDetails.html',
             controller: 'reservationDetailsController'
         }); 
 
