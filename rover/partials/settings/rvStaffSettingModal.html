@@ -1,7 +1,8 @@
-<div role="dialog" id="modal" class="modal-show"><form name="update-settings" id="update-settings" class="modal-content form admin-form">
+<div role="dialog" id="modal" class="modal-show" ng-click="clearErrorMessage()"><form name="update-settings" id="update-settings" class="modal-content form admin-form">
 	<button type="button" id="modal-close"  ng-click="cancelClicked()" class="modal-close">
 		<span class="icons icon-close invert"></span>
 	</button>
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<strong class="h2 admin-title">Update your account settings</strong>
 	<div class="entry full-width">
 		<div id="notification-message"></div>
@@ -23,11 +24,10 @@
 		<input type="password" ng-model="confirmPassword" placeholder="Repeat new password" name="confirm-password" id="confirm-password">
 	</div>
 	<div class="actions float">
-		<button type="button" ng-click="updateSettings()" class="button green modal-close">
+		<button type="button" ng-click="updateSettings()" class="button  modal-close" ng-disabled="!passwordsMatch()" ng-class="{'green': passwordsMatch()}">
 			Save changes
 		</button>
 		<button type="button" id="cancel" ng-click="cancelClicked()" class="button blank modal-close">Cancel</button>
 	</div>
 </form>
 </div>
-<div id="modal-overlay" class="modal-show"></div>
