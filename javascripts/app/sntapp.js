@@ -235,7 +235,7 @@ var app = function(){
       }
     })(navigator);  
 
-    //Stores the card data in a 
+    //Stores the card data to process while check-in
     this.regCardData = {}; 
     //Flag to check if a payment done via card swipe 
     this.paymentTypeSwipe = false;
