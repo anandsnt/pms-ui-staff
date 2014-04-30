@@ -2,23 +2,24 @@ admin.controller('ADaddRatesDetailCtrl',['$scope','ADRatesAddDetailsSrv',  funct
 
 $scope.init = function(){
 	BaseCtrl.call(this, $scope);
-	$scope.rateTypesDetails = [];
-	$scope.basedOnRateTypeSelected = '';
-	$scope.rateTypeselected ='';
-	$scope.rate_name = '';
-	$scope.rate_description = '';
-	$scope.based_on_plus_minus ='+';
-	$scope.based_on_value ='';
-	$scope.based_on_type = 'amount';
-	$scope.isFirstTime = true;
-	$scope.errorMessage = "";
-	
-	$scope.step1Data = {
-		'name':$scope.rate_name,
-		'type':$scope.rateTypeselected,
-		'basedOn':'',
-		'description':$scope.rate_description
-	};
+	if (!$scope.rateId){
+		$scope.rateTypesDetails = [];
+		$scope.basedOnRateTypeSelected = '';
+		$scope.rateTypeselected ='';
+		$scope.rate_name = '';
+		$scope.rate_description = '';
+		$scope.based_on_plus_minus ='+';
+		$scope.based_on_value ='';
+		$scope.based_on_type = 'amount';
+		$scope.isFirstTime = true;
+		$scope.errorMessage = "";
+	}	
+		$scope.step1Data = {
+			'name':$scope.rate_name,
+			'type':$scope.rateTypeselected,
+			'basedOn':'',
+			'description':$scope.rate_description
+		};
 };
 $scope.init();
 /*
@@ -65,12 +66,12 @@ $scope.saveStep1 = function(){
 	var amount = parseInt($scope.based_on_plus_minus + $scope.based_on_value);
 
 	if($scope.basedOnRateTypeSelected)
-		var basedOn_id = $scope.basedOnRateTypeSelected.id;
+		var basedOn_id = $scope.basedOnRateTypeSelected;
 
 	var data = 
 	{   'name': $scope.rate_name,
 		'description': $scope.rate_description,
-		'rate_type_id': $scope.rateTypeselected.id,
+		'rate_type_id': $scope.rateTypeselected,
 		'based_on_rate_id': basedOn_id,
 		'based_on_type': $scope.based_on_type,
 		'based_on_value': amount

@@ -13,9 +13,9 @@
 			<div class="entry">
 				<label>Type <strong>*</strong> </label>
 				<div class="select">
-					<select class="placeholder" ng-options="rateType.name for rateType in rateTypesDetails.rate_types" ng-model="rateTypeselected">
-						<option value="">select Rate Type</option>		
-					</select>
+					<select class="placeholder" ng-model="rateTypeselected" ng-options="rateType.id as rateType.name for rateType in rateTypesDetails.rate_types">
+	                    <option value="" disabled>Select Rate Type</option>
+	                </select>
 				</div>
 			</div>
 		</fieldset>
@@ -24,7 +24,7 @@
 			<div class="entry">
 				<label> Based On </label>
 				<div class="select">
-					<select class="placeholder" ng-options="basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results" ng-model="basedOnRateTypeSelected">
+					<select class="placeholder" ng-model="basedOnRateTypeSelected" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
 						<option value="">select rate</option>	
 					</select>
 				</div>

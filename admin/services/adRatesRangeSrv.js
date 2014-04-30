@@ -29,7 +29,8 @@ function($q, ADBaseWebSrvV2) {
 		ADBaseWebSrvV2.postJSON(url,postData).then(function(data) {
 			var dateData = {};
 			dateData.id = data.id;
-			dateData.data = dateRangeData.data;
+			dateData.begin_date = dateRangeData.data.begin_date;
+			dateData.end_date = dateRangeData.data.end_date;
 			dateRangeDataArray.push(dateData);
 			deferred.resolve(data);
 		}, function(data) {

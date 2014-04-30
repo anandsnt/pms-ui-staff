@@ -49,4 +49,16 @@ function($http, $q, ADBaseWebSrvV2) {
 		return deferred.promise;
 	};
 
+	// get rate details
+	this.fetchDetails = function(params) {
+		var deferred = $q.defer();
+		var url = "/api/rates/" + params.rateId;
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	}
+
 }]);
