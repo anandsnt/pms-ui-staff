@@ -5,7 +5,7 @@
 			<span class="count"> (
 				{{data.markets.length}}
 				) </span>
-			<a class="action add" ng-click="addNewClicked()">Add new</a>
+			<a class="action add" ng-hide="!data.is_use_markets" ng-click="addNewClicked()" >Add new</a>
 			<ad-toggle-button is-checked="data.is_use_markets" div-class="header-title" ng-click="clickedUsedMarkets()" label="Use markets"></ad-toggle-button>
 		</header>
 
