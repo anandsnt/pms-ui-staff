@@ -1,4 +1,4 @@
-sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window','RVDashboardSrv', function($rootScope, $scope, $state,$window,RVDashboardSrv){
+sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window','RVDashboardSrv','ngDialog', function($rootScope, $scope, $state,$window,RVDashboardSrv,ngDialog){
 
 $scope.init = function () {
     BaseCtrl.call(this, $scope);
@@ -63,8 +63,13 @@ $scope.$emit('hideLoader');
 $scope.settingsClicked = function(){
 if($scope.isHotelAdmin)
  $window.location.href = "/admin";
-else if($scope.isHotelStaff)
- console.log("Staff");
+else if($scope.isHotelStaff){
+        ngDialog.open({
+             template: '/assets/partials/settings/rvStaffSettingModal.html',
+             controller: 'RVStaffsettingsModalController',
+             className: 'ngdialog-theme-default calendar-modal'
+        });
+    }
 }
 
 }]);
