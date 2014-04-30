@@ -1,0 +1,43 @@
+<nav id="main-menu" style="display: block;" >
+	
+	<!-- For Hotel Admin -->
+	<ul ng-show ="isHotelAdmin || isHotelStaff" >
+		<li>
+			<a   ui-sref="rover.dashboard" class="icon-menu icon-dashboard" ng-class="{'active': isDashBoardActive}">Dashboard</a>
+		</li>
+		<li>
+			<a  ui-sref="rover.search" class="icon-menu icon-search" ng-class="{'active': isSearchActive}">Search</a>
+		</li>
+		<li class="hidden">
+			<a ng-click="$emit('navToggled')" class="icon-menu icon-social-lobby ">Social Lobby</a>
+		</li>
+		<li class="hidden">
+			<a ng-click="$emit('navToggled')" class="icon-menu icon-messages ">Messages</a>
+		</li>
+		<li class="hidden">
+			<a ng-click="$emit('navToggled')" class="icon-menu icon-reviews ">Reviews</a>
+		</li>
+		<li id="settings">
+			<a ng-click="settingsClicked()" class="icon-menu icon-settings">Settings</a>
+		</li>
+		<li id="sign-out">
+			<a ng-click="$emit('navToggled')" href="/logout" class="icon-menu icon-sign-out">Sign Out</a>
+		</li>
+		<li id="rover-info">
+			<img src="../assets/stayntouch.png" alt="">
+			Version 1.0
+		</li>
+	</ul>
+
+	<!-- For SNT Admin -->
+	<ul ng-hide ="isHotelAdmin" >
+		<li id="sign-out">
+			<a ng-click="$emit('navToggled')" href= "/logout" class="icon-menu icon-sign-out">Sign Out</a>
+		</li>
+		<li id="rover-info">
+			<img src="../assets/stayntouch.png" alt="" />
+			Version 1.0
+		</li>
+	</ul>
+
+</nav>
