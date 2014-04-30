@@ -2,7 +2,7 @@
 	<ul class="wrapper ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
 		
 		
-		<li class="icons-tabs no-icon reservation-tab ui-state-default ui-corner-top" ng-repeat="list in reservationList">
+		<li class="icons-tabs no-icon reservation-tab ui-state-default ui-corner-top" ng-click="getReservationDetails(list.confirmation_num)" ng-repeat="list in reservationList">
 			<a> <span class="guest-status departed small-icon"></span> <span class="number">{{list.confirmation_num}}</span> </a>
 		</li>
 		

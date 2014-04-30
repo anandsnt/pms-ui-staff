@@ -7,7 +7,7 @@ sntRover.service('RVReservationCardSrv',['$http', '$q', 'RVBaseWebSrv', function
 		
 		var deferred = $q.defer();
 		// var url = '/staff/staycards/staycard.json?confirmation=4844947&id=5470';
-		var url = 'api/reservations/5470.json';
+		var url = 'api/reservations/56.json';
 
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -22,6 +22,7 @@ sntRover.service('RVReservationCardSrv',['$http', '$q', 'RVBaseWebSrv', function
 	var that= this;
 	this.emptyConfirmationNumbers = function(){
 		that.confirmationNumbersArray = [];
+		reservationDetails = {};
 	};
 	this.storeConfirmationNumbers  = function (confirmationNumber) {
 		that.confirmationNumbersArray.push(confirmationNumber);
@@ -46,13 +47,13 @@ sntRover.service('RVReservationCardSrv',['$http', '$q', 'RVBaseWebSrv', function
 			var url = '/staff/staycards/reservation_details.json?reservation='+confirmationNumber;
 	
 			RVBaseWebSrv.getJSON(url).then(function(data) {
-				reservationDetails.confirmationNumber = data;
+				reservationDetails[confirmationNumber] = data;
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
 			});	
 		} else {
-			deferred.resolve(reservationDetails.confirmationNumber);
+			deferred.resolve(reservationDetails[confirmationNumber]);
 		}
 		
 		return deferred.promise;

@@ -10,7 +10,7 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 		$scope.countHistory = data.reservation_list.history_reservations_arr.length;
 		$scope.currentReservationId = data.reservation_list.current_reservations_arr[0].confirmation_num;
 		
-		 $scope.$broadcast("DO_BIDDING", $scope.currentReservationId);
+		 $scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 		
 		$scope.reservationList = data.reservation_list.current_reservations_arr;
 	};
@@ -23,6 +23,7 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 		$scope.invokeApi(RVReservationCardSrv.fetch, {},$scope.fetchReservationDataSuccessCallback,$scope.fetchReservationDataFailureCallback);	
 	};
 	$scope.fetchReservationData();
+	 RVReservationCardSrv.emptyConfirmationNumbers();
 	$scope.showTimeLineReservation = function(timeline){
 		if(timeline == "current"){
 			$scope.timeline = "current";
@@ -30,7 +31,10 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 			
 			if($scope.countCurrent>0){
 				$scope.currentReservationId = $scope.data.reservation_list.current_reservations_arr[0].confirmation_num;
-			 	$scope.$broadcast("DO_BIDDING", $scope.currentReservationId);
+			 	$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
+			} else {
+				$scope.currentReservationId = "";
+			 	$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 			}
 			
 		}
@@ -39,16 +43,27 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 			$scope.reservationList = $scope.data.reservation_list.upcoming_reservations_arr;
 			if($scope.countUpcoming>0){
 				$scope.currentReservationId = $scope.data.reservation_list.upcoming_reservations_arr[0].confirmation_num;
-			 	$scope.$broadcast("DO_BIDDING", $scope.currentReservationId);
+			 	$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 			} else {
 				$scope.currentReservationId = "";
-			 	$scope.$broadcast("DO_BIDDING", $scope.currentReservationId);
+			 	$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 			}
 			
 		}
 		if(timeline == "history"){
 			$scope.timeline = "history";
 			$scope.reservationList = $scope.data.reservation_list.history_reservations_arr;
+			if($scope.countHistory > 0){
+				$scope.currentReservationId = $scope.data.reservation_list.history_reservations_arr[0].confirmation_num;
+			 	$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
+			} else {
+				$scope.currentReservationId = "";
+			 	$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
+			}
 		}
-	};
+		
+	 };
+	 $scope.getReservationDetails = function(currentConfirmationNumber){
+	 	$scope.$broadcast("RESERVATIONDETAILS", currentConfirmationNumber);
+	 };
 }]);

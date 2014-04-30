@@ -3,11 +3,10 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	$scope.reservationDetailsFetchSuccessCallback = function(data){
 		$scope.$emit('hideLoader');
 		$scope.reservationData = data;
-		console.log(JSON.stringify($scope.reservationData));
 	};
 	
-	 $scope.$on("DO_BIDDING", function(event, confirmationNumber){
-	 	alert(confirmationNumber);
+	 $scope.$on("RESERVATIONDETAILS", function(event, confirmationNumber){
+	 	
 	 	if(confirmationNumber){
 	 		  $scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, confirmationNumber, $scope.reservationDetailsFetchSuccessCallback);	
 	 	} else {
