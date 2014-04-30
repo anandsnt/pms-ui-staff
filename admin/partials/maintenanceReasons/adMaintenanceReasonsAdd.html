@@ -1,0 +1,20 @@
+<div class="data-holder">
+	<!-- Add Charge Group -->
+	<form class="form inline-form float">
+		<div class="form-title">
+			<h3><span></span> Add </h3>
+			<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+		</div>
+		<fieldset class="holder left float">
+			<ad-textbox value="data.name" name = "item-name" label = "Name" placeholder = "Enter maintenance reason" required = "yes"></ad-textbox>
+		</fieldset>
+		<div class="actions float">
+			<button type="button" ng-click="clickedCancel()" class="button blank edit-data-inline">
+				Cancel
+			</button>
+			<button type="button" ng-click="saveAddNew()" class="button green edit-data-inline">
+				Save changes
+			</button>
+		</div>
+	</form>
+</div>

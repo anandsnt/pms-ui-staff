@@ -1,0 +1,101 @@
+/* StayNTouch | Rover LESS file */
+
+/* 1. ROOT
+==========================================================*/
+@import "less/common/01-A_reset.less";
+
+@import "less/common/01-B_variables.less";
+@import "less/app/01-B_variables.less"; 
+
+@import "less/common/01-C_mixins.less"; 
+@import "less/common/01-D_mixins-animations.less"; 
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+@import "less/common/02_typography.less"; 
+
+/* 3. GRAPHICAL ELEMENTS
+==========================================================*/
+@import "less/common/03_graphics.less"; 
+@import "less/app/03_graphics.less"; 
+
+/* 4. LAYOUT
+==========================================================*/
+@import "less/common/04_layout.less";
+@import "less/app/04_layout.less";
+
+/* 5. COMPONENTS
+==========================================================*/
+@import "less/common/05-A_components.less";
+@import "less/app/05-A_components.less";
+
+@import "less/common/05-B_forms.less";
+@import "less/app/05-B_forms.less";
+
+@import "less/common/05-C_plugins.less";
+@import "less/app/05-C_plugins.less"; 
+
+/* 6. IE
+==========================================================*/
+@import "less/app/06_ie.less"; 
+
+/* 7. MEDIA QUERIES
+==========================================================*/
+@media only print {
+    @import "less/app/07_print.less"; 
+}
+
+
+//Added for animation effects
+.slide-left.ng-enter,
+.slide-left.ng-leave,
+.slide-right.ng-enter,
+.slide-right.ng-leave {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: inherit;
+  -ms-transition: 2.4s ease-in-out;
+  -webkit-transition: 2.4s ease-in-out;
+  transition:  2.4s ease-in-out;
+}
+
+.slide-left.ng-enter {}
+.slide-left.ng-enter.ng-enter-active {
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+
+.slide-left.ng-leave {
+  z-index: 100;
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+.slide-left.ng-leave.ng-leave-active {
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+}
+
+
+.slide-right.ng-enter {
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+} 
+
+.slide-right.ng-enter.ng-enter-active, 
+.slide-right.ng-leave {
+  position: absolute;
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+
+.slide-right.ng-leave.ng-leave-active {
+  -webkit-transform: translateX(100%);
+  transform: translateX(100%);
+}
+
+
+
+.container.menu-open .page-current, .container.menu-open .page-locked {
+    animation: 0s ease 0s normal both 1 appMenuOpen;
+ }
+
