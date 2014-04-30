@@ -22,6 +22,14 @@ $scope.cancelClicked = function(){
     ngDialog.close();
 
 };
+$scope.passwordsMatch =function(){
+	if($scope.new_password !== $scope.confirmPassword)
+		return false;
+	else if($scope.new_password.length === 0)
+		return false;
+	else
+		return true;
+};
 
 
 $scope.updateSettings = function(){
