@@ -1,0 +1,53 @@
+
+<!-- <div id="reservation-listing">
+	<ul>
+		<li ng-repeat="reservationNumber in reservationNumbers">
+			<a ng-click = "loadReservationDetails(reservationNumber)">
+				<span class="guest-status no-show small-icon"></span>
+				<span class="number">{{reservationNumber}}</span>						
+			</a>
+		</li>
+	</ul>
+
+</div> -->
+
+
+<div id="reservations-nav-current" class="reservation-tabs-nav reservations-tabs scrollable">
+	<ul class="wrapper ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+		<li data-confirmation-num="4842206" class="icons-tabs no-icon reservation-tab ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="reservation-4842206" aria-labelledby="ui-id-1" aria-selected="false">
+			<a href="#reservation-4842206" data-transition="reservation-list" class="no-auto-bind ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-1"> <span class="guest-status departed small-icon"></span> <span class="number">4842206</span> </a>
+		</li>
+		<li data-confirmation-num="4842697" class="icons-tabs no-icon reservation-tab ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="reservation-4842697" aria-labelledby="ui-id-2" aria-selected="false">
+			<a href="#reservation-4842697" data-transition="reservation-list" class="no-auto-bind ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-2"> <span class="guest-status departed small-icon"></span> <span class="number">4842697</span> </a>
+		</li>
+		<li data-confirmation-num="4842698" class="icons-tabs no-icon reservation-tab ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="reservation-4842698" aria-labelledby="ui-id-3" aria-selected="false">
+			<a href="#reservation-4842698" data-transition="reservation-list" class="no-auto-bind ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-3"> <span class="guest-status no-show small-icon"></span> <span class="number">4842698</span> </a>
+		</li>
+		<li data-confirmation-num="4842699" class="icons-tabs no-icon reservation-tab ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="reservation-4842699" aria-labelledby="ui-id-4" aria-selected="false">
+			<a href="#reservation-4842699" data-transition="reservation-list" class="no-auto-bind ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-4"> <span class="guest-status no-show small-icon"></span> <span class="number">4842699</span> </a>
+		</li>
+		<li data-confirmation-num="4842700" class="icons-tabs no-icon reservation-tab ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="reservation-4842700" aria-labelledby="ui-id-5" aria-selected="false">
+			<a href="#reservation-4842700" data-transition="reservation-list" class="no-auto-bind ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-5"> <span class="guest-status departed small-icon"></span> <span class="number">4842700</span> </a>
+		</li>
+		<li data-confirmation-num="4843951" class="icons-tabs no-icon reservation-tab ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="reservation-4843951" aria-labelledby="ui-id-6" aria-selected="false">
+			<a href="#reservation-4843951" data-transition="reservation-list" class="no-auto-bind ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-6"> <span class="guest-status inhouse small-icon"></span> <span class="number">4843951</span> </a>
+		</li>
+		<li data-confirmation-num="4843952" class="icons-tabs no-icon reservation-tab ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="reservation-4843952" aria-labelledby="ui-id-7" aria-selected="false">
+			<a href="#reservation-4843952" data-transition="reservation-list" class="no-auto-bind ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-7"> <span class="guest-status inhouse small-icon"></span> <span class="number">4843952</span> </a>
+		</li>
+		<li data-confirmation-num="4843953" class="icons-tabs no-icon reservation-tab ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="reservation-4843953" aria-labelledby="ui-id-8" aria-selected="false">
+			<a href="#reservation-4843953" data-transition="reservation-list" class="no-auto-bind ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-8"> <span class="guest-status inhouse small-icon"></span> <span class="number">4843953</span> </a>
+		</li>
+		<li data-confirmation-num="4844452" class="icons-tabs no-icon reservation-tab ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="reservation-4844452" aria-labelledby="ui-id-9" aria-selected="false">
+			<a href="#reservation-4844452" data-transition="reservation-list" class="no-auto-bind ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-9"> <span class="guest-status check-in small-icon"></span> <span class="number">4844452</span> </a>
+		</li>
+		<li data-confirmation-num="4844453" class="icons-tabs no-icon reservation-tab ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="reservation-4844453" aria-labelledby="ui-id-10" aria-selected="true">
+			<a href="#reservation-4844453" data-transition="reservation-list" class="no-auto-bind ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-10"> <span class="guest-status small-icon check-in"></span> <span class="number">4844453</span> </a>
+		</li>
+		<!-- Setting button to hidded - need in future -->
+		<a class="hidden open-modal add-new-button">+ Add new</a>
+	</ul>
+	<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
+		<div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 105px; transform: translate(0px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
+	</div>
+</div>
