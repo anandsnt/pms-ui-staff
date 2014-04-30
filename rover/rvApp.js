@@ -1,4 +1,4 @@
-var sntRover = angular.module('sntRover',['ui.router']);
+var sntRover = angular.module('sntRover',['ui.router', 'ng-iscroll']);
 
 sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
 	
