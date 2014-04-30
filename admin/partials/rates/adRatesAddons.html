@@ -24,7 +24,7 @@
 						{{ item.description }}
 					</td>
 
-					<td data-title="'Toggle'" header-class="width-20" class="activate text-left" ng-hide="currentClickedAddon == $index" >
+					<td data-title="'Toggle'" header-class="width-10" class="activate text-left" ng-hide="currentClickedAddon == $index" >
 						<div class="entry">
 							<label></label>
 							<div class="switch-button single"
@@ -38,7 +38,11 @@
 						</div>
 					</td>
 
-					<td colspan="3" ng-include="getTemplateUrl($index,room_types.id)" ng-show="currentClickedAddon == $index"></td>
+					<td data-title="'Delete'" header-class="width-10" class="delete" >
+						<a class="icons icon-delete large-icon" ng-click="deleteAddon()">Delete this addon</a>		
+					</td>
+
+					<td colspan="4" ng-include="getTemplateUrl($index,room_types.id)" ng-show="currentClickedAddon == $index"></td>
 				</tr>
 			</tbody>
 		</table>

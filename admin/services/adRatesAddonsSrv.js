@@ -150,8 +150,6 @@ admin.service('ADRatesAddonsSrv', [
 			return deferred.promise;
 		};
 
-		
-
 		/*
 		* activate/deactivate an adddon
 		*
@@ -164,9 +162,28 @@ admin.service('ADRatesAddonsSrv', [
 				url      = '/api/addons/' + dataWith.id + '/activate',
 				data     = _.omit(dataWith, 'id');
 
-				console.log( data );
-
 			ADBaseWebSrvV2.postJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(errorMessage) {
+					deferred.reject(errorMessage);
+				});
+
+			return deferred.promise;
+		};
+
+		/*
+		* delete an adddon
+		*
+		* @method DELETE
+		* @param {object} id of the addon
+		* @return {object} defer promise
+		*/
+		this.deleteAddon = function(params) {
+			var deferred = $q.defer(),
+				url      = '/api/addons/' + params.id;
+
+			ADBaseWebSrvV2.deleteJSON(url)
 				.then(function(data) {
 					deferred.resolve(data);
 				}, function(errorMessage) {

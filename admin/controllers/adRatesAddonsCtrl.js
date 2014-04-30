@@ -108,8 +108,8 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.currentClickedAddon = -1;
 
 			// title for the sub template
-			$scope.likeTitle    = "Add New";
-			$scope.likeSubtitle = "Addon";
+			$scope.addonTitle    = "Add New";
+			$scope.addonSubtitle = "Addon";
 
 			// params to be sent to server
 			$scope.singleAddon            = {};
@@ -126,8 +126,8 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.currentClickedAddon = this.$index;
 
 			// title for the sub template
-			$scope.likeTitle    = "Edit";
-			$scope.likeSubtitle = this.item.name;
+			$scope.addonTitle    = "Edit";
+			$scope.addonSubtitle = this.item.name;
 
 			// empty singleAddon
 			$scope.singleAddon = {};
@@ -185,22 +185,38 @@ admin.controller('ADRatesAddonsCtrl', [
 
 		// on change activation 
 		$scope.switchActivation = function() {
-
-			// TESTING: remove later
-			this.item.activated = this.item.activated ? false : true;
+			var item = this.item;
 
 			var callback = function() {
-				this.item.activated = this.item.activated ? false : true;
+				item.activated = item.activated ? false : true;
 
 				$scope.$emit('hideLoader');
 			};
 
 			var data = {
-				id: this.item.id,
-				status: this.item.activated ? false : true
+				id: item.id,
+				status: item.activated ? false : true
 			}
 
 			$scope.invokeApi(ADRatesAddonsSrv.switchActivation, data, callback);
+		};
+
+		// on delete addon
+		$scope.deleteAddon = function() {
+			var item = this.item;
+
+			var callback = function() {
+				var withoutThis = _.without( $scope.addonList, item );
+				$scope.addonList = withoutThis;
+
+				$scope.$emit('hideLoader');
+			};
+
+			var data = {
+				id: item.id
+			}
+
+			$scope.invokeApi(ADRatesAddonsSrv.deleteAddon, data, callback);
 		};
 	}
 ]);
