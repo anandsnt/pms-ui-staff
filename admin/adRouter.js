@@ -240,6 +240,11 @@ admin.config([
 			controller: 'ADCheckinCheckoutCtrl',
 			url : '/checkinCheckoutEmail/:from'
 		});
-
+		
+		$stateProvider.state('admin.maintenanceReasons', {
+			templateUrl: '/assets/partials/maintenanceReasons/adMaintenanceReasons.html',
+			controller: 'ADMaintenanceReasonsCtrl',
+			url : '/maintenanceReasons'
+		});
 	}
 ]);
