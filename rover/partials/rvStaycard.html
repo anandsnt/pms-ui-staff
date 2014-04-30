@@ -9,7 +9,7 @@
 
 
 <div id="page-inner-first" class="page inner-page page-current">
-	<div>
+	<div id="staycard_main" >
 		<!-- TO INCLUDE GUEST CARD -->
 		<div ng-include="'assets/partials/guestCard/guestCard.html'"></div>
 
@@ -17,7 +17,8 @@
 			<!-- Nav bar -->
 			<header role="banner" class="nav-bar float">
 				<!-- Drawer toggle -->
-				<a id="back-arrow" href="#main-nav" class="nav-toggle">Menu</a>
+				<a id="back-arrow" class="nav-toggle" ng-click="$emit('navToggled')" ng-class="{'active': true}">Menu</a>
+		
 				<!-- Title -->
 				<h1 class="h2"> Stay Card <span> <strong> Admin
 					Staff </strong> | <em class="date"> Monday, 31 March 2014 </em> </span></h1>
@@ -27,7 +28,7 @@
 				</div>
 			</header>
 			<!-- TO INCLUDE RESERVATION CARD WHICH INCLUDES RESERVATION LISTING AND RESERVATION DETAILS IN THE RIGHT SIDE-->
-			<div ui-view> </div>
+			<div ui-view > </div>
 		</div>
 
 

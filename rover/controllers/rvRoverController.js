@@ -1,9 +1,7 @@
-sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window','RVDashboardSrv', function($rootScope, $scope, $state,$window,RVDashboardSrv){
+sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window','RVDashboardSrv','ngDialog', function($rootScope, $scope, $state,$window,RVDashboardSrv,ngDialog){
 
 $scope.init = function () {
     BaseCtrl.call(this, $scope);
-    $scope.isDashBoardActive = true;
-    $scope.isSearchActive = false;
     $rootScope.adminRole = '';
 
 /*
@@ -31,20 +29,7 @@ $scope.init = function () {
 }
 
 $scope.init();
-/*
-   * left menu actions
-   */
 
-$scope.leftMenuSelected = function(menu){
-if(menu === 'Dashboard'){
-    $scope.isDashBoardActive = true;
-    $scope.isSearchActive = false
-}
-else if(menu === 'Search'){
-    $scope.isSearchActive    = true;
-    $scope.isDashBoardActive = false;
-}
-};
 
 $scope.$on("navToggled", function(){
   $scope.menuOpen = !$scope.menuOpen;
@@ -78,8 +63,13 @@ $scope.$emit('hideLoader');
 $scope.settingsClicked = function(){
 if($scope.isHotelAdmin)
  $window.location.href = "/admin";
-else if($scope.isHotelStaff)
- console.log("Staff");
+else if($scope.isHotelStaff){
+        ngDialog.open({
+             template: '/assets/partials/settings/rvStaffSettingModal.html',
+             controller: 'RVStaffsettingsModalController',
+             className: 'ngdialog-theme-default calendar-modal'
+        });
+    }
 }
 
 }]);

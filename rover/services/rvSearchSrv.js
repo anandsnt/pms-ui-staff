@@ -4,7 +4,7 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv)
 	
 	this.fetch = function(){
 		var deferred = $q.defer();
-		var data = {fakeDataToAvoidCache: new Date(), status: 'DUEIN'};
+		var data = {fakeDataToAvoidCache: new Date(), status: 'INHOUSE'};
 		var url =  'search.json';	
 		
 		RVBaseWebSrv.getJSON(url, data).then(function(data) {

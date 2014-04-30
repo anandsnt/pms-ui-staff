@@ -9,7 +9,7 @@ sntRover.config([
 		$stateProvider.state('rover', {
 			abstract: true,
 			url: '/staff',
-			templateUrl: '/assets/partials/rover.html',
+			templateUrl: '/assets/partials/rvRover.html',
 			controller: 'roverController'
 		});
 		
@@ -34,7 +34,7 @@ sntRover.config([
 		$stateProvider.state('rover.staycard', {
 			abstract : true,
 			url: '/staycard',
-			templateUrl: '/assets/partials/staycard.html',
+			templateUrl: '/assets/partials/rvStaycard.html',
             controller: 'staycardController'
         });
 
@@ -69,6 +69,12 @@ sntRover.config([
 			templateUrl : "/assets/partials/bill_details.html",
 			controller	: 'billDetailsController'
         });
+        
+        // $stateProvider.state('rover.staycard.billcard.details', {
+			// url: '/:billNo',
+			// templateUrl : "/assets/partials/bill_details.html",
+			// controller	: 'billDetailsController'
+        // });
         
 		// may be replaced with ng-include?
 	    /*$stateProvider.state('rover.staycard.billcard.all', {

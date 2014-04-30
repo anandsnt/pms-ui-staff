@@ -1,28 +1,7 @@
 <div id="page-main-second" class="page main-page page-current">
 	<div id="search_list" data-view="Search" data-search-type="">
 	<!-- Navbar -->
-		<header role="banner" class="nav-bar float">
-			<!-- Drawer toggle -->
-			<a href="#main-nav" class="nav-toggle">Menus page</a>
-			<!-- Title -->
-			<h1 id="search-title" class="h2">
-				Search
-				<span>
-					<strong>
-						{{UserRole}}{{UserName}}
-					</strong>
-					|
-					<em class="date">
-						{{businessDate}}
-					</em>
-				</span>
-			</h1>
-			<!-- Late checkout -->
-			<a id="late-checkout-alert" class="icons icon-alert late-check-out">{{lateCheckoutCount}}</a>
-			<div class="logo">
-				<img src="{{hotellogo_utl}}" alt="Hotel Logo Url">
-			</div>
-		</header>
+		<div ng-include="'/assets/partials/common/header.html'"></div>
 		<form role="search" name="search-form" method="get" id="search-form" class="search-form form float" action="">
 			<div class="entry">
 				<a id="clear-query" class="icons icon-clear-search">Clear query</a>
@@ -32,7 +11,7 @@
 			<!-- %button.button.blank{name: "advanced", type: "button"} Advanced search -->
 		</form>
 		<section role="main" id="search" class="content scrollable">
-			<div class="wrapper" id="result-showing-area" ng-hide="results.length==0" ng-iscroll="result-showing-area"  ng-iscroll-delay="500">
+			<div class="wrapper" id="result-showing-area" ng-hide="results.length==0" ng-iscroll="result-showing-area"  ng-iscroll-delay="1000">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<ul id="search-results" class="search-results" ng-class="{'hidden': results.length==0}">
 					<li ng-repeat="row in results">
@@ -45,7 +24,8 @@
 							<div class="data">
 								<h2>{{row.lastname}}, {{row.firstname}}</h2>
 								<span class="confirmation">{{row.confirmation}}</span>
-								<span class="icons icon-location" ng-hide="{{row.location==null}}" >{{row.location}}</span>
+								<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
+								</span>
 								<em class="icons icon-group" ng-hide="{{row.group==null}}">{{row.group}}</em>
 							</div>	
 

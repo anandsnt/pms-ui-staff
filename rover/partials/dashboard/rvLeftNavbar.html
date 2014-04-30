@@ -3,10 +3,10 @@
 	<!-- For Hotel Admin -->
 	<ul ng-show ="isHotelAdmin || isHotelStaff" >
 		<li>
-			<a  ng-click="leftMenuSelected('Dashboard')" ui-sref="rover.dashboard" class="icon-menu icon-dashboard" ng-class="{'active': isDashBoardActive}">Dashboard</a>
+			<a   ui-sref="rover.dashboard" class="icon-menu icon-dashboard" ng-class="{'active': isDashBoardActive}">Dashboard</a>
 		</li>
 		<li>
-			<a ng-click="leftMenuSelected('Search')" ui-sref="rover.search" class="icon-menu icon-search" ng-class="{'active': isSearchActive}">Search</a>
+			<a  ui-sref="rover.search" class="icon-menu icon-search" ng-class="{'active': isSearchActive}">Search</a>
 		</li>
 		<li class="hidden">
 			<a ng-click="$emit('navToggled')" class="icon-menu icon-social-lobby ">Social Lobby</a>

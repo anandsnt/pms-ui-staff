@@ -26,8 +26,19 @@ sntRover.service('RVBaseWebSrv',['$http', '$q', '$window', function($http, $q, $
 		if(typeof params == "undefined"){
 			params = "";
 		}
+
+		var httpDict = {};
+ 		httpDict.url = url;
+ 		httpDict.method = httpMethod;
+ 		if(httpMethod == 'GET' || httpMethod == 'DELETE'){
+ 			httpDict.params = params;
+ 		}
+ 		else if(httpMethod == 'POST' || httpMethod == 'PUT'){
+ 			httpDict.data = params;
+  		};
+
 		//Sample params {params:{fname: "fname", lname: "lname"}}
-		httpMethod(url, params).success(function(response, status) {
+		$http(httpDict).success(function(response, status) {
 			if(response.status == "success"){
 		    	deferred.resolve(response.data);
 			}else{
@@ -60,19 +71,19 @@ sntRover.service('RVBaseWebSrv',['$http', '$q', '$window', function($http, $q, $
 	};
 
    	this.getJSON = function(url, params){	
-    	return this.callWebService($http.get, url, params);
+    	return this.callWebService("GET", url, params);
    	};
     
    	this.putJSON = function(url, params){
-   		return this.callWebService($http.put, url, params);
+   		return this.callWebService("PUT", url, params);
    	};
     
    	this.postJSON = function(url, params){
-   		return this.callWebService($http.post, url, params);
+   		return this.callWebService("POST", url, params);
    	};
     
    	this.deleteJSON = function(url, params){
-   		return this.callWebService($http.delete, url, params);
+   		return this.callWebService("DELETE", url, params);
    	};
 
 }]);
