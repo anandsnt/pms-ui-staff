@@ -4,6 +4,10 @@ BaseCtrl.call(this, $scope);
 $scope.new_password = '';
 $scope.confirmPassword ='';
 $scope.errorMessage='';
+
+/*
+   * fetch data for settings
+   */
 $scope.fetchData = function(){   
     var fetchUserInfoSuccessCallback = function(data){
         $scope.userInfo = data;
@@ -13,15 +17,19 @@ $scope.fetchData = function(){
         $scope.$emit('hideLoader');
     };
     $scope.invokeApi(RVSettingsSrv.fetchUserInfo,{},fetchUserInfoSuccessCallback,fetchUserInfoFailureCallback);  
-
 }   
 
 $scope.fetchData();
-
+/*
+   * cancel click action
+   */
 $scope.cancelClicked = function(){
     ngDialog.close();
 
 };
+/*
+   * function to check if the passwords matches
+   */
 $scope.passwordsMatch =function(){
 	if($scope.new_password !== $scope.confirmPassword)
 		return false;
@@ -30,10 +38,10 @@ $scope.passwordsMatch =function(){
 	else
 		return true;
 };
-
-
+/*
+   * update settings
+   */
 $scope.updateSettings = function(){
-
 	var updateUserInfoSuccessCallback = function(data){
 		$scope.cancelClicked();
 	    $scope.$emit('hideLoader');
