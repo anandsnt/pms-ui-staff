@@ -1,5 +1,5 @@
-<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()">
-	<div data-view="HotelChargeGroupsView">
+<section class="content current" ng-click="clearErrorMessage()">
+	<div>
 		<header class="content-title float">
 			<h2> Charge Groups </h2>
 			<span class="count"> (
@@ -14,9 +14,9 @@
 		
 		<table class="grid">
 			<tbody>
-				<tr ng-repeat="item in data.charge_groups" > 
+				<tr ng-repeat="item in data.markets" > 
 					<td ng-click="editItem($index)" ng-hide="currentClickedElement == $index">
-						<a data-item="1" data-colspan="2" class="edit-data-inline">{{item.name}} </a>
+						<a data-item="1" data-colspan="2" class="edit-data-inline">{{item.name}}</a>
 					</td>
 					<td class="delete" ng-click="clickedDelete(item.value)" ng-hide="currentClickedElement == $index">
 						<a class="icons icon-delete large-icon delete_item"></a>
