@@ -24,7 +24,7 @@
 		<input type="password" ng-model="confirmPassword" placeholder="Repeat new password" name="confirm-password" id="confirm-password">
 	</div>
 	<div class="actions float">
-		<button type="button" ng-click="updateSettings()" class="button  modal-close" ng-disabled="passwordsMatch()" ng-class="{'green': passwordsMatch()}">
+		<button type="button" ng-click="updateSettings()" class="button  modal-close" ng-disabled="!passwordsMatch()" ng-class="{'green': passwordsMatch()}">
 			Save changes
 		</button>
 		<button type="button" id="cancel" ng-click="cancelClicked()" class="button blank modal-close">Cancel</button>
