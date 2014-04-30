@@ -16,8 +16,8 @@
 			<fieldset class="holder left float">
 				<ad-textbox styleclass="full-width"
 					value="singleAddon.name"
-					name="new-addon-name"
-					id="new-addon-name"
+					name="name"
+					id="name"
 					label="Name"
 					placeholder="Enter the addon name"
 					required="yes"></ad-textbox>
@@ -26,8 +26,8 @@
 					div-class="full-width"
 					text-area-class="full-width"
 					value="singleAddon.description"
-					name="new-addon-desc"
-					id="new-addon-desc"
+					name="desc"
+					id="desc"
 					label="Description"
 					placeholder="Enter the addon description"
 					required="yes"></ad-textarea>
@@ -40,21 +40,13 @@
 					</label>
 				</div>
 
-				<ad-textbox styleclass="full-width"
-					value="singleAddon.charge_group_id"
-					name="new-addon-charge-group-id"
-					id="new-addon-charge-group-id"
-					label="Charge group"
-					placeholder="Enter the charge group id"
-					required="yes"></ad-textbox>
-
-				<ad-textbox styleclass="full-width"
-					value="singleAddon.charge_code_id"
-					name="new-addon-charge-code-id"
-					id="new-addon-charge-code-id"
-					label="Charge code"
-					placeholder="Enter the charge code id"
-					required="yes"></ad-textbox>
+				<div class="entry full-width radio-check">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
+						<label>Is it rate code only?</label>
+						<input type="checkbox" ng-model="singleAddon.rate_code_only">
+					</label>
+				</div>
 			</fieldset>
 
 
@@ -90,38 +82,72 @@
 							</div>
 						</div>
 					</div>
-				</div>								
+				</div>
 
-				<ad-textbox styleclass="full-width"
-					value="singleAddon.amount"
-					name="new-addon-amount"
-					id="new-addon-amount"
-					label="Amount"
-					placeholder="Enter the amount"
-					required="yes"></ad-textbox>
+				<div class="entry">
+					<div class="entry full-width">
+						<label for="charge-group-id">
+							Charge group
+							<strong>*</strong>
+						</label>
+						<div class="select">
+							<select name="charge-group-id"
+								id="charge-group-id"
+								ng-model="singleAddon.charge_group_id"
+								ng-options="group.id as group.name for group in chargeGroups"></select>
+						</div>
+					</div>
+				</div>
+				<div class="entry">
+					<div class="entry full-width">
+						<label for="charge-group-id">
+							Charge code
+							<strong>*</strong>
+						</label>
+						<div class="select">
+							<select name="charge-code-id"
+								id="charge-code-id"
+								ng-model="singleAddon.charge_code_id"
+								ng-options="code.id as code.name for code in chargeCodes"></select>
+						</div>
+					</div>
+				</div>							
+				
+				<div class="entry">
+					<ad-textbox styleclass="full-width"
+						value="singleAddon.amount"
+						name="amount"
+						id="amount"
+						label="Amount"
+						placeholder="Enter the amount"
+						required="yes"></ad-textbox>
+				</div>
+				<div class="entry">
+					<div class="entry full-width">
+						<label for="amount-type-id">
+							Amount Type
+							<strong>*</strong>
+						</label>
+						<div class="select">
+							<select name="amount-type-id"
+								id="amount-type-id"
+								ng-model="singleAddon.amount_type_id"
+								ng-options="type.id as type.value for type in amountTypes"></select>
+						</div>
+					</div>
+				</div>
 
-				<ad-textbox styleclass="full-width"
-					value="singleAddon.amount_type_id"
-					name="new-addon-charge-code-id"
-					id="new-addon-charge-code-id"
-					label="Amount type"
-					placeholder="Enter the amount type id"
-					required="yes"></ad-textbox>
-
-				<ad-textbox styleclass="full-width"
-					value="singleAddon.post_type_id"
-					name="new-addon-post-type-id"
-					id="new-addon-post-type-id"
-					label="Post type"
-					placeholder="Enter the post type id"
-					required="yes"></ad-textbox>
-
-				<div class="entry full-width radio-check">
-					<label class="checkbox">
-						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
-						<label>Is it rate code only?</label>
-						<input type="checkbox" ng-model="singleAddon.rate_code_only">
+				<div class="entry full-width">
+					<label for="amount-type-id">
+						Post Type
+						<strong>*</strong>
 					</label>
+					<div class="select">
+						<select name="post-type-id"
+							id="post-type-id"
+							ng-model="singleAddon.post_type_id"
+							ng-options="type.id as type.value for type in postTypes"></select>
+					</div>
 				</div>
 			</fieldset>
 

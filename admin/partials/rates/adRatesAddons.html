@@ -20,11 +20,11 @@
 						<a class="edit-data-inline">{{ item.name }}</a>
 					</td>
 
-					<td header-class="width-40"  data-title="'Description'" sortable="'description'" ng-hide="currentClickedAddon == $index" >	
+					<td header-class="width-50"  data-title="'Description'" sortable="'description'" ng-hide="currentClickedAddon == $index" >	
 						{{ item.description }}
 					</td>
 
-					<td data-title="'Toggle'" header-class=" width-30" class="activate text-left" ng-hide="currentClickedAddon == $index" >
+					<td data-title="'Toggle'" header-class="width-20" class="activate text-left" ng-hide="currentClickedAddon == $index" >
 						<div class="entry">
 							<label></label>
 							<div class="switch-button single"
@@ -32,7 +32,7 @@
 								<input type = "checkbox"
 										id = "rates-addons"
 										name = "rates-addons"
-										ng-click = "switchClicked($index)">
+										ng-click = "switchActivation()">
 								<span class="switch-icon"></span>
 							</div>
 						</div>

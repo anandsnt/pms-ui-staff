@@ -88,5 +88,92 @@ admin.service('ADRatesAddonsSrv', [
 
 			return deferred.promise;
 		};
+
+		/*
+		* Get the list of charge codes
+		*
+		* @method GET
+		* @return {object} defer promise
+		*/
+		this.fetchChargeCodes = function() {
+			var deferred = $q.defer(),
+				url      = '/api/charge_codes';
+
+			ADBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(errorMessage) {
+					deferred.reject(errorMessage);
+				});
+
+			return deferred.promise;
+		};
+
+		/*
+		* Get the list of charge groups
+		*
+		* @method GET
+		* @return {object} defer promise
+		*/
+		this.fetchChargeGroups = function() {
+			var deferred = $q.defer(),
+				url      = '/api/charge_groups';
+
+			ADBaseWebSrvV2.getJSON(url)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(errorMessage) {
+					deferred.reject(errorMessage);
+				});
+
+			return deferred.promise;
+		};
+		
+		/*
+		* Get a particular list from refrence values api
+		*
+		* @method GET
+		* @param {object} type - 'amount_type' or 'post_type'
+		* @return {object} defer promise
+		*/
+		this.fetchReferenceValue = function(params) {
+			var deferred = $q.defer(),
+				url      = '/api/reference_values';
+
+			ADBaseWebSrvV2.getJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(errorMessage) {
+					deferred.reject(errorMessage);
+				});
+
+			return deferred.promise;
+		};
+
+		
+
+		/*
+		* activate/deactivate an adddon
+		*
+		* @method POST
+		* @param {object} id of the addon
+		* @return {object} defer promise
+		*/
+		this.switchActivation = function(dataWith) {
+			var deferred = $q.defer(),
+				url      = '/api/addons/' + dataWith.id + '/activate',
+				data     = _.omit(dataWith, 'id');
+
+				console.log( data );
+
+			ADBaseWebSrvV2.postJSON(url, data)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(errorMessage) {
+					deferred.reject(errorMessage);
+				});
+
+			return deferred.promise;
+		};
 	}
 ]);

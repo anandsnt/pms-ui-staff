@@ -14,18 +14,79 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			// for adding 
 			$scope.isAddMode = false;
+
+			// api load count
+			$scope.apiLoadCount = 0;
 		};
 
 		$scope.init();
 
+		// fetch charge groups, charge codes, amount type and post type
+		$scope.fetchOtherApis = function() {
+
+			// fetch charge groups
+			var cgCallback = function(data) {
+				$scope.chargeGroups = data.results;
+
+				// when ever we are ready to emit 'hideLoader'
+				$scope.apiLoadCount++
+				if ( $scope.apiLoadCount > 4 ) {
+					$scope.$emit('hideLoader');
+				};
+			};
+			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeGroups, {}, cgCallback);
+
+			// fetch charge codes
+			var ccCallback = function(data) {
+				$scope.chargeCodes = data.results;
+
+				// when ever we are ready to emit 'hideLoader'
+				$scope.apiLoadCount++
+				if ( $scope.apiLoadCount > 4 ) {
+					$scope.$emit('hideLoader');
+				};
+			};
+			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, ccCallback);
+
+			// fetch amount types
+			var atCallback = function(data) {
+				$scope.amountTypes = data;
+
+				// when ever we are ready to emit 'hideLoader'
+				$scope.apiLoadCount++
+				if ( $scope.apiLoadCount > 4 ) {
+					$scope.$emit('hideLoader');
+				};
+			};
+			$scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'amount_type' }, atCallback);
+
+			// fetch post types
+			var ptCallback = function(data) {
+				$scope.postTypes = data;
+
+				// when ever we are ready to emit 'hideLoader'
+				$scope.apiLoadCount++
+				if ( $scope.apiLoadCount > 4 ) {
+					$scope.$emit('hideLoader');
+				};
+			};
+			$scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'post_type' }, ptCallback);
+		};
+
+		$scope.fetchOtherApis();
+
 		// fetch addon list
 		$scope.fetchAddons = function() {
-			var callback = function(data) {
-				$scope.$emit('hideLoader');
-				
+			var callback = function(data) {				
 				$scope.addonList  = data.results;
 				$scope.total      = data.total_count;
 				$scope.bestseller = data.bestseller;
+
+				// when ever we are ready to emit 'hideLoader'
+				$scope.apiLoadCount++
+				if ( $scope.apiLoadCount > 4 ) {
+					$scope.$emit('hideLoader');
+				};
 			};
 
 			$scope.invokeApi(ADRatesAddonsSrv.fetch, {}, callback);
@@ -120,6 +181,26 @@ admin.controller('ADRatesAddonsCtrl', [
 
 				$scope.invokeApi(ADRatesAddonsSrv.updateSingle, $scope.singleAddon, callback);
 			};
+		};
+
+		// on change activation 
+		$scope.switchActivation = function() {
+
+			// TESTING: remove later
+			this.item.activated = this.item.activated ? false : true;
+
+			var callback = function() {
+				this.item.activated = this.item.activated ? false : true;
+
+				$scope.$emit('hideLoader');
+			};
+
+			var data = {
+				id: this.item.id,
+				status: this.item.activated ? false : true
+			}
+
+			$scope.invokeApi(ADRatesAddonsSrv.switchActivation, data, callback);
 		};
 	}
 ]);
