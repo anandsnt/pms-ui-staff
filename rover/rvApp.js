@@ -1,5 +1,4 @@
-var sntRover = angular.module('sntRover',['ui.router','ngDialog']);
-
+var sntRover = angular.module('sntRover',['ui.router','ngAnimate','ngDialog']);
 sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
 	
 	$rootScope.$state = $state;
