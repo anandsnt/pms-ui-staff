@@ -8,7 +8,7 @@ var reports = angular.module('reports', ['ngAnimate', 'ngSanitize', 'mgcrea.ngSt
 
 reports.config([
     '$datepickerProvider',
-    function($datepickerProvider) {
+    function($datepickerProvider, $rootScope) {
         angular.extend($datepickerProvider.defaults, {
             dateFormat: 'yyyy/MM/dd',
             startWeek: 0,
@@ -97,8 +97,20 @@ reports.controller('reporstList', [
 
 
                     // for managing date filters limits
-                    $scope.reportList[i].today = new Date();
-                    $scope.reportList[i].allowedUntilDate = new Date();
+                    // use the business dates
+                    // UPDATE: depricated due to next set of comments/lines of code
+                    $scope.reportList[i].today = new Date( $rootScope.businessDate );
+                    $scope.reportList[i].allowedUntilDate = new Date( $rootScope.businessDate );
+
+                    // set the default values for until date to business date
+                    // plus calender will open in the corresponding month, rather than today
+                    $scope.reportList[i].untilDate = $rootScope.businessDate
+
+                    // HACK: set the default value for from date to a week ago from business date
+                    // so that calender will open in the corresponding month, rather than today
+                    var today = new Date( $rootScope.businessDate );
+                    var weekAgo = today.setDate(today.getDate() - 7);
+                    $scope.reportList[i].fromDate = weekAgo;
                 };
             });
 
@@ -120,9 +132,6 @@ reports.controller('reporstList', [
         };
 
         $scope.genReport = function() {
-
-        	console.log(  $filter('date')(this.item.fromDate, 'yyyy/MM/dd') )
-
             if ( !this.item.fromDate || !this.item.untilDate ) {
                 return;
             };
@@ -196,8 +205,6 @@ reports.controller('reportDetails', [
             $scope.headers = response.headers;
             $scope.results = response.results;
 
-
-
             // for hard coding styles for report headers
             // if the header count is greater than 4
             // split it up into two parts
@@ -224,6 +231,13 @@ reports.controller('reportDetails', [
             if ( $scope.chosenReport.title === 'Check In / Check Out' ) {
                 if ( $scope.firstHalf[0] ) {
                     $scope.firstHalf[0]['class'] = 'green';
+
+                    // extra hack
+                    // if the chosenCico is 'OUT'
+                    // class must be 'red'
+                    if ( $scope.chosenReport.chosenCico === 'OUT' ) {
+                    	$scope.firstHalf[0]['class'] = 'red';
+                    }
                 };
 
                 if ( $scope.restHalf[0] ) {
@@ -234,10 +248,22 @@ reports.controller('reportDetails', [
                 // 'Upsell' and 'Late Check Out' only
                 if ( $scope.firstHalf[1] ) {
                     $scope.firstHalf[1]['class'] = 'orange';
+
+                    // hack to add $ currency in front
+                    $scope.firstHalf[1]['value'] = '$' + $scope.firstHalf[1]['value'];
                 };
             };
 
+            // hack to add curency $ symbol in front of values
+            if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
+            	for (var i = 0, j = $scope.results.length; i < j; i++) {
+            		$scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
+            	};
+            }
 
+            // hack to set the colspan for reports details tfoot
+            $scope.leftColSpan  = $scope.chosenReport.title === 'Check In / Check Out' ? 4 : 2;
+            $scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' ? 5 : 2;
 
             // track the total count
             $scope.totalCount = response.total_count;
@@ -387,8 +413,8 @@ reports.controller('reportDetails', [
             // now sice we are gonna update the filter
             // we are gonna start from page one
             var params = {
-                from_date: $scope.chosenReport.fromDate,
-                to_date: $scope.chosenReport.untilDate,
+                from_date: $filter('date')($scope.chosenReport.fromDate, 'yyyy/MM/dd'),
+                to_date: $filter('date')($scope.chosenReport.untilDate, 'yyyy/MM/dd'),
                 user_ids: $scope.chosenReport.chosenUsers,
                 checked_in: $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'BOTH',
                 checked_out: $scope.chosenReport.chosenCico === 'OUT' || $scope.chosenReport.chosenCico === 'BOTH',
