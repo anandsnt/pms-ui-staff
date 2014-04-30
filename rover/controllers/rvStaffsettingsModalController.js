@@ -3,6 +3,7 @@ sntRover.controller('RVStaffsettingsModalController', ['$scope','ngDialog','RVSe
 BaseCtrl.call(this, $scope);
 $scope.new_password = '';
 $scope.confirmPassword ='';
+$scope.errorMessage='';
 $scope.fetchData = function(){   
     var fetchUserInfoSuccessCallback = function(data){
         $scope.userInfo = data;
@@ -16,9 +17,9 @@ $scope.fetchData = function(){
 }   
 
 $scope.fetchData();
-	
-	$scope.cancelClicked = function(){
- ngDialog.close();
+
+$scope.cancelClicked = function(){
+    ngDialog.close();
 
 };
 
@@ -26,9 +27,11 @@ $scope.fetchData();
 $scope.updateSettings = function(){
 
 	var updateUserInfoSuccessCallback = function(data){
+		$scope.cancelClicked();
 	    $scope.$emit('hideLoader');
 	};
 	var updateUserInfoFailureCallback = function(data){
+		 $scope.errorMessage=data;
 	    $scope.$emit('hideLoader');
 	};
 	$scope.invokeApi(RVSettingsSrv.updateUserInfo,{'new_password' :$scope.new_password},updateUserInfoSuccessCallback,updateUserInfoFailureCallback);  
