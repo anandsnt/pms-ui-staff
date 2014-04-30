@@ -9,7 +9,7 @@ sntRover.config([
 		$stateProvider.state('rover', {
 			abstract: true,
 			url: '/staff',
-			templateUrl: '/assets/partials/rover.html',
+			templateUrl: '/assets/partials/rvRover.html',
 			controller: 'roverController'
 		});
 		
@@ -34,7 +34,7 @@ sntRover.config([
 		$stateProvider.state('rover.staycard', {
 			abstract : true,
 			url: '/staycard',
-			templateUrl: '/assets/partials/staycard.html',
+			templateUrl: '/assets/partials/rvStaycard.html',
             controller: 'staycardController'
         });
 
