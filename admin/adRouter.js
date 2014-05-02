@@ -258,7 +258,7 @@ admin.config([
 		});
 		
 		$stateProvider.state('admin.bookingOrigins', {
-			templateUrl: '/assets/partials/sources/adOrigins.html',
+			templateUrl: '/assets/partials/origins/adOrigins.html',
 			controller: 'ADOriginsCtrl',
 			url : '/origins'
 		});
