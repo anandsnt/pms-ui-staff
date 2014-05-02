@@ -28,10 +28,8 @@ function($scope, $state, $rootScope, $stateParams, ADFrequentFlyerProgramSrv, ng
 
 	$scope.fetchFFP = function() {
 		var callback = function (data) {
-			console.log( data );
-
 			$scope.$emit('hideLoader');
-			$scope.ffp = data.data.frequent_flyer_program;
+			$scope.ffp = data.frequent_flyer_program;
 		}
 
 		$scope.invokeApi(ADFrequentFlyerProgramSrv.fetch, {}, callback);
@@ -57,12 +55,11 @@ function($scope, $state, $rootScope, $stateParams, ADFrequentFlyerProgramSrv, ng
 		};
 
 		var postSuccess = function() {
-			console.log( item );
 			$scope.$emit('hideLoader');
 			item.is_active = item.is_active ? false : true;
 		};
 
-		$scope.invokeApi(ADFrequentFlyerProgramSrv.postFrequentFlyerProgramToggle, data, postSuccess);
+		$scope.invokeApi(ADFrequentFlyerProgramSrv.switchToggle, data, postSuccess);
 	};
 
 }]);

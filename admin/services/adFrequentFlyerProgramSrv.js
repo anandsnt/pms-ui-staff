@@ -1,5 +1,5 @@
-admin.service('ADFrequentFlyerProgramSrv', ['$http', '$q', 'ADBaseWebSrvV2',
-function($http, $q, ADBaseWebSrvV2) {
+admin.service('ADFrequentFlyerProgramSrv', ['$http', '$q', 'ADBaseWebSrv',
+function($http, $q, ADBaseWebSrv) {
 
 	/**
 	 *   A getter method to return the Frequent Flyer Program List
@@ -8,7 +8,7 @@ function($http, $q, ADBaseWebSrvV2) {
 		var deferred = $q.defer();
 		var url = '/admin/hotel/list_ffps.json';
 
-		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		ADBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
@@ -19,11 +19,11 @@ function($http, $q, ADBaseWebSrvV2) {
 	 *   A post method to update Frequent Flyer Program for a hotel
 	 *   @param {Object} data for the Frequent Flyer Program List details.
 	 */
-	this.postFrequentFlyerProgramToggle = function(data) {
+	this.switchToggle = function(data) {
 		var deferred = $q.defer();
 		var url = '/admin/hotel/toggle_ffp_activation/';
 
-		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
