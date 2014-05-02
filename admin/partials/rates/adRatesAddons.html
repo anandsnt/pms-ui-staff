@@ -4,7 +4,7 @@
 		<header class="content-title float">
 			<h2>Addons</h2>
 			<span class="count">
-				({{ addonList.length }})
+				({{ totalCount }})
 			</span>
 			<a id="add-new-button" class="action add" ng-click="addNew()">Add new</a>
 		</header>
@@ -13,7 +13,7 @@
 
 		<div id="new-form-holder" ng-show="isAddMode" ng-include="getTemplateUrl()"></div>
 
-		<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode">
+		<table id="addons" class="grid" ng-table="tableParams" ng-hide="isAddMode" template-pagination="custom/pager">
 			<tbody>
 				<tr ng-repeat="item in  addonList">
 					<td header-class="width-30"  data-title="'Name'" sortable="'name'" ng-click="editSingle()" ng-hide="currentClickedAddon == $index" >
@@ -49,9 +49,9 @@
 
 		<!--Custom pagination footer goes here-->
 		<script type="text/ng-template" id="custom/pager">
-			<div class = "pager">
-				<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
-				<span ng-show="totalCount==0">Showing 0 items</span>
+			<div class="pager">
+				<span ng-show="totalCount > 0">Showing {{ startCount }} to {{ endCount }} of {{ totalCount }} items</span>
+				<span ng-show="totalCount == 0">Showing 0 items</span>
 				<ul class="ng-cloak">
 	              	<li ng-repeat="page in pages"
 		                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"

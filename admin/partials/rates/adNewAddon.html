@@ -56,32 +56,14 @@
 						From Date
 						<strong>*</strong>
 					</label>
-					<input type="text" ng-model="singleAddon.begin_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="showFromDate = true">
-					<div class="date-picker-fixed" ng-show="showFromDate" ng-click="showFromDate = false">
-						<div class="date-picker-bg">
-							<div class="date-picker-wrap">
-								<div class="col-xs-12">
-									<div pickadate="" ng-model="singleAddon.begin_date" min-date="minDate" max-date="maxDate" is-current-month="true" is-date-selected="isFromDateSelected"></div>
-								</div>
-							</div>
-						</div>
-					</div>
+					<input type="text" ng-model="singleAddon.begin_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="popupCalendar('From')">
 				</div>
 				<div class="entry">
 					<label>
 						To Date
 						<strong>*</strong>
 					</label>
-					<input type="text" ng-model="singleAddon.end_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="showToDate = true">
-					<div class="date-picker-fixed" ng-show="showToDate" ng-click="showToDate = false">
-						<div class="date-picker-bg">
-							<div class="date-picker-wrap">
-								<div class="col-xs-12">
-									<div pickadate="" ng-model="singleAddon.end_date" min-date="minDate" max-date="maxDate" is-current-month="true" is-date-selected="isFromDateSelected"></div>
-								</div>
-							</div>
-						</div>
-					</div>
+					<input type="text" ng-model="singleAddon.end_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="popupCalendar('To')">
 				</div>
 
 				<div class="entry">
