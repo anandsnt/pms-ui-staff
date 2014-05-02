@@ -1,0 +1,203 @@
+<section role="complementary" id="room-assignment" class="content stay-card-inner check-in">
+	<!-- Room assignment header -->
+	<input type="hidden" value="35889" id="roomassignment-ref-id">
+	<!-- Room assignment header -->
+	<div class="reservation-header">
+		<div class="actions back">
+			<!-- %a.back-button{"data-transition" => "nested-view", href: "dashboard/staycard?confirmation=#{header_details["confirmation_num"]}"} -->
+			<a ng-click="backToStayCard()" class="back-button"> Back </a>
+		</div>
+		<!-- Other header details -->
+		<div class="data">
+			<span data-room-status="READY" data-reserv-status="CHECKING_IN" data-fostatus="VACANT" class="room"> <span class="guest-status room">room</span> <strong id="header-room-num" class="room-number ready"> 3006 </strong> <span id="room-type" data-room-type="DLK"> Deluxe Room updated </span> </span>
+			<span class="nights"> <span class="guest-status nights"></span> 5
+				nights </span>
+			<span class="date"> <span class="guest-status small-icon check-in">check-in</span> Monday
+				03-31-2014 </span>
+			<span class="date"> <span class="guest-status small-icon check-out">check-out</span> Saturday
+				04-05-2014 </span>
+		</div>
+
+	</div>
+	<div class="wrapper">
+		<div id="notification-message"></div>
+		<!-- Room assignment content -->
+		<div class="room-assignment-content">
+			<!-- Rooms listing & filters -->
+			<div class="rooms-listing">
+				<!-- Room type search + reveal filters button -->
+				<div class="search float">
+					<a href="#room-attributes" class="button white with-icon only-icon toggle"> <span class="icons icon-filter"></span> Room attributes </a>
+					<div class="select">
+						<select name="room-type" id="room-type-selectbox">
+							<!-- %option.placeholder{value: "all-types"} All room types -->
+							<option value="DLK" selected="true"> Deluxe Room updated
+								(
+								same rate
+								) </option>
+						</select>
+					</div>
+				</div>
+				<div class="results">
+					<!-- Advanced search fields -->
+					<div id="room-attributes" class="attributes scrollable">
+						<div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+							<div class="action">
+								<button type="button" id="clear-filters-button" class="button blank clear-selection">
+									Clear filters
+								</button>
+							</div>
+							<div id="group-default" class="entry radio-check">
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="include-not-ready" id="filter-not-ready">
+									Include Not Ready </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="include-due-out" id="filter-dueout">
+									Include Due Out </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="include-pre-assigned" id="filter-preassigned">
+									Include Pre-Assigned </label>
+							</div>
+							<!-- if group_name = 'ROOM FEATURE', it is displayed at the bottom. -->
+							<div id="group-0" data-multiples-allowed="false" data-group-name="Building" class="entry radio-check">
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="49" name="attr-features">
+									Down </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="48" name="attr-features">
+									Tower </label>
+								<input type="hidden" value="2" id="filter-count">
+							</div>
+							<!-- Display room features -->
+							<!-- if group_name = 'ROOM FEATURE', it is displayed at the bottom. -->
+							<div id="group-1" data-multiples-allowed="false" data-group-name="Category 3" class="entry radio-check">
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="101" name="attr-features">
+									Opt 1 </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="102" name="attr-features">
+									Opt 2 </label>
+								<input type="hidden" value="2" id="filter-count">
+							</div>
+							<!-- Display room features -->
+							<!-- if group_name = 'ROOM FEATURE', it is displayed at the bottom. -->
+							<div id="group-2" data-multiples-allowed="false" data-group-name="ELEVATOR" class="entry radio-check">
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="141" name="attr-features">
+									Away From Elevator </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="140" name="attr-features">
+									Near Elevator </label>
+								<input type="hidden" value="2" id="filter-count">
+							</div>
+							<!-- Display room features -->
+							<!-- if group_name = 'ROOM FEATURE', it is displayed at the bottom. -->
+							<div id="group-3" data-multiples-allowed="false" data-group-name="FLOOR" class="entry radio-check">
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="138" name="attr-features">
+									High Floor </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="139" name="attr-features">
+									Low Floor </label>
+								<input type="hidden" value="2" id="filter-count">
+							</div>
+							<!-- Display room features -->
+							<!-- if group_name = 'ROOM FEATURE', it is displayed at the bottom. -->
+							<!-- Display room features -->
+							<!-- if group_name = 'ROOM FEATURE', it is displayed at the bottom. -->
+							<div id="group-4" data-multiples-allowed="false" data-group-name="SMOKING" class="entry radio-check">
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="11" name="attr-features">
+									Non Smoking </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="10" name="attr-features">
+									Smoking </label>
+								<input type="hidden" value="2" id="filter-count">
+							</div>
+							<!-- Display room features -->
+							<div id="group-5" data-multiples-allowed="true" data-group-name="ROOM FEATURE" class="entry radio-check">
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="203" name="attr-features">
+									Accessible </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="16" name="attr-features">
+									Balcony </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="144" name="attr-features">
+									Connecting Room </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="209" name="attr-features">
+									High Floor </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="206" name="attr-features">
+									Jacuzzi </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="207" name="attr-features">
+									Kitchenette </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="208" name="attr-features">
+									Large Room </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="204" name="attr-features">
+									Near Elevator </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="1" name="attr-features">
+									Pool View </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="205" name="attr-features">
+									Quiet Room </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="145" name="attr-features">
+									Spa </label>
+								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
+									<input type="checkbox" value="202" name="attr-features">
+									Terrace </label>
+								<input type="hidden" value="12" id="filter-count">
+							</div>
+							<input type="hidden" value="6" id="group-count">
+						</div>
+						<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
+							<div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 22px; transform: translate(0px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
+						</div>
+					</div>
+					<!-- Rooms list -->
+					<div id="rooms-available" class="rooms scrollable">
+						<ul class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+							<li>
+								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="107" class="room-number ready">107</span></a>
+							</li>
+							<li>
+								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="108" class="room-number ready">108</span></a>
+							</li>
+							<li>
+								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="110" class="room-number ready">110</span></a>
+							</li>
+							<li>
+								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="3004" class="room-number ready">3004</span></a>
+							</li>
+							<li>
+								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="3008" class="room-number ready">3008</span></a>
+							</li>
+							<li>
+								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="3012" class="room-number ready">3012</span></a>
+							</li>
+						</ul>
+						<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
+							<div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 56px; transform: translate(0px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Upgrades available -->
+			<!-- No upgrades -->
+			<div class="upgrades no-content">
+				<div class="info">
+					<span class="icon-no-content icon-upgrades"></span>
+					<strong class="h1">Upgrades not available</strong>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</section>

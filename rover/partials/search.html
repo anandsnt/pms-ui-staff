@@ -1,12 +1,13 @@
-<div id="page-main-second" class="page main-page page-current">
+<div id="page-main-second">
 	<div id="search_list" data-view="Search" data-search-type="DUEIN">
 		<!-- Navbar -->
 		<header role="banner" class="nav-bar float">
 			<!-- Drawer toggle -->
-			<a href="#main-nav" class="nav-toggle">Menus page</a>
+		<a class="nav-toggle active" ng-click="$emit('navToggled')" ng-class="{'active': true}">Menu</a>
 			<!-- Title -->
 			<h1 id="search-title" class="h2"> Checking In <span> Logged in as <strong> Admin
 				Staff </strong> </span></h1>
+				<a ui-sref="rover.staycard.reservationcard.reservationdetails">GO TO STAYCARD</a>
 			<!-- Late checkout -->
 			<a id="late-checkout-alert" class="icons icon-alert late-check-out">4</a>
 			<div class="logo">

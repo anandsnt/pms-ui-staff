@@ -21,7 +21,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 			if(data.pms_type !== null)
 				$scope.isConnectedToPMS = true;
 		}
-		$scope.invokeApi(ADHotelSettingsSrv.fetchHotelSettings, {}, fetchSuccessOfHotelSettings);
+		$scope.invokeApi(ADHotelSettingsSrv.fetch, {}, fetchSuccessOfHotelSettings);
 	};
 	$scope.checkPMSConnection();
 

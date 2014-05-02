@@ -9,6 +9,8 @@ hkRover.controller('HKSearchCtrl',
 	function($scope, HKSearchSrv, $state, $timeout, fetchedRoomList){
 
 	$scope.query = '';
+	$scope.showPickup = false;
+	$scope.showInspected = false;
 
 	// make sure any previous open filter is not showing
 	$scope.$emit('dismissFilterScreen');
@@ -53,6 +55,8 @@ hkRover.controller('HKSearchCtrl',
 	if ( HKSearchSrv.isListEmpty() ) {
 		$scope.$emit('showLoader');
 		HKSearchSrv.fetch().then(function(data) {
+			$scope.showPickup = data.use_pickup;
+			$scope.showInspected = data.use_inspected;
 			afterFetch( data );
 		}, function() {
 			console.log("fetch failed");
