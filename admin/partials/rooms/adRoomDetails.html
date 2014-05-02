@@ -1,0 +1,91 @@
+<section class="content current" ng-click="clearErrorMessage()"><!-- Edit Room -->
+	<div >
+		<div class="data-holder">
+			<header class="content-title float">
+				<h2>
+					Edit Room
+					<span>
+						{{roomNumber}}
+					</span>
+				</h2>
+				<a ng-click="goBack()" id="go_back" data-type="load-details" class="action back">Back to Rooms</a>
+			</header>
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<form name="edit-room" id="edit-room" data-room-id="{{data.room_id}}" class="form float">
+				<fieldset class="holder left">
+					<div class="form-title">
+						<h3>
+							<span>Room</span>
+							details
+						</h3>
+						<em class="status">
+							<strong>All fields are mandatory!</strong>
+						</em>
+					</div>
+					<ad-textbox value="data.room_number" name="room-number" id="room-number" label="Number" placeholder="Enter hotel name" required="yes" maxlength=10></ad-textbox>	
+
+					<ad-dropdown div-class='full-width' label-in-drop-down='Select room type' label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id'></ad-dropdown>
+
+					
+				<div class="entry full-width">
+					<label for="room-picture">
+						Image
+						<strong>*</strong>
+					</label>
+					<div class="file-upload with-preview">
+						<span class="input">{{fileName}}</span>
+						<input ng-model="data.room_image" type="file" accept="image/*" name="room-picture" id="room-picture" value="{{data.room_image}}" app-filereader>
+						<button type="button" class="button brand-colors" >Replace image</button>
+					</div>
+					<span class="file-preview">
+						<img src="{{data.room_image}}" id="file-preview" alt="">
+					</span>
+				</div>
+			</fieldset>
+			<fieldset class="holder right">
+				<!-- Room Features -->
+				<div class="form-title">
+					<h3>
+						<span>Room</span>
+						Features
+					</h3>
+					<em class="status">
+						<span>Select Features that apply to this room.</span>
+					</em>
+				</div>
+
+				<div class="entry full-width">
+					<div id="room-features" class="boxes col2">
+						<ad-checkbox ng-repeat="room_feature in data.room_features" is-checked="room_feature.selected" label="{{room_feature.name}}"></ad-checkbox>
+
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="holder right">
+				<div class="form-title">
+					<h3>
+						<span>Room</span>
+						Likes
+					</h3>
+					<em class="status">
+						<span>Select Likes that apply to this room.</span>
+					</em>
+				</div>
+				<div class="entry full-width">
+					<div id="room-likes" class="boxes col2">
+						<div ng-repeat="room_likes in data.room_likes">
+							<ad-checkbox ng-repeat="option in room_likes.options" is-checked="option.selected" label="{{option.name}}" datagroup='{{room_likes.group_name}}' index="{{$index}}" change='changed'></ad-checkbox>
+						</div>						
+					</div>							
+				</div>
+			</fieldset>
+			<div class="actions float">
+				<button type="button" id="cancel" ng-click="goBack()" class="button blank add-data-inline">Cancel</button>
+				<button type="button" id="update" class="button green add-data-inline" ng-click="updateRoomDetails()">Save changes</button>
+			</div>
+		</form>
+	</div>
+
+
+</div>
+</section>

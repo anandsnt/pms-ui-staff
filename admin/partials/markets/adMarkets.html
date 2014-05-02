@@ -1,0 +1,31 @@
+<section  class="content current" ng-click="clearErrorMessage()">
+	<div>
+		<header class="content-title float">
+			<h2> Markets </h2>
+			<span class="count"> (
+				{{data.markets.length}}
+				) </span>
+			<a class="action add" ng-hide="!data.is_use_markets" ng-click="addNewClicked()" >Add new</a>
+			<ad-toggle-button is-checked="data.is_use_markets" div-class="header-title" ng-click="clickedUsedMarkets()" label="Use markets"></ad-toggle-button>
+		</header>
+
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		
+		<div id="add-new" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/markets/adMarketsAdd.html'"></div>		
+		
+		<table class="grid" ng-disabled="data.is_use_markets" ng-class="{'overlay' : !data.is_use_markets}">
+			<tbody>
+				<tr ng-repeat="item in data.markets" > 
+					<td ng-click="editItem($index)" ng-hide="currentClickedElement == $index">
+						<a data-item="1" data-colspan="2" class="edit-data-inline">{{item.name}} </a>
+					</td>
+					<td class="activate" ng-click="updateItem($index)" ng-hide="currentClickedElement == $index">
+						<ad-toggle-button is-checked="item.is_active" ></ad-toggle-button>
+					</td>
+					<td colspan="2" ng-include="getTemplateUrl($index)"></td>
+				</tr>
+				
+			</tbody>
+		</table>
+	</div>
+</section>

@@ -1,0 +1,38 @@
+<section class="content current">
+	<div >
+		<header class="content-title float">
+			<h2>OWS Connectivity Setup</h2>
+			<a id="go_back" data-type="load-details" class="action back" ng-click="cancelClick()">Back</a>
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+		<form style="overflow-y:auto;" name="edit-guest-review" method="post" class="form float">
+			<fieldset class="holder left">
+				<ad-textbox value="externalPmsConnectivityData.pms_access_url" styleclass="full-width" name = "pms-access-url" id = "pms-access-url" label = "Access Url" placeholder = "Enter access url" required = "yes" ></ad-textbox>
+
+				<ad-textbox value="externalPmsConnectivityData.pms_channel_code" styleclass="full-width" name = "pms-channel-code" id = "pms-channel-code" label = "Pms channel code " placeholder = "Enter pms cahnnel code" required = "yes" ></ad-textbox>
+
+				<ad-textbox value="externalPmsConnectivityData.pms_user_name" styleclass="full-width" name = "pms-user-name" id = "pms-user-name" label = "PMS Username" placeholder = "Enter pms user name" required = "yes" ></ad-textbox>
+
+			</fieldset>
+			<fieldset class="holder right">
+				<ad-textbox inputtype="password" value="externalPmsConnectivityData.pms_user_pwd" styleclass="full-width" name = "pms-password" id = "pms-password" label = "PMS password " placeholder = "Enter pms password " required = "yes" ></ad-textbox>
+				<ad-textbox value="externalPmsConnectivityData.pms_hotel_code" styleclass="full-width" name = "pms-hotel-code" id = "pms-hotel-code" label = "Hotel Code " placeholder = "Enter Hotel Code" required = "yes" ></ad-textbox>
+
+				<ad-textbox value="externalPmsConnectivityData.pms_chain_code" styleclass="full-width" name = "pms-chain-code" id = "pms-chain-code" label = "Chain Code " placeholder = "Enter  Chain Code" required = "yes" ></ad-textbox>
+
+			</fieldset>
+			<div class="actions float">
+				<button type="button" class="button blank add-data-inline" ng-click="cancelClick()">
+					Cancel
+				</button>
+				<button type="button" class="button green" ng-click="saveConnectivity()">
+					Save changes
+				</button>
+				<button type="button" class="button blue" ng-click="testConnectivity()">
+					Test Connectivity
+				</button>
+			</div>
+		</form>
+	</div>
+</section>

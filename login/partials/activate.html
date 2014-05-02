@@ -1,0 +1,28 @@
+<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 	
+<div id="login" class="content">
+	<img src="/assets/logo.png" class="logo" alt="">
+	<span class='notice error' ng-show="errorMessage!=''" >
+		<ul>
+			<li ng-repeat="message in errorMessage">
+				{{message}}
+			</li>
+		</ul>	
+	</span>
+	<form method="post" id="forget_pswd" ng-submit="submit()" class="form forget_pswd" accept-charset="UTF-8" novalidate>
+		
+		<div class="entry float">
+			<label for="password">Password</label>
+			<input type="password" ng-model="data.password" placeholder="Enter your password" name="password" id="password" class="r5 password">
+		</div>
+		<div class="entry float">
+			<label for="password">Confirm Password</label>
+			<input type="password" ng-model="data.password_confirmation"  placeholder="Enter your password" name="password_confirmation" id="password" class="r5 password">
+		</div>
+		<div class="entry float">
+			<button value="login" type="submit" name="commit" class="button r5 green">
+				Reset my password
+			</button>
+		</div>
+	</form>
+
+</div>

@@ -1,0 +1,50 @@
+<section class="content current" ng-click="clearErrorMessage()"><!-- Add new Item -->
+	<div id="add-new-item" data-view="ItemsDetailsView">
+		<header class="content-title float">
+			<h2 ng-show="mod == 'edit'">Edit <span>{{itemDetails.item_description}} </span></h2>
+			<h2 ng-show="mod == 'add'">Add New Iten</h2>
+			
+			<a data-type="load-details" class="action back" ng-click="goBack()">Back to Items</a>
+			<em class="status required" ng-show="mod == 'edit'">
+				Fields marked with
+				<strong>*</strong>
+				are mandatory!
+			</em>
+		</header>
+		<form name="item-details" method="post" class="form float">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<fieldset class="holder full-width float" ng-show="mod == 'add'">
+				<div class="form-title" >
+					<h3>
+						<span>Add new</span>
+						Item
+					</h3>
+					<em class="status">
+						Fields marked with
+						<strong>*</strong>
+						are mandatory!
+					</em>
+				</div>
+			</fieldset>
+			<fieldset class="holder left float">
+				<ad-textbox value="itemDetails.item_description" name = "item_desc" id = "item_desc" label = "Item Description" placeholder = "Enter Item Description" required = "yes" styleclass="full-width" ></ad-textbox>
+
+				<ad-textbox value="itemDetails.unit_price" name = "unit_price" id = "unit_price" label = "Unit Price" placeholder = "Enter Unit Price" required = "no" styleclass="full-width" ></ad-textbox>
+
+			</fieldset>
+			<fieldset class="holder right float">
+				<ad-dropdown label="Select Charge Code" label-in-drop-down="Select Charge Code" list="itemDetails.charge_code" selected-Id='itemDetails.selected_charge_code' required = "yes" div-class="full-width" id="charge_code"></ad-dropdown>						
+			</fieldset>
+			<fieldset class="holder left float">
+				<ad-checkbox is-checked="itemDetails.is_favourite" label="Favorite" name="favorite" id="favorite"></ad-checkbox>	
+
+			</fieldset>
+		<div class="actions float">
+			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()">Cancel</button>
+
+			<button type="button" id="save" class="button green add-data-inline"  ng-click="saveItemDetails()">Save changes</button>
+
+		</div>
+	</form>
+</div>
+</section>

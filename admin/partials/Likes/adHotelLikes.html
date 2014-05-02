@@ -1,0 +1,39 @@
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()"><div data-view="GuestCardLikesView">
+	<header class="content-title float">
+		<h2>
+			Likes
+		</h2>
+		<span class="count">
+			({{likeList.likes.length}})
+		</span>
+		<a id="add-new-button" class="action add" ng-click="addNew()">Add new</a>
+	</header>
+
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<div id="new-form-holder" ng-show="isAddmode" ng-include="getTemplateUrl()">
+	</div>
+	<table id="likes" class="grid">
+		<tbody>
+			<tr  ng-repeat="like in  likeList.likes">
+				<td ng-click="editSelected($index,like.id,like.name,like.is_system_defined)" ng-hide="currentClickedElement == $index && isEditmode">
+					{{like.name}} <em ng-show="{{like.is_system_defined === 'true'}}">(system defined)</em>
+				</td>
+				
+				<td class="activate" ng-hide="currentClickedElement == $index && isEditmode">
+					<div class="entry">
+						<label></label>
+						<div  class="switch-button single" ng-class="{ on :like.is_active === 'true' }">
+							<input type="checkbox"  name="upsell-rooms" id="upsell-rooms" ng-click="switchClicked($index)">
+							<span class="switch-icon"></span>
+
+						</div>
+					</div>
+
+				</td>
+				<td colspan="2" ng-include="getTemplateUrl(like.name)" ng-show="currentClickedElement == $index && isEditmode">
+					</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+</section>

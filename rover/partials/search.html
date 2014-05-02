@@ -1,0 +1,56 @@
+<div id="page-main-second">
+	<div id="search_list" data-view="Search" data-search-type="DUEIN">
+		<!-- Navbar -->
+		<header role="banner" class="nav-bar float">
+			<!-- Drawer toggle -->
+		<a class="nav-toggle active" ng-click="$emit('navToggled')" ng-class="{'active': true}">Menu</a>
+			<!-- Title -->
+			<h1 id="search-title" class="h2"> Checking In <span> Logged in as <strong> Admin
+				Staff </strong> </span></h1>
+				<a ui-sref="rover.staycard.reservationcard.reservationdetails">GO TO STAYCARD</a>
+			<!-- Late checkout -->
+			<a id="late-checkout-alert" class="icons icon-alert late-check-out">4</a>
+			<div class="logo">
+				<img src="https://pms-dev.stayntouch.com/assets/logo.png" alt="">
+				<em class="date"> Tuesday, 31 December 2013 </em>
+
+			</div>
+		</header>
+		<form role="search" name="search-form" method="get" id="search-form" class="search-form form float" action="">
+			<div class="entry">
+				<a id="clear-query" class="icons icon-clear-search">Clear query</a>
+				<button type="submit" name="submit" class="icons icon-search">
+					Search
+				</button>
+				<input type="text" placeholder="Name, Group, Room No. or Confirmation No." name="query" id="query" autocomplete="false">
+			</div>
+			<!-- %button.button.blank{name: "advanced", type: "button"} Advanced search -->
+		</form>
+		<section role="main" id="search" class="content scrollable">
+			<div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+				<div id="notification-message" style="display: none;"></div>
+				<ul id="search-results" class="search-results">
+
+					<ul>
+
+						<li ng-repeat="searchResults in results.data">
+							<a data-transition="inner-page" class="guest-check-in link-item float" ui-sref="rover.staycard.reservationcard.reservationdetails">
+							<figure class="guest-image">
+								<img src="https://pms-dev.stayntouch.com/assets/avatar-trans.png">
+							</figure>
+							<div class="data">
+								<h2>{{searchResults.lastname}}, {{searchResults.firstname}}</h2>
+								<span class="confirmation">{{searchResults.confirmation}}</span>
+							</div>
+							<div class="status">
+								<span class="guest-status check-in"></span>
+							</div> <strong class="room-number not-ready"> </strong><span class="room-status"></span> </a>
+						</li>
+
+					</ul>
+			</div>
+			<div id="no-results" class="no-content hidden"></div>
+	
+		</section>
+	</div>
+</div>

@@ -1,0 +1,56 @@
+<section  class="content current">
+	<div data-view="PaymentMethodsView">
+		<header class="content-title float">
+			<h2> Payment Methods </h2>
+			<span class="count"> (
+				{{data.payments.length}}
+				) </span>
+		</header>
+
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<table id="likes" class="grid">
+			<tbody ng-repeat="payment in data.payments">
+				<tr>
+					<td>
+						<strong>{{payment.description}}</strong>
+						<em>(System defined)</em>
+					</td>
+					<td class="activate">
+						<div class="entry">
+							<td class="activate">
+								<div class="entry" >
+									<div class="switch-button single"  ng-class="{ on : payment.is_active == 'true' }" ng-click="toggleClickedPayment($index)">
+										<input type="checkbox">
+										<span class="switch-icon"></span>
+									</div>
+								</div>
+							</td>
+						</div>
+					</td>
+				</tr>
+				<tr ng-show="payment.description == 'Credit Card' && payment.is_active == 'true'">
+					<td colspan="3" class="nested-table">
+						<table id="credit_cards_types" class="grid">
+							<tbody>
+								<tr data-credit-card-id="1" ng-repeat="cc in data.credit_card_types">
+									<td>
+										<strong>{{cc.description}}</strong>
+										<em>(System defined)</em>
+									</td>
+									<td class="activate">
+										<div class="entry" >
+											<div class="switch-button single"  ng-class="{ on : cc.is_active == 'true' }" ng-click="toggleClickedCC($index)">
+												<input type="checkbox">
+												<span class="switch-icon"></span>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

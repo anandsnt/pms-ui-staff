@@ -1,0 +1,41 @@
+<section id="replacing-div-first" class="content current"><div data-view="ItemsListView">
+	<header class="content-title float">
+		<h2>
+			Items
+		</h2>
+		<span class="count">
+			(
+			{{data.items.length}}
+			)
+		</span>
+		<a id="add-new-button" ui-sref="admin.itemdetails({itemid:''})" class="action add">Add new</a>
+	</header>
+
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<div id="new-form-holder"></div>
+	<table id="items" class="grid datatable dataTable" ng-table="itemList">
+
+
+	
+		<tr role="row" ng-repeat="item in $data">
+			<td width="25%" class="sorting" data-title="'Description'" sortable="'item_description'">
+				<a ui-sref="admin.itemdetails({itemid: item.item_id})">{{item.item_description}}</a>
+			</td>
+			<td width="25%" class="sorting" data-title="'Charge Group'" sortable="'category_name'">
+				{{item.category_name}}
+			</td>
+			<td width="14%" class="" data-title="'Unit Price'" style="text-align:center;">
+				{{item.unit_price}}
+			</td>
+			<td width="14%" class="activate" data-title="'Favorite'">
+				<ad-toggle-button is-checked="item.is_favourite" ng-click='toggleFavourite(item.item_id, item.is_favourite)'></ad-toggle-button>
+			</td>
+			<td width="12%" class="delete" data-title="'Delete'">
+				<a class="icons icon-delete large-icon" ng-click="deleteItem($index, item.item_id)"></a>
+				
+			</td>
+		</tr>
+		
+	</table>
+</div>
+</section>

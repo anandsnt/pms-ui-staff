@@ -1,0 +1,156 @@
+<div style="display: block;" id="add-new" class="edit-data">
+	<div class="data-holder" >
+		
+		<!-- Add chain -->
+		<form class="form inline-form float">
+			<div class="form-title">
+				<h3>
+					<span></span>
+					{{formTitle}}
+				</h3>
+				<em class="status">
+					Fields marked with
+					<strong>*</strong>
+					are mandatory!
+				</em>
+			</div>
+			<fieldset class="holder left float">
+
+
+				<!-- hotel code -->
+
+				<ad-textbox value="editData.hotel_code"   label = "Chain Code" placeholder = "Enter chain code" required = "yes" styleclass="full-width"></ad-textbox>
+				<!--  import freaquency -->
+				<ad-textbox value="editData.import_frequency"   label = "Import Frequency [Minutes]" placeholder = "Enter import frequency" required = "yes" styleclass="full-width"></ad-textbox>
+
+			</fieldset>
+			<fieldset class="holder right float">
+				<!-- name  -->
+
+				<ad-textbox value="editData.name"   label = "Chain Name" placeholder = "Enter chain name" required = "yes" styleclass="full-width"></ad-textbox>
+
+			</fieldset>
+			<div class="form-title">
+				<h3>
+					<span></span>
+					SFTP Settings
+				</h3>
+			</div>
+			<fieldset class="holder left float">
+
+				<!-- sftp location -->
+
+				<ad-textbox value="editData.sftp_location"   label = "SFTP Location" placeholder = "Enter SFTP Location"  styleclass="full-width"></ad-textbox>
+
+				<!-- sftp port -->
+
+				<ad-textbox value="editData.sftp_port"   label = "SFTP Port" placeholder = "Enter SFTP Port"  styleclass="full-width"></ad-textbox>
+
+				<!-- sftp user -->
+
+				<ad-textbox value="editData.sftp_user"   label = "SFTP user" placeholder = "Enter SFTP User"  styleclass="full-width"></ad-textbox>
+
+			</fieldset>
+			<fieldset class="holder right float">
+
+				<!--  sftp password-->
+				<ad-textbox inputtype="password" value="editData.sftp_password"   label = "SFTP Password" placeholder = "Enter SFTP Password"  styleclass="full-width"></ad-textbox>
+
+				<!--  sftp respath-->
+				<ad-textbox value="editData.sftp_respath"   label = "SFTP Respath" placeholder = "Enter SFTP Respath"  styleclass="full-width"></ad-textbox>
+
+			</fieldset>
+
+			<div class="form-title">
+				<h3>
+					<span></span>
+					Hotel MLI Settings
+				</h3>
+			</div>
+			<fieldset class="holder right float">
+	
+				 <div class="entry full-width">
+					<label for="certificate">CA Certificate </label>
+					<div class="file-upload">
+						<span class="input">{{uploadPlaceholder}}</span>
+						<input type="file" ng-model="editData.ca_certificate" accept="*" app-filereader />
+						<button type="button" class="button brand-colors">
+							 Attach Certificate
+						</button> 
+					</div>
+					
+				</div>
+
+
+
+
+
+			</fieldset>
+
+
+			<div class="form-title">
+				<h3>
+					<span></span>
+					Setup Loyalty
+				</h3>
+			</div>
+			<fieldset class="holder left float">
+				<!-- program name -->
+				<ad-textbox value="editData.loyalty_program_name"   label = "Program Name" placeholder = "Enter Program Name"  styleclass="full-width"></ad-textbox>
+				<!--  program code-->
+
+				<ad-textbox value="editData.loyalty_program_code"   label = "Program Code" placeholder = "Enter Program Code"  styleclass="full-width"></ad-textbox>
+
+
+			</fieldset>
+			<fieldset class="holder right float">
+				<div id="entry-select" class="data-type">
+					<div class="entry full-width">
+						<label for="select-option1">
+							Levels
+						</label>
+						<div class="entry" ng-repeat="lov in editData.lov track by $index">
+							<input type="text"  placeholder="Add new option" name="lov" ng-focus="onFocus($index)" ng-blur="onBlur($index)" ng-change="textChanged($index)" data-type="select" class="add-new-option"
+							ng-model="lov.name" value="{{lov.name}}" >
+							<input type="text" ng-model="lov.value" ng-hide="true">
+						</div>
+					</div>
+				</div>
+			</fieldset>
+			<div class="form-title">
+				<h3>
+					<span></span>
+					Setup Terms and Conditions
+				</h3>
+			</div>
+			<fieldset class="holder left float">
+				<!-- t&c phone -->
+				<ad-textbox value="editData.terms_cond_phone"   label = "CONTACT PHONE FOR T&amp;C" placeholder = "Enter phone number"  styleclass="full-width"></ad-textbox>
+
+				<div class="entry full-width">
+					<label for="terms_and_condtn">
+						Terms &amp; Conditions
+					</label>
+					<textarea value="" type="" required="" placeholder="Enter Terms &amp; Conditions" name="terms_and_condtn" ng-model="editData.terms_cond" class="full-width"></textarea>
+				</div>
+
+
+
+
+			</fieldset>
+			<fieldset class="holder right float">
+				<!-- t&c email -->
+
+				<ad-textbox value="editData.terms_cond_email"   label = "CONTACT EMAIL FOR T&amp;C" placeholder = "Enter e-mail"  styleclass="full-width"></ad-textbox>
+
+			</fieldset>
+
+			<div class="actions float">
+				<button type="button" ng-click="cancelClicked()" class="button blank edit-data-inline">Cancel</button>
+				<button type="button" id="save" class="button green edit-data-inline" ng-click="saveClicked()">Save changes</button>
+			</div>
+
+		</form>
+	</div>
+</div>
+

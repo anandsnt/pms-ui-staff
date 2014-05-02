@@ -1,0 +1,28 @@
+<section  class="content current" style="display: block;" ng-click="clearErrorMessage()">
+	<div>
+		<header class="content-title float">
+			<h2>Social Lobby Setup</h2>
+			<a id="go_back" data-type="load-details" class="action back" ng-click="goBack()"> Back</a>
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<form style="overflow-y:auto;" name="edit-social-lobby" method="post" class="form float">
+			<fieldset class="holder column">
+				<div></div>
+				
+				<ad-toggle-button label="Social Lobby" is-checked="data.is_social_lobby_on" ></ad-toggle-button>
+
+				<ad-toggle-button label="My group" is-checked="data.is_my_group_on" ></ad-toggle-button>
+
+				<ad-dropdown label="Arrival Grace Days"  list="arrival_grace_days_list" selected-Id='data.arrival_grace_days'  id="arrival-grace-days"></ad-dropdown>
+
+				<ad-dropdown label="Departure Grace Days" list="departure_grace_days_list" selected-Id='data.departure_grace_days'  id="departure-grace-days"></ad-dropdown>
+				
+				
+			</fieldset>
+			<div class="actions float">
+				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()">Cancel</button>
+				<button type="button" id="save_social_lobby" class="button green" ng-click="save()">Save changes</button>
+			</div>
+		</form>
+	</div>
+</section>

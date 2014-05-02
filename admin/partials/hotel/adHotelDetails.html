@@ -1,0 +1,298 @@
+<div id="wrapper" class="content current" ng-click="clearErrorMessage()" >
+	<header class="content-title float">
+		<h2>{{title}}</h2>
+		<a ng-click ="back()" class="action back">Back</a>
+	</header>
+	<form class="form float" >
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div> 
+		
+		<fieldset class="holder left">
+			<div class="form-title">
+				<h3><span>Hotel</span> Name and Location </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+		
+	    	<ad-textbox value="data.hotel_name" name = "hotel-name" id = "hotel-name" label = "Name" placeholder = "Enter hotel name" required = "yes" ></ad-textbox>
+			
+			<ad-textbox value="data.hotel_code" name = "hotel-code" id = "hotel-code" label = "Hotel Code" placeholder = "Enter hotel name" required = "yes" readonly="{{readOnly}}"></ad-textbox>
+
+			<ad-textbox label="Street" value="data.street" required="yes" placeholder="Enter hotel street" name="hotel-street" id="hotel-street"></ad-textbox>
+
+			<ad-textbox label="Phone" value="data.phone" required="yes" placeholder="Enter hotel phone number" name="hotel-phone" id="hotel-phone"></ad-textbox>
+
+			<div class="entry">
+				<label for="hotel-city"> City <strong>*</strong> </label>
+				<input type="text" ng-model="data.city" value="{{data.city}}" required="yes" placeholder="Enter city name" name="hotel-city" id="hotel-city">
+			</div>
+
+			<div class="entry">
+				<label for="hotel-state"> State </label>
+				<input type="text" ng-model="data.state" value="{{data.state}}" required="" placeholder="Enter state name" name="hotel-state" id="hotel-state">
+			</div>
+
+			<div class="entry">
+				<label for="hotel-zipcode"> ZipCode <strong>*</strong> </label>
+				<input type="text" ng-model="data.zipcode" value="{{data.zipcode}}" required="yes" placeholder="Enter zip code" name="hotel-zipcode" id="hotel-zipcode">
+			</div>
+
+			<div class="entry">
+				<label for="hotel-country"> Country <strong>*</strong> </label>
+				<div class="select">
+					<select ng-model="data.country" name="hotel-country" id="hotel-country" class="placeholder">
+						<option value=""> Country </option>
+						<option ng-model="country.id" ng-repeat="country in data.countries" value="{{country.id}}" ng-selected="country.id==data.country"> {{country.name}} </option>
+
+					</select>
+				</div>
+			</div>
+
+			<div class="entry">
+				<label for="hotel-longitude"> Longitude </label>
+				<input type="text" ng-model="data.longitude" value="{{data.longitude}}" required="" readonly="readonly" placeholder="Enter hotel longitude" name="hotel-longitude">
+			</div>
+
+			<div class="entry">
+				<label for="hotel-latitude"> Latitude </label>
+				<input type="text" ng-model="data.latitude" value="{{data.latitude}}" required="" readonly="readonly" placeholder="Enter hotel latitude" name="hotel-latitude" >
+			</div>
+
+			<div class="entry full-width registration-for-rover" ng-hide="isAdminSnt">
+				<label for="rover"> Rover Registration </label>
+				<div  id="registration-for-rover" class="boxes">
+					<label class="radio" ng-class="{checked: data.required_signature_at == 'CHECKIN'}"> <span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'CHECKIN'}"></span>
+						<input ng-model="data.required_signature_at" type="radio" value="CHECKIN" name="rover" id="type1" class="change-data" checked="checked">
+						Require Signature at Check In </label>
+					<label class="radio" ng-class="{checked: data.required_signature_at == 'CHECKOUT'}"> <span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'CHECKOUT'}"></span>
+						<input ng-model="data.required_signature_at" type="radio" value="CHECKOUT" name="rover" id="type2" class="change-data">
+						Require Signature at Check Out </label>
+					<label class="radio" ng-class="{checked: data.required_signature_at == 'NO_SIGNATURE'}"> <span class="icon-form icon-radio" ng-class="{checked: data.required_signature_at == 'NO_SIGNATURE'}"></span>
+						<input ng-model="data.required_signature_at"type="radio" value="NO_SIGNATURE" name="rover" id="type3" class="change-data">
+						No Signature Required </label>
+				</div>
+			</div>
+			
+		</fieldset>
+		
+		<fieldset class="holder right">
+			<div class="form-title">
+				<h3><span>Hotel</span> Details </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+			
+			<ad-textbox value="data.number_of_rooms" label = "Number of rooms" placeholder = "Type number" readonly="{{readOnly}}"></ad-textbox>
+
+			<div class="entry">
+				<label for="hotel-currency"> Hotel Currency <strong>*</strong> </label>
+				<div class="select">
+					<select ng-model="data.default_currency" name="hotel-currency" id="hotel-currency" class="placeholder">
+						<option value=""> Hotel Currency </option>
+						<option ng-model="currency.id" ng-repeat="currency in data.currency_list" ng-selected="currency.id==data.default_currency" value="{{currency.id}}">{{currency.code}}</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="entry">
+				<label> Checkin time </label>
+				<div class="entry full-width float">
+					<div class="select select-col col1-3">
+						<select ng-model="data.check_in_hour" name="hotel-checkin-hour" id="hotel-checkin-hour" class="styled">
+							<option value="" data-text="Not set" class="placeholder">HH</option>
+							<option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==data.check_in_time.hour" >{{i}}</option>
+						</select>
+					</div>
+					<div class="select select-col col1-3">
+						<select ng-model="data.check_in_min" name="hotel-checkin-minute" id="hotel-checkin-minutes">
+							<option value="" data-text="Not set" class="placeholder">MM</option>
+							<option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==data.check_in_time.minute" >{{i}}</option>
+						</select>
+					</div>
+					<div class="select select-col col1-3">
+						<select ng-model="data.check_in_primetime" class="styled">
+							<!-- || data.check_in_time.primetime.length == '' || data.check_in_time.primetime.length == 0  || !isEdit -->
+							<option ng-selected="data.check_in_time.primetime == 'AM'" value="AM">AM</option>
+							<option ng-selected="data.check_in_time.primetime == 'PM'" value="PM">PM</option>
+						</select>
+						
+					</div>
+
+				</div>
+
+			</div>
+			<div class="entry">
+				<label> Checkout time </label>
+				<div class="entry full-width float">
+					<div class="select select-col col1-3">
+						<select ng-model="data.check_out_hour" name="hotel-checkout-hour" id="hotel-checkout-hour" class="styled">
+							<option value="" data-text="Not set" class="placeholder">HH</option>
+							<option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==data.check_out_time.hour" >{{i}}</option>
+						</select>
+					</div>
+					<div class="select select-col col1-3">
+						<select ng-model="data.check_out_min" name="hotel-checkout-minute" id="hotel-checkout-minutes">
+							<option value="" data-text="Not set" class="placeholder">MM</option>
+							<option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==data.check_out_time.minute" >{{i}}</option>
+						</select>
+					</div>
+					<div class="select select-col col1-3">
+						<select ng-model="data.check_out_primetime" class="styled">
+							<option ng-selected="data.check_out_time.primetime == 'AM'" value="AM">AM</option>
+							<option ng-selected="data.check_out_time.primetime == 'PM'" value="PM">PM</option>
+						</select>
+					</div>
+				</div>
+
+			</div>
+			<div class="entry">
+				<label for="hotel-chain"> Hotel chain <strong>*</strong> </label>
+				<div class="select">
+					<select ng-model="data.hotel_chain" name="hotel-chain" id="hotel-chain" class="placeholder">
+						<option value=""> Hotel chain </option>
+						<option ng-repeat="chain in data.chains" value="{{chain.id}}" ng-selected="chain.id==data.hotel_chain" >{{chain.name}}</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="entry">
+				<label for="hotel-brand"> Hotel brand </label>
+				<div class="select">
+					<select ng-model="data.hotel_brand" name="hotel-brand" id="hotel-brand" class="placeholder">
+						<option value=""> Hotel brand </option>
+						<option ng-repeat="brand in data.brands" value="{{brand.id}}" ng-selected="brand.id==data.hotel_brand">{{brand.name}}</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="entry">
+				<label for="hotel-time-zone"> Hotel Time Zone <strong>*</strong> </label>
+				<div class="select">
+					<select ng-model="data.hotel_time_zone" name="hotel-time-zone" id="hotel-time-zone" class="placeholder" >
+						<option value=""> Hotel Time Zone </option>
+						<option ng-repeat="timezone in data.time_zones"  ng-selected="timezone.value==data.hotel_time_zone">{{timezone.value}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="entry hotel-pms-type" ng-show="isAdminSnt">
+				<label for="hotel-pms-type"> PMS Type </label>
+				<div class="select">
+					<select ng-model="data.hotel_pms_type" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
+						<option value=""> PMS Type </option>
+						<option ng-repeat="pms_types in data.pms_types" value="{{pms_types.value}}" ng-selected="pms_types.value==data.hotel_pms_type">{{pms_types.value}}</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="entry is-pms-tokenized" ng-show="isAdminSnt">
+				<label for="is-pms-tokenized">PMS Tokenized</label>
+				<div class="switch-button single" ng-class="{ on : data.is_pms_tokenized == 'true' }" ng-click="toggleClicked()">
+					<input type="checkbox" value="{{data.is_pms_tokenized}}" name="is-pms-tokenized" id="is-pms-tokenized">
+					<span class="switch-icon"></span>
+				</div>
+			</div>
+
+			<div class="entry">
+				<label for="auto-logout"> Auto logout delay [Minutes] <strong>*</strong> </label>
+				<input type="text" ng-model="data.auto_logout_delay" value="{{data.auto_logout_delay}}" required="yes" placeholder="Enter auto logout delay" name="auto-logout" id="auto-logout">
+			</div>
+
+			<div class="entry">
+				<label for="hotel_from_address"> EMAIL DOMAIN AND FROM ADDRESS FOR GUESTS <strong>*</strong></label>
+				<input type="text" ng-model="data.hotel_from_address" value="{{data.hotel_from_address}}" placeholder="Enter Email domain and from address for GUEST" name="hotel_from_address" id="hotel_from_address">
+			</div>
+
+			<div class="entry full-width" ng-hide="isAdminSnt">
+				<label for="hotel-logo"> Hotel Logo Image </label>
+				<div class="file-upload with-preview">
+					<span class="input">Choose file ...</span>
+					<input type="file" ng-model="data.hotel_logo" accept="image/*" app-filereader />
+					<button type="button" class="button brand-colors">
+						Choose file
+					</button>
+				</div>
+				<span class="file-preview"> <img src="{{data.hotel_logo}}" alt="" height="112" width="auto"> </span>
+			</div>
+			
+		</fieldset>
+		
+		<fieldset class="holder left">
+			<div class="form-title">
+				<h3><span>Hotel</span> Main Contact </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+			<div class="entry">
+				<label for="contact-first-name"> First Name <strong>*</strong> </label>
+				<input type="text" ng-model="data.contact_first_name" required="yes" placeholder="Enter first name" name="contact-first-name" id="contact-first-name" value="{{data.contact_first_name}}">
+			</div>
+
+			<div class="entry">
+				<label for="contact-last-name"> Last Name <strong>*</strong> </label>
+				<input type="text" ng-model="data.contact_last_name" required="yes" placeholder="Enter last name" name="contact-last-name" id="contact-last-name" value="{{data.contact_last_name}}">
+			</div>
+
+			<div class="entry">
+				<label for="contact-email"> Email <strong>*</strong> </label>
+				<input type="text" ng-model="data.contact_email" value="{{data.contact_email}}" required="yes" placeholder="Enter email" name="contact-email" id="contact-email">
+			</div>
+
+			<div class="entry">
+				<label for="contact-phone"> Phone <strong>*</strong> </label>
+				<input type="text" ng-model="data.contact_phone" value="{{data.contact_phone}}" required="yes" placeholder="Enter phone number" name="contact-phone" id="contact-phone">
+			</div>
+
+		</fieldset>
+		
+		<fieldset class="holder right" ng-show="isAdminSnt">
+			<div class="form-title">
+				<h3><span>Hotel</span> MLI Settings </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+			<div class="entry">
+				<label for="mli-hotel-code"> MLI hotel code </label>
+				<input type="text" ng-model="data.mli_hotel_code" value="{{data.mli_hotel_code}}" placeholder="Enter MLI hotel code" name="mli-hotel-code" id="mli-hotel-code">
+			</div>
+
+			<div class="entry">
+				<label for="mli-chain-code"> MLI chain code </label>
+				<input type="text" ng-model="data.mli_chain_code" value="{{data.mli_chain_code}}" placeholder="Enter MLI chain code" name="mli-chain-code" id="mli-chain-code">
+			</div>
+
+			<div class="entry full-width">
+				<label for="certificate">
+					 MLI Token Certificate
+				</label>
+				<div class="file-upload">
+					<span class="input">{{fileName}}</span>
+					<input type="file" ng-model="certificate" accept="*" app-filereader />
+					<button type="button" class="button brand-colors">
+						Attach Certificate
+					</button>
+				</div>
+			</div>
+			
+			<div class="entry full-width">
+				<label for="mli-access-url"> MLI Access URL </label>
+				<input type="text" ng-model="data.mli_access_url" value="{{data.mli_access_url}}" readonly="true" name="mli-access-url" id="mli-access-url" readonly>
+			</div>
+
+			<button type="button" id="test-mli-connectivity" ng-click="clickedTestMliConnectivity()" class="button blue">
+				Test MLI Connectivity
+			</button>
+
+		</fieldset>
+
+		<div class="actions float">
+			<button type="button" ng-click ="back()" class="button blank">
+				Cancel
+			</button>
+			<button type="button" ng-click="clickedSave()" class="button green">
+				Save Changes
+			</button>
+			<button type="button" ui-sref="admin.mapping({hotelId:id})"  ng-show="isAdminSnt && isEdit" class="button green">
+				Mappings
+			</button>
+			<button type="button" ui-sref="admin.users({id:id})" ng-show="isAdminSnt && isEdit" class="button green">
+				User Setup
+			</button>
+		</div>
+
+	</form>
+</div>

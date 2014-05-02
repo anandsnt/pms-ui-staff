@@ -1,0 +1,14 @@
+<div class="entry full-width" ng-model="value">
+	<label for="certificate" ng-hide="label.length ==0">
+		 {{label}}
+	</label>
+	<div class="file-upload">
+		<span class="input">Choose file ...</span>
+		<input type="file" name="certificate">
+		<button type="button" class="button brand-colors">
+			{{name}}
+		</button>
+	</div>
+	<span class="file-preview"> <img ng-src="{{image}}" id="file-preview" alt=""> </span>
+</div>
+

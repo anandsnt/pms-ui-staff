@@ -1,0 +1,54 @@
+<div class="data-holder">
+	<form room_type_id="1" id="edit-room-type" class="form inline-form float">
+		<div class="form-title">
+			<h3><span>Edit</span> {{roomTypeData.room_type_name}} </h3>
+			<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+		</div>
+		
+		<fieldset class="holder left float">
+			
+			<ad-textbox styleclass="full-width" value="roomTypeData.room_type_name" name = "room-type-name" id = "room-type-name" label = "Room Type Name" placeholder = "Enter Room Type" required = "yes" ></ad-textbox>
+			
+			<ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="roomTypeData.snt_description" name = "snt-desc" id = "snt-desc" label = "StayNTouch Description " placeholder = "Enter StayNTouch Description"></ad-textarea>
+
+		</fieldset>
+		<fieldset class="holder right float">
+			<ad-textbox value="roomTypeData.room_type_code" name = "room-type-code" id = "room-type-code" label = "Code" placeholder = "Enter Room Type Code" required = "yes" ></ad-textbox>
+            <ad-textbox value="roomTypeData.max_occupancy" name = "max-occupancy" id = "max-occupancy" label = "Max Occupancy " placeholder = "Enter Max Occupancy" required = "" ></ad-textbox>
+			 
+			 <div class="entry full-width">
+				<label for="room-type-picture"> Picture </label>
+				<div class="file-upload with-preview">
+					<input type="file" ng-model="roomTypeData.image_of_room_type" accept="image/*" app-filereader />
+					<button type="button" class="button brand-colors">
+						Choose file
+					</button> 
+				</div>
+				<span class="file-preview"><img ng-src="{{roomTypeData.image_of_room_type}}" id="file-preview" alt=""> </span>
+			</div> 
+			
+			<!-- <div class="entry full-width">
+					<label for="user-picture"> Picture </label>
+					<div class="file-upload with-preview">
+						<span class="input">Choose file ...</span>
+						<input type="file" ng-model="image" accept="image/*" app-filereader />
+						<button type="button" class="button brand-colors">
+							 Choose file
+						</button> 
+					</div>
+					<span class="file-preview"> <img ng-src="{{image}}" id="file-preview" alt=""> </span>
+				</div> -->
+
+			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_pseudo_room_type" label="Room is a pseudo room type"></ad-checkbox>
+			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_suite" label="Room is a suite"></ad-checkbox>
+		</fieldset>
+		<div class="actions float">
+			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()">
+				Cancel
+			</button>
+			<button type="button" like-type="common" id="update" class="button green add-data-inline" ng-click="saveRoomTypes()">
+				Save changes
+			</button>
+		</div>
+	</form>
+</div>

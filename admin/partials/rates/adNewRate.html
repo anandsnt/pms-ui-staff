@@ -1,0 +1,31 @@
+<div id="wrapper" class="content current" ng-click="clearErrorMessage()">
+	<header class="content-title float">
+		<h2>Add new Rate</h2>
+		<a class="action back" ui-sref="admin.rates">Back to rates</a>
+	</header>
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	<table class="grid">
+		<tr ng-repeat ="step in currentStepIndexList">
+			<td style="padding-right: 3px; padding-left:5px;" ng-include="includeTemplate($index)" colspan="2" ng-show="currentRateStepIndex === $index"></td>
+			<td width="90%" ng-hide="currentRateStepIndex === $index" >
+				<span ng-hide="step.title === 'Configure'">
+				
+					<em class="rate_step_title">{{step.title}}</em>&nbsp;<span class="italic_text">{{step.subtitle}}</span>
+			
+				</span>
+				<span ng-show="step.title === 'Configure'">
+	            <span  class="italic_text">{{step.begin_date | date:'MMMM dd,y'}}</span>
+	            <span style="margin:0 5px;">to</span>
+	            <span  class="italic_text">{{step.end_date | date:'MMMM dd,y'}}</span>
+
+				</span>
+			</td>
+			<td width="5%" ng-hide="currentRateStepIndex === $index" ng-click="clickedStep($index,step.id)" align="right" style="text-align:right !important;" class="cursor_pointer"><img src="/assets/arrow-down.png"/></td>
+		</tr>
+	</table>
+	<div ng-show="showAddNewDateRangeOptions" ng-include="'/assets/partials/rates/adRatesAddRange.html'"></div>
+
+  <div ng-click="addNewDateRange()" ng-hide="hideAddNewDateRange()" class="center_align add_new_date_range_container"> 
+      <a class="icons icon-add">
+      	<span>NEW DATE RANGE</span>
+      </a>

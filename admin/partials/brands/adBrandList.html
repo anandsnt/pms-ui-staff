@@ -1,0 +1,22 @@
+<section class="content current" ng-click="clearErrorMessage()">
+	<div data-view="HotelBrandsView">
+		<header class="content-title float">
+			<h2> Brands </h2>
+			<span class="count">({{data.length}})</span>
+			<a id="add-new-button" class="action add" ng-click="addNew()">Add new</a>
+		</header>
+		<div id="new-form-holder" ng-show="addFormView" ng-include="getTemplateUrl('','')"></div>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div id="new-form-holder" ng-show="isAddmode" ng-include="getTemplateUrl()"></div>
+		<table id="brands" class="grid">
+			<tbody>
+				<tr ng-repeat="brand in data" > 
+					<td ng-click="editBrand($index,brand.value)" ng-hide="currentClickedElement == $index && isEditmode" >
+						<a data-item="3" data-colspan="2" class="edit-data-inline"> {{brand.name}} </a>
+					</td>					
+					<td ng-include="getTemplateUrl($index,brand.value)" ng-show="currentClickedElement == $index && isEditmode"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>
