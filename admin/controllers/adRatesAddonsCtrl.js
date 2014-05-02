@@ -33,7 +33,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			var getParams = $scope.calculateGetParams(params);
 
 			var fetchSuccessOfItemList = function(data) {
-				$scope.totalCount = data.totall_count;
+				$scope.totalCount = data.total_count;	
 				$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
 				
 				$scope.currentPage = params.page();
@@ -42,11 +42,7 @@ admin.controller('ADRatesAddonsCtrl', [
 	        	$scope.addonList = data.results;
 	            $defer.resolve($scope.addonList);
 
-	            // when ever we are ready to emit 'hideLoader'
-	            $scope.apiLoadCount++
-	            if ( $scope.apiLoadCount > 4 ) {
-	            	$scope.$emit('hideLoader');
-	            };
+	            $scope.$emit('hideLoader');
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetch, getParams, fetchSuccessOfItemList);	
 		}	
@@ -89,11 +85,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			var ccCallback = function(data) {
 				$scope.chargeCodes = data.results;
 
-				// when ever we are ready to emit 'hideLoader'
-				$scope.apiLoadCount++
-				if ( $scope.apiLoadCount > 4 ) {
-					$scope.$emit('hideLoader');
-				};
+				$scope.$emit('hideLoader');
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, ccCallback);
 
@@ -101,11 +93,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			var atCallback = function(data) {
 				$scope.amountTypes = data;
 
-				// when ever we are ready to emit 'hideLoader'
-				$scope.apiLoadCount++
-				if ( $scope.apiLoadCount > 4 ) {
-					$scope.$emit('hideLoader');
-				};
+				$scope.$emit('hideLoader');
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'amount_type' }, atCallback);
 
@@ -113,11 +101,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			var ptCallback = function(data) {
 				$scope.postTypes = data;
 
-				// when ever we are ready to emit 'hideLoader'
-				$scope.apiLoadCount++
-				if ( $scope.apiLoadCount > 4 ) {
-					$scope.$emit('hideLoader');
-				};
+				$scope.$emit('hideLoader');
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'post_type' }, ptCallback);
 		};
@@ -210,7 +194,7 @@ admin.controller('ADRatesAddonsCtrl', [
 					$scope.$emit('hideLoader');
 					$scope.isAddMode = false;
 
-					$scope.loadTable();
+					$scope.tableParams.reload();
 				};
 
 				$scope.invokeApi(ADRatesAddonsSrv.addNewAddon, $scope.singleAddon, callback);
@@ -259,6 +243,8 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.addonList = withoutThis;
 
 				$scope.$emit('hideLoader');
+
+				$scope.tableParams.reload();
 			};
 
 			var data = {
