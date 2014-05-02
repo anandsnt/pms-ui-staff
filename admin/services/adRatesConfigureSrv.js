@@ -28,6 +28,7 @@ admin.service('ADRatesConfigureSrv',['$http', '$q', 'ADBaseWebSrvV2','$rootScope
 	};
 	
 	this.saveSet = function(data){
+		console.log(data);
 		var deferred = $q.defer();
 		var url = "/api/rate_sets/"+data.id;
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
