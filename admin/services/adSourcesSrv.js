@@ -16,7 +16,7 @@ admin.service('ADSourcesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 	/**
     *   A post method to enable/disable sources
     */
-	this.toggleUsedMarkets = function(data){
+	this.toggleUsedSources = function(data){
 		var deferred = $q.defer();
 		var url = '/api/sources/use_sources';
 		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
@@ -67,7 +67,7 @@ admin.service('ADSourcesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 		var deferred = $q.defer();
 		var url = '/api/sources/'+data.value;
 		
-		ADBaseWebSrvV2.deleteJSON(url,data).then(function(data) {
+		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);

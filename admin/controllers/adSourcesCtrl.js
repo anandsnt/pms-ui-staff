@@ -12,10 +12,10 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', function($scope, ADS
 	};
 	$scope.invokeApi(ADSourcesSrv.fetch, {},fetchSuccessCallback);
 	/*
-    * To handle nable/disable of use sources
+    * To handle enable/disable of use sources
     */
-	$scope.clickedUsedMarkets = function(){
-		$scope.invokeApi(ADSourcesSrv.toggleUsedMarkets, {'is_use_markets':$scope.data.is_use_sources });
+	$scope.clickedUsedSources = function(){
+		$scope.invokeApi(ADSourcesSrv.toggleUsedSources, {'is_use_sources':$scope.data.is_use_sources });
 	};
     /*
     * To render edit screen
