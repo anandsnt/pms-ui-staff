@@ -12,7 +12,7 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv', function($scope, ADO
 	};
 	$scope.invokeApi(ADOriginsSrv.fetch, {},fetchSuccessCallback);
 	/*
-    * To handle nable/disable of use origins
+    * To handle enable/disable of use origins
     */
 	$scope.clickedUsedOrigins = function(){
 		$scope.invokeApi(ADOriginsSrv.toggleUsedOrigins, {'is_use_origins':$scope.data.is_use_origins });
@@ -20,7 +20,6 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv', function($scope, ADO
     /*
     * To render edit screen
     * @param {int} index index of selected origins
-    * @paran {string} id - charge groups id
     */
 	$scope.editItem = function(index)	{
 		$scope.currentClickedElement = index;
@@ -28,7 +27,6 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv', function($scope, ADO
 	/*
     * To get the template of edit screen
     * @param {int} index of the selected item
-    * @param {string} id of the item
     */
 	$scope.getTemplateUrl = function(index){
 		if($scope.currentClickedElement == index){ 

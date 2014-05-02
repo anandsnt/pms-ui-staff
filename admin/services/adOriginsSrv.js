@@ -59,7 +59,7 @@ admin.service('ADOriginsSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 		return deferred.promise;
 	};
 	/*
-    * Service function to delete market item.
+    * Service function to delete origin item.
     * @return {object} status of deletion
     */
 	this.deleteItem = function(data){
