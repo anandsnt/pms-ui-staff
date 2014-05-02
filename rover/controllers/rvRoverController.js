@@ -67,7 +67,7 @@ else if($scope.isHotelStaff){
         ngDialog.open({
              template: '/assets/partials/settings/rvStaffSettingModal.html',
              controller: 'RVStaffsettingsModalController',
-             className: 'ngdialog-theme-default calendar-modal'
+             className: 'ngdialog-theme-plain calendar-modal'
         });
     }
 }

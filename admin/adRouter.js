@@ -122,6 +122,11 @@ admin.config([
 			url : '/roomtypes'
 		});
 
+		$stateProvider.state('admin.housekeeping', {
+			templateUrl: '/assets/partials/housekeeping/adHousekeeping.html',
+			controller: 'adHousekeepingCtrl',
+			url : '/housekeeping'
+		});
 
 		$stateProvider.state('admin.roomKeyDelivery', {
 			templateUrl: '/assets/partials/roomKeyDelivery/roomKeyDelivery.html',
