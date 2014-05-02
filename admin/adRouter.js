@@ -256,6 +256,12 @@ admin.config([
 			controller: 'ADMarketsCtrl',
 			url : '/markets'
 		});
-
+		
+		$stateProvider.state('admin.bookingOrigins', {
+			templateUrl: '/assets/partials/sources/adOrigins.html',
+			controller: 'ADOriginsCtrl',
+			url : '/origins'
+		});
+		
 	}
 ]);
