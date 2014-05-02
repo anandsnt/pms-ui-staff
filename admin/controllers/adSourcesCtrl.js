@@ -19,16 +19,14 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', function($scope, ADS
 	};
     /*
     * To render edit screen
-    * @param {int} index index of selected sources
-    * @paran {string} id - charge groups id
+    * @param {int} index index of selected source
     */
 	$scope.editItem = function(index)	{
 		$scope.currentClickedElement = index;
 	};
 	/*
     * To get the template of edit screen
-    * @param {int} index of the selected item
-    * @param {string} id of the item
+    * @param {int} index of the selected source
     */
 	$scope.getTemplateUrl = function(index){
 		if($scope.currentClickedElement == index){ 
@@ -73,7 +71,7 @@ admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', function($scope, ADS
   		$scope.invokeApi(ADSourcesSrv.update, data, postSuccess);
    	};
    	/*
-    * To handle delete button in edit box and list view.
+    * To handle delete button in edit box.
     */
 	$scope.clickedDelete = function(id){
 		var successDeletionCallback = function(){

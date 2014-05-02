@@ -27,7 +27,7 @@ admin.service('ADSourcesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 		return deferred.promise;
 	};
 	/*
-    * Service function to save sources
+    * Service function to save source
     * @return {object} status of update
     */
 	this.save = function(data){
@@ -43,7 +43,7 @@ admin.service('ADSourcesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 		return deferred.promise;
 	};
 	/*
-    * Service function to update sources.
+    * Service function to update source.
     * @return {object} status of update
     */
 	this.update = function(data){
@@ -59,7 +59,7 @@ admin.service('ADSourcesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $
 		return deferred.promise;
 	};
 	/*
-    * Service function to delete sources item.
+    * Service function to delete source.
     * @return {object} status of deletion
     */
 	this.deleteItem = function(data){

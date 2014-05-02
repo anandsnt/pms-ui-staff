@@ -6,7 +6,7 @@
 				{{data.sources.length}}
 				) </span>
 			<a class="action add" ng-click="addNewClicked()">Add new</a>
-			<ad-toggle-button is-checked="data.is_use_sources" div-class="header-title" ng-click="clickedUsedSources()" label="Use sources"></ad-toggle-button>
+			<ad-toggle-button ng-hide="!data.is_use_sources" is-checked="data.is_use_sources" div-class="header-title" ng-click="clickedUsedSources()" label="Use sources"></ad-toggle-button>
 		</header>
 
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
