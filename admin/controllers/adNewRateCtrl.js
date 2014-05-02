@@ -72,7 +72,7 @@ admin.controller('ADAddnewRate',
                 if (!$scope.edit_mode){
                     if($scope.currentStepIndexList[2].title === 'Date'){
                         $scope.currentStepIndexList.splice(2,1);
-                    }
+                    }getDateRangeData = $scope.date_range;
                     getDateRangeData = ADRatesRangeSrv.getDateRangeData();
                 }
                 else{
@@ -81,24 +81,24 @@ admin.controller('ADAddnewRate',
                 $scope.showAddNewDateRangeOptions = false;
 
                 angular.forEach(getDateRangeData, function(value, key){
-                var nextContent = {
+                    var nextContent = {
                                     'title': 'Configure',
                                     'type' : 'Configure',
                                     'id'   : value.id,
                                     'begin_date' : value.begin_date,
                                     'end_date':value.end_date
                                     };
-                $scope.isAlreadyIncurrentStepIndexList = false;
-                angular.forEach($scope.currentStepIndexList, function(stepValue, key){
+                    $scope.isAlreadyIncurrentStepIndexList = false;
+                    angular.forEach($scope.currentStepIndexList, function(stepValue, key){
 
-                if(stepValue.id == nextContent.id){
-                    $scope.isAlreadyIncurrentStepIndexList = true;
-                }
-                });
-                if(!$scope.isAlreadyIncurrentStepIndexList)
-                   $scope.currentStepIndexList.push(nextContent);
+                    if(stepValue.id == nextContent.id){
+                        $scope.isAlreadyIncurrentStepIndexList = true;
+                    }
+                    });
+                    if(!$scope.isAlreadyIncurrentStepIndexList)
+                       $scope.currentStepIndexList.push(nextContent);
 
-                  });   
+                });   
                 $scope.clickedStep($scope.currentStepIndexList.length-1);   
             }
 
@@ -159,9 +159,34 @@ admin.controller('ADAddnewRate',
             $scope.based_on_plus_minus = (data.based_on != null) ? (data.based_on.value > 0 ? '+' : '-') : '';            
             $scope.based_on_value = (data.based_on != null) ? Math.abs(data.based_on.value) : '';
             $scope.room_type_ids = data.room_type_ids;
-            $scope.date_range = data.date_range;
+            $scope.date_ranges = data.date_ranges;
+            $scope.setupEdit();
             $scope.$emit('hideLoader');
         };
+
+        $scope.setupEdit = function(){
+            nextContent = {
+                            'title': 'Room',
+                            'subtitle':'Types',
+                            'type' : 'Type',
+                            'id'   : 'Type'
+                        };
+            $scope.currentStepIndexList.push(nextContent);
+            getDateRangeData = $scope.date_ranges;
+            console.log(getDateRangeData);
+            angular.forEach(getDateRangeData, function(value, key){
+                var nextContent = {
+                                'title': 'Configure',
+                                'type' : 'Configure',
+                                'id'   : value.id,
+                                'begin_date' : value.begin_date,
+                                'end_date':value.end_date
+                                };
+                $scope.currentStepIndexList.push(nextContent);
+
+            });   
+            $scope.clickedStep($scope.currentStepIndexList.length-1);
+        }
 
         /*
         * init function

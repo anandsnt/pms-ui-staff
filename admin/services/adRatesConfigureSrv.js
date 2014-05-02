@@ -17,11 +17,8 @@ admin.service('ADRatesConfigureSrv',['$http', '$q', 'ADBaseWebSrvV2','$rootScope
 
 	this.fetchSetsInDateRange = function(data) {
 		var deferred = $q.defer();
-
-		// var url = " /sample_json/ng_admin/rate_types.json";
 		var url = "/api/rate_date_ranges/"+data.id;
 		that.setDateId(data.id);
-		// var url = "/sample_json/rates/rates_config_add.json";
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
