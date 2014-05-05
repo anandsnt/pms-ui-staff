@@ -40,9 +40,14 @@ $scope.saveStep2 = function(){
         'room_type_ids': assignedRoomArray,
         'id' : $scope.newRateId
     };
+
     var saveRoomTypesSuccessCallback = function(data){
         $scope.$emit('hideLoader');
-        if ($scope.edit_mode){
+        if($scope.hasBaseRate){
+        	$scope.setupConfigureRates();
+            $scope.$emit("updateIndex","3");
+        }
+        else if ($scope.edit_mode){
             $scope.$emit("updateIndex","3");
         }
         else{
