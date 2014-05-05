@@ -83,6 +83,8 @@ $scope.saveStep1 = function(){
 		$scope.isFirstTime = false;
 		$scope.$emit('hideLoader');
 		$scope.$emit("updateIndex",{'id':'1','rateId':$scope.newRateId});
+		$scope.$emit("updateBasedonRate", basedOn_id);
+		
 	};
 	var createNewRateFailureCallback = function(data){
 		$scope.$emit('hideLoader');
@@ -91,6 +93,8 @@ $scope.saveStep1 = function(){
 	var updateRateSuccessCallback = function(data){
 		$scope.$emit('hideLoader');
 		$scope.$emit("updateIndex",{'id':'1','rateId':$scope.newRateId});
+		$scope.$emit("updateBasedonRate", basedOn_id);
+
 	};
 	var updateRateFailureCallback = function(data){
 		$scope.$emit('hideLoader');

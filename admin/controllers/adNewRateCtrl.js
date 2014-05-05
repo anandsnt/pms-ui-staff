@@ -17,6 +17,10 @@ admin.controller('ADAddnewRate',
             $scope.errorMessage = '';
             $scope.newRateId = $stateParams.rateId;
             $scope.showAddNewDateRangeOptions =false;
+        	$scope.hasBaseRate = false;
+        	$scope.date_ranges = [];
+        	$scope.basedonRateId = "";
+
             // setting rateId and values for Rate Edit
             if ($stateParams.rateId){
                 $scope.edit_mode = true
@@ -34,6 +38,17 @@ admin.controller('ADAddnewRate',
         $scope.$on("errorReceived", function(e,value){
             
             $scope.errorMessage = value;
+        });
+
+        $scope.$on("updateBasedonRate", function(e,basedonRateId){
+        	console.log("updateBasedonRate");
+        	console.log(basedonRateId);
+        	if($scope.based_on_id == basedonRateId || basedonRateId == undefined)
+        		return false;
+        	$scope.hasBaseRate = true;
+        	$scope.basedonRateId = basedonRateId;
+            $scope.invokeApi(ADRatesSrv.fetchDetails, {rateId:basedonRateId}, $scope.fetchDetailsSuccess);
+
         });
         /*
             * to be updated from child classes 
@@ -150,17 +165,20 @@ admin.controller('ADAddnewRate',
 
         // Fetch details success callback for rate edit
         $scope.fetchDetailsSuccess = function(data){
+
+        	console.log(JSON.stringify(data));
             // set rate edit field values for all steps
             $scope.rate_name = data.name;
             $scope.rate_description = data.description;
             $scope.rateTypeselected = (data.rate_type != null) ? data.rate_type.id : ''
             $scope.basedOnRateTypeSelected = (data.based_on != null) ? data.based_on.id : '';
+            $scope.based_on_id = (data.based_on != null) ? data.based_on.id : '';
             $scope.based_on_type = (data.based_on != null) ? data.based_on.type : '';
             $scope.based_on_plus_minus = (data.based_on != null) ? (data.based_on.value > 0 ? '+' : '-') : '';            
             $scope.based_on_value = (data.based_on != null) ? Math.abs(data.based_on.value) : '';
             $scope.room_type_ids = data.room_type_ids;
             $scope.date_ranges = data.date_ranges;
-            $scope.setupEdit();
+            if($scope.edit_mode) $scope.setupEdit();
             $scope.$emit('hideLoader');
         };
 
