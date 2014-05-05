@@ -13,7 +13,7 @@
 		<section role="main" id="search" class="content scrollable">
 			<div class="wrapper" id="result-showing-area" ng-hide="results.length==0" >
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-				<div ng-iscroll="result_showing_area"  ng-iscroll-delay="1000">
+				<div ng-iscroll="result_showing_area"  ng-iscroll-delay="1000" style="position:absolute; top:0px; bottom:0px; left: 0px;width: 100%;">
 					<ul id="search-results" class="search-results" ng-class="{'hidden': results.length==0}" style="width: 100%;">
 						<li ng-repeat="row in results" ng-show="row.is_row_visible==true" ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation})">
 							<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
@@ -24,29 +24,31 @@
 								</figure>
 
 								<div class="data">
-									<h2 ng-bind-html-unsafe="{{row.lastname}}, {{row.firstname}} |highlight:textInQueryBox:caseSensitive"> {{row.lastname}}, {{row.firstname}}</h2>
+									<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false"> <!--{{row.lastname}},{{row.firstname}} --></h2>
 									<span class="confirmation">{{row.confirmation}}</span>
 									<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
 									</span>
 									<em class="icons icon-group" ng-hide="{{row.group==null}}">{{row.group}}</em>
 								</div>	
 
-								<div class="status" >
-									<span class="late-checkout-time" ng-hide="escapeNull(row.lateCheckoutTime)==''||row.reservation_status!='CHECKING_OUT'||row.is_opted_late_checkout==false">
-										{{row.lateCheckoutTime}}
+								<div class="status" >				
+									<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
+										{{row.late_checkout_time}}
 									</span>
 
-									<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.isLateCheckoutOn)}}">
+									<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}">
 									</span>
 								</div>	
 
-								<span class="room-number {{getRoomStatusMapped(row.roomstatus, row.foStatus)}}" >
+								<span class="room-number {{getRoomStatusMapped(row.roomstatus, row.fostatus)}}" ng-if="row.reservation_status == 'CHECKING_IN'">
 									{{row.room}}
 								</span>
-								
+								<span class="room-number" ng-if="row.reservation_status != 'CHECKING_IN'">
+									{{row.room}}
+								</span>
 
 
-								<strong class="room-status " ng-show="getRoomStatusMapped(roomstatus, foStatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</strong>
+								<strong class="room-status " ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</strong>
 							</a>
 						</li>					
 					</ul>
