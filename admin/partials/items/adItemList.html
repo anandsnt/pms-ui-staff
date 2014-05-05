@@ -25,7 +25,7 @@
 				{{item.category_name}}
 			</td>
 			<td width="14%" class="" data-title="'Unit Price'" style="text-align:center;">
-				{{item.unit_price}}
+				{{item.currency_code}} {{item.unit_price}}
 			</td>
 			<td width="14%" class="activate" data-title="'Favorite'">
 				<ad-toggle-button is-checked="item.is_favourite" ng-click='toggleFavourite(item.item_id, item.is_favourite)'></ad-toggle-button>
