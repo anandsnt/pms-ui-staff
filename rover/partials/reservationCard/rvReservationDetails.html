@@ -35,10 +35,10 @@
 			1
 		</li>
 	</ul>
-	<input type="hidden" value="4844453" name="confirm_no" id="confirm_no">
-	<div id="reservation-content-4844453" class="reservation-content scrollable check-in">
+
+	<div class="reservation-content scrollable check-in">
 		<div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
-			<div id="notification-message"></div>
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<h2 class="h1"> Reservation {{reservationData.reservation_card.confirmation_num}}</h2>
 			<!-- Credit card -->
 			<span id="reservation-card-payment">
