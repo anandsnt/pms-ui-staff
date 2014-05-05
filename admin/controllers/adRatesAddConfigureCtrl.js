@@ -31,16 +31,18 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
         $scope.$emit('hideLoader');
         $scope.data = data;
         // manually build room_rates for add mode
-        if (!$scope.edit_mode){
+        //if (!$scope.edit_mode){
             room_rates = []
             angular.forEach($scope.data.sets, function(value, key){
-                angular.forEach($scope.data.room_types, function(room_type, key){
-                    data = {"id": room_type.id, "name" : room_type.name, "single": "", "double": "", "extra_adult":"", "child":"", "isSaved" : false}
-                    room_rates.push(data);
-                });
-                value.room_rates = room_rates;
+                if (value.room_rates.length === 0){
+                    angular.forEach($scope.data.room_types, function(room_type, key){
+                        data = {"id": room_type.id, "name" : room_type.name, "single": "", "double": "", "extra_adult":"", "child":"", "isSaved" : false}
+                        room_rates.push(data);
+                    });
+                    value.room_rates = room_rates;
+                }
             });
-        }
+        //}
     };
     $scope.fetchSetsInDateRangeFailureCallback = function(errorMessage){
         $scope.$emit('hideLoader');
