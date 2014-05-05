@@ -2,6 +2,7 @@ admin.service('ADRatesConfigureSrv',['$http', '$q', 'ADBaseWebSrvV2','$rootScope
 	
 	this.currentSetData = {};
 	this.dateId ='';
+	this.hasBaseRate = false;
 	this.setCurrentSetData = function(data){
 		this.currentSetData =data;
 		 $rootScope.$broadcast('dateRangeUpdated',this.currentSetData);

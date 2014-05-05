@@ -2,6 +2,9 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
    $scope.sets = "";
    $scope.currentClickedSet = 0;
    $scope.selectedCalendarInitialData = {};
+    if($scope.hasBaseRate){
+        ADRatesConfigureSrv.hasBaseRate = true;
+    }
 
     ADRatesConfigureSrv.setCurrentSetData($scope.$parent.step);
     $scope.$parent.step = ADRatesConfigureSrv.getCurrentSetData();
@@ -11,6 +14,23 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
      });
 
     // disable date range edit
+    $scope.disableDateSetEdit = function(){
+        if($scope.hasBaseRate) {
+            return true;
+        }
+        if($scope.edit_mode){
+            if(!$scope.step.is_editable){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
     $scope.disableDateRangeEdit = function(){
         if($scope.edit_mode){
             if(!$scope.step.is_editable){
@@ -31,9 +51,9 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
         $scope.$emit('hideLoader');
         $scope.data = data;
         // manually build room_rates for add mode
-        if (!$scope.edit_mode){
-            room_rates = []
+        if (!($scope.edit_mode && $scope.hasBaseRate)){        
             angular.forEach($scope.data.sets, function(value, key){
+                room_rates = []
                 angular.forEach($scope.data.room_types, function(room_type, key){
                     data = {"id": room_type.id, "name" : room_type.name, "single": "", "double": "", "extra_adult":"", "child":"", "isSaved" : false}
                     room_rates.push(data);
@@ -41,6 +61,7 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
                 value.room_rates = room_rates;
             });
         }
+
     };
     $scope.fetchSetsInDateRangeFailureCallback = function(errorMessage){
         $scope.$emit('hideLoader');
@@ -54,6 +75,7 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     };
 
     $scope.fetchData = function(){
+        console.log("fetchData");
         $scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, {"id":dateRangeId},$scope.fetchSetsInDateRangeSuccessCallback,$scope.fetchSetsInDateRangeFailureCallback);     
     };
     $scope.fetchData();

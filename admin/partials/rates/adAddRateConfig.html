@@ -13,16 +13,16 @@
     <ul class="date-wrapper" ng-class="{actions: currentClickedSet == $index}" style="padding-right: 15px;">
 
 
-        <li style="width:30px;" ng-show="currentClickedSet == $index"><span class="icons delete_small cursor-hand" ng-click="deleteSet(set.id, $index)" ng-hide="disableDateRangeEdit()">&nbsp;</span></li>
-        <li ng-show="currentClickedSet == $index"><ad-textbox value="set.name" style="width:150px; margin-top:10px;" disabled="disableDateRangeEdit()"></ad-textbox></li>
+        <li style="width:30px;" ng-show="currentClickedSet == $index"><span class="icons delete_small cursor-hand" ng-click="deleteSet(set.id, $index)" ng-hide="disableDateSetEdit()">&nbsp;</span></li>
+        <li ng-show="currentClickedSet == $index"><ad-textbox value="set.name" style="width:150px; margin-top:10px;" disabled="disableDateSetEdit()"></ad-textbox></li>
         <li ng-show="currentClickedSet == $index">
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.monday" ng-click="toggleDays($index, 'monday')" label="MON" is-disabled="disableDateRangeEdit()"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.tuesday" ng-click="toggleDays($index, 'tuesday')" label="TUE" is-disabled="disableDateRangeEdit()"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.wednesday" ng-click="toggleDays($index, 'wednesday')" label="WED" is-disabled="disableDateRangeEdit()"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.thursday" ng-click="toggleDays($index, 'thursday')" label="THU" is-disabled="disableDateRangeEdit()"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.friday" ng-click="toggleDays($index, 'friday')" label="FRI" is-disabled="disableDateRangeEdit()"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.saturday" ng-click="toggleDays($index, 'saturday')" label="SAT" is-disabled="disableDateRangeEdit()"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.sunday" ng-click="toggleDays($index, 'sunday')" label="SUN" is-disabled="disableDateRangeEdit()"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.monday" ng-click="toggleDays($index, 'monday')" label="MON" is-disabled="disableDateSetEdit()"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.tuesday" ng-click="toggleDays($index, 'tuesday')" label="TUE" is-disabled="disableDateSetEdit()"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.wednesday" ng-click="toggleDays($index, 'wednesday')" label="WED" is-disabled="disableDateSetEdit()"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.thursday" ng-click="toggleDays($index, 'thursday')" label="THU" is-disabled="disableDateSetEdit()"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.friday" ng-click="toggleDays($index, 'friday')" label="FRI" is-disabled="disableDateSetEdit()"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.saturday" ng-click="toggleDays($index, 'saturday')" label="SAT" is-disabled="disableDateSetEdit()"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.sunday" ng-click="toggleDays($index, 'sunday')" label="SUN" is-disabled="disableDateSetEdit()"></ad-checkboxtext-left>
         </li>
         <li style="float:right; padding-top:10px;" ng-show="currentClickedSet == $index">
             <span class="icons icon-rate-search" style="float:right; width:40px;">&nbsp;</span>
@@ -71,13 +71,13 @@
         <tr ng-repeat="room_rate in set.room_rates">
             <td align="right" class="room-type">{{room_rate.name}}</td>
             <td align="center">&nbsp;</td>
-            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.single}}" ng-model="room_rate.single" ng-disabled="disableDateRangeEdit()"></div></td>
+            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.single}}" ng-model="room_rate.single" ng-disabled="disableDateSetEdit()"></div></td>
             <td align="center"><span class="icons right-arrow-grey" ng-click="moveSingleToDouble($parent.$index,$index)">&nbsp;</span></td>
-            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.double}}" ng-model="room_rate.double" ng-disabled="disableDateRangeEdit()"></div></td>
+            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.double}}" ng-model="room_rate.double" ng-disabled="disableDateSetEdit()"></div></td>
             <td align="center">&nbsp;</td>
-            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.extra_adult}}" ng-model="room_rate.extra_adult" ng-disabled="disableDateRangeEdit()"></div></td>
+            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.extra_adult}}" ng-model="room_rate.extra_adult" ng-disabled="disableDateSetEdit()"></div></td>
             <td align="center">&nbsp;</td>
-            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.child}}" ng-model="room_rate.child" ng-disabled="disableDateRangeEdit()"></div></td>
+            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.child}}" ng-model="room_rate.child" ng-disabled="disableDateSetEdit()"></div></td>
             <td align="center">&nbsp;</td>
         </tr>
       <tr>

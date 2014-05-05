@@ -41,8 +41,6 @@ admin.controller('ADAddnewRate',
         });
 
         $scope.$on("updateBasedonRate", function(e,basedonRateId){
-        	console.log("updateBasedonRate");
-        	console.log(basedonRateId);
         	if($scope.based_on_id == basedonRateId || basedonRateId == undefined)
         		return false;
         	$scope.hasBaseRate = true;
@@ -179,7 +177,9 @@ admin.controller('ADAddnewRate',
             $scope.based_on_value = (data.based_on != null) ? Math.abs(data.based_on.value) : '';
             $scope.room_type_ids = data.room_type_ids;
             $scope.date_ranges = data.date_ranges;
-            if($scope.edit_mode) $scope.setupEdit();
+            if($scope.edit_mode) {
+            	$scope.setupEdit();
+            }
             $scope.$emit('hideLoader');
         };
 
