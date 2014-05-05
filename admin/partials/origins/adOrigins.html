@@ -6,7 +6,7 @@
 				{{data.booking_origins.length}}
 				) </span>
 			<a class="action add" ng-hide="!data.is_use_origins" ng-click="addNewClicked()" >Add new</a>
-			<ad-toggle-button is-checked="data.is_use_origins" div-class="header-title" ng-click="clickedUsedOrigins()" label="Use origins"></ad-toggle-button>
+			<ad-toggle-button is-checked="data.is_use_origins" div-class="header-title" ng-click="clickedUsedOrigins()" label="Use Origin of Booking"></ad-toggle-button>
 		</header>
 
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
