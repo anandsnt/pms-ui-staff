@@ -3,11 +3,11 @@ sntRover.service('RVReservationCardSrv',['$http', '$q', 'RVBaseWebSrv', function
     * To fetch the list of users
     * @return {object} users list json
     */
-	this.fetch = function(){
+	this.fetch = function(reservationId){
 		
 		var deferred = $q.defer();
 		// var url = '/staff/staycards/staycard.json?confirmation=4844947&id=5470';
-		var url = 'api/reservations/56.json';
+		var url = 'api/reservations/'+reservationId+'.json';
 
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);

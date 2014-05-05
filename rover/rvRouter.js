@@ -47,9 +47,9 @@ sntRover.config([
         });
 
         $stateProvider.state('rover.staycard.reservationcard.reservationdetails', {
-        	url: '/reservationdetails',
+        	url: '/reservationdetails/:id/:confirmationId',
 			templateUrl: '/assets/partials/reservationCard/rvReservationDetails.html',
-            controller: 'reservationDetailsController'
+            controller: 'reservationDetailsController',
         }); 
 
                                

@@ -1,12 +1,10 @@
-sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv', function($scope, RVReservationCardSrv){
+sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', function($scope, RVReservationCardSrv, $stateParams){
 	
 	$scope.reservationDetailsFetchSuccessCallback = function(data){
 		
 		$scope.$emit('hideLoader');
 		$scope.reservationData = data;
-		
 		$scope.$emit('showStaycard');
-		
 	};
 	
 	 $scope.$on("RESERVATIONDETAILS", function(event, confirmationNumber){
@@ -18,4 +16,6 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	 	}
 	  
   	});
+  	var passData = {confirmationNumber: $stateParams.confirmationId, reservationId: $stateParams.id};
+  	$scope.$emit('guestId', passData);
 }]);
