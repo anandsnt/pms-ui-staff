@@ -24,7 +24,7 @@
 								</figure>
 
 								<div class="data">
-									<h2 ng-bind-html-unsafe="{{row.lastname}}, {{row.firstname}} |highlight:textInQueryBox:caseSensitive"> {{row.lastname}}, {{row.firstname}}</h2>
+									<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false"> <!--{{row.lastname}},{{row.firstname}} --></h2>
 									<span class="confirmation">{{row.confirmation}}</span>
 									<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
 									</span>
@@ -32,7 +32,9 @@
 								</div>	
 
 								<div class="status" >
-									<span class="late-checkout-time" ng-hide="escapeNull(row.lateCheckoutTime)==''||row.reservation_status!='CHECKING_OUT'||row.is_opted_late_checkout==false">
+									{{escapeNull(row.lateCheckoutTime)==''}}
+									{{row.is_opted_late_checkout==false}}
+									<span class="late-checkout-time" ng-hide="escapeNull(row.lateCheckoutTime)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
 										{{row.lateCheckoutTime}}
 									</span>
 

@@ -56,26 +56,36 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   };
 
 
-  //setting the heading of the screen
-  $scope.heading = headingListDict[$stateParams.type]; 
 
-
-	var dataDict = {};
-	if(typeof $stateParams !== 'undefined' && 
-    typeof $stateParams.type !== 'undefined' && 
-    $stateParams.type!='') {
-      if($stateParams.type == "LATE_CHECKOUT"){
-        dataDict.is_late_checkout_only = true;
+  /**
+  * function to perform initial actions like setting heading, call webservice..
+  */
+  var performInitialActions = function(){
+      //setting the heading of the screen
+      $scope.heading = headingListDict[$stateParams.type]; 
+      //preparing for web service call
+    	var dataDict = {};
+    	if(typeof $stateParams !== 'undefined' && 
+        typeof $stateParams.type !== 'undefined' && 
+        $stateParams.type!='') {
+          //LATE_CHECKOUT is a special case, parameter is diff. here
+          if($stateParams.type == "LATE_CHECKOUT"){
+            dataDict.is_late_checkout_only = true;
+          }
+          else{
+      		  dataDict.status = $stateParams.type;
+          }
+          //calling the webservice
+          $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofInitialFetch); 
+    	}
+      
+      else{   
+        $scope.results = [];
       }
-      else{
-  		  dataDict.status = $stateParams.type;
-      }
-      $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofInitialFetch); 
-	}
-  
-  else{   
-    $scope.results = [];
   }
+
+  
+  performInitialActions();
 
   /**
   * function to perform filtering/request data from service in change event of query box
@@ -95,14 +105,17 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   /**
   *
   */
-  var displayFilteredResults = function(){
+  var displayFilteredResults = function(){      
     if($scope.textInQueryBox.length < 3){
       for(var i = 0; i < $scope.results.length; i++){
           $scope.results[i].is_row_visible = true;
       }
+      if($scope.results.length == 0){
+        performInitialActions();
+      }
     }
     else{
-      var value = "";
+      var value = ""; 
       var visibleElementsCount = 0;
       for(var i = 0; i < $scope.results.length; i++){
         value = $scope.results[i];
@@ -117,14 +130,15 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
             }
         else {
           $scope.results[i].is_row_visible = false;
-        }      
+        }
+              
       }
-      if(visibleElementsCount == 0){
+     if(visibleElementsCount == 0){    
         var dataDict = {'query': $scope.textInQueryBox.trim()};
         $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofInitialFetch); 
-      }
-
+      }                 
     }
+
     
 
   };
