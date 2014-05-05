@@ -357,10 +357,10 @@ var Search  = function(domRef){
       that.fetchTerm = "";
       $('#search-results').empty().addClass('hidden');
       var preloadedResultsCount = that.preloadedResults.length;
-	  if(preloadedResultsCount > 0){
+	    if(preloadedResultsCount > 0){
 	    	$('#search-results').empty().removeClass('hidden');
 	    	that.displayFilteredResults(that.preloadedResults, "");
-	  }
+	    }
       //TODO: verify working. Rename function
       that.updateView();
     return;
