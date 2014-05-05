@@ -3,7 +3,7 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 $scope.init = function () {
     BaseCtrl.call(this, $scope);
     $rootScope.adminRole = '';
-
+    $scope.selectedMenuIndex = 0;
 /*
    * retrieve user info
    */
@@ -29,7 +29,17 @@ $scope.init = function () {
 }
 
 $scope.init();
+/*
+   * update selected menu class
+   */
 
+$scope.$on("updateIndex", function(e,value){
+  $scope.selectedMenuIndex = value;
+});
+
+/*
+   * toggle action of drawer
+   */
 
 $scope.$on("navToggled", function(){
   $scope.menuOpen = !$scope.menuOpen;
