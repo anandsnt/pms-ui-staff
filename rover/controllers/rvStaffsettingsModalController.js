@@ -1,7 +1,7 @@
 sntRover.controller('RVStaffsettingsModalController', ['$scope','ngDialog','RVSettingsSrv', function($scope,ngDialog,RVSettingsSrv){
 
 BaseCtrl.call(this, $scope);
-$scope.new_password = '';
+$scope.newPassword = '';
 $scope.confirmPassword ='';
 $scope.errorMessage='';
 
@@ -31,9 +31,9 @@ $scope.cancelClicked = function(){
  * function to check if the passwords matches
  */
 $scope.passwordsMatch =function(){
-	if($scope.new_password !== $scope.confirmPassword)
+	if($scope.newPassword !== $scope.confirmPassword)
 		return false;
-	else if($scope.new_password.length === 0)
+	else if($scope.newPassword.length === 0)
 		return false;
 	else
 		return true;
@@ -50,7 +50,7 @@ $scope.updateSettings = function(){
 		 $scope.errorMessage=data;
 	    $scope.$emit('hideLoader');
 	};
-	$scope.invokeApi(RVSettingsSrv.updateUserInfo,{'new_password' :$scope.new_password},updateUserInfoSuccessCallback,updateUserInfoFailureCallback);  
+	$scope.invokeApi(RVSettingsSrv.updateUserInfo,{'new_password' :$scope.newPassword},updateUserInfoSuccessCallback,updateUserInfoFailureCallback);  
 	};
 
 }]);
