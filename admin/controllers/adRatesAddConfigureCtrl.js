@@ -9,6 +9,21 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
      $scope.$on('dateRangeUpdated', function(event,data) {
         $scope.$parent.step = data;
      });
+
+    // disable date range edit
+    $scope.disableDateRangeEdit = function(){
+        if($scope.edit_mode){
+            if(!$scope.step.is_editable){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
    
 
     var dateRangeId = $scope.$parent.step.id;
