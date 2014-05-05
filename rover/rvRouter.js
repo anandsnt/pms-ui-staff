@@ -50,6 +50,16 @@ sntRover.config([
         	url: '/reservationdetails/:id/:confirmationId',
 			templateUrl: '/assets/partials/reservationCard/rvReservationDetails.html',
             controller: 'reservationDetailsController',
+            resolve: {
+				reservationListData: function(RVReservationCardSrv, $stateParams) {
+					
+					return RVReservationCardSrv.fetch($stateParams.id);
+				},
+				reservationDetails:function(RVReservationCardSrv, $stateParams) {
+					
+					return RVReservationCardSrv.fetchReservationDetails($stateParams.confirmationId);
+				}
+			}
         }); 
 
                                

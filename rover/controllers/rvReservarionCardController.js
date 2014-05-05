@@ -4,45 +4,21 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 	$scope.reservationList = [];
 	$scope.currentReservationId = "";
 	/*
-	 * Fetch reservation list successcallback
-	 * @param {object} data
+	 * to get state params from resrvation details controller
 	 */
-	$scope.fetchReservationDataSuccessCallback = function(data){
-		$scope.$emit('hideLoader');
+	$scope.$on('passReservationParams',function(event, data){
+		
+		// $scope.fetchReservationData(data.reservationId);
+		// $scope.currentReservationId = data.confirmationNumber;
+
 		$scope.data = data;
 		$scope.countCurrent = data.reservation_list.current_reservations_arr.length;
 		$scope.countUpcoming = data.reservation_list.upcoming_reservations_arr.length;
 		$scope.countHistory = data.reservation_list.history_reservations_arr.length;
 				
-		$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
-		
+		// $scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
+		$scope.currentReservationId = data.reservation_details.confirmation_num;
 		$scope.reservationList = data.reservation_list.current_reservations_arr;
-		
-	};
-	/*
-	 * Fetch reservation list failure callback
-	 * @param {string} erorr message
-	 */
-	$scope.fetchReservationDataFailureCallback = function(errorMessage){
-		$scope.$emit('hideLoader');
-		$scope.errorMessage = errorMessage;
-	};
-	/*
-	 * Fetch reservation list
-	 * @param {string} reservation id
-	 */
-	$scope.fetchReservationData = function(reservationId){
-		 
-		$scope.invokeApi(RVReservationCardSrv.fetch, reservationId,$scope.fetchReservationDataSuccessCallback,$scope.fetchReservationDataFailureCallback);	
-	};
-	/*
-	 * to get state params from resrvation details controller
-	 */
-	$scope.$on('passReservationParams',function(event, data){
-		
-		$scope.fetchReservationData(data.reservationId);
-		$scope.currentReservationId = data.confirmationNumber;
-	 	RVReservationCardSrv.emptyConfirmationNumbers();
 	});
 	/*
 	 * Handles time line click events
