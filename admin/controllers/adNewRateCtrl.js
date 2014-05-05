@@ -168,6 +168,7 @@ admin.controller('ADAddnewRate',
 
         	console.log(JSON.stringify(data));
             // set rate edit field values for all steps
+            $scope.hotel_business_date = data.business_date;
             $scope.rate_name = data.name;
             $scope.rate_description = data.description;
             $scope.rateTypeselected = (data.rate_type != null) ? data.rate_type.id : ''
@@ -191,10 +192,9 @@ admin.controller('ADAddnewRate',
                         };
             $scope.currentStepIndexList.push(nextContent);
             getDateRangeData = $scope.date_ranges;
-            // TODO replace hardcoded value with API return hotel business date
-            hotel_business_date = "2014-05-26";
+
             angular.forEach(getDateRangeData, function(value, key){
-                past_date_range = Date.parse(value.end_date) < Date.parse(hotel_business_date)
+                past_date_range = Date.parse(value.end_date) < Date.parse($scope.hotel_business_date);
                 var nextContent = {
                                     'title': 'Configure',
                                     'type' : 'Configure',
