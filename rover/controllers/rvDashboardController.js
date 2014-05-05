@@ -1,7 +1,9 @@
 
 sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv','dashBoarddata','$rootScope', function($scope,RVDashboardSrv,dashBoarddata,$rootScope){
 
- 
+  //setting the heading of the screen
+  $scope.heading = "Dashboard";
+
  	$scope.dashboardData = dashBoarddata.dashboardData;
  	$scope.userDetails   = dashBoarddata.userDetails;
 	$scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
