@@ -2,12 +2,15 @@ sntRover.service('RVSearchSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv)
 	
 	var self = this;
 	
-	this.fetch = function(){
+	this.fetch = function(dataToSend){
 		var deferred = $q.defer();
-		var data = {fakeDataToAvoidCache: new Date(), status: 'INHOUSE'};
-		var url =  'search.json';	
-		
-		RVBaseWebSrv.getJSON(url, data).then(function(data) {
+		dataToSend.fakeDataToAvoidCache = new Date();
+		var url =  'search.json';			
+		RVBaseWebSrv.getJSON(url, dataToSend).then(function(data) {
+			for(var i = 0; i < data.length; i++){
+				data[i].is_row_visible = true;
+			}
+
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
