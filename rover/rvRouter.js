@@ -26,8 +26,8 @@ sntRover.config([
 
 		// search state
 		$stateProvider.state('rover.search', {
-			url: '/search',
-			templateUrl: '/assets/partials/search.html',
+			url: '/search/:type',
+			templateUrl: '/assets/partials/search/search.html',
 			controller: 'searchController'
 		});	
 		

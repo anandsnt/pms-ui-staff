@@ -1,4 +1,4 @@
-var sntRover = angular.module('sntRover',['ui.router','ngAnimate','ngDialog']);
+var sntRover = angular.module('sntRover',['ui.router', 'ui.utils', 'ng-iscroll', 'ngAnimate','ngDialog']);
 sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
 	//BaseCtrl.call(this, $scope);
 	$rootScope.$state = $state;

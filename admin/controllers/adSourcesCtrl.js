@@ -1,36 +1,36 @@
-admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', function($scope, ADMarketsSrv){
+admin.controller('ADSourcesCtrl',['$scope', 'ADSourcesSrv', function($scope, ADSourcesSrv){
 
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 7);
 	$scope.currentClickedElement = -1;
     /*
-    * To fetch charge markets list
+    * To fetch charge sources list
     */
 	var fetchSuccessCallback = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.data = data;
 	};
-	$scope.invokeApi(ADMarketsSrv.fetch, {},fetchSuccessCallback);
+	$scope.invokeApi(ADSourcesSrv.fetch, {},fetchSuccessCallback);
 	/*
-    * To handle nable/disable of use markets
+    * To handle enable/disable of use sources
     */
-	$scope.clickedUsedMarkets = function(){
-		$scope.invokeApi(ADMarketsSrv.toggleUsedMarkets, {'is_use_markets':$scope.data.is_use_markets });
+	$scope.clickedUsedSources = function(){
+		$scope.invokeApi(ADSourcesSrv.toggleUsedSources, {'is_use_sources':$scope.data.is_use_sources });
 	};
     /*
     * To render edit screen
-    * @param {int} index index of selected markets
+    * @param {int} index index of selected source
     */
 	$scope.editItem = function(index)	{
 		$scope.currentClickedElement = index;
 	};
 	/*
     * To get the template of edit screen
-    * @param {int} index of the selected item
+    * @param {int} index of the selected source
     */
 	$scope.getTemplateUrl = function(index){
 		if($scope.currentClickedElement == index){ 
-			 return "/assets/partials/markets/adMarketsEdit.html";
+			 return "/assets/partials/sources/adSourcesEdit.html";
 		}
 	};
 	/*
@@ -53,9 +53,9 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', function($scope, ADM
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			$scope.data.name = "";
-			$scope.data.markets.push(data);
+			$scope.data.sources.push(data);
 		};
-  		$scope.invokeApi(ADMarketsSrv.save, { 'name' : $scope.data.name }, postSuccess);
+  		$scope.invokeApi(ADSourcesSrv.save, { 'name' : $scope.data.name }, postSuccess);
 	};
 	/*
     * To handle save button in edit box.
@@ -65,26 +65,26 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', function($scope, ADM
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 		};
-		if(index == undefined) var data = $scope.data.markets[$scope.currentClickedElement];
-		else var data = $scope.data.markets[index];
+		if(index == undefined) var data = $scope.data.sources[$scope.currentClickedElement];
+		else var data = $scope.data.sources[index];
 		
-  		$scope.invokeApi(ADMarketsSrv.update, data, postSuccess);
+  		$scope.invokeApi(ADSourcesSrv.update, data, postSuccess);
    	};
    	/*
-    * To handle delete button in edit box and list view.
+    * To handle delete button in edit box.
     */
 	$scope.clickedDelete = function(id){
 		var successDeletionCallback = function(){
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;
 			// delete data from scope
-			angular.forEach($scope.data.markets,function(item, index) {
+			angular.forEach($scope.data.sources,function(item, index) {
 	 			if (item.value == id) {
-	 				$scope.data.markets.splice(index, 1);
+	 				$scope.data.sources.splice(index, 1);
 	 			}
  			});
 		};
-		$scope.invokeApi(ADMarketsSrv.deleteItem, {'value':id }, successDeletionCallback);
+		$scope.invokeApi(ADSourcesSrv.deleteItem, {'value':id }, successDeletionCallback);
 	};
 	
 }]);
