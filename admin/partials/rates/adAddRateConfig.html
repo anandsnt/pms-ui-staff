@@ -1,9 +1,9 @@
 <div class="config-wrapper">
     <ul style="padding-left: 20px;">        
         <li style="width:98.5%; float:left;" ng-show="currentClickedSet == $index">
-            <span  class="italic_text">{{step.begin_date | date:'MMMM dd, y'}}</span>
+            <span  class="italic_text">{{data.begin_date | date:'MMMM dd, y'}}</span>
             <span style="margin:0 5px;">to</span>
-            <span  class="italic_text">{{step.end_date | date:'MMMM dd, y'}}</span>
+            <span  class="italic_text">{{data.end_date | date:'MMMM dd, y'}}</span>
             <span style="float:right" class="cursor-hand"><img src="/assets/arrow-up.png" ng-click="unsetCurrentClickedSet($index)" ></span>
 
         </li>

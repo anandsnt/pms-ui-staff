@@ -49,22 +49,20 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     var dateRangeId = $scope.$parent.step.id;
     $scope.fetchSetsInDateRangeSuccessCallback = function(data){
         $scope.$emit('hideLoader');
-        //$scope.data = data;
+
         $scope.data = $scope.calculateTheRatesRestriction(data);
-
-        // manually build room_rates for add mode
-
+        
+        // manually build room_rates for add mode   
+        angular.forEach($scope.data.sets, function(value, key){
             room_rates = []
-            angular.forEach($scope.data.sets, function(value, key){
-                if (value.room_rates.length === 0){
-                    angular.forEach($scope.data.room_types, function(room_type, key){
-                        data = {"id": room_type.id, "name" : room_type.name, "single": "", "double": "", "extra_adult":"", "child":"", "isSaved" : false}
-                        room_rates.push(data);
-                    });
-                    value.room_rates = room_rates;
-                }
-            });
-
+            if (value.room_rates.length === 0){
+                angular.forEach($scope.data.room_types, function(room_type, key){
+                    data = {"id": room_type.id, "name" : room_type.name, "single": "", "double": "", "extra_adult":"", "child":"", "isSaved" : false}
+                    room_rates.push(data);
+                });
+                value.room_rates = room_rates;
+            }
+        });
     };
     $scope.fetchSetsInDateRangeFailureCallback = function(errorMessage){
         $scope.$emit('hideLoader');
@@ -175,9 +173,13 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
     };
 
     $scope.calculateTheRatesRestriction = function(data){
+
+        if(!$scope.hasBaseRate){
+            return data;
+        }
+
         var basedonValue = parseInt($scope.basedonValue);
         var basedonPlusMinus = $scope.basedonPlusMinus;
-        console.log($scope.basedonType);
         angular.forEach(data.sets, function(set, key){
             angular.forEach(set.room_rates, function(roomRate, key){
 
@@ -188,7 +190,6 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
                     roomRate.child = basedonPlusMinus == "+" ? (roomRate.child + basedonValue): (roomRate.child - basedonValue);
                     
                 }
-
                 else if ($scope.basedonType == 'percent'){
                     roomRate.single = basedonPlusMinus == "+" ? (roomRate.single + (basedonValue / 100 * roomRate.single)) :(roomRate.single - (basedonValue / 100 * roomRate.single));
                     roomRate["double"] = basedonPlusMinus == "+" ? (roomRate["double"] + (basedonValue / 100 * roomRate["double"])) : (roomRate["double"] - (basedonValue / 100 * roomRate["double"]));
@@ -196,12 +197,10 @@ admin.controller('ADRatesAddConfigureCtrl',['$scope', 'ADRatesConfigureSrv','ADR
                     roomRate.child = basedonPlusMinus == "+" ? (roomRate.child + (basedonValue / 100 * roomRate.child)) : (roomRate.child - (basedonValue / 100 * roomRate.child));
                     
                 }
-                
 
             });
         });
-return data;
-        console.log(JSON.stringify(data));
+        return data;
 
     };
 
