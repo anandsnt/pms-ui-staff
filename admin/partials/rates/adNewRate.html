@@ -7,23 +7,26 @@
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<table class="grid">
 		<tr ng-repeat ="step in currentStepIndexList">
+			<!-- load templates for each expanded rows-->
 			<td style="padding-right: 3px; padding-left:5px;" ng-include="includeTemplate($index)" colspan="2" ng-show="currentRateStepIndex === $index"></td>
+			<!-- rate steps header-->
 			<td width="90%" ng-hide="currentRateStepIndex === $index" >
+				<!-- rate step header -not configure-->
 				<span ng-hide="step.title === 'Configure'">
-				
 					<em class="rate_step_title">{{step.title}}</em>&nbsp;<span class="italic_text">{{step.subtitle}}</span>
-			
 				</span>
+				<!-- rate step header -configure-->
 				<span ng-show="step.title === 'Configure'">
-	            <span  class="italic_text">{{step.begin_date | date:'MMMM dd, y'}}</span>
-	            <span style="margin:0 5px;">to</span>
-	            <span  class="italic_text">{{step.end_date | date:'MMMM dd, y'}}</span>
-
+		            <span  class="italic_text">{{step.begin_date | date:'MMMM dd, y'}}</span>
+		            <span style="margin:0 5px;">to</span>
+	           		<span  class="italic_text">{{step.end_date | date:'MMMM dd, y'}}</span>
 				</span>
 			</td>
+			<!-- rate step toggle arrow button-->
 			<td width="5%" ng-hide="currentRateStepIndex === $index" ng-click="clickedStep($index,step.id)" align="right" style="text-align:right !important;" class="cursor_pointer"><img src="/assets/arrow-down.png"/></td>
 		</tr>
 	</table>
+	<!-- template to add new date range -->
 	<div ng-show="showAddNewDateRangeOptions" ng-include="'/assets/partials/rates/adRatesAddRange.html'"></div>
 
   <div ng-click="addNewDateRange()" ng-hide="hideAddNewDateRange()" class="center_align add_new_date_range_container"> 
