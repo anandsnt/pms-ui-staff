@@ -17,7 +17,7 @@
 
 					<li ng-repeat = "roomtype in nonAssignedroomTypes" 
 
-						data-drag = "true"
+						data-drag = "!hasBaseRate"
 						ng-model = "nonAssignedroomTypes"
 						jqyoui-draggable ="{index: {{$index}}, placeholder: false, animate: 'true', onOver: 'reachedUnAssignedRoomTypes'}"
 

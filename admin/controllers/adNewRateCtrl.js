@@ -19,6 +19,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.showAddNewDateRangeOptions =false;
         	$scope.hasBaseRate = false;
         	$scope.date_ranges = [];
+        	$scope.basedonPlusMinus = '+';
+        	$scope.basedonType = "";
+        	$scope.basedonValue = 0;
+
 
 
             // setting rateId and values for Rate Edit
@@ -43,10 +47,13 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.errorMessage = value;
         });
 
-        $scope.$on("updateBasedonRate", function(e,basedonRateId){
+        $scope.$on("updateBasedonRate", function(e,basedonRateId, basedonPlusMinus, basedonType, basedonValue){
         	if($scope.based_on_id == basedonRateId || basedonRateId == undefined)
         		return false;
         	$scope.hasBaseRate = true;
+        	$scope.basedonPlusMinus = basedonPlusMinus;
+        	$scope.basedonType = basedonType;
+        	$scope.basedonValue = basedonValue;
             $scope.invokeApi(ADRatesSrv.fetchDetails, {rateId:basedonRateId}, $scope.fetchDetailsSuccess);
 
         });

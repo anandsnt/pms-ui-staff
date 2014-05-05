@@ -118,6 +118,10 @@ $scope.assignedRoomSelected = function($event, index){
  */
 
 $scope.unAssignedRoomSelected = function($event, index){
+	//If base rate is selected, restrict the room types to the base rate
+	if($scope.hasBaseRate){
+		return false;
+	}
     if(lastDropedTime == ''){
         if(index === $scope.selectedUnAssignedRoomIndex)
             $scope.selectedUnAssignedRoomIndex =-1;
@@ -170,10 +174,15 @@ $scope.topMoveleftClicked = function(){
  */
 
 $scope.bottomMoverightClicked = function(){
+	//If base rate is selected, restrict the room types to the base rate
+	if($scope.hasBaseRate){
+		return false;
+	}
+
     if($scope.nonAssignedroomTypes.length>0){
         angular.forEach($scope.nonAssignedroomTypes, function(item){
         $scope.assignedRoomTypes.push(item);
- });
+ 	});
         $scope.nonAssignedroomTypes = [];
     }
     $scope.selectedUnAssignedRoomIndex =-1;
