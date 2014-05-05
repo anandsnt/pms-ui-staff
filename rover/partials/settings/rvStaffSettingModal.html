@@ -1,33 +1,33 @@
-<div role="dialog" id="modal" class="modal-show"><form name="update-settings" id="update-settings" class="modal-content form admin-form">
+<div role="dialog" id="modal" class="modal-show" ng-click="clearErrorMessage()"><form name="update-settings" id="update-settings" class="modal-content form admin-form">
 	<button type="button" id="modal-close"  ng-click="cancelClicked()" class="modal-close">
 		<span class="icons icon-close invert"></span>
 	</button>
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<strong class="h2 admin-title">Update your account settings</strong>
 	<div class="entry full-width">
 		<div id="notification-message"></div>
 	</div>
 	<div class="entry full-width">
 		<label for="name">Name</label>
-		<input type="text" value="Staff Staff" readonly="readonly" name="name" id="name" class="normalInputStyle">
+		<input type="text" value="{{userInfo.name}}" readonly="readonly" name="name" id="name" class="normalInputStyle">
 	</div>
 	<div class="entry full-width">
 		<label for="email">E-mail</label>
-		<input type="email" value="hotelstaff@hotel.com" readonly="readonly" name="email" id="email" class="normalInputStyle">
+		<input type="email" value="{{userInfo.email}}" readonly="readonly" name="email" id="email" class="normalInputStyle">
 	</div>
 	<div class="entry full-width">
 		<label for="change-password">Change password</label>
-		<input type="password" value="" placeholder="Enter new password" name="change-password" id="change-password">
+		<input type="password" ng-model="new_password" placeholder="Enter new password" name="change-password" id="change-password">
 	</div>
 	<div class="entry full-width">
 		<label for="confirm-password">Confirm password</label>
-		<input type="password" value="" placeholder="Repeat new password" name="confirm-password" id="confirm-password">
+		<input type="password" ng-model="confirmPassword" placeholder="Repeat new password" name="confirm-password" id="confirm-password">
 	</div>
 	<div class="actions float">
-		<button type="button" id="save-changes" class="button green modal-close">
+		<button type="button" ng-click="updateSettings()" class="button  modal-close" ng-disabled="!passwordsMatch()" ng-class="{'green': passwordsMatch()}">
 			Save changes
 		</button>
 		<button type="button" id="cancel" ng-click="cancelClicked()" class="button blank modal-close">Cancel</button>
 	</div>
 </form>
 </div>
-<div id="modal-overlay" class="modal-show"></div>

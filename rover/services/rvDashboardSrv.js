@@ -4,7 +4,7 @@ sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', function( $q, RVBaseWeb
     * To fetch user details
     * @return {object} user details
     */	
-this.fetchuserInfo = function(){
+this.fetchUserInfo = function(){
 		var deferred = $q.defer();
 		var url =  '/api/rover_header_info.json';	
 		
@@ -18,7 +18,7 @@ this.fetchuserInfo = function(){
 
 
 
-this.dashboardDetails = {};
+this.dashBoardDetails = {};
 	var that = this;
 
    /*
@@ -35,11 +35,11 @@ this.dashboardDetails = {};
     * To fetch user details
     * @return {object} user details
     */	
-		 self.fetchuserDetails = function(){
+		 self.fetchUserDetails = function(){
 			var url = '/api/rover_header_info.json'
 			RVBaseWebSrv.getJSON(url).then(function(data) {
-				that.dashboardDetails.userDetails = data;
-				self.fetchlateCheckoutDetails();
+				that.dashBoardDetails.userDetails = data;
+				self.fetchLateCheckoutDetails();
 			},function(errorMessage){
 				deferred.reject(errorMessage);
 			});
@@ -50,12 +50,12 @@ this.dashboardDetails = {};
     * @return {object}late checkout details
     */
 
-		 self.fetchlateCheckoutDetails = function(){
+		 self.fetchLateCheckoutDetails = function(){
 			var url = '/staff/dashboard/late_checkout_count.json';	
 			
 			RVBaseWebSrv.getJSON(url).then(function(data) {
-				that.dashboardDetails.lateCheckoutDetails = data;
-				deferred.resolve(that.dashboardDetails);
+				that.dashBoardDetails.lateCheckoutDetails = data;
+				deferred.resolve(that.dashBoardDetails);
 			},function(errorMessage){
 				deferred.reject(errorMessage);
 			});
@@ -67,8 +67,8 @@ this.dashboardDetails = {};
 			
 		
 		RVBaseWebSrv.getJSON(url).then(function(data) {
-			that.dashboardDetails.dashboardData = data;
-			self.fetchuserDetails();
+			that.dashBoardDetails.dashboardData = data;
+			self.fetchUserDetails();
 		},function(errorMessage){
 			deferred.reject(errorMessage);
 		});

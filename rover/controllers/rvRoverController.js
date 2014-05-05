@@ -20,13 +20,13 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
       var fetchUserInfoFailureCallback = function(data){
           $scope.$emit('hideLoader');
       };
-      $scope.invokeApi(RVDashboardSrv.fetchuserInfo,{},fetchUserInfoSuccessCallback,fetchUserInfoFailureCallback);  
+      $scope.invokeApi(RVDashboardSrv.fetchUserInfo,{},fetchUserInfoSuccessCallback,fetchUserInfoFailureCallback);  
 
-      }   
+      };   
 
       $scope.fetchData();
       $scope.menuOpen = false;
-    }
+    };
 
     $scope.init();
 
@@ -38,6 +38,7 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
     $scope.isMenuOpen = function(){
     return $scope.menuOpen ? true : false;
     };
+
 
     $scope.$on("showLoader", function(){
         $scope.hasLoader = true;
@@ -76,7 +77,8 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
                  className: 'ngdialog-theme-default calendar-modal'
             });
         }
-    }
+
+	};
 
 
 
