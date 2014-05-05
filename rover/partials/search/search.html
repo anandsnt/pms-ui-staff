@@ -15,7 +15,7 @@
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<div ng-iscroll="result_showing_area"  ng-iscroll-delay="1000">
 					<ul id="search-results" class="search-results" ng-class="{'hidden': results.length==0}" style="width: 100%;">
-						<li ng-repeat="row in results" ng-show="row.is_row_visible==true">
+						<li ng-repeat="row in results" ng-show="row.is_row_visible==true" ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation})">
 							<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
 							<a data-transition="inner-page" class="guest-check-in link-item float">
 								<figure class="guest-image" ng-show="row.image!=''">
