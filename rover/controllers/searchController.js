@@ -2,6 +2,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
 	
   BaseCtrl.call(this, $scope);
   $scope.textInQueryBox = "";
+  $scope.$emit("updateIndex",1);
 
   var globalCopyOfResults = [];
 

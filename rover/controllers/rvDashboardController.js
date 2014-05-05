@@ -14,6 +14,7 @@ sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv','dashBoar
    $scope.init =  function(){
 
          	BaseCtrl.call(this, $scope);
+          $scope.$emit("updateIndex",0);
          	//Display greetings message based on current time
          	var d = new Date();
         	var time = d.getHours();
