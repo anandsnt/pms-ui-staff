@@ -9,18 +9,18 @@
 
 /* Screen positioning       ==============================*/
     .content:not(#login) {
-        top: 60px;
-        .calc-height(100, 60); /* %, px */
+        top: 40px;
+        .calc-height(100, 40); /* %, px */
 
         /** Rooms screen ***/
         &#rooms {
-            top: 120px;
-            .calc-height(100, 120); /* %, px */
+            top: 100px;
+            .calc-height(100, 100); /* %, px */
         }
 
         &#filter-options {
-            top: 60px;
-            .calc-height(100, 60); /* %, px */
+            top: 40px;
+            .calc-height(100, 40); /* %, px */
         }
 
         &#guest-info {
@@ -31,21 +31,17 @@
 
 /* Nav Bar                  ==============================*/
     .nav-bar{ 
-        height: 60px;
-
-        .nav-toggle,
-        .back-button,
-        .clear-selection,
-        .toggle, { top: 10px; }
+        height: 40px;
 
         h1 {
             .h2;
-            line-height: 60px;
+            font-size: 18px;
+            line-height: 40px;
         }
 
         .clear-selection {
-            left: 20px; 
-            font-size: 16px; 
+            left: 10px; 
+            font-size: 14px; 
         }
 
         .toggle {
@@ -54,8 +50,8 @@
             }
 
             &.complete { 
-                right: 20px;
-                font-size: 16px; 
+                right: 10px;
+                font-size: 14px; 
             }
         }
     }
@@ -91,41 +87,78 @@
 /* Dashboard page           ==============================*/
     #dashboard {
         .wrapper {
-            padding: 40px 40px 20px 40px;
+            padding: 20px;
+            right: 0;
 
             h2 {
-                margin: 20px 0;
-                font-size: 30px;
-                line-height: 30px;
+                margin: 10px 0 20px;
+                font-size: 24px;
+                line-height: 24px;
+                text-align: center;
+                font-weight: 300;
             }
 
             #guests-today {
                 margin-bottom: 30px;
-                display: table;
-                width: 100%;
                 .float;
 
                 li {
                     text-align: center;
-                    display: table-cell;
-                    table-layout: fixed;
-                    padding: 0 5px;
+                    margin: 0 10px 0 0;
+                    .calc-width(33.3333, 6.6666);
+                    .pull-left;
+
                     .button {
-                        padding: 20px;
+                        padding: 15px 10px 10px 10px;
+                        .show;
 
                         .icons { 
-                            margin: 0;
-                            background: transparent;
-                            text-indent: 0;
-                            width: 100%;
+                            margin: 0 auto 5px auto;
+                            .square(30px);
+                            .hide-text; 
                         }
 
                         strong {
-                            font-size: 72px;
-                            line-height: 1.1em;
-                            overflow: hidden;
-                            .show;
+                            font-size: 36px;
                         }
+                    }
+
+                    &:last-child { margin-right: 0; }
+                }
+            }
+
+            #stats-today {
+                li {
+                    font-size: 14px;
+                    line-height: 36px;
+                    padding-bottom: 5px;
+                    margin-bottom: 5px;
+                    color: @grey3;
+                    text-transform: uppercase; 
+                    display: block;
+                    border-bottom: 1px solid rgba(0,0,0,.1);
+                    em {
+                        font-style: normal;
+                        white-space: nowrap;
+                        .pull-left;
+                    }
+                    span {
+                        font-size: 36px;
+                        line-height: 1em;
+                        color: @textColor;
+                        .show;
+                        margin-left: 60%;
+                        text-align: right;
+
+                        &.green { color: @green; }
+                        &.red { color: @red; }
+                        &.grey { color: @grey3; }
+                    }
+
+                    &:last-child {
+                        padding-bottom: 0;
+                        margin-bottom: 0;
+                        border-bottom: 0;
                     }
                 }
             }
@@ -136,8 +169,10 @@
     
     /* Rooms listing ***/
     #rooms {
-        li {           
+        li {
+            margin: 0;         
             a {
+                color: @textColor;
                 padding: 0 10px 0 10px;
                 white-space: nowrap;
                 text-overflow: ellipsis;
@@ -146,7 +181,6 @@
                 background-color: @white;
                 position: relative;
                 .show;
-                .float;
 
                 .room-number {
                     font-size: 30px;
@@ -164,19 +198,22 @@
                     position: absolute;
                     top: 0;
                     left: 90px;
-                    right: 50px;
+                    right: 50px;    
                 }
 
                 .room-status,
                 .fo-status {
-                    font-size: 16px;
-                    font-style: normal;
-                    text-transform: uppercase;
-                    font-weight: 600;
+                    display: inline-block;
+                    color: @grey3;
+                    font-size: 13px;
+                    font-weight: 400; 
+                    font-style: italic;
+                    line-height: 50px;
                 }
 
                 .room-status {
-                     width: 50%;
+                    width: 50%;
+                    .pull-left;
                  }
 
                  @media (max-width: 319px) {
@@ -221,23 +258,72 @@
                         #border-radius > .rounded(40px);
                     }
                 }
+
+                &.room-clean { 
+                    .room-number { color: @green; }
+                }
+
+                &.room-dirty { 
+                    .room-number { color: @red; }
+                }
+
+                &.room-out {
+                    .room-number { color: @grey3; }
+                }
+
+                &:hover,
+                &:active {
+                    background-color: rgba(0,0,0,.02);
+                }
             }
         }
     }
 
     /* Rooms filters ***/
     #filter-rooms {
+        z-index: 199;
+        background: @white;
+        overflow: hidden;
+        display: none;
+
         .wrapper {
-            padding: 20px;
+            min-height: 100%;
+            padding: 20px 10px;
+            right: 0;
         
             .holder {
                 margin-bottom: 30px;
 
-                .title { margin-bottom: 20px; }
+                .title {
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    margin-bottom: 10px;
+                }
 
                 .entry {
+                    padding: 5px 0;
+                    margin-bottom: 0;
+                    border-bottom: 1px solid rgba(0,0,0,.1);
+                    .show;
+
                     .radio,
-                    .checkbox { font-size: 16px; }
+                    .checkbox { 
+                        font-size: 14px;
+                        line-height: 30px;
+                        height: 30px;
+                        padding-left: 30px;
+                        margin-bottom: 0;
+                        float: none; 
+                        width: 100%;
+                        .show;
+
+                        .icon-form { 
+                            top: 5px; 
+                            left: 0;
+                        }
+                    }
+
+                    &:first-child { padding-top: 0; }
                 }
             }
         }
@@ -320,39 +406,90 @@
 
         #fo-status { 
             font-size: 18px;
-            padding: 20px 0; 
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            display: block;
+            text-align: center;
         }
 
         #guest-info {
             .wrapper { 
-                padding: 0 40px; 
+                padding: 60px 40px 0 40px; 
 
                 .guest-image { 
-                    margin-top: 40px;
-                    .square(128px); 
-                }
+                    position: relative;
+                    margin: 30px auto 20px auto;
+                    background: @grey1;
+                    #border-radius > .rounded(64px);
+                    .square(64px);
 
-                h2 {
-                    .guest-status { margin: 5px 10px 0 0; }
+                    .vip {
+                        position: absolute;
+                        bottom: 0;
+                        right: 0;
+                    }
 
-                    .name {
-                        font-size: 44px;
-                        line-height: 44px;
-                        vertical-align: top;
+                    img {
+                        width: 100%;
+                        height: auto;
+                        #border-radius > .rounded(64px);
                     }
                 }
 
-                .status {  font-size: 21px; }
+                h2 {
+                    font-weight: 300;
+                    text-align: center;
+                    margin: 0;
+                    .show;
+
+                    .guest-status {
+                        display: inline-block;
+                        background-color: rgba(0,0,0,.15);
+                        margin-right: 5px;
+                        .square(30px);
+
+                        &.check-out,
+                        &.late-check-out { background-color: @red; }
+                        &.inhouse { background-color: @blue; }
+                    }
+
+                    .name {
+                        font-size: 30px;
+                        line-height: 30px;
+                        vertical-align: top;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                    }
+                }
+
+                .status {
+                    font-size: 18px;
+                    line-height: 1.2em;
+                    text-align: center;
+                    .show;
+
+                    strong { font-weight: 600; }
+
+                    &.today { color: @red; }
+                }
 
                 .checkout-guest {
-                    margin-top: 40px;
+                    padding-top: 20px;
+                    margin-top: 30px;
+                    border-top: 1px solid rgba(0,0,0,.1);
 
-                    strong { font-size: 18px; }
+                    strong {
+                        text-transform: uppercase;
+                        text-align: center;
+                        font-weight: 600;
+                        .show;
+                    }
 
                     .button {
-                        margin: 20px auto;
-                        line-height: 60px;
-                        font-size: 21px;
+                        margin-top: 10px;
+                        line-height: 50px;
+                        width: 100%;
                         .show;
                     }
                 }
@@ -397,19 +534,22 @@
             @media (max-width: 319px) {
                 .wrapper {
                     padding: 120px 10px 0;
+
+                    h2 .name {
+                        display: block;
+                    }
                 }
 
                 &.no-content {
                     padding: 120px 10px 0;
+
+                    .info {
+                        position: static;
+                        margin: 50px 0;
+                    }
                 }
             }
 
-            @media (max-height: 319px) {
-                &.no-content .info {
-                    position: static;
-                    margin: 50px 0;
-                }
-            }
         }   
     }
 
