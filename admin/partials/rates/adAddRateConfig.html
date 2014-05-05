@@ -1,9 +1,9 @@
 <div class="config-wrapper">
     <ul style="padding-left: 20px;">        
         <li style="width:98.5%; float:left;" ng-show="currentClickedSet == $index">
-            <span  class="italic_text">{{step.begin_date | date:'MMMM dd,y'}}</span>
+            <span  class="italic_text">{{step.begin_date | date:'MMMM dd, y'}}</span>
             <span style="margin:0 5px;">to</span>
-            <span  class="italic_text">{{step.end_date | date:'MMMM dd,y'}}</span>
+            <span  class="italic_text">{{step.end_date | date:'MMMM dd, y'}}{{ step.is_past_date_range }}</span>
             <span style="float:right" class="cursor-hand"><img src="/assets/arrow-up.png" ng-click="unsetCurrentClickedSet($index)" ></span>
 
         </li>
@@ -71,13 +71,13 @@
         <tr ng-repeat="room_rate in set.room_rates">
             <td align="right" class="room-type">{{room_rate.name}}</td>
             <td align="center">&nbsp;</td>
-            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.single}}" ng-model="room_rate.single" ng-disabled="(edit_mode)"></div></td>
+            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.single}}" ng-model="room_rate.single" ng-disabled="(!step.is_editable && edit_mode)"></div></td>
             <td align="center"><span class="icons right-arrow-grey" ng-click="moveSingleToDouble($parent.$index,$index)">&nbsp;</span></td>
-            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.double}}" ng-model="room_rate.double" ng-disabled="(edit_mode)"></div></td>
+            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.double}}" ng-model="room_rate.double" ng-disabled="(!step.is_editable && edit_mode)"></div></td>
             <td align="center">&nbsp;</td>
-            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.extra_adult}}" ng-model="room_rate.extra_adult" ng-disabled="(edit_mode)"></div></td>
+            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.extra_adult}}" ng-model="room_rate.extra_adult" ng-disabled="(!step.is_editable && edit_mode)"></div></td>
             <td align="center">&nbsp;</td>
-            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.child}}" ng-model="room_rate.child" ng-disabled="(edit_mode)"></div></td>
+            <td align="left"><div class ="entry"><input type="text" value="{{room_rate.child}}" ng-model="room_rate.child" ng-disabled="(!step.is_editable && edit_mode)"></div></td>
             <td align="center">&nbsp;</td>
         </tr>
       <tr>

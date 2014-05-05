@@ -4,7 +4,7 @@ admin.controller('ADAddnewRate',
         $scope.init = function(){
             BaseCtrl.call(this, $scope);
             ADRatesRangeSrv.emptyDateRangeData();
-            // edit_mode by default false stands for Add Rate
+            // edit_mode by default false indicate Add New Rate
             $scope.edit_mode = false
             var initialContent = {
                                     'title': 'Rate',
@@ -173,15 +173,19 @@ admin.controller('ADAddnewRate',
                         };
             $scope.currentStepIndexList.push(nextContent);
             getDateRangeData = $scope.date_ranges;
-            console.log(getDateRangeData);
+            // TODO replace hardcoded value with API return hotel business date
+            hotel_business_date = "2014-05-26";
             angular.forEach(getDateRangeData, function(value, key){
+                past_date_range = Date.parse(value.end_date) < Date.parse(hotel_business_date)
                 var nextContent = {
-                                'title': 'Configure',
-                                'type' : 'Configure',
-                                'id'   : value.id,
-                                'begin_date' : value.begin_date,
-                                'end_date':value.end_date
-                                };
+                                    'title': 'Configure',
+                                    'type' : 'Configure',
+                                    'id'   : value.id,
+                                    'begin_date' : value.begin_date,
+                                    'end_date' : value.end_date,
+                                    'is_editable' : past_date_range
+                                  };
+                console.log(nextContent)
                 $scope.currentStepIndexList.push(nextContent);
 
             });   

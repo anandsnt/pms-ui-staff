@@ -56,8 +56,13 @@ admin.controller('ADAddRateRangeCtrl',['$scope','$filter','dateFilter','ADRatesR
             setDetails.friday = set.days[4].checked;
             setDetails.saturday = set.days[5].checked;
             setDetails.sunday = set.days[6].checked;
-
             setData.push(setDetails);
+
+            // angular.forEach($scope.data.room_types, function(room_type, key){
+            //      data = {"id": room_type.id, "name" : room_type.name, "single": "", "double": "", "extra_adult":"", "child":"", "isSaved" : false}
+            //      room_rates.push(data);
+            // });
+            // set.room_rates = room_rates;
       });
       var dateRangeData = 
       {
