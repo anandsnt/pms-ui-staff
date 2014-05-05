@@ -30,13 +30,17 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 
     $scope.init();
 
+    $scope.$on("closeDrawer", function(){      
+      $scope.menuOpen = false;  
+      $scope.isMenuOpen();
+    });
 
     $scope.$on("navToggled", function(){
       $scope.menuOpen = !$scope.menuOpen;
     });
 
     $scope.isMenuOpen = function(){
-    return $scope.menuOpen ? true : false;
+      return $scope.menuOpen ? true : false;
     };
 
 
