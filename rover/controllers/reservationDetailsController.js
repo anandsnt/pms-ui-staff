@@ -1,8 +1,12 @@
 sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv', function($scope, RVReservationCardSrv){
 	
 	$scope.reservationDetailsFetchSuccessCallback = function(data){
+		
 		$scope.$emit('hideLoader');
 		$scope.reservationData = data;
+		
+		$scope.$emit('showStaycard');
+		
 	};
 	
 	 $scope.$on("RESERVATIONDETAILS", function(event, confirmationNumber){

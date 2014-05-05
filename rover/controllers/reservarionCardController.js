@@ -1,7 +1,9 @@
 sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv', function($scope, RVReservationCardSrv){
+	BaseCtrl.call(this, $scope);
 	$scope.timeline = "current";
 	$scope.reservationList = [];
 	$scope.currentReservationId = "";
+	
 	$scope.fetchReservationDataSuccessCallback = function(data){
 		$scope.$emit('hideLoader');
 		$scope.data = data;
@@ -13,6 +15,7 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 		 $scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 		
 		$scope.reservationList = data.reservation_list.current_reservations_arr;
+		
 	};
 	$scope.fetchReservationDataFailureCallback = function(errorMessage){
 		$scope.$emit('hideLoader');
@@ -64,6 +67,8 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 		
 	 };
 	 $scope.getReservationDetails = function(currentConfirmationNumber){
+	 	
 	 	$scope.$broadcast("RESERVATIONDETAILS", currentConfirmationNumber);
+	 	$scope.currentReservationId = currentConfirmationNumber;
 	 };
 }]);
