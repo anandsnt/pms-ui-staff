@@ -59,29 +59,18 @@ $scope.fetchData();
 
 $scope.saveRoomTypes = function(){
     
-    var assignedRoomArray =[];
+    var roomIdArray =[];
     angular.forEach($scope.assignedRoomTypes, function(item){
-       assignedRoomArray.push(item.id);
+       roomIdArray.push(item.id);
     });
     var data = {
-        'room_type_ids': assignedRoomArray,
+        'room_type_ids': roomIdArray,
         'id' : $scope.newRateId
     };
 
     var saveRoomTypesSuccessCallback = function(data){
         $scope.$emit('hideLoader');
-        $scope.rateData.room_type_ids = assignedRoomArray;
-        if($scope.hasBaseRate){
-        	$scope.setupConfigureRates();
-            $scope.$emit("updateIndex","3");
-        }
-        else if ($scope.edit_mode){
-            $scope.$emit("updateIndex","3");
-        }
-        else{
-            $scope.$emit("updateIndex","2");
-        }
-        
+        $scope.rateData.room_type_ids = roomIdArray;
     };
 
     $scope.invokeApi(ADRatesAddRoomTypeSrv.saveRoomTypes,data,saveRoomTypesSuccessCallback);       
@@ -228,7 +217,6 @@ $scope.bottomMoveleftClicked = function(){
         lastDropedTime = new Date();
     }
     $scope.reachedUnAssignedRoomTypes = function(){
-        console.log("now");
         $scope.selectedUnAssignedRoomIndex = -1;    
         lastDropedTime = new Date();
     } 
