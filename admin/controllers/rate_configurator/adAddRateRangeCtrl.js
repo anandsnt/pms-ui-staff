@@ -58,7 +58,7 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
          * to save rate range
          */
 
-        $scope.saveStep3 = function () {
+        $scope.saveDateRange = function () {
 
             var setData = [];
             angular.forEach($scope.Sets, function (set, key) {
@@ -74,7 +74,7 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
                 setData.push(setDetails);
             });
             var dateRangeData = {
-                'id': $scope.newRateId,
+                'id': $scope.rateData.id,
                 'data': {
                     'begin_date': $scope.fromDate,
                     'end_date': $scope.toMonthDateFormated,
@@ -83,16 +83,19 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
             };
 
             var postDateRangeSuccessCallback = function (data) {
-                if ($scope.edit_mode) {
-                    var dateData = {};
-                    dateData.id = data.id;
-                    dateData.begin_date = dateRangeData.data.begin_date;
-                    dateData.end_date = dateRangeData.data.end_date;
-                    $scope.date_ranges.push(dateData);
-                }
-                $scope.$emit('hideLoader');
+                //TODO: commented code required?
+                //if ($scope.edit_mode) {
+                var dateData = {};
+                dateData.id = data.id;
+                dateData.begin_date = dateRangeData.data.begin_date;
+                dateData.end_date = dateRangeData.data.end_date;
+                $scope.rateData.date_ranges.push(dateData);
+                //}
+                //TODO: remove flag?
                 $scope.showAddNewDateRangeOptions = false;
-                $scope.$emit("updateIndex", "3");
+                $scope.$emit("changeMenu", 'dateRange.'+ data.id);
+                $scope.$emit('hideLoader');
+
 
             };
             var postDateRangeFailureCallback = function (data) {

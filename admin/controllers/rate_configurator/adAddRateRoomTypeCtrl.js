@@ -14,7 +14,6 @@ var lastDropedTime = '';
 */
 $scope.fetchData = function(){
     var fetchRoomTypesSuccessCallback = function(data){
-        console.log($scope.rateData.room_type_ids);
         $scope.availableRoomTypes = data.results;
         //$scope.nonAssignedroomTypes = data.results;
         $scope.calculateRoomLists();
@@ -30,8 +29,6 @@ $scope.$on("onRateDefaultsFetched", function(e){
 });
 
 $scope.calculateRoomLists = function(){
-    console.log($scope.rateData.based_on.id);
-
     // separate out assigned and non-assigned room types
     $scope.assignedRoomTypes = [];
     if ($scope.rateData.room_type_ids){
@@ -39,15 +36,14 @@ $scope.calculateRoomLists = function(){
             angular.forEach($scope.rateData.room_type_ids, function(room_type_id){
                 if (room_type_id == $scope.availableRoomTypes[j].id){
                     $scope.assignedRoomTypes.push($scope.availableRoomTypes[j]);
-                    //$scope.availableRoomTypes.splice(j, 1);
-                }else{
-                    $scope.nonAssignedroomTypes.push($scope.availableRoomTypes[j]);
                 }
-                
             });
         }
-        if($scope.rateData.based_on.id !== undefined || $scope.rateData.based_on.id !== ""){
+
+        if($scope.hasBasedon){
             $scope.nonAssignedroomTypes = [];
+        }else{
+            $scope.nonAssignedroomTypes = $scope.availableRoomTypes;
         }
     }
 
@@ -58,22 +54,28 @@ $scope.calculateRoomLists = function(){
 $scope.fetchData();
 
 $scope.saveRoomTypes = function(){
-    
     var roomIdArray =[];
     angular.forEach($scope.assignedRoomTypes, function(item){
        roomIdArray.push(item.id);
     });
     var data = {
         'room_type_ids': roomIdArray,
-        'id' : $scope.newRateId
+        'id' : $scope.rateData.id
     };
 
     var saveRoomTypesSuccessCallback = function(data){
         $scope.$emit('hideLoader');
         $scope.rateData.room_type_ids = roomIdArray;
+        if($scope.hasBasedon || $scope.edit_mode){
+            //TODO add change menu
+            var dateRangeId = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].id;
+            $scope.$emit("changeMenu", 'dateRange.'+ dateRangeId);
+        }else{
+            $scope.$emit("changeMenu", 'ADD_NEW_DATE_RANGE');
+        }
     };
 
-    $scope.invokeApi(ADRatesAddRoomTypeSrv.saveRoomTypes,data,saveRoomTypesSuccessCallback);       
+    $scope.invokeApi(ADRatesAddRoomTypeSrv.saveRoomTypes, data, saveRoomTypesSuccessCallback);       
 };
 
 /**
