@@ -5,11 +5,12 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
             $scope.rateMenu = 'Details';
             $scope.rateData = {
+                "id": "",
                 "name": "",
                 "description": "",
                 "code": "",
-                "based_on": "",
-                "rate_type": "",
+                "based_on": { "id": "", "type": "", "value_abs": "", "value_sign" : "" },
+                "rate_type_id": "",
                 "date_range_count": 0,
                 "status": true,
                 "room_type_ids": [],
@@ -42,9 +43,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             // setting rateId and values for Rate Edit
             if ($stateParams.rateId) {
                 $scope.edit_mode = true
-                $scope.rateId = $stateParams.rateId
+                $scope.rateData.id = $stateParams.rateId
                 $scope.invokeApi(ADRatesSrv.fetchDetails, {
-                    rateId: $scope.rateId
+                    rateId: $scope.rateData.id
                 }, $scope.fetchDetailsSuccess);
             }
         };
@@ -193,8 +194,14 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             // set rate edit field values for all steps
             $scope.hotel_business_date = data.business_date;
             $scope.rateData = data;
-            $scope.rateData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
-            $scope.rateData.based_on = (data.based_on != null) ? data.based_on.id : '';
+            $scope.rateData.rate_type_id = (data.rate_type != null) ? data.rate_type.id : ''
+            if(data.based_on){
+                $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value)
+                $scope.rateData.based_on.value_sign = data.based_on.value > 0 ? "+" : "-";
+            }
+            else{
+                $scope.rateData.based_on = { "id": "", "type": "", "value_abs": "", "value_sign" : "" };
+            }
             $scope.$emit('hideLoader');
         };
 

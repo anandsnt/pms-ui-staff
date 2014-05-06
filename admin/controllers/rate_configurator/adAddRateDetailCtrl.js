@@ -3,42 +3,21 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
 
         $scope.init = function () {
             BaseCtrl.call(this, $scope);
-            if (!$scope.rateId) {
-                $scope.rateTypesDetails = [];
-                $scope.basedOnRateTypeSelected = '';
-                $scope.rateTypeselected = '';
-                $scope.rate_name = '';
-                $scope.rate_description = '';
-                $scope.based_on_plus_minus = '+';
-                $scope.based_on_value = '';
-                $scope.based_on_type = 'amount';
-                $scope.isFirstTime = true;
-                $scope.errorMessage = "";
-            }
-            $scope.step1Data = {
-                'name': $scope.rate_name,
-                'type': $scope.rateTypeselected,
-                'basedOn': '',
-                'description': $scope.rate_description
-            };
+            $scope.fetchData();
         };
-        $scope.init();
+
         /*
-         * check if fields are not null
+         * Validate Rate Details Form
          */
 
-        $scope.allFieldsnotFilled = function () {
-            if ($scope.rate_name && $scope.rate_description && $scope.rateTypeselected) {
-                if (($scope.rate_name.length > 0) && ($scope.rate_description.length > 0) && ($scope.rateTypeselected.length > 0)) {
-                    return false;
-                }
-            } else {
-                return true;
-            }
+        $scope.isFormValid = function () {
+            if (!$scope.rateData.name || !$scope.rateData.description || !$scope.rateData.rate_type_id) { return false; }
+            if (($scope.rateData.name.length <= 0) || ($scope.rateData.description.length <= 0) || ($scope.rateData.rate_type_id.length <= 0)) { return false; }
+            return true;
         };
 
         /*
-         * fetch details
+         * Fetch Details
          */
 
         $scope.fetchData = function () {
@@ -51,45 +30,35 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 $scope.$emit('hideLoader');
             };
             $scope.invokeApi(ADRatesAddDetailsSrv.fetchRateTypes, {}, fetchRateTypesSuccessCallback, fetchRateTypesFailureCallback);
-
         }
 
-        $scope.fetchData();
-
         /*
-         * save step1
+         * Save Rate Details
          */
+        
+        $scope.saveRateDetails = function () {
+            
+            var amount = parseInt($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
 
-        $scope.saveStep1 = function () {
-
-            var amount = parseInt($scope.based_on_plus_minus + $scope.based_on_value);
-
-            if ($scope.basedOnRateTypeSelected)
-                var basedOn_id = $scope.basedOnRateTypeSelected;
+            if ($scope.rateData.based_on){
+                var basedOn_id = $scope.rateData.based_on.id;
+            }
 
             var data = {
-                'name': $scope.rate_name,
-                'description': $scope.rate_description,
-                'rate_type_id': $scope.rateTypeselected,
-                'based_on_rate_id': basedOn_id,
-                'based_on_type': $scope.based_on_type,
+                'name': $scope.rateData.name,
+                'description': $scope.rateData.description,
+                'rate_type_id': $scope.rateData.rate_type_id,
+                'based_on_rate_id': $scope.rateData.based_on.id,
+                'based_on_type': $scope.rateData.based_on.type,
                 'based_on_value': amount
             };
 
-            //createNewRate
+            //Create New Rate Success Callback
             var createNewRateSuccessCallback = function (data) {
-                $scope.newRateId = data.id;
-                $scope.isFirstTime = false;
+                $scope.rateData.id = data.id;
                 $scope.$emit('hideLoader');
-
-            //refractor
-                // $scope.$emit("updateIndex", {
-                //     'id': '1',
-                //     'rateId': $scope.newRateId
-                // });
                 $scope.$emit("changeMenu",'Room types');
-
-                $scope.$emit("updateBasedonRate", basedOn_id, $scope.based_on_plus_minus, $scope.based_on_type, $scope.based_on_value);
+                $scope.$emit("updateBasedonRate", $scope.rateData.based_on.id, $scope.based_on_plus_minus, $scope.based_on_type, $scope.based_on_value);
 
             };
             var createNewRateFailureCallback = function (data) {
@@ -100,21 +69,22 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 $scope.$emit('hideLoader');
                 $scope.$emit("updateIndex", {
                     'id': '1',
-                    'rateId': $scope.newRateId
+                    'rateId': $scope.rateData.id
                 });
-                $scope.$emit("updateBasedonRate", basedOn_id, $scope.based_on_plus_minus, $scope.based_on_type, $scope.based_on_value);
+                $scope.$emit("updateBasedonRate", $scope.rateData.based_on.id, $scope.based_on_plus_minus, $scope.based_on_type, $scope.based_on_value);
 
             };
             var updateRateFailureCallback = function (data) {
                 $scope.$emit('hideLoader');
                 $scope.$emit("errorReceived", data);
             };
-            if ($scope.isFirstTime)
+            if ($scope.rateData.id){
                 $scope.invokeApi(ADRatesAddDetailsSrv.createNewRate, data, createNewRateSuccessCallback, createNewRateFailureCallback);
+            }
             else {
                 var updatedData = {
                     'updatedData': data,
-                    'rateId': $scope.newRateId
+                    'rateId': $scope.rateData.id
                 };
                 $scope.invokeApi(ADRatesAddDetailsSrv.updateNewRate, updatedData, updateRateSuccessCallback, updateRateFailureCallback);
             }
