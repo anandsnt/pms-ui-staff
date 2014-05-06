@@ -17,18 +17,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "date_ranges": []
             }
 
-            $scope.basedonData = {
-                "name": "",
-                "description": "",
-                "code": "",
-                "based_on": "",
-                "rate_type": "",
-                "date_range_count": 0,
-                "status": true,
-                "room_type_ids": [],
-                "date_ranges": []
-            }
-
             ADRatesRangeSrv.emptyDateRangeData();
             // edit_mode by default false indicate Add New Rate
             $scope.edit_mode = false
@@ -53,7 +41,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.edit_mode = true
                 $scope.invokeApi(ADRatesSrv.fetchDetails, {
                     rateId: $stateParams.rateId
-                }, $scope.fetchDetailsSuccess);
+                }, $scope.updateRateDefaults);
             }
         };
 
@@ -87,9 +75,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         		return false;
 
             var fetchBasedonSuccess = function(data){
-                $scope.basedonData = data;
-                $scope.basedonData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
-                $scope.basedonData.based_on = (data.based_on != null) ? data.based_on.id : '';
+                $scope.basedonRateData = data;
+                $scope.updateRateDefaults(data);
+                $scope.basedonRateData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
+                $scope.basedonRateData.based_on = (data.based_on != null) ? data.based_on.id : '';
                 $scope.$emit('hideLoader');
             };
             $scope.invokeApi(ADRatesSrv.fetchDetails, {rateId : $scope.rateData.based_on.id}, fetchBasedonSuccess);
@@ -204,7 +193,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         // Fetch details success callback for rate edit
 
-        $scope.fetchDetailsSuccess = function (data) {
+        $scope.updateRateDefaults = function (data) {
             // set rate edit field values for all steps
             $scope.hotel_business_date = data.business_date;
             $scope.rateData = data;
@@ -218,6 +207,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.rateData.based_on = { "id": "", "type": "", "value_abs": "", "value_sign" : "" };
             }
             $scope.$emit('hideLoader');
+            $scope.$broadcast('onRateDefaultsFetched');
         };
 
         $scope.setupEdit = function () {
