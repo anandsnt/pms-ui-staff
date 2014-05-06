@@ -36,21 +36,12 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.errorMessage = '';
             $scope.newRateId = $stateParams.rateId;
 
-            $scope.showAddNewDateRangeOptions = false;
-            $scope.hasBaseRate = false;
-            $scope.date_ranges = [];
-            $scope.basedonPlusMinus = '+';
-            $scope.basedonType = "";
-            $scope.basedonValue = 0;
-
-
-
             // setting rateId and values for Rate Edit
             if ($stateParams.rateId) {
                 $scope.edit_mode = true
                 $scope.invokeApi(ADRatesSrv.fetchDetails, {
                     rateId: $stateParams.rateId
-                }, $scope.fetchDetailsSuccess);
+                }, $scope.updateRateDefaults);
             }
         };
 
@@ -81,17 +72,17 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         });
 
         /**
-         * Fetch the based on rate retails, if the rate has chosen a based on rate.
-         */
-        $scope.$on("updateBasedonRate", function (e) {
-            if ($scope.rateData.based_on.id == undefined)
-                return false;
-            $scope.hasBaseRate = true;
+        * Fetch the based on rate retails, if the rate has chosen a based on rate.
+        */
+        $scope.$on("updateBasedonRate", function(e){
+        	if($scope.rateData.based_on.id == undefined)
+        		return false;
 
-            var fetchBasedonSuccess = function (data) {
-                $scope.basedonData = data;
-                $scope.basedonData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
-                $scope.basedonData.based_on = (data.based_on != null) ? data.based_on.id : '';
+            var fetchBasedonSuccess = function(data){
+                $scope.basedonRateData = data;
+                $scope.updateRateDefaults(data);
+                $scope.basedonRateData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
+                $scope.basedonRateData.based_on = (data.based_on != null) ? data.based_on.id : '';
                 $scope.$emit('hideLoader');
             };
             $scope.invokeApi(ADRatesSrv.fetchDetails, {
@@ -208,7 +199,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         // Fetch details success callback for rate edit
 
-        $scope.fetchDetailsSuccess = function (data) {
+        $scope.updateRateDefaults = function (data) {
             // set rate edit field values for all steps
             $scope.hotel_business_date = data.business_date;
             $scope.rateData = data;
@@ -226,6 +217,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 };
             }
             $scope.$emit('hideLoader');
+            $scope.$broadcast('onRateDefaultsFetched');
         };
 
         $scope.setupEdit = function () {

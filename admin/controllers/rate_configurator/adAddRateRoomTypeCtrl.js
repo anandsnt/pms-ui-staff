@@ -4,6 +4,8 @@ $scope.selectedAssignedRoomIndex =-1;
 $scope.selectedUnAssignedRoomIndex =-1;
 $scope.nonAssignedroomTypes = [];
 $scope.assignedRoomTypes = [];
+$scope.availableRoomTypes = [];
+
 var lastDropedTime = '';
 
 /**
@@ -12,51 +14,63 @@ var lastDropedTime = '';
 */
 $scope.fetchData = function(){
     var fetchRoomTypesSuccessCallback = function(data){
-        $scope.nonAssignedroomTypes = JSON.parse(JSON.stringify(data.results));
-        // separate out assigned and non-assigned room types
-        if ($scope.rateData.room_type_ids){
-            for(var j = 0; j < $scope.nonAssignedroomTypes.length; j++){
-                angular.forEach($scope.rateData.room_type_ids, function(room_type_id){
-                    if (room_type_id == $scope.nonAssignedroomTypes[j].id){
-                        $scope.assignedRoomTypes.push($scope.nonAssignedroomTypes[j]);
-                        $scope.nonAssignedroomTypes.splice(j, 1);
-                    }
-                });
-            }
-        }
+        console.log($scope.rateData.room_type_ids);
+        $scope.availableRoomTypes = data.results;
+        //$scope.nonAssignedroomTypes = data.results;
+        $scope.calculateRoomLists();
         $scope.$emit('hideLoader');
     };
 
     $scope.invokeApi(ADRatesAddRoomTypeSrv.fetchRoomTypes, {},fetchRoomTypesSuccessCallback); 
 
 };
+
+$scope.$on("onRateDefaultsFetched", function(e){
+    $scope.calculateRoomLists();
+});
+
+$scope.calculateRoomLists = function(){
+    console.log($scope.rateData.based_on.id);
+
+    // separate out assigned and non-assigned room types
+    $scope.assignedRoomTypes = [];
+    if ($scope.rateData.room_type_ids){
+        for(var j = 0; j < $scope.availableRoomTypes.length; j++){
+            angular.forEach($scope.rateData.room_type_ids, function(room_type_id){
+                if (room_type_id == $scope.availableRoomTypes[j].id){
+                    $scope.assignedRoomTypes.push($scope.availableRoomTypes[j]);
+                    //$scope.availableRoomTypes.splice(j, 1);
+                }else{
+                    $scope.nonAssignedroomTypes.push($scope.availableRoomTypes[j]);
+                }
+                
+            });
+        }
+        if($scope.rateData.based_on.id !== undefined || $scope.rateData.based_on.id !== ""){
+            $scope.nonAssignedroomTypes = [];
+        }
+    }
+
+    
+}
+
+
 $scope.fetchData();
 
 $scope.saveRoomTypes = function(){
     
-    var assignedRoomArray =[];
+    var roomIdArray =[];
     angular.forEach($scope.assignedRoomTypes, function(item){
-       assignedRoomArray.push(item.id);
+       roomIdArray.push(item.id);
     });
     var data = {
-        'room_type_ids': assignedRoomArray,
+        'room_type_ids': roomIdArray,
         'id' : $scope.newRateId
     };
 
     var saveRoomTypesSuccessCallback = function(data){
         $scope.$emit('hideLoader');
-        $scope.rateData.room_type_ids = assignedRoomArray;
-        if($scope.hasBaseRate){
-        	$scope.setupConfigureRates();
-            $scope.$emit("updateIndex","3");
-        }
-        else if ($scope.edit_mode){
-            $scope.$emit("updateIndex","3");
-        }
-        else{
-            $scope.$emit("updateIndex","2");
-        }
-        
+        $scope.rateData.room_type_ids = roomIdArray;
     };
 
     $scope.invokeApi(ADRatesAddRoomTypeSrv.saveRoomTypes,data,saveRoomTypesSuccessCallback);       
@@ -94,6 +108,7 @@ $scope.anyRoomSelected = function(){
  */
 
 $scope.assignedRoomSelected = function($event, index){
+
     if(lastDropedTime == ''){
         if(index === $scope.selectedAssignedRoomIndex)
             $scope.selectedAssignedRoomIndex = -1;
@@ -175,11 +190,6 @@ $scope.topMoveleftClicked = function(){
  */
 
 $scope.bottomMoverightClicked = function(){
-	//If base rate is selected, restrict the room types to the base rate
-	if($scope.hasBaseRate){
-		return false;
-	}
-
     if($scope.nonAssignedroomTypes.length>0){
         angular.forEach($scope.nonAssignedroomTypes, function(item){
         $scope.assignedRoomTypes.push(item);
@@ -209,6 +219,7 @@ $scope.bottomMoveleftClicked = function(){
     $scope.reachedUnAssignedRoomTypes = function(){
         $scope.selectedUnAssignedRoomIndex = -1;    
         lastDropedTime = new Date();
-    }   
+    } 
+
 }]);
 
