@@ -1,0 +1,13 @@
+<div class="block-item item-room float">
+	<div class="block-title">
+		<h3>Room</h3>
+	</div>
+	<!-- Room Assignment screen is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
+	<!-- The arrows are removed and room assignment buttons are not clickable in that case -->
+	<a class="has-arrow next-view no-auto-bind hover-hand">
+		 <strong class="room-number ready" ui-sref="rover.staycard.roomassignment">
+		 	 {{reservationData.reservation_card.room_number}} 
+		 </strong>{{reservationData.reservation_card.room_type_description}} 
+	</a>
+
+</div>

@@ -1,0 +1,12 @@
+<form method="post" class="block-item item-newspaper">
+	<div class="block-title">
+		<h3>Newspaper</h3>
+	</div>
+	<div class="select">
+		<!-- The newspaper selection option is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
+		<select name="reservation_newspaper" >
+			<option value="" class="placeholder">Select newspaper</option>
+			<option ng-repeat="newspaper in reservationData.reservation_card.news_paper_pref.news_papers">{{newspaper.name}} </option>
+		</select>
+	</div>
+</form>
