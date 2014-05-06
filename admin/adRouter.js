@@ -256,6 +256,7 @@ admin.config([
 			controller: 'ADMarketsCtrl',
 			url : '/markets'
 		});
+
 		$stateProvider.state('admin.sources', {
 			templateUrl: '/assets/partials/sources/adSources.html',
 			controller: 'ADSourcesCtrl',
@@ -267,5 +268,13 @@ admin.config([
 			url : '/origins'
 		});
 		
+
+		$stateProvider.state('admin.ratesAddons', {
+			templateUrl: '/assets/partials/rates/adRatesAddons.html',
+			controller: 'ADRatesAddonsCtrl',
+			url : '/rates_addons'
+		});
+
+
 	}
 ]);
