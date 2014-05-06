@@ -21,6 +21,21 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 		$scope.reservationList = data.reservation_list.current_reservations_arr;
 		
 		RVReservationCardSrv.setGuestData($scope.data.guest_details);
+
+	var fetchGuestcardDataSuccessCallback = function(data){
+        $scope.guestcardData = data;
+        $scope.$emit('hideLoader');
+    };
+    var fetchGuestcardDataFailureCallback = function(data){
+        $scope.$emit('hideLoader');
+    };
+
+    $scope.reservationStatus = data.reservation_details.reservation_status;
+    var param = {'status':$scope.reservationStatus,
+				'fakeDataToAvoidCache':new Date()
+				}
+    $scope.invokeApi(RVReservationCardSrv.fetchGuestcardData,param,fetchGuestcardDataSuccessCallback,fetchGuestcardDataFailureCallback);  
+
 		
 		// $scope.$broadcast('passGuestDetails', $scope.data.guest_details);
 	});
