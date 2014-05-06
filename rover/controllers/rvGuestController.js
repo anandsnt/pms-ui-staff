@@ -1,5 +1,9 @@
 sntRover.controller('guestCardController', ['$scope', 'Likes', '$window', 'RVReservationCardSrv', function($scope, Likes, $window, RVReservationCardSrv){
 	
+	console.log("--------------")
+	console.log($scope.guestCardData);
+	console.log("--------------")
+
 	$scope.current = 'guest-contact';
 	//To get data from service
     $scope.guestData = RVReservationCardSrv.getGuestData();
