@@ -48,4 +48,44 @@ admin.service('ADRulesRestrictionSrv',
         return deferred.promise;
       };
 
+      /*
+      * To fetch rules list
+      * 
+      * @param {object} contains page and per_page params
+      * @return {object} defer promise
+      */  
+      this.fetchPolicy = function(params) {
+        var deferred = $q.defer(),
+            url      = '/api/policies';
+
+        ADBaseWebSrvV2.getJSON(url, params)
+          .then(function(data) {
+            deferred.resolve(data);
+          }, function(errorMessage) {
+            deferred.reject(errorMessage);
+          });
+
+        return deferred.promise;
+      };
+
+      /*
+      * To fetch rules list
+      * 
+      * @param {object} contains page and per_page params
+      * @return {object} defer promise
+      */  
+      this.postPolicy = function(params) {
+        var deferred = $q.defer(),
+            url      = '/api/policies';
+
+        ADBaseWebSrvV2.postJSON(url, params)
+          .then(function(data) {
+            deferred.resolve(data);
+          }, function(errorMessage) {
+            deferred.reject(errorMessage);
+          });
+
+        return deferred.promise;
+      };
+
 }]);
