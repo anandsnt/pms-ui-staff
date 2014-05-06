@@ -68,7 +68,7 @@ sntRover.service('RVReservationCardSrv',['$http', '$q', 'RVBaseWebSrv', function
 
 	this.fetchGuestcardData = function(param){
 		var deferred = $q.defer();
-		var url = '/search.json';
+		var url = '/staff/guestcard/show.json';
 		RVBaseWebSrv.getJSON(url,param).then(function(data) {
 			    deferred.resolve(data);
 			},function(data){

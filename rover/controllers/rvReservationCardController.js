@@ -31,9 +31,8 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
     };
 
     $scope.reservationStatus = data.reservation_details.reservation_status;
-    var param = {'status':$scope.reservationStatus,
-				'fakeDataToAvoidCache':new Date()
-				}
+    var param = {'fakeDataToAvoidCache':new Date(),
+					'id':$scope.data.guest_details.reservation_id}
     $scope.invokeApi(RVReservationCardSrv.fetchGuestcardData,param,fetchGuestcardDataSuccessCallback,fetchGuestcardDataFailureCallback);  
 
 
