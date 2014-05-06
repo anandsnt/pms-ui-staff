@@ -91,12 +91,12 @@ admin.controller('ADRulesRestrictionCtrl', [
                 return;
             };
 
-            var policyType = item.description === 'Cancellation Penalties' ? 'CANCELLATION_POLICY' :
+            var ruleType = item.description === 'Cancellation Penalties' ? 'CANCELLATION_POLICY' :
                              item.description === 'Deposit Requested' ? 'DEPOSIT_REQUEST' : '';
 
             // lets empty lists all before fetch
-            $scope.cancelList = [];
-            $scope.depositlList = [];
+            $scope.cancelRulesList = [];
+            $scope.depositRuleslList = [];
 
             // hide list views all before fetch
             $scope.showCancelPolicy = false;
@@ -105,28 +105,28 @@ admin.controller('ADRulesRestrictionCtrl', [
             // fetch the appropriate policy
             var callback = function(data) {
 
-                if ( policyType === 'CANCELLATION_POLICY' ) {
-                    $scope.cancelList = data.results;
+                if ( ruleType === 'CANCELLATION_POLICY' ) {
+                    $scope.cancelRulesList = data.results;
                     $scope.showCancelPolicy = true;
                     $scope.showDepositPolicy = false;
 
-                    $scope.editCancelPolicy = false;
-                    $scope.editDepositPolicy = false;
+                    $scope.editCancelRules = false;
+                    $scope.editDepositRules = false;
                 };
 
-                if ( policyType === 'DEPOSIT_REQUEST' ) {
-                    $scope.depositlList = data.results;
+                if ( ruleType === 'DEPOSIT_REQUEST' ) {
+                    $scope.depositRuleslList = data.results;
                     $scope.showCancelPolicy = false;
                     $scope.showDepositPolicy = true;
 
-                    $scope.editCancelPolicy = false;
-                    $scope.editDepositPolicy = false;
+                    $scope.editCancelRules = false;
+                    $scope.editDepositRules = false;
                 };
 
                 $scope.$emit('hideLoader');
             };
 
-            $scope.invokeApi(ADRulesRestrictionSrv.fetchPolicy, { policy_type: policyType }, callback);
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchPolicy, { policy_type: ruleType }, callback);
         };
 
 
@@ -136,8 +136,8 @@ admin.controller('ADRulesRestrictionCtrl', [
 
             // identify the restriction
             if ( this.item.description === 'Cancellation Penalties' ) {
-                $scope.editCancelPolicy = true;
-                $scope.editDepositPolicy = false;
+                $scope.editCancelRules = true;
+                $scope.editDepositRules = false;
 
                 $scope.rulesSubtitle = 'Cancellation Penalties Rule';
 
@@ -146,8 +146,8 @@ admin.controller('ADRulesRestrictionCtrl', [
             }
 
             if ( this.item.description === 'Deposit Requested' ) {
-                $scope.editCancelPolicy = false;
-                $scope.editDepositPolicy = true;
+                $scope.editCancelRules = false;
+                $scope.editDepositRules = true;
 
                 $scope.rulesSubtitle = 'Deposit Requested Rule';
 
@@ -157,12 +157,11 @@ admin.controller('ADRulesRestrictionCtrl', [
         };
 
         $scope.cancelCliked = function() {
-            $scope.editCancelPolicy = false;
-            $scope.editDepositPolicy = false;
+            $scope.editCancelRules = false;
+            $scope.editDepositRules = false;
         };
 
         $scope.addNewRule = function(from) {
-
             var from = from;
 
             var callback = function(data) {
@@ -171,6 +170,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                         editable: true,
                         description: from
                     });
+                    $scope.editCancelRules = false;
                 }
 
                 if ( from === 'Deposit Requested' ) {
@@ -178,10 +178,29 @@ admin.controller('ADRulesRestrictionCtrl', [
                         editable: true,
                         description: from
                     });
+                    $scope.editDepositRules = false;
                 }
+
+                $scope.$emit('hideLoader');
             };
 
             $scope.invokeApi(ADRulesRestrictionSrv.postPolicy, $scope.singleRule, callback);
+        };
+
+        $scope.deleteRule = function(from) {
+            var from = from;
+
+            var callback = function() {
+                if ( from === 'Cancellation Penalties' ) {
+                    cancelRulesList
+                }
+
+                if ( from === 'Deposit Requested' ) {
+                    
+                }
+
+                $scope.$emit('hideLoader');
+            };
         };
 
     }

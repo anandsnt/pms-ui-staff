@@ -4,18 +4,18 @@
 		<td>No deposit requested added yet.</td>
 	</tr> -->
 
-	<tr ng-hide="editDepositPolicy" ng-repeat="list in depositlList">
+	<tr ng-hide="editDepositRules" ng-repeat="rule in depositRuleslList">
 		<td class="offset"> &nbsp; </td>
-		<td>{{ list.name }}</td>
+		<td>{{ rule.name }}</td>
 
-		<td>{{ list.description }}</td>
+		<td>{{ rule.description }}</td>
 
 		<td class="delete">
-			<a class="icons icon-delete large-icon" ng-click="deleteAddon()">Delete this policy</a>		
+			<a class="icons icon-delete large-icon" ng-click="deleteRule('Deposit Requested')">Delete this rule</a>		
 		</td>
 	</tr>
 
-	<tr ng-show="editDepositPolicy">
+	<tr ng-show="editDepositRules">
 		<td class="offset"> &nbsp; </td>
 		<td>
 			<div style="display: block;" id="add-new" class="edit-data">
@@ -122,7 +122,7 @@
 								like-type="common"
 								id="update"
 								class="button green add-data-inline"
-								ng-click="addNewRule()">Save changes</button>
+								ng-click="addNewRule('Deposit Requested')">Save changes</button>
 						</div>
 
 					</form>

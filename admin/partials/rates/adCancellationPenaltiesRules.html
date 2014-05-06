@@ -1,21 +1,21 @@
 <table class="grid sub-grid">
-	<!-- <tr ng-hide="editCancelPolicy || policyList.length" class="no-results">
+	<!-- <tr ng-hide="editCancelRules || policyList.length" class="no-results">
 		<td class="offset"> &nbsp; </td>
 		<td>No cancellation penalties added yet</td>
 	</tr> -->
 
-	<tr ng-hide="editCancelPolicy" ng-repeat="list in cancelList">
+	<tr ng-hide="editCancelRules" ng-repeat="rule in cancelRulesList">
 		<td class="offset"> &nbsp; </td>
-		<td>{{ list.name }}</td>
+		<td>{{ rule.name }}</td>
 
-		<td>{{ list.description }}</td>
+		<td>{{ rule.description }}</td>
 
 		<td class="delete">
-			<a class="icons icon-delete large-icon" ng-click="deleteAddon()">Delete this policy</a>		
+			<a class="icons icon-delete large-icon" ng-click="deleteRule('Cancellation Penalties')">Delete this rule</a>		
 		</td>
 	</tr>
 
-	<tr ng-show="editCancelPolicy">
+	<tr ng-show="editCancelRules">
 		<td class="offset"> &nbsp; </td>
 		<td>
 			<div style="display: block;" id="add-new" class="edit-data">
@@ -122,7 +122,7 @@
 								like-type="common"
 								id="update"
 								class="button green add-data-inline"
-								ng-click="addNewRule()">Save changes</button>
+								ng-click="addNewRule('Cancellation Penalties')">Save changes</button>
 						</div>
 
 					</form>

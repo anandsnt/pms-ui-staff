@@ -88,4 +88,24 @@ admin.service('ADRulesRestrictionSrv',
         return deferred.promise;
       };
 
+      /*
+      * To delete a particular rule
+      * 
+      * @param {object} contains page and per_page params
+      * @return {object} defer promise
+      */  
+      this.delPolicy = function(params) {
+        var deferred = $q.defer(),
+            url      = '/api/policies/' + id;
+
+        ADBaseWebSrvV2.postJSON(url, params)
+          .then(function(data) {
+            deferred.resolve(data);
+          }, function(errorMessage) {
+            deferred.reject(errorMessage);
+          });
+
+        return deferred.promise;
+      };
+
 }]);
