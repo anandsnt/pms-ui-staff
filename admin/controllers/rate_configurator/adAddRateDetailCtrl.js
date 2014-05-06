@@ -89,7 +89,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 // });
                 $scope.$emit("changeMenu",'Room types');
 
-                $scope.$emit("updateBasedonRate", basedOn_id, $scope.based_on_plus_minus, $scope.based_on_type, $scope.based_on_value);
+                $scope.$emit("updateBasedonRate");
 
             };
             var createNewRateFailureCallback = function (data) {
@@ -102,7 +102,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                     'id': '1',
                     'rateId': $scope.newRateId
                 });
-                $scope.$emit("updateBasedonRate", basedOn_id, $scope.based_on_plus_minus, $scope.based_on_type, $scope.based_on_value);
+                $scope.$emit("updateBasedonRate");
 
             };
             var updateRateFailureCallback = function (data) {
