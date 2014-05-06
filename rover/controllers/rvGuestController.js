@@ -2,6 +2,7 @@ sntRover.controller('guestCardController', ['$scope', 'Likes', '$window', 'RVRes
 	
 	console.log("--------------")
 	console.log($scope.guestCardData);
+	console.log($scope.countriesList.length);
 	console.log("--------------")
 
 	$scope.current = 'guest-contact';
