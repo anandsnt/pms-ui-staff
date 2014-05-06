@@ -1,0 +1,18 @@
+<div class="data-holder">
+	<form class="form single-field-form float">
+		<ad-textbox value="item.name" name = "item-name" label = "" placeholder = "Enter source name" required = ""></ad-textbox>
+
+		<div class="actions float">
+			<button type="button" class="button blank edit-data-inline" ng-click="clickedCancel()">
+				Cancel
+			</button>
+			<button type="button" class="button green edit-data-inline" ng-click="updateItem()">
+				Save changes
+			</button>
+			<button type="button" class="button red edit-data-inline" ng-click="clickedDelete(item.value)">
+				Delete
+			</button>
+		</div>
+		
+	</form>
+</div>

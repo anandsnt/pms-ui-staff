@@ -15,13 +15,11 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', function($scope, ADM
     * To handle nable/disable of use markets
     */
 	$scope.clickedUsedMarkets = function(){
-		console.log($scope.data.is_use_markets);
 		$scope.invokeApi(ADMarketsSrv.toggleUsedMarkets, {'is_use_markets':$scope.data.is_use_markets });
 	};
     /*
     * To render edit screen
     * @param {int} index index of selected markets
-    * @paran {string} id - charge groups id
     */
 	$scope.editItem = function(index)	{
 		$scope.currentClickedElement = index;
@@ -29,7 +27,6 @@ admin.controller('ADMarketsCtrl',['$scope', 'ADMarketsSrv', function($scope, ADM
 	/*
     * To get the template of edit screen
     * @param {int} index of the selected item
-    * @param {string} id of the item
     */
 	$scope.getTemplateUrl = function(index){
 		if($scope.currentClickedElement == index){ 

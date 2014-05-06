@@ -122,6 +122,11 @@ admin.config([
 			url : '/roomtypes'
 		});
 
+		$stateProvider.state('admin.housekeeping', {
+			templateUrl: '/assets/partials/housekeeping/adHousekeeping.html',
+			controller: 'adHousekeepingCtrl',
+			url : '/housekeeping'
+		});
 
 		$stateProvider.state('admin.roomKeyDelivery', {
 			templateUrl: '/assets/partials/roomKeyDelivery/roomKeyDelivery.html',
@@ -251,6 +256,16 @@ admin.config([
 			controller: 'ADMarketsCtrl',
 			url : '/markets'
 		});
-
+		$stateProvider.state('admin.sources', {
+			templateUrl: '/assets/partials/sources/adSources.html',
+			controller: 'ADSourcesCtrl',
+			url : '/sources'
+		});
+		$stateProvider.state('admin.bookingOrigins', {
+			templateUrl: '/assets/partials/origins/adOrigins.html',
+			controller: 'ADOriginsCtrl',
+			url : '/origins'
+		});
+		
 	}
 ]);
