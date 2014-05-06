@@ -10,18 +10,17 @@
 			<option value="{{frequentflyer.id}}" ng-repeat="frequentflyer in reservationData.reservation_card.loyalty_level.frequentFlyerProgram">
 				 {{frequentflyer.membership_type}} {{frequentflyer.membership_card_number}} </option>
 				<optgroup label="Hotel Loyalty Program"></optgroup>
-			<option value="dl-12345" id="255" data-type="hlp" data-primary="true" data-number="2345" data-level="" data-id="255" data-code="DL"> DL
-				12345 </option>
-			<option value="gha-234567" id="341" data-type="hlp" data-primary="true" data-number="4567" data-level="" data-id="341" data-code="GHA"> GHA
-				234567 </option>
-			<option value="hh-2345" selected="" id="350" data-type="hlp" data-primary="true" data-number="2345" data-level="" data-id="350" data-code="HH"> HH
-				2345 </option>
+			<option value="{{hotelloyalty.id}}" ng-repeat="hotelloyalty in reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram">
+				{{hotelloyalty.membership_type}} 
+				{{hotelloyalty.membership_card_number}} 
+			</option>
+			
 
 		</select>
 		<!-- Calculates the default selected loyalty -->
-		<div id="reservationLoyalty" class="selected">
-			<span class="value code"> HH </span>
-			<span class="number"> Ending with <span class="value number"> 2345 </span> </span>
+		<div id="reservationLoyalty" class="selected" >
+			<span class="value code"> {{selectedLoyalty.membership_type}}</span>
+			<span class="number"> Ending with <span class="value number"> {{selectedLoyalty.membership_card_number}} </span> </span>
 		</div>
 	</div>
 	<div class="actions">
