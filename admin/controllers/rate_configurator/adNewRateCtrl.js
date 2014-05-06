@@ -9,7 +9,12 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "name": "",
                 "description": "",
                 "code": "",
-                "based_on": { "id": "", "type": "", "value_abs": "", "value_sign" : "" },
+                "based_on": {
+                    "id": "",
+                    "type": "",
+                    "value_abs": "",
+                    "value_sign": ""
+                },
                 "rate_type_id": "",
                 "date_range_count": 0,
                 "status": true,
@@ -31,12 +36,12 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.errorMessage = '';
             $scope.newRateId = $stateParams.rateId;
 
-            $scope.showAddNewDateRangeOptions =false;
-        	$scope.hasBaseRate = false;
-        	$scope.date_ranges = [];
-        	$scope.basedonPlusMinus = '+';
-        	$scope.basedonType = "";
-        	$scope.basedonValue = 0;
+            $scope.showAddNewDateRangeOptions = false;
+            $scope.hasBaseRate = false;
+            $scope.date_ranges = [];
+            $scope.basedonPlusMinus = '+';
+            $scope.basedonType = "";
+            $scope.basedonValue = 0;
 
 
 
@@ -54,7 +59,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * to be updated from child classes
          */
         $scope.$on("changeMenu", function (e, value) {
-             $scope.rateMenu =  value;
+            $scope.rateMenu = value;
         });
 
 
@@ -72,23 +77,25 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         });
 
         /**
-        * Fetch the based on rate retails, if the rate has chosen a based on rate.
-        */
-        $scope.$on("updateBasedonRate", function(e){
-        	if($scope.rateData.based_on.id == undefined)
-        		return false;
-        	$scope.hasBaseRate = true;
+         * Fetch the based on rate retails, if the rate has chosen a based on rate.
+         */
+        $scope.$on("updateBasedonRate", function (e) {
+            if ($scope.rateData.based_on.id == undefined)
+                return false;
+            $scope.hasBaseRate = true;
 
-            var fetchBasedonSuccess = function(data){
+            var fetchBasedonSuccess = function (data) {
                 $scope.basedonData = data;
                 $scope.basedonData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
                 $scope.basedonData.based_on = (data.based_on != null) ? data.based_on.id : '';
                 $scope.$emit('hideLoader');
             };
-            $scope.invokeApi(ADRatesSrv.fetchDetails, {rateId : $scope.rateData.based_on.id}, fetchBasedonSuccess);
+            $scope.invokeApi(ADRatesSrv.fetchDetails, {
+                rateId: $scope.rateData.based_on.id
+            }, fetchBasedonSuccess);
 
         });
-        
+
         /*
          * to be updated from child classes
          */
@@ -203,12 +210,16 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData = data;
             $scope.rateData.id = $stateParams.rateId;
             $scope.rateData.rate_type_id = (data.rate_type != null) ? data.rate_type.id : '';
-            if(data.based_on){
+            if (data.based_on) {
                 $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value)
                 $scope.rateData.based_on.value_sign = data.based_on.value > 0 ? "+" : "-";
-            }
-            else{
-                $scope.rateData.based_on = { "id": "", "type": "", "value_abs": "", "value_sign" : "" };
+            } else {
+                $scope.rateData.based_on = {
+                    "id": "",
+                    "type": "",
+                    "value_abs": "",
+                    "value_sign": ""
+                };
             }
             $scope.$emit('hideLoader');
         };
@@ -224,23 +235,23 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.setupConfigureRates();
         }
 
-        $scope.setupConfigureRates = function(){
-        	getDateRangeData = $scope.date_ranges;
+        $scope.setupConfigureRates = function () {
+            getDateRangeData = $scope.date_ranges;
 
-        	angular.forEach(getDateRangeData, function (value, key) {
-        	    past_date_range = Date.parse(value.end_date) < Date.parse($scope.hotel_business_date);
-        	    var nextContent = {
-        	        'title': 'Configure',
-        	        'type': 'Configure',
-        	        'id': value.id,
-        	        'begin_date': value.begin_date,
-        	        'end_date': value.end_date,
-        	        'is_editable': !past_date_range
-        	    };
-        	    $scope.currentStepIndexList.push(nextContent);
+            angular.forEach(getDateRangeData, function (value, key) {
+                past_date_range = Date.parse(value.end_date) < Date.parse($scope.hotel_business_date);
+                var nextContent = {
+                    'title': 'Configure',
+                    'type': 'Configure',
+                    'id': value.id,
+                    'begin_date': value.begin_date,
+                    'end_date': value.end_date,
+                    'is_editable': !past_date_range
+                };
+                $scope.currentStepIndexList.push(nextContent);
 
-        	});
-        	$scope.clickedStep($scope.currentStepIndexList.length - 1);
+            });
+            $scope.clickedStep($scope.currentStepIndexList.length - 1);
 
         }
 
