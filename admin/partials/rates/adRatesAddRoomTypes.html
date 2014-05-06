@@ -1,7 +1,8 @@
-<span ng-hide="rateMenu ==='Room types'">
+<div ng-hide="rateMenu ==='Room types'">
 	<em class="rate_step_title">Room</em>&nbsp;<span class="italic_text">Types</span>
-	<span ng-click="$emit('changeMenu','Room types')"class="cursor_pointer"><img src="/assets/arrow-down.png"/></span>
-</span>
+	
+<div ng-click="$emit('changeMenu','Room types')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+</div>
 <div ng-show="rateMenu ==='Room types'" ng-controller="ADAddRateRoomTypeCtrl">
 	<form user="2"  class="form float form_add_new_rate">
 		<fieldset class="holder full-width">
