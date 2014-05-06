@@ -72,9 +72,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         * Fetch the based on rate retails, if the rate has chosen a based on rate.
         */
         $scope.$on("updateBasedonRate", function(e){
-        	if($scope.rateData.based_on.id == undefined)
-        		return false;
-
+        	if($scope.rateData.based_on.id == undefined || $scope.rateData.based_on.id == ""){
+                return false;
+            }
             $scope.hasBasedon = true;
 
             var fetchBasedonSuccess = function(data){
@@ -189,7 +189,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 break;
             };
         };
-
+        //TODO: Ask if to be removed
         $scope.addNewDateRange = function () {
             $scope.showAddNewDateRangeOptions = true;
             $scope.$broadcast('resetCalendar');

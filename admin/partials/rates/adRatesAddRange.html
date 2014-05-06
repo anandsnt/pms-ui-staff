@@ -1,4 +1,4 @@
-<form ng-show="rateMenu ==='Rates Range'" class="form" ng-controller="ADAddRateRangeCtrl">
+<form ng-show="rateMenu ==='ADD_NEW_DATE_RANGE'" class="form" ng-controller="ADAddRateRangeCtrl">
 	<fieldset class="holder full-width" style="margin-bottom:20px;">
 		<div class="form-title">
 			<h3><span>Date</span>&nbsp;Range</h3>
@@ -46,7 +46,7 @@
 	<button type="button" ui-sref="admin.rates" class="button blank add-data-inline">
 		Cancel
 	</button>
-	<button type="button" ng-click="saveStep3()" ng-disabled="allFieldsFilled()" class="button  brand-colors" ng-hide="allFieldsFilled()">
+	<button type="button" ng-click="saveDateRange()" ng-disabled="allFieldsFilled()" class="button  brand-colors" ng-hide="allFieldsFilled()">
 		Step 4 - Configure Rate
 	</button>
 	<button type="button" id="send-email" disabled="" class="button grey" ng-show="allFieldsFilled()">Step 4 - Configure Rate</button>

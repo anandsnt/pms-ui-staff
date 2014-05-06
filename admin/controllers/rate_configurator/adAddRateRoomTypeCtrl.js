@@ -14,7 +14,6 @@ var lastDropedTime = '';
 */
 $scope.fetchData = function(){
     var fetchRoomTypesSuccessCallback = function(data){
-        console.log($scope.rateData.room_type_ids);
         $scope.availableRoomTypes = data.results;
         //$scope.nonAssignedroomTypes = data.results;
         $scope.calculateRoomLists();
@@ -37,15 +36,14 @@ $scope.calculateRoomLists = function(){
             angular.forEach($scope.rateData.room_type_ids, function(room_type_id){
                 if (room_type_id == $scope.availableRoomTypes[j].id){
                     $scope.assignedRoomTypes.push($scope.availableRoomTypes[j]);
-                    //$scope.availableRoomTypes.splice(j, 1);
-                }else{
-                    $scope.nonAssignedroomTypes.push($scope.availableRoomTypes[j]);
                 }
-                
             });
         }
-        if($scope.rateData.based_on.id !== undefined || $scope.rateData.based_on.id !== ""){
+
+        if($scope.hasBasedon){
             $scope.nonAssignedroomTypes = [];
+        }else{
+            $scope.nonAssignedroomTypes = $scope.availableRoomTypes;
         }
     }
 
@@ -56,8 +54,6 @@ $scope.calculateRoomLists = function(){
 $scope.fetchData();
 
 $scope.saveRoomTypes = function(){
-    console.log($scope.rateData.id)
-    
     var roomIdArray =[];
     angular.forEach($scope.assignedRoomTypes, function(item){
        roomIdArray.push(item.id);
@@ -70,7 +66,12 @@ $scope.saveRoomTypes = function(){
     var saveRoomTypesSuccessCallback = function(data){
         $scope.$emit('hideLoader');
         $scope.rateData.room_type_ids = roomIdArray;
-        $scope.$emit("changeMenu", 'Rates Range');
+        if($scope.hasBasedon || $scope.edit_mode){
+            //TODO add change menu
+            //$scope.$emit("changeMenu", 'ADD_NEW_DATE_RANGE');
+        }else{
+            $scope.$emit("changeMenu", 'ADD_NEW_DATE_RANGE');
+        }
     };
 
     $scope.invokeApi(ADRatesAddRoomTypeSrv.saveRoomTypes, data, saveRoomTypesSuccessCallback);       
