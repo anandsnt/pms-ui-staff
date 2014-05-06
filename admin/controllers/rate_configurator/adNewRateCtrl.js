@@ -59,6 +59,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * to be updated from child classes
          */
         $scope.$on("changeMenu", function (e, value) {
+            console.log(value);
+            if (parseInt(value) > 0){
+                value = "dateRange."+value;
+            }
             $scope.rateMenu = value;
         });
 

@@ -1,77 +1,43 @@
 admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ngDialog',
     function ($scope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ngDialog) {
-        $scope.sets = "";
-        $scope.currentClickedSet = 0;
-        $scope.selectedCalendarInitialData = {};
-        if ($scope.hasBaseRate) {
-            ADRatesConfigureSrv.hasBaseRate = true;
-        }
+        // ADRatesConfigureSrv.setCurrentSetData($scope.$parent.step);
+        // $scope.$parent.step = ADRatesConfigureSrv.getCurrentSetData();
 
-        ADRatesConfigureSrv.setCurrentSetData($scope.$parent.step);
-        $scope.$parent.step = ADRatesConfigureSrv.getCurrentSetData();
-
-        $scope.$on('dateRangeUpdated', function (event, data) {
-            $scope.$parent.step = data;
-        });
+        // $scope.$on('dateRangeUpdated', function (event, data) {
+        //     $scope.$parent.step = data;
+        // });
 
         // disable date range edit
-        $scope.disableDateSetEdit = function () {
-            if ($scope.hasBaseRate) {
-                return true;
-            }
-            if ($scope.edit_mode) {
-                if (!$scope.step.is_editable) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
+        // $scope.disableDateSetEdit = function () {
+        //     if ($scope.hasBaseRate) {
+        //         return true;
+        //     }
+        //     if ($scope.edit_mode) {
+        //         if (!$scope.step.is_editable) {
+        //             return true;
+        //         } else {
+        //             return false;
+        //         }
+        //     } else {
+        //         return false;
+        //     }
+        // }
 
-        $scope.disableDateRangeEdit = function () {
-            if ($scope.edit_mode) {
-                if (!$scope.step.is_editable) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
+        // $scope.disableDateRangeEdit = function () {
+        //     if ($scope.edit_mode) {
+        //         if (!$scope.step.is_editable) {
+        //             return true;
+        //         } else {
+        //             return false;
+        //         }
+        //     } else {
+        //         return false;
+        //     }
+        // }
 
+        
+        
 
-        var dateRangeId = $scope.$parent.step.id;
-        $scope.fetchSetsInDateRangeSuccessCallback = function (data) {
-            $scope.$emit('hideLoader');
-
-            $scope.data = $scope.calculateTheRatesRestriction(data);
-
-            // manually build room_rates for add mode   
-            angular.forEach($scope.data.sets, function (value, key) {
-                room_rates = []
-                if (value.room_rates.length === 0) {
-                    angular.forEach($scope.data.room_types, function (room_type, key) {
-                        data = {
-                            "id": room_type.id,
-                            "name": room_type.name,
-                            "single": "",
-                            "double": "",
-                            "extra_adult": "",
-                            "child": "",
-                            "isSaved": false
-                        }
-                        room_rates.push(data);
-                    });
-                    value.room_rates = room_rates;
-                }
-            });
-        };
-        $scope.fetchSetsInDateRangeFailureCallback = function (errorMessage) {
-            $scope.$emit('hideLoader');
-        };
         $scope.setCurrentClickedSet = function (index) {
             $scope.currentClickedSet = index;
         };
@@ -80,34 +46,72 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             $scope.currentClickedSet = -1;
         };
 
-        $scope.fetchData = function () {
-            console.log("fetchData");
-            $scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, {
-                "id": dateRangeId
-            }, $scope.fetchSetsInDateRangeSuccessCallback, $scope.fetchSetsInDateRangeFailureCallback);
-        };
-        $scope.fetchData();
+        var fetchData = function () {
 
-        $scope.saveSetFailureCallback = function (errorMessage) {
+            var fetchSetsInDateRangeSuccessCallback = function (data) {
             $scope.$emit('hideLoader');
-            $scope.errorMessage = errorMessage;
-            $scope.$emit("errorReceived", errorMessage);
+
+            $scope.data = $scope.calculateTheRatesRestriction(data);
+
+                // Manually build room rates dictionary - if Add Rate
+                angular.forEach($scope.data.sets, function (value, key) {
+                    room_rates = []
+                    if (value.room_rates.length === 0) {
+                        angular.forEach($scope.data.room_types, function (room_type, key) {
+                            data = {
+                                "id": room_type.id,
+                                "name": room_type.name,
+                                "single": "",
+                                "double": "",
+                                "extra_adult": "",
+                                "child": "",
+                                "isSaved": false
+                            }
+                            room_rates.push(data);
+                        });
+                        value.room_rates = room_rates;
+                    }
+                });
+            };
+
+            $scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, 
+                {
+                    "id": $scope.dateRange.id
+                }, fetchSetsInDateRangeSuccessCallback);
         };
-        $scope.cancelClick = function () {
-            $scope.currentClickedSet = -1;
-        };
+
+
+        fetchData();
+
+
+
+        
+        // $scope.cancelClick = function () {
+        //     $scope.currentClickedSet = -1;
+        // };
+
+
         $scope.saveSet = function (index) {
+
             var saveSetSuccessCallback = function () {
                 $scope.$emit('hideLoader');
                 $scope.data.sets[index].isSaved = true;
             };
+
+            var saveSetFailureCallback = function (errorMessage) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = errorMessage;
+                $scope.$emit("errorReceived", errorMessage);
+            };
+
+            // API request do not require all keys except room_types
             var unwantedKeys = ["room_types"];
             var setData = dclone($scope.data.sets[index], unwantedKeys);
-            $scope.updateData = setData;
-            $scope.updateData.room_rates = $scope.data.sets[index].room_rates;
-            $scope.invokeApi(ADRatesConfigureSrv.saveSet, $scope.updateData, saveSetSuccessCallback, $scope.saveSetFailureCallback);
+
+            $scope.invokeApi(ADRatesConfigureSrv.saveSet, setData, saveSetSuccessCallback, saveSetFailureCallback);
 
         };
+
         $scope.moveAllSingleToDouble = function (index) {
             angular.forEach($scope.data.sets[index].room_rates, function (value, key) {
                 if (value.hasOwnProperty("single") && value.single != "") {
@@ -155,7 +159,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             return enableSetUpdateButton;
         };
 
-        $scope.saveWholeData = function () {
+        $scope.saveDateRange = function () {
             angular.forEach($scope.data.sets, function (value, key) {
                 $scope.saveSet(key);
             });
