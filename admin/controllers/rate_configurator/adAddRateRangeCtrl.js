@@ -83,17 +83,19 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
             };
 
             var postDateRangeSuccessCallback = function (data) {
+                //TODO: commented code required?
                 //if ($scope.edit_mode) {
-                    var dateData = {};
-                    dateData.id = data.id;
-                    dateData.begin_date = dateRangeData.data.begin_date;
-                    dateData.end_date = dateRangeData.data.end_date;
-                    console.log($scope.rateData);
-                    $scope.rateData.date_ranges.push(dateData);
+                var dateData = {};
+                dateData.id = data.id;
+                dateData.begin_date = dateRangeData.data.begin_date;
+                dateData.end_date = dateRangeData.data.end_date;
+                $scope.rateData.date_ranges.push(dateData);
                 //}
-                $scope.$emit('hideLoader');
+                //TODO: remove flag?
                 $scope.showAddNewDateRangeOptions = false;
-                $scope.$emit("changeMenu", 'ADD_NEW_DATE_RANGE');
+                $scope.$emit("changeMenu", 'dateRange.'+ data.id);
+                $scope.$emit('hideLoader');
+
 
             };
             var postDateRangeFailureCallback = function (data) {

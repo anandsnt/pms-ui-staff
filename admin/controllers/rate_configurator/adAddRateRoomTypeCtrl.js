@@ -68,7 +68,8 @@ $scope.saveRoomTypes = function(){
         $scope.rateData.room_type_ids = roomIdArray;
         if($scope.hasBasedon || $scope.edit_mode){
             //TODO add change menu
-            //$scope.$emit("changeMenu", 'ADD_NEW_DATE_RANGE');
+            var dateRangeId = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].id;
+            $scope.$emit("changeMenu", 'dateRange.'+ dateRangeId);
         }else{
             $scope.$emit("changeMenu", 'ADD_NEW_DATE_RANGE');
         }
