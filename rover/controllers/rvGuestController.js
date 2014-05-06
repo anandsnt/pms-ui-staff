@@ -14,7 +14,7 @@ sntRover.controller('guestCardController', ['$scope', 'Likes', '$window', 'RVRes
 	
 	$scope.guestCardToggle = function(){
 		
-		$scope.guestCardHeight = ($scope.guestCardHeight === 90) ? 340:90;
+		$scope.guestCardHeight = ($scope.guestCardHeight === 90) ? 550:90;
 		
 		// var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null,
 		// 	$maxHeight = $window.innerHeight,

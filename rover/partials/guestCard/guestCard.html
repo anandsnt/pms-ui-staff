@@ -1,58 +1,393 @@
-<div role="complementary" id="guest-card" class="ui-resizable"  ng-controller="guestCardController" style="height: {{guestCardHeight}}px;" ng-class="{'open': guestCardHeight ===340}">
-	<div id="card-wrapper">
+<div role="complementary" id="guest-card" class="ui-resizable"  ng-controller="guestCardController" style="height: {{guestCardHeight}}px;" ng-class="{'open': guestCardHeight ===550}">
+	<div id="card-wrapper" class="ng-scope">
 		<!-- Guest Card Header -->
-		<header id="guest-card-header" class="float">
+		<header class="float" id="guest-card-header">
 			<figure class="guest-image">
 				<!-- TODO: use actual image -->
-				<img src="https://pms-dev.stayntouch.com/assets/avatar-trans.png" id="guest-image" alt="">
+				<img alt="" id="guest-image" src="https://pms-dev.stayntouch.com/assets/avatar-trans.png">
 			</figure>
-			<form name="change-name" method="post" id="change-name" action="">
+			<form action="" id="change-name" method="post" name="change-name" class="ng-pristine ng-valid">
 				<div class="holder">
 					<div class="entry">
-						<input type="text" ng-modal="guestData.first_name" value="{{guestData.first_name}}" placeholder="" class="masked-input h1" >
+						<input type="text" class="masked-input h1" placeholder="" value="Revathi" ng-modal="guestData.first_name">
 						
-						<input type="text" ng-modal="guestData.last_name" value="{{guestData.last_name}}" placeholder="" class="masked-input h1"  >
+						<input type="text" class="masked-input h1" placeholder="" value="Achari" ng-modal="guestData.last_name">
 						
 					</div>
 					<strong class="status"> </strong>
 					<!-- The VIP button is hidden since the VIP turn on/off option is not available now. -->
 					<div class="switch-button hidden disabled">
-						<input type="checkbox" value="0" name="vip" id="vip" disabled="">
+						<input type="checkbox" disabled="" id="vip" name="vip" value="0">
 						<label class="data-off"> <span class="switch-icon vip">VIP</span> <span class="value">Off</span> </label>
 						<label class="data-on"> <span class="value">On</span> <span class="switch-icon vip">VIP</span> </label>
 					</div>
 				</div>
 				<div class="holder data">
-					<input type="text" ng-modal="guestData.city" value="{{guestData.city}}" placeholder=""  class="masked-input icons icon-gc-location" data-size="0">
-					<input type="text" ng-modal="guestData.state" value="{{guestData.state}}" class="masked-input" data-size="0">
-					<input type="tel" ng-modal="guestData.phone" value="{{guestData.phone}}" class="masked-input icons icon-gc-phone" data-size="0">
-					<input type="email" ng-modal="guestData.email" value="{{guestData.email}}" class="masked-input icons icon-gc-email" data-size="0">
+					<input type="text" data-size="0" class="masked-input icons icon-gc-location" placeholder="" value="" ng-modal="guestData.city">
+					<input type="text" data-size="0" class="masked-input" value="" ng-modal="guestData.state">
+					<input type="tel" data-size="0" class="masked-input icons icon-gc-phone" value="" ng-modal="guestData.phone">
+					<input type="email" data-size="0" class="masked-input icons icon-gc-email" value="revathi@qburst.com" ng-modal="guestData.email">
 				</div>
 			</form>
 		</header>
 		<!-- Guest Card Content -->
-		<div id="guest-card-content" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+		<div class="ui-tabs ui-widget ui-widget-content ui-corner-all" id="guest-card-content">
 			<!-- Guest Card tabs navigation -->
-			<ul id="guest-card-tabs-nav" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
-				<li ng-click="guestCardTabSwitch('guest-contact')" ng-class="{'ui-tabs-active': current == 'guest-contact'}" class="ui-state-default ui-corner-top" role="tab" tabindex="0" aria-controls="contact-info" aria-labelledby="guest-contact" aria-selected="true">
-					<a id="guest-contact" class="ui-tabs-anchor" role="presentation" tabindex="-1">Contact Information {{$current}}</a>
+			<ul role="tablist" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" id="guest-card-tabs-nav">
+				<li aria-selected="true" aria-labelledby="guest-contact" aria-controls="contact-info" tabindex="0" role="tab" class="ui-state-default ui-corner-top ui-tabs-active" ng-class="{'ui-tabs-active': current == 'guest-contact'}" ng-click="guestCardTabSwitch('guest-contact')">
+					<a tabindex="-1" role="presentation" class="ui-tabs-anchor ng-binding" id="guest-contact">Contact Information </a>
 				</li>
-				<li ng-click="guestCardTabSwitch('guest-like')" ng-class="{'ui-tabs-active': current == 'guest-like'}" class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="likes" aria-labelledby="guest-like" aria-selected="false">
-					<a id="guest-like" class="ui-tabs-anchor" role="presentation" tabindex="-1">Likes</a>
+				<li aria-selected="false" aria-labelledby="guest-like" aria-controls="likes" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-like'}" ng-click="guestCardTabSwitch('guest-like')">
+					<a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-like">Likes</a>
 				</li>
-				<li ng-click="guestCardTabSwitch('guest-credit')" ng-class="{'ui-tabs-active': current == 'guest-credit'}" class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="cc-payment" aria-labelledby="guest-credit" aria-selected="false">
-					<a id="guest-credit"  class="ui-tabs-anchor" role="presentation" tabindex="-1">Credit Cards &amp; Payment</a>
+				<li aria-selected="false" aria-labelledby="guest-credit" aria-controls="cc-payment" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-credit'}" ng-click="guestCardTabSwitch('guest-credit')">
+					<a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-credit">Credit Cards &amp; Payment</a>
 				</li>
-				<li ng-click="guestCardTabSwitch('guest-loyalty')" ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="loyalty" aria-labelledby="guest-loyalty" aria-selected="false">
-					<a id="guest-loyalty" class="ui-tabs-anchor" role="presentation" tabindex="-1">Loyalty</a>
+				<li aria-selected="false" aria-labelledby="guest-loyalty" aria-controls="loyalty" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" ng-click="guestCardTabSwitch('guest-loyalty')">
+					<a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-loyalty">Loyalty</a>
 				</li>
 			</ul>
 			<!-- Guest Card Tab 1 -->
-			<div ng-include="'/assets/partials/guestCard/contactInfo.html'"></div>
+			<form aria-hidden="false" aria-expanded="true" role="tabpanel" aria-labelledby="guest-contact" action="" class="card-content form scrollable ui-tabs-panel ui-widget-content ui-corner-bottom ng-pristine ng-valid" ng-show="current == 'guest-contact'" id="contact-info" method="post" name="contact-info">
+				<div style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);" class="wrapper float">
+					<div class="entry full-width">
+						<div id="notification-message-guest"></div>
+					</div>
+					<div class="holder float left">
+						<div class="entry">
+							<label for="title">Title</label>
+							<input type="text" id="title" name="title" value="">
+						</div>
+						<div class="entry"></div>
+						<div class="entry">
+							<label for="firstname">First name</label>
+							<input type="text" id="guest_firstname" name="firstname" value="">
+						</div>
+						<div class="entry">
+							<label for="lastname">Last Name</label>
+							<input type="text" id="guest_lastname" name="lastname" value="">
+						</div>
+						<div class="entry">
+							<label for="works-at">Works at</label>
+							<input type="text" id="works-at" name="works-at" value="">
+						</div>
+						<div class="entry">
+							<label for="job-title">Job title</label>
+							<input type="text" id="job-title" name="job-title" value="">
+						</div>
+						<div class="entry has-datepicker">
+							<label for="birthday"> Birthday </label>
+							<input type="text" class="hasDatepicker" id="guest-birthday" maxlength="8" name="guest-birthday" readonly="" value="">
+							<button class="ui-datepicker-trigger" type="button">
+								...
+							</button>
+						</div>
+						<div class="entry radio-check full-width">
+							<label for="opt-in">Email Opt In</label>
+							<label class="checkbox"><span class="icon-form icon-checkbox"></span>
+								<input type="checkbox" id="opt-in" name="opt-in" value="opt-in">
+								Promotions &amp; News Email Opt In </label>
+						</div>
+					</div>
+					<div class="holder float right">
+						<div class="entry full-width">
+							<label for="email">E-mail address</label>
+							<input type="email" id="email" name="email" value="">
+						</div>
+						<div class="entry full-width">
+							<label for="streetname">Address</label>
+							<input type="text" id="streetname" name="streetname" value="">
+						</div>
+						<div class="entry">
+							<label for="city">City</label>
+							<input type="text" id="city" name="city" value="">
+						</div>
+						<div class="entry">
+							<label for="postalcode">Postal code</label>
+							<input type="number" id="postalcode" name="postalcode" value="">
+						</div>
+						<div class="entry">
+							<label for="state">State</label>
+							<input type="text" id="state" name="state" value="">
+						</div>
+						<div class="entry">
+							<label for="country">Country</label>
+							<div class="select" form="contact-info">
+								<select id="countries_status" name="countries[status]">
+									<option value=""></option>
+									<option value="1">Afghanistan</option>
+									<option value="2">Aland Islands</option>
+									<option value="3">Albania</option>
+									<option value="4">Algeria</option>
+									<option value="5">American Samoa</option>
+									<option value="6">Andorra</option>
+									<option value="7">Angola</option>
+									<option value="8">Anguilla</option>
+									<option value="9">Antarctica</option>
+									<option value="10">Antigua and Barbuda</option>
+									<option value="11">Argentina</option>
+									<option value="12">Armenia</option>
+									<option value="13">Aruba</option>
+									<option value="14">Australia</option>
+									<option value="15">Austria</option>
+									<option value="16">Azerbaijan</option>
+									<option value="17">Bahamas</option>
+									<option value="18">Bahrain</option>
+									<option value="19">Bangladesh</option>
+									<option value="20">Barbados</option>
+									<option value="21">Belarus</option>
+									<option value="22">Belgium</option>
+									<option value="23">Belize</option>
+									<option value="24">Benin</option>
+									<option value="25">Bermuda</option>
+									<option value="26">Bhutan</option>
+									<option value="27">Bolivia, Plurinational State Of</option>
+									<option value="28">Bonaire, Sint Eustatius and Saba</option>
+									<option value="29">Bosnia and Herzegovina</option>
+									<option value="30">Botswana</option>
+									<option value="31">Bouvet Island</option>
+									<option value="32">Brazil</option>
+									<option value="33">British Indian Ocean Territory</option>
+									<option value="34">Brunei Darussalam</option>
+									<option value="35">Bulgaria</option>
+									<option value="36">Burkina Faso</option>
+									<option value="37">Burundi</option>
+									<option value="38">Cambodia</option>
+									<option value="39">Cameroon</option>
+									<option value="40">Canada</option>
+									<option value="41">Cape Verde</option>
+									<option value="42">Cayman Islands</option>
+									<option value="43">Central African Republic</option>
+									<option value="44">Chad</option>
+									<option value="45">Chile</option>
+									<option value="46">China</option>
+									<option value="47">Christmas Island</option>
+									<option value="48">Cocos (KEELING) Islands</option>
+									<option value="49">Colombia</option>
+									<option value="50">Comoros</option>
+									<option value="51">Congo</option>
+									<option value="52">Congo, The Democratic Republic Of The</option>
+									<option value="53">Cook Islands</option>
+									<option value="54">Costa Rica</option>
+									<option value="55">Cote D'ivoire</option>
+									<option value="56">Croatia</option>
+									<option value="57">Cuba</option>
+									<option value="58">Curacao</option>
+									<option value="59">Cyprus</option>
+									<option value="60">Czech Republic</option>
+									<option value="61">Denmark</option>
+									<option value="62">Djibouti</option>
+									<option value="63">Dominica</option>
+									<option value="64">Dominican Republic</option>
+									<option value="65">Ecuador</option>
+									<option value="66">Egypt</option>
+									<option value="67">El Salvador</option>
+									<option value="68">Equatorial Guinea</option>
+									<option value="69">Eritrea</option>
+									<option value="70">Estonia</option>
+									<option value="71">Ethiopia</option>
+									<option value="72">Falkland Islands (MALVINAS)</option>
+									<option value="73">Faroe Islands</option>
+									<option value="74">Fiji</option>
+									<option value="75">Finland</option>
+									<option value="76">France</option>
+									<option value="77">French Guiana</option>
+									<option value="78">French Polynesia</option>
+									<option value="79">French Southern Territories</option>
+									<option value="80">Gabon</option>
+									<option value="81">Gambia</option>
+									<option value="82">Georgia</option>
+									<option value="83">Germany</option>
+									<option value="84">Ghana</option>
+									<option value="85">Gibraltar</option>
+									<option value="86">Greece</option>
+									<option value="87">Greenland</option>
+									<option value="88">Grenada</option>
+									<option value="89">Guadeloupe</option>
+									<option value="90">Guam</option>
+									<option value="91">Guatemala</option>
+									<option value="92">Guernsey</option>
+									<option value="93">Guinea</option>
+									<option value="94">Guinea-Bissau</option>
+									<option value="95">Guyana</option>
+									<option value="96">Haiti</option>
+									<option value="97">Heard Island and Mcdonald Islands</option>
+									<option value="98">Holy See (VATICAN City State)</option>
+									<option value="99">Honduras</option>
+									<option value="100">Hong Kong</option>
+									<option value="101">Hungary</option>
+									<option value="102">Iceland</option>
+									<option value="103">India</option>
+									<option value="104">Indonesia</option>
+									<option value="105">Iran, Islamic Republic Of</option>
+									<option value="106">Iraq</option>
+									<option value="107">Ireland</option>
+									<option value="108">Isle Of Man</option>
+									<option value="109">Israel</option>
+									<option value="110">Italy</option>
+									<option value="111">Jamaica</option>
+									<option value="112">Japan</option>
+									<option value="113">Jersey</option>
+									<option value="114">Jordan</option>
+									<option value="115">Kazakhstan</option>
+									<option value="116">Kenya</option>
+									<option value="117">Kiribati</option>
+									<option value="118">Korea, Democratic People's Republic Of</option>
+									<option value="119">Korea, Republic Of</option>
+									<option value="120">Kuwait</option>
+									<option value="121">Kyrgyzstan</option>
+									<option value="122">Lao People's Democratic Republic</option>
+									<option value="123">Latvia</option>
+									<option value="124">Lebanon</option>
+									<option value="125">Lesotho</option>
+									<option value="126">Liberia</option>
+									<option value="127">Libya</option>
+									<option value="128">Liechtenstein</option>
+									<option value="129">Lithuania</option>
+									<option value="130">Luxembourg</option>
+									<option value="131">Macao</option>
+									<option value="132">Macedonia, The Former Yugoslav Republic Of</option>
+									<option value="133">Madagascar</option>
+									<option value="134">Malawi</option>
+									<option value="135">Malaysia</option>
+									<option value="136">Maldives</option>
+									<option value="137">Mali</option>
+									<option value="138">Malta</option>
+									<option value="139">Marshall Islands</option>
+									<option value="140">Martinique</option>
+									<option value="141">Mauritania</option>
+									<option value="142">Mauritius</option>
+									<option value="143">Mayotte</option>
+									<option value="144">Mexico</option>
+									<option value="145">Micronesia, Federated States Of</option>
+									<option value="146">Moldova, Republic Of</option>
+									<option value="147">Monaco</option>
+									<option value="148">Mongolia</option>
+									<option value="149">Montenegro</option>
+									<option value="150">Montserrat</option>
+									<option value="151">Morocco</option>
+									<option value="152">Mozambique</option>
+									<option value="153">Myanmar</option>
+									<option value="154">Namibia</option>
+									<option value="155">Nauru</option>
+									<option value="156">Nepal</option>
+									<option value="157">Netherlands</option>
+									<option value="158">New Caledonia</option>
+									<option value="159">New Zealand</option>
+									<option value="160">Nicaragua</option>
+									<option value="161">Niger</option>
+									<option value="162">Nigeria</option>
+									<option value="163">Niue</option>
+									<option value="164">Norfolk Island</option>
+									<option value="165">Northern Mariana Islands</option>
+									<option value="166">Norway</option>
+									<option value="167">Oman</option>
+									<option value="168">Pakistan</option>
+									<option value="169">Palau</option>
+									<option value="170">Palestine, State Of</option>
+									<option value="171">Panama</option>
+									<option value="172">Papua New Guinea</option>
+									<option value="173">Paraguay</option>
+									<option value="174">Peru</option>
+									<option value="175">Philippines</option>
+									<option value="176">Pitcairn</option>
+									<option value="177">Poland</option>
+									<option value="178">Portugal</option>
+									<option value="179">Puerto Rico</option>
+									<option value="180">Qatar</option>
+									<option value="181">Reunion</option>
+									<option value="182">Romania</option>
+									<option value="183">Russian Federation</option>
+									<option value="184">Rwanda</option>
+									<option value="185">Saint Barthelemy</option>
+									<option value="186">Saint Helena, Ascension and Tristan Da Cunha</option>
+									<option value="187">Saint Kitts and Nevis</option>
+									<option value="188">Saint Lucia</option>
+									<option value="189">Saint Martin (FRENCH Part)</option>
+									<option value="190">Saint Pierre and Miquelon</option>
+									<option value="191">Saint Vincent and The Grenadines</option>
+									<option value="192">Samoa</option>
+									<option value="193">San Marino</option>
+									<option value="194">Sao Tome and Principe</option>
+									<option value="195">Saudi Arabia</option>
+									<option value="196">Senegal</option>
+									<option value="197">Serbia</option>
+									<option value="198">Seychelles</option>
+									<option value="199">Sierra Leone</option>
+									<option value="200">Singapore</option>
+									<option value="201">Sint Maarten (DUTCH Part)</option>
+									<option value="202">Slovakia</option>
+									<option value="203">Slovenia</option>
+									<option value="204">Solomon Islands</option>
+									<option value="205">Somalia</option>
+									<option value="206">South Africa</option>
+									<option value="207">South Georgia and The South Sandwich Islands</option>
+									<option value="208">South Sudan</option>
+									<option value="209">Spain</option>
+									<option value="210">Sri Lanka</option>
+									<option value="211">Sudan</option>
+									<option value="212">Suriname</option>
+									<option value="213">Svalbard and Jan Mayen</option>
+									<option value="214">Swaziland</option>
+									<option value="215">Sweden</option>
+									<option value="216">Switzerland</option>
+									<option value="217">Syrian Arab Republic</option>
+									<option value="218">Taiwan, Province Of China</option>
+									<option value="219">Tajikistan</option>
+									<option value="220">Tanzania, United Republic Of</option>
+									<option value="221">Thailand</option>
+									<option value="222">Timor-Leste</option>
+									<option value="223">Togo</option>
+									<option value="224">Tokelau</option>
+									<option value="225">Tonga</option>
+									<option value="226">Trinidad and Tobago</option>
+									<option value="227">Tunisia</option>
+									<option value="228">Turkey</option>
+									<option value="229">Turkmenistan</option>
+									<option value="230">Turks and Caicos Islands</option>
+									<option value="231">Tuvalu</option>
+									<option value="232">Uganda</option>
+									<option value="233">Ukraine</option>
+									<option value="234">United Arab Emirates</option>
+									<option value="235">United Kingdom</option>
+									<option value="236">United States</option>
+									<option value="237">United States Minor Outlying Islands</option>
+									<option value="238">Uruguay</option>
+									<option value="239">Uzbekistan</option>
+									<option value="240">Vanuatu</option>
+									<option value="241">Venezuela, Bolivarian Republic Of</option>
+									<option value="242">Viet Nam</option>
+									<option value="243">Virgin Islands, British</option>
+									<option value="244">Virgin Islands, U.S.</option>
+									<option value="245">Wallis and Futuna</option>
+									<option value="246">Western Sahara</option>
+									<option value="247">Yemen</option>
+									<option value="248">Zambia</option>
+									<option value="249">Zimbabwe</option>
+								</select>
+							</div>
+						</div>
+						<div class="entry">
+							<label for="phone">Phone</label>
+							<input type="tel" id="phone" name="phone" value="">
+						</div>
+						<div class="entry">
+							<label for="mobile">Mobile</label>
+							<input type="tel" id="mobile" name="mobile" value="">
+						</div>
+						<div class="entry">
+							<input type="hidden" id="reservation_id" name="reservation_id" value="">
+						</div>
+					</div>
+				</div>
+				<div style="overflow: hidden; pointer-events: none;" class="iScrollVerticalScrollbar iScrollLoneScrollbar">
+					<div style="transition-duration: 0ms; display: block; height: 64px; transform: translate(0px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);" class="iScrollIndicator"></div>
+				</div>
+			</form>
 
 			<!-- Guest Card Tab 2 -->
-			<form name="likes" ng-show="current == 'guest-like'" method="post" id="likes" class="card-content form scrollable ui-tabs-panel ui-widget-content ui-corner-bottom current" action="" aria-labelledby="guest-like" role="tabpanel" aria-expanded="false" >
-				<div id="guest_likes" data-view="LikesView">
+			<form aria-expanded="false" role="tabpanel" aria-labelledby="guest-like" action="" class="card-content form scrollable ui-tabs-panel ui-widget-content ui-corner-bottom current ng-pristine ng-valid ng-hide" id="likes" method="post" ng-show="current == 'guest-like'" name="likes">
+				<div data-view="LikesView" id="guest_likes">
 					<div class="wrapper float">
 						<div class="entry full-width">
 							<div id="notification-message-guest"></div>
@@ -61,8 +396,8 @@
 							<strong class="h3">Preferences</strong>
 							<div class="entry full-width">
 								<label for="newspaper">Newspaper</label>
-								<select name="newspaper" id="newspaper">
-									<option></option>
+								<select id="newspaper" name="newspaper">
+									<option value=""></option>
 									30
 									<option value="Frankfurter Allgemeine"> Frankfurter Allgemeine </option>
 									31
@@ -91,8 +426,8 @@
 							</div>
 							<div class="entry full-width">
 								<label for="roomtype">Room type</label>
-								<select name="roomtype" id="roomtype">
-									<option></option>
+								<select id="roomtype" name="roomtype">
+									<option value=""></option>
 									<option value="Queen"> Queen </option>
 									<option value="King"> King </option>
 									<option value="Test1"> Test1 </option>
@@ -111,245 +446,245 @@
 							<div class="entry radio-check float">
 								<label for="floor"> FLOOR </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="HIGH FLOOR" prefname="FLOOR" name="pref_0" id="pref_0" data-group="FLOOR">
+									<input type="checkbox" data-group="FLOOR" id="pref_0" name="pref_0" prefname="FLOOR" value="HIGH FLOOR">
 									HIGH FLOOR </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="LOW FLOOR" prefname="FLOOR" name="pref_0" id="pref_1" data-group="FLOOR">
+									<input type="checkbox" data-group="FLOOR" id="pref_1" name="pref_0" prefname="FLOOR" value="LOW FLOOR">
 									LOW FLOOR </label>
 							</div>
 							<div class="entry radio-check float">
 								<label for="floor"> SMOKING </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="SMOKING" prefname="SMOKING" name="pref_1" id="pref_2" data-group="SMOKING">
+									<input type="checkbox" data-group="SMOKING" id="pref_2" name="pref_1" prefname="SMOKING" value="SMOKING">
 									SMOKING </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="NON-SMOKING" prefname="SMOKING" name="pref_1" id="pref_3" data-group="SMOKING">
+									<input type="checkbox" data-group="SMOKING" id="pref_3" name="pref_1" prefname="SMOKING" value="NON-SMOKING">
 									NON-SMOKING </label>
 							</div>
 							<div class="entry radio-check float">
 								<label for="floor"> ELEVATOR </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="NEAR ELEVATOR" prefname="ELEVATOR" name="pref_2" id="pref_4" data-group="ELEVATOR">
+									<input type="checkbox" data-group="ELEVATOR" id="pref_4" name="pref_2" prefname="ELEVATOR" value="NEAR ELEVATOR">
 									NEAR ELEVATOR </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="AWAY FROM ELEVATOR" prefname="ELEVATOR" name="pref_2" id="pref_5" data-group="ELEVATOR">
+									<input type="checkbox" data-group="ELEVATOR" id="pref_5" name="pref_2" prefname="ELEVATOR" value="AWAY FROM ELEVATOR">
 									AWAY FROM ELEVATOR </label>
 							</div>
 							<div class="entry radio-check float">
 								<label for="floor"> Test </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="a" prefname="Test" name="pref_3" id="pref_6" data-group="Test">
+									<input type="checkbox" data-group="Test" id="pref_6" name="pref_3" prefname="Test" value="a">
 									a </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="b" prefname="Test" name="pref_3" id="pref_7" data-group="Test">
+									<input type="checkbox" data-group="Test" id="pref_7" name="pref_3" prefname="Test" value="b">
 									b </label>
 							</div>
 							<div class="entry radio-check float">
 								<label for="floor"> Building </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="Tower" prefname="Building" name="pref_4" id="pref_8" data-group="Building">
+									<input type="checkbox" data-group="Building" id="pref_8" name="pref_4" prefname="Building" value="Tower">
 									Tower </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="Down" prefname="Building" name="pref_4" id="pref_9" data-group="Building">
+									<input type="checkbox" data-group="Building" id="pref_9" name="pref_4" prefname="Building" value="Down">
 									Down </label>
 							</div>
 							<div class="entry radio-check float">
 								<label for="floor"> New like </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="1" prefname="New like" name="pref_5" id="pref_10" data-group="New like">
+									<input type="checkbox" data-group="New like" id="pref_10" name="pref_5" prefname="New like" value="1">
 									1 </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="2" prefname="New like" name="pref_5" id="pref_11" data-group="New like">
+									<input type="checkbox" data-group="New like" id="pref_11" name="pref_5" prefname="New like" value="2">
 									2 </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="3" prefname="New like" name="pref_5" id="pref_12" data-group="New like">
+									<input type="checkbox" data-group="New like" id="pref_12" name="pref_5" prefname="New like" value="3">
 									3 </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="4" prefname="New like" name="pref_5" id="pref_13" data-group="New like">
+									<input type="checkbox" data-group="New like" id="pref_13" name="pref_5" prefname="New like" value="4">
 									4 </label>
 							</div>
 							<div class="entry radio-check float">
 								<label for="floor"> test12389787989798797987979 </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="1" prefname="test12389787989798797987979" name="pref_6" id="pref_14" data-group="test12389787989798797987979">
+									<input type="checkbox" data-group="test12389787989798797987979" id="pref_14" name="pref_6" prefname="test12389787989798797987979" value="1">
 									1 </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="2" prefname="test12389787989798797987979" name="pref_6" id="pref_15" data-group="test12389787989798797987979">
+									<input type="checkbox" data-group="test12389787989798797987979" id="pref_15" name="pref_6" prefname="test12389787989798797987979" value="2">
 									2 </label>
 							</div>
 							<div class="entry radio-check float">
 								<label for="floor"> aaaaa </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="asdasd" prefname="aaaaa" name="pref_7" id="pref_16" data-group="aaaaa">
+									<input type="checkbox" data-group="aaaaa" id="pref_16" name="pref_7" prefname="aaaaa" value="asdasd">
 									asdasd </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="asd" prefname="aaaaa" name="pref_7" id="pref_17" data-group="aaaaa">
+									<input type="checkbox" data-group="aaaaa" id="pref_17" name="pref_7" prefname="aaaaa" value="asd">
 									asd </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="342" prefname="aaaaa" name="pref_7" id="pref_18" data-group="aaaaa">
+									<input type="checkbox" data-group="aaaaa" id="pref_18" name="pref_7" prefname="aaaaa" value="342">
 									342 </label>
 							</div>
 							<div class="entry radio-check float">
 								<label for="floor"> Jos Likes </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="Beer" prefname="Jos Likes" name="pref_8" id="pref_19" data-group="Jos Likes">
+									<input type="checkbox" data-group="Jos Likes" id="pref_19" name="pref_8" prefname="Jos Likes" value="Beer">
 									Beer </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="Craftbeer" prefname="Jos Likes" name="pref_8" id="pref_20" data-group="Jos Likes">
+									<input type="checkbox" data-group="Jos Likes" id="pref_20" name="pref_8" prefname="Jos Likes" value="Craftbeer">
 									Craftbeer </label>
 							</div>
 							<div class="entry radio-check float">
 								<label for="floor"> Category 3 </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="opt 1" prefname="Category 3" name="pref_9" id="pref_21" data-group="Category 3">
+									<input type="checkbox" data-group="Category 3" id="pref_21" name="pref_9" prefname="Category 3" value="opt 1">
 									opt 1 </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="opt 2" prefname="Category 3" name="pref_9" id="pref_22" data-group="Category 3">
+									<input type="checkbox" data-group="Category 3" id="pref_22" name="pref_9" prefname="Category 3" value="opt 2">
 									opt 2 </label>
 							</div>
 							<div class="entry radio-check float">
 								<label for="floor"> Craftbeer Preference </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="IPA" prefname="Craftbeer Preference" name="pref_10" id="pref_23" data-group="Craftbeer Preference">
+									<input type="checkbox" data-group="Craftbeer Preference" id="pref_23" name="pref_10" prefname="Craftbeer Preference" value="IPA">
 									IPA </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="Tripple" prefname="Craftbeer Preference" name="pref_10" id="pref_24" data-group="Craftbeer Preference">
+									<input type="checkbox" data-group="Craftbeer Preference" id="pref_24" name="pref_10" prefname="Craftbeer Preference" value="Tripple">
 									Tripple </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="Dubble" prefname="Craftbeer Preference" name="pref_10" id="pref_25" data-group="Craftbeer Preference">
+									<input type="checkbox" data-group="Craftbeer Preference" id="pref_25" name="pref_10" prefname="Craftbeer Preference" value="Dubble">
 									Dubble </label>
 							</div>
 							<div class="entry radio-check float">
 								<label for="floor"> 3 </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="4" prefname="3" name="pref_11" id="pref_26" data-group="3">
+									<input type="checkbox" data-group="3" id="pref_26" name="pref_11" prefname="3" value="4">
 									4 </label>
 							</div>
 							<div class="entry radio-check float">
 								<label for="floor"> Test 200 </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="opt1" prefname="Test 200" name="pref_12" id="pref_27" data-group="Test 200">
+									<input type="checkbox" data-group="Test 200" id="pref_27" name="pref_12" prefname="Test 200" value="opt1">
 									opt1 </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="opt2" prefname="Test 200" name="pref_12" id="pref_28" data-group="Test 200">
+									<input type="checkbox" data-group="Test 200" id="pref_28" name="pref_12" prefname="Test 200" value="opt2">
 									opt2 </label>
 							</div>
 							<div class="entry radio-check float">
 								<label for="floor"> testerab </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="ab" prefname="testerab" name="pref_13" id="pref_29" data-group="testerab">
+									<input type="checkbox" data-group="testerab" id="pref_29" name="pref_13" prefname="testerab" value="ab">
 									ab </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="cd" prefname="testerab" name="pref_13" id="pref_30" data-group="testerab">
+									<input type="checkbox" data-group="testerab" id="pref_30" name="pref_13" prefname="testerab" value="cd">
 									cd </label>
 							</div>
 						</div>
-						<input type="hidden" value="14" id="totalpreference">
+						<input type="hidden" id="totalpreference" value="14">
 						<div class="holder right">
 							<strong class="h3">Room Features</strong>
 							<!-- To handle custom div starting and closing using HTML -->
 							<div class="entry radio-check float">
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="POOL VIEW" name="features" id="feat_0">
+									<input type="checkbox" id="feat_0" name="features" value="POOL VIEW">
 									POOL VIEW </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="BALCONY" name="features" id="feat_1">
+									<input type="checkbox" id="feat_1" name="features" value="BALCONY">
 									BALCONY </label>
 								<!-- To handle custom div starting and closing using HTML -->
 							</div>
 							<!-- To handle custom div starting and closing using HTML -->
 							<div class="entry radio-check float">
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="CONNECTING ROOM" name="features" id="feat_2">
+									<input type="checkbox" id="feat_2" name="features" value="CONNECTING ROOM">
 									CONNECTING ROOM </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="SPA" name="features" id="feat_3">
+									<input type="checkbox" id="feat_3" name="features" value="SPA">
 									SPA </label>
 								<!-- To handle custom div starting and closing using HTML -->
 							</div>
 							<!-- To handle custom div starting and closing using HTML -->
 							<div class="entry radio-check float">
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="TERRACE" name="features" id="feat_4">
+									<input type="checkbox" id="feat_4" name="features" value="TERRACE">
 									TERRACE </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="ACCESSIBLE" name="features" id="feat_5">
+									<input type="checkbox" id="feat_5" name="features" value="ACCESSIBLE">
 									ACCESSIBLE </label>
 								<!-- To handle custom div starting and closing using HTML -->
 							</div>
 							<!-- To handle custom div starting and closing using HTML -->
 							<div class="entry radio-check float">
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="NEAR ELEVATOR" name="features" id="feat_6">
+									<input type="checkbox" id="feat_6" name="features" value="NEAR ELEVATOR">
 									NEAR ELEVATOR </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="QUIET ROOM" name="features" id="feat_7">
+									<input type="checkbox" id="feat_7" name="features" value="QUIET ROOM">
 									QUIET ROOM </label>
 								<!-- To handle custom div starting and closing using HTML -->
 							</div>
 							<!-- To handle custom div starting and closing using HTML -->
 							<div class="entry radio-check float">
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="JACUZZI" name="features" id="feat_8">
+									<input type="checkbox" id="feat_8" name="features" value="JACUZZI">
 									JACUZZI </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="KITCHENETTE" name="features" id="feat_9">
+									<input type="checkbox" id="feat_9" name="features" value="KITCHENETTE">
 									KITCHENETTE </label>
 								<!-- To handle custom div starting and closing using HTML -->
 							</div>
 							<!-- To handle custom div starting and closing using HTML -->
 							<div class="entry radio-check float">
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="LARGE ROOM" name="features" id="feat_10">
+									<input type="checkbox" id="feat_10" name="features" value="LARGE ROOM">
 									LARGE ROOM </label>
 								<label class="checkbox"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="HIGH FLOOR" name="features" id="feat_11">
+									<input type="checkbox" id="feat_11" name="features" value="HIGH FLOOR">
 									HIGH FLOOR </label>
 								<!-- To handle custom div starting and closing using HTML -->
 							</div>
 						</div>
-						<input type="hidden" value="12" id="totalfeatures">
+						<input type="hidden" id="totalfeatures" value="12">
 					</div>
 				</div>
 
 			</form>
 			<!-- = render :partial => "shared/like" -->
 			<!-- Guest Card Tab 3 -->
-			<form name="cc-payment" ng-show="current == 'guest-credit'" method="post" id="cc-payment" class="card-content form scrollable ui-tabs-panel ui-widget-content ui-corner-bottom current" action="" aria-labelledby="guest-credit" role="tabpanel" aria-expanded="false" >
-				<div id="guest_payment" data-view="GuestPaymentView">
-					<div id="payment_tab" data-payment-count="1" class="wrapper float">
+			<form aria-expanded="false" role="tabpanel" aria-labelledby="guest-credit" action="" class="card-content form scrollable ui-tabs-panel ui-widget-content ui-corner-bottom current ng-pristine ng-valid ng-hide" id="cc-payment" method="post" ng-show="current == 'guest-credit'" name="cc-payment">
+				<div data-view="GuestPaymentView" id="guest_payment">
+					<div class="wrapper float" data-payment-count="1" id="payment_tab">
 						<div class="entry full-width">
 							<div id="notification-message-guest"></div>
 						</div>
 						<!-- Credit cards on file -->
-						<a id="credit_row1509" credit_id="1509" class="active-item credit-card-option-row1509 float item-payment primary">
+						<a class="active-item credit-card-option-row1509 float item-payment primary" credit_id="1509" id="credit_row1509">
 						<figure class="card-logo">
-							<img src="/assets/mc.png" alt="">
-						</figure> <span class="number"> Ending with <span class="value number"> 0008 </span> </span> <span class="date"> Date <span class="value date"> 03/25 </span> </span> <span class="name"> Name <span class="value name"> Revathi A5 </span> </span> <span id="primary_credit" class="primary"> <span class="value primary">Primary</span> </span> </a>
-						<a id="add_new_payment" class="add-new-button">+ New Payment Method</a>
+							<img alt="" src="/assets/mc.png">
+						</figure> <span class="number"> Ending with <span class="value number"> 0008 </span> </span> <span class="date"> Date <span class="value date"> 03/25 </span> </span> <span class="name"> Name <span class="value name"> Revathi A5 </span> </span> <span class="primary" id="primary_credit"> <span class="value primary">Primary</span> </span> </a>
+						<a class="add-new-button" id="add_new_payment">+ New Payment Method</a>
 					</div>
 				</div>
 			</form>
 			<!-- Guest Card Tab 4 -->
-			<form name="loyalty" ng-show="current == 'guest-loyalty'" method="post" id="loyalty" class="card-content form scrollable ui-tabs-panel ui-widget-content ui-corner-bottom current" action="" aria-labelledby="guest-loyalty" role="tabpanel"  aria-expanded="false" >
-				<div id="guest_loyalty" data-view="GuestcardLoyaltyView">
-					<div id="loyalty-tab" class="wrapper float">
+			<form aria-expanded="false" role="tabpanel" aria-labelledby="guest-loyalty" action="" class="card-content form scrollable ui-tabs-panel ui-widget-content ui-corner-bottom current ng-pristine ng-valid ng-hide" id="loyalty" method="post" ng-show="current == 'guest-loyalty'" name="loyalty">
+				<div data-view="GuestcardLoyaltyView" id="guest_loyalty">
+					<div class="wrapper float" id="loyalty-tab">
 						<!-- Frequent Flyer Program -->
 						<div class="holder left">
 							<strong class="h3">Frequent Flyer Program</strong>
 							<div id="loyalty-ffp"></div>
-							<a id="add-new-ffp" data-action="new-ffp" class="add-new-button">+ New Frequent Flyer Program</a>
+							<a class="add-new-button" data-action="new-ffp" id="add-new-ffp">+ New Frequent Flyer Program</a>
 						</div>
 						<!-- Hotel Loyalty Program -->
 						<div class="holder right">
 							<strong class="h3">Hotel Loyalty Program</strong>
 							<div id="loyalty-hlp"></div>
-							<a id="add-new-hlp" data-action="new-hlp" class="add-new-button">+ New Hotel Loyalty Program</a>
+							<a class="add-new-button" data-action="new-hlp" id="add-new-hlp">+ New Hotel Loyalty Program</a>
 						</div>
 					</div>
 				</div>
 			</form>
 		</div>
 	</div>
-	<div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;" ng-click="guestCardToggle()"></div>
+	<div ng-click="guestCardToggle()" style="z-index: 90;" class="ui-resizable-handle ui-resizable-s"></div>
 </div>
