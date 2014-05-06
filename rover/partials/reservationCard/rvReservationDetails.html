@@ -45,7 +45,7 @@
 				<form method="post" class="block-item item-payment has-button float" action="">
 					<div class="block-title">
 						<h3>PAYMENT METHOD</h3>
-						<span> 6PM
+						<span> {{reservationData.reservation_card.guarentee_type}} 
 							Guarantee </span>
 					</div>
 					<!-- The credit card selection popup is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
@@ -65,7 +65,9 @@
 				</div>
 				<!-- Room Assignment screen is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
 				<!-- The arrows are removed and room assignment buttons are not clickable in that case -->
-				<a id="room-number" data-transition="nested-view" data-room-status="READY" data-fo-status="VACANT" class="has-arrow next-view no-auto-bind hover-hand"> <strong class="room-number ready" ui-sref="rover.staycard.roomassignment"> 3006 </strong> Deluxe Room updated </a>
+				<a class="has-arrow next-view no-auto-bind hover-hand">
+					 <strong class="room-number ready" ui-sref="rover.staycard.roomassignment"> 3006 
+					 	</strong> Deluxe Room updated </a>
 
 			</div>
 			<!-- Wake up / Newspaper / Loyalty -->
