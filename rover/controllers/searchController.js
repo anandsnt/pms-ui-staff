@@ -10,6 +10,14 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   */
   var refreshScroller = function(){
     $scope.$parent.myScroll['result_showing_area'].refresh();
+    //scroller options
+    $scope.$parent.myScrollOptions = {
+        snap: false,
+        bounce: true,
+        vScroll: true,
+        vScrollbar: true,
+        hideScrollbar: false
+    };
   }
 
   var headingListDict = {  
@@ -125,9 +133,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
       //based on 'is_row_visible' parameter we are showing the data in the template      
       for(var i = 0; i < $scope.results.length; i++){
           $scope.results[i].is_row_visible = true;
-      } 
-      // we have changed data, so we are refreshing the scrollerbar
-      refreshScroller()     
+      }     
       //the following code is for a special case
       /*
       after not found any data in a webservice call, user will clear the entered data
@@ -139,6 +145,8 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
         $stateParams.type != null && $stateParams.type!=''){
         performInitialActions();
       }
+      // we have changed data, so we are refreshing the scrollerbar
+      refreshScroller()       
     }
     else{
       var value = ""; 
