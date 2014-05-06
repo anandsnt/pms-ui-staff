@@ -193,22 +193,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             };
             $scope.currentStepIndexList.push(nextContent);
             $scope.setupConfigureRates();
-            /*getDateRangeData = $scope.date_ranges;
-
-            angular.forEach(getDateRangeData, function (value, key) {
-                past_date_range = Date.parse(value.end_date) < Date.parse($scope.hotel_business_date);
-                var nextContent = {
-                    'title': 'Configure',
-                    'type': 'Configure',
-                    'id': value.id,
-                    'begin_date': value.begin_date,
-                    'end_date': value.end_date,
-                    'is_editable': !past_date_range
-                };
-                $scope.currentStepIndexList.push(nextContent);
-
-            });
-            $scope.clickedStep($scope.currentStepIndexList.length - 1);*/
         }
 
         $scope.setupConfigureRates = function(){
