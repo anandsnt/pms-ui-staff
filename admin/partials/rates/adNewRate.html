@@ -12,7 +12,7 @@
         </tr>
         <!-- Render Rate Room Types View -->
         <!-- TODO Hide row for Add Mode -->
-        <tr>
+        <tr ng-show="rateData.id > 0">
             <td ng-include="'/assets/partials/rates/adRatesAddRoomTypes.html'"></td>
         </tr>
         <!-- Render Rate Date Range View -->
@@ -23,7 +23,9 @@
     <!-- template to add new date range -->
     <div ng-show="showAddNewDateRangeOptions" ng-include="'/assets/partials/rates/adRatesAddRange.html'"></div>
 
-  <div ng-click="addNewDateRange()" ng-hide="hideAddNewDateRange()" class="center_align add_new_date_range_container"> 
-      <a class="icons icon-add">
+    <div ng-click="addNewDateRange()" ng-hide="hideAddNewDateRange()" class="center_align add_new_date_range_container"> 
+        <a class="icons icon-add">
         <span>NEW DATE RANGE</span>
-      </a>
+        </a>
+    </div>
+</div>
