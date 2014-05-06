@@ -187,8 +187,13 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.invokeApi(ADRulesRestrictionSrv.postPolicy, $scope.singleRule, callback);
         };
 
-        $scope.deleteRule = function(from) {
-            var from = from;
+        $scope.deleteRule = function(rule, from) {
+
+            // keep them in local context of deleteRule function as
+            // we dont know when callback will be called, so..
+            // didnt understand? contact someone who can; dont remove
+            var rule = rule,
+                from = from;
 
             var callback = function() {
                 if ( from === 'Cancellation Penalties' ) {
