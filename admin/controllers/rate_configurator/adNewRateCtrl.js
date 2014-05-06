@@ -16,6 +16,18 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "date_ranges": []
             }
 
+            $scope.basedonData = {
+                "name": "",
+                "description": "",
+                "code": "",
+                "based_on": "",
+                "rate_type": "",
+                "date_range_count": 0,
+                "status": true,
+                "room_type_ids": [],
+                "date_ranges": []
+            }
+
             ADRatesRangeSrv.emptyDateRangeData();
             // edit_mode by default false indicate Add New Rate
             $scope.edit_mode = false
@@ -31,11 +43,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.newRateId = $stateParams.rateId;
 
             $scope.showAddNewDateRangeOptions =false;
-        	$scope.hasBaseRate = false;
         	$scope.date_ranges = [];
-        	$scope.basedonPlusMinus = '+';
-        	$scope.basedonType = "";
-        	$scope.basedonValue = 0;
 
 
 
@@ -77,7 +85,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         $scope.$on("updateBasedonRate", function(e){
         	if($scope.rateData.based_on.id == undefined)
         		return false;
-        	$scope.hasBaseRate = true;
 
             var fetchBasedonSuccess = function(data){
                 $scope.basedonData = data;

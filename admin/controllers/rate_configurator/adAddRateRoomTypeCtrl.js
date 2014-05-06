@@ -94,6 +94,7 @@ $scope.anyRoomSelected = function(){
  */
 
 $scope.assignedRoomSelected = function($event, index){
+
     if(lastDropedTime == ''){
         if(index === $scope.selectedAssignedRoomIndex)
             $scope.selectedAssignedRoomIndex = -1;
@@ -149,7 +150,8 @@ $scope.unAssignedRoomSelected = function($event, index){
  */
 
 $scope.topMoverightClicked = function(){
-
+    var isRoomDraggable = $scope.isDraggable($scope.nonAssignedroomTypes[$scope.selectedUnAssignedRoomIndex])
+    if(!isRoomDraggable) return false
     if($scope.selectedUnAssignedRoomIndex != -1){
         var temp = $scope.nonAssignedroomTypes[$scope.selectedUnAssignedRoomIndex];
         $scope.assignedRoomTypes.push(temp)
@@ -207,8 +209,18 @@ $scope.bottomMoveleftClicked = function(){
         lastDropedTime = new Date();
     }
     $scope.reachedUnAssignedRoomTypes = function(){
+        console.log("now");
         $scope.selectedUnAssignedRoomIndex = -1;    
         lastDropedTime = new Date();
-    }   
+    } 
+
+    $scope.isDraggable = function(roomType){
+        if($scope.basedonData.based_on.id == undefined){
+            return true;
+        }
+        return isAnyMatch(roomType, $scope.basedonData.room_type_ids)
+    };
+
+
 }]);
 
