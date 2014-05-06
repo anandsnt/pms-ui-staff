@@ -55,8 +55,12 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
 
             // Save Rate Success Callback
             var saveSuccessCallback = function (data) {
+                console.log("hree");
                 if (data.id) {
+                    console.log("save");
                     $scope.rateData.id = data.id;
+                    console.log($scope.rateData.id);
+                    
                 }
                 $scope.$emit('hideLoader');
                 $scope.$emit("changeMenu", 'Room types');

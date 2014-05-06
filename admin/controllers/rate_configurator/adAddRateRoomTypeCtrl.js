@@ -30,8 +30,6 @@ $scope.$on("onRateDefaultsFetched", function(e){
 });
 
 $scope.calculateRoomLists = function(){
-    console.log($scope.rateData.based_on.id);
-
     // separate out assigned and non-assigned room types
     $scope.assignedRoomTypes = [];
     if ($scope.rateData.room_type_ids){
@@ -58,6 +56,7 @@ $scope.calculateRoomLists = function(){
 $scope.fetchData();
 
 $scope.saveRoomTypes = function(){
+    console.log($scope.rateData.id)
     
     var roomIdArray =[];
     angular.forEach($scope.assignedRoomTypes, function(item){
@@ -65,15 +64,16 @@ $scope.saveRoomTypes = function(){
     });
     var data = {
         'room_type_ids': roomIdArray,
-        'id' : $scope.newRateId
+        'id' : $scope.rateData.id
     };
 
     var saveRoomTypesSuccessCallback = function(data){
         $scope.$emit('hideLoader');
         $scope.rateData.room_type_ids = roomIdArray;
+        $scope.$emit("changeMenu", 'Rates Range');
     };
 
-    $scope.invokeApi(ADRatesAddRoomTypeSrv.saveRoomTypes,data,saveRoomTypesSuccessCallback);       
+    $scope.invokeApi(ADRatesAddRoomTypeSrv.saveRoomTypes, data, saveRoomTypesSuccessCallback);       
 };
 
 /**

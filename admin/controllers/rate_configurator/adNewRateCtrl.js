@@ -35,6 +35,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.currentRateStepIndex = 0;
             $scope.errorMessage = '';
             $scope.newRateId = $stateParams.rateId;
+            $scope.hasBasedon = false;
 
             // setting rateId and values for Rate Edit
             if ($stateParams.rateId) {
@@ -73,6 +74,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         $scope.$on("updateBasedonRate", function(e){
         	if($scope.rateData.based_on.id == undefined)
         		return false;
+
+            $scope.hasBasedon = true;
 
             var fetchBasedonSuccess = function(data){
                 $scope.basedonRateData = data;
@@ -198,8 +201,15 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         $scope.updateRateDefaults = function (data) {
             // set rate edit field values for all steps
             $scope.hotel_business_date = data.business_date;
+            //Keep the rate id created from rate details step.
+            var rateID = $scope.rateData.id;
             $scope.rateData = data;
-            $scope.rateData.id = $stateParams.rateId;
+            //We will update rate id only if it is from edit.
+            if($scope.hasBasedon){
+                $scope.rateData.id = rateID;
+            }else{
+                $scope.rateData.id = $stateParams.rateId;
+            }
             $scope.rateData.rate_type_id = (data.rate_type != null) ? data.rate_type.id : '';
             if (data.based_on) {
                 $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value)
