@@ -1,4 +1,12 @@
-<form class="form form-rate-config">
+<!-- Collapse View -->
+<div ng-hide="rateMenu === 'dateRange.{{ dateRange.id }}'">
+	<span  class="italic_text">{{dateRange.begin_date | date:'MMMM dd, y'}}</span>
+    <span style="margin:0 5px;">to</span>
+    <span  class="italic_text">{{dateRange.end_date | date:'MMMM dd, y'}}</span>  
+	<div ng-click="$emit('changeMenu','Details')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+</div>
+<!-- Expanded View -->
+<!-- <form ng-show="rateMenu === 'dateRange.{{ dateRange.id }}'" class="form form-rate-config">
 	<div ng-controller="ADRatesAddConfigureCtrl" style="width:100%;">
 
 		<table width="100%">
@@ -17,4 +25,4 @@
 		</div>
 	</div>
 </form>
-
+ -->
