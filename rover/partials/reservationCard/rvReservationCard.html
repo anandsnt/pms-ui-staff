@@ -1,0 +1,25 @@
+<section id="reservation-card" data-current-timeliine="current" class="content stay-card-inner reservation-tabs-timeline ui-tabs ui-widget ui-widget-content ui-corner-all ui-tabs-vertical ui-helper-clearfix" >
+	<!-- Reservations navigation -->
+	
+	<ul id="reservation-timeline" class="reservation-tabs-nav ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+		<li tabindex="-1" role="tab" ng-class="{'ui-tabs-active': timeline == 'upcoming'}" ng-click="showTimeLineReservation('upcoming')" class="icons-tabs icon-reservation no-reservation ui-state-default ui-corner-top" aria-selected="false" aria-labelledby="ui-id-32" aria-controls="upcoming">
+			<a class="ui-tabs-anchor"> Upcoming <span>{{countUpcoming}}</span> </a>
+		</li>
+		<li tabindex="0" role="tab" ng-class="{'ui-tabs-active': timeline == 'current'}" ng-click="showTimeLineReservation('current')" class="icons-tabs icon-reservation ui-state-default ui-corner-top" aria-selected="true" aria-labelledby="ui-id-33" aria-controls="current">
+			<a class="ui-tabs-anchor"> Current <span class="highlight">{{countCurrent}}</span> </a>
+		</li>
+		<li tabindex="-1" role="tab" ng-class="{'ui-tabs-active': timeline == 'history'}" ng-click="showTimeLineReservation('history')" class="icons-tabs icon-reservation no-reservation ui-state-default ui-corner-top" aria-selected="false" aria-labelledby="ui-id-34" aria-controls="history">
+			<a class="ui-tabs-anchor"> History <span>{{countHistory}}</span> </a>
+		</li>
+	</ul>
+
+	<!-- Current reservation -->
+	<div id="current" class="reservation-list float reservation-tabs ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs ui-widget ui-corner-all ui-tabs-vertical ui-helper-clearfix" aria-labelledby="ui-id-33" role="tabpanel" aria-expanded="true" aria-hidden="false">
+		<!-- TO INCLUDE RESERVATION LISTING -->
+		<div ng-include="'assets/partials/reservationCard/rvReservationListing.html'"></div>
+		<!-- TO INCLUDE RESERVATION DETAILS IN THE RIGHT SIDE-->
+		<div ui-view></div>
+
+	</div>
+	
+</section>

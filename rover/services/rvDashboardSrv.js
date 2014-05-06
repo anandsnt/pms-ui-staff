@@ -39,29 +39,12 @@ this.dashBoardDetails = {};
 			var url = '/api/rover_header_info.json'
 			RVBaseWebSrv.getJSON(url).then(function(data) {
 				that.dashBoardDetails.userDetails = data;
-				self.fetchLateCheckoutDetails();
-			},function(errorMessage){
-				deferred.reject(errorMessage);
-			});
-			return deferred.promise;
-		};
-   /*
-    * To fetch late checkout details
-    * @return {object}late checkout details
-    */
-
-		 self.fetchLateCheckoutDetails = function(){
-			var url = '/staff/dashboard/late_checkout_count.json';	
-			
-			RVBaseWebSrv.getJSON(url).then(function(data) {
-				that.dashBoardDetails.lateCheckoutDetails = data;
 				deferred.resolve(that.dashBoardDetails);
 			},function(errorMessage){
 				deferred.reject(errorMessage);
 			});
 			return deferred.promise;
-		};
-		
+		};		
 
 		var url = '/api/hotel_statistics.json';
 			

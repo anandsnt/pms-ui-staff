@@ -34,7 +34,7 @@ sntRover.config([
 		$stateProvider.state('rover.staycard', {
 			abstract : true,
 			url: '/staycard',
-			templateUrl: '/assets/partials/rvStaycard.html',
+			templateUrl: '/assets/partials/staycard/rvStaycard.html',
             controller: 'staycardController'
         });
 
@@ -42,14 +42,24 @@ sntRover.config([
         $stateProvider.state('rover.staycard.reservationcard', {
         	abstract : true,
 			url: '/reservationcard',
-			templateUrl: '/assets/partials/reservationCard/reservation_card.html',
-            controller: 'reservarionCardController'
+			templateUrl: '/assets/partials/reservationCard/rvReservationCard.html',
+            controller: 'reservationCardController'
         });
 
         $stateProvider.state('rover.staycard.reservationcard.reservationdetails', {
-        	url: '/reservationdetails',
-			templateUrl: '/assets/partials/reservationCard/reservation_details.html',
-            controller: 'reservationDetailsController'
+        	url: '/reservationdetails/:id/:confirmationId',
+			templateUrl: '/assets/partials/reservationCard/rvReservationDetails.html',
+            controller: 'reservationDetailsController',
+            resolve: {
+				reservationListData: function(RVReservationCardSrv, $stateParams) {
+					
+					return RVReservationCardSrv.fetch($stateParams.id);
+				},
+				reservationDetails:function(RVReservationCardSrv, $stateParams) {
+					
+					return RVReservationCardSrv.fetchReservationDetails($stateParams.confirmationId);
+				}
+			}
         }); 
 
                                

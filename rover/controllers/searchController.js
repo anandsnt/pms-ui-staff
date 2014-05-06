@@ -4,11 +4,14 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
 
   //model used in query textbox, we will be using this across
   $scope.textInQueryBox = "";
+  $scope.$emit("updateIndex",1);
+
 
   /**
   * function used for refreshing the scroller
   */
   var refreshScroller = function(){
+
     $scope.$parent.myScroll['result_showing_area'].refresh();
     //scroller options
     $scope.$parent.myScrollOptions = {
@@ -32,6 +35,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
 	var successCallBackofInitialFetch = function(data){
     $scope.$emit('hideLoader');
 		$scope.results = data;
+    setTimeout(function(){refreshScroller();}, 750);
 	};
 
 
@@ -110,6 +114,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   //setting up initial things
   performInitialActions();
 
+
   /**
   * function to perform filtering/request data from service in change event of query box
   */
@@ -146,7 +151,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
         performInitialActions();
       }
       // we have changed data, so we are refreshing the scrollerbar
-      refreshScroller()       
+      refreshScroller();      
     }
     else{
       var value = ""; 
