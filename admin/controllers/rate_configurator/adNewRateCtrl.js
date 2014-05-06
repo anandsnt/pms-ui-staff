@@ -43,9 +43,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             // setting rateId and values for Rate Edit
             if ($stateParams.rateId) {
                 $scope.edit_mode = true
-                $scope.rateData.id = $stateParams.rateId
                 $scope.invokeApi(ADRatesSrv.fetchDetails, {
-                    rateId: $scope.rateData.id
+                    rateId: $stateParams.rateId
                 }, $scope.fetchDetailsSuccess);
             }
         };
@@ -72,16 +71,24 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.errorMessage = value;
         });
 
-        $scope.$on("updateBasedonRate", function(e,basedonRateId, basedonPlusMinus, basedonType, basedonValue){
-        	if($scope.based_on_id == basedonRateId || basedonRateId == undefined)
+        /**
+        * Fetch the based on rate retails, if the rate has chosen a based on rate.
+        */
+        $scope.$on("updateBasedonRate", function(e){
+        	if($scope.rateData.based_on.id == undefined)
         		return false;
         	$scope.hasBaseRate = true;
-        	$scope.basedonPlusMinus = basedonPlusMinus;
-        	$scope.basedonType = basedonType;
-        	$scope.basedonValue = basedonValue;
-            $scope.invokeApi(ADRatesSrv.fetchDetails, {rateId:basedonRateId}, $scope.fetchDetailsSuccess);
+
+            var fetchBasedonSuccess = function(data){
+                $scope.basedonData = data;
+                $scope.basedonData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
+                $scope.basedonData.based_on = (data.based_on != null) ? data.based_on.id : '';
+                $scope.$emit('hideLoader');
+            };
+            $scope.invokeApi(ADRatesSrv.fetchDetails, {rateId : $scope.rateData.based_on.id}, fetchBasedonSuccess);
 
         });
+        
         /*
          * to be updated from child classes
          */
@@ -194,7 +201,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             // set rate edit field values for all steps
             $scope.hotel_business_date = data.business_date;
             $scope.rateData = data;
-            $scope.rateData.rate_type_id = (data.rate_type != null) ? data.rate_type.id : ''
+            $scope.rateData.id = $stateParams.rateId;
+            $scope.rateData.rate_type_id = (data.rate_type != null) ? data.rate_type.id : '';
             if(data.based_on){
                 $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value)
                 $scope.rateData.based_on.value_sign = data.based_on.value > 0 ? "+" : "-";
