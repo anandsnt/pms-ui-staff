@@ -197,15 +197,19 @@ admin.controller('ADRulesRestrictionCtrl', [
 
             var callback = function() {
                 if ( from === 'Cancellation Penalties' ) {
-                    cancelRulesList
+                    var withoutThis = _.without( $scope.cancelRulesList, rule );
+                    $scope.cancelRulesList = withoutThis;
                 }
 
                 if ( from === 'Deposit Requested' ) {
-                    
+                    var withoutThis = _.without( $scope.depositRuleslList, rule );
+                    $scope.cancelRulesList = withoutThis;
                 }
 
                 $scope.$emit('hideLoader');
             };
+
+            $scope.invokeApi(ADRulesRestrictionSrv.delPolicy, { id: rule.id }, callback);
         };
 
     }

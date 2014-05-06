@@ -96,9 +96,9 @@ admin.service('ADRulesRestrictionSrv',
       */  
       this.delPolicy = function(params) {
         var deferred = $q.defer(),
-            url      = '/api/policies/' + id;
+            url      = '/api/policies/' + params.id;
 
-        ADBaseWebSrvV2.postJSON(url, params)
+        ADBaseWebSrvV2.deleteJSON(url, params)
           .then(function(data) {
             deferred.resolve(data);
           }, function(errorMessage) {

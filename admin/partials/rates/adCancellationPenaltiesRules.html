@@ -1,16 +1,11 @@
-<table class="grid sub-grid">
-	<!-- <tr ng-hide="editCancelRules || policyList.length" class="no-results">
-		<td class="offset"> &nbsp; </td>
-		<td>No cancellation penalties added yet</td>
-	</tr> -->
-
+<table class="grid sub-grid" ng-show="editCancelRules || cancelRulesList.length">
 	<tr ng-hide="editCancelRules" ng-repeat="rule in cancelRulesList">
 		<td class="offset"> &nbsp; </td>
 		<td>{{ rule.name }}</td>
 
 		<td>{{ rule.description }}</td>
 
-		<td class="delete">
+		<td width="10" class="delete">
 			<a class="icons icon-delete large-icon" ng-click="deleteRule(rule, 'Cancellation Penalties')">Delete this rule</a>		
 		</td>
 	</tr>
