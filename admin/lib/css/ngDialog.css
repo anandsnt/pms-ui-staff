@@ -102,10 +102,15 @@ body.ngdialog-open {
 
 /** Added by QBurst **/
 	
-.calendar-modal .ngdialog-content{
+.calendar-modal .ngdialog-content {
 	  margin-left: 20% !important;
     width: 75% !important;
     padding: 0px !important;
+}
+
+.calendar-modal.single-date-picker .ngdialog-content {
+    margin: 0 auto !important;
+    width: 500px !important;
 }
 
 .ngdialog.ngdialog-theme-default .ngdialog-content,.grey-texture-bg-color{

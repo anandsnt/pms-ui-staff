@@ -257,5 +257,11 @@ admin.config([
 			url : '/markets'
 		});
 
+		$stateProvider.state('admin.ratesAddons', {
+			templateUrl: '/assets/partials/rates/adRatesAddons.html',
+			controller: 'ADRatesAddonsCtrl',
+			url : '/rates_addons'
+		});
+
 	}
 ]);
