@@ -1,0 +1,73 @@
+<div id="page-main-second">
+	<div id="search_list" data-view="Search" data-search-type="">
+	<!-- Navbar -->
+		<div ng-include="'/assets/partials/common/header.html'"></div>
+		<form role="search" name="search-form" method="get" id="search-form" class="search-form form float" action="">
+			<div class="entry">
+				<a id="clear-query" class="icons icon-clear-search" ng-class="{'visible': textInQueryBox!=''}">Clear query</a>
+				<button type="submit" name="submit" class="icons icon-search">Search</button>
+				<input type="text" placeholder="Name, Group, Room No. or Confirmation No." name="query" id="query" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()">
+			</div>
+			<!-- %button.button.blank{name: "advanced", type: "button"} Advanced search -->
+		</form>
+		<section role="main" id="search" class="content scrollable">
+			<div class="wrapper" id="result-showing-area" ng-hide="results.length==0" >
+				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+				<div ng-iscroll="result_showing_area"  ng-iscroll-delay="1000" >
+					<ul id="search-results" class="search-results" ng-class="{'hidden': results.length==0}" style="width: 100%;">
+						<li ng-repeat="row in results" ng-show="row.is_row_visible==true" >
+							<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
+							<a data-transition="inner-page" class="guest-check-in link-item float" ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation})">
+								<figure class="guest-image" ng-show="row.image!=''">
+									<img ng-src="{{row.image}}">
+									<span class="vip" ng-show="row.vip==true">VIP</span>
+								</figure>
+
+								<div class="data">
+									<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false"> <!--{{row.lastname}},{{row.firstname}} --></h2>
+									<span class="confirmation">{{row.confirmation}}</span>
+									<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
+									</span>
+									<em class="icons icon-group" ng-hide="{{row.group==null}}">{{row.group}}</em>
+								</div>	
+
+								<div class="status" >				
+									<span class="late-checkout-time" ng-hide="escapeNull(row.late_checkout_time)==''&&row.reservation_status!='CHECKING_OUT'&&row.is_opted_late_checkout==false">
+										{{row.late_checkout_time}}
+									</span>
+
+									<span class="guest-status {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}">
+									</span>
+								</div>	
+
+								<span class="room-number {{getRoomStatusMapped(row.roomstatus, row.fostatus)}}" ng-if="row.reservation_status == 'CHECKING_IN'">
+									{{row.room}}
+								</span>
+								<span class="room-number" ng-if="row.reservation_status != 'CHECKING_IN'">
+									{{row.room}}
+								</span>
+
+
+								<strong class="room-status " ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</strong>
+							</a>
+						</li>					
+					</ul>
+				</div>
+			</div>
+			<div id="no-results" class="no-content" ng-show="results.length==0">
+				<div class="info">
+					<span class="icon-no-content icon-search"></span>
+					<strong class="h1">Find Guests</strong>
+					<span class="h2">
+						Search by
+						<strong>Name</strong>,
+						<strong>Group</strong>,
+						<strong>Room No.</strong>
+						or
+						<strong>Confirmation No.</strong>
+					</span>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>
