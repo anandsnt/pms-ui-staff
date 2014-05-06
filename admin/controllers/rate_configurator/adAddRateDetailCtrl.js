@@ -81,10 +81,14 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 $scope.newRateId = data.id;
                 $scope.isFirstTime = false;
                 $scope.$emit('hideLoader');
-                $scope.$emit("updateIndex", {
-                    'id': '1',
-                    'rateId': $scope.newRateId
-                });
+
+            //refractor
+                // $scope.$emit("updateIndex", {
+                //     'id': '1',
+                //     'rateId': $scope.newRateId
+                // });
+                $scope.$emit("changeMenu",'Room types');
+
                 $scope.$emit("updateBasedonRate", basedOn_id, $scope.based_on_plus_minus, $scope.based_on_type, $scope.based_on_value);
 
             };

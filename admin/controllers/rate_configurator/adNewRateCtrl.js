@@ -2,6 +2,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
     function ($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams) {
         $scope.init = function () {
             BaseCtrl.call(this, $scope);
+
+            //refractor
+            $scope.rateMenu = 'Details';
+
             ADRatesRangeSrv.emptyDateRangeData();
             // edit_mode by default false indicate Add New Rate
             $scope.edit_mode = false
@@ -34,6 +38,16 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 }, $scope.fetchDetailsSuccess);
             }
         };
+
+//refractor
+      /*
+         * to be updated from child classes
+         */
+        $scope.$on("changeMenu", function (e, value) {
+             $scope.rateMenu =  value;
+        });
+
+
         /*
          * click action to switch between steps
          */
