@@ -1,8 +1,7 @@
 <!-- Header Collapse View -->
 <div ng-hide="rateMenu ==='Details'">
     <em class="rate_step_title">Rate</em>&nbsp;<span class="italic_text">Details</span>
-    
-<div ng-click="$emit('changeMenu','Details')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+    <div ng-click="$emit('changeMenu','Details')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
 </div>
 
 <!-- Expanded View -->
@@ -13,15 +12,11 @@
             <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
         </div>
         <fieldset class="holder left">
-            <div></div>
-            <ad-textbox inputtype="text" value="rate_name"
-            label = "Name" placeholder = "Enter Rate name"
-            required="yes"></ad-textbox>
-
+            <ad-textbox inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate name" required="yes"></ad-textbox>
             <div class="entry">
                 <label>Type <strong>*</strong> </label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateTypeselected" ng-options="rateType.id as rateType.name for rateType in rateTypesDetails.rate_types">
+                    <select class="placeholder" ng-model="rateData.rate_type" ng-options="rateType.id as rateType.name for rateType in rateTypesDetails.rate_types">
                         <option value="" disabled>Select Rate Type</option>
                     </select>
                 </div>

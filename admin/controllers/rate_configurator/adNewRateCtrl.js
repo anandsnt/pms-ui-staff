@@ -4,6 +4,17 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             BaseCtrl.call(this, $scope);
 
             $scope.rateMenu = 'Details';
+            $scope.rateData = {
+                "name": "",
+                "description": "",
+                "code": "",
+                "based_on": "",
+                "rate_type": "",
+                "date_range_count": 0,
+                "status": true,
+                "room_type_ids": [],
+                "date_ranges": []
+            }
 
             ADRatesRangeSrv.emptyDateRangeData();
             // edit_mode by default false indicate Add New Rate
@@ -181,19 +192,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         $scope.fetchDetailsSuccess = function (data) {
             // set rate edit field values for all steps
             $scope.hotel_business_date = data.business_date;
-            $scope.rate_name = data.name;
-            $scope.rate_description = data.description;
-            $scope.rateTypeselected = (data.rate_type != null) ? data.rate_type.id : ''
-            $scope.basedOnRateTypeSelected = (data.based_on != null) ? data.based_on.id : '';
-            $scope.based_on_id = (data.based_on != null) ? data.based_on.id : '';
-            $scope.based_on_type = (data.based_on != null) ? data.based_on.type : '';
-            $scope.based_on_plus_minus = (data.based_on != null) ? (data.based_on.value > 0 ? '+' : '-') : '';
-            $scope.based_on_value = (data.based_on != null) ? Math.abs(data.based_on.value) : '';
-            $scope.room_type_ids = data.room_type_ids;
-            $scope.date_ranges = data.date_ranges;
-            if($scope.edit_mode) {
-            	$scope.setupEdit();
-            }
+            $scope.rateData = data;
+            $scope.rateData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
+            $scope.rateData.based_on = (data.based_on != null) ? data.based_on.id : '';
             $scope.$emit('hideLoader');
         };
 
