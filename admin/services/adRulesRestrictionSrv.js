@@ -4,6 +4,26 @@ admin.service('ADRulesRestrictionSrv', [
     function($q, ADBaseWebSrvV2) {
     
         /*
+        * To fetch post types reference values
+        * 
+        * @param {object} contains page and per_page params
+        * @return {object} defer promise
+        */  
+        this.fetchRefVales = function(params) {
+            var deferred = $q.defer(),
+                url      = '/api/reference_values';
+
+            ADBaseWebSrvV2.getJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+        /*
         * To fetch restrictions list
         * 
         * @param {object} contains page and per_page params

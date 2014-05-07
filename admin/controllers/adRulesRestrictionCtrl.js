@@ -106,7 +106,6 @@ admin.controller('ADRulesRestrictionCtrl', [
 
             // fetch the appropriate policy
             var callback = function(data) {
-
                 if ( ruleType === 'CANCELLATION_POLICY' ) {
                     $scope.cancelRulesList = data.results;
                 };
@@ -119,6 +118,15 @@ admin.controller('ADRulesRestrictionCtrl', [
             };
 
             $scope.invokeApi(ADRulesRestrictionSrv.fetchRules, { policy_type: ruleType }, callback);
+
+            // if we havnt fetched post_types
+            // lets fetch that too
+            if ( !$scope.postTypes ) {
+                $scope.invokeApi(ADRulesRestrictionSrv.fetchRefVales, { type: 'post_type' }, function(data) {
+                    $scope.postTypes = data;
+                    $scope.$emit('hideLoader');
+                });
+            };
         };
 
 
