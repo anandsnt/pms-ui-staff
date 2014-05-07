@@ -3,8 +3,25 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
 
         $scope.init = function () {
             BaseCtrl.call(this, $scope);
+            $scope.rateTypesDetails = [];
             fetchData();
         };
+
+        $scope.is_promotional = function(){
+            var ispromo =false;
+            // angular.forEach($scope.rateTypesDetails.rate_types, function(rate_type){
+            //     if($scope.rateData.rate_type_id === rate_type.id){
+            //         if(rate_type.name === "Promotional"){
+            //             ispromo = true;
+            //         }
+            //         else{
+            //             ispromo = false;
+                        
+            //         }
+            //     }
+            // });
+            return ispromo;
+        }
 
         /*
          * Validate Rate Details Form

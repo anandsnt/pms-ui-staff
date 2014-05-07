@@ -26,7 +26,8 @@
         <fieldset class="holder right">
             <div></div>
             <div class="entry">
-                <label> Based On </label>
+                <label ng-hide="is_promotional()">Based On</label>
+                <label ng-show="is_promotional()">Copy From</label>
                 <div class="select">
                     <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
                         <option value="">select rate</option>   
