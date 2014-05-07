@@ -36,7 +36,8 @@
 		</li>
 	</ul>
 
-	<div class="reservation-content scrollable check-in">
+	<div class="reservation-content scrollable check-in"  >
+		<div ng-iscroll="result_listing" ng-iscroll-delay="1000" style="position:absolute; top:0px; bottom: 0px; left:0px; width: 100%;">
 		<div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<h2 class="h1"> Reservation {{reservationData.reservation_card.confirmation_num}}</h2>
@@ -178,8 +179,6 @@
 			</div>
 
 		</div>
-		<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
-			<div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 34px; transform: translate(0px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
 		</div>
 	</div>
 	<!-- Reservation actions pane -->
