@@ -9,9 +9,9 @@
 			<form action="" id="change-name" method="post" name="change-name" class="ng-pristine ng-valid">
 				<div class="holder">
 					<div class="entry">
-						<input type="text" class="masked-input h1" placeholder="" value="Revathi" ng-modal="guestData.first_name">
+						<input type="text" class="masked-input h1" placeholder=""  ng-model="guestCardData.contactInfo.first_name">
 						
-						<input type="text" class="masked-input h1" placeholder="" value="Achari" ng-modal="guestData.last_name">
+						<input type="text" class="masked-input h1" placeholder="" value="Achari" ng-model="guestCardData.contactInfo.last_name">
 						
 					</div>
 					<strong class="status"> </strong>
@@ -23,10 +23,10 @@
 					</div>
 				</div>
 				<div class="holder data">
-					<input type="text" data-size="0" class="masked-input icons icon-gc-location" placeholder="" value="" ng-modal="guestData.city">
-					<input type="text" data-size="0" class="masked-input" value="" ng-modal="guestData.state">
-					<input type="tel" data-size="0" class="masked-input icons icon-gc-phone" value="" ng-modal="guestData.phone">
-					<input type="email" data-size="0" class="masked-input icons icon-gc-email" value="revathi@qburst.com" ng-modal="guestData.email">
+					<input type="text" data-size="0" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.city">
+					<input type="text" data-size="0" class="masked-input" ng-model="guestCardData.contactInfo.state">
+					<input type="tel" data-size="0" class="masked-input icons icon-gc-phone" ng-model="guestCardData.contactInfo.phone">
+					<input type="email" data-size="0" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email_address">
 				</div>
 			</form>
 		</header>

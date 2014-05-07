@@ -1,7 +1,7 @@
 sntRover.controller('guestCardController', ['$scope', 'Likes', '$window', 'RVReservationCardSrv', function($scope, Likes, $window, RVReservationCardSrv){
 	
 	console.log("--------------")
-	console.log($scope.guestCardData.contactInfo);
+	console.log(JSON$scope.guestCardData.contactInfo);
 	//console.log($scope.countriesList.length);
 	console.log("--------------")
 
