@@ -5,6 +5,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.is_edit = false;
             // activate Rate Details View
             $scope.rateMenu = 'Details';
+            $scope.hideBasedOn = false;
             // intialize rateData dictionary - START
             $scope.rateData = {
                 "id": "",
@@ -17,7 +18,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     "value_abs": "",
                     "value_sign": ""
                 },
-                "rate_type_id": "",
+                "rate_type": {
+                    "id": "",
+                    "name": ""
+                },
                 "status": true,
                 "room_type_ids": [],
                 "date_ranges": []
@@ -101,7 +105,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             // set rate data for edit
             $scope.rateData = data;
             $scope.rateData.id = $stateParams.rateId;
-            $scope.rateData.rate_type_id = (data.rate_type != null) ? data.rate_type.id : '';
+            $scope.rateData.rate_type.id = (data.rate_type != null) ? data.rate_type.id : '';
+            $scope.rateData.rate_type.name = (data.rate_type != null) ? data.rate_type.name : '';
+
             if (data.based_on) {
                 $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value)
                 $scope.rateData.based_on.value_sign = data.based_on.value > 0 ? "+" : "-";
