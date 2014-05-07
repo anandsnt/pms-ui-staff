@@ -108,6 +108,16 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 };
             }
             // fetch basedOn Rate Details
+            // navigate to step where user last left unsaved
+            if($scope.rateData.date_ranges.length > 0){
+                date_ranges_length = $scope.rateData.date_ranges.length
+                console.log($scope.rateData.date_ranges[6]);
+                active_item = "dateRange."+$scope.rateData.date_ranges[date_ranges_length-1].id
+                $scope.$emit("changeMenu", active_item);
+            }
+            else{
+                $scope.$emit("changeMenu", 'Room types');
+            }
             fetchBasedOnRateDetails(false);
             $scope.$emit('hideLoader');
             $scope.$broadcast('onRateDefaultsFetched');
