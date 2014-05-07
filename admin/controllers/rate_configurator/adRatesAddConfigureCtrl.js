@@ -1,5 +1,8 @@
 admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ADRatesRangeSrv','ngDialog',
     function ($scope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ADRatesRangeSrv, ngDialog) {
+        //expand first set
+        $scope.currentClickedSet = 0;
+
 
         // data range set expanded view
         $scope.setCurrentClickedSet = function (index) {
@@ -176,10 +179,12 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
 
 
         $scope.popupCalendar = function () {
+           // ADRatesConfigureSrv.setCurrentSetData($scope.data);
             ngDialog.open({
                 template: '/assets/partials/rates/adAddRatesCalendarPopup.html',
                 controller: 'ADDateRangeModalCtrl',
-                className: 'ngdialog-theme-default calendar-modal'
+                className: 'ngdialog-theme-default calendar-modal',
+                scope: $scope
             });
         };
 
