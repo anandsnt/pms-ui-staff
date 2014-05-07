@@ -196,7 +196,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             if (date_range_end_date){
                 return Date.parse(date_range_end_date) > Date.parse($scope.hotel_business_date)
             }
-            return false;
+            return true;
         };
 
         $scope.calculateTheRatesRestriction = function (data) {
