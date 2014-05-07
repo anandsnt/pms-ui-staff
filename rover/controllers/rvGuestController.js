@@ -14,6 +14,9 @@ sntRover.controller('guestCardController', ['$scope', 'Likes', '$window', 'RVRes
     $scope.guestCardHeight = 90;
 
 	$scope.guestCardTabSwitch = function(div){
+
+		if($scope.current ==='guest-contact')
+			$scope.$broadcast('saveContactInfo');
 		$scope.current = div;
 	};
 	

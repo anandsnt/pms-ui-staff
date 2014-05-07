@@ -24,13 +24,15 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 
 	var fetchGuestcardDataSuccessCallback = function(data){
 		var contactInfoData = {'data': data,
-								'countries': $scope.data.countries};
+								'countries': $scope.data.countries,
+								'userId':$scope.data.user_id};
         $scope.$emit('guestCardUpdateData',contactInfoData);
         $scope.$emit('hideLoader');
     };
     var fetchGuestcardDataFailureCallback = function(data){
         $scope.$emit('hideLoader');
     };
+
    
     var param = {'fakeDataToAvoidCache':new Date(),
 					'id':$scope.data.guest_details.reservation_id}
