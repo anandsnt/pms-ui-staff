@@ -1,7 +1,7 @@
 
-<form name="contact-info" ng-show="current == 'guest-contact'" class="card-content form scrollable ui-tabs-panel ui-widget-content ui-corner-bottom"  aria-labelledby="guest-contact" role="tabpanel" aria-expanded="true" aria-hidden="false" ng-controller="RVContactInfoController">
-	<div ng-iscroll="result_showing_area"  ng-iscroll-delay="1000">
-				<div class="wrapper float" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+<form name="contact-info" ng-show="current == 'guest-contact'" class="card-content form"  aria-labelledby="guest-contact" role="tabpanel" aria-expanded="true" aria-hidden="false" ng-controller="RVContactInfoController">
+	<div ng-iscroll="contact_info"  ng-iscroll-delay="1000" style="position: absolute; top:0px; bottom:0px; left:0px; width: 100%;" ng-iscroll-form='true'>
+				<div class="wrapper float">
 					<div class="entry full-width">
 						<div id="notification-message-guest"></div>
 					</div>
@@ -49,8 +49,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
-					<div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 64px; transform: translate(0px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
-				 </div>
+
 				</div>
 			</form>
