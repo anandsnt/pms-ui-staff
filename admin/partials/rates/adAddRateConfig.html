@@ -24,7 +24,7 @@
             <span class="icons icon-rate-fill" style="float:right; width:40px;">&nbsp;</span>
         </li>
         <li style="float:right; padding-top:10px;" ng-show="currentClickedSet == $index">
-            <span class="icons icon-calendar" style="float:right; width:40px;" ng-click="popupCalendar()" ng-hide="disableDateRangeEdit()">&nbsp;</span>
+            <span class="icons icon-calendar" style="float:right; width:40px;" ng-click="popupCalendar()" ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
 
 

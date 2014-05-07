@@ -19,7 +19,7 @@
         <tr ng-repeat ="dateRange in rateData.date_ranges">
             <td ng-include="'/assets/partials/rates/adRatesAddConfigure.html'"></td>
         </tr>
-        <tr>
+        <tr ng-show="rateMenu ==='ADD_NEW_DATE_RANGE'">
             <td ng-include="'/assets/partials/rates/adRatesAddRange.html'"></td>
         </tr>
 
@@ -27,7 +27,7 @@
     <!-- template to add new date range -->
     
 
-    <div ng-click="addNewDateRange()" ng-hide="hideAddNewDateRange()" class="center_align add_new_date_range_container"> 
+    <div ng-click="addNewDateRange()" ng-show="shouldShowAddNewDateRange()" class="center_align add_new_date_range_container"> 
         <a class="icons icon-add">
         <span>NEW DATE RANGE</span>
         </a>

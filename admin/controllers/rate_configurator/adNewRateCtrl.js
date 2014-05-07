@@ -113,6 +113,18 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.$broadcast('onRateDefaultsFetched');
         };
 
+        $scope.addNewDateRange = function(){
+            $scope.rateMenu ='ADD_NEW_DATE_RANGE';
+            // TODO :: call reset calendar
+
+        };
+
+        $scope.shouldShowAddNewDateRange = function(){
+            if($scope.rateMenu === 'ADD_NEW_DATE_RANGE') { return false; }
+            if (!$scope.rateData.id || $scope.rateData.room_type_ids.length == 0) { return false; }
+            return true;
+        };
+
         /*
          * init call
          */
