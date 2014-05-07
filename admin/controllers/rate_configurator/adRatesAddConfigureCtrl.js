@@ -1,5 +1,7 @@
 admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ngDialog',
     function ($scope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ngDialog) {
+        //expand first set
+        $scope.currentClickedSet = 0;
 
         // data range set expanded view
         $scope.setCurrentClickedSet = function (index) {
