@@ -19,7 +19,3 @@
 //=require_tree ../admin/controllers
 //=require_tree ../admin/directives
 //=require_tree ../admin/services
-
-
-
-
