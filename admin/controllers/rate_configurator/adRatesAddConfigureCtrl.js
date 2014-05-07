@@ -1,48 +1,18 @@
 admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ngDialog',
     function ($scope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ngDialog) {
-        // ADRatesConfigureSrv.setCurrentSetData($scope.$parent.step);
-        // $scope.$parent.step = ADRatesConfigureSrv.getCurrentSetData();
 
-        // $scope.$on('dateRangeUpdated', function (event, data) {
-        //     $scope.$parent.step = data;
-        // });
-
-        // disable date range edit
-        // $scope.disableDateSetEdit = function () {
-        //     if ($scope.hasBaseRate) {
-        //         return true;
-        //     }
-        //     if ($scope.edit_mode) {
-        //         if (!$scope.step.is_editable) {
-        //             return true;
-        //         } else {
-        //             return false;
-        //         }
-        //     } else {
-        //         return false;
-        //     }
-        // }
-
-        // $scope.disableDateRangeEdit = function () {
-        //     if ($scope.edit_mode) {
-        //         if (!$scope.step.is_editable) {
-        //             return true;
-        //         } else {
-        //             return false;
-        //         }
-        //     } else {
-        //         return false;
-        //     }
-        // }
-
-        
-        
-
+        // data range set expanded view
         $scope.setCurrentClickedSet = function (index) {
             $scope.currentClickedSet = index;
         };
 
+        // data range set collapsed view
         $scope.unsetCurrentClickedSet = function (index) {
+            $scope.currentClickedSet = -1;
+        };
+
+        // collapse current active date range set view
+        $scope.cancelClick = function () {
             $scope.currentClickedSet = -1;
         };
 
@@ -80,16 +50,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
                 }, fetchSetsInDateRangeSuccessCallback);
         };
 
-
         fetchData();
-
-
-
-        
-        // $scope.cancelClick = function () {
-        //     $scope.currentClickedSet = -1;
-        // };
-
 
         $scope.saveSet = function (index) {
 
@@ -168,14 +129,13 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
 
 
         $scope.popupCalendar = function () {
-
-
             ngDialog.open({
                 template: '/assets/partials/rates/adAddRatesCalendarPopup.html',
                 controller: 'ADDateRangeModalCtrl',
                 className: 'ngdialog-theme-default calendar-modal'
             });
         };
+
         $scope.toggleDays = function (index, mod) {
             angular.forEach($scope.data.sets, function (value, key) {
                 $scope.data.sets[key][mod] = false;
@@ -184,11 +144,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         };
 
         $scope.calculateTheRatesRestriction = function (data) {
-
             if (!$scope.hasBaseRate) {
                 return data;
             }
-
             var basedonValue = parseInt($scope.basedonValue);
             var basedonPlusMinus = $scope.basedonPlusMinus;
             angular.forEach(data.sets, function (set, key) {
@@ -211,7 +169,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
                 });
             });
             return data;
-
         };
 
     }

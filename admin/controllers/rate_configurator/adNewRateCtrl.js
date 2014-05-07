@@ -18,7 +18,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     "value_sign": ""
                 },
                 "rate_type_id": "",
-                "date_range_count": 0,
                 "status": true,
                 "room_type_ids": [],
                 "date_ranges": []
