@@ -379,42 +379,39 @@ var RoomAssignmentView = function(viewDom){
   
   //Update resevation with the selected room.
   this.updateRoomAssignment = function(e){
+    	
+    var roomSelected = $(this).find(">:first-child").attr("data-value");
+    var currentReservation = $('#roomassignment-ref-id').val();
+    var roomStatusExplained = $(this).find(">:first-child").next().attr("data-value");
     
-    if(that.initialRoomType === that.selectedRoomType){
-    	console.log("same room type selected");
-        var roomSelected = $(this).find(">:first-child").attr("data-value");
-	    var currentReservation = $('#roomassignment-ref-id').val();
-	    var roomStatusExplained = $(this).find(">:first-child").next().attr("data-value");
+    var postParams = {};
+    postParams.reservation_id = currentReservation;
+    postParams.room_number = roomSelected;
+    
+  	var webservice = new WebServiceInterface();
+  	var successCallBackParams = {
+  			'roomSelected': roomSelected,
+  			'currentReservation': currentReservation, 
+  			'roomStatusExplained': roomStatusExplained,
+  			'selectedItem': $(this),
+  	};
+    var options = { requestParameters: postParams,
+    				successCallBack: that.roomAssignmentSuccess,
+    				successCallBackParameters: successCallBackParams,
+    				failureCallBack: that.fetchFailedOfSave,
+    				loader: 'blocker'
+    };
 	    
-	    var postParams = {};
-	    postParams.reservation_id = currentReservation;
-	    postParams.room_number = roomSelected;
-	    var url = '/staff/reservation/modify_reservation';
-	  	var webservice = new WebServiceInterface();
-	  	var successCallBackParams = {
-	  			'roomSelected': roomSelected,
-	  			'currentReservation': currentReservation, 
-	  			'roomStatusExplained': roomStatusExplained,
-	  			'selectedItem': $(this),
-	  	};
-	    var options = { requestParameters: postParams,
-	    				successCallBack: that.roomAssignmentSuccess,
-	    				successCallBackParameters: successCallBackParams,
-	    				failureCallBack: that.fetchFailedOfSave,
-	    				loader: 'blocker'
-	    		};
-	    webservice.postJSON(url, options);
+	if(that.initialRoomType === that.selectedRoomType){
+		console.log("same room type selected");
+		var url = '/staff/reservation/modify_reservation';
+		webservice.postJSON(url, options);
     }
     else{
     	console.log(" diff room type selectd");
     	
-    	var roomTypeChargeModal = new RoomTypeChargeModal();
+    	var roomTypeChargeModal = new RoomTypeChargeModal(options);
 			roomTypeChargeModal.initialize();
-			/*
-			roomTypeChargeModal.params = {
-				"origin" : views.STAYCARD,
-				"reservationStatus" : reservationStatus
-			};*/
     }
 
   };
