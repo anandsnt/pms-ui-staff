@@ -128,10 +128,12 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
 
 
         $scope.popupCalendar = function () {
+           // ADRatesConfigureSrv.setCurrentSetData($scope.data);
             ngDialog.open({
                 template: '/assets/partials/rates/adAddRatesCalendarPopup.html',
                 controller: 'ADDateRangeModalCtrl',
-                className: 'ngdialog-theme-default calendar-modal'
+                className: 'ngdialog-theme-default calendar-modal',
+                scope: $scope
             });
         };
 
