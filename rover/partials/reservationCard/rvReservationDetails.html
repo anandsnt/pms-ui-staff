@@ -1,4 +1,4 @@
-<div role="tabpanel" id="reservation-4844453" data-reservation-status="CHECKING_IN" data-reservation-id="35889" class="reservation ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-10" aria-hidden="false" aria-expanded="true">
+<div ng-show="reservationDisplayStatus" role="tabpanel" id="reservation-4844453" data-reservation-status="CHECKING_IN" data-reservation-id="35889" class="reservation ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-10" aria-hidden="false" aria-expanded="true">
 	<!-- Reservation header -->
 	<div class="reservation-header">
 		<div class="actions">
@@ -36,7 +36,8 @@
 		</li>
 	</ul>
 
-	<div class="reservation-content scrollable check-in">
+	<div class="reservation-content scrollable check-in"  >
+		<div ng-iscroll="result_details" ng-iscroll-delay="1000" style="position:absolute; top:0px; bottom: 0px; left:0px; width: 100%;">
 		<div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<h2 class="h1"> Reservation {{reservationData.reservation_card.confirmation_num}}</h2>
@@ -69,11 +70,12 @@
 				
 				
 					
-					<div ng-include="'assets/partials/reservationCard/reservationCardLoyalty.html'"></div>
+				<div ng-include="'assets/partials/reservationCard/reservationCardLoyalty.html'"></div>
 					
 				
 			</div>
 			<!-- ADR / Total Stay Cost -->
+			<div ng-include="'assets/partials/reservationCard/reservationCardTotalStayCost.html'"></div>
 			<div class="block-item item-rate">
 				<div class="block-title">
 					<h3> ADR / <strong>Total Room Charge</strong></h3>
@@ -117,8 +119,6 @@
 			</div>
 
 		</div>
-		<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
-			<div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 34px; transform: translate(0px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
 		</div>
 	</div>
 	<!-- Reservation actions pane -->
@@ -145,4 +145,39 @@
 		<a id="post-charge" class="button white green-text">Add Charge</a>
 	</div>
 
+</div>
+
+
+<div class="reservation no-content" ng-show="countUpcoming == 0 && !reservationDisplayStatus && timeline=='upcoming'">
+	<div class="info">
+		<span class="icon-no-content icon-room"></span>
+		<strong class="h1">No upcoming reservations</strong>
+		<span class="h2"> It looks like
+			{{data.guest_details.first_name}}
+			{{data.guest_details.last_name}}
+			doesn’t have an upcoming reservation. Would you like to <a class="open-modal-fix">create one</a> ? </span>
+	</div>
+</div>
+
+
+
+<div class="reservation no-content" ng-show="countCurrent == 0 && !reservationDisplayStatus && timeline=='current'">
+	<div class="info">
+		<span class="icon-no-content icon-room"></span>
+		<strong class="h1">No Current reservations</strong>
+		<span class="h2"> It looks like
+			{{data.guest_details.first_name}}
+			{{data.guest_details.last_name}}
+			doesn’t have any reservation today. Would you like to <a class="open-modal-fix">create one</a> ? </span>
+	</div>
+</div>
+
+<div class="reservation no-content" ng-show="countHistory == 0 && !reservationDisplayStatus && timeline=='history'">
+	<div class="info">
+		<span class="icon-no-content icon-room"></span>
+		<strong class="h1">No past reservations</strong>
+		<span class="h2"> We don't have past reservations for
+			{{data.guest_details.first_name}}
+			{{data.guest_details.last_name}} </span>
+	</div>
 </div>
