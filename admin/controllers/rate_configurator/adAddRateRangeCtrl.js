@@ -126,17 +126,6 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
             $scope.Sets[SetIndex].days[dayIndex].checked = temp;
         }
 
-
-        // check whether date range is past
-        $scope.is_date_range_editable = function(date_range_end_date){
-            console.log(date_range_end_date);
-            console.log($scope.hotel_business_date);
-            if ($scope.rateData.based_on.id) { return false; }
-            if (date_range_end_date){
-                return Date.parse(date_range_end_date) > Date.parse($scope.hotel_business_date)
-            }
-            return false;
-        };
         /**
         * Function to check if from_date and to_dates are selected in the calender
         */
