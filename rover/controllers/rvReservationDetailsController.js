@@ -5,6 +5,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	 */
 	//Data fetched using resolve in router
 	$scope.reservationData = reservationDetails;
+	$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
 	$scope.selectedLoyalty = {};
 	angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
 		if($scope.reservationData.reservation_card.loyalty_level.selected_loyalty == item.id){

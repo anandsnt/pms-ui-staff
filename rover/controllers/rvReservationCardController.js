@@ -20,7 +20,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 		$scope.countHistory = data.reservation_list.history_reservations_arr.length;
 		
 		$scope.currentReservationId = data.reservation_details.confirmation_num;
-
+		
 		RVReservationCardSrv.setGuestData($scope.data.guest_details);
 		
 		if($scope.timeline == "current"){
