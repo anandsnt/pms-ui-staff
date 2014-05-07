@@ -2,8 +2,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
     function ($scope, ADRatesRangeSrv, ADRatesSrv, $state, $stateParams) {
         $scope.init = function () {
             BaseCtrl.call(this, $scope);
-
+            $scope.is_edit = false;
+            // activate Rate Details View
             $scope.rateMenu = 'Details';
+            // intialize rateData dictionary - START
             $scope.rateData = {
                 "id": "",
                 "name": "",
@@ -21,34 +23,20 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "room_type_ids": [],
                 "date_ranges": []
             }
-
-            ADRatesRangeSrv.emptyDateRangeData();
-            // edit_mode by default false indicate Add New Rate
-            $scope.edit_mode = false
-            var initialContent = {
-                'title': 'Rate',
-                'subtitle': 'Details',
-                'type': 'Details',
-                'id': 'Details'
-            };
-            $scope.currentStepIndexList = [initialContent];
-            $scope.currentRateStepIndex = 0;
+            // intialize rateData dictionary - END
             $scope.errorMessage = '';
-            $scope.newRateId = $stateParams.rateId;
-            $scope.hasBasedon = false;
-
-            // setting rateId and values for Rate Edit
+            // webservice call to fetch rate details for edit
             if ($stateParams.rateId) {
-                $scope.edit_mode = true
+                $scope.is_edit = true;
                 $scope.invokeApi(ADRatesSrv.fetchDetails, {
                     rateId: $stateParams.rateId
-                }, $scope.updateRateDefaults);
+                }, rateDetailsFetchSuccess);
             }
         };
 
 
         /*
-         * to be updated from child classes
+         * toogle different rate view
          */
         $scope.$on("changeMenu", function (e, value) {
             console.log(value);
@@ -58,17 +46,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateMenu = value;
         });
 
-
-        /*
-         * click action to switch between steps
-         */
-        $scope.clickedStep = function (index, id) {
-            console.log(index);
-            $scope.currentRateStepIndex = index;
-        };
-
         $scope.$on("errorReceived", function (e, value) {
-
             $scope.errorMessage = value;
         });
 
@@ -79,11 +57,10 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         	if($scope.rateData.based_on.id == undefined || $scope.rateData.based_on.id == ""){
                 return false;
             }
-            $scope.hasBasedon = true;
-
             var fetchBasedonSuccess = function(data){
+                // set basedon data
                 $scope.basedonRateData = data;
-                $scope.updateRateDefaults(data);
+                updateRateDefaults();
                 $scope.basedonRateData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
                 $scope.basedonRateData.based_on = (data.based_on != null) ? data.based_on.id : '';
                 $scope.$emit('hideLoader');
@@ -94,126 +71,24 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         });
 
-        /*
-         * to be updated from child classes
-         */
-        $scope.$on("updateIndex", function (e, value) {
-            var nextContent = {}
-            if (value.id == 1) {
-                $scope.newRateId = value.rateId;
-                if ($scope.currentStepIndexList.length < 2) {
 
-                    nextContent = {
-                        'title': 'Room',
-                        'subtitle': 'Types',
-                        'type': 'Type',
-                        'id': 'Type'
-                    };
-                    $scope.currentStepIndexList.push(nextContent);
+        var updateRateDefaults = function(){
+            if(!is_edit){
+                if($scope.rateData.room_type_ids.length == 0){
+                    // set basedon room types into rateData room types
+                    $scope.rateData.room_type_ids = angular.copy($scope.basedonRateData.room_type_ids)
                 }
-                $scope.clickedStep(parseInt(value.id));
-            } else if (value == 2) {
-                if ($scope.currentStepIndexList.length < 3) {
-
-                    nextContent = {
-                        'title': 'Date',
-                        'subtitle': 'Range',
-                        'type': 'Range',
-                        'id': 'Range'
-                    };
-                    $scope.currentStepIndexList.push(nextContent);
-                }
-                $scope.clickedStep(parseInt(value));
-            } else if (value == 3) {
-                var getDateRangeData = [];
-                if (!$scope.edit_mode) {
-                    if ($scope.currentStepIndexList[2].title === 'Date') {
-                        $scope.currentStepIndexList.splice(2, 1);
-                    }
-                    getDateRangeData = ADRatesRangeSrv.getDateRangeData();
-                } else {
-                    getDateRangeData = $scope.date_ranges;
-                }
-                $scope.showAddNewDateRangeOptions = false;
-
-                angular.forEach(getDateRangeData, function (value, key) {
-                    var nextContent = {
-                        'title': 'Configure',
-                        'type': 'Configure',
-                        'id': value.id,
-                        'begin_date': value.begin_date,
-                        'end_date': value.end_date,
-                        'is_editable': true
-                    };
-                    $scope.isAlreadyIncurrentStepIndexList = false;
-                    angular.forEach($scope.currentStepIndexList, function (stepValue, key) {
-
-                        if (stepValue.id == nextContent.id) {
-                            $scope.isAlreadyIncurrentStepIndexList = true;
-                        }
-                    });
-                    if (!$scope.isAlreadyIncurrentStepIndexList)
-                        $scope.currentStepIndexList.push(nextContent);
-
-                });
-                $scope.clickedStep($scope.currentStepIndexList.length - 1);
             }
-
-
-        });
-
-        $scope.hideAddNewDateRange = function () {
-
-            if ($scope.currentStepIndexList.length >= 3) {
-                if (parseInt($scope.currentStepIndexList[2].id))
-                    return false;
-                else
-                    return true;
-            } else
-                return true;
-        }
-        /*
-         * to include template
-         */
-
-        $scope.includeTemplate = function (index) {
-
-            switch (index) {
-            case 0:
-                return "/assets/partials/rates/adRatesAddDetails.html";
-                break;
-            case 1:
-                return "/assets/partials/rates/adRatesAddRoomTypes.html";
-                break;
-            default:
-                if ($scope.currentStepIndexList[2].title === "Configure")
-                    return "/assets/partials/rates/adRatesAddConfigure.html";
-                else
-                    return "/assets/partials/rates/adRatesAddRange.html";
-                break;
-            };
-        };
-        //TODO: Ask if to be removed
-        $scope.addNewDateRange = function () {
-            $scope.showAddNewDateRangeOptions = true;
-            $scope.$broadcast('resetCalendar');
-            $scope.currentRateStepIndex = -1;
         }
 
         // Fetch details success callback for rate edit
 
-        $scope.updateRateDefaults = function (data) {
-            // set rate edit field values for all steps
+        var rateDetailsFetchSuccess = function (data) {
+
             $scope.hotel_business_date = data.business_date;
-            //Keep the rate id created from rate details step.
-            var rateID = $scope.rateData.id;
+            // set rate data for edit
             $scope.rateData = data;
-            //We will update rate id only if it is from edit.
-            if($scope.hasBasedon){
-                $scope.rateData.id = rateID;
-            }else{
-                $scope.rateData.id = $stateParams.rateId;
-            }
+            $scope.rateData.id = $stateParams.rateId;
             $scope.rateData.rate_type_id = (data.rate_type != null) ? data.rate_type.id : '';
             if (data.based_on) {
                 $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value)
@@ -230,39 +105,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.$broadcast('onRateDefaultsFetched');
         };
 
-        $scope.setupEdit = function () {
-            nextContent = {
-                'title': 'Room',
-                'subtitle': 'Types',
-                'type': 'Type',
-                'id': 'Type'
-            };
-            $scope.currentStepIndexList.push(nextContent);
-            $scope.setupConfigureRates();
-        }
-
-        $scope.setupConfigureRates = function () {
-            getDateRangeData = $scope.date_ranges;
-
-            angular.forEach(getDateRangeData, function (value, key) {
-                past_date_range = Date.parse(value.end_date) < Date.parse($scope.hotel_business_date);
-                var nextContent = {
-                    'title': 'Configure',
-                    'type': 'Configure',
-                    'id': value.id,
-                    'begin_date': value.begin_date,
-                    'end_date': value.end_date,
-                    'is_editable': !past_date_range
-                };
-                $scope.currentStepIndexList.push(nextContent);
-
-            });
-            $scope.clickedStep($scope.currentStepIndexList.length - 1);
-
-        }
-
         /*
-         * init function
+         * init call
          */
         $scope.init();
 

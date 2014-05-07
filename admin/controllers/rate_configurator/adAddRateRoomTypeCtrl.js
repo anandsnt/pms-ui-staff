@@ -15,7 +15,6 @@ var lastDropedTime = '';
 $scope.fetchData = function(){
     var fetchRoomTypesSuccessCallback = function(data){
         $scope.availableRoomTypes = data.results;
-        //$scope.nonAssignedroomTypes = data.results;
         $scope.calculateRoomLists();
         $scope.$emit('hideLoader');
     };
@@ -30,7 +29,6 @@ $scope.$on("onRateDefaultsFetched", function(e){
 
 $scope.calculateRoomLists = function(){
     // separate out assigned and non-assigned room types
-    $scope.assignedRoomTypes = [];
     if ($scope.rateData.room_type_ids){
         for(var j = 0; j < $scope.availableRoomTypes.length; j++){
             angular.forEach($scope.rateData.room_type_ids, function(room_type_id){
