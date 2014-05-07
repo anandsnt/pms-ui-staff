@@ -21,10 +21,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             var fetchSetsInDateRangeSuccessCallback = function (data) {
                 $scope.$emit('hideLoader');
                 if($scope.dateRange.id < 0){
-                    //TODO: calculate rate sets
+                    console.log("beforr0");
+                    $scope.calculateTheRatesRestriction(data);
                 }
                 $scope.data = data;
-                console.log(data);
 
                 // Manually build room rates dictionary - if Add Rate
                 angular.forEach($scope.data.sets, function (value, key) {
@@ -200,18 +200,22 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         };
 
         $scope.calculateTheRatesRestriction = function (data) {
-            var basedonValue = parseInt($scope.basedonValue);
-            var basedonPlusMinus = $scope.basedonPlusMinus;
+            var basedonValue = parseInt($scope.rateData.based_on.value_abs);
+            var basedonPlusMinus = $scope.rateData.based_on.value_sign;
+
             angular.forEach(data.sets, function (set, key) {
                 angular.forEach(set.room_rates, function (roomRate, key) {
 
-                    if ($scope.basedonType == 'amount') {
+                    if ($scope.rateData.based_on.type == 'amount') {
+                        console.log("amout");
                         roomRate.single = basedonPlusMinus == "+" ? (roomRate.single + basedonValue) : (roomRate.single - basedonValue);
                         roomRate["double"] = basedonPlusMinus == "+" ? (roomRate["double"] + basedonValue) : (roomRate["double"] - basedonValue);
                         roomRate.extra_adult = basedonPlusMinus == "+" ? (roomRate.extra_adult + basedonValue) : (roomRate.extra_adult - basedonValue);
                         roomRate.child = basedonPlusMinus == "+" ? (roomRate.child + basedonValue) : (roomRate.child - basedonValue);
 
-                    } else if ($scope.basedonType == 'percent') {
+                    } else if ($scope.rateData.based_on.type == 'percent') {
+                        console.log("percent");
+                        
                         roomRate.single = basedonPlusMinus == "+" ? (roomRate.single + (basedonValue / 100 * roomRate.single)) : (roomRate.single - (basedonValue / 100 * roomRate.single));
                         roomRate["double"] = basedonPlusMinus == "+" ? (roomRate["double"] + (basedonValue / 100 * roomRate["double"])) : (roomRate["double"] - (basedonValue / 100 * roomRate["double"]));
                         roomRate.extra_adult = basedonPlusMinus == "+" ? (roomRate.extra_adult + (basedonValue / 100 * roomRate.extra_adult)) : (roomRate.extra_adult - (basedonValue / 100 * roomRate.extra_adult));

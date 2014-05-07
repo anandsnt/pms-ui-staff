@@ -87,6 +87,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     dateRange.id = dateRange.id * -1;
                 });
 
+                console.log(JSON.stringify($scope.rateData));
+
             }
             $scope.$broadcast('onRateDefaultsFetched');
         }
