@@ -42,6 +42,15 @@ admin.controller('ADRulesRestrictionCtrl', [
             };
 
             $scope.invokeApi(ADRulesRestrictionSrv.fetchRestrictions, {}, fetchHotelLikesSuccessCallback);
+
+            // lets fetch post_types too
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchRefVales, { type: 'post_type' }, function(data) {
+                $scope.postTypes = data;
+
+                console.log( $scope.postTypes );
+
+                $scope.$emit('hideLoader');
+            });
         };
 
         $scope.fetchRestrictions();
@@ -118,15 +127,6 @@ admin.controller('ADRulesRestrictionCtrl', [
             };
 
             $scope.invokeApi(ADRulesRestrictionSrv.fetchRules, { policy_type: ruleType }, callback);
-
-            // if we havnt fetched post_types
-            // lets fetch that too
-            if ( !$scope.postTypes ) {
-                $scope.invokeApi(ADRulesRestrictionSrv.fetchRefVales, { type: 'post_type' }, function(data) {
-                    $scope.postTypes = data;
-                    $scope.$emit('hideLoader');
-                });
-            };
         };
 
 
@@ -177,9 +177,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                     $scope.singleRule.policy_type = 'DEPOSIT_REQUEST';
 
                     // need to split HH:MM into individual keys
-                    console.log( $scope.singleRule.advance_time );
                     if ( $scope.singleRule.advance_time ) {
-
                         var hhmm = dateFilter( $scope.singleRule.advance_time, 'hh:mm' );
 
                         $scope.singleRule.advance_hour = hhmm.split(':')[0];

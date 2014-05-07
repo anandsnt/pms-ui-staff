@@ -80,15 +80,11 @@
 
 							<div class="entry full-width" ng-show="singleRule.amount_type === 'percent'">
 								<label for="amount-type-id">
-									Night or Stay
+									Per day or stay
 									<strong>*</strong>
 								</label>
 								<div class="select">
-									<select name="amount-type-id" id="amount-type-id" ng-model="singleRule.post_type_id">
-										<option value="" data-text="Not set" class="placeholder">Choose a value</option>
-										<option value="night">Night</option>
-										<option value="stay">Stay</option>
-										<option ng-repeat="type in postTypes"></option>
+									<select name="amount-type-id" id="amount-type-id" ng-model="singleRule.post_type_id" ng-options="type.id as type.description for type in postTypes">
 									</select>
 								</div>
 							</div>
