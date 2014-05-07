@@ -53,8 +53,10 @@
                     </select>
                 </div>
             </div>
-        </div>
-    </fieldset>
+        </fieldset>
+        <fieldset class="holder left" ng-show="is_promotional()">
+                <ad-textbox inputtype="text" value="rateData.promotion_code" label = "Promotions Code" placeholder = "Enter Promotional Code" required="no"></ad-textbox>
+        </fieldset>
 </fieldset>
 <fieldset class="full-width">
     <ad-textarea rows="2" div-class="full-width" text-area-class="full-width" value="rateData.description" label = "Description " placeholder = "Enter rate description" required="true"></ad-textarea>

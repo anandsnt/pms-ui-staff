@@ -20,6 +20,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "rate_type_id": "",
                 "status": true,
                 "room_type_ids": [],
+                "promotion_code": "",
                 "date_ranges": []
             }
             // intialize rateData dictionary - END
