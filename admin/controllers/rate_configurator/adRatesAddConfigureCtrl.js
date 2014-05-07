@@ -1,5 +1,5 @@
-admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ngDialog',
-    function ($scope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ngDialog) {
+admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ADRatesRangeSrv','ngDialog',
+    function ($scope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ADRatesRangeSrv, ngDialog) {
 
         // data range set expanded view
         $scope.setCurrentClickedSet = function (index) {
@@ -20,9 +20,19 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
 
             var fetchSetsInDateRangeSuccessCallback = function (data) {
                 $scope.$emit('hideLoader');
+                if($scope.dateRange.id < 0){
+                    //TODO: calculate rate sets
+                }
                 $scope.data = data;
+                console.log(data);
+
                 // Manually build room rates dictionary - if Add Rate
                 angular.forEach($scope.data.sets, function (value, key) {
+                    
+                    if($scope.dateRange.id < 0){
+                        value.id = value.id * -1;
+                    }
+
                     room_rates = []
                     if (value.room_rates.length === 0) {
                         angular.forEach($scope.data.room_types, function (room_type, key) {
@@ -40,11 +50,20 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
                         value.room_rates = room_rates;
                     }
                 });
+
+
+
             };
+
+            
+            var dateRangeId = $scope.dateRange.id;
+            if(dateRangeId < 0){
+                dateRangeId = dateRangeId * -1;
+            }
 
             $scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, 
                 {
-                    "id": $scope.dateRange.id
+                    "id": dateRangeId
                 }, fetchSetsInDateRangeSuccessCallback);
         };
 
@@ -120,9 +139,38 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         };
 
         $scope.saveDateRange = function () {
+            
+            if($scope.dateRange.id < 0){
+                $scope.saveDateRangeFirstTime();
+                return false;
+            }
+
             angular.forEach($scope.data.sets, function (value, key) {
                 $scope.saveSet(key);
             });
+
+        };
+
+        /**
+        * If the rate is a based on rate, then save the entair date range data
+        */
+        $scope.saveDateRangeFirstTime = function(){
+            angular.forEach($scope.data.sets, function (set, key) {
+                delete set["id"];
+            });
+            var dateRangeData = {
+                'id': $scope.rateData.id,
+                'data': {
+                    'begin_date': $scope.dateRange.begin_date,
+                    'end_date': $scope.dateRange.end_date,
+                    'sets': $scope.data.sets
+                }
+            };
+          
+            var saveDateRangeSuccess = function(data){
+                $scope.$emit('hideLoader');
+            }
+            $scope.invokeApi(ADRatesRangeSrv.postDateRange, dateRangeData, saveDateRangeSuccess);
         };
 
 

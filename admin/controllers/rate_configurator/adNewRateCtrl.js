@@ -38,7 +38,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * toogle different rate view
          */
         $scope.$on("changeMenu", function (e, value) {
-            if (parseInt(value) > 0){
+            if (!isNaN(parseInt(value))){
                 value = "dateRange."+value;
             }
             $scope.rateMenu = value;
@@ -82,7 +82,11 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             if($scope.rateData.room_type_ids.length == 0){
                 // set basedon room types into rateData room types
                 $scope.rateData.room_type_ids = angular.copy($scope.basedonRateData.room_type_ids);
-                $scope.rateData.date_ranges = angular.copy($scope.basedonRateData.date_ranges)
+                $scope.rateData.date_ranges = angular.copy($scope.basedonRateData.date_ranges);
+                angular.forEach($scope.rateData.date_ranges, function(dateRange){
+                    dateRange.id = dateRange.id * -1;
+                });
+
             }
             $scope.$broadcast('onRateDefaultsFetched');
         }
