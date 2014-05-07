@@ -1,7 +1,9 @@
-<table class="grid sub-grid" ng-show="editDepositRules || depositRuleslList.length">
-	<tr ng-hide="editDepositRules" ng-repeat="rule in depositRuleslList">
+<div ng-show="showDepositForm" ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+<table class="grid sub-grid" ng-show="showDepositForm || depositRuleslList.length">
+	<tr ng-hide="showDepositForm" ng-repeat="rule in depositRuleslList">
 		<td class="offset"> &nbsp; </td>
-		<td>{{ rule.name }}</td>
+		<td ng-click="editSingleRule(rule, 'Deposit Requested')">{{ rule.name }}</td>
 
 		<td>{{ rule.description }}</td>
 
@@ -10,9 +12,10 @@
 		</td>
 	</tr>
 
-	<tr ng-show="editDepositRules">
+	<tr ng-show="showDepositForm">
 		<td class="offset"> &nbsp; </td>
 		<td>
+			
 			<div style="display: block;" id="add-new" class="edit-data">
 				<div class="data-holder">
 					<form id="add-addon" name="add-addon" class="form inline-form float">
@@ -117,7 +120,7 @@
 								like-type="common"
 								id="update"
 								class="button green add-data-inline"
-								ng-click="addNewRule('Deposit Requested')">Save changes</button>
+								ng-click="saveUpdateRule('Deposit Requested')">Save changes</button>
 						</div>
 
 					</form>

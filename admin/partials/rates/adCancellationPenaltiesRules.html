@@ -1,7 +1,9 @@
-<table class="grid sub-grid" ng-show="editCancelRules || cancelRulesList.length">
-	<tr ng-hide="editCancelRules" ng-repeat="rule in cancelRulesList">
+<div ng-show="showCancelForm" ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+<table class="grid sub-grid" ng-show="showCancelForm || cancelRulesList.length">
+	<tr ng-hide="showCancelForm || editCancelRules" ng-repeat="rule in cancelRulesList">
 		<td class="offset"> &nbsp; </td>
-		<td>{{ rule.name }}</td>
+		<td ng-click="editSingleRule(rule, 'Cancellation Penalties')">{{ rule.name }}</td>
 
 		<td>{{ rule.description }}</td>
 
@@ -10,7 +12,7 @@
 		</td>
 	</tr>
 
-	<tr ng-show="editCancelRules">
+	<tr ng-show="showCancelForm">
 		<td class="offset"> &nbsp; </td>
 		<td>
 			<div style="display: block;" id="add-new" class="edit-data">
@@ -117,7 +119,7 @@
 								like-type="common"
 								id="update"
 								class="button green add-data-inline"
-								ng-click="addNewRule('Cancellation Penalties')">Save changes</button>
+								ng-click="saveUpdateRule('Cancellation Penalties')">Save changes</button>
 						</div>
 
 					</form>

@@ -69,7 +69,7 @@ admin.service('ADRulesRestrictionSrv',
       };
 
       /*
-      * To fetch rules list
+      * save a new rule
       * 
       * @param {object} contains page and per_page params
       * @return {object} defer promise
@@ -79,6 +79,26 @@ admin.service('ADRulesRestrictionSrv',
             url      = '/api/policies';
 
         ADBaseWebSrvV2.postJSON(url, params)
+          .then(function(data) {
+            deferred.resolve(data);
+          }, function(errorMessage) {
+            deferred.reject(errorMessage);
+          });
+
+        return deferred.promise;
+      };
+
+      /*
+      * update a existing rule
+      * 
+      * @param {object} contains page and per_page params
+      * @return {object} defer promise
+      */  
+      this.putPolicy = function(params) {
+        var deferred = $q.defer(),
+            url      = '/api/policies';
+
+        ADBaseWebSrvV2.putJSON(url, params)
           .then(function(data) {
             deferred.resolve(data);
           }, function(errorMessage) {
@@ -99,6 +119,27 @@ admin.service('ADRulesRestrictionSrv',
             url      = '/api/policies/' + params.id;
 
         ADBaseWebSrvV2.deleteJSON(url, params)
+          .then(function(data) {
+            deferred.resolve(data);
+          }, function(errorMessage) {
+            deferred.reject(errorMessage);
+          });
+
+        return deferred.promise;
+      };
+
+
+      /*
+      * get details of a particular rule
+      * 
+      * @param {object} contains page and per_page params
+      * @return {object} defer promise
+      */  
+      this.fetchSingleRule = function(params) {
+        var deferred = $q.defer(),
+            url      = '/api/policies/' + params.id;
+
+        ADBaseWebSrvV2.getJSON(url, params)
           .then(function(data) {
             deferred.resolve(data);
           }, function(errorMessage) {
