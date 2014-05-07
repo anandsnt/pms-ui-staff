@@ -19,6 +19,10 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 		// $scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 		$scope.currentReservationId = data.reservation_details.confirmation_num;
 		$scope.reservationList = data.reservation_list.current_reservations_arr;
+		
+		RVReservationCardSrv.setGuestData($scope.data.guest_details);
+		
+		// $scope.$broadcast('passGuestDetails', $scope.data.guest_details);
 	});
 	/*
 	 * Handles time line click events
