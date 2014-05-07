@@ -38,7 +38,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * toogle different rate view
          */
         $scope.$on("changeMenu", function (e, value) {
-            console.log(value);
             if (parseInt(value) > 0){
                 value = "dateRange."+value;
             }
@@ -72,12 +71,12 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
 
         var updateRateDefaults = function(){
-            if(!is_edit){
-                if($scope.rateData.room_type_ids.length == 0){
-                    // set basedon room types into rateData room types
-                    $scope.rateData.room_type_ids = angular.copy($scope.basedonRateData.room_type_ids)
-                }
+            if($scope.rateData.room_type_ids.length == 0){
+                // set basedon room types into rateData room types
+                $scope.rateData.room_type_ids = angular.copy($scope.basedonRateData.room_type_ids);
+                $scope.rateData.date_ranges = angular.copy($scope.basedonRateData.date_ranges)
             }
+            $scope.$broadcast('onRateDefaultsFetched');
         }
 
         // Fetch details success callback for rate edit
