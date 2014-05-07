@@ -72,7 +72,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
 
         var updateRateDefaults = function(){
-            if(!is_edit){
+            if(!$scope.is_edit){
                 if($scope.rateData.room_type_ids.length == 0){
                     // set basedon room types into rateData room types
                     $scope.rateData.room_type_ids = angular.copy($scope.basedonRateData.room_type_ids)

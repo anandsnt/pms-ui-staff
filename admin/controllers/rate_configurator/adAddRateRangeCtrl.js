@@ -81,20 +81,14 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
             };
 
             var postDateRangeSuccessCallback = function (data) {
-                //TODO: commented code required?
-                //if ($scope.edit_mode) {
                 var dateData = {};
                 dateData.id = data.id;
                 dateData.begin_date = dateRangeData.data.begin_date;
                 dateData.end_date = dateRangeData.data.end_date;
                 $scope.rateData.date_ranges.push(dateData);
-                //}
-                //TODO: remove flag?
-                $scope.showAddNewDateRangeOptions = false;
-                $scope.$emit("changeMenu", 'dateRange.'+ data.id);
+                // activate last saved date range view
+                $scope.$emit("changeMenu", data.id);
                 $scope.$emit('hideLoader');
-
-
             };
             var postDateRangeFailureCallback = function (data) {
                 $scope.$emit('hideLoader');
@@ -178,6 +172,17 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
             });
             $scope.Sets[SetIndex].days[dayIndex].checked = temp;
         }
+
+        // check whether date range is past
+        $scope.is_date_range_editable = function(date_range_end_date){
+            console.log(date_range_end_date);
+            console.log($scope.hotel_business_date);
+            if ($scope.rateData.based_on.id) { return false; }
+            if (date_range_end_date){
+                return Date.parse(date_range_end_date) > Date.parse($scope.hotel_business_date)
+            }
+            return false;
+        };
 
 
         $scope.allFieldsFilled = function () {

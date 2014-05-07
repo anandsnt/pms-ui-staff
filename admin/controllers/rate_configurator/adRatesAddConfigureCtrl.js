@@ -19,10 +19,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         var fetchData = function () {
 
             var fetchSetsInDateRangeSuccessCallback = function (data) {
-            $scope.$emit('hideLoader');
-
-            $scope.data = $scope.calculateTheRatesRestriction(data);
-
+                $scope.$emit('hideLoader');
+                $scope.data = data;
                 // Manually build room rates dictionary - if Add Rate
                 angular.forEach($scope.data.sets, function (value, key) {
                     room_rates = []
@@ -50,6 +48,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
                 }, fetchSetsInDateRangeSuccessCallback);
         };
 
+        // webservice call to fetch each date range details
         fetchData();
 
         $scope.saveSet = function (index) {
@@ -144,9 +143,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         };
 
         $scope.calculateTheRatesRestriction = function (data) {
-            if (!$scope.hasBaseRate) {
-                return data;
-            }
             var basedonValue = parseInt($scope.basedonValue);
             var basedonPlusMinus = $scope.basedonPlusMinus;
             angular.forEach(data.sets, function (set, key) {
@@ -170,6 +166,5 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             });
             return data;
         };
-
     }
 ]);
