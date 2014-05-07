@@ -38,7 +38,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * toogle different rate view
          */
         $scope.$on("changeMenu", function (e, value) {
-            console.log(value);
             if (parseInt(value) > 0){
                 value = "dateRange."+value;
             }
@@ -53,31 +52,39 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         * Fetch the based on rate retails, if the rate has chosen a based on rate.
         */
         $scope.$on("updateBasedonRate", function(e){
-        	if($scope.rateData.based_on.id == undefined || $scope.rateData.based_on.id == ""){
+        	fetchBasedOnRateDetails(true);
+        });
+
+
+        var fetchBasedOnRateDetails = function(update_rate_data){
+            if($scope.rateData.based_on.id == undefined || $scope.rateData.based_on.id == ""){
                 return false;
             }
             var fetchBasedonSuccess = function(data){
                 // set basedon data
                 $scope.basedonRateData = data;
-                updateRateDefaults();
                 $scope.basedonRateData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
                 $scope.basedonRateData.based_on = (data.based_on != null) ? data.based_on.id : '';
+                if(update_rate_data){
+                    updateRateDefaults();
+                }
                 $scope.$emit('hideLoader');
             };
             $scope.invokeApi(ADRatesSrv.fetchDetails, {
                 rateId: $scope.rateData.based_on.id
             }, fetchBasedonSuccess);
+        }
 
-        });
+
 
 
         var updateRateDefaults = function(){
-            if(!$scope.is_edit){
-                if($scope.rateData.room_type_ids.length == 0){
-                    // set basedon room types into rateData room types
-                    $scope.rateData.room_type_ids = angular.copy($scope.basedonRateData.room_type_ids)
-                }
+            if($scope.rateData.room_type_ids.length == 0){
+                // set basedon room types into rateData room types
+                $scope.rateData.room_type_ids = angular.copy($scope.basedonRateData.room_type_ids);
+                $scope.rateData.date_ranges = angular.copy($scope.basedonRateData.date_ranges)
             }
+            $scope.$broadcast('onRateDefaultsFetched');
         }
 
         // Fetch details success callback for rate edit
@@ -100,6 +107,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     "value_sign": ""
                 };
             }
+            // fetch basedOn Rate Details
+            fetchBasedOnRateDetails(false);
             $scope.$emit('hideLoader');
             $scope.$broadcast('onRateDefaultsFetched');
         };
