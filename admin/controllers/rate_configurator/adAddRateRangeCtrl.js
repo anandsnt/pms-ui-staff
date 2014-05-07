@@ -1,39 +1,14 @@
 admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRatesRangeSrv',
     function ($scope, $filter, dateFilter, ADRatesRangeSrv) {
-        /*
-         * set up data to be displayed
-         */
-
+        
+        /**
+        * set up data to be displayed
+        */
         $scope.setUpData = function () {
 
             $scope.isFromDateSelected = false;
             $scope.isToDateSelected = false;
-
-            $scope.Sets = [{
-                "setName": "Set 1",
-                'days': [{
-                    'name': 'MON',
-                    'checked': true
-                }, {
-                    'name': 'TUE',
-                    'checked': true
-                }, {
-                    'name': 'WED',
-                    'checked': true
-                }, {
-                    'name': 'THU',
-                    'checked': true
-                }, {
-                    'name': 'FRI',
-                    'checked': true
-                }, {
-                    'name': 'SAT',
-                    'checked': true
-                }, {
-                    'name': 'SUN',
-                    'checked': true
-                }]
-            }];
+            $scope.Sets = createDefaultSet("Set 1")
             $scope.fromDate = dateFilter(new Date(), 'yyyy-MM-dd');
             $scope.fromMinDate = dateFilter(new Date(), 'yyyy-MM-dd');
 
@@ -45,17 +20,16 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
             $scope.toMonthMinDate = dateFilter(currentDate, 'yyyy-MM-dd');
         };
 
-        $scope.setUpData();
-
+        /*
+        * Reset calendar action
+        */
         $scope.$on('resetCalendar', function (e) {
             $scope.setUpData();
         });
 
-
         /*
-         * to save rate range
-         */
-
+        * to save rate range
+        */
         $scope.saveDateRange = function () {
 
             var setData = [];
@@ -81,16 +55,12 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
             };
 
             var postDateRangeSuccessCallback = function (data) {
-                //TODO: commented code required?
-                //if ($scope.edit_mode) {
                 var dateData = {};
                 dateData.id = data.id;
                 dateData.begin_date = dateRangeData.data.begin_date;
                 dateData.end_date = dateRangeData.data.end_date;
                 $scope.rateData.date_ranges.push(dateData);
-                //}
-                //TODO: remove flag?
-                $scope.showAddNewDateRangeOptions = false;
+                // Change view to the config rates
                 $scope.$emit("changeMenu", 'dateRange.'+ data.id);
                 $scope.$emit('hideLoader');
 
@@ -105,14 +75,13 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
 
 
         /*
-         * add new set
-         */
-
+        * add new week set
+        */
         $scope.addNewSet = function (index) {
 
             if ($scope.Sets.length < 7) {
                 var newSet = {};
-                newSet.setName = "";
+                //newSet.setName = "";
                 var checkedDays = [];
                 /*
                  * check if any day has already been checked,if else check it in new set
@@ -125,7 +94,69 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
                     });
 
                 });
-                newSet.days = [{
+
+                newSet = createDefaultSet(" ");
+                angular.forEach(checkedDays, function (uncheckedDay, key) {
+                    angular.forEach(newSet.days, function (day, key) {
+                        if (uncheckedDay === day.name) {
+                            day.checked = false;
+                        }
+                    });
+                });
+                $scope.Sets.push(newSet)
+            }
+        };
+
+        /*
+        * delete set
+        */
+        $scope.deleteSet = function (index) {
+            $scope.Sets.splice(index, 1);
+        };
+
+        /**
+        * checkbox click action, uncheck all other set's day
+        */
+        $scope.checkboxClicked = function (dayIndex, SetIndex) {
+            var temp = $scope.Sets[SetIndex].days[dayIndex].checked;
+            angular.forEach($scope.Sets, function (set, key) {
+                angular.forEach(set.days, function (day, key) {
+                    if ($scope.Sets[SetIndex].days[dayIndex].name === day.name)
+                        day.checked = false;
+                });
+            });
+            $scope.Sets[SetIndex].days[dayIndex].checked = temp;
+        }
+
+        /**
+        * Function to check if from_date and to_dates are selected in the calender
+        */
+        $scope.allFieldsFilled = function () {
+
+            var anyOneDayisChecked = false;
+            angular.forEach($scope.Sets, function (set, key) {
+                angular.forEach(set.days, function (day, key) {
+                    if (day.checked)
+                        anyOneDayisChecked = true;
+                });
+            });
+
+            if ($scope.isFromDateSelected && $scope.isToDateSelected && anyOneDayisChecked) {
+                return false;
+            } else
+                return true;
+        };
+
+        /**
+        * Create the default set of days for display
+        * @param {String} name of the set
+        * @return {Object} Sets with all days set to true
+        */
+        var createDefaultSet = function (setName) {
+
+            var sets = [{
+                "setName": setName,
+                'days': [{
                     'name': 'MON',
                     'checked': true
                 }, {
@@ -146,54 +177,12 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
                 }, {
                     'name': 'SUN',
                     'checked': true
-                }];
+                }]
+            }];
+            return sets;
 
-                angular.forEach(checkedDays, function (uncheckedDay, key) {
-                    angular.forEach(newSet.days, function (day, key) {
-                        if (uncheckedDay === day.name) {
-                            day.checked = false;
-                        }
-                    });
-                });
-                $scope.Sets.push(newSet)
-            }
-        };
-        /*
-         * delete set
-         */
-
-        $scope.deleteSet = function (index) {
-            $scope.Sets.splice(index, 1);
-        };
-        /*
-         * checkbox click action,uncheck all other set's day
-         */
-        $scope.checkboxClicked = function (dayIndex, SetIndex) {
-            var temp = $scope.Sets[SetIndex].days[dayIndex].checked;
-            angular.forEach($scope.Sets, function (set, key) {
-                angular.forEach(set.days, function (day, key) {
-                    if ($scope.Sets[SetIndex].days[dayIndex].name === day.name)
-                        day.checked = false;
-                });
-            });
-            $scope.Sets[SetIndex].days[dayIndex].checked = temp;
         }
 
-
-        $scope.allFieldsFilled = function () {
-
-            var anyOneDayisChecked = false;
-            angular.forEach($scope.Sets, function (set, key) {
-                angular.forEach(set.days, function (day, key) {
-                    if (day.checked)
-                        anyOneDayisChecked = true;
-                });
-            });
-
-            if ($scope.isFromDateSelected && $scope.isToDateSelected && anyOneDayisChecked) {
-                return false;
-            } else
-                return true;
-        };
-    }
-]);
+        $scope.setUpData();
+    
+}]);
