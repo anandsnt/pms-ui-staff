@@ -166,6 +166,14 @@ admin.controller('ADRulesRestrictionCtrl', [
                     $scope.singleRule = data;
                     $scope.singleRule.policy_type = 'DEPOSIT_REQUEST';
 
+                    // need to split HH:MM into individual keys
+                    if ( $scope.singleRule.advance_time ) {
+                        $scope.singleRule.advance_hour = $scope.singleRule.advance_time.split(':')[0];
+                        $scope.singleRule.advance_min = $scope.singleRule.advance_time.split(':')[1];
+
+                        console.log($scope.singleRule.advance_time);
+                    };
+
                     $scope.showCancelForm = false;
                     $scope.showDepositForm = true;
                 }
@@ -238,6 +246,19 @@ admin.controller('ADRulesRestrictionCtrl', [
 
                     $scope.$emit('hideLoader');
                 };
+
+                // need to combine individuals HH:MM to single entry
+                // and remove the individuals before posting
+                // NOTE: since this is not a required field, we are ignoring
+                // a case where user only entered MM
+                if ( $scope.singleRule.advance_hour || $scope.singleRule.advance_min ) {
+                    $scope.singleRule.advance_time = $scope.singleRule.advance_hour + ':' + $scope.singleRule.advance_min;
+
+                    var withoutEach = _.omit($scope.singleRule, 'advance_hour');
+                    withoutEach = _.omit(withoutEach, 'advance_min');
+
+                    $scope.singleRule = withoutEach;
+                }; 
 
                 $scope.invokeApi(ADRulesRestrictionSrv.saveRule, $scope.singleRule, saveCallback);
             };

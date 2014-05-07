@@ -36,8 +36,8 @@
 								value="singleRule.name"
 								name="name"
 								id="name"
-								label="Request name"
-								placeholder="Enter the request name"
+								label="Policy name"
+								placeholder="Enter the Policy name"
 								required="yes"></ad-textbox>
 
 							<ad-textarea rows="4"
@@ -47,7 +47,7 @@
 								name="desc"
 								id="desc"
 								label="Description"
-								placeholder="Enter the request description"
+								placeholder="Enter the policy description"
 								required="yes"></ad-textarea>
 						</fieldset>
 
@@ -69,7 +69,7 @@
 									</label>
 									<div class="select">
 										<select name="amount-type-id" id="amount-type-id" ng-model="singleRule.amount_type">
-											<option value=""></option>
+											<option value="" data-text="Not set" class="placeholder">Choose a value</option>
 											<option value="amount">Amount</option>
 											<option value="percent">Percent</option>
 											<option value="day">Day</option>
@@ -85,21 +85,39 @@
 								</label>
 								<div class="select">
 									<select name="amount-type-id" id="amount-type-id" ng-model="singleRule.post_type_id">
-										<option value=""></option>
+										<option value="" data-text="Not set" class="placeholder">Choose a value</option>
 										<option value="night">Night</option>
 										<option value="stay">Stay</option>
 									</select>
 								</div>
 							</div>
 
-							<div class="entry">
+							<div class="entry margin-right">
 								<ad-textbox styleclass="full-width"
 									value="singleRule.advance_days"
 									name="name"
 									id="name"
 									label="Days In advance"
-									placeholder="Enter the number of days"
-									required="yes"></ad-textbox>
+									placeholder="Enter the number of days"></ad-textbox>
+							</div>
+							<div class="entry no-margin-right">
+								<div class="entry full-width">
+									<label>Time</label>
+									<div>
+										<div class="select select-col col1-2">
+											<select ng-model="singleRule.advance_hour" name="hotel-checkin-hour" id="hotel-checkin-hour" class="styled">
+												<option value="" data-text="Not set" class="placeholder">HH</option>
+												<option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==singleRule.advance_hour" >{{i}}</option>
+											</select>
+										</div>
+										<div class="select select-col col1-2">
+											<select ng-model="singleRule.advance_min" name="hotel-checkin-minute" id="hotel-checkin-minutes">
+												<option value="" data-text="Not set" class="placeholder">MM</option>
+												<option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==singleRule.advance_min" >{{i}}</option>
+											</select>
+										</div>
+									</div>
+								</div>
 							</div>
 
 							<div class="entry full-width radio-check">
