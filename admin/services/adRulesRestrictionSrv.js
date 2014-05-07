@@ -1,112 +1,114 @@
-admin.service('ADRulesRestrictionSrv',
-  [
+admin.service('ADRulesRestrictionSrv', [
     '$q',
     'ADBaseWebSrvV2',
     function($q, ADBaseWebSrvV2) {
     
-      /*
-      * To fetch rules list
-      * 
-      * @param {object} contains page and per_page params
-      * @return {object} defer promise
-      */	
-      this.fetch = function(params) {
-        var deferred = $q.defer(),
-            url      = '/api/restriction_types',
-            params   = params || {};
+        /*
+        * To fetch restrictions list
+        * 
+        * @param {object} contains page and per_page params
+        * @return {object} defer promise
+        */	
+        this.fetchRestrictions = function(params) {
+            var deferred = $q.defer(),
+                url      = '/api/restriction_types',
+                params   = params || {};
 
-        ADBaseWebSrvV2.getJSON(url, params)
-          .then(function(data) {
-            deferred.resolve(data);
-          }, function(errorMessage) {
-            deferred.reject(errorMessage);
-          });
+            ADBaseWebSrvV2.getJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
 
-        return deferred.promise;
-      };
+            return deferred.promise;
+        };
 
 
-      /*
-      * To handle switch toggle
-      * 
-      * @param {object} contains rule id and status
-      * @return {object} defer promise
-      */
-      this.toggleSwitch = function(data) {
-        var deferred = $q.defer(),
-            id       = data.id,
-            data     = { 'status': data.status },
-            url      = '/api/restriction_types/' + id + '/activate';
+        /*
+        * To activate or deactivate a restriction
+        * 
+        * @param {object} contains rule id and status
+        * @return {object} defer promise
+        */
+        this.toggleSwitch = function(data) {
+            var deferred = $q.defer(),
+                id       = data.id,
+                data     = { 'status': data.status },
+                url      = '/api/restriction_types/' + id + '/activate';
 
-        ADBaseWebSrvV2.postJSON(url, data)
-          .then(function(data) {
-            deferred.resolve(data);
-          },function(data){
-            deferred.reject(data);
-          });
+            ADBaseWebSrvV2.postJSON(url, data)
+                .then(function(data) {
+                    deferred.resolve(data);
+                },function(data){
+                    deferred.reject(data);
+                });
 
-        return deferred.promise;
-      };
+            return deferred.promise;
+        };
 
-      /*
-      * To fetch rules list
-      * 
-      * @param {object} contains page and per_page params
-      * @return {object} defer promise
-      */  
-      this.fetchPolicy = function(params) {
-        var deferred = $q.defer(),
-            url      = '/api/policies';
 
-        ADBaseWebSrvV2.getJSON(url, params)
-          .then(function(data) {
-            deferred.resolve(data);
-          }, function(errorMessage) {
-            deferred.reject(errorMessage);
-          });
+        /*
+        * To fetch rules list for a particular restriction
+        * 
+        * @param {object} contains page and per_page params
+        * @return {object} defer promise
+        */  
+        this.fetchRules = function(params) {
+            var deferred = $q.defer(),
+                url      = '/api/policies';
 
-        return deferred.promise;
-      };
+            ADBaseWebSrvV2.getJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
 
-      /*
-      * save a new rule
-      * 
-      * @param {object} contains page and per_page params
-      * @return {object} defer promise
-      */  
-      this.postPolicy = function(params) {
-        var deferred = $q.defer(),
-            url      = '/api/policies';
+            return deferred.promise;
+        };
 
-        ADBaseWebSrvV2.postJSON(url, params)
-          .then(function(data) {
-            deferred.resolve(data);
-          }, function(errorMessage) {
-            deferred.reject(errorMessage);
-          });
 
-        return deferred.promise;
-      };
+        /*
+        * Save a newly created rule under a particular restriction
+        * 
+        * @param {object} contains page and per_page params
+        * @return {object} defer promise
+        */  
+        this.saveRule = function(params) {
+            var deferred = $q.defer(),
+                url      = '/api/policies';
 
-      /*
-      * update a existing rule
-      * 
-      * @param {object} contains page and per_page params
-      * @return {object} defer promise
-      */  
-      this.putPolicy = function(params) {
-        var deferred = $q.defer(),
-            url      = '/api/policies';
+            ADBaseWebSrvV2.postJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
 
-        ADBaseWebSrvV2.putJSON(url, params)
-          .then(function(data) {
-            deferred.resolve(data);
-          }, function(errorMessage) {
-            deferred.reject(errorMessage);
-          });
+            return deferred.promise;
+        };
 
-        return deferred.promise;
-      };
+        /*
+        * update a existing rule under a particular restriction
+        * 
+        * @param {object} contains page and per_page params
+        * @return {object} defer promise
+        */  
+        this.updateRule = function(dataWith) {
+            var deferred = $q.defer(),
+                url      = '/api/policies/' + dataWith.id,
+                data     = _.omit(dataWith, 'id');
+
+            ADBaseWebSrvV2.putJSON(url, data)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
 
       /*
       * To delete a particular rule
@@ -114,7 +116,7 @@ admin.service('ADRulesRestrictionSrv',
       * @param {object} contains page and per_page params
       * @return {object} defer promise
       */  
-      this.delPolicy = function(params) {
+      this.deleteRule = function(params) {
         var deferred = $q.defer(),
             url      = '/api/policies/' + params.id;
 

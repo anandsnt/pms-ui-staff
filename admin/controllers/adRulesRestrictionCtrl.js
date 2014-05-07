@@ -39,7 +39,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.total = data.total_count;
             };
 
-            $scope.invokeApi(ADRulesRestrictionSrv.fetch, {}, fetchHotelLikesSuccessCallback);
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchRestrictions, {}, fetchHotelLikesSuccessCallback);
         };
 
         $scope.fetchRestrictions();
@@ -116,7 +116,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.$emit('hideLoader');
             };
 
-            $scope.invokeApi(ADRulesRestrictionSrv.fetchPolicy, { policy_type: ruleType }, callback);
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchRules, { policy_type: ruleType }, callback);
         };
 
 
@@ -193,7 +193,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 saveCallback,
                 updateCallback;
 
-            // save new rule
+            // if we are in update (or edit) mode
             if ( $scope.updateRule ) {
                 updateCallback = function(data) {
                     if ( from === 'Cancellation Penalties' ) {
@@ -217,7 +217,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                     $scope.$emit('hideLoader');
                 };
 
-                $scope.invokeApi(ADRulesRestrictionSrv.putPolicy, $scope.singleRule, updateCallback);
+                $scope.invokeApi(ADRulesRestrictionSrv.updateRule, $scope.singleRule, updateCallback);
             } else {
                 saveCallback = function(data) {
                     if ( from === 'Cancellation Penalties' ) {
@@ -239,7 +239,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                     $scope.$emit('hideLoader');
                 };
 
-                $scope.invokeApi(ADRulesRestrictionSrv.postPolicy, $scope.singleRule, saveCallback);
+                $scope.invokeApi(ADRulesRestrictionSrv.saveRule, $scope.singleRule, saveCallback);
             };
 
         };
@@ -266,7 +266,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.$emit('hideLoader');
             };
 
-            $scope.invokeApi(ADRulesRestrictionSrv.delPolicy, { id: rule.id }, callback);
+            $scope.invokeApi(ADRulesRestrictionSrv.deleteRule, { id: rule.id }, callback);
         };
     }
 ]);	
