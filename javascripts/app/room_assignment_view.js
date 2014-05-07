@@ -386,7 +386,6 @@ var RoomAssignmentView = function(viewDom){
     
     var postParams = {};
     postParams.reservation_id = currentReservation;
-    postParams.room_number = roomSelected;
     
   	var webservice = new WebServiceInterface();
   	var successCallBackParams = {
@@ -404,14 +403,15 @@ var RoomAssignmentView = function(viewDom){
 	    
 	if(that.initialRoomType === that.selectedRoomType){
 		console.log("same room type selected");
+		postParams.room_number = roomSelected;
 		var url = '/staff/reservation/modify_reservation';
 		webservice.postJSON(url, options);
     }
     else{
     	console.log(" diff room type selectd");
-    	
+    	postParams.room_no = roomSelected;
     	var roomTypeChargeModal = new RoomTypeChargeModal(options);
-			roomTypeChargeModal.initialize();
+		roomTypeChargeModal.initialize();
     }
 
   };

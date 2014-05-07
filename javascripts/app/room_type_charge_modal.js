@@ -8,18 +8,15 @@ var RoomTypeChargeModal = function(options) {
 	};
 	
 	this.okButtonClicked = function(){
-		that.hide();
 		
 		var roomTypeCharge = that.myDom.find("#room-type-charge").val();
-		console.log("roomTypeCharge ==> "+roomTypeCharge);
+		options.requestParameters.upsell_amount = roomTypeCharge;
 		
-		console.log(options);
-		options.requestParameters.upsell_charge = roomTypeCharge;
-		console.log(options);
-		
-		var url = '/staff/reservation/upgrade_room';
+		var url = '/staff/reservations/upgrade_room';
 		var webservice = new WebServiceInterface();
 		webservice.postJSON(url, options);
+		
+		that.hide();
 		
 	};
 };
