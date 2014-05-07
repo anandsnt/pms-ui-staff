@@ -1,4 +1,4 @@
-<div role="tabpanel" id="reservation-4844453" data-reservation-status="CHECKING_IN" data-reservation-id="35889" class="reservation ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-10" aria-hidden="false" aria-expanded="true">
+<div ng-show="reservationDisplayStatus" role="tabpanel" id="reservation-4844453" data-reservation-status="CHECKING_IN" data-reservation-id="35889" class="reservation ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-10" aria-hidden="false" aria-expanded="true">
 	<!-- Reservation header -->
 	<div class="reservation-header">
 		<div class="actions">
@@ -37,7 +37,7 @@
 	</ul>
 
 	<div class="reservation-content scrollable check-in"  >
-		<div ng-iscroll="result_listing" ng-iscroll-delay="1000" style="position:absolute; top:0px; bottom: 0px; left:0px; width: 100%;">
+		<!-- <div ng-iscroll="result_details" ng-iscroll-delay="1000" style="position:absolute; top:0px; bottom: 0px; left:0px; width: 100%;"> -->
 		<div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<h2 class="h1"> Reservation {{reservationData.reservation_card.confirmation_num}}</h2>
@@ -179,7 +179,7 @@
 			</div>
 
 		</div>
-		</div>
+		<!-- </div> -->
 	</div>
 	<!-- Reservation actions pane -->
 	<div class="reservation-actions">
@@ -205,4 +205,39 @@
 		<a id="post-charge" class="button white green-text">Add Charge</a>
 	</div>
 
+</div>
+
+
+<div class="reservation no-content" ng-show="countUpcoming == 0 && !reservationDisplayStatus && timeline=='upcoming'">
+	<div class="info">
+		<span class="icon-no-content icon-room"></span>
+		<strong class="h1">No upcoming reservations</strong>
+		<span class="h2"> It looks like
+			Revathi
+			A10
+			doesn’t have an upcoming reservation. Would you like to <a class="open-modal-fix">create one</a> ? </span>
+	</div>
+</div>
+
+
+
+<div class="reservation no-content" ng-show="countCurrent == 0 && !reservationDisplayStatus && timeline=='current'">
+	<div class="info">
+		<span class="icon-no-content icon-room"></span>
+		<strong class="h1">No Current reservations</strong>
+		<span class="h2"> It looks like
+			Saurav
+			Ganguly
+			doesn’t have any reservation today. Would you like to <a class="open-modal-fix">create one</a> ? </span>
+	</div>
+</div>
+
+<div class="reservation no-content" ng-show="countHistory == 0 && !reservationDisplayStatus && timeline=='history'">
+	<div class="info">
+		<span class="icon-no-content icon-room"></span>
+		<strong class="h1">No past reservations</strong>
+		<span class="h2"> We don't have past reservations for
+			Revathi
+			A10 </span>
+	</div>
 </div>
