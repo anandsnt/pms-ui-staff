@@ -1,8 +1,24 @@
 sntRover.controller('guestCardController', ['$scope', 'Likes', '$window','RVContactInfoSrv', function($scope, Likes, $window, RVContactInfoSrv){
 
+
+$scope.decloneUnwantedKeysFromContactInfo =  function(){
+		// API call needs only rest of keys in the data
+    var	unwantedKeys = ["address","birthday","country",
+					    "is_opted_promotion_email","job_title",
+					    "mobile","passport_expiry",
+					    "passport_number","postal_code",
+					    "reservation_id","title","user_id",
+					    "works_at","birthday"
+  					  ];
+    var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys); 
+    return declonedData;
+};
+
 // init guestcard header data
-var currentGuestCardHeaderData ={};
+var declonedData = $scope.decloneUnwantedKeysFromContactInfo();
+var currentGuestCardHeaderData = declonedData;
 $scope.current = 'guest-contact';
+
 // to be changed
 $scope.guestCardHeight = 90;
 
@@ -19,6 +35,7 @@ $scope.guestCardClick = function($event){
 	//console.log($event);
 };
 
+
 $scope.updateData =  function(){
 	var saveUserInfoSuccessCallback = function(data){
 		$scope.$emit('hideLoader');
@@ -26,15 +43,7 @@ $scope.updateData =  function(){
 	var saveUserInfoFailureCallback = function(data){
 		$scope.$emit('hideLoader');
 	};
-    // API call needs only rest of keys in the data
-    var	unwantedKeys = ["address","birthday","country",
-					    "is_opted_promotion_email","job_title",
-					    "mobile","passport_expiry",
-					    "passport_number","postal_code",
-					    "reservation_id","title","user_id",
-					    "works_at","birthday"
-  					  ];
-    var newUpdatedData = dclone($scope.guestCardData.contactInfo, unwantedKeys); 
+    var newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
     // check if there is any chage in data.if so call API for updating data
     if(JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(newUpdatedData)){
     	currentGuestCardHeaderData =newUpdatedData; 
