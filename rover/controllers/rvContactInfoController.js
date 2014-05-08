@@ -2,7 +2,6 @@ sntRover.controller('RVContactInfoController',['$scope','RVContactInfoSrv', func
 
 
 $scope.saveContactInfo = function(){
-	console.log("blur")
       var saveUserInfoSuccessCallback = function(data){
 	        $scope.$emit('hideLoader');
 	    };

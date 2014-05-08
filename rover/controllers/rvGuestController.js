@@ -25,18 +25,13 @@ $scope.guestCardHeight = 90;
 // tab actions
 $scope.guestCardTabSwitch = function(div){
 
-	if($scope.current ==='guest-contact')
+	if($scope.current ==='guest-contact' && div !== 'guest-contact')
 		$scope.$broadcast('saveContactInfo');
 	$scope.current = div;
 };
 
-$scope.guestCardClick = function($event){
 
-	//console.log($event);
-};
-
-
-$scope.updateData =  function(){
+$scope.updateContactInfo =  function(){
 	var saveUserInfoSuccessCallback = function(data){
 		$scope.$emit('hideLoader');
 	};
@@ -53,6 +48,14 @@ $scope.updateData =  function(){
     $scope.invokeApi(RVContactInfoSrv.saveContactInfo,data,saveUserInfoSuccessCallback,saveUserInfoFailureCallback); 
 } 
 };
+
+// handle click outside tabs
+$scope.guestCardClick = function($event){
+	if($event.target.id != 'guest-contact'){
+		$scope.$broadcast('saveContactInfo');
+	}
+};
+
 
 $scope.guestCardToggle = function(){
 	

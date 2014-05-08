@@ -9,9 +9,9 @@
 			<form action="" id="change-name" method="post" name="change-name" class="ng-pristine ng-valid">
 				<div class="holder">
 					<div class="entry">
-						<input type="text" class="masked-input h1" placeholder=""  ng-model="guestCardData.contactInfo.first_name" ng-blur="updateData()">
+						<input type="text" class="masked-input h1" placeholder=""  ng-model="guestCardData.contactInfo.first_name" ng-blur="updateContactInfo()">
 						
-						<input type="text" class="masked-input h1" placeholder="" value="Achari" ng-model="guestCardData.contactInfo.last_name" ng-blur="updateData()">
+						<input type="text" class="masked-input h1" placeholder="" value="Achari" ng-model="guestCardData.contactInfo.last_name" ng-blur="updateContactInfo()">
 						
 					</div>
 					<strong class="status"> </strong>
@@ -23,10 +23,10 @@
 					</div>
 				</div>
 				<div class="holder data">
-					<input type="text" data-size="0" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.city" ng-blur="updateData()">
-					<input type="text" data-size="0" class="masked-input" ng-model="guestCardData.contactInfo.state" ng-blur="updateData()">
-					<input type="tel" data-size="0" class="masked-input icons icon-gc-phone" ng-model="guestCardData.contactInfo.phone" ng-blur="updateData()">
-					<input type="email" data-size="0" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email_address" ng-blur="updateData()">
+					<input type="text" data-size="0" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.city" ng-blur="updateContactInfo()">
+					<input type="text" data-size="0" class="masked-input" ng-model="guestCardData.contactInfo.state" ng-blur="updateContactInfo()">
+					<input type="tel" data-size="0" class="masked-input icons icon-gc-phone" ng-model="guestCardData.contactInfo.phone" ng-blur="updateContactInfo()">
+					<input type="email" data-size="0" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email_address" ng-blur="updateContactInfo()">
 				</div>
 			</form>
 		</header>
