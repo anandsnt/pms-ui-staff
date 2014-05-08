@@ -203,7 +203,7 @@ admin.config([
 
 
 		$stateProvider.state('admin.rulesRestrictions', {
-			templateUrl: '/assets/partials/rates/adRulesRestriction.html',
+			templateUrl: '/assets/partials/rulesRestriction/adRulesRestriction.html',
 			controller: 'ADRulesRestrictionCtrl',
 			url : '/restriction_types'
 		});

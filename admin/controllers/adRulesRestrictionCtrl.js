@@ -14,7 +14,7 @@ admin.controller('ADRulesRestrictionCtrl', [
         $scope.init();
 
         /**
-        * To fetch hotel likes
+        * To fetch restrictions list
         */
         $scope.fetchRestrictions = function() {
             var fetchHotelLikesSuccessCallback = function(data) {
@@ -46,9 +46,6 @@ admin.controller('ADRulesRestrictionCtrl', [
             // lets fetch post_types too
             $scope.invokeApi(ADRulesRestrictionSrv.fetchRefVales, { type: 'post_type' }, function(data) {
                 $scope.postTypes = data;
-
-                console.log( $scope.postTypes );
-
                 $scope.$emit('hideLoader');
             });
         };
@@ -74,6 +71,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.invokeApi(ADRulesRestrictionSrv.toggleSwitch, data, toggleSwitchLikesSuccessCallback);
         }
 
+        // get templates for editable restrictions
         $scope.getTemplateUrl = function() {
             
             if ( !this.item ) {
@@ -86,11 +84,11 @@ admin.controller('ADRulesRestrictionCtrl', [
             };
 
             if ( this.item.description === 'Cancellation Penalties' ) {
-                return '/assets/partials/rates/adCancellationPenaltiesRules.html';
+                return '/assets/partials/rulesRestriction/adCancellationPenaltiesRules.html';
             };
 
             if ( this.item.description === 'Deposit Requested' ) {
-                return '/assets/partials/rates/adDepositRequestRules.html';
+                return '/assets/partials/rulesRestriction/adDepositRequestRules.html';
             };
         };
 
@@ -129,7 +127,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.invokeApi(ADRulesRestrictionSrv.fetchRules, { policy_type: ruleType }, callback);
         };
 
-
+        // open the form to add a new rule
         $scope.openAddNewRule = function() {
             $scope.rulesTitle = 'New';
 
@@ -155,6 +153,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             }
         };
 
+        // open the form to edit a rule
         $scope.editSingleRule = function(rule, from) {
             var rule = rule,
                 from = from;
@@ -206,6 +205,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.showDepositForm = false;
         };
 
+        // save a new rule or update an edited rule
         $scope.saveUpdateRule = function(from) {
             var from = from,
                 saveCallback,
@@ -275,6 +275,7 @@ admin.controller('ADRulesRestrictionCtrl', [
 
         };
 
+        // delete a rule
         $scope.deleteRule = function(rule, from) {
 
             // keep them in local context of deleteRule function as
