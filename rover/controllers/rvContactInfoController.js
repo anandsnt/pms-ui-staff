@@ -2,6 +2,7 @@ sntRover.controller('RVContactInfoController',['$scope','RVContactInfoSrv', func
 
 
 $scope.saveContactInfo = function(){
+	console.log("blur")
       var saveUserInfoSuccessCallback = function(data){
 	        $scope.$emit('hideLoader');
 	    };
@@ -9,7 +10,7 @@ $scope.saveContactInfo = function(){
 	        $scope.$emit('hideLoader');
 	    };
 	    var data ={'data':$scope.guestCardData.contactInfo,
-	    			'userId':$scope.guestCardData.userId
+	    			'userId':$scope.guestCardData.contactInfo.user_id
 	    		}
 	    $scope.invokeApi(RVContactInfoSrv.saveContactInfo,data,saveUserInfoSuccessCallback,saveUserInfoFailureCallback);  
 

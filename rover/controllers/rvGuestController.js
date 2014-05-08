@@ -1,4 +1,4 @@
-sntRover.controller('guestCardController', ['$scope', 'Likes', '$window', 'RVReservationCardSrv', function($scope, Likes, $window, RVReservationCardSrv){
+sntRover.controller('guestCardController', ['$scope', 'Likes', '$window','RVContactInfoSrv', function($scope, Likes, $window, RVContactInfoSrv){
 	
 	console.log("--------------")
 	console.log($scope.guestCardData.contactInfo);
@@ -20,6 +20,29 @@ sntRover.controller('guestCardController', ['$scope', 'Likes', '$window', 'RVRes
 		$scope.current = div;
 	};
 	
+	$scope.updateData =  function(){
+ 		var saveUserInfoSuccessCallback = function(data){
+	        $scope.$emit('hideLoader');
+	    };
+	    var saveUserInfoFailureCallback = function(data){
+	        $scope.$emit('hideLoader');
+	    };
+
+	    var	unwantedKeys = ["address","birthday","country",
+							"is_opted_promotion_email","job_title",
+							"mobile","passport_expiry",
+							"passport_number","postal_code",
+							"reservation_id","title","user_id",
+							"works_at","birthday"
+							];
+		var dataTobeUpdated = dclone($scope.guestCardData.contactInfo, unwantedKeys); 
+
+	    var data ={'data':dataTobeUpdated,
+	    			'userId':$scope.guestCardData.contactInfo.user_id
+	    		}
+	    $scope.invokeApi(RVContactInfoSrv.saveContactInfo,data,saveUserInfoSuccessCallback,saveUserInfoFailureCallback);  
+	};
+
 	$scope.guestCardToggle = function(){
 		
 		$scope.guestCardHeight = ($scope.guestCardHeight === 90) ? 550:90;
