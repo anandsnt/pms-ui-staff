@@ -84,7 +84,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
 
         $scope.moveSingleToDouble = function (parentIndex, index) {
             if ($scope.data.sets[parentIndex].room_rates[index].single != "" && $scope.data.sets[parentIndex].room_rates[index].hasOwnProperty("single")) {
-                $scope.data.sets[parentIndex].room_rates[index].double = $scope.data.sets[parentIndex].room_types[index].single;
+                $scope.data.sets[parentIndex].room_rates[index].double = $scope.data.sets[parentIndex].room_rates[index].single;
             }
         };
 
