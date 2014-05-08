@@ -7,11 +7,11 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
             fetchData();
         };
 
-        $scope.is_promotional = function(){
+        $scope.isPromotional = function(){
             var ispromo =false;
             if($scope.rateTypesDetails){
                 angular.forEach($scope.rateTypesDetails.rate_types, function(rate_type){
-                    if($scope.rateData.rate_type_id === rate_type.id){
+                    if($scope.rateData.rate_type.id === rate_type.id){
                         if(rate_type.name === "Promotional"){
                             ispromo = true;
                         }
@@ -22,6 +22,23 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 });
             }
             return ispromo;
+        }
+
+        $scope.hideBasedOn = function(){
+            var hideBasedOn =false;
+            if($scope.rateTypesDetails){
+                angular.forEach($scope.rateTypesDetails.rate_types, function(rate_type){
+                    if($scope.rateData.rate_type.id === rate_type.id){
+                        if (['Corporate Rates', 'Consortia Rates', 'Government Rates'].indexOf(rate_type.name) >= 0){
+                            hideBasedOn = true;
+                        }
+                        else{
+                            hideBasedOn = false;
+                        }
+                    }
+                });
+            }
+            return hideBasedOn;
         }
 
         /*
@@ -45,7 +62,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
         var fetchData = function () {
 
             var fetchRateTypesSuccessCallback = function (data) {
-                console.log(JSON.stringify(data));
                 $scope.rateTypesDetails = data;
                 $scope.$emit('hideLoader');
             };
@@ -61,11 +77,11 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
         */
         $scope.rateTypeChanged = function(){
             var rateTypeSelected = $scope.rateData.rate_type.name;
-            var rateTypes = ['Corporate Rates', 'Consortia Rates', 'Government Rates']
-            if(isAnyMatch(rateTypeSelected, ['Corporate Rates', 'Consortia Rates', 'Government Rates'])){
+            if (['Corporate Rates', 'Consortia Rates', 'Government Rates'].indexOf(rateTypeSelected) >= 0){
                 $scope.hideBasedOn = true;
-            }else{
-                $scope.hideBasedOn = false;
+            }
+            else if(rateTypeSelected === 'Promotional'){
+                $scope.isPromotional = true;
             }
         };
 

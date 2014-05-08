@@ -5,7 +5,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.is_edit = false;
             // activate Rate Details View
             $scope.rateMenu = 'Details';
-            $scope.hideBasedOn = false;
             // intialize rateData dictionary - START
             $scope.rateData = {
                 "id": "",
@@ -91,9 +90,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 angular.forEach($scope.rateData.date_ranges, function(dateRange){
                     dateRange.id = dateRange.id * -1;
                 });
-
-                console.log(JSON.stringify($scope.rateData));
-
             }
             $scope.$broadcast('onRateDefaultsFetched');
         }
@@ -124,7 +120,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             // navigate to step where user last left unsaved
             if($scope.rateData.date_ranges.length > 0){
                 date_ranges_length = $scope.rateData.date_ranges.length
-                console.log($scope.rateData.date_ranges[6]);
                 active_item = "dateRange."+$scope.rateData.date_ranges[date_ranges_length-1].id
                 $scope.$emit("changeMenu", active_item);
             }
