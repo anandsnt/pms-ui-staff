@@ -36,7 +36,11 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
             };
             $scope.invokeApi(ADRatesAddDetailsSrv.fetchRateTypes, {}, fetchRateTypesSuccessCallback, fetchRateTypesFailureCallback);
         }
-
+        /**
+        * Method to show/hide the based on range selection.
+        * Based on rate will not be available, 
+        * if it the rate type is 'Corporate Rates', 'Consortia Rates', 'Government Rates'
+        */
         $scope.rateTypeChanged = function(){
             var rateTypeSelected = $scope.rateData.rate_type.name;
             var rateTypes = ['Corporate Rates', 'Consortia Rates', 'Government Rates']
