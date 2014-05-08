@@ -1,4 +1,4 @@
-<form method="post" id="reservationcard-loyalty" class="block-item item-loyalty has-buttons float" action="../stay-card/check-in/">
+<form method="post" id="reservationcard-loyalty" class="block-item item-loyalty has-buttons float" ng-controller="reservationCardLoyalty">
 	<div class="block-title">
 		<h3>Loyalty</h3>
 	</div>
@@ -18,9 +18,13 @@
 
 		</select>
 		<!-- Calculates the default selected loyalty -->
-		<div id="reservationLoyalty" class="selected" >
+		<div id="reservationLoyalty" class="selected" ng-show="showSelectedLoyalty(reservationData.reservation_card.loyalty_level.selected_loyalty)">
 			<span class="value code"> {{selectedLoyalty.membership_type}}</span>
 			<span class="number"> Ending with <span class="value number"> {{selectedLoyalty.membership_card_number}} </span> </span>
+		</div>
+		<div id="reservationLoyalty" class="selected" ng-hide="showSelectedLoyalty(reservationData.reservation_card.loyalty_level.selected_loyalty)">
+			<span class="value code"> </span>
+			<span class="number"> Select Hotel Loyalty<span class="value number">  </span> </span>
 		</div>
 	</div>
 	<div class="actions">
