@@ -24,6 +24,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 },
                 "status": true,
                 "room_type_ids": [],
+                "promotion_code": "",
                 "date_ranges": []
             }
             // intialize rateData dictionary - END
@@ -137,8 +138,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         $scope.addNewDateRange = function(){
             $scope.rateMenu ='ADD_NEW_DATE_RANGE';
-            // TODO :: call reset calendar
-
+            // reset calendar
+            $scope.$broadcast('resetCalendar');
         };
 
         $scope.shouldShowAddNewDateRange = function(){

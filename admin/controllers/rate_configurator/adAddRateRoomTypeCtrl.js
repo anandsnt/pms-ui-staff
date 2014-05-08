@@ -48,8 +48,10 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv',  fun
                 $scope.assignedRoomTypes.push(room_type);
             } else if($scope.rateData.based_on.id == ""){
                 $scope.nonAssignedroomTypes.push(room_type);
-            } else if($scope.basedonRateData.room_type_ids.indexOf(room_type.id) >= 0){
-                $scope.nonAssignedroomTypes.push(room_type);
+            } else if($scope.basedonRateData){
+                if($scope.basedonRateData.room_type_ids.indexOf(room_type.id) >= 0){
+                    $scope.nonAssignedroomTypes.push(room_type);
+                }
             }
        });
        

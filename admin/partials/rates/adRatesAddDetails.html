@@ -25,8 +25,10 @@
         </fieldset>
         <fieldset class="holder right">
             <div></div>
+
             <div class="entry" ng-hide="hideBasedOn">
-                <label> Based On </label>
+                <label ng-hide="is_promotional()">Based On</label>
+                <label ng-show="is_promotional()">Copy From</label>
                 <div class="select">
                     <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
                         <option value="">select rate</option>   
@@ -52,8 +54,10 @@
                     </select>
                 </div>
             </div>
-        </div>
-    </fieldset>
+        </fieldset>
+        <fieldset class="holder left" ng-show="is_promotional()">
+                <ad-textbox inputtype="text" value="rateData.promotion_code" label = "Promotions Code" placeholder = "Enter Promotional Code" required="no"></ad-textbox>
+        </fieldset>
 </fieldset>
 <fieldset class="full-width">
     <ad-textarea rows="2" div-class="full-width" text-area-class="full-width" value="rateData.description" label = "Description " placeholder = "Enter rate description" required="true"></ad-textarea>
