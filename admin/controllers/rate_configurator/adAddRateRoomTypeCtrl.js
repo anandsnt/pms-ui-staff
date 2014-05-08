@@ -31,7 +31,14 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv',  fun
     /*
     * Method ivoked after fetching the rate details
     */
-    $scope.$on("onRateDefaultsFetched", function(e){
+    $scope.$on("ratesChanged", function(e){
+        $scope.calculateRoomLists();
+    });
+
+    /*
+    * Method ivoked after fetching the basedon rates
+    */
+    $scope.$on("basedonRatesChanged", function(e){
         $scope.calculateRoomLists();
     });
 

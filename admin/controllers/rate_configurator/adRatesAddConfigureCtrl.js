@@ -27,8 +27,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             $scope.currentClickedSet = -1;
         };
 
-        console.log("child initialize");
-
         $scope.$on("fetchLastDateRangeSet", function(e){
             console.log("inside sdfhsldjfl");
             // webservice call to fetch each date range details
@@ -69,8 +67,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
                         value.room_rates = room_rates;
                     }
                 });
-
-
 
             };
             // $scope.dateRange.id
@@ -151,41 +147,12 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         };
 
         $scope.saveDateRange = function () {
-            
-            /*if($scope.dateRange.id < 0){
-                $scope.saveDateRangeFirstTime();
-                return false;
-            }*/
 
             angular.forEach($scope.data.sets, function (value, key) {
                 $scope.saveSet(key);
             });
 
         };
-
-        /**
-        * If the rate is a based on rate, then save the entair date range data
-        */
-        /*$scope.saveDateRangeFirstTime = function(){
-            angular.forEach($scope.data.sets, function (set, key) {
-                delete set["id"];
-            });
-            var dateRangeData = {
-                'id': $scope.rateData.id,
-                'data': {
-                    'begin_date': $scope.dateRange.begin_date,
-                    'end_date': $scope.dateRange.end_date,
-                    'sets': $scope.data.sets
-                }
-            };
-          
-            var saveDateRangeSuccess = function(data){
-                $scope.$emit('hideLoader');
-            }
-            $scope.invokeApi(ADRatesRangeSrv.postDateRange, dateRangeData, saveDateRangeSuccess);
-        };
-*/
-
 
         $scope.popupCalendar = function () {
            // ADRatesConfigureSrv.setCurrentSetData($scope.data);

@@ -39,7 +39,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             }
         };
 
-
         /*
          * toogle different rate view
          */
@@ -50,7 +49,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             }
             $scope.rateMenu = value;
 
-
         });
 
         $scope.$on("errorReceived", function (e, value) {
@@ -58,14 +56,17 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         });
 
         /**
-        * Fetch the based on rate retails, if the rate has chosen a based on rate.
+        * Function ivoked from child classes when the rate details are changed.
         */
-        $scope.$on("updateBasedonRate", function(e){
-        	fetchBasedOnRateDetails(true);
+        $scope.$on("rateChangedFromDetails", function(e){
+            $scope.$broadcast('ratesChanged');
+            fetchBasedOnRateDetails();
         });
 
-
-        var fetchBasedOnRateDetails = function(update_rate_data){
+        /**
+        * Fetch the based on rate retails, if the rate has chosen a based on rate.
+        */
+        var fetchBasedOnRateDetails = function(){
             if($scope.rateData.based_on.id == undefined || $scope.rateData.based_on.id == ""){
                 return false;
             }
@@ -74,9 +75,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.basedonRateData = data;
                 $scope.basedonRateData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
                 $scope.basedonRateData.based_on = (data.based_on != null) ? data.based_on.id : '';
-                /*if(update_rate_data){
-                    updateRateDefaults();
-                }*/
+                //Broadcast an event to child classed to notify that the based on rates are changed.
+                $scope.$broadcast('basedonRatesChanged');
                 $scope.$emit('hideLoader');
             };
             $scope.invokeApi(ADRatesSrv.fetchDetails, {
@@ -95,6 +95,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.rate_type.name = (data.rate_type != null) ? data.rate_type.name : '';
 
             if (data.based_on) {
+                $scope.rateData.based_on.id = data.based_on.id;
                 $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value)
                 $scope.rateData.based_on.value_sign = data.based_on.value > 0 ? "+" : "-";
             } else {
