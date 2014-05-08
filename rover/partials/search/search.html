@@ -20,8 +20,8 @@
 						<li ng-repeat="row in results" ng-show="row.is_row_visible==true" >
 							<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
 							<a data-transition="inner-page" class="guest-check-in link-item float" ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation})">
-								<figure class="guest-image" ng-show="row.image!=''">
-									<img ng-src="{{row.image}}">
+								<figure ng-repeat="image in row.images" class="guest-image" ng-show="row.images.length!=0 ">
+									<img ng-src="{{image.guest_image}}">
 									<span class="vip" ng-show="row.vip==true">VIP</span>
 								</figure>
 
