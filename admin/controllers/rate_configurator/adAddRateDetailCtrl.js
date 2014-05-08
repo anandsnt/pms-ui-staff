@@ -105,9 +105,11 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
 
             // Save Rate Success Callback
             var saveSuccessCallback = function (data) {
-                if (data.id) {
-                    $scope.rateData.id = data.id;
-                }
+
+                //$scope.rateData.id = data.id;
+                //TODO: Uncomment below line and remove above, once Jon's API updates are in place
+                
+                $scope.manipulateData(data);
                 $scope.$emit('hideLoader');
                 $scope.$emit("changeMenu", 'Room types');
                 $scope.$emit("updateBasedonRate");

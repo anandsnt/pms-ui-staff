@@ -3,10 +3,10 @@
     <span class="italic_text">{{dateRange.begin_date | date:'MMMM dd, y'}}</span>
     <span style="margin:0 5px;">to</span>
     <span class="italic_text">{{dateRange.end_date | date:'MMMM dd, y'}}</span>  
-    <div ng-click="$emit('changeMenu', dateRange.id)" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+    <div ng-click="getDateRangeData(dateRange.id)" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
 </div>
 <!-- Expanded View -->
-    <div ng-show="rateMenu === 'dateRange.{{ dateRange.id }}'" ng-controller="ADRatesAddConfigureCtrl">
+    <div ng-show="rateMenu === 'dateRange.{{ dateRange.id }}'">
     <form class="form form-rate-config">
         <div style="width:100%;">
             <ul style="padding-left: 20px;">        

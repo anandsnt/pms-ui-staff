@@ -44,11 +44,12 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv',  fun
         $scope.assignedRoomTypes = [];
 
         angular.forEach($scope.availableRoomTypes, function(room_type){
+
             if ($scope.rateData.room_type_ids.indexOf(room_type.id) >=0){
                 $scope.assignedRoomTypes.push(room_type);
             } else if($scope.rateData.based_on.id == ""){
                 $scope.nonAssignedroomTypes.push(room_type);
-            } else if($scope.basedonRateData){
+            } else if($scope.basedonRateData.id != undefined){
                 if($scope.basedonRateData.room_type_ids.indexOf(room_type.id) >= 0){
                     $scope.nonAssignedroomTypes.push(room_type);
                 }

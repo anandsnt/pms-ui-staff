@@ -26,6 +26,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "promotion_code": "",
                 "date_ranges": []
             }
+
+            $scope.basedonRateData = {};
             // intialize rateData dictionary - END
             $scope.errorMessage = '';
             // webservice call to fetch rate details for edit
@@ -44,8 +46,11 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         $scope.$on("changeMenu", function (e, value) {
             if (!isNaN(parseInt(value))){
                 value = "dateRange."+value;
+                $scope.$broadcast('fetchDateRangeData');
             }
             $scope.rateMenu = value;
+
+
         });
 
         $scope.$on("errorReceived", function (e, value) {
@@ -69,9 +74,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 $scope.basedonRateData = data;
                 $scope.basedonRateData.rate_type = (data.rate_type != null) ? data.rate_type.id : ''
                 $scope.basedonRateData.based_on = (data.based_on != null) ? data.based_on.id : '';
-                if(update_rate_data){
+                /*if(update_rate_data){
                     updateRateDefaults();
-                }
+                }*/
                 $scope.$emit('hideLoader');
             };
             $scope.invokeApi(ADRatesSrv.fetchDetails, {
@@ -79,29 +84,13 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             }, fetchBasedonSuccess);
         }
 
-
-
-
-        var updateRateDefaults = function(){
-            if($scope.rateData.room_type_ids.length == 0){
-                // set basedon room types into rateData room types
-                $scope.rateData.room_type_ids = angular.copy($scope.basedonRateData.room_type_ids);
-                $scope.rateData.date_ranges = angular.copy($scope.basedonRateData.date_ranges);
-                angular.forEach($scope.rateData.date_ranges, function(dateRange){
-                    dateRange.id = dateRange.id * -1;
-                });
-            }
-            $scope.$broadcast('onRateDefaultsFetched');
-        }
-
-        // Fetch details success callback for rate edit
-
-        var rateDetailsFetchSuccess = function (data) {
-
-            $scope.hotel_business_date = data.business_date;
-            // set rate data for edit
-            $scope.rateData = data;
-            $scope.rateData.id = $stateParams.rateId;
+        $scope.manipulateData = function(data){
+            $scope.rateData.id = data.id;
+            $scope.rateData.name= data.name;
+            $scope.rateData.description = data.description;
+            $scope.rateData.promotion_code = data.promotion_code;
+            $scope.rateData.room_type_ids = data.room_type_ids;
+            $scope.rateData.date_ranges= data.date_ranges;
             $scope.rateData.rate_type.id = (data.rate_type != null) ? data.rate_type.id : '';
             $scope.rateData.rate_type.name = (data.rate_type != null) ? data.rate_type.name : '';
 
@@ -116,11 +105,24 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     "value_sign": ""
                 };
             }
-            // fetch basedOn Rate Details
+            
+        }
+
+        // Fetch details success callback for rate edit
+
+        var rateDetailsFetchSuccess = function (data) {
+
+            $scope.hotel_business_date = data.business_date;
+            // set rate data for edit
+            
+            
+            $scope.manipulateData(data);
+            $scope.rateData.id = $stateParams.rateId;
+
             // navigate to step where user last left unsaved
             if($scope.rateData.date_ranges.length > 0){
                 date_ranges_length = $scope.rateData.date_ranges.length
-                active_item = "dateRange."+$scope.rateData.date_ranges[date_ranges_length-1].id
+                active_item = "dateRange." + $scope.rateData.date_ranges[date_ranges_length-1].id;
                 $scope.$emit("changeMenu", active_item);
             }
             else{

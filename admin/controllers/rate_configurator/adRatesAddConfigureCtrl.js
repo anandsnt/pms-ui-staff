@@ -3,6 +3,14 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         //expand first set
         $scope.currentClickedSet = 0;
 
+        $scope.init = function(){
+            // in edit mode last date range data will be expanded and details can't by click
+            // so intiating fetching data
+            if($scope.rateMenu === ("dateRange." + $scope.dateRange.id)){
+                fetchData($scope.dateRange.id);
+            }
+        };
+
 
         // data range set expanded view
         $scope.setCurrentClickedSet = function (index) {
@@ -19,23 +27,31 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             $scope.currentClickedSet = -1;
         };
 
-        var fetchData = function () {
+        console.log("child initialize");
+
+        $scope.$on("fetchLastDateRangeSet", function(e){
+            console.log("inside sdfhsldjfl");
+            // webservice call to fetch each date range details
+            fetchData(id);
+        });
+
+        $scope.getDateRangeData = function(id){
+            // webservice call to fetch each date range details
+            fetchData(id);
+            $scope.$emit('changeMenu', id)
+        };
+
+        var fetchData = function (dateRangeId) {
 
             var fetchSetsInDateRangeSuccessCallback = function (data) {
                 $scope.$emit('hideLoader');
-                if($scope.dateRange.id < 0){
-                    console.log("beforr0");
-                    $scope.calculateTheRatesRestriction(data);
-                }
+                
                 $scope.data = data;
 
                 // Manually build room rates dictionary - if Add Rate
                 angular.forEach($scope.data.sets, function (value, key) {
                     
-                    if($scope.dateRange.id < 0){
-                        value.id = value.id * -1;
-                    }
-
+                  
                     room_rates = []
                     if (value.room_rates.length === 0) {
                         angular.forEach($scope.data.room_types, function (room_type, key) {
@@ -57,21 +73,14 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
 
 
             };
-
-            
-            var dateRangeId = $scope.dateRange.id;
-            if(dateRangeId < 0){
-                dateRangeId = dateRangeId * -1;
-            }
-
+            // $scope.dateRange.id
             $scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, 
                 {
                     "id": dateRangeId
                 }, fetchSetsInDateRangeSuccessCallback);
         };
 
-        // webservice call to fetch each date range details
-        fetchData();
+        
 
         $scope.saveSet = function (index) {
 
@@ -143,10 +152,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
 
         $scope.saveDateRange = function () {
             
-            if($scope.dateRange.id < 0){
+            /*if($scope.dateRange.id < 0){
                 $scope.saveDateRangeFirstTime();
                 return false;
-            }
+            }*/
 
             angular.forEach($scope.data.sets, function (value, key) {
                 $scope.saveSet(key);
@@ -157,7 +166,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         /**
         * If the rate is a based on rate, then save the entair date range data
         */
-        $scope.saveDateRangeFirstTime = function(){
+        /*$scope.saveDateRangeFirstTime = function(){
             angular.forEach($scope.data.sets, function (set, key) {
                 delete set["id"];
             });
@@ -175,7 +184,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             }
             $scope.invokeApi(ADRatesRangeSrv.postDateRange, dateRangeData, saveDateRangeSuccess);
         };
-
+*/
 
 
         $scope.popupCalendar = function () {
@@ -206,33 +215,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             return true;
         };
 
-        $scope.calculateTheRatesRestriction = function (data) {
-            var basedonValue = parseInt($scope.rateData.based_on.value_abs);
-            var basedonPlusMinus = $scope.rateData.based_on.value_sign;
-
-            angular.forEach(data.sets, function (set, key) {
-                angular.forEach(set.room_rates, function (roomRate, key) {
-
-                    if ($scope.rateData.based_on.type == 'amount') {
-                        console.log("amout");
-                        roomRate.single = basedonPlusMinus == "+" ? (roomRate.single + basedonValue) : (roomRate.single - basedonValue);
-                        roomRate["double"] = basedonPlusMinus == "+" ? (roomRate["double"] + basedonValue) : (roomRate["double"] - basedonValue);
-                        roomRate.extra_adult = basedonPlusMinus == "+" ? (roomRate.extra_adult + basedonValue) : (roomRate.extra_adult - basedonValue);
-                        roomRate.child = basedonPlusMinus == "+" ? (roomRate.child + basedonValue) : (roomRate.child - basedonValue);
-
-                    } else if ($scope.rateData.based_on.type == 'percent') {
-                        console.log("percent");
-                        
-                        roomRate.single = basedonPlusMinus == "+" ? (roomRate.single + (basedonValue / 100 * roomRate.single)) : (roomRate.single - (basedonValue / 100 * roomRate.single));
-                        roomRate["double"] = basedonPlusMinus == "+" ? (roomRate["double"] + (basedonValue / 100 * roomRate["double"])) : (roomRate["double"] - (basedonValue / 100 * roomRate["double"]));
-                        roomRate.extra_adult = basedonPlusMinus == "+" ? (roomRate.extra_adult + (basedonValue / 100 * roomRate.extra_adult)) : (roomRate.extra_adult - (basedonValue / 100 * roomRate.extra_adult));
-                        roomRate.child = basedonPlusMinus == "+" ? (roomRate.child + (basedonValue / 100 * roomRate.child)) : (roomRate.child - (basedonValue / 100 * roomRate.child));
-
-                    }
-
-                });
-            });
-            return data;
-        };
+        $scope.init();
     }
 ]);
