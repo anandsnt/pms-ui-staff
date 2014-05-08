@@ -2,7 +2,7 @@
 	<div id="add-new-item" data-view="ItemsDetailsView">
 		<header class="content-title float">
 			<h2 ng-show="mod == 'edit'">Edit <span>{{itemDetails.item_description}} </span></h2>
-			<h2 ng-show="mod == 'add'">Add New Iten</h2>
+			<h2 ng-show="mod == 'add'">Add New Item</h2>
 			
 			<a data-type="load-details" class="action back" ng-click="goBack()">Back to Items</a>
 			<em class="status required" ng-show="mod == 'edit'">
@@ -32,7 +32,7 @@
 				<ad-textbox value="itemDetails.unit_price" name = "unit_price" id = "unit_price" label = "Unit Price" placeholder = "Enter Unit Price" required = "no" styleclass="full-width" ></ad-textbox>
 
 			</fieldset>
-			<fieldset class="holder right float">
+			<fieldset ng-class="(mod == 'add') ? 'holder right float' :  'holder left float'">
 				<ad-dropdown label="Select Charge Code" label-in-drop-down="Select Charge Code" list="itemDetails.charge_code" selected-Id='itemDetails.selected_charge_code' required = "yes" div-class="full-width" id="charge_code"></ad-dropdown>						
 			</fieldset>
 			<fieldset class="holder left float">

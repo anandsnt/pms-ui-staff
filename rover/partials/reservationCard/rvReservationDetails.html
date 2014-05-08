@@ -1,0 +1,70 @@
+<div ng-show="reservationDisplayStatus" role="tabpanel" id="reservation-4844453" data-reservation-status="CHECKING_IN" data-reservation-id="35889" class="reservation ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-10" aria-hidden="false" aria-expanded="true">
+	<!-- Reservation header -->
+	<div class="reservation-header">
+		<div class="actions">
+			<a href="#reservation-4844453-guests" class="button has-arrow toggle"> <span class="label">Guests</span> {{reservationData.reservation_card.guests_total}} </a>
+			<!-- nights button is clickable only for the below status -->
+			<a id="nights-btn" class="button has-arrow next-view"> <span class="label"> Nights </span> {{reservationData.reservation_card.total_nights}} </a>
+			<!-- Show only a label for displaying nights -->
+		</div>
+		<div class="data">
+			<em class="icons icon-group"> {{reservationData.reservation_card.group_name}}</em>
+			<span class="date"><span class="guest-status small-icon check-in">check-in</span>{{reservationData.reservation_card.arrival_date}} </span>
+			<span class="date"><span class="guest-status small-icon check-out">check-out</span>{{reservationData.reservation_card.departure_date}} </span>
+		</div>
+	</div>
+	<!-- Guest details -->
+	<ul class="reservation-guests hidden">
+		<!-- Add new guest set as hidden -->
+		<li>
+			<a class="hidden open-modal add-new-button">+ New Guest</a>
+		</li>
+		<li>
+			<span class="guest-icon">0-3</span>
+			<span class="label">Infants</span>
+			{{reservationData.reservation_card.number_of_infants}} 
+		</li>
+		<li>
+			<span class="guest-icon">3-18</span>
+			<span class="label">Children</span>
+			{{reservationData.reservation_card.number_of_children}} 
+		</li>
+		<li>
+			<span class="guest-icon">18+</span>
+			<span class="label">Adults</span>
+			{{reservationData.reservation_card.number_of_adults}} 
+		</li>
+	</ul>
+
+	<div class="reservation-content scrollable check-in"  >
+		<div ng-iscroll="result_details" ng-iscroll-delay="1000" style="position:absolute; top:0px; bottom: 0px; left:0px; width: 100%;">
+		<div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<h2 class="h1"> Reservation {{reservationData.reservation_card.confirmation_num}}</h2>
+			<!-- Credit card -->
+			<div ng-include="'assets/partials/reservationCard/reservationCardPayment.html'"></div>
+			<!-- Display only the upgrades option -->
+			<div ng-include="'assets/partials/reservationCard/reservationCardRoom.html'"></div>
+			<!-- Wake up / Newspaper / Loyalty -->
+			<div id="stay-card-loyalty" class="block-wrapper float">
+				<div ng-include="'assets/partials/reservationCard/reservationCardWakeup.html'"></div>
+				<div ng-include="'assets/partials/reservationCard/reservationCardNewsPaper.html'"></div>
+				<div ng-include="'assets/partials/reservationCard/reservationCardLoyalty.html'"></div>
+			</div>
+			<!-- ADR / Total Stay Cost -->
+			<div ng-include="'assets/partials/reservationCard/reservationCardTotalStayCost.html'"></div>
+			
+			<!-- Notes -->
+			<div ng-include="'assets/partials/reservationCard/reservationCardNotes.html'"></div>
+
+		</div>
+		</div>
+	</div>
+	<!-- Reservation actions pane -->
+	<div ng-include="'assets/partials/reservationCard/reservationActions.html'"></div>
+</div>
+
+<div ng-include="'assets/partials/reservationCard/reservationNoUpcoming.html'"></div>
+<div ng-include="'assets/partials/reservationCard/reservationNoCurrent.html'"></div>
+<div ng-include="'assets/partials/reservationCard/reservationNoHistory.html'"></div>
+

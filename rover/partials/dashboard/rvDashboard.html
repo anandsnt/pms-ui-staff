@@ -1,30 +1,17 @@
 <div>
-	<!-- Navbar -->
-	<header class="nav-bar float" role = "banner">
-		<!-- Drawer toggle -->
-		<a class="nav-toggle active" ng-click="$emit('navToggled')" ng-class="{'active': true}">Menu</a>
-		<!-- Title -->
-		<h1 class="h2"> Dashboard <span><strong> {{userDetails.first_name}}
-			{{userDetails.last_name}} </strong> | <em class="date"> {{userDetails.business_date | date:'EEEE, d MMMM y'}}</em></span>
-
-			<!-- Late checkout --></h1><a id="late-checkout-alert" ui-sref="rover.search" class="icons icon-alert late-check-out"> {{lateCheckoutDetails.late_checkout_count}} </a>
-		<div class="logo">
-			<img alt = "", src= "{{userDetails.logo}}" />
-		</div>
-		<!-- Right side button -->
-	</header>
+	<div ng-include="'/assets/partials/common/header.html'"></div>
 	<section id="dashboard" class="content scrollable" role = "main">
 		<div class="wrapper">
 			<h2>{{greetingsMessage}} {{userDetails.first_name}}! </h2>
 			<ul id="guests-today">
 				<li>
-					<a class="button green" ui-sref="rover.search">Checking in <strong> {{dashboardData.due_in_count?dashboardData.due_in_count:0}} </strong> </a>
+					<a class="button green" ui-sref="rover.search({type:'DUEIN'})">Checking in <strong> {{dashboardData.due_in_count?dashboardData.due_in_count:0}} </strong> </a>
 				</li>
 				<li>
-					<a class="button blue" ui-sref="rover.search"> In house <strong> {{dashboardData.inhouse_count?dashboardData.inhouse_count:0}} </strong> </a>
+					<a class="button blue" ui-sref="rover.search({type:'INHOUSE'})"> In house <strong> {{dashboardData.inhouse_count?dashboardData.inhouse_count:0}} </strong> </a>
 				</li>
 				<li>
-					<a class="button red" ui-sref="rover.search"> Checking out <strong> {{dashboardData.due_out_count?dashboardData.due_out_count:0}} </strong> </a>
+					<a class="button red" ui-sref="rover.search({type:'DUEOUT'})"> Checking out <strong> {{dashboardData.due_out_count?dashboardData.due_out_count:0}} </strong> </a>
 				</li>
 			</ul>
 			<ul id="stats-today" class="upsell_on">

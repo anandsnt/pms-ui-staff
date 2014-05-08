@@ -5,9 +5,11 @@
 //=require ../shared/lib/js/angular-route.js
 //=require ../shared/lib/js/angular-ui-router.js
 //=require ../shared/lib/js/angular-animate.js
+//=require ../shared/lib/js/angular-sanitize.js
+//=require ../shared/lib/js/ui-utils.min.js
 
-//=require ../shared/lib/js/ng-iscroll.js
 //=require ../shared/lib/js/iscroll.js
+//=require ../shared/lib/js/ng-iscroll.js
 //=require ../shared/lib/js/ngDialog.min.js
 //=require ../shared/lib/js/Utils.js
 
