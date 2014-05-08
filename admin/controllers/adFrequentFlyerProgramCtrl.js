@@ -17,7 +17,14 @@ function($scope, $state, $rootScope, $stateParams, ADFrequentFlyerProgramSrv, ng
 		        total: $scope.ffp.length, // length of data
 		        getData: function($defer, params) {
 		            // use build-in angular filter
+
+		            console.log( params.sorting() );
+		            console.log( params.orderBy() );
+
 		            var orderedData = params.sorting() ? $filter('orderBy')($scope.ffp, params.orderBy()) : $scope.ffp;
+
+		            $scope.ffp = orderedData;
+
 		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 		        }
 		    });
