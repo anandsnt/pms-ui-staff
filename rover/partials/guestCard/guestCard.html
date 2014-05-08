@@ -1,5 +1,5 @@
 <div role="complementary" id="guest-card" class="ui-resizable"  ng-controller="guestCardController" style="height: {{guestCardHeight}}px;" ng-class="{'open': guestCardHeight ===550}">
-	<div id="card-wrapper" class="ng-scope">
+	<div id="card-wrapper" class="ng-scope" ng-click="guestCardClick($event)">
 		<!-- Guest Card Header -->
 		<header class="float" id="guest-card-header">
 			<figure class="guest-image">
