@@ -1,5 +1,5 @@
-<div class="container tabs" ng-class="{'menu-open': isMenuOpen()}">
-	
+<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 
+<div class="container tabs" ng-class="{'menu-open': isMenuOpen()}">	
 	<div ui-view ></div>
 </div>
 <div ng-include="'/assets/partials/dashboard/rvLeftNavbar.html'"></div>

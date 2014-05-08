@@ -1,7 +1,188 @@
-sntRover.controller('searchController',['$scope', 'RVSearchSrv', function($scope, RVSearchSrv){
-	// RVSearchSrv.fetch().then(function(data) {
-		        // $scope.results = data;
-		// });	
-	 
-}]);
+sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams', function($scope, RVSearchSrv, $stateParams){
+	
+  BaseCtrl.call(this, $scope);
 
+  //model used in query textbox, we will be using this across
+  $scope.textInQueryBox = "";
+  $scope.$emit("updateIndex",1);
+
+
+  /**
+  * function used for refreshing the scroller
+  */
+  var refreshScroller = function(){
+
+    $scope.$parent.myScroll['result_showing_area'].refresh();
+    //scroller options
+    $scope.$parent.myScrollOptions = {
+        snap: false,
+        bounce: true,
+        vScroll: true,
+        vScrollbar: true,
+        hideScrollbar: false
+    };
+  }
+
+  var headingListDict = {  
+    'DUEIN': "Checking In",
+    'INHOUSE': "IN HOUSE",
+    'DUEOUT': "Checking Out",
+    'LATE_CHECKOUT': "Checking Out Late",
+    '': "Search"
+  }
+
+  //success callback of data fetching from the webservice
+	var successCallBackofInitialFetch = function(data){
+    $scope.$emit('hideLoader');
+		$scope.results = data;
+    setTimeout(function(){refreshScroller();}, 750);
+	};
+
+
+  /*
+  * function used in template to map the reservation status to the view expected format
+  */
+  $scope.getGuestStatusMapped = function(reservationStatus, isLateCheckoutOn){
+      var viewStatus = "";
+      if(isLateCheckoutOn && "CHECKING_OUT" == reservationStatus){
+        viewStatus = "late-check-out";
+        return viewStatus;
+      }
+      if("RESERVED" == reservationStatus){
+        viewStatus = "arrival";
+      }else if("CHECKING_IN" == reservationStatus){
+        viewStatus = "check-in";
+      }else if("CHECKEDIN" == reservationStatus){
+        viewStatus = "inhouse";
+      }else if("CHECKEDOUT" == reservationStatus){
+        viewStatus = "departed";
+      }else if("CHECKING_OUT" == reservationStatus){
+        viewStatus = "check-out";
+      }else if("CANCELED" == reservationStatus){
+        viewStatus = "cancel";
+      }else if(("NOSHOW" == reservationStatus)||("NOSHOW_CURRENT" == reservationStatus)){
+        viewStatus = "no-show";
+      }
+      return viewStatus;
+  };
+
+  //click function on search area, mainly for closing the drawer
+  $scope.clickedOnSearchArea = function(){
+    $scope.$emit("closeDrawer");
+  }
+  //Map the room status to the view expected format
+  $scope.getRoomStatusMapped = function(roomstatus, fostatus){
+    	var mappedStatus = "";
+    	if(roomstatus == "READY" && fostatus == "VACANT"){
+      	mappedStatus = 'ready';
+    	}else{
+      	mappedStatus = "not-ready";
+    	}
+  	 return mappedStatus;
+  };
+
+
+
+  /**
+  * function to perform initial actions like setting heading, call webservice..
+  */
+  var performInitialActions = function(){
+      //setting the heading of the screen
+      $scope.heading = headingListDict[$stateParams.type]; 
+      //preparing for web service call
+    	var dataDict = {};
+    	if(typeof $stateParams !== 'undefined' && 
+        typeof $stateParams.type !== 'undefined' && 
+        $stateParams.type != null &&
+        $stateParams.type.trim() != '') {
+          //LATE_CHECKOUT is a special case, parameter is diff. here (is_late_checkout_only)
+          if($stateParams.type == "LATE_CHECKOUT"){
+            dataDict.is_late_checkout_only = true;
+          }
+          else{
+      		  dataDict.status = $stateParams.type;
+          }
+          //calling the webservice
+          $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofInitialFetch); 
+    	}
+      
+      else{   
+        $scope.results = [];
+      }
+  }
+
+  //setting up initial things
+  performInitialActions();
+
+
+  /**
+  * function to perform filtering/request data from service in change event of query box
+  */
+	$scope.queryEntered = function(){
+    //setting the heading of the screen to "Search"
+    $scope.heading = headingListDict['']; 
+
+    displayFilteredResults();  
+  };
+
+
+
+  /**
+  * function to perform filering on results.
+  * if not fouund in the data, it will request for webservice
+  */
+  var displayFilteredResults = function(){ 
+
+    //if the entered text's length < 3, we will show everything, means no filtering    
+    if($scope.textInQueryBox.length < 3){
+      //based on 'is_row_visible' parameter we are showing the data in the template      
+      for(var i = 0; i < $scope.results.length; i++){
+          $scope.results[i].is_row_visible = true;
+      }     
+      //the following code is for a special case
+      /*
+      after not found any data in a webservice call, user will clear the entered data
+      then there is a functionality found in pms that, it is showing the old data
+      that is here
+      */ 
+      if($scope.results.length == 0 && typeof $stateParams !== 'undefined' && 
+        typeof $stateParams.type !== 'undefined' &&         
+        $stateParams.type != null && $stateParams.type!=''){
+        performInitialActions();
+      }
+      // we have changed data, so we are refreshing the scrollerbar
+      refreshScroller();      
+    }
+    else{
+      var value = ""; 
+      var visibleElementsCount = 0;
+      //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
+      //if it is zero, then we will request for webservice
+      for(var i = 0; i < $scope.results.length; i++){
+        value = $scope.results[i];
+        if (($scope.escapeNull(value.firstname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 || 
+            ($scope.escapeNull(value.lastname).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 || 
+            ($scope.escapeNull(value.group).toUpperCase()).indexOf($scope.textInQueryBox.toUpperCase()) >= 0 ||
+            ($scope.escapeNull(value.room).toString()).indexOf($scope.textInQueryBox) >= 0 || 
+            ($scope.escapeNull(value.confirmation).toString()).indexOf($scope.textInQueryBox) >= 0)
+            {
+               $scope.results[i].is_row_visible = true;
+               visibleElementsCount++;
+            }
+        else {
+          $scope.results[i].is_row_visible = false;
+        }
+              
+      }
+      // last hope, we are looking in webservice.      
+     if(visibleElementsCount == 0){    
+        var dataDict = {'query': $scope.textInQueryBox.trim()};
+        $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofInitialFetch); 
+      }
+      // we have changed data, so we are refreshing the scrollerbar
+      refreshScroller()                  
+    }
+  };
+
+  //end of controller
+}]);
