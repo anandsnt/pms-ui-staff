@@ -1,0 +1,11 @@
+<span>
+	<form method="post" class="block-item item-payment has-button float" action="">
+		<div class="">
+			GROUP : {{reservationData.reservation_card.group_name}}
+		</div>
+		<div class="">
+			ACCOMPANY GUEST : 
+			<span ng-repeat="guest in reservationData.reservation_card.accompaying_guests">{{guest.guest_name}}</span>
+		</div>
+	</form>
+</span>
