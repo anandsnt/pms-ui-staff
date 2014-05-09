@@ -9,7 +9,6 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv', functi
 	$scope.fetchFilterOptions = function(){
 		var fetchFilterOptionsSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
-			console.log(data);
 			$scope.data = data;
 		};
 		$scope.invokeApi(RMFilterOptionsSrv.fetch, {},fetchFilterOptionsSuccessCallback);
