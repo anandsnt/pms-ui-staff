@@ -1,17 +1,25 @@
 sntRover.controller('guestCardController', ['$scope', 'Likes', '$window', 'RVReservationCardSrv', function($scope, Likes, $window, RVReservationCardSrv){
 	
-	console.log("--------------")
-	console.log($scope.guestCardData.contactInfo);
-	console.log($scope.countriesList.length);
-	console.log("--------------")
+	var maxHeight = $(window).height();
 
 	$scope.current = 'guest-contact';
-	// //To get data from service
- //    $scope.guestData = RVReservationCardSrv.getGuestData();
 
-
-    // to be changed
-    $scope.guestCardHeight = 90;
+    $scope.guestCardVisible = false;    
+    $scope.resizableOptions = {
+    	minHeight: '90',
+    	maxHeight: maxHeight - 90,
+    	handles: 's',
+    	resize: function( event, ui ) {
+			if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				
+				$scope.guestCardVisible = true;
+				$scope.$apply();
+			}
+			else if($(this).height() <= 120 && $scope.guestCardVisible){
+				$scope.guestCardVisible = false;
+				$scope.$apply();
+			}
+		}
+    }
 
 	$scope.guestCardTabSwitch = function(div){
 		$scope.current = div;
