@@ -1,8 +1,9 @@
-sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv', function($scope, RVReservationCardSrv){
+sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVReservationCardSrv', function($rootScope, $scope, RVReservationCardSrv){
 	BaseCtrl.call(this, $scope);
-	$scope.timeline = "current";
+	$scope.timeline = "";
 	$scope.reservationList = [];
 	$scope.currentReservationId = "";
+	$scope.reservationCount = 0;
 	/*
 	 * to get state params from resrvation details controller
 	 */
@@ -12,25 +13,27 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 		// $scope.currentReservationId = data.confirmationNumber;
 
 		$scope.data = data;
+		$scope.timeline = data.reservation_details.timeline;;
+		
 		$scope.countCurrent = data.reservation_list.current_reservations_arr.length;
 		$scope.countUpcoming = data.reservation_list.upcoming_reservations_arr.length;
 		$scope.countHistory = data.reservation_list.history_reservations_arr.length;
-				
-		// $scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
+		
 		$scope.currentReservationId = data.reservation_details.confirmation_num;
-		$scope.reservationList = data.reservation_list.current_reservations_arr;
 		
 		RVReservationCardSrv.setGuestData($scope.data.guest_details);
 
 	var fetchGuestcardDataSuccessCallback = function(data){
 		var contactInfoData = {'data': data,
-								'countries': $scope.data.countries};
+								'countries': $scope.data.countries,
+								'userId':$scope.data.user_id};
         $scope.$emit('guestCardUpdateData',contactInfoData);
         $scope.$emit('hideLoader');
     };
     var fetchGuestcardDataFailureCallback = function(data){
         $scope.$emit('hideLoader');
     };
+
    
     var param = {'fakeDataToAvoidCache':new Date(),
 					'id':$scope.data.guest_details.reservation_id}
@@ -38,7 +41,22 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 
 
 		
-		// $scope.$broadcast('passGuestDetails', $scope.data.guest_details);
+		if($scope.timeline == "current"){
+			$scope.reservationList = data.reservation_list.current_reservations_arr;
+			//This status is used to show appr message if count of reservations in selected time line is zero
+			$scope.reservationDisplayStatus = 	($scope.countCurrent>0) ? true : false;
+		}
+		if($scope.timeline == "upcoming"){
+			$scope.reservationList = data.reservation_list.upcoming_reservations_arr;
+			//This status is used to show appr message if count of reservations in selected time line is zero
+			$scope.reservationDisplayStatus = 	($scope.countUpcoming>0) ? true : false;
+		}
+		if($scope.timeline == "history"){
+			$scope.reservationList = data.reservation_list.history_reservations_arr;
+			//This status is used to show appr message if count of reservations in selected time line is zero
+			$scope.reservationDisplayStatus = 	($scope.countHistory>0) ? true : false;
+		}
+
 	});
 	/*
 	 * Handles time line click events
@@ -56,6 +74,8 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 				$scope.currentReservationId = "";
 			 	$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 			}
+			//This status is used to show appr message if count of reservations in selected time line is zero
+			$scope.reservationDisplayStatus = 	($scope.countCurrent>0) ? true : false;
 			
 		}
 		if(timeline == "upcoming"){
@@ -68,6 +88,8 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 				$scope.currentReservationId = "";
 			 	$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 			}
+			//This status is used to show appr message if count of reservations in selected time line is zero
+			$scope.reservationDisplayStatus = 	($scope.countUpcoming>0) ? true : false;
 			
 		}
 		if(timeline == "history"){
@@ -80,6 +102,8 @@ sntRover.controller('reservationCardController',['$scope', 'RVReservationCardSrv
 				$scope.currentReservationId = "";
 			 	$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 			}
+			//This status is used to show appr message if count of reservations in selected time line is zero
+			$scope.reservationDisplayStatus = ($scope.countHistory>0) ? true : false;
 		}
 		
 	 };

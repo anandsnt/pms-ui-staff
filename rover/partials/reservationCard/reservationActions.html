@@ -1,0 +1,47 @@
+<div class="reservation-actions" ng-controller="reservationActionsController">
+		<!-- Resevation is checking-in -->
+		<a class="button green" ng-show="reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT'">
+			Check in
+		</a>
+		
+		<!-- Show checkin time -->
+		<div class="icons time check-in" ng-show="displayArrivalTime(reservationData.reservation_card.reservation_status)"> 
+			{{reservationData.reservation_card.arrival_time}}
+		</div>
+		
+		<a class="button red" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
+			Check out
+		</a>
+		<div class="icons time late-check-out" ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.is_opted_late_checkout && reservationData.reservation_card.is_late_checkout_on">
+			 {{reservationData.reservation_card.late_checkout_time}}
+		</div>
+		<div class="icons time check-out" ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.departure_time !=''">
+			 {{reservationData.reservation_card.departure_time}}
+		</div>
+		<!-- Reservation is checking out -->
+		<!-- Show balance -->
+		<div class="balance break" ng-show="displayBalance(reservationData.reservation_card.reservation_status)">
+			<span class="label">Balance</span>
+			<!-- if balance is zero, show balance in green color -->
+			<span class="h1" ng-class="getBalanceAmountColor(reservationData.reservation_card.balance_amount)"> 
+				{{currencySymbol}} 
+				{{reservationData.reservation_card.balance_amount}}
+			</span>
+		</div>
+		<!-- Show add-ons button set hidden for now as part of story 4130 - in future we need this -->
+		<a class="button hidden brand-colors" ng-show="displayAddon(reservationData.reservation_card.reservation_status)">
+			Add-ons
+		</a>
+		<!-- As Cancel functionality is currently not implemented, the 'Cancel' button should be hidden on the Stay Card until a later stage. -->
+
+		<a class="button white red-text hidden">Cancel reservation</a>
+		
+		<a  ui-sref="rover.staycard.billcard" class="button yellow-btn red-text-btn" ng-show="reservationData.reservation_card.is_routing_available">
+			View bill / Routing
+		</a>
+		
+		<a ui-sref="rover.staycard.billcard" class="button white blue-text" ng-hide="reservationData.reservation_card.is_routing_available">View bill</a>
+		
+		<!-- show add charge -->
+		<a class="button white green-text" ng-show="displayAddCharge()">Add Charge</a>
+	</div>

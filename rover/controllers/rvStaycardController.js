@@ -4,6 +4,7 @@ sntRover.controller('staycardController',['$scope', function($scope){
 		 $scope.$on('guestCardUpdateData',function(event, data){
 		 	$scope.guestCardData.contactInfo = data.data;
 		 	$scope.countriesList = data.countries;
+		 	$scope.guestCardData.userId=data.userId;
 		
 		 });
 }]);

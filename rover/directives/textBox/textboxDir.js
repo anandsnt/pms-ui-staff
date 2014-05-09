@@ -1,4 +1,4 @@
-sntRover.directive('adTextbox', function($timeout) {
+sntRover.directive('rvTextbox', function($timeout) {
 
     return {
     	restrict: 'AE',
@@ -17,7 +17,7 @@ sntRover.directive('adTextbox', function($timeout) {
             disabled: '=disabled'
 
 	    },
-    	templateUrl: '../../assets/directives/textBox/adTextbox.html'  
+    	templateUrl: '../../assets/directives/textBox/textboxDirective.html'  
 	        
 	   };
 

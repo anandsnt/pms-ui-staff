@@ -1,9 +1,16 @@
 sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window','RVDashboardSrv','ngDialog', function($rootScope, $scope, $state,$window,RVDashboardSrv,ngDialog){
 
-$scope.isMenuOpen = function(){
-	return $scope.menuOpen ? true : false;
-};
-$scope.$on("showLoader", function(){
+    $scope.$on("closeDrawer", function(){      
+      $scope.menuOpen = false;  
+      $scope.isMenuOpen();
+    });
+
+    $scope.isMenuOpen = function(){
+      return $scope.menuOpen ? true : false;
+    };
+
+
+    $scope.$on("showLoader", function(){
         $scope.hasLoader = true;
     });
 
@@ -12,34 +19,34 @@ $scope.$on("showLoader", function(){
     }); 
 
 
-$scope.init = function () {
-    BaseCtrl.call(this, $scope);
-    $rootScope.adminRole = '';
-    $scope.selectedMenuIndex = 0;
-/*
-   * retrieve user info
-   */
-    $scope.fetchData = function(){   
-	    var fetchUserInfoSuccessCallback = function(data){
-	        $scope.userInfo = data;
-	        $rootScope.adminRole=$scope.userInfo.user_role;
-	        if($rootScope.adminRole == "Hotel admin" )
-	            $scope.isHotelAdmin =  true;
-	        if($rootScope.adminRole == "Hotel staff" )
-	            $scope.isHotelStaff =  true;
-	        $scope.$emit('hideLoader');
-	    };
-	    var fetchUserInfoFailureCallback = function(data){
-	        $scope.$emit('hideLoader');
-	    };
-	    $scope.invokeApi(RVDashboardSrv.fetchUserInfo,{},fetchUserInfoSuccessCallback,fetchUserInfoFailureCallback);  
+    $scope.init = function () {
+      BaseCtrl.call(this, $scope);
+      $rootScope.adminRole = '';
+      $scope.selectedMenuIndex = 0;
+      /*
+      * retrieve user info
+      */
+      $scope.fetchData = function(){   
+  	    var fetchUserInfoSuccessCallback = function(data){
+  	        $scope.userInfo = data;
+  	        $rootScope.adminRole=$scope.userInfo.user_role;
+  	        if($rootScope.adminRole == "Hotel admin" )
+  	            $scope.isHotelAdmin =  true;
+  	        if($rootScope.adminRole == "Hotel staff" )
+  	            $scope.isHotelStaff =  true;
+  	        $scope.$emit('hideLoader');
+  	    };
+  	    var fetchUserInfoFailureCallback = function(data){
+  	        $scope.$emit('hideLoader');
+  	    };
+  	    $scope.invokeApi(RVDashboardSrv.fetchUserInfo,{},fetchUserInfoSuccessCallback,fetchUserInfoFailureCallback);  
 
     };   
 	// Show a loading message until promises are not resolved
 	$scope.$emit('showLoader');
 	
 	// if menu is open, close it
-	$scope.isMenuOpen();
+	 $scope.isMenuOpen();
     $scope.fetchData();
     $scope.menuOpen = false;
 };
@@ -85,15 +92,15 @@ $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState
 });
 
 $scope.settingsClicked = function(){
-if($scope.isHotelAdmin)
- $window.location.href = "/admin";
-else if($scope.isHotelStaff){
-        ngDialog.open({
-             template: '/assets/partials/settings/rvStaffSettingModal.html',
-             controller: 'RVStaffsettingsModalController',
-             className: 'ngdialog-theme-plain calendar-modal'
-        });
-    }
+  if($scope.isHotelAdmin)
+   $window.location.href = "/admin";
+  else if($scope.isHotelStaff){
+          ngDialog.open({
+               template: '/assets/partials/settings/rvStaffSettingModal.html',
+               controller: 'RVStaffsettingsModalController',
+               className: 'ngdialog-theme-plain calendar-modal'
+          });
+  }
 };
 
 }]);
