@@ -1,7 +1,7 @@
 
-<div role="complementary" id="guest-card"   ng-controller="guestCardController" style="height: 90px;" ng-class="{'open': guestCardVisible}" ui-jq="resizable" ui-options="resizableOptions"  >
+<div role="complementary" id="guest-card"   ng-controller="guestCardController" style="height: {{guestCardHeight}}px;" ng-class="{'open': guestCardVisible}" ui-jq="resizable" ui-options="resizableOptions" ng-click="guestCardClick($event)"  >
 
-	<div id="card-wrapper" ng-click="guestCardClick($event)" >
+	<div id="card-wrapper">
 		<!-- Guest Card Header -->
 		<header class="float" id="guest-card-header">
 			<figure class="guest-image">

@@ -13,7 +13,7 @@ $scope.setUpData = function(){
     else{
       $scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
     }
-    alert($scope.date);
+  
     $scope.maxDate =dateFilter(new Date(), 'yyyy-MM-dd');
 //data for the year dropdown
     var presentDate = new Date();

@@ -16,7 +16,7 @@ sntRover.controller('guestCardController', ['$scope', 'Likes', '$window','RVCont
 
 	// init guestcard header data
 	var declonedData = $scope.decloneUnwantedKeysFromContactInfo();
-	var currentGuestCardHeaderData = declonedData;
+	var currentGuestCardHeaderData = declonedData;	
 	$scope.current = 'guest-contact';
 
 	// tab actions
@@ -47,20 +47,57 @@ sntRover.controller('guestCardController', ['$scope', 'Likes', '$window','RVCont
 	} 
 	};
 
+	/**
+	*   In case of a click or an event occured on child elements
+	*	of actual targeted element, we need to change it as the event on parent element
+	*   @param {event} is the actual event
+	*   @param {selector} is the selector which we want to check against that event
+	*   @return {Boolean} trueif the event occured on selector or it's child elements
+	*   @return {Boolean} false if not
+	*/
+	function getParentWithSelector($event, selector) {
+
+		var obj = $event.target, matched = false;
+		console.log(obj);
+		console.log(selector);
+		return selector.contains(obj);
+		/*if(obj.is(selector)) {
+			matched = true;
+		}
+		// if no match found in our above check
+		if(!matched){
+			result = obj.parents(selector + ":eq(0)");
+			if(result.length) {
+				obj=result;
+				matched = true;
+			}
+		}
+		$event.target = obj;
+		return matched;*/
+	};
+
 	// TO DO:handle click outside tabs
 	$scope.guestCardClick = function($event){
-		// if($event.target.id != 'guest-contact'){
-		// 	$scope.$broadcast('saveContactInfo');
-		// }
+		var element = $event.target;		
+		if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])){			
+			if(!$scope.guestCardVisible){
+				$scope.guestCardHeight = $scope.resizableOptions.maxHeight;
+				$scope.guestCardVisible = true;
+			}
+			else{
+				$scope.guestCardHeight = $scope.resizableOptions.minHeight;
+				$scope.guestCardVisible = false;
+			}
+		}
 	};
 
 
 	/**
 	* for dragging of guest card 
 	*/
-	var maxHeight = $(window).height();
+	var maxHeight = $(window).height(); //against angular js practice, sorry :(
     $scope.guestCardVisible = false; //varibale used to determine whether to show guest card's different tabs
-
+    $scope.guestCardHeight = 90;
     //scroller options
     $scope.resizableOptions = {
     	minHeight: '90',
