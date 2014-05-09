@@ -95,6 +95,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
             if (data.based_on) {
                 $scope.rateData.based_on.id = data.based_on.id;
+                $scope.rateData.based_on.type = data.based_on.type;
                 $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value)
                 $scope.rateData.based_on.value_sign = data.based_on.value > 0 ? "+" : "-";
             } else {
