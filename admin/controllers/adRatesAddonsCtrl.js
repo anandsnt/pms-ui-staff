@@ -98,7 +98,6 @@ admin.controller('ADRatesAddonsCtrl', [
 			// fetch charge codes
 			var ccCallback = function(data) {
 				$scope.chargeCodes = data.results;
-
 				$scope.$emit('hideLoader');
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, ccCallback);
@@ -106,7 +105,6 @@ admin.controller('ADRatesAddonsCtrl', [
 			// fetch amount types
 			var atCallback = function(data) {
 				$scope.amountTypes = data;
-
 				$scope.$emit('hideLoader');
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'amount_type' }, atCallback);
@@ -114,12 +112,18 @@ admin.controller('ADRatesAddonsCtrl', [
 			// fetch post types
 			var ptCallback = function(data) {
 				$scope.postTypes = data;
-
-				console.log( data );
-
 				$scope.$emit('hideLoader');
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'post_type' }, ptCallback);
+
+			// fetch the current business date
+			var bdCallback = function(data) {
+
+				// dwad convert the date to 'MM-dd-yyyy'
+				$scope.businessDate = data.business_date;
+				$scope.$emit('hideLoader');
+			};
+			$scope.invokeApi(ADRatesAddonsSrv.fetchBusinessDate, {}, bdCallback);
 		};
 
 		$scope.fetchOtherApis();
@@ -149,18 +153,25 @@ admin.controller('ADRatesAddonsCtrl', [
 			var today = new Date();
             var weekAfter = today.setDate(today.getDate() + 7);
 
-            // today should be business date, currently not avaliable
-            // TODO: need business date, convert it to 'MM-dd-yyyy' format (required)
-            $scope.singleAddon.begin_date = dateFilter(new Date(), 'MM-dd-yyyy');
-			$scope.singleAddon.end_date   = dateFilter(weekAfter, 'MM-dd-yyyy');
+            // the inital dates to business date
+            $scope.singleAddon.begin_date = $scope.businessDate;
+			$scope.singleAddon.end_date   = $scope.businessDate;
 		}
 
 		// listen for datepicker update from ngDialog
 		var updateBind = $rootScope.$on('datepicker.update', function(event, chosenDate) {  
 
-			// covert the date to 'MM-dd-yyyy' format  
+			// covert the date back to 'MM-dd-yyyy' format  
 			if ( $scope.dateNeeded === 'From' ) {
 	            $scope.singleAddon.begin_date = dateFilter(chosenDate, 'MM-dd-yyyy');
+
+	            // if user moved begin_date in a way
+	            // that the end_date is before begin_date
+	            // we must set the end_date to begin_date
+	            // so that user may not submit invalid dates
+	            if ( new Date($scope.singleAddon.begin_date) - new Date($scope.singleAddon.end_date) > 0 ) {
+	                $scope.singleAddon.end_date = dateFilter(chosenDate, 'MM-dd-yyyy');
+	            }
 			} else {
 				$scope.singleAddon.end_date = dateFilter(chosenDate, 'MM-dd-yyyy');
 			}
@@ -197,6 +208,13 @@ admin.controller('ADRatesAddonsCtrl', [
 				// now remove commas created by number
 				// when the number is greater than 3 digits (without fractions)
 				$scope.singleAddon.amount = $scope.singleAddon.amount.split(',').join('');
+
+
+				// if the user is editing an old addon
+				// where the dates are not set
+				// set the date to current business date
+	            $scope.singleAddon.begin_date = $scope.businessDate;
+				$scope.singleAddon.end_date   = $scope.businessDate;
 
 				// convert system date to MM-dd-yyyy format
 				$scope.singleAddon.begin_date = $filter('date')($scope.singleAddon.begin_date, 'MM-dd-yyyy');

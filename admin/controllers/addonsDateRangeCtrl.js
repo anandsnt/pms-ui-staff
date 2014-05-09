@@ -16,15 +16,15 @@ admin.controller('addonsDatesRangeCtrl',
             $scope.dateNeeded = $scope.parentScope.dateNeeded;
 
             if ( $scope.parentScope.dateNeeded === 'From' ) {
-                $scope.datePickerDate = new Date($scope.parentScope.singleAddon.begin_date);
+                $scope.datePickerDate = dateFilter( new Date($scope.parentScope.singleAddon.begin_date), 'yyyy-MM-dd' );
 
-                // today should be business date, currently not avaliable
-                $scope.fromDate = dateFilter( new Date(), 'MM-dd-yyyy' );
+                // from date should be from business date
+                // and must be of the format 'yyyy-MM-dd'
+                $scope.fromDate = dateFilter( new Date($scope.parentScope.businessDate), 'yyyy-MM-dd' );
             } else {
-                $scope.datePickerDate = new Date($scope.parentScope.singleAddon.end_date);
+                $scope.datePickerDate = dateFilter( new Date($scope.parentScope.singleAddon.end_date), 'yyyy-MM-dd' );
 
-                var begin = new Date( $scope.parentScope.singleAddon.begin_date );
-                $scope.fromDate = dateFilter(begin, 'MM-dd-yyyy');
+                $scope.fromDate = dateFilter(new Date($scope.parentScope.singleAddon.begin_date), 'yyyy-MM-dd');
             }
 
             $scope.updateClicked = function() {

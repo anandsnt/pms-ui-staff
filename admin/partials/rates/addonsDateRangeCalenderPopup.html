@@ -2,15 +2,15 @@
 	<fieldset class="holder full-width grey-texture-bg-color">
 		<div class="center_align grey-texture-bg-color">
 			<em>{{ dateNeeded }} Date</em> &nbsp;
-			<span ng-show="isFromDateSelected" class="italic_text">
-				{{ datePickerDate | date: 'yyyy-MM-dd' }}
+			<span class="italic_text">
+				{{ datePickerDate | date: 'MM-dd-yyyy' }}
 			</span>
 		</div>
 
 		<div class="date-picker-bg">
 			<div class="date-picker-wrap">
 			   <div class="col-xs-12">
-			      <div pickadate="" ng-model="datePickerDate" min-date="fromDate" date="date" is-current-month="true" is-date-selected="isFromDateSelected"></div>
+			      <div pickadate="" ng-model="datePickerDate" min-date="fromDate" date="date" is-current-month="true" is-date-selected="true"></div>
 			   </div>
 			</div>
 		</div>
