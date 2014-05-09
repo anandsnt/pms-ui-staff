@@ -39,14 +39,12 @@
 								</div>
 							</td>
 						</table>
-						
-						<div ng-if="item.editable && item.description !== 'Levels'" ng-include="getTemplateUrl()"></div>
 					</td>
 				</tr>
 
 				<tr><td><br><br><strong>Editable Restrictions</strong></td></tr>
 
-				<tr ng-repeat="item in ruleList | filter: { editable: true }">
+				<tr ng-repeat="item in ruleList | filter: { editable: true }" ng-hide="{{ item.description === 'Levels' }}">
 					<td>
 						<table class="grid">
 							<td>
@@ -68,7 +66,7 @@
 							</td>
 						</table>
 						
-						<div ng-if="item.editable && item.description !== 'Levels'" ng-include="getTemplateUrl()"></div>
+						<div ng-include="getTemplateUrl()"></div>
 					</td>
 				</tr>
 			</tbody>
