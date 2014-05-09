@@ -12,6 +12,7 @@
 //=require ../shared/lib/js/ng-iscroll.js
 //=require ../shared/lib/js/ngDialog.min.js
 //=require ../shared/lib/js/Utils.js
+//=require ../shared/lib/js/ng-table.js
 
 //=require ../rover/rvApp.js
 //=require ../rover/rvRouter.js
