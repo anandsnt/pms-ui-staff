@@ -1,7 +1,5 @@
 sntRover.controller('RVContactInfoController',['$scope','RVContactInfoSrv','ngDialog','dateFilter',function($scope,RVContactInfoSrv,ngDialog,dateFilter){
 
-// $scope.birthdayUnformatted = $scope.guestCardData.contactInfo.birthday;
-$scope.guestCardData.contactInfo.birthday = dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy');
 $scope.saveContactInfo = function(){
       var saveUserInfoSuccessCallback = function(data){
 	        $scope.$emit('hideLoader');
@@ -9,6 +7,7 @@ $scope.saveContactInfo = function(){
 	    var saveUserInfoFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	    };
+	    $scope.guestCardData.contactInfo.birthday= dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')
 	    var data ={'data':$scope.guestCardData.contactInfo,
 	    			'userId':$scope.guestCardData.contactInfo.user_id
 	    		}
@@ -17,9 +16,7 @@ $scope.saveContactInfo = function(){
 };
 
 $scope.$on('saveContactInfo',function(){
-
 	$scope.saveContactInfo();
-
 });	
 
 

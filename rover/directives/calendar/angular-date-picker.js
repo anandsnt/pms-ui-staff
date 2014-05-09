@@ -52,7 +52,8 @@
           isCurrentMonth: '=',
           isDateSelected: '=',
           startYear: '=',
-          endYear:'='
+          endYear:'=',
+          closePopupOnSelection:'='
         },
         templateUrl:'../../assets/directives/Calendar/adCalendar.html' ,
             link: function(scope, element, attrs, ngModel)  {
@@ -123,6 +124,7 @@
             if(dateObj.className != "pickadate-disabled"){
               scope.isDateSelected = true;
               scope.setDate(dateObj);
+              scope.closePopupOnSelection = true;
             }
           };
 

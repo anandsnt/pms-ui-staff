@@ -1,40 +1,36 @@
 
-sntRover.controller('RVContactInfoDatePickerController',['$scope','dateFilter','ngDialog','$filter',function($scope,dateFilter,ngDialog,$filter){
+sntRover.controller('RVContactInfoDatePickerController',['$scope','dateFilter','ngDialog',function($scope,dateFilter,ngDialog){
+
+$scope.setUpData = function(){
+
+    $scope.isDateSelected = false;
+    $scope.birthday = $scope.guestCardData.contactInfo.birthday;
+
+    if($scope.birthday!= null){
+      $scope.date = $scope.birthday;
+      $scope.isDateSelected = true;
+    }
+    else{
+      $scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
+    }
+    $scope.maxDate =dateFilter(new Date(), 'yyyy-MM-dd');
+//data for the year dropdown
+    var presentDate = new Date();
+    $scope.endYear = presentDate.getFullYear();
+    $scope.startYear = $scope.endYear-100;
+    $scope.closePopupOnSelection = false;
+};
+$scope.setUpData();
+
+$scope.$watch('closePopupOnSelection',function(){
+  if($scope.closePopupOnSelection){
+    $scope.guestCardData.contactInfo.birthday = $scope.date;
+    ngDialog.close();
+  }
+});
 
 
 
-   $scope.setUpData = function(){
 
-  	 	$scope.isDateSelected = false;
-  	 	$scope.birthday = $scope.guestCardData.contactInfo.birthday;
-
-
-
-
-	   	$scope.date = dateFilter(new Date(), 'yyyy-MM-dd');
-
-
-	   	// 	alert("date"+$scope.date);
-  	 	// alert("bday"+$scope.birthday);
-  	 	// alert("formatbday"+$filter('date')($scope.birthday, "yyyy-MM-dd"));
-
-
-	   	$scope.maxDate =dateFilter(new Date(), 'yyyy-MM-dd');
-	  
-	  	var presentDate = new Date();
-        $scope.endYear = presentDate.getFullYear();
-	  	$scope.startYear = $scope.endYear-100;;
-   };
-
-   $scope.$watch('isDateSelected',function(){
-   	if($scope.isDateSelected){
-   	 $scope.guestCardData.contactInfo.birthday = dateFilter($scope.date, 'MM-dd-yyyy');
-   	 ngDialog.close();
-   	}
-   });
-
-
-
-   $scope.setUpData();
 
 }]);

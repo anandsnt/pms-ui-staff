@@ -1,6 +1,5 @@
 sntRover.controller('guestCardController', ['$scope', 'Likes', '$window','RVContactInfoSrv', function($scope, Likes, $window, RVContactInfoSrv){
 
-
 $scope.decloneUnwantedKeysFromContactInfo =  function(){
 		// API call needs only rest of keys in the data
     var	unwantedKeys = ["address","birthday","country",
@@ -10,8 +9,7 @@ $scope.decloneUnwantedKeysFromContactInfo =  function(){
 					    "reservation_id","title","user_id",
 					    "works_at","birthday"
   					  ];
-   // var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys); 
-   var declonedData ={};
+   var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys); 
     return declonedData;
 };
 
@@ -50,7 +48,7 @@ $scope.updateContactInfo =  function(){
 } 
 };
 
-// handle click outside tabs
+// TO DO:handle click outside tabs
 $scope.guestCardClick = function($event){
 	// if($event.target.id != 'guest-contact'){
 	// 	$scope.$broadcast('saveContactInfo');
