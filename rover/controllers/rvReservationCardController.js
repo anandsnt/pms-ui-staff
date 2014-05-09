@@ -19,21 +19,26 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 		$scope.countUpcoming = data.reservation_list.upcoming_reservations_arr.length;
 		$scope.countHistory = data.reservation_list.history_reservations_arr.length;
 		
-		
-		// $scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 		$scope.currentReservationId = data.reservation_details.confirmation_num;
+		
+		RVReservationCardSrv.setGuestData($scope.data.guest_details);
+		
 		if($scope.timeline == "current"){
 			$scope.reservationList = data.reservation_list.current_reservations_arr;
+			//This status is used to show appr message if count of reservations in selected time line is zero
 			$scope.reservationDisplayStatus = 	($scope.countCurrent>0) ? true : false;
 		}
 		if($scope.timeline == "upcoming"){
 			$scope.reservationList = data.reservation_list.upcoming_reservations_arr;
+			//This status is used to show appr message if count of reservations in selected time line is zero
 			$scope.reservationDisplayStatus = 	($scope.countUpcoming>0) ? true : false;
 		}
 		if($scope.timeline == "history"){
 			$scope.reservationList = data.reservation_list.history_reservations_arr;
+			//This status is used to show appr message if count of reservations in selected time line is zero
 			$scope.reservationDisplayStatus = 	($scope.countHistory>0) ? true : false;
 		}
+
 	});
 	/*
 	 * Handles time line click events
@@ -51,7 +56,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 				$scope.currentReservationId = "";
 			 	$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 			}
-			
+			//This status is used to show appr message if count of reservations in selected time line is zero
 			$scope.reservationDisplayStatus = 	($scope.countCurrent>0) ? true : false;
 			
 		}
@@ -65,6 +70,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 				$scope.currentReservationId = "";
 			 	$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 			}
+			//This status is used to show appr message if count of reservations in selected time line is zero
 			$scope.reservationDisplayStatus = 	($scope.countUpcoming>0) ? true : false;
 			
 		}
@@ -78,6 +84,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 				$scope.currentReservationId = "";
 			 	$scope.$broadcast("RESERVATIONDETAILS", $scope.currentReservationId);
 			}
+			//This status is used to show appr message if count of reservations in selected time line is zero
 			$scope.reservationDisplayStatus = ($scope.countHistory>0) ? true : false;
 		}
 		
