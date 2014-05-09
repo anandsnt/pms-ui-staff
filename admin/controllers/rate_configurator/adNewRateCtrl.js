@@ -84,7 +84,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         }
 
         $scope.manipulateData = function(data){
-            $scope.rateData.id = data.id;
+            if(data.id) { $scope.rateData.id = data.id; }
             $scope.rateData.name= data.name;
             $scope.rateData.description = data.description;
             $scope.rateData.promotion_code = data.promotion_code;

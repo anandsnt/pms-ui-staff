@@ -108,7 +108,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 $scope.manipulateData(data);
                 $scope.$emit('hideLoader');
                 $scope.$emit("changeMenu", 'Room types');
-                //$scope.$emit("updateBasedonRate");
                 $scope.$emit("rateChangedFromDetails");
 
             };
