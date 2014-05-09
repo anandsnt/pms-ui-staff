@@ -1,7 +1,8 @@
 <div class="config-wrapper">
     <ul class="date-wrapper" style="margin-left:31px;">
-        <li style="width:30px;"><span class="icons delete_small" ng-click="deleteSet(set.id, $index)" >&nbsp;</span></li>
-        
+        <li style="width:30px;">
+            <span class="icons delete_small" ng-click="deleteSet(set.id, $index)"  ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
+        </li>
         <li style="width:150px;" ng-hide="currentClickedSet == $index">{{set.name}}</li>
         <li ng-show="currentClickedSet == $index">
             <ad-textbox value="set.name" style="width:150px; margin-top:10px;"></ad-textbox>
@@ -57,7 +58,9 @@
                     <input type="text" ng-model="room_rate.single" ng-disabled="!is_date_range_editable(dateRange.end_date)">
                 </div>
             </td>
-            <td align="center"><span class="icons right-arrow-grey" ng-click="moveSingleToDouble($parent.$index,$index)">&nbsp;</span></td>
+            <td align="center" ng-hide="!is_date_range_editable(dateRange.end_date)">
+                <span class="icons right-arrow-grey" ng-click="moveSingleToDouble($parent.$index,$index)">&nbsp;</span>
+            </td>
             <td align="left"><div class ="entry"><input type="text" ng-model="room_rate.double" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div></td>
             <td align="center">&nbsp;</td>
             <td align="left"><div class ="entry"><input type="text" ng-model="room_rate.extra_adult" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div></td>
@@ -69,12 +72,14 @@
         <td width="20%" align="right">&nbsp;</td>
         <td width="2%">&nbsp;</td>
         <td width="16%" align="left">&nbsp;</td>
-        <td width="4%" align="center"><span class="icons right-arrow-green" ng-click="moveAllSingleToDouble($index)">&nbsp;</span></td>
+        <td width="4%" align="center">
+            <span class="icons right-arrow-green" ng-hide="!is_date_range_editable(dateRange.end_date)" ng-click="moveAllSingleToDouble($index)">&nbsp;</span>
+        </td>
         <td width="16%" align="left">&nbsp;</td>
         <td width="4%" align="center">&nbsp;</td>
         <td width="15%" style="text-align:right;" colspan="3">
             <span style="padding-right:20px;">
-                <button type="button" class="button blue">QUICK FILL</button>
+                <button type="button" class="button blue" ng-hide="!is_date_range_editable(dateRange.end_date)">QUICK FILL</button>
             </span>
             <button type="button" class="button" ng-click="saveSet($index)" ng-hide="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">SAVE&nbsp;SET</button>
             <button type="button" class="button" ng-click="saveSet($index)" ng-show="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">UPDATE&nbsp;SET</button>
