@@ -16,5 +16,15 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv', functi
 	};
 	$scope.fetchFilterOptions();
 
+
+	$scope.clickedAllRates = function(){
+		if($scope.data.is_checked_all_rates == "true"){
+			
+			$scope.data.is_checked_all_rates = "false";
+		}
+		else{
+			$scope.data.is_checked_all_rates = "true";
+		}
+	};
   
 }]);

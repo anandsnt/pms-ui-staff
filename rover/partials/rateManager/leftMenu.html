@@ -12,8 +12,8 @@
 	<div class="entry">
 	    <label for="nationality">Zoom Level</label>
 	    <div class="select">
-			<select name="zoom-level"> 
-			    <option ng-repeat="level in data.zoom_level" class="placeholder" value="{{level.value}}">{{level.name}}</option> 
+			<select name="zoom-level">
+			    <option ng-selected="level.value == data.zoom_level_selected" ng-repeat="level in data.zoom_level" class="placeholder" value="{{level.value}}">{{level.name}}</option> 
 			</select>
 		</div>
 	</div>
@@ -21,28 +21,30 @@
 	<hr/>
 	
 	<div class="entry radio-check">
-	    <label class="checkbox" ng-class="{'checked:data.is_checked_all_rates=='true'}">
-	    	<span class="icon-form icon-checkbox" ng-class="{'checked:data.is_checked_all_rates=='true'}"></span>
-            <input type="checkbox" value="opt-in" id="opt-in" name="opt-in">
+	    <label class="checkbox" ng-class="{'checked':data.is_checked_all_rates=='true'}">
+	    	<span ng-model="data.is_checked_all_rates" class="icon-form icon-checkbox" ng-class="{'checked':data.is_checked_all_rates=='true'}" ></span>
+            <input type="checkbox" ng-click="clickedAllRates()">
             ALL RATES
         </label>
 	</div>
 	
-	
-	<div class="entry">
+	<span ng-show="data.is_checked_all_rates=='false'">
+	----- OR -----
+	</span>
+	<div class="entry" ng-show="data.is_checked_all_rates=='false'">
 	    <label for="nationality">Rate Type</label>
 	    <div class="select">
 			<select name="rate-type"> 
-				<option ng-repeat="rate_type in data.rate_type" class="placeholder" value="{{rate_type.value}}">{{rate_type.name}}</option> 
+				<option ng-selected="rate_type.value == data.rate_type_selected" ng-repeat="rate_type in data.rate_type" class="placeholder" value="{{rate_type.value}}">{{rate_type.name}}</option> 
 			</select>
 		</div>
 	</div>
 	
-	<div class="entry">
+	<div class="entry" ng-show="data.is_checked_all_rates=='false'">
 	    <label for="nationality">Rate</label>
 	    <div class="select">
 			<select name="zoom-level"> 
-				<option ng-repeat="rate in data.rate" class="placeholder" value="{{rate.value}}">{{rate.name}}</option> 
+				<option ng-selected="rate.value == data.rate_selected" ng-repeat="rate in data.rate" class="placeholder" value="{{rate.value}}">{{rate.name}}</option> 
 			</select>
 		</div>
 	</div>
