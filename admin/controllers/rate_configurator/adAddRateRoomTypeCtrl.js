@@ -50,7 +50,6 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
     $scope.calculateRoomLists = function(){
         $scope.nonAssignedroomTypes = [];
         $scope.assignedRoomTypes = [];
-
         angular.forEach($scope.availableRoomTypes, function(room_type){
 
             if ($scope.rateData.room_type_ids.indexOf(room_type.id) >=0){
@@ -80,7 +79,6 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$ro
             'room_type_ids': roomIdArray,
             'id' : $scope.rateData.id
         };
-
         var saveRoomTypesSuccessCallback = function(data){
             $scope.$emit('hideLoader');
             $scope.rateData.room_type_ids = roomIdArray;

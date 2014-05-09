@@ -8,7 +8,8 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
 
             $scope.isFromDateSelected = false;
             $scope.isToDateSelected = false;
-            $scope.Sets = createDefaultSet("Set 1")
+            $scope.Sets = []
+            $scope.Sets.push(createDefaultSet("Set 1"));
             $scope.fromDate = dateFilter(new Date(), 'yyyy-MM-dd');
             $scope.fromMinDate = dateFilter(new Date(), 'yyyy-MM-dd');
 
@@ -79,7 +80,7 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
 
             if ($scope.Sets.length < 7) {
                 var newSet = {};
-                //newSet.setName = "";
+
                 var checkedDays = [];
                 /*
                  * check if any day has already been checked,if else check it in new set
@@ -92,7 +93,6 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
                     });
 
                 });
-
                 newSet = createDefaultSet(" ");
                 angular.forEach(checkedDays, function (uncheckedDay, key) {
                     angular.forEach(newSet.days, function (day, key) {
@@ -152,7 +152,7 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
         */
         var createDefaultSet = function (setName) {
 
-            var sets = [{
+            var sets = {
                 "setName": setName,
                 'days': [{
                     'name': 'MON',
@@ -176,7 +176,7 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
                     'name': 'SUN',
                     'checked': true
                 }]
-            }];
+            };
             return sets;
 
         }

@@ -131,7 +131,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             }
             fetchBasedOnRateDetails(false);
             $scope.$emit('hideLoader');
-            $scope.$broadcast('onRateDefaultsFetched');
+            $scope.$broadcast('ratesChanged');
         };
 
         $scope.addNewDateRange = function(){
