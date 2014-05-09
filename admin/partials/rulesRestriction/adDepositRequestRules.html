@@ -1,9 +1,7 @@
-<div ng-show="showDepositForm" ng-include="'/assets/partials/common/notification_message.html'"></div>
-
 <table class="grid sub-grid" ng-show="showDepositForm || depositRuleslList.length">
 	<tr ng-hide="showDepositForm" ng-repeat="rule in depositRuleslList">
 		<td class="offset"> &nbsp; </td>
-		<td ng-click="editSingleRule(rule, 'Deposit Requested')">{{ rule.name }}</td>
+		<td ng-click="editSingleRule(rule, 'Deposit Requested')"><a href>{{ rule.name }}</a></td>
 
 		<td>{{ rule.description }}</td>
 
@@ -57,7 +55,7 @@
 									value="singleRule.amount"
 									name="amount"
 									id="amount"
-									label="Amount"
+									label="Amount [{{ currencySym }}]"
 									placeholder="Enter the amount"
 									required="yes"></ad-textbox>
 							</div>
@@ -89,7 +87,7 @@
 								</div>
 							</div>
 
-							<div class="entry margin-right">
+							<div class="entry">
 								<ad-textbox styleclass="full-width"
 									value="singleRule.advance_days"
 									name="name"
@@ -97,30 +95,11 @@
 									label="Days In advance"
 									placeholder="Enter the number of days"></ad-textbox>
 							</div>
-							<div class="entry no-margin-right">
-								<div class="entry full-width">
-									<label>Time</label>
-									<div>
-										<div class="select select-col col1-2">
-											<select ng-model="singleRule.advance_hour" name="hotel-checkin-hour" id="hotel-checkin-hour" class="styled">
-												<option value="" data-text="Not set" class="placeholder">HH</option>
-												<option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==singleRule.advance_hour" >{{i}}</option>
-											</select>
-										</div>
-										<div class="select select-col col1-2">
-											<select ng-model="singleRule.advance_min" name="hotel-checkin-minute" id="hotel-checkin-minutes">
-												<option value="" data-text="Not set" class="placeholder">MM</option>
-												<option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==singleRule.advance_min" >{{i}}</option>
-											</select>
-										</div>
-									</div>
-								</div>
-							</div>
 
 							<div class="entry full-width radio-check">
 								<label class="checkbox">
 									<span class="icon-form icon-checkbox" ng-class="{ checked : singleRule.apply_to_all_bookings }"></span>
-									<label>Apply to all bookings?</label>
+									<label>Apply to all bookings</label>
 									<input type="checkbox" ng-model="singleRule.apply_to_all_bookings">
 								</label>
 							</div>

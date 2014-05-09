@@ -24,6 +24,25 @@ admin.service('ADRulesRestrictionSrv', [
         };
 
         /*
+        * To fetch hotel setting - currency
+        * 
+        * @return {object} defer promise
+        */  
+        this.fetchHotelCurrency = function(params) {
+            var deferred = $q.defer(),
+                url      = '/api/hotel_settings';
+
+            ADBaseWebSrvV2.getJSON(url, params)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
+
+        /*
         * To fetch restrictions list
         * 
         * @param {object} contains page and per_page params
