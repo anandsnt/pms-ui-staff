@@ -1,12 +1,12 @@
 <table class="grid sub-grid" ng-show="showDepositForm || depositRuleslList.length">
 	<tr ng-hide="showDepositForm" ng-repeat="rule in depositRuleslList">
 		<td class="offset"> &nbsp; </td>
-		<td ng-click="editSingleRule(rule, 'Deposit Requested')"><a href>{{ rule.name }}</a></td>
+		<td ng-click="editSingleRule(rule, 'Deposit Requests')"><a href>{{ rule.name }}</a></td>
 
 		<td>{{ rule.description }}</td>
 
 		<td width="10" class="delete">
-			<a class="icons icon-delete large-icon" ng-click="deleteRule(rule, 'Deposit Requested')">Delete this rule</a>		
+			<a class="icons icon-delete large-icon" ng-click="deleteRule(rule, 'Deposit Requests')">Delete this rule</a>		
 		</td>
 	</tr>
 
@@ -114,7 +114,7 @@
 								like-type="common"
 								id="update"
 								class="button green add-data-inline"
-								ng-click="saveUpdateRule('Deposit Requested')">Save changes</button>
+								ng-click="saveUpdateRule('Deposit Requests')">Save changes</button>
 						</div>
 
 					</form>

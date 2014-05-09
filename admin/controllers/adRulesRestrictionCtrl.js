@@ -76,7 +76,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 return '/assets/partials/rulesRestriction/adCancellationPenaltiesRules.html';
             };
 
-            if ( this.item.description === 'Deposit Requested' ) {
+            if ( this.item.description === 'Deposit Requests' ) {
                 return '/assets/partials/rulesRestriction/adDepositRequestRules.html';
             };
         };
@@ -90,7 +90,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             };
 
             var ruleType = item.description === 'Cancellation Penalties' ? 'CANCELLATION_POLICY' :
-                             item.description === 'Deposit Requested' ? 'DEPOSIT_REQUEST' : '';
+                             item.description === 'Deposit Requests' ? 'DEPOSIT_REQUEST' : '';
 
             // lets empty lists all before fetch
             $scope.cancelRulesList = [];
@@ -120,8 +120,6 @@ admin.controller('ADRulesRestrictionCtrl', [
         $scope.openAddNewRule = function() {
             $scope.rulesTitle = 'New';
 
-            console.log( this.item.description );
-
             // identify the restriction
             if ( this.item.description === 'Cancellation Penalties' ) {
                 $scope.showCancelForm = true;
@@ -133,7 +131,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
             }
 
-            if ( this.item.description === 'Deposit Requested' ) {
+            if ( this.item.description === 'Deposit Requests' ) {
                 $scope.showCancelForm = false;
                 $scope.showDepositForm = true;
 
@@ -191,7 +189,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                     $scope.showDepositForm = false;
                 }
 
-                if ( from === 'Deposit Requested' ) {
+                if ( from === 'Deposit Requests' ) {
                     $scope.singleRule = data;
                     $scope.singleRule.policy_type = 'DEPOSIT_REQUEST';
 
@@ -257,7 +255,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                         $scope.showCancelForm = false;
                     }
 
-                    if ( from === 'Deposit Requested' ) {
+                    if ( from === 'Deposit Requests' ) {
                         $scope.fetchRuleList({
                             editable: true,
                             description: from
@@ -281,7 +279,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                         $scope.showCancelForm = false;
                     }
 
-                    if ( from === 'Deposit Requested' ) {
+                    if ( from === 'Deposit Requests' ) {
                         $scope.fetchRuleList({
                             editable: true,
                             description: from
@@ -312,7 +310,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                     $scope.cancelRulesList = withoutThis;
                 }
 
-                if ( from === 'Deposit Requested' ) {
+                if ( from === 'Deposit Requests' ) {
                     var withoutThis = _.without( $scope.depositRuleslList, rule );
                     $scope.depositRuleslList = withoutThis;
                 }
