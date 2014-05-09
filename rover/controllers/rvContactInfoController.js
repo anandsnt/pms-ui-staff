@@ -1,35 +1,41 @@
 sntRover.controller('RVContactInfoController',['$scope','RVContactInfoSrv','ngDialog','dateFilter',function($scope,RVContactInfoSrv,ngDialog,dateFilter){
 
 //storing to check if data will be updated
-var presentContactInfo =  JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
-
+var presentContactInfo = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
 
 $scope.saveContactInfo = function(){
-      var saveUserInfoSuccessCallback = function(data){
+        var saveUserInfoSuccessCallback = function(data){
 	        $scope.$emit('hideLoader');
 	    };
 	    var saveUserInfoFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	    };
-	    //change date format for API call and check if data is updated or not 
+	    //change date format for API call 
 	    var dataToUpdate =  JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
-	    var dataUpdated = true;
-	    if(presentContactInfo!==dataToUpdate)
-	    	dataUpdated = false;
+	     
+	    var dataUpdated = false;
+	
+	    if(angular.equals(dataToUpdate, presentContactInfo)) {
+    			dataUpdated = true;
+		}
+		else{
+			presentContactInfo = dataToUpdate;
+		};
+	 	    	
 	    dataToUpdate.birthday = $scope.birthdayText;
 	 
 	    var data ={'data':dataToUpdate,
 	    			'userId':$scope.guestCardData.contactInfo.user_id
 	    		};
-	  if (!dataUpdated){
-	    $scope.invokeApi(RVContactInfoSrv.saveContactInfo,data,saveUserInfoSuccessCallback,saveUserInfoFailureCallback);  	
-	};
+	    if(!dataUpdated)
+	     $scope.invokeApi(RVContactInfoSrv.saveContactInfo,data,saveUserInfoSuccessCallback,saveUserInfoFailureCallback);  	
 };
 
+// watch and update formatted date for display
 $scope.$watch('guestCardData.contactInfo.birthday',function(){
 	$scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
 });
-
+// to handle click actins outside this tab
 $scope.$on('saveContactInfo',function(){
 	$scope.saveContactInfo();
 });	
