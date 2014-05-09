@@ -58,8 +58,6 @@ sntRover.controller('guestCardController', ['$scope', 'Likes', '$window','RVCont
 	function getParentWithSelector($event, selector) {
 
 		var obj = $event.target, matched = false;
-		console.log(obj);
-		console.log(selector);
 		return selector.contains(obj);
 		/*if(obj.is(selector)) {
 			matched = true;
