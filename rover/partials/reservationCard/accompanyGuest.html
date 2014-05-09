@@ -7,7 +7,10 @@
 		<br/>
 		<div class="guest">
 			<span class="label">ACCOMPANY GUEST </span>
-			<span class="name" ng-repeat="guest in reservationData.reservation_card.accompaying_guests">{{guest.guest_name}}</span>
+			<span class="name" ng-repeat="guest in reservationData.reservation_card.accompaying_guests">
+				{{guest.guest_name}}
+				<span ng-show="reservationData.reservation_card.accompaying_guests.length>1 && !$last">, </span>
+			</span>
 		</div>
 	</div>
 </span>
