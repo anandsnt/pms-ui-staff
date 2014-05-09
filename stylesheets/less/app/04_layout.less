@@ -2,7 +2,7 @@
 ==========================================================*/
 body { overflow: hidden; }
 
-::-webkit-selection {
+/*::-webkit-selection {
 	background: transparent;
 }
 ::-moz-selection{
@@ -10,6 +10,18 @@ body { overflow: hidden; }
 }
 ::selection{
 	background: transparent;
+}*/
+::-webkit-selection {
+    color: @white;
+    background: @logoPrimary;
+}
+::-moz-selection{
+    color: @white;
+    background: @logoPrimary;
+}
+::selection{
+    color: @white;
+    background: @logoPrimary;
 }
 
 .hidden { display: none !important; }
@@ -381,11 +393,11 @@ body { overflow: hidden; }
 		-ms-touch-action: none; 
 
 		/* Prevent the callout on tap-hold and text selection */
-		-webkit-touch-callout: none;
+		/*-webkit-touch-callout: none;
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		-ms-user-select: none;
-		user-select: none; 
+		user-select: none;*/ 
 
 		/* Prevent text resize on orientation change, useful for web-apps */
 		-webkit-text-size-adjust: none;
