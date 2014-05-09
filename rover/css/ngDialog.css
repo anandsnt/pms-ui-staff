@@ -104,8 +104,9 @@ body.ngdialog-open {
 	
 .calendar-modal .ngdialog-content{
 
-    width:40% !important;
+    width:38% !important;
     padding: 0px !important;
+    margin-top: -10% !important;
 }
 
 .ngdialog.ngdialog-theme-default .ngdialog-content,.grey-texture-bg-color{

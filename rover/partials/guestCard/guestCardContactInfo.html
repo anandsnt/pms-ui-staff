@@ -14,10 +14,10 @@
 						<rv-textbox value="guestCardData.contactInfo.works_at"   label = "Works at" ></rv-textbox>
 						<rv-textbox value="guestCardData.contactInfo.job_title"   label = "Job title" ></rv-textbox>
 
-						<div class="entry has-datepicker" ng-click="popupCalendar()">
+						<div class="entry has-datepicker">
 							<label for="birthday"> Birthday </label>
-							<input type="text" ng-model="guestCardData.contactInfo.birthday" readonly="" name="guest-birthday" maxlength="8" id="guest-birthday" class="hasDatepicker" >
-							<button type="button" class="ui-datepicker-trigger">
+							<input type="text" ng-model="guestCardData.contactInfo.birthday" readonly="" name="guest-birthday" maxlength="8" id="guest-birthday" class="hasDatepicker"ng-click="popupCalendar()" >
+							<button type="button" class="ui-datepicker-trigger" ng-click="popupCalendar()">
 								...
 							</button>
 						</div>
