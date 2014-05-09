@@ -1,5 +1,8 @@
 sntRover.controller('RVContactInfoController',['$scope','RVContactInfoSrv','ngDialog','dateFilter',function($scope,RVContactInfoSrv,ngDialog,dateFilter){
 
+
+console.log($scope.guestCardData.contactInfo)
+
 $scope.saveContactInfo = function(){
       var saveUserInfoSuccessCallback = function(data){
 	        $scope.$emit('hideLoader');
