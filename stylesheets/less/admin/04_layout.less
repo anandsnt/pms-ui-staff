@@ -580,6 +580,10 @@ body { overflow: hidden; }
                         color: @textColor;
                         .show;
 
+                        &.inline {
+                            display: inline;
+                        }
+
                         strong { .show; }
 
                         em { font-weight: 400; }
@@ -595,6 +599,17 @@ body { overflow: hidden; }
                     em { 
                         font-size: 14px;
                         color: @grey3;
+
+                        &.action.add {
+                            background-position: 5px -348px;
+                            cursor: pointer;
+                            color: #89bd55;
+                            font-style: normal;
+
+                            &:hover {
+                                color: #70a13e;
+                            }
+                        }
                     }
 
                     /* Larger font size for short data - room #, IATA etc. ***/
@@ -692,6 +707,32 @@ body { overflow: hidden; }
                     }
                 }
             }
+        }
+    }
+
+    .grid.sub-grid {
+        border-spacing: 0 0 10px 0;
+
+        tbody tr td {
+            height: 40px;
+        }
+
+        tbody tr .offset {
+            width: 20px;
+            background: none;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+        }
+
+        .no-results td {
+            background: none;
+            line-height: 1;
+            padding: 0;
+            color: #6b6c6e;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
         }
     }
 

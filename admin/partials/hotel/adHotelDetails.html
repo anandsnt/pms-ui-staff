@@ -96,16 +96,16 @@
 				<div class="entry full-width float">
 					<div class="select select-col col1-3">
 						<select ng-model="data.check_in_hour" name="hotel-checkin-hour" id="hotel-checkin-hour" class="styled">
-							<option value="" data-text="Not set" class="placeholder">HH</option>
-							<option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==data.check_in_time.hour" >{{i}}</option>
-						</select>
-					</div>
-					<div class="select select-col col1-3">
-						<select ng-model="data.check_in_min" name="hotel-checkin-minute" id="hotel-checkin-minutes">
-							<option value="" data-text="Not set" class="placeholder">MM</option>
-							<option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==data.check_in_time.minute" >{{i}}</option>
-						</select>
-					</div>
+								<option value="" data-text="Not set" class="placeholder">HH</option>
+								<option ng-repeat="i in [1, 12, 1, 2] | makeRange" value="{{i}}" ng-selected="i==data.check_in_time.hour" >{{i}}</option>
+							</select>
+						</div>
+						<div class="select select-col col1-3">
+							<select ng-model="data.check_in_min" name="hotel-checkin-minute" id="hotel-checkin-minutes">
+								<option value="" data-text="Not set" class="placeholder">MM</option>
+								<option ng-repeat="i in [0, 45, 15, 2] | makeRange" value="{{i}}" ng-selected="i==data.check_in_time.minute" >{{i}}</option>
+							</select>
+						</div>
 					<div class="select select-col col1-3">
 						<select ng-model="data.check_in_primetime" class="styled">
 							<!-- || data.check_in_time.primetime.length == '' || data.check_in_time.primetime.length == 0  || !isEdit -->
