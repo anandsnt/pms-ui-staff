@@ -2,10 +2,11 @@ admin.controller('ADRatesAddonsCtrl', [
 	'$scope',
 	'$rootScope',
 	'ADRatesAddonsSrv',
+	'$filter',
 	'dateFilter',
 	'ngTableParams',
 	'ngDialog',
-	function($scope, $rootScope, ADRatesAddonsSrv, dateFilter, ngTableParams, ngDialog) {
+	function($scope, $rootScope, ADRatesAddonsSrv, $filter, dateFilter, ngTableParams, ngDialog) {
 
 		
 
@@ -14,7 +15,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
 			// various addon data holders
-			$scope.addonList   = [];
+			$scope.data   = [];
 			$scope.singleAddon = {};
 
 			// for adding 
@@ -30,7 +31,16 @@ admin.controller('ADRatesAddonsCtrl', [
 
 
 		$scope.fetchTableData = function($defer, params) {
+
+			var params = params;
 			var getParams = $scope.calculateGetParams(params);
+
+
+			// var orderedData = params.sorting() ?
+			//                     $filter('orderBy')($scope.data.frequent_flyer_program, params.orderBy()) :
+			//                     $scope.data.frequent_flyer_program;
+
+			console.log( params.orderBy() );
 
 			var fetchSuccessOfItemList = function(data) {
 				$scope.totalCount = data.total_count;	
@@ -39,8 +49,12 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.currentPage = params.page();
 	        	params.total(data.total_count);
 
-	        	$scope.addonList = data.results;
-	            $defer.resolve($scope.addonList);
+	        	// sort the results
+	        	$scope.data = params.sorting() ?
+	        	                    $filter('orderBy')(data.results, params.orderBy()) :
+	        	                    data.results
+
+	            $defer.resolve($scope.data);
 
 	            $scope.$emit('hideLoader');
 			};
@@ -52,7 +66,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			        page: 1,  // show first page
 			        count: $scope.displyCount, // count per page 
 			        sorting: {
-			            rate: 'asc' // initial sorting
+			            name: 'asc' // initial sorting
 			        }
 			    }, {
 			        total: 0, // length of data
@@ -101,6 +115,8 @@ admin.controller('ADRatesAddonsCtrl', [
 			var ptCallback = function(data) {
 				$scope.postTypes = data;
 
+				console.log( data );
+
 				$scope.$emit('hideLoader');
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetchReferenceValue, { 'type': 'post_type' }, ptCallback);
@@ -134,16 +150,19 @@ admin.controller('ADRatesAddonsCtrl', [
             var weekAfter = today.setDate(today.getDate() + 7);
 
             // today should be business date, currently not avaliable
-            $scope.singleAddon.begin_date = dateFilter(new Date(), 'yyyy-MM-dd');
-			$scope.singleAddon.end_date   = dateFilter(weekAfter, 'yyyy-MM-dd');
+            // TODO: need business date, convert it to 'MM-dd-yyyy' format (required)
+            $scope.singleAddon.begin_date = dateFilter(new Date(), 'MM-dd-yyyy');
+			$scope.singleAddon.end_date   = dateFilter(weekAfter, 'MM-dd-yyyy');
 		}
 
 		// listen for datepicker update from ngDialog
-		var updateBind = $rootScope.$on('datepicker.update', function(event, chosenDate) {    
+		var updateBind = $rootScope.$on('datepicker.update', function(event, chosenDate) {  
+
+			// covert the date to 'MM-dd-yyyy' format  
 			if ( $scope.dateNeeded === 'From' ) {
-				$scope.singleAddon.begin_date = chosenDate;
+	            $scope.singleAddon.begin_date = dateFilter(chosenDate, 'MM-dd-yyyy');
 			} else {
-				$scope.singleAddon.end_date = chosenDate;
+				$scope.singleAddon.end_date = dateFilter(chosenDate, 'MM-dd-yyyy');
 			}
 		});
 
@@ -171,6 +190,17 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.$emit('hideLoader');
 				
 				$scope.singleAddon = data;
+
+				// Display currency with two decimals
+				$scope.singleAddon.amount = $filter('number')($scope.singleAddon.amount, 2);
+
+				// now remove commas created by number
+				// when the number is greater than 3 digits (without fractions)
+				$scope.singleAddon.amount = $scope.singleAddon.amount.split(',').join('');
+
+				// convert system date to MM-dd-yyyy format
+				$scope.singleAddon.begin_date = $filter('date')($scope.singleAddon.begin_date, 'MM-dd-yyyy');
+				$scope.singleAddon.end_date   = $filter('date')($scope.singleAddon.end_date, 'MM-dd-yyyy');
 			};
 
 			$scope.invokeApi(ADRatesAddonsSrv.fetchSingle, $scope.currentAddonId, callback);
@@ -187,6 +217,10 @@ admin.controller('ADRatesAddonsCtrl', [
 
 		// on save add/edit addon
 		$scope.addUpdateAddon = function() {
+
+			// convert dates to system format yyyy-MM-dd
+			$scope.singleAddon.begin_date = $filter('date')($scope.singleAddon.begin_date, 'yyyy-MM-dd');
+			$scope.singleAddon.end_date   = $filter('date')($scope.singleAddon.end_date, 'yyyy-MM-dd');	
 
 			// if we are adding new addon
 			if ( $scope.isAddMode ) {
@@ -239,8 +273,8 @@ admin.controller('ADRatesAddonsCtrl', [
 			var item = this.item;
 
 			var callback = function() {
-				var withoutThis = _.without( $scope.addonList, item );
-				$scope.addonList = withoutThis;
+				var withoutThis = _.without( $scope.data, item );
+				$scope.data = withoutThis;
 
 				$scope.$emit('hideLoader');
 
