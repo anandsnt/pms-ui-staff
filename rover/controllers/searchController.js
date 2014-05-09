@@ -80,7 +80,18 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
     	}
   	 return mappedStatus;
   };
+//function that converts a null value to a desired string.
 
+ //if no replace value is passed, it returns an empty string
+
+$scope.escapeNull = function(value, replaceWith){
+     var newValue = "";
+    if((typeof replaceWith != "undefined") && (replaceWith != null)){
+     newValue = replaceWith;
+     }
+    var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
+    return valueToReturn;
+ };
 
 
   /**
