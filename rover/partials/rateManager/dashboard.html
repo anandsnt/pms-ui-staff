@@ -2,8 +2,8 @@
 	<div ng-include="'/assets/partials/common/header.html'"></div>
 	<div ng-include="'/assets/partials/rateManager/topbar.html'" style= "width:100%;"></div>
 	<div class="content">
-        <div ng-include="'/assets/partials/rateManager/leftMenu.html'" ng-controller="RMFilterOptionsCtrl"></div>
-		<div ng-if = "displayMode == 'CALENDAR'" ng-include="'/assets/partials/rateManager/rateTable.html'"></div>
-		<div ng-if = "displayMode == 'GRAPH'" ng-include="'/assets/partials/rateManager/occupancyGraph.html'"></div>
+        <div ng-include="'/assets/partials/rateManager/leftMenu.html'" ng-controller="RMFilterOptionsCtrl" class="left-menu"></div>
+		<div ng-if = "displayMode == 'CALENDAR'" ng-include="'/assets/partials/rateManager/rateTable.html'" class="calendar"></div>
+		<div ng-if = "displayMode == 'GRAPH'" ng-include="'/assets/partials/rateManager/occupancyGraph.html'" class="graph"></div>
 	<div>
 </div>
