@@ -6,7 +6,7 @@ sntRover.service('RMFilterOptionsSrv',['$q', 'RVBaseWebSrv', function( $q, RVBas
     */
 	this.fetch = function(){
 			var deferred = $q.defer();
-			var url =  '/sample_json/filter_options/filter_options.json';	
+			var url =  '/sample_json/rate_manager/filter_options.json';	
 			RVBaseWebSrv.getJSON(url).then(function(data) {
 				deferred.resolve(data);
 			},function(data){
