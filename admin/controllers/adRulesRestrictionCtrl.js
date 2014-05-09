@@ -136,13 +136,13 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.showCancelForm = true;
                 $scope.showDepositForm = false;
 
-                $scope.rulesSubtitle = 'Cancellation Penalties Rule';
+                $scope.rulesSubtitle = 'Cancellation Penalty';
 
                 $scope.singleRule = {};
                 $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
             }
 
-            if ( this.item.description === 'Deposit Requested' ) {
+            if ( this.item.description === 'Deposit Request' ) {
                 $scope.showCancelForm = false;
                 $scope.showDepositForm = true;
 
