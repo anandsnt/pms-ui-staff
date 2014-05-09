@@ -442,6 +442,10 @@
             .entry {
                 &:nth-of-type(even):not(.full-width) { margin-right: 0; }
                 &:nth-of-type(odd):not(.full-width) { #pixel-to-percent > .right-margin(20, 580); }
+
+                &.margin-right { #pixel-to-percent > .right-margin(20, 580) !important; }
+
+                &.no-margin-right { margin-right: 0 !important; }
             }
 
             .actions { padding: 0; }
