@@ -1,4 +1,4 @@
-sntRover.directive('adTextbox', function($timeout) {
+sntRover.directive('rvTextbox', function($timeout) {
 
     return {
     	restrict: 'AE',
