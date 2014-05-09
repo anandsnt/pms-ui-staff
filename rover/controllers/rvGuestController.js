@@ -10,7 +10,8 @@ $scope.decloneUnwantedKeysFromContactInfo =  function(){
 					    "reservation_id","title","user_id",
 					    "works_at","birthday"
   					  ];
-    var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys); 
+   // var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys); 
+   var declonedData ={};
     return declonedData;
 };
 
@@ -51,9 +52,9 @@ $scope.updateContactInfo =  function(){
 
 // handle click outside tabs
 $scope.guestCardClick = function($event){
-	if($event.target.id != 'guest-contact'){
-		$scope.$broadcast('saveContactInfo');
-	}
+	// if($event.target.id != 'guest-contact'){
+	// 	$scope.$broadcast('saveContactInfo');
+	// }
 };
 
 

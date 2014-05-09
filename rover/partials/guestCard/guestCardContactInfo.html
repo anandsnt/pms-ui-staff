@@ -14,9 +14,9 @@
 						<ad-textbox value="guestCardData.contactInfo.works_at"   label = "Works at" ></ad-textbox>
 						<ad-textbox value="guestCardData.contactInfo.job_title"   label = "Job title" ></ad-textbox>
 
-						<div class="entry has-datepicker">
+						<div class="entry has-datepicker" ng-click="popupCalendar()">
 							<label for="birthday"> Birthday </label>
-							<input type="text" ng-model="guestCardData.contactInfo.birthday" readonly="" name="guest-birthday" maxlength="8" id="guest-birthday" class="hasDatepicker">
+							<input type="text" ng-model="guestCardData.contactInfo.birthday" readonly="" name="guest-birthday" maxlength="8" id="guest-birthday" class="hasDatepicker" >
 							<button type="button" class="ui-datepicker-trigger">
 								...
 							</button>
@@ -38,7 +38,7 @@
 						<div class="entry">
 							<label for="country">Country</label>
 							<div form="contact-info" class="select">
-								<select ng-options="country[0] for country  in countriesList" ng-model="contactInfo.country">
+								<select ng-options="country[1] as country[0] for country  in countriesList" ng-model="guestCardData.contactInfo.country">
 								<option style="display:none" value=""></option>
 							</select>
 							</div>

@@ -50,7 +50,9 @@
           maxDate: '=',
           disabledDates: '=',
           isCurrentMonth: '=',
-          isDateSelected: '='
+          isDateSelected: '=',
+          startYear: '=',
+          endYear:'='
         },
         templateUrl:'../../assets/directives/Calendar/adCalendar.html' ,
             link: function(scope, element, attrs, ngModel)  {
@@ -140,7 +142,8 @@
           scope.todayDate = dateFilter(new Date(), 'yyyy-MM-dd');
           scope.years = [];
           scope.yearSelected = currentDate.getFullYear();
-          for(year=2014;year<=2100;year++){
+          
+          for(year=parseInt(scope.startYear);year<=parseInt(scope.endYear);year++){
             scope.years.push(year);
           };
           scope.weekDays = ['SU','MO','TU','WE','TH','FR','SA'];
