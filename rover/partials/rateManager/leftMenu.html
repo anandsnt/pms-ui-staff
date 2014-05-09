@@ -13,12 +13,7 @@
 	    <label for="nationality">Zoom Level</label>
 	    <div class="select">
 			<select name="zoom-level"> 
-			    <option class="placeholder" value="">Select Zoom Level</option> 
-		        <option selected="" value="3">3 days</option>
-		        <option value="4">4 days</option>
-		        <option value="5">5 days</option>
-		        <option value="6">6 days</option>
-		        <option value="7">7 days</option>
+			    <option ng-repeat="level in data.zoom_level" class="placeholder" value="{{level.value}}">{{level.name}}</option> 
 			</select>
 		</div>
 	</div>
@@ -26,7 +21,8 @@
 	<hr/>
 	
 	<div class="entry radio-check">
-	    <label class="checkbox"><span class="icon-form icon-checkbox"></span>
+	    <label class="checkbox" ng-class="{'checked:data.is_checked_all_rates=='true'}">
+	    	<span class="icon-form icon-checkbox" ng-class="{'checked:data.is_checked_all_rates=='true'}"></span>
             <input type="checkbox" value="opt-in" id="opt-in" name="opt-in">
             ALL RATES
         </label>
@@ -36,13 +32,8 @@
 	<div class="entry">
 	    <label for="nationality">Rate Type</label>
 	    <div class="select">
-			<select name="zoom-level"> 
-			    <option class="placeholder" value="">Select Rate Type</option> 
-		        <option selected="" value="3">3 days</option>
-		        <option value="4">4 days</option>
-		        <option value="5">5 days</option>
-		        <option value="6">6 days</option>
-		        <option value="7">7 days</option>
+			<select name="rate-type"> 
+				<option ng-repeat="rate_type in data.rate_type" class="placeholder" value="{{rate_type.value}}">{{rate_type.name}}</option> 
 			</select>
 		</div>
 	</div>
@@ -51,12 +42,7 @@
 	    <label for="nationality">Rate</label>
 	    <div class="select">
 			<select name="zoom-level"> 
-			    <option class="placeholder" value="">Select Rate </option> 
-		        <option selected="" value="3">3 days</option>
-		        <option value="4">4 days</option>
-		        <option value="5">5 days</option>
-		        <option value="6">6 days</option>
-		        <option value="7">7 days</option>
+				<option ng-repeat="rate in data.rate" class="placeholder" value="{{rate.value}}">{{rate.name}}</option> 
 			</select>
 		</div>
 	</div>

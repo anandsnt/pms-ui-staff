@@ -2,7 +2,7 @@
 	<div ng-include="'/assets/partials/common/header.html'"></div>
 	<div ng-include="'/assets/partials/rateManager/topbar.html'" style= "width:100%;"></div>
 	<div class="content">
-		<div ng-include="'/assets/partials/rateManager/leftMenu.html'"></div>
+		<div ng-include="'/assets/partials/rateManager/leftMenu.html'" ng-controller="RMFilterOptionsCtrl"></div>
 		<div ng-if = "displayMode == 'calendar'" ng-include="'/assets/partials/rateManager/rateTable.html'"></div>
 		<div ng-if = "displayMode == 'graph'" ng-include="'/assets/partials/rateManager/occupancyGraph.html'"></div>
 	<div>
