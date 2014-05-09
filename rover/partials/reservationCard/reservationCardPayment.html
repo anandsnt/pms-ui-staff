@@ -22,31 +22,30 @@
 				<span class="icons icon-wallet"></span> Update CC 
 			</a>
 		</div>
-		
-		<a class="next-view" ng-show="reservationData.reservation_card.payment_method_used == 'CA'">
-  			<span class="value code"></span>
-  			CASH PAYMENT
-  			<div class="actions payment_actions" ng-show="reservationData.reservation_card.payment_method_used == 'CA'">
+
+			<a class="next-view" ng-show="reservationData.reservation_card.payment_method_used == 'CA'" >
+	  			<span class="value code"></span>
+	  			CASH PAYMENT
+			</a>
+			<div class="actions payment_actions" ng-show="reservationData.reservation_card.payment_method_used == 'CA'">
     			<a class="add-new-button"> + Add</a>
   			</div>
-		</a>
 		
 		
 		<a class="next-view" ng-show="reservationData.reservation_card.payment_method_used == 'CK'">
   			<span class="value code"></span>
   			CHECK PAYMENT
-  			<div class="actions payment_actions" ng-show="reservationData.reservation_card.payment_method_used == 'CK'">
-    			<a class="add-new-button"> + Add</a>
-  			</div>
 		</a>
+		<div class="actions payment_actions" ng-show="reservationData.reservation_card.payment_method_used == 'CK'">
+			<a class="add-new-button"> + Add</a>
+		</div>
 		
 		<a class="next-view" ng-show="reservationData.reservation_card.payment_method_used == 'DB'">
   			<span class="value code"></span>
   			DIRECT PAYMENT
-  			<div class="actions payment_actions" ng-show="reservationData.reservation_card.payment_method_used == 'DB'">
-    			<a class="add-new-button"> + Add</a>
-  			</div>
 		</a>
-		
+		<div class="actions payment_actions" ng-show="reservationData.reservation_card.payment_method_used == 'DB'">
+			<a class="add-new-button"> + Add</a>
+		</div>
 
 	</form> </span>
