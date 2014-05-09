@@ -45,7 +45,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         $scope.$on("changeMenu", function (e, value) {
             if (!isNaN(parseInt(value))){
                 value = "dateRange."+value;
-                $scope.$broadcast('fetchDateRangeData');
             }
             $scope.rateMenu = value;
 

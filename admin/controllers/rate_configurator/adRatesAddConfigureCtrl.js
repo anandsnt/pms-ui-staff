@@ -4,13 +4,17 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         $scope.currentClickedSet = 0;
 
         $scope.init = function(){
-            // in edit mode last date range data will be expanded and details can't by click
-            // so intiating fetching data
+            // in edit mode last date range data will be expanded and details can't fetch by click
+            // so intiating fetch data
             if($scope.rateMenu === ("dateRange." + $scope.dateRange.id)){
                 fetchData($scope.dateRange.id);
             }
         };
 
+        $scope.$on("needToShowDateRange", function(e, id){
+            // webservice call to fetch each date range details
+            fetchData(id);
+        });
 
         // data range set expanded view
         $scope.setCurrentClickedSet = function (index) {
@@ -26,12 +30,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         $scope.cancelClick = function () {
             $scope.currentClickedSet = -1;
         };
-
-        $scope.$on("fetchLastDateRangeSet", function(e){
-            console.log("inside sdfhsldjfl");
-            // webservice call to fetch each date range details
-            fetchData(id);
-        });
 
         $scope.getDateRangeData = function(id){
             // webservice call to fetch each date range details

@@ -1,4 +1,5 @@
-admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv',  function($scope,ADRatesAddRoomTypeSrv){
+admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv', '$rootScope',  
+    function($scope,ADRatesAddRoomTypeSrv, $rootScope){
 
 
 
@@ -88,11 +89,10 @@ admin.controller('ADAddRateRoomTypeCtrl',['$scope','ADRatesAddRoomTypeSrv',  fun
             var menuName = "ADD_NEW_DATE_RANGE";
             if($scope.rateData.date_ranges.length > 0){
                 var dateRangeId = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length - 1].id;
-                var menuName = 'dateRange.'+ dateRangeId;
+                var menuName = dateRangeId;
+                $rootScope.$broadcast("needToShowDateRange", dateRangeId);
             }
-
             $scope.$emit("changeMenu", menuName);
-
         };
 
         $scope.invokeApi(ADRatesAddRoomTypeSrv.saveRoomTypes, data, saveRoomTypesSuccessCallback);       
