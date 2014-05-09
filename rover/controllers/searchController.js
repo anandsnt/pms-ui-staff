@@ -24,9 +24,9 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   }
 
   var headingListDict = {  
-    'DUEIN': "CHECKING IN",
-    'INHOUSE': "IN HOUSE",
-    'DUEOUT': "CHECKING OUT",
+    'DUEIN': "Checking In",
+    'INHOUSE': "In House",
+    'DUEOUT': "Checking Out",
     'LATE_CHECKOUT': "Checking Out Late",
     '': "Search"
   }
