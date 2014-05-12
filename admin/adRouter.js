@@ -261,11 +261,18 @@ admin.config([
 			controller: 'ADSourcesCtrl',
 			url : '/sources'
 		});
+
 		$stateProvider.state('admin.bookingOrigins', {
 			templateUrl: '/assets/partials/origins/adOrigins.html',
 			controller: 'ADOriginsCtrl',
 			url : '/origins'
 		});
-		
+
+		$stateProvider.state('admin.ratesAddons', {
+			templateUrl: '/assets/partials/rates/adRatesAddons.html',
+			controller: 'ADRatesAddonsCtrl',
+			url : '/rates_addons'
+		});
+
 	}
 ]);

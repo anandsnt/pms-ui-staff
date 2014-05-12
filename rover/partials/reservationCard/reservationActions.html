@@ -15,7 +15,7 @@
 		<div class="icons time late-check-out" ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.is_opted_late_checkout && reservationData.reservation_card.is_late_checkout_on">
 			 {{reservationData.reservation_card.late_checkout_time}}
 		</div>
-		<div class="icons time check-out" ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.departure_time !=''">
+		<div class="icons check-out"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.departure_time !=''">
 			 {{reservationData.reservation_card.departure_time}}
 		</div>
 		<!-- Reservation is checking out -->
@@ -43,5 +43,6 @@
 		<a ui-sref="rover.staycard.billcard" class="button white blue-text" ng-hide="reservationData.reservation_card.is_routing_available">View bill</a>
 		
 		<!-- show add charge -->
-		<a class="button white green-text" ng-show="displayAddCharge()">Add Charge</a>
+		
+		<a class="button white green-text" ng-show="displayAddCharge(reservationData.reservation_card.reservation_status)">Add Charge</a>
 	</div>

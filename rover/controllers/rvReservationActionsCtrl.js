@@ -35,6 +35,7 @@ sntRover.controller('reservationActionsController',[ '$rootScope','$scope',  fun
 	
 	$scope.displayAddCharge = function(status){
 		var display = false;
+		
 		if(status == 'RESERVED' || status == 'CHECKING_IN' || status == 'CHECKEDIN' || status == 'CHECKING_OUT' || status == 'NOSHOW_CURRENT'){
 			display = true;
 		}
