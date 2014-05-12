@@ -20,8 +20,9 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 		}
 	});
 	
-	$scope.$parent.myScrollOptions = {
+	$scope.$parent.myScrollOptions = {		
 	    'resultDetails': {
+	    	scrollbars: true,
 	        snap: false,
 	        hideScrollbar: false
 	    },
