@@ -97,9 +97,10 @@ admin.service('ADRatesAddonsSrv', [
 		*/
 		this.fetchChargeCodes = function() {
 			var deferred = $q.defer(),
-				url      = '/api/charge_codes';
+				url      = '/api/charge_codes',
+				params   = { per_page: 1000, page: 1 };
 
-			ADBaseWebSrvV2.getJSON(url)
+			ADBaseWebSrvV2.getJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
 				}, function(errorMessage) {
