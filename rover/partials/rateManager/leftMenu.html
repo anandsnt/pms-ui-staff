@@ -12,7 +12,7 @@
 	<div class="entry">
 	    <label for="nationality">Zoom Level</label>
 	    <div class="select">
-			<select name="zoom-level">
+			<select name="zoom-level" ng-model="data.zoom_level_selected">
 			    <option ng-selected="level.value == data.zoom_level_selected" ng-repeat="level in data.zoom_level" class="placeholder" value="{{level.value}}">{{level.name}}</option> 
 			</select>
 		</div>
@@ -29,13 +29,13 @@
 	</div>
 	
 	<span class="half-border" ng-show="data.is_checked_all_rates=='false'">
-	----- OR -----
+		<hr class="half-left"/> OR <hr class="half-right"/> 
 	</span>
 	<div class="entry" ng-show="data.is_checked_all_rates=='false'">
 	    <label for="nationality">Rate Type</label>
 	    <div class="select">
 			<select name="rate-type"> 
-				<option ng-selected="rate_type.value == data.rate_type_selected" ng-repeat="rate_type in data.rate_type" class="placeholder" value="{{rate_type.value}}">{{rate_type.name}}</option> 
+				<option  ng-repeat="rate_type in data.rate_types" class="placeholder" value="{{rate_type.id}}">{{rate_type.name}}</option> 
 			</select>
 		</div>
 	</div>
@@ -43,15 +43,19 @@
 	<div class="entry" ng-show="data.is_checked_all_rates=='false'">
 	    <label for="nationality">Rate</label>
 	    <div class="select">
-			<select name="zoom-level"> 
-				<option ng-selected="rate.value == data.rate_selected" ng-repeat="rate in data.rate" class="placeholder" value="{{rate.value}}">{{rate.name}}</option> 
+			<select ng-model="data.rate_selected">
+				<option value="">Select rate</option>
+				<option ng-repeat="rate in data.rates" class="placeholder" value="{{rate.id}}">{{rate.name}}</option> 
 			</select>
 		</div>
 	</div>
 	
+	<div ng-show="data.is_checked_all_rates=='false'" ng-repeat="rates in selectedRatesList">
+		<span>{{rates.name}}</span>
+		<span ng-click="deleteRate(rates.value)" class="icons delete_small cursor-hand"> delete</span>
+	</div>
 	
 	<hr/>
-	
 	
 	<div class="entry table-search1">
 		<span class="search-text">NAME CARD,IATA # OR CORPORATED ID</span>
@@ -65,7 +69,7 @@
 
 	<div class="entry ">
 		<div class="actions float">
-			<button class="button green" type="button">Show Rates</button>
+			<button class="button green" type="button" ng-click="showRates()">Show Rates</button>
 		</div>
 	</div>
 
