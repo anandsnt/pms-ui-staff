@@ -74,9 +74,11 @@ sntRover.controller('guestCardController', ['$scope', 'Likes', '$window','RVCont
 		return matched;*/
 	};
 
-	// TO DO:handle click outside tabs
+	// handle click outside tabs and drawer click
 	$scope.guestCardClick = function($event){
-		var element = $event.target;		
+		var element = $event.target;
+		$event.stopPropagation();
+		$event.stopImmediatePropagation();			
 		if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])){			
 			if(!$scope.guestCardVisible){
 				$scope.guestCardHeight = $scope.resizableOptions.maxHeight;
@@ -87,15 +89,19 @@ sntRover.controller('guestCardController', ['$scope', 'Likes', '$window','RVCont
 				$scope.guestCardVisible = false;
 			}
 		}
-		else if($event.target.id){
-			if(($event.target.id === 'guest-contact')||($event.target.id === 'guest-like')||
-				($event.target.id === 'guest-credit')||($event.target.id === 'guest-loyalty')){
-				return;	
-			}
-		}
 		else{
-			alert("parents")
-			$scope.updateContactInfo();
+			if(getParentWithSelector($event, document.getElementById("guest-card-content"))){
+				// handle click on tab navigation bar.
+				if($event.target.id==='guest-card-tabs-nav')
+					$scope.$broadcast('saveContactInfo');
+				else
+				    return;
+			}
+			else
+			{
+				// handle click outside.
+			  	$scope.$broadcast('saveContactInfo');
+			}
 		}
 
 	};

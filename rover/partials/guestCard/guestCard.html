@@ -11,9 +11,9 @@
 			<form action="" id="change-name" method="post" name="change-name" class="ng-pristine ng-valid">
 				<div class="holder">
 					<div class="entry">
-						<input type="text" class="masked-input h1" placeholder=""  ng-model="guestCardData.contactInfo.first_name" ng-blur="updateContactInfo()">
+						<input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.first_name.length}}"  ng-model="guestCardData.contactInfo.first_name" ng-blur="updateContactInfo()" auto-grow-field>
 						
-						<input type="text" class="masked-input h1" placeholder="" ng-model="guestCardData.contactInfo.last_name" ng-blur="updateContactInfo()">
+						<input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.last_name.length}}" ng-model="guestCardData.contactInfo.last_name" ng-blur="updateContactInfo()" auto-grow-field>
 						
 					</div>
 					<strong class="status"> </strong>
