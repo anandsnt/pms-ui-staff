@@ -92,7 +92,7 @@
 							<select name="charge-code-id"
 								id="charge-code-id"
 								ng-model="singleAddon.charge_code_id"
-								ng-options="code.id as code.name for code in chargeCodes"></select>
+								ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodes"></select>
 						</div>
 					</div>
 				</div>							
