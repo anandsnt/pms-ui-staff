@@ -1,15 +1,7 @@
-var sntRover = angular.module('sntRover',['ui.router', 'ui.utils', 'ng-iscroll', 'ngAnimate','ngDialog', 'ngSanitize']);
-sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
-	//BaseCtrl.call(this, $scope);
-	$rootScope.$state = $state;
-	$rootScope.$stateParams = $stateParams;
-	// $scope.$on("showLoader", function(){
-        // $scope.hasLoader = true;
-    // });
-// 
-    // $scope.$on("hideLoader", function(){
-        // $scope.hasLoader = false;
-    // });    
-
-	
-}]);
+var sntRover = angular.module('sntRover', ['ui.router', 'ui.utils', 'ng-iscroll', 'ngAnimate', 'ngDialog', 'ngSanitize', 'highcharts-ng']);
+sntRover.run(['$rootScope', '$state', '$stateParams',
+    function ($rootScope, $state, $stateParams) {
+        $rootScope.$state = $state;
+        $rootScope.$stateParams = $stateParams;
+    }
+]);
