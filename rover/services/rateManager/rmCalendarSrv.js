@@ -6,7 +6,7 @@ sntRover.service('RMCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrv
     */
 	this.fetch = function(){
 		var deferred = $q.defer();
-		var url =  '/sample_json/rate_manager/calendar.json';	
+		var url =  '/sample_json/rate_manager/rate_view_calendar.json';	
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(data){

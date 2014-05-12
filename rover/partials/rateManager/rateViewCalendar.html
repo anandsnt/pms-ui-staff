@@ -1,0 +1,35 @@
+<table class="grid" ng-table="tableParams" ng-controller="RateCellCtrl">
+	<thead>
+	 	<tr>
+	 		<th>
+	 			&nbsp;	
+	 		</th>
+	 		<th ng-repeat="date in $data.dates">{{date}}</th>
+	 	</tr>
+	 </thead>
+
+	<tbody>
+		<tr><td> All Rates</td>
+			<td ng-repeat="item in $data.all_rates" class="cal-cell">
+				<span ng-repeat="restriction in item.restrictions" class="{{$data.restriction_types[restriction.id].background_class}} {{$data.restriction_types[restriction.id].icon}} cal-cell" >
+					{{restriction.value}}
+				</span>
+
+			</td>
+
+
+		</tr>
+		<tr ng-repeat="row in $data.data">
+			<td>{{row.rate.name}}
+				<img src="/assets/arrow-up.png">
+			</td>
+
+			<td ng-repeat="item in row.details" class="cal-cell" >
+				<span ng-repeat="restriction in item.restrictions" class="{{$data.restriction_types[restriction.id].background_class}} {{$data.restriction_types[restriction.id].icon}} cal-cell" >
+					{{restriction.value}}
+				</span>
+			</td>
+		</tr>
+		
+	</tbody>
+</table>

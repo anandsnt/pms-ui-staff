@@ -1,28 +1,6 @@
 <!--ng-table component -->
-<table class="grid" ng-table="tableParams">
-	<thead>
-	 	<tr>
-	 		<th>
-	 			<button> Open All</button>	
-	 			<button> Close All</button>	
-	 		</th>
-	 		<th ng-repeat="date in $data.dates">{{date}}</th>
-	 	</tr>
-	 </thead>
-	<tbody>
-		<tr><td colspan="{{$data.data.length + 1}}"> All rooms</td></tr>
-		<tr ng-repeat="row in $data.data">
-			<td>Room Type
-				<img src="/assets/arrow-up.png" ng-click="expandRow($index)" >
-			</td> 
-			<td ng-hide="currentExpandedRow==$parent.$index" ng-repeat="item in row.details" class="cal-cell" >
-				{{item.rate}}
-				<!-- TODO: Item.restriction -->
-			</td>
-			<td ng-repeat="item in row.details" class="cal-cell" ng-show="currentExpandedRow==$parent.$index">
-				expanded value
-			</td>
-		</tr>
-	</tbody>
-</table>
+<div ng-include="'/assets/partials/rateManager/rateViewCalendar.html'"></div>
+<!-- <div ng-include="'/assets/partials/rateManager/roomTypeCalendar.html'"></div> -->
+
+
 <!--end -->
