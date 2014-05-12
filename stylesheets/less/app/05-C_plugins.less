@@ -17,7 +17,6 @@
 			position: absolute;
 			font-size: 0.1px;
 			z-index: 9999 !important;
-			display: block;
 			.show;
 
 			&.ui-resizable-s {
@@ -27,9 +26,7 @@
 				bottom: -10px;
 				left: 50%;
 				margin-left: -26px;
-				background-color: @gcard;
 				background-repeat: no-repeat, repeat;
-				background-image: @icons, @gcardTexture;
 				background-position: 8px -396px, 0 0;
 				.box-shadow(0 2px 2px rgba(0,0,0,.2));
 				#border-radius > .bottom(5px);
@@ -52,6 +49,33 @@
 		&.ui-resizable-disabled,
 		&.ui-resizable-autohid {
 			.ui-resizable-handle { .hide; }
+		}
+
+		&.guest-card {
+			.ui-resizable-handle {
+				&.ui-resizable-s {
+					background-color: @gcard;
+					background-image: @icons, @gcardTexture;
+				}
+			}
+		}
+
+		&.company-card {
+			.ui-resizable-handle {
+				&.ui-resizable-s {
+					background-color: @ccard;
+					background-image: @icons, @ccardTexture;
+				}
+			}
+		}
+
+		&.travel-agent-card {
+			.ui-resizable-handle {
+				&.ui-resizable-s {
+					background-color: @tacard;
+					background-image: @icons, @tacardTexture;
+				}
+			}
 		}
 	}
 
@@ -951,6 +975,60 @@
 
 					&.primary {
 						.value { font-weight: 600; }
+					}
+				}
+			}
+
+			/* Grid modal ***/
+			&.grid {
+				padding: 20px;
+				width: 480px;
+				
+				.grid-wrapper {
+					.float;
+
+					.holder {
+						.pull-left;
+
+						.entry { width: 50px; }
+
+						&.left {
+							width: 90px;
+
+							.entry {
+
+								&.move {
+									width: 40px;
+
+									.icon-mover-right {
+										margin-top: 30px;
+										cursor: pointer;
+										.hide-text;
+										.square(40px);
+									}
+								}
+							}
+						}
+
+						&.right {
+							width: 350px; 
+
+							.entry { 
+								margin-right: 10px;
+
+								&:nth-child(6n) { margin-right: 0; }
+							}
+						}
+					}
+				}
+
+				.actions {
+					margin-top: 20px;
+					
+					.button { 
+						width: auto;
+						padding: 0 40px;
+						margin: 0 auto;
 					}
 				}
 			}
