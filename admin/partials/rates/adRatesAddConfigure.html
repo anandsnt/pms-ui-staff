@@ -1,20 +1,40 @@
-<form class="form form-rate-config">
-	<div ng-controller="ADRatesAddConfigureCtrl" style="width:100%;">
+<!-- Collapse View -->
+<div ng-hide="rateMenu === 'dateRange.{{ dateRange.id }}'">
+    <span class="italic_text">{{dateRange.begin_date | date:'MMMM dd, y'}}</span>
+    <span style="margin:0 5px;">to</span>
+    <span class="italic_text">{{dateRange.end_date | date:'MMMM dd, y'}}</span>  
+    <div ng-click="getDateRangeData(dateRange.id)" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+</div>
+<!-- Expanded View -->
+    <div ng-show="rateMenu === 'dateRange.{{ dateRange.id }}'">
+    <form class="form form-rate-config">
+        <div style="width:100%;">
+            <ul style="padding-left: 20px;">        
+                <li style="width:98.5%; float:left;">
+                    <span  class="italic_text">{{dateRange.begin_date | date:'MMMM dd, y'}}</span>
+                    <span style="margin:0 5px;">to</span>
+                    <span  class="italic_text">{{dateRange.end_date | date:'MMMM dd, y'}}</span>
+                    <span style="float:right" class="cursor-hand"><img src="/assets/arrow-up.png" ng-click="unsetCurrentClickedSet($index)" ></span>
 
-		<table width="100%">
-			<tr ng-repeat="set in data.sets">
-				<td ng-include="'/assets/partials/rates/adAddRateConfig.html'" style="padding:0px !important;"></td>
-			</tr>
-		</table>
+                </li>
+                
+                <br clear="all"/>
+            </ul>
 
-		<div class="actions float">
-			<button class="button blank add-data-inline" id="cancel" type="button" ng-click="cancelClick()">
-				Cancel
-			</button>
-			<button ng-click="saveWholeData()" class="button green add-data-inline" id="save" type="button">
-				Save Rate
-			</button>
-		</div>
-	</div>
-</form>
+            <table width="100%">
+                <tr ng-repeat="set in data.sets">
+                    <td ng-include="'/assets/partials/rates/adAddRateConfig.html'" style="padding:0px !important;"></td>
+                </tr>
+            </table>
 
+            <div class="actions float">
+                <button class="button blank add-data-inline" id="cancel" type="button" ng-click="cancelClick()">
+                    Cancel
+                </button>
+                <button ng-click="saveDateRange()" class="button green add-data-inline" id="save" type="button">
+                    Save Rate
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
