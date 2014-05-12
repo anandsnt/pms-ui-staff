@@ -1,4 +1,4 @@
-sntRover.controller('RateCalendarCtrl', ['$scope', 'RMCalendarSrv', 'ngTableParams', function($scope, RMCalendarSrv, ngTableParams){
+sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTableParams', function($scope, RateMngrCalendarSrv, ngTableParams){
 	
 	BaseCtrl.call(this, $scope);
 
@@ -20,14 +20,14 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RMCalendarSrv', 'ngTablePara
 	/*
     * Method to fetch all calendar data
     */
-	var fetchCalendarData = function($defer, params){
+	var getCalendarData = function($defer, params){
 		var calenderDataFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.calendarData = data;
         	params.total(data.length);
             $defer.resolve(data);
 		};
-		$scope.invokeApi(RMCalendarSrv.fetch, {}, calenderDataFetchSuccess);
+		$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, {}, calenderDataFetchSuccess);
 	};
 
 	var loadTable = function(data){
@@ -37,7 +37,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RMCalendarSrv', 'ngTablePara
 		        count: 10 
 		    }, {
 		    	total: 2,
-		        getData: fetchCalendarData
+		        getData: getCalendarData
 		    }
 		);
 	}

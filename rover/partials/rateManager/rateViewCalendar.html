@@ -1,4 +1,4 @@
-<table class="grid" ng-table="tableParams" ng-controller="RateCellCtrl">
+<table class="grid" ng-table="tableParams" ng-controller="RateViewCalendarCtrl">
 	<thead>
 	 	<tr>
 	 		<th>
@@ -10,23 +10,23 @@
 
 	<tbody>
 		<tr><td> All Rates</td>
-			<td ng-repeat="item in $data.all_rates" class="cal-cell">
-				<span ng-repeat="restriction in item.restrictions" class="{{$data.restriction_types[restriction.id].background_class}} {{$data.restriction_types[restriction.id].icon}} cal-cell" >
-					{{restriction.value}}
-				</span>
 
+			<td ng-repeat="date in $data.dates" class="cal-cell">
+				<span ng-repeat="restriction in $data.all_rates[date]" class="{{$data.restriction_types[restriction.restriction_type_id].background_class}} {{$data.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
+					{{restriction.days}}
+				</span>
 			</td>
 
 
 		</tr>
-		<tr ng-repeat="row in $data.data">
-			<td>{{row.rate.name}}
+		<tr ng-repeat="rate in $data.data">
+			<td>{{rate.name}}
 				<img src="/assets/arrow-up.png">
 			</td>
 
-			<td ng-repeat="item in row.details" class="cal-cell" >
-				<span ng-repeat="restriction in item.restrictions" class="{{$data.restriction_types[restriction.id].background_class}} {{$data.restriction_types[restriction.id].icon}} cal-cell" >
-					{{restriction.value}}
+			<td ng-repeat="date in $data.dates" class="cal-cell" >
+				<span ng-repeat="restriction in rate[date]" class="{{$data.restriction_types[restriction.restriction_type_id].background_class}} {{$data.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
+					{{restriction.days}}
 				</span>
 			</td>
 		</tr>
