@@ -2,20 +2,22 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$scope',
     function ($scope) {
         graph_data = [{
             "name": "Actual",
-            "data": [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
+            "data": [[Date.UTC(2014, 3, 22), 30], [Date.UTC(2014, 3, 23), 40], [Date.UTC(2014, 3, 24), 70]],
             "color": "blue"
         }, {
             "name": "Target",
-            "data": [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5],
+            "data": [[Date.UTC(2014, 3, 22), 60], [Date.UTC(2014, 3, 23), 50], [Date.UTC(2014, 3, 24), 60]],
             "color": "black"
         }]
         $scope.highchartsNG = {
             options: {
                 chart: {
                     type: 'line',
+                    className: "rateMgrOccGraph",
                     plotBackgroundColor: '#e0e0e0'
                 },
                 legend: {
+                    rtl: true,
                     layout: 'vertical',
                     align: 'left',
                     verticalAlign: 'top',
@@ -29,14 +31,22 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$scope',
                 xAxis: {
                     gridLineWidth: 10,
                     gridLineColor: '#f0f0f0',
-                    opposite: true
-                }
+                    opposite: true,
+                    tickPosition: 'inside',
+                    type: 'datetime',
+                    minTickInterval: 24 * 3600 * 1000,
+                    dateTimeLabelFormats:{
+                        day: '%A <br/> %B %d'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        showCheckbox: true,
+                        selected: true
+                    }
+                },
             },
-            series: graph_data,
-            title: {
-                text: 'Sample Chart'
-            },
-            loading: false
+            series: graph_data
         }
     }
 ]);
