@@ -87,6 +87,17 @@ sntRover.controller('guestCardController', ['$scope', 'Likes', '$window','RVCont
 				$scope.guestCardVisible = false;
 			}
 		}
+		else if($event.target.id){
+			if(($event.target.id === 'guest-contact')||($event.target.id === 'guest-like')||
+				($event.target.id === 'guest-credit')||($event.target.id === 'guest-loyalty')){
+				return;	
+			}
+		}
+		else{
+			alert("parents")
+			$scope.updateContactInfo();
+		}
+
 	};
 
 
