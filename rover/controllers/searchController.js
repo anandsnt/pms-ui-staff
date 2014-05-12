@@ -70,7 +70,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   //click function on search area, mainly for closing the drawer
   $scope.clickedOnSearchArea = function(){
     $scope.$emit("closeDrawer");
-  }
+  };
   //Map the room status to the view expected format
   $scope.getRoomStatusMapped = function(roomstatus, fostatus){
     	var mappedStatus = "";
@@ -110,7 +110,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
       else{   
         $scope.results = [];
       }
-  }
+  };
 
   //setting up initial things
   performInitialActions();

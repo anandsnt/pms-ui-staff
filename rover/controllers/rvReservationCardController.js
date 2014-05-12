@@ -23,8 +23,6 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 		
 		$scope.currentReservationId = data.reservation_details.confirmation_num;
 		
-		RVReservationCardSrv.setGuestData($scope.data.guest_details);
-		
 		if($scope.timeline == "current"){
 			$scope.reservationList = data.reservation_list.current_reservations_arr;
 			//This status is used to show appr message if count of reservations in selected time line is zero
@@ -40,6 +38,8 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 			//This status is used to show appr message if count of reservations in selected time line is zero
 			$scope.reservationDisplayStatus = 	($scope.countHistory>0) ? true : false;
 		}
+		
+		RVReservationCardSrv.setGuestData($scope.data.guest_details);
 
 	});
 	/*

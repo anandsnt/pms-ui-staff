@@ -17,6 +17,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	//scroller options
 	$scope.$parent.myScrollOptions = {
         snap: false,
+        scrollbars: true,
         bounce: true,
         vScroll: true,
         vScrollbar: true,
@@ -37,7 +38,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	//on drag start we need to show a dotted border on bookmark area
 	$scope.onDragStart = function(){
 		$scope.isDragging = true;
-	}
+	};
 
 	//on drag stop we need to hide the dotted border on bookmark area
 	$scope.onDragStop = function(){
