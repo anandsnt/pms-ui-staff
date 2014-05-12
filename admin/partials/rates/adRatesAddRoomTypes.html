@@ -1,4 +1,11 @@
-<div ng-controller="ADAddRateRoomTypeCtrl">
+<!-- Collapse View -->
+<div ng-hide="rateMenu ==='Room types'">
+	<em class="rate_step_title">Room</em>&nbsp;<span class="italic_text">Types</span>
+	<div ng-click="$emit('changeMenu','Room types')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+</div>
+
+<!-- Expanded View -->
+<div ng-show="rateMenu ==='Room types'" ng-controller="ADAddRateRoomTypeCtrl">
 	<form user="2"  class="form float form_add_new_rate">
 		<fieldset class="holder full-width">
 			<div class="form-title">
@@ -75,7 +82,7 @@
 	<div class="actions float">
 		<button type="button" id="cancel" class="button blank add-data-inline" ui-sref="admin.rates">Cancel</button>
 		<button type="button" id="send-email"  class="button grey" ng-hide="anyRoomSelected()" ng-disabled="true" >Step 3 - Set date range</button>
-		<button type="button" ng-click="saveStep2()" class="button  brand-colors" ng-show="anyRoomSelected()">
+		<button type="button" ng-click="saveRoomTypes()" class="button  brand-colors" ng-show="anyRoomSelected()">
 			Step 3 - Set date range
 		</button>
 	</div>

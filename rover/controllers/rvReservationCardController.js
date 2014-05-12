@@ -4,6 +4,33 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 	$scope.reservationList = [];
 	$scope.currentReservationId = "";
 	$scope.reservationCount = 0;
+	// // console.log("litsing")
+	// $scope.$parent.myScrollOptions = {
+	    // 'result_listing': {
+	        // snap: false,
+	        // hideScrollbar: false,onScrollEnd: function ()
+        	// {
+            	// alert('finshed scrolling wrapper');
+    		// }
+	    // },
+	// };
+// 	
+// 	
+	 // $scope.$parent.myScrollOptions = {
+        // 'resultDetails': {
+            // snap: false,
+            // onScrollEnd: function ()
+            // {
+                // alert('finshed scrolling wrapper2');
+            // }},
+        // 'result_listing': {
+            // snap: false,
+            // onScrollEnd: function ()
+            // {
+                // alert('finshed scrolling wrapper3');
+            // }}
+    // };
+	
 	/*
 	 * to get state params from resrvation details controller
 	 */
