@@ -83,8 +83,12 @@ sntRover.config([
         $stateProvider.state('rover.ratemanager', {
         	url: '/rateManager',
         	templateUrl: '/assets/partials/rateManager/dashboard.html',
-        	controller	: 'RMDashboradCtrl'
-        	
+        	controller	: 'RMDashboradCtrl',
+        	resolve: {
+				dashBoarddata: function(RVDashboardSrv) {
+					return RVDashboardSrv.fetchDashboardDetails();
+				}
+			}
         });
         
         // $stateProvider.state('rover.staycard.billcard.details', {
