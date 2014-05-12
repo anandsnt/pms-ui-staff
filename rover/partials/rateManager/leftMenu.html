@@ -1,6 +1,6 @@
 <div class="filter-options">
 <h3>FILTER OPTIONS</h3>
-<div class="holder left">
+<div class="holder left" ng-iscroll="filter_details" ng-iscroll-delay="1000">
 	
 	<div class="entry has-datepicker">
 	    <label for="">DATE RANGE</label>
@@ -13,6 +13,7 @@
 	    <label for="nationality">Zoom Level</label>
 	    <div class="select">
 			<select name="zoom-level" ng-model="data.zoom_level_selected">
+				<option value="">Select Zoom Level</option>
 			    <option ng-selected="level.value == data.zoom_level_selected" ng-repeat="level in data.zoom_level" class="placeholder" value="{{level.value}}">{{level.name}}</option> 
 			</select>
 		</div>
@@ -50,7 +51,7 @@
 		</div>
 	</div>
 	
-	<div ng-show="data.is_checked_all_rates=='false'" ng-repeat="rates in selectedRatesList">
+	<div ng-show="data.is_checked_all_rates=='false'" ng-repeat="rates in data.selectedRatesList">
 		<span>{{rates.name}}</span>
 		<span ng-click="deleteRate(rates.value)" class="icons delete_small cursor-hand"> delete</span>
 	</div>

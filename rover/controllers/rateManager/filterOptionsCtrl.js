@@ -1,20 +1,17 @@
 sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv', function($scope, RMFilterOptionsSrv){
 	
   	BaseCtrl.call(this, $scope);
-  	//$scope.displayMode = "calendar";
   	$scope.data = {};
-  	$scope.selectedRatesList = [];
+  	$scope.data.selectedRatesList = [];
   	$scope.data.rates = [];
   	$scope.data.rate_types = [];
+  	$scope.data.zoom_level = [{"value": "3","name": "3 days"},{"value": "4","name": "4 days"},{"value": "5","name": "5 days"},{"value": "6","name": "6 days"},{"value": "7","name": "7 days"}];
+    $scope.data.date_range = [{"from": "10-10-12","to": "11-11-12"}];
+    $scope.data.is_checked_all_rates = "false";   
   	/*
     * Method to fetch all filter options
     */
 	$scope.fetchFilterOptions = function(){
-		var fetchFilterOptionsSuccessCallback = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.data = data;
-		};
-		$scope.invokeApi(RMFilterOptionsSrv.fetch, {},fetchFilterOptionsSuccessCallback);
 		var fetchRatesSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.data.rates = data.results;
@@ -43,7 +40,7 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv', functi
 	
 	$scope.$watch('data.rate_selected', function() {
 		var isDataExists = false;
-		angular.forEach($scope.selectedRatesList,function(item, index) {
+		angular.forEach($scope.data.selectedRatesList,function(item, index) {
        		if (item.id == $scope.data.rate_selected) {
        			isDataExists = true;
 		 	}
@@ -51,16 +48,16 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv', functi
 		if(!isDataExists){
 			angular.forEach($scope.data.rates,function(item, index) {
 	       		if (item.id == $scope.data.rate_selected) {
-	       			$scope.selectedRatesList.push(item);
+	       			$scope.data.selectedRatesList.push(item);
 			 	}
 	       });
 	    }
    	});
    	
 	$scope.deleteRate = function(id){
-		angular.forEach($scope.selectedRatesList,function(item, index) {
+		angular.forEach($scope.data.selectedRatesList,function(item, index) {
        		if (item.id == id) {
-       			$scope.selectedRatesList.splice(index, 1);
+       			$scope.data.selectedRatesList.splice(index, 1);
 		 	}
        	});
 	};
