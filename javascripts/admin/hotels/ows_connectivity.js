@@ -15,7 +15,6 @@ var ConnectivityView = function(domRef){
   };
   // To save guest review
   this.testOrSaveConnectivityDetails = function(event) {
-  	
   	var data = that.getData();
 	 
 	 var postData = {
@@ -24,7 +23,8 @@ var ConnectivityView = function(domRef){
 		    "pms_user_name": data.pms_user_name,
 		    "pms_user_pwd": data.pms_user_pwd,
 		    "pms_hotel_code": data.pms_hotel_code,
-		    "pms_chain_code": data.pms_chain_code
+		    "pms_chain_code": data.pms_chain_code,
+		    "pms_timeout": data.pms_timeout
 	 };
 	 var type = event.data[0];
 	 if(type == "save"){
@@ -68,6 +68,7 @@ var ConnectivityView = function(domRef){
   	 var pms_user_pwd     = that.myDom.find("#pms-user-pwd").val();
   	 var pms_hotel_code   = that.myDom.find("#pms-hotel-code").val();
   	 var pms_chain_code   = that.myDom.find("#pms-chain-code").val();
+  	 var pms_timeout   = that.myDom.find("#pms-timeout").val();
   	 
   	 var data = {};
   	 data.pms_access_url 	= pms_access_url;
@@ -76,6 +77,7 @@ var ConnectivityView = function(domRef){
   	 data.pms_user_pwd = pms_user_pwd;
   	 data.pms_hotel_code = pms_hotel_code;
   	 data.pms_chain_code = pms_chain_code;
+  	 data.pms_timeout = pms_timeout;
   	 return data;
   };
   // To handle success on save API
