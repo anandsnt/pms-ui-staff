@@ -16,20 +16,21 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
     //scroller options
     $scope.$parent.myScrollOptions = {
         snap: false,
+        scrollbars: true,
         bounce: true,
         vScroll: true,
         vScrollbar: true,
         hideScrollbar: false
     };
-  }
+  };
 
   var headingListDict = {  
-    'DUEIN': "Checking In",
+    'DUEIN': "CHECKING IN",
     'INHOUSE': "IN HOUSE",
-    'DUEOUT': "Checking Out",
+    'DUEOUT': "CHECKING OUT",
     'LATE_CHECKOUT': "Checking Out Late",
     '': "Search"
-  }
+  };
 
   //success callback of data fetching from the webservice
 	var successCallBackofInitialFetch = function(data){

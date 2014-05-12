@@ -5,18 +5,7 @@
 
 		<div role="main" id="view-nested-first" class="nested-view view-current">
 			<!-- Nav bar -->
-			<header role="banner" class="nav-bar float">
-				<!-- Drawer toggle -->
-				<a id="back-arrow" class="nav-toggle" ng-click="$emit('navToggled')" ng-class="{'active': menuOpen}">Menu</a>
-		
-				<!-- Title -->
-				<h1 class="h2"> Stay Card <span> <strong> Admin
-					Staff </strong> | <em class="date"> Monday, 31 March 2014 </em> </span></h1>
-				<!-- Logo -->
-				<div class="logo">
-					<img src="https://8ebd8b3dcdf6d6f8887d-4d1e022461cbaa577307930af1386d20.ssl.cf2.rackcdn.com/CHA/DOZERQA/hotels/1/icons/original/logo20140422014327.png" alt="">
-				</div>
-			</header>
+			<div ng-include="'/assets/partials/common/header.html'"></div>
 			<!-- TO INCLUDE RESERVATION CARD WHICH INCLUDES RESERVATION LISTING AND RESERVATION DETAILS IN THE RIGHT SIDE-->
 			<div ui-view > </div>
 		</div>
