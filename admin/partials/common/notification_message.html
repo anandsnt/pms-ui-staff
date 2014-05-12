@@ -4,11 +4,10 @@
 	<span ng-switch-when="1">
 			{{errorMessage[0]}}
 	</span>
-	<span ng-switch-default>
-		
-		<span ng-repeat-start="message in errorMessage">{{message}}, </span>
-		<span ng-repeat-end="">
-			{{message}}
+	<span ng-switch-default>		
+		<span ng-repeat="message in errorMessage" >
+			<span ng-if=!$last>{{message}}, </span>
+			<span ng-if=$last> {{message}} </span>
 		</span>
 	</span>	
 	

@@ -151,6 +151,26 @@ admin.service('ADRatesAddonsSrv', [
 		};
 
 		/*
+		* Get the current business date
+		*
+		* @method GET
+		* @return {object} defer promise
+		*/
+		this.fetchBusinessDate = function(params) {
+			var deferred = $q.defer(),
+				url      = '/api/business_dates/active';
+
+			ADBaseWebSrvV2.getJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(errorMessage) {
+					deferred.reject(errorMessage);
+				});
+
+			return deferred.promise;
+		};
+
+		/*
 		* activate/deactivate an adddon
 		*
 		* @method POST
