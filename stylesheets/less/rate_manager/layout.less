@@ -1,5 +1,5 @@
-#rate-manager{
-    .topbar{
+#rate-manager {
+    .topbar {
         width: 100%;
         background: #FFFFFF;
 
@@ -7,14 +7,29 @@
             float:right;
         }
     }
-    .content{
+    .content {
         clear:both;
-        .filter-options{
+        .left-menu{
+            width: 22%;
+            display: table-cell;
+
+        }
+        .filter-options {
             display:block;
             width: 230px;
             background-color:#E0E0E0 ;
             padding:20px;
             height:100%;
         }
+        .calendar, .graph {
+            display: table-cell;
+            width: 78%;
+
+            .cal-cell{
+                text-align:center; 
+                vertical-align:middle;
+            }
+
+        } 
     }
 }
