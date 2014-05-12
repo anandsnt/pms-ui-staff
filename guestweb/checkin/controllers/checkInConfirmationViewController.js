@@ -8,11 +8,7 @@
 
 		$rootScope.checkedApplyCharges = false;
 
-
-
-
-
-		$scope.minDate  = dateFilter(new Date(), 'yyyy-MM-dd');
+		$scope.minDate  = $rootScope.businessDate;
 		$scope.cardDigits = '';
 
 		// page navigatons if any of following conditions happpens

@@ -25,7 +25,7 @@
 	
 
 		<!-- contentarea starts here-->
-		<div class="container" ng-hide="isFetching || netWorkError">
+		<div class="container line-top  line-bottom" ng-hide="isFetching || netWorkError">
 			<!-- top section starts here-->
 
 			<div class="row checkin-wrapper">
@@ -40,7 +40,7 @@
 				</div>
 				<!-- top section ends here-->
 
-				<div class="verti-ruler"></div>
+				<div class="verti-ruler" style="margin-bottom: 20px;"></div>
 
 				<!-- <carousel interval="myInterval"> -->
 				<div class="col-md-6 pad-lf-60 carousel-view">
@@ -86,6 +86,7 @@
 					</carousel>
 
 					<div class="proceed-to-checkin" ng-click="noThanksClicked()">
+
 						NO,THANKS. PROCEED TO <strong>CHECK-IN</strong>
 						<img src="/assets/img/white_arrow.png">
 					</div>

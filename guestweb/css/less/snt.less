@@ -152,7 +152,7 @@ margin:0px !important;
 }
 
 .header {
-padding-bottom: 15px; 
+padding-bottom: 15px;
 }
 
 .headerrow {
@@ -227,13 +227,13 @@ margin: 0 10px;
 
 @media (max-width: 992px) {
 .checkout-later-back-button{
-  
+
   display:none;
   }
 }
 @media (min-width: 992px) {
 .checkout-later-back-button-for-mobile{
-  
+
   display:none;
   }
 }
@@ -272,12 +272,12 @@ padding: 20px 10px;
 }
 
 .later-options .rel-wrapper {
-padding: 30px 20px 32px;
+padding: 30px 5px 32px;
 }
 
 .checkoutnow,.proceed-to-checkin {
 background: #000000;
-color: #ffffff; 
+color: #ffffff;
 }
 .checkin{
   margin:0px 0px 10px 0px !important;
@@ -309,7 +309,7 @@ z-index: 3;
     font-size: 15px;
   }
   .amount {
-    font-size: 25px;
+    font-size: 23px;
   }
 }
 
@@ -450,11 +450,11 @@ color:#000000;
 }
 
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
-  
+
     padding: 1px !important;
     padding-left : 12px !important;
     background-color: #fcfcfc !important;
-   
+
 }
 .table {
 
@@ -666,14 +666,14 @@ border-color:  #000000 !important;
   height: 1px;
   border: 0;
   background-color: white;
-  
+
 }
 .horizontalLineTop{
   margin: 5px 25px 35px;
 }
 .horizontalLineBottom {
   margin: 75px 25px 60px;
-}  
+}
 
 .now-later-options > .row  {
 
@@ -691,7 +691,7 @@ border-color:  #000000 !important;
 
   width: 270px !important;
   height: 75px !important;
-  
+
   }
   .headtext{
    font-size:37px  !important;
@@ -707,7 +707,7 @@ border-color:  #000000 !important;
   &.second-in {
   padding-top: 0 !important;
   }
-  
+
   .rel-wrapper .col-md-8{
   padding-tip: 0  !important;
   margin:0;
@@ -764,7 +764,7 @@ border-color:  #000000 !important;
 
 
 .reservation-details{
- 
+
   font-style: bold  !important;
   font-weight: 500;
 
@@ -782,15 +782,15 @@ font-size: 10px !important;
 
 
 .alert-box{
-  
+
   margin-top: 20px !important;
   padding-top: 20px !important;
-} 
+}
 .alert-element{
   margin-top: 20px !important;
   margin-bottom: 20px !important;
 }
-.alert-link{ 
+.alert-link{
   color:#0030e2 !important;
   margin-bottom: 25px !important;
 }
@@ -824,7 +824,7 @@ padding:5px 8px 2px 0;
  }
 
  .row .reservation-id{
- 
+
     color: #fff;
     margin-bottom: 5px;
     font-size: 11px !important;
@@ -852,7 +852,7 @@ padding:5px 8px 2px 0;
   }
 
 .row .date-container{
-  
+
   margin: 20px 0 0px;
   border-bottom:1px solid #fff;
 }
@@ -868,7 +868,7 @@ padding:5px 8px 2px 0;
  }
 
 .qr-code-image {
-  padding: 20px 10px 10px; 
+  padding: 20px 10px 10px;
   background: #fff;
   border-radius: 10px;
   img {
@@ -898,9 +898,9 @@ padding:5px 8px 2px 0;
   p{
    line-height: 0.9;
     margin-bottom:0px !important ;
-    
+
   }
-} 
+}
 .key-image{
   text-align:right;
 
@@ -943,7 +943,7 @@ padding:5px 8px 2px 0;
 .carousel .carousel-control {
   height: 37px;
   width: 37px;
-  top: 19%;
+  top: 80px;
 }
 
 .carousel .carousel-control span {
@@ -1112,7 +1112,7 @@ padding:5px 8px 2px 0;
     font-size: 10px;
     margin-bottom: 5px;
     float :right;
-    
+
 }
 
 @media all and (max-width: 990px) {
@@ -1125,14 +1125,15 @@ padding:5px 8px 2px 0;
     cursor: pointer;
 }
 .date-picker-ok{
+
   text-align:right;
   color:#b59f64;
 }
 .date-picker-back{
-  
+
   padding-left : 5px !important;
   color:  #9c9c9c !important;
-  
+
 }
 
 .departure-date{
@@ -1140,12 +1141,12 @@ padding:5px 8px 2px 0;
   p:first-child{
     margin-bottom:0px !important;
   color:#ac9557;
-  
+
   }
   p:last-child{
     color:#fff;
   }
-  
+
 }
 
 /* ------------------date -picker ---------------------*/
@@ -1202,13 +1203,29 @@ padding:5px 8px 2px 0;
 }
 
 .pickadate-cell .pickadate-disabled,
-.pickadate-cell .pickadate-disabled,
-.pickadate-cell .pickadate-enabled {
+.pickadate-cell .pickadate-enabled,
+.pickadate-cell .pickadate-outofrange-disabled {
   background-color: #7d6742;
 }
+
 .pickadate-cell .pickadate-disabled,
 .pickadate-cell .pickadate-disabled a {
   color: #ac9557;
+}
+
+// must not be changed
+.pickadate-cell .pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-outofrange-disabled a,
+.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled a {
+  // date must be hidden
+  // user must not see or select it
+  color: #7d6742;
+  color: transparent;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 .pickadate-cell .pickadate-enabled {
@@ -1219,7 +1236,7 @@ padding:5px 8px 2px 0;
 
 
 .pickadate-cell .pickadate-active {
-  background-color: #fff;
+  background-color: #fff !important;
 }
 
 .pickadate-cell .pickadate-active {
@@ -1261,7 +1278,7 @@ padding:5px 8px 2px 0;
 
 // must not be changed
 // must only be update for different hotel
-.pickadate-cell .pickadate-outofrange-disabled, 
+.pickadate-cell .pickadate-outofrange-disabled,
 .pickadate-cell .pickadate-outofrange-disabled a,
 .pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled,
 .pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled a,
@@ -1271,7 +1288,7 @@ padding:5px 8px 2px 0;
   // user must not see or select it
   color: #7d6742;
   color: transparent;
-  background-color: #7d6742;
+
   cursor: default;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -1281,7 +1298,7 @@ padding:5px 8px 2px 0;
 /* ------------------date -picker ends here-------------------------- */
 
 .upgrades-label{
-    
+
     font-size: 11px !important;
     font-weight: 600 !important;
 }
@@ -1380,20 +1397,15 @@ body > div[ng-view] {
 @media (min-width: 992px) {
 
 
-  .ap {
-      font-size: 19px;
-    }
-  .time {
-      font-size: 28px;
-    }
+  
 
   .remove-scroll {
     height: 100%;
     padding: 0;
     overflow: hidden;
   }
-  .hide-in-desktop { display: none !important; }   
-  
+  .hide-in-desktop { display: none !important; }
+
   .icontop {
     padding-top: 20px;
   }
@@ -1479,7 +1491,7 @@ body > div[ng-view] {
     float: none;
     width: auto;
   }
-  
+
   .foot-text {
     padding: 40px 50px 0px;
   }
@@ -1502,7 +1514,7 @@ body > div[ng-view] {
       font-size: 20px;
     }
     .amount {
-      font-size: 40px;
+      font-size: 35px;
     }
   }
 
@@ -1556,7 +1568,7 @@ body > div[ng-view] {
     padding: 42px 55px;
     height: 99.9%;
     overflow-x: hidden;
-    overflow-y: auto; 
+    overflow-y: auto;
     span, th, td {
       font-size: 18px;
     }
@@ -1810,6 +1822,7 @@ body > div[ng-view] {
   }
 
   .jumbotron .checkin-wrapper {
+
     margin: 55px auto 0 !important;
     padding: 20px 0;
     position: relative;
@@ -1834,6 +1847,7 @@ body > div[ng-view] {
     width: 1px;
     background: #fff;
     overflow: hidden;
+
   }
 
   .proceed-to-checkin {
@@ -1860,7 +1874,10 @@ body > div[ng-view] {
 
 @media (max-width: 900px) {
 
-
+.circle-text {
+    width:119% !important;
+    margin-bottom:10px;
+}
 
 .col-md-6.headtext.centeralign.extra-head-pad{
 
@@ -1889,7 +1906,7 @@ padding-right: 30px;
 }
 
 .row .date-container {
-    
+
     margin:5px;
 }
 
@@ -1936,12 +1953,12 @@ text-align: center !important;
 
 
 .key-wrap .key-for-image {
-   
+
     width: 55px;
 }
 
 .key-wrap .key-for-txt {
- 
+
     margin-left: 72px;
    font-size: 22px;
 }
@@ -1989,13 +2006,13 @@ text-align: center !important;
     width: 100%;
     height:0;
     padding-bottom: 100%;
-    
-    -moz-border-radius: 50%; 
-    -webkit-border-radius: 50%; 
+
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
     border-radius: 50%;
 border-style:solid;
 border-color:#fff;
-   
+
 
 
 }
@@ -2009,4 +2026,31 @@ border-color:#fff;
     text-align:center;
     color:white;
 
+}
+
+
+
+.alert-link-tag,.alert-link-tag:hover {
+    color: #0030E2 !important;
+
+}
+
+.date-text,.pickadate-next,.pickadate-prev{
+
+  text-transform: uppercase;
+  }
+
+
+
+  .later-options .rel-wrapper .circle-wrapper {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.circle-bg {
+    background: url("/assets/img/circle-bg.png") no-repeat scroll center top transparent;
+    display: block;
+    height: 73px;
+    text-align:center;
+    padding-top: 20px !important;
 }

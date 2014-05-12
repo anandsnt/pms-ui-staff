@@ -30,7 +30,8 @@
 				<div class="col-md-6 no-padding top-margin now-later-options" ng-show="optionsAvailable">
 					<div class="row">
 						<div ng-repeat="charge in charges" class="col-xs-6 later-options {{ charge.class }}">
-						
+
+							
 							<div class="rel-wrapper">
 
 								 <a ng-href="#/checkOutLaterSuccess/{{ charge.id }}"></a> 
@@ -55,13 +56,15 @@
 									<span class="amount" ng-show="charge.amount.toString().length>2">${{charge.amount| number:0}}</span>
 								</div>
 							</div>
+							</div>
+
 						</div>
 					</div>
 				</div>
 
 				<div class="row no-thanks-wrap">
 					<p class="centeralign no-thanks" ng-show="optionsAvailable">
-						<a href="#/">no, thanks</a>
+						<a class="no-thanks-text" href="#/">no, thanks</a>
 
 
 					</p>

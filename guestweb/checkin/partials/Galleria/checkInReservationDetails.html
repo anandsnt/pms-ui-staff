@@ -13,7 +13,7 @@
 		<div class="container">
 			<!-- top section starts here-->
 
-			<div class="row checkin-wrapper">
+			<div class="row checkin-wrapper line-top checkin-details " style="padding-bottom: 0px;">
 
 				<div class="col-md-6 pad-rt-60">
 
@@ -96,26 +96,24 @@
 
 					</div></div>
 
-					<div class="verti-ruler"></div>
+					<div class="verti-ruler" style="margin-top: 20px;"></div>
 
-					<div class="col-md-6 pad-lf-60">					
-						<button class="checkin-button" ng-disabled="!checkedApplyCharges" ng-click="checkInButtonClicked()">
+					<div class="col-md-6 pad-lf-60 checkin-width">					
+						<button class=" checkin checkin-button" ng-disabled="!checkedApplyCharges" ng-click="checkInButtonClicked()">
 							<span>Check in</span>
-							<img src="/assets/img/checkin_icon.png" width="60" height="60" alt=""/>
 						</button>
 					</div>
 
 				</div>
 
-				<div class="row checkin-wrapper no-top-margin">
-					<div class="col-md-6 error-callus">
+				<div class="row checkin-wrapper no-top-margin line-bottom" style="padding-top: 0px; padding-bottom: 0px;">
+
+					<div class="col-md-6 error-callus" style="margin-top: 0px;">
 						<div class="lightcontent">
-
 							ERRORS? <a href="tel: {{hotelPhone}}"><u>CALL US AT  {{hotelPhone}}</u></a>
-
 						</div>
 					</div>
-					<div class="verti-ruler"></div>
+					<div class="verti-ruler" style="margin-bottom: 20px;"></div>
 				</div>
 			
 		</div>
