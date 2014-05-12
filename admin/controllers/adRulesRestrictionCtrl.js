@@ -20,24 +20,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             var fetchHotelLikesSuccessCallback = function(data) {
                 $scope.$emit('hideLoader');
 
-                // gotta preprocess the recived data
-                // order as sys-defs then editable
-                var results = data.results,
-                sysDef = [],
-                editable = [];
-
-                for (var i = 0, j = results.length; i < j; i++) {
-                    if ( results[i]['editable'] ) {
-                        editable.push( results[i] ); 
-                    } else {
-                        sysDef.push( results[i] );
-                    }
-                };
-
-                results = sysDef.concat( editable );
-
-
-                $scope.ruleList = results;
+                $scope.ruleList = data.results;
                 $scope.total = data.total_count;
             };
 
@@ -46,6 +29,12 @@ admin.controller('ADRulesRestrictionCtrl', [
             // lets fetch post_types too
             $scope.invokeApi(ADRulesRestrictionSrv.fetchRefVales, { type: 'post_type' }, function(data) {
                 $scope.postTypes = data;
+                $scope.$emit('hideLoader');
+            });
+
+            // lets fetch the hotel currency symbol
+            $scope.invokeApi(ADRulesRestrictionSrv.fetchHotelCurrency, {}, function(data) {
+                $scope.currencySym = data.currency.symbol;
                 $scope.$emit('hideLoader');
             });
         };
@@ -87,7 +76,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 return '/assets/partials/rulesRestriction/adCancellationPenaltiesRules.html';
             };
 
-            if ( this.item.description === 'Deposit Requested' ) {
+            if ( this.item.description === 'Deposit Requests' ) {
                 return '/assets/partials/rulesRestriction/adDepositRequestRules.html';
             };
         };
@@ -101,7 +90,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             };
 
             var ruleType = item.description === 'Cancellation Penalties' ? 'CANCELLATION_POLICY' :
-                             item.description === 'Deposit Requested' ? 'DEPOSIT_REQUEST' : '';
+                             item.description === 'Deposit Requests' ? 'DEPOSIT_REQUEST' : '';
 
             // lets empty lists all before fetch
             $scope.cancelRulesList = [];
@@ -136,17 +125,17 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.showCancelForm = true;
                 $scope.showDepositForm = false;
 
-                $scope.rulesSubtitle = 'Cancellation Penalties Rule';
+                $scope.rulesSubtitle = 'Cancellation Penalty';
 
                 $scope.singleRule = {};
                 $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
             }
 
-            if ( this.item.description === 'Deposit Requested' ) {
+            if ( this.item.description === 'Deposit Requests' ) {
                 $scope.showCancelForm = false;
                 $scope.showDepositForm = true;
 
-                $scope.rulesSubtitle = 'Deposit Requested Rule';
+                $scope.rulesSubtitle = 'Deposit Request Rule';
 
                 $scope.singleRule = {};
                 $scope.singleRule.policy_type = 'DEPOSIT_REQUEST';
@@ -167,21 +156,42 @@ admin.controller('ADRulesRestrictionCtrl', [
                     $scope.singleRule = data;
                     $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
 
+                    // need to split HH:MM into individual keys
+                    var hhmm, hh, mm;
+                    if ( $scope.singleRule.advance_time ) {
+                        var hhmm = dateFilter( $scope.singleRule.advance_time, 'hh:mm a' );
+
+                        hh = hhmm.split(':')[0];
+                        mm = hhmm.split(':')[1];
+
+                        // convert string to number
+                        hh *= 1;
+                        if ( hh > 12 ) {
+                            $scope.singleRule.advance_primetime = 'PM';
+                            hh -= 12;
+                        } else {
+                            $scope.singleRule.advance_primetime = 'AM';
+                        }
+
+                        // padding 0 and converting back to string
+                        if ( hh < 9 ) {
+                            hh = '0' + hh;
+                        } else {
+                            hh += '';
+                        }
+
+                        $scope.singleRule.advance_hour = hh;
+                        $scope.singleRule.advance_min = mm;
+                    };
+
+
                     $scope.showCancelForm = true;
                     $scope.showDepositForm = false;
                 }
 
-                if ( from === 'Deposit Requested' ) {
+                if ( from === 'Deposit Requests' ) {
                     $scope.singleRule = data;
                     $scope.singleRule.policy_type = 'DEPOSIT_REQUEST';
-
-                    // need to split HH:MM into individual keys
-                    if ( $scope.singleRule.advance_time ) {
-                        var hhmm = dateFilter( $scope.singleRule.advance_time, 'hh:mm' );
-
-                        $scope.singleRule.advance_hour = hhmm.split(':')[0];
-                        $scope.singleRule.advance_min = hhmm.split(':')[1];
-                    };
 
                     $scope.showCancelForm = false;
                     $scope.showDepositForm = true;
@@ -211,15 +221,25 @@ admin.controller('ADRulesRestrictionCtrl', [
                 saveCallback,
                 updateCallback;
 
-            // need to combine individuals HH:MM to single entry
+            // need to combine individuals HH:MM:ap to single hours entry
             // and remove the individuals before posting
-            // NOTE: since this is not a required field, we are ignoring
-            // a case where user only entered MM
             if ( $scope.singleRule.advance_hour || $scope.singleRule.advance_min ) {
-                $scope.singleRule.advance_time = $scope.singleRule.advance_hour + ':' + $scope.singleRule.advance_min;
+                var hh, mm;
 
+                if ($scope.singleRule.advance_primetime === 'PM') {
+                    hh = $scope.singleRule.advance_hour ? ($scope.singleRule.advance_hour < 12 ? ($scope.singleRule.advance_hour * 1) + 12 : $scope.singleRule.advance_hour) : '00';
+                } else {
+                    hh = $scope.singleRule.advance_hour || '00';
+                }
+
+                mm = $scope.singleRule.advance_min ? $scope.singleRule.advance_min : '00';
+
+                $scope.singleRule.advance_time = hh + ':' + mm;
+
+                // remove these before sending
                 var withoutEach = _.omit($scope.singleRule, 'advance_hour');
                 withoutEach = _.omit(withoutEach, 'advance_min');
+                withoutEach = _.omit(withoutEach, 'advance_primetime');
 
                 $scope.singleRule = withoutEach;
             };
@@ -235,7 +255,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                         $scope.showCancelForm = false;
                     }
 
-                    if ( from === 'Deposit Requested' ) {
+                    if ( from === 'Deposit Requests' ) {
                         $scope.fetchRuleList({
                             editable: true,
                             description: from
@@ -259,7 +279,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                         $scope.showCancelForm = false;
                     }
 
-                    if ( from === 'Deposit Requested' ) {
+                    if ( from === 'Deposit Requests' ) {
                         $scope.fetchRuleList({
                             editable: true,
                             description: from
@@ -290,7 +310,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                     $scope.cancelRulesList = withoutThis;
                 }
 
-                if ( from === 'Deposit Requested' ) {
+                if ( from === 'Deposit Requests' ) {
                     var withoutThis = _.without( $scope.depositRuleslList, rule );
                     $scope.depositRuleslList = withoutThis;
                 }
