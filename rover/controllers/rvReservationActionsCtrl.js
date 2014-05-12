@@ -50,4 +50,13 @@ sntRover.controller('reservationActionsController',[ '$rootScope','$scope',  fun
 		return display;
 	};
 	
+	$scope.getArrivalTimeColor = function(time){
+		var timeColor = "";
+		if(time!=null){
+			console.log ("============"+time.length);
+			timeColor = "time";
+		}
+		return timeColor;
+	};
+	
 }]);

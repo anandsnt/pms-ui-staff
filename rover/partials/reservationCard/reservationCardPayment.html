@@ -1,5 +1,5 @@
-<span id="reservation-card-payment">
-	<form method="post" class="block-item item-payment has-button float" action="">
+<span id="reservation-card-payment" ng-controller="reservationPaymentController">
+	<form method="post" class="block-item item-payment float" ng-class="getHasButtonClass(reservationData.reservation_card.reservation_status)" action="">
 		<div class="block-title">
 			<h3>PAYMENT METHOD</h3>
 			<span> {{reservationData.reservation_card.guarentee_type}}
@@ -17,7 +17,7 @@
 				<span class="value date"> {{reservationData.reservation_card.payment_details.card_expiry}} </span> 
 			</span> 
 		</a>
-		<div class="actions payment_actions" ng-show="reservationData.reservation_card.payment_method_used == 'CC'">
+		<div class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.payment_method_used == 'CC'">
 			<a id="update_card" data-payment-id="1361" class="button with-icon green"> 
 				<span class="icons icon-wallet"></span> Update CC 
 			</a>
