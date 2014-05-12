@@ -51,9 +51,9 @@
 		</div>
 	</div>
 	
-	<div ng-show="data.is_checked_all_rates=='false'" ng-repeat="rates in data.selectedRatesList">
-		<span>{{rates.name}}</span>
-		<span ng-click="deleteRate(rates.value)" class="icons delete_small cursor-hand"> delete</span>
+	<div class="rates-box" ng-show="data.is_checked_all_rates=='false'" ng-repeat="rates in data.selectedRatesList">
+		<span class="rate-data">{{rates.name}}</span>
+		<span ng-click="deleteRate(rates.value)" class="icons delete_small cursor-hand"> .</span>
 	</div>
 	
 	<hr/>
