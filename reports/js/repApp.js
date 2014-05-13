@@ -5,7 +5,10 @@
 
 // create iscroll
 var reportScroll = createVerticalScroll( '#reports', {} );
-var reportContent = createVerticalScroll( '#report-content', {} );
+
+// I want more control with this
+// so I am gonna create my own
+var reportContent = new IScroll('#report-content', { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' });
 
 
 var reports = angular.module('reports', ['ngAnimate', 'ngSanitize', 'mgcrea.ngStrap.datepicker']);
@@ -26,10 +29,11 @@ reports.controller('reporstList', [
     '$scope',
     '$rootScope',
     '$filter',
+    '$timeout',
     'RepFetchSrv',
     'RepUserSrv',
     'RepFetchReportsSrv',
-    function($scope, $rootScope, $filter, RepFetchSrv, RepUserSrv, RepFetchReportsSrv) {
+    function($scope, $rootScope, $filter, $timeout, RepFetchSrv, RepUserSrv, RepFetchReportsSrv) {
 
         // set the inital report app title
         $rootScope.report_app_title = 'Stats & Reports';
@@ -134,8 +138,6 @@ reports.controller('reporstList', [
         $scope.toggleFilter = function() {
             // DO NOT flip as scuh could endup in infinite $digest loop
             this.item.show_filter = this.item.show_filter ? false : true;
-
-            refreshVerticalScroll( reportScroll );
         };
 
         $scope.genReport = function() {
@@ -197,10 +199,11 @@ reports.controller('reportDetails', [
     '$scope',
     '$rootScope',
     '$window',
+    '$timeout',
     '$filter',
     'RepUserSrv',
     'RepFetchReportsSrv',
-    function($scope, $rootScope, $window, $filter, RepUserSrv, RepFetchReportsSrv) {
+    function($scope, $rootScope, $window, $timeout, $filter, RepUserSrv, RepFetchReportsSrv) {
 
         // track the user list
         RepUserSrv.fetch()
@@ -287,7 +290,10 @@ reports.controller('reportDetails', [
             $rootScope.showReportDetails = true;
 
             // refesh the report scroll
-            refreshVerticalScroll( reportContent );
+            $timeout(function(){
+                reportContent.refresh();
+                reportContent.scrollTo(0, 0, 100);
+            }, 100);
         };
 
         // we are gonna need to drop some pagination
@@ -452,7 +458,14 @@ reports.controller('reportDetails', [
 
         // print the page
         $scope.print = function() {
-            $window.print();
+            $timeout(function(){
+                reportContent.refresh();
+                reportContent.scrollTo(0, 0, 100);
+            }, 10);
+
+            setTimeout( function() {
+                $window.print();
+            }, 100 );
         };
     }
 ]);
