@@ -39,7 +39,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			var url =  '/sample_json/rate_manager/daily_rates.json';	
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 				that.dailyRates = data; 
-				var calendarData = that.calculateCalendarData();
+				var calendarData = that.calculateRateViewCalData();
 				console.log(JSON.stringify(calendarData));
 				deferred.resolve(calendarData);
 			},rejectDeferred);
@@ -53,21 +53,42 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	}
 
 	this.fetchRoomTypeCalenarData = function(){
-		//TODO: Modify to handle case of date range changes, if needed.
-		var url =  '/sample_json/rate_manager/calendar.json';	
+		var deferred = $q.defer();
+
+		var rejectDeferred = function(data){
+			deferred.reject(data);
+		}
+		var getRoomTypeRates = function(d){
+			console.log("getDailyRates");
+
+			//TODO:URL
+			var url =  '/sample_json/rate_manager/rate_details.json';	
+			BaseWebSrvV2.getJSON(url).then(function(data) {
+				that.roomTypeRates = data; 
+				var calendarData = that.calculateRoomTypeViewCalData();
+				console.log(JSON.stringify(calendarData));
+				deferred.resolve(calendarData);
+			},rejectDeferred);
+
+		};
+
+		that.fetchAllRestrictionTypes().then(getRoomTypeRates, rejectDeferred);
+				
+		return deferred.promise;
+
+		/*var url =  '/sample_json/rate_manager/calendar.json';	
 		var deferred = $q.defer();
 		BaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
 		});
-		return deferred.promise;
+		return deferred.promise;*/
 
 	};
 
-	this.calculateCalendarData = function(){
+	this.calculateRoomTypeViewCalData = function(){
 		var calendarData = {};
-
 		
 		// Format restriction Types as required by UI, and make it a dict for easy lookup 
 		var formattedRestrictionTypes = {};
@@ -75,8 +96,67 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			formattedRestrictionTypes[item.id]= that.getRestrictionUIElements(item);
 		});
 		calendarData.restriction_types = formattedRestrictionTypes;
+		
+		// In UI, tables are represented as rows of columns. 
+		//Input data is in opposite structure, restructuring here 
+		var datesList = [];
+		var ratesRestrictions = {};
+		var roomRateData = [];
+
+		angular.forEach(that.roomTypeRates.results, function(item){
+		   	datesList.push(item.date);
+		   	console.log(JSON.stringify(item))
+
+		   	//UI requires al-rates separated from daily rates.
+		   	ratesRestrictions[item.date] = item.rate_restrictions;
+
+		   	//Adjusting Daily Rate Data - we require rows of colums - not the other way.
+		   	for(var ri in item.room_rates){
+		   		var rate = item.room_rates[ri];
+		   		//Check if this rate is already pushed.
+		   		var rateData = null;
+		   		for (var i in roomRateData){
+	   				if (roomRateData[i].room_type.id == rate.room_type.id)
+	   				{
+	   		  			rateData = roomRateData[i];
+	   		  			//break;
+	   				}
+		   		}
+
+		   	   	if (rateData === null){
+		   	   		rateData = {"room_type": {}};
+		   			rateData.room_type = rate.room_type;
+		   			roomRateData.push(rateData);
+		   		}
+		   		var rr = {};
+		   		rr.restrictions = rate.restrictions;
+		   		rr.single = rate.single;
+		   		rr["double"] = rate["double"];
+		   		rr.extra_adult = rate.extra_adult;
+		   		rr.child = rate.child;
+
+		   		rateData[item.date] = rr;
+		   	}
+
+		});
+
+		calendarData.dates = datesList;
+		calendarData.rate_restrictions = ratesRestrictions;
+		calendarData.data = roomRateData;
+
+		return calendarData;
+	};
 
 
+	this.calculateRateViewCalData = function(){
+		var calendarData = {};
+		
+		// Format restriction Types as required by UI, and make it a dict for easy lookup 
+		var formattedRestrictionTypes = {};
+		angular.forEach(that.allRestrictionTypes, function(item){
+			formattedRestrictionTypes[item.id]= that.getRestrictionUIElements(item);
+		});
+		calendarData.restriction_types = formattedRestrictionTypes;
 		
 		// In UI, tables are represented as rows of columns. 
 		//Input data is in opposite structure, restructuring here 
@@ -115,7 +195,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		   	}
 
 		});
-
 
 		calendarData.dates = datesList;
 		calendarData.all_rates = allRatesData;
