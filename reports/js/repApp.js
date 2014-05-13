@@ -472,6 +472,10 @@ reports.controller('reportDetails', [
 
             setTimeout( function() {
                 $window.print();
+
+                if ( sntapp.cordovaLoaded ) {
+                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                };
             }, 100 );
         };
     }
