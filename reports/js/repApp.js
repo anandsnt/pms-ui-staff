@@ -224,7 +224,6 @@ reports.controller('reportDetails', [
             // split it up into two parts
             // NOTE: this implementation may need mutation if in future style changes
             // NOTE: this implementation also effects template, depending on design
-
             // discard previous values
             $scope.firstHalf = [];
             $scope.firstHalf = [];
@@ -268,12 +267,20 @@ reports.controller('reportDetails', [
                 };
             };
 
+
             // hack to add curency $ symbol in front of values
             if ( $scope.chosenReport.title === 'Late Check Out' || $scope.chosenReport.title === 'Upsell' ) {
             	for (var i = 0, j = $scope.results.length; i < j; i++) {
             		$scope.results[i][ $scope.results[i].length - 1 ] = '$' + $scope.results[i][ $scope.results[i].length - 1 ];
+
+                    // hack to append ':00 PM' to time
+                    // thus makin the value in template 'X:00 PM'
+                    if ( $scope.chosenReport.title === 'Late Check Out' ) {
+                        $scope.results[i][ $scope.results[i].length - 2 ] += ':00 PM';
+                    }
             	};
             }
+
 
             // hack to set the colspan for reports details tfoot
             $scope.leftColSpan  = $scope.chosenReport.title === 'Check In / Check Out' ? 4 : 2;
