@@ -13,7 +13,7 @@
 //=require ../shared/lib/js/ngDialog.min.js
 //=require ../shared/lib/js/Utils.js
 //=require ../shared/lib/js/ng-table.js
-
+//=require ../shared/lib/js/angular-pickdate.js
 //=require ../shared/lib/js/highcharts.js
 //=require ../shared/lib/js/angular-highcharts.js
 

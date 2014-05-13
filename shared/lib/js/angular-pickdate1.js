@@ -5,6 +5,7 @@
     }
     return -1;
   };
+
   angular.module('pickadate.utils', [])
     .factory('pickadateUtils', ['dateFilter', function(dateFilter) {
       return {
@@ -51,8 +52,7 @@
           isCurrentMonth: '=',
           isDateSelected: '='
         },
-        templateUrl:'../../../assets/directives/calendar.html' ,
-        
+        templateUrl:'../../assets/directives/Calendar/adCalendar.html' ,
             link: function(scope, element, attrs, ngModel)  {
           var minDate       = scope.minDate && dateUtils.stringToDate(scope.minDate),
               maxDate       = scope.maxDate && dateUtils.stringToDate(scope.maxDate),
