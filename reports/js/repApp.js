@@ -1,4 +1,8 @@
 
+// ==========================================================
+// NOTE: MANUAL ANGULAR APP BOOTSTRAPING, CHECK THE LAST LINE
+// ==========================================================
+
 // create iscroll
 var reportScroll = createVerticalScroll( '#reports', {} );
 var reportContent = createVerticalScroll( '#report-content', {} );
@@ -26,6 +30,9 @@ reports.controller('reporstList', [
     'RepUserSrv',
     'RepFetchReportsSrv',
     function($scope, $rootScope, $filter, RepFetchSrv, RepUserSrv, RepFetchReportsSrv) {
+
+        // set the inital report app title
+        $rootScope.report_app_title = 'Stats & Reports';
 
         // hide the details page
         $rootScope.showReportDetails = false;
@@ -174,6 +181,9 @@ reports.controller('reporstList', [
                 per_page: $rootScope.resultsPerPage
             }
 
+            // set the new title based on the chosen report
+            $rootScope.report_app_title = this.item.title + ' ' + this.item.sub_title;
+
             // emit that the user wish to see report details
             $rootScope.$emit( 'report.submit', this.item, this.item.id, params );
         };
@@ -186,10 +196,11 @@ reports.controller('reporstList', [
 reports.controller('reportDetails', [
     '$scope',
     '$rootScope',
+    '$window',
     '$filter',
     'RepUserSrv',
     'RepFetchReportsSrv',
-    function($scope, $rootScope, $filter, RepUserSrv, RepFetchReportsSrv) {
+    function($scope, $rootScope, $window, $filter, RepUserSrv, RepFetchReportsSrv) {
 
         // track the user list
         RepUserSrv.fetch()
@@ -369,6 +380,9 @@ reports.controller('reportDetails', [
         // back btn 
         $scope.returnBack = function() {
             $rootScope.showReportDetails = false;
+
+            // reset the report app title
+            $rootScope.report_app_title = 'Stats & Reports';
         };
 
         // fetch next page on pagination change
@@ -434,6 +448,11 @@ reports.controller('reportDetails', [
                     afterFetch( response );
                     calPagination( response );
                 });
+        };
+
+        // print the page
+        $scope.print = function() {
+            $window.print();
         };
     }
 ]);
@@ -587,5 +606,5 @@ reports.factory('RepFetchReportsSrv', [
 
 
 // need manual bootstraping app
-angular.bootstrap( angular.element('#reprots-wrapper'), ['reports'] );
+angular.bootstrap( angular.element('#reports_main'), ['reports'] );
 
