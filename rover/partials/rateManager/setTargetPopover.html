@@ -1,0 +1,29 @@
+<table border="1">
+    <tr>
+        <th>&nbsp;</th>
+        <th>WEEK</th>
+        <th>&nbsp;</th>
+        <th>SUN</th>
+        <th>MON</th>
+        <th>TUE</th>
+        <th>WED</th>
+        <th>THU</th>
+        <th>FRI</th>
+        <th>SAT</th>
+    </tr>
+    <tr ng-repeat="week in targetData">
+        <td colspan="">{{ week[0].date | date:'dd' }} . - {{ week[6].date | date:'dd.MMM' }}</td>
+        <td>
+            <input type="text" />
+        </td>
+        <td ng-click="copyValue()">></td>
+        <td ng-repeat="weekDay in week">
+            <input ng-model="weekDay.value" />
+        </td>
+
+    </tr>
+    <tr>
+        <button>Cancel</button>
+        <button ng-click="setTargets()">Set</button>
+    </tr>
+</table>

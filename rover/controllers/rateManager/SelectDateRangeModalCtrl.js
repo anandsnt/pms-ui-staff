@@ -1,18 +1,18 @@
 sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','dateFilter', function($scope,  ngDialog, $filter, dateFilter){
-    var dateDict = {"begin_date":"2014-05-25","end_date": "2015-05-25"};
+	
     $scope.setUpData = function(){
 
         $scope.isFromDateSelected = true;
         $scope.isToDateSelected   = true;
 
-        $scope.fromDate = dateDict.begin_date;
+        $scope.fromDate = $scope.currentFilterData.begin_date;
         $scope.fromMinDate = dateFilter(new Date(), 'yyyy-MM-dd');
       
         currentDate   = new Date();
         currentDate.setDate(1);
         currentDate.setMonth(currentDate.getMonth() +1);
         $scope.toMonthDate = currentDate;
-        $scope.toMonthDateFormated = dateDict.end_date;
+        $scope.toMonthDateFormated = $scope.currentFilterData.end_date;
         $scope.toMonthMinDate = dateFilter(currentDate, 'yyyy-MM-dd');
         $scope.errorMessage='';
    };
@@ -38,7 +38,7 @@ sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','d
 	   //$scope.invokeApi(ADRatesConfigureSrv.updateDateRange,data,successUpdateRange,failureUpdateRange);
    };
    $scope.cancelClicked = function(){
-     ngDialog.close();
+     	ngDialog.close();
    };
 
 }]);
