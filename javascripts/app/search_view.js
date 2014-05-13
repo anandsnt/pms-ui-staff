@@ -458,13 +458,13 @@ var Search = function(domRef) {
 	this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip, lateCheckoutTime, isLateCheckoutOn, room_ready_status, use_pickup, use_inspected, checkin_inspected_only) {
 		var guestStatusIcon = this.getGuestStatusMapped(reservation_status, isLateCheckoutOn);
 		var roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
-		
+
 		if (room_ready_status == "") {
 			var roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
-			
+
 		} else {
 			var roomStatusMapped = this.getRoomReadyStatusMapped(room_ready_status, use_inspected, use_pickup, checkin_inspected_only, foStatus);
-			
+
 		}
 		var roomstatusexplained = "";
 		var roomStatus = "";
@@ -526,19 +526,22 @@ var Search = function(domRef) {
 	// manage the Room-status color mapping CICO-5779
 	this.getRoomReadyStatusMapped = function(room_ready_status, use_inspected, use_pickup, checkin_is_inspected_only, fo_status) {
 		var mapped_room_color = "";
+		var resultant_mapped_room_color = "";
 
-		if (room_ready_status!= "" && fo_status == "VACANT") {
+		if (room_ready_status != "" && fo_status == "VACANT") {
 			mapped_room_color = this.get_mapped_room_ready_status_color(room_ready_status, use_inspected, use_pickup, checkin_is_inspected_only)
 		} else {
-			mapped_room_color = "red"
-			console.log('----');
+			console.log('Either FO Status OCC/ room_Ready_status null');
 		}
+
 		console.log("mapped -Room Ready Status---" + room_ready_status);
 		console.log("mapped -Use Pickup---" + use_pickup);
 		console.log("mapped -Use Inspected---" + use_inspected);
-		console.log(checkin_is_inspected_only);		
+		console.log("mapped - CHECK-IN INSPECTED ONLY---" + checkin_is_inspected_only);
 		console.log("mapped -COLOR---" + mapped_color);
-		return mapped_room_color;
+		console.log("------------------------------")
+		resultant_mapped_room_color = this.map_with_color_class(mapped_room_color)
+		return resultant_mapped_room_color;
 	};
 
 	this.get_mapped_room_ready_status_color = function(room_ready_status, use_inspected, use_pickup, checkin_is_inspected_only) {
@@ -592,5 +595,21 @@ var Search = function(domRef) {
 		}
 		// Refresh scrolling
 		refreshVerticalScroll('#search');
+	};
+
+	this.map_with_color_class = function(mapped_color) {
+		resultant_class = "";
+		switch(mapped_color) {
+			case "green":
+				resultant_class = "ready";
+				break
+			case "read":
+				resultant_class = "not-ready";
+				break;
+			case "orange" :
+				resultant_class = "";
+				break;
+		}
+		return resultant_class;
 	};
 };
