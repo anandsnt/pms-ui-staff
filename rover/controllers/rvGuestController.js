@@ -78,7 +78,9 @@ $scope.guestCardClick = function($event){
 	var element = $event.target;
 	$event.stopPropagation();
 	$event.stopImmediatePropagation();			
-	if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])){			
+	if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])){	
+
+	if(!$scope.isResizing){		
 		if(!$scope.guestCardVisible){
 			$scope.guestCardHeight = $scope.resizableOptions.maxHeight;
 			$scope.guestCardVisible = true;
@@ -87,6 +89,10 @@ $scope.guestCardClick = function($event){
 			$scope.guestCardHeight = $scope.resizableOptions.minHeight;
 			$scope.guestCardVisible = false;
 		}
+	}
+	else{
+		$scope.isResizing = !$scope.isResizing;
+	}
 	}
 	else{
 		if(getParentWithSelector($event, document.getElementById("guest-card-content"))){
@@ -132,6 +138,7 @@ $scope.resizableOptions = {
 			$scope.guestCardVisible = false;
 			$scope.$apply();
 		}
+		$scope.isResizing = true;
 	}
 }
 
