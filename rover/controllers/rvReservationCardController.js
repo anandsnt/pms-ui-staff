@@ -4,6 +4,8 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 	$scope.reservationList = [];
 	$scope.currentReservationId = "";
 	$scope.reservationCount = 0;
+	
+	
 	/*
 	 * to get state params from resrvation details controller
 	 */

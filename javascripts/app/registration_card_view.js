@@ -503,7 +503,13 @@ var RegistrationCardView = function(viewDom) {
 
 	// Goto search screen with empty search results
 	this.goToSearchScreen = function() {
-		switchPage('main-page', 'search', '', 'page-main-second', 'move-from-left');
+		var nextPage = 'page-main-second';
+ 		if($(".container div").hasClass('prev-page-current')){
+ 			nextPage = $(".container .prev-page-current").attr('id');
+ 			console.log(nextPage);
+ 		}
+ 		switchPage('main-page', 'search', '', nextPage, 'move-from-left');
+		//switchPage('main-page', 'search', '', 'page-main-second', 'move-from-left');
 		//Do not call 'initialize' method for this object. which results multiple event binding
 		var searchView = new Search();
 		searchView.clearResults();

@@ -16,14 +16,40 @@
 
 		<table id="rules">
 			<tbody>
-				<tr ng-repeat="item in  ruleList">
+				<tr><td><br><strong>System Defined Restrictions</strong></td></tr>
+
+				<tr ng-repeat="item in ruleList | filter: { editable: false }">
 					<td>
 						<table class="grid">
 							<td>
-								<strong ng-if="!item.editable"> {{ item.description }} </strong>
-								<a class="inline" ng-if="item.editable" ng-click="fetchRuleList(item)"> {{ item.description }} </a>
-								<em ng-if="!item.editable">(system defined)</em>
-								<em ng-if="item.editable" class="action add" ng-click="openAddNewRule()">Add new rule</em>
+								<strong> {{ item.description }} </strong>
+								<em>(system defined)</em>
+							</td>
+							<td class="activate text-left">
+								<div class="entry">
+									<label></label>
+									<div class="switch-button single"
+											ng-class="{ on: item.activated }">
+										<input type = "checkbox"
+												id = "upsell-rooms"
+												name = "upsell-rooms"
+												ng-click = "switchClicked($index)">
+										<span class="switch-icon"></span>
+									</div>
+								</div>
+							</td>
+						</table>
+					</td>
+				</tr>
+
+				<tr><td><br><br><strong>Editable Restrictions</strong></td></tr>
+
+				<tr ng-repeat="item in ruleList | filter: { editable: true }" ng-hide="{{ item.description === 'Levels' }}">
+					<td>
+						<table class="grid">
+							<td>
+								<a class="inline" ng-click="fetchRuleList(item)"> {{ item.description }} </a>
+								<em class="action add" ng-click="openAddNewRule()">Add new rule</em>
 							</td>
 							<td class="activate text-left">
 								<div class="entry">
@@ -40,7 +66,7 @@
 							</td>
 						</table>
 						
-						<div ng-if="item.editable && item.description !== 'Levels'" ng-include="getTemplateUrl()"></div>
+						<div ng-include="getTemplateUrl()"></div>
 					</td>
 				</tr>
 			</tbody>
