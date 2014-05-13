@@ -20,13 +20,13 @@
 						<li ng-repeat="row in results" ng-show="row.is_row_visible==true" >
 							<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
 							<a data-transition="inner-page" class="guest-check-in link-item float" ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation})">
-								<figure class="guest-image" ng-show="row.image!=''">
-									<img ng-src="{{row.image}}">
+								<figure class="guest-image" ng-show="row.images.length!=0 ">	
+									<img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true),'second-image':(row.images.length >1 && image.is_primary==false)}">
 									<span class="vip" ng-show="row.vip==true">VIP</span>
 								</figure>
 
 								<div class="data">
-									<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false"> <!--{{row.lastname}},{{row.firstname}} --></h2>
+									<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false" ng-class="{'grey' : row.is_accompanying_guest=='1'}"> <!--{{row.lastname}},{{row.firstname}} --></h2>
 									<span class="confirmation">{{row.confirmation}}</span>
 									<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
 									</span>
