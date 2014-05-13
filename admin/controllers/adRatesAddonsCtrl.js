@@ -213,8 +213,12 @@ admin.controller('ADRatesAddonsCtrl', [
 				// if the user is editing an old addon
 				// where the dates are not set
 				// set the date to current business date
-	            $scope.singleAddon.begin_date = $scope.businessDate;
-				$scope.singleAddon.end_date   = $scope.businessDate;
+				if ( !$scope.singleAddon.begin_date ) {
+					$scope.singleAddon.begin_date = $scope.businessDate;
+				};
+				if ( !$scope.singleAddon.end_date ) {
+					$scope.singleAddon.end_date = $scope.businessDate;
+				};
 
 				// convert system date to MM-dd-yyyy format
 				$scope.singleAddon.begin_date = $filter('date')($scope.singleAddon.begin_date, 'MM-dd-yyyy');
