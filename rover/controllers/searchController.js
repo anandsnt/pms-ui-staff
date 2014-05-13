@@ -25,9 +25,9 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   };
 
   var headingListDict = {  
-    'DUEIN': "CHECKING IN",
-    'INHOUSE': "IN HOUSE",
-    'DUEOUT': "CHECKING OUT",
+    'DUEIN': "Checking In",
+    'INHOUSE': "In House",
+    'DUEOUT': "Checking Out",
     'LATE_CHECKOUT': "Checking Out Late",
     '': "Search"
   };
@@ -81,7 +81,18 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
     	}
   	 return mappedStatus;
   };
+//function that converts a null value to a desired string.
 
+ //if no replace value is passed, it returns an empty string
+
+$scope.escapeNull = function(value, replaceWith){
+     var newValue = "";
+    if((typeof replaceWith != "undefined") && (replaceWith != null)){
+     newValue = replaceWith;
+     }
+    var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
+    return valueToReturn;
+ };
 
 
   /**
