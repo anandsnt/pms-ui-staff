@@ -9,18 +9,18 @@
             <header class="cards-header">
                 <div id="company-card-header" class="card-header ">
                     <!-- When company logo exists -->
-                    <figure class="guest-image">
-                        <img src="../with-cards/images/allianz-logo.jpg" alt="" />
+                    <figure class="guest-image" ng-if="escapeNull(contactInformation.logo)!=''">
+                        <img ng-src="{{contactInformation.logo}}" alt="" />
                     </figure>
-                    <!-- When there's no logo use this instead of <figure> 
-                    <div class="guest-image icons icon-company">
+                    <!-- When there's no logo use this instead of <figure>  -->
+                    <div class="guest-image icons icon-company" ng-if="escapeNull(contactInformation.logo)==''">
                         Company
-                    </div> -->
-                    <form method="post" action="app/stay-card/" name="change-company-name" id="change-company-name">
+                    </div> 
+                    <form method="post" name="change-company-name" id="change-company-name">
                         <div class="holder">
                             <div class="entry">
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="Allianz" type="text" class="masked-input h1" />
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="Insurance" type="text" class="masked-input h1" />
+                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.name1}}" ng-model="contactInformation.name1" type="text" class="masked-input h1" />
+                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.name2}}" ng-model="contactInformation.name2" type="text" class="masked-input h1" />
                             </div>
                         </div>
                         <div class="holder data">
@@ -34,8 +34,8 @@
             </header>
 
             <!-- Cards Content -->
-            <div class="cards-content">               
-                <div id="company-card-content" class="card-tabs card-content">
+            <div class="cards-content" ng-iscroll="company-card-content" ng-iscroll-delay="500" >               
+                <div id="company-card-content" class="card-tabs card-content" >
                     <!-- company Card tabs navigation -->
                     <ul id="company-card-tabs-nav" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 

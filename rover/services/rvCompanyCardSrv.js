@@ -2,9 +2,9 @@ sntRover.service('RVCompanyCardSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWe
 	
 	var self = this;
 	
-	this.fetch = function(){
+	this.fetchContactInformation = function(){
 		var deferred = $q.defer();		
-		var url =  '/sample_json/contracts/rvCompanyCardSearchSrv.json';			
+		var url =  '/sample_json/contracts/rvCompanyCardDetails.json';			
 		RVBaseWebSrv.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(data){

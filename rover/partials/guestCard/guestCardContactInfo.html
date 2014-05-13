@@ -1,9 +1,9 @@
 
-<form id="guestcard-contact-info" ng-show="current == 'guest-contact'" class="card-content form"  aria-labelledby="guest-contact" role="tabpanel" aria-expanded="true" aria-hidden="false" ng-controller="RVContactInfoController" ng-blur="saveContactInfo()">
+<form id="guestcard-contact-info" ng-show="current == 'guest-contact'" class="card-content form"  aria-labelledby="guest-contact" role="tabpanel" aria-expanded="true" aria-hidden="false" ng-controller="RVContactInfoController" ng-blur="saveContactInfo()" ng-click="clearErrorMessage()">
 	<div ng-iscroll="contact_info"  ng-iscroll-delay="1000" style="position: absolute; top:0px; bottom:0px; left:0px; width: 100%;" ng-iscroll-form='true'>
 				<div class="wrapper float">
 					<div class="entry full-width">
-						<div id="notification-message-guest"></div>
+					   <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 					</div>
 					<div class="holder float left">
 						
