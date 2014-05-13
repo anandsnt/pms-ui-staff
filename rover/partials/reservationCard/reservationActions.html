@@ -5,17 +5,17 @@
 		</a>
 		
 		<!-- Show checkin time -->
-		<div class="icons time check-in" ng-show="displayArrivalTime(reservationData.reservation_card.reservation_status)"> 
+		<div class="icons check-in" ng-show="displayArrivalTime(reservationData.reservation_card.reservation_status)" ng-class="getTimeColor(reservationData.reservation_card.arrival_time)"> 
 			{{reservationData.reservation_card.arrival_time}}
 		</div>
 		
 		<a class="button red" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
 			Check out
 		</a>
-		<div class="icons time late-check-out" ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.is_opted_late_checkout && reservationData.reservation_card.is_late_checkout_on">
+		<div class="icons late-check-out" ng-class="getTimeColor(reservationData.reservation_card.late_checkout_time)"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.is_opted_late_checkout && reservationData.reservation_card.is_late_checkout_on">
 			 {{reservationData.reservation_card.late_checkout_time}}
 		</div>
-		<div class="icons check-out"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.departure_time !=''">
+		<div class="icons check-out" ng-class="getTimeColor(reservationData.reservation_card.departure_time)"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.departure_time !=''">
 			 {{reservationData.reservation_card.departure_time}}
 		</div>
 		<!-- Reservation is checking out -->
