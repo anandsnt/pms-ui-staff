@@ -1,10 +1,22 @@
-<div ng-show="reservationDisplayStatus" role="tabpanel" id="reservation-4844453" data-reservation-status="CHECKING_IN" data-reservation-id="35889" class="reservation ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-10" aria-hidden="false" aria-expanded="true">
+<div ng-show="reservationDisplayStatus" role="tabpanel" class="reservation ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-10" aria-hidden="false" aria-expanded="true">
 	<!-- Reservation header -->
 	<div class="reservation-header">
 		<div class="actions">
-			<a href="#reservation-4844453-guests" class="button has-arrow toggle"> <span class="label">Guests</span> {{reservationData.reservation_card.guests_total}} </a>
+			<a class="button has-arrow toggle"> <span class="label">Guests</span> {{reservationData.reservation_card.guests_total}} </a>
 			<!-- nights button is clickable only for the below status -->
-			<a id="nights-btn" class="button has-arrow next-view"> <span class="label"> Nights </span> {{reservationData.reservation_card.total_nights}} </a>
+			<a class="button has-arrow next-view" ng-show="reservationData.reservation_card.enable_nights" ui-sref="rover.staycard.nights">
+  				<span class="label">
+    				Nights
+  				</span>
+  				{{reservationData.reservation_card.total_nights}}
+			</a>
+			<div class="inactive-nights" ng-hide="reservationData.reservation_card.enable_nights" >
+  				<span class="label">
+    			Nights
+  				</span>
+  				{{reservationData.reservation_card.total_nights}}
+			</div>
+
 			<!-- Show only a label for displaying nights -->
 		</div>
 		<div class="data">
@@ -37,10 +49,11 @@
 	</ul>
 
 	<div class="reservation-content scrollable check-in"  >
-		<div ng-iscroll="result_details" ng-iscroll-delay="1000" style="position:absolute; top:0px; bottom: 0px; left:0px; width: 100%;">
-		<div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+		<div id="resultDetails" ng-iscroll='resultDetails' ng-iscroll-delay='1000' style="position:absolute; top:0px; bottom: 0px; left:0px; width: 100%;">
+		<div class="wrapper" >
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<h2 class="h1"> Reservation {{reservationData.reservation_card.confirmation_num}}</h2>
+			<!-- Accompany in guest card -->
+			<div ng-include="'assets/partials/reservationCard/accompanyGuest.html'"></div>
 			<!-- Credit card -->
 			<div ng-include="'assets/partials/reservationCard/reservationCardPayment.html'"></div>
 			<!-- Display only the upgrades option -->

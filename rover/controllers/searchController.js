@@ -16,20 +16,21 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
     //scroller options
     $scope.$parent.myScrollOptions = {
         snap: false,
+        scrollbars: true,
         bounce: true,
         vScroll: true,
         vScrollbar: true,
         hideScrollbar: false
     };
-  }
+  };
 
   var headingListDict = {  
     'DUEIN': "Checking In",
-    'INHOUSE': "IN HOUSE",
+    'INHOUSE': "In House",
     'DUEOUT': "Checking Out",
     'LATE_CHECKOUT': "Checking Out Late",
     '': "Search"
-  }
+  };
 
   //success callback of data fetching from the webservice
 	var successCallBackofInitialFetch = function(data){
@@ -80,7 +81,18 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
     	}
   	 return mappedStatus;
   };
+//function that converts a null value to a desired string.
 
+ //if no replace value is passed, it returns an empty string
+
+$scope.escapeNull = function(value, replaceWith){
+     var newValue = "";
+    if((typeof replaceWith != "undefined") && (replaceWith != null)){
+     newValue = replaceWith;
+     }
+    var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
+    return valueToReturn;
+ };
 
 
   /**
