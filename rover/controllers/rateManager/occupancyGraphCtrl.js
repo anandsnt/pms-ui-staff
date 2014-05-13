@@ -4,13 +4,20 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         BaseCtrl.call(this, $scope);
         $scope.highchartsNG = {};
         $scope.targetData = "";
+        $scope.seriesActualVisible = true;
+        $scope.seriesTargetVisible = true;
         var drawGraph = function(){
             $scope.highchartsNG = {
                 options: {
                     chart: {
                         type: 'line',
                         className: "rateMgrOccGraph",
-                        plotBackgroundColor: '#e0e0e0'
+                        plotBackgroundColor: '#e0e0e0',
+                        // Edit chart spacing
+                        spacingBottom: 15,
+                        spacingTop: 10,
+                        spacingLeft: 10,
+                        spacingRight: 10,
                     },
                     /*legend: {
                         rtl: true,
@@ -55,7 +62,28 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                 series: $scope.graphData
             }
         }
-        
+    
+    $scope.legendToggled = function(legendName){
+        var chart = $('#occGraphContainer').highcharts();
+        if (legendName === 'actual'){
+            $scope.seriesActualVisible = !$scope.seriesActualVisible;
+            if($scope.seriesActualVisible){
+                chart.series[0].show();
+            }
+            else{
+                chart.series[0].hide();
+            }
+        }
+        else{
+            $scope.seriesTargetVisible = !$scope.seriesTargetVisible;
+            if($scope.seriesTargetVisible){
+                chart.series[1].show();
+            }
+            else{
+                chart.series[1].hide();
+            }
+        }
+    }
 
     var manipulateGraphData = function(data){
         var graphData = [];
