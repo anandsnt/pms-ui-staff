@@ -1,5 +1,6 @@
 sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2){
 	var that = this;
+	that.allRestrictionTypes = {};
 
 	/**
     * To fetch All Calendar data
@@ -13,26 +14,33 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 				that.dailyRates = data; 
 				var calendarData = that.calculateCalendarData();
-			console.log(JSON.stringify(calendarData));
-				//TODO: Return correct val
 				deferred.resolve(calendarData);
 			},function(data){
 				deferred.reject(data);
 			});
 
+		};
+
+		var fetchAllRestrictionTypes = function(){
+			var url =  '/sample_json/rate_manager/restriction_types.json';	
+
+			BaseWebSrvV2.getJSON(url).then(function(data) {
+				that.allRestrictionTypes = data; 
+				getDailyRates();
+			},function(data){
+				deferred.reject(data);
+
+			});
+		};
+		
+		if(!isEmpty(that.allRestrictionTypes)){
+			fetchAllRestrictionTypes();
+		} else {
+			getDailyRates();
 		}
 
-		var url =  '/sample_json/rate_manager/restriction_types.json';	
-		BaseWebSrvV2.getJSON(url).then(function(data) {
-			that.allRestrictionTypes = data; 
-			console.log(that.allRestrictionTypes);
-			getDailyRates();
-		},function(data){
-			deferred.reject(data);
-
-		});
+		
 		return deferred.promise;
-
 
 	}
 
@@ -56,7 +64,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		var dailyRatesData = [];
 
 		angular.forEach(that.dailyRates.results, function(item){
-			console.log("Dates loop");
 		   	datesList.push(item.date);
 
 		   	//UI requires al-rates separated from daily rates.
@@ -65,30 +72,24 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		   	//Adjusting Daily Rate Data - we require rows of colums - not the other way.
 		   	for(var ri in item.rates){
 		   		var rate = item.rates[ri];
-		   		console.log("rates loop");
 		   		//Check if this rate is already pushed.
 		   		var rateData = null;
 		   		for (var i in dailyRatesData){
 	   				if (dailyRatesData[i].id == rate.id)
 	   				{
-	   					console.log("Found item");
 	   		  			rateData = dailyRatesData[i];
 	   		  			//break;
 	   				}
 		   		}
 
 		   	   	if (rateData === null){
-		   	   		console.log("RateData is null");
 		   			rateData ={
 		   				id : rate.id,
 		   				name : rate.name
 		   			};
 		   			dailyRatesData.push(rateData);
 		   		}
-		   		console.log("Pushing Restrictions");
 		   		rateData[item.date] = rate.restrictions;
-		   		console.log(rateData);
-		   		console.log(dailyRatesData);
 
 		   	}
 

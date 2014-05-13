@@ -2,7 +2,8 @@
 	<thead>
 	 	<tr>
 	 		<th>
-	 			&nbsp;	
+	 			<button> Open All</button>	
+	 			<button> Close All</button>	
 	 		</th>
 	 		<th ng-repeat="date in $data.dates">{{date}}</th>
 	 	</tr>
@@ -21,7 +22,7 @@
 		</tr>
 		<tr ng-repeat="rate in $data.data">
 			<td>{{rate.name}}
-				<img src="/assets/arrow-up.png">
+				<img src="/assets/arrow-up.png" ng-click="goToRoomTypeCalendarView()">
 			</td>
 
 			<td ng-repeat="date in $data.dates" class="cal-cell" >

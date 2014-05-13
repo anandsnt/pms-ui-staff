@@ -1,6 +1,7 @@
 sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTableParams', function($scope, RateMngrCalendarSrv, ngTableParams){
 	
 	BaseCtrl.call(this, $scope);
+	$scope.calendarMode = "RATE_VIEW";
 
 	$scope.init = function(){
 		$scope.currentExpandedRow = -1;
@@ -27,7 +28,12 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
         	params.total(data.length);
             $defer.resolve(data);
 		};
-		$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, {}, calenderDataFetchSuccess);
+
+		if($scope.calendarMode == "RATE_VIEW"){
+			$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, {}, calenderDataFetchSuccess);
+		} else {
+			$scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalenarData, {}, calenderDataFetchSuccess);
+		}
 	};
 
 	var loadTable = function(data){
@@ -40,7 +46,14 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		        getData: getCalendarData
 		    }
 		);
-	}
+	};
+
+	/**
+	* Click handler for up-arrows in rate_view_calendar
+	*/
+	$scope.goToRoomTypeCalendarView = function(){
+		$scope.calendarMode = "ROOM_TYPE_VIEW";
+	};
 
 	$scope.init();
 
