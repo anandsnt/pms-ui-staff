@@ -37,7 +37,7 @@
 			<!-- Guest Card tabs navigation -->
 			<ul role="tablist" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" id="guest-card-tabs-nav">
 				<li aria-selected="true" aria-labelledby="guest-contact" aria-controls="contact-info" tabindex="0" role="tab" class="ui-state-default ui-corner-top ui-tabs-active" ng-class="{'ui-tabs-active': current == 'guest-contact'}" ng-click="guestCardTabSwitch('guest-contact')">
-					<a tabindex="-1" role="presentation" class="ui-tabs-anchor ng-binding" id="guest-contact">Contact Information </a>
+					<a tabindex="-1" role="presentation" class="ui-tabs-anchor ng-binding" id="guest-contact" ng-class="{'error':contactInfoError}">Contact Information </a>
 				</li>
 				<li aria-selected="false" aria-labelledby="guest-like" aria-controls="likes" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-like'}" ng-click="guestCardTabSwitch('guest-like')">
 					<a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-like">Likes</a>
