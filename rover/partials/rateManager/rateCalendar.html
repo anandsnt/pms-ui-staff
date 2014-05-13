@@ -1,5 +1,5 @@
-<div ng-show = "calendarMode == 'RATE_VIEW'" ng-include="'/assets/partials/rateManager/rateViewCalendar.html'"></div>
-<div ng-show = "calendarMode == 'ROOM_TYPE_VIEW'" ng-include="'/assets/partials/rateManager/roomTypeCalendar.html'"></div>
+<div ng-if = "calendarMode == 'RATE_VIEW'" ng-include="'/assets/partials/rateManager/rateViewCalendar.html'"></div>
+<div ng-if = "calendarMode == 'ROOM_TYPE_VIEW'" ng-include="'/assets/partials/rateManager/roomTypeViewCalendar.html'"></div>
 
 <div ng-repeat="restrictionType in calendarData.restriction_types">
 	<span>{{restrictionType.description}}</span>

@@ -22,7 +22,7 @@
 		</tr>
 		<tr ng-repeat="rate in $data.data">
 			<td>{{rate.name}}
-				<img src="/assets/arrow-up.png" ng-click="goToRoomTypeCalendarView()">
+				<img src="/assets/arrow-up.png" ng-click="goToRoomTypeCalendarView(rate.id)">
 			</td>
 
 			<td ng-repeat="date in $data.dates" class="cal-cell" >

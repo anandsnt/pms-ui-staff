@@ -2,47 +2,68 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	var that = this;
 	that.allRestrictionTypes = {};
 
+
+
+	this.fetchAllRestrictionTypes = function(){
+		//TODO: Modify to handle case of date range changes, if needed.
+		var url =  '/sample_json/rate_manager/restriction_types.json';	
+		var deferred = $q.defer();
+		if(!isEmpty(that.allRestrictionTypes)){
+			deferred.resolve(that.allRestrictionTypes)
+		} else{
+			console.log("fetch all restriction types");
+			BaseWebSrvV2.getJSON(url).then(function(data) {
+				that.allRestrictionTypes = data; 
+				deferred.resolve(data);
+			},function(data){
+				deferred.reject(data);
+			});
+		}
+		return deferred.promise;
+	};
+
+
 	/**
     * To fetch All Calendar data
     */
 	this.fetchCalendarData = function(){
 		var deferred = $q.defer();
 
-		var getDailyRates = function(){
+		var rejectDeferred = function(data){
+			deferred.reject(data);
+		}
+		var getDailyRates = function(d){
+			console.log("getDailyRates");
+
 			//TODO:URL
 			var url =  '/sample_json/rate_manager/daily_rates.json';	
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 				that.dailyRates = data; 
 				var calendarData = that.calculateCalendarData();
+				console.log(JSON.stringify(calendarData));
 				deferred.resolve(calendarData);
-			},function(data){
-				deferred.reject(data);
-			});
+			},rejectDeferred);
 
 		};
 
-		var fetchAllRestrictionTypes = function(){
-			var url =  '/sample_json/rate_manager/restriction_types.json';	
-
-			BaseWebSrvV2.getJSON(url).then(function(data) {
-				that.allRestrictionTypes = data; 
-				getDailyRates();
-			},function(data){
-				deferred.reject(data);
-
-			});
-		};
-		
-		if(!isEmpty(that.allRestrictionTypes)){
-			fetchAllRestrictionTypes();
-		} else {
-			getDailyRates();
-		}
-
-		
+		that.fetchAllRestrictionTypes().then(getDailyRates, rejectDeferred);
+				
 		return deferred.promise;
 
 	}
+
+	this.fetchRoomTypeCalenarData = function(){
+		//TODO: Modify to handle case of date range changes, if needed.
+		var url =  '/sample_json/rate_manager/calendar.json';	
+		var deferred = $q.defer();
+		BaseWebSrvV2.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+
+	};
 
 	this.calculateCalendarData = function(){
 		var calendarData = {};

@@ -53,6 +53,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 	*/
 	$scope.goToRoomTypeCalendarView = function(){
 		$scope.calendarMode = "ROOM_TYPE_VIEW";
+		loadTable();
 	};
 
 	$scope.init();
