@@ -22,17 +22,17 @@
 		<hr/>
 		
 		<div class="entry radio-check">
-		    <label class="checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates=='true'}">
-		    	<span ng-model="currentFilterData.is_checked_all_rates" class="icon-form icon-checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates=='true'}" ></span>
+		    <label class="checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}">
+		    	<span ng-model="currentFilterData.is_checked_all_rates" class="icon-form icon-checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}" ></span>
 	            <input type="checkbox" ng-click="clickedAllRates()">
 	            ALL RATES
 	        </label>
 		</div>
 		
-		<span class="half-border" ng-show="currentFilterData.is_checked_all_rates=='false'">
+		<span class="half-border" ng-show="!currentFilterData.is_checked_all_rates">
 			<hr class="half-left"/> OR <hr class="half-right"/> 
 		</span>
-		<div class="entry" ng-show="currentFilterData.is_checked_all_rates=='false'">
+		<div class="entry" ng-show="!currentFilterData.is_checked_all_rates">
 		    <label for="nationality">Rate Type</label>
 		    <div class="select">
 				<select name="rate-type" ng-model="currentFilterData.rate_type_selected">
@@ -42,19 +42,19 @@
 			</div>
 		</div>
 		
-		<div class="entry" ng-show="currentFilterData.is_checked_all_rates=='false'">
+		<div class="entry" ng-show="!currentFilterData.is_checked_all_rates">
 		    <label for="nationality">Rate</label>
-		    <div class="select">
-				<select >
+		    <div class="select" >
+				<select ng-model="currentFilterData.rate_selected">
 					<option value="">Select rate</option>
 					<option ng-repeat="rate in currentFilterData.rates" class="placeholder" value="{{rate.id}}">{{rate.name}}</option> 
 				</select>
 			</div>
 		</div>
 		
-		<div class="rates-box" ng-show="currentFilterData.is_checked_all_rates=='false'" ng-repeat="rates in currentFilterData.selectedRatesList">
+		<div class="rates-box" ng-show="!currentFilterData.is_checked_all_rates" ng-repeat="rates in currentFilterData.rates_selected_list">
 			<span class="rate-data">{{rates.name}}</span>
-			<span ng-click="deleteRate(rates.value)" class="icons delete_small cursor-hand"> .</span>
+			<span ng-click="deleteRate(rates.id)" class="icons delete_small cursor-hand"> .</span>
 		</div>
 		
 		<hr/>
