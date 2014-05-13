@@ -34,7 +34,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 		setTimeout(function(){
 			$scope.$parent.myScroll['resultDetails'].refresh();
 			}, 
-		2000);
+		1500);
 		
      });
 		

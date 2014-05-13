@@ -89,6 +89,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 			//This status is used to show appr message if count of reservations in selected time line is zero
 			$scope.reservationDisplayStatus = ($scope.countHistory>0) ? true : false;
 		}
+		 $scope.$broadcast('RESERVATIONLISTUPDATED');
 		
 	 };
 	 /*
