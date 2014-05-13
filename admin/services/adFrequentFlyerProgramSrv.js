@@ -19,7 +19,7 @@ function($http, $q, ADBaseWebSrv) {
 	 *   A post method to update Frequent Flyer Program for a hotel
 	 *   @param {Object} data for the Frequent Flyer Program List details.
 	 */
-	this.postFrequentFlyerProgramToggle = function(data) {
+	this.switchToggle = function(data) {
 		var deferred = $q.defer();
 		var url = '/admin/hotel/toggle_ffp_activation/';
 
