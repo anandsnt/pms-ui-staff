@@ -14,4 +14,5 @@
  *= require '../rover/css/ngDialog-theme-default.css'
  *= require '../rover/css/ngDialog-theme-plain.css'
  *= require '../shared/lib/css/ng-table.css'
+ *= require '../shared/lib/css/date-picker.css.less'
  */

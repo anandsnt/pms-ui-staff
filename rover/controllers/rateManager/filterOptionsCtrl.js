@@ -1,4 +1,4 @@
-sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv', function($scope, RMFilterOptionsSrv){
+sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDialog', function($scope, RMFilterOptionsSrv, ngDialog){
 	
   	BaseCtrl.call(this, $scope);
   	$scope.data = {};
@@ -60,6 +60,17 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv', functi
        			$scope.data.selectedRatesList.splice(index, 1);
 		 	}
        	});
+	};
+	
+	$scope.showCalendar = function(){
+		
+		ngDialog.open({
+			
+			 template:'/assets/partials/rateManager/selectDateRangeModal.html',
+    		 controller: 'SelectDateRangeModalCtrl',
+			 className: 'ngdialog-theme-default calendar-modal'
+    	});
+    	
 	};
   
 }]);
