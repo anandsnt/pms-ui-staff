@@ -48,6 +48,12 @@ sntRover.directive("autoGrowField", function($window){
           // the input has updated by the time this executes.
           $window.setTimeout(updateWidth, 0);
         });
-        
+        //sat as active
+        element.bind("focus", function() {
+          element.addClass('active');
+        });
+        element.bind("blur", function() {
+          element.removeClass('active');
+        });
     }
 });
