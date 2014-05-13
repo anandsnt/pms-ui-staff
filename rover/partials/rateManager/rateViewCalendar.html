@@ -1,0 +1,36 @@
+<table class="grid" ng-table="tableParams" ng-controller="RateViewCalendarCtrl">
+	<thead>
+	 	<tr>
+	 		<th>
+	 			<button> Open All</button>	
+	 			<button> Close All</button>	
+	 		</th>
+	 		<th ng-repeat="date in $data.dates">{{date}}</th>
+	 	</tr>
+	 </thead>
+
+	<tbody>
+		<tr><td> All Rates</td>
+
+			<td ng-repeat="date in $data.dates" class="cal-cell">
+				<span ng-repeat="restriction in $data.all_rates[date]" class="{{$data.restriction_types[restriction.restriction_type_id].background_class}} {{$data.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
+					{{restriction.days}}
+				</span>
+			</td>
+
+
+		</tr>
+		<tr ng-repeat="rate in $data.data">
+			<td>{{rate.name}}
+				<img src="/assets/arrow-up.png" ng-click="goToRoomTypeCalendarView()">
+			</td>
+
+			<td ng-repeat="date in $data.dates" class="cal-cell" >
+				<span ng-repeat="restriction in rate[date]" class="{{$data.restriction_types[restriction.restriction_type_id].background_class}} {{$data.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
+					{{restriction.days}}
+				</span>
+			</td>
+		</tr>
+		
+	</tbody>
+</table>

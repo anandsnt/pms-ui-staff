@@ -18,7 +18,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
+1.2
 */
 
 
@@ -37,7 +37,8 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
             var ngiScroll_opts = {
                 snap: true,
                 momentum: true,
-                hScrollbar: false
+                hScrollbar: false,
+                mouseWheel: true
             };
 
             // scroll key /id
@@ -79,7 +80,7 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
                     scope.$parent.myScroll = [];
                 }
 
-                scope.$parent.myScroll[scroll_key] = new iScroll(element[0], ngiScroll_opts);
+                scope.$parent.myScroll[scroll_key] = new IScroll(element[0], ngiScroll_opts);
             }
 
             // new specific setting for setting timeout using: ng-iscroll-timeout='{val}'
@@ -93,13 +94,6 @@ angular.module('ng-iscroll', []).directive('ngIscroll', function ()
                 setTimeout(setScroll, ngiScroll_timeout);
             });
 
-			// add ng-iscroll-refresher for watching dynamic content inside iscroll
-			if(attr.ngIscrollRefresher !== undefined) {
-				scope.$watch(attr.ngIscrollRefresher, function ()
-				{
-					if(scope.$parent.myScroll[scroll_key] !== undefined) scope.$parent.myScroll[scroll_key].refresh();
-				});
-			}
         }
     };
 });
