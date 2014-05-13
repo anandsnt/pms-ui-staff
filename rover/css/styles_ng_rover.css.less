@@ -106,3 +106,42 @@
 .action-post-button{
   width:23.645% !important;
 }
+.grey{
+  color:grey;
+}
+
+// CICO-609 'Accompany' in Search- Multiple images
+.guest-image img{
+    &.first-image {
+        margin-left: 0;
+        position: absolute;
+        width: 70%;
+    }
+    &.second-image {
+        margin-left: 15px;
+        margin-top: 15px;
+        position: relative;
+        width: 70%;
+    }
+}
+// CICO-609 'Accompany' in stay card.
+.block-item.accompany-guest{
+  background-color: #E0E0E0;
+  border-radius:5px;
+  padding:5px 15px;
+  min-height: 80px;
+  .group{
+    margin: 5px 0 5px;
+  }
+  .name{
+    font-style:italic;
+  }
+  .guest{
+    margin: 5px 0 5px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 5px;
+  }
+  .label{
+    width:30%;
+  }
+}
