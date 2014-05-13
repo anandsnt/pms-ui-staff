@@ -2,7 +2,9 @@
 sntRover.controller('guestCardController', ['$scope', 'Likes', '$window','RVContactInfoSrv', function($scope, Likes, $window, RVContactInfoSrv){
 
 $scope.contactInfoError = false;
+$scope.eventTimestamp =  "";
 BaseCtrl.call(this, $scope);
+var preventClicking = false;
 $scope.decloneUnwantedKeysFromContactInfo =  function(){
 	
 /**
@@ -75,24 +77,28 @@ function getParentWithSelector($event, selector) {
 * handle click outside tabs and drawer click
 */
 $scope.guestCardClick = function($event){
+
 	var element = $event.target;
+	console.log(element)
+	
 	$event.stopPropagation();
 	$event.stopImmediatePropagation();			
 	if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])){	
-
-	if(!$scope.isResizing){		
+		if(parseInt($scope.eventTimestamp)){
+		if(($event.timeStamp - $scope.eventTimestamp) <100)	{
+			return;
+		}
+		}
 		if(!$scope.guestCardVisible){
 			$scope.guestCardHeight = $scope.resizableOptions.maxHeight;
 			$scope.guestCardVisible = true;
 		}
 		else{
+			$("#guest-card").css("height", $scope.resizableOptions.minHeight);
 			$scope.guestCardHeight = $scope.resizableOptions.minHeight;
+
 			$scope.guestCardVisible = false;
 		}
-	}
-	else{
-		$scope.isResizing = !$scope.isResizing;
-	}
 	}
 	else{
 		if(getParentWithSelector($event, document.getElementById("guest-card-content"))){
@@ -112,12 +118,6 @@ $scope.guestCardClick = function($event){
 
 };
 
-// $scope.$watch('windowHeight',function(){
-
-// 	$scope.maxHeight = $scope.windowHeight;
-// });
-
-
 /**
 * for dragging of guest card 
 */
@@ -125,8 +125,8 @@ var maxHeight = $(window).height(); //against angular js practice, sorry :(
 $scope.guestCardVisible = false; //varibale used to determine whether to show guest card's different tabs
 $scope.guestCardHeight = 90;
 //scroller options
-$scope.resizableOptions = {
-	minHeight: '90',
+$scope.resizableOptions = 
+{	minHeight: '90',
 	maxHeight: maxHeight - 90,
 	handles: 's',
 	resize: function( event, ui ) {
@@ -138,7 +138,13 @@ $scope.resizableOptions = {
 			$scope.guestCardVisible = false;
 			$scope.$apply();
 		}
-		$scope.isResizing = true;
+	},
+	stop: function(event, ui){
+		preventClicking = true;
+
+		$scope.eventTimestamp = event.timeStamp;
+		
+
 	}
 }
 
