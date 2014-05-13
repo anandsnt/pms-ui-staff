@@ -49,7 +49,6 @@
           minDate: '=',
           maxDate: '=',
           disabledDates: '=',
-          isCurrentMonth: '=',
           isDateSelected: '='
         },
         templateUrl:'../../assets/directives/Calendar/adCalendar.html' ,

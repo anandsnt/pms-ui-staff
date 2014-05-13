@@ -38,9 +38,9 @@ sntRover.config([
 			controller: 'searchCompanyCardController'
 		});	
 
-		//company card search
+		//company card details
 		$stateProvider.state('rover.companycarddetails', {
-			url: '/companycard',
+			url: '/companycard/:id',
 			templateUrl: '/assets/partials/companyCard/rvCompanyCardDetails.html',
 			controller: 'companyCardDetailsController'
 		});		
@@ -93,31 +93,12 @@ sntRover.config([
 			templateUrl : "/assets/partials/bill_details.html",
 			controller	: 'billDetailsController'
         });
+        $stateProvider.state('rover.staycard.nights', {
+			url: '/nights',
+			templateUrl: '/assets/partials/nights/rvNights.html',
+            controller: 'RVnightsController'
+        });
         
-        // $stateProvider.state('rover.staycard.billcard.details', {
-			// url: '/:billNo',
-			// templateUrl : "/assets/partials/bill_details.html",
-			// controller	: 'billDetailsController'
-        // });
-        
-		// may be replaced with ng-include?
-	    /*$stateProvider.state('rover.staycard.billcard.all', {
-        	url: '',
-			views : {
-				'billDetails' :{
-					templateUrl : "partials/bill_details.html",
-					controller	: 'billDetailsController'
-
-				}
-			}
-        });*/
-        
-		/*$stateProvider.state('guestcard', {
-			url: '/guestcard',
-			templateUrl: 'partials/guestcard.html',
-			controller: 'guestCardController'
-		});	*/
-
 		// let's redirect all undefined states to dashboard state
 		
 	}

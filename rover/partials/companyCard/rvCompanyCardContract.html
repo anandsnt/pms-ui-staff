@@ -1,0 +1,97 @@
+<form method="post" action="app/modals/contracted-nights/" id="cc-contracts" name="cc-contracts" class="form card-tab contracts" ng-show="currentSelectedTab == 'cc-contracts'">
+    <div id="cc-contracts-header" class="tab-header form card-tab">
+        <div class="entry">
+            <div class="select">
+                <select name="company-contract">
+                    <option value="" class="placeholder" disabled>Select contract</option>
+                    <option value="current" selected>Current Contract</option>
+                    <option value="previous">Previous Contract</option>
+                    <option value="custom-name">Custom name Contract</option>
+                </select>
+            </div>
+        </div>
+        <div class="actions">
+            <button id="company-new-contract" type="button" class="button green">New Contract</button>
+        </div>
+    </div>
+    <div id="cc-contracts-content" class="tab-details scrollable">
+        <div class="wrapper">
+            <div class="holder left">
+                <strong class="h3">Details</strong>
+                <div class="entry margin">
+                    <label for="company-rate">Contracted Rate</label>
+                    <input name="company-rate" id="company-rate" value="COR (System defined)" type="text" />
+                </div>
+                <div class="entry price-adjust no-label">
+                    <div class="select">
+                        <select name="company-rate-adjust-1">
+                            <option value="add" selected>+</option>
+                            <option value="subtract">-</option>
+                        </select>
+                    </div>
+                    <input name="company-rate-adjust-2" id="company-rate-adjust-2" value="10" type="text" />
+                    <div class="select">
+                        <select name="company-rate-adjust-3">
+                            <option value="percentage" selected>%</option>
+                            <option value="value">$</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="entry margin has-datepicker">
+                    <label for="company-contract-start">Contract Start</label>
+                    <input name="company-contract-start" id="company-contract-start" class="datepicker" value="" maxlength="8" readonly type="text" />
+                </div>
+                <div class="entry has-datepicker">
+                    <label for="company-contract-end">Contract End</label>
+                    <input name="company-contract-end" id="company-contract-end" class="datepicker" value="" maxlength="8" readonly type="text" />
+                </div>
+                <div class="entry margin only-switch">
+                    <label for="company-contract-fixed-rate">Fixed Rate</label>
+                    <div class="switch-button full-width">
+                        <input name="company-contract-fixed-rate" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
+                        <label class="data-off">
+                            <span class="value">Yes</span>
+                            <span class="switch-icon">No</span>
+                        </label>
+                        <label class="data-on">
+                            <span class="switch-icon">Yes</span>
+                            <span class="value">No</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="entry only-switch">
+                    <label for="company-contract-show-on-bill">Show on Guest Bill</label>
+                    <div class="switch-button full-width">
+                        <input name="company-contract-show-on-bill" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
+                        <label class="data-off">
+                            <span class="value">Yes</span>
+                            <span class="switch-icon">No</span>
+                        </label>
+                        <label class="data-on">
+                            <span class="switch-icon">Yes</span>
+                            <span class="value">No</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="entry">
+                    <label for="company-contracted-nights">Contracted nights</label>
+                    <input name="company-contracted-nights" id="company-contracted-nights" class="open-modal contracted-nights" placeholder="Nights per month" value="240" maxlength="8" readonly type="text" />
+                </div>
+            </div>
+            <div class="holder right">
+                <strong class="h3">Statistics</strong>
+                <ul id="company-contract-stats" class="contract-stats">
+                    <li>Booked Nights <span>163</span></li>
+                    <li>Total Nights <span>159</span></li>
+                    <li>Total Stays <span>49</span></li>
+                    <li>Total Revenue <span class="green">$3579.00</span></li>
+                    <li>Average Rate <span>$219.00</span></li>
+                </ul>
+            </div>
+            <div id="company-cards-occupancy" class="occupancy">
+                <strong class="h3">Occupancy</strong>
+                <img src="images/occupancy.png" class="temporary-graph" alt="">
+            </div>
+        </div>
+    </div>
+</form>

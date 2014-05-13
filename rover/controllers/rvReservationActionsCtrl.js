@@ -1,4 +1,4 @@
-sntRover.controller('reservationActionsController',[ '$rootScope','$scope',  function($rootScope, $scope){
+sntRover.controller('reservationActionsController',[ '$rootScope','$scope', 'ngDialog',  function($rootScope, $scope, ngDialog){
 	BaseCtrl.call(this, $scope);
 	
 	$scope.displayTime = function(status){
@@ -48,6 +48,21 @@ sntRover.controller('reservationActionsController',[ '$rootScope','$scope',  fun
 			display = true;
 		}
 		return display;
+	};
+	
+	$scope.getArrivalTimeColor = function(time){
+		var timeColor = "";
+		if(time!=null){
+			timeColor = "time";
+		}
+		return timeColor;
+	};
+	$scope.openPostCharge = function(){
+			ngDialog.open({
+	    		 template: '/assets/partials/postCharge/postCharge.html',
+	    		 controller: 'RVPostChargeController'
+	    	});
+
 	};
 	
 }]);

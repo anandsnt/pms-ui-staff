@@ -15,7 +15,7 @@
         <div class="wrapper">
             <ul id="search-cards-results" class="search-results" ng-class="{'hidden': results.cards.length==0}">
                  <li ng-repeat="row in results">
-                    <a ui-sref="rover.companycarddetails" class="card-result company-card" data-transition="inner-page">
+                    <a ui-sref="rover.companycarddetails({id:1})" class="card-result company-card" data-transition="inner-page">
                         <figure class="guest-image">
                             <img src="{{row.image}}" alt="">
                         </figure>
