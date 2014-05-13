@@ -26,7 +26,7 @@ sntRover.directive("autoGrowField", function($window){
           
           // measure!
           var r = tester[0].getBoundingClientRect();
-          var w = r.width+20;
+          var w = r.width+40;
           
           // apply the new width!
           element.css('width', w + 'px');

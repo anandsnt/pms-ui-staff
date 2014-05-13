@@ -106,6 +106,11 @@ $scope.guestCardClick = function($event){
 
 };
 
+// $scope.$watch('windowHeight',function(){
+
+// 	$scope.maxHeight = $scope.windowHeight;
+// });
+
 
 /**
 * for dragging of guest card 
