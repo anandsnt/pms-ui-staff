@@ -1,0 +1,34 @@
+<form method="post" id="reservationcard-loyalty" class="block-item item-loyalty has-buttons float" ng-controller="reservationCardLoyalty">
+	<div class="block-title">
+		<h3>Loyalty</h3>
+	</div>
+	<div class="select-item loyalty">
+		<!-- Disable the loyalty select feature for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' %reservations -->
+		<select name="loyalty" id="loyalty" class="styled">
+			<option value="" data-id="">Select Loyalty program</option>
+			<optgroup label="Frequent Flyer Program"></optgroup>
+			<option value="{{frequentflyer.id}}" ng-repeat="frequentflyer in reservationData.reservation_card.loyalty_level.frequentFlyerProgram">
+				 {{frequentflyer.membership_type}} {{frequentflyer.membership_card_number}} </option>
+				<optgroup label="Hotel Loyalty Program"></optgroup>
+			<option value="{{hotelloyalty.id}}" ng-repeat="hotelloyalty in reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram">
+				{{hotelloyalty.membership_type}} 
+				{{hotelloyalty.membership_card_number}} 
+			</option>
+			
+
+		</select>
+		<!-- Calculates the default selected loyalty -->
+		<div id="reservationLoyalty" class="selected" ng-show="showSelectedLoyalty(reservationData.reservation_card.loyalty_level.selected_loyalty)">
+			<span class="value code"> {{selectedLoyalty.membership_type}}</span>
+			<span class="number"> Ending with <span class="value number"> {{selectedLoyalty.membership_card_number}} </span> </span>
+		</div>
+		<div id="reservationLoyalty" class="selected" ng-hide="showSelectedLoyalty(reservationData.reservation_card.loyalty_level.selected_loyalty)">
+			<span class="value code"> </span>
+			<span class="number"> Select Hotel Loyalty<span class="value number">  </span> </span>
+		</div>
+	</div>
+	<div class="actions">
+		<a id="add_new_loyalty_staycard" class="add-new-button">+ Add</a>
+	</div>
+
+</form>

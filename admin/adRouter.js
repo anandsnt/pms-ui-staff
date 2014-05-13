@@ -191,19 +191,20 @@ admin.config([
 			url : '/externalPmsConnectivity'
 		});
 
-
-
-
 		$stateProvider.state('admin.addRate', {
 			templateUrl: '/assets/partials/rates/adNewRate.html',
 		    controller: 'ADAddnewRate',
 			url : '/addNewRate'
 		});
 
-
+		$stateProvider.state('admin.rateDetails', {
+			templateUrl: '/assets/partials/rates/adNewRate.html',
+			controller: 'ADAddnewRate',
+			url : '/ratedetails/:rateId'
+		});
 
 		$stateProvider.state('admin.rulesRestrictions', {
-			templateUrl: '/assets/partials/rates/adRulesRestriction.html',
+			templateUrl: '/assets/partials/rulesRestriction/adRulesRestriction.html',
 			controller: 'ADRulesRestrictionCtrl',
 			url : '/restriction_types'
 		});
@@ -261,11 +262,18 @@ admin.config([
 			controller: 'ADSourcesCtrl',
 			url : '/sources'
 		});
+
 		$stateProvider.state('admin.bookingOrigins', {
 			templateUrl: '/assets/partials/origins/adOrigins.html',
 			controller: 'ADOriginsCtrl',
 			url : '/origins'
 		});
-		
+
+		$stateProvider.state('admin.ratesAddons', {
+			templateUrl: '/assets/partials/rates/adRatesAddons.html',
+			controller: 'ADRatesAddonsCtrl',
+			url : '/rates_addons'
+		});
+
 	}
 ]);

@@ -5,6 +5,55 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	 */
 	//Data fetched using resolve in router
 	$scope.reservationData = reservationDetails;
+	$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
+	$scope.selectedLoyalty = {};
+	angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
+		if($scope.reservationData.reservation_card.loyalty_level.selected_loyalty == item.id){
+			$scope.selectedLoyalty = item;
+			$scope.selectedLoyalty.membership_card_number = $scope.selectedLoyalty.membership_card_number.substr($scope.selectedLoyalty.membership_card_number.length - 4);
+		}
+	});
+	angular.forEach($scope.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram, function(item, index) {
+		if($scope.reservationData.reservation_card.loyalty_level.selected_loyalty == item.id){
+			$scope.selectedLoyalty = item;
+			$scope.selectedLoyalty.membership_card_number = $scope.selectedLoyalty.membership_card_number.substr($scope.selectedLoyalty.membership_card_number.length - 4);
+		}
+	});
+	
+	$scope.$parent.myScrollOptions = {		
+	    'resultDetails': {
+	    	scrollbars: true,
+	        snap: false,
+	        hideScrollbar: false
+	    },
+	};
+
+	
+	
+	$scope.$on('$viewContentLoaded', function() {
+	 	// alert("jphme jphme")
+	 	
+	 	// var myScroll = new IScroll('#resultDetails',{
+    // mouseWheel: true,
+    // scrollbars: true
+// });
+         // setTimeout(function() {
+         	// // console.log($scope)
+//          	
+//          
+         // if($scope.$parent.myScroll != undefined){
+         	// console.log("recahe")
+         	// console.log($scope.$parent.myScroll)
+         	// $scope.$parent.myScroll['result_details'].refresh();
+         	// // $scope.$parent.myScroll['result_details'].refresh();
+         // }
+//          	
+              // // $scope.$parent.myScroll['result_details'].refresh();
+             // // $scope.$parent.myScroll['result_details'].scrollTo(0, 0, 200);
+          // }, 3000);
+     });
+		
+	
 	$scope.reservationDetailsFetchSuccessCallback = function(data){
 		
 		$scope.$emit('hideLoader');

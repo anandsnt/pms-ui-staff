@@ -1,11 +1,9 @@
-sntRover.controller('guestCardController', ['$scope', 'Likes', '$window', function($scope, Likes, $window){
+sntRover.controller('guestCardController', ['$scope', 'Likes', '$window', 'RVReservationCardSrv', function($scope, Likes, $window, RVReservationCardSrv){
 	
 	$scope.current = 'guest-contact';
+	//To get data from service
+    $scope.guestData = RVReservationCardSrv.getGuestData();
 
-	console.log($window.innerHeight);
-
-	console.log($(window).height());
-	
 	$scope.guestCardTabSwitch = function(div){
 		$scope.current = div;
 	};

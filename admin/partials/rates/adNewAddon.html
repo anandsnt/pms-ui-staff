@@ -1,0 +1,153 @@
+<div style="display: block;" id="add-new" class="edit-data">
+	<div class="data-holder">
+		<form id="add-addon" name="add-addon" class="form inline-form float">
+			<div class="form-title">
+				<h3>
+					<span>{{ addonTitle }}</span>
+					{{ addonSubtitle }}
+				</h3>
+				<em class="status">
+					Fields marked with
+					<strong>*</strong>
+					are mandatory!
+				</em>
+			</div>
+			
+			<fieldset class="holder left float">
+				<ad-textbox styleclass="full-width"
+					value="singleAddon.name"
+					name="name"
+					id="name"
+					label="Name"
+					placeholder="Enter the addon name"
+					required="yes"></ad-textbox>
+
+				<ad-textarea rows="4"
+					div-class="full-width"
+					text-area-class="full-width"
+					value="singleAddon.description"
+					name="desc"
+					id="desc"
+					label="Description"
+					placeholder="Enter the addon description"
+					required="yes"></ad-textarea>
+
+				<div class="entry full-width radio-check">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.bestseller }"></span>
+						<label>Bestseller</label>
+						<input type="checkbox" ng-model="singleAddon.bestseller">
+					</label>
+				</div>
+
+				<div class="entry full-width radio-check">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
+						<label>Rates only</label>
+						<input type="checkbox" ng-model="singleAddon.rate_code_only">
+					</label>
+				</div>
+			</fieldset>
+
+
+			<fieldset class="holder right float">
+				<div class="entry rel">
+					<label>
+						From Date
+						<strong>*</strong>
+					</label>
+					<input type="text" ng-model="singleAddon.begin_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="popupCalendar('From')">
+					<span class="icons icon-calendar" ng-click="popupCalendar('From')"></span>
+				</div>
+				<div class="entry rel">
+					<label>
+						To Date
+						<strong>*</strong>
+					</label>
+					<input type="text" ng-model="singleAddon.end_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="popupCalendar('To')">
+					<span class="icons icon-calendar" ng-click="popupCalendar('To')"></span>
+				</div>
+
+				<div class="entry">
+					<div class="entry full-width">
+						<label for="charge-group-id">
+							Charge group
+							<strong>*</strong>
+						</label>
+						<div class="select">
+							<select name="charge-group-id"
+								id="charge-group-id"
+								ng-model="singleAddon.charge_group_id"
+								ng-options="group.id as group.name for group in chargeGroups"></select>
+						</div>
+					</div>
+				</div>
+				<div class="entry">
+					<div class="entry full-width">
+						<label for="charge-group-id">
+							Charge code
+							<strong>*</strong>
+						</label>
+						<div class="select">
+							<select name="charge-code-id"
+								id="charge-code-id"
+								ng-model="singleAddon.charge_code_id"
+								ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodes"></select>
+						</div>
+					</div>
+				</div>							
+				
+				<div class="entry">
+					<ad-textbox styleclass="full-width"
+						value="singleAddon.amount"
+						name="amount"
+						id="amount"
+						label="Amount"
+						placeholder="Enter the amount"
+						required="yes"></ad-textbox>
+				</div>
+				<div class="entry">
+					<div class="entry full-width">
+						<label for="amount-type-id">
+							Amount Type
+							<strong>*</strong>
+						</label>
+						<div class="select">
+							<select name="amount-type-id"
+								id="amount-type-id"
+								ng-model="singleAddon.amount_type_id"
+								ng-options="type.id as type.value for type in amountTypes"></select>
+						</div>
+					</div>
+				</div>
+
+				<div class="entry full-width">
+					<label for="amount-type-id">
+						Post Type
+						<strong>*</strong>
+					</label>
+					<div class="select">
+						<select name="post-type-id"
+							id="post-type-id"
+							ng-model="singleAddon.post_type_id"
+							ng-options="type.id as type.value for type in postTypes"></select>
+					</div>
+				</div>
+			</fieldset>
+
+
+			<div class="actions float">
+				<button type="button"
+					id="cancel"
+					class="button blank add-data-inline"
+					ng-click="cancelCliked()">Cancel</button>
+				<button type="button"
+					like-type="common"
+					id="update"
+					class="button green add-data-inline"
+					ng-click="addUpdateAddon()">Save changes</button>
+			</div>
+
+		</form>
+	</div>
+</div>

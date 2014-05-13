@@ -1,4 +1,4 @@
-<section id="reservation-card" data-current-timeliine="current" class="content stay-card-inner reservation-tabs-timeline ui-tabs ui-widget ui-widget-content ui-corner-all ui-tabs-vertical ui-helper-clearfix" >
+<section id="reservation-card" class="content stay-card-inner reservation-tabs-timeline ui-tabs ui-widget ui-widget-content ui-corner-all ui-tabs-vertical ui-helper-clearfix" >
 	<!-- Reservations navigation -->
 	
 	<ul id="reservation-timeline" class="reservation-tabs-nav ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
@@ -16,10 +16,13 @@
 	<!-- Current reservation -->
 	<div id="current" class="reservation-list float reservation-tabs ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs ui-widget ui-corner-all ui-tabs-vertical ui-helper-clearfix" aria-labelledby="ui-id-33" role="tabpanel" aria-expanded="true" aria-hidden="false">
 		<!-- TO INCLUDE RESERVATION LISTING -->
-		<div ng-include="'assets/partials/reservationCard/rvReservationListing.html'"></div>
+		<!-- <span ng-switch on="reservationCount"> -->
+			<div ng-if="reservationDisplayStatus" ng-include="'assets/partials/reservationCard/rvReservationListing.html'"></div>
+		<!-- </span> -->
 		<!-- TO INCLUDE RESERVATION DETAILS IN THE RIGHT SIDE-->
 		<div ui-view></div>
 
 	</div>
 	
 </section>
+
