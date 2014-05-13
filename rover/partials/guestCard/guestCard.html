@@ -1,5 +1,5 @@
 
-<div role="complementary" id="guest-card"   ng-controller="guestCardController" style="height: {{guestCardHeight}}px;" ng-class="{'open': guestCardVisible}" ui-jq="resizable" ui-options="resizableOptions" ng-click="guestCardClick($event)"  >
+<div role="complementary" id="guest-card"   ng-controller="guestCardController" style="height: {{guestCardHeight}}px;" ng-class="{'open': guestCardVisible}" ui-jq="resizable" ui-options="resizableOptions" ng-click="guestCardClick($event)" resize >
 
 	<div id="card-wrapper">
 		<!-- Guest Card Header -->
@@ -11,9 +11,9 @@
 			<form action="" id="change-name" method="post" name="change-name" class="ng-pristine ng-valid">
 				<div class="holder">
 					<div class="entry">
-						<input type="text" class="masked-input h1" placeholder=""  ng-model="guestCardData.contactInfo.first_name" ng-blur="updateContactInfo()">
+						<input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.first_name.length}}"  ng-model="guestCardData.contactInfo.first_name" ng-blur="updateContactInfo()" auto-grow-field>
 						
-						<input type="text" class="masked-input h1" placeholder="" ng-model="guestCardData.contactInfo.last_name" ng-blur="updateContactInfo()">
+						<input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.last_name.length}}" ng-model="guestCardData.contactInfo.last_name" ng-blur="updateContactInfo()" auto-grow-field>
 						
 					</div>
 					<strong class="status"> </strong>
@@ -25,10 +25,10 @@
 					</div>
 				</div>
 				<div class="holder data">
-					<input type="text" data-size="0" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.city" ng-blur="updateContactInfo()">
-					<input type="text" data-size="0" class="masked-input" ng-model="guestCardData.contactInfo.state" ng-blur="updateContactInfo()">
-					<input type="tel" data-size="0" class="masked-input icons icon-gc-phone" ng-model="guestCardData.contactInfo.phone" ng-blur="updateContactInfo()">
-					<input type="email" data-size="0" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email_address" ng-blur="updateContactInfo()">
+					<input type="text" data-size="{{guestCardData.contactInfo.city.length}}" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.city" ng-blur="updateContactInfo()"auto-grow-field>
+					<input type="text" data-size="{{guestCardData.contactInfo.state.length}}" class="masked-input" ng-model="guestCardData.contactInfo.state" ng-blur="updateContactInfo()" auto-grow-field>
+					<input type="tel" data-size="{{guestCardData.contactInfo.phone.length}}" class="masked-input icons icon-gc-phone" ng-model="guestCardData.contactInfo.phone" ng-blur="updateContactInfo()" auto-grow-field>
+					<input type="email" data-size="{{guestCardData.contactInfo.email_address.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email_address" ng-blur="updateContactInfo()"auto-grow-field>
 				</div>
 			</form>
 		</header>
@@ -37,7 +37,7 @@
 			<!-- Guest Card tabs navigation -->
 			<ul role="tablist" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" id="guest-card-tabs-nav">
 				<li aria-selected="true" aria-labelledby="guest-contact" aria-controls="contact-info" tabindex="0" role="tab" class="ui-state-default ui-corner-top ui-tabs-active" ng-class="{'ui-tabs-active': current == 'guest-contact'}" ng-click="guestCardTabSwitch('guest-contact')">
-					<a tabindex="-1" role="presentation" class="ui-tabs-anchor ng-binding" id="guest-contact">Contact Information </a>
+					<a tabindex="-1" role="presentation" class="ui-tabs-anchor ng-binding" id="guest-contact" ng-class="{'error':contactInfoError}">Contact Information </a>
 				</li>
 				<li aria-selected="false" aria-labelledby="guest-like" aria-controls="likes" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-like'}" ng-click="guestCardTabSwitch('guest-like')">
 					<a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-like">Likes</a>
