@@ -283,8 +283,8 @@ reports.controller('reportDetails', [
 
 
             // hack to set the colspan for reports details tfoot
-            $scope.leftColSpan  = $scope.chosenReport.title === 'Check In / Check Out' ? 4 : 2;
-            $scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' ? 5 : 2;
+            $scope.leftColSpan  = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 4 : 2;
+            $scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 5 : 2;
 
             // track the total count
             $scope.totalCount = response.total_count;
@@ -470,13 +470,13 @@ reports.controller('reportDetails', [
                 reportContent.scrollTo(0, 0, 100);
             }, 10);
 
-            setTimeout( function() {
+            $timeout(function() {
                 $window.print();
 
                 if ( sntapp.cordovaLoaded ) {
                     cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
                 };
-            }, 100 );
+            }, 100);
         };
     }
 ]);
