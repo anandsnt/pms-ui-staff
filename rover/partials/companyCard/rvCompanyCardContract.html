@@ -2,11 +2,9 @@
     <div id="cc-contracts-header" class="tab-header form card-tab">
         <div class="entry">
             <div class="select">
-                <select name="company-contract">
+                <select name="company-contract" ng-model="contractsData.contracts_list_selected">
                     <option value="" class="placeholder" disabled>Select contract</option>
-                    <option value="current" selected>Current Contract</option>
-                    <option value="previous">Previous Contract</option>
-                    <option value="custom-name">Custom name Contract</option>
+                    <option value="{{type.value}}" ng-selected="type.value==contractsData.contracts_list_selected" ng-repeat="type in contractsData.contracts_list" >{{type.name}}</option>
                 </select>
             </div>
         </div>
