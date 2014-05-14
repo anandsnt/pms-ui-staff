@@ -39,9 +39,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     rateId: $stateParams.rateId
                 }, rateDetailsFetchSuccess);
             }
-            else{
-                $scope.invokeApi(ADRatesSrv.fetchAddons,{},fetchAddonsSuccessCallback);
-            }
+            $scope.invokeApi(ADRatesSrv.fetchAddons,{},fetchAddonsSuccessCallback);
+            
         };
 
         var fetchAddonsSuccessCallback  = function(data){
@@ -147,9 +146,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         // Fetch details success callback for rate edit
 
         var rateDetailsFetchSuccess = function (data) {
-
-            alert("3")
-            alert(data)
 
             $scope.hotel_business_date = data.business_date;
             // set rate data for edit   
