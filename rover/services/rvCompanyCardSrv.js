@@ -13,6 +13,18 @@ sntRover.service('RVCompanyCardSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWe
 		return deferred.promise;		
 		
 	};
+	
+	this.fetchContracts = function(){
+		var deferred = $q.defer();		
+		var url =  '/sample_json/contracts/rvCompanyCardContracts.json';	
+		RVBaseWebSrv.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;		
+		
+	};
 
 
 }]);
