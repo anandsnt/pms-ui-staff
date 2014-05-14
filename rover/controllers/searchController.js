@@ -25,9 +25,9 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   };
 
   var headingListDict = {  
-    'DUEIN': "CHECKING IN",
-    'INHOUSE': "IN HOUSE",
-    'DUEOUT': "CHECKING OUT",
+    'DUEIN': "Checking In",
+    'INHOUSE': "In House",
+    'DUEOUT': "Checking Out",
     'LATE_CHECKOUT': "Checking Out Late",
     '': "Search"
   };
@@ -81,7 +81,18 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
     	}
   	 return mappedStatus;
   };
+//function that converts a null value to a desired string.
 
+ //if no replace value is passed, it returns an empty string
+
+$scope.escapeNull = function(value, replaceWith){
+     var newValue = "";
+    if((typeof replaceWith != "undefined") && (replaceWith != null)){
+     newValue = replaceWith;
+     }
+    var valueToReturn = ((value == null || typeof value == 'undefined' ) ? newValue : value);
+    return valueToReturn;
+ };
 
 
   /**
@@ -89,6 +100,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   */
   var performInitialActions = function(){
       //setting the heading of the screen
+      $scope.clickedStatus = '';
       $scope.heading = headingListDict[$stateParams.type]; 
       //preparing for web service call
     	var dataDict = {};
@@ -96,6 +108,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
         typeof $stateParams.type !== 'undefined' && 
         $stateParams.type != null &&
         $stateParams.type.trim() != '') {
+        	$scope.clickedStatus = $stateParams.type;
           //LATE_CHECKOUT is a special case, parameter is diff. here (is_late_checkout_only)
           if($stateParams.type == "LATE_CHECKOUT"){
             dataDict.is_late_checkout_only = true;
@@ -110,6 +123,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
       else{   
         $scope.results = [];
       }
+
   };
 
   //setting up initial things
@@ -125,7 +139,11 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
 
     displayFilteredResults();  
   };
-
+  
+  $scope.clearResults = function(){
+  	performInitialActions();
+  	$scope.textInQueryBox = "";
+  };
 
 
   /**
@@ -181,7 +199,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
         $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofInitialFetch); 
       }
       // we have changed data, so we are refreshing the scrollerbar
-      refreshScroller()                  
+      refreshScroller();                  
     }
   };
 

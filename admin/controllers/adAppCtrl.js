@@ -46,7 +46,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 
 		//also we are taking the lastDropedTime to preventing click after drag stop operation
 		lastDropedTime = new Date();			
-	}	
+	};	
 
 	//function to copy the ids of bookmark to a new array
 	var copyBookmarkIds = function(arrayToCopy){

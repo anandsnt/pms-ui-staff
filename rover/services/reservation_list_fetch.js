@@ -66,5 +66,16 @@ sntRover.service('RVReservationCardSrv',['$http', '$q', 'RVBaseWebSrv', function
 		return this.guestData;
 	};
 
+	this.fetchGuestcardData = function(param){
+		var deferred = $q.defer();
+		var url = '/staff/guestcard/show.json';
+		RVBaseWebSrv.getJSON(url,param).then(function(data) {
+			    deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+		return deferred.promise;
+	};
+
    
 }]);

@@ -11,7 +11,7 @@ sntRover.controller('reservationListController',['$scope', function($scope){
 		setTimeout(function(){
 			$scope.$parent.myScroll['resultListing'].refresh();
 			}, 
-		700);
+		500);
 		
 	});
 }]);

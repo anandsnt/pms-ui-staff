@@ -11,13 +11,16 @@
 //=require ../shared/lib/js/iscroll.js
 //=require ../shared/lib/js/ng-iscroll.js
 //=require ../shared/lib/js/ngDialog.min.js
+//=require ../rover/directives/calendar/angular-date-picker.js
 //=require ../shared/lib/js/Utils.js
+//=require_tree ../shared
 
 //=require ../rover/rvApp.js
 //=require ../rover/rvRouter.js
 //=require ../shared/lib/js/baseCtrl.js
 //=require_tree ../rover/controllers
 //=require_tree ../rover/services
+//=require_tree ../rover/directives
 
 
 
