@@ -70,6 +70,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
 
             var fetchRateTypesSuccessCallback = function (data) {
                 $scope.rateTypesDetails = data;
+
+
+                console.log(JSON.stringify($scope.rateTypesDetails.addOns));
                 $scope.$emit('hideLoader');
             };
             var fetchRateTypesFailureCallback = function (data) {

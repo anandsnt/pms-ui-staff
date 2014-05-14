@@ -8,16 +8,17 @@
 <form ng-show="detailsMenu ==='addOns'" class="form float form_add_new_rate">
 	ADD-ONS
 	<div ng-click="changeDetailsMenu('')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-up.png"></div>
+
 	<table class="grid">
 		<th>ADD-ON</th>
 		<th>PRICE</th>
 		<th>INCLUSIVE/EXCLUSIVE</th>
 		<th>USE</th>
-		<tr ng-repeat="x in [1,2,3]">
+		<tr ng-repeat="addon in rateTypesDetails.addOns">
+			<td>{{addon.name}}</td> 
+			<td>{{rateTypesDetails.hotel_settings.currency.symbol}} 32</td> 
 			<td>x</td> 
-			<td>x</td> 
-			<td>x</td> 
-			<td>x</td> 
+			<td><ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="Notify Guest When Room is Ready &amp; Vacant" div-class="full-width"></ad-checkbox></td> 
 		</tr>
 		
 	</table>
