@@ -1,19 +1,34 @@
 <form method="post" action="app/modals/contracted-nights/" id="cc-contracts" name="cc-contracts" class="form card-tab contracts" ng-show="currentSelectedTab == 'cc-contracts'">
     <div id="cc-contracts-header" class="tab-header form card-tab">
         <div class="entry">
-            <div class="select">
-                <select name="company-contract" ng-model="contractsData.contracts_list_selected">
-                    <option value="" class="placeholder" disabled>Select contract</option>
-                    <option value="{{type.value}}" ng-selected="type.value==contractsData.contracts_list_selected" ng-repeat="type in contractsData.contracts_list" >{{type.name}}</option>
+            <div class="select" ng-hide="isAddmode">
+                <select name="company-contract" ng-model="contractSelected">
+                    <option value="" class="placeholder">Select contract</option>
+                    <optgroup label="Current">
+                    	<option value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.current" >{{type.name}}</option>
+                	</optgroup>
+                	<optgroup label="Future">
+                    	<option value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.future" >{{type.name}}</option>
+                	</optgroup>
+                	<optgroup label="History">
+                    	<option value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.history" >{{type.name}}</option>
+                	</optgroup>
                 </select>
             </div>
+            <div class="" ng-show="isAddmode">
+                <input placeholder="Contract Name" name="company-contract-new" class="" value="" maxlength="8" type="text" />
+            </div>
         </div>
-        <div class="actions">
-            <button id="company-new-contract" type="button" class="button green">New Contract</button>
+        <div class="actions" ng-hide="isAddmode">
+            <button id="company-new-contract" type="button" class="button green" ng-click="isAddmode=true">New Contract</button>
+        </div>
+        <div class="actions" ng-show="isAddmode">
+        	<button id="company-new-contract" type="button" class="button red" ng-click="isAddmode=false">Cancel</button>
+            <button id="company-new-contract" type="button" class="button green" ng-click="isAddmode=false">Save Contract</button>
         </div>
     </div>
     <div id="cc-contracts-content" class="tab-details scrollable">
-        <div class="wrapper">
+        <div class="wrapper" ng-class="{'overlay':contractList.contract_selected=='3'}">
             <div class="holder left">
                 <strong class="h3">Details</strong>
                 <div class="entry margin">
@@ -37,11 +52,11 @@
                 </div>
                 <div class="entry margin has-datepicker">
                     <label for="company-contract-start">Contract Start</label>
-                    <input name="company-contract-start" id="company-contract-start" class="datepicker" value="" maxlength="8" readonly type="text" />
+                    <input ng-click="contractStart()" name="company-contract-start" id="company-contract-start" class="datepicker" value="" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry has-datepicker">
                     <label for="company-contract-end">Contract End</label>
-                    <input name="company-contract-end" id="company-contract-end" class="datepicker" value="" maxlength="8" readonly type="text" />
+                    <input ng-click="contractEnd()" name="company-contract-end" id="company-contract-end" class="datepicker" value="" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry margin only-switch">
                     <label for="company-contract-fixed-rate">Fixed Rate</label>
@@ -76,7 +91,7 @@
                     <input name="company-contracted-nights" id="company-contracted-nights" class="open-modal contracted-nights" placeholder="Nights per month" value="240" maxlength="8" readonly type="text" />
                 </div>
             </div>
-            <div class="holder right">
+            <div class="holder right" ng-hide="isAddmode">
                 <strong class="h3">Statistics</strong>
                 <ul id="company-contract-stats" class="contract-stats">
                     <li>Booked Nights <span>163</span></li>
@@ -86,7 +101,7 @@
                     <li>Average Rate <span>$219.00</span></li>
                 </ul>
             </div>
-            <div id="company-cards-occupancy" class="occupancy">
+            <div id="company-cards-occupancy" class="occupancy" ng-hide="isAddmode">
                 <strong class="h3">Occupancy</strong>
                 <img src="images/occupancy.png" class="temporary-graph" alt="">
             </div>
