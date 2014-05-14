@@ -25,9 +25,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "room_type_ids": [],
                 "promotion_code": "",
                 "date_ranges": [],
-                "addOns":[],
-                "allAddOns":[]
+                "addOns":[]
             }
+            $scope.allAddOns = [];
 
             $scope.basedonRateData = {};
             // intialize rateData dictionary - END
@@ -45,8 +45,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         };
 
         var fetchAddonsSuccessCallback  = function(data){
-
-         angular.forEach(data.results, function(addOns){
+         $scope.allAddOns = data.results;
+         angular.forEach($scope.allAddOns, function(addOns){
                 addOns.isSelected = false;
                 addOns.is_inclusive_in_rate = "false";
              });
@@ -98,6 +98,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         }
 
         $scope.manipulateData = function(data){
+          
             if(data.id) { $scope.rateData.id = data.id; }
             $scope.rateData.name= data.name;
             $scope.rateData.description = data.description;
@@ -107,12 +108,12 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.rate_type.id = (data.rate_type != null) ? data.rate_type.id : '';
             $scope.rateData.rate_type.name = (data.rate_type != null) ? data.rate_type.name : '';
             $scope.rateData.addOns = data.addons;
-            $scope.rateData.allAddOns = data.allAddOns;
+          
 
             if($scope.rateData.addOns.length>0){
                 var tempData = $scope.rateData.addOns;
                 $scope.rateData.addOns = [];
-                angular.forEach($scope.rateData.allAddOns, function(addOns){
+                angular.forEach($scope.allAddOns, function(addOns){
                     angular.forEach(tempData, function(addOnsSelected){
                         if(addOns.id === addOnsSelected.id){
                             addOns.isSelected = true;
