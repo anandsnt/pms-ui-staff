@@ -3,7 +3,7 @@
 	<div ng-include="'/assets/partials/rateManager/topbar.html'" style= "width:100%;"></div>
 	<div class="content">
         <div ng-include="'/assets/partials/rateManager/leftMenu.html'" ng-controller="RMFilterOptionsCtrl" class="left-menu"></div>
-		<div ng-if = "displayMode == 'CALENDAR'" ng-include="'/assets/partials/rateManager/rateCalendar.html'" class="calendar" ng-controller="RateCalendarCtrl"></div>
+		<div ng-if = "displayMode == 'CALENDAR'" ng-include="'/assets/partials/rateManager/rateCalendar.html'" class="calendar" ng-controller="RateCalendarCtrl" style="padding-left: 20px;"></div>
 		<div ng-if = "displayMode == 'GRAPH'" ng-include="'/assets/partials/rateManager/occupancyGraph.html'" class="graph" ng-controller="RateMgrOccupancyGraphCtrl">
 		</div>
 
