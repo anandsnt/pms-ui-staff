@@ -1,8 +1,8 @@
 <table border="1">
-    <tr>
-        <td colspan="10" align="center"><h1>SET TARGETS</h1><br>Values will be set as percentage</td>
+    <tr class="noline">
+        <td colspan="10" align="center"><h1>SET TARGETS</h1><em>Values will be set as percentage</em></td>
     </tr>
-    <tr>
+    <tr class="noline">
         <th>&nbsp;</th>
         <th>WEEK</th>
         <th>&nbsp;</th>
@@ -15,22 +15,24 @@
         <th>SAT</th>
     </tr>
     <tr ng-repeat="week in targetData">
-        <td colspan="">{{ week[0].date | date:'dd' }} . - {{ week[6].date | date:'dd.MMM' }}</td>
+        <td colspan="" width="11%">{{ week[0].date | date:'dd' }} . - {{ week[6].date | date:'dd.MMM' }}</td>
         <td>
             <input type="text" ng-model=weekCommonTargets[$index] />
         </td>
-        <td>
+        <td width="4%">
             <span class="icons right-arrow-grey" ng-click="copyTargetToAllWeekDays($index)">&nbsp;</span>
         </td>
         <td ng-repeat="weekDay in week">
-            <input ng-model="weekDay.value" />
+            <div class="cellbg">
+                12
+            <input ng-model="weekDay.value" /></div>
         </td>
 
     </tr>
-    <tr>
+    <tr class="noline">
         <td colspan="10">
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
+                <tr class="noline">
                     <td align="right" width="50%"> <button ng-click="cancelClicked()" class="button nogreen edit-data-inline">Cancel</button></td>
                     <td align="left" width="50%"> <button ng-click="setTargets()" class="button green edit-data-inline">Set</button></td>
                 </tr>
