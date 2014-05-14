@@ -70,7 +70,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
   //click function on search area, mainly for closing the drawer
   $scope.clickedOnSearchArea = function(){
     $scope.$emit("closeDrawer");
-  }
+  };
   //Map the room status to the view expected format
   $scope.getRoomStatusMapped = function(roomstatus, fostatus){
     	var mappedStatus = "";
@@ -100,6 +100,7 @@ $scope.escapeNull = function(value, replaceWith){
   */
   var performInitialActions = function(){
       //setting the heading of the screen
+      $scope.clickedStatus = '';
       $scope.heading = headingListDict[$stateParams.type]; 
       //preparing for web service call
     	var dataDict = {};
@@ -107,6 +108,7 @@ $scope.escapeNull = function(value, replaceWith){
         typeof $stateParams.type !== 'undefined' && 
         $stateParams.type != null &&
         $stateParams.type.trim() != '') {
+        	$scope.clickedStatus = $stateParams.type;
           //LATE_CHECKOUT is a special case, parameter is diff. here (is_late_checkout_only)
           if($stateParams.type == "LATE_CHECKOUT"){
             dataDict.is_late_checkout_only = true;
@@ -121,7 +123,8 @@ $scope.escapeNull = function(value, replaceWith){
       else{   
         $scope.results = [];
       }
-  }
+      
+  };
 
   //setting up initial things
   performInitialActions();
@@ -136,7 +139,11 @@ $scope.escapeNull = function(value, replaceWith){
 
     displayFilteredResults();  
   };
-
+  
+  $scope.clearResults = function(){
+  	performInitialActions();
+  	$scope.textInQueryBox = "";
+  };
 
 
   /**
@@ -192,7 +199,7 @@ $scope.escapeNull = function(value, replaceWith){
         $scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofInitialFetch); 
       }
       // we have changed data, so we are refreshing the scrollerbar
-      refreshScroller()                  
+      refreshScroller();                  
     }
   };
 
