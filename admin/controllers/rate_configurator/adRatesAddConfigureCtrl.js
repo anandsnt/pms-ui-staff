@@ -116,6 +116,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
                 $scope.$emit('hideLoader');
                 var sets = $scope.data.sets;
                 $scope.data.sets.splice(index, 1);
+                if (sets.length == 0){
+                    $scope.$emit('deletedAllDateRangeSets', $scope.dateRange.id);
+                }
+                
             };
             $scope.invokeApi(ADRatesConfigureSrv.deleteSet, id, successDeleteCallBack);
         };
