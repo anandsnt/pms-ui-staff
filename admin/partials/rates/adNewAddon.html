@@ -35,7 +35,7 @@
 				<div class="entry full-width radio-check">
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.bestseller }"></span>
-						<label>Is it a best seller?</label>
+						<label>Bestseller</label>
 						<input type="checkbox" ng-model="singleAddon.bestseller">
 					</label>
 				</div>
@@ -43,7 +43,7 @@
 				<div class="entry full-width radio-check">
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
-						<label>Is it rate code only?</label>
+						<label>Rate only</label>
 						<input type="checkbox" ng-model="singleAddon.rate_code_only">
 					</label>
 				</div>
@@ -51,19 +51,21 @@
 
 
 			<fieldset class="holder right float">
-				<div class="entry">
+				<div class="entry rel">
 					<label>
 						From Date
 						<strong>*</strong>
 					</label>
 					<input type="text" ng-model="singleAddon.begin_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="popupCalendar('From')">
+					<span class="icons icon-calendar" ng-click="popupCalendar('From')"></span>
 				</div>
-				<div class="entry">
+				<div class="entry rel">
 					<label>
 						To Date
 						<strong>*</strong>
 					</label>
 					<input type="text" ng-model="singleAddon.end_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="popupCalendar('To')">
+					<span class="icons icon-calendar" ng-click="popupCalendar('To')"></span>
 				</div>
 
 				<div class="entry">
@@ -90,7 +92,7 @@
 							<select name="charge-code-id"
 								id="charge-code-id"
 								ng-model="singleAddon.charge_code_id"
-								ng-options="code.id as code.name for code in chargeCodes"></select>
+								ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodes"></select>
 						</div>
 					</div>
 				</div>							
@@ -114,7 +116,7 @@
 							<select name="amount-type-id"
 								id="amount-type-id"
 								ng-model="singleAddon.amount_type_id"
-								ng-options="type.id as type.value for type in amountTypes"></select>
+								ng-options="type.id as type.description for type in amountTypes"></select>
 						</div>
 					</div>
 				</div>
@@ -128,7 +130,7 @@
 						<select name="post-type-id"
 							id="post-type-id"
 							ng-model="singleAddon.post_type_id"
-							ng-options="type.id as type.value for type in postTypes"></select>
+							ng-options="type.id as type.description for type in postTypes"></select>
 					</div>
 				</div>
 			</fieldset>

@@ -1,9 +1,15 @@
 sntRover.controller('staycardController',['$scope', function($scope){
-	// $scope.stayCardLoading = false;
-	/*
-	 * Show page only after completing API call
-	 */
-	// $scope.$on('showStaycard',function(){
-		// $scope.stayCardLoading = true;
-	// });
+
+
+		 $scope.guestCardData ={};
+		 $scope.$on('guestCardUpdateData',function(event, data){
+		 	$scope.guestCardData.contactInfo = data.data;
+		 	$scope.countriesList = data.countries;
+		 	$scope.guestCardData.userId=data.userId;
+		
+		 });
+
+	 //setting the heading of the screen to "Search"
+    $scope.heading = "Stay Card";
+
 }]);

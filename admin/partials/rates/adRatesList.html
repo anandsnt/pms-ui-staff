@@ -42,7 +42,9 @@
 			<tbody>
 				<tr ng-repeat="rate in $data" ng-class = "{'inactive': !rate.status}"> 
 					<td data-title="'Name'" sortable="'rate'" header-class="width-25">
-						<strong>{{rate.name}}</strong>
+						<a ui-sref='admin.rateDetails({ rateId : rate.id })' class="edit-data">
+							<strong> {{rate.name}}</strong>
+						</a>
 					</td>
 
 					<td data-title="'Based on'"  sortable="'based_on'" header-class="width-25">

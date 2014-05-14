@@ -1,0 +1,76 @@
+<section id="replacing-div-first"
+			class="content current">
+
+	<div data-view="GuestCardLikesView">
+		<header class="content-title float">
+			<h2>
+				Rules & Restrictions
+			</h2>
+		</header>
+
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+		<div id="new-form-holder"
+				ng-show="isAddmode"
+				ng-include="getTemplateUrl()"></div>
+
+		<table id="rules">
+			<tbody>
+				<tr><td><br><strong>System Defined Restrictions</strong></td></tr>
+
+				<tr ng-repeat="item in ruleList | filter: { editable: false }">
+					<td>
+						<table class="grid">
+							<td>
+								<strong> {{ item.description }} </strong>
+								<em>(system defined)</em>
+							</td>
+							<td class="activate text-left">
+								<div class="entry">
+									<label></label>
+									<div class="switch-button single"
+											ng-class="{ on: item.activated }">
+										<input type = "checkbox"
+												id = "upsell-rooms"
+												name = "upsell-rooms"
+												ng-click = "switchClicked($index)">
+										<span class="switch-icon"></span>
+									</div>
+								</div>
+							</td>
+						</table>
+					</td>
+				</tr>
+
+				<tr><td><br><br><strong>Editable Restrictions</strong></td></tr>
+
+				<tr ng-repeat="item in ruleList | filter: { editable: true }" ng-hide="{{ item.description === 'Levels' }}">
+					<td>
+						<table class="grid">
+							<td>
+								<a class="inline" ng-click="fetchRuleList(item)"> {{ item.description }} </a>
+								<em class="action add" ng-click="openAddNewRule()">Add new rule</em>
+							</td>
+							<td class="activate text-left">
+								<div class="entry">
+									<label></label>
+									<div class="switch-button single"
+											ng-class="{ on: item.activated }">
+										<input type = "checkbox"
+												id = "upsell-rooms"
+												name = "upsell-rooms"
+												ng-click = "switchClicked($index)">
+										<span class="switch-icon"></span>
+									</div>
+								</div>
+							</td>
+						</table>
+						
+						<div ng-include="getTemplateUrl()"></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+</section>

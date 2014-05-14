@@ -1,7 +1,5 @@
 login.service('loginSrv',['$http', '$q', function($http, $q){
 	this.login = function(data, successCallback, failureCallBack){
-		console.log(data);
-		
 		var deferred = $q.defer();
 		
 		//Sample params {params:{fname: "fname", lname: "lname"}}
