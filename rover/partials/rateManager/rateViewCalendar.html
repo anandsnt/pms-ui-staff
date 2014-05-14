@@ -27,7 +27,7 @@
 			</td>
 			<td class="row-arrows"><img src="/assets/arrow-down.png" ng-click="goToRoomTypeCalendarView(rate.id)"></td>
 
-			<td ng-repeat="date in calendarData.dates" class="cal-cell" >
+			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-click="showUpdatePriceAndRestrictionsDialog()" >
 				<span ng-repeat="restriction in rate[date]" class="{{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
 					{{restriction.days}}
 				</span>
