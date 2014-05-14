@@ -2,6 +2,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','dateFilter', function($scope,d
 	
 	BaseCtrl.call(this, $scope);
 	$scope.displayMode = "CALENDAR";
+    $scope.filterConfigured = false;
 	
 	$scope.currentFilterData =	{
            begin_date : dateFilter(new Date(), 'yyyy-MM-dd'),
@@ -23,5 +24,10 @@ sntRover.controller('RMDashboradCtrl', ['$scope','dateFilter', function($scope,d
 	$scope.showGraphView = function(){
 		$scope.displayMode = "GRAPH";
 	};
+
+    $scope.showRatesBtnClicked = function(){
+        $scope.filterConfigured = true;
+        $scope.$broadcast("showRatesClicked");
+    };
   
 }]);
