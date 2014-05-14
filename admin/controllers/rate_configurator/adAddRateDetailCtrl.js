@@ -62,6 +62,36 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
             return true;
         };
 
+
+
+        // var manipulateData = function(){
+
+        // if($scope.rateData.addOns.length>0){
+        //     var tempData = $scope.rateData.addOns;
+        //     $scope.rateData.addOns = [];
+
+        //      angular.forEach($scope.rateTypesDetails.addOns, function(addOns){
+
+        //         angular.forEach(tempData, function(addOnsSelected){
+
+        //             if(addOns.id === addOnsSelected.addon_id){
+        //                 addOns.isSelected = true;
+        //                 addOns.is_inclusive_in_rate = addOnsSelected.is_inclusive_in_rate ? 'true':'false';
+        //                 $scope.rateData.addOns.push(addOns);
+        //             };
+        //         });
+
+        //      });
+        //  }
+        //  else{
+        //      angular.forEach($scope.rateTypesDetails.addOns, function(addOns){
+        //         addOns.isSelected = false;
+        //         addOns.is_inclusive_in_rate = "false";
+        //      });
+        //     $scope.rateData.addOns = $scope.rateTypesDetails.addOns;
+        //  }
+        // };
+
         /*
          * Fetch Details
          */
@@ -70,9 +100,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
 
             var fetchRateTypesSuccessCallback = function (data) {
                 $scope.rateTypesDetails = data;
-
-
-                console.log(JSON.stringify($scope.rateTypesDetails.addOns));
+              //  manipulateData();
                 $scope.$emit('hideLoader');
             };
             var fetchRateTypesFailureCallback = function (data) {
@@ -94,6 +122,19 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 $scope.isPromotional = true;
             }
         };
+        var setUpAddOnData = function(){
+            var addOnsArray = [];
+            angular.forEach($scope.rateData.addOns, function(addOns){
+                if(addOns.isSelected)
+                { 
+                    var data ={};
+                    data.is_inclusive_in_rate = addOns.is_inclusive_in_rate;
+                    data.addon_id =  addOns.id;
+                    addOnsArray.push(data);
+                }
+             });
+            return addOnsArray;
+        };
 
         /*
          * Save Rate Details
@@ -103,6 +144,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
 
             var amount = parseInt($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
 
+            var addOns = setUpAddOnData();
             var data = {
                 'name': $scope.rateData.name,
                 'description': $scope.rateData.description,
@@ -110,7 +152,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 'based_on_rate_id': $scope.rateData.based_on.id,
                 'based_on_type': $scope.rateData.based_on.type,
                 'based_on_value': amount,
-                'promotion_code': $scope.rateData.promotion_code
+                'promotion_code': $scope.rateData.promotion_code,
+                'addons': addOns
             };
 
             // Save Rate Success Callback

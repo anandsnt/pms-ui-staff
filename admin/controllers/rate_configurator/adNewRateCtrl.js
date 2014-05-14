@@ -24,7 +24,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "status": true,
                 "room_type_ids": [],
                 "promotion_code": "",
-                "date_ranges": []
+                "date_ranges": [],
+                "addOns":[],
+                "allAddOns":[]
             }
 
             $scope.basedonRateData = {};
@@ -37,6 +39,18 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     rateId: $stateParams.rateId
                 }, rateDetailsFetchSuccess);
             }
+            else{
+                $scope.invokeApi(ADRatesSrv.fetchAddons,{},fetchAddonsSuccessCallback);
+            }
+        };
+
+        var fetchAddonsSuccessCallback  = function(data){
+
+         angular.forEach(data.results, function(addOns){
+                addOns.isSelected = false;
+                addOns.is_inclusive_in_rate = "false";
+             });
+            $scope.rateData.addOns =data.results;
         };
 
         /*
@@ -92,6 +106,23 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.date_ranges= data.date_ranges;
             $scope.rateData.rate_type.id = (data.rate_type != null) ? data.rate_type.id : '';
             $scope.rateData.rate_type.name = (data.rate_type != null) ? data.rate_type.name : '';
+            $scope.rateData.addOns = data.addons;
+            $scope.rateData.allAddOns = data.allAddOns;
+
+            if($scope.rateData.addOns.length>0){
+                var tempData = $scope.rateData.addOns;
+                $scope.rateData.addOns = [];
+                angular.forEach($scope.rateData.allAddOns, function(addOns){
+                    angular.forEach(tempData, function(addOnsSelected){
+                        if(addOns.id === addOnsSelected.id){
+                            addOns.isSelected = true;
+                            addOns.is_inclusive_in_rate = addOnsSelected.is_inclusive_in_rate ? 'true':'false';
+                            $scope.rateData.addOns.push(addOns);
+                        };
+                    });
+                });
+            }
+           
 
             if (data.based_on) {
                 $scope.rateData.based_on.id = data.based_on.id;
@@ -109,13 +140,18 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             
         }
 
+
+
+    
         // Fetch details success callback for rate edit
 
         var rateDetailsFetchSuccess = function (data) {
 
+            alert("3")
+            alert(data)
+
             $scope.hotel_business_date = data.business_date;
-            // set rate data for edit
-            
+            // set rate data for edit   
             
             $scope.manipulateData(data);
             $scope.rateData.id = $stateParams.rateId;

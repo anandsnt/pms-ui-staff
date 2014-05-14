@@ -14,25 +14,25 @@
 		<th>PRICE</th>
 		<th>INCLUSIVE/EXCLUSIVE</th>
 		<th>USE</th>
-		<tr ng-repeat="addon in rateTypesDetails.addOns">
+		<tr ng-repeat="addon in rateData.addOns">
 			<td>{{addon.name}}</td> 
 			<td>{{rateTypesDetails.hotel_settings.currency.symbol}} {{addon.price}} {{addon.post_type}}</td> 
 			<td>
 				<div id="options" class="entry full-width" ng-hide="hideAlertOption">
 					<div>
 						<div class="float_left">
-					<label class="radio" ng-class="{checked:addon.type == 'inclusive'}">
-						<span class="icon-form icon-radio " ng-class="{checked:addon.type == 'inclusive'}"></span>
-						<input type="radio" ng-model="addon.type" value="inclusive" class="change-data">
+					<label class="radio" ng-class="{checked:addon.is_inclusive_in_rate == 'true'}">
+						<span class="icon-form icon-radio " ng-class="{checked:addon.is_inclusive_in_rate == 'true'}"></span>
+						<input type="radio" ng-model="addon.is_inclusive_in_rate" value="true" class="change-data">
 						INCLUSIVE
 						
 					</label>
 				</div>
 					<div class="float_right">
 
-					<label class="radio" ng-class="{checked:addon.type == 'exclusive'}">
-						<span class="icon-form icon-radio " ng-class="{checked:addon.type == 'exclusive'}"></span>
-						<input type="radio" ng-model="addon.type" value="exclusive" class="change-data">
+					<label class="radio" ng-class="{checked:addon.is_inclusive_in_rate == 'false'}">
+						<span class="icon-form icon-radio " ng-class="{checked:addon.is_inclusive_in_rate == 'false'}"></span>
+						<input type="radio" ng-model="addon.is_inclusive_in_rate" value="false" class="change-data">
 						EXCLUSIVE
 						
 					</label>
@@ -41,7 +41,7 @@
 
 				</div>
 			</td> 
-			<td><ad-toggle-button is-checked="addon.isActive" ></ad-toggle-button></td> 
+			<td><ad-toggle-button is-checked="addon.isSelected" ></ad-toggle-button></td> 
 		</tr>
 		
 	</table>
