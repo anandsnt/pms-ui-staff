@@ -16,6 +16,8 @@ sntRover.controller('RMDashboradCtrl', ['$scope','dateFilter', function($scope,d
            rates_selected_list : [],
            name_on_cards : []
    	};
+
+    $scope.rateSelected = {};
    	
 	$scope.showCalendarView = function(){
 		$scope.displayMode = "CALENDAR";

@@ -77,9 +77,10 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 	/**
 	* Click handler for up-arrows in rate_view_calendar
 	*/
-	$scope.goToRoomTypeCalendarView = function(rateId){
+	$scope.goToRoomTypeCalendarView = function(rate){
+		$scope.rateSelected = rate;
 		$scope.calendarMode = "ROOM_TYPE_VIEW";
-		loadTable(rateId);
+		loadTable(rate.id);
 	};
 	/**
 	* Handle openall/closeall button clicks
