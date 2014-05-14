@@ -9,25 +9,25 @@
             </div>             
             <div class="entry margin">
                 <label for="company-address-1">Address</label>
-                <input name="company-address-1" id="company-address-1" value="400 U.S. 169" type="text" />
+                <input name="company-address-1" id="company-address-1" value="{{contactInformation.address_line1}}" ng-model="contactInformation.address_line1" type="text" />
             </div>
             <div class="entry no-label">
-                <input name="company-address-2" id="company-address-2" value="" type="text" />
+                <input name="company-address-2" id="company-address-2" value="" type="text"  value="{{contactInformation.address_line2}}" ng-model="contactInformation.address_line2" />
             </div>
             <div class="entry no-label full-width">
-                <input name="company-address-3" id="company-address-3" value="" type="text" />
+                <input name="company-address-3" id="company-address-3" value="" type="text"  value="{{contactInformation.address_line3}}" ng-model="contactInformation.address_line3"/>
             </div>
             <div class="entry margin">
                 <label for="company-city">City</label>
-                <input name="company-city" id="company-city" value="Minneapolis" type="text" />
+                <input name="company-city" id="company-city"  value="{{contactInformation.city}}" ng-model="contactInformation.city" type="text" />
             </div>
             <div class="entry">
                 <label for="company-postalcode">Postal code</label>
-                <input name="company-postalcode" id="company-postalcode" value="55426" type="text" />
+                <input name="company-postalcode" id="company-postalcode" value="{{contactInformation.postal_code}}" ng-model="contactInformation.postal_code" type="text" />
             </div>
             <div class="entry margin">
                 <label for="company-state">State</label>
-                <input name="company-state" id="company-state" value="Minnesotta" type="text" />
+                <input name="company-state" id="company-state" value="{{contactInformation.state}}" ng-model="contactInformation.state" type="text" />
             </div>
             <div class="entry">
                 <label for="company-country">Country</label>
@@ -281,11 +281,11 @@
             </div>
             <div class="entry">
                 <label for="company-phone">Phone</label>
-                <input name="company-phone" id="company-phone" value="+1.800.9505872" type="tel" />
+                <input name="company-phone" id="company-phone" value="{{contactInformation.phone}}" ng-model="contactInformation.phone" type="tel" />
             </div>
             <div class="entry full-width">
                 <label for="company-email">E-mail address</label>
-                <input name="company-email" id="company-email" value="allianz_contact@allianzlife.com" type="email" />
+                <input name="company-email" id="company-email" value="{{contactInformation.email}}" ng-model="contactInformation.email" type="email" />
             </div>
             <div class="entry full-width">
                 <label for="company-logo">Company logo</label>
@@ -301,36 +301,36 @@
             <strong class="h3">Extended Company Details</strong>
             <div class="entry margin">
                 <label for="company-corporate-id">Corporate ID</label>
-                <input name="company-corporate-id" id="company-corporate-id" value="" type="text" />
+                <input name="company-corporate-id" id="company-corporate-id" value="{{contactInformation.corporate_id}}" ng-model="contactInformation.corporate_id" type="text" />
             </div>
             <div class="entry">
                 <label for="company-arn">Accounts Receivable Number</label>
-                <input name="company-arn" id="company-arn" value="" type="text" />
+                <input name="company-arn" id="company-arn"  value="{{contactInformation.accounts_receivable_number}}" ng-model="contactInformation.accounts_receivable_number" type="text" />
             </div>
             <div class="entry">
                 <label for="company-billing">Billing Information</label>
-                <input name="company-billing" id="company-billing" value="" type="text" />
+                <input name="company-billing" id="company-billing" value="{{contactInformation.billing_information}}" ng-model="contactInformation.billing_information" type="text" />
             </div>
             <strong class="h3 margin">Primary Contact Details</strong>
             <div class="entry margin">
                 <label for="company-contact-firstname">First name</label>
-                <input name="company-contact-firstname" id="company-contact-firstname" value="Michael" type="text" />
+                <input name="company-contact-firstname" id="company-contact-firstname" value="{{contactInformation.contact_first_name}}" ng-model="contactInformation.contact_first_name" type="text" />
             </div>
             <div class="entry">
                 <label for="company-contact-lastname">Last Name</label>
-                <input name="company-contact-lastname" id="company-contact-lastname" value="Donaldson" type="text" />
+                <input name="company-contact-lastname" id="company-contact-lastname" value="{{contactInformation.contact_last_name}}" ng-model="contactInformation.contact_last_name" type="text" />
             </div>
             <div class="entry margin">
                 <label for="company-contact-job-title">Job title</label>
-                <input name="company-contact-job-title" id="job-title" value="Front Desk Manager" type="text" />
+                <input name="company-contact-job-title" id="job-title" value="{{contactInformation.contact_job_title}}" ng-model="contactInformation.contact_job_title" type="text" />
             </div>
             <div class="entry">
                 <label for="company-contact-phone">Phone</label>
-                <input name="company-contact-phone" id="company-contact-phone" value="45 5542615815" type="tel" />
+                <input name="company-contact-phone" id="company-contact-phone"  value="{{contactInformation.contact_phone}}" ng-model="contactInformation.contact_phone" type="tel" />
             </div>
             <div class="entry full-width">
                 <label for="company-contact-email">E-mail address</label>
-                <input name="company-contact-email" id="company-contact-email" value="michael.donaldson@allianzusa.com" type="email" />
+                <input name="company-contact-email" id="company-contact-email" value="{{contactInformation.contact_email}}" ng-model="contactInformation.contact_email" type="email" />
             </div>
         </div>
     </div>

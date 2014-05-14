@@ -21,7 +21,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	*/
 	var successCallbackOfInitialFetch = function(data){
 		$scope.$emit("hideLoader");
-		$scope.contactInformation = data;
+		$scope.contactInformation = data.account_info;
 	}
 
 	//getting the contact information
