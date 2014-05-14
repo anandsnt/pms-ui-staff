@@ -6,4 +6,12 @@ sntRover.controller('reservationListController',['$scope', function($scope){
 	        hideScrollbar: false
 	    },
 	};
+	
+	$scope.$on('RESERVATIONLISTUPDATED', function(event) {
+		setTimeout(function(){
+			$scope.$parent.myScroll['resultListing'].refresh();
+			}, 
+		500);
+		
+	});
 }]);
