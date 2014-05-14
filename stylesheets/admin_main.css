@@ -9,9 +9,9 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
 
- *= require '../admin/lib/css/admin_ng.css.less'
- *= require '../admin/lib/css/ng-table.css'
- *= require '../admin/lib/css/ngDialog.css'
- *= require '../admin/lib/css/ngDialog-theme-default.css'
- *= require '../admin/lib/css/ngDialog-theme-plain.css'
+ *= require '../admin/css/admin_ng.css.less'
+ *= require '../shared/lib/css/ng-table.css'
+ *= require '../shared/lib/css/ngDialog.css'
+ *= require '../shared/lib/css/ngDialog-theme-default.css'
+ *= require '../shared/lib/css/ngDialog-theme-plain.css'
  */

@@ -1431,23 +1431,19 @@
 
 		/* Reservation header ***/
 		.reservation-header {
-
+<<<<<<< HEAD
 			.float;
-			/*.data { 
-				position: relative;
-				text-align: left;
-				.calc-width(100, 240); /* %, px */
-				/*.pull-right;*/
-
-
-			.data {
+=======
+			.data { 
 				position: relative;
 				text-align: left;
 				.calc-width(100, 240); /* %, px */
 				.pull-right;
-				
-				/*.pull-left;
-				.calc-width(100, 240); */
+>>>>>>> 52f9bc79115cfb998c6411c4d966262b642d0206
+
+			.data {
+				.pull-left;
+				.calc-width(100, 240);
 
 				.guest-status { text-indent: 9999px; }
 			}
