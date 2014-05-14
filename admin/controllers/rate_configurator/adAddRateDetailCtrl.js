@@ -64,34 +64,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
 
 
 
-        // var manipulateData = function(){
-
-        // if($scope.rateData.addOns.length>0){
-        //     var tempData = $scope.rateData.addOns;
-        //     $scope.rateData.addOns = [];
-
-        //      angular.forEach($scope.rateTypesDetails.addOns, function(addOns){
-
-        //         angular.forEach(tempData, function(addOnsSelected){
-
-        //             if(addOns.id === addOnsSelected.addon_id){
-        //                 addOns.isSelected = true;
-        //                 addOns.is_inclusive_in_rate = addOnsSelected.is_inclusive_in_rate ? 'true':'false';
-        //                 $scope.rateData.addOns.push(addOns);
-        //             };
-        //         });
-
-        //      });
-        //  }
-        //  else{
-        //      angular.forEach($scope.rateTypesDetails.addOns, function(addOns){
-        //         addOns.isSelected = false;
-        //         addOns.is_inclusive_in_rate = "false";
-        //      });
-        //     $scope.rateData.addOns = $scope.rateTypesDetails.addOns;
-        //  }
-        // };
-
         /*
          * Fetch Details
          */
@@ -100,7 +72,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
 
             var fetchRateTypesSuccessCallback = function (data) {
                 $scope.rateTypesDetails = data;
-              //  manipulateData();
                 $scope.$emit('hideLoader');
             };
             var fetchRateTypesFailureCallback = function (data) {
@@ -153,7 +124,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 'based_on_type': $scope.rateData.based_on.type,
                 'based_on_value': amount,
                 'promotion_code': $scope.rateData.promotion_code,
-                'addons': addOns
+                'addons': addOns,
+                'charge_code_id': $scope.rateData.charge_code_id,
+                'currency_id': $scope.rateData.currency_id
             };
 
             // Save Rate Success Callback

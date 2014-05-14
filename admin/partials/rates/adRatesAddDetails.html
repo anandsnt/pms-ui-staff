@@ -22,21 +22,18 @@
                     </select>
                 </div>
             </div>
-
-           
             <div class="entry">
                 <label>Charge code <strong>*</strong> </label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
-                        <option value="" disabled>Select Rate Type</option>
+                    <select class="placeholder" ng-model="rateData.charge_code_id" ng-options="charge_code.id as charge_code.description for charge_code in rateTypesDetails.charge_codes">
                     </select>
                 </div>
             </div>
             <div class="entry">
                 <label>currency <strong>*</strong> </label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
-                        <option value="" disabled>Select Rate Type</option>
+                    <select class="placeholder" ng-model="rateData.currency_code_id">
+                        <option value="">{{rateTypesDetails.hotel_settings.currency.symbol}}</option>
                     </select>
                 </div>
             </div>

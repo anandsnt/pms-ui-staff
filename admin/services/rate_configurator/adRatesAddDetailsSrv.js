@@ -11,6 +11,20 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
         this.fetchRateTypes = function () {
 
              var deferred = $q.defer();
+              /*
+             * Service function to fetch HotelSettings
+             * @return {object} HotelSettings
+             */
+            this.fetchChargeCodes = function () {
+                var url = "/api/charge_codes";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.charge_codes = data.results;
+                    deferred.resolve(that.addRatesDetailsData);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+            };
+
          
             /*
              * Service function to fetch HotelSettings
@@ -20,7 +34,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                 var url = "/api/hotel_settings";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.hotel_settings = data;
-                    deferred.resolve(that.addRatesDetailsData);
+                    this.fetchChargeCodes();
                 }, function (data) {
                     deferred.reject(data);
                 });
