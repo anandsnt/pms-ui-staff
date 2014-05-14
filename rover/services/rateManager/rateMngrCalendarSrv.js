@@ -32,8 +32,8 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			deferred.reject(data);
 		}
 		var getDailyRates = function(d){
-			//var url = "/api/daily_rates";
-			var url =  '/sample_json/rate_manager/daily_rates.json';	
+			var url = "/api/daily_rates";
+			//var url =  '/sample_json/rate_manager/daily_rates.json';	
 			BaseWebSrvV2.getJSON(url, params).then(function(data) {
 				that.dailyRates = data; 
 				var calendarData = that.calculateRateViewCalData();
@@ -48,15 +48,19 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 	}
 
-	this.fetchRoomTypeCalenarData = function(){
+	this.fetchRoomTypeCalenarData = function(params){
 		var deferred = $q.defer();
 
 		var rejectDeferred = function(data){
 			deferred.reject(data);
 		}
 		var getRoomTypeRates = function(d){
-			var url =  '/sample_json/rate_manager/rate_details.json';	
-			BaseWebSrvV2.getJSON(url).then(function(data) {
+			var url = "/api/daily_rates/" + params.id
+			delete params['id'];
+			console.log(JSON.stringify(params));
+
+			//var url =  '/sample_json/rate_manager/rate_details.json';	
+			BaseWebSrvV2.getJSON(url, params).then(function(data) {
 				that.roomTypeRates = data; 
 				var calendarData = that.calculateRoomTypeViewCalData();
 				deferred.resolve(calendarData);

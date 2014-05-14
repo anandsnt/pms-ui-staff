@@ -27,12 +27,12 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		};
 
 		if($scope.calendarMode == "RATE_VIEW"){
-			var getData = calculateRateViewCalGetParams();
-			$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, getData, calenderDataFetchSuccess);
+			var getParams = calculateRateViewCalGetParams();
+			$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, getParams, calenderDataFetchSuccess);
 		
 		} else {
-			var getData = calculateRoomTypeViewCalGetParams(rateId);
-			$scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalenarData, {}, calenderDataFetchSuccess);
+			var getParams = calculateRoomTypeViewCalGetParams(rateId);
+			$scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalenarData, getParams, calenderDataFetchSuccess);
 		}
 	};
 
