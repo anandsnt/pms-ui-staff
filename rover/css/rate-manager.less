@@ -63,17 +63,36 @@
         table {
             width:100%;
         }
+
         th, td {
-            border: 1px solid black;
-            height:50px;
+            margin: 0px 10px 0px 10px;
+            vertical-allign: middle;
         }
-        .row-title {
-            text-align: right;
+
+        .cell-content{
+                border : 10px solid #e7e7e7;
+                height : 80px;
+                line-height : 80px; /* Trick for vertical alligh*/
+                font-size : 20px;
         }
-        .row-arrows {
-            float: right;
-            padding-right: 5px;
+        th .cell-content{
+                background-color : #393c41;
         }
+        td .cell-content{
+                background-color : #fcfcfc;
+        }
+
+    }
+}
+
+.restriction-legends{
+    background-color : #fcfcfc;
+    font-size : 16px;
+    text-transform:uppercase;
+    span{
+        padding-right: 20px;
+        padding-bottom : 10px;
+        padding-top : 10px;
     }
 }
 

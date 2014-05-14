@@ -1,85 +1,61 @@
-<table class="grid">
+<table class="rate-calendar">
 	<thead>
 	 	<tr>
-	 		<th>
-	 			<button> Open All</button>	
-	 			<button> Close All</button>	
+	 		<th width="250">
+	 			<button class="button green"> Open All</button>	
+	 			<button class="button red"> Close All</button>	
 	 		</th>
-	 		<th ng-repeat="date in calendarData.dates">{{date}}</th>
+	 		<th width="250" ng-repeat="date in calendarData.dates"><div class="cell-content">{{date| date:'EEEE MMMM yy'}}</div></th>
 	 	</tr>
 	 </thead>
+	
 	<tbody>
-		<!-- First row All Rooms Restrictions -->
-		<tr><td> All Rooms</td>
-
-			<td ng-repeat="date in calendarData.dates" class="cal-cell">
-				<span ng-repeat="restriction in calendarData.rate_restrictions[date]" class="{{calendarData.restriction_types[
+		<tr>
+			<td> All Rooms</td>
+			<td ng-repeat="date in calendarData.dates" class="cal-cell"> 
+                <div class="cell-content">
+					<span ng-repeat="restriction in calendarData.rate_restrictions[date]" class="{{calendarData.restriction_types[
 				restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
 					{{restriction.days}}
-				</span>
+					</span>
+                </div>
 			</td>
 		</tr>
-		<!--end  -->
-		<!-- Room type rates for each day -->
-		<tr ng-repeat="rate in calendarData.data">
-			<!-- Room Type listing- expanded and collapsed views -->
-			<td ng-hide="currentExpandedRow==$index">{{rate.room_type.name}}
-				<img src="/assets/arrow-up.png" ng-click="expandRow($index)">
-			</td>
-			<td ng-show="currentExpandedRow==$index">{{rate.room_type.name}} Expanded
-				<img src="/assets/arrow-up.png" ng-click="expandRow($index)">
-			</td>
-			<!--end -->
-			<!--Rates and restrictions for each day -->
-			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-hide="currentExpandedRow==$parent.$index">
-				<span ng-repeat="restriction in rate[date].restrictions" class="{{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
-					{{restriction.days}}
-				</span>
-				<span>{{rate[date].single}}</span>
 
+		<tr ng-repeat="rate in calendarData.data">
+			<td ng-hide="currentExpandedRow==$index">    
+				<span>{{rate.room_type.name}}<span>
+			    <span style="float:right">
+			    	<img src="/assets/arrow-down.png" ng-click="expandRow($index)">
+			    </span>
+            </td>
+			<td ng-show="currentExpandedRow==$index">    
+				<span>{{rate.room_type.name}} Expanded<span>
+			    <span style="float:right">
+			    	<img src="/assets/arrow-down.png" ng-click="expandRow($index)">
+			    </span>
+            </td>
+			
+			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-hide="currentExpandedRow==$parent.$index">
+				<div class="cell-content">
+					<span ng-repeat="restriction in rate[date].restrictions" class="{{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
+						{{restriction.days}}
+					</span>
+					<span>{{rate[date].single}}</span>
+				</div>
 			</td>
 			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-show="currentExpandedRow==$parent.$index">
-				<span ng-repeat="restriction in rate[date].restrictions" class="{{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
-					{{restriction.days}}
-				</span>
-				<div>Single {{rate[date].single}}<div>
-				<div>Double {{rate[date].double}}<div>
-				<div>Extra Adult {{rate[date].extra_adult}}<div>
-				<div>Child {{rate[date].child}}<div>
+				<div class="cell-content">
+					<span ng-repeat="restriction in rate[date].restrictions" class="{{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
+						{{restriction.days}}
+					</span>
+					<div>Single {{rate[date].single}}<div>
+					<div>Double {{rate[date].double}}<div>
+					<div>Extra Adult {{rate[date].extra_adult}}<div>
+					<div>Child {{rate[date].child}}<div>
+				</div>
 			</td>
-			<!--end-->
 		</tr>
-		<!--end -->
-
-
-
-
-
-
-
-
-
-
-
-				<!-- <tr ng-repeat="row in calendarData.data">
-					<td ng-hide="currentExpandedRow==$index">Room Type
-						<img src="/assets/arrow-up.png" ng-click="expandRow($index)" >
-					</td>
-					<td ng-show="currentExpandedRow==$index"> Room Type Expanded
-						<img src="/assets/arrow-up.png" ng-click="expandRow($index)" >
-					</td> 
-					<td ng-hide="currentExpandedRow==$parent.$index" ng-repeat="item in row.details" class="cal-cell" >
-						{{item.rates.total}}
-						<span class=" guest-status check-out">
-													</span>
-						TODO: Item.restriction
-					</td>
-					<td ng-repeat="item in row.details" class="cal-cell" ng-show="currentExpandedRow==$parent.$index">
-						expanded value
-					</td>
-				</tr> -->
-
-		
 		
 	</tbody>
 </table> 

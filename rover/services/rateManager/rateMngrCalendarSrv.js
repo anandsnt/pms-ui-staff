@@ -57,7 +57,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		var getRoomTypeRates = function(d){
 			var url = "/api/daily_rates/" + params.id
 			delete params['id'];
-			console.log(JSON.stringify(params));
 
 			//var url =  '/sample_json/rate_manager/rate_details.json';	
 			BaseWebSrvV2.getJSON(url, params).then(function(data) {
