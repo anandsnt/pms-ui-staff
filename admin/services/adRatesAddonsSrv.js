@@ -97,9 +97,10 @@ admin.service('ADRatesAddonsSrv', [
 		*/
 		this.fetchChargeCodes = function() {
 			var deferred = $q.defer(),
-				url      = '/api/charge_codes';
+				url      = '/api/charge_codes',
+				params   = { per_page: 1000, page: 1 };
 
-			ADBaseWebSrvV2.getJSON(url)
+			ADBaseWebSrvV2.getJSON(url, params)
 				.then(function(data) {
 					deferred.resolve(data);
 				}, function(errorMessage) {
@@ -139,6 +140,26 @@ admin.service('ADRatesAddonsSrv', [
 		this.fetchReferenceValue = function(params) {
 			var deferred = $q.defer(),
 				url      = '/api/reference_values';
+
+			ADBaseWebSrvV2.getJSON(url, params)
+				.then(function(data) {
+					deferred.resolve(data);
+				}, function(errorMessage) {
+					deferred.reject(errorMessage);
+				});
+
+			return deferred.promise;
+		};
+
+		/*
+		* Get the current business date
+		*
+		* @method GET
+		* @return {object} defer promise
+		*/
+		this.fetchBusinessDate = function(params) {
+			var deferred = $q.defer(),
+				url      = '/api/business_dates/active';
 
 			ADBaseWebSrvV2.getJSON(url, params)
 				.then(function(data) {

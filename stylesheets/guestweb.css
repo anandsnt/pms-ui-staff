@@ -10,5 +10,5 @@
  *
  *= require '../guestweb/css/less/snt.less'
  * 
- *= require '../guestweb/static/lib/css/bootstrap.min.css'
+ *= require '../shared/lib/css/bootstrap.min.css'
  */

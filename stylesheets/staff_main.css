@@ -9,7 +9,7 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require '../rover/css/styles_ng_rover.css.less'
-  *= require '../rover/css/ngDialog.css'
- *= require '../rover/css/ngDialog-theme-default.css'
- *= require '../rover/css/ngDialog-theme-plain.css'
+ *= require '../shared/lib/css/ngDialog.css'
+ *= require '../shared/lib/css/ngDialog-theme-default.css'
+ *= require '../shared/lib/css/ngDialog-theme-plain.css'
  */

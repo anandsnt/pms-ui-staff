@@ -19,6 +19,26 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 			$scope.selectedLoyalty.membership_card_number = $scope.selectedLoyalty.membership_card_number.substr($scope.selectedLoyalty.membership_card_number.length - 4);
 		}
 	});
+	
+	$scope.$parent.myScrollOptions = {		
+	    'resultDetails': {
+	    	scrollbars: true,
+	        snap: false,
+	        hideScrollbar: false
+	    },
+	};
+
+	
+	
+	$scope.$on('$viewContentLoaded', function() {
+		setTimeout(function(){
+			$scope.$parent.myScroll['resultDetails'].refresh();
+			}, 
+		1500);
+		
+     });
+		
+	
 	$scope.reservationDetailsFetchSuccessCallback = function(data){
 		
 		$scope.$emit('hideLoader');

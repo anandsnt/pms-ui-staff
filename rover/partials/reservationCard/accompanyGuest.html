@@ -1,0 +1,16 @@
+<span>
+	<div class="block-item accompany-guest" action="">
+		<div class="group">
+			<span class="label">GROUP  </span>
+			<span class="name">{{reservationData.reservation_card.group_name}}</span>
+		</div>
+		<br/>
+		<div class="guest">
+			<span class="label">ACCOMPANY GUEST </span>
+			<span class="name" ng-repeat="guest in reservationData.reservation_card.accompaying_guests">
+				{{guest.guest_name}}
+				<span ng-show="reservationData.reservation_card.accompaying_guests.length>1 && !$last">, </span>
+			</span>
+		</div>
+	</div>
+</span>
