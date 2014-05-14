@@ -584,12 +584,13 @@
 						left: 15px;
 						top: 80px; 
 						.calc-width(100, 20); /* %, px */
-						.calc-height(100, 410); /* %, px */
+						.calc-height(100, 398); /* %, px */
 
+            > .wrapper { padding-bottom: 2px; }
 						li {
 							position: relative;
 							margin: 0 20px 0 0;
-							padding: 5px 0;
+							padding: 5px;
 							text-align: left;
 							line-height: 1.1em;
 							font-weight: 600;
@@ -615,10 +616,7 @@
 								}
 							}
 
-							&.selected {
-								padding: 5px;
-								background: rgba(0,0,0,.05);
-							}
+							&.selected { .faux-clickable; }
 						}
 
 						.iScrollVerticalScrollbar {
@@ -631,7 +629,7 @@
 					#total-charge {
 						position: absolute;
 						left: 15px;
-						top: 265px;
+						top: 275px;
 						border-top: 2px solid rgba(0,0,0,.1);
 						padding-top: 10px;
 						font-weight: 600;
@@ -645,9 +643,9 @@
 							.pull-right;
 						}
 						
-						&.offset-1 { top: 130px; }
-						&.offset-2 { top: 175px; }
-						&.offset-3 { top: 220px; }
+						&.offset-1 { top: 140px; }
+						&.offset-2 { top: 185px; }
+						&.offset-3 { top: 230px; }
 					}
 
 					#numpad {
