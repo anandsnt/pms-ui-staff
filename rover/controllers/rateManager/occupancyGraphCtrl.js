@@ -4,6 +4,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         BaseCtrl.call(this, $scope);
         $scope.highchartsNG = {};
         $scope.targetData = "";
+        $scope.weekCommonTargets = [];
         $scope.seriesActualVisible = true;
         $scope.seriesTargetVisible = true;
         var drawGraph = function(){
@@ -13,30 +14,15 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                         type: 'line',
                         className: "rateMgrOccGraph",
                         plotBackgroundColor: '#e0e0e0',
-                        // Edit chart spacing
-                        spacingBottom: 15,
-                        spacingTop: 10,
-                        spacingLeft: 10,
-                        spacingRight: 10,
-                    },
-                    /*legend: {
-                        rtl: true,
-                        layout: 'vertical',
-                        align: 'left',
-                        verticalAlign: 'top',
-                        borderWidth: 0
-                    },*/
-                    tooltip: {
-                        formatter: function () {
-                            return 'Actual <b>' + this.point[1].y + '</b>' + '<br/>Off Target <b>' + this.point[0].y + '</b>';
-                        }
                     },
                     tooltip: {
                         shared: true,
                         formatter: function() {
                             return 'Actual <b>' + this.points[0].y + '</b>' + '<br/>Off Target <b>' + this.points[1].y + '</b>';
                         }
-
+                    },
+                    legend: { 
+                        enabled:false
                     },
                     xAxis: {
                         gridLineWidth: 10,
@@ -52,12 +38,6 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                     title:{
                         text:''
                     }
-                    /*plotOptions: {
-                        series: {
-                            showCheckbox: true,
-                            selected: true
-                        }
-                    },*/
                 },
                 series: $scope.graphData
             }
@@ -129,6 +109,10 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                 targetWeeklyItem.push(item);
             }
         }
+        $scope.weekCommonTargets = [];
+        for(var i = 0; i <= formattedTargetData.length; i++){
+            $scope.weekCommonTargets.push('');
+        }
         return formattedTargetData;
     }
 
@@ -165,11 +149,19 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
     $scope.showSetTargetDialog = function () {
         ngDialog.open({
             template: '/assets/partials/rateManager/setTargetPopover.html',
-            className: 'ngdialog-theme-default',
+            className: 'ngdialog-theme-default settarget',
             closeByDocument: true,
             scope: $scope
         });
     };
+
+    $scope.copyTargetToAllWeekDays = function(index){
+        angular.forEach($scope.targetData[index], function (item, key) {
+            if (item.hasOwnProperty("value")) {
+                item.value = $scope.weekCommonTargets[index];
+            }
+        });
+    }
 
     $scope.setTargets = function(){
         var params = {};
@@ -191,6 +183,10 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         };
         $scope.invokeApi(RateMgrOccupancyGraphSrv.setTargets, params, setTargetsSuccess);
     }
+
+    $scope.cancelClicked = function() {
+      ngDialog.close();
+    };
 
     var fetchGraphData = function(params){
         var fetchGraphDataSuccess = function(data) {
