@@ -24,9 +24,9 @@
 		<tr ng-repeat="rate in calendarData.data">
 			<td>    
 				<span>{{rate.name}}<span>
-			    <span style="float:right"><img src="/assets/arrow-down.png" ng-click="goToRoomTypeCalendarView(rate.id)"></span>
+			    <span style="float:right"><img src="/assets/arrow-down.png" ng-click="goToRoomTypeCalendarView(rate)"></span>
             </td>
-			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-click="showUpdatePriceAndRestrictionsDialog()">
+			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-click="showUpdatePriceAndRestrictionsDialog(date)">
                 <div class="cell-content">
 					<span ng-repeat="restriction in rate[date]" class="{{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
 						{{restriction.days}}
