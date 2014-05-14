@@ -18,7 +18,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 	}
 
 	/**
-    * Method to fetch all calendar data
+    * Method to fetch calendar data
     */
 	var loadTable = function($defer, params){
 		var calenderDataFetchSuccess = function(data) {
@@ -46,7 +46,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		
 		data.rate_type_ids = [];
 		var rateTypeId = parseInt($scope.currentFilterData.rate_type_selected);
-		data.rate_type_ids.push(rateTypeId);
+		//data.rate_type_ids.push(rateTypeId);
 		
 		data.rate_ids = [];
 		for(var i in $scope.currentFilterData.rates_selected_list){

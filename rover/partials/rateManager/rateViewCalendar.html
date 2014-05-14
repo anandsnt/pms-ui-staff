@@ -11,8 +11,8 @@
 
 	<tbody>
 		<tr>
-			<td> All Rates</td>
-			<td>&nbsp;</td>
+			<td class="row-title"> All Rates</td>
+			<td class="row-arrows" width="5">&nbsp;</td>
 			<td ng-repeat="date in calendarData.dates" class="cal-cell">
 				<span ng-repeat="restriction in calendarData.all_rates[date]" class="{{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
 					{{restriction.days}}
@@ -22,10 +22,10 @@
 
 		</tr>
 		<tr ng-repeat="rate in calendarData.data">
-			<td>
+			<td class="row-title">
 				{{rate.name}}
 			</td>
-			<td><img src="/assets/arrow-down.png" ng-click="goToRoomTypeCalendarView(rate.id)"></td>
+			<td class="row-arrows"><img src="/assets/arrow-down.png" ng-click="goToRoomTypeCalendarView(rate.id)"></td>
 
 			<td ng-repeat="date in calendarData.dates" class="cal-cell" >
 				<span ng-repeat="restriction in rate[date]" class="{{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
