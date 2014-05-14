@@ -16,9 +16,32 @@
 		<th>USE</th>
 		<tr ng-repeat="addon in rateTypesDetails.addOns">
 			<td>{{addon.name}}</td> 
-			<td>{{rateTypesDetails.hotel_settings.currency.symbol}} 32</td> 
-			<td>x</td> 
-			<td><ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="Notify Guest When Room is Ready &amp; Vacant" div-class="full-width"></ad-checkbox></td> 
+			<td>{{rateTypesDetails.hotel_settings.currency.symbol}} {{addon.price}} {{addon.post_type}}</td> 
+			<td>
+				<div id="options" class="entry full-width" ng-hide="hideAlertOption">
+					<div>
+						<div class="float_left">
+					<label class="radio" ng-class="{checked:addon.type == 'inclusive'}">
+						<span class="icon-form icon-radio " ng-class="{checked:addon.type == 'inclusive'}"></span>
+						<input type="radio" ng-model="addon.type" value="inclusive" class="change-data">
+						INCLUSIVE
+						
+					</label>
+				</div>
+					<div class="float_right">
+
+					<label class="radio" ng-class="{checked:addon.type == 'exclusive'}">
+						<span class="icon-form icon-radio " ng-class="{checked:addon.type == 'exclusive'}"></span>
+						<input type="radio" ng-model="addon.type" value="exclusive" class="change-data">
+						EXCLUSIVE
+						
+					</label>
+				</div>
+					</div>
+
+				</div>
+			</td> 
+			<td><ad-toggle-button is-checked="addon.isActive" ></ad-toggle-button></td> 
 		</tr>
 		
 	</table>
