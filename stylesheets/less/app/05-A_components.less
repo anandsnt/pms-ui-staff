@@ -1433,9 +1433,14 @@
 		.reservation-header {
 			.float;
 
+
 			.data {
-				.pull-left;
-				.calc-width(100, 240);
+				/*.pull-left;
+				.calc-width(100, 240);*/
+				position: relative;
+				text-align: left;
+				.calc-width(100, 240); /* %, px */
+				.pull-right;
 
 				.guest-status { text-indent: 9999px; }
 			}

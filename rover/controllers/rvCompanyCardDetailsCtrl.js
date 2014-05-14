@@ -21,14 +21,22 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	*/
 	var successCallbackOfInitialFetch = function(data){
 		$scope.$emit("hideLoader");
-		$scope.contactInformation = data.account_info;
+		$scope.contactInformation = data;
+
 	}
 
 	//getting the contact information
 	var id = $stateParams.id;
 	var data = {'id': id};
 	$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, data, successCallbackOfInitialFetch);
-		
+
+	 $scope.$parent.myScrollOptions = {		
+	    'company-card-content': {
+	    	scrollbars: true,
+	        snap: false,
+	        hideScrollbar: false
+	    },
+	};		
 
 
 

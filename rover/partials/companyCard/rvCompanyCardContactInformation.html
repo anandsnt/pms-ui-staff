@@ -1,337 +1,77 @@
 <!-- Company Card Tab 1 -->
-<form method="post" action="app/stay-card/" id="cc-contact-info" name="cc-contact-info" class="form card-tab scrollable tab-header" ng-show="currentSelectedTab == 'cc-contact-info'">
-    <div class="wrapper">
+<form method="post"  id="cc-contact-info" name="cc-contact-info" class="form card-tab scrollable tab-header full-width" ng-show="currentSelectedTab == 'cc-contact-info'" ng-iscroll="company-card-content" ng-iscroll-delay="2000" style="position: relative;top:0px; bottom:0px;" >
+    <div class="wrapper" >
         <div class="holder left">
             <strong class="h3">Company Info</strong>
-            <div class="entry margin">
-                <label for="company-name-1">Name</label>
-                <input name="company-name-1" id="company-name-1" value="Allianz" type="text" />
-            </div>             
-            <div class="entry margin">
-                <label for="company-address-1">Address</label>
-                <input name="company-address-1" id="company-address-1" value="{{contactInformation.address_line1}}" ng-model="contactInformation.address_line1" type="text" />
-            </div>
-            <div class="entry no-label">
-                <input name="company-address-2" id="company-address-2" value="" type="text"  value="{{contactInformation.address_line2}}" ng-model="contactInformation.address_line2" />
-            </div>
-            <div class="entry no-label full-width">
-                <input name="company-address-3" id="company-address-3" value="" type="text"  value="{{contactInformation.address_line3}}" ng-model="contactInformation.address_line3"/>
-            </div>
-            <div class="entry margin">
-                <label for="company-city">City</label>
-                <input name="company-city" id="company-city"  value="{{contactInformation.city}}" ng-model="contactInformation.city" type="text" />
-            </div>
-            <div class="entry">
-                <label for="company-postalcode">Postal code</label>
-                <input name="company-postalcode" id="company-postalcode" value="{{contactInformation.postal_code}}" ng-model="contactInformation.postal_code" type="text" />
-            </div>
-            <div class="entry margin">
-                <label for="company-state">State</label>
-                <input name="company-state" id="company-state" value="{{contactInformation.state}}" ng-model="contactInformation.state" type="text" />
-            </div>
+            <rv-textbox value="contactInformation.address_details.first_name" label="Name" placeholder = "Enter Name" styleclass="margin"></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.last_name" styleclass="no-label"></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.street1" label="Address" placeholder = "Enter Address Line 1" styleclass="margin"></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.street2" placeholder = "Enter Address Line 2" styleclass="no-label"></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.street3" placeholder = "Enter Address Line 3" styleclass="no-label full-width"></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.city" label="City" placeholder = "Enter City" styleclass="margin"></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.postal_code" label="Postal code" placeholder = "Enter Postal code" ></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.state" label="State" placeholder = "Enter State" styleclass="margin"></rv-textbox>
+
+            <!--<rv-dropdown label="Country" label-in-drop-down="Select country" list="contactInformation.countries" selected-Id='contactInformation.address_details.country' ></rv-dropdown> -->
+            <!-- drop down directive is name & value, but in here it is different-->
             <div class="entry">
                 <label for="company-country">Country</label>
                 <div class="select">
                     <select id="company-country" name="company-country"> 
                         <option value="" class="placeholder">Select country</option> 
-                        <optgroup label="-------------------">
-                                    <option value="US" selected>United States</option>
-                            <option value="CA">Canada</option>
-                                    <option value="GB">United Kingdom</option>
-                            <option value="DE">Germany</option>
-                            <option value="FR">France</option>
-                            <option value="RU">Russia</option>
-                            <option value="IT">Italy</option>
-                            <option value="CN">China</option>
-                            <option value="JP">Japan</option>
-                            <option value="AU">Australia</option>
-                        </optgroup>
-                        <optgroup label="-------------------">
-                            <option value="AF">Afghanistan</option>
-                            <option value="AL">Albania</option>
-                            <option value="DZ">Algeria</option>
-                            <option value="AS">American Samoa</option>
-                            <option value="AD">Andorra</option>
-                            <option value="AO">Angola</option>
-                            <option value="AI">Anguilla</option>
-                            <option value="AQ">Antarctica</option>
-                            <option value="AG">Antigua And Barbuda</option>
-                            <option value="AR">Argentina</option>
-                            <option value="AM">Armenia</option>
-                            <option value="AW">Aruba</option>
-                            <option value="AT">Austria</option>
-                            <option value="AZ">Azerbaijan</option>
-                            <option value="BS">Bahamas</option>
-                            <option value="BH">Bahrain</option>
-                            <option value="BD">Bangladesh</option>
-                            <option value="BB">Barbados</option>
-                            <option value="BY">Belarus</option>
-                            <option value="BE">Belgium</option>
-                            <option value="BZ">Belize</option>
-                            <option value="BJ">Benin</option>
-                            <option value="BM">Bermuda</option>
-                            <option value="BT">Bhutan</option>
-                            <option value="BO">Bolivia</option>
-                            <option value="BA">Bosnia And Herzegovina</option>
-                            <option value="BW">Botswana</option>
-                            <option value="BV">Bouvet Island</option>
-                            <option value="BR">Brazil</option>
-                            <option value="IO">British Indian Ocean Territory</option>
-                            <option value="BN">Brunei Darussalam</option>
-                            <option value="BG">Bulgaria</option>
-                            <option value="BF">Burkina Faso</option>
-                            <option value="BI">Burundi</option>
-                            <option value="KH">Cambodia</option>
-                            <option value="CM">Cameroon</option>
-                            <option value="CV">Cape Verde</option>
-                            <option value="KY">Cayman Islands</option>
-                            <option value="CF">Central African Republic</option>
-                            <option value="TD">Chad</option>
-                            <option value="CL">Chile</option>
-                            <option value="CX">Christmas Island</option>
-                            <option value="CC">Cocos (Keeling) Islands</option>
-                            <option value="CO">Colombia</option>
-                            <option value="KM">Comoros</option>
-                            <option value="CG">Congo</option>
-                            <option value="CK">Cook Islands</option>
-                            <option value="CR">Costa Rica</option>
-                            <option value="CI">Cote D'Ivoire</option>
-                            <option value="HR">Croatia</option>
-                            <option value="CU">Cuba</option>
-                            <option value="CY">Cyprus</option>
-                            <option value="CZ">Czech Republic</option>
-                            <option value="DK">Denmark</option>
-                            <option value="DJ">Djibouti</option>
-                            <option value="DM">Dominica</option>
-                            <option value="DO">Dominican Republic</option>
-                            <option value="EC">Ecuador</option>
-                            <option value="EG">Egypt</option>
-                            <option value="SV">El Salvador</option>
-                            <option value="GQ">Equatorial Guinea</option>
-                            <option value="ER">Eritrea</option>
-                            <option value="EE">Estonia</option>
-                            <option value="ET">Ethiopia</option>
-                            <option value="FK">Falkland Islands (Malvinas)</option>
-                            <option value="FO">Faroe Islands</option>
-                            <option value="FJ">Fiji</option>
-                            <option value="FI">Finland</option>
-                            <option value="GF">French Guiana</option>
-                            <option value="PF">French Polynesia</option>
-                            <option value="TF">French Southern Territories</option>
-                            <option value="GA">Gabon</option>
-                            <option value="GM">Gambia</option>
-                            <option value="GE">Georgia</option>
-                            <option value="GH">Ghana</option>
-                            <option value="GI">Gibraltar</option>
-                            <option value="GR">Greece</option>
-                            <option value="GL">Greenland</option>
-                            <option value="GD">Grenada</option>
-                            <option value="GP">Guadeloupe</option>
-                            <option value="GU">Guam</option>
-                            <option value="GT">Guatemala</option>
-                            <option value="GN">Guinea</option>
-                            <option value="GW">Guinea-Bissau</option>
-                            <option value="GY">Guyana</option>
-                            <option value="HT">Haiti</option>
-                            <option value="HM">Heard Island &amp; Mcdonald Islands</option>
-                            <option value="HN">Honduras</option>
-                            <option value="HK">Hong Kong</option>
-                            <option value="HU">Hungary</option>
-                            <option value="IS">Iceland</option>
-                            <option value="IN">India</option>
-                            <option value="ID">Indonesia</option>
-                            <option value="IR">Iran, Islamic Republic Of</option>
-                            <option value="IQ">Iraq</option>
-                            <option value="IE">Ireland</option>
-                            <option value="IL">Israel</option>   
-                            <option value="JM">Jamaica</option>  
-                            <option value="JO">Jordan</option>
-                            <option value="KZ">Kazakhstan</option>
-                            <option value="KE">Kenya</option>
-                            <option value="KI">Kiribati</option>
-                            <option value="KP">Korea, Democratic People'S Republic Of</option>
-                            <option value="KR">Korea, Republic Of</option>
-                            <option value="XK">Kosovo</option>
-                            <option value="KW">Kuwait</option>
-                            <option value="KG">Kyrgyzstan</option>
-                            <option value="LA">Lao People'S Democratic Republic</option>
-                            <option value="LV">Latvia</option>
-                            <option value="LB">Lebanon</option>
-                            <option value="LS">Lesotho</option>
-                            <option value="LR">Liberia</option>
-                            <option value="LY">Libyan Arab Jamahiriya</option>
-                            <option value="LI">Liechtenstein</option>
-                            <option value="LT">Lithuania</option>
-                            <option value="LU">Luxembourg</option>
-                            <option value="MO">Macau</option>
-                            <option value="MK">Macedonia</option>
-                            <option value="MG">Madagascar</option>
-                            <option value="MW">Malawi</option>
-                            <option value="MY">Malaysia</option>
-                            <option value="MV">Maldives</option>
-                            <option value="ML">Mali</option>
-                            <option value="MT">Malta</option>
-                            <option value="MH">Marshall Islands</option>
-                            <option value="MQ">Martinique</option>
-                            <option value="MR">Mauritania</option>
-                            <option value="MU">Mauritius</option>
-                            <option value="YT">Mayotte</option>
-                            <option value="MX">Mexico</option>
-                            <option value="FM">Micronesia, Federated States Of</option>
-                            <option value="MD">Moldova, Republic Of</option>
-                            <option value="MC">Monaco</option>
-                            <option value="MN">Mongolia</option>
-                            <option value="ME">Montenegro</option>
-                            <option value="MS">Montserrat</option>
-                            <option value="MA">Morocco</option>
-                            <option value="MZ">Mozambique</option>
-                            <option value="MM">Myanmar</option>
-                            <option value="NA">Namibia</option>
-                            <option value="NR">Nauru</option>
-                            <option value="NP">Nepal</option>
-                            <option value="NL">Netherlands</option>
-                            <option value="AN">Netherlands Antilles</option>
-                            <option value="NC">New Caledonia</option>
-                            <option value="NZ">New Zealand</option>
-                            <option value="NI">Nicaragua</option>
-                            <option value="NE">Niger</option>
-                            <option value="NG">Nigeria</option>
-                            <option value="NU">Niue</option>
-                            <option value="NF">Norfolk Island</option>
-                            <option value="MP">Northern Mariana Islands</option>
-                            <option value="NO">Norway</option>
-                            <option value="OM">Oman</option>
-                            <option value="PK">Pakistan</option>
-                            <option value="PW">Palau</option>
-                            <option value="PA">Panama</option>
-                            <option value="PG">Papua New Guinea</option>
-                            <option value="PY">Paraguay</option>
-                            <option value="PE">Peru</option>
-                            <option value="PH">Philippines</option>
-                            <option value="PN">Pitcairn</option>
-                            <option value="PL">Poland</option>
-                            <option value="PT">Portugal</option>
-                            <option value="PR">Puerto Rico</option>
-                            <option value="QA">Qatar</option>
-                            <option value="RE">Reunion</option>
-                            <option value="RO">Romania</option>
-                            <option value="RW">Rwanda</option>
-                            <option value="SH">Saint Helena</option>
-                            <option value="KN">Saint Kitts And Nevis</option>
-                            <option value="LC">Saint Lucia</option>
-                            <option value="PM">Saint Pierre And Miquelon</option>
-                            <option value="VC">Saint Vincent And The Grenadines</option>
-                            <option value="WS">Samoa</option>
-                            <option value="SM">San Marino</option>
-                            <option value="ST">Sao Tome And Principe</option>
-                            <option value="SA">Saudi Arabia</option>
-                            <option value="SN">Senegal</option>
-                            <option value="RS">Serbia</option>
-                            <option value="SC">Seychelles</option>
-                            <option value="SL">Sierra Leone</option>
-                            <option value="SG">Singapore</option>
-                            <option value="SK">Slovakia (Slovak Republic)</option>
-                            <option value="SI">Slovenia</option>
-                            <option value="SB">Solomon Islands</option>
-                            <option value="SO">Somalia</option>
-                            <option value="ZA">South Africa</option>
-                            <option value="ES">Spain</option>
-                            <option value="LK">Sri Lanka</option>
-                            <option value="SD">Sudan</option>
-                            <option value="SR">Suriname</option>
-                            <option value="SJ">Svalbard And Jan Mayen Islands</option>
-                            <option value="SZ">Swaziland</option>
-                            <option value="SE">Sweden</option>
-                            <option value="CH">Switzerland</option>
-                            <option value="SY">Syrian Arab Republic</option>
-                            <option value="TW">Taiwan, Province Of China</option>
-                            <option value="TJ">Tajikistan</option>
-                            <option value="TZ">Tanzania, United Republic Of</option>
-                            <option value="TH">Thailand</option>
-                            <option value="TG">Togo</option>
-                            <option value="TK">Tokelau</option>
-                            <option value="TO">Tonga</option>
-                            <option value="TT">Trinidad And Tobago</option>
-                            <option value="TN">Tunisia</option>
-                            <option value="TR">Turkey</option>
-                            <option value="TM">Turkmenistan</option>
-                            <option value="TC">Turks And Caicos Islands</option>
-                            <option value="TV">Tuvalu</option>
-                            <option value="UG">Uganda</option>
-                            <option value="UA">Ukraine</option>
-                            <option value="AE">United Arab Emirates</option>
-                            <option value="UM">United States Minor Outlying Islands</option>
-                            <option value="UY">Uruguay</option>
-                            <option value="UZ">Uzbekistan</option>
-                            <option value="VU">Vanuatu</option>
-                            <option value="VA">Vatican City State (Holy See)</option>
-                            <option value="VE">Venezuela</option>
-                            <option value="VN">Viet Nam</option>
-                            <option value="VG">Virgin Islands (British)</option>
-                            <option value="VI">Virgin Islands (U.S.)</option>
-                            <option value="WF">Wallis And Futuna Islands</option>
-                            <option value="EH">Western Sahara</option>
-                            <option value="YE">Yemen</option>
-                            <option value="ZM">Zambia</option>
-                            <option value="ZW">Zimbabwe</option>
-                            <option value="ZZ">Unknown or Invalid Region</option>
-                        </optgroup>
+                        <option ng-repeat="country in contactInformation.countries" value="{{country.id}}" ng-selected="country.id==contactInformation.address_details.country" ng-model="address_details.country">
+                            {{country.value}}
+                        </option>
                     </select>
                 </div>
-            </div>
-            <div class="entry">
-                <label for="company-phone">Phone</label>
-                <input name="company-phone" id="company-phone" value="{{contactInformation.phone}}" ng-model="contactInformation.phone" type="tel" />
-            </div>
-            <div class="entry full-width">
-                <label for="company-email">E-mail address</label>
-                <input name="company-email" id="company-email" value="{{contactInformation.email}}" ng-model="contactInformation.email" type="email" />
-            </div>
+            </div> 
+
+            <rv-textbox value="contactInformation.address_details.phone" inputtype="tel" label="Phone" placeholder = "Enter Phone"></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.email_address" label="E-mail address" placeholder = "Enter email" styleclass="full-width">
+
             <div class="entry full-width">
                 <label for="company-logo">Company logo</label>
                 <div class="file-upload with-preview">
-                    <input type="file" name="company-logo" id="company-logo" />
+                    <input type="file" name="company-logo" id="company-logo"  ng-model="contactInformation.company_details.company_logo" accept="*" app-filereader />
                     <button type="button" class="button brand-colors">Choose file</button>
                 </div>
-                <span class="file-preview"><img src="../images/allianz-logo.jpg" alt="" /></span>
-                <!-- When no image, use <span class="file-preview"><em>Preview not available</em></span> -->
+                <span class="file-preview"><img ng-src="{{contactInformation.company_details.company_logo}}" alt="" ng-if="escapeNull(contactInformation.company_details.company_logo)!=''"/></span>
+                <!-- When no image, use  -->
+                <span class="file-preview" ng-if="escapeNull(contactInformation.company_details.company_logo)==''"><em>Preview not available</em></span>
             </div>
         </div>
+
         <div class="holder right">
             <strong class="h3">Extended Company Details</strong>
-            <div class="entry margin">
-                <label for="company-corporate-id">Corporate ID</label>
-                <input name="company-corporate-id" id="company-corporate-id" value="{{contactInformation.corporate_id}}" ng-model="contactInformation.corporate_id" type="text" />
-            </div>
-            <div class="entry">
-                <label for="company-arn">Accounts Receivable Number</label>
-                <input name="company-arn" id="company-arn"  value="{{contactInformation.accounts_receivable_number}}" ng-model="contactInformation.accounts_receivable_number" type="text" />
-            </div>
-            <div class="entry">
-                <label for="company-billing">Billing Information</label>
-                <input name="company-billing" id="company-billing" value="{{contactInformation.billing_information}}" ng-model="contactInformation.billing_information" type="text" />
-            </div>
+
+            <rv-textbox value="contactInformation.company_details.corporate_id" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin"></rv-textbox>
+
+            <rv-textbox value="contactInformation.company_details.accounts_receivable_number" label="Accounts Receivable Number" placeholder = "Enter Corporate ID" ></rv-textbox>
+
+            <rv-textbox value="contactInformation.company_details.billing_information" label="Billing Information" placeholder = "Enter Billing Information" ></rv-textbox>
+
+            
             <strong class="h3 margin">Primary Contact Details</strong>
-            <div class="entry margin">
-                <label for="company-contact-firstname">First name</label>
-                <input name="company-contact-firstname" id="company-contact-firstname" value="{{contactInformation.contact_first_name}}" ng-model="contactInformation.contact_first_name" type="text" />
-            </div>
-            <div class="entry">
-                <label for="company-contact-lastname">Last Name</label>
-                <input name="company-contact-lastname" id="company-contact-lastname" value="{{contactInformation.contact_last_name}}" ng-model="contactInformation.contact_last_name" type="text" />
-            </div>
-            <div class="entry margin">
-                <label for="company-contact-job-title">Job title</label>
-                <input name="company-contact-job-title" id="job-title" value="{{contactInformation.contact_job_title}}" ng-model="contactInformation.contact_job_title" type="text" />
-            </div>
-            <div class="entry">
-                <label for="company-contact-phone">Phone</label>
-                <input name="company-contact-phone" id="company-contact-phone"  value="{{contactInformation.contact_phone}}" ng-model="contactInformation.contact_phone" type="tel" />
-            </div>
-            <div class="entry full-width">
-                <label for="company-contact-email">E-mail address</label>
-                <input name="company-contact-email" id="company-contact-email" value="{{contactInformation.contact_email}}" ng-model="contactInformation.contact_email" type="email" />
-            </div>
+
+            <rv-textbox value="contactInformation.primary_account_details.first_name" label="First name" placeholder = "Enter Contact First name" styleclass="margin"></rv-textbox>
+
+            <rv-textbox value="contactInformation.primary_account_details.last_name" label="Last Name" placeholder = "Enter Contact Last Name" ></rv-textbox>
+
+            <rv-textbox value="contactInformation.primary_account_details.job_title" label="Job title" placeholder = "Enter Job title" styleclass="margin"></rv-textbox>
+            
+            <rv-textbox value="contactInformation.primary_account_details.phone" label="Phone" placeholder = "Enter Contact Person's Phone" ></rv-textbox>
+
+            <rv-textbox value="contactInformation.primary_account_details.email_address" label="E-mail address" placeholder = "Enter Contact person's e-mail address" styleclass="full-width"></rv-textbox>
+
         </div>
     </div>
-</form>
+</form> 
+

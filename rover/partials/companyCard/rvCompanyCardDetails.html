@@ -9,32 +9,36 @@
             <header class="cards-header">
                 <div id="company-card-header" class="card-header ">
                     <!-- When company logo exists -->
-                    <figure class="guest-image" ng-if="escapeNull(contactInformation.logo)!=''">
-                        <img ng-src="{{contactInformation.logo}}" alt="" />
+                    <figure class="guest-image" ng-if="escapeNull(contactInformation.company_details.company_logo)!=''">
+                        <img ng-src="{{contactInformation.company_details.company_logo}}" alt="" />
                     </figure>
                     <!-- When there's no logo use this instead of <figure>  -->
-                    <div class="guest-image icons icon-company" ng-if="escapeNull(contactInformation.logo)==''">
+                    <div class="guest-image icons icon-company" ng-if="escapeNull(contactInformation.company_details.company_logo)==''">
                         Company
                     </div> 
                     <form method="post" name="change-company-name" id="change-company-name">
                         <div class="holder">
                             <div class="entry">
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.name1}}" ng-model="contactInformation.name1" type="text" class="masked-input h1" />
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.name2}}" ng-model="contactInformation.name2" type="text" class="masked-input h1" />
+                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.address_details.first_name}}" ng-model="contactInformation.address_details.first_name" type="text" class="masked-input h1" />
+
+                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.address_details.last_name}}" ng-model="contactInformation.address_details.last_name" type="text" class="masked-input h1" />
                             </div>
                         </div>
                         <div class="holder data">
-                            <input  name="cc-city" id="cc-city" placeholder="" value="{{contactInformation.city}}" ng-model="contactInformation.city" type="text" class="masked-input icons icon-gc-location" />
-                            <input  name="cc-state" id="cc-state" placeholder="" value="{{contactInformation.state}}" ng-model="contactInformation.state"  type="text" class="masked-input" />
-                            <input name="cc-phone" id="cc-phone" placeholder="" value="{{contactInformation.phone}}" ng-model="contactInformation.phone" type="tel" class="masked-input icons icon-gc-phone" />
-                            <input name="cc-email" id="cc-email" placeholder="" value="{{contactInformation.email}}" ng-model="contactInformation.email" type="email" class="masked-input icons icon-gc-email" />
+                            <input  name="cc-city" id="cc-city" placeholder="" value="{{contactInformation.address_details.city}}" ng-model="contactInformation.address_details.city" type="text" class="masked-input icons icon-gc-location" />
+
+                            <input  name="cc-state" id="cc-state" placeholder="" value="{{contactInformation.address_details.state}}" ng-model="contactInformation.address_details.state"  type="text" class="masked-input" />
+
+                            <input name="cc-phone" id="cc-phone" placeholder="" value="{{contactInformation.address_details.phone}}" ng-model="contactInformation.address_details.phone" type="tel" class="masked-input icons icon-gc-phone" />
+
+                            <input name="cc-email" id="cc-email" placeholder="" value="{{contactInformation.email_address}}" ng-model="contactInformation.address_details.email_address" type="email" class="masked-input icons icon-gc-email" />
                         </div>
                     </form>
                 </div>
             </header>
 
             <!-- Cards Content -->
-            <div class="cards-content" ng-iscroll="company-card-content" ng-iscroll-delay="500" >               
+            <div class="cards-content"  >               
                 <div id="company-card-content" class="card-tabs card-content" >
                     <!-- company Card tabs navigation -->
                     <ul id="company-card-tabs-nav" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
