@@ -76,6 +76,18 @@
         <fieldset class="holder left" ng-show="isPromotional()">
                 <ad-textbox inputtype="text" value="rateData.promotion_code" label = "Promotions Code" placeholder = "Enter Promotional Code" required="no"></ad-textbox>
         </fieldset>
+
+        <table class="grid">
+            <tr>
+             <td ng-include="'/assets/partials/rates/adRateAdditionalDetails.html'"></td> 
+         </tr>
+         <tr>
+            <td ng-include="'/assets/partials/rates/adRateRulesAndRestrictions.html'"></td>
+        </tr> 
+          <tr>
+            <td ng-include="'/assets/partials/rates/adRateAddons.html'"></td>
+        </tr> 
+       </table>
 </fieldset>
 <div class="actions float actions_margin_top">
     <button type="button" ui-sref="admin.rates" class="button blank add-data-inline">

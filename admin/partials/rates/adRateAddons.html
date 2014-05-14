@@ -1,0 +1,24 @@
+<!-- Header Collapse View -->
+<div ng-hide="detailsMenu ==='addOns'">
+    ADD-ONS
+    <div ng-click="changeDetailsMenu('addOns')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+</div>
+
+<!-- Expanded View -->
+<form ng-show="detailsMenu ==='addOns'" class="form float form_add_new_rate">
+	ADD-ONS
+	<div ng-click="changeDetailsMenu('')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-up.png"></div>
+	<table class="grid">
+		<th>ADD-ON</th>
+		<th>PRICE</th>
+		<th>INCLUSIVE/EXCLUSIVE</th>
+		<th>USE</th>
+		<tr ng-repeat="x in [1,2,3]">
+			<td>x</td> 
+			<td>x</td> 
+			<td>x</td> 
+			<td>x</td> 
+		</tr>
+		
+	</table>
+</form>

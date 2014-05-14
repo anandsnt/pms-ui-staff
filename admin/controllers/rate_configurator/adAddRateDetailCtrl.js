@@ -7,6 +7,13 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
             fetchData();
         };
 
+      /*
+       * change detials sub menu selection
+       */
+        $scope.changeDetailsMenu = function(selectedMenu){
+            $scope.detailsMenu = selectedMenu;
+        };
+
         $scope.isPromotional = function(){
             var ispromo =false;
             if($scope.rateTypesDetails){
