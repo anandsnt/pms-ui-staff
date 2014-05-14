@@ -43,7 +43,7 @@
 				<div class="entry full-width radio-check">
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
-						<label>Rates only</label>
+						<label>Rate only</label>
 						<input type="checkbox" ng-model="singleAddon.rate_code_only">
 					</label>
 				</div>
@@ -116,7 +116,7 @@
 							<select name="amount-type-id"
 								id="amount-type-id"
 								ng-model="singleAddon.amount_type_id"
-								ng-options="type.id as type.value for type in amountTypes"></select>
+								ng-options="type.id as type.description for type in amountTypes"></select>
 						</div>
 					</div>
 				</div>
@@ -130,7 +130,7 @@
 						<select name="post-type-id"
 							id="post-type-id"
 							ng-model="singleAddon.post_type_id"
-							ng-options="type.id as type.value for type in postTypes"></select>
+							ng-options="type.id as type.description for type in postTypes"></select>
 					</div>
 				</div>
 			</fieldset>
