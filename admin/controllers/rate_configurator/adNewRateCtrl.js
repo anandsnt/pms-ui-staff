@@ -26,9 +26,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "promotion_code": "",
                 "date_ranges": []
             }
-
-            $scope.basedonRateData = {};
             // intialize rateData dictionary - END
+            $scope.basedonRateData = {};
             $scope.errorMessage = '';
             // webservice call to fetch rate details for edit
             if ($stateParams.rateId) {
