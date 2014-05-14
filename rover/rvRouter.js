@@ -8,7 +8,7 @@ sntRover.config([
 		  prefix: '/assets/messages/',
 		  suffix: '.json'
 		});
-		// $translateProvider.preferredLanguage('en');
+		//$translateProvider.preferredLanguage('en');
 		// dashboard state
 		$urlRouterProvider.otherwise('/staff/dashboard');
 

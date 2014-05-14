@@ -2,7 +2,7 @@
 sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv','dashBoarddata','$rootScope', '$filter', function($scope,RVDashboardSrv,dashBoarddata,$rootScope, $filter){
 	
   //setting the heading of the screen
-  $scope.heading = "Dashboard";
+  $scope.heading = 'DASHBOARD_HEADING';
 
  	$scope.dashboardData = dashBoarddata.dashboardData;
  	$scope.userDetails   = dashBoarddata.userDetails;
@@ -20,13 +20,13 @@ sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv','dashBoar
         	var time = d.getHours();
         	$scope.greetingsMessage = "";
         	if (time < 12){
-        		$scope.greetingsMessage = $filter('translate')('GREETING_MORNING');
+        		$scope.greetingsMessage = 'GREETING_MORNING';
         	}
         	else if (time >= 12 && time < 16){
-        		$scope.greetingsMessage = $filter('translate')('GREETING_AFTERNOON');
+        		$scope.greetingsMessage = 'GREETING_AFTERNOON';
         	}
         	else{
-        		$scope.greetingsMessage = $filter('translate')('GREETING_EVENING');
+        		$scope.greetingsMessage = 'GREETING_EVENING';
         	}
         	
         	
