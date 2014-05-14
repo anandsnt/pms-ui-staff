@@ -1,6 +1,6 @@
 
 sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv','dashBoarddata','$rootScope', '$filter', function($scope,RVDashboardSrv,dashBoarddata,$rootScope, $filter){
-
+	
   //setting the heading of the screen
   $scope.heading = "Dashboard";
 
@@ -12,7 +12,7 @@ sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv','dashBoar
   $rootScope.adminRole = dashBoarddata.userDetails.user_role;
 
    $scope.init =  function(){
-
+		
          	BaseCtrl.call(this, $scope);
           $scope.$emit("updateIndex",0);
          	//Display greetings message based on current time
@@ -33,6 +33,8 @@ sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv','dashBoar
 
    };
    $scope.init();
+   
+   
 	
 }]);
 

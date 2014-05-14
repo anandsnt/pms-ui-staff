@@ -3,13 +3,7 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	//BaseCtrl.call(this, $scope);
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
-	// $scope.$on("showLoader", function(){
-        // $scope.hasLoader = true;
-    // });
-// 
-    // $scope.$on("hideLoader", function(){
-        // $scope.hasLoader = false;
-    // });    
+  
 
 	
 }]);

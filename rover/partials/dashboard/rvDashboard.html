@@ -3,6 +3,9 @@
 	<section id="dashboard" class="content scrollable" role = "main">
 		<div class="wrapper">
 			<h2>{{greetingsMessage}} {{userDetails.first_name}}! </h2>
+			<h2>
+				{{ 'GREETING_MORNING' | translate }}
+			</h2>
 			<ul id="guests-today">
 				<li>
 					<a class="button green" ui-sref="rover.search({type:'DUEIN'})">Checking in <strong> {{dashboardData.due_in_count?dashboardData.due_in_count:0}} </strong> </a>

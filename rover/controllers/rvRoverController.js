@@ -1,5 +1,7 @@
-sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window','RVDashboardSrv','ngDialog', function($rootScope, $scope, $state,$window,RVDashboardSrv,ngDialog){
-
+sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window','RVDashboardSrv','ngDialog','$translate', function($rootScope, $scope, $state,$window,RVDashboardSrv,ngDialog, $translate){
+	
+	
+	$translate.use('ge');
     $scope.$on("closeDrawer", function(){      
       $scope.menuOpen = false;  
       $scope.isMenuOpen();
