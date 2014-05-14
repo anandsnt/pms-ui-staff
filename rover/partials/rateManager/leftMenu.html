@@ -4,7 +4,7 @@
 		
 		<div class="entry has-datepicker">
 		    <label for="">DATE RANGE</label>
-		    <input placeholder="Select date range" readonly="" maxlength="8" value="" class="datepicker1 hasDatepicker"  name="">
+		    <input placeholder="Select date range" readonly="" maxlength="8" value="{{currentFilterData.begin_date +' , '+currentFilterData.end_date}}" class="hasDatepicker"  name="">
 		    <button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
 		</div>
 		

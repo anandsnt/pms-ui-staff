@@ -18,27 +18,10 @@ sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','d
    };
 
    $scope.setUpData();
-   $scope.updateClicked = function(){
-	   	var successUpdateRange =function(){
-	   		$scope.$emit('hideLoader');
-		    dateDict.begin_date = $scope.fromDate;
-		    dateDict.end_date =  $scope.toMonthDateFormated;
-		    //ADRatesConfigureSrv.setCurrentSetData(dateDict);
-		    ngDialog.close();
-	   };
-	   var failureUpdateRange =function(data){
-		   	$scope.$emit('hideLoader');
-       		$scope.errorMessage = data;
-	   };
-	   var data = {
-		   	 "begin_date": $scope.fromDate,
-		   	 "end_date":$scope.toMonthDateFormated
-	   };
-     $scope.currentFilterData.begin_date = $scope.fromDate;
-     $scope.currentFilterData.end_date = $scope.toMonthDateFormated;
-     
-	   console.log(data);
-	   //$scope.invokeApi(ADRatesConfigureSrv.updateDateRange,data,successUpdateRange,failureUpdateRange);
+   $scope.okClicked = function(){
+	   $scope.currentFilterData.begin_date = $scope.fromDate;
+	   $scope.currentFilterData.end_date = $scope.toMonthDateFormated;
+	   ngDialog.close();
    };
    $scope.cancelClicked = function(){
      	ngDialog.close();
