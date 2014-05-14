@@ -119,12 +119,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		$scope.invokeApi(RateMngrCalendarSrv.updateRestrictions, params, restrictionUpdateSuccess);
 	}
 
-	var updateTopbar = function(){
-		$scope.fromDate = "10-10-10";
-		$scope.toDate = "11-12-13";
-
-
-	};
 	/**
 	* Click event handler for filter menu "show rates" button
 	*/
@@ -134,7 +128,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		for( var i in $scope.currentFilterData.rates_selected_list){
 			$scope.ratesDisplayed.push($scope.currentFilterData.rates_selected_list[i]);
 		}
-		updateTopbar();
 		loadTable();
 	});  
 
