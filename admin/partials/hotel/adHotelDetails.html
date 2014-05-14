@@ -193,9 +193,18 @@
 				<label for="auto-logout"> Auto logout delay [Minutes] <strong>*</strong> </label>
 				<input type="text" ng-model="data.auto_logout_delay" value="{{data.auto_logout_delay}}" required="yes" placeholder="Enter auto logout delay" name="auto-logout" id="auto-logout">
 			</div>
-
+			<div class="entry full-width" >
+				<label for="hotel-pms-type"> Language </label>
+				<div class="select">
+					<select ng-model="data.selected_language" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
+						<option value=""> Language </option>
+						<option ng-repeat="language in data.languages" value="{{language.value}}" ng-selected="language.value==data.selected_language">
+							{{language.description}}
+						</option>
+					</select>
+				</div>
+			</div>
 			
-			<ad-dropdown label="Language" label-in-drop-down="Select language" list="data.hotel_pms_type" selected-Id='' required = "yes" div-class="full-width"></ad-dropdown>
 			<div class="entry full-width">
 				<label for="hotel_from_address"> EMAIL DOMAIN AND FROM ADDRESS FOR GUESTS <strong>*</strong></label>
 				<input type="text" ng-model="data.hotel_from_address" value="{{data.hotel_from_address}}" placeholder="Enter Email domain and from address for GUEST" name="hotel_from_address" id="hotel_from_address">
