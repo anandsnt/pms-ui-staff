@@ -17,7 +17,7 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 	this.fetchContractsList = function(){
 		var deferred = $q.defer();		
 		var url =  '/sample_json/contracts/rvCompanyCardContractsList.json';	
-		RVBaseWebSrv.getJSON(url).then(function(data) {
+		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
@@ -28,7 +28,7 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 	this.fetchContractsDetails = function(){
 		var deferred = $q.defer();		
 		var url =  '/sample_json/contracts/rvCompanyCardContractsDetails.json';	
-		RVBaseWebSrv.getJSON(url).then(function(data) {
+		rvBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);

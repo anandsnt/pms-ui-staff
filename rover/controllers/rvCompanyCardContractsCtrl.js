@@ -53,4 +53,5 @@ sntRover.controller('companyCardContractsCtrl',['$scope', 'RVCompanyCardSrv', '$
 			 scope: $scope
 		});
 	};
+	
 }]);
