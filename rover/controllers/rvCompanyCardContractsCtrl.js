@@ -7,11 +7,10 @@ sntRover.controller('companyCardContractsCtrl',['$scope', 'RVCompanyCardSrv', '$
   	    var fetchContractsDetailsSuccessCallback = function(data){
   	    	console.log("sucss dettls");
   	    	console.log(data);
-  	    	$scope.contractsData = data;
+  	    	$scope.contractData = data;
+  	    	console.log($scope.contractData.occupancy)
   	    };
   	    var fetchContractsListSuccessCallback = function(data){
-  	    	console.log("sucss list");
-  	    	console.log(data);
   	    	$scope.contractList = data.results;
   	    	$scope.contractSelected = data.contract_selected;
   	    };
@@ -32,7 +31,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope', 'RVCompanyCardSrv', '$
 		ngDialog.open({
 			 template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
 			 controller: 'contractStartCalendarCtrl',
-			 className: 'ngdialog-theme-default calendar-modal',
+			 className: 'ngdialog-theme-default calendar-modal1',
 			 scope: $scope
 		});
 	};
@@ -41,7 +40,16 @@ sntRover.controller('companyCardContractsCtrl',['$scope', 'RVCompanyCardSrv', '$
 		ngDialog.open({
 			 template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
 			 controller: 'contractEndCalendarCtrl',
-			 className: 'ngdialog-theme-default calendar-modal',
+			 className: 'ngdialog-theme-default calendar-modal1',
+			 scope: $scope
+		});
+	};
+	
+	$scope.clickedContractedNights = function(){
+		ngDialog.open({
+			 template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
+			 controller: 'contractedNightsCtrl',
+			 className: 'ngdialog-theme-default calendar-modal1',
 			 scope: $scope
 		});
 	};

@@ -1,4 +1,4 @@
-<form method="post" action="app/modals/contracted-nights/" id="cc-contracts" name="cc-contracts" class="form card-tab contracts" ng-show="currentSelectedTab == 'cc-contracts'">
+<form method="post" id="cc-contracts" name="cc-contracts" class="form card-tab contracts" ng-show="currentSelectedTab == 'cc-contracts'">
     <div id="cc-contracts-header" class="tab-header form card-tab">
         <div class="entry">
             <div class="select" ng-hide="isAddmode">
@@ -28,12 +28,17 @@
         </div>
     </div>
     <div id="cc-contracts-content" class="tab-details scrollable">
-        <div class="wrapper" ng-class="{'overlay':contractList.contract_selected=='3'}">
+        <div class="wrapper" ng-class="{'overlay':contractSelected=='3'}">
             <div class="holder left">
                 <strong class="h3">Details</strong>
                 <div class="entry margin">
                     <label for="company-rate">Contracted Rate</label>
-                    <input name="company-rate" id="company-rate" value="COR (System defined)" type="text" />
+                    <div class="select">
+		                <select name="company-contract" ng-model="contractData.contracted_rate_selected">
+		                    <option value="" class="placeholder">Select contracted rate</option>
+		                    <option value="{{rate.id}}" ng-selected="rate.id==contractData.contracted_rate_selected" ng-repeat="rate in contractData.rate" >{{rate.name}}</option>
+		                </select>
+		            </div>
                 </div>
                 <div class="entry price-adjust no-label">
                     <div class="select">
@@ -52,16 +57,16 @@
                 </div>
                 <div class="entry margin has-datepicker">
                     <label for="company-contract-start">Contract Start</label>
-                    <input ng-click="contractStart()" name="company-contract-start" id="company-contract-start" class="datepicker" value="" maxlength="8" readonly type="text" />
+                    <input ng-click="contractStart()" name="company-contract-start" id="company-contract-start" class="datepicker" value="{{contractData.start_date}}" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry has-datepicker">
                     <label for="company-contract-end">Contract End</label>
-                    <input ng-click="contractEnd()" name="company-contract-end" id="company-contract-end" class="datepicker" value="" maxlength="8" readonly type="text" />
+                    <input ng-click="contractEnd()" name="company-contract-end" id="company-contract-end" class="datepicker" value="{{contractData.end_date}}" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry margin only-switch">
                     <label for="company-contract-fixed-rate">Fixed Rate</label>
-                    <div class="switch-button full-width">
-                        <input name="company-contract-fixed-rate" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
+                    <div ng-model="contractData.is_fixed_rate" class="switch-button full-width" ng-class="{'on': contractData.is_fixed_rate}">
+                        <input ng-click="contractData.is_fixed_rate = !contractData.is_fixed_rate" name="company-contract-fixed-rate" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
                         <label class="data-off">
                             <span class="value">Yes</span>
                             <span class="switch-icon">No</span>
@@ -74,8 +79,8 @@
                 </div>
                 <div class="entry only-switch">
                     <label for="company-contract-show-on-bill">Show on Guest Bill</label>
-                    <div class="switch-button full-width">
-                        <input name="company-contract-show-on-bill" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
+                    <div ng-model="contractData.is_on_guest_bill" class="switch-button full-width" ng-class="{'on': contractData.is_on_guest_bill}">
+                        <input ng-click="contractData.is_on_guest_bill = !contractData.is_on_guest_bill" name="company-contract-show-on-bill" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
                         <label class="data-off">
                             <span class="value">Yes</span>
                             <span class="switch-icon">No</span>
@@ -88,21 +93,24 @@
                 </div>
                 <div class="entry">
                     <label for="company-contracted-nights">Contracted nights</label>
-                    <input name="company-contracted-nights" id="company-contracted-nights" class="open-modal contracted-nights" placeholder="Nights per month" value="240" maxlength="8" readonly type="text" />
+                    <input ng-click="clickedContractedNights()" name="company-contracted-nights" id="company-contracted-nights" class="open-modal contracted-nights" placeholder="Nights per month" value="{{contractData.total_contracted_nights}}" maxlength="8" readonly type="text" />
                 </div>
             </div>
             <div class="holder right" ng-hide="isAddmode">
                 <strong class="h3">Statistics</strong>
                 <ul id="company-contract-stats" class="contract-stats">
-                    <li>Booked Nights <span>163</span></li>
-                    <li>Total Nights <span>159</span></li>
-                    <li>Total Stays <span>49</span></li>
-                    <li>Total Revenue <span class="green">$3579.00</span></li>
-                    <li>Average Rate <span>$219.00</span></li>
+                    <li>Booked Nights <span>{{contractData.statistics.booked_nights}}</span></li>
+                    <li>Total Nights <span>{{contractData.statistics.total_nights}}</span></li>
+                    <li>Total Stays <span>{{contractData.statistics.total_stays}}</span></li>
+                    <li>Total Revenue <span class="green">{{contractData.statistics.total_revenue}}</span></li>
+                    <li>Average Rate <span>{{contractData.statistics.average_rate}}</span></li>
                 </ul>
             </div>
             <div id="company-cards-occupancy" class="occupancy" ng-hide="isAddmode">
                 <strong class="h3">Occupancy</strong>
+                <div>
+                {{contractData.occupancy}}
+                </div>
                 <img src="images/occupancy.png" class="temporary-graph" alt="">
             </div>
         </div>
