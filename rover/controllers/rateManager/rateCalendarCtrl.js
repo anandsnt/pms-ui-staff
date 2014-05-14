@@ -138,8 +138,18 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 	$scope.$on("setCalendarModeRateType", function(){
 		$scope.calendarMode = "RATE_VIEW";
 		loadTable();
-		
+
 	});
+
+	$scope.showUpdatePriceAndRestrictionsDialog = function(){
+        console.log('reached::showUpdatePriceAndRestrictionsDialog');
+        ngDialog.open({
+            template: '/assets/partials/rateManager/updatePriceAndRestrictions.html',
+            className: 'ngdialog-theme-default',
+            closeByDocument: true,
+            scope: $scope
+        });
+    }
 
 	$scope.init();
   
