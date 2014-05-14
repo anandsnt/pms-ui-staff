@@ -78,7 +78,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 	* Click handler for up-arrows in rate_view_calendar
 	*/
 	$scope.goToRoomTypeCalendarView = function(rate){
-		$scope.rateSelected = rate;
+		$scope.ratesDisplayed.length = 0;
+		$scope.ratesDisplayed.push(rate);
 		$scope.calendarMode = "ROOM_TYPE_VIEW";
 		loadTable(rate.id);
 	};
@@ -117,12 +118,27 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 
 		$scope.invokeApi(RateMngrCalendarSrv.updateRestrictions, params, restrictionUpdateSuccess);
 	}
+
+	var updateTopbar = function(){
+		$scope.fromDate = "10-10-10";
+		$scope.toDate = "11-12-13";
+
+
+	};
 	/**
 	* Click event handler for filter menu "show rates" button
 	*/
 	$scope.$on("showRatesClicked", function(){
 		$scope.calendarMode = "RATE_VIEW";
+		$scope.ratesDisplayed = $scope.currentFilterData.rates_selected_list;
+		updateTopbar();
 		loadTable();
+	});  
+
+	$scope.$on("setCalendarModeRateType", function(){
+		$scope.calendarMode = "RATE_VIEW";
+		loadTable();
+		
 	});
 
 	$scope.init();

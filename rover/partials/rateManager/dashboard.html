@@ -1,6 +1,6 @@
 <div id="rate-manager">
 	<div ng-include="'/assets/partials/common/header.html'"></div>
-	<div ng-include="'/assets/partials/rateManager/topbar.html'" style= "width:100%;"></div>
+	<div ng-include="'/assets/partials/rateManager/topbar.html'" style= "width:100%;" ng-show="filterConfigured"></div>
 	<div class="content">
         <div ng-include="'/assets/partials/rateManager/leftMenu.html'" ng-controller="RMFilterOptionsCtrl" class="left-menu"></div>
 		<div ng-if = "displayMode == 'CALENDAR'" ng-include="'/assets/partials/rateManager/rateCalendar.html'" class="calendar" ng-controller="RateCalendarCtrl" style="padding-left: 20px;"></div>
