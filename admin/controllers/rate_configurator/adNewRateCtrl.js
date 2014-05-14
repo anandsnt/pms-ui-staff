@@ -136,6 +136,14 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.$broadcast('ratesChanged');
         };
 
+        $scope.$on('deletedAllDateRangeSets', function(e, dateRangeId){
+            angular.forEach($scope.rateData.date_ranges, function(dateRange, index){
+                if (dateRange.id == dateRangeId){
+                    $scope.rateData.date_ranges.splice(index, 1);
+                }
+            });
+        })
+
         $scope.addNewDateRange = function(){
             $scope.rateMenu ='ADD_NEW_DATE_RANGE';
             // reset calendar
