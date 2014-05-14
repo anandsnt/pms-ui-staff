@@ -6,14 +6,13 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 	this.fetchAllRestrictionTypes = function(){
 		//TODO: Modify to handle case of date range changes, if needed.
-		var url =  '/sample_json/rate_manager/restriction_types.json';	
+		var url =  '/api/restriction_types';	
 		var deferred = $q.defer();
 		if(!isEmpty(that.allRestrictionTypes)){
 			deferred.resolve(that.allRestrictionTypes)
 		} else{
-			console.log("fetch all restriction types");
 			BaseWebSrvV2.getJSON(url).then(function(data) {
-				that.allRestrictionTypes = data; 
+				that.allRestrictionTypes = data.results; 
 				deferred.resolve(data);
 			},function(data){
 				deferred.reject(data);
@@ -26,21 +25,18 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	/**
     * To fetch All Calendar data
     */
-	this.fetchCalendarData = function(){
+	this.fetchCalendarData = function(params){
 		var deferred = $q.defer();
 
 		var rejectDeferred = function(data){
 			deferred.reject(data);
 		}
 		var getDailyRates = function(d){
-			console.log("getDailyRates");
-
-			//TODO:URL
+			//var url = "/api/daily_rates";
 			var url =  '/sample_json/rate_manager/daily_rates.json';	
-			BaseWebSrvV2.getJSON(url).then(function(data) {
+			BaseWebSrvV2.getJSON(url, params).then(function(data) {
 				that.dailyRates = data; 
 				var calendarData = that.calculateRateViewCalData();
-				console.log(JSON.stringify(calendarData));
 				deferred.resolve(calendarData);
 			},rejectDeferred);
 
@@ -59,14 +55,10 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			deferred.reject(data);
 		}
 		var getRoomTypeRates = function(d){
-			console.log("getDailyRates");
-
-			//TODO:URL
 			var url =  '/sample_json/rate_manager/rate_details.json';	
 			BaseWebSrvV2.getJSON(url).then(function(data) {
 				that.roomTypeRates = data; 
 				var calendarData = that.calculateRoomTypeViewCalData();
-				console.log(JSON.stringify(calendarData));
 				deferred.resolve(calendarData);
 			},rejectDeferred);
 
@@ -76,14 +68,18 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				
 		return deferred.promise;
 
-		/*var url =  '/sample_json/rate_manager/calendar.json';	
+	};
+
+	this.updateRestrictions = function(params){
+
+		var url =  '/api/daily_rates';	
 		var deferred = $q.defer();
-		BaseWebSrvV2.getJSON(url).then(function(data) {
+		BaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
 		});
-		return deferred.promise;*/
+		return deferred.promise;
 
 	};
 
@@ -210,6 +206,8 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		restriction_type_updated.background_class = "bgclass";
 		restriction_type_updated.id = restriction_type.id;
 		restriction_type_updated.description = restriction_type.description;
+		restriction_type_updated.value = restriction_type.value;
+
 
 		return restriction_type_updated;
 	};

@@ -34,6 +34,9 @@ sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','d
 		   	 "begin_date": $scope.fromDate,
 		   	 "end_date":$scope.toMonthDateFormated
 	   };
+     $scope.currentFilterData.begin_date = $scope.fromDate;
+     $scope.currentFilterData.end_date = $scope.toMonthDateFormated;
+     
 	   console.log(data);
 	   //$scope.invokeApi(ADRatesConfigureSrv.updateDateRange,data,successUpdateRange,failureUpdateRange);
    };

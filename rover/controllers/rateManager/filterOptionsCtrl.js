@@ -26,9 +26,7 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 		}
 	};
 	
-	$scope.showRates = function(){
-		console.log("showRates");
-	};
+	
 	
 	$scope.$watch('currentFilterData.rate_selected', function() {
 		var isDataExists = false;

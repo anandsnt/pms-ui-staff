@@ -1,13 +1,12 @@
-sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTableParams', function($scope, RateMngrCalendarSrv, ngTableParams){
+sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTableParams','dateFilter', function($scope, RateMngrCalendarSrv, ngTableParams, dateFilter){
 	
 	BaseCtrl.call(this, $scope);
-	$scope.calendarMode = "RATE_VIEW";
 
 	$scope.init = function(){
 		$scope.currentExpandedRow = -1;
 		$scope.displayMode = "CALENDAR";
-		loadTable();
-
+		$scope.calendarMode = "RATE_VIEW";
+		$scope.calendarData = {};
 	};
 
 	$scope.expandRow = function(index){
@@ -18,34 +17,44 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		$scope.currentExpandedRow = index;
 	}
 
-	/*
+	/**
     * Method to fetch all calendar data
     */
-	var getCalendarData = function($defer, params){
+	var loadTable = function($defer, params){
 		var calenderDataFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.calendarData = data;
-        	params.total(data.length);
-            $defer.resolve(data);
 		};
 
 		if($scope.calendarMode == "RATE_VIEW"){
-			$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, {}, calenderDataFetchSuccess);
+			var getData = calculateCalendarGetParams();
+			$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, getData, calenderDataFetchSuccess);
+		
 		} else {
 			$scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalenarData, {}, calenderDataFetchSuccess);
 		}
 	};
 
-	var loadTable = function(data){
-		console.log("loadTable");
-		$scope.tableParams = new ngTableParams({
-		        page: 1,  // show first page
-		        count: 10 
-		    }, {
-		    	total: 2,
-		        getData: getCalendarData
-		    }
-		);
+	/**
+	* Calcultes the get params for fetching calendar.
+	*/
+	var calculateCalendarGetParams = function(){
+
+		var data = {};
+		data.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
+		data.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
+		
+		data.rate_type_ids = [];
+		var rateTypeId = parseInt($scope.currentFilterData.rate_type_selected);
+		data.rate_type_ids.push(rateTypeId);
+		
+		data.rate_ids = [];
+		for(var i in $scope.currentFilterData.rates_selected_list){
+			data.rate_ids.push($scope.currentFilterData.rates_selected_list[i].id);	
+		}
+		
+		data.name_card_ids = [];	
+		return data;
 	};
 
 	/**
@@ -55,10 +64,49 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		$scope.calendarMode = "ROOM_TYPE_VIEW";
 		loadTable();
 	};
+	/**
+	* Handle openall/closeall button clicks
+	* Calls the API to update the "CLOSED" restriction.
+	*/
+	$scope.openCloseAllRestrictions = function(action){
+		var restrictionUpdateSuccess = function(){
+			$scope.$emit('hideLoader');
+			loadTable();
+		};
+
+		var params = {};
+		params.details = []; 
+		
+		item = {};
+		item.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
+		item.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
+		item.restrictions = [];
+		
+		var rr = {};
+		rr.action = action;
+		var restrictionTypes = $scope.calendarData.restriction_types;
+		var restrictionTypeId = "";
+		for (var i = 0, keys = Object.keys(restrictionTypes), j = keys.length; i < j; i++) {
+			if(restrictionTypes[keys[i]].value == "CLOSED"){
+				restrictionTypeId = restrictionTypes[keys[i]].id;
+				break;
+			}
+		}
+		rr.restriction_type_id = restrictionTypeId;
+
+		item.restrictions.push(rr);
+		params.details.push(item);
+
+		$scope.invokeApi(RateMngrCalendarSrv.updateRestrictions, params, restrictionUpdateSuccess);
+	}
+	/**
+	* Click event handler for filter menu "show rates" button
+	*/
+	$scope.$on("showRatesClicked", function(){
+		console.log("showRatesClicked");
+		loadTable();
+	});
 
 	$scope.init();
-
-
-
   
 }]);
