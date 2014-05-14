@@ -5,28 +5,30 @@
 		<div ng-include="'/assets/partials/common/header.html'"></div>
 		<form role="search" name="search-form" method="get" id="search-form" class="search-form form float" action="">
 			<div class="entry">
-				<a id="clear-query" class="icons icon-clear-search" ng-class="{'visible': textInQueryBox!=''}">Clear query</a>
+				<a id="clear-query" class="icons icon-clear-search" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">Clear query</a>
 				<button type="submit" name="submit" class="icons icon-search">Search</button>
 				<input type="text" placeholder="Name, Group, Room No. or Confirmation No." name="query" id="query" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()">
 			</div>
 			<!-- %button.button.blank{name: "advanced", type: "button"} Advanced search -->
 		</form>
 		<section role="main" id="search" class="content scrollable">
-			<div class="" id="result-showing-area" ng-hide="results.length==0" >
+			<div class="" id="result-showing-area" >
 				<!--removed class 'wrapper' which is creating pblm for scroller and not found any pblm with css -->
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-				<div ng-iscroll="result_showing_area" ng-iscroll-delay="1000" style="position:absolute; top:125px; bottom: 0px; left:0px; width: 100%;">
-					<ul id="search-results" class="search-results" ng-class="{'hidden': results.length==0}" style="width: 100%;">
-						<li ng-repeat="row in results" ng-show="row.is_row_visible==true" >
+
+				<div ng-iscroll="result_showing_area" ng-iscroll-delay="1000" style="position:absolute; top:125px; bottom: 0px; left:0px; width: 100%;overflow:hidden;">
+					<ul id="search-results" class="search-results" style="width: 100%;">
+						<li ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length == 0">
 							<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
+							
 							<a data-transition="inner-page" class="guest-check-in link-item float" ui-sref="rover.staycard.reservationcard.reservationdetails({id:row.id, confirmationId:row.confirmation})">
-								<figure class="guest-image" ng-show="row.image!=''">
-									<img ng-src="{{row.image}}">
+								<figure class="guest-image" ng-show="row.images.length!=0 ">	
+									<img ng-repeat="image in row.images" ng-src="{{image.guest_image}}" ng-class="{'first-image':(row.images.length >1 && image.is_primary==true),'second-image':(row.images.length >1 && image.is_primary==false)}">
 									<span class="vip" ng-show="row.vip==true">VIP</span>
 								</figure>
 
 								<div class="data">
-									<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false"> <!--{{row.lastname}},{{row.firstname}} --></h2>
+									<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false" ng-class="{'grey' : row.is_accompanying_guest=='1'}"> <!--{{row.lastname}},{{row.firstname}} --></h2>
 									<span class="confirmation">{{row.confirmation}}</span>
 									<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
 									</span>
@@ -52,11 +54,38 @@
 
 								<strong class="room-status " ng-show="getRoomStatusMapped(row.roomstatus, row.fostatus) == 'not-ready' && row.reservation_status == 'CHECKING_IN'"  >{{row.fostatus}}</strong>
 							</a>
-						</li>					
+						</li>
+						<li class="no-content" ng-show="results.length == 0 && clickedStatus!=''">
+							<div class="info">
+								<span class="icon-no-content icon-search"></span>
+								<strong class="h1">No matches </strong>
+								<span class="h2">Check that you didn't mispell the <strong>Name</strong> or 
+									<strong>Group</strong>, or typed in the wrong <strong>Room </strong> or 
+									<strong>Confirmation</strong> number.
+								</span>
+							</div>
+						</li>
+						
+						<li class="no-content" ng-show="results.length == 0 && clickedStatus==''">
+							<div class="info">
+								<span class="icon-no-content icon-search"></span>
+								<strong class="h1">Find Guests</strong>
+								<span class="h2">
+									Search by
+									<strong>Name</strong>,
+									<strong>Group</strong>,
+									<strong>Room No.</strong>
+									or
+									<strong>Confirmation No.</strong>
+								</span>
+							</div>
+						</li>
+				
+				
 					</ul>
 				</div>
 			</div>
-			<div id="no-results" class="no-content" ng-show="results.length==0">
+			<!-- <div id="no-results" class="no-content" ng-show="results.length==0">
 				<div class="info">
 					<span class="icon-no-content icon-search"></span>
 					<strong class="h1">Find Guests</strong>
@@ -69,7 +98,7 @@
 						<strong>Confirmation No.</strong>
 					</span>
 				</div>
-			</div>
+			</div> -->
 		</section>
 	</div>
 </div>
