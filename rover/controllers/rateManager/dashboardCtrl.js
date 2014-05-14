@@ -3,7 +3,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','dateFilter', function($scope,d
 	BaseCtrl.call(this, $scope);
 	$scope.displayMode = "CALENDAR";
     $scope.filterConfigured = false;
-	
+	$scope.showLeftMenu = true;
 	$scope.currentFilterData =	{
            begin_date : dateFilter(new Date(), 'yyyy-MM-dd'),
            end_date : dateFilter(new Date(), 'yyyy-MM-dd'),
