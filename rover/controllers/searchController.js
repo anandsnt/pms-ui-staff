@@ -123,7 +123,7 @@ $scope.escapeNull = function(value, replaceWith){
       else{   
         $scope.results = [];
       }
-      
+
   };
 
   //setting up initial things

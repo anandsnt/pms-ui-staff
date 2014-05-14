@@ -17,6 +17,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	//scroller options
 	$scope.$parent.myScrollOptions = {
         snap: false,
+        scrollbars: true,
         bounce: true,
         vScroll: true,
         vScrollbar: true,

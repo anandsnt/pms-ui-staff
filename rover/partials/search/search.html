@@ -15,7 +15,8 @@
 			<div class="" id="result-showing-area" >
 				<!--removed class 'wrapper' which is creating pblm for scroller and not found any pblm with css -->
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-				<div ng-iscroll="result_showing_area" ng-iscroll-delay="1000" style="position:absolute; top:125px; bottom: 0px; left:0px; width: 100%;">
+
+				<div ng-iscroll="result_showing_area" ng-iscroll-delay="1000" style="position:absolute; top:125px; bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 					<ul id="search-results" class="search-results" style="width: 100%;">
 						<li ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length == 0">
 							<!--, lastname: textInQueryBox, confirmation: textInQueryBox -->
