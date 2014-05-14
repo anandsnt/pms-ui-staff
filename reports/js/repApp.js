@@ -466,8 +466,11 @@ reports.controller('reportDetails', [
         // print the page
         $scope.print = function() {
             $timeout(function(){
-                reportContent.refresh();
+                // reportContent.refresh();
                 reportContent.scrollTo(0, 0, 100);
+
+                // kaboom boom boom destroyed
+                reportContent.destroy();
             }, 10);
 
             $timeout(function() {
@@ -477,6 +480,13 @@ reports.controller('reportDetails', [
                     cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
                 };
             }, 100);
+
+            $timeout(function() {
+
+                // Since I destroyed
+                // I need to recreate
+                reportContent = new IScroll('#report-content', { mouseWheel: true, scrollX: false, scrollbars: true, scrollbars: 'custom' });
+            }, 500);
         };
     }
 ]);
