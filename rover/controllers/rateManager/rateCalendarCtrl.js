@@ -1,4 +1,4 @@
-sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTableParams','dateFilter', function($scope, RateMngrCalendarSrv, ngTableParams, dateFilter){
+sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTableParams', 'dateFilter', 'ngDialog', function($scope, RateMngrCalendarSrv, ngTableParams, dateFilter, ngDialog){
 	
 	BaseCtrl.call(this, $scope);
 
