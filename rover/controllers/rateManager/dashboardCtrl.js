@@ -17,7 +17,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','dateFilter', function($scope,d
            name_on_cards : []
     };
     $scope.ratesDisplayed = [];
-     
+
     $scope.showCalendarView = function(){
         $scope.displayMode = "CALENDAR";
     };
@@ -31,7 +31,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','dateFilter', function($scope,d
         $scope.$broadcast("showRatesClicked");
     };
     $scope.backButtonClicked = function(){
-        $scope.ratesDisplayed = $scope.currentFilterData.rates_selected_list;
+        angular.copy($scope.currentFilterData.rates_selected_list, $scope.ratesDisplayed);
         $scope.$broadcast("setCalendarModeRateType");
     }
 

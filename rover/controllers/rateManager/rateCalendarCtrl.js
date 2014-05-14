@@ -130,7 +130,10 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 	*/
 	$scope.$on("showRatesClicked", function(){
 		$scope.calendarMode = "RATE_VIEW";
-		$scope.ratesDisplayed = $scope.currentFilterData.rates_selected_list;
+		$scope.ratesDisplayed.length=0;
+		for( var i in $scope.currentFilterData.rates_selected_list){
+			$scope.ratesDisplayed.push($scope.currentFilterData.rates_selected_list[i]);
+		}
 		updateTopbar();
 		loadTable();
 	});  
