@@ -5,6 +5,7 @@ sntRover.controller('RVContactInfoController',['$scope','RVContactInfoSrv','ngDi
   */
 var presentContactInfo = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
 $scope.errorMessage = "";
+
 $scope.saveContactInfo = function(){
     var saveUserInfoSuccessCallback = function(data){
         $scope.$emit('hideLoader');
@@ -38,7 +39,7 @@ $scope.saveContactInfo = function(){
   * watch and update formatted date for display
   */
 $scope.$watch('guestCardData.contactInfo.birthday',function(){
-$scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
+	$scope.birthdayText = JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
 });
 /**
   * to handle click actins outside this tab
