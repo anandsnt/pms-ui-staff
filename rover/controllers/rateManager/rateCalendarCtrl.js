@@ -96,12 +96,16 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 	* Calls the API to update the "CLOSED" restriction.
 	*/
 	$scope.openCloseAllRestrictions = function(action){
+
 		var restrictionUpdateSuccess = function(){
 			$scope.$emit('hideLoader');
 			loadTable();
 		};
 
 		var params = {};
+		if($scope.selectedRate !== ""){
+			params.id = $scope.selectedRate.id;	
+		}
 		params.details = []; 
 		
 		item = {};
@@ -153,7 +157,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		$scope.popupData.selectedDate = date;
 		$scope.popupData.selectedRate = rate;
 		if(rate == ""){
-			$scope.popupData.selectedRate = $scope.selectedRate;
+			$scope.popupData.selectedRate = $scope.selectedRate.id;
 		}
 		$scope.popupData.selectedRoomType = roomType;
 		$scope.popupData.fromRoomTypeView = false;
