@@ -119,12 +119,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             
             $scope.manipulateData(data);
             $scope.rateData.id = $stateParams.rateId;
-            console.log($scope.hotel_business_date);
             // navigate to step where user last left unsaved
             if($scope.rateData.date_ranges.length > 0){
-                // console.log($scope.rateData.date_ranges);
-                // date_ranges_length = $scope.rateData.date_ranges.length
-                // active_item = "dateRange." + $scope.rateData.date_ranges[date_ranges_length-1].id;
                 activeDateRange = getActiveDateRange();
                 $scope.$emit("changeMenu", activeDateRange);
             }
@@ -141,7 +137,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
 
         var getActiveDateRange = function(){
-            var startDate = '';
+            var beginDate = '';
             var endDate = '';
             var hotelBusinessDate = new Date($scope.hotel_business_date).getTime();
             var keepGoing = true;
