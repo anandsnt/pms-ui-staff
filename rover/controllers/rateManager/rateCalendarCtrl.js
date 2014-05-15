@@ -7,6 +7,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		$scope.displayMode = "CALENDAR";
 		$scope.calendarMode = "RATE_VIEW";
 		$scope.calendarData = {};
+        $scope.currentlySelectedDate = "";
+        $scope.currentlySelectedRate = {};
+        $scope.currentlySelectedRoomType = {};
 	};
 
 	$scope.expandRow = function(index){
@@ -119,12 +122,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		$scope.invokeApi(RateMngrCalendarSrv.updateRestrictions, params, restrictionUpdateSuccess);
 	}
 
-	var updateTopbar = function(){
-		$scope.fromDate = "10-10-10";
-		$scope.toDate = "11-12-13";
-
-
-	};
 	/**
 	* Click event handler for filter menu "show rates" button
 	*/
@@ -134,7 +131,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		for( var i in $scope.currentFilterData.rates_selected_list){
 			$scope.ratesDisplayed.push($scope.currentFilterData.rates_selected_list[i]);
 		}
-		updateTopbar();
 		loadTable();
 	});  
 
@@ -144,8 +140,13 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 
 	});
 
-	$scope.showUpdatePriceAndRestrictionsDialog = function(){
+	$scope.showUpdatePriceAndRestrictionsDialog = function(date, type, obj){
+        console.log(type);
+        $scope.currentlySelectedDate = date;
+        if (type === 'RATE'){ $scope.currentlySelectedRate = obj; }
+        if (type === 'ROOM_TYPE'){ $scope.currentlySelectedRoomType = obj; }
         console.log('reached::showUpdatePriceAndRestrictionsDialog');
+        console.log(obj);
         ngDialog.open({
             template: '/assets/partials/rateManager/updatePriceAndRestrictions.html',
             className: 'ngdialog-theme-default',

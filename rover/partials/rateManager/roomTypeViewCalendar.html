@@ -36,7 +36,7 @@
 			    </span>
             </td>
 			
-			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-hide="currentExpandedRow==$parent.$index">
+			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-hide="currentExpandedRow==$parent.$index" ng-click="showUpdatePriceAndRestrictionsDialog(date, 'ROOM_TYPE', rate)">
 				<div class="cell-content">
 					<span ng-repeat="restriction in rate[date].restrictions" class="{{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
 						{{restriction.days}}
