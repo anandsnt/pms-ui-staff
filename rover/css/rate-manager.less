@@ -261,86 +261,101 @@ table tr {
     border-radius: 10px;
     float: right;
     text-align: center;
+    z-index: 10000;
     
 }
 .status-on{
-    background-color: #78d622;
+    background-color: #89bd55;
 }
 .status-off{
-    background-color: #e54019;
+    background-color: #e63838;
 }
 .status-mixed{
-    background-color: #D8D8D8;
+    background-color: rgba(0, 0, 0, 0.15);;
 }
 
 
 
 
 dialog{
-  color:#000;
-  .header{
-    background: url("../cssimg/texture-guest-card.png") repeat scroll 0 0 #3B3F43;
-    color: #FCFCFC;
-    display: block;
-    height: 100px;
-    left: 0;
-    position: absolute;
-    width: 100%;
-    z-index: 999;
-    padding:20px;
-    margin-top: -17px;
-    top:17px;
-}
-.restriction_text
-{
-  margin:125px 10px 20px 10px;
-
-  text-align:center;
-
-  .mixed_restrictions{
-    padding:15px;
-    margin-top:20px;
-    color: #625305;
-    background: none repeat scroll 0 0 #F8E26E;
-    border: 1px solid #F3CE0D;
-    border-radius: 3px 3px 3px 3px;
-  }
- }
-  .restriction_type{
-    font-size:14px;
-    text-transform: uppercase;
-    margin:0px 10px;
-    padding:10px;
-    border-bottom: 1px solid #D8D8D8;
-     .restriction_type_status{
-       background-color: #89BD55;
-       border:1px solid red;
-        height: 30px;
-        margin-top: 10px;
-        width: 30px;
-        background-image: asset-url("admin/admin-icons.png");
-        background-repeat: no-repeat;
-        border: 0;
-    .restriction_cancel
-    {
-      background-color: #89BD55;
+    color:#000;
+    .header{
+        background: url("../cssimg/texture-guest-card.png") repeat scroll 0 0 #3B3F43;
+        color: #FCFCFC;
+        display: block;
+        height: 100px;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        z-index: 999;
+        padding:20px;
+        margin-top: -17px;
+        top:17px;
     }
-    .small-icon{
-    background-position: 8px -112px;
-     }
-}
-  }
-  .footer{
-    text-align:center;
-    border-top:1px solid #D8D8D8;
-    padding-top:20px;
-    .button{
-        font-size: 21px;
-        height: 60px;
-       width: 188px;
-    }
-  }
+    .restriction_text {
+        margin:125px 10px 20px 10px;
+        text-align:center;
 
+        .mixed_restrictions {
+            padding:15px;
+            margin-top:20px;
+            color: #625305;
+            background: none repeat scroll 0 0 #F8E26E;
+            border: 1px solid #F3CE0D;
+            border-radius: 3px 3px 3px 3px;
+        }
+    }
+    .restriction-type {
+        font-size:14px;
+        text-transform: uppercase;
+        margin:0px 10px;
+        padding:10px;
+        border-bottom: 1px solid #D8D8D8;
+        .restriction-icon {
+            width: 25px;
+            height: 25px;
+            background-color: rgba(0, 0, 0, 0.15);
+            display: block;
+            margin-right: 10px;
+            float: left;    
+            border: 0;
+            text-align: center;
+            color: #FCFCFC;
+            &.bg-green {
+                background-color: #89bd55;
+            }
+            &.bg-red {
+                background-color: #e63838;
+            }
+            &.bg-blue {
+                background-color: #82c3de;
+            } 
+            &.bg-violet {
+                background-color: #a261bd;
+            }
+            &.icon-cross {
+                background-image: url(/assets/app/app-icons.png);
+                background-position: 5px -195px;
+            }
+            &.icon-block {
+                background-image: url(/assets/app/app-icons.png);
+                background-position: 5px -195px;
+            }
+        }
+
+        
+        
+    }
+    .footer{
+        text-align:center;
+        border-top:1px solid #D8D8D8;
+        padding-top:20px;
+        .button{
+            font-size: 21px;
+            height: 60px;
+            width: 188px;
+        }
+    }
 }
 
 
