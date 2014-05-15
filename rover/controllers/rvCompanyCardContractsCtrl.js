@@ -1,32 +1,36 @@
 sntRover.controller('companyCardContractsCtrl',['$scope', 'RVCompanyCardSrv', '$stateParams','ngDialog','dateFilter', function($scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter){
 
 	$scope.isAddMode = false;
-	$scope.contractsData = {};
 	$scope.contractList = {};
-	$scope.fetchData = function(){   
-  	    var fetchContractsDetailsSuccessCallback = function(data){
-  	    	console.log("sucss dettls");
-  	    	console.log(data);
-  	    	$scope.contractData = data;
-  	    	console.log($scope.contractData.occupancy)
-  	    };
-  	    var fetchContractsListSuccessCallback = function(data){
-  	    	$scope.contractList = data.results;
-  	    	$scope.contractSelected = data.contract_selected;
-  	    };
-  	    var fetchContractsDetailsFailureCallback = function(data){
-  	        $scope.$emit('hideLoader');
-  	    };
-  	    var fetchContractsListFailureCallback = function(data){
-  	        $scope.$emit('hideLoader');
-  	    };
-  	    $scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);  
-		
-		$scope.invokeApi(RVCompanyCardSrv.fetchContractsList,{},fetchContractsListSuccessCallback,fetchContractsListFailureCallback);  
-
-    };
-	$scope.fetchData();
 	
+	var fetchContractsDetailsSuccessCallback = function(data){
+		$scope.contractsData = {};
+    	$scope.contractData = data;
+    	$scope.$emit('hideLoader');
+    };
+  	var fetchFailureCallback = function(data){
+        $scope.$emit('hideLoader');
+    };    
+  	    
+    var fetchContractsListSuccessCallback = function(data){
+    	$scope.contractList = data.results;
+    	$scope.contractSelected = data.contract_selected;
+    	$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":$scope.contractSelected},fetchContractsDetailsSuccessCallback,fetchFailureCallback);  
+    };
+    var fetchContractsDetailsFailureCallback = function(data){
+        $scope.$emit('hideLoader');
+    };
+	
+	$scope.invokeApi(RVCompanyCardSrv.fetchContractsList,{"account_id":$stateParams.id},fetchContractsListSuccessCallback,fetchFailureCallback);  
+	
+	/*
+    * Function to handle data change in 'Contract List'.
+    */
+    $scope.clickedContractList = function(contract_id){
+		console.log("clickedContractList"+contract_id);
+		$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":contract_id},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);  
+    };
+   
 	$scope.contractStart = function(){
 		ngDialog.open({
 			 template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
