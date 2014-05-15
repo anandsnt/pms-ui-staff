@@ -106,10 +106,10 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         var targetData = [];
         angular.forEach(data.results, function(item){
             itemDate = Date.parse(item.date);
-            actualData.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: replace harcoded 10 with item.actual
-            //actualData.push([itemDate, item.actual]);
-            targetData.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: replace harcoded 10 with item.target
-            //targetData.push([itemDate,item.target]);
+            //actualData.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: replace harcoded 10 with item.actual
+            actualData.push([itemDate, item.actual]);
+            //targetData.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: replace harcoded 10 with item.target
+            targetData.push([itemDate,item.target]);
         });
         graphData = [{
             "name": "Actual",
