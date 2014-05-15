@@ -7,13 +7,16 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         $scope.weekCommonTargets = [];
         $scope.seriesActualVisible = true;
         $scope.seriesTargetVisible = true;
+        clientWidth = $(window).width();
         var drawGraph = function(){
             $scope.highchartsNG = {
                 options: {
                     chart: {
-                        type: 'line',
+                        type: 'area',
                         className: "rateMgrOccGraph",
                         plotBackgroundColor: '#e0e0e0',
+                        width : clientWidth - 270,
+                        backgroundColor : null
                     },
                     tooltip: {
                         shared: true,
@@ -24,6 +27,11 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                     legend: { 
                         enabled:false
                     },
+                    plotOptions:{
+                    	series: {
+                        fillOpacity: 0.1
+                    	}
+                    },
                     xAxis: {
                         gridLineWidth: 10,
                         gridLineColor: '#f0f0f0',
@@ -33,6 +41,13 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                         minTickInterval: 24 * 3600 * 1000,
                         dateTimeLabelFormats:{
                             day: '%A <br/> %B %d'
+                        }
+                    },
+                    yAxis: {
+                        floor: 0,
+                        ceiling: 100,
+                        title: {
+                            text: ''
                         }
                     },
                     title:{
@@ -71,17 +86,27 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         var targetData = [];
         angular.forEach(data.results, function(item){
             itemDate = Date.parse(item.date);
-            actualData.push([itemDate, 10]); // TODO :: replace harcoded 10 with item.actual
-            targetData.push([itemDate, item.target]);
+            //actualData.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: replace harcoded 10 with item.actual
+            actualData.push([itemDate, item.actual]);
+            //targetData.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: replace harcoded 10 with item.target
+            targetData.push([itemDate,item.target]);
         });
         graphData = [{
             "name": "Actual",
             "data": actualData,
-            "color": "blue"
+            "color": "rgba(247,153,27,0.9)",
+            "marker":{
+        		symbol: 'circle',
+        		radius:5
+        	}
         },{
             "name": "Target",
             "data": targetData,
-            "color": "black"
+            "color": "rgba(130,195,223,0.9)",
+            "marker":{
+        		symbol: 'triangle',
+        		radius:5
+        	}
         }]
         return graphData
     }
@@ -196,8 +221,8 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
             $scope.$emit('hideLoader');
         };
         var params = {
-            "from_date": "2014-05-01",
-            "to_date": "2014-05-13"
+            "from_date": $scope.currentFilterData.begin_date,
+            "to_date": $scope.currentFilterData.end_date
         }
         $scope.invokeApi(RateMgrOccupancyGraphSrv.fetch, params, fetchGraphDataSuccess);
     };

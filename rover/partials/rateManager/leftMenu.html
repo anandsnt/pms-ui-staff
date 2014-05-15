@@ -1,6 +1,7 @@
-<div class="filter-options" style="position: absolute; left:0px; z-index:11;" ng-show="showLeftMenu">	
+<div class="filter-options {{currentLeftMenuClass}}"  style="z-index:11;" >	
 
 	<h3>FILTER OPTIONS</h3>
+	<a class="leftMenuHandle" ng-click="toggleLeftMenu()"></a>	
 	<div class="holder left" ng-iscroll="filter_details" ng-iscroll-delay="1000">
 		
 		<div class="entry has-datepicker">
@@ -78,5 +79,4 @@
 
 </div>
 
-<input type="button" value="show/close" ng-click="showLeftMenu=!showLeftMenu" style="position:absolute; top:190px; z-index: 11;">
 

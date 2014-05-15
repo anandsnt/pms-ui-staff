@@ -10,6 +10,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
         $scope.currentlySelectedDate = "";
         $scope.currentlySelectedRate = {};
         $scope.currentlySelectedRoomType = {};
+        if($scope.filterConfigured){
+        	loadTable();
+        }
 	};
 
 	$scope.expandRow = function(index){
@@ -83,6 +86,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 	$scope.goToRoomTypeCalendarView = function(rate){
 		$scope.ratesDisplayed.length = 0;
 		$scope.ratesDisplayed.push(rate);
+        $scope.$emit("enableBackbutton");
 		$scope.calendarMode = "ROOM_TYPE_VIEW";
 		loadTable(rate.id);
 	};

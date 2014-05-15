@@ -1,4 +1,27 @@
 #rate-manager {
+
+.occupancy-graph-container{
+	position: absolute;
+	.filter-options{
+		background:none !important;
+	}
+	.entry.radio-check{
+		margin : 0 0 20px 0
+	}
+}
+
+
+	#update{
+width:100%;
+}
+
+.occgraph-outer{
+position: absolute;
+left: 240px;
+top: 115px;
+clear:both;
+margin-top:20px;
+}	
     .topbar {
         height: 50px;
         line-height: 50px;
@@ -29,6 +52,7 @@
         .filter-options {
             display:block;
             width: 230px;
+            top : 78px; /* To avoid the div falling down, when table has Height fixed. Need Review review */
             background-color:#E0E0E0 ;
             padding:20px;
             height:100%;
@@ -74,6 +98,23 @@
                 height : 80px;
                 line-height : 80px; /* Trick for vertical alligh*/
                 font-size : 20px;
+        }
+        .date-header {
+          border : 10px solid #e7e7e7;
+          height : 80px;
+          font-size : 20px;
+          text-align: center;
+          white-space: pre-line;
+          vertical-align: middle;
+          display:table;
+          width: 100%;
+        }
+        th .date-header {
+          background-color : #393c41;
+        }
+        th .date-header span { 
+          display: table-cell;
+          vertical-align: middle;
         }
         th .cell-content{
                 background-color : #393c41;
@@ -301,6 +342,42 @@ dialog{
   }
 
 }
+
+
+/** Added for leftside menu transition by qburst */
+
+.leftMenuHandle {
+    position:absolute;
+    left: 230px;
+    top:20px; 
+    background-color: #E0E0E0;
+    background-image: url("/assets/main-navigation.png"), url("/assets/texture-dark.png");
+    background-position: -10px -10px, 0 0;
+    background-repeat: no-repeat, repeat;
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+    box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.2) inset;
+    display: block;
+    height: 40px;
+    width: 40px;
+}
+.slide_right {
+    position: absolute;
+    left: 0;
+    /*-webkit-transition-duration: .5s;
+    -moz-transition-duration: .5s;
+    -o-transition-duration: .5s;
+    transition-duration: .5s;*/
+  }
+.slide_left {
+    position: absolute;
+    left: -220px;
+    /*-webkit-transition-duration: .5s;
+    -moz-transition-duration: .5s;
+    -o-transition-duration: .5s;
+    transition-duration: .5s;*/
+}
+
 
 
 
