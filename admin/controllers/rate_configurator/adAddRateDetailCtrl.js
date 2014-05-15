@@ -130,7 +130,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 'promotion_code': $scope.rateData.promotion_code,
                 'addons': addOns,
                 'charge_code_id': $scope.rateData.charge_code_id,
-                'currency_code_id': $scope.rateData.currency_id
+                'currency_code_id': $scope.rateData.currency_code_id
             };
 
             // Save Rate Success Callback

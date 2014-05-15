@@ -109,6 +109,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.rate_type.id = (data.rate_type != null) ? data.rate_type.id : '';
             $scope.rateData.rate_type.name = (data.rate_type != null) ? data.rate_type.name : '';
             $scope.rateData.addOns = data.addons;
+            $scope.rateData.charge_code_id = data.charge_code_id;
+            $scope.rateData.currency_code_id = data.currency_code_id;
+
           
 
             if($scope.rateData.addOns.length>0){
