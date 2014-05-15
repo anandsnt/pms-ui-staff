@@ -133,7 +133,7 @@ var element = $event.target;
 		}
 		}
 		if(!$scope.guestCardVisible){
-			$scope.guestCardHeight =  $scope.windowHeight-90;
+			$("#guest-card").css("height", $scope.windowHeight-90);
 			$scope.guestCardVisible = true;			
 			$scope.$broadcast('CONTACTINTOLOADED');
 		}
