@@ -369,10 +369,10 @@ hkRover.controller('HKSearchCtrl',
 		var MOVE_EV  = hasTouch ? 'touchmove' : 'mousemove';
 		var END_EV   = hasTouch ? 'touchend' : 'mouseup';
 
-		var touching = false;
-		var startY   = 0;
-		var nowY     = 0;
-		var initTop  = $el.scrollTop;
+		var touching  = false;
+		var startY    = 0;
+		var nowY      = 0;
+		var initTop   = $el.scrollTop;
 		var trigger   = 100; 
 
 		var loaderEngine = function(diff) {
@@ -468,7 +468,7 @@ hkRover.controller('HKSearchCtrl',
 			loaderEngine();
 		};
 
-		$el.addEventListener('touchstart', touchStartHandler, false);
+		$el.addEventListener(START_EV, touchStartHandler, false);
 
 		$el.addEventListener('touchend', touchEndHandler, false);
 	};
