@@ -9,6 +9,7 @@ var HouseKeepingSettingsView = function(domRef) {
 		that.use_pickup = "false";
 		that.use_inspected = "false";
 		that.checkin_inspected_only = "false";
+
 	};
 
 	this.delegateEvents = function() {
@@ -26,14 +27,20 @@ var HouseKeepingSettingsView = function(domRef) {
 	};
 
 	this.disableCheckbox = function() {
+		is_checkbox_checked = that.myDom.find("#div-checkin_inspected_only").is(":checked");
 
 		if (that.myDom.find("#div-use-inspected").hasClass("on")) {
 			console.log("On Enabled...")
+			if (is_checkbox_checked) {
+				console.log("is_checked---" + is_checkbox_checked);
+				that.myDom.find("#div-checkin_inspected_only").closest("label").find("span:eq(0)").addClass("checked");
+				that.myDom.find("#div-checkin_inspected_only").closest("label").addClass("checked");
+			}
 			that.myDom.find("#div-checkin_inspected_only").removeAttr("disabled");
 		} else {
 			that.myDom.find("#div-checkin_inspected_only").closest("label").find("span:eq(0)").removeClass("checked");
 			that.myDom.find("#div-checkin_inspected_only").closest("label").removeClass("checked");
-			that.myDom.find("#div-checkin_inspected_only").removeAttr("checked").attr("disabled", true);
+			that.myDom.find("#div-checkin_inspected_only").attr("disabled", true);
 
 		}
 
