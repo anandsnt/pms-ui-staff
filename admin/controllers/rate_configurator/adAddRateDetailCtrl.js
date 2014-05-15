@@ -130,7 +130,15 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 'promotion_code': $scope.rateData.promotion_code,
                 'addons': addOns,
                 'charge_code_id': $scope.rateData.charge_code_id,
-                'currency_code_id': $scope.rateData.currency_code_id
+                'currency_code_id': $scope.rateData.currency_code_id,
+                'min_advanced_booking':$scope.rateData.min_advanced_booking,
+                'max_advanced_booking':$scope.rateData.max_advanced_booking,
+                'min_stay':$scope.rateData.min_stay,
+                'max_stay':$scope.rateData.max_stay,
+                'use_rate_levels':$scope.rateData.use_rate_levels,
+                'is_commission_on':$scope.rateData.is_commission_on,
+                'is_suppress_rate_on':$scope.rateData.is_suppress_rate_on,
+                'is_discount_allowed_on':$scope.rateData.is_discount_allowed_on
             };
 
             // Save Rate Success Callback

@@ -112,8 +112,19 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.charge_code_id = data.charge_code_id;
             $scope.rateData.currency_code_id = data.currency_code_id;
 
-          
+            // rules and restrictions
+            $scope.rateData.min_advanced_booking = data.min_advanced_booking;
+            $scope.rateData.max_advanced_booking = data.max_advanced_booking;
+            $scope.rateData.min_stay = data.min_stay;
+            $scope.rateData.max_stay = data.max_stay;        
+            $scope.rateData.use_rate_levels =(data.use_rate_levels) ? true: false ;
 
+            //Additional details
+            $scope.rateData.is_commission_on = (data.is_commission_on)?true:false;
+            $scope.rateData.is_suppress_rate_on = (data.is_suppress_rate_on)?true:false;
+            $scope.rateData.is_discount_allowed_on = (data.is_discount_allowed_on)?true:false;
+
+            // addons
             if($scope.rateData.addOns.length>0){
                 var tempData = $scope.rateData.addOns;
                 $scope.rateData.addOns = [];
