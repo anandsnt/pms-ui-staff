@@ -3,6 +3,8 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
   	/*
     * Method to fetch all filter options
     */
+    
+
 
 	$scope.fetchFilterOptions = function(){
 		var fetchRatesSuccessCallback = function(data) {

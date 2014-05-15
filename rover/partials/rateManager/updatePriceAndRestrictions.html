@@ -1,26 +1,41 @@
 <div ng-controller="UpdatePriceAndRestrictionsCtrl">
-    <div class="updatePriceAndRestrictionsContainer">
-        <div class="header">
+    <dialog>
+        <div class="updatePriceAndRestrictionsContainer">
+            <div class="header">
+                <h2 class="h1">Bar</h2>
+                <em>Wednesday, January 14</em>
+            </div>
+            <div class="restriction_text" >
+                <h2 class="h1">RESTRICTIONS</h2>
+                <div class="mixed_restrictions">
+                    <em>Mixed restrictions applied!</em>
+                </div>
+            </div>
+            <div>
+                <div ng-include="'/assets/partials/rateManager/rateMngrRestrictions.html'" >
+                </div>
+                <div class="hide">
+                    include div 2 here
+                </div >
+                <div class="hide">
+                    include div 3 here
+                </div>
+                <div class="hide">
+                    include div 4 here
+                </div>
+                <div class="hide">
+                    include div 5 here
+                </div>
+            </div>
+            <div class="footer">
+                <div class="actions float">
+                    <button class="button blank edit-data-inline" id="cancel" ng-click="hideUpdatePriceAndRestrictionsDialog()" type="button">
+                        Cancel
+                    </button>
+                    <button class="button green edit-data-inline" id="save" type="button" ng-click="updateRestriction()">
+                        Set
+                    </button>
+                </div>
+            </div>
         </div>
-        <div>
-            <div ng-include="'/assets/partials/rateManager/rateMngrRestrictions.html'" >
-            </div>
-            <div>
-                include div 2 here
-            </div>
-            <div>
-                include div 3 here
-            </div>
-            <div>
-                include div 4 here
-            </div>
-            <div>
-                include div 5 here
-            </div>
-        </div>
-        <div class="footer">
-            <button ng-click="hideUpdatePriceAndRestrictionsDialog()">Cancel</button>
-            <button>Set</button>
-        </div>
-    </div>
 </div>
