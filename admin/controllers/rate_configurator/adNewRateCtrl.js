@@ -118,12 +118,16 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.min_stay = data.min_stay;
             $scope.rateData.max_stay = data.max_stay;        
             $scope.rateData.use_rate_levels =(data.use_rate_levels) ? true: false ;
+            $scope.rateData.deposit_policy_id = data.deposit_policy_id;
+            $scope.rateData.cancellation_policy_id = data.cancellation_policy_id;
 
             //Additional details
             $scope.rateData.is_commission_on = (data.is_commission_on)?true:false;
             $scope.rateData.is_suppress_rate_on = (data.is_suppress_rate_on)?true:false;
             $scope.rateData.is_discount_allowed_on = (data.is_discount_allowed_on)?true:false;
-       
+            $scope.rateData.source_id = data.source_id;
+            $scope.rateData.market_segment_id = data.market_segment_id;
+
             // addons
             if($scope.rateData.addOns.length>0){
                 var tempData = $scope.rateData.addOns;

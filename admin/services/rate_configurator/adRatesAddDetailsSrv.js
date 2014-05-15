@@ -18,10 +18,9 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
              * @return {object}  cancelation penalties
              */
             this.fetchCancelationPenalties = function () {
-                var url = " /api/policies?policy_type=CANCEL_PENALTIES";
+                var url = "/api/policies?policy_type=CANCELLATION_POLICY";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.cancelationPenalties = data.results;
-                    console.log(that.addRatesDetailsData)
                     deferred.resolve(that.addRatesDetailsData);
                 }, function (data) {
                     deferred.reject(data);
@@ -34,7 +33,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
              * @return {object} deposit policies
              */
             this.fetchDepositPolicies = function () {
-                var url = "/api/policies?policy_type=DEPOSIT_REQUESTED";
+                var url = "/api/policies?policy_type=DEPOSIT_REQUEST";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.depositPolicies = data.results;
                     this.fetchCancelationPenalties();

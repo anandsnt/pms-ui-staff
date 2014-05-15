@@ -140,7 +140,10 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 'is_suppress_rate_on':$scope.rateData.is_suppress_rate_on,
                 'is_discount_allowed_on':$scope.rateData.is_discount_allowed_on,
                 'source_id':$scope.rateData.source_id,
-                'market_segment_id':$scope.rateData.market_segment_id
+                'market_segment_id':$scope.rateData.market_segment_id,
+                'cancellation_policy_id': $scope.rateData.cancellation_policy_id,
+                'deposit_policy_id':$scope.rateData.deposit_policy_id
+
             };
 
             // Save Rate Success Callback
