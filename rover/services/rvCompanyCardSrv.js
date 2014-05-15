@@ -2,6 +2,11 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 	
 	var self = this;
 	
+	/** contact information area */
+
+	/**
+	* service function used to retreive contact information against a accound id
+	*/
 	this.fetchContactInformation = function(data){
 		var id = data.id;
 		var deferred = $q.defer();		
@@ -11,10 +16,26 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 		},function(data){
 			deferred.reject(data);
 		});
-		return deferred.promise;		
-		
+		return deferred.promise;				
 	};
-	
+
+
+	/**
+	* service function used to save the contact information
+	*/
+	this.saveContactInformation = function(data){
+		var deferred = $q.defer();		
+		var url =  'api/accounts/save.json';			
+		rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	}
+
+	/** end of contact information area */
+		
 	this.fetchContractsList = function(data){
 		var deferred = $q.defer();		
 		var url =  '/sample_json/contracts/rvCompanyCardContractsList.json';	
