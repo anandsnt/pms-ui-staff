@@ -39,7 +39,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 restrictionTypes[itemID] = item;
             }
             $scope.data.restrictionTypes = restrictionTypes;
-			console.log(JSON.stringify($scope.data.restrictionTypes));
+            $scope.data.previousRestrictionTypes = JSON.parse(JSON.stringify($scope.data.restrictionTypes));
+			// console.log(JSON.stringify($scope.data.previousRestrictionTypes));
         };
 
         /**
@@ -58,7 +59,16 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         $scope.init();
         
         $scope.saveRestriction = function(){
+        	console.log(JSON.stringify($scope.data.previousRestrictionTypes));
+        	console.log("------------------original--------JSON.stringify($scope.data.previousRestrictionTypes)=================");
         	console.log(JSON.stringify($scope.data.restrictionTypes));
+        	
+        	angular.forEach($scope.data.restrictionTypes, function(value, key){
+        		console.log("value--------"+value);
+        		console.log("value--------"+key);
+		     });
+        	
+        	
         };
     }
 ]);
