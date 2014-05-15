@@ -4,10 +4,13 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
     $scope.displayMode = "CALENDAR";
     $scope.filterConfigured = false;
     var defaultDateRange = 7;
-	$scope.showLeftMenu = true;
     $scope.backbuttonEnabled = false;
+    
+    //left side menu class, based on which it will appear or not
+    $scope.currentLeftMenuClass = 'slide_right';
+    
 
-	$scope.currentFilterData =	{
+	  $scope.currentFilterData =	{
            begin_date : dateFilter(new Date(), 'yyyy-MM-dd'),
            end_date : dateFilter(new Date((new Date()).getTime() + defaultDateRange*24*60*60*1000), 'yyyy-MM-dd'),
            zoom_level : [{"value": "3","name": "3 days"},{"value": "4","name": "4 days"},{"value": "5","name": "5 days"},{"value": "6","name": "6 days"},{"value": "7","name": "7 days"}],
@@ -18,8 +21,9 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
            rates : [],
            rates_selected_list : [],
            name_on_cards : []
+   	};
 
-    };
+
     /* UI options like column width are computed here 
        A property, and a function to compute the same are given below
     */
@@ -87,5 +91,18 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
     $scope.$on("enableBackbutton", function(){
         $scope.backbuttonEnabled = true;
     });
+
+
+    /**
+    * function to handle left side menu toggling
+    */
+    $scope.toggleLeftMenu = function()   {
+      if ($scope.currentLeftMenuClass == 'slide_right'){
+        $scope.currentLeftMenuClass = 'slide_left';
+      }
+      else{
+        $scope.currentLeftMenuClass = 'slide_right';
+      }
+    }
 
 }]);
