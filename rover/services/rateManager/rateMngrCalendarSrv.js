@@ -205,8 +205,23 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	this.getRestrictionUIElements = function(restriction_type){
 		var restriction_type_updated = {};
 		//TODO: Add UI condition checks using "restrVal"
-		restriction_type_updated.icon = "icon";
-		restriction_type_updated.background_class = "bgclass";
+		restriction_type_updated.icon = "";
+		if('CLOSED' == restriction_type.value) {
+			restriction_type_updated.icon = "icon-cross";
+		} 
+		if('CLOSED_ARRIVAL' == restriction_type.value) {
+			restriction_type_updated.icon = "icon-block";
+		}
+		restriction_type_updated.background_class = "";
+		if(['CLOSED', 'CLOSED_ARRIVAL', 'CLOSED_DEPARTURE'].indexOf(restriction_type.value) >= 0){
+			restriction_type_updated.background_class = "bg-red";
+		}
+		if('MIN_STAY_LENGTH' == restriction_type.value) {
+			restriction_type_updated.background_class = "bg-blue";
+		} 
+		if('MIN_ADV_BOOKING' == restriction_type.value) {
+			restriction_type_updated.background_class = "bg-green";
+		}
 		restriction_type_updated.id = restriction_type.id;
 		restriction_type_updated.description = restriction_type.description;
 		restriction_type_updated.value = restriction_type.value;

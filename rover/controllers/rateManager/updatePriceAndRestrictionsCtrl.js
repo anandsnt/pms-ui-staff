@@ -9,18 +9,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             ngDialog.close();
         };
 
-        $scope.isRestrictionOn = function(searchRestrictionKey){
-
-            return true;
-        	/*var ret = false;
-        	for(var i=0 in rateRestrictions){
-        		if(rateRestrictions[i].restriction_type_id == searchRestrictionKey){
-        			ret = true;
-        		}
-        	}
-        	return ret;*/
-        };
-
         var computePopUPdata = function(){
             var selectedDateInfo = {};
             for(var i in $scope.calendarData.data){
@@ -49,6 +37,21 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 restrictionTypes[itemID] = item;
             }
             $scope.data.restrictionTypes = restrictionTypes;
+
+        };
+
+        $scope.updateRestriction = function(id, action){
+            console.log("updateRestriction");
+            console.log(id);
+            console.log(action);
+
+            if(action == "ENABLE"){
+                $scope.data.restrictionTypes[id].isRestrictionEnabled = true; 
+            }
+            if(action == "ENABLE"){
+                $scope.data.restrictionTypes[id].isRestrictionEnabled = false; 
+            }
+
 
         };
 
