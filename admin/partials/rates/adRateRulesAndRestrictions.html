@@ -1,9 +1,48 @@
 <!-- Header Collapse View -->
 <div ng-hide="detailsMenu ==='rulesAndRestrictions'">
-    RULES AND RESTRICTIONS
-    <div ng-click="changeDetailsMenu('rulesAndRestrictions')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+	<div class="form-title">
+		<h3 class="rate_additional_details_heading">  RULES AND RESTRICTIONS </h3>
+		<div ng-click="changeDetailsMenu('rulesAndRestrictions')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+	</div>
 </div>
 
 <!-- Expanded View -->
 <form ng-show="detailsMenu ==='rulesAndRestrictions'" class="form float form_add_new_rate">
+	<div class="form-title">
+		<h3 class="rate_additional_details_heading">RULES AND RESTRICTIONS </h3>
+		<div ng-click="changeDetailsMenu('')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-up.png"></div>
+	</div>
+
+	<!-- <fieldset class="holder full-width"> -->
+	<fieldset class="holder left">
+		<div class="entry full-width">
+			<ad-textbox inputtype="text" value="rateData.name" label = "min.advanced booking" placeholder = "Enter Rate name" ></ad-textbox>
+			<ad-textbox inputtype="text" value="rateData.name" label = "max.advanced booking" placeholder = "Enter Rate name" ></ad-textbox>
+		</div>
+		<div class="entry full-width">
+			<ad-textbox inputtype="text" value="rateData.name" label = "min.length of stay" placeholder = "Enter Rate name" ></ad-textbox>
+			<ad-textbox inputtype="text" value="rateData.name" label = "max.length of stay" placeholder = "Enter Rate name" ></ad-textbox>
+		</div>
+		<ad-checkbox is-checked="checkinData.is_notify_on_room_ready_flag" label="Use Rate Levels" div-class="full-width"></ad-checkbox>	
+	</fieldset>
+	<fieldset class="holder right">
+		<div class="entry full-width">
+			<label>deposit requirements</label>
+			<div class="select">
+				<select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
+					<option value="" disabled>Select Rate Type</option>
+				</select>
+			</div>
+		</div>
+		<div class="entry full-width">
+			<label>cancellation penalties</label>
+			<div class="select">
+				<select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
+					<option value="" disabled>Select Rate Type</option>
+				</select>
+			</div>
+		</div>
+	</fieldset>
+	<!-- </fieldset> -->
+
 </form>

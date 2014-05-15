@@ -22,21 +22,18 @@
                     </select>
                 </div>
             </div>
-
-           
             <div class="entry">
                 <label>Charge code <strong>*</strong> </label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
-                        <option value="" disabled>Select Rate Type</option>
+                    <select class="placeholder" ng-model="rateData.charge_code_id" ng-options="charge_code.id as charge_code.description for charge_code in rateTypesDetails.charge_codes">
                     </select>
                 </div>
             </div>
             <div class="entry">
                 <label>currency <strong>*</strong> </label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
-                        <option value="" disabled>Select Rate Type</option>
+                    <select class="placeholder" ng-model="rateData.currency_code_id">
+                        <option value="">{{rateTypesDetails.hotel_settings.currency.symbol}}</option>
                     </select>
                 </div>
             </div>
@@ -72,23 +69,19 @@
         </fieldset>
 
         <fieldset class="holder right">
-              <ad-textarea rows="2" div-class="full-width" text-area-class="full-width" value="rateData.description" label = "Description " placeholder = "Enter rate description" required="true"></ad-textarea>
+              <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label = "Description " placeholder = "Enter rate description" required="true"></ad-textarea>
         </fieldset>
         <fieldset class="holder left" ng-show="isPromotional()">
                 <ad-textbox inputtype="text" value="rateData.promotion_code" label = "Promotions Code" placeholder = "Enter Promotional Code" required="no"></ad-textbox>
         </fieldset>
 
-        <table class="grid">
-            <tr>
-             <td ng-include="'/assets/partials/rates/adRateAdditionalDetails.html'"></td> 
-         </tr>
-         <tr>
-            <td ng-include="'/assets/partials/rates/adRateRulesAndRestrictions.html'"></td>
-        </tr> 
-          <tr>
-            <td ng-include="'/assets/partials/rates/adRateDetailsAddons.html'"></td>
-        </tr> 
-       </table>
+        <div ng-include="'/assets/partials/rates/adRateAdditionalDetails.html'">
+        </div>
+        <div  ng-include="'/assets/partials/rates/adRateRulesAndRestrictions.html'">
+        </div>
+         <div  ng-include="'/assets/partials/rates/adRateDetailsAddons.html'">
+        </div>
+
 </fieldset>
 <div class="actions float actions_margin_top">
     <button type="button" ui-sref="admin.rates" class="button blank add-data-inline">

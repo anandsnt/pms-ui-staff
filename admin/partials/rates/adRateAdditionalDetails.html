@@ -1,9 +1,52 @@
 <!-- Header Collapse View -->
 <div ng-hide="detailsMenu ==='additionalDetails'">
-    ADDITIONAL DETAILS
-    <div ng-click="changeDetailsMenu('additionalDetails')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+ <div class="form-title">
+            <h3 class="rate_additional_details_heading">ADDITIONAL DETAILS </h3>
+            <div ng-click="changeDetailsMenu('additionalDetails')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+  </div>
 </div>
 
 <!-- Expanded View -->
 <form ng-show="detailsMenu ==='additionalDetails'" class="form float form_add_new_rate" >
+  <div class="form-title">
+            <h3 class="rate_additional_details_heading">ADDITIONAL DETAILS </h3>
+            <div ng-click="changeDetailsMenu('')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-up.png"></div>
+  </div>
+	
+	 <!-- <fieldset class="holder full-width"> -->
+	 	<fieldset class="holder left">
+	 		      <div class="entry has-datepicker">
+							<label for="birthday"> end date(overrides date range) </label>
+							<input type="text" ng-model="birthdayText" readonly="" name="guest-birthday" maxlength="8" id="guest-birthday" class="hasDatepicker"ng-click="popupCalendar()" >
+							<button type="button" class="ui-datepicker-trigger" ng-click="popupCalendar()">
+								...
+							</button>
+				</div>
+	 		   <div class="entry full-width">
+	 		   	<div class="entry">
+                <label>Market</label>
+                <div class="select">
+                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
+                        <option value="" disabled>Select Rate Type</option>
+                    </select>
+                </div>
+                </div>
+                <div class="entry">
+                <label>Source</label>
+                <div class="select">
+                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
+                        <option value="" disabled>Select Rate Type</option>
+                    </select>
+                </div>
+          		</div>
+            </div>
+           
+	 	</fieldset>
+	 	<fieldset class="holder right">
+	 		<ad-toggle-button is-checked="addon.isSelected" label="COMMISION"></ad-toggle-button>
+	 		<ad-toggle-button is-checked="addon.isSelected" label="DISCOUNT ALLOWED"></ad-toggle-button>
+	 		<ad-toggle-button is-checked="addon.isSelected" label="SUPPRESS RATE"></ad-toggle-button>
+	 	</fieldset>
+	 <!-- </fieldset> -->
+
 </form>

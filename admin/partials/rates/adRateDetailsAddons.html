@@ -1,7 +1,9 @@
 <!-- Header Collapse View -->
 <div ng-hide="detailsMenu ==='addOns'">
-    ADD-ONS
-    <div ng-click="changeDetailsMenu('addOns')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+    <div class="form-title">
+            <h3 class="rate_additional_details_heading">AADD-ONS</h3>
+             <div ng-click="changeDetailsMenu('addOns')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+  </div>
 </div>
 
 <!-- Expanded View -->
@@ -10,17 +12,23 @@
 	<div ng-click="changeDetailsMenu('')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-up.png"></div>
 
 	<table class="grid">
-		<th>ADD-ON</th>
-		<th>PRICE</th>
-		<th>INCLUSIVE/EXCLUSIVE</th>
-		<th>USE</th>
+		 <col width="20%">
+ 		 <col width="20%">
+ 		 <col width="30%">
+ 		 <col width="20%">
+		<thead>
+		<th class="header">ADD-ON</th>
+		<th class="header">PRICE</th>
+		<th class="header center_align">INCLUSIVE/EXCLUSIVE</th>
+		<th class="header">USE</th>
+	    </thead>
+		<tbody>
 		<tr ng-repeat="addon in rateData.addOns">
 			<td>{{addon.name}}</td> 
-			<td>{{rateTypesDetails.hotel_settings.currency.symbol}} {{addon.price}} {{addon.post_type}}</td> 
+			<td>{{rateTypesDetails.hotel_settings.currency.symbol}} {{addon.price}} <span class="rate_perstay">{{addon.post_type}}</span></td> 
 			<td>
-				<div id="options" class="entry full-width" ng-hide="hideAlertOption">
-					<div>
-						<div class="float_left">
+				<div class="center_align">
+					<div class="float_left">
 					<label class="radio" ng-class="{checked:addon.is_inclusive_in_rate == 'true'}">
 						<span class="icon-form icon-radio " ng-class="{checked:addon.is_inclusive_in_rate == 'true'}"></span>
 						<input type="radio" ng-model="addon.is_inclusive_in_rate" value="true" class="change-data">
@@ -28,7 +36,7 @@
 						
 					</label>
 				</div>
-					<div class="float_right">
+					<div class="float_left rates_exclusive">
 
 					<label class="radio" ng-class="{checked:addon.is_inclusive_in_rate == 'false'}">
 						<span class="icon-form icon-radio " ng-class="{checked:addon.is_inclusive_in_rate == 'false'}"></span>
@@ -37,12 +45,11 @@
 						
 					</label>
 				</div>
-					</div>
-
 				</div>
 			</td> 
 			<td><ad-toggle-button is-checked="addon.isSelected" ></ad-toggle-button></td> 
 		</tr>
+		</tbody>
 		
 	</table>
 </form>
