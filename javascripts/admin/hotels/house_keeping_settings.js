@@ -16,7 +16,7 @@ var HouseKeepingSettingsView = function(domRef) {
 		// To unbind all events that happened - CICO-5474 fix
 		that.myDom.on('load').unbind("click");
 		that.myDom.find('#save').on('click', that.saveHouseKeepingSettings);
-		that.myDom.find('#div-use-inspected').on('change', that.disableCheckbox);
+		that.myDom.find('#div-use-inspected').on('click', that.disableCheckbox);
 		that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView);
 
 		// Initialize checkbox disabled by default.
@@ -27,10 +27,9 @@ var HouseKeepingSettingsView = function(domRef) {
 	};
 
 	this.disableCheckbox = function() {
-		is_checkbox_checked = that.myDom.find("#div-checkin_inspected_only").is(":checked");
-
-		if (that.myDom.find("#div-use-inspected").hasClass("on")) {
-			console.log("On Enabled...")
+		var is_checkbox_checked = that.myDom.find("#div-checkin_inspected_only").is(":checked");
+		var is_use_inspected = that.myDom.find("#use_inpsected_room_status").is(":checked");
+		if (is_use_inspected) {
 			if (is_checkbox_checked) {
 				console.log("is_checked---" + is_checkbox_checked);
 				that.myDom.find("#div-checkin_inspected_only").closest("label").find("span:eq(0)").addClass("checked");
