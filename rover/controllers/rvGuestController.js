@@ -138,7 +138,7 @@ var element = $event.target;
 			$scope.$broadcast('CONTACTINTOLOADED');
 		}
 		else{
-			$scope.guestCardHeight = $scope.resizableOptions.minHeight;
+			$("#guest-card").css("height", $scope.resizableOptions.minHeight);
 			$scope.guestCardVisible = false;
 		}
 }
