@@ -1,7 +1,7 @@
 
 <div class ="topbar">
 	<ul>
-		<li ng-click="backButtonClicked()">Back</li>
+		<li ng-show="backbuttonEnabled" ng-click="backButtonClicked()">Back</li>
 		<li><h6>Date Range</h6>{{currentFilterData.begin_date}} to {{currentFilterData.end_date}}</li>
 		<li ng-show="ratesDisplayed.length > 0"><h6>Rate</h6><span ng-repeat="rate in ratesDisplayed">{{rate.name}}</span></li>
 		<li ng-show="name_on_cards.length > 0"><h6>Name Card</h6><span ng-repeat="name in name_on_cards">{{name}}</span></li>
