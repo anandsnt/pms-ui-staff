@@ -20,8 +20,9 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 		}
 	});
 	
-	$scope.$parent.myScrollOptions = {
+	$scope.$parent.myScrollOptions = {		
 	    'resultDetails': {
+	    	scrollbars: true,
 	        snap: false,
 	        hideScrollbar: false
 	    },
@@ -30,26 +31,11 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	
 	
 	$scope.$on('$viewContentLoaded', function() {
-	 	// alert("jphme jphme")
-	 	
-	 	// var myScroll = new IScroll('#resultDetails',{
-    // mouseWheel: true,
-    // scrollbars: true
-// });
-         // setTimeout(function() {
-         	// // console.log($scope)
-//          	
-//          
-         // if($scope.$parent.myScroll != undefined){
-         	// console.log("recahe")
-         	// console.log($scope.$parent.myScroll)
-         	// $scope.$parent.myScroll['result_details'].refresh();
-         	// // $scope.$parent.myScroll['result_details'].refresh();
-         // }
-//          	
-              // // $scope.$parent.myScroll['result_details'].refresh();
-             // // $scope.$parent.myScroll['result_details'].scrollTo(0, 0, 200);
-          // }, 3000);
+		setTimeout(function(){
+			$scope.$parent.myScroll['resultDetails'].refresh();
+			}, 
+		1500);
+		
      });
 		
 	

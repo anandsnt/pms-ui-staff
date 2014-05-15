@@ -49,7 +49,6 @@
           minDate: '=',
           maxDate: '=',
           disabledDates: '=',
-          isCurrentMonth: '=',
           isDateSelected: '='
         },
         templateUrl:'../../assets/directives/Calendar/adCalendar.html' ,
@@ -65,6 +64,8 @@
           currentDate   = new Date(scope.date);
           scope.dayNames    = $locale.DATETIME_FORMATS['SHORTDAY'];
           scope.currentDate = currentDate;
+
+          console.log( $locale );
 
           scope.render = function(initialDate) {
             initialDate = new Date(initialDate.getFullYear(), initialDate.getMonth(), 1, 3);

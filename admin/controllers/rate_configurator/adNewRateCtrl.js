@@ -26,9 +26,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "promotion_code": "",
                 "date_ranges": []
             }
-
-            $scope.basedonRateData = {};
             // intialize rateData dictionary - END
+            $scope.basedonRateData = {};
             $scope.errorMessage = '';
             // webservice call to fetch rate details for edit
             if ($stateParams.rateId) {
@@ -126,13 +125,24 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 active_item = "dateRange." + $scope.rateData.date_ranges[date_ranges_length-1].id;
                 $scope.$emit("changeMenu", active_item);
             }
-            else{
+            else if($scope.rateData.room_type_ids.length > 0){
                 $scope.$emit("changeMenu", 'Room types');
+            }
+            else{
+                $scope.$emit("changeMenu", 'Details');
             }
             fetchBasedOnRateDetails(false);
             $scope.$emit('hideLoader');
             $scope.$broadcast('ratesChanged');
         };
+
+        $scope.$on('deletedAllDateRangeSets', function(e, dateRangeId){
+            angular.forEach($scope.rateData.date_ranges, function(dateRange, index){
+                if (dateRange.id == dateRangeId){
+                    $scope.rateData.date_ranges.splice(index, 1);
+                }
+            });
+        })
 
         $scope.addNewDateRange = function(){
             $scope.rateMenu ='ADD_NEW_DATE_RANGE';

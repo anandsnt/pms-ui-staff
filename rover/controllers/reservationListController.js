@@ -1,12 +1,17 @@
 sntRover.controller('reservationListController',['$scope', function($scope){
-	 console.log("==litsing")
 	$scope.$parent.myScrollOptions = {
-	    'result_listing': {
+	    'resultListing': {
 	        snap: false,
-	        hideScrollbar: false,onScrollEnd: function ()
-        	{
-            	alert('finshed scrolling wrapper');
-    		}
+	        scrollbars: true,
+	        hideScrollbar: false
 	    },
 	};
+	
+	$scope.$on('RESERVATIONLISTUPDATED', function(event) {
+		setTimeout(function(){
+			$scope.$parent.myScroll['resultListing'].refresh();
+			}, 
+		500);
+		
+	});
 }]);
