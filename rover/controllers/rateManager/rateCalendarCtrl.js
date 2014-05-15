@@ -6,10 +6,10 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		$scope.currentExpandedRow = -1;
 		$scope.displayMode = "CALENDAR";
 		$scope.calendarMode = "RATE_VIEW";
+		$scope.selectedRate = "";
 		$scope.calendarData = {};
-        $scope.currentlySelectedDate = "";
-        $scope.currentlySelectedRate = {};
-        $scope.currentlySelectedRoomType = {};
+		$scope.popupData = {};
+        
         if($scope.filterConfigured){
         	loadTable();
         }
@@ -86,6 +86,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 	$scope.goToRoomTypeCalendarView = function(rate){
 		$scope.ratesDisplayed.length = 0;
 		$scope.ratesDisplayed.push(rate);
+		$scope.selectedRate = rate;
         $scope.$emit("enableBackbutton");
 		$scope.calendarMode = "ROOM_TYPE_VIEW";
 		loadTable(rate.id);
@@ -95,12 +96,16 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 	* Calls the API to update the "CLOSED" restriction.
 	*/
 	$scope.openCloseAllRestrictions = function(action){
+
 		var restrictionUpdateSuccess = function(){
 			$scope.$emit('hideLoader');
 			loadTable();
 		};
 
 		var params = {};
+		if($scope.selectedRate !== ""){
+			params.id = $scope.selectedRate.id;	
+		}
 		params.details = []; 
 		
 		item = {};
@@ -144,13 +149,28 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 
 	});
 
-	$scope.showUpdatePriceAndRestrictionsDialog = function(date, type, obj){
-        console.log(type);
-        $scope.currentlySelectedDate = date;
-        if (type === 'RATE'){ $scope.currentlySelectedRate = obj; }
-        if (type === 'ROOM_TYPE'){ $scope.currentlySelectedRoomType = obj; }
-        console.log('reached::showUpdatePriceAndRestrictionsDialog');
-        console.log(obj);
+	/**
+	* Click handler for calendar cell. Creates an ng-dialog and pass the scope parameters
+	* Set scope variables to be passed to the popup.
+	*/
+	$scope.showUpdatePriceAndRestrictionsDialog = function(date, rate, roomType, type){
+		$scope.popupData.selectedDate = date;
+		$scope.popupData.selectedRate = rate;
+		if(rate == ""){
+			$scope.popupData.selectedRate = $scope.selectedRate.id;
+		}
+		$scope.popupData.selectedRoomType = roomType;
+		$scope.popupData.fromRoomTypeView = false;
+		
+		if(type == 'ROOM_TYPE'){
+			$scope.popupData.fromRoomTypeView = true;
+		}
+
+		$scope.popupData.all_data_selected = false;
+		if(type == 'ALL_DATA'){
+			$scope.popupData.all_data_selected = true;
+		}
+        
         ngDialog.open({
             template: '/assets/partials/rateManager/updatePriceAndRestrictions.html',
             className: 'ngdialog-theme-default',
