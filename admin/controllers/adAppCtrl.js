@@ -174,8 +174,10 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 		for(var i = 0; i < $scope.data.bookmarks.length; i++){
 			$scope.bookmarkIdList.push($scope.data.bookmarks[i].id);
 		}
-			
-		$scope.getLanguage();
+		if($scope.isHotelAdmin){
+			$scope.getLanguage();
+		}
+		
 			
 	};
 	
