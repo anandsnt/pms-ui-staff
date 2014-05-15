@@ -1,5 +1,5 @@
-admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ADRatesRangeSrv','ngDialog',
-    function ($scope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ADRatesRangeSrv, ngDialog) {
+admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ADRatesRangeSrv','ngDialog', '$state',
+    function ($scope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ADRatesRangeSrv, ngDialog, $state) {
         //expand first set
         $scope.currentClickedSet = 0;
 
@@ -153,7 +153,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             angular.forEach($scope.data.sets, function (value, key) {
                 $scope.saveSet(key);
             });
-
+            $state.go('admin.rates');
         };
 
         $scope.popupCalendar = function () {
