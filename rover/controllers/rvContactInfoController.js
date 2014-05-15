@@ -71,8 +71,4 @@ $scope.popupCalendar = function(){
 		1500);
 		
 	});
-	
-	
-
-
 }]);
