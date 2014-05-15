@@ -2,8 +2,7 @@
     <header class="content-title float">
         <h2 ng-if="!is_edit">Add new Rate</h2>
         <div ng-show="is_edit">
-            <h2>Edit Rate</h2>
-            <h3>{{ rateData.name }}</h3>
+            <h2>Edit Rate <span>{{ rateData.name }}</span></h2>
         </div>
         <a class="action back" ui-sref="admin.rates">Back to rates</a>
 
