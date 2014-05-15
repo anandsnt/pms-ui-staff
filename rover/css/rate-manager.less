@@ -52,6 +52,7 @@ margin-top:20px;
         .filter-options {
             display:block;
             width: 230px;
+            top : 78px; /* To avoid the div falling down, when table has Height fixed. Need Review review */
             background-color:#E0E0E0 ;
             padding:20px;
             height:100%;
@@ -97,6 +98,23 @@ margin-top:20px;
                 height : 80px;
                 line-height : 80px; /* Trick for vertical alligh*/
                 font-size : 20px;
+        }
+        .date-header {
+          border : 10px solid #e7e7e7;
+          height : 80px;
+          font-size : 20px;
+          text-align: center;
+          white-space: pre-line;
+          vertical-align: middle;
+          display:table;
+          width: 100%;
+        }
+        th .date-header {
+          background-color : #393c41;
+        }
+        th .date-header span { 
+          display: table-cell;
+          vertical-align: middle;
         }
         th .cell-content{
                 background-color : #393c41;
