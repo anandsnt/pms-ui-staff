@@ -20,14 +20,16 @@ $scope.saveContactInfo = function(){
   * change date format for API call 
   */
     var dataToUpdate =  JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
+    dataToUpdate.birthday = $scope.birthdayText;
     var dataUpdated = false;
+
     if(angular.equals(dataToUpdate, presentContactInfo)) {
 			dataUpdated = true;
 	}
 	else{
-		presentContactInfo = dataToUpdate;
+		presentContactInfo = dataToUpdate;	
 	};	    	
-    dataToUpdate.birthday = $scope.birthdayText;
+    
     var data ={'data':dataToUpdate,
     			'userId':$scope.guestCardData.contactInfo.user_id
     		};
