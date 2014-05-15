@@ -27,6 +27,11 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                     legend: { 
                         enabled:false
                     },
+                    plotOptions:{
+                    	series: {
+                        fillOpacity: 0.1
+                    	}
+                    },
                     xAxis: {
                         gridLineWidth: 10,
                         gridLineColor: '#f0f0f0',
@@ -36,6 +41,13 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                         minTickInterval: 24 * 3600 * 1000,
                         dateTimeLabelFormats:{
                             day: '%A <br/> %B %d'
+                        }
+                    },
+                    yAxis: {
+                        floor: 0,
+                        ceiling: 100,
+                        title: {
+                            text: ''
                         }
                     },
                     title:{
@@ -74,8 +86,10 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         var targetData = [];
         angular.forEach(data.results, function(item){
             itemDate = Date.parse(item.date);
-            actualData.push([itemDate, Math.floor((Math.random() * 10) + 1)]); // TODO :: replace harcoded 10 with item.actual
-            targetData.push([itemDate, Math.floor((Math.random() * 10) + 1)]); // TODO :: replace harcoded 10 with item.actual
+            //actualData.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: replace harcoded 10 with item.actual
+            actualData.push([itemDate, item.actual]);
+            //targetData.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: replace harcoded 10 with item.target
+            targetData.push([itemDate,item.target]);
         });
         graphData = [{
             "name": "Actual",
