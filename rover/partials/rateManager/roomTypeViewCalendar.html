@@ -5,7 +5,7 @@
 	 			<button class="button green"> Open All</button>	
 	 			<button class="button red"> Close All</button>	
 	 		</th>
-	 		<th width="250" ng-repeat="date in calendarData.dates"><div class="cell-content">{{date| date:'EEEE MMMM yy'}}</div></th>
+	 		<th width="250" ng-repeat="date in calendarData.dates" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', true)"><div class="cell-content">{{date| date:'EEEE MMMM yy'}}</div></th>
 	 	</tr>
 	 </thead>
 	
@@ -36,7 +36,7 @@
 			    </span>
             </td>
 			
-			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-hide="currentExpandedRow==$parent.$index" ng-click="showUpdatePriceAndRestrictionsDialog(date, 'ROOM_TYPE', rate)">
+			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-hide="currentExpandedRow==$parent.$index" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.room_type.id, true)">
 				<div class="cell-content">
 					<span ng-repeat="restriction in rate[date].restrictions" class="{{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
 						{{restriction.days}}

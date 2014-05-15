@@ -6,10 +6,10 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		$scope.currentExpandedRow = -1;
 		$scope.displayMode = "CALENDAR";
 		$scope.calendarMode = "RATE_VIEW";
+		$scope.selectedRate = "";
 		$scope.calendarData = {};
-        $scope.currentlySelectedDate = "";
-        $scope.currentlySelectedRate = {};
-        $scope.currentlySelectedRoomType = {};
+		$scope.popupData = {};
+        
         if($scope.filterConfigured){
         	loadTable();
         }
@@ -86,6 +86,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 	$scope.goToRoomTypeCalendarView = function(rate){
 		$scope.ratesDisplayed.length = 0;
 		$scope.ratesDisplayed.push(rate);
+		$scope.selectedRate = rate;
         $scope.$emit("enableBackbutton");
 		$scope.calendarMode = "ROOM_TYPE_VIEW";
 		loadTable(rate.id);
@@ -144,13 +145,18 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 
 	});
 
-	$scope.showUpdatePriceAndRestrictionsDialog = function(date, type, obj){
-        console.log(type);
-        $scope.currentlySelectedDate = date;
-        if (type === 'RATE'){ $scope.currentlySelectedRate = obj; }
-        if (type === 'ROOM_TYPE'){ $scope.currentlySelectedRoomType = obj; }
-        console.log('reached::showUpdatePriceAndRestrictionsDialog');
-        console.log(obj);
+	/**
+	* Click handler for calendar cell. Creates an ng-dialog and pass the scope parameters
+	*/
+	$scope.showUpdatePriceAndRestrictionsDialog = function(date, rate, roomType, isFromRoomTypeView){
+		$scope.popupData.selectedDate = date;
+		$scope.popupData.selectedRate = rate;
+		if(rate == ""){
+			$scope.popupData.selectedRate = $scope.selectedRate;
+		}
+		$scope.popupData.selectedRoomType = roomType;
+		$scope.popupData.fromRoomTypeView = isFromRoomTypeView;
+        
         ngDialog.open({
             template: '/assets/partials/rateManager/updatePriceAndRestrictions.html',
             className: 'ngdialog-theme-default',
