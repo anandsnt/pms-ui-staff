@@ -139,6 +139,7 @@ var HotelDetailsView = function(domRef) {
 			that.myDom.find(".hotel-pms-type").remove();
 			that.myDom.find(".is-pms-tokenized").remove();
 			that.myDom.find(".re-invite").remove();
+			that.myDom.find('.is-kiosk-entity-id').remove();
 		}
 	};
 	//to update or create new hotel
@@ -150,6 +151,10 @@ var HotelDetailsView = function(domRef) {
 		if(that.myDom.find("#div-is-pms-tokenized").hasClass("on")){
 			isPmsTokenized = true;
 		}
+		isUseKioskEntityId = false;
+		if(that.myDom.find("#div-kiosk-entity-id").hasClass("on")){
+			isUseKioskEntityId = true;
+		}
 
 		var mliHotelCode = that.myDom.find('#mli-hotel-code').val();
 		var mliChainCode = $('#mli-chain-code').val();
@@ -158,7 +163,6 @@ var HotelDetailsView = function(domRef) {
 		var hotelPmsType = that.myDom.find("#hotel-pms-type").val();
 		var hotel_logo = "";
 
-
 		if(that.myDom.find("#hotel-logo-preview").attr("changed") == "changed")
 	  		hotel_logo = that.myDom.find("#hotel-logo-preview").attr("src");
 
@@ -166,7 +170,7 @@ var HotelDetailsView = function(domRef) {
 	  	if($("#checkin_to_inspected").parent("label:eq(0)").hasClass("checked")) {
 	  	  var checkinToInspectedRoomsOnly = "true";
 	 	}
-		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, checkinToInspectedRoomsOnly);
+		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, checkinToInspectedRoomsOnly, isUseKioskEntityId);
 		var type = event.data[0];
 	    if(type == "create"){
 	      var url = '/admin/hotels';
@@ -211,7 +215,7 @@ var HotelDetailsView = function(domRef) {
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
 	};
 	//Generating post data
-	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, checkinToInspectedRoomsOnly) {
+	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, checkinToInspectedRoomsOnly, isUseKioskEntityId) {
 
 		if (that.currentView == "snt-admin-view") {
 			data = {
@@ -250,7 +254,8 @@ var HotelDetailsView = function(domRef) {
 				mli_chain_code: mliChainCode,
 				mli_certificate : that.fileContent,
 				hotel_from_address: hotelFromAddress,
-				is_pms_tokenized: isPmsTokenized
+				is_pms_tokenized: isPmsTokenized,
+				use_kiosk_entity_id : isUseKioskEntityId
 			};
 		} else {
 			data = {

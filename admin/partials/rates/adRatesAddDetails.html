@@ -1,66 +1,73 @@
-<form class="form float form_add_new_rate" ng-controller="ADaddRatesDetailCtrl" >
-	<fieldset class="holder full-width" style="margin-bottom:0px;">
-		<div class="form-title">
-			<h3><span>Rate</span> Details </h3>
-			<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
-		</div>
-		<fieldset class="holder left">
-			<div></div>
-			<ad-textbox inputtype="text" value="rate_name"
-			label = "Name" placeholder = "Enter Rate name"
-			required="yes"></ad-textbox>
+<!-- Header Collapse View -->
+<div ng-hide="rateMenu ==='Details'">
+    <em class="rate_step_title">Rate</em>&nbsp;<span class="italic_text">Details</span>
+    <div ng-click="$emit('changeMenu','Details')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+</div>
 
-			<div class="entry">
-				<label>Type <strong>*</strong> </label>
-				<div class="select">
-					<select class="placeholder" ng-options="rateType.name for rateType in rateTypesDetails.rate_types" ng-model="rateTypeselected">
-						<option value="">select Rate Type</option>		
-					</select>
-				</div>
-			</div>
-		</fieldset>
-		<fieldset class="holder right">
-			<div></div>
-			<div class="entry">
-				<label> Based On </label>
-				<div class="select">
-					<select class="placeholder" ng-options="basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results" ng-model="basedOnRateTypeSelected">
-						<option value="">select rate</option>	
-					</select>
-				</div>
-			</div>
-			<div class="entry"> 
-					<div class="select select-col col1-3 actions_margin_top">			
-					<select  class="styled" ng-model="based_on_plus_minus">
-						<option value="+">+</option>
-						<option value="-">-</option>
-					</select>
-				</div>
-				<div class=" select-col col1-3 actions_margin_top" >
-					<ad-textbox inputtype="text" value="based_on_value" styleclass = "col1-3"
-					label = "" placeholder = "" style=" width: 66px;"
-					></ad-textbox>
-				</div>
-				<div class="select select-col col1-3">
-					<select class="styled" ng-model="based_on_type">
-						<option value="amount" >{{rateTypesDetails.hotel_settings.currency.symbol}}</option>
-						<option value="percent">%</option>
-					</select>
-				</div>
-			</div>
-		</div>
-	</fieldset>
+<!-- Expanded View -->
+<form ng-show="rateMenu ==='Details'" class="form float form_add_new_rate" ng-controller="ADaddRatesDetailCtrl" >
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3><span>Rate</span> Details </h3>
+            <em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+        </div>
+        <fieldset class="holder left">
+        <div></div>
+            <ad-textbox inputtype="text" value="rateData.name" label = "Name" placeholder = "Enter Rate name" required="yes"></ad-textbox>
+            <div class="entry">
+                <label>Type <strong>*</strong> </label>
+                <div class="select">
+                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
+                        <option value="" disabled>Select Rate Type</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="holder right">
+            <div></div>
+
+            <div class="entry" ng-hide="hideBasedOn()">
+                <label ng-hide="isPromotional()">Based On</label>
+                <label ng-show="isPromotional()">Copy From</label>
+                <div class="select">
+                    <select class="placeholder" ng-model="rateData.based_on.id" ng-options="basedOnrateType.id as basedOnrateType.name for basedOnrateType in rateTypesDetails.based_on.results">
+                        <option value="">select rate</option>   
+                    </select>
+                </div>
+            </div>
+            <div class="entry" ng-hide="hideBasedOn()"> 
+                    <div class="select select-col col1-3 actions_margin_top">           
+                    <select  class="styled" ng-model="rateData.based_on.value_sign">
+                        <option value="+">+</option>
+                        <option value="-">-</option>
+                    </select>
+                </div>
+                <div class=" select-col col1-3 actions_margin_top" >
+                    <ad-textbox inputtype="text" value="rateData.based_on.value_abs" styleclass = "col1-3"
+                    label = "" placeholder = "" style=" width: 66px;"
+                    ></ad-textbox>
+                </div>
+                <div class="select select-col col1-3">
+                    <select class="styled" ng-model="rateData.based_on.type">
+                        <option value="amount" >{{rateTypesDetails.hotel_settings.currency.symbol}}</option>
+                        <option value="percent">%</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="holder left" ng-show="isPromotional()">
+                <ad-textbox inputtype="text" value="rateData.promotion_code" label = "Promotions Code" placeholder = "Enter Promotional Code" required="no"></ad-textbox>
+        </fieldset>
 </fieldset>
 <fieldset class="full-width">
-	<ad-textarea rows="2" div-class="full-width" text-area-class="full-width" value="rate_description" label = "Description " placeholder = "Enter rate description" required="true"></ad-textarea>
+    <ad-textarea rows="2" div-class="full-width" text-area-class="full-width" value="rateData.description" label = "Description " placeholder = "Enter rate description" required="true"></ad-textarea>
 </fieldset>
 <div class="actions float actions_margin_top">
-	<button type="button" ui-sref="admin.rates" class="button blank add-data-inline">
-		Cancel
-	</button>
-	<button type="button" ng-click="saveStep1()" ng-disabled="allFieldsFilled()" class="button  brand-colors" ng-hide="allFieldsnotFilled()">
-		Step 2 - Select Room Types
-	</button>
-	<button type="button" id="send-email" disabled="" class="button grey" ng-show="allFieldsnotFilled()">Step 2 - Select Room Types</button>
+    <button type="button" ui-sref="admin.rates" class="button blank add-data-inline">
+        Cancel
+    </button>
+    <button type="button" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid() }" >
+        Step 2 - Select Room Types
+    </button>
 </div>
 </form>
