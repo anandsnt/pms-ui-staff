@@ -93,6 +93,10 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 $scope.isPromotional = true;
             }
         };
+
+        /*
+         * Set add on data
+         */
         var setUpAddOnData = function(){
             var addOnsArray = [];
             angular.forEach($scope.rateData.addOns, function(addOns){
@@ -114,7 +118,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
         $scope.saveRateDetails = function () {
 
             var amount = parseInt($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
-            
+
             var addOns = setUpAddOnData();
             var data = {
                 'name': $scope.rateData.name,
@@ -126,7 +130,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 'promotion_code': $scope.rateData.promotion_code,
                 'addons': addOns,
                 'charge_code_id': $scope.rateData.charge_code_id,
-                'currency_id': $scope.rateData.currency_id
+                'currency_code_id': $scope.rateData.currency_id
             };
 
             // Save Rate Success Callback

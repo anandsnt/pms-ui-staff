@@ -141,10 +141,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             }
             
         }
-
-
-
-    
+   
         // Fetch details success callback for rate edit
 
         var rateDetailsFetchSuccess = function (data) {
