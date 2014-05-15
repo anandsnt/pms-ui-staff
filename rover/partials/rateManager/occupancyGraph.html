@@ -1,29 +1,31 @@
-<div class="filter-options">    
-<div class="entry radio-check">
-            <label ng-class="{'checked': seriesActualVisible}" class="checkbox checked">
-                <span ng-class="{'checked':seriesActualVisible}" class="icon-form icon-checkbox ng-pristine ng-valid checked" ng-model="currentFilterData.is_checked_all_rates"></span>
-                <input type="checkbox" ng-click="legendToggled('actual')">
-                ACTUAL
-            </label>
+<div class="occupancy-graph-container">
+
+<div class="filter-options">
+
+<div class="entry radio-check"><label
+	ng-class="{'checked': seriesActualVisible}" class="checkbox checked">
+<span ng-class="{'checked':seriesActualVisible}"
+	class="icon-form icon-checkbox ng-pristine ng-valid checked"
+	ng-model="currentFilterData.is_checked_all_rates"> </span> <input
+	type="checkbox" ng-click="legendToggled('actual')"> ACTUAL </label></div>
+
+
+<div class="entry radio-check"><label
+	ng-class="{'checked':seriesTargetVisible}" class="checkbox checked">
+<span ng-class="{'checked':seriesTargetVisible}"
+	class="icon-form icon-checkbox ng-pristine ng-valid checked"
+	ng-model="currentFilterData.is_checked_all_rates"></span> <input
+	type="checkbox" ng-click="legendToggled('target')"> TARGET </label></div>
+
+<hr>
+
+<button type="button" id="update" class="button green edit-data-inline"
+	ng-click="showSetTargetDialog()">Set Targets</button>
+</div>
 </div>
 
+<div class="occgraph-outer"><highchart id="occGraphContainer"
+	config="highchartsNG"></highchart></div>
 
-<div class="entry radio-check">
-            <label ng-class="{'checked':seriesTargetVisible}" class="checkbox checked">
-                <span ng-class="{'checked':seriesTargetVisible}" class="icon-form icon-checkbox ng-pristine ng-valid checked" ng-model="currentFilterData.is_checked_all_rates"></span>
-                <input type="checkbox" ng-click="legendToggled('target')">
-                TARGET
-            </label>
-</div>
-
-
-<button type="button" id="update" class="button green edit-data-inline" ng-click="showSetTargetDialog()">
-Set Targets
-</button>
-</div>
-</div>
-
-<div class="occgraph-outer">
-    <highchart id="occGraphContainer" config="highchartsNG"></highchart>
 </div>
 

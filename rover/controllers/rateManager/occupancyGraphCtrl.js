@@ -7,13 +7,16 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         $scope.weekCommonTargets = [];
         $scope.seriesActualVisible = true;
         $scope.seriesTargetVisible = true;
+        clientWidth = $(window).width();
         var drawGraph = function(){
             $scope.highchartsNG = {
                 options: {
                     chart: {
-                        type: 'line',
+                        type: 'area',
                         className: "rateMgrOccGraph",
                         plotBackgroundColor: '#e0e0e0',
+                        width : clientWidth - 270,
+                        backgroundColor : null
                     },
                     tooltip: {
                         shared: true,
@@ -71,17 +74,25 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         var targetData = [];
         angular.forEach(data.results, function(item){
             itemDate = Date.parse(item.date);
-            actualData.push([itemDate, 10]); // TODO :: replace harcoded 10 with item.actual
-            targetData.push([itemDate, item.target]);
+            actualData.push([itemDate, Math.floor((Math.random() * 10) + 1)]); // TODO :: replace harcoded 10 with item.actual
+            targetData.push([itemDate, Math.floor((Math.random() * 10) + 1)]); // TODO :: replace harcoded 10 with item.actual
         });
         graphData = [{
             "name": "Actual",
             "data": actualData,
-            "color": "blue"
+            "color": "rgba(247,153,27,0.9)",
+            "marker":{
+        		symbol: 'circle',
+        		radius:5
+        	}
         },{
             "name": "Target",
             "data": targetData,
-            "color": "black"
+            "color": "rgba(130,195,223,0.9)",
+            "marker":{
+        		symbol: 'triangle',
+        		radius:5
+        	}
         }]
         return graphData
     }
