@@ -1,15 +1,17 @@
 <!-- Header Collapse View -->
 <div ng-hide="detailsMenu ==='addOns'">
     <div class="form-title">
-            <h3 class="rate_additional_details_heading">AADD-ONS</h3>
+            <h3 class="rate_additional_details_heading">ADD-ONS</h3>
              <div ng-click="changeDetailsMenu('addOns')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
   </div>
 </div>
 
 <!-- Expanded View -->
-<form ng-show="detailsMenu ==='addOns'" class="form float form_add_new_rate">
-	ADD-ONS
-	<div ng-click="changeDetailsMenu('')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-up.png"></div>
+<form ng-show="detailsMenu ==='addOns'" class="form_add_new_rate">
+	<div class="form-title">
+		<h3 class="rate_additional_details_heading">ADD-ONS </h3>
+		<div ng-click="changeDetailsMenu('')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-up.png"></div>
+	</div>
 
 	<table class="grid">
 		 <col width="20%">
@@ -19,7 +21,7 @@
 		<thead>
 		<th class="header">ADD-ON</th>
 		<th class="header">PRICE</th>
-		<th class="header center_align">INCLUSIVE/EXCLUSIVE</th>
+		<th class="header">INCLUSIVE/EXCLUSIVE</th>
 		<th class="header">USE</th>
 	    </thead>
 		<tbody>

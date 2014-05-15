@@ -114,7 +114,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
         $scope.saveRateDetails = function () {
 
             var amount = parseInt($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
-
+            
             var addOns = setUpAddOnData();
             var data = {
                 'name': $scope.rateData.name,
