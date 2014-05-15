@@ -92,6 +92,8 @@ $scope.guestCardClick = function($event){
 		if(!$scope.guestCardVisible){
 			$scope.guestCardHeight = $scope.resizableOptions.maxHeight;
 			$scope.guestCardVisible = true;
+			
+			$scope.$broadcast('CONTACTINTOLOADED');
 		}
 		else{
 			$("#guest-card").css("height", $scope.resizableOptions.minHeight);
@@ -138,6 +140,7 @@ $scope.resizableOptions =
 			$scope.guestCardVisible = false;
 			$scope.$apply();
 		}
+		$scope.$broadcast('CONTACTINTOLOADED');
 	},
 	stop: function(event, ui){
 		preventClicking = true;
@@ -146,6 +149,6 @@ $scope.resizableOptions =
 		
 
 	}
-}
+};
 
 }]);
