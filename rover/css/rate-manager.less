@@ -27,6 +27,7 @@ margin-top:20px;
         line-height: 50px;
         width: 100%;
         background: #FFFFFF;
+        border: 1px solid #FCFCFC;
         ul {
             float: left;
             margin-left: 40px;
@@ -62,16 +63,13 @@ margin-top:20px;
         }
         .display-mode {
           .button {
-            height: 100%;
+            background-color: #F5F5F5;
             border-radius: 0;
             border-right: 1px solid #DCDCDC;
-            vertical-align: middle;
+            box-shadow: none;
+            height: 100%;
             text-align: center;
-            background: -webkit-linear-gradient(#FCFCFC, #ECECEC); /* For Safari 5.1 to 6.0 */
-            background: -o-linear-gradient(#FCFCFC, #F0F0F0); /* For Opera 11.1 to 12.0 */
-            background: -moz-linear-gradient(#FCFCFC, #F0F0F0); /* For Firefox 3.6 to 15 */
-            background: linear-gradient(#FCFCFC, #F0F0F0); /* Standard syntax */
-            
+            vertical-align: middle;
             &.active {
               position: relative;
               background: -webkit-linear-gradient(#ffb319, #ff860d); /* For Safari 5.1 to 6.0 */
@@ -91,10 +89,9 @@ margin-top:20px;
               pointer-events: none;
             }
             &.active:after {
-              border-color: rgba(136, 183, 213, 0); 
-              border-top-color: #ff860d; 
-              border-width: 14px; 
-              margin-left: -14px;
+              border-color: #FF860D rgba(136, 183, 213, 0) rgba(136, 183, 213, 0);
+              border-width: 9px;
+              margin-left: -9px;
             }
             
           }
