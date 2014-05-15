@@ -51,7 +51,8 @@ $scope.popupCalendar = function(){
 	ngDialog.open({
 		 template: '/assets/partials/guestCard/contactInfoCalendarPopup.html',
 		 controller: 'RVContactInfoDatePickerController',
-		 className: 'ngdialog-theme-default calendar-modal',
+		 className: 'ngdialog-theme-default single-date-picker',
+         closeByDocument: true,
 		 scope:$scope
 	});
 };
