@@ -193,7 +193,7 @@
 				<label for="auto-logout"> Auto logout delay [Minutes] <strong>*</strong> </label>
 				<input type="text" ng-model="data.auto_logout_delay" value="{{data.auto_logout_delay}}" required="yes" placeholder="Enter auto logout delay" name="auto-logout" id="auto-logout">
 			</div>
-			<div class="entry full-width" >
+			<div class="entry full-width" ng-show="isAdminSnt">
 				<label for="hotel-pms-type"> Language </label>
 				<div class="select">
 					<select ng-model="data.selected_language" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
