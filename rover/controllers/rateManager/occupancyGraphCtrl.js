@@ -16,12 +16,20 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                         className: "rateMgrOccGraph",
                         plotBackgroundColor: '#e0e0e0',
                         width : clientWidth - 270,
-                        backgroundColor : null
+                        backgroundColor : null                        
                     },
                     tooltip: {
                         shared: true,
                         formatter: function() {
-                            return 'Actual <b>' + this.points[0].y + '</b>' + '<br/>Off Target <b>' + this.points[1].y + '</b>';
+                    	    if($scope.seriesActualVisible && $scope.seriesTargetVisible){
+                    	    	return 'ACTUAL <b>' + this.points[0].y + '%</b>' + '<br/>TARGET <b>' + this.points[1].y + '%</b>';
+                    	    }
+                    	    if ($scope.seriesActualVisible){
+                    	    	return 'ACTUAL <b>' + this.points[0].y + '%';
+                    	    }
+                    	    if ($scope.seriesTargetVisible){
+                    	    	return 'TARGET <b>' + this.points[0].y + '%';
+                    	    }
                         }
                     },
                     legend: { 
@@ -32,20 +40,32 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                         fillOpacity: 0.1
                     	}
                     },
-                    xAxis: {
-                        gridLineWidth: 10,
-                        gridLineColor: '#f0f0f0',
+                    xAxis: {                    
+                    	gridLineWidth: 5,
+                        gridLineColor: '#FCFCFC',
                         opposite: true,
-                        tickPosition: 'inside',
+                        tickPosition: 'inside',                        
                         type: 'datetime',
-                        minTickInterval: 24 * 3600 * 1000,
+                        minTickInterval: 24 * 3600 * 1000,                        
                         dateTimeLabelFormats:{
                             day: '%A <br/> %B %d'
                         }
                     },
                     yAxis: {
+                    	tickPosition : "inside",
+                    	showLastLabel: false,
+                    	style: {
+                    		color: 'red'
+                    	},
+                    	labels: {
+                            align: 'left',
+                            x: 0,
+                            y: -2
+                        },
                         floor: 0,
-                        ceiling: 100,
+                        ceiling: 110,
+                        tickInterval:10,
+                        minRange:110,
                         title: {
                             text: ''
                         }
@@ -86,10 +106,10 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         var targetData = [];
         angular.forEach(data.results, function(item){
             itemDate = Date.parse(item.date);
-            //actualData.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: replace harcoded 10 with item.actual
-            actualData.push([itemDate, item.actual]);
-            //targetData.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: replace harcoded 10 with item.target
-            targetData.push([itemDate,item.target]);
+            actualData.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: replace harcoded 10 with item.actual
+            //actualData.push([itemDate, item.actual]);
+            targetData.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: replace harcoded 10 with item.target
+            //targetData.push([itemDate,item.target]);
         });
         graphData = [{
             "name": "Actual",
