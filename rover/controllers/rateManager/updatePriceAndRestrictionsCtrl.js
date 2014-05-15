@@ -1,7 +1,7 @@
 sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
     function ($q, $scope, ngDialog) {
         $scope.init = function(){
-            computePopUPdata();
+            computePopUpdata();
         };
 
         $scope.hideUpdatePriceAndRestrictionsDialog = function(){
@@ -9,7 +9,10 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             ngDialog.close();
         };
 
-        var computePopUPdata = function(){
+        /**
+        * Compute the restrictions data     
+        */
+        var computePopUpdata = function(){
             var selectedDateInfo = {};
             for(var i in $scope.calendarData.data){
                 if($scope.calendarData.data[i].id == $scope.popupData.selectedRate){
@@ -39,21 +42,19 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 			console.log(JSON.stringify($scope.data.restrictionTypes));
         };
 
-        $scope.updateRestriction = function(id, action){
-            console.log("updateRestriction");
-            console.log(id);
-            console.log(action);
+        /**
+        * Click handler for restriction on/off buttons
+        * Enable disable restriction. 
+        */
+        $scope.onOffRestrictions = function(id, action){
 
             if(action == "ENABLE"){
                 $scope.data.restrictionTypes[id].isRestrictionEnabled = true; 
             }
-            if(action == "ENABLE"){
+            if(action == "DISABLE"){
                 $scope.data.restrictionTypes[id].isRestrictionEnabled = false; 
             }
-
-
         };
-
         $scope.init();
         
         $scope.saveRestriction = function(){

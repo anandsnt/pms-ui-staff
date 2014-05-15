@@ -27,23 +27,81 @@ margin-top:20px;
         line-height: 50px;
         width: 100%;
         background: #FFFFFF;
+        border: 1px solid #FCFCFC;
         ul {
-            float:left;
+            float: left;
+            margin-left: 40px;
+            height: 100%;
             li { 
-                float:left;
-                display: inline-block; 
-                margin-right:25px;
-
+                display: inline-block;
+                float: left;
+                font-size: 14px;
+                line-height: normal;
+                h6 {
+                  color: #9D9D9D;
+                  min-width: 200px;
+                  text-transform: uppercase;
+                  margin-top: 7px;
+                }
                 .button {
                     float:right !important;
                 }
+                .back-button {
+                  display: block;
+                  line-height: normal;
+                  margin-top: 14px;
+                }
+            }
+            li.ng-binding + li.ng-binding::before {
+              content: "|";
+              color: #DDDDDD;
+              float: left;
+              font-size: 35px;
+              line-height: normal;
+              margin: 0 15px;
             }
         }
-
+        .display-mode {
+          .button {
+            background-color: #F5F5F5;
+            border-radius: 0;
+            border-right: 1px solid #DCDCDC;
+            box-shadow: none;
+            height: 100%;
+            text-align: center;
+            vertical-align: middle;
+            &.active {
+              position: relative;
+              background: -webkit-linear-gradient(#ffb319, #ff860d); /* For Safari 5.1 to 6.0 */
+              background: -o-linear-gradient(#ffb319, #ff860d); /* For Opera 11.1 to 12.0 */
+              background: -moz-linear-gradient(#ffb319, #ff860d); /* For Firefox 3.6 to 15 */
+              background: linear-gradient(#ffb319, #ff860d); /* Standard syntax */
+              box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3) inset;
+            }
+            &.active:after, &.active:before {
+              top: 100%; 
+              left: 50%; 
+              border: solid transparent; 
+              content: " "; 
+              height: 0; 
+              width: 0; 
+              position: absolute; 
+              pointer-events: none;
+            }
+            &.active:after {
+              border-color: #FF860D rgba(136, 183, 213, 0) rgba(136, 183, 213, 0);
+              border-width: 9px;
+              margin-left: -9px;
+            }
+            
+          }
+          
+        }
         
     }
     .content {
         clear:both;
+        margin-top: 40px;
         .left-menu{
             width: 22%;
             display: table-cell;
