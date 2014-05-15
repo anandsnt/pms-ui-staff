@@ -45,9 +45,11 @@
 	<button type="button" ui-sref="admin.rates" class="button blank add-data-inline">
 		Cancel
 	</button>
-	<button type="button" ng-click="saveDateRange()" ng-disabled="allFieldsFilled()" class="button  brand-colors" ng-hide="allFieldsFilled()">
+	<button type="button" ng-click="saveDateRange()" ng-hide="rateDate.date_ranges.length > 0" class="button" ng-class="{ 'brand-colors' : allFieldsFilled() }" ng-disabled="!allFieldsFilled()">
 		Step 4 - Configure Rate
 	</button>
-	<button type="button" id="send-email" disabled="" class="button grey" ng-show="allFieldsFilled()">Step 4 - Configure Rate</button>
+	<button type="button" ng-click="saveDateRange()" ng-show="rateDate.date_ranges.length > 0" class="button" ng-class="{'brand-colors'}" ng-show="allFieldsFilled()">	Save
+	</button>
+
 </div>
 </form>
