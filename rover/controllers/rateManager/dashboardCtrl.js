@@ -29,7 +29,9 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
     */
     var DEFAULT_COLUMN_WIDTH = 200;
     var DEFAULT_TABLE_WIDTH = 4000;
+    var DEFAULT_TABLE_WIDTH = 400;
     $scope.uiOptions={
+        tableHeight : DEFAULT_TABLE_WIDTH,
         columWidth : DEFAULT_COLUMN_WIDTH,
         tableWidth : DEFAULT_TABLE_WIDTH,
         
@@ -37,9 +39,11 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
 
     $scope.computeColumWidth = function(){
 
-        var FILTER_OPTIONS_WIDTH = 230;
+        var FILTER_OPTIONS_WIDTH = 300;
         var FIRST_COLUMN_WIDTH = 270;
         var COLUMN_BORDER_WIDTH = 20;
+        var TOP_BOTTOM_HEIGHT = 187;
+
         var totalwidth = $window.innerWidth - FILTER_OPTIONS_WIDTH - FIRST_COLUMN_WIDTH; //Adjusting for left side .
         var singleColumnWidth = parseInt($scope.currentFilterData.zoom_level_selected) + COLUMN_BORDER_WIDTH; //Adjusting for the padding etc
         var mywidth = totalwidth/parseInt($scope.currentFilterData.zoom_level_selected);
@@ -48,6 +52,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
         var columsTotalWidth = numColumns * mywidth;
         if ( columsTotalWidth < totalwidth) columsTotalWidth = totalwidth; //@minimum, table should cover full view.
         $scope.uiOptions.tableWidth = parseInt(FIRST_COLUMN_WIDTH + columsTotalWidth);
+        $scope.uiOptions.tableHeight = $window.innerHeight - TOP_BOTTOM_HEIGHT;
         $scope.uiOptions.columWidth = parseInt(mywidth);
         
         console.log("TotalWidth :  "+ totalwidth);
@@ -56,6 +61,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
         console.log("numColumns :  "+ numColumns);
         console.log("columsTotalWidth :  "+columsTotalWidth );
         console.log("tableWidth :  "+$scope.uiOptions.tableWidth );
+        console.log("tableHeight :  "+$scope.uiOptions.tableHeight );
         console.log("columWidth :  "+$scope.uiOptions.columWidth );
     };
 

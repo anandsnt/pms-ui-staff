@@ -1,11 +1,12 @@
-<table class="rate-calendar" style="position:absolute;z-index: 10; table-layout:fixed; width:{{uiOptions.tableWidth}}">
+<div style="width=100%; over-flow:scroll; padding:0px;height:{{uiOptions.tableHeight}}" ng-iscroll="rateViewCalendar"  ng-iscroll-delay="1000" >
+<table class="rate-calendar" style="position:absolute;z-index: -10; table-layout:fixed; width:{{uiOptions.tableWidth}}; ">
 	<thead>
 	 	<tr>
 	 		<th width="270" style="{width:th.width}">
 	 			<button ng-click="openCloseAllRestrictions('remove')" class="button green"> Open All</button>	
 	 			<button ng-click="openCloseAllRestrictions('add')" class="button red"> Close All</button>	
 	 		</th>
-	 		<th width="{{uiOptions.columnWidth}}"   style="{width:th.width}"  ng-repeat="date in calendarData.dates"><div class="cell-content">{{date| date:'EEEE MMMM dd'}}</div></th>
+	 		<th width="{{uiOptions.columnWidth}}"   style="{width:th.width}"  ng-repeat="date in calendarData.dates"><div class="date-header"><span>{{date| date:'EEEE MMMM dd'}}</span></div></th>
 	 	</tr>
 	 </thead>
 
@@ -36,3 +37,4 @@
 		</tr>
 	</tbody>
 </table>
+</div>
