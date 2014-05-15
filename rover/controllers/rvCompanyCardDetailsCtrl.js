@@ -30,7 +30,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	var data = {'id': id};
 	$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, data, successCallbackOfInitialFetch);
 
-	 $scope.$parent.myScrollOptions = {		
+	$scope.$parent.myScrollOptions = {		
 	    'company-card-content': {
 	    	scrollbars: true,
 	        snap: false,
