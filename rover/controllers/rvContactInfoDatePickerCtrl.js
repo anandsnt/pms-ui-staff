@@ -29,9 +29,4 @@ $scope.$watch('closePopupOnSelection',function(){
     ngDialog.close();
   }
 });
-
-
-
-
-
 }]);
