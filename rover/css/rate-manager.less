@@ -1,11 +1,46 @@
 #rate-manager {
+
+.occupancy-graph-container{
+	position: absolute;
+	.filter-options{
+		background:none !important;
+	}
+	.entry.radio-check{
+		margin : 0 0 20px 0
+	}
+}
+
+
+	#update{
+width:100%;
+}
+
+.occgraph-outer{
+position: absolute;
+left: 240px;
+top: 115px;
+clear:both;
+margin-top:20px;
+}	
     .topbar {
+        height: 50px;
+        line-height: 50px;
         width: 100%;
         background: #FFFFFF;
+        ul {
+            float:left;
+            li { 
+                float:left;
+                display: inline-block; 
+                margin-right:25px;
 
-        button {
-            float:right;
+                .button {
+                    float:right !important;
+                }
+            }
         }
+
+        
     }
     .content {
         clear:both;
@@ -51,17 +86,47 @@
         table {
             width:100%;
         }
+
         th, td {
-            border: 1px solid black;
-            height:50px;
+            margin: 0px 10px 0px 10px;
+            vertical-allign: middle;
         }
-        .row-title {
-            text-align: right;
+
+        .cell-content{
+                border : 10px solid #e7e7e7;
+                height : 80px;
+                line-height : 80px; /* Trick for vertical alligh*/
+                font-size : 20px;
         }
-        .row-arrows {
-            float: right;
-            padding-right: 5px;
+        th .cell-content{
+                background-color : #393c41;
         }
+        td .cell-content{
+                background-color : #fcfcfc;
+        }
+
+    }
+}
+
+.restriction-legends{
+    background-color : #fcfcfc;
+    font-size : 16px;
+    text-transform:uppercase;
+    span{
+        padding-right: 20px;
+        padding-bottom : 10px;
+        padding-top : 10px;
+    }
+
+    #update{
+      width:100%;
+    }
+
+    .occgraph-outer{
+      position: absolute;
+      left: 550px;
+      top: 88px;
+      clear:both;
     }
 }
 
@@ -83,13 +148,14 @@
             tr {
                 border-bottom:1px solid #dadada;
                 th {
-                    font-size:17px !important;
+                    font-size:14px !important;
                     color:#202123;
                     text-align:center !important;
+                    padding-top:30px;
                 }
                 td {
                     padding:20px 10px;
-                    font-size:18px !important;
+                    font-size:12px !important;
                     font-weight:bold !important;
                     color:#202123;
                     text-align: center !important;
@@ -106,9 +172,51 @@
            text-align:center;
         }
                
-        em{
-          font-size:14px !important;
-        }
+em{
+    font-size:14px !important;
+    font-weight:normal !important;
+}
+
+table tr {
+    border-bottom:1px solid #dadada;}
+
+.noline {
+    border-bottom:none !important;
+}
+
+.cellbg {
+    background-color: #fcfcfc;
+    font-size:11px;
+    text-align:right;
+    color:#d8d8d8;
+    border: 0 none;
+    border-radius: 2px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15) inset;
+    margin: 0;
+    min-height: 30px !important;
+    resize: none;
+    transition: all 0.3s cubic-bezier(0.1, 0.1, 0.25, 0.9) 0s;
+    vertical-align: middle;
+    padding:5px 5px 0 0;
+}
+
+.cellbg input{
+    background-color:none !important;
+    border: 0 none;
+    border-radius: 0px !important;
+    box-shadow:none!important;;
+    margin: 0;
+    height: 20px !important;
+    resize: none;
+    transition: all 0.3s cubic-bezier(0.1, 0.1, 0.25, 0.9) 0s;
+    vertical-align: middle;
+    width:92% !important;
+    font-weight:bold !important;
+    font-size:18px !important;
+    color:#d8d8d8;
+    padding:5px 6px;
+    text-align:center;
+}
         .nogreen {
             background:none !important;
             color:#202123 !important;
@@ -122,4 +230,61 @@
         }
     }
 }
+
+.restriction-status {
+    display: block;
+    height: 16px;
+    width: 32px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -khtml-border-radius: 8px;
+    border-radius: 8px;
+    float: right;
+    text-align: center;
+    
+}
+.status-on{
+    background-color: #78d622;
+}
+.status-off{
+    background-color: #e54019;
+}
+
+
+/** Added for leftside menu transition by qburst */
+
+.leftMenuHandle {
+    position:absolute;
+    left: 230px;
+    top:20px; 
+    background-color: #E0E0E0;
+    background-image: url("/assets/main-navigation.png"), url("/assets/texture-dark.png");
+    background-position: -10px -10px, 0 0;
+    background-repeat: no-repeat, repeat;
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+    box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.2) inset;
+    display: block;
+    height: 40px;
+    width: 40px;
+}
+.slide_right {
+    position: absolute;
+    left: 0;
+    /*-webkit-transition-duration: .5s;
+    -moz-transition-duration: .5s;
+    -o-transition-duration: .5s;
+    transition-duration: .5s;*/
+  }
+.slide_left {
+    position: absolute;
+    left: -220px;
+    /*-webkit-transition-duration: .5s;
+    -moz-transition-duration: .5s;
+    -o-transition-duration: .5s;
+    transition-duration: .5s;*/
+}
+
+
+
 

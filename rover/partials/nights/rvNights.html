@@ -1,0 +1,590 @@
+<section role="complementary" id="edit-reservation" class="content stay-card-inner check-in">
+	<!-- Room assignment header -->
+	<div class="reservation-header">
+		<div class="actions back">
+			<a id="changedates-back-btn" class="back-button">Back</a>
+		</div>
+		<div class="data">
+			<span data-room-status="NOTREADY" data-reserv-status="CHECKING_IN" data-fostatus="" class="room"> <span class="guest-status room">room</span> <strong id="header-room-num" class="room-number not-ready"> </strong> <span id="room-type" data-room-type="DLK"> Deluxe Room updated </span> </span>
+			<span class="nights"> <span class="guest-status nights"></span> 1
+				night </span>
+			<span class="date"> <span class="guest-status small-icon check-in">check-in</span> Monday
+				03-31-2014 </span>
+			<span class="date"> <span class="guest-status small-icon check-out">check-out</span> Tuesday
+				04-01-2014 </span>
+		</div>
+
+	</div>
+	<!-- Edit reservation -->
+	<div class="edit-reservation-content">
+		<!-- Reservation calendar -->
+		<div id="calendar-holder" class="reservation-calendar scrollable">
+			<div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+				<div id="notification-message"></div>
+				<div id="reservation-calendar" class="fc fc-ltr">
+					<table style="width:100%" class="fc-header">
+						<tbody>
+							<tr>
+								<td class="fc-header-left"><span class="fc-button fc-button-prev fc-state-default fc-corner-left fc-corner-right" unselectable="on" style="-moz-user-select: none;"><span class="fc-text-arrow">‹</span></span></td><td class="fc-header-center"><span class="fc-header-title"><h2>March 2014</h2></span></td><td class="fc-header-right"><span class="fc-button fc-button-next fc-state-default fc-corner-left fc-corner-right" unselectable="on" style="-moz-user-select: none;"><span class="fc-text-arrow">›</span></span></td>
+							</tr>
+						</tbody>
+					</table>
+					<div style="position: relative;" class="fc-content">
+						<div style="position: relative; -moz-user-select: none;" class="fc-view fc-view-month fc-grid" unselectable="on">
+							<div style="position:absolute;z-index:8;top:0;left:0" class="fc-event-container">
+								<div style="position: absolute; left: 67px; width: 60px; top: 305px;" data-date="2014-03-31" class="fc-event fc-event-hori fc-event-draggable fc-event-start fc-event-end check-in">
+									<div class="fc-event-inner">
+										<span class="fc-event-day">31</span><span class="fc-event-title">$200</span>
+									</div>
+								</div>
+								<div style="position: absolute; left: 134px; width: 60px; top: 305px;" data-date="2014-04-01" class="fc-event fc-event-hori fc-event-draggable fc-event-start fc-event-end check-out">
+									<div class="fc-event-inner">
+										<span class="fc-event-day">1</span><span class="fc-event-title">$200</span>
+									</div>
+								</div>
+							</div>
+							<table cellspacing="0" style="width:100%" class="fc-border-separate">
+								<thead>
+									<tr class="fc-first fc-last">
+										<th class="fc-day-header fc-sun fc-widget-header fc-first" style="width: 67px;">Su</th><th class="fc-day-header fc-mon fc-widget-header" style="width: 67px;">Mo</th><th class="fc-day-header fc-tue fc-widget-header" style="width: 67px;">Tu</th><th class="fc-day-header fc-wed fc-widget-header" style="width: 67px;">We</th><th class="fc-day-header fc-thu fc-widget-header" style="width: 67px;">Th</th><th class="fc-day-header fc-fri fc-widget-header" style="width: 67px;">Fr</th><th class="fc-day-header fc-sat fc-widget-header fc-last">Sa</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="fc-week fc-first">
+										<td data-date="2014-02-23" class="fc-day fc-sun fc-widget-content fc-other-month fc-past fc-first">
+										<div style="min-height: 43px;">
+											<div class="fc-day-number">
+												23
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-02-24" class="fc-day fc-mon fc-widget-content fc-other-month fc-past">
+										<div>
+											<div class="fc-day-number">
+												24
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-02-25" class="fc-day fc-tue fc-widget-content fc-other-month fc-past">
+										<div>
+											<div class="fc-day-number">
+												25
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-02-26" class="fc-day fc-wed fc-widget-content fc-other-month fc-past">
+										<div>
+											<div class="fc-day-number">
+												26
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-02-27" class="fc-day fc-thu fc-widget-content fc-other-month fc-past">
+										<div>
+											<div class="fc-day-number">
+												27
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-02-28" class="fc-day fc-fri fc-widget-content fc-other-month fc-past">
+										<div>
+											<div class="fc-day-number">
+												28
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-01" class="fc-day fc-sat fc-widget-content fc-past fc-last">
+										<div>
+											<div class="fc-day-number">
+												1
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td>
+									</tr>
+									<tr class="fc-week">
+										<td data-date="2014-03-02" class="fc-day fc-sun fc-widget-content fc-past fc-first">
+										<div style="min-height: 43px;">
+											<div class="fc-day-number">
+												2
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-03" class="fc-day fc-mon fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												3
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-04" class="fc-day fc-tue fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												4
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-05" class="fc-day fc-wed fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												5
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-06" class="fc-day fc-thu fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												6
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-07" class="fc-day fc-fri fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												7
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-08" class="fc-day fc-sat fc-widget-content fc-past fc-last">
+										<div>
+											<div class="fc-day-number">
+												8
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td>
+									</tr>
+									<tr class="fc-week">
+										<td data-date="2014-03-09" class="fc-day fc-sun fc-widget-content fc-past fc-first">
+										<div style="min-height: 43px;">
+											<div class="fc-day-number">
+												9
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-10" class="fc-day fc-mon fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												10
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-11" class="fc-day fc-tue fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												11
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-12" class="fc-day fc-wed fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												12
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-13" class="fc-day fc-thu fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												13
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-14" class="fc-day fc-fri fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												14
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-15" class="fc-day fc-sat fc-widget-content fc-past fc-last">
+										<div>
+											<div class="fc-day-number">
+												15
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td>
+									</tr>
+									<tr class="fc-week">
+										<td data-date="2014-03-16" class="fc-day fc-sun fc-widget-content fc-past fc-first">
+										<div style="min-height: 43px;">
+											<div class="fc-day-number">
+												16
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-17" class="fc-day fc-mon fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												17
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-18" class="fc-day fc-tue fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												18
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-19" class="fc-day fc-wed fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												19
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-20" class="fc-day fc-thu fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												20
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-21" class="fc-day fc-fri fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												21
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-22" class="fc-day fc-sat fc-widget-content fc-past fc-last">
+										<div>
+											<div class="fc-day-number">
+												22
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td>
+									</tr>
+									<tr class="fc-week">
+										<td data-date="2014-03-23" class="fc-day fc-sun fc-widget-content fc-past fc-first">
+										<div style="min-height: 43px;">
+											<div class="fc-day-number">
+												23
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-24" class="fc-day fc-mon fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												24
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-25" class="fc-day fc-tue fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												25
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-26" class="fc-day fc-wed fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												26
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-27" class="fc-day fc-thu fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												27
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-28" class="fc-day fc-fri fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												28
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-29" class="fc-day fc-sat fc-widget-content fc-past fc-last">
+										<div>
+											<div class="fc-day-number">
+												29
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 0px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td>
+									</tr>
+									<tr class="fc-week fc-last">
+										<td data-date="2014-03-30" class="fc-day fc-sun fc-widget-content fc-past fc-first">
+										<div style="min-height: 50px;">
+											<div class="fc-day-number">
+												30
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 50px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-03-31" class="fc-day fc-mon fc-widget-content fc-past">
+										<div>
+											<div class="fc-day-number">
+												31
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 50px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-04-01" class="fc-day fc-tue fc-widget-content fc-other-month fc-past">
+										<div>
+											<div class="fc-day-number">
+												1
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 50px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-04-02" class="fc-day fc-wed fc-widget-content fc-other-month fc-past">
+										<div>
+											<div class="fc-day-number">
+												2
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 50px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-04-03" class="fc-day fc-thu fc-widget-content fc-other-month fc-past">
+										<div>
+											<div class="fc-day-number">
+												3
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 50px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-04-04" class="fc-day fc-fri fc-widget-content fc-other-month fc-past">
+										<div>
+											<div class="fc-day-number">
+												4
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 50px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td><td data-date="2014-04-05" class="fc-day fc-sat fc-widget-content fc-other-month fc-past fc-last">
+										<div>
+											<div class="fc-day-number">
+												5
+											</div>
+											<div class="fc-day-content">
+												<div style="position: relative; height: 50px;">
+													&nbsp;
+												</div>
+											</div>
+										</div></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<strong id="instruction-title" class="notice">Drag &amp; drop to change stay dates</strong>
+				<ul id="reservation-calendar-legend">
+					<li>
+						<span class="check-in"></span>Arrival
+					</li>
+					<li>
+						<span class="no-availability"></span>No availability
+					</li>
+					<li>
+						<span class="mid-stay"></span>Mid stay
+					</li>
+					<li>
+						<span class="availability"></span>Room available
+					</li>
+					<li>
+						<span class="check-out"></span>Departure
+					</li>
+				</ul>
+			</div>
+			<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
+				<div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 86px; transform: translate(0px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
+			</div>
+		</div>
+		<!-- Reservation update -->
+		<div id="reservation-details" class="reservation-updates">
+			<div id="no-reservation-updates" class="updates-content no-content">
+				<div class="info">
+					<strong class="h1">Change stay dates to see room and rate changes.</strong>
+				</div>
+			</div>
+			<div id="reservation-updates" class="updates-content hidden">
+				<h4 class="available-title">Reservation updates</h4>
+				<div id="update-details" class="details scrollable">
+					<div class="wrapper">
+						<h2 class="room"><strong id="room-number" class="room-number"></strong><span id="room-type"></span></h2>
+						<ul class="data">
+							<li class="nights">
+								<span class="guest-status nights">nights</span>
+								<span id="new-nights">nights</span>
+							</li>
+							<li class="date">
+								<span class="guest-status small-icon check-in">check-in</span>
+								<span id="new-check-in"></span>
+							</li>
+							<li class="date">
+								<span class="guest-status small-icon check-out">check-out</span>
+								<span id="new-check-out"></span>
+							</li>
+						</ul>
+						<p class="rate">
+							<span class="number"> <span id="avg-daily-rate"></span> <strong id="total-stay-cost"></strong> </span>
+							<span id="rate-desc"></span>
+						</p>
+						<div class="action">
+							<a id="confirm-changes" href="reservation-card/inhouse/" data-transition="nested-view reload-content" class="button back-button brand-colors">Confirm updates</a>
+							<button type="button" id="reset-dates" class="button blank">
+								Cancel (reset dates)
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="room-list" class="updates-content hidden">
+				<h4 class="available-title error"> Room <span id="current-room"></span> is not available. </h4>
+				<strong class="subheading"> Please select another room or
+				<button type="button" id="reset-dates" class="button blank">
+					Reset dates
+				</button> </strong>
+				<div id="change-room" class="details scrollable">
+					<div class="wrapper">
+						<ul class="rooms"></ul>
+					</div>
+				</div>
+			</div>
+			<div id="room-locked" class="updates-content no-content hidden">
+				<div class="info">
+					<strong class="h1">Room cannot be made available past the guest's current departure date.</strong>
+					<span class="h2">Please see Front Desk.</span>
+					<button type="button" id="reset-dates" class="button blank">
+						Reset dates
+					</button>
+				</div>
+			</div>
+			<div id="room-restricted" class="updates-content no-content hidden">
+				<div class="info">
+					<strong class="h1">Minimum Length of Stay restriction exists for this booking.</strong>
+					<span class="h2">Please see Front Desk.</span>
+					<button type="button" id="reset-dates" class="button blank">
+						Reset dates
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

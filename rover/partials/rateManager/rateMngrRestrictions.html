@@ -1,0 +1,9 @@
+<div>
+	<div ng-repeat="restrictionType in calendarData.restriction_types">
+		<span style="background-color: {{restrictionType.background_class}};"> <img src="{{restrictionType.icon}}"></span>
+		<span>{{restrictionType.description}}</span>
+		<span>{{isRestrictionOn(currentlySelectedRate[currentlySelectedDate], restrictionType.id)}}</span>
+		<span class="restriction-status" ng-class="{'status-on': isRestrictionOn(currentlySelectedRate[currentlySelectedDate], restrictionType.id), 'status-off': !isRestrictionOn(currentlySelectedRate[currentlySelectedDate], restrictionType.id)}">Off</span>
+
+	</div>
+</div>
