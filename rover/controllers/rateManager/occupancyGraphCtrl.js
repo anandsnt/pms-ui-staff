@@ -196,8 +196,8 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
             $scope.$emit('hideLoader');
         };
         var params = {
-            "from_date": "2014-05-01",
-            "to_date": "2014-05-13"
+            "from_date": $scope.currentFilterData.begin_date,
+            "to_date": $scope.currentFilterData.end_date
         }
         $scope.invokeApi(RateMgrOccupancyGraphSrv.fetch, params, fetchGraphDataSuccess);
     };
