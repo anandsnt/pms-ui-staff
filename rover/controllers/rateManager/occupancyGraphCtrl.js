@@ -16,19 +16,20 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                         className: "rateMgrOccGraph",
                         plotBackgroundColor: '#e0e0e0',
                         width : clientWidth - 270,
-                        backgroundColor : null                        
+                        backgroundColor : null,
+                        zoomType: 'x'
                     },
                     tooltip: {
                         shared: true,
                         formatter: function() {
                     	    if($scope.seriesActualVisible && $scope.seriesTargetVisible){
-                    	    	return 'ACTUAL <b>' + this.points[0].y + '%</b>' + '<br/>TARGET <b>' + this.points[1].y + '%</b>';
+                    	    	return 'ACTUAL <b>' + (( typeof this.points[0].y == 'undefined' ) ? '0' : this.points[0].y ) + '%</b>' + '<br/>TARGET <b>' +  (( typeof this.points[1] == 'undefined' ) ? '0' : this.points[1].y ) + '%</b>';
                     	    }
                     	    if ($scope.seriesActualVisible){
-                    	    	return 'ACTUAL <b>' + this.points[0].y + '%';
+                    	    	return 'ACTUAL <b>' + (( typeof this.points[0].y == 'undefined' ) ? '0' : this.points[0].y ) + '%';
                     	    }
                     	    if ($scope.seriesTargetVisible){
-                    	    	return 'TARGET <b>' + this.points[0].y + '%';
+                    	    	return 'TARGET <b>' + (( typeof this.points[0].y == 'undefined' ) ? '0' : this.points[0].y ) + '%';
                     	    }
                         }
                     },
@@ -44,12 +45,26 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                     	gridLineWidth: 5,
                         gridLineColor: '#FCFCFC',
                         opposite: true,
-                        tickPosition: 'inside',                        
+                        tickPosition: 'inside',
+                        tickWidth:0,
                         type: 'datetime',
-                        minTickInterval: 24 * 3600 * 1000,                        
+                        minTickInterval: 24 * 3600 * 1000,
+                        minPadding:0.1,                        
                         dateTimeLabelFormats:{
                             day: '%A <br/> %B %d'
-                        }
+                        },labels: {                            
+                            x: 0,
+                            y: -25,
+                            style: {
+                        		'class': 'uppercase-label',
+                        		'textAlign' : 'center',
+                        		'display':'block',                        		
+                            	'color': '#868788',
+                            	'fontWeight': 'bold',                            	
+                            	'textTransform':'uppercase'
+                            },
+                            useHTML: true
+                        },
                     },
                     yAxis: {
                     	tickPosition : "inside",
@@ -57,10 +72,15 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                     	style: {
                     		color: 'red'
                     	},
+                    	useHTML : true,
                     	labels: {
                             align: 'left',
                             x: 0,
-                            y: -2
+                            y: -2,
+                            style: {
+                            	color: '#868788',
+                            	fontWeight: 'bold'
+                            }
                         },
                         floor: 0,
                         ceiling: 110,
