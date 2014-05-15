@@ -5,13 +5,13 @@
                 <select name="company-contract" ng-model="contractSelected">
                     <option value="" class="placeholder">Select contract</option>
                     <optgroup label="Current">
-                    	<option value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.current" >{{type.name}}</option>
+                    	<option ng-click="clickedContractList(type.id)" value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.current" >{{type.name}}</option>
                 	</optgroup>
                 	<optgroup label="Future">
-                    	<option value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.future" >{{type.name}}</option>
+                    	<option ng-click="clickedContractList(type.id)" value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.future" >{{type.name}}</option>
                 	</optgroup>
                 	<optgroup label="History">
-                    	<option value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.history" >{{type.name}}</option>
+                    	<option ng-click="clickedContractList(type.id)" value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.history" >{{type.name}}</option>
                 	</optgroup>
                 </select>
             </div>
