@@ -1,5 +1,5 @@
-admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
-    function ($scope, ADRatesAddDetailsSrv) {
+admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDialog',
+    function ($scope, ADRatesAddDetailsSrv,ngDialog) {
 
         $scope.init = function () {
             BaseCtrl.call(this, $scope);
@@ -142,7 +142,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 'source_id':$scope.rateData.source_id,
                 'market_segment_id':$scope.rateData.market_segment_id,
                 'cancellation_policy_id': $scope.rateData.cancellation_policy_id,
-                'deposit_policy_id':$scope.rateData.deposit_policy_id
+                'deposit_policy_id':$scope.rateData.deposit_policy_id,
+                'end_date':$scope.rateData.end_date
 
             };
 
@@ -171,5 +172,17 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
         };
 
         $scope.init();
+
+
+        $scope.popupCalendar = function(){
+        ngDialog.open({
+         template: '/assets/partials/rates/adRatesAdditionalDeatilsPicker.html',
+         controller: 'adEndDatePickerController',
+         className: 'ngdialog-theme-default single-calendar-modal',
+         scope:$scope,
+         closeByDocument:true
+    });
+};
     }
 ]);
+
