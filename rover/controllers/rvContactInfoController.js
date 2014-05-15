@@ -4,6 +4,7 @@ sntRover.controller('RVContactInfoController',['$scope','RVContactInfoSrv','ngDi
   * storing to check if data will be updated
   */
 var presentContactInfo = JSON.parse(JSON.stringify($scope.guestCardData.contactInfo));
+presentContactInfo.birthday =JSON.parse(JSON.stringify(dateFilter($scope.guestCardData.contactInfo.birthday, 'MM-dd-yyyy')));
 $scope.errorMessage = "";
 
 $scope.saveContactInfo = function(){
