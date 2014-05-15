@@ -34,13 +34,15 @@ var HouseKeepingSettingsView = function(domRef) {
 				console.log("is_checked---" + is_checkbox_checked);
 				that.myDom.find("#div-checkin_inspected_only").closest("label").find("span:eq(0)").addClass("checked");
 				that.myDom.find("#div-checkin_inspected_only").closest("label").addClass("checked");
+			} else {
+				that.myDom.find("#div-checkin_inspected_only").attr('checked', false);
 			}
 			that.myDom.find("#div-checkin_inspected_only").removeAttr("disabled");
 		} else {
 			that.myDom.find("#div-checkin_inspected_only").closest("label").find("span:eq(0)").removeClass("checked");
 			that.myDom.find("#div-checkin_inspected_only").closest("label").removeClass("checked");
 			that.myDom.find("#div-checkin_inspected_only").attr("disabled", true);
-
+			console.log("Use Inspected----" + that.myDom.find("#div-checkin_inspected_only").is(":checked"))
 		}
 
 	};
@@ -48,16 +50,20 @@ var HouseKeepingSettingsView = function(domRef) {
 	this.saveHouseKeepingSettings = function() {
 		var extended_checkout = new Array();
 		var postParams = {};
-
-		if (that.myDom.find("#div-use-pickup").hasClass("on")) {
+		var is_use_pickup_on = that.myDom.find("#div-use-pickup").hasClass("on");
+		var is_inspected_on = that.myDom.find("#div-use-inspected").hasClass("on");
+		var is_inspected_only_checked = that.myDom.find("#div-checkin_inspected_only").is(":checked");
+		if (is_use_pickup_on) {
 			that.use_pickup = "true";
 		}
-		if (that.myDom.find("#div-use-inspected").hasClass("on")) {
+		if (is_inspected_on) {
+			if (is_inspected_only_checked) {
+				that.checkin_inspected_only = "true";
+			}
 			that.use_inspected = "true";
 
-		}
-		if (that.myDom.find("#div-checkin_inspected_only").is(":checked")) {
-			that.checkin_inspected_only = "true";
+		} else {
+			that.checkin_inspected_only = "false";
 		}
 
 		postParams.use_pickup = that.use_pickup;
