@@ -1,4 +1,5 @@
-<table class="rate-calendar" style="position:absolute;z-index: 10; table-layout:fixed; width:{{uiOptions.tableWidth}}">
+<div style="width=100%; over-flow:scroll; padding:0px;height:{{uiOptions.tableHeight}}" ng-iscroll="rateViewCalendar"  ng-iscroll-delay="1000" >
+<table class="rate-calendar" style="position:absolute;z-index: -10; table-layout:fixed; width:{{uiOptions.tableWidth}}; ">
 	<thead>
 	 	<tr>
 	 		<th width="270" style="{width:th.width}">
@@ -36,3 +37,4 @@
 		</tr>
 	</tbody>
 </table>
+</div>
