@@ -1,11 +1,11 @@
-<table class="rate-calendar">
+<table class="rate-calendar" style="table-layout:fixed; width:{{uiOptions.tableWidth}}">
 	<thead>
 	 	<tr>
-	 		<th width="250">
+	 		<th width="270" style="{width:th.width}">
 	 			<button ng-click="openCloseAllRestrictions('remove')" class="button green"> Open All</button>	
 	 			<button ng-click="openCloseAllRestrictions('add')" class="button red"> Close All</button>	
 	 		</th>
-	 		<th width="250" ng-repeat="date in calendarData.dates"><div class="cell-content">{{date| date:'EEEE MMMM yy'}}</div></th>
+	 		<th width="{{uiOptions.columnWidth}}"   style="{width:th.width}"  ng-repeat="date in calendarData.dates"><div class="cell-content">{{date| date:'EEEE MMMM dd'}}</div></th>
 	 	</tr>
 	 </thead>
 
