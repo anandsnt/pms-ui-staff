@@ -2,8 +2,8 @@ sntRover.controller('RMDashboradCtrl', ['$scope','dateFilter', function($scope,d
 	
 	BaseCtrl.call(this, $scope);
 	$scope.displayMode = "CALENDAR";
-    $scope.filterConfigured = false;
-	$scope.showLeftMenu = true;
+  $scope.filterConfigured = false;
+	$scope.currentLeftMenuClass = 'slide_right';
 	$scope.currentFilterData =	{
            begin_date : dateFilter(new Date(), 'yyyy-MM-dd'),
            end_date : dateFilter(new Date(), 'yyyy-MM-dd'),
@@ -16,7 +16,15 @@ sntRover.controller('RMDashboradCtrl', ['$scope','dateFilter', function($scope,d
            rates_selected_list : [],
            name_on_cards : []
    	};
-   	
+
+  $scope.toggleLeftMenu = function()   	{
+    if ($scope.currentLeftMenuClass == 'slide_right'){
+      $scope.currentLeftMenuClass = 'slide_left';
+    }
+    else{
+      $scope.currentLeftMenuClass = 'slide_right';
+    }
+  }
 	$scope.showCalendarView = function(){
 		$scope.displayMode = "CALENDAR";
 	};
