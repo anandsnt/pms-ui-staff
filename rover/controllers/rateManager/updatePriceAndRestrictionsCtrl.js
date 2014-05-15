@@ -24,10 +24,9 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 restrictionTypes[rTypes[i].id] = rTypes[i];
                 var item =  rTypes[i];
                 var itemID = rTypes[i].id;
-
+				item.days = "";
+                item.isRestrictionEnabled = false;
                 for(var i in selectedDateInfo){
-                    item.days = "";
-                    item.isRestrictionEnabled = false;
                     if(selectedDateInfo[i].restriction_type_id == itemID){
                         item.days = selectedDateInfo[i].days;
                         item.isRestrictionEnabled = true;
@@ -37,7 +36,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 restrictionTypes[itemID] = item;
             }
             $scope.data.restrictionTypes = restrictionTypes;
-
+			console.log(JSON.stringify($scope.data.restrictionTypes));
         };
 
         $scope.updateRestriction = function(id, action){
@@ -56,5 +55,9 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         };
 
         $scope.init();
+        
+        $scope.saveRestriction = function(){
+        	console.log(JSON.stringify($scope.data.restrictionTypes));
+        };
     }
 ]);
