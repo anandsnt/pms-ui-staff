@@ -5,7 +5,8 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
     $scope.filterConfigured = false;
     var defaultDateRange = 7;
 	$scope.showLeftMenu = true;
-    
+    $scope.backbuttonEnabled = false;
+
 	$scope.currentFilterData =	{
            begin_date : dateFilter(new Date(), 'yyyy-MM-dd'),
            end_date : dateFilter(new Date((new Date()).getTime() + defaultDateRange*24*60*60*1000), 'yyyy-MM-dd'),
@@ -71,8 +72,14 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
         
     };
     $scope.backButtonClicked = function(){
+        $scope.backbuttonEnabled = false;
+        $scope.displayMode = "CALENDAR";
         angular.copy($scope.currentFilterData.rates_selected_list, $scope.ratesDisplayed);
         $scope.$broadcast("setCalendarModeRateType");
     }
+
+    $scope.$on("enableBackbutton", function(){
+        $scope.backbuttonEnabled = true;
+    });
 
 }]);
