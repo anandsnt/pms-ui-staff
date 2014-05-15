@@ -123,7 +123,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.is_commission_on = (data.is_commission_on)?true:false;
             $scope.rateData.is_suppress_rate_on = (data.is_suppress_rate_on)?true:false;
             $scope.rateData.is_discount_allowed_on = (data.is_discount_allowed_on)?true:false;
-
+       
             // addons
             if($scope.rateData.addOns.length>0){
                 var tempData = $scope.rateData.addOns;

@@ -26,16 +26,16 @@
 	 		   	<div class="entry">
                 <label>Market</label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
-                        <option value="" disabled>Select Rate Type</option>
+                    <select class="placeholder" ng-model="rateData.market_segment_id" ng-options="market.value as market.name for market in rateTypesDetails.markets">
+                        <option value="" disabled>Select Market</option>
                     </select>
                 </div>
                 </div>
                 <div class="entry">
                 <label>Source</label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
-                        <option value="" disabled>Select Rate Type</option>
+                    <select class="placeholder" ng-model="rateData.source_id" ng-options="source.value as source.name for source in rateTypesDetails.sources">
+                        <option value="" disabled>Select Source</option>
                     </select>
                 </div>
           		</div>

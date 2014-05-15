@@ -11,15 +11,76 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
         this.fetchRateTypes = function () {
 
              var deferred = $q.defer();
+
+
+            /*
+             * Service function to fetch cancelation penalties
+             * @return {object}  cancelation penalties
+             */
+            this.fetchCancelationPenalties = function () {
+                var url = " /api/policies?policy_type=CANCEL_PENALTIES";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.cancelationPenalties = data.results;
+                    console.log(that.addRatesDetailsData)
+                    deferred.resolve(that.addRatesDetailsData);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+            };
+
+
+            /*
+             * Service function to fetch deposit policies
+             * @return {object} deposit policies
+             */
+            this.fetchDepositPolicies = function () {
+                var url = "/api/policies?policy_type=DEPOSIT_REQUESTED";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.depositPolicies = data.results;
+                    this.fetchCancelationPenalties();
+                }, function (data) {
+                    deferred.reject(data);
+                });
+            };
+
+               /*
+             * Service function to fetch markets
+             * @return {object} markets
+             */
+            this.fetchMarkets = function () {
+                var url = "/api/market_segments?is_active=true";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.markets = data.markets;
+                    this.fetchDepositPolicies();
+                }, function (data) {
+                    deferred.reject(data);
+                });
+            };
+
+
+            /*
+             * Service function to fetch source
+             * @return {object} source
+             */
+            this.fetchSources = function () {
+                var url = "/api/sources.json?is_active=true";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.sources = data.sources;
+                    this.fetchMarkets();
+                }, function (data) {
+                    deferred.reject(data);
+                });
+            };
+
               /*
-             * Service function to fetch HotelSettings
-             * @return {object} HotelSettings
+             * Service function to fetch charge codes
+             * @return {object} charge codes
              */
             this.fetchChargeCodes = function () {
                 var url = "/api/charge_codes";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.charge_codes = data.results;
-                    deferred.resolve(that.addRatesDetailsData);
+                    this.fetchSources();
                 }, function (data) {
                     deferred.reject(data);
                 });

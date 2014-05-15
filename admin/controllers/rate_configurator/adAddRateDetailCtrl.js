@@ -138,7 +138,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv',
                 'use_rate_levels':$scope.rateData.use_rate_levels,
                 'is_commission_on':$scope.rateData.is_commission_on,
                 'is_suppress_rate_on':$scope.rateData.is_suppress_rate_on,
-                'is_discount_allowed_on':$scope.rateData.is_discount_allowed_on
+                'is_discount_allowed_on':$scope.rateData.is_discount_allowed_on,
+                'source_id':$scope.rateData.source_id,
+                'market_segment_id':$scope.rateData.market_segment_id
             };
 
             // Save Rate Success Callback
