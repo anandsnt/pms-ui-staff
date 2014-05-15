@@ -56,4 +56,24 @@ $scope.popupCalendar = function(){
 	});
 };
 
+	$scope.$parent.myScrollOptions = {		
+	    'contact_info': {
+	    	scrollbars: true,
+	        snap: false,
+	        hideScrollbar: false
+	    },
+	};
+
+	$scope.$on('CONTACTINTOLOADED', function(event) {
+		setTimeout(function(){
+			console.log(":::::::::::::::::JPHME")
+			$scope.$parent.myScroll['contact_info'].refresh();
+			}, 
+		1500);
+		
+	});
+	
+	
+
+
 }]);
