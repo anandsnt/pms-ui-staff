@@ -24,26 +24,32 @@ var ConnectivityView = function(domRef){
 		    "pms_user_name": data.pms_user_name,
 		    "pms_user_pwd": data.pms_user_pwd,
 		    "pms_hotel_code": data.pms_hotel_code,
-		    "pms_chain_code": data.pms_chain_code
-	  };
-	  var type = event.data[0];
-	  if(type == "save"){
-	 	  var url = '/admin/save_pms_connection_config';
-	  } else {
-	 	  var url = '/admin/test_pms_connection';
-	  }
-
-	  var webservice = new WebServiceInterface();
-	  var options = {
+		    "pms_chain_code": data.pms_chain_code,
+		    "pms_timeout": data.pms_timeout
+	 };
+	 var type = event.data[0];
+	 if(type == "save"){
+	 	var url = '/admin/save_pms_connection_config';
+	 } else {
+	 	var url = '/admin/test_pms_connection';
+	 }
+	 
+	 var webservice = new WebServiceInterface();
+	 var options = { 
 				requestParameters: data,
 				successCallBack: that.fetchCompletedOfSave,
 				failureCallBack: that.fetchFailedOfSave,
 				successCallBackParameters:{ "type": type},
 				failureCallBackParameters:{ "type": type},
 				loader: 'blocker'
-	  };
-
-	  webservice.postJSON(url, options);
+	 };
+	 if(type == "save"){
+	 	 webservice.postJSON(url, options);	
+	 } else {
+	 	 webservice.getJSON(url, options);	
+	 }
+	
+	    
   };
 
   //enable test connection button
@@ -64,7 +70,8 @@ var ConnectivityView = function(domRef){
   	 var pms_user_pwd     = that.myDom.find("#pms-user-pwd").val();
   	 var pms_hotel_code   = that.myDom.find("#pms-hotel-code").val();
   	 var pms_chain_code   = that.myDom.find("#pms-chain-code").val();
-
+  	 var pms_timeout   = that.myDom.find("#pms-timeout").val();
+  	 
   	 var data = {};
   	 data.pms_access_url 	= pms_access_url;
   	 data.pms_channel_code 	= pms_channel_code;
@@ -72,6 +79,7 @@ var ConnectivityView = function(domRef){
   	 data.pms_user_pwd = pms_user_pwd;
   	 data.pms_hotel_code = pms_hotel_code;
   	 data.pms_chain_code = pms_chain_code;
+  	 data.pms_timeout = pms_timeout;
   	 return data;
   };
   // To handle success on save API

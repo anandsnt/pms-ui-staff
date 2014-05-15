@@ -13,7 +13,6 @@
 		    <label for="nationality">Zoom Level</label>
 		    <div class="select">
 				<select name="zoom-level" ng-model="currentFilterData.zoom_level_selected">
-					<option value="">Select Zoom Level</option>
 				    <option ng-selected="level.value == currentFilterData.zoom_level_selected" ng-repeat="level in currentFilterData.zoom_level" class="placeholder" value="{{level.value}}">{{level.name}}</option> 
 				</select>
 			</div>
