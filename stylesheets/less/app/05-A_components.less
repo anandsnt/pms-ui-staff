@@ -4415,6 +4415,13 @@
 		}*/
 	}
 
+	@media (max-width: 999px) {
+		#report-update {
+			position: static;
+			height: auto;
+		}
+	}
+
 	#report-details {
 		background-color: #fcfcfc;
 		background-image: @textureImage;
@@ -4537,7 +4544,7 @@
 				font-size: 14px;
 				line-height: 21px;
 				text-transform: uppercase;
-				table-layout: auto;
+				table-layout: fixed;
 				border-collapse: separate; 
 				border-spacing: 0 10px;
 				margin: 0;
@@ -4607,6 +4614,12 @@
 					}
 				}
 			}
+		}
+	}
+
+	@media (max-width: 999px) {
+		#report-details.content.stay-card-inner {
+			position: static;
 		}
 	}
 
