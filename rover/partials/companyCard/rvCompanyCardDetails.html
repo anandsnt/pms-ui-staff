@@ -19,19 +19,19 @@
                     <form method="post" name="change-company-name" id="change-company-name">
                         <div class="holder">
                             <div class="entry">
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.address_details.first_name}}" ng-model="contactInformation.address_details.first_name" type="text" class="masked-input h1" />
+                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.company_details.account_first_name}}" ng-model="contactInformation.company_details.account_first_name" type="text" class="masked-input h1"/>
 
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.address_details.last_name}}" ng-model="contactInformation.address_details.last_name" type="text" class="masked-input h1" />
+                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.company_details.account_last_name}}" ng-model="contactInformation.company_details.account_last_name" type="text" class="masked-input h1" />
                             </div>
                         </div>
                         <div class="holder data">
-                            <input  name="cc-city" id="cc-city" placeholder="" value="{{contactInformation.address_details.city}}" ng-model="contactInformation.address_details.city" type="text" class="masked-input icons icon-gc-location" />
+                            <input  name="cc-city" id="cc-city" placeholder="" value="{{contactInformation.address_details.city}}" ng-model="contactInformation.address_details.city" type="text" class="masked-input icons icon-gc-location"  data-size="{{contactInformation.address_details.city.length}}" auto-grow-field/>
 
-                            <input  name="cc-state" id="cc-state" placeholder="" value="{{contactInformation.address_details.state}}" ng-model="contactInformation.address_details.state"  type="text" class="masked-input" />
+                            <input  name="cc-state" id="cc-state" placeholder="" value="{{contactInformation.address_details.state}}" ng-model="contactInformation.address_details.state"  type="text" class="masked-input" auto-grow-field/>
 
-                            <input name="cc-phone" id="cc-phone" placeholder="" value="{{contactInformation.address_details.phone}}" ng-model="contactInformation.address_details.phone" type="tel" class="masked-input icons icon-gc-phone" />
+                            <input name="cc-phone" id="cc-phone" placeholder="" value="{{contactInformation.address_details.phone}}" ng-model="contactInformation.address_details.phone" type="tel" class="masked-input icons icon-gc-phone" auto-grow-field />
 
-                            <input name="cc-email" id="cc-email" placeholder="" value="{{contactInformation.email_address}}" ng-model="contactInformation.address_details.email_address" type="email" class="masked-input icons icon-gc-email" />
+                            <input name="cc-email" id="cc-email" placeholder="" value="{{contactInformation.email_address}}" ng-model="contactInformation.address_details.email_address" type="email" class="masked-input icons icon-gc-email" auto-grow-field/>
                         </div>
                     </form>
                 </div>
