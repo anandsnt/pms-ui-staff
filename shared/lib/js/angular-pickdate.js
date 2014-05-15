@@ -6,6 +6,7 @@
     return -1;
   };
 
+
   angular.module('pickadate.utils', [])
     .factory('pickadateUtils', ['dateFilter', function(dateFilter) {
       return {

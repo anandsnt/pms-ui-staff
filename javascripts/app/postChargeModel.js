@@ -148,6 +148,10 @@ var PostChargeModel = function(callBack) {
 
 		if (!element.hasClass('selected')) {
 			that.myDom.find('#items-summary li.selected').removeClass('selected');
+			that.myDom.find('#numpad').show();
+		}
+		else{
+			that.myDom.find('#numpad').hide();
 		}
 		element.toggleClass('selected');
 		
@@ -194,12 +198,13 @@ var PostChargeModel = function(callBack) {
 			// First click on a list item - add item to item summary 
 			if (!is_item_present_in_item_summary) {
 				
+				that.updateSelectedItemSummary($id);
 				$('<span class="count" />').appendTo(element);
 				var totalChargeHTML = "Total <span class='price'>"+$currency_code+" <span class='value'>0</span></span>";
 				that.myDom.find('#total-charge').html(totalChargeHTML);
 				// Add item to list
 				var items = [];
-				items.push($('<li data-id="' + $id + '" />').html($output));
+				items.push($('<li class="selected" data-id="' + $id + '" />').html($output));
 				that.myDom.find('#items-summary ul').append.apply(that.myDom.find('#items-summary ul'), items);
 	
 				if(that.myDom.find('#items-summary li').length > '4') {
@@ -215,6 +220,7 @@ var PostChargeModel = function(callBack) {
 	
 			// Other clicks - increase count and value
 			else{
+				that.updateSelectedItemSummary($id);
 				// Update item count
 				that.updateItemCount($id,current_item_count+1);
 				// Update item price
@@ -231,6 +237,12 @@ var PostChargeModel = function(callBack) {
 
 			refreshVerticalScroll('#items-listing', parseInt($target));
 		}
+	};
+	// Make summary item(right side) active on selecting item list(left side).
+	this.updateSelectedItemSummary = function(id){
+			that.myDom.find("#items-summary li").removeClass("selected");
+			that.myDom.find("#items-summary li[data-id='"+id+"']").addClass("selected");
+			that.myDom.find('#numpad').show();
 	};
 	//To get count of item - paasing item Id.
 	this.getItemCount = function(itemId){
@@ -519,7 +531,7 @@ var PostChargeModel = function(callBack) {
 					  that.element_active_item.remove();
 					  that.updateTotalPrice();
 					  that.number = "";
-					  
+					  that.myDom.find('#numpad').hide();
 					  var item_summary_item_length = that.myDom.find("#items-summary ul li").length;
 					  
 					  if(item_summary_item_length == "0"){
