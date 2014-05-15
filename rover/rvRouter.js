@@ -79,6 +79,13 @@ sntRover.config([
 			templateUrl : "/assets/partials/bill_details.html",
 			controller	: 'billDetailsController'
         });
+
+        $stateProvider.state('rover.ratemanager', {
+        	url: '/rateManager',
+        	templateUrl: '/assets/partials/rateManager/dashboard.html',
+        	controller	: 'RMDashboradCtrl'
+		});
+		
         $stateProvider.state('rover.staycard.nights', {
 			url: '/nights',
 			templateUrl: '/assets/partials/nights/rvNights.html',

@@ -1,123 +1,5 @@
-
-
-@import "less/admin/01-B_variables.less"; 
-
-
-@import "less/admin/04_layout.less";
-
-
-
-
-
-
-
-
-/* StayNTouch | Rover LESS file */
-
-/* 1. ROOT
-==========================================================*/
-@import "less/common/01-A_reset.less";
-
-@import "less/common/01-B_variables.less";
-@import "less/app/01-B_variables.less"; 
-
-@import "less/common/01-C_mixins.less"; 
-@import "less/common/01-D_mixins-animations.less"; 
-
-/* 2. TYPOGRAPHY
-==========================================================*/
-@import "less/common/02_typography.less"; 
-
-/* 3. GRAPHICAL ELEMENTS
-==========================================================*/
-@import "less/common/03_graphics.less"; 
-@import "less/app/03_graphics.less"; 
-
-/* 4. LAYOUT
-==========================================================*/
-@import "less/common/04_layout.less";
-@import "less/app/04_layout.less";
-
-/* 5. COMPONENTS
-==========================================================*/
-@import "less/common/05-A_components.less";
-@import "less/app/05-A_components.less";
-
-@import "less/common/05-B_forms.less";
-@import "less/app/05-B_forms.less";
-
-@import "less/common/05-C_plugins.less";
-@import "less/app/05-C_plugins.less"; 
-
-/* 6. IE
-==========================================================*/
-@import "less/app/06_ie.less"; 
-
-/* 7. MEDIA QUERIES
-==========================================================*/
-@media only print {
-    @import "less/app/07_print.less"; 
-}
-
-
-
-//Added for animation effects
-.slide-left.ng-enter,
-.slide-left.ng-leave,
-.slide-right.ng-enter,
-.slide-right.ng-leave {
-  position: absolute;
-  top: 0; right: 0; bottom: 0; left: 0;
-  background: inherit;
-  -ms-transition: 2.4s ease-in-out;
-  -webkit-transition: 2.4s ease-in-out;
-  transition:  2.4s ease-in-out;
-}
-
-.slide-left.ng-enter {}
-.slide-left.ng-enter.ng-enter-active {
-  -webkit-transform: translateX(0);
-  transform: translateX(0);
-}
-
-.slide-left.ng-leave {
-  z-index: 100;
-  -webkit-transform: translateX(0);
-  transform: translateX(0);
-}
-.slide-left.ng-leave.ng-leave-active {
-  -webkit-transform: translateX(-100%);
-  transform: translateX(-100%);
-}
-
-
-.slide-right.ng-enter {
-  -webkit-transform: translateX(-100%);
-  transform: translateX(-100%);
-} 
-
-.slide-right.ng-enter.ng-enter-active, 
-.slide-right.ng-leave {
-  position: absolute;
-  -webkit-transform: translateX(0);
-  transform: translateX(0);
-}
-
-.slide-right.ng-leave.ng-leave-active {
-  -webkit-transform: translateX(100%);
-  transform: translateX(100%);
-}
-
-
-
-.container.menu-open .page-current, .container.menu-open .page-locked {
-    animation: 0s ease 0s normal both 1 appMenuOpen;
- }
-
-
-
-
 /* ------------------date -picker ---------------------*/
+
 .pickdate-cell-bg{
   background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05);
 }
@@ -266,8 +148,26 @@
   -moz-user-select: none;
   user-select: none;
 }
+
+.date-picker-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999666;
+
+  .date-picker-bg {
+    max-width: 450px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -225px 0 0 -217px;
+  }
+}
+
 .date-picker-bg{
-  
   background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
   padding:10px;
   margin:5px;
@@ -333,69 +233,3 @@ height: 410px;
 }
 
 /*------------------date -picker ends here-------------------------- */
-
-
-.ui-match { color: #F6991B; margin-right: 0px !important;}
-.post-button {
-  line-height: 50px !important;
-  width: 100% !important;
-}
-.action-post-button{
-  width:23.645% !important;
-}
-
-.icons {
-    background-image: url("/assets/admin/admin-icons.png");
-    background-repeat: no-repeat;
-    border: 0 none;
-    display: block;
-}
-.delete_small {
-    background-position: 13px -542px !important;
-}
-.cursor-hand {
-    cursor: pointer;
-}
-
-
-
-.grey{
-  color:grey;
-}
-
-// CICO-609 'Accompany' in Search- Multiple images
-.guest-image img{
-    &.first-image {
-        margin-left: 0;
-        position: absolute;
-        width: 70%;
-    }
-    &.second-image {
-        margin-left: 15px;
-        margin-top: 15px;
-        position: relative;
-        width: 70%;
-    }
-}
-// CICO-609 'Accompany' in stay card.
-.block-item.accompany-guest{
-  background-color: #E0E0E0;
-  border-radius:5px;
-  padding:5px 15px;
-  min-height: 80px;
-  .group{
-    margin: 5px 0 5px;
-  }
-  .name{
-    font-style:italic;
-  }
-  .guest{
-    margin: 5px 0 5px;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    padding-top: 5px;
-  }
-  .label{
-    width:30%;
-  }
-}
-

@@ -1,0 +1,10 @@
+<div>
+	<div class="restriction_type"   ng-repeat="restrictionType in calendarData.restriction_types">
+		
+		<span class = "restriction_type_status restriction_cancel small-icon" >closed </span>
+		<span>{{restrictionType.description}}</span>
+		<span>{{isRestrictionOn(currentlySelectedRate[currentlySelectedDate], restrictionType.id)}}</span>
+		<span class="restriction-status" ng-class="{'status-on': isRestrictionOn(currentlySelectedRate[currentlySelectedDate], restrictionType.id), 'status-off': !isRestrictionOn(currentlySelectedRate[currentlySelectedDate], restrictionType.id)}">Off</span>
+
+	</div>
+</div>
