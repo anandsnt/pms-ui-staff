@@ -2,11 +2,12 @@
 hkRover.controller('HKSearchCtrl',
 	[
 		'$scope',
+		'$rootScope',
 		'HKSearchSrv',
 		'$state',
 		'$timeout',
 		'fetchedRoomList',
-	function($scope, HKSearchSrv, $state, $timeout, fetchedRoomList){
+	function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 
 	$scope.query = '';
 
@@ -49,25 +50,29 @@ hkRover.controller('HKSearchCtrl',
         }, 100);
 	};
 
-	//Fetch the roomlist if necessary
-	if ( HKSearchSrv.isListEmpty() ) {
-		$scope.$emit('showLoader');
-		HKSearchSrv.fetch().then(function(data) {
-			afterFetch( data );
-		}, function() {
-			console.log("fetch failed");
-			$scope.$emit('hideLoader');
-		});	
-	} else {
-		$timeout(function() {
-
-			// show loader as we will be slicing the rooms
-			// in smaller and bigger parts and show smaller first
-			// and rest after a delay
+	var fetchRooms = function() {
+		//Fetch the roomlist if necessary
+		if ( HKSearchSrv.isListEmpty() || !fetchedRoomList.length) {
 			$scope.$emit('showLoader');
-			afterFetch( fetchedRoomList );
-		}, 1);
-	}
+			HKSearchSrv.fetch().then(function(data) {
+				afterFetch( data );
+			}, function() {
+				console.log("fetch failed");
+				$scope.$emit('hideLoader');
+			});	
+		} else {
+			$timeout(function() {
+
+				// show loader as we will be slicing the rooms
+				// in smaller and bigger parts and show smaller first
+				// and rest after a delay
+				$scope.$emit('showLoader');
+				afterFetch( fetchedRoomList );
+			}, 1);
+		}
+	};
+
+	fetchRooms();
 
 	$scope.currentFilters = HKSearchSrv.currentFilters;
 
@@ -350,4 +355,127 @@ hkRover.controller('HKSearchCtrl',
 		$scope.refreshScroll();
 	}
 
+
+
+
+	var pullRefresh = function() {
+		var $el = document.getElementById( 'rooms' );
+		var $nf = document.getElementById( 'pull-refresh-notify' );
+		var $ar = document.getElementById( 'icon' );
+		var $rt = document.getElementById( 'ref-text' );
+
+		var hasTouch = 'ontouchstart' in window;
+		var START_EV = hasTouch ? 'touchstart' : 'mousedown';
+		var MOVE_EV  = hasTouch ? 'touchmove' : 'mousemove';
+		var END_EV   = hasTouch ? 'touchend' : 'mouseup';
+
+		var touching = false;
+		var startY   = 0;
+		var nowY     = 0;
+		var initTop  = $el.scrollTop;
+		var trigger   = 100; 
+
+		var loaderEngine = function(diff) {
+			if ( !diff ) {
+				$ar.className = '';
+				$rt.innerHTML = 'Pull down to refresh...';
+				return;
+			};
+
+			if (diff > trigger - 30) {
+				$ar.className = 'rotate';
+			} else {
+				$ar.className = '';
+			}
+
+			if (diff > trigger - 20) {
+				$rt.innerHTML = 'Release to refresh...';
+			} else {
+				$rt.innerHTML = 'Pull down to refresh...';
+			}
+		};
+
+		var touchMoveHandler = function(e) {
+			var touch = e.touches ? e.touches[0] : e;
+
+			if ( !touching || this.scrollTop > initTop ) {
+				return;
+			};
+
+			nowY = touch.y || touch.pageY;
+
+			if ( startY > nowY ) {
+				return;
+			};
+
+			e.preventDefault();
+
+			$el.style.WebkitTransition = '';
+			$nf.style.WebkitTransition = '';
+
+			var diff = (nowY - startY);
+
+			$el.style.webkitTransform = 'translateY(' + diff + 'px)';
+			$nf.style.webkitTransform = 'translateY(' + diff + 'px)';
+
+			loaderEngine( diff );
+		};
+
+		var touchStartHandler = function(e) {
+			var touch = e.touches ? e.touches[0] : e;
+
+			if ( this.scrollTop > initTop ) {
+				return;
+			};
+
+			touching = true;
+
+			startY = touch.y || touch.pageY;
+
+			$el.style.WebkitTransition = '';
+			$nf.style.WebkitTransition = '';
+
+			$el.addEventListener('touchmove', touchMoveHandler, false);
+		};
+
+		var touchEndHandler = function(e) {
+			var touch = e.touches ? e.touches[0] : e;
+
+			if ( this.scrollTop > initTop ) {
+				return;
+			};
+
+			e.preventDefault();
+
+			touching = false;
+
+			nowY = touch ? (touch.y || touch.pageY) : nowY;
+
+			var diff = (nowY - startY);
+
+			if (diff > trigger) {
+				fetchRooms();
+			}
+
+			$el.style.WebkitTransition = '-webkit-transform 0.3s';
+			$nf.style.WebkitTransition = '-webkit-transform 0.3s';
+
+			$el.style.webkitTransform = 'translateY(0)';
+			$nf.style.webkitTransform = 'translateY(0)';
+
+			$el.removeEventListener(touchMoveHandler);
+
+			loaderEngine();
+		};
+
+		$el.addEventListener('touchstart', touchStartHandler, false);
+
+		$el.addEventListener('touchend', touchEndHandler, false);
+	};
+
+
+	pullRefresh();
+
+
 }]);
+
