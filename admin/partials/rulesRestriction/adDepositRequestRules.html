@@ -55,7 +55,7 @@
 									value="singleRule.amount"
 									name="amount"
 									id="amount"
-									label="Amount [{{ currencySym }}]"
+									label="Amount"
 									placeholder="Enter the amount"
 									required="yes"></ad-textbox>
 							</div>
@@ -67,8 +67,8 @@
 									</label>
 									<div class="select">
 										<select name="amount-type-id" id="amount-type-id" ng-model="singleRule.amount_type">
-											<option value="" data-text="Not set" class="placeholder">Choose a value</option>
-											<option value="amount">Amount</option>
+											<option value="" data-text="Not set" class="placeholder">Choose amount type</option>
+											<option value="amount">Amount [{{ currencySym }}]</option>
 											<option value="percent">Percent</option>
 											<option value="day">Day</option>
 										</select>
@@ -78,11 +78,12 @@
 
 							<div class="entry full-width" ng-show="singleRule.amount_type === 'percent'">
 								<label for="amount-type-id">
-									Per day or stay
+									Per Night or Stay
 									<strong>*</strong>
 								</label>
 								<div class="select">
 									<select name="amount-type-id" id="amount-type-id" ng-model="singleRule.post_type_id" ng-options="type.id as type.description for type in postTypes">
+										<option value="" data-text="Not set" class="placeholder">Choose night or stay</option>
 									</select>
 								</div>
 							</div>
