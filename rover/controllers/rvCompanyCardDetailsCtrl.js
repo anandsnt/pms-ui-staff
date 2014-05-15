@@ -13,9 +13,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	* @param{string} is the value of that tab
 	*/
 	$scope.switchTabTo = function(tabToSwitch){
-		console.log('1111');
 		if($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info'){
-			console.log('dddddd');
 			saveContactInformation($scope.contactInformation);
 		}
 		$scope.currentSelectedTab = tabToSwitch;		
@@ -30,6 +28,15 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	    },
 	};		
 
+	/**
+	* function to handle click operation on company card, mainly used for saving
+	*/
+	$scope.companyCardClicked = function($event){
+
+		if(getParentWithSelector($event, document.getElementById("company-card-nested-first"))){
+			$scope.$emit("saveContactInformation");
+		}
+	}
 
 	/**
 	* remaining portion will be the Controller class of company card's contact info
@@ -101,10 +108,10 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	/**
 	* recieving function for save contact with data
 	*/
-	$scope.$on("saveContactInformation", function(event, data){
+	$scope.$on("saveContactInformation", function(event){
 		event.preventDefault();
 		event.stopPropagation();
-		saveContactInformation(data);
+		saveContactInformation($scope.contactInformation);
 	});
 
 	/*** end of the contact info's controller class */
