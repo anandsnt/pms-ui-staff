@@ -76,11 +76,11 @@ $scope.current = 'guest-contact';
 /**
 * tab actions
 */
-$scope.guestCardTabSwitch = function(div){
+$scope.guestCardTabSwitch = function(tab){
 
-if($scope.current ==='guest-contact' && div !== 'guest-contact')
+if($scope.current ==='guest-contact' && tab !== 'guest-contact')
 	$scope.$broadcast('saveContactInfo');
-$scope.current = div;
+$scope.current = tab;
 };
 
 $scope.$on('contactInfoError', function(event, value) { 
@@ -133,12 +133,12 @@ var element = $event.target;
 		}
 		}
 		if(!$scope.guestCardVisible){
-			$scope.guestCardHeight =  $scope.windowHeight-90;
+			$("#guest-card").css("height", $scope.windowHeight-90);
 			$scope.guestCardVisible = true;			
 			$scope.$broadcast('CONTACTINTOLOADED');
 		}
 		else{
-			$scope.guestCardHeight = $scope.resizableOptions.minHeight;
+			$("#guest-card").css("height", $scope.resizableOptions.minHeight);
 			$scope.guestCardVisible = false;
 		}
 }
