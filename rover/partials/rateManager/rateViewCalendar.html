@@ -1,18 +1,20 @@
-<div style="width=100%; over-flow:scroll; padding:0px;" >
-<table class="rate-calendar" style="position:absolute;; table-layout:fixed; width:{{uiOptions.tableWidth}}; ">
+<div style="width:100%;  height:{{uiOptions.tableHeight}}; padding:0px; " ng-iscroll="rateViewCalendar" ng-iscroll-delay="1000">
+<table class="rate-calendar" style="table-layout:fixed; width:{{uiOptions.tableWidth}}; height:200px">
 	<thead>
 	 	<tr>
 	 		<th width="270" style="{width:th.width}">
 	 			<button ng-click="openCloseAllRestrictions('remove')" class="button green"> Open All</button>	
 	 			<button ng-click="openCloseAllRestrictions('add')" class="button red"> Close All</button>	
 	 		</th>
-	 		<th width="{{uiOptions.columnWidth}}"   style="{width:th.width}"  ng-repeat="date in calendarData.dates" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE')"><div class="date-header"><span>{{date| date:'EEEE MMMM dd'}}</span></div></th>
+	 		<th width="{{uiOptions.columnWidth}}"   style="{width:th.width}"  ng-repeat="date in calendarData.dates" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE')">
+                    <div class="date-header"><span>{{date| date:'EEEE MMMM dd'}}</span></div>
+                </th>
 	 	</tr>
 	 </thead>
 
 	<tbody>
 		<tr>
-			<td> All Rates</td>
+			<td> <span style="float:right">All Rates</span><span style="float:right;padding-left:30px">&nbsp;</span></td>
 			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.room_type.id, 'ALL_DATA')"> 
                 <div class="cell-content">
 					<span ng-repeat="restriction in calendarData.all_rates[date]" class="{{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
@@ -24,8 +26,8 @@
 
 		<tr ng-repeat="rate in calendarData.data">
 			<td>    
-				<span>{{rate.name}}<span>
-			    <span style="float:right"><img src="/assets/arrow-down.png" ng-click="goToRoomTypeCalendarView(rate)"></span>
+				<span style="float:right;">{{rate.name}}<span>
+			    <span style="float:right; padding-left:30px"><img src="/assets/arrow-down.png" ng-click="goToRoomTypeCalendarView(rate)"></span>
             </td>
 			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE')">
                 <div class="cell-content">
