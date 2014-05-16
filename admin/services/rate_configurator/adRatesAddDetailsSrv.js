@@ -10,7 +10,82 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
          */
         this.fetchRateTypes = function () {
 
-            var deferred = $q.defer();
+             var deferred = $q.defer();
+
+
+            /*
+             * Service function to fetch cancelation penalties
+             * @return {object}  cancelation penalties
+             */
+            this.fetchCancelationPenalties = function () {
+                var url = "/api/policies?policy_type=CANCELLATION_POLICY";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.cancelationPenalties = data.results;
+                    deferred.resolve(that.addRatesDetailsData);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+            };
+
+
+            /*
+             * Service function to fetch deposit policies
+             * @return {object} deposit policies
+             */
+            this.fetchDepositPolicies = function () {
+                var url = "/api/policies?policy_type=DEPOSIT_REQUEST";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.depositPolicies = data.results;
+                    this.fetchCancelationPenalties();
+                }, function (data) {
+                    deferred.reject(data);
+                });
+            };
+
+               /*
+             * Service function to fetch markets
+             * @return {object} markets
+             */
+            this.fetchMarkets = function () {
+                var url = "/api/market_segments?is_active=true";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.markets = data.markets;
+                    this.fetchDepositPolicies();
+                }, function (data) {
+                    deferred.reject(data);
+                });
+            };
+
+
+            /*
+             * Service function to fetch source
+             * @return {object} source
+             */
+            this.fetchSources = function () {
+                var url = "/api/sources.json?is_active=true";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.sources = data.sources;
+                    this.fetchMarkets();
+                }, function (data) {
+                    deferred.reject(data);
+                });
+            };
+
+              /*
+             * Service function to fetch charge codes
+             * @return {object} charge codes
+             */
+            this.fetchChargeCodes = function () {
+                var url = "/api/charge_codes";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.addRatesDetailsData.charge_codes = data.results;
+                    this.fetchSources();
+                }, function (data) {
+                    deferred.reject(data);
+                });
+            };
+
+         
             /*
              * Service function to fetch HotelSettings
              * @return {object} HotelSettings
@@ -19,7 +94,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                 var url = "/api/hotel_settings";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.hotel_settings = data;
-                    deferred.resolve(that.addRatesDetailsData);
+                    this.fetchChargeCodes();
                 }, function (data) {
                     deferred.reject(data);
                 });
@@ -36,7 +111,9 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                     'per_page': '10000',
                     'query': '',
                     'sort_dir': 'asc',
-                    'sort_field': ''
+                    'sort_field': '',
+                    'is_parent': true,
+                    'is_fully_configured': true
                 };
                 ADBaseWebSrvV2.getJSON(url, data).then(function (data) {
                     that.addRatesDetailsData.based_on = data;

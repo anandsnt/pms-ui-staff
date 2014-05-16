@@ -9,10 +9,15 @@ $scope.init = function(){
 }
 
 $scope.init();
+
+
+$scope.$on('reservationCardisClicked',function(){
+	$("#guest-card").css("height", $scope.resizableOptions.minHeight);//against angular js practice, sorry :(
+	$scope.guestCardVisible = false;
+});
 /**
 * for dragging of guest card 
 */
-var maxHeight = $(window).height(); //against angular js practice, sorry :(
 $scope.guestCardVisible = false; //varibale used to determine whether to show guest card's different tabs
 $scope.guestCardHeight = 90;
 
@@ -23,31 +28,28 @@ $scope.$watch('windowHeight',function(newValue,oldValue){
   $scope.windowHeight = newValue ;
 });
 
-
 /**
 * scroller options
 */
 $scope.resizableOptions = 
-{	minHeight: '90',
-maxHeight: $scope.windowHeight - 90,
-handles: 's',
-resize: function( event, ui ) {
-	if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				
-		$scope.guestCardVisible = true;
-		$scope.$apply();
+{	
+	minHeight: '90',
+	maxHeight: $scope.windowHeight -130,
+	handles: 's',
+	resize: function( event, ui ) {
+		if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				
+			$scope.guestCardVisible = true;
+			$scope.$apply();
+		}
+		else if($(this).height() <= 120 && $scope.guestCardVisible){
+			$scope.guestCardVisible = false;
+			$scope.$apply();
+		}
+	},
+	stop: function(event, ui){
+		preventClicking = true;
+		$scope.eventTimestamp = event.timeStamp;
 	}
-	else if($(this).height() <= 120 && $scope.guestCardVisible){
-		$scope.guestCardVisible = false;
-		$scope.$apply();
-	}
-},
-stop: function(event, ui){
-	preventClicking = true;
-
-	$scope.eventTimestamp = event.timeStamp;
-	
-
-}
 }
 
 /**
@@ -77,10 +79,9 @@ $scope.current = 'guest-contact';
 * tab actions
 */
 $scope.guestCardTabSwitch = function(tab){
-
 if($scope.current ==='guest-contact' && tab !== 'guest-contact')
 	$scope.$broadcast('saveContactInfo');
-$scope.current = tab;
+    $scope.current = tab;
 };
 
 $scope.$on('contactInfoError', function(event, value) { 
@@ -135,7 +136,7 @@ var element = $event.target;
 		if(!$scope.guestCardVisible){
 			$("#guest-card").css("height", $scope.windowHeight-90);
 			$scope.guestCardVisible = true;			
-			$scope.$broadcast('CONTACTINTOLOADED');
+			$scope.$broadcast('CONTACTINFOLOADED');
 		}
 		else{
 			$("#guest-card").css("height", $scope.resizableOptions.minHeight);
