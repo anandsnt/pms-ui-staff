@@ -37,9 +37,13 @@
             </td>
 			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE')">
                 <div class="cell-content">
-					<span ng-repeat="restriction in rate[date]" class="restriction-icon {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
-						{{restriction.days}}
-					</span>
+                	<div>
+                		<div>
+                			<span ng-repeat="restriction in rate[date]" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
+								{{restriction.days}}
+							</span>
+                		</div>
+                	</div>
                 </div>
 			</td>
 		</tr>

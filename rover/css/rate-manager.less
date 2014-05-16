@@ -222,6 +222,22 @@
             &.exp {
                 height: auto;
             }
+            & > div {
+              display: table;
+              width: 100%;
+              height: 100%;
+              & > div {
+                display: table-cell;
+                vertical-align: middle;
+                .right {
+                  float: right;
+                }
+                .left {
+                  float: left;
+                }
+              }
+            }
+            
         }
         .date-header {
           border : 10px solid #e7e7e7;
