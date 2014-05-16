@@ -160,3 +160,33 @@ function isEmpty(dict) {
    }
    return true;
 }
+
+
+
+var get_mapped_room_ready_status_color = function(room_ready_status, checkin_is_inspected_only) {
+		mapped_color = "";
+		switch(room_ready_status) {
+
+			case "INSPECTED":
+				mapped_color = 'room-green';
+				break;
+			case "CLEAN":
+				if (checkin_is_inspected_only == "true") {
+					mapped_color = 'room-orange';
+					break;
+				} else {
+					mapped_color = 'room-green';
+					break;
+				}
+				break;
+			case "PICKUP":
+				mapped_color = "room-orange";
+				break;
+
+			case "DIRTY":
+				mapped_color = "room-red";
+				break;
+
+		}
+		return mapped_color;
+};

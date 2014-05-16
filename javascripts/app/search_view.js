@@ -529,7 +529,7 @@ var Search = function(domRef) {
 		var resultant_mapped_room_color = "";
 
 		if (room_ready_status != "" && fo_status == "VACANT") {
-			mapped_room_color = this.get_mapped_room_ready_status_color(room_ready_status, checkin_is_inspected_only)
+			mapped_room_color = get_mapped_room_ready_status_color(room_ready_status, checkin_is_inspected_only)
 		} else {
 			console.log('Either FO Status OCC/ room_Ready_status null');
 		}
@@ -540,37 +540,10 @@ var Search = function(domRef) {
 		console.log("mapped - CHECK-IN INSPECTED ONLY---" + checkin_is_inspected_only);
 		console.log("mapped -COLOR---" + mapped_color);
 		console.log("------------------------------")
-		resultant_mapped_room_color = this.map_with_color_class(mapped_room_color)
-		return resultant_mapped_room_color;
+		return mapped_room_color;
 	};
 
-	this.get_mapped_room_ready_status_color = function(room_ready_status, checkin_is_inspected_only) {
-		mapped_color = "";
-		switch(room_ready_status) {
-
-			case "INSPECTED":
-				mapped_color = 'green';
-				break;
-			case "CLEAN":
-				if (checkin_is_inspected_only == "true") {
-					mapped_color = 'orange';
-					break;
-				} else {
-					mapped_color = 'green';
-					break;
-				}
-				break;
-			case "PICKUP":
-				mapped_color = "orange";
-				break;
-
-			case "DIRTY":
-				mapped_color = "red";
-				break;
-
-		}
-		return mapped_color;
-	};
+	
 
 	this.updateView = function() {
 		// Content update
@@ -586,19 +559,5 @@ var Search = function(domRef) {
 		refreshVerticalScroll('#search');
 	};
 
-	this.map_with_color_class = function(mapped_color) {
-		resultant_class = "";
-		switch(mapped_color) {
-			case "green":
-				resultant_class = "ready";
-				break
-			case "read":
-				resultant_class = "not-ready";
-				break;
-			case "orange" :
-				resultant_class = "";
-				break;
-		}
-		return resultant_class;
-	};
+	
 };

@@ -66,6 +66,9 @@ var ChangeStayDatesView = function(viewDom){
   };
 
   this.calenderDatesFetchCompleted = function(calenderEvents){
+  	
+  	
+  	console.log(calenderEvents);
       that.availableEvents = calenderEvents;
       //TODO: Remove after API completed
       //that.availableEvents.data.is_rates_suppressed = "true";
