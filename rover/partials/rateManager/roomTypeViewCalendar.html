@@ -23,18 +23,18 @@
 		</tr>
 
 		<tr ng-repeat="rate in calendarData.data">
-			<td ng-hide="currentExpandedRow==$index">    
+			<td>    
 				<span>{{rate.room_type.name}}<span>
 			    <span style="float:right">
 			    	<img src="/assets/arrow-down.png" ng-click="expandRow($index)">
 			    </span>
             </td>
-			<td ng-show="currentExpandedRow==$index">    
+			<!-- <td ng-show="currentExpandedRow==$index">    
 				<span>{{rate.room_type.name}} Expanded<span>
 			    <span style="float:right">
 			    	<img src="/assets/arrow-down.png" ng-click="expandRow($index)">
 			    </span>
-            </td>
+			            </td> -->
 			
 			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-hide="currentExpandedRow==$parent.$index" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.room_type.id, 'ROOM_TYPE')">
 				<div class="cell-content">
@@ -45,7 +45,7 @@
 				</div>
 			</td>
 			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-show="currentExpandedRow==$parent.$index">
-				<div class="cell-content">
+				<div class="exp cell-content">
 					<span ng-repeat="restriction in rate[date].restrictions" class="{{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
 						{{restriction.days}}
 					</span>

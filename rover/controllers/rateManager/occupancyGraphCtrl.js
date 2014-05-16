@@ -8,6 +8,7 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
         $scope.seriesActualVisible = true;
         $scope.seriesTargetVisible = true;
         clientWidth = $(window).width();
+        clientHeight = $(window).height();
         var drawGraph = function(){
             $scope.highchartsNG = {
                 options: {
@@ -17,7 +18,8 @@ sntRover.controller('RateMgrOccupancyGraphCtrl', ['$q', '$scope', 'RateMgrOccupa
                         plotBackgroundColor: '#e0e0e0',
                         width : clientWidth - 270,
                         backgroundColor : null,
-                        zoomType: 'x'
+                        zoomType: 'x',
+                        height: clientHeight - 175
                     },
                     tooltip: {
                         shared: true,

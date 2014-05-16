@@ -140,9 +140,9 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
             });
 
             if ($scope.isFromDateSelected && $scope.isToDateSelected && anyOneDayisChecked) {
-                return false;
-            } else
                 return true;
+            } else
+                return false;
         };
 
         /**

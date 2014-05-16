@@ -79,6 +79,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 var itemID = rTypes[i].id;
 				item.days = "";
                 item.isRestrictionEnabled = false;
+                item.showEdit = false;
+
                 for(var i in selectedDateInfo){
                     if(selectedDateInfo[i].restriction_type_id == itemID){
                         item.days = selectedDateInfo[i].days;

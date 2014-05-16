@@ -76,11 +76,11 @@ $scope.current = 'guest-contact';
 /**
 * tab actions
 */
-$scope.guestCardTabSwitch = function(div){
+$scope.guestCardTabSwitch = function(tab){
 
-if($scope.current ==='guest-contact' && div !== 'guest-contact')
+if($scope.current ==='guest-contact' && tab !== 'guest-contact')
 	$scope.$broadcast('saveContactInfo');
-$scope.current = div;
+$scope.current = tab;
 };
 
 $scope.$on('contactInfoError', function(event, value) { 
