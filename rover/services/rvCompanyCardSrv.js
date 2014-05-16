@@ -59,6 +59,33 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 		});
 		return deferred.promise;		
 	};
-
+	
+	/**
+	* service function used to update the contracts
+	*/
+	this.updateContract = function(data){
+		var deferred = $q.defer();		
+		var url =	'/api/accounts/'+data.account_id+'/contracts/'+data.contract_id;
+		rvBaseWebSrvV2.putJSON(url, data.postData).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	}
+	
+	/**
+	* service function used to add new contracts
+	*/
+	this.addNewContract = function(data){
+		var deferred = $q.defer();		
+		var url = '/api/accounts/'+data.account_id+'/contracts';	
+		rvBaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	}
 
 }]);
