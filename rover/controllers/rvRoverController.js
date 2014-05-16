@@ -92,8 +92,10 @@ $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState
 });
 
 $scope.settingsClicked = function(){
-  if($scope.isHotelAdmin)
+  if($scope.isHotelAdmin){
+    $scope.selectedMenuIndex = "settings";
    $window.location.href = "/admin";
+ }
   else if($scope.isHotelStaff){
           ngDialog.open({
                template: '/assets/partials/settings/rvStaffSettingModal.html',

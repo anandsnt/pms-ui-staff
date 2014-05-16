@@ -17,7 +17,7 @@ sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv','dashBoar
           $rootScope.adminRole = dashBoarddata.userDetails.user_role;
 
           //update left nav bar
-          $scope.$emit("updateRoverLeftMenu",0);
+          $scope.$emit("updateRoverLeftMenu","dashboard");
           $scope.$emit("closeDrawer");
           
          	//Display greetings message based on current time
