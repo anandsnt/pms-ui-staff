@@ -2,12 +2,12 @@
 <div ng-include="'/assets/partials/common/header.html'"></div>
 
 <div id="company-card-nested-first" class="nested-view view-current" role="main" ng-click="companyCardClicked($event)">
-    <div class="company-card cards fullscreen">
+    <div class="cards fullscreen" ng-class="{'company-card': account_type == 'company', 'travel-agent-card': account_type == 'travel-agent'}">
         <div class="cards-wrapper">
 
             <!-- Cards Header -->
             <header class="cards-header">
-                <div id="company-card-header" class="card-header ">
+                <div ng-id="{'company-card-header': account_type == 'company', 'travel-agent-card-header': account_type == 'travel-agent'}" class="card-header ">
                     <!-- When company logo exists -->
                     <figure class="guest-image" ng-if="escapeNull(contactInformation.company_details.company_logo)!=''">
                         <img ng-src="{{contactInformation.company_details.company_logo}}" alt="" />
@@ -41,18 +41,18 @@
             <div class="cards-content"  >               
                 <div id="company-card-content" class="card-tabs card-content" >
                     <!-- company Card tabs navigation -->
-                    <ul id="company-card-tabs-nav" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+                    <ul ng-id="{'company-card-tabs-nav': account_type == 'company', 'travel-agent-card-tabs-nav': account_type == 'travel-agent'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 
-                        <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contact-info'}" ng-click="switchTabTo('cc-contact-info')">
+                        <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contact-info'}" ng-click="switchTabTo($event, 'cc-contact-info')">
                             <a >Contact Information</a>
                         </li>
 
-                        <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo('cc-contracts')">
+                        <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
                             <a >Contracts</a>
                         </li>
 
 
-                        <li class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo('cc-reservations')">
+                        <li class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
                             <a >Reservations</a>
                         </li>
 
