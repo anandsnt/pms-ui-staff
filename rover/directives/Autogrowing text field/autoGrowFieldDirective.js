@@ -39,7 +39,7 @@ sntRover.directive("autoGrowField", function($window){
         updateWidth();
 
         //to set width initially
-        $window.setTimeout(updateWidth, 0);
+        $window.setTimeout(updateWidth, 2000);
         
         // do it on keydown so it updates "real time"
         element.bind("keydown", function(){
