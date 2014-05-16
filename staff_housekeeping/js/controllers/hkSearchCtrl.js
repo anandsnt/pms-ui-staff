@@ -364,11 +364,6 @@ hkRover.controller('HKSearchCtrl',
 		var $ar = document.getElementById( 'icon' );
 		var $rt = document.getElementById( 'ref-text' );
 
-		var hasTouch = 'ontouchstart' in window;
-		var START_EV = hasTouch ? 'touchstart' : 'mousedown';
-		var MOVE_EV  = hasTouch ? 'touchmove' : 'mousemove';
-		var END_EV   = hasTouch ? 'touchend' : 'mouseup';
-
 		var touching  = false;
 		var startY    = 0;
 		var nowY      = 0;
