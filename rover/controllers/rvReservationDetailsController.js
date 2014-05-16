@@ -24,7 +24,8 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	    'resultDetails': {
 	    	scrollbars: true,
 	        snap: false,
-	        hideScrollbar: false
+	        hideScrollbar: false,
+	        preventDefault: false
 	    },
 	};
 

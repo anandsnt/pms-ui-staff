@@ -1,13 +1,13 @@
 <!-- Preloaded nested view -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
 
-<div id="company-card-nested-first" class="nested-view view-current" role="main">
-    <div class="company-card cards fullscreen">
+<div id="company-card-nested-first" class="nested-view view-current" role="main" ng-click="companyCardClicked($event)">
+    <div class="cards fullscreen" ng-class="{'company-card': account_type == 'company', 'travel-agent-card': account_type == 'travel-agent'}">
         <div class="cards-wrapper">
 
             <!-- Cards Header -->
             <header class="cards-header">
-                <div id="company-card-header" class="card-header ">
+                <div ng-id="{'company-card-header': account_type == 'company', 'travel-agent-card-header': account_type == 'travel-agent'}" class="card-header ">
                     <!-- When company logo exists -->
                     <figure class="guest-image" ng-if="escapeNull(contactInformation.company_details.company_logo)!=''">
                         <img ng-src="{{contactInformation.company_details.company_logo}}" alt="" />
@@ -19,19 +19,19 @@
                     <form method="post" name="change-company-name" id="change-company-name">
                         <div class="holder">
                             <div class="entry">
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.address_details.first_name}}" ng-model="contactInformation.address_details.first_name" type="text" class="masked-input h1" />
+                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.company_details.account_first_name}}" ng-model="contactInformation.company_details.account_first_name" type="text" class="masked-input h1"/>
 
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.address_details.last_name}}" ng-model="contactInformation.address_details.last_name" type="text" class="masked-input h1" />
+                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.company_details.account_last_name}}" ng-model="contactInformation.company_details.account_last_name" type="text" class="masked-input h1" />
                             </div>
                         </div>
                         <div class="holder data">
-                            <input  name="cc-city" id="cc-city" placeholder="" value="{{contactInformation.address_details.city}}" ng-model="contactInformation.address_details.city" type="text" class="masked-input icons icon-gc-location" />
+                            <input  name="cc-city" id="cc-city" placeholder="" value="{{contactInformation.address_details.city}}" ng-model="contactInformation.address_details.city" type="text" class="masked-input icons icon-gc-location"  data-size="{{contactInformation.address_details.city.length}}" auto-grow-field/>
 
-                            <input  name="cc-state" id="cc-state" placeholder="" value="{{contactInformation.address_details.state}}" ng-model="contactInformation.address_details.state"  type="text" class="masked-input" />
+                            <input  name="cc-state" id="cc-state" placeholder="" value="{{contactInformation.address_details.state}}" ng-model="contactInformation.address_details.state"  type="text" class="masked-input" auto-grow-field/>
 
-                            <input name="cc-phone" id="cc-phone" placeholder="" value="{{contactInformation.address_details.phone}}" ng-model="contactInformation.address_details.phone" type="tel" class="masked-input icons icon-gc-phone" />
+                            <input name="cc-phone" id="cc-phone" placeholder="" value="{{contactInformation.address_details.phone}}" ng-model="contactInformation.address_details.phone" type="tel" class="masked-input icons icon-gc-phone" auto-grow-field />
 
-                            <input name="cc-email" id="cc-email" placeholder="" value="{{contactInformation.email_address}}" ng-model="contactInformation.address_details.email_address" type="email" class="masked-input icons icon-gc-email" />
+                            <input name="cc-email" id="cc-email" placeholder="" value="{{contactInformation.email_address}}" ng-model="contactInformation.address_details.email_address" type="email" class="masked-input icons icon-gc-email" auto-grow-field/>
                         </div>
                     </form>
                 </div>
@@ -41,18 +41,18 @@
             <div class="cards-content"  >               
                 <div id="company-card-content" class="card-tabs card-content" >
                     <!-- company Card tabs navigation -->
-                    <ul id="company-card-tabs-nav" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+                    <ul ng-id="{'company-card-tabs-nav': account_type == 'company', 'travel-agent-card-tabs-nav': account_type == 'travel-agent'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 
-                        <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contact-info'}" ng-click="switchTabTo('cc-contact-info')">
+                        <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contact-info'}" ng-click="switchTabTo($event, 'cc-contact-info')">
                             <a >Contact Information</a>
                         </li>
 
-                        <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo('cc-contracts')">
+                        <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
                             <a >Contracts</a>
                         </li>
 
 
-                        <li class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo('cc-reservations')">
+                        <li class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
                             <a >Reservations</a>
                         </li>
 

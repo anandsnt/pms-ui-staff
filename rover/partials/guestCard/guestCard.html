@@ -1,63 +1,613 @@
+<div class="guest-card cards open" style="height:500px;" ui-jq="resizable" ng-controller="guestCardController" style="height: {{guestCardHeight}}px;" ng-class="{'open': guestCardVisible}" ui-jq="resizable" ui-options="resizableOptions" ng-click="guestCardClick($event)"  ng-controller="guestCardController" style="height: {{guestCardHeight}}px;" ng-class="{'open': guestCardVisible}" ui-jq="resizable" ui-options="resizableOptions" ng-click="guestCardClick($event)"  >
+    <div class="cards-wrapper">
+        <!-- Cards Header -->
+        <header class="cards-header">
+            <div id="guest-card-header" class="card-header">
+                <figure class="guest-image">
+                    <img src="../images/jos.jpg" alt="" />
+                    <span class="vip">VIP </span>
+                </figure>
+                <form method="post" action="app/stay-card/" name="change-name" id="change-name">
+                    <div class="holder">
+                        <div class="entry">
+                            <input name="gc-firstname" id="gc-firstname" placeholder="" value="Jos" type="text" class="masked-input h1" />
+                            <input name="gc-lastname" id="gc-lastname" placeholder="" value="Schaap" type="text" class="masked-input h1" />
+                        </div>
+                        <strong class="status">Platinum</strong>
+                    </div>
+                    <div class="holder data">
+                        <input  name="gc-city" id="gc-city" placeholder="" value="" type="text" class="masked-input icons icon-gc-location" />
+                        <input  name="gc-state" id="gc-state" placeholder="" value="" type="text" class="masked-input" />
+                        <input name="gc-phone" id="gc-phone" placeholder="" value="" type="tel" class="masked-input icons icon-gc-phone" />
+                        <input name="gc-email" id="gc-email" placeholder="" value="" type="email" class="masked-input icons icon-gc-email" />
+                    </div>
+                </form>
+            </div>
+        </header>
 
-<div role="complementary" id="guest-card"   ng-controller="guestCardController" style="height: {{guestCardHeight}}px;" ng-class="{'open': guestCardVisible}" ui-jq="resizable" ui-options="resizableOptions" ng-click="guestCardClick($event)" resize >
+        <!-- Cards Content -->
+        <div class="cards-content">
+            <div id="guest-card-content" class="card-tabs card-content"  style="display:block;">
 
-	<div id="card-wrapper">
-		<!-- Guest Card Header -->
-		<header class="float" id="guest-card-header">
-			<figure class="guest-image">
-				<!-- TODO: use actual image -->
-				<img alt="" id="guest-image" src="https://pms-dev.stayntouch.com/assets/avatar-trans.png">
-			</figure>
-			<form action="" id="change-name" method="post" name="change-name" class="ng-pristine ng-valid">
-				<div class="holder">
-					<div class="entry">
-						<input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.first_name.length}}"  ng-model="guestCardData.contactInfo.first_name" ng-blur="updateContactInfo()" auto-grow-field>
-						
-						<input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.last_name.length}}" ng-model="guestCardData.contactInfo.last_name" ng-blur="updateContactInfo()" auto-grow-field>
-						
-					</div>
-					<strong class="status"> </strong>
-					<!-- The VIP button is hidden since the VIP turn on/off option is not available now. -->
-					<div class="switch-button hidden disabled">
-						<input type="checkbox" disabled="" id="vip" name="vip" value="0">
-						<label class="data-off"> <span class="switch-icon vip">VIP</span> <span class="value">Off</span> </label>
-						<label class="data-on"> <span class="value">On</span> <span class="switch-icon vip">VIP</span> </label>
-					</div>
-				</div>
-				<div class="holder data">
-					<input type="text" data-size="{{guestCardData.contactInfo.city.length}}" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.city" ng-blur="updateContactInfo()"auto-grow-field>
-					<input type="text" data-size="{{guestCardData.contactInfo.state.length}}" class="masked-input" ng-model="guestCardData.contactInfo.state" ng-blur="updateContactInfo()" auto-grow-field>
-					<input type="tel" data-size="{{guestCardData.contactInfo.phone.length}}" class="masked-input icons icon-gc-phone" ng-model="guestCardData.contactInfo.phone" ng-blur="updateContactInfo()" auto-grow-field>
-					<input type="email" data-size="{{guestCardData.contactInfo.email_address.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email_address" ng-blur="updateContactInfo()"auto-grow-field>
-				</div>
-			</form>
-		</header>
-		<!-- Guest Card Content -->
-		<div class="ui-tabs ui-widget ui-widget-content ui-corner-all" id="guest-card-content">
-			<!-- Guest Card tabs navigation -->
-			<ul role="tablist" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" id="guest-card-tabs-nav">
-				<li aria-selected="true" aria-labelledby="guest-contact" aria-controls="contact-info" tabindex="0" role="tab" class="ui-state-default ui-corner-top ui-tabs-active" ng-class="{'ui-tabs-active': current == 'guest-contact'}" ng-click="guestCardTabSwitch('guest-contact')">
-					<a tabindex="-1" role="presentation" class="ui-tabs-anchor ng-binding" id="guest-contact" ng-class="{'error':contactInfoError}">Contact Information </a>
-				</li>
-				<li aria-selected="false" aria-labelledby="guest-like" aria-controls="likes" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-like'}" ng-click="guestCardTabSwitch('guest-like')">
-					<a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-like">Likes</a>
-				</li>
-				<li aria-selected="false" aria-labelledby="guest-credit" aria-controls="cc-payment" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-credit'}" ng-click="guestCardTabSwitch('guest-credit')">
-					<a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-credit">Credit Cards &amp; Payment</a>
-				</li>
-				<li aria-selected="false" aria-labelledby="guest-loyalty" aria-controls="loyalty" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" ng-click="guestCardTabSwitch('guest-loyalty')">
-					<a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-loyalty">Loyalty</a>
-				</li>
-			</ul>
-			<!-- Guest Card Tab 1 contact info-->
-			<span ng-include="'/assets/partials/guestCard/guestCardContactInfo.html'"></span> 
-			<!-- Guest Card Tab 2 likes -->
-			<span ng-include="'/assets/partials/guestCard/guestCardLikes.html'"></span> 
-			<!-- Guest Card Tab 3 payment -->
-			<span ng-include="'/assets/partials/guestCard/guestCardPayment.html'"></span>
-			<!-- Guest Card Tab 4 loyalty-->
-			<span ng-include="'/assets/partials/guestCard/guestCardLoyalty.html'"></span>
-		</div>
-	</div>
-	
+                <!-- Guest Card tabs navigation -->
+                <ul id="guest-card-tabs-nav" class="card-tabs-nav">
+                    <li><a href="#gc-contact-info" class="error">Contact Information</a></li>
+                    <li><a href="#gc-likes">Likes</a></li>
+                    <li><a href="#gc-payment">Credit Cards &amp; Payment</a></li>
+                    <li><a href="#gc-loyalty" class="warning">Loyalty</a></li>
+                </ul>
+
+                <!-- Guest Card Tab 1 -->
+                <form method="post" action="app/stay-card/" id="gc-contact-info" name="gc-contact-info" class="form card-tab scrollable">
+                    <div class="wrapper">
+                        <div class="holder left">
+                            <div class="entry margin">
+                                <label for="firstname">First name</label>
+                                <input name="firstname" id="firstname" value="Jos" type="text" />
+                            </div>
+                            <div class="entry">
+                                <label for="lastname">Last Name</label>
+                                <input name="lastname" id="lastname" value="Schaap" type="text" />
+                            </div>
+                            <div class="entry margin">
+                                <label for="company">Works at</label>
+                                <input name="company" id="company" value="StayNTouch" type="text" />
+                            </div>
+                            <div class="entry">
+                                <label for="job-title">Job title</label>
+                                <input name="job-title" id="job-title" value="CEO" type="text" />
+                            </div>
+                            <div class="entry margin">
+                                <label for="title">Title</label>
+                                <input name="title" id="title" value="Mr." type="text" />
+                            </div>
+                            <div class="entry">
+                                <label for="language">Language</label>
+                                <div class="select">
+                                    <select id="language" name="language"> 
+                                        <option value="" class="placeholder">Select language</option> 
+                                        <optgroup label="-------------------">
+                                            <option value="EN" selected>English</option>
+                                            <option value="ES">Spanish</option>
+                                            <option value="DE">German</option>
+                                            <option value="FR">French</option>
+                                            <option value="PT">Portuguese</option>
+                                            <option value="RU">Russian</option>
+                                            <option value="IT">Italian</option>
+                                            <option value="AR">Arabic</option>
+                                            <option value="JA">Japanese</option>
+                                        </optgroup>
+                                        <optgroup label="-------------------">
+                                            <option value="AB">Abkhazian</option>
+                                            <option value="AA">Afar</option>
+                                            <option value="AF">Afrikaans</option>
+                                            <option value="SQ">Albanian</option>
+                                            <option value="AM">Amharic</option>
+                                            <option value="HY">Armenian</option>
+                                            <option value="AS">Assamese</option>
+                                            <option value="AY">Aymara</option>
+                                            <option value="">...</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="entry margin has-datepicker">
+                                <label for="birthday">Birthday (<span>DD-MM-YY</span>) <span class="clear-value" onclick="document.getElementById('birthday').value= '';">Clear</span></label>
+                                <input name="birthday" id="birthday" class="datepicker" value="" maxlength="8" readonly />
+                            </div>
+                            <div class="entry">
+                                <label for="nationality">Nationality</label>
+                                <div class="select">
+                                    <select id="nationality" name="nationality"> 
+                                        <option value="" class="placeholder">Select nationality</option> 
+                                        <optgroup label="-------------------">
+                                            <option value="US" selected>American</option>
+                                            <option value="ES">Spaniard</option>
+                                            <option value="DE">German</option>
+                                            <option value="FR">French</option>
+                                            <option value="PT">Portuguese</option>
+                                            <option value="RU">Russian</option>
+                                            <option value="IT">Italian</option>
+                                            <option value="JA">Japanese</option>
+                                        </optgroup>
+                                        <optgroup label="-------------------">
+                                            <option value="AF">Afghan</option>
+                                            <option value="AL">Albanian</option>
+                                            <option value="AD">Andorran</option>
+                                            <option value="AR">Argentinian</option>
+                                            <option value="AM">Armenian</option>
+                                            <option value="AW">Aruban</option>
+                                            <option value="AU">Australian</option>
+                                            <option value="AT">Austrian</option>
+                                            <option value="">...</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="entry margin">
+                                <label for="passport-number">Passport number</label>
+                                <span class="flag flag-us"></span>
+                                <input name="passport-number" id="passport-number" value="C00002951" type="text" />
+                            </div>
+                            <div class="entry">
+                                <label for="passport-month">Passport expir. date (<span>MM-YY</span>)</label>
+                                <input name="passport-month" id="passport-month" value="07" maxlength="2" size="2" type="text" />
+                                <input name="passport-year" id="passport-year" value="15" maxlength="2" size="2" type="text" />
+                            </div>
+                            <div class="entry radio-check full-width">
+                                <label for="opt-in">Email Opt In</label>
+                                <label class="checkbox">
+                                    <input name="opt-in" id="opt-in" value="opt-in" type="checkbox" />
+                                    Promotions &amp; News Email Opt In
+                                </label>
+                            </div>
+                        </div>
+                        <div class="holder right">
+                            <div class="entry full-width">
+                                <label for="email">E-mail address</label>
+                                <input name="email" id="email" value="jos@stayntouch.com" type="email" />
+                            </div>
+                            <div class="entry full-width">
+                                <label for="streetname">Address</label>
+                                <input name="streetname" id="streetname" value="Street name 5" type="text" />
+                            </div>
+                            <div class="entry margin">
+                                <label for="city">City</label>
+                                <input name="city" id="city" value="Potomac" type="text" />
+                            </div>
+                            <div class="entry">
+                                <label for="postalcode">Postal code</label>
+                                <input name="postalcode" id="postalcode" value="169874" type="text" />
+                            </div>
+                            <div class="entry margin">
+                                <label for="state">State</label>
+                                <input name="state" id="state" value="Maryland" type="text" />
+                            </div>
+                            <div class="entry">
+                                <label for="country">Country</label>
+                                <div class="select">
+                                    <select id="guest-country" name="guest-country"> 
+                                        <option value="" class="placeholder">Select country</option> 
+                                        <optgroup label="-------------------">
+                                            <option value="US" selected>United States</option>
+                                            <option value="CA">Canada</option>
+                                            <option value="GB">United Kingdom</option>
+                                            <option value="DE">Germany</option>
+                                            <option value="FR">France</option>
+                                            <option value="RU">Russia</option>
+                                            <option value="IT">Italy</option>
+                                            <option value="CN">China</option>
+                                            <option value="JP">Japan</option>
+                                            <option value="AU">Australia</option>
+                                        </optgroup>
+                                        <optgroup label="-------------------">
+                                            <option value="AF">Afghanistan</option>
+                                            <option value="AL">Albania</option>
+                                            <option value="DZ">Algeria</option>
+                                            <option value="AS">American Samoa</option>
+                                            <option value="AD">Andorra</option>
+                                            <option value="AO">Angola</option>
+                                            <option value="AI">Anguilla</option>
+                                            <option value="AQ">Antarctica</option>
+                                            <option value="AG">Antigua And Barbuda</option>
+                                            <option value="AR">Argentina</option>
+                                            <option value="AM">Armenia</option>
+                                            <option value="AW">Aruba</option>
+                                            <option value="AT">Austria</option>
+                                            <option value="AZ">Azerbaijan</option>
+                                            <option value="BS">Bahamas</option>
+                                            <option value="BH">Bahrain</option>
+                                            <option value="BD">Bangladesh</option>
+                                            <option value="BB">Barbados</option>
+                                            <option value="BY">Belarus</option>
+                                            <option value="BE">Belgium</option>
+                                            <option value="BZ">Belize</option>
+                                            <option value="BJ">Benin</option>
+                                            <option value="BM">Bermuda</option>
+                                            <option value="BT">Bhutan</option>
+                                            <option value="BO">Bolivia</option>
+                                            <option value="BA">Bosnia And Herzegovina</option>
+                                            <option value="BW">Botswana</option>
+                                            <option value="BV">Bouvet Island</option>
+                                            <option value="BR">Brazil</option>
+                                            <option value="IO">British Indian Ocean Territory</option>
+                                            <option value="BN">Brunei Darussalam</option>
+                                            <option value="BG">Bulgaria</option>
+                                            <option value="BF">Burkina Faso</option>
+                                            <option value="BI">Burundi</option>
+                                            <option value="KH">Cambodia</option>
+                                            <option value="CM">Cameroon</option>
+                                            <option value="CV">Cape Verde</option>
+                                            <option value="KY">Cayman Islands</option>
+                                            <option value="CF">Central African Republic</option>
+                                            <option value="TD">Chad</option>
+                                            <option value="CL">Chile</option>
+                                            <option value="CX">Christmas Island</option>
+                                            <option value="CC">Cocos (Keeling) Islands</option>
+                                            <option value="CO">Colombia</option>
+                                            <option value="KM">Comoros</option>
+                                            <option value="CG">Congo</option>
+                                            <option value="CK">Cook Islands</option>
+                                            <option value="CR">Costa Rica</option>
+                                            <option value="CI">Cote D'Ivoire</option>
+                                            <option value="HR">Croatia</option>
+                                            <option value="CU">Cuba</option>
+                                            <option value="CY">Cyprus</option>
+                                            <option value="CZ">Czech Republic</option>
+                                            <option value="DK">Denmark</option>
+                                            <option value="DJ">Djibouti</option>
+                                            <option value="DM">Dominica</option>
+                                            <option value="DO">Dominican Republic</option>
+                                            <option value="EC">Ecuador</option>
+                                            <option value="EG">Egypt</option>
+                                            <option value="SV">El Salvador</option>
+                                            <option value="GQ">Equatorial Guinea</option>
+                                            <option value="ER">Eritrea</option>
+                                            <option value="EE">Estonia</option>
+                                            <option value="ET">Ethiopia</option>
+                                            <option value="FK">Falkland Islands (Malvinas)</option>
+                                            <option value="FO">Faroe Islands</option>
+                                            <option value="FJ">Fiji</option>
+                                            <option value="FI">Finland</option>
+                                            <option value="GF">French Guiana</option>
+                                            <option value="PF">French Polynesia</option>
+                                            <option value="TF">French Southern Territories</option>
+                                            <option value="GA">Gabon</option>
+                                            <option value="GM">Gambia</option>
+                                            <option value="GE">Georgia</option>
+                                            <option value="GH">Ghana</option>
+                                            <option value="GI">Gibraltar</option>
+                                            <option value="GR">Greece</option>
+                                            <option value="GL">Greenland</option>
+                                            <option value="GD">Grenada</option>
+                                            <option value="GP">Guadeloupe</option>
+                                            <option value="GU">Guam</option>
+                                            <option value="GT">Guatemala</option>
+                                            <option value="GN">Guinea</option>
+                                            <option value="GW">Guinea-Bissau</option>
+                                            <option value="GY">Guyana</option>
+                                            <option value="HT">Haiti</option>
+                                            <option value="HM">Heard Island &amp; Mcdonald Islands</option>
+                                            <option value="HN">Honduras</option>
+                                            <option value="HK">Hong Kong</option>
+                                            <option value="HU">Hungary</option>
+                                            <option value="IS">Iceland</option>
+                                            <option value="IN">India</option>
+                                            <option value="ID">Indonesia</option>
+                                            <option value="IR">Iran, Islamic Republic Of</option>
+                                            <option value="IQ">Iraq</option>
+                                            <option value="IE">Ireland</option>
+                                            <option value="IL">Israel</option>   
+                                            <option value="JM">Jamaica</option>  
+                                            <option value="JO">Jordan</option>
+                                            <option value="KZ">Kazakhstan</option>
+                                            <option value="KE">Kenya</option>
+                                            <option value="KI">Kiribati</option>
+                                            <option value="KP">Korea, Democratic People'S Republic Of</option>
+                                            <option value="KR">Korea, Republic Of</option>
+                                            <option value="XK">Kosovo</option>
+                                            <option value="KW">Kuwait</option>
+                                            <option value="KG">Kyrgyzstan</option>
+                                            <option value="LA">Lao People'S Democratic Republic</option>
+                                            <option value="LV">Latvia</option>
+                                            <option value="LB">Lebanon</option>
+                                            <option value="LS">Lesotho</option>
+                                            <option value="LR">Liberia</option>
+                                            <option value="LY">Libyan Arab Jamahiriya</option>
+                                            <option value="LI">Liechtenstein</option>
+                                            <option value="LT">Lithuania</option>
+                                            <option value="LU">Luxembourg</option>
+                                            <option value="MO">Macau</option>
+                                            <option value="MK">Macedonia</option>
+                                            <option value="MG">Madagascar</option>
+                                            <option value="MW">Malawi</option>
+                                            <option value="MY">Malaysia</option>
+                                            <option value="MV">Maldives</option>
+                                            <option value="ML">Mali</option>
+                                            <option value="MT">Malta</option>
+                                            <option value="MH">Marshall Islands</option>
+                                            <option value="MQ">Martinique</option>
+                                            <option value="MR">Mauritania</option>
+                                            <option value="MU">Mauritius</option>
+                                            <option value="YT">Mayotte</option>
+                                            <option value="MX">Mexico</option>
+                                            <option value="FM">Micronesia, Federated States Of</option>
+                                            <option value="MD">Moldova, Republic Of</option>
+                                            <option value="MC">Monaco</option>
+                                            <option value="MN">Mongolia</option>
+                                            <option value="ME">Montenegro</option>
+                                            <option value="MS">Montserrat</option>
+                                            <option value="MA">Morocco</option>
+                                            <option value="MZ">Mozambique</option>
+                                            <option value="MM">Myanmar</option>
+                                            <option value="NA">Namibia</option>
+                                            <option value="NR">Nauru</option>
+                                            <option value="NP">Nepal</option>
+                                            <option value="NL">Netherlands</option>
+                                            <option value="AN">Netherlands Antilles</option>
+                                            <option value="NC">New Caledonia</option>
+                                            <option value="NZ">New Zealand</option>
+                                            <option value="NI">Nicaragua</option>
+                                            <option value="NE">Niger</option>
+                                            <option value="NG">Nigeria</option>
+                                            <option value="NU">Niue</option>
+                                            <option value="NF">Norfolk Island</option>
+                                            <option value="MP">Northern Mariana Islands</option>
+                                            <option value="NO">Norway</option>
+                                            <option value="OM">Oman</option>
+                                            <option value="PK">Pakistan</option>
+                                            <option value="PW">Palau</option>
+                                            <option value="PA">Panama</option>
+                                            <option value="PG">Papua New Guinea</option>
+                                            <option value="PY">Paraguay</option>
+                                            <option value="PE">Peru</option>
+                                            <option value="PH">Philippines</option>
+                                            <option value="PN">Pitcairn</option>
+                                            <option value="PL">Poland</option>
+                                            <option value="PT">Portugal</option>
+                                            <option value="PR">Puerto Rico</option>
+                                            <option value="QA">Qatar</option>
+                                            <option value="RE">Reunion</option>
+                                            <option value="RO">Romania</option>
+                                            <option value="RW">Rwanda</option>
+                                            <option value="SH">Saint Helena</option>
+                                            <option value="KN">Saint Kitts And Nevis</option>
+                                            <option value="LC">Saint Lucia</option>
+                                            <option value="PM">Saint Pierre And Miquelon</option>
+                                            <option value="VC">Saint Vincent And The Grenadines</option>
+                                            <option value="WS">Samoa</option>
+                                            <option value="SM">San Marino</option>
+                                            <option value="ST">Sao Tome And Principe</option>
+                                            <option value="SA">Saudi Arabia</option>
+                                            <option value="SN">Senegal</option>
+                                            <option value="RS">Serbia</option>
+                                            <option value="SC">Seychelles</option>
+                                            <option value="SL">Sierra Leone</option>
+                                            <option value="SG">Singapore</option>
+                                            <option value="SK">Slovakia (Slovak Republic)</option>
+                                            <option value="SI">Slovenia</option>
+                                            <option value="SB">Solomon Islands</option>
+                                            <option value="SO">Somalia</option>
+                                            <option value="ZA">South Africa</option>
+                                            <option value="ES">Spain</option>
+                                            <option value="LK">Sri Lanka</option>
+                                            <option value="SD">Sudan</option>
+                                            <option value="SR">Suriname</option>
+                                            <option value="SJ">Svalbard And Jan Mayen Islands</option>
+                                            <option value="SZ">Swaziland</option>
+                                            <option value="SE">Sweden</option>
+                                            <option value="CH">Switzerland</option>
+                                            <option value="SY">Syrian Arab Republic</option>
+                                            <option value="TW">Taiwan, Province Of China</option>
+                                            <option value="TJ">Tajikistan</option>
+                                            <option value="TZ">Tanzania, United Republic Of</option>
+                                            <option value="TH">Thailand</option>
+                                            <option value="TG">Togo</option>
+                                            <option value="TK">Tokelau</option>
+                                            <option value="TO">Tonga</option>
+                                            <option value="TT">Trinidad And Tobago</option>
+                                            <option value="TN">Tunisia</option>
+                                            <option value="TR">Turkey</option>
+                                            <option value="TM">Turkmenistan</option>
+                                            <option value="TC">Turks And Caicos Islands</option>
+                                            <option value="TV">Tuvalu</option>
+                                            <option value="UG">Uganda</option>
+                                            <option value="UA">Ukraine</option>
+                                            <option value="AE">United Arab Emirates</option>
+                                            <option value="UM">United States Minor Outlying Islands</option>
+                                            <option value="UY">Uruguay</option>
+                                            <option value="UZ">Uzbekistan</option>
+                                            <option value="VU">Vanuatu</option>
+                                            <option value="VA">Vatican City State (Holy See)</option>
+                                            <option value="VE">Venezuela</option>
+                                            <option value="VN">Viet Nam</option>
+                                            <option value="VG">Virgin Islands (British)</option>
+                                            <option value="VI">Virgin Islands (U.S.)</option>
+                                            <option value="WF">Wallis And Futuna Islands</option>
+                                            <option value="EH">Western Sahara</option>
+                                            <option value="YE">Yemen</option>
+                                            <option value="ZM">Zambia</option>
+                                            <option value="ZW">Zimbabwe</option>
+                                            <option value="ZZ">Unknown or Invalid Region</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="entry margin">
+                                <label for="phone">Phone</label>
+                                <input name="phone" id="phone" value="301-456-3000" type="tel" />
+                            </div>
+                            <div class="entry">
+                                <label for="mobile">Mobile</label>
+                                <input name="mobile" id="mobile" value="" type="tel" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Guest Card Tab 2 -->
+                <form method="post" action="app/stay-card/" id="gc-likes" name="gc-likes" class="form card-tab scrollable">
+                    <div class="wrapper">
+                        <div class="holder left">
+                            <strong class="h3">Preferences</strong>
+                            <div class="entry full-width">
+                                <label for="newspaper">Newspaper</label>
+                                <input name="newspaper" id="newspaper" value="Wall Street Journal" type="text" />
+                            </div>
+                            <div class="entry full-width">
+                                <label for="roomtype">Room type</label>
+                                <input name="roomtype" id="roomtype" value="Executive Suite" type="text" />
+                            </div>
+                            <div class="entry radio-check">
+                                <label for="floor1">Floor</label>
+                                <label class="checkbox">
+                                    <input data-group="floor" name="floor" id="floor1" value="high-floor" type="checkbox" />
+                                    High Floor
+                                </label>
+                                <label class="checkbox">
+                                    <input data-group="floor" name="floor" id="floor2" value="low-floor" type="checkbox" />
+                                    Low Floor
+                                </label>
+                            </div>
+                            <div class="entry radio-check">
+                                <label for="elevator1">Elevator</label>
+                                <label class="checkbox">
+                                    <input data-group="elevator" name="elevator" id="elevator1" value="near-elevator" type="checkbox" />
+                                    Close to Elevator
+                                </label>
+                                <label class="checkbox">
+                                    <input data-group="elevator" name="elevator" id="elevator2" value="away-from-elevator" type="checkbox" checked />
+                                    Away from Elevator
+                                </label>
+                            </div>
+                            <div class="entry radio-check">
+                                <label for="smoking1">Smoking</label>
+                                <label class="checkbox">
+                                    <input data-group="smoking" name="smoking" id="smoking1" value="smoking-room" type="checkbox" />
+                                    Smoking Room
+                                </label>
+                                <label class="checkbox">
+                                    <input data-group="smoking" name="smoking" id="smoking2" value="non-smoking-room" type="checkbox" checked />
+                                    Non-Smoking Room
+                                </label>
+                            </div>
+                        </div>
+                        <div class="holder right">
+                            <strong class="h3">Room Features</strong>
+                            <div class="entry radio-check">
+                                <label class="checkbox">
+                                    <input name="features" id="features1" value="pool-view" type="checkbox" checked />
+                                    Pool View
+                                </label>
+                                <label class="checkbox">
+                                    <input name="features" id="features2" value="street-view" type="checkbox" />
+                                    Street View
+                                </label>
+                            </div>
+                            <div class="entry radio-check">
+                                <label class="checkbox">
+                                    <input name="features" id="features3" value="balcony" type="checkbox" />
+                                    Balcony
+                                </label>
+                                <label class="checkbox">
+                                    <input name="features" id="features4" value="terrace" type="checkbox" checked />
+                                    Terrace
+                                </label>
+                            </div>
+                            <div class="entry radio-check">
+                                <label class="checkbox">
+                                    <input name="features" id="features5" value="kitchenette" type="checkbox" />
+                                    Kitchenette
+                                </label>
+                                <label class="checkbox">
+                                    <input name="features" id="features6" value="coffee-tea" type="checkbox" checked />
+                                    Coffee / Tea
+                                </label>
+                            </div>
+                            <div class="entry radio-check">
+                                <label class="checkbox">
+                                    <input name="features" id="features7" value="large-bathroom" type="checkbox" />
+                                    Large Bathroom
+                                </label>
+                                <label class="checkbox">
+                                    <input name="features" id="features8" value="wheelchair-access" type="checkbox" />
+                                    Wheelchair Access
+                                </label>
+                            </div>
+                            <div class="entry radio-check">
+                                <label class="checkbox">
+                                    <input name="features" id="features9" value="close-to-gym" type="checkbox" />
+                                    Close to Gym
+                                </label>
+                                <label class="checkbox">
+                                    <input name="features" id="features10" value="close-to-spa" type="checkbox" />
+                                    Close to Spa
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Guest Card Tab 3 -->
+                <form method="post" action="app/stay-card/" id="gc-payment" name="gc-payment" class="form card-tab scrollable">
+                    <div class="wrapper">
+                        <!-- Credit cards on file -->
+                        <a href="modals/select-primary/" class="active-item item-payment primary open-modal float">
+                            <figure class="card-logo">
+                                <img src="../images/visa.png" alt="" />
+                            </figure>
+                            <span class="number">Ending with <span class="value number">6531</span></span>
+                            <span class="date">Date <span class="value date">07/15</span></span>
+                            <span class="name">Name <span class="value name">Jos Schaap</span></span>
+                            <span class="primary"><span class="value primary">Primary</span></span>
+                        </a>
+                        <a href="modals/select-primary/" class="active-item item-payment open-modal float">
+                            <figure class="card-logo">
+                                <img src="../images/mastercard.png" alt="" />
+                            </figure>
+                            <span class="number">Ending with <span class="value number">7718</span></span>
+                            <span class="date">Date <span class="value date">04/16</span></span>
+                            <span class="name">Name <span class="value name">Jos Schaap</span></span>
+                        </a>
+                        <a href="modals/select-primary/" class="active-item item-payment open-modal float">
+                            <figure class="card-logo">
+                                <img src="../images/amex.png" alt="" />
+                            </figure>
+                            <span class="number">Ending with <span class="value number">2757</span></span>
+                            <span class="date">Date <span class="value date">12/14</span></span>
+                            <span class="name">Name <span class="value name">Jos Schaap</span></span>
+                        </a>
+                        <a href="modals/select-primary/" class="active-item item-payment open-modal float">
+                            <span class="value code">Cash</span>
+                        </a>
+                        <a href="modals/new-payment-method/" class="open-modal add-new-button">+ New Payment Method</a>
+                    </div>
+                </form>
+
+                <!-- Guest Card Tab 4 -->
+                <form method="post" action="app/stay-card/" id="gc-loyalty" name="loyalty" class="form card-tab scrollable">
+                    <div class="wrapper">
+                        <span class="notice">Set Primary Hotel Loyalty Program</span>
+                        <!-- Frequent Flyer Program -->
+                        <div class="holder left">
+                            <strong class="h3">Frequent Flyer Program</strong>
+                            <a href="modals/select-primary/" class="active-item item-loyalty open-modal float">
+                                <span class="value code">QF</span>
+                                <span class="value number">4595476</span>
+                                <span class="value name">Quantas Frequent Flyer</span>
+                            </a>
+                            <a href="modals/select-primary/" class="active-item item-loyalty open-modal float">
+                                <span class="value code">QF</span>
+                                <span class="value number">4595476</span>
+                                <span class="value name">Quantas Frequent Flyer</span>
+                            </a>
+                            <a href="modals/select-primary/" class="active-item item-loyalty primary open-modal float">
+                                <span class="value code">QF</span>
+                                <span class="value number">4595476</span>
+                                <span class="value name">Quantas Frequent Flyer</span>
+                                <span class="primary"><span class="value primary">Primary</span></span>
+                            </a>
+                            <a href="modals/new-ffp/" class="open-modal add-new-button">+ New Frequent Flyer Program</a>
+                        </div>
+
+                        <!-- Hotel Loyalty Program -->
+                        <div class="holder right">
+                            <strong class="h3">Hotel Loyalty Program</strong>
+                            <a href="modals/select-primary/" class="active-item item-loyalty open-modal float">
+                                <span class="value code">PC</span>
+                                <span class="value number">7894598763</span>
+                                <span class="value name">Diamond</span>
+                            </a>
+                            <a href="modals/select-primary/" class="active-item item-loyalty open-modal float">
+                                <span class="value code">HC</span>
+                                <span class="value number">7894562224</span>
+                                <span class="value name">Black</span>
+                            </a>
+                            <a href="modals/new-hlp/" class="open-modal add-new-button">+ New Hotel Loyalty Program</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>   
 </div>

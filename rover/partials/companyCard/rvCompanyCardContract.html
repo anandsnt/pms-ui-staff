@@ -1,52 +1,74 @@
-<form method="post" action="app/modals/contracted-nights/" id="cc-contracts" name="cc-contracts" class="form card-tab contracts" ng-show="currentSelectedTab == 'cc-contracts'">
+<form   method="post" id="cc-contracts" name="cc-contracts" class="form card-tab contracts" ng-show="currentSelectedTab == 'cc-contracts'">
     <div id="cc-contracts-header" class="tab-header form card-tab">
         <div class="entry">
-            <div class="select">
-                <select name="company-contract" ng-model="contractsData.contracts_list_selected">
-                    <option value="" class="placeholder" disabled>Select contract</option>
-                    <option value="{{type.value}}" ng-selected="type.value==contractsData.contracts_list_selected" ng-repeat="type in contractsData.contracts_list" >{{type.name}}</option>
+            <div class="select" ng-hide="isAddMode">
+                <select name="company-contract" ng-model="contractSelected">
+                    <option value="" class="placeholder">Select contract</option>
+                    <optgroup label="Current">
+                    	<option ng-click="clickedContractList(type.id)" value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.current_contracts" >{{type.contract_name}}</option>
+                	</optgroup>
+                	<optgroup label="Future">
+                    	<option ng-click="clickedContractList(type.id)" value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.future_contracts" >{{type.contract_name}}</option>
+                	</optgroup>
+                	<optgroup label="History">
+                    	<option ng-click="clickedContractList(type.id)" value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.history_contracts" >{{type.contract_name}}</option>
+                	</optgroup>
                 </select>
             </div>
+            <div class="" ng-show="isAddMode" >
+                <input ng-model="contractData.contract_name" placeholder="Contract Name" name="company-contract-new" class="" value="{{contractData.contract_name}}" maxlength="8" type="text" />
+            </div>
         </div>
-        <div class="actions">
-            <button id="company-new-contract" type="button" class="button green">New Contract</button>
+        <div class="actions" ng-hide="isAddMode">
+            <button id="company-new-contract" type="button" class="button green" ng-click="isAddMode=true">New Contract</button>
+        </div>
+        <div class="actions" ng-show="isAddMode">
+        	<button id="company-new-contract" type="button" class="button red" ng-click="isAddMode=false">Cancel</button>
+            <button id="company-new-contract" type="button" class="button green" ng-click="AddNewContract(isAddMode=false)">Save Contract</button>
         </div>
     </div>
     <div id="cc-contracts-content" class="tab-details scrollable">
-        <div class="wrapper">
+    	<!--div class="wrapper" ng-class="{'overlay':contractSelected=='3'}" ng-iscroll="contracts_scroll" ng-iscroll-delay="1000"--->
+
+        <div class="wrapper" ng-class="{'overlay':contractSelected=='3'}">
             <div class="holder left">
                 <strong class="h3">Details</strong>
                 <div class="entry margin">
                     <label for="company-rate">Contracted Rate</label>
-                    <input name="company-rate" id="company-rate" value="COR (System defined)" type="text" />
+                    <div class="select">
+		                <select name="company-contract" ng-model="contractData.contracted_rate_selected">
+		                    <option value="" class="placeholder">Select contracted rate</option>
+		                    <option value="{{rate.id}}" ng-selected="rate.id==contractData.contracted_rate_selected" ng-repeat="rate in contractData.rates" >{{rate.name}}</option>
+		                </select>
+		            </div>
                 </div>
                 <div class="entry price-adjust no-label">
                     <div class="select">
-                        <select name="company-rate-adjust-1">
-                            <option value="add" selected>+</option>
-                            <option value="subtract">-</option>
+                        <select name="company-rate-adjust-1" ng-model="contractData.selected_type">
+                            <option value="+">+</option>
+                            <option value="-">-</option>
                         </select>
                     </div>
-                    <input name="company-rate-adjust-2" id="company-rate-adjust-2" value="10" type="text" />
+                    <input ng-model="contractData.rate_value" name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{contractData.rate_value}}" type="text" />
                     <div class="select">
-                        <select name="company-rate-adjust-3">
-                            <option value="percentage" selected>%</option>
-                            <option value="value">$</option>
+                        <select name="company-rate-adjust-3" ng-model="contractData.selected_symbol">
+                            <option value="%">%</option>
+                            <option value="$">$</option>
                         </select>
                     </div>
                 </div>
                 <div class="entry margin has-datepicker">
                     <label for="company-contract-start">Contract Start</label>
-                    <input name="company-contract-start" id="company-contract-start" class="datepicker" value="" maxlength="8" readonly type="text" />
+                    <input ng-click="contractStart()" name="company-contract-start" id="company-contract-start" class="datepicker1" value="{{contractData.begin_date}}" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry has-datepicker">
                     <label for="company-contract-end">Contract End</label>
-                    <input name="company-contract-end" id="company-contract-end" class="datepicker" value="" maxlength="8" readonly type="text" />
+                    <input ng-click="contractEnd()" name="company-contract-end" id="company-contract-end" class="datepicker1" value="{{contractData.end_date}}" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry margin only-switch">
                     <label for="company-contract-fixed-rate">Fixed Rate</label>
-                    <div class="switch-button full-width">
-                        <input name="company-contract-fixed-rate" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
+                    <div ng-model="contractData.is_fixed_rate" class="switch-button full-width" ng-class="{'on': contractData.is_fixed_rate}">
+                        <input ng-click="contractData.is_fixed_rate = !contractData.is_fixed_rate" name="company-contract-fixed-rate" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
                         <label class="data-off">
                             <span class="value">Yes</span>
                             <span class="switch-icon">No</span>
@@ -59,8 +81,8 @@
                 </div>
                 <div class="entry only-switch">
                     <label for="company-contract-show-on-bill">Show on Guest Bill</label>
-                    <div class="switch-button full-width">
-                        <input name="company-contract-show-on-bill" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
+                    <div ng-model="contractData.is_rate_shown_on_guest_bill" class="switch-button full-width" ng-class="{'on': contractData.is_rate_shown_on_guest_bill}">
+                        <input ng-click="contractData.is_rate_shown_on_guest_bill = !contractData.is_rate_shown_on_guest_bill" name="company-contract-show-on-bill" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
                         <label class="data-off">
                             <span class="value">Yes</span>
                             <span class="switch-icon">No</span>
@@ -73,22 +95,24 @@
                 </div>
                 <div class="entry">
                     <label for="company-contracted-nights">Contracted nights</label>
-                    <input name="company-contracted-nights" id="company-contracted-nights" class="open-modal contracted-nights" placeholder="Nights per month" value="240" maxlength="8" readonly type="text" />
+                    <input ng-click="clickedContractedNights()" name="company-contracted-nights" id="company-contracted-nights" class="open-modal1 contracted-nights" placeholder="Nights per month" value="{{contractData.total_contracted_nights}}" maxlength="8" readonly type="text" />
                 </div>
             </div>
-            <div class="holder right">
+            <div class="holder right" ng-hide="isAddMode">
                 <strong class="h3">Statistics</strong>
                 <ul id="company-contract-stats" class="contract-stats">
-                    <li>Booked Nights <span>163</span></li>
-                    <li>Total Nights <span>159</span></li>
-                    <li>Total Stays <span>49</span></li>
-                    <li>Total Revenue <span class="green">$3579.00</span></li>
-                    <li>Average Rate <span>$219.00</span></li>
+                    <li>Booked Nights <span>{{contractData.statistics.booked_nights}}</span></li>
+                    <li>Total Nights <span>{{contractData.statistics.total_nights}}</span></li>
+                    <li>Total Stays <span>{{contractData.statistics.total_stays}}</span></li>
+                    <li>Total Revenue <span class="green">{{contractData.statistics.total_revenue}}</span></li>
+                    <li>Average Rate <span>{{contractData.statistics.average_rate}}</span></li>
                 </ul>
             </div>
-            <div id="company-cards-occupancy" class="occupancy">
+            <div id="company-cards-occupancy" class="occupancy" ng-hide="isAddMode">
                 <strong class="h3">Occupancy</strong>
-                <img src="images/occupancy.png" class="temporary-graph" alt="">
+                <div class="occgraph-outer" style='width: 100%'>
+					<highchart id="occGraphContainer" config="highchartsNG"></highchart>
+				</div>
             </div>
         </div>
     </div>
