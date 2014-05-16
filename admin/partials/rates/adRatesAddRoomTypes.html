@@ -81,9 +81,11 @@
 	</fieldset>
 	<div class="actions float">
 		<button type="button" id="cancel" class="button blank add-data-inline" ui-sref="admin.rates">Cancel</button>
-		<button type="button" id="send-email"  class="button grey" ng-hide="anyRoomSelected()" ng-disabled="true" >Step 3 - Set date range</button>
-		<button type="button" ng-click="saveRoomTypes()" class="button  brand-colors" ng-show="anyRoomSelected()">
+		<button type="button" id="send-email" ng-hide="rateData.room_type_ids.length > 0"  class="button" ng-class="{ 'brand-colors' : anyRoomSelected() }" ng-disabled="!anyRoomSelected()" ng-click="saveRoomTypes()" >
 			Step 3 - Set date range
+		</button>
+		<button type="button" id="send-email" ng-show="rateData.room_type_ids.length > 0"  class="button" ng-class="{ 'brand-colors' : anyRoomSelected() }" ng-disabled="!anyRoomSelected()" ng-click="saveRoomTypes()" >
+			Save
 		</button>
 	</div>
 </form>
