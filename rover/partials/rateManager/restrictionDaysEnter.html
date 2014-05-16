@@ -3,13 +3,12 @@
 	    <h2 class="h1">{{restrictionType.description}}</h2>
 	    {{restrictionType.description}}
 		<div>
-			<input type="text" ng-model="daysEntered"></input>
+			<input ng-model="daysEntered"/>
 		</div>
 		<div>
 		    <button class="button green" type="button" ng-click="updateRestrictionBtnClicked(restrictionType.id)">Set Restriction</button>
-		    <button class="button red" type="button">Remove Restriction</button>
+		    <button class="button red" type="button" ng-click="removeRestrictionBtnClicked(restrictionType.id)">Remove Restriction</button>
 		</div>
 	</div>
-	
 </div>
 
