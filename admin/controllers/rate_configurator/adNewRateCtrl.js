@@ -171,6 +171,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         $scope.shouldShowAddNewDateRange = function(){
             if($scope.rateMenu === 'ADD_NEW_DATE_RANGE') { return false; }
+            if($scope.rateData.based_on.id > 1 && $scope.rateData.rate_type.name != 'Promotional') { return false; }
             if (!$scope.rateData.id || $scope.rateData.room_type_ids.length == 0) { return false; }
             return true;
         };
