@@ -97,21 +97,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 rateId: $scope.rateData.based_on.id
             }, fetchBasedonSuccess);
         }
-
-        $scope.manipulateData = function(data){
-          
-            if(data.id) { $scope.rateData.id = data.id; }
-            $scope.rateData.name= data.name;
-            $scope.rateData.description = data.description;
-            $scope.rateData.promotion_code = data.promotion_code;
-            $scope.rateData.room_type_ids = data.room_type_ids;
-            $scope.rateData.date_ranges= data.date_ranges;
-            $scope.rateData.rate_type.id = (data.rate_type != null) ? data.rate_type.id : '';
-            $scope.rateData.rate_type.name = (data.rate_type != null) ? data.rate_type.name : '';
-            $scope.rateData.addOns = data.addons;
-            $scope.rateData.charge_code_id = data.charge_code_id;
-            $scope.rateData.currency_code_id = data.currency_code_id;
-
+        var manipulateAdditionalDetails = function(data){
             // rules and restrictions
             $scope.rateData.min_advanced_booking = data.min_advanced_booking;
             $scope.rateData.max_advanced_booking = data.max_advanced_booking;
@@ -143,7 +129,25 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     });
                 });
             }
-           
+
+        };
+
+        $scope.manipulateData = function(data){
+          
+            if(data.id) { $scope.rateData.id = data.id; }
+            $scope.rateData.name= data.name;
+            $scope.rateData.description = data.description;
+            $scope.rateData.promotion_code = data.promotion_code;
+            $scope.rateData.room_type_ids = data.room_type_ids;
+            $scope.rateData.date_ranges= data.date_ranges;
+            $scope.rateData.rate_type.id = (data.rate_type != null) ? data.rate_type.id : '';
+            $scope.rateData.rate_type.name = (data.rate_type != null) ? data.rate_type.name : '';
+            $scope.rateData.addOns = data.addons;
+            $scope.rateData.charge_code_id = data.charge_code_id;
+            $scope.rateData.currency_code_id = data.currency_code_id;
+
+            manipulateAdditionalDetails(data);
+                   
 
             if (data.based_on) {
                 $scope.rateData.based_on.id = data.based_on.id;
