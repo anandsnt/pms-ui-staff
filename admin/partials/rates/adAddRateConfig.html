@@ -1,7 +1,7 @@
 <div class="config-wrapper">
     <ul class="date-wrapper" style="margin-left:31px;">
         <li style="width:30px;">
-            <span class="icons delete_small" ng-click="confirmDeleteSet(set.id, $index)"  ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
+            <span class="icons delete_small" ng-click="confirmDeleteSet(set.id, $index, set.name)"  ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
         <li style="width:150px;" ng-hide="currentClickedSet == $index">{{set.name}}</li>
         <li ng-show="currentClickedSet == $index">

@@ -111,9 +111,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             }
         };
 
-        $scope.confirmDeleteSet = function (id, index) {
+        $scope.confirmDeleteSet = function (id, index, setName) {
             $scope.deleteSetId = id;
             $scope.deleteSetIndex = index;
+            $scope.deleteSetName = setName;
             ngDialog.open({
                 template: '/assets/partials/rates/confirmDeleteSetDialog.html',
                 controller: 'ADRatesAddConfigureCtrl',
