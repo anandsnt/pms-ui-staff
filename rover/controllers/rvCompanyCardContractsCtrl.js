@@ -79,10 +79,13 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
             }
         }
 	
+	var contractInfo = "";
 	var fetchContractsDetailsSuccessCallback = function(data){
 		$scope.contractsData = {};
     	$scope.contractData = data;
-    	$scope.graphData = manipulateGraphData(data.occupancy);    	
+    	contractInfo = JSON.parse(JSON.stringify($scope.contractData));
+    	$scope.contractData.contract_name ="";
+    	$scope.graphData = manipulateGraphData(data.occupancy);
     	$scope.$emit('hideLoader');
     	drawGraph();    	
     	//setTimeout(function(){refreshScroller();}, 750);
@@ -157,6 +160,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     */
     $scope.clickedContractList = function(contract_id){
 		console.log("clickedContractList"+contract_id);
+		$scope.contractSelected = contract_id;
 		$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":contract_id},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);  
     };
    
@@ -186,16 +190,31 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 			 scope: $scope
 		});
 	};
+	/*
+	 * Add new contarcts
+	*/
+	$scope.AddNewContract = function(){
+		
+		var data = dclone($scope.contractData,['occupancy','statistics','rates','total_contracted_nights']);
+		
+		var saveContractSuccessCallback = function(data){
+	    	$scope.contractData.contract_name ="";
+	    	$scope.$emit('hideLoader');
+	    };
+	  	var saveContractFailureCallback = function(data){
+	        $scope.$emit('hideLoader');
+	    }; 
+		$scope.invokeApi(RVCompanyCardSrv.addNewContract,{ "account_id":$stateParams.id, "postData":data}, saveContractSuccessCallback, saveContractFailureCallback);  
+	};
 	
 	
-	$scope.saveContract= function(){
+	$scope.updateContract= function(){
 	    var saveContractSuccessCallback = function(data){
 	        $scope.$emit('hideLoader');
 	    };
 	    var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
-	         $scope.$emit('contactInfoError',true);
 	    };
 	   
 		/**
@@ -203,28 +222,21 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	  	*/
 	    var dataToUpdate =  JSON.parse(JSON.stringify($scope.contractData));
 	    var dataUpdated = false;
-	    if(angular.equals(dataToUpdate, presentContract)) {
+	    if(angular.equals(dataToUpdate, contractInfo)) {
 				dataUpdated = true;
 		}
 		else{
-			presentContract = dataToUpdate;
+			contractInfo = dataToUpdate;
 		};	    	
-	    //dataToUpdate.birthday = $scope.birthdayText;
-	    var data ={'data':dataToUpdate,
-	    			'userId':$scope.guestCardData.contactInfo.user_id
-	    		};
+	    
 	    if(!dataUpdated)
-	     	$scope.invokeApi(RVCompanyCardSrv.saveContract,data,saveContractSuccessCallback,saveContractFailureCallback);  	
+	    $scope.invokeApi(RVCompanyCardSrv.updateContract,{ "account_id": $stateParams.id, "contract_id": $scope.contractSelected, "postData": dataToUpdate}, saveContractSuccessCallback, saveContractFailureCallback);
 	};
 
 	$scope.$on('saveContract',function(){
-	 	console.log("outside clkkk");
-	 	$scope.saveContract();
+	 	$scope.updateContract();
 	});
 	
-	$scope.AddNewContract = function(){
-		console.log("data to save");
-		console.log($scope.contractData);
-	};
+	
 	
 }]);
