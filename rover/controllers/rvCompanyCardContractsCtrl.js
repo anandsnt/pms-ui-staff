@@ -229,8 +229,10 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 			contractInfo = dataToUpdate;
 		};	    	
 	    
-	    if(!dataUpdated)
-	    $scope.invokeApi(RVCompanyCardSrv.updateContract,{ "account_id": $stateParams.id, "contract_id": $scope.contractSelected, "postData": dataToUpdate}, saveContractSuccessCallback, saveContractFailureCallback);
+	    if(!dataUpdated){
+	    	var data = dclone($scope.contractData,['occupancy','statistics','rates','total_contracted_nights']);
+	    	$scope.invokeApi(RVCompanyCardSrv.updateContract,{ "account_id": $stateParams.id, "contract_id": $scope.contractSelected, "postData": data}, saveContractSuccessCallback, saveContractFailureCallback);
+		}
 	};
 
 	$scope.$on('saveContract',function(){
