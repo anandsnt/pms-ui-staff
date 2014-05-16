@@ -53,7 +53,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 		var rejectDeferred = function(data){
 			deferred.reject(data);
-		}
+		};
 		var getRoomTypeRates = function(d){
 			var url = "/api/daily_rates/" + params.id
 			delete params['id'];

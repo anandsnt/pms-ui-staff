@@ -1,6 +1,8 @@
-sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
-    function ($q, $scope, ngDialog) {
+sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog', 'UpdatePriceAndRestrictionsSrv',
+    function ($q, $scope, ngDialog, UpdatePriceAndRestrictionsSrv) {
         $scope.init = function(){
+        	console.log("++++++++++++++++++++++++");
+        	console.log(JSON.stringify($scope.popupData));
             if($scope.popupData.fromRoomTypeView){
                 computePopupdateForRoomTypeCal();
             }else{
@@ -96,11 +98,13 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         $scope.saveRestriction = function(){
         	
         	var data = {};
-        	data.restrictions = [];
-        	console.log(JSON.stringify($scope.data));
+        	data.details = [];
+        	var details = {};
+        	details.restrictions = [];
+        	details.from_date = "";
+        	details.to_date = "";
+        	
         	angular.forEach($scope.data.restrictionTypes, function(value, key){
-        		
-
         		if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled != value.isRestrictionEnabled){
         			var action = "";
         			if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled == "true"){
@@ -113,11 +117,16 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         				"restriction_type_id": value.id,
         				"days": value.days
         			};
-        			data.restrictions.push(restrictionData);
+        			details.restrictions.push(restrictionData);
         		}
 		    });
-		    
-        	console.log(JSON.stringify(data));
+		    if(!$scope.popupData.fromRoomTypeView){
+		    	data.rate_id = $scope.popupData.selectedRate;
+		    	details.from_date = $scope.popupData.selectedDate  ;
+		    	details.to_date = $scope.popupData.selectedDate;
+		    }
+		    data.details.push(details);
+        	$scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data);
         	
         };
     }
