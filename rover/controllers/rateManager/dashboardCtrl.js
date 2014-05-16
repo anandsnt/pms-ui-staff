@@ -39,10 +39,10 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
 
     $scope.computeColumWidth = function(){
 
-        var FILTER_OPTIONS_WIDTH = 300;
+        var FILTER_OPTIONS_WIDTH = 10;
         var FIRST_COLUMN_WIDTH = 270;
         var COLUMN_BORDER_WIDTH = 20;
-        var TOP_BOTTOM_HEIGHT = 187;
+        var TOP_BOTTOM_HEIGHT = 185;
 
         var totalwidth = $window.innerWidth - FILTER_OPTIONS_WIDTH - FIRST_COLUMN_WIDTH; //Adjusting for left side .
         var singleColumnWidth = parseInt($scope.currentFilterData.zoom_level_selected) + COLUMN_BORDER_WIDTH; //Adjusting for the padding etc
