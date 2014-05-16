@@ -6,7 +6,9 @@ sntRover.controller('reservationListController',['$scope', function($scope){
 	        hideScrollbar: false
 	    },
 	};
-	$scope.$emit("updateIndex","");
+	
+	 //update left nav bar
+	$scope.$emit("updateRoverLeftMenu","");
 	
 	$scope.$on('RESERVATIONLISTUPDATED', function(event) {
 		setTimeout(function(){
