@@ -2,6 +2,10 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     function ($q, $scope, ngDialog, UpdatePriceAndRestrictionsSrv) {
         $scope.init = function(){
             $scope.showRestrictionDayUpdate = false;
+            // console.log("*****************************JPHME HM calendr************************");
+            // console.log(JSON.stringify($scope.popupData));
+             // console.log("*****************************JPHME HM popup************************");
+             // console.log(JSON.stringify($scope.popupData));
             if($scope.popupData.fromRoomTypeView){
                 computePopupdateForRoomTypeCal();
             }else{
@@ -10,7 +14,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         };
 
         $scope.hideUpdatePriceAndRestrictionsDialog = function(){
-            console.log('reached::hideUpdatePriceAndRestrictionsDialog');
             ngDialog.close();
         };
 
@@ -42,7 +45,18 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 restrictionTypes[itemID] = item;
             }
             $scope.data.restrictionTypes = restrictionTypes;
-
+            
+            // console.log("value====="+JSON.stringify($scope.calendarData));
+            angular.forEach($scope.calendarData.data, function(value, key){
+            	var selectedDate = $scope.popupData.selectedDate;
+        		$scope.data.single = value[selectedDate].single;
+        		$scope.data.double = value[selectedDate].double;
+        		$scope.data.extra_adult = value[selectedDate].extra_adult;
+        		$scope.data.child = value[selectedDate].child;
+		    });
+            
+            
+			
         };
 
         /**
