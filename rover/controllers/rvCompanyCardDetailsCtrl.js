@@ -27,13 +27,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	}
 	
 
-	$scope.$parent.myScrollOptions = {		
-	    'company_card_content': {
-	    	scrollbars: true,
-	        snap: false,
-	        hideScrollbar: false
-	    }
-	};		
+		
 
 	/**
 	* function to handle click operation on company card, mainly used for saving
