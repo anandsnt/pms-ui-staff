@@ -3,7 +3,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope', 'RVCompanyCardSrv', '$
 	$scope.isAddMode = false;
 	$scope.contractList = {};
 	$scope.errorMessage = "";
-	var contractInfo = "";
+	var contractInfo = {};
 	var fetchContractsDetailsSuccessCallback = function(data){
 		$scope.contractsData = {};
     	$scope.contractData = data;
