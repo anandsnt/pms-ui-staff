@@ -9,19 +9,19 @@
 	
 	<div class="price-fields">
 		<span class="inp-field-before-or">
-			<input type="text" size="7">
+			<input type="text" size="7" ng-model="data.single" value="{{data.single}}">
 		</span>
 		<span class="or"> OR</span>
-		<span class="inp-field-after-or">
+		<span class="inp-field-after-or" ng-model="data.single_sign">
 			<select style="width:70px;">
 				<option value="+">+</option>
 				<option value="-">-</option>
 			</select>
 		<span class="inp-field">
-			<input type="text"  size="7">
+			<input type="text"  size="7" ng-model="data.single_extra_amnt">
 		</span>	
 		<span class="inp-field">
-			<select style="width:70px;">
+			<select style="width:70px;" ng-model="data.single_amnt_diff">
 				<option value="%">%</option>
 				<option value="$">$</option>
 			</select>
@@ -32,21 +32,21 @@
 	</div>
 	<div class="price-fields">
 		<span class="inp-field-before-or">
-			<input type="text" size="7">
+			<input type="text" size="7" ng-model="data.double" value="{{data.double}}">
 		</span>
 		<span class="or"> OR</span>
 		<span class="inp-field-after-or">
-			<select style="width:70px;">
+			<select style="width:70px;" ng-model="data.double_sign">
 				<option value="+">+</option>
 				<option value="-">-</option>
 			</select>
-		<span class="inp-field">
+		<span class="inp-field" ng-model="data.double_extra_amnt">
 			<input type="text"  size="7">
 		</span>	
 		<span class="inp-field">
-			<select style="width:70px;">
-				<option value="%">%</option>
-				<option value="$">$</option>
+			<select style="width:70px;" ng-model="data.double_amnt_diff">
+				<option value='%'>%</option>
+				<option value='$'>$</option>
 			</select>
 		</span>
 	</div>
@@ -55,19 +55,19 @@
 	</div>
 	<div class="price-fields">
 		<span class="inp-field-before-or">
-			<input type="text" size="7">
+			<input type="text" size="7" ng-model="data.extra_adult" value="{{data.extra_adult}}">
 		</span>
 		<span class="or"> OR</span>
-		<span class="inp-field-after-or">
+		<span class="inp-field-after-or" ng-model="data.extra_adult_sign">
 			<select style="width:70px;">
 				<option value="+">+</option>
 				<option value="-">-</option>
 			</select>
 		<span class="inp-field">
-			<input type="text"  size="7">
+			<input type="text"  size="7" ng-model="data.extra_adult_extra_amnt">
 		</span>	
 		<span class="inp-field">
-			<select style="width:70px;">
+			<select style="width:70px;" ng-model="data.extra_adult_amnt_diff">
 				<option value="%">%</option>
 				<option value="$">$</option>
 			</select>
@@ -78,19 +78,19 @@
 	</div>
 	<div class="price-fields">
 		<span class="inp-field-before-or">
-			<input type="text" size="7">
+			<input type="text" size="7" ng-model="data.child" value="{{data.child}}">
 		</span>
 		<span class="or"> OR</span>
 		<span class="inp-field-after-or">
-			<select style="width:70px;">
+			<select style="width:70px;" ng-model="data.child_sign">
 				<option value="+">+</option>
 				<option value="-">-</option>
 			</select>
 		<span class="inp-field">
-			<input type="text"  size="7">
+			<input type="text"  size="7" ng-model="data.child_extra_amnt">
 		</span>	
 		<span class="inp-field">
-			<select style="width:70px;">
+			<select style="width:70px;" ng-model="data.child_amnt_diff">
 				<option value="%">%</option>
 				<option value="$">$</option>
 			</select>
