@@ -9,13 +9,14 @@ var HouseKeepingSettingsView = function(domRef) {
 		that.use_pickup = "false";
 		that.use_inspected = "false";
 		that.checkin_inspected_only = "false";
+
 	};
 
 	this.delegateEvents = function() {
 		// To unbind all events that happened - CICO-5474 fix
 		that.myDom.on('load').unbind("click");
 		that.myDom.find('#save').on('click', that.saveHouseKeepingSettings);
-		that.myDom.find('#div-use-inspected').on('change', that.disableCheckbox);
+		that.myDom.find('#div-use-inspected').on('click', that.disableCheckbox);
 		that.myDom.find('#cancel, #go_back').on('click', that.goBackToPreviousView);
 
 		// Initialize checkbox disabled by default.
@@ -26,15 +27,22 @@ var HouseKeepingSettingsView = function(domRef) {
 	};
 
 	this.disableCheckbox = function() {
-
-		if (that.myDom.find("#div-use-inspected").hasClass("on")) {
-			console.log("On Enabled...")
+		var is_checkbox_checked = that.myDom.find("#div-checkin_inspected_only").is(":checked");
+		var is_use_inspected = that.myDom.find("#use_inpsected_room_status").is(":checked");
+		if (is_use_inspected) {
+			if (is_checkbox_checked) {
+				console.log("is_checked---" + is_checkbox_checked);
+				that.myDom.find("#div-checkin_inspected_only").closest("label").find("span:eq(0)").addClass("checked");
+				that.myDom.find("#div-checkin_inspected_only").closest("label").addClass("checked");
+			} else {
+				that.myDom.find("#div-checkin_inspected_only").attr('checked', false);
+			}
 			that.myDom.find("#div-checkin_inspected_only").removeAttr("disabled");
 		} else {
 			that.myDom.find("#div-checkin_inspected_only").closest("label").find("span:eq(0)").removeClass("checked");
 			that.myDom.find("#div-checkin_inspected_only").closest("label").removeClass("checked");
-			that.myDom.find("#div-checkin_inspected_only").removeAttr("checked").attr("disabled", true);
-
+			that.myDom.find("#div-checkin_inspected_only").attr("disabled", true);
+			console.log("Use Inspected----" + that.myDom.find("#div-checkin_inspected_only").is(":checked"))
 		}
 
 	};
@@ -42,16 +50,20 @@ var HouseKeepingSettingsView = function(domRef) {
 	this.saveHouseKeepingSettings = function() {
 		var extended_checkout = new Array();
 		var postParams = {};
-
-		if (that.myDom.find("#div-use-pickup").hasClass("on")) {
+		var is_use_pickup_on = that.myDom.find("#div-use-pickup").hasClass("on");
+		var is_inspected_on = that.myDom.find("#div-use-inspected").hasClass("on");
+		var is_inspected_only_checked = that.myDom.find("#div-checkin_inspected_only").is(":checked");
+		if (is_use_pickup_on) {
 			that.use_pickup = "true";
 		}
-		if (that.myDom.find("#div-use-inspected").hasClass("on")) {
+		if (is_inspected_on) {
+			if (is_inspected_only_checked) {
+				that.checkin_inspected_only = "true";
+			}
 			that.use_inspected = "true";
 
-		}
-		if (that.myDom.find("#div-checkin_inspected_only").is(":checked")) {
-			that.checkin_inspected_only = "true";
+		} else {
+			that.checkin_inspected_only = "false";
 		}
 
 		postParams.use_pickup = that.use_pickup;
