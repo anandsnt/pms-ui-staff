@@ -1,4 +1,8 @@
-<div ng-if = "!filterConfigured"> Rate Manager Not configured</div>
+<div id="rate-manager-not-configured" ng-if = "!filterConfigured">
+	 <span>
+	 	<span>Rate Manager not configured<span>Please select filter options to begin</span></span>
+ 	</span>
+</div>
 <div ng-if = "filterConfigured && calendarMode == 'RATE_VIEW'" ng-include="'/assets/partials/rateManager/rateViewCalendar.html'"></div>
 <div ng-if = "filterConfigured && calendarMode == 'ROOM_TYPE_VIEW'" ng-include="'/assets/partials/rateManager/roomTypeViewCalendar.html'"></div>
 
