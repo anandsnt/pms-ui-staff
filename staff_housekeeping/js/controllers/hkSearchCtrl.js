@@ -357,120 +357,148 @@ hkRover.controller('HKSearchCtrl',
 
 
 
-
+	// could be moved to a directive,
+	// but addicted by the amount of control
+	// and power it gives here
 	var pullRefresh = function() {
-		var $el = document.getElementById( 'rooms' );
-		var $nf = document.getElementById( 'pull-refresh-notify' );
-		var $ar = document.getElementById( 'icon' );
-		var $rt = document.getElementById( 'ref-text' );
 
-		var touching  = false;
-		var startY    = 0;
-		var nowY      = 0;
-		var initTop   = $el.scrollTop;
-		var trigger   = 100; 
+		// caching DOM nodes invloved 
+		var $rooms     = document.getElementById( 'rooms' ),
+			$notify    = document.getElementById( 'pull-refresh-notify' ),
+			$arrow     = document.getElementById( 'icon' ),
+			$notifyTxt = document.getElementById( 'ref-text' );
 
-		var loaderEngine = function(diff) {
+		// flags and variables necessary
+		var touching = false,
+			startY   = 0,
+			nowY     = 0,
+			initTop  = $rooms.scrollTop,
+			trigger  = 100; 
+
+		// methods to modify the $notifyText and rotate $arrow
+		var loadNotify = function(diff) {
 			if ( !diff ) {
-				$ar.className = '';
-				$rt.innerHTML = 'Pull down to refresh...';
+				$arrow.className = '';
+				$notifyTxt.innerHTML = 'Pull down to refresh...';
 				return;
 			};
 
 			if (diff > trigger - 30) {
-				$ar.className = 'rotate';
+				$arrow.className = 'rotate';
 			} else {
-				$ar.className = '';
+				$arrow.className = '';
 			}
 
 			if (diff > trigger - 20) {
-				$rt.innerHTML = 'Release to refresh...';
+				$notifyTxt.innerHTML = 'Release to refresh...';
 			} else {
-				$rt.innerHTML = 'Pull down to refresh...';
+				$notifyTxt.innerHTML = 'Pull down to refresh...';
 			}
 		};
 
+		// set of excutions to be executed when
+		// the user is swiping across the screen
 		var touchMoveHandler = function(e) {
 			var touch = e.touches ? e.touches[0] : e;
 
+			// if not touching or we are not on top of scroll area
 			if ( !touching || this.scrollTop > initTop ) {
 				return;
 			};
 
 			nowY = touch.y || touch.pageY;
 
-			if ( startY > nowY ) {
+			// again a precaution
+ 			if ( startY > nowY ) {
 				return;
 			};
 
+			// only when everything checks out
+			// prevent default to block the scrolling
 			e.preventDefault();
 
-			$el.style.WebkitTransition = '';
-			$nf.style.WebkitTransition = '';
+			// don't remove, you will learn soon why not
+			$rooms.style.WebkitTransition = '';
+			$notify.style.WebkitTransition = '';
 
 			var diff = (nowY - startY);
 
-			$el.style.webkitTransform = 'translateY(' + diff + 'px)';
-			$nf.style.webkitTransform = 'translateY(' + diff + 'px)';
+			// we move with the swipe
+			$rooms.style.webkitTransform = 'translateY(' + diff + 'px)';
+			$notify.style.webkitTransform = 'translateY(' + diff + 'px)';
 
-			loaderEngine( diff );
+			loadNotify( diff );
 		};
 
+		// set of excutions to be executed when
+		// the user touch the screen
 		var touchStartHandler = function(e) {
 			var touch = e.touches ? e.touches[0] : e;
 
+			// if we are not on top of scroll area
 			if ( this.scrollTop > initTop ) {
 				return;
 			};
 
 			touching = true;
-
 			startY = touch.y || touch.pageY;
 
-			$el.style.WebkitTransition = '';
-			$nf.style.WebkitTransition = '';
+			$rooms.style.WebkitTransition = '';
+			$notify.style.WebkitTransition = '';
 
-			$el.addEventListener('touchmove', touchMoveHandler, false);
+			// only bind touchmove when required
+			$rooms.addEventListener('touchmove', touchMoveHandler, false);
 		};
 
+		// set of excutions to be executed when
+		// the user stops touching the screen
+		// TODO: need to bind very similar for 'touchcancel' event
 		var touchEndHandler = function(e) {
 			var touch = e.touches ? e.touches[0] : e;
 
+			// if we are not on top of scroll area
 			if ( this.scrollTop > initTop ) {
 				return;
 			};
 
+			// gotta prevent since the user has already pulled down
 			e.preventDefault();
 
 			touching = false;
-
 			nowY = touch ? (touch.y || touch.pageY) : nowY;
 
 			var diff = (nowY - startY);
 
+			// if we have hit the trigger refresh room list
 			if (diff > trigger) {
 				fetchRooms();
 			}
 
-			$el.style.WebkitTransition = '-webkit-transform 0.3s';
-			$nf.style.WebkitTransition = '-webkit-transform 0.3s';
+			// for the smooth transition back
+			$rooms.style.WebkitTransition = '-webkit-transform 0.3s';
+			$notify.style.WebkitTransition = '-webkit-transform 0.3s';
 
-			$el.style.webkitTransform = 'translateY(0)';
-			$nf.style.webkitTransform = 'translateY(0)';
+			$rooms.style.webkitTransform = 'translateY(0)';
+			$notify.style.webkitTransform = 'translateY(0)';
 
-			$el.removeEventListener(touchMoveHandler);
+			// 'touchmove' handler is not more necessary
+			$rooms.removeEventListener(touchMoveHandler);
 
-			loaderEngine();
+			loadNotify();
 		};
 
-		$el.addEventListener(START_EV, touchStartHandler, false);
+		// bind the 'touchstart' handler
+		$rooms.addEventListener('touchstart', touchStartHandler, false);
 
-		$el.addEventListener('touchend', touchEndHandler, false);
+		// bind the 'touchstart' handler
+		// TODO: need a similar for 'touchcancel'
+		$rooms.addEventListener('touchend', touchEndHandler, false);
 	};
 
-
+	// initiate pullRefresh
+	// dont move these codes outside this controller
+	// DOM node will be missing
 	pullRefresh();
-
 
 }]);
 
