@@ -36,8 +36,7 @@
                     </select>
                 </div>
             </div>
-
-              <div class="entry" ng-hide="hideBasedOn()">
+            <div class="entry">
                 <label ng-hide="isPromotional()">Based On</label>
                 <label ng-show="isPromotional()">Copy From</label>
                 <div class="select">
@@ -86,8 +85,11 @@
     <button type="button" ui-sref="admin.rates" class="button blank add-data-inline">
         Cancel
     </button>
-    <button type="button" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid() }" >
+    <button type="button" ng-hide="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid() }" >
         Step 2 - Select Room Types
+    </button>
+    <button type="button" ng-show="rateData.id > 0" ng-click="saveRateDetails()" ng-disabled="!isFormValid()" class="button" ng-class="{ 'brand-colors' : isFormValid() }" >
+        Save
     </button>
 </div>
 </form>

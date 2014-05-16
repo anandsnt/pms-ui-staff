@@ -1,4 +1,8 @@
 sntRover.service('RVReservationCardSrv',['$http', '$q', 'RVBaseWebSrv', function($http, $q, RVBaseWebSrv){
+   
+	this.reservationData = {};
+	var that =this;
+
    /**
     * To fetch the list of users
     * @return {object} users list json
@@ -6,11 +10,22 @@ sntRover.service('RVReservationCardSrv',['$http', '$q', 'RVBaseWebSrv', function
 	this.fetch = function(reservationId){
 		
 		var deferred = $q.defer();
-		// var url = '/staff/staycards/staycard.json?confirmation=4844947&id=5470';
-		var url = 'api/reservations/'+reservationId+'.json';
+				
+		var fetchCountryList =  function(data){
+			var url = 'api/countries.json';
+			RVBaseWebSrv.getJSON(url).then(function(data) {
+				that.reservationData.countries = data;
+			   	 deferred.resolve(that.reservationData);
+			},function(data){
+			    deferred.reject(data);
+			});	
 
+		}
+
+		var url = 'api/reservations/'+reservationId+'.json';
 		RVBaseWebSrv.getJSON(url).then(function(data) {
-		    deferred.resolve(data);
+			that.reservationData = data;
+		   	fetchCountryList();
 		},function(data){
 		    deferred.reject(data);
 		});	
@@ -37,13 +52,10 @@ sntRover.service('RVReservationCardSrv',['$http', '$q', 'RVBaseWebSrv', function
 		  isConfirmationNumberAlreadyCalled = true;
      });
 	
-	
-		
 		var deferred = $q.defer();
 
 		if(!isConfirmationNumberAlreadyCalled){
 			that.storeConfirmationNumbers(confirmationNumber);
-			// var url = '/staff/staycards/staycard.json?confirmation=4844947&id=5470';
 			var url = '/staff/staycards/reservation_details.json?reservation='+confirmationNumber;
 	
 			RVBaseWebSrv.getJSON(url).then(function(data) {
