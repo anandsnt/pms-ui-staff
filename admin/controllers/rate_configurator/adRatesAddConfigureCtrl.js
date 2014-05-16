@@ -111,18 +111,34 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             }
         };
 
-        $scope.deleteSet = function (id, index) {
+        $scope.confirmDeleteSet = function (id, index) {
+            $scope.deleteSetId = id;
+            $scope.deleteSetIndex = index;
+            ngDialog.open({
+                template: '/assets/partials/rates/confirmDeleteSetDialog.html',
+                controller: 'ADRatesAddConfigureCtrl',
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
+        };
+
+        $scope.closeConfirmDeleteSet = function(){
+            ngDialog.close();
+        };
+
+        $scope.deleteSet = function () {
             var successDeleteCallBack = function () {
                 $scope.$emit('hideLoader');
                 var sets = $scope.data.sets;
-                $scope.data.sets.splice(index, 1);
+                $scope.data.sets.splice($scope.deleteSetIndex, 1);
                 if (sets.length == 0){
                     $scope.$emit('deletedAllDateRangeSets', $scope.dateRange.id);
                 }
-                
+                $scope.closeConfirmDeleteSet();
             };
-            $scope.invokeApi(ADRatesConfigureSrv.deleteSet, id, successDeleteCallBack);
+            $scope.invokeApi(ADRatesConfigureSrv.deleteSet, $scope.deleteSetId, successDeleteCallBack);
         };
+
 
         $scope.checkFieldEntered = function (index) {
             var enableSetUpdateButton = false;
