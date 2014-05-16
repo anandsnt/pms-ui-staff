@@ -22,6 +22,18 @@ admin.controller('ADRulesRestrictionCtrl', [
 
                 $scope.ruleList = data.results;
                 $scope.total = data.total_count;
+
+                // preload rules under - CANCELLATION_POLICY
+                var cancelPolicy = _.find($scope.ruleList, function(item) {
+                    return item.description === 'Cancellation Penalties';
+                });
+                $scope.fetchRuleList(cancelPolicy);
+
+                // preload rules under - DEPOSIT_REQUEST
+                var depositPolicy = _.find($scope.ruleList, function(item) {
+                    return item.description === 'Cancellation Penalties';
+                });
+                $scope.fetchRuleList(depositPolicy);
             };
 
             $scope.invokeApi(ADRulesRestrictionSrv.fetchRestrictions, {}, fetchHotelLikesSuccessCallback);
