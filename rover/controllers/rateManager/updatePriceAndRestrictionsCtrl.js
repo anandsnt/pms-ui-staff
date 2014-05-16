@@ -1,6 +1,7 @@
-sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
-    function ($q, $scope, ngDialog) {
+sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog', 'UpdatePriceAndRestrictionsSrv',
+    function ($q, $scope, ngDialog, UpdatePriceAndRestrictionsSrv) {
         $scope.init = function(){
+            $scope.showRestrictionDayUpdate = false;
             if($scope.popupData.fromRoomTypeView){
                 computePopupdateForRoomTypeCal();
             }else{
@@ -20,7 +21,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
                 }
             }
-            console.log(JSON.stringify(selectedDateInfo));
             $scope.data = {};
             var restrictionTypes = {};
             var rTypes = $scope.calendarData.restriction_types;
@@ -32,6 +32,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 for(var i in selectedDateInfo.restrictions){
                     item.days = "";
                     item.isRestrictionEnabled = false;
+                    item.showEdit = false;
                     if(selectedDateInfo.restrictions[i].restriction_type_id == itemID){
                         item.days = selectedDateInfo.restrictions[i].days;
                         item.isRestrictionEnabled = true;
@@ -62,10 +63,11 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 restrictionTypes[rTypes[i].id] = rTypes[i];
                 var item =  rTypes[i];
                 var itemID = rTypes[i].id;
+				item.days = "";
+                item.isRestrictionEnabled = false;
+                item.showEdit = false;
 
                 for(var i in selectedDateInfo){
-                    item.days = "";
-                    item.isRestrictionEnabled = false;
                     if(selectedDateInfo[i].restriction_type_id == itemID){
                         item.days = selectedDateInfo[i].days;
                         item.isRestrictionEnabled = true;
@@ -75,14 +77,21 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 restrictionTypes[itemID] = item;
             }
             $scope.data.restrictionTypes = restrictionTypes;
-
+            $scope.data.previousRestrictionTypes = JSON.parse(JSON.stringify($scope.data.restrictionTypes));
+			// console.log(JSON.stringify($scope.data.previousRestrictionTypes));
         };
 
         /**
         * Click handler for restriction on/off buttons
         * Enable disable restriction. 
         */
-        $scope.onOffRestrictions = function(id, action){
+        $scope.onOffRestrictions = function(id, action, days){
+            if(days != ""){
+                $scope.showRestrictionDayUpdate = true;
+                $scope.data.restrictionTypes[id].showEdit = true;
+                console.log("open popup");
+                return false;
+            }
 
             if(action == "ENABLE"){
                 $scope.data.restrictionTypes[id].isRestrictionEnabled = true; 
@@ -92,5 +101,40 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             }
         };
         $scope.init();
+        
+        $scope.saveRestriction = function(){
+        	
+        	var data = {};
+        	data.details = [];
+        	var details = {};
+        	details.restrictions = [];
+        	details.from_date = "";
+        	details.to_date = "";
+        	
+        	angular.forEach($scope.data.restrictionTypes, function(value, key){
+        		if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled != value.isRestrictionEnabled){
+        			var action = "";
+        			if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled == "true"){
+        				action = "remove";
+        			} else {
+        				action = "add";
+        			}
+        			var restrictionData = {
+        				"action": action,
+        				"restriction_type_id": value.id,
+        				"days": value.days
+        			};
+        			details.restrictions.push(restrictionData);
+        		}
+		    });
+		    if(!$scope.popupData.fromRoomTypeView){
+		    	data.rate_id = $scope.popupData.selectedRate;
+		    	details.from_date = $scope.popupData.selectedDate  ;
+		    	details.to_date = $scope.popupData.selectedDate;
+		    }
+		    data.details.push(details);
+        	$scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data);
+        	
+        };
     }
 ]);

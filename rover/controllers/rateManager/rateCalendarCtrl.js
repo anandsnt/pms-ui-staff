@@ -173,7 +173,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
         
         ngDialog.open({
             template: '/assets/partials/rateManager/updatePriceAndRestrictions.html',
-            className: 'ngdialog-theme-default',
+            className: 'ngdialog-theme-default restriction-popup',
             closeByDocument: true,
             scope: $scope
         });

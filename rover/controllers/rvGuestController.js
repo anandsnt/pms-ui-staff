@@ -1,24 +1,69 @@
 
 sntRover.controller('guestCardController', ['$scope', 'Likes', '$window','RVContactInfoSrv', function($scope, Likes, $window, RVContactInfoSrv){
 
-$scope.contactInfoError = false;
-$scope.eventTimestamp =  "";
-BaseCtrl.call(this, $scope);
-var preventClicking = false;
-$scope.decloneUnwantedKeysFromContactInfo =  function(){
+$scope.init = function(){
+	$scope.contactInfoError = false;
+	$scope.eventTimestamp =  "";
+	BaseCtrl.call(this, $scope);
+	var preventClicking = false;
+}
+
+$scope.init();
+/**
+* for dragging of guest card 
+*/
+var maxHeight = $(window).height(); //against angular js practice, sorry :(
+$scope.guestCardVisible = false; //varibale used to determine whether to show guest card's different tabs
+$scope.guestCardHeight = 90;
+
+/**
+* to be updated from resize directive
+*/
+$scope.$watch('windowHeight',function(newValue,oldValue){
+  $scope.windowHeight = newValue ;
+});
+
+
+/**
+* scroller options
+*/
+$scope.resizableOptions = 
+{	minHeight: '90',
+maxHeight: $scope.windowHeight - 90,
+handles: 's',
+resize: function( event, ui ) {
+	if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				
+		$scope.guestCardVisible = true;
+		$scope.$apply();
+	}
+	else if($(this).height() <= 120 && $scope.guestCardVisible){
+		$scope.guestCardVisible = false;
+		$scope.$apply();
+	}
+},
+stop: function(event, ui){
+	preventClicking = true;
+
+	$scope.eventTimestamp = event.timeStamp;
 	
+
+}
+}
+
 /**
 *  API call needs only rest of keys in the data
 */
-    var	unwantedKeys = ["address","birthday","country",
-					    "is_opted_promotion_email","job_title",
-					    "mobile","passport_expiry",
-					    "passport_number","postal_code",
-					    "reservation_id","title","user_id",
-					    "works_at","birthday"
-  					  ];
-   var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys); 
-    return declonedData;
+$scope.decloneUnwantedKeysFromContactInfo =  function(){	
+
+var	unwantedKeys = ["address","birthday","country",
+				    "is_opted_promotion_email","job_title",
+				    "mobile","passport_expiry",
+				    "passport_number","postal_code",
+				    "reservation_id","title","user_id",
+				    "works_at","birthday"
+					  ];
+var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys); 
+return declonedData;
 };
 
 /**
@@ -33,13 +78,13 @@ $scope.current = 'guest-contact';
 */
 $scope.guestCardTabSwitch = function(div){
 
-	if($scope.current ==='guest-contact' && div !== 'guest-contact')
-		$scope.$broadcast('saveContactInfo');
-	$scope.current = div;
+if($scope.current ==='guest-contact' && div !== 'guest-contact')
+	$scope.$broadcast('saveContactInfo');
+$scope.current = div;
 };
 
 $scope.$on('contactInfoError', function(event, value) { 
-	$scope.contactInfoError = value;
+    $scope.contactInfoError = value;
 });
 $scope.updateContactInfo =  function(){
 	var saveUserInfoSuccessCallback = function(data){
@@ -48,15 +93,15 @@ $scope.updateContactInfo =  function(){
 	var saveUserInfoFailureCallback = function(data){
 		$scope.$emit('hideLoader');
 	};
-    var newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
-    // check if there is any chage in data.if so call API for updating data
-    if(JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(newUpdatedData)){
-    	currentGuestCardHeaderData =newUpdatedData; 
-    	var data ={'data':currentGuestCardHeaderData,
-    	'userId':$scope.guestCardData.contactInfo.user_id
-    }
-    $scope.invokeApi(RVContactInfoSrv.saveContactInfo,data,saveUserInfoSuccessCallback,saveUserInfoFailureCallback); 
-} 
+	var newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
+	// check if there is any chage in data.if so call API for updating data
+	if(JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(newUpdatedData)){
+		currentGuestCardHeaderData =newUpdatedData; 
+		var data ={'data':currentGuestCardHeaderData,
+		'userId':$scope.guestCardData.contactInfo.user_id
+	}
+	$scope.invokeApi(RVContactInfoSrv.saveContactInfo,data,saveUserInfoSuccessCallback,saveUserInfoFailureCallback); 
+	} 
 };
 
 /**
@@ -69,18 +114,16 @@ $scope.updateContactInfo =  function(){
 */
 function getParentWithSelector($event, selector) {
 
-	var obj = $event.target, matched = false;
-	return selector.contains(obj);
-	
+var obj = $event.target, matched = false;
+return selector.contains(obj);
+
 };
 /**
 * handle click outside tabs and drawer click
 */
 $scope.guestCardClick = function($event){
 
-	var element = $event.target;
-	console.log(element)
-	
+var element = $event.target;
 	$event.stopPropagation();
 	$event.stopImmediatePropagation();			
 	if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-handle")[0])){	
@@ -90,62 +133,31 @@ $scope.guestCardClick = function($event){
 		}
 		}
 		if(!$scope.guestCardVisible){
-			$scope.guestCardHeight = $scope.resizableOptions.maxHeight;
-			$scope.guestCardVisible = true;
+			$("#guest-card").css("height", $scope.windowHeight-90);
+			$scope.guestCardVisible = true;			
+			$scope.$broadcast('CONTACTINTOLOADED');
 		}
 		else{
 			$("#guest-card").css("height", $scope.resizableOptions.minHeight);
-			$scope.guestCardHeight = $scope.resizableOptions.minHeight;
-
 			$scope.guestCardVisible = false;
 		}
-	}
-	else{
-		if(getParentWithSelector($event, document.getElementById("guest-card-content"))){
-			/**
-				* handle click on tab navigation bar.
-				*/
-			if($event.target.id==='guest-card-tabs-nav')
-				$scope.$broadcast('saveContactInfo');
-			else
-			    return;
-		}
+}
+else{
+	if(getParentWithSelector($event, document.getElementById("guest-card-content"))){
+		/**
+			* handle click on tab navigation bar.
+			*/
+		if($event.target.id==='guest-card-tabs-nav')
+			$scope.$broadcast('saveContactInfo');
 		else
-		{
-		  	$scope.$broadcast('saveContactInfo');
-		}
+		    return;
 	}
-
-};
-
-/**
-* for dragging of guest card 
-*/
-var maxHeight = $(window).height(); //against angular js practice, sorry :(
-$scope.guestCardVisible = false; //varibale used to determine whether to show guest card's different tabs
-$scope.guestCardHeight = 90;
-//scroller options
-$scope.resizableOptions = 
-{	minHeight: '90',
-	maxHeight: maxHeight - 90,
-	handles: 's',
-	resize: function( event, ui ) {
-		if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				
-			$scope.guestCardVisible = true;
-			$scope.$apply();
-		}
-		else if($(this).height() <= 120 && $scope.guestCardVisible){
-			$scope.guestCardVisible = false;
-			$scope.$apply();
-		}
-	},
-	stop: function(event, ui){
-		preventClicking = true;
-
-		$scope.eventTimestamp = event.timeStamp;
-		
-
+	else
+	{
+	  	$scope.$broadcast('saveContactInfo');
 	}
 }
+
+};
 
 }]);
