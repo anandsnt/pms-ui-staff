@@ -15,8 +15,8 @@
                 	</optgroup>
                 </select>
             </div>
-            <div class="" ng-show="isAddMode">
-                <input placeholder="Contract Name" name="company-contract-new" class="" value="" maxlength="8" type="text" />
+            <div class="" ng-show="isAddMode" >
+                <input ng-model="contractData.contract_name" placeholder="Contract Name" name="company-contract-new" class="" value="{{contractData.contract_name}}" maxlength="8" type="text" />
             </div>
         </div>
         <div class="actions" ng-hide="isAddMode">
@@ -44,16 +44,16 @@
                 </div>
                 <div class="entry price-adjust no-label">
                     <div class="select">
-                        <select name="company-rate-adjust-1">
-                            <option value="add" selected>+</option>
-                            <option value="subtract">-</option>
+                        <select name="company-rate-adjust-1" ng-model="contractData.selected_type">
+                            <option value="+">+</option>
+                            <option value="-">-</option>
                         </select>
                     </div>
-                    <input name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{contractData.rate_value}}" type="text" />
+                    <input ng-model="contractData.rate_value" name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{contractData.rate_value}}" type="text" />
                     <div class="select">
-                        <select name="company-rate-adjust-3">
-                            <option value="percentage" selected>%</option>
-                            <option value="value">$</option>
+                        <select name="company-rate-adjust-3" ng-model="contractData.selected_symbol">
+                            <option value="%">%</option>
+                            <option value="$">$</option>
                         </select>
                     </div>
                 </div>
