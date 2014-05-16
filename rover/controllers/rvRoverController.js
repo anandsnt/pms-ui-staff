@@ -56,7 +56,7 @@ $scope.init();
    * update selected menu class
    */
 
-$scope.$on("updateIndex", function(e,value){
+$scope.$on("updateRoverLeftMenu", function(e,value){
   $scope.selectedMenuIndex = value;
 });
 
