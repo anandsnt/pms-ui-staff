@@ -9,6 +9,13 @@ var HouseKeepingSettingsView = function(domRef) {
 		that.use_pickup = "false";
 		that.use_inspected = "false";
 		that.checkin_inspected_only = "false";
+		var div_checkin_inspected_only = that.myDom.find("#div-checkin_inspected_only");
+		var is_use_inspected = that.myDom.find("#use_inpsected_room_status").is(":checked");
+		if (is_use_inspected) {
+			div_checkin_inspected_only.removeAttr("disabled");
+		} else {
+			div_checkin_inspected_only.attr("disabled", true);
+		}
 
 	};
 
@@ -27,22 +34,21 @@ var HouseKeepingSettingsView = function(domRef) {
 	};
 
 	this.disableCheckbox = function() {
-		var is_checkbox_checked = that.myDom.find("#div-checkin_inspected_only").is(":checked");
+		var div_checkin_inspected_only = that.myDom.find("#div-checkin_inspected_only");
+		var is_checkbox_checked = div_checkin_inspected_only.is(":checked");
 		var is_use_inspected = that.myDom.find("#use_inpsected_room_status").is(":checked");
 		if (is_use_inspected) {
 			if (is_checkbox_checked) {
-				console.log("is_checked---" + is_checkbox_checked);
-				that.myDom.find("#div-checkin_inspected_only").closest("label").find("span:eq(0)").addClass("checked");
-				that.myDom.find("#div-checkin_inspected_only").closest("label").addClass("checked");
+				div_checkin_inspected_only.closest("label").find("span:eq(0)").addClass("checked");
+				div_checkin_inspected_only.closest("label").addClass("checked");
 			} else {
-				that.myDom.find("#div-checkin_inspected_only").attr('checked', false);
+				div_checkin_inspected_only.attr('checked', false);
 			}
-			that.myDom.find("#div-checkin_inspected_only").removeAttr("disabled");
+			div_checkin_inspected_only.removeAttr("disabled");
 		} else {
-			that.myDom.find("#div-checkin_inspected_only").closest("label").find("span:eq(0)").removeClass("checked");
-			that.myDom.find("#div-checkin_inspected_only").closest("label").removeClass("checked");
-			that.myDom.find("#div-checkin_inspected_only").attr("disabled", true);
-			console.log("Use Inspected----" + that.myDom.find("#div-checkin_inspected_only").is(":checked"))
+			div_checkin_inspected_only.closest("label").find("span:eq(0)").removeClass("checked");
+			div_checkin_inspected_only.closest("label").removeClass("checked");
+			div_checkin_inspected_only.attr("disabled", true);
 		}
 
 	};
