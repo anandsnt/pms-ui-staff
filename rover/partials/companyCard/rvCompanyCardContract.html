@@ -110,10 +110,9 @@
             </div>
             <div id="company-cards-occupancy" class="occupancy" ng-hide="isAddMode">
                 <strong class="h3">Occupancy</strong>
-                <div>
-                {{contractData.occupancy}}
-                </div>
-                <img src="images/occupancy.png" class="temporary-graph" alt="">
+                <div class="occgraph-outer" style='width: 100%'>
+					<highchart id="occGraphContainer" config="highchartsNG"></highchart>
+				</div>
             </div>
         </div>
     </div>
