@@ -56,8 +56,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$scope.contactInformation = data;
 		if(typeof $stateParams.id !== 'undefined' && $stateParams.id !== ""){
 			$scope.contactInformation.id = $stateParams.id;
-		}
-		$scope.$parent.myScroll['company_card_content'].refresh();
+		}		
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch
 		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
@@ -77,10 +76,14 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	//we assumes that id will be equal to "add" in case for add, other for edit
 	if(typeof id !== "undefined" && id === "add") {
 		$scope.contactInformation = {};
+		if(typeof $stateParams.firstname !== "undefined" && $stateParams.firstname !== "") {
+			$scope.contactInformation.company_details = {};
+			$scope.contactInformation.company_details.account_first_name = $stateParams.firstname;
+		}
 		//taking a deep copy of copy of contact info. for handling save operation
 		// by knowing no use at this time
 		//we are not associating with scope in order to avoid watch
-		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
+		presentContactInfo = {};
 	}
 	//we are checking for edit screen
 	else if(typeof id !== 'undefined' && id !== ""){
@@ -118,7 +121,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 			var dataToSend = JSON.parse(JSON.stringify(data));
 			for(key in dataToSend){
 				if(typeof dataToSend[key] !== "undefined" && data[key] != null && data[key] != ""){
-					//in add case's first api call, presentContactInfo will be empty object
+					//in add case's first api call, presentContactInfo will be empty object					
 					if(JSON.stringify(presentContactInfo) !== '{}'){
 						for(subDictKey in dataToSend[key]){
 							if(typeof dataToSend[key][subDictKey] ==='undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]){
@@ -130,6 +133,9 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 				else{
 					delete dataToSend[key];
 				}
+			}
+			if(typeof dataToSend.countries !== 'undefined'){
+				delete dataToSend['countries'];
 			}
 			$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfSaveData);
 		}
