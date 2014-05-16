@@ -40,7 +40,7 @@ sntRover.config([
 
 		//company card details
 		$stateProvider.state('rover.companycarddetails', {
-			url: '/companycard/:id',
+			url: '/companycard/:type/:id',
 			templateUrl: '/assets/partials/companyCard/rvCompanyCardDetails.html',
 			controller: 'companyCardDetailsController'
 		});		
