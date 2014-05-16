@@ -1,6 +1,7 @@
 sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
     function ($q, $scope, ngDialog) {
         $scope.init = function(){
+            $scope.showRestrictionDayUpdate = false;
             if($scope.popupData.fromRoomTypeView){
                 computePopupdateForRoomTypeCal();
             }else{
@@ -20,7 +21,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
                 }
             }
-            console.log(JSON.stringify(selectedDateInfo));
             $scope.data = {};
             var restrictionTypes = {};
             var rTypes = $scope.calendarData.restriction_types;
@@ -32,6 +32,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 for(var i in selectedDateInfo.restrictions){
                     item.days = "";
                     item.isRestrictionEnabled = false;
+                    item.showEdit = false;
                     if(selectedDateInfo.restrictions[i].restriction_type_id == itemID){
                         item.days = selectedDateInfo.restrictions[i].days;
                         item.isRestrictionEnabled = true;
@@ -82,7 +83,13 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         * Click handler for restriction on/off buttons
         * Enable disable restriction. 
         */
-        $scope.onOffRestrictions = function(id, action){
+        $scope.onOffRestrictions = function(id, action, days){
+            if(days != ""){
+                $scope.showRestrictionDayUpdate = true;
+                $scope.data.restrictionTypes[id].showEdit = true;
+                console.log("open popup");
+                return false;
+            }
 
             if(action == "ENABLE"){
                 $scope.data.restrictionTypes[id].isRestrictionEnabled = true; 

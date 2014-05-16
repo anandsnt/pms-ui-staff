@@ -1,8 +1,14 @@
+<div class="restriction_text" >
+    <h2 class="h1">RESTRICTIONS</h2>
+    <div class="mixed_restrictions">
+        <em>Mixed restrictions applied!</em>
+    </div>
+</div>
 <div>
 	<div class="restriction-type" ng-repeat="restrictionType in data.restrictionTypes">
 		<span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}">{{restrictionType.days}}</span>
 		<span>{{restrictionType.description}}</span>
-		<span ng-show="restrictionType.isRestrictionEnabled" class="restriction-status status-on" ng-click="onOffRestrictions(restrictionType.id, 'DISABLE')">on</span>
-		<span ng-show="!restrictionType.isRestrictionEnabled" class="restriction-status status-off" ng-click="onOffRestrictions(restrictionType.id, 'ENABLE')">off</span>
+		<span ng-show="restrictionType.isRestrictionEnabled" class="restriction-status status-on" ng-click="onOffRestrictions(restrictionType.id, 'DISABLE', restrictionType.days)">on</span>
+		<span ng-show="!restrictionType.isRestrictionEnabled" class="restriction-status status-off" ng-click="onOffRestrictions(restrictionType.id, 'ENABLE', restrictionType.days)">off</span>
 	</div>
 </div>

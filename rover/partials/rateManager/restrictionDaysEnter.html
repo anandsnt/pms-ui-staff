@@ -1,0 +1,15 @@
+<div ng-repeat="restrictionType in data.restrictionTypes">
+	<div ng-if="restrictionType.days !=''" ng-show="restrictionType.showEdit">
+	    <h2 class="h1">{{restrictionType.description}}</h2>
+	    {{restrictionType.description}}
+		<div>
+			<input type="text" ng-model="daysEntered"></input>
+		</div>
+		<div>
+		    <button class="button green" type="button" ng-click="updateRestrictionBtnClicked(restrictionType.id)">Set Restriction</button>
+		    <button class="button red" type="button">Remove Restriction</button>
+		</div>
+	</div>
+	
+</div>
+
