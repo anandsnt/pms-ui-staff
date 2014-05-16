@@ -1,6 +1,7 @@
 <!-- Company Card Tab 1 -->
 <form method="post"  id="cc-contact-info" name="cc-contact-info" class="form card-tab scrollable tab-header full-width" ng-show="currentSelectedTab == 'cc-contact-info'"   >
-    <div class="wrapper"  ng-iscroll="company_card_content" ng-iscroll-delay="2000" style="">
+    <div class="wrapper"  ng-iscroll="company_card_content" ng-iscroll-delay="2000" >
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="holder left">
             <strong class="h3">Company Info</strong>
             <rv-textbox value="contactInformation.company_details.account_first_name" label="Name" placeholder = "Enter Name" styleclass="margin"></rv-textbox>

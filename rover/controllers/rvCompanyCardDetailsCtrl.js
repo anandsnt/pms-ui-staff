@@ -92,9 +92,9 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	}
 
 	/**
-	* success callback of save data
+	* success callback of save contact data
 	*/
-	var successCallbackOfSaveData = function(data){
+	var successCallbackOfContactSaveData = function(data){
 		$scope.$emit("hideLoader");
 		if(typeof $stateParams.id !== 'undefined' && $stateParams.id !== ""){
 			$scope.contactInformation.id = $stateParams.id;
@@ -105,6 +105,15 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch
 		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
+	}
+
+	/**
+	* failure callback of save contact data
+	*/
+	var failureCallbackOfContactSaveData = function(errorMessage){
+		$scope.$emit("hideLoader");
+		$scope.errorMessage = errorMessage;
+		$scope.currentSelectedTab = 'cc-contact-info';
 	}
 
 	/**
@@ -137,7 +146,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 			if(typeof dataToSend.countries !== 'undefined'){
 				delete dataToSend['countries'];
 			}
-			$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfSaveData);
+			$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
 		}
 	}
 
