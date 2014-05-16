@@ -1,7 +1,7 @@
 <form   method="post" id="cc-contracts" name="cc-contracts" class="form card-tab contracts" ng-show="currentSelectedTab == 'cc-contracts'">
     <div id="cc-contracts-header" class="tab-header form card-tab">
         <div class="entry">
-            <div class="select" ng-hide="isAddmode">
+            <div class="select" ng-hide="isAddMode">
                 <select name="company-contract" ng-model="contractSelected">
                     <option value="" class="placeholder">Select contract</option>
                     <optgroup label="Current">
@@ -15,20 +15,22 @@
                 	</optgroup>
                 </select>
             </div>
-            <div class="" ng-show="isAddmode">
+            <div class="" ng-show="isAddMode">
                 <input placeholder="Contract Name" name="company-contract-new" class="" value="" maxlength="8" type="text" />
             </div>
         </div>
-        <div class="actions" ng-hide="isAddmode">
-            <button id="company-new-contract" type="button" class="button green" ng-click="isAddmode=true">New Contract</button>
+        <div class="actions" ng-hide="isAddMode">
+            <button id="company-new-contract" type="button" class="button green" ng-click="isAddMode=true">New Contract</button>
         </div>
-        <div class="actions" ng-show="isAddmode">
-        	<button id="company-new-contract" type="button" class="button red" ng-click="isAddmode=false">Cancel</button>
-            <button id="company-new-contract" type="button" class="button green" ng-click="isAddmode=false">Save Contract</button>
+        <div class="actions" ng-show="isAddMode">
+        	<button id="company-new-contract" type="button" class="button red" ng-click="isAddMode=false">Cancel</button>
+            <button id="company-new-contract" type="button" class="button green" ng-click="AddNewContract(isAddMode=false)">Save Contract</button>
         </div>
     </div>
     <div id="cc-contracts-content" class="tab-details scrollable">
-        <div class="wrapper" ng-class="{'overlay':contractSelected=='3'}" ng-iscroll="contracts_scroll" ng-iscroll-delay="1000">
+    	<!--div class="wrapper" ng-class="{'overlay':contractSelected=='3'}" ng-iscroll="contracts_scroll" ng-iscroll-delay="1000"--->
+
+        <div class="wrapper" ng-class="{'overlay':contractSelected=='3'}">
             <div class="holder left">
                 <strong class="h3">Details</strong>
                 <div class="entry margin">
@@ -96,7 +98,7 @@
                     <input ng-click="clickedContractedNights()" name="company-contracted-nights" id="company-contracted-nights" class="open-modal1 contracted-nights" placeholder="Nights per month" value="{{contractData.total_contracted_nights}}" maxlength="8" readonly type="text" />
                 </div>
             </div>
-            <div class="holder right" ng-hide="isAddmode">
+            <div class="holder right" ng-hide="isAddMode">
                 <strong class="h3">Statistics</strong>
                 <ul id="company-contract-stats" class="contract-stats">
                     <li>Booked Nights <span>{{contractData.statistics.booked_nights}}</span></li>
@@ -106,7 +108,7 @@
                     <li>Average Rate <span>{{contractData.statistics.average_rate}}</span></li>
                 </ul>
             </div>
-            <div id="company-cards-occupancy" class="occupancy" ng-hide="isAddmode">
+            <div id="company-cards-occupancy" class="occupancy" ng-hide="isAddMode">
                 <strong class="h3">Occupancy</strong>
                 <div>
                 {{contractData.occupancy}}
