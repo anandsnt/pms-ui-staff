@@ -20,6 +20,9 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		if($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info'){
 			saveContactInformation($scope.contactInformation);
 		}
+		if($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts'){
+			$scope.$broadcast("saveContract");
+		}		
 		$scope.currentSelectedTab = tabToSwitch;		
 	}
 	
@@ -37,6 +40,9 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	*/
 	$scope.companyCardClicked = function($event){
 		if(getParentWithSelector($event, document.getElementById("cc-contact-info")) && $scope.currentSelectedTab == 'cc-contact-info'){
+			return;
+		}
+		else if(getParentWithSelector($event, document.getElementById("cc-contracts")) && $scope.currentSelectedTab == 'cc-contracts'){
 			return;
 		}
 		else if(getParentWithSelector($event, document.getElementById("company-card-nested-first"))){
