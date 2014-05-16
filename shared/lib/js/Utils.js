@@ -1,6 +1,9 @@
 
 // Function to remove unwanted key elements from hash.
 var dclone = function(object, unwanted_keys){
+	console.log(object);
+	console.log("++++++++DCLONE+++++++++++++");
+	console.log(JSON.stringify(object));
   	if(typeof unwanted_keys === "undefined"){
   		unwanted_keys = [];
   	}
