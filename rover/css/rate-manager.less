@@ -52,7 +52,7 @@ margin-top:20px;
                   margin-top: 14px;
                 }
             }
-            li.ng-binding + li.ng-binding::before {
+            li:not(.ng-hide) + li:not(.ng-hide)::before {
               content: "|";
               color: #DDDDDD;
               float: left;
