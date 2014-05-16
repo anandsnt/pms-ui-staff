@@ -7,6 +7,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope', 'RVCompanyCardSrv', '$
 		$scope.contractsData = {};
     	$scope.contractData = data;
     	$scope.$emit('hideLoader');
+    	setTimeout(function(){refreshScroller();}, 750);
     };
   	var fetchFailureCallback = function(data){
         $scope.$emit('hideLoader');
@@ -21,6 +22,23 @@ sntRover.controller('companyCardContractsCtrl',['$scope', 'RVCompanyCardSrv', '$
         $scope.$emit('hideLoader');
     };
 	
+	/**
+  	* function used for refreshing the scroller
+  	*/
+  	var refreshScroller = function(){
+
+	    $scope.$parent.myScroll['contracts_scroll'].refresh();
+	    //scroller options
+	    $scope.$parent.myScrollOptions = {
+	        snap: false,
+	        scrollbars: true,
+	        bounce: true,
+	        vScroll: true,
+	        vScrollbar: true,
+	        hideScrollbar: false
+	    };
+  	};
+  	
 	$scope.invokeApi(RVCompanyCardSrv.fetchContractsList,{"account_id":$stateParams.id},fetchContractsListSuccessCallback,fetchFailureCallback);  
 	
 	/*
@@ -57,5 +75,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope', 'RVCompanyCardSrv', '$
 			 scope: $scope
 		});
 	};
+	
+	
 	
 }]);

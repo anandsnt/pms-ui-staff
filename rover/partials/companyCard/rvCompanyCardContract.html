@@ -28,7 +28,7 @@
         </div>
     </div>
     <div id="cc-contracts-content" class="tab-details scrollable">
-        <div class="wrapper" ng-class="{'overlay':contractSelected=='3'}">
+        <div class="wrapper" ng-class="{'overlay':contractSelected=='3'}" ng-iscroll="contracts_scroll" ng-iscroll-delay="1000">
             <div class="holder left">
                 <strong class="h3">Details</strong>
                 <div class="entry margin">
@@ -36,7 +36,7 @@
                     <div class="select">
 		                <select name="company-contract" ng-model="contractData.contracted_rate_selected">
 		                    <option value="" class="placeholder">Select contracted rate</option>
-		                    <option value="{{rate.id}}" ng-selected="rate.id==contractData.contracted_rate_selected" ng-repeat="rate in contractData.rate" >{{rate.name}}</option>
+		                    <option value="{{rate.id}}" ng-selected="rate.id==contractData.contracted_rate_selected" ng-repeat="rate in contractData.rates" >{{rate.name}}</option>
 		                </select>
 		            </div>
                 </div>
@@ -47,7 +47,7 @@
                             <option value="subtract">-</option>
                         </select>
                     </div>
-                    <input name="company-rate-adjust-2" id="company-rate-adjust-2" value="10" type="text" />
+                    <input name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{contractData.rate_value}}" type="text" />
                     <div class="select">
                         <select name="company-rate-adjust-3">
                             <option value="percentage" selected>%</option>
@@ -57,11 +57,11 @@
                 </div>
                 <div class="entry margin has-datepicker">
                     <label for="company-contract-start">Contract Start</label>
-                    <input ng-click="contractStart()" name="company-contract-start" id="company-contract-start" class="datepicker" value="{{contractData.start_date}}" maxlength="8" readonly type="text" />
+                    <input ng-click="contractStart()" name="company-contract-start" id="company-contract-start" class="datepicker1" value="{{contractData.begin_date}}" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry has-datepicker">
                     <label for="company-contract-end">Contract End</label>
-                    <input ng-click="contractEnd()" name="company-contract-end" id="company-contract-end" class="datepicker" value="{{contractData.end_date}}" maxlength="8" readonly type="text" />
+                    <input ng-click="contractEnd()" name="company-contract-end" id="company-contract-end" class="datepicker1" value="{{contractData.end_date}}" maxlength="8" readonly type="text" />
                 </div>
                 <div class="entry margin only-switch">
                     <label for="company-contract-fixed-rate">Fixed Rate</label>
@@ -79,8 +79,8 @@
                 </div>
                 <div class="entry only-switch">
                     <label for="company-contract-show-on-bill">Show on Guest Bill</label>
-                    <div ng-model="contractData.is_on_guest_bill" class="switch-button full-width" ng-class="{'on': contractData.is_on_guest_bill}">
-                        <input ng-click="contractData.is_on_guest_bill = !contractData.is_on_guest_bill" name="company-contract-show-on-bill" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
+                    <div ng-model="contractData.is_rate_shown_on_guest_bill" class="switch-button full-width" ng-class="{'on': contractData.is_rate_shown_on_guest_bill}">
+                        <input ng-click="contractData.is_rate_shown_on_guest_bill = !contractData.is_rate_shown_on_guest_bill" name="company-contract-show-on-bill" id="company-contract-fixed-rate" value="1" checked type="checkbox" />
                         <label class="data-off">
                             <span class="value">Yes</span>
                             <span class="switch-icon">No</span>
@@ -93,7 +93,7 @@
                 </div>
                 <div class="entry">
                     <label for="company-contracted-nights">Contracted nights</label>
-                    <input ng-click="clickedContractedNights()" name="company-contracted-nights" id="company-contracted-nights" class="open-modal contracted-nights" placeholder="Nights per month" value="{{contractData.total_contracted_nights}}" maxlength="8" readonly type="text" />
+                    <input ng-click="clickedContractedNights()" name="company-contracted-nights" id="company-contracted-nights" class="open-modal1 contracted-nights" placeholder="Nights per month" value="{{contractData.total_contracted_nights}}" maxlength="8" readonly type="text" />
                 </div>
             </div>
             <div class="holder right" ng-hide="isAddmode">
