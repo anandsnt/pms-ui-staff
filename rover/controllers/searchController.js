@@ -4,7 +4,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
 
   //model used in query textbox, we will be using this across
   $scope.textInQueryBox = "";
-  $scope.$emit("updateRoverLeftMenu",1);
+  $scope.$emit("updateRoverLeftMenu","search");
 
 
   /**

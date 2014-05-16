@@ -69,7 +69,7 @@ $scope.popupCalendar = function(){
 	    },
 	};
 
-	$scope.$on('CONTACTINTOLOADED', function(event) {
+	$scope.$on('CONTACTINFOLOADED', function(event) {
 		setTimeout(function(){
 			$scope.$parent.myScroll['contact_info'].refresh();
 			}, 
