@@ -1,5 +1,5 @@
-<table class="grid sub-grid" ng-show="showCancelForm || cancelRulesList.length">
-	<tr ng-hide="showCancelForm || editCancelRules" ng-repeat="rule in cancelRulesList">
+<table class="grid sub-grid">
+	<tr ng-hide="showCancelForm || !showCancelList" ng-repeat="rule in cancelRulesList">
 		<td class="offset"> &nbsp; </td>
 		<td ng-click="editSingleRule(rule, 'Cancellation Penalties')"><a href>{{ rule.name }}</a></td>
 

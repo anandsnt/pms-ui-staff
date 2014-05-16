@@ -48,7 +48,8 @@
 					<td>
 						<table class="grid">
 							<td>
-								<a class="inline" ng-click="fetchRuleList(item)"> {{ item.description }} </a>
+								<span class="toggle" ng-show="showPolicyArrow()"></span>
+								<a class="inline" ng-click="toggleRulesListShow()"> {{ item.description }} </a>
 								<em class="action add" ng-click="openAddNewRule()">Add new rule</em>
 							</td>
 							<td class="activate text-left">

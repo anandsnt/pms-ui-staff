@@ -1,5 +1,5 @@
-<table class="grid sub-grid" ng-show="showDepositForm || depositRuleslList.length">
-	<tr ng-hide="showDepositForm" ng-repeat="rule in depositRuleslList">
+<table class="grid sub-grid">
+	<tr ng-hide="showDepositForm || !showDepositlList" ng-repeat="rule in depositRuleslList">
 		<td class="offset"> &nbsp; </td>
 		<td ng-click="editSingleRule(rule, 'Deposit Requests')"><a href>{{ rule.name }}</a></td>
 

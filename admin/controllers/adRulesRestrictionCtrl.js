@@ -128,6 +128,26 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.invokeApi(ADRulesRestrictionSrv.fetchRules, { policy_type: ruleType }, callback);
         };
 
+        $scope.showPolicyArrow = function() {
+            if ( this.item.description === 'Cancellation Penalties' ) {
+                return $scope.cancelRulesList.length ? true : false;
+            };
+
+            if ( this.item.description === 'Deposit Requests' ) {
+                return $scope.depositRuleslList.length ? true : false;
+            };
+        };
+
+        $scope.toggleRulesListShow = function() {
+            if ( this.item.description === 'Cancellation Penalties' ) {
+                $scope.showCancelList = $scope.showCancelList ? false : true;
+            };
+
+            if ( this.item.description === 'Deposit Requests' ) {
+                $scope.showDepositList = $scope.showDepositList ? false : true;
+            };
+        };
+
         // open the form to add a new rule
         $scope.openAddNewRule = function() {
             $scope.rulesTitle = 'New';
@@ -233,6 +253,14 @@ admin.controller('ADRulesRestrictionCtrl', [
         $scope.cancelCliked = function() {
             $scope.showCancelForm = false;
             $scope.showDepositForm = false;
+
+            // if ( this.item.description === 'Cancellation Penalties' ) {
+            //     $scope.showCancelList = $scope.showCancelList ? false : true;
+            // };
+
+            // if ( this.item.description === 'Deposit Requests' ) {
+            //     $scope.showDepositList = $scope.showDepositList ? false : true;
+            // };
         };
 
         // save a new rule or update an edited rule

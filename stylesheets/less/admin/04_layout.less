@@ -619,6 +619,17 @@ body { overflow: hidden; }
                         }
                     }
 
+                    .toggle {
+                        width: 20px;
+                        height: 20px;
+                        float: left;
+                        padding-right: 10px;
+                        background-image: @arrowDown;
+                        background-position: 0 0;
+                        background-repeat: no-repeat;
+                    }
+                    .toggle.active { background-image: @arrowUp; }
+
                     /* Larger font size for short data - room #, IATA etc. ***/
                     .number { 
                         font-size: 24px;
