@@ -152,7 +152,6 @@ admin.controller('ADRulesRestrictionCtrl', [
                 // clear any previous data
                 $scope.singleRule = data;
 
-                console.log( $scope.singleRule.amount );
                 var amtString = $scope.singleRule.amount + '',
                     num       = amtString.split('.')[0],
                     dec       = amtString.split('.')[1] * 1;
@@ -163,8 +162,6 @@ admin.controller('ADRulesRestrictionCtrl', [
 
                 $scope.singleRule.amount = num + '.' + dec;
 
-                console.log( $scope.singleRule.amount );
-;
                 if ( from === 'Cancellation Penalties' ) {
                     $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
 

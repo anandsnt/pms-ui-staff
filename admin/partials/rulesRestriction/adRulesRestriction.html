@@ -16,7 +16,7 @@
 
 		<table id="rules">
 			<tbody>
-				<tr><td><br><strong>Restrictions</strong></td></tr>
+				<tr><td><br><strong class="sep-heading">Restrictions</strong></td></tr>
 
 				<tr ng-repeat="item in ruleList | filter: { editable: false }">
 					<td>
@@ -42,7 +42,7 @@
 					</td>
 				</tr>
 
-				<tr><td><br><br><strong>Rules</strong></td></tr>
+				<tr><td><br><br><strong class="sep-heading">Rules</strong></td></tr>
 
 				<tr ng-repeat="item in ruleList | filter: { editable: true }" ng-hide="{{ item.description === 'Levels' }}">
 					<td>
