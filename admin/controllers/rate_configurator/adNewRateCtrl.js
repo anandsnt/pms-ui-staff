@@ -127,6 +127,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.is_discount_allowed_on = (data.is_discount_allowed_on)?true:false;
             $scope.rateData.source_id = data.source_id;
             $scope.rateData.market_segment_id = data.market_segment_id;
+            $scope.rateData.end_date = data.end_date;
 
             // addons
             if($scope.rateData.addOns.length>0){
