@@ -421,7 +421,7 @@ hkRover.controller('HKSearchCtrl',
 			$rooms.style.WebkitTransition = '';
 			$notify.style.WebkitTransition = '';
 
-			var diff = (nowY - startY);
+			var diff = (nowY - startY);	
 
 			// we move with the swipe
 			$rooms.style.webkitTransform = 'translateY(' + diff + 'px)';
@@ -446,7 +446,7 @@ hkRover.controller('HKSearchCtrl',
 			$rooms.style.WebkitTransition = '';
 			$notify.style.WebkitTransition = '';
 
-			// only bind touchmove when required
+			// only bind 'touchmove' when required
 			$rooms.addEventListener('touchmove', touchMoveHandler, false);
 		};
 
