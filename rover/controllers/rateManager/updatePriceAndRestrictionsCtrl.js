@@ -59,15 +59,30 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         $scope.init();
         
         $scope.saveRestriction = function(){
-        	console.log(JSON.stringify($scope.data.previousRestrictionTypes));
-        	console.log("------------------original--------JSON.stringify($scope.data.previousRestrictionTypes)=================");
-        	console.log(JSON.stringify($scope.data.restrictionTypes));
         	
+        	var data = {};
+        	data.restrictions = [];
+        	console.log(JSON.stringify($scope.data));
         	angular.forEach($scope.data.restrictionTypes, function(value, key){
-        		console.log("value--------"+value);
-        		console.log("value--------"+key);
-		     });
-        	
+        		
+
+        		if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled != value.isRestrictionEnabled){
+        			var action = "";
+        			if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled == "true"){
+        				action = "remove";
+        			} else {
+        				action = "add";
+        			}
+        			var restrictionData = {
+        				"action": action,
+        				"restriction_type_id": value.id,
+        				"days": value.days
+        			};
+        			data.restrictions.push(restrictionData);
+        		}
+		    });
+		    
+        	console.log(JSON.stringify(data));
         	
         };
     }
