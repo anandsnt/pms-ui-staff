@@ -18,12 +18,15 @@
 				<span>All Rates</span>
 				<span>&nbsp;</span>
 			</td>
-			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.room_type.id, 'ALL_DATA')"> 
+			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'ALL_DATA')"> 
                 <div class="cell-content">
-
-					<span ng-repeat="restriction in calendarData.all_rates[date]" class="restriction-icon {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
-						{{restriction.days}}
-					</span>
+                	<div>
+                		<div>
+							<span ng-repeat="restriction in calendarData.all_rates[date]" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
+								{{restriction.days}}
+							</span>
+						</div>
+					</div>
                 </div>
 			</td>
 		</tr>
