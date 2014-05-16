@@ -3,10 +3,11 @@ sntRover.controller('companyCardContractsCtrl',['$scope', 'RVCompanyCardSrv', '$
 	$scope.isAddMode = false;
 	$scope.contractList = {};
 	$scope.errorMessage = "";
-	
+	var contractInfo = "";
 	var fetchContractsDetailsSuccessCallback = function(data){
 		$scope.contractsData = {};
     	$scope.contractData = data;
+    	contractInfo = JSON.parse(JSON.stringify($scope.contractData));
     	$scope.contractData.contract_name ="";
     	$scope.$emit('hideLoader');
     	//setTimeout(function(){refreshScroller();}, 750);
@@ -103,7 +104,6 @@ sntRover.controller('companyCardContractsCtrl',['$scope', 'RVCompanyCardSrv', '$
 	    var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
-	         $scope.$emit('contactInfoError',true);
 	    };
 	   
 		/**
@@ -111,22 +111,18 @@ sntRover.controller('companyCardContractsCtrl',['$scope', 'RVCompanyCardSrv', '$
 	  	*/
 	    var dataToUpdate =  JSON.parse(JSON.stringify($scope.contractData));
 	    var dataUpdated = false;
-	    if(angular.equals(dataToUpdate, presentContract)) {
+	    if(angular.equals(dataToUpdate, contractInfo)) {
 				dataUpdated = true;
 		}
 		else{
-			presentContract = dataToUpdate;
+			contractInfo = dataToUpdate;
 		};	    	
-	    //dataToUpdate.birthday = $scope.birthdayText;
-	    var data ={'data':dataToUpdate,
-	    			'userId':$scope.guestCardData.contactInfo.user_id
-	    		};
+	    
 	    if(!dataUpdated)
-	    $scope.invokeApi(RVCompanyCardSrv.updateContract,{ "account_id":$stateParams.id, "contract_id":$scope.contractSelected, "postData":data}, saveContractSuccessCallback, saveContractFailureCallback);
+	    $scope.invokeApi(RVCompanyCardSrv.updateContract,{ "account_id": $stateParams.id, "contract_id": $scope.contractSelected, "postData": dataToUpdate}, saveContractSuccessCallback, saveContractFailureCallback);
 	};
 
 	$scope.$on('saveContract',function(){
-	 	console.log("outside clkkk");
 	 	$scope.updateContract();
 	});
 	
