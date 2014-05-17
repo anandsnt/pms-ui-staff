@@ -59,7 +59,7 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 		ngDialog.open({
 			 template: '/assets/partials/rateManager/selectDateRangeModal.html',
     		 controller: 'SelectDateRangeModalCtrl',
-			 className: 'ngdialog-theme-default calendar-modal1',
+			 className: 'ngdialog-theme-default calendar-modal',
 			 scope: $scope
     	});
 	};
