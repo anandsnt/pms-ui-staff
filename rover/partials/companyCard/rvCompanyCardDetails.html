@@ -52,7 +52,7 @@
                         </li>
 
 
-                        <li class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
+                        <li  ng-hide="true" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
                             <a >Reservations</a>
                         </li>
 
@@ -64,7 +64,7 @@
                     <div ng-controller="companyCardContractsCtrl"  ng-include="'/assets/partials/companyCard/rvCompanyCardContract.html'"></div>
 
                     <!-- Company Card Tab 3 Resevations -->
-                    <div ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></div>                    
+                    <div ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></div>                    
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 <div class="config-wrapper">
-    <ul class="date-wrapper" style="margin-left:31px;">
+    <ul class="date-wrapper" ng-class="{'inactive': currentClickedSet != $index}">
         <li style="width:30px;">
-            <span class="icons delete_small" ng-click="deleteSet(set.id, $index)"  ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
+            <span class="icons delete_small" ng-click="confirmDeleteSet(set.id, $index, set.name)"  ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
         <li style="width:150px;" ng-hide="currentClickedSet == $index">{{set.name}}</li>
         <li ng-show="currentClickedSet == $index">
@@ -17,20 +17,24 @@
             <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.saturday" ng-click="toggleDays($index, 'saturday')" label="SAT"></ad-checkboxtext-left>
             <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.sunday" ng-click="toggleDays($index, 'sunday')" label="SUN"></ad-checkboxtext-left>
         </li>
-
+        <!--
         <li style="float:right; padding-top:10px;" ng-show="currentClickedSet == $index">
             <span class="icons icon-rate-search" style="float:right; width:40px;">&nbsp;</span>
         </li>
         <li style="float:right; padding-top:10px;" ng-show="currentClickedSet == $index">
             <span class="icons icon-rate-fill" style="float:right; width:40px;">&nbsp;</span>
         </li>
+        -->
         <li style="float:right; padding-top:10px;" ng-show="currentClickedSet == $index">
             <span class="icons icon-calendar" style="float:right; width:40px;" ng-click="popupCalendar()" ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
 
 
-        <li style="width:3%; float:right;" ng-hide="currentClickedSet == $index">
+        <li style="float:right;" ng-hide="currentClickedSet == $index">
             <span class="cursor-hand"><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)"></span>
+        </li>
+        <li style="float:right;" ng-show="currentClickedSet == $index">
+            <span class="cursor-hand"><img src="/assets/arrow-up.png" ng-click="unsetCurrentClickedSet($index)"></span>
         </li>
         
     </ul>
@@ -82,9 +86,11 @@
         <td width="16%" align="left">&nbsp;</td>
         <td width="4%" align="center">&nbsp;</td>
         <td width="15%" style="text-align:right;" colspan="3">
+            <!--
             <span style="padding-right:20px;">
                 <button type="button" class="button blue" ng-hide="!is_date_range_editable(dateRange.end_date)">QUICK FILL</button>
             </span>
+            -->
             <button type="button" class="button" ng-click="saveSet($index)" ng-hide="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">SAVE&nbsp;SET</button>
             <button type="button" class="button" ng-click="saveSet($index)" ng-show="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">UPDATE&nbsp;SET</button>
         </td>

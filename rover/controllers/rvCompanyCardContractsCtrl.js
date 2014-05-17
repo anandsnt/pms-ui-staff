@@ -9,6 +9,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	   clientWidth = $(window).width();
         clientHeight = $(window).height();
        var drawGraph = function(){
+        console.log('reached::drawGraph');
             $scope.highchartsNG = {
                 options: {
                     chart: {
@@ -128,10 +129,10 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
         angular.forEach(data, function(item){
             itemDate = item.month + " " + item.year;
             $scope.categories.push(itemDate);
-            //contracted.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: replace harcoded 10 with item.actual
-            contracted.push([itemDate, item.contracted_occupancy]);
-            //actual.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: replace harcoded 10 with item.target
-            actual.push([itemDate,item.actual_occupancy]);
+            contracted.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: Remove this line and uncomment below line
+            //contracted.push([itemDate, item.contracted_occupancy]);
+            actual.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: Remove this line and uncomment below line
+            //actual.push([itemDate,item.actual_occupancy]);
         });
         graphData = [{
             "name": "ACTUAL",
@@ -168,7 +169,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		ngDialog.open({
 			 template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
 			 controller: 'contractStartCalendarCtrl',
-			 className: 'ngdialog-theme-default calendar-modal1',
+			 className: 'ngdialog-theme-default calendar-single',
 			 scope: $scope
 		});
 	};
@@ -177,7 +178,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		ngDialog.open({
 			 template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
 			 controller: 'contractEndCalendarCtrl',
-			 className: 'ngdialog-theme-default calendar-modal1',
+			 className: 'ngdialog-theme-default calendar-single',
 			 scope: $scope
 		});
 	};
@@ -186,7 +187,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		ngDialog.open({
 			 template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
 			 controller: 'contractedNightsCtrl',
-			 className: 'ngdialog-theme-default calendar-modal1',
+			 className: 'ngdialog-theme-default calendar-single',
 			 scope: $scope
 		});
 	};

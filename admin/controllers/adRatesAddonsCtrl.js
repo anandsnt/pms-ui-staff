@@ -35,13 +35,6 @@ admin.controller('ADRatesAddonsCtrl', [
 			var params = params;
 			var getParams = $scope.calculateGetParams(params);
 
-
-			// var orderedData = params.sorting() ?
-			//                     $filter('orderBy')($scope.data.frequent_flyer_program, params.orderBy()) :
-			//                     $scope.data.frequent_flyer_program;
-
-			console.log( params.orderBy() );
-
 			var fetchSuccessOfItemList = function(data) {
 				$scope.totalCount = data.total_count;	
 				$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
@@ -159,21 +152,23 @@ admin.controller('ADRatesAddonsCtrl', [
 		}
 
 		// listen for datepicker update from ngDialog
-		var updateBind = $rootScope.$on('datepicker.update', function(event, chosenDate) {  
+		var updateBind = $rootScope.$on('datepicker.update', function(event, chosenDate) {
+
+			console.log( chosenDate );
 
 			// covert the date back to 'MM-dd-yyyy' format  
 			if ( $scope.dateNeeded === 'From' ) {
-	            $scope.singleAddon.begin_date = dateFilter(chosenDate, 'MM-dd-yyyy');
+	            $scope.singleAddon.begin_date = dateFilter(new Date(chosenDate), 'MM-dd-yyyy');
 
 	            // if user moved begin_date in a way
 	            // that the end_date is before begin_date
 	            // we must set the end_date to begin_date
 	            // so that user may not submit invalid dates
 	            if ( new Date($scope.singleAddon.begin_date) - new Date($scope.singleAddon.end_date) > 0 ) {
-	                $scope.singleAddon.end_date = dateFilter(chosenDate, 'MM-dd-yyyy');
+	                $scope.singleAddon.end_date = dateFilter(new Date(chosenDate), 'MM-dd-yyyy');
 	            }
 			} else {
-				$scope.singleAddon.end_date = dateFilter(chosenDate, 'MM-dd-yyyy');
+				$scope.singleAddon.end_date = dateFilter(new Date(chosenDate), 'MM-dd-yyyy');
 			}
 		});
 
@@ -221,8 +216,8 @@ admin.controller('ADRatesAddonsCtrl', [
 				};
 
 				// convert system date to MM-dd-yyyy format
-				$scope.singleAddon.begin_date = $filter('date')($scope.singleAddon.begin_date, 'MM-dd-yyyy');
-				$scope.singleAddon.end_date   = $filter('date')($scope.singleAddon.end_date, 'MM-dd-yyyy');
+				$scope.singleAddon.begin_date = $filter('date')(new Date($scope.singleAddon.begin_date), 'MM-dd-yyyy');
+				$scope.singleAddon.end_date   = $filter('date')(new Date($scope.singleAddon.end_date), 'MM-dd-yyyy');
 			};
 
 			$scope.invokeApi(ADRatesAddonsSrv.fetchSingle, $scope.currentAddonId, callback);
@@ -241,8 +236,8 @@ admin.controller('ADRatesAddonsCtrl', [
 		$scope.addUpdateAddon = function() {
 
 			// convert dates to system format yyyy-MM-dd
-			$scope.singleAddon.begin_date = $filter('date')($scope.singleAddon.begin_date, 'yyyy-MM-dd');
-			$scope.singleAddon.end_date   = $filter('date')($scope.singleAddon.end_date, 'yyyy-MM-dd');	
+			$scope.singleAddon.begin_date = $filter('date')(new Date($scope.singleAddon.begin_date), 'yyyy-MM-dd');
+			$scope.singleAddon.end_date   = $filter('date')(new Date($scope.singleAddon.end_date), 'yyyy-MM-dd');	
 
 			// if we are adding new addon
 			if ( $scope.isAddMode ) {
