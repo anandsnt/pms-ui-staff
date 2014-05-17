@@ -4,8 +4,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             $scope.showRestrictionDayUpdate = false;
             // console.log("*****************************JPHME HM calendr************************");
             // console.log(JSON.stringify($scope.popupData));
-             console.log("*****************************JPHME HM popup************************");
-             console.log(JSON.stringify($scope.calendarData));
+             // console.log("*****************************JPHME HM popup************************");
+             // console.log(JSON.stringify($scope.calendarData));
             if($scope.popupData.fromRoomTypeView){
                 computePopupdateForRoomTypeCal();
             }else{
@@ -121,13 +121,16 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 return false;
             }
             return true;
-        }
+        };
 
         /**
         * Click handler for restriction on/off buttons
         * Enable disable restriction. 
         */
         $scope.onOffRestrictions = function(id, action, days){
+        	angular.forEach($scope.data.restrictionTypes, function(value, key){
+        		value.showEdit =  false;
+        	});
             if($scope.data.restrictionTypes[id].hasEdit){
                 $scope.showRestrictionDayUpdate = true;
                 $scope.data.restrictionTypes[id].showEdit = true;

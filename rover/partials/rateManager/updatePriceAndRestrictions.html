@@ -13,11 +13,11 @@
                             <div ng-include="'/assets/partials/rateManager/restrictionsList.html'" >
                             </div>
                         </td>
-                        <td  style="vertical-align:top" ng-show="showRestrictionDayUpdate" >
+                        <td  ng-show="showRestrictionDayUpdate" >
                             <div ng-include="'/assets/partials/rateManager/restrictionDaysEnter.html'"ng-controller="RestrictionDaysCtrl"></div >
                         </td>
-                        <td style="vertical-align:top" >
-                            <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'"></div >
+                        <td style="vertical-align:top" ng-show="popupData.fromRoomTypeView">
+                            <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'" ></div >
                         </td>
                          <td style="vertical-align:top" ng-hide="true">
                             <div ng-include="'/assets/partials/rateManager/restrictionWeekDays.html'"></div >
