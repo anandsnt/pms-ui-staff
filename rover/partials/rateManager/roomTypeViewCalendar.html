@@ -34,13 +34,13 @@
 
 		<tr ng-repeat="rate in calendarData.data">
 			<td class="first-row">    
-				<span>{{rate.room_type.name}}</span>
+				<span>{{rate.name}}</span>
 			    <span style="float:right">
 			    	<img src="/assets/arrow-down.png" ng-click="expandRow($index)">
 			    </span>
             </td>
 
-			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-hide="currentExpandedRow==$parent.$index" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.room_type.id, 'ROOM_TYPE')">
+			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-hide="currentExpandedRow==$parent.$index" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.id, 'ROOM_TYPE')">
 				<div class="cell-content">
 					<div>
                 		<div>

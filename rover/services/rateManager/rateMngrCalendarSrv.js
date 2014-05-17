@@ -115,7 +115,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		   		//Check if this rate is already pushed.
 		   		var rateData = null;
 		   		for (var i in roomRateData){
-	   				if (roomRateData[i].room_type.id == rate.room_type.id)
+	   				if (roomRateData[i].id == rate.room_type.id)
 	   				{
 	   		  			rateData = roomRateData[i];
 	   		  			//break;
@@ -123,8 +123,10 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		   		}
 
 		   	   	if (rateData === null){
-		   	   		rateData = {"room_type": {}};
-		   			rateData.room_type = rate.room_type;
+		   	   		rateData ={
+   				   				id : rate.room_type.id,
+   				   				name : rate.room_type.name
+   				   			};
 		   			roomRateData.push(rateData);
 		   		}
 		   		var rr = {};

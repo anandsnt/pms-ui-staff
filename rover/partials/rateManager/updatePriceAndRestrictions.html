@@ -3,7 +3,7 @@
         <div class="updatePriceAndRestrictionsContainer">
             <div class="header">
                 <h2 class="h1">Bar</h2>
-                <em>Wednesday, January 14</em>
+                <em>{{popupData.selectedDate| date:'EEEE MMMM dd'}}</em>
             </div>
             
             <div>
@@ -13,22 +13,20 @@
                             <div ng-include="'/assets/partials/rateManager/restrictionsList.html'" >
                             </div>
                         </td>
-                        <td ng-show="showRestrictionDayUpdate" >
+                        <td  style="vertical-align:top" ng-show="showRestrictionDayUpdate" >
                             <div ng-include="'/assets/partials/rateManager/restrictionDaysEnter.html'"ng-controller="RestrictionDaysCtrl"></div >
                         </td>
                         <td style="vertical-align:top" >
                             <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'"></div >
                         </td>
-                         <td style="vertical-align:top" >
+                         <td style="vertical-align:top" ng-hide="true">
                             <div ng-include="'/assets/partials/rateManager/restrictionWeekDays.html'"></div >
                         </td>
+
                         <td>
                         </td>
                     </tr>
                 </table>
-                
-                
-                
             </div>
             <div class="footer">
                 <div class="actions float">
