@@ -4,6 +4,12 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 	$scope.reservationList = [];
 	$scope.currentReservationId = "";
 	$scope.reservationCount = 0;
+
+
+
+	$scope.reservationCardClick =  function(){
+		 $scope.$emit('reservationCardClicked');
+	};
 	
 	
 	/*
@@ -13,7 +19,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 		
 		// $scope.fetchReservationData(data.reservationId);
 		// $scope.currentReservationId = data.confirmationNumber;
-
+		
 		$scope.data = data;
 		$scope.timeline = data.reservation_details.timeline;;
 		
@@ -23,13 +29,14 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 		
 		$scope.currentReservationId = data.reservation_details.confirmation_num;
 		
-
 		RVReservationCardSrv.setGuestData($scope.data.guest_details);
 
 		var fetchGuestcardDataSuccessCallback = function(data){
 			var contactInfoData = {'data': data,
 									'countries': $scope.data.countries,
-									'userId':$scope.data.user_id};
+									'userId':$scope.data.user_id,
+									'avatar':$scope.data.avatar,
+									'vip':$scope.data.vip};
 	        $scope.$emit('guestCardUpdateData',contactInfoData);
 	        $scope.$emit('hideLoader');
 	    };

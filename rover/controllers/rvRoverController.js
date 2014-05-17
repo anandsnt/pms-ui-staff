@@ -56,7 +56,7 @@ $scope.init();
    * update selected menu class
    */
 
-$scope.$on("updateIndex", function(e,value){
+$scope.$on("updateRoverLeftMenu", function(e,value){
   $scope.selectedMenuIndex = value;
 });
 
@@ -92,8 +92,10 @@ $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState
 });
 
 $scope.settingsClicked = function(){
-  if($scope.isHotelAdmin)
+  if($scope.isHotelAdmin){
+    $scope.selectedMenuIndex = "settings";
    $window.location.href = "/admin";
+ }
   else if($scope.isHotelStaff){
           ngDialog.open({
                template: '/assets/partials/settings/rvStaffSettingModal.html',
