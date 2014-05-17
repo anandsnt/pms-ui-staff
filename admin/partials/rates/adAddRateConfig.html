@@ -1,5 +1,5 @@
 <div class="config-wrapper">
-    <ul class="date-wrapper" style="margin-left:31px;">
+    <ul class="date-wrapper" ng-class="{'inactive': currentClickedSet != $index}">
         <li style="width:30px;">
             <span class="icons delete_small" ng-click="confirmDeleteSet(set.id, $index, set.name)"  ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
@@ -32,6 +32,9 @@
 
         <li style="float:right;" ng-hide="currentClickedSet == $index">
             <span class="cursor-hand"><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)"></span>
+        </li>
+        <li style="float:right;" ng-show="currentClickedSet == $index">
+            <span class="cursor-hand"><img src="/assets/arrow-up.png" ng-click="unsetCurrentClickedSet($index)"></span>
         </li>
         
     </ul>

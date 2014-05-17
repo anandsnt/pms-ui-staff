@@ -14,7 +14,7 @@
                     <span  class="italic_text">{{dateRange.begin_date | date:'MMMM dd, y'}}</span>
                     <span style="margin:0 5px;">to</span>
                     <span  class="italic_text">{{dateRange.end_date | date:'MMMM dd, y'}}</span>
-                    <span style="float:right" class="cursor-hand"><img src="/assets/arrow-up.png" ng-click="unsetCurrentClickedSet($index)" ></span>
+                    <span style="float:right" class="cursor-hand"><img src="/assets/arrow-up.png" ng-click="$emit('changeMenu', '');" ></span>
 
                 </li>
                 
