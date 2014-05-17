@@ -32,7 +32,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		$scope.currentExpandedRow = index;
 	}
 
-	/**
+   /**
     * Method to fetch calendar data
     */
 	var loadTable = function(rateId){
@@ -186,7 +186,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
             closeByDocument: true,
             scope: $scope
         });
-    }
+   };
 
 	$scope.init();
   

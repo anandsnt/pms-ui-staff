@@ -7,7 +7,7 @@ sntRover.controller('RateViewCalendarCtrl', ['$scope', function($scope){
                 mouseWheel: true,
                 hideScrollbar: false,
             },
-    }
+    };
     
     BaseCtrl.call(this, $scope);
 
