@@ -1,5 +1,5 @@
-admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ADRatesRangeSrv','ngDialog',
-    function ($scope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ADRatesRangeSrv, ngDialog) {
+admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'ADRatesAddRoomTypeSrv', 'ADRatesRangeSrv','ngDialog', '$state',
+    function ($scope, ADRatesConfigureSrv, ADRatesAddRoomTypeSrv, ADRatesRangeSrv, ngDialog, $state) {
         //expand first set
         $scope.currentClickedSet = 0;
 
@@ -111,18 +111,35 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             }
         };
 
-        $scope.deleteSet = function (id, index) {
+        $scope.confirmDeleteSet = function (id, index, setName) {
+            $scope.deleteSetId = id;
+            $scope.deleteSetIndex = index;
+            $scope.deleteSetName = setName;
+            ngDialog.open({
+                template: '/assets/partials/rates/confirmDeleteSetDialog.html',
+                controller: 'ADRatesAddConfigureCtrl',
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
+        };
+
+        $scope.closeConfirmDeleteSet = function(){
+            ngDialog.close();
+        };
+
+        $scope.deleteSet = function () {
             var successDeleteCallBack = function () {
                 $scope.$emit('hideLoader');
                 var sets = $scope.data.sets;
-                $scope.data.sets.splice(index, 1);
+                $scope.data.sets.splice($scope.deleteSetIndex, 1);
                 if (sets.length == 0){
                     $scope.$emit('deletedAllDateRangeSets', $scope.dateRange.id);
                 }
-                
+                $scope.closeConfirmDeleteSet();
             };
-            $scope.invokeApi(ADRatesConfigureSrv.deleteSet, id, successDeleteCallBack);
+            $scope.invokeApi(ADRatesConfigureSrv.deleteSet, $scope.deleteSetId, successDeleteCallBack);
         };
+
 
         $scope.checkFieldEntered = function (index) {
             var enableSetUpdateButton = false;
@@ -153,11 +170,10 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             angular.forEach($scope.data.sets, function (value, key) {
                 $scope.saveSet(key);
             });
-
+            $state.go('admin.rates');
         };
 
         $scope.popupCalendar = function () {
-           // ADRatesConfigureSrv.setCurrentSetData($scope.data);
             ngDialog.open({
                 template: '/assets/partials/rates/adAddRatesCalendarPopup.html',
                 controller: 'ADDateRangeModalCtrl',
@@ -177,7 +193,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         $scope.is_date_range_editable = function(date_range_end_date){
             if($scope.is_edit){
                 if ($scope.rateData.based_on.id) { return false; }
-                if (date_range_end_date){
+                if (date_range_end_date && $scope.hotel_business_date){
                     return Date.parse(date_range_end_date) > Date.parse($scope.hotel_business_date)
                 }
             }

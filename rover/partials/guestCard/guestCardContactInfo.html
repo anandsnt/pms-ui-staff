@@ -38,7 +38,7 @@
 						<div class="entry">
 							<label for="country">Country</label>
 							<div form="contact-info" class="select">
-								<select ng-options="country[1] as country[0] for country  in countriesList" ng-model="guestCardData.contactInfo.country">
+								<select ng-options="country.id as country.name for country  in countriesList" ng-model="guestCardData.contactInfo.country">
 								<option style="display:none" value=""></option>
 							</select>
 							</div>
