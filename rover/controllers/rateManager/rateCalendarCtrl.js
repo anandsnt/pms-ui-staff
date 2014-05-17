@@ -1,7 +1,16 @@
 sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTableParams', 'dateFilter', 'ngDialog', function($scope, RateMngrCalendarSrv, ngTableParams, dateFilter, ngDialog){
 	
-	BaseCtrl.call(this, $scope);
-
+	$scope.$parent.myScrollOptions = {
+            'RateCalendarCtrl': {
+                scrollX: true,
+                scrollbars: true,
+                interactiveScrollbars: true,
+                // snap: false,
+            },
+   };
+	
+   BaseCtrl.call(this, $scope);
+   
 	$scope.init = function(){
 		$scope.currentExpandedRow = -1;
 		$scope.displayMode = "CALENDAR";
