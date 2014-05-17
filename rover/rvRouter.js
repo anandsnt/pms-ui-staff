@@ -1,8 +1,14 @@
 sntRover.config([
 	'$stateProvider',
 	'$urlRouterProvider',
-	function($stateProvider, $urlRouterProvider) {
-
+	'$translateProvider',
+	function($stateProvider, $urlRouterProvider, $translateProvider) {
+		
+		$translateProvider.useStaticFilesLoader({
+		  prefix: '/assets/messages/',
+		  suffix: '.json'
+		});
+		//$translateProvider.preferredLanguage('en');
 		// dashboard state
 		$urlRouterProvider.otherwise('/staff/dashboard');
 
