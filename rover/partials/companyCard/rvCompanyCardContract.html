@@ -1,5 +1,5 @@
-<form   method="post" id="cc-contracts" name="cc-contracts" class="form card-tab contracts" ng-show="currentSelectedTab == 'cc-contracts'">
-    <div id="cc-contracts-header" class="tab-header form card-tab">
+<div id="cc-contracts" name="cc-contracts" class="form card-tab contracts" style="overflow: scroll !important;" ng-show="currentSelectedTab == 'cc-contracts'">
+    <div id="cc-contracts-header" class="tab-header">
         <div class="entry">
             <div class="select" ng-hide="isAddMode">
                 <select name="company-contract" ng-model="contractSelected">
@@ -27,10 +27,9 @@
             <button id="company-new-contract" type="button" class="button green" ng-click="AddNewContract(isAddMode=false)">Save Contract</button>
         </div>
     </div>
-    <div id="cc-contracts-content" class="tab-details scrollable">
-    	<!--div class="wrapper" ng-class="{'overlay':contractSelected=='3'}" ng-iscroll="contracts_scroll" ng-iscroll-delay="1000"--->
+    	<!--div class="wrapper" ng-class="{'overlay':contractSelected=='3'}" ng-iscroll="contracts_scroll" ng-iscroll-delay="1000" -->
 
-        <div class="wrapper" ng-class="{'overlay':contractSelected=='3'}">
+        <div class="wrapper">
             <div class="holder left">
                 <strong class="h3">Details</strong>
                 <div class="entry margin">
@@ -106,12 +105,11 @@
                     <li>Average Rate <span>{{contractData.statistics.average_rate}}</span></li>
                 </ul>
             </div>
-            <div id="company-cards-occupancy" class="occupancy" ng-hide="isAddMode">
+            <div>
                 <strong class="h3">Occupancy</strong>
                 <div class="occgraph-outer" style='width: 100%'>
-					<highchart id="occGraphContainer" config="highchartsNG"></highchart>
-				</div>
+                    <highchart id="occGraphContainer" config="highchartsNG"></highchart>
+                </div>
             </div>
         </div>
-    </div>
-</form>
+</div>
