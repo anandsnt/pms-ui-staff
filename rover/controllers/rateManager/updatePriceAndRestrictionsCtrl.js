@@ -20,10 +20,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         var computePopupdateForRoomTypeCal = function(){
             var selectedDateInfo = {};
             for(var i in $scope.calendarData.data){
-                if($scope.calendarData.data[i].room_type.id == $scope.popupData.selectedRate){
+                if($scope.calendarData.data[i].id == $scope.popupData.selectedRoomType){
                     selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
                 }
             }
+            console.log("nowwww");
+            console.log(JSON.stringify(selectedDateInfo));
             $scope.data = {};
             var restrictionTypes = {};
             var rTypes = $scope.calendarData.restriction_types;
