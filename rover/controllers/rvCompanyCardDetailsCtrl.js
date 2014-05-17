@@ -77,7 +77,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$scope.countries = data;
 	}
 	//fetching country list
-	$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, data, successCallbackOfInitialFetch);	
+	$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, data, successCallbackOfCountryListFetch);	
 
 	//getting the contact information
 	var id = $stateParams.id;

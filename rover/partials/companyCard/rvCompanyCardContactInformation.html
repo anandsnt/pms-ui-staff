@@ -25,9 +25,9 @@
             <div class="entry">
                 <label for="company-country">Country</label>
                 <div class="select">
-                    <select id="company-country" name="company-country" ng-model="address_details.country"> 
+                    <select id="company-country" name="company-country" ng-model="contactInformation.address_details.country_id"> 
                         <option value="" class="placeholder">Select country</option> 
-                        <option ng-repeat="country in countries" value="{{country.id}}" ng-selected="country.id==contactInformation.address_details.country" >
+                        <option ng-repeat="country in countries" value="{{country.id}}" ng-selected="country.id==contactInformation.address_details.country_id" >
                             {{country.value}}
                         </option>
                     </select>
