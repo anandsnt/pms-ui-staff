@@ -1,8 +1,12 @@
 admin.config([	
 	'$stateProvider',
 	'$urlRouterProvider',
-	function($stateProvider, $urlRouterProvider) {
-
+	'$translateProvider',
+	function($stateProvider, $urlRouterProvider, $translateProvider) {
+		$translateProvider.useStaticFilesLoader({
+		  prefix: '/assets/adLocales/',
+		  suffix: '.json'
+		});
 		// dashboard state
 		$urlRouterProvider.otherwise('/admin/dashboard/0');
 

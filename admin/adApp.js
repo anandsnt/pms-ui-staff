@@ -1,4 +1,4 @@
-var admin = angular.module('admin', ['ui.router', 'ng-iscroll', 'ngDragDrop', 'ngTable','pickadate', 'ngDialog']);
+var admin = angular.module('admin', ['ui.router', 'ng-iscroll', 'ngDragDrop', 'ngTable','pickadate', 'ngDialog', 'ngSanitize', 'pascalprecht.translate']);
 
 
 admin.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {	
