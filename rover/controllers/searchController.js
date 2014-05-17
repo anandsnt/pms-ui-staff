@@ -4,7 +4,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
 
   //model used in query textbox, we will be using this across
   $scope.textInQueryBox = "";
-  $scope.$emit("updateIndex",1);
+  $scope.$emit("updateRoverLeftMenu","search");
 
 
   /**
@@ -14,14 +14,27 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
 
     $scope.$parent.myScroll['result_showing_area'].refresh();
     //scroller options
+    // $scope.$parent.myScrollOptions = {
+        // snap: false,
+        // scrollbars: true,
+        // bounce: true,
+        // vScroll: true,
+        // vScrollbar: true,
+        // hideScrollbar: false
+    // };
     $scope.$parent.myScrollOptions = {
-        snap: false,
-        scrollbars: true,
-        bounce: true,
-        vScroll: true,
-        vScrollbar: true,
-        hideScrollbar: false
-    };
+	    'result_showing_area': {
+	       	snap: false,
+	        scrollbars: true,
+	        bounce: true,
+	        vScroll: true,
+	        vScrollbar: true,
+	        hideScrollbar: false
+	    }
+	};
+
+    
+    
   };
 
   var headingListDict = {  

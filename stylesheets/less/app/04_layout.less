@@ -3,13 +3,16 @@
 body { overflow: hidden; }
 
 ::-webkit-selection {
-	background: transparent;
+    color: @white;
+    background: @logoPrimary;
 }
 ::-moz-selection{
-	background: transparent;
+    color: @white;
+    background: @logoPrimary;
 }
 ::selection{
-	background: transparent;
+    color: @white;
+    background: @logoPrimary;
 }
 
 .hidden { display: none !important; }
@@ -379,13 +382,6 @@ body { overflow: hidden; }
 
 		/* Prevent native touch events on Windows */
 		-ms-touch-action: none; 
-
-		/* Prevent the callout on tap-hold and text selection */
-		-webkit-touch-callout: none;
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		user-select: none; 
 
 		/* Prevent text resize on orientation change, useful for web-apps */
 		-webkit-text-size-adjust: none;

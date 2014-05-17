@@ -4,17 +4,23 @@ sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv','dashBoar
   //setting the heading of the screen
   $scope.heading = 'DASHBOARD_HEADING';
 
- 	$scope.dashboardData = dashBoarddata.dashboardData;
- 	$scope.userDetails   = dashBoarddata.userDetails;
-	$scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
- 	$scope.currencySymbol=dashBoarddata.userDetails.currency_code;	
-
-  $rootScope.adminRole = dashBoarddata.userDetails.user_role;
-
    $scope.init =  function(){
 		
          	BaseCtrl.call(this, $scope);
-          $scope.$emit("updateIndex",0);
+
+            //setting the heading of the screen
+          $scope.heading = "Dashboard";
+
+          $scope.dashboardData = dashBoarddata.dashboardData;
+          $scope.userDetails   = dashBoarddata.userDetails;
+          $scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
+          $scope.currencySymbol=dashBoarddata.userDetails.currency_code;  
+          $rootScope.adminRole = dashBoarddata.userDetails.user_role;
+
+          //update left nav bar
+          $scope.$emit("updateRoverLeftMenu","dashboard");
+          $scope.$emit("closeDrawer");
+          
          	//Display greetings message based on current time
          	var d = new Date();
         	var time = d.getHours();

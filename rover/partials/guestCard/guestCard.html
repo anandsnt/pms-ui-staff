@@ -4,9 +4,9 @@
 	<div id="card-wrapper">
 		<!-- Guest Card Header -->
 		<header class="float" id="guest-card-header">
-			<figure class="guest-image">
-				<!-- TODO: use actual image -->
-				<img alt="" id="guest-image" src="https://pms-dev.stayntouch.com/assets/avatar-trans.png">
+			<figure class="guest-image">	
+					<img ng-src="{{guestCardData.contactInfo.avatar}}">
+					<span class="vip" ng-show="guestCardData.contactInfo.vip==true">VIP</span>
 			</figure>
 			<form action="" id="change-name" method="post" name="change-name" class="ng-pristine ng-valid">
 				<div class="holder">

@@ -1,36 +1,38 @@
 <div class="config-wrapper">
-    <ul class="date-wrapper" style="margin-left:31px;">
+    <ul class="date-wrapper" ng-class="{'inactive': currentClickedSet != $index}">
         <li style="width:30px;">
-            <span class="icons delete_small" ng-click="deleteSet(set.id, $index)"  ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
+            <span class="icons delete_small" ng-click="confirmDeleteSet(set.id, $index, set.name)"  ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
         <li style="width:150px;" ng-hide="currentClickedSet == $index">{{set.name}}</li>
         <li ng-show="currentClickedSet == $index">
-            <ad-textbox value="set.name" style="width:150px; margin-top:10px;"></ad-textbox>
+            <ad-textbox disabled="!is_date_range_editable(dateRange.end_date)" value="set.name" style="width:150px; margin-top:10px;"></ad-textbox>
         </li>
 
         <li>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.monday" ng-click="toggleDays($index, 'monday')" label="MON"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.tuesday" ng-click="toggleDays($index, 'tuesday')" label="TUE"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.wednesday" ng-click="toggleDays($index, 'wednesday')" label="WED"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.thursday" ng-click="toggleDays($index, 'thursday')" label="THU"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.friday" ng-click="toggleDays($index, 'friday')" label="FRI"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.saturday" ng-click="toggleDays($index, 'saturday')" label="SAT"></ad-checkboxtext-left>
-            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-checked="set.sunday" ng-click="toggleDays($index, 'sunday')" label="SUN"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.monday" ng-click="toggleDays($index, 'monday')" label="MON"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.tuesday" ng-click="toggleDays($index, 'tuesday')" label="TUE"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.wednesday" ng-click="toggleDays($index, 'wednesday')" label="WED"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.thursday" ng-click="toggleDays($index, 'thursday')" label="THU"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.friday" ng-click="toggleDays($index, 'friday')" label="FRI"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.saturday" ng-click="toggleDays($index, 'saturday')" label="SAT"></ad-checkboxtext-left>
+            <ad-checkboxtext-left style="float:left;width:80px;margin:5px;" is-disabled="!is_date_range_editable(dateRange.end_date)" is-checked="set.sunday" ng-click="toggleDays($index, 'sunday')" label="SUN"></ad-checkboxtext-left>
         </li>
-
+        <!--
         <li style="float:right; padding-top:10px;" ng-show="currentClickedSet == $index">
             <span class="icons icon-rate-search" style="float:right; width:40px;">&nbsp;</span>
         </li>
         <li style="float:right; padding-top:10px;" ng-show="currentClickedSet == $index">
             <span class="icons icon-rate-fill" style="float:right; width:40px;">&nbsp;</span>
         </li>
-        <li style="float:right; padding-top:10px;" ng-show="currentClickedSet == $index">
-            <span class="icons icon-calendar" style="float:right; width:40px;" ng-click="popupCalendar()" ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
-        </li>
-
-
-        <li style="width:3%; float:right;" ng-hide="currentClickedSet == $index">
+        -->
+        <li class="arrow-right" ng-hide="currentClickedSet == $index">
             <span class="cursor-hand"><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)"></span>
+        </li>
+        <li class="arrow-right" ng-show="currentClickedSet == $index">
+            <span class="cursor-hand"><img src="/assets/arrow-up.png" ng-click="unsetCurrentClickedSet($index)"></span>
+        </li>
+        <li class="arrow-right padding-right-ten" ng-show="currentClickedSet == $index">
+            <span class="icons icon-calendar" style="width:40px;" ng-click="popupCalendar()" ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
         
     </ul>
@@ -54,18 +56,22 @@
             <td align="right" class="room-type">{{room_rate.name}}</td>
             <td align="center">&nbsp;</td>
             <td align="left">
-                <div class ="entry">
-                    <input type="text" ng-model="room_rate.single" ng-disabled="!is_date_range_editable(dateRange.end_date)">
-                </div>
+                <div class ="entry"><input type="text" ng-model="room_rate.single" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div>
             </td>
             <td align="center" ng-hide="!is_date_range_editable(dateRange.end_date)">
                 <span class="icons right-arrow-grey" ng-click="moveSingleToDouble($parent.$index,$index)">&nbsp;</span>
             </td>
-            <td align="left"><div class ="entry"><input type="text" ng-model="room_rate.double" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div></td>
+            <td align="left">
+                <div class ="entry"><input type="text" ng-model="room_rate.double" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div>
+            </td>
             <td align="center">&nbsp;</td>
-            <td align="left"><div class ="entry"><input type="text" ng-model="room_rate.extra_adult" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div></td>
+            <td align="left">
+                <div class ="entry"><input type="text" ng-model="room_rate.extra_adult" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div>
+            </td>
             <td align="center">&nbsp;</td>
-            <td align="left"><div class ="entry"><input type="text" ng-model="room_rate.child" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div></td>
+            <td align="left">
+                <div class ="entry"><input type="text" ng-model="room_rate.child" ng-disabled="!is_date_range_editable(dateRange.end_date)"></div>
+            </td>
             <td align="center">&nbsp;</td>
         </tr>
       <tr>
@@ -78,9 +84,11 @@
         <td width="16%" align="left">&nbsp;</td>
         <td width="4%" align="center">&nbsp;</td>
         <td width="15%" style="text-align:right;" colspan="3">
+            <!--
             <span style="padding-right:20px;">
                 <button type="button" class="button blue" ng-hide="!is_date_range_editable(dateRange.end_date)">QUICK FILL</button>
             </span>
+            -->
             <button type="button" class="button" ng-click="saveSet($index)" ng-hide="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">SAVE&nbsp;SET</button>
             <button type="button" class="button" ng-click="saveSet($index)" ng-show="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">UPDATE&nbsp;SET</button>
         </td>
