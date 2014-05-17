@@ -103,7 +103,7 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 	
 	this.updateNight = function(data){
 		var deferred = $q.defer();		
-		var url = '/api/accounts/'+data.account_id+'/contracts/'+data.contract_id+'contract_nights';
+		var url = '/api/accounts/'+data.account_id+'/contracts/'+data.contract_id+'/contract_nights';
 		rvBaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
 			deferred.resolve(data);
 		},function(data){

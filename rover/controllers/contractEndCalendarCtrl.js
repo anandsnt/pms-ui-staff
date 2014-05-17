@@ -22,7 +22,7 @@ sntRover.controller('contractEndCalendarCtrl',['$scope','dateFilter','ngDialog',
 	};
 	$scope.setUpData();
 	
-	$scope.$watch('closePopupOnSelection',function(){
+	$scope.$watch('date',function(){
 	  if($scope.closePopupOnSelection){
 	    $scope.contractData.end_date = $scope.date;
 	    ngDialog.close();

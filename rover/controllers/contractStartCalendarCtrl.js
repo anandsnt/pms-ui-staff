@@ -5,8 +5,8 @@ sntRover.controller('contractStartCalendarCtrl',['$scope','dateFilter','ngDialog
 	
 	    $scope.isDateSelected = false;
 	
-	    if($scope.contractData.start_date!= null){
-	      $scope.date = $scope.contractData.start_date;
+	    if($scope.contractData.begin_date!= null){
+	      $scope.date = $scope.contractData.begin_date;
 	      $scope.isDateSelected = true;
 	    }
 	    else{
@@ -22,9 +22,9 @@ sntRover.controller('contractStartCalendarCtrl',['$scope','dateFilter','ngDialog
 	};
 	$scope.setUpData();
 	
-	$scope.$watch('closePopupOnSelection',function(){
+	$scope.$watch('date',function(){
 	  if($scope.closePopupOnSelection){
-	    $scope.contractData.start_date = $scope.date;
+	    $scope.contractData.begin_date = $scope.date;
 	    ngDialog.close();
 	  }
 	});
