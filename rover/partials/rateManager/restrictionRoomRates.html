@@ -9,7 +9,7 @@
 	
 	<div class="price-fields">
 		<span class="inp-field-before-or">
-			<input type="text" size="7" ng-model="data.single" value="{{data.single}}">
+			<input type="text" size="7" ng-model="data.single" value="{{data.single}}" ng-class={'strike-through': data.single_extra_amnt != ''} ng-disabled="data.single_extra_amnt != ''">
 		</span>
 		<span class="or"> OR</span>
 		<span class="inp-field-after-or" ng-model="data.single_sign">
@@ -18,7 +18,7 @@
 				<option value="-">-</option>
 			</select>
 		<span class="inp-field">
-			<input type="text"  size="7" ng-model="data.single_extra_amnt">
+			<input type="text"  size="7" ng-model="data.single_extra_amnt" >
 		</span>	
 		<span class="inp-field">
 			<select style="width:70px;" ng-model="data.single_amnt_diff">
@@ -32,7 +32,7 @@
 	</div>
 	<div class="price-fields">
 		<span class="inp-field-before-or">
-			<input type="text" size="7" ng-model="data.double" value="{{data.double}}">
+			<input type="text" size="7" ng-class={'strike-through': data.double_extra_amnt != ''} ng-model="data.double" value="{{data.double}}" ng-disabled="data.double_extra_amnt!=''">
 		</span>
 		<span class="or"> OR</span>
 		<span class="inp-field-after-or">
@@ -40,8 +40,8 @@
 				<option value="+">+</option>
 				<option value="-">-</option>
 			</select>
-		<span class="inp-field" ng-model="data.double_extra_amnt">
-			<input type="text"  size="7">
+		<span class="inp-field" >
+			<input type="text" ng-model="data.double_extra_amnt" size="7" >
 		</span>	
 		<span class="inp-field">
 			<select style="width:70px;" ng-model="data.double_amnt_diff">
@@ -55,7 +55,7 @@
 	</div>
 	<div class="price-fields">
 		<span class="inp-field-before-or">
-			<input type="text" size="7" ng-model="data.extra_adult" value="{{data.extra_adult}}">
+			<input type="text" size="7" ng-class={'strike-through': data.extra_adult_extra_amnt != ''} ng-model="data.extra_adult" value="{{data.extra_adult}}" ng-disabled="data.extra_adult_extra_amnt!=''">
 		</span>
 		<span class="or"> OR</span>
 		<span class="inp-field-after-or" ng-model="data.extra_adult_sign">
@@ -64,7 +64,7 @@
 				<option value="-">-</option>
 			</select>
 		<span class="inp-field">
-			<input type="text"  size="7" ng-model="data.extra_adult_extra_amnt">
+			<input type="text"  size="7" ng-model="data.extra_adult_extra_amnt" >
 		</span>	
 		<span class="inp-field">
 			<select style="width:70px;" ng-model="data.extra_adult_amnt_diff">
@@ -78,7 +78,7 @@
 	</div>
 	<div class="price-fields">
 		<span class="inp-field-before-or">
-			<input type="text" size="7" ng-model="data.child" value="{{data.child}}">
+			<input type="text" size="7" ng-class={'strike-through': data.child_extra_amnt != ''} ng-model="data.child" value="{{data.child}}" ng-disabled="data.child_extra_amnt!=''">
 		</span>
 		<span class="or"> OR</span>
 		<span class="inp-field-after-or">
@@ -87,7 +87,7 @@
 				<option value="-">-</option>
 			</select>
 		<span class="inp-field">
-			<input type="text"  size="7" ng-model="data.child_extra_amnt">
+			<input type="text"  size="7" ng-model="data.child_extra_amnt" >
 		</span>	
 		<span class="inp-field">
 			<select style="width:70px;" ng-model="data.child_amnt_diff">

@@ -30,7 +30,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 		var rejectDeferred = function(data){
 			deferred.reject(data);
-		}
+		};
 		var getDailyRates = function(d){
 			var url = "/api/daily_rates";
 			//var url =  '/sample_json/rate_manager/daily_rates.json';	
@@ -46,7 +46,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				
 		return deferred.promise;
 
-	}
+	};
 
 	this.fetchRoomTypeCalenarData = function(params){
 		var deferred = $q.defer();
