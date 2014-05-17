@@ -6,7 +6,6 @@ sntRover.controller('RestrictionDaysCtrl', ['$q', '$scope', 'ngDialog',
         };
 
         $scope.updateRestrictionBtnClicked = function(id){
-            console.log($scope.daysEntered);
 
             $scope.data.restrictionTypes[id].showEdit = false;
             $scope.data.restrictionTypes[id].days = $scope.daysEntered;
