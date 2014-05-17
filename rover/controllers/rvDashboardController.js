@@ -9,7 +9,7 @@ sntRover.controller('RVdashboardController',['$scope','RVDashboardSrv','dashBoar
          	BaseCtrl.call(this, $scope);
 
             //setting the heading of the screen
-          $scope.heading = "Dashboard";
+          $scope.heading = "DASHBOARD_HEADING";
 
           $scope.dashboardData = dashBoarddata.dashboardData;
           $scope.userDetails   = dashBoarddata.userDetails;
