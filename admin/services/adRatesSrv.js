@@ -51,16 +51,46 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2',
         var that = this;
         this.rateDetails = {};
 
+      /*
+        * Service function to fetch add ons
+        * @return {object} add ons
+        */
+        this.fetchAddons = function () {
+           var deferred = $q.defer();
+
+           var url = "/api/addons?is_active=true";
+            ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        }
+
         // get rate details
         this.fetchDetails = function (params) {
             var deferred = $q.defer();
+             /*
+             * Service function to fetch add ons
+             * @return {object} add ons
+             */
+            this.fetchAddons = function () {
+                var url = "/api/addons?is_active=true";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.rateDetails.allAddOns = data.results;
+                    deferred.resolve(that.rateDetails);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+            };
+
             // fetch hotel business date
             this.fetchHotelInfo = function () {
                 var url = "/api/rover_header_info";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     data = data.data;
                     that.rateDetails.business_date = data.business_date;
-                    deferred.resolve(that.rateDetails);
+                    this.fetchAddons();
                 }, function (data) {
                     deferred.reject(data);
                 });
