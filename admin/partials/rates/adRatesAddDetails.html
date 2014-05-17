@@ -32,7 +32,7 @@
             <div class="entry">
                 <label>currency <strong>*</strong> </label>
                 <div class="select">
-                    <select class="placeholder" ng-model="rateData.currency_code_id" ng-options="data.id as data.symbol for data in [rateTypesDetails.hotel_settings.currency]">
+                    <select class="placeholder" ng-model="rateData.currency_code_id" ng-options="data.id as data.symbol for data in [rateTypesDetails.hotel_settings.currency]" disabled="disabled" class="styled">
                     </select>
                 </div>
             </div>

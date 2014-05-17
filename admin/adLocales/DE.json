@@ -1,0 +1,21 @@
+{
+    "EDIT": "Bearbeiten",
+    "HOTEL_ANNOUNCEMENTS": "Hotel Ankündigungen",
+    "ZEST_WELCOME_MESSAGE_TITLE": "Zest Begrüßung",
+    "ZEST_CHECKOUT_MESSAGE_TITLE": "Zest Kasse Nachricht",
+    "KEY_DELIVERY_EMAIL_MESSAGE_TITLE": "Key Delivery E-Mail-Adresse",
+    "CANCEL": "stornieren",
+    "SAVE_CHANGES": "Änderungen speichern",
+    "BACK": "zurück",
+    "GUEST_CHECKIN_SETUP": "Gast Checkin-Setup",
+    "SEND_CHECKIN_EMAIL": "Senden Sie E-Mail-Checkin",
+    "SEND_CHECKIN_ALERT": "Senden Check In Alarm",
+    "NOTIFY_GUEST_WHEN_ROOM_READY_VACANT_TITLE": "Benachrichtigen Sie Gast Wenn Zimmer ist fertig & Frei",
+    "RESERVATION_CC_GUARANTEED": "Nur wenn Reservierung garantiert CC",
+    "EMAIL_TO_ALL_ARRIVALS": "E-Mail an alle Ankünfte auf",
+    "CHECKIN_ALERT": "Überprüfen Sie in Alert",
+    "WEB_CHECKIN_STAFF_ALERT": "Web Check-in Personal-Benachrichtigung",
+    "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Nur bei Check-in ist NICHT erfolgreich",
+    "ALL": "alle",
+    "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "E-Mail-Accounts (mit Semikolons getrennt [;])"
+}
