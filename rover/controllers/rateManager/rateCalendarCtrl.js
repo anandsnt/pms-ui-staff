@@ -5,6 +5,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
                 scrollX: true,
                 scrollbars: true,
                 interactiveScrollbars: true,
+                click: true
                 // snap: false,
             },
    };
