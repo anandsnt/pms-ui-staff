@@ -2,10 +2,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     function ($q, $scope, ngDialog, UpdatePriceAndRestrictionsSrv) {
         $scope.init = function(){
             $scope.showRestrictionDayUpdate = false;
-            // console.log("*****************************JPHME HM calendr************************");
-            // console.log(JSON.stringify($scope.popupData));
-             // console.log("*****************************JPHME HM popup************************");
-             // console.log(JSON.stringify($scope.popupData));
+            
             if($scope.popupData.fromRoomTypeView){
                 computePopupdateForRoomTypeCal();
             }else{
@@ -18,15 +15,18 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         };
 
         var computePopupdateForRoomTypeCal = function(){
-            var selectedDateInfo = {};
+            $scope.data = {};
+            $scope.data.id = "";
+            $scope.data.name = "";
+            selectedDateInfo = {};
             for(var i in $scope.calendarData.data){
                 if($scope.calendarData.data[i].id == $scope.popupData.selectedRoomType){
                     selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
+                    $scope.data.id = $scope.calendarData.data[i].id;
+                    $scope.data.name = $scope.calendarData.data[i].name;
                 }
             }
-            console.log("nowwww");
-            console.log(JSON.stringify(selectedDateInfo));
-            $scope.data = {};
+
             var restrictionTypes = {};
             var rTypes = $scope.calendarData.restriction_types;
             for(var i in rTypes){
@@ -52,7 +52,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             $scope.data.restrictionTypes = restrictionTypes;
             $scope.data.previousRestrictionTypes = JSON.parse(JSON.stringify($scope.data.restrictionTypes));
             
-            // console.log("value====="+JSON.stringify($scope.calendarData));
             angular.forEach($scope.calendarData.data, function(value, key){
             	var selectedDate = $scope.popupData.selectedDate;
         		$scope.data.single = value[selectedDate].single;
@@ -83,14 +82,20 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         * Compute the restrictions data     
         */
         var computePopUpdata = function(){
+            $scope.data = {};
+            $scope.data.id = "";
+            $scope.data.name = "";
+
             var selectedDateInfo = {};
             for(var i in $scope.calendarData.data){
                 if($scope.calendarData.data[i].id == $scope.popupData.selectedRate){
                     selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
+                    $scope.data.id = $scope.calendarData.data[i].id;
+                    $scope.data.name = $scope.calendarData.data[i].name;
                 }
             }
+           
 
-            $scope.data = {};
             var restrictionTypes = {};
             var rTypes = $scope.calendarData.restriction_types;
             for(var i in rTypes){
@@ -113,7 +118,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             }
             $scope.data.restrictionTypes = restrictionTypes;
             $scope.data.previousRestrictionTypes = JSON.parse(JSON.stringify($scope.data.restrictionTypes));
-			// console.log(JSON.stringify($scope.data.previousRestrictionTypes));
         };
 
         var isRestictionHasDaysEnter = function(restriction){
@@ -270,7 +274,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 		    // data.details.push(doubleData);
 		    // data.details.push(extraAdultData);
 		    // data.details.push(childData);
-		    console.log("value==>>>>>>>>>>>>==="+JSON.stringify(data));
         	$scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data);
         	
         };
