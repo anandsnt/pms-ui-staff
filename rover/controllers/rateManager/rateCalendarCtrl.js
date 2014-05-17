@@ -35,7 +35,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
    /**
     * Method to fetch calendar data
     */
-	var loadTable = function(rateId){
+	var loadTable = function(){
 		var calenderDataFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.calendarData = data;
@@ -46,7 +46,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 			$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, getParams, calenderDataFetchSuccess);
 		
 		} else {
-			var getParams = calculateRoomTypeViewCalGetParams(rateId);
+			var getParams = calculateRoomTypeViewCalGetParams($scope.selectedRate.id);
 			$scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalenarData, getParams, calenderDataFetchSuccess);
 		}
 	};
@@ -189,5 +189,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
    };
 
 	$scope.init();
+	
+	$scope.refreshData = function(){
+		loadTable();
+	};
   
 }]);

@@ -263,6 +263,9 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 		    data.details.push(restrictionDetails);
         	$scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data);
         	
+        	$scope.refreshData();
+        	ngDialog.close();
+        	
         };
     }
 ]);
