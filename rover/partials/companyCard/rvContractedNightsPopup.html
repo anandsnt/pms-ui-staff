@@ -7,10 +7,10 @@
         <div class="holder left">
             <div class="entry">
                 <label for="contracted-all">All</label>
-                <input name="contracted-all" id="contracted-all" value="" type="text"  />
+                <input ng-model="contractData.allNights" name="contracted-all" id="contracted-all" value="{{contractData.allNights}}" type="text"  />
             </div>
             <div class="entry move">
-                <span id="copy-to-all" class="admin-icons icon-mover-right">Copy values</span>
+                <span ng-click="updateAllNights()" id="copy-to-all" class="admin-icons icon-mover-right">Copy values</span>
             </div>
         </div>
         <div class="holder right">
