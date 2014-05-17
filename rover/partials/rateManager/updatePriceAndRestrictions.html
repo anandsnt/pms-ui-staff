@@ -13,9 +13,12 @@
                             <div ng-include="'/assets/partials/rateManager/restrictionsList.html'" >
                             </div>
                         </td>
-                        <td width="50%" ng-show="showRestrictionDayUpdate" >
+                        <td width="50%" ng-show="showRestrictionDayUpdate && !popupData.all_data_selected" >
                             <div ng-include="'/assets/partials/rateManager/restrictionDaysEnter.html'"ng-controller="RestrictionDaysCtrl"></div >
                         </td>
+                        <!-- <td width="50%" ng-show="popupData.all_data_selected && showRestrictionDayUpdate" >
+                            <div ng-include="'/assets/partials/rateManager/mixedRestrictions.html'" ng-controller="MixedRestrictionsCtrl"></div >
+                        </td> -->
                        <!--  <td width="50%" style="vertical-align:top" >
                            <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'"ng-controller="RestrictionDaysCtrl"></div >
                        </td> -->
@@ -23,17 +26,7 @@
                         </td>
                     </tr>
                 </table>
-                
-                
-                <!-- <div class="hide">
-                    include div 3 here
-                </div>
-                <div class="hide">
-                    include div 4 here
-                </div>
-                <div class="hide">
-                    include div 5 here
-                </div> -->
+
             </div>
             <div class="footer">
                 <div class="actions float">

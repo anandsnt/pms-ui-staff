@@ -121,10 +121,11 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         };
 
         var isRestictionHasDaysEnter = function(restriction){
+            var ret = true;
             if(['CLOSED', 'CLOSED_ARRIVAL', 'CLOSED_DEPARTURE'].indexOf(restriction) >= 0){
-                return false;
+                ret = false;
             }
-            return true;
+            return ret;
         }
 
         /**
@@ -132,12 +133,21 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         * Enable disable restriction. 
         */
         $scope.onOffRestrictions = function(id, action, days){
-            if($scope.data.restrictionTypes[id].hasEdit){
+            //if All data selected, html is rendered based on the flag '$scope.popupData.all_data_selected'
+           /* if($scope.popupData.all_data_selected){
+                $scope.showRestrictionDayUpdate = true;
+                $scope.data.restrictionTypes[id].showEdit = true;
+                return false;
+            }*/
+
+            //If the restriction types has edit, show restrictionEdit section based on, 
+            //the flag $scope.showRestrictionDayUpdate
+            if($scope.data.restrictionTypes[id].hasEdit || $scope.popupData.all_data_selected){
                 $scope.showRestrictionDayUpdate = true;
                 $scope.data.restrictionTypes[id].showEdit = true;
                 return false;
             }
-
+            //The restriction has normal on of action
             if(action == "ENABLE"){
                 $scope.data.restrictionTypes[id].isRestrictionEnabled = true; 
             }

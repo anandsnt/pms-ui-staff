@@ -104,8 +104,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 		angular.forEach(that.roomTypeRates.results, function(item){
 		   	datesList.push(item.date);
-		   	console.log(JSON.stringify(item))
-
 		   	//UI requires al-rates separated from daily rates.
 		   	ratesRestrictions[item.date] = item.rate_restrictions;
 
@@ -223,6 +221,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		} 
 		if('MIN_ADV_BOOKING' == restriction_type.value) {
 			restriction_type_updated.background_class = "bg-green";
+		}
+		if('MIN_STAY_THROUGH' == restriction_type.value) {
+			restriction_type_updated.background_class = "bg-violet";
 		}
 		restriction_type_updated.id = restriction_type.id;
 		restriction_type_updated.description = restriction_type.description;
