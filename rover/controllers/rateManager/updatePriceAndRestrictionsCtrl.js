@@ -2,7 +2,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     function ($q, $scope, ngDialog, UpdatePriceAndRestrictionsSrv) {
         $scope.init = function(){
             $scope.showRestrictionDayUpdate = false;
-            
+
             if($scope.popupData.fromRoomTypeView){
                 computePopupdateForRoomTypeCal();
             }else{
@@ -173,21 +173,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         	restrictionDetails.double = {};
         	restrictionDetails.extra_adult = {};
         	restrictionDetails.child = {};
-        	// restrictionDetails.single.value = 123;
-        	// restrictionDetails.single.type = "sxhchdhj";
-//         	
-        	// var singleData = {};
-        	// singleData.single = [];
-// 
-//         	
-        	// var doubleData = {};
-        	// doubleData.double = [];
-//         	
-        	// var extraAdultData = {};
-        	// extraAdultData.extra_adult = [];
-//         	
-        	// var childData = {};
-        	// childData.child = [];
         	
         	
         	angular.forEach($scope.data.restrictionTypes, function(value, key){
@@ -258,8 +243,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         			restrictionDetails.extra_adult.type = "amount_new";
 		    	}
 		    	
-		    	
-		    	
 		    	if($scope.data.child==""){
 		    		restrictionDetails.child.value = $scope.data.child_sign + $scope.data.child_extra_amnt;
 		    		if($scope.data.child_amnt_diff == "$"){
@@ -272,18 +255,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 		    		restrictionDetails.child.value = $scope.data.child;
         			restrictionDetails.child.type = "amount_new";
 		    	}
-		    	
-		    	
 		    }
 		    restrictionDetails.single.value = parseFloat(restrictionDetails.single.value);
 		    restrictionDetails.double.value = parseFloat(restrictionDetails.double.value);
 		    restrictionDetails.extra_adult.value = parseFloat(restrictionDetails.extra_adult.value);
 		    restrictionDetails.child.value = parseFloat(restrictionDetails.child.value);
 		    data.details.push(restrictionDetails);
-		    // data.details.push(singleData);
-		    // data.details.push(doubleData);
-		    // data.details.push(extraAdultData);
-		    // data.details.push(childData);
         	$scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data);
         	
         };

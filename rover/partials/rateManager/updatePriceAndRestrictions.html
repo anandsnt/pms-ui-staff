@@ -9,19 +9,20 @@
             <div>
                 <table>
                     <tr>
-                        <td width="50%">
-                            <div ng-include="'/assets/partials/rateManager/restrictionsList.html'" >
+                        <td>
+                            <div class="ng-scope restbg" ng-include="'/assets/partials/rateManager/restrictionsList.html'" >
                             </div>
                         </td>
-                        <td width="50%" ng-show="showRestrictionDayUpdate && !popupData.all_data_selected" >
+                        <td  style="vertical-align:top" ng-show="showRestrictionDayUpdate" >
                             <div ng-include="'/assets/partials/rateManager/restrictionDaysEnter.html'"ng-controller="RestrictionDaysCtrl"></div >
                         </td>
-                        <!-- <td width="50%" ng-show="popupData.all_data_selected && showRestrictionDayUpdate" >
-                            <div ng-include="'/assets/partials/rateManager/mixedRestrictions.html'" ng-controller="MixedRestrictionsCtrl"></div >
-                        </td> -->
-                       <!--  <td width="50%" style="vertical-align:top" >
-                           <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'"ng-controller="RestrictionDaysCtrl"></div >
-                       </td> -->
+                        <td style="vertical-align:top" >
+                            <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'"></div >
+                        </td>
+                         <td style="vertical-align:top" ng-hide="true">
+                            <div ng-include="'/assets/partials/rateManager/restrictionWeekDays.html'"></div >
+                        </td>
+
                         <td>
                         </td>
                     </tr>
