@@ -1,18 +1,18 @@
 <section  class="content current" style="display: block;" ng-click="clearErrorMessage()">
 	<div>
 	<header class="content-title float">
-		<h2>Edit Hotel Announcements</h2>
-		<a id="go_back" data-type="load-details" class="action back" ng-click="goBack()">Back</a>
+		<h2>{{ 'EDIT' | translate }} {{ 'HOTEL_ANNOUNCEMENTS' | translate }}</h2>
+		<a id="go_back" data-type="load-details" class="action back" ng-click="goBack()">{{ 'BACK' | translate }}</a>
 	</header>
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<form style="overflow-y:auto;" name="edit-hotel-announcement" method="post" class="form float">
 		<fieldset class="holder column">
 
-			<ad-textarea rows="2" div-class="full-width" value="data.guest_zest_welcome_message" name = "guest-zest-welcome-message" id = "guest-zest-welcome-message" label = "Zest Welcome Message" placeholder = "Enter Zest Welcome Message" maxlength="200"></ad-textarea>
+			<ad-textarea rows="2" div-class="full-width" value="data.guest_zest_welcome_message" name = "guest-zest-welcome-message" id = "guest-zest-welcome-message" label = "{{ 'ZEST_WELCOME_MESSAGE_TITLE' | translate }}" placeholder = "Enter Zest Welcome Message" maxlength="200"></ad-textarea>
 
-			<ad-textarea rows="2" div-class="full-width" value="data.guest_zest_checkout_complete_message" name = "guest-zest-checkout-message" id = "guest-zest-checkout-message" label = "Zest Checkout Message" placeholder = "Enter Zest Checkout Message" maxlength="200" ></ad-textarea>
+			<ad-textarea rows="2" div-class="full-width" value="data.guest_zest_checkout_complete_message" name = "guest-zest-checkout-message" id = "guest-zest-checkout-message" label = "{{ 'ZEST_CHECKOUT_MESSAGE_TITLE' | translate }}" placeholder = "Enter Zest Checkout Message" maxlength="200" ></ad-textarea>
 
-			<ad-textarea rows="4" div-class="full-width" value="data.key_delivery_email_message" name = "guest-zest-checkout-message" id = "guest-zest-key-delivery-email-message" label = "Key Delivery Email Message" placeholder = "Enter Zest Checkout Message" maxlength="500"></ad-textarea>
+			<ad-textarea rows="4" div-class="full-width" value="data.key_delivery_email_message" name = "guest-zest-checkout-message" id = "guest-zest-key-delivery-email-message" label = "{{ 'KEY_DELIVERY_EMAIL_MESSAGE_TITLE' | translate }}" placeholder = "Enter Zest Checkout Message" maxlength="500"></ad-textarea>
 
 		</fieldset>
 		<div class="actions float">
