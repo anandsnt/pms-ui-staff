@@ -19,6 +19,19 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 		return deferred.promise;				
 	};
 
+	/**
+	* service function used for retreive country list
+	*/
+	this.fetchCountryList = function(){
+		var deferred = $q.defer();		
+		var url =  '/ui/country_list';			
+		rvBaseWebSrvV2.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;				
+	};	
 
 	/**
 	* service function used to save the contact information
