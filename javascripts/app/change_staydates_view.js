@@ -68,7 +68,9 @@ var ChangeStayDatesView = function(viewDom){
   this.calenderDatesFetchCompleted = function(calenderEvents){
   	
   	
-  	console.log(calenderEvents);
+  	  console.log(calenderEvents);
+  	  that.checkin_inspected_only = calenderEvents.data.checkin_inspected_only;
+  	  that.room_ready_status = calenderEvents.data.room_ready_status;
       that.availableEvents = calenderEvents;
       //TODO: Remove after API completed
       //that.availableEvents.data.is_rates_suppressed = "true";
@@ -420,7 +422,8 @@ var ChangeStayDatesView = function(viewDom){
       var foStatus = that.myDom.find('.reservation-header .room').attr('data-fostatus');
       var roomStatus = that.myDom.find('.reservation-header .room').attr('data-room-status');
       var reservStatus = that.myDom.find('.reservation-header .room').attr('data-reserv-status'); 
-      var roomColorClass = getRoomColorClass(reservStatus, roomStatus, foStatus);
+      //var roomColorClass = getRoomColorClass(reservStatus, roomStatus, foStatus);
+      var roomColorClass = get_mapped_room_ready_status_color(that.room_ready_status, that.checkin_inspected_only);
       that.myDom.find('#reservation-updates #room-number').addClass(roomColorClass);
       //display room type
       that.myDom.find('#reservation-updates #room-type').text(that.myDom.find('#room-type').text());
@@ -499,7 +502,8 @@ var ChangeStayDatesView = function(viewDom){
       that.myDom.find('#change-room ul').html('');
 
       $(response.data.rooms).each(function(index){
-          var roomElement = '<span id = "room-list-number" class="room-number '+ (this.room_status=="READY" ? "ready" : "not-ready") +'">'+ this.room_number +'</span>';
+      	  var colorCode = get_mapped_room_ready_status_color(that.room_ready_status, that.checkin_inspected_only);
+          var roomElement = '<span id = "room-list-number" class="room-number '+ colorCode +'">'+ this.room_number +'</span>';
           var roomListEntry = '<li><button type="button" data-value="'+ this.room_number +'" class="button white">' 
                             +roomElement+ '</button></li>';
           that.myDom.find('#change-room ul').append(roomListEntry);

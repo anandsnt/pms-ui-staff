@@ -273,8 +273,12 @@ var RoomAssignmentView = function(viewDom){
           
           // Display FO status (VACANT, DUEOUT, etc) only when room-status = NOT-READY
           // Always show color coding ( Red / Green - for Room status)
+          	var color_code = get_mapped_room_ready_status_color(filteredRoomList[i].room_ready_status, filteredRoomList[i].checkin_is_inspected_only)
           if(filteredRoomList[i].room_status == "READY" && filteredRoomList[i].fo_status == "VACANT"){
-            room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
+          	console.log("filteredRoomList[i].room_ready_status---"+filteredRoomList[i].room_ready_status);
+          	console.log("filteredRoomList[i].use_inspected---"+filteredRoomList[i].use_inspected);
+          
+            room_status_html = "<span class='room-number '"+ color_code+ "data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
         
             if(filteredRoomList[i].is_preassigned) {
               room_status_html += "<span class='room-preassignment'>"+filteredRoomList[i].last_name + " " + filteredRoomList[i].guarantee_type+"</span>";
@@ -283,7 +287,7 @@ var RoomAssignmentView = function(viewDom){
           else{
           	 if (filteredRoomList[i].room_ready_status == "PICKUP"){
           	 	console.log("room_ready_Status ---"+filteredRoomList[i].room_ready_status);
-          	 	room_status_html += "<span class='room-number room-color-orange' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
+          	 	room_status_html += "<span class='room-number room-orange' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
               	"<span class='room-status room-ornage' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].room_ready_status+" </span>";
           	 	}
           	 	else{	
