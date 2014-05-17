@@ -9,15 +9,18 @@
             <div>
                 <table>
                     <tr>
-                        <td width="50%">
+                        <td>
                             <div ng-include="'/assets/partials/rateManager/restrictionsList.html'" >
                             </div>
                         </td>
-                        <td width="50%" ng-show="showRestrictionDayUpdate" >
+                        <td ng-show="showRestrictionDayUpdate" >
                             <div ng-include="'/assets/partials/rateManager/restrictionDaysEnter.html'"ng-controller="RestrictionDaysCtrl"></div >
                         </td>
-                        <td width="50%" style="vertical-align:top" >
-                            <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'"ng-controller="RestrictionDaysCtrl"></div >
+                        <td style="vertical-align:top" >
+                            <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'"></div >
+                        </td>
+                         <td style="vertical-align:top" >
+                            <div ng-include="'/assets/partials/rateManager/restrictionWeekDays.html'"></div >
                         </td>
                         <td>
                         </td>
@@ -25,15 +28,7 @@
                 </table>
                 
                 
-                <!-- <div class="hide">
-                    include div 3 here
-                </div>
-                <div class="hide">
-                    include div 4 here
-                </div>
-                <div class="hide">
-                    include div 5 here
-                </div> -->
+                
             </div>
             <div class="footer">
                 <div class="actions float">
