@@ -1,7 +1,7 @@
 <!-- Header Collapse View -->
 <div ng-hide="detailsMenu ==='rulesAndRestrictions'">
 	<div class="form-title">
-		<h3 class="rate_additional_details_heading">  RULES AND RESTRICTIONS </h3>
+		<h3 class="rate_additional_details_heading">  RULES & RESTRICTIONS </h3>
 		<div ng-click="changeDetailsMenu('rulesAndRestrictions')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
 	</div>
 </div>
@@ -9,7 +9,7 @@
 <!-- Expanded View -->
 <div ng-show="detailsMenu ==='rulesAndRestrictions'" class="form_add_new_rate">
 	<div class="form-title">
-		<h3 class="rate_additional_details_heading">RULES AND RESTRICTIONS </h3>
+		<h3 class="rate_additional_details_heading">RULES & RESTRICTIONS </h3>
 		<div ng-click="changeDetailsMenu('')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-up.png"></div>
 	</div>
 
@@ -26,7 +26,7 @@
 		<ad-checkbox is-checked="rateData.use_rate_levels" label="Use Rate Levels" div-class="full-width"></ad-checkbox>	
 	</fieldset>
 	<fieldset class="holder right">
-		<div class="entry full-width">
+		<div class="entry full-width rates_deposit_requirements">
 			<label>deposit requirements</label>
 			<div class="select">
 				<select class="placeholder" ng-model="rateData.deposit_policy_id" ng-options="policy.id as policy.name for policy in rateTypesDetails.depositPolicies">
