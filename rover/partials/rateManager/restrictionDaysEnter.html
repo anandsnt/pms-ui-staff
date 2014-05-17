@@ -1,5 +1,5 @@
 <div ng-repeat="restrictionType in data.restrictionTypes">
-	<div ng-if="restrictionType.days !=''" ng-show="restrictionType.showEdit">
+	<div ng-if="restrictionType.hasEdit" ng-show="restrictionType.showEdit">
 	    <h2 class="h1">{{restrictionType.description}}</h2>
 	    {{restrictionType.description}}
 		<div>

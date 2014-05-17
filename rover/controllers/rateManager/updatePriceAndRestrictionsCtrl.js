@@ -31,11 +31,14 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 restrictionTypes[rTypes[i].id] = rTypes[i];
                 var item =  rTypes[i];
                 var itemID = rTypes[i].id;
+                item.days = "";
+                item.isRestrictionEnabled = false;
+                item.showEdit = false;
+                item.hasEdit = isRestictionHasDaysEnter(rTypes[i].value);
 
                 for(var i in selectedDateInfo.restrictions){
-                    item.days = "";
-                    item.isRestrictionEnabled = false;
-                    item.showEdit = false;
+
+
                     if(selectedDateInfo.restrictions[i].restriction_type_id == itemID){
                         item.days = selectedDateInfo.restrictions[i].days;
                         item.isRestrictionEnabled = true;
@@ -95,6 +98,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 				item.days = "";
                 item.isRestrictionEnabled = false;
                 item.showEdit = false;
+                item.hasEdit = isRestictionHasDaysEnter(rTypes[i].value);
 
                 for(var i in selectedDateInfo){
                     if(selectedDateInfo[i].restriction_type_id == itemID){
@@ -110,15 +114,21 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 			// console.log(JSON.stringify($scope.data.previousRestrictionTypes));
         };
 
+        var isRestictionHasDaysEnter = function(restriction){
+            if(['CLOSED', 'CLOSED_ARRIVAL', 'CLOSED_DEPARTURE'].indexOf(restriction) >= 0){
+                return false;
+            }
+            return true;
+        }
+
         /**
         * Click handler for restriction on/off buttons
         * Enable disable restriction. 
         */
         $scope.onOffRestrictions = function(id, action, days){
-            if(days != ""){
+            if($scope.data.restrictionTypes[id].hasEdit){
                 $scope.showRestrictionDayUpdate = true;
                 $scope.data.restrictionTypes[id].showEdit = true;
-                console.log("open popup");
                 return false;
             }
 
