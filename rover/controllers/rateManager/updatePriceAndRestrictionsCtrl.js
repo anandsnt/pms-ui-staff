@@ -2,7 +2,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     function ($q, $scope, ngDialog, UpdatePriceAndRestrictionsSrv) {
         $scope.init = function(){
             $scope.showRestrictionDayUpdate = false;
-
             if($scope.popupData.fromRoomTypeView){
                 computePopupdateForRoomTypeCal();
             }else{
@@ -133,16 +132,11 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         * Enable disable restriction. 
         */
         $scope.onOffRestrictions = function(id, action, days){
-            //if All data selected, html is rendered based on the flag '$scope.popupData.all_data_selected'
-           /* if($scope.popupData.all_data_selected){
-                $scope.showRestrictionDayUpdate = true;
-                $scope.data.restrictionTypes[id].showEdit = true;
-                return false;
-            }*/
 
-            //If the restriction types has edit, show restrictionEdit section based on, 
-            //the flag $scope.showRestrictionDayUpdate
-            if($scope.data.restrictionTypes[id].hasEdit || $scope.popupData.all_data_selected){
+        	angular.forEach($scope.data.restrictionTypes, function(value, key){
+        		value.showEdit =  false;
+        	});
+            if($scope.data.restrictionTypes[id].hasEdit){
                 $scope.showRestrictionDayUpdate = true;
                 $scope.data.restrictionTypes[id].showEdit = true;
                 return false;
