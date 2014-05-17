@@ -25,9 +25,9 @@
             <div class="entry">
                 <label for="company-country">Country</label>
                 <div class="select">
-                    <select id="company-country" name="company-country"> 
+                    <select id="company-country" name="company-country" ng-model="address_details.country"> 
                         <option value="" class="placeholder">Select country</option> 
-                        <option ng-repeat="country in contactInformation.countries" value="{{country.id}}" ng-selected="country.id==contactInformation.address_details.country" ng-model="address_details.country">
+                        <option ng-repeat="country in countries" value="{{country.id}}" ng-selected="country.id==contactInformation.address_details.country" >
                             {{country.value}}
                         </option>
                     </select>
@@ -70,7 +70,7 @@
             
             <rv-textbox value="contactInformation.primary_contact_details.contact_phone" label="Phone" placeholder = "Enter Contact Person's Phone" ></rv-textbox>
 
-            <rv-textbox value="contactInformation.primary_contact_details.contact_email_address" label="E-mail address" placeholder = "Enter Contact person's e-mail address" styleclass="full-width"></rv-textbox>
+            <rv-textbox value="contactInformation.primary_contact_details.contact_email" label="E-mail address" placeholder = "Enter Contact person's e-mail address" styleclass="full-width"></rv-textbox>
 
         </div>
     </div>
