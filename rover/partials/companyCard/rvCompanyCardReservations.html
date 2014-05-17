@@ -1,0 +1,89 @@
+<form method="post" action="app/stay-card/" id="cc-reservations" name="cc-reservations" class="form card-tab reservations" ng-show="currentSelectedTab == 'cc-reservations'">
+    <div id="cc-reservations-header" class="form card-tab">
+        <div class="entry date-range">
+            <div class="has-datepicker">
+                <input name="check-in-check-out-range-from" id="check-in-check-out-range-from" class="range-datepicker" value="14-01-2014" readonly="" data-range="from" />
+            </div>
+            <span>to</span>
+            <div class="has-datepicker">
+                <input name="check-in-check-out-range-to" id="check-in-check-out-range-to" class="range-datepicker" value="17-01-2014" readonly="" data-range="to" />
+            </div>
+        </div>
+        <div class="actions">
+            <button id="company-search-reservations" type="button" class="button green">Find reservations</button>
+        </div>
+    </div>
+    <div id="cc-reservations-content" class="tab-details scrollable">
+        <div class="wrapper">
+            <ul id="company-card-reservations" class="search-results">
+                <li>
+                    <a href="stay-card/check-in/?accompany=false" class="guest-check-in float" data-transition="inner-page remove-previous">
+                        <figure class="guest-image">
+                            <img src="../images/guest3.jpg" alt="">
+                        </figure>
+                        <div class="data">
+                            <h2>Johnson, Paul</h2>
+                            <span class="date">
+                                <span class="guest-status small-icon check-in">check-in</span>
+                                Tuesday 14-01-14
+                            </span>
+                            <span class="date">
+                                <span class="guest-status small-icon check-out">check-out</span>
+                                Friday 17-01-14
+                            </span>
+                        </div>
+                        <div class="status">
+                            <span class="guest-status check-in">check-in</span>
+                        </div>
+                        <strong class="room-number ready">104</strong>
+                    </a>
+                </li>
+                <li>
+                    <a href="stay-card/inhouse/?accompany=true" class="guest-inhouse float" data-transition="inner-page remove-previous">
+                        <figure class="guest-image">
+                            <img src="../images/guest1.jpg" alt="">
+                        </figure>
+                        <div class="data">
+                            <h2>Smith, Aaron</h2>
+                            <span class="date">
+                                <span class="guest-status small-icon check-in">check-in</span>
+                                Monday 13-01-14
+                            </span>
+                            <span class="date">
+                                <span class="guest-status small-icon check-out">check-out</span>
+                                Friday 17-01-14
+                            </span>
+                        </div>
+                        <div class="status">
+                            <span class="guest-status inhouse">inhouse</span>
+                        </div>
+                        <strong class="room-number">114</strong>
+                    </a>
+                </li>
+                <li>
+                    <a href="stay-card/inhouse/?accompany=true" class="guest-inhouse accompany float" data-transition="inner-page remove-previous">
+                        <figure class="guest-image accompany">
+                            <img src="../images/guest1.jpg" alt="">
+                            <img src="../images/avatar-female.jpg" alt="">
+                        </figure>
+                        <div class="data">
+                            <h2>Smith, Marcy</h2>
+                            <span class="date">
+                                <span class="guest-status small-icon check-in">check-in</span>
+                                Monday 13-01-14
+                            </span>
+                            <span class="date">
+                                <span class="guest-status small-icon check-out">check-out</span>
+                                Friday 17-01-14
+                            </span>
+                        </div>
+                        <div class="status">
+                            <span class="guest-status inhouse">inhouse</span>
+                        </div>
+                        <strong class="room-number">114</strong>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</form>

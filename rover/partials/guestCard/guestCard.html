@@ -1,5 +1,34 @@
+<div class="guest-card cards open" style="height:500px;" ui-jq="resizable" ng-controller="guestCardController" style="height: {{guestCardHeight}}px;" ng-class="{'open': guestCardVisible}" ui-jq="resizable" ui-options="resizableOptions" ng-click="guestCardClick($event)"  ng-controller="guestCardController" style="height: {{guestCardHeight}}px;" ng-class="{'open': guestCardVisible}" ui-jq="resizable" ui-options="resizableOptions" ng-click="guestCardClick($event)"  >
+    <div class="cards-wrapper">
+        <!-- Cards Header -->
+        <header class="cards-header">
+            <div id="guest-card-header" class="card-header">
+                <figure class="guest-image">
+                    <img src="../images/jos.jpg" alt="" />
+                    <span class="vip">VIP </span>
+                </figure>
+                <form method="post" action="app/stay-card/" name="change-name" id="change-name">
+                    <div class="holder">
+                        <div class="entry">
+                            <input name="gc-firstname" id="gc-firstname" placeholder="" value="Jos" type="text" class="masked-input h1" />
+                            <input name="gc-lastname" id="gc-lastname" placeholder="" value="Schaap" type="text" class="masked-input h1" />
+                        </div>
+                        <strong class="status">Platinum</strong>
+                    </div>
+                    <div class="holder data">
+                        <input  name="gc-city" id="gc-city" placeholder="" value="" type="text" class="masked-input icons icon-gc-location" />
+                        <input  name="gc-state" id="gc-state" placeholder="" value="" type="text" class="masked-input" />
+                        <input name="gc-phone" id="gc-phone" placeholder="" value="" type="tel" class="masked-input icons icon-gc-phone" />
+                        <input name="gc-email" id="gc-email" placeholder="" value="" type="email" class="masked-input icons icon-gc-email" />
+                    </div>
+                </form>
+            </div>
+        </header>
 
-<div role="complementary" id="guest-card"   ng-controller="guestCardController" style="height: {{guestCardHeight}}px;" ng-class="{'open': guestCardVisible}" ui-jq="resizable" ui-options="resizableOptions" ng-click="guestCardClick($event)" resize >
+        <!-- Cards Content -->
+        <div class="cards-content">
+            <div id="guest-card-content" class="card-tabs card-content"  style="display:block;">
+
 
 	<div id="card-wrapper">
 		<!-- Guest Card Header -->

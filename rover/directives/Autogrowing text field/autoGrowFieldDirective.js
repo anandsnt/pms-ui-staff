@@ -38,8 +38,8 @@ sntRover.directive("autoGrowField", function($window){
         // initalize the input
         updateWidth();
 
-        //to set width initially
-        $window.setTimeout(updateWidth, 2000);
+        ////to set width initially
+        $window.setTimeout(updateWidth, 2000); //changed from 0 to 2000 becauze the lazy loading
         
         // do it on keydown so it updates "real time"
         element.bind("keydown", function(){
