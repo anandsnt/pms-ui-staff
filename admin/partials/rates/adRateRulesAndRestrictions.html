@@ -7,7 +7,7 @@
 </div>
 
 <!-- Expanded View -->
-<form ng-show="detailsMenu ==='rulesAndRestrictions'" class="form_add_new_rate">
+<div ng-show="detailsMenu ==='rulesAndRestrictions'" class="form_add_new_rate">
 	<div class="form-title">
 		<h3 class="rate_additional_details_heading">RULES AND RESTRICTIONS </h3>
 		<div ng-click="changeDetailsMenu('')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-up.png"></div>
@@ -16,7 +16,7 @@
 	<!-- <fieldset class="holder full-width"> -->
 	<fieldset class="holder left">
 		<div class="entry full-width">
-			<ad-textbox inputtype="text" value="rateData.min_advanced_booking" label = "miwn.advanced booking" placeholder = "Enter Rate name" ></ad-textbox>
+			<ad-textbox inputtype="text" value="rateData.min_advanced_booking" label = "min.advanced booking" placeholder = "Enter Rate name" ></ad-textbox>
 			<ad-textbox inputtype="text" value="rateData.max_advanced_booking" label = "max.advanced booking" placeholder = "Enter Rate name" ></ad-textbox>
 		</div>
 		<div class="entry full-width">
@@ -45,4 +45,4 @@
 	</fieldset>
 	<!-- </fieldset> -->
 
-</form>
+</div>

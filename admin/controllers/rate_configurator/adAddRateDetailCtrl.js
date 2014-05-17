@@ -5,6 +5,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
             BaseCtrl.call(this, $scope);
             $scope.rateTypesDetails = {};
             fetchData();
+            $scope.detailsMenu = '';
         };
 
       /*
