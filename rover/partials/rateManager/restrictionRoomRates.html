@@ -1,13 +1,14 @@
 <div class="price-div">
 	<div class="restriction_text" >
-	    PRICE
+		<h1>
+	    	price
+	    </h1>
 	</div>
+
 	
-	<div class="price-set-title">
-		SINGLE
-	</div>
 	
 	<div class="price-fields">
+		<label>SINGLE</label>
 		<span class="inp-field-before-or">
 			<input type="text" size="7" ng-model="data.single" value="{{data.single}}">
 		</span>
@@ -26,11 +27,11 @@
 				<option value="$">$</option>
 			</select>
 		</span>
+		<br clear="all">
 	</div>
-	<div class="price-set-title">
-		DOUBLE
-	</div>
+
 	<div class="price-fields">
+		<label>DOUBLE</label>
 		<span class="inp-field-before-or">
 			<input type="text" size="7" ng-model="data.double" value="{{data.double}}">
 		</span>
@@ -50,10 +51,10 @@
 			</select>
 		</span>
 	</div>
-	<div class="price-set-title">
-		EXTRA ADULT (+$)
-	</div>
+
 	<div class="price-fields">
+		<label>	EXTRA ADULT (+$)</label>
+
 		<span class="inp-field-before-or">
 			<input type="text" size="7" ng-model="data.extra_adult" value="{{data.extra_adult}}">
 		</span>
@@ -73,10 +74,9 @@
 			</select>
 		</span>
 	</div>
-	<div class="price-set-title">
-		CHILD (+$)
-	</div>
+
 	<div class="price-fields">
+		<label>		CHILD (+$)</label>
 		<span class="inp-field-before-or">
 			<input type="text" size="7" ng-model="data.child" value="{{data.child}}">
 		</span>

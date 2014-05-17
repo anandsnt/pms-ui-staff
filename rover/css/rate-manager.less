@@ -518,6 +518,7 @@ dialog{
       padding: 20px;
       width: 100%;
     }
+
     .restbg {
       background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05)
     }
@@ -538,6 +539,10 @@ dialog{
       text-transform:uppercase;
       font-size:12px;
       padding-top:50px;
+      padding-left: 10%;
+        input{
+          width:88% !important;
+        }
     }
 
     .cancellationbuttonwrap{
@@ -551,6 +556,9 @@ dialog{
     .restriction_text {
         padding: 25px;
         text-align: center;
+        h1{
+          text-transform: uppercase;
+        }
 
         .mixed_restrictions {
             padding:15px;
@@ -568,6 +576,10 @@ dialog{
         padding: 10px 0 15px;
         text-transform: uppercase;
         text-align:left;
+
+        &.selected {
+          background: white;
+        }
         
     }
     .footer{
@@ -589,8 +601,15 @@ dialog{
         }
         .price-fields{
           border-bottom:1px solid #D8D8D8;
-          height: 53px;
           margin-bottom: 6px;
+          padding-bottom:12px;
+
+          label{
+          font-size:12px;
+          display:block;
+          text-align:left !important;
+          }
+
           .or{
             margin-left:2px;
             margin-right:2px;
