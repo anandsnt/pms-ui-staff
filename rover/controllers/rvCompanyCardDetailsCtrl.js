@@ -55,7 +55,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$scope.$emit("hideLoader");
 		$scope.contactInformation = data;
 		if(typeof $stateParams.id !== 'undefined' && $stateParams.id !== ""){
-			$scope.contactInformation.id = $stateParams.id;
+			$scope.contactInformation.id = $stateParams.id;			
 		}		
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch
@@ -69,6 +69,15 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	else{
 		$scope.account_type = "travel-agent";
 	}
+
+	/**
+	* successcall back of country list fetch
+	*/
+	var successCallbackOfCountryListFetch = function(data){
+		$scope.countries = data;
+	}
+	//fetching country list
+	$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, data, successCallbackOfCountryListFetch);	
 
 	//getting the contact information
 	var id = $stateParams.id;
@@ -84,6 +93,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		// by knowing no use at this time
 		//we are not associating with scope in order to avoid watch
 		presentContactInfo = {};
+
 	}
 	//we are checking for edit screen
 	else if(typeof id !== 'undefined' && id !== ""){
