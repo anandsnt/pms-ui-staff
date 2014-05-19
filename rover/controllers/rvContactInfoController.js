@@ -63,19 +63,19 @@ $scope.popupCalendar = function(){
 	});
 };
 
-	$scope.$parent.myScrollOptions = {		
-	    'contact_info': {
-	    	scrollbars: true,
-	        snap: false,
-	        hideScrollbar: false
-	    },
-	};
+$scope.$parent.myScrollOptions = {		
+    'contact_info': {
+    	scrollbars: true,
+        snap: false,
+        hideScrollbar: false
+    },
+};
 
-	$scope.$on('CONTACTINFOLOADED', function(event) {
-		setTimeout(function(){
-			$scope.$parent.myScroll['contact_info'].refresh();
-			}, 
-		1500);
-		
-	});
+$scope.$on('CONTACTINFOLOADED', function(event) {
+	setTimeout(function(){
+		$scope.$parent.myScroll['contact_info'].refresh();
+		}, 
+	1500);
+	
+});
 }]);
