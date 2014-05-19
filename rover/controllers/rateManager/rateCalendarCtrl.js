@@ -18,7 +18,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		$scope.currentExpandedRow = -1;
 		$scope.displayMode = "CALENDAR";
 		$scope.calendarMode = "RATE_VIEW";
-		$scope.selectedRate = "";
+		$scope.selectedRate = {};
 		$scope.calendarData = {};
 		$scope.popupData = {};
         
@@ -39,6 +39,12 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
     * Method to fetch calendar data
     */
 	var loadTable = function(){
+		// If only one rate is selected in the filter section, the defult view is room type calendar 
+		if($scope.currentFilterData.rates_selected_list.length == 1){
+			$scope.calendarMode = "ROOM_TYPE_VIEW";
+			$scope.selectedRate.id = $scope.currentFilterData.rates_selected_list[0].id;
+		}
+
 		var calenderDataFetchSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.calendarData = data;
@@ -49,7 +55,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 			$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, getParams, calenderDataFetchSuccess);
 		
 		} else {
-			var getParams = calculateRoomTypeViewCalGetParams($scope.selectedRate.id);
+			var getParams = calculateRoomTypeViewCalGetParams();
 			$scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalenarData, getParams, calenderDataFetchSuccess);
 		}
 	};
@@ -62,7 +68,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 		var data = {};
 		data.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
 		data.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
-		
+		if($scope.currentFilterData.is_checked_all_rates){
+			return data;
+		}
 		data.rate_type_ids = [];
 		var rateTypeSelected = $scope.currentFilterData.rate_type_selected;
 		var rateTypeId = rateTypeSelected !== "" ? parseInt(rateTypeSelected) : "";
@@ -82,10 +90,10 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTab
 	/**
 	* Calcultes the get params for fetching calendar.
 	*/
-	var calculateRoomTypeViewCalGetParams = function(rateId){
+	var calculateRoomTypeViewCalGetParams = function(){
 
 		var data = {};
-		data.id = rateId;
+		data.id = $scope.selectedRate.id;
 		data.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
 		data.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
 		
