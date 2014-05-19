@@ -1,5 +1,8 @@
  <form id="gc-contact-info" name="gc-contact-info" class="form card-tab scrollable" ng-controller="RVContactInfoController" ng-show="current == 'guest-contact'">
- 	<div class="wrapper" ng-iscroll="contact_info"  ng-iscroll-delay="1000" style="position: absolute; top:0px; bottom:0px; left:0px; width: 100%;" ng-iscroll-form='true'>
+
+ 		<div ng-iscroll="contact_info"  ng-iscroll-delay="1000" style="position: absolute; top:0px; bottom:0px; left:0px; width: 100%;" ng-iscroll-form='true'>
+ 			<div class="wrapper">
+
  		<div class="entry full-width">
  			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
  		</div>
@@ -44,5 +47,6 @@
  				<rv-textbox value="guestCardData.contactInfo.phone"  styleclass="margin" label = "Phone" ></rv-textbox>
  				<rv-textbox value="guestCardData.contactInfo.mobile"   label = "Mobile" ></rv-textbox>
  			</div>
+ 		</div>
  		</div>
  	</form>
