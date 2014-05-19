@@ -17,4 +17,10 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 		ngDialog.close();
 	};
 	
+	$scope.updateAllNights = function(){
+		angular.forEach($scope.contractData.occupancy,function(item, index) {
+			item.contracted_occupancy = $scope.contractData.allNights;
+       	});
+	};
+	
 }]);
