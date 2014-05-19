@@ -143,6 +143,12 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		calendarData.rate_restrictions = ratesRestrictions;
 		calendarData.data = roomRateData;
 
+		//close all/open all restriction status
+		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.rate_restrictions, calendarData.dates);
+		calendarData.disableCloseAllBtn = enableDisableCloseAll.disableCloseAllBtn;
+		calendarData.disableOpenAllBtn = enableDisableCloseAll.disableOpenAllBtn;
+
+
 		return calendarData;
 	};
 
@@ -198,9 +204,59 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		calendarData.dates = datesList;
 		calendarData.all_rates = allRatesData;
 		calendarData.data = dailyRatesData;
+		
+		//close all/open all restriction status
+		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.all_rates, calendarData.dates);
+		calendarData.disableCloseAllBtn = enableDisableCloseAll.disableCloseAllBtn;
+		calendarData.disableOpenAllBtn = enableDisableCloseAll.disableOpenAllBtn;
 
+		
 		return calendarData;
 	};
+
+	//compute the closeall/openall restriction status beased on the total number of 
+	//closed restrictions in the all_rates/all_restrictions section
+	that.getCloseAllEnableDisableStatus = function(allRates, allDates) {
+		//Check if CLOSE ALL restriction is available in all_rates section
+		var allRateRestrictionClosedCount = that.getNumOfClosedRestriction(allRates);
+		var daysLength = allDates.length;
+		var dict = {};
+		dict.disableCloseAllBtn = true;
+		dict.disableOpenAllBtn = false;
+		if(allRateRestrictionClosedCount < daysLength){
+			dict.disableCloseAllBtn = false;
+		}
+		if(allRateRestrictionClosedCount == 0){
+			dict.disableOpenAllBtn = true;
+		}
+		return dict;
+
+	};
+
+	//Returns the total count of closed restrictions in the given restriction set
+	this.getNumOfClosedRestriction = function(allRates, allRestrictionTypes){
+		var closedRestrictionId = "";
+		for(var i in that.allRestrictionTypes){
+			if (that.allRestrictionTypes[i].value == 'CLOSED'){
+				closedRestrictionId = that.allRestrictionTypes[i].id;
+				break;
+			}
+		}
+
+		var closedRestrictionCount = 0;
+		for(var i in allRates){
+			item = allRates[i]; 
+			for(var j in item){
+				if(item[j].restriction_type_id == closedRestrictionId){
+					closedRestrictionCount++;
+					break;
+				}
+			}
+		}
+
+		return closedRestrictionCount;
+
+	}
 
 	this.getRestrictionUIElements = function(restriction_type){
 		var restriction_type_updated = {};
