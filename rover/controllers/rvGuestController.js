@@ -79,9 +79,11 @@ $scope.current = 'guest-contact';
 * tab actions
 */
 $scope.guestCardTabSwitch = function(tab){
-if($scope.current ==='guest-contact' && tab !== 'guest-contact')
+if($scope.current ==='guest-contact' && tab !== 'guest-contact'){
 	$scope.$broadcast('saveContactInfo');
-    $scope.current = tab;
+};
+ 
+ $scope.current = tab;
 };
 
 $scope.$on('contactInfoError', function(event, value) { 
@@ -133,6 +135,7 @@ var element = $event.target;
 			return;
 		}
 		}
+		
 		if(!$scope.guestCardVisible){
 			$("#guest-card").css("height", $scope.windowHeight-90);
 			$scope.guestCardVisible = true;			
