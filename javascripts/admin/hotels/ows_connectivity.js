@@ -33,9 +33,9 @@ var ConnectivityView = function(domRef){
 	 } else {
 	 	var url = '/admin/test_pms_connection';
 	 }
-	 
+
 	 var webservice = new WebServiceInterface();
-	 var options = { 
+	 var options = {
 				requestParameters: data,
 				successCallBack: that.fetchCompletedOfSave,
 				failureCallBack: that.fetchFailedOfSave,
@@ -43,13 +43,8 @@ var ConnectivityView = function(domRef){
 				failureCallBackParameters:{ "type": type},
 				loader: 'blocker'
 	 };
-	 if(type == "save"){
-	 	 webservice.postJSON(url, options);	
-	 } else {
-	 	 webservice.getJSON(url, options);	
-	 }
-	
-	    
+
+ 	 webservice.postJSON(url, options);
   };
 
   //enable test connection button
@@ -71,7 +66,7 @@ var ConnectivityView = function(domRef){
   	 var pms_hotel_code   = that.myDom.find("#pms-hotel-code").val();
   	 var pms_chain_code   = that.myDom.find("#pms-chain-code").val();
   	 var pms_timeout   = that.myDom.find("#pms-timeout").val();
-  	 
+
   	 var data = {};
   	 data.pms_access_url 	= pms_access_url;
   	 data.pms_channel_code 	= pms_channel_code;
