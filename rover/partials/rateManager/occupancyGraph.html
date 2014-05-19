@@ -24,8 +24,9 @@
 </div>
 </div>
 
-<div class="occgraph-outer"><highchart id="occGraphContainer"
-	config="highchartsNG"></highchart></div>
+<div class="occgraph-outer" style="width:{{graphDimensions.containerWidth}}px; overflow: hidden; position: relative" ng-iscroll="RateMgrOccupancyGraphCtrl" ng-iscroll-delay="1000">
+	<highchart id="occGraphContainer" style="width:{{uiOptions.tableWidth}}px;" config="highchartsNG"></highchart>
+</div>
 
 </div>
 
