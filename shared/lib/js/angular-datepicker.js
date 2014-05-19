@@ -6,7 +6,6 @@
     return -1;
   };
 
-
   angular.module('pickadate.utils', [])
     .factory('pickadateUtils', ['dateFilter', function(dateFilter) {
       return {
@@ -50,7 +49,11 @@
           minDate: '=',
           maxDate: '=',
           disabledDates: '=',
-          isDateSelected: '='
+          isCurrentMonth: '=',
+          isDateSelected: '=',
+          startYear: '=',
+          endYear:'=',
+          closePopupOnSelection:'='
         },
         templateUrl:'../../assets/directives/Calendar/adCalendar.html' ,
             link: function(scope, element, attrs, ngModel)  {
@@ -65,8 +68,6 @@
           currentDate   = new Date(scope.date);
           scope.dayNames    = $locale.DATETIME_FORMATS['SHORTDAY'];
           scope.currentDate = currentDate;
-
-          console.log( $locale );
 
           scope.render = function(initialDate) {
             initialDate = new Date(initialDate.getFullYear(), initialDate.getMonth(), 1, 3);
@@ -123,6 +124,7 @@
             if(dateObj.className != "pickadate-disabled"){
               scope.isDateSelected = true;
               scope.setDate(dateObj);
+              scope.closePopupOnSelection = true;
             }
           };
 
@@ -142,7 +144,15 @@
           scope.todayDate = dateFilter(new Date(), 'yyyy-MM-dd');
           scope.years = [];
           scope.yearSelected = currentDate.getFullYear();
-          for(year=2014;year<=2100;year++){
+
+
+          scope.presentDay = new Date();
+          scope.presentYear = scope.presentDay.getFullYear();
+
+          scope.startYear = scope.startYear ? scope.startYear : scope.presentYear;
+          scope.endYear   = scope.endYear   ? scope.endYear :scope.presentYear+100;
+
+          for(year=parseInt(scope.startYear);year<=parseInt(scope.endYear);year++){
             scope.years.push(year);
           };
           scope.weekDays = ['SU','MO','TU','WE','TH','FR','SA'];
