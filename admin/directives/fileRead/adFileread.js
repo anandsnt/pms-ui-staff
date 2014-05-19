@@ -1,7 +1,5 @@
 //File reader directive - in HTML <input type="file" ng-model="image" accept="image/*" app-filereader />
-admin.directive('appFilereader', function(
-    $q
-){
+admin.directive('appFilereader', function($q){
     var slice = Array.prototype.slice;
 
     return {

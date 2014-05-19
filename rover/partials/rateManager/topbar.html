@@ -1,4 +1,16 @@
+
 <div class ="topbar">
-	<button ng-click="showCalendarView()">Calendar</button>
-	<button ng-click="showGraphView()">graph</button>
+	<ul>
+		<li ng-show="backbuttonEnabled"><a ng-click="backButtonClicked()" class="back-button">Back</a></li>
+		<li><h6>Date Range</h6>{{currentFilterData.begin_date}} to {{currentFilterData.end_date}}</li>
+		<li ng-show="ratesDisplayed.length > 0"><h6>Rate</h6><span ng-repeat="rate in ratesDisplayed">{{rate.name}}</span></li>
+		<li ng-show="name_on_cards.length > 0"><h6>Name Card</h6><span ng-repeat="name in name_on_cards">{{name}}</span></li>
+	</ul>
+	<div class="display-mode" style="float:right">
+
+		<div style="float:right;"><button class="button cl-gr-button">&nbsp;</button></div>
+		<div style="float:right;"><button ng-click="showGraphView()" class="button gr-button" ng-class="{'active' : displayMode == 'GRAPH'}">&nbsp;</button></div>
+		<div style="float:right;"><button ng-click="showCalendarView()" class="button active cl-button" ng-class="{'active' : displayMode == 'CALENDAR'}">&nbsp;</button></div>
+	</div>
+	<br clear="all">
 </div>

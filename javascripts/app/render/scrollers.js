@@ -67,7 +67,7 @@ function getScrollObjectForDiv(obj){
                         break;
                     }
                 }
-            }  
+            }
             // Refresh all available
             else {
                 for (var i = 0; i < verticalScroll.length; i++) {

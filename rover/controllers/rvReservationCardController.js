@@ -4,32 +4,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 	$scope.reservationList = [];
 	$scope.currentReservationId = "";
 	$scope.reservationCount = 0;
-	// // console.log("litsing")
-	// $scope.$parent.myScrollOptions = {
-	    // 'result_listing': {
-	        // snap: false,
-	        // hideScrollbar: false,onScrollEnd: function ()
-        	// {
-            	// alert('finshed scrolling wrapper');
-    		// }
-	    // },
-	// };
-// 	
-// 	
-	 // $scope.$parent.myScrollOptions = {
-        // 'resultDetails': {
-            // snap: false,
-            // onScrollEnd: function ()
-            // {
-                // alert('finshed scrolling wrapper2');
-            // }},
-        // 'result_listing': {
-            // snap: false,
-            // onScrollEnd: function ()
-            // {
-                // alert('finshed scrolling wrapper3');
-            // }}
-    // };
+	
 	
 	/*
 	 * to get state params from resrvation details controller
@@ -48,7 +23,26 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 		
 		$scope.currentReservationId = data.reservation_details.confirmation_num;
 		
+
 		RVReservationCardSrv.setGuestData($scope.data.guest_details);
+
+		var fetchGuestcardDataSuccessCallback = function(data){
+			var contactInfoData = {'data': data,
+									'countries': $scope.data.countries,
+									'userId':$scope.data.user_id};
+	        $scope.$emit('guestCardUpdateData',contactInfoData);
+	        $scope.$emit('hideLoader');
+	    };
+	    var fetchGuestcardDataFailureCallback = function(data){
+	        $scope.$emit('hideLoader');
+	    };
+	
+	   
+	    var param = {'fakeDataToAvoidCache':new Date(),
+						'id':$scope.data.guest_details.reservation_id};
+	    $scope.invokeApi(RVReservationCardSrv.fetchGuestcardData,param,fetchGuestcardDataSuccessCallback,fetchGuestcardDataFailureCallback);  
+
+
 		
 		if($scope.timeline == "current"){
 			$scope.reservationList = data.reservation_list.current_reservations_arr;
@@ -65,6 +59,8 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 			//This status is used to show appr message if count of reservations in selected time line is zero
 			$scope.reservationDisplayStatus = 	($scope.countHistory>0) ? true : false;
 		}
+		
+		RVReservationCardSrv.setGuestData($scope.data.guest_details);
 
 	});
 	/*
@@ -114,6 +110,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 			//This status is used to show appr message if count of reservations in selected time line is zero
 			$scope.reservationDisplayStatus = ($scope.countHistory>0) ? true : false;
 		}
+		 $scope.$broadcast('RESERVATIONLISTUPDATED');
 		
 	 };
 	 /*

@@ -83,38 +83,15 @@ sntRover.config([
         $stateProvider.state('rover.ratemanager', {
         	url: '/rateManager',
         	templateUrl: '/assets/partials/rateManager/dashboard.html',
-        	controller	: 'RMDashboradCtrl',
-        	resolve: {
-				dashBoarddata: function(RVDashboardSrv) {
-					return RVDashboardSrv.fetchDashboardDetails();
-				}
-			}
+        	controller	: 'RMDashboradCtrl'
+		});
+		
+        $stateProvider.state('rover.staycard.nights', {
+			url: '/nights',
+			templateUrl: '/assets/partials/nights/rvNights.html',
+            controller: 'RVnightsController'
         });
         
-        // $stateProvider.state('rover.staycard.billcard.details', {
-			// url: '/:billNo',
-			// templateUrl : "/assets/partials/bill_details.html",
-			// controller	: 'billDetailsController'
-        // });
-        
-		// may be replaced with ng-include?
-	    /*$stateProvider.state('rover.staycard.billcard.all', {
-        	url: '',
-			views : {
-				'billDetails' :{
-					templateUrl : "partials/bill_details.html",
-					controller	: 'billDetailsController'
-
-				}
-			}
-        });*/
-        
-		/*$stateProvider.state('guestcard', {
-			url: '/guestcard',
-			templateUrl: 'partials/guestcard.html',
-			controller: 'guestCardController'
-		});	*/
-
 		// let's redirect all undefined states to dashboard state
 		
 	}

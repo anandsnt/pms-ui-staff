@@ -1,3 +1,17 @@
+
+
+@import "less/admin/01-B_variables.less"; 
+
+
+@import "less/admin/04_layout.less";
+
+
+
+
+
+
+
+
 /* StayNTouch | Rover LESS file */
 
 /* 1. ROOT
@@ -99,6 +113,228 @@
 .container.menu-open .page-current, .container.menu-open .page-locked {
     animation: 0s ease 0s normal both 1 appMenuOpen;
  }
+
+
+
+
+/* ------------------date -picker ---------------------*/
+.pickdate-cell-bg{
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05);
+}
+.pickdate-container-bg{
+  background: url("/assets/date_container_bg.png");
+}
+.pickadate-header {
+  position: relative;
+}
+
+
+
+.pickadate-main {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+}
+
+.pickadate a:visited, .pickadate a {
+  color: #666666;
+}
+
+.pickadate-cell {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.pickadate-cell li {
+  display: block;
+  float: left;
+  border-left: 2px solid #f1f1f1;
+  border-right: 2px solid #f1f1f1;
+  width: 14.285%;
+  padding: 2.3%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+    margin-bottom: 0.5em !important;
+
+}
+
+.pickadate-cell li:nth-child(7n+0) {
+  border-right: 2px solid #f1f1f1;
+}
+
+.pickadate-cell li:nth-child(1),
+.pickadate-cell li:nth-child(8),
+.pickadate-cell li:nth-child(15),
+.pickadate-cell li:nth-child(22),
+.pickadate-cell li:nth-child(29),
+.pickadate-cell li:nth-child(36) {
+  border-left: 2px solid #f1f1f1;
+}
+
+
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #9D9D9D;
+  font-size: 18px;
+}
+
+
+.pickadate-cell .pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-outofrange-disabled a,
+.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled a {
+
+  
+  color: transparent;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.pickadate-cell .pickadate-enabled {
+  cursor: pointer;
+  font-size: 18px;
+  color: #000;
+  font-weight:400;
+}
+
+
+.pickadate-cell .pickadate-active {
+  color: #fff !important;
+  background-color: #ffaa17;
+
+}
+
+.pickadate-cell .pickadate-active {
+  color: #000;
+
+}
+
+.pickadate-cell .pickadate-head {
+  color: #9D9D9D;
+  line-height: 30px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-top: 0px ;
+  border-left: 0px !important;
+  border-right: 0px !important;
+}
+
+.pickadate-centered-heading {
+  text-transform: uppercase;
+  color:#000;
+  font-weight: normal;
+  text-align: center;
+  font-size: 1em;
+  margin: 13px 0 13px 0;
+}
+
+.pickadate-controls {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+}
+
+.pickadate-controls .pickadate-next {
+  float: right;
+}
+
+.pickadate-controls a {
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.pickadate-cell .pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-outofrange-disabled a,
+.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled a,
+.pickadate-cell .pickadate-active.pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
+
+  color: gray;
+  color: transparent;
+
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+.date-picker-bg{
+  
+  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
+  padding:10px;
+  margin:5px;
+}
+.date-picker-bg_right{
+  width:48%;
+  float:right;
+}
+.date-picker-bg_left{
+  width:48%;
+  float:left;
+}
+
+.pickadate_select{
+  background: none repeat scroll 0 0 #ffffff !important;
+  padding-right:14px;
+  color:black;
+  box-shadow:none !important;
+  outline:0 !important;
+}
+.float_left{
+  float:left;
+
+}
+.float_right{
+  float:right;
+
+}
+.calendar_top_panel{
+  background-color:white;
+  height:46px;
+}
+.pickadate-prev,.pickadate-next{
+  
+  width:30px;
+  padding:15px 5px !important;
+}
+.pickadate-body{
+  margin-top:10px;
+
+}
+.date_picker_conatiner{
+border-style: solid;
+border-width: 1px 0;
+border-color: #f1f1f1;
+height: 410px;
+}
+
+.date_range_set_table{
+  margin-bottom:0px;
+  width:100%;
+  tr,td{
+    box-shadow: none !important;
+  }
+  tr{
+    border-style: solid;
+    border-width: 1px 0;
+    border-color: #f1f1f1;
+  }
+}
+.pickadate-cell .current-date{
+  color: #66CCFF !important;
+}
+
+/*------------------date -picker ends here-------------------------- */
+
+
 .ui-match { color: #F6991B; margin-right: 0px !important;}
 .post-button {
   line-height: 50px !important;
@@ -107,6 +343,7 @@
 .action-post-button{
   width:23.645% !important;
 }
+
 .icons {
     background-image: url("/assets/admin/admin-icons.png");
     background-repeat: no-repeat;
@@ -122,3 +359,51 @@
 
 
 
+.grey{
+  color:grey;
+}
+
+// CICO-609 'Accompany' in Search- Multiple images
+.guest-image img{
+    &.first-image {
+        margin-left: 0;
+        position: absolute;
+        width: 70%;
+    }
+    &.second-image {
+        margin-left: 15px;
+        margin-top: 15px;
+        position: relative;
+        width: 70%;
+    }
+}
+// CICO-609 'Accompany' in stay card.
+.block-item.accompany-guest{
+  background-color: #E0E0E0;
+  border-radius:5px;
+  padding:5px 15px;
+  min-height: 80px;
+  .group{
+    margin: 5px 0 5px;
+  }
+  .name{
+    font-style:italic;
+  }
+  .guest{
+    margin: 5px 0 5px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 5px;
+  }
+  .label{
+    width:30%;
+  }
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+
+  border-radius: 0px !important;
+  padding: 0px !important;
+}
+.ngdialog-close{
+  display: none;
+}

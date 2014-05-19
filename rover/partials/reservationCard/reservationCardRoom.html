@@ -4,7 +4,7 @@
 	</div>
 	<!-- Room Assignment screen is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
 	<!-- The arrows are removed and room assignment buttons are not clickable in that case -->
-	<a class="next-view no-auto-bind hover-hand" ng-class="getRoomClass(reservationData.reservation_card.reservation_status)">
+	<a class="next-view no-auto-bind hover-hand" ui-sref="rover.staycard.roomassignment" ng-class="getRoomClass(reservationData.reservation_card.reservation_status)">
 		 <strong class="room-number" ng-class="getRoomStatusClass(reservationData.reservation_card.reservation_status, reservationData.reservation_card.room_status, reservationData.reservation_card.fo_status)" ui-sref="rover.staycard.roomassignment">
 		 	 {{reservationData.reservation_card.room_number}} 
 		 </strong>{{reservationData.reservation_card.room_type_description}} 

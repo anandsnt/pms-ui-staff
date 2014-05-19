@@ -6,4 +6,15 @@ sntRover.controller('reservationListController',['$scope', function($scope){
 	        hideScrollbar: false
 	    },
 	};
+	
+	 //update left nav bar
+	$scope.$emit("updateRoverLeftMenu","");
+	
+	$scope.$on('RESERVATIONLISTUPDATED', function(event) {
+		setTimeout(function(){
+			$scope.$parent.myScroll['resultListing'].refresh();
+			}, 
+		500);
+		
+	});
 }]);

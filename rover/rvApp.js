@@ -1,5 +1,5 @@
 var sntRover = angular.module('sntRover', ['ui.router', 'ui.utils', 'ng-iscroll', 'ngAnimate', 'ngDialog',
-    'ngSanitize', 'ngTable', 'highcharts-ng'
+    'ngSanitize', 'ngTable', 'highcharts-ng', 'pickadate'
 ]);
 sntRover.run(['$rootScope', '$state', '$stateParams',
     function ($rootScope, $state, $stateParams) {

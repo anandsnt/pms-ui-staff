@@ -26,9 +26,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 "promotion_code": "",
                 "date_ranges": []
             }
-
-            $scope.basedonRateData = {};
             // intialize rateData dictionary - END
+            $scope.basedonRateData = {};
             $scope.errorMessage = '';
             // webservice call to fetch rate details for edit
             if ($stateParams.rateId) {
@@ -85,6 +84,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         $scope.manipulateData = function(data){
             if(data.id) { $scope.rateData.id = data.id; }
+            if(!$scope.is_edit) { $scope.is_edit =true };
             $scope.rateData.name= data.name;
             $scope.rateData.description = data.description;
             $scope.rateData.promotion_code = data.promotion_code;
@@ -119,20 +119,49 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             
             $scope.manipulateData(data);
             $scope.rateData.id = $stateParams.rateId;
-
             // navigate to step where user last left unsaved
             if($scope.rateData.date_ranges.length > 0){
-                date_ranges_length = $scope.rateData.date_ranges.length
-                active_item = "dateRange." + $scope.rateData.date_ranges[date_ranges_length-1].id;
-                $scope.$emit("changeMenu", active_item);
+                activeDateRange = getActiveDateRange();
+                $scope.$emit("changeMenu", activeDateRange);
+            }
+            else if($scope.rateData.room_type_ids.length > 0){
+                $scope.$emit("changeMenu", 'Room types');
             }
             else{
-                $scope.$emit("changeMenu", 'Room types');
+                $scope.$emit("changeMenu", 'Details');
             }
             fetchBasedOnRateDetails(false);
             $scope.$emit('hideLoader');
             $scope.$broadcast('ratesChanged');
         };
+
+
+        var getActiveDateRange = function(){
+            var beginDate = '';
+            var endDate = '';
+            var hotelBusinessDate = new Date($scope.hotel_business_date).getTime();
+            var keepGoing = true;
+            var activeDateRange = $scope.rateData.date_ranges[$scope.rateData.date_ranges.length-1].id;
+            angular.forEach($scope.rateData.date_ranges, function(dateRange, index){
+                if(keepGoing) {
+                    beginDate = new Date(dateRange.begin_date).getTime();
+                    endDate = new Date(dateRange.end_date).getTime();
+                    if (beginDate <= hotelBusinessDate && hotelBusinessDate <= endDate){
+                        activeDateRange = "dateRange." + dateRange.id;
+                        keepGoing = false;
+                    }
+                }
+            });
+            return activeDateRange;
+        }
+
+        $scope.$on('deletedAllDateRangeSets', function(e, dateRangeId){
+            angular.forEach($scope.rateData.date_ranges, function(dateRange, index){
+                if (dateRange.id == dateRangeId){
+                    $scope.rateData.date_ranges.splice(index, 1);
+                }
+            });
+        })
 
         $scope.addNewDateRange = function(){
             $scope.rateMenu ='ADD_NEW_DATE_RANGE';
