@@ -11,7 +11,7 @@ sntRover.config(function($httpProvider) {
 });
 
 
-sntRover.service('rvBaseWebSrvV2',['$http', '$q', '$window', function($http, $q, $window){
+sntRover.service('RVBaseWebSrvV2',['$http', '$q', '$window', function($http, $q, $window){
 
     /**
     *   A http requester method for calling webservice

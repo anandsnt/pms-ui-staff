@@ -25,16 +25,14 @@
             <span class="icons icon-rate-fill" style="float:right; width:40px;">&nbsp;</span>
         </li>
         -->
-        <li style="float:right; padding-top:10px;" ng-show="currentClickedSet == $index">
-            <span class="icons icon-calendar" style="float:right; width:40px;" ng-click="popupCalendar()" ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
-        </li>
-
-
-        <li style="float:right;" ng-hide="currentClickedSet == $index">
+        <li class="arrow-right" ng-hide="currentClickedSet == $index">
             <span class="cursor-hand"><img src="/assets/arrow-down.png" ng-click="setCurrentClickedSet($index)"></span>
         </li>
-        <li style="float:right;" ng-show="currentClickedSet == $index">
+        <li class="arrow-right" ng-show="currentClickedSet == $index">
             <span class="cursor-hand"><img src="/assets/arrow-up.png" ng-click="unsetCurrentClickedSet($index)"></span>
+        </li>
+        <li class="arrow-right padding-right-ten" ng-show="currentClickedSet == $index">
+            <span class="icons icon-calendar" style="width:40px;" ng-click="popupCalendar()" ng-hide="!is_date_range_editable(dateRange.end_date)">&nbsp;</span>
         </li>
         
     </ul>

@@ -5,6 +5,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
             BaseCtrl.call(this, $scope);
             $scope.rateTypesDetails = {};
             fetchData();
+            $scope.detailsMenu = '';
         };
 
       /*
@@ -72,6 +73,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
 
             var fetchRateTypesSuccessCallback = function (data) {
                 $scope.rateTypesDetails = data;
+                $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
                 $scope.$emit('hideLoader');
             };
             var fetchRateTypesFailureCallback = function (data) {
@@ -177,7 +179,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
 
         $scope.popupCalendar = function(){
         ngDialog.open({
-         template: '/assets/partials/rates/adRatesAdditionalDeatilsPicker.html',
+         template: '/assets/partials/rates/adRatesAdditionalDetailsPicker.html',
          controller: 'adEndDatePickerController',
          className: 'ngdialog-theme-default single-calendar-modal',
          scope:$scope,
