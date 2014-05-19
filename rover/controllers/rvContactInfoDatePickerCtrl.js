@@ -23,10 +23,16 @@ $scope.setUpData = function(){
 };
 $scope.setUpData();
 
-$scope.$watch('closePopupOnSelection',function(){
-  if($scope.closePopupOnSelection){
-    $scope.guestCardData.contactInfo.birthday = $scope.date;
+
+$scope.updateDate = function(){
+
+  $scope.$watch('date',function(){
+    if($scope.date){
+      $scope.guestCardData.contactInfo.birthday = $scope.date;
+    };  
     ngDialog.close();
-  }
-});
+  });
+  
+};
+
 }]);

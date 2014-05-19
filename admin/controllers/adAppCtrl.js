@@ -1,4 +1,4 @@
-admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$stateParams', '$window', function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window ){
+admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$stateParams', '$window', '$translate', function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate){
 	
 	//when there is an occured while trying to access any menu details, we need to show that errors
 	$scope.errorMessage = '';
@@ -171,11 +171,33 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 		$scope.bookMarks = $scope.data.bookmarks;
 		
 		$scope.bookmarkIdList = [];
-		for(var i = 0; i < $scope.data.bookmarks.length; i++)
+		for(var i = 0; i < $scope.data.bookmarks.length; i++){
 			$scope.bookmarkIdList.push($scope.data.bookmarks[i].id);
+		}
+		if($scope.isHotelAdmin){
+			$scope.getLanguage();
+		}
+		
+			
 	};
 	
 	$scope.invokeApi(ADAppSrv.fetch, {}, $scope.successCallbackOfMenuLoading);
+	
+	/*
+	 * Success callback of get language
+	 * @param {object} response
+	 */
+	$scope.fetchHotelDetailsSuccessCallback = function(data){
+		 $translate.use(data.language.value);
+		 $scope.$emit('hideLoader');
+	};
+	/*
+	 * Function to get the current hotel language
+	 */
+	$scope.getLanguage = function(){
+		$scope.invokeApi(ADAppSrv.fetchHotelDetails,{},$scope.fetchHotelDetailsSuccessCallback);  
+	};
+
 
 	// if there is any error occured 
     $scope.$on("showErrorMessage", function($event, errorMessage){

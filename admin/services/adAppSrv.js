@@ -1,4 +1,4 @@
-admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
+admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv','ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
 
 	this.fetch = function(){
 		var deferred = $q.defer();
@@ -59,6 +59,16 @@ admin.service('ADAppSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADB
 		};
 		
 		ADBaseWebSrv.deleteJSON(url).then(fetchSuccess, fetchFailed);
+		return deferred.promise;
+	};
+	this.fetchHotelDetails = function(){
+		var deferred = $q.defer();
+		var url = '/api/hotel_settings.json';
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		},function(errorMessage){
+			deferred.reject(errorMessage);
+		});
 		return deferred.promise;
 	};
 	

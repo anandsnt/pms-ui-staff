@@ -2,11 +2,9 @@ admin.controller('adEndDatePickerController',['$scope','dateFilter','ngDialog',f
 
 $scope.setUpData = function(){
 
-    $scope.end_date = $scope.rateData.end_date;
     $scope.isDateSelected = $scope.rateData.end_date ?  true:false;
-
-    if($scope.end_date!= null){
-      $scope.date = $scope.end_date;
+    if($scope.rateData.end_date!= null){
+      $scope.date = $scope.rateData.end_date;
       $scope.isDateSelected = true;
     }
     else{
@@ -17,8 +15,8 @@ $scope.setUpData();
 
 $scope.$watch('date',function(oldValue,newValue){
     if(oldValue != newValue){
-       $scope.rateData.end_date = $scope.date;
-    ngDialog.close();
+      $scope.rateData.end_date = $scope.date;
+      ngDialog.close();
   }
 });
 

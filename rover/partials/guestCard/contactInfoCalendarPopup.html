@@ -1,9 +1,9 @@
-<form ng-cloak class="grey-texture-bg-color">
+<form ng-cloak class="grey-texture-bg-color" ng-click="updateDate()">
 <fieldset class="holder grey-texture-bg-color">
 <div class="date-picker-bg">
 	<div class="date-picker-wrap">
-	   <div class="col-xs-12">
-	    	<div pickadate="" ng-model="date" date="birthday" max-date="maxDate" is-date-selected="isDateSelected" start-year="startYear" end-year="endYear" close-popup-on-selection="closePopupOnSelection"></div>
+	   <div class="col-xs-12" ng-click="updateDate()">
+	    	<div pickadate="" ng-model="date"  max-date="maxDate" is-date-selected="isDateSelected" start-year="startYear" end-year="endYear" close-popup-on-selection="closePopupOnSelection"></div>
 	   </div>
 	</div>
 </div>

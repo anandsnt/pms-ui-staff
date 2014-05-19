@@ -2,42 +2,54 @@
  	<div ng-include="'/assets/partials/common/header.html'"></div>
 	<section id="dashboard" class="content scrollable" role = "main">
 		<div class="wrapper">
-			<h2>{{greetingsMessage}} {{userDetails.first_name}}! </h2>
+			<h2>{{greetingsMessage | translate}} {{userDetails.first_name}}! </h2>
+
 			<ul id="guests-today">
 				<li>
-					<a class="button green" ui-sref="rover.search({type:'DUEIN'})">Checking in <strong> {{dashboardData.due_in_count?dashboardData.due_in_count:0}} </strong> </a>
+					<a class="button green" ui-sref="rover.search({type:'DUEIN'})">
+						{{ 'CHECKING_IN' | translate }}
+						<strong> {{dashboardData.due_in_count?dashboardData.due_in_count:0}} 
+							</strong> 
+					</a>
 				</li>
 				<li>
-					<a class="button blue" ui-sref="rover.search({type:'INHOUSE'})"> In house <strong> {{dashboardData.inhouse_count?dashboardData.inhouse_count:0}} </strong> </a>
+					<a class="button blue" ui-sref="rover.search({type:'INHOUSE'})"> 
+						{{ 'INHOUSE' | translate }}
+						<strong> {{dashboardData.inhouse_count?dashboardData.inhouse_count:0}} 
+							</strong> 
+					</a>
 				</li>
 				<li>
-					<a class="button red" ui-sref="rover.search({type:'DUEOUT'})"> Checking out <strong> {{dashboardData.due_out_count?dashboardData.due_out_count:0}} </strong> </a>
+					<a class="button red" ui-sref="rover.search({type:'DUEOUT'})"> 
+						{{ 'CHECKING_OUT' | translate }}
+						<strong> {{dashboardData.due_out_count?dashboardData.due_out_count:0}} </strong> 
+					</a>
 				</li>
 			</ul>
 			<ul id="stats-today" class="upsell_on">
 				<li>
-					Guest review score
+					{{ 'GUEST_REVIEW_SCORE_TITLE' | translate }}
 					<span ng-show="dashboardData.guest_review_score">{{dashboardData.guest_review_score}}</span>
 					<span ng-hide="dashboardData.guest_review_score" class="no-data"> No data available </span>
 				</li>
 				<li>
-					Upsell target
+					{{ 'UPSELL_TARGET_TITLE' | translate }}
 					<span class="blue"> {{currencySymbol}}{{dashboardData.upsell_target?dashboardData.upsell_target:0}} </span>
 				</li>
 				<li>
-					Actual upsell
+					{{ 'ACTUAL_UPSELL_TITLE' | translate }}
 					<span class="red">{{currencySymbol}}{{dashboardData.actual_upsell?dashboardData.actual_upsell:0}}</span>
 				</li>
 				<li>
-					VIP checkin's
+					{{ 'VIP_CHECKIN_TITLE' | translate }}
 					<span>{{dashboardData.vip_checkin_count?dashboardData.vip_checkin_count:0}}</span>
 				</li>
 				<li>
-					Rooms for upsell
+					{{ 'ROOMS_FOR_UPSELL_TITLE' | translate }}
 					<span>{{dashboardData.rooms_for_upsell?dashboardData.rooms_for_upsell:0}}</span>
 				</li>
 				<li>
-					Rooms upsold
+					{{ 'ROOMS_UPSOLD_TITLE' | translate }}
 					<span>{{dashboardData.rooms_upsold?dashboardData.rooms_upsold:0}}</span>
 				</li>
 				</li>
