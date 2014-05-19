@@ -4,7 +4,7 @@ sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearc
 	
 	//model used in query textbox, we will be using this across
 	$scope.textInQueryBox = "";
-	$scope.$emit("updateIndex",1);
+	$scope.$emit("updateRoverLeftMenu","cards");
   	$scope.results = [];
 	var successCallBackofInitialFetch = function(data){
 		$scope.$emit("hideLoader");
