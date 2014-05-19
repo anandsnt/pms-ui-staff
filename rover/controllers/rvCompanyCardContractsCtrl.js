@@ -107,17 +107,27 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	/**
   	* function used for refreshing the scroller
   	*/
+  	$scope.$parent.myScrollOptions = {		
+	    'contracts_scroll': {
+	    	scrollbars: true,
+	    	scrollY: true,
+	        snap: false,
+	        hideScrollbar: false
+	    }
+	};
   	var refreshScroller = function(){
 
 	    $scope.$parent.myScroll['contracts_scroll'].refresh();
 	    //scroller options
 	    $scope.$parent.myScrollOptions = {
+	    	'contracts_scroll': {
 	        snap: false,
 	        scrollbars: true,
 	        bounce: true,
 	        vScroll: true,
 	        vScrollbar: true,
 	        hideScrollbar: false
+	       }
 	    };
   	};
   	
