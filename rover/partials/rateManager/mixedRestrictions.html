@@ -1,28 +1,30 @@
 <div ng-repeat="restrictionType in data.restrictionTypes">
-	<div ng-if="restrictionType.hasEdit" ng-show="restrictionType.showEdit">
-	    <h2 class="h1">{{restrictionType.description}}</h2>
+	<div class="restriction_text" ng-if="restrictionType.hasEdit" ng-show="restrictionType.showEdit">
+	    <h1 class="h1">{{restrictionType.description}}</h1>
 	    <div class="mixed_restrictions">
 	        <em>This overrides all {{restrictionType.description}} restrictions for the selected room type(s) and date range</em>
 	    </div>
-	    {{restrictionType.description}}
-		<div>
+	    <div class="inputlabel"><span> {{restrictionType.description}} </span>
+			<br/>
 			<input ng-model="daysEntered"/>
-		</div>
-		<div>
+	    </div>
+		<div class="cancellationbuttonwrap">
 		    <button class="button green" type="button" ng-click="updateRestrictionBtnClicked(restrictionType.id)">Set Restriction</button>
 		    <button class="button red" type="button" ng-click="removeRestrictionBtnClicked(restrictionType.id)">Remove Restriction</button>
+			<button ng-show="restrictionType.showEdit" class="button blank" type="button">Cancel</button>
 		</div>
 	</div>
-	<div ng-if="!restrictionType.hasEdit" ng-show="restrictionType.showEdit">
-	    <h2 class="h1">{{restrictionType.description}}</h2>
+	<div class="restriction_text" ng-if="!restrictionType.hasEdit" ng-show="restrictionType.showEdit">
+	    <h1 class="h1">{{restrictionType.description}}</h1>
 	    <div class="mixed_restrictions">
 	        <em>This overrides all {{restrictionType.description}} restrictions for the selected room type(s) and date range</em>
 	    </div>
-		<div>
+		<div class="cancellationbuttonwrap">
 		    <button class="button green" type="button" ng-click="updateRestrictionBtnClicked(restrictionType.id)">Set Restriction</button>
 		    <button class="button red" type="button" ng-click="removeRestrictionBtnClicked(restrictionType.id)">Remove Restriction</button>
+			<button ng-show="restrictionType.showEdit" class="button blank" type="button">Cancel</button>
+
 		</div>
 	</div>
-	<button ng-show="restrictionType.showEdit" class="button blank" type="button">Cancel</button>
 </div>
 
