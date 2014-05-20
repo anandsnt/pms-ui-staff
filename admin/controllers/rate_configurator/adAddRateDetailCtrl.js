@@ -20,7 +20,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
             if($scope.rateTypesDetails){
                 angular.forEach($scope.rateTypesDetails.rate_types, function(rate_type){
                     if($scope.rateData.rate_type.id === rate_type.id){
-                        if(rate_type.name === "Promotional"){
+                        if(rate_type.name === "Specials & Promotions"){
                             ispromo = true;
                         }
                         else{
@@ -83,7 +83,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
         }
         /**
         * Method to show/hide the based on range selection.
-        * Based on rate will not be available, 
+        * Based on rate will not be available,
         * if it the rate type is 'Corporate Rates', 'Consortia Rates', 'Government Rates'
         */
         $scope.rateTypeChanged = function(){
@@ -91,7 +91,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
             if (['Corporate Rates', 'Consortia Rates', 'Government Rates'].indexOf(rateTypeSelected) >= 0){
                 $scope.hideBasedOn = true;
             }
-            else if(rateTypeSelected === 'Promotional'){
+            else if(rateTypeSelected === 'Specials & Promotions'){
                 $scope.isPromotional = true;
             }
         };
@@ -103,7 +103,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
             var addOnsArray = [];
             angular.forEach($scope.rateData.addOns, function(addOns){
                 if(addOns.isSelected)
-                { 
+                {
                     var data ={};
                     data.is_inclusive_in_rate = addOns.is_inclusive_in_rate;
                     data.addon_id =  addOns.id;
