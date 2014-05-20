@@ -93,6 +93,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     };
   	var fetchFailureCallback = function(data){
         $scope.$emit('hideLoader');
+        $scope.errorMessage = data;
     };    
   	    
     var fetchContractsListSuccessCallback = function(data){
@@ -102,6 +103,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     };
     var fetchContractsDetailsFailureCallback = function(data){
         $scope.$emit('hideLoader');
+        $scope.errorMessage = data;
     };
 	
 	/**
@@ -214,6 +216,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	    };
 	  	var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
+	        $scope.errorMessage = data;
 	    }; 
 		$scope.invokeApi(RVCompanyCardSrv.addNewContract,{ "account_id":$stateParams.id, "postData":data}, saveContractSuccessCallback, saveContractFailureCallback);  
 	};
@@ -226,6 +229,8 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	    var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
+	        $scope.errorMessage = data;
+	    	$scope.$parent.currentSelectedTab = 'cc-contracts';
 	    };
 	   
 		/**
