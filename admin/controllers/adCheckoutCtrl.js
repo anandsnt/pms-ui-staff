@@ -1,4 +1,4 @@
-admin.controller('ADCheckoutCtrl',['$scope','adCheckoutSrv','$state', function($scope,adCheckoutSrv,$state){
+admin.controller('ADCheckoutCtrl',['$scope','$rootScope','adCheckoutSrv','$state', function($scope,$rootScope,adCheckoutSrv,$state){
 
 	$scope.errorMessage = '';
 
@@ -66,11 +66,23 @@ admin.controller('ADCheckoutCtrl',['$scope','adCheckoutSrv','$state', function($
     	$scope.invokeApi(adCheckoutSrv.save, uploadData,saveCheckoutDetailsSuccessCallback,saveCheckoutDetailsFailureCallback);
     };
   
-    $scope.gotToDashboard = function(){
-    		$state.go('admin.dashboard', {
-			menu : 1
-		});
+ /**
+    *   Method to go back to previous state.
+    */
+    $scope.backClicked = function(){
+        
+        if($rootScope.previousStateParam){
+            $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+        }
+        else if($rootScope.previousState){
+            $state.go($rootScope.previousState);
+        }
+        else 
+        {
+            $state.go('admin.dashboard', {menu : 0});
+        }
+    
     };
-
+ 
 
 }]);

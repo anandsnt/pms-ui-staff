@@ -2,7 +2,7 @@
 		<header class="content-title float">
 			<h2>Guest Checkout Setup</h2>
 			<a ui-sref="admin.checkinCheckoutEmail({from:'checkout'})" class="action email">Send Checkout Email</a>
-			<a ng-click="gotToDashboard()" data-type="load-details" class="action back">Back</a>
+			<a ng-click="backClicked()" data-type="load-details" class="action back">Back</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
 		<form style="overflow-y:auto;" name="edit-social-lobby" method="post" class="form float">
