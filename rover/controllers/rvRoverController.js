@@ -1,5 +1,7 @@
-sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window','RVDashboardSrv','ngDialog', function($rootScope, $scope, $state,$window,RVDashboardSrv,ngDialog){
-
+sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window','RVDashboardSrv','ngDialog','$translate', function($rootScope, $scope, $state,$window,RVDashboardSrv,ngDialog, $translate){
+	
+	
+	
     $scope.$on("closeDrawer", function(){      
       $scope.menuOpen = false;  
       $scope.isMenuOpen();
@@ -35,6 +37,7 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
   	        if($rootScope.adminRole == "Hotel staff" )
   	            $scope.isHotelStaff =  true;
   	        $scope.$emit('hideLoader');
+  	        $scope.getLanguage();
   	    };
   	    var fetchUserInfoFailureCallback = function(data){
   	        $scope.$emit('hideLoader');
@@ -50,8 +53,23 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
     $scope.fetchData();
     $scope.menuOpen = false;
 };
+/*
+ * Success callback of get language
+ * @param {object} response
+ */
+$scope.fetchHotelDetailsSuccessCallback = function(data){
+	 $translate.use(data.language.value);
+	 $scope.$emit('hideLoader');
+};
+/*
+ * Function to get the current hotel language
+ */
+$scope.getLanguage = function(){
+	$scope.invokeApi(RVDashboardSrv.fetchHotelDetails,{},$scope.fetchHotelDetailsSuccessCallback);  
+};
 
 $scope.init();
+
 /*
    * update selected menu class
    */
@@ -92,8 +110,10 @@ $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState
 });
 
 $scope.settingsClicked = function(){
-  if($scope.isHotelAdmin)
+  if($scope.isHotelAdmin){
+    $scope.selectedMenuIndex = "settings";
    $window.location.href = "/admin";
+ }
   else if($scope.isHotelStaff){
           ngDialog.open({
                template: '/assets/partials/settings/rvStaffSettingModal.html',

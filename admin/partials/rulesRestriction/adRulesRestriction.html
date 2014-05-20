@@ -16,7 +16,7 @@
 
 		<table id="rules">
 			<tbody>
-				<tr><td><br><strong>System Defined Restrictions</strong></td></tr>
+				<tr><td><br><strong class="sep-heading">Restrictions</strong></td></tr>
 
 				<tr ng-repeat="item in ruleList | filter: { editable: false }">
 					<td>
@@ -42,13 +42,14 @@
 					</td>
 				</tr>
 
-				<tr><td><br><br><strong>Editable Restrictions</strong></td></tr>
+				<tr><td><br><br><strong class="sep-heading">Rules</strong></td></tr>
 
 				<tr ng-repeat="item in ruleList | filter: { editable: true }" ng-hide="{{ item.description === 'Levels' }}">
 					<td>
 						<table class="grid">
 							<td>
-								<a class="inline" ng-click="fetchRuleList(item)"> {{ item.description }} </a>
+								<span class="toggle" ng-show="showPolicyArrow()"></span>
+								<a class="inline" ng-click="toggleRulesListShow()"> {{ item.description }} </a>
 								<em class="action add" ng-click="openAddNewRule()">Add new rule</em>
 							</td>
 							<td class="activate text-left">

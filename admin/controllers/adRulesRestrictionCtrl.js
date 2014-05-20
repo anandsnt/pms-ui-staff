@@ -22,6 +22,18 @@ admin.controller('ADRulesRestrictionCtrl', [
 
                 $scope.ruleList = data.results;
                 $scope.total = data.total_count;
+
+                // preload rules under - CANCELLATION_POLICY
+                var cancelPolicy = _.find($scope.ruleList, function(item) {
+                    return item.description === 'Cancellation Penalties';
+                });
+                $scope.fetchRuleList(cancelPolicy);
+
+                // preload rules under - DEPOSIT_REQUEST
+                var depositPolicy = _.find($scope.ruleList, function(item) {
+                    return item.description === 'Cancellation Penalties';
+                });
+                $scope.fetchRuleList(depositPolicy);
             };
 
             $scope.invokeApi(ADRulesRestrictionSrv.fetchRestrictions, {}, fetchHotelLikesSuccessCallback);
@@ -116,6 +128,26 @@ admin.controller('ADRulesRestrictionCtrl', [
             $scope.invokeApi(ADRulesRestrictionSrv.fetchRules, { policy_type: ruleType }, callback);
         };
 
+        $scope.showPolicyArrow = function() {
+            if ( this.item.description === 'Cancellation Penalties' ) {
+                return $scope.cancelRulesList.length ? true : false;
+            };
+
+            if ( this.item.description === 'Deposit Requests' ) {
+                return $scope.depositRuleslList.length ? true : false;
+            };
+        };
+
+        $scope.toggleRulesListShow = function() {
+            if ( this.item.description === 'Cancellation Penalties' ) {
+                $scope.showCancelList = $scope.showCancelList ? false : true;
+            };
+
+            if ( this.item.description === 'Deposit Requests' ) {
+                $scope.showDepositList = $scope.showDepositList ? false : true;
+            };
+        };
+
         // open the form to add a new rule
         $scope.openAddNewRule = function() {
             $scope.rulesTitle = 'New';
@@ -135,7 +167,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 $scope.showCancelForm = false;
                 $scope.showDepositForm = true;
 
-                $scope.rulesSubtitle = 'Deposit Request Rule';
+                $scope.rulesSubtitle = 'Deposit Request';
 
                 $scope.singleRule = {};
                 $scope.singleRule.policy_type = 'DEPOSIT_REQUEST';
@@ -150,10 +182,19 @@ admin.controller('ADRulesRestrictionCtrl', [
             var callback = function(data) {
                 
                 // clear any previous data
-                $scope.singleRule = {};
+                $scope.singleRule = data;
+
+                var amtString = $scope.singleRule.amount + '',
+                    num       = amtString.split('.')[0],
+                    dec       = amtString.split('.')[1] * 1;
+
+                if ( dec < 9 ) {
+                    dec += '0';
+                };
+
+                $scope.singleRule.amount = num + '.' + dec;
 
                 if ( from === 'Cancellation Penalties' ) {
-                    $scope.singleRule = data;
                     $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
 
                     // need to split HH:MM into individual keys
@@ -190,7 +231,6 @@ admin.controller('ADRulesRestrictionCtrl', [
                 }
 
                 if ( from === 'Deposit Requests' ) {
-                    $scope.singleRule = data;
                     $scope.singleRule.policy_type = 'DEPOSIT_REQUEST';
 
                     $scope.showCancelForm = false;
@@ -213,6 +253,14 @@ admin.controller('ADRulesRestrictionCtrl', [
         $scope.cancelCliked = function() {
             $scope.showCancelForm = false;
             $scope.showDepositForm = false;
+
+            // if ( this.item.description === 'Cancellation Penalties' ) {
+            //     $scope.showCancelList = $scope.showCancelList ? false : true;
+            // };
+
+            // if ( this.item.description === 'Deposit Requests' ) {
+            //     $scope.showDepositList = $scope.showDepositList ? false : true;
+            // };
         };
 
         // save a new rule or update an edited rule

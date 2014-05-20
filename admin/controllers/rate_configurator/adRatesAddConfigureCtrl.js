@@ -192,7 +192,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         // check whether date range is past
         $scope.is_date_range_editable = function(date_range_end_date){
             if($scope.is_edit){
-                if ($scope.rateData.based_on.id) { return false; }
+                console.log('reached::is_date_range_editable');
+                console.log($scope.rateData.rate_type.name);
+                if ($scope.rateData.based_on.id && $scope.rateData.rate_type.name != 'Promotional') { return false; }
                 if (date_range_end_date && $scope.hotel_business_date){
                     return Date.parse(date_range_end_date) > Date.parse($scope.hotel_business_date)
                 }

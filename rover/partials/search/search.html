@@ -29,10 +29,10 @@
 
 								<div class="data">
 									<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false" ng-class="{'grey' : row.is_accompanying_guest=='1'}"> <!--{{row.lastname}},{{row.firstname}} --></h2>
-									<span class="confirmation">{{row.confirmation}}</span>
+									<span class="confirmation" ng-bind-html="'{{row.confirmation}}'|highlight:textInQueryBox:false">{{row.confirmation}}</span>
 									<span class="icons icon-location" ng-hide="escapeNull(row.location)==''" >{{escapeNull(row.location)}}
 									</span>
-									<em class="icons icon-group" ng-hide="{{row.group==null}}">{{row.group}}</em>
+									<em class="icons icon-group" ng-hide="{{row.group==null}}"  ng-bind-html="'{{row.group}}'|highlight:textInQueryBox:false"></em>
 								</div>	
 
 								<div class="status" >				
@@ -47,8 +47,14 @@
 								<span class="room-number {{getRoomStatusMapped(row.roomstatus, row.fostatus)}}" ng-if="row.reservation_status == 'CHECKING_IN'">
 									{{row.room}}
 								</span>
-								<span class="room-number" ng-if="row.reservation_status != 'CHECKING_IN'">
-									{{row.room}}
+								<span class="room-number" ng-if="row.reservation_status != 'CHECKING_IN'" >
+									<span class='highlight' ng-if="textInQueryBox.indexOf(row.room) != -1">
+										{{row.room}}
+									</span>
+									<span  ng-if="textInQueryBox.indexOf(row.room) == -1">
+										{{row.room}}
+									</span>
+
 								</span>
 
 

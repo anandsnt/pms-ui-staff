@@ -9,9 +9,15 @@ sntRover.controller('staycardController',['$scope', function($scope){
 
 		 $scope.$on('guestCardUpdateData',function(event, data){
 		 	$scope.guestCardData.contactInfo = data.data;
+		 	$scope.guestCardData.contactInfo.avatar = data.avatar;
+		 	$scope.guestCardData.contactInfo.vip = data.vip;
 		 	$scope.countriesList = data.countries;
 		 	$scope.guestCardData.userId=data.userId;
 	
+		 });
+
+		 $scope.$on('reservationCardClicked',function(){
+		 	 $scope.$broadcast('reservationCardisClicked');
 		 });
 
 
