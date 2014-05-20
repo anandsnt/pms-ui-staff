@@ -60,12 +60,23 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2',
         */
         this.fetchAdditionalDetails = function () {
             var deferred = $q.defer();
-            
+
+            this.fetchSelectedRestrictions = function () {
+               var url = "api/restriction_types?is_selected_restriction=true";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.additionalDetails.selectedRestrictions = data.results;
+                    deferred.resolve(that.additionalDetails);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+                return deferred.promise;
+              }
+
             this.fetchRestictionDetails = function () {
                var url = "/api/restriction_types";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.additionalDetails.restrictionDetails = data.results;
-                    deferred.resolve(that.additionalDetails);
+                    this.fetchSelectedRestrictions();
                 }, function (data) {
                     deferred.reject(data);
                 });

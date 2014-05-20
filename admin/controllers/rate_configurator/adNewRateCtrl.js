@@ -46,23 +46,40 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         };
 
         var fetchAdditionalDetailsSuccessCallback  = function(data){
-
-         $scope.allAddOns = data.addons;
-         angular.forEach($scope.allAddOns, function(addOns){
+        //add ons
+        $scope.allAddOns = data.addons;
+        angular.forEach($scope.allAddOns, function(addOns){
                 addOns.isSelected = false;
                 addOns.is_inclusive_in_rate = "false";
              });
-            $scope.rateData.addOns =data.results;
+        $scope.rateData.addOns =data.results;
        
+        //restriction type
         $scope.restrictionDetails = data.restrictionDetails;
         angular.forEach($scope.restrictionDetails, function(restrictionType){
                if(restrictionType.value == 'CANCEL_PENALTIES'){
-                console.log(restrictionType)
                  $scope.cancelPenaltiesActivated = (restrictionType.activated) ? true:false;
                } 
                if(restrictionType.value == 'DEPOSIT_REQUESTED'){
                 $scope.depositRequiredActivated = (restrictionType.activated)  ? true:false;              
                }    
+         });
+
+         //selected restrictions 
+         angular.forEach(data.selectedRestrictions, function(selectedRestriction){
+              
+               if(selectedRestriction.value == 'MAX_ADV_BOOKING'){
+                  $scope.maxAdvancedBookingActivated =  true;
+               } 
+               if(selectedRestriction.value == 'MAX_STAY_LENGTH'){
+                  $scope.maxStayLengthActivated =  true;          
+               } 
+               if(selectedRestriction.value == 'MIN_ADV_BOOKING'){
+                  $scope.minAdvancedBookingActivated =  true;            
+               }  
+                if(selectedRestriction.value == 'MIN_ADV_BOOKING'){
+                   $scope.minStayLengthActivated =  true;            
+               }     
          });
 
          };
