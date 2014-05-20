@@ -184,7 +184,9 @@ var Search  = function(domRef){
     }
 
     $('#query').val('');
-    $('#search-results').empty().addClass('hidden');
+    $('#search-results').empty().addClass('hidden');    
+    that.showHideClearQueryButton();
+    
     if(typeof that.preloadedResults != "undefined"){
       var preloadedResultsCount = that.preloadedResults.length;
       if(preloadedResultsCount > 0){
