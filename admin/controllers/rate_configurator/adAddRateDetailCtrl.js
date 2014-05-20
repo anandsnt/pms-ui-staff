@@ -77,6 +77,15 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
                 $scope.rateTypesDetails.markets = $scope.rateTypesDetails.is_use_markets ? $scope.rateTypesDetails.markets : [];
                 $scope.rateTypesDetails.sources = $scope.rateTypesDetails.is_use_sources ? $scope.rateTypesDetails.sources : [];
                 
+                angular.forEach($scope.rateTypesDetails.depositPolicies, function(depositPolicy){
+                        var symbol =  (depositPolicy.amount_type ==="amount") ? '$':'%';
+                        depositPolicy.displayData = depositPolicy.name +"   "+"("+symbol+depositPolicy.amount+")";
+                });
+                angular.forEach($scope.rateTypesDetails.cancelationPenalties, function(cancelationPenalty){
+                        var symbol =  (cancelationPenalty.amount_type ==="amount") ? '$':'%';
+                        cancelationPenalty.displayData = cancelationPenalty.name +"   "+"("+symbol+cancelationPenalty.amount+")";
+                });
+
                 $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
                 $scope.$emit('hideLoader');
             };

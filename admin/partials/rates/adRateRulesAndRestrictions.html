@@ -29,7 +29,7 @@
 		<div class="entry full-width rates_deposit_requirements">
 			<label>deposit requirements</label>
 			<div class="select">
-				<select class="placeholder" ng-model="rateData.deposit_policy_id" ng-options="policy.id as policy.name for policy in rateTypesDetails.depositPolicies">
+				<select class="placeholder" ng-model="rateData.deposit_policy_id" ng-options="policy.id as policy.displayData for policy in rateTypesDetails.depositPolicies">
 					<option value="" disabled>Select Deposit requiremnts</option>
 				</select>
 			</div>
@@ -37,7 +37,7 @@
 		<div class="entry full-width">
 			<label>cancellation penalties</label>
 			<div class="select">
-				<select class="placeholder" ng-model="rateData.cancellation_policy_id" ng-options="penalty.id as penalty.name for penalty in rateTypesDetails.cancelationPenalties">
+				<select class="placeholder" ng-model="rateData.cancellation_policy_id" ng-options="penalty.id as penalty.displayData for penalty in rateTypesDetails.cancelationPenalties">
 					<option value="" disabled>Select Cancellation Penalties</option>
 				</select>
 			</div>
