@@ -83,7 +83,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 			data.rate_ids.push($scope.currentFilterData.rates_selected_list[i].id);	
 		}
 		
-		data.name_card_ids = [];	
+		data.name_card_ids = [];
 		return data;
 	};
 
@@ -124,7 +124,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 
 		var params = {};
 		if($scope.selectedRate !== ""){
-			params.id = $scope.selectedRate.id;	
+			params.rate_id = $scope.selectedRate.id;	
 		}
 		params.details = []; 
 		

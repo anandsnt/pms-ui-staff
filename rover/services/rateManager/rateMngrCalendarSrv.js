@@ -26,6 +26,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
     * To fetch All Calendar data
     */
 	this.fetchCalendarData = function(params){
+		//var url = {"from_date":"2014-05-20","to_date":"2014-05-27","rate_type_ids":[],"rate_ids":[51,46],"name_card_ids":[]} 
 		var deferred = $q.defer();
 
 		var rejectDeferred = function(data){
@@ -33,8 +34,23 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		};
 		var getDailyRates = function(d){
 			var url = "/api/daily_rates";
+			var dateString = url + '?from_date=' + params.from_date + '&to_date=' + params.to_date;
+			var rateString = "";
+			for(var i in params.rate_ids){
+				rateString = rateString + "&rate_ids[]=" + params.rate_ids[i];
+			}
+			var rateTypeString = "";
+			for(var i in params.rate_type_ids){
+				rateTypeString = rateString + "&rate_type_ids[]=" + params.rate_type_ids[i];
+			}
+
+			for(var i in params.name_card_ids){
+				nameCardString = rateString + "&name_card_ids[]=" + params.name_card_ids[i];
+			}
+
+			var urlString = dateString + rateString + rateTypeString;
 			//var url =  '/sample_json/rate_manager/daily_rates.json';	
-			BaseWebSrvV2.getJSON(url, params).then(function(data) {
+			BaseWebSrvV2.getJSON(urlString).then(function(data) {
 				that.dailyRates = data; 
 				var calendarData = that.calculateRateViewCalData();
 				deferred.resolve(calendarData);
