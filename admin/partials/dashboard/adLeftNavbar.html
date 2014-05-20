@@ -8,6 +8,10 @@
 		<li>
 			<a ng-click="$emit('navToggled')" class="icon-menu icon-search">Search</a>
 		</li>
+		
+		<li ng-show="isHotelAdmin">
+			<a href="staff#/staff/rateManager" ng-click="$emit('navToggled')" class="icon-menu">Rate Manager</a>
+		</li>
 		<li class="hidden">
 			<a ng-click="$emit('navToggled')" class="icon-menu icon-social-lobby ">Social Lobby</a>
 		</li>
