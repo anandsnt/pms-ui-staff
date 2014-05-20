@@ -163,30 +163,30 @@ function isEmpty(dict) {
 
 
 
-var get_mapped_room_ready_status_color = function(room_ready_status, checkin_is_inspected_only) {
-		mapped_color = "";
-		switch(room_ready_status) {
+var get_mapped_room_ready_status_color = function(roomReadyStatus, checkinIsInspectedOnly) {
+		mappedColor = "";
+		switch(roomReadyStatus) {
 
 			case "INSPECTED":
-				mapped_color = 'room-green';
+				mappedColor = 'room-green';
 				break;
 			case "CLEAN":
-				if (checkin_is_inspected_only == "true") {
-					mapped_color = 'room-orange';
+				if (checkinIsInspectedOnly == "true") {
+					mappedColor = 'room-orange';
 					break;
 				} else {
-					mapped_color = 'room-green';
+					mappedColor = 'room-green';
 					break;
 				}
 				break;
 			case "PICKUP":
-				mapped_color = "room-orange";
+				mappedColor = "room-orange";
 				break;
 
 			case "DIRTY":
-				mapped_color = "room-red";
+				mappedColor = "room-red";
 				break;
 
 		}
-		return mapped_color;
+		return mappedColor;
 };
