@@ -35,7 +35,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 		setTimeout(function(){
 			$scope.$parent.myScroll['resultDetails'].refresh();
 			}, 
-		1500);
+		3000);
 		
      });
 		
@@ -61,5 +61,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	//To pass confirmation number and resrvation id to reservation Card controller.
   	 // var passData = {confirmationNumber: $stateParams.confirmationId, reservationId: $stateParams.id};
   	 var passData = reservationListData;
+  	 passData.avatar=reservationListData.guest_details.avatar;
+  	 passData.vip=reservationListData.guest_details.vip;
   	 $scope.$emit('passReservationParams', passData);
 }]);

@@ -193,11 +193,30 @@
 				<label for="auto-logout"> Auto logout delay [Minutes] <strong>*</strong> </label>
 				<input type="text" ng-model="data.auto_logout_delay" value="{{data.auto_logout_delay}}" required="yes" placeholder="Enter auto logout delay" name="auto-logout" id="auto-logout">
 			</div>
-
-			<div class="entry">
+			<div class="entry full-width" ng-show="isAdminSnt">
+				<label for="hotel-pms-type"> Language </label>
+				<div class="select">
+					<select ng-model="data.selected_language" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
+						<option value=""> Language </option>
+						<option ng-repeat="language in data.languages" value="{{language.value}}" ng-selected="language.value==data.selected_language">
+							{{language.description}}
+						</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="entry full-width">
 				<label for="hotel_from_address"> EMAIL DOMAIN AND FROM ADDRESS FOR GUESTS <strong>*</strong></label>
 				<input type="text" ng-model="data.hotel_from_address" value="{{data.hotel_from_address}}" placeholder="Enter Email domain and from address for GUEST" name="hotel_from_address" id="hotel_from_address">
 			</div>
+			
+			<!-- <div class="entry">
+				<label for="hotel_from_address"> LANGUAGE <strong>*</strong></label>
+				<select ng-model="data.hotel_pms_type" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
+					<option value=""> PMS Type </option>
+					<option ng-repeat="pms_types in data.pms_types" value="{{pms_types.value}}" ng-selected="pms_types.value==data.hotel_pms_type">{{pms_types.value}}</option>
+				</select>
+			</div> -->
 
 			<div class="entry full-width" ng-hide="isAdminSnt">
 				<label for="hotel-logo"> Hotel Logo Image </label>

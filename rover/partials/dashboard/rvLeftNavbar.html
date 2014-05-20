@@ -3,10 +3,10 @@
 	<!-- For Hotel Admin -->
 	<ul ng-show ="isHotelAdmin || isHotelStaff" >
 		<li>
-			<a   ui-sref="rover.dashboard" class="icon-menu icon-dashboard" ng-class="{'active': selectedMenuIndex === 0}" ng-click="$emit('navToggled')">Dashboard</a>
+			<a   ui-sref="rover.dashboard" class="icon-menu icon-dashboard" ng-class="{'active': selectedMenuIndex === 'dashboard'}" ng-click="$emit('navToggled')">Dashboard</a>
 		</li>
 		<li>
-			<a  ui-sref="rover.search" class="icon-menu icon-search" ng-class="{'active': selectedMenuIndex === 1}" ng-click="$emit('navToggled')">Search</a>
+			<a  ui-sref="rover.search" class="icon-menu icon-search" ng-class="{'active': selectedMenuIndex === 'search'}" ng-click="$emit('navToggled')">Search</a>
 		</li>
 		<li ng-show="isHotelAdmin">
 			<a ui-sref="rover.ratemanager" ng-click="$emit('navToggled')" class="icon-menu">Rate Manager</a>
@@ -21,7 +21,7 @@
 			<a ng-click="$emit('navToggled')" class="icon-menu icon-reviews ">Reviews</a>
 		</li>
 		<li id="settings">
-			<a ng-click="settingsClicked()" class="icon-menu icon-settings">Settings</a>
+			<a ng-click="settingsClicked()" ng-class="{'active': selectedMenuIndex === 'settings'}"class="icon-menu icon-settings">Settings</a>
 		</li>
 		<li id="sign-out">
 			<a ng-click="$emit('navToggled')" href="/logout" class="icon-menu icon-sign-out">Sign Out</a>

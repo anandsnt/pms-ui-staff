@@ -1,0 +1,15 @@
+{
+    "GREETING_MORNING": "Good Morning",
+    "GREETING_AFTERNOON": "Good Afternoon",
+    "GREETING_EVENING": "Good Evening",
+    "GUEST_REVIEW_SCORE_TITLE": "Guest review score",
+    "UPSELL_TARGET_TITLE": "Upsell Target",
+    "ACTUAL_UPSELL_TITLE": "Actual Upsell",
+    "VIP_CHECKIN_TITLE": "VIP Checkin's",
+    "ROOMS_FOR_UPSELL_TITLE": "Rooms For Upsell",
+    "ROOMS_UPSOLD_TITLE": "Rooms Upsold",
+    "CHECKING_IN": "Checking In",
+    "INHOUSE": "Inhouse",
+    "CHECKING_OUT": "Checking Out",
+    "DASHBOARD_HEADING": "Dashboard"
+}
