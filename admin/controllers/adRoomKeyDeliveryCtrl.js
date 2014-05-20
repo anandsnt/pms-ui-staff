@@ -1,4 +1,4 @@
-admin.controller('ADRoomKeyDeliveryCtrl',['$state', '$scope', 'ADRoomKeyDeliverySrv', function($state, $scope, ADRoomKeyDeliverySrv){
+admin.controller('ADRoomKeyDeliveryCtrl',['$state', '$scope','$rootScope','ADRoomKeyDeliverySrv', function($state, $scope,$rootScope, ADRoomKeyDeliverySrv){
 	
 	BaseCtrl.call(this, $scope);
 	$scope.isRoverCheckinRFID = false;
@@ -28,5 +28,23 @@ admin.controller('ADRoomKeyDeliveryCtrl',['$state', '$scope', 'ADRoomKeyDelivery
        		$scope.isRoverCheckinRFID = false;
        }
    	});
+
+   /**
+    *   Method to go back to previous state.
+    */
+	$scope.backClicked = function(){
+		
+		if($rootScope.previousStateParam){
+			$state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+		}
+		else if($rootScope.previousState){
+			$state.go($rootScope.previousState);
+		}
+		else 
+		{
+			$state.go('admin.dashboard', {menu : 0});
+		}
+	
+	};
    	
 }]);

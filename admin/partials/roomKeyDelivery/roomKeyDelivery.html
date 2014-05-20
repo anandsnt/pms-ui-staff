@@ -2,7 +2,7 @@
 	<div data-view="RoomKeyDeliveryView">
 		<header class="content-title float">
 			<h2>Room Key Delivery Setup</h2>
-			<a ui-sref="admin.dashboard({menu:4})" data-type="load-details" class="action back">Back</a>
+			<a ng-click="backClicked()" data-type="load-details" class="action back">Back</a>
 		</header>
 		
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
