@@ -1,0 +1,75 @@
+{
+	"cards": 
+	[
+		{
+			"id"					: "1",
+			"image"					: "allianz-logo.jpg",
+			"name1"					: "Allianz",
+			"name2"					: "Insurance",
+			"cardtype"				: "company"
+		},
+		{
+			"id"					: "2",
+			"image"					: "allianz-logo.jpg",
+			"name1"					: "Allianz",
+			"name2"					: "Global Assistance USA",
+			"cardtype"				: "company"
+		},
+		{
+			"id"					: "3",
+			"image"					: "allianz-logo.jpg",
+			"name1"					: "Allianz",
+			"name2"					: "Global Corporate & Specialty",
+			"cardtype"				: "company"
+		},
+		{
+			"id"					: "4",
+			"image"					: "allianz-logo.jpg",
+			"name1"					: "Allianz",
+			"name2"					: "Global Investors",
+			"cardtype"				: "company"
+		},
+		{
+			"id"					: "5",
+			"image"					: "allianz-logo.jpg",
+			"name1"					: "Allianz",
+			"name2"					: "Life Insurance New York",
+			"cardtype"				: "company"
+		},
+		{
+			"id"					: "6",
+			"image"					: "allianz-logo.jpg",
+			"name1"					: "Allianz",
+			"name2"					: "Life Insurance North America",
+			"cardtype"				: "company"
+		},
+		{
+			"id"					: "7",
+			"image"					: "",
+			"name1"					: "All",
+			"name2"					: "On One Wholesale",
+			"cardtype"				: "company"
+		},
+		{
+			"id"					: "8",
+			"image"					: "",
+			"name1"					: "McTavish",
+			"name2"					: "Travel",
+            "cardtype"              : "travel-agent"
+		},
+		{
+			"id"					: "9",
+			"image"					: "",
+			"name1"					: "Allianz",
+			"name2"					: "Travel",
+            "cardtype"              : "travel-agent"
+		},
+		{
+			"id"					: "10",
+			"image"					: "guest1.jpg",
+			"name1"					: "Joe",
+			"name2"					: "Allen",
+			"cardtype"              : "guest"
+		}
+	]
+}

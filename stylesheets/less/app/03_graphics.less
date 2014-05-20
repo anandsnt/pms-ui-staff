@@ -45,6 +45,10 @@
 			background-position: 0 -840px;
 		}
 
+		&.icon-cards {
+			background-position: 0 -960px;
+		}
+
 		@media @highdpi {
 			background-image: @iconNoContent2x;
 			background-size: 125px, 120px;
@@ -124,6 +128,23 @@
 		&.icon-gc-email {background-position: 10px -344px; }
 
 		/* Stay Card Icons ***/
+		&.icon-company,
+        &.icon-travel-agent {
+        	text-align: center;
+        	text-transform: uppercase;
+        	color: @white;
+        	font-size: 12px;
+        	font-weight: 600;
+        	padding-top: 55px;
+        	margin: -20px 0 0 -20px;
+        	.square(90px);
+        	white-space: nowrap;
+        	text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+
+        	&.icon-company { background-position: 32px -3435px; }
+        	&.icon-travel-agent { background-position: 33px -3553px; }
+        }
+
 		&.icon-upgrade { background-position: 3px -440px; }
 		&.icon-key { background-position: 3px -500px; }
 		&.icon-plus { background-position: 3px -1000px; }
@@ -274,16 +295,18 @@
 
 		&.next-view { background-image: @arrowRight; }
 		&.prev-view { background-image: @arrowLeft; }
-		&.toggle { background-image: @arrowDown; }
-		&.toggle.active { background-image: @arrowUp; }
+		&.toggle,
 		&.toggle-filter { background-image: @arrowDown; }
+		&.toggle.active,
 		&.toggle-filter.active { background-image: @arrowUp; }
 
 		@media @highdpi {
 			&.next-view { background-image: @arrowRight2x; background-size: 14px 14px; }
 			&.prev-view { background-image: @arrowLeft2x; background-size: 14px 14px; }
-			&.toggle { background-image: @arrowDown2x; background-size: 14px 14px; }
-			&.toggle.active { background-image: @arrowUp2x; background-size: 14px 14px; }
+			&.toggle,
+			&.toggle-filter { background-image: @arrowDown2x; background-size: 14px 14px; }
+			&.toggle.active,
+			&.toggle-filter.active { background-image: @arrowUp2x; background-size: 14px 14px; }
 		}
 	}
 
@@ -479,6 +502,27 @@
 			background-size: 97px;
 		}
 	}
+
+/* Admin icons			==================================*/
+	.admin-icons {
+		background-image: @iconsAdmin;
+		background-repeat: no-repeat;
+		border: 0;
+		.show;
+
+		&.icon-mover-right {
+			background-position: 13px -788px; 
+			
+			&:hover,
+			&:active { background-position: 13px -888px; }
+		}
+
+		@media @highdpi {
+			background-image: @iconsAdmin2x;
+			background-size: 50px;
+		}
+	}
+
 
 /* 4. LAYOUT
 ==========================================================*/
