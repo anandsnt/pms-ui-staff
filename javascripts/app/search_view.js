@@ -534,12 +534,7 @@ var Search = function(domRef) {
 			console.log('Either FO Status OCC/ room_Ready_status null');
 		}
 
-		console.log("mapped -Room Ready Status---" + room_ready_status);
-		console.log("mapped -Use Pickup---" + use_pickup);
-		console.log("mapped -Use Inspected---" + use_inspected);
-		console.log("mapped - CHECK-IN INSPECTED ONLY---" + checkin_is_inspected_only);
-		console.log("mapped -COLOR---" + mapped_color);
-		console.log("------------------------------")
+		
 		return mapped_room_color;
 	};
 
