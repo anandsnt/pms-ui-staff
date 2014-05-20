@@ -179,7 +179,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
 
         $scope.popupCalendar = function(){
         ngDialog.open({
-         template: '/assets/partials/rates/adRatesAdditionalDeatilsPicker.html',
+         template: '/assets/partials/rates/adRatesAdditionalDetailsPicker.html',
          controller: 'adEndDatePickerController',
          className: 'ngdialog-theme-default single-calendar-modal',
          scope:$scope,
