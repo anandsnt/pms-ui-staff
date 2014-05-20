@@ -4,19 +4,27 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     * Method to fetch all filter options
     */
     
+    $scope.leftMenuDimensions = {};
+
+    var heightOfComponents = 500;
+    var headerHeight = 60;
+    var heightOfFixedComponents = 140;
+
+    $scope.leftMenuDimensions.outerContainerHeight = $(window).height() > heightOfComponents ? heightOfComponents : $(window).height() - headerHeight;
+
+    $scope.leftMenuDimensions.scrollableContainerHeight = $scope.leftMenuDimensions.outerContainerHeight - heightOfFixedComponents;   
+
 	$scope.$parent.myScrollOptions = {		
 	    'filter_details': {
 	    	scrollbars: true,
-	        snap: false,
-	        hideScrollbar: false,
-	        preventDefault: false
+	        snap: false,	        
+	        preventDefault: false,
+	        interactiveScrollbars: true
 	    },
 	};
-
-	
 	
 	$scope.$on('$viewContentLoaded', function() {
-		setTimeout(function(){
+		setTimeout(function(){			
 			$scope.$parent.myScroll['filter_details'].refresh();
 			}, 
 		3000);
@@ -44,6 +52,9 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 		else{
 			$scope.currentFilterData.is_checked_all_rates = true;
 		}
+		setTimeout(function(){
+			$scope.$$childTail.$parent.myScroll['filter_details'].refresh();
+			}, 300);
 	};
 	
 	
