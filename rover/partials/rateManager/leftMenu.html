@@ -1,18 +1,18 @@
 <div class="filter-options {{currentLeftMenuClass}}"  style="z-index:11;" >	
 
-	<h3>FILTER OPTIONS</h3>
+	<h3 style="padding-bottom:15px;">FILTER OPTIONS</h3>
 	<a class="leftMenuHandle" ng-click="toggleLeftMenu()"></a>	
 	<div class="holder left" ng-iscroll="filter_details" ng-iscroll-delay="1000">
 		
-		<div class="entry has-datepicker">
-		    <label for="">DATE RANGE</label>
+		<div class="entry has-datepicker" style="padding-bottom:15px;">
+		    <label for="" style="font-size:14px;">DATE RANGE</label>
 		    <input placeholder="Select date range" readonly="" maxlength="8" value="{{currentFilterData.begin_date +' , '+currentFilterData.end_date}}" class="hasDatepicker"  name="">
 		    <button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
 		</div>
 		
 		
 		<div class="entry">
-		    <label for="nationality">Zoom Level</label>
+		    <label for="nationality" style="font-size:14px;">Zoom Level</label>
 		    <div class="select">
 				<select name="zoom-level" ng-model="currentFilterData.zoom_level_selected">
 				    <option ng-selected="level.value == currentFilterData.zoom_level_selected" ng-repeat="level in currentFilterData.zoom_level" class="placeholder" value="{{level.value}}">{{level.name}}</option> 
@@ -20,7 +20,7 @@
 			</div>
 		</div>
 		
-		<hr/>
+		<hr style="padding:0px; margin:20px 0px;"/>
 		
 		<div class="entry radio-check">
 		    <label class="checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}">
@@ -33,8 +33,8 @@
 		<span class="half-border" ng-show="!currentFilterData.is_checked_all_rates">
 			<hr class="half-left"/> OR <hr class="half-right"/> 
 		</span>
-		<div class="entry" ng-show="!currentFilterData.is_checked_all_rates">
-		    <label for="nationality">Rate Type</label>
+		<div class="entry" ng-show="!currentFilterData.is_checked_all_rates" style="padding-bottom:15px;">
+		    <label for="nationality" style="font-size:14px;">Rate Type</label>
 		    <div class="select">
 				<select name="rate-type" ng-model="currentFilterData.rate_type_selected">
 					<option value="">Select rate type</option>
@@ -44,7 +44,7 @@
 		</div>
 		
 		<div class="entry" ng-show="!currentFilterData.is_checked_all_rates">
-		    <label for="nationality">Rate</label>
+		    <label for="nationality" style="font-size:14px;">Rate</label>
 		    <div class="select" >
 				<select ng-model="currentFilterData.rate_selected">
 					<option value="">Select rate</option>
@@ -58,12 +58,12 @@
 			<span ng-click="deleteRate(rates.id)" class="icons delete_small cursor-hand"> .</span>
 		</div>
 		
-		<hr/>
+		<hr style="padding:0px; margin:20px 0px 10px 0px;"/>
 		
-		<div class="entry table-search1">
-			<span class="search-text">NAME CARD,IATA # OR CORPORATED ID</span>
+		<div class="entry table-search1" style="padding:0px;">
+			<label class="search-text" style="font-size:14px; line-height:14px;">NAME CARD,IATA # OR CORPORATED ID</label>
 			<span type="submit" name="submit" class="icons icon-search1"></span>
-	    	<input type="search" placeholder="Enter search criteria" autocomplete="off"  >
+	    	<input type="search" placeholder="Enter search criteria" autocomplete="off" style="margin-bottom:10px;"  >
 	    </div>
 		
 		
@@ -72,7 +72,7 @@
 
 	<div class="entry ">
 		<div class="actions float">
-			<button class="button green" type="button" ng-click="showRatesBtnClicked()">Show Rates</button>
+			<button class="button green" type="button" ng-click="showRatesBtnClicked()" style="width:100%;">Show Rates</button>
 		</div>
 	</div>
 

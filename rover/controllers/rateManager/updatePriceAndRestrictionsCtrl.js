@@ -133,14 +133,17 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         */
         $scope.onOffRestrictions = function(id, action, days){
 
-        	/*angular.forEach($scope.data.restrictionTypes, function(value, key){
+        	angular.forEach($scope.data.restrictionTypes, function(value, key){
         		value.showEdit =  false;
         	});
-            if($scope.data.restrictionTypes[id].hasEdit){
-                $scope.showRestrictionDayUpdate = true;
+            console.log($scope.popupData.all_data_selected);
+            console.log($scope.data.restrictionTypes[id].hasEdit)
+                console.log("here");
+            if($scope.popupData.all_data_selected){
+                //$scope.showRestrictionDayUpdate = true;
                 $scope.data.restrictionTypes[id].showEdit = true;
                 return false;
-            }*/
+            }
             //The restriction has normal on of action
             if($scope.data.restrictionTypes[id].hasEdit){
                 $scope.data.restrictionTypes[id].days = prompt("Please enter the restriction", $scope.data.restrictionTypes[id].days);

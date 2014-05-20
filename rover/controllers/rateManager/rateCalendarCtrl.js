@@ -1,4 +1,4 @@
-sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'ngTableParams', 'dateFilter', 'ngDialog', function($scope, RateMngrCalendarSrv, ngTableParams, dateFilter, ngDialog){
+sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateFilter', 'ngDialog', function($scope, RateMngrCalendarSrv, dateFilter, ngDialog){
 	
 	$scope.$parent.myScrollOptions = {
             'RateCalendarCtrl': {
