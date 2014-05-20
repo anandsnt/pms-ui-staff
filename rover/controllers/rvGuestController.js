@@ -34,7 +34,7 @@ $scope.$watch('windowHeight',function(newValue,oldValue){
 $scope.resizableOptions = 
 {	
 	minHeight: '90',
-	maxHeight: $scope.windowHeight -130,
+	maxHeight: screen.height -200,
 	handles: 's',
 	resize: function( event, ui ) {
 		if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				

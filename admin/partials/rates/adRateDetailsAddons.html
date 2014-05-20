@@ -7,27 +7,27 @@
 </div>
 
 <!-- Expanded View -->
-<form ng-show="detailsMenu ==='addOns'" class="form_add_new_rate">
+<div ng-show="detailsMenu ==='addOns'" class="form_add_new_rate">
 	<div class="form-title">
 		<h3 class="rate_additional_details_heading">ADD-ONS </h3>
 		<div ng-click="changeDetailsMenu('')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-up.png"></div>
 	</div>
 
-	<table class="grid">
+	<table class="grid rate_addons">
 		 <col width="20%">
  		 <col width="20%">
  		 <col width="30%">
- 		 <col width="20%">
+ 		 <col width="8%">
 		<thead>
 		<th class="header">ADD-ON</th>
 		<th class="header">PRICE</th>
 		<th class="header">INCLUSIVE/EXCLUSIVE</th>
-		<th class="header">USE</th>
+		<th class="header center_align">USE</th>
 	    </thead>
 		<tbody>
 		<tr ng-repeat="addon in rateData.addOns">
 			<td>{{addon.name}}</td> 
-			<td>{{rateTypesDetails.hotel_settings.currency.symbol}} {{addon.price}} <span class="rate_perstay">{{addon.post_type}}</span></td> 
+			<td ng-show="addon.price.length>0">{{rateTypesDetails.hotel_settings.currency.symbol}} {{addon.price}} <span class="rate_perstay">{{addon.post_type}}</span></td> 
 			<td>
 				<div class="center_align">
 					<div class="float_left">
@@ -49,9 +49,9 @@
 				</div>
 				</div>
 			</td> 
-			<td><ad-toggle-button is-checked="addon.isSelected" ></ad-toggle-button></td> 
+			<td><div class="center_align"><ad-toggle-button is-checked="addon.isSelected" ></ad-toggle-button></td> 
 		</tr>
 		</tbody>
 		
 	</table>
-</form>
+</div>
