@@ -36,7 +36,7 @@
          style="overflow: visible !important;"> 
 
    	<a class="icon-admin-menu in-quick-menu {{bookmark.icon_class}}"  
-         style="display: block; width: 169px;"
+         style="display: block; width: {{bookmark.name.length*10+80}}px;"
 
          ng-repeat="bookmark in bookMarks" 
          data-drag="true" 
