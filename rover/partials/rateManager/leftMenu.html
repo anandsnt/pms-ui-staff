@@ -2,70 +2,71 @@
 
 	<h3 style="padding-bottom:15px;">FILTER OPTIONS</h3>
 	<a class="leftMenuHandle" ng-click="toggleLeftMenu()"></a>	
-	<div class="holder left" ng-iscroll="filter_details" ng-iscroll-delay="1000">
-		
-		<div class="entry has-datepicker" style="padding-bottom:15px;">
-		    <label for="" style="font-size:14px;">DATE RANGE</label>
-		    <input placeholder="Select date range" readonly="" maxlength="8" value="{{currentFilterData.begin_date +' , '+currentFilterData.end_date}}" class="hasDatepicker"  name="">
-		    <button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
-		</div>
-		
-		
-		<div class="entry">
-		    <label for="nationality" style="font-size:14px;">Zoom Level</label>
-		    <div class="select">
-				<select name="zoom-level" ng-model="currentFilterData.zoom_level_selected">
-				    <option ng-selected="level.value == currentFilterData.zoom_level_selected" ng-repeat="level in currentFilterData.zoom_level" class="placeholder" value="{{level.value}}">{{level.name}}</option> 
-				</select>
+	<div ng-iscroll="filter_details" ng-iscroll-delay="1000" style="height:200px;position: absolute;">
+		<div class="holder left" >
+			
+			<div class="entry has-datepicker" style="padding-bottom:15px;">
+			    <label for="" style="font-size:14px;">DATE RANGE</label>
+			    <input placeholder="Select date range" readonly="" maxlength="8" value="{{currentFilterData.begin_date +' , '+currentFilterData.end_date}}" class="hasDatepicker"  name="">
+			    <button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
 			</div>
-		</div>
-		
-		<hr style="padding:0px; margin:20px 0px;"/>
-		
-		<div class="entry radio-check">
-		    <label class="checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}">
-		    	<span ng-model="currentFilterData.is_checked_all_rates" class="icon-form icon-checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}" ></span>
-	            <input type="checkbox" ng-click="clickedAllRates()">
-	            ALL RATES
-	        </label>
-		</div>
-		
-		<span class="half-border" ng-show="!currentFilterData.is_checked_all_rates">
-			<hr class="half-left"/> OR <hr class="half-right"/> 
-		</span>
-		<div class="entry" ng-show="!currentFilterData.is_checked_all_rates" style="padding-bottom:15px;">
-		    <label for="nationality" style="font-size:14px;">Rate Type</label>
-		    <div class="select">
-				<select name="rate-type" ng-model="currentFilterData.rate_type_selected">
-					<option value="">Select rate type</option>
-					<option  ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder" value="{{rate_type.id}}">{{rate_type.name}}</option> 
-				</select>
+			
+			
+			<div class="entry">
+			    <label for="nationality" style="font-size:14px;">Zoom Level</label>
+			    <div class="select">
+					<select name="zoom-level" ng-model="currentFilterData.zoom_level_selected">
+					    <option ng-selected="level.value == currentFilterData.zoom_level_selected" ng-repeat="level in currentFilterData.zoom_level" class="placeholder" value="{{level.value}}">{{level.name}}</option> 
+					</select>
+				</div>
 			</div>
-		</div>
-		
-		<div class="entry" ng-show="!currentFilterData.is_checked_all_rates">
-		    <label for="nationality" style="font-size:14px;">Rate</label>
-		    <div class="select" >
-				<select ng-model="currentFilterData.rate_selected">
-					<option value="">Select rate</option>
-					<option ng-repeat="rate in currentFilterData.rates" class="placeholder" value="{{rate.id}}">{{rate.name}}</option> 
-				</select>
+			
+			<hr style="padding:0px; margin:20px 0px;"/>
+			
+			<div class="entry radio-check">
+			    <label class="checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}">
+			    	<span ng-model="currentFilterData.is_checked_all_rates" class="icon-form icon-checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}" ></span>
+		            <input type="checkbox" ng-click="clickedAllRates()">
+		            ALL RATES
+		        </label>
 			</div>
+			
+			<span class="half-border" ng-show="!currentFilterData.is_checked_all_rates">
+				<hr class="half-left"/> OR <hr class="half-right"/> 
+			</span>
+			<div class="entry" ng-show="!currentFilterData.is_checked_all_rates" style="padding-bottom:15px;">
+			    <label for="nationality" style="font-size:14px;">Rate Type</label>
+			    <div class="select">
+					<select name="rate-type" ng-model="currentFilterData.rate_type_selected">
+						<option value="">Select rate type</option>
+						<option  ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder" value="{{rate_type.id}}">{{rate_type.name}}</option> 
+					</select>
+				</div>
+			</div>
+			
+			<div class="entry" ng-show="!currentFilterData.is_checked_all_rates">
+			    <label for="nationality" style="font-size:14px;">Rate</label>
+			    <div class="select" >
+					<select ng-model="currentFilterData.rate_selected">
+						<option value="">Select rate</option>
+						<option ng-repeat="rate in currentFilterData.rates" class="placeholder" value="{{rate.id}}">{{rate.name}}</option> 
+					</select>
+				</div>
+			</div>
+			
+			<div class="rates-box" ng-show="!currentFilterData.is_checked_all_rates" ng-repeat="rates in currentFilterData.rates_selected_list">
+				<span class="rate-data">{{rates.name}}</span>
+				<span ng-click="deleteRate(rates.id)" class="icons delete_small cursor-hand"> .</span>
+			</div>
+			
+			<hr style="padding:0px; margin:20px 0px 10px 0px;"/>
+			
+			<div class="entry table-search1" style="padding:0px;">
+				<label class="search-text" style="font-size:14px; line-height:14px;">NAME CARD,IATA # OR CORPORATED ID</label>
+				<span type="submit" name="submit" class="icons icon-search1"></span>
+		    	<input type="search" placeholder="Enter search criteria" autocomplete="off" style="margin-bottom:10px;"  >
+		    </div>
 		</div>
-		
-		<div class="rates-box" ng-show="!currentFilterData.is_checked_all_rates" ng-repeat="rates in currentFilterData.rates_selected_list">
-			<span class="rate-data">{{rates.name}}</span>
-			<span ng-click="deleteRate(rates.id)" class="icons delete_small cursor-hand"> .</span>
-		</div>
-		
-		<hr style="padding:0px; margin:20px 0px 10px 0px;"/>
-		
-		<div class="entry table-search1" style="padding:0px;">
-			<label class="search-text" style="font-size:14px; line-height:14px;">NAME CARD,IATA # OR CORPORATED ID</label>
-			<span type="submit" name="submit" class="icons icon-search1"></span>
-	    	<input type="search" placeholder="Enter search criteria" autocomplete="off" style="margin-bottom:10px;"  >
-	    </div>
-		
 		
 	</div>
 

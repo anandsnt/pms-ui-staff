@@ -4,7 +4,24 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     * Method to fetch all filter options
     */
     
+	$scope.$parent.myScrollOptions = {		
+	    'filter_details': {
+	    	scrollbars: true,
+	        snap: false,
+	        hideScrollbar: false,
+	        preventDefault: false
+	    },
+	};
 
+	
+	
+	$scope.$on('$viewContentLoaded', function() {
+		setTimeout(function(){
+			$scope.$parent.myScroll['filter_details'].refresh();
+			}, 
+		3000);
+		
+     });
 
 	$scope.fetchFilterOptions = function(){
 		var fetchRatesSuccessCallback = function(data) {
