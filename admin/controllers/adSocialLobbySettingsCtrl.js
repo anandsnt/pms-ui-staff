@@ -1,4 +1,4 @@
-admin.controller('ADSocialLobbySettingsCtrl', ['$scope', '$state', 'ADSocialLobbySrv', function($scope, $state, ADSocialLobbySrv){
+admin.controller('ADSocialLobbySettingsCtrl', ['$scope','$rootScope', '$state', 'ADSocialLobbySrv', function($scope, $rootScope,$state, ADSocialLobbySrv){
 
    	/*
 	* controller class for social lobby settings
@@ -25,7 +25,16 @@ admin.controller('ADSocialLobbySettingsCtrl', ['$scope', '$state', 'ADSocialLobb
 
 	//function to go back to prev. screen
 	$scope.goBack = function(){
-		$state.go('admin.dashboard', {menu: 1});  
+		if($rootScope.previousStateParam){
+			$state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+		}
+		else if($rootScope.previousState){
+			$state.go($rootScope.previousState);
+		}
+		else 
+		{
+			$state.go('admin.dashboard', {menu : 0});
+		}  
 	}
 
 	/*
