@@ -106,6 +106,7 @@ body.ngdialog-open {
 	  margin-left: 20% !important;
     width: 75% !important;
     padding: 0px !important;
+    margin-top: -5% !important;
 }
 
 .ngdialog.ngdialog-theme-default .ngdialog-content,.grey-texture-bg-color{

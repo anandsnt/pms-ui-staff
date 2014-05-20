@@ -1,9 +1,8 @@
-var sntRover = angular.module('sntRover', ['ui.router', 'ui.utils', 'ng-iscroll', 'ngAnimate', 'ngDialog',
-    'ngSanitize', 'ngTable', 'highcharts-ng', 'pickadate'
-]);
-sntRover.run(['$rootScope', '$state', '$stateParams',
-    function ($rootScope, $state, $stateParams) {
-        $rootScope.$state = $state;
-        $rootScope.$stateParams = $stateParams;
-    }
-]);
+var sntRover = angular.module('sntRover',['ui.router', 'ui.utils','pickadate', 'ng-iscroll', 'ngAnimate','ngDialog', 'ngSanitize', 'pascalprecht.translate']);
+sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
+	//BaseCtrl.call(this, $scope);
+	$rootScope.$state = $state;
+	$rootScope.$stateParams = $stateParams;
+	
+}]);
+

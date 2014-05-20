@@ -14,7 +14,7 @@ $scope.saveContactInfo = function(){
     var saveUserInfoFailureCallback = function(data){
         $scope.$emit('hideLoader');
         $scope.errorMessage = data;
-         $scope.$emit('contactInfoError',true);
+        $scope.$emit('contactInfoError',true);
     };
    
 /**
@@ -29,6 +29,8 @@ $scope.saveContactInfo = function(){
 	}
 	else{
 		presentContactInfo = dataToUpdate;	
+		var unwantedKeys = ["avatar","vip"]; // remove unwanted keys for API
+		dataToUpdate = dclone(dataToUpdate, unwantedKeys); 
 	};	    	
     
     var data ={'data':dataToUpdate,
@@ -61,19 +63,19 @@ $scope.popupCalendar = function(){
 	});
 };
 
-	$scope.$parent.myScrollOptions = {		
-	    'contact_info': {
-	    	scrollbars: true,
-	        snap: false,
-	        hideScrollbar: false
-	    },
-	};
+$scope.$parent.myScrollOptions = {		
+    'contact_info': {
+    	scrollbars: true,
+        snap: false,
+        hideScrollbar: false
+    },
+};
 
-	$scope.$on('CONTACTINTOLOADED', function(event) {
-		setTimeout(function(){
-			$scope.$parent.myScroll['contact_info'].refresh();
-			}, 
-		1500);
-		
-	});
+$scope.$on('CONTACTINFOLOADED', function(event) {
+	setTimeout(function(){
+		$scope.$parent.myScroll['contact_info'].refresh();
+		}, 
+	1500);
+	
+});
 }]);
