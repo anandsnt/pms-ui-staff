@@ -41,18 +41,33 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     rateId: $stateParams.rateId
                 }, rateDetailsFetchSuccess);
             }
-            $scope.invokeApi(ADRatesSrv.fetchAddons,{},fetchAddonsSuccessCallback);
+            $scope.invokeApi(ADRatesSrv.fetchAdditionalDetails,{},fetchAdditionalDetailsSuccessCallback);
             
         };
 
-        var fetchAddonsSuccessCallback  = function(data){
-         $scope.allAddOns = data.results;
+        var fetchAdditionalDetailsSuccessCallback  = function(data){
+
+         $scope.allAddOns = data.addons;
          angular.forEach($scope.allAddOns, function(addOns){
                 addOns.isSelected = false;
                 addOns.is_inclusive_in_rate = "false";
              });
             $scope.rateData.addOns =data.results;
-        };
+       
+        $scope.restrictionDetails = data.restrictionDetails;
+        angular.forEach($scope.restrictionDetails, function(restrictionType){
+               if(restrictionType.value == 'CANCEL_PENALTIES'){
+                console.log(restrictionType)
+                 $scope.cancelPenaltiesActivated = (restrictionType.activated) ? true:false;
+               } 
+               if(restrictionType.value == 'DEPOSIT_REQUESTED'){
+                $scope.depositRequiredActivated = (restrictionType.activated)  ? true:false;              
+               }    
+         });
+
+         };
+
+
 
         /*
          * toogle different rate view

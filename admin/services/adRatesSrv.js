@@ -51,20 +51,35 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2',
         var that = this;
         this.rateDetails = {};
 
+
+        var that = this;
+        this.additionalDetails = {};
       /*
         * Service function to fetch add ons
         * @return {object} add ons
         */
-        this.fetchAddons = function () {
-           var deferred = $q.defer();
+        this.fetchAdditionalDetails = function () {
+            var deferred = $q.defer();
+            
+            this.fetchRestictionDetails = function () {
+               var url = "/api/restriction_types";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.additionalDetails.restrictionDetails = data.results;
+                    deferred.resolve(that.additionalDetails);
+                }, function (data) {
+                    deferred.reject(data);
+                });
+                return deferred.promise;
+              }
 
-           var url = "/api/addons?is_active=true";
-            ADBaseWebSrvV2.getJSON(url).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
+               var url = "/api/addons?is_active=true";
+                ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                    that.additionalDetails.addons = data.results;
+                    this.fetchRestictionDetails();
+                }, function (data) {
+                    deferred.reject(data);
+                });
+                return deferred.promise;
         }
 
         // get rate details
