@@ -255,6 +255,8 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	 	$scope.updateContract();
 	});
 	
-	
+	$scope.closeActivityIndication = function(){
+		$scope.$emit('hideLoader');
+	};
 	
 }]);

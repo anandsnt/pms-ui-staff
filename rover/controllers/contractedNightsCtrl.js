@@ -17,12 +17,10 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 	$scope.saveContractedNights = function(){
 		
 		var saveContractSuccessCallback = function(data){
-			console.log("success");
-	    	$scope.$emit('hideLoader');
+	    	$scope.closeActivityIndication();
 	    };
 	  	var saveContractFailureCallback = function(data){
-	  		console.log("failure");
-	        $scope.$emit('hideLoader');
+	  		$scope.closeActivityIndication();
 	        $scope.errorMessage = data;
 	    };
 	    var data = {"occupancy": $scope.contractData.occupancy};
