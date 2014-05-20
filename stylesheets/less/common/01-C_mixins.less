@@ -24,12 +24,12 @@
 		&:focus { overflow: hidden; }
 	}
 
-	.placeholder-text(@font-size, @line-height, @font-weight, @color) {
+	.placeholder-text(@font-size, @line-height, @font-weight, @color, @font-style: italic) {
 		&::-webkit-input-placeholder {
 		   	font-size: @font-size;
 		   	line-height: @line-height;
 		   	font-weight: @font-weight;
-		   	font-style: italic;
+		   	font-style: @font-style;
 		   	color: @color;
 		}
 
@@ -37,7 +37,7 @@
 		   	font-size: @font-size;
 		   	line-height: @line-height;
 		   	font-weight: @font-weight;
-		   	font-style: italic;
+		   	font-style: @font-style;
 			color: @color;
 		}
 
@@ -45,14 +45,14 @@
 			font-size: @font-size;
 			line-height: @line-height;
 		   	font-weight: @font-weight;
-		   	font-style: italic;
+		   	font-style: @font-style;
 		   	color: @color;}
 
 		&:-ms-input-placeholder {  
 			font-size: @font-size;
 			line-height: @line-height;
 			font-weight: @font-weight;
-		   	font-style: italic;
+		   	font-style: @font-style;
 		   	color: @color;
 		}
 
@@ -60,7 +60,7 @@
 			font-size: @font-size;
 			line-height: @line-height;
 			font-weight: @font-weight;
-		   	font-style: italic;
+		   	font-style: @font-style;
 		   	color: @color;
 		}
 	}
@@ -294,7 +294,6 @@
 		}
 	}
 
-
 /* 4. LAYOUT
 ==========================================================*/
 	.size(@height: 5px, @width: 5px) {
@@ -325,6 +324,15 @@
 		width: -moz-calc(~"@{percentage}% + @{pixels}px");
 		width: calc(~"@{percentage}% + @{pixels}px");
 		.no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
+	}
+
+	#calc-position {
+		.left(@percentage, @pixels) {
+			left: -webkit-calc(~"@{percentage}% - @{pixels}px");
+			left: -moz-calc(~"@{percentage}% - @{pixels}px");
+			left: calc(~"@{percentage}% - @{pixels}px");
+			.no-transition; /* transitions disabled as transition + calc crash browsers in iOS6 */
+		}
 	}
 
 	#pixel-to-percent {
@@ -380,7 +388,6 @@
 		backface-visibility: @value;
   	}
   	
-
 /* 5. COMPONENTS
 ==========================================================*/
 /* 6. IE
