@@ -85,24 +85,10 @@ hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $wi
 	// keept as msg so that it can be called from crtl if needed
 	this.setRoomStatusClass = function(room){
 
-		if(this.roomList.checkin_inspected_only == "true"){
-			if(room.hk_status.value == 'INSPECTED' && !room.is_occupied) {
-				return 'room-clean';
-			}
-			if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-				return 'room-pickup';
-			}
+		if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED') && !room.is_occupied) {
+			return 'room-clean';
 		}
-		else {
-			if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED') && !room.is_occupied) {
-				return 'room-clean';
-			}
-			if((room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-				return 'room-pickup';
-			}
-		}
-
-		if((room.hk_status.value == 'DIRTY') && !room.is_occupied) {
+		if((room.hk_status.value == 'DIRTY' || room.hk_status.value == 'PICKUP') && !room.is_occupied) {
 			return 'room-dirty';
 		}
 		if(room.hk_status.value == 'OO' || room.hk_status.value == 'OS'){

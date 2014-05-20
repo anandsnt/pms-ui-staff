@@ -211,7 +211,6 @@ var RoomAssignmentView = function(viewDom){
     var includeNotReady = false;
     var includeDueout = false;
     var includePreAssigned = false;
-    var include_clean = false;
 
     if(that.myDom.find($('#filter-not-ready')).is(':checked')){
       includeNotReady = true;
@@ -223,9 +222,6 @@ var RoomAssignmentView = function(viewDom){
 	
     if(that.myDom.find($('#filter-preassigned')).is(':checked')){
       includePreAssigned = true;
-    }
-    if(that.myDom.find($('#filter-clean')).is(':checked')){
-      include_clean = true;
     }
 
     for (var i = 0; i< roomList.length; i++){
@@ -240,9 +236,6 @@ var RoomAssignmentView = function(viewDom){
       }
       else if(includePreAssigned && roomList[i].is_preassigned){
         filteredRoomList.push(roomList[i]);
-      }
-      else if(include_clean && roomList[i].room_ready_status == "CLEAN"){
-      	filteredRoomList.push(roomList[i]);
       }
     }
     return filteredRoomList;
@@ -274,7 +267,6 @@ var RoomAssignmentView = function(viewDom){
           // Display FO status (VACANT, DUEOUT, etc) only when room-status = NOT-READY
           // Always show color coding ( Red / Green - for Room status)
           if(filteredRoomList[i].room_status == "READY" && filteredRoomList[i].fo_status == "VACANT"){
-          
             room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
         
             if(filteredRoomList[i].is_preassigned) {
@@ -282,16 +274,8 @@ var RoomAssignmentView = function(viewDom){
             } 
           }
           else{
-          	 if (filteredRoomList[i].room_ready_status == "PICKUP"){
-          	 	console.log("room_ready_Status ---"+color_code);
-          	 	room_status_html += "<span class='room-number room-orange' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
-              	"<span class='room-status room-orange' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].room_ready_status+" </span>";
-          	 	}
-          	 	else{
-        	         var color_code = get_mapped_room_ready_status_color(filteredRoomList[i].room_ready_status, filteredRoomList[i].checkin_inspected_only)
-			  		room_status_html = "<span class='room-number "+color_code+"' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
-              		"<span class='room-status "+color_code+"'  data-value="+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].fo_status+" </span>";
-              }   
+              room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
+              "<span class='room-status not-ready' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].fo_status+" </span>";   
           }
   
           //Append the HTML to the UI.

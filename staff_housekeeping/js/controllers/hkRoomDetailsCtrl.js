@@ -9,10 +9,10 @@ hkRover.controller('HKRoomDetailsCtrl',
 		function($scope, $state, $stateParams, HKRoomDetailsSrv, roomDetailsData, HKSearchSrv) {
 	
 	$scope.initColorCodes = function(){
-		$scope.isGreen = false;
-		$scope.isRed = false;
+		$scope.isCleanVacant = false;
+		$scope.isDirtyVacant = false;
 		$scope.isOutOfService = false;
-		$scope.isOrange = false;
+		$scope.isPickup = false;
 		$scope.isDefaultRoomColor = false;
 		$scope.isRoomOccupied = false;
 	};
@@ -20,6 +20,8 @@ hkRover.controller('HKRoomDetailsCtrl',
 	$scope.initColorCodes();
 	$scope.guestViewStatus = "";
 	$scope.$emit('hideNavMenu');
+	//$scope.$emit('showLoader');
+
 
 	$scope.data = roomDetailsData;
 
@@ -34,56 +36,45 @@ hkRover.controller('HKRoomDetailsCtrl',
 	    }
 	});
 
+		
+
+	/*HKRoomDetailsSrv.fetch($stateParams.id).then(function(data) {
+		$scope.$emit('hideLoader');
+	    $scope.data = data;
+
+		_.each($scope.data.room_details.hk_status_list, function(hkStatusDict) { 
+		    if(hkStatusDict.value == $scope.data.room_details.current_hk_status){
+		    	$scope.currentHKStatus = hkStatusDict;
+		    }
+		});
+
+		$scope.calculateColorCodes();		
+		$scope.guestViewStatus = getGuestStatusMapped($scope.data.room_details.reservation_status,
+													 $scope.data.room_details.is_late_checkout);
+		
+	}, function(){
+		console.log('fetch failed');
+		$scope.$emit('hideLoader');
+
+	});*/
+
+
+
 	$scope.calculateColorCodes = function(){
 		$scope.initColorCodes();
-		/*if(this.roomList.checkin_inspected_only == "true"){
-			if(room.hk_status.value == 'INSPECTED' && !room.is_occupied) {
-				return 'room-clean';
-			}
-			if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-				return 'room-pickup';
-			}
-		}
-		else {
-			if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED') && !room.is_occupied) {
-				return 'room-clean';
-			}
-			if((room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-				return 'room-pickup';
-			}
-		}
 
-		if((room.hk_status.value == 'DIRTY') && !room.is_occupied) {
-			return 'room-dirty';
+		if(($scope.data.room_details.current_hk_status == "CLEAN" || $scope.data.room_details.current_hk_status == "INSPECTED")
+			&& $scope.data.room_details.is_occupied == "false"){
+			$scope.isCleanVacant = true;
 		}
-		if(room.hk_status.value == 'OO' || room.hk_status.value == 'OS'){
-			return 'room-out';
-		}
-		return '';*/
-		if($scope.data.room_details.checkin_inspected_only == "true"){
-			if($scope.data.room_details.current_hk_status == "INSPECTED" && $scope.data.room_details.is_occupied == "false"){
-				$scope.isGreen = true;
-			}else if(($scope.data.room_details.current_hk_status == "CLEAN" || $scope.data.room_details.current_hk_status == "PICKUP")
-				&& $scope.data.room_details.is_occupied == "false"){
- 				$scope.isOrange = true;
-			}
-
-		} else {
-			if(($scope.data.room_details.current_hk_status == "CLEAN" || $scope.data.room_details.current_hk_status == "INSPECTED")
-				&& $scope.data.room_details.is_occupied == "false"){
-				$scope.isGreen = true;
-			}else if($scope.data.room_details.current_hk_status == "PICKUP"
-				&& $scope.data.room_details.is_occupied == "false"){
- 				$scope.isOrange = true;
-			}
-		}
-
-		if($scope.data.room_details.current_hk_status == "DIRTY"
+		else if($scope.data.room_details.current_hk_status == "DIRTY"
  			&& $scope.data.room_details.is_occupied == "false") {
- 			$scope.isRed = true;
+ 			$scope.isDirtyVacant = true;
  		}else if(($scope.data.room_details.current_hk_status == "OO") ||
     		($scope.data.room_details.current_hk_status == "OS")) {
  			$scope.isOutOfService = true;
+ 		}else if($scope.data.room_details.current_hk_status == "PICKUP") {
+ 			$scope.isPickup = true;
  		}else {
  			$scope.isDefaultRoomColor = true;
  		}
