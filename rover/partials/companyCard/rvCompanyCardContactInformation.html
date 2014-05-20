@@ -1,0 +1,78 @@
+<!-- Company Card Tab 1 -->
+<form method="post"  id="cc-contact-info" name="cc-contact-info" class="form card-tab scrollable tab-header full-width" ng-show="currentSelectedTab == 'cc-contact-info'"  ng-iscroll="company_card_content" ng-iscroll-delay="2000" ng-controller="companyCardDetailsContactCtrl" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false" style="overflow: scroll;">
+    <div class="wrapper"  >
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div class="holder left">
+            <strong class="h3">Company Info</strong>
+            <rv-textbox value="contactInformation.company_details.account_first_name" label="Name" placeholder = "Enter Name" styleclass="margin"></rv-textbox>
+
+            <rv-textbox value="contactInformation.company_details.account_last_name" styleclass="no-label"></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.street1" label="Address" placeholder = "Enter Address Line 1" styleclass="margin"></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.street2" placeholder = "Enter Address Line 2" styleclass="no-label"></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.street3" placeholder = "Enter Address Line 3" styleclass="no-label full-width"></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.city" label="City" placeholder = "Enter City" styleclass="margin"></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.postal_code" label="Postal code" placeholder = "Enter Postal code" ></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.state" label="State" placeholder = "Enter State" styleclass="margin"></rv-textbox> 
+
+            <!--<rv-dropdown label="Country" label-in-drop-down="Select country" list="contactInformation.countries" selected-Id='contactInformation.address_details.country' ></rv-dropdown> -->
+            <!-- drop down directive is name & value, but in here it is different-->
+            <div class="entry">
+                <label for="company-country">Country</label>
+                <div class="select">
+                    <select id="company-country" name="company-country" ng-model="contactInformation.address_details.country_id"> 
+                        <option value="" class="placeholder">Select country</option> 
+                        <option ng-repeat="country in countries" value="{{country.id}}" ng-selected="country.id==contactInformation.address_details.country_id" >
+                            {{country.value}}
+                        </option>
+                    </select>
+                </div>
+            </div> 
+
+            <rv-textbox value="contactInformation.address_details.phone" inputtype="tel" label="Phone" placeholder = "Enter Phone"></rv-textbox>
+
+            <rv-textbox value="contactInformation.address_details.email_address" label="E-mail address" placeholder = "Enter email" styleclass="full-width"></rv-textbox>
+
+            <div class="entry full-width">
+                <label for="company-logo">Company logo</label>
+                <div class="file-upload with-preview">
+                    <input type="file" name="company-logo" id="company-logo"  ng-model="contactInformation.company_details.company_logo" accept="*" app-filereader />
+                    <button type="button" class="button brand-colors">Choose file</button>
+                </div>
+                <span class="file-preview"><img ng-src="{{contactInformation.company_details.company_logo}}" alt="" ng-if="escapeNull(contactInformation.company_details.company_logo)!=''"/></span>
+                <!-- When no image, use  -->
+                <span class="file-preview" ng-if="escapeNull(contactInformation.company_details.company_logo)==''"><em>Preview not available</em></span>
+            </div>
+        </div>
+
+        <div class="holder right">
+            <strong class="h3">Extended Company Details</strong>
+
+            <rv-textbox value="contactInformation.company_details.corporate_id" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin"></rv-textbox>
+
+            <rv-textbox value="contactInformation.company_details.accounts_receivable_number" label="Accounts Receivable Number" placeholder = "Enter Corporate ID" ></rv-textbox>
+
+            <rv-textbox value="contactInformation.company_details.billing_information" label="Billing Information" placeholder = "Enter Billing Information" ></rv-textbox>
+
+            
+            <strong class="h3 margin">Primary Contact Details</strong>
+
+            <rv-textbox value="contactInformation.primary_contact_details.contact_first_name" label="First name" placeholder = "Enter Contact First name" styleclass="margin"></rv-textbox>
+
+            <rv-textbox value="contactInformation.primary_contact_details.contact_last_name" label="Last Name" placeholder = "Enter Contact Last Name" ></rv-textbox>
+
+            <rv-textbox value="contactInformation.primary_contact_details.contact_job_title" label="Job title" placeholder = "Enter Job title" styleclass="margin"></rv-textbox>
+            
+            <rv-textbox value="contactInformation.primary_contact_details.contact_phone" label="Phone" placeholder = "Enter Contact Person's Phone" ></rv-textbox>
+
+            <rv-textbox value="contactInformation.primary_contact_details.contact_email" label="E-mail address" placeholder = "Enter Contact person's e-mail address" styleclass="full-width"></rv-textbox>
+
+        </div>
+    </div>
+</form> 
+

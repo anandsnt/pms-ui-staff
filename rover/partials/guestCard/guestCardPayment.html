@@ -1,15 +1,34 @@
-<form aria-expanded="false" role="tabpanel" aria-labelledby="guest-credit" action="" class="card-content form scrollable ui-tabs-panel ui-widget-content ui-corner-bottom current ng-pristine ng-valid ng-hide" id="cc-payment" method="post" ng-show="current == 'guest-credit'" name="cc-payment">
-				<div data-view="GuestPaymentView" id="guest_payment">
-					<div class="wrapper float" data-payment-count="1" id="payment_tab">
-						<div class="entry full-width">
-							<div id="notification-message-guest"></div>
-						</div>
-						<!-- Credit cards on file -->
-						<a class="active-item credit-card-option-row1509 float item-payment primary" credit_id="1509" id="credit_row1509">
-						<figure class="card-logo">
-							<img alt="" src="/assets/mc.png">
-						</figure> <span class="number"> Ending with <span class="value number"> 0008 </span> </span> <span class="date"> Date <span class="value date"> 03/25 </span> </span> <span class="name"> Name <span class="value name"> Revathi A5 </span> </span> <span class="primary" id="primary_credit"> <span class="value primary">Primary</span> </span> </a>
-						<a class="add-new-button" id="add_new_payment">+ New Payment Method</a>
-					</div>
-				</div>
-			</form>
+ <form method="post" action="app/stay-card/" id="gc-payment" name="gc-payment" class="form card-tab scrollable" ng-show="current == 'guest-credit'">
+                    <div class="wrapper">
+                        <!-- Credit cards on file -->
+                        <a href="modals/select-primary/" class="active-item item-payment primary open-modal float">
+                            <figure class="card-logo">
+                                <img src="../images/visa.png" alt="" />
+                            </figure>
+                            <span class="number">Ending with <span class="value number">6531</span></span>
+                            <span class="date">Date <span class="value date">07/15</span></span>
+                            <span class="name">Name <span class="value name">Jos Schaap</span></span>
+                            <span class="primary"><span class="value primary">Primary</span></span>
+                        </a>
+                        <a href="modals/select-primary/" class="active-item item-payment open-modal float">
+                            <figure class="card-logo">
+                                <img src="../images/mastercard.png" alt="" />
+                            </figure>
+                            <span class="number">Ending with <span class="value number">7718</span></span>
+                            <span class="date">Date <span class="value date">04/16</span></span>
+                            <span class="name">Name <span class="value name">Jos Schaap</span></span>
+                        </a>
+                        <a href="modals/select-primary/" class="active-item item-payment open-modal float">
+                            <figure class="card-logo">
+                                <img src="../images/amex.png" alt="" />
+                            </figure>
+                            <span class="number">Ending with <span class="value number">2757</span></span>
+                            <span class="date">Date <span class="value date">12/14</span></span>
+                            <span class="name">Name <span class="value name">Jos Schaap</span></span>
+                        </a>
+                        <a href="modals/select-primary/" class="active-item item-payment open-modal float">
+                            <span class="value code">Cash</span>
+                        </a>
+                        <a href="modals/new-payment-method/" class="open-modal add-new-button">+ New Payment Method</a>
+                    </div>
+                </form>

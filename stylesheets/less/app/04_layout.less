@@ -113,6 +113,11 @@ body { overflow: hidden; }
 			.calc-height(100, 120); /* %, px */
 		}
 
+		&#search-cards-wrapper {
+			top: 120px;
+			.calc-height(100, 120); /* %, px */
+		}
+
 		/* Stay Card ***/
 		&.stay-card-inner {
 			top: 150px;
@@ -425,7 +430,8 @@ body { overflow: hidden; }
 				z-index: 99;
 			}
 
-			#query {
+			#query,
+			.query {
 				position: absolute;
 				top: 0;
 				left: 0;
@@ -744,6 +750,23 @@ body { overflow: hidden; }
 			height: auto;
 			
 			#border-radius > .rounded();
+		}
+
+		&.accompany {
+
+			img { 
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 40px;
+
+				&:nth-child(2) {
+					top: 15px;
+					left: 15px;
+					width: 35px;
+				}
+
+			}
 		}
 	}
 
