@@ -1,6 +1,6 @@
 
 sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RVCompanyCardSrv','$stateParams',function($scope,dateFilter,ngDialog,RVCompanyCardSrv,$stateParams){
-
+	BaseCtrl.call(this, $scope);
 	var month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 	if($scope.contractData.occupancy.length == 0){
 		for(var i=0;i<12;i++){
@@ -17,9 +17,11 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 	$scope.saveContractedNights = function(){
 		
 		var saveContractSuccessCallback = function(data){
+			console.log("success");
 	    	$scope.$emit('hideLoader');
 	    };
 	  	var saveContractFailureCallback = function(data){
+	  		console.log("failure");
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
 	    };
