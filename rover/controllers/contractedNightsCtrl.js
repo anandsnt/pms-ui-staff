@@ -1,6 +1,6 @@
 
 sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RVCompanyCardSrv','$stateParams',function($scope,dateFilter,ngDialog,RVCompanyCardSrv,$stateParams){
-
+	BaseCtrl.call(this, $scope);
 	var month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 	if($scope.contractData.occupancy.length == 0){
 		for(var i=0;i<12;i++){
@@ -15,14 +15,16 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 	}
 		
 	$scope.saveContractedNights = function(){
-		console.log($scope.contractData);
+		
 		var saveContractSuccessCallback = function(data){
-	    	$scope.$emit('hideLoader');
+	    	$scope.closeActivityIndication();
 	    };
 	  	var saveContractFailureCallback = function(data){
-	        $scope.$emit('hideLoader');
-	    }; 
-		$scope.invokeApi(RVCompanyCardSrv.updateNight,{ "account_id": $stateParams.id, "contract_id": $scope.contractSelected, "postData": $scope.contractData.occupancy}, saveContractSuccessCallback, saveContractFailureCallback);  
+	  		$scope.closeActivityIndication();
+	        $scope.errorMessage = data;
+	    };
+	    var data = {"occupancy": $scope.contractData.occupancy};
+		$scope.invokeApi(RVCompanyCardSrv.updateNight,{ "account_id": $stateParams.id, "contract_id": $scope.contractSelected, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);  
 		ngDialog.close();
 	};
 	

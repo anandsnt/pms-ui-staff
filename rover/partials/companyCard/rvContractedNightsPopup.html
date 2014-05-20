@@ -15,8 +15,8 @@
         </div>
         <div class="holder right">
             <div ng-repeat="nights in contractData.occupancy" class="entry">
-                <label for="contracted-jan">{{nights.month}}</label>
-                <input name="contracted-jan" id="contracted-jan" value="{{nights.contracted_occupancy}}" type="text" />
+                <label for="contracted-jan">{{nights.month}} - {{nights.year}}</label>
+                <input ng-model="nights.contracted_occupancy" name="contracted-jan" id="contracted-jan" value="{{nights.contracted_occupancy}}" type="text" />
             </div>
             
         </div>
