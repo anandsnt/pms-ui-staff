@@ -36,7 +36,21 @@ sntRover.config([
 			templateUrl: '/assets/partials/search/search.html',
 			controller: 'searchController'
 		});	
-		
+
+		//company card search
+		$stateProvider.state('rover.companycardsearch', {
+			url: '/cardsearch',
+			templateUrl: '/assets/partials/search/rvSearchCompanyCard.html',
+			controller: 'searchCompanyCardController'
+		});	
+
+		//company card details
+		$stateProvider.state('rover.companycarddetails', {
+			url: '/companycard/:type/:id/:firstname',
+			templateUrl: '/assets/partials/companyCard/rvCompanyCardDetails.html',
+			controller: 'companyCardDetailsController'
+		});		
+
 		$stateProvider.state('rover.staycard', {
 			abstract : true,
 			url: '/staycard',

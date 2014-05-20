@@ -1,4 +1,4 @@
-sntRover.directive('adCheckbox', function($timeout) {
+sntRover.directive('rvCheckbox', function($timeout) {
 
     return {
     	restrict: 'AE',

@@ -44,17 +44,10 @@
 									</span>
 								</div>	
 
-								<span class="room-number {{getRoomStatusMapped(row.roomstatus, row.fostatus)}}" ng-if="row.reservation_status == 'CHECKING_IN'">
-									{{row.room}}
-								</span>
-								<span class="room-number" ng-if="row.reservation_status != 'CHECKING_IN'" >
-									<span class='highlight' ng-if="textInQueryBox.indexOf(row.room) != -1">
+								<span class="room-number" ng-class="getMappedClassWithResStatusAndRoomStatus(row.reservation_status, row.roomstatus, row.fostatus)" >
+									<span ng-class="{'highlight': row.room.indexOf(textInQueryBox) != -1 && textInQueryBox!='' && textInQueryBox.length>=3 }" >
 										{{row.room}}
-									</span>
-									<span  ng-if="textInQueryBox.indexOf(row.room) == -1">
-										{{row.room}}
-									</span>
-
+									</span>			
 								</span>
 
 

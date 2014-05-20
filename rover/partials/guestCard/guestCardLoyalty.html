@@ -1,18 +1,42 @@
-<form aria-expanded="false" role="tabpanel" aria-labelledby="guest-loyalty" action="" class="card-content form scrollable ui-tabs-panel ui-widget-content ui-corner-bottom current ng-pristine ng-valid ng-hide" id="loyalty" method="post" ng-show="current == 'guest-loyalty'" name="loyalty">
-				<div data-view="GuestcardLoyaltyView" id="guest_loyalty">
-					<div class="wrapper float" id="loyalty-tab">
-						<!-- Frequent Flyer Program -->
-						<div class="holder left">
-							<strong class="h3">Frequent Flyer Program</strong>
-							<div id="loyalty-ffp"></div>
-							<a class="add-new-button" data-action="new-ffp" id="add-new-ffp">+ New Frequent Flyer Program</a>
-						</div>
-						<!-- Hotel Loyalty Program -->
-						<div class="holder right">
-							<strong class="h3">Hotel Loyalty Program</strong>
-							<div id="loyalty-hlp"></div>
-							<a class="add-new-button" data-action="new-hlp" id="add-new-hlp">+ New Hotel Loyalty Program</a>
-						</div>
-					</div>
-				</div>
-			</form>
+ <form method="post" action="app/stay-card/" id="gc-loyalty" name="loyalty" class="form card-tab scrollable" ng-show="current == 'guest-loyalty'">
+                    <div class="wrapper">
+                        <span class="notice">Set Primary Hotel Loyalty Program</span>
+                        <!-- Frequent Flyer Program -->
+                        <div class="holder left">
+                            <strong class="h3">Frequent Flyer Program</strong>
+                            <a href="modals/select-primary/" class="active-item item-loyalty open-modal float">
+                                <span class="value code">QF</span>
+                                <span class="value number">4595476</span>
+                                <span class="value name">Quantas Frequent Flyer</span>
+                            </a>
+                            <a href="modals/select-primary/" class="active-item item-loyalty open-modal float">
+                                <span class="value code">QF</span>
+                                <span class="value number">4595476</span>
+                                <span class="value name">Quantas Frequent Flyer</span>
+                            </a>
+                            <a href="modals/select-primary/" class="active-item item-loyalty primary open-modal float">
+                                <span class="value code">QF</span>
+                                <span class="value number">4595476</span>
+                                <span class="value name">Quantas Frequent Flyer</span>
+                                <span class="primary"><span class="value primary">Primary</span></span>
+                            </a>
+                            <a href="modals/new-ffp/" class="open-modal add-new-button">+ New Frequent Flyer Program</a>
+                        </div>
+
+                        <!-- Hotel Loyalty Program -->
+                        <div class="holder right">
+                            <strong class="h3">Hotel Loyalty Program</strong>
+                            <a href="modals/select-primary/" class="active-item item-loyalty open-modal float">
+                                <span class="value code">PC</span>
+                                <span class="value number">7894598763</span>
+                                <span class="value name">Diamond</span>
+                            </a>
+                            <a href="modals/select-primary/" class="active-item item-loyalty open-modal float">
+                                <span class="value code">HC</span>
+                                <span class="value number">7894562224</span>
+                                <span class="value name">Black</span>
+                            </a>
+                            <a href="modals/new-hlp/" class="open-modal add-new-button">+ New Hotel Loyalty Program</a>
+                        </div>
+                    </div>
+                </form>

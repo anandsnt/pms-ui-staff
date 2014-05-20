@@ -126,7 +126,18 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
     */
 	$scope.back = function(){
 		if($scope.isAdminSnt) $state.go("admin.hotels");
-		else $state.go('admin.dashboard', {menu: 0});
+		else {
+			if($rootScope.previousStateParam){
+				$state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+			}
+			else if($rootScope.previousState){
+				$state.go($rootScope.previousState);
+			}
+			else 
+			{
+				$state.go('admin.dashboard', {menu : 0});
+			}
+		}
 	};
 	
 }]);

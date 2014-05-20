@@ -430,3 +430,23 @@ button.icons.icon-search{
 	 top:15px;
 }
 }
+/* Admin icons      ==================================*/
+@iconsAdmin: url("/assets/admin/admin-icons.png");
+  .admin-icons {
+    background-image: @iconsAdmin;
+    background-repeat: no-repeat;
+    border: 0;
+    .show;
+
+    &.icon-mover-right {
+      background-position: 13px -788px; 
+      
+      &:hover,
+      &:active { background-position: 13px -888px; }
+    }
+
+    @media @highdpi {
+      background-image: @iconsAdmin2x;
+      background-size: 50px;
+    }
+  }
