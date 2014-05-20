@@ -90,6 +90,13 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     	$scope.$emit('hideLoader');
     	drawGraph();    	
     	//setTimeout(function(){refreshScroller();}, 750);
+    	// Disable contracts on selecting history
+    	$scope.isHistorySelected = false ;
+    	angular.forEach($scope.contractList.history_contracts,function(item, index) {
+    		if(item.id == $scope.contractSelected){
+    			$scope.isHistorySelected = true ;
+    		}
+       	});
     };
   	var fetchFailureCallback = function(data){
         $scope.$emit('hideLoader');
@@ -172,7 +179,6 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     * Function to handle data change in 'Contract List'.
     */
     $scope.clickedContractList = function(contract_id){
-		console.log("clickedContractList"+contract_id);
 		$scope.contractSelected = contract_id;
 		$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":contract_id},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);  
     };
