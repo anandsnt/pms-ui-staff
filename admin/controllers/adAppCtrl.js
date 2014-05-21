@@ -32,7 +32,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	else{
 		$scope.isHotelAdmin =  false;
 	}
-
+	$scope.isPmsConfigured = $rootScope.isPmsConfigured;
 	$scope.isDragging = false;
 
 	//on drag start we need to show a dotted border on bookmark area
