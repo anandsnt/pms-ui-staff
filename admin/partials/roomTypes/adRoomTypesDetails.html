@@ -1,7 +1,10 @@
 <div class="data-holder">
 	<form room_type_id="1" id="edit-room-type" class="form inline-form float">
 		<div class="form-title">
-			<h3><span>Edit</span> {{roomTypeData.room_type_name}} </h3>
+			<h3>
+				<span ng-hide="isAddMode">Edit</span>
+				<span ng-show="isAddMode">Add</span>
+				 {{roomTypeData.room_type_name}} </h3>
 			<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 		</div>
 		
@@ -26,19 +29,6 @@
 				</div>
 				<span class="file-preview"><img ng-src="{{roomTypeData.image_of_room_type}}" id="file-preview" alt=""> </span>
 			</div> 
-			
-			<!-- <div class="entry full-width">
-					<label for="user-picture"> Picture </label>
-					<div class="file-upload with-preview">
-						<span class="input">Choose file ...</span>
-						<input type="file" ng-model="image" accept="image/*" app-filereader />
-						<button type="button" class="button brand-colors">
-							 Choose file
-						</button> 
-					</div>
-					<span class="file-preview"> <img ng-src="{{image}}" id="file-preview" alt=""> </span>
-				</div> -->
-
 			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_pseudo_room_type" label="Room is a pseudo room type"></ad-checkbox>
 			<ad-checkbox div-class="full-width" is-checked="roomTypeData.is_suite" label="Room is a suite"></ad-checkbox>
 		</fieldset>

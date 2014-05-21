@@ -64,4 +64,22 @@ admin.service('ADRoomTypesSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $
 		});	
 		return deferred.promise;
 	};
+
+
+	/*
+    * To create room type
+    * @param {array} data of the  room type
+    * @return {object} status 
+    */
+	this.createRoomType = function(data){
+
+		var deferred = $q.defer();
+		var url = '/admin/room_types/';	
+		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
 }]);
