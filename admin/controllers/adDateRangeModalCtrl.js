@@ -45,4 +45,19 @@ $scope.cancelClicked = function(){
 
 };
 
+$scope.count = 0;
+
+$scope.$on("fromDateChanged", function(e,value){
+           $scope.count++;
+           if($scope.count > 2){
+              var fromScope = $scope.$$childHead;
+              var toScope = $scope.$$childHead.$$nextSibling;
+              var fromDays = (12* parseInt(fromScope.yearSelected)) + parseInt(fromScope.monthSelected.value);
+              var toDays = (12*parseInt(toScope.yearSelected)) + parseInt(toScope.monthSelected.value);
+              if(fromDays >= toDays){                
+                toScope.changeMonth(parseInt (fromDays - toDays),false);  
+              }
+           }
+});
+
 }]);
