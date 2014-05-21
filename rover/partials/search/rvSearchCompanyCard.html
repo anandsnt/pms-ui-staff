@@ -1,7 +1,7 @@
 <div id="page-main-second"  ng-click="clickedOnSearchArea()" class="" style="">
     <!-- Search form -->
     <div ng-include="'/assets/partials/common/header.html'"></div>
-    <form method="get" action="/app/search/" name="search-cards" id="search-cards" class="search-form card-search-form float" role="search">
+    <form name="search-cards" id="search-cards" class="search-form card-search-form float" role="search">
         <div class="entry">
         	<a id="clear-query" class="icons icon-clear-search" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">Clear query</a>
 			<button type="submit" name="submit" class="icons icon-search">Search</button>

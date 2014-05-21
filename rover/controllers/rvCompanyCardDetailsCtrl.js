@@ -76,6 +76,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	var successCallbackOfCountryListFetch = function(data){
 		$scope.countries = data;
 	}
+	
 	//fetching country list
 	$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, data, successCallbackOfCountryListFetch);	
 
@@ -89,9 +90,8 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 			$scope.contactInformation.company_details = {};
 			$scope.contactInformation.company_details.account_first_name = $stateParams.firstname;
 		}
-		//taking a deep copy of copy of contact info. for handling save operation
-		// by knowing no use at this time
-		//we are not associating with scope in order to avoid watch
+
+		//setting as null dictionary, will help us in saving..
 		presentContactInfo = {};
 
 	}
