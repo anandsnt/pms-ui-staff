@@ -5,6 +5,7 @@ var RoomTypeChargeModal = function(options) {
 
 	this.delegateEvents = function() {
 		that.myDom.find('#ok').on('click',that.okButtonClicked);
+		that.myDom.find('#room-type-charge').on('keypress',that.keypressed);
 	};
 	
 	this.okButtonClicked = function(){
@@ -19,4 +20,10 @@ var RoomTypeChargeModal = function(options) {
 		that.hide();
 		
 	};
+	this.keypressed = function(e){
+		if ( e.keyCode == 13 ) {
+			e.preventDefault();
+	   	}
+	};
+	
 };

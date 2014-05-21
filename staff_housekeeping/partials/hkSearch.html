@@ -63,7 +63,7 @@
                     Show Dirty
                 </label>
              </div>
-             <div class="entry radio-check">
+             <div class="entry radio-check" ng-show="showPickup">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.pickup}"></span>
                     <input type="checkbox" ng-model="currentFilters.pickup" name="room-filters">
@@ -77,7 +77,7 @@
                     Show Clean
                 </label>
              </div>
-             <div class="entry radio-check">
+             <div class="entry radio-check" ng-show="showInspected">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.inspected}"></span>
                     <input type="checkbox" ng-model="currentFilters.inspected" name="room-filters">
