@@ -53,6 +53,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
 
   //success callback of data fetching from the webservice
 	var successCallBackofInitialFetch = function(data){
+
     $scope.$emit('hideLoader');
 		$scope.results = data;
     oldType = "";

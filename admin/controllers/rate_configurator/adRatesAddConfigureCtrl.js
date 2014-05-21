@@ -41,13 +41,13 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
 
             var fetchSetsInDateRangeSuccessCallback = function (data) {
                 $scope.$emit('hideLoader');
-                
+
                 $scope.data = data;
 
                 // Manually build room rates dictionary - if Add Rate
                 angular.forEach($scope.data.sets, function (value, key) {
-                    
-                  
+
+
                     room_rates = []
                     if (value.room_rates.length === 0) {
                         angular.forEach($scope.data.room_types, function (room_type, key) {
@@ -68,13 +68,13 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
 
             };
             // $scope.dateRange.id
-            $scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange, 
+            $scope.invokeApi(ADRatesConfigureSrv.fetchSetsInDateRange,
                 {
                     "id": dateRangeId
                 }, fetchSetsInDateRangeSuccessCallback);
         };
 
-        
+
 
         $scope.saveSet = function (index) {
 
@@ -191,7 +191,7 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         // check whether date range is past
         $scope.is_date_range_editable = function(date_range_end_date){
             if($scope.is_edit){
-                if ($scope.rateData.based_on.id && $scope.rateData.rate_type.name != 'Promotional') { return false; }
+                if ($scope.rateData.based_on.id && $scope.rateData.rate_type.name != 'Specials & Promotions') { return false; }
                 if (date_range_end_date && $scope.hotel_business_date){
                     return Date.parse(date_range_end_date) > Date.parse($scope.hotel_business_date)
                 }
