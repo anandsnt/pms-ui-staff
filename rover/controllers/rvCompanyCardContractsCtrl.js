@@ -82,7 +82,6 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
         }
 	
 	var fetchContractsDetailsSuccessCallback = function(data){
-		$scope.contractsData = {};
     	$scope.contractData = data;
     	contractInfo = JSON.parse(JSON.stringify($scope.contractData));
     	$scope.contractData.contract_name ="";
@@ -178,10 +177,12 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	/*
     * Function to handle data change in 'Contract List'.
     */
-    $scope.clickedContractList = function(contract_id){
-		$scope.contractSelected = contract_id;
-		$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":contract_id},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);  
-    };
+   	$scope.$watch("contractSelected",
+           function( newValue, oldValue ) {
+                    console.log("contractSelected chgedddd"+newValue+oldValue);
+                    $scope.contractSelected = newValue;
+                    if(newValue != undefined) $scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":newValue},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);  
+     });
    
 	$scope.contractStart = function(){
 		ngDialog.open({
@@ -208,6 +209,11 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 			 className: 'ngdialog-theme-default calendar-single',
 			 scope: $scope
 		});
+	};
+	
+	$scope.AddNewButtonClicked = function(){
+		console.log("AddNewButtonClicked");
+		//$scope.contractData = {};
 	};
 	/*
 	 * Add new contarcts
@@ -265,4 +271,5 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		$scope.$emit('hideLoader');
 	};
 	
+                
 }]);
