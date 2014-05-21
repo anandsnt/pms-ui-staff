@@ -50,6 +50,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                 var url = "/api/market_segments?is_active=true";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.markets = data.markets;
+                    that.addRatesDetailsData.is_use_markets = data.is_use_markets;
                     this.fetchDepositPolicies();
                 }, function (data) {
                     deferred.reject(data);
@@ -65,6 +66,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                 var url = "/api/sources.json?is_active=true";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.addRatesDetailsData.sources = data.sources;
+                    that.addRatesDetailsData.is_use_sources = data.is_use_sources;
                     this.fetchMarkets();
                 }, function (data) {
                     deferred.reject(data);
