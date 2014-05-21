@@ -283,7 +283,6 @@ var RoomAssignmentView = function(viewDom){
           }
           else{
           	 if (filteredRoomList[i].room_ready_status == "PICKUP"){
-          	 	console.log("room_ready_Status ---"+color_code);
           	 	room_status_html += "<span class='room-number room-orange' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
               	"<span class='room-status room-orange' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].room_ready_status+" </span>";
           	 	}
