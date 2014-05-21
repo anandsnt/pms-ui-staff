@@ -425,10 +425,19 @@ background-color:#FCFCFC;
 }
 
 button.icons.icon-search{
-	background: url("/assets/app/app-icons.png");
+	background: @icons;
     background-repeat: no-repeat;
 	 top:15px;
 }
+
+
+
+}
+
+#search-cards .entry{
+  .icon-search{
+    background-image: @icons;
+  }
 }
 /* Admin icons      ==================================*/
 @iconsAdmin: url("/assets/admin/admin-icons.png");

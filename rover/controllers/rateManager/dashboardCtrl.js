@@ -1,6 +1,10 @@
 sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', function($scope,$window,dateFilter){
     
     BaseCtrl.call(this, $scope);
+
+
+    $scope.$emit("updateRoverLeftMenu","rateManager");
+
     $scope.displayMode = "CALENDAR";
     $scope.filterConfigured = false;
     var defaultDateRange = 7;
