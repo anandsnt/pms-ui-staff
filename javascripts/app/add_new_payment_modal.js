@@ -1,12 +1,28 @@
-var AddNewPaymentModal = function(fromPagePayment, backView){
+var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
   	BaseModal.call(this);
   	var that = this;
   	this.save_inprogess = false;
   	this.url = "staff/payments/addNewPayment";
   	this.$paymentTypes = [];
   	this.fromPagePayment = fromPagePayment;
+  	
+  	
     //Delegate events
+    this.modalDidShow = function(){
+    	console.log("upto here");
+    	that.myDom.find("#setOverlay").hide();
+ 		if(that.params && that.params.should_show_overlay){
+ 			that.params.should_show_overlay = false;
+ 			console.log("inside that parama here");
+			that.myDom.find("#setOverlay").show();
+			that.myDom.find('#noSwipe').on('click', that.hidePaymentModal);
+		};
+    	
+    };
+    
   	this.delegateEvents = function(){
+
+		
   		that.getPaymentsList();
   		that.myDom.find('#new-payment #payment-type').on('change', that.filterPayments);
 		that.myDom.find('#new-payment #save_new_credit_card').on('click', that.saveNewPayment);
@@ -15,7 +31,18 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 			that.myDom.find("#add-in-guest-card").parent().parent().show();
 		}
 	};
+	that.hidePaymentModal = function(){
+		that.hide();
+	};
     
+    this.dataUpdated=function(){
+    	$("#setOverlay").hide();
+    	if (that.swipedCardData) {
+			that.populateSwipedCard();
+	   };
+    	
+    	
+    };
 	this.populateSwipedCard = function() {
 		var swipedCardData = this.swipedCardData;
 		// inject the values to payment modal
@@ -48,6 +75,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
     		that.params = {"card_action": "manual_entry"};
 			console.log('not swipe');
 		}
+	
 		
    	};
     //Success call back after succesful addition of payment in reservation
@@ -158,7 +186,6 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
    	};    	
    	//save new payment
    	this.saveNewPayment = function(){
-
    		if (that.save_inprogress == true) return false;
 		var $payment_type = $("#new-payment #payment-type").val();
 		var $payment_credit_type = $("#new-payment #payment-credit-type").val();
@@ -192,7 +219,9 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 		//If it is a check-in reservation using card swipe from registration card, 
 		//do not update the server with card details. 
 		//Instead, save the details locally and pass the information while cheking in 
-		if(reservationStatus == "CHECKING_IN" && fromPagePayment == views.BILLCARD && sntapp.paymentTypeSwipe){
+		//Commenting for now as per CICO-6389
+		/*if(reservationStatus == "CHECKING_IN" && fromPagePayment == views.BILLCARD && sntapp.paymentTypeSwipe){
+			console.log("---------------------------------");
 			var params =  {'number': $number,'add_to_guest_card':add_to_guest_card}
 		    var data = {
 				payment_type: $payment_type,
@@ -207,7 +236,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 		    sntapp.regCardData = data;
 			that.fetchCompletedOfReservationPayment('', params);
 			return false;
-		}
+		}*/
 		
 		if(fromPagePayment == "guest"){
 			
@@ -240,6 +269,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 			
 		} 
 		else {
+			console.log("reservation payment payment");
 			var reservation_id = getReservationId();
 			that.save_inprogress = true;
 			var webservice = new WebServiceInterface();
