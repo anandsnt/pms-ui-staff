@@ -221,9 +221,11 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		var data = dclone($scope.contractData,['occupancy','statistics','rates','total_contracted_nights']);
 		
 		var saveContractSuccessCallback = function(data){
-	    	$scope.contractData.contract_name ="";
 	    	$scope.$emit('hideLoader');
 	    	$scope.contractSelected = '';
+	    	var dataNew = {"id":data.id,"contract_name":$scope.contractData.contract_name};
+	    	$scope.contractList.current_contracts.push(dataNew);
+	    	$scope.contractData.contract_name ="";
 	    };
 	  	var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
