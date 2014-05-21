@@ -6,18 +6,18 @@
                 <select name="company-contract" ng-model="contractSelected">
                     <option value="" class="placeholder">Select contract</option>
                     <optgroup label="Current">
-                    	<option value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.current_contracts" >{{type.contract_name}}</option>
+                    	<option ng-click="clickContractSElected(type.id)" value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.current_contracts" >{{type.contract_name}}</option>
                 	</optgroup>
                 	<optgroup label="Future">
-                    	<option  value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.future_contracts" >{{type.contract_name}}</option>
+                    	<option ng-click="clickContractSElected(type.id)" value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.future_contracts" >{{type.contract_name}}</option>
                 	</optgroup>
                 	<optgroup label="History">
-                    	<option  value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.history_contracts" >{{type.contract_name}}</option>
+                    	<option ng-click="clickContractSElected(type.id)" value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.history_contracts" >{{type.contract_name}}</option>
                 	</optgroup>
                 </select>
             </div>
             <div class="" ng-show="isAddMode" >
-                <input ng-model="contractData.contract_name" placeholder="Contract Name" name="company-contract-new" class="" value="{{contractData.contract_name}}" maxlength="8" type="text" />
+                <input ng-model="contractData.contract_name" placeholder="Contract Name" name="company-contract-new" class="" value="{{contractData.contract_name}}" type="text" />
             </div>
         </div>
         <div class="actions" ng-hide="isAddMode">

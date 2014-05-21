@@ -3,6 +3,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     $scope.highchartsNG = {};
 	$scope.isAddMode = false;
 	$scope.contractList = {};
+	$scope.contractSelected = "";
 	$scope.errorMessage = "";
 	var contractInfo = {};
 	
@@ -177,12 +178,9 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	/*
     * Function to handle data change in 'Contract List'.
     */
-   	$scope.$watch("contractSelected",
-           function( newValue, oldValue ) {
-                    console.log("contractSelected chgedddd"+newValue+oldValue);
-                    $scope.contractSelected = newValue;
-                    if(newValue != undefined) $scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":newValue},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);  
-     });
+   	$scope.clickContractSElected = function(contratct_id){
+   		$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":contratct_id},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);
+   	};
    
 	$scope.contractStart = function(){
 		ngDialog.open({
@@ -225,10 +223,12 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		var saveContractSuccessCallback = function(data){
 	    	$scope.contractData.contract_name ="";
 	    	$scope.$emit('hideLoader');
+	    	$scope.contractSelected = '';
 	    };
 	  	var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
+	        $scope.contractSelected = '';
 	    }; 
 		$scope.invokeApi(RVCompanyCardSrv.addNewContract,{ "account_id":$stateParams.id, "postData":data}, saveContractSuccessCallback, saveContractFailureCallback);  
 	};
