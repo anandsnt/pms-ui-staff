@@ -132,6 +132,19 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	};
 
 	/*
+	* function to handle exception when state is not found
+	*/
+	$scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams){ 
+	    event.preventDefault();
+	    $scope.errorMessage = ['Sorry, the feature you are looking for is not implemented yet'];
+	    //closing the error message after after 2 seconds
+	    setTimeout(function(){
+	    	$scope.clearErrorMessage();
+	    	$scope.$apply();
+	    }, 2000);
+	});
+
+	/*
 	* function for handling click operation on menu item
 	* Here is a special case
 	* After drag operation, click event is firing. Inorder to prevent that
