@@ -3,7 +3,6 @@ return {
         require: 'ngModel',
         scope: {
           value: '=ngModel'
-
         },
         link:function(scope, element, attr){
           // a method to update the width of an input
@@ -13,7 +12,7 @@ return {
               var tester = angular.element('<span>'),
               
               // get the computed style of the input
-                  elemStyle = $window.document.defaultView
+              elemStyle = $window.document.defaultView
                     .getComputedStyle(element[0], '');
               
               // apply any styling that affects the font to the tester span.
