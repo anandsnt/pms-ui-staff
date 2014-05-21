@@ -52,7 +52,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 addOns.isSelected = false;
                 addOns.is_inclusive_in_rate = "false";
              });
-        $scope.rateData.addOns =data.results;
+        $scope.rateData.addOns =data.addons;
        
         //restriction type
         $scope.restrictionDetails = data.restrictionDetails;
