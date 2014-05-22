@@ -36,7 +36,13 @@
     "MAX_OCCUPANCY_PLACE_HOLDER":"Geben Maximale Belegung",
     "SNT_DESCRIPTION_PLACE_HOLDER":"Geben Sie StayNTouch Beschreibung",
     "MANDIATORY_FIELDS_MESSAGE1":"Felder markiert mit",
-    "MANDIATORY_FIELDS_MESSAGE2":"sind Pflichtfelder!"
+    "MANDIATORY_FIELDS_MESSAGE2":"sind Pflichtfelder!",
+
+    "ROOMS":"Zimmer",
+    "OF":"von",
+    "LICENSED_ROOMS_CONFIGURED":"Lizenzierte Zimmer konfiguriert"
+
+
 
 
 }
