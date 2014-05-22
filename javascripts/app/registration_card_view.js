@@ -404,24 +404,31 @@ var RegistrationCardView = function(viewDom) {
 	// To add new payment from bill card
 	this.addNewPaymentModal = function(event, options){
 		var domElement = $("#bill"+that.getActiveBillNumber());
+		
+		//Instance does not exist - First Time invocation.
 	  	if ( !sntapp.getViewInst('addNewPaymentModal') ) {
 	      sntapp.setViewInst('addNewPaymentModal', function() {
 	      	  return new AddNewPaymentModal(views.BILLCARD, domElement);
 	      });
+	      if(options && options.should_show_overlay){
+	    	sntapp.getViewInst('addNewPaymentModal').should_show_overlay=true;
+	      }
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
-	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
+	      sntapp.getViewInst('addNewPaymentModal').params = 
+	      				{ "bill_number" :that.getActiveBillNumber(),
+	      				  "origin":views.BILLCARD};
+	   
 	    } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
 	
 	      // if addNewPaymentModal instance exist, but the dom is removed
 	      sntapp.updateViewInst('addNewPaymentModal', function() {
 	        return new AddNewPaymentModal(views.BILLCARD, domElement);
 	      });
+	      if(options && options.should_show_overlay){
+	    	sntapp.getViewInst('addNewPaymentModal').should_show_overlay=true;
+	      }
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
 	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
-	    }
-	    if(options && options.should_show_overlay){
-	    sntapp.getViewInst('addNewPaymentModal').params.should_show_overlay=true;
-	    console.log("Setting popup ");
 	    }
   	};
 	//function on click complete checkout button

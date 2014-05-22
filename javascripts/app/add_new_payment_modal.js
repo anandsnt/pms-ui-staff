@@ -10,9 +10,10 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
     //Delegate events
     this.modalDidShow = function(){
     	console.log("upto here");
+    	console.log(that.params);
     	that.myDom.find("#setOverlay").hide();
- 		if(that.params && that.params.should_show_overlay){
- 			that.params.should_show_overlay = false;
+ 		if(that.params && that.should_show_overlay){
+ 			that.should_show_overlay = false;
  			console.log("inside that parama here");
 			that.myDom.find("#setOverlay").show();
 			that.myDom.find('#noSwipe').on('click', that.hidePaymentModal);
@@ -68,7 +69,9 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 	};
 
 	this.modalInit = function(){
-		if(typeof that.swipedCardData != 'undefined' && Object.keys(that.swipedCardData).length != 0){
+		console.log(that.should_show_overlay);
+		if((typeof that.swipedCardData != 'undefined' && Object.keys(that.swipedCardData).length != 0)
+			||that.should_show_overlay===true){
 			console.log("swipe");
     		that.params = {"card_action": "swipe"};
 		}else{
@@ -310,7 +313,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
   // to get the payments list json to filter on change of payment type
    this.getPaymentsList = function(){
 		var webservice = new WebServiceInterface();
-	
+	console.log("how many")
 	    var url = 'staff/payments/addNewPayment.json'; 
 	    var options = {
 				   successCallBack: that.fetchCompletedOfGetPayment,
