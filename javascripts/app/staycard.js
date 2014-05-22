@@ -1,4 +1,5 @@
 var StayCard = function(viewDom){
+	console.log("test console message");
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
