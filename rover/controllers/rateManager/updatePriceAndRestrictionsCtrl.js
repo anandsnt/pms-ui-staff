@@ -161,8 +161,10 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
  
         };
         $scope.init();
-        
+
+       
         $scope.saveRestriction = function(){
+            console.log("here");
         	
         	var data = {};
         	data.details = [];
@@ -174,10 +176,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         	restrictionDetails.restrictions = [];
         	restrictionDetails.from_date = "";
         	restrictionDetails.to_date = "";
-        	restrictionDetails.single = {};
-        	restrictionDetails.double = {};
-        	restrictionDetails.extra_adult = {};
-        	restrictionDetails.child = {};
+        	
         	
         	
         	angular.forEach($scope.data.restrictionTypes, function(value, key){
@@ -196,16 +195,22 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         			restrictionDetails.restrictions.push(restrictionData);
         		}
 		    });
+            //The popup appears by from the rate calendar view
 		    if(!$scope.popupData.fromRoomTypeView){
-		    	data.rate_id = $scope.popupData.selectedRate;
+                data.rate_id = $scope.popupData.selectedRate;
 		    	restrictionDetails.from_date = $scope.popupData.selectedDate;
 		    	restrictionDetails.to_date = $scope.popupData.selectedDate;
+            //The popup appears by from the room type calendar view
 		    } else {
 		    	data.rate_id = $scope.popupData.selectedRate;
-		    	data.room_type_id = $scope.popupData.selectedRoomType;
+                data.room_type_id = $scope.popupData.selectedRoomType;
 		    	restrictionDetails.from_date = $scope.popupData.selectedDate;
 		    	restrictionDetails.to_date = $scope.popupData.selectedDate;
-		    	
+
+		    	restrictionDetails.single = {};
+                restrictionDetails.double = {};
+                restrictionDetails.extra_adult = {};
+                restrictionDetails.child = {};
 		    	if($scope.data.single==""){
 		    		restrictionDetails.single.value = $scope.data.single_sign + $scope.data.single_extra_amnt;
 		    		
@@ -260,11 +265,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 		    		restrictionDetails.child.value = $scope.data.child;
         			restrictionDetails.child.type = "amount_new";
 		    	}
+                restrictionDetails.single.value = parseFloat(restrictionDetails.single.value);
+                restrictionDetails.double.value = parseFloat(restrictionDetails.double.value);
+                restrictionDetails.extra_adult.value = parseFloat(restrictionDetails.extra_adult.value);
+                restrictionDetails.child.value = parseFloat(restrictionDetails.child.value);
 		    }
-		    restrictionDetails.single.value = parseFloat(restrictionDetails.single.value);
-		    restrictionDetails.double.value = parseFloat(restrictionDetails.double.value);
-		    restrictionDetails.extra_adult.value = parseFloat(restrictionDetails.extra_adult.value);
-		    restrictionDetails.child.value = parseFloat(restrictionDetails.child.value);
+		    
 		    data.details.push(restrictionDetails);
         	$scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data);
         	
