@@ -1,18 +1,18 @@
 <div class="data-holder">
 	<form room_type_id="1" id="edit-room-type" class="form inline-form float">
 		<div class="form-title">
-			<h3><span>Edit</span> {{floorListData.room_type_name}} </h3>
+			<h3><span>Edit</span> {{floorListData.description}} </h3>
 			<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 		</div>
 		
 		<fieldset class="holder left float">
 			
-			<ad-textbox value="floorListData.room_type_code" name = "room-type-code" id = "room-type-code" label = "Floor No" placeholder = "Enter Floor No" required = "yes" ></ad-textbox>
+			<ad-textbox value="floorListData.floor_number" name = "room-type-code" id = "room-type-code" label = "Floor No" placeholder = "Enter Floor No" required = "yes" ></ad-textbox>
 			
 		</fieldset>
 		<fieldset class="holder right float">
 			
-            <ad-textbox styleclass="full-width" value="floorListData.room_type_name" name = "room-type-name" id = "room-type-name" label = "FLOOR DESCRIPTION" placeholder = "Enter Description" required = "yes" ></ad-textbox>
+            <ad-textbox styleclass="full-width" value="floorListData.description" name = "room-type-name" id = "room-type-name" label = "FLOOR DESCRIPTION" placeholder = "Enter Description" required = "yes" ></ad-textbox>
 		</fieldset> 
 		
 		<div class="actions float">
