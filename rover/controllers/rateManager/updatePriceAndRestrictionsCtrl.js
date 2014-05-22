@@ -2,6 +2,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     function ($q, $scope, ngDialog, UpdatePriceAndRestrictionsSrv) {
         $scope.init = function(){
             $scope.showRestrictionDayUpdate = false;
+            $scope.showExpandedView = false;
+
             if($scope.popupData.fromRoomTypeView){
                 computePopupdateForRoomTypeCal();
             }else{
@@ -160,11 +162,13 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             }
  
         };
-        $scope.init();
+
+        $scope.expandButtonClicked = function(){
+            $scope.showExpandedView = !$scope.showExpandedView;
+        };
 
        
         $scope.saveRestriction = function(){
-            console.log("here");
         	
         	var data = {};
         	data.details = [];
@@ -278,7 +282,10 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         	ngDialog.close();
         	
         };
+
+
+        $scope.init();
         
        
-    }
-]);
+    
+}]);

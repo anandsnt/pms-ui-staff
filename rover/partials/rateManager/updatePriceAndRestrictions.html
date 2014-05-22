@@ -2,7 +2,8 @@
     <dialog>
         <div class="updatePriceAndRestrictionsContainer">
             <div class="header">
-                <h2 class="h1">{{data.name}}</h2>
+                <button class="button" style="float:right;" ng-click="expandButtonClicked()" ng-class"{'btn-expand':!showExpandedView, 'btn-collapse': showExpandedView}">&nbsp;</button>
+                <h2 class="h1" style="float:left;">{{data.name}}</h2>
                 <em>{{popupData.selectedDate| date:'EEEE MMMM dd'}}</em>
             </div>
             
@@ -19,8 +20,11 @@
                         <!-- <td style="vertical-align:top" ng-show="popupData.fromRoomTypeView">
                             <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'" ></div >
                         </td> -->
-                         <td style="vertical-align:top" ng-hide="true">
+                         <td style="vertical-align:top" ng-show="showExpandedView">
                             <div ng-include="'/assets/partials/rateManager/restrictionWeekDays.html'"></div >
+                        </td>
+                        <td style="vertical-align:top" ng-show="showExpandedView">
+                            <div ng-include="'/assets/partials/rateManager/priceInfo.html'"></div >
                         </td>
                     
                         <td>
