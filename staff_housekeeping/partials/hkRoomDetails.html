@@ -9,7 +9,7 @@
     <!-- Rooms details -->
     <section id="room-details" class="content">
 
-        <header id="room-header" ng-class= "{'inspected-clean': isCleanVacant, 'dirty': isDirtyVacant, '': isOutOfService, 'pickup': isPickup, 'occupied': isDefaultRoomColor}">
+        <header id="room-header" ng-class= "{'inspected-clean': isGreen, 'dirty': isRed, '': isOutOfService, 'pickup': isOrange, 'occupied': isDefaultRoomColor}">
             <h1 class="icons icon-room">{{data.room_details.current_room_no}}</h1>
             <div class="select">
                 <div ng-show = "shouldDisable()" style = "height:100%; z-index:999; width : 100%; position:absolute;"></div>

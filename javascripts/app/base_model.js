@@ -14,7 +14,12 @@ var BaseModal = function() {
             this.fetchFromURL(that.type);
         }
     };
-
+    
+    /* Currently used in Payment Modal Only*/
+	this.dataUpdated = function(){
+		
+	};
+	
     this.modalInit = function(){
     };
     
