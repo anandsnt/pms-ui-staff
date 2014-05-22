@@ -32,6 +32,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			var fetchSuccess = function(data){
 				console.log(JSON.stringify(data));
 				$scope.data = data.data;
+				$scope.countries = data.countries;
 				$scope.$emit('hideLoader');
 				console.log(data.mli_pem_certificate_loaded);
 				if(data.mli_pem_certificate_loaded){
