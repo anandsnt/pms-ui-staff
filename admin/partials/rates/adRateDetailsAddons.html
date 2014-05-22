@@ -28,7 +28,7 @@
 		<tr ng-repeat="addon in rateData.addOns">
 			<td>{{addon.name}}</td> 
 			<td>
-				<span ng-show="addon.price.length>0">{{rateTypesDetails.hotel_settings.currency.symbol}} {{addon.price}} <span class="rate_perstay">{{addon.post_type}}</span>
+				<span ng-show="addon.price.length>0">{{rateTypesDetails.hotel_settings.currency.symbol}} {{addon.price |number:2}} <span class="rate_perstay">{{addon.post_type}}</span>
 				</span>
 			</td> 
 			<td>
@@ -52,7 +52,7 @@
 				</div>
 				</div>
 			</td> 
-			<td><div class="center_align"><ad-toggle-button is-checked="addon.isSelected" ></ad-toggle-button></td> 
+			<td><div class="center_align" style="margin-top:-22px;"><ad-toggle-button is-checked="addon.isSelected" ></ad-toggle-button></td> 
 		</tr>
 		</tbody>
 		
