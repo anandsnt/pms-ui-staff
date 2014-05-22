@@ -3,8 +3,7 @@ sntRover.controller('contractStartCalendarCtrl',['$scope','dateFilter','ngDialog
 
 	$scope.setUpData = function(){
 	    $scope.isDateSelected = false;
-	
-	    if($scope.contractData.begin_date!= null){
+	    if($scope.contractData.begin_date!= null && $scope.contractData.begin_date != ""){
 	      $scope.date = $scope.contractData.begin_date;
 	      $scope.isDateSelected = true;
 	    }
