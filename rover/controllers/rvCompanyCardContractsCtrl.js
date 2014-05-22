@@ -219,6 +219,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	};
 	$scope.CancelAddNewContract =  function(){
 		$scope.isAddMode = false;
+		$scope.addData.contract_name = "";
 	};
 	/*
 	 * Add new contarcts
@@ -229,14 +230,15 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		
 		var saveContractSuccessCallback = function(data){
 	    	$scope.$emit('hideLoader');
-	    	var dataNew = {"id":data.id,"contract_name":$scope.contractData.contract_name};
+	    	var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
 	    	$scope.contractList.current_contracts.push(dataNew);
-	    	$scope.contractData.contract_name ="";
+	    	$scope.addData.contract_name = "";
 	    	$scope.isAddMode = false;
 	    };
 	  	var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
+	        $scope.addData.contract_name = "";
 	        $scope.isAddMode = false;
 	    }; 
 		$scope.invokeApi(RVCompanyCardSrv.addNewContract,{ "account_id":$stateParams.id, "postData":data}, saveContractSuccessCallback, saveContractFailureCallback);  
