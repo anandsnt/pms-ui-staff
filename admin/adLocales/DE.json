@@ -18,7 +18,25 @@
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Nur bei Check-in ist NICHT erfolgreich",
     "ALL": "alle",
     "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "E-Mail-Accounts (mit Semikolons getrennt [;])",
+    
+    "IMPORT_FROM_PMS":"IMPORT FROM PMS",
+    "ROOM_TYPES":"Zimmerarten",
+    "ADD_NEW":"neue hinzufügen",
     "CHOOSE_FILE": "wählen Sie Datei",
     "PICTURE":"Bild",
-    "ADD":"Hinzufügen"
+    "ADD":"Hinzufügen",
+    "ROOM_TYPE_NAME":"Zimmer Typnamen",
+    "CODE":"Code",
+    "SNT_DESCRIPTION":"stayntouch Beschreibung",
+    "MAX_OCCUPANCY":"Maximale Belegung",
+    "PSEUDO_ROOM_TYPE":"Zimmer ist ein Pseudo-Raumtyp",
+    "SUITE_ROOM_TYPE":"room is a suite",
+    "ROOM_TYPE_PLACE_HOLDER":"Geben Zimmerkategorie",
+    "ROOM_TYPE__CODE_PLACE_HOLDER":"Geben Raumtyp -Code",
+    "MAX_OCCUPANCY_PLACE_HOLDER":"Geben Maximale Belegung",
+    "SNT_DESCRIPTION_PLACE_HOLDER":"Geben Sie StayNTouch Beschreibung",
+    "MANDIATORY_FIELDS_MESSAGE1":"Felder markiert mit",
+    "MANDIATORY_FIELDS_MESSAGE2":"sind Pflichtfelder!"
+
+
 }
