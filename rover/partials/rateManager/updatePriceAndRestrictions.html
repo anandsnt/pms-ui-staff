@@ -17,13 +17,13 @@
                         <td ng-if="popupData.all_data_selected">
                             <div ng-include="'/assets/partials/rateManager/mixedRestrictions.html'"></div>
                         </td>
-                        <!-- <td style="vertical-align:top" ng-show="popupData.fromRoomTypeView">
+                        <td style="vertical-align:top" ng-show="popupData.fromRoomTypeView">
                             <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'" ></div >
-                        </td> -->
+                        </td>
                          <td style="vertical-align:top" ng-show="showExpandedView">
                             <div ng-include="'/assets/partials/rateManager/restrictionWeekDays.html'"></div >
                         </td>
-                        <td style="vertical-align:top" ng-show="showExpandedView">
+                        <td style="vertical-align:top" ng-show="showExpandedView && !popupData.fromRoomTypeView &&!popupData.all_data_selected">
                             <div ng-include="'/assets/partials/rateManager/priceInfo.html'"></div >
                         </td>
                     

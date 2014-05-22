@@ -3,18 +3,10 @@
     	PRICES
     </h1>
 </div>
-<div class="price-info">
+<div class="price-info" ng-repeat="roomPrice in data.roomPriceData">
 	<div class="price-item">
-		<div>Standard King</div>
-		<div class="amount">120.00</div>
+		<div>{{roomPrice.name}}</div>
+		<div class="amount">{{roomPrice.rate}}</div>
 	</div>
-	<div class="price-item">
-		<div>Standard King</div>
-		<div class="amount">120.00</div>
-	</div>
-	<div class="price-item">
-		<div>Standard King</div>
-		<div class="amount">120.00</div>
-	<div>
 </div>
 

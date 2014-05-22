@@ -1,18 +1,57 @@
-sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog', 'UpdatePriceAndRestrictionsSrv',
-    function ($q, $scope, ngDialog, UpdatePriceAndRestrictionsSrv) {
+sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog','dateFilter', 'RateMngrCalendarSrv', 'UpdatePriceAndRestrictionsSrv',
+    function ($q, $scope, ngDialog, dateFilter, RateMngrCalendarSrv, UpdatePriceAndRestrictionsSrv) {
         $scope.init = function(){
             $scope.showRestrictionDayUpdate = false;
             $scope.showExpandedView = false;
+            $scope.data = {};
 
             if($scope.popupData.fromRoomTypeView){
                 computePopupdateForRoomTypeCal();
             }else{
-                computePopUpdata();
+                computePopUpdataForRateViewCal();
+                fetchPriceDetailsForRate();
             }
+
+
         };
+
+        $scope.daysOptions = {  "days": 
+                            {   "mon" : false,
+                                "tue" : false,
+                                "wed" : false,
+                                "thu" : false,
+                                "fri" : false,
+                                "sat" : false,
+                                "sun" : false,
+                            },
+                        "numOfWeeks" : 2,
+                        "applyToPrice" : false,
+                        "applyToRestrictions" : false
+                     };
 
         $scope.hideUpdatePriceAndRestrictionsDialog = function(){
             ngDialog.close();
+        };
+
+        var fetchPriceDetailsForRate = function() {
+            var data = {};
+            data.id = $scope.popupData.selectedRate;
+            data.from_date = dateFilter($scope.popupData.selectedDate, 'yyyy-MM-dd');
+            data.to_date = dateFilter($scope.popupData.selectedDate, 'yyyy-MM-dd');
+            var priceDetailsFetchSuccess = function(response) {
+                var roomPriceData = [];
+                for (var i in response.data){
+                    var roomType = {};
+                    roomType.name = response.data[i].name;
+                    roomType.rate = response.data[i][$scope.popupData.selectedDate].single;
+                    roomPriceData.push(roomType);
+                }
+                $scope.data.roomPriceData = roomPriceData;
+                $scope.$emit('hideLoader');
+            };
+            $scope.invokeApi(RateMngrCalendarSrv.fetchRoomTypeCalenarData, data, priceDetailsFetchSuccess);
+
+
         };
 
         var computePopupdateForRoomTypeCal = function(){
@@ -82,7 +121,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         /**
         * Compute the restrictions data     
         */
-        var computePopUpdata = function(){
+        var computePopUpdataForRateViewCal = function(){
             $scope.data = {};
             $scope.data.id = "";
             $scope.data.name = "";
@@ -167,8 +206,20 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             $scope.showExpandedView = !$scope.showExpandedView;
         };
 
+        getAllSelectedDates = function() {
+            console.log(JSON.stringify($scope.daysOptions));
+            var currentDayOfWeek = dateFilter($scope.popupData.selectedDate, 'EEE');
+
+
+            return "abc";
+
+
+        };
+
        
         $scope.saveRestriction = function(){
+
+            var datesSelected = getAllSelectedDates();
         	
         	var data = {};
         	data.details = [];
