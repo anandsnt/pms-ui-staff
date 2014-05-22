@@ -9,8 +9,10 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     var heightOfComponents = 500;
     var headerHeight = 60;
     var heightOfFixedComponents = 140;
+    var variableComponentHeight = 90;
+    var maxSize = $(window).height() - headerHeight;
 
-    $scope.leftMenuDimensions.outerContainerHeight = $(window).height() > heightOfComponents ? heightOfComponents : $(window).height() - headerHeight;
+    $scope.leftMenuDimensions.outerContainerHeight = $(window).height() > heightOfComponents ? heightOfComponents : maxSize;
 
     $scope.leftMenuDimensions.scrollableContainerHeight = $scope.leftMenuDimensions.outerContainerHeight - heightOfFixedComponents;   
 
@@ -48,9 +50,11 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 	$scope.clickedAllRates = function(){
 		if($scope.currentFilterData.is_checked_all_rates){
 			$scope.currentFilterData.is_checked_all_rates = false;
+			$scope.leftMenuDimensions.scrollableContainerHeight = Math.min($scope.leftMenuDimensions.scrollableContainerHeight + variableComponentHeight, maxSize - heightOfFixedComponents);
 		}
 		else{
 			$scope.currentFilterData.is_checked_all_rates = true;
+    		$scope.leftMenuDimensions.scrollableContainerHeight = $scope.leftMenuDimensions.outerContainerHeight - heightOfFixedComponents;   
 		}
 		setTimeout(function(){
 			$scope.$$childTail.$parent.myScroll['filter_details'].refresh();
