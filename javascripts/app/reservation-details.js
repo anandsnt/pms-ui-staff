@@ -5,10 +5,7 @@ var reservationDetailsView = function(domRef) {
 	this.reservation_id = getReservationId();
 	
 	this.pageinit = function() {
-		
 		that.updateTimelineIcon();
-		//To set cuurent view 
-		sntapp.cardSwipeCurrView = 'StayCardView';
 	};
 
 	this.updateTimelineIcon = function(){

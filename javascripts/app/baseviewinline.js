@@ -74,13 +74,9 @@ var BaseInlineView = function(viewDom){
     	    that.myDom.find("div.actions #cancel.button.blank").on('click', that.cancelFromAddNewForm);
     	    that.myDom.find("div.actions #save.button.green").on('click', that.addNewData);
     	    sntapp.activityIndicator.hideActivityIndicator();
-        }, 300);		
+        }, 300);				
 		
 	};
-
-  this.bindNewformEvents = function(){
-
-  };
 	
   this.appendInlineData = function(event) {
 	  	// event for tr's click to append the data
@@ -130,10 +126,9 @@ var BaseInlineView = function(viewDom){
     	    containerTable.find("div.actions #delete").on('click', that.deleteItem); // from list and from inline edit delete method is same. pls do the logic in the method
     	    
     	    sntapp.activityIndicator.hideActivityIndicator();
-			that.bindNewformEvents();		  	    
-        }, 300);
-
-
+    	    
+    	    
+        }, 300);				
 		
 	};
 	 //if any extra events to be handled over ride below function

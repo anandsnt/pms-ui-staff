@@ -17,15 +17,14 @@ var CardOperation = function(){
 			var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 			var carddata= { 'RVCardReadCardType': 'AX',
 							'RVCardReadTrack2': 'CDA1E3A2EB853964E4D4550151545BE1052CB17498A61E8FE5BB5D948BD3844EA78603B263D5E509',
-          					'RVCardReadTrack2KSN': '950067000000062002AF',
-          					'RVCardReadMaskedPAN': '5405220008002226'
+          					'RVCardReadTrack2KSN': '950067000000062002AF'
 						  };
 
 			if (typeof data != 'undefined'){ carddata = data;}
 			successCallBack(carddata, successCallBackParameters);
-		};
+		}
 
-	};
+	}
 	this.writeKeyDataDebug = function(options){
 		//Simulating the write function for easy testing. May be removed in production.
 		console.log("sucecss called in write key debug mode");
@@ -34,10 +33,10 @@ var CardOperation = function(){
 		var mechineResponse= { };
 
 		setTimeout(function(){
-			successCallBack(mechineResponse, successCallBackParameters);
-		}, 1000);
+			successCallBack(mechineResponse, successCallBackParameters)
+		}, 1000)
 
-	};
+	}	
 
 
 	this.startReader = function(options){
@@ -124,7 +123,7 @@ var CardOperation = function(){
 			console.log('Calling recursively');
 			that.callCordovaService(options);
 		}
-	};
+	}
 	
 	//function for get single swipe
 	this.listenForSingleSwipe = function(options){		
@@ -182,7 +181,7 @@ var CardOperation = function(){
 		// we are simulating the process by calling the success call back after some time
 		setTimeout(function(){
 				successCallBack(deviceStatus, successCallBackParameters);
-		}, 1000);		
+		}, 1000)		
 	};
 
 	/**
@@ -203,7 +202,7 @@ var CardOperation = function(){
 		// we are simulating the process by calling the success call back after some time period
 		setTimeout(function(){
 			successCallBack(retUserID);
-		}, 1000);
+		}, 1000)
 	};
 
 };

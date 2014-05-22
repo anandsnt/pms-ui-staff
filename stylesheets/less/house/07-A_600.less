@@ -131,7 +131,7 @@
         li {           
             a {
                 color: @textColor;
-                padding: 0 20px 0 20px;
+                padding: 0 50px 0 20px;
 
                 .room-number,
                 .room-status,
@@ -150,18 +150,13 @@
                     font-weight: 600;
                 }
 
-                .guest-image {
-                    top: 10px;
-                }
-
-                .room-stats-wrap {
-                    left: 150px;
-                    right: 60px;
-                }
+                .room-status { .calc-width(45, 60); }
+                .fo-status {  .calc-width(55, 60); }
 
                 &.with-image {
                     .guest-image {
                         top: 10px;
+                        right: 20px;
                     }
                 }
             }
@@ -202,7 +197,7 @@
 
         #guest-info {
             .wrapper { 
-                padding: 120px 40px 0 40px; 
+                padding: 0 40px; 
 
                 .guest-image { 
                     margin-top: 40px;

@@ -17,8 +17,8 @@ var ReservationCardLoyaltyView = function(domRef){
   this.changedLoyaltyProgram = function(){
     var id = $(this).find('option:selected').attr('id');
     var reservation_id = getReservationId();
-
-    if(id == "" || id == undefined){
+    
+    if(id==""){
       // on Selecting option "Select Loyalty Program"
       clearSelectionUI();
     }

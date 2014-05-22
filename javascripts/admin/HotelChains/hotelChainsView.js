@@ -1,10 +1,9 @@
 var HotelChainsView = function(domRef){
+  
 	BaseInlineView.call(this);  
 	this.myDom = domRef;
 	this.textOptionStart = 1;
 	var that = this;
-    this.fileContent = "";
-
 	
 	// page init function
 	this.pageinit = function(){
@@ -18,16 +17,6 @@ var HotelChainsView = function(domRef){
 		that.myDom.on("keyup", that.keyUpOperations);
 		that.myDom.on("focusin", that.viewEventHandler);
 		that.myDom.on("focusout", that.viewFocusOutHandler);
-		
-	};
-
-	this.bindNewformEvents = function(){
-		//Setup the input fields to display the file names
-   	 	setupFile();
-   	 	//bind the file change event
-		$('#ca-cert').on('change', function(){
-  			that.readCertificate(this, "certificate");
-  		});
 	};
 	// text box clearing when value is null
 	this.viewFocusOutHandler = function(event){
@@ -139,8 +128,6 @@ var HotelChainsView = function(domRef){
 		data.sftp_user = sftp_user;
 		data.sftp_password = sftp_password;		
 		data.sftp_respath = sftp_respath;	
-		data.ca_certificate = that.fileContent;
-
 	    var options = {
 				   successCallBack: that.fetchCompletedOfSave,
 				   failureCallBack: that.fetchFailedOfSave,
@@ -226,18 +213,5 @@ var HotelChainsView = function(domRef){
 	 sntapp.activityIndicator.hideActivityIndicator();
 	 sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);  
    };
-
-   	this.readCertificate = function(input, type) {
-        if (input.files && input.files[0]) {
-          var reader = new FileReader();
-          reader.onload = function(e) {
-              that.fileContent = e.target.result;
-        console.log(that.fileContent);
-
-          };
-          reader.readAsDataURL(input.files[0]);
-        }
-
-    };
 
 };

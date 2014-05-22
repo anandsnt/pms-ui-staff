@@ -174,6 +174,7 @@ var NotificationMessage = function() {
 	
 	// to close the message
 	this.hideMessage = function(dom, delay){
+
 		if (this.msgDuringLoading) {
 			return;
 		};
@@ -184,17 +185,11 @@ var NotificationMessage = function() {
         dom.find("#notification-message").slideUp({ 
         	duration : delay || duration,
         	complete : function(){
-        		//To handle any special cases where the $("#notification-message") become undefined
-        		//due to the delay given for sliding effect.
-        		try{
-        			var myElement = dom.find("#notification-message");
-        			 if (myElement.queue( "fx" ).length <=1)   {
-        				myElement.removeClass('notice success_message error_message').html('');
-        			 }
-        		}catch(e){
-        			console.log(e.message);
-        		}
-        		
+        		// var myElement = dom.find("#notification-message");
+        		var myElement = dom.find("#notification-message");
+        		 if (myElement.queue( "fx" ).length <=1)   {
+        			myElement.removeClass('notice success_message error_message').html('');
+        		 }
         	}, 
         });
         

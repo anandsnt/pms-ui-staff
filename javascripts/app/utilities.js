@@ -17,15 +17,15 @@ return convertDateToUTC(new Date(dateString));
 */
 function getParentWithSelector(event, selector) {
 
-	var obj = $(event.target), matched = false;
+	var obj = $(event.target), matched = false;	
 	if(obj.is(selector)) {
 		matched = true;
 	}
 	// if no match found in our above check
 	if(!matched){
 		result = obj.parents(selector + ":eq(0)");
-		if(result.length) {
-			obj=result;
+		if(result.length) { 
+			obj=result; 
 			matched = true;
 		}
 	}
@@ -33,7 +33,7 @@ function getParentWithSelector(event, selector) {
 	return matched;
 };
 
-function convertDateToUTC(date) {
+function convertDateToUTC(date) { 
   return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
 }
 
@@ -80,7 +80,7 @@ function getAvatharUrl(title){
 		// TODO: handle exception
 	}
 }
-//function that converts a null value to a desired string.
+//function that converts a null value to a desired string. 
 //if no replace value is passed, it returns an empty string
 escapeNull = function(value, replaceWith){
 	var newValue = "";
@@ -118,7 +118,7 @@ function getDateString(dateObj, showDay){
 	weekday[4]="Thursday";
 	weekday[5]="Friday";
 	weekday[6]="Saturday";
-
+	
 
 	var month = dateObj.getMonth() + 1 + "";
 	if (month.length == 1){
@@ -137,56 +137,4 @@ function getDateString(dateObj, showDay){
     }
 	return dateString;
 
-};
-
-var getRoomColorClass = function(reservationStatus, roomStatus, foStatus){
-	var roomColorClass = "";
-	if(reservationStatus == "CHECKING_IN"){
-		if(roomStatus == "READY" && foStatus == "VACANT"){
-			roomColorClass = "ready";
-		} else {
-			roomColorClass = "not-ready";
-		}
-
-	}
-	return roomColorClass;
-}
-
-function isEmpty(dict) {
-   for(var key in dict) {
-      if (dict.hasOwnProperty(key)) {
-         return false;
-      }
-   }
-   return true;
-}
-
-
-
-var get_mapped_room_ready_status_color = function(roomReadyStatus, checkinIsInspectedOnly) {
-		mappedColor = "";
-		switch(roomReadyStatus) {
-
-			case "INSPECTED":
-				mappedColor = 'room-green';
-				break;
-			case "CLEAN":
-				if (checkinIsInspectedOnly == "true") {
-					mappedColor = 'room-orange';
-					break;
-				} else {
-					mappedColor = 'room-green';
-					break;
-				}
-				break;
-			case "PICKUP":
-				mappedColor = "room-orange";
-				break;
-
-			case "DIRTY":
-				mappedColor = "room-red";
-				break;
-
-		}
-		return mappedColor;
 };

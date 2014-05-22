@@ -19,26 +19,22 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	
 	this.delegateEvents = function() {
 		that.myDom.find('#try-again').on('click', that.showDeviceConnectingMessge);
-		that.myDom.find('.cancel-key-popup').on('click', that.cancelPopupClicked);
+		if(that.params.origin == views.BILLCARD){
+			that.myDom.find('.cancel-key-popup').on('click', that.showKeyPrintFailure);
+		}else{
+			that.myDom.find('.cancel-key-popup').on('click', function(){
+				that.hide();
+				if(!sntapp.cardSwipeDebug){
+					that.cancelWriteOperation();
+				}
+			});
+		}
 		that.myDom.find('#key1').on('click', that.key1Selected);
 		that.myDom.find('#key2').on('click', that.key2Selected);//
 		that.myDom.find('#create-key').on('click', that.keyCreateBtnClicked);
 		that.myDom.find('#goto-staycard').on('click', that.clickedGotoStayCard);
 		that.myDom.find('#goto-search').on('click', that.clickedGotoSearch);
 
-	};
-
-	this.cancelPopupClicked = function(e){
-		if(that.params.origin == views.BILLCARD){
-			var message = 'Key creation failed!';
-			//if billcard, show a new message with options to navigate to search or staycard
-			that.showKeyPrintFailure(message);
-		}else{
-			that.hide();
-			if(!sntapp.cardSwipeDebug){
-				that.cancelWriteOperation();
-			}
-		}
 	};
 
 	/*
@@ -429,7 +425,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		if(typeof message == 'undefined'){
 			var message = 'Key creation failed!';
 		}
-		console.log(message);
 		sntapp.activityIndicator.hideActivityIndicator();
 		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('not-connected completed');
 		that.myDom.find('#key-status em').removeClass('pending success icon-key status').addClass('info').text(message);		
@@ -438,8 +433,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		that.myDom.find('#room-status h1').addClass('icon-key');
 		that.myDom.find('#print-over-action').show();
 
-		//in billcard we show the gotostaycard option and goto search options, and hide the cancel option
-		//This is to avoid going back to the billcard again. we can not close the popup and got to billcard.
+		//in billcard we show, the gotostaycard option and goto search options and hide the cancel option
 		if(that.params.origin == views.STAYCARD){
 			that.myDom.find('#print-over-action .cancel-key-popup').removeClass('hidden');
 			that.myDom.find('#print-over-action #goto-staycard').addClass('hidden');
