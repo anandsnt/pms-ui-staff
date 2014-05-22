@@ -2,8 +2,8 @@
 	<form room_type_id="1" id="edit-room-type" class="form inline-form float">
 		<div class="form-title">
 			<h3>
-				<span ng-hide="isAddMode">Edit</span>
-				<span ng-show="isAddMode">Add</span>
+				<span ng-hide="isAddMode">{{ 'EDIT' | translate }}</span>
+				<span ng-show="isAddMode">{{ 'ADD' | translate }}</span>
 				 {{roomTypeData.room_type_name}} </h3>
 			<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 		</div>
@@ -20,11 +20,11 @@
             <ad-textbox value="roomTypeData.max_occupancy" name = "max-occupancy" id = "max-occupancy" label = "Max Occupancy " placeholder = "Enter Max Occupancy" required = "" ></ad-textbox>
 			 
 			 <div class="entry full-width">
-				<label for="room-type-picture"> Picture </label>
+				<label for="room-type-picture"> {{ 'CHOOSE_FILE' | translate }} </label>
 				<div class="file-upload with-preview">
 					<input type="file" ng-model="roomTypeData.image_of_room_type" accept="image/*" app-filereader />
 					<button type="button" class="button brand-colors">
-						Choose file
+						{{ 'PICTURE' | translate }}
 					</button> 
 				</div>
 				<span class="file-preview"><img ng-src="{{roomTypeData.image_of_room_type}}" id="file-preview" alt=""> </span>
@@ -34,10 +34,10 @@
 		</fieldset>
 		<div class="actions float">
 			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()">
-				Cancel
+				{{ 'CANCEL' | translate }}
 			</button>
 			<button type="button" like-type="common" id="update" class="button green add-data-inline" ng-click="saveRoomTypes()">
-				Save changes
+				{{ 'SAVE_CHANGES' | translate }}
 			</button>
 		</div>
 	</form>

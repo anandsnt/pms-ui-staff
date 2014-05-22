@@ -17,5 +17,7 @@
     "WEB_CHECKIN_STAFF_ALERT": "Web Check-in Personal-Benachrichtigung",
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Nur bei Check-in ist NICHT erfolgreich",
     "ALL": "alle",
-    "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "E-Mail-Accounts (mit Semikolons getrennt [;])"
+    "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "E-Mail-Accounts (mit Semikolons getrennt [;])",
+    "CHOOSE_FILE": "wählen Sie Datei",
+    "PICTURE":"Bild"
 }

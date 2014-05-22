@@ -17,5 +17,7 @@
     "WEB_CHECKIN_STAFF_ALERT": "Web Check In staff alert",
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
     "ALL": "All",
-    "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) "
+    "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) ",
+    "CHOOSE_FILE": "Choose file",
+    "PICTURE":"Picture"
 }
