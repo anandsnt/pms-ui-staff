@@ -17,8 +17,10 @@
 //=require ../shared/lib/js/angular-highcharts.js
 //=require ../rover/directives/calendar/angular-date-picker.js
 //=require ../shared/lib/js/Utils.js
+//=require ../shared/lib/js/ng-table.js
+//=require ../shared/lib/js/highcharts.js
+//=require ../shared/lib/js/angular-highcharts.js
 //=require_tree ../shared
-
 //=require ../rover/rvApp.js
 //=require ../rover/rvRouter.js
 //=require ../shared/lib/js/baseCtrl.js

@@ -7,7 +7,7 @@
                     <img ng-src="{{guestCardData.contactInfo.avatar}}">
                     <span class="vip" ng-show="guestCardData.contactInfo.vip==true">VIP</span>
                 </figure>
-                <form method="post" action="app/stay-card/" name="change-name" id="change-name">
+                <form name="change-name" id="change-name">
                     <div class="holder">
                         <div class="entry">
                             <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.first_name.length}}"  ng-model="guestCardData.contactInfo.first_name" ng-blur="updateContactInfo()" auto-grow-field>
@@ -20,10 +20,10 @@
                         <input  name="gc-state" id="gc-state" placeholder="" value="" type="text" class="masked-input" />
                         <input name="gc-phone" id="gc-phone" placeholder="" value="" type="tel" class="masked-input icons icon-gc-phone" />
                         <input name="gc-email" id="gc-email" placeholder="" value="" type="email" class="masked-input icons icon-gc-email" /> -->
-                        <input type="text" data-size="{{guestCardData.contactInfo.city.length}}" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.city" ng-blur="updateContactInfo()"auto-grow-field>
+                        <input type="text" data-size="{{guestCardData.contactInfo.city.length}}" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.city" ng-blur="updateContactInfo()" auto-grow-field>
                     <input type="text" data-size="{{guestCardData.contactInfo.state.length}}" class="masked-input" ng-model="guestCardData.contactInfo.state" ng-blur="updateContactInfo()" auto-grow-field>
                     <input type="tel" data-size="{{guestCardData.contactInfo.phone.length}}" class="masked-input icons icon-gc-phone" ng-model="guestCardData.contactInfo.phone" ng-blur="updateContactInfo()" auto-grow-field>
-                    <input type="email" data-size="{{guestCardData.contactInfo.email_address.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email_address" ng-blur="updateContactInfo()"auto-grow-field>
+                    <input type="email" data-size="{{guestCardData.contactInfo.email_address.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email_address" ng-blur="updateContactInfo()" auto-grow-field>
                     </div>
                 </form>
             </div>

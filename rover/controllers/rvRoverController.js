@@ -31,6 +31,7 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
       $scope.fetchData = function(){   
   	    var fetchUserInfoSuccessCallback = function(data){
   	        $scope.userInfo = data;
+  	        $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
   	        $rootScope.adminRole=$scope.userInfo.user_role;
   	        if($rootScope.adminRole == "Hotel admin" )
   	            $scope.isHotelAdmin =  true;
@@ -58,8 +59,11 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
  * @param {object} response
  */
 $scope.fetchHotelDetailsSuccessCallback = function(data){
-	 $translate.use(data.language.value);
-	 $scope.$emit('hideLoader');
+  if(data.language)
+	  $translate.use(data.language.value);
+  else
+    $translate.use('EN');
+	$scope.$emit('hideLoader');
 };
 /*
  * Function to get the current hotel language

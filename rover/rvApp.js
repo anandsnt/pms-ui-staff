@@ -5,7 +5,6 @@ sntRover.run(['$rootScope', '$state', '$stateParams', function ($rootScope, $sta
 	//BaseCtrl.call(this, $scope);
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
-  
-
 	
 }]);
+

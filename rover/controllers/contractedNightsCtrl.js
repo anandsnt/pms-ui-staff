@@ -1,8 +1,10 @@
 
 sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RVCompanyCardSrv','$stateParams',function($scope,dateFilter,ngDialog,RVCompanyCardSrv,$stateParams){
 	BaseCtrl.call(this, $scope);
-	var month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-	if($scope.contractData.occupancy.length == 0){
+	
+	if($scope.isAddMode){
+		$scope.addData.occupancy = [];
+		var month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 		for(var i=0;i<12;i++){
 			var obj = {
 				"contracted_occupancy" : 0,
@@ -10,7 +12,7 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 				"actual_occupancy" : 0,
 				"month" : month[i]
 			};
-			$scope.contractData.occupancy.push(obj);
+			$scope.addData.occupancy.push(obj);
 		}
 	}
 		
@@ -23,7 +25,12 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 	  		$scope.closeActivityIndication();
 	        $scope.errorMessage = data;
 	    };
-	    var data = {"occupancy": $scope.contractData.occupancy};
+	    if($scope.isAddMode){
+	    	var data = {"occupancy": $scope.addData.occupancy};
+	    }
+	    else{
+	    	var data = {"occupancy": $scope.contractData.occupancy};
+	    }
 		$scope.invokeApi(RVCompanyCardSrv.updateNight,{ "account_id": $stateParams.id, "contract_id": $scope.contractSelected, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);  
 		ngDialog.close();
 	};
@@ -33,9 +40,16 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 	};
 	
 	$scope.updateAllNights = function(){
-		angular.forEach($scope.contractData.occupancy,function(item, index) {
-			item.contracted_occupancy = $scope.contractData.allNights;
-       	});
+		if($scope.isAddMode){
+			angular.forEach($scope.addData.occupancy,function(item, index) {
+				item.contracted_occupancy = $scope.addData.allNights;
+	       	});
+       	}
+       	else{
+       		angular.forEach($scope.contractData.occupancy,function(item, index) {
+				item.contracted_occupancy = $scope.contractData.allNights;
+	       	});
+       	}
 	};
 	
 }]);
