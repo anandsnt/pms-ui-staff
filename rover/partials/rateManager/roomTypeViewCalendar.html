@@ -1,0 +1,77 @@
+<div style="width:100%;  height:{{uiOptions.tableHeight}}; padding:0px; overflow: hidden; " ng-iscroll="RateCalendarCtrl" ng-iscroll-delay="1000">
+<table class="rate-calendar" style="table-layout:fixed; width:{{uiOptions.tableWidth}}; height:200px">
+	<thead>
+	 	<tr>
+	 		<th width="220" style="{width:th.width}" class="first-row actions">
+	 			<button ng-click="openCloseAllRestrictions('remove')" class="button green" ng-class="{'open': calendarData.disableOpenAllBtn}" ng-disabled="calendarData.disableOpenAllBtn"> Open All</button>	
+	 			<button ng-click="openCloseAllRestrictions('add')" class="button red" ng-class="{'open': calendarData.disableCloseAllBtn}" ng-disabled="calendarData.disableCloseAllBtn"> Close All</button>	
+	 		</th>
+	 		<th width="{{uiOptions.columnWidth}}" style="{width:th.width}"  ng-repeat="date in calendarData.dates" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'ROOM_TYPE')">
+                <div class="date-header"><span>{{date| date:'EEEE MMMM dd'}}</span></div>
+            </th>
+	 	</tr>
+	 </thead>
+	
+	<tbody>
+		<tr>
+			<td class="first-row">
+				<span>All Rooms</span>
+				<span>&nbsp;</span>
+			</td>
+			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'ALL_DATA')"> 
+                <div class="cell-content">
+                	<div>
+                		<div>
+							<span ng-repeat="restriction in calendarData.rate_restrictions[date]" class="restriction-icon right {{calendarData.restriction_types[
+						restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
+							{{restriction.days}}
+							</span>
+						</div>
+					</div>
+                </div>
+			</td>
+		</tr>
+
+		<tr ng-repeat="rate in calendarData.data">
+			<td class="first-row">    
+				<span>{{rate.name}}</span>
+			    <span style="float:right" ng-hide="currentExpandedRow==$index">
+			    	<img src="/assets/arrow-down.png" ng-click="expandRow($index)">
+			    </span>
+			    <span style="float:right" ng-show="currentExpandedRow==$index">
+			    	<img src="/assets/arrow-up.png" ng-click="expandRow($index)">
+			    </span>
+            </td>
+
+			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-hide="currentExpandedRow==$parent.$index" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.id, 'ROOM_TYPE')">
+				<div class="cell-content">
+					<div>
+                		<div>
+							<span ng-repeat="restriction in rate[date].restrictions" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
+								{{restriction.days}}
+							</span>
+							<span class="left rate-single">{{rate[date].single}}</span>
+						</div>
+                	</div>						
+				</div>
+			</td>
+			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-show="currentExpandedRow==$parent.$index">
+				<div class="exp cell-content">
+					<div>
+                		<div>
+                			<div>
+								<span ng-repeat="restriction in rate[date].restrictions" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
+								{{restriction.days}}
+								</span>
+							</div>
+							<div>Single <span>{{rate[date].single}}</span></div>
+							<div>Double <span>{{rate[date].double}}</span></div>
+							<div>Extra Adult <span>{{rate[date].extra_adult}}</span></div>
+							<div>Child <span>{{rate[date].child}}</span></div>
+						</div>
+                	</div>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table> 

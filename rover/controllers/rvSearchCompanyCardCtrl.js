@@ -1,7 +1,7 @@
 sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearchSrv', '$stateParams', function($scope, RVCompanyCardSearchSrv, $stateParams){
 
 	BaseCtrl.call(this, $scope);
-	
+	$scope.heading = "Company Card";
 	//model used in query textbox, we will be using this across
 	$scope.textInQueryBox = "";
 	$scope.$emit("updateRoverLeftMenu","cards");

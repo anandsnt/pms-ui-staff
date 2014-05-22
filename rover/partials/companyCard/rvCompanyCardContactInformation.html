@@ -44,7 +44,7 @@
                     <input type="file" name="company-logo" id="company-logo"  ng-model="contactInformation.company_details.company_logo" accept="*" app-filereader />
                     <button type="button" class="button brand-colors">Choose file</button>
                 </div>
-                <span class="file-preview"><img ng-src="{{contactInformation.company_details.company_logo}}" alt="" ng-if="escapeNull(contactInformation.company_details.company_logo)!=''"/></span>
+                <span class="file-preview" ng-if="escapeNull(contactInformation.company_details.company_logo)!=''"><img ng-src="{{contactInformation.company_details.company_logo}}" alt="" /></span>
                 <!-- When no image, use  -->
                 <span class="file-preview" ng-if="escapeNull(contactInformation.company_details.company_logo)==''"><em>Preview not available</em></span>
             </div>

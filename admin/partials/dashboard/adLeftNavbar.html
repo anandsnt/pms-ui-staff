@@ -8,6 +8,10 @@
 		<li>
 			<a ng-click="$emit('navToggled')" href="/staff#/staff/search/" class="icon-menu icon-search">Search</a>
 		</li>
+		
+		<li ng-show="isHotelAdmin">
+			<a href="staff#/staff/rateManager" ng-click="$emit('navToggled')" class="icon-menu">Rate Manager</a>
+		</li>
 		<li class="hidden">
 			<a ng-click="$emit('navToggled')" class="icon-menu icon-social-lobby ">Social Lobby</a>
 		</li>
@@ -16,6 +20,9 @@
 		</li>
 		<li class="hidden">
 			<a ng-click="$emit('navToggled')" class="icon-menu icon-reviews ">Reviews</a>
+		</li>
+		<li ng-hide="isPmsConfigured">
+			<a ui-sref="rover.companycardsearch" class="icon-menu icon-cards">Cards</a>
 		</li>
 		<li id="settings">
 			<a ng-click="$emit('navToggled')" class="active icon-menu icon-settings">Settings</a>
