@@ -156,7 +156,12 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                             addOns.isSelected = true;
                             addOns.is_inclusive_in_rate = addOnsSelected.is_inclusive_in_rate ? 'true':'false';
                             $scope.rateData.addOns.push(addOns);
-                        };
+                        }
+                        else{
+                            addOns.isSelected = false;
+                            addOns.is_inclusive_in_rate = addOnsSelected.is_inclusive_in_rate ? 'true':'false';
+                            $scope.rateData.addOns.push(addOns);
+                        }
                     });
                 });
             }
