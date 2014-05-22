@@ -21,6 +21,9 @@
 		<li class="hidden">
 			<a ng-click="$emit('navToggled')" class="icon-menu icon-reviews ">Reviews</a>
 		</li>
+		<li ng-hide="isPmsConfigured">
+			<a ui-sref="rover.companycardsearch" class="icon-menu icon-cards">Cards</a>
+		</li>
 		<li id="settings">
 			<a ng-click="$emit('navToggled')" class="active icon-menu icon-settings">Settings</a>
 		</li>

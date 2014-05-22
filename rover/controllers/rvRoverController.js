@@ -31,6 +31,7 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
       $scope.fetchData = function(){   
   	    var fetchUserInfoSuccessCallback = function(data){
   	        $scope.userInfo = data;
+  	        $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
   	        $rootScope.adminRole=$scope.userInfo.user_role;
   	        if($rootScope.adminRole == "Hotel admin" )
   	            $scope.isHotelAdmin =  true;
