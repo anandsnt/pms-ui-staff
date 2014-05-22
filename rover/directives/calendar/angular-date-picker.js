@@ -144,7 +144,14 @@
           scope.todayDate = dateFilter(new Date(), 'yyyy-MM-dd');
           scope.years = [];
           scope.yearSelected = currentDate.getFullYear();
-          
+
+
+          scope.presentDay = new Date();
+          scope.presentYear = presentDay.getFullYear();
+
+          scope.startYear = scope.startYear ? scope.startYear : scope.presentYear;
+          scope.endYear   = scope.endYear   ? scope.endYear :scope.presentYear+100;
+
           for(year=parseInt(scope.startYear);year<=parseInt(scope.endYear);year++){
             scope.years.push(year);
           };

@@ -132,7 +132,16 @@ $scope.$watch('upsellData.extended_checkout_charge_1', function(newValue, oldVal
 *
 */ 
 $scope.cancelClick = function(){
-    $state.go( 'admin.dashboard', {menu:2});
+ if($rootScope.previousStateParam){
+  $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+}
+else if($rootScope.previousState){
+  $state.go($rootScope.previousState);
+}
+else 
+{
+ $state.go('admin.dashboard', {menu : 0});
+}
 };
 
 /**

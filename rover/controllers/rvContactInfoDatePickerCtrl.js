@@ -25,10 +25,13 @@ $scope.setUpData();
 
 
 $scope.updateDate = function(){
-  if($scope.closePopupOnSelection){
-    $scope.guestCardData.contactInfo.birthday = $scope.date;
-    ngDialog.close();
-  }
+
+    if($scope.closePopupOnSelection){
+      $scope.guestCardData.contactInfo.birthday = $scope.date;
+       ngDialog.close();
+    };  
+
+  
 };
 
 }]);

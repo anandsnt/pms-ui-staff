@@ -60,6 +60,7 @@
 }
 
 
+
 //Added for animation effects
 .slide-left.ng-enter,
 .slide-left.ng-leave,
@@ -343,6 +344,21 @@ height: 410px;
   width:23.645% !important;
 }
 
+.icons {
+    background-image: url("/assets/admin/admin-icons.png");
+    background-repeat: no-repeat;
+    border: 0 none;
+    display: block;
+}
+.delete_small {
+    background-position: 13px -542px !important;
+}
+.cursor-hand {
+    cursor: pointer;
+}
+
+
+
 .grey{
   color:grey;
 }
@@ -394,3 +410,52 @@ height: 410px;
 .ngdialog-close{
   display: none;
 }
+
+//Search page Changes : CICO-3997
+
+#search_list #search-form{
+
+background: rgba(0,0,0,0.1);
+.entry{
+	width:100%;
+	 top:-20px;
+}
+input{
+background-color:#FCFCFC;
+}
+
+button.icons.icon-search{
+	background: @icons;
+    background-repeat: no-repeat;
+	 top:15px;
+}
+
+
+
+}
+
+#search-cards .entry{
+  .icon-search{
+    background-image: @icons;
+  }
+}
+/* Admin icons      ==================================*/
+@iconsAdmin: url("/assets/admin/admin-icons.png");
+  .admin-icons {
+    background-image: @iconsAdmin;
+    background-repeat: no-repeat;
+    border: 0;
+    .show;
+
+    &.icon-mover-right {
+      background-position: 13px -788px; 
+      
+      &:hover,
+      &:active { background-position: 13px -888px; }
+    }
+
+    @media @highdpi {
+      background-image: @iconsAdmin2x;
+      background-size: 50px;
+    }
+  }

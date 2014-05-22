@@ -4,6 +4,11 @@ var admin = angular.module('admin', ['ui.router', 'ng-iscroll', 'ngDragDrop', 'n
 admin.run(['$rootScope', '$state', '$stateParams','$location', function ($rootScope, $state, $stateParams, $location) {	
 	$rootScope.$state = $state;
 	$rootScope.$stateParams = $stateParams;
+
+	$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams) {
+            $rootScope.previousState = from.name;
+            $rootScope.previousStateParam = fromParams.menu;
+    });
 }]);
 
 
@@ -73,6 +78,7 @@ function($rootScope, $scope, $attrs, $location) {
 	//store basic details as rootscope variables
 	$rootScope.adminRole = $attrs.adminRole;
 	$rootScope.hotelId = $attrs.hotelId;
+	$rootScope.isPmsConfigured = $attrs.isPmsConfigured;
 
 }]);
 

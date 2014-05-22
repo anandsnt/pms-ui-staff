@@ -1,4 +1,4 @@
-  admin.controller('ADCheckinCtrl',['$scope','adCheckinSrv','$state', function($scope,adCheckinSrv,$state){
+  admin.controller('ADCheckinCtrl',['$scope','$rootScope','adCheckinSrv','$state', function($scope,$rootScope,adCheckinSrv,$state){
     
     $scope.errorMessage = '';
 
@@ -79,11 +79,23 @@
     $scope.invokeApi(adCheckinSrv.save, uploadData,saveCheckinDetailsSuccessCallback,saveCheckinDetailsFailureCallback);
   };
 
-    $scope.gotToDashboard = function(){
-
-      $state.go('admin.dashboard', {
-          menu : 1
-      });
+/**
+    *   Method to go back to previous state.
+    */
+  $scope.backClicked = function(){
+    
+    if($rootScope.previousStateParam){
+      $state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+    }
+    else if($rootScope.previousState){
+      $state.go($rootScope.previousState);
+    }
+    else 
+    {
+      $state.go('admin.dashboard', {menu : 0});
+    }
+  
   };
+ 
 
   }]);

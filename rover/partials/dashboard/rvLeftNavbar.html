@@ -8,6 +8,9 @@
 		<li>
 			<a  ui-sref="rover.search" class="icon-menu icon-search" ng-class="{'active': selectedMenuIndex === 'search'}" ng-click="$emit('navToggled')">Search</a>
 		</li>
+		<li ng-show="isHotelAdmin">
+			<a ui-sref="rover.ratemanager" ng-click="$emit('navToggled')" class="icon-menu"  ng-class="{'active': selectedMenuIndex === 'rateManager'}">Rate Manager</a>
+		</li>
 		<li class="hidden">
 			<a ng-click="$emit('navToggled')" class="icon-menu icon-social-lobby ">Social Lobby</a>
 		</li>
@@ -16,6 +19,9 @@
 		</li>
 		<li class="hidden">
 			<a ng-click="$emit('navToggled')" class="icon-menu icon-reviews ">Reviews</a>
+		</li>
+		<li ng-hide="isPmsConfigured">
+			<a ui-sref="rover.companycardsearch" class="icon-menu icon-cards" ng-class="{'active': selectedMenuIndex === 'cards'}">Cards</a>
 		</li>
 		<li id="settings">
 			<a ng-click="settingsClicked()" ng-class="{'active': selectedMenuIndex === 'settings'}"class="icon-menu icon-settings">Settings</a>

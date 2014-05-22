@@ -1,4 +1,4 @@
-admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSetupSrv', function($scope, $state, ADGuestReviewSetupSrv){
+admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSetupSrv','$rootScope', function($scope, $state, ADGuestReviewSetupSrv,$rootScope){
 
 	/*
 	* controller class for guest review setup
@@ -26,7 +26,16 @@ admin.controller('ADGuestReviewSetupCtrl', ['$scope', '$state', 'ADGuestReviewSe
 
 	//function to go back to prev. screen
 	$scope.goBack = function(){
-		$state.go('admin.dashboard', {menu: 1});  
+		if($rootScope.previousStateParam){
+			$state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+		}
+		else if($rootScope.previousState){
+			$state.go($rootScope.previousState);
+		}
+		else 
+		{
+			$state.go('admin.dashboard', {menu : 0});
+		} 
 	}
 
 	/*

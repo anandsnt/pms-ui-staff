@@ -1,4 +1,4 @@
-sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'RVBaseWebSrvV2', function( $q, RVBaseWebSrv, RVBaseWebSrvV2){
+sntRover.service('RVDashboardSrv',['$q', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function( $q, RVBaseWebSrv, RVBaseWebSrvV2){
 
  /*
   * To fetch user details

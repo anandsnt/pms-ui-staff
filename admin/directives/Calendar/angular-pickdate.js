@@ -51,7 +51,8 @@
           disabledDates: '=',
           isDateSelected: '='
         },
-        templateUrl:'../../assets/directives/Calendar/adCalendar.html' ,
+        templateUrl:'../../../assets/directives/calendar.html' ,
+        
             link: function(scope, element, attrs, ngModel)  {
           var minDate       = scope.minDate && dateUtils.stringToDate(scope.minDate),
               maxDate       = scope.maxDate && dateUtils.stringToDate(scope.maxDate),

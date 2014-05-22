@@ -1,4 +1,4 @@
-admin.controller('ADHotelAnnouncementSettingsCtrl', ['$scope', '$state', 'ADHotelAnnouncementSrv', function($scope, $state, ADHotelAnnouncementSrv){
+admin.controller('ADHotelAnnouncementSettingsCtrl', ['$scope','$rootScope', '$state', 'ADHotelAnnouncementSrv', function($scope, $rootScope,$state, ADHotelAnnouncementSrv){
 
 	BaseCtrl.call(this, $scope);
 	$scope.errorMessage = '';
@@ -16,7 +16,16 @@ admin.controller('ADHotelAnnouncementSettingsCtrl', ['$scope', '$state', 'ADHote
 
 	//function to go back to prev. screen
 	$scope.goBack = function(){
-		$state.go('admin.dashboard', {menu: 1});  
+		if($rootScope.previousStateParam){
+			$state.go($rootScope.previousState, { menu:$rootScope.previousStateParam});
+		}
+		else if($rootScope.previousState){
+			$state.go($rootScope.previousState);
+		}
+		else 
+		{
+			$state.go('admin.dashboard', {menu : 0});
+		}
 	}
 
 	/*
