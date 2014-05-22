@@ -10,6 +10,8 @@
 			<span class="status">
 				{{data.number_of_rooms_configured}} of {{data.total_number_of_rooms}} Licensed Rooms Configured
 			</span>
+		    </span>
+			<a id="add-rooms" class="action add" ui-sref='admin.roomdetails({})' ng-show="data.is_add_available">{{ 'ADD_NEW' | translate }}</a>
 		</header>
 
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
