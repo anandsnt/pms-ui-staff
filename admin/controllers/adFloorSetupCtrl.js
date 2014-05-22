@@ -20,7 +20,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 		        page: 1,            // show first page
 		        count: $scope.data.length,    // count per page - Need to change when on pagination implemntation
 		        sorting: {
-		            name: 'asc'     // initial sorting
+		            description: 'asc'     // initial sorting
 		        }
 		    }, {
 		        total: $scope.data.length, // length of data

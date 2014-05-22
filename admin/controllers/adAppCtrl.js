@@ -190,7 +190,8 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	 * @param {object} response
 	 */
 	$scope.fetchHotelDetailsSuccessCallback = function(data){
-	 if(data.language)
+
+     if(data.language)
 	   $translate.use(data.language.value);
      else
        $translate.use('EN');
