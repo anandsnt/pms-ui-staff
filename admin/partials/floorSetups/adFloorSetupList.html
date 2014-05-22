@@ -1,0 +1,25 @@
+<section class="content current" ng-click='clearErrorMessage()'>
+	
+	<div data-view="HotelRoomTypesView">
+		<header class="content-title float">
+			<h2> Room Types </h2>
+			<span class="count"> ({{data.room_types.length}}) </span>
+			<a id="import-rooms" class="action import" ng-click="importFromPms()" ng-show="data.is_import_available">IMPORT FROM PMS</a>
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div id="new-form-holder"></div>
+		<table id="brands" class="grid" ng-table="tableParams">
+			<tbody>
+				<tr ng-repeat="room_types in $data" > 
+					<td header-class="width-70"  data-title="'Room Type'" sortable="'name'" ng-click="editRoomTypes($index,room_types.id)" ng-hide="currentClickedElement == $index" >
+						<a data-item="3" data-colspan="2" class="edit-data-inline">{{room_types.name}} </a>
+					</td>
+					<td data-title="'Room Code'" header-class=" width-30"  sortable="'code'" class="text-left" ng-hide="currentClickedElement == $index" >
+						{{room_types.code}}
+					</td>
+					<td colspan="2" ng-include="getTemplateUrl($index,room_types.id)" ng-show="currentClickedElement == $index"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>
