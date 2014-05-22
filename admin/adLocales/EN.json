@@ -19,5 +19,6 @@
     "ALL": "All",
     "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) ",
     "CHOOSE_FILE": "Choose file",
-    "PICTURE":"Picture"
+    "PICTURE":"Picture",
+    "ADD":"Add"
 }

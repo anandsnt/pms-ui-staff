@@ -19,5 +19,6 @@
     "ALL": "alle",
     "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "E-Mail-Accounts (mit Semikolons getrennt [;])",
     "CHOOSE_FILE": "wählen Sie Datei",
-    "PICTURE":"Bild"
+    "PICTURE":"Bild",
+    "ADD":"Hinzufügen"
 }
