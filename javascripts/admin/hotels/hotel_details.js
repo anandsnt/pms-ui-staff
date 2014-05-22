@@ -19,6 +19,11 @@ var HotelDetailsView = function(domRef) {
   		that.myDom.find('#hotel-logo').on('change', function(){
 	  		that.readCertificate(this, "logo");
 	  	});
+
+	  	that.myDom.find('#hotel-template-logo').on('change', function(){
+	  		that.readCertificate(this, "logo-template");
+	  	});
+
 		that.myDom.find('#test-mli-connectivity').on('click', that.testMliConnectivity);
 	};
 
@@ -166,6 +171,11 @@ var HotelDetailsView = function(domRef) {
 		if(that.myDom.find("#hotel-logo-preview").attr("changed") == "changed")
 	  		hotel_logo = that.myDom.find("#hotel-logo-preview").attr("src");
 
+	  	var hotel_template_logo = "";
+
+	  	if(that.myDom.find("#hotel-logo-template-preview").attr("changed") == "changed")
+	  		hotel_template_logo = that.myDom.find("#hotel-logo-template-preview").attr("src");
+
 	  	var checkinToInspectedRoomsOnly = "false";
 	  	if($("#checkin_to_inspected").parent("label:eq(0)").hasClass("checked")) {
 	  	  var checkinToInspectedRoomsOnly = "true";
@@ -307,6 +317,11 @@ this.readCertificate = function(input, type) {
            		//console.log(e.target.result);
            		if(type == "logo"){
 					that.myDom.find('#hotel-logo-preview').attr('src', e.target.result);
+				}
+				
+
+				if(type == "logo-template"){
+					that.myDom.find('#hotel-logo-template-preview').attr('src', e.target.result);
 				}
                that.fileContent = e.target.result;
            };
