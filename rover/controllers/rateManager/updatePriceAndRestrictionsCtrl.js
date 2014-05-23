@@ -24,7 +24,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                                 "sat" : false,
                                 "sun" : false,
                             },
-                        "numOfWeeks" : 2,
+                        "numOfWeeks" : 1,
                         "applyToPrice" : false,
                         "applyToRestrictions" : false
                      };
@@ -177,9 +177,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         	angular.forEach($scope.data.restrictionTypes, function(value, key){
         		value.showEdit =  false;
         	});
-            console.log($scope.popupData.all_data_selected);
-            console.log($scope.data.restrictionTypes[id].hasEdit)
-                console.log("here");
+
             if($scope.popupData.all_data_selected){
                 //$scope.showRestrictionDayUpdate = true;
                 $scope.data.restrictionTypes[id].showEdit = true;
@@ -189,7 +187,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             if($scope.data.restrictionTypes[id].hasEdit){
                 $scope.data.restrictionTypes[id].days = prompt("Please enter the restriction", $scope.data.restrictionTypes[id].days);
             }
-            if($scope.data.restrictionTypes[id].days == "" && $scope.data.restrictionTypes[id].days == null) {
+
+            if($scope.data.restrictionTypes[id].days == "" || $scope.data.restrictionTypes[id].days == null) {
                 return false;
             }
                 
@@ -206,15 +205,146 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             $scope.showExpandedView = !$scope.showExpandedView;
         };
 
+        /**
+        * Computes all the selected dates
+        */
         getAllSelectedDates = function() {
-            console.log(JSON.stringify($scope.daysOptions));
-            var currentDayOfWeek = dateFilter($scope.popupData.selectedDate, 'EEE');
 
+            var datesList = [];
+            //First entry in the dates list is the current date
+            datesList.push($scope.popupData.selectedDate);
+            //If the day value is true, then it is a checked(selected) day
+            var selectedDays = [];
+            for(var key in $scope.daysOptions.days){
+                if($scope.daysOptions.days[key]){
+                    selectedDays.push(key.toUpperCase());
+                }
+            }
+            
+            //We dont have to add more dates to the dates list if no day is checked            
+            if(selectedDays.length <= 0) {
+                return datesList;
+            }
 
-            return "abc";
+            //For the selected date range, if the day matches the selected day of week,
+            //Add the date to the datesList
+            for (var i=1 ; i<($scope.daysOptions.numOfWeeks) * 7 ; i++){
+                var date = new Date($scope.popupData.selectedDate);
+                var newDate = new Date(date.getTime() + (i * 24 * 60 * 60 * 1000));
+                var dayOfWeek = dateFilter(newDate, 'EEE');
+                if(selectedDays.indexOf(dayOfWeek.toUpperCase()) >= 0) {
+                    datesList.push(getDateString(newDate));
 
+                }
+            }
 
+            return datesList;
         };
+
+        var calculateDetailsToSave = function(datesSelected){
+            var details = [];
+
+            for(var i in datesSelected) {
+                var restrictionDetails = {};
+                if(!$scope.daysOptions.applyToRestrictions && !$scope.daysOptions.applyToPrice && i> 0) {
+                    break;
+                }
+                restrictionDetails.from_date = datesSelected[i];
+                restrictionDetails.to_date = datesSelected[i];
+                restrictionDetails.restrictions = [];
+                
+                if($scope.daysOptions.applyToRestrictions || (!$scope.daysOptions.applyToRestrictions && i== 0)) {
+                    angular.forEach($scope.data.restrictionTypes, function(value, key){
+                        if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled != value.isRestrictionEnabled){
+                            var action = "";
+                            if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled == "true"){
+                                action = "remove";
+                            } else {
+                                action = "add";
+                            }
+                            var restrictionData = {
+                                "action": action,
+                                "restriction_type_id": value.id,
+                                "days": value.days
+                            };
+                            restrictionDetails.restrictions.push(restrictionData);
+                        }
+                    });
+                }
+                
+                //The popup appears by from the rate calendar view
+                if($scope.popupData.fromRoomTypeView){
+                    if($scope.daysOptions.applyToPrice || (!$scope.daysOptions.applyToPrice && i== 0)) {
+                        restrictionDetails.single = {};
+                        restrictionDetails.double = {};
+                        restrictionDetails.extra_adult = {};
+                        restrictionDetails.child = {};
+                        if($scope.data.single==""){
+                            restrictionDetails.single.value = $scope.data.single_sign + $scope.data.single_extra_amnt;
+                            
+                            if($scope.data.single_amnt_diff == "$"){
+                                restrictionDetails.single.type = "amount_diff";
+                            } else {
+                                restrictionDetails.single.type = "percent_diff";
+                            }
+                            
+                        } else {
+                            restrictionDetails.single.value = $scope.data.single;
+                            restrictionDetails.single.type = "amount_new";
+                        }
+                        
+                        if($scope.data.double==""){
+                            restrictionDetails.double.value = $scope.data.double_sign + $scope.data.double_extra_amnt;
+                            if($scope.data.double_amnt_diff == "$"){
+                                restrictionDetails.double.type = "amount_diff";
+                            } else {
+                                restrictionDetails.double.type = "percent_diff";
+                            }
+                            
+                        } else {
+                            restrictionDetails.double.value = $scope.data.double;
+                            restrictionDetails.double.type = "amount_new";
+                        }
+                        
+                        if($scope.data.extra_adult==""){
+                            restrictionDetails.extra_adult.value = $scope.data.extra_adult_sign + $scope.data.extra_adult_extra_amnt;
+                            if($scope.data.extra_adult_amnt_diff == "$"){
+                                restrictionDetails.extra_adult.type = "amount_diff";
+                            } else {
+                                restrictionDetails.extra_adult.type = "percent_diff";
+                            }
+                            
+                        } else {
+                            restrictionDetails.extra_adult.value = $scope.data.extra_adult;
+                            restrictionDetails.extra_adult.type = "amount_new";
+                        }
+                        
+                        if($scope.data.child==""){
+                            restrictionDetails.child.value = $scope.data.child_sign + $scope.data.child_extra_amnt;
+                            if($scope.data.child_amnt_diff == "$"){
+                                restrictionDetails.child.type = "amount_diff";
+                            } else {
+                                restrictionDetails.child.type = "percent_diff";
+                            }
+                            
+                        } else {
+                            restrictionDetails.child.value = $scope.data.child;
+                            restrictionDetails.child.type = "amount_new";
+                        }
+                        restrictionDetails.single.value = parseFloat(restrictionDetails.single.value);
+                        restrictionDetails.double.value = parseFloat(restrictionDetails.double.value);
+                        restrictionDetails.extra_adult.value = parseFloat(restrictionDetails.extra_adult.value);
+                        restrictionDetails.child.value = parseFloat(restrictionDetails.child.value);
+                    }
+                }
+                details.push(restrictionDetails);
+
+            }
+            
+            return details;
+            
+
+        }
 
        
         $scope.saveRestriction = function(){
@@ -222,111 +352,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             var datesSelected = getAllSelectedDates();
         	
         	var data = {};
-        	data.details = [];
-        	// data.details.single = [];
-        	// data.details.double = [];
-        	// data.details.extra_adult = [];
-        	// data.details.child = [];
-        	var restrictionDetails = {};
-        	restrictionDetails.restrictions = [];
-        	restrictionDetails.from_date = "";
-        	restrictionDetails.to_date = "";
-        	
-        	
-        	
-        	angular.forEach($scope.data.restrictionTypes, function(value, key){
-        		if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled != value.isRestrictionEnabled){
-        			var action = "";
-        			if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled == "true"){
-        				action = "remove";
-        			} else {
-        				action = "add";
-        			}
-        			var restrictionData = {
-        				"action": action,
-        				"restriction_type_id": value.id,
-        				"days": value.days
-        			};
-        			restrictionDetails.restrictions.push(restrictionData);
-        		}
-		    });
-            //The popup appears by from the rate calendar view
-		    if(!$scope.popupData.fromRoomTypeView){
-                data.rate_id = $scope.popupData.selectedRate;
-		    	restrictionDetails.from_date = $scope.popupData.selectedDate;
-		    	restrictionDetails.to_date = $scope.popupData.selectedDate;
-            //The popup appears by from the room type calendar view
-		    } else {
-		    	data.rate_id = $scope.popupData.selectedRate;
-                data.room_type_id = $scope.popupData.selectedRoomType;
-		    	restrictionDetails.from_date = $scope.popupData.selectedDate;
-		    	restrictionDetails.to_date = $scope.popupData.selectedDate;
+            data.rate_id = $scope.popupData.selectedRate;
 
-		    	restrictionDetails.single = {};
-                restrictionDetails.double = {};
-                restrictionDetails.extra_adult = {};
-                restrictionDetails.child = {};
-		    	if($scope.data.single==""){
-		    		restrictionDetails.single.value = $scope.data.single_sign + $scope.data.single_extra_amnt;
-		    		
-		    		if($scope.data.single_amnt_diff == "$"){
-		    			restrictionDetails.single.type = "amount_diff";
-		    		} else {
-		    			restrictionDetails.single.type = "percent_diff";
-		    		}
-        			
-		    	} else {
-		    		restrictionDetails.single.value = $scope.data.single;
-        			restrictionDetails.single.type = "amount_new";
-		    	}
-		    	
-		    	if($scope.data.double==""){
-		    		restrictionDetails.double.value = $scope.data.double_sign + $scope.data.double_extra_amnt;
-		    		if($scope.data.double_amnt_diff == "$"){
-		    			restrictionDetails.double.type = "amount_diff";
-		    		} else {
-		    			restrictionDetails.double.type = "percent_diff";
-		    		}
-        			
-		    	} else {
-		    		restrictionDetails.double.value = $scope.data.double;
-        			restrictionDetails.double.type = "amount_new";
-		    	}
-		
-		    	
-		   		
-		    	if($scope.data.extra_adult==""){
-		    		restrictionDetails.extra_adult.value = $scope.data.extra_adult_sign + $scope.data.extra_adult_extra_amnt;
-		    		if($scope.data.extra_adult_amnt_diff == "$"){
-		    			restrictionDetails.extra_adult.type = "amount_diff";
-		    		} else {
-		    			restrictionDetails.extra_adult.type = "percent_diff";
-		    		}
-        			
-		    	} else {
-		    		restrictionDetails.extra_adult.value = $scope.data.extra_adult;
-        			restrictionDetails.extra_adult.type = "amount_new";
-		    	}
-		    	
-		    	if($scope.data.child==""){
-		    		restrictionDetails.child.value = $scope.data.child_sign + $scope.data.child_extra_amnt;
-		    		if($scope.data.child_amnt_diff == "$"){
-		    			restrictionDetails.child.type = "amount_diff";
-		    		} else {
-		    			restrictionDetails.child.type = "percent_diff";
-		    		}
-        			
-		    	} else {
-		    		restrictionDetails.child.value = $scope.data.child;
-        			restrictionDetails.child.type = "amount_new";
-		    	}
-                restrictionDetails.single.value = parseFloat(restrictionDetails.single.value);
-                restrictionDetails.double.value = parseFloat(restrictionDetails.double.value);
-                restrictionDetails.extra_adult.value = parseFloat(restrictionDetails.extra_adult.value);
-                restrictionDetails.child.value = parseFloat(restrictionDetails.child.value);
-		    }
-		    
-		    data.details.push(restrictionDetails);
+            if($scope.popupData.fromRoomTypeView){
+                data.room_type_id = $scope.popupData.selectedRoomType;
+            }
+        	data.details = calculateDetailsToSave(datesSelected);
         	$scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data);
         	
         	$scope.refreshData();

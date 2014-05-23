@@ -17,7 +17,7 @@
                         <td ng-if="popupData.all_data_selected">
                             <div ng-include="'/assets/partials/rateManager/mixedRestrictions.html'"></div>
                         </td>
-                        <td style="vertical-align:top" ng-show="popupData.fromRoomTypeView">
+                        <td style="vertical-align:top" ng-show="popupData.fromRoomTypeView &&!popupData.all_data_selected">
                             <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'" ></div >
                         </td>
                          <td style="vertical-align:top" ng-show="showExpandedView">
