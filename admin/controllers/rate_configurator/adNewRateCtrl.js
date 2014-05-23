@@ -146,6 +146,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.market_segment_id = data.market_segment_id;
             $scope.rateData.end_date = data.end_date;
 
+
             // addons -mark as activated for selected addons
             if($scope.rateData.addOns.length>0){
                 var tempData = $scope.rateData.addOns;
@@ -161,6 +162,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
                    });
                 });
+            
+            }
             // addons mark as deactivated for selected addons
             angular.forEach($scope.allAddOns, function(addOns){
 
@@ -171,7 +174,6 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 }
 
             });
-        }
 
     };
 
