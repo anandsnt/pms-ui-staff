@@ -762,12 +762,42 @@ dialog{
           
       }
   }
- .strike-through{
-   text-decoration:line-through;
- }
+.strike-through{
+  text-decoration:line-through;
+}
 
 .icons.right-arrow-copy{
   background-position: 0 -802px;
+}
+
+.company-card-results{
+  position: fixed;
+  width: 380px;
+  height: 250px;
+  overflow-y: auto;
+  top: 200px;
+  left: 220px;
+  background: #FCFCFC;
+  .search-results{
+    padding: 0;
+    margin: 0;
+    position: relative;
+  }
+  li{
+    border-bottom: 1px solid #eeeeee;
+    cursor: pointer;
+    height: 42px;
+    margin: 1px !important;
+  }
+  img{
+    float: left;
+    padding:5px 10px;
+  }
+  h4{
+    float: left;
+    margin: 12px 0;
+    clear: none;
+  }
 }
 
 

@@ -1,85 +1,106 @@
-<div class="filter-options {{currentLeftMenuClass}}"  style="z-index:99999;" >	
+<div ng-controller="RMFilterOptionsCtrl" class="filter-options {{currentLeftMenuClass}}"  style="z-index:99999;" >  
 
-	<div class="fixed-container" style="height:{{leftMenuDimensions.outerContainerHeight}}px; position:relative;">
-
-
-		<h3 style="padding-bottom:15px;">FILTER OPTIONS</h3>
-		<a class="leftMenuHandle" ng-click="toggleLeftMenu()" style="left:210px"></a>	
-
-		<div class="scrolling-container" ng-iscroll="filter_details" ng-iscroll-delay="1000" style="height:{{leftMenuDimensions.scrollableContainerHeight}}px; margin-bottom:10px ;overflow:hidden; position:relative">
-
-			<div class="holder left">
-
-				<div class="entry has-datepicker" style="padding-bottom:15px;">
-					<label for="" style="font-size:14px;">DATE RANGE</label>
-					<input style="font-size:14px; width:100%;" placeholder="Select date range" readonly="" maxlength="8" value="{{currentFilterData.begin_date +' , '+currentFilterData.end_date}}" class="hasDatepicker"  name="">
-					<button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
-				</div>
+    <div class="fixed-container" style="height:{{leftMenuDimensions.outerContainerHeight}}px; position:relative;">
 
 
-				<div class="entry">
-					<label for="nationality" style="font-size:14px; text-transform:uppercase;">Zoom Level</label>
-					<div class="select">
-						<select style="font-size:14px;" name="zoom-level" ng-model="currentFilterData.zoom_level_selected">
-							<option ng-selected="level.value == currentFilterData.zoom_level_selected" ng-repeat="level in currentFilterData.zoom_level" class="placeholder" value="{{level.value}}">{{level.name}}</option> 
-						</select>
-					</div>
-				</div>
+        <h3 style="padding-bottom:15px;">FILTER OPTIONS</h3>
+        <a class="leftMenuHandle" ng-click="toggleLeftMenu()" style="left:210px"></a>   
 
-				<hr style="padding:0px; margin:20px 0px;"/>
+        <div class="scrolling-container" ng-iscroll="filter_details" ng-iscroll-delay="1000" style="height:{{leftMenuDimensions.scrollableContainerHeight}}px; margin-bottom:10px ;overflow:hidden; position:relative">
 
-				<div class="entry radio-check" style="font-size:14px;" >
-					<label class="checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}">
-						<span ng-model="currentFilterData.is_checked_all_rates" class="icon-form icon-checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}" ></span>
-						<input type="checkbox" ng-click="clickedAllRates()"/>
-						ALL RATES
-					</label>
-				</div>
+            <div class="holder left">
 
-				<span class="half-border" ng-show="!currentFilterData.is_checked_all_rates">
-					<hr class="half-left"/> OR <hr class="half-right"/> 
-				</span>
-				<div class="entry" ng-show="!currentFilterData.is_checked_all_rates" style="padding-bottom:15px; font-size:14px;">
-					<label for="nationality">RATE TYPE</label>
-					<div class="select">
-						<select name="rate-type" ng-model="currentFilterData.rate_type_selected">
-							<option value="">Select rate type</option>
-							<option  ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder" value="{{rate_type.id}}">{{rate_type.name}}</option> 
-						</select>
-					</div>
-				</div>
+                <div class="entry has-datepicker" style="padding-bottom:15px;">
+                    <label for="" style="font-size:14px;">DATE RANGE</label>
+                    <input style="font-size:14px; width:100%;" placeholder="Select date range" readonly="" maxlength="8" value="{{currentFilterData.begin_date +' , '+currentFilterData.end_date}}" class="hasDatepicker"  name="">
+                    <button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
+                </div>
 
-				<div class="entry" ng-show="!currentFilterData.is_checked_all_rates" style="font-size:14px;">
-					<label for="nationality">RATE</label>
-					<div class="select" >
-						<select ng-model="currentFilterData.rate_selected">
-							<option value="">Select rate</option>
-							<option ng-repeat="rate in currentFilterData.rates" class="placeholder" value="{{rate.id}}">{{rate.name}}</option> 
-						</select>
-					</div>
-				</div>
 
-				<div style="text-transform:uppercase; font-size:14px;" class="rates-box" ng-show="!currentFilterData.is_checked_all_rates" ng-repeat="rates in currentFilterData.rates_selected_list">
-					<span class="rate-data">{{rates.name}}</span>
-					<span ng-click="deleteRate(rates.id)" class="icons delete_small cursor-hand"> &nbsp;</span>
-					<br clear="all">
-				</div>
+                <div class="entry">
+                    <label for="nationality" style="font-size:14px; text-transform:uppercase;">Zoom Level</label>
+                    <div class="select">
+                        <select style="font-size:14px;" name="zoom-level" ng-model="currentFilterData.zoom_level_selected">
+                            <option ng-selected="level.value == currentFilterData.zoom_level_selected" ng-repeat="level in currentFilterData.zoom_level" class="placeholder" value="{{level.value}}">{{level.name}}</option> 
+                        </select>
+                    </div>
+                </div>
 
-				<hr style="padding:0px; margin:20px 0px 10px 0px;"/>
+                <hr style="padding:0px; margin:20px 0px;"/>
 
-				<div class="entry table-search1" style="padding:0px;">
-					<label class="search-text" style="font-size:14px; line-height:14px;">NAME CARD,IATA # OR CORPORATED ID</label>
-					<span type="submit" name="submit" class="icons icon-search1"></span>
-					<input type="search" placeholder="Enter search criteria" autocomplete="off" style="margin-bottom:10px;"  >
-				</div>
-			</div>
-		</div>
-		
+                <div class="entry radio-check" style="font-size:14px;" >
+                    <label class="checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}">
+                        <span ng-model="currentFilterData.is_checked_all_rates" class="icon-form icon-checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}" ></span>
+                        <input type="checkbox" ng-click="clickedAllRates()"/>
+                        ALL RATES
+                    </label>
+                </div>
 
-		<div class="entry ">
-			<div class="actions float">
-				<button class="button green" type="button" ng-click="showRatesBtnClicked()" style="width:100%;">Show Rates</button>
-			</div>
-		</div>
-	</div>
+                <span class="half-border" ng-show="!currentFilterData.is_checked_all_rates">
+                    <hr class="half-left"/> OR <hr class="half-right"/> 
+                </span>
+                <div class="entry" ng-show="!currentFilterData.is_checked_all_rates" style="padding-bottom:15px; font-size:14px;">
+                    <label for="nationality">RATE TYPE</label>
+                    <div class="select">
+                        <select name="rate-type" ng-model="currentFilterData.rate_type_selected">
+                            <option value="">Select rate type</option>
+                            <option  ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder" value="{{rate_type.id}}">{{rate_type.name}}</option> 
+                        </select>
+                    </div>
+                </div>
+
+                <div class="entry" ng-show="!currentFilterData.is_checked_all_rates" style="font-size:14px;">
+                    <label for="nationality">RATE</label>
+                    <div class="select" >
+                        <select ng-model="currentFilterData.rate_selected">
+                            <option value="">Select rate</option>
+                            <option ng-repeat="rate in currentFilterData.rates" class="placeholder" value="{{rate.id}}">{{rate.name}}</option> 
+                        </select>
+                    </div>
+                </div>
+
+                <div style="text-transform:uppercase; font-size:14px;" class="rates-box" ng-show="!currentFilterData.is_checked_all_rates" ng-repeat="rates in currentFilterData.rates_selected_list">
+                    <span class="rate-data">{{rates.name}}</span>
+                    <span ng-click="deleteRate(rates.id)" class="icons delete_small cursor-hand"> &nbsp;</span>
+                    <br clear="all">
+                </div>
+
+                <hr style="padding:0px; margin:20px 0px 10px 0px;"/>
+
+                <div class="entry table-search1" style="padding:0px;">
+                    <label class="search-text" style="font-size:14px; line-height:14px;">NAME CARD,IATA # OR CORPORATED ID</label>
+                    <span type="submit" name="submit" class="icons icon-search1"></span>
+                    <input type="text" placeholder="Enter search criteria" autocomplete="off" style="margin-bottom:10px;" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="entry ">
+            <div class="actions float">
+                <button class="button green" type="button" ng-click="showRatesBtnClicked()" style="width:100%;">Show Rates</button>
+            </div>
+        </div>
+
+
+        <!-- Company Card Results / content -->
+        <div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''">
+            <div class="search-results">
+                <ul>
+                    <li ng-repeat="row in companyCardResults" ng-show="row.is_row_visible==true" ng-click="setCompanyCardFilter(row.first_name+' '+row.last_name)">
+                        <img src="http://placehold.it/33">
+                        <h4 ng-bind-html="'{{row.first_name}}, {{row.last_name}}'|highlight:companySearchText:false"></h4>
+                    </li>
+                    <!-- No results / no content when searched query not found-->
+                    <li ng-show="companyCardResults.length === 0 && companySearchText !== ''">
+                        <div>
+                            <strong class="h1">No matches have been found</strong>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+    </div>
 </div>
