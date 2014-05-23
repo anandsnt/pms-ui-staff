@@ -7,7 +7,9 @@
 		
 		<fieldset class="holder left float">
 			
-			<ad-textbox value="floorListData.floor_number" name = "room-type-code" id = "room-type-code" label = "Floor No" placeholder = "Enter Floor No" required = "yes" ></ad-textbox>
+			<!-- <ad-textbox value="floorListData.floor_number" name = "room-type-code" id = "room-type-code" label = "Floor No" placeholder = "Enter Floor No" required = "yes" ></ad-textbox> -->
+
+			<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_FLOOR' | translate }}"label="{{ 'FLOOR_NO' | translate }}" sel-class='placeholder'  list='floors' required='yes' selected-Id='floorListData.floor_number'></ad-dropdown>
 			
 		</fieldset>
 		<fieldset class="holder right float">

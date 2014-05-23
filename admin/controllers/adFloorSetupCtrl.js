@@ -49,26 +49,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 	$scope.editFloor = function(index, id)	{
 		$scope.departmentData={};
 		$scope.currentClickedElement = index;
-	 	var successCallbackRender = function(data){	
-	 		$scope.$emit('hideLoader');
-	 		$scope.floorListData = data;
-	 		// if($scope.floorListData.is_pseudo_room_type == "true" || $scope.floorListData.is_pseudo_room_type == true){
-	 		// 	$scope.floorListData.is_pseudo_room_type = true;
-	 		// }
-	 		// else{
-	 		// 	$scope.floorListData.is_pseudo_room_type = false;
-	 		// }
-	 		// if($scope.floorListData.is_suite == "true" || $scope.floorListData.is_suite == true){
-	 		// 	$scope.floorListData.is_suite = true;
-	 		// }
-	 		// else{
-	 		// 	$scope.floorListData.is_suite = false;
-	 		// }
-	 	};
-	 	var data = {"id":id };
-	 	var res = {"name":1,"floor_number":"1","description":"Description - 1"};
-	 	successCallbackRender(res);
-	 	// $scope.invokeApi(ADFloorSetupSrv.getRoomTypeDetails, data , successCallbackRender);    
+	 	$scope.floorListData = $scope.orderedData[index]; 
 	};
    
    /*
@@ -90,11 +71,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 		
 		var unwantedKeys = [];
 		console.log($scope.floorListData);
-		if($scope.floorListData.image_of_room_type.indexOf("data:")!= -1){
-		} else {
-			unwantedKeys = ["image_of_room_type"];
-		}
-		 var data = dclone($scope.floorListData, unwantedKeys);
+		var data = dclone($scope.floorListData, unwantedKeys);
 		 
     	var successCallbackSave = function(data){
     		$scope.$emit('hideLoader');
@@ -103,14 +80,9 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
     		$scope.orderedData[parseInt($scope.currentClickedElement)].code = $scope.floorListData.room_type_code;
     		$scope.currentClickedElement = -1;
     	};
-    	$scope.invokeApi(ADFloorSetupSrv.updateRoomTypes, data , successCallbackSave);
+    	$scope.invokeApi(ADFloorSetupSrv.updateFloor, data , successCallbackSave);
     };
-   /*
-    * To handle click event
-    */	
-	$scope.clickCancel = function(){
-		$scope.currentClickedElement = -1;
-	};	
+   
    /*
     * To delete department
     * @param {int} index of the selected department
@@ -124,5 +96,40 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 	 	};
 		$scope.invokeApi(ADFloorSetupSrv.importFromPms, '' , successCallbackImport);
 	};
+
+	 /*
+    * To add new floor
+    * 
+    */		
+	$scope.addNewFloor = function(){
+		$scope.currentClickedElement = -1;
+		$scope.isAddMode = $scope.isAddMode ? false : true;
+		//reset data
+		$scope.floorListData = {
+				"name":1,
+				"floor_number":"",
+				"description":""
+			}	
+	};
+
+	/*
+    * To handle click event
+    */	
+	$scope.clickCancel = function(){
+		if($scope.isAddMode)
+			$scope.isAddMode =false;
+		else
+		    $scope.currentClickedElement = -1;
+	};	
+	var  addZeros = function(n) {
+ 			 return (n < 10)? '0' + n :'' + n;
+	}
+
+	$scope.floors = [];
+	for(i=0;i<=100;i++){
+		var floorData = {"value":i,"name":addZeros(i)};
+		$scope.floors.push(floorData);
+	};
+
 }]);
 

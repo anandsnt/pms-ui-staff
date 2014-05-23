@@ -17,28 +17,11 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 	};
   
    /*
-    * To get the details of the selected room type
-    * @param {array} selected room type id
-    * @return {object} selected room type details
-    */
-	this.getRoomTypeDetails = function(data){
-		var deferred = $q.defer();
-		var id = data.id;
-		var url = '/admin/room_types/'+id+'/edit.json';	
-
-		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-		    deferred.resolve(data);
-		},function(data){
-		    deferred.reject(data);
-		});	
-		return deferred.promise;
-	};
-   /*
     * To update room types data
     * @param {array} data of the modified room type
     * @return {object} status of updated room type
     */
-	this.updateRoomTypes = function(data){
+	this.updateFloor = function(data){
 
 		var deferred = $q.defer();
 		var url = '/admin/room_types/'+data.room_type_id;	
@@ -49,19 +32,17 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 		});	
 		return deferred.promise;
 	};
-   /*
-    * To import room
-    * @return {object} status of import
-    */
-	this.importFromPms = function(){
-		var deferred = $q.defer();
-		var url = '/admin/rooms/import';	
 
-		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+	this.deleteFloor = function(data){
+
+		var deferred = $q.defer();
+		var url = '/api/floors/'+data.floorID;	
+		ADBaseWebSrvV2.deleteJson(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
 		});	
 		return deferred.promise;
 	};
+
 }]);

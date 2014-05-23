@@ -55,7 +55,7 @@
     "REPLACE_IMAGE":"Replace Image",
     "ENTER_ROOM_NUMBER":"Enter Room number",
     "SELECT_ROOM_TYPE":"Select room type",
-    "SELECT_FLOOR":"Select Floor"
-
+    "SELECT_FLOOR":"Select Floor",
+    "FLOOR_NO":"Floor No"
 
 }

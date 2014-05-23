@@ -55,8 +55,8 @@
     "REPLACE_IMAGE":"Bild ersetzen",
     "ENTER_ROOM_NUMBER":"Geben Sie Zimmer Nummer",
     "SELECT_ROOM_TYPE":"Zimmertyp auswählen",
-    "SELECT_FLOOR":"wählen Boden"
-
+    "SELECT_FLOOR":"wählen Boden",
+    "FLOOR_NO":"Stockwerk"
 
     
 

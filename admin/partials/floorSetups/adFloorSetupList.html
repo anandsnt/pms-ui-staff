@@ -4,20 +4,25 @@
 		<header class="content-title float">
 			<h2> Floors </h2>
 			<span class="count"> ({{data.floors.length}}) </span>
-			<a id="import-rooms" class="action add" ng-click="addNewRoomType()" >{{ 'ADD_NEW' | translate }}</a>
+			<a id="import-rooms" class="action add" ng-click="addNewFloor()" >{{ 'ADD_NEW' | translate }}</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div id="new-form-holder"></div>
+		<span class="grid" ng-show="isAddMode" ng-include="getTemplateUrl(-1)"></span>
 		<table id="brands" class="grid" ng-table="tableParams">
 			<tbody>
 				<tr ng-repeat="floor in $data" > 
-					<td header-class="width-70"  data-title="'Floor Type'" sortable="'name'" ng-click="editFloor($index)" ng-hide="currentClickedElement == $index" >
+					<td header-class="width-70"  data-title="'Floor Type'" sortable="'description'" ng-click="editFloor($index)" ng-hide="currentClickedElement == $index" >
 						<a data-item="3" data-colspan="2" class="edit-data-inline">{{floor.description}} </a>
 					</td>
-					<td data-title="'Floor No'" header-class=" width-30"  sortable="'code'" class="text-left" ng-hide="currentClickedElement == $index" >
+					<td data-title="'Floor No'" header-class=" width-20"  sortable="'floor_number'" class="text-left" ng-hide="currentClickedElement == $index" >
 						{{floor.floor_number}}
 					</td>
-					<td colspan="2" ng-include="getTemplateUrl($index)" ng-show="currentClickedElement == $index"></td>
+					<td data-title="" header-class=" width-10"  class="text-left" ng-hide="currentClickedElement == $index" >
+						<span ng-click="" class="icons delete_small">&nbsp;</span>
+					</td>
+					
+					<td colspan="3" ng-include="getTemplateUrl($index)" ng-show="currentClickedElement == $index"></td>
 				</tr>
 			</tbody>
 		</table>
