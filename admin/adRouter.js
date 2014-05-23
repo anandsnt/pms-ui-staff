@@ -126,6 +126,12 @@ admin.config([
 			url : '/roomtypes'
 		});
 
+		$stateProvider.state('admin.floorsetups', {
+			templateUrl: '/assets/partials/floorSetups/adFloorSetupList.html',
+			controller: 'ADFloorSetupCtrl',
+			url : '/floorsetups'
+		});
+
 		$stateProvider.state('admin.housekeeping', {
 			templateUrl: '/assets/partials/housekeeping/adHousekeeping.html',
 			controller: 'adHousekeepingCtrl',

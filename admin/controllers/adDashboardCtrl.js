@@ -4,6 +4,19 @@ admin.controller('ADDashboardCtrl',['$scope', '$state', '$stateParams', function
 	if(typeof $scope.data !== 'undefined'){
 		$scope.selectedMenu = $scope.data.menus[$stateParams.menu];		
 	}
+	if(!$scope.selectedMenu)
+		return;
+	if($scope.selectedMenu.menu_name == "Rooms" && $scope.selectedMenu.components[$scope.selectedMenu.components.length - 1].name != "Floor setup"){
+		var array = $scope.selectedMenu.components;
+		var submenu = {};
+		submenu.name = "Floor setup";
+		submenu.icon_class = array[0].icon_class;
+		submenu.is_bookmarked = array[0].is_bookmarked;
+		submenu.state = "admin.floorsetups";
+		submenu.action_path = array[0].action_path;
+		console.log("state----" + submenu.state);
+		$scope.selectedMenu.components.push(submenu);
+		}
 }]);
 
     

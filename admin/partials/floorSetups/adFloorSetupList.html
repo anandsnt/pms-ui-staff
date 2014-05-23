@@ -1,0 +1,25 @@
+<section class="content current" ng-click='clearErrorMessage()'>
+	
+	<div data-view="HotelRoomTypesView">
+		<header class="content-title float">
+			<h2> Floors </h2>
+			<span class="count"> ({{data.floors.length}}) </span>
+			<a id="import-rooms" class="action add" ng-click="addNewRoomType()" >{{ 'ADD_NEW' | translate }}</a>
+		</header>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<div id="new-form-holder"></div>
+		<table id="brands" class="grid" ng-table="tableParams">
+			<tbody>
+				<tr ng-repeat="floor in $data" > 
+					<td header-class="width-70"  data-title="'Floor Type'" sortable="'name'" ng-click="editFloor($index)" ng-hide="currentClickedElement == $index" >
+						<a data-item="3" data-colspan="2" class="edit-data-inline">{{floor.description}} </a>
+					</td>
+					<td data-title="'Floor No'" header-class=" width-30"  sortable="'code'" class="text-left" ng-hide="currentClickedElement == $index" >
+						{{floor.floor_number}}
+					</td>
+					<td colspan="2" ng-include="getTemplateUrl($index)" ng-show="currentClickedElement == $index"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>
