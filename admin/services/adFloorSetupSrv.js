@@ -1,4 +1,4 @@
-admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv){
+admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2){
    /**
     * To fetch the list of room types
     * @return {object} room types list json
@@ -8,7 +8,7 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
 		var deferred = $q.defer();
 		var url = '/api/floors.json';
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -26,7 +26,7 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
 		var id = data.id;
 		var url = '/admin/room_types/'+id+'/edit.json';	
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -42,7 +42,7 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
 
 		var deferred = $q.defer();
 		var url = '/admin/room_types/'+data.room_type_id;	
-		ADBaseWebSrv.putJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -57,7 +57,7 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', function($http, 
 		var deferred = $q.defer();
 		var url = '/admin/rooms/import';	
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
