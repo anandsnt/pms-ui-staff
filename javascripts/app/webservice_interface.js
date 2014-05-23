@@ -258,17 +258,17 @@ var WebServiceInterface = function(){
 			error: function(jqXHR, textStatus, errorThrown){
                 if (jqXHR.status=="401") { sntapp.logout(); return;}
                 if (jqXHR.status=="503" || jqXHR.status=="500") {
-                    location.href = "/500";
+                    location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
                     return;
                 }
 
                 if(jqXHR.status=="422"){
-                    location.href = "/422";
+                    location.href = XHR_STATUS.REJECTED;
                     return;
                 }
 
                 if(jqXHR.status=="404"){
-                    location.href = "/404";
+                    location.href = XHR_STATUS.SERVER_DOWN;
                     return;
                 }
 
