@@ -40,9 +40,22 @@
 
     "ROOMS":"Zimmer",
     "OF":"von",
-    "LICENSED_ROOMS_CONFIGURED":"Lizenzierte Zimmer konfiguriert"
+    "LICENSED_ROOMS_CONFIGURED":"Lizenzierte Zimmer konfiguriert",
+    "ROOM":"Zimmer",
+    "EDIT_ROOM":"Raum bearbeiten",
+    "ADD_ROOM":"Raum hinzufügen",
+    "BACK_TO_ROOMS":"Zurück zu Zimmer",
+    "DETAILS":"Details",
+    "ALL_FIELDS_MANDIATORY":"Alle Felder sind Pflichtfelder!",
+    "IMAGE":"Bild",
+    "FEATURES":"Eigenschaften",
+    "ROOM_FEATURES_TEXT":"Wählen Sie Funktionen, die zu diesem Raum gelten.",
+    "LIKES":"Likes",
+    "ROOM_LIKE_TEXT":"Wählen Likes, die zu diesem Raum gelten.",
+    "REPLACE_IMAGE":"Bild ersetzen",
+    "ENTER_ROOM_NUMBER":"Geben Sie Zimmer Nummer",
+    "SELECT_ROOM_TYPE":"Zimmertyp auswählen"
 
-
-
+    
 
 }

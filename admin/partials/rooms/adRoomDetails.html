@@ -3,39 +3,40 @@
 		<div class="data-holder">
 			<header class="content-title float">
 				<h2>
-					<span ng-show="editMode">Edit Room</span>
-					<span ng-hide="editMode">Add Room</span>
+					<span ng-show="editMode">{{ 'EDIT_ROOM' | translate }}</span>
+					<span ng-hide="editMode">{{ 'ADD_ROOM' | translate }}</span>
 					<span>
 						{{roomNumber}}
 					</span>
 				</h2>
-				<a ng-click="goBack()" id="go_back" data-type="load-details" class="action back">Back to Rooms</a>
+				<a ng-click="goBack()" id="go_back" data-type="load-details" class="action back">{{ 'BACK_TO_ROOMS' | translate }}</a>
 			</header>
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<form name="edit-room" id="edit-room" data-room-id="{{data.room_id}}" class="form float">
 				<fieldset class="holder left">
 					<div class="form-title">
 						<h3>
-							<span>Room</span>
-							details
+							<span>{{ 'ROOM' | translate }}</span>
+							{{ 'DETAILS' | translate }}
 						</h3>
 						<em class="status">
-							<strong>All fields are mandatory!</strong>
+							<strong>{{ 'ALL_FIELDS_MANDIATORY' | translate }}</strong>
 						</em>
 					</div>
-					<ad-textbox value="data.room_number" name="room-number" id="room-number" label="Number" placeholder="Enter hotel name" required="yes" maxlength=10></ad-textbox>	
 
-					<ad-dropdown div-class='full-width' label-in-drop-down='Select room type' label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id'></ad-dropdown>
+					<ad-textbox value="data.room_number" name="room-number" id="room-number" label="Number" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}"required="yes" maxlength=10>
+				</ad-textbox>	
+					<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_ROOM_TYPE' | translate }}"label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id'></ad-dropdown>
 					
 				<div class="entry full-width">
 					<label for="room-picture">
-						Image
+						{{ 'IMAGE' | translate }}
 						<strong>*</strong>
 					</label>
 					<div class="file-upload with-preview">
 						<span class="input">{{fileName}}</span>
 						<input ng-model="data.room_image" type="file" accept="image/*" name="room-picture" id="room-picture" value="{{data.room_image}}" app-filereader>
-						<button type="button" class="button brand-colors" >Replace image</button>
+						<button type="button" class="button brand-colors" >{{ 'REPLACE_IMAGE' | translate }}</button>
 					</div>
 					<span class="file-preview">
 						<img src="{{data.room_image}}" id="file-preview" alt="">
@@ -46,11 +47,11 @@
 				<!-- Room Features -->
 				<div class="form-title">
 					<h3>
-						<span>Room</span>
-						Features
+						<span>{{ 'ROOM' | translate }}</span>
+						{{ 'FEATURES' | translate }}
 					</h3>
 					<em class="status">
-						<span>Select Features that apply to this room.</span>
+						<span>{{ 'ROOM_FEATURES_TEXT' | translate }}</span>
 					</em>
 				</div>
 
@@ -64,11 +65,11 @@
 			<fieldset class="holder right">
 				<div class="form-title">
 					<h3>
-						<span>Room</span>
-						Likes
+						<span>{{ 'ROOM' | translate }}</span>
+						{{ 'LIKES' | translate }}
 					</h3>
 					<em class="status">
-						<span>Select Likes that apply to this room.</span>
+						<span>{{ 'ROOM_LIKE_TEXT' | translate }}</span>
 					</em>
 				</div>
 				<div class="entry full-width">
@@ -80,8 +81,8 @@
 				</div>
 			</fieldset>
 			<div class="actions float">
-				<button type="button" id="cancel" ng-click="goBack()" class="button blank add-data-inline">Cancel</button>
-				<button type="button" id="update" class="button green add-data-inline" ng-click="updateRoomDetails()">Save changes</button>
+				<button type="button" id="cancel" ng-click="goBack()" class="button blank add-data-inline">{{ 'CANCEL' | translate }}</button>
+				<button type="button" id="update" class="button green add-data-inline" ng-click="updateRoomDetails()">{{ 'SAVE_CHANGES' | translate }}</button>
 			</div>
 		</form>
 	</div>
