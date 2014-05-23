@@ -1,3 +1,4 @@
+
 var Search = function(domRef) {
 	BaseView.call(this);
 	var that = this;
@@ -187,6 +188,9 @@ var Search = function(domRef) {
 
 		$('#query').val('');
 		$('#search-results').empty().addClass('hidden');
+    // Clear button visibility toggle
+    that.showHideClearQueryButton();
+
 		if ( typeof that.preloadedResults != "undefined") {
 			var preloadedResultsCount = that.preloadedResults.length;
 			if (preloadedResultsCount > 0) {
@@ -533,7 +537,6 @@ var Search = function(domRef) {
 		} else {
 			console.log('Either FO Status OCC/ room_Ready_status null');
 		}
-
 		
 		return mapped_room_color;
 	};
