@@ -59,7 +59,10 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
  * @param {object} response
  */
 $scope.fetchHotelDetailsSuccessCallback = function(data){
-	 $translate.use(data.language.value);
+	 if(data.language)
+    $translate.use(data.language.value);
+   else
+    $translate.use('EN');
 	 $scope.$emit('hideLoader');
 };
 /*
