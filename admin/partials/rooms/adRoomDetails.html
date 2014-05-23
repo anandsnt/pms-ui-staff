@@ -22,7 +22,9 @@
 							<strong>All fields are mandatory!</strong>
 						</em>
 					</div>
-					<ad-textbox value="data.room_number" name="room-number" id="room-number" label="Number" placeholder="Enter hotel name" required="yes" maxlength=10></ad-textbox>	
+					<ad-textbox value="data.room_number" name="room-number" id="room-number" label="Number" placeholder="Enter hotel name" required="yes" maxlength=10></ad-textbox>
+
+					<ad-textbox value="" name = "max-occupancy" id = "max-occupancy" label = "Max Occupancy " placeholder = "Enter Max Occupancy" required = "" ></ad-textbox>	
 
 					<ad-dropdown div-class='full-width' label-in-drop-down='Select room type' label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id'></ad-dropdown>
 
