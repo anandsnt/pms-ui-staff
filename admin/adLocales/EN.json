@@ -54,7 +54,8 @@
     "ROOM_LIKE_TEXT":"Select Likes that apply to this room.",
     "REPLACE_IMAGE":"Replace Image",
     "ENTER_ROOM_NUMBER":"Enter Room number",
-    "SELECT_ROOM_TYPE":"Select room type"
+    "SELECT_ROOM_TYPE":"Select room type",
+    "SELECT_FLOOR":"Select Floor"
 
 
 }

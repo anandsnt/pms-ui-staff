@@ -24,10 +24,13 @@
 						</em>
 					</div>
 
-					<ad-textbox value="data.room_number" name="room-number" id="room-number" label="Number" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}"required="yes" maxlength=10>
+				<ad-textbox value="data.room_number" name="room-number" id="room-number" label="Number" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}"required="yes" maxlength=10>
 				</ad-textbox>	
-					<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_ROOM_TYPE' | translate }}"label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id'></ad-dropdown>
-					
+
+				<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_FLOOR' | translate }}"label="{{ 'SELECT_FLOOR' | translate }}" sel-class='placeholder'  list='floors' required='yes' selected-Id='data.floor'></ad-dropdown>
+
+				<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_ROOM_TYPE' | translate }}"label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id'></ad-dropdown>
+
 				<div class="entry full-width">
 					<label for="room-picture">
 						{{ 'IMAGE' | translate }}

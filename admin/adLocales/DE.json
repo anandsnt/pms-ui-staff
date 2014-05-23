@@ -54,7 +54,9 @@
     "ROOM_LIKE_TEXT":"Wählen Likes, die zu diesem Raum gelten.",
     "REPLACE_IMAGE":"Bild ersetzen",
     "ENTER_ROOM_NUMBER":"Geben Sie Zimmer Nummer",
-    "SELECT_ROOM_TYPE":"Zimmertyp auswählen"
+    "SELECT_ROOM_TYPE":"Zimmertyp auswählen",
+    "SELECT_FLOOR":"wählen Boden"
+
 
     
 

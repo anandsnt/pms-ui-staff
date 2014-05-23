@@ -4,6 +4,10 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	*/
 	$scope.errorMessage = '';	
 	$scope.fileName = "Choose File....";
+
+	var  addZeros = function(n) {
+ 			 return (n < 10)? '0' + n :'' + n;
+	}
 	
 	//inheriting from base controller
 	BaseCtrl.call(this, $scope);
@@ -17,6 +21,13 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		}
 		$scope.editMode = true;
 	}
+	
+	$scope.floors = [];
+	for(i=0;i<=100;i++){
+		var floorData = {"value":i,"name":addZeros(i)};
+		$scope.floors.push(floorData);
+	};
+	
 	
 
 
