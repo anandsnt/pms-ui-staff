@@ -5,9 +5,6 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	$scope.errorMessage = '';	
 	$scope.fileName = "Choose File....";
 
-	var  addZeros = function(n) {
- 			 return (n < 10)? '0' + n :'' + n;
-	}
 	
 	//inheriting from base controller
 	BaseCtrl.call(this, $scope);
@@ -22,15 +19,6 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		$scope.editMode = true;
 	}
 	
-	$scope.floors = [];
-	for(i=0;i<=100;i++){
-		var floorData = {"value":i,"name":addZeros(i)};
-		$scope.floors.push(floorData);
-	};
-	
-	
-
-
 	/*
 	* Success function of room details fetch
 	* Doing the operatios on data here
@@ -38,6 +26,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	var fetchSuccessOfRoomDetails = function(data){
 		$scope.$emit('hideLoader');
 		$scope.data = data;	
+		$scope.floors = data.floors;
 		$scope.roomNumber = $scope.data.room_number;
 		/* 
 		* adding the seletected attribute on room feature here
@@ -100,8 +89,10 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		for(var i = 0; i < $scope.data.room_likes.length; i++){
 			for(var j = 0; j < $scope.data.room_likes[i].options.length; j++){
 				$scope.data.room_likes[i].options[j].selected = false;
-		}
-	}
+		    }
+	    }
+	    $scope.floors = data.floors;
+	
 		$scope.data.room_image = "";
 		$scope.data.room_number="";
 		$scope.data.room_type_id="";
@@ -140,6 +131,7 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		postData.room_type_id = $scope.data.room_type_id;
 		postData.active_room_features = [];
 		postData.active_room_likes = [];
+		postData.selected_floor = $scope.data.selected_floor;
 		// to get seletected features
 		for(var i = 0; i < $scope.data.room_features.length; i++){
 			if($scope.data.room_features[i].selected == true ){
