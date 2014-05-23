@@ -2,19 +2,39 @@
 sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RVCompanyCardSrv','$stateParams',function($scope,dateFilter,ngDialog,RVCompanyCardSrv,$stateParams){
 	BaseCtrl.call(this, $scope);
 	
-	if($scope.isAddMode){
-		$scope.addData.occupancy = [];
-		var month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-		for(var i=0;i<12;i++){
+		
+	var first_date = new Date($scope.contractData.begin_date);
+	var last_date = new Date($scope.contractData.end_date);
+	var month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+	
+	var new_occupancy =[];
+	for(var j=first_date.getFullYear(); j<= last_date.getFullYear(); j++){
+		for(var i=first_date.getMonth() ; i<=last_date.getMonth(); i++){
 			var obj = {
-				"contracted_occupancy" : 0,
-				"year" : new Date().getFullYear().toString(),
-				"actual_occupancy" : 0,
+				"contracted_occupancy": 0,
+				"year" : j,
+				"actual_occupancy": 0,
 				"month" : month[i]
 			};
-			$scope.addData.occupancy.push(obj);
+			new_occupancy.push(obj);
 		}
 	}
+
+	if(!$scope.isAddMode){
+		angular.forEach($scope.contractData.occupancy,function(item, index) {
+				angular.forEach(new_occupancy,function(item2, index2) {
+					if((item2.year == item.year) && (item2.month == item.month)){
+						item2.contracted_occupancy = item.contracted_occupancy;
+						item2.actual_occupancy = item.actual_occupancy;
+					}
+	    		});
+	    });
+	    $scope.contractData.occupancy = new_occupancy;
+   	}
+   	else{
+   		$scope.addData.occupancy = [];
+   		$scope.addData.occupancy = new_occupancy;
+   	}
 		
 	$scope.saveContractedNights = function(){
 		
