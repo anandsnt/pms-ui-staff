@@ -243,6 +243,11 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 
         var calculateDetailsToSave = function(datesSelected){
             var details = [];
+            // We do not show the apply to restrictions option if not from room type calendar view
+            // So setting the flag by default as true
+            if(!$scope.popupData.fromRoomTypeView){
+                $scope.daysOptions.applyToRestrictions = true;
+            }
 
             for(var i in datesSelected) {
                 var restrictionDetails = {};
@@ -279,7 +284,9 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                         restrictionDetails.double = {};
                         restrictionDetails.extra_adult = {};
                         restrictionDetails.child = {};
-                        if($scope.data.single==""){
+                        console.log("here");
+                        console.log($scope.data.single);
+                        if($scope.data.single_extra_amnt !== ""){
                             restrictionDetails.single.value = $scope.data.single_sign + $scope.data.single_extra_amnt;
                             
                             if($scope.data.single_amnt_diff == "$"){
@@ -293,7 +300,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                             restrictionDetails.single.type = "amount_new";
                         }
                         
-                        if($scope.data.double==""){
+                        if($scope.data.double_extra_amnt !== ""){
                             restrictionDetails.double.value = $scope.data.double_sign + $scope.data.double_extra_amnt;
                             if($scope.data.double_amnt_diff == "$"){
                                 restrictionDetails.double.type = "amount_diff";
@@ -306,7 +313,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                             restrictionDetails.double.type = "amount_new";
                         }
                         
-                        if($scope.data.extra_adult==""){
+                        if($scope.data.extra_adult_extra_amnt !== ""){
                             restrictionDetails.extra_adult.value = $scope.data.extra_adult_sign + $scope.data.extra_adult_extra_amnt;
                             if($scope.data.extra_adult_amnt_diff == "$"){
                                 restrictionDetails.extra_adult.type = "amount_diff";
@@ -319,7 +326,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                             restrictionDetails.extra_adult.type = "amount_new";
                         }
                         
-                        if($scope.data.child==""){
+                        if($scope.data.child_extra_amnt !== ""){
                             restrictionDetails.child.value = $scope.data.child_sign + $scope.data.child_extra_amnt;
                             if($scope.data.child_amnt_diff == "$"){
                                 restrictionDetails.child.type = "amount_diff";

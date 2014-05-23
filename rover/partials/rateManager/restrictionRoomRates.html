@@ -10,8 +10,8 @@
 			<input type="text" size="7" ng-model="data.single" value="{{data.single}}" ng-class="{'strike-through': data.single_extra_amnt != ''}" ng-disabled="data.single_extra_amnt != ''">
 		</span>
 		<span class="or"> OR</span>
-		<span class="inp-field-after-or" ng-model="data.single_sign">
-			<select style="width:70px;">
+		<span class="inp-field-after-or">
+			<select style="width:70px;" ng-model="data.single_sign">
 				<option value="+">+</option>
 				<option value="-">-</option>
 			</select>
