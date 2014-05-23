@@ -161,9 +161,9 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         };
 
         var isRestictionHasDaysEnter = function(restriction){
-            var ret = true;
-            if(['CLOSED', 'CLOSED_ARRIVAL', 'CLOSED_DEPARTURE'].indexOf(restriction) >= 0){
-                ret = false;
+            var ret = false;
+            if(['MIN_STAY_LENGTH', 'MAX_STAY_LENGTH', 'MIN_STAY_THROUGH', 'MIN_ADV_BOOKING', 'MAX_ADV_BOOKING'].indexOf(restriction) >= 0){
+                ret = true;
             }
             return ret;
         }
@@ -208,7 +208,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         /**
         * Computes all the selected dates
         */
-        getAllSelectedDates = function() {
+        var getAllSelectedDates = function() {
 
             var datesList = [];
             //First entry in the dates list is the current date
