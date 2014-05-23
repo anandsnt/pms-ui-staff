@@ -47,7 +47,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
     * @param {id} id of the room type
     */	
 	$scope.editFloor = function(index, id)	{
-		$scope.departmentData={};
+		
 		$scope.currentClickedElement = index;
 	 	$scope.floorListData = $scope.orderedData[index]; 
 	};
@@ -72,31 +72,47 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 		var unwantedKeys = [];
 		console.log($scope.floorListData);
 		var data = dclone($scope.floorListData, unwantedKeys);
+		var params = {};
+		params.description = data.description;
+		params.floor_number = data.floor_number;
+		if(!$scope.isAddMode)
+			params.id = data.id;
 		 
     	var successCallbackSave = function(data){
     		$scope.$emit('hideLoader');
     		//Since the list is ordered. Update the ordered data
-    		$scope.orderedData[parseInt($scope.currentClickedElement)].name = $scope.floorListData.room_type_name;
-    		$scope.orderedData[parseInt($scope.currentClickedElement)].code = $scope.floorListData.room_type_code;
-    		$scope.currentClickedElement = -1;
+    		if($scope.isAddMode){
+    			$scope.data.floors.push($scope.floorListData);
+    			$scope.tableParams.reload();
+    			$scope.isAddMode = false;
+    		}else{
+    			$scope.orderedData[parseInt($scope.currentClickedElement)].description = $scope.floorListData.description;
+    			$scope.orderedData[parseInt($scope.currentClickedElement)].floor_number = $scope.floorListData.floor_number;
+    			$scope.tableParams.reload();
+    			$scope.currentClickedElement = -1;
+    		}		
+    		
     	};
     	$scope.invokeApi(ADFloorSetupSrv.updateFloor, data , successCallbackSave);
     };
-   
-   /*
-    * To delete department
-    * @param {int} index of the selected department
-    * @param {string} id of the selected department
-    */		
-	$scope.importFromPms = function(){
-		var successCallbackImport = function(data){	
-	 		$scope.$emit('hideLoader');
-	 		$scope.listRoomTypes();
-	 		// $scope.data.departments.splice(index, 1);
-	 	};
-		$scope.invokeApi(ADFloorSetupSrv.importFromPms, '' , successCallbackImport);
-	};
 
+    /*
+   * To delete a floor
+   */
+   $scope.deleteFloor = function(index){
+		
+		var unwantedKeys = [];
+		console.log($scope.floorListData);
+		var data = {};
+		 data.id = $scope.orderedData[index].id;
+    	var successCallbackSave = function(){
+    		$scope.$emit('hideLoader');
+    		var pos = $scope.data.floors.indexOf($scope.orderedData[index]);
+    		$scope.data.floors.splice(pos, 1);
+    		$scope.tableParams.reload();
+    	};
+    	$scope.invokeApi(ADFloorSetupSrv.deleteFloor, data , successCallbackSave);
+    };
 	 /*
     * To add new floor
     * 
@@ -106,10 +122,9 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 		$scope.isAddMode = $scope.isAddMode ? false : true;
 		//reset data
 		$scope.floorListData = {
-				"name":1,
 				"floor_number":"",
 				"description":""
-			}	
+			};	
 	};
 
 	/*

@@ -19,7 +19,7 @@
 						{{floor.floor_number}}
 					</td>
 					<td data-title="" header-class=" width-10"  class="text-left" ng-hide="currentClickedElement == $index" >
-						<span ng-click="" class="icons delete_small">&nbsp;</span>
+						<span ng-click="deleteFloor($index)" class="icons delete_small">&nbsp;</span>
 					</td>
 					
 					<td colspan="3" ng-include="getTemplateUrl($index)" ng-show="currentClickedElement == $index"></td>

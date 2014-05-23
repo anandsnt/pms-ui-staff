@@ -24,8 +24,8 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 	this.updateFloor = function(data){
 
 		var deferred = $q.defer();
-		var url = '/admin/room_types/'+data.room_type_id;	
-		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
+		var url = '/api/floors/save';	
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -36,8 +36,8 @@ admin.service('ADFloorSetupSrv',['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2'
 	this.deleteFloor = function(data){
 
 		var deferred = $q.defer();
-		var url = '/api/floors/'+data.floorID;	
-		ADBaseWebSrvV2.deleteJson(url, data).then(function(data) {
+		var url = '/api/floors/'+data.id;	
+		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
