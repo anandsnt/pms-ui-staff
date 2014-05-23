@@ -1,81 +1,82 @@
 <div id="restrictionDays" class="price-div" ng-controller = "RestrictionWeekdaysCtrl"  ng-iscroll="restictionWeekDays" ng-iscroll-delay="3000" >
-<div class="scrollable">
-	<div class="restriction_text" >
-	    DAYS OF WEEK
-	</div>
+	<div class="scrollable">
+		<div class="restriction_text" >
+			DAYS OF WEEK
+		</div>
 		
-	<div class="price-set-title">
-		<label class="checkbox" >
-			<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.days.mon}"></span>
-			<input type="checkbox" ng-model="daysOptions.days.mon">
-			<span>MONDAY </span> 
-		</label>
+		<div class="price-set-title">
+			<label class="checkbox" >
+				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.days.mon}"></span>
+				<input type="checkbox" ng-model="daysOptions.days.mon">
+				<span>MONDAY </span> 
+			</label>
 
 
-		<label class="checkbox">
-			<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.days.tue}"></span>
-			<input type="checkbox" ng-model="daysOptions.days.tue">
-			<span>TUESDAY </span> 
-		</label>
+			<label class="checkbox">
+				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.days.tue}"></span>
+				<input type="checkbox" ng-model="daysOptions.days.tue">
+				<span>TUESDAY </span> 
+			</label>
 
-		<label class="checkbox">
-			<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.days.wed}"></span>
-			<input type="checkbox" ng-model="daysOptions.days.wed">
-			<span>WEDNESDAY </span> 
-		</label>
-
-
-		<label class="checkbox">
-			<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.days.thu}"></span>
-			<input type="checkbox" ng-model="daysOptions.days.thu">
-			<span>THURSDAY </span> 
-		</label>
+			<label class="checkbox">
+				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.days.wed}"></span>
+				<input type="checkbox" ng-model="daysOptions.days.wed">
+				<span>WEDNESDAY </span> 
+			</label>
 
 
-		<label class="checkbox">
-			<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.days.fri}"></span>
-			<input type="checkbox" ng-model="daysOptions.days.fri">
-			<span>FRIDAY </span> 
-		</label>
+			<label class="checkbox">
+				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.days.thu}"></span>
+				<input type="checkbox" ng-model="daysOptions.days.thu">
+				<span>THURSDAY </span> 
+			</label>
 
 
-		<label class="checkbox">
-			<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.days.sat}"></span>
-			<input type="checkbox" ng-model="daysOptions.days.sat">
-			<span>SATURDAY </span> 
-		</label>
+			<label class="checkbox">
+				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.days.fri}"></span>
+				<input type="checkbox" ng-model="daysOptions.days.fri">
+				<span>FRIDAY </span> 
+			</label>
 
 
-		<label class="checkbox">
-			<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.days.sun}"></span>
-			<input type="checkbox" ng-model="daysOptions.days.sun">
-			<span>SUNDAY </span> 
-		</label>
+			<label class="checkbox">
+				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.days.sat}"></span>
+				<input type="checkbox" ng-model="daysOptions.days.sat">
+				<span>SATURDAY </span> 
+			</label>
+
+
+			<label class="checkbox">
+				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.days.sun}"></span>
+				<input type="checkbox" ng-model="daysOptions.days.sun">
+				<span>SUNDAY </span> 
+			</label>
+		</div>
+		<br />
+		<div class="restriction_text price-div" >
+			WEEKS
+		</div>
+		<div class="select">
+			<select ng-model="daysOptions.numOfWeeks">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+			</select>
+		</div>
+
+		<div class="price-set-title application" ng-hide="!popupData.fromRoomTypeView">
+
+			<label class="checkbox" >
+				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToPrice}"></span>
+				<input type="checkbox" ng-model="daysOptions.applyToPrice">
+				<span>APPLY TO PRICE </span> 
+			</label>
+			<label class="checkbox" >
+				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToRestrictions}" ></span>
+				<input type="checkbox" ng-model="daysOptions.applyToRestrictions">
+				<span>APPLY TO RESTRICTIONS </span> 
+			</label>
+		</div>
 	</div>
-	<br />
-	<div class="restriction_text price-div" >
-	    WEEKS
-	</div>
-	<div class="select">
-	   <select ng-model="daysOptions.numOfWeeks">
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-		</select>
-	</div>
-	<br /> <!-- ng-hide="!popupData.fromRoomTypeView" -->
-	<div class="price-set-title application" >
-		<label class="checkbox" >
-			<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToPrice}"></span>
-			<input type="checkbox" ng-model="daysOptions.applyToPrice">
-			<span>APPLY TO PRICE </span> 
-		</label>
-		<label class="checkbox" >
-			<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToRestrictions}" ></span>
-			<input type="checkbox" ng-model="daysOptions.applyToRestrictions">
-			<span>APPLY TO RESTRICTIONS </span> 
-		</label>
-	</div>
-</div>
 </div>
