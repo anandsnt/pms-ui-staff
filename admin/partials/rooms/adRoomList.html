@@ -3,13 +3,15 @@
 	<section>
 		<header class="content-title float">
 			<h2>
-				Rooms
+				{{ 'ROOMS' | translate }}
 			</h2>
 			<span class="count">
 				( {{data.rooms.length}} )
 			<span class="status">
-				{{data.number_of_rooms_configured}} of {{data.total_number_of_rooms}} Licensed Rooms Configured
+				{{data.number_of_rooms_configured}} {{ 'OF' | translate }} {{data.total_number_of_rooms}} {{ 'LICENSED_ROOMS_CONFIGURED' | translate }}
 			</span>
+		    </span>
+			<a id="add-rooms" class="action add" ui-sref='admin.roomdetails({})' ng-show="data.is_add_available">{{ 'ADD_NEW' | translate }}</a>
 		</header>
 
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>

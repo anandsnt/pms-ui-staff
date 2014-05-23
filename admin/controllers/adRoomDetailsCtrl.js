@@ -4,15 +4,31 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 	*/
 	$scope.errorMessage = '';	
 	$scope.fileName = "Choose File....";
+
+	var  addZeros = function(n) {
+ 			 return (n < 10)? '0' + n :'' + n;
+	}
 	
 	//inheriting from base controller
 	BaseCtrl.call(this, $scope);
 	
 	var roomId = $stateParams.roomId;
-	//if roomnumber is null returning to room list
-	if(typeof roomId === 'undefined' || roomId.trim() == ''){
-		$state.go('admin.rooms');
+
+	if(roomId){
+		//if roomnumber is null returning to room list
+		if(typeof roomId === 'undefined' || roomId.trim() == ''){
+			$state.go('admin.rooms');
+		}
+		$scope.editMode = true;
 	}
+	
+	$scope.floors = [];
+	for(i=0;i<=100;i++){
+		var floorData = {"value":i,"name":addZeros(i)};
+		$scope.floors.push(floorData);
+	};
+	
+	
 
 
 	/*
@@ -74,8 +90,37 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		}		
 	};
 
-	//getting the room details
+
+	var fecthAllRoomDetailsSuccessCallback = function(data){
+		$scope.$emit('hideLoader');
+		$scope.data = data;
+		for(var i = 0; i < $scope.data.room_features.length; i++){
+			$scope.data.room_features[i].selected = false;
+		}
+		for(var i = 0; i < $scope.data.room_likes.length; i++){
+			for(var j = 0; j < $scope.data.room_likes[i].options.length; j++){
+				$scope.data.room_likes[i].options[j].selected = false;
+		}
+	}
+		$scope.data.room_image = "";
+		$scope.data.room_number="";
+		$scope.data.room_type_id="";
+
+	};
+	var fecthAllRoomDetailsFailureCallback = function(errorMessage){
+		$scope.$emit('hideLoader');
+		$scope.errorMessage = errorMessage ;
+	};
+
+    if($scope.editMode){
+    //getting the room details
 	$scope.invokeApi(ADRoomSrv.roomDetails, {'roomId': roomId}, fetchSuccessOfRoomDetails, fetchFailedOfRoomDetails);	
+    }
+    else
+    {
+     $scope.invokeApi(ADRoomSrv.fecthAllRoomDetails, {}, fecthAllRoomDetailsSuccessCallback, fecthAllRoomDetailsFailureCallback);		
+    }
+	
 
 	/*
 	* method for go back to previous stage, it is always room listing	
@@ -113,7 +158,12 @@ admin.controller('adRoomDetailsCtrl', ['$scope','ADRoomSrv', '$state', '$statePa
 		if($scope.data.room_image.indexOf("data:")!= -1){
 			postData.room_image = $scope.data.room_image;
 		}
-		$scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);	
+
+		if($scope.editMode)
+		    $scope.invokeApi(ADRoomSrv.update, {'room_id': $scope.data.room_id, 'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);	
+		else
+			$scope.invokeApi(ADRoomSrv.createRoom, {'updateData': postData}, $scope.successCallbackOfUpdateRoomDetails);	
+	
 	}
 
 	/**

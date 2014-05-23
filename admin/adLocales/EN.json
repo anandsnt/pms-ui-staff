@@ -36,5 +36,26 @@
     "MAX_OCCUPANCY_PLACE_HOLDER":"Enter Max Occupancy",
     "SNT_DESCRIPTION_PLACE_HOLDER":"Enter StayNTouch Description",
     "MANDIATORY_FIELDS_MESSAGE1":"Fields marked with",
-    "MANDIATORY_FIELDS_MESSAGE2":"are mandatory!"
+    "MANDIATORY_FIELDS_MESSAGE2":"are mandatory!",
+
+    "ROOMS":"Rooms",
+    "OF":"of",
+    "LICENSED_ROOMS_CONFIGURED":"Licensed Rooms Configured",
+    "ROOM":"Room",
+    "EDIT_ROOM":"Edit Room",
+    "ADD_ROOM":"Add Room",
+    "BACK_TO_ROOMS":"Back to Rooms",
+    "DETAILS":"details",
+    "ALL_FIELDS_MANDIATORY":"All fields are mandatory!",
+    "IMAGE":"Image",
+    "FEATURES":"Features",
+    "ROOM_FEATURES_TEXT":"Select Features that apply to this room.",
+    "LIKES":"Likes",
+    "ROOM_LIKE_TEXT":"Select Likes that apply to this room.",
+    "REPLACE_IMAGE":"Replace Image",
+    "ENTER_ROOM_NUMBER":"Enter Room number",
+    "SELECT_ROOM_TYPE":"Select room type",
+    "SELECT_FLOOR":"Select Floor"
+
+
 }
