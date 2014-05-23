@@ -257,6 +257,21 @@ var WebServiceInterface = function(){
 			},
 			error: function(jqXHR, textStatus, errorThrown){
                 if (jqXHR.status=="401") { sntapp.logout(); return;}
+                if (jqXHR.status=="503" || jqXHR.status=="500") {
+                    location.href = "/500";
+                    return;
+                }
+
+                if(jqXHR.status=="422"){
+                    location.href = "/422";
+                    return;
+                }
+
+                if(jqXHR.status=="404"){
+                    location.href = "/404";
+                    return;
+                }
+
 				sntapp.activityIndicator.hideActivityIndicator();				
 
 				if(failureCallBack) {	
