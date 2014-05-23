@@ -243,5 +243,5 @@ var app = function(){
 };
 
 sntapp = new app();
-//sntapp.enableCardSwipeDebug();
+// sntapp.enableCardSwipeDebug();
 
