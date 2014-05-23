@@ -1,0 +1,43 @@
+<div ng-controller="UpdatePriceAndRestrictionsCtrl">
+    <dialog>
+        <div class="updatePriceAndRestrictionsContainer">
+            <div class="header">
+                <h2 class="h1">{{data.name}}</h2>
+                <em>{{popupData.selectedDate| date:'EEEE MMMM dd'}}</em>
+            </div>
+            
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            <div class="ng-scope restbg" ng-include="'/assets/partials/rateManager/restrictionsList.html'" >
+                            </div>
+                        </td>
+                        <td ng-if="popupData.all_data_selected">
+                            <div ng-include="'/assets/partials/rateManager/mixedRestrictions.html'"></div >
+                        </td>
+                        <!-- <td style="vertical-align:top" ng-show="popupData.fromRoomTypeView">
+                            <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'" ></div >
+                        </td> -->
+                         <td style="vertical-align:top" ng-hide="true">
+                            <div ng-include="'/assets/partials/rateManager/restrictionWeekDays.html'"></div >
+                        </td>
+                    
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="footer" ng-hide="popupData.all_data_selected">
+                <div class="actions float">
+                    <button class="button blank edit-data-inline" id="cancel" ng-click="hideUpdatePriceAndRestrictionsDialog()" type="button">
+                        Cancel
+                    </button>
+                    <button class="button green edit-data-inline" id="save" type="button" ng-click="saveRestriction()">
+                        Set
+                    </button>
+                </div>
+            </div>
+        </div>
+</div>

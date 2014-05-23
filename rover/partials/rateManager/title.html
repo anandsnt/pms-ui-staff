@@ -1,0 +1,20 @@
+<!-- Navbar -->
+<header class="nav-bar float" role = "banner">
+	<!-- Drawer toggle -->
+	<a id="{{menuImage}}"class="nav-toggle" ng-click="$emit('navToggled')"  ng-class="{'active': menuOpen}">Menu</a>
+	<!-- Title -->
+	<h1 class="h2">Rate Manager
+		<span>
+			<em>
+			Logged in as
+			</em>
+			<strong>
+				{{userInfo.first_name}}
+			</strong>
+		</span>
+	</h1>
+	<div class="logo">
+		<img alt = "" ng-src= "{{userInfo.logo}}" />
+	</div>
+	<!-- Right side button -->
+</header>
