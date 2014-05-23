@@ -7,11 +7,14 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     $scope.leftMenuDimensions = {};
     //company card search query text
     $scope.companySearchText = "";
+    $scope.companyLastSearchText = "";
     $scope.companyCardResults = [];
 
     $scope.cmpCardSearchDivHgt = 42;
     $scope.cmpCardSearchDivTop = 0;
     $scope.arrowPosFromTop = 0;
+
+    var companyCardFetchInterval = '';
 
     var heightOfComponents = 500;
     var headerHeight = 60;
@@ -107,7 +110,7 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
             $scope.companyCardResults = [];
         }
         else{
-            setTimeout(function(){displayFilteredResults();}, 500);
+            companyCardFetchInterval = window.setInterval(function(){displayFilteredResults();}, 500);
         }
     };
 
@@ -141,10 +144,14 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     * if not fouund in the data, it will request for webservice
     */
     var displayFilteredResults = function(){
-        var paramDict = {'query': $scope.companySearchText.trim()};
-        $scope.invokeApi(RMFilterOptionsSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
-        // we have changed data, so we are refreshing the scrollerbar
-        refreshScroller(); 
+        if($scope.companySearchText !='' && $scope.companyLastSearchText != $scope.companySearchText){
+            var paramDict = {'query': $scope.companySearchText.trim()};
+            $scope.invokeApi(RMFilterOptionsSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
+            // we have changed data, so we are refreshing the scrollerbar
+            $scope.companyLastSearchText = $scope.companySearchText;
+            clearInterval(companyCardFetchInterval);
+            refreshScroller(); 
+        }
     };
 
     $scope.setCompanyCardFilter = function(name){
