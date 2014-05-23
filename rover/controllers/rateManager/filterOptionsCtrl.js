@@ -9,6 +9,10 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     $scope.companySearchText = "";
     $scope.companyCardResults = [];
 
+    $scope.cmpCardSearchDivHgt = 0;
+    $scope.cmpCardSearchDivTop = 0;
+    $scope.arrowPosFromTop = 0;
+
     var heightOfComponents = 500;
     var headerHeight = 60;
     var heightOfFixedComponents = 140;
@@ -99,6 +103,7 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     * company search 
     */
     $scope.companySearchTextEntered = function(){
+        refreshScroller(); 
         if($scope.companySearchText.length === 0){
             $scope.companyCardResults = [];
         }
@@ -114,6 +119,18 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
         var valueToReturn = ((value == null || typeof value == 'undefined' ) ? '' : value);
         return valueToReturn;
     };
+
+    var refreshScroller = function(){
+        $scope.cmpCardSearchDivHgt = "250";
+        $scope.arrowPosFromTop = $('#company-card').offset().top;
+        var popOverBottomPosFromTop = $('#company-card').offset().top + 20;
+        var liCount = ("#search-list li").length;
+        var totalHeight = $('#search-list').height();
+        if(totalHeight < $scope.cmpCardSearchDivHgt){
+            $scope.cmpCardSearchDivHgt = totalHeight;
+        }
+        $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt + 10;
+    }
 
     var successCallBackOfCompanySearch = function(data){
         $scope.$emit("hideLoader");
@@ -154,7 +171,7 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
                                             "last_name": "House"
                                         }
                                     ]
-        // setTimeout(function(){refreshScroller();}, 750);
+        refreshScroller();
     }
 
     /**
@@ -168,9 +185,6 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
           for(var i = 0; i < $scope.companyCardResults.length; i++){
               $scope.companyCardResults[i].is_row_visible = true;
           }     
-          
-          // we have changed data, so we are refreshing the scrollerbar
-          // refreshScroller();      
         }
         else{
           var value = ""; 
@@ -194,10 +208,10 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
          if(visibleElementsCount == 0){   
             var paramDict = {'query': $scope.companySearchText.trim()};
             $scope.invokeApi(RMFilterOptionsSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
-          }
-          // we have changed data, so we are refreshing the scrollerbar
-          // refreshScroller();                  
+          }                 
         }
+        // we have changed data, so we are refreshing the scrollerbar
+        refreshScroller(); 
     };
 
     $scope.setCompanyCardFilter = function(name){
