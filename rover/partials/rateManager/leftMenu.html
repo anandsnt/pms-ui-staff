@@ -71,6 +71,7 @@
                     <label class="search-text" style="font-size:14px; line-height:14px;">NAME CARD,IATA # OR CORPORATED ID</label>
                     <span type="submit" name="submit" class="icons icon-search1"></span>
                     <input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off" style="margin-bottom:10px;" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
+                    {{ companyCardResults.length }}
                 </div>
             </div>
         </div>
@@ -87,16 +88,16 @@
         <div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: {{cmpCardSearchDivHgt}}px; top: {{cmpCardSearchDivTop}}px">
             <div class="search-results">
                 <ul id="search-list">
-                    <li ng-repeat="row in companyCardResults" ng-show="row.is_row_visible==true" ng-click="setCompanyCardFilter(row.first_name+' '+row.last_name)">
+                    <li ng-repeat="row in companyCardResults" ng-click="setCompanyCardFilter(row.account_first_name+' '+row.account_last_name)">
                         <img src="http://placehold.it/33">
-                        <h4 ng-bind-html="'{{row.first_name}}, {{row.last_name}}'|highlight:companySearchText:false"></h4>
+                        <h4 ng-bind-html="'{{row.account_first_name}}, {{row.account_last_name}}'|highlight:companySearchText:false"></h4>
                     </li>
                     <!-- No results / no content when searched query not found-->
-                    <!-- <li ng-show="companyCardResults.length === 0 && companySearchText !== ''">
+                    <li ng-show="companyCardResults.length === 0 && companySearchText !== ''">
                         <div>
-                            <strong class="h1">No matches have been found</strong>
+                            No matches have been found
                         </div>
-                    </li> -->
+                    </li>
                 </ul>
             </div>
             <span class="arrow-left" style="top: {{arrowPosFromTop}}px;" ng-hide="cmpCardSearchDivHgt < 40"></span>

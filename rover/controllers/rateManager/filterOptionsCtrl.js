@@ -9,7 +9,7 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     $scope.companySearchText = "";
     $scope.companyCardResults = [];
 
-    $scope.cmpCardSearchDivHgt = 0;
+    $scope.cmpCardSearchDivHgt = 42;
     $scope.cmpCardSearchDivTop = 0;
     $scope.arrowPosFromTop = 0;
 
@@ -100,18 +100,17 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     };
 
     /**
-    * company search 
+    * company card search text entered
     */
     $scope.companySearchTextEntered = function(){
-        refreshScroller(); 
         if($scope.companySearchText.length === 0){
             $scope.companyCardResults = [];
         }
         else{
             setTimeout(function(){displayFilteredResults();}, 500);
-            // displayFilteredResults();
         }
     };
+
 
     //if no replace value is passed, it returns an empty string
     
@@ -124,7 +123,6 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
         $scope.cmpCardSearchDivHgt = "250";
         $scope.arrowPosFromTop = $('#company-card').offset().top;
         var popOverBottomPosFromTop = $('#company-card').offset().top + 20;
-        var liCount = ("#search-list li").length;
         var totalHeight = $('#search-list').height();
         if(totalHeight < $scope.cmpCardSearchDivHgt){
             $scope.cmpCardSearchDivHgt = totalHeight;
@@ -134,43 +132,7 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 
     var successCallBackOfCompanySearch = function(data){
         $scope.$emit("hideLoader");
-        // $scope.companyCardResults = data.accounts;
-
-        // TODO - Replace below hardcoded values with above commented out line once API is ready
-        $scope.companyCardResults = [
-                                        {
-                                            "first_name": "Isabelle",
-                                            "last_name": "Park"
-                                        },
-                                        {
-                                            "first_name": "Trevino",
-                                            "last_name": "Black"
-                                        },
-                                        {
-                                            "first_name": "Suarez",
-                                            "last_name": "Mercer"
-                                        },
-                                        {
-                                            "first_name": "Banks",
-                                            "last_name": "Sharp"
-                                        },
-                                        {
-                                            "first_name": "Heath",
-                                            "last_name": "Wyatt"
-                                        },
-                                        {
-                                            "first_name": "Lorna",
-                                            "last_name": "Galloway"
-                                        },
-                                        {
-                                            "first_name": "Millicent",
-                                            "last_name": "Drake"
-                                        },
-                                        {
-                                            "first_name": "Rivas",
-                                            "last_name": "House"
-                                        }
-                                    ]
+        $scope.companyCardResults = data.accounts;
         refreshScroller();
     }
 
@@ -178,38 +140,9 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     * function to perform filering on results.
     * if not fouund in the data, it will request for webservice
     */
-    var displayFilteredResults = function(){ 
-        //if the entered text's length < 3, we will show everything, means no filtering    
-        if($scope.companySearchText.length < 3){
-          //based on 'is_row_visible' parameter we are showing the data in the template      
-          for(var i = 0; i < $scope.companyCardResults.length; i++){
-              $scope.companyCardResults[i].is_row_visible = true;
-          }     
-        }
-        else{
-          var value = ""; 
-          var visibleElementsCount = 0;
-          //searching in the data we have, we are using a variable 'visibleElementsCount' to track matching
-          //if it is zero, then we will request for webservice
-          for(var i = 0; i < $scope.companyCardResults.length; i++){
-            value = $scope.companyCardResults[i];
-            if (($scope.escapeNull(value.first_name).toUpperCase()).indexOf($scope.companySearchText.toUpperCase()) >= 0 || 
-                ($scope.escapeNull(value.last_name).toUpperCase()).indexOf($scope.companySearchText.toUpperCase()) >= 0 ) 
-                {
-                   $scope.companyCardResults[i].is_row_visible = true;
-                   visibleElementsCount++;
-                }
-            else {
-              $scope.companyCardResults[i].is_row_visible = false;
-            }
-                  
-          }
-          // last hope, we are looking in webservice.      
-         if(visibleElementsCount == 0){   
-            var paramDict = {'query': $scope.companySearchText.trim()};
-            $scope.invokeApi(RMFilterOptionsSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
-          }                 
-        }
+    var displayFilteredResults = function(){
+        var paramDict = {'query': $scope.companySearchText.trim()};
+        $scope.invokeApi(RMFilterOptionsSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
         // we have changed data, so we are refreshing the scrollerbar
         refreshScroller(); 
     };
