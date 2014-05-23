@@ -34,13 +34,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             // intialize rateData dictionary - END
             $scope.basedonRateData = {};
             $scope.errorMessage = '';
-            // webservice call to fetch rate details for edit
-            if ($stateParams.rateId) {
-                $scope.is_edit = true;
-                $scope.invokeApi(ADRatesSrv.fetchDetails, {
-                    rateId: $stateParams.rateId
-                }, rateDetailsFetchSuccess);
-            }
+
             $scope.invokeApi(ADRatesSrv.fetchAdditionalDetails,{},fetchAdditionalDetailsSuccessCallback);
         };
 
@@ -48,47 +42,53 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         //add ons
         $scope.allAddOns = data.addons;
         angular.forEach($scope.allAddOns, function(addOns){
-                addOns.isSelected = false;
-                addOns.is_inclusive_in_rate = "false";
-             });
+            addOns.isSelected = false;
+            addOns.is_inclusive_in_rate = "false";
+        });
         $scope.rateData.addOns =data.addons;
+
+     // webservice call to fetch rate details for edit
+     if ($stateParams.rateId) {
+        $scope.is_edit = true;
+        $scope.invokeApi(ADRatesSrv.fetchDetails, {
+            rateId: $stateParams.rateId
+        }, rateDetailsFetchSuccess);
+    }
 
         //restriction type
         $scope.restrictionDetails = data.restrictionDetails;
         angular.forEach($scope.restrictionDetails, function(restrictionType){
-               if(restrictionType.value == 'CANCEL_PENALTIES'){
-                 $scope.cancelPenaltiesActivated = (restrictionType.activated) ? true:false;
-               }
-               if(restrictionType.value == 'DEPOSIT_REQUESTED'){
-                $scope.depositRequiredActivated = (restrictionType.activated)  ? true:false;
-               }
-         });
+         if(restrictionType.value == 'CANCEL_PENALTIES'){
+           $scope.cancelPenaltiesActivated = (restrictionType.activated) ? true:false;
+       }
+       if(restrictionType.value == 'DEPOSIT_REQUESTED'){
+        $scope.depositRequiredActivated = (restrictionType.activated)  ? true:false;
+    }
+});
 
          //selected restrictions
          angular.forEach(data.selectedRestrictions, function(selectedRestriction){
 
-               if(selectedRestriction.value == 'MAX_ADV_BOOKING'){
-                  $scope.maxAdvancedBookingActivated =  true;
-               }
-               if(selectedRestriction.value == 'MAX_STAY_LENGTH'){
-                  $scope.maxStayLengthActivated =  true;
-               }
-               if(selectedRestriction.value == 'MIN_ADV_BOOKING'){
-                  $scope.minAdvancedBookingActivated =  true;
-               }
-                if(selectedRestriction.value == 'MIN_ADV_BOOKING'){
-                   $scope.minStayLengthActivated =  true;
-               }
-         });
+             if(selectedRestriction.value == 'MAX_ADV_BOOKING'){
+              $scope.maxAdvancedBookingActivated =  true;
+          }
+          if(selectedRestriction.value == 'MAX_STAY_LENGTH'){
+              $scope.maxStayLengthActivated =  true;
+          }
+          if(selectedRestriction.value == 'MIN_ADV_BOOKING'){
+              $scope.minAdvancedBookingActivated =  true;
+          }
+          if(selectedRestriction.value == 'MIN_ADV_BOOKING'){
+             $scope.minStayLengthActivated =  true;
+         }
+     });
 
-         };
-
-
+     };
 
         /*
          * toogle different rate view
          */
-        $scope.$on("changeMenu", function (e, value) {
+         $scope.$on("changeMenu", function (e, value) {
             if (!isNaN(parseInt(value))){
                 value = "dateRange."+value;
             }
@@ -96,7 +96,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
         });
 
-        $scope.$on("errorReceived", function (e, value) {
+         $scope.$on("errorReceived", function (e, value) {
             $scope.errorMessage = value;
         });
 
@@ -146,7 +146,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.market_segment_id = data.market_segment_id;
             $scope.rateData.end_date = data.end_date;
 
-            // addons
+
+            // addons -mark as activated for selected addons
             if($scope.rateData.addOns.length>0){
                 var tempData = $scope.rateData.addOns;
                 $scope.rateData.addOns = [];
@@ -155,47 +156,60 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                         if(addOns.id === addOnsSelected.id){
                             addOns.isSelected = true;
                             addOns.is_inclusive_in_rate = addOnsSelected.is_inclusive_in_rate ? 'true':'false';
-                            $scope.rateData.addOns.push(addOns);
-                        };
-                    });
+                            if($scope.rateData.addOns.indexOf(addOns)=== -1)
+                               $scope.rateData.addOns.push(addOns);
+                       }
+
+                   });
                 });
+            
             }
+            // addons mark as deactivated for selected addons
+            angular.forEach($scope.allAddOns, function(addOns){
 
-        };
+                if($scope.rateData.addOns.indexOf(addOns)=== -1){
+                    addOns.isSelected = false;
+                    addOns.is_inclusive_in_rate = 'false';
+                    $scope.rateData.addOns.push(addOns);
+                }
 
-        $scope.manipulateData = function(data){
+            });
 
-            if(data.id) { $scope.rateData.id = data.id; }
-            if(!$scope.is_edit) { $scope.is_edit =true };
-            $scope.rateData.name= data.name;
-            $scope.rateData.description = data.description;
-            $scope.rateData.promotion_code = data.promotion_code;
-            $scope.rateData.room_type_ids = data.room_type_ids;
-            $scope.rateData.date_ranges= data.date_ranges;
-            $scope.rateData.rate_type.id = (data.rate_type != null) ? data.rate_type.id : '';
-            $scope.rateData.rate_type.name = (data.rate_type != null) ? data.rate_type.name : '';
-            $scope.rateData.addOns = data.addons;
-            $scope.rateData.charge_code_id = data.charge_code_id;
-            $scope.rateData.currency_code_id = data.currency_code_id;
+    };
 
-            manipulateAdditionalDetails(data);
+    $scope.manipulateData = function(data){
+
+        if(data.id) { $scope.rateData.id = data.id; }
+        if(!$scope.is_edit) { $scope.is_edit =true };
+        $scope.rateData.name= data.name;
+        $scope.rateData.description = data.description;
+        $scope.rateData.promotion_code = data.promotion_code;
+        $scope.rateData.room_type_ids = data.room_type_ids;
+        $scope.rateData.date_ranges= data.date_ranges;
+        $scope.rateData.rate_type.id = (data.rate_type != null) ? data.rate_type.id : '';
+        $scope.rateData.rate_type.name = (data.rate_type != null) ? data.rate_type.name : '';
+        $scope.rateData.addOns = data.addons;
+        $scope.rateData.charge_code_id = data.charge_code_id;
+        $scope.rateData.currency_code_id = data.currency_code_id;
+
+        manipulateAdditionalDetails(data);
 
 
-            if (data.based_on) {
-                $scope.rateData.based_on.id = data.based_on.id;
-                $scope.rateData.based_on.type = data.based_on.type;
-                $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value)
-                $scope.rateData.based_on.value_sign = data.based_on.value > 0 ? "+" : "-";
-            } else {
-                $scope.rateData.based_on = {
-                    "id": "",
-                    "type": "",
-                    "value_abs": "",
-                    "value_sign": ""
-                };
-            }
-
+        if (data.based_on) {
+            $scope.rateData.based_on.id = data.based_on.id;
+            $scope.rateData.based_on.type = data.based_on.type;
+            $scope.rateData.based_on.value_abs = Math.abs(data.based_on.value)
+            $scope.rateData.based_on.value_sign = data.based_on.value > 0 ? "+" : "-";
+        } else {
+            $scope.rateData.based_on = {
+                "id": "",
+                "type": "",
+                "value_abs": "",
+                "value_sign": ""
+            };
         }
+
+    }
 
         // Fetch details success callback for rate edit
 
@@ -266,8 +280,8 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
         /*
          * init call
          */
-        $scope.init();
+         $scope.init();
 
 
-    }
-]);
+     }
+     ]);

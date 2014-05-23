@@ -3,6 +3,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     $scope.highchartsNG = {};
 	$scope.isAddMode = false;
 	$scope.contractList = {};
+	$scope.contractSelected = "";
 	$scope.errorMessage = "";
 	var contractInfo = {};
 	
@@ -177,12 +178,9 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	/*
     * Function to handle data change in 'Contract List'.
     */
-   	$scope.$watch("contractSelected",
-           function( newValue, oldValue ) {
-                    console.log("contractSelected chgedddd"+newValue+oldValue);
-                    $scope.contractSelected = newValue;
-                    if(newValue != undefined) $scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":newValue},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);  
-     });
+   	$scope.clickContractSElected = function(contratct_id){
+   		$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":contratct_id},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);
+   	};
    
 	$scope.contractStart = function(){
 		ngDialog.open({
@@ -212,23 +210,36 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	};
 	
 	$scope.AddNewButtonClicked = function(){
-		console.log("AddNewButtonClicked");
-		//$scope.contractData = {};
+		$scope.isAddMode = true;
+		$scope.addData = {};
+		$scope.addData = dclone($scope.contractData,['statistics','total_contracted_nights']);
+		$scope.addData.occupancy = [];
+		$scope.addData.begin_date = dateFilter(new Date(), 'yyyy-MM-dd');;
+		$scope.addData.end_date = dateFilter(new Date(), 'yyyy-MM-dd');;
+	};
+	$scope.CancelAddNewContract =  function(){
+		$scope.isAddMode = false;
+		$scope.addData.contract_name = "";
 	};
 	/*
 	 * Add new contarcts
 	*/
 	$scope.AddNewContract = function(){
 		
-		var data = dclone($scope.contractData,['occupancy','statistics','rates','total_contracted_nights']);
+		var data = dclone($scope.addData,['occupancy','statistics','rates','total_contracted_nights']);
 		
 		var saveContractSuccessCallback = function(data){
-	    	$scope.contractData.contract_name ="";
 	    	$scope.$emit('hideLoader');
+	    	var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
+	    	$scope.contractList.current_contracts.push(dataNew);
+	    	$scope.addData.contract_name = "";
+	    	$scope.isAddMode = false;
 	    };
 	  	var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
+	        $scope.addData.contract_name = "";
+	        $scope.isAddMode = false;
 	    }; 
 		$scope.invokeApi(RVCompanyCardSrv.addNewContract,{ "account_id":$stateParams.id, "postData":data}, saveContractSuccessCallback, saveContractFailureCallback);  
 	};
