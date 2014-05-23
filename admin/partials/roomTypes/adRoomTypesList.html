@@ -9,11 +9,9 @@
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div id="new-form-holder"></div>
+		<span class="grid" ng-show="isAddMode" ng-include="'/assets/partials/roomTypes/adRoomTypesDetails.html'"></span>	
 		<table id="brands" class="grid" ng-table="tableParams">
 			<tbody>
-				<tr ng-show="isAddMode">
-					<td colspan="2" ng-include="'/assets/partials/roomTypes/adRoomTypesDetails.html'"></td>
-				</tr>	
 				<tr ng-repeat="room_types in $data" > 
 					<td header-class="width-70"  data-title="'Room Type'" sortable="'name'" ng-click="editRoomTypes($index,room_types.id)" ng-hide="currentClickedElement == $index" >
 						<a data-item="3" data-colspan="2" class="edit-data-inline">{{room_types.name}} </a>
