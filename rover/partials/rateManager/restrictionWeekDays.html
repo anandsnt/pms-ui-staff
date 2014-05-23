@@ -1,4 +1,5 @@
-<div class="price-div" ng-controller = "RestrictionWeekdaysCtrl">
+<div id="restrictionDays" class="price-div" ng-controller = "RestrictionWeekdaysCtrl"  ng-iscroll="restictionWeekDays" ng-iscroll-delay="3000" >
+<div class="scrollable">
 	<div class="restriction_text" >
 	    DAYS OF WEEK
 	</div>
@@ -52,11 +53,11 @@
 		</label>
 	</div>
 	<br />
-	<div class="price-div" >
+	<div class="restriction_text price-div" >
 	    WEEKS
 	</div>
-	<div>
-	   <select style="width:214px;" ng-model="daysOptions.numOfWeeks">
+	<div class="select">
+	   <select ng-model="daysOptions.numOfWeeks">
 			<option value="1">1</option>
 			<option value="2">2</option>
 			<option value="3">3</option>
@@ -64,7 +65,7 @@
 		</select>
 	</div>
 	<br /> <!-- ng-hide="!popupData.fromRoomTypeView" -->
-	<div class="price-set-title" >
+	<div class="price-set-title application" >
 		<label class="checkbox" >
 			<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToPrice}"></span>
 			<input type="checkbox" ng-model="daysOptions.applyToPrice">
@@ -76,4 +77,5 @@
 			<span>APPLY TO RESTRICTIONS </span> 
 		</label>
 	</div>
+</div>
 </div>

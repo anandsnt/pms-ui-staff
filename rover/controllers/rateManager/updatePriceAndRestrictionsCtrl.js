@@ -15,6 +15,21 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 
         };
 
+    $scope.$parent.myScrollOptions = {
+        'restictionsList' : {            
+            scrollbars : true,
+            interactiveScrollbars : true,
+            click : true            
+        },
+
+    };
+
+    //$scope.restictions.selectedIndex
+
+    $scope.restrictionsList = {
+        selectedIndex : -1
+    };
+
         $scope.daysOptions = {  "days": 
                             {   "mon" : false,
                                 "tue" : false,
@@ -172,7 +187,13 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         * Click handler for restriction on/off buttons
         * Enable disable restriction. 
         */
-        $scope.onOffRestrictions = function(id, action, days){
+        $scope.onOffRestrictions = function(id, action, days,selectedIndex){
+            if( $scope.popupData.all_data_selected || $scope.popupData.fromRoomTypeView){
+                 $(".ngdialog-content").addClass("data-entry");
+            }
+
+
+            $scope.restrictionsList.selectedIndex = selectedIndex;
 
         	angular.forEach($scope.data.restrictionTypes, function(value, key){
         		value.showEdit =  false;
@@ -204,6 +225,16 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 
         $scope.expandButtonClicked = function(){
             $scope.showExpandedView = !$scope.showExpandedView;
+            if($scope.showExpandedView){
+                if($scope.popupData.all_data_selected || $scope.popupData.fromRoomTypeView){
+                    $(".ngdialog-content").addClass("expanded");
+                }else{
+                    $(".ngdialog-content").addClass("moderate");
+                }
+            }else{
+                $(".ngdialog-content").removeClass("expanded moderate");
+            }
+            console.log($scope.popupData);
         };
 
         getAllSelectedDates = function() {

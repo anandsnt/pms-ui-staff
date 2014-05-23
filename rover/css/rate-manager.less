@@ -197,6 +197,7 @@
             .cal-cell{
                 text-align:center; 
                 vertical-align:middle;
+                line-height: 24px;
             }
             .iScrollHorizontalScrollbar {
               top: auto !important;
@@ -535,13 +536,6 @@ table tr {
 .status-mixed{
     background-color: rgba(0, 0, 0, 0.15);;
 }
-.ngdialog.ngdialog-theme-default.restriction-popup .ngdialog-content {
-    width: 800px;
-} 
-
-.ngdialog.ngdialog-theme-default.restriction-popup .ngdialog-content {
-    width: 1100px;
-}
 
 dialog{
     color:#000;
@@ -614,7 +608,7 @@ dialog{
         text-align:left;
 
         &.selected {
-          background: white;
+          background: #F0F0F0;
         }
     }
     .price-info {
@@ -784,4 +778,197 @@ dialog{
   background-position: 0 -802px;
 }
 
+.ngdialog.ngdialog-theme-default.restriction-popup{
 
+  &.fromRoomTypeView{
+   .ngdialog-content{
+    width: 700px;
+    }
+  }
+
+  padding-top: 80px;
+  .ngdialog-content{
+    width: 270px;
+    &.data-entry{
+    width: 700px;
+    }    
+    &.expanded{
+      width: 940px;
+    }
+    &.moderate{
+      width: 810px;
+    }
+    table{
+      margin-bottom: 0px;
+    }
+  .updatePriceAndRestrictionsContainer{
+    .header{
+      height: 80px;
+    }
+
+    .footer{
+      height: 80px;
+      padding-top: 10px;
+      button{
+        height: 45px;
+        width: 120px;
+      }
+    }
+  }
+
+  #restictionsList{
+    width:270px;
+    height:400px;
+    overflow: hidden;
+    position: relative;
+  .restriction-type{
+    position: relative;
+    min-height: 45px;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 15px;
+    padding-right: 5px;
+    span{
+      display: inline-block;
+      &.restriction-status{
+        position: absolute;
+        right:10px;
+        top:10px;
+      }
+      &.text{
+        width: 130px;
+        text-align: left !important;
+        margin-right: 60px;
+        font-size: 13px;
+        line-height: 12px;
+      }
+      &.restriction-icon{
+        position: relative;
+        line-height: 24px;
+      }
+    }
+  }
+  }
+
+  #restrictionDays{
+    position: relative;
+    width:270px;
+    height:400px;
+    overflow-y: hidden;
+    background-color:#DEDEDE;  
+    margin-left: 0px;      
+    .select{
+      width: 200px;
+      margin-left: 20px;
+      margin-top: 10px;
+    }
+
+
+    .restriction_text{
+      text-align: left;
+      padding:25px 0 0 20px;
+      font-size: 15px;
+      font-weight: bold;
+      &.price-div{
+        margin: 0;
+        padding-top: 0px;
+      }
+    }
+    .price-set-title{
+      text-align: left;
+      margin-left: 8px;
+      label.checkbox{
+       -webkit-box-shadow: none;
+       box-shadow: none;
+        display: block;
+        border: none;
+        background: none;
+        height: 30px;
+      }
+      input{
+        height: 18px;
+      }
+      &.application{
+        position: relative;
+        top: -10px;
+      }
+    }
+  }
+
+  #mixedRestrictions{
+    width:400px;
+    height:400px;
+
+    h4{
+      text-transform: uppercase;
+    }
+
+    .inputlabel{
+      padding-top: 15px;
+
+      label{
+        font-weight: bold;
+        display: inline-block;
+      }
+    }
+
+      .cancellationbuttonwrap{
+          button{ 
+          height: 45px;
+          font-size: 18px;
+
+          &.large{
+            height: 60px;
+          }
+        }
+
+        .button.cancel{
+          color: #030303;
+          font-weight: normal;
+          font-size: 15px;
+        }
+
+      }
+
+    .mixed_restrictions{
+       color:#D98814;      
+
+      em{
+        font-size: 14px;
+      }
+
+      span.h4{
+        display: inline;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  #restrictionPriceContainer{
+    width:400px;
+    height:400px;
+    padding-left: 10px;
+    margin-left: 0;
+  }
+
+  #pricesContainer{
+    width:270px;
+    height:400px;
+    overflow-y: scroll;
+    background-color: #E4E4E4;
+
+    .price-info{
+      padding: 0;
+    .price-item{
+      color:#CCC;
+      .amount{
+        color: #28292D;
+      }
+    }
+  }
+  }
+
+}
+}
