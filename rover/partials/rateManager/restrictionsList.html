@@ -2,7 +2,9 @@
 	<h1>
     	RESTRICTIONS
     </h1>
-
+    <div class="mixed_restrictions" ng-show="popupData.all_data_selected">
+        <em>Mixed restrictions applied!</em>
+    </div>
 </div>
 <div>
 	<div class="restriction-type" ng-repeat="restrictionType in data.restrictionTypes">
