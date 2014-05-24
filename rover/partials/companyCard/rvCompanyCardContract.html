@@ -50,7 +50,7 @@
                             <option ng-repeat="type in ['+','-']" ng-model="contractData.selected_type" value="type">{{type}}</option>
                         </select>
                     </div>
-                    <input ng-model="contractData.rate_value" name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{contractData.rate_value}}" type="text" />
+                    <input ng-model="contractData.rate_value" name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{contractData.rate_value | number:2}}" type="text" />
                     <div class="select">
                         <select name="company-rate-adjust-3" >
                         	<option ng-repeat="symbol in ['%','$']" ng-model="contractData.selected_symbol" value="symbol">{{symbol}}</option>
