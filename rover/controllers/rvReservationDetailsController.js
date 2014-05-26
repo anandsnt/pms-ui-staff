@@ -1,4 +1,4 @@
-sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'RVNewsPaperPreferenceSrv', function($scope, RVReservationCardSrv, RVNewsPaperPreferenceSrv, $stateParams, reservationListData, reservationDetails){
+sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'RVNewsPaperPreferenceSrv', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, RVNewsPaperPreferenceSrv){
 	BaseCtrl.call(this, $scope);
 	/*
 	 * success call back of fetch reservation details
@@ -68,12 +68,27 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 $scope.saveNewsPaperPreference = function(selected_newspaper){
 		
 		var params = {};
-		params.reservation_id = $scope.reservationData.id;
-		params.selected_newspaper= selected_newspaper;
+		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+		params.selected_newspaper= $scope.getIDFromNewspaper(selected_newspaper);
 
+		$scope.newspaperSavedSuccessCallback = function(data){
+		
+		$scope.$emit('hideLoader');
+	};
+		$scope.invokeApi(RVNewsPaperPreferenceSrv.saveNewspaperPreference, params, $scope.newspaperSavedSuccessCallback);
 
-		$scope.invokeApi(RVNewsPaperPreferenceSrv.saveNewsPaperPreference, params);
+	};
 
+	$scope.getIDFromNewspaper = function(newspaper){
+		var flag = false;
+		var id = 0;
+		angular.forEach($scope.reservationData.reservation_card.news_paper_pref.news_papers, function(item, index) {
+		if(newspaper.substr(item.name) && !flag){
+			id = item.value;
+			flag = true;
+		}
+	});
+		return id;
 	};
 
 
