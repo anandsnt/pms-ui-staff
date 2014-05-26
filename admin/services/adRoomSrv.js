@@ -20,6 +20,39 @@ admin.service('ADRoomSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
 		return deferred.promise;
 	};
 
+  /*
+    * getter method for the room details of hotel
+    * @return {object} room details
+    */
+	this.fecthAllRoomDetails = function(data){
+		var deferred = $q.defer();
+		var url = '/admin/hotel_rooms/new.json';	
+		ADBaseWebSrv.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		},function(errorMessage){
+			deferred.reject(errorMessage);
+		});
+		return deferred.promise;
+	};
+
+	 /*
+    * setter method for room details
+    * @return {object} status 
+    */
+	this.createRoom = function(data){
+	
+		var updateData = data.updateData;
+		var deferred = $q.defer();
+		var url = '/admin/hotel_rooms/';
+		
+		ADBaseWebSrv.postJSON(url,updateData).then(function(data) {
+			deferred.resolve(data);
+		},function(errorMessage){
+			deferred.reject(errorMessage);
+		});
+		return deferred.promise;
+	};
+
 
    /*
     * getter method for the details of room
