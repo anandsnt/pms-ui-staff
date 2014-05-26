@@ -330,34 +330,48 @@ this.readCertificate = function(input, type) {
 		//CICO-5178
 		if(type == "logo"){
 			that.myDom.find('#hotel-logo-preview').attr('changed', "changed");
+			that.myDom.find('#hotel-logo-preview').attr('deleted', false);
 		}
 
 		else if(type == "logo-template"){					
 			that.myDom.find('#hotel-logo-template-preview').attr('changed', "changed");
+			that.myDom.find('#hotel-logo-template-preview').attr('deleted', false);
+
 		}
 
 		else if(type == "logo-deleted"){
 			that.myDom.find('#hotel-logo-preview').attr('deleted', "deleted");
+			that.myDom.find("#deleteLogo").hide();
+			that.myDom.find('#hotel-logo-preview').attr('src', "");
+			that.myDom.find('#hotel-logo').parent('div').find('span').text("Choose file ...");
 		}
 
 		else if(type == "logo-template-deleted"){					
 			that.myDom.find('#hotel-logo-template-preview').attr('deleted', "deleted");
+			that.myDom.find("#deleteTemplate").hide();
+			that.myDom.find('#hotel-logo-template-preview').attr('src', "");
+			that.myDom.find('#hotel-logo').parent('div').find('span').text("Choose file ...");
 		}
+
 
         if (input.files && input.files[0]) {
            var reader = new FileReader();
            reader.onload = function(e) {
            		if(type == "logo"){
 					that.myDom.find('#hotel-logo-preview').attr('src', e.target.result);
-				}
-				
+					that.myDom.find("#deleteLogo").show();
+				}			
 
 				if(type == "logo-template"){
 					that.myDom.find('#hotel-logo-template-preview').attr('src', e.target.result);
+					that.myDom.find("#deleteTemplate").show();
 				}
                that.fileContent = e.target.result;
            };
            reader.readAsDataURL(input.files[0]);
+			
+
+
        }
   };
 
