@@ -29,12 +29,13 @@ sntRover.controller('contractStartCalendarCtrl',['$scope','dateFilter','ngDialog
 
 	    if($scope.closePopupOnSelection && $scope.isAddMode){
 	     	$scope.addData.begin_date = $scope.date;
-	     	ngDialog.close();
 	    }
 	    else{
-	    	$scope.contractData.begin_date = $scope.date;
-	     	ngDialog.close();
+	    	$scope.contractData.begin_date = $scope.date;   	
 	    }
+
+	    if($scope.closePopupOnSelection)
+	    	ngDialog.close();
 
   	};
 
