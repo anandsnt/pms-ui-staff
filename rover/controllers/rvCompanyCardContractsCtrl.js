@@ -3,7 +3,8 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     $scope.highchartsNG = {};
 	$scope.isAddMode = false;
 	$scope.contractList = {};
-	$scope.contractSelected = "";
+	$scope.contractData = {};
+	$scope.contractList.contractSelected = "";
 	$scope.errorMessage = "";
 	var contractInfo = {};
 	
@@ -85,8 +86,9 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	var fetchContractsDetailsSuccessCallback = function(data){
 		$scope.contractData = {};
     	$scope.contractData = data;
-    	contractInfo = JSON.parse(JSON.stringify($scope.contractData));
+    	contractInfo = {};
     	$scope.contractData.contract_name ="";
+    	contractInfo = JSON.parse(JSON.stringify($scope.contractData));
     	$scope.graphData = manipulateGraphData(data.occupancy);
     	$scope.$emit('hideLoader');
     	drawGraph();    	
@@ -94,7 +96,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     	// Disable contracts on selecting history
     	$scope.isHistorySelected = false ;
     	angular.forEach($scope.contractList.history_contracts,function(item, index) {
-    		if(item.id == $scope.contractSelected){
+    		if(item.id == $scope.contractList.contractSelected){
     			$scope.isHistorySelected = true ;
     		}
        	});
@@ -106,9 +108,9 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
   	    
     var fetchContractsListSuccessCallback = function(data){
     	$scope.contractList = data;
-    	$scope.contractSelected = data.contract_selected;
-    	if($scope.contractSelected != undefined){
-    		$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":$scope.contractSelected},fetchContractsDetailsSuccessCallback,fetchFailureCallback);  
+    	$scope.contractList.contractSelected = data.contract_selected;
+    	if($scope.contractList.contractSelected){
+    		$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":$scope.contractList.contractSelected},fetchContractsDetailsSuccessCallback,fetchFailureCallback);  
     	}
     };
     var fetchContractsDetailsFailureCallback = function(data){
@@ -181,15 +183,22 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	/*
     * Function to handle data change in 'Contract List'.
     */
-   	$scope.clickContractSElected = function(contratct_id){
-   		$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":contratct_id},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);
+   	$scope.clickContractSelected = function(contratct_id){
+   		if(contratct_id){
+   			$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":contratct_id},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);
+	   		angular.forEach($scope.contractList.history_contracts,function(item, index) {
+	    		if(item.id == contratct_id){
+	    			$scope.isHistorySelected = true ;
+	    		}
+	       	});
+       }
    	};
    
 	$scope.contractStart = function(){
 		ngDialog.open({
 			 template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
 			 controller: 'contractStartCalendarCtrl',
-			 className: 'ngdialog-theme-default calendar-single',
+			 className: 'ngdialog-theme-default calendar-single1',
 			 scope: $scope
 		});
 	};
@@ -198,7 +207,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		ngDialog.open({
 			 template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
 			 controller: 'contractEndCalendarCtrl',
-			 className: 'ngdialog-theme-default calendar-single',
+			 className: 'ngdialog-theme-default calendar-single1',
 			 scope: $scope
 		});
 	};
@@ -207,7 +216,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		ngDialog.open({
 			 template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
 			 controller: 'contractedNightsCtrl',
-			 className: 'ngdialog-theme-default calendar-single',
+			 className: 'ngdialog-theme-default calendar-single1',
 			 scope: $scope
 		});
 	};
@@ -269,11 +278,11 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		}
 		else{
 			contractInfo = dataToUpdate;
-		};	    	
+		}	    	
 	    
 	    if(!dataUpdated){
 	    	var data = dclone($scope.contractData,['occupancy','statistics','rates','total_contracted_nights']);
-	    	$scope.invokeApi(RVCompanyCardSrv.updateContract,{ "account_id": $stateParams.id, "contract_id": $scope.contractSelected, "postData": data}, saveContractSuccessCallback, saveContractFailureCallback);
+	    	$scope.invokeApi(RVCompanyCardSrv.updateContract,{ "account_id": $stateParams.id, "contract_id": $scope.contractList.contractSelected, "postData": data}, saveContractSuccessCallback, saveContractFailureCallback);
 		}
 	};
 
