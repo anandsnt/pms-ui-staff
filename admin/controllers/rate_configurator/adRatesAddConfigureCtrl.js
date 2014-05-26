@@ -169,7 +169,8 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             angular.forEach($scope.data.sets, function (value, key) {
                 $scope.saveSet(key);
             });
-            $state.go('admin.rates');
+            //CICO-6885
+            //$state.go('admin.rates');
         };
 
         $scope.popupCalendar = function () {
