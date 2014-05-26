@@ -71,11 +71,10 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 		if($scope.currentFilterData.is_checked_all_rates){
 			return data;
 		}
+
 		data.rate_type_ids = [];
-		var rateTypeSelected = $scope.currentFilterData.rate_type_selected;
-		var rateTypeId = rateTypeSelected !== "" ? parseInt(rateTypeSelected) : "";
-		if(rateTypeId != ""){
-			data.rate_type_ids.push(rateTypeId);
+		for(var i in $scope.currentFilterData.rate_type_selected_list){
+			data.rate_type_ids.push($scope.currentFilterData.rate_type_selected_list[i].id);	
 		}
 		
 		data.rate_ids = [];

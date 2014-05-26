@@ -60,8 +60,31 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 			$scope.$$childTail.$parent.myScroll['filter_details'].refresh();
 			}, 300);
 	};
-	
-	
+
+	$scope.$watch('currentFilterData.rate_type_selected', function() {
+		var isDataExists = false;
+		angular.forEach($scope.currentFilterData.rate_type_selected_list,function(item, index) {
+       		if (item.id == $scope.currentFilterData.rate_type_selected) {
+       			isDataExists = true;
+		 	}
+       	});
+		if(!isDataExists){
+			angular.forEach($scope.currentFilterData.rate_types,function(item, index) {
+	       		if (item.id == $scope.currentFilterData.rate_type_selected) {
+	       			$scope.currentFilterData.rate_type_selected_list.push(item);
+			 	}
+	       });
+	    }
+	    $scope.currentFilterData.rate_type_selected = "";
+   	});	
+
+   	$scope.deleteSelectedRateType = function(id){
+		angular.forEach($scope.currentFilterData.rate_type_selected_list,function(item, index) {
+       		if (item.id == id) {
+       			$scope.currentFilterData.rate_type_selected_list.splice(index, 1);
+		 	}
+       	});
+	};
 	
 	$scope.$watch('currentFilterData.rate_selected', function() {
 		var isDataExists = false;
@@ -77,8 +100,9 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 			 	}
 	       });
 	    }
+	    $scope.currentFilterData.rate_selected = "";
    	});
-   	
+
 	$scope.deleteRate = function(id){
 		angular.forEach($scope.currentFilterData.rates_selected_list,function(item, index) {
        		if (item.id == id) {
