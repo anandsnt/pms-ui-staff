@@ -24,7 +24,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
            rate_type_selected : '',
            rates : [],
            rates_selected_list : [],
-           name_on_cards : []
+           name_card_ids : []
    	};
 
 

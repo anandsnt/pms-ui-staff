@@ -87,15 +87,9 @@
         <div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: {{cmpCardSearchDivHgt}}px; top: {{cmpCardSearchDivTop}}px">
             <div class="search-results">
                 <ul id="search-list">
-                    <li ng-repeat="row in companyCardResults" ng-click="setCompanyCardFilter(row.account_first_name+' '+row.account_last_name)">
+                    <li ng-repeat="row in companyCardResults" ng-click="setCompanyCardFilter(row)">
                         <img src="http://placehold.it/33">
                         <h4 ng-bind-html="'{{row.account_first_name}}, {{row.account_last_name}}'|highlight:companySearchText:false"></h4>
-                    </li>
-                    <!-- No results / no content when searched query not found-->
-                    <li ng-show="companyCardResults.length === 0 && companySearchText !== ''">
-                        <div>
-                            No matches have been found
-                        </div>
                     </li>
                 </ul>
             </div>

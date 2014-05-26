@@ -110,9 +110,14 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     $scope.companySearchTextEntered = function(){
         if($scope.companySearchText.length === 0){
             $scope.companyCardResults = [];
+            $scope.companyLastSearchText = "";
+            // clear company card filter data
+            $scope.currentFilterData.name_card_ids = [];
         }
         else{
-            companyCardFetchInterval = window.setInterval(function(){displayFilteredResults();}, 500);
+            companyCardFetchInterval = window.setInterval(function() {
+                displayFilteredResults();
+            }, 500);
         }
     };
 
@@ -125,21 +130,16 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     };
 
     var refreshScroller = function(){
-        $scope.cmpCardSearchDivHgt = "250";
+        $scope.cmpCardSearchDivHgt = 250;
         $scope.arrowPosFromTop = $('#company-card').offset().top;
         var popOverBottomPosFromTop = $('#company-card').offset().top + 20;
-        var totalHeight = $('#search-list').height();
+        var totalHeight = 42;
         if(totalHeight < $scope.cmpCardSearchDivHgt){
             $scope.cmpCardSearchDivHgt = totalHeight;
         }
         $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt + 10;
     }
 
-    var successCallBackOfCompanySearch = function(data){
-        $scope.$emit("hideLoader");
-        $scope.companyCardResults = data.accounts;
-        refreshScroller();
-    }
 
     /**
     * function to perform filering on results.
@@ -147,18 +147,23 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     */
     var displayFilteredResults = function(){
         if($scope.companySearchText !='' && $scope.companyLastSearchText != $scope.companySearchText){
+
+            var successCallBackOfCompanySearch = function(data){
+                $scope.$emit("hideLoader");
+                $scope.companyCardResults = data.accounts;
+                refreshScroller();
+            }
             var paramDict = {'query': $scope.companySearchText.trim()};
             $scope.invokeApi(RMFilterOptionsSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
-            // we have changed data, so we are refreshing the scrollerbar
+            // we have changed data, so we dont hit server for each keypress
             $scope.companyLastSearchText = $scope.companySearchText;
             clearInterval(companyCardFetchInterval);
-            refreshScroller(); 
         }
     };
 
-    $scope.setCompanyCardFilter = function(name){
-        $scope.companySearchText = name;
-        $scope.currentFilterData.name_on_cards.push(name);
+    $scope.setCompanyCardFilter = function(cmpCardObj){
+        $scope.companySearchText = cmpCardObj.account_first_name + " " + cmpCardObj.account_last_name;
+        $scope.currentFilterData.name_card_ids.push(cmpCardObj.id);
         // reset company card result array
         $scope.companyCardResults = [];
     }

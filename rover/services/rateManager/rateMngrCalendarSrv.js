@@ -48,7 +48,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 				nameCardString = rateString + "&name_card_ids[]=" + params.name_card_ids[i];
 			}
 
-			var urlString = dateString + rateString + rateTypeString;
+			var urlString = dateString + rateString + rateTypeString + nameCardString;
 			//var url =  '/sample_json/rate_manager/daily_rates.json';	
 			BaseWebSrvV2.getJSON(urlString).then(function(data) {
 				that.dailyRates = data; 
