@@ -83,6 +83,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
         }
 	
 	var fetchContractsDetailsSuccessCallback = function(data){
+		$scope.contractData = {};
     	$scope.contractData = data;
     	contractInfo = JSON.parse(JSON.stringify($scope.contractData));
     	$scope.contractData.contract_name ="";
