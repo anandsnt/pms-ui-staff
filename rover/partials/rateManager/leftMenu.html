@@ -49,6 +49,12 @@
 					</div>
 				</div>
 
+				<div style="text-transform:uppercase; font-size:14px;" class="rates-box" ng-show="!currentFilterData.is_checked_all_rates" ng-repeat="rate_type in currentFilterData.rate_type_selected_list">
+					<span class="rate-data">{{rate_type.name}}</span>
+					<span ng-click="deleteSelectedRateType(rate_type.id)" class="icons delete_small cursor-hand"> &nbsp;</span>
+					<br clear="all">
+				</div>
+
 				<div class="entry" ng-show="!currentFilterData.is_checked_all_rates" style="font-size:14px;">
 					<label for="nationality">RATE</label>
 					<div class="select" >

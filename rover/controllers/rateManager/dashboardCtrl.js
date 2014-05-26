@@ -21,7 +21,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
            zoom_level_selected : "3",
            is_checked_all_rates : true,
            rate_types: [],
-           rate_type_selected : '',
+           rate_type_selected_list : [],
            rates : [],
            rates_selected_list : [],
            name_on_cards : []

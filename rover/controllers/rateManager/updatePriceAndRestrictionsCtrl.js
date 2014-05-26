@@ -20,8 +20,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             scrollbars : true,
             interactiveScrollbars : true,
             click : true            
-        },
-
+        }
     };
 
     //$scope.restictions.selectedIndex
@@ -30,15 +29,18 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         selectedIndex : -1
     };
 
-        $scope.daysOptions = {  "days": 
-                            {   "mon" : false,
-                                "tue" : false,
-                                "wed" : false,
-                                "thu" : false,
-                                "fri" : false,
-                                "sat" : false,
-                                "sun" : false,
-                            },
+
+
+
+        $scope.daysOptions = {  "days":[ 
+                                {key:"MON",day:"MONDAY",value:"false"},//"mon" : false,
+                                {key:"TUE",day:"TUESDAY",value:"false"},//"tue" : false,
+                                {key:"WED",day:"WEDNESDAY",value:"false"},//"wed" : false,
+                                {key:"THU",day:"THURSDAY",value:"false"},//"thu" : false,
+                                {key:"FRI",day:"FRIDAY",value:"false"},//"fri" : false,
+                                {key:"SAT",day:"SATURDAY",value:"false"},//"sat" : false,
+                                {key:"SUN",day:"SUNDAY",value:"false"}//"sun" : false,
+                            ],
                         "numOfWeeks" : 1,
                         "applyToPrice" : false,
                         "applyToRestrictions" : false
@@ -244,6 +246,11 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             }else{
                 $(".ngdialog-content").removeClass("expanded moderate");
             }
+
+            // setTimeout(function(){
+            //     $scope.$parent.$$childHead.myScroll['restictionsList'].refresh();
+            // }, 300);
+
             console.log($scope.popupData);
         };
 
@@ -257,11 +264,17 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             datesList.push($scope.popupData.selectedDate);
             //If the day value is true, then it is a checked(selected) day
             var selectedDays = [];
-            for(var key in $scope.daysOptions.days){
-                if($scope.daysOptions.days[key]){
-                    selectedDays.push(key.toUpperCase());
+            // for(var key in $scope.daysOptions.days){
+            //     if($scope.daysOptions.days[key]){
+            //         selectedDays.push(key.toUpperCase());
+            //     }
+            // }
+
+            $($scope.daysOptions.days).each(function(){
+                if(this.value === true){
+                    selectedDays.push(this.key.toUpperCase());
                 }
-            }
+            });
             
             //We dont have to add more dates to the dates list if no day is checked            
             if(selectedDays.length <= 0) {

@@ -28,7 +28,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	this.fetchCalendarData = function(params){
 		//var url = {"from_date":"2014-05-20","to_date":"2014-05-27","rate_type_ids":[],"rate_ids":[51,46],"name_card_ids":[]} 
 		var deferred = $q.defer();
-
 		var rejectDeferred = function(data){
 			deferred.reject(data);
 		};
@@ -41,7 +40,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			}
 			var rateTypeString = "";
 			for(var i in params.rate_type_ids){
-				rateTypeString = rateString + "&rate_type_ids[]=" + params.rate_type_ids[i];
+				rateTypeString = rateTypeString + "&rate_type_ids[]=" + params.rate_type_ids[i];
 			}
 
 			for(var i in params.name_card_ids){
