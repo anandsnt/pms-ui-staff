@@ -1,0 +1,52 @@
+<div role="dialog" id="modal" class="modal-show"><form class="modal-content form new-content" name="new-payment" id="new-payment" action="http://stayntouch.perceptiveinteractive.com/with-cards/app/modals/new-payment-method/" method="post">
+	<button class="dark-title modal-close" type="button" id="modal-close"><span class="icons icon-close"></span></button>
+	<strong class="new-form-title">New payment method</strong>
+	<div class="entry full-width">
+	    <label for="payment-type">Payment type</label>
+	    <div class="select">
+	    	<select ng-model="saveData.selected_payment_type" class="placeholder" ng-change="renderPaymentValues()">
+				<option value=""> Select Payment Type </option>
+				<option ng-repeat="paymenttype in data" value="{{$index}}">{{paymenttype.description}}</option>
+			</select>
+	    	
+	
+		</div>
+	</div>
+	<div class="entry full-width">
+	    <label for="credit-card">Select credit card</label>
+	    <div class="select">
+	    	<select ng-model="saveData.payment_credit_type" class="placeholder">
+				<option value=""> Select credit card </option>
+				<option ng-repeat="paymenttypevalue in paymentTypeValues" value="{{paymenttypevalue.cardcode}}">{{paymenttypevalue.cardname}}</option>
+			</select>
+	    	
+			
+		</div>
+	</div>
+	<div class="holder float">
+		<div class="entry">
+		    <label for="card-number-set1">Card number</label>
+		    <input type="text" maxlength="15" placeholder="Enter Card number" ng-model="saveData.card_number">
+		</div>
+		<div class="entry">
+		    <label for="expiry-month">Expiration date (<span>MM/YY</span>)</label>
+		    <input type="text" size="2" maxlength="2" value="" placeholder="MM" ng-model="saveData.card_expiry_month">
+		    <input type="text" size="2" maxlength="2" value="" placeholder="YY" ng-model="saveData.card_expiry_year">
+		</div>
+	</div>
+	<div class="entry full-width">
+	    <label for="name-on-card">Name on card</label>
+	    <input type="text" ng-model="saveData.name_on_card" placeholder="Enter name on card" id="name-on-card" name="name-on-card">
+	</div>	
+	<div class="entry full-width">
+		<label for="add-in-guest-card" class="checkbox inline">
+			<span class="icon-form icon-checkbox"></span>
+            <input type="checkbox" value="1" id="add-in-guest-card" name="checkin">
+            Add to Guest Card
+        </label>
+	</div>
+	<div class="actions float">
+		<button class="button blank modal-close" id="cancel" type="button">Cancel</button>
+		<button class="button green modal-close" id="save" type="button" ng-click="savePayment()">Add card</button>  
+	</div>
+</form></div>

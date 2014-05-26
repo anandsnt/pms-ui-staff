@@ -124,4 +124,16 @@ $scope.settingsClicked = function(){
   }
 };
 
+
+$scope.showAddNewPaymentModal = function(passData){
+	alert("rvg")
+	console.log(passData)
+	  $scope.passData = passData;
+	  ngDialog.open({
+               template: '/assets/partials/payment/rvPaymentModal.html',
+               controller: 'RVPaymentMethodCtrl',
+               scope:$scope
+          });
+};
+
 }]);

@@ -24,7 +24,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 			$scope.$broadcast("saveContract");
 		}		
 		$scope.currentSelectedTab = tabToSwitch;
-	}
+	};
 	
 
 		
@@ -43,7 +43,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		else if(getParentWithSelector($event, document.getElementById("company-card-nested-first"))){
 			$scope.$emit("saveContactInformation");
 		}
-	}
+	};
 
 	/**
 	* remaining portion will be the Controller class of company card's contact info
@@ -61,7 +61,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch
 		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
-	}
+	};
 
 	//checking for type, if not found, choosing as travel-agent, need to discuss with team
 	if(typeof $stateParams.type !== 'undefined' && $stateParams.type !== ""){
@@ -76,7 +76,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	*/
 	var successCallbackOfCountryListFetch = function(data){
 		$scope.countries = data;
-	}
+	};
 
 	//fetching country list
 	$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, data, successCallbackOfCountryListFetch);	
@@ -116,7 +116,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch
 		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
-	}
+	};
 
 	/**
 	* failure callback of save contact data
@@ -125,7 +125,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$scope.$emit("hideLoader");
 		$scope.errorMessage = errorMessage;
 		$scope.currentSelectedTab = 'cc-contact-info';
-	}
+	};
 
 	/**
 	* function used to save the contact data, it will save only if there is any
@@ -159,7 +159,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 			}
 			$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
 		}
-	}
+	};
 
 	/**
 	* recieving function for save contact with data

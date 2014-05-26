@@ -5,6 +5,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	 */
 	//Data fetched using resolve in router
 	$scope.reservationData = reservationDetails;
+console.log(JSON.stringify($scope.reservationData));
 	$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
 	$scope.selectedLoyalty = {};
 	angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
@@ -50,7 +51,6 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	 * @param {int} confirmationNumber => confirmationNumber of reservation
 	 */
 	$scope.$on("RESERVATIONDETAILS", function(event, confirmationNumber){
-	 	
 	 	if(confirmationNumber){
 	 		  $scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, confirmationNumber, $scope.reservationDetailsFetchSuccessCallback);	
 	 	} else {
@@ -64,4 +64,12 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 passData.avatar=reservationListData.guest_details.avatar;
   	 passData.vip=reservationListData.guest_details.vip;
   	 $scope.$emit('passReservationParams', passData);
+  	 
+  	 $scope.openAddNewPaymentModel = function(){
+  	 	var passData = {
+  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
+  	 		"fromView": "staycard"
+  	 	};
+  	 	$scope.showAddNewPaymentModal(passData);
+  	 };
 }]);

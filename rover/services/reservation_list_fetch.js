@@ -20,7 +20,7 @@ sntRover.service('RVReservationCardSrv',['$http', '$q', 'RVBaseWebSrv', function
 			    deferred.reject(data);
 			});	
 
-		}
+		};
 
 		var url = 'api/reservations/'+reservationId+'.json';
 		RVBaseWebSrv.getJSON(url).then(function(data) {

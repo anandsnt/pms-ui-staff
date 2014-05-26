@@ -8,22 +8,22 @@ $scope.guestCardData.userId = '';
 $scope.guestCardData.contactInfo.birthday = '';
 
 $scope.$on('guestCardUpdateData',function(event, data){
-$scope.guestCardData.contactInfo = data.data;
-$scope.guestCardData.contactInfo.avatar = data.avatar;
-$scope.guestCardData.contactInfo.vip = data.vip;
-$scope.countriesList = data.countries;
-$scope.guestCardData.userId=data.userId;
+	$scope.guestCardData.contactInfo = data.data;
+	$scope.guestCardData.contactInfo.avatar = data.avatar;
+	$scope.guestCardData.contactInfo.vip = data.vip;
+	$scope.countriesList = data.countries;
+	$scope.guestCardData.userId=data.userId;
 
 });
 
 $scope.$on('reservationCardClicked',function(){
-$scope.$broadcast('reservationCardisClicked');
+	$scope.$broadcast('reservationCardisClicked');
 });
 
 
 
 //setting the heading of the screen to "Search"
-   $scope.heading = "Stay Card";
-$scope.menuImage = "back-arrow";    
+    $scope.heading = "Stay Card";
+	$scope.menuImage = "back-arrow";    
 
 }]);
