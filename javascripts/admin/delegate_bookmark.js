@@ -15,6 +15,20 @@ var DelegateBookMark = function(){
 			error : function(jqxhr, status, error){
             	//checking whether a user is logged in
             	if (jqxhr.status == "401") { sntapp.logout(); return;}
+            	if (jqxhr.status=="503" || jqxhr.status=="500") {
+            	    location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
+            	    return;
+            	}
+
+            	if(jqxhr.status=="422"){
+            	    location.href = XHR_STATUS.REJECTED;
+            	    return;
+            	}
+
+            	if(jqxhr.status=="404"){
+            	    location.href = XHR_STATUS.SERVER_DOWN;
+            	    return;
+            	}
 
 			  $("#components_"+bookMarkId).removeClass("moved ui-draggable-disabled ui-state-disabled");
 			}
@@ -34,6 +48,20 @@ var DelegateBookMark = function(){
 			error : function(jqxhr, status, error){
             	//checking whether a user is logged in
             	if (jqxhr.status == "401") { sntapp.logout(); return;}
+            	if (jqxhr.status=="503" || jqxhr.status=="500") {
+            	    location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
+            	    return;
+            	}
+
+            	if(jqxhr.status=="422"){
+            	    location.href = XHR_STATUS.REJECTED;
+            	    return;
+            	}
+
+            	if(jqxhr.status=="404"){
+            	    location.href = XHR_STATUS.SERVER_DOWN;
+            	    return;
+            	}
 			  
 			}
 		});
