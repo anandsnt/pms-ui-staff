@@ -142,7 +142,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 
 	$scope.floors = [];
 	for(i=0;i<=100;i++){
-		var floorData = {"value":i,"name":addZeros(i)};
+		var floorData = {"value":addZeros(i),"name":addZeros(i)};
 		$scope.floors.push(floorData);
 	};
 
