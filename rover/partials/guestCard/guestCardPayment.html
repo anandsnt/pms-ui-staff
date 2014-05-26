@@ -1,4 +1,4 @@
- <form method="post" action="app/stay-card/" id="gc-payment" name="gc-payment" class="form card-tab scrollable" ng-show="current == 'guest-credit'">
+ <form ng-controller="RVPaymentGuestCtrl" class="form card-tab scrollable" ng-show="current == 'guest-credit'">
                     <div class="wrapper">
                         <!-- Credit cards on file -->
                         <a href="modals/select-primary/" class="active-item item-payment primary open-modal float">
@@ -10,25 +10,7 @@
                             <span class="name">Name <span class="value name">Jos Schaap</span></span>
                             <span class="primary"><span class="value primary">Primary</span></span>
                         </a>
-                        <a href="modals/select-primary/" class="active-item item-payment open-modal float">
-                            <figure class="card-logo">
-                                <img src="../images/mastercard.png" alt="" />
-                            </figure>
-                            <span class="number">Ending with <span class="value number">7718</span></span>
-                            <span class="date">Date <span class="value date">04/16</span></span>
-                            <span class="name">Name <span class="value name">Jos Schaap</span></span>
-                        </a>
-                        <a href="modals/select-primary/" class="active-item item-payment open-modal float">
-                            <figure class="card-logo">
-                                <img src="../images/amex.png" alt="" />
-                            </figure>
-                            <span class="number">Ending with <span class="value number">2757</span></span>
-                            <span class="date">Date <span class="value date">12/14</span></span>
-                            <span class="name">Name <span class="value name">Jos Schaap</span></span>
-                        </a>
-                        <a href="modals/select-primary/" class="active-item item-payment open-modal float">
-                            <span class="value code">Cash</span>
-                        </a>
-                        <a href="modals/new-payment-method/" class="open-modal add-new-button">+ New Payment Method</a>
+                        
+                        <a class="open-modal add-new-button" ng-click="openAddNewPaymentModel()">+ New Payment Method</a>
                     </div>
                 </form>

@@ -15,7 +15,7 @@
 	<div class="entry full-width">
 	    <label for="credit-card">Select credit card</label>
 	    <div class="select">
-	    	<select ng-model="saveData.payment_credit_type" class="placeholder">
+	    	<select ng-model="saveData.credit_card" class="placeholder">
 				<option value=""> Select credit card </option>
 				<option ng-repeat="paymenttypevalue in paymentTypeValues" value="{{paymenttypevalue.cardcode}}">{{paymenttypevalue.cardname}}</option>
 			</select>

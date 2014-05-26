@@ -1,4 +1,4 @@
-sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVReservationCardSrv', function($rootScope, $scope, RVReservationCardSrv){
+sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVReservationCardSrv', 'RVGuestCardSrv', function($rootScope, $scope, RVReservationCardSrv, RVGuestCardSrv){
 	BaseCtrl.call(this, $scope);
 	$scope.timeline = "";
 	$scope.reservationList = [];
@@ -32,6 +32,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 		RVReservationCardSrv.setGuestData($scope.data.guest_details);
 
 		var fetchGuestcardDataSuccessCallback = function(data){
+			
 			var contactInfoData = {'data': data,
 									'countries': $scope.data.countries,
 									'userId':$scope.data.user_id,
@@ -39,6 +40,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 									'vip':$scope.data.vip};
 	        $scope.$emit('guestCardUpdateData',contactInfoData);
 	        $scope.$emit('hideLoader');
+	        $scope.showGuestPaymentList(data.user_id);
 	    };
 	    var fetchGuestcardDataFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
@@ -128,5 +130,20 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 	 	
 	 	$scope.$broadcast("RESERVATIONDETAILS", currentConfirmationNumber);
 	 	$scope.currentReservationId = currentConfirmationNumber;
+	 };
+	
+	 $scope.showGuestPaymentList = function(userId){
+	 	 var paymentSuccess = function(paymentData){
+		 	 $scope.$emit('hideLoader');
+		 	
+		 	 
+		 	 var paymentData = {"data":paymentData,
+		 	 			"user_id":userId
+		 	};
+		 	 
+		 	 
+		 	 $scope.$emit('GUESTPAYMENTDATA', paymentData);
+		 };
+	 	$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess);  
 	 };
 }]);

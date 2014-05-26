@@ -126,8 +126,6 @@ $scope.settingsClicked = function(){
 
 
 $scope.showAddNewPaymentModal = function(passData){
-	alert("rvg")
-	console.log(passData)
 	  $scope.passData = passData;
 	  ngDialog.open({
                template: '/assets/partials/payment/rvPaymentModal.html',
@@ -135,5 +133,9 @@ $scope.showAddNewPaymentModal = function(passData){
                scope:$scope
           });
 };
+
+ $scope.$on('GUESTPAYMENTDATA', function(event, paymentData) {
+ 	$scope.$broadcast('GUESTPAYMENT', paymentData);
+ });
 
 }]);
