@@ -79,9 +79,9 @@
 						<div class="entry has-sortable col3">
 							<label> Level 1 </label>
 
-							<ul id="level_1" data-placeholder="Drop here for Level 1" class="boxes sortable empty short-list" data-drop="true" jqyoui-droppable="{multiple:true}" ng-model="levelOne" data-jqyoui-options="{accept: '.acceptable_room_upsell_level'}" style="overflow: visible !important;">
+							<ul id="level_1" data-placeholder="Drop here for Level 1" class="boxes sortable empty short-list" data-drop="true" jqyoui-droppable="{multiple:true}" ng-model="levelOne" data-jqyoui-options="{accept: '.acceptable_room_upsell_level'}" style="overflow: scroll !important;">
 								<li ng-repeat="level1 in levelOne"
-								ng-model="levelOne" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" 
+								ng-model="levelOne" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" 
 								jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true'}" 
 								class='acceptable_room_upsell_level'
 								ng-hide="!level1.room_type_name">
@@ -93,11 +93,11 @@
 					</div>
 					<div class="entry has-sortable col3">
 						<label> Level 2 </label>
-						<ul id="level_2" data-placeholder="Drop here for Level 2" class="boxes sortable empty short-list" data-drop="true" jqyoui-droppable="{multiple:true}" ng-model="levelTwo" style="overflow: visible !important;" data-jqyoui-options="{accept: '.acceptable_room_upsell_level'}">
+						<ul id="level_2" data-placeholder="Drop here for Level 2" class="boxes sortable empty short-list" data-drop="true" jqyoui-droppable="{multiple:true}" ng-model="levelTwo" style="overflow: scroll !important;" data-jqyoui-options="{accept: '.acceptable_room_upsell_level'}">
 							<li ng-repeat="level2 in levelTwo"
 							ng-model="levelTwo" 
 							data-drag="true"
-							data-jqyoui-options="{revert: 'invalid'}" 
+							data-jqyoui-options="{revert: 'invalid',helper:'clone'}" 
 							jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true'}" 
 							class='acceptable_room_upsell_level'
 							ng-hide="!level2.room_type_name">
@@ -112,10 +112,10 @@
 					<label> Level 3 </label>
 
 
-					<ul id="level_3" data-placeholder="Drop here for Level 3" class="boxes sortable empty short-list" data-drop="true" jqyoui-droppable="{multiple:true}" ng-model="levelThree" style="overflow: visible !important;" data-jqyoui-options="{accept: '.acceptable_room_upsell_level'}">
+					<ul id="level_3" data-placeholder="Drop here for Level 3" class="boxes sortable empty short-list" data-drop="true" jqyoui-droppable="{multiple:true}" ng-model="levelThree" style="overflow: scroll !important;" data-jqyoui-options="{accept: '.acceptable_room_upsell_level'}">
 						<li data-drag="true" 
 						ng-repeat="level3 in levelThree"
-						ng-model="levelThree" data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true'}" 
+						ng-model="levelThree" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:'true'}" 
 						class='acceptable_room_upsell_level'
 						ng-hide="!level3.room_type_name">
 						<span class="icons icon-handle"> </span>{{level3.room_type_name}}

@@ -26,8 +26,8 @@
 
 						data-drag = "true"
 						ng-model = "nonAssignedroomTypes"
-						jqyoui-draggable ="{index: {{$index}}, placeholder: false, animate: 'true', onOver: 'reachedUnAssignedRoomTypes'}"
-
+						jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
+						data-jqyoui-options="{revert: 'invalid', helper:'clone'}"
 						ng-click = "unAssignedRoomSelected($event, $index)"
 						ng-class = '{selected: selectedUnAssignedRoomIndex === $index}' 
 						>
@@ -68,10 +68,10 @@
 					<li ng-repeat="roomtype in assignedRoomTypes"
 					ng-click="assignedRoomSelected($event,$index)"
 					ng-class='{selected: selectedAssignedRoomIndex === $index}'
-					
+					data-jqyoui-options="{revert: 'invalid', helper:'clone'}"
 					data-drag = "true"
 					ng-model = "assignedRoomTypes"
-					jqyoui-draggable ="{index: {{$index}}, placeholder: false, animate: 'true'}">
+					jqyoui-draggable ="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
 						<span class="icons icon-handle"></span>
 						<span class="icons icon-handle"></span>
 						{{roomtype.name}}
