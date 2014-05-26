@@ -86,8 +86,8 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		$scope.contractData = {};
     	$scope.contractData = data;
     	contractInfo = {};
-    	contractInfo = JSON.parse(JSON.stringify($scope.contractData));
     	$scope.contractData.contract_name ="";
+    	contractInfo = JSON.parse(JSON.stringify($scope.contractData));
     	$scope.graphData = manipulateGraphData(data.occupancy);
     	$scope.$emit('hideLoader');
     	drawGraph();    	
