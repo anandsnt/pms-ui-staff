@@ -165,12 +165,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         };
 
         $scope.saveDateRange = function () {
-
             angular.forEach($scope.data.sets, function (value, key) {
                 $scope.saveSet(key);
             });
-            //CICO-6885
-            //$state.go('admin.rates');
         };
 
         $scope.popupCalendar = function () {
