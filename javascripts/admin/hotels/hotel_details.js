@@ -183,14 +183,14 @@ var HotelDetailsView = function(domRef) {
 		if(that.myDom.find("#hotel-logo-preview").attr("changed") == "changed")
 	  		hotel_logo = that.myDom.find("#hotel-logo-preview").attr("src");
 	  	else if (that.myDom.find("#hotel-logo-preview").attr("deleted") == "deleted")
-	  		hotel_logo = null;
+	  		hotel_logo = false;
 
 	  	var hotel_template_logo = "";
 
 	  	if(that.myDom.find("#hotel-logo-template-preview").attr("changed") == "changed")
 	  		hotel_template_logo = that.myDom.find("#hotel-logo-template-preview").attr("src");
 	  	else if (that.myDom.find("#hotel-logo-template-preview").attr("deleted") == "deleted")
-	  		hotel_template_logo = null;
+	  		hotel_template_logo = false;
 
 
 	  	var checkinToInspectedRoomsOnly = "false";
@@ -341,16 +341,16 @@ this.readCertificate = function(input, type) {
 
 		else if(type == "logo-deleted"){
 			that.myDom.find('#hotel-logo-preview').attr('deleted', "deleted");
-			that.myDom.find("#deleteLogo").hide();
+			that.myDom.find("#deleteLogo").addClass('hidden');
 			that.myDom.find('#hotel-logo-preview').attr('src', "");
 			that.myDom.find('#hotel-logo').parent('div').find('span').text("Choose file ...");
 		}
 
 		else if(type == "logo-template-deleted"){					
 			that.myDom.find('#hotel-logo-template-preview').attr('deleted', "deleted");
-			that.myDom.find("#deleteTemplate").hide();
+			that.myDom.find("#deleteTemplate").addClass('hidden');
 			that.myDom.find('#hotel-logo-template-preview').attr('src', "");
-			that.myDom.find('#hotel-logo').parent('div').find('span').text("Choose file ...");
+			that.myDom.find('#hotel-template-logo').parent('div').find('span').text("Choose file ...");
 		}
 
 
@@ -359,12 +359,12 @@ this.readCertificate = function(input, type) {
            reader.onload = function(e) {
            		if(type == "logo"){
 					that.myDom.find('#hotel-logo-preview').attr('src', e.target.result);
-					that.myDom.find("#deleteLogo").show();
+					that.myDom.find("#deleteLogo").removeClass('hidden');
 				}			
 
 				if(type == "logo-template"){
 					that.myDom.find('#hotel-logo-template-preview').attr('src', e.target.result);
-					that.myDom.find("#deleteTemplate").show();
+					that.myDom.find("#deleteTemplate").removeClass('hidden');
 				}
                that.fileContent = e.target.result;
            };
