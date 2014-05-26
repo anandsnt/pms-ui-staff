@@ -1,25 +1,28 @@
 
 sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RVCompanyCardSrv','$stateParams',function($scope,dateFilter,ngDialog,RVCompanyCardSrv,$stateParams){
 	BaseCtrl.call(this, $scope);
-	
-		
 	var first_date = new Date($scope.contractData.begin_date);
 	var last_date = new Date($scope.contractData.end_date);
-	var month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+	var month_array = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+	var new_occupancy = [];
 	
-	var new_occupancy =[];
-	for(var j=first_date.getFullYear(); j<= last_date.getFullYear(); j++){
-		for(var i=first_date.getMonth() ; i<=last_date.getMonth(); i++){
-			var obj = {
+	start_point = first_date.getFullYear()*12 + first_date.getMonth();
+	end_point = last_date.getFullYear()*12 + last_date.getMonth();
+	my_point = start_point;
+	
+	while( my_point <= end_point ){
+		year = Math.floor(my_point/12);
+		month = my_point - year*12;
+		var obj = {
 				"contracted_occupancy": 0,
-				"year" : j,
+				"year" : year,
 				"actual_occupancy": 0,
-				"month" : month[i]
-			};
-			new_occupancy.push(obj);
-		}
+				"month" : month_array[month]
+		};
+		new_occupancy.push(obj);
+		my_point +=1;
 	}
-
+	
 	if(!$scope.isAddMode){
 		angular.forEach($scope.contractData.occupancy,function(item, index) {
 				angular.forEach(new_occupancy,function(item2, index2) {
@@ -51,7 +54,7 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 	    else{
 	    	var data = {"occupancy": $scope.contractData.occupancy};
 	    }
-		$scope.invokeApi(RVCompanyCardSrv.updateNight,{ "account_id": $stateParams.id, "contract_id": $scope.contractSelected, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);  
+		$scope.invokeApi(RVCompanyCardSrv.updateNight,{ "account_id": $stateParams.id, "contract_id": $scope.contractList.contractSelected, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);  
 		ngDialog.close();
 	};
 	
