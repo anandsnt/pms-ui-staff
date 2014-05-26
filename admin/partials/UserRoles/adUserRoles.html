@@ -3,22 +3,59 @@
 		<h2>
 			User roles
 		</h2>
-		<a id="add-new-button" class="action add" ng-click="addNew()">Add new</a>
+		<a id="add-new-button" class="action add" ng-click="addNewClick()">Add new</a>
 	</header>
 
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	
+	<div class="data-holder grid" ng-show="addMode">
+		<form room_type_id="1" id="edit-room-type" class="form inline-form float">
+			<div class="form-title">
+				<h3><span>Add</span> User role </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+
+			<fieldset class="holder left float"> 
+				
+				<ad-textbox value="newUserRole" label = "User Role" placeholder = "Enter User role" required = "yes" ></ad-textbox>
+
+			</fieldset>
+			<fieldset class="holder right float">
+
+				<ad-dropdown div-class='' label="Role Dashboard" label-in-drop-down='Select Dashboard' sel-class='placeholder'  list='dashboard_types'selected-Id='selecetedDashboardId'></ad-dropdown>
+			</fieldset> 
+
+			<div class="actions float">
+				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClick()">
+					Cancel
+				</button>
+				<button type="button" like-type="common" id="update" class="button green add-data-inline" ng-click="saveUserRole()">
+					Save changes
+				</button>
+			</div>
+		</form>
+	</div>
+	
 
 	<table class="grid" id="likes">
+		<thead>
+			<th>
+				User Roles
+			</th>
+			<th>
+				Role Dashboard
+			</th>
+		</thead>
 		<tbody>
-			<tr ng-repeat="role in rolesList">
-			<td>
+			<tr ng-repeat="role in rolesList" style="padding:50px;">
+				<td>
 					{{role.name}}
-			</td>
-			<td>
-				<ad-dropdown div-class='' label="Role Dashboard" label-in-drop-down='Select Dashboard' sel-class='placeholder' id='room-type' name='room-type' list='dashboard_types'selected-Id='data.room_type_id'></ad-dropdown>
-			</td>
+				</td>
+				<td>
+					<ad-dropdown div-class='' label-in-drop-down='Select Dashboard' sel-class='placeholder' id='room-type' name='room-type' list='dashboard_types'selected-Id='data.room_type_id'></ad-dropdown>
+				</td>
 			</tr>
 		</tbody>
 
-	 </table>
+	</table>
 </section>
