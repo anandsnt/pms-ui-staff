@@ -26,7 +26,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
 			var url = '/api/reference_values.json?type=language';	
 			
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
-				hotelDetailsData.countries = data;
+				hotelDetailsData.languages = data;
 			    deferred.resolve(hotelDetailsData);
 			},function(data){
 			    deferred.reject(data);
