@@ -190,8 +190,11 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	 * @param {object} response
 	 */
 	$scope.fetchHotelDetailsSuccessCallback = function(data){
-		 $translate.use(data.language.value);
-		 $scope.$emit('hideLoader');
+     if(data.language)
+	   $translate.use(data.language.value);
+     else
+       $translate.use('EN');
+	 $scope.$emit('hideLoader');
 	};
 	/*
 	 * Function to get the current hotel language
