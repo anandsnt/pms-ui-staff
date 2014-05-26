@@ -56,6 +56,8 @@
     "ENTER_ROOM_NUMBER":"Enter Room number",
     "SELECT_ROOM_TYPE":"Select room type",
     "SELECT_FLOOR":"Select Floor",
-    "FLOOR_NO":"Floor No"
+    "FLOOR_NO":"Floor No",
+    "FLOOR_DESCRIPTION":"Floor Description",
+    "FLOORS":"Floors"
 
 }

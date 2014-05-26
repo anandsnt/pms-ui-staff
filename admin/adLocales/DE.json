@@ -56,8 +56,9 @@
     "ENTER_ROOM_NUMBER":"Geben Sie Zimmer Nummer",
     "SELECT_ROOM_TYPE":"Zimmertyp auswählen",
     "SELECT_FLOOR":"wählen Boden",
-    "FLOOR_NO":"Stockwerk"
-
+    "FLOOR_NO":"Stockwerk",
+    "FLOOR_DESCRIPTION":"Stock Beschreibung",
+    "FLOORS":"Etagen"
     
 
 }

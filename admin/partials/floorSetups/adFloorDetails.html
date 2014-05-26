@@ -1,8 +1,8 @@
 <div class="data-holder">
 	<form room_type_id="1" id="edit-room-type" class="form inline-form float">
 		<div class="form-title">
-			<h3><span>Edit</span> {{floorListData.description}} </h3>
-			<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			<h3><span>{{ 'EDIT' | translate }}</span> {{floorListData.description}} </h3>
+			<em class="status"> {{ 'MANDIATORY_FIELDS_MESSAGE1' | translate }} <strong>*</strong> {{ 'MANDIATORY_FIELDS_MESSAGE2' | translate }} </em>
 		</div>
 		
 		<fieldset class="holder left float">
@@ -14,15 +14,15 @@
 		</fieldset>
 		<fieldset class="holder right float">
 			
-            <ad-textbox styleclass="full-width" value="floorListData.description" name = "room-type-name" id = "room-type-name" label = "FLOOR DESCRIPTION" placeholder = "Enter Description" required = "yes" ></ad-textbox>
+            <ad-textbox styleclass="full-width" value="floorListData.description" name = "room-type-name" id = "room-type-name" label = "{{ 'FLOOR_DESCRIPTION' | translate }}" placeholder = "Enter Description" required = "yes" ></ad-textbox>
 		</fieldset> 
 		
 		<div class="actions float">
 			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()">
-				Cancel
+				{{ 'CANCEL' | translate }}
 			</button>
 			<button type="button" like-type="common" id="update" class="button green add-data-inline" ng-click="saveFloor()">
-				Save changes
+				{{ 'SAVE_CHANGES' | translate }}
 			</button>
 		</div>
 	</form>
