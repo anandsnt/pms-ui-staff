@@ -4100,6 +4100,179 @@
 		}
 	}
 	
+
+	/* reports details animation */
+	#reports-details.ng-hide-add,
+	#reports-details.ng-hide-remove {
+		display: block !important;
+	}
+
+	#reports-details.ng-hide-add.ng-hide-add-active,
+	#reports-details.ng-hide-remove.ng-hide-remove-active {
+		-webkit-animation: fadeInDown 0.5s;
+		-webkit-animation-fill-mode: both;
+	}
+
+	@-webkit-keyframes fadeInDown {
+		0% {
+			left: 100%;
+		}
+
+		100% {
+			left: 0;
+		}
+	}
+
+	/* reports date picker */
+	.datepicker {
+		position: fixed !important;
+		padding: 10px;
+		width: 480px !important;
+		max-width: initial !important;
+		top: 50% !important;
+		left: 50% !important;
+		margin: -200px 0 0 -175px !important;
+		background-image: @textureImage;
+		background-repeat: repeat;
+		z-index: 999666;
+	}
+
+	.datepicker-mask {
+		background: rgba(0, 0, 0, 0.41);
+		position: fixed;
+		top: 0 !important;
+		left: 0 !important;
+		right: 0;
+		bottom: 0;
+		z-index: 666999;
+	}
+
+	.datepicker table {
+		border-collapse: collapse;
+		margin-bottom: 0;
+	}
+
+	.datepicker thead .text-center th {
+		background: #fff;
+	}
+
+	.datepicker thead .dow {
+		color: #9d9d9d;
+		font-weight: 600;
+		text-align: center;
+		text-transform: uppercase;
+		line-height: 30px;
+		vertical-align: middle;
+	}
+
+	.datepicker th .btn {
+		display: block;
+		width: 100%;
+		height: 100%;
+		background: none;
+		border: 0;
+		cursor: pointer;
+	}
+
+	.datepicker th .btn-block {
+		font-size: 18px;
+		font-weight: 600;
+		line-height: 40px;
+		vertical-align: middle;
+		text-align: center;
+		text-transform: uppercase;
+	}
+
+	.datepicker th .glyphicon {
+		width: 13px;
+		height: 13px;
+		display: block;
+		margin: 0 auto;
+	}
+
+	.glyphicon-chevron-left {
+		background-image: @arrowBlackLeft;
+		background-repeat: none;
+	}
+
+	.glyphicon-chevron-right {
+		background-image: @arrowBlackRight;
+		background-repeat: none;
+	}
+
+	.datepicker td {
+		border: 0;
+		padding: 2px 3px;
+	}
+
+	.datepicker td .btn {
+		background: none;
+		border: 0;
+	}
+
+	.datepicker td .btn span {
+		border: 0;
+		display: block;
+		font-size: 18px;
+		font-weight: 600;
+		line-height: 40px;
+		height: 100%;
+		color: #202225;
+		background: rgba(0,0,0,0.05);
+		cursor: pointer;
+	}
+
+	.datepicker td .btn:disabled span {
+		color: #d8d8d8;
+		background: rgba(0,0,0,0.025);
+		cursor: default;
+	}
+
+	.datepicker td .btn.btn-primary span {
+		color: #fcfcfc;
+		text-shadow: 1px 1px 0 rgba(0,0,0,0.15);
+		background-image: -moz-linear-gradient(top, #ffb319, #ff860d);
+		background-image: -ms-linear-gradient(top, #ffb319, #ff860d);
+		background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffb319), to(#ff860d));
+		background-image: -webkit-linear-gradient(top, #ffb319, #ff860d);
+		background-image: -o-linear-gradient(top, #ffb319, #ff860d);
+		background-image: linear-gradient(top, #ffb319, #ff860d);
+		background-color: #ffa114;
+		background-repeat: repeat;
+	}
+
+	.datepicker td .btn span.text-muted {
+		display: none;
+	}
+.setOverlay{
+    background-color: rgba(100, 100, 100, 0.2);
+    height: 100%;
+    position: absolute;
+    width: 481px;
+    z-index: 9999;
+    margin-top: 47px;
+}
+.noSwipe{
+    background: none repeat scroll 0 0 #FFFFFF;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 154px;
+    text-align:center;
+    padding-bottom: 16px;
+    
+}
+.titleSwipe{
+  margin-bottom: 10%; 
+  padding-top: 10%;
+  // font-weight: bold;
+  font-size:21px;
+}
+.noSwipeButton{
+  text-align:center;
+  width:70% !important;
+  margin:0 auto;
+}
+		
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
