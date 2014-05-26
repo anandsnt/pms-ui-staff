@@ -280,5 +280,16 @@ admin.config([
 			url : '/rates_addons'
 		});
 
+		$stateProvider.state('admin.userRoles', {
+			templateUrl: '/assets/partials/UserRoles/adUserRoles.html',
+			controller: 'ADUserRolesCtrl',
+			url : '/UserRoles',
+			resolve: {
+				rolesList: function(ADUserRolesSrv) {
+					return ADUserRolesSrv.fetchUserRoles();
+				}
+			}
+		});
+
 	}
 ]);

@@ -1,0 +1,24 @@
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()"><div data-view="GuestCardLikesView">
+	<header class="content-title float">
+		<h2>
+			User roles
+		</h2>
+		<a id="add-new-button" class="action add" ng-click="addNew()">Add new</a>
+	</header>
+
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+	<table class="grid" id="likes">
+		<tbody>
+			<tr ng-repeat="role in rolesList">
+			<td>
+					{{role.name}}
+			</td>
+			<td>
+				<ad-dropdown div-class='' label="Role Dashboard" label-in-drop-down='Select Dashboard' sel-class='placeholder' id='room-type' name='room-type' list='dashboard_types'selected-Id='data.room_type_id'></ad-dropdown>
+			</td>
+			</tr>
+		</tbody>
+
+	 </table>
+</section>
