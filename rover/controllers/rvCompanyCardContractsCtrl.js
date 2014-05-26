@@ -216,7 +216,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		ngDialog.open({
 			 template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
 			 controller: 'contractedNightsCtrl',
-			 className: 'ngdialog-theme-default calendar-single1',
+			 className: 'ngdialog-theme-default1 calendar-single1',
 			 scope: $scope
 		});
 	};
