@@ -63,12 +63,13 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 	};
 	
 	$scope.updateAllNights = function(){
-		if($scope.isAddMode){
+		
+		if($scope.isAddMode && $scope.addData.allNights){
 			angular.forEach($scope.addData.occupancy,function(item, index) {
 				item.contracted_occupancy = $scope.addData.allNights;
 	       	});
        	}
-       	else{
+       	else if($scope.contractData.allNights){
        		angular.forEach($scope.contractData.occupancy,function(item, index) {
 				item.contracted_occupancy = $scope.contractData.allNights;
 	       	});
