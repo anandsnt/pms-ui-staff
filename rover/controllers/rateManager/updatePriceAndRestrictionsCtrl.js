@@ -188,6 +188,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         * Enable disable restriction. 
         */
         $scope.onOffRestrictions = function(id, action, days,selectedIndex){
+        	
+        	
             if( $scope.popupData.all_data_selected || $scope.popupData.fromRoomTypeView){
                  $(".ngdialog-content").addClass("data-entry");
             }
@@ -204,14 +206,23 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 $scope.data.restrictionTypes[id].showEdit = true;
                 return false;
             }
-            //The restriction has normal on of action
-            if($scope.data.restrictionTypes[id].hasEdit){
+            
+            /*Prompt the user for number of days
+             * Only if enabling a restriction.
+             */
+            if($scope.data.restrictionTypes[id].hasEdit && action === "ENABLE"){
                 $scope.data.restrictionTypes[id].days = prompt("Please enter the restriction", $scope.data.restrictionTypes[id].days);
             }
-
-            if($scope.data.restrictionTypes[id].days == "" || $scope.data.restrictionTypes[id].days == null) {
+            
+			/* Shiju PC: Commenting this code, as it creates a bug in setting data.  
+			 * Please review and re-enable as bug fix.
+			 * TODO: Review with UI team.
+			 */
+			
+            /*if($scope.data.restrictionTypes[id].days == "" || $scope.data.restrictionTypes[id].days == null) {
+            	
                 return false;
-            }
+            }*/
                 
             if(action == "ENABLE"){
                 $scope.data.restrictionTypes[id].isRestrictionEnabled = true; 

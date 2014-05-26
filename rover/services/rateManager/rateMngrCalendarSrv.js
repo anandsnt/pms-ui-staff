@@ -71,9 +71,18 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			deferred.reject(data);
 		};
 		var getRoomTypeRates = function(d){
-			var url = "/api/daily_rates/" + params.id
+			
+			/* It is the case of All-Rates from Rate Calendar. 
+			 * TODO: Handle this case at the calling place itself.
+			 */
+			if(typeof(params.id) === "undefined") {
+				deferred.resolve( {} );	
+				return;
+			};
+			
+			var url = "/api/daily_rates/" + params.id;
+			
 			delete params['id'];
-
 			//var url =  '/sample_json/rate_manager/rate_details.json';	
 			BaseWebSrvV2.getJSON(url, params).then(function(data) {
 				that.roomTypeRates = data; 
