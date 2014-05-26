@@ -3,29 +3,29 @@ admin.controller('ADUserRolesCtrl',['$scope','rolesList','ADUserRolesSrv', funct
 
 	
 	$scope.dashboard_types = [
-							  {"name":"Manager"},
-							  {"name":"Front Desk"},
-							  {"name":"Housekeeping"}
+							  {"value":"0","name":"Manager"},
+							  {"value":"1","name":"Front Desk"},
+							  {"value":"2","name":"Housekeeping"}
 							 ];
 
 	$scope.rolesList = rolesList.user_roles;
 	$scope.addMode = false;
 	$scope.newUserRole = "";
 
-	$scope.addNewClick = function(){
+	$scope.toggleAddMode = function(){
 
 		$scope.addMode = !$scope.addMode;
 	};
 
 	var userRoleSuccessCallback = function(){
-		$scope.addNewClick();
+		$scope.toggleAddMode();
 		$scope.$emit('hideLoader');
 
 		$scope.rolesList.push({"name":$scope.newUserRole});
 		$scope.newUserRole = "";//reset
 	}
 	var userRoleFailureCallback = function(){
-		$scope.addNewClick();
+		$scope.toggleAddMode();
 		$scope.$emit('hideLoader');
 	}
 	$scope.saveUserRole =  function(){
@@ -34,7 +34,13 @@ admin.controller('ADUserRolesCtrl',['$scope','rolesList','ADUserRolesSrv', funct
 		
 	}
 	$scope.cancelClick = function(){
-		$scope.addNewClick();
+		$scope.toggleAddMode();
+	}
+
+
+	$scope.changeDashBoard =  function(id,dashboardId){
+
+		console.log(id+dashboardId)
 	}
 
 }]);

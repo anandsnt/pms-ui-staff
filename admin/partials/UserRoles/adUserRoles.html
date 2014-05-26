@@ -3,7 +3,8 @@
 		<h2>
 			User roles
 		</h2>
-		<a id="add-new-button" class="action add" ng-click="addNewClick()">Add new</a>
+		<!-- Disable for now  -->
+		<!-- <a id="add-new-button" class="action add" ng-click="toggleAddMode()">Add new</a> -->
 	</header>
 
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -52,7 +53,21 @@
 					{{role.name}}
 				</td>
 				<td>
-					<ad-dropdown div-class='' label-in-drop-down='Select Dashboard' sel-class='placeholder' id='room-type' name='room-type' list='dashboard_types'selected-Id='data.room_type_id'></ad-dropdown>
+				
+				<div class='entry'>
+				  <div class='select'>
+				    <select ng-model='dashBoardID' ng-change="changeDashBoard(role.value,dashBoardID)">
+				      <option value="">
+				        Select Dashboard
+				      </option>
+				      <option ng-repeat='row in dashboard_types' value='{{row.value}}'  ng-selected="row.value==selectedId" >
+				        {{row.name}}
+				      </option>
+				    </select>
+				  </div>
+				</div>
+
+
 				</td>
 			</tr>
 		</tbody>
