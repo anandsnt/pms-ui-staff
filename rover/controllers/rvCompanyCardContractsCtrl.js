@@ -3,6 +3,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     $scope.highchartsNG = {};
 	$scope.isAddMode = false;
 	$scope.contractList = {};
+	$scope.contractData = {};
 	$scope.contractList.contractSelected = "";
 	$scope.errorMessage = "";
 	var contractInfo = {};
