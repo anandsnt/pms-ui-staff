@@ -11,6 +11,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
          
    };
 
+   
+
 	
    BaseCtrl.call(this, $scope);
    
@@ -190,9 +192,18 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 			$scope.popupData.all_data_selected = true;
 		}
         
+		popupClassName = (function(){
+			if($scope.popupData.fromRoomTypeView){
+				return 'ngdialog-theme-default restriction-popup fromRoomTypeView';
+			}
+			else{
+				return 'ngdialog-theme-default restriction-popup';
+			}
+		}());
+
         ngDialog.open({
             template: '/assets/partials/rateManager/updatePriceAndRestrictions.html',
-            className: 'ngdialog-theme-default restriction-popup',
+            className: popupClassName,
             closeByDocument: true,
             scope: $scope
         });

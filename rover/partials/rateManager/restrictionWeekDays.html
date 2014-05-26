@@ -1,89 +1,44 @@
-<div class="price-div">
-	<div class="restriction_text" >
-	    DAYS OF WEEK
-	</div>
+<div id="restrictionDays" class="price-div" ng-controller = "RestrictionWeekdaysCtrl"  ng-iscroll="restictionWeekDaysScroll" ng-iscroll-delay="3000" >
+	<div class="scrollable">
+		<div class="restriction_text" >
+			DAYS OF WEEK
+		</div>
 		
-	<div class="price-set-title">
-		<div class="entry radio-check full-width">
-			<label class="checkbox">
-				<span class="icon-form icon-checkbox" ></span>
-				<input type="checkbox" ng-model="data.monday">
-				<span class="guest_card_promotions">MONDAY </span> 
-			</label>
-		</div>
-		<div class="entry radio-check full-width">
-			<label class="checkbox">
-				<span class="icon-form icon-checkbox" ></span>
-				<input type="checkbox">
-				<span class="guest_card_promotions">TUESDAY </span> 
-			</label>
-		</div>
-		<div class="entry radio-check full-width">
-			<label class="checkbox">
-				<span class="icon-form icon-checkbox" ></span>
+		<div class="price-set-title">
+			<label class="checkbox" ng-repeat="day in daysOptions.days" ng-model="daysOptions.days.mon" ng-click="day.value = !day.value">
+				<span class="icon-form icon-checkbox" ng-class="{'checked': !day.value}"></span>
 				<input type="checkbox" >
-				<span class="guest_card_promotions">WEDNESDAY </span> 
-			</label>
+				<span> {{day.day}} </span> 
+          	</label>
+		
 		</div>
-		<div class="entry radio-check full-width">
-			<label class="checkbox">
-				<span class="icon-form icon-checkbox" ></span>
-				<input type="checkbox" >
-				<span class="guest_card_promotions">THURSDAY </span> 
-			</label>
+		<br />
+		<div class="restriction_text price-div" >
+			WEEKS
 		</div>
-		<div class="entry radio-check full-width">
-			<label class="checkbox">
-				<span class="icon-form icon-checkbox" ></span>
-				<input type="checkbox" >
-				<span class="guest_card_promotions">FRIDAY </span> 
-			</label>
+		<div class="select">
+			<select ng-model="daysOptions.numOfWeeks">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+			</select>
 		</div>
-		<div class="entry radio-check full-width">
-			<label class="checkbox">
-				<span class="icon-form icon-checkbox" ></span>
-				<input type="checkbox" >
-				<span class="guest_card_promotions">SATURDAY </span> 
+
+<!-- ng-hide="!popupData.fromRoomTypeView" -->
+
+		<div class="price-set-title application">
+
+			<label class="checkbox" ng-click="daysOptions.applyToPrice = !daysOptions.applyToPrice">
+				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToPrice}"></span>
+				<input type="checkbox" ng-model="daysOptions.applyToPrice">
+				<span>APPLY TO PRICE </span> 
 			</label>
-		</div>
-		<div class="entry radio-check full-width">
-			<label class="checkbox">
-				<span class="icon-form icon-checkbox" ></span>
-				<input type="checkbox" >
-				<span class="guest_card_promotions">SUNDAY </span> 
-			</label>
-		</div> 
-	</div>
-	<br />
-	<div class="price-div" >
-	    WEEKS
-	</div>
-	<div>
-	   <select style="width:214px;">
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-		</select>
-	</div>
-	<br />
-	<div class="price-set-title">
-		<div class="entry radio-check full-width">
-			<label class="checkbox">
-				<span class="icon-form icon-checkbox" ></span>
-				<input type="checkbox" >
-				<span class="guest_card_promotions">APPLY TO PRICE </span> 
-			</label>
-		</div>
-		<div class="entry radio-check full-width">
-			<label class="checkbox">
-				<span class="icon-form icon-checkbox" ></span>
-				<input type="checkbox" >
-				<span class="guest_card_promotions">APPLY TO RESTRICTIONS </span> 
+			<label class="checkbox" ng-click="daysOptions.applyToRestrictions = !daysOptions.applyToRestrictions">
+				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToRestrictions}" ></span>
+				<input type="checkbox" ng-model="daysOptions.applyToRestrictions">
+				<span>APPLY TO RESTRICTIONS </span> 
 			</label>
 		</div>
 	</div>
-	
-	
-	
 </div>

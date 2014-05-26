@@ -131,3 +131,16 @@ function removeNullKeys(dict){
     }
     return dict;
 }
+
+
+function getDateString(dateObj){
+    var yr = dateObj.getFullYear();
+    var month = dateObj.getMonth() + 1;
+    var monthFormatted = (month < 10) ? ("0"+ month) : month; 
+    var date = dateObj.getDate();
+    var dateFormatted = (date < 10) ? ("0"+ date) : date; 
+
+    var dateString = yr + '-' + monthFormatted + '-' + dateFormatted;
+
+    return dateString;
+}
