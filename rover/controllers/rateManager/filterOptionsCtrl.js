@@ -134,9 +134,15 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
         $scope.arrowPosFromTop = $('#company-card').offset().top;
         var popOverBottomPosFromTop = $('#company-card').offset().top + 20;
         var totalHeight = 42;
-        if(totalHeight < $scope.cmpCardSearchDivHgt){
+        // if(totalHeight < $scope.cmpCardSearchDivHgt){
+        //     $scope.cmpCardSearchDivHgt = totalHeight;
+        // }
+        if($scope.companyCardResults.length ===0){
             $scope.cmpCardSearchDivHgt = totalHeight;
+        }else{
+            $scope.cmpCardSearchDivHgt = $scope.companyCardResults.length * totalHeight;
         }
+        $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt + 10;
         $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt + 10;
     }
 
@@ -151,8 +157,23 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
             var successCallBackOfCompanySearch = function(data){
                 $scope.$emit("hideLoader");
 
-            $scope.companyCardResults = data.accounts;
- 
+           // $scope.companyCardResults = data.accounts;
+             $scope.companyCardResults =  [
+    {
+        "account_first_name": "Megan",
+        "account_last_name": "Ferrell",
+        "company_logo": ""
+    },
+    {
+        "account_first_name": "Jefferson",
+        "account_last_name": "Savage",
+        "company_logo": ""
+    },
+    {
+        "account_first_name": "Gillespie",
+        "account_last_name": "Yang",
+        "company_logo": ""
+    }];
 
 
                 refreshScroller();
