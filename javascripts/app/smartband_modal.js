@@ -12,6 +12,11 @@ var SmartBandModal = function(reservationID) {
 		that.myDom.find('#add-new-button').on('click', that.addNewSmartBand);
 	};
 
+	this.modalDidShow = function(){
+		// Set scrolling
+    	createVerticalScroll('#listing-area');
+    };
+
 	/**
 	* function to handle click on add new button screen
 	*/

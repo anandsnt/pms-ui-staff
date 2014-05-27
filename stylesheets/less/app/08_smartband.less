@@ -7,14 +7,18 @@
 	    padding: 14px 16px 16px 28px;
 	    height: 80px;
 	    border-bottom: 1px solid #D7D7D7;
-	    
+	    display: block;
 	    width: 100%;	    
-		box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
+		box-shadow: .5px .5px 0 rgba(0, 0, 0, 0.15);
 	    
 	    span.heading{
-	    	font-size: 25px;	    	
-	    	color: #000;	    	    		    	
-	    	font-weight: bold;
+			color: #000000;
+		    display: block;
+		    float: left;
+		    font-size: 25px;
+		    font-weight: bold;
+		    padding-top: 14px;
+		    width: auto;
 	    }
 
 	    #add-new-button{
@@ -27,51 +31,68 @@
 	    #see-all-band-button{		    		
 			display: inline-block; 
 			float: right;
-			font-size: 1em;
-    		line-height: 40px;	
+    		font-size: 15px;	
+    		height: 50px !important;
     		width: 40%;		
 	    }	    
 	}	
 
 	.middle{
-		margin-top: 3px;
-		height: 350px;		
 
+		padding-top: 3px;
+		height: 420px;		
+		background-color:  #DCDCDC;
+		display:block;
+		position: absolute;
 		li{
-			padding: 4px 15px 4px 7px;
-			background-color: #FCFCFC; 
-			height: 50px;
+
+			background-color: #fcfcfc;
+			border-radius: 1.5px;
+			box-shadow: .5px .5px 1px 0px rgba(0, 0, 0, 0.15);
 			width: 586px;
-			/***here **/
-			margin-bottom: 5px; 
-			margin-left: 5px; 
-			margin-right: 10px; 
-			box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15); 
-			display: block;		
+			height: 50px;
+
+			padding: 7px 7px 7px 9px;
+			margin: 5px 15px  5px 5px;
 			
 			span.smartband-icon{
-
+				width: 48px;
+				height: 35px;
+				background-image:url('/assets/smartband_icon_small.png');
+				background-repeat: no-repeat;
+				display: inline-block;
+				float: left;
 			}
 			span.band-holder {
-				padding-left: 3%;
-				color: blue;
+				color: #4174d2;
+				font-size: 21.5px;
+				font-weight: bold;
+				height: 16.5px;
+				margin-left: 14px;
+				padding-top: 9px;
+				display: inline-block;
 			}
 			span.charge{
+				color: #202225;
+				font-size: 20px;
+				font-weight: Light;
+				padding-top: 10px;
+				padding-right: 10px;
+				display: inline-block;
 				float: right;
-				text-transform: uppercase;
 			}	
 		}
 	}
 
 
 	.footer{
-		background: none repeat scroll 0 0 #FFF;
+		background: none repeat scroll 0 0 #F5F5F5;
 	    color: #000;
 	    display: inline-block;
 	    vertical-align: middle;
 	    width: 100%;
 	    padding: 2%;
-	    height: 51px;
+	    height: 70px;
 	    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15) inset;
 	    a#close-popup{
 	    	display: block;
