@@ -4,6 +4,11 @@ var Search = function(domRef) {
 	var that = this;
 	this.myDomElement = domRef;
 
+	this.setDom = function(newDom){
+		//in some cases we may want to reuse the old object & also may want use new dom
+    	that.myDomElement = newDom;
+  	};
+
 	this.pageinit = function() {
 		that.currentQuery = "";
 		that.fetchResults = [];
