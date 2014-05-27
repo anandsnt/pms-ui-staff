@@ -1,9 +1,10 @@
 sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$stateParams','ngDialog','dateFilter', function($scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter){
 	BaseCtrl.call(this, $scope);
     $scope.highchartsNG = {};
-	$scope.isAddMode = false;
 	$scope.contractList = {};
+	$scope.contractData = {};
 	$scope.contractList.contractSelected = "";
+	$scope.contractList.isAddMode = false;
 	$scope.errorMessage = "";
 	var contractInfo = {};
 	
@@ -86,12 +87,11 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		$scope.contractData = {};
     	$scope.contractData = data;
     	contractInfo = {};
-    	contractInfo = JSON.parse(JSON.stringify($scope.contractData));
     	$scope.contractData.contract_name ="";
+    	contractInfo = JSON.parse(JSON.stringify($scope.contractData));
     	$scope.graphData = manipulateGraphData(data.occupancy);
     	$scope.$emit('hideLoader');
     	drawGraph();    	
-    	//setTimeout(function(){refreshScroller();}, 750);
     	// Disable contracts on selecting history
     	$scope.isHistorySelected = false ;
     	angular.forEach($scope.contractList.history_contracts,function(item, index) {
@@ -99,6 +99,8 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     			$scope.isHistorySelected = true ;
     		}
        	});
+       	
+       	setTimeout(function(){refreshScroller();}, 500);
     };
   	var fetchFailureCallback = function(data){
         $scope.$emit('hideLoader');
@@ -121,19 +123,28 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
   	* function used for refreshing the scroller
   	*/
   	$scope.$parent.myScrollOptions = {		
-	    'contracts_scroll': {
+	    'companyCardContractsCtrl': {
 	    	scrollbars: true,
 	    	scrollY: true,
 	        snap: false,
 	        hideScrollbar: false
 	    }
 	};
+	/*
+	$scope.$on('$viewContentLoaded', function() {
+		setTimeout(function(){
+			$scope.$parent.myScroll['companyCardContractsCtrl'].refresh();
+			}, 
+		3000);
+		
+     });*/
+     
   	var refreshScroller = function(){
-
-	    $scope.$parent.myScroll['contracts_scroll'].refresh();
+console.log("refreshScroller");
+	    
 	    //scroller options
-	    $scope.$parent.myScrollOptions = {
-	    	'contracts_scroll': {
+	  /*  $scope.$parent.myScrollOptions = {
+	    	'companyCardContractsCtrl': {
 	        snap: false,
 	        scrollbars: true,
 	        bounce: true,
@@ -141,7 +152,8 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	        vScrollbar: true,
 	        hideScrollbar: false
 	       }
-	    };
+	    };*/
+	    $scope.$parent.myScroll['companyCardContractsCtrl'].refresh();
   	};
   	
   	var manipulateGraphData = function(data){
@@ -212,16 +224,44 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	};
 	
 	$scope.clickedContractedNights = function(){
-		ngDialog.open({
-			 template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
-			 controller: 'contractedNightsCtrl',
-			 className: 'ngdialog-theme-default calendar-single1',
-			 scope: $scope
-		});
+		/*
+		 * On AddMode : save new contract before showing Nights popup.
+		*/
+		if($scope.contractList.isAddMode){
+			var data = dclone($scope.addData,['occupancy','statistics','rates','total_contracted_nights']);
+		
+			var saveContractSuccessCallback = function(data){
+		    	$scope.$emit('hideLoader');
+		    	var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
+		    	$scope.contractList.current_contracts.push(dataNew);
+		    	$scope.addData.contract_name = "";
+		    	$scope.contractList.isAddMode = false;
+		    	
+		    	ngDialog.open({
+					 template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
+					 controller: 'contractedNightsCtrl',
+					 className: 'ngdialog-theme-default1 calendar-single1',
+					 scope: $scope
+				});
+		    };
+		  	var saveContractFailureCallback = function(data){
+		        $scope.$emit('hideLoader');
+		        $scope.errorMessage = data;
+		    }; 
+			$scope.invokeApi(RVCompanyCardSrv.addNewContract,{ "account_id":$stateParams.id, "postData":data}, saveContractSuccessCallback, saveContractFailureCallback);  
+		}
+		else{
+			ngDialog.open({
+				 template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
+				 controller: 'contractedNightsCtrl',
+				 className: 'ngdialog-theme-default1 calendar-single1',
+				 scope: $scope
+			});
+		}
 	};
 	
 	$scope.AddNewButtonClicked = function(){
-		$scope.isAddMode = true;
+		$scope.contractList.isAddMode = true;
 		$scope.addData = {};
 		$scope.addData = dclone($scope.contractData,['statistics','total_contracted_nights']);
 		$scope.addData.occupancy = [];
@@ -229,7 +269,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		$scope.addData.end_date = dateFilter(new Date(), 'yyyy-MM-dd');;
 	};
 	$scope.CancelAddNewContract =  function(){
-		$scope.isAddMode = false;
+		$scope.contractList.isAddMode = false;
 		$scope.addData.contract_name = "";
 	};
 	/*
@@ -243,14 +283,10 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	    	$scope.$emit('hideLoader');
 	    	var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
 	    	$scope.contractList.current_contracts.push(dataNew);
-	    	$scope.addData.contract_name = "";
-	    	$scope.isAddMode = false;
 	    };
 	  	var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
-	        $scope.addData.contract_name = "";
-	        $scope.isAddMode = false;
 	    }; 
 		$scope.invokeApi(RVCompanyCardSrv.addNewContract,{ "account_id":$stateParams.id, "postData":data}, saveContractSuccessCallback, saveContractFailureCallback);  
 	};
