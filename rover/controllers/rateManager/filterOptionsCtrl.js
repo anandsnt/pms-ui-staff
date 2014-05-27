@@ -138,15 +138,16 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
         var totalHeight = 42;
         $scope.arrowPosFromTop = $('#company-card').offset().top;
         var popOverBottomPosFromTop = $('#company-card').offset().top + 20;
-        if($scope.companyCardResults.length ===0){
+        if($scope.companyCardResults.length === 0){
             $scope.cmpCardSearchDivHgt = totalHeight;
         }
+        else{
+            $scope.cmpCardSearchDivHgt = $scope.companyCardResults.length * totalHeight;
+        }
+        console.log($scope.cmpCardSearchDivHgt);
         $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt + 10;
-        $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt + 10;
-
-	//$scope.$$childTail.$parent.myScroll['filter_details'].refresh();
 	
-	setTimeout(function(){
+        setTimeout(function(){
             $scope.$parent.myScroll['nameOnCard'].refresh();
         }, 300);
 	
