@@ -83,7 +83,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 		var flag = false;
 		var id = 0;
 		angular.forEach($scope.reservationData.reservation_card.news_paper_pref.news_papers, function(item, index) {
-		if(newspaper.substr(item.name) && !flag){
+		if(newspaper.indexOf(item.name) != -1 && !flag){
 			id = item.value;
 			flag = true;
 		}
