@@ -158,17 +158,22 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			// covert the date back to 'MM-dd-yyyy' format  
 			if ( $scope.dateNeeded === 'From' ) {
-	            $scope.singleAddon.begin_date = dateFilter(new Date(chosenDate), 'MM-dd-yyyy');
+	            $scope.singleAddon.begin_date = chosenDate;
+	            // convert system date to MM-dd-yyyy format
+				$scope.singleAddon.begin_date_for_display = $filter('date')(new Date(chosenDate), 'MM-dd-yyyy');
+				
 
 	            // if user moved begin_date in a way
 	            // that the end_date is before begin_date
 	            // we must set the end_date to begin_date
 	            // so that user may not submit invalid dates
 	            if ( new Date($scope.singleAddon.begin_date) - new Date($scope.singleAddon.end_date) > 0 ) {
-	                $scope.singleAddon.end_date = dateFilter(new Date(chosenDate), 'MM-dd-yyyy');
+	                $scope.singleAddon.end_date = chosenDate
+	                $scope.singleAddon.end_date_for_display   = $filter('date')(new Date(chosenDate), 'MM-dd-yyyy');
 	            }
 			} else {
-				$scope.singleAddon.end_date = dateFilter(new Date(chosenDate), 'MM-dd-yyyy');
+				  $scope.singleAddon.end_date = chosenDate
+	              $scope.singleAddon.end_date_for_display   = $filter('date')(new Date(chosenDate), 'MM-dd-yyyy');
 			}
 		});
 
@@ -216,8 +221,12 @@ admin.controller('ADRatesAddonsCtrl', [
 				};
 
 				// convert system date to MM-dd-yyyy format
-				$scope.singleAddon.begin_date = $filter('date')(new Date($scope.singleAddon.begin_date), 'MM-dd-yyyy');
-				$scope.singleAddon.end_date   = $filter('date')(new Date($scope.singleAddon.end_date), 'MM-dd-yyyy');
+				$scope.singleAddon.begin_date_for_display = $filter('date')(new Date($scope.singleAddon.begin_date), 'MM-dd-yyyy');
+				$scope.singleAddon.end_date_for_display   = $filter('date')(new Date($scope.singleAddon.end_date), 'MM-dd-yyyy');
+
+				$scope.singleAddon.begin_date = $scope.singleAddon.begin_date;
+				$scope.singleAddon.end_date   =$scope.singleAddon.end_date;
+
 			};
 
 			$scope.invokeApi(ADRatesAddonsSrv.fetchSingle, $scope.currentAddonId, callback);
@@ -311,7 +320,7 @@ admin.controller('ADRatesAddonsCtrl', [
 	    	ngDialog.open({
 	    		 template: '/assets/partials/rates/addonsDateRangeCalenderPopup.html',
 	    		 controller: 'addonsDatesRangeCtrl',
-				 className: 'ngdialog-theme-default calendar-modal single-date-picker',
+				 className: 'ngdialog-theme-default addon-calendar-modal single-date-picker',
 				 closeByDocument: true,
 				 scope: $scope
 	    	});
