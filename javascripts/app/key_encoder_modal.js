@@ -204,17 +204,14 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			$("#key" + i).closest('label').addClass('checked'); 			
 		}
 		if(that.numOfKeys > 0){
-			that.myDom.find('#create-key').text('Print key 1');
 			createKeyBtn.removeClass('grey').addClass('green');
 			createKeyBtn.removeAttr('disabled');
 		}	
 		else{
-			that.myDom.find('#create-key').text('Print key');
 			createKeyBtn.removeClass('green').addClass('grey');
 			createKeyBtn.attr('disabled','disabled');
 		}
 		var elementToPut = {};
-		that.printKeyStatus = [];
 		for(var i = 1; i <= $("input[name=keys]").length; i++){
 			elementToPut = {};
 			elementToPut['key'] = 'key' + i;
@@ -364,6 +361,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			},
 			'failureCallBack': function(){
 				sntapp.activityIndicator.hideActivityIndicator();
+				alert('failed: ' +that.numOfKeys);
 				if(that.numOfKeys > 0){
 					that.myDom.find('#key-status .status').removeClass('success').addClass('error').text('Print key failed, Please try again');
 				}
