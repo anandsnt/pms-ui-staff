@@ -1,7 +1,7 @@
 <div id="modal" class="modal-show" role="dialog">
 
     <form id="set-wake-up-call" class="modal-content form confirmation" name="set-wake-up-call" method="post" action="index.html">
-        <button id="modal-close" class="modal-close" type="button">
+        <button id="modal-close" class="modal-close" type="button" ng-click="closeDialog()">
             <span class="icons icon-close invert"></span>
         </button>
         <div class="entry full-width">
@@ -158,8 +158,8 @@
              If reservation_status is "CHECKING_OUT" disable 'Tomorrow' switch 
 
             -->
-            <div id="wakeupDate" class="switch-button full-width on">
-                <input id="wake-up-day" type="checkbox" value="2" name="wake-up-day" checked="checked"></input>
+            <div ng-model="todaySelected" id="wakeupDate" class="switch-button full-width on" " ng-class="{'on': todaySelected}">
+                <input id="wake-up-day" type="checkbox" value="2" name="wake-up-day" checked="checked" ng-click="todaySelected = !todaySelected"></input>
                 <label class="data-off">
                     <span class="switch-icon">
 
@@ -197,7 +197,7 @@
                 Delete wake-up call
 
             </button>
-            <button id="cancel" class="button blank modal-close" type="button">
+            <button id="cancel" class="button blank modal-close" type="button" ng-click="closeDialog()">
 
                 Cancel
 

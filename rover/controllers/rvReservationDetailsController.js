@@ -69,7 +69,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
             
             ngDialog.open({
                 template: '/assets/partials/reservationCard/rvSetWakeupTimeDialog.html',
-                controller: '',
+                controller: 'rvSetWakeupcallController',
                 className: 'ngdialog-theme-default',
                 scope: $scope
             });
