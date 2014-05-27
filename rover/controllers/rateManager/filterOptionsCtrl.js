@@ -150,7 +150,11 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 
             var successCallBackOfCompanySearch = function(data){
                 $scope.$emit("hideLoader");
-                $scope.companyCardResults = data.accounts;
+
+            $scope.companyCardResults = data.accounts;
+ 
+
+
                 refreshScroller();
             }
             var paramDict = {'query': $scope.companySearchText.trim()};
@@ -216,4 +220,10 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 			 scope: $scope
     	});
 	};
+
+
+    $scope.$on('closeFilterPopup',function(){
+
+        $scope.companyCardResults = [];
+    });
 }]);

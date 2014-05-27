@@ -109,4 +109,37 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
       }
     }
 
+/**
+*   In case of a click or an event occured on child elements
+*   of actual targeted element, we need to change it as the event on parent element
+*   @param {event} is the actual event
+*   @param {selector} is the selector which we want to check against that event
+*   @return {Boolean} trueif the event occured on selector or it's child elements
+*   @return {Boolean} false if not
+*/
+function getParentWithSelector($event, selector) {
+
+    var obj = $event.target, matched = false;
+    return selector.contains(obj);
+
+};
+
+  /*
+    * function to handle click
+    */
+
+    $scope.rateManagerContentClick = function($event){
+
+       // if(getParentWithSelector($event, document.getElementById("search-list"))){
+
+       //      alert("displayMode");
+       // }
+       // else
+       // {
+       // // alert("false")
+       // }
+
+       $scope.$broadcast('closeFilterPopup');
+    }
+
 }]);
