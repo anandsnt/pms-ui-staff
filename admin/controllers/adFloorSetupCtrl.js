@@ -15,15 +15,15 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 			$scope.data = data;
 			$scope.currentClickedElement = -1;
 			console.log($scope.data);
+			
 			// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		    $scope.tableParams = new ngTableParams({
-		        page: 1,            // show first page
-		        count: $scope.data.floors.length,    // count per page - Need to change when on pagination implemntation
-		        sorting: {
-		            description: 'asc'     // initial sorting
+		       page: 1,            // show first page
+		       	count: 100,    // count per page - Need to change when on pagination implemntation
+		        sorting: { floor_number: 'asc'     // initial sorting 
 		        }
 		    }, {
-		        total: $scope.data.floors.length, // length of data
+		     
 		        getData: function($defer, params) {
 		            // use build-in angular filter
 		            var orderedData = params.sorting() ?
@@ -31,9 +31,8 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 		                                $scope.data.floors;
 		                              
 		            $scope.orderedData =  orderedData;
-		            // console.log($scope.orderedData);
-		                       
-		            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+		                                 
+		            $defer.resolve(orderedData);
 		        }
 		    });
 		};
@@ -50,6 +49,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 		
 		$scope.currentClickedElement = index;
 	 	$scope.floorListData = $scope.orderedData[index]; 
+	 	$scope.floorListData.floortitle = $scope.floorListData.description ;
 	};
    
    /*
@@ -73,16 +73,14 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 		console.log($scope.floorListData);
 		var data = dclone($scope.floorListData, unwantedKeys);
 		var params = {};
-		params.description = data.description;
-		params.floor_number = data.floor_number;
-		if(!$scope.isAddMode)
-			params.id = data.id;
+	
 		 
     	var successCallbackSave = function(data){
     		$scope.$emit('hideLoader');
     		//Since the list is ordered. Update the ordered data
     		if($scope.isAddMode){
     			$scope.data.floors.push($scope.floorListData);
+    			// $scope.tableParams.count = $scope.data.floors.length;
     			$scope.tableParams.reload();
     			$scope.isAddMode = false;
     		}else{
@@ -123,7 +121,8 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 		//reset data
 		$scope.floorListData = {
 				"floor_number":"",
-				"description":""
+				"description":"",
+				"floortitle":""
 			};	
 	};
 
@@ -144,6 +143,13 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 	for(i=0;i<100;i++){
 		var floorData = {"value":addZeros(i),"name":addZeros(i)};
 		$scope.floors.push(floorData);
+	};
+
+	$scope.validate = function(){
+		if ($scope.floorListData.floor_number == "" || typeof $scope.floorListData.floor_number == "undefined" || $scope.floorListData.description == " ") 
+			return false;
+		else
+			return true;
 	};
 
 }]);
