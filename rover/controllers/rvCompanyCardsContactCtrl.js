@@ -7,4 +7,5 @@ sntRover.controller('companyCardDetailsContactCtrl',['$scope', 'RVCompanyCardSrv
 	        hideScrollbar: false
 	    }
 	};
+	SAJITH = $scope;
 }]);

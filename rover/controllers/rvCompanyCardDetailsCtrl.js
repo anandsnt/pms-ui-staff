@@ -19,6 +19,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$event.stopImmediatePropagation();
 		if($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info'){
 			saveContactInformation($scope.contactInformation);
+			$scope.$broadcast("ContactTabActivated");
 		}
 		if($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts'){
 			$scope.$broadcast("saveContract");

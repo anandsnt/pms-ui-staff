@@ -8,6 +8,36 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	$scope.errorMessage = "";
 	var contractInfo = {};
 	
+	/* Items related to ScrollBars 
+	 * 1. When the tab is activated, refresh scroll.
+	 * 2. Scroll is actually on a sub-scope created by ng-include. 
+	 *    So ng-iscroll will create the ,myScroll Array there, if not defined here.
+	 */
+	$scope.$on("ContactTabActivated", function(){
+		setTimeout(function(){refreshScroller();}, 500);
+	});
+	
+	$scope.$parent.myScroll =[];
+	
+	$scope.$parent.myScrollOptions = {		
+	    'companyCardContractsCtrl': {
+	    	scrollbars: true,
+	    	scrollY: true,
+	        snap: false,
+	        hideScrollbar: false
+	    }
+	};
+	
+  	var refreshScroller = function(){    
+	   //Refresh only if this DOM is visible.
+	   if($scope.currentSelectedTab ==='cc-contracts'){
+	   		$scope.$parent.myScroll['companyCardContractsCtrl'].refresh();
+	   }
+  	};
+  	
+  	/**** Scroll related code ends here. ****/
+	
+	
 	   clientWidth = $(window).width();
         clientHeight = $(window).height();
        var drawGraph = function(){
@@ -119,43 +149,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
         $scope.errorMessage = data;
     };
 	
-	/**
-  	* function used for refreshing the scroller
-  	*/
-  	$scope.$parent.myScrollOptions = {		
-	    'companyCardContractsCtrl': {
-	    	scrollbars: true,
-	    	scrollY: true,
-	        snap: false,
-	        hideScrollbar: false
-	    }
-	};
-	/*
-	$scope.$on('$viewContentLoaded', function() {
-		setTimeout(function(){
-			$scope.$parent.myScroll['companyCardContractsCtrl'].refresh();
-			}, 
-		3000);
-		
-     });*/
-     
-  	var refreshScroller = function(){
-console.log("refreshScroller");
-	    
-	    //scroller options
-	  /*  $scope.$parent.myScrollOptions = {
-	    	'companyCardContractsCtrl': {
-	        snap: false,
-	        scrollbars: true,
-	        bounce: true,
-	        vScroll: true,
-	        vScrollbar: true,
-	        hideScrollbar: false
-	       }
-	    };*/
-	    $scope.$parent.myScroll['companyCardContractsCtrl'].refresh();
-  	};
-  	
+	
   	var manipulateGraphData = function(data){
         var graphData = [];
         var contracted = [];

@@ -20,7 +20,7 @@
 		<li class="hidden">
 			<a ng-click="$emit('navToggled')" class="icon-menu icon-reviews ">Reviews</a>
 		</li>
-		<li ng-hide="isPmsConfigured">
+		<li ng-show="isPmsConfigured">
 			<a ui-sref="rover.companycardsearch" class="icon-menu icon-cards" ng-class="{'active': selectedMenuIndex === 'cards'}">Cards</a>
 		</li>
 		<li id="settings">
