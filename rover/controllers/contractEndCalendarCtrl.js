@@ -4,8 +4,8 @@ sntRover.controller('contractEndCalendarCtrl',['$scope','dateFilter','ngDialog',
 	$scope.setUpData = function(){
 	
 	    $scope.isDateSelected = false;
-		if($scope.isAddMode){
-		    if($scope.addData.end_date!= null && $scope.addData.begin_date != ""){
+		if($scope.contractList.isAddMode){
+		    if($scope.addData.end_date){
 		      $scope.date = $scope.addData.end_date;
 		      $scope.isDateSelected = true;
 		    }
@@ -14,7 +14,7 @@ sntRover.controller('contractEndCalendarCtrl',['$scope','dateFilter','ngDialog',
 		    }
 	  	}
 	  	else{
-	  		if($scope.contractData.end_date!= null && $scope.contractData.begin_date != ""){
+	  		if($scope.contractData.end_date){
 		      $scope.date = $scope.contractData.end_date;
 		      $scope.isDateSelected = true;
 		    }
@@ -29,14 +29,15 @@ sntRover.controller('contractEndCalendarCtrl',['$scope','dateFilter','ngDialog',
 	
 	$scope.updateDate = function(){
 
-	    if($scope.closePopupOnSelection && $scope.isAddMode){
+	    if($scope.closePopupOnSelection && $scope.contractList.isAddMode){
 	     	$scope.addData.end_date = $scope.date;
-		    ngDialog.close();
 	    }
 	    else{
 	    	$scope.contractData.end_date = $scope.date;
-		    ngDialog.close();
 	    } 
+	     if($scope.closePopupOnSelection)
+	    	ngDialog.close();
+
 
   	};
 
