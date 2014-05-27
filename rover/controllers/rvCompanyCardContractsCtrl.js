@@ -92,7 +92,6 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     	$scope.graphData = manipulateGraphData(data.occupancy);
     	$scope.$emit('hideLoader');
     	drawGraph();    	
-    	//setTimeout(function(){refreshScroller();}, 750);
     	// Disable contracts on selecting history
     	$scope.isHistorySelected = false ;
     	angular.forEach($scope.contractList.history_contracts,function(item, index) {
@@ -100,6 +99,8 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     			$scope.isHistorySelected = true ;
     		}
        	});
+       	
+       	setTimeout(function(){refreshScroller();}, 500);
     };
   	var fetchFailureCallback = function(data){
         $scope.$emit('hideLoader');
@@ -122,19 +123,28 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
   	* function used for refreshing the scroller
   	*/
   	$scope.$parent.myScrollOptions = {		
-	    'contracts_scroll': {
+	    'companyCardContractsCtrl': {
 	    	scrollbars: true,
 	    	scrollY: true,
 	        snap: false,
 	        hideScrollbar: false
 	    }
 	};
+	/*
+	$scope.$on('$viewContentLoaded', function() {
+		setTimeout(function(){
+			$scope.$parent.myScroll['companyCardContractsCtrl'].refresh();
+			}, 
+		3000);
+		
+     });*/
+     
   	var refreshScroller = function(){
-
-	    $scope.$parent.myScroll['contracts_scroll'].refresh();
+console.log("refreshScroller");
+	    
 	    //scroller options
-	    $scope.$parent.myScrollOptions = {
-	    	'contracts_scroll': {
+	  /*  $scope.$parent.myScrollOptions = {
+	    	'companyCardContractsCtrl': {
 	        snap: false,
 	        scrollbars: true,
 	        bounce: true,
@@ -142,7 +152,8 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	        vScrollbar: true,
 	        hideScrollbar: false
 	       }
-	    };
+	    };*/
+	    $scope.$parent.myScroll['companyCardContractsCtrl'].refresh();
   	};
   	
   	var manipulateGraphData = function(data){

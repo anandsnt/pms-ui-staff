@@ -1,4 +1,4 @@
-<div id="cc-contracts" name="cc-contracts" class="form card-tab contracts" style="height: 550px !important; overflow: scroll !important;" ng-show="currentSelectedTab == 'cc-contracts'">
+<div id="cc-contracts" name="cc-contracts" class="form card-tab contracts"  ng-show="currentSelectedTab == 'cc-contracts'">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div id="cc-contracts-header" class="tab-header">
         <div class="entry">
@@ -28,10 +28,10 @@
             <button id="company-new-contract" type="button" class="button green" ng-click="AddNewContract()">Save Contract</button>
         </div>
     </div>
-    <div id="cc-contracts-content" class="tab-details">
-    	<div class="wrapper" ng-class="{'overlay':isHistorySelected==true}" ng-iscroll="contracts_scroll" ng-iscroll-delay="1000" >
-
-
+    
+    <div id="cc-contracts-content" class="tab-details" ng-iscroll="companyCardContractsCtrl" ng-iscroll-delay="1000" style="height:100% ">
+    	
+    	<div class="wrapper" ng-class="{'overlay':isHistorySelected==true}">
 
             <div class="holder left" ng-hide="contractList.isAddMode">
                 <strong class="h3">Details</strong>
@@ -99,8 +99,6 @@
                 </div>
             </div>
             
-            
-            
             <div class="holder left" ng-show="contractList.isAddMode">
                 <strong class="h3">Details</strong>
                 <div class="entry margin">
@@ -167,17 +165,6 @@
                 </div>
             </div>
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
             <div class="holder right" ng-hide="contractList.isAddMode">
                 <strong class="h3">Statistics</strong>
                 <ul id="company-contract-stats" class="contract-stats">
@@ -188,12 +175,15 @@
                     <li>Average Rate <span>{{contractData.statistics.average_rate}}</span></li>
                 </ul>
             </div>
+            
+            <div id="company-cards-occupancy" class="occupancy" ng-hide="contractList.isAddMode">
+		        <strong class="h3">Occupancy</strong>
+		        <div class="occgraph-outer" style='width: 100%'>
+		            <highchart id="occGraphContainer" config="highchartsNG"></highchart>
+		        </div>
+		    </div>
+    
         </div>
-    </div>
-    <div id="company-cards-occupancy" class="occupancy" ng-hide="contractList.isAddMode">
-        <strong class="h3">Occupancy</strong>
-        <div class="occgraph-outer" style='width: 100%'>
-            <highchart id="occGraphContainer" config="highchartsNG"></highchart>
-        </div>
+    
     </div>
 </div>
