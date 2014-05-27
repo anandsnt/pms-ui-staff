@@ -310,8 +310,6 @@ reports.controller('reportDetails', [
         // and when user updated the filters
         var calPagination = function(response, pageNum) {
 
-            console.log('here');
-
             if(typeof pageNum == "undefined"){
                 pageNum = 1;
             }
