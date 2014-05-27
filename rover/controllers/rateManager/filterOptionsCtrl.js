@@ -69,8 +69,6 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
             }, 300);
     };
     
-    
-    
     $scope.$watch('currentFilterData.rate_selected', function() {
         var isDataExists = false;
         angular.forEach($scope.currentFilterData.rates_selected_list,function(item, index) {
@@ -130,17 +128,13 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     };
 
     var refreshScroller = function(){
+        // setting popver height and each element height
         $scope.cmpCardSearchDivHgt = 250;
+        var totalHeight = 42;
         $scope.arrowPosFromTop = $('#company-card').offset().top;
         var popOverBottomPosFromTop = $('#company-card').offset().top + 20;
-        var totalHeight = 42;
-        // if(totalHeight < $scope.cmpCardSearchDivHgt){
-        //     $scope.cmpCardSearchDivHgt = totalHeight;
-        // }
         if($scope.companyCardResults.length ===0){
             $scope.cmpCardSearchDivHgt = totalHeight;
-        }else{
-            $scope.cmpCardSearchDivHgt = $scope.companyCardResults.length * totalHeight;
         }
         $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt + 10;
         $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt + 10;
@@ -156,26 +150,7 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 
             var successCallBackOfCompanySearch = function(data){
                 $scope.$emit("hideLoader");
-
-           // $scope.companyCardResults = data.accounts;
-             $scope.companyCardResults =  [
-    {
-        "account_first_name": "Megan",
-        "account_last_name": "Ferrell",
-        "company_logo": ""
-    },
-    {
-        "account_first_name": "Jefferson",
-        "account_last_name": "Savage",
-        "company_logo": ""
-    },
-    {
-        "account_first_name": "Gillespie",
-        "account_last_name": "Yang",
-        "company_logo": ""
-    }];
-
-
+                $scope.companyCardResults = data.accounts;
                 refreshScroller();
             }
             var paramDict = {'query': $scope.companySearchText.trim()};
@@ -244,7 +219,6 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 
 
     $scope.$on('closeFilterPopup',function(){
-
         $scope.companyCardResults = [];
     });
 }]);
