@@ -2,19 +2,16 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	
 	$scope.errorMessage = '';
 	BaseCtrl.call(this, $scope);
-	$scope.roomTypeData = {};
-	
+	$scope.roomTypeData = {};	
 
    /*
     * To fetch list of room types
     */
 	$scope.listRoomTypes = function(){
-		console.log("upto list room type");
 		var successCallbackFetch = function(data){
 			$scope.$emit('hideLoader');
 			$scope.data = data;
 			$scope.currentClickedElement = -1;
-			console.log($scope.data);
 			// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 		    $scope.tableParams = new ngTableParams({
 		        page: 1,            // show first page
@@ -47,6 +44,7 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
     * @param {id} id of the room type
     */	
 	$scope.editRoomTypes = function(index, id)	{
+		$scope.isAddMode =false;
 		$scope.departmentData={};
 		$scope.currentClickedElement = index;
 	 	var successCallbackRender = function(data){	
@@ -86,32 +84,46 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
    $scope.saveRoomTypes = function(){
 		
 		var unwantedKeys = [];
-		console.log($scope.roomTypeData);
 		if($scope.roomTypeData.image_of_room_type.indexOf("data:")!= -1){
 		} else {
 			unwantedKeys = ["image_of_room_type"];
 		}
 		 var data = dclone($scope.roomTypeData, unwantedKeys);
 		 
-    	var successCallbackSave = function(data){
+    	var editSuccessCallbackSave = function(data){
     		$scope.$emit('hideLoader');
     		//Since the list is ordered. Update the ordered data
     		$scope.orderedData[parseInt($scope.currentClickedElement)].name = $scope.roomTypeData.room_type_name;
     		$scope.orderedData[parseInt($scope.currentClickedElement)].code = $scope.roomTypeData.room_type_code;
     		$scope.currentClickedElement = -1;
     	};
-    	$scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data , successCallbackSave);
+    	var addSuccessCallbackSave = function(){
+    		$scope.$emit('hideLoader');
+    		$scope.isAddMode = false;
+    		$scope.listRoomTypes();
+    	};
+    	var failureCallback = function(data){
+    		$scope.errorMessage = data;
+    		$scope.$emit('hideLoader');
+    	};
+
+    	if($scope.isAddMode)
+    		$scope.invokeApi(ADRoomTypesSrv.createRoomType, data , addSuccessCallbackSave,failureCallback);
+      	else
+    	    $scope.invokeApi(ADRoomTypesSrv.updateRoomTypes, data , editSuccessCallbackSave,failureCallback);
     };
    /*
     * To handle click event
     */	
 	$scope.clickCancel = function(){
-		$scope.currentClickedElement = -1;
+		if($scope.isAddMode)
+			$scope.isAddMode =false;
+		else
+		    $scope.currentClickedElement = -1;
 	};	
    /*
-    * To delete department
-    * @param {int} index of the selected department
-    * @param {string} id of the selected department
+    * To import form pms
+    * 
     */		
 	$scope.importFromPms = function(){
 		var successCallbackImport = function(data){	
@@ -121,5 +133,27 @@ admin.controller('ADRoomTypesCtrl',['$scope', '$state', 'ADRoomTypesSrv', 'ngTab
 	 	};
 		$scope.invokeApi(ADRoomTypesSrv.importFromPms, '' , successCallbackImport);
 	};
+
+  /*
+    * To add new room type
+    * 
+    */		
+	$scope.addNewRoomType = function(){
+		$scope.currentClickedElement = -1;
+		$scope.isAddMode = $scope.isAddMode ? false : true;
+		//reset data
+		$scope.roomTypeData = {
+				"room_type_id": "",
+				"room_type_code": "",
+				"room_type_name": "",
+				"snt_description": "",
+				"max_occupancy": "",
+				"is_pseudo_room_type": "",
+				"is_suite": "",
+				"image_of_room_type": " "
+			}	
+	};
+
+
 }]);
 
