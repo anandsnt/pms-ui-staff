@@ -93,7 +93,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 item.days = "";
                 item.isRestrictionEnabled = false;
                 item.showEdit = false;
-                //item.hasEdit = isRestictionHasDaysEnter(rTypes[i].value);
+                item.hasEdit = isRestictionHasDaysEnter(rTypes[i].value);
 
                 for(var i in selectedDateInfo.restrictions){
 
@@ -162,7 +162,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 				item.days = "";
                 item.isRestrictionEnabled = false;
                 item.showEdit = false;
-                //item.hasEdit = isRestictionHasDaysEnter(rTypes[i].value);
+                item.hasEdit = isRestictionHasDaysEnter(rTypes[i].value);
 
                 for(var i in selectedDateInfo){
                     if(selectedDateInfo[i].restriction_type_id == itemID){
@@ -212,7 +212,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             /*Prompt the user for number of days
              * Only if enabling a restriction.
              */
-            if($scope.data.restrictionTypes[id].editable && action === "ENABLE"){
+            if($scope.data.restrictionTypes[id].hasEdit && action === "ENABLE"){
                 $scope.data.restrictionTypes[id].days = prompt("Please enter the restriction", $scope.data.restrictionTypes[id].days);
             }
             

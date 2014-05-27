@@ -1,6 +1,6 @@
 sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2){
 	var that = this;
-	that.allRestrictionTypes = {};
+	that.allRestrictionTypes = [];
 
 
 
@@ -8,11 +8,16 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		//TODO: Modify to handle case of date range changes, if needed.
 		var url =  '/api/restriction_types';	
 		var deferred = $q.defer();
-		if(!isEmpty(that.allRestrictionTypes)){
+		if(that.allRestrictionTypes.length > 0){
 			deferred.resolve(that.allRestrictionTypes)
 		} else{
 			BaseWebSrvV2.getJSON(url).then(function(data) {
-				that.allRestrictionTypes = data.results; 
+				//Only the editable restrictions should be shown in the UI
+				for(var i in data.results) {
+					if(data.results[i].activated && !data.results[i].editable){
+						that.allRestrictionTypes.push(data.results[i]); 
+					}	
+				}
 				deferred.resolve(data);
 			},function(data){
 				deferred.reject(data);
