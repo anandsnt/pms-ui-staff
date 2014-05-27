@@ -79,11 +79,14 @@ $scope.current = 'guest-contact';
 * tab actions
 */
 $scope.guestCardTabSwitch = function(tab){
-if($scope.current ==='guest-contact' && tab !== 'guest-contact'){
-	$scope.$broadcast('saveContactInfo');
-};
+	if($scope.current ==='guest-contact' && tab !== 'guest-contact'){
+		$scope.$broadcast('saveContactInfo');
+	};
+	if(tab === 'guest-credit'){
+		$scope.$broadcast('PAYMENTSCROLL');
+	}
  
- $scope.current = tab;
+	 $scope.current = tab;
 };
 
 $scope.$on('contactInfoError', function(event, value) { 

@@ -1,23 +1,26 @@
- <form ng-controller="RVPaymentGuestCtrl" class="form card-tab scrollable" ng-show="current == 'guest-credit'">
-	<div class="wrapper">
-		<!-- Credit cards on file -->
-		<a class="active-item item-payment primary open-modal float" ng-repeat="payment in paymentData.data">
-		<figure class="card-logo">
-			<img src="../images/{{payment.card_code}}.png" alt="" />
-		</figure> 
-		<span class="number">Ending with 
-			<span class="value number">{{payment.mli_token_display}}</span>
-		</span> 
-			<span class="date">Date 
-				<span class="value date">{{payment.card_expiry}}</span>
-			</span>
-			<span class="name">Name 
-				<span class="value name">{{payment.card_name}}</span>
-			</span> 
-			<span class="primary" ng-show="payment.is_primary">
-				<span class="value primary">Primary</span>
-			</span> 
-		</a>
-		<a class="open-modal add-new-button" ng-click="openAddNewPaymentModel()">+ New Payment Method</a>
+<form ng-controller="RVPaymentGuestCtrl" class="form card-tab scrollable" ng-show="current == 'guest-credit'">
+	<div id="paymentList" ng-iscroll='paymentList' ng-iscroll-delay='50' style="position:absolute; top:0px; bottom: 0px; left:0px; width: 100%;">
+		<div class="wrapper">
+			<!-- Credit cards on file -->
+			<a ng-click="openDeleteSetAsPrimaryModal(payment.id, $index)" class="active-item item-payment primary open-modal float" ng-repeat="payment in paymentData.data">
+				<figure class="card-logo">
+					<img src="/assets/{{payment.card_code}}.png" alt="" />
+				</figure> 
+				<span class="number">Ending with 
+					<span class="value number">{{payment.mli_token}}</span>
+				</span> 
+				<span class="date">Date 
+					<span class="value date">{{payment.card_expiry}}</span>
+				</span>
+				<span class="name">Name 
+					<span class="value name">{{payment.card_name}}</span>
+				</span> 
+				<span class="primary" ng-show="payment.is_primary">
+					<span class="value primary">Primary</span>
+				</span> 
+			</a>
+			<a class="open-modal add-new-button" ng-click="openAddNewPaymentModel()">+ New Payment Method</a>
+		</div>
 	</div>
 </form>
+

@@ -38,15 +38,15 @@
 	    <label for="name-on-card">Name on card</label>
 	    <input type="text" ng-model="saveData.name_on_card" placeholder="Enter name on card" id="name-on-card" name="name-on-card">
 	</div>	
-	<div class="entry full-width">
-		<label for="add-in-guest-card" class="checkbox inline">
-			<span class="icon-form icon-checkbox"></span>
-            <input type="checkbox" value="1" id="add-in-guest-card" name="checkin">
-            Add to Guest Card
-        </label>
+	<div class="entry full-width" ng-show="!isFromGuestCard">
+        <label class="checkbox" ng-class="{'checked': saveData.add_to_guest_card}">
+        	<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.add_to_guest_card}"></span>
+			<input type="checkbox" ng-model="saveData.add_to_guest_card">
+			<span class="guest_card_promotions">Add to Guest Card</span> 
+		</label>
 	</div>
 	<div class="actions float">
-		<button class="button blank modal-close" id="cancel" type="button">Cancel</button>
+		<button class="button blank modal-close" id="cancel" type="button" ng-click="clickCancel()">Cancel</button>
 		<button class="button green modal-close" id="save" type="button" ng-click="savePayment()">Add card</button>  
 	</div>
 </form></div>

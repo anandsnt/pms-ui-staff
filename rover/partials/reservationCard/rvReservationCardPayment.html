@@ -6,7 +6,7 @@
 				Guarantee </span>
 		</div>
 		<!-- The credit card selection popup is not available for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' reservations -->
-		<a class="next-view" ng-show="reservationData.reservation_card.payment_method_used == 'CC'">
+		<a class="next-view" ng-show="reservationData.reservation_card.payment_method_used == 'CC'" ng-click="openPaymentList()">
 			<figure class="card-logo">
 				<img src="/assets/{{reservationData.reservation_card.payment_details.card_type_image}}" alt="">
 			</figure> 
