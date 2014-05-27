@@ -191,16 +191,16 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	/*
     * Function to handle data change in 'Contract List'.
     */
-   	$scope.clickContractSelected = function(contratct_id){
-   		if(contratct_id){
-   			$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":contratct_id},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);
+   	$scope.$watch('contractList.contractSelected', function() {
+       if($scope.contractList.contractSelected){
+   			$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":$scope.contractList.contractSelected},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);
 	   		angular.forEach($scope.contractList.history_contracts,function(item, index) {
-	    		if(item.id == contratct_id){
+	    		if(item.id == $scope.contractList.contractSelected){
 	    			$scope.isHistorySelected = true ;
 	    		}
 	       	});
        }
-   	};
+   	});
    
 	$scope.contractStart = function(){
 		ngDialog.open({
