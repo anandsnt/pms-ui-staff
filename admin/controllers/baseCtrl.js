@@ -49,4 +49,13 @@ function BaseCtrl($scope){
 		return serviceApi(params).then(successCallback, failureCallback);
 		
 	};
+
+	//handle drag and drop events
+	$scope.hideCurrentDragItem = function(ev, ui){ 
+		$(ev.target).hide();
+	 };
+
+ 	$scope.showCurrentDragItem = function(ev, ui){ 
+		$(ev.target).show();
+ 	}
 }
