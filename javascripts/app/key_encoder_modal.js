@@ -10,10 +10,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.noOfErrorMethodCalled = 0;
 	this.maxSecForErrorCalling = 10000;
 	this.key1Printed = false;
-	this.isAdditional = false;
-
+	this.key1Fetched = false;
 	this.numOfKeys = 0;
-	this.printKeyStatus = [];
 
 	this.url = "/staff/reservations/" + reservation_id + "/get_key_setup_popup";
 
@@ -22,9 +20,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	this.delegateEvents = function() {
 		that.myDom.find('#try-again').on('click', that.showDeviceConnectingMessge);
 		that.myDom.find('.cancel-key-popup').on('click', that.cancelPopupClicked);
-		that.myDom.find('input[name=keys]').on('click', that.keySelected);
-		//that.myDom.find('#key1').on('click', that.key1Selected);
-		//that.myDom.find('#key2').on('click', that.key2Selected);//
+		that.myDom.find('#key1').on('click', that.key1Selected);
+		that.myDom.find('#key2').on('click', that.key2Selected);//
 		that.myDom.find('#create-key').on('click', that.keyCreateBtnClicked);
 		that.myDom.find('#goto-staycard').on('click', that.clickedGotoStayCard);
 		that.myDom.find('#goto-search').on('click', that.clickedGotoSearch);
@@ -182,10 +179,10 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 
 	};
 
-	/**
-	* function to handle on button selected
-	* will do style, text change and also create a list of dictionary to help in knowing the printing status
+	/*
+	* User Clicked the key1 option. Handles the key color changes
 	*/
+<<<<<<< HEAD
 	this.keySelected = function(event){
 		that.numOfKeys = 0;
 		var keyElem = $(event.target);
@@ -209,9 +206,28 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		}
 		else{
 			that.myDom.find('#create-key').text('Print key');
+=======
+	this.key1Selected = function(event){
+		var keyElem = $(event.target);
+		var createKeyBtn = that.myDom.find('#create-key');
+
+		//Unselect key1 - change the color
+		if(keyElem.closest('label').hasClass('checked')){
+			keyElem.closest('label').removeClass('checked');
+>>>>>>> develop
 			createKeyBtn.removeClass('green').addClass('grey');
 			createKeyBtn.attr('disabled','disabled');
+			that.numOfKeys = 0;
+
+		//select key1
+		}else{
+			keyElem.closest('label').addClass('checked');
+			createKeyBtn.removeClass('grey').addClass('green');
+			createKeyBtn.removeAttr('disabled');
+			that.numOfKeys = 1;
+
 		}
+<<<<<<< HEAD
 		var elementToPut = {};
 		that.printKeyStatus = [];
 		for(var i = 1; i <= $("input[name=keys]").length; i++){
@@ -221,8 +237,37 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			elementToPut['fetched'] = false;
 			that.printKeyStatus.push(elementToPut);
 		}
+=======
+
+>>>>>>> develop
 	};
 
+	/*
+	* User selected the key2. turn both key1 and hey2 to green colors.
+	*/
+	this.key2Selected = function(event){
+		var key2 = $(event.target);
+		var key1 = that.myDom.find('#key1');
+		var createKeyBtn = that.myDom.find('#create-key');
+
+		//Unselect key2 - only key1 is selected
+		if(key2.closest('label').hasClass('checked')){
+			key2.closest('label').removeClass('checked');
+			key1.removeAttr('disabled');
+			createKeyBtn.text('Print key');
+			that.numOfKeys = 1;
+		//select key2 - both keys are selected
+		} else {
+			key2.closest('label').addClass('checked');
+			key1.closest('label').addClass('checked');
+			createKeyBtn.removeClass('grey').addClass('green');
+			createKeyBtn.removeAttr('disabled');
+			key1.attr('disabled','disabled');
+			createKeyBtn.text('Print key 1');
+			that.numOfKeys = 2;
+		}
+
+	};
 
 	/*
 	* User selected the key create button.
@@ -230,8 +275,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	* and pass it to the API while fetching the keys.
 	*/
 	this.keyCreateBtnClicked = function(){
-
-		that.myDom.find("input[name='keys']").attr("disabled", "disabled");
+		that.myDom.find('#key1').attr('disabled','disabled');
+		that.myDom.find('#key2').attr('disabled','disabled');
 
 		//On selecting the key create button for the first time, get the keys form API.
 		if(that.myDom.find('#print-key').attr('data-retrieve-uid') == "true"){
@@ -267,6 +312,32 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		that.showKeyPrintFailure(message);
 	};
 
+	/*
+	* Calculate the keyWrite data from the API response and call the write key method for key writing.
+	*/
+	that.printKeys = function(){
+	    var keyPos = 0;
+	    if(that.key1Printed) keyPos = 1;
+
+	    var keyData = [];
+
+	    //Safelock key
+	    if(Object.keys(that.keyData.key_info[0])[0] == "base64"){
+	    	keyData.push(that.keyData.key_info[0].base64)
+	    }else{
+	    	keyData.push(that.keyData.key_info[0].t3)
+	    }
+
+	    keyData.push(Object.keys(that.keyData.key_info[0])[0]);
+	    keyData.push(escapeNull(that.keyData.aid));
+	    keyData.push(escapeNull(that.keyData.keyb));
+	    if(keyPos == 0){
+	    	that.writeKey(keyData, "key1");
+	    }else if (keyPos == 1){
+	    	that.writeKey(keyData, "key2");
+	    }
+
+	};
 
 	/*
 	* Server call to fetch the key data.
@@ -277,9 +348,8 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	    var reservationId = getReservationId();
 
 	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": true};
-	    // for initial case the key we are requesting is not additional
-	    if(!that.isAdditional){
-	    	that.isAdditional = true;
+	    if(!that.key1Fetched){
+	    	that.key1Fetched = true;
 	    	var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": false};
 	    }
 	    if(typeof uID !== 'undefined'){
@@ -306,6 +376,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	*/
 	this.keyFetchSuccess = function(response, requestParams){
 		that.keyData = response.data;
+<<<<<<< HEAD
 		that.printKeys();
 	};
 
@@ -334,13 +405,16 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	    keyData.push(escapeNull(that.keyData.aid));
 	    keyData.push(escapeNull(that.keyData.keyb));
 	    that.writeKey(keyData, index);
+=======
+		that.printKeys();
+
+>>>>>>> develop
 	};
 
 	/*
 	* Calls the cordova service to write the keys
 	*/
-	this.writeKey = function(keyWriteData, index){
-		console.log('index :'+ index);
+	this.writeKey = function(keyWriteData, key){
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		that.myDom.find('#key-status .status').removeClass('pending').addClass('success').text('Writing key!');
 		var options = {
@@ -355,10 +429,13 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 					that.showKeyPrintSuccess();
 					return true;
 				}
-
-				that.printKeyStatus[index-1].printed = true;
-				that.myDom.find('#key' + index).closest('label').addClass('printed');
-				that.myDom.find('#create-key').text('Print key '+ (index+1));
+				if(key == "key1"){
+					that.key1Printed = true;
+					that.myDom.find('#key1').closest('label').addClass('printed');
+					that.myDom.find('#create-key').text('Print key 2');
+				} else if (key == "key2"){
+					that.myDom.find('#key2').closest('label').addClass('printed');
+				}
 
 			},
 			'failureCallBack': function(){
