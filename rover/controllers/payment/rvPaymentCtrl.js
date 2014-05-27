@@ -24,7 +24,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		ngDialog.close();
 		var cardNumber = $scope.saveData.card_number;
 		var expiryDate = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
-		$scope.paymentData.payment_details.card_type_image = $scope.data[$scope.saveData.selected_payment_type].name+".png";
+		var cardCode = $scope.saveData.credit_card;
+		$scope.paymentData.payment_details.card_type_image = cardCode.toLowerCase()+".png";
 		$scope.paymentData.payment_details.card_number = cardNumber.substr(cardNumber.length - 4);
 		$scope.paymentData.payment_details.card_expiry = expiryDate;
 	};
@@ -33,8 +34,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		console.log("reached failuer")
 		var cardNumber = $scope.saveData.card_number;
 		var expiryDate = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
-		console.log(JSON.stringify($scope.paymentData));
-		$scope.paymentData.reservation_card.payment_details.card_type_image = $scope.data[$scope.saveData.selected_payment_type].name+".png";
+		console.log(JSON.stringify($scope.saveData));
+		var cardCode = $scope.saveData.credit_card;
+		$scope.paymentData.reservation_card.payment_details.card_type_image = cardCode.toLowerCase()+".png";
 		$scope.paymentData.reservation_card.payment_details.card_number = cardNumber.substr(cardNumber.length - 4);
 		$scope.paymentData.reservation_card.payment_details.card_expiry = expiryDate;
 	};
