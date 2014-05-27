@@ -2,30 +2,30 @@
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div id="cc-contracts-header" class="tab-header">
         <div class="entry">
-            <div class="select" ng-hide="isAddMode">
-                <select name="company-contract" ng-model="contractSelected">
+            <div class="select" ng-hide="contractList.isAddMode">
+                <select name="company-contract" ng-model="contractList.contractSelected">
                     <option value="" class="placeholder">Select contract</option>
                     <optgroup label="Current">
-                    	<option ng-click="clickContractSElected(type.id)" value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.current_contracts" >{{type.contract_name}}</option>
+                    	<option ng-click="clickContractSelected(type.id)" value="{{type.id}}" ng-selected="type.id==contractList.contractSelected" ng-repeat="type in contractList.current_contracts" >{{type.contract_name}}</option>
                 	</optgroup>
                 	<optgroup label="Future">
-                    	<option ng-click="clickContractSElected(type.id)" value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.future_contracts" >{{type.contract_name}}</option>
+                    	<option ng-click="clickContractSelected(type.id)" value="{{type.id}}" ng-selected="type.id==contractList.contractSelected" ng-repeat="type in contractList.future_contracts" >{{type.contract_name}}</option>
                 	</optgroup>
                 	<optgroup label="History">
-                    	<option ng-click="clickContractSElected(type.id)" value="{{type.id}}" ng-selected="type.id==contractSelected" ng-repeat="type in contractList.history_contracts" >{{type.contract_name}}</option>
+                    	<option ng-click="clickContractSelected(type.id)" value="{{type.id}}" ng-selected="type.id==contractList.contractSelected" ng-repeat="type in contractList.history_contracts" >{{type.contract_name}}</option>
                 	</optgroup>
                 </select>
             </div>
-            <div class="" ng-show="isAddMode" >
+            <div class="" ng-show="contractList.isAddMode" >
                 <input ng-model="addData.contract_name" placeholder="Contract Name" name="company-contract-new" class="" value="{{addData.contract_name}}" type="text" />
             </div>
         </div>
-        <div class="actions" ng-hide="isAddMode">
-            <button id="company-new-contract" type="button" class="button green" ng-click="AddNewButtonClicked(isAddMode=true)">New Contract</button>
+        <div class="actions" ng-hide="contractList.isAddMode">
+            <button id="company-new-contract" type="button" class="button green" ng-click="AddNewButtonClicked()">New Contract</button>
         </div>
-        <div class="actions" ng-show="isAddMode">
-        	<button id="company-new-contract" type="button" class="button red" ng-click="CancelAddNewContract(isAddMode=false)">Cancel</button>
-            <button id="company-new-contract" type="button" class="button green" ng-click="AddNewContract(isAddMode=false)">Save Contract</button>
+        <div class="actions" ng-show="contractList.isAddMode">
+        	<button id="company-new-contract" type="button" class="button red" ng-click="CancelAddNewContract()">Cancel</button>
+            <button id="company-new-contract" type="button" class="button green" ng-click="AddNewContract()">Save Contract</button>
         </div>
     </div>
     <div id="cc-contracts-content" class="tab-details">
@@ -33,14 +33,14 @@
 
 
 
-            <div class="holder left" ng-hide="isAddMode">
+            <div class="holder left" ng-hide="contractList.isAddMode">
                 <strong class="h3">Details</strong>
                 <div class="entry margin">
                     <label for="company-rate">Contracted Rate</label>
                     <div class="select">
-		                <select name="company-contract" ng-model="contractData.contracted_rate_selected">
+		                <select name="company-contract">
 		                    <option value="" class="placeholder">Select contracted rate</option>
-		                    <option value="{{rate.id}}" ng-selected="rate.id==contractData.contracted_rate_selected" ng-repeat="rate in contractData.rates" >{{rate.name}}</option>
+		                    <option ng-model="contractData.contracted_rate_selected" value="{{rate.id}}" ng-selected="rate.id==contractData.contracted_rate_selected" ng-repeat="rate in contractData.rates" >{{rate.name}}</option>
 		                </select>
 		            </div>
                 </div>
@@ -101,14 +101,14 @@
             
             
             
-            <div class="holder left" ng-show="isAddMode">
+            <div class="holder left" ng-show="contractList.isAddMode">
                 <strong class="h3">Details</strong>
                 <div class="entry margin">
                     <label for="company-rate">Contracted Rate</label>
                     <div class="select">
-		                <select name="company-contract" ng-model="addData.contracted_rate_selected">
+		                <select name="company-contract">
 		                    <option value="" class="placeholder">Select contracted rate</option>
-		                    <option value="{{rate.id}}" ng-selected="rate.id==addData.contracted_rate_selected" ng-repeat="rate in addData.rates" >{{rate.name}}</option>
+		                    <option ng-model="addData.contracted_rate_selected" value="{{rate.id}}" ng-selected="rate.id==addData.contracted_rate_selected" ng-repeat="rate in addData.rates" >{{rate.name}}</option>
 		                </select>
 		            </div>
                 </div>
@@ -178,7 +178,7 @@
             
             
             
-            <div class="holder right" ng-hide="isAddMode">
+            <div class="holder right" ng-hide="contractList.isAddMode">
                 <strong class="h3">Statistics</strong>
                 <ul id="company-contract-stats" class="contract-stats">
                     <li>Booked Nights <span>{{contractData.statistics.booked_nights}}</span></li>
@@ -190,7 +190,7 @@
             </div>
         </div>
     </div>
-    <div id="company-cards-occupancy" class="occupancy" ng-hide="isAddMode">
+    <div id="company-cards-occupancy" class="occupancy" ng-hide="contractList.isAddMode">
         <strong class="h3">Occupancy</strong>
         <div class="occgraph-outer" style='width: 100%'>
             <highchart id="occGraphContainer" config="highchartsNG"></highchart>
