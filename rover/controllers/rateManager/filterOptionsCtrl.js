@@ -150,7 +150,54 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 
             var successCallBackOfCompanySearch = function(data){
                 $scope.$emit("hideLoader");
-                $scope.companyCardResults = data.accounts;
+                // $scope.companyCardResults = data.accounts;
+                $scope.companyCardResults = [
+                                                {
+                                                    "account_first_name": "Megan",
+                                                    "account_last_name": "Ferrell",
+                                                    "company_logo": ""
+                                                },
+                                                {
+                                                    "account_first_name": "Jefferson",
+                                                    "account_last_name": "Savage",
+                                                    "company_logo": ""
+                                                },
+                                                {
+                                                    "account_first_name": "Gillespie",
+                                                    "account_last_name": "Yang",
+                                                    "company_logo": ""
+                                                },
+                                                {
+                                                    "account_first_name": "Castillo",
+                                                    "account_last_name": "Hernandez",
+                                                    "company_logo": ""
+                                                },
+                                                {
+                                                    "account_first_name": "Graham",
+                                                    "account_last_name": "Gregory",
+                                                    "company_logo": ""
+                                                },
+                                                {
+                                                    "account_first_name": "Buckner",
+                                                    "account_last_name": "Solomon",
+                                                    "company_logo": ""
+                                                },
+                                                {
+                                                    "account_first_name": "Yates",
+                                                    "account_last_name": "Browning",
+                                                    "company_logo": ""
+                                                },
+                                                {
+                                                    "account_first_name": "Barbara",
+                                                    "account_last_name": "Cross",
+                                                    "company_logo": ""
+                                                },
+                                                {
+                                                    "account_first_name": "Dennis",
+                                                    "account_last_name": "Carver",
+                                                    "company_logo": ""
+                                                }
+                                            ]
                 refreshScroller();
             }
             var paramDict = {'query': $scope.companySearchText.trim()};
