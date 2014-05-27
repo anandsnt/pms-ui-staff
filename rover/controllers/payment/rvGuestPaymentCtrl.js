@@ -3,10 +3,12 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 	BaseCtrl.call(this, $scope);
 	$scope.openAddNewPaymentModel = function(){
   	 	var passData = {
-  	 		"reservationId": $scope.paymentData.user_id,
+  	 		"user_id": $scope.paymentData.user_id,
+  	 		"guest_id": $scope.paymentData.guest_id,
   	 		"fromView": "guestcard"
   	 	};
-  	 	$scope.showAddNewPaymentModal(passData);
+  	 	var paymentData = $scope.paymentData;
+  	 	$scope.showAddNewPaymentModal(passData, paymentData);
   	 };
 	
 	

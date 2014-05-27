@@ -6,6 +6,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.$emit("hideLoader");
 		$scope.data = data;
 		$scope.paymentTypeValues = [];
+		
+		
+		
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender);
 	$scope.renderPaymentValues = function(){
@@ -14,15 +17,42 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveSuccess = function(){
 		$scope.$emit("hideLoader");
 		ngDialog.close();
+		$scope.paymentData.data.push($scope.saveData);
+		
+		console.log(JSON.stringify($scope.paymentData));
+	};
+	$scope.failureCallBack = function(){
+		$scope.$emit("hideLoader");
+		
+		$scope.paymentData.data.push($scope.saveData);
+		
+		console.log(JSON.stringify($scope.paymentData));
 	};
 	$scope.savePayment = function(){
-	
+		
 		$scope.saveData.payment_type = $scope.data[$scope.saveData.selected_payment_type].name;
 		$scope.saveData.card_expiry = $scope.saveData.card_expiry_month && $scope.saveData.card_expiry_year ? "20"+$scope.saveData.card_expiry_year+"-"+$scope.saveData.card_expiry_month+"-01" : "";
-		$scope.saveData.reservation_id = $scope.passData.reservationId;
-			var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type"];
-			var data = dclone($scope.saveData, unwantedKeys);
+		//$scope.passData  => Gives information from which view popup opened 
+		//get reservation id if it is from staycard
+		if($scope.passData.fromView == "staycard"){
+			$scope.saveData.reservation_id = $scope.passData.reservationId;
+		} else {
+			$scope.saveData.guest_id = $scope.passData.guest_id;
+			$scope.saveData.user_id = $scope.passData.user_id;
+		}
+		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type"];
+		var data = dclone($scope.saveData, unwantedKeys);
+		if($scope.passData.fromView == "staycard"){
+			
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess);
+		} else {
+			//Used to update the list with new value
+			$scope.newPaymentInfo = {
+				
+			};
+			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
+		}
+		
 		
 	};
 	

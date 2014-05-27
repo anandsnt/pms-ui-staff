@@ -125,8 +125,9 @@ $scope.settingsClicked = function(){
 };
 
 
-$scope.showAddNewPaymentModal = function(passData){
+$scope.showAddNewPaymentModal = function(passData, paymentData){
 	  $scope.passData = passData;
+	  $scope.paymentData = paymentData;
 	  ngDialog.open({
                template: '/assets/partials/payment/rvPaymentModal.html',
                controller: 'RVPaymentMethodCtrl',

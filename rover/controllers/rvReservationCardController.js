@@ -40,7 +40,11 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 									'vip':$scope.data.vip};
 	        $scope.$emit('guestCardUpdateData',contactInfoData);
 	        $scope.$emit('hideLoader');
-	        $scope.showGuestPaymentList(data.user_id);
+	        var guestInfo = {
+	        	"user_id":data.user_id,
+	        	"guest_id":data.guest_id
+	        };
+	        $scope.showGuestPaymentList(guestInfo);
 	    };
 	    var fetchGuestcardDataFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
@@ -132,13 +136,16 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 	 	$scope.currentReservationId = currentConfirmationNumber;
 	 };
 	
-	 $scope.showGuestPaymentList = function(userId){
+	 $scope.showGuestPaymentList = function(guestInfo){
+	 	var userId = guestInfo.user_id,
+	 	guestId = guestInfo.guest_id;
 	 	 var paymentSuccess = function(paymentData){
 		 	 $scope.$emit('hideLoader');
 		 	
 		 	 
 		 	 var paymentData = {"data":paymentData,
-		 	 			"user_id":userId
+		 	 			"user_id":userId,
+		 	 			"guest_id":guestId
 		 	};
 		 	 
 		 	 
