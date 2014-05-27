@@ -27,7 +27,7 @@ admin.service('ADUserRolesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
 		var url = 'api/reference_values.json?type=dashboard';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-		   that.userRolesData.dashboards = data.dashboards;
+		   that.userRolesData.dashboards = data;
 		   fetchUserRolesData();
 		},function(data){
 		    deferred.reject(data);

@@ -6,15 +6,6 @@ admin.controller('ADUserRolesCtrl',['$scope','userRolesData','ADUserRolesSrv', f
 	$scope.rolesList = userRolesData.userRoles;
 	$scope.dashboard_types = userRolesData.dashboards;
 
-
-	//to delete
-	$scope.dashboard_types = [
-							  {"value":0,"name":"Manager"},
-							  {"value":1,"name":"Front Desk"},
-							  {"value":2,"name":"Housekeeping"}
-							 ];
-
-
 	$scope.addMode = false;
 	$scope.newUserRole = "";
 

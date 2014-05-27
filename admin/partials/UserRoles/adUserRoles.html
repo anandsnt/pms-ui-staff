@@ -55,7 +55,7 @@
 				<td>
 	 		   	<div class="entry">
                 <div class="select">
-                    <select class="placeholder" ng-model="role.dashboard_id" ng-options="dashboard.value as dashboard.name for dashboard in dashboard_types" ng-change="changeDashBoard(role.value,role.dashboard_id)">
+                    <select class="placeholder" ng-model="role.dashboard_id" ng-options="dashboard.id as dashboard.description for dashboard in dashboard_types" ng-change="changeDashBoard(role.value,role.dashboard_id)">
                         <option value="" disabled>Select Dashboard</option>
                     </select>
                 </div>
