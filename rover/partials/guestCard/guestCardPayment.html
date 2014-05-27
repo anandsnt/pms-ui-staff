@@ -1,14 +1,14 @@
  <form ng-controller="RVPaymentGuestCtrl" class="form card-tab scrollable" ng-show="current == 'guest-credit'">
                     <div class="wrapper">
                         <!-- Credit cards on file -->
-                        <a href="modals/select-primary/" class="active-item item-payment primary open-modal float">
+                        <a class="active-item item-payment primary open-modal float" ng-repeat="payment in paymentData.data">
                             <figure class="card-logo">
                                 <img src="../images/visa.png" alt="" />
                             </figure>
-                            <span class="number">Ending with <span class="value number">6531</span></span>
-                            <span class="date">Date <span class="value date">07/15</span></span>
-                            <span class="name">Name <span class="value name">Jos Schaap</span></span>
-                            <span class="primary"><span class="value primary">Primary</span></span>
+                            <span class="number">Ending with <span class="value number">{{payment.mli_token_display}}</span></span>
+                            <span class="date">Date <span class="value date">{{payment.card_expiry}}</span></span>
+                            <span class="name">Name <span class="value name">{{payment.card_name}}</span></span>
+                            <span class="primary" ng-show="payment.is_primary"><span class="value primary">Primary</span></span>
                         </a>
                         
                         <a class="open-modal add-new-button" ng-click="openAddNewPaymentModel()">+ New Payment Method</a>
