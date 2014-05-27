@@ -8,9 +8,10 @@
 
  <div class="restriction-legends" >
 	<span ng-repeat="restrictionType in calendarData.restriction_types">
-		<span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}">{{restrictionType.days}}</span>
-		<!--<span style="background-color: {{restrictionType.background_class}};"> <img src="{{restrictionType.icon}}"></span>-->
-		<span>{{restrictionType.description}}</span>
+		<span ng-if ="restrictionType.activated">
+			<span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}">{{restrictionType.days}}</span>
+			<span>{{restrictionType.description}}</span>
+		</span>
 	</span>
 </div> 
 
