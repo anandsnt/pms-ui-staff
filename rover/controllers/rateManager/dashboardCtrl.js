@@ -15,8 +15,8 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
     
 
 	  $scope.currentFilterData =	{
-           begin_date : dateFilter(new Date(), 'yyyy-MM-dd'),
-           end_date : dateFilter(new Date((new Date()).getTime() + defaultDateRange*24*60*60*1000), 'yyyy-MM-dd'),
+           begin_date : "",//dateFilter(new Date(), 'yyyy-MM-dd'),
+           end_date : "",//dateFilter(new Date((new Date()).getTime() + defaultDateRange*24*60*60*1000), 'yyyy-MM-dd'),
            zoom_level : [{"value": "3","name": "3 days"},{"value": "4","name": "4 days"},{"value": "5","name": "5 days"},{"value": "6","name": "6 days"},{"value": "7","name": "7 days"}],
            zoom_level_selected : "3",
            is_checked_all_rates : true,
@@ -24,9 +24,9 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
            rate_type_selected_list : [],
            rates : [],
            rates_selected_list : [],
-           name_on_cards : []
+           name_on_cards : [],
+           selected_date_range : "Select Date Range"
    	};
-
 
     /* UI options like column width are computed here 
        A property, and a function to compute the same are given below

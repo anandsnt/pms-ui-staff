@@ -196,6 +196,9 @@
             currentDate.setDate(1);
             currentDate.setFullYear(scope.yearSelected);
             scope.render(currentDate);
+            if(scope.$$nextSibling && scope.$$nextSibling.date){
+                scope.$emit('fromDateChanged');
+            }
           })
        
           /*
@@ -217,6 +220,9 @@
              currentDate.setDate(1);
              currentDate.setMonth(scope.monthSelected.value);
              scope.render(currentDate);
+             if(scope.$$nextSibling && scope.$$nextSibling.date){
+                scope.$emit('fromDateChanged');
+             }
           });
 
           function isDateDisabled(dateObj) {
