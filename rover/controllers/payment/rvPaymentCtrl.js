@@ -24,7 +24,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.failureCallBack = function(){
 		$scope.$emit("hideLoader");
 		
-		$scope.paymentData.data.push($scope.saveData);
+		$scope.paymentData.data.push($scope.newPaymentInfo);
 		
 		console.log(JSON.stringify($scope.paymentData));
 	};
@@ -47,8 +47,14 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess);
 		} else {
 			//Used to update the list with new value
+			var cardNumber = $scope.saveData.card_number;
+			var expiryDate = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
 			$scope.newPaymentInfo = {
-				
+				"card_code": $scope.saveData.credit_card,
+				"mli_token_display":cardNumber.substr(cardNumber.length - 4),
+				"card_expiry": $scope.saveData.card_expiry,
+				"card_name": $scope.saveData.name_on_card,
+				"is_primary":false
 			};
 			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
 		}
