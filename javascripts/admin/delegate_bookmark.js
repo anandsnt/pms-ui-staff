@@ -1,21 +1,21 @@
 var DelegateBookMark = function(){
 	var that = this;
 	// To add book marks
-	this.addBookMark = function(bookMarkId){ 
+	this.addBookMark = function(bookMarkId){
 		$.ajax({
 			type : "POST",
-			url : '/admin/user_admin_bookmark',	
+			url : '/admin/user_admin_bookmark',
 			data : {id:bookMarkId},
 			dataType : 'json',
-			success : function(data) {				
+			success : function(data) {
 				if (data.status == "success") {
-				    
+
 				}
 			},
 			error : function(jqxhr, status, error){
             	//checking whether a user is logged in
             	if (jqxhr.status == "401") { sntapp.logout(); return;}
-            	if (jqxhr.status=="503" || jqxhr.status=="500") {
+            	if (jqxhr.status=="500" || jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
             	    location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
             	    return;
             	}
@@ -35,20 +35,20 @@ var DelegateBookMark = function(){
 		});
 	};
 	// To remove book marks
-	this.removeBookMark = function(bookMarkId){ 
+	this.removeBookMark = function(bookMarkId){
 		$.ajax({
 			type : "DELETE",
-			url : ' /admin/user_admin_bookmark/'+bookMarkId,				
+			url : ' /admin/user_admin_bookmark/'+bookMarkId,
 			dataType : 'json',
-			success : function(data) {				
+			success : function(data) {
 				if (data.status == "success") {
-				    
+
 				}
 			},
 			error : function(jqxhr, status, error){
             	//checking whether a user is logged in
             	if (jqxhr.status == "401") { sntapp.logout(); return;}
-            	if (jqxhr.status=="503" || jqxhr.status=="500") {
+            	if (jqxhr.status=="500" || jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
             	    location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
             	    return;
             	}
@@ -62,9 +62,9 @@ var DelegateBookMark = function(){
             	    location.href = XHR_STATUS.SERVER_DOWN;
             	    return;
             	}
-			  
+
 			}
 		});
 	};
-	
+
 };
