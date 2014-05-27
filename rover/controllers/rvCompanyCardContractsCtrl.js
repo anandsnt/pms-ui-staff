@@ -188,9 +188,15 @@ console.log("refreshScroller");
         }]
         return graphData
     }
-  	
-	$scope.invokeApi(RVCompanyCardSrv.fetchContractsList,{"account_id":$stateParams.id},fetchContractsListSuccessCallback,fetchFailureCallback);  
-	
+    console.log("$stateParams.id"+$stateParams.id);
+  	if($stateParams.id !="add"){
+  		console.log("not add");
+		$scope.invokeApi(RVCompanyCardSrv.fetchContractsList,{"account_id":$stateParams.id},fetchContractsListSuccessCallback,fetchFailureCallback);  
+	}
+	else{
+		console.log("is add");
+		$scope.$emit('hideLoader');
+	}
 	/*
     * Function to handle data change in 'Contract List'.
     */
