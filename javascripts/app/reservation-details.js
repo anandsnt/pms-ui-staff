@@ -75,6 +75,9 @@ var reservationDetailsView = function(domRef) {
 	    if(getParentWithSelector(event, "#nights-btn")) {
 	    	return that.gotToChangeDatesScreen(event);
 	    }
+	    if(getParentWithSelector(event, "#smartband-btn")) {
+	    	return that.smartBandButtonClicked(event);
+	    }	    
 	};
 
 		
@@ -86,6 +89,15 @@ var reservationDetailsView = function(domRef) {
 		reservationCardLoyaltyView.initialize();
 		var reservationCardNotes = new reservationCardNotesView(that.myDom);
 		reservationCardNotes.initialize();
+	};
+
+
+	/**
+	* function to handle click on smart band button
+	*/
+	this.smartBandButtonClicked = function(){
+		var smartBandModal = new SmartBandModal(this.reservation_id);
+		smartBandModal.initialize();
 	};
 
 	this.gotToChangeDatesScreen = function() {
