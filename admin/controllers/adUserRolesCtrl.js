@@ -1,14 +1,20 @@
-admin.controller('ADUserRolesCtrl',['$scope','rolesList','ADUserRolesSrv', function($scope,rolesList,ADUserRolesSrv){
+admin.controller('ADUserRolesCtrl',['$scope','userRolesData','ADUserRolesSrv', function($scope,userRolesData,ADUserRolesSrv){
 	BaseCtrl.call(this, $scope);
 
 	
+	
+	$scope.rolesList = userRolesData.userRoles;
+	$scope.dashboard_types = userRolesData.dashboards;
+
+
+	//to delete
 	$scope.dashboard_types = [
-							  {"value":"0","name":"Manager"},
-							  {"value":"1","name":"Front Desk"},
-							  {"value":"2","name":"Housekeeping"}
+							  {"value":0,"name":"Manager"},
+							  {"value":1,"name":"Front Desk"},
+							  {"value":2,"name":"Housekeeping"}
 							 ];
 
-	$scope.rolesList = rolesList.user_roles;
+
 	$scope.addMode = false;
 	$scope.newUserRole = "";
 
@@ -40,7 +46,8 @@ admin.controller('ADUserRolesCtrl',['$scope','rolesList','ADUserRolesSrv', funct
 
 	$scope.changeDashBoard =  function(id,dashboardId){
 
-		console.log(id+dashboardId)
+		console.log(id);
+		console.log(dashboardId);
 	}
 
 }]);

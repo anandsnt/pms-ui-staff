@@ -1,4 +1,9 @@
 admin.service('ADUserRolesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2){
+   
+
+	this.userRolesData  = {};
+	var that = this;
+
    /**
     * To fetch the list of user roles
     * @return {object} users list json
@@ -6,10 +11,24 @@ admin.service('ADUserRolesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
 	this.fetchUserRoles = function(){
 		
 		var deferred = $q.defer();
-		var url = '/admin/roles.json';
+
+		var fetchUserRolesData = function(){
+			var url = '/api/roles.json';
+
+			ADBaseWebSrvV2.getJSON(url).then(function(data) {
+				that.userRolesData.userRoles = data.user_roles;
+			    deferred.resolve(that.userRolesData);
+			},function(data){
+			    deferred.reject(data);
+			});	
+			return deferred.promise;
+		};
+
+		var url = 'api/reference_values.json?type=dashboard';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-		    deferred.resolve(data);
+		   that.userRolesData.dashboards = data.dashboards;
+		   fetchUserRolesData();
 		},function(data){
 		    deferred.reject(data);
 		});	

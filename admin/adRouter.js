@@ -285,7 +285,7 @@ admin.config([
 			controller: 'ADUserRolesCtrl',
 			url : '/UserRoles',
 			resolve: {
-				rolesList: function(ADUserRolesSrv) {
+				userRolesData: function(ADUserRolesSrv) {
 					return ADUserRolesSrv.fetchUserRoles();
 				}
 			}

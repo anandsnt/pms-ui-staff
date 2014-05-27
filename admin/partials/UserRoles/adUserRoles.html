@@ -53,21 +53,13 @@
 					{{role.name}}
 				</td>
 				<td>
-				
-				<div class='entry'>
-				  <div class='select'>
-				    <select ng-model='dashBoardID' ng-change="changeDashBoard(role.value,dashBoardID)">
-				      <option value="">
-				        Select Dashboard
-				      </option>
-				      <option ng-repeat='row in dashboard_types' value='{{row.value}}'  ng-selected="row.value==selectedId" >
-				        {{row.name}}
-				      </option>
-				    </select>
-				  </div>
-				</div>
-
-
+	 		   	<div class="entry">
+                <div class="select">
+                    <select class="placeholder" ng-model="role.dashboard_id" ng-options="dashboard.value as dashboard.name for dashboard in dashboard_types" ng-change="changeDashBoard(role.value,role.dashboard_id)">
+                        <option value="" disabled>Select Dashboard</option>
+                    </select>
+                </div>
+                </div>
 				</td>
 			</tr>
 		</tbody>
