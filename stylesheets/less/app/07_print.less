@@ -142,7 +142,6 @@ h4, .h4 { page-break-after: avoid; }
 		}
 
 		.report-content {
-			position: relative;			
 			height: auto !important;
 
 			> .wrapper { padding: 0; }
@@ -151,19 +150,23 @@ h4, .h4 { page-break-after: avoid; }
 				border-collapse: collapse; 
 				margin-bottom: 0;
 				tr {	
-				page-break-before: always;
+				page-break-after: always;
 				page-break-inside: avoid;
 						
 					th,
 					td {
-						page-break-before: always;
-						page-break-inside: avoid;
+						page-break-after:always !important;
+						page-break-inside: avoid !important;
 						white-space: normal !important;
 						overflow: visible !important;
 						vertical-align: top !important;
 						line-height: 1.1;
 						padding: .2cm 1cm .2cm 0;
 						border-bottom: 1px solid rgba(0,0,0,.1);
+						min-width: 15%;
+						max-width: 30%;
+						width: 30%;
+						word-break: break-all;
 					}
 				}
 
