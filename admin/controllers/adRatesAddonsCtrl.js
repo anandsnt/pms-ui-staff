@@ -160,7 +160,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			// title for the sub template
 			$scope.addonTitle    = "Add New";
-			$scope.addonSubtitle = "Addon";
+			$scope.addonSubtitle = "Add-On";
 
 			// params to be sent to server
 			$scope.singleAddon            = {};

@@ -58,7 +58,12 @@
     "SELECT_FLOOR":"wählen Boden",
     "FLOOR_NO":"Stockwerk",
     "FLOOR_DESCRIPTION":"Stock Beschreibung",
-    "FLOORS":"Etagen"
+    "FLOORS":"Etagen",
+
+    "NAME":"Name",
+    "DESCRIPTION":"Beschreibung",
+    "ACTIVE":"aktiv",
+    "DELETE":"löschen"
     
 
 }

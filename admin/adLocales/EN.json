@@ -58,6 +58,11 @@
     "SELECT_FLOOR":"Select Floor",
     "FLOOR_NO":"Floor No",
     "FLOOR_DESCRIPTION":"Floor Description",
-    "FLOORS":"Floors"
+    "FLOORS":"Floors",
+
+    "NAME":"Name",
+    "DESCRIPTION":"Description",
+    "ACTIVE":"Active",
+    "DELETE":"Delete"
 
 }
