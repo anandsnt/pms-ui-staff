@@ -234,7 +234,10 @@ height: 410px;
 
 /*------------------date -picker ends here-------------------------- */
 
-.form {
+//Limitting form and related class to relevant screen, to avoid issues elsewhere.   
+.calendar-modal, #search_list {
+  
+  .form {
       padding: 30px 20px;
       margin-bottom: 30px;
       background: #fcfcfc;
@@ -301,11 +304,8 @@ height: 410px;
     .italic_text {
       font-style: italic;
     }
- 
     
- //Limitting datepicker-bg class to relevant screen, to avoid issues elsewhere.   
- .calendar-modal{
-      .form .actions {
+    .form .actions {
       width: 100%;
       clear: both;
       padding-top: 20px;
@@ -319,3 +319,4 @@ height: 410px;
       margin: 5px;
     }
 }
+
