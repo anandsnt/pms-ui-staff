@@ -19,6 +19,22 @@ var HotelDetailsView = function(domRef) {
   		that.myDom.find('#hotel-logo').on('change', function(){
 	  		that.readCertificate(this, "logo");
 	  	});
+
+	  	//CICO-5178
+
+	  	that.myDom.find('#hotel-template-logo').on('change', function(){
+	  		that.readCertificate(this, "logo-template");
+	  	});
+
+	  	that.myDom.find('#deleteLogo').on('click', function(){
+	  		that.readCertificate(this, "logo-deleted");
+	  	});
+
+	  	that.myDom.find('#deleteTemplate').on('click', function(){
+	  		that.readCertificate(this, "logo-template-deleted");
+	  	});
+
+
 		that.myDom.find('#test-mli-connectivity').on('click', that.testMliConnectivity);
 	};
 
@@ -163,14 +179,25 @@ var HotelDetailsView = function(domRef) {
 		var hotelPmsType = that.myDom.find("#hotel-pms-type").val();
 		var hotel_logo = "";
 
+		//CICO-5178
 		if(that.myDom.find("#hotel-logo-preview").attr("changed") == "changed")
 	  		hotel_logo = that.myDom.find("#hotel-logo-preview").attr("src");
+	  	else if (that.myDom.find("#hotel-logo-preview").attr("deleted") == "deleted")
+	  		hotel_logo = false;
+
+	  	var hotel_template_logo = "";
+
+	  	if(that.myDom.find("#hotel-logo-template-preview").attr("changed") == "changed")
+	  		hotel_template_logo = that.myDom.find("#hotel-logo-template-preview").attr("src");
+	  	else if (that.myDom.find("#hotel-logo-template-preview").attr("deleted") == "deleted")
+	  		hotel_template_logo = false;
+
 
 	  	var checkinToInspectedRoomsOnly = "false";
 	  	if($("#checkin_to_inspected").parent("label:eq(0)").hasClass("checked")) {
 	  	  var checkinToInspectedRoomsOnly = "true";
 	 	}
-		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, checkinToInspectedRoomsOnly, isUseKioskEntityId);
+		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityId);
 		var type = event.data[0];
 	    if(type == "create"){
 	      var url = '/admin/hotels';
@@ -215,7 +242,7 @@ var HotelDetailsView = function(domRef) {
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
 	};
 	//Generating post data
-	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, checkinToInspectedRoomsOnly, isUseKioskEntityId) {
+	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityId) {
 
 		if (that.currentView == "snt-admin-view") {
 			data = {
@@ -286,6 +313,7 @@ var HotelDetailsView = function(domRef) {
 			required_signature_at:roverRegistration,
 			hotel_from_address: hotelFromAddress,
 			hotel_logo:hotel_logo,
+			hotel_template_logo: hotel_template_logo,
 			checkin_to_inspected_rooms_only: checkinToInspectedRoomsOnly
 
 		} ;
@@ -298,19 +326,52 @@ this.gotoPreviousPage = function() {
 };
 
 this.readCertificate = function(input, type) {
+
+		//CICO-5178
 		if(type == "logo"){
 			that.myDom.find('#hotel-logo-preview').attr('changed', "changed");
+			that.myDom.find('#hotel-logo-preview').attr('deleted', false);
 		}
+
+		else if(type == "logo-template"){					
+			that.myDom.find('#hotel-logo-template-preview').attr('changed', "changed");
+			that.myDom.find('#hotel-logo-template-preview').attr('deleted', false);
+
+		}
+
+		else if(type == "logo-deleted"){
+			that.myDom.find('#hotel-logo-preview').attr('deleted', "deleted");
+			that.myDom.find("#deleteLogo").addClass('hidden');
+			that.myDom.find('#hotel-logo-preview').attr('src', "");
+			that.myDom.find('#hotel-logo').parent('div').find('span').text("Choose file ...");
+		}
+
+		else if(type == "logo-template-deleted"){					
+			that.myDom.find('#hotel-logo-template-preview').attr('deleted', "deleted");
+			that.myDom.find("#deleteTemplate").addClass('hidden');
+			that.myDom.find('#hotel-logo-template-preview').attr('src', "");
+			that.myDom.find('#hotel-template-logo').parent('div').find('span').text("Choose file ...");
+		}
+
+
         if (input.files && input.files[0]) {
            var reader = new FileReader();
            reader.onload = function(e) {
-           		//console.log(e.target.result);
            		if(type == "logo"){
 					that.myDom.find('#hotel-logo-preview').attr('src', e.target.result);
+					that.myDom.find("#deleteLogo").removeClass('hidden');
+				}			
+
+				if(type == "logo-template"){
+					that.myDom.find('#hotel-logo-template-preview').attr('src', e.target.result);
+					that.myDom.find("#deleteTemplate").removeClass('hidden');
 				}
                that.fileContent = e.target.result;
            };
            reader.readAsDataURL(input.files[0]);
+			
+
+
        }
   };
 

@@ -312,6 +312,20 @@ $(function($){
                 error: function(jqxhr, status, error){
                     //checking whether a user is logged in
                     if (jqxhr.status == "401") { sntapp.logout(); return;}
+                    if (jqxhr.status=="503" || jqxhr.status=="500") {
+                        location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
+                        return;
+                    }
+
+                    if(jqxhr.status=="422"){
+                        location.href = XHR_STATUS.REJECTED;
+                        return;
+                    }
+
+                    if(jqxhr.status=="404"){
+                        location.href = XHR_STATUS.SERVER_DOWN;
+                        return;
+                    }
                 }
             });    
 
@@ -336,6 +350,20 @@ $(function($){
                     error: function(jqxhr, status, error){
                         //checking whether a user is logged in
                         if (jqxhr.status == "401") { sntapp.logout(); return;}
+                        if (jqxhr.status=="503" || jqxhr.status=="500") {
+                            location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
+                            return;
+                        }
+
+                        if(jqxhr.status=="422"){
+                            location.href = XHR_STATUS.REJECTED;
+                            return;
+                        }
+
+                        if(jqxhr.status=="404"){
+                            location.href = XHR_STATUS.SERVER_DOWN;
+                            return;
+                        }
                     }
                 });
             }
@@ -421,6 +449,20 @@ $(function($){
                     },
                     error: function(jqxhr, status, error){
                         if (jqxhr.status=="401") { sntapp.logout(); return;}
+                        if (jqxhr.status=="503" || jqxhr.status=="500") {
+                            location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
+                            return;
+                        }
+
+                        if(jqxhr.status=="422"){
+                            location.href = XHR_STATUS.REJECTED;
+                            return;
+                        }
+
+                        if(jqxhr.status=="404"){
+                            location.href = XHR_STATUS.SERVER_DOWN;
+                            return;
+                        }
                         $('#loading').remove();
                     }
                 }).done(function(data){
@@ -438,6 +480,7 @@ $(function($){
 
                     if ( sntapp.getViewInst(instName) ) {
                         viewInstance = sntapp.getViewInst(instName);
+                        viewInstance.setDom($('#'+$next));
                     } else {
                         viewInstance = sntapp.getViewInstance($('#'+$next));
                         sntapp.setViewInst(instName, viewInstance);
