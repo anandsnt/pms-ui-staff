@@ -84,9 +84,9 @@
 
 
         <!-- Company Card Results / content -->
-        <div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: {{cmpCardSearchDivHgt}}px; top: {{cmpCardSearchDivTop}}px">
-            <div class="search-results">
-                <ul id="search-list">
+        <div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: {{cmpCardSearchDivHgt}}px; top: {{cmpCardSearchDivTop}}px"  ng-iscroll="nameOnCard" ng-iscroll-delay="100">
+            <div class="search-results"  >
+                <ul id="search-list" >
                     <li ng-repeat="row in companyCardResults" ng-click="setCompanyCardFilter(row)">
                         <img ng-src="{{row.company_logo}}" alt="">
                         <h4 ng-bind-html="'{{row.account_first_name}}, {{row.account_last_name}}'|highlight:companySearchText:false"></h4>

@@ -32,6 +32,11 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
             snap: false,            
             preventDefault: false,
             interactiveScrollbars: true
+        },
+	'nameOnCard' : {
+            scrollbars: true,
+            snap: false,            
+            interactiveScrollbars: true
         }
     };
     
@@ -138,6 +143,13 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
         }
         $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt + 10;
         $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt + 10;
+
+	//$scope.$$childTail.$parent.myScroll['filter_details'].refresh();
+	
+	setTimeout(function(){
+            $scope.$parent.myScroll['nameOnCard'].refresh();
+        }, 300);
+	
     }
 
 
