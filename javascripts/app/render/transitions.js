@@ -480,6 +480,7 @@ $(function($){
 
                     if ( sntapp.getViewInst(instName) ) {
                         viewInstance = sntapp.getViewInst(instName);
+                        viewInstance.setDom($('#'+$next));
                     } else {
                         viewInstance = sntapp.getViewInstance($('#'+$next));
                         sntapp.setViewInst(instName, viewInstance);
