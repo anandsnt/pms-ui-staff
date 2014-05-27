@@ -84,13 +84,8 @@
         <td width="16%" align="left">&nbsp;</td>
         <td width="4%" align="center">&nbsp;</td>
         <td width="15%" style="text-align:right;" colspan="3">
-            <!--
-            <span style="padding-right:20px;">
-                <button type="button" class="button blue" ng-hide="!is_date_range_editable(dateRange.end_date)">QUICK FILL</button>
-            </span>
-            -->
-            <button type="button" class="button" ng-click="saveSet($index)" ng-hide="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">SAVE&nbsp;SET</button>
-            <button type="button" class="button" ng-click="saveSet($index)" ng-show="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">UPDATE&nbsp;SET</button>
+            <button type="button" class="button" ng-click="saveDateRange()" ng-hide="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">SAVE&nbsp;SET</button>
+            <button type="button" class="button" ng-click="saveDateRange()" ng-show="set.isSaved" ng-disabled="!checkFieldEntered($index)" ng-class="(set.isEnabled) ? 'green' : 'grey'">UPDATE&nbsp;SET</button>
         </td>
 
          </tr>
