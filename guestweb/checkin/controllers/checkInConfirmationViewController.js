@@ -8,24 +8,34 @@
 
 		$rootScope.checkedApplyCharges = false;
 
+
+
+
+
 		$scope.minDate  = $rootScope.businessDate;
 		$scope.cardDigits = '';
 
 		// page navigatons if any of following conditions happpens
 
+
 		if($rootScope.isCheckedin){
+
 			$scope.pageSuccess = false;
 			$location.path('/checkinSuccess');
 		}
 		else if($rootScope.isCheckedout){
+
 			$scope.pageSuccess = false;
 			$location.path('/checkOutNowSuccess');
 		}
 		else if(!$rootScope.isCheckin){
+
 			$scope.pageSuccess = false;
 			$location.path('/');
 		}
+
  		//setup options for modal
+
  		$scope.opts = {
  			backdrop: true,
  			backdropClick: true,
@@ -34,15 +44,21 @@
 
  		};
 
+
+
  		if($scope.pageSuccess){
+
 			//set up flags related to webservice
 			$scope.isPosting 		 = false;
 			$rootScope.netWorkError  = false;
+
+
 			// watch for any change
 			$rootScope.$watch('netWorkError',function(){
 				if($rootScope.netWorkError)
 					$scope.isPosting = false;
 			});
+
 
 			//next button clicked actions
 			$scope.nextButtonClicked = function() {

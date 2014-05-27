@@ -6,8 +6,83 @@
 ==========================================================*/
 /* 4. LAYOUT
 ==========================================================*/
+
+/* Screen positioning       ==============================*/
+    .content:not(#login) {
+        top: 40px;
+        .calc-height(100, 40); /* %, px */
+
+        /** Rooms screen ***/
+        &#rooms {
+            top: 100px;
+            .calc-height(100, 100); /* %, px */
+        }
+
+        &#filter-options {
+            top: 40px;
+            .calc-height(100, 40); /* %, px */
+        }
+
+        &#guest-info {
+            top: 100px;
+            .calc-height(100, 100); /* %, px */
+        }
+    }
+
+/* Nav Bar                  ==============================*/
+    .nav-bar{ 
+        height: 40px;
+
+        h1 {
+            .h2;
+            font-size: 18px;
+            line-height: 40px;
+        }
+
+        .clear-selection {
+            left: 10px; 
+            font-size: 14px; 
+        }
+
+        .toggle {
+            &.only-icon {
+                right: 10px;
+            }
+
+            &.complete { 
+                right: 10px;
+                font-size: 14px; 
+            }
+        }
+    }
+
 /* 5. COMPONENTS
 ==========================================================*/
+
+/* Search bar               ==============================*/
+    .search-form {
+        height: 60px;
+
+        .entry {
+            height: 40px;
+
+            .icon-search {
+                top: 12.5px;
+                right: 12.5px;
+            }
+
+            #query {
+                line-height: 40px;
+                min-height: 40px;
+                .placeholder-text(16px, 40px, 400, @grey3);
+            }
+
+            #clear-query {
+                top: 12.5px;
+                right: 12.5px;
+            }
+        }
+    }   
 
 /* Dashboard page           ==============================*/
     #dashboard {
@@ -59,7 +134,7 @@
                     padding-bottom: 5px;
                     margin-bottom: 5px;
                     color: @grey3;
-                    text-transform: uppercase;
+                    text-transform: uppercase; 
                     display: block;
                     border-bottom: 1px solid rgba(0,0,0,.1);
                     em {
@@ -94,21 +169,18 @@
     
     /* Rooms listing ***/
     #rooms {
-        z-index: -1;
-
         li {
-            margin: 0;
-            
+            margin: 0;         
             a {
                 color: @textColor;
-                padding: 0 50px 0 10px;
+                padding: 0 10px 0 10px;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 border-bottom: 1px solid rgba(0,0,0,.1);
                 background-color: @white;
+                position: relative;
                 .show;
-                .float;
 
                 .room-number {
                     font-size: 30px;
@@ -120,6 +192,15 @@
                     .pull-left;
                 }
 
+                .room-stats-wrap {
+                    display: block;
+                    overflow: hidden;
+                    position: absolute;
+                    top: 0;
+                    left: 90px;
+                    right: 50px;    
+                }
+
                 .room-status,
                 .fo-status {
                     display: inline-block;
@@ -128,39 +209,53 @@
                     font-weight: 400; 
                     font-style: italic;
                     line-height: 50px;
-                    overflow: hidden;
-                    .pull-left;
                 }
 
-                .room-status { .calc-width(45, 35); }
-                .fo-status {  .calc-width(55, 35); }
+                .room-status {
+                    width: 50%;
+                    .pull-left;
+                 }
 
-                &.with-image {
+                 @media (max-width: 319px) {
+                    .room-stats-wrap {
+                        clear: both;
+                        position: static;
+                        padding: 3px 0 10px;
+                    }
+
+                    .room-status,
+                    .fo-status {
+                        width: 49%;
+                        line-height: 1;
+                    }
+
+                    .fo-status {
+                        text-align: right;
+                        .pull-right;
+                    }
+                }
+
+                .guest-image {
                     position: relative;
+                    top: 5px;
+                    .pull-right;
+                    #border-radius > .rounded(40px);
+                    .square(40px);
 
-                    .guest-image {
+                    .vip {
                         position: absolute;
-                        top: 5px;
-                        right: 10px;
-                        background: @grey1;
+                        bottom: 0;
+                        right: 0;
+                        font-size: 9px;
+                        line-height: 16px;
+                        .square(16px);
+                        #border-radius > .rounded(16px);       
+                    }
+
+                    img {
+                        width: 100%;
+                        height: auto;
                         #border-radius > .rounded(40px);
-                        .square(40px);
-
-                        .vip {
-                            position: absolute;
-                            bottom: 0;
-                            right: 0;
-                            font-size: 9px;
-                            line-height: 16px;
-                            .square(16px);
-                            #border-radius > .rounded(16px);       
-                        }
-
-                        img {
-                            width: 100%;
-                            height: auto;
-                            #border-radius > .rounded(40px);
-                        }
                     }
                 }
 
@@ -176,16 +271,15 @@
                     .room-number { color: @grey3; }
                 }
 
+                &.room-pickup {
+                    .room-number { color: @orange; }
+                }
+
                 &:hover,
                 &:active {
                     background-color: rgba(0,0,0,.02);
                 }
             }
-        }
-
-        .iScrollVerticalScrollbar { 
-            top: 5px;
-            bottom: 5px;
         }
     }
 
@@ -196,23 +290,13 @@
         overflow: hidden;
         display: none;
 
-        .nav-bar {
-            h2 {
-                margin: 30px 0 10px;
-                font-size: 24px;
-                line-height: 24px;
-                text-align: center;
-                font-weight: 300;
-            }
-        }
-
         .wrapper {
             min-height: 100%;
             padding: 20px 10px;
             right: 0;
-
+        
             .holder {
-                margin-bottom: 20px;
+                margin-bottom: 30px;
 
                 .title {
                     font-weight: 600;
@@ -247,8 +331,6 @@
                 }
             }
         }
-
-        &.hidden { display: block !important; }
     }
 
 /* Room details page        ==============================*/
@@ -290,6 +372,21 @@
                 }
             }
 
+            @media (max-width: 319px) {
+                h1 {
+                    float: none;
+                    text-align: center;
+                    display: block;
+                    background-position-x: center !important;
+                    padding-left: 60px;
+                }
+
+                .select {
+                    float: none;
+                    width: 100%;
+                }
+            }
+
             &.occupied { background: @blue; }
             &.inspected-clean { background: @green; }
             &.pickup { background: @orange; }
@@ -308,33 +405,22 @@
             width: 100%;
             height: 100%;
 
-            &.autoheight {
-                height: auto;
-            }
+            h1 { font-size: 48px; }
         }
 
-
-
-        #fo-status {
-            padding: 10px 0;
+        #fo-status { 
+            font-size: 18px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            display: block;
             text-align: center;
-            text-transform: uppercase;
-            font-weight: 600;
-            border-bottom: 1px solid rgba(0,0,0,.1);
-            width: 100%;
-            z-index: 99;
-            .show;
         }
 
         #guest-info {
-            background-color: @white;
-            height: 100%;
-            min-height: 100%;
+            .wrapper { 
+                padding: 60px 40px 0 40px; 
 
-            .wrapper {
-                padding: 60px 10px 0;   
-
-                .guest-image {
+                .guest-image { 
                     position: relative;
                     margin: 30px auto 20px auto;
                     background: @grey1;
@@ -410,23 +496,24 @@
                         width: 100%;
                         .show;
                     }
-                }             
+                }
             }
 
             .iScrollVerticalScrollbar { 
-                top: 10px;
-                bottom: 10px;
+                top: 20px;
+                bottom: 20px;
             }
 
             &.no-content {
                 position: relative;
                 margin: 0;
+                padding: 60px 10px 0;
+                min-height: 230px;
                 background: transparent;
                 text-align: center;
                 color: @grey3;
                 .square(100%);
                 .box-shadow(none);
-                min-height: 230px;
 
                 .info {
                     position: absolute;
@@ -447,6 +534,26 @@
                     }
                 }
             }
+
+            @media (max-width: 319px) {
+                .wrapper {
+                    padding: 120px 10px 0;
+
+                    h2 .name {
+                        display: block;
+                    }
+                }
+
+                &.no-content {
+                    padding: 120px 10px 0;
+
+                    .info {
+                        position: static;
+                        margin: 50px 0;
+                    }
+                }
+            }
+
         }   
     }
 
@@ -454,34 +561,3 @@
 ==========================================================*/
 /* 7. RESPONSIVE
 ==========================================================*/
-
-
-/* 7. iscroll overrides
-==========================================================*/
-#dashboard .myScrollbarV,
-#rooms .myScrollbarV,
-#filter-rooms .myScrollbarV,
-#room-details-content .myScrollbarV {
-    position: absolute;
-    z-index: 100;
-    width: 5px;
-    top: 5px;
-    bottom: 5px;
-    right: 5px;
-}
-
-#dashboard .myScrollbarV > div,
-#rooms .myScrollbarV > div,
-#filter-rooms .myScrollbarV > div, 
-#room-details-content .myScrollbarV > div {
-    position: absolute;
-    z-index: 100;
-    background: #ffb319;
-    width: 100%;
-    border: none;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    -webkit-background-clip: padding-box;
-    box-sizing: border-box;
-}

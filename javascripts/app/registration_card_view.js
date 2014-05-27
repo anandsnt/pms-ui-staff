@@ -7,6 +7,10 @@ var RegistrationCardView = function(viewDom) {
     this.reviewStatus = [];
     this.isAllBillsReviewed = false;
     this.isEarlyDepartureFlag = "false";
+    sntapp.cardData = {};
+
+    //Stores the card data to process while check-in
+    sntapp.regCardData = {};
     
 	this.pageinit = function() {
 		this.setBillTabs();
@@ -37,10 +41,28 @@ var RegistrationCardView = function(viewDom) {
 			data.bill_number = $(this).attr("data-bill-number");
 			that.reviewStatus.push(data);
 		});
-	};
+		
+		
+		
+		
+	  };
 
 	this.pageshow = function(){
 		sntapp.cardSwipeCurrView = 'GuestBillView';
+		
+		var currentStatus= "";
+		var shouldShowPaymentPopUp =  false;
+        if(!($("#checkin-button").parent().parent().hasClass("hidden"))){
+      		currentStatus = $("#registrationcard_main").attr("data-current-reservation-status");
+      		if(currentStatus == "CHECKING_IN"){
+      			shouldShowPaymentPopUp = true;
+      		}
+        }
+        
+      	if(shouldShowPaymentPopUp){
+			that.addNewPaymentModal({}, {should_show_overlay: true});
+		}
+									
 	};
 	
     // To Display Guest Bill screen in detailed mode via ViewBillButton click.
@@ -77,6 +99,8 @@ var RegistrationCardView = function(viewDom) {
 		that.myDom.find("#signature").on('mouseout touchend', function() {
 			enableVerticalScroll('#registration-content');
 		});
+		
+		that.myDom.find('.movetobill').on('change', that.moveToAnotherBill);
 	};
 
 	// function for closing the drawer if is open
@@ -117,6 +141,7 @@ var RegistrationCardView = function(viewDom) {
 	    	return that.subscribeCheckboxClicked(event);
 	    }
 	    if(getParentWithSelector(event, "#update_card")) {
+	    	sntapp.paymentTypeSwipe = false;
 	    	//return that.clickedRemovePayment(event);
 	    	return that.addNewPaymentModal(event);
 	    }
@@ -124,6 +149,7 @@ var RegistrationCardView = function(viewDom) {
 	    	return that.showExistingPayments(event);
 	    }
 	    if(getParentWithSelector(event, "#add-new-payment")) {
+			sntapp.paymentTypeSwipe = false;
 	    	return that.addNewPaymentModal(event);
 	    }
 	    
@@ -202,7 +228,6 @@ var RegistrationCardView = function(viewDom) {
 	};
 
 	this.completeCheckin = function(e) {
-
 		e.stopPropagation();
 		e.preventDefault();
 		e.stopImmediatePropagation();
@@ -237,12 +262,12 @@ var RegistrationCardView = function(viewDom) {
 			validateOptEmailModal.initialize();
 			return;
 		}
+		
 		else {
-			
 			var data = {
 				"is_promotions_and_email_set" : is_promotions_and_email_set,
 				"signature" : signature,
-				"reservation_id" : that.reservation_id
+				"reservation_id" : that.reservation_id		
 			};
 
 			var webservice = new WebServiceInterface();
@@ -259,6 +284,7 @@ var RegistrationCardView = function(viewDom) {
 	};
 	
 	this.completeCheckinSuccess = function(data) {
+		console.log("completeCheckinSuccess");
 
 		var keySettings = that.myDom.find("#checkin-button").attr("data-key-settings");
 		var reservationStatus = that.myDom.find("#checkin-button").attr('data-reseravation-status');
@@ -378,18 +404,29 @@ var RegistrationCardView = function(viewDom) {
 	// To add new payment from bill card
 	this.addNewPaymentModal = function(event, options){
 		var domElement = $("#bill"+that.getActiveBillNumber());
+		
+		//Instance does not exist - First Time invocation.
 	  	if ( !sntapp.getViewInst('addNewPaymentModal') ) {
 	      sntapp.setViewInst('addNewPaymentModal', function() {
-	        return new AddNewPaymentModal(views.BILLCARD, domElement);
+	      	  return new AddNewPaymentModal(views.BILLCARD, domElement);
 	      });
+	      if(options && options.should_show_overlay){
+	    	sntapp.getViewInst('addNewPaymentModal').should_show_overlay=true;
+	      }
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
-	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
+	      sntapp.getViewInst('addNewPaymentModal').params = 
+	      				{ "bill_number" :that.getActiveBillNumber(),
+	      				  "origin":views.BILLCARD};
+	   
 	    } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
 	
 	      // if addNewPaymentModal instance exist, but the dom is removed
 	      sntapp.updateViewInst('addNewPaymentModal', function() {
 	        return new AddNewPaymentModal(views.BILLCARD, domElement);
 	      });
+	      if(options && options.should_show_overlay){
+	    	sntapp.getViewInst('addNewPaymentModal').should_show_overlay=true;
+	      }
 	      sntapp.getViewInst('addNewPaymentModal').initialize();
 	      sntapp.getViewInst('addNewPaymentModal').params = { "bill_number" : that.getActiveBillNumber(),"origin":views.BILLCARD};
 	    }
@@ -483,14 +520,45 @@ var RegistrationCardView = function(viewDom) {
 
 	// Goto search screen with empty search results
 	this.goToSearchScreen = function() {
-		switchPage('main-page', 'search', '', 'page-main-second', 'move-from-left');
+		var nextPage = 'page-main-second';
+ 		if($(".container div").hasClass('prev-page-current')){
+ 			nextPage = $(".container .prev-page-current").attr('id');
+ 			console.log(nextPage);
+ 		}
+ 		switchPage('main-page', 'search', '', nextPage, 'move-from-left');
+		//switchPage('main-page', 'search', '', 'page-main-second', 'move-from-left');
 		//Do not call 'initialize' method for this object. which results multiple event binding
 		var searchView = new Search();
 		searchView.clearResults();
 	};
 	// To get current active bill's bill-number
 	this.getActiveBillNumber =  function() {
+		
 		return that.myDom.find("#bills-tabs-nav ul li.ui-tabs-active").attr('data-bill-number');
+	};
+
+	this.moveToAnotherBill = function(e) {
+
+		var element = $(e.target);
+
+		var current_bill_number = that.getActiveBillNumber();
+		var to_bill_number = element.val();
+		var reservation_id = getReservationId();
+		var transaction_id = element.attr('data-transaction_id');
+
+		var data = {
+			"reservation_id" : reservation_id,
+			"to_bill" : to_bill_number,
+			"from_bill" : current_bill_number,
+			"transaction_id" : transaction_id
+		};
+
+		var webservice = new WebServiceInterface();
+		var options = {
+			requestParameters : data,
+			successCallBack : that.reloadBillCardPage
+		};
+		webservice.postJSON('/staff/bills/transfer_transaction', options);
 	};
 
 };

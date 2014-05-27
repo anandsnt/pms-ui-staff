@@ -1,4 +1,5 @@
 var StayCard = function(viewDom){
+	console.log("test console message");
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
@@ -11,15 +12,17 @@ var StayCard = function(viewDom){
     reservationDetails.initialize();
     // ok we just entered staycard page
     sntapp.cardSwipeCurrView = 'StayCardView';
-
+	
     // Start listening to card swipes
     this.initCardSwipe();
   };
 
   // Start listening to card swipes
   this.initCardSwipe = function() {
+    sntapp.paymentTypeSwipe = false;
     var options = {
         successCallBack: function(data){
+          sntapp.paymentTypeSwipe = true;
           // if this is not staycard do nothing
           // TODO: can't match page to '' as there could be pages with no data-page
           // TODO: support new pages when they are added
@@ -75,15 +78,14 @@ var StayCard = function(viewDom){
     
     /* Function for listening from swipe in staycard, guestcard, billcard */
     var respondToSwipe = function (fromPage, domElement, params){
-
       if ( !sntapp.getViewInst('addNewPaymentModal') ) {
          sntapp.setViewInst('addNewPaymentModal', function() {
-           return new AddNewPaymentModal(fromPage, domElement);
+           return new AddNewPaymentModal(fromPage, domElement, params);
         });
       } else if (sntapp.getViewInst('addNewPaymentModal') && !$('#new-payment').length) {
        // if addNewPaymentModal instance exist, but the dom is removed
          sntapp.updateViewInst('addNewPaymentModal', function() {
-           return new AddNewPaymentModal(fromPage, domElement);
+           return new AddNewPaymentModal(fromPage, domElement, params);
         });
       }
       sntapp.getViewInst('addNewPaymentModal').swipedCardData = swipedCardData;
@@ -91,7 +93,9 @@ var StayCard = function(viewDom){
       if(typeof params != "undefined"){
         sntapp.getViewInst('addNewPaymentModal').params = params;
       }
-    }
+      sntapp.getViewInst('addNewPaymentModal').dataUpdated();
+    };
+    
 
     var successCallBackHandler = function(token) {
       // add token to card data
@@ -102,20 +106,29 @@ var StayCard = function(viewDom){
         // respond to StayCardView
         case 'StayCardView':
         var confirmationNum = getCurrentConfirmation();
+        console.log("staycard")
           respondToSwipe("staycard", $("#reservation-"+confirmationNum), {});
           break;
 
         //respond to GuestBillView
         case 'GuestBillView':
+         console.log("GuestBillView")
           //To get the current bill number we are re-using the bill card view object
           var regCardView = sntapp.getViewInst('registrationCardView');
           var domElement = $("#bill" + regCardView.getActiveBillNumber());
-          var params = { "bill_number" : regCardView.getActiveBillNumber(), "origin":views.BILLCARD};
+          
+          var params = { 
+          	"bill_number" : regCardView.getActiveBillNumber(), 
+          	"origin":views.BILLCARD
+          	};
+          // $("#setOverlay").hide();
           respondToSwipe(views.BILLCARD, domElement, params);
+          
           break;
 
         //respond to GuestCardView
         case 'GuestCardView':
+          console.log("GuestCardView")
           respondToSwipe("guest", $("#cc-payment"), {});
 
           break;

@@ -247,11 +247,15 @@ var app = function(){
      else {
         return false;
       }
-    })(navigator);    
+    })(navigator);  
 
+    //Stores the card data to process while check-in
+    this.regCardData = {}; 
+    //Flag to check if a payment done via card swipe 
+    this.paymentTypeSwipe = false;
 
 };
 
 sntapp = new app();
-//sntapp.enableCardSwipeDebug();
+// sntapp.enableCardSwipeDebug();
 
