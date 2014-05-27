@@ -36,6 +36,7 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 	$scope.fetchFilterOptions = function(){
 		var fetchRatesSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
+			$scope.currentFilterData.allRates = data.results;
 			$scope.currentFilterData.rates = data.results;
 		};
 		$scope.invokeApi(RMFilterOptionsSrv.fetchRates, {},fetchRatesSuccessCallback);
@@ -62,6 +63,7 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 	};
 
 	$scope.$watch('currentFilterData.rate_type_selected', function() {
+		console.log("landed");
 		var isDataExists = false;
 		angular.forEach($scope.currentFilterData.rate_type_selected_list,function(item, index) {
        		if (item.id == $scope.currentFilterData.rate_type_selected) {
@@ -76,7 +78,27 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
 	       });
 	    }
 	    $scope.currentFilterData.rate_type_selected = "";
+	    calculateRatesList();
+
    	});	
+
+   	var calculateRatesList = function() {
+   		$scope.currentFilterData.rates = [];
+		var rateType = "";
+		for(var j in $scope.currentFilterData.rate_type_selected_list){
+			rateType = $scope.currentFilterData.rate_type_selected_list[j];
+			for(var i in $scope.currentFilterData.allRates){
+				if($scope.currentFilterData.allRates[i].rate_type == null || 
+					$scope.currentFilterData.allRates[i].rate_type == undefined){
+					continue; 
+				}
+				if($scope.currentFilterData.allRates[i].rate_type.id == rateType.id) {
+					$scope.currentFilterData.rates.push($scope.currentFilterData.allRates[i]);
+				}
+			}
+
+		}
+   	};
 
    	$scope.deleteSelectedRateType = function(id){
 		angular.forEach($scope.currentFilterData.rate_type_selected_list,function(item, index) {
@@ -84,6 +106,7 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
        			$scope.currentFilterData.rate_type_selected_list.splice(index, 1);
 		 	}
        	});
+       	calculateRatesList();
 	};
 	
 	$scope.$watch('currentFilterData.rate_selected', function() {

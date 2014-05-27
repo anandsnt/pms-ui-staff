@@ -10,9 +10,15 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
             },
          
    };
+   /* Cute workaround. ng-iscroll creates myScroll array in its Scope's $parent.
+    * Since our controller's scope is two step above the scroll div, 
+    * We create an empty myScroll here. ng-iscroll will see this item, and use the same.
+    * Note: If a subscope requires another iScroll, this approach may not work.
+    */
+   $scope.$parent.myScroll =[];
 
    
-
+   sajith=$scope;
 	
    BaseCtrl.call(this, $scope);
    
@@ -51,6 +57,9 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
         	$scope.currentFilterData.filterConfigured = true;
 			$scope.$emit('hideLoader');
 			$scope.calendarData = data;
+			if($scope.$parent.myScroll['RateCalendarCtrl'] != undefined){
+				$scope.$parent.myScroll['RateCalendarCtrl'].refresh();
+			}
 		};
 
 		if($scope.calendarMode == "RATE_VIEW"){
