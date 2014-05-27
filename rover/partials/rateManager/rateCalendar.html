@@ -1,10 +1,10 @@
-<div id="rate-manager-not-configured" ng-if = "!filterConfigured">
+<div id="rate-manager-not-configured" ng-if = "!currentFilterData.filterConfigured">
 	 <span>
 	 	<span>Rate Manager not configured<span>Please select filter options to begin</span></span>
  	</span>
 </div>
-<div ng-if = "filterConfigured && calendarMode == 'RATE_VIEW'" ng-include="'/assets/partials/rateManager/rateViewCalendar.html'" class="calendar-wraper"></div>
-<div ng-if = "filterConfigured && calendarMode == 'ROOM_TYPE_VIEW'" ng-include="'/assets/partials/rateManager/roomTypeViewCalendar.html'" class="calendar-wraper"></div>
+<div ng-if = "currentFilterData.filterConfigured && calendarMode == 'RATE_VIEW'" ng-include="'/assets/partials/rateManager/rateViewCalendar.html'" class="calendar-wraper"></div>
+<div ng-if = "currentFilterData.filterConfigured && calendarMode == 'ROOM_TYPE_VIEW'" ng-include="'/assets/partials/rateManager/roomTypeViewCalendar.html'" class="calendar-wraper"></div>
 
  <div class="restriction-legends" >
 	<span ng-repeat="restrictionType in calendarData.restriction_types">

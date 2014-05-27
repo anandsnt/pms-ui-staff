@@ -24,7 +24,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 		$scope.calendarData = {};
 		$scope.popupData = {};
         
-        if($scope.filterConfigured){
+        if($scope.currentFilterData.filterConfigured){
         	loadTable();
         }
 	};
@@ -48,7 +48,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 		}
 
 		var calenderDataFetchSuccess = function(data) {
-        	$scope.filterConfigured = true;
+        	$scope.currentFilterData.filterConfigured = true;
 			$scope.$emit('hideLoader');
 			$scope.calendarData = data;
 		};
