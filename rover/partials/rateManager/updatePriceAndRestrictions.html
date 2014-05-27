@@ -2,7 +2,7 @@
     <dialog>
         <div class="updatePriceAndRestrictionsContainer">
             <div class="header">
-                <button class="button" style="float:right; position:absolute; right:24px;" ng-click="expandButtonClicked()" ng-class"{'btn-expand':!showExpandedView, 'btn-collapse': showExpandedView}">&nbsp;</button>
+                <button class="button toggle-expand" ng-click="expandButtonClicked()" ng-class="{ expand:!showExpandedView, collapse: showExpandedView}">&nbsp;</button>
                 <h2 class="h1" style="font-weight: lighter;font-size: 16px;">{{data.name}}</h2>
                 <em>{{popupData.selectedDate| date:'EEEE MMMM dd'}}</em>
             </div>
