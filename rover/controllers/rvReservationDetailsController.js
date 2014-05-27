@@ -69,6 +69,9 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
   	 		"fromView": "staycard"
   	 	};
-  	 	$scope.showAddNewPaymentModal(passData);
+  	 	console.log("++++++++++++++++++++++++++++++++++++++")
+  	 	console.log(JSON.stringify($scope.reservationData));
+  	 	var paymentData = $scope.reservationData;
+  	 	$scope.showAddNewPaymentModal(passData, paymentData);
   	 };
 }]);
