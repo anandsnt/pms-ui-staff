@@ -1,4 +1,4 @@
-<div class="filter-options {{currentLeftMenuClass}}"  style="z-index:99999;" >	
+<div id="rateManagerLeftPanel" class="filter-options {{currentLeftMenuClass}}"  style="z-index:99999;" >	
 
 	<div class="fixed-container" style="height:{{leftMenuDimensions.outerContainerHeight}}px; position:relative;">
 
@@ -6,7 +6,7 @@
 		<h3 style="padding-bottom:15px;">FILTER OPTIONS</h3>
 		<a class="leftMenuHandle" ng-click="toggleLeftMenu()" style="left:210px"></a>	
 
-		<div class="scrolling-container" ng-iscroll="filter_details" ng-iscroll-delay="1000" style="height:{{leftMenuDimensions.scrollableContainerHeight}}px; margin-bottom:10px ;overflow:hidden; position:relative">
+		<div class="scrolling-container" ng-iscroll="filter_details" ng-iscroll-delay="1000" style="height:{{leftMenuDimensions.scrollableContainerHeight}}px;">
 
 			<div class="holder left">
 
@@ -84,7 +84,7 @@
 
 		<div class="entry ">
 			<div class="actions float">
-				<button class="button green" type="button" ng-click="showRatesBtnClicked()" style="width:100%;">Show Rates</button>
+				<button class="button green" type="button" ng-click="showRatesBtnClicked()" style="width:94%;">Show Rates</button>
 			</div>
 		</div>
 	</div>
