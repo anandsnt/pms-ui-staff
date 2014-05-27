@@ -182,31 +182,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	/*
 	* User Clicked the key1 option. Handles the key color changes
 	*/
-<<<<<<< HEAD
-	this.keySelected = function(event){
-		that.numOfKeys = 0;
-		var keyElem = $(event.target);
-		var createKeyBtn = that.myDom.find('#create-key');
-		$("input[name='keys']").closest('label').removeClass('checked');
-		if(keyElem.is(":checked")){
-			that.numOfKeys = parseInt(keyElem.val());
-		}
-		else{
-			that.numOfKeys = parseInt(keyElem.val()) - 1;
-		}
-
-		for(var i = 1; i <= that.numOfKeys; i++){
-			$("#key" + i).prop('checked', true);
-			$("#key" + i).closest('label').addClass('checked');
-		}
-		if(that.numOfKeys > 0){
-			that.myDom.find('#create-key').text('Print key 1');
-			createKeyBtn.removeClass('grey').addClass('green');
-			createKeyBtn.removeAttr('disabled');
-		}
-		else{
-			that.myDom.find('#create-key').text('Print key');
-=======
 	this.key1Selected = function(event){
 		var keyElem = $(event.target);
 		var createKeyBtn = that.myDom.find('#create-key');
@@ -214,7 +189,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		//Unselect key1 - change the color
 		if(keyElem.closest('label').hasClass('checked')){
 			keyElem.closest('label').removeClass('checked');
->>>>>>> develop
 			createKeyBtn.removeClass('green').addClass('grey');
 			createKeyBtn.attr('disabled','disabled');
 			that.numOfKeys = 0;
@@ -227,19 +201,6 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 			that.numOfKeys = 1;
 
 		}
-<<<<<<< HEAD
-		var elementToPut = {};
-		that.printKeyStatus = [];
-		for(var i = 1; i <= $("input[name=keys]").length; i++){
-			elementToPut = {};
-			elementToPut['key'] = 'key' + i;
-			elementToPut['printed'] = false;
-			elementToPut['fetched'] = false;
-			that.printKeyStatus.push(elementToPut);
-		}
-=======
-
->>>>>>> develop
 	};
 
 	/*
@@ -376,39 +337,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	*/
 	this.keyFetchSuccess = function(response, requestParams){
 		that.keyData = response.data;
-<<<<<<< HEAD
 		that.printKeys();
-	};
-
-	/*
-	* Calculate the keyWrite data from the API response and call the write key method for key writing.
-	*/
-	that.printKeys = function(){
-		var index = -1;
-		for(var i = 0; i < that.printKeyStatus.length; i++){
-			if(that.printKeyStatus[i].printed == false){
-				index = i + 1;
-				break;
-			}
-		}
-
-	    var keyData = [];
-
-	    //Safelock key
-	    if(Object.keys(that.keyData.key_info[0])[0] == "base64"){
-	    	keyData.push(that.keyData.key_info[0].base64)
-	    }else{
-	    	keyData.push(that.keyData.key_info[0].t3)
-	    }
-
-	    keyData.push(Object.keys(that.keyData.key_info[0])[0]);
-	    keyData.push(escapeNull(that.keyData.aid));
-	    keyData.push(escapeNull(that.keyData.keyb));
-	    that.writeKey(keyData, index);
-=======
-		that.printKeys();
-
->>>>>>> develop
 	};
 
 	/*
