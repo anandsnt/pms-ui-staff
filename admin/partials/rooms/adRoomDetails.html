@@ -24,12 +24,10 @@
 						</em>
 					</div>
 
-					<ad-textbox value="data.room_number" name="room-number" id="room-number" label="Number" placeholder="Enter hotel name" required="yes" maxlength=10></ad-textbox>
-
-					<ad-textbox value="data.max_occupancy" name = "max-occupancy" id = "max-occupancy" label = "Max Occupancy " placeholder = "Enter Max Occupancy" required = "" ></ad-textbox>	
-
 				<ad-textbox value="data.room_number" name="room-number" id="room-number" label="Number" placeholder="{{ 'ENTER_ROOM_NUMBER' | translate }}"required="yes" maxlength=10>
 				</ad-textbox>	
+
+				<ad-textbox value="" name = "max-occupancy" id = "max-occupancy" label = "Max Occupancy " placeholder = "Enter Max Occupancy" required = "" ></ad-textbox>	
 
 				<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_FLOOR' | translate }}"label="{{ 'SELECT_FLOOR' | translate }}" sel-class='placeholder'  list='floors' required='yes' selected-Id='data.selected_floor'></ad-dropdown>
 
