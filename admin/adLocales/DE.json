@@ -63,7 +63,21 @@
     "NAME":"Name",
     "DESCRIPTION":"Beschreibung",
     "ACTIVE":"aktiv",
-    "DELETE":"löschen"
+    "DELETE":"löschen",
+    "ADD_ONS":"Add-Ons",
+    "FROM_DATE":"von-Datum",
+    "TO_DATE":"To Date",
+    "CHARGE_GROUP":"Ladegruppe",
+    "CHARGE_CODE":"Lade Code",
+    "AMOUNT":"Menge",
+    "AMOUNT_TYPE":"Anzahl Typ",
+    "BESTSELLER":"Bestseller",
+    "POST_TYPE":"Beitrag Typ",
+    "RATE_ONLY":"Nur bewerten",
+    "RESERVATION_ONLY":"Reservierung nur",
+    "EDIT":"Bearbeiten",
+    "ADD_NEW_SMALL":"Neue",
+    "ADD_ON":"Add-On"
     
 
 }

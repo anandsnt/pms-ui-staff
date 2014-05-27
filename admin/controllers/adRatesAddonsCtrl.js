@@ -159,8 +159,8 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.currentClickedAddon = -1;
 
 			// title for the sub template
-			$scope.addonTitle    = "Add New";
-			$scope.addonSubtitle = "Add-On";
+			$scope.addonTitle    = $filter('translate')('ADD_NEW_SMALL');
+			$scope.addonSubtitle = $filter('translate')('ADD_ON'); 
 
 			// params to be sent to server
 			$scope.singleAddon            = {};
@@ -210,7 +210,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.currentClickedAddon = this.$index;
 
 			// title for the sub template
-			$scope.addonTitle    = "Edit";
+			$scope.addonTitle    = $filter('translate')('EDIT');
 			$scope.addonSubtitle = this.item.name;
 
 			// empty singleAddon
