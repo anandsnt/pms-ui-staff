@@ -1,7 +1,7 @@
 <section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()"><div data-view="GuestCardLikesView">
 	<header class="content-title float">
 		<h2>
-			User roles
+			{{'USER_ROLES' | translate}}
 		</h2>
 		<!-- Disable for now  -->
 		<!-- <a id="add-new-button" class="action add" ng-click="toggleAddMode()">Add new</a> -->
@@ -12,7 +12,7 @@
 	<div class="data-holder grid" ng-show="addMode">
 		<form room_type_id="1" id="edit-room-type" class="form inline-form float">
 			<div class="form-title">
-				<h3><span>Add</span> User role </h3>
+				<h3><span>Add</span> {{'USER_ROLES' | translate}} </h3>
 				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 			</div>
 
@@ -28,10 +28,10 @@
 
 			<div class="actions float">
 				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClick()">
-					Cancel
+					{{'USER_ROLES' | translate}}
 				</button>
 				<button type="button" like-type="common" id="update" class="button green add-data-inline" ng-click="saveUserRole()">
-					Save changes
+					{{'USER_ROLES' | translate}}
 				</button>
 			</div>
 		</form>
@@ -41,10 +41,10 @@
 	<table class="grid" id="likes">
 		<thead>
 			<th>
-				User Roles
+				{{'USER_ROLES' | translate}}
 			</th>
 			<th>
-				Role Dashboard
+				{{'ROLE_DASHBOARD' | translate}}
 			</th>
 		</thead>
 		<tbody>
