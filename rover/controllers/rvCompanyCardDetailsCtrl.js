@@ -106,12 +106,15 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	* success callback of save contact data
 	*/
 	var successCallbackOfContactSaveData = function(data){
+		console.log('in success');
+		
 		$scope.$emit("hideLoader");
-		if(typeof $stateParams.id !== 'undefined' && $stateParams.id !== ""){
-			$scope.contactInformation.id = $stateParams.id;
-		}
-		else{
+		console.log($scope.contactInformation.id);
+		if(typeof data.id !== 'undefined' && data.id !== ""){
 			$scope.contactInformation.id = data.id;
+		}
+		else if(typeof $stateParams.id !== 'undefined' && $stateParams.id !== ""){
+			$scope.contactInformation.id = $stateParams.id;
 		}
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch
