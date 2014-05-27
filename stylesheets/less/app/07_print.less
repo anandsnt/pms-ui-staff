@@ -131,6 +131,7 @@ h4, .h4 { page-break-after: avoid; }
 		.report-header { .hide; }
 
 		.report-totals { 
+
 			padding: .3cm 0;
 			margin: 0 .5cm .75cm;
 			border-top: 2px solid rgba(0,0,0,.1);
@@ -141,6 +142,7 @@ h4, .h4 { page-break-after: avoid; }
 		}
 
 		.report-content {
+			position: relative;			
 			height: auto !important;
 
 			> .wrapper { padding: 0; }
@@ -148,10 +150,14 @@ h4, .h4 { page-break-after: avoid; }
 			table {
 				border-collapse: collapse; 
 				margin-bottom: 0;
-
-				tr {
+				tr {	
+				page-break-before: always;
+				page-break-inside: avoid;
+						
 					th,
 					td {
+						page-break-before: always;
+						page-break-inside: avoid;
 						white-space: normal !important;
 						overflow: visible !important;
 						vertical-align: top !important;
