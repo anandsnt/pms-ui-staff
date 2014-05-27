@@ -23,6 +23,8 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			// api load count
 			$scope.apiLoadCount = 0;
+			$scope.chargeCodesForChargeGrp = [];
+			$scope.singleAddon.charge_group_id = "";
 		};
 
 		$scope.init();
@@ -70,6 +72,26 @@ admin.controller('ADRatesAddonsCtrl', [
 
 		$scope.loadTable();
 
+		// map charge codes for selected charge charge group
+
+		var manipulateChargeCodeForChargeGroups = function(){
+
+			if($scope.singleAddon.charge_group_id ===""){
+				$scope.chargeCodesForChargeGrp = $scope.chargeCodes;
+			}
+			else{
+				var selectedChargeGrpId = $scope.singleAddon.charge_group_id;
+				$scope.chargeCodesForChargeGrp =[];
+		   		angular.forEach($scope.chargeCodes, function(chargeCode, key) {
+		        angular.forEach(chargeCode.associcated_charge_groups, function(associatedChargeGrp, key) {
+		        	if(associatedChargeGrp.id === selectedChargeGrpId){
+		        		$scope.chargeCodesForChargeGrp.push(chargeCode);
+		        	}
+		        });
+		     });
+
+			}
+		};
 
 
 
@@ -88,9 +110,11 @@ admin.controller('ADRatesAddonsCtrl', [
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeGroups, {}, cgCallback);
 
+		
 			// fetch charge codes
 			var ccCallback = function(data) {
 				$scope.chargeCodes = data.results;
+				manipulateChargeCodeForChargeGroups();
 				$scope.$emit('hideLoader');
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, ccCallback);
@@ -154,8 +178,6 @@ admin.controller('ADRatesAddonsCtrl', [
 		// listen for datepicker update from ngDialog
 		var updateBind = $rootScope.$on('datepicker.update', function(event, chosenDate) {
 
-			console.log( chosenDate );
-
 			// covert the date back to 'MM-dd-yyyy' format  
 			if ( $scope.dateNeeded === 'From' ) {
 	            $scope.singleAddon.begin_date = chosenDate;
@@ -201,6 +223,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.$emit('hideLoader');
 				
 				$scope.singleAddon = data;
+				manipulateChargeCodeForChargeGroups();
 
 				// Display currency with two decimals
 				$scope.singleAddon.amount = $filter('number')($scope.singleAddon.amount, 2);
@@ -325,5 +348,10 @@ admin.controller('ADRatesAddonsCtrl', [
 				 scope: $scope
 	    	});
 	    };
+
+	    $scope.chargeGroupChage = function(){
+			$scope.singleAddon.charge_code_id = "";
+			manipulateChargeCodeForChargeGroups();
+		};
 	}
 ]);

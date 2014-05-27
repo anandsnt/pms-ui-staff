@@ -76,7 +76,9 @@
 							<select name="charge-group-id"
 								id="charge-group-id"
 								ng-model="singleAddon.charge_group_id"
-								ng-options="group.id as group.name for group in chargeGroups"></select>
+								ng-options="group.id as group.name for group in chargeGroups"
+								ng-change="chargeGroupChage()"
+								></select>
 						</div>
 					</div>
 				</div>
@@ -90,7 +92,7 @@
 							<select name="charge-code-id"
 								id="charge-code-id"
 								ng-model="singleAddon.charge_code_id"
-								ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodes"></select>
+								ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodesForChargeGrp"></select>
 						</div>
 					</div>
 				</div>							
