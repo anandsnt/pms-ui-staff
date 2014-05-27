@@ -54,7 +54,7 @@ reports.controller('reporstList', [
         //to keep track of where the user was before clicking on print
         $scope.returnToPage = 1;
         // fetch the reports list with the filters to be used
-        
+
         RepFetchSrv.fetch()
             .then(function(response) {
                 sntapp.activityIndicator.hideActivityIndicator();
@@ -310,13 +310,15 @@ reports.controller('reportDetails', [
         // and when user updated the filters
         var calPagination = function(response, pageNum) {
 
+            console.log('here');
+
             if(typeof pageNum == "undefined"){
                 pageNum = 1;
             }
 
             $scope.pagination = [];
             if (response.results.length < response.total_count) {
-                var pages = Math.floor( response.total_count / response.results.length );
+                var pages = Math.floor( response.total_count / $rootScope.resultsPerPage );
                 var extra = response.total_count % response.results.length;
 
                 if (extra > 0) {
