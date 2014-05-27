@@ -51,4 +51,22 @@ admin.service('ADUserRolesSrv',['$http', '$q', 'ADBaseWebSrvV2', function($http,
 		return deferred.promise;
 	};
 
+  /*
+    * To assign dashboard
+    * @param {array} dashboard
+    * 
+    */
+	this.assignDashboard = function(data){
+		var deferred = $q.defer();
+		var url = '/api/roles/assign_dashboard';	
+
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		},function(data){
+		    deferred.reject(data);
+		});	
+		return deferred.promise;
+	};
+
+
 }]);
