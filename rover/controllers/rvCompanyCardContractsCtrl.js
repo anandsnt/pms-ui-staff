@@ -189,8 +189,9 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     var fetchRatesSuccessCallback = function(data){
     	console.log(data);
     	$scope.contractData.rates = [];
+    	$scope.addData.rates = [];
     	$scope.contractData.rates = data.contract_rates;
-    	console.log($scope.contractData);
+    	$scope.addData.rates = data.contract_rates;
     };
     $scope.invokeApi(RVCompanyCardSrv.fetchRates,{},fetchRatesSuccessCallback,fetchFailureCallback);  
     
