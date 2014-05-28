@@ -1,4 +1,7 @@
 sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', function($scope, RVCompanyCardSrv, $state, $stateParams){
+	
+	console.log("$stateParams type --"+$stateParams.type);
+	
 	//setting the heading of the screen
 	$scope.heading = "Company Card";	
 
