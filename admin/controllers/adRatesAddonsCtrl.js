@@ -152,6 +152,10 @@ admin.controller('ADRatesAddonsCtrl', [
 
 		// to add new addon
 		$scope.addNew = function() {
+
+			$scope.singleAddon.charge_group_id ="";
+			manipulateChargeCodeForChargeGroups();
+
 			$scope.isAddMode   = true;
 			$scope.isEditMode  = false;
 
