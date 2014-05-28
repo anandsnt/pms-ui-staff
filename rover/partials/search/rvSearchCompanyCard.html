@@ -16,9 +16,16 @@
             <ul id="search-cards-results" class="search-results" >
                  <li ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length==0 || textInQueryBox==''">
                     <a ui-sref="rover.companycarddetails({id:row.id, type: row.account_type.toLowerCase()})" class="card-result company-card" data-transition="inner-page">
-                        <figure class="guest-image">
+                        
+                        <figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
                             <img ng-src="{{row.company_logo}}" alt="">
                         </figure>
+                        
+                        <figure class="guest-image" ng-if="escapeNull(row.company_logo)==''">
+                            <div class="guest-image icons icon-company" ng-if="escapeNull(row.account_type)=='COMPANY'" ></div>
+                            <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)!='COMPANY'" ></div>
+                        </figure>
+                        
                         <div class="data">
                             <h2 ng-bind-html="'{{row.account_first_name}}, {{row.account_last_name}}'|highlight:textInQueryBox:false"></h2>
                         </div>
