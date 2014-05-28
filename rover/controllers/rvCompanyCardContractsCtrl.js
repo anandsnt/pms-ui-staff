@@ -182,6 +182,17 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
         }]
         return graphData
     }
+    
+    // Fetch data for rates
+    
+    var fetchRatesSuccessCallback = function(data){
+    	console.log(data);
+    	$scope.contractData.rates = [];
+    	$scope.contractData.rates = data.contract_rates;
+    	console.log($scope.contractData);
+    };
+    $scope.invokeApi(RVCompanyCardSrv.fetchRates,{},fetchRatesSuccessCallback,fetchFailureCallback);  
+    
   	if($stateParams.id !="add"){
 		$scope.invokeApi(RVCompanyCardSrv.fetchContractsList,{"account_id":$stateParams.id},fetchContractsListSuccessCallback,fetchFailureCallback);  
 	}
