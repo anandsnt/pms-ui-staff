@@ -1,6 +1,9 @@
 <div role="dialog" id="modal" class="modal-show"><form class="modal-content form new-content" name="new-payment" id="new-payment" action="http://stayntouch.perceptiveinteractive.com/with-cards/app/modals/new-payment-method/" method="post">
-	<button class="dark-title modal-close" type="button" id="modal-close"><span class="icons icon-close"></span></button>
+	<button class="dark-title modal-close" type="button" id="modal-close" ng-click="closeDialog()">
+		<span class="icons icon-close"></span>
+	</button>
 	<strong class="new-form-title">New payment method</strong>
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	<div class="entry full-width">
 	    <label for="payment-type">Payment type</label>
 	    <div class="select">

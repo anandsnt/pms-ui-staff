@@ -41,8 +41,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.paymentData.payment_details.card_number = cardNumber.substr(cardNumber.length - 4);
 		$scope.paymentData.payment_details.card_expiry = expiryDate;
 	};
-	$scope.failureCallBack = function(){
+	$scope.failureCallBack = function(errorMessage){
 		$scope.$emit("hideLoader");
+		$scope.errorMessage = errorMessage;
 	};
 	/*
 	 * Save new payment - GUestcard or staycard
