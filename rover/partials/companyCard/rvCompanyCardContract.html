@@ -124,7 +124,7 @@
                     <input ng-model="addData.rate_value" name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{addData.rate_value}}" type="text" />
                     <div class="select">
                         <select name="company-rate-adjust-3" ng-model="addData.selected_symbol">
-                        	<option ng-repeat="symbol in ['%','$']"  ng-selected="type==addData.selected_symbol" value="{{symbol}}">{{symbol}}</option>
+                        	<option ng-repeat="symbol in ['%','$']"  ng-selected="symbol==addData.selected_symbol" value="{{symbol}}">{{symbol}}</option>
                         </select>
                     </div>
                 </div>
