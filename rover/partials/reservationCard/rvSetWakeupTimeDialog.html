@@ -193,7 +193,7 @@
                 {{ 'SET_WAKEUP_CALL' | translate }}
 
             </button>
-            <button id="delete-wakeup-call" ng-class="{'red': true}" class="button red modal-close" type="button" ng-disabled="!validate()" data-disabled-delete="true" ng-click="deleteWakeupCall()">
+            <button id="delete-wakeup-call" ng-class="{'red': true}" class="button red modal-close" type="button" ng-disabled="isDeletable()" data-disabled-delete="true" ng-click="deleteWakeupCall()">
 
                 {{ 'DELETE_WAKEUP_CALL' | translate }}
 

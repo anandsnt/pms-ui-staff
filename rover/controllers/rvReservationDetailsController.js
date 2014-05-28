@@ -68,6 +68,8 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 $scope.showWakeupCallDialog = function () {
             
             var successCallbackWakeupTime = function(wakeupData){
+            	$scope.$emit('hideLoader');
+            	$scope.wakeupData = wakeupData;
             	ngDialog.open({
                 template: '/assets/partials/reservationCard/rvSetWakeupTimeDialog.html',
                 controller: 'rvSetWakeupcallController',
