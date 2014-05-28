@@ -61,6 +61,7 @@
     "FLOORS":"Floors",
 
     "USER_ROLES":"User roles",
-    "ROLE_DASHBOARD": "Role Dashboard"
+    "ROLE_DASHBOARD": "Role Dashboard",
+    "SELECT_DASHBOARD":"Select Dashboard"
 
 }

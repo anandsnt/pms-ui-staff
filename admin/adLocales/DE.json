@@ -61,6 +61,7 @@
     "FLOORS":"Etagen",
 
     "USER_ROLES":"Benutzerrollen",
-    "ROLE_DASHBOARD": "Role-Dashboard"
+    "ROLE_DASHBOARD": "Role-Dashboard",
+    "SELECT_DASHBOARD":"Select-Dashboard"
 
 }

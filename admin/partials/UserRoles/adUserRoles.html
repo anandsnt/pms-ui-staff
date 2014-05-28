@@ -9,7 +9,10 @@
 
 	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	
-	<div class="data-holder grid" ng-show="addMode">
+
+	<!-- TO DO:Add mode is partially done for now -->
+
+	<!-- <div class="data-holder grid" ng-show="addMode">
 		<form room_type_id="1" id="edit-room-type" class="form inline-form float">
 			<div class="form-title">
 				<h3><span>Add</span> {{'USER_ROLES' | translate}} </h3>
@@ -23,7 +26,7 @@
 			</fieldset>
 			<fieldset class="holder right float">
 
-				<ad-dropdown div-class='' label="Role Dashboard" label-in-drop-down='Select Dashboard' sel-class='placeholder'  list='dashboard_types'selected-Id='selecetedDashboardId'></ad-dropdown>
+				<ad-dropdown div-class='' label="Role Dashboard" label-in-drop-down="{{'SELECT_DASHBOARD'|translate}}" sel-class='placeholder'  list='dashboard_types'selected-Id='selecetedDashboardId'></ad-dropdown>
 			</fieldset> 
 
 			<div class="actions float">
@@ -35,7 +38,7 @@
 				</button>
 			</div>
 		</form>
-	</div>
+	</div> -->
 	
 
 	<table class="grid" id="likes">
@@ -56,7 +59,7 @@
 	 		   	<div class="entry">
                 <div class="select">
                     <select class="placeholder" ng-model="role.dashboard_id" ng-options="dashboard.id as dashboard.description for dashboard in dashboard_types" ng-change="changeDashBoard(role.value,role.dashboard_id)">
-                        <option value="" disabled>Select Dashboard</option>
+                        <option value="" disabled>{{'SELECT_DASHBOARD'|translate}}</option>
                     </select>
                 </div>
                 </div>
