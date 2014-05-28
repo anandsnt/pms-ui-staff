@@ -35,8 +35,8 @@
     "ROOM_TYPE__CODE_PLACE_HOLDER":"Enter Room Type Code",
     "MAX_OCCUPANCY_PLACE_HOLDER":"Enter Max Occupancy",
     "SNT_DESCRIPTION_PLACE_HOLDER":"Enter StayNTouch Description",
-    "MANDIATORY_FIELDS_MESSAGE1":"Fields marked with",
-    "MANDIATORY_FIELDS_MESSAGE2":"are mandatory!",
+    "MANDATORY_FIELDS_MESSAGE1":"Fields marked with",
+    "MANDATORY_FIELDS_MESSAGE2":"are mandatory!",
 
     "ROOMS":"Rooms",
     "OF":"of",
