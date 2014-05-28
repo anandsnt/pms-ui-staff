@@ -4,20 +4,41 @@
 		<header class="content-title float">
 			<h2> {{ 'FLOORS' | translate }} </h2>
 			<span class="count"> ({{data.floors.length}}) </span>
-			<a id="import-rooms" class="action add" ng-click="addNewFloor()" >{{ 'ADD_NEW' | translate }}</a>
+			<a id="import-rooms" class="action add" ng-click="addNewFloor()"  >{{ 'ADD_NEW' | translate }}</a>
 		</header>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<div id="new-form-holder"></div>
 		<span class="grid" ng-show="isAddMode" ng-include="getTemplateUrl(-1)"></span>
 		<table id="brands" class="grid" ng-table="tableParams">
+			<thead>
+				<tr>
+					 
+           <th class="sortable" ng-class="{
+                    'sort-asc': tableParams.isSortBy('floor_number', 'asc'),
+                    'sort-desc': tableParams.isSortBy('floor_number', 'desc')
+                  }"
+                    ng-click="tableParams.sorting({'floor_number' : tableParams.isSortBy('floor_number', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                    <div><i class="glyphicon glyphicon-user"></i> {{ 'FLOOR_NO' | translate }}</div>
+                </th>
+                <th class="sortable" ng-class="{
+                    'sort-asc': tableParams.isSortBy('description', 'asc'),
+                    'sort-desc': tableParams.isSortBy('description', 'desc')
+                  }"
+                    ng-click="tableParams.sorting({'description' : tableParams.isSortBy('description', 'asc') ? 'desc' : 'asc'})" rowspan="2">
+                    <div><i class="glyphicon glyphicon-user"></i> {{ 'FLOOR_DESCRIPTION' | translate }}</div>
+                </th>					
+					<th class="width-10"> {{ 'DELETE' | translate }}</th>
+
+				</tr>
+			</thead>
 			<tbody>
 				<tr ng-repeat="floor in $data" > 
-					<td data-title="'FLOOR_NO' | translate " header-class=" width-10"  sortable="'floor_number'" class="text-left" ng-hide="currentClickedElement == $index" >
-						<a data-item="3" data-colspan="1" class="edit-data-inline" ng-click="editFloor($index)">{{floor.floor_number}} </a>
+					<td  class="text-left" ng-hide="currentClickedElement == $index" >
+						<a  class="edit-data-inline" ng-click="editFloor($index)">{{floor.floor_number}} </a>
 						
 					</td>
 					<td header-class="width-20"  data-title="'FLOOR_DESCRIPTION' | translate" sortable="'description'" ng-click="editFloor($index)" ng-hide="currentClickedElement == $index" >
-						<a data-item="3" data-colspan="1" class="edit-data-inline">{{floor.description}} </a>
+						<a class="edit-data-inline">{{floor.description}} </a>
 					</td>
 					<td data-title="'DELETE' | translate" header-class=" width-10"  class="text-left" ng-hide="currentClickedElement == $index" >
 						<span ng-click="deleteFloor($index)" class="icons icon-delete large-icon floor_delete">&nbsp;</span>

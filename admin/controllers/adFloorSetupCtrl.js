@@ -50,6 +50,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 		$scope.currentClickedElement = index;
 	 	$scope.floorListData = $scope.orderedData[index]; 
 	 	$scope.floorListData.floortitle = $scope.floorListData.description ;
+	 	$scope.floorListData.floor_number_old = $scope.floorListData.floor_number ;
 	};
    
    /*
@@ -130,6 +131,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
     */	
 	$scope.clickCancel = function(){
 		$scope.floorListData.description = $scope.floorListData.floortitle;
+		$scope.floorListData.floor_number = $scope.floorListData.floor_number_old;
 		if($scope.isAddMode)
 			$scope.isAddMode =false;
 		else
