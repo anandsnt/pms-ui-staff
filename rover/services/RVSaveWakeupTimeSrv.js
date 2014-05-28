@@ -2,9 +2,20 @@ sntRover.service('RVSaveWakeupTimeSrv',['$q', 'RVBaseWebSrv', function($q, RVBas
 		
 	this.saveWakeupTime = function(param){
 		var deferred = $q.defer();
-		var dataToSend = param.data;
 		var url =  '/staff/guest_cards/'+userId;			
-		RVBaseWebSrv.putJSON(url, dataToSend).then(function(data) {
+		RVBaseWebSrv.putJSON(url, param).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;		
+		
+	};
+
+	this.deleteWakeupTime = function(param){
+		var deferred = $q.defer();
+		var url =  '/staff/guest_cards/'+userId;			
+		RVBaseWebSrv.putJSON(url, param).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);

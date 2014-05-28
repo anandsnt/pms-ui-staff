@@ -158,7 +158,8 @@
              If reservation_status is "CHECKING_OUT" disable 'Tomorrow' switch 
 
             -->
-            <div ng-model="todaySelected" id="wakeupDate" class="switch-button full-width on" " ng-class="{'on': todaySelected}">
+            <div ng-model="todaySelected" id="wakeupDate" class="switch-button full-width on"  
+            ng-class="{'on': todaySelected}">
                 <input id="wake-up-day" type="checkbox" value="2" name="wake-up-day" checked="checked" ng-click="todaySelected = !todaySelected"></input>
                 <label class="data-off">
                     <span class="switch-icon">
@@ -187,12 +188,12 @@
             </div>
         </div>
         <div class="actions float is-disabled">
-            <button id="save-wakeup-call" class="button green modal-close" type="button" disabled="">
+            <button id="save-wakeup-call" ng-class="{'green': true}" class="button green modal-close" type="button" ng-disabled="false">
 
                 Set wake-up call
 
             </button>
-            <button id="delete-wakeup-call" class="button grey modal-close" type="button" disabled="" data-disabled-delete="true">
+            <button id="delete-wakeup-call" ng-class="{'red': true}" class="button red modal-close" type="button" ng-disabled="false" data-disabled-delete="true">
 
                 Delete wake-up call
 

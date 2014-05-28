@@ -5,4 +5,13 @@ sntRover.controller('rvSetWakeupcallController',['$scope','RVSaveWakeupTimeSrv',
 		ngDialog.close();
 	};
 
+	$scope.saveWakeupCall = function(){
+		
+		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, {} , $scope.closeDialog);
+	};
+
+	$scope.deleteWakeupCall = function(){
+		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, {} , $scope.closeDialog);
+	};
+
 }]);
