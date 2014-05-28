@@ -105,6 +105,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 item.isRestrictionEnabled = false;
                 item.showEdit = false;
                 item.hasEdit = isRestictionHasDaysEnter(rTypes[i].value);
+                item.is_editable = true;
 
                 for(var i in selectedDateInfo){
                     if(selectedDateInfo[i].restriction_type_id == itemID){
@@ -136,9 +137,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         	angular.forEach($scope.data.restrictionTypes, function(value, key){
         		value.showEdit =  false;
         	});
-            console.log($scope.popupData.all_data_selected);
-            console.log($scope.data.restrictionTypes[id].hasEdit)
-                console.log("here");
             if($scope.popupData.all_data_selected){
                 //$scope.showRestrictionDayUpdate = true;
                 $scope.data.restrictionTypes[id].showEdit = true;
