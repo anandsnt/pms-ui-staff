@@ -980,7 +980,7 @@
 			/* Grid modal ***/
 			&.grid {
 				padding: 20px;
-				width: 480px;
+				width: 550px;
 				
 				.grid-wrapper {
 					.float;
@@ -988,31 +988,40 @@
 					.holder {
 						.pull-left;
 
-						.entry { width: 50px; }
+						.entry { 
+							width: 60px;
+
+							label {
+								margin-bottom: 0;
+							}
+						}
 
 						&.left {
-							width: 90px;
+							width: 100px;
 
 							.entry {
+								margin: 0;
 
 								&.move {
 									width: 40px;
 
 									.icon-mover-right {
-										margin-top: 30px;
+										margin-top: 25px;
 										cursor: pointer;
 										.hide-text;
 										.square(40px);
 									}
 								}
+
+								input { font-weight: 700; }
 							}
 						}
 
 						&.right {
-							width: 350px; 
+							width: 410px; 
 
 							.entry { 
-								margin-right: 10px;
+								margin: 0 10px 20px 0;
 
 								&:nth-child(6n) { margin-right: 0; }
 							}
@@ -1022,11 +1031,13 @@
 
 				.actions {
 					margin-top: 20px;
-					
+					text-align: center;
+
 					.button { 
+						display: inline-block;
 						width: auto;
-						padding: 0 40px;
-						margin: 0 auto;
+
+						&.green { padding: 0 40px; }
 					}
 				}
 			}
