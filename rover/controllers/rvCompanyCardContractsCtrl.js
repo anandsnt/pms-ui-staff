@@ -5,6 +5,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	$scope.contractData = {};
 	$scope.addData = {};
 	$scope.contractList.contractSelected = "";
+	$scope.contractList.current_contracts = [];
 	$scope.contractList.isAddMode = false;
 	$scope.errorMessage = "";
 	var contractInfo = {};
@@ -258,7 +259,16 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		        $scope.$emit('hideLoader');
 		        $scope.errorMessage = data;
 		    }; 
-			$scope.invokeApi(RVCompanyCardSrv.addNewContract,{ "account_id":$stateParams.id, "postData":data}, saveContractSuccessCallback, saveContractFailureCallback);  
+		    
+		    if($stateParams.id == "add"){
+	    		var account_id = $scope.contactInformation.id;
+		    }
+		    else{
+		    	var account_id = $stateParams.id;
+		    }
+		    if(account_id){
+				$scope.invokeApi(RVCompanyCardSrv.addNewContract,{ "account_id": account_id, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);  
+			}
 		}
 		else{
 			ngDialog.open({
@@ -272,7 +282,6 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	
 	$scope.AddNewButtonClicked = function(){
 		$scope.contractList.isAddMode = true;
-		$scope.addData = {};
 		$scope.addData.occupancy = [];
 		$scope.addData.begin_date = dateFilter(new Date(), 'yyyy-MM-dd');
 		$scope.addData.end_date = dateFilter(new Date(), 'yyyy-MM-dd');
