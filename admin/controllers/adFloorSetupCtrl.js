@@ -71,15 +71,15 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
 		
 		var unwantedKeys = [];
 		console.log($scope.floorListData);
-		var data = dclone($scope.floorListData, unwantedKeys);
-		var params = {};
+		var params = dclone($scope.floorListData, unwantedKeys);
+		
 	
 		 
     	var successCallbackSave = function(data){
     		$scope.$emit('hideLoader');
     		//Since the list is ordered. Update the ordered data
     		if($scope.isAddMode){
-    			$scope.data.floors.push($scope.floorListData);
+    			$scope.data.floors.push(data);
     			$scope.tableParams.reload();
     			$scope.isAddMode = false;
     		}else{
@@ -90,7 +90,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
     		}		
     		
     	};
-    	$scope.invokeApi(ADFloorSetupSrv.updateFloor, data , successCallbackSave);
+    	$scope.invokeApi(ADFloorSetupSrv.updateFloor, params , successCallbackSave);
     };
 
     /*
