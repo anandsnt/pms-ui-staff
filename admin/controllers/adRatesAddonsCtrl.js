@@ -76,7 +76,7 @@ admin.controller('ADRatesAddonsCtrl', [
 
 		var manipulateChargeCodeForChargeGroups = function(){
 
-			if($scope.singleAddon.charge_group_id ===""){
+			if(!$scope.singleAddon.charge_group_id){
 				$scope.chargeCodesForChargeGrp = $scope.chargeCodes;
 			}
 			else{
