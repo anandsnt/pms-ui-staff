@@ -77,7 +77,8 @@
     "RESERVATION_ONLY":"Reservierung nur",
     "EDIT":"Bearbeiten",
     "ADD_NEW_SMALL":"Neue",
-    "ADD_ON":"Add-On"
-    
+    "ADD_ON":"Add-On",
+    "DELETE":"löschen"
+
 
 }
