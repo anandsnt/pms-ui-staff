@@ -1,0 +1,29 @@
+<div class="data-holder">
+	<form room_type_id="1" id="edit-room-type" class="form inline-form float">
+		<div class="form-title">
+			<h3><span>{{ 'EDIT' | translate }}</span> {{floorListData.description}} </h3>
+			<em class="status"> {{ 'MANDATORY_FIELDS_MESSAGE1' | translate }} <strong>*</strong> {{ 'MANDATORY_FIELDS_MESSAGE2' | translate }} </em>
+		</div>
+		
+		<fieldset class="holder left float">
+			
+			<!-- <ad-textbox value="floorListData.floor_number" name = "room-type-code" id = "room-type-code" label = "Floor No" placeholder = "Enter Floor No" required = "yes" ></ad-textbox> -->
+
+			<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_FLOOR' | translate }}"label="{{ 'FLOOR_NO' | translate }}" sel-class='placeholder'  list='floors' required='yes' selected-Id='floorListData.floor_number'></ad-dropdown>
+			
+		</fieldset>
+		<fieldset class="holder right float">
+			
+            <ad-textbox styleclass="full-width" value="floorListData.description" name = "room-type-name" id = "room-type-name" label = "{{ 'FLOOR_DESCRIPTION' | translate }}" placeholder = "Enter Description" required = "yes" ></ad-textbox>
+		</fieldset> 
+		
+		<div class="actions float">
+			<button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()">
+				{{ 'CANCEL' | translate }}
+			</button>
+			<button type="button" like-type="common" id="update" class="button green add-data-inline" ng-click="saveFloor()">
+				{{ 'SAVE_CHANGES' | translate }}
+			</button>
+		</div>
+	</form>
+</div>

@@ -1,7 +1,10 @@
 <!-- Company Card Tab 1 -->
-<form method="post"  id="cc-contact-info" name="cc-contact-info" class="form card-tab scrollable tab-header full-width" ng-show="currentSelectedTab == 'cc-contact-info'"  ng-iscroll="company_card_content" ng-iscroll-delay="2000" ng-controller="companyCardDetailsContactCtrl" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="true" aria-hidden="false" style="overflow: scroll;">
-    <div class="wrapper"  >
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
+<form method="post"  id="cc-contact-info" name="cc-contact-info" class="form card-tab scrollable tab-header full-width" ng-show="currentSelectedTab == 'cc-contact-info'"   aria-labelledby="ui-id-1"
+ role="tabpanel" aria-expanded="true" aria-hidden="false" ng-controller="companyCardDetailsContactCtrl" 
+ style="height:100%" ng-iscroll="companyCardDetailsContactCtrl" ng-iscroll-delay="2000">
+    <div class="wrapper cc-contact-info-height">
+
         <div class="holder left">
             <strong class="h3">Company Info</strong>
             <rv-textbox value="contactInformation.company_details.account_first_name" label="Name" placeholder = "Enter Name" styleclass="margin"></rv-textbox>
@@ -55,7 +58,7 @@
 
             <rv-textbox value="contactInformation.company_details.corporate_id" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin"></rv-textbox>
 
-            <rv-textbox value="contactInformation.company_details.accounts_receivable_number" label="Accounts Receivable Number" placeholder = "Enter Corporate ID" ></rv-textbox>
+            <rv-textbox value="contactInformation.company_details.accounts_receivable_number" label="Accounts Receivable Number" placeholder = "Enter Accounts Receivable Number" ></rv-textbox>
 
             <rv-textbox value="contactInformation.company_details.billing_information" label="Billing Information" placeholder = "Enter Billing Information" ></rv-textbox>
 
