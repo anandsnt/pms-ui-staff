@@ -149,13 +149,16 @@
           scope.presentDay = new Date();
           scope.presentYear = scope.presentDay.getFullYear();
 
-          scope.startYear = scope.startYear ? scope.startYear : scope.presentYear;
-          scope.endYear   = scope.endYear   ? scope.endYear :scope.presentYear+100;
+          /* Creating new variables, as changing startYear will throw exception
+           * if the value is not passed into the directive
+           */
+          scope.myStartYear = scope.startYear ? scope.startYear : scope.presentYear;
+          scope.myEndYear   = scope.endYear   ? scope.endYear :scope.presentYear+100;
 
-          for(year=parseInt(scope.startYear);year<=parseInt(scope.endYear);year++){
+          for(year=parseInt(scope.myStartYear);year<=parseInt(scope.myEndYear);year++){
             scope.years.push(year);
           };
-          scope.weekDays = ['SU','MO','TU','WE','TH','FR','SA'];
+          scope.weekDays = ['SU','MO','TU','WE','TH','FR','SA']; 
 
           scope.months=[{'name':'January','value':'0'},
                         {'name':'February','value':'1'},
