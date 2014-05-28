@@ -37,10 +37,10 @@
 						<a  class="edit-data-inline" ng-click="editFloor($index)">{{floor.floor_number}} </a>
 						
 					</td>
-					<td header-class="width-20"  data-title="'FLOOR_DESCRIPTION' | translate" sortable="'description'" ng-click="editFloor($index)" ng-hide="currentClickedElement == $index" >
+					<td header-class="width-20"  ng-click="editFloor($index)" ng-hide="currentClickedElement == $index" >
 						<a class="edit-data-inline">{{floor.description}} </a>
 					</td>
-					<td data-title="'DELETE' | translate" header-class=" width-10"  class="text-left" ng-hide="currentClickedElement == $index" >
+					<td header-class=" width-10"  class="text-left" ng-hide="currentClickedElement == $index" >
 						<span ng-click="deleteFloor($index)" class="icons icon-delete large-icon floor_delete">&nbsp;</span>
 					</td>
 					
