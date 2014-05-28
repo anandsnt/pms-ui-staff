@@ -15,7 +15,7 @@
         </div>
         <div class="holder right">
             <div ng-repeat="nights in contractData.occupancy" class="entry">
-                <label for="contracted-jan">{{nights.month}} - {{nights.year}}</label>
+                <label for="contracted-jan">{{nights.month}} {{nights.year}}</label>
                 <input ng-model="nights.contracted_occupancy" name="contracted-jan" id="contracted-jan" value="{{nights.contracted_occupancy}}" type="text" />
             </div>
             
@@ -34,7 +34,7 @@
         </div>
         <div class="holder right">
             <div ng-repeat="nights in addData.occupancy" class="entry">
-                <label for="contracted-jan">{{nights.month}} - {{nights.year}}</label>
+                <label for="contracted-jan">{{nights.month}} {{nights.year}}</label>
                 <input ng-model="nights.contracted_occupancy" name="contracted-jan" id="contracted-jan" value="{{nights.contracted_occupancy}}" type="text" />
             </div>
             
@@ -42,8 +42,8 @@
     </div>
     
     <div class="actions float">
-        <button type="button" id="submit" class="button green modal-close" ng-click="saveContractedNights()">Save</button>
         <button type="button" id="cancel" class="button blank modal-close" ng-click="clickedCancel()">Cancel</button>
+        <button type="button" id="submit" class="button green modal-close" ng-click="saveContractedNights()">Save</button>
     </div>
 </form>
 </div>
