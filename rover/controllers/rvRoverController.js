@@ -1,6 +1,6 @@
 sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window','RVDashboardSrv','ngDialog','$translate', function($rootScope, $scope, $state,$window,RVDashboardSrv,ngDialog, $translate){
 	
-	
+	sntapp.enableCardSwipeDebug();
 	
     $scope.$on("closeDrawer", function(){      
       $scope.menuOpen = false;  
