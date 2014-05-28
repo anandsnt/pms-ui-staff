@@ -29,6 +29,9 @@
 </fieldset>
 <table class="date_range_set_table">
 <tr ng-repeat="set in Sets">
+	<td width="5%">
+		<a class="icons icon-delete  delete_item" ng-hide="($index === 0) && !($index ==6)"ng-click="deleteSet($index)"></a>
+	</td>
 	<td width="20%">
 		<ad-textbox value="set.setName" style="width:150px;"></ad-textbox>
 	</td>
@@ -37,7 +40,7 @@
 	</td>
 	<td>
 		<a class="icons icon-add" ng-show="($index === Sets.length-1) && !($index ==6)" ng-click="addNewSet($index)"></a>
-		<a class="icons icon-delete  delete_item" ng-hide="($index === Sets.length-1) && !($index ==6)"ng-click="deleteSet($index)"></a>	
+			
 	</td>
 <tr>
 </table>

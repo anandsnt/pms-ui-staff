@@ -165,11 +165,9 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
         };
 
         $scope.saveDateRange = function () {
-
             angular.forEach($scope.data.sets, function (value, key) {
                 $scope.saveSet(key);
             });
-            $state.go('admin.rates');
         };
 
         $scope.popupCalendar = function () {
