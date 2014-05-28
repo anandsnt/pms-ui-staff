@@ -80,7 +80,6 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
     		//Since the list is ordered. Update the ordered data
     		if($scope.isAddMode){
     			$scope.data.floors.push($scope.floorListData);
-    			// $scope.tableParams.count = $scope.data.floors.length;
     			$scope.tableParams.reload();
     			$scope.isAddMode = false;
     		}else{
@@ -130,6 +129,7 @@ admin.controller('ADFloorSetupCtrl',['$scope', '$state', 'ADFloorSetupSrv', 'ngT
     * To handle click event
     */	
 	$scope.clickCancel = function(){
+		$scope.floorListData.description = $scope.floorListData.floortitle;
 		if($scope.isAddMode)
 			$scope.isAddMode =false;
 		else
