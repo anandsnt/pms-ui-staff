@@ -1,1 +1,30 @@
-payment list
+<div role="dialog" id="modal" class="modal-show">
+	
+	<div class="modal-content card-content">
+		<!-- <div class="scrollable"  id="paymentList" ng-iscroll='paymentList' ng-iscroll-delay='500' style="position:absolute; top:0px; left:0px;height:200px;bottom:0px; width: 100%;"> -->
+		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
+			<span class="icons icon-close invert"></span>
+		</button>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<br>
+		<div class="scrollable"  id="paymentList" ng-iscroll='paymentList' ng-iscroll-delay='500' style="position:absolute; top:0px; left:0px;bottom:0px; width: 100%;">
+			<div style="height:500px;">
+			<a class="active-item existing_payments float item-payment" ng-click="clickPaymentItem(paymentlist.value, paymentlist.card_code, paymentlist.ending_with, paymentlist.expiry_date)" ng-repeat="paymentlist in paymentListData.existing_payments">
+				<figure class="card-logo">
+					<img src="/assets/{{paymentlist.card_code}}.png" alt="">
+				</figure> 
+				<span class="number"> Ending with 
+					<span class="value number"> {{paymentlist.ending_with}} </span> 
+				</span> 
+				<span class="date"> Date 
+					<span class="value date"> {{paymentlist.expiry_date}}  </span> 
+				</span> 
+				<span class="name"> Name 
+					<span class="value name"> {{paymentlist.holder_name}}  </span> 
+				</span> 
+				<span class="in-gc" ng-show="paymentlist.is_in_guest_card">In Guest Card</span>
+			 </a>
+			 </div>
+		</div>
+	</div>
+</div>

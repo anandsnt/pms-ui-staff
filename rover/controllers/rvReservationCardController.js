@@ -154,13 +154,5 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 	 	$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess);  
 	 };
 	 
-	 $scope.openPaymentList = function(){
-	 //	$scope.paymentData.payment_id = id;
-  	 	//  $scope.paymentData.index = index;
-		  ngDialog.open({
-	               template: '/assets/partials/payment/rvShowPaymentList.html',
-	               controller: 'RVShowPaymentListCtrl',
-	               scope:$scope
-	          });
-	 };
+	 
 }]);

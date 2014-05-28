@@ -1,4 +1,4 @@
-sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails){
+sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'ngDialog', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog){
 	BaseCtrl.call(this, $scope);
 	/*
 	 * success call back of fetch reservation details
@@ -72,4 +72,13 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 	var paymentData = $scope.reservationData;
   	 	$scope.showAddNewPaymentModal(passData, paymentData);
   	 };
+  	 $scope.openPaymentList = function(){
+	 //	$scope.paymentData.payment_id = id;
+  	 	//  $scope.paymentData.index = index;
+		  ngDialog.open({
+	               template: '/assets/partials/payment/rvShowPaymentList.html',
+	               controller: 'RVShowPaymentListCtrl',
+	               scope:$scope
+	          });
+	 };
 }]);

@@ -51,4 +51,28 @@ sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv', function($http, 
 			});	
 		return deferred.promise;
 	};
+	this.getPaymentList = function(reservationId){
+		var deferred = $q.defer();
+		var url = '/staff/staycards/get_credit_cards.json?reservation_id='+reservationId;
+		RVBaseWebSrv.getJSON(url).then(function(data) {
+			    deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+		return deferred.promise;
+	};
+	this.mapPaymentToReservation = function(data){
+		var deferred = $q.defer();
+		
+		var url = '/staff/reservation/link_payment';
+		RVBaseWebSrv.postJSON(url, data).then(function(data) {
+			    deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+		return deferred.promise;
+	};
+	
+	
+	
 }]);

@@ -143,5 +143,9 @@ $scope.showAddNewPaymentModal = function(passData, paymentData){
  $scope.$on('GUESTPAYMENTDATA', function(event, paymentData) {
  	$scope.$broadcast('GUESTPAYMENT', paymentData);
  });
+ $scope.closeDialog = function(){
+ 	$scope.$emit('hideLoader');
+ 	ngDialog.close();
+ };
 
 }]);
