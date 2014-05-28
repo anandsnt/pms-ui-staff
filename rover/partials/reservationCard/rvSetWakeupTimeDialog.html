@@ -14,7 +14,7 @@
 
             </label>
             <div class="select select-col col1-3">
-                <select id="wake-up-hour" class="styled" name="wake-up">
+                <select ng-model="hrs" id="wake-up-hour" class="styled" name="wake-up">
                     <option class="placeholder" value="" data-text="Not set">
 
                         HH
@@ -95,7 +95,7 @@
                 </select>
             </div>
             <div class="select select-col col1-3">
-                <select id="wake-up-minute" class="styled" name="wake-up">
+                <select ng-model="min" id="wake-up-minute" class="styled" name="wake-up">
                     <option class="placeholder" value="" data-text="Not set">
 
                         MM
@@ -128,7 +128,7 @@
                 </select>
             </div>
             <div class="select select-col col1-3">
-                <select id="wake-up-primetime" class="styled" name="wake-up">
+                <select ng-model="am_pm" id="wake-up-primetime" class="styled" name="wake-up">
                     <!--
 
                      %option.placeholder{"data-text" => "Not set", value: ""} AM/PM 
@@ -158,9 +158,9 @@
              If reservation_status is "CHECKING_OUT" disable 'Tomorrow' switch 
 
             -->
-            <div ng-model="todaySelected" id="wakeupDate" class="switch-button full-width on"  
-            ng-class="{'on': todaySelected}">
-                <input id="wake-up-day" type="checkbox" value="2" name="wake-up-day" checked="checked" ng-click="todaySelected = !todaySelected"></input>
+            <div ng-model="tomorrowSelected" id="wakeupDate" class="switch-button full-width on"  
+            ng-class="{'on': tomorrowSelected}">
+                <input id="wake-up-day" type="checkbox" value="2" name="wake-up-day" checked="checked" ng-click="tomorrowSelected = !tomorrowSelected"></input>
                 <label class="data-off">
                     <span class="switch-icon">
 
@@ -188,12 +188,12 @@
             </div>
         </div>
         <div class="actions float is-disabled">
-            <button id="save-wakeup-call" ng-class="{'green': true}" class="button green modal-close" type="button" ng-disabled="false">
+            <button id="save-wakeup-call" ng-class="{'green': true}" class="button green modal-close" type="button" ng-disabled="!validate()" ng-click="saveWakeupCall()">
 
                 Set wake-up call
 
             </button>
-            <button id="delete-wakeup-call" ng-class="{'red': true}" class="button red modal-close" type="button" ng-disabled="false" data-disabled-delete="true">
+            <button id="delete-wakeup-call" ng-class="{'red': true}" class="button red modal-close" type="button" ng-disabled="!validate()" data-disabled-delete="true" ng-click="deleteWakeupCall()">
 
                 Delete wake-up call
 
