@@ -1,4 +1,4 @@
-sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv{
+sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv){
 	BaseCtrl.call(this, $scope);
 	/*
 	 * success call back of fetch reservation details
@@ -67,7 +67,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 
   	 $scope.showWakeupCallDialog = function () {
             
-            var successCallbackWakeupTime = function(){
+            var successCallbackWakeupTime = function(wakeupData){
             	ngDialog.open({
                 template: '/assets/partials/reservationCard/rvSetWakeupTimeDialog.html',
                 controller: 'rvSetWakeupcallController',
@@ -75,9 +75,9 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
                 scope: $scope
             });
             };
-            // var param = {};
-            // RVSaveWakeupTimeSrv.
-
+            var params = {};
+            params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+            $scope.invokeApi(RVSaveWakeupTimeSrv.getWakeupTimeDetails, params, successCallbackWakeupTime);
             
         };
 }]);

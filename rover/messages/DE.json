@@ -12,6 +12,13 @@
     "CHECKING_IN": "Einchecken",
     "INHOUSE": "Im Haus",
     "CHECKING_OUT": "AUSCHECKEN",
-    "DASHBOARD_HEADING": "Armaturenbrett"
+    "DASHBOARD_HEADING": "Armaturenbrett",
+    "DELETE_WAKEUP_CALL": "Löschen Weckruf",
+    "SET_WAKEUP_CALL": "Set Weckruf",
+    "CANCEL": "Cance",
+    "TODAY": "heute",
+    "TOMORROW": "morgen",
+    "SELECT_DATE": "Datum wählen",
+    "SELECT_WAKEUP_TIME": "Wählen Sie Weckzeit"
 
 }

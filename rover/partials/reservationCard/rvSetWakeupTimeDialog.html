@@ -10,7 +10,7 @@
         <div class="entry full-width float">
             <label for="wake-up">
 
-                Select wake-up time
+                {{ 'SELECT_WAKEUP_TIME' | translate }}
 
             </label>
             <div class="select select-col col1-3">
@@ -150,7 +150,7 @@
         <div class="entry full-width">
             <label for="wake-up-day">
 
-                Select date
+                {{ 'SELECT_DATE' | translate }}
 
             </label>
             <!--
@@ -164,24 +164,24 @@
                 <label class="data-off">
                     <span class="switch-icon">
 
-                        Today ({{reservationData.reservation_card.wake_up_time.today_date}})
+                        {{ 'TODAY' | translate }} ({{reservationData.reservation_card.wake_up_time.today_date}})
 
                     </span>
                     <span id="wakeup-day" class="value">
 
-                        Tomorrow ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
+                        {{ 'TOMORROW' | translate }} ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
 
                     </span>
                 </label>
                 <label class="data-on">
                     <span id="wakeup-day" class="value">
 
-                        Today ({{reservationData.reservation_card.wake_up_time.today_date}})
+                        {{ 'TODAY' | translate }}({{reservationData.reservation_card.wake_up_time.today_date}})
 
                     </span>
                     <span class="switch-icon">
 
-                        Tomorrow ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
+                        {{ 'TOMORROW' | translate }} ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
 
                     </span>
                 </label>
@@ -190,17 +190,17 @@
         <div class="actions float is-disabled">
             <button id="save-wakeup-call" ng-class="{'green': true}" class="button green modal-close" type="button" ng-disabled="!validate()" ng-click="saveWakeupCall()">
 
-                Set wake-up call
+                {{ 'SET_WAKEUP_CALL' | translate }}
 
             </button>
             <button id="delete-wakeup-call" ng-class="{'red': true}" class="button red modal-close" type="button" ng-disabled="!validate()" data-disabled-delete="true" ng-click="deleteWakeupCall()">
 
-                Delete wake-up call
+                {{ 'DELETE_WAKEUP_CALL' | translate }}
 
             </button>
             <button id="cancel" class="button blank modal-close" type="button" ng-click="closeDialog()">
 
-                Cancel
+                {{ 'CANCEL' | translate }}
 
             </button>
         </div>

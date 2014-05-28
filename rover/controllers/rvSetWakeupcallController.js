@@ -13,7 +13,7 @@ sntRover.controller('rvSetWakeupcallController',['$scope','RVSaveWakeupTimeSrv',
 		params.wake_up_time = $scope.getTimeString();
 		params.day = ($scope.tomorrowSelected)? "Tomorrow":"Today";
 		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
-		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, {} , $scope.closeDialog);
+		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, params , $scope.closeDialog);
 	};
 
 	$scope.getTimeString = function(){

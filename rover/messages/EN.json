@@ -11,5 +11,12 @@
     "CHECKING_IN": "Checking In",
     "INHOUSE": "Inhouse",
     "CHECKING_OUT": "Checking Out",
-    "DASHBOARD_HEADING": "Dashboard"
+    "DASHBOARD_HEADING": "Dashboard",
+    "DELETE_WAKEUP_CALL": "Delete wake-up call",
+    "SET_WAKEUP_CALL": "Set wake-up call",
+    "CANCEL": "Cancel",
+    "TODAY": "Today",
+    "TOMORROW": "Tomorrow",
+    "SELECT_DATE": "Select date",
+    "SELECT_WAKEUP_TIME": "Select wake-up time"
 }

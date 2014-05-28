@@ -3,7 +3,7 @@ sntRover.service('RVSaveWakeupTimeSrv',['$q', 'RVBaseWebSrv', function($q, RVBas
 	this.saveWakeupTime = function(param){
 		var deferred = $q.defer();
 		var url =  '/wakeup/set_wakeup_calls';			
-		RVBaseWebSrv.putJSON(url, param).then(function(data) {
+		RVBaseWebSrv.postJSON(url, param).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
