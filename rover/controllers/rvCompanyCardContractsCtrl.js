@@ -285,7 +285,8 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		$scope.addData.occupancy = [];
 		$scope.addData.begin_date = dateFilter(new Date(), 'yyyy-MM-dd');
 		$scope.addData.end_date = dateFilter(new Date(), 'yyyy-MM-dd');
-		
+		$scope.addData.is_fixed_rate = false;
+		$scope.addData.is_rate_shown_on_guest_bill = false;
 	};
 	$scope.CancelAddNewContract =  function(){
 		$scope.contractList.isAddMode = false;
