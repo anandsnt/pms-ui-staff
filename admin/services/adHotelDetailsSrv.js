@@ -21,12 +21,12 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
     */
 	this.fetchEditData = function(data){
 		var deferred = $q.defer();
-		this.fetchCountries = function(){
+		this.fetchLanguages = function(){
 			
 			var url = '/api/reference_values.json?type=language';	
 			
 			ADBaseWebSrvV2.getJSON(url).then(function(data) {
-				hotelDetailsData.countries = data;
+				hotelDetailsData.languages = data;
 			    deferred.resolve(hotelDetailsData);
 			},function(data){
 			    deferred.reject(data);
@@ -39,7 +39,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
 			
 			ADBaseWebSrv.getJSON(url).then(function(data) {
 				hotelDetailsData.data = data;
-				this.fetchCountries();
+				this.fetchLanguages();
 			    // deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);
