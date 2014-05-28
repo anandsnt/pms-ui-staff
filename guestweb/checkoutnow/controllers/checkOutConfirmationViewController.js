@@ -1,10 +1,6 @@
 
 (function() {
 	var checkOutConfirmationController = function($scope,$rootScope,$location) {
-		
-
-		
-		
 
 		if($rootScope.isCheckedin){
 			$scope.pageSuccess = false;
@@ -22,14 +18,10 @@
 		else
 			$scope.pageSuccess = true;
 
-
 		if($scope.pageSuccess){
-
-		$scope.checkoutTimessage = $rootScope.checkoutTimessage ? $rootScope.checkoutTimessage:"Check out time is ";
-		
-		$scope.footerMessage1 = !$rootScope.isLateCheckoutAvailable ? 'Late check out is not available.' :'' ;
-
-	    }
+			$scope.checkoutTimessage = $rootScope.checkoutTimessage ? $rootScope.checkoutTimessage:"Check out time is ";
+			$scope.footerMessage1 = !$rootScope.isLateCheckoutAvailable ? 'Late check out is not available.' :'' ;
+		}
 	};
 
 	var dependencies = [
