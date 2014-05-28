@@ -1,9 +1,23 @@
-<nav id="main-menu" style="display: block;" >
+<nav id="main-menu" style="display: block;" ng-class="{'visible': menuOpen}">
+
+	<a id="{{menuImage}}"class="nav-toggle updated" ng-click="$emit('navToggled')"  ng-class="{'active': menuOpen}">Menu</a>
 	
 	<!-- For Hotel Admin -->
 	<ul ng-show ="isHotelAdmin || isHotelStaff" >
-		<li>
-			<a   ui-sref="rover.dashboard" class="icon-menu icon-dashboard" ng-class="{'active': selectedMenuIndex === 'dashboard'}" ng-click="$emit('navToggled')">Dashboard</a>
+		<li class="menu-title">
+			MENU
+		</li>
+		
+		<li ng-repeat="menuItem in menu" ng-mouseover="$emit('updateSubMenu',[$index,menuItem])">
+			<label class="icon-menu" ng-class="menuItem.iconClass" ></label>
+			<!-- <a  ui-sref="rover.dashboard" class="icon-menu icon-dashboard" ng-class="{'active': selectedMenuIndex === 'dashboard'}" ng-click="$emit('navToggled')">Dashboard</a> -->
+			{{menuItem.title}}
+			<div class="pointer" ng-hide="menuItem.submenu.length < 1">
+		</li>
+
+
+		<!-- <li>
+			<a ng-mouseover="$emit('updateSubMenu')"  ui-sref="rover.dashboard" class="icon-menu icon-dashboard" ng-class="{'active': selectedMenuIndex === 'dashboard'}" ng-click="$emit('navToggled')">Dashboard</a>
 		</li>
 		<li>
 			<a  ui-sref="rover.search" class="icon-menu icon-search" ng-class="{'active': selectedMenuIndex === 'search'}" ng-click="$emit('navToggled')">Search</a>
@@ -32,7 +46,7 @@
 		<li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="">
 			Version 1.0
-		</li>
+		</li> -->
 	</ul>
 
 	<!-- For SNT Admin -->
@@ -45,5 +59,13 @@
 			Version 1.0
 		</li>
 	</ul>
+
+	<div id="submenu" ng-show="showSubMenu && activeSubMenu.length > 0">
+		<ul>
+		<li ng-repeat="menuItem in activeSubMenu">
+			{{menuItem.title}}
+			<div class="pointer">
+		</li>
+	</div>
 
 </nav>
