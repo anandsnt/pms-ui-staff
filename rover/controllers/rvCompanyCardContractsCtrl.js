@@ -283,6 +283,8 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	/*
 	 * Add new contarcts
 	*/
+	
+	console.log($scope.$parent.contactInformation.id);
 	$scope.AddNewContract = function(){
 		
 		var data = dclone($scope.addData,['occupancy','statistics','rates','total_contracted_nights']);
@@ -296,7 +298,16 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
 	    }; 
-		$scope.invokeApi(RVCompanyCardSrv.addNewContract,{ "account_id":$stateParams.id, "postData":data}, saveContractSuccessCallback, saveContractFailureCallback);  
+	    
+	    console.log("$scope.contactInformation.id ="+$scope.contactInformation.id);
+	    console.log("$stateParams.id ="+$stateParams.id);
+	    if($stateParams.id == "add"){
+	    	var account_id = $scope.contactInformation.id;
+	    }
+	    else{
+	    	var account_id = $stateParams.id;
+	    }
+		$scope.invokeApi(RVCompanyCardSrv.addNewContract,{ "account_id": account_id, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);  
 	};
 	
 	
