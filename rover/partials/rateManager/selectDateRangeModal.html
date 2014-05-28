@@ -1,4 +1,4 @@
-<form ng-cloak class="form grey-texture-bg-color">
+<form ng-cloak class="form grey-texture-bg-color" style="height:610px;">
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<fieldset style="margin-bottom: 19px;" class="holder full-width grey-texture-bg-color" style="margin-bottom:0px;">
 		<div class="form-title">
@@ -6,32 +6,33 @@
 		</div>
 	</fieldset>
 <fieldset class="holder full-width">
-<fieldset class="holder left grey-texture-bg-color">
-<div class="center_align grey-texture-bg-color"><em>From</em>
-	<span ng-show="isFromDateSelected" class="italic_text">{{fromDate | date:'MMMM dd, y'}}</span></div>
-<div class="date-picker-bg">
-	<div class="date-picker-wrap">
-	   <div class="col-xs-12">
-	      <div pickadate="" ng-model="fromDate"  max-date="maxDate" date="date" is-current-month="true" is-date-selected="isFromDateSelected"></div>
-	   </div>
+	<fieldset class="holder left grey-texture-bg-color">
+	<div class="center_align grey-texture-bg-color"><em>From</em>
+		<span ng-show="isFromDateSelected" class="italic_text">{{fromDate | date:'MMMM dd, y'}}</span></div>
+	<div class="date-picker-bg">
+		<div class="date-picker-wrap">
+		   <div class="col-xs-12">
+		      <div pickadate="" ng-model="fromDate"  max-date="maxDate" date="date" is-current-month="true" is-date-selected="isFromDateSelected"></div>
+		   </div>
+		</div>
 	</div>
-</div>
-</fieldset>
-<fieldset class="holder right grey-texture-bg-color">
-<div class="center_align grey-texture-bg-color"><em>To</em>
-	<span ng-show="isToDateSelected" class="italic_text">{{toMonthDateFormated | date:'MMMM dd, y'}}</span></div>
-<div class="date-picker-bg">
-	<div class="date-picker-wrap">
-	   <div class="col-xs-12">
-	      <div pickadate="" ng-model="toMonthDateFormated"  max-date="maxDate" date="toMonthDate" is-current-month="false" is-date-selected="isToDateSelected"></div>
-	   </div>
+	</fieldset>
+	<fieldset class="holder right grey-texture-bg-color">
+	<div class="center_align grey-texture-bg-color"><em>To</em>
+		<span ng-show="isToDateSelected" class="italic_text">{{toMonthDateFormated | date:'MMMM dd, y'}}</span></div>
+	<div class="date-picker-bg">
+		<div class="date-picker-wrap">
+		   <div class="col-xs-12">
+		      <div pickadate="" ng-model="toMonthDateFormated"  max-date="maxDate" date="toMonthDate" is-current-month="false" is-date-selected="isToDateSelected"></div>
+		   </div>
+		</div>
 	</div>
-</div>
+	</fieldset>
+	<div class="actions float">
+		<button class="button blank add-data-inline" type="button" ng-click="cancelClicked()">Cancel</button>
+		<button class="button green" ng-click="okClicked()" type="button">Ok</button>
+	</div>
+	<br clear="all">
 </fieldset>
-</fieldset>
-<div class="actions float">
-				<button class="button blank add-data-inline" type="button" ng-click="cancelClicked()">Cancel</button>
-				<button class="button green" ng-click="okClicked()" type="button">Ok</button>
-			</div>
-<br clear="all">
+
 </form>
