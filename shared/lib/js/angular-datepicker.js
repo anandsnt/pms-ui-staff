@@ -53,7 +53,8 @@
           isDateSelected: '=',
           startYear: '=',
           endYear:'=',
-          closePopupOnSelection:'='
+          closePopupOnSelection:'=',
+          calendarId : '='
         },
         templateUrl:'../../assets/directives/Calendar/adCalendar.html' ,
             link: function(scope, element, attrs, ngModel)  {
@@ -114,13 +115,14 @@
        
 
           scope.setDate = function(dateObj) {
-            
             if (isDateDisabled(dateObj)) return;
             ngModel.$setViewValue(dateObj.date);
+            scope.$emit("dateChangeEvent",{            
+              calendarId : scope.calendarId
+            });
           };
 
           scope.dateClicked = function(dateObj){
-           
             if(dateObj.className != "pickadate-disabled"){
               scope.isDateSelected = true;
               scope.setDate(dateObj);
@@ -198,10 +200,7 @@
           scope.$watch('yearSelected',function(){
             currentDate.setDate(1);
             currentDate.setFullYear(scope.yearSelected);
-            scope.render(currentDate);
-            if(scope.$$nextSibling && scope.$$nextSibling.date){
-                scope.$emit('fromDateChanged');
-            }
+            scope.render(currentDate);            
           })
        
           /*
@@ -222,10 +221,7 @@
           scope.$watch('monthSelected.value',function(){     
              currentDate.setDate(1);
              currentDate.setMonth(scope.monthSelected.value);
-             scope.render(currentDate);
-             if(scope.$$nextSibling && scope.$$nextSibling.date){
-                scope.$emit('fromDateChanged');
-             }
+             scope.render(currentDate);             
           });
 
           function isDateDisabled(dateObj) {

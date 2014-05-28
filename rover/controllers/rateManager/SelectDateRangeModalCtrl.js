@@ -5,6 +5,9 @@ sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','d
     $scope.isFromDateSelected = true;
     $scope.isToDateSelected   = true;
 
+    $scope.fromCalendarID = "RateManagerDateRangeFrom";
+    $scope.toCalendarID = "RateManagerDateRangeTo";
+
 
         if($scope.currentFilterData.begin_date.length > 0){
           $scope.fromDate = $scope.currentFilterData.begin_date;
@@ -41,20 +44,13 @@ sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','d
         ngDialog.close();
       };
 
-
-      $scope.count = 0;
-
-      $scope.$on("fromDateChanged", function(e,value){
-       $scope.count++;
-       if($scope.count > 2){
-        var fromScope = $scope.$$childHead;
-        var toScope = $scope.$$childHead.$$nextSibling;
-        var fromDays = (12* parseInt(fromScope.yearSelected)) + parseInt(fromScope.monthSelected.value);
-        var toDays = (12*parseInt(toScope.yearSelected)) + parseInt(toScope.monthSelected.value);
-        if(fromDays != toDays){                
-          toScope.changeMonth(parseInt (fromDays - toDays),false);  
+      $scope.$on("dateChangeEvent",function(e, value){
+        if(new Date($scope.fromDate) > new Date($scope.toMonthDateFormated)){
+          if (value.calendarId === $scope.fromCalendarID){
+            $scope.toMonthDateFormated = $scope.fromDate;
+          }else{
+            $scope.fromDate = $scope.toMonthDateFormated;
+          }
         }
-      }
-    });
-
+      });
     }]);
