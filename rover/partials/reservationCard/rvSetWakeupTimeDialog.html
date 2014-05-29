@@ -158,9 +158,11 @@
              If reservation_status is "CHECKING_OUT" disable 'Tomorrow' switch 
 
             -->
-            <div ng-model="tomorrowSelected" id="wakeupDate" class="switch-button full-width on"  
+
+           <div  id="wakeupDate" class="switch-button full-width"  
             ng-class="{'on': tomorrowSelected}">
-                <input id="wake-up-day" type="checkbox" value="2" name="wake-up-day" checked="checked" ng-click="tomorrowSelected = !tomorrowSelected"></input>
+                <input id="wake-up-day" type="checkbox" value="2" name="wake-up-day"
+                 ng-model="tomorrowSelected"></input>
                 <label class="data-off">
                     <span class="switch-icon">
 

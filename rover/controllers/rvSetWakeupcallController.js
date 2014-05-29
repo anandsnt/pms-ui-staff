@@ -1,4 +1,4 @@
-sntRover.controller('rvSetWakeupcallController',['$scope','RVSaveWakeupTimeSrv', 'ngDialog', function($scope, RVSaveWakeupTimeSrv, ngDialog){
+sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeupTimeSrv', 'ngDialog', function($scope, $filter, RVSaveWakeupTimeSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	
 	$scope.closeDialog = function(){
@@ -15,11 +15,15 @@ sntRover.controller('rvSetWakeupcallController',['$scope','RVSaveWakeupTimeSrv',
 			return (typeof $scope.wakeupData.wake_up_time != 'undefined')?$scope.wakeupData.wake_up_time.substr(6,2):"AM";
 	}
 
-	$scope.tomorrowSelected = $scope.wakeupData.day == "TOMORROW";
+	$scope.$watch(
+        function() { return $scope.wakeupData.day == "TOMORROW"; },
+        function(flag) { $scope.tomorrowSelected  = flag; }
+    );
+
 	$scope.hrs = $scope.getHours();
 	$scope.min = $scope.getMins();
 	$scope.am_pm = $scope.getAM_PM();
-	$scope.successCallbackForAPI = function(){
+	$scope.dimissLoaderAndDialog = function(){
 			$scope.$emit('hideLoader');
 			$scope.closeDialog();
 		};
@@ -31,11 +35,14 @@ sntRover.controller('rvSetWakeupcallController',['$scope','RVSaveWakeupTimeSrv',
 		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 
 		var successCallbackSetWakeupcall = function(){
-			$scope.$emit('hideLoader');
-			$scope.closeDialog();
+			// $scope.$parent.wake_up_time = $scope.getTimeString();
+			$scope.wakeupData.wake_up_time = $scope.getTimeString();
+			$scope.wakeupData.day = ($scope.tomorrowSelected)? "TOMORROW":"TODAY";
+			$scope.$emit("updateWakeUpTime",$scope.wakeupData);
+			$scope.dimissLoaderAndDialog();
 		};
 
-		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, params , $scope.successCallbackForAPI);
+		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, params , successCallbackSetWakeupcall);
 	};
 
 
@@ -46,7 +53,13 @@ sntRover.controller('rvSetWakeupcallController',['$scope','RVSaveWakeupTimeSrv',
 	$scope.deleteWakeupCall = function(){
 		var params = {};
 		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
-		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, params , $scope.successCallbackForAPI);
+		var successCallbackDeleteWakeupcall = function(){
+			delete $scope.wakeupData.wake_up_time;
+			delete $scope.wakeupData.day;
+			$scope.$emit("updateWakeUpTime",$scope.wakeupData);
+			$scope.dimissLoaderAndDialog();
+		};
+		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, params , successCallbackDeleteWakeupcall);
 	};
 
 	$scope.validate = function(){
@@ -56,7 +69,7 @@ sntRover.controller('rvSetWakeupcallController',['$scope','RVSaveWakeupTimeSrv',
 			return true;
 	};
 	$scope.isDeletable = function(){
-		return !$scope.validate && typeof $scope.wakeupData.wake_up_time == 'undefined')
+		return typeof $scope.wakeupData.wake_up_time == 'undefined';
 	};
 
 }]);
