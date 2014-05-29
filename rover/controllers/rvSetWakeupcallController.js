@@ -1,6 +1,7 @@
 sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeupTimeSrv', 'ngDialog', function($scope, $filter, RVSaveWakeupTimeSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	
+
 	$scope.closeDialog = function(){
 		ngDialog.close();
 	};
@@ -45,7 +46,6 @@ sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeu
 		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, params , successCallbackSetWakeupcall);
 	};
 
-
 	$scope.getTimeString = function(){
 		return $scope.hrs + ":" + $scope.min + " " + $scope.am_pm;
 	};
@@ -60,6 +60,7 @@ sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeu
 			$scope.dimissLoaderAndDialog();
 		};
 		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, params , successCallbackDeleteWakeupcall);
+
 	};
 
 	$scope.validate = function(){
@@ -71,5 +72,6 @@ sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeu
 	$scope.isDeletable = function(){
 		return typeof $scope.wakeupData.wake_up_time == 'undefined';
 	};
+
 
 }]);

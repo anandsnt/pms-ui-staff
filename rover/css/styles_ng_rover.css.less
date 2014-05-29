@@ -344,12 +344,14 @@ height: 410px;
   width:23.645% !important;
 }
 
-.icons {
-    background-image: url("/assets/admin/admin-icons.png");
-    background-repeat: no-repeat;
-    border: 0 none;
-    display: block;
-}
+//Commenting this as this overrides icon class used by Stjpan.
+//TODO: Review places where this class were used, and apply the styles locally. 
+ // .icons {
+     // background-image: url("/assets/admin/admin-icons.png");
+     // background-repeat: no-repeat;
+     // border: 0 none;
+     // display: block;
+ // }
 .delete_small {
     background-position: 13px -542px !important;
 }
@@ -467,4 +469,10 @@ button.icons.icon-search{
   }
 
 
+// CICO-6047 
+// Hardcoded the height for companyCard contact screen for the working of iscroll.
+// We want to remove this when find a better solution to fixing it.
+.cc-contact-info-height{
+  height : 800px;
+}
 
