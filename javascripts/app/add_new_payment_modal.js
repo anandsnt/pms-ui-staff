@@ -16,6 +16,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
  			that.should_show_overlay = false;
  			console.log("inside that parama here");
 			that.myDom.find("#setOverlay").show();
+			that.myDom.find("#new-payment").addClass("hidden");
 			that.myDom.find('#noSwipe').on('click', that.hidePaymentModal);
 		};
     	
@@ -38,6 +39,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
     
     this.dataUpdated=function(){
     	$("#setOverlay").hide();
+    	that.myDom.find("#new-payment").removeClass("hidden");
     	if (that.swipedCardData) {
 			that.populateSwipedCard();
 	   };
