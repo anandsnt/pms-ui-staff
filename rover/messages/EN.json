@@ -11,5 +11,30 @@
     "CHECKING_IN": "Checking In",
     "INHOUSE": "Inhouse",
     "CHECKING_OUT": "Checking Out",
-    "DASHBOARD_HEADING": "Dashboard"
+    "DASHBOARD_HEADING": "Dashboard",
+    
+    "CONTRACTED_NIGHTS_HEADING": "Contracted nigths",
+    "ALL": "All",
+    "COPY_VALUES": "Copy values",
+    "CANCEL": "Cancel",
+    "SAVE": "Save",
+    
+    "COMPANY": "Company",
+    "CONTACT_INFORMATION": "Contact Information",
+    "CONTRACTS": "Contracts",
+    "RESERVATIONS": "Reservations",
+    
+    "COMAPNY_INFO": "Company Info",
+    "COUNTRY": "Country",
+    "SELECT_COUNTRY": "Select country",
+    "COMAPNY_LOGO": "Company logo",
+    "CHOOSE_FILE": "Choose file",
+    "PREVIEW_NOT_AVAILABLE": "Preview not available",
+    "EXTENDED_COMPANY_DETAILS": "Extended Company Details",
+    "PRIMARY_CONTACT_DETAILS": "Primary Contact Details"
+    
+    
+    
+    
+    
 }

@@ -1,16 +1,16 @@
 <div role="dialog" id="modal" class="modal-show">
 <form method="post" id="contracted-nights" name="contracted-nights" class="modal-content form grid">
     <button class="modal-close" id="modal-close" type="button" ng-click="clickedCancel()"><span class="icons icon-close invert"></span></button>
-    <span class="h2 message">Contracted nigths</span>
+    <span class="h2 message" translate>CONTRACTED_NIGHTS_HEADING</span>
     
     <div class="grid-wrapper" ng-hide="isAddMode">
         <div class="holder left">
             <div class="entry">
-                <label for="contracted-all">All</label>
+                <label for="contracted-all" translate>ALL</label>
                 <input ng-model="contractData.allNights" name="contracted-all" id="contracted-all" value="{{contractData.allNights}}" type="text"  />
             </div>
             <div class="entry move">
-                <span ng-click="updateAllNights()" id="copy-to-all" class="admin-icons icon-mover-right">Copy values</span>
+                <span ng-click="updateAllNights()" id="copy-to-all" class="admin-icons icon-mover-right" translate>COPY_VALUES</span>
             </div>
         </div>
         <div class="holder right">
@@ -18,18 +18,17 @@
                 <label for="contracted-jan">{{nights.month}} {{nights.year}}</label>
                 <input ng-model="nights.contracted_occupancy" name="contracted-jan" id="contracted-jan" value="{{nights.contracted_occupancy}}" type="text" />
             </div>
-            
         </div>
     </div>
     
     <div class="grid-wrapper" ng-show="isAddMode">
         <div class="holder left">
             <div class="entry">
-                <label for="contracted-all">All</label>
+                <label for="contracted-all" translate>ALL</label>
                 <input ng-model="addData.allNights" name="contracted-all" id="contracted-all" value="{{addData.allNights}}" type="text"  />
             </div>
             <div class="entry move">
-                <span ng-click="updateAllNights()" id="copy-to-all" class="admin-icons icon-mover-right">Copy values</span>
+                <span ng-click="updateAllNights()" id="copy-to-all" class="admin-icons icon-mover-right" translate>COPY_VALUES</span>
             </div>
         </div>
         <div class="holder right">
@@ -42,8 +41,8 @@
     </div>
     
     <div class="actions float">
-        <button type="button" id="cancel" class="button blank modal-close" ng-click="clickedCancel()">Cancel</button>
-        <button type="button" id="submit" class="button green modal-close" ng-click="saveContractedNights()">Save</button>
+        <button type="button" id="cancel" class="button blank modal-close" ng-click="clickedCancel()" translate>CANCEL</button>
+        <button type="button" id="submit" class="button green modal-close" ng-click="saveContractedNights()" translate>SAVE</button>
     </div>
 </form>
 </div>

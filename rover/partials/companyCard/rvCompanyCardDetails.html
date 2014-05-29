@@ -14,8 +14,8 @@
                         <img ng-src="{{contactInformation.account_details.company_logo}}" alt="" />
                     </figure>
                     <!-- When there's no logo use this instead of <figure>  -->
-                    <div class="guest-image icons icon-company" ng-if="escapeNull(contactInformation.account_details.company_logo)==''">
-                        Company
+                    <div class="guest-image icons icon-company" ng-if="escapeNull(contactInformation.account_details.company_logo)==''" translate>
+                        COMPANY
                     </div> 
                     <form method="post" name="change-company-name" id="change-company-name">
                         <div class="holder">
@@ -45,16 +45,16 @@
                     <ul ng-id="{'company-card-tabs-nav': account_type == 'COMPANY', 'travel-agent-card-tabs-nav': account_type == 'TRAVELAGENT'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 
                         <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contact-info'}" ng-click="switchTabTo($event, 'cc-contact-info')">
-                            <a >Contact Information</a>
+                            <a translate>CONTACT_INFORMATION</a>
                         </li>
 
                         <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
-                            <a >Contracts</a>
+                            <a translate>CONTRACTS</a>
                         </li>
 
 
                         <li  ng-hide="true" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
-                            <a >Reservations</a>
+                            <a translate>RESERVATIONS</a>
                         </li>
 
                     </ul>
