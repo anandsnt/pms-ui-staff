@@ -25,26 +25,27 @@ var GlobalApp = function(){
     		 */ 
     		 
     		var xhr=new XMLHttpRequest(); //TODO: IE support?
-    		xhr.open("GET",url,true);
+    		
     		xhr.onreadystatechange=function() {
-    			console.log("ready state change")
+    
   				if (xhr.readyState==4 && xhr.status==200){
   					that.fetchCompletedOfCordovaPlugins(xhr.responseText);
   				} else {
   					that.fetchFailedOfCordovaPlugins();
   				}
   			};
+  			xhr.open("GET",url,true);
   			
 			xhr.send(); //TODO: Loading indicator
 
     	}	
+    	
     };
 
     
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data){
-    	console.log("-------------------success cordova load------------------");
-    	console.log(data);
+    	console.log("test")
     	$('body').append(data);
     	that.cardReader = new CardOperation();
     	that.cordovaLoaded = true;
@@ -52,7 +53,6 @@ var GlobalApp = function(){
     
     // success function of coddova plugin's appending
     this.fetchFailedOfCordovaPlugins = function(errorMessage){    
-    	console.log("Errooorrrr");	
     	that.cordovaLoaded = false;
     };
 
@@ -64,5 +64,5 @@ var GlobalApp = function(){
 };
 
 sntapp = new GlobalApp();
-// sntapp.enableCardSwipeDebug();
+sntapp.enableCardSwipeDebug();
 

@@ -29,7 +29,7 @@
 	<div class="holder float">
 		<div class="entry">
 		    <label for="card-number-set1">Card number</label>
-		    <input type="text" maxlength="15" placeholder="Enter Card number" ng-model="saveData.card_number">
+		    <input type="text" maxlength="15" value="{{saveData.card_number}}" placeholder="Enter Card number" ng-model="saveData.card_number">
 		</div>
 		<div class="entry">
 		    <label for="expiry-month">Expiration date (<span>MM/YY</span>)</label>
@@ -39,7 +39,7 @@
 	</div>
 	<div class="entry full-width">
 	    <label for="name-on-card">Name on card</label>
-	    <input type="text" ng-model="saveData.name_on_card" placeholder="Enter name on card" id="name-on-card" name="name-on-card">
+	    <input type="text" ng-model="saveData.name_on_card" value="{{saveData.name_on_card}}" placeholder="Enter name on card" id="name-on-card" name="name-on-card">
 	</div>	
 	<div class="entry full-width" ng-show="!isFromGuestCard">
         <label class="checkbox" ng-class="{'checked': saveData.add_to_guest_card}">

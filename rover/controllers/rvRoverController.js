@@ -3,8 +3,18 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
  	  // if (sntapp.cardSwipeDebug ===  true)  { sntapp.cardReader.startReaderDebug(options) } ;
       // if(sntapp.cordovaLoaded){ sntapp.cardReader.startReader(options) }; 
 //       
-	$scope.successCallBackSwipe = function(){
-		alert("succ")
+	//This variable is used to identify whether guest card is visible
+	//Depends on $scope.guestCardVisible in rvguestcardcontroller.js
+	$scope.isGuestCardVisible = false;
+	$scope.$on('GUESTCARDVISIBLE', function(event, data){
+		$scope.isGuestCardVisible = false;
+		if(data){
+			$scope.isGuestCardVisible = true;
+		}
+	});
+	$scope.successCallBackSwipe = function(data){
+		alert("swi")
+		$scope.$broadcast('SWIPEHAPPENED', data);
 	};
 	
 	$scope.failureCallBackSwipe = function(){
@@ -15,7 +25,14 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 	 options["successCallBack"] = $scope.successCallBackSwipe;
 	 options["failureCallBack"] = $scope.failureCallBackSwipe;
 	 sntapp.setBrowser("rv_native");
-	 if(sntapp.cordovaLoaded){ sntapp.cardReader.startReader(options) }; 
+	 setTimeout(function(){
+	 	 if (sntapp.cardSwipeDebug ===  true)  { sntapp.cardReader.startReaderDebug(options); }
+	 	 if(sntapp.cordovaLoaded){ 
+		 	console.log("cordova loaded");
+		 	sntapp.cardReader.startReader(options); 
+		 }; 
+	 }, 2000);
+	
       // sntapp.cardReader.startReader(options) 
 	
 	
@@ -149,6 +166,8 @@ $scope.settingsClicked = function(){
 
 
 $scope.showAddNewPaymentModal = function(passData, paymentData){
+	console.log("------------------PASSDATA------------------");
+	console.log(JSON.stringify(passData))
 	  $scope.passData = passData;
 	  $scope.paymentData = paymentData;
 	  ngDialog.open({

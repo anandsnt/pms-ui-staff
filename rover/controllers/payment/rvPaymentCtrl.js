@@ -1,6 +1,28 @@
 sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RVPaymentSrv','ngDialog', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
+	
+	// $scope.saveData.card_number = $scope.passData.card_number;
+	// $scope.saveData.credit_card = $scope.passData.credit_card;
+	// $scope.saveData.name_on_card = $scope.passData.name_on_card;
 	$scope.saveData = {};
+	console.log(JSON.stringify($scope.passData));
+	$scope.saveData.card_number  = $scope.passData.card_number;
+	$scope.saveData.credit_card  =  $scope.passData.credit_card;
+	$scope.saveData.name_on_card =  $scope.passData.name_on_card;
+	
+	
+	// var passData = {
+		  	 		// "reservationId": $scope.reservationData.reservation_card.reservation_id,
+		  	 		// "fromView": "staycard",
+		  	 		// "selected_payment_type": 0, //Default value of credit card - TODO:check in seed data
+		  	 		// "credit_card": data.RVCardReadCardType,
+		  	 		// "card_number": data.token,
+		  	 		// "name_on_card": data.RVCardReadCardName
+		  	 	// };
+	
+	
+	
+	
 	$scope.isFromGuestCard = false;
 	if($scope.passData.fromView == "guestcard"){
 		$scope.isFromGuestCard = true;

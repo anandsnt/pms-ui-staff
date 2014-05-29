@@ -34,7 +34,13 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 	    },
 	};
 
-	
+	$scope.$on('SWIPEHAPPENED', function(event, data){
+	 	if($scope.isGuestCardVisible){
+	 		
+	 		$scope.openAddNewPaymentModel();
+	 	}
+	 	
+	 });
 
 	
 }]);

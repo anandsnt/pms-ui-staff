@@ -64,11 +64,25 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 passData.vip=reservationListData.guest_details.vip;
   	 $scope.$emit('passReservationParams', passData);
   	 
-  	 $scope.openAddNewPaymentModel = function(){
-  	 	var passData = {
-  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
-  	 		"fromView": "staycard"
-  	 	};
+  	 $scope.openAddNewPaymentModel = function(data){
+  	 	if(data === undefined){alert("undefined")
+  	 			var passData = {
+		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
+		  	 		"fromView": "staycard"
+		  	 	};
+  	 	} else {alert("here")
+  	 	alert(JSON.stringify(data));
+  	 		
+  	 		var passData = {
+		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
+		  	 		"fromView": "staycard",
+		  	 		"selected_payment_type": 0, //Default value of credit card - TODO:check in seed data
+		  	 		"credit_card": data.RVCardReadCardType,
+		  	 		"card_number": data.token,
+		  	 		"name_on_card": data.RVCardReadCardName
+		  	 	};
+  	 	}
+  	 
   	 	var paymentData = $scope.reservationData;
   	 	$scope.showAddNewPaymentModal(passData, paymentData);
   	 };
@@ -81,4 +95,14 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	               scope:$scope
 	          });
 	 };
+	 /*
+	  * Handle swipe action in guest card
+	  */
+	 $scope.$on('SWIPEHAPPENED', function(event, data){
+	 	if(!$scope.isGuestCardVisible){
+	 	alert("happ")
+	 		$scope.openAddNewPaymentModel(data);
+	 	}
+	 	
+	 });
 }]);

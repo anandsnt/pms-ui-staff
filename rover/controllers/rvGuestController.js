@@ -6,7 +6,7 @@ $scope.init = function(){
 	$scope.eventTimestamp =  "";
 	BaseCtrl.call(this, $scope);
 	var preventClicking = false;
-}
+};
 
 $scope.init();
 
@@ -50,7 +50,7 @@ $scope.resizableOptions =
 		preventClicking = true;
 		$scope.eventTimestamp = event.timeStamp;
 	}
-}
+};
 
 /**
 *  API call needs only rest of keys in the data
@@ -105,7 +105,7 @@ $scope.updateContactInfo =  function(){
 		currentGuestCardHeaderData =newUpdatedData; 
 		var data ={'data':currentGuestCardHeaderData,
 		'userId':$scope.guestCardData.contactInfo.user_id
-	}
+	};
 	$scope.invokeApi(RVContactInfoSrv.saveContactInfo,data,saveUserInfoSuccessCallback,saveUserInfoFailureCallback); 
 	} 
 };
@@ -143,10 +143,12 @@ var element = $event.target;
 			$("#guest-card").css("height", $scope.windowHeight-90);
 			$scope.guestCardVisible = true;			
 			$scope.$broadcast('CONTACTINFOLOADED');
+			$scope.$emit('GUESTCARDVISIBLE', true);
 		}
 		else{
 			$("#guest-card").css("height", $scope.resizableOptions.minHeight);
 			$scope.guestCardVisible = false;
+			$scope.$emit('GUESTCARDVISIBLE', false);
 		}
 }
 else{
@@ -166,5 +168,8 @@ else{
 }
 
 };
+
+
+	
 
 }]);
