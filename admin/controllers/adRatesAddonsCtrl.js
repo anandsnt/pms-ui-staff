@@ -210,6 +210,20 @@ admin.controller('ADRatesAddonsCtrl', [
 			}
 		});
 
+	// listen for datepicker reset from ngDialog
+		var resetDate = $rootScope.$on('datepicker.reset', function(event, chosenDate) {
+
+			if ( $scope.dateNeeded === 'From' ) {
+				$scope.singleAddon.begin_date_for_display = "";
+				$scope.isStartDateSelected  = false;
+			}
+			else{
+				$scope.singleAddon.end_date_for_display   = "";
+				$scope.isEndDateSelected  = false;
+			};
+
+		});
+
 		// the listner must be destroyed when no needed anymore
 		$scope.$on( '$destroy', updateBind );
 
