@@ -5,7 +5,7 @@
 
 </div>
 <div>
-	<div class="restriction-type" ng-repeat="restrictionType in data.restrictionTypes" ng-show="restrictionType.is_editable == true">
+	<div class="restriction-type" ng-repeat="restrictionType in data.restrictionTypes" ng-hide="restrictionType.is_on_rate === true">
 		<span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}">{{restrictionType.days}}</span>
 		<span class="text">{{restrictionType.description}}</span>
 		<span ng-show="restrictionType.isRestrictionEnabled" class="restriction-status status-on" ng-click="onOffRestrictions(restrictionType.id, 'DISABLE', restrictionType.days)">on</span>
