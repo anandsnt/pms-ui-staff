@@ -8,6 +8,36 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	$scope.errorMessage = "";
 	var contractInfo = {};
 	
+	/* Items related to ScrollBars 
+	 * 1. When the tab is activated, refresh scroll.
+	 * 2. Scroll is actually on a sub-scope created by ng-include. 
+	 *    So ng-iscroll will create the ,myScroll Array there, if not defined here.
+	 */
+	$scope.$on("ContactTabActivated", function(){
+		setTimeout(function(){refreshScroller();}, 500);
+	});
+	
+	$scope.$parent.myScroll =[];
+	
+	$scope.$parent.myScrollOptions = {		
+	    'companyCardContractsCtrl': {
+	    	scrollbars: true,
+	    	scrollY: true,
+	        snap: false,
+	        hideScrollbar: false
+	    }
+	};
+	
+  	var refreshScroller = function(){    
+	   //Refresh only if this DOM is visible.
+	   if($scope.currentSelectedTab ==='cc-contracts'){
+	   		$scope.$parent.myScroll['companyCardContractsCtrl'].refresh();
+	   }
+  	};
+  	
+  	/**** Scroll related code ends here. ****/
+	
+	
 	   clientWidth = $(window).width();
         clientHeight = $(window).height();
        var drawGraph = function(){
@@ -119,43 +149,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
         $scope.errorMessage = data;
     };
 	
-	/**
-  	* function used for refreshing the scroller
-  	*/
-  	$scope.$parent.myScrollOptions = {		
-	    'companyCardContractsCtrl': {
-	    	scrollbars: true,
-	    	scrollY: true,
-	        snap: false,
-	        hideScrollbar: false
-	    }
-	};
-	/*
-	$scope.$on('$viewContentLoaded', function() {
-		setTimeout(function(){
-			$scope.$parent.myScroll['companyCardContractsCtrl'].refresh();
-			}, 
-		3000);
-		
-     });*/
-     
-  	var refreshScroller = function(){
-console.log("refreshScroller");
-	    
-	    //scroller options
-	  /*  $scope.$parent.myScrollOptions = {
-	    	'companyCardContractsCtrl': {
-	        snap: false,
-	        scrollbars: true,
-	        bounce: true,
-	        vScroll: true,
-	        vScrollbar: true,
-	        hideScrollbar: false
-	       }
-	    };*/
-	    $scope.$parent.myScroll['companyCardContractsCtrl'].refresh();
-  	};
-  	
+	
   	var manipulateGraphData = function(data){
         var graphData = [];
         var contracted = [];
@@ -188,22 +182,25 @@ console.log("refreshScroller");
         }]
         return graphData
     }
-  	
-	$scope.invokeApi(RVCompanyCardSrv.fetchContractsList,{"account_id":$stateParams.id},fetchContractsListSuccessCallback,fetchFailureCallback);  
-	
+  	if($stateParams.id !="add"){
+		$scope.invokeApi(RVCompanyCardSrv.fetchContractsList,{"account_id":$stateParams.id},fetchContractsListSuccessCallback,fetchFailureCallback);  
+	}
+	else{
+		$scope.$emit('hideLoader');
+	}
 	/*
     * Function to handle data change in 'Contract List'.
     */
-   	$scope.clickContractSelected = function(contratct_id){
-   		if(contratct_id){
-   			$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":contratct_id},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);
+   	$scope.$watch('contractList.contractSelected', function() {
+       if($scope.contractList.contractSelected){
+   			$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":$scope.contractList.contractSelected},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);
 	   		angular.forEach($scope.contractList.history_contracts,function(item, index) {
-	    		if(item.id == contratct_id){
+	    		if(item.id == $scope.contractList.contractSelected){
 	    			$scope.isHistorySelected = true ;
 	    		}
 	       	});
        }
-   	};
+   	});
    
 	$scope.contractStart = function(){
 		ngDialog.open({

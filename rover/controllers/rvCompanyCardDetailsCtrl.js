@@ -19,6 +19,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$event.stopImmediatePropagation();
 		if($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info'){
 			saveContactInformation($scope.contactInformation);
+			$scope.$broadcast("ContactTabActivated");
 		}
 		if($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts'){
 			$scope.$broadcast("saveContract");
@@ -106,12 +107,15 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	* success callback of save contact data
 	*/
 	var successCallbackOfContactSaveData = function(data){
+		console.log('in success');
+		
 		$scope.$emit("hideLoader");
-		if(typeof $stateParams.id !== 'undefined' && $stateParams.id !== ""){
-			$scope.contactInformation.id = $stateParams.id;
-		}
-		else{
+		console.log($scope.contactInformation.id);
+		if(typeof data.id !== 'undefined' && data.id !== ""){
 			$scope.contactInformation.id = data.id;
+		}
+		else if(typeof $stateParams.id !== 'undefined' && $stateParams.id !== ""){
+			$scope.contactInformation.id = $stateParams.id;
 		}
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch

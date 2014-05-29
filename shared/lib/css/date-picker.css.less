@@ -234,8 +234,10 @@ height: 410px;
 
 /*------------------date -picker ends here-------------------------- */
 
-.calendar-modal{
-    .form {
+//Limitting form and related class to relevant screen, to avoid issues elsewhere.   
+.calendar-modal, #search_list {
+  
+  .form {
       padding: 30px 20px;
       margin-bottom: 30px;
       background: #fcfcfc;
@@ -246,6 +248,9 @@ height: 410px;
       -moz-border-radius: 2px;
       border-radius: 2px;
     }
+    
+
+    
     
     .form .form-title {
       position: relative;
@@ -300,12 +305,6 @@ height: 410px;
       font-style: italic;
     }
     
-    .date-picker-bg {
-      background: url("/assets/texture.png") repeat scroll 0 0 #fcfcfc;
-      padding: 10px;
-      margin: 5px;
-    }
-    
     .form .actions {
       width: 100%;
       clear: both;
@@ -314,4 +313,10 @@ height: 410px;
       border-top: 1px solid rgba(0, 0, 0, 0.1);
       display: block;
     }
+    .date-picker-bg {
+      background: url("/assets/texture.png") repeat scroll 0 0 #fcfcfc;
+      padding: 10px;
+      margin: 5px;
+    }
 }
+

@@ -35,8 +35,8 @@
     "ROOM_TYPE__CODE_PLACE_HOLDER":"Enter Room Type Code",
     "MAX_OCCUPANCY_PLACE_HOLDER":"Enter Max Occupancy",
     "SNT_DESCRIPTION_PLACE_HOLDER":"Enter StayNTouch Description",
-    "MANDIATORY_FIELDS_MESSAGE1":"Fields marked with",
-    "MANDIATORY_FIELDS_MESSAGE2":"are mandatory!",
+    "MANDATORY_FIELDS_MESSAGE1":"Fields marked with",
+    "MANDATORY_FIELDS_MESSAGE2":"are mandatory!",
 
     "ROOMS":"Rooms",
     "OF":"of",
@@ -60,8 +60,30 @@
     "FLOOR_DESCRIPTION":"Floor Description",
     "FLOORS":"Floors",
 
+
     "USER_ROLES":"User roles",
     "ROLE_DASHBOARD": "Role Dashboard",
-    "SELECT_DASHBOARD":"Select Dashboard"
+    "SELECT_DASHBOARD":"Select Dashboard",
+
+    "NAME":"Name",
+    "DESCRIPTION":"Description",
+    "ACTIVE":"Active",
+    "DELETE":"Delete",
+    "ADD_ONS":"Add-Ons",
+    "FROM_DATE":"From Date",
+    "TO_DATE":"TO Date",
+    "CHARGE_GROUP":"Charge Group",
+    "CHARGE_CODE":"Charge Code",
+    "AMOUNT":"Amount",
+    "AMOUNT_TYPE":"Amount Type",
+    "BESTSELLER":"Bestseller",
+    "POST_TYPE":"Post Type",
+    "RATE_ONLY":"Rate Only",
+    "RESERVATION_ONLY":"Reservation Only",
+    "EDIT":"Edit",
+    "ADD_NEW_SMALL":"Add New",
+    "ADD_ON":"Add-On",
+    "DELETE":"delete"
+
 
 }
