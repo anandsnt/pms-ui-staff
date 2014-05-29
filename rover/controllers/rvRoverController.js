@@ -6,10 +6,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     // OBJECT WITH THE MENU STRUCTURE
     $scope.menu = [{
-      title:"Dashboard",
-      action: "#",
+      title: "Dashboard",
+      action: "rover.dashboard",
+      menuIndex: "dashboard",
       submenu: [],
-      iconClass:"icon-dashboard"
+      iconClass: "icon-dashboard"
     }, {
       title: "Availability",
       action: "#",
@@ -29,13 +30,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }, {
         title: "Room Assignment",
         action: "#"
-      },{
+      }, {
         title: "Post Charges",
         action: "#"
-      },{
+      }, {
         title: "Cashier",
         action: "#"
-      },{
+      }, {
         title: "End of Day",
         action: "#"
       }]
@@ -53,12 +54,13 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         title: "Reviews",
         action: "#"
       }]
-    },{
+    }, {
       title: "Revenue Management",
       action: "#",
       submenu: [{
         title: "Rate Manager",
-        action: "#"
+        action: "rover.ratemanager",
+        menuIndex: "rateManager"
       }, {
         title: "Company & TA Cards",
         action: "#"
@@ -66,7 +68,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         title: "Distribution Manager",
         action: "#"
       }]
-    },{
+    }, {
       title: "Housekeeping",
       action: "#",
       submenu: [{
@@ -79,7 +81,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         title: "Maintenance",
         action: "#"
       }]
-    },{
+    }, {
       title: "Financials",
       action: "#",
       submenu: [{
@@ -92,20 +94,20 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         title: "Commissions",
         action: "#"
       }]
-    },{
-      title:"Reports",
+    }, {
+      title: "Reports",
       action: "#",
       submenu: []
-    },{
-      title:"Settings",
+    }, {
+      title: "Settings",
       action: "#",
       submenu: [],
-      iconClass:"icon-settings"
-    },{
-      title:"Logout",
+      iconClass: "icon-settings"
+    }, {
+      title: "Logout",
       action: "#",
       submenu: [],
-      iconClass:"icon-sign-out"
+      iconClass: "icon-sign-out"
     }]
 
     $scope.$on("updateSubMenu", function(idx, item) {

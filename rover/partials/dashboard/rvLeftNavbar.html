@@ -1,4 +1,4 @@
-<nav id="main-menu" style="display: block;" ng-class="{'visible': menuOpen}">
+<nav id="main-menu" style="display: block;" ng-class="{'visible': menuOpen}"  ng-mouseleave="showSubMenu = false" ng-mouseenter="showSubMenu = true">
 
 	<a id="{{menuImage}}"class="nav-toggle updated" ng-click="$emit('navToggled')"  ng-class="{'active': menuOpen}">Menu</a>
 	
@@ -8,11 +8,13 @@
 			MENU
 		</li>
 		
-		<li ng-repeat="menuItem in menu" ng-mouseover="$emit('updateSubMenu',[$index,menuItem])">
-			<label class="icon-menu" ng-class="menuItem.iconClass" ></label>
-			<!-- <a  ui-sref="rover.dashboard" class="icon-menu icon-dashboard" ng-class="{'active': selectedMenuIndex === 'dashboard'}" ng-click="$emit('navToggled')">Dashboard</a> -->
-			{{menuItem.title}}
-			<div class="pointer" ng-hide="menuItem.submenu.length < 1">
+
+		<li ng-repeat="menuItem in menu" ng-mouseover="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0}">
+ 			<label class="icon-menu" ng-class="menuItem.iconClass" ></label>
+			<a ui-sref="{{menuItem.action}}">
+				{{menuItem.title}}
+			</a>
+			<div class="pointer" ng-show="showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu">
 		</li>
 
 
@@ -62,9 +64,11 @@
 
 	<div id="submenu" ng-show="showSubMenu && activeSubMenu.length > 0">
 		<ul>
-		<li ng-repeat="menuItem in activeSubMenu">
-			{{menuItem.title}}
-			<div class="pointer">
+		<li ng-repeat="menuItem in activeSubMenu" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}">
+			<a ui-sref="{{menuItem.action}}">
+				{{menuItem.title}}
+			</a>
+			<div class="pointer" ng-hide="selectedMenuIndex != menuItem.menuIndex">
 		</li>
 	</div>
 
