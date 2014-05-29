@@ -5,12 +5,6 @@ sntRover.controller('contractEndCalendarCtrl',['$scope','dateFilter','ngDialog',
 	
 	    $scope.isDateSelected = false;
 	    
-	    if($scope.addData.begin_date){
-	    	$scope.minDate = dateFilter($scope.addData.begin_date, 'yyyy-MM-dd');
-	    }
-	    else{
-	    	$scope.minDate = dateFilter(new Date(), 'yyyy-MM-dd');
-	    }
 		if($scope.contractList.isAddMode){
 		    if($scope.addData.end_date){
 		      $scope.date = $scope.addData.end_date;
