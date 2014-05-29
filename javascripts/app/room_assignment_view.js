@@ -3,7 +3,7 @@ var RoomAssignmentView = function(viewDom){
   var that = this;
   this.myDom = viewDom;
   this.reservation_id = getReservationId();
-
+  this.initialRoomType = "", this.selectedRoomType="";
   //Stores the non-filtered list of rooms
   this.roomCompleteList = [];
 
@@ -11,7 +11,9 @@ var RoomAssignmentView = function(viewDom){
      //Scroll view initialization for the view
     this.createViewScroll();  
     //Get the list of rooms from the server.
-    this.fetchRoomList();
+    this.initialRoomType = that.myDom.find('.reservation-header #room-type').attr('data-room-type');
+    this.selectedRoomType = this.initialRoomType;
+    this.fetchRoomList(this.initialRoomType);
 
     //pushing RoomAssignmentView instance sntapp.viewDict
     sntapp.setViewInst('RoomAssignmentView', that);
@@ -27,7 +29,7 @@ var RoomAssignmentView = function(viewDom){
 
     that.myDom.unbind('click');
     that.myDom.on('click', that.roomAssignmentClickHandler);
-
+	that.myDom.find('.rooms-listing #room-type-selectbox').on('change', that.changedRoomType);
 
   };
   this.roomAssignmentClickHandler = function(event){
@@ -74,10 +76,15 @@ var RoomAssignmentView = function(viewDom){
   this.createRoomListScroll = function(){
     if (that.myDom.find('#rooms-available').length) { createVerticalScroll('#rooms-available'); }
   };
-
+  // Room type changed from select box.
+  this.changedRoomType = function(e){
+  	var element = $(e.target);
+  	that.selectedRoomType = element.find('option:selected').val();
+  	that.fetchRoomList(that.selectedRoomType);
+  };
   //Fetches the non-filtered list of rooms.
-  this.fetchRoomList = function(){
-    var roomType = that.myDom.find('.reservation-header #room-type').attr('data-room-type');
+  this.fetchRoomList = function(roomType){
+    //var roomType = that.myDom.find('.reservation-header #room-type').attr('data-room-type');
     var data = {};
     if(roomType != null && roomType!= undefined){
       data = {"room_type": roomType, "reservation_id": that.reservation_id};
@@ -204,6 +211,7 @@ var RoomAssignmentView = function(viewDom){
     var includeNotReady = false;
     var includeDueout = false;
     var includePreAssigned = false;
+    var include_clean = false;
 
     if(that.myDom.find($('#filter-not-ready')).is(':checked')){
       includeNotReady = true;
@@ -216,6 +224,9 @@ var RoomAssignmentView = function(viewDom){
     if(that.myDom.find($('#filter-preassigned')).is(':checked')){
       includePreAssigned = true;
     }
+    if(that.myDom.find($('#filter-clean')).is(':checked')){
+      include_clean = true;
+    }
 
     for (var i = 0; i< roomList.length; i++){
       if(roomList[i].fo_status === "VACANT" && roomList[i].room_status === "READY" && !roomList[i].is_preassigned){
@@ -224,11 +235,15 @@ var RoomAssignmentView = function(viewDom){
       else if(includeDueout && roomList[i].fo_status === "DUEOUT"){
         filteredRoomList.push(roomList[i]);
       }
-      else if(includeNotReady && roomList[i].room_status === "NOTREADY" && roomList[i].fo_status == "VACANT"){
+      // CICO-5779 story- QA comments- avoid clean room list for NOT READY filter.
+      else if(includeNotReady && roomList[i].room_status === "NOTREADY" && roomList[i].fo_status == "VACANT" && roomList[i].room_ready_status != "CLEAN"){
         filteredRoomList.push(roomList[i]);
       }
       else if(includePreAssigned && roomList[i].is_preassigned){
         filteredRoomList.push(roomList[i]);
+      }
+      else if(include_clean && roomList[i].room_ready_status === "CLEAN"){
+      	filteredRoomList.push(roomList[i]);
       }
     }
     return filteredRoomList;
@@ -258,8 +273,12 @@ var RoomAssignmentView = function(viewDom){
           var room_status_html ="" ;
           
           // Display FO status (VACANT, DUEOUT, etc) only when room-status = NOT-READY
-          // Always show color coding ( Red / Green - for Room status)
+          // Always show color coding ( Red / Green /Orange - for Room Ready status)
+          // Display oranage for ALL PICKUP room ready status
+          // Display orange for ALL CLEAN room ready status, if admin checkinspected is on
+          // Display red for Not Ready, Due -out, Occupied Rooms
           if(filteredRoomList[i].room_status == "READY" && filteredRoomList[i].fo_status == "VACANT"){
+          
             room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
         
             if(filteredRoomList[i].is_preassigned) {
@@ -267,8 +286,14 @@ var RoomAssignmentView = function(viewDom){
             } 
           }
           else{
-              room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
-              "<span class='room-status not-ready' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].fo_status+" </span>";   
+          	 if (filteredRoomList[i].room_ready_status == "PICKUP"  || filteredRoomList[i].room_ready_status == "CLEAN"){
+          	 	room_status_html += "<span class='room-number room-orange' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
+              	"<span class='room-status room-orange' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].room_ready_status+" </span>";
+          	 	}
+          	 	else{
+			  		room_status_html += "<span class='room-number room-red' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
+              		"<span class='room-status room-red' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].fo_status+" </span>";
+              }   
           }
   
           //Append the HTML to the UI.
@@ -372,15 +397,14 @@ var RoomAssignmentView = function(viewDom){
   
   //Update resevation with the selected room.
   this.updateRoomAssignment = function(e){
-
+    	
     var roomSelected = $(this).find(">:first-child").attr("data-value");
     var currentReservation = $('#roomassignment-ref-id').val();
     var roomStatusExplained = $(this).find(">:first-child").next().attr("data-value");
     
     var postParams = {};
     postParams.reservation_id = currentReservation;
-    postParams.room_number = roomSelected;
-    var url = '/staff/reservation/modify_reservation';
+    
   	var webservice = new WebServiceInterface();
   	var successCallBackParams = {
   			'roomSelected': roomSelected,
@@ -393,9 +417,20 @@ var RoomAssignmentView = function(viewDom){
     				successCallBackParameters: successCallBackParams,
     				failureCallBack: that.fetchFailedOfSave,
     				loader: 'blocker'
-    		};
-    webservice.postJSON(url, options);
-    
+    };
+	    
+	if(that.initialRoomType === that.selectedRoomType){
+		console.log("same room type selected");
+		postParams.room_number = roomSelected;
+		var url = '/staff/reservation/modify_reservation';
+		webservice.postJSON(url, options);
+    }
+    else{
+    	console.log(" diff room type selectd");
+    	postParams.room_no = roomSelected;
+    	var roomTypeChargeModal = new RoomTypeChargeModal(options);
+		roomTypeChargeModal.initialize();
+    }
 
   };
 
