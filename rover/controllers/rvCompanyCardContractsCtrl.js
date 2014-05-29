@@ -120,6 +120,9 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     	$scope.contractData = data;
     	contractInfo = {};
     	$scope.contractData.contract_name ="";
+    	if(typeof $stateParams.type !== 'undefined' && $stateParams.type !== ""){
+			$scope.contractData.account_type = $stateParams.type;
+		}
     	contractInfo = JSON.parse(JSON.stringify($scope.contractData));
     	$scope.graphData = manipulateGraphData(data.occupancy);
     	$scope.$emit('hideLoader');
@@ -287,15 +290,18 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		$scope.addData.end_date = dateFilter(new Date(), 'yyyy-MM-dd');
 		$scope.addData.is_fixed_rate = false;
 		$scope.addData.is_rate_shown_on_guest_bill = false;
+		if(typeof $stateParams.type !== 'undefined' && $stateParams.type !== ""){
+			$scope.addData.account_type = $stateParams.type;
+		}
 	};
 	$scope.CancelAddNewContract =  function(){
 		$scope.contractList.isAddMode = false;
 		$scope.addData.contract_name = "";
 	};
-	/*
-	 * Add new contarcts
-	*/
 	
+	/*
+	 * To add new contrcts
+	*/
 	$scope.AddNewContract = function(){
 		
 		var data = dclone($scope.addData,['occupancy','statistics','rates','total_contracted_nights']);
@@ -327,7 +333,10 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		}
 	};
 	
-	
+	/**
+	* function used to save the contract data, it will save only if there is any
+	* change found in the present contract info.
+	*/
 	$scope.updateContract= function(){
 	    var saveContractSuccessCallback = function(data){
 	        $scope.$emit('hideLoader');
@@ -364,11 +373,17 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 			}
 		}
 	};
-
-	$scope.$on('saveContract',function(){
+	/**
+	* recieving function for save contract with data
+	*/
+	$scope.$on('saveContract',function(event){
+		event.preventDefault();
+		event.stopPropagation();
 	 	$scope.updateContract();
 	});
-	
+	/**
+	* function for close activity indicator.
+	*/
 	$scope.closeActivityIndication = function(){
 		$scope.$emit('hideLoader');
 	};

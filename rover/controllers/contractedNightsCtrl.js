@@ -54,7 +54,14 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 	    else{
 	    	var data = {"occupancy": $scope.contractData.occupancy};
 	    }
-		$scope.invokeApi(RVCompanyCardSrv.updateNight,{ "account_id": $stateParams.id, "contract_id": $scope.contractList.contractSelected, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);  
+	    
+	    if($stateParams.id == "add"){
+    		var account_id = $scope.contactInformation.id;
+	    }
+	    else{
+	    	var account_id = $stateParams.id;
+	    }
+		$scope.invokeApi(RVCompanyCardSrv.updateNight,{ "account_id": account_id , "contract_id": $scope.contractList.contractSelected, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);  
 		ngDialog.close();
 	};
 	
