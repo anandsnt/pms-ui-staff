@@ -10,9 +10,9 @@
 
         <div class="holder left">
             <strong class="h3">Company Info</strong>
-            <rv-textbox value="contactInformation.company_details.account_first_name" label="Name" placeholder = "Enter Name" styleclass="margin"></rv-textbox>
+            <rv-textbox value="contactInformation.account_details.account_first_name" label="Name" placeholder = "Enter Name" styleclass="margin"></rv-textbox>
 
-            <rv-textbox value="contactInformation.company_details.account_last_name" styleclass="no-label"></rv-textbox>
+            <rv-textbox value="contactInformation.account_details.account_last_name" styleclass="no-label"></rv-textbox>
 
             <rv-textbox value="contactInformation.address_details.street1" label="Address" placeholder = "Enter Address Line 1" styleclass="margin"></rv-textbox>
 
@@ -47,23 +47,23 @@
             <div class="entry full-width">
                 <label for="company-logo">Company logo</label>
                 <div class="file-upload with-preview">
-                    <input type="file" name="company-logo" id="company-logo"  ng-model="contactInformation.company_details.company_logo" accept="*" app-filereader />
+                    <input type="file" name="company-logo" id="company-logo"  ng-model="contactInformation.account_details.company_logo" accept="*" app-filereader />
                     <button type="button" class="button brand-colors">Choose file</button>
                 </div>
-                <span class="file-preview" ng-if="escapeNull(contactInformation.company_details.company_logo)!=''"><img ng-src="{{contactInformation.company_details.company_logo}}" alt="" /></span>
+                <span class="file-preview" ng-if="escapeNull(contactInformation.account_details.company_logo)!=''"><img ng-src="{{contactInformation.account_details.company_logo}}" alt="" /></span>
                 <!-- When no image, use  -->
-                <span class="file-preview" ng-if="escapeNull(contactInformation.company_details.company_logo)==''"><em>Preview not available</em></span>
+                <span class="file-preview" ng-if="escapeNull(contactInformation.account_details.company_logo)==''"><em>Preview not available</em></span>
             </div>
         </div>
 
         <div class="holder right">
             <strong class="h3">Extended Company Details</strong>
 
-            <rv-textbox value="contactInformation.company_details.account_number" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin"></rv-textbox>
+            <rv-textbox value="contactInformation.account_details.account_number" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin"></rv-textbox>
 
-            <rv-textbox value="contactInformation.company_details.accounts_receivable_number" label="Accounts Receivable Number" placeholder = "Enter Accounts Receivable Number" ></rv-textbox>
+            <rv-textbox value="contactInformation.account_details.accounts_receivable_number" label="Accounts Receivable Number" placeholder = "Enter Accounts Receivable Number" ></rv-textbox>
 
-            <rv-textbox value="contactInformation.company_details.billing_information" label="Billing Information" placeholder = "Enter Billing Information" ></rv-textbox>
+            <rv-textbox value="contactInformation.account_details.billing_information" label="Billing Information" placeholder = "Enter Billing Information" ></rv-textbox>
 
             
             <strong class="h3 margin">Primary Contact Details</strong>
