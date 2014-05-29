@@ -3,7 +3,10 @@
 <form method="post"  id="cc-contact-info" name="cc-contact-info" class="form card-tab scrollable tab-header full-width" ng-show="currentSelectedTab == 'cc-contact-info'"   aria-labelledby="ui-id-1"
  role="tabpanel" aria-expanded="true" aria-hidden="false" ng-controller="companyCardDetailsContactCtrl" 
  style="height:100%" ng-iscroll="companyCardDetailsContactCtrl" ng-iscroll-delay="2000">
+ 
     <div class="wrapper cc-contact-info-height">
+    	
+    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
         <div class="holder left">
             <strong class="h3">Company Info</strong>

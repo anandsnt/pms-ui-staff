@@ -38,22 +38,22 @@
                 <div class="entry margin">
                     <label for="company-rate">Contracted Rate</label>
                     <div class="select">
-		                <select name="company-contract">
+		                <select name="company-contract" ng-model="contractData.contracted_rate_selected">
 		                    <option value="" class="placeholder">Select contracted rate</option>
-		                    <option ng-model="contractData.contracted_rate_selected" value="{{rate.id}}" ng-selected="rate.id==contractData.contracted_rate_selected" ng-repeat="rate in contractData.rates" >{{rate.name}}</option>
+		                    <option ng-repeat="rate in contractData.rates"  ng-selected="rate.id==contractData.contracted_rate_selected"  value="{{rate.id}}">{{rate.name}}</option>
 		                </select>
 		            </div>
                 </div>
                 <div class="entry price-adjust no-label">
                     <div class="select">
-                        <select name="company-rate-adjust-1" >
-                            <option ng-repeat="type in ['+','-']" ng-model="contractData.selected_type" value="type">{{type}}</option>
+                        <select name="company-rate-adjust-1" ng-model="contractData.selected_type">
+                            <option ng-repeat="type in ['+','-']"  ng-selected="type==contractData.selected_type" value="{{type}}">{{type}}</option>
                         </select>
                     </div>
                     <input ng-model="contractData.rate_value" name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{contractData.rate_value | number:2}}" type="text" />
                     <div class="select">
-                        <select name="company-rate-adjust-3" >
-                        	<option ng-repeat="symbol in ['%','$']" ng-model="contractData.selected_symbol" value="symbol">{{symbol}}</option>
+                        <select name="company-rate-adjust-3" ng-model="contractData.selected_symbol">
+                        	<option ng-repeat="symbol in ['%','$']" ng-selected="symbol==contractData.selected_symbol" value="{{symbol}}">{{symbol}}</option>
                         </select>
                     </div>
                 </div>
@@ -109,22 +109,22 @@
                 <div class="entry margin">
                     <label for="company-rate">Contracted Rate</label>
                     <div class="select">
-		                <select name="company-contract">
+		                <select name="company-contract" ng-model="addData.contracted_rate_selected">
 		                    <option value="" class="placeholder">Select contracted rate</option>
-		                    <option ng-model="addData.contracted_rate_selected" value="{{rate.id}}" ng-selected="rate.id==addData.contracted_rate_selected" ng-repeat="rate in addData.rates" >{{rate.name}}</option>
+		                    <option  value="{{rate.id}}" ng-selected="rate.id==addData.contracted_rate_selected" ng-repeat="rate in addData.rates" >{{rate.name}}</option>
 		                </select>
 		            </div>
                 </div>
                 <div class="entry price-adjust no-label">
                     <div class="select">
-                        <select name="company-rate-adjust-1" >
-                            <option ng-repeat="type in ['+','-']" ng-model="addData.selected_type" value="type">{{type}}</option>
+                        <select name="company-rate-adjust-1" ng-model="addData.selected_type">
+                            <option ng-repeat="type in ['+','-']"  ng-selected="type==addData.selected_type" value="{{type}}">{{type}}</option>
                         </select>
                     </div>
                     <input ng-model="addData.rate_value" name="company-rate-adjust-2" id="company-rate-adjust-2" value="{{addData.rate_value}}" type="text" />
                     <div class="select">
-                        <select name="company-rate-adjust-3" >
-                        	<option ng-repeat="symbol in ['%','$']" ng-model="addData.selected_symbol" value="symbol">{{symbol}}</option>
+                        <select name="company-rate-adjust-3" ng-model="addData.selected_symbol">
+                        	<option ng-repeat="symbol in ['%','$']"  ng-selected="symbol==addData.selected_symbol" value="{{symbol}}">{{symbol}}</option>
                         </select>
                     </div>
                 </div>
