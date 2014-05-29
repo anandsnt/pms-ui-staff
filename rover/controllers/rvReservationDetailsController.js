@@ -64,32 +64,34 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 passData.avatar=reservationListData.guest_details.avatar;
   	 passData.vip=reservationListData.guest_details.vip;
   	 $scope.$emit('passReservationParams', passData);
-
+	 $scope.failureNewspaperSave = function(errorMessage){
+	 	$scope.errorMessage = errorMessage;
+	 	$scope.$emit('hideloader');
+	 };
+	 $scope.successCallback = function(){
+	 	$scope.$emit('hideloader');
+	 };
   	 $scope.saveNewsPaperPreference = function(selected_newspaper){
 		
 		var params = {};
 		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
-		params.selected_newspaper= $scope.getIDFromNewspaper(selected_newspaper);
-
-		$scope.newspaperSavedSuccessCallback = function(data){
+		params.selected_newspaper= selected_newspaper;
 		
-		$scope.$emit('hideLoader');
-	};
-		$scope.invokeApi(RVNewsPaperPreferenceSrv.saveNewspaperPreference, params, $scope.newspaperSavedSuccessCallback);
+		$scope.invokeApi(RVNewsPaperPreferenceSrv.saveNewspaperPreference, params, $scope.successCallback, $scope.failureNewspaperSave);
 
 	};
 
-	$scope.getIDFromNewspaper = function(newspaper){
-		var flag = false;
-		var id = 0;
-		angular.forEach($scope.reservationData.reservation_card.news_paper_pref.news_papers, function(item, index) {
-		if(newspaper.indexOf(item.name) != -1 && !flag){
-			id = item.value;
-			flag = true;
-		}
-	});
-		return id;
-	};
+	// $scope.getIDFromNewspaper = function(newspaper){
+		// var flag = false;
+		// var id = 0;
+		// angular.forEach($scope.reservationData.reservation_card.news_paper_pref.news_papers, function(item, index) {
+		// if(newspaper.indexOf(item.name) != -1 && !flag){
+			// id = item.value;
+			// flag = true;
+		// }
+	// });
+		// return id;
+	// };
 
 
 
