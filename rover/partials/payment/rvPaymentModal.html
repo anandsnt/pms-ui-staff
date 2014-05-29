@@ -9,7 +9,7 @@
 	    <div class="select">
 	    	<select ng-model="saveData.selected_payment_type" class="placeholder" ng-change="renderPaymentValues()">
 				<option value=""> Select Payment Type </option>
-				<option ng-repeat="paymenttype in data" value="{{$index}}">{{paymenttype.description}}</option>
+				<option ng-repeat="paymenttype in data" value="{{$index}}" ng-selected="{{$index == saveData.selected_payment_type}}">{{paymenttype.description}}</option>
 			</select>
 	    	
 	
@@ -20,7 +20,7 @@
 	    <div class="select">
 	    	<select ng-model="saveData.credit_card" class="placeholder">
 				<option value=""> Select credit card </option>
-				<option ng-repeat="paymenttypevalue in paymentTypeValues" value="{{paymenttypevalue.cardcode}}">{{paymenttypevalue.cardname}}</option>
+				<option ng-repeat="paymenttypevalue in paymentTypeValues" value="{{paymenttypevalue.cardcode}}" ng-selected="{{paymenttypevalue.cardcode == saveData.selected_credit_card}}">{{paymenttypevalue.cardname}}</option>
 			</select>
 	    	
 			

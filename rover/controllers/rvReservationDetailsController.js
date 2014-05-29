@@ -65,26 +65,53 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 $scope.$emit('passReservationParams', passData);
   	 
   	 $scope.openAddNewPaymentModel = function(data){
-  	 	if(data === undefined){alert("undefined")
+  	 	if(data === undefined){
+  	 		   alert("undefined")
   	 			var passData = {
 		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
 		  	 		"fromView": "staycard"
 		  	 	};
-  	 	} else {alert("here")
-  	 	alert(JSON.stringify(data));
+		  	 	var paymentData = $scope.reservationData;
+  	 		 $scope.showAddNewPaymentModal(passData, paymentData);
+  	 	} else {
+  	 		alert("here")
+  	 		alert(JSON.stringify(data));
   	 		
-  	 		var passData = {
+  	 		
+           var  getTokenFrom = {
+              'et2': data.RVCardReadTrack2,
+              'ksn': data.RVCardReadTrack2KSN,
+              'pan': data.RVCardReadMaskedPAN
+           };
+         
+         var tokenizeSuccessCallback = function(tokenData){
+         	data.token = tokenData;
+         		var passData = {
 		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
 		  	 		"fromView": "staycard",
 		  	 		"selected_payment_type": 0, //Default value of credit card - TODO:check in seed data
 		  	 		"credit_card": data.RVCardReadCardType,
-		  	 		"card_number": data.token,
-		  	 		"name_on_card": data.RVCardReadCardName
+		  	 		"card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
+		  	 		"name_on_card": data.RVCardReadCardName,
+		  	 		"card_expiry_month":data.RVCardReadExpDate
 		  	 	};
+         	    var paymentData = $scope.reservationData;
+         	    alert("success=="+paymentData);
+  	 		$scope.showAddNewPaymentModal(passData, paymentData);
+         	
+         	
+         };
+         $scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);	
+          
+  	 		
+  	 		
+  	 		
+  	 		
+  	 		
+  	 	
   	 	}
   	 
-  	 	var paymentData = $scope.reservationData;
-  	 	$scope.showAddNewPaymentModal(passData, paymentData);
+  	 	
   	 };
   	 $scope.openPaymentList = function(){
 	 //	$scope.paymentData.payment_id = id;

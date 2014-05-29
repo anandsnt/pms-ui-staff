@@ -89,5 +89,16 @@ sntRover.service('RVReservationCardSrv',['$http', '$q', 'RVBaseWebSrv', function
 		return deferred.promise;
 	};
 
+
+   this.tokenize = function(data){
+   		var deferred = $q.defer();
+		var url = '/staff/payments/tokenize';
+		RVBaseWebSrv.postJSON(url,data).then(function(data) {
+			    deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+		return deferred.promise;
+   };
    
 }]);

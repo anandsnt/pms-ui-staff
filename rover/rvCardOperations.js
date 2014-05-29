@@ -24,6 +24,10 @@ console.log("==========Before cointsnace------------")
 
 			if (typeof data != 'undefined'){ carddata = data;}
 			successCallBack(carddata, successCallBackParameters);
+			
+			
+			
+			
 		};
 
 	};

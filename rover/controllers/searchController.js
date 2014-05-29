@@ -12,12 +12,7 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
       oldType = $stateParams.type;
   }
 
-  /**
-  * function used for refreshing the scroller
-  */
-  var refreshScroller = function(){
-  
-    $scope.$parent.myScrollOptions = {
+  $scope.$parent.myScrollOptions = {
       'result_showing_area': {
           snap: false,
           scrollbars: true,
@@ -29,6 +24,12 @@ sntRover.controller('searchController',['$scope', 'RVSearchSrv', '$stateParams',
           tap: true
       }
     };
+  /**
+  * function used for refreshing the scroller
+  */
+  var refreshScroller = function(){
+  
+    
 
     $scope.$parent.myScroll['result_showing_area'].refresh();
     //scroller options
