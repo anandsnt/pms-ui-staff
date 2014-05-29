@@ -1,6 +1,24 @@
 sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window','RVDashboardSrv','ngDialog','$translate', function($rootScope, $scope, $state,$window,RVDashboardSrv,ngDialog, $translate){
 	
-	sntapp.enableCardSwipeDebug();
+ 	  // if (sntapp.cardSwipeDebug ===  true)  { sntapp.cardReader.startReaderDebug(options) } ;
+      // if(sntapp.cordovaLoaded){ sntapp.cardReader.startReader(options) }; 
+//       
+	$scope.successCallBackSwipe = function(){
+		alert("succ")
+	};
+	
+	$scope.failureCallBackSwipe = function(){
+		alert("fail")
+	};
+	
+     var options = [];
+	 options["successCallBack"] = $scope.successCallBackSwipe;
+	 options["failureCallBack"] = $scope.failureCallBackSwipe;
+	 sntapp.setBrowser("rv_native");
+	 if(sntapp.cordovaLoaded){ sntapp.cardReader.startReader(options) }; 
+      // sntapp.cardReader.startReader(options) 
+	
+	
 	
     $scope.$on("closeDrawer", function(){      
       $scope.menuOpen = false;  

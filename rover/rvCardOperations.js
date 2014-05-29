@@ -47,6 +47,8 @@ var CardOperation = function(){
 	
 	// function used to call cordova services
 	this.callCordovaService = function(options){
+		
+		
 		// cordova.exec function require success and error call back
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
@@ -78,7 +80,7 @@ var CardOperation = function(){
 			return false;			
 		}		
 		else{
-			
+		
 			//calling cordova service
 			cordova.exec(
 						// if success call back require any parameters
@@ -127,7 +129,7 @@ var CardOperation = function(){
 	};
 	
 	//function for get single swipe
-	this.listenForSingleSwipe = function(options){		
+	this.listenForSingleSwipe = function(options){	
 		options['service'] = "RVCardPlugin";
 		options['action'] = "observeForSwipe";
 		that.callCordovaService(options);
