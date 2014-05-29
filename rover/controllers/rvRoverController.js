@@ -98,25 +98,15 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       title: "Reports",
       action: "#",
       submenu: []
-    }, {
-      title: "Settings",
-      action: "#",
-      submenu: [],
-      iconClass: "icon-settings"
-    }, {
-      title: "Logout",
-      action: "#",
-      submenu: [],
-      iconClass: "icon-sign-out"
     }]
 
     $scope.$on("updateSubMenu", function(idx, item) {
-      $scope.showSubMenu = true;
-      $scope.activeSubMenu = item[1].submenu;
-      console.log({
-        index: idx,
-        item: item
-      })
+      if(item && item[1] && item[1].submenu) {
+        $scope.showSubMenu = true;
+        $scope.activeSubMenu = item[1].submenu;
+      }else{
+        $scope.activeSubMenu = [];
+      }
     });
 
     $scope.$on("closeDrawer", function() {
@@ -209,7 +199,6 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
 
     $scope.$on("navToggled", function() {
       $scope.menuOpen = !$scope.menuOpen;
-      $scope.showSubMenu = false;
     });
 
 

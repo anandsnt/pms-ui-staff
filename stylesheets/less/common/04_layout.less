@@ -45,8 +45,6 @@ body {
 			background-color: blue;
 		}
 
-
-
 		.pointer{
 				top: 20px;
 				position: absolute;
@@ -56,6 +54,12 @@ body {
 				border-top: 10px solid transparent;
 				border-bottom: 10px solid transparent;
 				border-right: 10px solid #6B6B6B;			
+		}
+
+		ul.float-bottom{
+			position: absolute;
+			bottom: 0;
+			width: 100%;
 		}
 
 		div#submenu{
@@ -92,6 +96,8 @@ body {
 
 
 		li {
+
+			&.last-child { border-bottom: 0 !important; }
 
 			a{
 				color:#F5F5F5;
@@ -141,7 +147,7 @@ body {
 				pointer-events:none;
 			}
 
-			&:last-child { border-bottom: 0; }
+			//&:last-child { border-bottom: 0 !important; }
 
 			&#settings,
 			&#sign-out,
