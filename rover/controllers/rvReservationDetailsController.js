@@ -66,10 +66,10 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 $scope.$emit('passReservationParams', passData);
 	 $scope.failureNewspaperSave = function(errorMessage){
 	 	$scope.errorMessage = errorMessage;
-	 	$scope.$emit('hideloader');
+	 	$scope.$emit('hideLoader');
 	 };
 	 $scope.successCallback = function(){
-	 	$scope.$emit('hideloader');
+	 	$scope.$emit('hideLoader');
 	 };
   	 $scope.saveNewsPaperPreference = function(selected_newspaper){
 		
