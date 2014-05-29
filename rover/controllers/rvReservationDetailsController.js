@@ -81,18 +81,6 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 
 	};
 
-	// $scope.getIDFromNewspaper = function(newspaper){
-		// var flag = false;
-		// var id = 0;
-		// angular.forEach($scope.reservationData.reservation_card.news_paper_pref.news_papers, function(item, index) {
-		// if(newspaper.indexOf(item.name) != -1 && !flag){
-			// id = item.value;
-			// flag = true;
-		// }
-	// });
-		// return id;
-	// };
-
 
 
 }]);
