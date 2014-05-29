@@ -91,8 +91,8 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	if(typeof id !== "undefined" && id === "add") {
 		$scope.contactInformation = {};
 		if(typeof $stateParams.firstname !== "undefined" && $stateParams.firstname !== "") {
-			$scope.contactInformation.company_details = {};
-			$scope.contactInformation.company_details.account_first_name = $stateParams.firstname;
+			$scope.contactInformation.account_details = {};
+			$scope.contactInformation.account_details.account_first_name = $stateParams.firstname;
 		}
 
 		//setting as null dictionary, will help us in saving..
