@@ -287,7 +287,11 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		$scope.contractList.isAddMode = true;
 		$scope.addData.occupancy = [];
 		$scope.addData.begin_date = dateFilter(new Date(), 'yyyy-MM-dd');
-		$scope.addData.end_date = dateFilter(new Date(), 'yyyy-MM-dd');
+		
+		var myDate = new Date();
+		myDate.setDate(myDate.getDate() + 1);
+	    $scope.addData.end_date = dateFilter(myDate, 'yyyy-MM-dd'); 
+	     		
 		$scope.addData.is_fixed_rate = false;
 		$scope.addData.is_rate_shown_on_guest_bill = false;
 		if(typeof $stateParams.type !== 'undefined' && $stateParams.type !== ""){

@@ -128,14 +128,20 @@
                         </select>
                     </div>
                 </div>
+                
+                
                 <div class="entry margin has-datepicker">
                     <label for="company-contract-start">Contract Start</label>
-                    <input ng-click="contractStart()" name="company-contract-start" id="company-contract-start" class="datepicker1" value="{{addData.begin_date}}" maxlength="8" readonly type="text" />
+                    <input type="text" readonly="" maxlength="8" value="{{addData.begin_date}}" class="datepicker1 hasDatepicker" >
+                    <button ng-click="contractStart()" type="button" class="ui-datepicker-trigger">...</button>
                 </div>
+                
                 <div class="entry has-datepicker">
                     <label for="company-contract-end">Contract End</label>
-                    <input ng-click="contractEnd()" name="company-contract-end" id="company-contract-end" class="datepicker1" value="{{addData.end_date}}" maxlength="8" readonly type="text" />
+                    <input type="text" readonly="" maxlength="8" value="{{addData.end_date}}" class="datepicker1 hasDatepicker" >
+                    <button ng-click="contractEnd()" type="button" class="ui-datepicker-trigger">...</button>
                 </div>
+                
                 <div class="entry margin only-switch">
                     <label for="company-contract-fixed-rate">Fixed Rate</label>
                     <div ng-model="addData.is_fixed_rate" class="switch-button full-width" ng-class="{'on': addData.is_fixed_rate}">
