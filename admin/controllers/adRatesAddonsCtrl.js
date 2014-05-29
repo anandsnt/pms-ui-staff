@@ -357,5 +357,13 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.singleAddon.charge_code_id = "";
 			manipulateChargeCodeForChargeGroups();
 		};
+
+		$scope.reservationOnlyChanged = function(){
+			$scope.singleAddon.rate_code_only = $scope.singleAddon.is_reservation_only? false : $scope.singleAddon.is_reservation_only;
+		};
+
+		$scope.rateOnlyChanged = function(){
+			$scope.singleAddon.is_reservation_only = $scope.singleAddon.rate_code_only ? false : $scope.singleAddon.is_reservation_only;
+		};
 	}
 ]);
