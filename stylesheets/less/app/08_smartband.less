@@ -252,8 +252,15 @@
 	}
 
 	#update-card-info{
+		padding: 28.5px 71px 97px 71px !important;
+		height: 491px!important;
+		background-color:  #DCDCDC;
+		display:block;
+		position: absolute;
+		width: 100%;
+
 		.smartband-image{
-			margin-left:167.5px;
+			margin-left:181.5px;
 			width: 96px;
 			height: 73px;
 			background-image:url('/assets/smartband_icon.png');
@@ -266,14 +273,65 @@
 			font-size: 15px;
 			text-align: center;
 		}
-		#float-right {
-			float: right;
+
+		#float-right{
+			width: 50%;
+			div {
+				float: right;
+			}
 		}
 		#credit-bal{
 			color:  #202225;
 			font-size: 21px;
 			font-weight: 400;
-		}	
+		}
+		#continue-button{
+			marging-top: 46px !important;
+			height: 50px !important;
+			margin-left: 131.5px;
+			display: block;
+			width: 179px;
+		}
+		.cancel-link{
+			margin-top: 31.5px;
+			margin-left: 196.5px;
+			text-transform: uppercase;
+			display: block;
+			color: #000;
+		}
+		#credit-adding-div{
+		 	display: inline-block;
+	    	margin-left: 0;
+	    	width: 35% !important;
+	    	padding-right: 0px !important;
+		}
+		#credit-adding-div input[type=text]{
+			padding-right: 0px !important;
+			padding-left: 0px !imprtant;
+		}
+		#credit-adding-div div {
+			display:block;
+			width:100%;
+			background-color: white;
+
+			label {
+				display: inline-block;
+				background-color: white;
+				color: #000;
+				float: left;
+			 	line-height: 40px;
+			 	text-align: right;
+    			width: 27px;
+    			font-size: 18px;
+    		}
+			input {
+				padding-left: 2px !important;
+				box-shadow: none;
+				display: inline-block;
+				width: 80%;
+			}
+		}		
+
 	}
 
 

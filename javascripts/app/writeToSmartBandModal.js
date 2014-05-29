@@ -2,11 +2,12 @@
 * model class for Hold smartband until ready & write
 *
 */
-var WriteToSmartBandModal= function(){
+var WriteToSmartBandModal= function(params){
 
 	BaseModal.call(this);
+	
 	var that = this;
-	this.url = "/ui/show?haml_file=modals/writeToSmartBand&json_input=smartbands/smart_band_list.json&is_hash_map=true&is_partial=true";	
+	this.url = "/ui/show?haml_file=modals/smartbands/writeToSmartBand&json_input=smartbands/smart_band_list.json&is_hash_map=true&is_partial=true";	
 
 	this.modalDidShow = function(){
 
