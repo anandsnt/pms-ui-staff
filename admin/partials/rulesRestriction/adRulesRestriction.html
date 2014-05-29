@@ -48,7 +48,7 @@
 					<td>
 						<table class="grid">
 							<td>
-								<span class="toggle" ng-show="showPolicyArrow()"></span>
+								<span class="toggle" ng-click="toggleRulesListShow()" ng-show="showPolicyArrow()"></span>
 								<a class="inline" ng-click="toggleRulesListShow()"> {{ item.description }} </a>
 								<em class="action add" ng-click="openAddNewRule()">Add new rule</em>
 							</td>
