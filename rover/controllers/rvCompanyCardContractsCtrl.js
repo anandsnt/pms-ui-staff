@@ -196,6 +196,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     	$scope.addData.rates = [];
     	$scope.contractData.rates = data.contract_rates;
     	$scope.addData.rates = data.contract_rates;
+    	console.log("$scope.contractData.rates"+$scope.contractData.rates);
     };
     $scope.invokeApi(RVCompanyCardSrv.fetchRates,{},fetchRatesSuccessCallback,fetchFailureCallback);  
     
@@ -209,14 +210,21 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     * Function to handle data change in 'Contract List'.
     */
    	$scope.$watch('contractList.contractSelected', function() {
+   		if($stateParams.id == "add"){
+	    	var account_id = $scope.contactInformation.id;
+	    }
+	    else{
+	    	var account_id = $stateParams.id;
+	    }
        if($scope.contractList.contractSelected){
-   			$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":$scope.contractList.contractSelected},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);
+   			$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":account_id,"contract_id":$scope.contractList.contractSelected},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);
 	   		angular.forEach($scope.contractList.history_contracts,function(item, index) {
 	    		if(item.id == $scope.contractList.contractSelected){
 	    			$scope.isHistorySelected = true ;
 	    		}
 	       	});
        }
+       
    	});
    
 	$scope.contractStart = function(){
@@ -250,6 +258,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		    	$scope.contractList.current_contracts.push(dataNew);
 		    	$scope.addData.contract_name = "";
 		    	$scope.contractList.isAddMode = false;
+		    	$scope.contractList.contractSelected = data.id;
 		    	
 		    	ngDialog.open({
 					 template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
@@ -274,12 +283,18 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 			}
 		}
 		else{
-			ngDialog.open({
-				 template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
-				 controller: 'contractedNightsCtrl',
-				 className: 'ngdialog-theme-default1 calendar-single1',
-				 scope: $scope
-			});
+			if($scope.contractList.contractSelected){
+				ngDialog.open({
+					 template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
+					 controller: 'contractedNightsCtrl',
+					 className: 'ngdialog-theme-default1 calendar-single1',
+					 scope: $scope
+				});
+			}
+			else{
+				$scope.contractList.isAddMode = true;
+				$scope.AddNewContract();
+			}
 		}
 	};
 	
@@ -315,9 +330,9 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	    	var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
 	    	$scope.contractList.current_contracts.push(dataNew);
 	    	
-	    	if($stateParams.id == "add"){
+	    	//if($stateParams.id == "add"){
 	    		$scope.contractList.contractSelected = data.id;
-	    	}
+	    	//}
 	    };
 	  	var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
