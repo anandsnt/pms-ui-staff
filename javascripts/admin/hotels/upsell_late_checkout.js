@@ -25,6 +25,9 @@ var UpsellLateCheckoutView = function(domRef){
 	   that.myDom.find('#charge-for-checkout-1').on('change keydown', that.changeSecondLevel);
 	   that.myDom.find('#checkout-time-extended-to-2').on('change', that.changeThirdLevel);
 	   that.myDom.find('#charge-for-checkout-2').on('change keydown', that.changeThirdLevel);
+	   
+	   that.myDom.find('#room-types').on('change', that.changeRoomType);
+	   that.myDom.find('#room-type-details').on('click', that.clickedRoomTypeDetails);
   };
   this.changeSecondLevel = function(){
   	 setTimeout(function(){
@@ -123,7 +126,17 @@ var UpsellLateCheckoutView = function(domRef){
 	  postParams.extended_checkout = extended_checkout;
 	  postParams.sent_alert = sent_alert;
 	  postParams.charge_code = charge_code;
-
+	  // Searching for max_late_checkouts in room-type-details
+	  postParams.room_types = [];
+	  that.myDom.find("#room-type-details div div" ).each(function() {
+			var value = $(this).find('input').val();
+			var id = $(this).find('input').attr('id');
+			var obj = { "id": id , "max_late_checkouts": value};
+			postParams.room_types.push(obj);
+	  });
+		
+	  console.log(postParams.room_types);
+		
 	  var url = '/admin/hotel/update_late_checkout_setup';
 	  var webservice = new WebServiceInterface();
 	  var options = {
@@ -133,7 +146,6 @@ var UpsellLateCheckoutView = function(domRef){
 			   loader: "BLOCKER"
 	  };
 	  webservice.postJSON(url, options);
-
   };
   // To handle success on save API
   this.fetchCompletedOfSave = function() {
@@ -143,4 +155,37 @@ var UpsellLateCheckoutView = function(domRef){
   this.fetchFailedOfSave = function(errorMessage){
   	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   };
+  // To handle Room type change
+  this.changeRoomType = function(e){
+  	
+  	var element = $(e.target);
+	var selectedRoomTypeId = $(element).find('option:selected').val();
+	var selectedRoomTypeText = $(element).find('option:selected').text();
+		
+  	var html = "<div class='entry' id='room-type-box-"+selectedRoomTypeId+"'><div><span>"+selectedRoomTypeText+"</span>"+
+  	"<input type='text' value='' required=''  id='"+selectedRoomTypeId+"'></div>"+
+  	"<div class='entry'><span class='icons icon-delete large-icon' id='"+selectedRoomTypeId+"' name='"+selectedRoomTypeText+"' style='margin-top: 5px;'>"+
+	"</span></div></div>";
+  	
+  	that.myDom.find('#room-type-details').append(html);
+  	that.myDom.find("#room-types option[value='"+selectedRoomTypeId+"']").remove();
+  };
+  
+  this.clickedRoomTypeDetails = function(e){
+  		var element = $(e.target);
+	  	// Delete button click
+	  	if(element.hasClass('icon-delete')){
+			var selectedRoomTypeId = element.attr('id');
+			var selectedRoomTypeText = element.attr('name');
+			
+			that.myDom.find("#room-type-box-"+selectedRoomTypeId).remove();
+			
+			var html = "<option value='"+selectedRoomTypeId+"'>"+selectedRoomTypeText+"</option>";
+			console.log(html);
+			
+			that.myDom.find("room-types").append(html);
+		}
+  };
+  
+  
 };
