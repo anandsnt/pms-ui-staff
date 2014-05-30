@@ -7,13 +7,12 @@
 
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-		<div id="new-form-holder"></div>
 
 		<table id="reservation-types" class="grid">
 
 			<tbody>
 
-				<tr ng-repeat = "resevationtype in data" data-rate-type-id="{{resevationtype.value}}">
+				<tr ng-repeat = "resevationtype in data" >
 
 					<td width = "50%" ><strong>{{resevationtype.name}}</strong><em translate> SYSTEM_DEFINED_LABEL</em></td>
 
