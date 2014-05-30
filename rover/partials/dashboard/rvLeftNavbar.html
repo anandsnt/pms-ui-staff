@@ -8,8 +8,7 @@
 			MENU
 		</li>		
 
-		<li ng-repeat="menuItem in menu" ng-mouseover="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0, 'last-child' : $last}" >
- 			<label class="icon-menu" ng-class="menuItem.iconClass" ></label>
+		<li ng-repeat="menuItem in menu" ng-mouseover="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0, 'last-child' : $last}" class="rover-icon-menu {{menuItem.iconClass}}"> 			
 			<a ui-sref="{{menuItem.action}}">
 				{{menuItem.title}}
 			</a>

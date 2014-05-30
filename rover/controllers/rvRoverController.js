@@ -14,6 +14,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     }, {
       title: "Availability",
       action: "#",
+      iconClass:"icon-availability",
       submenu: [{
         title: "House Status",
         action: "#"
@@ -24,6 +25,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     }, {
       title: "Front Desk",
       action: "#",
+      iconClass: "icon-frontdesk",
       submenu: [{
         title: "Create Reservation",
         action: "#"
@@ -43,7 +45,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     }, {
       title: "Conversations",
       action: "#",
-      iconClass: "icon-social-lobby",
+      iconClass: "icon-conversations",
       submenu: [{
         title: "Social Lobby",
         action: "#"
@@ -57,6 +59,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     }, {
       title: "Revenue Management",
       action: "#",
+      iconClass: "icon-revenue",
       submenu: [{
         title: "Rate Manager",
         action: "rover.ratemanager",
@@ -71,6 +74,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     }, {
       title: "Housekeeping",
       action: "#",
+      iconClass: "icon-housekeeping",
       submenu: [{
         title: "Housekeeping",
         action: "#"
@@ -84,6 +88,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     }, {
       title: "Financials",
       action: "#",
+      iconClass: "icon-finance",
       submenu: [{
         title: "Revenue",
         action: "#"
@@ -97,6 +102,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     }, {
       title: "Reports",
       action: "#",
+      iconClass:"icon-reports",
       submenu: []
     }]
 
