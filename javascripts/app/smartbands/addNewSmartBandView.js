@@ -6,8 +6,7 @@
 var AddNewSmartBandView = function(domRef) {	
 	BaseView.call(this);
 	this.myDom = domRef;
-	var that = this;
-	this.reservationID = '';	
+	var that = this;	
 	
 	this.delegateEvents = function(){
 		that.myDom.find('#continue-button').on('click', that.continueButtonClicked);	
@@ -33,10 +32,14 @@ var AddNewSmartBandView = function(domRef) {
 	*/
 	this.successCallbackOfSaveAction = function(data){		
 		var id = data.id;
+		data.first_name = 	that.myDom.find('#first-name').val();
+		data.last_name = $.trim(that.myDom.find('#last-name').val());
+		data.is_fixed = that.myDom.find('#payment-type').is(":checked");
+		data.amount = $.trim(that.myDom.find('#fixed-amound').val());
 		// we have to close this & need to call the writing interface
 		var params = {}; //TODO:
-		var writeToSmartBandModal = new WriteToSmartBandModal(params);
-		writeToSmartBandModal.initialize();
+		that.parentController.getControllerObject('write-to-band').data = data;
+		that.parentController.showPage('write-to-band');
 	}
 
 
@@ -57,7 +60,7 @@ var AddNewSmartBandView = function(domRef) {
 			dataToPost.amount = $.trim(that.myDom.find('#fixed-amound').val());
 		}
 		
-		var url = '/api/reservations/' + that.reservationID + '/smartbands';
+		var url = '/api/reservations/' + that.parentController.reservationID + '/smartbands';
 	    var options = { 
 			requestParameters: dataToPost,
 			successCallBack: that.successCallbackOfSaveAction,

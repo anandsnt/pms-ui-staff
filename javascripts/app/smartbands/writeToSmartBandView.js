@@ -8,24 +8,26 @@ var WriteToSmartBandView = function(domRef){
 	this.myDom = domRef;
 
 	var that = this;
-	
+	this.data = {};
 
 	this.delegateEvents = function(){ 
-		$('#modal-overlay, #modal-close, #cancel').off('click');
-        $('#modal-overlay, #modal-close, #cancel').unbind('click');
+			
 	};
 	
-	this.modalDidShow = function(){
-		$('#modal-overlay, #modal-close, #cancel').unbind('click');
+	this.pageshow = function(){
+		that.parentController.disableOutsideClickClosing();
 		that.myDom.find(".success").hide();
 		that.myDom.find("#button-area").hide();
+		//TODO: code for reading the cardid
+
 		setTimeout(function(){
 			that.myDom.find(".success").show();
 			that.myDom.find("#button-area").show();	
-
 			that.myDom.find("#not-ready-status").hide();
 			that.myDom.find("#cancel").hide();	
-			$('#modal-overlay, #modal-close, #cancel').on('click');		
+			that.parentController.enableOutsideClickClosing();
+			that.parentController.addRow(that.data);
+			that.parentController.showPage('smartband-listing');
 		}, 10000);
     };
 };

@@ -46,7 +46,6 @@ var SmartBandListView = function(domRef) {
 		
 		var url = '/api/smartbands/' + id;
 	    var options = { 
-			requestParameters: dataToPost,
 			successCallBack: that.successCallbackOfGetDetails,
 			failureCallBack: that.failureCallbackOfGetDetails,
 			loader: 'blocker',
@@ -54,8 +53,19 @@ var SmartBandListView = function(domRef) {
 	    };
 		// we prepared, we shooted!!	    			
 	    webservice.getJSON(url, options);	
-
 		
+	}
+
+	this.addRow = function(rowToAppend){
+		var html = "<li data-id = "+ rowToAppend.id + ">";
+		html += "<span class=smartband-icon></span>";
+		html += "<span class=band-holder>" + rowToAppend.first_name + " " + rowToAppend.last_name  + "</span>";
+		if(rowToAppend.is_fixed == true){
+			html += "<span class=charge>" + rowToAppend.amount + "</span>";
+		}
+		else{
+			html += "<span class=charge> OPEN ROOM CHARGE </span>";
+		}
 	}
 
 
