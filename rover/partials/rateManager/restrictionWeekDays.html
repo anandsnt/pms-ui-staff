@@ -29,7 +29,7 @@
 
 		<div class="price-set-title application">
 
-			<label class="checkbox" ng-click="daysOptions.applyToPrice = !daysOptions.applyToPrice">
+			<label class="checkbox" ng-click="daysOptions.applyToPrice = !daysOptions.applyToPrice" ng-show="popupData.fromRoomTypeView">
 				<span class="icon-form icon-checkbox" ng-class="{'checked':daysOptions.applyToPrice}"></span>
 				<input type="checkbox" ng-model="daysOptions.applyToPrice">
 				<span>APPLY TO PRICE </span> 

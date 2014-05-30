@@ -25,7 +25,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
            rate_type_selected_list : [],
            rates : [],
            rates_selected_list : [],
-           name_on_cards : [],
+           name_card_ids : [],
            selected_date_range : "Select Date Range"
    	};
 
@@ -108,6 +108,16 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
       else{
         $scope.currentLeftMenuClass = 'slide_right';
       }
+    }
+
+
+  /*
+    * function to handle click
+    */
+
+    $scope.rateManagerContentClick = function($event){
+
+       $scope.$broadcast('closeFilterPopup');
     }
 
 }]);

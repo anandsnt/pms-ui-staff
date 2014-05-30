@@ -23,6 +23,8 @@ admin.controller('ADRatesAddonsCtrl', [
 
 			// api load count
 			$scope.apiLoadCount = 0;
+			$scope.chargeCodesForChargeGrp = [];
+			$scope.singleAddon.charge_group_id = "";
 		};
 
 		$scope.init();
@@ -70,6 +72,26 @@ admin.controller('ADRatesAddonsCtrl', [
 
 		$scope.loadTable();
 
+		// map charge codes for selected charge charge group
+
+		var manipulateChargeCodeForChargeGroups = function(){
+
+			if(!$scope.singleAddon.charge_group_id){
+				$scope.chargeCodesForChargeGrp = $scope.chargeCodes;
+			}
+			else{
+				var selectedChargeGrpId = $scope.singleAddon.charge_group_id;
+				$scope.chargeCodesForChargeGrp =[];
+		   		angular.forEach($scope.chargeCodes, function(chargeCode, key) {
+		        angular.forEach(chargeCode.associcated_charge_groups, function(associatedChargeGrp, key) {
+		        	if(associatedChargeGrp.id === selectedChargeGrpId){
+		        		$scope.chargeCodesForChargeGrp.push(chargeCode);
+		        	}
+		        });
+		     });
+
+			}
+		};
 
 
 
@@ -88,9 +110,11 @@ admin.controller('ADRatesAddonsCtrl', [
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeGroups, {}, cgCallback);
 
+		
 			// fetch charge codes
 			var ccCallback = function(data) {
 				$scope.chargeCodes = data.results;
+				manipulateChargeCodeForChargeGroups();
 				$scope.$emit('hideLoader');
 			};
 			$scope.invokeApi(ADRatesAddonsSrv.fetchChargeCodes, {}, ccCallback);
@@ -128,6 +152,10 @@ admin.controller('ADRatesAddonsCtrl', [
 
 		// to add new addon
 		$scope.addNew = function() {
+
+			$scope.singleAddon.charge_group_id ="";
+			manipulateChargeCodeForChargeGroups();
+
 			$scope.isAddMode   = true;
 			$scope.isEditMode  = false;
 
@@ -135,8 +163,8 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.currentClickedAddon = -1;
 
 			// title for the sub template
-			$scope.addonTitle    = "Add New";
-			$scope.addonSubtitle = "Addon";
+			$scope.addonTitle    = $filter('translate')('ADD_NEW_SMALL');
+			$scope.addonSubtitle = $filter('translate')('ADD_ON'); 
 
 			// params to be sent to server
 			$scope.singleAddon            = {};
@@ -154,21 +182,24 @@ admin.controller('ADRatesAddonsCtrl', [
 		// listen for datepicker update from ngDialog
 		var updateBind = $rootScope.$on('datepicker.update', function(event, chosenDate) {
 
-			console.log( chosenDate );
-
 			// covert the date back to 'MM-dd-yyyy' format  
 			if ( $scope.dateNeeded === 'From' ) {
-	            $scope.singleAddon.begin_date = dateFilter(new Date(chosenDate), 'MM-dd-yyyy');
+	            $scope.singleAddon.begin_date = chosenDate;
+	            // convert system date to MM-dd-yyyy format
+				$scope.singleAddon.begin_date_for_display = $filter('date')(new Date(chosenDate), 'MM-dd-yyyy');
+				
 
 	            // if user moved begin_date in a way
 	            // that the end_date is before begin_date
 	            // we must set the end_date to begin_date
 	            // so that user may not submit invalid dates
 	            if ( new Date($scope.singleAddon.begin_date) - new Date($scope.singleAddon.end_date) > 0 ) {
-	                $scope.singleAddon.end_date = dateFilter(new Date(chosenDate), 'MM-dd-yyyy');
+	                $scope.singleAddon.end_date = chosenDate
+	                $scope.singleAddon.end_date_for_display   = $filter('date')(new Date(chosenDate), 'MM-dd-yyyy');
 	            }
 			} else {
-				$scope.singleAddon.end_date = dateFilter(new Date(chosenDate), 'MM-dd-yyyy');
+				  $scope.singleAddon.end_date = chosenDate
+	              $scope.singleAddon.end_date_for_display   = $filter('date')(new Date(chosenDate), 'MM-dd-yyyy');
 			}
 		});
 
@@ -183,7 +214,7 @@ admin.controller('ADRatesAddonsCtrl', [
 			$scope.currentClickedAddon = this.$index;
 
 			// title for the sub template
-			$scope.addonTitle    = "Edit";
+			$scope.addonTitle    = $filter('translate')('EDIT');
 			$scope.addonSubtitle = this.item.name;
 
 			// empty singleAddon
@@ -196,6 +227,7 @@ admin.controller('ADRatesAddonsCtrl', [
 				$scope.$emit('hideLoader');
 				
 				$scope.singleAddon = data;
+				manipulateChargeCodeForChargeGroups();
 
 				// Display currency with two decimals
 				$scope.singleAddon.amount = $filter('number')($scope.singleAddon.amount, 2);
@@ -216,8 +248,12 @@ admin.controller('ADRatesAddonsCtrl', [
 				};
 
 				// convert system date to MM-dd-yyyy format
-				$scope.singleAddon.begin_date = $filter('date')(new Date($scope.singleAddon.begin_date), 'MM-dd-yyyy');
-				$scope.singleAddon.end_date   = $filter('date')(new Date($scope.singleAddon.end_date), 'MM-dd-yyyy');
+				$scope.singleAddon.begin_date_for_display = $filter('date')(new Date($scope.singleAddon.begin_date), 'MM-dd-yyyy');
+				$scope.singleAddon.end_date_for_display   = $filter('date')(new Date($scope.singleAddon.end_date), 'MM-dd-yyyy');
+
+				$scope.singleAddon.begin_date = $scope.singleAddon.begin_date;
+				$scope.singleAddon.end_date   =$scope.singleAddon.end_date;
+
 			};
 
 			$scope.invokeApi(ADRatesAddonsSrv.fetchSingle, $scope.currentAddonId, callback);
@@ -311,10 +347,15 @@ admin.controller('ADRatesAddonsCtrl', [
 	    	ngDialog.open({
 	    		 template: '/assets/partials/rates/addonsDateRangeCalenderPopup.html',
 	    		 controller: 'addonsDatesRangeCtrl',
-				 className: 'ngdialog-theme-default calendar-modal single-date-picker',
+				 className: 'ngdialog-theme-default addon-calendar-modal single-date-picker',
 				 closeByDocument: true,
 				 scope: $scope
 	    	});
 	    };
+
+	    $scope.chargeGroupChage = function(){
+			$scope.singleAddon.charge_code_id = "";
+			manipulateChargeCodeForChargeGroups();
+		};
 	}
 ]);

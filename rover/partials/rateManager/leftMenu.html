@@ -1,8 +1,5 @@
-<div id="rateManagerLeftPanel" class="filter-options {{currentLeftMenuClass}}"  style="z-index:99999;" >	
-
+<div ng-controller="RMFilterOptionsCtrl" id="rateManagerLeftPanel" class="filter-options {{currentLeftMenuClass}}"  style="z-index:99999;" >	
 	<div class="fixed-container" style="height:{{leftMenuDimensions.outerContainerHeight}}px; position:relative;">
-
-
 		<h3 style="padding-bottom:15px;">FILTER OPTIONS</h3>
 		<a class="leftMenuHandle" ng-click="toggleLeftMenu()" style="left:210px"></a>	
 
@@ -76,7 +73,7 @@
 				<div class="entry table-search1" style="padding:0px;">
 					<label class="search-text" style="font-size:14px; line-height:14px;">NAME CARD,IATA # OR CORPORATED ID</label>
 					<span type="submit" name="submit" class="icons icon-search1"></span>
-					<input type="search" placeholder="Enter search criteria" autocomplete="off" style="margin-bottom:10px;"  >
+					<input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off" style="margin-bottom:10px;" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
 				</div>
 			</div>
 		</div>
@@ -87,5 +84,19 @@
 				<button class="button green" type="button" ng-click="showRatesBtnClicked()" style="width:94%;">Show Rates</button>
 			</div>
 		</div>
+
+         <!-- Company Card Results / content -->
+        <div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: {{cmpCardSearchDivHgt}}px; top: {{cmpCardSearchDivTop}}px" ng-iscroll="nameOnCard" ng-iscroll-delay="100">
+            <div class="search-results" >
+                <ul id="search-list" >
+                    <li ng-repeat="row in companyCardResults" ng-click="setCompanyCardFilter(row)">
+                        <img ng-src="{{row.company_logo}}" alt="">
+                        <h4 ng-bind-html="'{{row.account_first_name}}, {{row.account_last_name}}'|highlight:companySearchText:false"></h4>
+                    </li>
+                </ul>
+            </div>
+            <span class="arrow-left" style="top: {{arrowPosFromTop}}px;" ng-hide="cmpCardSearchDivHgt < 40"></span>
+        </div>
+
 	</div>
 </div>

@@ -61,7 +61,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 				$scope.$parent.myScroll['RateCalendarCtrl'].refresh();
 			}
 		};
-
 		if($scope.calendarMode == "RATE_VIEW"){
 			var getParams = calculateRateViewCalGetParams();
 			$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, getParams, calenderDataFetchSuccess);
@@ -80,6 +79,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 		var data = {};
 		data.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
 		data.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
+		data.name_card_ids = $scope.currentFilterData.name_card_ids;
 		if($scope.currentFilterData.is_checked_all_rates){
 			return data;
 		}
@@ -93,8 +93,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 		for(var i in $scope.currentFilterData.rates_selected_list){
 			data.rate_ids.push($scope.currentFilterData.rates_selected_list[i].id);	
 		}
-		
-		data.name_card_ids = [];
 		return data;
 	};
 
@@ -107,7 +105,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 		data.id = $scope.selectedRate.id;
 		data.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
 		data.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
-		
+		data.name_card_ids = $scope.currentFilterData.name_card_ids;
 		return data;
 	};
 

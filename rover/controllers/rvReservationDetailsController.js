@@ -1,4 +1,4 @@
-sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails){
+sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'RVNewsPaperPreferenceSrv', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, RVNewsPaperPreferenceSrv){
 	BaseCtrl.call(this, $scope);
 	/*
 	 * success call back of fetch reservation details
@@ -64,4 +64,23 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 passData.avatar=reservationListData.guest_details.avatar;
   	 passData.vip=reservationListData.guest_details.vip;
   	 $scope.$emit('passReservationParams', passData);
+	 $scope.failureNewspaperSave = function(errorMessage){
+	 	$scope.errorMessage = errorMessage;
+	 	$scope.$emit('hideLoader');
+	 };
+	 $scope.successCallback = function(){
+	 	$scope.$emit('hideLoader');
+	 };
+  	 $scope.saveNewsPaperPreference = function(selected_newspaper){
+		
+		var params = {};
+		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+		params.selected_newspaper= selected_newspaper;
+		
+		$scope.invokeApi(RVNewsPaperPreferenceSrv.saveNewspaperPreference, params, $scope.successCallback, $scope.failureNewspaperSave);
+
+	};
+
+
+
 }]);

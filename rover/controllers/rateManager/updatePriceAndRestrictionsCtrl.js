@@ -106,6 +106,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             for(var i in selectedDateInfo.restrictions){
                 if(selectedDateInfo.restrictions[i].restriction_type_id == itemID){
                     item.days = selectedDateInfo.restrictions[i].days;
+                    item.isOnRate = selectedDateInfo.restrictions[i].is_on_rate;
                     item.isRestrictionEnabled = true;
                     break;
                 }
@@ -163,7 +164,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 }
             }
         }
-       
 
         var restrictionTypes = {};
         var rTypes = $scope.calendarData.restriction_types;
@@ -176,9 +176,11 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             item.showEdit = false;
             item.hasEdit = isRestictionHasDaysEnter(rTypes[i].value);
 
+
             for(var i in selectedDateInfo){
                 if(selectedDateInfo[i].restriction_type_id == itemID){
                     item.days = selectedDateInfo[i].days;
+                    item.isOnRate = selectedDateInfo[i].is_on_rate;
                     item.isRestrictionEnabled = true;
                     break;
                 }
@@ -268,11 +270,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         }else{
             $(".ngdialog-content").removeClass("expanded moderate full-width");
         }
-
-        // setTimeout(function(){
-        //     $scope.$parent.$$childHead.myScroll['restictionsList'].refresh();
-        // }, 300);
-
     };
 
     /**
