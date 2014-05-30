@@ -11,5 +11,7 @@
     "CHECKING_IN": "Checking In",
     "INHOUSE": "Inhouse",
     "CHECKING_OUT": "Checking Out",
-    "DASHBOARD_HEADING": "Dashboard"
+    "DASHBOARD_HEADING": "Dashboard",
+    "NEWSPAPER_LABEL" : "Newspaper",
+    "NEWSPAPER_SELECT" : "Select Newspaper"
 }

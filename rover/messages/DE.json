@@ -12,6 +12,7 @@
     "CHECKING_IN": "Einchecken",
     "INHOUSE": "Im Haus",
     "CHECKING_OUT": "AUSCHECKEN",
-    "DASHBOARD_HEADING": "Armaturenbrett"
-
+    "DASHBOARD_HEADING": "Armaturenbrett",
+    "NEWSPAPER_LABEL" : "Zeitung",
+    "NEWSPAPER_SELECT" : "Wählen Zeitung"
 }
