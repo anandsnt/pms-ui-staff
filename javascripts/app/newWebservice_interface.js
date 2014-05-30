@@ -1,4 +1,4 @@
-var WebServiceInterface = function(){
+var NewWebServiceInterface = function(){
 	
 	this.timeout = 80000; //80 seconds
 	this.defaultLoader = "NORMAL";
@@ -116,15 +116,21 @@ var WebServiceInterface = function(){
 
 	this.createErrorMessage = function(jqXHR, textStatus, errorThrown){
 		var errorMessage = '';
-		if (textStatus === 'parsererror') {
+		if(jqXHR.responseJSON != ""){
+			errorMessage = jqXHR.responseJSON;
+		}
+		else if(jqXHR.responseText != ""){
+			errorMessage = jqXHR.responseText;
+		}		
+		else if (textStatus === 'parsererror') {
 			errorMessage = 'Requested JSON parse failed.';
-              } 
+        } 
 		else if (textStatus === 'timeout') {
 			errorMessage = 'Time out error.';
-			} 
+		} 
 		else if (textStatus === 'abort') {
 			errorMessage = 'Ajax request aborted.';
-			}
+		}
 		else if (jqXHR.status === '0') {
 			errorMessage = 'Not connect.\n Verify Network.';
 		}else if (jqXHR.status == 404) {
@@ -133,7 +139,7 @@ var WebServiceInterface = function(){
 			errorMessage = 'Internal Server Error [500].';			
 		}
 		else {
-			errorMessage = 'Uncaught Error.\n [' + jqXHR.status + '] ' + errorThrown;
+			errorMessage = 'Error happened [' + jqXHR.status + '] ' + errorThrown;
 		}	
 		return errorMessage;
 	};
@@ -216,65 +222,39 @@ var WebServiceInterface = function(){
 			success: function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
 				if(dataType.toLowerCase() === 'json'){
-					if(!('status' in data)){
-						sntapp.notification.showErrorMessage("Some error happend: 'status' key does not exist in web service, please contact developers");
-						return false;
-					}
-					if(data.status == 'success'){
-						//TODO: show success notification
-						if(successCallBack) {
-							if(successCallBackParameters){
-								successCallBack(data, successCallBackParameters);
-							}
-							else{
-								successCallBack(data);
-							}					}
-					}
-					else{						
-						if(failureCallBack) {	
-							if(failureCallBackParameters){
-								failureCallBack(data.errors, failureCallBackParameters);
-							}
-							else{
-								failureCallBack(data.errors);
-							}
-						}
-						else {
-							sntapp.notification.showErrorMessage(data.errors);
-						}
-					}
-				}
-				else{
+					//TODO: show success notification
 					if(successCallBack) {
 						if(successCallBackParameters){
 							successCallBack(data, successCallBackParameters);
 						}
 						else{
 							successCallBack(data);
-						}						
+						}
 					}
 				}
 			},
 			error: function(jqXHR, textStatus, errorThrown){
                 if (jqXHR.status=="401") { sntapp.logout(); return;}
                 if (jqXHR.status=="503" || jqXHR.status=="500") {
-                    location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
-                    return;
+                    /*location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
+                    return;*/
                 }
 
                 if(jqXHR.status=="422"){
-                    location.href = XHR_STATUS.REJECTED;
-                    return;
+                    /*location.href = XHR_STATUS.REJECTED;
+                    return;*/
                 }
 
                 if(jqXHR.status=="404"){
-                    location.href = XHR_STATUS.SERVER_DOWN;
-                    return;
+                    /*location.href = XHR_STATUS.SERVER_DOWN;
+                    return;*/
                 }
 
 				sntapp.activityIndicator.hideActivityIndicator();				
 
 				if(failureCallBack) {	
+					console.log(JSON.stringify(jqXHR));
+					console.log("jqXHR, textStatus, errorThrown" + jqXHR + "- "+ textStatus + " - "+ errorThrown)
 					var errorMessage = that.createErrorMessage(jqXHR, textStatus, errorThrown);
 					if(failureCallBackParameters){
 						failureCallBack(errorMessage, failureCallBackParameters);

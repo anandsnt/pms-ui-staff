@@ -12,6 +12,7 @@ var AddNewSmartBandModal = function(reservationID) {
 	this.delegateEvents = function(){
 		that.myDom.find('#continue-button').on('click', that.continueButtonClicked);	
 		that.myDom.find('#payment-type').on('click', that.switchedPaymentType);
+		that.myDom.find('#see-all-band-button').on('click', that.seeAllBandsClicked);
 	}
 
 	/**
@@ -25,7 +26,7 @@ var AddNewSmartBandModal = function(reservationID) {
 	* function to handle the failure case of save API
 	*/
 	this.failureCallbackOfSaveAction = function(errorMessage){
-		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
+		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
 	}
 
 	/**
@@ -45,12 +46,12 @@ var AddNewSmartBandModal = function(reservationID) {
 	* in this operation we are saving the info, on success we are redirecting writing interface
 	*/
 	this.continueButtonClicked = function(){
-		var webservice = new WebServiceInterface();
+		var webservice = new NewWebServiceInterface();
 		//preparing the data to post
 		var dataToPost = {};
 		dataToPost.first_name = $.trim(that.myDom.find('#first-name').val());
 		dataToPost.last_name = $.trim(that.myDom.find('#last-name').val());
-		dataToPost.account_number = "Need To Read from device"; // TODO: need to call the api to read from device
+		dataToPost.account_number = "33365774"; // TODO: need to call the api to read from device
 		var payment_mode = that.myDom.find('#payment-type').is(":checked");
 		dataToPost.is_fixed = payment_mode;
 		if(payment_mode){ //means fixed, then only we need to add this attribute
@@ -81,4 +82,12 @@ var AddNewSmartBandModal = function(reservationID) {
 			that.myDom.find('#fixed-amound').parents("div").eq(0).hide();
 		}
 	};
+
+	/** 
+	* function to goto see all bands screen
+	*/
+	this.seeAllBandsClicked = function(){
+		var smartBandModal = new SmartBandModal(that.reservationID);
+		smartBandModal.initialize();
+	}
 };

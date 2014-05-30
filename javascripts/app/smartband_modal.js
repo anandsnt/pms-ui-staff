@@ -8,6 +8,8 @@ var SmartBandModal = function(reservationID) {
 	var that = this;
 	this.url = "/ui/show?haml_file=modals/smartbands/smartband&json_input=smartbands/smart_band_list.json&is_hash_map=true&is_partial=true";
 	this.reservationID = reservationID;
+	//this.url = "/api/reservations/" + this.reservationID + "/smartbands"
+	
 
 	this.delegateEvents = function() {
 		that.myDom.find('#add-new-button').on('click', that.addNewSmartBand);
@@ -36,4 +38,6 @@ var SmartBandModal = function(reservationID) {
 		var updateSmartBandBalanceModal = new UpdateSmartBandBalanceModal(id);
 		updateSmartBandBalanceModal.initialize();
 	}
+
+
 };
