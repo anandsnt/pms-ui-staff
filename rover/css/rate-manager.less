@@ -787,8 +787,14 @@
 
   &.fromRoomTypeView{
    .ngdialog-content{
-    width: 700px;
-  }
+      width: 700px;
+    }
+
+    &.allRooms {
+      .ngdialog-content{
+         width: 100%;
+       }
+    }
 }
 
 padding-top: 80px;
@@ -802,6 +808,9 @@ padding-top: 80px;
   }
   &.moderate{
     width: 810px;
+  }
+  &.full-width {
+    width: 100%;
   }
   table{
     margin-bottom: 0px;

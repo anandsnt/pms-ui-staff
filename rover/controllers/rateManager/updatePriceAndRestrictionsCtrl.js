@@ -3,7 +3,9 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         $scope.init = function(){
             $scope.showRestrictionDayUpdate = false;
             $scope.showExpandedView = false;
+
             $scope.data = {};
+            $scope.data.showEditView = false;
 
             if($scope.popupData.fromRoomTypeView){
                 computePopupdateForRoomTypeCal();
@@ -202,9 +204,9 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     $scope.onOffRestrictions = function(id, action, days,selectedIndex){
     	
     	
-        if( $scope.popupData.all_data_selected || $scope.popupData.fromRoomTypeView){
+/*        if( $scope.popupData.all_data_selected || $scope.popupData.fromRoomTypeView){
              $(".ngdialog-content").addClass("data-entry");
-        }
+        }*/
 
 
         $scope.restrictionsList.selectedIndex = selectedIndex;
@@ -213,18 +215,24 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     		value.showEdit =  false;
     	});
 
-        if($scope.popupData.all_data_selected){
+/*        if($scope.popupData.all_data_selected){
             //$scope.showRestrictionDayUpdate = true;
             $scope.data.restrictionTypes[id].showEdit = true;
             return false;
-        }
+        }*/
         
         /*Prompt the user for number of days
          * Only if enabling a restriction.
          */
-        if($scope.data.restrictionTypes[id].hasEdit && action === "ENABLE"){
-            $scope.data.restrictionTypes[id].days = prompt("Please enter the restriction", $scope.data.restrictionTypes[id].days);
+        if($scope.popupData.all_data_selected || ($scope.data.restrictionTypes[id].hasEdit && action === "ENABLE")){
+            $scope.data.showEditView = true;
+            $(".ngdialog-content").addClass("data-entry");
+            $scope.data.restrictionTypes[id].showEdit = true;
+            return false;
+            //$scope.data.restrictionTypes[id].days = prompt("Please enter the restriction", $scope.data.restrictionTypes[id].days);
         }
+
+
         
 		/* Shiju PC: Commenting this code, as it creates a bug in setting data.  
 		 * Please review and re-enable as bug fix.
@@ -248,13 +256,17 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     $scope.expandButtonClicked = function(){
         $scope.showExpandedView = !$scope.showExpandedView;
         if($scope.showExpandedView){
+            if($scope.popupData.all_data_selected && $scope.popupData.fromRoomTypeView){
+                $(".ngdialog-content").addClass("full-width");
+            }
+
             if($scope.popupData.all_data_selected || $scope.popupData.fromRoomTypeView){
                 $(".ngdialog-content").addClass("expanded");
             }else{
                 $(".ngdialog-content").addClass("moderate");
             }
         }else{
-            $(".ngdialog-content").removeClass("expanded moderate");
+            $(".ngdialog-content").removeClass("expanded moderate full-width");
         }
 
         // setTimeout(function(){

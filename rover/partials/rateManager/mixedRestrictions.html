@@ -3,7 +3,7 @@
 		<div class="restriction_text" ng-if="restrictionType.hasEdit" ng-show="restrictionType.showEdit">
 		    <h4>{{restrictionType.description}}</h4>
 		    <div class="mixed_restrictions">
-		        <em>This overrides all </em><span class="h4>" {{restrictionType.description}} </span><em>restrictions for the selected room type(s) and date range</em>
+		    	<em>Restrictions have been already been set for some of the selected room types or rates. This will override all previously set restrictions of this type.</em>
 		    </div>
 		    <div class="inputlabel" for="restictionCount">
 		    	<label> {{restrictionType.description}} </label>
@@ -14,18 +14,18 @@
 			<div class="cancellationbuttonwrap">
 			    <button class="button  green" type="button" ng-click="updateRestrictionBtnClicked(restrictionType.id)">Set Restriction</button>
 			    <button class="button  red" type="button" ng-click="removeRestrictionBtnClicked(restrictionType.id)">Remove Restriction</button>
-				<button ng-show="restrictionType.showEdit" class="button blank cancel" type="button" ng-click="cancelButtonClicked()">Cancel</button>
+				<button ng-show="restrictionType.showEdit" class="button blank cancel" type="button" ng-click="cancelButtonClicked(restrictionType.id)">Cancel</button>
 			</div>
 		</div>
 		<div class="restriction_text" ng-if="!restrictionType.hasEdit" ng-show="restrictionType.showEdit">
 		    <h4>{{restrictionType.description}}</h4>
 		    <div class="mixed_restrictions">
-		        <em>This overrides all </em> <span class="h4">{{restrictionType.description}} </span> <em>restrictions for the selected room type(s) and date range</em>
+		        <em>Restrictions have been already been set for some of the selected room types or rates. This will override all previously set restrictions of this type.</em>
 		    </div>
 			<div class="cancellationbuttonwrap">
 			    <button class="button large green" type="button" ng-click="updateRestrictionBtnClicked(restrictionType.id)">Set Restriction</button>
 			    <button class="button large red" type="button" ng-click="removeRestrictionBtnClicked(restrictionType.id)">Remove Restriction</button>
-				<button ng-show="restrictionType.showEdit" class="button blank cancel" type="button" ng-click="cancelButtonClicked()">Cancel</button>
+				<button ng-show="restrictionType.showEdit" class="button blank cancel" type="button" ng-click="cancelButtonClicked(restrictionType.id)">Cancel</button>
 
 			</div>
 		</div>

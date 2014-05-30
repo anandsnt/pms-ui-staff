@@ -5,12 +5,9 @@
 			<h4>
 				RESTRICTIONS
 			</h4>
-			<div class="mixed_restrictions" ng-show="popupData.all_data_selected">
-				<em>Mixed restrictions applied!</em>
-			</div>
 		</div>
 		<div>
-			<div class="restriction-type" ng-repeat="restrictionType in data.restrictionTypes" ng-class="{selected: ($index == restrictionsList.selectedIndex && !popupData.fromRoomTypeView && popupData.all_data_selected)}">
+			<div class="restriction-type" ng-repeat="restrictionType in data.restrictionTypes" ng-class="{selected: ($index == restrictionsList.selectedIndex && data.showEditView)}">
 				<span class="restriction-icon {{restrictionType.background_class}} {{restrictionType.icon}}">{{restrictionType.days}}</span>
 				<span class="text">{{restrictionType.description}}</span>
 				<span ng-show="restrictionType.isRestrictionEnabled" class="restriction-status status-on" ng-click="onOffRestrictions(restrictionType.id, 'DISABLE', restrictionType.days,$index)">on</span>
