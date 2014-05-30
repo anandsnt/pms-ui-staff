@@ -6,7 +6,7 @@
 		<td>{{ rule.description }}</td>
 
 		<td width="10" class="delete">
-			<a class="icons icon-delete large-icon" ng-click="deleteRule(rule, 'Deposit Requests')">Delete this rule</a>		
+			<a class="icons icon-delete large-icon" ng-click="deleteRule(rule, 'Deposit Requests')" translate>DELETE_RULE</a>		
 		</td>
 	</tr>
 
@@ -23,9 +23,9 @@
 								{{ rulesSubtitle }}
 							</h3>
 							<em class="status">
-								Fields marked with
+								{{'MANDATORY_FIELDS_MESSAGE1'| translate}}
 								<strong>*</strong>
-								are mandatory!
+								{{'MANDATORY_FIELDS_MESSAGE2'| translate}}
 							</em>
 						</div>
 
@@ -35,7 +35,7 @@
 								name="name"
 								id="name"
 								label="Policy name"
-								placeholder="Enter the Policy name"
+								placeholder="{{'ENTER_THE_POLICY_NAME'|translate}}"
 								required="yes"></ad-textbox>
 
 							<ad-textarea rows="4"
@@ -45,7 +45,7 @@
 								name="desc"
 								id="desc"
 								label="Description"
-								placeholder="Enter the policy description"
+								placeholder="{{'ENTER_THE_POLICY_DESC'|translate}}"
 								required="yes"></ad-textarea>
 						</fieldset>
 
@@ -56,34 +56,34 @@
 									name="amount"
 									id="amount"
 									label="Amount"
-									placeholder="Enter the amount"
+									placeholder="{{'ENTER_THE_AMT'|translate}}"
 									required="yes"></ad-textbox>
 							</div>
 							<div class="entry">
 								<div class="entry full-width">
 									<label for="amount-type-id">
-										Amount Type
+										{{'AMOUNT_TYPE'|translate}}
 										<strong>*</strong>
 									</label>
 									<div class="select">
 										<select name="amount-type-id" id="amount-type-id" ng-model="singleRule.amount_type">
 											<option value="" data-text="Not set" class="placeholder">Choose amount type</option>
-											<option value="amount">Amount [{{ currencySym }}]</option>
-											<option value="percent">Percentage</option>
-											<option value="day">Night(s)</option>
+											<option value="amount">{{'AMOUNT'|translate}}[{{ currencySym }}]</option>
+											<option value="percent" translate>PERCENTAGE</option>
+											<option value="day" translate>NIGHTS</option>
 										</select>
 									</div>
 								</div>
 							</div>
 
 							<div class="entry full-width" ng-show="singleRule.amount_type === 'percent'">
-								<label for="amount-type-id">
-									Per Night or Stay
+								<label for="amount-type-id"> 
+									{{'PER_NIGHT_OR_STAY'|translate}}
 									<strong>*</strong>
 								</label>
 								<div class="select">
 									<select name="amount-type-id" id="amount-type-id" ng-model="singleRule.post_type_id" ng-options="type.id as type.description for type in postTypes">
-										<option value="" data-text="Not set" class="placeholder">Choose night or stay</option>
+										<option value="" data-text="Not set" class="placeholder" translate>CHOOSE_NIGHT_OR_STAY</option>
 									</select>
 								</div>
 							</div>
@@ -94,13 +94,13 @@
 									name="name"
 									id="name"
 									label="Days In advance"
-									placeholder="Enter the number of days"></ad-textbox>
+									placeholder="{{'ENTER_THE_NUM_OF_DAYS'|translate}}"></ad-textbox>
 							</div>
 
 							<div class="entry full-width radio-check">
 								<label class="checkbox">
 									<span class="icon-form icon-checkbox" ng-class="{ checked : singleRule.apply_to_all_bookings }"></span>
-									<label>Apply to all bookings</label>
+									<label translate>APPLY_TO_ALL_BOOKINGS</label>
 									<input type="checkbox" ng-model="singleRule.apply_to_all_bookings">
 								</label>
 							</div>
@@ -110,12 +110,12 @@
 							<button type="button"
 								id="cancel"
 								class="button blank add-data-inline"
-								ng-click="cancelCliked()">Cancel</button>
+								ng-click="cancelCliked()" translate>CANCEL</button>
 							<button type="button"
 								like-type="common"
 								id="update"
 								class="button green add-data-inline"
-								ng-click="saveUpdateRule('Deposit Requests')">Save changes</button>
+								ng-click="saveUpdateRule('Deposit Requests')" translate>SAVE_CHANGES</button>
 						</div>
 
 					</form>
