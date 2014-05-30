@@ -50,10 +50,14 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
         var TOP_BOTTOM_HEIGHT = 240;
 
         var totalwidth = $window.innerWidth - FILTER_OPTIONS_WIDTH - FIRST_COLUMN_WIDTH; //Adjusting for left side .
-        var singleColumnWidth = parseInt($scope.currentFilterData.zoom_level_selected) + COLUMN_BORDER_WIDTH; //Adjusting for the padding etc
+  
         var mywidth = totalwidth/parseInt($scope.currentFilterData.zoom_level_selected);
         var numColumns = new Date($scope.currentFilterData.end_date) - new Date($scope.currentFilterData.begin_date);
         numColumns = numColumns/(24*60*60*1000) + 1;
+        if (numColumns < parseInt($scope.currentFilterData.zoom_level_selected)){
+          numColumns = parseInt($scope.currentFilterData.zoom_level_selected);
+        }
+
         var columsTotalWidth = numColumns * mywidth;
         if ( columsTotalWidth < totalwidth) columsTotalWidth = totalwidth; //@minimum, table should cover full view.
         $scope.uiOptions.tableWidth = parseInt(FIRST_COLUMN_WIDTH + columsTotalWidth);
@@ -61,7 +65,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
         $scope.uiOptions.columWidth = parseInt(mywidth);
         
         console.log("TotalWidth :  "+ totalwidth);
-        console.log("singleColumnWidth :  "+singleColumnWidth );
+  
         console.log("mywidth :  "+mywidth );
         console.log("numColumns :  "+ numColumns);
         console.log("columsTotalWidth :  "+columsTotalWidth );

@@ -202,10 +202,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
         
 		popupClassName = (function(){
 
-			if($scope.popupData.fromRoomTypeView & $scope.popupData.all_data_selected){
-				return 'ngdialog-theme-default restriction-popup fromRoomTypeView allRooms';
-			}
-			else if($scope.popupData.fromRoomTypeView){
+			if($scope.popupData.fromRoomTypeView){
 				return 'ngdialog-theme-default restriction-popup fromRoomTypeView';
 			}
 			else{

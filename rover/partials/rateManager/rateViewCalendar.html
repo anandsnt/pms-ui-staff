@@ -10,7 +10,7 @@
 				<button ng-click="openCloseAllRestrictions('add')" class="button red" ng-class="{'open': calendarData.disableCloseAllBtn}" ng-disabled="calendarData.disableCloseAllBtn">
 					Close All
 				</button></th>
-				<th width="{{uiOptions.columnWidth}}"   style="{width:th.width}"  ng-repeat="date in calendarData.dates" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', false)">
+				<th width="{{uiOptions.columnWidth}}"   style="{width:th.width}"  ng-repeat="date in calendarData.dates">
 				<div class="date-header">
 					<span>{{date| date:'EEEE MMMM dd'}}</span>
 				</div></th>
