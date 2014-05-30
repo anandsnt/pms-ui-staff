@@ -84,7 +84,8 @@
     "ADD_NEW_SMALL":"Add New",
     "ADD_ON":"Add-On",
     "DELETE":"delete",
-    "RESERVATION_TYPE_LABEL":"RESERVATION TYPES"
+    "RESERVATION_TYPE_LABEL":"RESERVATION TYPES",
+    "SYSTEM_DEFINED_LABEL": " (System defined)"
 
 
 }

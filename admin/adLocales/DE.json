@@ -83,7 +83,8 @@
     "ADD_NEW_SMALL":"Neue",
     "ADD_ON":"Add-On",
     "DELETE":"löschen",
-    "RESERVATION_TYPE_LABEL":"Reservierungsarten"
+    "RESERVATION_TYPE_LABEL":"Reservierungsarten",
+    "SYSTEM_DEFINED_LABEL":"(System definiert)"
 
 
 
