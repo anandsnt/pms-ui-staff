@@ -5,16 +5,11 @@
 
 var SmartBandListView = function(domRef) {
 	BaseView.call(this);
-	this.myDom = domRef;
-	console.log(this.myDom);	
+	this.myDom = domRef;	
 	var that = this;	
-	console.log(that.myDom);
-	this.reservationID = '';
-	//this.url = "/api/reservations/" + this.reservationID + "/smartbands"
-	
 
-	this.delegateEvents = function() {
-		
+
+	this.delegateEvents = function() {		
 		that.myDom.find('#listing-area ul li').on('click', that.clickedOnSmartband);
 	};
 
@@ -25,6 +20,20 @@ var SmartBandListView = function(domRef) {
     	that.parentController.showButton('add-new-button');
     };
 
+    /**
+	* function to handle the failure case of save API
+	*/
+	this.failureCallbackOfGetDetails = function(errorMessage){
+		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
+	}
+
+	/**
+	* function to handle the success case of save API,  will be calling writing interface
+	*/
+	this.successCallbackOfGetDetails = function(data){	
+		that.parentController.getControllerObject('update-card-info').data = data;
+		that.parentController.showPage('update-card-info');
+	}
 
 	/**
 	* function to handle on each smarband click, which means on li
@@ -32,9 +41,23 @@ var SmartBandListView = function(domRef) {
 	this.clickedOnSmartband = function(event){
 		var target = $(event.target);
 		var id = target.attr("data-id");
+
+		var webservice = new NewWebServiceInterface();
 		
-		that.showPage('update-card-info');
+		var url = '/api/smartbands/' + id;
+	    var options = { 
+			requestParameters: dataToPost,
+			successCallBack: that.successCallbackOfGetDetails,
+			failureCallBack: that.failureCallbackOfGetDetails,
+			loader: 'blocker',
+			async: false
+	    };
+		// we prepared, we shooted!!	    			
+	    webservice.getJSON(url, options);	
+
+		
 	}
+
 
 
 };

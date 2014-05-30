@@ -16,9 +16,9 @@ var SmartBandModal = function(reservationID) {
 		that.myDom.find('#see-all-band-button').on('click', that.seeAllBandsClicked);
 	}
 
-	
+
 	this.modalDidShow = function(){
-		that.controllers={
+		that.controllers = {
 			"smartband-listing" : new SmartBandListView(that.myDom.find("#smartband-listing")),
 			"add-new-smartband" : new AddNewSmartBandView(that.myDom.find('#add-new-smartband')),
 			"update-card-info" : new UpdateSmartBandBalanceView(that.myDom.find('#update-card-info')),
@@ -39,6 +39,9 @@ var SmartBandModal = function(reservationID) {
     	that.controllers[id].pageshow();    
     }
 
+    this.getControllerObject = function(id){
+    	return that.controllers[id];
+    }
 
 	/**
 	* function to handle click on add new button screen

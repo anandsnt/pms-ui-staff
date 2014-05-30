@@ -8,6 +8,7 @@ var UpdateSmartBandBalanceView = function(domRef) {
 	this.myDom = domRef;
 	var that = this;	
 	this.smartBandId = '';
+	this.data = '';
 
 	this.delegateEvents = function(){
 		that.myDom.find('#continue-button').on('click', that.continueButtonClicked);	
@@ -29,11 +30,15 @@ var UpdateSmartBandBalanceView = function(domRef) {
 	}
 
 
+	this.pageshow = function(){
+		
+	};
+
 	/**
 	* function to handle click on continue button	
 	*/
 	this.continueButtonClicked = function(){
-		var webservice = new WebServiceInterface();
+		var webservice = new NewWebServiceInterface();
 		//preparing the data to post
 		var dataToPost = {};
 		dataToPost.first_name = $.trim(that.myDom.find('#first-name').val());
