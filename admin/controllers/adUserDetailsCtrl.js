@@ -1,4 +1,4 @@
-admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUserSrv', '$rootScope', function($scope, $state, $stateParams, ADUserSrv, $rootScope){
+admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUserSrv', '$rootScope', 'ADUserRolesSrv', function($scope, $state, $stateParams, ADUserSrv, $rootScope, ADUserRolesSrv){
 	
 	BaseCtrl.call(this, $scope);
 	$scope.mod = "";
@@ -10,7 +10,47 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 	$scope.selectedUnassignedRole = -1;
 	$scope.selectedAssignedRole = -1;
 	$scope.justDropped = -1;
+	$scope.defaultDashboard = -1;
+	$scope.dashboardOptions = [];
 	var lastDropedTime = '';
+
+	$scope.setDashboardOptionsFromRoles = function(rolesData){
+		
+		for (role in rolesData){
+			var rolePresent = false;
+			for(dashboard in $scope.dashboardOptions){
+				if(role.dashboard_id == dashboard.dashboard_id)
+					rolePresent = true;
+			}
+			if(!rolePresent){
+				var dashboard = {};
+				dashboard.dashboard_id = role.dashboard_id;
+				dashboard.dashboard_name = role.dashboard_name;
+				$scope.dashboardOptions.push(dashboard);
+			}
+		}
+	};
+
+	// $scope.me = function() { 
+	// 	var mydashbords =[]
+	// 	for each role in $scope.assignedRoles:
+	// 		if mydashboard.add AllRoles [role].dashboards
+
+	// 	return mydashboards
+	// };
+
+	$scope.getRolesData = function(){
+		var successCallbackRoles = function(data){
+			$scope.$emit('hideLoader');
+			$scope.rolesWithDashboards = data;
+
+			
+		};
+
+		$scope.invokeApi(ADUserRolesSrv.fetchUserRoles, {}, successCallbackRoles);
+
+	};
+	$scope.getRolesData();
 
    /**
     * To check whether logged in user is sntadmin or hoteladmin

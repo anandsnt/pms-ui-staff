@@ -20,6 +20,18 @@
 				<ad-textbox value="data.job_title" name = "job-title" id = "job-title" label = "Job title" placeholder = "Enter job title" required = "yes" ></ad-textbox>
 				<ad-textbox value="data.phone" name = "phone" id = "phone" label = "Phone" placeholder = "Enter phone" required = "no" ></ad-textbox>
 
+
+
+				<div class="entry full-width">
+                <div class="select">
+                    <select class="placeholder" ng-model = "defaultDashboard" ng-options="c.name for c in me()" >
+                      
+                    </select>
+                </div>
+                </div>
+
+
+
 				<div class="entry full-width">
 					<label for="user-picture"> Picture </label>
 					<div class="file-upload with-preview">
