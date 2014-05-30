@@ -17,10 +17,7 @@ function($scope, $rootScope, ADReservationTypesSrv) {
 		var params = {};
 		params.id = $scope.data[index].value;
 		params.is_active = $scope.data[index].is_active;
-		var successCallbackSetReservationType = function(data){
-			$scope.$emit('hideLoader');
-		};
-	   $scope.invokeApi(ADReservationTypesSrv.save, params, successCallbackSetReservationType);	
+	   $scope.invokeApi(ADReservationTypesSrv.save, params);	
 	};
 
 }]);
