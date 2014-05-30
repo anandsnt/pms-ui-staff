@@ -184,7 +184,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 	* Click handler for calendar cell. Creates an ng-dialog and pass the scope parameters
 	* Set scope variables to be passed to the popup.
 	*/
-	$scope.showUpdatePriceAndRestrictionsDialog = function(date, rate, roomType, type){	
+	$scope.showUpdatePriceAndRestrictionsDialog = function(date, rate, roomType, type, isForAllData){	
 		$scope.popupData.selectedDate = date;
 		$scope.popupData.selectedRate = rate;
 		if(rate == ""){
@@ -198,7 +198,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 		}
 
 		$scope.popupData.all_data_selected = false;
-		if(type == 'ALL_DATA'){
+		if(isForAllData){
 			$scope.popupData.all_data_selected = true;
 		}
         

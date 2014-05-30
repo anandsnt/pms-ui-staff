@@ -69,6 +69,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     };
 
     var computePopupdateForRoomTypeCal = function(){
+
         $scope.data = {};
         $scope.data.id = "";
         $scope.data.name = "";
@@ -147,11 +148,17 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         $scope.data.name = "";
 
         var selectedDateInfo = {};
-        for(var i in $scope.calendarData.data){
-            if($scope.calendarData.data[i].id == $scope.popupData.selectedRate){
-                selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
-                $scope.data.id = $scope.calendarData.data[i].id;
-                $scope.data.name = $scope.calendarData.data[i].name;
+        //Get the rate/restriction details for the selected cell
+        if($scope.popupData.all_data_selected) {
+            selectedDateInfo = $scope.calendarData.all_rates[$scope.popupData.selectedDate];
+
+        } else {
+            for(var i in $scope.calendarData.data){
+                if($scope.calendarData.data[i].id == $scope.popupData.selectedRate){
+                    selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
+                    $scope.data.id = $scope.calendarData.data[i].id;
+                    $scope.data.name = $scope.calendarData.data[i].name;
+                }
             }
         }
        
@@ -254,7 +261,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         //     $scope.$parent.$$childHead.myScroll['restictionsList'].refresh();
         // }, 300);
 
-        console.log($scope.popupData);
     };
 
     /**
@@ -342,8 +348,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     restrictionDetails.double = {};
                     restrictionDetails.extra_adult = {};
                     restrictionDetails.child = {};
-                    console.log("here");
-                    console.log($scope.data.single);
                     if($scope.data.single_extra_amnt !== ""){
                         restrictionDetails.single.value = $scope.data.single_sign + $scope.data.single_extra_amnt;
                         

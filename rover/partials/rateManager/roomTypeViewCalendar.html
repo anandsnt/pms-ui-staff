@@ -6,7 +6,7 @@
 	 			<button ng-click="openCloseAllRestrictions('remove')" class="button green" ng-class="{'open': calendarData.disableOpenAllBtn}" ng-disabled="calendarData.disableOpenAllBtn"> Open All</button>	
 	 			<button ng-click="openCloseAllRestrictions('add')" class="button red" ng-class="{'open': calendarData.disableCloseAllBtn}" ng-disabled="calendarData.disableCloseAllBtn"> Close All</button>	
 	 		</th>
-	 		<th width="{{uiOptions.columnWidth}}" style="{width:th.width}"  ng-repeat="date in calendarData.dates" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'ROOM_TYPE')">
+	 		<th width="{{uiOptions.columnWidth}}" style="{width:th.width}"  ng-repeat="date in calendarData.dates" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'ROOM_TYPE', false)">
                 <div class="date-header"><span>{{date| date:'EEEE MMMM dd'}}</span></div>
             </th>
 	 	</tr>
@@ -18,7 +18,7 @@
 				<span>All Rooms</span>
 				<span>&nbsp;</span>
 			</td>
-			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'ALL_DATA')"> 
+			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'ROOM_TYPE', true)"> 
                 <div class="cell-content">
                 	<div>
                 		<div>
@@ -43,7 +43,7 @@
 			    </span>
             </td>
 
-			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-hide="currentExpandedRow==$parent.$index" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.id, 'ROOM_TYPE')">
+			<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-hide="currentExpandedRow==$parent.$index" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', rate.id, 'ROOM_TYPE', false)">
 				<div class="cell-content">
 					<div>
                 		<div>
