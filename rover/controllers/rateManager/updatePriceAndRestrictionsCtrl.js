@@ -103,6 +103,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             for(var i in selectedDateInfo.restrictions){
                 if(selectedDateInfo.restrictions[i].restriction_type_id == itemID){
                     item.days = selectedDateInfo.restrictions[i].days;
+                    item.isOnRate = selectedDateInfo.restrictions[i].is_on_rate;
                     item.isRestrictionEnabled = true;
                     break;
                 }
@@ -166,9 +167,11 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             item.showEdit = false;
             item.hasEdit = isRestictionHasDaysEnter(rTypes[i].value);
 
+
             for(var i in selectedDateInfo){
                 if(selectedDateInfo[i].restriction_type_id == itemID){
                     item.days = selectedDateInfo[i].days;
+                    item.isOnRate = selectedDateInfo[i].is_on_rate;
                     item.isRestrictionEnabled = true;
                     break;
                 }
@@ -350,8 +353,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     restrictionDetails.double = {};
                     restrictionDetails.extra_adult = {};
                     restrictionDetails.child = {};
-                    console.log("here");
-                    console.log($scope.data.single);
                     if($scope.data.single_extra_amnt !== ""){
                         restrictionDetails.single.value = $scope.data.single_sign + $scope.data.single_extra_amnt;
                         
