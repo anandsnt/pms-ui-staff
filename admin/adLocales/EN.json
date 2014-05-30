@@ -18,7 +18,7 @@
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Only when check in is NOT successful",
     "ALL": "All",
     "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "Email Accounts (Seperated by semicolon [;]) ",
-    
+
     "IMPORT_FROM_PMS":"IMPORT FROM PMS",
     "ROOM_TYPES":"Room Types",
     "ADD_NEW":"ADD NEW",
@@ -60,6 +60,11 @@
     "FLOOR_DESCRIPTION":"Floor Description",
     "FLOORS":"Floors",
 
+
+    "USER_ROLES":"User roles",
+    "ROLE_DASHBOARD": "Role Dashboard",
+    "SELECT_DASHBOARD":"Select Dashboard",
+
     "NAME":"Name",
     "DESCRIPTION":"Description",
     "ACTIVE":"Active",
@@ -77,7 +82,33 @@
     "RESERVATION_ONLY":"Reservation Only",
     "EDIT":"Edit",
     "ADD_NEW_SMALL":"Add New",
-    "ADD_ON":"Add-On"
-    "DELETE":"delete"
+    "ADD_ON":"Add-On",
+    "DELETE":"delete",
+
+    "RULES":"Rules",
+    "ADD_NEW_RULE":"Add new rule",
+    "DELETE_RULE":"Delete this rule",
+    "PER_NIGHT_OR_STAY":"Per Night or Stay",
+    "CHOOSE_NIGHT_OR_STAY":"Choose night or stay",
+    "APPLY_TO_ALL_BOOKINGS":"Apply to all bookings",
+    "RULES_AND_RESTRICTIONS":"Rules & Restrictions",
+    "SYSTEM_DEFINED":"(system defined)",
+    "RESTRICTIONS":"Restrictions",
+    "PERCENTAGE":"Percentage",
+    "NIGHTS":"Night(s)",
+    "TIME":"Time",
+    "ENTER_THE_POLICY_NAME":"Enter the policy name",
+    "ENTER_THE_POLICY_DESC":"Enter the policy description",
+    "ENTER_THE_AMT":"Enter the amount",
+    "ENTER_THE_NUM_OF_DAYS":"Enter the number of days",
+    "ENTER_THE_REQUEST_NAME":"Enter the request name",
+    "ENTER_THE_REQUEST_DESC":"Enter the request description",
+    "HH":"HH",
+    "MM":"MM",
+    "AP":"AP",
+    "AM":"AM",
+    "PM":"PM"
+
+
 
 }

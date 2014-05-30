@@ -18,7 +18,7 @@
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Nur bei Check-in ist NICHT erfolgreich",
     "ALL": "alle",
     "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "E-Mail-Accounts (mit Semikolons getrennt [;])",
-    
+
     "IMPORT_FROM_PMS":"IMPORT FROM PMS",
     "ROOM_TYPES":"Zimmerarten",
     "ADD_NEW":"neue hinzufügen",
@@ -60,6 +60,10 @@
     "FLOOR_DESCRIPTION":"Stock Beschreibung",
     "FLOORS":"Etagen",
 
+    "USER_ROLES":"Benutzerrollen",
+    "ROLE_DASHBOARD": "Role-Dashboard",
+    "SELECT_DASHBOARD":"Select-Dashboard",
+
     "NAME":"Name",
     "DESCRIPTION":"Beschreibung",
     "ACTIVE":"aktiv",
@@ -79,6 +83,7 @@
     "ADD_NEW_SMALL":"Neue",
     "ADD_ON":"Add-On",
     "DELETE":"löschen"
+
 
 
 }
