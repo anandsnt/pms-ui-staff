@@ -10,7 +10,15 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
             },
          
    };
+   /* Cute workaround. ng-iscroll creates myScroll array in its Scope's $parent.
+    * Since our controller's scope is two step above the scroll div, 
+    * We create an empty myScroll here. ng-iscroll will see this item, and use the same.
+    * Note: If a subscope requires another iScroll, this approach may not work.
+    */
+   $scope.$parent.myScroll =[];
 
+   
+   sajith=$scope;
 	
    BaseCtrl.call(this, $scope);
    
@@ -22,7 +30,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 		$scope.calendarData = {};
 		$scope.popupData = {};
         
-        if($scope.filterConfigured){
+        if($scope.currentFilterData.filterConfigured){
         	loadTable();
         }
 	};
@@ -46,8 +54,12 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 		}
 
 		var calenderDataFetchSuccess = function(data) {
+        	$scope.currentFilterData.filterConfigured = true;
 			$scope.$emit('hideLoader');
 			$scope.calendarData = data;
+			if($scope.$parent.myScroll['RateCalendarCtrl'] != undefined){
+				$scope.$parent.myScroll['RateCalendarCtrl'].refresh();
+			}
 		};
 		if($scope.calendarMode == "RATE_VIEW"){
 			var getParams = calculateRateViewCalGetParams();
@@ -71,11 +83,10 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 		if($scope.currentFilterData.is_checked_all_rates){
 			return data;
 		}
+
 		data.rate_type_ids = [];
-		var rateTypeSelected = $scope.currentFilterData.rate_type_selected;
-		var rateTypeId = rateTypeSelected !== "" ? parseInt(rateTypeSelected) : "";
-		if(rateTypeId != ""){
-			data.rate_type_ids.push(rateTypeId);
+		for(var i in $scope.currentFilterData.rate_type_selected_list){
+			data.rate_type_ids.push($scope.currentFilterData.rate_type_selected_list[i].id);	
 		}
 		
 		data.rate_ids = [];
@@ -189,9 +200,18 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
 			$scope.popupData.all_data_selected = true;
 		}
         
+		popupClassName = (function(){
+			if($scope.popupData.fromRoomTypeView){
+				return 'ngdialog-theme-default restriction-popup fromRoomTypeView';
+			}
+			else{
+				return 'ngdialog-theme-default restriction-popup';
+			}
+		}());
+
         ngDialog.open({
             template: '/assets/partials/rateManager/updatePriceAndRestrictions.html',
-            className: 'ngdialog-theme-default restriction-popup',
+            className: popupClassName,
             closeByDocument: true,
             scope: $scope
         });

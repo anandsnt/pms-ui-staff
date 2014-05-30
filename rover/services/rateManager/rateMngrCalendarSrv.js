@@ -1,6 +1,6 @@
 sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, BaseWebSrvV2){
 	var that = this;
-	that.allRestrictionTypes = {};
+	that.allRestrictionTypes = [];
 
 
 
@@ -8,11 +8,16 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		//TODO: Modify to handle case of date range changes, if needed.
 		var url =  '/api/restriction_types';	
 		var deferred = $q.defer();
-		if(!isEmpty(that.allRestrictionTypes)){
+		if(that.allRestrictionTypes.length > 0){
 			deferred.resolve(that.allRestrictionTypes)
 		} else{
 			BaseWebSrvV2.getJSON(url).then(function(data) {
-				that.allRestrictionTypes = data.results; 
+				//Only the editable restrictions should be shown in the UI
+				for(var i in data.results) {
+					if(data.results[i].activated && !data.results[i].editable){
+						that.allRestrictionTypes.push(data.results[i]); 
+					}	
+				}
 				deferred.resolve(data);
 			},function(data){
 				deferred.reject(data);
@@ -28,7 +33,6 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	this.fetchCalendarData = function(params){
 		//var url = {"from_date":"2014-05-20","to_date":"2014-05-27","rate_type_ids":[],"rate_ids":[51,46],"name_card_ids":[]} 
 		var deferred = $q.defer();
-
 		var rejectDeferred = function(data){
 			deferred.reject(data);
 		};
@@ -41,7 +45,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			}
 			var rateTypeString = "";
 			for(var i in params.rate_type_ids){
-				rateTypeString = rateString + "&rate_type_ids[]=" + params.rate_type_ids[i];
+				rateTypeString = rateTypeString + "&rate_type_ids[]=" + params.rate_type_ids[i];
 			}
 
 			var nameCardString = "";
@@ -72,9 +76,18 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			deferred.reject(data);
 		};
 		var getRoomTypeRates = function(d){
-			var url = "/api/daily_rates/" + params.id
+			
+			/* It is the case of All-Rates from Rate Calendar. 
+			 * TODO: Handle this case at the calling place itself.
+			 */
+			if(typeof(params.id) === "undefined") {
+				deferred.resolve( {} );	
+				return;
+			};
+			
+			var url = "/api/daily_rates/" + params.id;
+			
 			delete params['id'];
-
 			//var url =  '/sample_json/rate_manager/rate_details.json';	
 			BaseWebSrvV2.getJSON(url, params).then(function(data) {
 				that.roomTypeRates = data; 
@@ -301,6 +314,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		restriction_type_updated.id = restriction_type.id;
 		restriction_type_updated.description = restriction_type.description;
 		restriction_type_updated.value = restriction_type.value;
+		restriction_type_updated.activated = restriction_type.activated;
+		restriction_type_updated.editable = restriction_type.editable;
+		
 
 
 		return restriction_type_updated;

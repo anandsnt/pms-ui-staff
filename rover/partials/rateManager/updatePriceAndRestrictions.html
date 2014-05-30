@@ -2,7 +2,8 @@
     <dialog>
         <div class="updatePriceAndRestrictionsContainer">
             <div class="header">
-                <h2 class="h1">{{data.name}}</h2>
+                <button class="button toggle-expand" ng-click="expandButtonClicked()" ng-class="{ expand:!showExpandedView, collapse: showExpandedView}">&nbsp;</button>
+                <h2 class="h1" style="font-weight: lighter;font-size: 16px;">{{data.name}}</h2>
                 <em>{{popupData.selectedDate| date:'EEEE MMMM dd'}}</em>
             </div>
             
@@ -14,13 +15,16 @@
                             </div>
                         </td>
                         <td ng-if="popupData.all_data_selected">
-                            <div ng-include="'/assets/partials/rateManager/mixedRestrictions.html'"></div >
+                            <div ng-include="'/assets/partials/rateManager/mixedRestrictions.html'"></div>
                         </td>
-                        <!-- <td style="vertical-align:top" ng-show="popupData.fromRoomTypeView">
+                        <td style="vertical-align:top" ng-show="popupData.fromRoomTypeView">
                             <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'" ></div >
-                        </td> -->
-                         <td style="vertical-align:top" ng-hide="true">
+                        </td>
+                         <td style="vertical-align:top" ng-show="showExpandedView">
                             <div ng-include="'/assets/partials/rateManager/restrictionWeekDays.html'"></div >
+                        </td>
+                        <td style="vertical-align:top" ng-show="showExpandedView && !popupData.fromRoomTypeView &&!popupData.all_data_selected">
+                            <div ng-include="'/assets/partials/rateManager/priceInfo.html'"></div >
                         </td>
                     
                         <td>

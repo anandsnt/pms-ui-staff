@@ -50,7 +50,7 @@
 							<span ng-repeat="restriction in rate[date].restrictions" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" >
 								{{restriction.days}}
 							</span>
-							<span class="left rate-single">{{rate[date].single}}</span>
+							<span class="left rate-single">{{rate[date].single | number : 2}}</span>
 						</div>
                 	</div>						
 				</div>
@@ -64,10 +64,10 @@
 								{{restriction.days}}
 								</span>
 							</div>
-							<div>Single <span>{{rate[date].single}}</span></div>
-							<div>Double <span>{{rate[date].double}}</span></div>
-							<div>Extra Adult <span>{{rate[date].extra_adult}}</span></div>
-							<div>Child <span>{{rate[date].child}}</span></div>
+							<div>Single <span>{{rate[date].single | number : 2}}</span></div>
+							<div>Double <span>{{rate[date].double | number : 2}}</span></div>
+							<div>Extra Adult <span>{{rate[date].extra_adult | number : 2}}</span></div>
+							<div>Child <span>{{rate[date].child | number : 2}}</span></div>
 						</div>
                 	</div>
 				</div>
