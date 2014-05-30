@@ -43,6 +43,7 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 		
 		var saveContractSuccessCallback = function(data){
 	    	$scope.closeActivityIndication();
+	    	$scope.contractData.total_contracted_nights = data.total_contracted_nights;
 	    };
 	  	var saveContractFailureCallback = function(data){
 	  		$scope.closeActivityIndication();
@@ -61,7 +62,13 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 	    else{
 	    	var account_id = $stateParams.id;
 	    }
-		$scope.invokeApi(RVCompanyCardSrv.updateNight,{ "account_id": account_id , "contract_id": $scope.contractList.contractSelected, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);  
+
+	    if(typeof $scope.contractList.contractSelected !== 'undefined'){
+			scope.invokeApi(RVCompanyCardSrv.updateNight,{ "account_id": account_id , "contract_id": $scope.contractList.contractSelected, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);  
+		}
+		else{
+			console.log("error: contractSelected undefined");
+		}
 		ngDialog.close();
 	};
 	
