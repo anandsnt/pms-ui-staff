@@ -12,6 +12,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       submenu: [],
       iconClass: "icon-dashboard"
     }, {
+      title: "Search",
+      action: "rover.search",
+      menuIndex: "search",
+      submenu: [],
+      iconClass: "icon-dashboard"
+    },{
       title: "Availability",
       action: "#",
       iconClass:"icon-availability",
@@ -24,6 +30,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }]
     }, {
       title: "Front Desk",
+      hidden: true,
       action: "#",
       iconClass: "icon-frontdesk",
       submenu: [{
@@ -44,6 +51,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }]
     }, {
       title: "Conversations",
+      hidden: true,
       action: "#",
       iconClass: "icon-conversations",
       submenu: [{
@@ -73,6 +81,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }]
     }, {
       title: "Housekeeping",
+      hidden: true,
       action: "#",
       iconClass: "icon-housekeeping",
       submenu: [{
@@ -87,6 +96,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       }]
     }, {
       title: "Financials",
+      hidden: true,
       action: "#",
       iconClass: "icon-finance",
       submenu: [{
@@ -107,11 +117,12 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     }]
 
     $scope.$on("updateSubMenu", function(idx, item) {
-      if(item && item[1] && item[1].submenu) {
+      if(item && item[1] && item[1].submenu && item[1].submenu.length > 0) {
         $scope.showSubMenu = true;
         $scope.activeSubMenu = item[1].submenu;
       }else{
         $scope.activeSubMenu = [];
+        $scope.$emit("navToggled");
       }
     });
 

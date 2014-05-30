@@ -1,14 +1,14 @@
 <nav id="main-menu" style="display: block;" ng-class="{'visible': menuOpen}"  ng-mouseleave="showSubMenu = false" >
 
-	<a id="{{menuImage}}"class="nav-toggle updated" ng-click="$emit('navToggled')"  ng-class="{'active': menuOpen}">Menu</a>
+	<a id="{{menuImage}}"class="nav-toggle updated" ng-click="$emit('navToggled')"  ng-class="{'collapse': menuOpen}">Menu</a>
 	
 	<!-- For Hotel Admin -->
 	<ul ng-show ="isHotelAdmin || isHotelStaff" ng-mouseenter="showSubMenu = true">
-		<li class="menu-title" ng-mouseover="$emit('updateSubMenu')">
+		<li class="menu-title">
 			MENU
 		</li>		
 
-		<li ng-repeat="menuItem in menu" ng-mouseover="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0, 'last-child' : $last}" class="rover-icon-menu {{menuItem.iconClass}}"> 			
+		<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0, 'last-child' : $last}" class="rover-icon-menu {{menuItem.iconClass}}"> 			
 			<a ui-sref="{{menuItem.action}}">
 				{{menuItem.title}}
 			</a>

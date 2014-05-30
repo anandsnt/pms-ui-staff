@@ -1,8 +1,23 @@
-<nav id="main-menu" style="display: block;" >
+<nav id="main-menu" style="display: block;" ng-class="{'visible': menuOpen}"  ng-mouseleave="showSubMenu = false" >
+
+	<a id="{{menuImage}}"class="nav-toggle updated" ng-click="$emit('navToggled')"  ng-class="{'active': menuOpen}">Menu</a>
 	
 	<!-- For Hotel Admin -->
-	<ul ng-show ="isHotelAdmin" >
-		<li>
+	<ul ng-show ="isHotelAdmin" ng-mouseenter="showSubMenu = true">
+		<li class="menu-title" ng-mouseover="$emit('updateSubMenu')">
+			MENU {{selectedMenuIndex}}
+		</li>	
+
+
+		<li ng-repeat="menuItem in menu" ng-mouseover="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex.length > 0 && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0), 'last-child' : $last}" class="rover-icon-menu {{menuItem.iconClass}}"> 			
+			<a href="{{menuItem.action}}">
+				{{menuItem.title}}
+			</a>
+			<div class="pointer" ng-show="menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu">
+			</li>
+
+
+<!-- 		<li>
 			<a ng-click="$emit('navToggled')" href="/staff" class="icon-menu icon-dashboard">Dashboard</a>
 		</li>
 		<li>
@@ -29,11 +44,28 @@
 		</li>
 		<li id="sign-out">
 			<a ng-click="$emit('navToggled')" href="/logout" class="icon-menu icon-sign-out">Sign Out</a>
-		</li>
-		<li id="rover-info">
+		</li> -->
+	<!-- 	<li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="">
 			Version 1.0
-		</li>
+		</li> -->
+
+		</ul>
+		<ul class="float-bottom">
+		<li >
+			<label class="icon-menu icon-settings active"></label>
+			<a ng-click="settingsClicked()">
+				Settings
+			</a>
+		</li> 
+
+		<li >
+			<label class="icon-menu icon-sign-out"></label>
+			<a ng-click="$emit('navToggled')" href="/logout">
+				Sign Out
+			</a>
+
+
 	</ul>
 
 	<!-- For SNT Admin -->
@@ -47,4 +79,14 @@
 		</li>
 	</ul>
 
-</nav>
+	<div id="submenu" ng-show="menuOpen && 	showSubMenu && activeSubMenu.length > 0">
+		<ul>
+			<li ng-repeat="menuItem in activeSubMenu" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}">
+				<a href="{{menuItem.action}}" ng-click="$emit('navToggled')">
+					{{menuItem.title}}
+				</a>
+				<div class="pointer" ng-show="selectedMenuIndex.length > 0 &&  selectedMenuIndex == menuItem.menuIndex">
+				</li>
+			</div>
+
+		</nav>

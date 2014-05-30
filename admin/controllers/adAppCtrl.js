@@ -1,244 +1,356 @@
-admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$stateParams', '$window', '$translate', function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate){
-	
-	//when there is an occured while trying to access any menu details, we need to show that errors
-	$scope.errorMessage = '';
+admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate',
+	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate) {
 
-	BaseCtrl.call(this, $scope);
-	$scope.menuOpen = false;
-	$scope.hotelListOpen = '';
+		//when there is an occured while trying to access any menu details, we need to show that errors
+		$scope.errorMessage = '';
 
-	$scope.dragStart = false;
-	$scope.selectedIndex = 0;	
-	$scope.dropedElementsModel = []; // model used for drag & drop feature, used for droping menu items displaying area
+		BaseCtrl.call(this, $scope);
+		$scope.menuOpen = false;
+		$scope.hotelListOpen = '';
 
-	//for preventing drag & drop operations turning into click
-	var lastDropedTime = '';
+		$scope.dragStart = false;
+		$scope.selectedIndex = 0;
+		$scope.dropedElementsModel = []; // model used for drag & drop feature, used for droping menu items displaying area
 
-	//scroller options
-	$scope.$parent.myScrollOptions = {
-		'tabs_menu': {
-	        snap: false,
-	        scrollbars: true,
-	        vScroll: true,
-	        vScrollbar: true,
-	        hideScrollbar: false,
-	        click: true
-    	}
-    };
-     
-	$scope.bookMarks = [];
+		//for preventing drag & drop operations turning into click
+		var lastDropedTime = '';
 
-	if($rootScope.adminRole == "hotel-admin" ){
-		$scope.isHotelAdmin =  true;
-	}	
-	else{
-		$scope.isHotelAdmin =  false;
-	}
-	$scope.isPmsConfigured = $rootScope.isPmsConfigured;
-	$scope.isDragging = false;
+		//scroller options
+		$scope.$parent.myScrollOptions = {
+			'tabs_menu': {
+				snap: false,
+				scrollbars: true,
+				vScroll: true,
+				vScrollbar: true,
+				hideScrollbar: false,
+				click: true
+			}
+		};
 
-	//on drag start we need to show a dotted border on bookmark area
-	$scope.onDragStart = function(){
-		$scope.isDragging = true;
-	};
 
-	//on drag stop we need to hide the dotted border on bookmark area
-	$scope.onDragStop = function(){
+		$scope.menu = [{
+			title: "Dashboard",
+			action: "/staff",
+			menuIndex: "dashboard",
+			submenu: [],
+			iconClass: "icon-dashboard"
+		}, {
+			title: "Availability",
+			action: "#",
+			iconClass: "icon-availability",
+			submenu: [{
+				title: "House Status",
+				action: "#"
+			}, {
+				title: "Availability",
+				action: "#"
+			}]
+		}, {
+			title: "Front Desk",
+			hidden: true,
+			action: "#",
+			iconClass: "icon-frontdesk",
+			submenu: [{
+				title: "Create Reservation",
+				action: "#"
+			}, {
+				title: "Room Assignment",
+				action: "#"
+			}, {
+				title: "Post Charges",
+				action: "#"
+			}, {
+				title: "Cashier",
+				action: "#"
+			}, {
+				title: "End of Day",
+				action: "#"
+			}]
+		}, {
+			title: "Conversations",
+			action: "#",
+			iconClass: "icon-conversations",
+			submenu: [{
+				title: "Social Lobby",
+				action: "#"
+			}, {
+				title: "Messages",
+				action: "#"
+			}, {
+				title: "Reviews",
+				action: "#"
+			}]
+		}, {
+			title: "Revenue Management",
+			action: "#",
+			iconClass: "icon-revenue",
+			submenu: [{
+				title: "Rate Manager",
+				action: "staff#/staff/rateManager",
+				menuIndex: "rateManager"
+			}, {
+				title: "Company & TA Cards",
+				action: "#"
+			}, {
+				title: "Distribution Manager",
+				action: "#"
+			}]
+		}, {
+			title: "Housekeeping",
+			action: "#",
+			iconClass: "icon-housekeeping",
+			submenu: [{
+				title: "Housekeeping",
+				action: "#"
+			}, {
+				title: "Task Management",
+				action: "#"
+			}, {
+				title: "Maintenance",
+				action: "#"
+			}]
+		}, {
+			title: "Financials",
+			action: "#",
+			iconClass: "icon-finance",
+			submenu: [{
+				title: "Revenue",
+				action: "#"
+			}, {
+				title: "Accounting Interface",
+				action: "#"
+			}, {
+				title: "Commissions",
+				action: "#"
+			}]
+		}, {
+			title: "Reports",
+			action: "#",
+			iconClass: "icon-reports",
+			submenu: []
+		}]
+
+		$scope.$on("updateSubMenu", function(idx, item) {
+			if (item && item[1] && item[1].submenu) {
+				$scope.showSubMenu = true;
+				$scope.activeSubMenu = item[1].submenu;
+			} else {
+				$scope.activeSubMenu = [];
+			}
+		});
+
+		$scope.bookMarks = [];
+
+		if ($rootScope.adminRole == "hotel-admin") {
+			$scope.isHotelAdmin = true;
+		} else {
+			$scope.isHotelAdmin = false;
+		}
+		$scope.isPmsConfigured = $rootScope.isPmsConfigured;
 		$scope.isDragging = false;
 
-		//also we are taking the lastDropedTime to preventing click after drag stop operation
-		lastDropedTime = new Date();			
-	};	
+		//on drag start we need to show a dotted border on bookmark area
+		$scope.onDragStart = function() {
+			$scope.isDragging = true;
+		};
 
-	//function to copy the ids of bookmark to a new array
-	var copyBookmarkIds = function(arrayToCopy){
-		for(var i = 0; i < $scope.bookMarks.length; i++){
-			arrayToCopy.push($scope.bookMarks[i].id);			
-		}
-	};
+		//on drag stop we need to hide the dotted border on bookmark area
+		$scope.onDragStop = function() {
+			$scope.isDragging = false;
 
-	//function to change bookmark status after dropping
-	var updateBookmarkStatus = function(){
-		for(var i = 0; i < $scope.data.menus.length; i++){
-			for(var j = 0; j < $scope.data.menus[i].components.length; j++){
-				if($scope.bookmarkIdList.indexOf($scope.data.menus[i].components[j].id) == -1){						
-					$scope.data.menus[i].components[j].is_bookmarked = false;							
-				}	
-				else{
-					$scope.data.menus[i].components[j].is_bookmarked = true;							
-				}					
+			//also we are taking the lastDropedTime to preventing click after drag stop operation
+			lastDropedTime = new Date();
+		};
+
+		//function to copy the ids of bookmark to a new array
+		var copyBookmarkIds = function(arrayToCopy) {
+			for (var i = 0; i < $scope.bookMarks.length; i++) {
+				arrayToCopy.push($scope.bookMarks[i].id);
 			}
-		}
-	};
+		};
 
-	//drop function on menu item listing
-	$scope.onDropingMenuItemListing = function(event, ui) {
-		var index = -1;
+		//function to change bookmark status after dropping
+		var updateBookmarkStatus = function() {
+			for (var i = 0; i < $scope.data.menus.length; i++) {
+				for (var j = 0; j < $scope.data.menus[i].components.length; j++) {
+					if ($scope.bookmarkIdList.indexOf($scope.data.menus[i].components[j].id) == -1) {
+						$scope.data.menus[i].components[j].is_bookmarked = false;
+					} else {
+						$scope.data.menus[i].components[j].is_bookmarked = true;
+					}
+				}
+			}
+		};
 
-		//successcallback of removing menu item
-	   	var successCallbackOfRemovingBookMark = function(){
-	   	 	$scope.$emit('hideLoader');
+		//drop function on menu item listing
+		$scope.onDropingMenuItemListing = function(event, ui) {
+			var index = -1;
 
-	   	 	if(index != -1){
-	    		$scope.bookmarkIdList.splice(index, 1);
-	    		index = -1;
-	    	}
-	    	updateBookmarkStatus();			    	   	
-	    };
+			//successcallback of removing menu item
+			var successCallbackOfRemovingBookMark = function() {
+				$scope.$emit('hideLoader');
 
-
-	    
-		var copiedBookMarkIds = [];		
-		copyBookmarkIds(copiedBookMarkIds);
-
-	    if($scope.bookMarks.length <= $scope.bookmarkIdList.length){
-	    	for(var i = 0; i < $scope.bookmarkIdList.length; i++){	
-	    		//checking bookmarked id's in copiedBookark id's, if it is no, call web service	    		
-	    		if(copiedBookMarkIds.indexOf($scope.bookmarkIdList[i]) == -1){
-	    			index = i;
-	    			var data = {id: $scope.bookmarkIdList[i]};
-   					$scope.invokeApi(ADAppSrv.removeBookMarkItem, data, successCallbackOfRemovingBookMark);
-	    		}
-	    	}
-	    }
-   		
-	};
-	
-	//drop function on boomark menu item listing
-	$scope.onDropAtBookmarkArea = function(event, ui) {		
-		var index = -1;
-	   	var successCallbackOfBookMark = function(){
-	   	 	$scope.$emit('hideLoader');
-	   	 	if(index != -1){
-	    		$scope.bookmarkIdList.push($scope.bookMarks[index].id);
-	    		index = -1;
+				if (index != -1) {
+					$scope.bookmarkIdList.splice(index, 1);
+					index = -1;
+				}
 				updateBookmarkStatus();
-	    	}	
-	    };
+			};
 
-		var copiedBookMarkIds = [];	
-		copyBookmarkIds(copiedBookMarkIds);
-	
-	    if($scope.bookMarks.length > $scope.bookmarkIdList.length){
-	    	for(var i = 0; i < $scope.bookMarks.length; i++){
 
-	    		// if the newly added bookmark is not in the old copy then we have to web service and add it to the old array
-	    		if($scope.bookmarkIdList.indexOf($scope.bookMarks[i].id) == -1){
-	    			index = i;
-	    			var data = {id: $scope.bookMarks[i].id};
-   					$scope.invokeApi(ADAppSrv.bookMarkItem, data, successCallbackOfBookMark);
-	    		}
-	    	}
-	    }
-   		
-	};
 
-	/*
-	* function for handling click operation on menu item
-	* Here is a special case
-	* After drag operation, click event is firing. Inorder to prevent that
-	* we will check the lastDropedTime with click event fired time.
-	* if it is less than a predefined time, it will not fire click event, otherwise fire	
-	*/
-	$scope.clickedMenuItem = function($event, stateToGo){
-		var currentTime = new Date();
-		if(lastDropedTime != '' && typeof lastDropedTime == 'object'){
-			var diff = currentTime - lastDropedTime;				
-			if(diff <= 400){
-				$event.preventDefault();
-				$event.stopImmediatePropagation();
-				$event.stopPropagation();				
-				lastDropedTime = '';
-				return false;
+			var copiedBookMarkIds = [];
+			copyBookmarkIds(copiedBookMarkIds);
+
+			if ($scope.bookMarks.length <= $scope.bookmarkIdList.length) {
+				for (var i = 0; i < $scope.bookmarkIdList.length; i++) {
+					//checking bookmarked id's in copiedBookark id's, if it is no, call web service	    		
+					if (copiedBookMarkIds.indexOf($scope.bookmarkIdList[i]) == -1) {
+						index = i;
+						var data = {
+							id: $scope.bookmarkIdList[i]
+						};
+						$scope.invokeApi(ADAppSrv.removeBookMarkItem, data, successCallbackOfRemovingBookMark);
+					}
+				}
 			}
-			else{
+
+		};
+
+		//drop function on boomark menu item listing
+		$scope.onDropAtBookmarkArea = function(event, ui) {
+			var index = -1;
+			var successCallbackOfBookMark = function() {
+				$scope.$emit('hideLoader');
+				if (index != -1) {
+					$scope.bookmarkIdList.push($scope.bookMarks[index].id);
+					index = -1;
+					updateBookmarkStatus();
+				}
+			};
+
+			var copiedBookMarkIds = [];
+			copyBookmarkIds(copiedBookMarkIds);
+
+			if ($scope.bookMarks.length > $scope.bookmarkIdList.length) {
+				for (var i = 0; i < $scope.bookMarks.length; i++) {
+
+					// if the newly added bookmark is not in the old copy then we have to web service and add it to the old array
+					if ($scope.bookmarkIdList.indexOf($scope.bookMarks[i].id) == -1) {
+						index = i;
+						var data = {
+							id: $scope.bookMarks[i].id
+						};
+						$scope.invokeApi(ADAppSrv.bookMarkItem, data, successCallbackOfBookMark);
+					}
+				}
+			}
+
+		};
+
+		/*
+		 * function for handling click operation on menu item
+		 * Here is a special case
+		 * After drag operation, click event is firing. Inorder to prevent that
+		 * we will check the lastDropedTime with click event fired time.
+		 * if it is less than a predefined time, it will not fire click event, otherwise fire
+		 */
+		$scope.clickedMenuItem = function($event, stateToGo) {
+			var currentTime = new Date();
+			if (lastDropedTime != '' && typeof lastDropedTime == 'object') {
+				var diff = currentTime - lastDropedTime;
+				if (diff <= 400) {
+					$event.preventDefault();
+					$event.stopImmediatePropagation();
+					$event.stopPropagation();
+					lastDropedTime = '';
+					return false;
+				} else {
+					lastDropedTime = '';
+					$state.go(stateToGo);
+				}
+			} else {
 				lastDropedTime = '';
 				$state.go(stateToGo);
 			}
-		}
-		else{
-			lastDropedTime = '';
-			$state.go(stateToGo);
-		}
-	};
-	
-	$scope.$on("changedSelectedMenu", function(event, menu){
-		$scope.selectedIndex = menu;		
-	});
+		};
 
-	$scope.successCallbackOfMenuLoading = function(data){
-		//$scope.currentIndex = 0;
-		$scope.data = data;
-		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];			
-		$scope.bookMarks = $scope.data.bookmarks;
-		
-		$scope.bookmarkIdList = [];
-		for(var i = 0; i < $scope.data.bookmarks.length; i++){
-			$scope.bookmarkIdList.push($scope.data.bookmarks[i].id);
-		}
-		if($scope.isHotelAdmin){
-			$scope.getLanguage();
-		}
-		
-			
-	};
-	
-	$scope.invokeApi(ADAppSrv.fetch, {}, $scope.successCallbackOfMenuLoading);
-	
-	/*
-	 * Success callback of get language
-	 * @param {object} response
-	 */
-	$scope.fetchHotelDetailsSuccessCallback = function(data){
+		$scope.$on("changedSelectedMenu", function(event, menu) {
+			$scope.selectedIndex = menu;
+		});
 
-     if(data.language)
-	   $translate.use(data.language.value);
-     else
-       $translate.use('EN');
-	 $scope.$emit('hideLoader');
-	};
-	/*
-	 * Function to get the current hotel language
-	 */
-	$scope.getLanguage = function(){
-		$scope.invokeApi(ADAppSrv.fetchHotelDetails,{},$scope.fetchHotelDetailsSuccessCallback);  
-	};
+		$scope.successCallbackOfMenuLoading = function(data) {
+			//$scope.currentIndex = 0;
+			$scope.data = data;
+			$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
+			$scope.bookMarks = $scope.data.bookmarks;
+
+			$scope.bookmarkIdList = [];
+			for (var i = 0; i < $scope.data.bookmarks.length; i++) {
+				$scope.bookmarkIdList.push($scope.data.bookmarks[i].id);
+			}
+			if ($scope.isHotelAdmin) {
+				$scope.getLanguage();
+			}
 
 
-	// if there is any error occured 
-    $scope.$on("showErrorMessage", function($event, errorMessage){
-    	$event.stopPropagation();
-    	$scope.errorMessage = errorMessage;
-        
-    });
-	
-	$scope.$on("navToggled", function(){
-        $scope.menuOpen = !$scope.menuOpen;
-    });
-    
- 	$scope.isMenuOpen = function(){
-        return $scope.menuOpen ? true : false;
-    };
+		};
+
+		$scope.invokeApi(ADAppSrv.fetch, {}, $scope.successCallbackOfMenuLoading);
+
+		/*
+		 * Success callback of get language
+		 * @param {object} response
+		 */
+		$scope.fetchHotelDetailsSuccessCallback = function(data) {
+
+			if (data.language)
+				$translate.use(data.language.value);
+			else
+				$translate.use('EN');
+			$scope.$emit('hideLoader');
+		};
+		/*
+		 * Function to get the current hotel language
+		 */
+		$scope.getLanguage = function() {
+			$scope.invokeApi(ADAppSrv.fetchHotelDetails, {}, $scope.fetchHotelDetailsSuccessCallback);
+		};
 
 
-    $scope.$on("showLoader", function(){
-        $scope.hasLoader = true;
-    });
+		// if there is any error occured 
+		$scope.$on("showErrorMessage", function($event, errorMessage) {
+			$event.stopPropagation();
+			$scope.errorMessage = errorMessage;
 
-    $scope.$on("hideLoader", function(){
-        $scope.hasLoader = false;
-    });    
+		});
 
-    $scope.isHotelListOpen = function(){
-        $scope.hotelListOpen = ($scope.hotelListOpen == "open") ? "" : "open";
-    };
-    $scope.redirectToHotel = function(hotel_id){
-    	ADAppSrv.redirectToHotel(hotel_id).then(function(data) {
-    		$window.location.href = "/admin";
-		},function(){
-			console.log("error controller");
-		});	
-    };
-}]);
+		$scope.$on("navToggled", function() {
+			$scope.menuOpen = !$scope.menuOpen;
+		});
 
-    
+		$scope.isMenuOpen = function() {
+			return $scope.menuOpen ? true : false;
+		};
+
+
+		$scope.$on("showLoader", function() {
+			$scope.hasLoader = true;
+		});
+
+		$scope.$on("hideLoader", function() {
+			$scope.hasLoader = false;
+		});
+
+		$scope.isHotelListOpen = function() {
+			$scope.hotelListOpen = ($scope.hotelListOpen == "open") ? "" : "open";
+		};
+		$scope.redirectToHotel = function(hotel_id) {
+			ADAppSrv.redirectToHotel(hotel_id).then(function(data) {
+				$window.location.href = "/admin";
+			}, function() {
+				console.log("error controller");
+			});
+		};
+	}
+]);
