@@ -10,7 +10,10 @@
 
         <div class="holder left">
             <strong class="h3" translate>COMAPNY_INFO</strong>
-            <rv-textbox value="contactInformation.account_details.account_first_name" label="Name" placeholder = "Enter Name" styleclass="margin"></rv-textbox>
+            
+            <rv-textbox ng-if="account_type == 'COMPANY'" value="contactInformation.account_details.account_first_name" label="Name" placeholder = "Enter Name" styleclass="margin"></rv-textbox>
+            
+            <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_first_name" label="TA Name" placeholder = "Enter TA Name" styleclass="margin"></rv-textbox>
 
             <rv-textbox value="contactInformation.account_details.account_last_name" styleclass="no-label"></rv-textbox>
 
@@ -44,6 +47,8 @@
 
             <rv-textbox value="contactInformation.address_details.email_address" label="E-mail address" placeholder = "Enter email" styleclass="full-width"></rv-textbox>
 
+            <rv-textbox value="contactInformation.account_details.web_page" label="Web Page" placeholder = "Enter Web Page" styleclass="full-width"></rv-textbox>
+
             <div class="entry full-width">
                 <label for="company-logo" translate>COMAPNY_LOGO</label>
                 <div class="file-upload with-preview">
@@ -59,7 +64,9 @@
         <div class="holder right">
             <strong class="h3" translate>EXTENDED_COMPANY_DETAILS</strong>
 
-            <rv-textbox value="contactInformation.account_details.account_number" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin"></rv-textbox>
+            <rv-textbox ng-if="account_type == 'COMPANY'" value="contactInformation.account_details.account_number" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin"></rv-textbox>
+            
+            <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_number" label="IATA Number" placeholder = "Enter IATA Number" styleclass="margin"></rv-textbox>
 
             <rv-textbox value="contactInformation.account_details.accounts_receivable_number" label="Accounts Receivable Number" placeholder = "Enter Accounts Receivable Number" ></rv-textbox>
 
