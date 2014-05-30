@@ -83,7 +83,8 @@
     "EDIT":"Edit",
     "ADD_NEW_SMALL":"Add New",
     "ADD_ON":"Add-On",
-    "DELETE":"delete"
+    "DELETE":"delete",
+    "RESERVATION_TYPE_LABEL":"RESERVATION TYPES"
 
 
 }

@@ -82,7 +82,8 @@
     "EDIT":"Bearbeiten",
     "ADD_NEW_SMALL":"Neue",
     "ADD_ON":"Add-On",
-    "DELETE":"löschen"
+    "DELETE":"löschen",
+    "RESERVATION_TYPE_LABEL":"Reservierungsarten"
 
 
 
