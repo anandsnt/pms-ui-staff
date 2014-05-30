@@ -109,15 +109,17 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 			if(that.params["origin"] == views.BILLCARD){
 				backView.find("#payment-type-text").remove();
 				backView.find("#select-card-from-list").removeClass('hidden');
+				backView.find(".item-payment h3").remove();
         		backView.find(".item-payment").append(appendHtml);
         		
         		// To update bill tab paymnt info
 	        	var billTabHtml = '<img src="/assets/'+$newImage+'" alt="">'+
 								'<span class="number">'+$endingWith+'</span>';
-								
+				$("#bills-tabs-nav #payment-"+that.params["bill_number"]).remove();			
 				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html("");		
 				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html(billTabHtml);
 				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).addClass('card-logo');
+				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).removeClass('hidden');
 	        }
 	        else{			
 				backView.find(".payment_actions").append(appendHtml);
