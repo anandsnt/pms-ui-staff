@@ -13,38 +13,45 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 	$scope.defaultDashboard = -1;
 	$scope.dashboardOptions = [];
 	var lastDropedTime = '';
+	$scope.assignedRoles = [];
 
-	$scope.setDashboardOptionsFromRoles = function(rolesData){
+	$scope.getDashboardOptionsFromRoles = function(rolesData){
 		
-		for (role in rolesData){
+		$scope.dashboardOptions = [];
+		for (var i = 0; i < rolesData.length; i++){
 			var rolePresent = false;
-			for(dashboard in $scope.dashboardOptions){
-				if(role.dashboard_id == dashboard.dashboard_id)
+			for(var j = 0; j < $scope.dashboardOptions.length; j++){
+				if(rolesData[i].dashboard_id == $scope.dashboardOptions[j].dashboard_id)
 					rolePresent = true;
 			}
 			if(!rolePresent){
 				var dashboard = {};
-				dashboard.dashboard_id = role.dashboard_id;
-				dashboard.dashboard_name = role.dashboard_name;
+				dashboard.dashboard_id = rolesData[i].dashboard_id;
+				dashboard.dashboard_name = rolesData[i].dashboard_name;
 				$scope.dashboardOptions.push(dashboard);
 			}
 		}
+		return $scope.dashboardOptions;
+		
 	};
 
-	// $scope.me = function() { 
-	// 	var mydashbords =[]
-	// 	for each role in $scope.assignedRoles:
-	// 		if mydashboard.add AllRoles [role].dashboards
+	$scope.getMyDashboards = function() { 
+		var assignedRolesWithDashboard =[]
+		for(var i = 0; i < $scope.assignedRoles.length; i++){
+			for(var j = 0; j < $scope.rolesWithDashboards.length; j++){
+				if($scope.assignedRoles[i].value == $scope.rolesWithDashboards[j].value)
+					assignedRolesWithDashboard.push($scope.rolesWithDashboards[j]);
+			}
+		}
 
-	// 	return mydashboards
-	// };
+		return $scope.getDashboardOptionsFromRoles(assignedRolesWithDashboard);
+	};
 
 	$scope.getRolesData = function(){
 		var successCallbackRoles = function(data){
 			$scope.$emit('hideLoader');
-			$scope.rolesWithDashboards = data;
-
-			
+			$scope.rolesWithDashboards = data.userRoles;
+			// $scope.setMyDashboards();			
 		};
 
 		$scope.invokeApi(ADUserRolesSrv.fetchUserRoles, {}, successCallbackRoles);
