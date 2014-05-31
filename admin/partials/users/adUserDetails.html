@@ -25,7 +25,7 @@
 				<div class="entry full-width">
 					<label for="defaultdashboard" >{{'DEFAULT_DASHBOARD'|translate}}<strong > * </strong></label>
                 <div class="select">
-                    <select id="defaultdashboard" ng-required="true" class="placeholder" ng-model = "defaultDashboard" ng-options="dashboard.dashboard_id as dashboard.dashboard_name for dashboard in getMyDashboards()" >
+                    <select id="defaultdashboard" ng-required="true" class="placeholder" ng-model = "data.default_dashboard_id" ng-options="dashboard.dashboard_id as dashboard.dashboard_name for dashboard in getMyDashboards()" >
                       <option value="" disabled translate>SELECT_DEFAULT_DASHBOARD</option>
                     </select>
                 </div>

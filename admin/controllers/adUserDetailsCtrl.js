@@ -14,6 +14,7 @@ admin.controller('ADUserDetailsCtrl',[ '$scope', '$state','$stateParams', 'ADUse
 	$scope.dashboardOptions = [];
 	var lastDropedTime = '';
 	$scope.assignedRoles = [];
+	$scope.rolesWithDashboards = [];
 
 	$scope.getDashboardOptionsFromRoles = function(rolesData){
 		
