@@ -52,7 +52,7 @@
     "TOTAL_NIGHTS": "Total Nights",
     "TOTAL_STAYS": "Total Stays",
     "TOTAL_REVENUE": "Total Revenue",
-    "AVERAGE_RATE": "Average Rate"
+    "AVERAGE_RATE": "Average Rate",
     "NEWSPAPER_LABEL" : "Newspaper",
     "NEWSPAPER_SELECT" : "Select Newspaper"
 }
