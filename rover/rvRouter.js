@@ -112,7 +112,12 @@ sntRover.config([
             controller: 'RVnightsController'
         });
         
-		// let's redirect all undefined states to dashboard state
+		$stateProvider.state('rover.reservation', {
+			abstract : true,
+			url: '/reservation',
+			templateUrl: '/assets/partials/reservation/base.html',
+            controller: 'ReservationBaseCtrl'
+        });
 		
 	}
 ]);
