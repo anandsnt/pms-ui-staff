@@ -1,7 +1,8 @@
 sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeupTimeSrv', 'ngDialog', function($scope, $filter, RVSaveWakeupTimeSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	
-
+	$scope.hourValues = ["01", "02", "03", "04", "05", "06","07", "08", "09", "10", "11", "12"];
+	$scope.minValues = ["00", "15", "30", "45"];
 	$scope.closeDialog = function(){
 		ngDialog.close();
 	};
@@ -68,7 +69,7 @@ sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeu
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorMessage;
 		};
-		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, params , successCallbackDeleteWakeupcall. errorCallbackDeleteWakeupcall);
+		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, params , successCallbackDeleteWakeupcall, errorCallbackDeleteWakeupcall);
 
 	};
 

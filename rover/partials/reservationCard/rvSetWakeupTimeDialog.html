@@ -20,78 +20,13 @@
                         HH
 
                     </option>
-                    <option value="01">
+                    <option  ng-repeat="hourValue in hourValues" ng-selected ="hrs==hourValue" value="{{hourValue}}">
 
 
-                        01
-
-                    </option>
-                    <option value="02">
-
-
-                        02
+                        {{hourValue}}
 
                     </option>
-                    <option value="03">
-
-
-                        03
-
-                    </option>
-                    <option value="04">
-
-
-                        04
-
-                    </option>
-                    <option value="05">
-
-
-                        05
-
-                    </option>
-                    <option value="06">
-
-
-                        06
-
-                    </option>
-                    <option value="07">
-
-
-                        07
-
-                    </option>
-                    <option value="08">
-
-
-                        08
-
-                    </option>
-                    <option value="09">
-
-
-                        09
-
-                    </option>
-                    <option value="10">
-
-
-                        10
-
-                    </option>
-                    <option value="11">
-
-
-                        11
-
-                    </option>
-                    <option value="12">
-
-
-                        12
-
-                    </option>
+                    
                 </select>
             </div>
             <div class="select select-col col1-3">
@@ -102,28 +37,10 @@
                         MM
 
                     </option>
-                    <option value="00">
+                    <option  ng-repeat="minValue in minValues" ng-selected ="min==minValue" value="{{minValue}}">
 
 
-                        00
-
-                    </option>
-                    <option value="15">
-
-
-                        15
-
-                    </option>
-                    <option value="30">
-
-
-                        30
-
-                    </option>
-                    <option value="45">
-
-
-                        45
+                        {{minValue}}
 
                     </option>
                 </select>
@@ -169,12 +86,12 @@
                 <label class="data-off">
                     <span class="switch-icon">
 
-                        {{ 'TODAY' | translate }} ({{reservationData.reservation_card.wake_up_time.today_date}})
+                        <span translate>TODAY</span> ({{reservationData.reservation_card.wake_up_time.today_date}})
 
                     </span>
                     <span id="wakeup-day" class="value">
 
-                        {{ 'TOMORROW' | translate }} ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
+                        <span translate>TOMORROW</span> ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
 
 
                     </span>
@@ -182,13 +99,13 @@
                 <label class="data-on">
                     <span id="wakeup-day" class="value">
 
-                        {{ 'TODAY' | translate }}({{reservationData.reservation_card.wake_up_time.today_date}})
+                        <span translate>TODAY</span>({{reservationData.reservation_card.wake_up_time.today_date}})
 
 
                     </span>
                     <span class="switch-icon">
 
-                        {{ 'TOMORROW' | translate }} ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
+                        <span translate>TOMORROW</span> ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
 
                     </span>
                 </label>
