@@ -14,18 +14,7 @@ var PaymentMethodsView = function(domRef) {
 			//$('#credit_cards_types').hide();
 		};
 	};
-	this.delegateEvents = function() {
-
-		that.myDom.find('.edit-data-inline').on('click', that.editDataClicked);
-	};
 	
-	this.editDataClicked = function(e){
-		console.log(e);
-		console.log("editDataClicked");
-		e.preventDefault();
-		e.stopImmediatePropagation();
-		
-	};
 	//Event handler for on-off toggle button.
 	this.toggleButtonClicked = function(element) {
 
@@ -43,6 +32,7 @@ var PaymentMethodsView = function(domRef) {
 				"id" : id,
 				"set_active" : toggleStatus
 			};
+			
 			if (id == "1" && type == "payment") {
 				if (that.myDom.find("#available-cards").hasClass("hidden")) {
 					that.myDom.find("#available-cards").removeClass("hidden");
