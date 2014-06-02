@@ -2,8 +2,9 @@ admin.controller('ADReservationSettingsCtrl',['$scope', '$rootScope','$state','A
 	
   BaseCtrl.call(this, $scope);
   $scope.errorMessage = "";	
-  $scope.defaultRateDisplays     = reservationSettingsData.defaultRateDisplays;
-  $scope.reservationSettingsData = reservationSettingsData.reservationSettingsData;
+  //$scope.defaultRateDisplays     = reservationSettingsData.defaultRateDisplays;
+  //$scope.reservationSettingsData = reservationSettingsData.reservationSettingsData;
+  $scope.reservationSettingsData = reservationSettingsData;
 
 /**
   *  Method to go back to previous state.
@@ -40,36 +41,6 @@ admin.controller('ADReservationSettingsCtrl',['$scope', '$rootScope','$state','A
     $scope.invokeApi(ADReservationSettingsSrv.saveChanges,data,saveChangesSuccessCallback,saveChangesFailureCallback); 
 
   };
-
-
-
-  // $scope.defaultRateDisplays = {
-  // 	"default_rate_displays": [
-  // 	{
-  // 		"value": 0,
-  // 		"name": "Recommended"
-  // 	},
-  // 	{
-  // 		"value": 1,
-  // 		"name": " By Room Type"
-  // 	},
-  // 	{
-  // 		"value": 2,
-  // 		"name": " By Rate"
-  // 	}
-  // 	]
-  // };
-
-
-  // $scope.reservationSettingsData = {
-  // 	"recommended_rate_display": true,
-  // 	"default_rate_display_id": 1,
-  // 	"max_guests": {
-  // 		"max_adults": 3,
-  // 		"max_children": 2,
-  // 		"max_infants": 1
-  // 	}
-  // };
 
 
 }]);

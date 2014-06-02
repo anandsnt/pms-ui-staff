@@ -1,4 +1,4 @@
-admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv){
+admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrvV2', function($q, ADBaseWebSrvV2){
 	
    /**
     * To fetch the reservation settings data
@@ -7,9 +7,9 @@ admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrv', function($q, ADB
 	this.fetchReservationSettingsData = function(){
 		
 		var deferred = $q.defer();
-		var url = '/admin/users.json';
+		var url = '/api/hotel_settings/show_hotel_reservation_settings';
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
@@ -24,8 +24,8 @@ admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrv', function($q, ADB
 	this.saveChanges = function(data){
 
 		var deferred = $q.defer();
-		var url = '/admin/hotel_brands/'+id;	
-		ADBaseWebSrv.putJSON(url,data).then(function(data) {
+		var url = '/api/hotel_settings/save_hotel_reservation_settings';	
+		ADBaseWebSrvV2.postJSON(url,data).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
