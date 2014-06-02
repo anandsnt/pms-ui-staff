@@ -3,15 +3,9 @@ admin.controller('ADReservationSettingsCtrl',['$scope', '$rootScope','$state','A
   BaseCtrl.call(this, $scope);
   $scope.errorMessage = "";	
 
-//TO DO:
-  //for drop down list
-  //$scope.defaultRateDisplays     = reservationSettingsData.defaultRateDisplays;
 
-  //settings data
-  //$scope.reservationSettingsData = reservationSettingsData.reservationSettingsData;
-  
-//TO DO:delete this line
-  $scope.reservationSettingsData = reservationSettingsData;
+ $scope.defaultRateDisplays     = reservationSettingsData.defaultRateDisplays;
+ $scope.reservationSettingsData = reservationSettingsData.data;
 
 /**
   *  Method to go back to previous state.
