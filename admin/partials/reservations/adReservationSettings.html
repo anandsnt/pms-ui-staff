@@ -1,53 +1,55 @@
 <section id="replacing-div-second" class="content current" ng-hide="isLoading" ng-click="clearErrorMessage()"><div data-view="ZestCheckinConfiguration" >
+	
 	<header class="content-title float">
-		<h2>Reservation Settings</h2>
-		<a ng-click="backClicked()" data-type="load-details" class="action back">{{ 'BACK' | translate}}</a>
+		<h2 translate>RESERVATION_SETTINGS</h2>
+		<a ng-click="backClicked()" data-type="load-details" class="action back" translate>BACK</a>
 	</header>
+
 	<div ng-include="'/assets/partials/common/notification_message.html'"  ></div>
+
 	<form style="overflow-y:auto;" class="form float" >
 		<fieldset class="holder full-width">
-			
+
 			<fieldset class="holder left">
 				<div style="height:20px;"></div>
-				<ad-checkbox is-checked="require_cc_for_checkout_email_flag" label="Use Recommended Rate Display" div-class="full-width"></ad-checkbox>	
+				<ad-checkbox is-checked="reservationSettingsData.recommended_rate_display" label="{{'USE_RECOMMENDED_RATE_DISPLAY' | translate}}" div-class="full-width"></ad-checkbox>	
 
 				<div class="entry">
-					<label>Default Rate Display</label>
+					<label translate>DEFAULT_RATE_DISPLAY</label>
 					<div class="select">
-						<select class="placeholder" ng-model="rateData.rate_type.id" ng-options="rate_type.id as rate_type.name for rate_type in rateTypesDetails.rate_types">
-							<option value="" disabled>Select Type</option>
+						<select class="placeholder" ng-model="reservationSettingsData.default_rate_display_id" ng-options="rate_type.value as rate_type.name for rate_type in defaultRateDisplays.default_rate_displays">
 						</select>
 					</div>
 				</div>
-				
-				
 			</fieldset>
+
+			<!-- max guest counts starts here -->
 
 			<fieldset class="holder right">
 				<div class="entry full-width"> 
 					<div class=" col1-3 actions_margin_top">           
-						<ad-textbox inputtype="text" value="rateData.based_on.value_abs" styleclass = "col1-3"
-						label = "MAX ADULTS" placeholder = "" style=" width: 100px;"
+						<ad-textbox inputtype="text" value="reservationSettingsData.max_guests.max_adults" styleclass = "col1-3"
+						label = "{{'MAX_ADULTS' | translate}}" placeholder = "" style=" width: 100px;"
 						></ad-textbox>
 					</div>
 					<div class=" actions_margin_top" >
-						<ad-textbox inputtype="text" value="rateData.based_on.value_abs" styleclass = "col1-3"
-						label = "MAX CHILDREN" placeholder = "" style=" width: 100px;"
+						<ad-textbox inputtype="text" value="reservationSettingsData.max_guests.max_children" styleclass = "col1-3"
+						label = "{{'MAX_CHILDREN' | translate}}" placeholder = "" style=" width: 100px;"
 						></ad-textbox>
 					</div>
 					<div class="col1-3">
-						<ad-textbox inputtype="text" value="rateData.based_on.value_abs" styleclass = "col1-3"
-						label = "MAX INFANTS" placeholder = "" style=" width: 100px;"
+						<ad-textbox inputtype="text" value="reservationSettingsData.max_guests.max_infants" styleclass = "col1-3"
+						label = "{{'MAX_INFANTS' | translate}}" placeholder = "" style=" width: 100px;"
 						></ad-textbox>
 					</div>
 				</div>    
 			</fieldset>
-
+			<!-- max guest counts ends here -->
 
 		</fieldset>
 		<div class="actions float">
-			<button type="button" ng-click="backClicked()" class="button blank add-data-inline">{{ 'CANCEL' | translate}}</button>
-			<button type="button" ng-click="saveCheckin()" class="button green">{{ 'SAVE_CHANGES' | translate}}</button>
+			<button type="button" ng-click="backClicked()" class="button blank add-data-inline" translate>CANCEL</button>
+			<button type="button" ng-click="saveChanges()" class="button green" translate>SAVE_CHANGES</button>
 		</div>
 	</form>
 </div>

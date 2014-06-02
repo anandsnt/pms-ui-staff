@@ -303,8 +303,8 @@ admin.config([
 			controller: 'ADReservationSettingsCtrl',
 			url : '/reservationSettings',
 			resolve: {
-				reservationsData: function(ADReservationSettingsSrv) {
-					return ADReservationSettingsSrv.fetchReservationsData();
+				reservationSettingsData: function(ADReservationSettingsSrv) {
+					return ADReservationSettingsSrv.fetchReservationSettingsData();
 				}
 			}
 		});

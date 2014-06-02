@@ -107,8 +107,15 @@
     "MM":"MM",
     "AP":"AP",
     "AM":"AM",
-    "PM":"PM"
+    "PM":"PM",
 
+
+    "RESERVATION_SETTINGS":"Reservation Settings",
+    "DEFAULT_RATE_DISPLAY":"Default Rate Display",
+    "MAX_ADULTS":"Max Adults",
+    "MAX_CHILDREN":"Max Children",
+    "MAX_INFANTS":"Max Infants",
+    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display"
 
 
 }
