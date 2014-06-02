@@ -121,8 +121,14 @@ sntRover.config([
 
         $stateProvider.state('rover.reservation.search', {
             url: '/search',
-            templateUrl: '/assets/partials/reservation/search.html',
-            controller: 'ReservationSearchCtrl'
+            templateUrl: '/assets/partials/reservation/searchByDate.html',
+            controller: 'ReservationSearchByDateCtrl'
+        });
+
+        $stateProvider.state('rover.reservation.searchByRoomType', {
+            url: '/searchByRoomType',
+            templateUrl: '/assets/partials/reservation/searchByRoomType.html',
+            controller: 'ReservationSearchByRoomTypeCtrl'
         });
         
     }
