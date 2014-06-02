@@ -47,6 +47,8 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
     	
     };
 	this.populateSwipedCard = function() {
+		
+		$('#payment-form-section').addClass('disable-clicks');
 		var swipedCardData = this.swipedCardData;
 		// inject the values to payment modal
         // inject payment type
