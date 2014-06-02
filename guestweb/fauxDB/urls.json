@@ -1,5 +1,0 @@
-{
-	"getUser": "/fauxDB/userDetails.json",
-	"getBills": "/fauxDB/billDetails.json",
-	"getLateCheckOutCharges": "/fauxDB/lateCheckOutCharges.json" 
-}
