@@ -10,14 +10,15 @@ admin.controller('ADReservationSettingsCtrl',['$scope', '$rootScope','$state','A
                                     },
                                     {
                                      "value": 1,
-                                     "name": " By Room Type"
+                                     "name": "By Room Type"
                                    },
                                    {
                                      "value": 2,
-                                     "name": " By Rate"
+                                     "name": "By Rate"
                                    }
                                  ];
  $scope.reservationSettingsData = reservationSettingsData;
+
 
 /**
   *  Method to go back to previous state.
