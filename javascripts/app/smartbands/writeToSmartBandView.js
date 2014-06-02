@@ -13,6 +13,7 @@ var WriteToSmartBandView = function(domRef){
 	this.delegateEvents = function(){ 
 		that.myDom.find('#done-button').on('click', that.clickedDoneButton);
 		that.myDom.find('#next-band-button').on('click', that.clickedNextBandButton);
+		that.myDom.find('#cancel').on('click', that.parentController.hide);
 	};
 
 	/**
@@ -47,34 +48,49 @@ var WriteToSmartBandView = function(domRef){
 		that.data.id = data.id;	
 	}  
 
+	this.fetchSuccessKeyRead = function(accountNumber){
+		sntapp.activityIndicator.hideActivityIndicator();
+		that.myDom.find(".success").show();
+		that.myDom.find("#button-area").show();	
+		that.myDom.find("#not-ready-status").hide();
+		that.myDom.find("#cancel").hide();	
+		that.parentController.enableOutsideClickClosing();		
+		that.data.account_number = accountNumber;
+		var url = '/api/reservations/' + that.parentController.reservationID + '/smartbands';
+	    var options = { 
+			requestParameters: that.data,
+			successCallBack: that.successCallbackOfSaveAction,
+			failureCallBack: that.failureCallbackOfSaveAction,
+			loader: 'blocker',
+			async: false
+	    };
+		// we prepared, we shooted!!
+		var webservice = new NewWebServiceInterface();	    			
+    	webservice.postJSON(url, options);		
+	};
+
+	this.fetchFailedKeyRead = function(){
+		sntapp.activityIndicator.hideActivityIndicator();
+		sntapp.notification.showErrorMessage('Failed to read from device', that.myDom);
+	};
   	this.pageshow = function(){
 		that.parentController.disableOutsideClickClosing();
 		that.myDom.find("#not-ready-status").show();
 		that.myDom.find("#cancel").show();	
 		that.myDom.find(".success").hide();
 		that.myDom.find("#button-area").hide();
-
+		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		//TODO: code for reading the cardid
+		var options = {
+			'successCallBack': that.fetchSuccessKeyRead,
+			'failureCallBack': that.fetchFailedKeyRead			
+		};	
+		if(sntapp.cardSwipeDebug){
+			sntapp.cardReader.retrieveUserIDDebug(options);
+		}
+		else{
+			sntapp.cardReader.retrieveUserID(options);
+		}
 
-		setTimeout(function(){
-			that.myDom.find(".success").show();
-			that.myDom.find("#button-area").show();	
-			that.myDom.find("#not-ready-status").hide();
-			that.myDom.find("#cancel").hide();	
-			that.parentController.enableOutsideClickClosing();
-			that.data.account_number = "33365774"; // TODO: need to call the api to read from device
-			var url = '/api/reservations/' + that.parentController.reservationID + '/smartbands';
-		    var options = { 
-				requestParameters: that.data,
-				successCallBack: that.successCallbackOfSaveAction,
-				failureCallBack: that.failureCallbackOfSaveAction,
-				loader: 'blocker',
-				async: false
-		    };
-			// we prepared, we shooted!!
-			var webservice = new NewWebServiceInterface();	    			
-	    	webservice.postJSON(url, options);			
-			
-		}, 4000);
     };
 };
