@@ -104,6 +104,12 @@ var app = function(){
 
             },
             error: function(jqxhr, status, error){
+                //Show ows connectivity error popup
+                if (jqxhr.status=="520") {
+                    sntapp.activityIndicator.hideActivityIndicator();
+                    sntapp.showOWSErrorPopup();
+                    return;
+                }
                 //checking whether a user is logged in
                 if (jqxhr.status == "401") { sntapp.logout(); return;}
                 if (jqxhr.status=="500" || jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
@@ -229,6 +235,11 @@ var app = function(){
     this.enableCardSwipeDebug = function(){
         that.cardSwipeDebug = true; // Mark it as true to debug cardSwype opertations
         that.cardReader = new CardOperation();
+    };
+
+    this.showOWSErrorPopup = function() {
+        var owsConnectivityModal = new OWSConnectivityModal();
+        owsConnectivityModal.initialize();
     };
 
 
