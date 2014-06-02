@@ -10,6 +10,7 @@ admin.service('ADReservationSettingsSrv',['$q', 'ADBaseWebSrvV2', function($q, A
 		var url = '/api/hotel_settings/show_hotel_reservation_settings';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+			//TO DO: call service for drop down data(service called from router)
 		    deferred.resolve(data);
 		},function(data){
 		    deferred.reject(data);
