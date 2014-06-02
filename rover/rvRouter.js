@@ -111,25 +111,48 @@ sntRover.config([
             templateUrl: '/assets/partials/nights/rvNights.html',
             controller: 'RVnightsController'
         });
+
+        // Reservation state actions - START
         
         $stateProvider.state('rover.reservation', {
             abstract : true,
             url: '/reservation',
-            templateUrl: '/assets/partials/reservation/base.html',
-            controller: 'ReservationBaseCtrl'
+            templateUrl: '/assets/partials/reservation/main.html',
+            controller: 'ReservationMainCtrl'
         });
 
         $stateProvider.state('rover.reservation.search', {
             url: '/search',
-            templateUrl: '/assets/partials/reservation/searchByDate.html',
-            controller: 'ReservationSearchByDateCtrl'
+            templateUrl: '/assets/partials/reservation/baseSearch.html',
+            controller: 'ReservationBaseSearchCtrl'
         });
 
-        $stateProvider.state('rover.reservation.searchByRoomType', {
-            url: '/searchByRoomType',
-            templateUrl: '/assets/partials/reservation/searchByRoomType.html',
-            controller: 'ReservationSearchByRoomTypeCtrl'
+        $stateProvider.state('rover.reservation.mainCard', {
+            abstract: true,
+            url: '/mainCard',
+            templateUrl: '/assets/partials/reservation/mainCard.html',
+            controller: 'ReservationMainCardCtrl'
         });
+
+        $stateProvider.state('rover.reservation.mainCard.roomType', {
+            url: '/roomType',
+            templateUrl: '/assets/partials/reservation/roomTypesList.html',
+            controller: 'ReservationRoomTypeCtrl'
+        });
+
+        $stateProvider.state('rover.reservation.mainCard.addons', {
+            url: '/addons',
+            templateUrl: '/assets/partials/reservation/addonsList.html',
+            controller: 'ReservationAddonsCtrl'
+        });
+
+        $stateProvider.state('rover.reservation.mainCard.summaryAndConfirm', {
+            url: '/summaryAndConfirm',
+            templateUrl: '/assets/partials/reservation/summaryAndConfirm.html',
+            controller: 'ReservationSummaryAndConfirmCtrl'
+        });
+
+        // Reservation state actions - END
         
     }
 ]);

@@ -1,5 +1,5 @@
 <!-- Content -->
-<section id="reservations" class="content create-reservation scrollable" role="main">
+<section id="reservations" class="content create-reservation scrollable" role="main" ng-controller="ReservationBaseSearchCtrl">
     <form method="get" action="reservations" name="create-reservation" id="create-reservation" class="wrapper" role="search">
         <div id="dates" class="row">
             <div id="arriving" class="entry">
@@ -90,6 +90,6 @@
                 <input name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" />
             </div>
         </div>
-        <button id="find-rooms-and-rates" type="button" class="button green" ui-sref='reservation.search'>Find Rooms &amp; Rates</button>
+        <button id="find-rooms-and-rates" type="button" class="button green" ui-sref='rover.reservation.mainCard.roomType'>Find Rooms &amp; Rates</button>
     </form>
 </section>
