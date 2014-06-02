@@ -71,6 +71,10 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	 $scope.successCallback = function(){
 	 	$scope.$emit('hideLoader');
 	 };
+	 $scope.isNewsPaperPreferenceFeatureAvailable = function(){
+        	var status = $scope.reservationData.reservation_card.reservation_status;
+        	return status == "CHECKEDIN" || status == "CHECKING_OUT" || status == "CHECKING_IN";
+        };
   	 $scope.saveNewsPaperPreference = function(selected_newspaper){
 		
 		var params = {};
