@@ -48,6 +48,9 @@ var WriteToSmartBandView = function(domRef){
 		that.data.id = data.id;	
 	}  
 
+	/**
+	* function to execute for successful card reading, will do enabling outside click & call api
+	*/
 	this.fetchSuccessKeyRead = function(accountNumber){
 		sntapp.activityIndicator.hideActivityIndicator();
 		that.myDom.find(".success").show();
@@ -56,6 +59,7 @@ var WriteToSmartBandView = function(domRef){
 		that.myDom.find("#cancel").hide();	
 		that.parentController.enableOutsideClickClosing();		
 		that.data.account_number = accountNumber;
+		
 		var url = '/api/reservations/' + that.parentController.reservationID + '/smartbands';
 	    var options = { 
 			requestParameters: that.data,
@@ -69,10 +73,16 @@ var WriteToSmartBandView = function(domRef){
     	webservice.postJSON(url, options);		
 	};
 
+	/**
+	* function to execute when card reading failed, will do enabling outside click & show error message
+	*/
 	this.fetchFailedKeyRead = function(){
 		sntapp.activityIndicator.hideActivityIndicator();
+		that.parentController.disableOutsideClickClosing();
 		sntapp.notification.showErrorMessage('Failed to read from device', that.myDom);
 	};
+
+
   	this.pageshow = function(){
 		that.parentController.disableOutsideClickClosing();
 		that.myDom.find("#not-ready-status").show();

@@ -86,7 +86,6 @@ var AddNewSmartBandView = function(domRef) {
 			that.myDom.find('#fixed-amound').parents("div").eq(0).hide();
 		}
 		onOffSwitch();
-
 	};
 
 };
