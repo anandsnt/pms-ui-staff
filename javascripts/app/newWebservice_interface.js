@@ -116,7 +116,14 @@ var NewWebServiceInterface = function(){
 
 	this.createErrorMessage = function(jqXHR, textStatus, errorThrown){
 		var errorMessage = '';
-		if(jqXHR.responseJSON != ""){
+		if (jqXHR.status === '0') {
+			errorMessage = 'Not connect.\n Verify Network.';
+		}else if (jqXHR.status == 404) {
+			errorMessage = 'Requested page not found. [404]';
+		}else if (jqXHR.status == 500) {
+			errorMessage = 'Internal Server Error [500].';			
+		}		
+		else if(jqXHR.responseJSON != ""){
 			errorMessage = jqXHR.responseJSON;
 		}
 		else if(jqXHR.responseText != ""){
@@ -130,13 +137,6 @@ var NewWebServiceInterface = function(){
 		} 
 		else if (textStatus === 'abort') {
 			errorMessage = 'Ajax request aborted.';
-		}
-		else if (jqXHR.status === '0') {
-			errorMessage = 'Not connect.\n Verify Network.';
-		}else if (jqXHR.status == 404) {
-			errorMessage = 'Requested page not found. [404]';
-		}else if (jqXHR.status == 500) {
-			errorMessage = 'Internal Server Error [500].';			
 		}
 		else {
 			errorMessage = 'Error happened [' + jqXHR.status + '] ' + errorThrown;
@@ -252,9 +252,7 @@ var NewWebServiceInterface = function(){
 
 				sntapp.activityIndicator.hideActivityIndicator();				
 
-				if(failureCallBack) {	
-					console.log(JSON.stringify(jqXHR));
-					console.log("jqXHR, textStatus, errorThrown" + jqXHR + "- "+ textStatus + " - "+ errorThrown)
+				if(failureCallBack) {						
 					var errorMessage = that.createErrorMessage(jqXHR, textStatus, errorThrown);
 					if(failureCallBackParameters){
 						failureCallBack(errorMessage, failureCallBackParameters);

@@ -1,5 +1,5 @@
 /**
-* model class for smart band adding
+* controller class for smart band adding
 *
 */
 
@@ -7,12 +7,13 @@ var UpdateSmartBandBalanceView = function(domRef) {
 	BaseView.call(this);
 	this.myDom = domRef;
 	var that = this;	
-	this.smartBandId = '';
+	this.accountID = '';
 	this.data = '';
 
-	this.delegateEvents = function(){
+	this.delegateEvents = function(){		
 		that.myDom.find('#continue-button').on('click', that.continueButtonClicked);	
-		that.myDom.find('#see-all-band-button').on('click', that.seeAllBandsClicked);	
+		that.myDom.find('#see-all-band-button').on('click', that.seeAllBandsClicked);
+		that.myDom.find("#cancel-link").on('click', that.parentController.hide);	
 	}
 
 	/**
@@ -31,7 +32,11 @@ var UpdateSmartBandBalanceView = function(domRef) {
 
 
 	this.pageshow = function(){
-		
+		that.myDom.find("#first-name").val(that.data.first_name);
+		that.myDom.find("#last-name").val(that.data.last_name);
+		that.myDom.find('#smartband-id').html('#' + that.data.account_number);
+		that.myDom.find('#credit-bal').append(that.data.amount);
+		that.accountID = that.data.id;
 	};
 
 	/**
@@ -46,7 +51,7 @@ var UpdateSmartBandBalanceView = function(domRef) {
 		dataToPost.credit = $.trim(that.myDom.find('#credit-to-add').val());
 
 		
-		var url = '/api/smartbands/' + that.smartBandId;
+		var url = '/api/smartbands/' + that.accountID;
 	    var options = { 
 			requestParameters: dataToPost,
 			successCallBack: that.successCallbackOfSaveAction,

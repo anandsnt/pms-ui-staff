@@ -11,65 +11,67 @@ var AddNewSmartBandView = function(domRef) {
 	this.delegateEvents = function(){
 		that.myDom.find('#continue-button').on('click', that.continueButtonClicked);	
 		that.myDom.find('#payment-type').on('click', that.switchedPaymentType);		
+		that.myDom.find("#cancel-link").on('click', that.parentController.hide);
 	}
+
 
 	/**
 	* event executed when shown the ui
 	*/
-	this.modalDidShow = function(){
-		that.switchedPaymentType();
+	this.pageshow = function(){		
+		that.parentController.hideButton('see-all-band-button');
+    	that.parentController.hideButton('add-new-button');
+    	that.myDom.find('#first-name').val('');
+    	that.myDom.find('#last-name').val('');
+    	that.myDom.find('#fixed-amound').val('');
+    	that.myDom.find('#payment-type').prop('checked', false);
+    	that.switchedPaymentType();
 	}
 
-	/**
-	* function to handle the failure case of save API
-	*/
-	this.failureCallbackOfSaveAction = function(errorMessage){
-		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
-	}
-
-	/**
-	* function to handle the success case of save API,  will be calling writing interface
-	*/
-	this.successCallbackOfSaveAction = function(data){		
-		var id = data.id;
-		data.first_name = 	that.myDom.find('#first-name').val();
-		data.last_name = $.trim(that.myDom.find('#last-name').val());
-		data.is_fixed = that.myDom.find('#payment-type').is(":checked");
-		data.amount = $.trim(that.myDom.find('#fixed-amound').val());
-		// we have to close this & need to call the writing interface
-		var params = {}; //TODO:
-		that.parentController.getControllerObject('write-to-band').data = data;
-		that.parentController.showPage('write-to-band');
-	}
+	
 
 
 	/**
 	* function to handle click on continue button
 	* in this operation we are saving the info, on success we are redirecting writing interface
 	*/
-	this.continueButtonClicked = function(){
-		var webservice = new NewWebServiceInterface();
-		//preparing the data to post
-		var dataToPost = {};
-		dataToPost.first_name = $.trim(that.myDom.find('#first-name').val());
-		dataToPost.last_name = $.trim(that.myDom.find('#last-name').val());
-		dataToPost.account_number = "33365774"; // TODO: need to call the api to read from device
+	this.continueButtonClicked = function(){		
+		//preparing the data to write screen
+		var data = {};
+		data.first_name = $.trim(that.myDom.find('#first-name').val());
+		data.last_name = $.trim(that.myDom.find('#last-name').val());		
 		var payment_mode = that.myDom.find('#payment-type').is(":checked");
-		dataToPost.is_fixed = payment_mode;
+		data.is_fixed = payment_mode;
 		if(payment_mode){ //means fixed, then only we need to add this attribute
-			dataToPost.amount = $.trim(that.myDom.find('#fixed-amound').val());
+			data.amount = $.trim(that.myDom.find('#fixed-amound').val());			
 		}
-		
-		var url = '/api/reservations/' + that.parentController.reservationID + '/smartbands';
-	    var options = { 
-			requestParameters: dataToPost,
-			successCallBack: that.successCallbackOfSaveAction,
-			failureCallBack: that.failureCallbackOfSaveAction,
-			loader: 'blocker',
-			async: false
-	    };
-		// we prepared, we shooted!!	    			
-	    webservice.postJSON(url, options);		
+		//validation part
+		var blankKeys = "";
+		if(data.first_name == ''){
+			blankKeys = "First Name"			
+		}
+		if(data.last_name == ''){			
+			blankKeys = blankKeys == '' ? "Last Name" : (blankKeys + ", " + 'Last Name');
+		}
+		if(payment_mode){	
+			if(data.amount == ''){			
+				blankKeys = blankKeys == '' ? "Amount" : (blankKeys + ", " + "Amount");
+			}
+			else{
+				var pattern = /^(0|[1-9][0-9]{0,2}(?:(,[0-9]{3})*|[0-9]*))(\.[0-9]+){0,1}$/;
+				if(!pattern.test(data.amount)){
+					blankKeys = blankKeys == '' ? "Amount is not valid" : (blankKeys + ", " + "Amount is not valid");
+				}
+			}
+
+		}	
+		if(blankKeys != "")	{
+			sntapp.notification.showErrorMessage('Please enter ' + blankKeys, that.myDom);
+		}
+		else{
+			that.parentController.getControllerObject('write-to-band').data = data;
+			that.parentController.showPage('write-to-band');		
+		}
 	};
 
 	/** 
@@ -83,6 +85,8 @@ var AddNewSmartBandView = function(domRef) {
 		else{
 			that.myDom.find('#fixed-amound').parents("div").eq(0).hide();
 		}
+		onOffSwitch();
+
 	};
 
 };

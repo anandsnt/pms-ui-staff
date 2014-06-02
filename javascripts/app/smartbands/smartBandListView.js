@@ -10,7 +10,8 @@ var SmartBandListView = function(domRef) {
 
 
 	this.delegateEvents = function() {		
-		that.myDom.find('#listing-area ul li').on('click', that.clickedOnSmartband);
+		that.myDom.find('#listing-area ul').on('click', that.clickedOnSmartband);
+		that.myDom.find("#close-popup").on('click', that.parentController.hide);
 	};
 
 	this.pageshow = function(){
@@ -30,7 +31,8 @@ var SmartBandListView = function(domRef) {
 	/**
 	* function to handle the success case of save API,  will be calling writing interface
 	*/
-	this.successCallbackOfGetDetails = function(data){	
+	this.successCallbackOfGetDetails = function(data, successCallBackParameters){
+		data.id = successCallBackParameters.id;
 		that.parentController.getControllerObject('update-card-info').data = data;
 		that.parentController.showPage('update-card-info');
 	}
@@ -38,34 +40,46 @@ var SmartBandListView = function(domRef) {
 	/**
 	* function to handle on each smarband click, which means on li
 	*/
-	this.clickedOnSmartband = function(event){
-		var target = $(event.target);
-		var id = target.attr("data-id");
+	this.clickedOnSmartband = function(event){	
+		if(getParentWithSelector(event, "li")){
+			var target = $(event.target);
+			var id = target.data("id");
+			var is_fixed = target.data("is-fixed");
 
-		var webservice = new NewWebServiceInterface();
-		
-		var url = '/api/smartbands/' + id;
-	    var options = { 
-			successCallBack: that.successCallbackOfGetDetails,
-			failureCallBack: that.failureCallbackOfGetDetails,
-			loader: 'blocker',
-			async: false
-	    };
-		// we prepared, we shooted!!	    			
-	    webservice.getJSON(url, options);	
-		
+			if(is_fixed){
+				var webservice = new NewWebServiceInterface();
+				
+				var url = '/api/smartbands/' + id;
+			    var options = { 
+					successCallBack: that.successCallbackOfGetDetails,
+					failureCallBack: that.failureCallbackOfGetDetails,
+					successCallBackParameters:{ "id": id},
+					loader: 'blocker',
+					async: false
+			    };
+				// we prepared, we shooted!!	    			
+			    webservice.getJSON(url, options);	
+			}
+			else{
+
+			}
+		}
+
 	}
 
 	this.addRow = function(rowToAppend){
-		var html = "<li data-id = "+ rowToAppend.id + ">";
+
+		var html = "<li data-id = "+ rowToAppend.id + " data-is-fixed = " + rowToAppend.is_fixed+ ">";
 		html += "<span class=smartband-icon></span>";
 		html += "<span class=band-holder>" + rowToAppend.first_name + " " + rowToAppend.last_name  + "</span>";
 		if(rowToAppend.is_fixed == true){
-			html += "<span class=charge>" + rowToAppend.amount + "</span>";
+			html += "<span class=charge>" + that.myDom.find("#listing-area").data("currency-symbol") + " " + rowToAppend.amount + "</span>";
 		}
 		else{
 			html += "<span class=charge> OPEN ROOM CHARGE </span>";
 		}
+		that.myDom.find("#listing-area ul").prepend(html);
+		createVerticalScroll('#listing-area'); 
 	}
 
 
