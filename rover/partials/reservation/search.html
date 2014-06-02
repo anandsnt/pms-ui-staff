@@ -1,0 +1,113 @@
+<!-- Navbar -->
+<header class="nav-bar float" role="banner">
+    <!-- Menu toggle button / Back button  -->
+    <a href="#main-nav" class="nav-toggle">Menu</a>
+
+    <!-- Logo -->
+    <div class="logo">
+        <img src="../images/logo-snt.png" alt="" />
+    </div>
+
+    <!-- Title -->
+    <h1 class="h2">Reservations    <span>
+            <strong>Jacob McCarthy</strong> |
+            <em class="date">Thursday, 29 May 2014</em>
+        </span>
+    </h1>
+</header>
+
+<!-- Content -->
+<section id="reservations" class="content create-reservation scrollable" role="main">
+    <form method="get" action="reservations" name="create-reservation" id="create-reservation" class="wrapper" role="search">
+        <div id="dates" class="row">
+            <div id="arriving" class="entry">
+                <label id="check-in-day-label" for="check-in-date">Arriving <span>today</span></label>
+                <!-- Styled check in date -->
+                <div class="entry-data">
+                    <input name="check-in-date" id="check-in-date" type="text" class="datepicker" value="05-29-2014" readonly />
+                    <strong id="check-in-day" class="day">29</strong>
+                    <span id="check-in-month" class="month">May</span>
+                    <span id="check-in-year" class="year">2014</span>
+                </div>
+            </div>
+            <div id="nights" class="entry">
+                <label for="nights-number">Staying <span>for</span></label>
+                <div class="entry-data">
+                    <span class="label">Nights</span>
+                    <input name="nights-number" id="nights-number" type="tel" value="1" maxlength="2" />
+                </div>
+            </div>
+            <div id="departing" class="entry">
+                <label id="check-out-day-label" for="check-out-date">Departing <span>tomorrow</span></label>
+                <!-- Styled check out date -->
+                <div class="entry-data">
+                    <input name="check-out-date" id="check-out-date" type="text" class="datepicker" value="05-30-2014" readonly />
+                    <strong id="check-out-day" class="day">30</strong>
+                    <span id="check-out-month" class="month">May</span>
+                    <span id="check-out-year" class="year">2014</span>
+                </div>
+            </div>
+        </div>
+        <div id="rooms" class="row">
+            <div id="room-1" class="entry">
+                <label for="room-1-adults">Room <span>(s)</span></label>
+                <div class="entry-data">
+                    <div class="select adults">
+                        <label for="room-1-adults" class="label">Adults</label>
+                        <select name="room-1-adults" id="room-1-adults">
+                            <option value="1" selected>1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                    <div class="select children">
+                        <label for="room-1-children" class="label">Children</label>
+                        <select name="room-1-children" id="room-1-children">
+                            <option value="0" selected>0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                    <div class="select infants">
+                        <label for="room-1-infants" class="label">Infants</label>
+                        <select name="room-1-infants" id="room-1-infants">
+                            <option value="0" selected>0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                    <div class="select room-type">
+                        <select name="room-1-type" id="room-1-type">
+                            <option value="all-rooms" selected>All Room Types</option>
+                            <option value="deluxe-room">Deluxe Room</option>
+                            <option value="deluxe-twin">Deluxe Twin</option>
+                            <option value="junior-suite">Junior Suite</option>
+                            <option value="standard-room">Standard Room</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="guest" class="row">
+            <div id="first-name" class="entry">
+                <label for="guest-first-name">Guest <span>(optional)</span></label>
+                <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First name" value="" />
+            </div>
+            <div id="last-name" class="entry no-label">
+                <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="" />
+            </div>
+        </div>
+        <div id="company-agent" class="row">
+            <div id="autocomplete-search" class="entry">
+                <label for="company-or-agent">Company / Travel Agent <span>(optional)</span></label>
+                <input name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" />
+            </div>
+        </div>
+        <button id="find-rooms-and-rates" type="button" class="button green">Find Rooms &amp; Rates</button>
+    </form>
+</section>
