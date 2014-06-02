@@ -46,6 +46,8 @@
 		height: 100%;
 		background: rgba(0,0,0,.5);
 		z-index: 999;
+
+		&.transparent { background: transparent; }
 	}
 
 	.has-datepicker {
@@ -227,6 +229,44 @@
 					.green;
 				}
 			}
+		}
+
+		&.reservation {
+			top: 460px !important;
+			background-image: none;
+			padding: 20px;
+			.box-shadow();
+			#border-radius > .rounded();
+
+			.ui-datepicker-header {
+				background-color: @grey1;
+			}
+
+			.ui-datepicker-group {
+				width: 460px;
+				.pull-left;
+
+				&.ui-datepicker-group-first { margin-right: 20px; }
+			}
+
+			&:after {
+                content: "";
+                position: absolute;
+                top: -15px;
+                width: 0; 
+                height: 0; 
+                border-bottom: 15px solid @white;
+                border-left: 15px solid transparent;
+                border-right: 15px solid transparent;
+            }
+
+            &.arriving {
+            	&:after { left: 360px; }
+            }
+
+            &.departing {
+            	&:after { right: 230px; }
+            }
 		}
 	}
 

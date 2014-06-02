@@ -59,6 +59,15 @@ body { overflow: hidden; }
 				z-index: 999;
 				.box-shadow(-1px 0px 2px rgba(0,0,0,.1));
 
+				.nested-view {
+					&.with-sidebar {
+						.content {
+							left: 5px;
+							.calc-width(100, 5);
+						}
+					}
+				}
+
 				&.set-back { z-index: 99; }
 
 				/* Page transitions ***/
@@ -108,18 +117,15 @@ body { overflow: hidden; }
 		.calc-height(100, 60); /* %, px */
 
 		/** Search screen ***/
-		&#search {
-			top: 120px;
-			.calc-height(100, 120); /* %, px */
-		}
-
+		&#search,
 		&#search-cards-wrapper {
 			top: 120px;
 			.calc-height(100, 120); /* %, px */
 		}
 
-		/* Stay Card ***/
-		&.stay-card-inner {
+		/* Stay Card / Reservations ***/
+		&.stay-card-inner,
+		&.reservations-inner {
 			top: 150px;
 			.calc-height(100, 150); /* %, px */
 		}
@@ -739,7 +745,8 @@ body { overflow: hidden; }
 		.square(50px);
 		.pull-left;
 
-		.vip {
+		.vip,
+		.search-indicator {
 			position: absolute;
 			bottom: -5px;
 			left: -5px;
@@ -1051,6 +1058,71 @@ body { overflow: hidden; }
 			}
 		}
 	}
+
+/* Left sidebar			 	==============================*/
+.sidebar-left {
+	position: absolute;
+	top: 150px;
+	left: 0;
+	width: 30px;
+	padding-right: 25px;
+	height: 100%;
+	z-index: 990;
+	.show;
+
+	.scrollable {
+		background: @rcardTexture1;
+		width: 100%;
+		.box-shadow(1px 0 1px rgba(0,0,0,.2));
+		.calc-height(100, 150);
+
+		> .wrapper { padding: 0; }
+		> .iScrollVerticalScrollbar { 
+			right: 30px;
+
+			.iScrollIndicator { background: rgba(0,0,0,.05); }
+		}
+
+		.settings-title {
+			font-size: 16px;
+			text-transform: uppercase;
+			font-weight: 600;
+			line-height: 40px;
+			color: @textColor;
+			background-color: rgba(0,0,0,.05);
+			width: 235px;
+			padding: 0 20px;
+			.float;
+
+			.title {
+				width: 155px;
+				.pull-left;
+			}
+
+			.value {
+				width: 20px;
+				text-align: right;
+				.pull-left;
+			}
+		}
+
+		.settings-content {
+			width: 235px;
+			padding: 20px;
+
+			label:not(.radio) {
+				font-size: 14px;
+				text-transform: uppercase;
+				color: @textColor;
+
+				span,
+				&.label { color: @grey3; }
+			}
+		}
+
+		@media @highdpi { background-size: 40px; }
+	}
+}
 	
 /* 6. IE
 ==========================================================*/

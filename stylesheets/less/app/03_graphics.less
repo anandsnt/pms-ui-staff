@@ -134,12 +134,15 @@
         	text-transform: uppercase;
         	color: @white;
         	font-size: 12px;
+        	line-height: 1em;
         	font-weight: 600;
         	padding-top: 55px;
         	margin: -20px 0 0 -20px;
         	.square(90px);
         	white-space: nowrap;
         	text-shadow: 1px 1px 0 rgba(0,0,0,.15);
+
+        	span { .show; }
 
         	&.icon-company { background-position: 32px -3435px; }
         	&.icon-travel-agent { background-position: 33px -3553px; }
@@ -153,6 +156,12 @@
 		&.icon-pencil { background-position: 3px -1178px; }
 		&.icon-wallet { background-position: 3px -1240px; }	
 		&.icon-save { background-position: 3px -3276px; }	
+
+		&.icon-swiped {
+			.square(30px);
+			.hide-text;
+			background-position: 0px -3332px; 
+		}
 
 		&.icon-trash { 
 			.square(20px);
@@ -249,6 +258,38 @@
 
 		&.icon-pencil-blue { background-position: 3px -2137px; }
 
+		/* Reservation Icons ***/
+		&.icon-add-60 {
+			background-position: 20px -3680px;
+			.hide-text;
+			.square(60px);
+		}
+
+		&.icon-remove-60 {
+			background-position: 20px -3740px;
+			.hide-text;
+			.square(60px);
+		}
+
+		&.icon-remove-10 {
+			background-color: transparent;
+			background-position: 2px -3938px;
+			.hide-text;
+			.square(14px);
+		}
+
+		&.icon-edit-10 {
+			background-color: transparent;
+			background-position: 2px -3998px;
+			.hide-text;
+			.square(14px);
+		}
+
+		&.icon-time {
+			&.time-in { background-position: 10px -4050px; }
+			&.time-out { background-position: 10px -4110px; }
+		}
+
 		@media @highdpi {
 			background-image: @icons2x;
 			background-size: 120px;
@@ -295,18 +336,41 @@
 
 		&.next-view { background-image: @arrowRight; }
 		&.prev-view { background-image: @arrowLeft; }
-		&.toggle,
-		&.toggle-filter { background-image: @arrowDown; }
+
+		&.toggle,,
+		&.toggle-filter { 
+			background-image: @arrowDown; 
+			
+			&.settings-title { background-image: @arrowDownTrans; }
+		}
+
 		&.toggle.active,
-		&.toggle-filter.active { background-image: @arrowUp; }
+		&.toggle-filter.active { 
+			background-image: @arrowUp; 
+			&.settings-title { background-image: @arrowUpTrans; }
+		}
+
+		&.settings-title { background-position: 205px 50%; }
 
 		@media @highdpi {
 			&.next-view { background-image: @arrowRight2x; background-size: 14px 14px; }
 			&.prev-view { background-image: @arrowLeft2x; background-size: 14px 14px; }
+
 			&.toggle,
-			&.toggle-filter { background-image: @arrowDown2x; background-size: 14px 14px; }
+			&.toggle-filter { 
+				background-image: @arrowDown2x; 
+				background-size: 14px 14px; 
+
+				&.settings-title { background-image: @arrowDownTrans2x; }
+			}
+
 			&.toggle.active,
-			&.toggle-filter.active { background-image: @arrowUp2x; background-size: 14px 14px; }
+			&.toggle-filter.active { 
+				background-image: @arrowUp2x; 
+				background-size: 14px 14px; 
+
+				&.settings-title { background-image: @arrowUpTrans2x; }
+			}
 		}
 	}
 
@@ -429,6 +493,19 @@
 		background: @yellow;
 		.square(20px);
 		#border-radius > .rounded(20px);
+	}
+
+	.search-indicator {
+		background: @white @icons no-repeat;
+		background-position: 4px -3875px;
+		border: 0;
+		.square(20px);
+		#border-radius > .rounded(20px);
+
+		@media @highdpi {
+			background-image: @icons2x;
+			background-size: 120px;
+		}
 	}
 
 	.stars {
