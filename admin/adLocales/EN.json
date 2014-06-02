@@ -107,8 +107,9 @@
     "MM":"MM",
     "AP":"AP",
     "AM":"AM",
-    "PM":"PM"
+    "PM":"PM",
 
-
+    "RESERVATION_TYPE_LABEL":"RESERVATION TYPES",
+    "SYSTEM_DEFINED_LABEL": " (System defined)"
 
 }

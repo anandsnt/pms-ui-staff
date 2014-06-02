@@ -132,6 +132,12 @@ admin.config([
 			url : '/floorsetups'
 		});
 
+		$stateProvider.state('admin.reservationTypes', {
+			templateUrl: '/assets/partials/reservationTypes/adReservationTypeList.html',
+			controller: 'ADReservationTypeListController',
+			url : '/reservationtypes'
+		});
+
 		$stateProvider.state('admin.housekeeping', {
 			templateUrl: '/assets/partials/housekeeping/adHousekeeping.html',
 			controller: 'adHousekeepingCtrl',
