@@ -1,4 +1,32 @@
 #rate-manager {
+
+  #roomTypeViewCalendar{
+    width:100%;  
+    padding:0px; 
+    overflow: hidden;
+
+    table.rate-calendar{
+       height:200px;
+       table-layout:fixed; 
+    }
+  }
+
+  #rateViewCalendar{
+    width:100%; 
+    position: relative;  
+    padding:0px; 
+    overflow: hidden; 
+
+    table{
+      table-layout:fixed; 
+    }
+  }
+
+  #rateManagerLeftMenu{
+
+  }
+
+
   .occupancy-graph-container{
     position: absolute;
     .filter-options{
@@ -27,7 +55,7 @@
       margin : 0 0 20px 0; 
       label{
        height : 40px;
-       padding-top: 10px; 
+       //padding-top: 10px;                                                                                                                                                                                          
        padding-left: 40px;    
        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gUQBikteQ2wPAAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAADCSURBVDjLrZWxDYMwEADP3zFDyjAAA2QHhBR6OmZKRx8kxA4egAFCyQxp0zyRgYCS+K+zLZ/e9v/bscPzdjoDBZADmU4PQA90ST2Nn/a5HVEDXDjGA9Va7FayK3DnN8qkntqN8E/ZRuqCYz6II03qaRQdNMTTADij6N5RiqaGFYVonlmRS5C0FmSCMaLlZMUgWptW9AJ0hsJOtLi9gcyHlVIZCKv5UdAoywhZObcx8/a1yENdSL+8U68dpj3s2LFfwAvhP0O7QfDr4AAAAABJRU5ErkJggg==);
        background-repeat : no-repeat;
@@ -45,9 +73,7 @@
  #update{
   width:100%;
 }
-.iScrollIndicator{
-  background-color:#FFA916 !important;
-}
+
 .occgraph-outer{
   left: 240px;
   clear:both;
@@ -171,18 +197,19 @@
     hr.half-left { width:30%; height:1px; margin:10px 0 0 25px; float:left;  border:1px solid rgba(0, 0, 0, 0.1)}
     hr.half-right{ width:30%; height:1px; margin:10px 25px 0 0; float:right; border:1px solid rgba(0, 0, 0, 0.1)}
     .rates-box{ 
-      background-color : skyblue;
       margin:10px 0 10px;
       width:100%;
-
-      .rate-data{ width:80% !important;
-        background-color : skyblue;
+      .rate-data{
+        width:80% !important;
         float:left;
-        line-height:14px;
-        padding:5px 0px 3px 5px;
-
+        padding: 4px 0;
+        text-indent: 10px;
       }
-      .delete_small{ width:15%;float:right;}
+      .delete_small{
+        width:15%;
+        float:right;
+        background-position: 7px -689px !important;
+      }
     }
     .has-datepicker.entry .ui-datepicker-trigger {
       left: 0px !important;
@@ -255,16 +282,25 @@
         cursor: pointer;
       }
       .button {
+        color: #fcfcfc;
         padding: 0 5px;
         margin-left: 10px;
+        text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);
+        background: -webkit-linear-gradient(90deg, #e60b0b 0%, #e66322 100%, #e66322 100%);
+        background: -moz-linear-gradient(90deg, #e60b0b 0%, #e66322 100%, #e66322 100%);
+        background: -o-linear-gradient(90deg, #e60b0b 0%, #e66322 100%, #e66322 100%);
+        background: -ms-linear-gradient(90deg, #e60b0b 0%, #e66322 100%, #e66322 100%);
+        background: linear-gradient(0deg, #e60b0b 0%, #e66322 100%, #e66322 100%);
+        border-radius: 1px;
         font-weight: normal;
         font-size: 14px;
         &.open {
-          background-color: #D9D9D9;
-          background-image: -moz-linear-gradient(#D9D9D9, #D0D0D0);
-          background-image: -webkit-linear-gradient(#D9D9D9, #D0D0D0); /* For Safari 5.1 to 6.0 */
-          background-image: -o-linear-gradient(#D9D9D9, #D0D0D0); /* For Opera 11.1 to 12.0 */
-          background-image: linear-gradient(#D9D9D9, #D0D0D0); /* Standard syntax */
+          background-color: #d1d1d1;
+          border-radius: 3px;
+          background-image: -moz-linear-gradient(#d1d1d1, #d8d8d8);
+          background-image: -webkit-linear-gradient(#d1d1d1, #d8d8d8); /* For Safari 5.1 to 6.0 */
+          background-image: -o-linear-gradient(#d1d1d1, #d8d8d8); /* For Opera 11.1 to 12.0 */
+          background-image: linear-gradient(#d1d1d1, #d8d8d8); /* Standard syntax */
         }
       }
       span {
@@ -290,10 +326,19 @@
   }
 
   .cell-content{
-    border : 10px solid #e7e7e7;
+    border : 10px solid rgb(216, 216, 216);
     height : 80px;
     line-height : 80px; /* Trick for vertical alligh*/
     font-size : 20px;
+
+    div{
+      -webkit-box-shadow: inset 1px 2px 4px -2px rgba(0,0,0,0.75);
+      -moz-box-shadow: inset 1px 2px 4px -2px rgba(0,0,0,0.75);
+      box-shadow: inset 1px 2px 4px -2px rgba(0,0,0,0.75);
+      -webkit-border-radius: 1px;
+      -moz-border-radius: 1px;
+      border-radius: 1px;
+    }
 
     &.exp {
       height: auto;
@@ -339,6 +384,7 @@
       & > div {
         display: table-cell;
         vertical-align: middle;
+        padding-left: 10px;
         .rate-single {
           width: 25px;
           height: 25px;
@@ -348,10 +394,10 @@
           color: #333;
         }
         .right {
-          float: right;
+          //float: right;
         }
         .left {
-          float: left;
+          //float: left;
         }
 
       }
@@ -359,7 +405,8 @@
 
   }
   .date-header {
-    border : 10px solid #e7e7e7;
+    border : 10px solid rgb(216, 216, 216);
+    background-color: #3b3f43;    
     height : 80px;
     font-size : 18px;
     text-align: center;
@@ -367,16 +414,21 @@
     vertical-align: middle;
     display:table;
     width: 100%;
-    color: #FFFFFF;
+    color: #fcfcfc;
     border-radius: 20px;
     text-transform: uppercase;
   }
   th .date-header {
     background-color : #393c41;
+    border-radius: 3px;
   }
   th .date-header span { 
-    display: table-cell;
+    font-size: 14px;    
     vertical-align: middle;
+    display: block;
+    &.week-day{
+      margin-top: 10px;
+    }
   }
   th .cell-content{
     background-color : #393c41;
@@ -787,14 +839,14 @@
 
   &.fromRoomTypeView{
    .ngdialog-content{
-      width: 700px;
-    }
+    width: 700px;
+  }
 
-    &.allRooms {
-      .ngdialog-content{
-         width: 100%;
-       }
-    }
+  &.allRooms {
+    .ngdialog-content{
+     width: 100%;
+   }
+ }
 }
 
 padding-top: 80px;
@@ -1006,17 +1058,99 @@ padding-top: 80px;
 }
 
 #rateManagerLeftPanel.filter-options{
+  .iScrollIndicator{
+    background-color: rgb(157, 157, 157) !important;
+  }
+  z-index:99999;
   padding-right: 10px !important;
+
+  .fixed-container{
+    position:relative;
+    h3{
+      text-align: center;
+      padding-bottom:15px;
+    }
+    a.leftMenuHandle{
+      left:210px;
+    }
+
+    hr{
+      padding:0px; 
+      margin:20px 0px;
+    }
+
+      span.deleteall{
+        display: block;
+        text-align: center;
+        font-size: 14px;
+        a{
+          color: rgb(157, 157, 157)
+        }
+      }
+
+    div.rates-box{
+      font-size: 14px;
+      text-transform: uppercase;
+      background: rgb(130, 195, 222);
+      color: white;
+
+
+
+      &.dark{
+        background: rgb(86, 96, 131);
+      }
+
+    }
+
+    div.holder.left{
+      div.entry{     
+
+        label{
+          text-transform: uppercase;
+        }
+
+        font-size: 14px;
+        &.has-datepicker{
+          padding-bottom:15px;
+          input{
+            width: 100%;
+          }
+        }
+
+
+
+      }
+    }
+
+    .button.green{
+      width: 100%;
+      margin-top: 30px;
+      background: linear-gradient(0deg, #54d115 0%, #90d92b 100%);
+
+    }
+
+
+  }
+
+
   .scrolling-container{
     margin-bottom:10px;
     overflow:hidden; 
     position:relative; 
     padding-right:12px;
+
+
   }
 
+
   .entry.table-search1{
+    padding:0px;
+    label{
+      line-height:14px;
+    }
     input{
       width:100%;
+      margin-bottom:10px;
     }
   }
 
@@ -1054,16 +1188,18 @@ padding-top: 80px;
 }
 
 .arrow-left {
-    border-color: rgba(0, 0, 0, 0) #FCFCFC #FCFCFC rgba(0, 0, 0, 0);
-    border-style: solid;
-    border-width: 10px;
-    height: 0;
-    width: 0;
-    position: fixed;
-    left: 207px;
+  border-color: rgba(0, 0, 0, 0) #FCFCFC #FCFCFC rgba(0, 0, 0, 0);
+  border-style: solid;
+  border-width: 10px;
+  height: 0;
+  width: 0;
+  position: fixed;
+  left: 207px;
 }
 
 .akhila:after {
   background: #fcfcfc url(/assets/select-arrow.png) no-repeat 50% 50%;
   background-size: 6px 4px;
 }
+
+

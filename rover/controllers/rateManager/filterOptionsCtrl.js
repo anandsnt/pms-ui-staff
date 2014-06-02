@@ -48,6 +48,12 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
         
      });
 
+    $scope.refreshFilterScroll = function(){
+        setTimeout(function(){
+            $scope.$$childTail.$parent.myScroll['filter_details'].refresh();
+            }, 300);
+    }
+
 	$scope.fetchFilterOptions = function(){
 		var fetchRatesSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
@@ -116,12 +122,17 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
    	};
 
    	$scope.deleteSelectedRateType = function(id){
+        if(id === "ALL"){
+            $scope.currentFilterData.rate_type_selected_list = [];
+        }
+
 		angular.forEach($scope.currentFilterData.rate_type_selected_list,function(item, index) {
        		if (item.id == id) {
        			$scope.currentFilterData.rate_type_selected_list.splice(index, 1);
 		 	}
        	});
        	calculateRatesList();
+        $scope.refreshFilterScroll();
 	};
 	
 	$scope.$watch('currentFilterData.rate_selected', function() {
@@ -208,19 +219,38 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
         }
     };
 
+    
+
     $scope.setCompanyCardFilter = function(cmpCardObj){
-        $scope.companySearchText = cmpCardObj.account_first_name + " " + cmpCardObj.account_last_name;
+        $scope.companySearchText = "";
+        $scope.selectedCards = [];
+        $scope.selectedCards.push(cmpCardObj.account_first_name + " " + cmpCardObj.account_last_name);
         $scope.currentFilterData.name_card_ids.push(cmpCardObj.id);
         // reset company card result array
         $scope.companyCardResults = [];
+        $scope.refreshFilterScroll();
     }
 
+
+    $scope.deleteCards = function(id){
+        $scope.companySearchText = "";
+        $scope.selectedCards = [];
+        $scope.refreshFilterScroll();
+    };
+    
+
+
 	$scope.deleteRate = function(id){
+        if(id === "ALL"){
+            $scope.currentFilterData.rates_selected_list = [];
+        }
 		angular.forEach($scope.currentFilterData.rates_selected_list,function(item, index) {
        		if (item.id == id) {
        			$scope.currentFilterData.rates_selected_list.splice(index, 1);
 		 	}
        	});
+        $scope.refreshFilterScroll();
+
 	};
 	
 	$scope.showCalendar = function(){

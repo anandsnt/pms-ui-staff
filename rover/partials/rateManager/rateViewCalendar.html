@@ -1,6 +1,6 @@
 
-<div style="width:100%; position: relative;  height:{{uiOptions.tableHeight}}px; padding:0px; overflow: hidden; " ng-iscroll="RateCalendarCtrl" ng-iscroll-delay="1000">
-	<table class="rate-calendar" style="table-layout:fixed; width:{{uiOptions.tableWidth}}px;">
+<div id="rateViewCalendar" style="height:{{uiOptions.tableHeight}}px;" ng-iscroll="RateCalendarCtrl" ng-iscroll-delay="1000">
+	<table class="rate-calendar" style="width:{{uiOptions.tableWidth}}px;">
 		<thead>
 			<tr>
 				<th width="220" style="{width:th.width}" class="first-row">
@@ -12,7 +12,8 @@
 				</button></th>
 				<th width="{{uiOptions.columnWidth}}"   style="{width:th.width}"  ng-repeat="date in calendarData.dates">
 				<div class="date-header">
-					<span>{{date| date:'EEEE MMMM dd'}}</span>
+					<span class="week-day">{{date| date:'EEEE'}}</span>
+					<span>{{date| date:'MMMM dd'}}</span>
 				</div></th>
 			</tr>
 		</thead>
