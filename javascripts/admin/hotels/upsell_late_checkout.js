@@ -2,7 +2,8 @@ var UpsellLateCheckoutView = function(domRef){
   BaseView.call(this);
   this.myDom = domRef;
   var that = this;
-
+  this.deleted_room_types = [];
+  
   this.pageinit = function(){
   };
   this.pageshow = function(){
@@ -128,13 +129,15 @@ var UpsellLateCheckoutView = function(domRef){
 	  postParams.charge_code = charge_code;
 	  // Searching for max_late_checkouts in room-type-details
 	  postParams.room_types = [];
+	  postParams.deleted_room_types = [];
 	  that.myDom.find("#room-type-details div div" ).each(function() {
 			var value = $(this).find('input').val();
 			var id = $(this).find('input').attr('id');
 			var obj = { "id": id , "max_late_checkouts": value};
 			postParams.room_types.push(obj);
 	  });
-		
+	  postParams.deleted_room_types = that.deleted_room_types;
+	  
 	  var url = '/admin/hotel/update_late_checkout_setup';
 	  var webservice = new WebServiceInterface();
 	  var options = {
@@ -157,6 +160,7 @@ var UpsellLateCheckoutView = function(domRef){
   this.changeRoomType = function(e){
   	
   	var element = $(e.target);
+  	console.log(element);
 	var selectedRoomTypeId = $(element).find('option:selected').val();
 	var selectedRoomTypeText = $(element).find('option:selected').text();
   	
@@ -165,7 +169,7 @@ var UpsellLateCheckoutView = function(domRef){
   	"<span class='entry'><a class='icons icon-delete large-icon align-text-center' id='"+selectedRoomTypeId+"' name='"+selectedRoomTypeText+"'>"+
 	"</a></span></div></div>";
 	
-  	that.myDom.find('#room-type-details').append(html);
+  	that.myDom.find('#room-type-details').prepend(html);
   	// Removing RoomType from select box
   	that.myDom.find("#room-types option[value='"+selectedRoomTypeId+"']").remove();
   };
@@ -180,7 +184,10 @@ var UpsellLateCheckoutView = function(domRef){
 			// Adding back Room type to select box.
 			var html = "<option value='"+selectedRoomTypeId+"'>"+selectedRoomTypeText+"</option>";
 			that.myDom.find("#room-types").append(html);
+			
+			that.deleted_room_types.push(selectedRoomTypeId);
 		}
+		
   };
   
   
