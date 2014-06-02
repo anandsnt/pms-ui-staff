@@ -11,5 +11,14 @@
     "CHECKING_IN": "Checking In",
     "INHOUSE": "Inhouse",
     "CHECKING_OUT": "Checking Out",
-    "DASHBOARD_HEADING": "Dashboard"
+    "DASHBOARD_HEADING": "Dashboard",
+    
+    "NEW_PAYMENT_METHOD": "New Payment Method",
+    "PAYMENT_TYPE": "Payment type",
+    "SELECT_CREDIT_CARD_LABEL": "Select credit card",
+    "SELECT_PAYMENT_TYPE": "Select Payment Type",
+    "CARD_NUMBER":"Card number",
+    "EXPIRATION_DATE":"Expiration date",
+    "NAME_ON_CARD":"Name on card",
+    "ADD_TO_GUEST_CARD":"Add to Guest Card"
 }

@@ -92,14 +92,39 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		//$scope.passData  => Gives information from which view popup opened 
 		//get reservation id if it is from staycard
 		if($scope.passData.fromView == "staycard"){
-			$scope.saveData.reservation_id = $scope.passData.reservationId;
 			
-		} else {
+			$scope.saveData.reservation_id = $scope.passData.reservationId;
+			$scope.saveData.et2 = $scope.passData.et2;
+			$scope.saveData.ksn = $scope.passData.ksn;
+			$scope.saveData.pan = $scope.passData.pan;
+			$scope.saveData.mli_token = $scope.passData.token;
+			if($scope.passData.is_swiped){
+				$scope.saveData.payment_credit_type = $scope.passData.credit_card;
+				$scope.saveData.credit_card = $scope.passData.credit_card;
+			} else {
+				$scope.saveData.credit_card = $scope.saveData.credit_card;
+			}
+			// $scope.saveData.credit_card = $scope.saveData.selected_credit_card;
+			
+		} else {alert("guestcard")
 			$scope.saveData.guest_id = $scope.passData.guest_id;
 			$scope.saveData.user_id = $scope.passData.user_id;
+			if($scope.passData.is_swiped){
+				$scope.saveData.credit_card = $scope.passData.credit_card;
+			}
+			$scope.saveData.et2 = $scope.passData.et2;
+			$scope.saveData.ksn = $scope.passData.ksn;
+			$scope.saveData.pan = $scope.passData.pan;
+			$scope.saveData.mli_token = $scope.passData.token;
 		}
-		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type"];
+		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card"];
 		var data = dclone($scope.saveData, unwantedKeys);
+		console.log("::::::::::::::::::::::::")
+		console.log(JSON.stringify($scope.saveData));
+		// mli_token: $card_token,
+				    // et2: $et2,
+					// ksn: $ksn,
+					// pan: $pan,
 		if($scope.passData.fromView == "staycard"){
 			
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);

@@ -20,7 +20,7 @@ var CardOperation = function(){
           					'RVCardReadTrack2KSN': '950067000000062002AF',
           					'RVCardReadMaskedPAN': '5405220008002226',
           					'RVCardReadCardName': 'Sample Name',
-          					'RVCardReadExpDate':"59021"
+          					'RVCardReadExpDate':"17012"
 						  };
 
 			if (typeof data != 'undefined'){ carddata = data;}

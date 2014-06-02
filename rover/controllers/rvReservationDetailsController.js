@@ -83,6 +83,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	           };
          
          	var tokenizeSuccessCallback = function(tokenData){
+         		alert("tokenData"+tokenData);
          	data.token = tokenData;
          		var passData = {
 		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -92,6 +93,10 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 		  	 		"card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
 		  	 		"name_on_card": data.RVCardReadCardName,
 		  	 		"card_expiry":data.RVCardReadExpDate,
+		  	 		"et2": data.RVCardReadTrack2,
+	             	 'ksn': data.RVCardReadTrack2KSN,
+	              	'pan': data.RVCardReadMaskedPAN,
+	              	'token': tokenData,
 		  	 		 "is_swiped": true   // Commenting for now
 		  	 	};
          	var paymentData = $scope.reservationData;

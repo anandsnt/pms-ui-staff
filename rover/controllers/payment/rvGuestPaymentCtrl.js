@@ -32,8 +32,13 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 		  	 		"card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
 		  	 		"name_on_card": data.RVCardReadCardName,
 		  	 		"card_expiry":data.RVCardReadExpDate,
+		  	 		"et2": data.RVCardReadTrack2,
+	             	'ksn': data.RVCardReadTrack2KSN,
+	              	'pan': data.RVCardReadMaskedPAN,
+	              	'token': tokenData,
 		  	 		"is_swiped": true  
 		  	 	};
+		  	 	
          	var paymentData = $scope.paymentData;
   	 		$scope.showAddNewPaymentModal(passData, paymentData);
          };
