@@ -32,7 +32,7 @@
 		    <input type="text" maxlength="15" value="{{saveData.card_number}}" placeholder="Enter Card number" ng-model="saveData.card_number">
 		</div>
 		<div class="entry">
-		    <label for="expiry-month" translate>EXPIRATION_DATE (<span>MM/YY</span>)</label>
+		    <label for="expiry-month" ><span translate>EXPIRATION_DATE </span>(<span>MM/YY</span>)</label>
 		    <input type="text" size="2" maxlength="2" value="" placeholder="MM" ng-model="saveData.card_expiry_month">
 		    <input type="text" size="2" maxlength="2" value="" placeholder="YY" ng-model="saveData.card_expiry_year">
 		</div>
@@ -49,7 +49,7 @@
 		</label>
 	</div>
 	<div class="actions float">
-		<button class="button blank modal-close" id="cancel" type="button" ng-click="clickCancel()">Cancel</button>
-		<button class="button green modal-close" id="save" type="button" ng-click="savePayment()">Add card</button>  
+		<button class="button blank modal-close" id="cancel" type="button" ng-click="clickCancel()" translate>CANCEL</button>
+		<button class="button green modal-close" id="save" type="button" ng-click="savePayment()" translate>ADD_CARD</button>  
 	</div>
 </form></div>

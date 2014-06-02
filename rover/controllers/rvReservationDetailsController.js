@@ -1,4 +1,4 @@
-sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'ngDialog', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog){
+sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'RVNewsPaperPreferenceSrv','ngDialog', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, RVNewsPaperPreferenceSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	/*
 	 * success call back of fetch reservation details
@@ -83,8 +83,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	           };
          
          	var tokenizeSuccessCallback = function(tokenData){
-         		alert("tokenData"+tokenData);
-         	data.token = tokenData;
+         		data.token = tokenData;
          		var passData = {
 		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
 		  	 		"fromView": "staycard",
@@ -124,4 +123,23 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	 	}
 	 	
 	 });
+	 $scope.failureNewspaperSave = function(errorMessage){
+	 	$scope.errorMessage = errorMessage;
+	 	$scope.$emit('hideLoader');
+	 };
+	 $scope.successCallback = function(){
+	 	$scope.$emit('hideLoader');
+	 };
+  	 $scope.saveNewsPaperPreference = function(selected_newspaper){
+		
+		var params = {};
+		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+		params.selected_newspaper= selected_newspaper;
+		
+		$scope.invokeApi(RVNewsPaperPreferenceSrv.saveNewspaperPreference, params, $scope.successCallback, $scope.failureNewspaperSave);
+
+	};
+
+
+
 }]);

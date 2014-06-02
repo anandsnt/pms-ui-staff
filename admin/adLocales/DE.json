@@ -18,7 +18,7 @@
     "ONLY_WHEN_CHECKIN_NOT_SUCCESSFUL": "Nur bei Check-in ist NICHT erfolgreich",
     "ALL": "alle",
     "EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON": "E-Mail-Accounts (mit Semikolons getrennt [;])",
-    
+
     "IMPORT_FROM_PMS":"IMPORT FROM PMS",
     "ROOM_TYPES":"Zimmerarten",
     "ADD_NEW":"neue hinzufügen",
@@ -58,7 +58,34 @@
     "SELECT_FLOOR":"wählen Boden",
     "FLOOR_NO":"Stockwerk",
     "FLOOR_DESCRIPTION":"Stock Beschreibung",
-    "FLOORS":"Etagen"
-    
+    "FLOORS":"Etagen",
+
+    "USER_ROLES":"Benutzerrollen",
+    "ROLE_DASHBOARD": "Role-Dashboard",
+    "SELECT_DASHBOARD":"Select-Dashboard",
+
+    "NAME":"Name",
+    "DESCRIPTION":"Beschreibung",
+    "ACTIVE":"aktiv",
+    "DELETE":"löschen",
+    "ADD_ONS":"Add-Ons",
+    "FROM_DATE":"von-Datum",
+    "TO_DATE":"To Date",
+    "CHARGE_GROUP":"Ladegruppe",
+    "CHARGE_CODE":"Lade Code",
+    "AMOUNT":"Menge",
+    "AMOUNT_TYPE":"Anzahl Typ",
+    "BESTSELLER":"Bestseller",
+    "POST_TYPE":"Beitrag Typ",
+    "RATE_ONLY":"Nur bewerten",
+    "RESERVATION_ONLY":"Reservierung nur",
+    "EDIT":"Bearbeiten",
+    "ADD_NEW_SMALL":"Neue",
+    "ADD_ON":"Add-On",
+    "DELETE":"löschen",
+    "RESERVATION_TYPE_LABEL":"Reservierungsarten",
+    "SYSTEM_DEFINED_LABEL":"(System definiert)"
+
+
 
 }

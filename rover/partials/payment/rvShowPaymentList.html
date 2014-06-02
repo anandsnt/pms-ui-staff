@@ -12,16 +12,16 @@
 				<figure class="card-logo">
 					<img src="/assets/{{paymentlist.card_code}}.png" alt="">
 				</figure> 
-				<span class="number"> Ending with 
+				<span class="number"> <span translate>ENDING_WITH </span>
 					<span class="value number"> {{paymentlist.ending_with}} </span> 
 				</span> 
-				<span class="date"> Date 
+				<span class="date"> <span translate>DATE </span>
 					<span class="value date"> {{paymentlist.expiry_date}}  </span> 
 				</span> 
-				<span class="name"> Name 
+				<span class="name"> <span translate>NAME </span>
 					<span class="value name"> {{paymentlist.holder_name}}  </span> 
 				</span> 
-				<span class="in-gc" ng-show="paymentlist.is_in_guest_card">In Guest Card</span>
+				<span class="in-gc" ng-show="paymentlist.is_in_guest_card"><span translate>IN_GUEST_CARD </span></span>
 				<br clear="all">
 			 </a>
 		</div>

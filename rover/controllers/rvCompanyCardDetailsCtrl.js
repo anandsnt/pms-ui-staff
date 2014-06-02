@@ -1,14 +1,24 @@
 sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', function($scope, RVCompanyCardSrv, $state, $stateParams){
+	
+	console.log("$stateParams type --"+$stateParams.type);
+	
 	//setting the heading of the screen
-	$scope.heading = "Company Card";	
-
+	if($stateParams.type == "COMPANY"){
+		$scope.heading = "Company Card";
+	}
+	else if($stateParams.type == "TRAVELAGENT"){
+		$scope.heading = "Travel Agent Card";
+	}
+	
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
 
 	//scope variable for tab navigation, based on which the tab will appear
 	$scope.currentSelectedTab = 'cc-contact-info'; //initially contact information is active
 
-
+	if(typeof $stateParams.type !== 'undefined' && $stateParams.type !== ""){
+			$scope.account_type = $stateParams.type;
+	}
 
 	/**
 	* function to switch to new tab, will set $scope.currentSelectedTab to param variable
@@ -58,19 +68,11 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$scope.contactInformation = data;
 		if(typeof $stateParams.id !== 'undefined' && $stateParams.id !== ""){
 			$scope.contactInformation.id = $stateParams.id;			
-		}		
+		}
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch
 		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
 	};
-
-	//checking for type, if not found, choosing as travel-agent, need to discuss with team
-	if(typeof $stateParams.type !== 'undefined' && $stateParams.type !== ""){
-		$scope.account_type = $stateParams.type;
-	}
-	else{
-		$scope.account_type = "travel-agent";
-	}
 
 	/**
 	* successcall back of country list fetch
@@ -89,8 +91,8 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	if(typeof id !== "undefined" && id === "add") {
 		$scope.contactInformation = {};
 		if(typeof $stateParams.firstname !== "undefined" && $stateParams.firstname !== "") {
-			$scope.contactInformation.company_details = {};
-			$scope.contactInformation.company_details.account_first_name = $stateParams.firstname;
+			$scope.contactInformation.account_details = {};
+			$scope.contactInformation.account_details.account_first_name = $stateParams.firstname;
 		}
 
 		//setting as null dictionary, will help us in saving..
@@ -136,6 +138,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	* change found in the present contact info.
 	*/
 	var saveContactInformation = function(data){
+		
 		var dataUpdated = false;
 	    if(!angular.equals(data, presentContactInfo)) {
 				dataUpdated = true;
@@ -161,6 +164,8 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 			if(typeof dataToSend.countries !== 'undefined'){
 				delete dataToSend['countries'];
 			}
+			dataToSend.account_type = $stateParams.type;
+			console.log(dataToSend);
 			$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
 		}
 	};

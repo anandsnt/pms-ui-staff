@@ -8,7 +8,6 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 	$scope.isGuestCardVisible = false;
 	$scope.$on('GUESTCARDVISIBLE', function(event, data){
 		$scope.isGuestCardVisible = false;
-		alert("=============="+data)
 		if(data){
 			$scope.isGuestCardVisible = true;
 		}
@@ -164,7 +163,6 @@ $scope.settingsClicked = function(){
 
 
 $scope.showAddNewPaymentModal = function(passData, paymentData){
-	alert(JSON.stringify(passData))
 	  $scope.passData = passData;
 	  $scope.paymentData = paymentData;
 	  ngDialog.open({
