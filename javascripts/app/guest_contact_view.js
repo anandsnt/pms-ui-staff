@@ -37,6 +37,7 @@ var GuestContactView = function(domRef) {
 			}
 		}
 	};
+	
 	this.fetchCompletedOfSaveContactInfo = function(data){
 		that.$contactInfoChange = false;
 		// Update guest card header UI.
@@ -171,7 +172,8 @@ var GuestContactView = function(domRef) {
 			   requestParameters: data,
 			   successCallBack: that.fetchCompletedOfRenderContactInformation,
 			   failureCallBack: that.fetchFailedOfRenderContactInformation,
-			   loader: 'BLOCKER',
+			   loader: 'NONE',
+			   async: true
 	    };		
 		var webservice = new WebServiceInterface();
 		webservice.getJSON(url, options);
