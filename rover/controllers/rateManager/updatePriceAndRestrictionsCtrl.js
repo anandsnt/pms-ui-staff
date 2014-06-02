@@ -321,7 +321,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 angular.forEach($scope.data.restrictionTypes, function(value, key){
                     if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled != value.isRestrictionEnabled){
                         var action = "";
-                        if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled == "true"){
+                        if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled){
                             action = "remove";
                         } else {
                             action = "add";
