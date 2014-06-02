@@ -69,7 +69,8 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 		   alert("undefined")
   	 			var passData = {
 		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
-		  	 		"fromView": "staycard"
+		  	 		"fromView": "staycard",
+		  	 		 "is_swiped": false 
 		  	 	};
 		  	 	var paymentData = $scope.reservationData;
   	 		 $scope.showAddNewPaymentModal(passData, paymentData);
@@ -93,10 +94,10 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 		  	 		"credit_card": data.RVCardReadCardType,
 		  	 		"card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
 		  	 		"name_on_card": data.RVCardReadCardName,
-		  	 		"card_expiry_month":data.RVCardReadExpDate
+		  	 		"card_expiry":data.RVCardReadExpDate,
+		  	 		 "is_swiped": true   // Commenting for now
 		  	 	};
-         	    var paymentData = $scope.reservationData;
-         	    alert("success=="+paymentData);
+         	var paymentData = $scope.reservationData;
   	 		$scope.showAddNewPaymentModal(passData, paymentData);
          	
          	
@@ -127,7 +128,6 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	  */
 	 $scope.$on('SWIPEHAPPENED', function(event, data){
 	 	if(!$scope.isGuestCardVisible){
-	 	alert("happ")
 	 		$scope.openAddNewPaymentModel(data);
 	 	}
 	 	

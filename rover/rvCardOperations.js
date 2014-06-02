@@ -8,7 +8,7 @@ var CardOperation = function(){
 	
 	this.startReaderDebug = function(options){
 	//Simulating the card reader function for easy testing. May be removed in production.
-console.log("==========Before cointsnace------------")
+
 		coinstance = this; // Global instance to test from console.
 		that.callSuccess = function(data)
 		{
@@ -19,7 +19,8 @@ console.log("==========Before cointsnace------------")
 							'RVCardReadTrack2': 'CDA1E3A2EB853964E4D4550151545BE1052CB17498A61E8FE5BB5D948BD3844EA78603B263D5E509',
           					'RVCardReadTrack2KSN': '950067000000062002AF',
           					'RVCardReadMaskedPAN': '5405220008002226',
-          					'RVCardReadCardName': 'Sample Name'
+          					'RVCardReadCardName': 'Sample Name',
+          					'RVCardReadExpDate':"59021"
 						  };
 
 			if (typeof data != 'undefined'){ carddata = data;}

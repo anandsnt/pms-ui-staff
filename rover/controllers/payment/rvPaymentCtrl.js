@@ -38,15 +38,17 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		
 		
 		console.log(JSON.stringify($scope.passData));
-	$scope.saveData.selected_payment_type = 0;//Only for swipe
-	$scope.paymentTypeValues = $scope.data[0].values;
-	$scope.saveData.card_number  = $scope.passData.card_number;
-	$scope.saveData.selected_credit_card  =  $scope.passData.credit_card;
-	$scope.saveData.name_on_card =  $scope.passData.name_on_card;
-	$scope.saveData.card_expiry_month = $scope.passData.card_expiry_month;
+		if($scope.passData.is_swiped){
+			$scope.saveData.selected_payment_type = 0;//Only for swipe
+			$scope.paymentTypeValues = $scope.data[0].values;
+			$scope.saveData.card_number  = $scope.passData.card_number;
+			$scope.saveData.selected_credit_card  =  $scope.passData.credit_card;
+			$scope.saveData.name_on_card =  $scope.passData.name_on_card;
+			$scope.saveData.card_expiry_month = $scope.passData.card_expiry.slice(-2);
+			$scope.saveData.card_expiry_year = $scope.passData.card_expiry.substring(0, 2);
+		}
 		
-		
-		
+
 	};
 	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender);
 	$scope.renderPaymentValues = function(){
