@@ -135,8 +135,6 @@ var UpsellLateCheckoutView = function(domRef){
 			postParams.room_types.push(obj);
 	  });
 		
-	  console.log(postParams.room_types);
-		
 	  var url = '/admin/hotel/update_late_checkout_setup';
 	  var webservice = new WebServiceInterface();
 	  var options = {
@@ -161,29 +159,27 @@ var UpsellLateCheckoutView = function(domRef){
   	var element = $(e.target);
 	var selectedRoomTypeId = $(element).find('option:selected').val();
 	var selectedRoomTypeText = $(element).find('option:selected').text();
-		
-  	var html = "<div class='entry' id='room-type-box-"+selectedRoomTypeId+"'><div><span>"+selectedRoomTypeText+"</span>"+
-  	"<input type='text' value='' required=''  id='"+selectedRoomTypeId+"'></div>"+
-  	"<div class='entry'><span class='icons icon-delete large-icon' id='"+selectedRoomTypeId+"' name='"+selectedRoomTypeText+"' style='margin-top: 5px;'>"+
-	"</span></div></div>";
   	
+  	var html = "<div class='entry full-width' id='room-type-box-"+selectedRoomTypeId+"'><div class='entry'><span class='align-text-center'>"+selectedRoomTypeText+"</span></div>"+
+  	"<div class='entry'><span class='entry'><input type='text' value='' required=''  id='"+selectedRoomTypeId+"'></span>"+
+  	"<span class='entry'><a class='icons icon-delete large-icon align-text-center' id='"+selectedRoomTypeId+"' name='"+selectedRoomTypeText+"'>"+
+	"</a></span></div></div>";
+	
   	that.myDom.find('#room-type-details').append(html);
+  	// Removing RoomType from select box
   	that.myDom.find("#room-types option[value='"+selectedRoomTypeId+"']").remove();
   };
-  
+  // To handle delete the selected room type
   this.clickedRoomTypeDetails = function(e){
   		var element = $(e.target);
 	  	// Delete button click
 	  	if(element.hasClass('icon-delete')){
 			var selectedRoomTypeId = element.attr('id');
 			var selectedRoomTypeText = element.attr('name');
-			
 			that.myDom.find("#room-type-box-"+selectedRoomTypeId).remove();
-			
+			// Adding back Room type to select box.
 			var html = "<option value='"+selectedRoomTypeId+"'>"+selectedRoomTypeText+"</option>";
-			console.log(html);
-			
-			that.myDom.find("room-types").append(html);
+			that.myDom.find("#room-types").append(html);
 		}
   };
   
