@@ -66,26 +66,23 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 
   	 $scope.openAddNewPaymentModel = function(data){
   	 	if(data === undefined){
-  	 		   alert("undefined")
   	 			var passData = {
 		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
 		  	 		"fromView": "staycard",
 		  	 		 "is_swiped": false 
 		  	 	};
 		  	 	var paymentData = $scope.reservationData;
-  	 		 $scope.showAddNewPaymentModal(passData, paymentData);
+  	 		 	$scope.showAddNewPaymentModal(passData, paymentData);
   	 	} else {
-  	 		alert("here")
-  	 		alert(JSON.stringify(data));
   	 		
   	 		
            var  getTokenFrom = {
-              'et2': data.RVCardReadTrack2,
-              'ksn': data.RVCardReadTrack2KSN,
-              'pan': data.RVCardReadMaskedPAN
-           };
+	              'et2': data.RVCardReadTrack2,
+	              'ksn': data.RVCardReadTrack2KSN,
+	              'pan': data.RVCardReadMaskedPAN
+	           };
          
-         var tokenizeSuccessCallback = function(tokenData){
+         	var tokenizeSuccessCallback = function(tokenData){
          	data.token = tokenData;
          		var passData = {
 		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
@@ -99,19 +96,9 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 		  	 	};
          	var paymentData = $scope.reservationData;
   	 		$scope.showAddNewPaymentModal(passData, paymentData);
-         	
-         	
-         };
-         $scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);	
-          
-  	 		
-  	 		
-  	 		
-  	 		
-  	 		
-  	 	
+         	};
+         	$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);	
   	 	}
-  	 
   	 	
   	 };
   	 $scope.openPaymentList = function(){

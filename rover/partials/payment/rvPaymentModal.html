@@ -42,7 +42,7 @@
 	    <input type="text" ng-model="saveData.name_on_card" value="{{saveData.name_on_card}}" placeholder="Enter name on card" id="name-on-card" name="name-on-card">
 	</div>	
 	<div class="entry full-width" ng-show="!isFromGuestCard">
-        <label class="checkbox" ng-class="{'checked': saveData.add_to_guest_card}">
+        <label class="checkbox add-to-guest" ng-class="{'checked': saveData.add_to_guest_card}" >
         	<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.add_to_guest_card}"></span>
 			<input type="checkbox" ng-model="saveData.add_to_guest_card">
 			<span class="guest_card_promotions">Add to Guest Card</span> 

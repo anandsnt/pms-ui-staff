@@ -4,15 +4,8 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 	 * To open new payment modal screen from guest card
 	 */
 	$scope.openAddNewPaymentModel = function(data){
-  	
-  	 	
-  	 	
-  	 	
-  	 	
-  	 	
   	 	
   	 	if(data === undefined){
-  	 		   alert("undefifffffned")
   	 			 	var passData = {
 			  	 		"user_id": $scope.paymentData.user_id,
 			  	 		"guest_id": $scope.paymentData.guest_id,
@@ -21,9 +14,6 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 			  	 	var paymentData = $scope.paymentData;
 			  	 	$scope.showAddNewPaymentModal(passData, paymentData);
   	 	} else {
-  	 		alert("hereddd")
-  	 		alert(JSON.stringify(data));
-  	 		
   	 		
            var  getTokenFrom = {
               'et2': data.RVCardReadTrack2,
@@ -42,24 +32,15 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 		  	 		"card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
 		  	 		"name_on_card": data.RVCardReadCardName,
 		  	 		"card_expiry":data.RVCardReadExpDate,
-		  	 		"is_swiped": true   // Commenting for now
+		  	 		"is_swiped": true  
 		  	 	};
          	var paymentData = $scope.paymentData;
   	 		$scope.showAddNewPaymentModal(passData, paymentData);
          };
          $scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);	
           
-  	 		
-  	 		
-  	 		
-  	 		
-  	 		
-  	 	
   	 	}
   	 
-  	 	
-  	 	
-  	 	
   	 };
   	 /*
 	 * To open set as as primary or delete payment
@@ -85,8 +66,6 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 
 	$scope.$on('SWIPEHAPPENED', function(event, data){
 	 	if($scope.isGuestCardVisible){
-	 		alert("guesy");
-	 		// alert(JSON.stringify(data));
 	 		$scope.openAddNewPaymentModel(data);
 	 	}
 	 	

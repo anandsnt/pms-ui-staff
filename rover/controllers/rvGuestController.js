@@ -39,10 +39,12 @@ $scope.resizableOptions =
 	resize: function( event, ui ) {
 		if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				
 			$scope.guestCardVisible = true;
+			$scope.$emit('GUESTCARDVISIBLE', true);
 			$scope.$apply();
 		}
 		else if($(this).height() <= 120 && $scope.guestCardVisible){
 			$scope.guestCardVisible = false;
+			$scope.$emit('GUESTCARDVISIBLE', false);
 			$scope.$apply();
 		}
 	},

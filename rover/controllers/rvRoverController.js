@@ -8,17 +8,16 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 	$scope.isGuestCardVisible = false;
 	$scope.$on('GUESTCARDVISIBLE', function(event, data){
 		$scope.isGuestCardVisible = false;
+		alert("=============="+data)
 		if(data){
 			$scope.isGuestCardVisible = true;
 		}
 	});
 	$scope.successCallBackSwipe = function(data){
-		alert("swi")
 		$scope.$broadcast('SWIPEHAPPENED', data);
 	};
 	
 	$scope.failureCallBackSwipe = function(){
-		alert("fail")
 	};
 	
      var options = [];
@@ -28,7 +27,6 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 	 setTimeout(function(){
 	 	 if (sntapp.cardSwipeDebug ===  true)  { sntapp.cardReader.startReaderDebug(options); }
 	 	 if(sntapp.cordovaLoaded){ 
-		 	console.log("cordova loaded");
 		 	sntapp.cardReader.startReader(options); 
 		 }; 
 	 }, 2000);
@@ -166,8 +164,7 @@ $scope.settingsClicked = function(){
 
 
 $scope.showAddNewPaymentModal = function(passData, paymentData){
-	console.log("------------------PASSDATA------------------");
-	console.log(JSON.stringify(passData))
+	alert(JSON.stringify(passData))
 	  $scope.passData = passData;
 	  $scope.paymentData = paymentData;
 	  ngDialog.open({
