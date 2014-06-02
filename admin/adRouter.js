@@ -297,5 +297,18 @@ admin.config([
 			}
 		});
 
+
+		$stateProvider.state('admin.reservationSettings', {
+			templateUrl: '/assets/partials/reservations/adReservationSettings.html',
+			controller: 'ADReservationSettingsCtrl',
+			url : '/reservationSettings',
+			resolve: {
+				reservationsData: function(ADReservationSettingsSrv) {
+					return ADReservationSettingsSrv.fetchReservationsData();
+				}
+			}
+		});
+
+
 	}
 ]);
