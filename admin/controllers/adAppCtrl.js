@@ -68,6 +68,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			}]
 		}, {
 			title: "Conversations",
+			hidden: true,
 			action: "#",
 			iconClass: "icon-conversations",
 			submenu: [{
@@ -97,6 +98,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			}]
 		}, {
 			title: "Housekeeping",
+			hidden: true,
 			action: "#",
 			iconClass: "icon-housekeeping",
 			submenu: [{

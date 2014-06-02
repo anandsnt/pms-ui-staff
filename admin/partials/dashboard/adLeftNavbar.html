@@ -9,7 +9,7 @@
 		</li>	
 
 
-		<li ng-repeat="menuItem in menu" ng-mouseover="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex.length > 0 && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0), 'last-child' : $last}" class="rover-icon-menu {{menuItem.iconClass}}"> 			
+		<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex.length > 0 && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0), 'last-child' : $last}" class="rover-icon-menu {{menuItem.iconClass}}"> 			
 			<a href="{{menuItem.action}}">
 				{{menuItem.title}}
 			</a>
@@ -51,7 +51,7 @@
 		</li> -->
 
 		</ul>
-		<ul class="float-bottom">
+		<ul class="float-bottom" ng-show ="isHotelAdmin">
 		<li >
 			<label class="icon-menu icon-settings active"></label>
 			<a ng-click="settingsClicked()">
@@ -71,12 +71,15 @@
 	<!-- For SNT Admin -->
 	<ul ng-hide ="isHotelAdmin" >
 		<li id="sign-out">
-			<a ng-click="$emit('navToggled')" href= "/logout" class="icon-menu icon-sign-out">Sign Out</a>
+			<label class="icon-menu icon-sign-out"></label>
+			<a ng-click="$emit('navToggled')" href= "/logout" >
+				Sign Out
+			</a>
 		</li>
-		<li id="rover-info">
+		<!-- <li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="" />
 			Version 1.0
-		</li>
+		</li> -->
 	</ul>
 
 	<div id="submenu" ng-show="menuOpen && 	showSubMenu && activeSubMenu.length > 0">
