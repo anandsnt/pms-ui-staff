@@ -5,11 +5,11 @@
             <span class="icons icon-close invert"></span>
         </button>
         <div class="entry full-width">
-            <div id="notification-message"></div>
+            <div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
         </div>
         <div class="entry full-width float">
-            <label for="wake-up">
-                {{ 'SELECT_WAKEUP_TIME' | translate }}
+            <label for="wake-up" translate>
+                SELECT_WAKEUP_TIME
 
             </label>
             <div class="select select-col col1-3">
@@ -151,9 +151,9 @@
             </div>
         </div>
         <div class="entry full-width">
-            <label for="wake-up-day">
+            <label for="wake-up-day" translate>
 
-                {{ 'SELECT_DATE' | translate }}
+                SELECT_DATE
 
             </label>
             <!--
@@ -195,19 +195,19 @@
             </div>
         </div>
         <div class="actions float is-disabled">
-            <button id="save-wakeup-call" ng-class="{'green': true}" class="button green modal-close" type="button" ng-disabled="!validate()" ng-click="saveWakeupCall()">
+            <button id="save-wakeup-call" ng-class="{'green': true}" class="button green modal-close" type="button" ng-disabled="!validate()" ng-click="saveWakeupCall()" translate>
 
-                {{ 'SET_WAKEUP_CALL' | translate }}
-
-            </button>
-            <button id="delete-wakeup-call" ng-class="{'red': true}" class="button red modal-close" type="button" ng-disabled="isDeletable()" data-disabled-delete="true" ng-click="deleteWakeupCall()">
-
-                {{ 'DELETE_WAKEUP_CALL' | translate }}
+                SET_WAKEUP_CALL
 
             </button>
-            <button id="cancel" class="button blank modal-close" type="button" ng-click="closeDialog()">
+            <button id="delete-wakeup-call" ng-class="{'red': true}" class="button red modal-close" type="button" ng-disabled="isDeletable()" data-disabled-delete="true" ng-click="deleteWakeupCall()" translate>
 
-                {{ 'CANCEL' | translate }}
+                DELETE_WAKEUP_CALL
+
+            </button>
+            <button id="cancel" class="button blank modal-close" type="button" ng-click="closeDialog()" translate>
+
+                CANCEL
 
             </button>
         </div>

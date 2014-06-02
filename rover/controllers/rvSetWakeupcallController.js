@@ -43,7 +43,11 @@ sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeu
 			$scope.dimissLoaderAndDialog();
 		};
 
-		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, params , successCallbackSetWakeupcall);
+		var errorCallbackSetWakeupcall = function(errorMessage){
+			$scope.errorMessage = errorMessage;
+		};
+
+		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, params , successCallbackSetWakeupcall, errorCallbackSetWakeupcall);
 	};
 
 	$scope.getTimeString = function(){
@@ -59,7 +63,10 @@ sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeu
 			$scope.$emit("updateWakeUpTime",$scope.wakeupData);
 			$scope.dimissLoaderAndDialog();
 		};
-		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, params , successCallbackDeleteWakeupcall);
+		var errorCallbackDeleteWakeupcall = function(errorMessage){
+			$scope.errorMessage = errorMessage;
+		};
+		$scope.invokeApi(RVSaveWakeupTimeSrv.saveWakeupTime, params , successCallbackDeleteWakeupcall. errorCallbackDeleteWakeupcall);
 
 	};
 
