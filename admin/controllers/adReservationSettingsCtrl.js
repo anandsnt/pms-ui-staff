@@ -4,8 +4,20 @@ admin.controller('ADReservationSettingsCtrl',['$scope', '$rootScope','$state','A
   $scope.errorMessage = "";	
 
 
- $scope.defaultRateDisplays     = reservationSettingsData.defaultRateDisplays;
- $scope.reservationSettingsData = reservationSettingsData.data;
+  $scope.defaultRateDisplays =  [  {
+                                      "value": 0,
+                                      "name": "Recommended"
+                                    },
+                                    {
+                                     "value": 1,
+                                     "name": " By Room Type"
+                                   },
+                                   {
+                                     "value": 2,
+                                     "name": " By Rate"
+                                   }
+                                 ];
+ $scope.reservationSettingsData = reservationSettingsData;
 
 /**
   *  Method to go back to previous state.
