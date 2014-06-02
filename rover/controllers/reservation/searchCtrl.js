@@ -1,3 +1,3 @@
-sntRover.controller('ReservationSearchCtrl', ['$scope' function($scope){
-    
+sntRover.controller('ReservationSearchCtrl', ['$scope', function($scope){
+
 }]);

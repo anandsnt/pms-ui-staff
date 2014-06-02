@@ -1,21 +1,3 @@
-<!-- Navbar -->
-<header class="nav-bar float" role="banner">
-    <!-- Menu toggle button / Back button  -->
-    <a href="#main-nav" class="nav-toggle">Menu</a>
-
-    <!-- Logo -->
-    <div class="logo">
-        <img src="../images/logo-snt.png" alt="" />
-    </div>
-
-    <!-- Title -->
-    <h1 class="h2">Reservations    <span>
-            <strong>Jacob McCarthy</strong> |
-            <em class="date">Thursday, 29 May 2014</em>
-        </span>
-    </h1>
-</header>
-
 <!-- Content -->
 <section id="reservations" class="content create-reservation scrollable" role="main">
     <form method="get" action="reservations" name="create-reservation" id="create-reservation" class="wrapper" role="search">
@@ -108,6 +90,6 @@
                 <input name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" />
             </div>
         </div>
-        <button id="find-rooms-and-rates" type="button" class="button green">Find Rooms &amp; Rates</button>
+        <button id="find-rooms-and-rates" type="button" class="button green" ui-sref='reservation.search'>Find Rooms &amp; Rates</button>
     </form>
 </section>

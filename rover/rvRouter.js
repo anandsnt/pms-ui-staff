@@ -120,7 +120,7 @@ sntRover.config([
         });
 
         $stateProvider.state('rover.reservation.search', {
-            url: '/reservation/search',
+            url: '/search',
             templateUrl: '/assets/partials/reservation/search.html',
             controller: 'ReservationSearchCtrl'
         });

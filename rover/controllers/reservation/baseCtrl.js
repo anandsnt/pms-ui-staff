@@ -1,3 +1,3 @@
-sntRover.controller('ReservationBaseCtrl', ['$scope' function($scope){
+sntRover.controller('ReservationBaseCtrl', ['$scope', function($scope){
     
 }]);

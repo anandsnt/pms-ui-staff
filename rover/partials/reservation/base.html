@@ -1,1 +1,17 @@
-<div ui-view ></div>
+<div id="page-inner-first" class="page page-current">
+	<div id="staycard_main" >
+		<!-- TO INCLUDE GUEST CARD -->
+		<!-- <div ng-include="'assets/partials/guestCard/guestCard.html'"></div> -->
+
+		<div role="main" id="view-nested-first" class="nested-view view-current">
+			<!-- Nav bar -->
+			<div ng-include="'/assets/partials/common/header.html'"></div>
+			<!-- TO INCLUDE RESERVATION CARD WHICH INCLUDES RESERVATION LISTING AND RESERVATION DETAILS IN THE RIGHT SIDE-->
+			<div ui-view > </div>
+		</div>
+
+
+	</div>
+</div>
+
+
