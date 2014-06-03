@@ -97,7 +97,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 
         //Get the rate/restriction details for the selected cell
         if($scope.popupData.all_data_selected) {
-            selectedDateInfo = $scope.calendarData.rate_restrictions[$scope.popupData.selectedDate];
+            selectedDateInfo.restrictions = $scope.calendarData.rate_restrictions[$scope.popupData.selectedDate];
 
         } else {
             for(var i in $scope.calendarData.data){
