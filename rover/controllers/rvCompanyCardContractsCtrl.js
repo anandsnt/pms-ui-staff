@@ -258,13 +258,14 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		    	$scope.addData.contract_name = "";
 		    	$scope.contractList.isAddMode = false;
 		    	$scope.contractList.contractSelected = data.id;
-		    	
+		    	/*
 		    	ngDialog.open({
 					 template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
 					 controller: 'contractedNightsCtrl',
 					 className: 'ngdialog-theme-default1 calendar-single1',
 					 scope: $scope
 				});
+				*/
 		    };
 		  	var saveContractFailureCallback = function(data){
 		        $scope.$emit('hideLoader');

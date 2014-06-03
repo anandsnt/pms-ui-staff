@@ -23,7 +23,7 @@
                         
                         <figure class="guest-image" ng-if="escapeNull(row.company_logo)==''">
                             <div class="guest-image icons icon-company" ng-if="escapeNull(row.account_type)=='COMPANY'" ></div>
-                            <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)!='COMPANY'" ></div>
+                            <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT'" ></div>
                         </figure>
                         
                         <div class="data">

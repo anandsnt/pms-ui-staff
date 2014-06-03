@@ -29,7 +29,7 @@
         </div>
     </div>
     
-    <div id="cc-contracts-content" class="tab-details" ng-iscroll="companyCardContractsCtrl" ng-iscroll-delay="1000" style="height:100%">
+    <div id="cc-contracts-content" class="tab-details" ng-iscroll="companyCardContractsCtrl" ng-iscroll-delay="1000" style="height:80%">
     	
     	<div class="wrapper" ng-class="{'overlay':isHistorySelected==true}">
 
@@ -60,13 +60,13 @@
                 
                 <div class="entry margin has-datepicker">
                     <label for="company-contract-start" translate>CONTRACT_START</label>
-                    <input type="text" readonly="" maxlength="8" value="{{contractData.begin_date}}" class="datepicker1 hasDatepicker" >
+                    <input type="text" readonly="" maxlength="8" value="{{contractData.begin_date | date :'MM-dd-yyyy'}}" class="datepicker1 hasDatepicker" >
                     <button ng-click="contractStart()" type="button" class="ui-datepicker-trigger">...</button>
                 </div>
                 
                 <div class="entry has-datepicker">
                     <label for="company-contract-end" translate>CONTRACT_END</label>
-                    <input type="text" readonly="" maxlength="8" value="{{contractData.end_date}}" class="datepicker1 hasDatepicker" >
+                    <input type="text" readonly="" maxlength="8" value="{{contractData.end_date | date :'MM-dd-yyyy'}}" class="datepicker1 hasDatepicker" >
                     <button ng-click="contractEnd()" type="button" class="ui-datepicker-trigger">...</button>
                 </div>
                 
