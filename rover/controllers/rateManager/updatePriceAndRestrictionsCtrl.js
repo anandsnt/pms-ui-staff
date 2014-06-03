@@ -116,7 +116,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         }
         
         var restrictionTypes = {};
-        var rTypes = $scope.calendarData.restriction_types;
+        var rTypes = dclone($scope.calendarData.restriction_types);
         for(var i in rTypes){
             restrictionTypes[rTypes[i].id] = rTypes[i];
             var item =  rTypes[i];
@@ -168,7 +168,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         }
 
         var restrictionTypes = {};
-        var rTypes = $scope.calendarData.restriction_types;
+        var rTypes = dclone($scope.calendarData.restriction_types);
         for(var i in rTypes){
             restrictionTypes[rTypes[i].id] = rTypes[i];
             var item =  rTypes[i];
