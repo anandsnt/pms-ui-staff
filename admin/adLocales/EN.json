@@ -64,6 +64,8 @@
     "USER_ROLES":"User roles",
     "ROLE_DASHBOARD": "Role Dashboard",
     "SELECT_DASHBOARD":"Select Dashboard",
+    "SELECT_DEFAULT_DASHBOARD":"Select Default Dashboard",
+    "DEFAULT_DASHBOARD":"Default Dashboard",
 
     "NAME":"Name",
     "DESCRIPTION":"Description",
