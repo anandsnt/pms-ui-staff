@@ -10,37 +10,44 @@
 				<button ng-click="openCloseAllRestrictions('add')" class="button red" ng-class="{'open': calendarData.disableCloseAllBtn}" ng-disabled="calendarData.disableCloseAllBtn">
 					Close All
 				</button></th>
-				<th width="{{uiOptions.columnWidth}}"   style="{width:th.width}"  ng-repeat="date in calendarData.dates">
-				<div class="date-header">
-					<span class="week-day">{{date| date:'EEEE'}}</span>
-					<span>{{date| date:'MMMM dd'}}</span>
-				</div></th>
+				<th width="{{uiOptions.columnWidth}}"   style="{width:th.width}"  ng-repeat="date in calendarData.dates" class="cell">
+					<div class="date-header">
+						<span class="week-day">{{date| date:'EEEE'}}</span>
+						<span>{{date| date:'MMMM dd'}}</span>
+					</div>
+					<div class="cell-overlay"></div>
+
+				</th>
 			</tr>
 		</thead>
 
 		<tbody>
 			<tr>
 				<td class="first-row"><span>All Rates</span><span>&nbsp;</span></td>
-				<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', true)">
-				<div class="cell-content">
-					<div>
+				<td ng-repeat="date in calendarData.dates" class="cell">
+					<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, '', '', 'RATE_TYPE', true)">
 						<div>
-							<span ng-repeat="restriction in calendarData.all_rates[date]" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" > {{restriction.days}} </span>
+							<div>
+								<span ng-repeat="restriction in calendarData.all_rates[date]" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}" > {{restriction.days}} </span>
+							</div>
 						</div>
 					</div>
-				</div></td>
+					<div class="cell-overlay"></div>
+				</td>
 			</tr>
 
 			<tr ng-repeat="rate in calendarData.data">
 				<td class="first-row"><span>{{rate.name}}</span><span> <img src="/assets/arrow-down.png" ng-click="goToRoomTypeCalendarView(rate)" /> </span></td>
-				<td ng-repeat="date in calendarData.dates" class="cal-cell" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE', false)">
-				<div class="cell-content">
-					<div>
+				<td ng-repeat="date in calendarData.dates" class="cell" >
+					<div class="cell-content" ng-click="showUpdatePriceAndRestrictionsDialog(date, rate.id, '', 'RATE_TYPE', false)">
 						<div>
-							<span ng-repeat="restriction in rate[date]" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}} cal-cell" > {{restriction.days}} </span>
+							<div>
+								<span ng-repeat="restriction in rate[date]" class="restriction-icon right {{calendarData.restriction_types[restriction.restriction_type_id].background_class}} {{calendarData.restriction_types[restriction.restriction_type_id].icon}}" > {{restriction.days}} </span>
+							</div>
 						</div>
 					</div>
-				</div></td>
+					<div class="cell-overlay"></div>
+				</td>
 			</tr>
 		</tbody>
 	</table>
