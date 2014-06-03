@@ -165,7 +165,7 @@ var UpsellLateCheckoutView = function(domRef){
 	var selectedRoomTypeText = $(element).find('option:selected').text();
   	
   	var html = "<div class='entry full-width' id='room-type-box-"+selectedRoomTypeId+"'><div class='entry'><span class='align-text-center'>"+selectedRoomTypeText+"</span></div>"+
-  	"<div class='entry'><span class='entry'><input type='text' value='' required=''  id='"+selectedRoomTypeId+"'></span>"+
+  	"<div class='entry'><span class='entry'><input type='text' value='0' required=''  id='"+selectedRoomTypeId+"'></span>"+
   	"<span class='entry'><a class='icons icon-delete large-icon align-text-center' id='"+selectedRoomTypeId+"' name='"+selectedRoomTypeText+"'>"+
 	"</a></span></div></div>";
 	
