@@ -12,7 +12,10 @@
 
 			<fieldset class="holder left">
 				<div style="height:20px;"></div>
-				<ad-checkbox is-checked="reservationSettingsData.recommended_rate_display" label="{{'USE_RECOMMENDED_RATE_DISPLAY' | translate}}" div-class="full-width"></ad-checkbox>	
+				<!-- <ad-checkbox is-checked="reservationSettingsData.recommended_rate_display" label="{{'USE_RECOMMENDED_RATE_DISPLAY' | translate}}" div-class="full-width"></ad-checkbox> -->
+				<ad-toggle-button label="{{'USE_RECOMMENDED_RATE_DISPLAY' | translate}}" is-checked="reservationSettingsData.recommended_rate_display" ></ad-toggle-button>
+
+
 
 				<div class="entry">
 					<label translate>DEFAULT_RATE_DISPLAY</label>
