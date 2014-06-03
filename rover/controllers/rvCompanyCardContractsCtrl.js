@@ -252,20 +252,23 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 			var data = dclone($scope.addData,['occupancy','statistics','rates','total_contracted_nights']);
 		
 			var saveContractSuccessCallback = function(data){
+				$scope.errorMessage = "";
 		    	$scope.$emit('hideLoader');
 		    	var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
 		    	$scope.contractList.current_contracts.push(dataNew);
 		    	$scope.addData.contract_name = "";
 		    	$scope.contractList.isAddMode = false;
 		    	$scope.contractList.contractSelected = data.id;
-		    	/*
-		    	ngDialog.open({
-					 template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
-					 controller: 'contractedNightsCtrl',
-					 className: 'ngdialog-theme-default1 calendar-single1',
-					 scope: $scope
-				});
-				*/
+		    	
+		    	setTimeout(function(){
+			    	ngDialog.open({
+						 template: '/assets/partials/companyCard/rvContractedNightsPopup.html',
+						 controller: 'contractedNightsCtrl',
+						 className: 'ngdialog-theme-default1 calendar-single1',
+						 scope: $scope
+					});
+				}, 500);
+				
 		    };
 		  	var saveContractFailureCallback = function(data){
 		        $scope.$emit('hideLoader');
@@ -317,6 +320,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	$scope.CancelAddNewContract =  function(){
 		$scope.contractList.isAddMode = false;
 		$scope.addData.contract_name = "";
+		$scope.errorMessage = "";
 	};
 	
 	/*
@@ -328,6 +332,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		
 		var saveContractSuccessCallback = function(data){
 	    	$scope.$emit('hideLoader');
+	    	$scope.errorMessage = "";
 	    	var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
 	    	$scope.contractList.current_contracts.push(dataNew);
 	    	$scope.contractList.contractSelected = data.id;
@@ -357,10 +362,10 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	$scope.updateContract= function(){
 	    var saveContractSuccessCallback = function(data){
 	        $scope.$emit('hideLoader');
+	        $scope.errorMessage = "";
 	    };
 	    var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
-	        $scope.errorMessage = data;
 	        $scope.errorMessage = data;
 	    	$scope.$parent.currentSelectedTab = 'cc-contracts';
 	    };
@@ -375,8 +380,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		}
 		else{
 			contractInfo = dataToUpdate;
-		}	    	
-	    
+		}
 	    if(!dataUpdated){
 	    	var data = dclone($scope.contractData,['occupancy','statistics','rates','total_contracted_nights']);
 	    	if($stateParams.id == "add"){
@@ -404,6 +408,12 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	$scope.closeActivityIndication = function(){
 		$scope.$emit('hideLoader');
 	};
-	
+	/*
+	 * To Update graph
+	 */
+	$scope.updateGraph = function(){
+		$scope.graphData = manipulateGraphData($scope.contractData.occupancy);
+    	drawGraph();    	
+	};
                 
 }]);
