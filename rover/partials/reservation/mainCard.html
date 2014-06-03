@@ -1,41 +1,39 @@
 <!-- Cards -->
-<div ng-controller="ReservationMainCardCtrl">
-    <div id="additional-cards" class="guest-card cards" role="complementary">
-        <!-- include company card drawer content -->
-        <div ng-include="'assets/partials/reservation/includes/companyCard.html'"></div>
-     </div>
+<div id="additional-cards" class="guest-card cards" role="complementary">
+    <!-- include company card drawer content -->
+    <div ng-include="'assets/partials/reservation/includes/companyCard.html'"></div>
+ </div>
 
-    <!-- Reservation settings (resizable left side sidebar) -->
-    <div id="reservations-settings" class="sidebar-left" role="complementary">
-        <!-- include reservation settings left menu content -->
-        <div ng-include="'assets/partials/reservation/includes/settings.html'"></div>
-    </div>
-
-    <!-- 
-    First & Second nested view are containers for all Reservation screens. 
-    Left sidebar and cards should not be reloaded when going to other screens, just updated when needed. 
-
-    Same way as Guest Card is not reloaded when going from the Stay Card to e.g. View bill or Check In screens.
-
-    -->
-
-    <!-- First nested view-->
-    <div id="reservations-nested-first" class="nested-view with-sidebar view-current" role="main">
-        <!-- Content -->
-        <section id="rooms-and-rates" class="content reservations-inner">
-            <div id="rooms-and-rates-content" class="reservations-content-wrapper">
-                <!--
-                    include different content for rooms and rates here: 
-                    02.A.rooms-and-rates.all-types.html
-                    02.B.rooms-and-rates.room-type.html
-                    02.C.rooms-and-rates.recommended.html
-                    02.D.rooms-and-rates.rate.html
-                -->
-                <div ui-view ></div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Second nested view placeholder -->
-    <div id="reservations-nested-second" class="nested-view with-sidebar" role="main"></div>
+<!-- Reservation settings (resizable left side sidebar) -->
+<div id="reservations-settings" class="sidebar-left" role="complementary">
+    <!-- include reservation settings left menu content -->
+    <div ng-include="'assets/partials/reservation/includes/settings.html'"></div>
 </div>
+
+<!-- 
+First & Second nested view are containers for all Reservation screens. 
+Left sidebar and cards should not be reloaded when going to other screens, just updated when needed. 
+
+Same way as Guest Card is not reloaded when going from the Stay Card to e.g. View bill or Check In screens.
+
+-->
+
+<!-- First nested view-->
+<div id="reservations-nested-first" class="nested-view with-sidebar view-current" role="main">
+    <!-- Content -->
+    <section id="rooms-and-rates" class="content reservations-inner">
+        <div id="rooms-and-rates-content" class="reservations-content-wrapper">
+            <!--
+                include different content for rooms and rates here: 
+                02.A.rooms-and-rates.all-types.html
+                02.B.rooms-and-rates.room-type.html
+                02.C.rooms-and-rates.recommended.html
+                02.D.rooms-and-rates.rate.html
+            -->
+            <div ui-view ></div>
+        </div>
+    </section>
+</div>
+
+<!-- Second nested view placeholder -->
+<div id="reservations-nested-second" class="nested-view with-sidebar" role="main"></div>

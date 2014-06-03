@@ -1,841 +1,839 @@
-<div ng-controller="ReservationRoomTypeCtrl">
-    <div class="reservation-filters">
-        <div id="change-room-type" class="select">
-            <select name="room-1-type" id="room-1-type">
-                <option value="all-rooms" selected>All Room Types</option>
-                <option value="deluxe-room">Deluxe Room</option>
-                <option value="deluxe-twin">Deluxe Twin</option>
-                <option value="junior-suite">Junior Suite</option>
-                <option value="standard-room">Standard Room</option>
-            </select>
-        </div>
-        <ul id="filter-rooms-and-rates">
-            <li id="show-recommended">Recommended</li>
-            <li id="show-type" class="active">Room Type</li>
-            <li id="show-rate">Rate</li>
-        </ul>
+<div class="reservation-filters">
+    <div id="change-room-type" class="select">
+        <select name="room-1-type" id="room-1-type">
+            <option value="all-rooms" selected>All Room Types</option>
+            <option value="deluxe-room">Deluxe Room</option>
+            <option value="deluxe-twin">Deluxe Twin</option>
+            <option value="junior-suite">Junior Suite</option>
+            <option value="standard-room">Standard Room</option>
+        </select>
     </div>
+    <ul id="filter-rooms-and-rates">
+        <li id="show-recommended">Recommended</li>
+        <li id="show-type" class="active">Room Type</li>
+        <li id="show-rate">Rate</li>
+    </ul>
+</div>
 
-    <div id="room-and-rate-types" class="reservation-content rooms-and-rates-content scrollable">
-        <ul class="rooms-and-rates wrapper">
-            <li>
-                <a href="#standard-details" class="has-arrow toggle">
-                    <div class="data">
-                        <h2>Standard Room</h2>
-                    </div>
-                    <div class="book-rate">
-                        <h4>Best Available Rate</h4>
-                        <div class="price">$149<span>Avg. Rate per night</span></div>
+<div id="room-and-rate-types" class="reservation-content rooms-and-rates-content scrollable">
+    <ul class="rooms-and-rates wrapper">
+        <li>
+            <a href="#standard-details" class="has-arrow toggle">
+                <div class="data">
+                    <h2>Standard Room</h2>
+                </div>
+                <div class="book-rate">
+                    <h4>Best Available Rate</h4>
+                    <div class="price">$149<span>Avg. Rate per night</span></div>
+                    <button ui-sref='rover.reservation.mainCard.addons' id="book-room-1-standard-bestavailable" type="button" class="button green">Book</button>
+                </div>
+            </a>
+            <ul id="standard-details" class="rates hidden">
+                <li>
+                    <a href="#standard-bestavailable-details" class="has-arrow toggle">
+                        <h3>Best Available Rate</h3>
+                        <div class="price">
+                            $149
+                            <span>Avg. Rate per night</span>
+                        </div>
                         <button ui-sref='rover.reservation.mainCard.addons' id="book-room-1-standard-bestavailable" type="button" class="button green">Book</button>
+                    </a>
+                    <div id="standard-bestavailable-details" class="rate-details hidden">
+                        <ul class="info">
+                            <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
+                            <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
+                            <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
+                            <li>A deposit is not required to guarantee your reservation.</li>
+                        </ul>
+                        <table class="room-cost">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Rate</th>
+                                    <th>Tax(20%)</th>
+                                    <th>Total</th>
+                                    <th class="edit"></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="total-label">Total Room Cost</td>
+                                    <td class="total-value">$447</td>
+                                    <td class="edit">
+                                        <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
+                                            <span class="icons icon-pencil"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Wednesday, 15-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"></td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday, 16-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td>
+                                    <td class="edit"></td> 
+                                </tr>
+                                <tr>
+                                    <td>Friday, 17-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </a>
-                <ul id="standard-details" class="rates hidden">
-                    <li>
-                        <a href="#standard-bestavailable-details" class="has-arrow toggle">
-                            <h3>Best Available Rate</h3>
-                            <div class="price">
-                                $149
-                                <span>Avg. Rate per night</span>
-                            </div>
-                            <button ui-sref='rover.reservation.mainCard.addons' id="book-room-1-standard-bestavailable" type="button" class="button green">Book</button>
-                        </a>
-                        <div id="standard-bestavailable-details" class="rate-details hidden">
-                            <ul class="info">
-                                <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
-                                <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
-                                <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
-                                <li>A deposit is not required to guarantee your reservation.</li>
-                            </ul>
-                            <table class="room-cost">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Rate</th>
-                                        <th>Tax(20%)</th>
-                                        <th>Total</th>
-                                        <th class="edit"></th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="total-label">Total Room Cost</td>
-                                        <td class="total-value">$447</td>
-                                        <td class="edit">
-                                            <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
-                                                <span class="icons icon-pencil"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td>Wednesday, 15-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thursday, 16-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td>
-                                        <td class="edit"></td> 
-                                    </tr>
-                                    <tr>
-                                        <td>Friday, 17-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                </li>
+                <li>
+                    <a href="#standard-bedbreakfast-details" class="has-arrow toggle">
+                        <h3>Bed &amp; Breakfast</h3>
+                        <div class="price">
+                            $159
+                            <span>Avg. Rate per night</span>
                         </div>
-                    </li>
-                    <li>
-                        <a href="#standard-bedbreakfast-details" class="has-arrow toggle">
-                            <h3>Bed &amp; Breakfast</h3>
-                            <div class="price">
-                                $159
-                                <span>Avg. Rate per night</span>
-                            </div>
-                            <button id="book-room-1-standard-bedbreakfast" type="button" class="button green">Book</button>
-                        </a>
-                        <div id="standard-bedbreakfast-details" class="rate-details hidden">
-                            <ul class="info">
-                                <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
-                                <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
-                                <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
-                                <li>A deposit is not required to guarantee your reservation.</li>
-                            </ul>
-                           <table class="room-cost">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Rate</th>
-                                        <th>Tax(20%)</th>
-                                        <th>Total</th>
-                                        <th class="edit"></th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="total-label">Total Room Cost</td>
-                                        <td class="total-value">$447</td>
-                                        <td class="edit">
-                                            <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
-                                                <span class="icons icon-pencil"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td>Wednesday, 15-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thursday, 16-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td>
-                                        <td class="edit"></td> 
-                                    </tr>
-                                    <tr>
-                                        <td>Friday, 17-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#standard-romancepackage-details" class="has-arrow toggle">
-                            <h3>Romance Package</h3>
-                            <div class="price">
-                                $169
-                                <span>Avg. Rate per night</span>
-                            </div>
-                            <button id="book-room-1-standard-romancepackage" type="button" class="button green">Book</button>
-                        </a>
-                        <div id="standard-romancepackage-details" class="rate-details hidden">
-                            <ul class="info">
-                                <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
-                                <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
-                                <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
-                                <li>A deposit is not required to guarantee your reservation.</li>
-                            </ul>
-                            <table class="room-cost">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Rate</th>
-                                        <th>Tax(20%)</th>
-                                        <th>Total</th>
-                                        <th class="edit"></th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="total-label">Total Room Cost</td>
-                                        <td class="total-value">$447</td>
-                                        <td class="edit">
-                                            <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
-                                                <span class="icons icon-pencil"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td>Wednesday, 15-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thursday, 16-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td>
-                                        <td class="edit"></td> 
-                                    </tr>
-                                    <tr>
-                                        <td>Friday, 17-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#deluxe-details" class="has-arrow toggle">
-                    <div class="data">
-                        <h2>Deluxe Room</h2>
-                        <span>For only $30 more per night</span>
+                        <button id="book-room-1-standard-bedbreakfast" type="button" class="button green">Book</button>
+                    </a>
+                    <div id="standard-bedbreakfast-details" class="rate-details hidden">
+                        <ul class="info">
+                            <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
+                            <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
+                            <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
+                            <li>A deposit is not required to guarantee your reservation.</li>
+                        </ul>
+                       <table class="room-cost">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Rate</th>
+                                    <th>Tax(20%)</th>
+                                    <th>Total</th>
+                                    <th class="edit"></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="total-label">Total Room Cost</td>
+                                    <td class="total-value">$447</td>
+                                    <td class="edit">
+                                        <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
+                                            <span class="icons icon-pencil"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Wednesday, 15-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"></td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday, 16-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td>
+                                    <td class="edit"></td> 
+                                </tr>
+                                <tr>
+                                    <td>Friday, 17-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="book-rate">
-                        <h4>Best Available Rate</h4>
-                        <div class="price">$179<span>Avg. Rate per night</span></div>
+                </li>
+                <li>
+                    <a href="#standard-romancepackage-details" class="has-arrow toggle">
+                        <h3>Romance Package</h3>
+                        <div class="price">
+                            $169
+                            <span>Avg. Rate per night</span>
+                        </div>
+                        <button id="book-room-1-standard-romancepackage" type="button" class="button green">Book</button>
+                    </a>
+                    <div id="standard-romancepackage-details" class="rate-details hidden">
+                        <ul class="info">
+                            <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
+                            <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
+                            <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
+                            <li>A deposit is not required to guarantee your reservation.</li>
+                        </ul>
+                        <table class="room-cost">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Rate</th>
+                                    <th>Tax(20%)</th>
+                                    <th>Total</th>
+                                    <th class="edit"></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="total-label">Total Room Cost</td>
+                                    <td class="total-value">$447</td>
+                                    <td class="edit">
+                                        <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
+                                            <span class="icons icon-pencil"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Wednesday, 15-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"></td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday, 16-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td>
+                                    <td class="edit"></td> 
+                                </tr>
+                                <tr>
+                                    <td>Friday, 17-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#deluxe-details" class="has-arrow toggle">
+                <div class="data">
+                    <h2>Deluxe Room</h2>
+                    <span>For only $30 more per night</span>
+                </div>
+                <div class="book-rate">
+                    <h4>Best Available Rate</h4>
+                    <div class="price">$179<span>Avg. Rate per night</span></div>
+                    <button id="book-room-1-deluxe-bestavailable" type="button" class="button green">Book</button>
+                </div>
+            </a>
+            <ul id="deluxe-details" class="rates hidden">
+                <li>
+                    <a href="#deluxe-bestavailable-details" class="has-arrow toggle">
+                        <h3>Best Available Rate</h3>
+                        <div class="price">
+                            $179
+                            <span>Avg. Rate per night</span>
+                        </div>
                         <button id="book-room-1-deluxe-bestavailable" type="button" class="button green">Book</button>
+                    </a>
+                    <div id="deluxe-bestavailable-details" class="rate-details hidden">
+                        <ul class="info">
+                            <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
+                            <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
+                            <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
+                            <li>A deposit is not required to guarantee your reservation.</li>
+                        </ul>
+                        <table class="room-cost">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Rate</th>
+                                    <th>Tax(20%)</th>
+                                    <th>Total</th>
+                                    <th class="edit"></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="total-label">Total Room Cost</td>
+                                    <td class="total-value">$447</td>
+                                    <td class="edit">
+                                        <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
+                                            <span class="icons icon-pencil"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Wednesday, 15-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"></td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday, 16-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td>
+                                    <td class="edit"></td> 
+                                </tr>
+                                <tr>
+                                    <td>Friday, 17-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </a>
-                <ul id="deluxe-details" class="rates hidden">
-                    <li>
-                        <a href="#deluxe-bestavailable-details" class="has-arrow toggle">
-                            <h3>Best Available Rate</h3>
-                            <div class="price">
-                                $179
-                                <span>Avg. Rate per night</span>
-                            </div>
-                            <button id="book-room-1-deluxe-bestavailable" type="button" class="button green">Book</button>
-                        </a>
-                        <div id="deluxe-bestavailable-details" class="rate-details hidden">
-                            <ul class="info">
-                                <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
-                                <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
-                                <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
-                                <li>A deposit is not required to guarantee your reservation.</li>
-                            </ul>
-                            <table class="room-cost">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Rate</th>
-                                        <th>Tax(20%)</th>
-                                        <th>Total</th>
-                                        <th class="edit"></th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="total-label">Total Room Cost</td>
-                                        <td class="total-value">$447</td>
-                                        <td class="edit">
-                                            <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
-                                                <span class="icons icon-pencil"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td>Wednesday, 15-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thursday, 16-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td>
-                                        <td class="edit"></td> 
-                                    </tr>
-                                    <tr>
-                                        <td>Friday, 17-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                </li>
+                <li>
+                    <a href="#deluxe-bedbreakfast-details" class="has-arrow toggle">
+                        <h3>Bed &amp; Breakfast</h3>
+                        <div class="price">
+                            $199
+                            <span>Avg. Rate per night</span>
                         </div>
-                    </li>
-                    <li>
-                        <a href="#deluxe-bedbreakfast-details" class="has-arrow toggle">
-                            <h3>Bed &amp; Breakfast</h3>
-                            <div class="price">
-                                $199
-                                <span>Avg. Rate per night</span>
-                            </div>
-                            <button id="book-room-1-deluxe-bedbreakfast" type="button" class="button green">Book</button>               
-                        </a>
-                        <div id="deluxe-bedbreakfast-details" class="rate-details hidden">
-                            <ul class="info">
-                                <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
-                                <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
-                                <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
-                                <li>A deposit is not required to guarantee your reservation.</li>
-                            </ul>
-                           <table class="room-cost">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Rate</th>
-                                        <th>Tax(20%)</th>
-                                        <th>Total</th>
-                                        <th class="edit"></th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="total-label">Total Room Cost</td>
-                                        <td class="total-value">$447</td>
-                                        <td class="edit">
-                                            <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
-                                                <span class="icons icon-pencil"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td>Wednesday, 15-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thursday, 16-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td>
-                                        <td class="edit"></td> 
-                                    </tr>
-                                    <tr>
-                                        <td>Friday, 17-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#deluxe-romancepackage-details" class="has-arrow toggle">
-                            <h3>Romance Package</h3>
-                            <div class="price">
-                                $209
-                                <span>Avg. Rate per night</span>
-                            </div>
-                            <button id="book-room-1-deluxe-romancepackage" type="button" class="button green">Book</button>
-                        </a>
-                        <div id="deluxe-romancepackage-details" class="rate-details hidden">
-                            <ul class="info">
-                                <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
-                                <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
-                                <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
-                                <li>A deposit is not required to guarantee your reservation.</li>
-                            </ul>
-                            <table class="room-cost">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Rate</th>
-                                        <th>Tax(20%)</th>
-                                        <th>Total</th>
-                                        <th class="edit"></th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="total-label">Total Room Cost</td>
-                                        <td class="total-value">$447</td>
-                                        <td class="edit">
-                                            <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
-                                                <span class="icons icon-pencil"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td>Wednesday, 15-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thursday, 16-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td>
-                                        <td class="edit"></td> 
-                                    </tr>
-                                    <tr>
-                                        <td>Friday, 17-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-            <li id="show-all-rooms-and-rates" class="break">
-                <span>See more room types</span>
-            </li>
-            <li class="hidden">
-                <a href="#deluxe-twin-details" class="has-arrow toggle">
-                    <div class="data">
-                        <h2>Deluxe Twin</h2>
-                        <span>For only $40 more per night</span>
+                        <button id="book-room-1-deluxe-bedbreakfast" type="button" class="button green">Book</button>               
+                    </a>
+                    <div id="deluxe-bedbreakfast-details" class="rate-details hidden">
+                        <ul class="info">
+                            <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
+                            <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
+                            <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
+                            <li>A deposit is not required to guarantee your reservation.</li>
+                        </ul>
+                       <table class="room-cost">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Rate</th>
+                                    <th>Tax(20%)</th>
+                                    <th>Total</th>
+                                    <th class="edit"></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="total-label">Total Room Cost</td>
+                                    <td class="total-value">$447</td>
+                                    <td class="edit">
+                                        <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
+                                            <span class="icons icon-pencil"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Wednesday, 15-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"></td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday, 16-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td>
+                                    <td class="edit"></td> 
+                                </tr>
+                                <tr>
+                                    <td>Friday, 17-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="book-rate">
-                        <h4>Best Available Rate</h4>
-                        <div class="price">$189<span>Avg. Rate per night</span></div>
+                </li>
+                <li>
+                    <a href="#deluxe-romancepackage-details" class="has-arrow toggle">
+                        <h3>Romance Package</h3>
+                        <div class="price">
+                            $209
+                            <span>Avg. Rate per night</span>
+                        </div>
+                        <button id="book-room-1-deluxe-romancepackage" type="button" class="button green">Book</button>
+                    </a>
+                    <div id="deluxe-romancepackage-details" class="rate-details hidden">
+                        <ul class="info">
+                            <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
+                            <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
+                            <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
+                            <li>A deposit is not required to guarantee your reservation.</li>
+                        </ul>
+                        <table class="room-cost">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Rate</th>
+                                    <th>Tax(20%)</th>
+                                    <th>Total</th>
+                                    <th class="edit"></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="total-label">Total Room Cost</td>
+                                    <td class="total-value">$447</td>
+                                    <td class="edit">
+                                        <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
+                                            <span class="icons icon-pencil"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Wednesday, 15-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"></td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday, 16-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td>
+                                    <td class="edit"></td> 
+                                </tr>
+                                <tr>
+                                    <td>Friday, 17-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <li id="show-all-rooms-and-rates" class="break">
+            <span>See more room types</span>
+        </li>
+        <li class="hidden">
+            <a href="#deluxe-twin-details" class="has-arrow toggle">
+                <div class="data">
+                    <h2>Deluxe Twin</h2>
+                    <span>For only $40 more per night</span>
+                </div>
+                <div class="book-rate">
+                    <h4>Best Available Rate</h4>
+                    <div class="price">$189<span>Avg. Rate per night</span></div>
+                    <button id="book-room-1-deluxe-twin-bestavailable" type="button" class="button green">Book</button>
+                </div>
+            </a>
+            <ul id="deluxe-twin-details" class="rates hidden">
+                <li>
+                    <a href="#deluxe-twin-bestavailable-details" class="has-arrow toggle">
+                        <h3>Best Available Rate</h3>
+                        <div class="price">
+                            $189
+                            <span>Avg. Rate per night</span>
+                        </div>
                         <button id="book-room-1-deluxe-twin-bestavailable" type="button" class="button green">Book</button>
+                    </a>
+                    <div id="deluxe-twin-bestavailable-details" class="rate-details hidden">
+                        <ul class="info">
+                            <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
+                            <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
+                            <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
+                            <li>A deposit is not required to guarantee your reservation.</li>
+                        </ul>
+                        <table class="room-cost">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Rate</th>
+                                    <th>Tax(20%)</th>
+                                    <th>Total</th>
+                                    <th class="edit"></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="total-label">Total Room Cost</td>
+                                    <td class="total-value">$447</td>
+                                    <td class="edit">
+                                        <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
+                                            <span class="icons icon-pencil"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Wednesday, 15-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"></td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday, 16-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td>
+                                    <td class="edit"></td> 
+                                </tr>
+                                <tr>
+                                    <td>Friday, 17-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </a>
-                <ul id="deluxe-twin-details" class="rates hidden">
-                    <li>
-                        <a href="#deluxe-twin-bestavailable-details" class="has-arrow toggle">
-                            <h3>Best Available Rate</h3>
-                            <div class="price">
-                                $189
-                                <span>Avg. Rate per night</span>
-                            </div>
-                            <button id="book-room-1-deluxe-twin-bestavailable" type="button" class="button green">Book</button>
-                        </a>
-                        <div id="deluxe-twin-bestavailable-details" class="rate-details hidden">
-                            <ul class="info">
-                                <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
-                                <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
-                                <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
-                                <li>A deposit is not required to guarantee your reservation.</li>
-                            </ul>
-                            <table class="room-cost">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Rate</th>
-                                        <th>Tax(20%)</th>
-                                        <th>Total</th>
-                                        <th class="edit"></th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="total-label">Total Room Cost</td>
-                                        <td class="total-value">$447</td>
-                                        <td class="edit">
-                                            <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
-                                                <span class="icons icon-pencil"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td>Wednesday, 15-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thursday, 16-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td>
-                                        <td class="edit"></td> 
-                                    </tr>
-                                    <tr>
-                                        <td>Friday, 17-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                </li>
+                <li>
+                    <a href="#deluxe-twin-bedbreakfast-details" class="has-arrow toggle">
+                        <h3>Bed &amp; Breakfast</h3>
+                        <div class="price">
+                            $209
+                            <span>Avg. Rate per night</span>
                         </div>
-                    </li>
-                    <li>
-                        <a href="#deluxe-twin-bedbreakfast-details" class="has-arrow toggle">
-                            <h3>Bed &amp; Breakfast</h3>
-                            <div class="price">
-                                $209
-                                <span>Avg. Rate per night</span>
-                            </div>
-                            <button id="book-room-1-deluxe-twin-bedbreakfast" type="button" class="button green">Book</button>
-                        </a>
-                        <div id="deluxe-twin-bedbreakfast-details" class="rate-details hidden">
-                            <ul class="info">
-                                <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
-                                <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
-                                <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
-                                <li>A deposit is not required to guarantee your reservation.</li>
-                            </ul>
-                           <table class="room-cost">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Rate</th>
-                                        <th>Tax(20%)</th>
-                                        <th>Total</th>
-                                        <th class="edit"></th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="total-label">Total Room Cost</td>
-                                        <td class="total-value">$447</td>
-                                        <td class="edit">
-                                            <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
-                                                <span class="icons icon-pencil"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td>Wednesday, 15-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thursday, 16-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td>
-                                        <td class="edit"></td> 
-                                    </tr>
-                                    <tr>
-                                        <td>Friday, 17-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#deluxe-twin-romancepackage-details" class="has-arrow toggle">
-                            <h3>Romance Package</h3>
-                            <div class="price">
-                                $229
-                                <span>Avg. Rate per night</span>
-                            </div>
-                            <button id="book-room-1-deluxe-twin-romancepackage" type="button" class="button green">Book</button>
-                        </a>
-                        <div id="deluxe-twin-romancepackage-details" class="rate-details hidden">
-                            <ul class="info">
-                                <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
-                                <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
-                                <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
-                                <li>A deposit is not required to guarantee your reservation.</li>
-                            </ul>
-                            <table class="room-cost">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Rate</th>
-                                        <th>Tax(20%)</th>
-                                        <th>Total</th>
-                                        <th class="edit"></th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="total-label">Total Room Cost</td>
-                                        <td class="total-value">$447</td>
-                                        <td class="edit">
-                                            <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
-                                                <span class="icons icon-pencil"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td>Wednesday, 15-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thursday, 16-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td>
-                                        <td class="edit"></td> 
-                                    </tr>
-                                    <tr>
-                                        <td>Friday, 17-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-            <li class="hidden">
-                <a href="#junior-suite-details" class="has-arrow toggle">
-                    <div class="data">
-                        <h2>Junior Suite</h2>
-                        <span>For only $60 more per night</span>
+                        <button id="book-room-1-deluxe-twin-bedbreakfast" type="button" class="button green">Book</button>
+                    </a>
+                    <div id="deluxe-twin-bedbreakfast-details" class="rate-details hidden">
+                        <ul class="info">
+                            <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
+                            <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
+                            <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
+                            <li>A deposit is not required to guarantee your reservation.</li>
+                        </ul>
+                       <table class="room-cost">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Rate</th>
+                                    <th>Tax(20%)</th>
+                                    <th>Total</th>
+                                    <th class="edit"></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="total-label">Total Room Cost</td>
+                                    <td class="total-value">$447</td>
+                                    <td class="edit">
+                                        <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
+                                            <span class="icons icon-pencil"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Wednesday, 15-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"></td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday, 16-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td>
+                                    <td class="edit"></td> 
+                                </tr>
+                                <tr>
+                                    <td>Friday, 17-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="book-rate">
-                        <h4>Best Available Rate</h4>
-                        <div class="price">$209<span>Avg. Rate per night</span></div>
+                </li>
+                <li>
+                    <a href="#deluxe-twin-romancepackage-details" class="has-arrow toggle">
+                        <h3>Romance Package</h3>
+                        <div class="price">
+                            $229
+                            <span>Avg. Rate per night</span>
+                        </div>
+                        <button id="book-room-1-deluxe-twin-romancepackage" type="button" class="button green">Book</button>
+                    </a>
+                    <div id="deluxe-twin-romancepackage-details" class="rate-details hidden">
+                        <ul class="info">
+                            <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
+                            <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
+                            <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
+                            <li>A deposit is not required to guarantee your reservation.</li>
+                        </ul>
+                        <table class="room-cost">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Rate</th>
+                                    <th>Tax(20%)</th>
+                                    <th>Total</th>
+                                    <th class="edit"></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="total-label">Total Room Cost</td>
+                                    <td class="total-value">$447</td>
+                                    <td class="edit">
+                                        <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
+                                            <span class="icons icon-pencil"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Wednesday, 15-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"></td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday, 16-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td>
+                                    <td class="edit"></td> 
+                                </tr>
+                                <tr>
+                                    <td>Friday, 17-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </li>
+            </ul>
+        </li>
+        <li class="hidden">
+            <a href="#junior-suite-details" class="has-arrow toggle">
+                <div class="data">
+                    <h2>Junior Suite</h2>
+                    <span>For only $60 more per night</span>
+                </div>
+                <div class="book-rate">
+                    <h4>Best Available Rate</h4>
+                    <div class="price">$209<span>Avg. Rate per night</span></div>
+                    <button id="book-room-1-junior-suite-bestavailable" type="button" class="button green">Book</button>
+                </div>
+            </a>
+            <ul id="junior-suite-details" class="rates hidden">
+                <li>
+                    <a href="#junior-suite-bestavailable-details" class="has-arrow toggle">
+                        <h3>Best Available Rate</h3>
+                        <div class="price">
+                            $209
+                            <span>Avg. Rate per night</span>
+                        </div>
                         <button id="book-room-1-junior-suite-bestavailable" type="button" class="button green">Book</button>
+                    </a>
+                    <div id="junior-suite-bestavailable-details" class="rate-details hidden">
+                        <ul class="info">
+                            <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
+                            <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
+                            <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
+                            <li>A deposit is not required to guarantee your reservation.</li>
+                        </ul>
+                        <table class="room-cost">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Rate</th>
+                                    <th>Tax(20%)</th>
+                                    <th>Total</th>
+                                    <th class="edit"></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="total-label">Total Room Cost</td>
+                                    <td class="total-value">$447</td>
+                                    <td class="edit">
+                                        <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
+                                            <span class="icons icon-pencil"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Wednesday, 15-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"></td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday, 16-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td>
+                                    <td class="edit"></td> 
+                                </tr>
+                                <tr>
+                                    <td>Friday, 17-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </a>
-                <ul id="junior-suite-details" class="rates hidden">
-                    <li>
-                        <a href="#junior-suite-bestavailable-details" class="has-arrow toggle">
-                            <h3>Best Available Rate</h3>
-                            <div class="price">
-                                $209
-                                <span>Avg. Rate per night</span>
-                            </div>
-                            <button id="book-room-1-junior-suite-bestavailable" type="button" class="button green">Book</button>
-                        </a>
-                        <div id="junior-suite-bestavailable-details" class="rate-details hidden">
-                            <ul class="info">
-                                <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
-                                <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
-                                <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
-                                <li>A deposit is not required to guarantee your reservation.</li>
-                            </ul>
-                            <table class="room-cost">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Rate</th>
-                                        <th>Tax(20%)</th>
-                                        <th>Total</th>
-                                        <th class="edit"></th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="total-label">Total Room Cost</td>
-                                        <td class="total-value">$447</td>
-                                        <td class="edit">
-                                            <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
-                                                <span class="icons icon-pencil"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td>Wednesday, 15-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thursday, 16-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td>
-                                        <td class="edit"></td> 
-                                    </tr>
-                                    <tr>
-                                        <td>Friday, 17-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                </li>
+                <li>
+                    <a href="#junior-suite-bedbreakfast-details" class="has-arrow toggle">
+                        <h3>Bed &amp; Breakfast</h3>
+                        <div class="price">
+                            $229
+                            <span>Avg. Rate per night</span>
                         </div>
-                    </li>
-                    <li>
-                        <a href="#junior-suite-bedbreakfast-details" class="has-arrow toggle">
-                            <h3>Bed &amp; Breakfast</h3>
-                            <div class="price">
-                                $229
-                                <span>Avg. Rate per night</span>
-                            </div>
-                            <button id="book-room-1-junior-suite-bedbreakfast" type="button" class="button green">Book</button>
-                        </a>
-                        <div id="junior-suite-bedbreakfast-details" class="rate-details hidden">
-                            <ul class="info">
-                                <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
-                                <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
-                                <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
-                                <li>A deposit is not required to guarantee your reservation.</li>
-                            </ul>
-                           <table class="room-cost">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Rate</th>
-                                        <th>Tax(20%)</th>
-                                        <th>Total</th>
-                                        <th class="edit"></th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="total-label">Total Room Cost</td>
-                                        <td class="total-value">$447</td>
-                                        <td class="edit">
-                                            <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
-                                                <span class="icons icon-pencil"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td>Wednesday, 15-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thursday, 16-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td>
-                                        <td class="edit"></td> 
-                                    </tr>
-                                    <tr>
-                                        <td>Friday, 17-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <button id="book-room-1-junior-suite-bedbreakfast" type="button" class="button green">Book</button>
+                    </a>
+                    <div id="junior-suite-bedbreakfast-details" class="rate-details hidden">
+                        <ul class="info">
+                            <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
+                            <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
+                            <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
+                            <li>A deposit is not required to guarantee your reservation.</li>
+                        </ul>
+                       <table class="room-cost">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Rate</th>
+                                    <th>Tax(20%)</th>
+                                    <th>Total</th>
+                                    <th class="edit"></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="total-label">Total Room Cost</td>
+                                    <td class="total-value">$447</td>
+                                    <td class="edit">
+                                        <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
+                                            <span class="icons icon-pencil"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Wednesday, 15-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"></td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday, 16-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td>
+                                    <td class="edit"></td> 
+                                </tr>
+                                <tr>
+                                    <td>Friday, 17-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </li>
+                <li>
+                    <a href="#junior-suite-romancepackage-details" class="has-arrow toggle">
+                        <h3>Romance Package</h3>
+                        <div class="price">
+                            $249
+                            <span>Avg. Rate per night</span>
                         </div>
-                    </li>
-                    <li>
-                        <a href="#junior-suite-romancepackage-details" class="has-arrow toggle">
-                            <h3>Romance Package</h3>
-                            <div class="price">
-                                $249
-                                <span>Avg. Rate per night</span>
-                            </div>
-                            <button id="book-room-1-junior-suite-romancepackage" type="button" class="button green">Book</button>
-                        </a>
-                        <div id="junior-suite-romancepackage-details" class="rate-details hidden">
-                            <ul class="info">
-                                <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
-                                <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
-                                <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
-                                <li>A deposit is not required to guarantee your reservation.</li>
-                            </ul>
-                            <table class="room-cost">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Rate</th>
-                                        <th>Tax(20%)</th>
-                                        <th>Total</th>
-                                        <th class="edit"></th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="total-label">Total Room Cost</td>
-                                        <td class="total-value">$447</td>
-                                        <td class="edit">
-                                            <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
-                                                <span class="icons icon-pencil"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td>Wednesday, 15-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thursday, 16-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td>
-                                        <td class="edit"></td> 
-                                    </tr>
-                                    <tr>
-                                        <td>Friday, 17-01-2014</td>
-                                        <td>$100.00</td>
-                                        <td>$49.00</td>
-                                        <td>$149.00</td> 
-                                        <td class="edit"</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </div>
+                        <button id="book-room-1-junior-suite-romancepackage" type="button" class="button green">Book</button>
+                    </a>
+                    <div id="junior-suite-romancepackage-details" class="rate-details hidden">
+                        <ul class="info">
+                            <li>Winter Promotional Rate - Room Only. Taxes included. Different daily rates listed.</li>
+                            <li>Cancel by 4PM on 27-DEC-12 to avoid a penalty charge of 05.00.</li>
+                            <li>Cancel by 4:00 PM on 12/27/2014 to avoid a penalty charge of 105.00.</li>
+                            <li>A deposit is not required to guarantee your reservation.</li>
+                        </ul>
+                        <table class="room-cost">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Rate</th>
+                                    <th>Tax(20%)</th>
+                                    <th>Total</th>
+                                    <th class="edit"></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="total-label">Total Room Cost</td>
+                                    <td class="total-value">$447</td>
+                                    <td class="edit">
+                                        <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
+                                            <span class="icons icon-pencil"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>Wednesday, 15-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"></td>
+                                </tr>
+                                <tr>
+                                    <td>Thursday, 16-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td>
+                                    <td class="edit"></td> 
+                                </tr>
+                                <tr>
+                                    <td>Friday, 17-01-2014</td>
+                                    <td>$100.00</td>
+                                    <td>$49.00</td>
+                                    <td>$149.00</td> 
+                                    <td class="edit"</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </div>
