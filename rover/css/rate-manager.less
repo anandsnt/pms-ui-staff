@@ -21,6 +21,14 @@
       line-height: 60px;
     }
     
+     tr {
+      img {
+        margin-top: 5px;
+        &.up{
+          margin-top: -1px;
+        }
+      }
+    }
 
     span.right{
       float:right;
@@ -120,9 +128,11 @@
           min-width: 200px;
           text-transform: uppercase;
           margin-top: 7px;
+          font-size: 12px;
         }
         span{
           text-transform: uppercase;
+          font-size:14px;
         }
         .button {
           float:right !important;
@@ -308,8 +318,7 @@
       img {
         cursor: pointer;
         width: 12px;
-        height: 12px;
-        margin-top: 5px;
+        height: 12px;        
       }
       .button {
         color: #fcfcfc;
@@ -355,30 +364,42 @@
     padding-right: 10px;
   }
 
+  .cell-container{
+    background-color: #e8e8e8;
+
+    &.exp{
+        background-color: #d2d2d2;
+    }
+  }
+
   .cell-content{
-    border : 10px solid rgb(216, 216, 216);
+    border : 10px solid #e8e8e8;
+    background-color: #fcfcfc;
     height : 80px;
     line-height : 80px; /* Trick for vertical alligh*/
     font-size : 20px;
-      -webkit-box-shadow: inset 1px 2px 4px -2px rgba(0,0,0,0.75);
-      -moz-box-shadow: inset 1px 2px 4px -2px rgba(0,0,0,0.75);
-      box-shadow: inset 1px 2px 4px -2px rgba(0,0,0,0.75);
-      -webkit-border-radius: 1px;
-      -moz-border-radius: 1px;
-      border-radius: 1px;
-    
+      -webkit-box-shadow: inset 1px 2px 4px -2px #e8e8e8;
+      -moz-box-shadow: inset 1px 2px 4px -2px #e8e8e8;
+      box-shadow: inset 1px 2px 4px -2px #e8e8e8;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
 
     &.exp {
       height: auto;
-      border: 10px solid #a7a7a7;
+      border: 10px solid #d2d2d2;
       line-height: normal;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
       & > div {
+
         & > div {
           padding: 0;
           & > div:first-child {
             border-bottom: 1px solid #e7e7e7;
             margin-bottom: 10px;
-            height: 50px;
+            height: 42px;
             span {
               height: 20px;
               margin-bottom: 10px;
@@ -410,16 +431,17 @@
       display: table;
       width: 100%;
       height: 100%;
+
       .rate-single {
           width: 25px;
           height: 25px;
           line-height: normal;
           padding-left: 10px;
           font-weight: lighter;
-          color: #333;
-        }
+          color: #333;       }
 
       & > div {
+
         display: table-cell;
         vertical-align: middle;
         padding-left: 10px;
@@ -443,7 +465,7 @@
 
   }
   .date-header {
-    border : 10px solid rgb(216, 216, 216);
+    border : 10px solid #e8e8e8;
     background-color: #3b3f43;    
     height : 80px;
     font-size : 18px;
@@ -1142,9 +1164,9 @@ padding-top: 80px;
       text-transform: uppercase;
       background: rgb(130, 195, 222);
       color: white;
-
-
-
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px; 
+      border-radius: 2px;
       &.dark{
         background: rgb(86, 96, 131);
       }
@@ -1172,7 +1194,7 @@ padding-top: 80px;
     }
 
     .button.green{
-      width: 100%;
+      width: 95%;
       margin-top: 30px;
       background: linear-gradient(0deg, #54d115 0%, #90d92b 100%);
 
@@ -1200,6 +1222,14 @@ padding-top: 80px;
     input{
       width:100%;
       margin-bottom:10px;
+      text-indent: 15px;
+    }
+    span.icons{
+      width: 20px;
+      height: 20px;
+      position: relative;
+      top: 60px;
+      left: 5px;
     }
   }
 
