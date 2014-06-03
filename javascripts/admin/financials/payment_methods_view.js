@@ -2,7 +2,6 @@ var PaymentMethodsView = function(domRef) {
 	BaseInlineView.call(this);
 	that = this;
 	this.myDom = domRef;
-	//var that = this;
 
 	this.pageshow = function() {
 
@@ -11,9 +10,6 @@ var PaymentMethodsView = function(domRef) {
 		var creditCard = that.myDom.find('tr[data-payment-id="1"]');
 		var isOn = creditCard.find('.switch-button').hasClass('on');
 
-		if (!isOn) {
-			//$('#credit_cards_types').hide();
-		};
 	};
 	
 	//Event handler for on-off toggle button.
@@ -90,7 +86,7 @@ var PaymentMethodsView = function(domRef) {
 		that.cancelFromAppendedDataInline(requestParams['event']);
 	};
 
-	//function to update payment
+	//function to update payment type
 	this.updateApi = function(event) {
 		var postData = {};
 		postData.id = that.myDom.find("#edit-payment").attr('payment_id');
@@ -109,7 +105,7 @@ var PaymentMethodsView = function(domRef) {
 		};
 		webservice.postJSON(url, options);
 	};
-	//function to delete charge group
+	//function to delete payment type
 	this.deleteItem = function(event) {
 		event.preventDefault();
 		var postData = {};
@@ -131,17 +127,7 @@ var PaymentMethodsView = function(domRef) {
 		};
 		webservice.deleteJSON(url, options);
 	};
-	// Success response of deletion
-	/*
-	this.fetchCompletedOfDelete = function(data, successParams) {
-
-		var url = '/admin/hotel_payment_types.json';
-		viewParams = {};
-		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
-		sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
-
-	};
-	*/
+	
 	// Failure response of deletion
 	this.fetchFailedOfDelete = function(errorMessage) {
 		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
