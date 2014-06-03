@@ -110,10 +110,16 @@
     "AP":"AP",
     "AM":"AM",
     "PM":"PM",
-
     "RESERVATION_TYPE_LABEL":"RESERVATION TYPES",
     "SYSTEM_DEFINED_LABEL": " (System defined)",
     "ENTER_ADDON_NAME":"Enter Add-On Name",
-    "ENTER_ADDON_DESCRIPTION":"Enter Add-On Description"
+    "ENTER_ADDON_DESCRIPTION":"Enter Add-On Description",
+    "RESERVATION_SETTINGS":"Reservation Settings",
+    "DEFAULT_RATE_DISPLAY":"Default Rate Display",
+    "MAX_ADULTS":"Max Adults",
+    "MAX_CHILDREN":"Max Children",
+    "MAX_INFANTS":"Max Infants",
+    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display"
+
 
 }
