@@ -1,5 +1,10 @@
 sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window','RVDashboardSrv','ngDialog','$translate', function($rootScope, $scope, $state,$window,RVDashboardSrv,ngDialog, $translate){
 	
+	//Used to add precison in amounts
+	$rootScope.precisonZero = 0;
+	$rootScope.precisonTwo = 2;
+	//To get currency symbol - update the value with the value from API see fetchHotelDetailsSuccessCallback
+	$rootScope.currencySymbol = "";
 	
 	
     $scope.$on("closeDrawer", function(){      
@@ -61,10 +66,11 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 $scope.fetchHotelDetailsSuccessCallback = function(data){
 
 	 if(data.language)
-    $translate.use(data.language.value);
-   else
-    $translate.use('EN');
-	 $scope.$emit('hideLoader');
+	    $translate.use(data.language.value);
+	 else
+	    $translate.use('EN');
+	$rootScope.currencySymbol = getCurrencySign(data.currency.value);
+	$scope.$emit('hideLoader');
 
 };
 /*

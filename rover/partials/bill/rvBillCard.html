@@ -26,7 +26,7 @@
 		<div id="registration-content" data-room-number="2019" data-reservation-status="CHECKEDOUT" class="registration-content scrollable">
 			<div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
 				<div id="notification-message" style="display: none;"></div>
-				<div id="billing-information" class="billing-information notice">
+				<div id="billing-information" class="billing-information notice" ng-show="routingArrayCount>0">
 					<table>
 						<thead>
 							<tr>
@@ -46,7 +46,7 @@
 						</tbody>
 					</table>
 				</div>
-				<div id="billing-information" class="billing-information notice">
+				<div id="billing-information" class="billing-information notice" ng-show="incomingRoutingArrayCount>0">
 					<table>
 						<thead>
 							<tr>
@@ -72,90 +72,86 @@
 					<!-- Bills summary tabs navigation -->
 					<div id="bills-tabs-nav" class="float bill-tabs">
 						<!-- Billing instructions -->
-						<a class="toggle has-arrow"> Billing information </a>
-						<a class="toggle has-arrow"> Incoming Billing information </a>
+						<a class="toggle has-arrow" ng-show="routingArrayCount>0"> Billing information </a>
+						<a class="toggle has-arrow" ng-show="incomingRoutingArrayCount>0"> Incoming Billing information </a>
 						<!-- Add new bill -->
 						<!-- %a.button.with-icon.only-icon.brand-colors -->
 						<!-- %span.icons.icon-plus -->
 						<!-- Add new -->
 						<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
-							<li data-bill-number="1" bill_active="true" class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="bill1" aria-labelledby="ui-id-106" aria-selected="true">
-								<a href="#bill1" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-106">
-								<div class="price">
-									<span>Bill #1</span>
-									$81
+							<li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" ng-repeat="billTab in reservationBillData.bills">
+								<a class="ui-tabs-anchor" >
+								<div class="price" ng-hide="billTab.total_amount=='SR'">
+									<span>Bill #{{billTab.bill_number}}</span>
+									{{currencySymbol}}{{billTab.total_amount | number: precisonZero}}
 								</div>
-								<figure id="payment-info-1" class="card-logo">
-									<img src="/assets/mc.png" alt="">
-									<span class="number"> 5454</span>
+								<div class="price" ng-show="billTab.total_amount=='SR'">
+									<span>Bill #{{billTab.bill_number}}</span>
+									{{billTab.total_amount}}
+								</div>
+								<div class="payment" ng-show="billTab.credit_card_details.payment_type == 'DB' || billTab.credit_card_details.payment_type == 'CA' || billTab.credit_card_details.payment_type == 'CK'">
+									{{billTab.credit_card_details.payment_type_description}}
+								</div>
+								<figure id="payment-info-1" class="card-logo" ng-show="billTab.credit_card_details.payment_type == 'CC'">
+									<img src="/assets/{{billTab.credit_card_details.card_code}}.png" alt="">
+									<span class="number"> {{billTab.credit_card_details.card_number}}</span>
 								</figure></a>
 							</li>
-							<li data-bill-number="2" bill_active="false" class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="bill2" aria-labelledby="ui-id-107" aria-selected="false">
-								<a href="#bill2" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-107">
-								<div class="price">
-									<span>Bill #2</span>
-									$1100
-								</div> <figure id="payment-info-2" class="card-logo hidden"></figure>
-								<div id="payment-2" class="payment">
-									Direct Bill
-								</div></a>
-							</li>
-							<li data-bill-number="3" bill_active="false" class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="bill3" aria-labelledby="ui-id-108" aria-selected="false">
-								<a href="#bill3" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-108">
-								<div class="price">
-									<span>Bill #3</span>
-									$102
-								</div> <figure id="payment-info-3" class="card-logo hidden"></figure>
-								<div id="payment-3" class="payment">
-									Cash
-								</div></a>
-							</li>
-							<li data-bill-number="4" bill_active="false" class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="bill4" aria-labelledby="ui-id-109" aria-selected="false">
-								<a href="#bill4" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-109">
-								<div class="price">
-									<span>Bill #4</span>
-									$0
-								</div></a>
-							</li>
+							
 						</ul>
 					</div>
 					<!-- Bill Tabs for Day items and Group items -->
-					<div role="tabpanel" id="bill1" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-106" aria-hidden="false" aria-expanded="true">
+					<div ng-class="{'hidden': $index!='0'}" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" ng-repeat="billData in reservationBillData.bills">
 						<div class="bill-summary-wrapper">
-							<div id="bill1-summary" class="scrollable">
+							<div class="scrollable">
 								<ul class="wrapper" style="width: 410px; transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
 									<li class="add-new">
 										<a id="add-new-button" class="add-new-button">+ Add</a>
 									</li>
 									<!-- For checkin date -->
-									<li class="active check-in">
-										<a href="#bill1-expense1" class="toggle dual-toggle"> <span class="day"> Tue </span> <span class="date"> 27 </span> <span class="guest-status check-in small-icon">check-in</span> <span class="price">$200</span> </a>
+									<li class="active" ng-repeat="days in billData.days" ng-class="{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}">
+										<a class="toggle dual-toggle" ng-show="days.date != reservationBillData.checkout_date"> 
+											<span class="day"> {{days.date | date:'EEE'}} </span> 
+											<span class="date"> {{days.date | date:'dd'}} </span> 
+											<span class="guest-status check-in small-icon" ng-show="days.date == reservationBillData.checkin_date">check-in</span> 
+											<span class="price">{{currencySymbol}}{{days.amount | number: precisonZero}}</span> 
+										</a>
+										<div class="no-expense" ng-show="days.date == reservationBillData.checkout_date"> 
+											<span class="day"> {{days.date | date:'EEE'}} </span> 
+											<span class="date"> {{days.date | date:'dd'}} </span> 
+											<span class="guest-status check-out small-icon" >check-out</span> 
+											<span class="price">{{currencySymbol}}{{days.amount | number: precisonZero}}</span> 
+										</div>
 									</li>
 									<!-- For checkout date -->
+									
 									<!-- For checkin date -->
-									<li class="active">
-										<a href="#bill1-expense2" class="toggle dual-toggle"> <span class="day"> Wed </span> <span class="date"> 28 </span> <span class="price">$200</span> </a>
-									</li>
-									<!-- For checkin date -->
-									<li class="active">
-										<a href="#bill1-expense3" class="toggle dual-toggle"> <span class="day"> Thu </span> <span class="date"> 29 </span> <span class="price">$200</span> </a>
-									</li>
-									<!-- For checkin date -->
-									<li class="active">
-										<a href="#bill1-expense4" class="toggle dual-toggle"> <span class="day"> Fri </span> <span class="date"> 30 </span> <span class="price">$200</span> </a>
-									</li>
-									<!-- For checkin date -->
-									<li class="check-out last">
+									<!-- <li class="check-out last">
 										<div class="no-expense">
 											<span class="day"> Sat </span>
 											<span class="date"> 31 </span>
 											<span class="guest-status check-out small-icon">check-out</span>
 										</div>
-									</li>
+									</li> -->
 									<!-- For dates between checkin and checkout -->
 									<!-- packages -->
 									<!-- Group items tab -->
 								</ul>
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
 								<div class="iScrollHorizontalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
 									<div class="iScrollIndicator" style="transition-duration: 0ms; display: none; width: 1261px; transform: translate(-10px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
 								</div>
