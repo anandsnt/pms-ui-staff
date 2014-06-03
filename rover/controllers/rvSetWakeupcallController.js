@@ -18,7 +18,7 @@ sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeu
 	}
 
 	$scope.$watch(
-        function() { return $scope.wakeupData.day == "TOMORROW"; },
+        function() { return $scope.wakeupData.day == "TOMORROW"|| typeof $scope.wakeupData.day == 'undefined' ; },
         function(flag) { $scope.tomorrowSelected  = flag; }
     );
 
