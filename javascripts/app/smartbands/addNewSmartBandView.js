@@ -11,15 +11,17 @@ var AddNewSmartBandView = function(domRef) {
 	this.delegateEvents = function(){
 		that.myDom.find('#continue-button').on('click', that.continueButtonClicked);	
 		that.myDom.find('#payment-type').on('click', that.switchedPaymentType);		
-		that.myDom.find("#cancel-link").on('click', that.parentController.hide);
+		that.myDom.find("#cancel-link").on('click', that.backToListing);
 	}
 
-
+	this.backToListing = function(){
+		that.parentController.showPage('smartband-listing');
+	}
 	/**
 	* event executed when shown the ui
 	*/
 	this.pageshow = function(){		
-		that.parentController.hideButton('see-all-band-button');
+		that.parentController.showButton('see-all-band-button');
     	that.parentController.hideButton('add-new-button');
     	that.myDom.find('#first-name').val('');
     	that.myDom.find('#last-name').val('');

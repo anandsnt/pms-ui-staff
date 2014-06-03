@@ -89,6 +89,8 @@ var WriteToSmartBandView = function(domRef){
 		that.myDom.find("#cancel").show();	
 		that.myDom.find(".success").hide();
 		that.myDom.find("#button-area").hide();
+		that.parentController.hideButton('see-all-band-button');
+    	that.parentController.hideButton('add-new-button');
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		//TODO: code for reading the cardid
 		var options = {

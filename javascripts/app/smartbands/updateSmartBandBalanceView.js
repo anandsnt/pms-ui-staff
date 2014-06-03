@@ -13,7 +13,7 @@ var UpdateSmartBandBalanceView = function(domRef) {
 	this.delegateEvents = function(){		
 		that.myDom.find('#continue-button').on('click', that.continueButtonClicked);	
 		that.myDom.find('#see-all-band-button').on('click', that.seeAllBandsClicked);
-		that.myDom.find("#cancel-link").on('click', that.parentController.hide);	
+		that.myDom.find("#cancel-link").on('click', that.backToListing);	
 	}
 
 	/**
@@ -23,19 +23,44 @@ var UpdateSmartBandBalanceView = function(domRef) {
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
 	}
 
+	this.backToListing = function(){
+		that.parentController.showPage('smartband-listing');
+	}
 	/**
 	* function to handle the success case of save API,  will be calling writing interface
 	*/
-	this.successCallbackOfSaveAction = function(data){		
-
+	this.successCallbackOfSaveAction = function(data, successCallBackParameters){		
+		var rowToChange = successCallBackParameters.data;
+		rowToChange.amount = rowToChange.credit + that.data.amount
+		rowToChange.id = that.data.id;
+		that.parentController.getControllerObject('smartband-listing').updateRow(rowToChange);
+		that.data = {};	
+		that.parentController.showPage('smartband-listing');
 	}
 
 
 	this.pageshow = function(){
+		that.myDom.find('#payment-type-div').hide();
+		that.myDom.find('#credit-adding-div').show();
+		that.myDom.find('#float-right').show();
+
 		that.myDom.find("#first-name").val(that.data.first_name);
 		that.myDom.find("#last-name").val(that.data.last_name);
 		that.myDom.find('#smartband-id').html('#' + that.data.account_number);
-		that.myDom.find('#credit-bal').append(that.data.amount);
+
+		that.myDom.find('#area-of-details').css("pointer-events", "auto").css("opacity", "1");
+	
+		if(!that.data.is_fixed){
+			that.myDom.find('#area-of-details').css("pointer-events", "none").css("opacity", "0.5");
+			that.myDom.find('#payment-type').prop('checked', false);
+    		that.switchedPaymentType();
+			that.myDom.find('#payment-type-div').show();
+			that.myDom.find('#credit-adding-div').hide();
+			that.myDom.find('#float-right').hide();
+		}
+		else{
+			that.myDom.find('#credit-bal').append(that.data.amount);
+		}
 		that.accountID = that.data.id;
 	};
 
@@ -43,6 +68,9 @@ var UpdateSmartBandBalanceView = function(domRef) {
 	* function to handle click on continue button	
 	*/
 	this.continueButtonClicked = function(){
+		if(!that.data.is_fixed){
+			return that.backToListing();
+		}
 		var webservice = new NewWebServiceInterface();
 		//preparing the data to post
 		var dataToPost = {};
@@ -55,6 +83,7 @@ var UpdateSmartBandBalanceView = function(domRef) {
 	    var options = { 
 			requestParameters: dataToPost,
 			successCallBack: that.successCallbackOfSaveAction,
+			successCallBackParameters: { 'data': dataToPost},
 			failureCallBack: that.failureCallbackOfSaveAction,
 			loader: 'blocker',
 			async: false
@@ -70,4 +99,17 @@ var UpdateSmartBandBalanceView = function(domRef) {
 		var smartBandModal = new SmartBandModal(that.reservationID);
 		smartBandModal.initialize();
 	}
+	/** 
+	* function to handle ui changes on payment type switching
+	*/
+	this.switchedPaymentType = function(){
+		var value = that.myDom.find('#payment-type').is(":checked");
+		if(value) {
+			that.myDom.find('#fixed-amound').parents("div").eq(0).show();
+		}
+		else{
+			that.myDom.find('#fixed-amound').parents("div").eq(0).hide();
+		}
+		onOffSwitch();
+	};	
 };

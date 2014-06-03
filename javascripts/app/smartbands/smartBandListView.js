@@ -45,24 +45,18 @@ var SmartBandListView = function(domRef) {
 			var target = $(event.target);
 			var id = target.data("id");
 			var is_fixed = target.data("is-fixed");
-
-			if(is_fixed){
-				var webservice = new NewWebServiceInterface();
-				
-				var url = '/api/smartbands/' + id;
-			    var options = { 
-					successCallBack: that.successCallbackOfGetDetails,
-					failureCallBack: that.failureCallbackOfGetDetails,
-					successCallBackParameters:{ "id": id},
-					loader: 'blocker',
-					async: false
-			    };
-				// we prepared, we shooted!!	    			
-			    webservice.getJSON(url, options);	
-			}
-			else{
-
-			}
+			var webservice = new NewWebServiceInterface();
+			
+			var url = '/api/smartbands/' + id;
+		    var options = { 
+				successCallBack: that.successCallbackOfGetDetails,
+				failureCallBack: that.failureCallbackOfGetDetails,
+				successCallBackParameters:{ "id": id},
+				loader: 'blocker',
+				async: false
+		    };
+			// we prepared, we shooted!!	    			
+		    webservice.getJSON(url, options);	
 		}
 
 	}
@@ -80,6 +74,12 @@ var SmartBandListView = function(domRef) {
 		}
 		that.myDom.find("#listing-area ul").prepend(html);
 		createVerticalScroll('#listing-area'); 
+	};
+
+	this.updateRow = function(rowToChange){
+		var row = that.myDom.find("#listing-area ul li[data-id=" + rowToChange.id + "]");
+		row.find('span.band-holder').html(rowToChange.first_name + " " + rowToChange.last_name);
+		row.find('span.charge').html(that.myDom.find("#listing-area").data("currency-symbol") + " " + rowToChange.amount);
 	}
 
 
