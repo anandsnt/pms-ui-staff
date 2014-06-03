@@ -84,7 +84,9 @@
     "ADD_ON":"Add-On",
     "DELETE":"löschen",
     "RESERVATION_TYPE_LABEL":"Reservierungsarten",
-    "SYSTEM_DEFINED_LABEL":"(System definiert)"
+    "SYSTEM_DEFINED_LABEL":"(System definiert)",
+    "ENTER_ADDON_NAME":"Geben Sie Add-On Namens",
+    "ENTER_ADDON_DESCRIPTION":"Geben Sie Add-On Beschreibung"
 
 
 

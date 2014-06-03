@@ -110,6 +110,8 @@
     "PM":"PM",
 
     "RESERVATION_TYPE_LABEL":"RESERVATION TYPES",
-    "SYSTEM_DEFINED_LABEL": " (System defined)"
+    "SYSTEM_DEFINED_LABEL": " (System defined)",
+    "ENTER_ADDON_NAME":"Enter Add-On Name",
+    "ENTER_ADDON_DESCRIPTION":"Enter Add-On Description"
 
 }
