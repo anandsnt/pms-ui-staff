@@ -117,13 +117,12 @@ var PaymentMethodsView = function(domRef) {
 		if (selectedId == "delete") {
 			selectedId = that.myDom.find("#edit-payment").attr('payment_id');
 		}
-		
-		var url = '/admin/payment_types/' + selectedId;
+		var url = '/admin/hotel_payment_types/'+ selectedId;
 		postData.id = selectedId;
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
-			successCallBack : that.fetchCompletedOfDelete,
+			successCallBack : that.fetchCompletedOfSave,
 			failureCallBack : that.fetchFailedOfDelete,
 			loader : "BLOCKER",
 			successCallBackParameters : {
@@ -133,6 +132,7 @@ var PaymentMethodsView = function(domRef) {
 		webservice.deleteJSON(url, options);
 	};
 	// Success response of deletion
+	/*
 	this.fetchCompletedOfDelete = function(data, successParams) {
 
 		var url = '/admin/hotel_payment_types.json';
@@ -141,6 +141,7 @@ var PaymentMethodsView = function(domRef) {
 		sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
 
 	};
+	*/
 	// Failure response of deletion
 	this.fetchFailedOfDelete = function(errorMessage) {
 		sntapp.notification.showErrorMessage(errorMessage, that.myDom);
