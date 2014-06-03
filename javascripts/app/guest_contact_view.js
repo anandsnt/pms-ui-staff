@@ -7,7 +7,19 @@ var GuestContactView = function(domRef) {
 	
 	this.pageinit = function() {
 		setTimeout(function() {
-			that.renderContactInformation();
+			
+				var viewParams = {
+					"user_id" : $("#user_id").val()
+				};
+				
+		
+				sntapp.fetchAndRenderView('staff/preferences/likes', $("#likes"), viewParams, 'NONE', '', true);
+		
+				sntapp.fetchAndRenderView('staff/payments/payment', $("#cc-payment"), viewParams, 'NONE', '', true);
+				//var reservation_id = getReservationId();
+				//viewParams = {"reservation_id" : reservation_id};
+				sntapp.fetchAndRenderView('staff/user_memberships', $("#loyalty"), viewParams, 'NONE', '', true);
+				that.renderContactInformation();
 		}, 700);		
 		$('html').off();
 		$('html').on('click', that.callSave);
@@ -144,15 +156,17 @@ var GuestContactView = function(domRef) {
 		sntapp.activityIndicator.hideActivityIndicator();
 		var guest_id = $("#guest_id").val();			    
 
-		var viewParams = {
-			"user_id" : $("#user_id").val()
-		};
-		sntapp.fetchAndRenderView('staff/preferences/likes', $("#likes"), viewParams);
-
-		sntapp.fetchAndRenderView('staff/payments/payment', $("#cc-payment"), viewParams);
-		//var reservation_id = getReservationId();
-		//viewParams = {"reservation_id" : reservation_id};
-		sntapp.fetchAndRenderView('staff/user_memberships', $("#loyalty"), viewParams);	
+		// var viewParams = {
+			// "user_id" : $("#user_id").val()
+		// };
+// 		
+// 
+		// sntapp.fetchAndRenderView('staff/preferences/likes', $("#likes"), viewParams, 'NONE', '', true);
+// 
+		// sntapp.fetchAndRenderView('staff/payments/payment', $("#cc-payment"), viewParams, 'NONE', '', true);
+		// //var reservation_id = getReservationId();
+		// //viewParams = {"reservation_id" : reservation_id};
+		// sntapp.fetchAndRenderView('staff/user_memberships', $("#loyalty"), viewParams, 'NONE', '', true);	
 	};
 
 	// failure function of renderContactInformation's ajax call
