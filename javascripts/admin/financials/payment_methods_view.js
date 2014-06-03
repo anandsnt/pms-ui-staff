@@ -1,7 +1,8 @@
 var PaymentMethodsView = function(domRef) {
 	BaseInlineView.call(this);
+	that = this;
 	this.myDom = domRef;
-	var that = this;
+	//var that = this;
 
 	this.pageshow = function() {
 
@@ -82,7 +83,7 @@ var PaymentMethodsView = function(domRef) {
 	//refreshing view with new data and showing message
 	this.fetchCompletedOfSave = function(data, requestParams) {
 
-		var url = "/admin/hotel_payment_types";
+		var url = "/admin/hotel_payment_types/";
 		viewParams = {};
 		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
 		sntapp.notification.showSuccessMessage("Saved Successfully", that.myDom);
@@ -96,7 +97,7 @@ var PaymentMethodsView = function(domRef) {
 		postData.description = that.myDom.find("#payment-description").val();
 		postData.value = that.myDom.find("#payment-code").val();
 		
-		var url = '/admin/hotel_payment_types.json';
+		var url = '/admin/hotel_payment_types';
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
@@ -106,7 +107,7 @@ var PaymentMethodsView = function(domRef) {
 			},
 			loader : "BLOCKER"
 		};
-		webservice.putJSON(url, options);
+		webservice.postJSON(url, options);
 	};
 	//function to delete charge group
 	this.deleteItem = function(event) {
