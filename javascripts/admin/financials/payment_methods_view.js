@@ -66,7 +66,7 @@ var PaymentMethodsView = function(domRef) {
 		var postData = {};
 		postData.description = that.myDom.find("#payment-description").val();
 		postData.value = that.myDom.find("#payment-code").val();
-		var url = '/admin/payment_types/save';
+		var url = '/admin/hotel_payment_types.json'
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
@@ -96,7 +96,7 @@ var PaymentMethodsView = function(domRef) {
 		postData.description = that.myDom.find("#payment-description").val();
 		postData.value = that.myDom.find("#payment-code").val();
 		
-		var url = '/admin/payment_types/save';
+		var url = '/admin/hotel_payment_types.json';
 		var webservice = new WebServiceInterface();
 		var options = {
 			requestParameters : postData,
@@ -116,6 +116,7 @@ var PaymentMethodsView = function(domRef) {
 		if (selectedId == "delete") {
 			selectedId = that.myDom.find("#edit-payment").attr('payment_id');
 		}
+		
 		var url = '/admin/payment_types/' + selectedId;
 		postData.id = selectedId;
 		var webservice = new WebServiceInterface();
@@ -133,7 +134,7 @@ var PaymentMethodsView = function(domRef) {
 	// Success response of deletion
 	this.fetchCompletedOfDelete = function(data, successParams) {
 
-		var url = "/admin/charge_groups";
+		var url = '/admin/hotel_payment_types.json';
 		viewParams = {};
 		sntapp.fetchAndRenderView(url, that.myDom, {}, 'BLOCKER', viewParams, false);
 		sntapp.notification.showSuccessMessage("Deleted Successfully", that.myDom);
