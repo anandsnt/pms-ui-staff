@@ -131,6 +131,8 @@ var WebServiceInterface = function(){
 			errorMessage = 'Requested page not found. [404]';
 		}else if (jqXHR.status == 500) {
 			errorMessage = 'Internal Server Error [500].';
+		}else if (jqXHR.status == 520) {
+			errorMessage = 'OWS Connectivity Error';
 		}
 		else {
 			errorMessage = 'Uncaught Error.\n [' + jqXHR.status + '] ' + errorThrown;

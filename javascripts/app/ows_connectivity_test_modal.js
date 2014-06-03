@@ -7,7 +7,9 @@ var OWSConnectivityModal = function(){
 		that.myDom.find('#try-again').on('click', that.tryAgainButtonPressed);
 	};
 
-	this.modalInit = function(){
+	this.modalDidShow = function(){
+		console.log("modals");
+		console.log($("#modal-overlay"));
 		$("#modal-overlay").unbind("click");
 		$("#modal-overlay").addClass("locked");
 	};
