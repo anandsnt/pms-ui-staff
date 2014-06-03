@@ -112,5 +112,18 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 		return deferred.promise;
 	}
 	
+	/**
+	* service function used for retreive rates
+	*/
+	this.fetchRates = function(){
+		var deferred = $q.defer();		
+		var url =  '/api/rates/contract_rates';			
+		rvBaseWebSrvV2.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;				
+	};	
 
 }]);
