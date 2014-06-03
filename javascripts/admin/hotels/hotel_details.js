@@ -327,52 +327,57 @@ this.gotoPreviousPage = function() {
 
 this.readCertificate = function(input, type) {
 
-		//CICO-5178
-		if(type == "logo"){
+		 function resetInput(element, eventId) {
+            var clone = element.clone(false, false);            
+            clone.on('change', function() {
+                that.readCertificate(this, eventId);
+            })
+            element.replaceWith(clone);
+        }
+
+
+		if (type == "logo") {
 			that.myDom.find('#hotel-logo-preview').attr('changed', "changed");
 			that.myDom.find('#hotel-logo-preview').attr('deleted', false);
-		}
-
-		else if(type == "logo-template"){					
+		} else if (type == "logo-template") {
 			that.myDom.find('#hotel-logo-template-preview').attr('changed', "changed");
 			that.myDom.find('#hotel-logo-template-preview').attr('deleted', false);
 
-		}
-
-		else if(type == "logo-deleted"){
+		} else if (type == "logo-deleted") {
 			that.myDom.find('#hotel-logo-preview').attr('deleted', "deleted");
 			that.myDom.find("#deleteLogo").addClass('hidden');
 			that.myDom.find('#hotel-logo-preview').attr('src', "");
 			that.myDom.find('#hotel-logo').parent('div').find('span').text("Choose file ...");
-		}
+			resetInput(that.myDom.find('#hotel-logo'),"logo");
 
-		else if(type == "logo-template-deleted"){					
+		} else if (type == "logo-template-deleted") {
 			that.myDom.find('#hotel-logo-template-preview').attr('deleted', "deleted");
 			that.myDom.find("#deleteTemplate").addClass('hidden');
 			that.myDom.find('#hotel-logo-template-preview').attr('src', "");
 			that.myDom.find('#hotel-template-logo').parent('div').find('span').text("Choose file ...");
+			resetInput(that.myDom.find('#hotel-template-logo'),"logo-template");
 		}
 
 
-        if (input.files && input.files[0]) {
-           var reader = new FileReader();
-           reader.onload = function(e) {
-           		if(type == "logo"){
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				if (type == "logo") {
 					that.myDom.find('#hotel-logo-preview').attr('src', e.target.result);
 					that.myDom.find("#deleteLogo").removeClass('hidden');
-				}			
+				}
 
-				if(type == "logo-template"){
+				if (type == "logo-template") {
 					that.myDom.find('#hotel-logo-template-preview').attr('src', e.target.result);
 					that.myDom.find("#deleteTemplate").removeClass('hidden');
 				}
-               that.fileContent = e.target.result;
-           };
-           reader.readAsDataURL(input.files[0]);
-			
+				that.fileContent = e.target.result;
+			};
+			reader.readAsDataURL(input.files[0]);
 
 
-       }
-  };
+
+		}
+	};
 
 };
