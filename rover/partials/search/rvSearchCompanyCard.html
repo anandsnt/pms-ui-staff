@@ -15,14 +15,21 @@
         <div class="wrapper1" ng-iscroll="comapany_card_scroll" ng-iscroll-delay="1000" style="position:absolute; top:125px; bottom: 0px; left:0px; width: 100%;overflow:hidden;">
             <ul id="search-cards-results" class="search-results" >
                  <li ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length==0 || textInQueryBox==''">
-                    <a ui-sref="rover.companycarddetails({id:row.id, type: row.account_type.toLowerCase()})" class="card-result company-card" data-transition="inner-page">
-                        <figure class="guest-image">
+                    <a ui-sref="rover.companycarddetails({id:row.id, type: row.account_type})" class="card-result company-card" data-transition="inner-page">
+                        
+                        <figure class="guest-image" ng-if="escapeNull(row.company_logo)!=''">
                             <img ng-src="{{row.company_logo}}" alt="">
                         </figure>
+                        
+                        <figure class="guest-image" ng-if="escapeNull(row.company_logo)==''">
+                            <div class="guest-image icons icon-company" ng-if="escapeNull(row.account_type)=='COMPANY'" ></div>
+                            <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(row.account_type)!='COMPANY'" ></div>
+                        </figure>
+                        
                         <div class="data">
                             <h2 ng-bind-html="'{{row.account_first_name}}, {{row.account_last_name}}'|highlight:textInQueryBox:false"></h2>
                         </div>
-                        <div class="status company" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travel-agent'}" >{{row.account_type}}</div>
+                        <div class="status company" ng-class="{'company': row.account_type.toLowerCase()=='company', 'travel-agent': row.account_type.toLowerCase()=='travelagent'}" >{{row.account_type}}</div>
                     </a>
                 </li>
             	<!-- No results / no content when searched query not found-->
@@ -31,8 +38,8 @@
 						<span class="icon-no-content icon-cards"></span>
 						<strong class="h1">No matches have been found</strong>
 						<span class="h2"> Do you want to create a new Company or Travel Agent card ? <br/>
-							<a class="open-modal" ui-sref="rover.companycarddetails({id:'add', type: 'company', firstname:textInQueryBox})">Add New Company Card</a> or
-							<a class="open-modal" ui-sref="rover.companycarddetails({id:'add', type: 'travel-agent', firstname:textInQueryBox})">Add New Travel Agent Card</a>
+							<a class="open-modal" ui-sref="rover.companycarddetails({id:'add', type: 'COMPANY', firstname:textInQueryBox})">Add New Company Card</a> or
+							<a class="open-modal" ui-sref="rover.companycarddetails({id:'add', type: 'TRAVELAGENT', firstname:textInQueryBox})">Add New Travel Agent Card</a>
 						</span>
 					</div>
 				</li>
