@@ -41,8 +41,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                             {key:"SUN",day:"SUNDAY",value:"false"}//"sun" : false,
                         ],
                     "numOfWeeks" : 1,
-                    "applyToPrice" : false,
-                    "applyToRestrictions" : false
+                    "applyToPrice" : true,
+                    "applyToRestrictions" : true
                  };
 
     $scope.hideUpdatePriceAndRestrictionsDialog = function(){
@@ -140,7 +140,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             restrictionTypes[itemID] = item;
         }
         $scope.data.restrictionTypes = restrictionTypes;
-        $scope.data.previousRestrictionTypes = $scope.data.restrictionTypes;
+        $scope.data.previousRestrictionTypes = dclone($scope.data.restrictionTypes);
 		
     };
 
@@ -191,7 +191,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             restrictionTypes[itemID] = item;
         }
         $scope.data.restrictionTypes = restrictionTypes;
-        $scope.data.previousRestrictionTypes = JSON.parse(JSON.stringify($scope.data.restrictionTypes));
+        $scope.data.previousRestrictionTypes = dclone($scope.data.restrictionTypes);
     };
 
     var isRestictionHasDaysEnter = function(restriction){
@@ -318,6 +318,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             restrictionDetails.restrictions = [];
             
             if($scope.daysOptions.applyToRestrictions || (!$scope.daysOptions.applyToRestrictions && i== 0)) {
+                console.log("inside");
                 angular.forEach($scope.data.restrictionTypes, function(value, key){
                     if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled != value.isRestrictionEnabled){
                         var action = "";
@@ -335,6 +336,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     }
                 });
             }
+
+            console.log(JSON.stringify(restrictionDetails.restrictions));
             
             //The popup appears by from the rate calendar view
             if($scope.popupData.fromRoomTypeView){
