@@ -235,6 +235,7 @@ sntRover.controller('RMFilterOptionsCtrl',['$scope','RMFilterOptionsSrv','ngDial
     $scope.deleteCards = function(id){
         $scope.companySearchText = "";
         $scope.selectedCards = [];
+        $scope.currentFilterData.name_card_ids = [];
         $scope.refreshFilterScroll();
     };
     
