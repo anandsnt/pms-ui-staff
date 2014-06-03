@@ -84,10 +84,16 @@ sntRover.config([
 
                                
         $stateProvider.state('rover.staycard.billcard', {
-			url: '/billcard',
-			templateUrl: '/assets/partials/bill/rvBillCard.html',
-            controller: 'RVbillCardController'
+			 url: '/billcard/:reservationId',
+			 templateUrl: '/assets/partials/bill/rvBillCard.html',
+             controller: 'RVbillCardController',
+	         resolve: {
+				reservationBillData: function(RVBillCardSrv, $stateParams) {
+					return RVBillCardSrv.fetch($stateParams.reservationId);
+				}
+			}
         });
+        
          $stateProvider.state('rover.staycard.roomassignment', {
 			url: '/roomassignment',
 			templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',

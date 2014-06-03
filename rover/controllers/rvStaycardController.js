@@ -1,6 +1,6 @@
 sntRover.controller('staycardController',['$scope', function($scope){
 
-
+sajith = $scope;
 $scope.guestCardData ={};
 $scope.guestCardData.contactInfo = {};
 $scope.countriesList = [];

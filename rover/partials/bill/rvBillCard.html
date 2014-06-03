@@ -1,80 +1,1507 @@
 
 <div class="nested-view view-current">
 	<!-- Nav bar -->
-	<header class="nav-bar float" role = "banner">
-		<!-- Drawer toggle -->
-		<a class="nav-toggle" > Menu</a>
-		<!-- Title -->
-		<h1 class="h2"> Dashboard <span> Logged in as <strong> {{ header_data.firstname }}
-			{{ header_data.lastname }} </strong> </span>
-		</h1>
-		<!-- Late checkout -->
-		<a id="late-checkout-alert" class="icons icon-alert late-check-out"> {{ header_data.late_checkout }} </a>
-		<div class="logo">
-			<img alt = "", src= "https://pms-dev.stayntouch.com/assets/logo.png" />
-			<em class="date"> {{ header_data.date }} </em>
-		</div>
-	</header>
+	
+	<div ng-include="'/assets/partials/common/header.html'"></div>
 
-	<section id="registration-details" class="content stay-card-inner check-in">
+	<section role="complementary" id="registration-details" class="content stay-card-inner check-in">
 		<!-- Reservation Header -->
 		<div class="reservation-header">
 			<div class="actions back">
-				<a class="back-button prev-view" ui-sref="rover.staycard.reservationcard.all">BACK</a>
+				<a id="back-to-staycard" class="back-button prev-view">BACK</a>
 			</div>
 			<!-- Other header details -->
 			<div class="data">
-				<span class="room"> <span class="guest-status room">room</span>
-					<strong id="header-room-num" class="room-number ready"> {{ data.room_number }}</strong>
-					<span id="room-type"> {{ data.room_type }} </span>
-				</span>
-				<span class="nights">
-					<span class="guest-status nights"> </span> {{ data.number_of_nights }} nights 
-				</span>
-				<span class="date">
-					<span class="guest-status small-icon check-in">check-in</span>
-					{{ data.checkin_date | date : 'EEEE' }}
-					{{ data.checkin_date | date : 'MM-dd-yyyy' }}
-				</span>
-				<span class="date">
-					<span class="guest-status small-icon check-out">check-out</span> 
-					{{ data.checkout_date | date : 'EEEE' }}
-					{{ data.checkout_date | date : 'MM-dd-yyyy' }} 
-				</span>
+				<span data-room-status="NOTREADY" data-reserv-status="CHECKEDOUT" data-fostatus="VACANT" class="room"> <span class="guest-status room">room</span> <strong id="header-room-num" class="room-number"> 2019 </strong> <span id="room-type"> Deluxe Twin </span> </span>
+				<span class="nights"> <span class="guest-status nights"></span> 4
+					nights </span>
+				<span class="date"> <span class="guest-status small-icon check-in">check-in</span> Tuesday
+					05-27-2014 </span>
+				<span class="date"> <span class="guest-status small-icon check-out">check-out</span> Saturday
+					05-31-2014 </span>
 			</div>
+
 		</div>
-		
 		<!-- Registration Content -->
-		<div id="registration-content" data-room-number="1039" data-reservation-status="CHECKING_IN" class="registration-content scrollable">
-			<div class="wrapper">
-				<div id="notification-message"></div>
+		<div id="registration-content" data-room-number="2019" data-reservation-status="CHECKEDOUT" class="registration-content scrollable">
+			<div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+				<div id="notification-message" style="display: none;"></div>
+				<div id="billing-information" class="billing-information notice">
+					<table>
+						<thead>
+							<tr>
+								<th>To Bill #</th>
+								<th>To Room #</th>
+								<th>Guest / Company</th>
+								<th>Details</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="routingData in reservationBillData.routing_array">
+								<td> {{routingData.bill_number}} </td>
+								<td>{{routingData.room_no}}</td>
+								<td> {{routingData.guest_or_company}} </td>
+								<td> {{routingData.details}} </td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div id="billing-information" class="billing-information notice">
+					<table>
+						<thead>
+							<tr>
+								<th>From Room #</th>
+								<th></th>
+								<th>From Guest Name</th>
+								<th>Details</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="incomingRoutingData in reservationBillData.incoming_routing_array">
+								<td> {{incomingRoutingData.room_no}} </td>
+								<td></td>
+								<td> {{incomingRoutingData.guest_name}} </td>
+								<td> {{incomingRoutingData.details}} </td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- -data["incoming_routing_array"] = [{"room_no"=>"12345","guest_name"=>"krishobh","details"=>"qburst clt"},{"room_no"=>"12345","guest_name"=>"krishobh","details"=>"qburst clt"}] -->
 				<!-- Rate & Bill Summary -->
 				<div id="bills" class="registration-summary ui-tabs ui-widget ui-widget-content ui-corner-all">
 					<!-- Bills summary tabs navigation -->
 					<div id="bills-tabs-nav" class="float bill-tabs">
 						<!-- Billing instructions -->
+						<a class="toggle has-arrow"> Billing information </a>
+						<a class="toggle has-arrow"> Incoming Billing information </a>
+						<!-- Add new bill -->
+						<!-- %a.button.with-icon.only-icon.brand-colors -->
+						<!-- %span.icons.icon-plus -->
+						<!-- Add new -->
 						<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
-
-							<li ng-repeat= "bills in data.bills" ng-click="toggleBills($index)" ng-class="{ active:  $state.includes('rover.staycard.billcard.details', { billNo : bills.bill_number })}" class="ui-state-default ui-corner-top" >
-								<a ui-sref="rover.staycard.billcard.details({ billNo : bills.bill_number })" class="ui-tabs-anchor" role="presentation" tabindex="-1">
-									<div class="price">
-										<span>Bill #{{bills.bill_number}}</span>
-										$ {{bills.total_amount}}
-									</div>
-									<figure id="payment-info-1" class="card-logo">
-										<img src="/assets/mc.png" alt="">
-										<span class="number"> {{bills.credit_card_details.card_number}} </span>
-									</figure>
-								</a>
+							<li data-bill-number="1" bill_active="true" class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="bill1" aria-labelledby="ui-id-106" aria-selected="true">
+								<a href="#bill1" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-106">
+								<div class="price">
+									<span>Bill #1</span>
+									$81
+								</div>
+								<figure id="payment-info-1" class="card-logo">
+									<img src="/assets/mc.png" alt="">
+									<span class="number"> 5454</span>
+								</figure></a>
 							</li>
-								
+							<li data-bill-number="2" bill_active="false" class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="bill2" aria-labelledby="ui-id-107" aria-selected="false">
+								<a href="#bill2" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-107">
+								<div class="price">
+									<span>Bill #2</span>
+									$1100
+								</div> <figure id="payment-info-2" class="card-logo hidden"></figure>
+								<div id="payment-2" class="payment">
+									Direct Bill
+								</div></a>
+							</li>
+							<li data-bill-number="3" bill_active="false" class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="bill3" aria-labelledby="ui-id-108" aria-selected="false">
+								<a href="#bill3" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-108">
+								<div class="price">
+									<span>Bill #3</span>
+									$102
+								</div> <figure id="payment-info-3" class="card-logo hidden"></figure>
+								<div id="payment-3" class="payment">
+									Cash
+								</div></a>
+							</li>
+							<li data-bill-number="4" bill_active="false" class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="bill4" aria-labelledby="ui-id-109" aria-selected="false">
+								<a href="#bill4" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-109">
+								<div class="price">
+									<span>Bill #4</span>
+									$0
+								</div></a>
+							</li>
 						</ul>
 					</div>
-						
-					<div ui-view> </div>
-					
+					<!-- Bill Tabs for Day items and Group items -->
+					<div role="tabpanel" id="bill1" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-106" aria-hidden="false" aria-expanded="true">
+						<div class="bill-summary-wrapper">
+							<div id="bill1-summary" class="scrollable">
+								<ul class="wrapper" style="width: 410px; transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
+									<li class="add-new">
+										<a id="add-new-button" class="add-new-button">+ Add</a>
+									</li>
+									<!-- For checkin date -->
+									<li class="active check-in">
+										<a href="#bill1-expense1" class="toggle dual-toggle"> <span class="day"> Tue </span> <span class="date"> 27 </span> <span class="guest-status check-in small-icon">check-in</span> <span class="price">$200</span> </a>
+									</li>
+									<!-- For checkout date -->
+									<!-- For checkin date -->
+									<li class="active">
+										<a href="#bill1-expense2" class="toggle dual-toggle"> <span class="day"> Wed </span> <span class="date"> 28 </span> <span class="price">$200</span> </a>
+									</li>
+									<!-- For checkin date -->
+									<li class="active">
+										<a href="#bill1-expense3" class="toggle dual-toggle"> <span class="day"> Thu </span> <span class="date"> 29 </span> <span class="price">$200</span> </a>
+									</li>
+									<!-- For checkin date -->
+									<li class="active">
+										<a href="#bill1-expense4" class="toggle dual-toggle"> <span class="day"> Fri </span> <span class="date"> 30 </span> <span class="price">$200</span> </a>
+									</li>
+									<!-- For checkin date -->
+									<li class="check-out last">
+										<div class="no-expense">
+											<span class="day"> Sat </span>
+											<span class="date"> 31 </span>
+											<span class="guest-status check-out small-icon">check-out</span>
+										</div>
+									</li>
+									<!-- For dates between checkin and checkout -->
+									<!-- packages -->
+									<!-- Group items tab -->
+								</ul>
+								<div class="iScrollHorizontalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
+									<div class="iScrollIndicator" style="transition-duration: 0ms; display: none; width: 1261px; transform: translate(-10px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
+								</div>
+							</div>
+							<!-- Bill  summaries -->
+							<!-- Bill item per day -Summary -->
+							<div id="bill1-expense1" class="summary-expanded float hidden">
+								<a href="#bill1-expense1-details" class="toggle has-arrow">
+								<div class="price">
+									$200.00<span>+ fees</span>
+								</div>
+								<div class="rate">
+									<span> Rate per night </span>
+									Rate for PMS-DEV
+								</div>
+								<div class="room">
+									<span> Guest Room Type </span>
+									Deluxe Twin
+								</div> </a>
+								<div id="bill1-expense1-details" class="stay-details float hidden">
+									<div class="rate-details">
+										Rate for PMS-DEV 1 includes wifi, parking and late checkout
+									</div>
+									<div class="room-details">
+										<ul>
+											<li>
+												Deluxe Twin
+											</li>
+											<li>
+												Amenities include Complimentary Bottle of wine Chocolates
+											</li>
+											<li>
+												Complimentary Airport Transfer one way
+											</li>
+											<li>
+												300 thread count Lissadel Linen
+											</li>
+											<li>
+												32 Flat screen TV
+											</li>
+											<li>
+												Nespresso coffee machine
+											</li>
+											<li>
+												Complimen
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div id="bill1-expense2" class="summary-expanded float hidden">
+								<a href="#bill1-expense2-details" class="toggle has-arrow">
+								<div class="price">
+									$200.00<span>+ fees</span>
+								</div>
+								<div class="rate">
+									<span> Rate per night </span>
+									Rate for PMS-DEV
+								</div>
+								<div class="room">
+									<span> Guest Room Type </span>
+									Deluxe Twin
+								</div> </a>
+								<div id="bill1-expense2-details" class="stay-details float hidden">
+									<div class="rate-details">
+										Rate for PMS-DEV 1 includes wifi, parking and late checkout
+									</div>
+									<div class="room-details">
+										<ul>
+											<li>
+												Deluxe Twin
+											</li>
+											<li>
+												Amenities include Complimentary Bottle of wine Chocolates
+											</li>
+											<li>
+												Complimentary Airport Transfer one way
+											</li>
+											<li>
+												300 thread count Lissadel Linen
+											</li>
+											<li>
+												32 Flat screen TV
+											</li>
+											<li>
+												Nespresso coffee machine
+											</li>
+											<li>
+												Complimen
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div id="bill1-expense3" class="summary-expanded float hidden">
+								<a href="#bill1-expense3-details" class="toggle has-arrow">
+								<div class="price">
+									$200.00<span>+ fees</span>
+								</div>
+								<div class="rate">
+									<span> Rate per night </span>
+									Rate for PMS-DEV
+								</div>
+								<div class="room">
+									<span> Guest Room Type </span>
+									Deluxe Twin
+								</div> </a>
+								<div id="bill1-expense3-details" class="stay-details float hidden">
+									<div class="rate-details">
+										Rate for PMS-DEV 1 includes wifi, parking and late checkout
+									</div>
+									<div class="room-details">
+										<ul>
+											<li>
+												Deluxe Twin
+											</li>
+											<li>
+												Amenities include Complimentary Bottle of wine Chocolates
+											</li>
+											<li>
+												Complimentary Airport Transfer one way
+											</li>
+											<li>
+												300 thread count Lissadel Linen
+											</li>
+											<li>
+												32 Flat screen TV
+											</li>
+											<li>
+												Nespresso coffee machine
+											</li>
+											<li>
+												Complimen
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div id="bill1-expense4" class="summary-expanded float hidden">
+								<a href="#bill1-expense4-details" class="toggle has-arrow">
+								<div class="price">
+									$200.00<span>+ fees</span>
+								</div>
+								<div class="rate">
+									<span> Rate per night </span>
+									Rate for PMS-DEV
+								</div>
+								<div class="room">
+									<span> Guest Room Type </span>
+									Deluxe Twin
+								</div> </a>
+								<div id="bill1-expense4-details" class="stay-details float hidden">
+									<div class="rate-details">
+										Rate for PMS-DEV 1 includes wifi, parking and late checkout
+									</div>
+									<div class="room-details">
+										<ul>
+											<li>
+												Deluxe Twin
+											</li>
+											<li>
+												Amenities include Complimentary Bottle of wine Chocolates
+											</li>
+											<li>
+												Complimentary Airport Transfer one way
+											</li>
+											<li>
+												300 thread count Lissadel Linen
+											</li>
+											<li>
+												32 Flat screen TV
+											</li>
+											<li>
+												Nespresso coffee machine
+											</li>
+											<li>
+												Complimen
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div id="bill1-expense5" class="summary-expanded float hidden">
+								<a href="#bill1-expense5-details" class="toggle has-arrow">
+								<div class="price">
+									$200.00<span>+ fees</span>
+								</div>
+								<div class="rate">
+									<span> Rate per night </span>
+									Rate for PMS-DEV
+								</div>
+								<div class="room">
+									<span> Guest Room Type </span>
+									Deluxe Twin
+								</div> </a>
+								<div id="bill1-expense5-details" class="stay-details float hidden">
+									<div class="rate-details">
+										Rate for PMS-DEV 1 includes wifi, parking and late checkout
+									</div>
+									<div class="room-details">
+										<ul>
+											<li>
+												Deluxe Twin
+											</li>
+											<li>
+												Amenities include Complimentary Bottle of wine Chocolates
+											</li>
+											<li>
+												Complimentary Airport Transfer one way
+											</li>
+											<li>
+												300 thread count Lissadel Linen
+											</li>
+											<li>
+												32 Flat screen TV
+											</li>
+											<li>
+												Nespresso coffee machine
+											</li>
+											<li>
+												Complimen
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<!-- package summary -->
+							<!-- Group items per day - Summary -->
+						</div>
+						<!-- Show Total Stay Fees and Balance -->
+						<!-- Total Fees & Balance -->
+						<div id="bill1-total-fees" class="total-stay-fees float">
+							<div class="overview">
+								<a href="#bill1-fees" class="toggle has-arrow with-rate active"> <span class="title"> Guest Balance: <em class="label"> As of
+									05-31-2014 </em> </span> <span class="value green">$0.00</span> </a>
+							</div>
+							<!-- Show Signature button -->
+							<!-- Credit card -->
+							<div id="payment" data-payment-type="CC" class="block-item item-payment">
+								<a id="select-card-from-list" class="next-view">
+								<figure class="card-logo">
+									<img src="/assets/mc.png" alt="">
+								</figure> <span class="number"> Ending with <span class="value number"> 5454 </span> </span> <span class="date"> Date <span class="value date"> 12/17 </span> </span> </a>
+								<a id="update_card" data-payment-id="1585" class="button with-icon green"> <span class="icons icon-wallet"></span> Update CC </a>
+							</div>
+							<!-- Show signed signature -->
+							<!-- Bill Total Stay Fees -->
+							<div id="bill1-fees" class="details">
+								<table class="total-fees">
+									<thead>
+										<tr>
+											<!-- %th Type -->
+											<th>Date</th>
+											<th>Description</th>
+											<th>Fees</th>
+											<th>Credits</th>
+											<th class="action-select">Bill #</th>
+											<th class="action"></th>
+										</tr>
+									</thead>
+									<!-- Total Stay fees details in CHECK IN status. -->
+									<tfoot>
+										<tr class="active edit">
+											<td colspan="2" class="total-label"><!-- Show email and print buttons --><a class="button with-icon only-icon blue hidden"> <span class="icons icon-email"></span> </a><a class="button with-icon only-icon blue hidden"> <span class="icons icon-print"></span> </a> Stay fees (as of
+											05-31-14
+											): </td>
+											<td colspan="2" class="total-value"><strong> $
+											81.00 </strong></td>
+											<td></td>
+											<!-- Show edit button to edit amount -->
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<!-- Show balance -->
+										<tr class="active">
+											<td colspan="2" class="total-label"> Balance (as of
+											05-31-14
+											): </td>
+											<td colspan="3" class="total-value green"><strong> $
+											0.00 </strong></td>
+											<td></td>
+											<!-- Show fee details -->
+										</tr>
+									</tfoot>
+									<tbody>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-27-2014 </td>
+											<td> Upgrade Charge
+											<br>
+											</td>
+											<td><strong> $
+											25.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_1" data-transaction_id="204875" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1" selected="true"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-27-2014 </td>
+											<td> Occupancy Tax- 4%
+											<br>
+											</td>
+											<td><strong> $
+											1.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_1" data-transaction_id="204876" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1" selected="true"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-27-2014 </td>
+											<td> Room Tax - 6%
+											<br>
+											</td>
+											<td><strong> $
+											1.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_1" data-transaction_id="204877" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1" selected="true"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-28-2014 </td>
+											<td> Upgrade Charge
+											<br>
+											</td>
+											<td><strong> $
+											25.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_1" data-transaction_id="205431" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1" selected="true"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-28-2014 </td>
+											<td> Occupancy Tax- 4%
+											<br>
+											</td>
+											<td><strong> $
+											1.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_1" data-transaction_id="205432" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1" selected="true"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-28-2014 </td>
+											<td> Room Tax - 6%
+											<br>
+											</td>
+											<td><strong> $
+											1.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_1" data-transaction_id="205433" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1" selected="true"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-29-2014 </td>
+											<td> Upgrade Charge
+											<br>
+											</td>
+											<td><strong> $
+											25.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_1" data-transaction_id="205584" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1" selected="true"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-29-2014 </td>
+											<td> Occupancy Tax- 4%
+											<br>
+											</td>
+											<td><strong> $
+											1.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_1" data-transaction_id="205585" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1" selected="true"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-29-2014 </td>
+											<td> Room Tax - 6%
+											<br>
+											</td>
+											<td><strong> $
+											1.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_1" data-transaction_id="205586" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1" selected="true"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-31-2014 </td>
+											<td> Master Card
+											<br>
+											</td>
+											<td><strong>
+											<br>
+											</strong></td>
+											<td><strong> $
+											81.00 </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_1" data-transaction_id="205795" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1" selected="true"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+									</tbody>
+
+								</table>
+							</div>
+						</div>
+
+						<!-- Review bill and Complete checkout -->
+						<!-- Checkin screen -->
+						<!-- Checkout screen -->
+
+					</div>
+					<!-- Bill Tabs for Day items and Group items -->
+					<div role="tabpanel" id="bill2" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-107" aria-hidden="true" aria-expanded="false" style="display: none;">
+						<div class="bill-summary-wrapper">
+							<div id="bill2-summary" class="scrollable">
+								<ul class="wrapper">
+									<li class="add-new">
+										<a id="add-new-button" class="add-new-button">+ Add</a>
+									</li>
+									<!-- packages -->
+									<!-- Group items tab -->
+								</ul>
+							</div>
+							<!-- Bill  summaries -->
+							<!-- Bill item per day -Summary -->
+							<!-- package summary -->
+							<!-- Group items per day - Summary -->
+						</div>
+						<!-- Show Total Stay Fees and Balance -->
+						<!-- Total Fees & Balance -->
+						<div id="bill2-total-fees" class="total-stay-fees float">
+							<div class="overview">
+								<a href="#bill2-fees" class="toggle has-arrow with-rate"> <span class="title"> Guest Balance: <em class="label"> As of
+									05-31-2014 </em> </span> <span class="value green">$0.00</span> </a>
+							</div>
+							<!-- Show Signature button -->
+							<!-- Credit card -->
+							<div class="block-item item-payment">
+								<h3> StaynTouch </h3>
+							</div>
+							<!-- Show signed signature -->
+							<!-- Bill Total Stay Fees -->
+							<div id="bill2-fees" class="details hidden">
+								<table class="total-fees">
+									<thead>
+										<tr>
+											<!-- %th Type -->
+											<th>Date</th>
+											<th>Description</th>
+											<th>Fees</th>
+											<th>Credits</th>
+											<th class="action-select">Bill #</th>
+											<th class="action"></th>
+										</tr>
+									</thead>
+									<!-- Total Stay fees details in CHECK IN status. -->
+									<tfoot>
+										<tr class="active edit">
+											<td colspan="2" class="total-label"><!-- Show email and print buttons --><a class="button with-icon only-icon blue hidden"> <span class="icons icon-email"></span> </a><a class="button with-icon only-icon blue hidden"> <span class="icons icon-print"></span> </a> Stay fees (as of
+											05-31-14
+											): </td>
+											<td colspan="2" class="total-value"><strong> $
+											1100.00 </strong></td>
+											<td></td>
+											<!-- Show edit button to edit amount -->
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<!-- Show balance -->
+										<tr class="active">
+											<td colspan="2" class="total-label"> Balance (as of
+											05-31-14
+											): </td>
+											<td colspan="3" class="total-value green"><strong> $
+											0.00 </strong></td>
+											<td></td>
+											<!-- Show fee details -->
+										</tr>
+									</tfoot>
+									<tbody>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-27-2014 </td>
+											<td> Transient Room Revenue
+											<br>
+											</td>
+											<td><strong> $
+											200.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="204878" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-27-2014 </td>
+											<td> Room Tax - 6%
+											<br>
+											</td>
+											<td><strong> $
+											12.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="204879" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-27-2014 </td>
+											<td> Occupancy Tax- 4%
+											<br>
+											</td>
+											<td><strong> $
+											8.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="204880" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-27-2014 </td>
+											<td> Transient Room Revenue
+											<br>
+											</td>
+											<td><strong> $
+											200.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="205358" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-27-2014 </td>
+											<td> Room Tax - 6%
+											<br>
+											</td>
+											<td><strong> $
+											12.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="205359" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-27-2014 </td>
+											<td> Occupancy Tax- 4%
+											<br>
+											</td>
+											<td><strong> $
+											8.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="205360" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-28-2014 </td>
+											<td> Transient Room Revenue
+											<br>
+											</td>
+											<td><strong> $
+											200.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="205534" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-28-2014 </td>
+											<td> Room Tax - 6%
+											<br>
+											</td>
+											<td><strong> $
+											12.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="205535" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-28-2014 </td>
+											<td> Occupancy Tax- 4%
+											<br>
+											</td>
+											<td><strong> $
+											8.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="205536" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-29-2014 </td>
+											<td> Transient Room Revenue
+											<br>
+											</td>
+											<td><strong> $
+											200.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="205654" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-29-2014 </td>
+											<td> Room Tax - 6%
+											<br>
+											</td>
+											<td><strong> $
+											12.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="205655" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-29-2014 </td>
+											<td> Occupancy Tax- 4%
+											<br>
+											</td>
+											<td><strong> $
+											8.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="205656" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-30-2014 </td>
+											<td> Transient Room Revenue
+											<br>
+											</td>
+											<td><strong> $
+											200.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="205755" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-30-2014 </td>
+											<td> Room Tax - 6%
+											<br>
+											</td>
+											<td><strong> $
+											12.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="205756" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-30-2014 </td>
+											<td> Occupancy Tax- 4%
+											<br>
+											</td>
+											<td><strong> $
+											8.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="205757" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-31-2014 </td>
+											<td> Cash
+											<br>
+											</td>
+											<td><strong>
+											<br>
+											</strong></td>
+											<td><strong> $
+											1100.00 </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_2" data-transaction_id="205796" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2" selected="true"> 2 </option>
+													<option value="3"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+									</tbody>
+
+								</table>
+							</div>
+						</div>
+
+						<!-- Review bill and Complete checkout -->
+						<!-- Checkin screen -->
+						<!-- Checkout screen -->
+
+					</div>
+					<!-- Bill Tabs for Day items and Group items -->
+					<div role="tabpanel" id="bill3" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-108" aria-hidden="true" aria-expanded="false" style="display: none;">
+						<div class="bill-summary-wrapper">
+							<div id="bill3-summary" class="scrollable">
+								<ul class="wrapper">
+									<li class="add-new">
+										<a id="add-new-button" class="add-new-button">+ Add</a>
+									</li>
+									<!-- packages -->
+									<!-- Group items tab -->
+									<li class="expense active">
+										<a href="#bill3-group-item-1" class="toggle dual-toggle"> <span class="expense"> PARKING </span> <span class="price">$0</span> </a>
+									</li>
+									<li class="expense active">
+										<a href="#bill3-group-item-2" class="toggle dual-toggle"> <span class="expense"> Food &amp; Beverage </span> <span class="price">$50</span> </a>
+									</li>
+									<li class="expense active">
+										<a href="#bill3-group-item-3" class="toggle dual-toggle"> <span class="expense"> Miscellaneous </span> <span class="price">$50</span> </a>
+									</li>
+								</ul>
+							</div>
+							<!-- Bill  summaries -->
+							<!-- Bill item per day -Summary -->
+							<!-- package summary -->
+							<!-- Group items per day - Summary -->
+							<div id="bill3-group-item-1" class="summary-expanded float hidden">
+								<table class="expense-details">
+									<thead>
+										<tr>
+											<th>Expense</th>
+											<th>Location</th>
+											<th>Date</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="price"> $
+											0.20 </td>
+											<td></td>
+											<td> 05-27-2014 </td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div id="bill3-group-item-2" class="summary-expanded float hidden">
+								<table class="expense-details">
+									<thead>
+										<tr>
+											<th>Expense</th>
+											<th>Location</th>
+											<th>Date</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="price"> $
+											50.00 </td>
+											<td></td>
+											<td> 05-27-2014 </td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div id="bill3-group-item-3" class="summary-expanded float hidden">
+								<table class="expense-details">
+									<thead>
+										<tr>
+											<th>Expense</th>
+											<th>Location</th>
+											<th>Date</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="price"> $
+											50.00 </td>
+											<td></td>
+											<td> 05-27-2014 </td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- Show Total Stay Fees and Balance -->
+						<!-- Total Fees & Balance -->
+						<div id="bill3-total-fees" class="total-stay-fees float">
+							<div class="overview">
+								<a href="#bill3-fees" class="toggle has-arrow with-rate"> <span class="title"> Guest Balance: <em class="label"> As of
+									05-31-2014 </em> </span> <span class="value green">$0.00</span> </a>
+							</div>
+							<!-- Show Signature button -->
+							<!-- Credit card -->
+							<div class="block-item item-payment">
+								<h3> Cash Payment </h3>
+							</div>
+							<!-- Show signed signature -->
+							<!-- Bill Total Stay Fees -->
+							<div id="bill3-fees" class="details hidden">
+								<table class="total-fees">
+									<thead>
+										<tr>
+											<!-- %th Type -->
+											<th>Date</th>
+											<th>Description</th>
+											<th>Fees</th>
+											<th>Credits</th>
+											<th class="action-select">Bill #</th>
+											<th class="action"></th>
+										</tr>
+									</thead>
+									<!-- Total Stay fees details in CHECK IN status. -->
+									<tfoot>
+										<tr class="active edit">
+											<td colspan="2" class="total-label"><!-- Show email and print buttons --><a class="button with-icon only-icon blue hidden"> <span class="icons icon-email"></span> </a><a class="button with-icon only-icon blue hidden"> <span class="icons icon-print"></span> </a> Stay fees (as of
+											05-31-14
+											): </td>
+											<td colspan="2" class="total-value"><strong> $
+											102.20 </strong></td>
+											<td></td>
+											<!-- Show edit button to edit amount -->
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<!-- Show balance -->
+										<tr class="active">
+											<td colspan="2" class="total-label"> Balance (as of
+											05-31-14
+											): </td>
+											<td colspan="3" class="total-value green"><strong> $
+											0.00 </strong></td>
+											<td></td>
+											<!-- Show fee details -->
+										</tr>
+									</tfoot>
+									<tbody>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-27-2014 </td>
+											<td> FB Revenue with Room Rev Generate
+											<br>
+											</td>
+											<td><strong> $
+											2.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_3" data-transaction_id="204873" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3" selected="true"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-27-2014 </td>
+											<td> Package Room Revenue
+											<br>
+											</td>
+											<td><strong> $
+											0.20
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_3" data-transaction_id="204874" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3" selected="true"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-27-2014 </td>
+											<td> Dinner AP
+											<br>
+											</td>
+											<td><strong> $
+											50.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_3" data-transaction_id="204881" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3" selected="true"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-27-2014 </td>
+											<td> Lobby Bar Food
+											<br>
+											</td>
+											<td><strong> $
+											50.00
+											<br>
+											</strong></td>
+											<td><strong> </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_3" data-transaction_id="204883" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3" selected="true"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<tr class="active edit">
+											<!-- %td -->
+											<!-- =fees_details["type"] -->
+											<td> 05-31-2014 </td>
+											<td> Cash
+											<br>
+											</td>
+											<td><strong>
+											<br>
+											</strong></td>
+											<td><strong> $
+											102.20 </strong></td>
+											<td>
+											<div class="select">
+												<select name="" id="move_to_bill_3" data-transaction_id="205797" class="movetobill">
+													<option value="" disabled="disabled" class="placeholder">Move to bill</option>
+													<option value="1"> 1 </option>
+													<option value="2"> 2 </option>
+													<option value="3" selected="true"> 3 </option>
+													<option value="4"> 4 </option>
+												</select>
+											</div></td>
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+									</tbody>
+
+								</table>
+							</div>
+						</div>
+
+						<!-- Review bill and Complete checkout -->
+						<!-- Checkin screen -->
+						<!-- Checkout screen -->
+
+					</div>
+					<!-- Bill Tabs for Day items and Group items -->
+					<div role="tabpanel" id="bill4" class="bill-summary ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-109" aria-hidden="true" aria-expanded="false" style="display: none;">
+						<div class="bill-summary-wrapper">
+							<div id="bill4-summary" class="scrollable">
+								<ul class="wrapper">
+									<li class="add-new">
+										<a id="add-new-button" class="add-new-button">+ Add</a>
+									</li>
+									<!-- packages -->
+									<!-- Group items tab -->
+								</ul>
+							</div>
+							<!-- Bill  summaries -->
+							<!-- Bill item per day -Summary -->
+							<!-- package summary -->
+							<!-- Group items per day - Summary -->
+						</div>
+						<!-- Show Total Stay Fees and Balance -->
+						<!-- Total Fees & Balance -->
+						<div id="bill4-total-fees" class="total-stay-fees float">
+							<div class="overview">
+								<a href="#bill4-fees" class="toggle has-arrow with-rate"> <span class="title"> Guest Balance: <em class="label"> As of
+									05-31-2014 </em> </span> <span class="value green">$0.00</span> </a>
+							</div>
+							<!-- Show Signature button -->
+							<!-- Credit card -->
+							<div class="block-item item-payment"></div>
+							<!-- Show signed signature -->
+							<!-- Bill Total Stay Fees -->
+							<div id="bill4-fees" class="details hidden">
+								<table class="total-fees">
+									<thead>
+										<tr>
+											<!-- %th Type -->
+											<th>Date</th>
+											<th>Description</th>
+											<th>Fees</th>
+											<th>Credits</th>
+											<th class="action-select">Bill #</th>
+											<th class="action"></th>
+										</tr>
+									</thead>
+									<!-- Total Stay fees details in CHECK IN status. -->
+									<tfoot>
+										<tr class="active edit">
+											<td colspan="2" class="total-label"><!-- Show email and print buttons --><a class="button with-icon only-icon blue hidden"> <span class="icons icon-email"></span> </a><a class="button with-icon only-icon blue hidden"> <span class="icons icon-print"></span> </a> Stay fees (as of
+											05-31-14
+											): </td>
+											<td colspan="2" class="total-value"><strong> $
+											0.00 </strong></td>
+											<td></td>
+											<!-- Show edit button to edit amount -->
+											<td class="edit"><a class="button with-icon only-icon purple edit hidden"> <span class="icons icon-pencil hidden"></span> Edit </a></td>
+										</tr>
+										<!-- Show balance -->
+										<tr class="active">
+											<td colspan="2" class="total-label"> Balance (as of
+											05-31-14
+											): </td>
+											<td colspan="3" class="total-value green"><strong> $
+											0.00 </strong></td>
+											<td></td>
+											<!-- Show fee details -->
+										</tr>
+									</tfoot><tbody></tbody>
+
+								</table>
+							</div>
+						</div>
+
+						<!-- Review bill and Complete checkout -->
+						<!-- Checkin screen -->
+						<!-- Checkout screen -->
+
+					</div>
+					<!-- Show Signature -->
+					<!-- = render :partial => "staff/reservations/signature",:locals =>{:data =>data} -->
 				</div>
 			</div>
+			<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
+				<div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 57px; transform: translate(0px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
+			</div>
 		</div>
+
 	</section>
 </div>
