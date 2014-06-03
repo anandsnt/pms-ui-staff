@@ -1,8 +1,14 @@
 
 sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RVCompanyCardSrv','$stateParams',function($scope,dateFilter,ngDialog,RVCompanyCardSrv,$stateParams){
 	BaseCtrl.call(this, $scope);
-	var first_date = new Date($scope.contractData.begin_date);
-	var last_date = new Date($scope.contractData.end_date);
+	if($scope.isAddMode){
+		var first_date = new Date($scope.addData.begin_date);
+		var last_date = new Date($scope.addData.end_date);
+	}
+	else{
+		var first_date = new Date($scope.contractData.begin_date);
+		var last_date = new Date($scope.contractData.end_date);
+	}
 	var month_array = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 	var new_occupancy = [];
 	
@@ -43,6 +49,8 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 		
 		var saveContractSuccessCallback = function(data){
 	    	$scope.closeActivityIndication();
+	    	$scope.contractData.total_contracted_nights = data.total_contracted_nights;
+	    	$scope.errorMessage = "";
 	    };
 	  	var saveContractFailureCallback = function(data){
 	  		$scope.closeActivityIndication();
@@ -54,7 +62,20 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 	    else{
 	    	var data = {"occupancy": $scope.contractData.occupancy};
 	    }
-		$scope.invokeApi(RVCompanyCardSrv.updateNight,{ "account_id": $stateParams.id, "contract_id": $scope.contractList.contractSelected, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);  
+	    
+	    if($stateParams.id == "add"){
+    		var account_id = $scope.contactInformation.id;
+	    }
+	    else{
+	    	var account_id = $stateParams.id;
+	    }
+
+	    if(typeof $scope.contractList.contractSelected !== 'undefined'){
+			$scope.invokeApi(RVCompanyCardSrv.updateNight,{ "account_id": account_id , "contract_id": $scope.contractList.contractSelected, "postData": data }, saveContractSuccessCallback, saveContractFailureCallback);  
+		}
+		else{
+			console.log("error: contractSelected undefined");
+		}
 		ngDialog.close();
 	};
 	

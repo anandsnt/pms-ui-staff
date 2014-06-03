@@ -1,4 +1,4 @@
-<div style="display: block;" id="add-new" class="edit-data">
+<div style="display: block;" id="add-new" class="edit-data" ng-cloak>
 	<div class="data-holder">
 		<form id="add-addon" name="add-addon" class="form inline-form float">
 			<div class="form-title">
@@ -7,9 +7,9 @@
 					{{ addonSubtitle }}
 				</h3>
 				<em class="status">
-					Fields marked with
+					{{'MANDATORY_FIELDS_MESSAGE1'| translate}}
 					<strong>*</strong>
-					are mandatory!
+					{{'MANDATORY_FIELDS_MESSAGE2'| translate}}
 				</em>
 			</div>
 			
@@ -18,7 +18,7 @@
 					value="singleAddon.name"
 					name="name"
 					id="name"
-					label="Name"
+					label="{{'NAME' | translate}}"
 					placeholder="Enter the addon name"
 					required="yes"></ad-textbox>
 
@@ -28,14 +28,14 @@
 					value="singleAddon.description"
 					name="desc"
 					id="desc"
-					label="Description"
+					label="{{'DESCRIPTION' | translate}}"
 					placeholder="Enter the addon description"
 					required="yes"></ad-textarea>
 
 				<div class="entry full-width radio-check">
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.bestseller }"></span>
-						<label>Bestseller</label>
+						<label>{{'BESTSELLER' | translate}}</label>
 						<input type="checkbox" ng-model="singleAddon.bestseller">
 					</label>
 				</div>
@@ -43,56 +43,65 @@
 				<div class="entry full-width radio-check">
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
-						<label>Rate only</label>
-						<input type="checkbox" ng-model="singleAddon.rate_code_only">
+						<label>{{'RATE_ONLY' | translate}}</label>
+						<input type="checkbox" ng-model="singleAddon.rate_code_only" ng-change="rateOnlyChanged()">
 					</label>
 				</div>
+
+				<div class="entry full-width radio-check">
+					<label class="checkbox">
+						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.is_reservation_only }"></span>
+						<label>{{'RESERVATION_ONLY' | translate}}</label>
+						<input type="checkbox" ng-model="singleAddon.is_reservation_only" ng-change="reservationOnlyChanged()">
+					</label>
+				</div>
+
 			</fieldset>
 
 
 			<fieldset class="holder right float">
 				<div class="entry rel">
 					<label>
-						From Date
-						<strong>*</strong>
+						{{'FROM_DATE' | translate}}
 					</label>
-					<input type="text" ng-model="singleAddon.begin_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="popupCalendar('From')">
+					<input type="text" ng-model="singleAddon.begin_date_for_display" readonly="" placeholder="Select Start Date" ng-click="popupCalendar('From')">
 					<span class="icons icon-calendar" ng-click="popupCalendar('From')"></span>
 				</div>
 				<div class="entry rel">
 					<label>
-						To Date
-						<strong>*</strong>
+						{{'TO_DATE' | translate}}
 					</label>
-					<input type="text" ng-model="singleAddon.end_date" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="popupCalendar('To')">
+					<input type="text" ng-model="singleAddon.end_date_for_display" readonly="" placeholder="Select End Date" ng-click="popupCalendar('To')">
 					<span class="icons icon-calendar" ng-click="popupCalendar('To')"></span>
 				</div>
 
 				<div class="entry">
 					<div class="entry full-width">
 						<label for="charge-group-id">
-							Charge group
+							{{'CHARGE_GROUP' | translate}}
 							<strong>*</strong>
 						</label>
 						<div class="select">
 							<select name="charge-group-id"
 								id="charge-group-id"
 								ng-model="singleAddon.charge_group_id"
-								ng-options="group.id as group.name for group in chargeGroups"></select>
+								ng-options="group.id as group.name for group in chargeGroups"
+								ng-change="chargeGroupChage()"
+								></select>
 						</div>
 					</div>
 				</div>
 				<div class="entry">
 					<div class="entry full-width">
 						<label for="charge-group-id">
-							Charge code
+							{{'CHARGE_CODE' | translate}}
 							<strong>*</strong>
 						</label>
 						<div class="select">
 							<select name="charge-code-id"
 								id="charge-code-id"
 								ng-model="singleAddon.charge_code_id"
-								ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodes"></select>
+								ng-options="code.id as code.name  + ' - ' + code.description for code in chargeCodesForChargeGrp"></select>
 						</div>
 					</div>
 				</div>							
@@ -102,14 +111,14 @@
 						value="singleAddon.amount"
 						name="amount"
 						id="amount"
-						label="Amount"
+						label="{{'AMOUNT' | translate}}"
 						placeholder="Enter the amount"
 						required="yes"></ad-textbox>
 				</div>
 				<div class="entry">
 					<div class="entry full-width">
 						<label for="amount-type-id">
-							Amount Type
+							{{'AMOUNT_TYPE' | translate}}
 							<strong>*</strong>
 						</label>
 						<div class="select">
@@ -123,7 +132,7 @@
 
 				<div class="entry full-width">
 					<label for="amount-type-id">
-						Post Type
+						{{'POST_TYPE' | translate}}
 						<strong>*</strong>
 					</label>
 					<div class="select">
@@ -140,12 +149,12 @@
 				<button type="button"
 					id="cancel"
 					class="button blank add-data-inline"
-					ng-click="cancelCliked()">Cancel</button>
+					ng-click="cancelCliked()">{{'CANCEL' | translate}}</button>
 				<button type="button"
 					like-type="common"
 					id="update"
 					class="button green add-data-inline"
-					ng-click="addUpdateAddon()">Save changes</button>
+					ng-click="addUpdateAddon()">{{'SAVE_CHANGES' | translate}}</button>
 			</div>
 
 		</form>

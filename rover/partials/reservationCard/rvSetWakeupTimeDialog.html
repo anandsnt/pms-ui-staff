@@ -1,0 +1,133 @@
+<div id="modal" class="modal-show" role="dialog">
+
+    <form id="set-wake-up-call" class="modal-content form confirmation" name="set-wake-up-call" method="post" action="index.html">
+        <button id="modal-close" class="modal-close" type="button" ng-click="closeDialog()">
+            <span class="icons icon-close invert"></span>
+        </button>
+        <div class="entry full-width">
+            <div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
+        </div>
+        <div class="entry full-width float">
+            <label for="wake-up" translate>
+                SELECT_WAKEUP_TIME
+
+            </label>
+            <div class="select select-col col1-3">
+                <select ng-model="hrs" id="wake-up-hour" class="styled" name="wake-up">
+
+                    <option class="placeholder" value="" data-text="Not set">
+
+                        HH
+
+                    </option>
+                    <option  ng-repeat="hourValue in hourValues" ng-selected ="hrs==hourValue" value="{{hourValue}}">
+
+
+                        {{hourValue}}
+
+                    </option>
+                    
+                </select>
+            </div>
+            <div class="select select-col col1-3">
+                <select ng-model="min" id="wake-up-minute" class="styled" name="wake-up">
+
+                    <option class="placeholder" value="" data-text="Not set">
+
+                        MM
+
+                    </option>
+                    <option  ng-repeat="minValue in minValues" ng-selected ="min==minValue" value="{{minValue}}">
+
+
+                        {{minValue}}
+
+                    </option>
+                </select>
+            </div>
+            <div class="select select-col col1-3">
+
+                <select ng-model="am_pm" id="wake-up-primetime" class="styled" name="wake-up">
+
+                    <!--
+
+                     %option.placeholder{"data-text" => "Not set", value: ""} AM/PM 
+
+                    -->
+                    <option value="AM">
+
+                        AM
+
+                    </option>
+                    <option value="PM">
+
+                        PM
+
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="entry full-width">
+            <label for="wake-up-day" translate>
+
+                SELECT_DATE
+
+            </label>
+            <!--
+
+             If reservation_status is "CHECKING_OUT" disable 'Tomorrow' switch 
+
+            -->
+
+           <div  id="wakeupDate" class="switch-button full-width"  
+            ng-class="{'on': tomorrowSelected}">
+                <input id="wake-up-day" type="checkbox" value="2" name="wake-up-day"
+                 ng-model="tomorrowSelected"></input>
+                <label class="data-off">
+                    <span class="switch-icon">
+
+                        <span translate>TODAY</span> ({{reservationData.reservation_card.wake_up_time.today_date}})
+
+                    </span>
+                    <span id="wakeup-day" class="value">
+
+                        <span translate>TOMORROW</span> ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
+
+
+                    </span>
+                </label>
+                <label class="data-on">
+                    <span id="wakeup-day" class="value">
+
+                        <span translate>TODAY</span>({{reservationData.reservation_card.wake_up_time.today_date}})
+
+
+                    </span>
+                    <span class="switch-icon">
+
+                        <span translate>TOMORROW</span> ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
+
+                    </span>
+                </label>
+            </div>
+        </div>
+        <div class="actions float is-disabled">
+            <button id="save-wakeup-call" ng-class="{'green': true}" class="button green modal-close" type="button" ng-disabled="!validate()" ng-click="saveWakeupCall()" translate>
+
+                SET_WAKEUP_CALL
+
+            </button>
+            <button id="delete-wakeup-call" ng-class="{'red': true}" class="button red modal-close" type="button" ng-disabled="isDeletable()" data-disabled-delete="true" ng-click="deleteWakeupCall()" translate>
+
+                DELETE_WAKEUP_CALL
+
+            </button>
+            <button id="cancel" class="button blank modal-close" type="button" ng-click="closeDialog()" translate>
+
+                CANCEL
+
+            </button>
+        </div>
+    </form>
+
+</div>

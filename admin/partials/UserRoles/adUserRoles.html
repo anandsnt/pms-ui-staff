@@ -1,0 +1,71 @@
+<section id="replacing-div-first" class="content current" ng-click="clearErrorMessage()"><div data-view="GuestCardLikesView">
+	<header class="content-title float">
+		<h2>
+			{{'USER_ROLES' | translate}}
+		</h2>
+		<!-- Disable for now  -->
+		<!-- <a id="add-new-button" class="action add" ng-click="toggleAddMode()">Add new</a> -->
+	</header>
+
+	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	
+
+	<!-- TO DO:Add mode is partially done for now -->
+
+	<!-- <div class="data-holder grid" ng-show="addMode">
+		<form room_type_id="1" id="edit-room-type" class="form inline-form float">
+			<div class="form-title">
+				<h3><span>Add</span> {{'USER_ROLES' | translate}} </h3>
+				<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
+			</div>
+
+			<fieldset class="holder left float"> 
+				
+				<ad-textbox value="newUserRole" label = "User Role" placeholder = "Enter User role" required = "yes" ></ad-textbox>
+
+			</fieldset>
+			<fieldset class="holder right float">
+
+				<ad-dropdown div-class='' label="Role Dashboard" label-in-drop-down="{{'SELECT_DASHBOARD'|translate}}" sel-class='placeholder'  list='dashboard_types'selected-Id='selecetedDashboardId'></ad-dropdown>
+			</fieldset> 
+
+			<div class="actions float">
+				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="cancelClick()">
+					{{'USER_ROLES' | translate}}
+				</button>
+				<button type="button" like-type="common" id="update" class="button green add-data-inline" ng-click="saveUserRole()">
+					{{'USER_ROLES' | translate}}
+				</button>
+			</div>
+		</form>
+	</div> -->
+	
+
+	<table class="grid" id="likes">
+		<thead>
+			<th>
+				{{'USER_ROLES' | translate}}
+			</th>
+			<th>
+				{{'ROLE_DASHBOARD' | translate}}
+			</th>
+		</thead>
+		<tbody>
+			<tr ng-repeat="role in rolesList" style="padding:50px;">
+				<td>
+					{{role.name}}
+				</td>
+				<td>
+	 		   	<div class="entry">
+                <div class="select">
+                    <select class="placeholder" ng-model="role.dashboard_id" ng-options="dashboard.id as dashboard.description for dashboard in dashboard_types" ng-change="changeDashBoard(role.value,role.dashboard_id)">
+                        <option value="" disabled>{{'SELECT_DASHBOARD'|translate}}</option>
+                    </select>
+                </div>
+                </div>
+				</td>
+			</tr>
+		</tbody>
+
+	</table>
+</section>
