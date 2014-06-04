@@ -100,5 +100,16 @@ sntRover.service('RVReservationCardSrv',['$http', '$q', 'RVBaseWebSrv', function
 			});	
 		return deferred.promise;
    };
+
+   this.saveReservationNote = function(data){
+   		var deferred = $q.defer();
+		var url = '/reservation_notes';
+		RVBaseWebSrv.postJSON(url,data).then(function(data) {
+			    deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+		return deferred.promise;
+   };
    
 }]);

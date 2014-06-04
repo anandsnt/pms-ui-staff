@@ -7,6 +7,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	 */
 	//Data fetched using resolve in router
 	$scope.reservationData = reservationDetails;
+	$scope.new_reservation_note = "";
 	$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
 	$scope.selectedLoyalty = {};
 	$scope.$watch(
@@ -179,6 +180,14 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
                 scope: $scope
             });
             
+        };
+        $scope.saveReservationNote = function(){
+        	var successCallBackReservationNote = function(data){
+        		$scope.new_reservation_note == "";
+        		$scope.reservationData.reservation_card.notes.reservation_notes.push(data);
+        		$scope.$emit('hideLoader');
+
+        	};
         };
         
 }]);
