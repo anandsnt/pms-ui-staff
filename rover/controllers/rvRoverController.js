@@ -4,6 +4,7 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 	$rootScope.precisonTwo = 2;
 	//To get currency symbol - update the value with the value from API see fetchHotelDetailsSuccessCallback
 	$rootScope.currencySymbol = "";
+
 	
     $scope.$on("closeDrawer", function(){      
      	$scope.menuOpen = false;  
@@ -126,5 +127,58 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 	          });
 	  }
 	};
+	//This variable is used to identify whether guest card is visible
+	//Depends on $scope.guestCardVisible in rvguestcardcontroller.js
+	$scope.isGuestCardVisible = false;
+	$scope.$on('GUESTCARDVISIBLE', function(event, data){
+		$scope.isGuestCardVisible = false;
+		if(data){
+			$scope.isGuestCardVisible = true;
+		}
+	});
+	$scope.successCallBackSwipe = function(data){
+		$scope.$broadcast('SWIPEHAPPENED', data);
+	};
+	
+	$scope.failureCallBackSwipe = function(){
+	};
+	
+     var options = [];
+	 options["successCallBack"] = $scope.successCallBackSwipe;
+	 options["failureCallBack"] = $scope.failureCallBackSwipe;
+	 sntapp.setBrowser("rv_native");
+	 setTimeout(function(){
+	 	 if (sntapp.cardSwipeDebug ===  true)  { sntapp.cardReader.startReaderDebug(options); }
+	 	 if(sntapp.cordovaLoaded){ 
+		 	sntapp.cardReader.startReader(options); 
+		 }; 
+	 }, 2000);
+	 /*
+	  * To show add new payment modal
+	  * @param {{passData}} information to pass to popup - from view, reservationid. guest id userid etc
+	  * @param {{object}} - payment data - used for swipe
+	  */
+	 $scope.showAddNewPaymentModal = function(passData, paymentData){
+		  $scope.passData = passData;
+		  $scope.paymentData = paymentData;
+		  ngDialog.open({
+	               template: '/assets/partials/payment/rvPaymentModal.html',
+	               controller: 'RVPaymentMethodCtrl',
+	               scope:$scope
+	          });
+	 };
+     /*
+      * 
+      */
+	 $scope.$on('GUESTPAYMENTDATA', function(event, paymentData) {
+	 	$scope.$broadcast('GUESTPAYMENT', paymentData);
+	 });
+	 /*
+	  * Tp close dialog box
+	  */
+	 $scope.closeDialog = function(){
+	 	$scope.$emit('hideLoader');
+	 	ngDialog.close();
+	 };
 
 }]);

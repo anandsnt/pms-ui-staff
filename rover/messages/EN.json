@@ -13,6 +13,29 @@
     "CHECKING_OUT": "Checking Out",
     "DASHBOARD_HEADING": "Dashboard",
     
+
+
+    "NEW_PAYMENT_METHOD": "New Payment Method",
+    "PAYMENT_TYPE": "Payment type",
+    "SELECT_CREDIT_CARD_LABEL": "Select credit card",
+    "SELECT_PAYMENT_TYPE": "Select Payment Type",
+    "CARD_NUMBER":"Card number",
+    "EXPIRATION_DATE":"Expiration date",
+    "NAME_ON_CARD":"Name on card",
+    "ADD_TO_GUEST_CARD":"Add to Guest Card",
+    "ADD_CARD":"Add card",
+    "PAYMENT_METHOD":"PAYMENT METHOD",
+    "GUARANTEE":"Guarantee",
+    "ENDING_WITH": "Ending with",
+    "DATE":"Date",
+    "UPDATE_CC": "Update CC",
+    "CASH_PAYMENT":"CASH PAYMENT",
+    "CHECK_PAYMENT": "CHECK PAYMENT",
+    "DIRECT_PAYMENT":"DIRECT PAYMENT",
+    "ADD": "Add",
+    "NAME": "Name",
+    "IN_GUEST_CARD":"In Guest Card",
+
     "CONTRACTED_NIGHTS": "Contracted Nights",
     "ALL": "All",
     "COPY_VALUES": "Copy values",
@@ -54,6 +77,7 @@
     "TOTAL_REVENUE": "Total Revenue",
     "AVERAGE_RATE": "Average Rate",
     "NEWSPAPER_LABEL" : "Newspaper",
+
     "NEWSPAPER_SELECT" : "Select Newspaper",
     "DELETE_WAKEUP_CALL": "Delete wake-up call",
     "SET_WAKEUP_CALL": "Set wake-up call",

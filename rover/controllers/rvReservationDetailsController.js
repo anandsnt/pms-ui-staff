@@ -1,3 +1,4 @@
+
 sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv','$filter', 'RVNewsPaperPreferenceSrv', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv,$filter, RVNewsPaperPreferenceSrv){
 
 	BaseCtrl.call(this, $scope);
@@ -62,7 +63,6 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	 * @param {int} confirmationNumber => confirmationNumber of reservation
 	 */
 	$scope.$on("RESERVATIONDETAILS", function(event, confirmationNumber){
-	 	
 	 	if(confirmationNumber){
 	 		  $scope.invokeApi(RVReservationCardSrv.fetchReservationDetails, confirmationNumber, $scope.reservationDetailsFetchSuccessCallback);	
 	 	} else {
@@ -76,6 +76,67 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 passData.avatar=reservationListData.guest_details.avatar;
   	 passData.vip=reservationListData.guest_details.vip;
   	 $scope.$emit('passReservationParams', passData);
+
+  	 
+  	 $scope.openAddNewPaymentModel = function(data){
+  	 	if(data === undefined){
+  	 			var passData = {
+		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
+		  	 		"fromView": "staycard",
+		  	 		 "is_swiped": false 
+		  	 	};
+		  	 	var paymentData = $scope.reservationData;
+  	 		 	$scope.showAddNewPaymentModal(passData, paymentData);
+  	 	} else {
+  	 		
+  	 		
+           var  getTokenFrom = {
+	              'et2': data.RVCardReadTrack2,
+	              'ksn': data.RVCardReadTrack2KSN,
+	              'pan': data.RVCardReadMaskedPAN
+	           };
+         
+         	var tokenizeSuccessCallback = function(tokenData){
+         		data.token = tokenData;
+         		var passData = {
+		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
+		  	 		"fromView": "staycard",
+		  	 		"selected_payment_type": 0, //Default value of credit card - TODO:check in seed data
+		  	 		"credit_card": data.RVCardReadCardType,
+		  	 		"card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
+		  	 		"name_on_card": data.RVCardReadCardName,
+		  	 		"card_expiry":data.RVCardReadExpDate,
+		  	 		"et2": data.RVCardReadTrack2,
+	             	 'ksn': data.RVCardReadTrack2KSN,
+	              	'pan': data.RVCardReadMaskedPAN,
+	              	'token': tokenData,
+		  	 		 "is_swiped": true   // Commenting for now
+		  	 	};
+         	var paymentData = $scope.reservationData;
+  	 		$scope.showAddNewPaymentModal(passData, paymentData);
+         	};
+         	$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);	
+  	 	}
+  	 	
+  	 };
+  	 $scope.openPaymentList = function(){
+	 //	$scope.paymentData.payment_id = id;
+  	 	//  $scope.paymentData.index = index;
+		  ngDialog.open({
+	               template: '/assets/partials/payment/rvShowPaymentList.html',
+	               controller: 'RVShowPaymentListCtrl',
+	               scope:$scope
+	          });
+	 };
+	 /*
+	  * Handle swipe action in guest card
+	  */
+	 $scope.$on('SWIPEHAPPENED', function(event, data){
+	 	if(!$scope.isGuestCardVisible){
+	 		$scope.openAddNewPaymentModel(data);
+	 	}
+	 	
+	 });
 
 	 $scope.failureNewspaperSave = function(errorMessage){
 	 	$scope.errorMessage = errorMessage;

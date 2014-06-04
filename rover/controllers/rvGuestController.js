@@ -39,10 +39,12 @@ $scope.resizableOptions =
 	resize: function( event, ui ) {
 		if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				
 			$scope.guestCardVisible = true;
+			$scope.$emit('GUESTCARDVISIBLE', true);
 			$scope.$apply();
 		}
 		else if($(this).height() <= 120 && $scope.guestCardVisible){
 			$scope.guestCardVisible = false;
+			$scope.$emit('GUESTCARDVISIBLE', false);
 			$scope.$apply();
 		}
 	},
@@ -50,7 +52,7 @@ $scope.resizableOptions =
 		preventClicking = true;
 		$scope.eventTimestamp = event.timeStamp;
 	}
-}
+};
 
 /**
 *  API call needs only rest of keys in the data
@@ -79,11 +81,14 @@ $scope.current = 'guest-contact';
 * tab actions
 */
 $scope.guestCardTabSwitch = function(tab){
-if($scope.current ==='guest-contact' && tab !== 'guest-contact'){
-	$scope.$broadcast('saveContactInfo');
-};
+	if($scope.current ==='guest-contact' && tab !== 'guest-contact'){
+		$scope.$broadcast('saveContactInfo');
+	};
+	if(tab === 'guest-credit'){
+		$scope.$broadcast('PAYMENTSCROLL');
+	}
  
- $scope.current = tab;
+	 $scope.current = tab;
 };
 
 $scope.$on('contactInfoError', function(event, value) { 
@@ -102,7 +107,7 @@ $scope.updateContactInfo =  function(){
 		currentGuestCardHeaderData =newUpdatedData; 
 		var data ={'data':currentGuestCardHeaderData,
 		'userId':$scope.guestCardData.contactInfo.user_id
-	}
+	};
 	$scope.invokeApi(RVContactInfoSrv.saveContactInfo,data,saveUserInfoSuccessCallback,saveUserInfoFailureCallback); 
 	} 
 };
@@ -140,10 +145,12 @@ var element = $event.target;
 			$("#guest-card").css("height", $scope.windowHeight-90);
 			$scope.guestCardVisible = true;			
 			$scope.$broadcast('CONTACTINFOLOADED');
+			$scope.$emit('GUESTCARDVISIBLE', true);
 		}
 		else{
 			$("#guest-card").css("height", $scope.resizableOptions.minHeight);
 			$scope.guestCardVisible = false;
+			$scope.$emit('GUESTCARDVISIBLE', false);
 		}
 }
 else{
@@ -163,5 +170,8 @@ else{
 }
 
 };
+
+
+	
 
 }]);
