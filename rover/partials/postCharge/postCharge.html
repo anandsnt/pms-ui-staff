@@ -25,7 +25,7 @@
 					<input type="search" placeholder="Search items" name="query" id="query" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
 				</div>
 			</div>
-			<div id="items-listing" class="scrollable">
+			<div id="items-listing" class="scrollable" ng-iscroll='itemList' ng-iscroll-delay='50'>
 				<ul id="search-item-results" class="wrapper">
 					<li id="items-list" ng-repeat="each in fetchedData.items" ng-if="each.show" ng-click="addItem()">
 						<a class="button white">
@@ -54,7 +54,7 @@
 				</div>
 			</div>
 			<div id="items-added" ng-show="items.length">
-				<div id="items-summary" class="scrollable">
+				<div id="items-summary" class="scrollable" ng-iscroll='chosenItems' ng-iscroll-delay='50'>
 					<ul class="wrapper">
 						<li ng-repeat="each in items" ng-class="{'selected': each.item_name === chosenItem.item_name}">
 							{{ each.item_name }}
@@ -67,7 +67,9 @@
 						</li>
 					</ul>
 				</div>
-				<p id="total-charge"></p>
+				<p id="total-charge" class="offset-2">
+					Total <span class="price">$ <span class="value">{{ net_total_price }}</span></span>
+				</p>
 				<div id="numpad">
 					<div id="numpad-numbers">
 						<button value="1" type="button" class="button white">

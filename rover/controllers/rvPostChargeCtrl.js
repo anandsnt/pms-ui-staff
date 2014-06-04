@@ -3,11 +3,31 @@ sntRover.controller('RVPostChargeController',
 		'$rootScope',
 		'$scope',
 		'rvChargeItems',
-
-		function($rootScope, $scope, rvChargeItems) {
+		'$timeout',
+		function($rootScope, $scope, rvChargeItems, $timeout) {
 
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
+
+			// set up scroll for item listing
+			$scope.$parent.myScrollOptions = {		
+			    'itemList': {
+			    	scrollbars: true,
+			        snap: false,
+			        hideScrollbar: false,
+			        preventDefault: false
+			    },
+			};
+
+			// set up scroll for chosen items
+			$scope.$parent.myScrollOptions = {		
+			    'chosenItems': {
+			    	scrollbars: true,
+			        snap: false,
+			        hideScrollbar: false,
+			        preventDefault: false
+			    },
+			};
 
 			// post the data
 			// https://pms-dev.stayntouch.com/staff/items/post_items_to_bill
@@ -35,12 +55,21 @@ sntRover.controller('RVPostChargeController',
 						item.show = false;
 					}
 				}
+
+				// refresh scrolls
+				$timeout(function() {
+					$scope.$parent.myScroll['itemList'].refresh();
+				}, 1000);
 			};
 
 			// filter the items based on the search query
 			// will search on all items, discard chosen 'chargeGroup'
 			$scope.filterByQuery = function() {
 				var query = $scope.query.toLowerCase();
+
+				if (query === '') {
+					return;
+				};
 
 				$scope.chargeGroup = '';
 
@@ -57,17 +86,35 @@ sntRover.controller('RVPostChargeController',
 						item.show = false;
 					}
 				};
+
+				// refresh scrolls
+				$timeout(function() {
+					$scope.$parent.myScroll['itemList'].refresh();
+				}, 1000);
 			};
+
+			
+
+			$scope.$on('$viewContentLoaded', function() {
+				setTimeout(function(){
+					$scope.$parent.myScroll['resultDetails'].refresh();
+					}, 
+				3000);
+				
+		     });
+
 
 			$scope.items = [];
 
 			$scope.chosenItem = null;
 
+			$scope.net_total_price = 0;
+
 			$scope.addItem = function() {
 				var item = angular.copy( this.each );
 
 				var hasItem = _.find($scope.items, function(each) {
-					return each.item_name === $scope.chosenItem.item_name;
+					return each.item_name === item.item_name;
 				});
 
 				// if already added
@@ -78,8 +125,16 @@ sntRover.controller('RVPostChargeController',
 				// set up new things
 				item.total_price = item.unit_price;
 
+				// update net total price
+				$scope.net_total_price += parseFloat(item.total_price);
+
 				$scope.items.push( item );
 				$scope.chosenItem = item;
+
+				// refresh scrolls
+				$timeout(function() {
+					$scope.$parent.myScroll['chosenItems'].refresh();
+				}, 1000);
 			};
 		}
 	]
