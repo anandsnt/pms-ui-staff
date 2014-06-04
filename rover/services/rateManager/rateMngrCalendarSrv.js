@@ -175,8 +175,10 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 		//close all/open all restriction status
 		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.rate_restrictions, calendarData.dates);
-		calendarData.disableCloseAllBtn = enableDisableCloseAll.disableCloseAllBtn;
-		calendarData.disableOpenAllBtn = enableDisableCloseAll.disableOpenAllBtn;
+		calendarData.disableCloseAllBtn = !enableDisableCloseAll.enableCloseAll;
+		calendarData.disableOpenAllBtn = !enableDisableCloseAll.enableOpenAll;
+		console.log(calendarData.disableOpenAllBtn);
+		console.log(calendarData.disableCloseAllBtn);
 
 
 		return calendarData;
@@ -234,11 +236,15 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		calendarData.dates = datesList;
 		calendarData.all_rates = allRatesData;
 		calendarData.data = dailyRatesData;
-		
+		console.log("here");
 		//close all/open all restriction status
 		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.all_rates, calendarData.dates);
-		calendarData.disableCloseAllBtn = enableDisableCloseAll.disableCloseAllBtn;
-		calendarData.disableOpenAllBtn = enableDisableCloseAll.disableOpenAllBtn;
+		calendarData.disableCloseAllBtn = !enableDisableCloseAll.enableCloseAll;
+		calendarData.disableOpenAllBtn = !enableDisableCloseAll.enableOpenAll;
+		console.log(calendarData.disableOpenAllBtn);
+		console.log(calendarData.disableCloseAllBtn);
+
+
 
 		
 		return calendarData;
@@ -248,7 +254,71 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 	//closed restrictions in the all_rates/all_restrictions section
 	that.getCloseAllEnableDisableStatus = function(allRates, allDates) {
 		//Check if CLOSE ALL restriction is available in all_rates section
-		var allRateRestrictionClosedCount = that.getNumOfClosedRestriction(allRates);
+		var closedRestrictionId = -1,
+			dict = {};
+		    dict.enableOpenAll = false,
+		    dict.enableCloseAll = false;
+
+		console.log(JSON.stringify(allRates));
+		console.log(JSON.stringify(allDates));
+
+
+		for(var i in that.allRestrictionTypes){
+			if (that.allRestrictionTypes[i].value == 'CLOSED'){
+				closedRestrictionId = that.allRestrictionTypes[i].id;
+				break;
+			}
+		}
+
+		
+
+		for(var date in allRates){
+	   		if(new Date(date).getTime() < new Date(that.businessDate).getTime()){
+		   		continue;
+	   		}
+
+	   		var item = allRates[date];
+	   		var isDateClosed = false;
+	   		for (var j in item){
+	   			if(item[j].restriction_type_id == closedRestrictionId){		
+
+	   				console.log("Enabling close all");
+	   				console.log(item);
+	   				console.log(j);
+	   				console.log(date);
+	   				dict.enableOpenAll = true;
+	   				isDateClosed = true;
+	   				break;
+	   			}
+	   		}
+
+	   		if(isDateClosed === false) {
+
+	   			dict.enableCloseAll = true;
+	   		}
+		}
+
+		console.log(dict.enableOpenAll);
+		console.log(dict.enableCloseAll);
+
+		/*
+		for(var i in allRates){
+			item = allRates[i]; 
+			for(var j in item){
+				//TODO: get date.
+				if(item.day not in history){
+
+					if(item[j].restriction_type_id == closedRestrictionId){				
+						dict.enableOpenAll = true;
+					}
+					else{
+						dict.enableCloseAll = true;	
+					}
+				}
+			}
+		}*/
+
+/*		var allRateRestrictionClosedCount = that.getNumOfClosedRestriction(allRates);
 		var daysLength = allDates.length;
 		var dict = {};
 		dict.disableCloseAllBtn = true;
@@ -258,7 +328,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		}
 		if(allRateRestrictionClosedCount == 0){
 			dict.disableOpenAllBtn = true;
-		}
+		}*/
 		return dict;
 
 	};
@@ -274,15 +344,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		}
 
 		var closedRestrictionCount = 0;
-		for(var i in allRates){
-			item = allRates[i]; 
-			for(var j in item){
-				if(item[j].restriction_type_id == closedRestrictionId){
-					closedRestrictionCount++;
-					break;
-				}
-			}
-		}
+		
 
 		return closedRestrictionCount;
 

@@ -17,9 +17,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
     * Note: If a subscope requires another iScroll, this approach may not work.
     */
    $scope.$parent.myScroll =[];
-
-   
-   sajith=$scope;
 	
    BaseCtrl.call(this, $scope);
    
@@ -30,7 +27,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		$scope.selectedRate = {};
 		$scope.calendarData = {};
 		$scope.popupData = {};
-        
+      
         if($scope.currentFilterData.filterConfigured){
         	loadTable();
         }
@@ -62,6 +59,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 				$scope.$parent.myScroll['RateCalendarCtrl'].refresh();
 			}
 		};
+		//Set the current business date value to the service. Done for calculating the history dates
+		RateMngrCalendarSrv.businessDate = $rootScope.businessDate;
 		if($scope.calendarMode == "RATE_VIEW"){
 			var getParams = calculateRateViewCalGetParams();
 			$scope.invokeApi(RateMngrCalendarSrv.fetchCalendarData, getParams, calenderDataFetchSuccess);
