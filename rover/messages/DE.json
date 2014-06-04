@@ -14,5 +14,14 @@
     "CHECKING_OUT": "AUSCHECKEN",
     "DASHBOARD_HEADING": "Armaturenbrett",
     "NEWSPAPER_LABEL" : "Zeitung",
-    "NEWSPAPER_SELECT" : "Wählen Zeitung"
+    "NEWSPAPER_SELECT" : "Wählen Zeitung",
+    "DELETE_WAKEUP_CALL": "Löschen Weckruf",
+    "SET_WAKEUP_CALL": "Set Weckruf",
+    "CANCEL": "Cance",
+    "TODAY": "heute",
+    "TOMORROW": "morgen",
+    "SELECT_DATE": "Datum wählen",
+    "SELECT_WAKEUP_TIME": "Wählen Sie Weckzeit",
+    "WAKE_UP_HEADER":"aufwachen",
+    "NOT_SET":"nicht gesetzt"
 }
