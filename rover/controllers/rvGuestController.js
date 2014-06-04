@@ -1,12 +1,12 @@
 
-sntRover.controller('guestCardController', ['$scope', 'Likes', '$window','RVContactInfoSrv', function($scope, Likes, $window, RVContactInfoSrv){
+sntRover.controller('guestCardController', ['$scope', '$window','RVContactInfoSrv', function($scope, $window, RVContactInfoSrv){
 
 $scope.init = function(){
 	$scope.contactInfoError = false;
 	$scope.eventTimestamp =  "";
 	BaseCtrl.call(this, $scope);
 	var preventClicking = false;
-}
+};
 
 $scope.init();
 

@@ -63,6 +63,8 @@
     "USER_ROLES":"Benutzerrollen",
     "ROLE_DASHBOARD": "Role-Dashboard",
     "SELECT_DASHBOARD":"Select-Dashboard",
+    "SELECT_DEFAULT_DASHBOARD":"Select-Default-Dashboard",
+    "DEFAULT_DASHBOARD":"Default-Dashboard",
 
     "NAME":"Name",
     "DESCRIPTION":"Beschreibung",
@@ -84,7 +86,9 @@
     "ADD_ON":"Add-On",
     "DELETE":"löschen",
     "RESERVATION_TYPE_LABEL":"Reservierungsarten",
-    "SYSTEM_DEFINED_LABEL":"(System definiert)"
+    "SYSTEM_DEFINED_LABEL":"(System definiert)",
+    "ENTER_ADDON_NAME":"Geben Sie Add-On Namens",
+    "ENTER_ADDON_DESCRIPTION":"Geben Sie Add-On Beschreibung"
 
 
 
