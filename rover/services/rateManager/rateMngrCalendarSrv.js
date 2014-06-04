@@ -49,8 +49,8 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			}
 
 			var nameCardString = "";
-			for(var i in params.name_card_ids){
-				nameCardString = rateString + "&name_card_ids[]=" + params.name_card_ids[i];
+				for(var i in params.name_card_ids){
+				nameCardString = nameCardString + "&name_card_ids[]=" + params.name_card_ids[i].id;
 			}
 
 			var urlString = dateString + rateString + rateTypeString + nameCardString;
