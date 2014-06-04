@@ -159,8 +159,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
             if ($scope.companySearchText.length === 0) {
                 $scope.companyCardResults = [];
                 $scope.companyLastSearchText = "";
-                // clear company card filter data
-                //$scope.currentFilterData.name_card_ids = [];
+
             } else {
                 companyCardFetchInterval = window.setInterval(function() {
                     displayFilteredResults();
@@ -221,8 +220,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
 
         $scope.setCompanyCardFilter = function(cmpCardObj) {
             $scope.companySearchText = "";
-            $scope.currentFilterData.name_card_ids.push(cmpCardObj);
-            console.log($scope.currentFilterData.name_card_ids);
+            $scope.currentFilterData.name_cards.push(cmpCardObj);
             // reset company card result array
             $scope.companyCardResults = [];
             $scope.refreshFilterScroll();
@@ -230,9 +228,9 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
 
 
         $scope.deleteCards = function(id) {
-            angular.forEach($scope.currentFilterData.name_card_ids, function(item, index) {
+            angular.forEach($scope.currentFilterData.name_cards, function(item, index) {
                 if (item.id == id) {
-                    $scope.currentFilterData.name_card_ids.splice(index, 1);
+                    $scope.currentFilterData.name_cards.splice(index, 1);
                 }
             });
             $scope.companySearchText = "";                       

@@ -59,6 +59,8 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 				$scope.$parent.myScroll['RateCalendarCtrl'].refresh();
 			}
 		};
+
+		console.log("before");
 		//Set the current business date value to the service. Done for calculating the history dates
 		RateMngrCalendarSrv.businessDate = $rootScope.businessDate;
 		if($scope.calendarMode == "RATE_VIEW"){
@@ -76,10 +78,18 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	*/
 	var calculateRateViewCalGetParams = function(){
 
+		console.log("calculateRateViewCalGetParams");
+
 		var data = {};
 		data.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
 		data.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
-		data.name_card_ids = $scope.currentFilterData.name_card_ids;
+
+		data.name_card_ids = [];
+		for(var i in $scope.currentFilterData.name_cards){
+			console.log(JSON.stringify($scope.currentFilterData.name_cards[i]));
+			data.name_card_ids.push($scope.currentFilterData.name_cards[i].id);	
+		}
+
 		if($scope.currentFilterData.is_checked_all_rates){
 			return data;
 		}
@@ -93,6 +103,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		for(var i in $scope.currentFilterData.rates_selected_list){
 			data.rate_ids.push($scope.currentFilterData.rates_selected_list[i].id);	
 		}
+
 		return data;
 	};
 
@@ -105,7 +116,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 		data.id = $scope.selectedRate.id;
 		data.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
 		data.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
-		data.name_card_ids = $scope.currentFilterData.name_card_ids;
 		return data;
 	};
 
