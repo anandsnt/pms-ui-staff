@@ -342,6 +342,8 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 	    	var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
 	    	$scope.contractList.current_contracts.push(dataNew);
 	    	$scope.contractList.contractSelected = data.id;
+	    	$scope.addData.contract_name = "";
+		    $scope.contractList.isAddMode = false;
 	    };
 	  	var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
