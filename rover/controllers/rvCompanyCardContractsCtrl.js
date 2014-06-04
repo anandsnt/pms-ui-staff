@@ -117,6 +117,7 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
         }
 	
 	var fetchContractsDetailsSuccessCallback = function(data){
+		$scope.contractList.isAddMode = false;
     	$scope.contractData = data;
     	$scope.contractData.rates = [];
     	$scope.contractData.rates = ratesList;
@@ -422,5 +423,31 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
 		$scope.graphData = manipulateGraphData($scope.contractData.occupancy);
     	drawGraph();    	
 	};
-                
+    /*
+    * Function to handle data change in 'Contract selected_type'.
+    * on selecting "$" , rate value must be float with 2 decimals.
+    * on selecting "%" , rate value must be integer
+    */
+   	$scope.$watch('contractData.selected_type', function() {
+		if($scope.contractData.selected_type == "%"){
+			$scope.contractData.rate_value = parseInt($scope.contractData.rate_value);
+		}
+		else{
+			$scope.contractData.rate_value = parseFloat($scope.contractData.rate_value).toFixed(2);
+		}
+   	});  
+   	/*
+    * Function to handle data change in 'Contract selected_type' in Add mode
+    * on selecting "$" , rate value must be float with 2 decimals.
+    * on selecting "%" , rate value must be integer
+    */
+   	$scope.$watch('addData.selected_type', function() {
+		if($scope.addData.selected_type == "%"){
+			$scope.addData.rate_value = parseInt($scope.addData.rate_value);
+		}
+		else{
+			$scope.addData.rate_value = parseFloat($scope.addData.rate_value).toFixed(2);
+		}
+   	});      
+   	      		
 }]);
