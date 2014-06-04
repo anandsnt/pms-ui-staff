@@ -58,7 +58,7 @@ var reservationDetailsView = function(domRef) {
 	    	return that.roomUpgradesClicked(event);
 	    }
 	    if(getParentWithSelector(event, "#reservation-checkout")) {
-	    	return that.clickedCheckoutButton();
+	    	return that.clickedCheckoutButton(event);
 	    }	    
 	    if(getParentWithSelector(event, "#reservation-view-bill")) {
 	    	return that.clickedViewBillButton(event);
@@ -225,8 +225,15 @@ var reservationDetailsView = function(domRef) {
 		};
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'blocker', nextViewParams);
 	};
-	this.clickedCheckoutButton = function() {
-		that.goToBillCardView("CheckoutButton");
+	this.clickedCheckoutButton = function(event) {
+		var target = $(event.target);
+		if(target.data("smartband-balance-remaining") == true){
+			var smartBandListForCheckoutModal = new SmartBandListForCheckoutModal();
+			smartBandListForCheckoutModal.initialize();
+		}
+		else{
+			that.goToBillCardView("CheckoutButton");
+		}
 	};
 	this.clickedViewBillButton = function(e) {
 		//sntapp.activityIndicator.showActivityIndicator("blocker");
