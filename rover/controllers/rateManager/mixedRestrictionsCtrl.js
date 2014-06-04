@@ -2,27 +2,52 @@ sntRover.controller('MixedRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
     function ($q, $scope, ngDialog) {
 
         $scope.init = function(){
-            $scope.daysEntered = 5;
+            $scope.options = {};
+            $scope.options.daysEntered = '';
         };
 
+        /**
+        * Click handle for 'Set restriction' button
+        * Updates the data modal in parent with the enable status 
+        * Update the data modal with the days entered in the box 
+        */
         $scope.updateRestrictionBtnClicked = function(id){
-            console.log($scope.daysEntered);
-            ngDialog.close();
+            var currentSelected = $scope.data.restrictionTypes[id];
+            currentSelected.isRestrictionEnabled = true;
+            if($scope.options.daysEntered !== undefined && $scope.options.daysEntered !== null){
+                currentSelected.days = $scope.options.daysEntered == "" ? "" : parseInt($scope.options.daysEntered);
+            }
+            collapseCurrentSelectedView(currentSelected);
 
-            /*$scope.data.restrictionTypes[id].showEdit = false;
-            $scope.data.restrictionTypes[id].days = $scope.daysEntered;
-            $scope.data.restrictionTypes[id].isRestrictionEnabled = true;
-            $scope.$parent.showRestrictionDayUpdate = false;*/
         };
 
+        /**
+        * Click handle for 'Remove restriction' button
+        * Updates the data modal in parent with the disable status 
+        * Updates the data modal in parent with days as empty
+        */
         $scope.removeRestrictionBtnClicked = function(id){
-            /*$scope.data.restrictionTypes[id].showEdit = false;
-            $scope.data.restrictionTypes[id].isRestrictionEnabled = false;
-            $scope.$parent.showRestrictionDayUpdate = false;*/
-
+            var currentSelected = $scope.data.restrictionTypes[id];
+            currentSelected.isRestrictionEnabled = false;
+            if($scope.options.daysEntered !== undefined && $scope.options.daysEntered !== null){
+                currentSelected.days = '';
+            }
+            collapseCurrentSelectedView(currentSelected);
         };
 
         $scope.cancelButtonClicked = function(id){
+            collapseCurrentSelectedView($scope.data.restrictionTypes[id]);
+        };
+
+        /**
+        * Collapses the selected restriction edit view
+        */
+        var collapseCurrentSelectedView = function(currentSelected) {
+            $scope.data.showEditView = false;
+            currentSelected.showEdit = false;
+            $(".ngdialog-content").removeClass("data-entry");
+            $scope.options.daysEntered = '';
+
         };
               
         $scope.init();
