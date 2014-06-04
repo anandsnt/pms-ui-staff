@@ -117,10 +117,10 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
         }
 	
 	var fetchContractsDetailsSuccessCallback = function(data){
-		//$scope.contractData = {};
     	$scope.contractData = data;
     	$scope.contractData.rates = [];
     	$scope.contractData.rates = ratesList;
+    	$scope.errorMessage = "";
     	contractInfo = {};
     	$scope.contractData.contract_name ="";
     	if(typeof $stateParams.type !== 'undefined' && $stateParams.type !== ""){
@@ -151,6 +151,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     	if($scope.contractList.contractSelected){
     		$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":$scope.contractList.contractSelected},fetchContractsDetailsSuccessCallback,fetchFailureCallback);  
     	}
+    	$scope.errorMessage = "";
     };
     var fetchContractsDetailsFailureCallback = function(data){
         $scope.$emit('hideLoader');
@@ -194,6 +195,13 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     // Fetch data for rates
     var fetchRatesSuccessCallback = function(data){
     	ratesList = data.contract_rates;
+    	
+    	$scope.contractData.rates = [];
+    	$scope.contractData.rates = ratesList;
+    	
+    	$scope.addData.rates = [];
+		$scope.addData.rates = ratesList;
+		$scope.errorMessage = "";
     };
     $scope.invokeApi(RVCompanyCardSrv.fetchRates,{},fetchRatesSuccessCallback,fetchFailureCallback);  
     
@@ -302,10 +310,8 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		//Setup data for Add mode
 		$scope.contractList.isAddMode = true;
 		$scope.addData.occupancy = [];
-		$scope.addData.rates = [];
-		$scope.addData.rates = ratesList;
 		$scope.addData.begin_date = dateFilter(new Date(), 'yyyy-MM-dd');
-		
+		$scope.addData.rate_value = 0;
 		var myDate = new Date();
 		myDate.setDate(myDate.getDate() + 1);
 	    $scope.addData.end_date = dateFilter(myDate, 'yyyy-MM-dd'); 
