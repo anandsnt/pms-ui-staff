@@ -1,4 +1,9 @@
-sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window','RVDashboardSrv','RVHotelDetailsSrv','ngDialog','$translate', function($rootScope, $scope, $state,$window,RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate){
+sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window','RVDashboardSrv','RVHotelDetailsSrv','ngDialog','$translate', function($rootScope, $scope, $state,$window,RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate){	
+	//Used to add precison in amounts
+	$rootScope.precisonZero = 0;
+	$rootScope.precisonTwo = 2;
+	//To get currency symbol - update the value with the value from API see fetchHotelDetailsSuccessCallback
+	$rootScope.currencySymbol = "";
 	
     $scope.$on("closeDrawer", function(){      
      	$scope.menuOpen = false;  
@@ -9,7 +14,6 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
       	return $scope.menuOpen ? true : false;
     };
 
-
     $scope.$on("showLoader", function(){
         $scope.hasLoader = true;
     });
@@ -17,7 +21,6 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
     $scope.$on("hideLoader", function(){
         $scope.hasLoader = false;
     }); 
-
 
     $scope.init = function () {
     	BaseCtrl.call(this, $scope);
@@ -54,21 +57,23 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 	};
 	$scope.init();
 	/*
-	 * Success callback of get language
+	 * Success callback of get hotel details
 	 * @param {object} response
 	 */
 	$scope.fetchHotelDetailsSuccessCallback = function(data){
 		//Can use these variables from subcontrollers
 		$rootScope.businessDate = data.business_date;
+         $rootScope.currencySymbol = getCurrencySign(data.currency.value);
 		if(data.language)
 	    	$translate.use(data.language.value);
 	    else
 	    	$translate.use('EN');
 		$scope.$emit('hideLoader');
-	
-	};
+
+     };
+
 	/*
-	 * Function to get the current hotel language
+	 * Function to get the current hotel details
 	 */
 	$scope.getHotelDetails = function(){
 		$scope.invokeApi(RVHotelDetailsSrv.fetchHotelDetails,{},$scope.fetchHotelDetailsSuccessCallback);  
@@ -79,6 +84,7 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 	$scope.$on("updateRoverLeftMenu", function(e,value){
 	  	$scope.selectedMenuIndex = value;
     });
+
 
    /*
     * toggle action of drawer
