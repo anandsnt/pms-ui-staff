@@ -167,10 +167,10 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
         angular.forEach(data, function(item){
             itemDate = item.month + " " + item.year;
             $scope.categories.push(itemDate);
-            contracted.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: Remove this line and uncomment below line
-            //contracted.push([itemDate, item.contracted_occupancy]);
-            actual.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: Remove this line and uncomment below line
-            //actual.push([itemDate,item.actual_occupancy]);
+            //contracted.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: Remove this line and uncomment below line
+            contracted.push([itemDate, item.contracted_occupancy]);
+            // actual.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: Remove this line and uncomment below line
+            actual.push([itemDate,item.actual_occupancy]);
         });
         graphData = [{
             "name": "ACTUAL",
