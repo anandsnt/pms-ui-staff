@@ -175,6 +175,11 @@
 					margin-left: -80px;
 					.pull-left;
 				}
+
+				&.queued {
+					.icons;
+					.icons > .icon-queued;
+				}
 			}
 
 			.room-number {
@@ -1122,6 +1127,7 @@
 				line-height: 50px;
 				padding: 0;
 				margin-bottom: 10px;
+				width: 100%;
 				.show; 
 
 				&.green,
@@ -1130,7 +1136,7 @@
 
 				&.red.cancel { font-size: 16px; }
 
-				&.red-text {
+				&#cancel-reservation {
 					position: absolute;
 					right: 0;
 					bottom: 0;
