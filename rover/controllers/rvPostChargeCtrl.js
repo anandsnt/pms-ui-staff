@@ -9,10 +9,6 @@ sntRover.controller('RVPostChargeController',
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
 
-			// its wired in a way that this modal will be
-			// created only when the data is fetched
-			console.log( $scope.fetchedData );
-
 			// post the data
 			// https://pms-dev.stayntouch.com/staff/items/post_items_to_bill
 			// data = {
@@ -62,8 +58,29 @@ sntRover.controller('RVPostChargeController',
 					}
 				};
 			};
+
+			$scope.items = [];
+
+			$scope.chosenItem = null;
+
+			$scope.addItem = function() {
+				var item = angular.copy( this.each );
+
+				var hasItem = _.find($scope.items, function(each) {
+					return each.item_name === $scope.chosenItem.item_name;
+				});
+
+				// if already added
+				if ( !!hasItem ) {
+					return;
+				};
+
+				// set up new things
+				item.total_price = item.unit_price;
+
+				$scope.items.push( item );
+				$scope.chosenItem = item;
+			};
 		}
 	]
 );
-
-// $scope.reservationData.reservation_card.reservation_id

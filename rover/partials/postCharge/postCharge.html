@@ -27,14 +27,14 @@
 			</div>
 			<div id="items-listing" class="scrollable">
 				<ul id="search-item-results" class="wrapper">
-					<li id="items-list" ng-repeat="item in fetchedData.items" ng-if="item.show">
+					<li id="items-list" ng-repeat="each in fetchedData.items" ng-if="each.show" ng-click="addItem()">
 						<a class="button white">
-							{{ item.item_name }}
+							{{ each.item_name }}
 							<span class="price">
-								{{ item.currency_code }}
-								<span class="value">{{ item.unit_price }}</span>
+								$
+								<span class="value">{{ each.unit_price }}</span>
 							</span>
-							<span ng-if="item.show_count" class="count"></span>
+							<span ng-if="each.show_count" class="count"></span>
 						</a>
 					</li>
 				</ul>
@@ -48,17 +48,24 @@
 						<option value="1"> 1 </option>
 					</select>
 				</div> </span>
-			<div id="no-items-added" class="no-content">
+			<div id="no-items-added" class="no-content" ng-hide="items.length">
 				<div class="info">
 					<strong class="h1">0 items selected</strong>
 				</div>
 			</div>
-			<div id="items-added" class="hidden">
+			<div id="items-added" ng-show="items.length">
 				<div id="items-summary" class="scrollable">
-					<ul class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);"></ul>
-					<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
-						<div class="iScrollIndicator" style="transition-duration: 0ms; display: none; height: 8px; transform: translate(0px, -8px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
-					</div>
+					<ul class="wrapper">
+						<li ng-repeat="each in items" ng-class="{'selected': each.item_name === chosenItem.item_name}">
+							{{ each.item_name }}
+							<span class="count" ng-if="each.count > 1">({{ each.count }})</span>
+							<span class="base">at ${{ each.unit_price }} / unit</span>
+							<span class="price">
+								$
+								<span class="value">{{ each.total_price }}</span>
+							</span>
+						</li>
+					</ul>
 				</div>
 				<p id="total-charge"></p>
 				<div id="numpad">
