@@ -31,7 +31,7 @@ var UpdateSmartBandBalanceView = function(domRef) {
 	*/
 	this.successCallbackOfSaveAction = function(data, successCallBackParameters){		
 		var rowToChange = successCallBackParameters.data;
-		rowToChange.amount = rowToChange.credit + that.data.amount
+		rowToChange.amount = parseFloat(rowToChange.credit) + parseFloat(that.data.amount);
 		rowToChange.id = that.data.id;
 		that.parentController.getControllerObject('smartband-listing').updateRow(rowToChange);
 		that.data = {};	
@@ -47,7 +47,7 @@ var UpdateSmartBandBalanceView = function(domRef) {
 		that.myDom.find("#first-name").val(that.data.first_name);
 		that.myDom.find("#last-name").val(that.data.last_name);
 		that.myDom.find('#smartband-id').html('#' + that.data.account_number);
-
+		that.myDom.find('#credit-to-add').val('');
 		that.myDom.find('#area-of-details').css("pointer-events", "auto").css("opacity", "1");
 	
 		if(!that.data.is_fixed){
@@ -59,7 +59,7 @@ var UpdateSmartBandBalanceView = function(domRef) {
 			that.myDom.find('#float-right').hide();
 		}
 		else{
-			that.myDom.find('#credit-bal').append(that.data.amount);
+			that.myDom.find('#credit-bal').html(that.myDom.data("currency-symbol") + " " + that.data.amount);
 		}
 		that.accountID = that.data.id;
 	};
