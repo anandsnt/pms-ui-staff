@@ -20,7 +20,7 @@
 		<tbody>
 			<tr>
 				<td class="first-row">
-					<span>All Rooms</span>
+					<span class="bolder">All Rooms</span>
 					<span>&nbsp;</span>
 				</td>
 				<td ng-repeat="date in calendarData.dates" class="cell"> 
@@ -40,7 +40,7 @@
 				</td>
 			</tr>
 
-		<tr ng-repeat="rate in calendarData.data">
+		<tr ng-repeat="rate in calendarData.data" ng-class="{'last': $last}">
 			<td class="first-row">    
 				<span>{{rate.name}}</span>
 				<span style="float:right" ng-hide="currentExpandedRow==$index">

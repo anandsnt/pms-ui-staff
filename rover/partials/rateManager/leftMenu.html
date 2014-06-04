@@ -88,9 +88,9 @@
 					<span type="submit" name="submit" class="icons icon-search1"></span>
 					<input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
 				</div>
-				<div class="rates-box dark" ng-repeat="name_card in selectedCards">
-					<span class="rate-data">{{name_card}}</span>
-					<span ng-click="deleteCards()" class="icons delete_small cursor-hand"> &nbsp;</span>
+				<div class="rates-box dark" ng-repeat="name_card in currentFilterData.name_card_ids">
+					<span class="rate-data">{{name_card.account_first_name + ' ' + name_card.account_last_name }}</span>
+					<span ng-click="deleteCards(name_card.id)" class="icons delete_small cursor-hand"> &nbsp;</span>
 					<br clear="all">
 				</div>
 
