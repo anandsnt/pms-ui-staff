@@ -29,6 +29,20 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             interactiveScrollbars : true,
             click : true, 
             snap : false
+        },
+        'restictionWeekDaysScroll': {
+                scrollbars: true,
+                interactiveScrollbars: true,
+                click: true,
+                useTransform: true,
+                zoom: false,
+                snap: false,
+                onBeforeScrollStart: function(e) {
+                    var target = e.target;
+                    while (target.nodeType != 1) target = target.parentNode;
+                    if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+                        e.preventDefault();
+                }
         }
     };
 
@@ -243,18 +257,18 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     };
 
     $scope.updatePopupWidth = function() {
-        var width = 240;
+        var width = 270;
         if($scope.data.showEditView) {
             width = width + 400;
         }
         if($scope.showExpandedView) {
-            width = width + 240;
+            width = width + 270;
         }
         if($scope.popupData.fromRoomTypeView) {
             width = width + 400;
         }
         if($scope.showExpandedView && !$scope.popupData.fromRoomTypeView && !$scope.popupData.all_data_selected) {
-            width = width + 240;
+            width = width + 270;
         }
         $(".ngdialog-content").css("width", width);
 
