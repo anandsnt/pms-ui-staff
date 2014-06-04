@@ -14,6 +14,7 @@
     "DASHBOARD_HEADING": "Dashboard",
     
 
+
     "NEW_PAYMENT_METHOD": "New Payment Method",
     "PAYMENT_TYPE": "Payment type",
     "SELECT_CREDIT_CARD_LABEL": "Select credit card",
@@ -34,8 +35,8 @@
     "ADD": "Add",
     "NAME": "Name",
     "IN_GUEST_CARD":"In Guest Card",
-    
-    "CONTRACTED_NIGHTS": "Contracted nigths",
+
+    "CONTRACTED_NIGHTS": "Contracted Nights",
     "ALL": "All",
     "COPY_VALUES": "Copy values",
     "CANCEL": "Cancel",
@@ -76,6 +77,15 @@
     "TOTAL_REVENUE": "Total Revenue",
     "AVERAGE_RATE": "Average Rate",
     "NEWSPAPER_LABEL" : "Newspaper",
-    "NEWSPAPER_SELECT" : "Select Newspaper"
 
+    "NEWSPAPER_SELECT" : "Select Newspaper",
+    "DELETE_WAKEUP_CALL": "Delete wake-up call",
+    "SET_WAKEUP_CALL": "Set wake-up call",
+    "CANCEL": "Cancel",
+    "TODAY": "Today",
+    "TOMORROW": "Tomorrow",
+    "SELECT_DATE": "Select date",
+    "SELECT_WAKEUP_TIME": "Select wake-up time",
+    "WAKE_UP_HEADER":"Wake up",
+    "NOT_SET":"Not Set"
 }

@@ -14,21 +14,21 @@
 			</div>
 			
 			<fieldset class="holder left float">
-				<ad-textbox styleclass="full-width"
+				<ad-textbox styleclass="full-width label-small-case"
 					value="singleAddon.name"
 					name="name"
 					id="name"
-					label="{{'NAME' | translate}}"
+					label="{{'ENTER_ADDON_NAME' | translate}}"
 					placeholder="Enter the addon name"
 					required="yes"></ad-textbox>
 
 				<ad-textarea rows="4"
-					div-class="full-width"
+					div-class="full-width label-small-case"
 					text-area-class="full-width"
 					value="singleAddon.description"
 					name="desc"
 					id="desc"
-					label="{{'DESCRIPTION' | translate}}"
+					label="{{'ENTER_ADDON_DESCRIPTION' | translate}}"
 					placeholder="Enter the addon description"
 					required="yes"></ad-textarea>
 
@@ -44,7 +44,7 @@
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
 						<label>{{'RATE_ONLY' | translate}}</label>
-						<input type="checkbox" ng-model="singleAddon.rate_code_only">
+						<input type="checkbox" ng-model="singleAddon.rate_code_only" ng-change="rateOnlyChanged()">
 					</label>
 				</div>
 
@@ -52,7 +52,7 @@
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.is_reservation_only }"></span>
 						<label>{{'RESERVATION_ONLY' | translate}}</label>
-						<input type="checkbox" ng-model="singleAddon.is_reservation_only">
+						<input type="checkbox" ng-model="singleAddon.is_reservation_only" ng-change="reservationOnlyChanged()">
 					</label>
 				</div>
 
@@ -64,14 +64,14 @@
 					<label>
 						{{'FROM_DATE' | translate}}
 					</label>
-					<input type="text" ng-model="singleAddon.begin_date_for_display" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="popupCalendar('From')">
+					<input type="text" ng-model="singleAddon.begin_date_for_display" readonly="" placeholder="Select Start Date" ng-click="popupCalendar('From')">
 					<span class="icons icon-calendar" ng-click="popupCalendar('From')"></span>
 				</div>
 				<div class="entry rel">
 					<label>
 						{{'TO_DATE' | translate}}
 					</label>
-					<input type="text" ng-model="singleAddon.end_date_for_display" readonly="" placeholder="date: 'yyyy-MM-dd'" ng-click="popupCalendar('To')">
+					<input type="text" ng-model="singleAddon.end_date_for_display" readonly="" placeholder="Select End Date" ng-click="popupCalendar('To')">
 					<span class="icons icon-calendar" ng-click="popupCalendar('To')"></span>
 				</div>
 

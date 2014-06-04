@@ -135,10 +135,12 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 	 	$scope.$broadcast("RESERVATIONDETAILS", currentConfirmationNumber);
 	 	$scope.currentReservationId = currentConfirmationNumber;
 	 };
-	
+	 /*
+	  * To show the payment data list
+	  */
 	 $scope.showGuestPaymentList = function(guestInfo){
 	 	var userId = guestInfo.user_id,
-	 	guestId = guestInfo.guest_id;
+	 		guestId = guestInfo.guest_id;
 	 	 var paymentSuccess = function(paymentData){
 		 	 $scope.$emit('hideLoader');
 		 	
