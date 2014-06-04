@@ -1,3 +1,185 @@
-<div>
-summaryAndConfirm.html
-</div>
+<!-- Content -->
+<section id="details-and-payment" class="content reservations-inner">
+    <div id="details-and-payment-content" class="reservations-content-wrapper">
+        <div id="reservation-summary" class="reservation-summary scrollable">
+            <div class="wrapper"> 
+                <h2>Reservation summary</h2>
+                <ul class="data">
+                    <li><span class="guest-status room">rooms</span>1 rooms</li>
+                    <li><span class="guest-status nights">nights</span>1 nights</li>
+                </ul>
+                <div class="stay-dates">
+                    <div class="check-in-dates">
+                        <span class="guest-status small-icon check-in">check-in</span>
+                        Today, 05-29-2014
+                        <div class="check-data icons icon-time time-in">
+                            <div class="select hour">
+                                <select id="check-in-hour" name="check-in" class="placeholder">
+                                    <option value="" selected>HH</option>
+                                    <option value="00">00</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                            <div class="select minutes">
+                                <select id="check-in-minutes" name="check-in" class="placeholder">
+                                    <option value="" selected>MM</option>
+                                    <option value="00">00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                            </div>
+                            <div class="select ampm">
+                                <select id="check-in-ampm" name="check-in" class="placeholder">
+                                    <option value="" selected>AM/PM</option>
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="check-out-dates">
+                        <span class="guest-status small-icon check-out">check-out</span>
+                        Tomorrow, 05-30-2014
+                        <div class="check-data icons icon-time time-out">
+                            <div class="select hour">
+                                <select id="check-out-hour" name="check-out" class="placeholder">
+                                    <option value="" selected>HH</option>
+                                    <option value="00">00</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                            <div class="select minutes">
+                                <select id="check-out-minutes" name="check-out" class="placeholder">
+                                    <option value="" selected>MM</option>
+                                    <option value="00">00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                            </div>
+                            <div class="select ampm">
+                                <select id="check-out-ampm" name="check-out" class="placeholder">
+                                    <option value="" selected>AM/PM</option>
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="room-1" class="rooms">
+                    <div class="title">
+                        Room 1
+                        <div class="count">
+                            <span><span class="label">Adults</span>2</span>
+                            <span><span class="label">Children</span>0</span>
+                            <span><span class="label">Infants</span>0</span>
+                        </div>
+                    </div>
+                    <!-- This here is dynamic content, depending on actual room booked -->
+                    <h4>Standard Room <span>#22648596</span></h4>
+                    <ul class="rate-and-enhancements">
+                        <li>
+                            <em>Best Available Rate</em>
+                            <span class="price">
+                                $149
+                                <span>avg/night</span>
+                                <span class="total">$149</span>
+                            </span>
+                        </li>
+                        <li>
+                            <em>2x Champange &amp; Chocolates</em>
+                            <span class="price">
+                                $79
+                                <span>each</span>
+                                <span class="total">$158</span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="total-stay-cost">
+                    <li><span class="label">Tax</span>$15</li>
+                    <li><span class="label">Total Stay Cost</span><strong>$322</strong></li>
+                </ul>
+            </div> 
+        </div>
+        <form method="get" action="reservations/" name="payment-info" id="payment-info" class="form payment-info scrollable">
+            <div class="wrapper">
+                <div class="entry margin">
+                    <label for="firstname">First name</label>
+                    <input name="firstname" id="firstname" value="" type="text">
+                </div>
+                <div class="entry">
+                    <label for="lastname">Last Name</label>
+                    <input name="lastname" id="lastname" value="" type="text">
+                </div>
+                <div class="entry full-width">
+                    <label for="email">E-mail address</label>
+                    <input name="email" id="email" value="" type="email">
+                    <label class="checkbox inline">
+                        <span class="icon-form icon-checkbox checked"></span>
+                        <input name="send-confirmation" id="send-confirmation" value="send-confirmation" type="checkbox" checked />
+                        Send confirmation E-mail to this address
+                    </label>
+                </div>
+                <div class="entry full-width hidden">
+                    <label for="email-secondary">Receive confirmation email on this address</label>
+                    <input name="email-secondary" id="email-secondary" value="" type="email">
+                </div>
+                <div class="entry full-width">
+                    <label for="payment-type">Payment type</label>
+                    <div class="select">
+                        <select name="payment-type" class="placeholder">
+                            <option value="" selected>Select Payment Type</option>
+                            <option value="credit-card">Credit card</option>
+                            <option value="cash">Cash</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="check">Check</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="entry card-number-large margin">
+                    <label for="card-number-set1">Credit Card</label>
+                    <input name="card-number-set1" id="card-number-set1" value="" type="text" disabled />
+                </div>
+                <div class="entry card-number-small">
+                    <label for="expiry-month">Expiration date (<span>MM YY</span>)</label>
+                    <input name="expiry-month" id="expiry-month" placeholder="" value="" maxlength="2" size="2" type="text" disabled  />
+                    <input name="expiry-year" id="expiry-year" placeholder=""  value="" maxlength="2" size="2" type="text" disabled  />
+                </div>
+                <div class="entry full-width">
+                    <label for="name-on-card">Name on card</label>
+                    <input name="name-on-card" id="name-on-card" value="" type="text" disabled  />
+                </div>
+                <div class="actions">
+                    <button type="button" id="save-reservation" class="button green">Confirm Reservation <span>&amp; return to dashboard</span></button>
+                    <button type="button" id="save-and-add-new" class="button brand-colors">Confirm Reservation <span>&amp; create new for this guest</span></button>
+                    <button type="button" id="cancel-reservation" class="button blank">Cancel Reservation</button>
+                </div>
+            </div> 
+        </form>
+    </div>
+</section>

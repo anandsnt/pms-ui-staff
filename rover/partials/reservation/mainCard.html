@@ -20,19 +20,7 @@ Same way as Guest Card is not reloaded when going from the Stay Card to e.g. Vie
 
 <!-- First nested view-->
 <div id="reservations-nested-first" class="nested-view with-sidebar view-current" role="main">
-    <!-- Content -->
-    <section id="rooms-and-rates" class="content reservations-inner" >
-        <div id="rooms-and-rates-content" class="reservations-content-wrapper">
-            <!--
-                include different content for rooms and rates here: 
-                02.A.rooms-and-rates.all-types.html
-                02.B.rooms-and-rates.room-type.html
-                02.C.rooms-and-rates.recommended.html
-                02.D.rooms-and-rates.rate.html
-            -->
-            <div ui-view ></div>
-        </div>
-    </section>
+    <ui-view></ui-view>
 </div>
 
 <!-- Second nested view placeholder -->

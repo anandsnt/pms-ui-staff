@@ -1,6 +1,6 @@
 sntRover.controller('ReservationSettingsCtrl', ['$scope', function($scope){
     
-    $scope.ReservationSettingsVisible = false;
+    $scope.reservationSettingsVisible = false;
     /**
 	* scroller options
 	*/
