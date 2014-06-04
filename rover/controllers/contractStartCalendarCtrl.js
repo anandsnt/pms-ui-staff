@@ -29,9 +29,18 @@ sntRover.controller('contractStartCalendarCtrl',['$scope','dateFilter','ngDialog
 
 	    if($scope.closePopupOnSelection && $scope.contractList.isAddMode){
 	     	$scope.addData.begin_date = $scope.date;
+	     	
+     		var myDate = new Date($scope.date);
+			myDate.setDate(myDate.getDate() + 1);
+     		$scope.addData.end_date = dateFilter(myDate, 'yyyy-MM-dd'); 
 	    }
 	    else{
-	    	$scope.contractData.begin_date = $scope.date;   	
+	    	$scope.contractData.begin_date = $scope.date;   
+	    	if(!($scope.contractData.begin_date < $scope.contractData.end_date)){
+	     		var myDate = new Date($scope.date);
+				myDate.setDate(myDate.getDate() + 1);
+	     		$scope.contractData.end_date = dateFilter(myDate, 'yyyy-MM-dd'); 
+	     	}	
 	    }
 
 	    if($scope.closePopupOnSelection)
