@@ -84,28 +84,29 @@
                 <input id="wake-up-day" type="checkbox" value="2" name="wake-up-day"
                  ng-model="tomorrowSelected"></input>
                 <label class="data-off">
-                    <span class="switch-icon">
-
-                        <span translate>TODAY</span> ({{reservationData.reservation_card.wake_up_time.today_date}})
-
-                    </span>
                     <span id="wakeup-day" class="value">
 
-                        <span translate>TOMORROW</span> ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
+                        {{'TODAY' | translate}}({{reservationData.reservation_card.wake_up_time.today_date}})
 
 
                     </span>
+                    <span class="switch-icon">
+
+                        {{'TOMORROW' | translate}} ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
+
+                    </span>
+                    
                 </label>
                 <label class="data-on">
-                    <span id="wakeup-day" class="value">
-
-                        <span translate>TODAY</span>({{reservationData.reservation_card.wake_up_time.today_date}})
-
-
-                    </span>
                     <span class="switch-icon">
 
-                        <span translate>TOMORROW</span> ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
+                        {{'TODAY' | translate}} ({{reservationData.reservation_card.wake_up_time.today_date}})
+
+                    </span>
+                    <span id="wakeup-day" class="value">
+
+                        {{'TOMORROW' | translate}} ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
+
 
                     </span>
                 </label>
