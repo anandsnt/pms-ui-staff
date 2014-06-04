@@ -78,7 +78,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
                     xAxis: { 
                     	minRange: 11,
                     	min:0,
-                    	categories: ['January','February','March','April','May','June','July','August','September','October','November','December'],//$scope.categories,
+                    	categories: $scope.categories,
                         tickWidth:0,                        
                         labels: { 
                             style: {                        		
