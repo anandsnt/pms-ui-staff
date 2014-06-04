@@ -226,6 +226,9 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
             $scope.refreshFilterScroll();
         }
 
+        $scope.hideCompanyCardSearchResults = function(){
+            $scope.companyCardResults = [];
+        }
 
         $scope.deleteCards = function(id) {
             angular.forEach($scope.currentFilterData.name_cards, function(item, index) {
