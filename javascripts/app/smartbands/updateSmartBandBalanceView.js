@@ -10,12 +10,16 @@ var UpdateSmartBandBalanceView = function(domRef) {
 	this.accountID = '';
 	this.data = '';
 
-	this.delegateEvents = function(){		
+	this.delegateEvents = function(){			
 		that.myDom.find('#continue-button').on('click', that.continueButtonClicked);	
 		that.myDom.find('#see-all-band-button').on('click', that.seeAllBandsClicked);
 		that.myDom.find("#cancel-link").on('click', that.backToListing);	
+		that.myDom.on('click', that.clickedOnMyDom);
 	}
 
+	this.clickedOnMyDom = function(event){
+		sntapp.notification.hideMessage(that.myDom);	
+	};
 	/**
 	* function to handle the failure case of save API
 	*/

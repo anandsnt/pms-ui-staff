@@ -12,6 +12,7 @@ var AddNewSmartBandView = function(domRef) {
 		that.myDom.find('#continue-button').on('click', that.continueButtonClicked);	
 		that.myDom.find('#payment-type').on('click', that.switchedPaymentType);		
 		that.myDom.find("#cancel-link").on('click', that.backToListing);
+		that.myDom.on('click', that.clickedOnMyDom);
 	}
 
 	this.backToListing = function(){
@@ -88,6 +89,10 @@ var AddNewSmartBandView = function(domRef) {
 			that.myDom.find('#fixed-amound').parents("div").eq(0).hide();
 		}
 		onOffSwitch();
+	};
+
+	this.clickedOnMyDom = function(event){
+		sntapp.notification.hideMessage(that.myDom);	
 	};
 
 };

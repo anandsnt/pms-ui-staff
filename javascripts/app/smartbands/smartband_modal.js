@@ -16,8 +16,12 @@ var SmartBandModal = function(reservationID) {
 	this.delegateEvents = function(){
 		that.myDom.find('#add-new-button').on('click', that.addNewSmartBand);
 		that.myDom.find('#see-all-band-button').on('click', that.seeAllBandsClicked);
+		that.myDom.on('click', that.clickedOnSmartbandModal);
 	};
 
+	this.clickedOnSmartbandModal = function(event){
+		sntapp.notification.hideMessage(that.myDom);	
+	};
 	this.disableOutsideClickClosing = function(){
         $('#modal-overlay, #modal-close, #cancel').unbind('click');
 	};

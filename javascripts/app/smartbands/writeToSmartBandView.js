@@ -14,6 +14,7 @@ var WriteToSmartBandView = function(domRef){
 		that.myDom.find('#done-button').on('click', that.clickedDoneButton);
 		that.myDom.find('#next-band-button').on('click', that.clickedNextBandButton);
 		that.myDom.find('#cancel').on('click', that.parentController.hide);
+		that.myDom.on('click', that.clickedOnMyDom);
 	};
 
 	/**
@@ -105,4 +106,8 @@ var WriteToSmartBandView = function(domRef){
 		}
 
     };
+
+    this.clickedOnMyDom = function(event){
+		sntapp.notification.hideMessage(that.myDom);	
+	};
 };

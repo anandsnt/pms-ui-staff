@@ -12,6 +12,7 @@ var SmartBandListView = function(domRef) {
 	this.delegateEvents = function() {		
 		that.myDom.find('#listing-area ul').on('click', that.clickedOnSmartband);
 		that.myDom.find("#close-popup").on('click', that.parentController.hide);
+		that.myDom.on('click', that.clickedOnMyDom);
 	};
 
 	this.pageshow = function(){
@@ -81,6 +82,9 @@ var SmartBandListView = function(domRef) {
 		row.find('span.band-holder').html(rowToChange.first_name + " " + rowToChange.last_name);
 		row.find('span.charge').html(that.myDom.find("#listing-area").data("currency-symbol") + " " + rowToChange.amount);
 	}
+	this.clickedOnMyDom = function(event){
+		sntapp.notification.hideMessage(that.myDom);	
+	};
 
 
 
