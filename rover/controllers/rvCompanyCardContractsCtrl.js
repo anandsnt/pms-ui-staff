@@ -1,4 +1,4 @@
-sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$stateParams','ngDialog','dateFilter', function($scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter){
+sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompanyCardSrv', '$stateParams','ngDialog','dateFilter', function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter){
 	BaseCtrl.call(this, $scope);
     $scope.highchartsNG = {};
 	$scope.contractList = {};
@@ -310,12 +310,11 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		//Setup data for Add mode
 		$scope.contractList.isAddMode = true;
 		$scope.addData.occupancy = [];
-		$scope.addData.begin_date = dateFilter(new Date(), 'yyyy-MM-dd');
+		$scope.addData.begin_date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
 		$scope.addData.rate_value = 0;
-		var myDate = new Date();
+		var myDate = new Date($rootScope.businessDate);
 		myDate.setDate(myDate.getDate() + 1);
 	    $scope.addData.end_date = dateFilter(myDate, 'yyyy-MM-dd'); 
-	     		
 		$scope.addData.is_fixed_rate = false;
 		$scope.addData.is_rate_shown_on_guest_bill = false;
 		if(typeof $stateParams.type !== 'undefined' && $stateParams.type !== ""){
