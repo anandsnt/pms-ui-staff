@@ -4,9 +4,9 @@
 			<h3>Notes</h3>
 		</div>
 		<form method="post" id="post_notes" class="float">
-			<textarea rows="2" ng-model="new_reservation_note" placeholder="Write a note" style="height: 110px;margin-right: 10px;width: 72.8972%;"></textarea>
+			<textarea rows="2" ng-model="$parent.reservationnote" placeholder="Write a note" style="height: 110px;margin-right: 10px;width: 72.8972%;"></textarea>
 			<div class="actions action-post-button">
-				<button type="button" id="reservation_notes_post" class="button brand-colors post post-button">
+				<button type="button" id="reservation_notes_post" class="button brand-colors post post-button" ng-click="saveReservationNote()">
 					Post
 				</button>
 			</div>
@@ -19,11 +19,11 @@
 				<div class="note-title">
 					<h4> {{note.username}} </h4>
 					<time datetime="T">
-						<span class="time"> </span>
-						<span class="date"> </span>
+						<span class="time"> {{note.posted_time}}</span>
+						<span class="date">{{note.posted_date}} </span>
 					</time>
 					<span class="topic"> {{note.topic}} </span>
-					<a note_id="409" id="delete_note" class="icons icon-trash">Delete post</a>
+					<a note_id="409" id="delete_note" class="icons icon-trash" ng-click="deleteReservationNote($index)" >Delete post</a>
 				</div>
 				<p>
 					{{note.text}}

@@ -7,7 +7,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	 */
 	//Data fetched using resolve in router
 	$scope.reservationData = reservationDetails;
-	$scope.new_reservation_note = "";
+	$scope.reservationnote = "notesssss";
 	$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
 	$scope.selectedLoyalty = {};
 	$scope.$watch(
@@ -183,11 +183,39 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
         };
         $scope.saveReservationNote = function(){
         	var successCallBackReservationNote = function(data){
-        		$scope.new_reservation_note == "";
+        		$scope.reservationnote ="";
         		$scope.reservationData.reservation_card.notes.reservation_notes.push(data);
         		$scope.$emit('hideLoader');
 
         	};
+        	var errorCallBackReservationNote = function(errorMessage){
+        		$scope.reservationnote ="";
+        		$scope.$emit('hideLoader');
+        		$scope.errorMessage = errorMessage;
+
+        	};
+        	var params = {};
+        	params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+        	params.text = $scope.reservationnote;
+        	params.note_topic = 1;
+        	$scope.invokeApi(RVReservationCardSrv.saveReservationNote, params, successCallBackReservationNote, errorCallBackReservationNote);
+        };
+        $scope.deleteReservationNote = function(index){
+        	$scope.deletedNoteIndex = index;
+        	var successCallBackDeleteReservationNote = function(data){
+        		$scope.reservationData.reservation_card.notes.reservation_notes.splice($scope.deletedNoteIndex, 1);
+        		$scope.$emit('hideLoader');
+
+        	};
+        	var errorCallBackDeleteReservationNote = function(errorMessage){
+        		$scope.reservationnote ="";
+        		$scope.$emit('hideLoader');
+        		$scope.errorMessage = errorMessage;
+
+
+        	};
+        	var note_id = $scope.reservationData.reservation_card.notes.reservation_notes[index].note_id;        	
+        	$scope.invokeApi(RVReservationCardSrv.deleteReservationNote, note_id, successCallBackDeleteReservationNote, errorCallBackDeleteReservationNote);
         };
         
 }]);
