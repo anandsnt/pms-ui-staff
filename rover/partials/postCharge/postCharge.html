@@ -25,16 +25,16 @@
 					<input type="search" placeholder="Search items" name="query" id="query" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
 				</div>
 			</div>
-			<div id="items-listing" class="scrollable" ng-iscroll='itemList' ng-iscroll-delay='50'>
+			<div id="items-listing" class="scrollable" ng-iscroll='fetchedItemList' ng-iscroll-delay='50'>
 				<ul id="search-item-results" class="wrapper">
-					<li id="items-list" ng-repeat="each in fetchedData.items" ng-if="each.show" ng-click="addItem()">
+					<li id="items-list" ng-repeat="each in fetchedItem" ng-if="each.show" ng-click="addItem()">
 						<a class="button white">
 							{{ each.item_name }}
 							<span class="price">
 								$
 								<span class="value">{{ each.unit_price }}</span>
 							</span>
-							<span ng-if="each.show_count" class="count"></span>
+							<span ng-if="each.count > 0" class="count">{{ each.count }}</span>
 						</a>
 					</li>
 				</ul>
@@ -48,15 +48,15 @@
 						<option value="1"> 1 </option>
 					</select>
 				</div> </span>
-			<div id="no-items-added" class="no-content" ng-hide="items.length">
+			<div id="no-items-added" class="no-content" ng-hide="chargedItems.length">
 				<div class="info">
 					<strong class="h1">0 items selected</strong>
 				</div>
 			</div>
-			<div id="items-added" ng-show="items.length">
-				<div id="items-summary" class="scrollable" ng-iscroll='chosenItems' ng-iscroll-delay='50'>
+			<div id="items-added" ng-show="chargedItems.length">
+				<div id="items-summary" class="scrollable" ng-iscroll='chargedItemsList' ng-iscroll-delay='50'>
 					<ul class="wrapper">
-						<li ng-repeat="each in items" ng-class="{'selected': each.item_name === chosenItem.item_name}">
+						<li ng-repeat="each in chargedItems" ng-class="{'selected': each.item_name === chosenChargedItem.item_name}" ng-click="selectUnselect()">
 							{{ each.item_name }}
 							<span class="count" ng-if="each.count > 1">({{ each.count }})</span>
 							<span class="base">at ${{ each.unit_price }} / unit</span>
@@ -70,56 +70,56 @@
 				<p id="total-charge" class="offset-2">
 					Total <span class="price">$ <span class="value">{{ net_total_price }}</span></span>
 				</p>
-				<div id="numpad">
+				<div id="numpad" ng-show="!!chosenChargedItem">
 					<div id="numpad-numbers">
-						<button value="1" type="button" class="button white">
+						<button value="1" type="button" class="button white" ng-click="calAction(1)">
 							1
 						</button>
-						<button value="2" type="button" class="button white">
+						<button value="2" type="button" class="button white" ng-click="calAction(2)">
 							2
 						</button>
-						<button value="3" type="button" class="button white">
+						<button value="3" type="button" class="button white" ng-click="calAction(3)">
 							3
 						</button>
-						<button value="4" type="button" class="button white">
+						<button value="4" type="button" class="button white" ng-click="calAction(4)">
 							4
 						</button>
-						<button value="5" type="button" class="button white">
+						<button value="5" type="button" class="button white" ng-click="calAction(5)">
 							5
 						</button>
-						<button value="6" type="button" class="button white">
+						<button value="6" type="button" class="button white" ng-click="calAction(6)">
 							6
 						</button>
-						<button value="7" type="button" class="button white">
+						<button value="7" type="button" class="button white" ng-click="calAction(7)">
 							7
 						</button>
-						<button value="8" type="button" class="button white">
+						<button value="8" type="button" class="button white" ng-click="calAction(8)">
 							8
 						</button>
-						<button value="9" type="button" class="button white">
+						<button value="9" type="button" class="button white" ng-click="calAction(9)">
 							9
 						</button>
-						<button value="+/-" type="button" class="button white small">
+						<button value="+/-" type="button" class="button white small" ng-click="calAction('SIGN')">
 							+/-
 						</button>
-						<button value="0" type="button" class="button white">
+						<button value="0" type="button" class="button white" ng-click="calAction(0)">
 							0
 						</button>
-						<button value="." type="button" class="button white small">
+						<button value="." type="button" class="button white small" ng-click="calAction('.')">
 							.
 						</button>
 					</div>
 					<div id="numpad-options">
-						<button value="QTY" type="button" id="quantity" class="button white numpad-toggle selected">
+						<button value="QTY" type="button" id="quantity" class="button white numpad-toggle" ng-class="{selected: calToggle === 'QTY'}" ng-click="calAction('QTY')">
 							QTY
 						</button>
-						<button value="PR" type="button" id="price" class="button white numpad-toggle">
+						<button value="PR" type="button" id="price" class="button white numpad-toggle"  ng-class="{selected: calToggle === 'PR'}" ng-click="calAction('PR')">
 							PR
 						</button>
-						<button value="undo" type="button" class="button white with-icon only-icon clear-value">
+						<button value="undo" type="button" class="button white with-icon only-icon clear-value" ng-click="calAction('CLR')">
 							<span class="icons icon-clear"></span>Clear last value
 						</button>
-						<button value="delete" type="button" class="button white with-icon only-icon remove-item">
+						<button value="delete" type="button" class="button white with-icon only-icon remove-item" ng-click="removeItem()">
 							<span class="icons icon-trash"></span>Remove item
 						</button>
 					</div>

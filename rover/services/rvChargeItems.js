@@ -39,7 +39,7 @@ sntRover.service('rvChargeItems',
 							item.show = true;
 
 							// lets show chosen count
-							item.show_count = false;
+							item.count = 0;
 						};
 
 						// keep the data fetched once safe on FE
