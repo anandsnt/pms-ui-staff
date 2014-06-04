@@ -1,4 +1,5 @@
-sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateFilter', 'ngDialog', function($scope, RateMngrCalendarSrv, dateFilter, ngDialog){
+sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalendarSrv', 'dateFilter', 'ngDialog', 
+	function($scope, $rootScope, RateMngrCalendarSrv, dateFilter, ngDialog){
 	
 	$scope.$parent.myScrollOptions = {
             'RateCalendarCtrl': {
@@ -216,12 +217,22 @@ sntRover.controller('RateCalendarCtrl', ['$scope', 'RateMngrCalendarSrv', 'dateF
             closeByDocument: true,
             scope: $scope
         });
-   };
+   	};
 
-	$scope.init();
+   	$scope.isHistoryDate = function(date){
+   		var currentDate = new Date(date);
+   		var businessDate = new Date($rootScope.businessDate);
+   		var ret = false;
+   		if(currentDate.getTime() < businessDate.getTime()){
+	   		ret = true;
+   		}
+   		return ret;
+   	}
 	
 	$scope.refreshData = function(){
 		loadTable();
 	};
+
+	$scope.init();
   
 }]);
