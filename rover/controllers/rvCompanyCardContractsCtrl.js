@@ -1,4 +1,4 @@
-sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$stateParams','ngDialog','dateFilter', function($scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter){
+sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompanyCardSrv', '$stateParams','ngDialog','dateFilter', function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter){
 	BaseCtrl.call(this, $scope);
     $scope.highchartsNG = {};
 	$scope.contractList = {};
@@ -117,6 +117,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
         }
 	
 	var fetchContractsDetailsSuccessCallback = function(data){
+		$scope.contractList.isAddMode = false;
     	$scope.contractData = data;
     	$scope.contractData.rates = [];
     	$scope.contractData.rates = ratesList;
@@ -310,12 +311,11 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		//Setup data for Add mode
 		$scope.contractList.isAddMode = true;
 		$scope.addData.occupancy = [];
-		$scope.addData.begin_date = dateFilter(new Date(), 'yyyy-MM-dd');
+		$scope.addData.begin_date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
 		$scope.addData.rate_value = 0;
-		var myDate = new Date();
+		var myDate = new Date($rootScope.businessDate);
 		myDate.setDate(myDate.getDate() + 1);
 	    $scope.addData.end_date = dateFilter(myDate, 'yyyy-MM-dd'); 
-	     		
 		$scope.addData.is_fixed_rate = false;
 		$scope.addData.is_rate_shown_on_guest_bill = false;
 		if(typeof $stateParams.type !== 'undefined' && $stateParams.type !== ""){
@@ -423,5 +423,31 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		$scope.graphData = manipulateGraphData($scope.contractData.occupancy);
     	drawGraph();    	
 	};
-                
+    /*
+    * Function to handle data change in 'Contract selected_type'.
+    * on selecting "$" , rate value must be float with 2 decimals.
+    * on selecting "%" , rate value must be integer
+    */
+   	$scope.$watch('contractData.selected_type', function() {
+		if($scope.contractData.selected_type == "%"){
+			$scope.contractData.rate_value = parseInt($scope.contractData.rate_value);
+		}
+		else{
+			$scope.contractData.rate_value = parseFloat($scope.contractData.rate_value).toFixed(2);
+		}
+   	});  
+   	/*
+    * Function to handle data change in 'Contract selected_type' in Add mode
+    * on selecting "$" , rate value must be float with 2 decimals.
+    * on selecting "%" , rate value must be integer
+    */
+   	$scope.$watch('addData.selected_type', function() {
+		if($scope.addData.selected_type == "%"){
+			$scope.addData.rate_value = parseInt($scope.addData.rate_value);
+		}
+		else{
+			$scope.addData.rate_value = parseFloat($scope.addData.rate_value).toFixed(2);
+		}
+   	});      
+   	      		
 }]);
