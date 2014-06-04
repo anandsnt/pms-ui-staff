@@ -13,8 +13,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 computePopUpdataForRateViewCal();
                 fetchPriceDetailsForRate();
             }
-
-
         };
 
     $scope.$parent.myScrollOptions = {
