@@ -1,4 +1,4 @@
-sntRover.controller('ReservationCompanyCardCtrl', ['$scope', function($scope){
+sntRover.controller('RVReservationCompanyCardCtrl', ['$scope', function($scope){
     
     $scope.guestCardVisible = false;
     /**

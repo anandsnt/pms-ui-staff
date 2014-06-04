@@ -117,39 +117,39 @@ sntRover.config([
         $stateProvider.state('rover.reservation', {
             abstract : true,
             url: '/reservation',
-            templateUrl: '/assets/partials/reservation/main.html',
-            controller: 'ReservationMainCtrl'
+            templateUrl: '/assets/partials/reservation/rvMain.html',
+            controller: 'RVReservationMainCtrl'
         });
 
         $stateProvider.state('rover.reservation.search', {
             url: '/search',
-            templateUrl: '/assets/partials/reservation/baseSearch.html',
-            controller: 'ReservationBaseSearchCtrl'
+            templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
+            controller: 'RVReservationBaseSearchCtrl'
         });
 
         $stateProvider.state('rover.reservation.mainCard', {
             abstract: true,
             url: '/mainCard',
-            templateUrl: '/assets/partials/reservation/mainCard.html',
-            controller: 'ReservationMainCardCtrl'
+            templateUrl: '/assets/partials/reservation/rvMainCard.html',
+            controller: 'RVReservationMainCardCtrl'
         });
 
         $stateProvider.state('rover.reservation.mainCard.roomType', {
             url: '/roomType',
-            templateUrl: '/assets/partials/reservation/roomTypesList.html',
-            controller: 'ReservationRoomTypeCtrl'
+            templateUrl: '/assets/partials/reservation/rvRoomTypesList.html',
+            controller: 'RVReservationRoomTypeCtrl'
         });
 
         $stateProvider.state('rover.reservation.mainCard.addons', {
             url: '/addons',
-            templateUrl: '/assets/partials/reservation/addonsList.html',
-            controller: 'ReservationAddonsCtrl'
+            templateUrl: '/assets/partials/reservation/rvAddonsList.html',
+            controller: 'RVReservationAddonsCtrl'
         });
 
         $stateProvider.state('rover.reservation.mainCard.summaryAndConfirm', {
             url: '/summaryAndConfirm',
-            templateUrl: '/assets/partials/reservation/summaryAndConfirm.html',
-            controller: 'ReservationSummaryAndConfirmCtrl'
+            templateUrl: '/assets/partials/reservation/rvSummaryAndConfirm.html',
+            controller: 'RVReservationSummaryAndConfirmCtrl'
         });
 
         // Reservation state actions - END

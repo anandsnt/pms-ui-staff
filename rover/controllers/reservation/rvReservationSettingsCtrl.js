@@ -1,4 +1,4 @@
-sntRover.controller('ReservationSettingsCtrl', ['$scope', function($scope){
+sntRover.controller('RVReservationSettingsCtrl', ['$scope', function($scope){
     
     $scope.reservationSettingsVisible = false;
     /**
