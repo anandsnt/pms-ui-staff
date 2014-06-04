@@ -7,7 +7,7 @@
         <div class="holder left">
             <div class="entry">
                 <label for="contracted-all" translate>ALL</label>
-                <input ng-model="nightsData.allNights" name="contracted-all" id="contracted-all" value="{{nightsData.allNights}}" type="text"  />
+                <input ng-model="nightsData.allNights" name="contracted-all" id="contracted-all" value="{{nightsData.allNights}}" type="number"  />
             </div>
             <div class="entry move">
                 <span ng-click="updateAllNights()" id="copy-to-all" class="admin-icons icon-mover-right" translate>COPY_VALUES</span>
@@ -16,7 +16,7 @@
         <div class="holder right">
             <div ng-repeat="nights in nightsData.occupancy" class="entry">
                 <label for="contracted-jan">{{nights.month}} {{nights.year}}</label>
-                <input ng-model="nights.contracted_occupancy" name="contracted-jan" id="contracted-jan" value="{{nights.contracted_occupancy}}" type="text" />
+                <input ng-model="nights.contracted_occupancy" name="contracted-jan" id="contracted-jan" value="{{nights.contracted_occupancy}}" type="number" />
             </div>
         </div>
     </div>
