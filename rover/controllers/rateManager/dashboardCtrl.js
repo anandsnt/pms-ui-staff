@@ -14,7 +14,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
     $scope.currentLeftMenuClass = 'slide_right';
     
 
-	  $scope.currentFilterData =	{
+	$scope.currentFilterData =	{
            filterConfigured: false,
            begin_date : "",//dateFilter(new Date(), 'yyyy-MM-dd'),
            end_date : "",//dateFilter(new Date((new Date()).getTime() + defaultDateRange*24*60*60*1000), 'yyyy-MM-dd'),
@@ -64,14 +64,6 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
         $scope.uiOptions.tableHeight = $window.innerHeight - TOP_BOTTOM_HEIGHT;
         $scope.uiOptions.columWidth = parseInt(mywidth);
         
-        console.log("TotalWidth :  "+ totalwidth);
-  
-        console.log("mywidth :  "+mywidth );
-        console.log("numColumns :  "+ numColumns);
-        console.log("columsTotalWidth :  "+columsTotalWidth );
-        console.log("tableWidth :  "+$scope.uiOptions.tableWidth );
-        console.log("tableHeight :  "+$scope.uiOptions.tableHeight );
-        console.log("columWidth :  "+$scope.uiOptions.columWidth );
     };
 
     $scope.ratesDisplayed = [];
@@ -114,8 +106,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
       }
     }
 
-
-  /*
+    /*
     * function to handle click
     */
 
