@@ -1,3 +1,5 @@
-sntRover.controller('RVReservationBaseSearchCtrl', ['$scope', function($scope){
-
-}]);
+sntRover.controller('RVReservationBaseSearchCtrl', ['$scope', 'RVReservationBaseSearchSrv', 
+    function($scope, RVReservationBaseSearchSrv){
+        
+    }
+]);
