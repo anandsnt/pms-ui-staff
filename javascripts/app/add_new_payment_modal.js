@@ -16,6 +16,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
  			that.should_show_overlay = false;
  			console.log("inside that parama here");
 			that.myDom.find("#setOverlay").show();
+			that.myDom.find("#new-payment").addClass("hidden");
 			that.myDom.find('#noSwipe').on('click', that.hidePaymentModal);
 		};
     	
@@ -38,6 +39,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
     
     this.dataUpdated=function(){
     	$("#setOverlay").hide();
+    	that.myDom.find("#new-payment").removeClass("hidden");
     	if (that.swipedCardData) {
 			that.populateSwipedCard();
 	   };
@@ -45,6 +47,8 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
     	
     };
 	this.populateSwipedCard = function() {
+		
+		$('#payment-form-section').addClass('disable-clicks');
 		var swipedCardData = this.swipedCardData;
 		// inject the values to payment modal
         // inject payment type
@@ -107,15 +111,17 @@ var AddNewPaymentModal = function(fromPagePayment, backView, backViewParams){
 			if(that.params["origin"] == views.BILLCARD){
 				backView.find("#payment-type-text").remove();
 				backView.find("#select-card-from-list").removeClass('hidden');
+				backView.find(".item-payment h3").remove();
         		backView.find(".item-payment").append(appendHtml);
         		
         		// To update bill tab paymnt info
 	        	var billTabHtml = '<img src="/assets/'+$newImage+'" alt="">'+
 								'<span class="number">'+$endingWith+'</span>';
-								
+				$("#bills-tabs-nav #payment-"+that.params["bill_number"]).remove();			
 				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html("");		
 				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).html(billTabHtml);
 				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).addClass('card-logo');
+				$("#bills-tabs-nav #payment-info-"+that.params["bill_number"]).removeClass('hidden');
 	        }
 	        else{			
 				backView.find(".payment_actions").append(appendHtml);

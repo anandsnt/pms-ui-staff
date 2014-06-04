@@ -32,6 +32,7 @@ var PostChargeModel = function(callBack) {
 		that.myDom.find("#items-summary").on("click", that.clickItemListSummary);
 		that.myDom.find("#charge-groups").on("change", that.changedChargeGroup);
   		that.myDom.find('#query').on('keyup paste', that.queryEntered);
+  		that.myDom.find('#query').on('keypress', that.keypressed);
   		that.myDom.find('#clear-query').on('click', that.clearResults);
 		that.myDom.find('#post').on('click', that.postCharge);
 		that.myDom.find('#numpad').on('click', that.clickedNumberPad);
@@ -50,7 +51,12 @@ var PostChargeModel = function(callBack) {
 	    that.currentList = that.itemCompleteList;
     	that.showAllItems();
   	};
-  
+  	// Handle Enter key press
+  	this.keypressed = function(e){
+		if ( e.keyCode == 13 ) {
+			e.preventDefault();
+	   	}
+	 }; 
   	//Search items
     this.queryEntered = function(e){
 		that.currentQuery = $(this).val();
