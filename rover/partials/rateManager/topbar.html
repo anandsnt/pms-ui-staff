@@ -2,8 +2,8 @@
 	<ul>
 		<li ng-show="backbuttonEnabled"><a ng-click="backButtonClicked()" class="back-button">Back</a></li>
 		<li><h6>Date Range</h6>{{currentFilterData.begin_date}} to {{currentFilterData.end_date}}</li>
-		<li ng-show="ratesDisplayed.length > 0"><h6>Rate</h6><span ng-repeat="rate in ratesDisplayed">{{rate.name}}</span></li>
-		<li ng-show="currentFilterData.name_cards.length > 0"><h6>Name Card</h6><span ng-repeat="card in currentFilterData.name_cards">{{card.account_first_name}}{{card.account_last_name}}</span></li>
+		<li ng-show="ratesDisplayed.length > 0"><h6>Rate</h6><span ng-repeat="rate in ratesDisplayed">{{rate.name}}{{$last ? '' : ', '}}</span></li>
+		<li ng-show="currentFilterData.name_cards.length > 0"><h6>Name Card</h6><span ng-repeat="card in currentFilterData.name_cards">{{card.account_first_name}}{{card.account_last_name}}{{$last ? '' : ', '}}</span></li>
 	</ul>
 	<div class="display-mode" >
 		<div><button class="button cl-gr-button">&nbsp;</button></div>
