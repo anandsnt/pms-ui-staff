@@ -398,7 +398,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    opacity:0.25;
+    opacity:0.15;
     z-index : 2000;
     background-color : rgb(162, 163, 165);
   }
@@ -961,7 +961,7 @@
 
 padding-top: 80px;
 .ngdialog-content{
-  width: 270px;
+  width: 240px;
   &.data-entry{
     width: 700px;
   }    
@@ -1008,40 +1008,56 @@ padding-top: 80px;
     padding-top: 10px;
     button{
       height: 45px;
-      width: 120px;
+      width: 100px;
     }
   }
 }
 
 #restictionsList{
-  width:270px;
-  height:400px;
+  width:240px;
+  height:450px;
   overflow: hidden;
   position: relative;
-  .restriction-type{
+
+  .restrictions-container{
     position: relative;
-    min-height: 45px;
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 15px;
-    padding-right: 5px;
+     min-height: 45px;
+      margin: 0 20px;
+      border-bottom: 1px solid #D8D8D8;
+  }
+
+  li.restriction-type{
+    &.selected{
+        .restrictions-container{
+          border-bottom: none;
+        }
+    } 
+    margin: 0;
+    padding: 0;
+    position: relative;
+    border-bottom: none;
     span{
       display: inline-block;
       &.restriction-status{
         position: absolute;
-        right:10px;
+        right:0;
         top:10px;
+        line-height: 11px;
       }
       &.text{
-        width: 130px;
+        width: 110px;
         text-align: left !important;
-        margin-right: 60px;
+        /* margin-right: 60px; */
         font-size: 13px;
         line-height: 12px;
+        position: relative;
+        left: 30px;
+        top: 13px;
       }
       &.restriction-icon{
-        position: relative;
-        line-height: 20px;
+        position: absolute;
+        top: calc(50% - 20px);
+        margin: 0; 
       }
     }
   }
@@ -1049,8 +1065,8 @@ padding-top: 80px;
 
 #restrictionDays{
   position: relative;
-  width:270px;
-  height:400px;
+  width:240px;
+  height:450px;
   overflow-y: hidden;
   background-color:#DEDEDE;  
   margin-left: 0px;      
@@ -1091,15 +1107,22 @@ padding-top: 80px;
 
 #mixedRestrictions{
   width:400px;
-  height:400px;
+  height:450px;
+  position: relative;
+
+  .editor-container{
+    position: absolute;
+    width: 400px;
+    height: 450px;
+  }
 
   h4{
     text-transform: uppercase;
   }
 
   .inputlabel{
-    padding-top: 15px;
-
+    padding-top: 15px;   
+    width: 360px;
     label{
       font-weight: bold;
       display: inline-block;
@@ -1107,50 +1130,61 @@ padding-top: 80px;
   }
 
   .cancellationbuttonwrap{
+    position: absolute;
+    bottom: 0px;
+    width: 360px;
     button{ 
       height: 45px;
       font-size: 18px;
 
       &.large{
-        height: 60px;
+        height: 50px;
       }
     }
 
     .button.cancel{
       color: #030303;
-      font-weight: normal;
-      font-size: 15px;
+      font-size: 18px;
     }
 
   }
 
-  .mixed_restrictions{
-   color:#D98814;      
+  .mixed_restrictions{   
+    display: none; 
+    background-color:  #f8e26e;
+    border-radius: 2px;;      
+    width: 360px;
+    em{
+      font-size: 14px;
+    }
 
-   em{
-    font-size: 14px;
+    span.h4{
+      display: inline;
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
   }
 
-  span.h4{
-    display: inline;
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: uppercase;
+  &.enter-restriction{
+    .inputlabel{
+      padding-top: 120px;   
   }
-}
+
+  }
 }
 
 #restrictionPriceContainer{
   width:400px;
-  height:400px;
+  height:450px;
   padding-left: 10px;
   margin-left: 0;
 }
 
 #pricesContainer{
-  width:270px;
-  height:400px;
-  overflow-y: scroll;
+  width:240px;
+  height:450px;
+  overflow-y: hidden;
   background-color: #E4E4E4;
 
   .price-info{

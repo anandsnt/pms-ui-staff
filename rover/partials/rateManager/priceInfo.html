@@ -1,14 +1,14 @@
-<div id="pricesContainer">
-<div class="restriction_text" >
-	<h4>
-    	PRICES
-    </h4>
-</div>
-<div class="price-info" ng-repeat="roomPrice in data.roomPriceData">
-	<div class="price-item">
-		<div>{{roomPrice.name}}</div>
-		<div class="amount">{{roomPrice.rate}}</div>
+<div id="pricesContainer" ng-iscroll="priceList" ng-iscroll-delay="1500">
+	<div class="restriction_text" >
+		<h4>
+			PRICES
+		</h4>
 	</div>
-</div>
+	<div class="price-info" ng-repeat="roomPrice in data.roomPriceData">
+		<div class="price-item">
+			<div>{{roomPrice.name}}</div>
+			<div class="amount">{{roomPrice.rate}}</div>
+		</div>
+	</div>
 </div>
 

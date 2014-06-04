@@ -21,7 +21,14 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         'restictionsList' : {            
             scrollbars : true,
             interactiveScrollbars : true,
-            click : true            
+            click : true,
+            snap : false             
+        },
+        'priceList' : {
+            scrollbars : true,
+            interactiveScrollbars : true,
+            click : true, 
+            snap : false
         }
     };
 
@@ -236,18 +243,18 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     };
 
     $scope.updatePopupWidth = function() {
-        var width = 270;
+        var width = 240;
         if($scope.data.showEditView) {
             width = width + 400;
         }
         if($scope.showExpandedView) {
-            width = width + 270;
+            width = width + 240;
         }
         if($scope.popupData.fromRoomTypeView) {
             width = width + 400;
         }
         if($scope.showExpandedView && !$scope.popupData.fromRoomTypeView && !$scope.popupData.all_data_selected) {
-            width = width + 270;
+            width = width + 240;
         }
         $(".ngdialog-content").css("width", width);
 
