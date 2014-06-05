@@ -1,0 +1,50 @@
+<div ng-controller="UpdatePriceAndRestrictionsCtrl">
+    <dialog>
+        <div class="updatePriceAndRestrictionsContainer">
+            <div class="header">
+                <button class="button toggle-expand" ng-click="expandButtonClicked()" ng-class="{ expand:!showExpandedView, collapse: showExpandedView}">&nbsp;</button>
+                <h2 class="h1" style="font-weight: lighter;font-size: 16px;">{{data.name}}</h2>
+                <em>{{popupData.selectedDate| date:'EEEE MMMM dd'}}</em>
+            </div>
+            
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            <div class="ng-scope restbg" ng-include="'/assets/partials/rateManager/restrictionsList.html'" >
+                            </div>
+                        </td>
+                        <td ng-if="popupData.all_data_selected" ng-show="data.showEditView">
+                            <div ng-include="'/assets/partials/rateManager/mixedRestrictions.html'"></div>
+                        </td>
+                        <td ng-show="data.showEditView && !popupData.all_data_selected">
+                            <div ng-include="'/assets/partials/rateManager/enterRestriction.html'"></div>
+                        </td>
+                        <td ng-show="popupData.fromRoomTypeView">
+                            <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'" ></div >
+                        </td>
+                         <td ng-show="showExpandedView">
+                            <div ng-include="'/assets/partials/rateManager/restrictionWeekDays.html'"></div >
+                        </td>
+                        <td ng-show="showExpandedView && popupData.fromRoomTypeView && !popupData.all_data_selected">
+                            <div ng-include="'/assets/partials/rateManager/priceInfo.html'"></div >
+                        </td>
+                    
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="footer">
+                <div class="actions float">
+                    <button class="button blank edit-data-inline" id="cancel" ng-click="hideUpdatePriceAndRestrictionsDialog()" type="button">
+                        Cancel
+                    </button>
+                    <button class="button green edit-data-inline" id="save" type="button" ng-click="saveRestriction()">
+                        Set
+                    </button>
+                </div>
+            </div>
+        </div>
+</div>

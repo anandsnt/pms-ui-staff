@@ -16,12 +16,14 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 
 	//scroller options
 	$scope.$parent.myScrollOptions = {
-        snap: false,
-        scrollbars: true,
-        bounce: true,
-        vScroll: true,
-        vScrollbar: true,
-        hideScrollbar: false
+		'tabs_menu': {
+	        snap: false,
+	        scrollbars: true,
+	        vScroll: true,
+	        vScrollbar: true,
+	        hideScrollbar: false,
+	        click: true
+    	}
     };
      
 	$scope.bookMarks = [];
@@ -32,7 +34,7 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	else{
 		$scope.isHotelAdmin =  false;
 	}
-
+	$scope.isPmsConfigured = $rootScope.isPmsConfigured;
 	$scope.isDragging = false;
 
 	//on drag start we need to show a dotted border on bookmark area
@@ -201,8 +203,12 @@ admin.controller('ADAppCtrl',['$state', '$scope', '$rootScope','ADAppSrv', '$sta
 	 * @param {object} response
 	 */
 	$scope.fetchHotelDetailsSuccessCallback = function(data){
-		 $translate.use(data.language.value);
-		 $scope.$emit('hideLoader');
+
+     if(data.language)
+	   $translate.use(data.language.value);
+     else
+       $translate.use('EN');
+	 $scope.$emit('hideLoader');
 	};
 	/*
 	 * Function to get the current hotel language

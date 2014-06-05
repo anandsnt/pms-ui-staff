@@ -31,7 +31,7 @@ admin.controller('ADRulesRestrictionCtrl', [
 
                 // preload rules under - DEPOSIT_REQUEST
                 var depositPolicy = _.find($scope.ruleList, function(item) {
-                    return item.description === 'Cancellation Penalties';
+                    return item.description === 'Deposit Requests';
                 });
                 $scope.fetchRuleList(depositPolicy);
             };
@@ -56,17 +56,17 @@ admin.controller('ADRulesRestrictionCtrl', [
         /*
         * To handle switch
         */
-        $scope.switchClicked = function(index){
+        $scope.switchClicked = function(item){
 
             //on success
             var toggleSwitchLikesSuccessCallback = function(data) {
-                $scope.ruleList[index].activated = $scope.ruleList[index].activated ? false : true;
+                item.activated = item.activated ? false : true;
                 $scope.$emit('hideLoader');
             };
 
             var data = {
-                'id': $scope.ruleList[index].id,
-                'status': $scope.ruleList[index].activated ? false : true
+                'id': item.id,
+                'status': item.activated ? false : true
             }
 
             $scope.invokeApi(ADRulesRestrictionSrv.toggleSwitch, data, toggleSwitchLikesSuccessCallback);
@@ -93,6 +93,10 @@ admin.controller('ADRulesRestrictionCtrl', [
             };
         };
 
+        // lets empty lists all before fetch
+            $scope.cancelRulesList = [];
+            $scope.depositRuleslList = [];
+
         // fetch rules under editable restrictions
         $scope.fetchRuleList = function(item) {
 
@@ -103,10 +107,6 @@ admin.controller('ADRulesRestrictionCtrl', [
 
             var ruleType = item.description === 'Cancellation Penalties' ? 'CANCELLATION_POLICY' :
                              item.description === 'Deposit Requests' ? 'DEPOSIT_REQUEST' : '';
-
-            // lets empty lists all before fetch
-            $scope.cancelRulesList = [];
-            $scope.depositRuleslList = [];
 
             // hide any open forms
             $scope.showCancelForm = false;
@@ -183,8 +183,8 @@ admin.controller('ADRulesRestrictionCtrl', [
                 
                 // clear any previous data
                 $scope.singleRule = data;
-
-                var amtString = $scope.singleRule.amount + '',
+                
+                /*var amtString = $scope.singleRule.amount + '',
                     num       = amtString.split('.')[0],
                     dec       = amtString.split('.')[1] * 1;
 
@@ -192,7 +192,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                     dec += '0';
                 };
 
-                $scope.singleRule.amount = num + '.' + dec;
+                $scope.singleRule.amount = num + '.' + dec;*/
 
                 if ( from === 'Cancellation Penalties' ) {
                     $scope.singleRule.policy_type = 'CANCELLATION_POLICY';
@@ -268,7 +268,7 @@ admin.controller('ADRulesRestrictionCtrl', [
             var from = from,
                 saveCallback,
                 updateCallback;
-
+            
             // need to combine individuals HH:MM:ap to single hours entry
             // and remove the individuals before posting
             if ( $scope.singleRule.advance_hour || $scope.singleRule.advance_min ) {

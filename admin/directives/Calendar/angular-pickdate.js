@@ -51,7 +51,8 @@
           disabledDates: '=',
           isDateSelected: '='
         },
-        templateUrl:'../../assets/directives/Calendar/adCalendar.html' ,
+        templateUrl:'../../../assets/directives/calendar.html' ,
+        
             link: function(scope, element, attrs, ngModel)  {
           var minDate       = scope.minDate && dateUtils.stringToDate(scope.minDate),
               maxDate       = scope.maxDate && dateUtils.stringToDate(scope.maxDate),
@@ -161,7 +162,7 @@
 
           scope.monthSelected = {'name':'January','value':'0'};
 
-          scope.changeMonth = function (offset) {
+          scope.changeMonth = function (offset,emit) {
             // If the current date is January 31th, setting the month to date.getMonth() + 1
             // sets the date to March the 3rd, since the date object adds 30 days to the current
             // date. Settings the date to the 2nd day of the month is a workaround to prevent this
@@ -175,6 +176,10 @@
 
             var month = currentDate.getMonth();
             scope.monthSelected = scope.months[month];
+
+            if(scope.$$nextSibling && scope.$$nextSibling.date && emit != false){
+                scope.$emit('fromDateChanged');
+             }
           };
 
           /*
@@ -185,6 +190,9 @@
             currentDate.setDate(1);
             currentDate.setFullYear(scope.yearSelected);
             scope.render(currentDate);
+            if(scope.$$nextSibling && scope.$$nextSibling.date){
+                scope.$emit('fromDateChanged');
+             }
           })
        
           /*
@@ -206,7 +214,11 @@
              currentDate.setDate(1);
              currentDate.setMonth(scope.monthSelected.value);
              scope.render(currentDate);
+             if(scope.$$nextSibling && scope.$$nextSibling.date){
+                scope.$emit('fromDateChanged');
+             }
           });
+          
 
           function isDateDisabled(dateObj) {
             return (/pickadate-disabled/.test(dateObj.className));

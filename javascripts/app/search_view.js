@@ -118,7 +118,6 @@ var Search  = function(domRef){
       };
 
       if (sntapp.cardSwipeDebug ===  true)  { sntapp.cardReader.startReaderDebug(options) } ;
-
       if(sntapp.cordovaLoaded){ sntapp.cardReader.startReader(options) };     
       
     

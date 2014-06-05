@@ -37,6 +37,12 @@ admin.controller('addonsDatesRangeCtrl',
             $scope.cancelClicked = function() {
                 ngDialog.close();
             };
+
+            $scope.resetDate =  function(){
+                 // emit choosen date back
+                $scope.$emit('datepicker.reset', $scope.datePickerDate);
+                ngDialog.close();
+            }
         }
     ]
 );

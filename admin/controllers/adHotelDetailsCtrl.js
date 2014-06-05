@@ -16,6 +16,7 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			$scope.title = "Add New Hotel";
 			
 			var fetchSuccess = function(data){
+			
 				$scope.data = data;
 				$scope.$emit('hideLoader');
 					$scope.data.check_in_primetime ="AM";
@@ -29,7 +30,9 @@ admin.controller('ADHotelDetailsCtrl', ['$rootScope', '$scope', 'ADHotelDetailsS
 			$scope.isEdit = true;
 			$scope.title = "Edit Hotel";
 			var fetchSuccess = function(data){
-				$scope.data = data;
+				console.log(JSON.stringify(data));
+				$scope.data = data.data;
+				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
 				console.log(data.mli_pem_certificate_loaded);
 				if(data.mli_pem_certificate_loaded){

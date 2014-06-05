@@ -1,27 +1,31 @@
 <!-- Preloaded nested view -->
+
 <div ng-include="'/assets/partials/common/header.html'"></div>
 
-<div id="company-card-nested-first" class="nested-view view-current" role="main" ng-click="companyCardClicked($event)">
-    <div class="cards fullscreen" ng-class="{'company-card': account_type == 'company', 'travel-agent-card': account_type == 'travel-agent'}">
+<div id="company-card-nested-first" class="nested-view view-current" role="main" ng-click="companyCardClicked($event)" outside-click-handler>
+    <div class="cards fullscreen" ng-class="{'company-card': account_type == 'COMPANY', 'travel-agent-card': account_type == 'TRAVELAGENT'}">
         <div class="cards-wrapper">
 
             <!-- Cards Header -->
             <header class="cards-header">
-                <div ng-id="{'company-card-header': account_type == 'company', 'travel-agent-card-header': account_type == 'travel-agent'}" class="card-header ">
+                <div ng-id="{'company-card-header': account_type == 'COMPANY', 'travel-agent-card-header': account_type == 'TRAVELAGENT'}" class="card-header ">
                     <!-- When company logo exists -->
-                    <figure class="guest-image" ng-if="escapeNull(contactInformation.company_details.company_logo)!=''">
-                        <img ng-src="{{contactInformation.company_details.company_logo}}" alt="" />
+                    <figure class="guest-image" ng-if="escapeNull(contactInformation.account_details.company_logo)!=''">
+                        <img ng-src="{{contactInformation.account_details.company_logo}}" alt="" />
                     </figure>
                     <!-- When there's no logo use this instead of <figure>  -->
-                    <div class="guest-image icons icon-company" ng-if="escapeNull(contactInformation.company_details.company_logo)==''">
-                        Company
+                    <div class="guest-image icons icon-company" ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'COMPANY'" translate>
+                        COMPANY
+                    </div> 
+                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'TRAVELAGENT'" translate>
+                        TRAVELAGENT
                     </div> 
                     <form method="post" name="change-company-name" id="change-company-name">
                         <div class="holder">
                             <div class="entry">
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.company_details.account_first_name}}" ng-model="contactInformation.company_details.account_first_name" type="text" class="masked-input h1"/>
+                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_first_name}}" ng-model="contactInformation.account_details.account_first_name" type="text" class="masked-input h1" auto-grow-field />
 
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.company_details.account_last_name}}" ng-model="contactInformation.company_details.account_last_name" type="text" class="masked-input h1" />
+                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_last_name}}" ng-model="contactInformation.account_details.account_last_name" type="text" class="masked-input h1" auto-grow-field/>
                             </div>
                         </div>
                         <div class="holder data">
@@ -41,19 +45,19 @@
             <div class="cards-content"  >               
                 <div id="company-card-content" class="card-tabs card-content" >
                     <!-- company Card tabs navigation -->
-                    <ul ng-id="{'company-card-tabs-nav': account_type == 'company', 'travel-agent-card-tabs-nav': account_type == 'travel-agent'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+                    <ul ng-id="{'company-card-tabs-nav': account_type == 'COMPANY', 'travel-agent-card-tabs-nav': account_type == 'TRAVELAGENT'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 
                         <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contact-info'}" ng-click="switchTabTo($event, 'cc-contact-info')">
-                            <a >Contact Information</a>
+                            <a translate>CONTACT_INFORMATION</a>
                         </li>
 
                         <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
-                            <a >Contracts</a>
+                            <a translate>CONTRACTS</a>
                         </li>
 
 
                         <li  ng-hide="true" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
-                            <a >Reservations</a>
+                            <a translate>RESERVATIONS</a>
                         </li>
 
                     </ul>

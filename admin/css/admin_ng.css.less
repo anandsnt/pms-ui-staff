@@ -146,7 +146,11 @@ height: 271px;
     width: 200px;
   }
   a{
-    margin-left:40%;
+    display: inline;
+    &.back{
+      background-position: 0 -949px;
+      margin-left: 100px;
+    }
   }
 }
 .rate_range_checkbox{
@@ -526,3 +530,24 @@ height: 410px;
   visibility:hidden !important;
 }
 
+
+
+/* style to fix issue in drag and drop */
+
+.form .entry.has-sortable .boxes.empty,.form .entry.has-sortable .boxes{
+  position: static !important;
+}
+
+
+
+.addon-calendar-modal .ngdialog-content {
+    padding: 0 !important;
+    width: 50% !important;
+    margin-top: -5% !important;}
+.icons.icon-delete.large-icon.floor_delete {
+    margin: 0 auto;
+}
+
+.form .label-small-case label {
+    text-transform: none;
+}

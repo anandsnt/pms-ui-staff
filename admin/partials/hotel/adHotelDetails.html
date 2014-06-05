@@ -198,7 +198,7 @@
 				<div class="select">
 					<select ng-model="data.selected_language" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
 						<option value=""> Language </option>
-						<option ng-repeat="language in data.languages" value="{{language.value}}" ng-selected="language.value==data.selected_language">
+						<option ng-repeat="language in languages" value="{{language.id}}" ng-selected="language.id==data.selected_language">
 							{{language.description}}
 						</option>
 					</select>

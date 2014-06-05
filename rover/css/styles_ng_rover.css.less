@@ -60,6 +60,7 @@
 }
 
 
+
 //Added for animation effects
 .slide-left.ng-enter,
 .slide-left.ng-leave,
@@ -343,6 +344,23 @@ height: 410px;
   width:23.645% !important;
 }
 
+//Commenting this as this overrides icon class used by Stjpan.
+//TODO: Review places where this class were used, and apply the styles locally. 
+ // .icons {
+     // background-image: url("/assets/admin/admin-icons.png");
+     // background-repeat: no-repeat;
+     // border: 0 none;
+     // display: block;
+ // }
+.delete_small {
+    background-position: 13px -542px !important;
+}
+.cursor-hand {
+    cursor: pointer;
+}
+
+
+
 .grey{
   color:grey;
 }
@@ -395,6 +413,44 @@ height: 410px;
   display: none;
 }
 
+//Search page Changes : CICO-3997
+
+#search_list #search-form{
+
+background: rgba(0,0,0,0.1);
+.entry{
+	width:100%;
+	 top:-20px;
+}
+input{
+background-color:#FCFCFC;
+}
+
+button.icons.icon-search{
+	background: @icons;
+    background-repeat: no-repeat;
+	 top:15px;
+}
+
+
+
+}
+
+#search-cards .entry{
+  .icon-search{
+    background-image: @icons;
+  }
+}
+.switch-button .data-off .switch-icon, .switch-button .data-on .switch-icon, .switch-button .data-off .value,.switch-button .data-on .value {
+
+  font-size:12px !important;
+}
+
+/* Customizing the z-index for loader to use with the popups */
+#loading{
+  z-index: 99999;
+}
+
 /* Admin icons      ==================================*/
 @iconsAdmin: url("/assets/admin/admin-icons.png");
   .admin-icons {
@@ -415,3 +471,6 @@ height: 410px;
       background-size: 50px;
     }
   }
+
+
+

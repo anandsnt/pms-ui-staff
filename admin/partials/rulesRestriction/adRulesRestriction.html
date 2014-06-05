@@ -3,8 +3,8 @@
 
 	<div data-view="GuestCardLikesView">
 		<header class="content-title float">
-			<h2>
-				Rules & Restrictions
+			<h2 translate>
+				RULES_AND_RESTRICTIONS
 			</h2>
 		</header>
 
@@ -16,14 +16,14 @@
 
 		<table id="rules">
 			<tbody>
-				<tr><td><br><strong class="sep-heading">Restrictions</strong></td></tr>
+				<tr><td><br><strong class="sep-heading" translate>RESTRICTIONS</strong></td></tr>
 
 				<tr ng-repeat="item in ruleList | filter: { editable: false }">
 					<td>
 						<table class="grid">
 							<td>
 								<strong> {{ item.description }} </strong>
-								<em>(system defined)</em>
+								<em translate>SYSTEM_DEFINED</em>
 							</td>
 							<td class="activate text-left">
 								<div class="entry">
@@ -33,7 +33,7 @@
 										<input type = "checkbox"
 												id = "upsell-rooms"
 												name = "upsell-rooms"
-												ng-click = "switchClicked($index)">
+												ng-click = "switchClicked(item)">
 										<span class="switch-icon"></span>
 									</div>
 								</div>
@@ -42,15 +42,15 @@
 					</td>
 				</tr>
 
-				<tr><td><br><br><strong class="sep-heading">Rules</strong></td></tr>
+				<tr><td><br><br><strong class="sep-heading" translate>RULES</strong></td></tr>
 
 				<tr ng-repeat="item in ruleList | filter: { editable: true }" ng-hide="{{ item.description === 'Levels' }}">
 					<td>
 						<table class="grid">
 							<td>
-								<span class="toggle" ng-show="showPolicyArrow()"></span>
+								<span class="toggle" ng-click="toggleRulesListShow()" ng-show="showPolicyArrow()"></span>
 								<a class="inline" ng-click="toggleRulesListShow()"> {{ item.description }} </a>
-								<em class="action add" ng-click="openAddNewRule()">Add new rule</em>
+								<em class="action add" ng-click="openAddNewRule()" translate>ADD_NEW_RULE</em>
 							</td>
 							<td class="activate text-left">
 								<div class="entry">
@@ -60,7 +60,7 @@
 										<input type = "checkbox"
 												id = "upsell-rooms"
 												name = "upsell-rooms"
-												ng-click = "switchClicked($index)">
+												ng-click = "switchClicked(item)">
 										<span class="switch-icon"></span>
 									</div>
 								</div>

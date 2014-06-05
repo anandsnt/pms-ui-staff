@@ -1,0 +1,323 @@
+/* ------------------date -picker ---------------------*/
+
+.pickdate-cell-bg{
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05);
+}
+.pickdate-container-bg{
+  background: url("/assets/date_container_bg.png");
+}
+.pickadate-header {
+  position: relative;
+}
+
+
+
+.pickadate-main {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+}
+
+.pickadate a:visited, .pickadate a {
+  color: #666666;
+}
+
+.pickadate-cell {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.pickadate-cell li {
+  display: block;
+  float: left;
+  border-left: 2px solid #f1f1f1;
+  border-right: 2px solid #f1f1f1;
+  width: 14.285%;
+  padding: 2.3%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+    margin-bottom: 0.5em !important;
+
+}
+
+.pickadate-cell li:nth-child(7n+0) {
+  border-right: 2px solid #f1f1f1;
+}
+
+.pickadate-cell li:nth-child(1),
+.pickadate-cell li:nth-child(8),
+.pickadate-cell li:nth-child(15),
+.pickadate-cell li:nth-child(22),
+.pickadate-cell li:nth-child(29),
+.pickadate-cell li:nth-child(36) {
+  border-left: 2px solid #f1f1f1;
+}
+
+
+.pickadate-cell .pickadate-disabled,
+.pickadate-cell .pickadate-disabled a {
+  color: #9D9D9D;
+  font-size: 18px;
+}
+
+
+.pickadate-cell .pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-outofrange-disabled a,
+.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled a {
+
+  
+  color: transparent;
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.pickadate-cell .pickadate-enabled {
+  cursor: pointer;
+  font-size: 18px;
+  color: #000;
+  font-weight:400;
+}
+
+
+.pickadate-cell .pickadate-active {
+  color: #fff !important;
+  background-color: #ffaa17;
+
+}
+
+.pickadate-cell .pickadate-active {
+  color: #000;
+
+}
+
+.pickadate-cell .pickadate-head {
+  color: #9D9D9D;
+  line-height: 30px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-top: 0px ;
+  border-left: 0px !important;
+  border-right: 0px !important;
+}
+
+.pickadate-centered-heading {
+  text-transform: uppercase;
+  color:#000;
+  font-weight: normal;
+  text-align: center;
+  font-size: 1em;
+  margin: 13px 0 13px 0;
+}
+
+.pickadate-controls {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+}
+
+.pickadate-controls .pickadate-next {
+  float: right;
+}
+
+.pickadate-controls a {
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.pickadate-cell .pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-outofrange-disabled a,
+.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-disabled.pickadate-outofrange-disabled a,
+.pickadate-cell .pickadate-active.pickadate-outofrange-disabled,
+.pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
+
+  color: gray;
+  color: transparent;
+
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.date-picker-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999666;
+
+  .date-picker-bg {
+    max-width: 450px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -225px 0 0 -217px;
+  }
+}
+
+.date-picker-bg{
+  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
+  padding:10px;
+  margin:5px;
+}
+.date-picker-bg_right{
+  width:48%;
+  float:right;
+}
+.date-picker-bg_left{
+  width:48%;
+  float:left;
+}
+
+.pickadate_select{
+  background: none repeat scroll 0 0 #ffffff !important;
+  padding-right:14px;
+  color:black;
+  box-shadow:none !important;
+  outline:0 !important;
+}
+.float_left{
+  float:left;
+
+}
+.float_right{
+  float:right;
+
+}
+.calendar_top_panel{
+  background-color:white;
+  height:46px;
+}
+.pickadate-prev,.pickadate-next{
+  
+  width:30px;
+  padding:15px 5px !important;
+}
+.pickadate-body{
+  margin-top:10px;
+
+}
+.date_picker_conatiner{
+border-style: solid;
+border-width: 1px 0;
+border-color: #f1f1f1;
+height: 410px;
+}
+
+.date_range_set_table{
+  margin-bottom:0px;
+  width:100%;
+  tr,td{
+    box-shadow: none !important;
+  }
+  tr{
+    border-style: solid;
+    border-width: 1px 0;
+    border-color: #f1f1f1;
+  }
+}
+.pickadate-cell .current-date{
+  color: #66CCFF !important;
+}
+
+/*------------------date -picker ends here-------------------------- */
+
+//Limitting form and related class to relevant screen, to avoid issues elsewhere.   
+.calendar-modal, #search_list {
+  
+  .form {
+      height : 650px;
+      padding: 30px 20px;
+      margin-bottom: 30px;
+      background: #fcfcfc;
+      -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+    }
+    
+
+    
+    
+    .form .form-title {
+      position: relative;
+      line-height: 30px;
+      vertical-align: middle;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      clear: both;
+    }
+    
+    .form .form-title h3 {
+      display: inline-block;
+      line-height: 30px;
+      font-style: italic;
+    }
+    
+    h3, .h3 {
+      font-size: 21px;
+    }
+    
+    .form .form-title h3 span {
+      color: #9d9d9d;
+    }
+    
+    .form .holder.full-width {
+      width: 100%;
+      float: none;
+      clear: both;
+    }
+    
+   
+    .form .holder.left {
+      margin-right: 3.3333333333333335%;
+    }
+    .form .holder {
+      width: 48.333333333333336%;
+      float: left;
+    }
+    
+    .center_align {
+      text-align: center;
+    }
+    
+    em {
+      font-style: italic;
+    }
+    
+    .italic_text {
+      font-style: italic;
+    }
+    .calendar-container {
+      height: 87%;
+      display: inline-block;
+    }
+    
+    .form .actions {
+      width: 100%;
+      clear: both;
+      padding-top: 10px;
+      text-align: center;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      display: block;
+    }
+    .date-picker-bg {
+      background: url("/assets/texture.png") repeat scroll 0 0 #fcfcfc;
+      padding: 10px;
+      margin: 5px;
+    }
+}
+

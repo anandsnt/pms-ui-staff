@@ -126,6 +126,18 @@ admin.config([
 			url : '/roomtypes'
 		});
 
+		$stateProvider.state('admin.floorsetups', {
+			templateUrl: '/assets/partials/floorSetups/adFloorSetupList.html',
+			controller: 'ADFloorSetupCtrl',
+			url : '/floorsetups'
+		});
+
+		$stateProvider.state('admin.reservationTypes', {
+			templateUrl: '/assets/partials/reservationTypes/adReservationTypeList.html',
+			controller: 'ADReservationTypeListController',
+			url : '/reservationtypes'
+		});
+
 		$stateProvider.state('admin.housekeeping', {
 			templateUrl: '/assets/partials/housekeeping/adHousekeeping.html',
 			controller: 'adHousekeepingCtrl',
@@ -279,6 +291,30 @@ admin.config([
 			controller: 'ADRatesAddonsCtrl',
 			url : '/rates_addons'
 		});
+
+		$stateProvider.state('admin.userRoles', {
+			templateUrl: '/assets/partials/UserRoles/adUserRoles.html',
+			controller: 'ADUserRolesCtrl',
+			url : '/UserRoles',
+			resolve: {
+				userRolesData: function(ADUserRolesSrv) {
+					return ADUserRolesSrv.fetchUserRoles();
+				}
+			}
+		});
+
+
+		$stateProvider.state('admin.reservationSettings', {
+			templateUrl: '/assets/partials/reservations/adReservationSettings.html',
+			controller: 'ADReservationSettingsCtrl',
+			url : '/reservationSettings',
+			resolve: {
+				reservationSettingsData: function(ADReservationSettingsSrv) {
+					return ADReservationSettingsSrv.fetchReservationSettingsData();
+				}
+			}
+		});
+
 
 	}
 ]);
