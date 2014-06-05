@@ -51,13 +51,13 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     };
 
     $scope.daysOptions = {  "days":[ 
-                            {key:"MON",day:"MONDAY",value:"false"},//"mon" : false,
-                            {key:"TUE",day:"TUESDAY",value:"false"},//"tue" : false,
-                            {key:"WED",day:"WEDNESDAY",value:"false"},//"wed" : false,
-                            {key:"THU",day:"THURSDAY",value:"false"},//"thu" : false,
-                            {key:"FRI",day:"FRIDAY",value:"false"},//"fri" : false,
-                            {key:"SAT",day:"SATURDAY",value:"false"},//"sat" : false,
-                            {key:"SUN",day:"SUNDAY",value:"false"}//"sun" : false,
+                            {key:"MON",day:"MONDAY",value:false},
+                            {key:"TUE",day:"TUESDAY",value:false},
+                            {key:"WED",day:"WEDNESDAY",value:false},
+                            {key:"THU",day:"THURSDAY",value:false},
+                            {key:"FRI",day:"FRIDAY",value:false},
+                            {key:"SAT",day:"SATURDAY",value:false},
+                            {key:"SUN",day:"SUNDAY",value:false}
                         ],
                     "numOfWeeks" : 1,
                     "applyToPrice" : true,
@@ -287,11 +287,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         datesList.push($scope.popupData.selectedDate);
         //If the day value is true, then it is a checked(selected) day
         var selectedDays = [];
-        // for(var key in $scope.daysOptions.days){
-        //     if($scope.daysOptions.days[key]){
-        //         selectedDays.push(key.toUpperCase());
-        //     }
-        // }
 
         $($scope.daysOptions.days).each(function(){
             if(this.value === true){
@@ -321,6 +316,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 
     var calculateDetailsToSave = function(datesSelected){
         var details = [];
+
         // We do not show the apply to restrictions option if not from room type calendar view
         // So setting the flag by default as true
         if(!$scope.popupData.fromRoomTypeView){
