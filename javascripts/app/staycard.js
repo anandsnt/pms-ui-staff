@@ -378,7 +378,7 @@ var StayCard = function(viewDom){
   	this.reservationQueueHandler = function(e){
     	
       var reservation_id = $('#reservation_id').val();
-      var is_queue_reservation = $('#reservation-queue-status').val();
+      var is_queue_reservation = $('#reservation-queue-status').val() == "true" ? false : true;
       var postParams = {};
       postParams.status = is_queue_reservation;
       
@@ -390,7 +390,7 @@ var StayCard = function(viewDom){
       				failureCallBack: that.queueSaveFailed,
       				loader: 'blocker'
       };
-    	var url = '/api/reservations/'+reservation_id+'0'+'/queue';
+    	var url = '/api/reservations/'+reservation_id+'/queue';
     	webservice.postJSON(url, options);
     };
     
