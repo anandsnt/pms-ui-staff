@@ -36,40 +36,46 @@
                 <div class="entry-data">
                     <div class="select adults">
                         <label for="room-1-adults" class="label">Adults</label>
-                        <select name="room-1-adults" id="room-1-adults">
+                        <!-- <select name="room-1-adults" id="room-1-adults">
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
+                        </select> -->
+                        <select name="room-1-adults" id="room-1-adults" ng-model="reservation.selectedMaxAdults">
+                            <option value="{{num}}" ng-repeat="num in range(0, maxAdults)"> {{num}} </option>
                         </select>
                     </div>
                     <div class="select children">
                         <label for="room-1-children" class="label">Children</label>
-                        <select name="room-1-children" id="room-1-children">
+                        <!-- <select name="room-1-children" id="room-1-children">
                             <option value="0" selected>0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
+                        </select> -->
+                        <select name="room-1-children" id="room-1-children" ng-model="reservation.selectedMaxChildren">
+                            <option value="{{num}}" ng-repeat="num in range(0, maxChildren)"> {{num}} </option>
                         </select>
                     </div>
                     <div class="select infants">
                         <label for="room-1-infants" class="label">Infants</label>
-                        <select name="room-1-infants" id="room-1-infants">
+                        <!-- <select name="room-1-infants" id="room-1-infants">
                             <option value="0" selected>0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
+                        </select> -->
+                        <select name="room-1-infants" id="room-1-infants" ng-model="reservation.selectedMaxInfants">
+                            <option value="{{num}}" ng-repeat="num in range(0, maxInfants)"> {{num}} </option>
                         </select>
                     </div>
                     <div class="select room-type">
-                        <select name="room-1-type" id="room-1-type">
-                            <option value="all-rooms" selected>All Room Types</option>
-                            <option value="deluxe-room">Deluxe Room</option>
-                            <option value="deluxe-twin">Deluxe Twin</option>
-                            <option value="junior-suite">Junior Suite</option>
-                            <option value="standard-room">Standard Room</option>
+                        <!-- Hotel Room Types -->
+                        <select ng-model="reservation.selectedRoomType" ng-options="roomType.id as roomType.name for roomType in roomTypes">
+                          <option value="">All Room Types</option>
                         </select>
                     </div>
                 </div>
@@ -87,7 +93,7 @@
         <div id="company-agent" class="row">
             <div id="autocomplete-search" class="entry">
                 <label for="company-or-agent">Company / Travel Agent <span>(optional)</span></label>
-                <input name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" />
+                <input ui-jq="autocomplete" ui-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
             </div>
         </div>
         <button id="find-rooms-and-rates" type="button" class="button green" ui-sref='rover.reservation.mainCard.roomType'>Find Rooms &amp; Rates</button>

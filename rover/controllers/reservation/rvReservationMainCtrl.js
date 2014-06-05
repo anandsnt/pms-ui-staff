@@ -1,3 +1,5 @@
-sntRover.controller('RVReservationMainCtrl', ['$scope', function($scope){
-    
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', function($scope, $rootScope){
+
+	// intialize reservation object
+    $scope.reservation = {};
 }]);
