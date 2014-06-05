@@ -164,6 +164,7 @@ var StayCard = function(viewDom){
     that.myDom.find('#title').on('change', that.changeAvathar);
     // that.myDom.unbind('click');
     that.myDom.find("#reservation-card").on('click', that.reservationCardClickHandler);
+    that.myDom.find("#reservation-queue").on('click', that.reservationQueueHandler);
 
   };
   
@@ -367,4 +368,27 @@ var StayCard = function(viewDom){
       //send an update request to the third party system
       that.updateGuestDetails($(this).val(), $(this).attr('data-val'));
     };
+    
+    //Update resevation with the selected room.
+  	this.reservationQueueHandler = function(e){
+    	
+    var reservation_id = $('#reservation_id').val();
+    var is_queue_reservation = $('#reservation-queue-status').val();
+    var postParams = {};
+    postParams.status = is_queue_reservation;
+    
+  	var webservice = new WebServiceInterface();
+  	var successCallBackParams = { 'reservationId': reservation_id,};
+  	
+    var options = { requestParameters: postParams,
+    				successCallBackParameters: successCallBackParams,
+    				failureCallBack: that.fetchFailedOfSave,
+    				loader: 'blocker'
+    };
+	
+	var url = '/api/reservations/'+reservation_id+'/queue';
+	webservice.postJSON(url, options);
+    
+
+  };
 };
