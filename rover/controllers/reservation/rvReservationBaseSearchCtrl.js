@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv',
-    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv){
+sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter',
+    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter){
         BaseCtrl.call(this, $scope);
 
         $scope.reservation.selectedRoomType = '';
@@ -10,11 +10,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         $scope.companySearchText = "";
         $scope.companyLastSearchText = "";
         $scope.companyCardResults = [];
+        $scope.nightsNumber = 1;
 
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
 
         var init = function(){
+            $scope.arrivalDate = dateFilter(new Date(), 'yyyy-MM-dd');
+            var tmpDate = new Date();
+            $scope.departureDate = tmpDate.setDate(tmpDate.getDate() + 1);
             $scope.roomTypes = baseSearchData.roomTypes;
             $scope.maxAdults = (baseSearchData.settings.max_guests.max_adults === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_adults;
             $scope.maxChildren = (baseSearchData.settings.max_guests.max_children === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_children;
