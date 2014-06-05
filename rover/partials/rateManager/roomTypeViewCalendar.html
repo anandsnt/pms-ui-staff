@@ -42,7 +42,7 @@
 
 		<tr ng-repeat="rate in calendarData.data" ng-class="{'last': $last}">
 			<td class="first-row">    
-				<span>{{rate.name}}</span>
+				<span ng-class="{'expanded': currentExpandedRow==$index}">{{rate.name}}</span>
 				<span style="float:right" ng-hide="currentExpandedRow==$index">
 					<img class="down" src="/assets/arrow-down.png" ng-click="expandRow($index)">
 				</span>
