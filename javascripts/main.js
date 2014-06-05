@@ -3,7 +3,7 @@ document.addEventListener('orientationchange', function (e) { $('body').css("hei
 
 /**
 *   DO NOT USE THIS - CANT SCROLL ANY SCREEENS IN IPHONE!!!!
-*   
+*
 *   Rather stop it on required element - that includes a scroll!!
 *
 *   document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
@@ -20,7 +20,7 @@ $(document).ready(function(){
 	});
     $("#login-form").submit(function(){
         localStorage.email = $("#email").val();
-        return true;        
+        return true;
     });
 
 	if($('#login').is(':has(span.notice)')){
@@ -33,31 +33,31 @@ $(document).ready(function(){
             e.stopPropagation();
         });
 
-        var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;  
+        var $isTablet = navigator.userAgent.match(/Android|iPad/i) != null;
         //for keyboard not raising issue in Ipad/android tabs
-        // in tabs especially in IPad .focus is creating the pblm of not showing keyboard        
-        if(!$isTablet){             
+        // in tabs especially in IPad .focus is creating the pblm of not showing keyboard
+        if(!$isTablet){
             if($.trim($("#email").val()) != ""){
                 $("#password").focus();
             } else {
                 $("#email").focus();
-            } 
+            }
         }
         else{
             if($.trim($("#email").val()) != ""){
                 $("#password").click();
             } else {
                 $("#email").click();
-            }             
+            }
         }
-        if('ontouchstart' in document.documentElement) { 
+        if('ontouchstart' in document.documentElement) {
             $("#email").on('touchstart', function(){
                 $("#email").click();
-            });                        
+            });
             $("#password").on('touchstart', function(){
-                $("#password").click();              
-            }); 
-        } 
+                $("#password").click();
+            });
+        }
     });
 
 });
@@ -65,7 +65,7 @@ $(document).ready(function(){
 // Chaining with intervals
 var chainedAnimation = function(){
     var This = this;
-    this._timeoutHandler = null;    
+    this._timeoutHandler = null;
     this.chain = new Array();
     this.currentStep = 0;
     this.isRunning = false;
@@ -122,7 +122,7 @@ function styleCheckboxRadio() {
     if ($(checkBoxInput).length) {
 
         $(checkBox).each(function(){
-            
+
             if(!$(this).children('.icon-form').length)
             {
                 $(checkBox).prepend('<span class="icon-form icon-checkbox" />');
@@ -197,11 +197,11 @@ function setupFile(){
     if (fileInput.length) {
         fileInput.each(function(){
 			// Display custom label if provided
-			var customLabel = $(this).attr('label')			
+			var customLabel = $(this).attr('label')
 			if (customLabel) label = '<span class="input">' + customLabel + '</span>';
 			if(!$(this).siblings().hasClass('input')){
             	$(this).before(label);
-            } 
+            }
             $(this).change(function(){
                     $(this).parent('.file-upload').children('.input').text($(this).val().replace('C:\\fakepath\\', ''));
             });
@@ -225,9 +225,9 @@ $.fn.updateStyledSelect = function() {
         attrString = attrArray.toString(),
         attributes = attrString.split(','),
         image = $.inArray('image', attributes) > -1;;
-        
+
     // Loop trough all attributes and update mathching data
-    for (i = 0, l = attributes.length; i < l; i++) 
+    for (i = 0, l = attributes.length; i < l; i++)
     {
         var attrSplitted = attributes[i].split('='),
             attrIndex = attrSplitted[0],
@@ -273,9 +273,9 @@ $.fn.autoGrowInput = function(o) {
             });
             check = function() {
 
-                if (val === (val = input.val())) { 
+                if (val === (val = input.val())) {
                     input.attr('data-size', input.val().length);
-                    return; 
+                    return;
                 }
 
                 // Enter new content into testSubject
@@ -320,6 +320,20 @@ function modalInit(content, closeAfter, position, lock) {
         },
         error: function(jqxhr, status, error){
             if (jqxhr.status=="401") { sntapp.logout(); return;}
+            if (jqxhr.status=="500" || jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
+                location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
+                return;
+            }
+
+            if(jqxhr.status=="422"){
+                location.href = XHR_STATUS.REJECTED;
+                return;
+            }
+
+            if(jqxhr.status=="404"){
+                location.href = XHR_STATUS.SERVER_DOWN;
+                return;
+            }
         }
     });
 
@@ -332,25 +346,25 @@ function modalInit(content, closeAfter, position, lock) {
     // Close modal on delay
     if (closeAfter != null)
     {
-         setTimeout(function() { 
+         setTimeout(function() {
             removeModal();
         }, closeAfter);
     }
 
     // Show modal
     function setModal(){
-        if ($('#modal').length) 
-        { 
-            $('#modal').removeClass('modal-show').empty();  
+        if ($('#modal').length)
+        {
+            $('#modal').removeClass('modal-show').empty();
         }
-        else 
-        { 
-            $($modal).prependTo('body'); 
+        else
+        {
+            $($modal).prependTo('body');
         }
 
-        if (!$('#modal-overlay').length) 
-        { 
-            $($overlay).insertAfter('#modal'); 
+        if (!$('#modal-overlay').length)
+        {
+            $($overlay).insertAfter('#modal');
         }
 
         // Check if modal should be locked
@@ -381,14 +395,14 @@ function modalInit(content, closeAfter, position, lock) {
 
     // Remove modal
     function removeModal() {
-        $('#modal, #modal-overlay').removeClass('modal-show'); 
-        setTimeout(function() { 
+        $('#modal, #modal-overlay').removeClass('modal-show');
+        setTimeout(function() {
             $('#modal, #modal-overlay').remove();
         }, 150);
     }
 }
 
-$(function($){ 
+$(function($){
 
     // FastClick - eliminate the 300ms delay between a physical tap and the firing of a click event on mobile browsers
     FastClick.attach(document.body);
@@ -403,11 +417,11 @@ $(function($){
         // Disable keyboard content shifting
         $(document).on('focus', '[data-keyboard=lock]', function() {
             window.scrollTo(0, 0);
-            if ($('#modal').length) { 
+            if ($('#modal').length) {
                 $('#modal').addClass('keyboard-lock');
             }
         }).on('focusout', '[data-keyboard=lock]', function(){
-            if ($('#modal').length) { 
+            if ($('#modal').length) {
                 $('#modal').removeClass('keyboard-lock');
             }
         });
@@ -425,7 +439,7 @@ $(function($){
 
     // Styled form elements - on load
     styleCheckboxRadio();
-    onOffSwitch();   
+    onOffSwitch();
     setupFile();
 
     // Styled form elements - on dom inserted
@@ -451,7 +465,7 @@ $(function($){
             $($groupItem).not($(this)).attr('checked',false);
             $(this).attr('checked', $(this).attr('checked'));
             styleCheckboxRadio();
-        }        
+        }
     });
 
     // Styled on-off switch checkbox
@@ -477,7 +491,7 @@ $(function($){
                 horizontalScroll[i].initiated = 0;
             }
         });
-    } 
+    }
 
     // Enable some parts of form
     // TODO - fire this after valid email address is added, not on keyup!
@@ -534,7 +548,7 @@ $(function($){
     }).on('focusout', '.masked-input', function(){
         $(this).removeClass('active');
     });
-      
+
     // Dialog window
     $(document).on('click', '.open-modal', function(e){
         e.preventDefault();
@@ -547,7 +561,7 @@ $(function($){
             $lockScreen = $(this).attr('data-lock');
 
         modalInit($href ? $href : $action, $duration, $position, $lockScreen);
-    }); 
+    });
 
     // Toggle hidden content
     $(document).on('click', '.toggle', function(e) {
@@ -586,7 +600,7 @@ $(function($){
                 // Open this
                 $(this).addClass('active');
                 $(this).children('.icons').addClass('active');
-                $('.container').addClass($openClass); 
+                $('.container').addClass($openClass);
             }
 
             // Check if there are other linked toggle buttons
@@ -651,7 +665,7 @@ $(function($){
                 $toggleNavigation.add(function(){ $('.container').removeClass($menuOpen).removeClass($menuClosing); }, $delay);
                 break;
         }
-        
+
         $toggleNavigation.start();
     });
 
@@ -673,16 +687,16 @@ $(function($){
 /*
 $(function() {
   var timer;
-  
+
   function reset_timer() {
     window.clearInterval(timer);
     set_timeout();
   }
-   
+
   function set_timeout() {
     timer = setInterval(logout, 1000 * 1 * 60); // 1 mins
   }
-   
+
   function logout(){
     $.get('/timeout.json', function(force_logout){
       if (force_logout) {
@@ -690,7 +704,7 @@ $(function() {
       }
     });
   }
-  
+
   set_timeout();
   $(document).bind('mousemove click keypress scroll', reset_timer);
 });
