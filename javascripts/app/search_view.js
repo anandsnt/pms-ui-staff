@@ -1,7 +1,13 @@
+
 var Search = function(domRef) {
 	BaseView.call(this);
 	var that = this;
 	this.myDomElement = domRef;
+
+	this.setDom = function(newDom){
+		//in some cases we may want to reuse the old object & also may want use new dom
+    	that.myDomElement = newDom;
+  	};
 
 	this.pageinit = function() {
 		that.currentQuery = "";
@@ -187,6 +193,9 @@ var Search = function(domRef) {
 
 		$('#query').val('');
 		$('#search-results').empty().addClass('hidden');
+    // Clear button visibility toggle
+    that.showHideClearQueryButton();
+
 		if ( typeof that.preloadedResults != "undefined") {
 			var preloadedResultsCount = that.preloadedResults.length;
 			if (preloadedResultsCount > 0) {
@@ -533,7 +542,6 @@ var Search = function(domRef) {
 		} else {
 			console.log('Either FO Status OCC/ room_Ready_status null');
 		}
-
 		
 		return mapped_room_color;
 	};

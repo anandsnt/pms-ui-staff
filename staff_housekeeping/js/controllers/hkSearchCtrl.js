@@ -202,20 +202,27 @@ hkRover.controller('HKSearchCtrl',
 					continue;
 				}
 			}
-
 			//Filter by status in filter section, OCCUPANCY_STATUS
-			if ($scope.isAnyFilterTrue(["vacant","occupied"])){
-				if ( !$scope.currentFilters.vacant && !room.is_occupied ) {
+			if ($scope.isAnyFilterTrue(["vacant","occupied","queued"])){
+				
+			
+				
+				if ( !$scope.currentFilters.queued && room.is_queued ) {
 					room.display_room = false;
 					continue;
 				}
-
-				if ( !$scope.currentFilters.occupied && room.is_occupied ) {
+				
+				// If queued, that get priority. Do not show anything which is "not queued" and vacant
+				if ( !$scope.currentFilters.vacant && !room.is_queued && !room.is_occupied ) {
+					room.display_room = false;
+					continue;
+				}
+				// If queued, that get priority.
+				if ( !$scope.currentFilters.occupied && !room.is_queued && room.is_occupied ) {
 					room.display_room = false;
 					continue;
 				}
 			}
-
 			//Filter by status in filter section, ROOM_RESERVATION_STATUS
 			// For this status, pass the test, if any condition applies.
 			if ($scope.isAnyFilterTrue(['stayover', 'not_reserved', 'arrival', 'arrived', 'dueout', 'departed', 'dayuse'])){
@@ -257,7 +264,6 @@ hkRover.controller('HKSearchCtrl',
 				continue;
 
 			}
-
 			room.display_room = true;
 
 		}
