@@ -79,6 +79,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
     $scope.showRatesBtnClicked = function(){
         //$scope.filterConfigured = true;
         $scope.computeColumWidth();
+        $scope.toggleLeftMenu();
         $scope.$broadcast("showRatesClicked");
         
     };

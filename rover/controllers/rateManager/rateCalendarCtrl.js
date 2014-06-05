@@ -60,7 +60,6 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 			}
 		};
 
-		console.log("before");
 		//Set the current business date value to the service. Done for calculating the history dates
 		RateMngrCalendarSrv.businessDate = $rootScope.businessDate;
 		if($scope.calendarMode == "RATE_VIEW"){
@@ -78,15 +77,12 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	*/
 	var calculateRateViewCalGetParams = function(){
 
-		console.log("calculateRateViewCalGetParams");
-
 		var data = {};
 		data.from_date = dateFilter($scope.currentFilterData.begin_date, 'yyyy-MM-dd');
 		data.to_date = dateFilter($scope.currentFilterData.end_date, 'yyyy-MM-dd');
 
 		data.name_card_ids = [];
 		for(var i in $scope.currentFilterData.name_cards){
-			console.log(JSON.stringify($scope.currentFilterData.name_cards[i]));
 			data.name_card_ids.push($scope.currentFilterData.name_cards[i].id);	
 		}
 
