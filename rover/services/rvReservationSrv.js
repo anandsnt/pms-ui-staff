@@ -70,6 +70,9 @@ sntRover.service('RVReservationCardSrv',['$http', '$q', 'RVBaseWebSrv', function
 		
 		return deferred.promise;
 	};
+	this.updateResrvationForConfirmationNumber = function(confirmationNumber, reservationData){
+		reservationDetails[confirmationNumber] = reservationData;
+	};
 	this.guestData  = "";
 	this.setGuestData = function(data){
 		this.guestData = data;

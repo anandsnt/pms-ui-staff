@@ -7,7 +7,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	 */
 	//Data fetched using resolve in router
 	$scope.reservationData = reservationDetails;
-	$scope.reservationnote = "notesssss";
+	$scope.reservationnote = "";
 	$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
 	$scope.selectedLoyalty = {};
 	$scope.$watch(
@@ -30,7 +30,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	$scope.$on("updateWakeUpTime",function(e,data){
 
 		$scope.reservationData.reservation_card.wake_up_time = data;
-
+		RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 		$scope.wake_up_time = (typeof $scope.reservationData.reservation_card.wake_up_time.wake_up_time != 'undefined')?$scope.reservationData.reservation_card.wake_up_time.wake_up_time:$filter('translate')('NOT_SET');
 	});
 	
@@ -144,31 +144,35 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	 	$scope.$emit('hideLoader');
 	 };
 	 $scope.successCallback = function(){
+	 	RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
 	 	$scope.$emit('hideLoader');
 	 };
 	 $scope.isNewsPaperPreferenceAndWakeupCallAvailable = function(){
         	var status = $scope.reservationData.reservation_card.reservation_status;
         	return status == "CHECKEDIN" || status == "CHECKING_OUT" || status == "CHECKING_IN";
         };
-  	 $scope.saveNewsPaperPreference = function(selected_newspaper){
+  	 $scope.saveNewsPaperPreference = function(){
 		
 		var params = {};
 		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
-		params.selected_newspaper= selected_newspaper;
+		params.selected_newspaper= reservationData.reservation_card.news_paper_pref.selected_newspaper;
 		
 		$scope.invokeApi(RVNewsPaperPreferenceSrv.saveNewspaperPreference, params, $scope.successCallback, $scope.failureNewspaperSave);
 
 	};
-
-  	 $scope.showWakeupCallDialog = function () {
-            	if(!$scope.isNewsPaperPreferenceAndWakeupCallAvailable){
-            		var errorMessage = "Feature not available";
+	$scope.showFeatureNotAvailableMessage = function(){
+		var errorMessage = "Feature not available";
             		if($scope.hasOwnProperty("errorMessage")){ 	
 						$scope.errorMessage = [errorMessage];
 						$scope.successMessage = '';
 					}else {
 						$scope.$emit("showErrorMessage", errorMessage);
 					}
+	};
+
+  	 $scope.showWakeupCallDialog = function () {
+            	if(!$scope.isNewsPaperPreferenceAndWakeupCallAvailable()){
+            		$scope.showFeatureNotAvailableMessage();
             		return;
             	}
             		
@@ -182,9 +186,15 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
             
         };
         $scope.saveReservationNote = function(){
+        	if(!$scope.isNewsPaperPreferenceAndWakeupCallAvailable()){
+        			$scope.reservationnote ="";
+            		$scope.showFeatureNotAvailableMessage();
+            		return;
+            	}
         	var successCallBackReservationNote = function(data){
         		$scope.reservationnote ="";
-        		$scope.reservationData.reservation_card.notes.reservation_notes.push(data);
+        		$scope.reservationData.reservation_card.notes.reservation_notes.splice(0, 0, data);
+        		RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
         		$scope.$emit('hideLoader');
 
         	};
@@ -204,6 +214,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
         	$scope.deletedNoteIndex = index;
         	var successCallBackDeleteReservationNote = function(data){
         		$scope.reservationData.reservation_card.notes.reservation_notes.splice($scope.deletedNoteIndex, 1);
+        		RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
         		$scope.$emit('hideLoader');
 
         	};
