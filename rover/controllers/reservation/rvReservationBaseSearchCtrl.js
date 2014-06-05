@@ -2,28 +2,29 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
     function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter){
         BaseCtrl.call(this, $scope);
 
-        $scope.reservation.selectedRoomType = '';
-        $scope.reservation.selectedMaxAdults = '';
-        $scope.reservation.selectedMaxChildren = '';
-        $scope.reservation.selectedMaxinfants = '';
         //company card search query text
         $scope.companySearchText = "";
         $scope.companyLastSearchText = "";
         $scope.companyCardResults = [];
-        $scope.nightsNumber = 1;
 
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
 
         var init = function(){
-            $scope.arrivalDate = dateFilter(new Date(), 'yyyy-MM-dd');
-            var tmpDate = new Date();
-            $scope.departureDate = tmpDate.setDate(tmpDate.getDate() + 1);
+            $scope.reservationData.arrivalDate = dateFilter(new Date(), 'yyyy-MM-dd');
+            $scope.setDepartureDate();
             $scope.roomTypes = baseSearchData.roomTypes;
             $scope.maxAdults = (baseSearchData.settings.max_guests.max_adults === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_adults;
             $scope.maxChildren = (baseSearchData.settings.max_guests.max_children === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_children;
             $scope.maxInfants = (baseSearchData.settings.max_guests.max_infants === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_infants;
         };
+
+        $scope.setDepartureDate = function(){
+            if($scope.reservationData.numNights > 0){
+                var tmpDate = new Date($scope.reservationData.arrivalDate);
+                $scope.reservationData.departureDate = tmpDate.setDate(tmpDate.getDate() + parseInt($scope.reservationData.numNights));
+            }
+        }
 
         $scope.range = function(min, max){
             var input = [];
