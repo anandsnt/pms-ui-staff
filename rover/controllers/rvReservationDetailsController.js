@@ -155,7 +155,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 		
 		var params = {};
 		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
-		params.selected_newspaper= reservationData.reservation_card.news_paper_pref.selected_newspaper;
+		params.selected_newspaper= $scope.reservationData.reservation_card.news_paper_pref.selected_newspaper;
 		
 		$scope.invokeApi(RVNewsPaperPreferenceSrv.saveNewspaperPreference, params, $scope.successCallback, $scope.failureNewspaperSave);
 
