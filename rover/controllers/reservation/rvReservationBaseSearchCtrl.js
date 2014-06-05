@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationBaseSearchCtrl', ['$scope', 'RVReservationBaseSearchSrv', 
-    function($scope, RVReservationBaseSearchSrv){
+sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv',
+    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv){
         BaseCtrl.call(this, $scope);
 
         $scope.reservation.selectedRoomType = '';
@@ -11,16 +11,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$scope', 'RVReservationBase
         $scope.companyLastSearchText = "";
         $scope.companyCardResults = [];
 
-        var fetchBaseSearchData = function(){
-            var fetchBaseSearchDataSuccess = function(data){
-                $scope.$emit('hideLoader');
-                $scope.roomTypes = data.roomTypes;
-                $scope.maxAdults = (data.settings.max_guests.max_adults === null) ? '' : data.settings.max_guests.max_adults;
-                $scope.maxChildren = (data.settings.max_guests.max_children === null) ? '' : data.settings.max_guests.max_children;
-                $scope.maxInfants = (data.settings.max_guests.max_infants === null) ? '' : data.settings.max_guests.max_infants;
-            }
-            $scope.invokeApi(RVReservationBaseSearchSrv.fetchHotelDetails, {}, fetchBaseSearchDataSuccess);
-        }
+        // default max value if max_adults, max_children, max_infants is not configured
+        var defaultMaxvalue = 5;
+
+        var init = function(){
+            $scope.roomTypes = baseSearchData.roomTypes;
+            $scope.maxAdults = (baseSearchData.settings.max_guests.max_adults === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_adults;
+            $scope.maxChildren = (baseSearchData.settings.max_guests.max_children === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_children;
+            $scope.maxInfants = (baseSearchData.settings.max_guests.max_infants === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_infants;
+        };
 
         $scope.range = function(min, max){
             var input = [];
@@ -28,7 +27,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$scope', 'RVReservationBase
             return input;
         };
 
-        /**
+        /*
         * company card search text entered
         */
         $scope.companySearchTextEntered = function(){
@@ -48,7 +47,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$scope', 'RVReservationBase
 
                 var successCallBackOfCompanySearch = function(data){
                     $scope.$emit("hideLoader");
-                    $scope.companyCardResults = data.accounts;
+                    angular.forEach(data.accounts, function(item){
+                        var eachItem = {};
+                        eachItem = {label: item.account_first_name+" "+item.account_last_name, value: item.id, image: item.company_logo}
+                        $scope.companyCardResults.push(eachItem);
+                    });
                 }
                 var paramDict = {'query': $scope.companySearchText.trim()};
                 $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
@@ -59,9 +62,16 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$scope', 'RVReservationBase
         };
 
         $scope.autocompleteOptions = {
-            source: $scope.companyCardResults
+            delay: 0,
+            position: { 
+                my : 'left bottom', 
+                at: 'left top',
+                collision: 'flip'
+            },
+            source: $scope.companyCardResults,
         }
 
-        fetchBaseSearchData();
+        // init call to set data for view 
+        init();
     }
 ]);

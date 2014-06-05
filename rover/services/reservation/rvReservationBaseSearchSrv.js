@@ -2,7 +2,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
     function ($q, RVBaseWebSrvV2) {
         var that = this;
         
-        this.fetchHotelDetails = function(){
+        this.fetchBaseSearchData = function(){
             var deferred = $q.defer();
             
             that.fetchRoomTypes = function(){
