@@ -1,7 +1,7 @@
 <!-- Total Fees & Balance -->
 <div class="total-stay-fees float">
 	<div class="overview" ng-repeat="totalFees in billData.total_fees" >
-		<a href="#bill1-fees" class="toggle has-arrow with-rate active">
+		<a ng-click="toggleFeesDetails($index)" class="toggle has-arrow with-rate active">
 			<span class="title"> Guest Balance: 
 				<em class="label"> As of
 					{{totalFees.fees_date | date:'MM-dd-yyyy'}}
@@ -56,7 +56,7 @@
 	</div>
 	<!-- Show signed signature -->
 	<!-- Bill Total Stay Fees -->
-	<div class="details" ng-repeat="totalFeesArray in billData.total_fees" ng-show="$index==showActiveBillFeesDetails">
+	<div class="details" ng-repeat="totalFeesArray in billData.total_fees" ng-show="$parent.$index==showActiveBillFeesDetails">
 		<table class="total-fees">
 			<thead>
 				<tr>
@@ -130,14 +130,14 @@
 							<br>
 						</span>
 					</strong></td>
-					<td><strong> {{currencySymbol}}{{feesData.credits}}</strong></td>
+					<td><strong ng-show="feesData.credits!=''"> {{currencySymbol}}{{feesData.credits}}</strong></td>
 					<td>
 					
 					<div class="select">
-						<select class="movetobill">
-							<option value="" disabled="disabled" class="placeholder">Move to billgh</option>
+						<select class="movetobill" ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)">
+							<option value="" disabled="disabled" class="placeholder">Move to bill</option>
 							
-							<option value="billNumbers.bill_number" ng-selected="billNumbers.bill_number =='k' " ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
+							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
 							
 						</select>
 					</div></td>
