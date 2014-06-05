@@ -40,7 +40,6 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 	
 	$scope.$on('$viewContentLoaded', function() {
 		setTimeout(function(){
-			alert("testy")
 			$scope.$parent.myScroll['paymentList'].refresh();
 			}, 
 		3000);

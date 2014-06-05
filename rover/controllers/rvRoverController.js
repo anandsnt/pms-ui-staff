@@ -64,7 +64,7 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 	$scope.fetchHotelDetailsSuccessCallback = function(data){
 		//Can use these variables from subcontrollers
 		$rootScope.businessDate = data.business_date;
-         $rootScope.currencySymbol = getCurrencySign(data.currency.value);
+        $rootScope.currencySymbol = getCurrencySign(data.currency.value);
 		if(data.language)
 	    	$translate.use(data.language.value);
 	    else
