@@ -333,7 +333,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             restrictionDetails.restrictions = [];
             
             if($scope.daysOptions.applyToRestrictions || (!$scope.daysOptions.applyToRestrictions && i== 0)) {
-                console.log("inside");
                 angular.forEach($scope.data.restrictionTypes, function(value, key){
                     if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled != value.isRestrictionEnabled){
                         var action = "";
@@ -352,8 +351,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 });
             }
 
-            console.log(JSON.stringify(restrictionDetails.restrictions));
-            
             //The popup appears by from the rate calendar view
             if($scope.popupData.fromRoomTypeView){
                 if($scope.daysOptions.applyToPrice || (!$scope.daysOptions.applyToPrice && i== 0)) {
