@@ -2,6 +2,7 @@
 sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv','$filter', 'RVNewsPaperPreferenceSrv', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv,$filter, RVNewsPaperPreferenceSrv){
 
 	BaseCtrl.call(this, $scope);
+	$scope.reservationCardSrv = RVReservationCardSrv;
 	/*
 	 * success call back of fetch reservation details
 	 */
@@ -184,49 +185,6 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
                 scope: $scope
             });
             
-        };
-        $scope.saveReservationNote = function(){
-        	if(!$scope.isNewsPaperPreferenceAndWakeupCallAvailable()){
-        			$scope.reservationnote ="";
-            		$scope.showFeatureNotAvailableMessage();
-            		return;
-            	}
-        	var successCallBackReservationNote = function(data){
-        		$scope.reservationnote ="";
-        		$scope.reservationData.reservation_card.notes.reservation_notes.splice(0, 0, data);
-        		RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
-        		$scope.$emit('hideLoader');
-
-        	};
-        	var errorCallBackReservationNote = function(errorMessage){
-        		$scope.reservationnote ="";
-        		$scope.$emit('hideLoader');
-        		$scope.errorMessage = errorMessage;
-
-        	};
-        	var params = {};
-        	params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
-        	params.text = $scope.reservationnote;
-        	params.note_topic = 1;
-        	$scope.invokeApi(RVReservationCardSrv.saveReservationNote, params, successCallBackReservationNote, errorCallBackReservationNote);
-        };
-        $scope.deleteReservationNote = function(index){
-        	$scope.deletedNoteIndex = index;
-        	var successCallBackDeleteReservationNote = function(data){
-        		$scope.reservationData.reservation_card.notes.reservation_notes.splice($scope.deletedNoteIndex, 1);
-        		RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
-        		$scope.$emit('hideLoader');
-
-        	};
-        	var errorCallBackDeleteReservationNote = function(errorMessage){
-        		$scope.reservationnote ="";
-        		$scope.$emit('hideLoader');
-        		$scope.errorMessage = errorMessage;
-
-
-        	};
-        	var note_id = $scope.reservationData.reservation_card.notes.reservation_notes[index].note_id;        	
-        	$scope.invokeApi(RVReservationCardSrv.deleteReservationNote, note_id, successCallBackDeleteReservationNote, errorCallBackDeleteReservationNote);
         };
         
 }]);

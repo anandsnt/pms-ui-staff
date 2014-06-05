@@ -25,5 +25,6 @@
     "WAKE_UP_HEADER":"aufwachen",
     "NOT_SET":"nicht gesetzt",
     "NOTES_HEADER":"Aufzeichnungen",
-    "NOTES_POST":"Beitrag"
+    "NOTES_POST":"Beitrag",
+    "WRITE_NOTE":"schreiben Sie eine Notiz"
 }

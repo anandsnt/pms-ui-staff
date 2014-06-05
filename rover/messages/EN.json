@@ -89,5 +89,6 @@
     "WAKE_UP_HEADER":"Wake up",
     "NOT_SET":"Not Set",
     "NOTES_HEADER":"Notes",
-    "NOTES_POST":"Post"
+    "NOTES_POST":"Post",
+    "WRITE_NOTE":"Write a note"
 }
