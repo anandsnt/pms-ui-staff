@@ -446,6 +446,10 @@ button.icons.icon-search{
   font-size:12px !important;
 }
 
+/* Customizing the z-index for loader to use with the popups */
+#loading{
+  z-index: 99999;
+}
 
 /* Admin icons      ==================================*/
 @iconsAdmin: url("/assets/admin/admin-icons.png");
@@ -469,10 +473,4 @@ button.icons.icon-search{
   }
 
 
-// CICO-6047 
-// Hardcoded the height for companyCard contact screen for the working of iscroll.
-// We want to remove this when find a better solution to fixing it.
-.cc-contact-info-height{
-  height : 800px;
-}
 
