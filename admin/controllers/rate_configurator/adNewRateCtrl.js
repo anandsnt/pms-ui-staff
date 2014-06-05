@@ -66,21 +66,22 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
     }
 });
 
-         //selected restrictions
-         angular.forEach(data.selectedRestrictions, function(selectedRestriction){
-
-             if(selectedRestriction.value == 'MAX_ADV_BOOKING'){
-              $scope.maxAdvancedBookingActivated =  true;
-          }
-          if(selectedRestriction.value == 'MAX_STAY_LENGTH'){
-              $scope.maxStayLengthActivated =  true;
-          }
-          if(selectedRestriction.value == 'MIN_ADV_BOOKING'){
-              $scope.minAdvancedBookingActivated =  true;
-          }
-          if(selectedRestriction.value == 'MIN_ADV_BOOKING'){
-             $scope.minStayLengthActivated =  true;
-         }
+     //selected restrictions
+     angular.forEach(data.selectedRestrictions, function(selectedRestriction){
+          if (selectedRestriction.activated) {
+              if(selectedRestriction.value == 'MAX_ADV_BOOKING'){
+                  $scope.maxAdvancedBookingActivated =  true;
+              }
+              if(selectedRestriction.value == 'MAX_STAY_LENGTH'){
+                  $scope.maxStayLengthActivated =  true;
+              }
+              if(selectedRestriction.value == 'MIN_ADV_BOOKING'){
+                  $scope.minAdvancedBookingActivated =  true;
+              }
+              if(selectedRestriction.value == 'MIN_ADV_BOOKING'){
+                 $scope.minStayLengthActivated =  true;
+             }
+        }
      });
 
      };
@@ -162,7 +163,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
 
                    });
                 });
-            
+
             }
             // addons mark as deactivated for selected addons
             angular.forEach($scope.allAddOns, function(addOns){

@@ -62,7 +62,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             var deferred = $q.defer();
 
             this.fetchSelectedRestrictions = function () {
-               var url = "api/restriction_types?is_selected_restriction=true";
+               var url = "api/restriction_types";
                 ADBaseWebSrvV2.getJSON(url).then(function (data) {
                     that.additionalDetails.selectedRestrictions = data.results;
                     deferred.resolve(that.additionalDetails);
