@@ -19,7 +19,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
 
         var heightOfComponents = 500;
         var headerHeight = 60;
-        var heightOfFixedComponents = 140;
+        var heightOfFixedComponents = 145;
         var variableComponentHeight = 90;
         var maxSize = $(window).height() - headerHeight;
 

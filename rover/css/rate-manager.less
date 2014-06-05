@@ -230,7 +230,7 @@
     width: 230px;
     top : 60px; /* To avoid the div falling down, when table has Height fixed. Need Review review */
     background-color:#E0E0E0 ;
-    padding:20px;
+
     height:100%;
     hr{border:1px solid rgba(0, 0, 0, 0.1);  margin: 20px 0;}
     hr.half-left { width:30%; height:1px; margin:10px 0 0 25px; float:left;  border:1px solid rgba(0, 0, 0, 0.1)}
@@ -1226,10 +1226,28 @@ padding-top: 80px;
     background-color: rgb(157, 157, 157) !important;
   }
   z-index:99999;
-  padding-right: 10px !important;
 
   span.half-border{
     color: #9d9d9d;
+  }
+
+  .filter-padding {
+    padding:20px 10px 20px 20px;
+  }
+
+  .action-filter {
+    position:fixed; 
+    background:#d4d4d4; 
+    border-top:1px solid #bcbcbc;
+    width:100%; 
+    text-align:center; 
+    padding:15px; 
+    bottom:0px; 
+    width:230px;
+    button {
+      height:40px;
+      width:190px;
+    }
   }
 
   .fixed-container{
