@@ -27,7 +27,8 @@ var UpsellLateCheckoutView = function(domRef){
 	   that.myDom.find('#checkout-time-extended-to-2').on('change', that.changeThirdLevel);
 	   that.myDom.find('#charge-for-checkout-2').on('change keydown', that.changeThirdLevel);
 	   
-	   that.myDom.find('#room-types').on('change', that.changeRoomType);
+	   that.myDom.find('#add-room-type').on('click', that.changeRoomType);
+	   //that.myDom.find('#room-types').on('change', that.changeRoomType);
 	   that.myDom.find('#room-type-details').on('click', that.clickedRoomTypeDetails);
   };
   this.changeSecondLevel = function(){
@@ -157,21 +158,26 @@ var UpsellLateCheckoutView = function(domRef){
   	sntapp.notification.showErrorMessage(errorMessage, that.myDom);
   };
   // To handle Room type change
-  this.changeRoomType = function(e){
-  	
-  	var element = $(e.target);
-  	console.log(element);
+  this.changeRoomType = function(event){
+  	event.preventDefault();
+  	var element = $("#room-types");
+	
 	var selectedRoomTypeId = $(element).find('option:selected').val();
 	var selectedRoomTypeText = $(element).find('option:selected').text();
-  	
-  	var html = "<div class='entry full-width' id='room-type-box-"+selectedRoomTypeId+"'><div class='entry'><span class='align-text-center'>"+selectedRoomTypeText+"</span></div>"+
-  	"<div class='entry'><span class='entry'><input type='text' value='0' required=''  id='"+selectedRoomTypeId+"'></span>"+
-  	"<span class='entry'><a class='icons icon-delete large-icon align-text-center' id='"+selectedRoomTypeId+"' name='"+selectedRoomTypeText+"'>"+
-	"</a></span></div></div>";
 	
-  	that.myDom.find('#room-type-details').prepend(html);
-  	// Removing RoomType from select box
-  	that.myDom.find("#room-types option[value='"+selectedRoomTypeId+"']").remove();
+  	if(selectedRoomTypeId != "")	{
+  		// To show room type header
+  		that.myDom.find('#room-type-header .entry').removeClass('hidden');
+  		
+	  	var html = "<div class='entry full-width room-type-details' id='room-type-box-"+selectedRoomTypeId+"'><div class='entry'><span class='align-text-center'>"+selectedRoomTypeText+"</span></div>"+
+	  	"<div class='entry'><span class='entry'><input type='text' value='0' required=''  id='"+selectedRoomTypeId+"'></span>"+
+	  	"<span class='entry'><a class='icons icon-delete large-icon align-text-center' id='"+selectedRoomTypeId+"' name='"+selectedRoomTypeText+"'>"+
+		"</a></span></div></div>";
+		
+	  	that.myDom.find('#room-type-details').prepend(html);
+	  	// Removing RoomType from select box
+	  	that.myDom.find("#room-types option[value='"+selectedRoomTypeId+"']").remove();
+  	}
   };
   // To handle delete the selected room type
   this.clickedRoomTypeDetails = function(e){
@@ -186,6 +192,12 @@ var UpsellLateCheckoutView = function(domRef){
 			that.myDom.find("#room-types").append(html);
 			
 			that.deleted_room_types.push(selectedRoomTypeId);
+			
+			var length = $("#room-type-details").find(".room-type-details").length;
+			// To hide room type header
+			if(length == 0){
+				that.myDom.find('#room-type-header .entry').addClass('hidden');
+			}
 		}
 		
   };
