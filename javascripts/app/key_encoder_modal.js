@@ -282,11 +282,15 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	    if(that.key1Printed) keyPos = 1;
 	    
 	    var keyData = [];
-
+	    alert(Object.keys(that.keyData.key_info[0])[0]);
 	    //Safelock key
 	    if(Object.keys(that.keyData.key_info[0])[0] == "base64"){
 	    	keyData.push(that.keyData.key_info[0].base64)
-	    }else{
+	    }
+	    else if(Object.keys(that.keyData.key_info[0])[0] == "image"){
+	    	keyData.push(that.keyData.key_info[0].image)
+	    }
+	    else{
 	    	keyData.push(that.keyData.key_info[0].t3)
 	    }
 
