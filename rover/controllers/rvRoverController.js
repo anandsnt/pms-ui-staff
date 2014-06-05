@@ -35,10 +35,11 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 	  	        $scope.userInfo = data;
 	  	        $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
 	  	        $rootScope.adminRole=$scope.userInfo.user_role;
-	  	        if($rootScope.adminRole == "Hotel admin" )
+	  	        $rootScope.isHotelStaff = $scope.userInfo.is_staff;
+	  	        if($rootScope.adminRole == "Hotel Admin" )
 	  	            $scope.isHotelAdmin =  true;
-	  	        if($rootScope.adminRole == "Hotel staff" )
-	  	            $scope.isHotelStaff =  true;
+	  	        // if($rootScope.isStaff == "Hotel staff" )
+	  	        //     $scope.isHotelStaff =  true;
 	  	        $scope.$emit('hideLoader');
 	  	        $scope.getHotelDetails();
 	  	    };
