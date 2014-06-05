@@ -5,130 +5,50 @@
             <span class="icons icon-close invert"></span>
         </button>
         <div class="entry full-width">
-            <div id="notification-message"></div>
+            <div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
         </div>
         <div class="entry full-width float">
-            <label for="wake-up">
-
-                Select wake-up time
+            <label for="wake-up" translate>
+                SELECT_WAKEUP_TIME
 
             </label>
             <div class="select select-col col1-3">
-                <select id="wake-up-hour" class="styled" name="wake-up">
+                <select ng-model="hrs" id="wake-up-hour" class="styled" name="wake-up">
+
                     <option class="placeholder" value="" data-text="Not set">
 
                         HH
 
                     </option>
-                    <option value="01">
+                    <option  ng-repeat="hourValue in hourValues" ng-selected ="hrs==hourValue" value="{{hourValue}}">
 
 
-                        01
-
-                    </option>
-                    <option value="02">
-
-
-                        02
+                        {{hourValue}}
 
                     </option>
-                    <option value="03">
-
-
-                        03
-
-                    </option>
-                    <option value="04">
-
-
-                        04
-
-                    </option>
-                    <option value="05">
-
-
-                        05
-
-                    </option>
-                    <option value="06">
-
-
-                        06
-
-                    </option>
-                    <option value="07">
-
-
-                        07
-
-                    </option>
-                    <option value="08">
-
-
-                        08
-
-                    </option>
-                    <option value="09">
-
-
-                        09
-
-                    </option>
-                    <option value="10">
-
-
-                        10
-
-                    </option>
-                    <option value="11">
-
-
-                        11
-
-                    </option>
-                    <option value="12">
-
-
-                        12
-
-                    </option>
+                    
                 </select>
             </div>
             <div class="select select-col col1-3">
-                <select id="wake-up-minute" class="styled" name="wake-up">
+                <select ng-model="min" id="wake-up-minute" class="styled" name="wake-up">
+
                     <option class="placeholder" value="" data-text="Not set">
 
                         MM
 
                     </option>
-                    <option value="00">
+                    <option  ng-repeat="minValue in minValues" ng-selected ="min==minValue" value="{{minValue}}">
 
 
-                        00
-
-                    </option>
-                    <option value="15">
-
-
-                        15
-
-                    </option>
-                    <option value="30">
-
-
-                        30
-
-                    </option>
-                    <option value="45">
-
-
-                        45
+                        {{minValue}}
 
                     </option>
                 </select>
             </div>
             <div class="select select-col col1-3">
-                <select id="wake-up-primetime" class="styled" name="wake-up">
+
+                <select ng-model="am_pm" id="wake-up-primetime" class="styled" name="wake-up">
+
                     <!--
 
                      %option.placeholder{"data-text" => "Not set", value: ""} AM/PM 
@@ -148,9 +68,9 @@
             </div>
         </div>
         <div class="entry full-width">
-            <label for="wake-up-day">
+            <label for="wake-up-day" translate>
 
-                Select date
+                SELECT_DATE
 
             </label>
             <!--
@@ -158,48 +78,54 @@
              If reservation_status is "CHECKING_OUT" disable 'Tomorrow' switch 
 
             -->
-            <div ng-model="todaySelected" id="wakeupDate" class="switch-button full-width on" " ng-class="{'on': todaySelected}">
-                <input id="wake-up-day" type="checkbox" value="2" name="wake-up-day" checked="checked" ng-click="todaySelected = !todaySelected"></input>
+
+           <div  id="wakeupDate" class="switch-button full-width"  
+            ng-class="{'on': tomorrowSelected}">
+                <input id="wake-up-day" type="checkbox" value="2" name="wake-up-day"
+                 ng-model="tomorrowSelected"></input>
                 <label class="data-off">
-                    <span class="switch-icon">
-
-                        Today ({{reservationData.reservation_card.wake_up_time.today_date}})
-
-                    </span>
                     <span id="wakeup-day" class="value">
 
-                        Tomorrow ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
+                        {{'TODAY' | translate}}({{reservationData.reservation_card.wake_up_time.today_date}})
+
 
                     </span>
+                    <span class="switch-icon">
+
+                        {{'TOMORROW' | translate}} ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
+
+                    </span>
+                    
                 </label>
                 <label class="data-on">
-                    <span id="wakeup-day" class="value">
-
-                        Today ({{reservationData.reservation_card.wake_up_time.today_date}})
-
-                    </span>
                     <span class="switch-icon">
 
-                        Tomorrow ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
+                        {{'TODAY' | translate}} ({{reservationData.reservation_card.wake_up_time.today_date}})
+
+                    </span>
+                    <span id="wakeup-day" class="value">
+
+                        {{'TOMORROW' | translate}} ({{reservationData.reservation_card.wake_up_time.tomorrow_date}})
+
 
                     </span>
                 </label>
             </div>
         </div>
         <div class="actions float is-disabled">
-            <button id="save-wakeup-call" class="button green modal-close" type="button" disabled="">
+            <button id="save-wakeup-call" ng-class="{'green': true}" class="button green modal-close" type="button" ng-disabled="!validate()" ng-click="saveWakeupCall()" translate>
 
-                Set wake-up call
-
-            </button>
-            <button id="delete-wakeup-call" class="button grey modal-close" type="button" disabled="" data-disabled-delete="true">
-
-                Delete wake-up call
+                SET_WAKEUP_CALL
 
             </button>
-            <button id="cancel" class="button blank modal-close" type="button" ng-click="closeDialog()">
+            <button id="delete-wakeup-call" ng-class="{'red': true}" class="button red modal-close" type="button" ng-disabled="isDeletable()" data-disabled-delete="true" ng-click="deleteWakeupCall()" translate>
 
-                Cancel
+                DELETE_WAKEUP_CALL
+
+            </button>
+            <button id="cancel" class="button blank modal-close" type="button" ng-click="closeDialog()" translate>
+
+                CANCEL
 
             </button>
         </div>

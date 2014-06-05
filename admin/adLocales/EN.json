@@ -64,6 +64,8 @@
     "USER_ROLES":"User roles",
     "ROLE_DASHBOARD": "Role Dashboard",
     "SELECT_DASHBOARD":"Select Dashboard",
+    "SELECT_DEFAULT_DASHBOARD":"Select Default Dashboard",
+    "DEFAULT_DASHBOARD":"Default Dashboard",
 
     "NAME":"Name",
     "DESCRIPTION":"Description",
@@ -107,8 +109,17 @@
     "MM":"MM",
     "AP":"AP",
     "AM":"AM",
-    "PM":"PM"
-
+    "PM":"PM",
+    "RESERVATION_TYPE_LABEL":"RESERVATION TYPES",
+    "SYSTEM_DEFINED_LABEL": " (System defined)",
+    "ENTER_ADDON_NAME":"Enter Add-On Name",
+    "ENTER_ADDON_DESCRIPTION":"Enter Add-On Description",
+    "RESERVATION_SETTINGS":"Reservation Settings",
+    "DEFAULT_RATE_DISPLAY":"Default Rate Display",
+    "MAX_ADULTS":"Max Adults",
+    "MAX_CHILDREN":"Max Children",
+    "MAX_INFANTS":"Max Infants",
+    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display"
 
 
 }
