@@ -1,5 +1,5 @@
 
-sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv','$filter', 'RVNewsPaperPreferenceSrv', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv,$filter, RVNewsPaperPreferenceSrv){
+sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv','$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv,$filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv){
 
 	BaseCtrl.call(this, $scope);
 	/*
@@ -178,6 +178,25 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
                 className: 'ngdialog-theme-default',
                 scope: $scope
             });
+            
+        };
+        $scope.showLoyaltyProgramDialog = function () {
+            	            
+            	var successCallbackfetchLoyalty = function(data){
+						$scope.$emit('hideLoader');
+						ngDialog.open({
+                			template: '/assets/partials/reservationCard/rvAddLoyaltyProgramDialog.html',
+               				controller: 'rvAddLoyaltyProgramController',
+                			className: 'ngdialog-theme-default',
+                			scope: $scope
+            			});
+				};
+				var errorCallbackfetchLoyalty = function(errorMessage){
+						$scope.$emit('hideLoader');
+						$scope.errorMessage = errorMessage;
+				};
+				$scope.invokeApi(RVLoyaltyProgramSrv.getLoyaltyDetails, "" , successCallbackfetchLoyalty, errorCallbackfetchLoyalty);		
+                
             
         };
         
