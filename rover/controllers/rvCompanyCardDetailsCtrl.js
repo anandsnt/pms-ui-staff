@@ -35,7 +35,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 			$scope.$broadcast("saveContract");
 		}		
 		$scope.currentSelectedTab = tabToSwitch;
-	}
+	};
 	
 
 		
@@ -54,7 +54,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		else if(getParentWithSelector($event, document.getElementById("company-card-nested-first"))){
 			$scope.$emit("saveContactInformation");
 		}
-	}
+	};
 
 	/**
 	* remaining portion will be the Controller class of company card's contact info
@@ -72,14 +72,14 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch
 		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
-	}
+	};
 
 	/**
 	* successcall back of country list fetch
 	*/
 	var successCallbackOfCountryListFetch = function(data){
 		$scope.countries = data;
-	}
+	};
 
 	//fetching country list
 	$scope.invokeApi(RVCompanyCardSrv.fetchCountryList, data, successCallbackOfCountryListFetch);	
@@ -122,7 +122,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		//taking a deep copy of copy of contact info. for handling save operation
 		//we are not associating with scope in order to avoid watch
 		presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
-	}
+	};
 
 	/**
 	* failure callback of save contact data
@@ -131,7 +131,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 		$scope.$emit("hideLoader");
 		$scope.errorMessage = errorMessage;
 		$scope.currentSelectedTab = 'cc-contact-info';
-	}
+	};
 
 	/**
 	* function used to save the contact data, it will save only if there is any
@@ -168,7 +168,7 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 			console.log(dataToSend);
 			$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
 		}
-	}
+	};
 
 	/**
 	* recieving function for save contact with data

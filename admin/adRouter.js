@@ -132,6 +132,12 @@ admin.config([
 			url : '/floorsetups'
 		});
 
+		$stateProvider.state('admin.reservationTypes', {
+			templateUrl: '/assets/partials/reservationTypes/adReservationTypeList.html',
+			controller: 'ADReservationTypeListController',
+			url : '/reservationtypes'
+		});
+
 		$stateProvider.state('admin.housekeeping', {
 			templateUrl: '/assets/partials/housekeeping/adHousekeeping.html',
 			controller: 'adHousekeepingCtrl',
@@ -296,6 +302,19 @@ admin.config([
 				}
 			}
 		});
+
+
+		$stateProvider.state('admin.reservationSettings', {
+			templateUrl: '/assets/partials/reservations/adReservationSettings.html',
+			controller: 'ADReservationSettingsCtrl',
+			url : '/reservationSettings',
+			resolve: {
+				reservationSettingsData: function(ADReservationSettingsSrv) {
+					return ADReservationSettingsSrv.fetchReservationSettingsData();
+				}
+			}
+		});
+
 
 	}
 ]);

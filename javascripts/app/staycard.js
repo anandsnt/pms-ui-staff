@@ -93,7 +93,7 @@ var StayCard = function(viewDom){
       if(typeof params != "undefined"){
         sntapp.getViewInst('addNewPaymentModal').params = params;
       }
-    }
+    };
 
     var successCallBackHandler = function(token) {
       // add token to card data
