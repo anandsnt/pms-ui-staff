@@ -20,7 +20,7 @@
                         <td ng-show="data.showEditView && !popupData.all_data_selected">
                             <div ng-include="'/assets/partials/rateManager/enterRestriction.html'"></div>
                         </td>
-                        <td ng-show="popupData.fromRoomTypeView">
+                        <td ng-show="popupData.fromRoomTypeView && !data.showEditView">
                             <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'" ></div >
                         </td>
                          <td ng-show="showExpandedView">

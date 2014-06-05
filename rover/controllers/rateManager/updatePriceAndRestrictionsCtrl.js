@@ -262,7 +262,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         if($scope.showExpandedView) {
             width = width + 270;
         }
-        if($scope.popupData.fromRoomTypeView) {
+        if($scope.popupData.fromRoomTypeView && !$scope.data.showEditView) {
             width = width + 400;
         }
         if($scope.showExpandedView && !$scope.popupData.fromRoomTypeView && !$scope.popupData.all_data_selected) {
