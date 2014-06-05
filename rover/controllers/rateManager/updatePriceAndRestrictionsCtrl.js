@@ -44,6 +44,17 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         }
     };
 
+    $scope.refreshPopUpScrolls = function(){
+        setTimeout(function(){
+            if(typeof $scope.myScroll['restictionsList'] != 'undefined')
+            $scope.myScroll['restictionsList'].refresh();
+            if(typeof $scope.myScroll['priceList'] != 'undefined')
+            $scope.myScroll['priceList'].refresh();
+            if(typeof $scope.myScroll['restictionWeekDaysScroll'] != 'undefined')
+            $scope.myScroll['restictionWeekDaysScroll'].refresh();
+        },1000);
+    }
+
     //$scope.restictions.selectedIndex
 
     $scope.restrictionsList = {
@@ -275,6 +286,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     $scope.expandButtonClicked = function(){
         $scope.showExpandedView = !$scope.showExpandedView;
         $scope.updatePopupWidth();
+        $scope.refreshPopUpScrolls();
     };
 
     /**
