@@ -174,7 +174,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		calendarData.data = roomRateData;
 
 		//close all/open all restriction status
-		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.rate_restrictions, calendarData.dates);
+		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.data, "ROOM_TYPE");
 		calendarData.disableCloseAllBtn = !enableDisableCloseAll.enableCloseAll;
 		calendarData.disableOpenAllBtn = !enableDisableCloseAll.enableOpenAll;
 
@@ -234,7 +234,7 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		calendarData.all_rates = allRatesData;
 		calendarData.data = dailyRatesData;
 		//close all/open all restriction status
-		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.all_rates, calendarData.dates);
+		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.data, "RATE_TYPE");
 		calendarData.disableCloseAllBtn = !enableDisableCloseAll.enableCloseAll;
 		calendarData.disableOpenAllBtn = !enableDisableCloseAll.enableOpenAll;
 		
@@ -243,13 +243,14 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 
 	//compute the closeall/openall restriction status beased on the total number of 
 	//closed restrictions in the all_rates/all_restrictions section
-	that.getCloseAllEnableDisableStatus = function(allRates, allDates) {
+	that.getCloseAllEnableDisableStatus = function(rateData, type) {
 		//Check if CLOSE ALL restriction is available in all_rates section
 		var closedRestrictionId = -1,
 			dict = {};
 		    dict.enableOpenAll = false,
 		    dict.enableCloseAll = false;
 
+		//Get the id for 'CLOSED' restriction
 		for(var i in that.allRestrictionTypes){
 			if (that.allRestrictionTypes[i].value == 'CLOSED'){
 				closedRestrictionId = that.allRestrictionTypes[i].id;
@@ -257,44 +258,41 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			}
 		}
 
-		for(var date in allRates){
-	   		if(new Date(date).getTime() < new Date(that.businessDate).getTime()){
-		   		continue;
-	   		}
+		//Iterate through each calendar cell to find if 'CLOSED' restricion is available
+		for(var i in rateData){
+			var rate = rateData[i];
+			for(var date in rate){
+				if (date == "id" || date == "name") {
+					continue;	
+				} 
+				//We don't want to check the history dates
+				if(new Date(date).getTime() < new Date(that.businessDate).getTime()){
+			   		continue;
+		   		}
+		   		
+		   		var item = rate[date];
+		   		if(type == "ROOM_TYPE") {
+		   			var item = rate[date].restrictions;
+		   		}
+		   		//If the 'CLOSED' restriction is available in any of the cell, the openall button is enabled
+		   		// If 'CLOSED' restriction is absent in any cell, close all button is enabled
+		   		var isDateClosed = false;
+		   		for (var j in item){
+		   			if(item[j].restriction_type_id == closedRestrictionId){		
+		   				dict.enableOpenAll = true;
+		   				isDateClosed = true;
+		   				break;
+		   			}
+		   		}
+   				if(isDateClosed === false) {
+   					dict.enableCloseAll = true;
+   				}	
 
-	   		var item = allRates[date];
-	   		var isDateClosed = false;
-	   		for (var j in item){
-	   			if(item[j].restriction_type_id == closedRestrictionId){		
-	   				dict.enableOpenAll = true;
-	   				isDateClosed = true;
-	   				break;
-	   			}
-	   		}
-
-	   		if(isDateClosed === false) {
-
-	   			dict.enableCloseAll = true;
-	   		}
+		   	}
 		}
 		return dict;
-
 	};
 
-	//Returns the total count of closed restrictions in the given restriction set
-	this.getNumOfClosedRestriction = function(allRates, allRestrictionTypes){
-		var closedRestrictionId = "";
-		for(var i in that.allRestrictionTypes){
-			if (that.allRestrictionTypes[i].value == 'CLOSED'){
-				closedRestrictionId = that.allRestrictionTypes[i].id;
-				break;
-			}
-		}
-
-		var closedRestrictionCount = 0;
-		return closedRestrictionCount;
-
-	}
 
 	this.getRestrictionUIElements = function(restriction_type){
 		var restriction_type_updated = {};
