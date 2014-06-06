@@ -225,6 +225,8 @@ var Search = function(domRef) {
 		sntapp.activityIndicator.hideActivityIndicator('get-json-web-calling');
 
 		var searchType = "";
+        that.displayedResultType = "QUERY"; // Displayed results are for those fetched based on typed Query string
+
 		$("#search-results").empty().removeAttr('style').removeClass('hidden');
 		$('#preloaded-results').addClass('hidden');
 		$('#no-results').addClass('hidden');
@@ -239,6 +241,10 @@ var Search = function(domRef) {
 		} else if (type == "LATE_CHECKOUT") {
 			searchType = "opted for late checkout";
 		}
+
+        if(searchType != "" ) {
+            that.displayedResultType = "PRELOAD"; // Displayed results are for INHOUSE etc.
+        }
 
 		if (response.data.length > 0) {
 			that.fetchResults = response.data;
@@ -356,6 +362,14 @@ var Search = function(domRef) {
 
 	//when user focus on search text
 	this.queryEntered = function(event) {
+		that.currentQuery = $.trim($(this).val());
+        /* CICO-7316 - FIX 1: If preloaded data is being shown,
+         * do nothing untill we type at least three charecters.
+        */
+        if ((that.currentQuery.length < 3) && (that.displayedResultType === "PRELOAD")) { 
+                return;
+        }
+
 		var searchTitleHtml = that.myDomElement.find('#search-title').html();
 		var newSearchTitleHtml = searchTitleHtml.replace("Checking In", "Search");
 		newSearchTitleHtml = newSearchTitleHtml.replace("Checking Out Late", "Search");
@@ -363,7 +377,6 @@ var Search = function(domRef) {
 		newSearchTitleHtml = newSearchTitleHtml.replace("In House", "Search");
 
 		that.myDomElement.find('#search-title').html(newSearchTitleHtml);
-		that.currentQuery = $.trim($(this).val());
 		// Clear button visibility toggle
 		that.showHideClearQueryButton();
 
@@ -407,25 +420,30 @@ var Search = function(domRef) {
 	 };*/
 
 	this.displayFilteredResults = function(searchResults, $query) {
+        that.displayedResultType = "QUERY"; // Displayed results are for those fetched based on typed Query string
 		if ($query == "") {
+            that.displayedResultType = "PRELOAD"; // Displayed results are pre-loaded : InHouse etc.
 			that.displaySearchResults(searchResults, $query);
 			return false;
 		}
 		sntapp.activityIndicator.showActivityIndicator('blocker', 'loader-html-appending');
 		$('#search-results').html("");
 		try {
-			var items = [];
+            /*CICO-7316: Fix to improve load performance.
+             *TODO: Cross check if this changes the DOM Structure.
+             *TODO: How do we manage this DOM detachment feature when moving to Angular? 
+             */
+            var searchHTML ="";
 			$.each(searchResults, function(i, value) {
 
 				if ((escapeNull(value.firstname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.lastname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.group).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.room).toString()).indexOf($query) >= 0 || (escapeNull(value.confirmation).toString()).indexOf($query) >= 0) {
-					items.push($('<li />').html(that.writeSearchResult(value.id, value.firstname, value.lastname, value.image, value.confirmation, value.reservation_status, value.room, value.roomstatus, value.fostatus, value.location, value.group, value.vip, value.late_checkout_time, value.is_opted_late_checkout, value.room_ready_status, value.use_pickup, value.use_inspected, value.checkin_inspected_only)));
+					searchHTML += '<li>' + that.writeSearchResult(value.id, value.firstname, value.lastname, value.image, value.confirmation, value.reservation_status, value.room, value.roomstatus, value.fostatus, value.location, value.group, value.vip, value.late_checkout_time, value.is_opted_late_checkout, value.room_ready_status, value.use_pickup, value.use_inspected, value.checkin_inspected_only);
 				}
 
 			});
 
-			$.each(items, function(i, value) {
-				$('#search-results').removeAttr('style').append(value).highlight($query);
-			});
+			$('#search-results').removeAttr('style').html(searchHTML).highlight($query); 
+
 			sntapp.activityIndicator.hideActivityIndicator('loader-html-appending');
 			// Refresh scroll
 			refreshVerticalScroll('#search');
@@ -443,13 +461,15 @@ var Search = function(domRef) {
 	this.displaySearchResults = function(response, $query) {
 		sntapp.activityIndicator.showActivityIndicator('blocker', 'loader-html-appending');
 		try {
-			var items = [];
+            /*CICO-7316: Fix to improve load performance.
+             *TODO: Cross check if this changes the DOM Structure.
+             *TODO: How do we manage this DOM detachment feature when moving to Angular? 
+             */
+			var searchHTML ="";
 			$.each(response, function(i, value) {
-
-				items.push($('<li />').html(that.writeSearchResult(value.id, value.firstname, value.lastname, value.image, value.confirmation, value.reservation_status, value.room, value.roomstatus, value.fostatus, value.location, value.group, value.vip, value.late_checkout_time, value.is_opted_late_checkout, value.room_ready_status, value.use_pickup, value.use_inspected, value.checkin_inspected_only)));
-
-				$('#search-results').removeAttr('style').append.apply($('#search-results'), items).highlight($query);
+				searchHTML += '<li >' + that.writeSearchResult(value.id, value.firstname, value.lastname, value.image, value.confirmation, value.reservation_status, value.room, value.roomstatus, value.fostatus, value.location, value.group, value.vip, value.late_checkout_time, value.is_opted_late_checkout, value.room_ready_status, value.use_pickup, value.use_inspected, value.checkin_inspected_only);
 			});
+			$('#search-results').removeAttr('style').html(searchHTML); // No highlight required here.
 
 			// Refresh scroll
 			refreshVerticalScroll('#search');
