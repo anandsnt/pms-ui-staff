@@ -1,4 +1,4 @@
- <form method="post" ng-controller="rvGuestCardLoyaltyController" id="gc-loyalty" name="loyalty" class="form card-tab scrollable" ng-show="current == 'guest-loyalty'">
+ <form method="post" ng-controller="RVGuestCardLoyaltyController" id="gc-loyalty" name="loyalty" class="form card-tab scrollable" ng-show="current == 'guest-loyalty'">
                     <div class="wrapper">
                         <span class="notice">Set Primary Hotel Loyalty Program</span>
                         <!-- Frequent Flyer Program -->
@@ -10,7 +10,7 @@
                                 <span class="value name">Quantas Frequent Flyer</span> -->
                             </a>
                       
-                            <a href="modals/new-ffp/" class="open-modal add-new-button">+ New Frequent Flyer Program</a>
+                            <a ng-click="addNewFreaquentLoyality()" class="open-modal add-new-button">+ New Frequent Flyer Program</a>
                         </div>
 
                         <!-- Hotel Loyalty Program -->
@@ -21,7 +21,7 @@
                                 <span class="value number">{{hotelLoyalty.membership_card_number}}</span>
                                 <span class="value name">{{hotelLoyalty.membership_level}}</span>
                             </a>
-                            <a href="modals/new-hlp/" class="open-modal add-new-button">+ New Hotel Loyalty Program</a>
+                            <a ng-click="addNewHotelLoyality()" class="open-modal add-new-button">+ New Hotel Loyalty Program</a>
                         </div>
                     </div>
                 </form>

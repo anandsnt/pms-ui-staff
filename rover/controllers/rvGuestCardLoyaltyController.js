@@ -1,11 +1,9 @@
-sntRover.controller('rvGuestCardLoyaltyController',['$scope','RVGuestCardLoyaltySrv', function($scope,RVGuestCardLoyaltySrv){
+sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyaltySrv','ngDialog',function($scope,RVGuestCardLoyaltySrv,ngDialog){
 	
 	$scope.init = function(){
 			
 		var loyaltyFetchsuccessCallback = function(data){		
 			$scope.$emit('hideLoader');
-			alert("rf");
-			console.log(data);
 			$scope.loyaltyData = data;
 		};
 
@@ -18,8 +16,24 @@ sntRover.controller('rvGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		$scope.invokeApi(RVGuestCardLoyaltySrv.fetchLoyalties,data , loyaltyFetchsuccessCallback, loyaltyFetchErrorCallback);
 	};
 
-	alert("ff");
-
-console.log($scope.guestCardData);
 	$scope.init();
+
+
+	$scope.addNewFreaquentLoyality =  function(){
+		 ngDialog.open({
+                  template: '/assets/partials/guestCard/addLoyaltyPopup.html',
+                  controller: 'RVAddNewFreaquentLoyaltyContrller',
+                  className: 'ngdialog-theme-default',
+                  scope: $scope
+                });
+	};
+
+	$scope.addNewHotelLoyality =  function(){
+		 ngDialog.open({
+                  template: '/assets/partials/guestCard/addLoyaltyPopup.html',
+                  controller: 'RVAddNewFreaquentLoyaltyContrller',
+                  className: 'ngdialog-theme-default',
+                  scope: $scope
+                });
+	}
 }]);
