@@ -11,7 +11,7 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 	$rootScope.monthInYear = "MMM";//Jan
 	$rootScope.mmddyyyyFormat = "MM-dd-yyyy";//01-22-2014
 	$rootScope.fullDateFormat = "EEEE, d MMMM yyyy";//Wednesday, 4 June 2014
-
+	
 	
     $scope.$on("closeDrawer", function(){      
      	$scope.menuOpen = false;  

@@ -11,11 +11,11 @@
                 <a href="reservations/change-dates/" class="stay-dates" data-transition="nested-view">
                     <div class="check-in">
                         <span class="title">Arriving <span>today</span></span>
-                        <strong class="date">29 May 2014</strong>
+                        <strong class="date">{{reservationData.arrivalDate}}</strong>
                     </div>
                     <div class="check-out">
                         <span class="title">Departing <span>tomorrow</span></span>
-                        <strong class="date">30 May 2014</strong>
+                        <strong class="date">{{reservationData.departureDate}}</strong>
                     </div>
                 </a>
             </div>
@@ -49,16 +49,16 @@
                     <!-- Room details should be attached here when book button is pressed -->
                     <div id="room-{{index+1}}-details" class="room-details">
                         <h4>
-                            {{reservationData.roomType}}
+                            {{room.roomType}}
                             <button id="remove-room-{{index+1}}" type="button" class="edit-room icons icon-edit-10">Edit Room</button>
                         </h4>
                         <ul class="rate-and-enhancements">
                             <li>
                                 <em>Bed &amp; Breakfast Package</em>
                                 <span class="price">
-                                    $149
+                                    {{room.roomRate}}
                                     <span>avg/night</span>
-                                    <span class="total">$149</span>
+                                    <span class="total">{{room.totalRate}}</span>
                                 </span>
                             </li>
                         </ul>
@@ -145,44 +145,33 @@
                     <div class="entry">
                         <label for="reservation-type">Reservation type</label>
                         <div class="select">
-                            <select name="reservation-type" id="reservation-type" class="placeholder">
-                                <option value="" selected>Select Reservation Type</option>
-                                <option value="type1">Type 1</option>
-                                <option value="type2">Type 2</option>
-                                <option value="type3">Type 3</option>
+                            <select name="reservation-type" id="reservation-type" class="placeholder" ng-model="reservationData.demographics.reservationType">
+                                <option ng-repeat="reservationType in listData.reservationTypes" value="reservationType.value" ng-selected="reservationType.value==reservationData.demographics.reservationType">{{reservationType.description}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="entry">
                         <label for="market">Market</label>
                         <div class="select">
-                            <select name="market" id="market" class="placeholder">
-                                <option value="" selected>Select Market</option>
-                                <option value="market1">Market 1</option>
-                                <option value="market2">Market 2</option>
-                                <option value="market3">Market 3</option>
+                            <select name="market" id="market" class="placeholder" ng-model="reservationData.demographics.market">
+                                <option ng-repeat="market in listData.markets" value="market.value" ng-selected="market.value==reservationData.demographics.market">{{market.description}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="entry">
                         <label for="source">Source</label>
                         <div class="select">
-                            <select name="source" id="source" class="placeholder">
-                                <option value="" selected>Select Source</option>
-                                <option value="source1">Source 1</option>
-                                <option value="source2">Source 2</option>
-                                <option value="source3">Source 3</option>
+                            <select name="source" id="source" class="placeholder" ng-model="reservationData.demographics.source">
+                                <option ng-repeat="source in listData.sources" value="source.value" ng-selected="source.value==reservationData.demographics.source">{{source.description}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="entry">
                         <label for="origin">Origin of Booking</label>
                         <div class="select">
-                            <select name="origin" id="origin" class="placeholder">
-                                <option value="" selected>Select Origin of Booking</option>
-                                <option value="origin1">Origin of Booking 1</option>
-                                <option value="origin2">Origin of Booking 2</option>
-                                <option value="origin3">Origin of Booking 3</option>
+                            <select name="origin" id="origin" class="placeholder" ng-model="reservationData.demographics.origin">
+                                <option ng-repeat="origin in listData.origins" value="origin.value" ng-selected="origin.value==reservationData.demographics.origin">{{origin.description}}</option>
+                            </select>
                             </select>
                         </div>
                     </div>

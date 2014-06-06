@@ -34,6 +34,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', function($scope){
     $scope.accordionOptions = {
     	header: 'a.toggle',
     	collapsible: true,
+    	
     	activate: function(event, ui){
     		if(isEmpty(ui.newHeader) && isEmpty(ui.newPanel)){ //means accordion was previously collapsed, activating..
     			ui.oldHeader.removeClass('active');

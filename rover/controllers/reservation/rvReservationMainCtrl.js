@@ -42,10 +42,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope',
             },
 
             demographics: {
-                market: '',
-                source: '',
-                reservationTypes: '', 
-                origin: ''
+                market: 'v1',
+                source: 'v2',
+                reservationType: 'v1', 
+                origin: 'v2'
             },
             promotion: {
                 promotionCode: '',
@@ -53,14 +53,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope',
             }
         }
 
-        $scope.otherdata = {
-            markets: {
-                id: '',
-                name: ''
-            },
-            sources: {},
-            origins: {},
-            promotionTypes: {}
+        $scope.listData = {
+            markets: [{value:"v1", description: "The first"}, {value:"v2", description: "The Second"}],
+            sources: [{value:"v1", description: "The first"}, {value:"v2", description: "The Second"}],
+            origins: [{value:"v1", description: "The first"}, {value:"v2", description: "The Second"}],
+            promotionTypes: [{value:"v1", description: "The first"}, {value:"v2", description: "The Second"}],
+            reservationTypes: [{value:"v1", description: "The first"}, {value:"v2", description: "The Second"}]
         }
     }
 ]);
