@@ -396,10 +396,13 @@ sntRover.controller('RVPostChargeController',
 			};
 
 			$scope.postCharges = function() {
-				var items = [],
-					each  = {};
+				var items = [];
+
+				console.log( $scope.chargedItems );
 
 				for (var i = 0, j = $scope.chargedItems.length; i < j; i++) {
+					var each = {};
+
 					each['value'] = $scope.chargedItems[i]['value'];
 					each['amount'] = $scope.chargedItems[i]['total_price'];
 					each['quantity'] = $scope.chargedItems[i]['count'];
