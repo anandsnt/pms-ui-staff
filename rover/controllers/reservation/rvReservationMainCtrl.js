@@ -1,6 +1,9 @@
 sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope',
     function ($scope, $rootScope) {
 
+    	$scope.maxNoOfAdults = 4;
+    	$scope.maxNoOfChildrens = 4;
+    	$scope.maxNoOfInfants = 4;
         // intialize reservation object
         $scope.reservationData = {
             arrivalDate: '2014-04-01',
@@ -15,6 +18,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope',
                 mm: '',
                 ampm: ''
             },
+
             numNights: 1, // computed value, ensure to keep it updated
             roomCount: 1, // Hard coded for now,
             rooms: [{
@@ -31,7 +35,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope',
                         avgAmount: 79,
                         totalAmount: 79
                     }
-                ] // Details will come later
+                ]
             }],
             totalTaxAmount: 15,
             totalStayCost: 300,

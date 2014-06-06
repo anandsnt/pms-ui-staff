@@ -4,8 +4,8 @@
 		<h3 translate>WAKE_UP_HEADER</h3>
 	</div>
 	<!-- Wake up feature available - added class 'feature-available'. -->
-	<a id="wakeup-time" class="next-view hover-hand" ng-class="{'feature-available': isWakeupCallFeatureAvailable()}" ng-click="showWakeupCallDialog()"> 
-		<span id="reservation_card_wake_up_time" ng-model="wake_up_time" ng-class="{'feature-available': isWakeupCallFeatureAvailable()}" class="value text">
+	<a id="wakeup-time" class="next-view hover-hand" ng-class="{'feature-available': isNewsPaperPreferenceAndWakeupCallAvailable()}" ng-click="showWakeupCallDialog()"> 
+		<span id="reservation_card_wake_up_time" ng-model="wake_up_time" ng-class="{'feature-available': isNewsPaperPreferenceAndWakeupCallAvailable()}" class="value text">
 			 {{wake_up_time}} </span>
 	 </a>
 </div>

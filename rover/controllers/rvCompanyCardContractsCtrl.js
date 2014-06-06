@@ -252,6 +252,28 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
 			 scope: $scope
 		});
 	};
+	// To update contracts list after add new contracts
+	
+	var updateContractList = function(data){
+		
+		var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
+		
+		var businessDate = new Date($rootScope.businessDate);
+    	var beginDate = new Date($scope.addData.begin_date);
+    	var endDate = new Date($scope.addData.end_date);
+    	
+    	if( beginDate <= businessDate && endDate >= businessDate ){
+    		$scope.contractList.current_contracts.push(dataNew);
+    	}
+    	else{
+    		$scope.contractList.future_contracts.push(dataNew);
+    	}
+    	
+    	$scope.contractList.contractSelected = data.id;
+    	$scope.addData.contract_name = "";
+		$scope.contractList.isAddMode = false;
+	};
+	
 	// To handle click on nights button
 	$scope.clickedContractedNights = function(){
 		/*
@@ -263,11 +285,7 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
 			var saveContractSuccessCallback = function(data){
 				$scope.errorMessage = "";
 		    	$scope.$emit('hideLoader');
-		    	var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
-		    	$scope.contractList.current_contracts.push(dataNew);
-		    	$scope.addData.contract_name = "";
-		    	$scope.contractList.isAddMode = false;
-		    	$scope.contractList.contractSelected = data.id;
+		    	updateContractList(data);
 		    	
 		    	setTimeout(function(){
 			    	ngDialog.open({
@@ -339,19 +357,13 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
 		var saveContractSuccessCallback = function(data){
 	    	$scope.$emit('hideLoader');
 	    	$scope.errorMessage = "";
-	    	var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
-	    	$scope.contractList.current_contracts.push(dataNew);
-	    	$scope.contractList.contractSelected = data.id;
-	    	$scope.addData.contract_name = "";
-		    $scope.contractList.isAddMode = false;
+	    	updateContractList(data);
 	    };
 	  	var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
 	    }; 
 	    
-	    console.log("$scope.contactInformation.id ="+$scope.contactInformation.id);
-	    console.log("$stateParams.id ="+$stateParams.id);
 	    if($stateParams.id == "add"){
 	    	var account_id = $scope.contactInformation.id;
 	    }

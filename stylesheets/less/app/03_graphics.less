@@ -114,6 +114,8 @@
 		/* Guest icons ***/
 		&.icon-location {  background-position: 0 -23px; background-size: 80px; }
 		&.icon-group { background-position: 0 -50px; background-size: 80px; }
+		&.icon-phone { background-position: 3px -4234px; }
+		&.icon-email-grey { background-position: 2px -4293px; }
 		&.check-in { background-position: 8px -112px; }
 		&.check-out { background-position: 8px -152px; }
 		&.inhouse { background-position: 8px -192px; }
@@ -125,7 +127,9 @@
 
 		&.icon-gc-location { background-position: 10px -269px; }
 		&.icon-gc-phone { background-position: 10px -306px; }
-		&.icon-gc-email {background-position: 10px -344px; }
+		&.icon-gc-email { background-position: 10px -344px; }
+
+		&.icon-queued { background-position: 45px -4170px; }
 
 		/* Stay Card Icons ***/
 		&.icon-company,
@@ -290,6 +294,7 @@
 			&.time-out { background-position: 10px -4110px; }
 		}
 
+		/* @2x Icons ***/
 		@media @highdpi {
 			background-image: @icons2x;
 			background-size: 120px;
@@ -347,6 +352,7 @@
 		&.toggle.active,
 		&.toggle-filter.active { 
 			background-image: @arrowUp; 
+
 			&.settings-title { background-image: @arrowUpTrans; }
 		}
 
@@ -495,6 +501,27 @@
 		#border-radius > .rounded(20px);
 	}
 
+	.skip {
+		&.button.green {
+			.gradient-with-image(@arrowWhiteRight, @greenStart, @greenEnd);
+			background-position: 92% 55%, 0 0;
+			background-repeat: no-repeat, repeat;
+
+			&:hover,
+			&:active { 
+				.gradient-with-image(@arrowWhiteRight, @greenEnd, @greenStart); 
+				background-position: 92% 55%, 0 0;
+				background-repeat: no-repeat, repeat;
+			}
+
+			@media @highdpi { 
+				.gradient-with-image(@arrowWhiteRight2x, @greenEnd, @greenStart); 
+				background-size: 14px 14px, 100%, 100%; 
+				background-repeat: no-repeat, repeat;
+			}
+		}		
+	}
+	
 	.search-indicator {
 		background: @white @icons no-repeat;
 		background-position: 4px -3875px;
