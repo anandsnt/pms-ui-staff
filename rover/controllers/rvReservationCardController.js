@@ -35,7 +35,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 			
 			var contactInfoData = {'data': data,
 									'countries': $scope.data.countries,
-									'userId':$scope.data.user_id,
+									'userId':data.user_id,
 									'avatar':$scope.data.avatar,
 									'vip':$scope.data.vip};
 	        $scope.$emit('guestCardUpdateData',contactInfoData);
