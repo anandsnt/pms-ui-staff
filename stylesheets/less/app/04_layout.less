@@ -60,10 +60,39 @@ body { overflow: hidden; }
 				.box-shadow(-1px 0px 2px rgba(0,0,0,.1));
 
 				.nested-view {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					z-index: 10;
+					visibility: hidden;
+					.show;
+					.background(@white);
+
 					&.with-sidebar {
 						.content {
 							left: 5px;
 							.calc-width(100, 5);
+						}
+					}
+
+					&.view-current {
+						z-index: 30;
+						visibility: visible;
+
+						&.set-back { z-index: 20; }
+
+						&.move-from-left { 
+							#move > #from > .left(); 
+
+							.nav-bar { .hide; }
+						}
+
+						&.move-from-right { 
+							#move > #from > .right(); 
+							
+							.nav-bar { .hide; }
 						}
 					}
 				}
