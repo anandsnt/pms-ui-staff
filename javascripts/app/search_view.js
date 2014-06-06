@@ -464,7 +464,7 @@ var Search = function(domRef) {
 		sntapp.activityIndicator.hideActivityIndicator('loader-html-appending');
 	};
 
-	this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip, lateCheckoutTime, isLateCheckoutOn, room_ready_status, use_pickup, use_inspected, checkin_inspected_only, is_reservation_queued) {
+	this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip, lateCheckoutTime, isLateCheckoutOn, room_ready_status, use_pickup, use_inspected, checkin_inspected_only, isReservationQueued) {
 		var guestStatusIcon = this.getGuestStatusMapped(reservation_status, isLateCheckoutOn);
 		var roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
 
@@ -490,9 +490,17 @@ var Search = function(domRef) {
 		} else {
 			roomStatus = '<strong class="room-number">' + escapeNull(room) + '</strong>';
 		}
-		var $location = (escapeNull(location) != '') ? '<span class="icons icon-location">' + escapeNull(location) + '</span>' : '', $group = (escapeNull(group) != '') ? '<em class="icons icon-group">' + escapeNull(group) + '</em>' : '', $vip = vip ? '<span class="vip">VIP</span>' : '', $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="' + escapeNull(image) + '" />' + $vip + '</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip + '</figure>', $roomAdditional = showRoomStatus ? '<span class="room-status">' + roomstatusexplained + '</span>' : '', $viewStatus = guestStatusIcon ? '<span class="guest-status ' + escapeNull(guestStatusIcon) + '"></span><span>'+is_reservation_queued+'</span>' : '<span class="guest-status"></span>', $lateCheckoutStatus = (escapeNull(lateCheckoutTime) == "" || "CHECKING_OUT" != reservation_status || isLateCheckoutOn == false) ? "" : '<span class="late-checkout-time">' + escapeNull(lateCheckoutTime) + '</span>', $guestViewIcons = '<div class="status">' + $lateCheckoutStatus + $viewStatus + '</div>';
-		$output = '<a href="staff/staycards/staycard?confirmation=' + confirmation + '&id=' + escapeNull(id) + '" class="guest-check-in link-item float" data-transition="inner-page">' + $image + '<div class="data">' + '<h2>' + escapeNull(lastname) + ', ' + escapeNull(firstname) + '</h2>' + '<span class="confirmation">' + escapeNull(confirmation) + '</span>' + $location + $group + '</div>' + $guestViewIcons + roomStatus + $roomAdditional + '</a>';
-		return $output;
+		var $location = (escapeNull(location) != '') ? '<span class="icons icon-location">' + escapeNull(location) + '</span>' : '', 
+			$group = (escapeNull(group) != '') ? '<em class="icons icon-group">' + escapeNull(group) + '</em>' : '', 
+			$vip = vip ? '<span class="vip">VIP</span>' : '', 
+			$image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="' + escapeNull(image) + '" />' + $vip + '</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip + '</figure>', 
+			$roomAdditional = showRoomStatus ? '<span class="room-status">' + roomstatusexplained + '</span>' : '', 
+			$viewStatus = guestStatusIcon ? '<span class="guest-status ' + escapeNull(guestStatusIcon) + '"></span>' : '<span class="guest-status"></span>', 
+			$lateCheckoutStatus = (escapeNull(lateCheckoutTime) == "" || "CHECKING_OUT" != reservation_status || isLateCheckoutOn == false) ? "" : '<span class="late-checkout-time">' + escapeNull(lateCheckoutTime) + '</span>', 
+			$queuedStatus = isReservationQueued ? 'queued' : '';
+			$guestViewIcons = '<div class="status '+ $queuedStatus +'">' + $lateCheckoutStatus + $viewStatus + '</div>',
+			$output = '<a href="staff/staycards/staycard?confirmation=' + confirmation + '&id=' + escapeNull(id) + '" class="guest-check-in link-item float" data-transition="inner-page">' + $image + '<div class="data">' + '<h2>' + escapeNull(lastname) + ', ' + escapeNull(firstname) + '</h2>' + '<span class="confirmation">' + escapeNull(confirmation) + '</span>' + $location + $group + '</div>' + $guestViewIcons + roomStatus + $roomAdditional + '</a>';
+			return $output;
 	};
 
 	//Map the reservation status to the view expected format
