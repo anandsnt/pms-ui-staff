@@ -23,5 +23,8 @@
     "SELECT_DATE": "Datum wählen",
     "SELECT_WAKEUP_TIME": "Wählen Sie Weckzeit",
     "WAKE_UP_HEADER":"aufwachen",
-    "NOT_SET":"nicht gesetzt"
+    "NOT_SET":"nicht gesetzt",
+    "NOTES_HEADER":"Aufzeichnungen",
+    "NOTES_POST":"Beitrag",
+    "WRITE_NOTE":"schreiben Sie eine Notiz"
 }

@@ -152,7 +152,7 @@ var getRoomColorClass = function(reservationStatus, roomStatus, foStatus){
 	return roomColorClass;
 }
 
-function isEmpty(dict) {
+function isEmpty(dict) {	
    for(var key in dict) {
       if (dict.hasOwnProperty(key)) {
          return false;

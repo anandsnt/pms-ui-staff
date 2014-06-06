@@ -87,5 +87,8 @@
     "SELECT_DATE": "Select date",
     "SELECT_WAKEUP_TIME": "Select wake-up time",
     "WAKE_UP_HEADER":"Wake up",
-    "NOT_SET":"Not Set"
+    "NOT_SET":"Not Set",
+    "NOTES_HEADER":"Notes",
+    "NOTES_POST":"Post",
+    "WRITE_NOTE":"Write a note"
 }

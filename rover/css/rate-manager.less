@@ -1,4 +1,61 @@
 #rate-manager {
+  #roomTypeViewCalendar{
+    width:100%;  
+    padding:0px; 
+    overflow: hidden;
+
+    .limit-width{
+      width: 60%;
+      padding-top: 6px;
+    }
+
+    table.rate-calendar{
+       height:200px;
+       table-layout:fixed; 
+    }
+
+    span.left{
+      float:left;
+      font-size: 26px;
+      line-height: 60px;
+    }
+    
+     tr {
+      img {
+        margin-top: 5px;
+        &.up{
+          margin-top: -1px;
+        }
+      }
+    }
+
+    span.right{
+      float:right;
+      color: white;
+      text-align: center;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .iScrollIndicator{
+      background: linear-gradient(-90deg, #ff860d 0%, #ffb319 100%) !important;
+    }
+  }
+
+  #rateViewCalendar{
+    width:100%; 
+    position: relative;  
+    padding:0px; 
+    overflow: hidden; 
+
+    table{
+      table-layout:fixed; 
+    }
+    .iScrollIndicator{
+      background: linear-gradient(-90deg, #ff860d 0%, #ffb319 100%) !important;
+    }
+  }
+
   .occupancy-graph-container{
     position: absolute;
     .filter-options{
@@ -27,7 +84,7 @@
       margin : 0 0 20px 0; 
       label{
        height : 40px;
-       padding-top: 10px; 
+       //padding-top: 10px;                                                                                                                                                                                          
        padding-left: 40px;    
        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3gUQBikteQ2wPAAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAADCSURBVDjLrZWxDYMwEADP3zFDyjAAA2QHhBR6OmZKRx8kxA4egAFCyQxp0zyRgYCS+K+zLZ/e9v/bscPzdjoDBZADmU4PQA90ST2Nn/a5HVEDXDjGA9Va7FayK3DnN8qkntqN8E/ZRuqCYz6II03qaRQdNMTTADij6N5RiqaGFYVonlmRS5C0FmSCMaLlZMUgWptW9AJ0hsJOtLi9gcyHlVIZCKv5UdAoywhZObcx8/a1yENdSL+8U68dpj3s2LFfwAvhP0O7QfDr4AAAAABJRU5ErkJggg==);
        background-repeat : no-repeat;
@@ -45,9 +102,7 @@
  #update{
   width:100%;
 }
-.iScrollIndicator{
-  background-color:#FFA916 !important;
-}
+
 .occgraph-outer{
   left: 240px;
   clear:both;
@@ -63,35 +118,47 @@
     margin-left: 40px;
     height: 100%;
     li { 
-      display: inline-block;
-      float: left;
-      font-size: 14px;
-      line-height: normal;
-      h6 {
-        color: #9D9D9D;
-        min-width: 200px;
-        text-transform: uppercase;
-        margin-top: 7px;
-      }
-      .button {
-        float:right !important;
-      }
-      .back-button {
-        display: block;
+        display: inline-block;
+        float: left;
+        font-size: 14px;
         line-height: normal;
-        margin-top: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        h6 {
+          color: #9D9D9D;
+          min-width: 200px;
+          text-transform: uppercase;
+          margin-top: 7px;
+          font-size: 12px;
+        }
+        span{
+          text-transform: uppercase;
+          font-size:14px;
+        }
+        .button {
+          float:right !important;
+        }
+        .back-button {
+          display: block;
+          line-height: normal;
+          margin-top: 14px;
+        }
+      } 
+      li:not(.ng-hide) + li:not(.ng-hide)::before {
+        content: "|";
+        color: #DDDDDD;
+        float: left;
+        font-size: 35px;
+        line-height: normal;
+        margin: 0 15px;
       }
     }
-    li:not(.ng-hide) + li:not(.ng-hide)::before {
-      content: "|";
-      color: #DDDDDD;
-      float: left;
-      font-size: 35px;
-      line-height: normal;
-      margin: 0 15px;
-    }
-  }
-  .display-mode {
+    .display-mode {
+      float: right;
+      div{
+        float: right;
+      }
     .button {
       background-color: #F5F5F5;
       border-radius: 0;
@@ -146,12 +213,10 @@
         border-width: 9px;
         margin-left: -9px;
       }
-
     }
-
   }
-
 }
+
 .content {
   clear:both;
   margin-top: 40px;
@@ -165,24 +230,25 @@
     width: 230px;
     top : 60px; /* To avoid the div falling down, when table has Height fixed. Need Review review */
     background-color:#E0E0E0 ;
-    padding:20px;
+
     height:100%;
     hr{border:1px solid rgba(0, 0, 0, 0.1);  margin: 20px 0;}
     hr.half-left { width:30%; height:1px; margin:10px 0 0 25px; float:left;  border:1px solid rgba(0, 0, 0, 0.1)}
     hr.half-right{ width:30%; height:1px; margin:10px 25px 0 0; float:right; border:1px solid rgba(0, 0, 0, 0.1)}
     .rates-box{ 
-      background-color : skyblue;
       margin:10px 0 10px;
       width:100%;
-
-      .rate-data{ width:80% !important;
-        background-color : skyblue;
+      .rate-data{
+        width:80% !important;
         float:left;
-        line-height:14px;
-        padding:5px 0px 3px 5px;
-
+        padding: 4px 0;
+        text-indent: 10px;
       }
-      .delete_small{ width:15%;float:right;}
+      .delete_small{
+        width:15%;
+        float:right;
+        background-position: 7px -689px !important;
+      }
     }
     .has-datepicker.entry .ui-datepicker-trigger {
       left: 0px !important;
@@ -197,7 +263,7 @@
     .cal-cell{
       text-align:center; 
       vertical-align:middle;
-      line-height: 24px;
+      line-height: 20px;
     }
     .iScrollHorizontalScrollbar {
       top: auto !important;
@@ -243,6 +309,16 @@
   table {
   }
   tr {
+
+    &.last{
+      .cell-content{
+         border-bottom : 10px solid #e8e8e8;
+
+        &.exp{
+           border-bottom : 10px solid #d8d8d8;
+        } 
+      }
+    }
     .first-row {
       text-align: right;
       padding: 0 20px;
@@ -253,18 +329,25 @@
       }
       img {
         cursor: pointer;
+        width: 12px;
+        height: 12px;        
       }
       .button {
+        color: #fcfcfc;
         padding: 0 5px;
         margin-left: 10px;
+        text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);
+
+        border-radius: 1px;
         font-weight: normal;
         font-size: 14px;
         &.open {
-          background-color: #D9D9D9;
-          background-image: -moz-linear-gradient(#D9D9D9, #D0D0D0);
-          background-image: -webkit-linear-gradient(#D9D9D9, #D0D0D0); /* For Safari 5.1 to 6.0 */
-          background-image: -o-linear-gradient(#D9D9D9, #D0D0D0); /* For Opera 11.1 to 12.0 */
-          background-image: linear-gradient(#D9D9D9, #D0D0D0); /* Standard syntax */
+          background-color: #d1d1d1;
+          border-radius: 3px;
+          background-image: -moz-linear-gradient(#d1d1d1, #d8d8d8);
+          background-image: -webkit-linear-gradient(#d1d1d1, #d8d8d8); /* For Safari 5.1 to 6.0 */
+          background-image: -o-linear-gradient(#d1d1d1, #d8d8d8); /* For Opera 11.1 to 12.0 */
+          background-image: linear-gradient(#d1d1d1, #d8d8d8); /* Standard syntax */
         }
       }
       span {
@@ -274,6 +357,13 @@
         &:first-child {
           width: 85%;
           float: left;
+          &.expanded{
+            color: #f6991b;
+            font-weight: 600;
+          }
+          &.bolder{
+            font-weight: 600;
+          }
         }
         &:last-child {
           width: 10%;
@@ -289,25 +379,63 @@
     padding-right: 10px;
   }
 
+
+  .cell-container{
+    background-color: #e8e8e8;
+
+    &.exp{
+        background-color: #d2d2d2;
+    }
+  }
+
+  .cell {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .cell-overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity:0.15;
+    z-index : 2000;
+    background-color : rgb(162, 163, 165);
+  }
+
   .cell-content{
-    border : 10px solid #e7e7e7;
+    border-left : 10px solid #e8e8e8;
+    border-right : 10px solid #e8e8e8;
+    border-top : 5px solid #e8e8e8;
+    border-bottom : 5px solid #e8e8e8;
+    background-color: none;
     height : 80px;
     line-height : 80px; /* Trick for vertical alligh*/
     font-size : 20px;
-
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     &.exp {
       height: auto;
-      border: 10px solid #a7a7a7;
+      border-left : 10px solid rgb(216, 216, 216);
+      border-right : 10px solid rgb(216, 216, 216);
+      border-top : 5px solid rgb(216, 216, 216);
+      border-bottom : 5px solid rgb(216, 216, 216);
       line-height: normal;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
       & > div {
         & > div {
-
+          padding: 0;
           & > div:first-child {
             border-bottom: 1px solid #e7e7e7;
             margin-bottom: 10px;
-            height: 50px;
+            height: 42px;
             span {
-              height: 26px;
+              height: 20px;
               margin-bottom: 10px;
               margin-top: 10px;
             }
@@ -315,18 +443,19 @@
           & > div {
             height: 30px;
             text-transform: uppercase;
-            font-size: 13px;
+            font-size: 12px;
             color: #999;
             text-align: left;
             padding: 0 10px;
+            line-height: 16px;  
 
             span {
               float: right;
               text-align: right;
               height: inherit;
-              font-size: 20px;
+              font-size: 24px;
               font-weight: lighter;
-              color:#333;
+              color:#555;
             }
           }
         }
@@ -336,9 +465,25 @@
       display: table;
       width: 100%;
       height: 100%;
+      background: none repeat scroll 0 0 #FCFCFC;
+      border-radius: 4px;
+      -webkit-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.25) inset;
+      -moz-box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.25) inset;
+      box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.25) inset;
+
+      .rate-single {
+          width: 25px;
+          height: 25px;
+          line-height: normal;
+          padding-left: 10px;
+          font-weight: lighter;
+          color: #333;       }
+
       & > div {
+
         display: table-cell;
         vertical-align: middle;
+        padding-left: 10px;
         .rate-single {
           width: 25px;
           height: 25px;
@@ -348,10 +493,10 @@
           color: #333;
         }
         .right {
-          float: right;
+          //float: right;
         }
         .left {
-          float: left;
+          //float: left;
         }
 
       }
@@ -359,7 +504,12 @@
 
   }
   .date-header {
-    border : 10px solid #e7e7e7;
+    border-left : 10px solid #e8e8e8;
+    border-right : 10px solid #e8e8e8;
+    border-top : 10px solid #e8e8e8;
+    border-bottom : 5px solid #e8e8e8;
+
+    background-color: #3b3f43;    
     height : 80px;
     font-size : 18px;
     text-align: center;
@@ -367,22 +517,27 @@
     vertical-align: middle;
     display:table;
     width: 100%;
-    color: #FFFFFF;
+    color: #fcfcfc;
     border-radius: 20px;
     text-transform: uppercase;
   }
   th .date-header {
     background-color : #393c41;
+    border-radius: 3px;
   }
   th .date-header span { 
-    display: table-cell;
+    font-size: 14px;    
     vertical-align: middle;
+    display: block;
+    &.week-day{
+      margin-top: 10px;
+    }
   }
   th .cell-content{
     background-color : #393c41;
   }
   td .cell-content{
-    background-color : #fcfcfc;
+    background-color : none;
   }
 
 }
@@ -394,6 +549,14 @@
   text-transform:uppercase;
   padding: 10px 40px;
   overflow: hidden;
+
+  .restriction-icon{
+    height: 20px;
+    width: 20px;
+    text-indent: 7px;
+    line-height: 20px;
+  }
+
   span{
     padding-right: 20px;
     padding-bottom : 10px;
@@ -520,8 +683,8 @@
       color:white;
       font-size:10px;
       display: block;
-      height: 17px;
-      width: 40px;
+      height: 15px;
+      width: 30px;
       -moz-border-radius: 10px;
       -webkit-border-radius: 10px;
       -khtml-border-radius: 10px;
@@ -529,8 +692,6 @@
       float: right;
       text-align: center;
       z-index: 10000;
-      padding-top:4px;
-
     }
     .status-on{
       background-color: #89bd55;
@@ -545,7 +706,7 @@
     dialog{
       color:#000;
       .header{
-        background: none repeat scroll 0 0 #000000;
+        background: none repeat scroll 0 0 #393c41;
         color: #FCFCFC;
         display: block;
         height: 100px;
@@ -636,7 +797,7 @@
         border-top:1px solid #D8D8D8;
         padding-top:20px;
         .button{
-          font-size: 21px;
+          font-size: 18px;
           height: 60px;
           width: 188px;
         }
@@ -671,9 +832,12 @@
   }
 
   label{
-    font-size:12px;
+    font-size:13px;
+    font-weight: 600;
+    margin-left: 20px;
     display:block;
     text-align:left !important;
+
   }
 
   .or{
@@ -739,11 +903,14 @@
     transition-duration: .5s;*/
   }
   .restriction-icon {
-    width: 25px;
-    height: 25px;
+    font-size: 14px;
+    line-height: 20px;
+    width: 20px;
+    height: 20px;
     background-color: rgba(0, 0, 0, 0.15);
     display: block;
-    margin-right: 10px;
+    margin-right: 4px;
+    margin-bottom: 4px;
     float: left;    
     border: 0;
     text-align: center;
@@ -758,19 +925,20 @@
       background-color: #82c3de;
     } 
     &.bg-violet {
-      background-color: #a261bd;
+      background-color: #a65fba;
     }
     &.icon-cross {
       background-image: url(/assets/rate-manager/close.png);
       background-repeat: no-repeat;
       background-position: center center;
+      background-size: 12px;
 
     }
     &.icon-block {
       background-image: url(/assets/rate-manager/cross.png);
       background-repeat: no-repeat;
       background-position: center center;
-
+      background-size: 12px;
 
 
     }
@@ -787,14 +955,14 @@
 
   &.fromRoomTypeView{
    .ngdialog-content{
-      width: 700px;
-    }
+    width: 700px;
+  }
 
-    &.allRooms {
-      .ngdialog-content{
-         width: 100%;
-       }
-    }
+  &.allRooms {
+    .ngdialog-content{
+     width: 100%;
+   }
+ }
 }
 
 padding-top: 80px;
@@ -817,7 +985,17 @@ padding-top: 80px;
   }
   .updatePriceAndRestrictionsContainer{
 
-    button.toggle-expand{
+    font-family: 'source_sans_pro';
+
+    h4{
+      font-size: 24px;
+    }
+
+    h2.h1{
+      text-transform: uppercase;
+    }
+
+    .toggle-expand{
      background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
 
      float: right;
@@ -846,40 +1024,64 @@ padding-top: 80px;
     padding-top: 10px;
     button{
       height: 45px;
-      width: 120px;
+      width: 100px;
+      &.blank{
+        color: #000;
+      }
     }
   }
 }
 
 #restictionsList{
   width:270px;
-  height:400px;
+  height:450px;
   overflow: hidden;
   position: relative;
-  .restriction-type{
+
+  .restrictions-container{
     position: relative;
-    min-height: 45px;
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 15px;
-    padding-right: 5px;
+     min-height: 45px;
+      margin: 0 20px;
+      border-bottom: 1px solid #D8D8D8;
+  }
+
+  li.restriction-type{
+    &.selected{
+        .restrictions-container{
+          border-bottom: none;
+        }
+    } 
+    margin: 0;
+    padding: 0;
+    position: relative;
+    border-bottom: none;
     span{
       display: inline-block;
       &.restriction-status{
+        cursor: alias;
         position: absolute;
-        right:10px;
+        right:0;
         top:10px;
+        line-height: 15px;
       }
       &.text{
-        width: 130px;
+        width: 125px;
         text-align: left !important;
-        margin-right: 60px;
+        /* margin-right: 60px; */
         font-size: 13px;
         line-height: 12px;
+        position: relative;
+        left: 40px;
+        top: 12px;
       }
       &.restriction-icon{
-        position: relative;
-        line-height: 24px;
+        position: absolute;
+        top: calc(50% - 30px);
+        margin: 0;
+        width: 30px;
+        height: 30px; 
+        font-size: 16px;
+        line-height: 30px;
       }
     }
   }
@@ -888,7 +1090,7 @@ padding-top: 80px;
 #restrictionDays{
   position: relative;
   width:270px;
-  height:400px;
+  height:450px;
   overflow-y: hidden;
   background-color:#DEDEDE;  
   margin-left: 0px;      
@@ -929,17 +1131,21 @@ padding-top: 80px;
 
 #mixedRestrictions{
   width:400px;
-  height:400px;
+  height:450px;
+  //position: relative;
+
+  .editor-container{
+  }
 
   h4{
     text-transform: uppercase;
   }
 
   .inputlabel{
-    padding-top: 15px;
-
+    padding-top: 15px;   
+    width: 360px;
     label{
-      font-weight: bold;
+      font-weight: 600;
       display: inline-block;
     }
   }
@@ -950,53 +1156,63 @@ padding-top: 80px;
       font-size: 18px;
 
       &.large{
-        height: 60px;
+        height: 50px;
       }
     }
 
     .button.cancel{
       color: #030303;
-      font-weight: normal;
-      font-size: 15px;
+      font-size: 18px;
     }
 
   }
 
-  .mixed_restrictions{
-   color:#D98814;      
+  .mixed_restrictions{   
+    background-color:  #f8e26e;
+    border-radius: 2px;;      
+    width: 360px;
+    em{
+      font-size: 14px;
+    }
 
-   em{
-    font-size: 14px;
+    span.h4{
+      display: inline;
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
   }
 
-  span.h4{
-    display: inline;
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: uppercase;
+  &.enter-restriction{
+    .inputlabel{
+      padding-top: 120px;   
   }
-}
+
+  }
 }
 
 #restrictionPriceContainer{
   width:400px;
-  height:400px;
+  height:450px;
   padding-left: 10px;
   margin-left: 0;
 }
 
 #pricesContainer{
   width:270px;
-  height:400px;
-  overflow-y: scroll;
+  height:450px;
+  overflow-y: hidden;
   background-color: #E4E4E4;
+  position: relative;
 
   .price-info{
-    padding: 0;
+    padding: 0 20px;
     .price-item{
-      color:#CCC;
+      color:#818181;
       .amount{
-        color: #28292D;
+        color: #555;
+        font-size: 16px;
+        font-weight: 400;
       }
     }
   }
@@ -1006,21 +1222,143 @@ padding-top: 80px;
 }
 
 #rateManagerLeftPanel.filter-options{
-  padding-right: 10px !important;
+  .iScrollIndicator{
+    background-color: rgb(157, 157, 157) !important;
+  }
+  z-index:99999;
+
+  span.half-border{
+    color: #9d9d9d;
+  }
+
+  .filter-padding {
+    padding:20px 10px 20px 20px;
+  }
+
+  .action-filter {
+    position:fixed; 
+    background:#d4d4d4; 
+    border-top:1px solid #bcbcbc;
+    width:100%; 
+    text-align:center; 
+    padding:15px; 
+    bottom:0px; 
+    width:230px;
+    button {
+      height:40px;
+      width:190px;
+    }
+  }
+
+  .fixed-container{
+    position:relative;
+    h3{
+      text-align: center;
+      padding-bottom:15px;
+      margin-right: 10px;
+      margin-top: 15px;
+    }
+    a.leftMenuHandle{
+      left:210px;
+      top:-10px;
+    }
+
+    hr{
+      padding:0px; 
+      margin:20px 0px;
+    }
+
+      span.deleteall{
+        display: block;
+        text-align: center;
+        font-size: 14px;
+        a{
+          color: rgb(157, 157, 157)
+        }
+      }
+
+    div.rates-box{
+      font-size: 14px;
+      text-transform: uppercase;
+      background: rgb(130, 195, 222);
+      color: white;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px; 
+      border-radius: 2px;
+      &.dark{
+        background: rgb(86, 96, 131);
+      }
+
+    }
+
+    div.holder.left{
+      div.entry{   
+
+        select{
+          //font-size: 14px;
+        }  
+
+        label{
+          text-transform: uppercase;
+        }
+
+        font-size: 14px;
+        &.has-datepicker{
+          padding-bottom:15px;
+          input{
+            width: 100%;
+            font-size: 14px;
+          }
+        }
+
+
+
+      }
+    }
+
+    .button.green{
+      width: 95%;
+      margin-top: 30px;
+      background: linear-gradient(0deg, #54d115 0%, #90d92b 100%);
+
+    }
+
+
+  }
+
+
   .scrolling-container{
     margin-bottom:10px;
     overflow:hidden; 
     position:relative; 
     padding-right:12px;
+
+
   }
 
+
   .entry.table-search1{
+    padding:0px;
+    label{
+      line-height:14px;
+    }
     input{
       width:100%;
+      margin-bottom:10px;
+      text-indent: 15px;
+    }
+    span.icons{
+      width: 20px;
+      height: 20px;
+      position: relative;
+      top: 60px;
+      left: 5px;
     }
   }
 
 }
+
+
 
 
 .company-card-results{
@@ -1042,9 +1380,33 @@ padding-top: 80px;
     height: 42px;
     margin: 1px !important;
   }
-  img{
+
+  .icon {
+    height: 35px;
+    width: 35px;
+    border: 0;
+    display: block;
     float: left;
-    padding:5px 10px;
+    margin: 3px 8px 0px 5px;
+    background-image: url(/assets/app/app-icons.png);
+    background-repeat: no-repeat;
+
+  }
+  .company-card {
+      background-color: #566083;
+      background-position: 8px -3656px;
+  }
+  .travel-agent { 
+      background-color: #80546d;
+      background-position: 8px -3574px;
+  }
+
+  img{
+    max-width: 100%;
+    float: left;
+    max-width: 35px;
+    max-height: 35px;
+    margin: 3px 8px 0px 5px;
   }
   h4{
     float: left;
@@ -1054,11 +1416,18 @@ padding-top: 80px;
 }
 
 .arrow-left {
-    border-color: rgba(0, 0, 0, 0) #FCFCFC #FCFCFC rgba(0, 0, 0, 0);
-    border-style: solid;
-    border-width: 10px;
-    height: 0;
-    width: 0;
-    position: fixed;
-    left: 207px;
+  border-color: rgba(0, 0, 0, 0) #FCFCFC #FCFCFC rgba(0, 0, 0, 0);
+  border-style: solid;
+  border-width: 10px;
+  height: 0;
+  width: 0;
+  position: fixed;
+  left: 207px;
 }
+
+.akhila:after {
+  background: #fcfcfc url(/assets/select-arrow.png) no-repeat 50% 50%;
+  background-size: 6px 4px;
+}
+
+

@@ -4,6 +4,13 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 	$rootScope.precisonTwo = 2;
 	//To get currency symbol - update the value with the value from API see fetchHotelDetailsSuccessCallback
 	$rootScope.currencySymbol = "";
+	
+	$rootScope.shortDateFormat = "MM/yy";//05/99
+	$rootScope.dayInWeek = "EEE";//Sun
+	$rootScope.dayInMonth = "dd";//01
+	$rootScope.monthInYear = "MMM";//Jan
+	$rootScope.mmddyyyyFormat = "MM-dd-yyyy";//01-22-2014
+	$rootScope.fullDateFormat = "EEEE, d MMMM yyyy";//Wednesday, 4 June 2014
 
 	
     $scope.$on("closeDrawer", function(){      
@@ -35,10 +42,11 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 	  	        $scope.userInfo = data;
 	  	        $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
 	  	        $rootScope.adminRole=$scope.userInfo.user_role;
-	  	        if($rootScope.adminRole == "Hotel admin" )
+	  	        $rootScope.isHotelStaff = $scope.userInfo.is_staff;
+	  	        if($rootScope.adminRole == "Hotel Admin" )
 	  	            $scope.isHotelAdmin =  true;
-	  	        if($rootScope.adminRole == "Hotel staff" )
-	  	            $scope.isHotelStaff =  true;
+	  	        // if($rootScope.isStaff == "Hotel staff" )
+	  	        //     $scope.isHotelStaff =  true;
 	  	        $scope.$emit('hideLoader');
 	  	        $scope.getHotelDetails();
 	  	    };

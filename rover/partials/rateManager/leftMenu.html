@@ -1,102 +1,129 @@
-<div ng-controller="RMFilterOptionsCtrl" id="rateManagerLeftPanel" class="filter-options {{currentLeftMenuClass}}"  style="z-index:99999;" >	
-	<div class="fixed-container" style="height:{{leftMenuDimensions.outerContainerHeight}}px; position:relative;">
-		<h3 style="padding-bottom:15px;">FILTER OPTIONS</h3>
-		<a class="leftMenuHandle" ng-click="toggleLeftMenu()" style="left:210px"></a>	
+<div id="rateManagerLeftPanel" ng-controller="RMFilterOptionsCtrl" class="filter-options {{currentLeftMenuClass}}" ng-click="hideCompanyCardSearchResults()">
+	<div class= "filter-padding"> 	
+		<div class="fixed-container" >
+			<h3>FILTER OPTIONS</h3>
+			<a class="leftMenuHandle" ng-click="toggleLeftMenu()"></a>	
 
-		<div class="scrolling-container" ng-iscroll="filter_details" ng-iscroll-delay="1000" style="height:{{leftMenuDimensions.scrollableContainerHeight}}px;">
+			<div class="scrolling-container" ng-iscroll="filter_details" ng-iscroll-delay="1000" style="height:{{leftMenuDimensions.scrollableContainerHeight}}px;">
 
-			<div class="holder left">
+				<div class="holder left">
 
-				<div class="entry has-datepicker" style="padding-bottom:15px;">
-					<label for="" style="font-size:14px;">DATE RANGE</label>
-					<input style="font-size:14px; width:100%;" placeholder="Select date range" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
-					<button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
-				</div>
-
-
-				<div class="entry">
-					<label for="nationality" style="font-size:14px; text-transform:uppercase;">Zoom Level</label>
-					<div class="select">
-						<select style="font-size:14px;" name="zoom-level" ng-model="currentFilterData.zoom_level_selected">
-							<option ng-selected="level.value == currentFilterData.zoom_level_selected" ng-repeat="level in currentFilterData.zoom_level" class="placeholder" value="{{level.value}}">{{level.name}}</option> 
-						</select>
+					<div class="entry has-datepicker">
+						<label for="rmDateRange">DATE RANGE</label>
+						<input id="rmDateRange" placeholder="Select date range" readonly="" maxlength="8" value="{{currentFilterData.selected_date_range}}" class="hasDatepicker"  name="">
+						<button ng-click="showCalendar()" type="button" class="ui-datepicker-trigger">...</button>
 					</div>
-				</div>
 
-				<hr style="padding:0px; margin:20px 0px;"/>
 
-				<div class="entry radio-check" style="font-size:14px;" >
-					<label class="checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}">
-						<span ng-model="currentFilterData.is_checked_all_rates" class="icon-form icon-checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}" ></span>
-						<input type="checkbox" ng-click="clickedAllRates()"/>
-						ALL RATES
-					</label>
-				</div>
-
-				<span class="half-border" ng-show="!currentFilterData.is_checked_all_rates">
-					<hr class="half-left"/> OR <hr class="half-right"/> 
-				</span>
-				<div class="entry" ng-show="!currentFilterData.is_checked_all_rates" style="padding-bottom:15px; font-size:14px;">
-					<label for="nationality">RATE TYPE</label>
-					<div class="select">
-						<select name="rate-type" ng-model="currentFilterData.rate_type_selected">
-							<option value="">Select rate type</option>
-							<option  ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder" value="{{rate_type.id}}">{{rate_type.name}}</option> 
-						</select>
+					<div class="entry">
+						<label for="rmZoom" >ZOOM LEVEL</label>
+						<div class="select">
+							<select id="rmZoom" name="zoom-level" ng-model="currentFilterData.zoom_level_selected">
+								<option ng-selected="level.value == currentFilterData.zoom_level_selected" ng-repeat="level in currentFilterData.zoom_level" class="placeholder" value="{{level.value}}">{{level.name}}</option> 
+							</select>
+						</div>
 					</div>
-				</div>
 
-				<div style="text-transform:uppercase; font-size:14px;" class="rates-box" ng-show="!currentFilterData.is_checked_all_rates" ng-repeat="rate_type in currentFilterData.rate_type_selected_list">
-					<span class="rate-data">{{rate_type.name}}</span>
-					<span ng-click="deleteSelectedRateType(rate_type.id)" class="icons delete_small cursor-hand"> &nbsp;</span>
-					<br clear="all">
-				</div>
+					<hr/>
 
-				<div class="entry" ng-show="!currentFilterData.is_checked_all_rates" style="font-size:14px;">
-					<label for="nationality">RATE</label>
-					<div class="select" >
-						<select ng-model="currentFilterData.rate_selected">
-							<option value="">Select rate</option>
-							<option ng-repeat="rate in currentFilterData.rates" class="placeholder" value="{{rate.id}}">{{rate.name}}</option> 
-						</select>
+					<div class="entry radio-check">
+						<label class="checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}">
+							<span ng-model="currentFilterData.is_checked_all_rates" class="icon-form icon-checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}" ></span>
+							<input type="checkbox" ng-click="clickedAllRates()"/>
+							ALL RATES
+						</label>
 					</div>
-				</div>
 
-				<div style="text-transform:uppercase; font-size:14px;" class="rates-box" ng-show="!currentFilterData.is_checked_all_rates" ng-repeat="rates in currentFilterData.rates_selected_list">
-					<span class="rate-data">{{rates.name}}</span>
-					<span ng-click="deleteRate(rates.id)" class="icons delete_small cursor-hand"> &nbsp;</span>
-					<br clear="all">
-				</div>
+					<span class="half-border" ng-show="!currentFilterData.is_checked_all_rates">
+						<hr class="half-left"/> OR <hr class="half-right"/> 
+					</span>
 
-				<hr style="padding:0px; margin:20px 0px 10px 0px;"/>
+					<div class="entry" ng-show="!currentFilterData.is_checked_all_rates">
+						<label for="rmRateType">RATE TYPE</label>
+						<div class="select">
+							<select id="rmRateType" name="rate-type" ng-model="currentFilterData.rate_type_selected" ng-change="refreshFilterScroll()">
+								<option value="">Select rate type</option>
+								<option  ng-repeat="rate_type in currentFilterData.rate_types" class="placeholder" value="{{rate_type.id}}">{{rate_type.name}}</option> 
+							</select>
+						</div>
+					</div>
 
-				<div class="entry table-search1" style="padding:0px;">
-					<label class="search-text" style="font-size:14px; line-height:14px;">NAME CARD,IATA # OR CORPORATED ID</label>
-					<span type="submit" name="submit" class="icons icon-search1"></span>
-					<input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off" style="margin-bottom:10px;" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
+					<div class="rates-box" ng-show="!currentFilterData.is_checked_all_rates" ng-repeat="rate_type in currentFilterData.rate_type_selected_list">
+						<span class="rate-data">{{rate_type.name}}</span>
+						<span ng-click="deleteSelectedRateType(rate_type.id)" class="icons delete_small cursor-hand"> &nbsp;</span>
+						<br clear="all">
+					</div>
+					<span class = "deleteall">
+						<a ng-click="deleteSelectedRateType('ALL')" ng-show="currentFilterData.rate_type_selected_list.length > 1">
+							CLEAR ALL RATE TYPES
+						</a>
+					</span>
+
+				
+
+					<div class="entry" ng-show="!currentFilterData.is_checked_all_rates">
+						<label for="rmCurrentFilterData">RATE</label>
+						<div id="rmCurrentFilterData" class="select" >
+							<select ng-model="currentFilterData.rate_selected" ng-change="refreshFilterScroll()">
+								<option value="">Select rate</option>
+								<option ng-repeat="rate in currentFilterData.rates" class="placeholder" value="{{rate.id}}">{{rate.name}}</option> 
+							</select>
+						</div>
+					</div>
+
+					<div class="rates-box" ng-show="!currentFilterData.is_checked_all_rates" ng-repeat="rates in currentFilterData.rates_selected_list">
+						<span class="rate-data">{{rates.name}}</span>
+						<span ng-click="deleteRate(rates.id)" class="icons delete_small cursor-hand"> &nbsp;</span>
+						<br clear="all">
+					</div>
+					<span class = "deleteall">
+						<a ng-click="deleteRate('ALL')" ng-show="currentFilterData.rates_selected_list.length > 2">
+							CLEAR ALL RATES
+						</a>
+					</span>
+
+					<hr/>
+
+					<div class="entry table-search1">
+						<label class="search-text" >NAME CARD,IATA # OR CORPORATE ID</label>
+						<span type="submit" name="submit" class="icons icon-search1"></span>
+						<input type="text" id="company-card" placeholder="Enter search criteria" autocomplete="off" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
+					</div>
+					<div class="rates-box dark" ng-repeat="name_card in currentFilterData.name_cards">
+						<span class="rate-data">{{name_card.account_first_name + ' ' + name_card.account_last_name }}</span>
+						<span ng-click="deleteCards(name_card.id)" class="icons delete_small cursor-hand"> &nbsp;</span>
+						<br clear="all">
+					</div>
+
+
 				</div>
 			</div>
-		</div>
-		
+			
 
-		<div class="entry ">
-			<div class="actions float">
-				<button class="button green" type="button" ng-click="showRatesBtnClicked()" style="width:94%;">Show Rates</button>
+			
+
+			<!-- Company Card Results / content -->
+			<div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: {{cmpCardSearchDivHgt}}px; top: {{cmpCardSearchDivTop}}px" ng-iscroll="nameOnCard" ng-iscroll-delay="100">
+				<div class="search-results" >
+					<ul id="search-list" >
+						<li ng-repeat="row in companyCardResults" ng-click="setCompanyCardFilter(row)">
+							<div class="icon company-card" ng-if="escapeNull(row.account_type)=='COMPANY' && row.company_logo == ''"></div>
+							<div class="icon travel-agent" ng-if="escapeNull(row.account_type)=='TRAVELAGENT' && row.company_logo == ''"></div>
+							<img ng-src="{{row.company_logo}}" alt="" ng-if="row.company_logo != ''">
+							<h4 ng-bind-html="'{{row.account_first_name}}, {{row.account_last_name}}'|highlight:companySearchText:false"></h4>
+						</li>
+					</ul>
+				</div>
+				<span class="arrow-left" style="top: {{arrowPosFromTop}}px;" ng-hide="cmpCardSearchDivHgt < 40"></span>
 			</div>
+
+
+
 		</div>
-
-         <!-- Company Card Results / content -->
-        <div class="company-card-results" ng-hide="companyCardResults.length === 0 || companySearchText === ''" style="height: {{cmpCardSearchDivHgt}}px; top: {{cmpCardSearchDivTop}}px" ng-iscroll="nameOnCard" ng-iscroll-delay="100">
-            <div class="search-results" >
-                <ul id="search-list" >
-                    <li ng-repeat="row in companyCardResults" ng-click="setCompanyCardFilter(row)">
-                        <img ng-src="{{row.company_logo}}" alt="">
-                        <h4 ng-bind-html="'{{row.account_first_name}}, {{row.account_last_name}}'|highlight:companySearchText:false"></h4>
-                    </li>
-                </ul>
-            </div>
-            <span class="arrow-left" style="top: {{arrowPosFromTop}}px;" ng-hide="cmpCardSearchDivHgt < 40"></span>
-        </div>
-
+	</div>
+	<div class="entry action-filter">
+		<div class="actions float">
+			<button class="button green" type="button" ng-click="showRatesBtnClicked()" >Show Rates</button>
+		</div>
 	</div>
 </div>
