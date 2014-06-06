@@ -87,5 +87,32 @@
     "SELECT_DATE": "Select date",
     "SELECT_WAKEUP_TIME": "Select wake-up time",
     "WAKE_UP_HEADER":"Wake up",
-    "NOT_SET":"Not Set"
+    "NOT_SET":"Not Set",
+
+    "RESERVATION_SUMMARY": "Reservation summary",
+    "ROOMS": "rooms",
+    "ROOM": "room",
+    "NIGHTS": "nights",
+    "NIGHT": "night",
+    "ADULTS": "Adults",
+    "CHILDREN": "Children",
+    "INFANTS": "Infants",
+    "AVG_NIGHT": "avg/night",
+    "EACH": "each",
+
+    "TAX": "Tax",
+    "TOTAL_STAY_COST": "Total Stay Cost",
+    "FIRST_NAME": "First name",
+    "LAST_NAME": "Last Name",
+    "EMAIL_ADDRESS": "E-mail address", 
+    "SEND_CONFIRM_EMAIL_TO_ADDRESS": "Send confirmation E-mail to this address", 
+
+    "RECEIVE_CONFIRM_EMAIL_TO_ADDRESS": "Receive confirmation email on this address",
+    "CREDIT_CARD": "Credit Card",
+
+    "CONFIRM_RESERVATION": "Confirm Reservation",
+    "RETURN_TO_DASHBOARD": "return to dashboard",
+    "CREATE_NEW_FOR_GUEST": "create new for this guest",
+    "CANCEL_RESERVATION": "Cancel Reservation"
+
 }

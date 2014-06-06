@@ -3,25 +3,46 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope',
 
         // intialize reservation object
         $scope.reservationData = {
-            arrivalDate: '',
-            departureDate: '',
+            arrivalDate: '2014-04-01',
+            departureDate: '2014-04-02',
+            checkinTime: {
+                hh: '',
+                mm: '',
+                ampm: ''
+            },
+            checkoutTime: {
+                hh: '',
+                mm: '',
+                ampm: ''
+            },
             numNights: 1, // computed value, ensure to keep it updated
-            room_count: 1, // Hard coded for now,
+            roomCount: 1, // Hard coded for now,
             rooms: [{
                 numAdults: 0,
                 numChildren: 0,
                 numInfants: 0,
                 roomType: '',
-                roomRate: 0,
-                addOns: [], // Details will come later
-                totalRate: ''
+                rateName: 'Best Available Rate',
+                rateAvg: 145,
+                rateTotal: 1000,
+                addOns: [
+                    {
+                        name: '2x Champagn and Chocolate',
+                        avgAmount: 79,
+                        totalAmount: 79
+                    }
+                ] // Details will come later
             }],
+            totalTaxAmount: 15,
+            totalStayCost: 300,
             guest: {
                 id: null, // if new guest, then it is null, other wise his id
-                firstName: '',
-                lastName: '',
+                firstName: 'Aaron',
+                lastName: 'Smith',
+                email: 'smith@snt.com',
                 city: '',
-                loyaltyNumber: ''
+                loyaltyNumber: '',
+                sendConfirmMailTo :''
             },
             company: {
                 id: null, // if new company, then it is null, other wise his id
@@ -34,8 +55,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope',
                 iataNumber: '', // Add different fields for travelAgent as in story
             },
             paymentType: {
-                type: '',	//Cash / CC / etc,
-                ccDetails: {} // if required.
+                type: {},   
+                ccDetails: { //optional - only if credit card selected
+                    number: '',
+                    expMonth: '',
+                    expYear: '',
+                    nameOnCard: ''
+                } 
             },
 
             demographics: {
