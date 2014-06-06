@@ -22,6 +22,7 @@ sntRover.controller('RVAddNewFreaquentLoyaltyContrller',['$scope','RVGuestCardLo
 		user_membership.membership_type = $scope.userMembershipType;
 
 		var data = {'user_id':$scope.$parent.guestCardData.userId,
+					'guest_id':$scope.$parent.guestCardData.userId,
 					'user_membership': user_membership
 					};
 		$scope.invokeApi(RVGuestCardLoyaltySrv.createLoyalties,data , loyaltyPostsuccessCallback, loyaltyPostErrorCallback);
