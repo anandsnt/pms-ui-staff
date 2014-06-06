@@ -49,8 +49,8 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			}
 
 			var nameCardString = "";
-			for(var i in params.name_card_ids){
-				nameCardString = rateString + "&name_card_ids[]=" + params.name_card_ids[i];
+				for(var i in params.name_card_ids){
+				nameCardString = nameCardString + "&name_card_ids[]=" + params.name_card_ids[i];
 			}
 
 			var urlString = dateString + rateString + rateTypeString + nameCardString;
@@ -174,10 +174,9 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		calendarData.data = roomRateData;
 
 		//close all/open all restriction status
-		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.rate_restrictions, calendarData.dates);
-		calendarData.disableCloseAllBtn = enableDisableCloseAll.disableCloseAllBtn;
-		calendarData.disableOpenAllBtn = enableDisableCloseAll.disableOpenAllBtn;
-
+		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.data, "ROOM_TYPE");
+		calendarData.disableCloseAllBtn = !enableDisableCloseAll.enableCloseAll;
+		calendarData.disableOpenAllBtn = !enableDisableCloseAll.enableOpenAll;
 
 		return calendarData;
 	};
@@ -234,38 +233,24 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 		calendarData.dates = datesList;
 		calendarData.all_rates = allRatesData;
 		calendarData.data = dailyRatesData;
-		
 		//close all/open all restriction status
-		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.all_rates, calendarData.dates);
-		calendarData.disableCloseAllBtn = enableDisableCloseAll.disableCloseAllBtn;
-		calendarData.disableOpenAllBtn = enableDisableCloseAll.disableOpenAllBtn;
-
+		var enableDisableCloseAll = that.getCloseAllEnableDisableStatus(calendarData.data, "RATE_TYPE");
+		calendarData.disableCloseAllBtn = !enableDisableCloseAll.enableCloseAll;
+		calendarData.disableOpenAllBtn = !enableDisableCloseAll.enableOpenAll;
 		
 		return calendarData;
 	};
 
 	//compute the closeall/openall restriction status beased on the total number of 
 	//closed restrictions in the all_rates/all_restrictions section
-	that.getCloseAllEnableDisableStatus = function(allRates, allDates) {
+	that.getCloseAllEnableDisableStatus = function(rateData, type) {
 		//Check if CLOSE ALL restriction is available in all_rates section
-		var allRateRestrictionClosedCount = that.getNumOfClosedRestriction(allRates);
-		var daysLength = allDates.length;
-		var dict = {};
-		dict.disableCloseAllBtn = true;
-		dict.disableOpenAllBtn = false;
-		if(allRateRestrictionClosedCount < daysLength){
-			dict.disableCloseAllBtn = false;
-		}
-		if(allRateRestrictionClosedCount == 0){
-			dict.disableOpenAllBtn = true;
-		}
-		return dict;
+		var closedRestrictionId = -1,
+			dict = {};
+		    dict.enableOpenAll = false,
+		    dict.enableCloseAll = false;
 
-	};
-
-	//Returns the total count of closed restrictions in the given restriction set
-	this.getNumOfClosedRestriction = function(allRates, allRestrictionTypes){
-		var closedRestrictionId = "";
+		//Get the id for 'CLOSED' restriction
 		for(var i in that.allRestrictionTypes){
 			if (that.allRestrictionTypes[i].value == 'CLOSED'){
 				closedRestrictionId = that.allRestrictionTypes[i].id;
@@ -273,20 +258,41 @@ sntRover.service('RateMngrCalendarSrv',['$q', 'BaseWebSrvV2', function( $q, Base
 			}
 		}
 
-		var closedRestrictionCount = 0;
-		for(var i in allRates){
-			item = allRates[i]; 
-			for(var j in item){
-				if(item[j].restriction_type_id == closedRestrictionId){
-					closedRestrictionCount++;
-					break;
-				}
-			}
+		//Iterate through each calendar cell to find if 'CLOSED' restricion is available
+		for(var i in rateData){
+			var rate = rateData[i];
+			for(var date in rate){
+				if (date == "id" || date == "name") {
+					continue;	
+				} 
+				//We don't want to check the history dates
+				if(new Date(date).getTime() < new Date(that.businessDate).getTime()){
+			   		continue;
+		   		}
+		   		
+		   		var item = rate[date];
+		   		if(type == "ROOM_TYPE") {
+		   			var item = rate[date].restrictions;
+		   		}
+		   		//If the 'CLOSED' restriction is available in any of the cell, the openall button is enabled
+		   		// If 'CLOSED' restriction is absent in any cell, close all button is enabled
+		   		var isDateClosed = false;
+		   		for (var j in item){
+		   			if(item[j].restriction_type_id == closedRestrictionId){		
+		   				dict.enableOpenAll = true;
+		   				isDateClosed = true;
+		   				break;
+		   			}
+		   		}
+   				if(isDateClosed === false) {
+   					dict.enableCloseAll = true;
+   				}	
+
+		   	}
 		}
+		return dict;
+	};
 
-		return closedRestrictionCount;
-
-	}
 
 	this.getRestrictionUIElements = function(restriction_type){
 		var restriction_type_updated = {};

@@ -88,6 +88,9 @@
     "SELECT_WAKEUP_TIME": "Select wake-up time",
     "WAKE_UP_HEADER":"Wake up",
     "NOT_SET":"Not Set",
+    "NOTES_HEADER":"Notes",
+    "NOTES_POST":"Post",
+    "WRITE_NOTE":"Write a note",
     "LOYALTY_LABEL":"Loyalty",
     "NEW_LOYALTY_LABEL":"New Loyalty Program",
     "LOYALTY_PROGRAM_LABEL":"Loyalty Program",
@@ -99,5 +102,4 @@
     "LOYALTY_CODE_LABEL":"Code",
     "FREEQUENT_FLYER_LABEL":"Frequent Flyer Program",
     "HOTEL_LOYALTY_LABEL":"Hotel Loyalty Program"
-
 }

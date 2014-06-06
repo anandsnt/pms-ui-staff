@@ -18,8 +18,8 @@
 			</span> 
 		</a>
 		<div  ng-click="openAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.payment_method_used == 'CC'">
-			<a id="update_card" data-payment-id="1361" class="button with-icon green" translate> 
-				<span class="icons icon-wallet"></span> UPDATE_CC 
+			<a class="button with-icon green" > 
+				<span class="icons icon-wallet"></span> {{ 'UPDATE_CC' | translate }}
 			</a>
 		</div>
 
