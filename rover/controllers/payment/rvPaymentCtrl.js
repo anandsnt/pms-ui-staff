@@ -18,8 +18,14 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.data = data;
 		$scope.paymentTypeValues = [];
 		if($scope.passData.is_swiped){
-			$scope.saveData.selected_payment_type = 0;//Only for swipe
-			$scope.paymentTypeValues = $scope.data[0].values;
+			var selectedPaymentType = 0;
+			angular.forEach($scope.data, function(value, key) {
+				if(value.name == 'CC'){
+					selectedPaymentType = key; 
+				}
+			});
+			$scope.saveData.selected_payment_type = selectedPaymentType;//Only for swipe
+			$scope.paymentTypeValues = $scope.data[selectedPaymentType].values;
 			$scope.saveData.card_number  = $scope.passData.card_number;
 			$scope.saveData.selected_credit_card  =  $scope.passData.credit_card;
 			$scope.saveData.name_on_card =  $scope.passData.name_on_card;

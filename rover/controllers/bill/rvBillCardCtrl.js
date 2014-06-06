@@ -1,4 +1,4 @@
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBillCardSrv','reservationBillData', function($scope,$rootScope,$state, RVBillCardSrv, reservationBillData){
+sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', function($scope,$rootScope,$state, RVBillCardSrv, reservationBillData, RVReservationCardSrv){
 	
 	BaseCtrl.call(this, $scope);
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
@@ -236,9 +236,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
          	var tokenizeSuccessCallback = function(tokenData){
          		data.token = tokenData;
          		var passData = {
-		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
-		  	 		"fromView": "staycard",
-		  	 		"selected_payment_type": 0, //Default value of credit card - TODO:check in seed data
+		  	 		"reservationId": $scope.reservationBillData.reservation_id,
+		  	 		"fromView": "billcard",
 		  	 		"credit_card": data.RVCardReadCardType,
 		  	 		"card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
 		  	 		"name_on_card": data.RVCardReadCardName,
@@ -247,10 +246,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	             	 'ksn': data.RVCardReadTrack2KSN,
 	              	'pan': data.RVCardReadMaskedPAN,
 	              	'token': tokenData,
-		  	 		 "is_swiped": true   // Commenting for now
+		  	 		"is_swiped": true   // Commenting for now
 		  	 	};
-         	var paymentData = $scope.reservationData;
-  	 		$scope.showAddNewPaymentModal(passData, paymentData);
+	         	var paymentData = $scope.reservationData;
+	  	 		$scope.showAddNewPaymentModal(passData, paymentData);
          	};
          	$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);	
   	 	}

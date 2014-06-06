@@ -103,7 +103,6 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
          		var passData = {
 		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
 		  	 		"fromView": "staycard",
-		  	 		"selected_payment_type": 0, //Default value of credit card - TODO:check in seed data
 		  	 		"credit_card": data.RVCardReadCardType,
 		  	 		"card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
 		  	 		"name_on_card": data.RVCardReadCardName,
