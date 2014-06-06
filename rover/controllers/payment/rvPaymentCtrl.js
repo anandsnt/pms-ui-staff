@@ -52,14 +52,22 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * updating staycard with new data
 	 */
 	$scope.saveSuccess = function(){
+		var billNumber = parseInt($scope.passData.fromBill)-1;
 		$scope.$emit("hideLoader");
 		ngDialog.close();
 		var cardNumber = $scope.saveData.card_number;
 		var expiryDate = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
 		var cardCode = $scope.saveData.credit_card;
-		$scope.paymentData.payment_details.card_type_image = cardCode.toLowerCase()+".png";
-		$scope.paymentData.payment_details.card_number = cardNumber.substr(cardNumber.length - 4);
-		$scope.paymentData.payment_details.card_expiry = expiryDate;
+		if($scope.passData.fromView == "staycard"){
+			$scope.paymentData.payment_details.card_type_image = cardCode.toLowerCase()+".png";
+			$scope.paymentData.payment_details.card_number = cardNumber.substr(cardNumber.length - 4);
+			$scope.paymentData.payment_details.card_expiry = expiryDate;
+		} else {
+			$scope.paymentData.bills[billNumber].credit_card_details.card_code = cardCode.toLowerCase();
+			$scope.paymentData.bills[billNumber].credit_card_details.card_number = cardNumber.substr(cardNumber.length - 4);
+			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = expiryDate;
+		}
+		
 	};
 	$scope.failureCallBack = function(errorMessage){
 		$scope.$emit("hideLoader");
@@ -107,7 +115,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		var data = dclone($scope.saveData, unwantedKeys);
 
 		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
-			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
+			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.saveSuccess);
 		} else {
 			//Used to update the list with new value
 			var cardNumber = $scope.saveData.card_number;
