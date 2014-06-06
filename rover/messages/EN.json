@@ -87,5 +87,17 @@
     "SELECT_DATE": "Select date",
     "SELECT_WAKEUP_TIME": "Select wake-up time",
     "WAKE_UP_HEADER":"Wake up",
-    "NOT_SET":"Not Set"
+    "NOT_SET":"Not Set",
+    "LOYALTY_LABEL":"Loyalty",
+    "NEW_LOYALTY_LABEL":"New Loyalty Program",
+    "LOYALTY_PROGRAM_LABEL":"Loyalty Program",
+    "LOYALTY_TYPE_LABEL":"TYPE",
+    "LOYALTY_LEVEL_LABEL":"LEVEL",
+    "LOYALTY_PROGRAM_SELECT_LABEL":" Select Loyalty Program",
+    "LOYALTY_TYPE_SELECT_LABEL":"Select Loyalty Type",
+    "LOYALTY_LEVEL_SELECT_LABEL":"Select Loyalty Level",
+    "LOYALTY_CODE_LABEL":"Code",
+    "FREEQUENT_FLYER_LABEL":"Frequent Flyer Program",
+    "HOTEL_LOYALTY_LABEL":"Hotel Loyalty Program"
+
 }

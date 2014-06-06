@@ -1,45 +1,46 @@
 <div id="modal" class="modal-show" role="dialog">
-<form id="new-loyalty-program" class="modal-content form new-content" name="new-loyalty-program" method="post" action="index.html">
-<button id="modal-close" ng-click = "closeDialog()" class="modal-close dark-title" type="button">
-<span class="icons icon-close"></span>
-</button>
-<strong class="new-form-title">New Loyalty Program</strong>
-<div class="entry full-width">
-<div id="notification-message"></div>
-</div>
-<div class="entry full-width">
-<label for="program">Loyalty Program</label>
-<div class="select">
-<select id="program" name="program">
-<option class="placeholder" value="" selected="selected">Select Loyalty Program</option>
-<option value="hlp">Hotel Loyalty Program</option>
-<option value="ffp">Frequent Flyer Program</option>
-</select>
-</div>
-</div>
-<div class="entry full-width">
-<label for="type">Type</label>
-<div class="select">
-<select id="type" name="type">
-<option class="placeholder" value="">Select Loyalty Type</option>
-</select>
-</div>
-</div>
-<div class="entry full-width">
-<label for="level">Level</label>
-<div class="select">
-<select id="level" name="level">
-<option class="placeholder" value="">Select Loyalty Level</option>
-</select>
-</div>
-</div>
-<div class="entry full-width">
-<label for="code">Code</label>
-<input id="code" type="text" value="" name="code">
-</div>
-<div class="actions float">
-<button id="cancel" class="button blank modal-close" ng-click = "closeDialog()" type="button">Cancel</button>
-<button id="save" class="button green modal-close" type="button">Add</button>
-</div>
-</form>
+   <form id="new-loyalty-program" class="modal-content form new-content" name="new-loyalty-program" method="post" action="index.html">
+      <button id="modal-close" ng-click = "closeDialog()" class="modal-close dark-title" type="button">
+      <span class="icons icon-close"></span>
+      </button>
+      <strong class="new-form-title" translate>NEW_LOYALTY_LABEL</strong>
+      <div class="entry full-width">
+         <div id="notification-message"></div>
+      </div>
+      <div class="entry full-width">
+         <label for="program" translate>LOYALTY_PROGRAM_LABEL</label>
+         <div class="select">
+            <select id="program" name="program">
+               <option class="placeholder" value="" translate>LOYALTY_PROGRAM_SELECT_LABEL</option>
+               <option value="loyaltyprogram.code" ng-repeat="loyaltyprogram in data.loyaltyprograms">{{loyaltyprogram.name}}</option>
+            </select>
+         </div>
+      </div>
+      <div class="entry full-width">
+         <label for="type" translate>LOYALTY_TYPE_LABEL</label>
+         <div class="select">
+            <select id="type" name="type">
+               <option class="placeholder" value="" translate>LOYALTY_TYPE_SELECT_LABEL</option>
+               <option value="loyaltytype.code" ng-repeat="loyaltytype in data.loyaltytypes">{{loyaltytype.name}}</option>
+            </select>
+         </div>
+      </div>
+      <div class="entry full-width">
+         <label for="level" translate>LOYALTY_LEVEL_LABEL</label>
+         <div class="select">
+            <select id="level" name="level">
+               <option class="placeholder" value="" translate>LOYALTY_LEVEL_SELECT_LABEL</option>
+               <option value="loyaltylevel.code" ng-repeat="loyaltylevel in data.loyaltylevels">{{loyaltylevel.name}}</option>
+            </select>
+         </div>
+      </div>
+      <div class="entry full-width">
+         <label for="code" translate>LOYALTY_CODE_LABEL</label>
+         <input id="code" type="text" value="" name="code">
+      </div>
+      <div class="actions float">
+         <button id="cancel" class="button blank modal-close" ng-click = "closeDialog()" type="button" translate>CANCEL</button>
+         <button id="save" class="button green modal-close" type="button" translate>ADD</button>
+      </div>
+   </form>
 </div>
