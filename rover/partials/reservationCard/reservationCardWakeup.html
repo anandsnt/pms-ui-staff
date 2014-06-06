@@ -1,11 +1,11 @@
 <div class="block-item item-wake-up">
 	<div class="block-title">
 		<span class="icons icon-alarm active"></span>
-		<h3>Wake up</h3>
+		<h3 translate>WAKE_UP_HEADER</h3>
 	</div>
 	<!-- Wake up feature available - added class 'feature-available'. -->
-	<a id="wakeup-time" class="next-view hover-hand feature-available"> 
-		<span id="reservation_card_wake_up_time" class="value text feature-available">
-			 Not Set </span>
+	<a id="wakeup-time" class="next-view hover-hand" ng-class="{'feature-available': isNewsPaperPreferenceAndWakeupCallAvailable()}" ng-click="showWakeupCallDialog()"> 
+		<span id="reservation_card_wake_up_time" ng-model="wake_up_time" ng-class="{'feature-available': isNewsPaperPreferenceAndWakeupCallAvailable()}" class="value text">
+			 {{wake_up_time}} </span>
 	 </a>
 </div>

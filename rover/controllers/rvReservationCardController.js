@@ -1,4 +1,4 @@
-sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVReservationCardSrv', function($rootScope, $scope, RVReservationCardSrv){
+sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVReservationCardSrv', 'RVGuestCardSrv', function($rootScope, $scope, RVReservationCardSrv, RVGuestCardSrv){
 	BaseCtrl.call(this, $scope);
 	$scope.timeline = "";
 	$scope.reservationList = [];
@@ -32,6 +32,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 		RVReservationCardSrv.setGuestData($scope.data.guest_details);
 
 		var fetchGuestcardDataSuccessCallback = function(data){
+			
 			var contactInfoData = {'data': data,
 									'countries': $scope.data.countries,
 									'userId':$scope.data.user_id,
@@ -39,6 +40,11 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 									'vip':$scope.data.vip};
 	        $scope.$emit('guestCardUpdateData',contactInfoData);
 	        $scope.$emit('hideLoader');
+	        var guestInfo = {
+	        	"user_id":data.user_id,
+	        	"guest_id":data.guest_id
+	        };
+	        $scope.showGuestPaymentList(guestInfo);
 	    };
 	    var fetchGuestcardDataFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
@@ -129,4 +135,26 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 	 	$scope.$broadcast("RESERVATIONDETAILS", currentConfirmationNumber);
 	 	$scope.currentReservationId = currentConfirmationNumber;
 	 };
+	 /*
+	  * To show the payment data list
+	  */
+	 $scope.showGuestPaymentList = function(guestInfo){
+	 	var userId = guestInfo.user_id,
+	 		guestId = guestInfo.guest_id;
+	 	 var paymentSuccess = function(paymentData){
+		 	 $scope.$emit('hideLoader');
+		 	
+		 	 
+		 	 var paymentData = {"data":paymentData,
+		 	 			"user_id":userId,
+		 	 			"guest_id":guestId
+		 	};
+		 	 
+		 	 
+		 	 $scope.$emit('GUESTPAYMENTDATA', paymentData);
+		 };
+	 	$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess);  
+	 };
+	 
+	 
 }]);

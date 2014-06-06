@@ -23,7 +23,7 @@
                {{submenu.name}}
             </a>
 
-            <a class="text" data-type="load-listing" href="{{submenu.action_path}}" ui-sref={{submenu.state}}>{{submenu.name}}</a>
+            <a class="text" data-type="load-listing"  ng-click="clickedMenuItem($event, submenu.state)">{{submenu.name}}</a>
          </li>
 
       </ul>      

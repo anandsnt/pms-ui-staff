@@ -6,7 +6,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
     $scope.$emit("updateRoverLeftMenu","rateManager");
 
     $scope.displayMode = "CALENDAR";
-    $scope.filterConfigured = false;
+    //$scope.filterConfigured = false;
     var defaultDateRange = 7;
     $scope.backbuttonEnabled = false;
     
@@ -14,19 +14,20 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
     $scope.currentLeftMenuClass = 'slide_right';
     
 
-	  $scope.currentFilterData =	{
-           begin_date : dateFilter(new Date(), 'yyyy-MM-dd'),
-           end_date : dateFilter(new Date((new Date()).getTime() + defaultDateRange*24*60*60*1000), 'yyyy-MM-dd'),
+	$scope.currentFilterData =	{
+           filterConfigured: false,
+           begin_date : "",//dateFilter(new Date(), 'yyyy-MM-dd'),
+           end_date : "",//dateFilter(new Date((new Date()).getTime() + defaultDateRange*24*60*60*1000), 'yyyy-MM-dd'),
            zoom_level : [{"value": "3","name": "3 days"},{"value": "4","name": "4 days"},{"value": "5","name": "5 days"},{"value": "6","name": "6 days"},{"value": "7","name": "7 days"}],
            zoom_level_selected : "3",
            is_checked_all_rates : true,
            rate_types: [],
-           rate_type_selected : '',
+           rate_type_selected_list : [],
            rates : [],
            rates_selected_list : [],
-           name_card_ids : []
+           name_cards : [],
+           selected_date_range : "Select Date Range"
    	};
-
 
     /* UI options like column width are computed here 
        A property, and a function to compute the same are given below
@@ -49,24 +50,20 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
         var TOP_BOTTOM_HEIGHT = 240;
 
         var totalwidth = $window.innerWidth - FILTER_OPTIONS_WIDTH - FIRST_COLUMN_WIDTH; //Adjusting for left side .
-        var singleColumnWidth = parseInt($scope.currentFilterData.zoom_level_selected) + COLUMN_BORDER_WIDTH; //Adjusting for the padding etc
+  
         var mywidth = totalwidth/parseInt($scope.currentFilterData.zoom_level_selected);
         var numColumns = new Date($scope.currentFilterData.end_date) - new Date($scope.currentFilterData.begin_date);
         numColumns = numColumns/(24*60*60*1000) + 1;
+        if (numColumns < parseInt($scope.currentFilterData.zoom_level_selected)){
+          numColumns = parseInt($scope.currentFilterData.zoom_level_selected);
+        }
+
         var columsTotalWidth = numColumns * mywidth;
         if ( columsTotalWidth < totalwidth) columsTotalWidth = totalwidth; //@minimum, table should cover full view.
         $scope.uiOptions.tableWidth = parseInt(FIRST_COLUMN_WIDTH + columsTotalWidth);
         $scope.uiOptions.tableHeight = $window.innerHeight - TOP_BOTTOM_HEIGHT;
         $scope.uiOptions.columWidth = parseInt(mywidth);
         
-        console.log("TotalWidth :  "+ totalwidth);
-        console.log("singleColumnWidth :  "+singleColumnWidth );
-        console.log("mywidth :  "+mywidth );
-        console.log("numColumns :  "+ numColumns);
-        console.log("columsTotalWidth :  "+columsTotalWidth );
-        console.log("tableWidth :  "+$scope.uiOptions.tableWidth );
-        console.log("tableHeight :  "+$scope.uiOptions.tableHeight );
-        console.log("columWidth :  "+$scope.uiOptions.columWidth );
     };
 
     $scope.ratesDisplayed = [];
@@ -80,8 +77,9 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
     };
 
     $scope.showRatesBtnClicked = function(){
-        $scope.filterConfigured = true;
+        //$scope.filterConfigured = true;
         $scope.computeColumWidth();
+        $scope.toggleLeftMenu();
         $scope.$broadcast("showRatesClicked");
         
     };
@@ -109,8 +107,7 @@ sntRover.controller('RMDashboradCtrl', ['$scope','$window','dateFilter', functio
       }
     }
 
-
-  /*
+    /*
     * function to handle click
     */
 
