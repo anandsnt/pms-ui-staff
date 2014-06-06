@@ -604,16 +604,16 @@
 					}
 
 					.scrollable { 
-						position: absolute;
-						left: 15px;
-						top: 80px; 
-						.calc-width(100, 20); /* %, px */
-						.calc-height(100, 398); /* %, px */
+						position: relative;
+						width: 100%;
+						height: auto;
+						max-height: 190px;
 
-            > .wrapper { padding-bottom: 2px; }
+            			> .wrapper { padding-bottom: 2px; }
+
 						li {
 							position: relative;
-							margin: 0 20px 0 0;
+							margin: 0 10px 0 0;
 							padding: 5px;
 							text-align: left;
 							line-height: 1.1em;
@@ -653,11 +653,12 @@
 					#total-charge {
 						border-top: 2px solid rgba(0,0,0,.1);
 						padding-top: 10px;
+						padding-right: 15px;
 						font-weight: 600;
 						line-height: 30px;
-						.calc-width(100, 40); /* %, px */
+						width: auto;
 						.float;
-
+						
 						.price {
 							font-size: 30px;
 							font-weight: 300;
@@ -665,7 +666,7 @@
 						}
 						
 						&.offset-1 { top: 140px; }
-						&.offset-2 { top: 185px; }
+						/*&.offset-2 { top: 185px; }*/
 						&.offset-3 { top: 230px; }
 					}
 

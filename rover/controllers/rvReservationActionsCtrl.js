@@ -3,8 +3,8 @@ sntRover.controller('reservationActionsController',
 		'$rootScope',
 		'$scope',
 		'ngDialog',
-		'rvChargeItems',
-		function($rootScope, $scope, ngDialog, rvChargeItems) {
+		'RVChargeItems',
+		function($rootScope, $scope, ngDialog, RVChargeItems) {
 			BaseCtrl.call(this, $scope);
 			
 			$scope.displayTime = function(status){
@@ -64,7 +64,8 @@ sntRover.controller('reservationActionsController',
 				return timeColor;
 			};
 			$scope.openPostCharge = function() {
-				var reservation_id = $scope.reservationData.reservation_card.reservation_id;
+				$scope.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+
 				var callback = function(data) {
 				    $scope.$emit( 'hideLoader' );
 
@@ -77,7 +78,11 @@ sntRover.controller('reservationActionsController',
 		        	});
 				};
 
-				$scope.invokeApi(rvChargeItems.fetch, reservation_id, callback);
+				$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
+			};
+
+			$scope.closeDialog = function() {
+				ngDialog.close();
 			};
 		
 		}

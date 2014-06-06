@@ -1,4 +1,4 @@
-sntRover.service('rvChargeItems',
+sntRover.service('RVChargeItems',
 	[
 		'$q',
 		'RVBaseWebSrv',
@@ -32,6 +32,7 @@ sntRover.service('rvChargeItems',
 
 						// we are gonna do some things here
 						// that will help with filtering the items
+						// and paying around numbers
 						for (var i = 0, j = data.items.length; i < j; i++) {
 							var item = data.items[i];
 							
@@ -40,6 +41,9 @@ sntRover.service('rvChargeItems',
 
 							// lets show chosen count
 							item.count = 0;
+
+							// parse string to float
+							item.unit_price = parseFloat( item.unit_price );
 						};
 
 						// keep the data fetched once safe on FE
@@ -53,10 +57,18 @@ sntRover.service('rvChargeItems',
 				return deferred.promise;
 			}.bind(this);
 
-			this.postCharges = function() {
+			this.postCharges = function(params) {
+				var deferred = $q.defer();
 				var url = '/staff/items/post_items_to_bill';
 
-				// RVBaseWebSrv.postJSON(url, params)
+				RVBaseWebSrv.postJSON(url, params)
+					.then(function(data) {
+						deferred.resolve(data);
+					}, function(data) {
+						deferred.reject(data);
+					});
+
+				return deferred.promise;
 			};
 		}
 	]
