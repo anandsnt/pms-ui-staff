@@ -1,20 +1,29 @@
 <!-- Content -->
 <section id="details-and-payment" class="content reservations-inner">
     <div id="details-and-payment-content" class="reservations-content-wrapper">
-        <div id="reservation-summary" class="reservation-summary scrollable">
+        <div id="reservation-summary" class="reservation-summary scrollable" ng-iscroll='reservationSummary'>
             <div class="wrapper"> 
-                <h2>Reservation summary</h2>
+                <h2 translate>RESERVATION_SUMMARY</h2>
                 <ul class="data">
-                    <li><span class="guest-status room">rooms</span>1 rooms</li>
-                    <li><span class="guest-status nights">nights</span>1 nights</li>
+                    <li><span class="guest-status room" translate>ROOMS</span>
+                        <span>{{reservationData.roomCount}}</span>
+                        <span ng-if="reservationData.roomCount === 1" translate>ROOM</span>
+                        <span ng-if="reservationData.roomCount !== 1" translate>ROOMS</span>
+                    </li>
+                    <li>
+                        <span class="guest-status nights" translate>NIGHTS</span>
+                        <span>{{reservationData.numNights}}</span>
+                        <span ng-if="reservationData.numNights === 1" translate> NIGHT</span>
+                        <span ng-if="reservationData.numNights !== 1" translate> NIGHTS</span>
+                    </li>
                 </ul>
                 <div class="stay-dates">
                     <div class="check-in-dates">
                         <span class="guest-status small-icon check-in">check-in</span>
-                        Today, 05-29-2014
+                        {{reservationData.arrivalDate | date:'EEEE dd-MM-yyyy'}}
                         <div class="check-data icons icon-time time-in">
                             <div class="select hour">
-                                <select id="check-in-hour" name="check-in" class="placeholder">
+                                <select name="check-in" class="placeholder" ng-model="reservationData.checkinTime.hh">
                                     <option value="" selected>HH</option>
                                     <option value="00">00</option>
                                     <option value="01">01</option>
@@ -32,7 +41,7 @@
                                 </select>
                             </div>
                             <div class="select minutes">
-                                <select id="check-in-minutes" name="check-in" class="placeholder">
+                                <select name="check-in" class="placeholder"ng-model="reservationData.checkinTime.mm">
                                     <option value="" selected>MM</option>
                                     <option value="00">00</option>
                                     <option value="15">15</option>
@@ -41,7 +50,7 @@
                                 </select>
                             </div>
                             <div class="select ampm">
-                                <select id="check-in-ampm" name="check-in" class="placeholder">
+                                <select name="check-in" class="placeholder" ng-model="reservationData.checkinTime.ampm">
                                     <option value="" selected>AM/PM</option>
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
@@ -51,10 +60,10 @@
                     </div>
                     <div class="check-out-dates">
                         <span class="guest-status small-icon check-out">check-out</span>
-                        Tomorrow, 05-30-2014
+                        {{reservationData.departureDate | date:'EEEE dd-MM-yyyy'}}
                         <div class="check-data icons icon-time time-out">
                             <div class="select hour">
-                                <select id="check-out-hour" name="check-out" class="placeholder">
+                                <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.hh">
                                     <option value="" selected>HH</option>
                                     <option value="00">00</option>
                                     <option value="01">01</option>
@@ -72,7 +81,7 @@
                                 </select>
                             </div>
                             <div class="select minutes">
-                                <select id="check-out-minutes" name="check-out" class="placeholder">
+                                <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.mm">
                                     <option value="" selected>MM</option>
                                     <option value="00">00</option>
                                     <option value="15">15</option>
@@ -81,7 +90,7 @@
                                 </select>
                             </div>
                             <div class="select ampm">
-                                <select id="check-out-ampm" name="check-out" class="placeholder">
+                                <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.ampm">
                                     <option value="" selected>AM/PM</option>
                                     <option value="AM">AM</option>
                                     <option value="PM">PM</option>
@@ -90,94 +99,92 @@
                         </div>
                     </div>
                 </div>
-                <div id="room-1" class="rooms">
+                <div class="rooms" ng-repeat="room in reservationData.rooms">
                     <div class="title">
-                        Room 1
+                        <span translate>ROOM</span>
+                        {{$index + 1}}
                         <div class="count">
-                            <span><span class="label">Adults</span>2</span>
-                            <span><span class="label">Children</span>0</span>
-                            <span><span class="label">Infants</span>0</span>
+                            <span><span class="label" translate>ADULTS</span>{{room.numAdults}}</span>
+                            <span><span class="label" translate>CHILDREN</span>{{room.numChildren}}</span>
+                            <span><span class="label" translate>INFANTS</span>{{room.numInfants}}</span>
                         </div>
                     </div>
                     <!-- This here is dynamic content, depending on actual room booked -->
-                    <h4>Standard Room <span>#22648596</span></h4>
+                    <h4>{{room.roomType}}<span>#22648596</span></h4>
                     <ul class="rate-and-enhancements">
                         <li>
-                            <em>Best Available Rate</em>
+                            <em>{{room.rateName}}</em>
                             <span class="price">
-                                $149
-                                <span>avg/night</span>
-                                <span class="total">$149</span>
+                                {{currencySymbol}}{{room.rateAvg}}
+                                <span translate>AVG_NIGHT</span>
+                                <span class="total">{{currencySymbol}}{{room.rateTotal}}</span>
                             </span>
                         </li>
-                        <li>
-                            <em>2x Champange &amp; Chocolates</em>
+                        <li ng-repeat='addon in room.addOns'>
+                            <em>{{addon.name}}</em>
                             <span class="price">
-                                $79
-                                <span>each</span>
-                                <span class="total">$158</span>
+                                {{currencySymbol}}{{addon.avgAmount}}
+                                <span translate>EACH</span>
+                                <span class="total">{{currencySymbol}}{{addon.avgAmount}}</span>
                             </span>
                         </li>
                     </ul>
                 </div>
                 <ul class="total-stay-cost">
-                    <li><span class="label">Tax</span>$15</li>
-                    <li><span class="label">Total Stay Cost</span><strong>$322</strong></li>
+                    <li><span class="label" translate>TAX</span>{{currencySymbol}}{{reservationData.totalTaxAmount}}</li>
+                    <li><span class="label" translate>TOTAL_STAY_COST</span><strong>{{currencySymbol}}{{reservationData.totalStayCost}}</strong></li>
                 </ul>
             </div> 
         </div>
-        <form method="get" action="reservations/" name="payment-info" id="payment-info" class="form payment-info scrollable">
+        <form class="form payment-info scrollable" ng-iscroll='paymentInfo'>
             <div class="wrapper">
                 <div class="entry margin">
-                    <label for="firstname">First name</label>
-                    <input name="firstname" id="firstname" value="" type="text">
+                    <label for="firstname" translate>FIRST_NAME</label>
+                    <input name="firstname" type="text" ng-model="reservationData.guest.firstName">
                 </div>
                 <div class="entry">
-                    <label for="lastname">Last Name</label>
-                    <input name="lastname" id="lastname" value="" type="text">
+                    <label for="lastname" translate>LAST_NAME</label>
+                    <input name="lastname" type="text" ng-model="reservationData.guest.lastName">
                 </div>
                 <div class="entry full-width">
-                    <label for="email">E-mail address</label>
-                    <input name="email" id="email" value="" type="email">
+                    <label for="email" translate>EMAIL_ADDRESS</label>
+                    <input name="email" type="email" ng-model="reservationData.guest.email">
                     <label class="checkbox inline">
-                        <span class="icon-form icon-checkbox checked"></span>
-                        <input name="send-confirmation" id="send-confirmation" value="send-confirmation" type="checkbox" checked />
-                        Send confirmation E-mail to this address
+                        <span class="icon-form icon-checkbox" ng-class="{'checked' : data.isConfirmationEmailSameAsGuestEmail}"></span>
+                        <input name="send-confirmation" value="send-confirmation" type="checkbox" ng-model="data.isConfirmationEmailSameAsGuestEmail" ng-change="confirmEmailCheckboxClicked()"/>
+                        <span translate>SEND_CONFIRM_EMAIL_TO_ADDRESS</span>
                     </label>
                 </div>
-                <div class="entry full-width hidden">
-                    <label for="email-secondary">Receive confirmation email on this address</label>
-                    <input name="email-secondary" id="email-secondary" value="" type="email">
+                <div class="entry full-width" ng-class="{'hidden' : data.isConfirmationEmailSameAsGuestEmail}">
+                    <label for="email-secondary" translate>RECEIVE_CONFIRM_EMAIL_TO_ADDRESS</label>
+                    <input name="email-secondary" type="email" ng-model="reservationData.guest.sendConfirmMailTo">
                 </div>
                 <div class="entry full-width">
-                    <label for="payment-type">Payment type</label>
+                    <label for="payment-type" translate>PAYMENT_TYPE</label>
                     <div class="select">
-                        <select name="payment-type" class="placeholder">
-                            <option value="" selected>Select Payment Type</option>
-                            <option value="credit-card">Credit card</option>
-                            <option value="cash">Cash</option>
-                            <option value="paypal">PayPal</option>
-                            <option value="check">Check</option>
+                        <select class="placeholder" ng-model="reservationData.paymentType.type"
+                            ng-options="paymentMethod as paymentMethod.description for paymentMethod in data.paymentMethods" ng-change="">
+                            <option value="" selected translate>SELECT_PAYMENT_TYPE</option>
                         </select>
                     </div>
                 </div>
                 <div class="entry card-number-large margin">
-                    <label for="card-number-set1">Credit Card</label>
-                    <input name="card-number-set1" id="card-number-set1" value="" type="text" disabled />
+                    <label for="card-number-set1" translate>CREDIT_CARD</label>
+                    <input name="card-number-set1" type="text" ng-disabled="reservationData.paymentType.type.name !== 'CC'" ng-model="reservationData.paymentType.ccDetails.number"/>
                 </div>
                 <div class="entry card-number-small">
-                    <label for="expiry-month">Expiration date (<span>MM YY</span>)</label>
-                    <input name="expiry-month" id="expiry-month" placeholder="" value="" maxlength="2" size="2" type="text" disabled  />
-                    <input name="expiry-year" id="expiry-year" placeholder=""  value="" maxlength="2" size="2" type="text" disabled  />
+                    <label for="expiry-month"><span translate>EXPIRATION_DATE</span> (<span>MM YY</span>)</label>
+                    <input name="expiry-month" placeholder="" maxlength="2" size="2" type="text" ng-disabled="reservationData.paymentType.type.name !== 'CC'" ng-model="reservationData.paymentType.ccDetails.expMonth"/>
+                    <input name="expiry-year" placeholder=""  maxlength="2" size="2" type="text" ng-disabled="reservationData.paymentType.type.name !== 'CC'" ng-model="reservationData.paymentType.ccDetails.expYear"/>
                 </div>
                 <div class="entry full-width">
-                    <label for="name-on-card">Name on card</label>
-                    <input name="name-on-card" id="name-on-card" value="" type="text" disabled  />
+                    <label for="name-on-card" translate>NAME_ON_CARD</label>
+                    <input name="name-on-card" id="name-on-card" value="" type="text" ng-disabled="reservationData.paymentType.type.name !== 'CC'" ng-model="reservationData.paymentType.ccDetails.nameOnCard"/>
                 </div>
                 <div class="actions">
-                    <button type="button" id="save-reservation" class="button green">Confirm Reservation <span>&amp; return to dashboard</span></button>
-                    <button type="button" id="save-and-add-new" class="button brand-colors">Confirm Reservation <span>&amp; create new for this guest</span></button>
-                    <button type="button" id="cancel-reservation" class="button blank">Cancel Reservation</button>
+                    <button type="button" id="save-reservation" class="button green" >{{'CONFIRM_RESERVATION' | translate}} <span>&amp; {{'RETURN_TO_DASHBOARD' | translate}}</span></button>
+                    <button type="button" id="save-and-add-new" class="button brand-colors">{{'CONFIRM_RESERVATION' | translate}}<span>&amp; {{'CREATE_NEW_FOR_GUEST' | translate}}</span></button>
+                    <button type="button" id="cancel-reservation" class="button blank" translate>CANCEL_RESERVATION</button>
                 </div>
             </div> 
         </form>
