@@ -1,4 +1,4 @@
-<div id="restrictionDays" class="price-div" ng-controller = "RestrictionWeekdaysCtrl"  ng-iscroll="restictionWeekDaysScroll" ng-iscroll-delay="3000" >
+<div id="restrictionDays" class="price-div" ng-controller = "RestrictionWeekdaysCtrl"  ng-iscroll="restictionWeekDaysScroll" ng-iscroll-delay="2500">
 	<div class="scrollable">
 		<div class="restriction_text" >
 			DAYS OF WEEK
@@ -6,7 +6,7 @@
 		
 		<div class="price-set-title">
 			<label class="checkbox" ng-repeat="day in daysOptions.days" ng-model="daysOptions.days.mon" ng-click="day.value = !day.value">
-				<span class="icon-form icon-checkbox" ng-class="{'checked': !day.value}"></span>
+				<span class="icon-form icon-checkbox" ng-class="{'checked': day.value}"></span>
 				<input type="checkbox" >
 				<span> {{day.day}} </span> 
           	</label>

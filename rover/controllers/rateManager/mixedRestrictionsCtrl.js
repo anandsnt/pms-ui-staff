@@ -47,6 +47,8 @@ sntRover.controller('MixedRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
             currentSelected.showEdit = false;
             $(".ngdialog-content").removeClass("data-entry");
             $scope.options.daysEntered = '';
+            $scope.updatePopupWidth();
+
 
         };
               

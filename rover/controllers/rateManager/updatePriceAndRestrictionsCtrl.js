@@ -13,17 +13,47 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 computePopUpdataForRateViewCal();
                 fetchPriceDetailsForRate();
             }
-
-
         };
 
     $scope.$parent.myScrollOptions = {
         'restictionsList' : {            
             scrollbars : true,
             interactiveScrollbars : true,
-            click : true            
+            click : true,
+            snap : false             
+        },
+        'priceList' : {
+            scrollbars : true,
+            interactiveScrollbars : true,
+            click : true, 
+            snap : false
+        },
+        'restictionWeekDaysScroll': {
+                scrollbars: true,
+                interactiveScrollbars: true,
+                click: true,
+                useTransform: true,
+                zoom: false,
+                snap: false,
+                onBeforeScrollStart: function(e) {
+                    var target = e.target;
+                    while (target.nodeType != 1) target = target.parentNode;
+                    if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+                        e.preventDefault();
+                }
         }
     };
+
+    $scope.refreshPopUpScrolls = function(){
+        setTimeout(function(){
+            if(typeof $scope.myScroll['restictionsList'] != 'undefined')
+            $scope.myScroll['restictionsList'].refresh();
+            if(typeof $scope.myScroll['priceList'] != 'undefined')
+            $scope.myScroll['priceList'].refresh();
+            if(typeof $scope.myScroll['restictionWeekDaysScroll'] != 'undefined')
+            $scope.myScroll['restictionWeekDaysScroll'].refresh();
+        },1000);
+    }
 
     //$scope.restictions.selectedIndex
 
@@ -32,17 +62,17 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     };
 
     $scope.daysOptions = {  "days":[ 
-                            {key:"MON",day:"MONDAY",value:"false"},//"mon" : false,
-                            {key:"TUE",day:"TUESDAY",value:"false"},//"tue" : false,
-                            {key:"WED",day:"WEDNESDAY",value:"false"},//"wed" : false,
-                            {key:"THU",day:"THURSDAY",value:"false"},//"thu" : false,
-                            {key:"FRI",day:"FRIDAY",value:"false"},//"fri" : false,
-                            {key:"SAT",day:"SATURDAY",value:"false"},//"sat" : false,
-                            {key:"SUN",day:"SUNDAY",value:"false"}//"sun" : false,
+                            {key:"MON",day:"MONDAY",value:false},
+                            {key:"TUE",day:"TUESDAY",value:false},
+                            {key:"WED",day:"WEDNESDAY",value:false},
+                            {key:"THU",day:"THURSDAY",value:false},
+                            {key:"FRI",day:"FRIDAY",value:false},
+                            {key:"SAT",day:"SATURDAY",value:false},
+                            {key:"SUN",day:"SUNDAY",value:false}
                         ],
                     "numOfWeeks" : 1,
-                    "applyToPrice" : false,
-                    "applyToRestrictions" : false
+                    "applyToPrice" : true,
+                    "applyToRestrictions" : true
                  };
 
     $scope.hideUpdatePriceAndRestrictionsDialog = function(){
@@ -73,13 +103,31 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     var computePopupdateForRoomTypeCal = function(){
 
         $scope.data = {};
-        $scope.data.id = "";
-        $scope.data.name = "";
+        $scope.data.id = '';
+        $scope.data.name = '';
+        $scope.data.single = '';
+        $scope.data.double = '';
+        $scope.data.extra_adult = '';
+        $scope.data.child = '';
+        $scope.data.single_sign = '+';
+        $scope.data.single_extra_amnt = '';
+        $scope.data.single_amnt_diff = '$';
+        $scope.data.double_sign = '+';
+        $scope.data.double_extra_amnt = '';
+        $scope.data.double_amnt_diff = '$';
+        $scope.data.extra_adult_sign = '+';
+        $scope.data.extra_adult_extra_amnt = '';
+        $scope.data.extra_adult_amnt_diff = '$';
+        $scope.data.child_sign = '+';
+        $scope.data.child_extra_amnt = '';
+        $scope.data.child_amnt_diff = '$';
+                
+               
         selectedDateInfo = {};
 
         //Get the rate/restriction details for the selected cell
         if($scope.popupData.all_data_selected) {
-            selectedDateInfo = $scope.calendarData.rate_restrictions[$scope.popupData.selectedDate];
+            selectedDateInfo.restrictions = $scope.calendarData.rate_restrictions[$scope.popupData.selectedDate];
 
         } else {
             for(var i in $scope.calendarData.data){
@@ -87,13 +135,18 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     selectedDateInfo = $scope.calendarData.data[i][$scope.popupData.selectedDate];
                     $scope.data.id = $scope.calendarData.data[i].id;
                     $scope.data.name = $scope.calendarData.data[i].name;
+                    if(selectedDateInfo != undefined){
+                        $scope.data.single = selectedDateInfo.single;
+                        $scope.data.double = selectedDateInfo.double;
+                        $scope.data.extra_adult = selectedDateInfo.extra_adult;
+                        $scope.data.child = selectedDateInfo.child;
+                    }
                 }
             }
         }
         
-
         var restrictionTypes = {};
-        var rTypes = $scope.calendarData.restriction_types;
+        var rTypes = dclone($scope.calendarData.restriction_types);
         for(var i in rTypes){
             restrictionTypes[rTypes[i].id] = rTypes[i];
             var item =  rTypes[i];
@@ -103,42 +156,21 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             item.showEdit = false;
             item.hasEdit = isRestictionHasDaysEnter(rTypes[i].value);
 
-            for(var i in selectedDateInfo.restrictions){
-                if(selectedDateInfo.restrictions[i].restriction_type_id == itemID){
-                    item.days = selectedDateInfo.restrictions[i].days;
-                    item.isOnRate = selectedDateInfo.restrictions[i].is_on_rate;
-                    item.isRestrictionEnabled = true;
-                    break;
+            if(selectedDateInfo != undefined){
+                for(var i in selectedDateInfo.restrictions){
+                    if(selectedDateInfo.restrictions[i].restriction_type_id == itemID){
+                        item.days = selectedDateInfo.restrictions[i].days;
+                        item.isOnRate = selectedDateInfo.restrictions[i].is_on_rate;
+                        item.isRestrictionEnabled = true;
+                        break;
+                    }
                 }
             }
+            
             restrictionTypes[itemID] = item;
         }
         $scope.data.restrictionTypes = restrictionTypes;
-        $scope.data.previousRestrictionTypes = $scope.data.restrictionTypes;
-        
-        angular.forEach($scope.calendarData.data, function(value, key){
-        	var selectedDate = $scope.popupData.selectedDate;
-    		$scope.data.single = value[selectedDate].single;
-    		$scope.data.double = value[selectedDate].double;
-    		$scope.data.extra_adult = value[selectedDate].extra_adult;
-    		$scope.data.child = value[selectedDate].child;
-    		
-    		
-	    });
-	    $scope.data.single_sign = "";
-        $scope.data.single_extra_amnt = "";
-        $scope.data.single_amnt_diff = "";
-        $scope.data.double_sign = "";
-        $scope.data.double_extra_amnt = "";
-        $scope.data.double_amnt_diff = "";
-        $scope.data.extra_adult_sign = "";
-        $scope.data.extra_adult_extra_amnt = "";
-        $scope.data.extra_adult_amnt_diff = "";
-        $scope.data.child_sign = "";
-        $scope.data.child_extra_amnt = "";
-        $scope.data.child_amnt_diff = "";
-        
-       
+        $scope.data.previousRestrictionTypes = dclone($scope.data.restrictionTypes);
 		
     };
 
@@ -166,7 +198,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         }
 
         var restrictionTypes = {};
-        var rTypes = $scope.calendarData.restriction_types;
+        var rTypes = dclone($scope.calendarData.restriction_types);
         for(var i in rTypes){
             restrictionTypes[rTypes[i].id] = rTypes[i];
             var item =  rTypes[i];
@@ -176,19 +208,20 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             item.showEdit = false;
             item.hasEdit = isRestictionHasDaysEnter(rTypes[i].value);
 
-
-            for(var i in selectedDateInfo){
-                if(selectedDateInfo[i].restriction_type_id == itemID){
-                    item.days = selectedDateInfo[i].days;
-                    item.isOnRate = selectedDateInfo[i].is_on_rate;
-                    item.isRestrictionEnabled = true;
-                    break;
+            if(selectedDateInfo != undefined){
+                for(var i in selectedDateInfo){
+                    if(selectedDateInfo[i].restriction_type_id == itemID){
+                        item.days = selectedDateInfo[i].days;
+                        item.isOnRate = selectedDateInfo[i].is_on_rate;
+                        item.isRestrictionEnabled = true;
+                        break;
+                    }
                 }
             }
             restrictionTypes[itemID] = item;
         }
         $scope.data.restrictionTypes = restrictionTypes;
-        $scope.data.previousRestrictionTypes = JSON.parse(JSON.stringify($scope.data.restrictionTypes));
+        $scope.data.previousRestrictionTypes = dclone($scope.data.restrictionTypes);
     };
 
     var isRestictionHasDaysEnter = function(restriction){
@@ -205,71 +238,55 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
     */
     $scope.onOffRestrictions = function(id, action, days,selectedIndex){
     	
-    	
-/*        if( $scope.popupData.all_data_selected || $scope.popupData.fromRoomTypeView){
-             $(".ngdialog-content").addClass("data-entry");
-        }*/
-
-
+        $scope.data.showEditView = false;
         $scope.restrictionsList.selectedIndex = selectedIndex;
 
     	angular.forEach($scope.data.restrictionTypes, function(value, key){
     		value.showEdit =  false;
     	});
 
-/*        if($scope.popupData.all_data_selected){
-            //$scope.showRestrictionDayUpdate = true;
-            $scope.data.restrictionTypes[id].showEdit = true;
-            return false;
-        }*/
-        
         /*Prompt the user for number of days
          * Only if enabling a restriction.
          */
         if($scope.popupData.all_data_selected || ($scope.data.restrictionTypes[id].hasEdit && action === "ENABLE")){
             $scope.data.showEditView = true;
-            $(".ngdialog-content").addClass("data-entry");
             $scope.data.restrictionTypes[id].showEdit = true;
+            $scope.updatePopupWidth();
+
             return false;
-            //$scope.data.restrictionTypes[id].days = prompt("Please enter the restriction", $scope.data.restrictionTypes[id].days);
         }
-
-
-        
-		/* Shiju PC: Commenting this code, as it creates a bug in setting data.  
-		 * Please review and re-enable as bug fix.
-		 * TODO: Review with UI team.
-		 */
-		
-        /*if($scope.data.restrictionTypes[id].days == "" || $scope.data.restrictionTypes[id].days == null) {
-        	
-            return false;
-        }*/
-            
         if(action == "ENABLE"){
             $scope.data.restrictionTypes[id].isRestrictionEnabled = true; 
         }
         if(action == "DISABLE"){
             $scope.data.restrictionTypes[id].isRestrictionEnabled = false; 
         }
+        $scope.updatePopupWidth();
 
     };
 
+    $scope.updatePopupWidth = function() {
+        var width = 270;
+        if($scope.data.showEditView) {
+            width = width + 400;
+        }
+        if($scope.showExpandedView) {
+            width = width + 270;
+        }
+        if($scope.popupData.fromRoomTypeView && !$scope.data.showEditView) {
+            width = width + 400;
+        }
+        if($scope.showExpandedView && !$scope.popupData.fromRoomTypeView && !$scope.popupData.all_data_selected) {
+            width = width + 270;
+        }
+        $(".ngdialog-content").css("width", width);
+
+    }
+
     $scope.expandButtonClicked = function(){
         $scope.showExpandedView = !$scope.showExpandedView;
-        if($scope.showExpandedView){
-            if($scope.popupData.all_data_selected && $scope.popupData.fromRoomTypeView){
-                $(".ngdialog-content").addClass("full-width");
-            }
-
-            if($scope.popupData.all_data_selected || $scope.popupData.fromRoomTypeView){
-                $(".ngdialog-content").addClass("expanded");
-            }else{
-                $(".ngdialog-content").addClass("moderate");
-            }
-        }else{
-            $(".ngdialog-content").removeClass("expanded moderate full-width");
-        }
+        $scope.updatePopupWidth();
+        $scope.refreshPopUpScrolls();
     };
 
     /**
@@ -282,11 +299,6 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         datesList.push($scope.popupData.selectedDate);
         //If the day value is true, then it is a checked(selected) day
         var selectedDays = [];
-        // for(var key in $scope.daysOptions.days){
-        //     if($scope.daysOptions.days[key]){
-        //         selectedDays.push(key.toUpperCase());
-        //     }
-        // }
 
         $($scope.daysOptions.days).each(function(){
             if(this.value === true){
@@ -316,6 +328,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 
     var calculateDetailsToSave = function(datesSelected){
         var details = [];
+
         // We do not show the apply to restrictions option if not from room type calendar view
         // So setting the flag by default as true
         if(!$scope.popupData.fromRoomTypeView){
@@ -335,7 +348,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                 angular.forEach($scope.data.restrictionTypes, function(value, key){
                     if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled != value.isRestrictionEnabled){
                         var action = "";
-                        if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled == "true"){
+                        if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled){
                             action = "remove";
                         } else {
                             action = "add";
@@ -349,7 +362,7 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     }
                 });
             }
-            
+
             //The popup appears by from the rate calendar view
             if($scope.popupData.fromRoomTypeView){
                 if($scope.daysOptions.applyToPrice || (!$scope.daysOptions.applyToPrice && i== 0)) {
