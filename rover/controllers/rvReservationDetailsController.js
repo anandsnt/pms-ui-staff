@@ -83,7 +83,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 			var passData = {
 		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
 		  	 		"fromView": "staycard",
-		  	 		 "is_swiped": false 
+		  	 		"is_swiped": false 
 		  	 	};
 		  	 	var paymentData = $scope.reservationData;
   	 		 	$scope.showAddNewPaymentModal(passData, paymentData);

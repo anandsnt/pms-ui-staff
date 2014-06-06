@@ -1,8 +1,8 @@
 <!-- Total Fees & Balance -->
 <div class="total-stay-fees float">
 	<div class="overview" ng-repeat="totalFees in billData.total_fees" >
-		<a ng-click="toggleFeesDetails($index)" class="toggle has-arrow with-rate active">
-			<span class="title"> Guest Balance: 
+		<a ng-click="toggleFeesDetails($parent.$index)" ng-hide="billData.hasFeesArray" class="toggle has-arrow with-rate" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
+			<span class="title"> Guest Balance:
 				<em class="label"> As of
 					{{totalFees.fees_date | date:'MM-dd-yyyy'}}
 				</em> 
@@ -10,7 +10,7 @@
 			<span class="value" ng-class="getBalanceClass(totalFees.balance_amount)">{{currencySymbol}}{{totalFees.balance_amount | number: precisonTwo}}</span> 
 		</a>
 	</div>
-	<div class="overview" ng-show="feesArrayCount == 0">
+	<div class="overview" ng-click="toggleFeesDetails($parent.$index)" ng-show="billData.hasFeesArray" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
 		<p>
 			<span class="title"> Guest Balance: <em class="label"></em> </span>
 			<span class="value"> 
@@ -46,7 +46,7 @@
 				<span class="value date"> {{billData.credit_card_details.card_expiry | date:'MM/yy'}} </span> 
 				</span> 
 			</a>
-		<a class="button with-icon green" ng-show="billData.credit_card_details.payment_type == 'CC' && $index == '0'"> 
+		<a class="button with-icon green" ng-click='addNewPaymentModal()' ng-show="billData.credit_card_details.payment_type == 'CC' && $index == '0'"> 
 			<span class="icons icon-wallet"></span> Update CC 
 		</a>
 		<h3 ng-show="billData.credit_card_details.payment_type == 'DB'"> {{billData.guest_or_company_name}} </h3>
@@ -56,7 +56,7 @@
 	</div>
 	<!-- Show signed signature -->
 	<!-- Bill Total Stay Fees -->
-	<div class="details" ng-repeat="totalFeesArray in billData.total_fees" ng-show="$parent.$index==showActiveBillFeesDetails">
+	<div class="details" ng-class="showFeesDetailsClass(billData.isOpenFeesDetails)" ng-repeat="totalFeesArray in billData.total_fees" ng-show="$parent.$index==showActiveBillFeesDetails">
 		<table class="total-fees">
 			<thead>
 				<tr>
@@ -82,16 +82,16 @@
 						</a> Stay fees (as of
 					 		{{totalFeesArray.fees_date | date:'MM-dd-yy'}}	):
 					 </td>
-					 <td colspan="2" class="total-value" ng-hide="billData.total_fees.total_amount == 'SR'">
-						<strong> {{currencySymbol}}
+					 <td colspan="2" class="total-value" >
+						<strong ng-hide="totalFeesArray.total_amount == 'SR'"> 
+							{{currencySymbol}}
 							{{totalFeesArray.total_amount | number: precisonTwo}}
 						</strong>
-					 </td>
-					 <td colspan="2" class="total-value" ng-show="billData.total_fees.total_amount == 'SR'">
-						<strong>
+						<strong ng-show="totalFeesArray.total_amount == 'SR'"> 
 							{{totalFeesArray.total_amount}}
 						</strong>
-					</td>
+					 </td>
+					
 					 <!-- Show edit button to edit amount -->
 					 <td class="edit">
 						<a class="button with-icon only-icon purple edit hidden"> 
@@ -100,12 +100,37 @@
 					</td>
 				</tr>
 				<!-- Show balance -->
-				<tr class="active">
+				<tr class="active" ng-hide="showGuestBalance(reservationBillData.reservation_status)">
 					<td colspan="2" class="total-label"> Balance (as of
 					{{totalFeesArray.fees_date | date:'MM-dd-yy'}}
 					): </td>
-					<td colspan="3" class="total-value" ng-class="getBalanceClass(billData.total_fees.balance_amount)"><strong> {{currencySymbol}}
-					{{totalFeesArray.balance_amount | number: precisonTwo}} </strong></td>
+					<td colspan="3" ng-show="totalFeesArray.balance_amount == 'SR'" class="total-value" ng-class="getBalanceClass(billData.total_fees.balance_amount)">
+						<strong> 
+							{{currencySymbol}}{{totalFeesArray.balance_amount | number: precisonTwo}} 
+						</strong>
+					</td>
+					<td colspan="3" ng-hide="totalFeesArray.balance_amount == 'SR'" class="total-value" ng-class="getBalanceClass(billData.total_fees.balance_amount)">
+						<strong> 
+							{{totalFeesArray.balance_amount}} 
+						</strong>
+					</td>
+					<td></td>
+					<!-- Show fee details -->
+				</tr>
+				<tr class="active" ng-show="showGuestBalance(reservationBillData.reservation_status)">
+					<td colspan="2" class="total-label"> Guest Balance (as of
+						{{totalFeesArray.fees_date | date:'MM-dd-yy'}}):
+					</td>
+					<td colspan="3" ng-hide="totalFeesArray.balance_amount == 'SR'" class="total-value" ng-class="getBalanceClass(billData.total_fees.balance_amount)">
+						<strong> 
+							{{currencySymbol}}{{totalFeesArray.balance_amount | number: precisonTwo}} 
+						</strong>
+					</td>
+					<td colspan="3" ng-show="totalFeesArray.balance_amount == 'SR'" class="total-value" ng-class="getBalanceClass(billData.total_fees.balance_amount)">
+						<strong> 
+							{{totalFeesArray.balance_amount}} 
+						</strong>
+					</td>
 					<td></td>
 					<!-- Show fee details -->
 				</tr>
@@ -130,7 +155,14 @@
 							<br>
 						</span>
 					</strong></td>
-					<td><strong ng-show="feesData.credits!=''"> {{currencySymbol}}{{feesData.credits}}</strong></td>
+					<td>
+						<strong ng-show="feesData.credits!=''"> 
+							{{currencySymbol}}{{feesData.credits}}
+						</strong>
+						<strong ng-show="feesData.credits=='SR'"> 
+							{{feesData.credits}}
+						</strong>
+					</td>
 					<td>
 					
 					<div class="select">

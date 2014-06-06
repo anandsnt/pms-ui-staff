@@ -1,33 +1,45 @@
 sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBillCardSrv','reservationBillData', function($scope,$rootScope,$state, RVBillCardSrv, reservationBillData){
 	
 	BaseCtrl.call(this, $scope);
-	var countFeesElements = 0;//1 - For heading, 2 for totl fees and balance, 2 for guest balnce and creditcard
+	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
 	var roomTypeDescriptionLength = parseInt(150); //Approximate height
 	var billTabHeight = parseInt(35);
 	var calenderDaysHeight = parseInt(35);
 	var totalHeight = 0;
 	$scope.init = function(reservationBillData){
 		/*
-		 * Adding biilValue and oldBillValue with data. Adding with each bills fees details
+		 * Adding billValue and oldBillValue with data. Adding with each bills fees details
 		 * To handle move to bill action
 		 * Added same value to two different key because angular is two way binding
 		 * Check in HTML moveToBillAction
 		 */
 		angular.forEach(reservationBillData.bills, function(value, key) {
+			//To handle fees open/close
 			value.isOpenFeesDetails = false;
 			if(key == 0){
 				value.isOpenFeesDetails = true;
 			}
-	        angular.forEach(value.total_fees[0].fees_details, function(feesValue, feesKey) {
-	        	feesValue.billValue = value.bill_number;//Bill value append with bill details
-	        	feesValue.oldBillValue = value.bill_number;// oldBillValue used to identify the old billnumber
-	     	});
+			value.hasFeesArray = true;
+			if(value.total_fees.length > 0){
+				value.hasFeesArray = false;
+				angular.forEach(value.total_fees[0].fees_details, function(feesValue, feesKey) {
+		        	feesValue.billValue = value.bill_number;//Bill value append with bill details
+		        	feesValue.oldBillValue = value.bill_number;// oldBillValue used to identify the old billnumber
+		     	});	
+			}
+	        
 	     });
+	     // console.log(JSON.stringify(reservationBillData));
 		$scope.reservationBillData = reservationBillData;
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
 		$scope.incomingRoutingArrayCount = $scope.reservationBillData.routing_array.length;
 		//Variables used to calculate height of the wrapper.To do scroll refresh
-		countFeesElements = parseInt(reservationBillData.bills[0].total_fees[0].fees_details.length)+parseInt(5);//1 - For heading, 2 for totl fees and balance, 2 for guest balnce and creditcard
+		if(reservationBillData.bills[0].total_fees.length > 0){
+			countFeesElements = parseInt(reservationBillData.bills[0].total_fees[0].fees_details.length)+parseInt(5);//1 - For heading, 2 for totl fees and balance, 2 for guest balnce and creditcard
+		} else {
+			countFeesElements = parseInt(5);
+		}
+		
 		var totalHeight = parseInt(countFeesElements*64)+calenderDaysHeight+billTabHeight+roomTypeDescriptionLength;
 		$scope.calculatedHeight = totalHeight;
 	};
@@ -135,8 +147,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	 		isShowNotDefined = false;
 	 	}
 	 };
-	 $scope.toggleFeesDetails = function(){
-	 	
+	 $scope.toggleFeesDetails = function(billIndex){
+	 	 $scope.reservationBillData.bills[billIndex].isOpenFeesDetails = !$scope.reservationBillData.bills[billIndex].isOpenFeesDetails;
 	 };
 	 /*
 	  * Success callback of fetch - After moving fees item from one bill to another
@@ -170,7 +182,51 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 		};
 		$scope.invokeApi(RVBillCardSrv.movetToAnotherBill, dataToMove, moveToBillSuccessCallback);  
 	 };
-		
+	 /*
+	  * To add class active if fees is open
+	  * @param {bool} - new data added along with bill data for each bill 
+	  */
+	 $scope.showFeesDetailsOpenClose = function(openCloseStatus){
+	 	 var openCloseClass = ""; 
+	     if(openCloseStatus){
+	     	 openCloseClass = "active";
+	     }
+	     return openCloseClass;
+	 };
+	 /*
+	  * To show/hide fees details on click arrow
+	  */
+	 $scope.showFeesDetailsClass = function(showFeesStatus){
+	 	 var showFeesClass = "hidden"; 
+	     if(showFeesStatus){
+	     	 showFeesClass = "";
+	     }
+	     return showFeesClass;
+	 };
+	 /*
+	  * Show guest balance OR balance depends on reservation status
+	  * @param {string} reservation status
+ 	  */
+	 $scope.showGuestBalance = function(reservationStatus){
+	 	 var showGuestBalance = false;
+	 	 if(reservationStatus == 'CHECKING_IN' || reservationStatus == 'NOSHOW_CURRENT'){
+	 	 	showGuestBalance = true;
+	 	 }
+	 	 return showGuestBalance;
+	 };
+	 $scope.addNewPaymentModal = function(){
+		var passData = {
+	 		"reservationId": $scope.reservationBillData.reservation_id,
+	 		"fromView": "billcard",
+	 		"fromBill" : $scope.currentActiveBill,
+	 		"is_swiped": false 
+	 	};
+	 	var paymentData = $scope.reservationBillData;
+	 	$scope.showAddNewPaymentModal(passData, paymentData);
+	 };
+	 /*
+	  * To show vertical scroll
+	  */
 	 $scope.$parent.myScrollOptions = {		
 		    'registration-content': {
 		    	scrollbars: true,
@@ -178,15 +234,15 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 		        hideScrollbar: false,
 		        preventDefault: false
 		    }
-		};
+	 };
+	 /*
+	  * Refresh scroll once page is loaded.
+	  */
 	 $scope.$on('$viewContentLoaded', function() {
-	
 		setTimeout(function(){
 			$scope.$parent.myScroll['registration-content'].refresh();
-			
 			}, 
 		3000);
-		
      });
 		
 }]);

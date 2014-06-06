@@ -111,13 +111,18 @@
 
 									<li class="active" ng-click="showDayRates($index, days.date, reservationBillData.checkout_date)" ng-repeat="days in billData.days" ng-class="{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}">
 										<!-- For checkin date -->
-										<a class="toggle dual-toggle" ng-class="{'active': $index == dayRates}" ng-show="days.date != reservationBillData.checkout_date"> <span class="day"> {{days.date | date:'EEE'}} </span> <span class="date"> {{days.date | date:'dd'}} </span> <span class="guest-status check-in small-icon" ng-show="days.date == reservationBillData.checkin_date">check-in</span> <span class="price">{{currencySymbol}}{{days.amount | number: precisonZero}}</span> </a>
+										<a class="toggle dual-toggle" ng-class="{'active': $index == dayRates}" ng-show="days.date != reservationBillData.checkout_date"> 
+											<span class="day"> {{days.date | date:'EEE'}} </span> 
+											<span class="date"> {{days.date | date:'dd'}} </span> 
+											<span class="guest-status check-in small-icon" ng-show="days.date == reservationBillData.checkin_date">check-in</span> 
+											<span class="price" ng-show="reservationBillData.is_rates_suppressed">{{reservationBillData.text_rates_suppressed}}</span>
+											<span class="price" ng-hide="reservationBillData.is_rates_suppressed">{{currencySymbol}}{{days.amount | number: precisonZero}}</span> 
+										</a>
 										<!-- For checkout date -->
 										<div class="no-expense" ng-show="days.date == reservationBillData.checkout_date">
 											<span class="day"> {{days.date | date:'EEE'}} </span>
 											<span class="date"> {{days.date | date:'dd'}} </span>
 											<span class="guest-status check-out small-icon" >check-out</span>
-											<span class="price">{{currencySymbol}}{{days.amount | number: precisonZero}}</span>
 										</div>
 									</li>
 

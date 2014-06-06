@@ -13,6 +13,11 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * Populates API with dropdown values
 	 */
 	$scope.successRender = function(data){
+		console.log("=======++++++++++++++++++++==============");
+		console.log(JSON.stringify($scope.paymentData));
+		
+		
+		
 		$scope.$emit("hideLoader");
 		$scope.data = data;
 		$scope.paymentTypeValues = [];
@@ -70,7 +75,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		$scope.saveData.card_expiry = $scope.saveData.card_expiry_month && $scope.saveData.card_expiry_year ? "20"+$scope.saveData.card_expiry_year+"-"+$scope.saveData.card_expiry_month+"-01" : "";
 		//$scope.passData  => Gives information from which view popup opened 
 		//get reservation id if it is from staycard
-		if($scope.passData.fromView == "staycard"){
+		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
 			
 			$scope.saveData.reservation_id = $scope.passData.reservationId;
 			$scope.saveData.et2 = $scope.passData.et2;
@@ -83,7 +88,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			} else {
 				$scope.saveData.credit_card = $scope.saveData.credit_card;
 			}
-			// $scope.saveData.credit_card = $scope.saveData.selected_credit_card;
+			if($scope.passData.fromView == "billcard"){
+				$scope.saveData.bill_number = $scope.passData.fromBill;
+			}
 			
 		} else {
 			$scope.saveData.guest_id = $scope.passData.guest_id;
@@ -99,8 +106,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card"];
 		var data = dclone($scope.saveData, unwantedKeys);
 
-		if($scope.passData.fromView == "staycard"){
-			
+		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
 			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
 		} else {
 			//Used to update the list with new value
