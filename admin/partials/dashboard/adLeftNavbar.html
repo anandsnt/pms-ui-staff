@@ -12,9 +12,8 @@
 		</li>	
 
 
-		<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex.length > 0 && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0), 'last-child' : $last}" class="rover-icon-menu {{menuItem.iconClass}}"> 			
-			<a href="{{menuItem.action}}">
-				{{menuItem.title}}
+		<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex.length > 0 && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0), 'last-child' : $last}" class="rover-icon-menu admin-bar {{menuItem.iconClass}}"> 			
+			<a href="{{menuItem.action}}" translate="{{menuItem.title}}">
 			</a>
 			<div class="pointer" ng-show="menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu">
 			</li>
@@ -26,7 +25,7 @@
 
 	</ul>
 	<ul class="float-bottom" ng-show ="isHotelAdmin">
-		<li >
+		<li class="active">
 			<label class="icon-menu icon-settings active"></label>
 			<a ng-click="settingsClicked()">
 				Settings
@@ -59,8 +58,7 @@
 	<div id="submenu" ng-show="menuOpen && 	showSubMenu && activeSubMenu.length > 0">
 		<ul>
 			<li ng-repeat="menuItem in activeSubMenu">
-				<a href="{{menuItem.action}}" ng-click="$emit('navToggled')">
-					{{menuItem.title}}
+				<a href="{{menuItem.action}}" ng-click="$emit('navToggled')" translate="{{menuItem.title}}">
 				</a>
 			</li>
 			<li class="filler"></li>

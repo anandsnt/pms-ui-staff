@@ -9,28 +9,32 @@
 			MENU
 		</li>		
 
-		<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0, 'last-child' : $last}" class="rover-icon-menu {{menuItem.iconClass}}"> 			
-			<a ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}">
-				{{menuItem.title}}
-			</a>
-			<a ng-if="menuItem.action == ''">
-				{{menuItem.title}}
+		<li ng-if="menuItem.action != ''" ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0, 'last-child' : $last}" class="rover-icon-menu {{menuItem.iconClass}}" ui-sref="{{menuItem.action}}"  ng-click="$emit('updateSubMenu',[$index,menuItem])"> 			
+			<a translate="{{menuItem.title}}">
 			</a>
 			<div class="pointer" ng-show="menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu">
 			</div>
 		</li>
+
+		<li ng-if="menuItem.action == ''" ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0, 'last-child' : $last}" class="rover-icon-menu {{menuItem.iconClass}}"> 			
+			<a translate="{{menuItem.title}}">
+			</a>
+			<div class="pointer" ng-show="menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu">
+			</div>
+		</li>
+
 	</ul>
 	<ul class="float-bottom" ng-show ="isHotelAdmin">
-		<li >
+		<li ng-click="settingsClicked()">
 			<label class="icon-menu icon-settings"></label>
-			<a ng-click="settingsClicked()">
+			<a class="fill">
 				Settings
 			</a>
 		</li> 
 
 		<li >
 			<label class="icon-menu icon-sign-out"></label>
-			<a ng-click="$emit('navToggled')" href="/logout">
+			<a class="fill" ng-click="$emit('navToggled')" href="/logout">
 				Sign Out
 			</a>
 		</li>
@@ -57,11 +61,9 @@
 	<div id="submenu" ng-show="menuOpen && 	showSubMenu && activeSubMenu.length > 0">
 		<ul>
 			<li ng-repeat="menuItem in activeSubMenu" ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}">
-				<a ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}" ng-click="$emit('navToggled')">
-					{{menuItem.title}}
+				<a ng-if="menuItem.action != ''" ui-sref="{{menuItem.action}}" ng-click="$emit('navToggled')" translate="{{menuItem.title}}">
 				</a>
-				<a ng-if="menuItem.action == ''" ng-click="$emit('navToggled')">
-					{{menuItem.title}}
+				<a ng-if="menuItem.action == ''" ng-click="$emit('navToggled')" translate="{{menuItem.title}}">
 				</a>
 			</li>
 			<li class="filler"></li>

@@ -10,111 +10,111 @@ sntRover.controller('roverController',['$rootScope', '$scope', '$state','$window
 
     // OBJECT WITH THE MENU STRUCTURE
     $scope.menu = [{
-      title: "Dashboard",
+      title: "MENU_DASHBOARD",
       action: "rover.dashboard",
       menuIndex: "dashboard",
       submenu: [],
       iconClass: "icon-dashboard"
     }, {
-      title: "Search",
+      title: "MENU_SEARCH",
       action: "rover.search",
       menuIndex: "search",
       submenu: [],
       iconClass: "icon-dashboard"
     },{
-      title: "Availability",
+      title: "MENU_AVAILABILITY",
       action: "",
       iconClass:"icon-availability",
       submenu: [{
-        title: "House Status",
+        title: "MENU_HOUSE_STATUS",
         action: ""
       }, {
-        title: "Availability",
+        title: "MENU_AVAILABILITY",
         action: ""
       }]
     }, {
-      title: "Front Desk",
+      title: "MENU_FRONT_DESK",
       hidden: true,
       action: "",
       iconClass: "icon-frontdesk",
       submenu: [{
-        title: "Create Reservation",
+        title: "MENU_CREATE_RESERVATION",
         action: ""
       }, {
-        title: "Room Assignment",
+        title: "MENU_ROOM_ASSIGNMENT",
         action: ""
       }, {
-        title: "Post Charges",
+        title: "MENU_POST_CHARGES",
         action: ""
       }, {
-        title: "Cashier",
+        title: "MENU_CASHIER",
         action: ""
       }, {
-        title: "End of Day",
+        title: "MENU_END_OF_DAY",
         action: ""
       }]
     }, {
-      title: "Conversations",
+      title: "MENU_CONVERSATIONS",
       hidden: true,
       action: "",
       iconClass: "icon-conversations",
       submenu: [{
-        title: "Social Lobby",
+        title: "MENU_SOCIAL_LOBBY",
         action: ""
       }, {
-        title: "Messages",
+        title: "MENU_MESSAGES",
         action: ""
       }, {
-        title: "Reviews",
+        title: "MENU_REVIEWS",
         action: ""
       }]
     }, {
-      title: "Revenue Management",
+      title: "MENU_REVENUE_MANAGEMENT",
       action: "",
       iconClass: "icon-revenue",
       submenu: [{
-        title: "Rate Manager",
+        title: "MENU_RATE_MANAGER",
         action: "rover.ratemanager",
         menuIndex: "rateManager"
       }, {
-        title: "Company & TA Cards",
+        title: "MENU_TA_CARDS",
         action: ""
       }, {
-        title: "Distribution Manager",
+        title: "MENU_DISTRIBUTION_MANAGER",
         action: ""
       }]
     }, {
-      title: "Housekeeping",
+      title: "MENU_HOUSEKEEPING",
       hidden: true,
       action: "",
       iconClass: "icon-housekeeping",
       submenu: [{
-        title: "Housekeeping",
+        title: "MENU_HOUSEKEEPING",
         action: ""
       }, {
-        title: "Task Management",
+        title: "MENU_TASK_MANAGEMENT",
         action: ""
       }, {
-        title: "Maintenance",
+        title: "MENU_MAINTAENANCE",
         action: ""
       }]
     }, {
-      title: "Financials",
+      title: "MENU_FINANCIALS",
       hidden: true,
       action: "",
       iconClass: "icon-finance",
       submenu: [{
-        title: "Revenue",
+        title: "MENU_REVENUE",
         action: ""
       }, {
-        title: "Accounting Interface",
+        title: "MENU_ACCOUNTING",
         action: ""
       }, {
-        title: "Commissions",
+        title: "MENU_COMMISIONS",
         action: ""
       }]
     }, {
-      title: "Reports",
+      title: "MENU_REPORTS",
       action: "",
       iconClass:"icon-reports",
       submenu: []
