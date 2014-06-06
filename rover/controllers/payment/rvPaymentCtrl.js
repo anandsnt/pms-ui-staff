@@ -52,7 +52,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * updating staycard with new data
 	 */
 	$scope.saveSuccess = function(){
-		var billNumber = parseInt($scope.passData.fromBill)-1;
+		var billIndex = parseInt($scope.passData.fromBill);
 		$scope.$emit("hideLoader");
 		ngDialog.close();
 		var cardNumber = $scope.saveData.card_number;
@@ -63,9 +63,13 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.paymentData.payment_details.card_number = cardNumber.substr(cardNumber.length - 4);
 			$scope.paymentData.payment_details.card_expiry = expiryDate;
 		} else {
-			$scope.paymentData.bills[billNumber].credit_card_details.card_code = cardCode.toLowerCase();
-			$scope.paymentData.bills[billNumber].credit_card_details.card_number = cardNumber.substr(cardNumber.length - 4);
-			$scope.paymentData.bills[billNumber].credit_card_details.card_expiry = expiryDate;
+			
+			console.log("---------"+billIndex);
+			console.log(JSON.stringify($scope.paymentData.bills[billIndex]));
+			console.log(JSON.stringify($scope.paymentData.bills[billIndex].credit_card_details));
+			$scope.paymentData.bills[billIndex].credit_card_details.card_code = cardCode.toLowerCase();
+			$scope.paymentData.bills[billIndex].credit_card_details.card_number = cardNumber.substr(cardNumber.length - 4);
+			$scope.paymentData.bills[billIndex].credit_card_details.card_expiry = expiryDate;
 		}
 		
 	};
@@ -99,6 +103,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			if($scope.passData.fromView == "billcard"){
 				$scope.saveData.bill_number = $scope.passData.fromBill;
 			}
+			$scope.saveData.add_to_guest_card = $scope.saveData.add_to_guest_card;
 			
 		} else {
 			$scope.saveData.guest_id = $scope.passData.guest_id;
@@ -115,7 +120,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		var data = dclone($scope.saveData, unwantedKeys);
 
 		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
-			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.saveSuccess);
+			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
 		} else {
 			//Used to update the list with new value
 			var cardNumber = $scope.saveData.card_number;
