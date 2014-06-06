@@ -418,7 +418,7 @@ var Search = function(domRef) {
 			$.each(searchResults, function(i, value) {
 
 				if ((escapeNull(value.firstname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.lastname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.group).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.room).toString()).indexOf($query) >= 0 || (escapeNull(value.confirmation).toString()).indexOf($query) >= 0) {
-					items.push($('<li />').html(that.writeSearchResult(value.id, value.firstname, value.lastname, value.image, value.confirmation, value.reservation_status, value.room, value.roomstatus, value.fostatus, value.location, value.group, value.vip, value.late_checkout_time, value.is_opted_late_checkout, value.room_ready_status, value.use_pickup, value.use_inspected, value.checkin_inspected_only, value.is_reservation_queued)));
+					items.push($('<li />').html(that.writeSearchResult(value.id, value.firstname, value.lastname, value.image, value.confirmation, value.reservation_status, value.room, value.roomstatus, value.fostatus, value.location, value.group, value.vip, value.late_checkout_time, value.is_opted_late_checkout, value.room_ready_status, value.use_pickup, value.use_inspected, value.checkin_inspected_only, value.is_reservation_queued, value.is_queue_rooms_on)));
 				}
 
 			});
@@ -446,7 +446,7 @@ var Search = function(domRef) {
 			var items = [];
 			$.each(response, function(i, value) {
 
-				items.push($('<li />').html(that.writeSearchResult(value.id, value.firstname, value.lastname, value.image, value.confirmation, value.reservation_status, value.room, value.roomstatus, value.fostatus, value.location, value.group, value.vip, value.late_checkout_time, value.is_opted_late_checkout, value.room_ready_status, value.use_pickup, value.use_inspected, value.checkin_inspected_only, value.is_reservation_queued)));
+				items.push($('<li />').html(that.writeSearchResult(value.id, value.firstname, value.lastname, value.image, value.confirmation, value.reservation_status, value.room, value.roomstatus, value.fostatus, value.location, value.group, value.vip, value.late_checkout_time, value.is_opted_late_checkout, value.room_ready_status, value.use_pickup, value.use_inspected, value.checkin_inspected_only, value.is_reservation_queued, value.is_queue_rooms_on)));
 
 				$('#search-results').removeAttr('style').append.apply($('#search-results'), items).highlight($query);
 			});
@@ -464,7 +464,7 @@ var Search = function(domRef) {
 		sntapp.activityIndicator.hideActivityIndicator('loader-html-appending');
 	};
 
-	this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip, lateCheckoutTime, isLateCheckoutOn, room_ready_status, use_pickup, use_inspected, checkin_inspected_only, isReservationQueued) {
+	this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip, lateCheckoutTime, isLateCheckoutOn, room_ready_status, use_pickup, use_inspected, checkin_inspected_only, isReservationQueued, isQueueRoomsOn) {
 		var guestStatusIcon = this.getGuestStatusMapped(reservation_status, isLateCheckoutOn);
 		var roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
 
@@ -497,7 +497,7 @@ var Search = function(domRef) {
 			$roomAdditional = showRoomStatus ? '<span class="room-status">' + roomstatusexplained + '</span>' : '', 
 			$viewStatus = guestStatusIcon ? '<span class="guest-status ' + escapeNull(guestStatusIcon) + '"></span>' : '<span class="guest-status"></span>', 
 			$lateCheckoutStatus = (escapeNull(lateCheckoutTime) == "" || "CHECKING_OUT" != reservation_status || isLateCheckoutOn == false) ? "" : '<span class="late-checkout-time">' + escapeNull(lateCheckoutTime) + '</span>', 
-			$queuedStatus = isReservationQueued ? 'queued' : '';
+			$queuedStatus = isReservationQueued == "true" && isQueueRoomsOn == "true" ? 'queued' : '';
 			$guestViewIcons = '<div class="status '+ $queuedStatus +'">' + $lateCheckoutStatus + $viewStatus + '</div>',
 			$output = '<a href="staff/staycards/staycard?confirmation=' + confirmation + '&id=' + escapeNull(id) + '" class="guest-check-in link-item float" data-transition="inner-page">' + $image + '<div class="data">' + '<h2>' + escapeNull(lastname) + ', ' + escapeNull(firstname) + '</h2>' + '<span class="confirmation">' + escapeNull(confirmation) + '</span>' + $location + $group + '</div>' + $guestViewIcons + roomStatus + $roomAdditional + '</a>';
 			return $output;

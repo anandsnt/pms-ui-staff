@@ -12,6 +12,7 @@ hkRover.controller('HKSearchCtrl',
 	$scope.query = '';
 	$scope.showPickup = false;
 	$scope.showInspected = false;
+	$scope.showQueued = false;
 
 	// make sure any previous open filter is not showing
 	$scope.$emit('dismissFilterScreen');
@@ -59,6 +60,7 @@ hkRover.controller('HKSearchCtrl',
 			HKSearchSrv.fetch().then(function(data) {
 				$scope.showPickup = data.use_pickup;
 				$scope.showInspected = data.use_inspected;
+				$scope.showQueued = data.is_queue_rooms_on;
 				afterFetch( data );
 			}, function() {
 				console.log("fetch failed");
