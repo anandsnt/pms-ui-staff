@@ -1,4 +1,4 @@
-sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$stateParams','ngDialog','dateFilter', function($scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter){
+sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompanyCardSrv', '$stateParams','ngDialog','dateFilter', function($rootScope, $scope, RVCompanyCardSrv, $stateParams, ngDialog, dateFilter){
 	BaseCtrl.call(this, $scope);
     $scope.highchartsNG = {};
 	$scope.contractList = {};
@@ -78,7 +78,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
                     xAxis: { 
                     	minRange: 11,
                     	min:0,
-                    	categories: ['January','February','March','April','May','June','July','August','September','October','November','December'],//$scope.categories,
+                    	categories: $scope.categories,
                         tickWidth:0,                        
                         labels: { 
                             style: {                        		
@@ -117,10 +117,11 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
         }
 	
 	var fetchContractsDetailsSuccessCallback = function(data){
-		//$scope.contractData = {};
+		$scope.contractList.isAddMode = false;
     	$scope.contractData = data;
     	$scope.contractData.rates = [];
     	$scope.contractData.rates = ratesList;
+    	$scope.errorMessage = "";
     	contractInfo = {};
     	$scope.contractData.contract_name ="";
     	if(typeof $stateParams.type !== 'undefined' && $stateParams.type !== ""){
@@ -151,6 +152,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     	if($scope.contractList.contractSelected){
     		$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":$scope.contractList.contractSelected},fetchContractsDetailsSuccessCallback,fetchFailureCallback);  
     	}
+    	$scope.errorMessage = "";
     };
     var fetchContractsDetailsFailureCallback = function(data){
         $scope.$emit('hideLoader');
@@ -166,10 +168,10 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
         angular.forEach(data, function(item){
             itemDate = item.month + " " + item.year;
             $scope.categories.push(itemDate);
-            contracted.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: Remove this line and uncomment below line
-            //contracted.push([itemDate, item.contracted_occupancy]);
-            actual.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: Remove this line and uncomment below line
-            //actual.push([itemDate,item.actual_occupancy]);
+            //contracted.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: Remove this line and uncomment below line
+            contracted.push([itemDate, item.contracted_occupancy]);
+            // actual.push([itemDate, Math.floor((Math.random() * 100) + 1)]); // TODO :: Remove this line and uncomment below line
+            actual.push([itemDate,item.actual_occupancy]);
         });
         graphData = [{
             "name": "ACTUAL",
@@ -194,6 +196,13 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
     // Fetch data for rates
     var fetchRatesSuccessCallback = function(data){
     	ratesList = data.contract_rates;
+    	
+    	$scope.contractData.rates = [];
+    	$scope.contractData.rates = ratesList;
+    	
+    	$scope.addData.rates = [];
+		$scope.addData.rates = ratesList;
+		$scope.errorMessage = "";
     };
     $scope.invokeApi(RVCompanyCardSrv.fetchRates,{},fetchRatesSuccessCallback,fetchFailureCallback);  
     
@@ -243,6 +252,28 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 			 scope: $scope
 		});
 	};
+	// To update contracts list after add new contracts
+	
+	var updateContractList = function(data){
+		
+		var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
+		
+		var businessDate = new Date($rootScope.businessDate);
+    	var beginDate = new Date($scope.addData.begin_date);
+    	var endDate = new Date($scope.addData.end_date);
+    	
+    	if( beginDate <= businessDate && endDate >= businessDate ){
+    		$scope.contractList.current_contracts.push(dataNew);
+    	}
+    	else{
+    		$scope.contractList.future_contracts.push(dataNew);
+    	}
+    	
+    	$scope.contractList.contractSelected = data.id;
+    	$scope.addData.contract_name = "";
+		$scope.contractList.isAddMode = false;
+	};
+	
 	// To handle click on nights button
 	$scope.clickedContractedNights = function(){
 		/*
@@ -254,11 +285,7 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 			var saveContractSuccessCallback = function(data){
 				$scope.errorMessage = "";
 		    	$scope.$emit('hideLoader');
-		    	var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
-		    	$scope.contractList.current_contracts.push(dataNew);
-		    	$scope.addData.contract_name = "";
-		    	$scope.contractList.isAddMode = false;
-		    	$scope.contractList.contractSelected = data.id;
+		    	updateContractList(data);
 		    	
 		    	setTimeout(function(){
 			    	ngDialog.open({
@@ -302,14 +329,11 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		//Setup data for Add mode
 		$scope.contractList.isAddMode = true;
 		$scope.addData.occupancy = [];
-		$scope.addData.rates = [];
-		$scope.addData.rates = ratesList;
-		$scope.addData.begin_date = dateFilter(new Date(), 'yyyy-MM-dd');
-		
-		var myDate = new Date();
+		$scope.addData.begin_date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
+		$scope.addData.rate_value = 0;
+		var myDate = new Date($rootScope.businessDate);
 		myDate.setDate(myDate.getDate() + 1);
 	    $scope.addData.end_date = dateFilter(myDate, 'yyyy-MM-dd'); 
-	     		
 		$scope.addData.is_fixed_rate = false;
 		$scope.addData.is_rate_shown_on_guest_bill = false;
 		if(typeof $stateParams.type !== 'undefined' && $stateParams.type !== ""){
@@ -333,17 +357,13 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		var saveContractSuccessCallback = function(data){
 	    	$scope.$emit('hideLoader');
 	    	$scope.errorMessage = "";
-	    	var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
-	    	$scope.contractList.current_contracts.push(dataNew);
-	    	$scope.contractList.contractSelected = data.id;
+	    	updateContractList(data);
 	    };
 	  	var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
 	    }; 
 	    
-	    console.log("$scope.contactInformation.id ="+$scope.contactInformation.id);
-	    console.log("$stateParams.id ="+$stateParams.id);
 	    if($stateParams.id == "add"){
 	    	var account_id = $scope.contactInformation.id;
 	    }
@@ -415,5 +435,31 @@ sntRover.controller('companyCardContractsCtrl',['$scope','RVCompanyCardSrv', '$s
 		$scope.graphData = manipulateGraphData($scope.contractData.occupancy);
     	drawGraph();    	
 	};
-                
+    /*
+    * Function to handle data change in 'Contract selected_type'.
+    * on selecting "$" , rate value must be float with 2 decimals.
+    * on selecting "%" , rate value must be integer
+    */
+   	$scope.$watch('contractData.selected_type', function() {
+		if($scope.contractData.selected_type == "%"){
+			$scope.contractData.rate_value = parseInt($scope.contractData.rate_value);
+		}
+		else{
+			$scope.contractData.rate_value = parseFloat($scope.contractData.rate_value).toFixed(2);
+		}
+   	});  
+   	/*
+    * Function to handle data change in 'Contract selected_type' in Add mode
+    * on selecting "$" , rate value must be float with 2 decimals.
+    * on selecting "%" , rate value must be integer
+    */
+   	$scope.$watch('addData.selected_type', function() {
+		if($scope.addData.selected_type == "%"){
+			$scope.addData.rate_value = parseInt($scope.addData.rate_value);
+		}
+		else{
+			$scope.addData.rate_value = parseFloat($scope.addData.rate_value).toFixed(2);
+		}
+   	});      
+   	      		
 }]);

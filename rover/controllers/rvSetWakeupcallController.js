@@ -18,8 +18,8 @@ sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeu
 	}
 
 	$scope.$watch(
-        function() { return $scope.wakeupData.day == "TOMORROW"; },
-        function(flag) { $scope.tomorrowSelected  = flag; }
+        function() { return $scope.wakeupData.day == "TOMORROW"|| typeof $scope.wakeupData.day == 'undefined' ; },
+        function(flag) { $scope.todaySelected  = !flag; }
     );
 
 	$scope.hrs = $scope.getHours();
@@ -33,13 +33,13 @@ sntRover.controller('rvSetWakeupcallController',['$scope','$filter','RVSaveWakeu
 	$scope.saveWakeupCall = function(){
 		var params = {};		
 		params.wake_up_time = $scope.getTimeString();
-		params.day = ($scope.tomorrowSelected)? "Tomorrow":"Today";
+		params.day = ($scope.todaySelected)? "Today":"Tomorrow";
 		params.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 
 		var successCallbackSetWakeupcall = function(){
 			// $scope.$parent.wake_up_time = $scope.getTimeString();
 			$scope.wakeupData.wake_up_time = $scope.getTimeString();
-			$scope.wakeupData.day = ($scope.tomorrowSelected)? "TOMORROW":"TODAY";
+			$scope.wakeupData.day = ($scope.todaySelected)? "TODAY":"TOMORROW";
 			$scope.$emit("updateWakeUpTime",$scope.wakeupData);
 			$scope.dimissLoaderAndDialog();
 		};

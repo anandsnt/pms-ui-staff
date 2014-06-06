@@ -1,27 +1,27 @@
-<div class="price-div">
+<div id="restrictionPriceContainer" class="price-div">
 	<div class="restriction_text" >
-		<h1>
-	    	price
-	    </h1>
+		<h4>
+	    	PRICE
+	    </h4>
 	</div>
-
-	
-	
 	<div class="price-fields">
 		<label>SINGLE</label>
-		<span class="inp-field-before-or">
-			<input type="text" size="7" ng-model="data.single" value="{{data.single}}" ng-class={'strike-through': data.single_extra_amnt != ''} ng-disabled="data.single_extra_amnt != ''">
+		<span ng-if = "!popupData.all_data_selected">
+			<span class="inp-field-before-or">
+				<input type="text" size="7" ng-model="data.single" value="{{data.single}}" ng-class="{'strike-through': data.single_extra_amnt != ''}" ng-disabled="data.single_extra_amnt != ''">
+			</span>
+			<span class="or"> OR</span>
 		</span>
-		<span class="or"> OR</span>
-		<span class="inp-field-after-or" ng-model="data.single_sign">
-			<select style="width:70px;">
+		<span class="inp-field-after-or select">
+			<select style="width:70px;" ng-model="data.single_sign">
 				<option value="+">+</option>
 				<option value="-">-</option>
 			</select>
+		</span>
 		<span class="inp-field">
 			<input type="text"  size="7" ng-model="data.single_extra_amnt" >
 		</span>	
-		<span class="inp-field">
+		<span class="inp-field select">
 			<select style="width:70px;" ng-model="data.single_amnt_diff">
 				<option value="%">%</option>
 				<option value="$">$</option>
@@ -32,19 +32,22 @@
 
 	<div class="price-fields">
 		<label>DOUBLE</label>
-		<span class="inp-field-before-or">
-			<input type="text" size="7" ng-class={'strike-through': data.double_extra_amnt != ''} ng-model="data.double" value="{{data.double}}" ng-disabled="data.double_extra_amnt!=''">
+		<span ng-if = "!popupData.all_data_selected">
+			<span class="inp-field-before-or">
+				<input type="text" size="7" ng-class="{'strike-through': data.double_extra_amnt != ''}" ng-model="data.double" value="{{data.double}}" ng-disabled="data.double_extra_amnt!=''">
+			</span>
+			<span class="or"> OR</span>
 		</span>
-		<span class="or"> OR</span>
-		<span class="inp-field-after-or">
+		<span class="inp-field-after-or select">
 			<select style="width:70px;" ng-model="data.double_sign">
 				<option value="+">+</option>
 				<option value="-">-</option>
 			</select>
+		</span>
 		<span class="inp-field" >
 			<input type="text" ng-model="data.double_extra_amnt" size="7" >
 		</span>	
-		<span class="inp-field">
+		<span class="inp-field select">
 			<select style="width:70px;" ng-model="data.double_amnt_diff">
 				<option value='%'>%</option>
 				<option value='$'>$</option>
@@ -54,20 +57,22 @@
 
 	<div class="price-fields">
 		<label>	EXTRA ADULT (+$)</label>
-
-		<span class="inp-field-before-or">
-			<input type="text" size="7" ng-class={'strike-through': data.extra_adult_extra_amnt != ''} ng-model="data.extra_adult" value="{{data.extra_adult}}" ng-disabled="data.extra_adult_extra_amnt!=''">
+		<span ng-if = "!popupData.all_data_selected">
+			<span class="inp-field-before-or">
+				<input type="text" size="7" ng-class="{'strike-through': data.extra_adult_extra_amnt != ''}" ng-model="data.extra_adult" value="{{data.extra_adult}}" ng-disabled="data.extra_adult_extra_amnt!=''">
+			</span>
+			<span class="or"> OR</span>
 		</span>
-		<span class="or"> OR</span>
-		<span class="inp-field-after-or" ng-model="data.extra_adult_sign">
-			<select style="width:70px;">
+		<span class="inp-field-after-or select">
+			<select style="width:70px;" ng-model="data.extra_adult_sign">
 				<option value="+">+</option>
 				<option value="-">-</option>
 			</select>
+		</span>
 		<span class="inp-field">
 			<input type="text"  size="7" ng-model="data.extra_adult_extra_amnt" >
 		</span>	
-		<span class="inp-field">
+		<span class="inp-field select">
 			<select style="width:70px;" ng-model="data.extra_adult_amnt_diff">
 				<option value="%">%</option>
 				<option value="$">$</option>
@@ -77,19 +82,22 @@
 
 	<div class="price-fields">
 		<label>		CHILD (+$)</label>
-		<span class="inp-field-before-or">
-			<input type="text" size="7" ng-class={'strike-through': data.child_extra_amnt != ''} ng-model="data.child" value="{{data.child}}" ng-disabled="data.child_extra_amnt!=''">
+		<span ng-if = "!popupData.all_data_selected">
+			<span class="inp-field-before-or">
+				<input type="text" size="7" ng-class="{'strike-through': data.child_extra_amnt != ''}" ng-model="data.child" value="{{data.child}}" ng-disabled="data.child_extra_amnt!=''">
+			</span>
+			<span class="or"> OR</span>
 		</span>
-		<span class="or"> OR</span>
-		<span class="inp-field-after-or">
+		<span class="inp-field-after-or select">
 			<select style="width:70px;" ng-model="data.child_sign">
 				<option value="+">+</option>
 				<option value="-">-</option>
 			</select>
+		</span>
 		<span class="inp-field">
 			<input type="text"  size="7" ng-model="data.child_extra_amnt" >
 		</span>	
-		<span class="inp-field">
+		<span class="inp-field select">
 			<select style="width:70px;" ng-model="data.child_amnt_diff">
 				<option value="%">%</option>
 				<option value="$">$</option>
