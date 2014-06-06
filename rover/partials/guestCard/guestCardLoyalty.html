@@ -1,42 +1,27 @@
- <form method="post" action="app/stay-card/" id="gc-loyalty" name="loyalty" class="form card-tab scrollable" ng-show="current == 'guest-loyalty'">
+ <form method="post" ng-controller="RVGuestCardLoyaltyController" id="gc-loyalty" name="loyalty" class="form card-tab scrollable" ng-show="current == 'guest-loyalty'">
                     <div class="wrapper">
                         <span class="notice">Set Primary Hotel Loyalty Program</span>
                         <!-- Frequent Flyer Program -->
                         <div class="holder left">
                             <strong class="h3">Frequent Flyer Program</strong>
-                            <a href="modals/select-primary/" class="active-item item-loyalty open-modal float">
-                                <span class="value code">QF</span>
+                            <a class="active-item item-loyalty open-modal float" ng-repeat="freaquentLoyalty in loyaltyData.userMemberships.frequentFlyerProgram">
+                              <!--   <span class="value code">QF</span>
                                 <span class="value number">4595476</span>
-                                <span class="value name">Quantas Frequent Flyer</span>
+                                <span class="value name">Quantas Frequent Flyer</span> -->
                             </a>
-                            <a href="modals/select-primary/" class="active-item item-loyalty open-modal float">
-                                <span class="value code">QF</span>
-                                <span class="value number">4595476</span>
-                                <span class="value name">Quantas Frequent Flyer</span>
-                            </a>
-                            <a href="modals/select-primary/" class="active-item item-loyalty primary open-modal float">
-                                <span class="value code">QF</span>
-                                <span class="value number">4595476</span>
-                                <span class="value name">Quantas Frequent Flyer</span>
-                                <span class="primary"><span class="value primary">Primary</span></span>
-                            </a>
-                            <a href="modals/new-ffp/" class="open-modal add-new-button">+ New Frequent Flyer Program</a>
+                      
+                            <a ng-click="addNewFreaquentLoyality()" class="open-modal add-new-button">+ New Frequent Flyer Program</a>
                         </div>
 
                         <!-- Hotel Loyalty Program -->
                         <div class="holder right">
                             <strong class="h3">Hotel Loyalty Program</strong>
-                            <a href="modals/select-primary/" class="active-item item-loyalty open-modal float">
-                                <span class="value code">PC</span>
-                                <span class="value number">7894598763</span>
-                                <span class="value name">Diamond</span>
+                            <a class="active-item item-loyalty open-modal float" ng-repeat="hotelLoyalty in loyaltyData.userMemberships.hotelLoyaltyProgram">
+                                <span class="value code">{{hotelLoyalty.membership_type}}</span>
+                                <span class="value number">{{hotelLoyalty.membership_card_number}}</span>
+                                <span class="value name">{{hotelLoyalty.membership_level}}</span>
                             </a>
-                            <a href="modals/select-primary/" class="active-item item-loyalty open-modal float">
-                                <span class="value code">HC</span>
-                                <span class="value number">7894562224</span>
-                                <span class="value name">Black</span>
-                            </a>
-                            <a href="modals/new-hlp/" class="open-modal add-new-button">+ New Hotel Loyalty Program</a>
+                            <a ng-click="addNewHotelLoyality()" class="open-modal add-new-button">+ New Hotel Loyalty Program</a>
                         </div>
                     </div>
                 </form>
