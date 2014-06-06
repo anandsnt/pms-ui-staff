@@ -214,15 +214,49 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	 	 }
 	 	 return showGuestBalance;
 	 };
-	 $scope.addNewPaymentModal = function(){
-		var passData = {
-	 		"reservationId": $scope.reservationBillData.reservation_id,
-	 		"fromView": "billcard",
-	 		"fromBill" : $scope.currentActiveBill,
-	 		"is_swiped": false 
-	 	};
-	 	var paymentData = $scope.reservationBillData;
-	 	$scope.showAddNewPaymentModal(passData, paymentData);
+	 $scope.addNewPaymentModal = function(data){
+	 	if(data === undefined){
+  	 			var passData = {
+			 		"reservationId": $scope.reservationBillData.reservation_id,
+			 		"fromView": "billcard",
+			 		"fromBill" : $scope.currentActiveBill,
+			 		"is_swiped": false 
+			 	};
+			 	var paymentData = $scope.reservationBillData;
+			 	$scope.showAddNewPaymentModal(passData, paymentData);
+  	 	} else {
+  	 		
+  	 		
+           var  getTokenFrom = {
+	              'et2': data.RVCardReadTrack2,
+	              'ksn': data.RVCardReadTrack2KSN,
+	              'pan': data.RVCardReadMaskedPAN
+	           };
+         
+         	var tokenizeSuccessCallback = function(tokenData){
+         		data.token = tokenData;
+         		var passData = {
+		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
+		  	 		"fromView": "staycard",
+		  	 		"selected_payment_type": 0, //Default value of credit card - TODO:check in seed data
+		  	 		"credit_card": data.RVCardReadCardType,
+		  	 		"card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
+		  	 		"name_on_card": data.RVCardReadCardName,
+		  	 		"card_expiry":data.RVCardReadExpDate,
+		  	 		"et2": data.RVCardReadTrack2,
+	             	 'ksn': data.RVCardReadTrack2KSN,
+	              	'pan': data.RVCardReadMaskedPAN,
+	              	'token': tokenData,
+		  	 		 "is_swiped": true   // Commenting for now
+		  	 	};
+         	var paymentData = $scope.reservationData;
+  	 		$scope.showAddNewPaymentModal(passData, paymentData);
+         	};
+         	$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);	
+  	 	}
+	 	
+	 	
+	 	
 	 };
 	 /*
 	  * To show vertical scroll
@@ -244,5 +278,17 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 			}, 
 		3000);
      });
+     
+     
+     /*
+	  * Handle swipe action in reservationdetails card
+	  */
+	 $scope.$on('SWIPEHAPPENED', function(event, data){
+	 	console.log("FROM VIEW BILL")
+	 	if(!$scope.isGuestCardVisible){
+	 		$scope.addNewPaymentModal(data);
+	 	}
+	 	
+	 });
 		
 }]);

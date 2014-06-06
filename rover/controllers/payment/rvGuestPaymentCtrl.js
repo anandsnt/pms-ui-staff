@@ -75,6 +75,12 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 	 	}
 	 	
 	 });
+	 
+	 $scope.$on('ADDEDNEWPAYMENTTOGUEST', function(event, data){
+	 	$scope.paymentData.data.push(data);
+	 });
+	 
+	 
 
 	
 }]);

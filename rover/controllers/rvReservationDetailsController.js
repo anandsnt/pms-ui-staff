@@ -129,7 +129,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	          });
 	 };
 	 /*
-	  * Handle swipe action in guest card
+	  * Handle swipe action in reservationdetails card
 	  */
 	 $scope.$on('SWIPEHAPPENED', function(event, data){
 	 	if(!$scope.isGuestCardVisible){

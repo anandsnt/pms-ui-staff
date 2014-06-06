@@ -1,6 +1,6 @@
-sntRover.controller('staycardController',['$scope', function($scope){
+sntRover.controller('staycardController',['$scope','RVGuestCardSrv', function($scope, RVGuestCardSrv){
 
-sajith = $scope;
+
 $scope.guestCardData ={};
 $scope.guestCardData.contactInfo = {};
 $scope.countriesList = [];
@@ -20,6 +20,18 @@ $scope.$on('guestCardUpdateData',function(event, data){
 	$scope.guestCardData.contactInfo.vip = data.vip;
 	$scope.countriesList = data.countries;
 	$scope.guestCardData.userId=data.userId;
+	// console.log("-----GUEST DATA-----"+JSON.stringify($scope.guestCardData));
+	 // var guestInfo = {
+    	// "user_id":$scope.guestCardData.user_id,
+    	// "guest_id":$scope.guestCardData.guest_id
+    // };
+    // var guestPaymentSuccess =  function(paymentData){
+    	// $scope.guestPaymentData = paymentData;
+    	// console.log("-----GUEST DATA-----"+JSON.stringify($scope.guestPaymentData));
+    // };
+	// $scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, $scope.guestCardData.user_id, guestPaymentSuccess);  
+	
+	// 
 
 });
 

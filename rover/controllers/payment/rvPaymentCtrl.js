@@ -13,10 +13,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * Populates API with dropdown values
 	 */
 	$scope.successRender = function(data){
-		console.log("=======++++++++++++++++++++==============");
-		console.log(JSON.stringify($scope.paymentData));
-		
-		
 		
 		$scope.$emit("hideLoader");
 		$scope.data = data;
@@ -58,20 +54,26 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		var cardNumber = $scope.saveData.card_number;
 		var expiryDate = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
 		var cardCode = $scope.saveData.credit_card;
+		var cardHolderName = $scope.saveData.name_on_card;
 		if($scope.passData.fromView == "staycard"){
-			$scope.paymentData.payment_details.card_type_image = cardCode.toLowerCase()+".png";
-			$scope.paymentData.payment_details.card_number = cardNumber.substr(cardNumber.length - 4);
-			$scope.paymentData.payment_details.card_expiry = expiryDate;
+			$scope.paymentData.reservation_card.payment_details.card_type_image = cardCode.toLowerCase()+".png";
+			$scope.paymentData.reservation_card.payment_details.card_number = cardNumber.substr(cardNumber.length - 4);
+			$scope.paymentData.reservation_card.payment_details.card_expiry = expiryDate;
 		} else {
-			
-			console.log("---------"+billIndex);
-			console.log(JSON.stringify($scope.paymentData.bills[billIndex]));
-			console.log(JSON.stringify($scope.paymentData.bills[billIndex].credit_card_details));
 			$scope.paymentData.bills[billIndex].credit_card_details.card_code = cardCode.toLowerCase();
 			$scope.paymentData.bills[billIndex].credit_card_details.card_number = cardNumber.substr(cardNumber.length - 4);
 			$scope.paymentData.bills[billIndex].credit_card_details.card_expiry = expiryDate;
 		}
-		
+		if($scope.saveData.add_to_guest_card){ 
+			var newDataToGuest = {
+				"card_code": cardCode.toLowerCase(),
+				"mli_token": cardNumber.substr(cardNumber.length - 4),
+				"card_expiry":expiryDate,
+				"card_name":cardHolderName,
+				"is_primary":false
+			};
+			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
+		}
 	};
 	$scope.failureCallBack = function(errorMessage){
 		$scope.$emit("hideLoader");
@@ -120,7 +122,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		var data = dclone($scope.saveData, unwantedKeys);
 
 		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
-			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
+			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.saveSuccess);
 		} else {
 			//Used to update the list with new value
 			var cardNumber = $scope.saveData.card_number;
