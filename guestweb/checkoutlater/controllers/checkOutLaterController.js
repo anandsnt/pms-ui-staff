@@ -1,7 +1,6 @@
 (function() {
 	var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location) {
 
-
 		$scope.pageSuccess = true;
 
 		if($rootScope.isCheckedin){
@@ -21,31 +20,24 @@
 			$location.path('/checkOutNow');
 		}
 
-
-
-	if($scope.pageSuccess){
-		
+		if($scope.pageSuccess){
+			
 			$scope.showBackButtonImage = true;
 			$rootScope.netWorkError = false;
 			$rootScope.isFetching = true;
 
-
 	//watch for any network errors
-
 	$rootScope.$watch('netWorkError',function(){
-
 		if($rootScope.netWorkError)
 			$scope.isFetching = false;
 	});
 
     // fetch details
-
     LateCheckOutChargesService.fetch().then(function(charges) {
     	$scope.charges = charges;
     	$rootScope.netWorkError = false;
     	$scope.isFetching = false;
-
-
+    	
     	if($scope.charges.length > 0)
     		$scope.optionsAvailable = true;
     	else
@@ -53,8 +45,6 @@
 
     });
 }
-
-
 };
 
 var dependencies = [
