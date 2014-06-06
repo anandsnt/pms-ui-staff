@@ -420,6 +420,8 @@ sntRover.controller('RVPostChargeController',
 
 				var callback = function() {
 					$scope.$emit( 'hideLoader' );
+
+					$scope.closeDialog();
 				};
 
 				$scope.invokeApi(RVChargeItems.postCharges, data, callback);

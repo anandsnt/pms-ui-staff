@@ -90,5 +90,11 @@
     "NOT_SET":"Not Set",
     "NOTES_HEADER":"Notes",
     "NOTES_POST":"Post",
-    "WRITE_NOTE":"Write a note"
+    "WRITE_NOTE":"Write a note",
+
+    "ALL_CHARGE_GROUPS": "All Charge Groups",
+    "POST_CHARGE_TO_BILL": "Post Charge to Bill",
+    "SEARCH_TERM": "Search items",
+    "0_ITEM_SELECTED": "0 items selected",
+    "POST_CHARGE": "Post Charge"
 }

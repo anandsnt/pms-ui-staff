@@ -14,7 +14,7 @@
 						ng-model="chargeGroup"
 						ng-change = "filterbyChargeGroup()"
 						ng-options="item.value as item.name for item in fetchedData.charge_groups">
-						<option value="" class="placeholder">All Charge Groups</option>
+						<option value="" class="placeholder" translate>ALL_CHARGE_GROUPS</option>
 					</select>
 				</div>
 				<div class="entry">
@@ -22,7 +22,7 @@
 					<button type="button" name="submit" class="icons icon-search">
 						Search
 					</button>
-					<input type="search" placeholder="Search items" name="query" id="query" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
+					<input type="search" placeholder="{{ 'SEARCH_TERM' |translate }}" name="query" id="query" autocomplete="off" ng-model="query" ng-change="filterByQuery()">
 				</div>
 			</div>
 			<div id="items-listing" class="scrollable" ng-iscroll='fetchedItemList' ng-iscroll-delay='50'>
@@ -41,7 +41,8 @@
 		</fieldset>
 		<!-- Right side -->
 		<fieldset class="content-right">
-			<span class="h2 message"> Post charge to Bill #
+			<span class="h2 message">
+				<span translate>POST_CHARGE_TO_BILL</span> #
 				<div id="select-bill-number" class="select">
 					<select ng-model="billNumber">
 					    <option ng-repeat="no in fetchedData.bill_numbers" ng-selected="{{no == billNumber}}" value="{{ no }}">
@@ -51,7 +52,7 @@
 				</div> </span>
 			<div id="no-items-added" class="no-content" ng-hide="chargedItems.length">
 				<div class="info">
-					<strong class="h1">0 items selected</strong>
+					<strong class="h1" translate>0_ITEM_SELECTED</strong>
 				</div>
 			</div>
 			<div id="items-added" ng-show="chargedItems.length">
@@ -125,12 +126,8 @@
 					</div>
 				</div>
 				<div class="actions float">
-					<button type="button" id="post" class="button green modal-close" ng-click="postCharges()">
-						Post charge
-					</button>
-					<button type="button" id="cancel" class="button blank modal-close" ng-click="closeDialog()">
-						Cancel
-					</button>
+					<button type="button" id="post" class="button green modal-close" ng-click="postCharges()" translate>POST_CHARGE</button>
+					<button type="button" id="cancel" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button>
 				</div>
 			</div>
 		</fieldset>
