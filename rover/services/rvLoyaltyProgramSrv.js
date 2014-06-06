@@ -23,6 +23,28 @@ sntRover.service('RVLoyaltyProgramSrv',['$q', 'RVBaseWebSrv', function($q, RVBas
 		return deferred.promise;		
 		
 	};
+	this.getAvailableFFPS = function(){
+		var deferred = $q.defer();
+		var url =  ' /staff/user_memberships/get_available_ffps.json';			
+		RVBaseWebSrv.getJSON(url, "").then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;		
+		
+	};
+	this.getAvailableHLPS = function(){
+		var deferred = $q.defer();
+		var url =  '/staff/user_memberships/get_available_hlps.json';			
+		RVBaseWebSrv.getJSON(url, "").then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;		
+		
+	};
 
 
 }]);

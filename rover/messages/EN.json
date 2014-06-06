@@ -101,5 +101,7 @@
     "LOYALTY_LEVEL_SELECT_LABEL":"Select Loyalty Level",
     "LOYALTY_CODE_LABEL":"Code",
     "FREEQUENT_FLYER_LABEL":"Frequent Flyer Program",
-    "HOTEL_LOYALTY_LABEL":"Hotel Loyalty Program"
+    "HOTEL_LOYALTY_LABEL":"Hotel Loyalty Program",
+    "HOTEL_LOYALTY_SELECT":"Select Hotel Loyalty",
+    "HOTEL_LOYALTY_ADD_BUTTON":"+ Add"
 }

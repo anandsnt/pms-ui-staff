@@ -10,27 +10,27 @@
       <div class="entry full-width">
          <label for="program" translate>LOYALTY_PROGRAM_LABEL</label>
          <div class="select">
-            <select id="program" name="program">
+            <select ng-model="selectedLoyaltyProgram" id="program" name="program">
                <option class="placeholder" value="" translate>LOYALTY_PROGRAM_SELECT_LABEL</option>
-               <option value="loyaltyprogram.code" ng-repeat="loyaltyprogram in data.loyaltyprograms">{{loyaltyprogram.name}}</option>
+               <option value="{{loyaltyprogram.code}}" ng-repeat="loyaltyprogram in loyaltyPrograms">{{loyaltyprogram.name}}</option>
             </select>
          </div>
       </div>
       <div class="entry full-width">
          <label for="type" translate>LOYALTY_TYPE_LABEL</label>
          <div class="select">
-            <select id="type" name="type">
+            <select ng-model="selectedLoyaltyType" id="type" name="type">
                <option class="placeholder" value="" translate>LOYALTY_TYPE_SELECT_LABEL</option>
-               <option value="loyaltytype.code" ng-repeat="loyaltytype in data.loyaltytypes">{{loyaltytype.name}}</option>
+               <option value="{{loyaltytype.code}}" ng-repeat="loyaltytype in getLoyaltyTypes()">{{loyaltytype.name}}</option>
             </select>
          </div>
       </div>
       <div class="entry full-width">
          <label for="level" translate>LOYALTY_LEVEL_LABEL</label>
          <div class="select">
-            <select id="level" name="level">
+            <select ng-model="selectedLevel" id="level" name="level">
                <option class="placeholder" value="" translate>LOYALTY_LEVEL_SELECT_LABEL</option>
-               <option value="loyaltylevel.code" ng-repeat="loyaltylevel in data.loyaltylevels">{{loyaltylevel.name}}</option>
+               <option value="{{loyaltylevel.membership_level}}" ng-repeat="loyaltylevel in getLoyaltyLevels()">{{loyaltylevel.membership_level}}</option>
             </select>
          </div>
       </div>

@@ -1,4 +1,4 @@
-<form method="post" id="reservationcard-loyalty" class="block-item item-loyalty has-buttons float" ng-controller="reservationCardLoyalty">
+<form method="post" id="reservationcard-loyalty" class="block-item item-loyalty has-buttons float">
 	<div class="block-title">
 		<h3 translate>LOYALTY_LABEL</h3>
 	</div>
@@ -7,10 +7,10 @@
 		<select name="loyalty" id="loyalty" class="styled">
 			<option value="" data-id="" translate>LOYALTY_PROGRAM_SELECT_LABEL</option>
 			<optgroup label="{{'FREEQUENT_FLYER_LABEL'|translate}}"></optgroup>
-			<option value="{{frequentflyer.id}}" ng-repeat="frequentflyer in reservationData.reservation_card.loyalty_level.frequentFlyerProgram">
+			<option value="{{frequentflyer.id}}" ng-repeat="frequentflyer in $parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram">
 				 {{frequentflyer.membership_type}} {{frequentflyer.membership_card_number}} </option>
 				<optgroup label="{{'HOTEL_LOYALTY_LABEL'|translate}}"></optgroup>
-			<option value="{{hotelloyalty.id}}" ng-repeat="hotelloyalty in reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram">
+			<option value="{{hotelloyalty.id}}" ng-repeat="hotelloyalty in $parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram">
 				{{hotelloyalty.membership_type}} 
 				{{hotelloyalty.membership_card_number}} 
 			</option>
@@ -18,17 +18,17 @@
 
 		</select>
 		<!-- Calculates the default selected loyalty -->
-		<div id="reservationLoyalty" class="selected" ng-show="showSelectedLoyalty(reservationData.reservation_card.loyalty_level.selected_loyalty)">
-			<span class="value code"> {{selectedLoyalty.membership_type}}</span>
-			<span class="number"> Ending with <span class="value number"> {{selectedLoyalty.membership_card_number}} </span> </span>
+		<div id="reservationLoyalty" class="selected" ng-show="showSelectedLoyalty()">
+			<span class="value code"> {{$parent.reservationData.reservation_card.loyalty_level.selectedLoyalty.membership_type}}</span>
+			<span class="number"> Ending with <span class="value number"> {{$parent.reservationData.reservation_card.loyalty_level.selectedLoyalty.membership_card_number}} </span> </span>
 		</div>
-		<div id="reservationLoyalty" class="selected" ng-hide="showSelectedLoyalty(reservationData.reservation_card.loyalty_level.selected_loyalty)">
+		<div id="reservationLoyalty" class="selected" ng-hide="showSelectedLoyalty()">
 			<span class="value code"> </span>
-			<span class="number"> Select Hotel Loyalty<span class="value number">  </span> </span>
+			<span class="number" translate> HOTEL_LOYALTY_SELECT  </span>
 		</div>
 	</div>
 	<div class="actions">
-		<a id="add_new_loyalty_staycard" ng-click="showLoyaltyProgramDialog()" class="add-new-button">+ Add</a>
+		<a id="add_new_loyalty_staycard" ng-click="showLoyaltyProgramDialog()" class="add-new-button" translate>HOTEL_LOYALTY_ADD_BUTTON</a>
 	</div>
 
 </form>
