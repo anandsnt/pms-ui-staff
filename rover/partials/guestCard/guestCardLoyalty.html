@@ -5,9 +5,9 @@
                         <div class="holder left">
                             <strong class="h3">Frequent Flyer Program</strong>
                             <a class="active-item item-loyalty open-modal float" ng-repeat="freaquentLoyalty in loyaltyData.userMemberships.frequentFlyerProgram">
-                              <!--   <span class="value code">QF</span>
-                                <span class="value number">4595476</span>
-                                <span class="value name">Quantas Frequent Flyer</span> -->
+                               <span class="value code">{{freaquentLoyalty.membership_type}}</span>
+                                <span class="value number">{{freaquentLoyalty.membership_card_number}}</span>
+                                <span class="value name">{{freaquentLoyalty.membership_level}}</span>
                             </a>
                       
                             <a ng-click="addNewFreaquentLoyality()" class="open-modal add-new-button">+ New Frequent Flyer Program</a>

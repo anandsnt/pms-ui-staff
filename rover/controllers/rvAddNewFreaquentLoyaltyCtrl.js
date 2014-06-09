@@ -11,6 +11,7 @@ sntRover.controller('RVAddNewFreaquentLoyaltyContrller',['$scope', '$rootScope',
 		var loyaltyPostsuccessCallback = function(data){	
 			$scope.newLoyalty.id = data.id;	
 			$scope.$emit('hideLoader');
+			$scope.cancel();
 			$rootScope.$broadcast('loyaltyProgramAdded', $scope.newLoyalty);
 		};
 
@@ -22,9 +23,10 @@ sntRover.controller('RVAddNewFreaquentLoyaltyContrller',['$scope', '$rootScope',
 		user_membership.membership_card_number = $scope.userMembershipNumber;
 		user_membership.membership_class = $scope.userMembershipClass;
 		user_membership.membership_type = $scope.userMembershipType;
+		user_membership.membership_level = "";
 		$scope.newLoyalty = user_membership;
 		var data = {'user_id':$scope.$parent.guestCardData.userId,
-					'guest_id':$scope.$parent.guestCardData.userId,
+					'guest_id':$scope.$parent.guestCardData.guestId,
 					'user_membership': user_membership
 					};
 		$scope.invokeApi(RVGuestCardLoyaltySrv.createLoyalties,data , loyaltyPostsuccessCallback, loyaltyPostErrorCallback);

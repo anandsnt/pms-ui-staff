@@ -2,10 +2,10 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
 	BaseCtrl.call(this, $scope);
 
 	$scope.selectedLoyaltyID = "";
-	
+
 	$scope.showSelectedLoyalty = function(){
 		var display = true;
-		var selectedLoyalty = $scope.$parent.reservationData.reservation_card.loyalty_level.selectedLoyalty;
+		var selectedLoyalty = $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty;
 		if(selectedLoyalty == null || typeof selectedLoyalty == 'undefined' || selectedLoyalty == '' || selectedLoyalty =={}){
 			display = false;
 		}
@@ -31,38 +31,44 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
         	}else{
         		$scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram.push(data);
         	}
-        	$scope.$parent.reservationData.reservation_card.loyalty_level.selectedLoyalty = data;
+        	$scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = data;
+            $scope.selectedLoyaltyID = data.id;
 	});
 
-        $scope.setSelectedLoyalty = function(id){
-        		var hotelLoyaltyProgram = $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram;
+        $scope.setSelectedLoyaltyForID = function(id){
+        	var hotelLoyaltyProgram = $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram;
         		var freequentFlyerprogram = $scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram;
         		var flag = false;
         		for(var i = 0; i < hotelLoyaltyProgram.length; i++){
         			if(id == hotelLoyaltyProgram[i].id){
         				flag = true
-        				$scope.$parent.reservationData.reservation_card.loyalty_level.selectedLoyalty = hotelLoyaltyProgram[i];
+        				$scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = hotelLoyaltyProgram[i];
         				$scope.selectedLoyaltyID = hotelLoyaltyProgram[i].id;
         				break; 
         			}
 
         		}
-        		if(flag){
-        			$scope.callSelectLoyaltyAPI();
-        			return;
+        		if(flag){        			
+        			return true;
         		}
         			
         		for(var i = 0; i < freequentFlyerprogram.length; i++){
         			if(id == freequentFlyerprogram[i].id){
        					flag = true;
-        				$scope.$parent.reservationData.reservation_card.loyalty_level.selectedLoyalty = freequentFlyerprogram[i];
+        				$scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = freequentFlyerprogram[i];
         				$scope.selectedLoyaltyID = freequentFlyerprogram[i].id;
         				break; 
         			}
 
         		}
-        		if(!flag){
-        			$scope.$parent.reservationData.reservation_card.loyalty_level.selectedLoyalty = "";
+        		return flag;
+        };
+        $scope.setSelectedLoyaltyForID($scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty);
+
+        $scope.setSelectedLoyalty = function(id){
+        		var isSelectedSet = $scope.setSelectedLoyaltyForID(id);
+        		if(!isSelectedSet){
+        			$scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = "";
         			$scope.selectedLoyaltyID = "";
         		}
         		$scope.callSelectLoyaltyAPI();
