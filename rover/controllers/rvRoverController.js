@@ -86,7 +86,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         menuIndex: "rateManager"
       }, {
         title: "MENU_TA_CARDS",
-        action: ""
+        action: "rover.companycardsearch",
+        menuIndex: "cards"
       }, {
         title: "MENU_DISTRIBUTION_MANAGER",
         action: ""

@@ -98,7 +98,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				menuIndex: "rateManager"
 			}, {
 				title: "MENU_TA_CARDS",
-				action: ""
+				action: "staff#/staff/cardsearch",
+				menuIndex: "cards"
 			}, {
 				title: "MENU_DISTRIBUTION_MANAGER",
 				action: ""
@@ -136,7 +137,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			title: "MENU_REPORTS",
 			action: "",
 			iconClass: "icon-reports",
-			submenu: []			
+			submenu: []
 		}]
 
 		$scope.$on("updateSubMenu", function(idx, item) {
