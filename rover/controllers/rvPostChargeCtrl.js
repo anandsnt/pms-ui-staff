@@ -67,6 +67,12 @@ sntRover.controller('RVPostChargeController',
 				var query = $scope.query.toLowerCase();
 
 				if (query === '') {
+
+					// show all and return
+					for (var i = 0, j = $scope.fetchedItem.length; i < j; i++) {
+						$scope.fetchedItem[i].show = true;
+					};
+
 					return;
 				};
 
@@ -142,8 +148,10 @@ sntRover.controller('RVPostChargeController',
 					return each.value === item.value;
 				});
 
-				// if already added
+				// if already added, just increase the 'QTY' by one and leave
 				if ( !!hasItem ) {
+					this.each.count += 1;
+					hasItem.count += 1;
 					return;
 				};
 

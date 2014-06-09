@@ -12,9 +12,11 @@
 						name="charge-groups"
 						id="charge-groups"
 						ng-model="chargeGroup"
-						ng-change = "filterbyChargeGroup()"
-						ng-options="item.value as item.name for item in fetchedData.charge_groups">
+						ng-change = "filterbyChargeGroup()">
 						<option value="" class="placeholder" translate>ALL_CHARGE_GROUPS</option>
+						<option ng-repeat="group in fetchedData.charge_groups" value="{{ group.value }}">
+					        {{ group.name }}
+					    </opzion>
 					</select>
 				</div>
 				<div class="entry">
