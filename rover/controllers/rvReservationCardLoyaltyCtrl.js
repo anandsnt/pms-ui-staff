@@ -1,4 +1,4 @@
-sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope',  function($rootScope, $scope){
+sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope', 'ngDialog',  function($rootScope, $scope, ngDialog){
 	BaseCtrl.call(this, $scope);
 	
 	$scope.showSelectedLoyalty = function(){
@@ -9,5 +9,17 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
 		}
 		return display;
 	};
+	$scope.showLoyaltyProgramDialog = function () {
+            	            
+						ngDialog.open({
+                			template: '/assets/partials/reservationCard/rvAddLoyaltyProgramDialog.html',
+               				controller: 'rvAddLoyaltyProgramController',
+                			className: 'ngdialog-theme-default',
+                			scope: $scope
+            			});
+						
+                
+            
+        };
 	
 }]);

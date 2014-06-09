@@ -2,7 +2,7 @@ sntRover.service('RVLoyaltyProgramSrv',['$q', 'RVBaseWebSrv', function($q, RVBas
 		
 	this.addLoyaltyProgram = function(param){
 		var deferred = $q.defer();
-		var url =  '/wakeup/set_wakeup_calls';			
+		var url =  '/staff/user_memberships';			
 		RVBaseWebSrv.postJSON(url, param).then(function(data) {
 			deferred.resolve(data);
 		},function(data){

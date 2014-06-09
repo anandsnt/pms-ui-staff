@@ -17,7 +17,8 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$filter','RVLoyal
 		};
 
 	$scope.addLoyaltyProgram = function(){
-		var params = {};		
+		var params = {};
+		params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;		
 		
 		var successCallbackaddLoyaltyProgram = function(){
 			

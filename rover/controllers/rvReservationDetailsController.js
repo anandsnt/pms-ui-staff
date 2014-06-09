@@ -186,24 +186,5 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
             });
             
         };
-        $scope.showLoyaltyProgramDialog = function () {
-            	            
-            	var successCallbackfetchLoyalty = function(data){
-						$scope.$emit('hideLoader');
-						ngDialog.open({
-                			template: '/assets/partials/reservationCard/rvAddLoyaltyProgramDialog.html',
-               				controller: 'rvAddLoyaltyProgramController',
-                			className: 'ngdialog-theme-default',
-                			scope: $scope
-            			});
-				};
-				var errorCallbackfetchLoyalty = function(errorMessage){
-						$scope.$emit('hideLoader');
-						$scope.errorMessage = errorMessage;
-				};
-				$scope.invokeApi(RVLoyaltyProgramSrv.getLoyaltyDetails, "" , successCallbackfetchLoyalty, errorCallbackfetchLoyalty);		
-                
-            
-        };
         
 }]);
