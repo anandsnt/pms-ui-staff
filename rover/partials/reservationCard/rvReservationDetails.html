@@ -57,7 +57,8 @@
 			<div ng-include="'assets/partials/reservationCard/rvReservationCardPayment.html'"></div>
 			<!-- Display only the upgrades option -->
 			<div ng-include="'assets/partials/reservationCard/reservationCardRoom.html'"></div>
-			<!-- Wake up / Newspaper / Loyalty -->
+			<!-- Wake up / Newspaper / Loyalty -->
+
 			<div id="stay-card-loyalty" class="block-wrapper float">
 				<div ng-include="'assets/partials/reservationCard/reservationCardWakeup.html'"></div>
 				<div ng-include="'assets/partials/reservationCard/reservationCardNewsPaper.html'"></div>
@@ -67,7 +68,7 @@
 			<div ng-include="'assets/partials/reservationCard/reservationCardTotalStayCost.html'"></div>
 			
 			<!-- Notes -->
-			<div ng-include="'assets/partials/reservationCard/reservationCardNotes.html'"></div>
+			<div ng-include="'assets/partials/reservationCard/rvReservationCardNotes.html'"  ng-controller="rvReservationCardNotesController"></div>
 
 		</div>
 		</div>

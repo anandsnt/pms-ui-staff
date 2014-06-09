@@ -54,7 +54,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			}]
 		}, {
 			title: "MENU_FRONT_DESK",
-			hidden: true,
+			//hidden: true,
 			action: "",
 			iconClass: "icon-frontdesk",
 			submenu: [{
@@ -105,7 +105,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			}]
 		}, {
 			title: "MENU_HOUSEKEEPING",
-			hidden: true,
+			//hidden: true,
 			action: "",
 			iconClass: "icon-housekeeping",
 			submenu: [{
@@ -136,8 +136,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			title: "MENU_REPORTS",
 			action: "",
 			iconClass: "icon-reports",
-			submenu: [],
-			hidden: true
+			submenu: []			
 		}]
 
 		$scope.$on("updateSubMenu", function(idx, item) {
