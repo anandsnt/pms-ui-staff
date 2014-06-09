@@ -57,7 +57,7 @@
                     </div>
                     <div class="select room-type">
                         <!-- Hotel Room Types -->
-                        <select ng-model="room.roomType" ng-options="roomType.id as roomType.name for roomType in roomTypes">
+                        <select ng-model="room.roomType" ng-options="roomType.id as roomType.name for roomType in reservationData.roomTypes">
                           <option value="">All Room Types</option>
                         </select>
                     </div>
