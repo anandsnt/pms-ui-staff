@@ -65,9 +65,15 @@ sntRover.controller('reservationRoomStatus',[ '$rootScope','$scope','ngDialog', 
 				 scope: $scope
 			});
 		}
+		
+		//Display the key encoder popup
 		else if(keySettings === "encode"){
-			
-			console.log("encode");
+			ngDialog.open({
+			    template: '/assets/partials/keys/rvKeyEncodePopup.html',
+			    controller: 'RVKeyEncodePopupCtrl',
+			    className: 'ngdialog-theme-default1',
+			    scope: $scope
+			});
 		}
 	};
 	
