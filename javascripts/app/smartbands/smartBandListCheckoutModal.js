@@ -6,7 +6,10 @@
 var SmartBandListForCheckoutModal = function(domRef) {
 	BaseModal.call(this);
 	this.myDom = domRef;	
-	this.url = "/ui/show?haml_file=modals/smartbands/smartband_list_checkoutscreen&json_input=smartbands/smartband_list_for_checkoutscreen.json&is_hash_map=true&is_partial=true";
+	this.reservationID = '';
+	//this.url = "/ui/show?haml_file=modals/smartbands/smartband_list_checkoutscreen&json_input=smartbands/smartband_list_for_checkoutscreen.json&is_hash_map=true&is_partial=true";
+	this.url = "/api/reservations/" + this.reservationID + "/smartbands/with_balance";
+	this.balKeepMode = ''; //variable used to selected monitor balance mode, without setting this, wont be able to close the modal
 	var that = this;	
 	this.callBack = '';
 	this.callBackParams = [];
@@ -35,30 +38,19 @@ var SmartBandListForCheckoutModal = function(domRef) {
 	};
 
 	this.keepCredit = function(){
-		var amount = that.myDom.find('#listing-area').data("balance-amount");
-		var dataToPost = {};
-		
-		
-		var url = '/api/reservations/35956/smartbands';
-	    var options = { 
-			requestParameters: dataToPost,
-			successCallBack: that.successCallbackOfKeepCredit,
-			loader: 'blocker',
-			async: false
-	    };	    
-		// we prepared, we shooted!!	    			
-		var webservice = new NewWebServiceInterface();
-	   	webservice.getJSON(url, options);
+		that.balKeepMode = 'KEEPCREDIT';
+		that.hide();
 	};
 
 	this.successCallbackOfCreditToRoom = function(data){
+		that.balKeepMode = 'CREDIT_TO_ROOM';
 		that.hide();
 	};
 	this.creditToRoom = function(){
 		var amount = that.myDom.find('#listing-area').data("balance-amount");
 		var dataToPost = {};
 		
-		var url = '/api/reservations/35956/smartbands';
+		var url = '/api/reservations/' + that.reservationID + '/smartbands/cash_out';
 	    var options = { 
 			requestParameters: dataToPost,
 			successCallBack: that.successCallbackOfCreditToRoom,
@@ -76,7 +68,9 @@ var SmartBandListForCheckoutModal = function(domRef) {
         $('#modal, #modal-overlay').removeClass('modal-show'); 
         setTimeout(function() { 
             $('#modal').empty();
-        	if(typeof that.callBack === "function") that.callBack(that.callBackParams[0]);
+            if(that.balKeepMode !== ""){
+        		if(typeof that.callBack === "function") that.callBack(that.callBackParams[0]);
+        	}
         }, 150);
 	}
 
