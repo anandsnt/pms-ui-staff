@@ -47,33 +47,35 @@ sntRover.controller('reservationRoomStatus',[ '$rootScope','$scope','ngDialog', 
 	// To handle click of key icon.
 	$scope.clickedIconKey = function(){
 		
-		console.log("clickedIconKey");
-		console.log($scope.reservationData);
-		console.log($scope.reservationData.reservation_card);
-		console.log($scope.reservationData.reservation_card.reservation_status);
-		console.log($scope.reservationData.reservation_card.key_settings);
-		console.log($scope.reservationData.reservation_card.reservation_id);
 		var keySettings = $scope.reservationData.reservation_card.key_settings;
 		
 		if(keySettings === "email"){
 			
-			console.log("email");
-			
 			ngDialog.open({
 				 template: '/assets/partials/keys/rvKeyEmailPopup.html',
-				 controller: 'RVKeyEmailPopupCtrlController',
-				 className: 'ngdialog-theme-default1 calendar-single1',
+				 controller: 'RVKeyEmailPopupController',
 				 scope: $scope
 			});
 		}
 		else if(keySettings === "qr_code_tablet"){
 			
-			console.log("qr_code_tablet");
+			ngDialog.open({
+				 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
+				 controller: 'RVKeyQRCodePopupController',
+				 scope: $scope
+			});
 		}
 		else if(keySettings === "encode"){
 			
 			console.log("encode");
 		}
+	};
+	
+	/**
+	* function for close activity indicator.
+	*/
+	$scope.closeActivityIndication = function(){
+		$scope.$emit('hideLoader');
 	};
 	
 }]);
