@@ -228,9 +228,7 @@ var reservationDetailsView = function(domRef) {
 	this.clickedCheckoutButton = function(event) {
 		var target = $(event.target);
 		if(target.data("smartband-balance-remaining") == true){
-			var smartBandListForCheckoutModal = new SmartBandListForCheckoutModal();
-			smartBandListForCheckoutModal.reservationID = getReservationId();
-			console.log(smartBandListForCheckoutModal.reservationID);
+			var smartBandListForCheckoutModal = new SmartBandListForCheckoutModal(getReservationId());
 			smartBandListForCheckoutModal.callBack = that.goToBillCardView;
 			smartBandListForCheckoutModal.callBackParams = ["CheckoutButton"];
 			smartBandListForCheckoutModal.initialize();

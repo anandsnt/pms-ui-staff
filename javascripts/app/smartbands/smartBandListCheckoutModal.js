@@ -3,12 +3,11 @@
 *
 */
 
-var SmartBandListForCheckoutModal = function(domRef) {
+var SmartBandListForCheckoutModal = function(reservationID) {
 	BaseModal.call(this);
-	this.myDom = domRef;	
-	this.reservationID = '';
+	this.reservationID = reservationID;
 	//this.url = "/ui/show?haml_file=modals/smartbands/smartband_list_checkoutscreen&json_input=smartbands/smartband_list_for_checkoutscreen.json&is_hash_map=true&is_partial=true";
-	this.url = "/api/reservations/" + this.reservationID + "/smartbands/with_balance";
+	this.url = "/api/reservations/" + this.reservationID + "/smartbands/with_balance.haml";
 	this.balKeepMode = ''; //variable used to selected monitor balance mode, without setting this, wont be able to close the modal
 	var that = this;	
 	this.callBack = '';
@@ -47,7 +46,6 @@ var SmartBandListForCheckoutModal = function(domRef) {
 		that.hide();
 	};
 	this.creditToRoom = function(){
-		var amount = that.myDom.find('#listing-area').data("balance-amount");
 		var dataToPost = {};
 		
 		var url = '/api/reservations/' + that.reservationID + '/smartbands/cash_out';
@@ -59,7 +57,7 @@ var SmartBandListForCheckoutModal = function(domRef) {
 	    };	    
 		// we prepared, we shooted!!	    			
 		var webservice = new NewWebServiceInterface();
-	    webservice.getJSON(url, options);
+	    webservice.postJSON(url, options);
 	};
 
 	this.hide = function(){
