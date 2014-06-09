@@ -283,7 +283,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
      
      
      /*
-	  * Handle swipe action in reservationdetails card
+	  * Handle swipe action in bill card
 	  */
 	 $scope.$on('SWIPEHAPPENED', function(event, data){
 	 	if(!$scope.isGuestCardVisible){
@@ -296,6 +296,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	 $scope.showSignature = function(){
 	 	$scope.showSignedSignature = !$scope.showSignedSignature;
 	 };
+	 /*
+	  * Show the payment list of guest card for selection
+	  */
 	 $scope.showPaymentList = function(){
 	 	$scope.reservationBillData.currentView = "billCard";
 	 	$scope.reservationBillData.currentActiveBill = $scope.currentActiveBill;
