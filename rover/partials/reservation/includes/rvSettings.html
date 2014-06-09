@@ -146,7 +146,7 @@
                         <label for="reservation-type">Reservation type</label>
                         <div class="select">
                             <select name="reservation-type" id="reservation-type" class="placeholder" ng-model="reservationData.demographics.reservationType">
-                                <option ng-repeat="reservationType in listData.reservationTypes" value="reservationType.value" ng-selected="reservationType.value==reservationData.demographics.reservationType">{{reservationType.description}}</option>
+                                <option ng-repeat="reservationType in otherData.reservationTypes" value="reservationType.value" ng-selected="reservationType.value==reservationData.demographics.reservationType">{{reservationType.description}}</option>
                             </select>
                         </div>
                     </div>
@@ -154,7 +154,7 @@
                         <label for="market">Market</label>
                         <div class="select">
                             <select name="market" id="market" class="placeholder" ng-model="reservationData.demographics.market">
-                                <option ng-repeat="market in listData.markets" value="market.value" ng-selected="market.value==reservationData.demographics.market">{{market.name}}</option>
+                                <option ng-repeat="market in otherData.markets" value="market.value" ng-selected="market.value==reservationData.demographics.market">{{market.name}}</option>
                             </select>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                         <label for="source">Source</label>
                         <div class="select">
                             <select name="source" id="source" class="placeholder" ng-model="reservationData.demographics.source">
-                                <option ng-repeat="source in listData.sources" value="source.value" ng-selected="source.value==reservationData.demographics.source">{{source.name}}</option>
+                                <option ng-repeat="source in otherData.sources" value="source.value" ng-selected="source.value==reservationData.demographics.source">{{source.name}}</option>
                             </select>
                         </div>
                     </div>
@@ -170,7 +170,7 @@
                         <label for="origin">Origin of Booking</label>
                         <div class="select">
                             <select name="origin" id="origin" class="placeholder" ng-model="reservationData.demographics.origin">
-                                <option ng-repeat="origin in listData.origins" value="origin.value" ng-selected="origin.value==reservationData.demographics.origin">{{origin.name}}</option>
+                                <option ng-repeat="origin in otherData.origins" value="origin.value" ng-selected="origin.value==reservationData.demographics.origin">{{origin.name}}</option>
                             </select>
                             </select>
                         </div>

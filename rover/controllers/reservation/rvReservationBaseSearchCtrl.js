@@ -13,10 +13,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         var init = function(){
             $scope.reservationData.arrivalDate = dateFilter(new Date(), 'yyyy-MM-dd');
             $scope.setDepartureDate();
-            $scope.roomTypes = baseSearchData.roomTypes;
-            $scope.maxAdults = (baseSearchData.settings.max_guests.max_adults === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_adults;
-            $scope.maxChildren = (baseSearchData.settings.max_guests.max_children === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_children;
-            $scope.maxInfants = (baseSearchData.settings.max_guests.max_infants === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_infants;
+            $scope.otherData.roomTypes = baseSearchData.roomTypes;
+            $scope.otherData.maxAdults = (baseSearchData.settings.max_guests.max_adults === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_adults;
+            $scope.otherData.maxChildren = (baseSearchData.settings.max_guests.max_children === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_children;
+            $scope.otherData.maxInfants = (baseSearchData.settings.max_guests.max_infants === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_infants;
         };
 
         $scope.setDepartureDate = function(){
@@ -25,12 +25,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 $scope.reservationData.departureDate = tmpDate.setDate(tmpDate.getDate() + parseInt($scope.reservationData.numNights));
             }
         }
-
-        $scope.range = function(min, max){
-            var input = [];
-            for (var i=min; i<=max; i++) input.push(i);
-            return input;
-        };
 
         /*
         * company card search text entered
