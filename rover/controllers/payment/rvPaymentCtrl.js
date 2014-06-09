@@ -14,6 +14,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 */
 	$scope.successRender = function(data){
 		
+		 
+		
+		
 		$scope.$emit("hideLoader");
 		$scope.data = data;
 		$scope.paymentTypeValues = [];
@@ -27,7 +30,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.selected_payment_type = selectedPaymentType;//Only for swipe
 			$scope.paymentTypeValues = $scope.data[selectedPaymentType].values;
 			$scope.saveData.card_number  = $scope.passData.card_number;
-			$scope.saveData.selected_credit_card  =  $scope.passData.credit_card;
+			$scope.saveData.credit_card  =  $scope.passData.credit_card;
 			$scope.saveData.name_on_card =  $scope.passData.name_on_card;
 			$scope.saveData.card_expiry_month = $scope.passData.card_expiry.slice(-2);
 			$scope.saveData.card_expiry_year = $scope.passData.card_expiry.substring(0, 2);
@@ -54,7 +57,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * updating staycard with new data
 	 */
 	$scope.saveSuccess = function(){
+		 
 		var billIndex = parseInt($scope.passData.fromBill);
+		
 		$scope.$emit("hideLoader");
 		ngDialog.close();
 		var cardNumber = $scope.saveData.card_number;

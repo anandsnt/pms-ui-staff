@@ -246,9 +246,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	             	 'ksn': data.RVCardReadTrack2KSN,
 	              	'pan': data.RVCardReadMaskedPAN,
 	              	'token': tokenData,
+	              	"fromBill" : $scope.currentActiveBill,
 		  	 		"is_swiped": true   // Commenting for now
 		  	 	};
-	         	var paymentData = $scope.reservationData;
+	         	var paymentData = $scope.reservationBillData;
 	  	 		$scope.showAddNewPaymentModal(passData, paymentData);
          	};
          	$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);	
@@ -283,7 +284,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	  * Handle swipe action in reservationdetails card
 	  */
 	 $scope.$on('SWIPEHAPPENED', function(event, data){
-	 	console.log("FROM VIEW BILL")
 	 	if(!$scope.isGuestCardVisible){
 	 		$scope.addNewPaymentModal(data);
 	 	}

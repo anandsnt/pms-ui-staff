@@ -7,17 +7,17 @@
 		<!-- Reservation Header -->
 		<div class="reservation-header">
 			<div class="actions back">
-				<a id="back-to-staycard" class="back-button prev-view">BACK</a>
+				<a id="back-to-staycard" class="back-button prev-view" >BACK</a>
 			</div>
 			<!-- Other header details -->
 			<div class="data">
 				<span data-room-status="NOTREADY" data-reserv-status="CHECKEDOUT" data-fostatus="VACANT" class="room"> <span class="guest-status room">room</span> <strong id="header-room-num" class="room-number"> 2019 </strong> <span id="room-type"> Deluxe Twin </span> </span>
-				<span class="nights"> <span class="guest-status nights"></span> 4
+				<span class="nights"> <span class="guest-status nights"></span> {{reservationBillData.number_of_nights}}
 					nights </span>
-				<span class="date"> <span class="guest-status small-icon check-in">check-in</span> Tuesday
-					05-27-2014 </span>
-				<span class="date"> <span class="guest-status small-icon check-out">check-out</span> Saturday
-					05-31-2014 </span>
+				<span class="date"> <span class="guest-status small-icon check-in">check-in</span> 
+				Tuesday	05-27-2014 </span>
+				<span class="date"> <span class="guest-status small-icon check-out">check-out</span> 
+				Saturday 05-31-2014 </span>
 			</div>
 
 		</div>
