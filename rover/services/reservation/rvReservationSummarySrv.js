@@ -43,12 +43,10 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             });
         };
 
-        this.fetchDemographicReservationTypes = function(deferred){
-            //var url = '/api/reservation_types'; //TODO: Ask Shiju P, not found any api in api guide
-            var url = '/api/booking_origins';
+        this.fetchDemographicReservationTypes = function(deferred){            
+            var url = '/api/reservation_types.json';
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                //that.reservationData.demographics.reservationTypes = data;
-                that.reservationData.demographics.reservationTypes = [{value:"v1", description: "The first"}, {value:"v2", description: "The Second"}];
+                that.reservationData.demographics.reservationTypes = data.reservation_types;                
                 deferred.resolve(that.reservationData);
             }, function(errorMessage){
                 deferred.reject(errorMessage);
