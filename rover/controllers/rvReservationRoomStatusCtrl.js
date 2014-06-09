@@ -76,4 +76,11 @@ sntRover.controller('reservationRoomStatus',[ '$rootScope','$scope','ngDialog', 
 		}
 	};
 	
+	/**
+	* function for close activity indicator.
+	*/
+	$scope.closeActivityIndication = function(){
+		$scope.$emit('hideLoader');
+	};
+	
 }]);

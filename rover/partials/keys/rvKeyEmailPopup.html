@@ -1,19 +1,23 @@
-<div role="dialog" id="modal" data-position="bottom-right" class="ui-draggable modal-show">
-	<div class="modal-content key-delivery inhouse">
-		<button ng-click="closeButtonClick()" class="modal-close blue" type="button" id="modal-close"><span class="icons icon-close"></span></button>
-		<div class="scan-key" id="room-status">
-			<span class="h2 message">In House</span>
-			<h1 class="icon-key">
-				Jos Schaap 
-				<span>104</span>
-			</h1>
-			<span class="number">Reservation 3265971523</span>
+<div role="dialog" id="modal" class="modal-show">
+	<div class="modal-content key-delivery" ng-class="data.colorCodeClass">
+		<button ng-click="closeButtonClick()" type="button" id="modal-close" class="modal-close" ng-class="data.colorCodeClassForClose">
+			<span class="icons icon-close"></span>
+		</button>
+		<div id="room-status" class="scan-key">
+			<span ng-show="data.is_late_checkout == 'true'" class="h2 message">{{data.reservationStatusText}}<br/> {{data.late_checkout_time}}</span>
+			<span ng-show="data.is_late_checkout == 'false'" class="h2 message">{{data.reservationStatusText}}</span>
+			<h1 class="icon-key"> {{data.user_name}} <span></span> {{data.room_number}} </h1>
+			<span class="number">
+				Reservation
+				{{data.confirmation_number}}	
+			</span>
 		</div>
-		<div class="scan-key" id="key-status">
-			<span class="h2 message">Scan Room Key</span>
-			<div class="qr-holder">
-				<em class="info">Drag window to adjust position for scan</em>
-			    <img alt="" src="http://stayntouch.perceptiveinteractive.com/with-cards/images/qrcode.png">
+		<div id="key-status" class="scan-key">
+			<span class="h2 message">Room Key Emailed</span>
+			<div class="action">
+				<em class="info"> Email with the key QR code sent to {{data.email}} </em>
+				<a ng-show="false" id="goto-staycard" class="modal-close button brand-colors">View Stay Card</a>
+				<a ng-show="false" id="goto-search" class="modal-close button blue">Search</a>
 			</div>
 		</div>
 	</div>

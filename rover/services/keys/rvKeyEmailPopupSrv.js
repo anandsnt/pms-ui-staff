@@ -1,4 +1,4 @@
-sntRover.service('RVKeyEmailPopupSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
+sntRover.service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv){
 		
 	this.fetchKeyEmailData = function(param){
 		
