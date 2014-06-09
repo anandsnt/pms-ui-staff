@@ -59,7 +59,7 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
                     tooltip: {
                         shared: true,
                         formatter: function() {                    	   
-                    	    	return 'ACTUAL <b>' + (( typeof this.points[0].y == 'undefined' ) ? '0' : this.points[0].y ) + '%</b>' + '<br/>CONTRACTED <b>' +  (( typeof this.points[1] == 'undefined' ) ? '0' : this.points[1].y ) + '%</b>';
+                    	    	return 'ACTUAL <b>' + (( typeof this.points[0].y == 'undefined' ) ? '0' : this.points[0].y ) + '</b>' + '<br/>CONTRACTED <b>' +  (( typeof this.points[1] == 'undefined' ) ? '0' : this.points[1].y ) + '</b>';
                         }
                     },
                     legend: { 
