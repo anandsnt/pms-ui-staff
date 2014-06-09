@@ -1,7 +1,7 @@
 <section id="rooms-and-rates" class="content reservations-inner" >
 
     <ul class="reservation-header" id="rooms-and-rates-header">
-        <li ng-repeat = "room in rooms" class="load-room" ng-class="{'active': $index == activeRoom}"> ROOM {{$index + 1}}</li>
+        <li ng-repeat = "room in rooms" class="load-room" ng-class="{'active': $index == activeRoom , 'hidden' : rooms.length < 2}"> ROOM {{$index + 1}}</li>
     </ul>
     <div id="rooms-and-rates-content" class="reservations-content-wrapper">
         <div class="reservation-filters">
@@ -45,7 +45,7 @@
                 <ul class="rates" ng-class="{hidden: selectedRoomType != $index}">
                     <li ng-repeat="rate in room.rates">
                         <a class="has-arrow toggle" ng-init="isActive=false" ng-click="isActive = !isActive">
-                            <h3>{{rate.rate_name}}{{isActive}}</h3>
+                            <h3>{{rate.rate_name}}</h3>
                             <div class="price">
                                 $149
                                 <span>Avg. Rate per night</span>
