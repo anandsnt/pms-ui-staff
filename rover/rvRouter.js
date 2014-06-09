@@ -147,7 +147,12 @@ sntRover.config([
         $stateProvider.state('rover.reservation.mainCard.roomType', {
             url: '/roomType',
             templateUrl: '/assets/partials/reservation/rvRoomTypesList.html',
-            controller: 'RVReservationRoomTypeCtrl'
+            controller: 'RVReservationRoomTypeCtrl',
+            resolve: {
+               roomRates : function(RVReservationBaseSearchSrv) {
+                    return RVReservationBaseSearchSrv.fetchRoomRates();
+                }
+            }
         });
 
         $stateProvider.state('rover.reservation.mainCard.addons', {
