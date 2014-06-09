@@ -1,4 +1,4 @@
-sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialog','RVKeyPopupSrv', function($rootScope, $scope, ngDialog, RVKeyPopupSrv){
+sntRover.controller('RVKeyQRCodePopupController',[ '$rootScope','$scope','ngDialog','RVKeyPopupSrv', function($rootScope, $scope, ngDialog, RVKeyPopupSrv){
 	
 	// Set up data for view
 	var setupData = function(){
@@ -31,7 +31,7 @@ sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialo
 	  		$scope.closeActivityIndication();
 	    };
 		
-		$scope.invokeApi(RVKeyPopupSrv.fetchKeyEmailData,{ "reservationId": reservationId }, successCallback, failureCallback);  
+		$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback, failureCallback);  
 
 	};
 	setupData();

@@ -17,8 +17,8 @@
   		</a>
 	</div>
 	
-	<div class="actions" >
-  		<a ng-click="clickedIconKey()" id="add-keys" class="button with-icon blue">
+	<div class="actions" ng-show="showKeysButton(reservationData.reservation_card.reservation_status)">
+  		<a ng-click="clickedIconKey()" id="add-keys" class="button with-icon blue" >
     		<span class="icons icon-key"></span>
     		Keys
   		</a>

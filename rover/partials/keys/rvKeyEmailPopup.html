@@ -16,8 +16,8 @@
 			<span class="h2 message">Room Key Emailed</span>
 			<div class="action">
 				<em class="info"> Email with the key QR code sent to {{data.email}} </em>
-				<a ng-show="false" id="goto-staycard" class="modal-close button brand-colors">View Stay Card</a>
-				<a ng-show="false" id="goto-search" class="modal-close button blue">Search</a>
+				<a ng-show="false" class="modal-close button brand-colors" ui-sref="rover.dashboard" ng-click="closeButtonClick()">View Stay Card</a>
+				<a ng-show="false" class="modal-close button blue" ui-sref="rover.search" ng-click="closeButtonClick()">Search</a>
 			</div>
 		</div>
 	</div>
