@@ -342,17 +342,19 @@ var HotelDetailsView = function(domRef) {
 				hotel_logo: hotel_logo,
 				hotel_template_logo: hotel_template_logo,
 				checkin_to_inspected_rooms_only: checkinToInspectedRoomsOnly
-
 			};
 		}
 		return data;
 	};
+
+
 	this.gotoPreviousPage = function() {
 
 		sntadminapp.gotoPreviousPage(that.viewParams, that.myDom);
 	};
 
 	this.readCertificate = function(input, type) {
+
 
 		 function resetInput(element, eventId) {
             var clone = element.clone(false, false);            
@@ -401,9 +403,6 @@ var HotelDetailsView = function(domRef) {
 				that.fileContent = e.target.result;
 			};
 			reader.readAsDataURL(input.files[0]);
-
-
-
 		}
 	};
 
