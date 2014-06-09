@@ -1,16 +1,16 @@
 <div id="modal" class="modal-show">
-	<form id="print-key" name="print-key" class="modal-content form key-delivery inhouse">
-		<button id="modal-close" type="button" class="modal-close blue" ng-click="closeDialog()">
+	<form id="print-key" name="print-key" class="modal-content form key-delivery" ng-class="data.colorCodeClass">
+		<button id="modal-close" type="button" class="modal-close blue" ng-click="closeDialog()" ng-class="data.colorCodeClassForClose">
 			<span class="icons icon-close">
 		</button>
 		<!-- Left contents -->
 		<div id="room-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keyesPrinted, 'not-connected' : deviceNotConnected, 'completed' : keyesPrinted}">
-			<span class="h2 message">In House</span>
+			<span class="h2 message">{{data.reservationStatusText}}</span>
 			<h1>
-				Jos Schaap 
-				<span>104</span>
+				{{guestCardData.contactInfo.first_name}} {{guestCardData.contactInfo.last_name}} 
+				<span>{{reservationData.reservation_card.room_number}}</span>
 			</h1>
-			<span class="number">Reservation 3265971523</span>
+			<span class="number">Reservation {{reservationData.reservation_card.confirmation_num}}</span>
 		</div>
 		<!--end-->
 

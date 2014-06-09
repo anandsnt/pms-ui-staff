@@ -2,6 +2,30 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog',  
 	BaseCtrl.call(this, $scope);
 	var that = this;
 	$scope.init = function(){
+		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+    	$scope.data = {};
+    	console.log(reservationStatus);
+    	
+    	// To check reservation status and select corresponding texts and classes.
+    	if(reservationStatus == 'CHECKING_IN' ){
+			$scope.data.reservationStatusText = 'Check in Complete';
+			$scope.data.colorCodeClass = 'check-in';
+			$scope.data.colorCodeClassForClose = 'hidden';
+		}
+		else if(reservationStatus == 'CHECKEDIN' ){
+			$scope.data.reservationStatusText = 'In House';
+			$scope.data.colorCodeClass = 'inhouse';
+			$scope.data.colorCodeClassForClose = 'blue';
+		}
+		else if(reservationStatus == 'CHECKING_OUT'){
+			$scope.data.reservationStatusText = 'Checking Out';
+			$scope.data.colorCodeClass = 'check-out';
+			$scope.data.colorCodeClassForClose = 'red';
+		}
+
+		//TODO: include late checkout scenario
+
+		console.log(JSON.stringify($scope.reservationData));
 		$scope.deviceConnecting = false;
 		$scope.showPrintKeyOptions = false;
 		$scope.deviceNotConnected = false;
