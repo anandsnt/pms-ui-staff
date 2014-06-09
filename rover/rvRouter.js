@@ -118,7 +118,12 @@ sntRover.config([
             abstract : true,
             url: '/reservation',
             templateUrl: '/assets/partials/reservation/rvMain.html',
-            controller: 'RVReservationMainCtrl'
+            controller: 'RVReservationMainCtrl',
+            resolve: {
+                baseData: function(RVReservationSummarySrv){
+                    return RVReservationSummarySrv.fetchInitialData();
+                }
+            }
         });
 
         $stateProvider.state('rover.reservation.search', {
