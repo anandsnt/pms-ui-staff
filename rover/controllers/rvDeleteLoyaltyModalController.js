@@ -1,13 +1,7 @@
-sntRover.controller('rvDeleteLoyaltyModalController',['$scope','$rootScope','$filter','RVLoyaltyProgramSrv', 'ngDialog', function($scope, $rootScope,$filter, RVLoyaltyProgramSrv, ngDialog){
+sntRover.controller('rvDeleteLoyaltyModalController',['$scope','$rootScope','$filter','RVGuestCardLoyaltySrv', 'ngDialog', function($scope, $rootScope,$filter, RVGuestCardLoyaltySrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	
-	$scope.availableFFPS = [];
-	$scope.availableHLPS = [];
-	$scope.loyaltyPrograms = [{name:"Frequent Flyer Program", code:"FFP"},{name:"Hotel Loyalty Program", code:"HLP"}];
-	$scope.selectedLoyaltyProgram = "";
-	$scope.selectedLoyaltyType = "";
-	$scope.selectedLevel = "";
-	$scope.loyaltyCode = "";
+	
 	$scope.closeDialog = function(){
 		ngDialog.close();
 	};
@@ -19,10 +13,12 @@ sntRover.controller('rvDeleteLoyaltyModalController',['$scope','$rootScope','$fi
 
 	$scope.deleteLoyalty = function(){
 			var successCallbackDeleteLoyalty = function(){
-
+				$scope.dimissLoaderAndDialog();
+				$rootScope.$broadcast('loyaltyProgramDeleted', $scope.loaytyID);
 			};
-			var errorCallbackDeleteLoyalty = function(){
-
+			var errorCallbackDeleteLoyalty = function(error){
+				$scope.dimissLoaderAndDialog();
+				$scope.errorMessage = error;
 			};
 			$scope.invokeApi(RVGuestCardLoyaltySrv.deleteLoyalty,$scope.loaytyID , successCallbackDeleteLoyalty, errorCallbackDeleteLoyalty);
 	};

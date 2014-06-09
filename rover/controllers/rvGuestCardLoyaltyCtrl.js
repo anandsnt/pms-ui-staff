@@ -38,6 +38,15 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
                   scope: $scope
                 });
 	}
+	$scope.showDeleteModel =  function(id){
+		$scope.loaytyID = id;
+		 ngDialog.open({
+                  template: '/assets/partials/guestCard/guestCardDeleteLoyaltyModal.html',
+                  controller: 'rvDeleteLoyaltyModalController',
+                  className: 'ngdialog-theme-default',
+                  scope: $scope
+                });
+	}
 	$scope.$on("loyaltyProgramAdded",function(e,data){
 
 		if(typeof $scope.loyaltyData == 'undefined')
@@ -51,4 +60,38 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		}
         	
 	});
+	$scope.$on("loyaltyProgramDeleted",function(e,id){
+
+		if(typeof $scope.loyaltyData == 'undefined')
+			return;
+		else{
+			$scope.removeLoyaltyWithID(id);
+		}
+        	
+	});
+	$scope.removeLoyaltyWithID = function(id){
+		var pos = "";
+		var hotelLoyaltyPrograms = $scope.loyaltyData.userMemberships.hotelLoyaltyProgram;
+		var frequentFlyerPrograms = $scope.loyaltyData.userMemberships.frequentFlyerProgram;
+		for(var i = 0; i < hotelLoyaltyPrograms.length; i++){
+			if(id == hotelLoyaltyPrograms[i].id){
+				pos = i;
+				break;
+			}
+		}
+		if(pos != ""){
+			$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(pos, 1);
+			return;
+		}
+		for(var i = 0; i < frequentFlyerPrograms.length; i++){
+			if(id == frequentFlyerPrograms[i].id){
+				pos = i;
+				break;
+			}
+		}
+		if(pos != ""){
+			$scope.loyaltyData.userMemberships.frequentFlyerProgram.splice(pos, 1);
+			return;
+		}
+	};
 }]);

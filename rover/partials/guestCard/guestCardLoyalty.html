@@ -1,10 +1,12 @@
  <form method="post" ng-controller="RVGuestCardLoyaltyController" id="gc-loyalty" name="loyalty" class="form card-tab scrollable" ng-show="current == 'guest-loyalty'">
                     <div class="wrapper">
-                        <span class="notice">Set Primary Hotel Loyalty Program</span>
+                        <div class="entry full-width">
+                            <div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
+                            </div>
                         <!-- Frequent Flyer Program -->
                         <div class="holder left">
                             <strong class="h3">Frequent Flyer Program</strong>
-                            <a class="active-item item-loyalty open-modal float" ng-repeat="freaquentLoyalty in loyaltyData.userMemberships.frequentFlyerProgram">
+                            <a class="active-item item-loyalty open-modal float" ng-repeat="freaquentLoyalty in loyaltyData.userMemberships.frequentFlyerProgram" ng-click="showDeleteModel(freaquentLoyalty.id)">
                                <span class="value code">{{freaquentLoyalty.membership_type}}</span>
                                 <span class="value number">{{freaquentLoyalty.membership_card_number}}</span>
                                 <span class="value name">{{freaquentLoyalty.membership_level}}</span>
@@ -16,7 +18,7 @@
                         <!-- Hotel Loyalty Program -->
                         <div class="holder right">
                             <strong class="h3">Hotel Loyalty Program</strong>
-                            <a class="active-item item-loyalty open-modal float" ng-repeat="hotelLoyalty in loyaltyData.userMemberships.hotelLoyaltyProgram">
+                            <a class="active-item item-loyalty open-modal float" ng-repeat="hotelLoyalty in loyaltyData.userMemberships.hotelLoyaltyProgram" ng-click="showDeleteModel(hotelLoyalty.id)">
                                 <span class="value code">{{hotelLoyalty.membership_type}}</span>
                                 <span class="value number">{{hotelLoyalty.membership_card_number}}</span>
                                 <span class="value name">{{hotelLoyalty.membership_level}}</span>
