@@ -87,4 +87,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         roomTypes: []
     };
 
+    //setting the main header of the screen
+    $scope.heading = "Reservations";
+
 }]);

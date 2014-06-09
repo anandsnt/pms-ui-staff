@@ -1,0 +1,163 @@
+<div id="additional-cards" class="cards" ng-class="UICards[0]" role="complementary" ui-jq="resizable" ui-options="resizableOptions" ng-controller="RVReservationAllCardsCtrl">
+    <div class="cards-wrapper">
+        
+        <!-- Cards Header -->
+        <header class="cards-header">
+           
+            <!-- Guest Card -->
+            <div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')">
+                <figure class="guest-image" ng-click="switchCard('guest-card')">
+                    <img src="../images/avatar.jpg" alt="" />
+                    <span class="search-indicator"></span>
+                </figure>
+                <form method="get" action="" name="search-guests" id="search-guests" class="card-search-form" role="search">
+                    <div class="holder">
+                        <div class="entry">
+                            <input name="gc-firstname" id="gc-firstname" placeholder="First Name" value="" type="text" class="masked-input fixed name h1" />
+                            <!-- Value in this input means we've searched for "Smi" in intial search screen -->
+                            <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" value="Smi" type="text" class="masked-input fixed name h1" />
+                            <input name="gc-city" id="gc-city" placeholder="City" value="" type="text" class="masked-input fixed city h1" />
+                            <input name="gc-loyalty" id="gc-loyalty" placeholder="Loyalty Number" value="" type="text" class="masked-input fixed loyalty h1" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Company Card -->
+            <div id="company-card-header" class="card-header" ng-class="UICardClass('company-card')">
+                <div class="guest-image icons icon-company" ng-click="switchCard('company-card')">
+                    Add <span>Company</span>
+                </div>
+                <form method="get" action="" name="search-company" id="search-company" class="card-search-form" role="search">
+                    <div class="holder">
+                        <div class="entry">
+                            <input name="cc-name" id="cc-name" placeholder="Company Name" value="" type="text" class="masked-input fixed long-name h1" />
+                            <input name="cc-city" id="cc-city" placeholder="City" value="" type="text" class="masked-input fixed city h1" />
+                            <input name="cc-corporate-id" id="cc-corporateid" placeholder="Corporate ID" value="" type="text" class="masked-input fixed code h1" />
+                        </div>
+                    </div>
+                </form>
+            </div> 
+            
+            <!-- Travel Agent Card -->
+            <div id="travel-agent-card-header" class="card-header" ng-class="UICardClass('travel-agent-card')">
+                <div class="guest-image icons icon-travel-agent" ng-click="switchCard('travel-agent-card')">
+                    Add <span>Travel Agent</span>
+                </div>
+                <form method="get" action="" name="search-travel-agent" id="search-travel-agent" class="card-search-form" role="search">
+                    <div class="holder">
+                        <div class="entry">
+                            <input name="tac-name" id="tac-name" placeholder="Travel Agent" value="" type="text" class="masked-input fixed long-name h1" />
+                            <input name="tac-city" id="tac-city" placeholder="City" value="" type="text" class="masked-input fixed city h1" />
+                            <input name="tac-iata" id="tac-iata" placeholder="IATA #" value="" type="text" class="masked-input fixed code h1" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </header>
+        
+        <!-- Cards Content -->
+        <div class="cards-content">
+            
+            <!-- Guest Card -->            
+            <div id="guest-card-content" class="card-search card-content visible">
+                <strong class="results-count">2 possible matches</strong>
+                <button id="new-guest" type="button" class="button green has-arrow skip">New Guest</button>
+                <div id="search-guests-content" class="search-cards scrollable">
+                    <div class="wrapper">
+                        <ul id="search-guests-results" class="search-results">
+                            <li>
+                                <a href="#">
+                                    <figure class="guest-image">
+                                        <img src="guest1.jpg" alt="" />
+                                    </figure>
+                                    <div class="data">
+                                        <h2>Smith, Aaron</h2>
+                                        <span class="confirmation">12341278</span>
+                                        <span class="icons icon-location">Dallas, TX</span>
+                                        <span class="icons icon-phone">302-555-1212</span>
+                                    </div>
+                                    <div class="stays">
+                                        <div class="count">
+                                            <span class="label">Stays</span>2
+                                        </div>
+                                        <div class="last-stay">
+                                            <span class="label">Last</span>
+                                            November 12, 2012
+                                            <strong>114</strong>
+                                            <em>Superior King</em>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <figure class="guest-image">
+                                        <img src="guest2.jpg" alt="" />
+                                        <span class="vip">VIP</span>
+                                    </figure>
+                                    <div class="data">
+                                        <h2>Smith, Adrianne</h2>
+                                        <span class="confirmation">14636117</span>
+                                        <span class="icons icon-location">Milwaukee, WI</span>
+                                        <span class="icons icon-phone">302-1562-14562</span>
+                                    </div>
+                                    <div class="stays">
+                                        <div class="count">
+                                            <span class="label">Stays</span>2
+                                        </div>
+                                        <div class="last-stay">
+                                            <span class="label">Last</span>
+                                            November 12, 2012
+                                            <strong>114</strong>
+                                            <em>Superior King</em>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="search-guests-no-results" class="search-cards no-content hidden">
+                    <div class="info">
+                        <span class="icon-no-content icon-guest"></span>
+                        <strong class="h1">Find Guest</strong>
+                        <span class="h2">Search by <strong>Name</strong>, <strong>Group</strong>, <strong>Room No.</strong> or <strong>Confirmation No.</strong></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Company Card -->
+            <div id="company-card-content" class="card-search card-content hidden">
+                <div id="search-company-content" class="search-cards scrollable hidden">
+                    <div class="wrapper">
+                        <ul id="search-company-results" class="search-results"></ul>
+                    </div>
+                </div>
+                <div id="search-company-no-results" class="search-cards no-content">
+                    <div class="info">
+                        <span class="icon-no-content icon-cards"></span>
+                        <strong class="h1">Find Company</strong>
+                        <span class="h2">Search by <strong>Name</strong>, <strong>City</strong> or <strong>Loyalty No.</strong></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Travel Agent Card -->
+            <div id="travel-agent-card-content" class="card-search card-content hidden">
+                <div id="search-travel-agent-content" class="search-cards scrollable hidden">
+                    <div class="wrapper">
+                        <ul id="search-travel-agent-results" class="search-results"></ul>
+                    </div>
+                </div>
+                <div id="search-travel-agent-no-results" class="search-cards no-content">
+                    <div class="info">
+                        <span class="icon-no-content icon-cards"></span>
+                        <strong class="h1">Find Travel Agent</strong>
+                        <span class="h2">Search by <strong>Travel Agent Name</strong>, <strong>City</strong>, or <strong>IATA #</strong></span>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+</div>

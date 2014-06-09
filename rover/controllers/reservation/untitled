@@ -1,4 +1,4 @@
-<div id="additional-cards" class="guest-card cards" role="complementary"  ui-jq="resizable" ui-options="resizableOptions" ng-controller="RVReservationCompanyCardCtrl">
+<div id="additional-cards" class="cards" ng-class="{{ UICards.selected }}" role="complementary"  ui-jq="resizable" ui-options="resizableOptions" ng-controller="RVReservationCompanyCardCtrl">
     <div class="cards-wrapper"  >
         <!-- Cards Header -->
         <header class="cards-header">
