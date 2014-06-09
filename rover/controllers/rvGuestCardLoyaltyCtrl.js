@@ -38,4 +38,17 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
                   scope: $scope
                 });
 	}
+	$scope.$on("loyaltyProgramAdded",function(e,data){
+
+		if(typeof $scope.loyaltyData == 'undefined')
+			return;
+		else{
+			if(data.membership_class == "HLP"){
+        		$scope.loyaltyData.userMemberships.hotelLoyaltyProgram.push(data);
+        	}else{
+        		$scope.loyaltyData.userMemberships.frequentFlyerProgram.push(data);
+        	}
+		}
+        	
+	});
 }]);

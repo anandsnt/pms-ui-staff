@@ -1,4 +1,4 @@
-sntRover.controller('rvAddLoyaltyProgramController',['$scope','$filter','RVLoyaltyProgramSrv', 'ngDialog', function($scope, $filter, RVLoyaltyProgramSrv, ngDialog){
+sntRover.controller('rvAddLoyaltyProgramController',['$scope','$rootScope','$filter','RVLoyaltyProgramSrv', 'ngDialog', function($scope, $rootScope,$filter, RVLoyaltyProgramSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
 	
 	$scope.availableFFPS = [];
@@ -7,6 +7,7 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$filter','RVLoyal
 	$scope.selectedLoyaltyProgram = "";
 	$scope.selectedLoyaltyType = "";
 	$scope.selectedLevel = "";
+	$scope.loyaltyCode = "";
 	$scope.closeDialog = function(){
 		ngDialog.close();
 	};
@@ -19,10 +20,17 @@ sntRover.controller('rvAddLoyaltyProgramController',['$scope','$filter','RVLoyal
 	$scope.addLoyaltyProgram = function(){
 		var params = {};
 		params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;		
-		
-		var successCallbackaddLoyaltyProgram = function(){
-			
+		params.user_id = $scope.$parent.$parent.guestCardData.userId;
+		params.user_membership = {};
+		params.user_membership.membership_type = $scope.selectedLoyaltyType;
+		params.user_membership.membership_card_number = $scope.loyaltyCode;
+		params.user_membership.membership_class = $scope.selectedLoyaltyProgram;
+		params.user_membership.membership_level = $scope.selectedLevel;
+		$scope.newLoyalty = params.user_membership;
+		var successCallbackaddLoyaltyProgram = function(data){
+			$scope.newLoyalty.id = data.id;
 			$scope.dimissLoaderAndDialog();
+			$rootScope.$broadcast('loyaltyProgramAdded', $scope.newLoyalty);
 		};
 
 		var errorCallbackaddLoyaltyProgram = function(errorMessage){

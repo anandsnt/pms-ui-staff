@@ -1,4 +1,4 @@
-sntRover.controller('RVAddNewHotelLoyaltyController',['$scope','RVGuestCardLoyaltySrv','ngDialog', function($scope,RVGuestCardLoyaltySrv,ngDialog){
+sntRover.controller('RVAddNewHotelLoyaltyController',['$scope', '$rootScope','RVGuestCardLoyaltySrv','ngDialog', function($scope, $rootScope,RVGuestCardLoyaltySrv,ngDialog){
 	
 
 	$scope.userMembershipTypes = $scope.loyaltyData.hotelLoyaltyData;
@@ -31,8 +31,10 @@ sntRover.controller('RVAddNewHotelLoyaltyController',['$scope','RVGuestCardLoyal
 
 	$scope.save = function(){
 
-		var loyaltyPostsuccessCallback = function(data){		
+		var loyaltyPostsuccessCallback = function(data){	
+			$scope.newLoyalty.id = data.id;	
 			$scope.$emit('hideLoader');
+			$rootScope.$broadcast('loyaltyProgramAdded', $scope.newLoyalty);
 		};
 
 		var loyaltyPostErrorCallback = function(errorMessage){
@@ -43,6 +45,7 @@ sntRover.controller('RVAddNewHotelLoyaltyController',['$scope','RVGuestCardLoyal
 		user_membership.membership_card_number = $scope.userMembershipNumber;
 		user_membership.membership_class = $scope.userMembershipClass;
 		user_membership.membership_type = $scope.userMembershipType;
+		$scope.newLoyalty = user_membership;
 
 		var data = {'user_id':$scope.$parent.guestCardData.userId,
 					'guest_id':$scope.$parent.guestCardData.userId,

@@ -45,6 +45,17 @@ sntRover.service('RVLoyaltyProgramSrv',['$q', 'RVBaseWebSrv', function($q, RVBas
 		return deferred.promise;		
 		
 	};
+	this.selectLoyalty = function(params){
+		var deferred = $q.defer();
+		var url =  '/staff/user_memberships/link_to_reservation';			
+		RVBaseWebSrv.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;		
+		
+	};
 
 
 }]);

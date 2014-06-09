@@ -51,6 +51,16 @@ sntRover.service('RVGuestCardLoyaltySrv',['$q', 'RVBaseWebSrv', function($q, RVB
 		return deferred.promise;		
 		
 	};
+	this.deleteLoyalty = function(id){
+		var deferred = $q.defer();		
+		var url =  '/staff/user_memberships/'+ id + '.json';			
+		RVBaseWebSrv.deleteJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 
 
 

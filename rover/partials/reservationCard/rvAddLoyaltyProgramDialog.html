@@ -5,8 +5,8 @@
       </button>
       <strong class="new-form-title" translate>NEW_LOYALTY_LABEL</strong>
       <div class="entry full-width">
-         <div id="notification-message"></div>
-      </div>
+            <div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
+        </div>
       <div class="entry full-width">
          <label for="program" translate>LOYALTY_PROGRAM_LABEL</label>
          <div class="select">
@@ -36,11 +36,11 @@
       </div>
       <div class="entry full-width">
          <label for="code" translate>LOYALTY_CODE_LABEL</label>
-         <input id="code" type="text" value="" name="code">
+         <input id="code" ng-model="loyaltyCode" type="text" value="" name="code">
       </div>
       <div class="actions float">
          <button id="cancel" class="button blank modal-close" ng-click = "closeDialog()" type="button" translate>CANCEL</button>
-         <button id="save" class="button green modal-close" type="button" translate>ADD</button>
+         <button id="save" class="button green modal-close" type="button" ng-click="addLoyaltyProgram()" translate>ADD</button>
       </div>
    </form>
 </div>
