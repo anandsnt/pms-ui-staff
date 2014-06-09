@@ -26,12 +26,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             }
         }
 
-        $scope.range = function(min, max){
-            var input = [];
-            for (var i=min; i<=max; i++) input.push(i);
-            return input;
-        };
-
         /*
         * company card search text entered
         */
