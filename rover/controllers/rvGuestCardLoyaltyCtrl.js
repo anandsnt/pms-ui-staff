@@ -32,8 +32,8 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 
 	$scope.addNewHotelLoyality =  function(){
 		 ngDialog.open({
-                  template: '/assets/partials/guestCard/addLoyaltyPopup.html',
-                  controller: 'RVAddNewFreaquentLoyaltyContrller',
+                  template: '/assets/partials/guestCard/guestCardaddHotelLoyaltyPopup.html',
+                  controller: 'RVAddNewHotelLoyaltyController',
                   className: 'ngdialog-theme-default',
                   scope: $scope
                 });

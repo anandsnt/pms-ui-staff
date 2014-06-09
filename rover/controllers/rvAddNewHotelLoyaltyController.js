@@ -1,10 +1,33 @@
-sntRover.controller('RVAddNewFreaquentLoyaltyContrller',['$scope','RVGuestCardLoyaltySrv','ngDialog', function($scope,RVGuestCardLoyaltySrv,ngDialog){
+sntRover.controller('RVAddNewHotelLoyaltyController',['$scope','RVGuestCardLoyaltySrv','ngDialog', function($scope,RVGuestCardLoyaltySrv,ngDialog){
 	
 
-	$scope.userMembershipTypes = $scope.loyaltyData.freaquentLoyaltyData;
+	$scope.userMembershipTypes = $scope.loyaltyData.hotelLoyaltyData;
 	$scope.userMembershipNumber = "";
 	$scope.userMembershipType = "";
-	$scope.userMembershipClass = "FFP";
+	$scope.userMembershipClass = "HLP";
+	$scope.userMembershipLevels = [];
+	$scope.userMembershipLevel = "";
+	$scope.isLevelsAvailable = false;
+
+
+	 $scope.memberShipTypeChanged = function(){
+
+	 	angular.forEach($scope.userMembershipTypes,function(userMembershipType, index) {
+
+    		if($scope.userMembershipType == userMembershipType.hl_value){
+     			$scope.userMembershipLevels = userMembershipType.levels;
+     			if($scope.userMembershipLevels.length >0){
+     				$scope.isLevelsAvailable = true;
+     			}
+     			else{
+     				$scope.isLevelsAvailable = false;
+     			}
+    		}
+       	});
+
+
+
+	};
 
 	$scope.save = function(){
 
