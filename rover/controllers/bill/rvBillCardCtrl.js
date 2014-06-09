@@ -58,6 +58,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	$scope.showActiveBillFeesDetails = 0;
 	$scope.showFeesDetails = true;
 	$scope.moveToBill = 0;
+	//Variable used to show signed signature
+	$scope.showSignedSignature = false;
 	/*
 	 * Adding class for active bill
 	 */
@@ -287,7 +289,18 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	 	if(!$scope.isGuestCardVisible){
 	 		$scope.addNewPaymentModal(data);
 	 	}
-	 	
 	 });
+	 /*
+	  * Toggle signature display
+	  */
+	 $scope.showSignature = function(){
+	 	$scope.showSignedSignature = !$scope.showSignedSignature;
+	 };
+	 $scope.showPaymentList = function(){
+	 	$scope.reservationBillData.currentView = "billCard";
+	 	$scope.reservationBillData.currentActiveBill = $scope.currentActiveBill;
+	 	$scope.$emit('SHOWPAYMENTLIST', $scope.reservationBillData);
+	 };
+	 
 		
 }]);

@@ -20,7 +20,7 @@
 	</div>
 
 	<!-- Show Signature button -->
-	<div class="signature" ng-show="reservationBillData.signature_details.is_signed">
+	<div class="signature" ng-show="reservationBillData.signature_details.is_signed" ng-click="showSignature()">
 		<a class="toggle signature-toggle has-arrow"> 
 			<span class="icons icon-signature"></span> 
 			Signed 
@@ -31,7 +31,7 @@
 	<!-- Credit card -->
 	<div class="block-item item-payment">
 		 <!-- AS PER CICO-4842 keeping cc section hidden for billnumber other than 1 -->
-		<a class="next-view" ng-show="billData.credit_card_details.payment_type == 'CC' && $index == '0'">
+		<a class="next-view" ng-show="billData.credit_card_details.payment_type == 'CC' && $index == '0'" ng-click="showPaymentList()">
 			<figure class="card-logo">
 				<img src="/assets/{{billData.credit_card_details.card_code}}.png" alt="">
 			</figure> 
@@ -55,6 +55,11 @@
 		<h3 ng-show="showNotDefined(billData.credit_card_details.payment_type)"> Not Defined <a class="add-new-button">+ Add</a></h3>
 	</div>
 	<!-- Show signed signature -->
+	<div class="details signature-wrapper" ng-show="showSignedSignature">
+		<figure>
+			<img alt="" src="{{reservationBillData.signature_details.signed_image}}">
+		</figure>	
+	</div>
 	<!-- Bill Total Stay Fees -->
 	<div class="details" ng-class="showFeesDetailsClass(billData.isOpenFeesDetails)" ng-repeat="totalFeesArray in billData.total_fees" ng-show="$parent.$index==showActiveBillFeesDetails">
 		<table class="total-fees">

@@ -113,22 +113,18 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	              	'token': tokenData,
 		  	 		 "is_swiped": true   // Commenting for now
 		  	 	};
-         	var paymentData = $scope.reservationData;
-  	 		$scope.showAddNewPaymentModal(passData, paymentData);
+	         	var paymentData = $scope.reservationData;
+	  	 		$scope.showAddNewPaymentModal(passData, paymentData);
          	};
          	$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);	
   	 	}
   	 	
   	 };
+  	
   	 $scope.openPaymentList = function(){
-	 //	$scope.paymentData.payment_id = id;
-  	 	//  $scope.paymentData.index = index;
-		  ngDialog.open({
-	               template: '/assets/partials/payment/rvShowPaymentList.html',
-	               controller: 'RVShowPaymentListCtrl',
-	               scope:$scope
-	          });
-	 };
+  	 	$scope.reservationData.currentView = "stayCard";
+	 	$scope.$emit('SHOWPAYMENTLIST', $scope.reservationData);
+  	 };
 	 /*
 	  * Handle swipe action in reservationdetails card
 	  */

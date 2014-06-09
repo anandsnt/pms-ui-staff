@@ -11,13 +11,16 @@
 			</div>
 			<!-- Other header details -->
 			<div class="data">
-				<span data-room-status="NOTREADY" data-reserv-status="CHECKEDOUT" data-fostatus="VACANT" class="room"> <span class="guest-status room">room</span> <strong id="header-room-num" class="room-number"> 2019 </strong> <span id="room-type"> Deluxe Twin </span> </span>
+				<span class="room"> 
+					<span class="guest-status room">room</span>
+					<strong id="header-room-num" class="room-number"> {{reservationBillData.room_number}} </strong> 
+					<span id="room-type"> {{reservationBillData.room_type_name}} </span> </span>
 				<span class="nights"> <span class="guest-status nights"></span> {{reservationBillData.number_of_nights}}
 					nights </span>
 				<span class="date"> <span class="guest-status small-icon check-in">check-in</span> 
-				Tuesday	05-27-2014 </span>
+				 {{reservationBillData.checkin_date | date:dayAndDate}} </span>
 				<span class="date"> <span class="guest-status small-icon check-out">check-out</span> 
-				Saturday 05-31-2014 </span>
+				{{reservationBillData.checkout_date | date:dayAndDate}} </span>
 			</div>
 
 		</div>
