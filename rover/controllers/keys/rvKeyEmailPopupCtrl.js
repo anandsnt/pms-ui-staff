@@ -1,6 +1,5 @@
 sntRover.controller('RVKeyEmailPopupCtrlController',[ '$rootScope','$scope','ngDialog','RVKeyPopupSrv', function($rootScope, $scope, ngDialog, RVKeyPopupSrv){
 	
-	console.log("reservation id"+$scope.reservationData.reservation_card.reservation_id);
 	// Set up data for view
 	var setupData = function(){
 		var reservationId = $scope.reservationData.reservation_card.reservation_id;
