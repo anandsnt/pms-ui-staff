@@ -2,7 +2,7 @@
 <div id="reservations-settings" class="sidebar-left" role="complementary" ng-controller="RVReservationSettingsCtrl"  ui-jq="resizable" ui-options="resizableOptions">
 <div class="scrollable"  ng-iscroll="reservation-settings" ng-iscroll-delay="500">
     <div class="wrapper" >
-        <div ui-jq="accordion" ui-options="accordionOptions">
+        <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
             <a href="#sidebar-nights" class="settings-title toggle has-arrow active" >
                 <span class="title">Nights</span>
                 <span class="value">{{reservationData.numNights}}</span>
@@ -20,29 +20,29 @@
                 </a>
             </div>
         </div>
-        <div ui-jq="accordion" ui-options="accordionOptions">
+        <div ui-jq="accordion" ui-options="accordionInitiallyCollapsedOptions">
             <a href="#sidebar-rooms" class="settings-title toggle has-arrow active">
                 <span class="title">Rooms</span>
-                <span class="value">{{reservationData.room_count}}</span>
+                <span class="value">{{reservationData.roomCount}}</span>
             </a>
             <div id="sidebar-rooms" class="settings-content">                
                 <div class="entry" ng-repeat="room in reservationData.rooms">
                     <label for="room-{{index+1}}-adults">Room {{$index+1}}</label>
                     <div class="select adults">
                         <label for="room-{{index+1}}-adults" class="label">Adults</label>
-                        <select name="room-{{index+1}}-adults" id="room-{{index+1}}-adults">
+                        <select name="room-{{index+1}}-adults" id="room-{{index+1}}-adults" ng-model="reservationData.numAdults">
                             <option ng-repeat="i in [1, maxNoOfAdults] | makeRange" value="$index" ng-selected="$index==reservationData.numAdults">{{i}}</option>
                         </select>
                     </div>
                     <div class="select children">
                         <label for="room-{{index+1}}-children" class="label">Children</label>
-                        <select name="room-{{index+1}}-children" id="room-{{index+1}}-children">
+                        <select name="room-{{index+1}}-children" id="room-{{index+1}}-children" ng-model="reservationData.numChildren">
                             <option ng-repeat="i in [1, maxNoOfChildrens] | makeRange" value="$index" ng-selected="$index==reservationData.numChildren">{{i}}</option>
                         </select>
                     </div>
                     <div class="select infants">
                         <label for="room-{{index+1}}-infants" class="label">Infants</label>
-                        <select name="room-{{index+1}}-infants" id="room-{{index+1}}-infants">
+                        <select name="room-{{index+1}}-infants" id="room-{{index+1}}-infants" ng-model="reservationData.numInfants">
                             <option ng-repeat="i in [1, maxNoOfInfants] | makeRange" value="$index" ng-selected="$index==reservationData.numInfants">{{i}}</option>
                         </select>
                     </div>
@@ -66,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div ui-jq="accordion" ui-options="accordionOptions">
+        <div ui-jq="accordion" ui-options="accordionInitiallyCollapsedOptions">
             <a href="#sidebar-codes" class="settings-title toggle has-arrow active">
                 <span class="title">Codes</span>
                 <span class="value">0</span>
@@ -137,7 +137,7 @@
                 </div>
                 </div>
             </div>
-            <div ui-jq="accordion" ui-options="accordionOptions">
+            <div ui-jq="accordion" ui-options="accordionInitiallyCollapsedOptions">
                 <a href="#sidebar-demographics" class="settings-title toggle has-arrow active">
                     <span class="title">Demographics</span>
                 </a>
@@ -154,7 +154,7 @@
                         <label for="market">Market</label>
                         <div class="select">
                             <select name="market" id="market" class="placeholder" ng-model="reservationData.demographics.market">
-                                <option ng-repeat="market in listData.markets" value="market.value" ng-selected="market.value==reservationData.demographics.market">{{market.description}}</option>
+                                <option ng-repeat="market in listData.markets" value="market.value" ng-selected="market.value==reservationData.demographics.market">{{market.name}}</option>
                             </select>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                         <label for="source">Source</label>
                         <div class="select">
                             <select name="source" id="source" class="placeholder" ng-model="reservationData.demographics.source">
-                                <option ng-repeat="source in listData.sources" value="source.value" ng-selected="source.value==reservationData.demographics.source">{{source.description}}</option>
+                                <option ng-repeat="source in listData.sources" value="source.value" ng-selected="source.value==reservationData.demographics.source">{{source.name}}</option>
                             </select>
                         </div>
                     </div>
@@ -170,7 +170,7 @@
                         <label for="origin">Origin of Booking</label>
                         <div class="select">
                             <select name="origin" id="origin" class="placeholder" ng-model="reservationData.demographics.origin">
-                                <option ng-repeat="origin in listData.origins" value="origin.value" ng-selected="origin.value==reservationData.demographics.origin">{{origin.description}}</option>
+                                <option ng-repeat="origin in listData.origins" value="origin.value" ng-selected="origin.value==reservationData.demographics.origin">{{origin.name}}</option>
                             </select>
                             </select>
                         </div>
