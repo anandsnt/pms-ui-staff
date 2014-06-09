@@ -85,7 +85,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
   	 			var passData = {
 		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
 		  	 		"fromView": "staycard",
-		  	 		 "is_swiped": false 
+		  	 		"is_swiped": false 
 		  	 	};
 		  	 	var paymentData = $scope.reservationData;
   	 		 	$scope.showAddNewPaymentModal(passData, paymentData);
@@ -103,7 +103,6 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
          		var passData = {
 		  	 		"reservationId": $scope.reservationData.reservation_card.reservation_id,
 		  	 		"fromView": "staycard",
-		  	 		"selected_payment_type": 0, //Default value of credit card - TODO:check in seed data
 		  	 		"credit_card": data.RVCardReadCardType,
 		  	 		"card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
 		  	 		"name_on_card": data.RVCardReadCardName,
@@ -114,24 +113,20 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	              	'token': tokenData,
 		  	 		 "is_swiped": true   // Commenting for now
 		  	 	};
-         	var paymentData = $scope.reservationData;
-  	 		$scope.showAddNewPaymentModal(passData, paymentData);
+	         	var paymentData = $scope.reservationData;
+	  	 		$scope.showAddNewPaymentModal(passData, paymentData);
          	};
          	$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);	
   	 	}
   	 	
   	 };
+  	
   	 $scope.openPaymentList = function(){
-	 //	$scope.paymentData.payment_id = id;
-  	 	//  $scope.paymentData.index = index;
-		  ngDialog.open({
-	               template: '/assets/partials/payment/rvShowPaymentList.html',
-	               controller: 'RVShowPaymentListCtrl',
-	               scope:$scope
-	          });
-	 };
+  	 	$scope.reservationData.currentView = "stayCard";
+	 	$scope.$emit('SHOWPAYMENTLIST', $scope.reservationData);
+  	 };
 	 /*
-	  * Handle swipe action in guest card
+	  * Handle swipe action in reservationdetails card
 	  */
 	 $scope.$on('SWIPEHAPPENED', function(event, data){
 	 	if(!$scope.isGuestCardVisible){

@@ -5,8 +5,10 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		var loyaltyFetchsuccessCallback = function(data){		
 			$scope.$emit('hideLoader');
 			$scope.loyaltyData = data;
-			// alert("ef");
-			// console.log(data)
+			setTimeout(function(){
+				$scope.$parent.myScroll['loyaltyList'].refresh();
+				}, 
+			3000);
 		};
 
 		var loyaltyFetchErrorCallback = function(errorMessage){
@@ -19,7 +21,15 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 	};
 
 	$scope.init();
-
+	
+	$scope.$parent.myScrollOptions = {		
+	    'loyaltyList': {
+	    	scrollbars: true,
+	        snap: false,
+	        hideScrollbar: false,
+	        preventDefault: false
+	    },
+	};
 
 	$scope.addNewFreaquentLoyality =  function(){
 		 ngDialog.open({
@@ -37,7 +47,7 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
                   className: 'ngdialog-theme-default',
                   scope: $scope
                 });
-	}
+	};
 	$scope.$on("loyaltyProgramAdded",function(e,data){
 
 		if(typeof $scope.loyaltyData == 'undefined')
@@ -51,4 +61,5 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		}
         	
 	});
+	
 }]);
