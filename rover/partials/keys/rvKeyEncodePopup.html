@@ -1,0 +1,67 @@
+<div id="modal" class="modal-show">
+	<form id="print-key" name="print-key" class="modal-content form key-delivery inhouse">
+		<button id="modal-close" type="button" class="modal-close blue" ng-click="closeDialog()">
+			<span class="icons icon-close">
+		</button>
+		<!-- Left contents -->
+		<div id="room-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keyesPrinted, 'not-connected' : deviceNotConnected, 'completed' : keyesPrinted}">
+			<span class="h2 message">In House</span>
+			<h1>
+				Jos Schaap 
+				<span>104</span>
+			</h1>
+			<span class="number">Reservation 3265971523</span>
+		</div>
+		<!--end-->
+
+		<!-- Right contents -->
+		<div id="key-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keyesPrinted , 'not-connected' : deviceNotConnected , 'completed' : keyesPrinted}">
+			<span ng-show="deviceConnecting">
+				<span class="h2 message">Print Room Key</span>
+				<em class="status icon-key pending">Connecting to Key Card Reader ...</em>
+			</span>
+
+			<span ng-show="deviceNotConnected">
+				<span class="h2 message">Print Room Key</span>
+				<em class="status icon-key error">Error connecting to Key Card Reader!</em>
+				<div class="action">
+					<button type="button" id="try-again" class="button blue" ng-click="showDeviceConnectingMessge()">Try Again</button>
+					<button type="button" id="cancel" class="button blank" ng-click="closeDialog()">Cancel</button> 
+				</div>
+			</span>
+
+			<span ng-show="showPrintKeyOptions">
+				<span class="h2 message">Print Room Key</span>
+					<em class="status icon-key success">Connected to Key Card Reader!</em>
+					<div id="print-keys">
+						<div class="entry radio-check cols-4 float">
+							<label for="keys">How many keys?</label>
+							<label class="only-number">
+								<input name="keys" id="key1" value="1" type="checkbox" />
+								1
+							</label>
+							<label class="only-number">
+								<input name="keys" id="key2" value="2" type="checkbox" />
+								2
+							</label>
+						</div>		
+						<div class="actions float">
+							<button type="button" id="create-key" class="button grey" disabled>Print key</button>
+							<button type="button" id="cancel" class="button blank">Cancel</button>
+						</div>
+					</div>
+			</span>
+
+			<span ng-show="keyesPrinted">
+				<span class="h2 message">Print Room Key</span>
+					<em class="info">Keys printed!</em>
+					<div class="action">
+						<!-- <a href="reservation-card/check-in/" class="back-button modal-close button brand-colors" data-transition="nested-view reload-content">View Stay Card</a>
+						<a data-href="history" href="search/" class="modal-close button blue" data-transition="main-page" data-page="search">Search</a> -->
+						<button type="button" class="button blank modal-close">Close</button>
+					</div>
+			</span>
+		</div>
+		<!-- end -->
+	</form>
+</div>
