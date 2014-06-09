@@ -177,8 +177,8 @@
 									<div class="rate-details">
 										{{billItem.rate_description}}
 									</div>
-									<div class="room-details">
-										{{billItem.room_type_description}}
+									<div class="room-details" ng-bind-html="billItem.room_type_description">
+										
 									</div>
 								</div>
 							</div>
