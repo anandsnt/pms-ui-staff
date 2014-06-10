@@ -310,11 +310,6 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 		$scope.$apply();
 	};
 
-	$scope.cancelClicked = function(){
-
-	};
-
-
 	$scope.init();
 
 	/*
@@ -331,41 +326,10 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 		if(typeof message == 'undefined'){
 			var message = 'Key creation failed!';
 		}
-		sntapp.activityIndicator.hideActivityIndicator();
 		
-		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('not-connected completed');
-		that.myDom.find('#key-status em').removeClass('pending success icon-key status').addClass('info').text(message);
-		that.myDom.find('#key-action').hide();
-		that.myDom.find('#print-keys').hide();
-		that.myDom.find('#room-status h1').addClass('icon-key');
-		that.myDom.find('#print-over-action').show();
-
-		//in billcard we show the gotostaycard option and goto search options, and hide the cancel option
-		//This is to avoid going back to the billcard again. we can not close the popup and got to billcard.
-		if(that.params.origin == views.STAYCARD){
-			that.myDom.find('#print-over-action .cancel-key-popup').removeClass('hidden');
-			that.myDom.find('#print-over-action #goto-staycard').addClass('hidden');
-			that.myDom.find('#print-over-action #goto-search').addClass('hidden');
-		}
-
-		that.cancelWriteOperation();
-
+		that.setStatusAndMessage(message, 'error')
 	};
 
-	// To handle Goto StayCard
-	this.clickedGotoStayCard = function() {
-		gotoStayCard();
-		that.hide(that.resetStyle);
-	};
-	// To handle Goto Search
-	this.clickedGotoSearch = function() {
-		gotoSearch();
-		that.hide(that.resetStyle);
-	};
-	// To Re-setting style of Modal.
-	this.resetStyle = function(e) {
-		$("#modal-overlay").removeClass("locked");
-	};	
 	// Close popup
 	$scope.closeDialog = function(){
 		ngDialog.close();

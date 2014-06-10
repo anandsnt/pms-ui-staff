@@ -40,7 +40,7 @@
 					<em class="status icon-key" ng-class="{'success': status=='success', 'pending': status=='pending', 'error': status=='error'}">{{statusMessage}}</em>
 					<div id="print-keys">
 						<div class="entry radio-check cols-4 float">
-							<label for="keys"> {{ 'HOW_MANY_KEYS' | translate }} {{printedKeysCount}}</label>
+							<label for="keys"> {{ 'HOW_MANY_KEYS' | translate }} </label>
 
 							<label ng-repeat="i in [1,2,3,4]"  ng-class="{'checked':numberOfKeysSelected>=($index+1), 'printed' :printedKeysCount>=($index+1)}" class="only-number" >
 
