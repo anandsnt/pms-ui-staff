@@ -32,4 +32,20 @@ sntRover.service('RVKeyPopupSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSr
 		
 	};
 
+
+	/**
+	* service function to get key from server by passing id from the card
+	*/
+	this.fetchKeyFromServer = function(params){
+		var deferred = $q.defer();
+		var url =  "/staff/reservation/print_key";	
+		
+		RVBaseWebSrv.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		},function(data){
+			deferred.reject(data);
+		});
+		return deferred.promise;		
+	}
+
 }]);

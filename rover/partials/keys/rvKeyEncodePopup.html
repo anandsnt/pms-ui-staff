@@ -32,21 +32,17 @@
 
 			<span ng-show="showPrintKeyOptions">
 				<span class="h2 message">Print Room Key</span>
-					<em class="status icon-key success">Connected to Key Card Reader!</em>
+					<em class="status icon-key success">{{status}}</em>
 					<div id="print-keys">
 						<div class="entry radio-check cols-4 float">
 							<label for="keys">How many keys?</label>
-							<label class="only-number">
-								<input name="keys" id="key1" value="1" type="checkbox" />
-								1
+							<label ng-repeat="i in [1,2,3,4]"  ng-class="{'checked':numberOfKeysSelected>=($index+1)}" class="only-number">
+								<input name="keys" id="key{{$index+1}}" value="{{$index+1}}" type="checkbox" ng-checked="numberOfKeysSelected>=($index+1)" ng-click="keySelected($index+1)" ng-disabled="writingInProgress"/> {{$index+1}}
 							</label>
-							<label class="only-number">
-								<input name="keys" id="key2" value="2" type="checkbox" />
-								2
-							</label>
+					
 						</div>		
 						<div class="actions float">
-							<button type="button" id="create-key" class="button grey" disabled>Print key</button>
+							<button type="button" id="create-key" class="button " ng-class="{'grey':numberOfKeysSelected==0 , 'green': numberOfKeysSelected>=1}" ng-disabled="numberOfKeysSelected==0" ng-click="clickedPrintKey()">Print key</button>
 							<button type="button" id="cancel" class="button blank">Cancel</button>
 						</div>
 					</div>
