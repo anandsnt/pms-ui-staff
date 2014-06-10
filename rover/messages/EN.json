@@ -128,6 +128,12 @@
     "NOTES_HEADER":"Notes",
     "NOTES_POST":"Post",
     "WRITE_NOTE":"Write a note",
+
+    "ALL_CHARGE_GROUPS": "All Charge Groups",
+    "POST_CHARGE_TO_BILL": "Post Charge to Bill",
+    "SEARCH_TERM": "Search items",
+    "0_ITEM_SELECTED": "0 items selected",
+    "POST_CHARGE": "Post Charge",
     
     "ROOM": "room",
     "NIGHTS": "nights",
@@ -153,9 +159,6 @@
     "GUEST_BALANCE": "Guest Balance",
     "AS_OF" : "As of",
     "SIGNED" : "Signed", 
-    "CASH_PAYMENT": "Cash Payment",
-    "CHECK_PAYMENT": "Check Payment",
-    "NOT_DEFINED" : "Not Defined",
     "DESCRIPTION" : "Description",
     "CREDITS" : "Credits",
     "STAY_FEES_AS_OF": "Stay fees (as of",
