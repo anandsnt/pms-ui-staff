@@ -14,9 +14,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 */
 	$scope.successRender = function(data){
 		
-		 
-		
-		
 		$scope.$emit("hideLoader");
 		$scope.data = data;
 		$scope.paymentTypeValues = [];
@@ -50,7 +47,18 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveSuccessGuest = function(){
 		$scope.$emit("hideLoader");
 		ngDialog.close();
-		$scope.paymentData.data.push($scope.saveData);
+		var cardNumber = $scope.saveData.card_number;
+		var expiryDate = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
+		var cardCode = $scope.saveData.credit_card;
+		var cardHolderName = $scope.saveData.name_on_card;
+		var newDataToGuest = {
+			"card_code": cardCode.toLowerCase(),
+			"mli_token": cardNumber.substr(cardNumber.length - 4),
+			"card_expiry":expiryDate,
+			"card_name":cardHolderName,
+			"is_primary":false
+		};
+		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
 	};
 	/*
 	 * Success callback of reservation payment
@@ -96,8 +104,13 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 */
 	$scope.savePayment = function(){
 	
+		// console.log(JSON.stringify($scope.data));
+		// console.log($scope.saveData.selected_payment_type);
+		$scope.saveData.payment_type = "";
+		if($scope.saveData.selected_payment_type != undefined){
+			$scope.saveData.payment_type = $scope.data[$scope.saveData.selected_payment_type].name;
+		}
 		
-		$scope.saveData.payment_type = $scope.data[$scope.saveData.selected_payment_type].name;
 		$scope.saveData.card_expiry = $scope.saveData.card_expiry_month && $scope.saveData.card_expiry_year ? "20"+$scope.saveData.card_expiry_year+"-"+$scope.saveData.card_expiry_month+"-01" : "";
 		//$scope.passData  => Gives information from which view popup opened 
 		//get reservation id if it is from staycard
