@@ -54,6 +54,7 @@ sntRover.controller('reservationRoomStatus',[ '$rootScope','$scope','ngDialog', 
 			ngDialog.open({
 				 template: '/assets/partials/keys/rvKeyEmailPopup.html',
 				 controller: 'RVKeyEmailPopupController',
+				 className: 'ngdialog-theme-default1',
 				 scope: $scope
 			});
 		}
@@ -62,6 +63,7 @@ sntRover.controller('reservationRoomStatus',[ '$rootScope','$scope','ngDialog', 
 			ngDialog.open({
 				 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
 				 controller: 'RVKeyQRCodePopupController',
+				 className: 'ngdialog-theme-default1',
 				 scope: $scope
 			});
 		}
