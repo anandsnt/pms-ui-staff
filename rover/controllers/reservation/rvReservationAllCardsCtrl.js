@@ -1,9 +1,11 @@
-sntRover.controller('RVReservationAllCardsCtrl', ['$scope', function($scope){
+sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCardsSrv', function($scope, RVReservationAllCardsSrv){
     
-    $scope.guestCardVisible = false;
+    BaseCtrl.call(this, $scope);
+
     /**
     * scroller options
     */
+    $scope.guestCardVisible = false;
     $scope.resizableOptions = 
     {   
         minHeight: '90',
@@ -54,7 +56,18 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', function($scope){
     }
 
     $scope.searchGuest = function(){
-        console.log('reached');
+
+        var successCallBackFetchGuest = function(data){
+            $scope.$emit("hideLoader");
+            console.log(data);
+        }
+        var paramDict = {
+                            'first_name': $scope.reservationData.guest.firstName,
+                            'last_name': $scope.reservationData.guest.lastName,
+                            'city': $scope.reservationData.guest.city,
+                            'membership_no': $scope.reservationData.guest.loyaltyNumber
+                        };
+        $scope.invokeApi(RVReservationAllCardsSrv.fetchGuests, paramDict, successCallBackFetchGuest);
     }
 
 
