@@ -374,6 +374,17 @@ var StayCard = function(viewDom){
       sntapp.notification.showErrorMessage(errorMessage, that.myDom); 
     }
     
+    this.queueSaveSuccess = function(data,params){
+      console.log(params);
+      console.log(params['reservationId']);
+      var staycardView = new StayCard($("#view-nested-first"));
+      staycardView.refreshReservationDetails(params['reservationId'], that.gotoStayCard);
+    };
+    
+    this.gotoStayCard = function() {
+		sntapp.activityIndicator.showActivityIndicator('blocker');
+      	changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);  
+	};
     //Update resevation with the selected room.
   	this.reservationQueueHandler = function(e){
     	
@@ -383,10 +394,11 @@ var StayCard = function(viewDom){
       postParams.status = is_queue_reservation;
       
     	var webservice = new WebServiceInterface();
-    	//var successCallBackParams = { 'reservationId': reservation_id,};
+    	var successCallBackParams = { 'reservationId': reservation_id,};
     	
       var options = { requestParameters: postParams,
-      				//successCallBackParameters: successCallBackParams,
+      				successCallBack : that.queueSaveSuccess,
+      				successCallBackParameters: successCallBackParams,
       				failureCallBack: that.queueSaveFailed,
       				loader: 'blocker'
       };
