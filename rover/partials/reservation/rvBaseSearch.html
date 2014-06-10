@@ -79,6 +79,6 @@
                 <input auto-complete auto-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearch.label" ng-keyup="companySearchTextEntered($event)" />
             </div>
         </div>
-        <button id="find-rooms-and-rates" type="button" class="button green" ui-sref='rover.reservation.mainCard.roomType'>Find Rooms &amp; Rates</button>
+        <button id="find-rooms-and-rates" type="button" class="button green" ng-click="navigate()">Find Rooms &amp; Rates</button>
     </form>
 </section>

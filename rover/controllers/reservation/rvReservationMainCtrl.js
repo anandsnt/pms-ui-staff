@@ -20,8 +20,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             numAdults: 0,
             numChildren: 0,
             numInfants: 0,
-            roomType: 'Standard Room',
-            rateName: 'Bed & BreakFast',
+            roomType: '',
+            rateName: '',
             rateAvg: 145,
             rateTotal: 1000,
             addOns: [
