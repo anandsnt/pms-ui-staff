@@ -193,7 +193,7 @@ var AddNewPaymentModal = function(fromPagePayment, backView){
 		//do not update the server with card details. 
 		//Instead, save the details locally and pass the information while cheking in 
 		if(reservationStatus == "CHECKING_IN" && fromPagePayment == views.BILLCARD && sntapp.paymentTypeSwipe){
-			var params =  {'number': $number,'add_to_guest_card':add_to_guest_card}
+			var params =  {'number': $number,'add_to_guest_card':add_to_guest_card};
 		    var data = {
 				payment_type: $payment_type,
 			    credit_card: $card_type,

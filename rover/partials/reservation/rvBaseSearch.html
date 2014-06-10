@@ -76,7 +76,7 @@
         <div id="company-agent" class="row">
             <div id="autocomplete-search" class="entry">
                 <label for="company-or-agent">Company / Travel Agent <span>(optional)</span></label>
-                <input ui-jq="autocomplete" ui-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearchText" ng-keyup="companySearchTextEntered()" />
+                <input auto-complete auto-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearch.label" ng-keyup="companySearchTextEntered($event)" />
             </div>
         </div>
         <button id="find-rooms-and-rates" type="button" class="button green" ui-sref='rover.reservation.mainCard.roomType'>Find Rooms &amp; Rates</button>

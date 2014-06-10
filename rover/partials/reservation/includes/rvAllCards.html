@@ -1,4 +1,4 @@
-<div id="additional-cards" class="cards" ng-class="UICards[0]" role="complementary" ui-jq="resizable" ui-options="resizableOptions" ng-controller="RVReservationAllCardsCtrl">
+<div id="additional-cards" class="cards" ng-class="cardCls()" role="complementary" ui-jq="resizable" ui-options="resizableOptions" ng-controller="RVReservationAllCardsCtrl">
     <div class="cards-wrapper">
         
         <!-- Cards Header -->
@@ -13,11 +13,12 @@
                 <form method="get" action="" name="search-guests" id="search-guests" class="card-search-form" role="search">
                     <div class="holder">
                         <div class="entry">
-                            <input name="gc-firstname" id="gc-firstname" placeholder="First Name" value="" type="text" class="masked-input fixed name h1" />
+                            <input name="gc-firstname" id="gc-firstname" placeholder="First Name" type="text" ng-value="reservationData.guest.firstName" class="masked-input fixed name h1" ng-keyup="searchGuest()" />
                             <!-- Value in this input means we've searched for "Smi" in intial search screen -->
-                            <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" value="Smi" type="text" class="masked-input fixed name h1" />
-                            <input name="gc-city" id="gc-city" placeholder="City" value="" type="text" class="masked-input fixed city h1" />
-                            <input name="gc-loyalty" id="gc-loyalty" placeholder="Loyalty Number" value="" type="text" class="masked-input fixed loyalty h1" />
+                            <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" type="text" ng-value="reservationData.guest.lastName" class="masked-input fixed name h1" ng-keyup="searchGuest()" />
+                            <!-- TODO: REMOVE inline display:block for the below 2 input elements, once the drawer open/close is captured -->
+                            <input name="gc-city" id="gc-city" placeholder="City" value="" type="text" ng-value="reservationData.guest.city" class="masked-input fixed city h1" ng-keyup="searchGuest()" />
+                            <input name="gc-loyalty" id="gc-loyalty" placeholder="Loyalty Number" value="" type="text" ng-value="reservationData.guest.loyaltyNumber" class="masked-input fixed loyalty h1" ng-keyup="searchGuest()" />
                         </div>
                     </div>
                 </form>
@@ -60,7 +61,7 @@
         <div class="cards-content">
             
             <!-- Guest Card -->            
-            <div id="guest-card-content" class="card-search card-content visible">
+            <div id="guest-card-content" class="card-search card-content" ng-class="UICardContentCls('guest-card')">
                 <strong class="results-count">2 possible matches</strong>
                 <button id="new-guest" type="button" class="button green has-arrow skip">New Guest</button>
                 <div id="search-guests-content" class="search-cards scrollable">
@@ -128,7 +129,7 @@
             </div>
             
             <!-- Company Card -->
-            <div id="company-card-content" class="card-search card-content hidden">
+            <div id="company-card-content" class="card-search card-content" ng-class="UICardContentCls('company-card')">
                 <div id="search-company-content" class="search-cards scrollable hidden">
                     <div class="wrapper">
                         <ul id="search-company-results" class="search-results"></ul>
@@ -144,7 +145,7 @@
             </div>
             
             <!-- Travel Agent Card -->
-            <div id="travel-agent-card-content" class="card-search card-content hidden">
+            <div id="travel-agent-card-content" class="card-search card-content" ng-class="UICardContentCls('travel-agent-card')">
                 <div id="search-travel-agent-content" class="search-cards scrollable hidden">
                     <div class="wrapper">
                         <ul id="search-travel-agent-results" class="search-results"></ul>

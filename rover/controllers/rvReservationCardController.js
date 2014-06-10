@@ -141,17 +141,14 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 	 $scope.showGuestPaymentList = function(guestInfo){
 	 	var userId = guestInfo.user_id,
 	 		guestId = guestInfo.guest_id;
-	 	 var paymentSuccess = function(paymentData){
-		 	 $scope.$emit('hideLoader');
-		 	
-		 	 
-		 	 var paymentData = {"data":paymentData,
-		 	 			"user_id":userId,
-		 	 			"guest_id":guestId
-		 	};
-		 	 
-		 	 
-		 	 $scope.$emit('GUESTPAYMENTDATA', paymentData);
+	 	    var paymentSuccess = function(paymentData){
+			 	$scope.$emit('hideLoader');
+			 	 
+			 	 var paymentData = {"data":paymentData,
+			 	 			"user_id":userId,
+			 	 			"guest_id":guestId
+			 	};
+		 	 	$scope.$emit('GUESTPAYMENTDATA', paymentData);
 		 };
 	 	$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess);  
 	 };

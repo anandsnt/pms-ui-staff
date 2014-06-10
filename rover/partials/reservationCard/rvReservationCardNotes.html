@@ -14,7 +14,7 @@
 		<ul class="notes">
 			<li ng-repeat="note in reservationData.reservation_card.notes.reservation_notes">
 				<figure class="guest-image">
-					<img src="note.user_image" alt="">
+					<img src="{{note.user_image}}" alt="">
 				</figure>
 				<div class="note-title">
 					<h4> {{note.username}} </h4>
