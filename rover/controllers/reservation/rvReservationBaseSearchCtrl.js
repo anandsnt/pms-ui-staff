@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter',
-    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter){
+sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', '$state',
+    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, $state) {
         BaseCtrl.call(this, $scope);
 
         //company card search query text
@@ -10,7 +10,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
 
-        var init = function(){
+        var init = function() {
             $scope.reservationData.arrivalDate = dateFilter(new Date(), 'yyyy-MM-dd');
             $scope.setDepartureDate();
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
@@ -19,40 +19,52 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.otherData.maxInfants = (baseSearchData.settings.max_guests.max_infants === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_infants;
         };
 
-        $scope.setDepartureDate = function(){
-            if($scope.reservationData.numNights > 0){
+        $scope.setDepartureDate = function() {
+            if ($scope.reservationData.numNights > 0) {
                 var tmpDate = new Date($scope.reservationData.arrivalDate);
                 $scope.reservationData.departureDate = tmpDate.setDate(tmpDate.getDate() + parseInt($scope.reservationData.numNights));
             }
         }
 
         /*
-        * company card search text entered
-        */
-        $scope.companySearchTextEntered = function(){
-            if($scope.companySearchText.length === 0){
+         * company card search text entered
+         */
+        $scope.companySearchTextEntered = function() {
+            if ($scope.companySearchText.length === 0) {
                 $scope.companyCardResults = [];
                 $scope.companyLastSearchText = "";
-            }
-            else{
+            } else {
                 companyCardFetchInterval = window.setInterval(function() {
                     displayFilteredResults();
                 }, 500);
             }
         };
 
-        var displayFilteredResults = function(){
-            if($scope.companySearchText !='' && $scope.companyLastSearchText != $scope.companySearchText){
+        $scope.navigate = function() {
+            var successCallBack = function(){
+                $state.go('rover.reservation.mainCard.roomType');
+            }
+            $scope.invokeApi(RVReservationBaseSearchSrv.chosenDates, {fromDate : $scope.reservationData.arrivalDate , toDate : $scope.reservationData.departureDate}, successCallBack);
+        }
 
-                var successCallBackOfCompanySearch = function(data){
+        var displayFilteredResults = function() {
+            if ($scope.companySearchText != '' && $scope.companyLastSearchText != $scope.companySearchText) {
+
+                var successCallBackOfCompanySearch = function(data) {
                     $scope.$emit("hideLoader");
-                    angular.forEach(data.accounts, function(item){
+                    angular.forEach(data.accounts, function(item) {
                         var eachItem = {};
-                        eachItem = {label: item.account_first_name+" "+item.account_last_name, value: item.id, image: item.company_logo}
+                        eachItem = {
+                            label: item.account_first_name + " " + item.account_last_name,
+                            value: item.id,
+                            image: item.company_logo
+                        }
                         $scope.companyCardResults.push(eachItem);
                     });
                 }
-                var paramDict = {'query': $scope.companySearchText.trim()};
+                var paramDict = {
+                    'query': $scope.companySearchText.trim()
+                };
                 $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
                 // we have changed data, so we dont hit server for each keypress
                 $scope.companyLastSearchText = $scope.companySearchText;
@@ -62,8 +74,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
         $scope.autocompleteOptions = {
             delay: 0,
-            position: { 
-                my : 'left bottom', 
+            position: {
+                my: 'left bottom',
                 at: 'left top',
                 collision: 'flip'
             },
