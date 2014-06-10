@@ -18,7 +18,7 @@
 	</div>
 	
 	<div class="actions" ng-show="showKeysButton(reservationData.reservation_card.reservation_status)">
-  		<a id="add-keys" class="button with-icon blue">
+  		<a ng-click="clickedIconKey()" id="add-keys" class="button with-icon blue" >
     		<span class="icons icon-key"></span>
     		Keys
   		</a>

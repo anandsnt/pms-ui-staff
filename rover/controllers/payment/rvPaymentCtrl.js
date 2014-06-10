@@ -2,7 +2,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	BaseCtrl.call(this, $scope);
 	
 	$scope.saveData = {};
-	
+	$scope.saveData.add_to_guest_card = false;
 	
 	$scope.isFromGuestCard = false;
 	if($scope.passData.fromView == "guestcard"){
@@ -13,9 +13,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * Populates API with dropdown values
 	 */
 	$scope.successRender = function(data){
-		
-		 
-		
 		
 		$scope.$emit("hideLoader");
 		$scope.data = data;
@@ -50,7 +47,18 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.saveSuccessGuest = function(){
 		$scope.$emit("hideLoader");
 		ngDialog.close();
-		$scope.paymentData.data.push($scope.saveData);
+		var cardNumber = $scope.saveData.card_number;
+		var expiryDate = $scope.saveData.card_expiry_month+"/"+$scope.saveData.card_expiry_year;
+		var cardCode = $scope.saveData.credit_card;
+		var cardHolderName = $scope.saveData.name_on_card;
+		var newDataToGuest = {
+			"card_code": cardCode.toLowerCase(),
+			"mli_token": cardNumber.substr(cardNumber.length - 4),
+			"card_expiry":expiryDate,
+			"card_name":cardHolderName,
+			"is_primary":false
+		};
+		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
 	};
 	/*
 	 * Success callback of reservation payment
@@ -67,6 +75,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		var cardCode = $scope.saveData.credit_card;
 		var cardHolderName = $scope.saveData.name_on_card;
 		if($scope.passData.fromView == "staycard"){
+			$scope.paymentData.reservation_card.payment_method_used = 'CC';
 			$scope.paymentData.reservation_card.payment_details.card_type_image = cardCode.toLowerCase()+".png";
 			$scope.paymentData.reservation_card.payment_details.card_number = cardNumber.substr(cardNumber.length - 4);
 			$scope.paymentData.reservation_card.payment_details.card_expiry = expiryDate;
@@ -95,8 +104,13 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 */
 	$scope.savePayment = function(){
 	
+		// console.log(JSON.stringify($scope.data));
+		// console.log($scope.saveData.selected_payment_type);
+		$scope.saveData.payment_type = "";
+		if($scope.saveData.selected_payment_type != undefined){
+			$scope.saveData.payment_type = $scope.data[$scope.saveData.selected_payment_type].name;
+		}
 		
-		$scope.saveData.payment_type = $scope.data[$scope.saveData.selected_payment_type].name;
 		$scope.saveData.card_expiry = $scope.saveData.card_expiry_month && $scope.saveData.card_expiry_year ? "20"+$scope.saveData.card_expiry_year+"-"+$scope.saveData.card_expiry_month+"-01" : "";
 		//$scope.passData  => Gives information from which view popup opened 
 		//get reservation id if it is from staycard
@@ -131,9 +145,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card"];
 		var data = dclone($scope.saveData, unwantedKeys);
-
+console.log(data)
 		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
-			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
+			 $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
 		} else {
 			//Used to update the list with new value
 			var cardNumber = $scope.saveData.card_number;
@@ -146,7 +160,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				"card_name": $scope.saveData.name_on_card,
 				"is_primary":false
 			};
-			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.saveSuccessGuest, $scope.failureCallBack);
+			 $scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.saveSuccessGuest, $scope.failureCallBack);
 		}
 	};
 	$scope.clickCancel = function(){

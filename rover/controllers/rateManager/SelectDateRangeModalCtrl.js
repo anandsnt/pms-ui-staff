@@ -37,7 +37,7 @@ sntRover.controller('SelectDateRangeModalCtrl',['$scope','ngDialog','$filter','d
       $scope.okClicked = function(){
         $scope.currentFilterData.begin_date = $scope.fromDate;
         $scope.currentFilterData.end_date = $scope.toMonthDateFormated;
-        $scope.currentFilterData.selected_date_range = $scope.currentFilterData.begin_date + ", " + $scope.currentFilterData.end_date;
+        $scope.currentFilterData.selected_date_range = dateFilter($scope.currentFilterData.begin_date, 'MM-dd-yyyy') + " to " + dateFilter($scope.currentFilterData.end_date, 'MM-dd-yyyy');
         ngDialog.close();
       };
       $scope.cancelClicked = function(){
