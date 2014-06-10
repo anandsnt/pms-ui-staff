@@ -55,6 +55,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                         var eachItem = {};
                         eachItem = {label: item.account_first_name+" "+item.account_last_name, value: item.account_first_name+" "+item.account_last_name, image: item.company_logo}
                         $scope.companyCardResults.push(eachItem);
+
+                        // remove duplicates
+                        // and woohoo it worked
+                        // thanks again underscore.js
+                        $scope.companyCardResults = _.unique( $scope.companyCardResults );
                     });
                 }
                 var paramDict = {'query': $scope.companySearchText.trim()};
@@ -84,6 +89,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
     }
 ]);
 
+// This code will be assimilated, resistance is futile
+// Code will be assimilated to become part of a better 
+// auto complete feature
 sntRover.directive('autoComplete', function () {
     return {
         restrict: 'A',
