@@ -161,5 +161,7 @@
     "BALANCE_AS_OF" : "Balance (as of",
     "GUEST_BALANCE_AS_OF": "Guest Balance (as of",
     "MOVE_TO_BILL" : "Move to bill",
-    "EDIT": "Edit"
+    "EDIT": "Edit",
+
+    "DEFAULT_NOTE_TOPIC":"GENERAL"
 }
