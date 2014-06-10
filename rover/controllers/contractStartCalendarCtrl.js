@@ -8,7 +8,7 @@ sntRover.controller('contractStartCalendarCtrl',['$rootScope','$scope','dateFilt
 		      $scope.isDateSelected = true;
 		    }
 		    else{
-		      $scope.date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
+		      $scope.date = $rootScope.businessDate;
 		    }
 	    }
 	    else{
@@ -17,10 +17,10 @@ sntRover.controller('contractStartCalendarCtrl',['$rootScope','$scope','dateFilt
 		      $scope.isDateSelected = true;
 		    }
 		    else{
-		      $scope.date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
+		      $scope.date = $rootScope.businessDate;
 		    }
 	    }
-	    $scope.minDate = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
+	    $scope.minDate = $rootScope.businessDate;
 	    $scope.closePopupOnSelection = false;
 	};
 	$scope.setUpData();

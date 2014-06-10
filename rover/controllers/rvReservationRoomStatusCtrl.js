@@ -1,4 +1,4 @@
-sntRover.controller('reservationRoomStatus',[ '$rootScope','$scope',  function($rootScope, $scope){
+sntRover.controller('reservationRoomStatus',[ '$rootScope','$scope','ngDialog',  function($rootScope, $scope, ngDialog){
 	BaseCtrl.call(this, $scope);
 	
 	
@@ -44,5 +44,46 @@ sntRover.controller('reservationRoomStatus',[ '$rootScope','$scope',  function($
 		return hasButton;
 	};
 	
+	// To handle click of key icon.
+	$scope.clickedIconKey = function(){
+		
+		var keySettings = $scope.reservationData.reservation_card.key_settings;
+		
+		if(keySettings === "email"){
+			
+			ngDialog.open({
+				 template: '/assets/partials/keys/rvKeyEmailPopup.html',
+				 controller: 'RVKeyEmailPopupController',
+				 className: 'ngdialog-theme-default1',
+				 scope: $scope
+			});
+		}
+		else if(keySettings === "qr_code_tablet"){
+			
+			ngDialog.open({
+				 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
+				 controller: 'RVKeyQRCodePopupController',
+				 className: 'ngdialog-theme-default1',
+				 scope: $scope
+			});
+		}
+		
+		//Display the key encoder popup
+		else if(keySettings === "encode"){
+			ngDialog.open({
+			    template: '/assets/partials/keys/rvKeyEncodePopup.html',
+			    controller: 'RVKeyEncodePopupCtrl',
+			    className: 'ngdialog-theme-default1',
+			    scope: $scope
+			});
+		}
+	};
+	
+	/**
+	* function for close activity indicator.
+	*/
+	$scope.closeActivityIndication = function(){
+		$scope.$emit('hideLoader');
+	};
 	
 }]);
