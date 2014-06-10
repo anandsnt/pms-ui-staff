@@ -4,7 +4,7 @@
 			<span class="icons icon-close">
 		</button>
 		<!-- Left contents -->
-		<div id="room-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keyesPrinted, 'not-connected' : deviceNotConnected, 'completed' : keyesPrinted}">
+		<div id="room-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keysPrinted, 'not-connected' : deviceNotConnected, 'completed' : keysPrinted}">
 			<span class="h2 message">{{data.reservationStatusText}}</span>
 			<h1>
 				{{guestCardData.contactInfo.first_name}} {{guestCardData.contactInfo.last_name}} 
@@ -15,7 +15,8 @@
 		<!--end-->
 
 		<!-- Right contents -->
-		<div id="key-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keyesPrinted , 'not-connected' : deviceNotConnected , 'completed' : keyesPrinted}">
+		<div id="key-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keysPrinted , 'not-connected' : deviceNotConnected , 'completed' : keysPrinted}">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<span ng-show="deviceConnecting">
 				<span class="h2 message">Print Room Key</span>
 				<em class="status icon-key pending">Connecting to Key Card Reader ...</em>
@@ -32,23 +33,27 @@
 
 			<span ng-show="showPrintKeyOptions">
 				<span class="h2 message">Print Room Key</span>
-					<em class="status icon-key success">{{status}}</em>
+					<em class="status icon-key" ng-class="{'success': status=='success', 'pending': status=='pending', 'error': status=='error'}">{{statusMessage}}</em>
 					<div id="print-keys">
 						<div class="entry radio-check cols-4 float">
-							<label for="keys">How many keys?</label>
-							<label ng-repeat="i in [1,2,3,4]"  ng-class="{'checked':numberOfKeysSelected>=($index+1)}" class="only-number">
-								<input name="keys" id="key{{$index+1}}" value="{{$index+1}}" type="checkbox" ng-checked="numberOfKeysSelected>=($index+1)" ng-click="keySelected($index+1)" ng-disabled="writingInProgress"/> {{$index+1}}
+							<label for="keys">How many keys? {{printedKeysCount}}</label>
+
+							<label ng-repeat="i in [1,2,3,4]"  ng-class="{'checked':numberOfKeysSelected>=($index+1), 'printed' :printedKeysCount>=($index+1)}" class="only-number" >
+
+								<input name="keys" id="key{{$index+1}}" value="{{$index+1}}" type="checkbox" ng-checked="numberOfKeysSelected>=($index+1)" ng-click="keySelected($index+1)" ng-disabled="writingInProgress"/> 
+								{{$index+1}}
+
 							</label>
 					
 						</div>		
 						<div class="actions float">
-							<button type="button" id="create-key" class="button " ng-class="{'grey':numberOfKeysSelected==0 , 'green': numberOfKeysSelected>=1}" ng-disabled="numberOfKeysSelected==0" ng-click="clickedPrintKey()">Print key</button>
+							<button type="button" id="create-key" class="button " ng-class="{'grey':numberOfKeysSelected==0 , 'green': numberOfKeysSelected>=1}" ng-disabled="numberOfKeysSelected==0" ng-click="clickedPrintKey()">{{buttonText}}</button>
 							<button type="button" id="cancel" class="button blank">Cancel</button>
 						</div>
 					</div>
 			</span>
 
-			<span ng-show="keyesPrinted">
+			<span ng-show="keysPrinted">
 				<span class="h2 message">Print Room Key</span>
 					<em class="info">Keys printed!</em>
 					<div class="action">
@@ -57,6 +62,7 @@
 						<button type="button" class="button blank modal-close">Close</button>
 					</div>
 			</span>
+
 		</div>
 		<!-- end -->
 	</form>

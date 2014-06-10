@@ -1,12 +1,18 @@
-sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog',  function($rootScope, $scope, ngDialog){
+sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', 'RVKeyPopupSrv', function($rootScope, $scope, ngDialog, RVKeyPopupSrv){
 	BaseCtrl.call(this, $scope);
 	var that = this;
+
+	this.setStatusAndMessage = function(message, status){
+		$scope.statusMessage = message;
+		$scope.status = status;
+	}
+
 	$scope.init = function(){
 		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
     	$scope.data = {};
-    	console.log(reservationStatus);
     	that.retrieveUID = true;
-    	$scope.status = "Connected to Key Card Reader!";
+    	that.UID = '';
+    	that.setStatusAndMessage('Connected to Key Card Reader!', 'success');	
     	// To check reservation status and select corresponding texts and classes.
     	if(reservationStatus == 'CHECKING_IN' ){
 			$scope.data.reservationStatusText = 'Check in Complete';
@@ -26,23 +32,33 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog',  
 
 		//TODO: include late checkout scenario
 
-		console.log(JSON.stringify($scope.reservationData));
 		$scope.deviceConnecting = false;
 		$scope.showPrintKeyOptions = false;
 		$scope.deviceNotConnected = false;
-		$scope.keyesPrinted = false;
+		$scope.keysPrinted = false;
 
 		that.noOfErrorMethodCalled = 0;
 		that.maxSecForErrorCalling = 1000;
 		$scope.showDeviceConnectingMessge();
+
 		$scope.numberOfKeysSelected = 0;
+		$scope.printedKeysCount = 0;
 		$scope.writingInProgress = false;
+		that.numOfKeys = 0;
 		that.printKeyStatus = [];
+		that.isAdditional = false;
+		$scope.buttonText = "Print Key";
 	};
 
 	$scope.keySelected = function(index){
+		that.numOfKeys = 0;
 		$scope.numberOfKeysSelected = ($scope.numberOfKeysSelected == index) ? --$scope.numberOfKeysSelected : index;
-		// 'printKeyStatus' 
+		that.numOfKeys = $scope.numberOfKeysSelected;
+		$scope.printedKeysCount = 0;
+		if(that.numOfKeys > 0){
+			$scope.buttonText = "Print Key 1";
+		}
+		// 'printKeyStatus' is the dictionary used to monitor the printing & writing key status
 		var elementToPut = {};
 		that.printKeyStatus = [];
 		for(var i = 1; i <= $scope.numberOfKeysSelected; i++){
@@ -57,6 +73,8 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog',  
 	$scope.clickedPrintKey = function(){		
 		if($scope.numberOfKeysSelected == 0)
 			return;
+		that.UID = '';
+
 		$scope.writingInProgress = true;
 		if(that.retrieveUID){
 			that.getUID();
@@ -71,7 +89,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog',  
 	* Call cordova service to get the UID
 	*/
 	that.getUID = function(){
-		$scope.status = "Reading key!";		
+		that.setStatusAndMessage('Reading key!', 'pending');	
 		$scope.$emit('showLoader');
 		var options = {
 			'successCallBack': that.callKeyFetchAPI,
@@ -95,13 +113,14 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog',  
 	* Server call to fetch the key data.
 	*/
 	this.callKeyFetchAPI = function(uID){
-		sntapp.activityIndicator.hideActivityIndicator();
-		$scope.status = 'Getting key image!';
-	    var reservationId = getReservationId();
+		$scope.$emit('hideLoader');
+		that.setStatusAndMessage('Getting key image!', 'pending');
+	    var reservationId = $scope.reservationData.reservation_card.reservation_id;
 
 	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": true};
-	    if(!that.key1Fetched){
-	    	that.key1Fetched = true;
+	    // for initial case the key we are requesting is not additional
+	    if(!that.isAdditional){
+	    	that.isAdditional = true;
 	    	var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": false};
 	    }
 	    if(typeof uID !== 'undefined'){
@@ -110,22 +129,111 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog',  
 	    	postParams.uid = "";
 
 	    }
-	    
-	    $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, successCallBackofInitialFetch);
-
-	    var url = '/staff/reservation/print_key'
-	    //var url = '/ui/show?format=json&json_input=keys/fetch_encode_key.json';
-		var webservice = new WebServiceInterface();	
-	  	var options = {
-	  			   requestParameters: postParams,
-	  			   successCallBack: that.keyFetchSuccess,
-	  			   failureCallBack: that.keyFetchFailed,
-	  			   loader: "BLOCKER"
-	  	};
-		webservice.postJSON(url, options);
+	    that.UID = postParams.uid;
+	    $scope.invokeApi(RVKeyPopupSrv.fetchKeyFromServer, postParams, that.keyFetchSuccess, that.keyFetchFailed);
 
 	};	
 
+	/*
+	* Success callback for key fetching
+	*/
+	this.keyFetchSuccess = function(response){
+		$scope.$emit('hideLoader');
+		that.keyData = response;	
+		that.printKeys();
+	};
+
+	/*
+	* Key fetch failed callback. Show a print key failure status
+	*/
+	this.keyFetchFailed = function(errorMessage){
+		$scope.$emit('hideLoader');
+		$scope.errorMessage = errorMessage;
+		var message = 'Key creation failed!';
+		that.showKeyPrintFailure(message);
+
+	};
+
+	/*
+	* Calculate the keyWrite data from the API response and call the write key method for key writing.
+	*/	
+	that.printKeys = function(){
+		var index = -1;
+		for(var i = 0; i < that.printKeyStatus.length; i++){
+			if(that.printKeyStatus[i].printed == false){
+				index = i + 1;
+				break;
+			}
+		}
+	    
+	    var keyData = [];
+	    //Safelock key
+	    if(Object.keys(that.keyData.key_info[0])[0] == "base64"){
+	    	keyData.push(that.keyData.key_info[0].base64)
+	    }
+	    else if(Object.keys(that.keyData.key_info[0])[0] == "image"){
+	    	keyData.push(that.keyData.key_info[0].image)
+	    }	    
+	    else{
+	    	keyData.push(that.keyData.key_info[0].t3)
+	    }
+
+	    keyData.push(Object.keys(that.keyData.key_info[0])[0]);
+	    keyData.push($scope.escapeNull(that.keyData.aid));
+	    keyData.push($scope.escapeNull(that.keyData.keyb));
+	    keyData.push($scope.escapeNull(that.UID));
+	    that.writeKey(keyData, index);
+	};
+
+	/*
+	* Calls the cordova service to write the keys
+	*/
+	this.writeKey = function(keyWriteData, index){
+		$scope.$emit('showLoader');
+		that.setStatusAndMessage('Writing key!', 'pending');
+
+		var options = {
+			//Cordova write success callback. If all the keys were written sucessfully, show key success message
+			//If keys left to print, call the cordova write key function to write the pending key
+			'successCallBack': function(data){
+				$scope.$emit('hideLoader');
+				that.setStatusAndMessage('Key created!', 'success');							
+
+				that.numOfKeys--;
+				that.printKeyStatus[index-1].printed = true;
+				$scope.printedKeysCount = index;
+				$scope.buttonText = 'Print key '+ (index+1);
+				$scope.$apply();
+				if(that.numOfKeys == 0){
+					that.showKeyPrintSuccess();
+					return true;
+				}
+
+
+				
+			},
+			'failureCallBack': function(){
+				$scope.$emit('hideLoader');
+				if(that.numOfKeys > 0){
+					that.setStatusAndMessage('Print key failed, Please try again', 'error');					
+				}
+				else {
+					var message = 'Key creation failed!';
+					that.showKeyPrintFailure(message);
+				}
+				$scope.$apply(); 
+
+			},
+			arguments: keyWriteData
+		};
+		if(sntapp.cardSwipeDebug){
+			sntapp.cardReader.writeKeyDataDebug(options);
+		}
+		else{
+			sntapp.cardReader.writeKeyData(options);
+		}
+
+	};	
 	/**
 	* Check if the card reader device connection is available.
 	* Display a screen having device connecting message.
@@ -133,7 +241,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog',  
 	$scope.showDeviceConnectingMessge = function(){
 		$scope.deviceConnecting = true;
 		$scope.deviceNotConnected = false;
-		$scope.keyesPrinted = false;
+		$scope.keysPrinted = false;
 		$scope.showPrintKeyOptions = false;
 
 		var callBack = {
@@ -172,7 +280,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog',  
 
 		if(secondsAfterCalled > that.maxSecForErrorCalling){
 			$scope.deviceConnecting = false;
-			$scope.keyesPrinted = false;
+			$scope.keysPrinted = false;
 			$scope.showPrintKeyOptions = false;
 			$scope.deviceNotConnected = true;
 			$scope.$apply();
@@ -184,15 +292,18 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog',  
 	var showPrintKeyOptions = function (){
 		$scope.deviceConnecting = false;
 		$scope.deviceNotConnected = false;
-		$scope.keyesPrinted = false;
+		$scope.keysPrinted = false;
 		$scope.showPrintKeyOptions = true;
 		$scope.$apply();
 
 	};
 
 	var showKeysPrinted = function(){
-
-		$scope.keyesPrinted = true;
+		$scope.deviceConnecting = false;
+		$scope.keysPrinted = true;
+		$scope.showPrintKeyOptions = false;
+		$scope.deviceNotConnected = false;
+		$scope.$apply();
 	};
 
 	$scope.cancelClicked = function(){
@@ -201,5 +312,53 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog',  
 
 
 	$scope.init();
-	
+
+	/*
+	* Show the key print success message
+	*/
+	this.showKeyPrintSuccess = function(){
+		showKeysPrinted();
+	};
+
+	/*
+	* Show the key print failure message
+	*/
+	this.showKeyPrintFailure = function(message){
+		if(typeof message == 'undefined'){
+			var message = 'Key creation failed!';
+		}
+		sntapp.activityIndicator.hideActivityIndicator();
+		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('not-connected completed');
+		that.myDom.find('#key-status em').removeClass('pending success icon-key status').addClass('info').text(message);
+		that.myDom.find('#key-action').hide();
+		that.myDom.find('#print-keys').hide();
+		that.myDom.find('#room-status h1').addClass('icon-key');
+		that.myDom.find('#print-over-action').show();
+
+		//in billcard we show the gotostaycard option and goto search options, and hide the cancel option
+		//This is to avoid going back to the billcard again. we can not close the popup and got to billcard.
+		if(that.params.origin == views.STAYCARD){
+			that.myDom.find('#print-over-action .cancel-key-popup').removeClass('hidden');
+			that.myDom.find('#print-over-action #goto-staycard').addClass('hidden');
+			that.myDom.find('#print-over-action #goto-search').addClass('hidden');
+		}
+
+		that.cancelWriteOperation();
+
+	};
+
+	// To handle Goto StayCard
+	this.clickedGotoStayCard = function() {
+		gotoStayCard();
+		that.hide(that.resetStyle);
+	};
+	// To handle Goto Search
+	this.clickedGotoSearch = function() {
+		gotoSearch();
+		that.hide(that.resetStyle);
+	};
+	// To Re-setting style of Modal.
+	this.resetStyle = function(e) {
+		$("#modal-overlay").removeClass("locked");
+	};	
 }]);
