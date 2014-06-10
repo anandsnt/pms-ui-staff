@@ -3,7 +3,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         BaseCtrl.call(this, $scope);
 
         //company card search query text
-        $scope.companySearchText = "";
+        $scope.companySearch = {
+            label: '',
+            id: '',
+        }
         $scope.companyLastSearchText = "";
         $scope.companyCardResults = [];
 
@@ -35,10 +38,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
             // var notBackSpace = (arguments[0].keyCode || arguments[0].which !== 8) ? true : false;
 
-            if($scope.companySearchText.length === 0){
+            if($scope.companySearch.label.length === 0){
                 $scope.companyCardResults = [];
                 $scope.companyLastSearchText = "";
-            } else if ( $scope.companySearchText.length > 2 ) {
+            } else if ( $scope.companySearch.label.length > 2 ) {
                 companyCardFetchInterval = window.setInterval(function() {
                     displayFilteredResults();
                 }, 500);
@@ -46,7 +49,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         };
 
         var displayFilteredResults = function(){
-            if($scope.companySearchText !='' && $scope.companyLastSearchText != $scope.companySearchText){
+            if($scope.companySearch.label !='' && $scope.companyLastSearchText != $scope.companySearch.label){
 
                 var successCallBackOfCompanySearch = function(data){
                     $scope.$emit("hideLoader");
@@ -62,10 +65,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                         $scope.companyCardResults = _.unique( $scope.companyCardResults );
                     });
                 }
-                var paramDict = {'query': $scope.companySearchText.trim()};
+                var paramDict = {'query': $scope.companySearch.label.trim()};
                 $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
                 // we have changed data, so we dont hit server for each keypress
-                $scope.companyLastSearchText = $scope.companySearchText;
+                $scope.companyLastSearchText = $scope.companySearch.label;
                 clearInterval(companyCardFetchInterval);
             }
         };
@@ -79,7 +82,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             },
             source: $scope.companyCardResults,
             select: function(event, ui) {
-                $scope.companySearchText = ui.item.label;
+                $scope.companySearch.label = ui.item.label;
+                $scope.companySearch.id = ui.item.id;
                 return false;
             }
         }
