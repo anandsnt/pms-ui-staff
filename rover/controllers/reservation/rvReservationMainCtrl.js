@@ -36,9 +36,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         totalStayCost: 300,
         guest: {
             id: null, // if new guest, then it is null, other wise his id
-            firstName: 'Aaron',
-            lastName: 'Smith',
-            email: 'smith@snt.com',
+            firstName: '',
+            lastName: '',
+            email: '',
             city: '',
             loyaltyNumber: '',
             sendConfirmMailTo :''

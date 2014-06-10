@@ -13,11 +13,12 @@
                 <form method="get" action="" name="search-guests" id="search-guests" class="card-search-form" role="search">
                     <div class="holder">
                         <div class="entry">
-                            <input name="gc-firstname" id="gc-firstname" placeholder="First Name" value="" type="text" class="masked-input fixed name h1" />
+                            <input name="gc-firstname" id="gc-firstname" placeholder="First Name" type="text" ng-value="reservationData.guest.firstName" class="masked-input fixed name h1" ng-keyup="searchGuest()" />
                             <!-- Value in this input means we've searched for "Smi" in intial search screen -->
-                            <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" value="Smi" type="text" class="masked-input fixed name h1" />
-                            <input name="gc-city" id="gc-city" placeholder="City" value="" type="text" class="masked-input fixed city h1" />
-                            <input name="gc-loyalty" id="gc-loyalty" placeholder="Loyalty Number" value="" type="text" class="masked-input fixed loyalty h1" />
+                            <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" type="text" ng-value="reservationData.guest.lastName" class="masked-input fixed name h1" ng-keyup="searchGuest()" />
+                            <!-- TODO: REMOVE inline display:block for the below 2 input elements, once the drawer open/close is captured -->
+                            <input name="gc-city" id="gc-city" placeholder="City" value="" type="text" ng-value="reservationData.guest.city" class="masked-input fixed city h1" ng-keyup="searchGuest()" style="display: block;" />
+                            <input name="gc-loyalty" id="gc-loyalty" placeholder="Loyalty Number" value="" type="text" ng-value="reservationData.guest.loyaltyNumber" class="masked-input fixed loyalty h1" ng-keyup="searchGuest()" style="display: block;" />
                         </div>
                     </div>
                 </form>

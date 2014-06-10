@@ -53,4 +53,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', function($scope){
 
     }
 
+    $scope.searchGuest = function(){
+        console.log('reached');
+    }
+
+
 }]);
