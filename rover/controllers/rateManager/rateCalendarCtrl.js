@@ -172,6 +172,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
 	$scope.$on("showRatesClicked", function(){
 		$scope.calendarMode = "RATE_VIEW";
 		$scope.ratesDisplayed.length=0;
+		//Update the rates displayed list - show in topbar
 		for( var i in $scope.currentFilterData.rates_selected_list){
 			$scope.ratesDisplayed.push($scope.currentFilterData.rates_selected_list[i]);
 		}
