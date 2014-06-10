@@ -2,7 +2,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	BaseCtrl.call(this, $scope);
 	
 	$scope.saveData = {};
-	
+	$scope.saveData.add_to_guest_card = false;
 	
 	$scope.isFromGuestCard = false;
 	if($scope.passData.fromView == "guestcard"){
@@ -131,9 +131,9 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card"];
 		var data = dclone($scope.saveData, unwantedKeys);
-
+console.log(data)
 		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
-			$scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
+			 $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
 		} else {
 			//Used to update the list with new value
 			var cardNumber = $scope.saveData.card_number;
@@ -146,7 +146,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				"card_name": $scope.saveData.name_on_card,
 				"is_primary":false
 			};
-			$scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.saveSuccessGuest, $scope.failureCallBack);
+			 $scope.invokeApi(RVPaymentSrv.saveGuestPaymentDetails, data, $scope.saveSuccessGuest, $scope.failureCallBack);
 		}
 	};
 	$scope.clickCancel = function(){
