@@ -200,6 +200,11 @@
 
          var manipulateMonthSelected = function(index,nextindex){
 
+               //set month as january if next month offset exeeds 11
+               if(nextindex == 12){
+                 nextindex = 0;
+               };
+               
                for (month = 0; month < scope.months.length; month++) {
                   if(scope.months[month].value == index){
                     scope.firstMonthName = scope.months[month].name;                   
