@@ -77,7 +77,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             ngDialog.open({
              template: '/assets/partials/reservation/rvReservationCalendarPopup.html',
              controller: 'RVReservationDatePickerController',
-             className: 'ngdialog-theme-default calendar-modal',
+             className: 'ngdialog-theme-default calendar-modal reservation-calendar',
              closeByDocument: true,
              scope:$scope
     });
