@@ -2,3 +2,18 @@
 .reservation-calendar .form{
 	height: 500px !important;
 }
+
+.current-month-calendar-container{
+	float:left;
+	width:50%;
+	padding:2%;
+}
+.next-month-calendar-container{
+	float:right;
+	width:50%;
+	padding:2%;
+}
+.month_label{
+	width:85%;
+	padding:2% 10%;
+}
