@@ -67,6 +67,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		var cardCode = $scope.saveData.credit_card;
 		var cardHolderName = $scope.saveData.name_on_card;
 		if($scope.passData.fromView == "staycard"){
+			$scope.paymentData.reservation_card.payment_method_used = 'CC';
 			$scope.paymentData.reservation_card.payment_details.card_type_image = cardCode.toLowerCase()+".png";
 			$scope.paymentData.reservation_card.payment_details.card_number = cardNumber.substr(cardNumber.length - 4);
 			$scope.paymentData.reservation_card.payment_details.card_expiry = expiryDate;
