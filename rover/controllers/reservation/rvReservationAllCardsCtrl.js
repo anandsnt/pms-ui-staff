@@ -45,6 +45,17 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         return cls;
     }
 
+    $scope.UICardContentCls = function(from){
+        // evaluate UICards return card conten className(s) as string
+        var cls = '';
+        if (from !== $scope.UICards[0]) {
+            cls = "hidden";
+        } else{
+            cls = 'visible';
+        };
+        return cls;
+    }
+
     $scope.cardCls = function(){
         // evaluate 
         var cls = $scope.UICards[0];   //  current active card
