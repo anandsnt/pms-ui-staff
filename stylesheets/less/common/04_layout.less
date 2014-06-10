@@ -110,9 +110,9 @@ body {
 			position: absolute;
 
 			top: 060px;
-			left: 250px;
+			left: 249px;
 			width:200px;
-			height: 100%;			
+			bottom: 0;			
 			background: #6B6B6B;
 
 			.pointer{
@@ -139,7 +139,19 @@ body {
 						height: 100%;
 						top:0%;
 					}
-				}	
+				}
+
+				&.admin{
+					margin-right: 10px;
+					&:before,
+					&:after{
+						height:0;
+						width: 0
+					}					 
+					a:before{
+						border:none;
+					}
+				}		
 
 			}
 
@@ -148,7 +160,7 @@ body {
 			  position: absolute;
 			  content:"";
 			  width: 15px;/* allows to width of triangle*/
-			  height:~"calc(50% - 10px)";
+			  height:~"calc(50% - 9px)";
 			  background-color: #6B6B6B;
 			  left: 100%;			  
 			}
@@ -158,8 +170,8 @@ body {
 			}
 
 			li:after {
-			  top:~"calc(50% + 10px)";
-			  height:~"calc(50% - 9px)";
+			  top:~"calc(50% + 9px)";
+			  height:~"calc(50% - 8px)";
 			}
 
 			a:before {

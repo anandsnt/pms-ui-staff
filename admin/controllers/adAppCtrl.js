@@ -89,7 +89,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				action: ""
 			}]
 		}, {
-			title: "MENU_REVENUE_MANAGEMENT",
+			title: "MENU_REV_MAN",
 			action: "",
 			iconClass: "icon-revenue",
 			submenu: [{
@@ -294,6 +294,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				lastDropedTime = '';
 				$state.go(stateToGo);
 			}
+			if ($scope.menuOpen) {
+				$scope.menuOpen = !$scope.menuOpen;
+				$scope.showSubMenu = false;
+			}
+
 		};
 
 		$scope.$on("changedSelectedMenu", function(event, menu) {
