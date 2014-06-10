@@ -235,7 +235,7 @@ sntRover.controller('RateCalendarCtrl', ['$scope', '$rootScope','RateMngrCalenda
    		return ret;
    	}
 	
-	$scope.refreshData = function(){
+	$scope.refreshCalendar = function(){
 		loadTable();
 	};
 
