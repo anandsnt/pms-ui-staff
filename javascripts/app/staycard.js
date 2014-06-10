@@ -164,7 +164,6 @@ var StayCard = function(viewDom){
     that.myDom.find('#title').on('change', that.changeAvathar);
     // that.myDom.unbind('click');
     that.myDom.find("#reservation-card").on('click', that.reservationCardClickHandler);
-    that.myDom.find("#reservation-queue").on('click', that.reservationQueueHandler);
 
   };
   
@@ -180,8 +179,12 @@ var StayCard = function(viewDom){
     // Change reservation
     if(getParentWithSelector(event, ".reservations-tabs li a")) {
         return that.reservationListItemClicked(event);
-    }    
-
+    }   
+    
+    // Click REMOVE FROM QUEUE or PUT IN QUEUE buttons 
+	if(getParentWithSelector(event, "#reservation-queue")) {
+        return that.reservationQueueHandler(event);
+    }
   };
 
   // function for closing the drawer if is open
@@ -375,8 +378,6 @@ var StayCard = function(viewDom){
     }
     
     this.queueSaveSuccess = function(data,params){
-      console.log(params);
-      console.log(params['reservationId']);
       var staycardView = new StayCard($("#view-nested-first"));
       staycardView.refreshReservationDetails(params['reservationId'], that.gotoStayCard);
     };
@@ -387,14 +388,14 @@ var StayCard = function(viewDom){
 	};
     //Update resevation with the selected room.
   	this.reservationQueueHandler = function(e){
-    	
+    
       var reservation_id = $('#reservation_id').val();
       var is_queue_reservation = $('#reservation-queue-status').val() == "true" ? false : true;
       var postParams = {};
       postParams.status = is_queue_reservation;
       
-    	var webservice = new WebServiceInterface();
-    	var successCallBackParams = { 'reservationId': reservation_id,};
+	  var webservice = new WebServiceInterface();
+	  var successCallBackParams = { 'reservationId': reservation_id };
     	
       var options = { requestParameters: postParams,
       				successCallBack : that.queueSaveSuccess,
@@ -402,8 +403,9 @@ var StayCard = function(viewDom){
       				failureCallBack: that.queueSaveFailed,
       				loader: 'blocker'
       };
-    	var url = '/api/reservations/'+reservation_id+'/queue';
-    	webservice.postJSON(url, options);
+      
+      var url = '/api/reservations/'+reservation_id+'/queue';
+      webservice.postJSON(url, options);
     };
     
 };
