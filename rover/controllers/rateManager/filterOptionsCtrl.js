@@ -74,7 +74,6 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
             //If allrates option is selected, unset all rates and rate types
             //$scope.currentFilterData.is_checked_all_rates = !$scope.currentFilterData.is_checked_all_rates;
 
-            console.log($scope.currentFilterData.is_checked_all_rates);
             if($scope.currentFilterData.is_checked_all_rates) {
                 $scope.currentFilterData.rate_type_selected_list = [];
                 $scope.currentFilterData.rates_selected_list = [];
@@ -86,7 +85,6 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
         };
 
         $scope.$watch('currentFilterData.rate_type_selected', function() {
-            console.log("landed");
             var isDataExists = false;
             angular.forEach($scope.currentFilterData.rate_type_selected_list, function(item, index) {
                 if (item.id == $scope.currentFilterData.rate_type_selected) {
@@ -192,7 +190,6 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
             } else {
                 $scope.cmpCardSearchDivHgt = $scope.companyCardResults.length * totalHeight;
             }
-            console.log($scope.cmpCardSearchDivHgt);
             $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt + 10;
 
             setTimeout(function() {
