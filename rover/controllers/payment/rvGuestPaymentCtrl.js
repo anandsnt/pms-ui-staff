@@ -27,7 +27,6 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 		  	 		"user_id": $scope.paymentData.user_id,
 			  	 	"guest_id": $scope.paymentData.guest_id,
 		  	 		"fromView": "guestcard",
-		  	 		"selected_payment_type": 0, //Default value of credit card - TODO:check in seed data
 		  	 		"credit_card": data.RVCardReadCardType,
 		  	 		"card_number": "xxxx-xxxx-xxxx-"+tokenData.slice(-4),
 		  	 		"name_on_card": data.RVCardReadCardName,
@@ -75,6 +74,12 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
 	 	}
 	 	
 	 });
+	 
+	 $scope.$on('ADDEDNEWPAYMENTTOGUEST', function(event, data){
+	 	$scope.paymentData.data.push(data);
+	 });
+	 
+	 
 
 	
 }]);

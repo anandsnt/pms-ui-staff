@@ -67,12 +67,7 @@ sntRover.controller('RVPostChargeController',
 				var query = $scope.query.toLowerCase();
 
 				if (query === '') {
-
-					// show all and return
-					for (var i = 0, j = $scope.fetchedItem.length; i < j; i++) {
-						$scope.fetchedItem[i].show = true;
-					};
-
+					$scope.clearQuery();
 					return;
 				};
 
@@ -148,10 +143,18 @@ sntRover.controller('RVPostChargeController',
 					return each.value === item.value;
 				});
 
-				// if already added, just increase the 'QTY' by one and leave
+				// if already added
+				// update the count, price and return
 				if ( !!hasItem ) {
-					this.each.count += 1;
-					hasItem.count += 1;
+					this.each.count++;
+					hasItem.count++;
+
+					// update price of the chosenChargedItem
+					hasItem.total_price = hasItem.unit_price * hasItem.count;
+
+					// update net total price
+					calNetTotalPrice();
+
 					return;
 				};
 
@@ -428,6 +431,9 @@ sntRover.controller('RVPostChargeController',
 
 				var callback = function() {
 					$scope.$emit( 'hideLoader' );
+
+					// update the price in staycard
+					$scope.$emit('postcharge.added', $scope.net_total_price);
 
 					$scope.closeDialog();
 				};

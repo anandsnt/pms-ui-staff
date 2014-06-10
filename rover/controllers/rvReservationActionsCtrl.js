@@ -63,7 +63,13 @@ sntRover.controller('reservationActionsController',
 				}
 				return timeColor;
 			};
+
+
+
+			
 			$scope.openPostCharge = function() {
+
+				// pass on the reservation id
 				$scope.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 
 				var callback = function(data) {
@@ -80,6 +86,18 @@ sntRover.controller('reservationActionsController',
 
 				$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
 			};
+
+			// update the price on staycard.
+			var postchargeAdded = $scope.$on('postcharge.added', function(event, netPrice) {
+				var balance = parseFloat( $scope.reservationData.reservation_card.balance_amount );
+
+				balance += netPrice;
+
+				$scope.reservationData.reservation_card.balance_amount = balance;
+			});
+
+			// the listner must be destroyed when no needed anymore
+			$scope.$on( '$destroy', postchargeAdded );
 
 			$scope.closeDialog = function() {
 				ngDialog.close();

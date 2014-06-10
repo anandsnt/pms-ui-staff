@@ -119,7 +119,34 @@
     "MAX_ADULTS":"Max Adults",
     "MAX_CHILDREN":"Max Children",
     "MAX_INFANTS":"Max Infants",
-    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display"
+    "USE_RECOMMENDED_RATE_DISPLAY":"Use Recommended Rate Display",
+
+    "MENU_DASHBOARD" : "Dashboard",
+    "MENU_SEARCH" : "Search",
+    "MENU_AVAILABILITY":"Availability",
+    "MENU_HOUSE_STATUS":"House Status",
+    "MENU_FRONT_DESK" : "Front Desk",
+    "MENU_CREATE_RESERVATION" : "Create Reservation",
+    "MENU_ROOM_ASSIGNMENT":"Room Assignment",
+    "MENU_POST_CHARGES":"Post Charges",
+    "MENU_CASHIER":"Cashier",
+    "MENU_END_OF_DAY":"End of Day",
+    "MENU_CONVERSATIONS":"Conversations",
+    "MENU_SOCIAL_LOBBY":"Social Lobby",
+    "MENU_MESSAGES":"Messages",
+    "MENU_REVIEWS":"Reviews",
+    "MENU_REVENUE_MANAGEMENT":"Revenue Management",
+    "MENU_RATE_MANAGER":"Rate Manager",
+    "MENU_TA_CARDS":"Company & TA Cards",
+    "MENU_DISTRIBUTION_MANAGER":"Distribution Manager",
+    "MENU_HOUSEKEEPING":"Housekeeping",
+    "MENU_TASK_MANAGEMENT":"Task Management",
+    "MENU_MAINTAENANCE":"Maintenance",
+    "MENU_FINANCIALS":"Financials",
+    "MENU_ACCOUNTING":"Accounting Interface",
+    "MENU_REVENUE":"Revenue",
+    "MENU_COMMISIONS":"Commissions",
+    "MENU_REPORTS":"Reports"
 
 
 }
