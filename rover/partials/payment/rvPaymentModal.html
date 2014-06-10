@@ -20,7 +20,7 @@
 	    <div class="select">
 	    	<select ng-model="saveData.credit_card" class="placeholder">
 				<option value="" translate> SELECT_CREDIT_CARD_LABEL </option>
-				<option ng-repeat="paymenttypevalue in paymentTypeValues" value="{{paymenttypevalue.cardcode}}" ng-selected="{{paymenttypevalue.cardcode == saveData.selected_credit_card}}">{{paymenttypevalue.cardname}}</option>
+				<option ng-repeat="paymenttypevalue in paymentTypeValues" value="{{paymenttypevalue.cardcode}}" ng-selected="{{paymenttypevalue.cardcode == saveData.credit_card}}">{{paymenttypevalue.cardname}}</option>
 			</select>
 	    	
 			
