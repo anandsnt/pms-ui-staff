@@ -172,7 +172,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 				//step4: calculate the rate differences between the rooms
 				//Put the average rate in the room object
-				value.averagePerNight = value.total[value.defaultRate].average;
+				if ( typeof value.total[value.defaultRate] != 'undefined'){
+					value.averagePerNight = value.total[value.defaultRate].average;
+				}
 			}
 
 
