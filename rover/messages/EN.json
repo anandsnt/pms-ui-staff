@@ -134,6 +134,19 @@
     "SEARCH_TERM": "Search items",
     "0_ITEM_SELECTED": "0 items selected",
     "POST_CHARGE": "Post Charge",
+    "LOYALTY_LABEL":"Loyalty",
+    "NEW_LOYALTY_LABEL":"New Loyalty Program",
+    "LOYALTY_PROGRAM_LABEL":"Loyalty Program",
+    "LOYALTY_TYPE_LABEL":"TYPE",
+    "LOYALTY_LEVEL_LABEL":"LEVEL",
+    "LOYALTY_PROGRAM_SELECT_LABEL":" Select Loyalty Program",
+    "LOYALTY_TYPE_SELECT_LABEL":"Select Loyalty Type",
+    "LOYALTY_LEVEL_SELECT_LABEL":"Select Loyalty Level",
+    "LOYALTY_CODE_LABEL":"Code",
+    "FREEQUENT_FLYER_LABEL":"Frequent Flyer Program",
+    "HOTEL_LOYALTY_LABEL":"Hotel Loyalty Program",
+    "HOTEL_LOYALTY_SELECT":"Select Hotel Loyalty",
+    "HOTEL_LOYALTY_ADD_BUTTON":"+ Add",
     
     "ROOM": "room",
     "NIGHTS": "nights",
@@ -175,6 +188,16 @@
     "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
     "TRY_AGAIN" : "Try Again",
     "HOW_MANY_KEYS" : "How many keys?",
-    "KEY_PRINTED" : "Keys printed!"
+    "KEY_PRINTED" : "Keys printed!",
     
+    "SET_PRIMARY_HOTEL_LOYALTY_PROGRAM": "Set Primary Hotel Loyalty Program",
+    "FREQUENT_FLYER_PROGRAM": "Frequent Flyer Program",
+    "NEW_FREQUENT_FLYER_PROGRAM" : "New Frequent Flyer Program",
+    "HOTEL_LOYALTY_PROGRAM" : "Hotel Loyalty Program",
+    "NEW_HOTEL_LOYALTY_PROGRAM" : "New Hotel Loyalty Program",
+    "AIRLINE" : "Airline",
+    "CODE": "Code",
+    "TYPE" : "Type",
+    "LEVEL" : "Level",
+    "PROGRAM_NUMBER" : "Program Number"
 }
