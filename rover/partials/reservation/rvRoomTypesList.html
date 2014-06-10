@@ -17,13 +17,12 @@
         </ul>
     </div>
 
-    <div id="room-and-rate-types" class="reservation-content rooms-and-rates-content scrollable">
+    <div id="room-and-rate-types"  ng-iscroll="room_types"  ng-iscroll-delay="500" class="reservation-content rooms-and-rates-content scrollable" style="height:{{containerHeight}}px">
         <ul ng-if="activeCriteria == 'RECOMMENDED'" class="rooms-and-rates wrapper">
          
         </ul>
 
-        <ul class="rooms-and-rates wrapper" style="height: 400px;
-        overflow-y: scroll;" ng-if="activeCriteria == 'ROOM_TYPE'">
+        <ul class="rooms-and-rates wrapper" ng-if="activeCriteria == 'ROOM_TYPE'">
 
         <li ng-repeat= "room in displayData.roomTypes">
          
@@ -40,7 +39,7 @@
             <!-- Rates list -->
             <ul class="rates" ng-class="{hidden: selectedRoomType != room.id}">
                 <li ng-repeat="rate in roomAvailability[room.id].rates">
-                    <a class="has-arrow toggle" ng-class="{active: isActive}" ng-init="isActive=false;" ng-click="isActive = !isActive">
+                    <a class="has-arrow toggle" ng-class="{active: isActive}" ng-init="isActive=false;" ng-click="isActive = !isActive ; refreshScroll()">
                         <h3>{{displayData.allRates[rate].name}}</h3>
                         <div class="price">
                             {{currencySymbol}}{{roomAvailability[room.id].total[rate].average}}
@@ -81,8 +80,8 @@
                                 <tr ng-repeat = "breakdown in roomAvailability[room.id].ratedetails">
                                     <td>{{breakdown.day | date:fullDateFormat}}</td>
                                     <td>{{currencySymbol}}{{breakdown.rate | number: 2}}</td>
-                                    <td>{{currencySymbol}}{{breakdown.rate * tax / 100 | number : 2}}</td>
-                                    <td>{{currencySymbol}}{{breakdown.rate + (breakdown.rate * tax / 100) | number: 2 }}</td> 
+                                    <td>{{currencySymbol}}{{breakdown.tax}}</td>
+                                    <td>{{currencySymbol}}{{breakdown.rate | number: 2 }}</td> 
                                     <td class="edit"></td>
                                 </tr>
                             </tbody>

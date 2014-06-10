@@ -1,10 +1,24 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope','$scope', 'roomRates', 'RVReservationBaseSearchSrv',
-	function( $rootScope, $scope, roomRates, RVReservationBaseSearchSrv) {
+sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout',
+
+	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout) {
 
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
 		$scope.expandedRoom = -1;
 		$scope.displayData.stay = [];
+		$scope.containerHeight = 300;
+
+		//scroller options
+		$scope.$parent.myScrollOptions = {
+			'room_types': {
+				snap: false,
+				scrollbars: true,
+				vScroll: true,
+				vScrollbar: true,
+				hideScrollbar: false,
+				click: true
+			}
+		};
 
 		var init = function() {
 
@@ -14,12 +28,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope','$scope', 'roomRa
 			$scope.activeRoom = 0;
 			$scope.activeCriteria = "ROOM_TYPE";
 
+			//TODO : Make adjustments if multiple rooms are selected and the room selection bar is displayed
+			$scope.containerHeight = $(window).height() - 300;
+
 
 			$scope.roomAvailability = $scope.getAvailability(roomRates);
 
 			$scope.displayData.allRooms = $(roomRates.room_types).filter(function() {
 				return $scope.roomAvailability[this.id].availability == true &&
-					$scope.roomAvailability[this.id].rates.length > 0;
+ 					$scope.roomAvailability[this.id].rates.length > 0;
 			});
 
 			$scope.displayData.roomTypes = $scope.displayData.allRooms;
@@ -42,7 +59,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope','$scope', 'roomRa
 		};
 
 
-		$scope.handleBooking = function(roomId,rateId,event){
+		$scope.handleBooking = function(roomId, rateId, event) {
 			$scope.reservationData.rooms[$scope.activeRoom = 0].roomType = roomId;
 			$scope.reservationData.rooms[$scope.activeRoom = 0].rateName = rateId;
 			//TODO: Navigate to the next screen
@@ -52,6 +69,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope','$scope', 'roomRa
 
 		$scope.setSelectedType = function(val) {
 			$scope.selectedRoomType = $scope.selectedRoomType == val.id ? -1 : val.id;
+			$scope.refreshScroll();
 		}
 
 		$scope.filterRooms = function() {
@@ -96,7 +114,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope','$scope', 'roomRa
 							days: [],
 							rates: [],
 							ratedetails: [],
-							total:[],
+							total: [],
 							defaultRate: 0
 						};
 					}
@@ -114,7 +132,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope','$scope', 'roomRa
 						rooms[d.room_type_id].ratedetails.push({
 							rate_id: rate_id,
 							rate: 100.00,
-							tax: 100.00 * $scope.tax / 100,
+							tax: 0,
 							day: new Date(for_date)
 						});
 						rooms[d.room_type_id].days.push(for_date);
@@ -125,15 +143,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope','$scope', 'roomRa
 
 			for (var id in rooms) {
 				var value = rooms[id];
-				$(value.ratedetails).each(function(i,d){					
-					if(typeof value.total[id] == 'undefined'){
+				$(value.ratedetails).each(function(i, d) {
+					if (typeof value.total[id] == 'undefined') {
 						value.total[d.rate_id] = {
-							total:0,
-							average:0
+							total: 0,
+							average: 0
 						}
 					}
 					value.total[id].total = parseInt(value.total[id].total) + parseInt(d.rate);
-					value.total[id].average = parseInt( value.total[id].total / 6); 
+					value.total[id].average = parseInt(value.total[id].total / 6);
 				})
 				//TODO: Caluculate the default ID
 
@@ -142,6 +160,13 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope','$scope', 'roomRa
 
 			console.log(rooms);
 			return rooms;
+		}
+
+
+		$scope.refreshScroll = function() {
+			$timeout(function() {
+				$scope.$parent.myScroll["room_types"].refresh();
+			}, 300);
 		}
 
 
