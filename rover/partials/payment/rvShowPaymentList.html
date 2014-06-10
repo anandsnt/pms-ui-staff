@@ -19,9 +19,14 @@
 					<span class="value date"> {{paymentlist.expiry_date}}  </span> 
 				</span> 
 				<span class="name"> <span translate>NAME </span>
-					<span class="value name"> {{paymentlist.holder_name}}  </span> 
+					<span class="value name"> {{paymentlist.holder_name}} </span> 
 				</span> 
-				<span class="in-gc" ng-show="paymentlist.is_in_guest_card"><span translate>IN_GUEST_CARD </span></span>
+				<span class="in-gc" ng-show="paymentlist.is_in_guest_card">
+					<span translate>IN_GUEST_CARD </span>
+				</span>
+				<span class="primary" ng-show="paymentlist.value == paymentListData.selected_payment">
+				 	<span class="value primary" translate>SELECTED</span>
+				</span>
 				<br clear="all">
 			 </a>
 		</div>
