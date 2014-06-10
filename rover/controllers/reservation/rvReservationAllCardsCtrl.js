@@ -77,7 +77,25 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
         var successCallBackFetchGuest = function(data){
             $scope.$emit("hideLoader");
-            console.log(data);
+            $scope.guests = [];
+            if(data.results.length>0){
+                angular.forEach(data.results, function(item){
+                    var guestData = {};
+                    guestData.firstName = item.first_name;
+                    guestData.lastName = item.last_name;
+                    guestData.address = {};
+                    guestData.address.phone = item.home_phone;
+                    guestData.address.city = item.address.city;
+                    guestData.address.state = item.address.state;
+                    guestData.address.postalCode = item.address.postal_code;
+                    guestData.stayCount = item.stay_count;
+                    guestData.lastStay = {};
+                    guestData.lastStay.date = item.last_stay.date;
+                    guestData.lastStay.room = item.last_stay.room;
+                    guestData.lastStay.roomType = item.last_stay.room_type;
+                    $scope.guests.push(guestData);
+                });
+            }
         }
         var paramDict = {
                             'first_name': $scope.reservationData.guest.firstName,
