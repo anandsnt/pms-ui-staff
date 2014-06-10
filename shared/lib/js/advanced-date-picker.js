@@ -44,7 +44,7 @@
 
   angular.module('advanced-pickadate', ['pickadate.utils'])
 
-  .directive('advancedpickadate', ['$locale', 'pickadateUtils', 'dateFilter',
+  .directive('advancedPickadate', ['$locale', 'pickadateUtils', 'dateFilter',
     function($locale, dateUtils, dateFilter) {
       return {
         require: 'ngModel',
