@@ -71,7 +71,15 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
         $scope.fetchFilterOptions();
 
         $scope.clickedAllRates = function() {
-            $scope.currentFilterData.is_checked_all_rates = !$scope.currentFilterData.is_checked_all_rates;
+            //If allrates option is selected, unset all rates and rate types
+            //$scope.currentFilterData.is_checked_all_rates = !$scope.currentFilterData.is_checked_all_rates;
+
+            console.log($scope.currentFilterData.is_checked_all_rates);
+            if($scope.currentFilterData.is_checked_all_rates) {
+                $scope.currentFilterData.rate_type_selected_list = [];
+                $scope.currentFilterData.rates_selected_list = [];
+            }
+
             setTimeout(function() {
                 $scope.$$childTail.$parent.myScroll['filter_details'].refresh();
             }, 300);
@@ -129,6 +137,10 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
             $scope.refreshFilterScroll();
         };
 
+        /**
+        * Display the selected rates in a list having close button.
+        * Duplicates are not allowed in the list.
+        */
         $scope.$watch('currentFilterData.rate_selected', function() {
             var isDataExists = false;
             angular.forEach($scope.currentFilterData.rates_selected_list, function(item, index) {
