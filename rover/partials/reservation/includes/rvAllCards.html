@@ -1,4 +1,4 @@
-<div id="additional-cards" class="cards" ng-class="UICards[0]" role="complementary" ui-jq="resizable" ui-options="resizableOptions" ng-controller="RVReservationAllCardsCtrl">
+<div id="additional-cards" class="cards" ng-class="cardCls()" role="complementary" ui-jq="resizable" ui-options="resizableOptions" ng-controller="RVReservationAllCardsCtrl">
     <div class="cards-wrapper">
         
         <!-- Cards Header -->
@@ -17,8 +17,8 @@
                             <!-- Value in this input means we've searched for "Smi" in intial search screen -->
                             <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" type="text" ng-value="reservationData.guest.lastName" class="masked-input fixed name h1" ng-keyup="searchGuest()" />
                             <!-- TODO: REMOVE inline display:block for the below 2 input elements, once the drawer open/close is captured -->
-                            <input name="gc-city" id="gc-city" placeholder="City" value="" type="text" ng-value="reservationData.guest.city" class="masked-input fixed city h1" ng-keyup="searchGuest()" style="display: block;" />
-                            <input name="gc-loyalty" id="gc-loyalty" placeholder="Loyalty Number" value="" type="text" ng-value="reservationData.guest.loyaltyNumber" class="masked-input fixed loyalty h1" ng-keyup="searchGuest()" style="display: block;" />
+                            <input name="gc-city" id="gc-city" placeholder="City" value="" type="text" ng-value="reservationData.guest.city" class="masked-input fixed city h1" ng-keyup="searchGuest()" />
+                            <input name="gc-loyalty" id="gc-loyalty" placeholder="Loyalty Number" value="" type="text" ng-value="reservationData.guest.loyaltyNumber" class="masked-input fixed loyalty h1" ng-keyup="searchGuest()" />
                         </div>
                     </div>
                 </form>
