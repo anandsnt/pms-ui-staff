@@ -28,7 +28,7 @@
 	  			<span translate>CASH_PAYMENT</span>
 			</a>
 			<div ng-click="openAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.payment_method_used == 'CA'">
-    			<a class="add-new-button" translate> + <span translate>ADD</span></a>
+    			<a class="add-new-button" translate> + {{ 'ADD' | translate }}</a>
   			</div>
 		
 		
@@ -37,7 +37,7 @@
   			<span translate>CHECK_PAYMENT</span>
 		</a>
 		<div  ng-click="openAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.payment_method_used == 'CK'">
-			<a class="add-new-button"> + <span translate>ADD</span></a>
+			<a class="add-new-button"> + {{ 'ADD' | translate }}</a>
 		</div>
 		
 		<a class="next-view" ng-show="reservationData.reservation_card.payment_method_used == 'DB'" >
@@ -45,7 +45,7 @@
   			<span translate>DIRECT_PAYMENT</span>
 		</a>
 		<div  ng-click="openAddNewPaymentModel()" class="actions payment_actions" ng-show="displayButton(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.payment_method_used == 'DB'">
-			<a class="add-new-button"> + <span translate>ADD</span></a>
+			<a class="add-new-button"> + {{ 'ADD' | translate }}</a>
 		</div>
 
 	</form> </span>
