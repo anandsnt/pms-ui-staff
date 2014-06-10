@@ -166,5 +166,16 @@
     "BALANCE_AS_OF" : "Balance (as of",
     "GUEST_BALANCE_AS_OF": "Guest Balance (as of",
     "MOVE_TO_BILL" : "Move to bill",
-    "EDIT": "Edit"
+    "EDIT": "Edit",
+    
+    "SET_PRIMARY_HOTEL_LOYALTY_PROGRAM": "Set Primary Hotel Loyalty Program",
+    "FREQUENT_FLYER_PROGRAM": "Frequent Flyer Program",
+    "NEW_FREQUENT_FLYER_PROGRAM" : "New Frequent Flyer Program",
+    "HOTEL_LOYALTY_PROGRAM" : "Hotel Loyalty Program",
+    "NEW_HOTEL_LOYALTY_PROGRAM" : "New Hotel Loyalty Program",
+    "AIRLINE" : "Airline",
+    "CODE": "Code",
+    "TYPE" : "Type",
+    "LEVEL" : "Level",
+    "PROGRAM_NUMBER" : "Program Number"
 }
