@@ -31,7 +31,7 @@
 				<ul id="search-item-results" class="wrapper">
 					<li id="items-list" ng-repeat="each in fetchedItem" ng-if="each.show" ng-click="addItem()">
 						<a class="button white">
-							{{ each.item_name }}
+							<span ng-bind-html="'{{ each.item_name }}' | highlight:query:false"></span>
 							<span class="price">
 								{{ currencySymbol }} <span class="value">{{ each.unit_price | number : 2 }}</span>
 							</span>
