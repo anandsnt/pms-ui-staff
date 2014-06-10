@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter',
-    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter){
+sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', '$timeout',
+    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, $timeout){
         BaseCtrl.call(this, $scope);
 
         //company card search query text
@@ -41,10 +41,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             if($scope.companySearch.label.length === 0){
                 $scope.companyCardResults = [];
                 $scope.companyLastSearchText = "";
-            } else if ( $scope.companySearch.label.length > 2 ) {
-                companyCardFetchInterval = window.setInterval(function() {
-                    displayFilteredResults();
-                }, 500);
+            } else if ( $scope.companySearch.label.length > 1 ) {
+                // companyCardFetchInterval = $timeout( displayFilteredResults, 500 );
+                displayFilteredResults();l
             }
         };
 
@@ -52,12 +51,18 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             if($scope.companySearch.label !='' && $scope.companyLastSearchText != $scope.companySearch.label){
 
                 var successCallBackOfCompanySearch = function(data){
-                    $scope.$emit("hideLoader");
+                    $scope.$emit( 'hideLoader' );
+
+                    var eachItem = {};
 
                     angular.forEach(data.accounts, function(item) {
-                        var eachItem = {};
-                        eachItem = {label: item.account_first_name+" "+item.account_last_name, value: item.account_first_name+" "+item.account_last_name, image: item.company_logo}
-                        $scope.companyCardResults.push(eachItem);
+                        eachItem = {
+                            label: item.account_first_name + ' ' + item.account_last_name,
+                            value: item.account_first_name + ' ' + item.account_last_name,
+                            image: item.company_logo
+                        }
+
+                        $scope.companyCardResults.push( eachItem );
 
                         // remove duplicates
                         // and woohoo it worked
@@ -65,11 +70,19 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                         $scope.companyCardResults = _.unique( $scope.companyCardResults );
                     });
                 }
-                var paramDict = {'query': $scope.companySearch.label.trim()};
-                $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
+
+                var paramDict = {
+                    'query': $scope.companySearch.label.trim()
+                };
+
+                $scope.invokeApi( RVReservationBaseSearchSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch );
+
                 // we have changed data, so we dont hit server for each keypress
                 $scope.companyLastSearchText = $scope.companySearch.label;
-                clearInterval(companyCardFetchInterval);
+
+                // clearInterval(companyCardFetchInterval);
+
+                $timeout.cancel( companyCardFetchInterval );
             }
         };
 
@@ -109,7 +122,7 @@ sntRover.directive('autoComplete', function () {
                     ul.addClass('find-cards');
 
                     var $result = $("<a></a>").text(item.label),
-                        $image = '<img src="../images/' + item.image + '" />';
+                        $image = '<img src="' + item.image + '" />';
                     
                     $($image).prependTo($result);
 
