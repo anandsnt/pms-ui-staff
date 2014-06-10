@@ -18,7 +18,7 @@
         </li>
       </ul>
       <ul class="pickadate-cell">
-        <li ng-repeat="d in currentMonthdates" ng-click="dateClicked(d)" class="{{d.className}} " ng-class="{'pickadate-active': (date == d.date) && isDateSelected,'current-date': (todayDate == d.date) && !isDateSelected,'pickdate-cell-bg':!((date == d.date) && isDateSelected)}"> 
+        <li ng-repeat="d in currentMonthdates" ng-click="dateClicked(d)" class="{{d.className}} pickdate-cell-bg " ng-class="{'pickadate-active': (date == d.date) && isDateSelected && (d.className !='pickadate-disabled'),'current-date': (todayDate == d.date) && !isDateSelected}"> 
           {{d.date | date:"d"}}
         </li>
       </ul>
@@ -44,7 +44,7 @@
         </li>
       </ul>
       <ul class="pickadate-cell">
-        <li ng-repeat="d in nextMonthdates" ng-click="dateClicked(d)" class="{{d.className}} " ng-class="{'pickadate-active': (date == d.date) && isDateSelected,'current-date': (todayDate == d.date) && !isDateSelected,'pickdate-cell-bg':!((date == d.date) && isDateSelected)}"> 
+        <li ng-repeat="d in nextMonthdates" ng-click="dateClicked(d)" class="{{d.className}} pickdate-cell-bg" ng-class="{'pickadate-active': (date == d.date) && isDateSelected &&(d.className !='pickadate-disabled'),'current-date': (todayDate == d.date) && !isDateSelected}"> 
           {{d.date | date:"d"}}
         </li>
       </ul>

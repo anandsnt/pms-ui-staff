@@ -32,9 +32,9 @@
                 <form method="get" action="" name="search-company" id="search-company" class="card-search-form" role="search">
                     <div class="holder">
                         <div class="entry">
-                            <input name="cc-name" id="cc-name" placeholder="Company Name" value="" type="text" class="masked-input fixed long-name h1" />
-                            <input name="cc-city" id="cc-city" placeholder="City" value="" type="text" class="masked-input fixed city h1" />
-                            <input name="cc-corporate-id" id="cc-corporateid" placeholder="Corporate ID" value="" type="text" class="masked-input fixed code h1" />
+                            <input name="cc-name" id="cc-name" placeholder="Company Name" value="" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="cc_firstname" delay="1000" function-to-fire="changedTextbox"/>
+                            <input name="cc-city" id="cc-city" placeholder="City" value="" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="cc_city" delay="1000" function-to-fire="changedTextbox"/>
+                            <input name="cc-corporate-id" id="cc-corporateid" placeholder="Corporate ID" value="" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="cc_corporate_id" delay="1000" function-to-fire="changedTextbox" />
                         </div>
                     </div>
                 </form>
