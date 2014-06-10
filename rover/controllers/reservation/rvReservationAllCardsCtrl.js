@@ -88,5 +88,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         $scope.invokeApi(RVReservationAllCardsSrv.fetchGuests, paramDict, successCallBackFetchGuest);
     }
 
+    $scope.changedTextbox = function(){
+        alert('dddd');
+    }
 
 }]);
