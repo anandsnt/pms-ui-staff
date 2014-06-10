@@ -1254,35 +1254,44 @@
 				/* Block details - Credit card **/
 				&.item-payment {
 
+					.next-view,
+					.no-view { 
+						position: relative;
+						line-height: 48px; 
+
+						.icon-swiped {
+							position: absolute;
+							top: 15px;
+							right: 20px;
+							margin: 0;
+						}
+					}
+
 					&.has-buttons {
 						.next-view,
-						.no-view {
-							line-height: 48px;
+						.no-view { 
 							.calc-width(100, 150); /* %, px - 140 is the width of two buttons + 10px margin */
 
 							.card-logo,
 							span { margin-right: 10px; }
 
-							.icon-swiped {
-								position: absolute;
-								top: 15px;
-								right: 10px;
-								margin: 0;
-							}
+							.icon-swiped { right: 0; }
 						}
-					}
+					}	
 
 					&.has-button {
 						.next-view,
-						.no-view {
-							line-height: 48px;
-							.calc-width(100, 75); /* %, px - 65 is the width of one buttons + 10px margin */
+						.no-view { 
+							line-height: 48px; 
+							.calc-width(100, 75); /* %, px - 65 is the width of one buttons + 10px margin */ 
+
+							.icon-swiped { right: 10px; }
 						}
 					}
 
 					.actions {
 						.button,
-						.add-new-button {
+						.add-new-button { 
 							margin-right: 10px;
 							.size(60px, 65px);
 							.pull-left;
