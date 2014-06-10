@@ -19,7 +19,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
 
         var heightOfComponents = 500;
         var headerHeight = 60;
-        var heightOfFixedComponents = 145;
+        var heightOfFixedComponents = 100;
         var variableComponentHeight = 90;
         var maxSize = $(window).height() - headerHeight;
 
@@ -71,13 +71,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
         $scope.fetchFilterOptions();
 
         $scope.clickedAllRates = function() {
-            if ($scope.currentFilterData.is_checked_all_rates) {
-                $scope.currentFilterData.is_checked_all_rates = false;
-                $scope.leftMenuDimensions.scrollableContainerHeight = Math.min($scope.leftMenuDimensions.scrollableContainerHeight + variableComponentHeight, maxSize - heightOfFixedComponents);
-            } else {
-                $scope.currentFilterData.is_checked_all_rates = true;
-                $scope.leftMenuDimensions.scrollableContainerHeight = $scope.leftMenuDimensions.outerContainerHeight - heightOfFixedComponents;
-            }
+            $scope.currentFilterData.is_checked_all_rates = !$scope.currentFilterData.is_checked_all_rates;
             setTimeout(function() {
                 $scope.$$childTail.$parent.myScroll['filter_details'].refresh();
             }, 300);
