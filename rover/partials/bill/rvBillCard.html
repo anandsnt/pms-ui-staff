@@ -18,7 +18,7 @@
 				</span>
 				<span class="nights"> 
 					<span class="guest-status nights"></span> {{reservationBillData.number_of_nights}}
-					{{'NIGHTS' | translate}} 
+					{{setNightsString()}} 
 				</span>
 				<span class="date"> <span class="guest-status small-icon check-in" translate>CHECK_IN</span> 
 				 {{reservationBillData.checkin_date | date:dayAndDate}} </span>
@@ -170,7 +170,7 @@
 									</div>
 									<div class="room">
 										<span translate> GUEST_ROOM_TYPE </span>
-										{{billItem.rate_name}}
+										{{billItem.room_type_name}}
 									</div> 
 								</a>
 								<div class="stay-details float" ng-class="{'hidden': $index != showRoomDetailsIndex}">

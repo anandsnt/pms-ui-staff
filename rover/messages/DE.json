@@ -28,5 +28,7 @@
     "NOTES_POST":"Beitrag",
     "WRITE_NOTE":"schreiben Sie eine Notiz",
 
-    "DEFAULT_NOTE_TOPIC":"allgemein"
+    "DEFAULT_NOTE_TOPIC":"allgemein",
+    "VIEW_BILL_TITLE":"Gastrechnung",
+    "VIEW_BILL_TITLE":"Aufenthalt Karte"
 }

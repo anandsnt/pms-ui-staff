@@ -130,6 +130,7 @@
     
     "ROOM": "room",
     "NIGHTS": "nights",
+    "NIGHT": "night",
     "CHECK_IN": "check-in",
     "CHECK_OUT": "check-out",
     "TO_BILL": "To Bill",
@@ -163,5 +164,7 @@
     "MOVE_TO_BILL" : "Move to bill",
     "EDIT": "Edit",
 
-    "DEFAULT_NOTE_TOPIC":"GENERAL"
+    "DEFAULT_NOTE_TOPIC":"GENERAL",
+    "VIEW_BILL_TITLE":"Guest Bill",
+    "STAY_CARD_TITLE":"Stay Card"
 }
