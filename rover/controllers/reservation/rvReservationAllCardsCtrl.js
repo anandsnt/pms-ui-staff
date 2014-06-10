@@ -6,6 +6,10 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
     var resizableMinHeight = 90;
     var that = this;
 
+    $scope.guestFirstName = $scope.reservationData.guest.firstName;
+    $scope.guestLastName = $scope.reservationData.guest.lastName;
+    $scope.guestCity = '';
+    $scope.guestLoyaltyNumber = '';
     /**
     * scroller options
     */
@@ -93,6 +97,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             if(data.results.length>0){
                 angular.forEach(data.results, function(item){
                     var guestData = {};
+                    // guestData.id = item.id;
                     guestData.firstName = item.first_name;
                     guestData.lastName = item.last_name;
                     guestData.address = {};
@@ -110,12 +115,21 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             }
         }
         var paramDict = {
-                            'first_name': $scope.reservationData.guest.firstName,
-                            'last_name': $scope.reservationData.guest.lastName,
-                            'city': $scope.reservationData.guest.city,
-                            'membership_no': $scope.reservationData.guest.loyaltyNumber
+                            'first_name': $scope.guestfirstName,
+                            'last_name': $scope.guestLastName,
+                            'city': $scope.guestCity,
+                            'membership_no': $scope.guestLoyaltyNumber
                         };
         $scope.invokeApi(RVReservationAllCardsSrv.fetchGuests, paramDict, successCallBackFetchGuest);
+    }
+
+    $scope.setGuest = function(guest, $event){
+        $event.stopPropagation();
+        // $scope.reservationData.guest.id = guest.id;
+        $scope.reservationData.guest.firstName = guest.firstName;
+        $scope.reservationData.guest.lastName = guest.lastName;
+        $scope.reservationData.guest.city = guest.address.city;
+        $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
     }
 
     $scope.changedTextbox = function(){
