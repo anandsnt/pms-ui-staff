@@ -68,9 +68,41 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 collision: 'flip'
             },
             source: $scope.companyCardResults,
+            select: function(event, item) {
+                $scope.companySearchText = item.label;
+            }
         }
 
         // init call to set data for view 
         init();
     }
 ]);
+
+sntRover.directive('autoV', function (){
+    return {
+        restrict: 'A',
+        scope: {
+            autoOptions: '=autoOptions'
+        },
+        link: function(scope, el, attrs) {
+            console.log(scope.autoOptions);
+
+            $(el).autocomplete(scope.autoOptions)
+                .data('ui-autocomplete')
+                ._renderItem = function(ul, item) {
+                    ul.addClass('find-cards');
+
+                    console.log( item );
+
+                    var $result = $("<a></a>").text(item.label),
+                        $image = '<img src="../images/' + item.image + '" />';
+                    
+                    // highlightText(this.term, $result);
+
+                    $($image).prependTo($result);
+
+                    return $('<li></li>').append($result).appendTo(ul);
+                };
+        }
+    };
+});
