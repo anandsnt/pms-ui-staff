@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter',
-    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter){
+sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter','ngDialog',
+    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter,ngDialog){
         BaseCtrl.call(this, $scope);
 
         //company card search query text
@@ -72,5 +72,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
         // init call to set data for view 
         init();
+
+        $scope.popupCalendar = function(){
+            ngDialog.open({
+             template: '/assets/partials/reservation/rvReservationCalendarPopup.html',
+             controller: 'RVReservationDatePickerController',
+             className: 'ngdialog-theme-default calendar-modal',
+             closeByDocument: true,
+             scope:$scope
+    });
+};
     }
 ]);

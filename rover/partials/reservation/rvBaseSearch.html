@@ -5,8 +5,8 @@
             <div id="arriving" class="entry">
                 <label id="check-in-day-label" for="check-in-date">Arriving <span>today</span></label>
                 <!-- Styled check in date -->
-                <div class="entry-data">
-                    <input name="check-in-date" id="check-in-date" type="text" class="datepicker" ng-model="reservationData.arrivalDate" readonly />
+                <div class="entry-data"  ng-click="popupCalendar()">
+                    <input name="check-in-date" id="check-in-date" type="text" class="datepicker" ng-model="reservationData.arrivalDate" readonly/>
                     <strong id="check-in-day" class="day">{{reservationData.arrivalDate | date:'dd'}}</strong>
                     <span id="check-in-month" class="month">{{reservationData.arrivalDate | date:'MMM'}}</span>
                     <span id="check-in-year" class="year">{{reservationData.arrivalDate | date:'yyyy'}}</span>
