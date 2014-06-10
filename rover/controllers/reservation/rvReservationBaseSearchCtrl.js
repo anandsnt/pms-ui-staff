@@ -10,6 +10,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
 
+        var companyCardFetchInterval = null;
+
         var init = function(){
             $scope.reservationData.arrivalDate = dateFilter(new Date(), 'yyyy-MM-dd');
             $scope.setDepartureDate();
@@ -29,12 +31,14 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         /*
         * company card search text entered
         */
-        $scope.companySearchTextEntered = function(){
+        $scope.companySearchTextEntered = function() {
+
+            // var notBackSpace = (arguments[0].keyCode || arguments[0].which !== 8) ? true : false;
+
             if($scope.companySearchText.length === 0){
                 $scope.companyCardResults = [];
                 $scope.companyLastSearchText = "";
-            }
-            else{
+            } else if ( $scope.companySearchText.length > 2 ) {
                 companyCardFetchInterval = window.setInterval(function() {
                     displayFilteredResults();
                 }, 500);
@@ -46,9 +50,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
                 var successCallBackOfCompanySearch = function(data){
                     $scope.$emit("hideLoader");
-                    angular.forEach(data.accounts, function(item){
+
+                    angular.forEach(data.accounts, function(item) {
                         var eachItem = {};
-                        eachItem = {label: item.account_first_name+" "+item.account_last_name, value: item.id, image: item.company_logo}
+                        eachItem = {label: item.account_first_name+" "+item.account_last_name, value: item.account_first_name+" "+item.account_last_name, image: item.company_logo}
                         $scope.companyCardResults.push(eachItem);
                     });
                 }
@@ -68,8 +73,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 collision: 'flip'
             },
             source: $scope.companyCardResults,
-            select: function(event, item) {
-                $scope.companySearchText = item.label;
+            select: function(event, ui) {
+                $scope.companySearchText = ui.item.label;
+                return false;
             }
         }
 
@@ -78,27 +84,21 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
     }
 ]);
 
-sntRover.directive('autoV', function (){
+sntRover.directive('autoComplete', function () {
     return {
         restrict: 'A',
         scope: {
             autoOptions: '=autoOptions'
         },
         link: function(scope, el, attrs) {
-            console.log(scope.autoOptions);
-
             $(el).autocomplete(scope.autoOptions)
                 .data('ui-autocomplete')
                 ._renderItem = function(ul, item) {
                     ul.addClass('find-cards');
 
-                    console.log( item );
-
                     var $result = $("<a></a>").text(item.label),
                         $image = '<img src="../images/' + item.image + '" />';
                     
-                    // highlightText(this.term, $result);
-
                     $($image).prependTo($result);
 
                     return $('<li></li>').append($result).appendTo(ul);
