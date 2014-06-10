@@ -1,5 +1,6 @@
-sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', '$state',
-    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, $state) {
+sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state'
+
+    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state) {
         BaseCtrl.call(this, $scope);
 
         //company card search query text
@@ -26,8 +27,20 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
         $scope.setDepartureDate = function() {
             if ($scope.reservationData.numNights > 0) {
-                var tmpDate = new Date($scope.reservationData.arrivalDate);
-                $scope.reservationData.departureDate = tmpDate.setDate(tmpDate.getDate() + parseInt($scope.reservationData.numNights));
+
+                //TO DO:Delete the 2 lines,if the below one works is right
+
+                // var tmpDate = new Date($scope.reservationData.arrivalDate);
+                // $scope.reservationData.departureDate = tmpDate.setDate(tmpDate.getDate() + parseInt($scope.reservationData.numNights));
+
+
+                var newDate = new Date();
+                newDay = newDate.getDate() + $scope.reservationData.numNights;
+                newDate.setDate(newDay);
+                $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
+
+            } else {
+                $scope.reservationData.departureDate = "";
             }
         }
 
@@ -57,7 +70,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 toDate: $scope.reservationData.departureDate
             }, successCallBack);
         }
-
 
         var displayFilteredResults = function() {
             if ($scope.companySearch.label != '' && $scope.companyLastSearchText != $scope.companySearch.label) {
@@ -107,6 +119,28 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
         // init call to set data for view 
         init();
+
+        $scope.popupArrivalDateCalendar = function() {
+            ngDialog.open({
+                template: '/assets/partials/reservation/rvReservationCalendarPopup.html',
+                controller: 'RVReservationArrivalDatePickerController',
+                className: 'ngdialog-theme-default calendar-modal reservation-calendar',
+                closeByDocument: true,
+                scope: $scope
+            });
+        };
+
+        $scope.popupDepartureDateCalendar = function() {
+            ngDialog.open({
+                template: '/assets/partials/reservation/rvReservationCalendarPopup.html',
+                controller: 'RVReservationDepartureDatePickerController',
+                className: 'ngdialog-theme-default calendar-modal reservation-calendar',
+                closeByDocument: true,
+                scope: $scope
+            });
+        };
+
+
     }
 ]);
 

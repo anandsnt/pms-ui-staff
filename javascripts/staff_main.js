@@ -20,6 +20,7 @@
 //=require ../shared/lib/js/highcharts.js
 //=require ../shared/lib/js/angular-highcharts.js
 //=require_tree ../shared
+//=require ../shared/lib/js/advanced-date-picker.js
 //=require ../rover/rvApp.js
 //=require ../rover/rvRouter.js
 //=require ../rover/rvCardOperations.js

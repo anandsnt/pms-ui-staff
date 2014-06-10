@@ -49,11 +49,20 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			//Filter for rooms which are available and have rate information
 			$scope.displayData.allRooms = $(roomRates.room_types).filter(function() {
-				return $scope.roomAvailability[this.id] && $scope.roomAvailability[this.id].availability == true && $scope.roomAvailability[this.id].rates.length > 0;
+				return $scope.roomAvailability[this.id] && $scope.roomAvailability[this.id].availability == true && 
+				$scope.roomAvailability[this.id].rates.length > 0;
+			});
+
+			//sort the rooms by levels
+			$scope.displayData.allRooms.sort(function(a,b){
+				  if (a.level < b.level)
+				     return -1;
+				  if (a.level > b.level)
+				    return 1;
+				  return 0;
 			});
 
 			//$scope.displayData.allRooms = roomRates.room_types;
-
 			$scope.displayData.roomTypes = $scope.displayData.allRooms;
 
 
@@ -70,9 +79,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			$scope.reservationData.rooms[$scope.activeRoom].roomType = roomId;
 			$scope.reservationData.rooms[$scope.activeRoom].rateName = rateId;
+			$scope.reservationData.rooms[$scope.activeRoom].rateAvg = $scope.roomAvailability[roomType].averagePerNight;
+			$scope.reservationData.rooms[$scope.activeRoom].rateTotal = $scope.roomAvailability[roomType].total[rateId].total;
 
 			//TODO: update the Tax and Total Amount information
-
+			$scope.reservationData.totalStayCost =  $scope.roomAvailability[roomType].total[rateId].total;
 
 			//Navigate to the next screen
 			$state.go('rover.reservation.mainCard.summaryAndConfirm');
@@ -168,6 +179,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			//step5 : sort the rooms based on the levels OR average per night
 
+			console.log(rooms);
 
 			return rooms;
 		}
@@ -178,6 +190,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					$scope.$parent.myScroll["room_types"].refresh();
 				}, 300);
 			}
+
 		}
 
 		$scope.calculateRate = function(rateTable) {

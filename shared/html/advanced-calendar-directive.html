@@ -1,0 +1,55 @@
+ <div class="pickadate">
+ <div class="current-month-calendar-container">
+    <div class="calendar_top_panel">
+
+     <a href="" class="pickadate-prev float_left" ng-hide="allowPrevMonth">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+
+     <a href="" class="pickadate-prev float_left" ng-click="changeMonth(-1)" ng-show="allowPrevMonth" ><img src="/assets/arrow-left-black.png"/></a>
+
+     <div class="float_left center_align month_label">
+      {{firstMonthName}}
+    </div>
+  </div>
+  <div class="pickadate-body">
+    <div class="pickadate-main">
+      <ul class="pickadate-cell">
+        <li class="pickadate-head" ng-repeat="dayName in weekDays">
+          {{dayName}}
+        </li>
+      </ul>
+      <ul class="pickadate-cell">
+        <li ng-repeat="d in currentMonthdates" ng-click="dateClicked(d)" class="{{d.className}} " ng-class="{'pickadate-active': (date == d.date) && isDateSelected,'current-date': (todayDate == d.date) && !isDateSelected,'pickdate-cell-bg':!((date == d.date) && isDateSelected)}"> 
+          {{d.date | date:"d"}}
+        </li>
+      </ul>
+    </div>
+  </div>
+  </div>
+
+  <div class="next-month-calendar-container">
+  <div class="calendar_top_panel center_align">
+    <div class="float_left center_align" style="width:85%;padding:2% 10%;">
+      {{secondMonthName}}
+    </div>
+
+    <a href="" class="pickadate-next float_right" ng-click="changeMonth(1)" ng-show="allowNextMonth" ><img src="/assets/arrow-right-black.png" /></a>
+  </div>
+  <div class="pickadate-body">
+
+
+    <div class="pickadate-main">
+      <ul class="pickadate-cell">
+        <li class="pickadate-head" ng-repeat="dayName in weekDays">
+          {{dayName}}
+        </li>
+      </ul>
+      <ul class="pickadate-cell">
+        <li ng-repeat="d in nextMonthdates" ng-click="dateClicked(d)" class="{{d.className}} " ng-class="{'pickadate-active': (date == d.date) && isDateSelected,'current-date': (todayDate == d.date) && !isDateSelected,'pickdate-cell-bg':!((date == d.date) && isDateSelected)}"> 
+          {{d.date | date:"d"}}
+        </li>
+      </ul>
+    </div>
+  </div>
+  </div>
+
+  </div>
