@@ -26,5 +26,7 @@
     "NOT_SET":"nicht gesetzt",
     "NOTES_HEADER":"Aufzeichnungen",
     "NOTES_POST":"Beitrag",
-    "WRITE_NOTE":"schreiben Sie eine Notiz"
+    "WRITE_NOTE":"schreiben Sie eine Notiz",
+
+    "DEFAULT_NOTE_TOPIC":"allgemein"
 }
