@@ -2,19 +2,23 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
     
     BaseCtrl.call(this, $scope);
 
+    var resizableMaxHeight = screen.height -200;
+    var resizableMinHeight = 90;
+    var that = this;
+
     /**
     * scroller options
     */
     $scope.cardVisible = false;
     $scope.resizableOptions = 
     {   
-        minHeight: '90',
-        maxHeight: screen.height -200,
+        minHeight: resizableMinHeight,
+        maxHeight: resizableMaxHeight,
         handles: 's',
         resize: function( event, ui ) {
             if ($(this).height() > 120 && !$scope.cardVisible) { //against angular js principle, sorry :(              
-                $scope.cardVisible = true;
-                $scope.$apply();
+            $scope.cardVisible = true;
+            $scope.$apply();
             }
             else if($(this).height() <= 120 && $scope.cardVisible){
                 $scope.cardVisible = false;
@@ -26,7 +30,15 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.eventTimestamp = event.timeStamp;
         }
     }
+    $scope.height = resizableMinHeight;
+    if($scope.otherData.fromSearch){
+        $scope.height = resizableMaxHeight;    
+        $scope.cardVisible = true;   
+        $scope.otherData.fromSearch = false;
+    }
 
+
+    
     // UICards first index will be active card
     $scope.UICards = ['guest-card', 'company-card', 'travel-agent-card'];
 
@@ -108,6 +120,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
     $scope.changedTextbox = function(){
         alert('dddd');
-    }
+    };
+
+
+
 
 }]);

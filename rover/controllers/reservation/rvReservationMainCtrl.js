@@ -84,10 +84,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         maxAdults: '',
         maxChildren: '',
         maxInfants: '',
-        roomTypes: []
+        roomTypes: [],
+        fromSearch: false
     };
 
     //setting the main header of the screen
     $scope.heading = "Reservations";
+
 
 }]);
