@@ -153,6 +153,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             var itemID = rTypes[i].id;
             item.days = "";
             item.isRestrictionEnabled = false;
+            item.isMixed = false;
+            item.hasChanged = false;
             item.showEdit = false;
             item.hasEdit = isRestictionHasDaysEnter(rTypes[i].value);
 
@@ -166,11 +168,15 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     }
                 }
             }
+            //In all data section, if the restriction is disabled(if enabled, all rates have the restriction enabled for that date, hence not mixed),
+            //we should check if the restriction is mixed restriction
+            if($scope.popupData.all_data_selected && !item.isRestrictionEnabled && isMixed(itemID)) {
+                item.isMixed = true;
+            }
             
             restrictionTypes[itemID] = item;
         }
         $scope.data.restrictionTypes = restrictionTypes;
-        $scope.data.previousRestrictionTypes = dclone($scope.data.restrictionTypes);
 		
     };
 
@@ -205,6 +211,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             var itemID = rTypes[i].id;
 			item.days = "";
             item.isRestrictionEnabled = false;
+            item.isMixed = false;
+            item.hasChanged = false;
             item.showEdit = false;
             item.hasEdit = isRestictionHasDaysEnter(rTypes[i].value);
 
@@ -218,10 +226,15 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     }
                 }
             }
+            //In all data section, if the restriction is disabled(if enabled, all roomrates have the restriction enabled for that date, hence not mixed),
+            //we should check if the restriction is mixed restriction
+            if($scope.popupData.all_data_selected && !item.isRestrictionEnabled && isMixed(itemID)) {
+                item.isMixed = true;
+            }
+
             restrictionTypes[itemID] = item;
         }
         $scope.data.restrictionTypes = restrictionTypes;
-        $scope.data.previousRestrictionTypes = dclone($scope.data.restrictionTypes);
     };
 
     var isRestictionHasDaysEnter = function(restriction){
@@ -232,12 +245,30 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         return ret;
     }
 
+    /* This does not handle the case of "Selected for all Rates", as this can be deduced from allData
+    */
+    var isMixed = function(id){
+        var mixed = false;
+        for (var row in $scope.calendarData.data){
+            if($scope.popupData.fromRoomTypeView){
+                var datedata = $scope.calendarData.data[row][$scope.popupData.selectedDate].restrictions;
+            }else{
+                var datedata = $scope.calendarData.data[row][$scope.popupData.selectedDate];
+            }
+            for (var restriction in datedata){
+                if (datedata[restriction]['restriction_type_id'] === id) {
+                    mixed =true;
+                    break;
+                }
+            }
+        }
+        return mixed;
+    }
     /**
     * Click handler for restriction on/off buttons
     * Enable disable restriction. 
     */
     $scope.onOffRestrictions = function(id, action, days,selectedIndex){
-    	
         $scope.data.showEditView = false;
         $scope.restrictionsList.selectedIndex = selectedIndex;
 
@@ -248,18 +279,31 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
         /*Prompt the user for number of days
          * Only if enabling a restriction.
          */
-        if($scope.popupData.all_data_selected || ($scope.data.restrictionTypes[id].hasEdit && action === "ENABLE")){
+        var shouldShowEdit =false;
+        if($scope.data.restrictionTypes[id].hasEdit && action === "ENABLE"){
+            shouldShowEdit = true;
+        }
+
+        if($scope.popupData.all_data_selected && action === "ENABLE" && $scope.data.restrictionTypes[id].isMixed){
+            shouldShowEdit = true;
+        }
+
+
+        if(shouldShowEdit){
             $scope.data.showEditView = true;
             $scope.data.restrictionTypes[id].showEdit = true;
             $scope.updatePopupWidth();
-
             return false;
         }
         if(action == "ENABLE"){
             $scope.data.restrictionTypes[id].isRestrictionEnabled = true; 
+            $scope.data.restrictionTypes[id].hasChanged = true; 
+            $scope.data.restrictionTypes[id].isMixed = false; 
         }
         if(action == "DISABLE"){
             $scope.data.restrictionTypes[id].isRestrictionEnabled = false; 
+            $scope.data.restrictionTypes[id].hasChanged = true; 
+            $scope.data.restrictionTypes[id].isMixed = false;
         }
         $scope.updatePopupWidth();
 
@@ -346,13 +390,14 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             
             if($scope.daysOptions.applyToRestrictions || (!$scope.daysOptions.applyToRestrictions && i== 0)) {
                 angular.forEach($scope.data.restrictionTypes, function(value, key){
-                    if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled != value.isRestrictionEnabled){
+                    if(value.hasChanged){
                         var action = "";
-                        if($scope.data.previousRestrictionTypes[key].isRestrictionEnabled){
-                            action = "remove";
-                        } else {
+                        if(value.isRestrictionEnabled) {
                             action = "add";
+                        } else {
+                            action = "remove";
                         }
+
                         var restrictionData = {
                             "action": action,
                             "restriction_type_id": value.id,
@@ -437,9 +482,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 
     }
 
-   
+    /**
+    * Click handler for save button in popup.
+    * Calls the API and dismiss the popup on success
+    */
     $scope.saveRestriction = function(){
-
+        //The dates to which the restriction should be applied
         var datesSelected = getAllSelectedDates();
     	
     	var data = {};
@@ -449,10 +497,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             data.room_type_id = $scope.popupData.selectedRoomType;
         }
     	data.details = calculateDetailsToSave(datesSelected);
-    	$scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data);
-    	
-    	$scope.refreshData();
-    	ngDialog.close();
+        var saveRestrictionSuccess = function() {
+            $scope.refreshCalendar();
+            ngDialog.close();
+        };
+
+    	$scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data, saveRestrictionSuccess);
     	
     };
 
