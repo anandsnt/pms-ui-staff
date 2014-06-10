@@ -5,7 +5,7 @@
             <div id="arriving" class="entry">
                 <label id="check-in-day-label" for="check-in-date">Arriving <span>today</span></label>
                 <!-- Styled check in date -->
-                <div class="entry-data"  ng-click="popupCalendar()">
+                <div class="entry-data"  ng-click="popupArrivalDateCalendar()">
                     <input name="check-in-date" id="check-in-date" type="text" class="datepicker" ng-model="reservationData.arrivalDate" readonly/>
                     <strong id="check-in-day" class="day">{{reservationData.arrivalDate | date:'dd'}}</strong>
                     <span id="check-in-month" class="month">{{reservationData.arrivalDate | date:'MMM'}}</span>
@@ -22,7 +22,7 @@
             <div id="departing" class="entry">
                 <label id="check-out-day-label" for="check-out-date">Departing <span>tomorrow</span></label>
                 <!-- Styled check out date -->
-                <div class="entry-data">
+                <div class="entry-data" ng-click="popupDepartureDateCalendar()">
                     <input name="check-out-date" id="check-out-date" type="text" class="datepicker" ng-model="reservationData.departureDate" readonly />
                     <strong id="check-out-day" class="day">{{reservationData.departureDate | date:'dd'}}</strong>
                     <span id="check-out-month" class="month">{{reservationData.departureDate | date:'MMM'}}</span>

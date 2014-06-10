@@ -60,12 +60,9 @@
         link: function(scope, element, attrs, ngModel) {
           var minDate = scope.minDate && dateUtils.stringToDate(scope.minDate),
             maxDate = scope.maxDate && dateUtils.stringToDate(scope.maxDate),
-            disabledDates = scope.disabledDates || [],
+            disabledDates = scope.disabledDates || [];
 
-            /*
-             * check if month is present or next
-             */
-
+          scope.todayDate = dateFilter(new Date(), 'yyyy-MM-dd');
           currentDate = new Date(scope.date);
           scope.dayNames = $locale.DATETIME_FORMATS['SHORTDAY'];
           scope.currentDate = currentDate;
@@ -115,32 +112,32 @@
 
           scope.render = function(initialDate) {
           
-           initialDate = new Date(initialDate.getFullYear(), initialDate.getMonth(), 1, 3);                     
-           initialDateNextMonth = new Date(initialDate.getFullYear(), initialDate.getMonth()+1, 1, 3);
+             initialDate = new Date(initialDate.getFullYear(), initialDate.getMonth(), 1, 3);                     
+             initialDateNextMonth = new Date(initialDate.getFullYear(), initialDate.getMonth()+1, 1, 3);
 
-           var allDatesCurrentMonth = manipualteDateData(initialDate);
-           var allDatesNextMonth = manipualteDateData(initialDateNextMonth);
-           var currentMonth = initialDate.getMonth() + 1;
-           var nextMonth = initialDateNextMonth.getMonth() + 1;
+             var allDatesCurrentMonth = manipualteDateData(initialDate);
+             var allDatesNextMonth = manipualteDateData(initialDateNextMonth);
+             var currentMonth = initialDate.getMonth() + 1;
+             var nextMonth = initialDateNextMonth.getMonth() + 1;
 
-           var nextMonthInitialDate = new Date(initialDate);
-           nextMonthInitialDate.setMonth(currentMonth);
+             var nextMonthInitialDate = new Date(initialDate);
+             nextMonthInitialDate.setMonth(currentMonth);
 
-           scope.allowPrevMonth = !minDate || initialDate > minDate;
-           scope.allowNextMonth = !maxDate || nextMonthInitialDate < maxDate;
-            
-           scope.currentMonthdates = setUpDates(allDatesCurrentMonth,currentMonth);
-           scope.nextMonthdates = setUpDates(allDatesNextMonth,nextMonth);
+             scope.allowPrevMonth = !minDate || initialDate > minDate;
+             scope.allowNextMonth = !maxDate || nextMonthInitialDate < maxDate;
+              
+             scope.currentMonthdates = setUpDates(allDatesCurrentMonth,currentMonth);
+             scope.nextMonthdates = setUpDates(allDatesNextMonth,nextMonth);
           
           };
 
 
 
           scope.setDate = function(dateObj) {
-            if (isDateDisabled(dateObj)) return;
-            ngModel.$setViewValue(dateObj.date);
-            scope.isDateSelected = true;
-            scope.dateSelected();
+              if (isDateDisabled(dateObj)) return;
+              ngModel.$setViewValue(dateObj.date);
+              scope.isDateSelected = true;
+              scope.dateSelected();
           };
 
           scope.dateClicked = function(dateObj) {
@@ -224,18 +221,18 @@
             // sets the date to March the 3rd, since the date object adds 30 days to the current
             // date. Settings the date to the 2nd day of the month is a workaround to prevent this
             // behaviour
-            currentDate.setDate(1);
-            currentDate.setMonth(currentDate.getMonth() + offset);
+              currentDate.setDate(1);
+              currentDate.setMonth(currentDate.getMonth() + offset);
 
-            manipulateMonthSelected(currentDate.getMonth(),currentDate.getMonth()+1);
+              manipulateMonthSelected(currentDate.getMonth(),currentDate.getMonth()+1);
 
-            scope.render(currentDate);
+              scope.render(currentDate);
 
-            var year = currentDate.getFullYear();
-            scope.yearSelected = year;
+              var year = currentDate.getFullYear();
+              scope.yearSelected = year;
 
-            var month = currentDate.getMonth();
-            scope.monthSelected = scope.months[month];
+              var month = currentDate.getMonth();
+              scope.monthSelected = scope.months[month];
           };
 
     

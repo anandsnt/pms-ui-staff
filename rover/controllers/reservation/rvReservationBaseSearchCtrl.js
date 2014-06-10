@@ -21,8 +21,21 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
         $scope.setDepartureDate = function(){
             if($scope.reservationData.numNights > 0){
-                var tmpDate = new Date($scope.reservationData.arrivalDate);
-                $scope.reservationData.departureDate = tmpDate.setDate(tmpDate.getDate() + parseInt($scope.reservationData.numNights));
+
+            //TO DO:Delete the 2 lines,if the below one works is right
+
+                // var tmpDate = new Date($scope.reservationData.arrivalDate);
+                // $scope.reservationData.departureDate = tmpDate.setDate(tmpDate.getDate() + parseInt($scope.reservationData.numNights));
+           
+
+                var newDate =  new Date();
+                newDay = newDate.getDate() + $scope.reservationData.numNights;
+                newDate.setDate(newDay);
+                $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
+
+            }
+            else{
+                 $scope.reservationData.departureDate = "";
             }
         }
 
@@ -73,14 +86,26 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         // init call to set data for view 
         init();
 
-        $scope.popupCalendar = function(){
+        $scope.popupArrivalDateCalendar = function(){
             ngDialog.open({
              template: '/assets/partials/reservation/rvReservationCalendarPopup.html',
-             controller: 'RVReservationDatePickerController',
+             controller: 'RVReservationArrivalDatePickerController',
              className: 'ngdialog-theme-default calendar-modal reservation-calendar',
              closeByDocument: true,
              scope:$scope
-    });
-};
+            });
+        };
+
+        $scope.popupDepartureDateCalendar = function(){
+            ngDialog.open({
+             template: '/assets/partials/reservation/rvReservationCalendarPopup.html',
+             controller: 'RVReservationDepartureDatePickerController',
+             className: 'ngdialog-theme-default calendar-modal reservation-calendar',
+             closeByDocument: true,
+             scope:$scope
+            });
+        };
+
+        
     }
 ]);
