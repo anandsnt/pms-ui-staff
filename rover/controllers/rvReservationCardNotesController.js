@@ -1,4 +1,4 @@
-sntRover.controller('rvReservationCardNotesController',['$scope', function($scope){
+sntRover.controller('rvReservationCardNotesController',['$scope', '$filter', function($scope, $filter){
 	$scope.reservationnote ="";
 	/*
 	 *To save the reservation note and update the ui accordingly
@@ -11,10 +11,14 @@ sntRover.controller('rvReservationCardNotesController',['$scope', function($scop
             	}
         	var successCallBackReservationNote = function(data){
         		$scope.reservationnote ="";
+                data.topic = "GENERAL";//$filter('translate')('DEFAULT_NOTE_TOPIC');
         		$scope.$parent.reservationData.reservation_card.notes.reservation_notes.splice(0, 0, data);
         		$scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
         		$scope.$parent.$emit('hideLoader');
-        		$scope.$parent.$parent.myScroll['resultDetails'].refresh();
+        		setTimeout(function(){
+        			$scope.$parent.myScroll['resultDetails'].refresh();
+        		}, 700);
+        		
 
         	};
         	var errorCallBackReservationNote = function(errorMessage){
@@ -37,7 +41,9 @@ sntRover.controller('rvReservationCardNotesController',['$scope', function($scop
         		$scope.$parent.reservationData.reservation_card.notes.reservation_notes.splice($scope.deletedNoteIndex, 1);
         		$scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
         		$scope.$parent.$emit('hideLoader');
-        		$scope.$parent.$parent.myScroll['resultDetails'].refresh();
+        		setTimeout(function(){
+        			$scope.$parent.myScroll['resultDetails'].refresh();
+        		}, 700);
         	};
         	var errorCallBackDeleteReservationNote = function(errorMessage){
         		$scope.reservationnote ="";

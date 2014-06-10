@@ -1,0 +1,26 @@
+<div role="dialog" id="modal" data-position="bottom-right" class="ui-draggable modal-show">
+	<div class="modal-content key-delivery" ng-class="data.colorCodeClass">
+		<button ng-click="closeButtonClick()" type="button" id="modal-close" class="modal-close" ng-class="data.colorCodeClassForClose">
+			<span class="icons icon-close"></span>
+		</button>
+		<div class="scan-key" id="room-status">
+			<span ng-show="data.is_late_checkout == 'true'" class="h2 message">{{data.reservationStatusText}}<br/> {{data.late_checkout_time}}</span>
+			<span ng-show="data.is_late_checkout == 'false'" class="h2 message">{{data.reservationStatusText}}</span>
+			<h1 class="icon-key"> {{data.user_name}} <span></span> {{data.room_number}} </h1>
+			<span class="number">
+				{{ 'RESERVATION' | translate }}
+				{{data.confirmation_number}}	
+			</span>
+		</div>
+		<div class="scan-key" id="key-status">
+			<span class="h2 message" translate>SCAN_ROOM_KEY</span>
+			<div class="action">
+				<a ng-show="false" class="modal-close button brand-colors" ui-sref="rover.dashboard" ng-click="closeButtonClick()" translate>VIEW_STAY_CARD</a>
+				<a ng-show="false" class="modal-close button blue" ui-sref="rover.search" ng-click="closeButtonClick()" translate>SEARCH</a>
+			</div>
+			<div class="qr-holder">
+			    <img alt="" src="{{data.qr_code_image}}">
+			</div>
+		</div>
+	</div>
+</div>
