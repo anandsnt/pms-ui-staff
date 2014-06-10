@@ -52,7 +52,9 @@
           date: '=ngModel',
           minDate: '=',
           maxDate: '=',
-          calendarId: '='
+          calendarId: '=',
+          dateSelected:'&',
+          isDateSelected:'='
         },
         templateUrl: '../../assets/html/advanced-calendar-directive.html',
         link: function(scope, element, attrs, ngModel) {
@@ -137,9 +139,8 @@
           scope.setDate = function(dateObj) {
             if (isDateDisabled(dateObj)) return;
             ngModel.$setViewValue(dateObj.date);
-            scope.$emit("dateChangeEvent", {
-              calendarId: scope.calendarId
-            });
+            scope.isDateSelected = true;
+            scope.dateSelected();
           };
 
           scope.dateClicked = function(dateObj) {
@@ -159,17 +160,6 @@
             }
             scope.render(currentDate);
           };
-
-          /*
-           * set up data to be displayed
-           */
-          scope.todayDate = dateFilter(new Date(), 'yyyy-MM-dd');
-          scope.years = [];
-          scope.yearSelected = currentDate.getFullYear();
-
-
-          scope.presentDay = new Date();
-          scope.presentYear = scope.presentDay.getFullYear();
 
           scope.weekDays = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
 
@@ -223,6 +213,11 @@
               };
 
           }
+
+          // To show the current and next months
+          var currentMonthIndex = currentDate.getMonth();
+          var nextMonthIndex    = currentDate.getMonth()+1;
+          manipulateMonthSelected(currentMonthIndex,nextMonthIndex);
 
           scope.changeMonth = function(offset) {
             // If the current date is January 31th, setting the month to date.getMonth() + 1
