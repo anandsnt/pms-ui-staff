@@ -376,12 +376,12 @@ var StayCard = function(viewDom){
       sntapp.activityIndicator.hideActivityIndicator();
       sntapp.notification.showErrorMessage(errorMessage, that.myDom); 
     }
-    
+    // Success callback for queue
     this.queueSaveSuccess = function(data,params){
       var staycardView = new StayCard($("#view-nested-first"));
       staycardView.refreshReservationDetails(params['reservationId'], that.gotoStayCard);
     };
-    
+    // Navigation to staycard
     this.gotoStayCard = function() {
 		sntapp.activityIndicator.showActivityIndicator('blocker');
       	changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);  
