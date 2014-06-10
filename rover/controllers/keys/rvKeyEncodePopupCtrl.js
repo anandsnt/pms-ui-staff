@@ -10,6 +10,10 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 	$scope.init = function(){
 		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
     	$scope.data = {};
+    	// Setup data for late checkout
+    	$scope.data.is_late_checkout = $scope.reservationData.reservation_card.is_opted_late_checkout;
+    	if($scope.data.is_late_checkout) $scope.data.late_checkout_time = $scope.reservationData.reservation_card.late_checkout_time;
+    	
     	that.retrieveUID = true;
     	that.UID = '';
     	that.setStatusAndMessage('Connected to Key Card Reader!', 'success');	
@@ -328,6 +332,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 			var message = 'Key creation failed!';
 		}
 		sntapp.activityIndicator.hideActivityIndicator();
+		
 		that.myDom.find('#room-status, #key-status').removeClass('connecting').addClass('not-connected completed');
 		that.myDom.find('#key-status em').removeClass('pending success icon-key status').addClass('info').text(message);
 		that.myDom.find('#key-action').hide();
@@ -361,4 +366,8 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog', '
 	this.resetStyle = function(e) {
 		$("#modal-overlay").removeClass("locked");
 	};	
+	// Close popup
+	$scope.closeDialog = function(){
+		ngDialog.close();
+	}
 }]);

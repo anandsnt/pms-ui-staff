@@ -163,5 +163,14 @@
     "MOVE_TO_BILL" : "Move to bill",
     "EDIT": "Edit",
 
-    "DEFAULT_NOTE_TOPIC":"GENERAL"
+    "DEFAULT_NOTE_TOPIC":"GENERAL",
+    
+    "CLOSE": "Close",
+    "PRINT_ROOM_KEY" : "Print Room Key",
+    "CONNECTING_TO_KEY_CARD_READER" : "Connecting to Key Card Reader ...",
+    "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
+    "TRY_AGAIN" : "Try Again",
+    "HOW_MANY_KEYS" : "How many keys?",
+    "KEY_PRINTED" : "Keys printed!"
+    
 }
