@@ -5,8 +5,10 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		var loyaltyFetchsuccessCallback = function(data){		
 			$scope.$emit('hideLoader');
 			$scope.loyaltyData = data;
-			// alert("ef");
-			// console.log(data)
+			setTimeout(function(){
+				$scope.$parent.myScroll['loyaltyList'].refresh();
+				}, 
+			3000);
 		};
 
 		var loyaltyFetchErrorCallback = function(errorMessage){
@@ -19,11 +21,19 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 	};
 
 	$scope.init();
-
+	
+	$scope.$parent.myScrollOptions = {		
+	    'loyaltyList': {
+	    	scrollbars: true,
+	        snap: false,
+	        hideScrollbar: false,
+	        preventDefault: false
+	    },
+	};
 
 	$scope.addNewFreaquentLoyality =  function(){
 		 ngDialog.open({
-                  template: '/assets/partials/guestCard/guestCardaddFreaquentLoyaltyPopup.html',
+                  template: '/assets/partials/guestCard/rvGuestCardaddFreaquentLoyaltyPopup.html',
                   controller: 'RVAddNewFreaquentLoyaltyContrller',
                   className: 'ngdialog-theme-default',
                   scope: $scope
@@ -32,21 +42,21 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 
 	$scope.addNewHotelLoyality =  function(){
 		 ngDialog.open({
-                  template: '/assets/partials/guestCard/guestCardaddHotelLoyaltyPopup.html',
+                  template: '/assets/partials/guestCard/rvGuestCardaddHotelLoyaltyPopup.html',
                   controller: 'RVAddNewHotelLoyaltyController',
                   className: 'ngdialog-theme-default',
                   scope: $scope
                 });
-	}
-	$scope.showDeleteModel =  function(id){
+	};
+	$scope.showDeleteModal =  function(id){
 		$scope.loaytyID = id;
 		 ngDialog.open({
-                  template: '/assets/partials/guestCard/guestCardDeleteLoyaltyModal.html',
+                  template: '/assets/partials/guestCard/rvGuestCardDeleteLoyaltyModal.html',
                   controller: 'rvDeleteLoyaltyModalController',
                   className: 'ngdialog-theme-default',
                   scope: $scope
                 });
-	}
+	};
 	$scope.$on("loyaltyProgramAdded",function(e,data){
 
 		if(typeof $scope.loyaltyData == 'undefined')
