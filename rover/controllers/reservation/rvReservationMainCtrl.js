@@ -20,8 +20,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             numAdults: 0,
             numChildren: 0,
             numInfants: 0,
-            roomType: '',
-            rateName: '',
+            roomType: 'Standard Room',
+            rateName: 'Bed & BreakFast',
             rateAvg: 145,
             rateTotal: 1000,
             addOns: [
@@ -36,9 +36,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         totalStayCost: 300,
         guest: {
             id: null, // if new guest, then it is null, other wise his id
-            firstName: 'Aaron',
-            lastName: 'Smith',
-            email: 'smith@snt.com',
+            firstName: '',
+            lastName: '',
+            email: '',
             city: '',
             loyaltyNumber: '',
             sendConfirmMailTo :''
@@ -64,10 +64,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         },
 
         demographics: {
-            market: 'v1',
-            source: 'v2',
-            reservationType: 'v1', 
-            origin: 'v2'
+            market: '1',
+            source: '1',
+            reservationType: '8', 
+            origin: '0'
         },
         promotion: {
             promotionCode: '',
@@ -86,5 +86,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         maxInfants: '',
         roomTypes: []
     };
+
+    //setting the main header of the screen
+    $scope.heading = "Reservations";
 
 }]);
