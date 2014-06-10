@@ -1,6 +1,6 @@
 sntRover.controller('RVAddNewHotelLoyaltyController',['$scope', '$rootScope','RVGuestCardLoyaltySrv','ngDialog', function($scope, $rootScope,RVGuestCardLoyaltySrv,ngDialog){
 	
-
+	BaseCtrl.call(this, $scope);
 	$scope.userMembershipTypes = $scope.loyaltyData.hotelLoyaltyData;
 	$scope.userMembershipNumber = "";
 	$scope.userMembershipType = "";

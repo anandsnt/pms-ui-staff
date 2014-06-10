@@ -1,5 +1,5 @@
 sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyaltySrv','ngDialog',function($scope,RVGuestCardLoyaltySrv,ngDialog){
-	
+	BaseCtrl.call(this, $scope);
 	$scope.init = function(){
 			
 		var loyaltyFetchsuccessCallback = function(data){		
@@ -69,6 +69,10 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		}
         	
 	});
+	$scope.$on("loyaltyDeletionError",function(e,error){
+
+            $scope.errorMessage = error;
+    });
 	$scope.removeLoyaltyWithID = function(id){
 		var pos = "";
 		var hotelLoyaltyPrograms = $scope.loyaltyData.userMemberships.hotelLoyaltyProgram;

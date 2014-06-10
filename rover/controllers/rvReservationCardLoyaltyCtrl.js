@@ -2,6 +2,7 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
 	BaseCtrl.call(this, $scope);
 
 	$scope.selectedLoyaltyID = "";
+    $scope.selectedLoyalty = {};
 
 	$scope.showSelectedLoyalty = function(){
 		var display = true;
@@ -31,16 +32,20 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
         	}else{
         		$scope.$parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram.push(data);
         	}
-        	$scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = data;
+        	$scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = data.id;
             $scope.selectedLoyaltyID = data.id;
+            $scope.selectedLoyalty = data;
+            $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
 	});
         $scope.$on("loyaltyProgramDeleted",function(e,id){
 
             $scope.removeLoyaltyWithID(id);
             if($scope.selectedLoyaltyID == id){
                 $scope.selectedLoyaltyID = "";
-                $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = "";
-            }            
+                $scope.selectedLoyalty = "";
+                $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty
+            }  
+            $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);         
     });
     $scope.removeLoyaltyWithID = function(id){
         var pos = "";
@@ -75,8 +80,9 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
         		for(var i = 0; i < hotelLoyaltyProgram.length; i++){
         			if(id == hotelLoyaltyProgram[i].id){
         				flag = true
-        				$scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = hotelLoyaltyProgram[i];
+        				$scope.selectedLoyalty = hotelLoyaltyProgram[i];
         				$scope.selectedLoyaltyID = hotelLoyaltyProgram[i].id;
+                        $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = hotelLoyaltyProgram[i].id;
         				break; 
         			}
 
@@ -88,8 +94,9 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
         		for(var i = 0; i < freequentFlyerprogram.length; i++){
         			if(id == freequentFlyerprogram[i].id){
        					flag = true;
-        				$scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = freequentFlyerprogram[i];
+        				$scope.selectedLoyalty = freequentFlyerprogram[i];
         				$scope.selectedLoyaltyID = freequentFlyerprogram[i].id;
+                        $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = freequentFlyerprogram[i].id;
         				break; 
         			}
 
@@ -101,17 +108,19 @@ sntRover.controller('rvReservationCardLoyaltyController',[ '$rootScope','$scope'
         $scope.setSelectedLoyalty = function(id){
         		var isSelectedSet = $scope.setSelectedLoyaltyForID(id);
         		if(!isSelectedSet){
-        			$scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = "";
+        			$scope.selectedLoyalty = "";
         			$scope.selectedLoyaltyID = "";
-        		}
-        		$scope.callSelectLoyaltyAPI();
-        			
+        		}        			
         };
-        $scope.callSelectLoyaltyAPI = function(){
+        $scope.callSelectLoyaltyAPI = function(id){
+            $scope.selectedLoyaltyID = id;
         	var successCallback = function(){
-        		$scope.$parent.$emit('hideLoader');
+        		$scope.setSelectedLoyalty($scope.selectedLoyaltyID);
+                $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
+                $scope.$parent.$emit('hideLoader');
         	};
         	var errorCallback = function(errorMessage){
+                $scope.setSelectedLoyalty($scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty);
         		$scope.$parent.$emit('hideLoader');
         		$scope.$parent.errorMessage = errorMessage;
         	};

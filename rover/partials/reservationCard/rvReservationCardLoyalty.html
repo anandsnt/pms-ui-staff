@@ -4,7 +4,7 @@
 	</div>
 	<div class="select-item loyalty">
 		<!-- Disable the loyalty select feature for 'NOSHOW', 'CHECKEDOUT', 'CANCELED' %reservations -->
-		<select ng-model="selectedLoyaltyID" name="loyalty" id="loyalty" class="styled"ng-change="setSelectedLoyalty(selectedLoyaltyID)">
+		<select ng-model="selectedLoyaltyID" name="loyalty" id="loyalty" class="styled"ng-change="callSelectLoyaltyAPI(selectedLoyaltyID)">
 			<option value="" data-id="" translate>LOYALTY_PROGRAM_SELECT_LABEL</option>
 			<optgroup label="{{'FREEQUENT_FLYER_LABEL'|translate}}"></optgroup>
 			<option value="{{frequentflyer.id}}" ng-repeat="frequentflyer in $parent.reservationData.reservation_card.loyalty_level.frequentFlyerProgram" ng-selected="selectedLoyaltyID==frequentflyer.id">
@@ -19,8 +19,8 @@
 		</select>
 		<!-- Calculates the default selected loyalty -->
 		<div id="reservationLoyalty" class="selected" ng-show="showSelectedLoyalty()">
-			<span class="value code"> {{$parent.reservationData.reservation_card.loyalty_level.selected_loyalty.membership_type}}</span>
-			<span class="number"> Ending with <span class="value number"> {{$parent.reservationData.reservation_card.loyalty_level.selected_loyalty.membership_card_number}} </span> </span>
+			<span class="value code"> {{selectedLoyalty.membership_type}}</span>
+			<span class="number"> Ending with <span class="value number"> {{selectedLoyalty.membership_card_number}} </span> </span>
 		</div>
 		<div id="reservationLoyalty" class="selected" ng-hide="showSelectedLoyalty()">
 			<span class="value code"> </span>

@@ -1,11 +1,11 @@
 <div role="dialog" id="modal" class="modal-show"><form name="new-hlp" method="post" id="new-hlp" class="modal-content form new-content" action="index.html">
-	<button type="button" id="modal-close" class="modal-close dark-title">
+	<button type="button" id="modal-close" ng-click = "cancel()" class="modal-close dark-title">
 		<span class="icons icon-close"></span>
 	</button>
 	<strong class="new-form-title">New Hotel Loyalty Program</strong>
 	<div class="entry full-width">
-		<div class="error-messages"></div>
-	</div>
+ 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+ 		</div>
 	<div class="entry full-width">
 		<div id="notification-message"></div>
 	</div>

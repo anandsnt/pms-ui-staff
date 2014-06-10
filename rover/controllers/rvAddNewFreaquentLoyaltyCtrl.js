@@ -1,6 +1,6 @@
 sntRover.controller('RVAddNewFreaquentLoyaltyContrller',['$scope', '$rootScope','RVGuestCardLoyaltySrv','ngDialog', function($scope, $rootScope,RVGuestCardLoyaltySrv,ngDialog){
 	
-
+	BaseCtrl.call(this, $scope);
 	$scope.userMembershipTypes = $scope.loyaltyData.freaquentLoyaltyData;
 	$scope.userMembershipNumber = "";
 	$scope.userMembershipType = "";
