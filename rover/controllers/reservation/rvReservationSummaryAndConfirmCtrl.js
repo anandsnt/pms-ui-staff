@@ -42,7 +42,16 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', 'RVReservat
 		if($scope.data.isConfirmationEmailSameAsGuestEmail) {
 			$scope.reservationData.guest.sendConfirmMailTo = $scope.reservationData.guest.email;
 		} 
-	}
+	};
+
+	var computeReservationDataToSave = function() {
+
+	};
+
+	$scope.clickedConfirmAndGoToDashboard = function() {
+		var postData = computeReservationDataToSave();
+
+	};
 
 	$scope.init();
 
