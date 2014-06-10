@@ -35,7 +35,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
 
                 var newDate = new Date();
-                newDay = newDate.getDate() + $scope.reservationData.numNights;
+                newDay = newDate.getDate() + parseInt($scope.reservationData.numNights);
                 newDate.setDate(newDay);
                 $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
 
