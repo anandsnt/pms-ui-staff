@@ -14,6 +14,9 @@ sntRover.controller('MixedRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
         $scope.updateRestrictionBtnClicked = function(id){
             var currentSelected = $scope.data.restrictionTypes[id];
             currentSelected.isRestrictionEnabled = true;
+            currentSelected.hasChanged = true;
+            currentSelected.isMixed = false;
+
             if($scope.options.daysEntered !== undefined && $scope.options.daysEntered !== null){
                 currentSelected.days = $scope.options.daysEntered == "" ? "" : parseInt($scope.options.daysEntered);
             }
@@ -29,6 +32,9 @@ sntRover.controller('MixedRestrictionsCtrl', ['$q', '$scope', 'ngDialog',
         $scope.removeRestrictionBtnClicked = function(id){
             var currentSelected = $scope.data.restrictionTypes[id];
             currentSelected.isRestrictionEnabled = false;
+            currentSelected.hasChanged = true;
+            currentSelected.isMixed = false;
+
             if($scope.options.daysEntered !== undefined && $scope.options.daysEntered !== null){
                 currentSelected.days = '';
             }

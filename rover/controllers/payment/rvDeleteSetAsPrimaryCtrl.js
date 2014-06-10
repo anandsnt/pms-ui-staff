@@ -13,20 +13,25 @@ sntRover.controller('RVDeleteSetAsPrimaryCtrl',['$rootScope', '$scope', '$state'
 		$scope.$emit("hideLoader");
 		ngDialog.close();
 	};
+	$scope.failureCallBack = function(errorMessage){
+
+		$scope.$emit("hideLoader");
+		$scope.updateErrorMessage(errorMessage);
+		$scope.closeDialog() ;
+	};
 	$scope.setAsPrimary = function(){
-		console.log(JSON.stringify($scope.paymentData));
 		var data = {
 			"id": $scope.paymentData.payment_id,
 			"user_id": $scope.paymentData.user_id
 		};
-		$scope.invokeApi(RVPaymentSrv.setAsPrimary, data, $scope.successSetAsPrimary);
+		$scope.invokeApi(RVPaymentSrv.setAsPrimary, data, $scope.successSetAsPrimary, $scope.failureCallBack);
 	};
 	$scope.deletePayment= function(){
 		console.log(JSON.stringify($scope.paymentData));
 		var data = {
 			"id": $scope.paymentData.payment_id
 		};
-		$scope.invokeApi(RVPaymentSrv.deletePayment, data, $scope.successDelete);
+		$scope.invokeApi(RVPaymentSrv.deletePayment, data, $scope.successDelete, $scope.failureCallBack);
 	};
 	
 }]);
