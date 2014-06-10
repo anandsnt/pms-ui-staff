@@ -348,6 +348,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		$scope.$on("navToggled", function() {
 			$scope.menuOpen = !$scope.menuOpen;
+			$scope.showSubMenu = false;
 		});
 
 		$scope.isMenuOpen = function() {
