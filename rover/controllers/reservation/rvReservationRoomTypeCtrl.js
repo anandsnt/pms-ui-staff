@@ -79,11 +79,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			$scope.reservationData.rooms[$scope.activeRoom].roomType = roomId;
 			$scope.reservationData.rooms[$scope.activeRoom].rateName = rateId;
-			$scope.reservationData.rooms[$scope.activeRoom].rateAvg = $scope.roomAvailability[roomType].averagePerNight;
-			$scope.reservationData.rooms[$scope.activeRoom].rateTotal = $scope.roomAvailability[roomType].total[rateId].total;
+			$scope.reservationData.rooms[$scope.activeRoom].rateAvg = $scope.roomAvailability[roomId].averagePerNight;
+			$scope.reservationData.rooms[$scope.activeRoom].rateTotal = $scope.roomAvailability[roomId].total[rateId].total;
 
 			//TODO: update the Tax and Total Amount information
-			$scope.reservationData.totalStayCost =  $scope.roomAvailability[roomType].total[rateId].total;
+			$scope.reservationData.totalStayCost =  $scope.roomAvailability[roomId].total[rateId].total;
 
 			//Navigate to the next screen
 			$state.go('rover.reservation.mainCard.summaryAndConfirm');
@@ -172,7 +172,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 				//step4: calculate the rate differences between the rooms
 				//Put the average rate in the room object
-				value.averagePerNight = value.total[value.defaultRate].average;
+				value.averagePerNight = value.defaultRate >= 0 ? value.total[value.defaultRate].average : 0;
 			}
 
 
