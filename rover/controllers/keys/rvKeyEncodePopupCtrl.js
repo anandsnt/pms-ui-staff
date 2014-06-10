@@ -37,10 +37,21 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog',  
 		$scope.showDeviceConnectingMessge();
 		$scope.numberOfKeysSelected = 0;
 		$scope.writingInProgress = false;
+		that.printKeyStatus = [];
 	};
 
 	$scope.keySelected = function(index){
 		$scope.numberOfKeysSelected = ($scope.numberOfKeysSelected == index) ? --$scope.numberOfKeysSelected : index;
+		// 'printKeyStatus' 
+		var elementToPut = {};
+		that.printKeyStatus = [];
+		for(var i = 1; i <= $scope.numberOfKeysSelected; i++){
+			elementToPut = {};
+			elementToPut['key'] = 'key' + i;
+			elementToPut['printed'] = false;
+			elementToPut['fetched'] = false;
+			that.printKeyStatus.push(elementToPut);
+		}
 	}
 
 	$scope.clickedPrintKey = function(){		
@@ -76,6 +87,7 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog',  
 	};
 	
 	that.showUIDFetchFailedMsg = function(){
+		$scope.$emit('hideLoader');
 		var message = 'Unable to read the key!';
 		that.showKeyPrintFailure(message);
 	};
@@ -99,6 +111,8 @@ sntRover.controller('RVKeyEncodePopupCtrl',[ '$rootScope','$scope','ngDialog',  
 
 	    }
 	    
+	    $scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, successCallBackofInitialFetch);
+
 	    var url = '/staff/reservation/print_key'
 	    //var url = '/ui/show?format=json&json_input=keys/fetch_encode_key.json';
 		var webservice = new WebServiceInterface();	

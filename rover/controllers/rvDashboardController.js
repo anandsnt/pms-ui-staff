@@ -39,16 +39,6 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
         	
 
    };
-
-   $scope.test = function(){
-
-    ngDialog.open({
-       template: '/assets/partials/keys/rvKeyEncodePopup.html',
-       controller: 'RVKeyEncodePopupCtrl',
-       className: 'ngdialog-theme-default1',
-       scope: $scope
-    });
-   };
    $scope.init();
    
    

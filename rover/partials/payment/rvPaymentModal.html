@@ -20,7 +20,7 @@
 	    <div class="select">
 	    	<select ng-model="saveData.credit_card" class="placeholder">
 				<option value="" translate> SELECT_CREDIT_CARD_LABEL </option>
-				<option ng-repeat="paymenttypevalue in paymentTypeValues" value="{{paymenttypevalue.cardcode}}" ng-selected="{{paymenttypevalue.cardcode == saveData.selected_credit_card}}">{{paymenttypevalue.cardname}}</option>
+				<option ng-repeat="paymenttypevalue in paymentTypeValues" value="{{paymenttypevalue.cardcode}}" ng-selected="{{paymenttypevalue.cardcode == saveData.credit_card}}">{{paymenttypevalue.cardname}}</option>
 			</select>
 	    	
 			
@@ -29,7 +29,7 @@
 	<div class="holder float">
 		<div class="entry">
 		    <label for="card-number-set1" translate>CARD_NUMBER</label>
-		    <input type="text" maxlength="15" value="{{saveData.card_number}}" placeholder="Enter Card number" ng-model="saveData.card_number">
+		    <input type="text" maxlength="16" value="{{saveData.card_number}}" placeholder="Enter Card number" ng-model="saveData.card_number">
 		</div>
 		<div class="entry">
 		    <label for="expiry-month" ><span translate>EXPIRATION_DATE </span>(<span>MM/YY</span>)</label>

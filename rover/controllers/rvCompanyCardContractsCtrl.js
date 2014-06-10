@@ -59,7 +59,7 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
                     tooltip: {
                         shared: true,
                         formatter: function() {                    	   
-                    	    	return 'ACTUAL <b>' + (( typeof this.points[0].y == 'undefined' ) ? '0' : this.points[0].y ) + '%</b>' + '<br/>CONTRACTED <b>' +  (( typeof this.points[1] == 'undefined' ) ? '0' : this.points[1].y ) + '%</b>';
+                    	    	return 'ACTUAL <b>' + (( typeof this.points[0].y == 'undefined' ) ? '0' : this.points[0].y ) + '</b>' + '<br/>CONTRACTED <b>' +  (( typeof this.points[1] == 'undefined' ) ? '0' : this.points[1].y ) + '</b>';
                         }
                     },
                     legend: { 
@@ -132,10 +132,10 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
     	$scope.$emit('hideLoader');
     	drawGraph();    	
     	// Disable contracts on selecting history
-    	$scope.isHistorySelected = false ;
+    	$scope.hasOverlay = false ;
     	angular.forEach($scope.contractList.history_contracts,function(item, index) {
     		if(item.id == $scope.contractList.contractSelected){
-    			$scope.isHistorySelected = true ;
+    			$scope.hasOverlay = true ;
     		}
        	});
        	
@@ -144,10 +144,22 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
   	var fetchFailureCallback = function(data){
         $scope.$emit('hideLoader');
         $scope.errorMessage = data;
-    };    
-  	    
+    }; 
+    // To check contract list is empty   
+  	var checkContractListEmpty = function(){
+  		
+  		if($scope.contractList.current_contracts.length == 0 && $scope.contractList.future_contracts.length == 0 && $scope.contractList.history_contracts.length ==0){
+    		$scope.hasOverlay = true;
+    		$scope.contractData = {};
+    	}
+    	else{
+    		$scope.hasOverlay = false;
+    	}
+  	};
+  	
     var fetchContractsListSuccessCallback = function(data){
     	$scope.contractList = data;
+    	checkContractListEmpty();
     	$scope.contractList.contractSelected = data.contract_selected;
     	if($scope.contractList.contractSelected){
     		$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":$stateParams.id,"contract_id":$scope.contractList.contractSelected},fetchContractsDetailsSuccessCallback,fetchFailureCallback);  
@@ -227,7 +239,7 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
    			$scope.invokeApi(RVCompanyCardSrv.fetchContractsDetails,{"account_id":account_id,"contract_id":$scope.contractList.contractSelected},fetchContractsDetailsSuccessCallback,fetchContractsDetailsFailureCallback);
 	   		angular.forEach($scope.contractList.history_contracts,function(item, index) {
 	    		if(item.id == $scope.contractList.contractSelected){
-	    			$scope.isHistorySelected = true ;
+	    			$scope.hasOverlay = true ;
 	    		}
 	       	});
        }
@@ -252,6 +264,28 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
 			 scope: $scope
 		});
 	};
+	// To update contracts list after add new contracts
+	
+	var updateContractList = function(data){
+		
+		var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
+		
+		var businessDate = new Date($rootScope.businessDate);
+    	var beginDate = new Date($scope.addData.begin_date);
+    	var endDate = new Date($scope.addData.end_date);
+    	
+    	if( beginDate <= businessDate && endDate >= businessDate ){
+    		$scope.contractList.current_contracts.push(dataNew);
+    	}
+    	else{
+    		$scope.contractList.future_contracts.push(dataNew);
+    	}
+    	
+    	$scope.contractList.contractSelected = data.id;
+    	$scope.addData.contract_name = "";
+		$scope.contractList.isAddMode = false;
+	};
+	
 	// To handle click on nights button
 	$scope.clickedContractedNights = function(){
 		/*
@@ -263,11 +297,7 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
 			var saveContractSuccessCallback = function(data){
 				$scope.errorMessage = "";
 		    	$scope.$emit('hideLoader');
-		    	var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
-		    	$scope.contractList.current_contracts.push(dataNew);
-		    	$scope.addData.contract_name = "";
-		    	$scope.contractList.isAddMode = false;
-		    	$scope.contractList.contractSelected = data.id;
+		    	updateContractList(data);
 		    	
 		    	setTimeout(function(){
 			    	ngDialog.open({
@@ -309,9 +339,13 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
 	
 	$scope.AddNewButtonClicked = function(){
 		//Setup data for Add mode
+		$scope.hasOverlay = false;
 		$scope.contractList.isAddMode = true;
 		$scope.addData.occupancy = [];
 		$scope.addData.begin_date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
+		$scope.addData.contracted_rate_selected = "";
+		$scope.addData.selected_symbol = "";
+		$scope.addData.selected_type = "";
 		$scope.addData.rate_value = 0;
 		var myDate = new Date($rootScope.businessDate);
 		myDate.setDate(myDate.getDate() + 1);
@@ -327,6 +361,7 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
 		$scope.contractList.isAddMode = false;
 		$scope.addData.contract_name = "";
 		$scope.errorMessage = "";
+		checkContractListEmpty();
 	};
 	
 	/*
@@ -339,19 +374,13 @@ sntRover.controller('companyCardContractsCtrl',['$rootScope','$scope','RVCompany
 		var saveContractSuccessCallback = function(data){
 	    	$scope.$emit('hideLoader');
 	    	$scope.errorMessage = "";
-	    	var dataNew = {"id":data.id,"contract_name":$scope.addData.contract_name};
-	    	$scope.contractList.current_contracts.push(dataNew);
-	    	$scope.contractList.contractSelected = data.id;
-	    	$scope.addData.contract_name = "";
-		    $scope.contractList.isAddMode = false;
+	    	updateContractList(data);
 	    };
 	  	var saveContractFailureCallback = function(data){
 	        $scope.$emit('hideLoader');
 	        $scope.errorMessage = data;
 	    }; 
 	    
-	    console.log("$scope.contactInformation.id ="+$scope.contactInformation.id);
-	    console.log("$stateParams.id ="+$stateParams.id);
 	    if($stateParams.id == "add"){
 	    	var account_id = $scope.contactInformation.id;
 	    }

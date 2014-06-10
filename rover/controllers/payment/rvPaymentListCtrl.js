@@ -4,13 +4,28 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 		$scope.$emit('hideLoader');
 		$scope.paymentListData = data;
 	};
-	$scope.invokeApi(RVPaymentSrv.getPaymentList, $scope.reservationData.reservation_card.reservation_id, $scope.paymentListSuccess);  
+
+	 console.log(JSON.stringify($scope.dataToPaymentList));
+	// return false;
+	var reservationId = "";
+	if($scope.dataToPaymentList.currentView == "billCard"){
+		reservationId = $scope.dataToPaymentList.reservation_id;
+	} else {
+		reservationId =  $scope.dataToPaymentList.reservation_card.reservation_id;
+	}
+	$scope.invokeApi(RVPaymentSrv.getPaymentList, reservationId, $scope.paymentListSuccess);  
 	
 	$scope.clickPaymentItem = function(paymentId, cardCode, cardNumberEndingWith, expiryDate){
 		var data = {
-			"reservation_id":	$scope.reservationData.reservation_card.reservation_id,
+			"reservation_id":	reservationId,
 			"user_payment_type_id":	paymentId
 		};
+		if($scope.dataToPaymentList.currentView == "billCard"){
+			data.bill_number = $scope.dataToPaymentList.bills[$scope.dataToPaymentList.currentActiveBill].bill_number;
+		}
+
+		
+		
 		var paymentMapFailure = function(errorMessage){
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorMessage;
@@ -18,9 +33,17 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 		var paymentMapSuccess = function(){
 			$scope.$emit('hideLoader');
 			ngDialog.close();
-			$scope.reservationData.reservation_card.payment_details.card_type_image = cardCode.toLowerCase()+".png";
-			$scope.reservationData.reservation_card.payment_details.card_number = cardNumberEndingWith;
-			$scope.reservationData.reservation_card.payment_details.card_expiry = expiryDate;
+			
+			if($scope.dataToPaymentList.currentView == "billCard"){
+				var billIndex = $scope.dataToPaymentList.currentActiveBill;
+				$scope.dataToPaymentList.bills[billIndex].credit_card_details.card_code = cardCode.toLowerCase();
+				$scope.dataToPaymentList.bills[billIndex].credit_card_details.card_number = cardNumberEndingWith;
+				$scope.dataToPaymentList.bills[billIndex].credit_card_details.card_expiry = expiryDate;
+			} else {
+				$scope.dataToPaymentList.reservation_card.payment_details.card_type_image = cardCode.toLowerCase()+".png";
+				$scope.dataToPaymentList.reservation_card.payment_details.card_number = cardNumberEndingWith;
+				$scope.dataToPaymentList.reservation_card.payment_details.card_expiry = expiryDate;
+			}
 		};
 		$scope.invokeApi(RVPaymentSrv.mapPaymentToReservation, data, paymentMapSuccess, paymentMapFailure);  
 	};
@@ -40,7 +63,6 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 	
 	$scope.$on('$viewContentLoaded', function() {
 		setTimeout(function(){
-			alert("testy")
 			$scope.$parent.myScroll['paymentList'].refresh();
 			}, 
 		3000);
