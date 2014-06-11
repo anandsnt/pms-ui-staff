@@ -23,7 +23,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		var init = function() {
 
 			// console.log("APIRETURN", roomRates);
-			// console.log("RESVOBJ", $scope.reservationData);
+			console.log("RESVOBJ", $scope.reservationData);
 
 			//defaults and hardcoded values
 			$scope.tax = roomRates.tax || 20;
@@ -84,8 +84,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.reservationData.rooms[$scope.activeRoom].rateAvg = $scope.roomAvailability[roomId].total[rateId].average;
 			$scope.reservationData.rooms[$scope.activeRoom].rateTotal = $scope.roomAvailability[roomId].total[rateId].total;
 
+			console.log({
+				rateAvg: $scope.roomAvailability[roomId].total[rateId].average,
+				rateTotal: $scope.roomAvailability[roomId].total[rateId].total
+			});
+
 			//TODO: update the Tax Amount information
 			$scope.reservationData.totalStayCost = $scope.roomAvailability[roomId].total[rateId].total;
+			$scope.reservationData.totalTaxAmount = 0;
 
 			//Navigate to the next screen
 			$state.go('rover.reservation.mainCard.summaryAndConfirm');
@@ -208,19 +214,29 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					value.total[d.rate_id].average = parseInt(value.total[d.rate_id].total / $scope.days);
 				})
 
-				//TODO: Caluculate the default ID
-				value.defaultRate = $(value.rates).first().length > 0 ? $(value.rates).first()[0] : -1;
+				//step4 : sort the rates within each room
+				value.rates.sort(function(a, b) {
+					if (value.total[a].total < value.total[b].total)
+						return -1;
+					if (value.total[a].total > value.total[b].total)
+						return 1;
+					return 0;
+				});
 
-				//step4: calculate the rate differences between the rooms
+				//TODO: Caluculate the default ID
+				if (value.rates.length > 0) {
+					value.defaultRate = value.rates[0];
+				} else{
+					value.defaultRate = -1;
+				}
+
+				//step5: calculate the rate differences between the rooms
 				//Put the average rate in the room object
 				if (typeof value.total[value.defaultRate] != 'undefined') {
 					value.averagePerNight = value.total[value.defaultRate].average;
 				}
 			}
 
-
-
-			//step5 : sort the rooms based on the levels OR average per night
 			return rooms;
 		}
 
