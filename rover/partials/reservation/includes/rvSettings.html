@@ -1,5 +1,5 @@
 
-<div id="reservations-settings" class="sidebar-left" role="complementary" ng-controller="RVReservationSettingsCtrl"  ui-jq="resizable" ui-options="resizableOptions">
+<div id="reservations-settings" class="sidebar-left" role="complementary" ng-controller="RVReservationSettingsCtrl"  ui-jq="resizable" ui-options="resizableOptions" ng-click="clickedOnReservationSettings($event)" style="width: {{reservationSettingsWidth}}px;">
 <div class="scrollable"  ng-iscroll="reservation-settings" ng-iscroll-delay="500">
     <div class="wrapper" >
         <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
