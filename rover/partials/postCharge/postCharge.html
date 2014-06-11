@@ -3,8 +3,6 @@
 		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
 			<span class="icons icon-close invert"></span>
 		</button>
-
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		
 		<!-- Left side -->
 		<fieldset class="content-left">
@@ -45,6 +43,8 @@
 		</fieldset>
 		<!-- Right side -->
 		<fieldset class="content-right">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+
 			<span class="h2 message">
 				<span translate>POST_CHARGE_TO_BILL</span> #
 				<div id="select-bill-number" class="select">

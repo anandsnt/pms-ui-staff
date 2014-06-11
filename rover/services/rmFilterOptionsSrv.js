@@ -1,5 +1,5 @@
 sntRover.service('RMFilterOptionsSrv',['$q', 'BaseWebSrvV2', function( $q, RVBaseWebSrv){
-    
+
     /*
     * To fetch filter options
     * @return {object} filter options
@@ -16,7 +16,7 @@ sntRover.service('RMFilterOptionsSrv',['$q', 'BaseWebSrvV2', function( $q, RVBas
     };
     this.fetchRateTypes = function(){
             var deferred = $q.defer();
-            var url =  '/api/rate_types/active';    
+            var url =  '/api/rate_types/active';
             RVBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             },function(data){
@@ -26,14 +26,14 @@ sntRover.service('RMFilterOptionsSrv',['$q', 'BaseWebSrvV2', function( $q, RVBas
     };
 
     this.fetchCompanyCard = function(data){
-        var deferred = $q.defer();      
-        var url =  '/api/accounts/search_account';  
-        RVBaseWebSrv.postJSON(url,data).then(function(data) {
+        var deferred = $q.defer();
+        var url =  '/api/accounts';
+        RVBaseWebSrv.getJSON(url,data).then(function(data) {
             deferred.resolve(data);
         },function(data){
             deferred.reject(data);
         });
-        return deferred.promise;        
+        return deferred.promise;
     };
 
 

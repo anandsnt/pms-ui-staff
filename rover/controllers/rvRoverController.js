@@ -14,7 +14,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.monthInYear = "MMM"; //Jan
     $rootScope.mmddyyyyFormat = "MM-dd-yyyy"; //01-22-2014
     $rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; //Wednesday, 4 June 2014
-    $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014 
+    $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
+    $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
 
     // OBJECT WITH THE MENU STRUCTURE
     $scope.menu = [{
@@ -47,7 +48,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       iconClass: "icon-frontdesk",
       submenu: [{
         title: "MENU_CREATE_RESERVATION",
-        action: ""
+        action: "rover.reservation.search"
       }, {
         title: "MENU_ROOM_ASSIGNMENT",
         action: ""

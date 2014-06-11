@@ -16,7 +16,7 @@
 		.no-transition;
 
 		&.active{
-			 background-position: -60px 0;
+			background-position: -60px 0;
 		}
 
 		&.icon-dashboard { 
@@ -94,6 +94,14 @@
 			&:hover,
 			&.active,
 			&:active { background-position: -60px -660px;}
+		}
+
+		&.icon-reservations {
+			background-position: 0 -720px;
+
+			&:hover,
+			&.active,
+			&:active { background-position: -60px -720px;}
 		}
 
 		@media @highdpi {
@@ -274,6 +282,7 @@
 			&:hover,
 			&:active { .gradient (@grey2, #d1d1d1); }
 		}
+		
 		&.yellow-btn {
 			background-color: #F8E26E;
 			text-shadow: none;

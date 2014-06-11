@@ -1,0 +1,182 @@
+
+<div id="reservations-settings" class="sidebar-left" role="complementary" ng-controller="RVReservationSettingsCtrl"  ui-jq="resizable" ui-options="resizableOptions">
+<div class="scrollable"  ng-iscroll="reservation-settings" ng-iscroll-delay="500">
+    <div class="wrapper" >
+        <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
+            <a href="#sidebar-nights" class="settings-title toggle has-arrow active" >
+                <span class="title" translate>NIGHTS</span>
+                <span class="value">{{reservationData.numNights}}</span>
+            </a>
+            <div id="sidebar-nights" class="settings-content">
+                <a href="reservations/change-dates/" class="stay-dates" data-transition="nested-view">
+                    <div class="check-in">
+                        <span class="title" >{{'ARRIVING_LABEL'|translate}} <span translate>TODAY</span></span>
+                        <strong class="date">{{reservationData.arrivalDate|date:fullDateFullMonthYear}}</strong>
+                    </div>
+                    <div class="check-out">
+                        <span class="title" >{{'DEPARTING_LABEL'|translate}} <span translate>TOMORROW</span></span>
+                        <strong class="date">{{reservationData.departureDate|date:fullDateFullMonthYear}}</strong>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div ui-jq="accordion" ui-options="accordionInitiallyCollapsedOptions">
+            <a href="#sidebar-rooms" class="settings-title toggle has-arrow active">
+                <span class="title" translate>ROOMS_LABEL</span>
+                <span class="value">{{reservationData.roomCount}}</span>
+            </a>
+            <div id="sidebar-rooms" class="settings-content">                
+                <div class="entry" ng-repeat="room in reservationData.rooms">
+                    <label for="room-{{index+1}}-adults">{{'ROOM_LABEL'|translate}} {{$index+1}}</label>
+                    <div class="select adults">
+                        <label for="room-{{index+1}}-adults" class="label" translate>ADULTS</label>
+                        <select name="room-{{index+1}}-adults" id="room-{{index+1}}-adults" ng-model="reservationData.numAdults">
+                            <option ng-repeat="i in [1, otherData.maxAdults] | makeRange" value="$index" ng-selected="$index==reservationData.numAdults">{{i}}</option>
+                        </select>
+                    </div>
+                    <div class="select children">
+                        <label for="room-{{index+1}}-children" class="label" translate>CHILDREN</label>
+                        <select name="room-{{index+1}}-children" id="room-{{index+1}}-children" ng-model="reservationData.numChildren">
+                            <option ng-repeat="i in [1, otherData.maxChildren] | makeRange" value="$index" ng-selected="$index==reservationData.numChildren">{{i}}</option>
+                        </select>
+                    </div>
+                    <div class="select infants">
+                        <label for="room-{{index+1}}-infants" class="label" translate>INFANTS</label>
+                        <select name="room-{{index+1}}-infants" id="room-{{index+1}}-infants" ng-model="reservationData.numInfants">
+                            <option ng-repeat="i in [1, otherData.maxInfants] | makeRange" value="$index" ng-selected="$index==reservationData.numInfants">{{i}}</option>
+                        </select>
+                    </div>
+                    <!-- Room details should be attached here when book button is pressed -->
+                    <div id="room-{{index+1}}-details" class="room-details">
+                        <h4>
+                            {{room.roomType}}
+                            <button id="remove-room-{{index+1}}" type="button" class="edit-room icons icon-edit-10" translate>EDIT_ROOM_LABEL</button>
+                        </h4>
+                        <ul class="rate-and-enhancements">
+                            <li>
+                                <em>{{room.rateName}}</em>
+                                <span class="price">
+                                    {{room.rateAvg}}
+                                    <span translate>AVG_NIGHT</span>
+                                    <span class="total">{{room.rateTotal}}</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ui-jq="accordion" ui-options="accordionInitiallyCollapsedOptions">
+            <a href="#sidebar-codes" class="settings-title toggle has-arrow active">
+                <span class="title" translate>CODES_LABEL</span>
+                <span class="value">0</span>
+            </a>
+            <div id="sidebar-codes" class="settings-content">
+                <div class="entry">
+                    <label class="radio inline">
+                        <span class="icon-form icon-radio checked"></span>
+                        <input name="codes" id="codes-none" type="radio" checked />
+                        {{'NONE_LABEL'|translate}}
+                    </label>
+                </div>
+                <div class="entry">
+                    <label class="radio inline" for="codes-promo-value">
+                        <span class="icon-form icon-radio"></span>
+                        <input name="codes" id="codes-promo" type="radio" />
+                       {{'PROMOTION_CODE_LABEL'|translate}}
+                    </label>
+                    <input name="codes-promo-value" id="codes-promo-value" type="text" value="" translate/>
+                </div>
+                <div class="entry">
+                    <label class="radio inline" for="codes-member-number-value">
+                        <span class="icon-form icon-radio"></span>
+                        <input name="codes" id="codes-member-number" type="radio" translate/>
+                        {{'MEMBER_NUMBER_LABEL'|translate}}
+                    </label>
+                    <input name="codes-member-number-value" id="codes-member-number-value" type="text" value="" />
+                </div>
+                <div class="entry">
+                    <label class="radio inline" for="codes-aaa-value">
+                        <span class="icon-form icon-radio"></span>
+                        <input name="codes" id="codes-aaa" type="radio" translate/>
+                        {{'AAA_LABEL'|translate}}
+                    </label>
+                    <input name="codes-aaa-value" id="codes-aaa-value" type="text" value="" />
+                </div>
+                <div class="entry">
+                    <label class="radio inline" for="codes-group-value">
+                        <span class="icon-form icon-radio"></span>
+                        <input name="codes" id="codes-group" type="radio" translate/>
+                        {{'GROUP_LABEL'|translate}}
+                    </label>
+                    <input name="codes-group-value" id="codes-group-value" type="text" value="" />
+                </div>
+                <div class="entry">
+                    <label class="radio inline" for="codes-senior-value">
+                        <span class="icon-form icon-radio"></span>
+                        <input name="codes" id="codes-senior" type="radio" translate/>
+                        {{'AARP_LABEL'|translate}}
+                    </label>
+                    <input name="codes-senior-value" id="codes-senior-value" type="text" value="" />
+                </div>
+                <div class="entry">
+                    <label class="radio inline" for="codes-gov-value">
+                        <span class="icon-form icon-radio"></span>
+                        <input name="codes" id="codes-gov" type="radio" translate/>
+                        {{'GOVERNMENT_LABEL'|translate}}
+                    </label>
+                    <input name="codes-gov-value" id="codes-gov-value" type="text" value="" />
+                </div>
+                <div class="entry">
+                    <label class="radio inline" for="codes-offers-value">
+                        <span class="icon-form icon-radio"></span>
+                        <input name="codes" id="codes-offers" type="radio" translate/>
+                        {{'PROMOTIONS_OFFERS_LABEL'|translate}}
+                    </label>
+                    <input name="codes-offers-value" id="codes-offers-value" type="text" value="" />
+                </div>
+                </div>
+            </div>
+            <div ui-jq="accordion" ui-options="accordionInitiallyCollapsedOptions">
+                <a href="#sidebar-demographics" class="settings-title toggle has-arrow active">
+                    <span class="title" translate>DEMOGRAPHICS_LABEL</span>
+                </a>
+                <div id="sidebar-demographics" class="settings-content">
+                    <div class="entry">
+                        <label for="reservation-type" translate>RESERVATION_TYPE_LABEL</label>
+                        <div class="select">
+                            <select name="reservation-type" id="reservation-type" class="placeholder" ng-model="reservationData.demographics.reservationType">
+                                <option ng-repeat="reservationType in otherData.reservationTypes" value="{{reservationType.value}}" ng-selected="reservationType.value==reservationData.demographics.reservationType">{{reservationType.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="entry">
+                        <label for="market" translate>MARKET_LABEL</label>
+                        <div class="select">
+                            <select name="market" id="market" class="placeholder" ng-model="reservationData.demographics.market">
+                                <option ng-repeat="market in otherData.markets" value="{{market.value}}" ng-selected="market.value==reservationData.demographics.market">{{market.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="entry">
+                        <label for="source" translate>SOURCE_LABEL</label>
+                        <div class="select">
+                            <select name="source" id="source" class="placeholder" ng-model="reservationData.demographics.source">
+                                <option ng-repeat="source in otherData.sources" value="{{source.value}}" ng-selected="source.value==reservationData.demographics.source">{{source.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="entry">
+                        <label for="origin" translate>ORIGIN_BOOKING_LABEL</label>
+                        <div class="select">
+                            <select name="origin" id="origin" class="placeholder" ng-model="reservationData.demographics.origin">
+                                <option ng-repeat="origin in otherData.origins" value="{{origin.value}}" ng-selected="origin.value==reservationData.demographics.origin">{{origin.name}}</option>
+                            </select>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
