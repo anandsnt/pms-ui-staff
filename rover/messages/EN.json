@@ -130,6 +130,9 @@
 
     "RESERVATION_SUMMARY": "Reservation summary",
     "ROOMS": "rooms",
+    "ROOMS_LABEL": "Rooms",
+    "ROOM_LABEL": "Room",
+    "EDIT_ROOM_LABEL":"Edit Room",
     "NIGHT": "night",
     "ADULTS": "Adults",
     "CHILDREN": "Children",
@@ -219,6 +222,23 @@
     "AIRLINE" : "Airline",
     "CODE": "Code",
     "TYPE" : "Type",
+    "RESERVATION_TYPE_LABEL":"Reservation type",
     "LEVEL" : "Level",
-    "PROGRAM_NUMBER" : "Program Number"
+    "PROGRAM_NUMBER" : "Program Number",
+    "ARRIVING_LABEL":"Arriving",
+    "DEPARTING_LABEL":"Departing",
+    "CODES_LABEL":"Codes",
+    "NONE_LABEL":"None",
+    "PROMOTION_CODE_LABEL":"Promotion Code",
+    "MEMBER_NUMBER_LABEL":"Member Number",
+    "AAA_LABEL":"AAA *",
+    "GROUP_LABEL":"Group",
+    "AARP_LABEL":"AARP / Senior Discount",
+    "GOVERNMENT_LABEL":"Government / Military",
+    "PROMOTIONS_OFFERS_LABEL":"Promotions / Offers",
+    "DEMOGRAPHICS_LABEL":"Demographics",
+    "MARKET_LABEL":"Market",
+    "SOURCE_LABEL":"Source",
+    "ORIGIN_BOOKING_LABEL":"Origin of Booking"
+
 }
