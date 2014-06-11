@@ -144,8 +144,11 @@ sntRover.controller('RVPostChargeController',
 				});
 
 				// if already added
+				// update the chosen charged Item
 				// update the count, price and return
 				if ( !!hasItem ) {
+					$scope.chosenChargedItem = hasItem;
+
 					this.each.count++;
 					hasItem.count++;
 
