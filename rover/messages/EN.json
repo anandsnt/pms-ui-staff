@@ -150,6 +150,7 @@
     
     "ROOM": "room",
     "NIGHTS": "nights",
+    "NIGHT": "night",
     "CHECK_IN": "check-in",
     "CHECK_OUT": "check-out",
     "TO_BILL": "To Bill",
@@ -190,6 +191,8 @@
     "HOW_MANY_KEYS" : "How many keys?",
     "KEY_PRINTED" : "Keys printed!",
     
+    "VIEW_BILL_TITLE":"Guest Bill",
+    "STAY_CARD_TITLE":"Stay Card",
     "SET_PRIMARY_HOTEL_LOYALTY_PROGRAM": "Set Primary Hotel Loyalty Program",
     "FREQUENT_FLYER_PROGRAM": "Frequent Flyer Program",
     "NEW_FREQUENT_FLYER_PROGRAM" : "New Frequent Flyer Program",

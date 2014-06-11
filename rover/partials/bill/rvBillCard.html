@@ -13,12 +13,12 @@
 			<div class="data">
 				<span class="room"> 
 					<span class="guest-status room" translate>ROOM</span>
-					<strong id="header-room-num" class="room-number"> {{reservationBillData.room_number}} </strong> 
+					<strong id="header-room-num" class="room-number" ng-class="getRoomClass(reservationBillData.reservation_status, reservationBillData.room_status, reservationBillData.fo_status)"> {{reservationBillData.room_number}} </strong> 
 					<span id="room-type"> {{reservationBillData.room_type_name}} </span> 
 				</span>
 				<span class="nights"> 
 					<span class="guest-status nights"></span> {{reservationBillData.number_of_nights}}
-					{{'NIGHTS' | translate}} 
+					{{setNightsString()}} 
 				</span>
 				<span class="date"> <span class="guest-status small-icon check-in" translate>CHECK_IN</span> 
 				 {{reservationBillData.checkin_date | date:dayAndDate}} </span>
@@ -117,9 +117,9 @@
 										<a id="add-new-button" class="add-new-button">+ <span translate>ADD</span></a>
 									</li>
 
-									<li class="active" ng-click="showDayRates($index, days.date, reservationBillData.checkout_date)" ng-repeat="days in billData.days" ng-class="{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}">
+									<li class="active" ng-click="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}">
 										<!-- For checkin date -->
-										<a class="toggle dual-toggle" ng-class="{'active': $index == dayRates}" ng-show="days.date != reservationBillData.checkout_date"> 
+										<a class="toggle dual-toggle" ng-class="{'active': $index == dayRates}" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'others')"> 
 											<span class="day"> {{days.date | date:'EEE'}} </span> 
 											<span class="date"> {{days.date | date:'dd'}} </span> 
 											<span class="guest-status check-in small-icon" ng-show="days.date == reservationBillData.checkin_date"><span translate>CHECK_IN</span></span> 
@@ -127,7 +127,7 @@
 											<span class="price" ng-hide="reservationBillData.is_rates_suppressed">{{currencySymbol}}{{days.amount | number: precisonZero}}</span> 
 										</a>
 										<!-- For checkout date -->
-										<div class="no-expense" ng-show="days.date == reservationBillData.checkout_date">
+										<div class="no-expense" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'checkout')">
 											<span class="day"> {{days.date | date:'EEE'}} </span>
 											<span class="date"> {{days.date | date:'dd'}} </span>
 											<span class="guest-status check-out small-icon" ><span translate>CHECK_OUT</span></span>
@@ -170,7 +170,7 @@
 									</div>
 									<div class="room">
 										<span translate> GUEST_ROOM_TYPE </span>
-										{{billItem.rate_name}}
+										{{billItem.room_type_name}}
 									</div> 
 								</a>
 								<div class="stay-details float" ng-class="{'hidden': $index != showRoomDetailsIndex}">
