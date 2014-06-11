@@ -319,6 +319,12 @@ function modalInit(content, closeAfter, position, lock) {
             $('#modal').html(data);
         },
         error: function(jqxhr, status, error){
+            //Show ows connectivity error popup
+            if (jqxhr.status=="520") {
+                sntapp.activityIndicator.hideActivityIndicator();
+                sntapp.showOWSErrorPopup();
+                return;
+            }
             if (jqxhr.status=="401") { sntapp.logout(); return;}
             if (jqxhr.status=="500" || jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
                 location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
