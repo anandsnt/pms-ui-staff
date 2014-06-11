@@ -378,14 +378,25 @@ var StayCard = function(viewDom){
     }
     // Success callback for queue
     this.queueSaveSuccess = function(data,params){
-      var staycardView = new StayCard($("#view-nested-first"));
-      staycardView.refreshReservationDetails(params['reservationId'], that.gotoStayCard);
+    	
+      if(that.myDom.find("#reservation-queue").hasClass('red-text')){
+      	// Change button "Remove from Queue" to "Put in Queue"
+      	that.myDom.find("#reservation-queue").removeClass('red-text').addClass('blue-text');
+      	that.myDom.find("#reservation-queue").text("Put in Queue");
+      	that.myDom.find("#reservation-queue-status").val("false");
+      	// Update on search results
+      	$("#search-results a .status").removeClass('queued');
+      }
+      else if(that.myDom.find("#reservation-queue").hasClass('blue-text')){
+      	// Change button "Put in Queue" to "Remove from Queue"
+      	that.myDom.find("#reservation-queue").removeClass('blue-text').addClass('red-text');
+      	that.myDom.find("#reservation-queue").text("Remove from Queue");
+      	that.myDom.find("#reservation-queue-status").val("true");
+      	// Update on search results
+      	$("#search-results a .status").addClass('queued');
+      }
     };
-    // Navigation to staycard
-    this.gotoStayCard = function() {
-		sntapp.activityIndicator.showActivityIndicator('blocker');
-      	changeView("nested-view", "", "view-nested-third", "view-nested-first", "move-from-left", false);  
-	};
+    
     //Update resevation with the selected room.
   	this.reservationQueueHandler = function(e){
     
