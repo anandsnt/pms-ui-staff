@@ -3,7 +3,9 @@
 		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
 			<span class="icons icon-close invert"></span>
 		</button>
-		<div id="notification-message"></div>
+
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		
 		<!-- Left side -->
 		<fieldset class="content-left">
 			<div role="search" class="search-form">
