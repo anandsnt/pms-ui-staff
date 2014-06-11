@@ -22,7 +22,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		var init = function() {
 			$scope.$emit('showLoader');
-			// console.log("APIRETURN", roomRates);
+			console.log("APIRETURN", roomRates);
 			//console.log("RESVOBJ", $scope.reservationData);
 
 			//defaults and hardcoded values
@@ -51,7 +51,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			//Filter for rooms which are available and have rate information
 			$scope.displayData.allRooms = $(roomRates.room_types).filter(function() {
 				return $scope.roomAvailability[this.id] && $scope.roomAvailability[this.id].availability == true &&
-					$scope.roomAvailability[this.id].rates.length > 0;
+					$scope.roomAvailability[this.id].rates.length > 1;
 			});
 
 			//sort the rooms by levels
@@ -85,10 +85,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.reservationData.rooms[$scope.activeRoom].rateAvg = $scope.roomAvailability[roomId].total[rateId].average;
 			$scope.reservationData.rooms[$scope.activeRoom].rateTotal = $scope.roomAvailability[roomId].total[rateId].total;
 
-			console.log({
-				rateAvg: $scope.roomAvailability[roomId].total[rateId].average,
-				rateTotal: $scope.roomAvailability[roomId].total[rateId].total
-			});
+			// console.log({
+			// 	rateAvg: $scope.roomAvailability[roomId].total[rateId].average,
+			// 	rateTotal: $scope.roomAvailability[roomId].total[rateId].total
+			// });
 
 			//TODO: update the Tax Amount information
 			$scope.reservationData.totalStayCost = $scope.roomAvailability[roomId].total[rateId].total;
@@ -115,36 +115,38 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				$scope.displayData.roomTypes = $($scope.displayData.allRooms).filter(function() {
 					return this.id == $scope.preferredType;
 				});
-				var level = $scope.roomAvailability[$scope.displayData.roomTypes[0].id].level;
-				if (level == 1 || level == 2) {
-					//Append rooms from the next level
-					//Get the candidate rooms of the room to be appended
-					var targetlevel = level + 1;
-					var candidateRooms = $($scope.roomAvailability).filter(function() {
-						return this.level == targetlevel;
-					});
-					//Check if candidate rooms are available
-					if (candidateRooms.length == 0) {
-						//try for candidate rooms in the same level						
-						candidateRooms = $($scope.roomAvailability).filter(function() {
-							return this.level == level && this.id != $scope.preferredType;
+				if ($scope.displayData.roomTypes.length > 0) {
+					var level = $scope.roomAvailability[$scope.displayData.roomTypes[0].id].level;
+					if (level == 1 || level == 2) {
+						//Append rooms from the next level
+						//Get the candidate rooms of the room to be appended
+						var targetlevel = level + 1;
+						var candidateRooms = $($scope.roomAvailability).filter(function() {
+							return this.level == targetlevel;
 						});
-					}
-					//Sort the candidate rooms to get the one with the least average rate
-					candidateRooms.sort(function(a, b) {
-						if (a.averagePerNight < b.averagePerNight)
-							return -1;
-						if (a.averagePerNight > b.averagePerNight)
-							return 1;
-						return 0;
-					});
-					//append the appropriate room to the list to be displayed
-					if (candidateRooms.length > 0) {
-						var selectedRoom = $($scope.displayData.allRooms).filter(function() {
-							return this.id == candidateRooms[0].id;
+						//Check if candidate rooms are available
+						if (candidateRooms.length == 0) {
+							//try for candidate rooms in the same level						
+							candidateRooms = $($scope.roomAvailability).filter(function() {
+								return this.level == level && this.id != $scope.preferredType;
+							});
+						}
+						//Sort the candidate rooms to get the one with the least average rate
+						candidateRooms.sort(function(a, b) {
+							if (a.averagePerNight < b.averagePerNight)
+								return -1;
+							if (a.averagePerNight > b.averagePerNight)
+								return 1;
+							return 0;
 						});
-						if (selectedRoom.length > 0) {
-							$scope.displayData.roomTypes.push(selectedRoom[0]);
+						//append the appropriate room to the list to be displayed
+						if (candidateRooms.length > 0) {
+							var selectedRoom = $($scope.displayData.allRooms).filter(function() {
+								return this.id == candidateRooms[0].id;
+							});
+							if (selectedRoom.length > 0) {
+								$scope.displayData.roomTypes.push(selectedRoom[0]);
+							}
 						}
 					}
 				}
@@ -279,12 +281,22 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		// 		init();
 		// 	}
 		// });
-		
-		$scope.$watch('reservationData.rooms[0].numAdults',function(){
-			init();
+
+		$scope.watchCount = 0;
+
+		$scope.$watch('reservationData.rooms[0].numAdults', function() {
+			if ($scope.watchCount > 1) {
+				init();
+			} else {
+				$scope.watchCount++;
+			}
 		});
-		$scope.$watch('reservationData.rooms[0].numChildren',function(){
-			init();
+		$scope.$watch('reservationData.rooms[0].numChildren', function() {
+			if ($scope.watchCount > 1) {
+				init();
+			} else {
+				$scope.watchCount++;
+			}
 		});
 
 
