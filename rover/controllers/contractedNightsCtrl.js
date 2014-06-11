@@ -48,6 +48,7 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 	    	$scope.contractData.occupancy = $scope.nightsData.occupancy;
 	    	$scope.errorMessage = "";
 	    	$scope.updateGraph();
+	    	ngDialog.close();
 	    };
 	  	var saveContractFailureCallback = function(data){
 	  		$scope.closeActivityIndication();
@@ -70,7 +71,7 @@ sntRover.controller('contractedNightsCtrl',['$scope','dateFilter','ngDialog','RV
 		else{
 			console.log("error: contractSelected undefined");
 		}
-		ngDialog.close();
+		
 	};
 	
 	$scope.clickedCancel = function(){

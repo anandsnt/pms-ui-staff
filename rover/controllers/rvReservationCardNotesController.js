@@ -41,7 +41,9 @@ sntRover.controller('rvReservationCardNotesController',['$scope', '$filter', fun
         		$scope.$parent.reservationData.reservation_card.notes.reservation_notes.splice($scope.deletedNoteIndex, 1);
         		$scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
         		$scope.$parent.$emit('hideLoader');
-        		$scope.$parent.$parent.myScroll['resultDetails'].refresh();
+        		setTimeout(function(){
+        			$scope.$parent.myScroll['resultDetails'].refresh();
+        		}, 700);
         	};
         	var errorCallBackDeleteReservationNote = function(errorMessage){
         		$scope.reservationnote ="";

@@ -1,7 +1,10 @@
 <form ng-controller="RVPaymentGuestCtrl" class="form card-tab scrollable" ng-show="current == 'guest-credit'">
-	<div id="paymentList" ng-iscroll='paymentList' ng-iscroll-delay='50' style="position:absolute; top:0px; bottom: 0px; left:0px; width: 100%;">
+	<div id="paymentList" ng-iscroll='paymentList' ng-iscroll-delay='50' class="scroll-guest-tab">
 		<div class="wrapper">
 			<!-- Credit cards on file -->
+			<div class="entry full-width">
+	 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	 		</div>
 			<a ng-click="openDeleteSetAsPrimaryModal(payment.id, $index)" class="active-item item-payment primary open-modal float" ng-repeat="payment in paymentData.data">
 				<figure class="card-logo">
 					<img src="/assets/{{payment.card_code}}.png" alt="" />
