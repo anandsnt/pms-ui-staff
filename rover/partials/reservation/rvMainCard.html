@@ -1,0 +1,27 @@
+<!-- Cards -->
+
+    <!-- include company card drawer content -->
+    <ng-include src="'assets/partials/reservation/includes/rvAllCards.html'"></ng-include>
+ 
+
+<!-- Reservation settings (resizable left side sidebar) -->
+
+    <!-- include reservation settings left menu content -->
+    <ng-include src="'assets/partials/reservation/includes/rvSettings.html'"></ng-include>
+
+
+<!-- 
+First & Second nested view are containers for all Reservation screens. 
+Left sidebar and cards should not be reloaded when going to other screens, just updated when needed. 
+
+Same way as Guest Card is not reloaded when going from the Stay Card to e.g. View bill or Check In screens.
+
+-->
+
+<!-- First nested view-->
+<div id="reservations-nested-first" class="nested-view with-sidebar view-current" role="main">
+    <ui-view></ui-view>
+</div>
+
+<!-- Second nested view placeholder -->
+<div id="reservations-nested-second" class="nested-view with-sidebar" role="main"></div>

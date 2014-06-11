@@ -90,7 +90,6 @@
     "WAKE_UP_HEADER":"Wake up",
     "NOT_SET":"Not Set",
     
-
     "VIEW_STAY_CARD":"View Stay Card",
     "SEARCH": "Search",
     "ROOM_KEY_EMAILED": "Room Key Emailed",
@@ -129,6 +128,30 @@
     "NOTES_POST":"Post",
     "WRITE_NOTE":"Write a note",
 
+    "RESERVATION_SUMMARY": "Reservation summary",
+    "ROOMS": "rooms",
+    "ROOMS_LABEL": "Rooms",
+    "ROOM_LABEL": "Room",
+    "EDIT_ROOM_LABEL":"Edit Room",
+    "NIGHT": "night",
+    "ADULTS": "Adults",
+    "CHILDREN": "Children",
+    "INFANTS": "Infants",
+    "AVG_NIGHT": "avg/night",
+    "EACH": "each",
+    "TAX": "Tax",
+    "TOTAL_STAY_COST": "Total Stay Cost",
+    "FIRST_NAME": "First name",
+    "LAST_NAME": "Last Name",
+    "EMAIL_ADDRESS": "E-mail address", 
+    "SEND_CONFIRM_EMAIL_TO_ADDRESS": "Send confirmation E-mail to this address", 
+    "RECEIVE_CONFIRM_EMAIL_TO_ADDRESS": "Receive confirmation email on this address",
+    "CREDIT_CARD": "Credit Card",
+    "CONFIRM_RESERVATION": "Confirm Reservation",
+    "RETURN_TO_DASHBOARD": "return to dashboard",
+    "CREATE_NEW_FOR_GUEST": "create new for this guest",
+    "CANCEL_RESERVATION": "Cancel Reservation",
+
     "ALL_CHARGE_GROUPS": "All Charge Groups",
     "POST_CHARGE_TO_BILL": "Post Charge to Bill",
     "SEARCH_TERM": "Search items",
@@ -147,6 +170,7 @@
     "HOTEL_LOYALTY_LABEL":"Hotel Loyalty Program",
     "HOTEL_LOYALTY_SELECT":"Select Hotel Loyalty",
     "HOTEL_LOYALTY_ADD_BUTTON":"+ Add",
+
     
     "ROOM": "room",
     "NIGHTS": "nights",
@@ -201,6 +225,23 @@
     "AIRLINE" : "Airline",
     "CODE": "Code",
     "TYPE" : "Type",
+    "RESERVATION_TYPE_LABEL":"Reservation type",
     "LEVEL" : "Level",
-    "PROGRAM_NUMBER" : "Program Number"
+    "PROGRAM_NUMBER" : "Program Number",
+    "ARRIVING_LABEL":"Arriving",
+    "DEPARTING_LABEL":"Departing",
+    "CODES_LABEL":"Codes",
+    "NONE_LABEL":"None",
+    "PROMOTION_CODE_LABEL":"Promotion Code",
+    "MEMBER_NUMBER_LABEL":"Member Number",
+    "AAA_LABEL":"AAA *",
+    "GROUP_LABEL":"Group",
+    "AARP_LABEL":"AARP / Senior Discount",
+    "GOVERNMENT_LABEL":"Government / Military",
+    "PROMOTIONS_OFFERS_LABEL":"Promotions / Offers",
+    "DEMOGRAPHICS_LABEL":"Demographics",
+    "MARKET_LABEL":"Market",
+    "SOURCE_LABEL":"Source",
+    "ORIGIN_BOOKING_LABEL":"Origin of Booking"
+
 }

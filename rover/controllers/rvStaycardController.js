@@ -6,6 +6,7 @@ $scope.guestCardData.contactInfo = {};
 $scope.countriesList = [];
 $scope.guestCardData.userId = '';
 $scope.guestCardData.contactInfo.birthday = '';
+$scope.paymentData = {};
 /*
  * To get the payment tab payments list
  */
@@ -21,8 +22,6 @@ $scope.$on('guestCardUpdateData',function(event, data){
 	$scope.countriesList = data.countries;
 	$scope.guestCardData.userId=data.userId;
 	$scope.guestCardData.guestId=data.guestId;
-
-
 });
 
 $scope.$on('reservationCardClicked',function(){
