@@ -195,8 +195,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
     $scope.searchCompany = function(){
         var successCallBackFetchCompanies = function(data){
-            console.log('reached successCallBackFetchCompanies');
-            console.log(data);
+            $scope.$emit("hideLoader");
             $scope.companies = [];
             if(data.accounts.length>0){
                 angular.forEach(data.accounts, function(item){
@@ -224,8 +223,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
     $scope.searchTravelAgent = function(){
         var successCallBackFetchTravelAgents = function(data){
-            console.log('reached successCallBackFetchTravelAgents');
-            console.log(data);
+            $scope.$emit("hideLoader");
             $scope.travelAgents = [];
             if(data.accounts.length>0){
                 angular.forEach(data.accounts, function(item){
