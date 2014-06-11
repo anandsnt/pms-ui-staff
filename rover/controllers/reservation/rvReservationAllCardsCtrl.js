@@ -164,7 +164,20 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                             'city': $scope.companyCity,
                             'corporate_id': $scope.companyCorpId
                         };
-        $scope.invokeApi(RVReservationAllCardsSrv.fetchCompanies, paramDict, successCallBackFetchCompanies);
+        $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
+    }
+
+    $scope.searchTravelAgent = function(){
+        var successCallBackFetchTravelAgents = function(data){
+            console.log('reached successCallBackFetchTravelAgents');
+            console.log(data);
+        }
+        var paramDict = {
+                            'name': $scope.companyName,
+                            'city': $scope.companyCity,
+                            'corporate_id': $scope.companyCorpId
+                        };
+        $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
     }
 
     $scope.changedTextbox = function(){
