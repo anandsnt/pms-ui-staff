@@ -50,15 +50,15 @@
                     <div id="room-{{index+1}}-details" class="room-details">
                         <h4>
                             {{room.roomType}}
-                            <button id="remove-room-{{index+1}}" type="button" class="edit-room icons icon-edit-10" translate>EDIT_ROOM_LABEL</button>
+                            <button id="remove-room-{{index+1}}" type="button" class="edit-room icons icon-edit-10" translate ng-hide="true">EDIT_ROOM_LABEL</button>
                         </h4>
                         <ul class="rate-and-enhancements">
                             <li>
                                 <em>{{room.rateName}}</em>
                                 <span class="price">
-                                    {{room.rateAvg}}
+                                    {{currencySymbol}}{{room.rateAvg}}
                                     <span translate>AVG_NIGHT</span>
-                                    <span class="total">{{room.rateTotal}}</span>
+                                    <span class="total">{{currencySymbol}}{{room.rateTotal}}</span>
                                 </span>
                             </li>
                         </ul>
