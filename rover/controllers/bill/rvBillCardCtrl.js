@@ -77,14 +77,21 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	 * @param {string} clickedDate
 	 * @param {string} checkoutDate
 	 */
-	$scope.showDayRates = function(dayIndex, clickedDate, checkoutDate){
+	$scope.showDayRates = function(dayIndex, clickedDate, checkoutDate, numberOfNights){
 		//In this condition show the last clicked days item 
 		//OR if checkout date clicked first do not show anything
 		if(clickedDate == checkoutDate){
-			$scope.dayRates = $scope.dayRates;
+			if(numberOfNights == 0){
+				$scope.dayRates = dayIndex;
+			} else {
+				$scope.dayRates = $scope.dayRates;
+			}
+			
 		} else {
 			$scope.dayRates = dayIndex;
 		}
+		$scope.showAddonIndex = -1;
+		$scope.showGroupItemIndex = -1;
 		
 	};
 	/*
@@ -106,6 +113,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	 */
 	$scope.showAddons = function(addonIndex){
 		$scope.showAddonIndex = addonIndex;
+		$scope.dayRates = -1;
 	};
 	/*
 	 * Show Group Items
@@ -113,6 +121,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	 */
 	$scope.showGroupItems = function(groupIndex){
 		$scope.showGroupItemIndex = groupIndex;
+		$scope.dayRates = -1;
 	};
 	/*
 	 * Show Room Details 
@@ -339,6 +348,33 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 
 	$scope.closeDialog = function() {
 		ngDialog.close();
+	};
+	$scope.getRoomClass =  function(reservationStatus, roomStatus, foStatus){
+		var roomClass = "";
+		if(reservationStatus == "CHECKING_IN"){
+			if(roomStatus == "READY" && foStatus== "VACANT"){
+				roomClass = "ready";
+			} else {
+				roomClass = "not-ready";
+			}
+		} 
+		return roomClass;
+	};
+	$scope.showDays = function(date, checkoutDate, numberOfNights, place){
+		var showDay = false;
+		if(place == 'checkout'){
+			if(date == checkoutDate && numberOfNights != 0){
+				showDay = true;
+			}
+		} else {
+			if(date == checkoutDate && numberOfNights == 0){
+				showDay = true;
+			} else if(date != checkoutDate){
+				showDay = true;
+			}
+		}
+		return showDay;
+		
 	};
 		
 }]);
