@@ -6,11 +6,17 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
     var resizableMinHeight = 90;
     var that = this;
 
-    // set guest search fields value based on search data from base search screen
+    // initialize / set guest search fields value based on search data from base search screen
     $scope.guestFirstName = $scope.reservationData.guest.firstName;
     $scope.guestLastName = $scope.reservationData.guest.lastName;
     $scope.guestCity = '';
     $scope.guestLoyaltyNumber = '';
+
+    // initialize company search fields
+    $scope.companyName = '';
+    $scope.companyCity = '';
+    $scope.companyCorpId = '';
+
     /**
     * scroller options
     */
@@ -145,6 +151,20 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         $scope.reservationData.guest.lastName = guest.lastName;
         $scope.reservationData.guest.city = guest.address.city;
         $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
+    }
+
+
+    $scope.searchCompany = function(){
+        var successCallBackFetchCompanies = function(data){
+            console.log('reached successCallBackFetchCompanies');
+            console.log(data);
+        }
+        var paramDict = {
+                            'name': $scope.companyName,
+                            'city': $scope.companyCity,
+                            'corporate_id': $scope.companyCorpId
+                        };
+        $scope.invokeApi(RVReservationAllCardsSrv.fetchCompanies, paramDict, successCallBackFetchCompanies);
     }
 
     $scope.changedTextbox = function(){
