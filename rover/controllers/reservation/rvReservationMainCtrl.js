@@ -25,8 +25,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 roomTypeName: '',
                 rateId: '',
                 rateName: '',
-                rateAvg: 145,
-                rateTotal: 1000,
+                rateAvg:0 ,
+                rateTotal: 0,
                 addOns: [
                     {
                         name: '2x Champagn and Chocolate',
