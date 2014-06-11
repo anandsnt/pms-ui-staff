@@ -84,7 +84,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             if(data.results.length>0){
                 angular.forEach(data.results, function(item){
                     var guestData = {};
-                    // guestData.id = item.id;
+                    guestData.id = item.id;
                     guestData.firstName = item.first_name;
                     guestData.lastName = item.last_name;
                     guestData.address = {};
@@ -102,7 +102,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             }
         }
         var paramDict = {
-                            'first_name': $scope.guestfirstName,
+                            'first_name': $scope.guestFirstName,
                             'last_name': $scope.guestLastName,
                             'city': $scope.guestCity,
                             'membership_no': $scope.guestLoyaltyNumber
@@ -112,11 +112,17 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
     $scope.setGuest = function(guest, $event){
         $event.stopPropagation();
-        // $scope.reservationData.guest.id = guest.id;
+        // Update main reservation scope
+        $scope.reservationData.guest.id = guest.id;
         $scope.reservationData.guest.firstName = guest.firstName;
         $scope.reservationData.guest.lastName = guest.lastName;
         $scope.reservationData.guest.city = guest.address.city;
         $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
+
+        // update current controller scope
+        $scope.guestFirstName = guest.firstName;
+        $scope.guestLastName = guest.lastName;
+        $scope.guestCity = guest.address.city;
     }
 
     $scope.changedTextbox = function(){
