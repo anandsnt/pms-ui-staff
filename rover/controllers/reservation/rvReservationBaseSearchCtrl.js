@@ -53,6 +53,19 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 $scope.setDepartureDate();
         };
 
+        $scope.departureDateChanged = function(){
+
+             var arrivalDate = new Date($scope.reservationData.arrivalDate);
+             arrivalDay = arrivalDate.getDate();
+
+             var departureDate = new Date($scope.reservationData.departureDate);
+             departureDay = departureDate.getDate();
+
+             var dayDiff =  Math.floor(( Date.parse(departureDate) - Date.parse(arrivalDate) ) / 86400000);
+
+             $scope.reservationData.numNights = dayDiff +1;
+        };
+
         /*
          * company card search text entered
          */
