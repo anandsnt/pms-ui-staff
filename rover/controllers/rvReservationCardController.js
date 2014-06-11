@@ -45,6 +45,8 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 	        	"user_id":data.user_id,
 	        	"guest_id":data.guest_id
 	        };
+	        console.log("---------------------GUEST INFO----------------------");
+	        console.log(JSON.stringify(guestInfo));
 	        $scope.showGuestPaymentList(guestInfo);
 	    };
 	    var fetchGuestcardDataFailureCallback = function(data){
