@@ -138,6 +138,7 @@
         </div>
         <form class="form payment-info scrollable" ng-iscroll='paymentInfo'>
             <div class="wrapper">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <div class="entry margin">
                     <label for="firstname" translate>FIRST_NAME</label>
                     <input name="firstname" type="text" ng-model="reservationData.guest.firstName">

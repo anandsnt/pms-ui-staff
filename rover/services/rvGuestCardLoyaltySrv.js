@@ -7,6 +7,7 @@ sntRover.service('RVGuestCardLoyaltySrv',['$q', 'RVBaseWebSrv', function($q, RVB
 		var deferred = $q.defer();
  		var user_id = param.userID;
 		this.fetchUserMemberships = function(){
+			console.log("userid in service------" +user_id);
 			var url =  	'/staff/user_memberships.json?user_id='+ user_id;
 			RVBaseWebSrv.getJSON(url).then(function(data) {
 				that.loyalties.userMemberships =  data;

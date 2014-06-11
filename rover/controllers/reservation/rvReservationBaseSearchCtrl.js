@@ -12,6 +12,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         };
         $scope.companyLastSearchText = "";
         $scope.companyCardResults = [];
+        //Setting number of nights 1
+        $scope.reservationData.numNights = 1;
 
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
@@ -52,11 +54,19 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         $scope.arrivalDateChanged = function(){
                 $scope.setDepartureDate();
         };
+       
+
         $scope.departureDateChanged = function(){
-        	console.log("deprture changed")
-        	var arriv = new Date($scope.reservationData.arrivalDate).getTime();
-        	var dept =  new Date($scope.reservationData.departureDate).getTime();
-        	console.log(Math.abs(arriv - dept)/(1000*60*60*24));
+
+             var arrivalDate = new Date($scope.reservationData.arrivalDate);
+             arrivalDay = arrivalDate.getDate();
+
+             var departureDate = new Date($scope.reservationData.departureDate);
+             departureDay = departureDate.getDate();
+
+             var dayDiff =  Math.floor(( Date.parse(departureDate) - Date.parse(arrivalDate) ) / 86400000);
+
+             $scope.reservationData.numNights = dayDiff +1;
         };
 
         /*
