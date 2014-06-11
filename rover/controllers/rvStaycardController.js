@@ -6,6 +6,7 @@ $scope.guestCardData.contactInfo = {};
 $scope.countriesList = [];
 $scope.guestCardData.userId = '';
 $scope.guestCardData.contactInfo.birthday = '';
+$scope.paymentData = {};
 /*
  * To get the payment tab payments list
  */
