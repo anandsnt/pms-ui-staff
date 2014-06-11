@@ -416,7 +416,7 @@ height: 410px;
 //Search page Changes : CICO-3997
 
 #search_list #search-form{
-
+height: 60px;
 background: rgba(0,0,0,0.1);
 .entry{
 	width:100%;
@@ -474,3 +474,163 @@ button.icons.icon-search{
 
 
 
+/* 
+* Angular UI-States Animations      
+* ==================================
+* DO NOT change the numeric values
+*/
+
+/* animation for root (app) zoom in animation */
+@-webkit-keyframes root-enter {
+  0% {
+    -webkit-transform: scale(0.9);
+    opacity: 0.0;
+  }
+
+  100% {
+    -webkit-transform: scale(1);
+    opacity: 1.0;
+  }
+}
+@-moz-keyframes root-enter {
+  0% {
+    -moz-transform: scale(0.9);
+    opacity: 0.0;
+  }
+
+  100% {
+    -moz-transform: scale(1);
+    opacity: 1.0;
+  }
+}
+@keyframes root-enter {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1.0;
+  }
+}
+
+/* animation for main (sections) slide in from right */
+@-webkit-keyframes main-enter {
+  0% {
+    -webkit-transform: translate3d(200px, 0, 0);
+  }
+
+  100% {
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+}
+@-moz-keyframes main-enter {
+  0% {
+    -moz-transform: translate3d(200px, 0, 0);
+  }
+
+  100% {
+    -moz-transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes main-enter {
+  0% {
+    transform: translate3d(200px, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* animation for main (sections) slide out to left */
+@-webkit-keyframes main-leave {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    -webkit-transform: translate3d(-200px, 0, 0);
+  }
+}
+@-moz-keyframes main-leave {
+  0% {
+    -moz-transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    -moz-transform: translate3d(-200px, 0, 0);
+  }
+}
+@keyframes main-leave {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-200px, 0, 0);
+  }
+}
+
+/* ui-view animation hook up class for root-view */
+.root-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
+}
+.root-view.ng-enter {
+  -webkit-backface-visibility: hidden;
+  backface-visibility:hidden;
+  /**/
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  /**/
+  -webkit-animation: root-enter 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+  -moz-animation: root-enter 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+  animation: root-enter 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+}
+
+/* ui-view animation hook up class for root-view */
+.main-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
+}
+
+.main-view.ng-enter,
+.main-view.ng-leave {
+  -webkit-backface-visibility: hidden;
+  backface-visibility:hidden;
+  /**/
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.main-view.ng-enter,
+.main-view.ng-enter-active {
+  z-index: 50;
+}
+
+.main-view.ng-leave,
+.main-view.ng-leave-active {
+  z-index: 30;
+}
+
+.main-view.ng-enter {
+  -webkit-animation: main-enter 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+  -moz-animation: main-enter 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+  animation: main-enter 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+}
+
+.main-view.ng-leave {
+  -webkit-animation: main-leave 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+  -moz-animation: main-leave 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+  animation: main-leave 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+}
