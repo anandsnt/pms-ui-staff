@@ -1,9 +1,9 @@
 sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCardsSrv', function($scope, RVReservationAllCardsSrv){
     
     BaseCtrl.call(this, $scope);
-
-    var resizableMaxHeight = screen.height - 200;
     var resizableMinHeight = 90;
+    var resizableMaxHeight = $(window).height() - resizableMinHeight;
+    
     var that = this;
 
     // initialize / set guest search fields value based on search data from base search screen
