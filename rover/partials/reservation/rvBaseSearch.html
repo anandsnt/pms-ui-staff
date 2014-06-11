@@ -28,6 +28,7 @@
                 <label id="check-out-day-label" for="check-out-date">Departing <span> {{getSimplifiedDayName(reservationData.departureDate)}}</span></label>
                 <!-- Styled check out date -->
                 <div class="entry-data datepicker-date">
+
                     <input ui-date="departureDateOptions" name="check-out-date" id="check-out-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.departureDate" ui-date readonly ng-change="departureDateChanged()"/>
                     <strong id="check-out-day" class="day">{{reservationData.departureDate | date:'dd'}}</strong>
                     <span id="check-out-month" class="month">{{reservationData.departureDate | date:'MMM'}}</span>
