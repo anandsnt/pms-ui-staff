@@ -8,7 +8,7 @@
                 <!-- Styled check in date -->
 
                 <div class="entry-data">
-                    <input ui-date="arrivalDateOptions"  name="check-in-date" id="check-in-date" type="text" class="datepicker" ng-model="reservationData.arrivalDate" ng-change="arrivalDateChanged()"readonly/>
+                    <input ui-date="arrivalDateOptions"  name="check-in-date" id="check-in-date" type="text" class="datepicker"  ui-date-format ng-model="reservationData.arrivalDate" ng-change="arrivalDateChanged()"readonly/>
                     
                     <strong id="check-in-day" class="day">{{reservationData.arrivalDate | date:'dd'}}</strong>
                     <span id="check-in-month" class="month">{{reservationData.arrivalDate | date:'MMM'}}</span>
@@ -28,7 +28,7 @@
                 <label id="check-out-day-label" for="check-out-date">Departing <span>tomorrow</span></label>
                 <!-- Styled check out date -->
                 <div class="entry-data datepicker-date">
-                    <input ui-date="departureDateOptions" name="check-out-date" id="check-out-date" type="text" class="datepicker" ng-model="reservationData.departureDate" ui-date readonly />
+                    <input ui-date="departureDateOptions" name="check-out-date" id="check-out-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.departureDate" ui-date readonly />
                     <strong id="check-out-day" class="day">{{reservationData.departureDate | date:'dd'}}</strong>
                     <span id="check-out-month" class="month">{{reservationData.departureDate | date:'MMM'}}</span>
                     <span id="check-out-year" class="year">{{reservationData.departureDate | date:'yyyy'}}</span>

@@ -132,9 +132,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
         $scope.arrivalDateOptions = {
         
-            showOn          : 'button',
-            dateFormat      : 'mm-dd-yy',
-            numberOfMonths  : 2,
+             showOn          : 'button',
+             dateFormat      : 'mm-dd-yy',
+             numberOfMonths  : 2,
+             yearRange       : '-0:+0',
+             minDate         : 0,
             beforeShow: function(input, inst){
                 $('#ui-datepicker-div').addClass('reservation arriving');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
@@ -152,6 +154,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             showOn          : 'button',
             dateFormat      : 'mm-dd-yy',
             numberOfMonths  : 2,
+            yearRange       : '-0:+0',
+            minDate         : 0,
             beforeShow: function(input, inst){
                 $('#ui-datepicker-div').addClass('reservation departing');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');

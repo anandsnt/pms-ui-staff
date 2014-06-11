@@ -1,9 +1,9 @@
 sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCardsSrv', function($scope, RVReservationAllCardsSrv){
     
     BaseCtrl.call(this, $scope);
-
-    var resizableMaxHeight = screen.height - 200;
     var resizableMinHeight = 90;
+    var resizableMaxHeight = $(window).height() - resizableMinHeight;
+    
     var that = this;
 
     // initialize / set guest search fields value based on search data from base search screen
@@ -46,10 +46,26 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.eventTimestamp = event.timeStamp;
         }
     }
+
+    /**
+    * function to open guest card
+    */    
+    $scope.openGuestCard = function(){
+        $scope.cardVisible = true;
+        $scope.guestCardHeight = resizableMaxHeight;
+    };
+    /**
+    * function to close guest card
+    */    
+    $scope.closeGuestCard = function(){
+        $scope.guestCardHeight = resizableMinHeight;
+        $scope.cardVisible = false;
+    };
+
+
     $scope.guestCardHeight = resizableMinHeight;
     if($scope.otherData.fromSearch && ($scope.guestFirstName != '')){
-        $scope.guestCardHeight = resizableMaxHeight;    
-        $scope.cardVisible = true;   
+        $scope.openGuestCard();
         $scope.otherData.fromSearch = false;
     }
 
@@ -148,6 +164,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         $scope.guestFirstName = guest.firstName;
         $scope.guestLastName = guest.lastName;
         $scope.guestCity = guest.address.city;
+        $scope.closeGuestCard();
     }
 
     $scope.createNewGuest = function(){
@@ -156,6 +173,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         $scope.reservationData.guest.lastName = guest.lastName;
         $scope.reservationData.guest.city = guest.address.city;
         $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
+        $scope.closeGuestCard();
     }
 
 
@@ -165,16 +183,16 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
     $scope.clickedOnGuestCard = function($event){        
         if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-s")[0])){ 
             if($scope.cardVisible){
-                $scope.guestCardHeight = resizableMinHeight;
-                $scope.cardVisible = false;
+                $scope.closeGuestCard();
             }
             else{ 
-                $scope.cardVisible = true;
-                $scope.guestCardHeight = resizableMaxHeight;
+                $scope.openGuestCard();
             } 
 
         }
     };
+
+
     $scope.searchCompany = function(){
         var successCallBackFetchCompanies = function(data){
             console.log('reached successCallBackFetchCompanies');
