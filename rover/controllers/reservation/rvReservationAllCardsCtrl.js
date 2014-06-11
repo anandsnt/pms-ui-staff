@@ -17,6 +17,11 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
     $scope.companyCity = '';
     $scope.companyCorpId = '';
 
+    // initialize travel-agent search fields
+    $scope.travelAgentName = '';
+    $scope.travelAgentCity = '';
+    $scope.travelAgentIATA = '';
+
     /**
     * scroller options
     */
@@ -173,18 +178,11 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             console.log(data);
         }
         var paramDict = {
-                            'name': $scope.companyName,
-                            'city': $scope.companyCity,
-                            'corporate_id': $scope.companyCorpId
+                            'name': $scope.travelAgentName,
+                            'city': $scope.travelAgentCity,
+                            'corporate_id': $scope.travelAgentIATA
                         };
         $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
     }
-
-    $scope.changedTextbox = function(){
-        alert('dddd');
-    };
-
-
-
 
 }]);
