@@ -6,6 +6,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
     var resizableMinHeight = 90;
     var that = this;
 
+    // set guest search fields value based on search data from base search screen
     $scope.guestFirstName = $scope.reservationData.guest.firstName;
     $scope.guestLastName = $scope.reservationData.guest.lastName;
     $scope.guestCity = '';
