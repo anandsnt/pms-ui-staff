@@ -137,6 +137,7 @@
     
     "ROOM": "room",
     "NIGHTS": "nights",
+    "NIGHT": "night",
     "CHECK_IN": "check-in",
     "CHECK_OUT": "check-out",
     "TO_BILL": "To Bill",
@@ -175,6 +176,8 @@
     "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
     "TRY_AGAIN" : "Try Again",
     "HOW_MANY_KEYS" : "How many keys?",
-    "KEY_PRINTED" : "Keys printed!"
+    "KEY_PRINTED" : "Keys printed!",
     
+    "VIEW_BILL_TITLE":"Guest Bill",
+    "STAY_CARD_TITLE":"Stay Card"
 }
