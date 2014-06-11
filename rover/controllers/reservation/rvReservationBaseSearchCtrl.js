@@ -25,7 +25,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.otherData.maxAdults = (baseSearchData.settings.max_guests.max_adults === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_adults;
             $scope.otherData.maxChildren = (baseSearchData.settings.max_guests.max_children === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_children;
             $scope.otherData.maxInfants = (baseSearchData.settings.max_guests.max_infants === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_infants;
-            $scope.otherData.fromSearch = false;
+            $scope.otherData.fromSearch = true;
         };
 
 
@@ -63,7 +63,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             if ($scope.companySearch.label.length === 0) {
                 $scope.companyCardResults = [];
                 $scope.companyLastSearchText = "";
-            } else if ($scope.companySearch.label.length > 2) {
+            } else if ($scope.companySearch.label.length > 1) {
                 companyCardFetchInterval = window.setInterval(function() {
                     displayFilteredResults();
                 }, 500);
@@ -132,9 +132,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
         $scope.arrivalDateOptions = {
         
-            showOn          : 'button',
-            dateFormat      : 'mm-dd-yy',
-            numberOfMonths  : 2,
+             showOn          : 'button',
+             dateFormat      : 'mm-dd-yy',
+             numberOfMonths  : 2,
+             yearRange       : '-0:+0',
+             minDate         : 0,
             beforeShow: function(input, inst){
                 $('#ui-datepicker-div').addClass('reservation arriving');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
@@ -152,6 +154,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             showOn          : 'button',
             dateFormat      : 'mm-dd-yy',
             numberOfMonths  : 2,
+            yearRange       : '-0:+0',
+            minDate         : 0,
             beforeShow: function(input, inst){
                 $('#ui-datepicker-div').addClass('reservation departing');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
@@ -170,7 +174,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 // This code will be assimilated, resistance is futile
 // Code will be assimilated to become part of a better 
 // auto complete feature
-sntRover.directive('autoComplete', function() {
+sntRover.directive('autoComplete', ['highlightFilter', function(highlightFilter) {
     return {
         restrict: 'A',
         scope: {
@@ -183,7 +187,7 @@ sntRover.directive('autoComplete', function() {
                     ul.addClass('find-cards');
 
                     var $result = $("<a></a>").text(item.label),
-                        $image = '<img src="../images/' + item.image + '" />';
+                        $image = '<img src="' + item.image + '" />';
 
                     $($image).prependTo($result);
 
@@ -191,4 +195,4 @@ sntRover.directive('autoComplete', function() {
             };
         }
     };
-});
+}]);

@@ -1,4 +1,4 @@
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog', function($scope,$rootScope,$state, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog){
+sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter', function($scope,$rootScope,$state, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter){
 	
 	BaseCtrl.call(this, $scope);
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
@@ -6,6 +6,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	var billTabHeight = parseInt(35);
 	var calenderDaysHeight = parseInt(35);
 	var totalHeight = 0;
+	// $scope.heading = $filter('translate')('VIEW_BILL_TITLE');
+	$scope.$emit('HeaderChanged', $filter('translate')('VIEW_BILL_TITLE'));
 	$scope.init = function(reservationBillData){
 		/*
 		 * Adding billValue and oldBillValue with data. Adding with each bills fees details
@@ -44,6 +46,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 		$scope.calculatedHeight = totalHeight;
 	};
 	$scope.init(reservationBillData);
+	$scope.setNightsString = function(){
+		return (reservationBillData.number_of_nights > 1)?$filter('translate')('NIGHTS'):$filter('translate')('NIGHT');
+	};
 	
 	//Scope variable to set active bill
 	$scope.currentActiveBill = 0;
@@ -77,14 +82,23 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	 * @param {string} clickedDate
 	 * @param {string} checkoutDate
 	 */
-	$scope.showDayRates = function(dayIndex, clickedDate, checkoutDate){
+	$scope.showDayRates = function(dayIndex, clickedDate, checkoutDate, numberOfNights){
 		//In this condition show the last clicked days item 
 		//OR if checkout date clicked first do not show anything
 		if(clickedDate == checkoutDate){
-			$scope.dayRates = $scope.dayRates;
-		} else {
+			if(numberOfNights == 0){
+				$scope.dayRates = dayIndex;
+			} else {
+				$scope.dayRates = $scope.dayRates;
+			}
+			
+		} else if($scope.dayRates != dayIndex) {
 			$scope.dayRates = dayIndex;
+		}else{
+			$scope.dayRates = -1;
 		}
+		$scope.showAddonIndex = -1;
+		$scope.showGroupItemIndex = -1;
 		
 	};
 	/*
@@ -105,14 +119,18 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	 * @param {int} addon index
 	 */
 	$scope.showAddons = function(addonIndex){
-		$scope.showAddonIndex = addonIndex;
+		$scope.showAddonIndex = ($scope.showAddonIndex != addonIndex)?addonIndex:-1;
+		$scope.dayRates = -1;
+		$scope.showGroupItemIndex = -1;
 	};
 	/*
 	 * Show Group Items
 	 * @param {int} group index
 	 */
 	$scope.showGroupItems = function(groupIndex){
-		$scope.showGroupItemIndex = groupIndex;
+		$scope.dayRates = -1;
+		$scope.showGroupItemIndex = ($scope.showGroupItemIndex != groupIndex)?groupIndex:-1;
+		$scope.showAddonIndex = -1;
 	};
 	/*
 	 * Show Room Details 
@@ -340,5 +358,53 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	$scope.closeDialog = function() {
 		ngDialog.close();
 	};
+	$scope.getRoomClass =  function(reservationStatus, roomStatus, foStatus){
+		var roomClass = "";
+		if(reservationStatus == "CHECKING_IN"){
+			if(roomStatus == "READY" && foStatus== "VACANT"){
+				roomClass = "ready";
+			} else {
+				roomClass = "not-ready";
+			}
+		} 
+		return roomClass;
+	};
+	$scope.showDays = function(date, checkoutDate, numberOfNights, place){
+		var showDay = false;
+		if(place == 'checkout'){
+			if(date == checkoutDate && numberOfNights != 0){
+				showDay = true;
+			}
+		} else {
+			if(date == checkoutDate && numberOfNights == 0){
+				showDay = true;
+			} else if(date != checkoutDate){
+				showDay = true;
+			}
+		}
+		return showDay;
 		
+	};
+	$scope.getDaysClass = function(index, dayDate, checkinDate, checkoutDate, businessDate){
+		var dayClass = "";
+		if(index!=0){
+			dayClass = "hidden";
+		}
+		if(dayDate == checkinDate){
+			dayClass = "check-in active";
+		}
+		if(dayDate != checkoutDate){
+			if(dayDate <= businessDate){
+				dayClass = "active";
+			}
+		}
+		if(dayDate == checkoutDate){
+			if(businessDate <= dayDate){
+				dayClass = "check-out last";
+			}
+		}
+		return dayClass;
+	};
+	
+		//{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date,'active': days.date != reservationBillData.checkout_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}
 }]);
