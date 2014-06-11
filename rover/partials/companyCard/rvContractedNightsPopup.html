@@ -1,8 +1,10 @@
 <div role="dialog" id="modal" class="modal-show">
+
 <form method="post" id="contracted-nights" name="contracted-nights" class="modal-content form grid">
     <button class="modal-close" id="modal-close" type="button" ng-click="clickedCancel()"><span class="icons icon-close invert"></span></button>
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <span class="h2 message" translate>CONTRACTED_NIGHTS</span>
-   
+    
     <div class="grid-wrapper">
         <div class="holder left">
             <div class="entry">

@@ -20,6 +20,9 @@ $scope.$on('guestCardUpdateData',function(event, data){
 	$scope.guestCardData.contactInfo.vip = data.vip;
 	$scope.countriesList = data.countries;
 	$scope.guestCardData.userId=data.userId;
+	$scope.guestCardData.guestId=data.guestId;
+
+
 });
 
 $scope.$on('reservationCardClicked',function(){
@@ -31,6 +34,10 @@ $scope.$on('reservationCardClicked',function(){
 //setting the heading of the screen to "Search"
     $scope.heading = "Stay Card";
 	$scope.menuImage = "back-arrow";   
+
+	$scope.$on('HeaderChanged', function(event, data){
+	 		$scope.heading = data;
+	 });
 	 
 	 $scope.$on('SHOWPAYMENTLIST', function(event, data){
 	 		$scope.openPaymentList(data);

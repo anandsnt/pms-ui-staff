@@ -1,0 +1,38 @@
+<div role="dialog" id="modal" class="modal-show"><form name="new-hlp" method="post" id="new-hlp" class="modal-content form new-content" action="index.html">
+	<button type="button" id="modal-close" ng-click = "cancel()" class="modal-close dark-title">
+		<span class="icons icon-close"></span>
+	</button>
+	<strong class="new-form-title" translate>NEW_HOTEL_LOYALTY_PROGRAM</strong>
+	<div class="entry full-width">
+ 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+ 		</div>
+	<div class="entry full-width">
+		<div id="notification-message"></div>
+	</div>
+	<div class="entry full-width">
+		<label for="type" translate>TYPE</label>
+		<div class="select">
+				<select ng-options="userMembership.hl_value as userMembership.hl_description for userMembership  in userMembershipTypes" ng-model="userMembershipType" ng-change="memberShipTypeChanged()">
+ 							<option style="display:none" value=""></option>
+ 						</select>
+			</div>
+		</div>
+		<div id="hlplevek" class="entry full-width" ng-show="isLevelsAvailable">
+			<label for="level" translate>LEVEL</label>
+			<div class="select">
+				<select ng-options="userMembership.membership_level as userMembership.description for userMembership  in userMembershipLevels" ng-model="userMembershipLevel">
+ 							<option style="display:none" value=""></option>
+ 						</select>
+			</div>
+		</div>
+		<div class="entry full-width">
+			<label for="code" translate>PROGRAM_NUMBER</label>
+			<input type="text" ng-model="userMembershipNumber" name="code" id="ff-code">
+		</div>
+		<div class="actions float">
+			<button type="button" id="cancel" class="button blank modal-close" ng-click="cancel()" translate>CANCEL</button>
+			<button type="button" id="save" class="button green modal-close" ng-click="save()" translate>ADD</button>
+		</div>
+		<input type="hidden" id="newhlp_id">
+	</form>
+</div>
