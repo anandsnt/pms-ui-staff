@@ -92,7 +92,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 				$scope.dayRates = $scope.dayRates;
 			}
 			
-		} else if($scope.dayRates == -1) {
+		} else if($scope.dayRates != dayIndex) {
 			$scope.dayRates = dayIndex;
 		}else{
 			$scope.dayRates = -1;
@@ -119,7 +119,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	 * @param {int} addon index
 	 */
 	$scope.showAddons = function(addonIndex){
-		$scope.showAddonIndex = addonIndex;
+		$scope.showAddonIndex = ($scope.showAddonIndex != addonIndex)?addonIndex:-1;
 		$scope.dayRates = -1;
 		$scope.showGroupItemIndex = -1;
 	};
@@ -129,7 +129,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	 */
 	$scope.showGroupItems = function(groupIndex){
 		$scope.dayRates = -1;
-		$scope.showGroupItemIndex = ($scope.showGroupItemIndex == -1)?groupIndex:-1;
+		$scope.showGroupItemIndex = ($scope.showGroupItemIndex != groupIndex)?groupIndex:-1;
 		$scope.showAddonIndex = -1;
 	};
 	/*
