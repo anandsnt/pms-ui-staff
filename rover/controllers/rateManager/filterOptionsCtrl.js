@@ -103,9 +103,13 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
 
         });
 
+        /**
+        * Filter the allrates based on the rate type selected.
+        */
         var calculateRatesList = function() {
             $scope.currentFilterData.rates = [];
             var rateTypeSelected = $scope.currentFilterData.rate_type_selected_list;
+            //If no rate type is selected, we should show all rates.
             if(rateTypeSelected.length == 0) {
                 $scope.currentFilterData.rates = dclone($scope.currentFilterData.allRates);
             }
