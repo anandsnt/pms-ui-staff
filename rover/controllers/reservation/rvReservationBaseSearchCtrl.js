@@ -9,7 +9,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         $scope.companySearch = {
             label: '',
             id: '',
-        }
+        };
         $scope.companyLastSearchText = "";
         $scope.companyCardResults = [];
 
@@ -47,10 +47,16 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             } else {
                 $scope.reservationData.departureDate = "";
             }
-        }
+        };
 
         $scope.arrivalDateChanged = function(){
                 $scope.setDepartureDate();
+        };
+        $scope.departureDateChanged = function(){
+        	console.log("deprture changed")
+        	var arriv = new Date($scope.reservationData.arrivalDate).getTime();
+        	var dept =  new Date($scope.reservationData.departureDate).getTime();
+        	console.log(Math.abs(arriv - dept)/(1000*60*60*24));
         };
 
         /*
@@ -73,12 +79,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         $scope.navigate = function() {
             var successCallBack = function() {
                 $state.go('rover.reservation.mainCard.roomType');
-            }
+            };
             $scope.invokeApi(RVReservationBaseSearchSrv.chosenDates, {
                 fromDate: $scope.reservationData.arrivalDate,
                 toDate: $scope.reservationData.departureDate
             }, successCallBack);
-        }
+        };
 
         var displayFilteredResults = function() {
             if ($scope.companySearch.label != '' && $scope.companyLastSearchText != $scope.companySearch.label) {
@@ -92,7 +98,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                             label: item.account_first_name + " " + item.account_last_name,
                             value: item.account_first_name + " " + item.account_last_name,
                             image: item.company_logo
-                        }
+                        };
                         $scope.companyCardResults.push(eachItem);
 
                         // remove duplicates
@@ -100,7 +106,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                         // thanks again underscore.js
                         $scope.companyCardResults = _.unique($scope.companyCardResults);
                     });
-                }
+                };
                 var paramDict = {
                     'query': $scope.companySearch.label.trim()
                 };
@@ -124,7 +130,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 $scope.companySearch.id = ui.item.id;
                 return false;
             }
-        }
+        };
 
         // init call to set data for view 
         init();
