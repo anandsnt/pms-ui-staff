@@ -27,9 +27,9 @@
 					<hr/>
 
 					<div class="entry radio-check">
-						<label class="checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}">
-							<span ng-model="currentFilterData.is_checked_all_rates" class="icon-form icon-checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}" ></span>
-							<input type="checkbox" ng-click="clickedAllRates()"/>
+						<label class="checkbox">
+							<span class="icon-form icon-checkbox" ng-class="{'checked':currentFilterData.is_checked_all_rates}" ></span>
+							<input type="checkbox" ng-change="clickedAllRates()" ng-model="currentFilterData.is_checked_all_rates" />
 							ALL RATES
 						</label>
 					</div>

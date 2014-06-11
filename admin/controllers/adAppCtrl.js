@@ -59,7 +59,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			iconClass: "icon-frontdesk",
 			submenu: [{
 				title: "MENU_CREATE_RESERVATION",
-				action: ""
+				action: "staff#/staff/reservation/search"
 			}, {
 				title: "MENU_ROOM_ASSIGNMENT",
 				action: ""
@@ -89,7 +89,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				action: ""
 			}]
 		}, {
-			title: "MENU_REVENUE_MANAGEMENT",
+			title: "MENU_REV_MAN",
 			action: "",
 			iconClass: "icon-revenue",
 			submenu: [{
@@ -294,6 +294,11 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 				lastDropedTime = '';
 				$state.go(stateToGo);
 			}
+			if ($scope.menuOpen) {
+				$scope.menuOpen = !$scope.menuOpen;
+				$scope.showSubMenu = false;
+			}
+
 		};
 
 		$scope.$on("changedSelectedMenu", function(event, menu) {
@@ -348,6 +353,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 
 		$scope.$on("navToggled", function() {
 			$scope.menuOpen = !$scope.menuOpen;
+			$scope.showSubMenu = false;
 		});
 
 		$scope.isMenuOpen = function() {

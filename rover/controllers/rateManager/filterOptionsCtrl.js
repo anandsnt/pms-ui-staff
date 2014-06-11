@@ -19,7 +19,7 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
 
         var heightOfComponents = 500;
         var headerHeight = 60;
-        var heightOfFixedComponents = 145;
+        var heightOfFixedComponents = 100;
         var variableComponentHeight = 90;
         var maxSize = $(window).height() - headerHeight;
 
@@ -71,20 +71,20 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
         $scope.fetchFilterOptions();
 
         $scope.clickedAllRates = function() {
-            if ($scope.currentFilterData.is_checked_all_rates) {
-                $scope.currentFilterData.is_checked_all_rates = false;
-                $scope.leftMenuDimensions.scrollableContainerHeight = Math.min($scope.leftMenuDimensions.scrollableContainerHeight + variableComponentHeight, maxSize - heightOfFixedComponents);
-            } else {
-                $scope.currentFilterData.is_checked_all_rates = true;
-                $scope.leftMenuDimensions.scrollableContainerHeight = $scope.leftMenuDimensions.outerContainerHeight - heightOfFixedComponents;
+            //If allrates option is selected, unset all rates and rate types
+            //$scope.currentFilterData.is_checked_all_rates = !$scope.currentFilterData.is_checked_all_rates;
+
+            if($scope.currentFilterData.is_checked_all_rates) {
+                $scope.currentFilterData.rate_type_selected_list = [];
+                $scope.currentFilterData.rates_selected_list = [];
             }
+
             setTimeout(function() {
                 $scope.$$childTail.$parent.myScroll['filter_details'].refresh();
             }, 300);
         };
 
         $scope.$watch('currentFilterData.rate_type_selected', function() {
-            console.log("landed");
             var isDataExists = false;
             angular.forEach($scope.currentFilterData.rate_type_selected_list, function(item, index) {
                 if (item.id == $scope.currentFilterData.rate_type_selected) {
@@ -103,17 +103,23 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
 
         });
 
+        /**
+        * Filter the allrates based on the rate type selected.
+        */
         var calculateRatesList = function() {
             $scope.currentFilterData.rates = [];
-            var rateType = "";
-            for (var j in $scope.currentFilterData.rate_type_selected_list) {
-                rateType = $scope.currentFilterData.rate_type_selected_list[j];
+            var rateTypeSelected = $scope.currentFilterData.rate_type_selected_list;
+            //If no rate type is selected, we should show all rates.
+            if(rateTypeSelected.length == 0) {
+                $scope.currentFilterData.rates = dclone($scope.currentFilterData.allRates);
+            }
+            for (var j in rateTypeSelected) {
                 for (var i in $scope.currentFilterData.allRates) {
                     if ($scope.currentFilterData.allRates[i].rate_type == null ||
                         $scope.currentFilterData.allRates[i].rate_type == undefined) {
                         continue;
                     }
-                    if ($scope.currentFilterData.allRates[i].rate_type.id == rateType.id) {
+                    if ($scope.currentFilterData.allRates[i].rate_type.id == rateTypeSelected[j].id) {
                         $scope.currentFilterData.rates.push($scope.currentFilterData.allRates[i]);
                     }
                 }
@@ -135,6 +141,10 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
             $scope.refreshFilterScroll();
         };
 
+        /**
+        * Display the selected rates in a list having close button.
+        * Duplicates are not allowed in the list.
+        */
         $scope.$watch('currentFilterData.rate_selected', function() {
             var isDataExists = false;
             angular.forEach($scope.currentFilterData.rates_selected_list, function(item, index) {
@@ -186,7 +196,6 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
             } else {
                 $scope.cmpCardSearchDivHgt = $scope.companyCardResults.length * totalHeight;
             }
-            console.log($scope.cmpCardSearchDivHgt);
             $scope.cmpCardSearchDivTop = popOverBottomPosFromTop - $scope.cmpCardSearchDivHgt + 10;
 
             setTimeout(function() {
