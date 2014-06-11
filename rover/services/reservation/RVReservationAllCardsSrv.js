@@ -12,7 +12,7 @@ sntRover.service('RVReservationAllCardsSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
-        this.fetchCompanies = function(data) {
+        this.fetchCompaniesOrTravelAgents = function(data) {
             var deferred = $q.defer();
             var url = '/api/accounts';
             RVBaseWebSrvV2.getJSON(url, data).then(function(data) {
@@ -22,5 +22,6 @@ sntRover.service('RVReservationAllCardsSrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
+        
     }
 ]);
