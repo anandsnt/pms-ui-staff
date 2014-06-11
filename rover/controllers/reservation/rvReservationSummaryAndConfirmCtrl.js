@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', 'RVReservationSummarySrv', 
-					function($scope, RVReservationSummarySrv){
+sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 
+					function($scope, $state, RVReservationSummarySrv){
 	BaseCtrl.call(this, $scope);
 
 	$scope.init = function(){
@@ -110,13 +110,34 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', 'RVReservat
 		var postData = computeReservationDataToSave();
 
 		var saveSuccess = function(data) {
-			console.log("saveSuccess");
 			$scope.$emit('hideLoader');
+			$scope.initReservationData();
+			goToReservationSearch();
 		};
 
 		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
 
 
+	};
+
+	$scope.clickedConfirmAndCreateNew = function(){
+		var postData = computeReservationDataToSave();
+
+		var saveSuccess = function(data) {
+			$scope.$emit('hideLoader');
+			goToReservationSearch();
+		};
+
+		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
+	};
+
+	$scope.cancelButtonClicked = function(){
+		$scope.initReservationData();
+		goToReservationSearch();
+	};
+
+	var goToReservationSearch = function(){
+		$state.go('rover.reservation.search');
 	};
 
 	$scope.init();

@@ -67,7 +67,7 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
         this.saveReservation = function(data){
             var deferred = $q.defer();
             var url = '/api/reservations';
-            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+            rvBaseWebSrvV2.postJSON(url).then(function(data) {
                 deferred.resolve(data);
             },function(data){
                 deferred.reject(data);

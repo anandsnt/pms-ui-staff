@@ -110,7 +110,7 @@
                         </div>
                     </div>
                     <!-- This here is dynamic content, depending on actual room booked -->
-                    <h4>{{room.roomTypeName}}<span>#22648596</span></h4>
+                    <h4>{{room.roomTypeName}}<span></span></h4>
                     <ul class="rate-and-enhancements">
                         <li>
                             <em>{{room.rateName}}</em>
@@ -184,7 +184,7 @@
                 <div class="actions">
                     <button type="button" id="save-reservation" class="button green" ng-click="clickedConfirmAndGoToDashboard()">{{'CONFIRM_RESERVATION' | translate}} <span>&amp; {{'RETURN_TO_DASHBOARD' | translate}}</span></button>
                     <button type="button" id="save-and-add-new" class="button brand-colors">{{'CONFIRM_RESERVATION' | translate}}<span>&amp; {{'CREATE_NEW_FOR_GUEST' | translate}}</span></button>
-                    <button type="button" id="cancel-reservation" class="button blank" translate>CANCEL_RESERVATION</button>
+                    <button type="button" id="cancel-reservation" class="button blank" ng-click="cancelButtonClicked()" translate >CANCEL_RESERVATION</button>
                 </div>
             </div> 
         </form>
