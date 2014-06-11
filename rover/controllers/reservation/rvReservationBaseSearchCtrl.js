@@ -9,9 +9,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         $scope.companySearch = {
             label: '',
             id: '',
-        }
+        };
         $scope.companyLastSearchText = "";
         $scope.companyCardResults = [];
+        //Setting number of nights 1
+        $scope.reservationData.numNights = 1;
 
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
@@ -47,11 +49,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             } else {
                 $scope.reservationData.departureDate = "";
             }
-        }
+        };
 
         $scope.arrivalDateChanged = function(){
                 $scope.setDepartureDate();
         };
+       
 
         $scope.departureDateChanged = function(){
 
@@ -70,28 +73,23 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
          * company card search text entered
          */
         $scope.companySearchTextEntered = function() {
-
-            // var notBackSpace = (arguments[0].keyCode || arguments[0].which !== 8) ? true : false;
-
             if ($scope.companySearch.label.length === 0) {
                 $scope.companyCardResults = [];
                 $scope.companyLastSearchText = "";
             } else if ($scope.companySearch.label.length > 1) {
-                companyCardFetchInterval = window.setInterval(function() {
-                    displayFilteredResults();
-                }, 500);
+                displayFilteredResults();
             }
         };
 
         $scope.navigate = function() {
             var successCallBack = function() {
                 $state.go('rover.reservation.mainCard.roomType');
-            }
+            };
             $scope.invokeApi(RVReservationBaseSearchSrv.chosenDates, {
                 fromDate: $scope.reservationData.arrivalDate,
                 toDate: $scope.reservationData.departureDate
             }, successCallBack);
-        }
+        };
 
         var displayFilteredResults = function() {
             if ($scope.companySearch.label != '' && $scope.companyLastSearchText != $scope.companySearch.label) {
@@ -105,7 +103,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                             label: item.account_first_name + " " + item.account_last_name,
                             value: item.account_first_name + " " + item.account_last_name,
                             image: item.company_logo
-                        }
+                        };
                         $scope.companyCardResults.push(eachItem);
 
                         // remove duplicates
@@ -113,14 +111,13 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                         // thanks again underscore.js
                         $scope.companyCardResults = _.unique($scope.companyCardResults);
                     });
-                }
+                };
                 var paramDict = {
                     'query': $scope.companySearch.label.trim()
                 };
                 $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
                 // we have changed data, so we dont hit server for each keypress
                 $scope.companyLastSearchText = $scope.companySearch.label;
-                clearInterval(companyCardFetchInterval);
             }
         };
 
@@ -137,7 +134,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 $scope.companySearch.id = ui.item.id;
                 return false;
             }
-        }
+        };
 
         // init call to set data for view 
         init();
@@ -191,7 +188,8 @@ sntRover.directive('autoComplete', ['highlightFilter', function(highlightFilter)
     return {
         restrict: 'A',
         scope: {
-            autoOptions: '=autoOptions'
+            autoOptions: '=autoOptions',
+            ngModel: '='
         },
         link: function(scope, el, attrs) {
             $(el).autocomplete(scope.autoOptions)
@@ -199,8 +197,9 @@ sntRover.directive('autoComplete', ['highlightFilter', function(highlightFilter)
                 ._renderItem = function(ul, item) {
                     ul.addClass('find-cards');
 
-                    var $result = $("<a></a>").text(item.label),
-                        $image = '<img src="' + item.image + '" />';
+                    var $content = highlightFilter(item.label, scope.ngModel),
+                        $result  = $("<a></a>").html( $content ),
+                        $image   = '<img src="' + item.image + '">';
 
                     $($image).prependTo($result);
 
