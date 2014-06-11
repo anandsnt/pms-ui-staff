@@ -105,15 +105,17 @@ sntRover.controller('RMFilterOptionsCtrl', ['$scope', 'RMFilterOptionsSrv', 'ngD
 
         var calculateRatesList = function() {
             $scope.currentFilterData.rates = [];
-            var rateType = "";
-            for (var j in $scope.currentFilterData.rate_type_selected_list) {
-                rateType = $scope.currentFilterData.rate_type_selected_list[j];
+            var rateTypeSelected = $scope.currentFilterData.rate_type_selected_list;
+            if(rateTypeSelected.length == 0) {
+                $scope.currentFilterData.rates = dclone($scope.currentFilterData.allRates);
+            }
+            for (var j in rateTypeSelected) {
                 for (var i in $scope.currentFilterData.allRates) {
                     if ($scope.currentFilterData.allRates[i].rate_type == null ||
                         $scope.currentFilterData.allRates[i].rate_type == undefined) {
                         continue;
                     }
-                    if ($scope.currentFilterData.allRates[i].rate_type.id == rateType.id) {
+                    if ($scope.currentFilterData.allRates[i].rate_type.id == rateTypeSelected[j].id) {
                         $scope.currentFilterData.rates.push($scope.currentFilterData.allRates[i]);
                     }
                 }
