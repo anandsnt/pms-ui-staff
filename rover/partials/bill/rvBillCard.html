@@ -117,7 +117,7 @@
 										<a id="add-new-button" class="add-new-button">+ <span translate>ADD</span></a>
 									</li>
 
-									<li class="active" ng-click="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}">
+									<li ng-click="showDayRates($index, days.date, reservationBillData.checkout_date, reservationBillData.number_of_nights)" ng-repeat="days in billData.days" ng-class="getDaysClass($parent.$index, days.date, reservationBillData.checkin_date, reservationBillData.checkout_date, businessDate)">
 										<!-- For checkin date -->
 										<a class="toggle dual-toggle" ng-class="{'active': $index == dayRates}" ng-show="showDays(days.date,reservationBillData.checkout_date, reservationBillData.number_of_nights, 'others')"> 
 											<span class="day"> {{days.date | date:'EEE'}} </span> 

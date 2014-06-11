@@ -385,5 +385,26 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 		return showDay;
 		
 	};
-		
+	$scope.getDaysClass = function(index, dayDate, checkinDate, checkoutDate, businessDate){
+		var dayClass = "";
+		if(index!=0){
+			dayClass = "hidden";
+		}
+		if(dayDate == checkinDate){
+			dayClass = "check-in active";
+		}
+		if(dayDate != checkoutDate){
+			if(dayDate <= businessDate){
+				dayClass = "active";
+			}
+		}
+		if(dayDate == checkoutDate){
+			if(businessDate <= dayDate){
+				dayClass = "check-out last";
+			}
+		}
+		return dayClass;
+	};
+	
+		//{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date,'active': days.date != reservationBillData.checkout_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}
 }]);
