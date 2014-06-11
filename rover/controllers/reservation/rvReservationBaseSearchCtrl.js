@@ -1,5 +1,7 @@
 sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state',
 
+
+
     function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state) {
         BaseCtrl.call(this, $scope);
 
@@ -23,7 +25,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.otherData.maxAdults = (baseSearchData.settings.max_guests.max_adults === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_adults;
             $scope.otherData.maxChildren = (baseSearchData.settings.max_guests.max_children === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_children;
             $scope.otherData.maxInfants = (baseSearchData.settings.max_guests.max_infants === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_infants;
+            $scope.otherData.fromSearch = false;
         };
+
+
 
         $scope.setDepartureDate = function() {
             if ($scope.reservationData.numNights > 0) {
@@ -34,7 +39,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 // $scope.reservationData.departureDate = tmpDate.setDate(tmpDate.getDate() + parseInt($scope.reservationData.numNights));
 
 
-                var newDate = new Date();
+                var newDate = new Date($scope.reservationData.arrivalDate);
                 newDay = newDate.getDate() + parseInt($scope.reservationData.numNights);
                 newDate.setDate(newDay);
                 $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
@@ -43,6 +48,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 $scope.reservationData.departureDate = "";
             }
         }
+
+        $scope.arrivalDateChanged = function(){
+                $scope.setDepartureDate();
+        };
 
         /*
          * company card search text entered
@@ -120,26 +129,40 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         // init call to set data for view 
         init();
 
-        $scope.popupArrivalDateCalendar = function() {
-            ngDialog.open({
-                template: '/assets/partials/reservation/rvReservationCalendarPopup.html',
-                controller: 'RVReservationArrivalDatePickerController',
-                className: 'ngdialog-theme-default calendar-modal reservation-calendar',
-                closeByDocument: true,
-                scope: $scope
-            });
+
+        $scope.arrivalDateOptions = {
+        
+            showOn          : 'button',
+            dateFormat      : 'mm-dd-yy',
+            numberOfMonths  : 2,
+            beforeShow: function(input, inst){
+                $('#ui-datepicker-div').addClass('reservation arriving');
+                $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
+            },
+
+            onClose: function(dateText, inst){ 
+                $('#ui-datepicker-div').removeClass('reservation arriving');
+                $('#ui-datepicker-overlay').remove();
+            }
+
         };
 
-        $scope.popupDepartureDateCalendar = function() {
-            ngDialog.open({
-                template: '/assets/partials/reservation/rvReservationCalendarPopup.html',
-                controller: 'RVReservationDepartureDatePickerController',
-                className: 'ngdialog-theme-default calendar-modal reservation-calendar',
-                closeByDocument: true,
-                scope: $scope
-            });
-        };
+        $scope.departureDateOptions = {
+        
+            showOn          : 'button',
+            dateFormat      : 'mm-dd-yy',
+            numberOfMonths  : 2,
+            beforeShow: function(input, inst){
+                $('#ui-datepicker-div').addClass('reservation departing');
+                $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
+            },
 
+            onClose: function(dateText, inst){ 
+                $('#ui-datepicker-div').removeClass('reservation departing');
+                $('#ui-datepicker-overlay').remove();
+            }
+
+        };
 
     }
 ]);

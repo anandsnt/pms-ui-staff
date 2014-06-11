@@ -1,23 +1,35 @@
 sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCardsSrv', function($scope, RVReservationAllCardsSrv){
     
     BaseCtrl.call(this, $scope);
+
+    var resizableMaxHeight = screen.height -200;
+    var resizableMinHeight = 90;
+    var that = this;
+
+    // initialize / set guest search fields value based on search data from base search screen
     $scope.guestFirstName = $scope.reservationData.guest.firstName;
     $scope.guestLastName = $scope.reservationData.guest.lastName;
     $scope.guestCity = '';
     $scope.guestLoyaltyNumber = '';
+
+    // initialize company search fields
+    $scope.companyName = '';
+    $scope.companyCity = '';
+    $scope.companyCorpId = '';
+
     /**
     * scroller options
     */
     $scope.cardVisible = false;
     $scope.resizableOptions = 
     {   
-        minHeight: '90',
-        maxHeight: screen.height -200,
+        minHeight: resizableMinHeight,
+        maxHeight: resizableMaxHeight,
         handles: 's',
         resize: function( event, ui ) {
             if ($(this).height() > 120 && !$scope.cardVisible) { //against angular js principle, sorry :(              
-                $scope.cardVisible = true;
-                $scope.$apply();
+            $scope.cardVisible = true;
+            $scope.$apply();
             }
             else if($(this).height() <= 120 && $scope.cardVisible){
                 $scope.cardVisible = false;
@@ -29,7 +41,15 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.eventTimestamp = event.timeStamp;
         }
     }
+    $scope.height = resizableMinHeight;
+    if($scope.otherData.fromSearch){
+        $scope.height = resizableMaxHeight;    
+        $scope.cardVisible = true;   
+        $scope.otherData.fromSearch = false;
+    }
 
+
+    
     // UICards first index will be active card
     $scope.UICards = ['guest-card', 'company-card', 'travel-agent-card'];
 
@@ -84,7 +104,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             if(data.results.length>0){
                 angular.forEach(data.results, function(item){
                     var guestData = {};
-                    // guestData.id = item.id;
+                    guestData.id = item.id;
                     guestData.firstName = item.first_name;
                     guestData.lastName = item.last_name;
                     guestData.address = {};
@@ -102,7 +122,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             }
         }
         var paramDict = {
-                            'first_name': $scope.guestfirstName,
+                            'first_name': $scope.guestFirstName,
                             'last_name': $scope.guestLastName,
                             'city': $scope.guestCity,
                             'membership_no': $scope.guestLoyaltyNumber
@@ -112,15 +132,59 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
     $scope.setGuest = function(guest, $event){
         $event.stopPropagation();
-        // $scope.reservationData.guest.id = guest.id;
+        // Update main reservation scope
+        $scope.reservationData.guest.id = guest.id;
+        $scope.reservationData.guest.firstName = guest.firstName;
+        $scope.reservationData.guest.lastName = guest.lastName;
+        $scope.reservationData.guest.city = guest.address.city;
+        $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
+
+        // update current controller scope
+        $scope.guestFirstName = guest.firstName;
+        $scope.guestLastName = guest.lastName;
+        $scope.guestCity = guest.address.city;
+    }
+
+    $scope.createNewGuest = function(){
+        $scope.reservationData.guest.id = '';
         $scope.reservationData.guest.firstName = guest.firstName;
         $scope.reservationData.guest.lastName = guest.lastName;
         $scope.reservationData.guest.city = guest.address.city;
         $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
     }
 
+
+    $scope.searchCompany = function(){
+        var successCallBackFetchCompanies = function(data){
+            console.log('reached successCallBackFetchCompanies');
+            console.log(data);
+        }
+        var paramDict = {
+                            'name': $scope.companyName,
+                            'city': $scope.companyCity,
+                            'corporate_id': $scope.companyCorpId
+                        };
+        $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
+    }
+
+    $scope.searchTravelAgent = function(){
+        var successCallBackFetchTravelAgents = function(data){
+            console.log('reached successCallBackFetchTravelAgents');
+            console.log(data);
+        }
+        var paramDict = {
+                            'name': $scope.companyName,
+                            'city': $scope.companyCity,
+                            'corporate_id': $scope.companyCorpId
+                        };
+        $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
+    }
+
     $scope.changedTextbox = function(){
         alert('dddd');
-    }
+    };
+
+
+
 
 }]);
