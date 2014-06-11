@@ -63,6 +63,17 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2',
             that.fetchDemographicReservationTypes(deferred);
             return deferred.promise;
         }
+
+        this.saveReservation = function(data){
+            var deferred = $q.defer();
+            var url = '/api/reservations';
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            },function(data){
+                deferred.reject(data);
+            }); 
+            return deferred.promise;
+        }
         
 
     }

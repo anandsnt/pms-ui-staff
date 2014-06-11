@@ -5,14 +5,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
         arrivalDate: '2014-04-01',
         departureDate: '2014-04-02',
         checkinTime: {
-            hh: '',
-            mm: '',
-            ampm: ''
+            hh: '12',
+            mm: '20',
+            ampm: 'AM'
         },
         checkoutTime: {
-            hh: '',
-            mm: '',
-            ampm: ''
+            hh: 12,
+            mm: 30,
+            ampm: 'AM'
         },
         numNights: 1, // computed value, ensure to keep it updated
         roomCount: 1, // Hard coded for now,
