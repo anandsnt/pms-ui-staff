@@ -3,6 +3,8 @@ sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', '
 	$scope.paymentListSuccess = function(data){
 		$scope.$emit('hideLoader');
 		$scope.paymentListData = data;
+		$scope.paymentListLength = $scope.paymentListData.existing_payments.length;
+		console.log($scope.paymentListLength);
 	};
 
 	 console.log(JSON.stringify($scope.dataToPaymentList));

@@ -1,8 +1,14 @@
 sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVPaymentSrv','ngDialog','RVReservationCardSrv', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog, RVReservationCardSrv){
 	BaseCtrl.call(this, $scope);
+	
+
 	/*
 	 * To open new payment modal screen from guest card
 	 */
+	
+	$scope.updateErrorMessage = function(message){
+		$scope.errorMessage = message;
+	};
 	$scope.openAddNewPaymentModel = function(data){
   	 	
   	 	if(data === undefined){
@@ -52,6 +58,7 @@ sntRover.controller('RVPaymentGuestCtrl',['$rootScope', '$scope', '$state', 'RVP
   	 $scope.openDeleteSetAsPrimaryModal = function(id, index){
   	 	  $scope.paymentData.payment_id = id;
   	 	  $scope.paymentData.index = index;
+  	 	  
 		  ngDialog.open({
 	               template: '/assets/partials/payment/rvDeleteSetAsPrimary.html',
 	               controller: 'RVDeleteSetAsPrimaryCtrl',

@@ -1,4 +1,4 @@
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', function($scope,$rootScope,$state, RVBillCardSrv, reservationBillData, RVReservationCardSrv){
+sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog', function($scope,$rootScope,$state, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog){
 	
 	BaseCtrl.call(this, $scope);
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
@@ -305,5 +305,40 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	 	$scope.$emit('SHOWPAYMENTLIST', $scope.reservationBillData);
 	 };
 	 
+
+	$scope.openPostCharge = function() {
+
+		// pass on the reservation id
+		$scope.reservation_id = $scope.reservationBillData.reservation_id;
+
+		var callback = function(data) {
+		    $scope.$emit( 'hideLoader' );
+
+		    $scope.fetchedData = data;
+
+    		ngDialog.open({
+        		template: '/assets/partials/postCharge/postCharge.html',
+        		controller: 'RVPostChargeController',
+        		scope: $scope
+        	});
+		};
+
+		$scope.invokeApi(RVChargeItems.fetch, $scope.reservation_id, callback);
+	};
+
+	// just fetch the bills again ;)
+	var postchargeAdded = $scope.$on('postcharge.added', function(event, netPrice) {
+		
+		// cos' we are gods, and this is what we wish
+		// just kidding.. :P
+		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
+	});
+
+	// the listner must be destroyed when no needed anymore
+	$scope.$on( '$destroy', postchargeAdded );
+
+	$scope.closeDialog = function() {
+		ngDialog.close();
+	};
 		
 }]);

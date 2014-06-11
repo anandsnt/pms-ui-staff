@@ -1,0 +1,46 @@
+<div id="modal" class="modal-show" role="dialog">
+   <form id="new-loyalty-program" class="modal-content form new-content" name="new-loyalty-program" method="post" action="index.html">
+      <button id="modal-close" ng-click = "closeDialog()" class="modal-close dark-title" type="button">
+      <span class="icons icon-close"></span>
+      </button>
+      <strong class="new-form-title" translate>NEW_LOYALTY_LABEL</strong>
+      <div class="entry full-width">
+            <div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
+        </div>
+      <div class="entry full-width">
+         <label for="program" translate>LOYALTY_PROGRAM_LABEL</label>
+         <div class="select">
+            <select ng-model="selectedLoyaltyProgram" id="program" name="program">
+               <option class="placeholder" value="" translate>LOYALTY_PROGRAM_SELECT_LABEL</option>
+               <option value="{{loyaltyprogram.code}}" ng-repeat="loyaltyprogram in loyaltyPrograms">{{loyaltyprogram.name}}</option>
+            </select>
+         </div>
+      </div>
+      <div class="entry full-width">
+         <label for="type" translate>LOYALTY_TYPE_LABEL</label>
+         <div class="select">
+            <select ng-model="selectedLoyaltyType" id="type" name="type">
+               <option class="placeholder" value="" translate>LOYALTY_TYPE_SELECT_LABEL</option>
+               <option value="{{loyaltytype.code}}" ng-repeat="loyaltytype in getLoyaltyTypes()">{{loyaltytype.name}}</option>
+            </select>
+         </div>
+      </div>
+      <div class="entry full-width">
+         <label for="level" translate>LOYALTY_LEVEL_LABEL</label>
+         <div class="select">
+            <select ng-model="selectedLevel" id="level" name="level">
+               <option class="placeholder" value="" translate>LOYALTY_LEVEL_SELECT_LABEL</option>
+               <option value="{{loyaltylevel.membership_level}}" ng-repeat="loyaltylevel in getLoyaltyLevels()">{{loyaltylevel.membership_level}}</option>
+            </select>
+         </div>
+      </div>
+      <div class="entry full-width">
+         <label for="code" translate>LOYALTY_CODE_LABEL</label>
+         <input id="code" ng-model="loyaltyCode" type="text" value="" name="code">
+      </div>
+      <div class="actions float">
+         <button id="cancel" class="button blank modal-close" ng-click = "closeDialog()" type="button" translate>CANCEL</button>
+         <button id="save" class="button green modal-close" type="button" ng-click="addLoyaltyProgram()" translate>ADD</button>
+      </div>
+   </form>
+</div>

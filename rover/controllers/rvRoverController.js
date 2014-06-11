@@ -78,7 +78,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         action: ""
       }]
     }, {
-      title: "MENU_REVENUE_MANAGEMENT",
+      title: "MENU_REV_MAN",
       action: "",
       iconClass: "icon-revenue",
       submenu: [{
@@ -238,7 +238,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.$emit('showLoader');
 
       // if menu is open, close it
-      $scope.isMenuOpen();
+      if($scope.menuOpen){
+        $scope.menuOpen = !$scope.menuOpen;
+        $scope.showSubMenu = false;
+      }
+      
     });
 
     $rootScope.$on('$stateChangeSuccess', function(e, curr, prev) {

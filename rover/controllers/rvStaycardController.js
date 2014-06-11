@@ -20,6 +20,9 @@ $scope.$on('guestCardUpdateData',function(event, data){
 	$scope.guestCardData.contactInfo.vip = data.vip;
 	$scope.countriesList = data.countries;
 	$scope.guestCardData.userId=data.userId;
+	$scope.guestCardData.guestId=data.guestId;
+
+
 });
 
 $scope.$on('reservationCardClicked',function(){
