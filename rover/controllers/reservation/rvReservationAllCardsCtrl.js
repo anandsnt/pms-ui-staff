@@ -64,12 +64,14 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
 
     $scope.guestCardHeight = resizableMinHeight;
-    if($scope.otherData.fromSearch && ($scope.guestFirstName != '')){
-        $scope.openGuestCard();
-        $scope.otherData.fromSearch = false;
+
+    var init = function(){
+        if($scope.otherData.fromSearch && ( $scope.guestFirstName != '' || $scope.guestLastName != '' ) ){
+            $scope.openGuestCard();
+            $scope.searchGuest();
+            $scope.otherData.fromSearch = false;
+        }
     }
-
-
     
     // UICards first index will be active card
     $scope.UICards = ['guest-card', 'company-card', 'travel-agent-card'];
@@ -142,6 +144,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 });
             }
         }
+
+        console.log('reached');
         var paramDict = {
                             'first_name': $scope.guestFirstName,
                             'last_name': $scope.guestLastName,
@@ -169,10 +173,11 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
     $scope.createNewGuest = function(){
         $scope.reservationData.guest.id = '';
-        $scope.reservationData.guest.firstName = guest.firstName;
-        $scope.reservationData.guest.lastName = guest.lastName;
-        $scope.reservationData.guest.city = guest.address.city;
+        $scope.reservationData.guest.firstName = $scope.guestFirstName;
+        $scope.reservationData.guest.lastName = $scope.guestLastName;
+        $scope.reservationData.guest.city = $scope.guestCity;
         $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
+        console.log('reached');
         $scope.closeGuestCard();
     }
 
@@ -248,5 +253,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                         };
         $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
     }
+
+    init();
 
 }]);
