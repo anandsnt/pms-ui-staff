@@ -51,7 +51,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			//Filter for rooms which are available and have rate information
 			$scope.displayData.allRooms = $(roomRates.room_types).filter(function() {
 				return $scope.roomAvailability[this.id] && $scope.roomAvailability[this.id].availability == true &&
-					$scope.roomAvailability[this.id].rates.length > 1;
+					$scope.roomAvailability[this.id].rates.length > 0;
 			});
 
 			//sort the rooms by levels
