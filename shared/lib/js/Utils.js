@@ -144,3 +144,19 @@ function getDateString(dateObj){
 
     return dateString;
 }
+
+function getTimeFormated(hours, minutes, ampm) {
+    var time = "";
+    hours = parseInt(hours);
+    minutes = parseInt(minutes);
+    
+    if(ampm == "PM" && hours < 12) hours = hours + 12;
+    if(ampm == "AM" && hours == 12) hours = hours - 12;
+    var sHours = hours.toString();
+    var sMinutes = minutes.toString();
+    if(hours < 10) sHours = "0" + sHours;
+    if(minutes < 10) sMinutes = "0" + sMinutes;
+
+    var time = sHours + ":" + sMinutes;
+    return time;
+}
