@@ -50,7 +50,7 @@
                         <!-- Rate Details -->
                         <div class="rate-details" ng-class="{hidden: !isActive}">
                             <ul class="info">
-                                <li>{{room.description}}</li>
+                                <li ng-bind-html="room.description" ></li>
                                 <li>{{displayData.allRates[rate].description}}</li>
                                 <li>{{displayData.allRates[rate].deposit_policy.description}}</li>
                                 <li>{{displayData.allRates[rate].cancellation_policy.description}}</li>

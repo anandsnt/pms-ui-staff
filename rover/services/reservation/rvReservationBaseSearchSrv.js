@@ -29,8 +29,8 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
 
         this.fetchCompanyCard = function(data) {
             var deferred = $q.defer();
-            var url = '/api/accounts/search_account';
-            RVBaseWebSrvV2.postJSON(url, data).then(function(data) {
+            var url = '/api/accounts';
+            RVBaseWebSrvV2.getJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
