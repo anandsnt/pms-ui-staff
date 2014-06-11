@@ -2,7 +2,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
     
     BaseCtrl.call(this, $scope);
 
-    var resizableMaxHeight = screen.height -200;
+    var resizableMaxHeight = screen.height - 200;
     var resizableMinHeight = 90;
     var that = this;
 
@@ -33,22 +33,22 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         handles: 's',
         resize: function( event, ui ) {
             if ($(this).height() > 120 && !$scope.cardVisible) { //against angular js principle, sorry :(              
-            $scope.cardVisible = true;
-            $scope.$apply();
+                $scope.cardVisible = true;
+                $scope.$apply();
             }
             else if($(this).height() <= 120 && $scope.cardVisible){
                 $scope.cardVisible = false;
                 $scope.$apply();
-            }
+            }            
         },
         stop: function(event, ui){
             preventClicking = true;
             $scope.eventTimestamp = event.timeStamp;
         }
     }
-    $scope.height = resizableMinHeight;
-    if($scope.otherData.fromSearch){
-        $scope.height = resizableMaxHeight;    
+    $scope.guestCardHeight = resizableMinHeight;
+    if($scope.otherData.fromSearch && ($scope.guestFirstName != '')){
+        $scope.guestCardHeight = resizableMaxHeight;    
         $scope.cardVisible = true;   
         $scope.otherData.fromSearch = false;
     }
@@ -159,6 +159,22 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
     }
 
 
+    /**
+    * function to execute click on Guest card
+    */
+    $scope.clickedOnGuestCard = function($event){        
+        if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-s")[0])){ 
+            if($scope.cardVisible){
+                $scope.guestCardHeight = resizableMinHeight;
+                $scope.cardVisible = false;
+            }
+            else{ 
+                $scope.cardVisible = true;
+                $scope.guestCardHeight = resizableMaxHeight;
+            } 
+
+        }
+    };
     $scope.searchCompany = function(){
         var successCallBackFetchCompanies = function(data){
             console.log('reached successCallBackFetchCompanies');
