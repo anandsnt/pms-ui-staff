@@ -70,16 +70,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
          * company card search text entered
          */
         $scope.companySearchTextEntered = function() {
-
-            // var notBackSpace = (arguments[0].keyCode || arguments[0].which !== 8) ? true : false;
-
             if ($scope.companySearch.label.length === 0) {
                 $scope.companyCardResults = [];
                 $scope.companyLastSearchText = "";
             } else if ($scope.companySearch.label.length > 1) {
-                companyCardFetchInterval = window.setInterval(function() {
-                    displayFilteredResults();
-                }, 500);
+                displayFilteredResults();
             }
         };
 
@@ -120,7 +115,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
                 // we have changed data, so we dont hit server for each keypress
                 $scope.companyLastSearchText = $scope.companySearch.label;
-                clearInterval(companyCardFetchInterval);
             }
         };
 
@@ -191,7 +185,8 @@ sntRover.directive('autoComplete', ['highlightFilter', function(highlightFilter)
     return {
         restrict: 'A',
         scope: {
-            autoOptions: '=autoOptions'
+            autoOptions: '=autoOptions',
+            ngModel: '='
         },
         link: function(scope, el, attrs) {
             $(el).autocomplete(scope.autoOptions)
@@ -199,8 +194,9 @@ sntRover.directive('autoComplete', ['highlightFilter', function(highlightFilter)
                 ._renderItem = function(ul, item) {
                     ul.addClass('find-cards');
 
-                    var $result = $("<a></a>").text(item.label),
-                        $image = '<img src="' + item.image + '" />';
+                    var $content = highlightFilter(item.label, scope.ngModel),
+                        $result  = $("<a></a>").html( $content ),
+                        $image   = '<img src="' + item.image + '">';
 
                     $($image).prependTo($result);
 
