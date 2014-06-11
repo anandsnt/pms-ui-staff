@@ -51,5 +51,43 @@ function BaseCtrl($scope){
 		
 	};
 
+    /**
+    * function to get day against a date
+    * if you give today's date it will return 'Today', Tomorrow will return against tomorrow's date
+    * for others, it will return week day (Sunday, Monday..) 
+    */
+
+    $scope.getSimplifiedDayName = function(date){
+    	var returnText = "";  	
+        try{
+            var passedDate = new Date(date);
+            var currentDate = new Date();
+			var timeDiff = (passedDate.getTime() - currentDate.getTime());
+			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 		
+			console.log(diffDays)	;
+			if(diffDays == 0){
+				returnText = "Today";
+			}
+			else if(diffDays == 1){
+				returnText = "Tomorrow";
+			}
+			else {
+				var weekday = new Array(7);
+			    weekday[0] = "Sunday";
+			    weekday[1] = "Monday";
+			    weekday[2] = "Tuesday";
+			    weekday[3] = "Wednesday";
+			    weekday[4] = "Thursday";
+			    weekday[5] = "Friday";
+			    weekday[6] = "Saturday";  
+			    returnText = weekday[passedDate.getDay()];
+			}
+			return returnText;
+        }
+        catch(e){
+        	return date;
+        }
+        console.log(returnText);
+    };
 
 }
