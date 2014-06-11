@@ -58,7 +58,7 @@ function BaseCtrl($scope){
  	$scope.showCurrentDragItem = function(ev, ui){ 
 		$(ev.target).show();
  	}
- 	
+
     /**
     * function to get day against a date
     * if you give today's date it will return 'Today', Tomorrow will return against tomorrow's date
@@ -71,8 +71,7 @@ function BaseCtrl($scope){
             var passedDate = new Date(date);
             var currentDate = new Date();
 			var timeDiff = (passedDate.getTime() - currentDate.getTime());
-			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 		
-			console.log(diffDays)	;
+			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 			if(diffDays == 0){
 				returnText = "Today";
 			}

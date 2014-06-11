@@ -63,8 +63,7 @@ function BaseCtrl($scope){
             var passedDate = new Date(date);
             var currentDate = new Date();
 			var timeDiff = (passedDate.getTime() - currentDate.getTime());
-			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 		
-			console.log(diffDays)	;
+			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 			if(diffDays == 0){
 				returnText = "Today";
 			}
