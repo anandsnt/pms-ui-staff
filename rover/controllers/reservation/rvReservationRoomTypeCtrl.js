@@ -21,9 +21,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		};
 
 		var init = function() {
-
+			$scope.$emit('showLoader');
 			// console.log("APIRETURN", roomRates);
-			console.log("RESVOBJ", $scope.reservationData);
+			//console.log("RESVOBJ", $scope.reservationData);
 
 			//defaults and hardcoded values
 			$scope.tax = roomRates.tax || 20;
@@ -72,6 +72,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			//$scope.preferredType = 5;
 			$scope.roomTypes = roomRates.room_types;
 			$scope.filterRooms();
+			$scope.$emit('hideLoader');
 		};
 
 		$scope.handleBooking = function(roomId, rateId, event) {
@@ -226,7 +227,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				//TODO: Caluculate the default ID
 				if (value.rates.length > 0) {
 					value.defaultRate = value.rates[0];
-				} else{
+				} else {
 					value.defaultRate = -1;
 				}
 
@@ -272,6 +273,20 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			return baseRoomRate + (extraAdults * rateTable.extra_adult) + (children * rateTable.child);
 		}
+
+		// $scope.$watchCollection('reservationData.rooms[0]', function(newC, oldC) {
+		// 	if (newC.numAdults != oldC.numAdults || newC.numChildren != oldC.numChildren) {
+		// 		init();
+		// 	}
+		// });
+		
+		$scope.$watch('reservationData.rooms[0].numAdults',function(){
+			init();
+		});
+		$scope.$watch('reservationData.rooms[0].numChildren',function(){
+			init();
+		});
+
 
 		init();
 	}
