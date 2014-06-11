@@ -139,6 +139,14 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         $scope.guestCity = guest.address.city;
     }
 
+    $scope.createNewGuest = function(){
+        $scope.reservationData.guest.id = '';
+        $scope.reservationData.guest.firstName = guest.firstName;
+        $scope.reservationData.guest.lastName = guest.lastName;
+        $scope.reservationData.guest.city = guest.address.city;
+        $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
+    }
+
     $scope.changedTextbox = function(){
         alert('dddd');
     };

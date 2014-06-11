@@ -63,7 +63,7 @@
             <!-- Guest Card -->            
             <div id="guest-card-content" class="card-search card-content" ng-class="UICardContentCls('guest-card')">
                 <strong class="results-count" ng-show="guests.length > 0">{{ guests.length }} possible matches</strong>
-                <button id="new-guest" type="button" class="button green has-arrow skip">New Guest</button>
+                <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button>
                 <div id="search-guests-content" class="search-cards scrollable">
                     <div class="wrapper">
                         <ul id="search-guests-results" class="search-results">
