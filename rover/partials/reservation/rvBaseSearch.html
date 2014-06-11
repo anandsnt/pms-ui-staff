@@ -4,7 +4,7 @@
 
         <div id="dates" class="row">
             <div id="arriving" class="entry">
-                <label id="check-in-day-label" for="check-in-date">Arriving <span>today</span></label>
+                <label id="check-in-day-label" for="check-in-date">Arriving <span>{{getSimplifiedDayName(reservationData.arrivalDate)}}</span></label>
                 <!-- Styled check in date -->
 
                 <div class="entry-data">
@@ -25,7 +25,7 @@
 
 
             <div id="departing" class="entry"  >
-                <label id="check-out-day-label" for="check-out-date">Departing <span>tomorrow</span></label>
+                <label id="check-out-day-label" for="check-out-date">Departing <span> {{getSimplifiedDayName(reservationData.departureDate)}}</span></label>
                 <!-- Styled check out date -->
                 <div class="entry-data datepicker-date">
                     <input ui-date="departureDateOptions" name="check-out-date" id="check-out-date" type="text" class="datepicker" ui-date-format ng-model="reservationData.departureDate" ui-date readonly ng-change="departureDateChanged()"/>
@@ -43,21 +43,21 @@
                         <label for="room-1-adults" class="label">Adults</label>
                         <!-- Max Adults -->
                         <select name="room-1-adults" id="room-1-adults" ng-model="room.numAdults">
-                            <option ng-repeat="i in [1, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="$index==reservationData.numInfants">{{i}}</option>
+                            <option ng-repeat="i in [1, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
                         </select>
                     </div>
                     <div class="select children">
                         <label for="room-1-children" class="label">Children</label>
                         <!-- Max Children -->
                         <select name="room-1-children" id="room-1-children" ng-model="room.numChildren">
-                            <option ng-repeat="i in [1, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="$index==reservationData.numInfants">{{i}}</option>
+                            <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==room.numChildren">{{i}}</option>
                         </select>
                     </div>
                     <div class="select infants">
                         <label for="room-1-infants" class="label">Infants</label>
                         <!-- Max Infants -->
                         <select name="room-1-infants" id="room-1-infants" ng-model="room.numInfants">
-                            <option ng-repeat="i in [1, otherData.maxInfants] | makeRange" value={{i}} ng-selected="$index==reservationData.numInfants">{{i}}</option>
+                            <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}"ng-selected="i==room.numInfants">{{i}}</option>
                         </select>
                     </div>
                     <div class="select room-type">
