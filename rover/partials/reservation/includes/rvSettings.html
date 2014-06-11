@@ -31,7 +31,7 @@
                     <div class="select adults">
                         <label for="room-{{index+1}}-adults" class="label" translate>ADULTS</label>
                         <select name="room-{{index+1}}-adults" id="room-{{index+1}}-adults" ng-model="room.numAdults">
-                            <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
+                            <option ng-repeat="i in [1, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
                         </select>
                     </div>
                     <div class="select children">
