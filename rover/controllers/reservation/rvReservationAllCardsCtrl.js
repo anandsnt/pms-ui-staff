@@ -179,6 +179,22 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         var successCallBackFetchCompanies = function(data){
             console.log('reached successCallBackFetchCompanies');
             console.log(data);
+            $scope.companies = [];
+            if(data.accounts.length>0){
+                angular.forEach(data.accounts, function(item){
+                    var companyData = {};
+                    companyData.firstName = item.account_first_name;
+                    companyData.lastName = item.account_last_name;
+                    companyData.logo = item.company_logo;
+                    companyData.address = {};
+                    companyData.address.postalCode = item.address.postal_code;
+                    companyData.address.city = item.address.city;
+                    companyData.address.state = item.address.state;
+                    companyData.email = item.email;
+                    companyData.phone = item.phone;
+                    $scope.companies.push(companyData);
+                });
+            }
         }
         var paramDict = {
                             'name': $scope.companyName,
@@ -192,6 +208,22 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         var successCallBackFetchTravelAgents = function(data){
             console.log('reached successCallBackFetchTravelAgents');
             console.log(data);
+            $scope.travelAgents = [];
+            if(data.accounts.length>0){
+                angular.forEach(data.accounts, function(item){
+                    var travelAgentData = {};
+                    travelAgentData.firstName = item.account_first_name;
+                    travelAgentData.lastName = item.account_last_name;
+                    travelAgentData.logo = item.company_logo;
+                    travelAgentData.address = {};
+                    travelAgentData.address.postalCode = item.address.postal_code;
+                    travelAgentData.address.city = item.address.city;
+                    travelAgentData.address.state = item.address.state;
+                    travelAgentData.email = item.email;
+                    travelAgentData.phone = item.phone;
+                    $scope.travelAgents.push(travelAgentData);
+                });
+            }
         }
         var paramDict = {
                             'name': $scope.travelAgentName,

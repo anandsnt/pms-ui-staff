@@ -109,20 +109,20 @@
                 <div id="search-company-content" class="search-cards scrollable">
                     <div class="wrapper">
                         <ul id="search-company-results" class="search-results">
-                            <li>
+                            <li ng-repeat="company in companies">
                                 <a href="#" class="card-result">
                                     <figure class="guest-image">
                                         <img src="images/allianz-logo.jpg" alt="" />
                                     </figure>
                                     <div class="data">
                                         <div class="info">
-                                            <h2><span class="highlight">Allianz</span> Insurance</h2>
+                                            <h2><span class="highlight">{{ company.firstName }}</span> {{ company.lastName }}</h2>
                                             <div class="rate"><span class="label">Rate</span> 10% off RACK</div>
                                         </div>
-                                        <span class="confirmation">12341278</span>
-                                        <span class="icons icon-location">Dallas, TX</span>
-                                        <span class="icons icon-phone">302-555-1212</span>
-                                        <span class="icons icon-email-grey">allianz_contact@allianzlife.com</span>
+                                        <span class="confirmation">{{ company.address.postalCode }}</span>
+                                        <span class="icons icon-location">{{ company.address.city }}, {{ company.address.state }}</span>
+                                        <span class="icons icon-phone">{{ company.phone }}</span>
+                                        <span class="icons icon-email-grey">{{ company.email }}</span>
                                     </div>
                                 </a>
                             </li>
@@ -142,7 +142,23 @@
             <div id="travel-agent-card-content" class="card-search card-content" ng-class="UICardContentCls('travel-agent-card')">
                 <div id="search-travel-agent-content" class="search-cards scrollable">
                     <div class="wrapper">
-                        <ul id="search-travel-agent-results" class="search-results"></ul>
+                        <ul id="search-travel-agent-results" class="search-results">
+                            <li ng-repeat="travelAgent in travelAgents">
+                                <a href="#" class="card-result">
+                                    <div class="guest-image icons icon-travel-agent"></div>
+                                    <div class="data">
+                                        <div class="info">
+                                            <h2><span class="highlight">{{ travelAgent.firstName }}</span> {{ travelAgent.lastName }}</h2>
+                                            <div class="rate"><span class="label">Rate</span> 10% off RACK</div>
+                                        </div>
+                                        <span class="confirmation">{{ travelAgent.address.postalCode }}</span>
+                                        <span class="icons icon-location">{{ travelAgent.address.city }}, {{ travelAgent.address.state }}</span>
+                                        <span class="icons icon-phone">{{ travelAgent.phone }}</span>
+                                        <span class="icons icon-email-grey">{{ travelAgent.email }}</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div id="search-travel-agent-no-results" class="search-cards no-content">
