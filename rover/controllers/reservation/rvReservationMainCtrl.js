@@ -27,13 +27,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 rateName: '',
                 rateAvg:0 ,
                 rateTotal: 0,
-                addOns: [
-                    {
-                        name: '',
-                        avgAmount: '',
-                        totalAmount: ''
-                    }
-                ]
+                //addOns: [
+                    //{
+                       // name: '',
+                        //avgAmount: '',
+                        //totalAmount: ''
+                    //}
+               // ]
             }],
             totalTaxAmount: '',
             totalStayCost: '',
