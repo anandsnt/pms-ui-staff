@@ -63,7 +63,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             if ($scope.companySearch.label.length === 0) {
                 $scope.companyCardResults = [];
                 $scope.companyLastSearchText = "";
-            } else if ($scope.companySearch.label.length > 2) {
+            } else if ($scope.companySearch.label.length > 1) {
                 companyCardFetchInterval = window.setInterval(function() {
                     displayFilteredResults();
                 }, 500);
@@ -170,7 +170,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 // This code will be assimilated, resistance is futile
 // Code will be assimilated to become part of a better 
 // auto complete feature
-sntRover.directive('autoComplete', function() {
+sntRover.directive('autoComplete', ['highlightFilter', function(highlightFilter) {
     return {
         restrict: 'A',
         scope: {
@@ -183,7 +183,7 @@ sntRover.directive('autoComplete', function() {
                     ul.addClass('find-cards');
 
                     var $result = $("<a></a>").text(item.label),
-                        $image = '<img src="../images/' + item.image + '" />';
+                        $image = '<img src="' + item.image + '" />';
 
                     $($image).prependTo($result);
 
@@ -191,4 +191,4 @@ sntRover.directive('autoComplete', function() {
             };
         }
     };
-});
+}]);
