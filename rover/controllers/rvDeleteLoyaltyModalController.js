@@ -18,7 +18,7 @@ sntRover.controller('rvDeleteLoyaltyModalController',['$scope','$rootScope','$fi
 			};
 			var errorCallbackDeleteLoyalty = function(error){
 				$scope.dimissLoaderAndDialog();
-				$scope.errorMessage = error;
+				$scope.$emit('loyaltyDeletionError', error);
 			};
 			$scope.invokeApi(RVGuestCardLoyaltySrv.deleteLoyalty,$scope.loaytyID , successCallbackDeleteLoyalty, errorCallbackDeleteLoyalty);
 	};

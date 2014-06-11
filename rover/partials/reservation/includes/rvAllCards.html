@@ -1,8 +1,8 @@
-<div id="additional-cards" class="cards" ng-class="cardCls()" role="complementary" ui-jq="resizable" ui-options="resizableOptions" ng-controller="RVReservationAllCardsCtrl">
-    <div class="cards-wrapper">
+<div id="additional-cards" class="cards" ng-class="cardCls()" role="complementary" ui-jq="resizable" ui-options="resizableOptions" ng-click="clickedOnGuestCard($event)"  ng-controller="RVReservationAllCardsCtrl"  style="height: {{guestCardHeight}}px;" resize>
+    <div class="cards-wrapper" >
         
         <!-- Cards Header -->
-        <header class="cards-header">
+        <header class="cards-header" >
            
             <!-- Guest Card -->
             <div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')">
@@ -13,12 +13,13 @@
                 <form method="get" action="" name="search-guests" id="search-guests" class="card-search-form" role="search">
                     <div class="holder">
                         <div class="entry">
-                            <input name="gc-firstname" id="gc-firstname" placeholder="First Name" type="text" ng-value="reservationData.guest.firstName" class="masked-input fixed name h1" ng-keyup="searchGuest()" />
+                            <input name="gc-firstname" id="gc-firstname" placeholder="First Name" type="text" class="masked-input fixed name h1" rv-delay-textbox ng-model="guestFirstName" delay="1000" function-to-fire="searchGuest" />
+
                             <!-- Value in this input means we've searched for "Smi" in intial search screen -->
-                            <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" type="text" ng-value="reservationData.guest.lastName" class="masked-input fixed name h1" ng-keyup="searchGuest()" />
+                            <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" type="text" class="masked-input fixed name h1" rv-delay-textbox ng-model="guestLastName" delay="1000" function-to-fire="searchGuest" />
                             <!-- TODO: REMOVE inline display:block for the below 2 input elements, once the drawer open/close is captured -->
-                            <input name="gc-city" id="gc-city" placeholder="City" value="" type="text" ng-value="reservationData.guest.city" class="masked-input fixed city h1" ng-keyup="searchGuest()" />
-                            <input name="gc-loyalty" id="gc-loyalty" placeholder="Loyalty Number" value="" type="text" ng-value="reservationData.guest.loyaltyNumber" class="masked-input fixed loyalty h1" ng-keyup="searchGuest()" />
+                            <input name="gc-city" id="gc-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="guestCity" delay="1000" function-to-fire="searchGuest" />
+                            <input name="gc-loyalty" id="gc-loyalty" placeholder="Loyalty Number" type="text" class="masked-input fixed loyalty h1" rv-delay-textbox ng-model="guestLoyaltyNumber" delay="1000" function-to-fire="searchGuest" />
                         </div>
                     </div>
                 </form>
@@ -32,9 +33,9 @@
                 <form method="get" action="" name="search-company" id="search-company" class="card-search-form" role="search">
                     <div class="holder">
                         <div class="entry">
-                            <input name="cc-name" id="cc-name" placeholder="Company Name" value="" type="text" class="masked-input fixed long-name h1" />
-                            <input name="cc-city" id="cc-city" placeholder="City" value="" type="text" class="masked-input fixed city h1" />
-                            <input name="cc-corporate-id" id="cc-corporateid" placeholder="Corporate ID" value="" type="text" class="masked-input fixed code h1" />
+                            <input name="cc-name" id="cc-name" placeholder="Company Name" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="companyName" delay="1000" function-to-fire="searchCompany"/>
+                            <input name="cc-city" id="cc-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="companyCity" delay="1000" function-to-fire="searchCompany"/>
+                            <input name="cc-corporate-id" id="cc-corporateid" placeholder="Corporate ID" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="companyCorpId" delay="1000" function-to-fire="searchCompany" />
                         </div>
                     </div>
                 </form>
@@ -48,9 +49,9 @@
                 <form method="get" action="" name="search-travel-agent" id="search-travel-agent" class="card-search-form" role="search">
                     <div class="holder">
                         <div class="entry">
-                            <input name="tac-name" id="tac-name" placeholder="Travel Agent" value="" type="text" class="masked-input fixed long-name h1" />
-                            <input name="tac-city" id="tac-city" placeholder="City" value="" type="text" class="masked-input fixed city h1" />
-                            <input name="tac-iata" id="tac-iata" placeholder="IATA #" value="" type="text" class="masked-input fixed code h1" />
+                            <input name="tac-name" id="tac-name" placeholder="Travel Agent" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="travelAgentName" delay="1000" function-to-fire="searchTravelAgent" />
+                            <input name="tac-city" id="tac-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="travelAgentCity" delay="1000" function-to-fire="searchTravelAgent" />
+                            <input name="tac-iata" id="tac-iata" placeholder="IATA #" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="travelAgentIATA" delay="1000" function-to-fire="searchTravelAgent" />
                         </div>
                     </div>
                 </form>
@@ -62,56 +63,31 @@
             
             <!-- Guest Card -->            
             <div id="guest-card-content" class="card-search card-content" ng-class="UICardContentCls('guest-card')">
-                <strong class="results-count">2 possible matches</strong>
-                <button id="new-guest" type="button" class="button green has-arrow skip">New Guest</button>
+                <strong class="results-count" ng-show="guests.length > 0">{{ guests.length }} possible matches</strong>
+                <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button>
                 <div id="search-guests-content" class="search-cards scrollable">
                     <div class="wrapper">
                         <ul id="search-guests-results" class="search-results">
-                            <li>
-                                <a href="#">
+                            <li ng-repeat="guest in guests">
+                                <a ng-click="setGuest(guest, $event)">
                                     <figure class="guest-image">
-                                        <img src="guest1.jpg" alt="" />
+                                        <img src="{{ guest.image }}" alt="" />
                                     </figure>
                                     <div class="data">
-                                        <h2>Smith, Aaron</h2>
-                                        <span class="confirmation">12341278</span>
-                                        <span class="icons icon-location">Dallas, TX</span>
-                                        <span class="icons icon-phone">302-555-1212</span>
+                                        <h2>{{ guest.firstName }}, {{ guest.lastName }}</h2>
+                                        <span class="confirmation">{{ guest.address.postalCode}}</span>
+                                        <span class="icons icon-location">{{ guest.address.city }}, {{ guest.address.state }}</span>
+                                        <span class="icons icon-phone">{{ guest.address.phone }}</span>
                                     </div>
                                     <div class="stays">
                                         <div class="count">
-                                            <span class="label">Stays</span>2
+                                            <span class="label">Stays</span>
                                         </div>
                                         <div class="last-stay">
-                                            <span class="label">Last</span>
-                                            November 12, 2012
-                                            <strong>114</strong>
-                                            <em>Superior King</em>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <figure class="guest-image">
-                                        <img src="guest2.jpg" alt="" />
-                                        <span class="vip">VIP</span>
-                                    </figure>
-                                    <div class="data">
-                                        <h2>Smith, Adrianne</h2>
-                                        <span class="confirmation">14636117</span>
-                                        <span class="icons icon-location">Milwaukee, WI</span>
-                                        <span class="icons icon-phone">302-1562-14562</span>
-                                    </div>
-                                    <div class="stays">
-                                        <div class="count">
-                                            <span class="label">Stays</span>2
-                                        </div>
-                                        <div class="last-stay">
-                                            <span class="label">Last</span>
-                                            November 12, 2012
-                                            <strong>114</strong>
-                                            <em>Superior King</em>
+                                            <span class="label">Last</span>{{ guest.stayCount }}
+                                            {{ guest.lastStay.date }}
+                                            <strong>{{ guest.lastStay.room }}</strong>
+                                            <em>{{ guest.lastStay.roomType }}</em>
                                         </div>
                                     </div>
                                 </a>
@@ -130,9 +106,27 @@
             
             <!-- Company Card -->
             <div id="company-card-content" class="card-search card-content" ng-class="UICardContentCls('company-card')">
-                <div id="search-company-content" class="search-cards scrollable hidden">
+                <div id="search-company-content" class="search-cards scrollable">
                     <div class="wrapper">
-                        <ul id="search-company-results" class="search-results"></ul>
+                        <ul id="search-company-results" class="search-results">
+                            <li ng-repeat="company in companies">
+                                <a href="#" class="card-result">
+                                    <figure class="guest-image">
+                                        <img src="images/allianz-logo.jpg" alt="" />
+                                    </figure>
+                                    <div class="data">
+                                        <div class="info">
+                                            <h2><span class="highlight">{{ company.firstName }}</span> {{ company.lastName }}</h2>
+                                            <div class="rate"><span class="label">Rate</span> 10% off RACK</div>
+                                        </div>
+                                        <span class="confirmation">{{ company.address.postalCode }}</span>
+                                        <span class="icons icon-location">{{ company.address.city }}, {{ company.address.state }}</span>
+                                        <span class="icons icon-phone">{{ company.phone }}</span>
+                                        <span class="icons icon-email-grey">{{ company.email }}</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div id="search-company-no-results" class="search-cards no-content">
@@ -146,9 +140,25 @@
             
             <!-- Travel Agent Card -->
             <div id="travel-agent-card-content" class="card-search card-content" ng-class="UICardContentCls('travel-agent-card')">
-                <div id="search-travel-agent-content" class="search-cards scrollable hidden">
+                <div id="search-travel-agent-content" class="search-cards scrollable">
                     <div class="wrapper">
-                        <ul id="search-travel-agent-results" class="search-results"></ul>
+                        <ul id="search-travel-agent-results" class="search-results">
+                            <li ng-repeat="travelAgent in travelAgents">
+                                <a href="#" class="card-result">
+                                    <div class="guest-image icons icon-travel-agent"></div>
+                                    <div class="data">
+                                        <div class="info">
+                                            <h2><span class="highlight">{{ travelAgent.firstName }}</span> {{ travelAgent.lastName }}</h2>
+                                            <div class="rate"><span class="label">Rate</span> 10% off RACK</div>
+                                        </div>
+                                        <span class="confirmation">{{ travelAgent.address.postalCode }}</span>
+                                        <span class="icons icon-location">{{ travelAgent.address.city }}, {{ travelAgent.address.state }}</span>
+                                        <span class="icons icon-phone">{{ travelAgent.phone }}</span>
+                                        <span class="icons icon-email-grey">{{ travelAgent.email }}</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div id="search-travel-agent-no-results" class="search-cards no-content">

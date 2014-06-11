@@ -32,11 +32,12 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 		RVReservationCardSrv.setGuestData($scope.data.guest_details);
 
 		var fetchGuestcardDataSuccessCallback = function(data){
-			
+	
 			var contactInfoData = {'data': data,
 									'countries': $scope.data.countries,
-									'userId':$scope.data.user_id,
+									'userId':data.user_id,
 									'avatar':$scope.data.avatar,
+									'guestId':data.guest_id,
 									'vip':$scope.data.vip};
 	        $scope.$emit('guestCardUpdateData',contactInfoData);
 	        $scope.$emit('hideLoader');
@@ -44,6 +45,8 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 	        	"user_id":data.user_id,
 	        	"guest_id":data.guest_id
 	        };
+	        console.log("---------------------GUEST INFO----------------------");
+	        console.log(JSON.stringify(guestInfo));
 	        $scope.showGuestPaymentList(guestInfo);
 	    };
 	    var fetchGuestcardDataFailureCallback = function(data){

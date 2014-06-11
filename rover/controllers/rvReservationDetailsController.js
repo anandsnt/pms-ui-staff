@@ -1,5 +1,5 @@
 
-sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv','$filter', 'RVNewsPaperPreferenceSrv', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv,$filter, RVNewsPaperPreferenceSrv){
+sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv','$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv,$filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv){
 
 	BaseCtrl.call(this, $scope);
 	$scope.reservationCardSrv = RVReservationCardSrv;
@@ -11,6 +11,7 @@ sntRover.controller('reservationDetailsController',['$scope','RVReservationCardS
 	$scope.reservationnote = "";
 	$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
 	$scope.selectedLoyalty = {};
+	$scope.$emit('HeaderChanged', $filter('translate')('STAY_CARD_TITLE'));
 	$scope.$watch(
         function() { return (typeof $scope.reservationData.reservation_card.wake_up_time.wake_up_time != 'undefined')?$scope.reservationData.reservation_card.wake_up_time.wake_up_time:$filter('translate')('NOT_SET'); },
         function(wakeuptime) { $scope.wake_up_time = wakeuptime; }

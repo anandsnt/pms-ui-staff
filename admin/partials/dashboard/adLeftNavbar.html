@@ -3,27 +3,24 @@
 	<a id="{{menuImage}}"class="nav-toggle updated" ng-click="$emit('navToggled')"  ng-class="{'active': menuOpen}">Menu
 		<span></span>
 	</a>
-
-	
 	<!-- For Hotel Admin -->
 	<ul ng-show ="isHotelAdmin">
 		<li class="menu-title">
 			MENU
-		</li>	
-
-
+		</li>
 		<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex.length > 0 && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0), 'last-child' : $last}" class="rover-icon-menu admin-bar {{menuItem.iconClass}}"> 			
 			<a href="{{menuItem.action}}" translate="{{menuItem.title}}">
 			</a>
 			<div class="pointer" ng-show="menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu">
-			</li>
+			</div>
+		</li>
 
-	<!-- 	<li id="rover-info">
+		<!--<li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="">
 			Version 1.0
 		</li> -->
-
 	</ul>
+
 	<ul class="float-bottom" ng-show ="isHotelAdmin">
 		<li class="active">
 			<label class="icon-menu icon-settings active"></label>
@@ -37,8 +34,7 @@
 			<a ng-click="$emit('navToggled')" href="/logout">
 				Sign Out
 			</a>
-
-
+		</li>
 	</ul>
 
 	<!-- For SNT Admin -->
@@ -57,11 +53,11 @@
 
 	<div id="submenu" ng-show="menuOpen && 	showSubMenu && activeSubMenu.length > 0">
 		<ul>
-			<li ng-repeat="menuItem in activeSubMenu">
+			<li class="admin" ng-repeat="menuItem in activeSubMenu">
 				<a href="{{menuItem.action}}" ng-click="$emit('navToggled')" translate="{{menuItem.title}}">
 				</a>
 			</li>
-			<li class="filler"></li>
+			<!-- <li class="filler"></li> -->
 		</ul>
 	</div>
 </nav>

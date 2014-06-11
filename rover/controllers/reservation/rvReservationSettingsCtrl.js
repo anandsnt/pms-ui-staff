@@ -1,15 +1,20 @@
 sntRover.controller('RVReservationSettingsCtrl', ['$scope', function($scope){
     
     $scope.reservationSettingsVisible = false;
+
+    var resizableMinWidth = 10;
+    var resizableMaxWidth = 260;
+    $scope.reservationSettingsWidth = resizableMinWidth;
     /**
 	* scroller options
 	*/
 	$scope.resizableOptions = 
 	{	
-		minWidth: '10',
-		maxWidth: '260',
+		minWidth: resizableMinWidth,
+		maxWidth: resizableMaxWidth,
 		handles: 'e',
 		resize: function( event, ui ) {
+
 		},
 		stop: function(event, ui){
 			preventClicking = true;
@@ -60,4 +65,21 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', function($scope){
     	}
 
     };
+
+    /**
+    * function to execute click on Guest card
+    */
+    $scope.clickedOnReservationSettings = function($event){        
+        if(getParentWithSelector($event, document.getElementsByClassName("ui-resizable-e")[0])){ 
+            if($scope.reservationSettingsVisible){
+                $scope.reservationSettingsWidth = resizableMinWidth;
+                $scope.reservationSettingsVisible = false;
+            }
+            else{ 
+                $scope.reservationSettingsVisible = true;
+                $scope.reservationSettingsWidth = resizableMaxWidth;
+            } 
+
+        }
+    };    
 }]);

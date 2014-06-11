@@ -5,6 +5,7 @@ sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialo
 		var reservationId = $scope.reservationData.reservation_card.reservation_id;
 		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
 		var successCallback = function(data){
+			$scope.closeActivityIndication();
 	    	$scope.data = {};
 	    	$scope.data = data;
 	    	
@@ -24,7 +25,7 @@ sntRover.controller('RVKeyEmailPopupController',[ '$rootScope','$scope','ngDialo
 				$scope.data.colorCodeClass = 'check-out';
 				$scope.data.colorCodeClassForClose = 'red';
 			}
-			$scope.closeActivityIndication();
+			
 	    };
 	    
 	  	var failureCallback = function(data){
