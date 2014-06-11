@@ -168,6 +168,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     }
                 }
             }
+            //In all data section, if the restriction is disabled(if enabled, all rates have the restriction enabled for that date, hence not mixed),
+            //we should check if the restriction is mixed restriction
             if($scope.popupData.all_data_selected && !item.isRestrictionEnabled && isMixed(itemID)) {
                 item.isMixed = true;
             }
@@ -224,7 +226,8 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
                     }
                 }
             }
-
+            //In all data section, if the restriction is disabled(if enabled, all roomrates have the restriction enabled for that date, hence not mixed),
+            //we should check if the restriction is mixed restriction
             if($scope.popupData.all_data_selected && !item.isRestrictionEnabled && isMixed(itemID)) {
                 item.isMixed = true;
             }
@@ -479,9 +482,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
 
     }
 
-   
+    /**
+    * Click handler for save button in popup.
+    * Calls the API and dismiss the popup on success
+    */
     $scope.saveRestriction = function(){
-
+        //The dates to which the restriction should be applied
         var datesSelected = getAllSelectedDates();
     	
     	var data = {};
@@ -491,10 +497,12 @@ sntRover.controller('UpdatePriceAndRestrictionsCtrl', ['$q', '$scope', 'ngDialog
             data.room_type_id = $scope.popupData.selectedRoomType;
         }
     	data.details = calculateDetailsToSave(datesSelected);
-    	$scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data);
-    	
-    	$scope.refreshData();
-    	ngDialog.close();
+        var saveRestrictionSuccess = function() {
+            $scope.refreshCalendar();
+            ngDialog.close();
+        };
+
+    	$scope.invokeApi(UpdatePriceAndRestrictionsSrv.savePriceAndRestrictions, data, saveRestrictionSuccess);
     	
     };
 
