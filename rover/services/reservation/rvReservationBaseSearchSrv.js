@@ -5,11 +5,22 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
         this.fetchBaseSearchData = function() {
             var deferred = $q.defer();
 
+            that.fetchBussinessDate = function() {
+                var url = '/api/business_dates/active';
+                RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                    that.reservation.businessDate = data.business_date;
+                    deferred.resolve(that.reservation);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+                return deferred.promise;
+            };
+
             that.fetchRoomTypes = function() {
                 var url = 'api/room_types.json';
                 RVBaseWebSrvV2.getJSON(url).then(function(data) {
                     that.reservation.roomTypes = data.results;
-                    deferred.resolve(that.reservation);
+                    that.fetchBussinessDate();
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
@@ -44,7 +55,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             var arr = new Date(typeof data.fromdate == 'string' ? Date.parse(data.fromDate) : data.fromDate);
             var dep = new Date(typeof data.todate == 'string' ? Date.parse(data.toDate) : data.toDate);
 
-            this.dates = {
+            that.dates = {
                 from: (arr.toISOString().slice(0, 10).replace(/-/g, "-")),
                 to: (dep.toISOString().slice(0, 10).replace(/-/g, "-"))
             }
@@ -55,8 +66,8 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
 
         this.fetchRoomRates = function(data) {
             var deferred = $q.defer();
-            if (typeof this.dates != 'undefined') {
-                var url = '/api/availability?from_date=' + dates.from + '&to_date=' + dates.to;
+            if (typeof that.dates != 'undefined') {
+                var url = '/api/availability?from_date=' + that.dates.from + '&to_date=' + that.dates.to;
             } else {
                 var dates = {
                     from: (new Date().toISOString().slice(0, 10).replace(/-/g, "-")),

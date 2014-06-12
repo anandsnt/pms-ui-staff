@@ -25,6 +25,9 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		
 	}
 
+	/**
+	* Fetches all the payment methods
+	*/
 	var fetchPaymentMethods = function(){
 		var paymentFetchSuccess = function(data) {
 			$scope.data.paymentMethods = data;
@@ -36,6 +39,10 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 
 	};
 
+	/**
+	* Click handler for confirm email Checkbox.
+	* If checked, copies the guest email to the confirm email
+	*/
 	$scope.confirmEmailCheckboxClicked = function(){
 
 		$scope.reservationData.guest.sendConfirmMailTo = '';
@@ -44,8 +51,10 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		} 
 	};
 
+	/**
+	* Compute the reservation data from the data modal to be passed to the API
+	*/
 	var computeReservationDataToSave = function() {
-		//TODO: add confirm emeil
 		var data = {};
 		data.arrival_date = $scope.reservationData.arrivalDate;
 		data.arrival_time = getTimeFormated($scope.reservationData.checkinTime.hh, 
@@ -62,6 +71,7 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		data.rate_id = parseInt($scope.reservationData.rooms[0].rateId);
 		data.room_type_id = parseInt($scope.reservationData.rooms[0].roomTypeId);
 
+		// Guest details
 		if($scope.reservationData.guest.id != null && $scope.reservationData.guest.id != '') {
 			data.guest_detail_id = $scope.reservationData.guest.id;
 		} else {
@@ -78,21 +88,26 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 			
 		}
 
-		/*if($scope.reservationData.company.id != null) {
+		//Company card
+		if($scope.reservationData.company.id != null && $scope.reservationData.company.id != '') {
 			data.company_id = $scope.reservationData.company.id;
 		} else {
-			data.company = {};
-			data.company.name = $scope.reservationData.company.name;
-			data.company.corporate_id = $scope.reservationData.company.corporateid;
+			if($scope.reservationData.company.name != "") {
+				data.company = {};
+				data.company.name = $scope.reservationData.company.name;
+				data.company.account_number = $scope.reservationData.company.corporateid;
+			}
 		}
-
-		if($scope.reservationData.travelAgent.id != null) {
+		//Travel agent
+		if($scope.reservationData.travelAgent.id != null && $scope.reservationData.travelAgent.id != '') {
 			data.travel_agent_id = $scope.reservationData.travelAgent.id;
 		} else {
-			data.travel_agent = {};
-			data.travel_agent.name = $scope.reservationData.travelAgent.name;
-			data.travel_agent.corporate_id = $scope.reservationData.travelAgent.iataNumber; //TODO: verify iataNum vs corporateid
-		}*/
+			if($scope.reservationData.travelAgent.name != "") {
+				data.travel_agent = {};
+				data.travel_agent.name = $scope.reservationData.travelAgent.name;
+				data.travel_agent.account_number = $scope.reservationData.travelAgent.iataNumber; //TODO: verify iataNum vs corporateid
+			}
+		}
 
 		data.reservation_type_id = parseInt($scope.reservationData.demographics.reservationType);
 		data.source_id = parseInt($scope.reservationData.demographics.source);
@@ -100,26 +115,15 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		data.booking_origin_id = parseInt($scope.reservationData.demographics.origin);
 		data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
 
-		console.log(JSON.stringify(data));
-
 		return data;
 
 	};
 
+	/**
+	* Click handler for confirm button - 
+	* Creates the reservation and Go back to the reservation search screen
+	*/
 	$scope.clickedConfirmAndGoToDashboard = function() {
-		var postData = computeReservationDataToSave();
-
-		var saveSuccess = function(data) {
-			$scope.$emit('hideLoader');
-			goToReservationSearch();
-		};
-
-		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
-
-
-	};
-
-	$scope.clickedConfirmAndCreateNew = function(){
 		var postData = computeReservationDataToSave();
 
 		var saveSuccess = function(data) {
@@ -131,6 +135,25 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
 	};
 
+	/**
+	* Click handler for confirm button - 
+	* Creates the reservation and Go back to the reservation search screen
+	* Will retain the guest information
+	*/
+	$scope.clickedConfirmAndCreateNew = function(){
+		var postData = computeReservationDataToSave();
+
+		var saveSuccess = function(data) {
+			$scope.$emit('hideLoader');
+			goToReservationSearch();
+		};
+		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
+	};
+
+	/**
+	* Click handler for cancel button - Go back to the reservation search screen
+	* Does not save the reservation
+	*/
 	$scope.cancelButtonClicked = function(){
 		$scope.initReservationData();
 		goToReservationSearch();

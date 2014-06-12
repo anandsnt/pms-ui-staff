@@ -1,17 +1,12 @@
 sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state',
-
-
-
     function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state) {
         BaseCtrl.call(this, $scope);
 
         //company card search query text
-        $scope.companySearch = {
-            label: '',
-            id: '',
-        };
+        $scope.companySearchText = '';
         $scope.companyLastSearchText = "";
         $scope.companyCardResults = [];
+
         //Setting number of nights 1
         $scope.reservationData.numNights = 1;
 
@@ -21,7 +16,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         var companyCardFetchInterval = null;
 
         var init = function() {
-            $scope.reservationData.arrivalDate = dateFilter(new Date(), 'yyyy-MM-dd');
+            $scope.businessDate =  baseSearchData.businessDate;
+            $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate ), 'yyyy-MM-dd');
             $scope.setDepartureDate();
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
             $scope.otherData.maxAdults = (baseSearchData.settings.max_guests.max_adults === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_adults;
@@ -29,8 +25,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.otherData.maxInfants = (baseSearchData.settings.max_guests.max_infants === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_infants;
             $scope.otherData.fromSearch = true;
         };
-
-
 
         $scope.setDepartureDate = function() {
             var dateOffset = $scope.reservationData.numNights;
@@ -44,11 +38,13 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         }
 
         $scope.arrivalDateChanged = function() {
+            $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
             $scope.setDepartureDate();
         };
 
 
         $scope.departureDateChanged = function() {
+            $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
 
             var arrivalDate = new Date($scope.reservationData.arrivalDate);
             arrivalDay = arrivalDate.getDate();
@@ -65,10 +61,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
          * company card search text entered
          */
         $scope.companySearchTextEntered = function() {
-            if ($scope.companySearch.label.length === 0) {
+            if ($scope.companySearchText.length === 0) {
                 $scope.companyCardResults = [];
                 $scope.companyLastSearchText = "";
-            } else if ($scope.companySearch.label.length > 1) {
+            } else if ($scope.companySearchText.length > 1) {
                 displayFilteredResults();
             }
         };
@@ -84,7 +80,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         };
 
         var displayFilteredResults = function() {
-            if ($scope.companySearch.label != '' && $scope.companyLastSearchText != $scope.companySearch.label) {
+            if ($scope.companySearchText != '' && $scope.companyLastSearchText != $scope.companySearchText) {
 
                 var successCallBackOfCompanySearch = function(data) {
                     $scope.$emit("hideLoader");
@@ -94,7 +90,13 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                         eachItem = {
                             label: item.account_first_name + " " + item.account_last_name,
                             value: item.account_first_name + " " + item.account_last_name,
-                            image: item.company_logo
+                            image: item.company_logo,
+                            // only for our understanding
+                            // jq-ui autocomplete wont use it
+                            type: item.account_type,
+                            id: item.id,
+                            corporateid: '',
+                            iataNumber: ''
                         };
                         $scope.companyCardResults.push(eachItem);
 
@@ -105,11 +107,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                     });
                 };
                 var paramDict = {
-                    'query': $scope.companySearch.label.trim()
+                    'query': $scope.companySearchText.trim()
                 };
                 $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
                 // we have changed data, so we dont hit server for each keypress
-                $scope.companyLastSearchText = $scope.companySearch.label;
+                $scope.companyLastSearchText = $scope.companySearchText;
             }
         };
 
@@ -122,9 +124,17 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             },
             source: $scope.companyCardResults,
             select: function(event, ui) {
-                $scope.companySearch.label = ui.item.label;
-                $scope.companySearch.id = ui.item.id;
-                return false;
+                if ( ui.item.type === 'COMPANY' ) {
+                    $scope.reservationData.company.id          = ui.item.id;
+                    $scope.reservationData.company.name        = ui.item.label;
+                    $scope.reservationData.company.corporateid = ui.item.corporateid;
+                } else {
+                    $scope.reservationData.travelAgent.id         = ui.item.id;
+                    $scope.reservationData.travelAgent.name       = ui.item.label;
+                    $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
+                };
+
+                // DO NOT return false;
             }
         };
 
@@ -138,7 +148,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             dateFormat: 'mm-dd-yy',
             numberOfMonths: 2,
             yearRange: '-0:+0',
-            minDate: 0,
+            minDate:  new Date($scope.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation arriving');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
@@ -157,7 +167,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             dateFormat: 'mm-dd-yy',
             numberOfMonths: 2,
             yearRange: '-0:+0',
-            minDate: 0,
+            minDate:  new Date($scope.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation departing');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');

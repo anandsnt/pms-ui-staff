@@ -16,9 +16,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 ampm: ''
             },
             numNights: '', // computed value, ensure to keep it updated
-            roomCount: '', // Hard coded for now,
+            roomCount: 1, // Hard coded for now,
             rooms: [{
-                numAdults: 1,
+                numAdults: 0,
                 numChildren: 0,
                 numInfants: 0,
                 roomTypeId: '',

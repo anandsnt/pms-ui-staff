@@ -3,12 +3,12 @@
 <div class="scrollable"  ng-iscroll="reservation-settings" ng-iscroll-delay="500">
     <div class="wrapper" >
         <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
-            <a href="#sidebar-nights" class="settings-title toggle has-arrow active" >
+            <a class="settings-title toggle has-arrow active" >
                 <span class="title" translate>NIGHTS</span>
                 <span class="value">{{reservationData.numNights}}</span>
             </a>
             <div id="sidebar-nights" class="settings-content">
-                <a href="reservations/change-dates/" class="stay-dates" data-transition="nested-view">
+                <a class="stay-dates" data-transition="nested-view">
                     <div class="check-in">
                         <span class="title" >{{'ARRIVING_LABEL'|translate}} <span translate>{{getSimplifiedDayName(reservationData.arrivalDate)}}</span></span>
                         <strong class="date">{{reservationData.arrivalDate|date:fullDateFullMonthYear}}</strong>
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div ui-jq="accordion" ui-options="accordionInitiallyCollapsedOptions">
-            <a href="#sidebar-rooms" class="settings-title toggle has-arrow active">
+            <a class="settings-title toggle has-arrow active">
                 <span class="title" translate>ROOMS_LABEL</span>
                 <span class="value">{{reservationData.roomCount}}</span>
             </a>
@@ -68,7 +68,7 @@
             </div>
         </div>
         <div ui-jq="accordion" ui-options="accordionInitiallyCollapsedOptions">
-            <a href="#sidebar-codes" class="settings-title toggle has-arrow active">
+            <a class="settings-title toggle has-arrow active">
                 <span class="title" translate>CODES_LABEL</span>
                 <span class="value">0</span>
             </a>
@@ -139,7 +139,7 @@
                 </div>
             </div>
             <div ui-jq="accordion" ui-options="accordionInitiallyCollapsedOptions">
-                <a href="#sidebar-demographics" class="settings-title toggle has-arrow active">
+                <a class="settings-title toggle has-arrow active">
                     <span class="title" translate>DEMOGRAPHICS_LABEL</span>
                 </a>
                 <div id="sidebar-demographics" class="settings-content">

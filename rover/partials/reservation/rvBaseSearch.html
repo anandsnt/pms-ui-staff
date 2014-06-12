@@ -73,7 +73,7 @@
         <div id="guest" class="row">
             <div id="first-name" class="entry">
                 <label for="guest-first-name">Guest <span>(optional)</span></label>
-                <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First name" ng-model="reservationData.guest.firstName" />
+                <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" ng-model="reservationData.guest.firstName" />
             </div>
             <div id="last-name" class="entry no-label">
                 <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" ng-model="reservationData.guest.lastName" />
@@ -82,7 +82,7 @@
         <div id="company-agent" class="row">
             <div id="autocomplete-search" class="entry">
                 <label for="company-or-agent">Company / Travel Agent <span>(optional)</span></label>
-                <input auto-complete auto-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearch.label" ng-keyup="companySearchTextEntered($event)" />
+                <input auto-complete auto-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearchText" ng-keyup="companySearchTextEntered($event)" />
             </div>
         </div>
         <button id="find-rooms-and-rates" type="button" class="button green" ng-click="navigate()">Find Rooms &amp; Rates</button>
