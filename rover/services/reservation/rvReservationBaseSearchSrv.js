@@ -55,7 +55,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             var arr = new Date(typeof data.fromdate == 'string' ? Date.parse(data.fromDate) : data.fromDate);
             var dep = new Date(typeof data.todate == 'string' ? Date.parse(data.toDate) : data.toDate);
 
-            this.dates = {
+            that.dates = {
                 from: (arr.toISOString().slice(0, 10).replace(/-/g, "-")),
                 to: (dep.toISOString().slice(0, 10).replace(/-/g, "-"))
             }
@@ -66,8 +66,8 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
 
         this.fetchRoomRates = function(data) {
             var deferred = $q.defer();
-            if (typeof this.dates != 'undefined') {
-                var url = '/api/availability?from_date=' + dates.from + '&to_date=' + dates.to;
+            if (typeof that.dates != 'undefined') {
+                var url = '/api/availability?from_date=' + that.dates.from + '&to_date=' + that.dates.to;
             } else {
                 var dates = {
                     from: (new Date().toISOString().slice(0, 10).replace(/-/g, "-")),
