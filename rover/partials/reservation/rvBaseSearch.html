@@ -44,7 +44,7 @@
                         <label for="room-1-adults" class="label">Adults</label>
                         <!-- Max Adults -->
                         <select name="room-1-adults" id="room-1-adults" ng-model="room.numAdults">
-                            <option ng-repeat="i in [1, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
+                            <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
                         </select>
                     </div>
                     <div class="select children">
@@ -73,7 +73,7 @@
         <div id="guest" class="row">
             <div id="first-name" class="entry">
                 <label for="guest-first-name">Guest <span>(optional)</span></label>
-                <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First name" ng-model="reservationData.guest.firstName" />
+                <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" ng-model="reservationData.guest.firstName" />
             </div>
             <div id="last-name" class="entry no-label">
                 <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" ng-model="reservationData.guest.lastName" />
