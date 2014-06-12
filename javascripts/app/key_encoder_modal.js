@@ -326,7 +326,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		}
 	    
 	    var keyData = [];
-	    alert(Object.keys(that.keyData.key_info[0])[0]);
+	    
 	    //Safelock key
 	    if(Object.keys(that.keyData.key_info[0])[0] == "base64"){
 	    	keyData.push(that.keyData.key_info[0].base64)
