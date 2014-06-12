@@ -64,12 +64,14 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
 
     $scope.guestCardHeight = resizableMinHeight;
-    if($scope.otherData.fromSearch && ($scope.guestFirstName != '')){
-        $scope.openGuestCard();
-        $scope.otherData.fromSearch = false;
+
+    var init = function(){
+        if($scope.otherData.fromSearch && ( $scope.guestFirstName != '' || $scope.guestLastName != '' ) ){
+            $scope.openGuestCard();
+            $scope.searchGuest();
+            $scope.otherData.fromSearch = false;
+        }
     }
-
-
     
     // UICards first index will be active card
     $scope.UICards = ['guest-card', 'company-card', 'travel-agent-card'];
@@ -128,13 +130,15 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     guestData.id = item.id;
                     guestData.firstName = item.first_name;
                     guestData.lastName = item.last_name;
-                    guestData.address = {};
-                    guestData.address.phone = item.home_phone;
-                    guestData.address.city = item.address.city;
-                    guestData.address.state = item.address.state;
-                    guestData.address.postalCode = item.address.postal_code;
+                    if ( item.address != null ){
+                        guestData.address = {};
+                        guestData.address.city = item.address.city;
+                        guestData.address.state = item.address.state;
+                        guestData.address.postalCode = item.address.postal_code;
+                    }
                     guestData.stayCount = item.stay_count;
                     guestData.lastStay = {};
+                    guestData.phone = item.home_phone;
                     guestData.lastStay.date = item.last_stay.date;
                     guestData.lastStay.room = item.last_stay.room;
                     guestData.lastStay.roomType = item.last_stay.room_type;
@@ -142,6 +146,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 });
             }
         }
+
+        console.log('reached');
         var paramDict = {
                             'first_name': $scope.guestFirstName,
                             'last_name': $scope.guestLastName,
@@ -151,7 +157,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         $scope.invokeApi(RVReservationAllCardsSrv.fetchGuests, paramDict, successCallBackFetchGuest);
     }
 
-    $scope.setGuest = function(guest, $event){
+    $scope.selectGuest = function(guest, $event){
         $event.stopPropagation();
         // Update main reservation scope
         $scope.reservationData.guest.id = guest.id;
@@ -169,9 +175,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
     $scope.createNewGuest = function(){
         $scope.reservationData.guest.id = '';
-        $scope.reservationData.guest.firstName = guest.firstName;
-        $scope.reservationData.guest.lastName = guest.lastName;
-        $scope.reservationData.guest.city = guest.address.city;
+        $scope.reservationData.guest.firstName = $scope.guestFirstName;
+        $scope.reservationData.guest.lastName = $scope.guestLastName;
+        $scope.reservationData.guest.city = $scope.guestCity;
         $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
         $scope.closeGuestCard();
     }
@@ -197,16 +203,19 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         var successCallBackFetchCompanies = function(data){
             $scope.$emit("hideLoader");
             $scope.companies = [];
-            if(data.accounts.length>0){
+            if(data.accounts.length > 0){
                 angular.forEach(data.accounts, function(item){
                     var companyData = {};
+                    companyData.id = item.id;
                     companyData.firstName = item.account_first_name;
                     companyData.lastName = item.account_last_name;
                     companyData.logo = item.company_logo;
-                    companyData.address = {};
-                    companyData.address.postalCode = item.address.postal_code;
-                    companyData.address.city = item.address.city;
-                    companyData.address.state = item.address.state;
+                    if ( item.address != null ){
+                        companyData.address = {};
+                        companyData.address.postalCode = item.address.postal_code;
+                        companyData.address.city = item.address.city;
+                        companyData.address.state = item.address.state;
+                    }
                     companyData.email = item.email;
                     companyData.phone = item.phone;
                     $scope.companies.push(companyData);
@@ -221,24 +230,42 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
     }
 
+    $scope.selectCompany = function(company, $event){
+        $event.stopPropagation();
+        // Update main reservation scope
+        $scope.reservationData.company.id = company.id;
+        $scope.reservationData.company.name = company.firstName + " " + company.lastName;
+        $scope.reservationData.company.corporateid = $scope.companyCorpId;
+
+        // update current controller scope
+        $scope.companyName = company.firstName + " " + company.lastName;
+        $scope.companyCity = company.city;
+        $scope.closeGuestCard();
+    }
+
     $scope.searchTravelAgent = function(){
         var successCallBackFetchTravelAgents = function(data){
             $scope.$emit("hideLoader");
             $scope.travelAgents = [];
-            if(data.accounts.length>0){
+            console.log(data.accounts.length);
+            if(data.accounts.length > 0){
                 angular.forEach(data.accounts, function(item){
                     var travelAgentData = {};
+                    travelAgentData.id = item.id;
                     travelAgentData.firstName = item.account_first_name;
                     travelAgentData.lastName = item.account_last_name;
                     travelAgentData.logo = item.company_logo;
-                    travelAgentData.address = {};
-                    travelAgentData.address.postalCode = item.address.postal_code;
-                    travelAgentData.address.city = item.address.city;
-                    travelAgentData.address.state = item.address.state;
+                    if ( item.address != null ){
+                        travelAgentData.address = {};
+                        travelAgentData.address.postalCode = item.address.postal_code;
+                        travelAgentData.address.city = item.address.city;
+                        travelAgentData.address.state = item.address.state;
+                    }
                     travelAgentData.email = item.email;
                     travelAgentData.phone = item.phone;
                     $scope.travelAgents.push(travelAgentData);
                 });
+            console.log($scope.travelAgents);
             }
         }
         var paramDict = {
@@ -248,5 +275,21 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                         };
         $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
     }
+
+    $scope.selectTravelAgent = function(travelAgent, $event){
+        $event.stopPropagation();
+        console.log(travelAgent);
+        // Update main reservation scope
+        $scope.reservationData.travelAgent.id = travelAgent.id;
+        $scope.reservationData.travelAgent.name = travelAgent.firstName + " " + travelAgent.lastName;
+        $scope.reservationData.travelAgent.iataNumber = $scope.travelAgentIATA;
+
+        // update current controller scope
+        $scope.travelAgentName = travelAgent.firstName + " " + travelAgent.lastName;
+        $scope.travelAgentCity = travelAgent.city;
+        $scope.closeGuestCard();
+    }
+
+    init();
 
 }]);

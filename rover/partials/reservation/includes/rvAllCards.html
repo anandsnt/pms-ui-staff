@@ -13,7 +13,7 @@
                 <form method="get" action="" name="search-guests" id="search-guests" class="card-search-form" role="search">
                     <div class="holder">
                         <div class="entry">
-                            <input name="gc-firstname" id="gc-firstname" placeholder="First Name" type="text" ng-model="guestFirstName" class="masked-input fixed name h1" ng-keyup="searchGuest()"/>
+                            <input name="gc-firstname" id="gc-firstname" placeholder="First Name" type="text" class="masked-input fixed name h1" rv-delay-textbox ng-model="guestFirstName" delay="1000" function-to-fire="searchGuest" />
 
                             <!-- Value in this input means we've searched for "Smi" in intial search screen -->
                             <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" type="text" class="masked-input fixed name h1" rv-delay-textbox ng-model="guestLastName" delay="1000" function-to-fire="searchGuest" />
@@ -69,7 +69,7 @@
                     <div class="wrapper">
                         <ul id="search-guests-results" class="search-results">
                             <li ng-repeat="guest in guests">
-                                <a ng-click="setGuest(guest, $event)">
+                                <a ng-click="selectGuest(guest, $event)">
                                     <figure class="guest-image">
                                         <img src="{{ guest.image }}" alt="" />
                                     </figure>
@@ -77,7 +77,7 @@
                                         <h2>{{ guest.firstName }}, {{ guest.lastName }}</h2>
                                         <span class="confirmation">{{ guest.address.postalCode}}</span>
                                         <span class="icons icon-location">{{ guest.address.city }}, {{ guest.address.state }}</span>
-                                        <span class="icons icon-phone">{{ guest.address.phone }}</span>
+                                        <span class="icons icon-phone">{{ guest.phone }}</span>
                                     </div>
                                     <div class="stays">
                                         <div class="count">
@@ -110,7 +110,7 @@
                     <div class="wrapper">
                         <ul id="search-company-results" class="search-results">
                             <li ng-repeat="company in companies">
-                                <a href="#" class="card-result">
+                                <a ng-click="selectCompany(company, $event)" class="card-result">
                                     <figure class="guest-image">
                                         <img src="images/allianz-logo.jpg" alt="" />
                                     </figure>
@@ -144,7 +144,7 @@
                     <div class="wrapper">
                         <ul id="search-travel-agent-results" class="search-results">
                             <li ng-repeat="travelAgent in travelAgents">
-                                <a href="#" class="card-result">
+                                <a ng-click="selectTravelAgent(travelAgent, $event)" class="card-result">
                                     <div class="guest-image icons icon-travel-agent"></div>
                                     <div class="data">
                                         <div class="info">
