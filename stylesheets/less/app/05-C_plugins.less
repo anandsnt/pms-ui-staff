@@ -62,108 +62,7 @@
 
 /* Modal window				==============================*/
 	#modal {
-		position: fixed;
-		top: 50%;
-		left: 50%;
-		height: auto;
-		z-index: 9999;
-		visibility: hidden;
-		.backface-visibility(hidden);
-		.transform3d(-50%, -50%, 0);
-		#border-radius > .rounded(3px);
-
-		#modal-close {
-			position: absolute;
-			top: -20px;
-			left: -20px;
-			z-index: 9995;
-			border: 0;
-			cursor: pointer;
-			.square(40px);
-			.background(@white);
-			#border-radius > .rounded(20px);
-
-			.icons {
-				position: absolute;
-				top: 8px;
-				left: 8px;
-				z-index: 9992;
-			}
-
-			&.green { background: @green; }
-			&.red { background: @red; }
-			&.blue { background: @blue; }
-			&.dark-title { background: @gcard; }
-		}
-
 		.modal-content {
-			padding: 20px;
-			z-index: 9990;
-			.background(@white);
-			#border-radius > .rounded(3px);
-			.transformScale(0.7);
-			.opacity(0);
-			.transition;
-
-			.message,
-			.text {
-				text-transform: uppercase;
-				font-weight: 600;
-				.show;
-			}
-
-			.message { 
-				margin: 10px 0 20px 0; 
-				text-align: center;
-
-				.select,
-				.select-item {
-					display: inline-block;
-					margin: -5px 0 0 10px;
-					width: 60px;
-
-					select { font-weight: 600; }
-				}
-
-				&.notice { margin-top: 0; }
-				&.solo { margin: 0; }
-			}
-
-			.text:not(.value) {
-				font-size: 14px;
-				line-height: 1em;
-				color: @grey3;
-				padding-bottom: 20px;
-				text-align: center;
-			}
-
-			.text.value {
-				font-weight: 400;
-				text-transform: none;
-			}
-
-			.button { 
-				font-size: 18px;
-				line-height: 50px;
-				width: 100%; 
-				.show; 
-
-				&.blank {
-					color: @textColor;
-
-					&:hover,
-					&:active { color: @logoPrimary; }
-				}
-
-				&.half {
-					padding: 0 5px;
-					.pull-left;
-					.calc-width(50, 10); /* %, px */
-
-					&:first-child { margin-right: 20px; }
-				}
-			}
-
 			/* Confirmation modal window ***/
 			&.confirmation {
 				width: 360px;
@@ -184,60 +83,7 @@
 				&#print-key { width: 400px; }
 			}
 
-			/* New content modal window ***/
-			&.new-content {
-				padding: 0 0 20px 0;
-				width: 480px;
-
-				.new-form-title {
-					color: @white;
-					text-transform: uppercase;
-					line-height: 50px;
-					vertical-align: middle;
-					padding: 0 20px;
-					margin-bottom: 20px;
-					background: @gcard;
-					#border-radius > .top();
-					.show;
-				}
-
-				.entry { 
-					padding: 0 20px; 
-					margin-bottom: 20px;
-				}
-
-				.actions {
-					text-align: center;
-					padding: 10px 0;
-					.float;
-
-					.button {
-						display: inline-block;
-						width: auto;
-						padding: 0 40px;
-
-						&.blank { 
-							padding: 0 20px 0 0; 
-							text-align: right; 
-						}
-					}
-
-					&.break-buttons {
-						padding: 0 20px;
-
-						.button {
-							&:first-child { margin-right: 10px;}
-							&.blank { 
-								margin: 10px auto 0 auto;
-								text-align: center;
-								padding: 0 40px;
-								.show; 
-							}
-						}
-					}
-				}
-			}
-
+			
 			/* Admin content modal window ***/
 			&.admin-form {
 				padding: 20px;
@@ -983,24 +829,7 @@
 		&.ui-draggable { cursor: move; }
 	}
 
-	#modal-overlay {
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		visibility: hidden;
-		top: 0;
-		left: 0;
-		z-index: 0;
-		opacity: 0;
-		background: rgba(0,0,0,0.5);
-		.transition;
-
-		&.modal-show { 
-			opacity: 1;
-			visibility: visible;
-			z-index: 9990;
-		}
-	}
+	
 
 /* iScroll Scrollbar		==============================*/
 	.iScrollVerticalScrollbar {

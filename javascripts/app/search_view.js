@@ -437,7 +437,7 @@ var Search = function(domRef) {
 			$.each(searchResults, function(i, value) {
 
 				if ((escapeNull(value.firstname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.lastname).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.group).toUpperCase()).indexOf($query.toUpperCase()) >= 0 || (escapeNull(value.room).toString()).indexOf($query) >= 0 || (escapeNull(value.confirmation).toString()).indexOf($query) >= 0) {
-					searchHTML += '<li>' + that.writeSearchResult(value.id, value.firstname, value.lastname, value.image, value.confirmation, value.reservation_status, value.room, value.roomstatus, value.fostatus, value.location, value.group, value.vip, value.late_checkout_time, value.is_opted_late_checkout, value.room_ready_status, value.use_pickup, value.use_inspected, value.checkin_inspected_only);
+					searchHTML += '<li>' + that.writeSearchResult(value.id, value.firstname, value.lastname, value.image, value.confirmation, value.reservation_status, value.room, value.roomstatus, value.fostatus, value.location, value.group, value.vip, value.late_checkout_time, value.is_opted_late_checkout, value.room_ready_status, value.use_pickup, value.use_inspected, value.checkin_inspected_only, value.is_reservation_queued, value.is_queue_rooms_on);
 				}
 
 			});
@@ -467,7 +467,7 @@ var Search = function(domRef) {
              */
 			var searchHTML ="";
 			$.each(response, function(i, value) {
-				searchHTML += '<li >' + that.writeSearchResult(value.id, value.firstname, value.lastname, value.image, value.confirmation, value.reservation_status, value.room, value.roomstatus, value.fostatus, value.location, value.group, value.vip, value.late_checkout_time, value.is_opted_late_checkout, value.room_ready_status, value.use_pickup, value.use_inspected, value.checkin_inspected_only);
+				searchHTML += '<li >' + that.writeSearchResult(value.id, value.firstname, value.lastname, value.image, value.confirmation, value.reservation_status, value.room, value.roomstatus, value.fostatus, value.location, value.group, value.vip, value.late_checkout_time, value.is_opted_late_checkout, value.room_ready_status, value.use_pickup, value.use_inspected, value.checkin_inspected_only, value.is_reservation_queued, value.is_queue_rooms_on);
 			});
 			$('#search-results').removeAttr('style').html(searchHTML); // No highlight required here.
 
@@ -484,7 +484,7 @@ var Search = function(domRef) {
 		sntapp.activityIndicator.hideActivityIndicator('loader-html-appending');
 	};
 
-	this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip, lateCheckoutTime, isLateCheckoutOn, room_ready_status, use_pickup, use_inspected, checkin_inspected_only) {
+	this.writeSearchResult = function(id, firstname, lastname, image, confirmation, reservation_status, room, roomstatus, foStatus, location, group, vip, lateCheckoutTime, isLateCheckoutOn, room_ready_status, use_pickup, use_inspected, checkin_inspected_only, isReservationQueued, isQueueRoomsOn) {
 		var guestStatusIcon = this.getGuestStatusMapped(reservation_status, isLateCheckoutOn);
 		var roomStatusMapped = this.getRoomStatusMapped(roomstatus, foStatus);
 
@@ -510,8 +510,8 @@ var Search = function(domRef) {
 		} else {
 			roomStatus = '<strong class="room-number">' + escapeNull(room) + '</strong>';
 		}
-
-		var $location = (escapeNull(location) != '') ? '<span class="icons icon-location">' + escapeNull(location) + '</span>' : '', $group = (escapeNull(group) != '') ? '<em class="icons icon-group">' + escapeNull(group) + '</em>' : '', $vip = vip ? '<span class="vip">VIP</span>' : '', $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="' + escapeNull(image) + '" />' + $vip + '</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip + '</figure>', $roomAdditional = showRoomStatus ? '<span class="room-status">' + roomstatusexplained + '</span>' : '', $viewStatus = guestStatusIcon ? '<span class="guest-status ' + escapeNull(guestStatusIcon) + '"></span>' : '<span class="guest-status"></span>', $lateCheckoutStatus = (escapeNull(lateCheckoutTime) == "" || "CHECKING_OUT" != reservation_status || isLateCheckoutOn == false) ? "" : '<span class="late-checkout-time">' + escapeNull(lateCheckoutTime) + '</span>', $guestViewIcons = '<div class="status">' + $lateCheckoutStatus + $viewStatus + '</div>';
+		
+		var $location = (escapeNull(location) != '') ? '<span class="icons icon-location">' + escapeNull(location) + '</span>' : '', $group = (escapeNull(group) != '') ? '<em class="icons icon-group">' + escapeNull(group) + '</em>' : '', $vip = vip ? '<span class="vip">VIP</span>' : '', $image = (escapeNull(image) != '') ? '<figure class="guest-image"><img src="' + escapeNull(image) + '" />' + $vip + '</figure>' : '<figure class="guest-image"><img src="/assets/blank-avatar.png" />' + $vip + '</figure>', $roomAdditional = showRoomStatus ? '<span class="room-status">' + roomstatusexplained + '</span>' : '', $viewStatus = guestStatusIcon ? '<span class="guest-status ' + escapeNull(guestStatusIcon) + '"></span>' : '<span class="guest-status"></span>', $lateCheckoutStatus = (escapeNull(lateCheckoutTime) == "" || "CHECKING_OUT" != reservation_status || isLateCheckoutOn == false) ? "" : '<span class="late-checkout-time">' + escapeNull(lateCheckoutTime) + '</span>', $queuedStatus = isReservationQueued == "true" && isQueueRoomsOn == "true" ? 'queued' : '' , $guestViewIcons = '<div class="status '+ $queuedStatus +' ">' + $lateCheckoutStatus + $viewStatus + '</div>';
 		$output = '<a href="staff/staycards/staycard?confirmation=' + confirmation + '&id=' + escapeNull(id) + '" class="guest-check-in link-item float" data-transition="inner-page">' + $image + '<div class="data">' + '<h2>' + escapeNull(lastname) + ', ' + escapeNull(firstname) + '</h2>' + '<span class="confirmation">' + escapeNull(confirmation) + '</span>' + $location + $group + '</div>' + $guestViewIcons + roomStatus + $roomAdditional + '</a>';
 		return $output;
 	};
