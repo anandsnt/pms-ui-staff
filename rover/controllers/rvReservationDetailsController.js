@@ -50,7 +50,6 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
 	$scope.$on('$viewContentLoaded', function() {
 		setTimeout(function(){
 			$scope.$parent.myScroll['resultDetails'].refresh();
-			$rootScope.$broadcast('guestCardDataUpdated');
 			}, 
 		3000);
 		
