@@ -5,11 +5,22 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
         this.fetchBaseSearchData = function() {
             var deferred = $q.defer();
 
+            that.fetchBussinessDate = function() {
+                var url = '/api/business_dates/active';
+                RVBaseWebSrvV2.getJSON(url).then(function(data) {
+                    that.reservation.businessDate = data.business_date;
+                    deferred.resolve(that.reservation);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+                return deferred.promise;
+            };
+
             that.fetchRoomTypes = function() {
                 var url = 'api/room_types.json';
                 RVBaseWebSrvV2.getJSON(url).then(function(data) {
                     that.reservation.roomTypes = data.results;
-                    deferred.resolve(that.reservation);
+                    that.fetchBussinessDate();
                 }, function(errorMessage) {
                     deferred.reject(errorMessage);
                 });
