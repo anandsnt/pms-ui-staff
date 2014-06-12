@@ -92,6 +92,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                             // only for our understanding
                             // jq-ui autocomplete wont use it
                             type: item.account_type,
+                            id: item.id,
                             corporateid: '',
                             iataNumber: ''
                         };
