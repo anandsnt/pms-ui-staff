@@ -21,7 +21,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         var companyCardFetchInterval = null;
 
         var init = function() {
-            $scope.reservationData.arrivalDate = dateFilter(new Date(), 'yyyy-MM-dd');
+            $scope.businessDate =  baseSearchData.businessDate;
+            $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate ), 'yyyy-MM-dd');
             $scope.setDepartureDate();
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
             var guestMaxSettings = baseSearchData.settings.max_guests;
@@ -30,8 +31,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.otherData.maxInfants = (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants;
             $scope.otherData.fromSearch = true;
         };
-
-
 
         $scope.setDepartureDate = function() {
             var dateOffset = $scope.reservationData.numNights;
