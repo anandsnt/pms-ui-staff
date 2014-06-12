@@ -92,21 +92,21 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		if($scope.reservationData.company.id != null && $scope.reservationData.company.id != '') {
 			data.company_id = $scope.reservationData.company.id;
 		} else {
-			/*if($scope.reservationData.company.name != "") {
+			if($scope.reservationData.company.name != "") {
 				data.company = {};
 				data.company.name = $scope.reservationData.company.name;
 				data.company.account_number = $scope.reservationData.company.corporateid;
-			}*/
+			}
 		}
 		//Travel agent
 		if($scope.reservationData.travelAgent.id != null && $scope.reservationData.travelAgent.id != '') {
 			data.travel_agent_id = $scope.reservationData.travelAgent.id;
 		} else {
-			/*if($scope.reservationData.travel_agent.name != "") {
+			if($scope.reservationData.travelAgent.name != "") {
 				data.travel_agent = {};
 				data.travel_agent.name = $scope.reservationData.travelAgent.name;
 				data.travel_agent.account_number = $scope.reservationData.travelAgent.iataNumber; //TODO: verify iataNum vs corporateid
-			}*/
+			}
 		}
 
 		data.reservation_type_id = parseInt($scope.reservationData.demographics.reservationType);
