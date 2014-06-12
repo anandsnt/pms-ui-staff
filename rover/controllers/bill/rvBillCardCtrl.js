@@ -409,7 +409,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	};
 	$scope.showBillingInfo = function(){
 		console.log(";;;;;;;;;;;;;;;;;;;;;;;;");
-		$scope.showBillingInfo = !$scope.showBillingInfo ;
+		$scope.showBillingInfo = !$scope.showBillingInfo;
 	};
 	$scope.showIncomingBillingInfo = function(){
 		console.log(";;;;;;;;;inco;;;;;;;;;;;;;;;");
