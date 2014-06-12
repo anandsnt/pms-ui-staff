@@ -62,7 +62,7 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		data.rate_id = parseInt($scope.reservationData.rooms[0].rateId);
 		data.room_type_id = parseInt($scope.reservationData.rooms[0].roomTypeId);
 
-		if($scope.reservationData.guest.id != null) {
+		if($scope.reservationData.guest.id != null && $scope.reservationData.guest.id != '') {
 			data.guest_detail_id = $scope.reservationData.guest.id;
 		} else {
 			data.guest_detail = {};
@@ -70,7 +70,7 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 			data.guest_detail.last_name = $scope.reservationData.guest.lastName;
 			data.guest_detail.email = $scope.reservationData.guest.email;
 			data.guest_detail.payment_type = {};
-			data.guest_detail.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.name);//TODO: verify
+			data.guest_detail.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);//TODO: verify
 			data.guest_detail.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
 			data.guest_detail.payment_type.expiry_date = $scope.reservationData.paymentType.ccDetails.expYear + '-' +
 															$scope.reservationData.paymentType.ccDetails.expMonth; //TODO: format
@@ -111,7 +111,6 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 
 		var saveSuccess = function(data) {
 			$scope.$emit('hideLoader');
-			$scope.initReservationData();
 			goToReservationSearch();
 		};
 
@@ -125,6 +124,7 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 
 		var saveSuccess = function(data) {
 			$scope.$emit('hideLoader');
+			$scope.initReservationData();
 			goToReservationSearch();
 		};
 

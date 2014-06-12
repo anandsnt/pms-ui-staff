@@ -22,7 +22,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         var companyCardFetchInterval = null;
 
         var init = function() {
-            $scope.reservationData.arrivalDate = dateFilter(new Date(), 'yyyy-MM-dd');
+            $scope.businessDate =  baseSearchData.businessDate;
+            $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate ), 'yyyy-MM-dd');
             $scope.setDepartureDate();
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
             $scope.otherData.maxAdults = (baseSearchData.settings.max_guests.max_adults === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_adults;
@@ -31,43 +32,33 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.otherData.fromSearch = true;
         };
 
-
-
         $scope.setDepartureDate = function() {
-            if ($scope.reservationData.numNights > 0) {
-
-                //TO DO:Delete the 2 lines,if the below one works is right
-
-                // var tmpDate = new Date($scope.reservationData.arrivalDate);
-                // $scope.reservationData.departureDate = tmpDate.setDate(tmpDate.getDate() + parseInt($scope.reservationData.numNights));
-
-
-                var newDate = new Date($scope.reservationData.arrivalDate);
-                newDay = newDate.getDate() + parseInt($scope.reservationData.numNights);
-                newDate.setDate(newDay);
-                $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
-
-            } else {
-                $scope.reservationData.departureDate = "";
+            var dateOffset = $scope.reservationData.numNights;
+            if ($scope.reservationData.numNights == null || $scope.reservationData.numNights == '') {
+                dateOffset = 1;
             }
+            var newDate = new Date($scope.reservationData.arrivalDate);
+            newDay = newDate.getDate() + parseInt(dateOffset);
+            newDate.setDate(newDay);
+            $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
+        }
+
+        $scope.arrivalDateChanged = function() {
+            $scope.setDepartureDate();
         };
 
-        $scope.arrivalDateChanged = function(){
-                $scope.setDepartureDate();
-        };
-       
 
-        $scope.departureDateChanged = function(){
+        $scope.departureDateChanged = function() {
 
-             var arrivalDate = new Date($scope.reservationData.arrivalDate);
-             arrivalDay = arrivalDate.getDate();
+            var arrivalDate = new Date($scope.reservationData.arrivalDate);
+            arrivalDay = arrivalDate.getDate();
 
-             var departureDate = new Date($scope.reservationData.departureDate);
-             departureDay = departureDate.getDate();
+            var departureDate = new Date($scope.reservationData.departureDate);
+            departureDay = departureDate.getDate();
 
-             var dayDiff =  Math.floor(( Date.parse(departureDate) - Date.parse(arrivalDate) ) / 86400000);
+            var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 
-             $scope.reservationData.numNights = dayDiff +1;
+            $scope.reservationData.numNights = dayDiff + 1;
         };
 
         /*
@@ -143,18 +134,18 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
 
         $scope.arrivalDateOptions = {
-        
-             showOn          : 'button',
-             dateFormat      : 'mm-dd-yy',
-             numberOfMonths  : 2,
-             yearRange       : '-0:+0',
-             minDate         : 0,
-            beforeShow: function(input, inst){
+
+            showOn: 'button',
+            dateFormat: 'mm-dd-yy',
+            numberOfMonths: 2,
+            yearRange: '-0:+0',
+            minDate: 0,
+            beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation arriving');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
             },
 
-            onClose: function(dateText, inst){ 
+            onClose: function(dateText, inst) {
                 $('#ui-datepicker-div').removeClass('reservation arriving');
                 $('#ui-datepicker-overlay').remove();
             }
@@ -162,18 +153,18 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         };
 
         $scope.departureDateOptions = {
-        
-            showOn          : 'button',
-            dateFormat      : 'mm-dd-yy',
-            numberOfMonths  : 2,
-            yearRange       : '-0:+0',
-            minDate         : 0,
-            beforeShow: function(input, inst){
+
+            showOn: 'button',
+            dateFormat: 'mm-dd-yy',
+            numberOfMonths: 2,
+            yearRange: '-0:+0',
+            minDate: 0,
+            beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation departing');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
             },
 
-            onClose: function(dateText, inst){ 
+            onClose: function(dateText, inst) {
                 $('#ui-datepicker-div').removeClass('reservation departing');
                 $('#ui-datepicker-overlay').remove();
             }
@@ -186,27 +177,29 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 // This code will be assimilated, resistance is futile
 // Code will be assimilated to become part of a better 
 // auto complete feature
-sntRover.directive('autoComplete', ['highlightFilter', function(highlightFilter) {
-    return {
-        restrict: 'A',
-        scope: {
-            autoOptions: '=autoOptions',
-            ngModel: '='
-        },
-        link: function(scope, el, attrs) {
-            $(el).autocomplete(scope.autoOptions)
-                .data('ui-autocomplete')
-                ._renderItem = function(ul, item) {
-                    ul.addClass('find-cards');
+sntRover.directive('autoComplete', ['highlightFilter',
+    function(highlightFilter) {
+        return {
+            restrict: 'A',
+            scope: {
+                autoOptions: '=autoOptions',
+                ngModel: '='
+            },
+            link: function(scope, el, attrs) {
+                $(el).autocomplete(scope.autoOptions)
+                    .data('ui-autocomplete')
+                    ._renderItem = function(ul, item) {
+                        ul.addClass('find-cards');
 
-                    var $content = highlightFilter(item.label, scope.ngModel),
-                        $result  = $("<a></a>").html( $content ),
-                        $image   = '<img src="' + item.image + '">';
+                        var $content = highlightFilter(item.label, scope.ngModel),
+                            $result = $("<a></a>").html($content),
+                            $image = '<img src="' + item.image + '">';
 
-                    $($image).prependTo($result);
+                        $($image).prependTo($result);
 
-                    return $('<li></li>').append($result).appendTo(ul);
-            };
-        }
-    };
-}]);
+                        return $('<li></li>').append($result).appendTo(ul);
+                };
+            }
+        };
+    }
+]);

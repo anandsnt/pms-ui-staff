@@ -69,7 +69,7 @@
                     <div class="wrapper">
                         <ul id="search-guests-results" class="search-results">
                             <li ng-repeat="guest in guests">
-                                <a ng-click="setGuest(guest, $event)">
+                                <a ng-click="selectGuest(guest, $event)">
                                     <figure class="guest-image">
                                         <img src="{{ guest.image }}" alt="" />
                                     </figure>
@@ -77,7 +77,7 @@
                                         <h2>{{ guest.firstName }}, {{ guest.lastName }}</h2>
                                         <span class="confirmation">{{ guest.address.postalCode}}</span>
                                         <span class="icons icon-location">{{ guest.address.city }}, {{ guest.address.state }}</span>
-                                        <span class="icons icon-phone">{{ guest.address.phone }}</span>
+                                        <span class="icons icon-phone">{{ guest.phone }}</span>
                                     </div>
                                     <div class="stays">
                                         <div class="count">
@@ -110,7 +110,7 @@
                     <div class="wrapper">
                         <ul id="search-company-results" class="search-results">
                             <li ng-repeat="company in companies">
-                                <a href="#" class="card-result">
+                                <a ng-click="selectCompany(company, $event)" class="card-result">
                                     <figure class="guest-image">
                                         <img src="images/allianz-logo.jpg" alt="" />
                                     </figure>
@@ -144,7 +144,7 @@
                     <div class="wrapper">
                         <ul id="search-travel-agent-results" class="search-results">
                             <li ng-repeat="travelAgent in travelAgents">
-                                <a href="#" class="card-result">
+                                <a ng-click="selectTravelAgent(travelAgent, $event)" class="card-result">
                                     <div class="guest-image icons icon-travel-agent"></div>
                                     <div class="data">
                                         <div class="info">
