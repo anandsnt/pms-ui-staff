@@ -33,7 +33,7 @@
 
 			<div class="wrapper wrapperDisplay" style="height: {{calculatedHeight}}px;">
 				<div id="notification-message" style="display: none;"></div>
-				<div id="billing-information" class="billing-information notice" ng-show="routingArrayCount>0">
+				<div id="billing-information" class="billing-information notice" ng-show="showBillingInfo">
 					<table>
 						<thead>
 							<tr>
@@ -53,7 +53,7 @@
 						</tbody>
 					</table>
 				</div>
-				<div id="billing-information" class="billing-information notice" ng-show="incomingRoutingArrayCount>0">
+				<div id="billing-information" class="billing-information notice" ng-show="showIncomingBillingInfo">
 					<table>
 						<thead>
 							<tr>
@@ -79,8 +79,8 @@
 					<!-- Bills summary tabs navigation -->
 					<div id="bills-tabs-nav" class="float bill-tabs">
 						<!-- Billing instructions -->
-						<a class="toggle has-arrow" ng-show="routingArrayCount>0" translate> BILLING_INFO </a>
-						<a class="toggle has-arrow" ng-show="incomingRoutingArrayCount>0" translate> INCOMING_BILLING_INFO </a>
+						<a class="toggle has-arrow" ng-show="routingArrayCount>0" ng-click="showBillingInfoHandle()" translate> BILLING_INFO </a>
+						<a class="toggle has-arrow" ng-show="incomingRoutingArrayCount>0" ng-click="showIncomingBillingInfoHandle()" translate> INCOMING_BILLING_INFO </a>
 						<!-- Add new bill -->
 						<!-- %a.button.with-icon.only-icon.brand-colors -->
 						<!-- %span.icons.icon-plus -->

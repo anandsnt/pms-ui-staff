@@ -7,6 +7,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.currencySymbol = "";
     $scope.showSubMenu = false;
     $scope.activeSubMenu = [];
+    $scope.isStandAlone = false;
 
     $rootScope.shortDateFormat = "MM/yy"; //05/99
     $rootScope.dayInWeek = "EEE"; //Sun
@@ -16,6 +17,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; //Wednesday, 4 June 2014
     $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
+
 
     // OBJECT WITH THE MENU STRUCTURE
     $scope.menu = [{
@@ -48,7 +50,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       iconClass: "icon-frontdesk",
       submenu: [{
         title: "MENU_CREATE_RESERVATION",
-        action: "rover.reservation.search"
+        action: "rover.reservation.search",
+        standAlone : true
       }, {
         title: "MENU_ROOM_ASSIGNMENT",
         action: ""
@@ -205,7 +208,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
         $translate.use(data.language.value);
       else
         $translate.use('EN');
+      //set flag if standalone PMS
+      if (data.pms_type === null)
+        $scope.isStandAlone = true;
       $scope.$emit('hideLoader');
+
 
     };
 
@@ -238,11 +245,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.$emit('showLoader');
 
       // if menu is open, close it
-      if($scope.menuOpen){
+      if ($scope.menuOpen) {
         $scope.menuOpen = !$scope.menuOpen;
         $scope.showSubMenu = false;
       }
-      
+
     });
 
     $rootScope.$on('$stateChangeSuccess', function(e, curr, prev) {

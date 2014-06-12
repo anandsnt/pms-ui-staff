@@ -48,7 +48,12 @@ sntRover.controller('RVPostChargeController',
 				for (var i = 0, j = $scope.fetchedItem.length; i < j; i++) {
 					var item = $scope.fetchedItem[i];
 
-					if ( !$scope.chargeGroup || item.charge_group_value === $scope.chargeGroup ) {
+					console.log( $scope.chargeGroup );
+
+					if ( $scope.chargeGroup === '' ) {
+						item.show = true;
+						continue;
+					} else if ( $scope.chargeGroup === item.charge_group_value || ($scope.chargeGroup === 'FAV' && item.is_favorite) ) {
 						item.show = true;
 					} else {
 						item.show = false;
@@ -109,6 +114,8 @@ sntRover.controller('RVPostChargeController',
 				}, 1000);
 			};
 
+			// make favorite selected by default
+			$scope.chargeGroup = 'FAV';
 
 
 
