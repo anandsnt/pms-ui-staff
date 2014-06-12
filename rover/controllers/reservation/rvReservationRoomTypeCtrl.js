@@ -22,7 +22,23 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		var init = function() {
 			$scope.$emit('showLoader');
-			console.log("APIRETURN", roomRates);
+			//console.log("APIRETURN", roomRates);
+			
+
+			//interim check on page reload if the page is refreshed
+			if($scope.reservationData.arrivalDate == '' || $scope.reservationData.departureDate == ''){
+				//defaulting to today's and tommorow's dates
+				$scope.reservationData.arrivalDate = (new Date().toISOString().slice(0, 10).replace(/-/g, "-"));
+				$scope.reservationData.departureDate = (new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10).replace(/-/g, "-"));
+
+				$($scope.reservationData.rooms).each(function(i,d){
+					$scope.reservationData.rooms[i].numAdults = 1;
+					d.numChildren = 0;
+					d.numInfants = 0;
+				});
+
+			}
+
 			//console.log("RESVOBJ", $scope.reservationData);
 
 			//defaults and hardcoded values
