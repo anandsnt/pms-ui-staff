@@ -9,6 +9,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         $scope.companySearch = {
             label: '',
             id: '',
+            type: ''
         };
         $scope.companyLastSearchText = "";
         $scope.companyCardResults = [];
@@ -21,7 +22,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         var companyCardFetchInterval = null;
 
         var init = function() {
-            $scope.reservationData.arrivalDate = dateFilter(new Date(), 'yyyy-MM-dd');
+            $scope.businessDate =  baseSearchData.businessDate;
+            $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate ), 'yyyy-MM-dd');
             $scope.setDepartureDate();
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
             $scope.otherData.maxAdults = (baseSearchData.settings.max_guests.max_adults === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_adults;
@@ -29,8 +31,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.otherData.maxInfants = (baseSearchData.settings.max_guests.max_infants === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_infants;
             $scope.otherData.fromSearch = true;
         };
-
-
 
         $scope.setDepartureDate = function() {
             var dateOffset = $scope.reservationData.numNights;
@@ -123,8 +123,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             source: $scope.companyCardResults,
             select: function(event, ui) {
                 $scope.companySearch.label = ui.item.label;
-                $scope.companySearch.id = ui.item.id;
-                return false;
+                $scope.companySearch.id    = ui.item.id;
+                $scope.companySearch.type  = ui.item.type;
+                // DO NOT return false;
             }
         };
 
