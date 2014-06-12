@@ -9,6 +9,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         $scope.companySearch = {
             label: '',
             id: '',
+            type: ''
         };
         $scope.companyLastSearchText = "";
         $scope.companyCardResults = [];
@@ -123,8 +124,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             source: $scope.companyCardResults,
             select: function(event, ui) {
                 $scope.companySearch.label = ui.item.label;
-                $scope.companySearch.id = ui.item.id;
-                return false;
+                $scope.companySearch.id    = ui.item.id;
+                $scope.companySearch.type  = ui.item.type;
+                // DO NOT return false;
             }
         };
 
