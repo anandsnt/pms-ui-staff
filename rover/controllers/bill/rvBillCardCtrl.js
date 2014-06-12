@@ -65,6 +65,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	$scope.moveToBill = 0;
 	//Variable used to show signed signature
 	$scope.showSignedSignature = false;
+	$scope.showBillingInfo = false;
+	$scope.showIncomingBillingInfo = false;
 	/*
 	 * Adding class for active bill
 	 */
@@ -404,6 +406,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 			}
 		}
 		return dayClass;
+	};
+	$scope.showBillingInfo = function(){
+		$scope.showBillingInfo = !$scope.showBillingInfo ;
+	};
+	$scope.showIncomingBillingInfo = function(){
+		$scope.showIncomingBillingInfo = !$scope.showIncomingBillingInfo ;
 	};
 	
 		//{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date,'active': days.date != reservationBillData.checkout_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}
