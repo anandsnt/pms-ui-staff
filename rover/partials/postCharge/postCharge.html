@@ -1,5 +1,5 @@
 <div role="dialog" id="modal" class="modal-show">
-	<form id="post-charge" class="modal-content post-charge">
+	<form id="post-charge" class="modal-content post-charge" ng-cloak>
 		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
 			<span class="icons icon-close invert"></span>
 		</button>
@@ -14,6 +14,7 @@
 						ng-model="chargeGroup"
 						ng-change = "filterbyChargeGroup()">
 						<option value="" class="placeholder" translate>ALL_CHARGE_GROUPS</option>
+						<option value="FAV" translate>FAVORITE</option>
 						<option ng-repeat="group in fetchedData.charge_groups" value="{{ group.value }}">
 					        {{ group.name }}
 					    </opzion>
