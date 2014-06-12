@@ -34,8 +34,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	     // console.log(JSON.stringify(reservationBillData));
 		$scope.reservationBillData = reservationBillData;
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
-		$scope.incomingRoutingArrayCount = $scope.reservationBillData.routing_array.length;
-		console.log($scope.routingArrayCount + "=========="+ $scope.incomingRoutingArrayCount);
+		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
+		console.log($scope.routingArrayCount + "====++======"+ $scope.incomingRoutingArrayCount);
 		//Variables used to calculate height of the wrapper.To do scroll refresh
 		if(reservationBillData.bills[0].total_fees.length > 0){
 			countFeesElements = parseInt(reservationBillData.bills[0].total_fees[0].fees_details.length)+parseInt(5);//1 - For heading, 2 for totl fees and balance, 2 for guest balnce and creditcard
