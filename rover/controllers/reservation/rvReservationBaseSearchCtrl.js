@@ -39,11 +39,13 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         }
 
         $scope.arrivalDateChanged = function() {
+            $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
             $scope.setDepartureDate();
         };
 
 
         $scope.departureDateChanged = function() {
+            $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
 
             var arrivalDate = new Date($scope.reservationData.arrivalDate);
             arrivalDay = arrivalDate.getDate();
@@ -147,7 +149,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             dateFormat: 'mm-dd-yy',
             numberOfMonths: 2,
             yearRange: '-0:+0',
-            minDate: 0,
+            minDate:  new Date($scope.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation arriving');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
@@ -166,7 +168,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             dateFormat: 'mm-dd-yy',
             numberOfMonths: 2,
             yearRange: '-0:+0',
-            minDate: 0,
+            minDate:  new Date($scope.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation departing');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
