@@ -29,15 +29,14 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
 
         this.fetchCompanyCard = function(data) {
             var deferred = $q.defer();
-            var url = '/api/accounts/search_account';
-            RVBaseWebSrvV2.postJSON(url, data).then(function(data) {
+            var url = '/api/accounts';
+            RVBaseWebSrvV2.getJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
             });
             return deferred.promise;
         };
-
 
         this.chosenDates = function(data) {
             var deferred = $q.defer();
@@ -46,17 +45,26 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             var dep = new Date(typeof data.todate == 'string' ? Date.parse(data.toDate) : data.toDate);
 
             this.dates = {
-                from: (arr.toISOString().slice(0,10).replace(/-/g,"-")),
-                to: (dep.toISOString().slice(0,10).replace(/-/g,"-"))
+                from: (arr.toISOString().slice(0, 10).replace(/-/g, "-")),
+                to: (dep.toISOString().slice(0, 10).replace(/-/g, "-"))
             }
 
-            deferred.resolve(true);              
+            deferred.resolve(true);
             return deferred.promise;
         }
 
         this.fetchRoomRates = function(data) {
             var deferred = $q.defer();
-            var url = '/api/availability?from_date='+ dates.from+'&to_date='+ dates.to;
+            if (typeof this.dates != 'undefined') {
+                var url = '/api/availability?from_date=' + dates.from + '&to_date=' + dates.to;
+            } else {
+                var dates = {
+                    from: (new Date().toISOString().slice(0, 10).replace(/-/g, "-")),
+                    to: (new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10).replace(/-/g, "-"))
+                }
+                var url = '/api/availability?from_date=' + dates.from + '&to_date=' + dates.to;
+            }
+
             RVBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(errorMessage) {

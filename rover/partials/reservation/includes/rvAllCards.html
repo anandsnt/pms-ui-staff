@@ -1,8 +1,8 @@
-<div id="additional-cards" class="cards" ng-class="cardCls()" role="complementary" ui-jq="resizable" ui-options="resizableOptions" ng-controller="RVReservationAllCardsCtrl"    set-height height-to-set='height'>
-    <div class="cards-wrapper">
+<div id="additional-cards" class="cards" ng-class="cardCls()" role="complementary" ui-jq="resizable" ui-options="resizableOptions" ng-click="clickedOnGuestCard($event)"  ng-controller="RVReservationAllCardsCtrl"  style="height: {{guestCardHeight}}px;" resize>
+    <div class="cards-wrapper" >
         
         <!-- Cards Header -->
-        <header class="cards-header">
+        <header class="cards-header" >
            
             <!-- Guest Card -->
             <div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')">
@@ -14,6 +14,7 @@
                     <div class="holder">
                         <div class="entry">
                             <input name="gc-firstname" id="gc-firstname" placeholder="First Name" type="text" class="masked-input fixed name h1" rv-delay-textbox ng-model="guestFirstName" delay="1000" function-to-fire="searchGuest" />
+
                             <!-- Value in this input means we've searched for "Smi" in intial search screen -->
                             <input name="gc-lastname" id="gc-lastname" placeholder="Last Name" type="text" class="masked-input fixed name h1" rv-delay-textbox ng-model="guestLastName" delay="1000" function-to-fire="searchGuest" />
                             <!-- TODO: REMOVE inline display:block for the below 2 input elements, once the drawer open/close is captured -->
@@ -68,7 +69,7 @@
                     <div class="wrapper">
                         <ul id="search-guests-results" class="search-results">
                             <li ng-repeat="guest in guests">
-                                <a ng-click="setGuest(guest, $event)">
+                                <a ng-click="selectGuest(guest, $event)">
                                     <figure class="guest-image">
                                         <img src="{{ guest.image }}" alt="" />
                                     </figure>
@@ -76,7 +77,7 @@
                                         <h2>{{ guest.firstName }}, {{ guest.lastName }}</h2>
                                         <span class="confirmation">{{ guest.address.postalCode}}</span>
                                         <span class="icons icon-location">{{ guest.address.city }}, {{ guest.address.state }}</span>
-                                        <span class="icons icon-phone">{{ guest.address.phone }}</span>
+                                        <span class="icons icon-phone">{{ guest.phone }}</span>
                                     </div>
                                     <div class="stays">
                                         <div class="count">
@@ -108,20 +109,20 @@
                 <div id="search-company-content" class="search-cards scrollable">
                     <div class="wrapper">
                         <ul id="search-company-results" class="search-results">
-                            <li>
-                                <a href="#" class="card-result">
+                            <li ng-repeat="company in companies">
+                                <a ng-click="selectCompany(company, $event)" class="card-result">
                                     <figure class="guest-image">
                                         <img src="images/allianz-logo.jpg" alt="" />
                                     </figure>
                                     <div class="data">
                                         <div class="info">
-                                            <h2><span class="highlight">Allianz</span> Insurance</h2>
+                                            <h2><span class="highlight">{{ company.firstName }}</span> {{ company.lastName }}</h2>
                                             <div class="rate"><span class="label">Rate</span> 10% off RACK</div>
                                         </div>
-                                        <span class="confirmation">12341278</span>
-                                        <span class="icons icon-location">Dallas, TX</span>
-                                        <span class="icons icon-phone">302-555-1212</span>
-                                        <span class="icons icon-email-grey">allianz_contact@allianzlife.com</span>
+                                        <span class="confirmation">{{ company.address.postalCode }}</span>
+                                        <span class="icons icon-location">{{ company.address.city }}, {{ company.address.state }}</span>
+                                        <span class="icons icon-phone">{{ company.phone }}</span>
+                                        <span class="icons icon-email-grey">{{ company.email }}</span>
                                     </div>
                                 </a>
                             </li>
@@ -141,7 +142,23 @@
             <div id="travel-agent-card-content" class="card-search card-content" ng-class="UICardContentCls('travel-agent-card')">
                 <div id="search-travel-agent-content" class="search-cards scrollable">
                     <div class="wrapper">
-                        <ul id="search-travel-agent-results" class="search-results"></ul>
+                        <ul id="search-travel-agent-results" class="search-results">
+                            <li ng-repeat="travelAgent in travelAgents">
+                                <a ng-click="selectTravelAgent(travelAgent, $event)" class="card-result">
+                                    <div class="guest-image icons icon-travel-agent"></div>
+                                    <div class="data">
+                                        <div class="info">
+                                            <h2><span class="highlight">{{ travelAgent.firstName }}</span> {{ travelAgent.lastName }}</h2>
+                                            <div class="rate"><span class="label">Rate</span> 10% off RACK</div>
+                                        </div>
+                                        <span class="confirmation">{{ travelAgent.address.postalCode }}</span>
+                                        <span class="icons icon-location">{{ travelAgent.address.city }}, {{ travelAgent.address.state }}</span>
+                                        <span class="icons icon-phone">{{ travelAgent.phone }}</span>
+                                        <span class="icons icon-email-grey">{{ travelAgent.email }}</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div id="search-travel-agent-no-results" class="search-cards no-content">

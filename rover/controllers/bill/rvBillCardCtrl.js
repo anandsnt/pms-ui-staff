@@ -34,7 +34,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	     // console.log(JSON.stringify(reservationBillData));
 		$scope.reservationBillData = reservationBillData;
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
-		$scope.incomingRoutingArrayCount = $scope.reservationBillData.routing_array.length;
+		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
 		//Variables used to calculate height of the wrapper.To do scroll refresh
 		if(reservationBillData.bills[0].total_fees.length > 0){
 			countFeesElements = parseInt(reservationBillData.bills[0].total_fees[0].fees_details.length)+parseInt(5);//1 - For heading, 2 for totl fees and balance, 2 for guest balnce and creditcard
@@ -65,6 +65,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	$scope.moveToBill = 0;
 	//Variable used to show signed signature
 	$scope.showSignedSignature = false;
+	$scope.showBillingInfo = false;
+	$scope.showIncomingBillingInfo = false;
 	/*
 	 * Adding class for active bill
 	 */
@@ -404,6 +406,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 			}
 		}
 		return dayClass;
+	};
+	$scope.showBillingInfoHandle = function(){
+		$scope.showBillingInfo = !$scope.showBillingInfo;
+	};
+	$scope.showIncomingBillingInfoHandle = function(){
+		$scope.showIncomingBillingInfo = !$scope.showIncomingBillingInfo ;
 	};
 	
 		//{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date,'active': days.date != reservationBillData.checkout_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}
