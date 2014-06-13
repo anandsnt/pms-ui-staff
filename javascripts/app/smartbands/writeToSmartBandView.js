@@ -79,7 +79,7 @@ var WriteToSmartBandView = function(domRef){
 	*/
 	this.fetchFailedKeyRead = function(){
 		sntapp.activityIndicator.hideActivityIndicator();
-		that.parentController.disableOutsideClickClosing();
+		that.parentController.enableOutsideClickClosing();
 		sntapp.notification.showErrorMessage('Failed to read from device', that.myDom);
 	};
 
