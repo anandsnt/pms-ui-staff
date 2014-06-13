@@ -38,24 +38,27 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
         }
 
+        $scope.setNumberOfNights = function(){
+
+            var arrivalDate = new Date($scope.reservationData.arrivalDate);
+            arrivalDay = arrivalDate.getDate();
+            var departureDate = new Date($scope.reservationData.departureDate);
+            departureDay = departureDate.getDate();
+            var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
+            $scope.reservationData.numNights = dayDiff;
+        }
+
         $scope.arrivalDateChanged = function() {
             $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
             $scope.setDepartureDate();
+            $scope.setNumberOfNights();
         };
 
 
         $scope.departureDateChanged = function() {
             $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
-
-            var arrivalDate = new Date($scope.reservationData.arrivalDate);
-            arrivalDay = arrivalDate.getDate();
-
-            var departureDate = new Date($scope.reservationData.departureDate);
-            departureDay = departureDate.getDate();
-
-            var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
-
-            $scope.reservationData.numNights = dayDiff + 1;
+            $scope.setNumberOfNights();
+            
         };
 
         /*
