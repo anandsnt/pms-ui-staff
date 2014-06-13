@@ -1,5 +1,7 @@
 function BaseCtrl($scope){	
-    
+
+	$scope.businessDate = "";
+
 	$scope.fetchedCompleted = function(data){
 		$scope.$emit('hideLoader');
 	};
@@ -66,10 +68,10 @@ function BaseCtrl($scope){
     */
 
     $scope.getSimplifiedDayName = function(date){
-    	var returnText = "";  	
+    	var returnText = "";  
         try{
             var passedDate = new Date(date);
-            var currentDate = new Date();
+            var currentDate = new Date($scope.businessDate);
 			var timeDiff = (passedDate.getTime() - currentDate.getTime());
 			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 			if(diffDays == 0){
