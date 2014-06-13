@@ -47,17 +47,31 @@ var WriteToSmartBandView = function(domRef){
 	*/
 	this.successCallbackOfSaveAction = function(data){		
 		that.data.id = data.id;	
-	}  
+		that.myDom.find(".success").show();
+		that.myDom.find("#button-area").show();	
+		that.myDom.find("#not-ready-status").hide();
+		that.myDom.find("#cancel").hide();			
+		that.parentController.showButton('see-all-band-button');
+		that.parentController.myDom.find('#see-all-band-button').unbind('click');
+		that.parentController.myDom.find('#see-all-band-button').on('click', that.clickedOnSeeAllBands);
+	};
+
+	/**
+	* function to handle click on see all bands button, will do some action after that it will revert
+	* it's binding to old.
+	*/
+	this.clickedOnSeeAllBands = function(event){
+		that.clickedDoneButton();
+		that.parentController.myDom.find('#see-all-band-button').unbind('click');
+		that.parentController.myDom.find('#see-all-band-button').on('click', that.parentController.seeAllBandsClicked);
+	};
+
 
 	/**
 	* function to execute for successful card reading, will do enabling outside click & call api
 	*/
 	this.fetchSuccessKeyRead = function(accountNumber){
 		sntapp.activityIndicator.hideActivityIndicator();
-		that.myDom.find(".success").show();
-		that.myDom.find("#button-area").show();	
-		that.myDom.find("#not-ready-status").hide();
-		that.myDom.find("#cancel").hide();	
 		that.parentController.enableOutsideClickClosing();		
 		that.data.account_number = accountNumber;
 		
@@ -90,7 +104,10 @@ var WriteToSmartBandView = function(domRef){
 		that.myDom.find("#cancel").show();	
 		that.myDom.find(".success").hide();
 		that.myDom.find("#button-area").hide();
+		// a special case for see all bands button here, it appears only after the successful api call,
+		// so it should perform when we press the Done button
 		that.parentController.hideButton('see-all-band-button');
+
     	that.parentController.hideButton('add-new-button');
 		sntapp.activityIndicator.showActivityIndicator('BLOCKER');
 		//TODO: code for reading the cardid
