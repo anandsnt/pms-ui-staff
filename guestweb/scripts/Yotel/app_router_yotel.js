@@ -36,7 +36,13 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 		templateUrl: '/assets/checkoutlater/partials/Yotel/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Checkout Later'
+	 }).state('checkinConfirmation', {
+	 	url: '/checkinConfirmation',
+	 	templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
+	 	controller : 'checkInConfirmationViewController',
+	 	title: 'Check In'
 	 });
+
 
 
 
@@ -106,11 +112,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	// 	title: 'Check In'
 	// });
 
-	// // $routeProvider.when('/checkinDatePicker', {
-	// // 	templateUrl: '/assets/checkin/partials/Yotel/checkinDatePicker.html',
-	// // 	controller : 'checkinDatePickerController',
-	// // 	title: 'Pick Date - Check In'
-	// // });
+
 
 	// $routeProvider.when('/checkinKeys', {
 	// 	templateUrl: '/assets/checkin/partials/checkInKeys.html',

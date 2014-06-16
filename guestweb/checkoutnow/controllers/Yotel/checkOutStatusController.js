@@ -4,7 +4,10 @@
 
 		$scope.pageValid = false;
 
-		if($rootScope.isCheckedout){
+		if($rootScope.isCheckin){
+ 		 $state.go('checkinConfirmation');
+ 		}
+		else if($rootScope.isCheckedout){
 			$state.go('checkOutStatus');
 		}
 		else

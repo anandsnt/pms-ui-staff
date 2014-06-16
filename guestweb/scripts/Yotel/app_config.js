@@ -52,18 +52,24 @@ snt.run(function($rootScope, $location, $http){
 
     $rootScope.$on("$locationChangeStart", function(event, next, current) {
 		if(next === current) {
-		if($rootScope.isCheckedin)
-			$location.path('/checkinSuccess');
-		else if($rootScope.isCheckedout)
-			$location.path('/checkOutStatus');
-		else if($rootScope.isCheckin && !$rootScope.isCheckedout)
-				$location.path('/checkinConfirmation');
-		else if (!$rootScope.isLateCheckoutAvailable)
-			    $location.path('/checkOutConfirmationController');
-			else{
-				$location.path('/');
+			// if($rootScope.isCheckedin){
+			// 	$location.path('/checkinSuccess');
+			// }
+			// else if($rootScope.isCheckin){
+			// 	$location.path('/checkinConfirmation');
+			// }
+			// else if($rootScope.isCheckedout){
+			// 	$location.path('/checkOutStatus');
+			// }
+				
+			// else if($rootScope.isCheckin && !$rootScope.isCheckedout)
+			// 		$location.path('/checkinConfirmation');
+			// else if (!$rootScope.isLateCheckoutAvailable)
+			// 	    $location.path('/checkOutConfirmation');
+			// 	else{
+			// 		$location.path('/');
 
-			}
+			// 	}
 		}
 	});
 });
