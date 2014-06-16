@@ -1,50 +1,63 @@
-<nav id="main-menu" style="display: block;" >
-	
+<nav id="main-menu" style="display: block;" ng-class="{'visible': menuOpen, 'invisible' : !menuOpen}">
+
+	<a id="{{menuImage}}"class="nav-toggle updated" ng-click="$emit('navToggled')"  ng-class="{'active': menuOpen}">Menu
+		<span></span>
+	</a>
 	<!-- For Hotel Admin -->
-	<ul ng-show ="isHotelAdmin" >
-		<li>
-			<a ng-click="$emit('navToggled')" href="/staff" class="icon-menu icon-dashboard">Dashboard</a>
+	<ul ng-show ="isHotelAdmin">
+		<li class="menu-title">
+			MENU
 		</li>
-		<li>
-			<a ng-click="$emit('navToggled')" href="/staff#/staff/search/" class="icon-menu icon-search">Search</a>
+		<li ng-repeat="menuItem in menu | filter:{hidden:'!'+true}" ng-click="$emit('updateSubMenu',[$index,menuItem])" ng-class="{'active':selectedMenuIndex.length > 0 && (selectedMenuIndex == menuItem.menuIndex || (menuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0), 'last-child' : $last}" class="rover-icon-menu admin-bar {{menuItem.iconClass}}"> 			
+			<a href="{{menuItem.action}}" translate="{{menuItem.title}}">
+			</a>
+			<div class="pointer" ng-show="menuOpen && showSubMenu && menuItem.submenu.length >= 1 && activeSubMenu == menuItem.submenu">
+			</div>
 		</li>
-		
-		<li ng-show="isHotelAdmin">
-			<a href="staff#/staff/rateManager" ng-click="$emit('navToggled')" class="icon-menu">Rate Manager</a>
-		</li>
-		<li class="hidden">
-			<a ng-click="$emit('navToggled')" class="icon-menu icon-social-lobby ">Social Lobby</a>
-		</li>
-		<li class="hidden">
-			<a ng-click="$emit('navToggled')" class="icon-menu icon-messages ">Messages</a>
-		</li>
-		<li class="hidden">
-			<a ng-click="$emit('navToggled')" class="icon-menu icon-reviews ">Reviews</a>
-		</li>
-		<li ng-hide="isPmsConfigured">
-			<a ui-sref="rover.companycardsearch" class="icon-menu icon-cards">Cards</a>
-		</li>
-		<li id="settings">
-			<a ng-click="$emit('navToggled')" class="active icon-menu icon-settings">Settings</a>
-		</li>
-		<li id="sign-out">
-			<a ng-click="$emit('navToggled')" href="/logout" class="icon-menu icon-sign-out">Sign Out</a>
-		</li>
-		<li id="rover-info">
+
+		<!--<li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="">
 			Version 1.0
+		</li> -->
+	</ul>
+
+	<ul class="float-bottom" ng-show ="isHotelAdmin">
+		<li class="active">
+			<label class="icon-menu icon-settings active"></label>
+			<a ng-click="settingsClicked()">
+				Settings
+			</a>
+		</li> 
+
+		<li >
+			<label class="icon-menu icon-sign-out"></label>
+			<a ng-click="$emit('navToggled')" href="/logout">
+				Sign Out
+			</a>
 		</li>
 	</ul>
 
 	<!-- For SNT Admin -->
 	<ul ng-hide ="isHotelAdmin" >
 		<li id="sign-out">
-			<a ng-click="$emit('navToggled')" href= "/logout" class="icon-menu icon-sign-out">Sign Out</a>
+			<label class="icon-menu icon-sign-out"></label>
+			<a ng-click="$emit('navToggled')" href= "/logout" >
+				Sign Out
+			</a>
 		</li>
-		<li id="rover-info">
+		<!-- <li id="rover-info">
 			<img src="../assets/stayntouch.png" alt="" />
 			Version 1.0
-		</li>
+		</li> -->
 	</ul>
 
+	<div id="submenu" ng-show="menuOpen && 	showSubMenu && activeSubMenu.length > 0">
+		<ul>
+			<li class="admin" ng-repeat="menuItem in activeSubMenu">
+				<a href="{{menuItem.action}}" ng-click="$emit('navToggled')" translate="{{menuItem.title}}">
+				</a>
+			</li>
+			<!-- <li class="filler"></li> -->
+		</ul>
+	</div>
 </nav>

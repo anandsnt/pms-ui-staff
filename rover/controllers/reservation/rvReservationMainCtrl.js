@@ -1,0 +1,102 @@
+sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', function ($scope, $rootScope, baseData) {
+
+    $scope.initReservationData = function(){
+        // intialize reservation object
+        $scope.reservationData = {
+            arrivalDate: '',
+            departureDate: '',
+            checkinTime: {
+                hh: '',
+                mm: '',
+                ampm: ''
+            },
+            checkoutTime: {
+                hh: '',
+                mm: '',
+                ampm: ''
+            },
+            numNights: '', // computed value, ensure to keep it updated
+            roomCount: '', // Hard coded for now,
+            rooms: [{
+                numAdults: 0,
+                numChildren: 0,
+                numInfants: 0,
+                roomTypeId: '',
+                roomTypeName: '',
+                rateId: '',
+                rateName: '',
+                rateAvg:0 ,
+                rateTotal: 0,
+                //addOns: [
+                    //{
+                       // name: '',
+                        //avgAmount: '',
+                        //totalAmount: ''
+                    //}
+               // ]
+            }],
+            totalTaxAmount: '',
+            totalStayCost: '',
+            guest: {
+                id: null, // if new guest, then it is null, other wise his id
+                firstName: '',
+                lastName: '',
+                email: '',
+                city: '',
+                loyaltyNumber: '',
+                sendConfirmMailTo :''
+            },
+            company: {
+                id: null, // if new company, then it is null, other wise his id
+                name: '',
+                corporateid: '', // Add different fields for company as in story
+            },
+            travelAgent: {
+                id: null, // if new , then it is null, other wise his id
+                name: '',
+                iataNumber: '', // Add different fields for travelAgent as in story
+            },
+            paymentType: {
+                type: {},   
+                ccDetails: { //optional - only if credit card selected
+                    number: '',
+                    expMonth: '',
+                    expYear: '',
+                    nameOnCard: ''
+                } 
+            },
+
+            demographics: {
+                market: '',
+                source: '',
+                reservationType: '', 
+                origin: ''
+            },
+            promotion: {
+                promotionCode: '',
+                promotionType: ''
+            }
+        }
+        
+    }
+    
+
+    $scope.otherData = {
+        markets: baseData.demographics.markets,
+        sources: baseData.demographics.sources,
+        origins: baseData.demographics.origins,
+        reservationTypes: baseData.demographics.reservationTypes,
+        promotionTypes: [{value:"v1", description: "The first"}, {value:"v2", description: "The Second"}],
+        maxAdults: '',
+        maxChildren: '',
+        maxInfants: '',
+        roomTypes: [],
+        fromSearch: false
+    };
+
+    //setting the main header of the screen
+    $scope.heading = "Reservations";
+
+    $scope.initReservationData();
+
+}]);

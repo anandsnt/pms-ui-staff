@@ -1,0 +1,39 @@
+<div role="dialog" id="modal" class="modal-show" >
+	
+	<div class="modal-content card-content">
+		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
+			<span class="icons icon-close invert"></span>
+		</button>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<br>
+		<div class="scrollable scroll-payment-list"  id="paymentList" ng-iscroll='paymentList' ng-iscroll-delay='300' >
+			<div ng-show="paymentListLength>0">
+				<a class="active-item existing_payments float item-payment" ng-click="clickPaymentItem(paymentlist.value, paymentlist.card_code, paymentlist.ending_with, paymentlist.expiry_date)" ng-repeat="paymentlist in paymentListData.existing_payments" >
+					<figure class="card-logo">
+						<img src="/assets/{{paymentlist.card_code}}.png" alt="">
+					</figure> 
+					<span class="number"> <span translate>ENDING_WITH </span>
+						<span class="value number"> {{paymentlist.ending_with}} </span> 
+					</span> 
+					<span class="date"> <span translate>DATE </span>
+						<span class="value date"> {{paymentlist.expiry_date}}  </span> 
+					</span> 
+					<span class="name"> <span translate>NAME </span>
+						<span class="value name"> {{paymentlist.holder_name}} </span> 
+					</span> 
+					<span class="in-gc" ng-show="paymentlist.is_in_guest_card">
+						<span translate>IN_GUEST_CARD </span>
+					</span>
+					<span class="primary" ng-show="paymentlist.value == paymentListData.selected_payment">
+					 	<span class="value primary" translate>SELECTED</span>
+					</span>
+					<br clear="all">
+				 </a>
+			</div>
+			<div ng-hide="paymentListLength>0">
+				No credit cards are saved to guest card
+			</div>
+		</div>
+
+	</div>
+</div>

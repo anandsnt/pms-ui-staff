@@ -131,9 +131,14 @@ h4, .h4 { page-break-after: avoid; }
 		.report-header { .hide; }
 
 		.report-totals { 
+
 			padding: .3cm 0;
-			margin: 0 0 .75cm 0;
+			margin: 0 .5cm .75cm;
 			border-top: 2px solid rgba(0,0,0,.1);
+
+			ul li {
+				font-size: 13px;
+			}
 		}
 
 		.report-content {
@@ -144,16 +149,24 @@ h4, .h4 { page-break-after: avoid; }
 			table {
 				border-collapse: collapse; 
 				margin-bottom: 0;
-
-				tr {
+				tr {	
+				page-break-after: always;
+				page-break-inside: avoid;
+						
 					th,
 					td {
+						page-break-after:always !important;
+						page-break-inside: avoid !important;
 						white-space: normal !important;
 						overflow: visible !important;
 						vertical-align: top !important;
 						line-height: 1.1;
 						padding: .2cm 1cm .2cm 0;
 						border-bottom: 1px solid rgba(0,0,0,.1);
+						min-width: 15%;
+						max-width: 30%;
+						width: 30%;
+						word-break: break-all;
 					}
 				}
 

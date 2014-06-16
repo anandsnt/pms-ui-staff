@@ -46,6 +46,8 @@
 		height: 100%;
 		background: rgba(0,0,0,.5);
 		z-index: 999;
+
+		&.transparent { background: transparent; }
 	}
 
 	.has-datepicker {
@@ -228,7 +230,393 @@
 				}
 			}
 		}
+
+		&.reservation {
+			top: 460px !important;
+			background-image: none;
+			padding: 20px;
+			.box-shadow();
+			#border-radius > .rounded();
+
+			.ui-datepicker-header {
+				background-color: @grey1;
+			}
+
+			.ui-datepicker-group {
+				width: 460px;
+				.pull-left;
+
+				&.ui-datepicker-group-first { margin-right: 20px; }
+			}
+
+			&:after {
+                content: "";
+                position: absolute;
+                top: -15px;
+                width: 0; 
+                height: 0; 
+                border-bottom: 15px solid @white;
+                border-left: 15px solid transparent;
+                border-right: 15px solid transparent;
+            }
+
+            &.arriving {
+            	&:after { left: 360px; }
+            }
+
+            &.departing {
+            	&:after { right: 230px; }
+            }
+		}
 	}
+
+/* Modal window				==============================*/
+	#modal,
+	.inline-modal {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		height: auto;
+		z-index: 9999;
+		visibility: hidden;
+		.backface-visibility(hidden);
+		.transform3d(-50%, -50%, 0);
+		#border-radius > .rounded(3px);
+
+		#modal-close {
+			position: absolute;
+			top: -20px;
+			left: -20px;
+			z-index: 9995;
+			border: 0;
+			cursor: pointer;
+			.square(40px);
+			.background(@white);
+			#border-radius > .rounded(20px);
+
+			.icons {
+				position: absolute;
+				top: 8px;
+				left: 8px;
+				z-index: 9992;
+			}
+
+			&.green { background: @green; }
+			&.red { background: @red; }
+			&.blue { background: @blue; }
+			&.dark-title { background: @gcard; }
+		}
+
+		.modal-content {
+			padding: 20px;
+			z-index: 9990;
+			.background(@white);
+			#border-radius > .rounded(3px);
+			.transformScale(0.7);
+			.opacity(0);
+			.transition;
+
+			.message,
+			.text {
+				text-transform: uppercase;
+				font-weight: 600;
+				.show;
+			}
+
+			.message { 
+				margin: 10px 0 20px 0; 
+				text-align: center;
+
+				.select,
+				.select-item {
+					display: inline-block;
+					margin: -5px 0 0 10px;
+					width: 60px;
+
+					select { font-weight: 600; }
+				}
+
+				&.notice { margin-top: 0; }
+				&.solo { margin: 0; }
+			}
+
+			.text:not(.value) {
+				font-size: 14px;
+				line-height: 1em;
+				color: @grey3;
+				padding-bottom: 20px;
+				text-align: center;
+			}
+
+			.text.value {
+				font-weight: 400;
+				text-transform: none;
+			}
+
+			.button { 
+				font-size: 18px;
+				line-height: 50px;
+				width: 100%; 
+				.show; 
+
+				&.blank {
+					color: @textColor;
+
+					&:hover,
+					&:active { color: @logoPrimary; }
+				}
+
+				&.half {
+					padding: 0 5px;
+					.pull-left;
+					.calc-width(50, 10); /* %, px */
+
+					&:first-child { margin-right: 20px; }
+				}
+			}
+		}
+
+		/* Auto-close notice message ***/
+		.notice {
+			font-weight: 600;
+			text-transform: uppercase;
+			margin: 0;
+			text-align: center;
+		}
+
+		&.modal-show { 
+			visibility: visible; 
+ 
+			.modal-content {
+				.transformScale(1);
+				.opacity(100);
+			}
+		}
+
+		&.keyboard-lock { .transform3d(-50%, -15%, 0); }
+
+		/* Custom positioning ***/
+		&[data-position="bottom-right"]{
+			top: auto;
+			left: auto;
+			bottom: 0;
+			right: 0;
+			.transform3d(0, 0, 0);
+		}
+
+		&.ui-draggable { cursor: move; }
+	}
+
+	#modal-overlay,
+	.inline-modal-overlay {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		visibility: hidden;
+		top: 0;
+		left: 0;
+		z-index: 0;
+		opacity: 0;
+		background: rgba(0,0,0,0.5);
+		.transition;
+
+		&.modal-show { 
+			opacity: 1;
+			visibility: visible;
+			z-index: 9990;
+		}
+	}
+
+	#modal {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		height: auto;
+		z-index: 9999;
+		visibility: hidden;
+		.backface-visibility(hidden);
+		.transform3d(-50%, -50%, 0);
+		#border-radius > .rounded(3px);
+
+		#modal-close {
+			position: absolute;
+			top: -20px;
+			left: -20px;
+			z-index: 9995;
+			border: 0;
+			cursor: pointer;
+			.square(40px);
+			.background(@white);
+			#border-radius > .rounded(20px);
+
+			.icons {
+				position: absolute;
+				top: 8px;
+				left: 8px;
+				z-index: 9992;
+			}
+
+			&.green { background: @green; }
+			&.red { background: @red; }
+			&.blue { background: @blue; }
+			&.dark-title { background: @gcard; }
+		}
+
+		.modal-content {
+			padding: 20px;
+			z-index: 9990;
+			.background(@white);
+			#border-radius > .rounded(3px);
+			.transformScale(0.7);
+			.opacity(0);
+			.transition;
+
+			.message,
+			.text {
+				text-transform: uppercase;
+				font-weight: 600;
+				.show;
+			}
+
+			.message { 
+				margin: 10px 0 20px 0; 
+				text-align: center;
+
+				.select,
+				.select-item {
+					display: inline-block;
+					margin: -5px 0 0 10px;
+					width: 60px;
+
+					select { font-weight: 600; }
+				}
+
+				&.notice { margin-top: 0; }
+				&.solo { margin: 0; }
+			}
+
+			.text:not(.value) {
+				font-size: 14px;
+				line-height: 1em;
+				color: @grey3;
+				padding-bottom: 20px;
+				text-align: center;
+			}
+
+			.text.value {
+				font-weight: 400;
+				text-transform: none;
+			}
+
+			.button { 
+				font-size: 18px;
+				line-height: 50px;
+				width: 100%; 
+				.show; 
+
+				&.blank {
+					color: @textColor;
+
+					&:hover,
+					&:active { color: @logoPrimary; }
+				}
+
+				&.half {
+					padding: 0 5px;
+					.pull-left;
+					.calc-width(50, 10); /* %, px */
+
+					&:first-child { margin-right: 20px; }
+				}
+			}
+
+			/* New content modal window ***/
+			&.new-content {
+				padding: 0 0 20px 0;
+				width: 480px;
+
+				&.warning {
+					padding: 20px 20px 10px 20px;
+				}
+
+				.new-form-title {
+					color: @white;
+					text-transform: uppercase;
+					line-height: 50px;
+					vertical-align: middle;
+					padding: 0 20px;
+					margin-bottom: 20px;
+					background: @gcard;
+					#border-radius > .top();
+					.show;
+				}
+
+				.entry { 
+					padding: 0 20px; 
+					margin-bottom: 20px;
+				}
+
+				.actions {
+					text-align: center;
+					padding: 10px 0;
+					.float;
+
+					.button {
+						display: inline-block;
+						width: auto;
+						padding: 0 40px;
+
+						&.blank { 
+							padding: 0 20px 0 0; 
+							text-align: right; 
+						}
+					}
+
+					&.break-buttons {
+						padding: 0 20px;
+
+						.button {
+							&:first-child { margin-right: 10px;}
+							&.blank { 
+								margin: 10px auto 0 auto;
+								text-align: center;
+								padding: 0 40px;
+								.show; 
+							}
+						}
+					}
+				}
+			}
+		}
+		&.modal-show { 
+			visibility: visible; 
+		
+			.modal-content {
+				.transformScale(1);
+				.opacity(100);
+			}
+		}
+	}
+
+	#modal-overlay {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		visibility: hidden;
+		top: 0;
+		left: 0;
+		z-index: 0;
+		opacity: 0;
+		background: rgba(0,0,0,0.5);
+		.transition;
+
+		&.modal-show { 
+			opacity: 1;
+			visibility: visible;
+			z-index: 9990;
+		}
+	}
+
 
 /* 6. IE
 ==========================================================*/

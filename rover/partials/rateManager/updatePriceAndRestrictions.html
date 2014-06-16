@@ -2,6 +2,7 @@
     <dialog>
         <div class="updatePriceAndRestrictionsContainer">
             <div class="header">
+                <div class="toggle-expand" ng-click="expandButtonClicked()" ng-class="{ expand:!showExpandedView, collapse: showExpandedView}">&nbsp;</div>
                 <h2 class="h1">{{data.name}}</h2>
                 <em>{{popupData.selectedDate| date:'EEEE MMMM dd'}}</em>
             </div>
@@ -13,14 +14,20 @@
                             <div class="ng-scope restbg" ng-include="'/assets/partials/rateManager/restrictionsList.html'" >
                             </div>
                         </td>
-                        <td ng-if="popupData.all_data_selected">
-                            <div ng-include="'/assets/partials/rateManager/mixedRestrictions.html'"></div >
+                        <td ng-if="popupData.all_data_selected" ng-show="data.showEditView">
+                            <div ng-include="'/assets/partials/rateManager/mixedRestrictions.html'"></div>
                         </td>
-                        <!-- <td style="vertical-align:top" ng-show="popupData.fromRoomTypeView">
+                        <td ng-show="data.showEditView && !popupData.all_data_selected">
+                            <div ng-include="'/assets/partials/rateManager/enterRestriction.html'"></div>
+                        </td>
+                        <td ng-show="popupData.fromRoomTypeView && !data.showEditView">
                             <div ng-include="'/assets/partials/rateManager/restrictionRoomRates.html'" ></div >
-                        </td> -->
-                         <td style="vertical-align:top" ng-hide="true">
+                        </td>
+                         <td ng-show="showExpandedView">
                             <div ng-include="'/assets/partials/rateManager/restrictionWeekDays.html'"></div >
+                        </td>
+                        <td ng-show="showExpandedView && !popupData.fromRoomTypeView && !popupData.all_data_selected">
+                            <div ng-include="'/assets/partials/rateManager/priceInfo.html'"></div >
                         </td>
                     
                         <td>
@@ -29,12 +36,12 @@
                 </table>
 
             </div>
-            <div class="footer" ng-hide="popupData.all_data_selected">
+            <div class="footer">
                 <div class="actions float">
                     <button class="button blank edit-data-inline" id="cancel" ng-click="hideUpdatePriceAndRestrictionsDialog()" type="button">
                         Cancel
                     </button>
-                    <button class="button green edit-data-inline" id="save" type="button" ng-click="saveRestriction()">
+                    <button class="button green edit-data-inline" id="save" type="button" ng-click="saveRestriction()" ng-class="{'grey' : data.showEditView}" ng-disabled="data.showEditView">
                         Set
                     </button>
                 </div>

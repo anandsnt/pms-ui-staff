@@ -79,14 +79,6 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0; 
 }
 
-input[readonly]:not(.datepicker):not(.hasDatepicker),
-input[disabled]{
-    cursor: default;
-    color: @grey3;
-    background: rgba(0,0,0,.01) !important;
-    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.05));
-}
-
 select {
     width: 100%;
     min-height: 40px;
@@ -128,6 +120,22 @@ select {
 label {
     cursor: pointer;
     margin-bottom: 5px;
+}
+
+input[readonly]:not(.datepicker):not(.hasDatepicker),
+input[disabled],
+textarea[readonly],
+textarea[disabled] {
+    cursor: default;
+    color: @grey3;
+    background: rgba(0,0,0,.01) !important;
+    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.05));
+}
+select[readonly],
+select[disabled],{
+    cursor: default;
+    color: @grey3;
+    .box-shadow(inset 1px 1px 1px rgba(0,0,0,.05));
 }
 
 /* 2. TYPOGRAPHY
@@ -204,6 +212,17 @@ label {
     }
 
 /* File upload                  ==========================*/
+
+    #deleteLogo,#deleteTemplate{
+        position: relative;
+        float: right;
+        top: 42px;
+        left: -20px;
+        &.hidden{
+            display: none;
+        }
+    }
+
     .file-upload {
         width: 100%;
         min-height: 40px;
