@@ -1,28 +1,27 @@
 
 (function() {
-  var checkinUpgradeRoomController = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService,checkinDetailsService) {
+  var checkinUpgradeRoomController = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService,checkinDetailsService,$state) {
 
-    $scope.pageSuccess = true;
+    $scope.pageValid = false;
 
     if($rootScope.isCheckedin){
-      $scope.pageSuccess = false;
       $location.path('/checkinSuccess');
     }
     else if($rootScope.isCheckedout){
-      $scope.pageSuccess = false;
-      $location.path('/checkOutNowSuccess');
+      $location.path('/checkOutSuccess');
     }
     else if(!$rootScope.isCheckin){
-      $scope.pageSuccess = false;
       $location.path('/');
     }
     else if(!$rootScope.upgradesAvailable){
-      $scope.pageSuccess = false;
       $location.path('/checkinReservationDetails');      
+    }
+    else{
+      $scope.pageValid = true;
     }
     
 
-    if($scope.pageSuccess){
+    if($scope.pageValid){
      $scope.slides = [];
        //set up flags related to webservice
 
@@ -59,23 +58,26 @@
          $rootScope.ShowupgradedLabel = true;
          $rootScope.roomUpgradeheading = "Your new Trip details";
          checkinDetailsService.setResponseData(response.data);         
-         $location.path('/checkinReservationDetails');
+         $state.go('checkinReservationDetails');
        }
        
+     },function(){
+        $rootScope.netWorkError = true;
+        $scope.isFetching = false;
      });
        
        
      }
 
      $scope.noThanksClicked = function(){
-       $location.path('/checkinKeys');
-     }
+        $state.go('checkinKeys');
+     };
 
    }
  };
 
  var dependencies = [
- '$scope','$location','$rootScope','checkinRoomUpgradeOptionsService','checkinRoomUpgradeService','checkinDetailsService',
+ '$scope','$location','$rootScope','checkinRoomUpgradeOptionsService','checkinRoomUpgradeService','checkinDetailsService','$state',
  checkinUpgradeRoomController
  ];
 
