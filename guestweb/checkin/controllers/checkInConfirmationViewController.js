@@ -1,8 +1,8 @@
 
 (function() {
-	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$location, dateFilter, $filter, checkinConfirmationService,checkinDetailsService) {
+	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$state, dateFilter, $filter, checkinConfirmationService,checkinDetailsService) {
 
-		$scope.pageSuccess = true;
+		$scope.pageValid = false;
 		//uncheck checkbox in reservation details page
 
 		$rootScope.checkedApplyCharges = false;
@@ -11,17 +11,17 @@
 
 		// page navigatons if any of following conditions happpens
 		if($rootScope.isCheckedin){
-			$scope.pageSuccess = false;
-			$location.path('/checkinSuccess');
+			$state.go('checkinSuccess');
 		}
 		else if($rootScope.isCheckedout){
-			$scope.pageSuccess = false;
-			$location.path('/checkOutNowSuccess');
+		    $state.go('checkOutStatus');
 		}
 		else if(!$rootScope.isCheckin){
-			$scope.pageSuccess = false;
-			$location.path('/');
+		   $state.go('checkOutOptions');
 		}
+		else{
+			$scope.pageValid = true;
+		};
 
  		//setup options for modal
  		$scope.opts = {
@@ -31,18 +31,13 @@
  			controller: ModalInstanceCtrl
  		};
 
- 		if($scope.pageSuccess){
+ 		if($scope.pageValid){
 
 			//set up flags related to webservice
 			$scope.isPosting 		 = false;
 			$rootScope.netWorkError  = false;
 
-			// watch for any change
-			$rootScope.$watch('netWorkError',function(){
-				if($rootScope.netWorkError)
-					$scope.isPosting = false;
-			});
-
+			
 			//next button clicked actions
 			$scope.nextButtonClicked = function() {
 				var data = {'departure_date':$rootScope.departureDate,'credit_card':$scope.cardDigits,'reservation_id':$rootScope.reservationID};
@@ -67,6 +62,9 @@
 						//navigate to next page
 						$location.path('/checkinReservationDetails');
 					}
+				},function(){
+					$rootScope.netWorkError = true;
+					$scope.isPosting = false;
 				});
 			};
 
@@ -91,7 +89,7 @@
 	};
 
 	var dependencies = [
-	'$scope','$modal','$rootScope','$location', 'dateFilter', '$filter', 'checkinConfirmationService','checkinDetailsService',
+	'$scope','$modal','$rootScope','$state', 'dateFilter', '$filter', 'checkinConfirmationService','checkinDetailsService',
 	checkInConfirmationViewController
 	];
 

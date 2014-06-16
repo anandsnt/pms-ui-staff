@@ -1,29 +1,20 @@
 (function() {
-	var checkinConfirmationService = function($q,baseWebService,$rootScope) {
+	var checkinConfirmationService = function($q,$http,$rootScope) {
 		
 		var responseData = {};
 
-
-		//fetch texts to be displayed
-
 		var login = function(data) {
-			
 			var deferred = $q.defer();
-
 			var url = '/guest_web/search.json';
-	
-			baseWebService.post(url,data).then(function(response) {
-
-
-
-				this.responseData = response;
-				deferred.resolve(this.responseData);
-			});
-			
-
+			$http.post(url,data).success(function(response) {
+					this.responseData = response;
+					deferred.resolve(this.responseData);
+				}.bind(this))
+				.error(function() {
+					deferred.reject();
+				});
 			return deferred.promise;
 		};
-
 
 		return {
 			responseData: responseData,
@@ -32,7 +23,7 @@
 	};
 
 	var dependencies = [
-	'$q','baseWebService','$rootScope',
+	'$q','$http','$rootScope',
 	checkinConfirmationService
 	];
 

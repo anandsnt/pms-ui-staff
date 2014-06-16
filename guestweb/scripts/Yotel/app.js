@@ -28,6 +28,8 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 ///
 	$attrs.isCheckin='true';
 	$rootScope.isCheckin = true;
+	$rootScope.isCheckedout =  false;
+	
 ///
     if($attrs.isCheckin ==='true'){
  		$state.go('checkinConfirmation');
