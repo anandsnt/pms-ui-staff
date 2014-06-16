@@ -12,7 +12,7 @@
                 </figure>
                 <form method="get" action="" name="search-guests" id="search-guests" class="card-search-form" role="search">
                     <div class="holder">
-                        <div class="entry">
+                        <div class="entry" ng-click="openGuestCard()">
                             <input name="gc-firstname" id="gc-firstname" placeholder="First Name" type="text" class="masked-input fixed name h1" rv-delay-textbox ng-model="guestFirstName" delay="1000" function-to-fire="searchGuest" />
 
                             <!-- Value in this input means we've searched for "Smi" in intial search screen -->
@@ -32,8 +32,8 @@
                 </div>
                 <form method="get" action="" name="search-company" id="search-company" class="card-search-form" role="search">
                     <div class="holder">
-                        <div class="entry">
-                            <input name="cc-name" id="cc-name" placeholder="Company Name" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="companyName" delay="1000" function-to-fire="searchCompany"/>
+                        <div class="entry" ng-click="openGuestCard()">
+                            <input name="cc-name" id="cc-name" placeholder="Company Name" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="companyName" delay="1000" function-to-fire="searchCompany" />
                             <input name="cc-city" id="cc-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="companyCity" delay="1000" function-to-fire="searchCompany"/>
                             <input name="cc-corporate-id" id="cc-corporateid" placeholder="Corporate ID" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="companyCorpId" delay="1000" function-to-fire="searchCompany" />
                         </div>
@@ -48,7 +48,7 @@
                 </div>
                 <form method="get" action="" name="search-travel-agent" id="search-travel-agent" class="card-search-form" role="search">
                     <div class="holder">
-                        <div class="entry">
+                        <div class="entry" ng-click="openGuestCard()">
                             <input name="tac-name" id="tac-name" placeholder="Travel Agent" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="travelAgentName" delay="1000" function-to-fire="searchTravelAgent" />
                             <input name="tac-city" id="tac-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="travelAgentCity" delay="1000" function-to-fire="searchTravelAgent" />
                             <input name="tac-iata" id="tac-iata" placeholder="IATA #" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="travelAgentIATA" delay="1000" function-to-fire="searchTravelAgent" />
@@ -106,6 +106,7 @@
             
             <!-- Company Card -->
             <div id="company-card-content" class="card-search card-content" ng-class="UICardContentCls('company-card')">
+            <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewCompany()">New Card</button>
                 <div id="search-company-content" class="search-cards scrollable">
                     <div class="wrapper">
                         <ul id="search-company-results" class="search-results">
@@ -140,6 +141,7 @@
             
             <!-- Travel Agent Card -->
             <div id="travel-agent-card-content" class="card-search card-content" ng-class="UICardContentCls('travel-agent-card')">
+            <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewTravelAgent()">New Card</button>
                 <div id="search-travel-agent-content" class="search-cards scrollable">
                     <div class="wrapper">
                         <ul id="search-travel-agent-results" class="search-results">

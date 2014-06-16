@@ -1,5 +1,5 @@
-sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate',
-  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate) {
+sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate','hotelDetails','userInfoDetails',
+  function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate,hotelDetails,userInfoDetails) {
     //Used to add precison in amounts
     $rootScope.precisonZero = 0;
     $rootScope.precisonTwo = 2;
@@ -7,6 +7,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.currencySymbol = "";
     $scope.showSubMenu = false;
     $scope.activeSubMenu = [];
+    $scope.isStandAlone = false;
 
     $rootScope.shortDateFormat = "MM/yy"; //05/99
     $rootScope.dayInWeek = "EEE"; //Sun
@@ -16,6 +17,34 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; //Wednesday, 4 June 2014
     $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
+
+      /*
+     * hotel Details 
+     */
+    
+    $rootScope.businessDate = hotelDetails.business_date;
+    $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
+    if (hotelDetails.language){
+      $translate.use(hotelDetails.language.value);
+    }
+    else{
+      $translate.use('EN');
+    };
+    //set flag if standalone PMS
+    if (hotelDetails.pms_type === null){
+       $scope.isStandAlone = true;
+    };
+
+ /*
+ * retrieve user info
+ */
+    $scope.userInfo = userInfoDetails;
+    $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
+    $rootScope.adminRole = $scope.userInfo.user_role;
+    $rootScope.isHotelStaff = $scope.userInfo.is_staff;
+    if ($rootScope.adminRole == "Hotel Admin")
+      $scope.isHotelAdmin = true;
+  
 
     // OBJECT WITH THE MENU STRUCTURE
     $scope.menu = [{
@@ -48,7 +77,8 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       iconClass: "icon-frontdesk",
       submenu: [{
         title: "MENU_CREATE_RESERVATION",
-        action: "rover.reservation.search"
+        action: "rover.reservation.search",
+        standAlone : true
       }, {
         title: "MENU_ROOM_ASSIGNMENT",
         action: ""
@@ -162,60 +192,14 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       BaseCtrl.call(this, $scope);
       $rootScope.adminRole = '';
       $scope.selectedMenuIndex = 0;
-      /*
-       * retrieve user info
-       */
-      $scope.fetchData = function() {
-        var fetchUserInfoSuccessCallback = function(data) {
-          $scope.userInfo = data;
-          $scope.isPmsConfigured = $scope.userInfo.is_pms_configured;
-          $rootScope.adminRole = $scope.userInfo.user_role;
-          $rootScope.isHotelStaff = $scope.userInfo.is_staff;
-          if ($rootScope.adminRole == "Hotel Admin")
-            $scope.isHotelAdmin = true;
-          // if($rootScope.isStaff == "Hotel staff" )
-          //     $scope.isHotelStaff =  true;
-          $scope.$emit('hideLoader');
-          $scope.getHotelDetails();
-        };
-        var fetchUserInfoFailureCallback = function(data) {
-          $scope.$emit('hideLoader');
-        };
-        $scope.invokeApi(RVDashboardSrv.fetchUserInfo, {}, fetchUserInfoSuccessCallback, fetchUserInfoFailureCallback);
-
-      };
-      // Show a loading message until promises are not resolved
-      $scope.$emit('showLoader');
-
+     
       // if menu is open, close it
       $scope.isMenuOpen();
-      $scope.fetchData();
       $scope.menuOpen = false;
     };
     $scope.init();
-    /*
-     * Success callback of get hotel details
-     * @param {object} response
-     */
-    $scope.fetchHotelDetailsSuccessCallback = function(data) {
-      //Can use these variables from subcontrollers
-      $rootScope.businessDate = data.business_date;
-      $rootScope.currencySymbol = getCurrencySign(data.currency.value);
-      if (data.language)
-        $translate.use(data.language.value);
-      else
-        $translate.use('EN');
-      $scope.$emit('hideLoader');
 
-    };
-
-    /*
-     * Function to get the current hotel details
-     */
-    $scope.getHotelDetails = function() {
-      $scope.invokeApi(RVHotelDetailsSrv.fetchHotelDetails, {}, $scope.fetchHotelDetailsSuccessCallback);
-    };
-    /*
+     /*
      * update selected menu class
      */
     $scope.$on("updateRoverLeftMenu", function(e, value) {
@@ -238,11 +222,11 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       $scope.$emit('showLoader');
 
       // if menu is open, close it
-      if($scope.menuOpen){
+      if ($scope.menuOpen) {
         $scope.menuOpen = !$scope.menuOpen;
         $scope.showSubMenu = false;
       }
-      
+
     });
 
     $rootScope.$on('$stateChangeSuccess', function(e, curr, prev) {

@@ -5,6 +5,11 @@ var BaseView = function(viewDom){
 
   var that = this;
 
+  this.setDom = function(newDom){
+    // This is added as part of a bug fix. Used only for search view.
+    // Hence the code is not written here
+  };
+
   this.pageinit = function(){
   };
   

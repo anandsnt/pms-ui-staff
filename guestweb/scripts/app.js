@@ -1,7 +1,7 @@
 
 var snt = angular.module('snt',['ngRoute','ui.bootstrap','pickadate']);
 
-snt.controller('rootController', ['$rootScope','$scope','$attrs', 'UserService','$location','authenticationService', function($rootScope,$scope,$attrs, UserService,$location,authenticationService) {
+snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location', function($rootScope,$scope,$attrs,$location) {
 
 
 
