@@ -5,7 +5,10 @@ var reservationDetailsView = function(domRef) {
 	this.reservation_id = getReservationId();
 	
 	this.pageinit = function() {
+		
 		that.updateTimelineIcon();
+		//To set cuurent view 
+		sntapp.cardSwipeCurrView = 'StayCardView';
 	};
 
 	this.updateTimelineIcon = function(){
@@ -55,7 +58,7 @@ var reservationDetailsView = function(domRef) {
 	    	return that.roomUpgradesClicked(event);
 	    }
 	    if(getParentWithSelector(event, "#reservation-checkout")) {
-	    	return that.clickedCheckoutButton();
+	    	return that.clickedCheckoutButton(event);
 	    }	    
 	    if(getParentWithSelector(event, "#reservation-view-bill")) {
 	    	return that.clickedViewBillButton(event);
@@ -72,6 +75,9 @@ var reservationDetailsView = function(domRef) {
 	    if(getParentWithSelector(event, "#nights-btn")) {
 	    	return that.gotToChangeDatesScreen(event);
 	    }
+	    if(getParentWithSelector(event, "#smartband-btn")) {
+	    	return that.smartBandButtonClicked(event);
+	    }	    
 	};
 
 		
@@ -83,6 +89,15 @@ var reservationDetailsView = function(domRef) {
 		reservationCardLoyaltyView.initialize();
 		var reservationCardNotes = new reservationCardNotesView(that.myDom);
 		reservationCardNotes.initialize();
+	};
+
+
+	/**
+	* function to handle click on smart band button
+	*/
+	this.smartBandButtonClicked = function(){
+		var smartBandModal = new SmartBandModal(this.reservation_id);
+		smartBandModal.initialize();
 	};
 
 	this.gotToChangeDatesScreen = function() {
@@ -210,8 +225,17 @@ var reservationDetailsView = function(domRef) {
 		};
 		sntapp.fetchAndRenderView(viewURL, viewDom, params, 'blocker', nextViewParams);
 	};
-	this.clickedCheckoutButton = function() {
-		that.goToBillCardView("CheckoutButton");
+	this.clickedCheckoutButton = function(event) {
+		var target = $(event.target);
+		if(target.data("smartband-balance-remaining") == true){
+			var smartBandListForCheckoutModal = new SmartBandListForCheckoutModal(getReservationId());
+			smartBandListForCheckoutModal.callBack = that.goToBillCardView;
+			smartBandListForCheckoutModal.callBackParams = ["CheckoutButton"];
+			smartBandListForCheckoutModal.initialize();
+		}
+		else{
+			that.goToBillCardView("CheckoutButton");
+		}
 	};
 	this.clickedViewBillButton = function(e) {
 		//sntapp.activityIndicator.showActivityIndicator("blocker");
