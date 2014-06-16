@@ -13,15 +13,15 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	$rootScope.userCity   	 = $attrs.city;
 	$rootScope.userState     = $attrs.state;
 	$rootScope.roomNo        = $attrs.roomNo;
-	//$rootScope.isLateCheckoutAvailable  = ($attrs.isLateCheckoutAvailable  === 'true') ? true : false;
-	$rootScope.isLateCheckoutAvailable  = ($attrs.isLateCheckoutAvailable  === 'true') ? true : true;
+	$rootScope.isLateCheckoutAvailable  = ($attrs.isLateCheckoutAvailable  === 'true') ? true : false;
+	//$rootScope.isLateCheckoutAvailable  = ($attrs.isLateCheckoutAvailable  === 'true') ? true : true;
 	$rootScope.emailAddress  = $attrs.emailAddress;
 	$rootScope.hotelLogo     = $attrs.hotelLogo;
 
 	$rootScope.hotelPhone    = $attrs.hotelPhone;
 	$rootScope.businessDate  = $attrs.businessDate;
-//	$rootScope.isCheckedout  = ($attrs.isCheckedout === 'true') ? true : false;
-	$rootScope.isCheckedout  = ($attrs.isCheckedout === 'true') ? false : false;
+	$rootScope.isCheckedout  = ($attrs.isCheckedout === 'true') ? true : false;
+	//$rootScope.isCheckedout  = ($attrs.isCheckedout === 'true') ? false : false;
 	$rootScope.isCheckin     =   ($attrs.isCheckin ==='true') ? true : false;
 
 	$rootScope.reservationStatusCheckedIn = ($attrs.reservationStatus ==='CHECKIN')? true :false;
@@ -31,7 +31,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken)
 
    ///
-  	$attrs.isLateCheckoutAvailable  = 'true';
+  //	$attrs.isLateCheckoutAvailable  = 'true';
   	///
 	if($rootScope.isCheckedout)	{
 		$state.go('checkOutStatus');	
