@@ -310,6 +310,12 @@ $(function($){
                     });
                 },
                 error: function(jqxhr, status, error){
+                    //Show ows connectivity error popup
+                    if (jqxhr.status=="520") {
+                        sntapp.activityIndicator.hideActivityIndicator();
+                        sntapp.showOWSErrorPopup();
+                        return;
+                    }
                     //checking whether a user is logged in
                     if (jqxhr.status == "401") { sntapp.logout(); return;}
                     if (jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
@@ -348,6 +354,12 @@ $(function($){
                         dashboard.pageshow();
                     },
                     error: function(jqxhr, status, error){
+                        //Show ows connectivity error popup
+                        if (jqxhr.status=="520") {
+                            sntapp.activityIndicator.hideActivityIndicator();
+                            sntapp.showOWSErrorPopup();
+                            return;
+                        }
                         //checking whether a user is logged in
                         if (jqxhr.status == "401") { sntapp.logout(); return;}
                         if (jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
@@ -448,6 +460,12 @@ $(function($){
                         $('#' + $next).html(data);
                     },
                     error: function(jqxhr, status, error){
+
+                        if (jqxhr.status=="520") {
+                            sntapp.activityIndicator.hideActivityIndicator();
+                            sntapp.showOWSErrorPopup();
+                            return;
+                        }
                         if (jqxhr.status=="401") { sntapp.logout(); return;}
                         if (jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
                             location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;

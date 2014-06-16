@@ -1,5 +1,4 @@
 var StayCard = function(viewDom){
-	console.log("test console message");
   BaseView.call(this);
   var that = this;
   this.myDom = viewDom;
@@ -164,7 +163,6 @@ var StayCard = function(viewDom){
     that.myDom.find('#title').on('change', that.changeAvathar);
     // that.myDom.unbind('click');
     that.myDom.find("#reservation-card").on('click', that.reservationCardClickHandler);
-    that.myDom.find("#reservation-queue").on('click', that.reservationQueueHandler);
 
   };
   
@@ -180,8 +178,12 @@ var StayCard = function(viewDom){
     // Change reservation
     if(getParentWithSelector(event, ".reservations-tabs li a")) {
         return that.reservationListItemClicked(event);
-    }    
-
+    }   
+    
+    // Click REMOVE FROM QUEUE or PUT IN QUEUE buttons 
+	if(getParentWithSelector(event, "#reservation-queue")) {
+        return that.reservationQueueHandler(event);
+    }
   };
 
   // function for closing the drawer if is open
@@ -373,25 +375,61 @@ var StayCard = function(viewDom){
       sntapp.activityIndicator.hideActivityIndicator();
       sntapp.notification.showErrorMessage(errorMessage, that.myDom); 
     }
+    // Success callback for queue
+    this.queueSaveSuccess = function(data,params){
+    	
+      var myConfirmationNo = getCurrentConfirmation();
+      
+      if(that.myDom.find("#reservation-queue").hasClass('red-text')){
+      	// Change button "Remove from Queue" to "Put in Queue"
+      	that.myDom.find("#reservation-queue").removeClass('red-text').addClass('blue-text');
+      	that.myDom.find("#reservation-queue").text("Put in Queue");
+      	that.myDom.find("#reservation-queue-status").val("false");
+      	
+      	// Update on search results
+		$("#search-results a" ).each(function() {
+			if($(this).find('.confirmation').text() === myConfirmationNo ){
+				$(this).find('.status').removeClass('queued');
+			}
+		});
+      	
+      }
+      else if(that.myDom.find("#reservation-queue").hasClass('blue-text')){
+      	// Change button "Put in Queue" to "Remove from Queue"
+      	that.myDom.find("#reservation-queue").removeClass('blue-text').addClass('red-text');
+      	that.myDom.find("#reservation-queue").text("Remove from Queue");
+      	that.myDom.find("#reservation-queue-status").val("true");
+      	
+      	// Update on search results
+      	$("#search-results a" ).each(function() {
+			if($(this).find('.confirmation').text() === myConfirmationNo ){
+				$(this).find('.status').addClass('queued');
+			}
+		});
+      	
+      }
+    };
     
     //Update resevation with the selected room.
   	this.reservationQueueHandler = function(e){
-    	
+    
       var reservation_id = $('#reservation_id').val();
       var is_queue_reservation = $('#reservation-queue-status').val() == "true" ? false : true;
       var postParams = {};
       postParams.status = is_queue_reservation;
       
-    	var webservice = new WebServiceInterface();
-    	//var successCallBackParams = { 'reservationId': reservation_id,};
+	  var webservice = new WebServiceInterface();
+	  var successCallBackParams = { 'reservationId': reservation_id };
     	
       var options = { requestParameters: postParams,
-      				//successCallBackParameters: successCallBackParams,
+      				successCallBack : that.queueSaveSuccess,
+      				successCallBackParameters: successCallBackParams,
       				failureCallBack: that.queueSaveFailed,
       				loader: 'blocker'
       };
-    	var url = '/api/reservations/'+reservation_id+'/queue';
-    	webservice.postJSON(url, options);
+      
+      var url = '/api/reservations/'+reservation_id+'/queue';
+      webservice.postJSON(url, options);
     };
     
 };

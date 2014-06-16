@@ -296,6 +296,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	  	var options = {
 	  			   requestParameters: postParams,
 	  			   successCallBack: that.keyFetchSuccess,
+	  			   successCallBackParameters: { 'uid': postParams.uid},
 	  			   failureCallBack: that.keyFetchFailed,
 	  			   loader: "BLOCKER"
 	  	};
@@ -308,6 +309,7 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 	*/
 	this.keyFetchSuccess = function(response, requestParams){
 		that.keyData = response.data;		
+		that.keyData.uid = requestParams.uid;
 		that.printKeys();
 	};
 
@@ -324,17 +326,22 @@ var KeyEncoderModal = function(gotoStayCard, gotoSearch) {
 		}
 	    
 	    var keyData = [];
-
+	    
 	    //Safelock key
 	    if(Object.keys(that.keyData.key_info[0])[0] == "base64"){
 	    	keyData.push(that.keyData.key_info[0].base64)
-	    }else{
+	    }
+		else if(Object.keys(that.keyData.key_info[0])[0] == "image"){
+	    	keyData.push(that.keyData.key_info[0].image)
+	    }	    
+	    else{
 	    	keyData.push(that.keyData.key_info[0].t3)
 	    }
 
 	    keyData.push(Object.keys(that.keyData.key_info[0])[0]);
 	    keyData.push(escapeNull(that.keyData.aid));
 	    keyData.push(escapeNull(that.keyData.keyb));
+		keyData.push(escapeNull(that.keyData.uid));
 	    that.writeKey(keyData, index);
 	};
 
