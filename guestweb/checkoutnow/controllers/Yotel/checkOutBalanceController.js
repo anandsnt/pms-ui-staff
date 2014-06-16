@@ -1,43 +1,32 @@
 (function() {
-	var checkOutBalanceController = function($scope, BillService,$rootScope,$location) {
+	var checkOutBalanceController = function($scope, BillService,$rootScope,$state) {
 
 		if($rootScope.isCheckedout)	{
-			$state.go('checkOutNow.checkOutStatus');
-			$scope.pageSuccess = false;	
+			$state.go('checkOutStatus');
+			$scope.pageValid = false;	
 		}
 		else{
-			$scope.pageSuccess = true;
+			$scope.pageValid = true;
 		};	
-		if($scope.pageSuccess){
+		if($scope.pageValid){
 
-		//if checkout is already done	
-		if ($rootScope.isCheckedout) 
-			$location.path('/checkOutNowSuccess');
+	// showBill flag and its reference in $rootScope
+	$scope.showBill = false;
+	$rootScope.showBill = $scope.showBill;
+	$scope.netWorkError = false;	
+	$scope.isFetching = true;
 
-		// showBill flag and its reference in $rootScope
-		$scope.showBill = false;
-		$rootScope.showBill = $scope.showBill;
-		$rootScope.netWorkError = false;	
-		$scope.isFetching = true;
-
-		//watch for any network errors
-		$rootScope.$watch('netWorkError',function(){
-			if($rootScope.netWorkError)
-				$scope.isFetching = false;
-		});
-
-		//fetch data to display
-		BillService.fetchBillData().then(function(billData) {
-			$scope.billData = billData.data.bill_details;
-			$scope.isFetching = false;
-			if($scope.billData)
-				$scope.optionsAvailable = true;
-			else
-				$location.path('/serverError');
-		});
-		
-	}
-
+	//fetch data to display
+	BillService.fetchBillData().then(function(billData) {
+		$scope.billData = billData.data.bill_details;
+		$scope.isFetching = false;
+		if($scope.billData)
+			$scope.optionsAvailable = true;
+	},function(){
+		$scope.netWorkError = true;
+		$scope.isFetching = false;
+	});
+};
 };
 
 var dependencies = [

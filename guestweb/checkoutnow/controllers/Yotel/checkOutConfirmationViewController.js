@@ -4,13 +4,13 @@
 
 		if($rootScope.isCheckedout)	{
 			$state.go('checkOutNow.checkOutStatus');
-			$scope.pageSuccess = false;	
+			$scope.pageValid = false;	
 		}
 		else{
-			$scope.pageSuccess = true;
+			$scope.pageValid = true;
 		};			
 
-		if($scope.pageSuccess){
+		if($scope.pageValid){
 			$scope.checkoutTimessage = $rootScope.checkoutTimessage ? $rootScope.checkoutTimessage:"Check out time is ";
 			$scope.footerMessage1 = !$rootScope.isLateCheckoutAvailable ? 'Late check out is not available.' :'' ;
 		}

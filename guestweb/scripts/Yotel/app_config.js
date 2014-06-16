@@ -30,7 +30,7 @@ snt.factory('authInterceptor', function ($rootScope, $q,$location) {
 snt.factory('timeoutHttpIntercept', function ($rootScope, $q) {
     return {
       'request': function(config) {
-        config.timeout = 80000; // set timeout
+        config.timeout = 5000; // set timeout
         return config;
       }
     };

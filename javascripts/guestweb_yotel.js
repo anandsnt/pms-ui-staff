@@ -12,6 +12,6 @@
 //= require_tree ../guestweb/shared
 //= require_tree ../guestweb/checkoutlater/controllers/Yotel
 //= require_tree ../guestweb/checkoutnow/controllers/Yotel
-//= require_tree ../guestweb/checkoutnow/services
+//= require_tree ../guestweb/checkoutnow/services/Yotel
 //= require_tree ../guestweb/checkoutlater/services
 //= require_tree ../guestweb/checkin
