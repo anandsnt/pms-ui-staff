@@ -15,7 +15,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
 		return deferred.promise;
 	};	
 	
-	/**
+   /**
     *   An getter method to edit deatils for an existing hotel for SNT Admin
     *   @param {Object} data - deatils of the hotel with hotel id.
     */
