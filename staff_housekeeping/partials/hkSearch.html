@@ -20,6 +20,11 @@
    </div>
 </form>
 
+<div id="pull-refresh-notify">
+  <span id="icon"></span>
+  <span id="ref-text">Pull down to refresh...</span>
+</div>
+
 <!-- Rooms list -->
 <section id="rooms" class="content scrollable">
    <ul class="wrapper">
@@ -108,6 +113,13 @@
                     <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.occupied}"></span>
                     <input type="checkbox" ng-model="currentFilters.occupied" name="room-filters">
                     Show Occupied
+                </label>
+             </div>
+             <div class="entry radio-check" ng-show="showQueued">
+                <label class="checkbox">
+                    <span class="icon-form icon-checkbox" ng-class = "{'checked' : currentFilters.queued}"></span>
+                    <input type="checkbox" ng-model="currentFilters.queued" name="room-filters">
+                    Show Queued
                 </label>
              </div>
           </div>
