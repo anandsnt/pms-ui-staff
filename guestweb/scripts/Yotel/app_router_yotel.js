@@ -41,7 +41,54 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
 	 	title: 'Check In'
+	 }).state('checkinReservationDetails', {
+	 	url: '/checkinReservationDetails',
+	 	templateUrl: '/assets/checkin/partials/checkInReservationDetails.html',
+	 	controller : 'checkInReservationDetails',
+	 	title: 'Details - Check In'
+	 }).state('checkinUpgrade', {
+	 	url: '/checkinUpgrade',
+	 	templateUrl: '/assets/checkin/partials/checkinUpgradeRoom.html',
+	 	controller : 'checkinUpgradeRoomController',
+	    title: 'Upgrade - Check In'
+	 }).state('checkinKeys', {
+	 	url: '/checkinKeys',
+	 	templateUrl: '/assets/checkin/partials/checkInKeys.html',
+	 	controller : 'checkInKeysController',
+	 	title: 'Keys - Check In'
+	 }).state('checkinSuccess', {
+	 	url: '/checkinSuccess',
+	 	templateUrl: '/assets/checkin/partials/checkinSuccess.html',
+	 	controller : 'checkInReservationDetails',
+	 	title: 'Status - Check In'
 	 });
+
+
+
+
+	// $routeProvider.when('/checkinKeys', {
+	// 	templateUrl: '/assets/checkin/partials/checkInKeys.html',
+	// 	controller : 'checkInKeysController',
+	// 	title: 'Keys - Check In'
+	// });
+
+	// $routeProvider.when('/checkinReservationDetails', {
+	// 	templateUrl: '/assets/checkin/partials/checkInReservationDetails.html',
+	// 	controller : 'checkInReservationDetails',
+	// 	title: 'Details - Check In'
+	// });
+
+	// $routeProvider.when('/checkinUpgrade', {
+	// 	templateUrl: '/assets/checkin/partials/checkinUpgradeRoom.html',
+	//     controller : 'checkinUpgradeRoomController',
+	//     title: 'Upgrade - Check In'
+	// });
+
+	// $routeProvider.when('/checkinSuccess', {
+	// 	templateUrl: '/assets/checkin/partials/checkinSuccess.html',
+	//     title: 'Status - Check In'
+	// });
+
 
 
 

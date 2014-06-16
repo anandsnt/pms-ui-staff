@@ -1,6 +1,6 @@
 
 (function() {
-  var checkinUpgradeRoomContorller = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService,checkinDetailsService) {
+  var checkinUpgradeRoomController = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService,checkinDetailsService) {
 
     $scope.pageSuccess = true;
 
@@ -37,15 +37,10 @@
           $rootScope.netWorkError = true;
         else
           $scope.slides = response.data;
-      });
-
-       // watch for any change
-
-       $rootScope.$watch('netWorkError',function(){
-         if($rootScope.netWorkError)
+      },function(){
+           $rootScope.netWorkError = true;
            $scope.isFetching = false;
-       });
-
+      });
 
       // upgrade button clicked
 
@@ -81,10 +76,10 @@
 
  var dependencies = [
  '$scope','$location','$rootScope','checkinRoomUpgradeOptionsService','checkinRoomUpgradeService','checkinDetailsService',
- checkinUpgradeRoomContorller
+ checkinUpgradeRoomController
  ];
 
- snt.controller('checkinUpgradeRoomContorller', dependencies);
+ snt.controller('checkinUpgradeRoomController', dependencies);
 })();
 
 // Setup directive to compile html

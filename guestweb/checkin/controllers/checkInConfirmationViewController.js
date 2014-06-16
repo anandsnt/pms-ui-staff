@@ -60,7 +60,7 @@
 						checkinDetailsService.setResponseData(response.data);
 						$rootScope.upgradesAvailable = (response.data.is_upgrades_available === "true") ? true :  false;
 						//navigate to next page
-						$location.path('/checkinReservationDetails');
+						$state.go('checkinReservationDetails');
 					}
 				},function(){
 					$rootScope.netWorkError = true;

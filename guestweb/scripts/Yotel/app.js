@@ -4,6 +4,7 @@ var snt = angular.module('snt',['ui.router','ui.bootstrap','pickadate']);
 snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state', function($rootScope,$scope,$attrs,$location,$state) {
 
 	//store basic details as rootscope variables
+//store basic details as rootscope variables
 
 	$rootScope.reservationID = $attrs.reservationId;
 	$rootScope.hotelName     = $attrs.hotelName;
@@ -22,17 +23,15 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	$rootScope.isCheckedout  = ($attrs.isCheckedout === 'true') ? true : false;
 	$rootScope.isCheckin     =   ($attrs.isCheckin ==='true') ? true : false;
 
-	$rootScope.reservationStatusCheckedIn = ($attrs.reservationStatus ==='CHECKIN')? true :false;  
- 	$rootScope.isActiveToken = ($attrs.isActiveToken ==='true') ? true : false;  
- 	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken);
-///
-	$attrs.isCheckin='true';
-	$rootScope.isCheckin = true;
-	$rootScope.isCheckedout =  false;
-	
-///
+	$rootScope.reservationStatusCheckedIn = ($attrs.reservationStatus ==='CHECKIN')? true :false;
+  
+ 	$rootScope.isActiveToken = ($attrs.isActiveToken ==='true') ? true : false;
+  
+ 	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken)
+
+
     if($attrs.isCheckin ==='true'){
- 		$state.go('checkinConfirmation');
+ 		$location.path('/checkinConfirmation');
  	}
   	else if($rootScope.isCheckedout)	{
 		$state.go('checkOutStatus');	

@@ -2,24 +2,25 @@
 (function() {
 	var checkInReservationDetails = function($scope,$rootScope,$location,checkinDetailsService) {
 		
-		$scope.pageSuccess = true;
+		$scope.pageValid = false;
 		
 		// page navigatons if any of following conditions happpens
 
-		if($rootScope.isCheckedin){
-			$scope.pageSuccess = false;
+		if($rootScope.isCheckedin){;
 			$location.path('/checkinSuccess');
 		}
 		else if($rootScope.isCheckedout){
-			$scope.pageSuccess = false;
 			$location.path('/checkOutNowSuccess');
 		}
 		else if(!$rootScope.isCheckin){
-			$scope.pageSuccess = false;
 			$location.path('/');
 		}
+		else{
 
-		if($scope.pageSuccess){
+			$scope.pageValid = true;
+		};
+
+		if($scope.pageValid){
 					//check if checkbox was already checked (before going to upgrades)
 					$scope.checked =  ($rootScope.ShowupgradedLabel) ? true:false;
 					$scope.reservationData = checkinDetailsService.getResponseData();
