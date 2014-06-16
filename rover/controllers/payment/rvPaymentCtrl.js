@@ -44,7 +44,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * Success callback of save payment in guest card
 	 * updating the list payments with new data 
 	 */
-	$scope.saveSuccessGuest = function(){
+	$scope.saveSuccessGuest = function(data){
 		$scope.$emit("hideLoader");
 		ngDialog.close();
 		var cardNumber = $scope.saveData.card_number;
@@ -56,7 +56,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			"mli_token": cardNumber.substr(cardNumber.length - 4),
 			"card_expiry":expiryDate,
 			"card_name":cardHolderName,
-			"is_primary":false
+			"is_primary":false,
+			"id":data.id
 		};
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
 	};
@@ -64,7 +65,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * Success callback of reservation payment
 	 * updating staycard with new data
 	 */
-	$scope.saveSuccess = function(){
+	$scope.saveSuccess = function(data){
 		 
 		var billIndex = parseInt($scope.passData.fromBill);
 		
@@ -90,7 +91,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				"mli_token": cardNumber.substr(cardNumber.length - 4),
 				"card_expiry":expiryDate,
 				"card_name":cardHolderName,
-				"is_primary":false
+				"is_primary":false,
+				"id": data.id
 			};
 			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
 		}
