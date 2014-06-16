@@ -312,7 +312,7 @@ $(function($){
                 error: function(jqxhr, status, error){
                     //checking whether a user is logged in
                     if (jqxhr.status == "401") { sntapp.logout(); return;}
-                    if (jqxhr.status=="500" || jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
+                    if (jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
                         location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
                         return;
                     }
@@ -350,7 +350,7 @@ $(function($){
                     error: function(jqxhr, status, error){
                         //checking whether a user is logged in
                         if (jqxhr.status == "401") { sntapp.logout(); return;}
-                        if (jqxhr.status=="500" || jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
+                        if (jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
                             location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
                             return;
                         }
@@ -449,7 +449,7 @@ $(function($){
                     },
                     error: function(jqxhr, status, error){
                         if (jqxhr.status=="401") { sntapp.logout(); return;}
-                        if (jqxhr.status=="500" || jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
+                        if (jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
                             location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
                             return;
                         }
