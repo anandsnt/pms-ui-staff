@@ -51,8 +51,10 @@ reports.controller('reporstList', [
         // lets fix the results per page to, user can't edit this for now
         // 25 is the current number set by backend server
         $rootScope.resultsPerPage = 25;
-
+        //to keep track of where the user was before clicking on print
+        $scope.returnToPage = 1;
         // fetch the reports list with the filters to be used
+
         RepFetchSrv.fetch()
             .then(function(response) {
                 sntapp.activityIndicator.hideActivityIndicator();
@@ -283,8 +285,8 @@ reports.controller('reportDetails', [
 
 
             // hack to set the colspan for reports details tfoot
-            $scope.leftColSpan  = $scope.chosenReport.title === 'Check In / Check Out' ? 4 : 2;
-            $scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' ? 5 : 2;
+            $scope.leftColSpan  = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 4 : 2;
+            $scope.rightColSpan = $scope.chosenReport.title === 'Check In / Check Out' || $scope.chosenReport.title === 'Upsell' ? 5 : 2;
 
             // track the total count
             $scope.totalCount = response.total_count;
@@ -306,10 +308,15 @@ reports.controller('reportDetails', [
         // we are gonna need to drop some pagination
         // this is done only once when the report details is loaded
         // and when user updated the filters
-        var calPagination = function(response) {
+        var calPagination = function(response, pageNum) {
+
+            if(typeof pageNum == "undefined"){
+                pageNum = 1;
+            }
+
             $scope.pagination = [];
             if (response.results.length < response.total_count) {
-                var pages = Math.floor( response.total_count / response.results.length );
+                var pages = Math.floor( response.total_count / $rootScope.resultsPerPage );
                 var extra = response.total_count % response.results.length;
 
                 if (extra > 0) {
@@ -319,7 +326,7 @@ reports.controller('reportDetails', [
                 for (var i = 1; i <= pages; i++) {
                     $scope.pagination.push({
                         no: i,
-                        active: i === 1 ? true : false
+                        active: i === pageNum ? true : false
                     })
                 };
             };
@@ -435,7 +442,11 @@ reports.controller('reportDetails', [
         };
 
         // fetch the updated result based on the filter changes
-        $scope.fetchUpdatedReport = function() {
+        $scope.fetchUpdatedReport = function(pageNum) {
+
+            if(typeof pageNum == "undefined"){
+                pageNum == 1;
+            }
 
             // now sice we are gonna update the filter
             // we are gonna start from page one
@@ -445,7 +456,7 @@ reports.controller('reportDetails', [
                 user_ids: $scope.chosenReport.chosenUsers,
                 checked_in: $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'BOTH',
                 checked_out: $scope.chosenReport.chosenCico === 'OUT' || $scope.chosenReport.chosenCico === 'BOTH',
-                page: 1,
+                page: pageNum,
                 per_page: $rootScope.resultsPerPage
             }
 
@@ -459,20 +470,66 @@ reports.controller('reportDetails', [
             RepFetchReportsSrv.fetch( $scope.reportID, params )
                 .then(function(response) {
                     afterFetch( response );
+                    calPagination( response , pageNum);
+                });
+        };
+
+
+        //loads the content in the existing report view in the DOM.
+        $scope.fetchFullReport = function() {
+            $scope.returnToPage = 1;
+
+            // now sice we are gonna update the filter
+            // we are gonna start from page one
+            var currPage = _.find($scope.pagination, function(page) {
+                return page.active === true
+            });
+
+            if(currPage){
+               $scope.returnToPage =  currPage.no;
+            }
+
+            var params = {
+                from_date: $filter('date')($scope.chosenReport.fromDate, 'yyyy/MM/dd'),
+                to_date: $filter('date')($scope.chosenReport.untilDate, 'yyyy/MM/dd'),
+                user_ids: $scope.chosenReport.chosenUsers,
+                checked_in: $scope.chosenReport.chosenCico === 'IN' || $scope.chosenReport.chosenCico === 'BOTH',
+                checked_out: $scope.chosenReport.chosenCico === 'OUT' || $scope.chosenReport.chosenCico === 'BOTH',
+                page: 1,
+                per_page: 10000
+            }
+
+            // let show the loading indicator
+            sntapp.activityIndicator.showActivityIndicator('BLOCKER');
+
+            // find back the names from chosenCico & chosenUsers values
+            findBackNames();
+
+            // and make the call
+            RepFetchReportsSrv.fetch( $scope.reportID, params )
+                .then(function(response) {
+                    afterFetch( response );
                     calPagination( response );
+                    $scope.print();
                 });
         };
 
         // print the page
         $scope.print = function() {
-            $timeout(function(){
-                reportContent.refresh();
-                reportContent.scrollTo(0, 0, 100);
-            }, 10);
-
-            setTimeout( function() {
+            $timeout(function() {
                 $window.print();
-            }, 100 );
+                if ( sntapp.cordovaLoaded ) {
+                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                };
+            }, 100);
+
+            $timeout(function() {
+                //go back to before print page
+                $scope.fetchUpdatedReport($scope.returnToPage);
+                // Since I destroyed
+                // I need to recreate
+                reportContent.refresh();
+            }, 500);
         };
     }
 ]);
