@@ -1,34 +1,25 @@
 (function() {
-	var checkOutLaterSuccessController = function($scope, $http, $q, $routeParams, $location, $rootScope, LateCheckOutChargesService) {
+	var checkOutLaterSuccessController = function($scope, $http, $q, $stateParams, $state, $rootScope, LateCheckOutChargesService) {
 		
-		$scope.pageSuccess = true;
+		$scope.pageValid = false;
 		
-		if($rootScope.isCheckedin){
-			$scope.pageSuccess = false;
-			$location.path('/checkinSuccess');
-		}
-		else if($rootScope.isCheckin){
-			$scope.pageSuccess = false;
-			$location.path('/checkinConfirmation');
-		}
-		else if($rootScope.isCheckedout){
-			$scope.pageSuccess = false;
-			$location.path('/checkOutNowSuccess');
+		if($rootScope.isCheckedout){
+			$location.go('checkOutStatus');
 		}
 		else if(!$rootScope.isLateCheckoutAvailable){
-			$scope.pageSuccess = false;
-			$location.path('/checkOutNow');
+			$state.go('checkOutConfirmation');
 		}
+		else{
+			$scope.pageValid = true;
+		};
 
-		if($scope.pageSuccess){
+		if($scope.pageValid){
 
 			var charges = LateCheckOutChargesService.charges;
-			var id = $routeParams.id;
-
+			var id = $stateParams.id;
 			$scope.reservationID = $rootScope.reservationID;
 			$scope.id = id;
-
-			$rootScope.netWorkError = false;
+			$scope.netWorkError = false;
 
 		// already opted for late checkout, send him home with a msg
 		$scope.returnHome = false;
@@ -55,14 +46,7 @@
 			};
 		});
 
-		//watch for any network errors
-		$rootScope.$watch('netWorkError',function(){
-
-			if($rootScope.netWorkError)
-				$scope.posted = true;
-		});
-
-		
+	
 		var posting = function() {
 
 			var deferred = $q.defer();
@@ -76,7 +60,7 @@
 			if(response.status != "failure")
 				$rootScope.isLateCheckoutAvailable = false;
 			else
-				$rootScope.netWorkError = true;	
+				$scope.netWorkError = true;	
 			deferred.resolve(response);
 
 		}).error(function(){				
@@ -101,8 +85,8 @@ var dependencies = [
 '$scope',
 '$http',
 '$q',
-'$routeParams',
-'$location',
+'$stateParams',
+'$state',
 '$rootScope',
 'LateCheckOutChargesService',
 checkOutLaterSuccessController

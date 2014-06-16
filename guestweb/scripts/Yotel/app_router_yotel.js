@@ -22,14 +22,21 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
        	templateUrl: '/assets/checkoutnow/partials/Yotel/checkoutConfirmation.html',
 		title: 'Confirm - Checkout Now'
     }).state('checkOutOptions', {
+    	url: '/checkOutOptions',
 	 	templateUrl: '/assets/landing/Yotel/landing.html',
 	 	controller: 'checkOutLandingController',
 	 	title: 'Checkout'
 	 }).state('checkOutLaterOptions', {
+	 	url: '/checkOutLaterOptions',
 		templateUrl: '/assets/checkoutlater/partials/Yotel/checkOutLater.html',
 	 	controller: 'checkOutLaterController',
 		title: 'Checkout Later'
-	});
+	}).state('checkOutLaterSuccess', {
+		url: '/checkOutLaterOptions/:id',
+		templateUrl: '/assets/checkoutlater/partials/Yotel/checkOutLaterSuccess.html',
+		controller: 'checkOutLaterSuccessController',
+		title: 'Status - Checkout Later'
+	 });
 
 
 

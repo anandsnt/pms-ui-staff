@@ -40,7 +40,7 @@
 						<div ng-repeat="charge in charges" class="col-xs-6 later-options {{ charge.class }}">
 							<div class="rel-wrapper">
 
-								<a ng-href="#/checkOutLaterSuccess/{{ charge.id }}"></a>
+								<a ui-sref="checkOutLaterSuccess({id:charge.id})"></a>
 								<div class="hexagon-wrapper">
 									<div class="row pad-hz-24 ">
 										<div class="hex-bg">
