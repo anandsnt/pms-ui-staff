@@ -71,44 +71,22 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		data.rate_id = parseInt($scope.reservationData.rooms[0].rateId);
 		data.room_type_id = parseInt($scope.reservationData.rooms[0].roomTypeId);
 
-		// Guest details
-		if($scope.reservationData.guest.id != null && $scope.reservationData.guest.id != '') {
-			data.guest_detail_id = $scope.reservationData.guest.id;
-		} else {
-			data.guest_detail = {};
-			data.guest_detail.first_name = $scope.reservationData.guest.firstName;
-			data.guest_detail.last_name = $scope.reservationData.guest.lastName;
-			data.guest_detail.email = $scope.reservationData.guest.email;
-			data.guest_detail.payment_type = {};
-			data.guest_detail.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);//TODO: verify
-			data.guest_detail.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
-			data.guest_detail.payment_type.expiry_date = $scope.reservationData.paymentType.ccDetails.expYear + '-' +
-															$scope.reservationData.paymentType.ccDetails.expMonth; //TODO: format
-			data.guest_detail.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
-			
-		}
+		//Guest details
+		data.guest_detail = {};
+		data.guest_detail.id = $scope.reservationData.guest.id;
+		data.guest_detail.first_name = $scope.reservationData.guest.firstName;
+		data.guest_detail.last_name = $scope.reservationData.guest.lastName;
+		data.guest_detail.email = $scope.reservationData.guest.email;
+		data.guest_detail.payment_type = {};
+		data.guest_detail.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);//TODO: verify
+		data.guest_detail.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
+		data.guest_detail.payment_type.expiry_date = "20"+ $scope.reservationData.paymentType.ccDetails.expYear + "-" + 
+														$scope.reservationData.paymentType.ccDetails.expMonth + "-01"
 
-		//Company card
-		if($scope.reservationData.company.id != null && $scope.reservationData.company.id != '') {
-			data.company_id = $scope.reservationData.company.id;
-		} else {
-			if($scope.reservationData.company.name != "") {
-				data.company = {};
-				data.company.name = $scope.reservationData.company.name;
-				data.company.account_number = $scope.reservationData.company.corporateid;
-			}
-		}
-		//Travel agent
-		if($scope.reservationData.travelAgent.id != null && $scope.reservationData.travelAgent.id != '') {
-			data.travel_agent_id = $scope.reservationData.travelAgent.id;
-		} else {
-			if($scope.reservationData.travelAgent.name != "") {
-				data.travel_agent = {};
-				data.travel_agent.name = $scope.reservationData.travelAgent.name;
-				data.travel_agent.account_number = $scope.reservationData.travelAgent.iataNumber; //TODO: verify iataNum vs corporateid
-			}
-		}
-
+														
+		data.guest_detail.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
+		data.company_id = $scope.reservationData.company.id;
+		data.travel_agent_id = $scope.reservationData.travelAgent.id;
 		data.reservation_type_id = parseInt($scope.reservationData.demographics.reservationType);
 		data.source_id = parseInt($scope.reservationData.demographics.source);
 		data.market_segment_id = parseInt($scope.reservationData.demographics.market);
