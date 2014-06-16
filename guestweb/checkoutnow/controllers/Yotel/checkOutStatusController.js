@@ -1,6 +1,6 @@
 
 (function() {
-	var checkOutStatusController = function($scope, baseWebService,$http,$location,$rootScope,$state) {
+	var checkOutStatusController = function($scope, baseWebService,$http,$rootScope,$state) {
 
 		$scope.pageValid = false;
 
@@ -49,7 +49,7 @@
 
 var dependencies = [
 '$scope',
-'baseWebService','$http','$location','$rootScope','$state',
+'baseWebService','$http','$rootScope','$state',
 checkOutStatusController
 ];
 
