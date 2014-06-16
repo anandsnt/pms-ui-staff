@@ -30,7 +30,7 @@ snt.factory('authInterceptor', function ($rootScope, $q,$location) {
 snt.factory('timeoutHttpIntercept', function ($rootScope, $q) {
     return {
       'request': function(config) {
-        config.timeout = 5000; // set timeout
+        config.timeout = 80000; // set timeout
         return config;
       }
     };
@@ -45,9 +45,9 @@ snt.config(function ($httpProvider) {
 
 snt.run(function($rootScope, $location, $http){
 
-	$rootScope.$on("$routeChangeSuccess", function(event, currentRoute, previousRoute){
-		//Change page title, based on Route information
-		$rootScope.title = currentRoute.title;
+	$rootScope.$on('$stateChangeStart', 
+		function(event, toState, toParams, fromState, fromParams){ 
+		$rootScope.title =toState.title;
 	});
 
     $rootScope.$on("$locationChangeStart", function(event, next, current) {
@@ -55,11 +55,11 @@ snt.run(function($rootScope, $location, $http){
 		if($rootScope.isCheckedin)
 			$location.path('/checkinSuccess');
 		else if($rootScope.isCheckedout)
-			$location.path('/checkOutNowSuccess');
+			$location.path('/checkOutStatus');
 		else if($rootScope.isCheckin && !$rootScope.isCheckedout)
 				$location.path('/checkinConfirmation');
 		else if (!$rootScope.isLateCheckoutAvailable)
-			    $location.path('/checkOutNow');
+			    $location.path('/checkOutConfirmationController');
 			else{
 				$location.path('/');
 

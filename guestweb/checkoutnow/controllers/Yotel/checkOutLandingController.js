@@ -1,9 +1,11 @@
 snt.controller('checkOutLandingController', ['$rootScope','$location','$state', function($rootScope,$location,$state) {
+
+
 	if($rootScope.isCheckedout)	{
-		$state.go('checkOutNow.checkOutStatus');	
+		$state.go('checkOutStatus');	
 	}
-	else if($attrs.isLateCheckoutAvailable  === 'false'){
-		$state.go('checkOutNow.checkOutConfirmation');
+	else if(!$rootScope.isLateCheckoutAvailable){
+		$state.go('checkOutConfirmation');
 	};
 
 }]);

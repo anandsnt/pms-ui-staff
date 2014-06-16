@@ -1,9 +1,9 @@
 
 (function() {
-	var checkOutConfirmationController = function($scope,$rootScope,$location) {
+	var checkOutConfirmationController = function($scope,$rootScope,$state) {
 
 		if($rootScope.isCheckedout)	{
-			$state.go('checkOutNow.checkOutStatus');
+			$state.go('checkOutStatus');
 			$scope.pageValid = false;	
 		}
 		else{
@@ -17,7 +17,7 @@
 	};
 
 	var dependencies = [
-	'$scope','$rootScope','$location',
+	'$scope','$rootScope','$state',
 	checkOutConfirmationController
 	];
 
