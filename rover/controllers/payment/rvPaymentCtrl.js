@@ -145,7 +145,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card"];
 		var data = dclone($scope.saveData, unwantedKeys);
-console.log(data)
 		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
 			 $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
 		} else {
