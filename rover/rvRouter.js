@@ -172,7 +172,12 @@ sntRover.config([
         $stateProvider.state('rover.reservation.mainCard.addons', {
             url: '/addons',
             templateUrl: '/assets/partials/reservation/rvAddonsList.html',
-            controller: 'RVReservationAddonsCtrl'
+            controller: 'RVReservationAddonsCtrl',
+            resolve: {
+                testData : function(RVReservationAddonsSrv) {
+                    return RVReservationAddonsSrv.fetchAddonData();
+                }
+            }
         });
 
         $stateProvider.state('rover.reservation.mainCard.summaryAndConfirm', {

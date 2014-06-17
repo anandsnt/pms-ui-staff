@@ -1,6 +1,5 @@
-sntRover.controller('RVReservationAddonsCtrl', ['$scope', function($scope){
-
-	$scope.addOns = [
+sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'testData', function($scope, testData){
+	$scope.addons = [
 					  {
 					    "category": "Mini-Bar",
 					    "category_short_desc": "",
@@ -177,24 +176,25 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', function($scope){
 		$state.go('rover.reservation.mainCard.summaryAndConfirm');
 	}
 
-	$scope.selectAddOnCategory = function(category, event){
+	$scope.selectAddonCategory = function(category, event){
 		event.stopPropagation();
-		$scope.activeAddOnCategory = category;
+		$scope.activeAddonCategory = category;
 	}
 
 	$scope.categoryCls = function(category){
         // evaluate 
         var cls = '';   //  current active card
-        if ( $scope.activeAddOnCategory ===  category) { cls = 'ui-state-active'; }
+        if ( $scope.activeAddonCategory ===  category) { cls = 'ui-state-active'; }
         return cls;
     }
 
-    $scope.selectAddOn = function(addOn){
-    	console.log(addOn);
+    $scope.selectAddon = function(addon){
+    	// console.log(addon);
     }
 
-	$scope.addOnCategories = ['Best Sellers', 'Attractions', 'Bedding', 'Food & Drink', 'Golf', 'Mini-Bar', 'Parking', 'Spa', 'Transportation'];
-	$scope.activeAddOnCategory = 'Best Sellers';
+	$scope.addonCategories = ['Best Sellers', 'Attractions', 'Bedding', 'Food & Drink', 'Golf', 'Mini-Bar', 'Parking', 'Spa', 'Transportation'];
+	$scope.activeAddonCategory = 'Best Sellers';
+
 
 
 }]);
