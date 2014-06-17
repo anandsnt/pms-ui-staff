@@ -10,22 +10,35 @@ module.exports = function(grunt) {
             src: ['rover_templates.js']
         },
     },
+    
     ngtemplates: {
         sntRover :{
             cwd : 'rover/',
             src : 'partials/**/*.html',
             dest : 'build/rover_templates.js',
-
             options :{
                 prefix : '/assets/',
             }
-    
-        }
+        },
+        
+		admin :{
+	            cwd : 'admin/',
+	            src : 'partials/**/*.html',
+	            dest : 'build/admin_templates.js',
+	            options :{
+	                prefix : '/assets/',
+	            }
+	     }
     },
+    bower: {
+		  install: {
+		  }
+		}
   });
 
   grunt.loadNpmTasks('grunt-angular-templates');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-bower-task');
 
 
 };
