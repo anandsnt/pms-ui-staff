@@ -9,6 +9,7 @@
 		$scope.fee = $stateParams.fee;
 		$scope.currency =  $stateParams.currency;
 
+
         $scope.months = [{
             'name': 'January',
             'value': '0'
@@ -53,6 +54,19 @@
           for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
             $scope.years.push(year);
           };
+
+          $scope.goToNextStep = function(){
+
+            if($stateParams.isFromCheckoutNow){
+
+              $rootScope.ccPaymentSuccessForCheckoutNow = true;
+              $state.go('checkOutStatus');
+
+            }else{
+               $rootScope.ccPaymentSuccessForCheckoutLater = true;
+            }
+
+          }
 	
 }
 }

@@ -1,5 +1,5 @@
 (function() {
-		var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location) {
+		var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location,$state) {
 
 			$scope.pageValid = true;
 
@@ -10,6 +10,17 @@
 		$scope.showBackButtonImage = true;
 		$scope.netWorkError = false;
 		$scope.isFetching = true;
+
+
+	$scope.gotToNextStep = function(fee,chargeId){
+		if($rootScope.isCCOnFile){
+			$state.go('ccVerification',{'fee':fee,'message':"Late check-out fee",'currency':'$','isFromCheckoutNow':false});
+		}				
+		else{
+			$state.go('checkOutLaterSuccess',{id:chargeId});
+		}
+				
+	}
 
 	// fetch details
 	LateCheckOutChargesService.fetchLateCheckoutOptions().then(function(charges) {
@@ -27,7 +38,7 @@
 
 var dependencies = [
 '$scope',
-'LateCheckOutChargesService','$rootScope','$location',
+'LateCheckOutChargesService','$rootScope','$location','$state',
 checkOutLaterController
 ];
 
