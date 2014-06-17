@@ -86,15 +86,18 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.paymentData.bills[billIndex].credit_card_details.card_expiry = expiryDate;
 		}
 		if($scope.saveData.add_to_guest_card){ 
-			var newDataToGuest = {
-				"card_code": cardCode.toLowerCase(),
-				"mli_token": cardNumber.substr(cardNumber.length - 4),
-				"card_expiry":expiryDate,
-				"card_name":cardHolderName,
-				"is_primary":false,
-				"id": data.id
-			};
-			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
+			if(!data.is_already_on_guest_card){
+				var newDataToGuest = {
+					"card_code": cardCode.toLowerCase(),
+					"mli_token": cardNumber.substr(cardNumber.length - 4),
+					"card_expiry":expiryDate,
+					"card_name":cardHolderName,
+					"is_primary":false,
+					"id": data.id
+				};
+				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
+			}
+			
 		}
 	};
 	$scope.failureCallBack = function(errorMessage){
