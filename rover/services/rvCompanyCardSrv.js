@@ -66,9 +66,11 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 		//var url =  '/sample_json/contracts/rvCompanyCardContractsDetails.json';	
 		var url = '/api/accounts/'+data.account_id+'/contracts/'+data.contract_id;
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
-			data.selected_type = '$';
+			data.selected_type = '';
 			if(data.selected_type == 'percent'){
 				data.selected_type = '%';
+			} else if (data.selected_type == 'amount') {
+				data.selected_type = '$';
 			}
 			deferred.resolve(data);
 		},function(data){
