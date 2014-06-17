@@ -156,7 +156,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.reservationData.totalTaxAmount = 0;
 
 			//Navigate to the next screen
-			$state.go('rover.reservation.mainCard.summaryAndConfirm');
+			// $state.go('rover.reservation.mainCard.summaryAndConfirm');
+			$state.go('rover.reservation.mainCard.addons');
 		}
 
 
