@@ -1,12 +1,10 @@
 
-var snt = angular.module('snt',['ngRoute','ui.bootstrap','pickadate']);
+var snt = angular.module('snt',['ui.router','ui.bootstrap','pickadate']);
 
-snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location', function($rootScope,$scope,$attrs,$location) {
-
-
-
+snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state', function($rootScope,$scope,$attrs,$location,$state) {
 
 	//store basic details as rootscope variables
+//store basic details as rootscope variables
 
 	$rootScope.reservationID = $attrs.reservationId;
 	$rootScope.hotelName     = $attrs.hotelName;
@@ -31,56 +29,26 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location', f
   
  	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken)
 
-   
-   	if(($attrs.reservationStatus ==='CHECKIN') && ($attrs.isActiveToken ==='false'))
-		$location.path('/checkinSuccess');
-	else if($rootScope.isCheckin)
-		$location.path('/checkinConfirmation');
-	else if($rootScope.isCheckedout)
-		$location.path('/checkOutNowSuccess');
-	else if($attrs.isLateCheckoutAvailable  === 'false')
-		$location.path('/checkOutNow');
 
-
+    if($attrs.isCheckin ==='true'){
+ 		$location.path('/checkinConfirmation');
+ 	}
+  	else if($rootScope.isCheckedout)	{
+		$state.go('checkOutStatus');	
+	}
+	else if($attrs.isLateCheckoutAvailable  === 'false'){
+		$state.go('checkOutConfirmation');
+	}else if($attrs.isLateCheckoutAvailable  === 'true'){
+		$state.go('checkOutOptions');
+	}
 
 	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;
-
-
 
 }]);
 
 
 
-(function() {
-	var checkOutLandingController = function($rootScope,$location) {
-		//if checkout is already done
-
-  	if($rootScope.isCheckedin)
-		$location.path('/checkinSuccess');
-	else if($rootScope.isCheckin)
-		$location.path('/checkinConfirmation');
-	else if($rootScope.isCheckedout)
-		$location.path('/checkOutNowSuccess');
-	else if(!$rootScope.isLateCheckoutAvailable)
-		$location.path('/checkOutNow');
-	}
-
-
-	var dependencies = [
-	'$rootScope','$location',
-	checkOutLandingController
-	];
-
-	snt.controller('checkOutLandingController', dependencies);
-})();
-
-
-snt.filter('customizeLabelText', function () {
-    return function (input, scope) {
-        return input.substring(0, 1) +" ' "+ input.substring(1, 2).toBold() +" ' "+ input.substring(2);
-    }
-});
 
 
 

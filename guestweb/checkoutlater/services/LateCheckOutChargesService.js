@@ -3,20 +3,20 @@
 		var charges = {};
 
 		var fetch = function() {
+
+			// return deferred.promise;
 			var deferred = $q.defer();
-			$http.get('/guest_web/get_late_checkout_charges.json',{
-    		params: {'reservation_id':$rootScope.reservationID}
-			})
-				.success(function(response) {
+			var url = '/guest_web/get_late_checkout_charges.json',
+			parameters = {'reservation_id':$rootScope.reservationID};
+			$http.get(url,{
+    		params: parameters
+			}).success(function(response) {
 					this.charges = response;
 					deferred.resolve(this.charges);
 				}.bind(this))
 				.error(function() {
 					deferred.reject();
-					$rootScope.netWorkError = true;
 				});
-
-
 			return deferred.promise;
 		};
 

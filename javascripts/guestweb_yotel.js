@@ -6,12 +6,10 @@
 //=require ../guestweb/static/lib/js/angular-route.js
 //=require ../guestweb/static/lib/js/ui-bootstrap-tpls-0.10.0.js
 //=require ../guestweb/static/lib/js/angular-ui-router.js
-//= require ../guestweb/scripts/Yotel/app.js
-//= require ../guestweb/scripts/Yotel/app_router_yotel.js
-//= require ../guestweb/scripts/Yotel/app_config.js
+//= require ../guestweb/scripts/app.js
+//= require ../guestweb/scripts/app_router_yotel.js
+//= require ../guestweb/scripts/app_config.js
 //= require_tree ../guestweb/shared
-//= require_tree ../guestweb/checkoutlater/controllers/Yotel
-//= require_tree ../guestweb/checkoutnow/controllers/Yotel
-//= require_tree ../guestweb/checkoutnow/services/Yotel
-//= require_tree ../guestweb/checkoutlater/services/Yotel
+//= require_tree ../guestweb/checkoutlater
+//= require_tree ../guestweb/checkoutnow
 //= require_tree ../guestweb/checkin

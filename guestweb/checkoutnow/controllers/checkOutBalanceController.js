@@ -1,57 +1,39 @@
 (function() {
-	var checkOutBalanceController = function($scope, BillService,$rootScope,$location) {
+	var checkOutBalanceController = function($scope, BillService,$rootScope,$state) {
 
-		$scope.pageSuccess = true;
-		
-		if($rootScope.isCheckedin){
-			$scope.pageSuccess = false;
-			$location.path('/checkinSuccess');
+		if($rootScope.isCheckedout)	{
+			$state.go('checkOutStatus');
+			$scope.pageValid = false;	
 		}
-		else if($rootScope.isCheckin){
-			$scope.pageSuccess = false;
-			$location.path('/checkinConfirmation');
-		}
-		else if($rootScope.isCheckedout){
-			$scope.pageSuccess = false;
-			$location.path('/checkOutNowSuccess');
-		}
-		if($scope.pageSuccess){
+		else{
+			$scope.pageValid = true;
+		};	
+		if($scope.pageValid){
 
-		//if checkout is already done	
-		if ($rootScope.isCheckedout) 
-			$location.path('/checkOutNowSuccess');
+			// showBill flag and its reference in $rootScope
+			$scope.showBill = false;
+			$rootScope.showBill = $scope.showBill;
+			$scope.netWorkError = false;	
+			$scope.isFetching = true;
 
-		// showBill flag and its reference in $rootScope
-		$scope.showBill = false;
-		$rootScope.showBill = $scope.showBill;
-		$rootScope.netWorkError = false;	
-		$scope.isFetching = true;
-
-		//watch for any network errors
-		$rootScope.$watch('netWorkError',function(){
-			if($rootScope.netWorkError)
+			//fetch data to display
+			BillService.fetchBillData().then(function(billData) {
+				$scope.billData = billData.data.bill_details;
 				$scope.isFetching = false;
-		});
+				if($scope.billData)
+					$scope.optionsAvailable = true;
+			},function(){
+				$scope.netWorkError = true;
+				$scope.isFetching = false;
+			});
+			};
+		};
 
-		//fetch data to display
-		BillService.fetchBillData().then(function(billData) {
-			$scope.billData = billData.data.bill_details;
-			$scope.isFetching = false;
-			if($scope.billData)
-				$scope.optionsAvailable = true;
-			else
-				$location.path('/serverError');
-		});
-		
-	}
-
-};
-
-var dependencies = [
-'$scope',
-'BillService','$rootScope','$location',
-checkOutBalanceController
-];
+		var dependencies = [
+		'$scope',
+		'BillService','$rootScope','$location',
+		checkOutBalanceController
+		];
 
 snt.controller('checkOutBalanceController', dependencies);
 })();
