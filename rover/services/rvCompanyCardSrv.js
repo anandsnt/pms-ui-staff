@@ -66,6 +66,10 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 		//var url =  '/sample_json/contracts/rvCompanyCardContractsDetails.json';	
 		var url = '/api/accounts/'+data.account_id+'/contracts/'+data.contract_id;
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
+			data.selected_type = '$';
+			if(data.selected_type == 'percent'){
+				data.selected_type = '%';
+			}
 			deferred.resolve(data);
 		},function(data){
 			deferred.reject(data);
@@ -77,6 +81,11 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 	* service function used to update the contracts
 	*/
 	this.updateContract = function(data){
+		if(data.postData.selected_type == '$'){
+			data.postData.selected_type = 'amount';
+		} else if(data.postData.selected_type == '%') {
+			data.postData.selected_type = 'percent';
+		}
 		var deferred = $q.defer();		
 		var url =	'/api/accounts/'+data.account_id+'/contracts/'+data.contract_id;
 		rvBaseWebSrvV2.putJSON(url, data.postData).then(function(data) {
@@ -91,6 +100,11 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 	* service function used to add new contracts
 	*/
 	this.addNewContract = function(data){
+		if(data.postData.selected_type == '$'){
+			data.postData.selected_type = 'amount';
+		} else if(data.postData.selected_type == '%') {
+			data.postData.selected_type = 'percent';
+		}
 		var deferred = $q.defer();		
 		var url = '/api/accounts/'+data.account_id+'/contracts';	
 		rvBaseWebSrvV2.postJSON(url, data.postData).then(function(data) {
