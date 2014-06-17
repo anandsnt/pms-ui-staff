@@ -1,13 +1,17 @@
 sntRover.controller('RVShowPaymentListCtrl',['$rootScope', '$scope', '$state', 'RVPaymentSrv','ngDialog', function($rootScope, $scope, $state, RVPaymentSrv, ngDialog){
 	BaseCtrl.call(this, $scope);
+	$scope.showNoValues = false;
 	$scope.paymentListSuccess = function(data){
 		$scope.$emit('hideLoader');
 		$scope.paymentListData = data;
 		$scope.paymentListLength = $scope.paymentListData.existing_payments.length;
-		console.log($scope.paymentListLength);
+		if($scope.paymentListLength == 0){
+			$scope.showNoValues = true;
+		}
+		// console.log($scope.paymentListLength);
 	};
 
-	 console.log(JSON.stringify($scope.dataToPaymentList));
+	 // console.log(JSON.stringify($scope.dataToPaymentList));
 	// return false;
 	var reservationId = "";
 	if($scope.dataToPaymentList.currentView == "billCard"){
