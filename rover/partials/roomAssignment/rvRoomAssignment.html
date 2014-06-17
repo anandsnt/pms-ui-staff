@@ -5,7 +5,7 @@
 	<div class="reservation-header">
 		<div class="actions back">
 			<!-- %a.back-button{"data-transition" => "nested-view", href: "dashboard/staycard?confirmation=#{header_details["confirmation_num"]}"} -->
-			<a ng-click="backToStayCard()" class="back-button"> Back </a>
+			<a ui-sref="rover.staycard.reservationcard.reservationdetails({id:reservationData.reservation_card.reservation_id, confirmationId:reservationData.reservation_card.confirmation_num})" class="back-button"> Back </a>
 		</div>
 		<!-- Other header details -->
 		<div class="data">
@@ -20,21 +20,19 @@
 
 	</div>
 	<div class="wrapper">
-		<div id="notification-message"></div>
+		<div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<!-- Room assignment content -->
 		<div class="room-assignment-content">
 			<!-- Rooms listing & filters -->
 			<div class="rooms-listing">
 				<!-- Room type search + reveal filters button -->
 				<div class="search float">
-					<a href="#room-attributes" class="button white with-icon only-icon toggle"> <span class="icons icon-filter"></span> Room attributes </a>
+					<a  class="button white with-icon only-icon toggle"> <span class="icons icon-filter"></span> Room attributes </a>
 					<div class="select">
-						<select name="room-type" id="room-type-selectbox">
+						<select ng-model="roomType" ng-change="getRooms()" name="room-type" id="room-type-selectbox">
 							<!-- %option.placeholder{value: "all-types"} All room types -->
-							<option value="DLK" selected="true"> Deluxe Room updated
-								(
-								same rate
-								) </option>
+							<option ng-repeat="roomtype in roomTypes" value="{{roomtype.type}}" ng-selected="roomtype.type==roomType"> 
+							{{roomtype.description}} </option>
 						</select>
 					</div>
 				</div>
@@ -161,36 +159,20 @@
 						</div>
 					</div>
 					<!-- Rooms list -->
-					<div id="rooms-available" class="rooms scrollable">
+					<div id="roomlist" ng-iscroll='roomlist' ng-iscroll-delay='50' class="rooms scrollable">
 						<ul class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
-							<li>
-								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="107" class="room-number ready">107</span></a>
-							</li>
-							<li>
-								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="108" class="room-number ready">108</span></a>
-							</li>
-							<li>
-								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="110" class="room-number ready">110</span></a>
-							</li>
-							<li>
-								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="3004" class="room-number ready">3004</span></a>
-							</li>
-							<li>
-								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="3008" class="room-number ready">3008</span></a>
-							</li>
-							<li>
-								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="3012" class="room-number ready">3012</span></a>
+							<li ng-repeat="room in rooms" ng-click="assignRoom($index)">
+								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="{{room.room_number}}" class="room-number ready">{{room.room_number}}</span></a>
 							</li>
 						</ul>
-						<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
-							<div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 56px; transform: translate(0px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
-						</div>
 					</div>
 				</div>
 			</div>
+
+			<div ng-include="'assets/partials/roomAssignment/rvUpgrades.html'" ng-show="true" ng-controller="RVUpgradesCtrl"> </div>
 			<!-- Upgrades available -->
 			<!-- No upgrades -->
-			<div class="upgrades no-content">
+			<div class="upgrades no-content" ng-show="false">
 				<div class="info">
 					<span class="icon-no-content icon-upgrades"></span>
 					<strong class="h1">Upgrades not available</strong>

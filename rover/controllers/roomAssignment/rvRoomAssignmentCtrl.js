@@ -3,13 +3,16 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	console.log("room assignment");
 	// $scope.parentObj.slide = 'slide-right';
 	BaseCtrl.call(this, $scope);
-	
+	$scope.backToStayCard = function(){
+		
+		$state.go("rover.staycard.reservationcard.reservationdetails");
+		
+	};
 	$scope.rooms = [];
 	$scope.roomTypes = [];
 	$scope.roomFeatures = [];
 
 	$scope.reservationData = $scope.$parent.reservation;
-	$scope.roomType = $stateParams.room_type;
 
 	$scope.getRooms = function(){
 		var successCallbackGetRooms = function(data){
@@ -26,7 +29,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 		};
 		var params = {};
 		params.reservation_id = $stateParams.reservation_id;
-		params.room_type = $scope.roomType;
+		params.room_type = $stateParams.room_type;
 		$scope.invokeApi(RVRoomAssignmentSrv.getRooms, params, successCallbackGetRooms, errorCallbackGetRooms);
 
 	};
@@ -45,20 +48,6 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 		$scope.invokeApi(RVRoomAssignmentSrv.getPreferences, params, successCallbackGetPreferences, errorCallbackGetPreferences);
 
 	};
-	$scope.assignRoom = function(index){
-		var successCallbackAssignRoom = function(data){
-			$scope.backToStayCard();
-			$scope.$emit('hideLoader');
-		};
-		var errorCallbackAssignRoom = function(error){
-			$scope.$emit('hideLoader');
-			$scope.errorMessage = error;
-		};
-		var params = {};
-		params.reservation_id = parseInt($stateParams.reservation_id, 10);
-		params.room_number = parseInt($scope.rooms[index].room_number, 10);
-		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
-	};
 	$scope.getPreferences();
 	$scope.getRooms();
 
@@ -68,12 +57,8 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	        snap: false,
 	        hideScrollbar: false,
 	        preventDefault: false
-	    }
-	};	
-	$scope.backToStayCard = function(){
-		
-		$state.go("rover.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num});
-		
+	    },
 	};
+	
 	
 }]);
