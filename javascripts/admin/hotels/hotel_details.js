@@ -195,9 +195,13 @@ var HotelDetailsView = function(domRef) {
 		if (that.myDom.find("#div-is-pms-tokenized").hasClass("on")) {
 			isPmsTokenized = true;
 		}
-		isUseKioskEntityId = false;
-		if (that.myDom.find("#div-kiosk-entity-id").hasClass("on")) {
-			isUseKioskEntityId = true;
+		isUseKioskEntityIdFetchBooking = false;
+		if (that.myDom.find("#div-kiosk-entity-id-fetch-booking").hasClass("on")) {
+			isUseKioskEntityIdFetchBooking = true;
+		}
+		isUseKioskEntityIdCheckinCheckout = false;
+		if (that.myDom.find("#div-kiosk-entity-id-checkin-checkout").hasClass("on")) {
+			isUseKioskEntityIdCheckinCheckout = true;
 		}
 
 		var mliHotelCode = that.myDom.find('#mli-hotel-code').val();
@@ -309,7 +313,8 @@ var HotelDetailsView = function(domRef) {
 				mli_certificate: that.fileContent,
 				hotel_from_address: hotelFromAddress,
 				is_pms_tokenized: isPmsTokenized,
-				use_kiosk_entity_id: isUseKioskEntityId
+				use_kiosk_entity_id_for_fetch_booking: isUseKioskEntityIdFetchBooking,
+				use_snt_entity_id_for_checkin_checkout: isUseKioskEntityIdCheckinCheckout
 			};
 		} else {
 			data = {
