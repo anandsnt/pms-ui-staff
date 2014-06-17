@@ -33,7 +33,7 @@ module.exports = function(grunt) {
     bower: {
 		  install: {
 		  }
-		}
+	}
   });
 
   grunt.loadNpmTasks('grunt-angular-templates');
