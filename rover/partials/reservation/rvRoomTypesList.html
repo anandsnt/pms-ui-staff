@@ -14,7 +14,7 @@
           <div class="find-rates" ng-show="activeCriteria == 'RATE'">
             <button type="submit" name="submit" class="icons icon-search">Search</button>
             <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-            <input ng-blur="isRateFilterActive = false" ng-focus="isRateFilterActive = true"  name="find-rates" id="find-rates" type="text" placeholder="Find Rates" value="" autocomplete="off" class="ui-autocomplete-input" ng-model="rateFilterText" ng-change="filterRates();">           
+            <input ng-blur="hideResults();" ng-focus="isRateFilterActive = true"  name="find-rates" id="find-rates" type="text" placeholder="Find Rates" value="" autocomplete="off" class="ui-autocomplete-input" ng-model="rateFilterText" ng-change="filterRates();">           
         </div>
         <ul id="filter-rooms-and-rates">
             <li id="show-recommended" ng-class="{active: activeCriteria =='RECOMMENDED'}" ng-click="activeCriteria='RECOMMENDED'">Recommended</li>
@@ -34,7 +34,7 @@
                 <a class="has-arrow toggle" ng-class="{active: selectedRoomType == room.id}" ng-click="setSelectedType(room)">
                     <div class="data">
                         <h2>{{room.name}}</h2>
-                        <span ng-show="displayData.roomTypes.length > 0 && $index > 0">For only {{currencySymbol}}{{roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight}} more per night</span>
+                        <span ng-show="displayData.roomTypes.length > 0 && $index > 0">For only {{currencySymbol}}{{roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight | number: 0}} more per night</span>
                     </div>
                     <div class="book-rate" ng-class="{hidden: selectedRoomType == room.id}">
                         <h4>Best Available Rate</h4>
@@ -109,7 +109,7 @@
             </li>          
         </ul> 
         <ul class="rooms-and-rates wrapper" ng-if="activeCriteria == 'RATE'">      
-            <li class="is-rate" ng-repeat="rate in displayData.availableRates" ng-init="isActive=false; selectedRoom = rate.rooms[0].id">
+            <li class="is-rate" ng-repeat="rate in rateFiltered ? filteredRates : displayData.availableRates" ng-init="isActive=false; selectedRoom = rate.rooms[0].id">
                 <a class="has-arrow toggle" ng-class="{active: isActive}" ng-click="isActive = !isActive ; refreshScroll();">
                     <div class="data">
                         <!-- |{{rate.rate.id}}|{{selectedRoom}} -->
@@ -172,9 +172,9 @@
         </ul>
     </div>
 </section>
-<ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all find-rate" id="ui-id-58" tabindex="0" ng-show="filteredRates.length > 0 && isRateFilterActive==true" style="width: 280px; top: 265px; left: 25px;">
+<ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all find-rate" tabindex="0" ng-show="filteredRates.length > 0 && isRateFilterActive==true" style="width: 280px; top: 265px; left: 25px;">
     <li ng-repeat="rate in filteredRates" class="ui-menu-item" role="presentation">
-        <a id="ui-id-59" class="ui-corner-all" tabindex="-1">
+        <a class="ui-corner-all" tabindex="-1"  ng-click="selectRate(rate)">
             <span ng-bind-html="highlight(rate.rate.name, rateFilterText)"></span>
         </a>
     </li>

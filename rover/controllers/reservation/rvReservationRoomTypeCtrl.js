@@ -32,12 +32,13 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		var init = function() {
 			$scope.$emit('showLoader');
-			console.log("APIRETURN", roomRates);
+			//console.log("APIRETURN", roomRates);
 			$scope.heading = 'Rooms & Rates';
 			$scope.displayData.dates = [];
 			$scope.rateFilterText = '';
 			$scope.filteredRates = [];
 			$scope.isRateFilterActive = true;
+			$scope.rateFiltered = false;
 
 
 			//interim check on page reload if the page is refreshed
@@ -132,7 +133,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			// 			Promotions
 			//The Rate order within each Rate Type should be alphabetical.
 			//TODO: Sort Rooms inside the rates so that they are in asc order of avg/day
-			console.log($scope.displayData.availableRates);
+			//console.log($scope.displayData.availableRates);
 			$scope.$emit('hideLoader');
 		};
 
@@ -308,7 +309,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					value.averagePerNight = value.total[value.defaultRate].average;
 				}
 			}
-			console.log(rooms);
+			//console.log(rooms);
 			return rooms;
 		}
 
@@ -368,12 +369,21 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			}
 		});
 
-		$scope.$watch("activeCriteria", function() {
+		$scope.selectRate = function(selectedRate) {
+			$scope.rateFilterText = selectedRate.rate.name;
+			$scope.filterRates();
+			$scope.rateFiltered = true;
 			$scope.refreshScroll();
-		});
 
+		}
+
+		$scope.hideResults = function() {
+			$timeout(function() {
+				$scope.isRateFilterActive = false;
+			}, 300);
+		}
 		$scope.filterRates = function() {
-
+			$scope.rateFiltered = false;
 			if ($scope.rateFilterText.length > 0) {
 				var re = new RegExp($scope.rateFilterText, "gi");
 				$scope.filteredRates = $($scope.displayData.availableRates).filter(function() {
@@ -381,8 +391,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				})
 			} else {
 				$scope.filteredRates = [];
-			}
-			console.log($scope.rateFilterText, $scope.filteredRates.length);
+			}			
+			$scope.refreshScroll();
 		}
 
 		$scope.highlight = function(text, search) {
