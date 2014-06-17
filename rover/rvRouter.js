@@ -5,7 +5,7 @@ sntRover.config([
     function($stateProvider, $urlRouterProvider, $translateProvider) {
         
         $translateProvider.useStaticFilesLoader({
-          prefix: '/assets/messages/',
+          prefix: '/assets/rvLocales/',
           suffix: '.json'
         });
         //$translateProvider.preferredLanguage('en');
