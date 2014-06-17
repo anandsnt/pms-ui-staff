@@ -58,13 +58,19 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 	var computeReservationDataToSave = function() {
 		var data = {};
 		data.arrival_date = $scope.reservationData.arrivalDate;
-		data.arrival_time = getTimeFormated($scope.reservationData.checkinTime.hh, 
+		data.arrival_time = '';
+		if($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkinTime.mm != '' && $scope.reservationData.checkinTime.ampm!= '') {
+			data.arrival_time = getTimeFormated($scope.reservationData.checkinTime.hh, 
 											$scope.reservationData.checkinTime.mm, 
-											$scope.reservationData.checkinTime.ampm);
+											$scope.reservationData.checkinTime.ampm);	
+		}
 		data.departure_date = $scope.reservationData.departureDate;
-		data.departure_time = getTimeFormated($scope.reservationData.checkoutTime.hh, 
-											$scope.reservationData.checkoutTime.mm,
-											$scope.reservationData.checkoutTime.ampm);
+		data.departure_time = '';
+		if($scope.reservationData.checkoutTime.hh != '' && $scope.reservationData.checkoutTime.mm != '' && $scope.reservationData.checkinTime.ampm!= '') {
+			data.arrival_time = getTimeFormated($scope.reservationData.checkoutTime.hh, 
+											$scope.reservationData.checkoutTime.mm, 
+											$scope.reservationData.checkoutTime.ampm);	
+		}
 		
 		data.adults_count = parseInt($scope.reservationData.rooms[0].numAdults);
 		data.children_count = parseInt($scope.reservationData.rooms[0].numChildren);
