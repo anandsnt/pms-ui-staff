@@ -3,7 +3,6 @@ var snt = angular.module('snt',['ui.router','ui.bootstrap','pickadate']);
 
 snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$state', function($rootScope,$scope,$attrs,$location,$state) {
 
-	//store basic details as rootscope variables
 //store basic details as rootscope variables
 
 	$rootScope.reservationID = $attrs.reservationId;
@@ -34,13 +33,16 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  		$location.path('/checkinConfirmation');
  	}
   	else if($rootScope.isCheckedout)	{
-		$state.go('checkOutStatus');	
+		$location.path('/checkOutStatus');	
 	}
-	else if($attrs.isLateCheckoutAvailable  === 'false'){
-		$state.go('checkOutConfirmation');
-	}else if($attrs.isLateCheckoutAvailable  === 'true'){
-		$state.go('checkOutOptions');
+	else{
+		$location.path('/checkoutRoomVerification');
 	}
+	// else if($attrs.isLateCheckoutAvailable  === 'false'){
+	// 	$location.path('/checkOutConfirmation');
+	// }else if($attrs.isLateCheckoutAvailable  === 'true'){
+	// 	$location.path('/checkOutOptions');
+	// }
 
 	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;

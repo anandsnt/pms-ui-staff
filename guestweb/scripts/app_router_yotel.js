@@ -73,6 +73,16 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 });
 
 
+	 //room verification
+
+	 $stateProvider.state('checkoutRoomVerification', {
+	 	url: '/checkoutRoomVerification',
+	 	templateUrl: '/assets/checkoutnow/partials/Yotel/checkoutRoomVerification.html',
+	 	controller : 'checkoutRoomVerificationViewController',
+	 	title: 'Room verification'
+	 });
+
+
 
 
 	// $routeProvider.when('/checkinKeys', {
