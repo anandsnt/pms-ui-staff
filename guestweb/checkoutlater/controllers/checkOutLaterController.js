@@ -12,7 +12,7 @@
 		$scope.isFetching = true;
 
 	// fetch details
-	LateCheckOutChargesService.fetch().then(function(charges) {
+	LateCheckOutChargesService.fetchLateCheckoutOptions().then(function(charges) {
 		$scope.charges = charges;
 		$scope.netWorkError = false;
 		$scope.isFetching = false;    	

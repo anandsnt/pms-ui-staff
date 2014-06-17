@@ -22,8 +22,6 @@
 		});
 
 	}
-	
-};
 };
 
 var dependencies = [

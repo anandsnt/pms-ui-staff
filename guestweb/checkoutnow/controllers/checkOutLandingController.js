@@ -1,4 +1,4 @@
-snt.controller('checkOutLandingController', ['$rootScope','$location','$state', function($rootScope,$location,$state) {
+snt.controller('checkOutLandingController', ['$rootScope','$location','$state','$scope', function($rootScope,$location,$state,$scope) {
 
 
 	$scope.pageValid = true;

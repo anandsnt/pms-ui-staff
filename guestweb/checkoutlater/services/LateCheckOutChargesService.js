@@ -2,7 +2,7 @@
 	var LateCheckOutChargesService = function($http, $q, $rootScope) {
 	var charges = {};
 	
-    var fetch = function() {
+    var fetchLateCheckoutOptions = function() {
 	// return deferred.promise;
 	var deferred = $q.defer();
 	var url = '/guest_web/get_late_checkout_charges.json',
@@ -17,11 +17,26 @@
 		deferred.reject();
 	});
 	return deferred.promise;
-};
+	};
+
+	var postNewCheckoutOption = function(url,reservation_id,id) {
+
+	var deferred = $q.defer();
+	var data = {reservation_id: reservation_id, late_checkout_offer_id: id};
+	$http.post(url, data).success(function(response){
+		deferred.resolve(response);
+	}).error(function(){				
+	$rootScope.netWorkError = true;
+	deferred.reject();			
+	});
+	return deferred.promise;
+	};
+
 
 return {
 	charges: charges,
-	fetch: fetch
+	fetchLateCheckoutOptions: fetchLateCheckoutOptions,
+	postNewCheckoutOption:postNewCheckoutOption
 }
 };
 

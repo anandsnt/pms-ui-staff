@@ -25,7 +25,7 @@
 	// show a message and give him option to go home
 	if (!charges.length) {
 
-		$location.path('/')
+		$state.go('checkOutOptions');
 		$scope.returnHome = true;
 		return;
 	};
@@ -37,40 +37,28 @@
 		};
 	});
 
+	var reservation_id = $scope.reservationID;
+	var url = '/guest_web/apply_late_checkout';
+	var id  = $scope.id; 
 
-	var posting = function() {
-
-		var deferred = $q.defer();
-		var reservation_id = $scope.reservationID;
-		var url = '/guest_web/apply_late_checkout';
-		var data = {reservation_id: reservation_id, late_checkout_offer_id: $scope.id};
-		$http.post(url, data).success(function(response){
-
-	// prevent further late chekout later options 
-
-	if(response.status != "failure")
-		$rootScope.isLateCheckoutAvailable = false;
-	else
-		$scope.netWorkError = true;	
-	deferred.resolve(response);
-
-	}).error(function(){				
-	$rootScope.netWorkError = true;
-	deferred.reject();			
-	});
-	return deferred.promise;
-	}
-
-	posting().then(function (response) {
-		$scope.posted = true;	
+	LateCheckOutChargesService.postNewCheckoutOption(url,reservation_id,id).then(function(response) {
 		$scope.success = response.status ? true : false;
-		if($scope.success === true){
+	 	if($scope.success === true){
+			$scope.posted = true;	
 			$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap
-			$rootScope.checkoutTimessage = "Your new check out time is ";
+		 	$rootScope.checkoutTimessage = "Your new check out time is ";
+		 	$rootScope.isLateCheckoutAvailable = false;
 		}
+	    else{
+	    	$scope.netWorkError = true;	
+	    }
+		
+	},function(){
+		$scope.netWorkError = true;
+		$scope.posted = true;
 	});
 	}		
-	};
+};
 
 var dependencies = [
 '$scope',
