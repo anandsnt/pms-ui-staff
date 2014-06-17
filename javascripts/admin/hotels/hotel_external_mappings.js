@@ -2,6 +2,7 @@ var HotelExternalMappingsView = function(domRef){
   BaseInlineView.call(this);
   this.myDom = domRef;
   var that = this;
+  //this.isAddNewOpen = false;
   this.externalMappings = [];
 
 
@@ -26,6 +27,7 @@ var HotelExternalMappingsView = function(domRef){
   };
   // function to get the view for edit external mapping
   this.editExternalMapping = function(event){
+  	 that.cancelFromAppendedDataInline();
   	that.getAllExternalMappings(event);
   	that.appendInlineData(event);
   };
