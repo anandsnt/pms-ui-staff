@@ -66,11 +66,12 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 		//var url =  '/sample_json/contracts/rvCompanyCardContractsDetails.json';	
 		var url = '/api/accounts/'+data.account_id+'/contracts/'+data.contract_id;
 		rvBaseWebSrvV2.getJSON(url).then(function(data) {
-			data.selected_type = '';
 			if(data.selected_type == 'percent'){
 				data.selected_type = '%';
 			} else if (data.selected_type == 'amount') {
 				data.selected_type = '$';
+			} else {
+				data.selected_type = '';
 			}
 			deferred.resolve(data);
 		},function(data){
@@ -87,6 +88,8 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 			data.postData.selected_type = 'amount';
 		} else if(data.postData.selected_type == '%') {
 			data.postData.selected_type = 'percent';
+		} else {
+			data.postData.selected_type = '';
 		}
 		var deferred = $q.defer();		
 		var url =	'/api/accounts/'+data.account_id+'/contracts/'+data.contract_id;
@@ -106,6 +109,8 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 			data.postData.selected_type = 'amount';
 		} else if(data.postData.selected_type == '%') {
 			data.postData.selected_type = 'percent';
+		} else {
+			data.postData.selected_type = '';
 		}
 		var deferred = $q.defer();		
 		var url = '/api/accounts/'+data.account_id+'/contracts';	
