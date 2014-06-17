@@ -19,8 +19,9 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 		
 		// $scope.fetchReservationData(data.reservationId);
 		// $scope.currentReservationId = data.confirmationNumber;
-		
+		$scope.$emit('staycardGuestData' , data);
 		$scope.data = data;
+		
 		$scope.timeline = data.reservation_details.timeline;;
 		
 		$scope.countCurrent = data.reservation_list.current_reservations_arr.length;
@@ -54,7 +55,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 	   
 	    var param = {'fakeDataToAvoidCache':new Date(),
 						'id':$scope.data.guest_details.reservation_id};
-	    $scope.invokeApi(RVReservationCardSrv.fetchGuestcardData,param,fetchGuestcardDataSuccessCallback,fetchGuestcardDataFailureCallback);  
+	    $scope.invokeApi(RVReservationCardSrv.fetchGuestcardData,param,fetchGuestcardDataSuccessCallback,fetchGuestcardDataFailureCallback, 'NONE');  
 
 
 		
@@ -151,7 +152,7 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 			 	};
 		 	 	$scope.$emit('GUESTPAYMENTDATA', paymentData);
 		 };
-	 	$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess);  
+	 	$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess,'', 'NONE');  
 	 };
 	 
 	 
