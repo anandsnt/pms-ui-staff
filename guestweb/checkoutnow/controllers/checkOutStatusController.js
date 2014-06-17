@@ -2,18 +2,9 @@
 (function() {
 	var checkOutStatusController = function($scope, baseWebService,$http,$rootScope,$state) {
 
-		$scope.pageValid = false;
-
-		if($rootScope.isCheckin){
- 		 $state.go('checkinConfirmation');
- 		}
-		else if($rootScope.isCheckedout){
-			$state.go('checkOutStatus');
-		}
-		else
-		{
-			$scope.pageValid = true;
-		};
+		
+		$scope.pageValid = true;
+		//TO DO: Navigations
 		if($scope.pageValid){
 			$scope.finalMessage = "Thank You for staying with us!";
 			$scope.errorMessage = "";

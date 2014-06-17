@@ -1,17 +1,9 @@
 (function() {
 	var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location) {
 
-		$scope.pageValid = false;
+		$scope.pageValid = true;
 
-		if($rootScope.isCheckedout){
-			$location.path('/checkOutNowSuccess');
-		}
-		else if(!$rootScope.isLateCheckoutAvailable){
-			$location.path('/checkOutNow');
-		}
-		else{
-			$scope.pageValid = true;
-		};
+		//TO DO : navigations
 
 		if($scope.pageValid){
 

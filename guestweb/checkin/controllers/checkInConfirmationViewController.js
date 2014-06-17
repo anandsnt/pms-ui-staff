@@ -2,26 +2,15 @@
 (function() {
 	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$state, dateFilter, $filter, checkinConfirmationService,checkinDetailsService) {
 
-		$scope.pageValid = false;
+		$scope.pageValid = true;
 		//uncheck checkbox in reservation details page
 
 		$rootScope.checkedApplyCharges = false;
 		$scope.minDate  = $rootScope.businessDate;
 		$scope.cardDigits = '';
 
-		// page navigatons if any of following conditions happpens
-		if($rootScope.isCheckedin){
-			$state.go('checkinSuccess');
-		}
-		else if($rootScope.isCheckedout){
-		    $state.go('checkOutStatus');
-		}
-		else if(!$rootScope.isCheckin){
-		   $state.go('checkOutOptions');
-		}
-		else{
-			$scope.pageValid = true;
-		};
+		//TO DO: page navigatons if any of following conditions happpens
+	
 
  		//setup options for modal
  		$scope.opts = {

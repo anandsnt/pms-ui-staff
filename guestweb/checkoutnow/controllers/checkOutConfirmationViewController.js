@@ -1,14 +1,9 @@
 
 (function() {
 	var checkOutConfirmationController = function($scope,$rootScope,$state) {
-
-		if($rootScope.isCheckedout)	{
-			$state.go('checkOutStatus');
-			$scope.pageValid = false;	
-		}
-		else{
-			$scope.pageValid = true;
-		};			
+		
+		$scope.pageValid = true;
+		//TO DO: Navigations		
 
 		if($scope.pageValid){
 			$scope.checkoutTimessage = $rootScope.checkoutTimessage ? $rootScope.checkoutTimessage:"Check out time is ";

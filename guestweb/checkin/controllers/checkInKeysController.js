@@ -2,27 +2,11 @@
 (function() {
 	var checkInKeysController = function($scope,$rootScope,$http,$location,checkinDetailsService) {
 
-		$scope.pageSuccess = true;
+		$scope.pageValid = true;
 
-		// page navigatons if any of following conditions happpens
+		//TO DO: page navigatons if any of following conditions happpens
 
-		if($rootScope.isCheckedin){
-
-			$scope.pageSuccess = false;
-			$location.path('/checkinSuccess');
-		}
-		else if($rootScope.isCheckedout){
-
-			$scope.pageSuccess = false;
-			$location.path('/checkOutNowSuccess');
-		}
-		else if(!$rootScope.isCheckin){
-
-			$scope.pageSuccess = false;
-			$location.path('/');
-		};
-
-		if($scope.pageSuccess){
+		if($scope.pageValid){
 
   		//set up flags related to webservice
   		$scope.isPosting     = true;

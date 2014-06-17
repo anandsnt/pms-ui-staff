@@ -1,12 +1,15 @@
 snt.controller('checkOutLandingController', ['$rootScope','$location','$state', function($rootScope,$location,$state) {
 
 
-	if($rootScope.isCheckedout)	{
-		$state.go('checkOutStatus');	
-	}
-	else if(!$rootScope.isLateCheckoutAvailable){
-		$state.go('checkOutConfirmation');
-	};
+		$scope.pageValid = true;
+		
+		//TO DO: Navigations
+	// if($rootScope.isCheckedout)	{
+	// 	$state.go('checkOutStatus');	
+	// }
+	// else if(!$rootScope.isLateCheckoutAvailable){
+	// 	$state.go('checkOutConfirmation');
+	// };
 
 }]);
 

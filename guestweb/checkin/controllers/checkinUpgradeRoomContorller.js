@@ -2,23 +2,9 @@
 (function() {
   var checkinUpgradeRoomController = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService,checkinDetailsService,$state) {
 
-    $scope.pageValid = false;
+    $scope.pageValid = true;
 
-    if($rootScope.isCheckedin){
-      $location.path('/checkinSuccess');
-    }
-    else if($rootScope.isCheckedout){
-      $location.path('/checkOutSuccess');
-    }
-    else if(!$rootScope.isCheckin){
-      $location.path('/');
-    }
-    else if(!$rootScope.upgradesAvailable){
-      $location.path('/checkinReservationDetails');      
-    }
-    else{
-      $scope.pageValid = true;
-    }
+   //TO DO : navigations
     
 
     if($scope.pageValid){

@@ -1,17 +1,9 @@
 (function() {
 	var checkOutLaterSuccessController = function($scope, $http, $q, $stateParams, $state, $rootScope, LateCheckOutChargesService) {
 		
-		$scope.pageValid = false;
+		$scope.pageValid = true;
 		
-		if($rootScope.isCheckedout){
-			$location.go('checkOutStatus');
-		}
-		else if(!$rootScope.isLateCheckoutAvailable){
-			$state.go('checkOutConfirmation');
-		}
-		else{
-			$scope.pageValid = true;
-		};
+		//TO DO : navigations
 
 		if($scope.pageValid){
 

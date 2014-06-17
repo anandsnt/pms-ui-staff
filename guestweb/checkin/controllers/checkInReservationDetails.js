@@ -2,23 +2,9 @@
 (function() {
 	var checkInReservationDetails = function($scope,$rootScope,$location,checkinDetailsService) {
 		
-		$scope.pageValid = false;
+		$scope.pageValid = true;
 		
-		// page navigatons if any of following conditions happpens
-
-		if($rootScope.isCheckedin){;
-			$location.path('/checkinSuccess');
-		}
-		else if($rootScope.isCheckedout){
-			$location.path('/checkOutNowSuccess');
-		}
-		else if(!$rootScope.isCheckin){
-			$location.path('/');
-		}
-		else{
-
-			$scope.pageValid = true;
-		};
+		//TO DO: page navigatons if any of following conditions happpens
 
 		if($scope.pageValid){
 					//check if checkbox was already checked (before going to upgrades)
