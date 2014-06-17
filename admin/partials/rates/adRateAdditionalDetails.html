@@ -23,7 +23,7 @@
 							</button>
 				</div>
 	 		   <div class="entry full-width">
-	 		   	<div class="entry">
+	 		   	<div class="entry" ng-hide="!rateTypesDetails.is_use_markets">
                 <label>Market</label>
                 <div class="select">
                     <select class="placeholder" ng-model="rateData.market_segment_id" ng-options="market.value as market.name for market in rateTypesDetails.markets">
@@ -31,7 +31,7 @@
                     </select>
                 </div>
                 </div>
-                <div class="entry">
+                <div class="entry"  ng-hide="!rateTypesDetails.is_use_sources">
                 <label>Source</label>
                 <div class="select">
                     <select class="placeholder" ng-model="rateData.source_id" ng-options="source.value as source.name for source in rateTypesDetails.sources">
