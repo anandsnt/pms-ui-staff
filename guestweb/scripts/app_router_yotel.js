@@ -80,6 +80,11 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	templateUrl: '/assets/checkoutnow/partials/Yotel/checkoutRoomVerification.html',
 	 	controller : 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
+	 }).state('ccVerification', {
+	 	url: '/ccVerification/:fee/:message/:currency',
+	 	templateUrl: '/assets/checkoutnow/partials/Yotel/ccVerification.html',
+	 	controller : 'ccVerificationViewController',
+	 	title: 'CC verification'
 	 });
 
 

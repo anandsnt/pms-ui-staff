@@ -21,12 +21,22 @@
 			$scope.isFetching = false;
 		});
 
+		$scope.gotToNextStep = function(){
+			if($rootScope.isCCOnFile && $scope.billData.balance>0){
+				$state.go('ccVerification',{'fee':$scope.billData.balance,'message':"Check-out fee",'currency':$scope.billData.currency});
+			}				
+			else{
+				$state.go('checkOutStatus');
+			}
+				
+		}
+
 	}
 };
 
 var dependencies = [
 '$scope',
-'BillService','$rootScope','$location',
+'BillService','$rootScope','$state',
 checkOutBalanceController
 ];
 

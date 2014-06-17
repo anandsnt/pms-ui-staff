@@ -28,6 +28,9 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
   
  	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken)
 
+ 	//To Do: retrieve from server via attrs
+
+ 	$rootScope.isCCOnFile =  true;
 
     if($attrs.isCheckin ==='true'){
  		$location.path('/checkinConfirmation');
