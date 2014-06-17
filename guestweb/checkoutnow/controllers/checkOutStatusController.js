@@ -2,12 +2,11 @@
 (function() {
 	var checkOutStatusController = function($scope, baseWebService,$http,$rootScope,$state) {
 
-		
-		$scope.pageValid = true;
-		//TO DO: Navigations
-		if($scope.pageValid){
-			$scope.finalMessage = "Thank You for staying with us!";
-			$scope.errorMessage = "";
+	$scope.pageValid = true;
+	//TO DO: Navigations
+	if($scope.pageValid){
+		$scope.finalMessage = "Thank You for staying with us!";
+		$scope.errorMessage = "";
 
 	// data posted status	
 	$scope.posted = false;
@@ -15,31 +14,28 @@
 	$scope.netWorkError = false;
 
 	// prevent chekout operation if user has already checked out
-	
+
 	if(!$scope.isCheckoutCompleted){
 		var url = '/guest_web/home/checkout_guest.json';
 		var data = {'reservation_id':$rootScope.reservationID};
 
 
-    //post data 
-
+	//post data 
 
 	$http.post(url,data).success(function(response) {
-			    	$scope.posted = true;	
-			    	$scope.success = (response.status != "failure") ? true : false;    	
-			    	if($scope.success)
-			    		$rootScope.isCheckedout = $scope.isCheckoutCompleted = true;  
-			    	else
-    				    $scope.errorMessage = response.errors[0];
-				}.bind(this))
-				.error(function() {
-					$scope.netWorkError =true;
-				});
+		$scope.posted = true;	
+		$scope.success = (response.status != "failure") ? true : false;    	
+		if($scope.success)
+			$rootScope.isCheckedout = $scope.isCheckoutCompleted = true;  
+		else
+			$scope.errorMessage = response.errors[0];
+	}.bind(this))
+	.error(function() {
+		$scope.netWorkError =true;
+	});
 	};
-    
-}
-
-};
+	}
+	};
 
 var dependencies = [
 '$scope',

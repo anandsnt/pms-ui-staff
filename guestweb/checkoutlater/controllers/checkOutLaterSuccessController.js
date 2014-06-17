@@ -1,65 +1,64 @@
 (function() {
 	var checkOutLaterSuccessController = function($scope, $http, $q, $stateParams, $state, $rootScope, LateCheckOutChargesService) {
-		
-		$scope.pageValid = true;
-		
-		//TO DO : navigations
+	$scope.pageValid = true;
 
-		if($scope.pageValid){
+	//TO DO : navigations
 
-			var charges = LateCheckOutChargesService.charges;
-			var id = $stateParams.id;
-			$scope.reservationID = $rootScope.reservationID;
-			$scope.id = id;
-			$scope.netWorkError = false;
+	if($scope.pageValid){
 
-		// already opted for late checkout, send him home with a msg
-		$scope.returnHome = false;
+		var charges = LateCheckOutChargesService.charges;
+		var id = $stateParams.id;
+		$scope.reservationID = $rootScope.reservationID;
+		$scope.id = id;
+		$scope.netWorkError = false;
 
-		// data has/being posted
-		$scope.posted = false;
+	// already opted for late checkout, send him home with a msg
+	$scope.returnHome = false;
 
-		// data posted sucessfully
-		$scope.success = false;
+	// data has/being posted
+	$scope.posted = false;
 
-		// if no charges recorded (user tried to reload on success page)
-		// show a message and give him option to go home
-		if (!charges.length) {
+	// data posted sucessfully
+	$scope.success = false;
 
-			$location.path('/')
-			$scope.returnHome = true;
-			return;
+	// if no charges recorded (user tried to reload on success page)
+	// show a message and give him option to go home
+	if (!charges.length) {
+
+		$location.path('/')
+		$scope.returnHome = true;
+		return;
+	};
+
+	// find the choosen option form list of options
+	$scope.lateCheckOut = _.find(charges, function(charge) {
+		if (id === charge.id) {
+			return charge;
 		};
-		
-		// find the choosen option form list of options
-		$scope.lateCheckOut = _.find(charges, function(charge) {
-			if (id === charge.id) {
-				return charge;
-			};
-		});
+	});
 
-	
-		var posting = function() {
 
-			var deferred = $q.defer();
-			var reservation_id = $scope.reservationID;
-			var url = '/guest_web/apply_late_checkout';
-			var data = {reservation_id: reservation_id, late_checkout_offer_id: $scope.id};
-			$http.post(url, data).success(function(response){
+	var posting = function() {
 
-			// prevent further late chekout later options 
+		var deferred = $q.defer();
+		var reservation_id = $scope.reservationID;
+		var url = '/guest_web/apply_late_checkout';
+		var data = {reservation_id: reservation_id, late_checkout_offer_id: $scope.id};
+		$http.post(url, data).success(function(response){
 
-			if(response.status != "failure")
-				$rootScope.isLateCheckoutAvailable = false;
-			else
-				$scope.netWorkError = true;	
-			deferred.resolve(response);
+	// prevent further late chekout later options 
 
-		}).error(function(){				
-			$rootScope.netWorkError = true;
-			deferred.reject();			
-		});
-		return deferred.promise;
+	if(response.status != "failure")
+		$rootScope.isLateCheckoutAvailable = false;
+	else
+		$scope.netWorkError = true;	
+	deferred.resolve(response);
+
+	}).error(function(){				
+	$rootScope.netWorkError = true;
+	deferred.reject();			
+	});
+	return deferred.promise;
 	}
 
 	posting().then(function (response) {
@@ -70,8 +69,8 @@
 			$rootScope.checkoutTimessage = "Your new check out time is ";
 		}
 	});
-}		
-};
+	}		
+	};
 
 var dependencies = [
 '$scope',

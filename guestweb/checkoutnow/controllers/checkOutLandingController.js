@@ -1,7 +1,7 @@
 snt.controller('checkOutLandingController', ['$rootScope','$location','$state', function($rootScope,$location,$state) {
 
 
-		$scope.pageValid = true;
+	$scope.pageValid = true;
 		
 		//TO DO: Navigations
 	// if($rootScope.isCheckedout)	{

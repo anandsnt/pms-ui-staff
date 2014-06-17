@@ -1,35 +1,35 @@
 (function() {
-	var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location) {
+		var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location) {
 
-		$scope.pageValid = true;
+			$scope.pageValid = true;
 
-		//TO DO : navigations
+	//TO DO : navigations
 
-		if($scope.pageValid){
+	if($scope.pageValid){
 
-			$scope.showBackButtonImage = true;
-			$scope.netWorkError = false;
-			$scope.isFetching = true;
+		$scope.showBackButtonImage = true;
+		$scope.netWorkError = false;
+		$scope.isFetching = true;
 
-			// fetch details
-			LateCheckOutChargesService.fetch().then(function(charges) {
-				$scope.charges = charges;
-				$scope.netWorkError = false;
-				$scope.isFetching = false;    	
-				if($scope.charges.length > 0)
-					$scope.optionsAvailable = true;
-			},function(){
-				$scope.netWorkError = true;
-				$scope.isFetching = false;
-			});
-		}
-		};
+	// fetch details
+	LateCheckOutChargesService.fetch().then(function(charges) {
+		$scope.charges = charges;
+		$scope.netWorkError = false;
+		$scope.isFetching = false;    	
+		if($scope.charges.length > 0)
+			$scope.optionsAvailable = true;
+	},function(){
+		$scope.netWorkError = true;
+		$scope.isFetching = false;
+	});
+	}
+	};
 
-		var dependencies = [
-		'$scope',
-		'LateCheckOutChargesService','$rootScope','$location',
-		checkOutLaterController
-		];
+var dependencies = [
+'$scope',
+'LateCheckOutChargesService','$rootScope','$location',
+checkOutLaterController
+];
 
 snt.controller('checkOutLaterController', dependencies);
 })();

@@ -2,9 +2,10 @@
 
 snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
 	
-    // For any unmatched url, redirect to /state1
     $urlRouterProvider.otherwise("/checkOutOptions");
 
+    // checkout now states
+    
 	$stateProvider.state('checkoutBalance', {
         url: '/checkoutBalance',
         controller: 'checkOutBalanceController',
@@ -21,7 +22,11 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
        	controller: 'checkOutConfirmationController',
        	templateUrl: '/assets/checkoutnow/partials/Yotel/checkoutConfirmation.html',
 		title: 'Confirm - Checkout Now'
-    }).state('checkOutOptions', {
+    });
+
+    // late checkout states
+
+    $stateProvider.state('checkOutOptions', {
     	url: '/checkOutOptions',
 	 	templateUrl: '/assets/landing/Yotel/landing.html',
 	 	controller: 'checkOutLandingController',
@@ -36,7 +41,11 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 		templateUrl: '/assets/checkoutlater/partials/Yotel/checkOutLaterSuccess.html',
 		controller: 'checkOutLaterSuccessController',
 		title: 'Status - Checkout Later'
-	 }).state('checkinConfirmation', {
+	 });
+
+	// checkin states
+
+	$stateProvider.state('checkinConfirmation', {
 	 	url: '/checkinConfirmation',
 	 	templateUrl: '/assets/checkin/partials/checkInConfirmation.html',
 	 	controller : 'checkInConfirmationViewController',
