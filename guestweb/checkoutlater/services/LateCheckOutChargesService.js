@@ -26,8 +26,7 @@
 	$http.post(url, data).success(function(response){
 		deferred.resolve(response);
 	}).error(function(){				
-	$rootScope.netWorkError = true;
-	deferred.reject();			
+		deferred.reject();			
 	});
 	return deferred.promise;
 	};

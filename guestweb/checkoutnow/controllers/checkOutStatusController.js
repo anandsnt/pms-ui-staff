@@ -1,6 +1,6 @@
 
 (function() {
-	var checkOutStatusController = function($scope, baseWebService,$http,$rootScope,$state) {
+	var checkOutStatusController = function($scope, checkoutNowService,$rootScope,$state) {
 
 	$scope.pageValid = true;
 	//TO DO: Navigations
@@ -19,27 +19,24 @@
 		var url = '/guest_web/home/checkout_guest.json';
 		var data = {'reservation_id':$rootScope.reservationID};
 
-
-	//post data 
-
-	$http.post(url,data).success(function(response) {
-		$scope.posted = true;	
-		$scope.success = (response.status != "failure") ? true : false;    	
-		if($scope.success)
-			$rootScope.isCheckedout = $scope.isCheckoutCompleted = true;  
-		else
-			$scope.errorMessage = response.errors[0];
-	}.bind(this))
-	.error(function() {
-		$scope.netWorkError =true;
-	});
-	};
-	}
-	};
+		checkoutNowService.completeCheckout(url,data).then(function(response) {
+			$scope.posted = true;	
+			$scope.success = (response.status != "failure") ? true : false;    	
+			if($scope.success)
+				$rootScope.isCheckedout = $scope.isCheckoutCompleted = true;  
+			else
+				$scope.errorMessage = response.errors[0];
+		},function(){
+			$scope.netWorkError = true;
+			$scope.posted = true;
+		});
+	};		
+ }
+};
 
 var dependencies = [
 '$scope',
-'baseWebService','$http','$rootScope','$state',
+'checkoutNowService','$rootScope','$state',
 checkOutStatusController
 ];
 
