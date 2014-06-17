@@ -82,11 +82,21 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
              */
                 angular.forEach($scope.rateTypesDetails.depositPolicies, function(depositPolicy){
                         var symbol =  (depositPolicy.amount_type ==="amount") ? '$':'%';
-                        depositPolicy.displayData = depositPolicy.name +"   "+"("+symbol+depositPolicy.amount+")";
+                        if (symbol == '%') {
+                            depositPolicy.displayData = depositPolicy.name +"   "+"("+depositPolicy.amount+symbol+")";
+                        }
+                        else {
+                            depositPolicy.displayData = depositPolicy.name +"   "+"("+symbol+depositPolicy.amount+")";
+                        }
                 });
                 angular.forEach($scope.rateTypesDetails.cancelationPenalties, function(cancelationPenalty){
                         var symbol =  (cancelationPenalty.amount_type ==="amount") ? '$':'%';
-                        cancelationPenalty.displayData = cancelationPenalty.name +"   "+"("+symbol+cancelationPenalty.amount+")";
+                        if (symbol == '%') {
+                            cancelationPenalty.displayData = cancelationPenalty.name +"   "+"("+cancelationPenalty.amount+symbol+")";
+                        }
+                        else {
+                            cancelationPenalty.displayData = cancelationPenalty.name +"   "+"("+symbol+cancelationPenalty.amount+")";
+                        }
                 });
             /*
              * empty the list if not activated
