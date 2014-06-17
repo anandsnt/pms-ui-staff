@@ -57,13 +57,12 @@
 
           $scope.goToNextStep = function(){
 
-            if($stateParams.isFromCheckoutNow){
-
+            if($stateParams.isFromCheckoutNow === "true"){
               $rootScope.ccPaymentSuccessForCheckoutNow = true;
               $state.go('checkOutStatus');
-
             }else{
                $rootScope.ccPaymentSuccessForCheckoutLater = true;
+               $state.go('checkOutLaterSuccess',{id:$scope.fee});
             }
 
           }

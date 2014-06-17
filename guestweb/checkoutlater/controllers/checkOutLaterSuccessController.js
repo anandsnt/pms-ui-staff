@@ -31,11 +31,24 @@
 	};
 
 	// find the choosen option form list of options
-	$scope.lateCheckOut = _.find(charges, function(charge) {
+
+	if($rootScope.ccPaymentSuccessForCheckoutLater){
+		$scope.lateCheckOut = _.find(charges, function(charge) {
+		if (id === charge.amount.toString()) {
+			return charge;
+		};
+		});
+		$scope.success = true;
+		$scope.posted = true;
+		$rootScope.isLateCheckoutAvailable = false;
+		$rootScope.checkoutTime = $scope.lateCheckOut.time +':00 '+$scope.lateCheckOut.ap
+	}
+	else{
+		$scope.lateCheckOut = _.find(charges, function(charge) {
 		if (id === charge.id) {
 			return charge;
 		};
-	});
+		});
 
 	var reservation_id = $scope.reservationID;
 	var url = '/guest_web/apply_late_checkout';
@@ -57,6 +70,10 @@
 		$scope.netWorkError = true;
 		$scope.posted = true;
 	});
+
+	}
+	
+
 	}		
 };
 
