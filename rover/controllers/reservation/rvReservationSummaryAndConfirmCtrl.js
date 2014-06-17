@@ -58,13 +58,19 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 	var computeReservationDataToSave = function() {
 		var data = {};
 		data.arrival_date = $scope.reservationData.arrivalDate;
-		data.arrival_time = getTimeFormated($scope.reservationData.checkinTime.hh, 
+		data.arrival_time = '';
+		if($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkinTime.mm != '' && $scope.reservationData.checkinTime.ampm!= '') {
+			data.arrival_time = getTimeFormated($scope.reservationData.checkinTime.hh, 
 											$scope.reservationData.checkinTime.mm, 
-											$scope.reservationData.checkinTime.ampm);
+											$scope.reservationData.checkinTime.ampm);	
+		}
 		data.departure_date = $scope.reservationData.departureDate;
-		data.departure_time = getTimeFormated($scope.reservationData.checkoutTime.hh, 
-											$scope.reservationData.checkoutTime.mm,
-											$scope.reservationData.checkoutTime.ampm);
+		data.departure_time = '';
+		if($scope.reservationData.checkoutTime.hh != '' && $scope.reservationData.checkoutTime.mm != '' && $scope.reservationData.checkinTime.ampm!= '') {
+			data.arrival_time = getTimeFormated($scope.reservationData.checkoutTime.hh, 
+											$scope.reservationData.checkoutTime.mm, 
+											$scope.reservationData.checkoutTime.ampm);	
+		}
 		
 		data.adults_count = parseInt($scope.reservationData.rooms[0].numAdults);
 		data.children_count = parseInt($scope.reservationData.rooms[0].numChildren);
@@ -78,14 +84,17 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		data.guest_detail.first_name = $scope.reservationData.guest.firstName;
 		data.guest_detail.last_name = $scope.reservationData.guest.lastName;
 		data.guest_detail.email = $scope.reservationData.guest.email;
-		data.guest_detail.payment_type = {};
-		data.guest_detail.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);//TODO: verify
-		data.guest_detail.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
-		data.guest_detail.payment_type.expiry_date = "20"+ $scope.reservationData.paymentType.ccDetails.expYear + "-" + 
-														$scope.reservationData.paymentType.ccDetails.expMonth + "-01"
+		if(!isEmpty($scope.reservationData.paymentType.type)){
+			data.guest_detail.payment_type = {};
+			data.guest_detail.payment_type.type_id = parseInt($scope.reservationData.paymentType.type.id);//TODO: verify
+			data.guest_detail.payment_type.card_number = $scope.reservationData.paymentType.ccDetails.number;
+			data.guest_detail.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear == "" || $scope.reservationData.paymentType.ccDetails.expYear == "") ? "" : "20"+ $scope.reservationData.paymentType.ccDetails.expYear + "-" + 
+															$scope.reservationData.paymentType.ccDetails.expMonth + "-01"
+			data.guest_detail.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
 
+		}
+		
 														
-		data.guest_detail.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
 		data.company_id = $scope.reservationData.company.id;
 		data.travel_agent_id = $scope.reservationData.travelAgent.id;
 		data.reservation_type_id = parseInt($scope.reservationData.demographics.reservationType);
