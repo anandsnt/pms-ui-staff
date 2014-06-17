@@ -496,6 +496,8 @@ var RoomAssignmentView = function(viewDom){
             failureCallBack: that.fetchFailedOfSave,
            loader: "BLOCKER"
     };
+    event.stopPropagation();
+	event.stopImmediatePropagation();
     webservice.postJSON(url, options);  
 
   };
