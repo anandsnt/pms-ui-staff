@@ -240,11 +240,6 @@ var NewWebServiceInterface = function(){
                     return;
                 }
 
-                if(jqXHR.status=="422"){
-                    location.href = XHR_STATUS.REJECTED;
-                    return;
-                }
-
                 if(jqXHR.status=="404"){
                     location.href = XHR_STATUS.SERVER_DOWN;
                     return;
