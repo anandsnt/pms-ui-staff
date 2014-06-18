@@ -16,7 +16,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	$rootScope.isLateCheckoutAvailable  = ($attrs.isLateCheckoutAvailable  === 'true') ? true : false;
 	$rootScope.emailAddress  = $attrs.emailAddress;
 	$rootScope.hotelLogo     = $attrs.hotelLogo;
-
+	$rootScope.currencySymbol= getCurrencySign($attrs.currencySymbol);
 	$rootScope.hotelPhone    = $attrs.hotelPhone;
 	$rootScope.businessDate  = $attrs.businessDate;
 	$rootScope.isCheckedout  = ($attrs.isCheckedout === 'true') ? true : false;
@@ -45,12 +45,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	}
 	else{
 		$location.path('/checkoutRoomVerification');
-	}
-	// else if($attrs.isLateCheckoutAvailable  === 'false'){
-	// 	$location.path('/checkOutConfirmation');
-	// }else if($attrs.isLateCheckoutAvailable  === 'true'){
-	// 	$location.path('/checkOutOptions');
-	// }
+	};
 
 	if($attrs.accessToken != "undefined")
 		$rootScope.accessToken = $attrs.accessToken	;

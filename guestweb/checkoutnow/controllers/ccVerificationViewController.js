@@ -41,9 +41,7 @@
 
 		$scope.checkoutmessage = $stateParams.message;
 		$scope.fee = $stateParams.fee;
-		$scope.currency =  $stateParams.currency;
-
-
+		
         $scope.months = [{
             'name': 'January',
             'value': '0'

@@ -33,7 +33,7 @@
 
 	$scope.gotToNextStep = function(fee,chargeId){
 		if($rootScope.isCCOnFile){
-			$state.go('ccVerification',{'fee':fee,'message':"Late check-out fee",'currency':'$','isFromCheckoutNow':false});
+			$state.go('ccVerification',{'fee':fee,'message':"Late check-out fee",'isFromCheckoutNow':false});
 		}				
 		else{
 			$state.go('checkOutLaterSuccess',{id:chargeId});

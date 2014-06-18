@@ -2,7 +2,7 @@
 
 snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlRouterProvider) {
 	
-    $urlRouterProvider.otherwise("/checkOutOptions");
+    $urlRouterProvider.otherwise("/checkoutRoomVerification");
 
     // checkout now states
     
@@ -80,7 +80,7 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 	controller : 'checkoutRoomVerificationViewController',
 	 	title: 'Room verification'
 	 }).state('ccVerification', {
-	 	url: '/ccVerification/:fee/:message/:currency/:isFromCheckoutNow',
+	 	url: '/ccVerification/:fee/:message/:isFromCheckoutNow',
 	 	templateUrl: '/assets/checkoutnow/partials/Yotel/ccVerification.html',
 	 	controller : 'ccVerificationViewController',
 	 	title: 'CC verification'
