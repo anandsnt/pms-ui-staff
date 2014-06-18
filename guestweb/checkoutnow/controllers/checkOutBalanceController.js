@@ -1,8 +1,25 @@
 (function() {
 	var checkOutBalanceController = function($scope, BillService,$rootScope,$state) {
 
-	$scope.pageValid = true;
-	//To DO: navigations
+	$scope.pageValid = false;
+
+	if($rootScope.isCheckedin){
+		$state.go('checkinSuccess');
+	}
+	else if($rootScope.isCheckin){
+		$state.go('checkinConfirmation');
+	}
+	else if($rootScope.isCheckedout ){
+		$state.go('checkOutStatus');
+	}
+	else if(!$rootScope.isRoomVerified){
+		$state.go('checkoutRoomVerification');
+	}
+	else{
+		$scope.pageValid = true;
+	}
+	
+	
 	if($scope.pageValid){
 		// showBill flag and its reference in $rootScope
 		$scope.showBill = false;
