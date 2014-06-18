@@ -65,14 +65,20 @@ hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', '$log', 'ngDia
         $scope.filterOpen = true;
     });
 
-    $rootScope.$on('showOWSError', function(){
+    /**
+    * Handles the OWS error - Shows a popup having ows connection test option
+    */
+    $rootScope.showOWSError = function(){
         // Hide loading message
         $scope.$emit('hideLoader');
         ngDialog.open({
             template: '/assets/partials/hkOWSError.html',
+            className: 'ngdialog-theme-default modal-theme',
+            controller: 'HKOWSErrorCtrl',
+            closeByDocument: false,
             scope: $scope
         });
-    });
+    };
     
 }]);
 

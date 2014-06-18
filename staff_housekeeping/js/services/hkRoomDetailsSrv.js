@@ -2,7 +2,7 @@ hkRover.service('HKRoomDetailsSrv',['$http', '$q', '$window', function($http, $q
 
 	this.fetch = function(id){
 		var deferred = $q.defer();
-		var url = '/house/rom/' + id + '.json';
+		var url = '/house/room/' + id + '.json';
 
 		$http.get(url).success(function(response, status) {
 			if(response.status == "success"){
