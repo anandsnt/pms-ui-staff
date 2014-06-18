@@ -9,8 +9,6 @@ sntRover.controller('RVPostChargeController',
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
 
-			console.log( $scope.fetchedData );
-
 			// quick ref to fetched items
 			// and chosen one from the list
 			$scope.fetchedItem = $scope.fetchedData.items;
@@ -27,8 +25,6 @@ sntRover.controller('RVPostChargeController',
 
 				for (var i = 0, j = $scope.fetchedItem.length; i < j; i++) {
 					var item = $scope.fetchedItem[i];
-
-					console.log( $scope.chargeGroup );
 
 					if ( $scope.chargeGroup === '' ) {
 						item.show = true;
@@ -379,8 +375,6 @@ sntRover.controller('RVPostChargeController',
 
 			$scope.postCharges = function() {
 				var items = [];
-
-				console.log( $scope.chargedItems );
 
 				for (var i = 0, j = $scope.chargedItems.length; i < j; i++) {
 					var each = {};
