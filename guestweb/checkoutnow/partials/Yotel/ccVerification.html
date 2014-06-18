@@ -1,94 +1,71 @@
-	<!-- contentarea starts here-->
-
-	<div class="jumbotron">
-
-		<div class="container backgroundbg" >
-			<div class="container-fluid">
-				<div class="row headerrow">
-					<logo-image></logo-image>
-				</div>
+<div class="jumbotron">
+	<div class="container backgroundbg" >
+		<div class="container-fluid">
+			<div class="row headerrow">
+				<logo-image></logo-image>
 			</div>
-
-
-	<!--	 show posting message 
-	<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-	<p class="msg-head">Your request is being processed.</p>
-	<p class="msg-body">This may take a few seconds..... please wait!</p>
-	</div>
-
-	<!--	show error message 
-
-	<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-	<p class="msg-head">Our apologies, something went wrong, please complete your check in at our front desk.</p>
-	<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
-	</div>
-
--->
-
-<!-- contentarea starts here-->
-<div class="container" ng-hide="isPosting || netWorkError || isResponseSuccess">
-	<!-- top section starts here-->
-
-	<div class="row checkin-wrapper">
-		<div class="col-md-6 headtext centeralign pad-rt-60">
-			Payment
-			<p class="leadtext checkout-time-container">
-				<span class="lightcontent chekout-time">{{checkoutmessage}}
-				</span>
-			</p>
-			{{currency}}{{fee}}			
 		</div>
+		<!-- contentarea starts here-->
+		<div class="container" ng-hide="isPosting || netWorkError">
+			<!-- top section starts here-->
 
-		<div class="verti-ruler"></div>
+			<div class="row checkin-wrapper">
+				<div class="col-md-6 headtext centeralign pad-rt-60">
+					Payment
+					<p class="leadtext checkout-time-container">
+						<span class="lightcontent chekout-time">{{checkoutmessage}}
+						</span>
+					</p>
+					{{currency}}{{fee}}			
+				</div>
 
-		<!-- top section ends here-->
+				<div class="verti-ruler"></div>
+
+				<!-- top section ends here-->
 
 
-		<div class="col-md-6 pad-lf-60 cabin-number">
-			<form >
-				<div class="row">
-					<div style="float:left;width:60%;">
-						<p class="cabin_number_text">Card Number</p>
-						<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox"/> 
-					</div>
-					<div style="float:right;width:38%;">
-						<p class="cabin_number_text">Card Number</p>
-						<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox"/> 
+				<div class="col-md-6 pad-lf-60 cabin-number">
+					<form >
+						<div class="row">
+							<div class="card-number-container">
+								<p class="cabin_number_text">Card Number</p>
+								<input type="password" ng-model="cardNumber" class = "col-xs-12 textBox"/> 
+							</div>
+							<div class="ccv-container">
+								<p class="cabin_number_text">CCV#</p>
+								<input type="password" ng-model="ccv" class = "col-xs-12 textBox"/> 
+							</div>
+						</div>
+
+						<div class="row expiry-date-container">
+							<div class="expiry-month-container">
+								<p class="cabin_number_text">Expiration Date</p>
+								<div class="select-style">
+									<select ng-model="monthSelected"
+									ng-options="month.value as month.name for month in months">
+									<option value="">Month</option>
+								</select>
+							</div>
+						</div>
+						<div class="expiry-year-container">
+							<p class="cabin_number_text">&nbsp;</p>
+							<div class="select-style">
+								<select ng-model="yearSelected"
+								ng-options="year as year  for year in years">
+								<option value="">Year</option>
+							</select>
+						</div>
 					</div>
 				</div>
 
-				<div class="row" style="padding-top:5%;">
-					<div style="float:left;width:49%;">
-						<p class="cabin_number_text">Expiration Date</p>
 
-						<div class="select-style">
-							<select style="width:100%;"
-							ng-model="monthSelected"
-							ng-options="month.value as month.name for month in months">
-							<option value="">Month</option>
-						</select>
-					</div>
-				</div>
-				<div style="float:right;width:49%;margin-left:2%">
-					<p class="cabin_number_text">&nbsp;</p>
-					<div class="select-style">
-						<select style="width:100%;"
-						ng-model="yearSelected"
-						ng-options="year as year  for year in years">
-						<option value="">Year</option>
-					</select>
-				</div>
-			</div>
+				<button class="checkin-button continue-button" ng-click="goToNextStep()">
+					<span class="continue-text">Continue</span>
+				</button>
 
-
-			<button class="checkin-button continue-button" ng-click="goToNextStep()">
-				<span class="continue-text">Continue</span>
-			</button>
-
-		</form>
+			</form>
+		</div>
 	</div>
-</div>
-<!-- checkinbtn section ends here-->
 </div>
 </div>
 </div>
