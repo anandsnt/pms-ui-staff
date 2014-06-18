@@ -41,9 +41,11 @@ var RoomTypeChargeModal = function(options) {
 
 	   	if(roomTypeCharge == ""){
 	   		that.myDom.find('#ok').attr("disabled", true);
+	   		that.myDom.find('#nocharge').attr("disabled", false);
 	   	}
 	   	else{
 	   		that.myDom.find('#ok').attr("disabled", false);
+	   		that.myDom.find('#nocharge').attr("disabled", true);
 	   	}
 	};
 
