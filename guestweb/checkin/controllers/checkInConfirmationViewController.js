@@ -2,7 +2,15 @@
 (function() {
 	var checkInConfirmationViewController = function($scope,$modal,$rootScope,$state, dateFilter, $filter, checkinConfirmationService,checkinDetailsService) {
 
+
+	$scope.pageValid = false;
+
+	if($rootScope.isCheckedin){
+		$state.go('checkinSuccess');
+	}
+	else{
 		$scope.pageValid = true;
+	}	
 	//uncheck checkbox in reservation details page
 
 	$rootScope.checkedApplyCharges = false;

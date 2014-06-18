@@ -1,10 +1,15 @@
 
 (function() {
-	var checkInReservationDetails = function($scope,$rootScope,$location,checkinDetailsService) {
+	var checkInReservationDetails = function($scope,$rootScope,$location,checkinDetailsService,$state) {
 
+	$scope.pageValid = false;
+	
+	if($rootScope.isCheckedin){
+		$state.go('checkinSuccess');
+	}
+	else{
 		$scope.pageValid = true;
-
-	//TO DO: page navigatons if any of following conditions happpens
+	};
 
 	if($scope.pageValid){
 	//check if checkbox was already checked (before going to upgrades)
@@ -37,7 +42,7 @@
 };
 
 var dependencies = [
-'$scope','$rootScope','$location','checkinDetailsService',
+'$scope','$rootScope','$location','checkinDetailsService','$state',
 checkInReservationDetails
 ];
 

@@ -1,10 +1,15 @@
 
 (function() {
-	var checkInKeysController = function($scope,$rootScope,$http,$location,checkinDetailsService,checkinKeysService) {
+	var checkInKeysController = function($scope,$rootScope,$http,$location,checkinDetailsService,checkinKeysService,$state) {
+	
+	$scope.pageValid = false;
 
+	if($rootScope.isCheckedin){
+		$state.go('checkinSuccess');
+	}
+	else{
 		$scope.pageValid = true;
-
-	//TO DO: page navigatons if any of following conditions happpens
+	};	
 
 	if($scope.pageValid){
 
@@ -33,7 +38,7 @@
 };
 
 var dependencies = [
-'$scope','$rootScope','$http','$location','checkinDetailsService','checkinKeysService',
+'$scope','$rootScope','$http','$location','checkinDetailsService','checkinKeysService','$state',
 checkInKeysController
 ];
 

@@ -2,10 +2,14 @@
 (function() {
   var checkinUpgradeRoomController = function($scope,$location,$rootScope,checkinRoomUpgradeOptionsService,checkinRoomUpgradeService,checkinDetailsService,$state) {
 
+  $scope.pageValid = false;
+
+  if($rootScope.isCheckedin){
+    $state.go('checkinSuccess');
+  }
+  else{
     $scope.pageValid = true;
-
-  //TO DO : navigations
-
+  };
 
   if($scope.pageValid){
     $scope.slides = [];
