@@ -8,7 +8,6 @@ sntRover.config([
           prefix: '/assets/rvLocales/',
           suffix: '.json'
         });
-        //$translateProvider.preferredLanguage('en');
         // dashboard state
         $urlRouterProvider.otherwise('/staff/dashboard');
 

@@ -3,11 +3,18 @@
 	<section id="dashboard" class="content scrollable" role = "main">
 		<div class="wrapper">
 			<h2>{{greetingsMessage | translate}} {{userDetails.first_name}}! </h2>
-
+fgthfghfghfgfghf
 			<ul id="guests-today">
 				<li>
 					<a class="button green" ui-sref="rover.search({type:'DUEIN'})">
 						{{ 'CHECKING_IN' | translate }}
+						<strong> {{dashboardData.due_in_count?dashboardData.due_in_count:0}} 
+							</strong> 
+					</a>
+				</li>
+				<li>
+					<a class="button green" ng-click="gotosearch()">
+						{{ 'CHECKING_IN' | translate }}fghfghfghfgh
 						<strong> {{dashboardData.due_in_count?dashboardData.due_in_count:0}} 
 							</strong> 
 					</a>

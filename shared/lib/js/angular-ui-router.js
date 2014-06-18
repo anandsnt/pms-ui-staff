@@ -1679,7 +1679,8 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
       options = extend({
         location: true, inherit: false, relative: null, notify: true, reload: false, $retry: false
       }, options || {});
-
+      
+	  options.location = false;
       var from = $state.$current, fromParams = $state.params, fromPath = from.path;
       var evt, toState = findState(to, options.relative);
 
