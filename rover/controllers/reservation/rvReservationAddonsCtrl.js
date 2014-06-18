@@ -1,4 +1,4 @@
-sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'testData', function($scope, testData){
+sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', function($scope, addonData){
 	$scope.addons = [
 					  {
 					    "category": "Mini-Bar",
@@ -192,7 +192,8 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'testData', function($
     	// console.log(addon);
     }
 
-	$scope.addonCategories = ['Best Sellers', 'Attractions', 'Bedding', 'Food & Drink', 'Golf', 'Mini-Bar', 'Parking', 'Spa', 'Transportation'];
+	$scope.addonCategories = addonData.addonCategories;
+	$scope.bestSellerEnabled = addonData.bestSellerEnabled;
 	$scope.activeAddonCategory = 'Best Sellers';
 
 

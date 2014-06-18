@@ -174,7 +174,7 @@ sntRover.config([
             templateUrl: '/assets/partials/reservation/rvAddonsList.html',
             controller: 'RVReservationAddonsCtrl',
             resolve: {
-                testData : function(RVReservationAddonsSrv) {
+                addonData: function(RVReservationAddonsSrv) {
                     return RVReservationAddonsSrv.fetchAddonData();
                 }
             }
