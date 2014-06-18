@@ -1,8 +1,21 @@
 (function() {
 	var ccVerificationViewController = function($scope,$rootScope,$state,$stateParams) {
 
-		$scope.pageValid = true;
-	//TO DO: Navigations		
+	
+  $scope.pageValid = false;
+
+  if($rootScope.isCheckedin){
+    $state.go('checkinSuccess');
+  }
+  else if($rootScope.isCheckin){
+    $state.go('checkinConfirmation');
+  }
+  else if(!$rootScope.isRoomVerified){
+    $state.go('checkoutRoomVerification');
+  }
+  else{
+    $scope.pageValid = true;
+  } 		
 
 	if($scope.pageValid){
 		$scope.checkoutmessage = $stateParams.message;

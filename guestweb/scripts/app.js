@@ -28,6 +28,8 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
   
  	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken)
 
+ 	$rootScope.isRoomVerified =  false;
+ 	
  	//To Do: retrieve from server via attrs
 
  	$rootScope.isCCOnFile =  true;

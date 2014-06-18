@@ -1,7 +1,26 @@
 (function() {
 		var checkOutLaterController = function($scope, LateCheckOutChargesService,$rootScope,$location,$state) {
 
-			$scope.pageValid = true;
+	$scope.pageValid = false;
+
+	if($rootScope.isCheckedin){
+		$state.go('checkinSuccess');
+	}
+	else if($rootScope.isCheckin){
+		$state.go('checkinConfirmation');
+	}
+	else if($rootScope.isCheckedout ){
+		$state.go('checkOutStatus');
+	}
+	else if(!$rootScope.isRoomVerified){
+		$state.go('checkoutRoomVerification');
+	}
+	else if(!$rootScope.isLateCheckoutAvailable){
+		$state.go('checkOutConfirmation');
+	}
+	else{
+		$scope.pageValid = true;
+	};
 
 	//TO DO : navigations
 

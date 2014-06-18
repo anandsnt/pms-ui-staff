@@ -68,7 +68,6 @@ snt.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
 	 }).state('checkinSuccess', {
 	 	url: '/checkinSuccess',
 	 	templateUrl: '/assets/checkin/partials/checkinSuccess.html',
-	 	controller : 'checkInReservationDetails',
 	 	title: 'Status - Check In'
 	 });
 
