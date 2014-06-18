@@ -9,7 +9,7 @@
 /* 5. COMPONENTS
 ==========================================================*/
 
-/* Dashboard page       ==============================*/
+/* Dashboard page       	==============================*/
 	#dashboard {
 		.wrapper {
 			#pixel-to-percent > .side-padding( 256, 2048 );
@@ -112,7 +112,7 @@
 		}
 	}
 
-/* Search page       	==============================*/
+/* Search page       		==============================*/
 	.search-results {
 		position: relative;
 		padding: 20px;
@@ -291,7 +291,7 @@
 		}
 	}
 
-/* Cards          		==============================*/
+/* Cards          			==============================*/
 	.cards {
 		position: absolute;
 		top: 60px;
@@ -325,7 +325,7 @@
 					form {
 						height: 50px;
 						margin-left: 20px;
-						.calc-width(100, 150); /* %, px (50px img; 20px margin; 80px lobby icon */
+						.calc-width(100, 90);
 						.pull-left;
 						.float;
 						.show;
@@ -450,13 +450,20 @@
 						}
 					}
 
-					.icon-show-conversations {
-						position: absolute;
-						top: 30px;
-						right: 20px;
-						.show;
-						.hide-text;
-						.size(30px, 35px);
+					.card-actions {
+						width: 160px;
+						.hide;
+						.pull-right;
+
+						.button {
+							width: 160px;
+							padding: 0;
+
+							&.blank { 
+								color: rgba(0,0,0,.4);
+								line-height: 40px; 
+							}
+						}
 					}
 
 					&#guest-card-header { background: @gcard @gcardTexture; }
@@ -501,7 +508,6 @@
 			/* Card content with tabs ***/
 			.cards-content {
 				overflow: hidden;
-				#border-radius > .rounded();
 				.calc-height(100, 80); /* %, px **/
 
 				.card-content { 
@@ -1256,62 +1262,14 @@
 											}
 										}
 									}
-
-									.data {
-										margin: 0 40px 0 20px;
-										overflow: hidden;
-										text-overflow: ellipsis;
-										.calc-width(63, 40); /* %, px */
-										.pull-left;
-
-										h2 {
-											font-size: 24px;
-											line-height: 50px;
-											font-weight: 700;
-											margin: 0;
-											white-space: nowrap;
-											overflow: hidden;
-											text-overflow: ellipsis;
-										}
-
-										.highlight { color: @logoPrimary; }
-									}
-
-									.status { .hide; }
-
-									.button {
-										line-height: 38px;
-										margin-top: 5px;
-										.pull-right;
-									}
-
-									&.no-content {
-										padding: 0 25%;
-										margin: 0;
-										white-space: normal;
-										overflow: auto;
-										text-overflow: auto;
-										background: transparent;
-										.box-shadow(none);
-										#border-radius > .rounded(0);
-										color: rgba(0,0,0,.4);
-
-										a { color: @white; }
-
-										.info { .square(100%); }
-									}
 								}
 							}
-						}
- &.no-content { 
+
+ 							&.no-content { 
 								color: @grey3; 
 								.calc-height(100, 30);
 								#border-radius > .left-top(2px);
 							}
-						.iScrollVerticalScrollbar { 
-							top: 0;
-							right: 10px;
-							bottom: 0;
 						}
 					}
 				}
@@ -1330,15 +1288,18 @@
 							width: 100%; 
 
 							form {
+								.calc-width(100, 250);
+
 								&.card-search-form { 
 									.calc-width(100, 90);
-
 									.masked-input { .show; }
 								}
 							}
 						}
 						&.second,
 						&.third { .hide; }
+
+						.card-actions { .show; }
 					}
 				}
 
@@ -1357,7 +1318,7 @@
 			.cards-wrapper {
 				.cards-header {
 					.card-header {
-						.icon-show-conversations { .show; }
+						.card-actions { .show; }
 					}
 				}
 
@@ -1387,7 +1348,7 @@
 		}
 	}
 
-/* Reservation Card     ==============================*/
+/* Reservation Card     	==============================*/
 	#reservation-card {
 
 		/* Left side tabs navigation ***/
@@ -2062,7 +2023,7 @@
 		}
 	}
 	
-/* Registration       	==============================*/
+/* Registration       		==============================*/
 	#registration-details {
 
 		/* Registration content ***/
@@ -2887,7 +2848,7 @@
 		}
 	}
 
-/* Room assignment      ==============================*/
+/* Room assignment      	==============================*/
 	#room-assignment {
 
 		.room-assignment-content {
@@ -3202,7 +3163,7 @@
 		}
 	}
 
-/* Edit reservation     ==============================*/
+/* Edit reservation     	==============================*/
 	#edit-reservation {
 
 		.edit-reservation-content {
@@ -3469,7 +3430,7 @@
 		}
 	}
 
-/* Add ons          	==============================*/
+/* Add ons          		==============================*/
 	.addons-content {
 		position: relative;
 		overflow: hidden;
@@ -3760,7 +3721,7 @@
 		}
 	}
 
-/* Social Lobby       	==============================*/
+/* Social Lobby       		==============================*/
 	.social-lobby-content {
 
 		/* Scrollable area ***/
@@ -4109,7 +4070,7 @@
 		}
 	}
 
-/* Messages & Reviews   ==============================*/
+/* Messages & Reviews   	==============================*/
 	.messages-content,
 	.reviews-content {
 		.float;
@@ -4704,7 +4665,7 @@
 		}
 	}
 
-/* Reports          	==============================*/
+/* Reports          		==============================*/
 	.reports-list {
 		position: relative;
 		padding: 20px;
@@ -5349,7 +5310,7 @@
 		display: none;
 	}
 
-/* Reservations       	==============================*/
+/* Reservations       		==============================*/
 	.create-reservation {
 		position: relative;
 		.calc-height(100, 60); /* %, px */
