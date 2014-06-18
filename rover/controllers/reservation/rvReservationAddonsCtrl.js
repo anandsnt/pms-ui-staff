@@ -1,4 +1,4 @@
-sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', function($scope, addonData){
+sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state', function($scope, addonData, $state){
 	$scope.addons = [
 					  {
 					    "category": "Mini-Bar",
