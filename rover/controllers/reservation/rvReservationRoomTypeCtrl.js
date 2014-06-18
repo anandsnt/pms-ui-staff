@@ -148,22 +148,22 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			// 			BAR
 			// 			Packages
 			// 			Promotions
-			$scope.displayData.availableRates.sort(function(a, b) {
-				var first = $scope.ratetypePriority[a.rate.rate_type.name];
-				var second = $scope.ratetypePriority[b.rate.rate_type.name];
+			// $scope.displayData.availableRates.sort(function(a, b) {
+			// 	var first = $scope.ratetypePriority[a.rate.rate_type.name];
+			// 	var second = $scope.ratetypePriority[b.rate.rate_type.name];
 
-				if (typeof first == 'undefined') {
-					first = 99;
-				}
-				if (typeof second == 'undefined') {
-					second = 99;
-				}
-				if (first < second)
-					return -1;
-				if (first > second)
-					return 1;
-				return 0;
-			});
+			// 	if (typeof first == 'undefined') {
+			// 		first = 99;
+			// 	}
+			// 	if (typeof second == 'undefined') {
+			// 		second = 99;
+			// 	}
+			// 	if (first < second)
+			// 		return -1;
+			// 	if (first > second)
+			// 		return 1;
+			// 	return 0;
+			// });
 
 			//TODO: Handle the selected roomtype from the previous screen
 			$scope.preferredType = $scope.reservationData.rooms[$scope.activeRoom].roomType;
