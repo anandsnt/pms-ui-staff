@@ -11,7 +11,7 @@ hkRover.controller('HKDashboardCtrl',['$scope', 'dashboardData',  function($scop
 		});
 
 	$scope.test = function(){
-		alert("show popup");
+		$scope.$emit('showOWSError');
 	}
 
 }]);

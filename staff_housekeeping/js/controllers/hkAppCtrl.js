@@ -1,5 +1,5 @@
 hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', '$log', 'ngDialog',
-    function($rootScope, $scope, $state, ngDialog){
+    function($rootScope, $scope, $state, $log, ngDialog){
     $scope.hasLoader = false;
     $scope.menuOpen = false;
     $scope.filterOpen = false;
@@ -70,8 +70,6 @@ hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', '$log', 'ngDia
         $scope.$emit('hideLoader');
         ngDialog.open({
             template: '/assets/partials/hkOWSError.html',
-            className: popupClassName,
-            closeByDocument: true,
             scope: $scope
         });
     });
