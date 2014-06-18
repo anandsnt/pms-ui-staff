@@ -8,9 +8,18 @@ sntRover.config([
           prefix: '/assets/rvLocales/',
           suffix: '.json'
         });
-        // dashboard state
-        $urlRouterProvider.otherwise('/staff/dashboard');
-
+        // default state
+        $urlRouterProvider.otherwise('/');
+		
+		/*
+		 * state added to show single url throughout the app
+		 */
+		$stateProvider.state('top', {
+       
+            url: '/',
+            controller: 'topController',
+    	});
+    
         $stateProvider.state('rover', {
             abstract: true,
             url: '/staff',

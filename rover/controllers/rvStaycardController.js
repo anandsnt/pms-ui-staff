@@ -25,7 +25,7 @@ $scope.$on('guestCardUpdateData',function(event, data){
 });
 $scope.$on('staycardGuestData',function(event, data){
 	$scope.guestCardData.contactInfo.first_name = data.guest_details.first_name;
-	$scope.guestCardData.contactInfo.last_name = data.guest_details.first_name;	$scope.guestCardData.contactInfo.avatar = data.guest_details.avatar;
+	$scope.guestCardData.contactInfo.last_name = data.guest_details.last_name;	$scope.guestCardData.contactInfo.avatar = data.guest_details.avatar;
 	$scope.guestCardData.contactInfo.city = data.guest_details.city;
 	$scope.guestCardData.contactInfo.state = data.guest_details.state;
 	$scope.guestCardData.contactInfo.phone = data.guest_details.phone;

@@ -134,6 +134,7 @@ var app = function(){
     };
 
     this.setBrowser = function(browser){
+    	console.log('in in setbrowser old');
     	if(typeof browser === 'undefined' || browser === ''){
     		that.browser = "other";
     	}
@@ -267,6 +268,6 @@ var app = function(){
 
 };
 
-sntapp = new app();
+// sntapp = new app();
 // sntapp.enableCardSwipeDebug();
 
