@@ -83,6 +83,31 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             }, successCallBack);
         };
 
+        /**
+        *   Validation conditions
+        *
+        *   Either adults or children can be 0,
+        *   but one of them will have to have a value other than 0. 
+        *   
+        *   Infants should be excluded from this validation.
+        */
+        $scope.validateOccupant = function(room, from) {
+
+            // just in case
+            if ( !room ) {
+                return;
+            };
+
+            var numAdults   = parseInt( room.numAdults ),
+                numChildren = parseInt( room.numChildren );
+
+            if ( from === 'adult' && (numAdults === 0 && numChildren === 0) ) {
+                room.numChildren = 1;
+            } else if ( from === 'children' && (numChildren === 0 && numAdults === 0) ) {
+                room.numAdults = 1;
+            }
+        };
+
         var displayFilteredResults = function() {
             if ($scope.companySearchText != '' && $scope.companyLastSearchText != $scope.companySearchText) {
 
@@ -90,7 +115,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                     $scope.$emit("hideLoader");
 
                     angular.forEach(data.accounts, function(item) {
-                        var eachItem = {};
+                        var eachItem = {},
+                            hasItem = false;
+
                         eachItem = {
                             label: item.account_first_name + " " + item.account_last_name,
                             value: item.account_first_name + " " + item.account_last_name,
@@ -102,12 +129,21 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                             corporateid: '',
                             iataNumber: ''
                         };
-                        $scope.companyCardResults.push(eachItem);
+                        
+                        // making sure that the newly created 'eachItem'
+                        // doesnt exist in 'companyCardResults' array
+                        // so as to avoid duplicate entry
+                        hasItem = _.find($scope.companyCardResults, function(item) {
+                            return eachItem.id === item.id;
+                        });
+                        
+                        // yep we just witnessed an loop inside loop, its necessary
+                        // worst case senario - too many results and 'eachItem' is-a-new-item
+                        // will loop the entire 'companyCardResults'
+                        if ( !hasItem ) {
+                            $scope.companyCardResults.push(eachItem);
+                        };
 
-                        // remove duplicates
-                        // and woohoo it worked
-                        // thanks again underscore.js
-                        $scope.companyCardResults = _.unique($scope.companyCardResults);
                     });
                 };
                 var paramDict = {

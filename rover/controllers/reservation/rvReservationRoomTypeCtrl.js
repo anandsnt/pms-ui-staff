@@ -6,7 +6,9 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.selectedRoomType = -1;
 		$scope.expandedRoom = -1;
 		$scope.containerHeight = 300;
-		$scope.showLess = true;
+		$scope.showLessRooms = true;
+		$scope.activeCriteria = "ROOM_TYPE";
+		//$scope.activeCriteria = "RATE";
 
 		//scroller options
 		$scope.$parent.myScrollOptions = {
@@ -22,16 +24,18 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		var init = function() {
 			$scope.$emit('showLoader');
-			//console.log("APIRETURN", roomRates);
-			
+			console.log("APIRETURN", roomRates);
+			$scope.heading = 'Rooms & Rates';
+			$scope.displayData.dates = [];
+
 
 			//interim check on page reload if the page is refreshed
-			if($scope.reservationData.arrivalDate == '' || $scope.reservationData.departureDate == ''){
+			if ($scope.reservationData.arrivalDate == '' || $scope.reservationData.departureDate == '') {
 				//defaulting to today's and tommorow's dates
 				$scope.reservationData.arrivalDate = (new Date().toISOString().slice(0, 10).replace(/-/g, "-"));
 				$scope.reservationData.departureDate = (new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10).replace(/-/g, "-"));
 
-				$($scope.reservationData.rooms).each(function(i,d){
+				$($scope.reservationData.rooms).each(function(i, d) {
 					$scope.reservationData.rooms[i].numAdults = 1;
 					d.numChildren = 0;
 					d.numInfants = 0;
@@ -45,7 +49,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			$scope.tax = roomRates.tax || 20;
 			$scope.rooms = roomRates.rooms;
 			$scope.activeRoom = 0;
-			$scope.activeCriteria = "ROOM_TYPE";
+
 
 
 			//Restructure rates for easy selection
@@ -67,7 +71,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			//Filter for rooms which are available and have rate information
 			$scope.displayData.allRooms = $(roomRates.room_types).filter(function() {
 				return $scope.roomAvailability[this.id] && $scope.roomAvailability[this.id].availability == true &&
-					$scope.roomAvailability[this.id].rates.length > 0;
+					$scope.roomAvailability[this.id].rates.length > 0 && $scope.roomAvailability[this.id].level != null;
 			});
 
 			//sort the rooms by levels
@@ -82,12 +86,41 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			//$scope.displayData.allRooms = roomRates.room_types;
 			$scope.displayData.roomTypes = $scope.displayData.allRooms;
 
-
 			//TODO: Handle the selected roomtype from the previous screen
 			$scope.preferredType = $scope.reservationData.rooms[$scope.activeRoom].roomType;
 			//$scope.preferredType = 5;
 			$scope.roomTypes = roomRates.room_types;
 			$scope.filterRooms();
+
+			//CICO-5253 > Rate Types Reservartion
+			//TODO : Get the rates for which rooms are available $scope.displayData.allRooms
+			$scope.ratesMaster = [];
+			$scope.displayData.availableRates = [];
+			$($scope.displayData.allRooms).each(function(i, d) {
+				var room = $scope.roomAvailability[d.id];
+				$(room.rates).each(function(i, rateId) {
+					if (typeof $scope.ratesMaster[rateId] == 'undefined') {
+						$scope.ratesMaster[rateId] = {
+							rooms: [],
+							rate: $scope.displayData.allRates[rateId]
+						};
+					}
+					$scope.ratesMaster[rateId].rooms.push(room);
+				})
+			});
+
+			$($scope.ratesMaster).each(function(i, d) {
+				if (typeof d != 'undefined') {
+					$scope.displayData.availableRates.push(d);
+				}
+			})
+			//TODO:Upon selecting the Rate radio button, the view will list the different rates that are available for the selected criteria listed by rate type. Rate Types should only include the below, listed in the exact same order:
+			// 			RACK
+			// 			BAR
+			// 			Packages
+			// 			Promotions
+			//The Rate order within each Rate Type should be alphabetical.
+			console.log($scope.displayData.availableRates);
 			$scope.$emit('hideLoader');
 		};
 
@@ -178,6 +211,10 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				roomDetails[d.id] = d;
 			});
 			$(roomRates.results).each(function(i, d) {
+				$scope.displayData.dates.push({
+					str : d.date,
+					obj : new Date(d.date)
+				});
 				var for_date = d.date;
 				//step1: check for room availability in the date range
 				$(d.room_types).each(function(i, d) {
@@ -188,7 +225,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							level: roomDetails[d.id].level,
 							availability: true,
 							rates: [],
-							ratedetails: [],
+							ratedetails: {},
 							total: [],
 							defaultRate: 0,
 							averagePerNight: 0
@@ -206,12 +243,26 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 						if ($(rooms[d.room_type_id].rates).index(rate_id) < 0) {
 							rooms[d.room_type_id].rates.push(rate_id);
 						}
-						rooms[d.room_type_id].ratedetails.push({
+						if (typeof rooms[d.room_type_id].ratedetails[for_date] == 'undefined') {
+							rooms[d.room_type_id].ratedetails[for_date] = [];
+						}
+						rooms[d.room_type_id].ratedetails[for_date][rate_id] = {
 							rate_id: rate_id,
 							rate: $scope.calculateRate(d),
+							rateBreakUp: d,
 							tax: 0,
 							day: new Date(for_date)
-						});
+						};
+						//TODO : compute total
+						if (typeof rooms[d.room_type_id].total[rate_id] == 'undefined') {
+							rooms[d.room_type_id].total[rate_id] = {
+								total: 0,
+								average: 0
+							}
+						}
+						rooms[d.room_type_id].total[rate_id].total = parseInt(rooms[d.room_type_id].total[rate_id].total) + $scope.calculateRate(d);
+						rooms[d.room_type_id].total[rate_id].average = rooms[d.room_type_id].total[rate_id].total / $scope.days;
+
 					})
 				})
 
@@ -221,17 +272,6 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			for (var id in rooms) {
 				// step3: total and average calculation
 				var value = rooms[id];
-				$(value.ratedetails).each(function(i, d) {
-					if (typeof value.total[d.rate_id] == 'undefined') {
-						value.total[d.rate_id] = {
-							total: 0,
-							average: 0
-						}
-					}
-					value.total[d.rate_id].total = parseInt(value.total[d.rate_id].total) + parseInt(d.rate);
-					//ASSUMPTION: use the number of days as the denominator for the average calculation
-					value.total[d.rate_id].average = parseInt(value.total[d.rate_id].total / $scope.days);
-				})
 
 				//step4 : sort the rates within each room
 				value.rates.sort(function(a, b) {
@@ -255,7 +295,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					value.averagePerNight = value.total[value.defaultRate].average;
 				}
 			}
-
+			console.log(rooms);
 			return rooms;
 		}
 
