@@ -28,18 +28,19 @@
 					<form >
 						<div class="row">
 							<div class="card-number-container">
-								<p class="cabin_number_text">Card Number</p>
+								<p class="cabin-number-text">Card Number</p>
 								<input type="password" ng-model="cardNumber" class = "col-xs-12 textBox"/> 
 							</div>
 							<div class="ccv-container">
-								<p class="cabin_number_text">CCV#</p>
+								<p class="cabin-number-text">CCV#</p>
 								<input type="password" ng-model="ccv" class = "col-xs-12 textBox"/> 
+								<p ng-click="showCcvPopup()"><u class="ccv-text">What is this?</u></p>
 							</div>
 						</div>
 
-						<div class="row expiry-date-container">
+						<div class="row ">
 							<div class="expiry-month-container">
-								<p class="cabin_number_text">Expiration Date</p>
+								<p class="cabin-number-text">Expiration Date</p>
 								<div class="select-style">
 									<select ng-model="monthSelected"
 									ng-options="month.value as month.name for month in months">
@@ -48,7 +49,7 @@
 							</div>
 						</div>
 						<div class="expiry-year-container">
-							<p class="cabin_number_text">&nbsp;</p>
+							<p class="cabin-number-text">&nbsp;</p>
 							<div class="select-style">
 								<select ng-model="yearSelected"
 								ng-options="year as year  for year in years">

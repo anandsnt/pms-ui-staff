@@ -25,12 +25,20 @@
 
     //setup options for error popup
 
-    $scope.opts = {
+    $scope.errorOpts = {
       backdrop: true,
       backdropClick: true,
       templateUrl: '/assets/checkoutnow/partials/ccVerificationErrorModal.html',
-      controller: ccVerificationErrorModalCtrl
+      controller: ccVerificationModalCtrl
     };
+
+    $scope.ccvOpts = {
+      backdrop: true,
+      backdropClick: true,
+      templateUrl: '/assets/checkoutnow/partials/ccVerificationNumberModal.html',
+      controller: ccVerificationModalCtrl
+    };
+
 		$scope.checkoutmessage = $stateParams.message;
 		$scope.fee = $stateParams.fee;
 		$scope.currency =  $stateParams.currency;
@@ -81,6 +89,10 @@
             $scope.years.push(year);
           };
 
+          $scope.showCcvPopup = function(){
+            $modal.open($scope.ccvOpts); // error modal popup
+          }
+
           $scope.goToNextStep = function(){
 
             if($scope.cardNumber.toString() ==="1"){
@@ -93,7 +105,7 @@
               }
             }
             else{
-              $modal.open($scope.opts); // error modal popup
+              $modal.open($scope.errorOpts); // error modal popup
             }
 
         
@@ -113,7 +125,7 @@ snt.controller('ccVerificationViewController', dependencies);
 
 // controller for the modal
 
-  var ccVerificationErrorModalCtrl = function ($scope, $modalInstance) {
+  var ccVerificationModalCtrl = function ($scope, $modalInstance) {
     $scope.closeDialog = function () {
       $modalInstance.dismiss('cancel');
     };
