@@ -63,6 +63,12 @@ hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', '$log', functi
     $scope.$on("showFilterScreen",function(){
         $scope.filterOpen = true;
     });
+
+    $rootScope.$on('showOWSError', function(){
+        // Hide loading message
+        $scope.$emit('hideLoader');
+        //TODO: ng-dialog
+    });
     
 }]);
 
