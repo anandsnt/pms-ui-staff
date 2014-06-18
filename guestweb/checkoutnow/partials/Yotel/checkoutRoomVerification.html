@@ -1,17 +1,12 @@
 <!-- contentarea starts here-->
 
 <div class="jumbotron">
-
-
-
 	<div class="container backgroundbg" >
 		<div class="container-fluid">
 			<div class="row headerrow">
 				<logo-image></logo-image>
 			</div>
 		</div>
-
-
 	<!--	 show posting message 
 		<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
 			<p class="msg-head">Your request is being processed.</p>
@@ -30,30 +25,21 @@
 	<!-- contentarea starts here-->
 	<div class="container" ng-hide="isPosting || netWorkError || isResponseSuccess">
 		<!-- top section starts here-->
-
 		<div class="row checkin-wrapper">
 			<div class="col-md-6 headtext centeralign pad-rt-60">
 				Enter Your <br class="cabin-number-main-heading-seperator"/> Cabin Number				
 			</div>
-
 			<div class="verti-ruler"></div>
-
 			<!-- top section ends here-->
-
-
 			<div class="col-md-6 pad-lf-60 cabin-number">
 				<form >
 				<div class="row cabin_number_field">
 					<p class="centeralign cabin_number_text">Cabin Number</p>
 					<input type="password" ng-model="roomNumber" class = "col-xs-12 textBox"/> 
-				</div>
-								
+				</div>								
 						<button class="checkin-button continue-button" ng-click="continueButtonClicked()">
 							<span class="continue-text">Continue</span>
-						</button>
-		
-				
-				
+						</button>				
 				</form>
 			</div>
 		</div>

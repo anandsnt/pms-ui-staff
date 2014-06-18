@@ -17,9 +17,6 @@
 	$scope.minDate  = $rootScope.businessDate;
 	$scope.cardDigits = '';
 
-	//TO DO: page navigatons if any of following conditions happpens
-
-
 	//setup options for modal
 	$scope.opts = {
 		backdrop: true,

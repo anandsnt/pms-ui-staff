@@ -1,9 +1,4 @@
 <div class="jumbotron">
-
-
-
-
-
 	<div class="container">
 		<!-- contentarea starts here-->
 		<div class="container">
@@ -12,23 +7,17 @@
 					<logo-image></logo-image>
 				</div>
 			</div>
-
-
-
 			<!-- show posting message -->
 			<div ng-show="isFetching && !netWorkError" class="checkout-status centeralign checkout-now-status" >
 				<p class="msg-head">Your request is being processed.</p>
 				<p class="msg-body">This may take a few seconds..... please wait!</p>
 			</div>
-
 			<!-- show error message -->
-
 			<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
 				<p class="msg-head">Our apologies, something went wrong, please complete your check out at our front desk.</p>
 				<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
 			</div>
 			<!-- top section starts here-->
-
 			<div class="row check-inout-wrapper toggle-pos-rel" ng-show="optionsAvailable && !isFetching && !netWorkError">
 				<div class="col-md-6 centeralign headtext nopadding-onblock toggle-pos-rel">
 					Check-Out
@@ -41,8 +30,6 @@
 						<a ng-hide="showBill"  ng-click="showBill = true"><img src="/assets/img/rightarrow.png" alt="" />&nbsp;&nbsp;VIEW BILL</a>
 						<a ng-show="showBill" ng-click="showBill = false"><img src="/assets/img/downarrow.png" alt=""  />&nbsp;&nbsp;VIEW BILL</a>
 					</div>
-
-
 					<div class="showbill-wrap" ng-show="showBill" >
 						<div class="trans-rel-wrap">
 							<div class="showbill">
@@ -115,12 +102,8 @@
 
 							</div>
 						</div>
-					</div>
-
-					
-
+					</div>			
 				</div>
-
 				<div class="col-md-6 no-padding now-later-options no-screen-attach">
 					<div class="row">
 						<div class="col-xs-12 accept-charges-button single">
@@ -136,7 +119,6 @@
 						</div>
 					</div>
 				</div>
-
 				<div class="row clearboth">
 					<p class="foot-text  balance-footer centeralign" ng-show="optionsAvailable && !netWorkError">
 						<em class = "base-text"> The credit card on record will be charged.</em>
