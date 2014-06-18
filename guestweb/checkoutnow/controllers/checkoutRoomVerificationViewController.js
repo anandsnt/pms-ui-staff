@@ -1,5 +1,5 @@
 (function() {
-	var checkoutRoomVerificationViewController = function($scope,$rootScope,$state) {
+	var checkoutRoomVerificationViewController = function($scope,$rootScope,$state,$modal) {
 
 	$scope.pageValid = false;
 
@@ -14,23 +14,44 @@
 	}	
 
 	if($scope.pageValid){
+		//setup options for modal
+		$scope.opts = {
+			backdrop: true,
+			backdropClick: true,
+			templateUrl: '/assets/checkoutnow/partials/roomVerificationErrorModal.html',
+			controller: roomVerificationErrorModalCtrl
+		};
 
 		$scope.continueButtonClicked = function(){
 
-		$rootScope.isRoomVerified =  true;
-		if($rootScope.isLateCheckoutAvailable ){
-				$state.go('checkOutOptions');
-	    }else {
-	    	$state.go('checkOutConfirmation');	
-		}
+		//TO DO:
+		$modal.open($scope.opts); // error modal popup
+
+		// $rootScope.isRoomVerified =  true;
+		// if($rootScope.isLateCheckoutAvailable ){
+		// 		$state.go('checkOutOptions');
+	 //    }else {
+	 //    	$state.go('checkOutConfirmation');	
+		// }
 	};
+
+	
 }
 }
 
 var dependencies = [
-'$scope','$rootScope','$state',
+'$scope','$rootScope','$state','$modal',
 checkoutRoomVerificationViewController
 ];
 
 snt.controller('checkoutRoomVerificationViewController', dependencies);
 })();
+
+
+// controller for the modal
+
+	var roomVerificationErrorModalCtrl = function ($scope, $modalInstance) {
+		$scope.closeDialog = function () {
+			$modalInstance.dismiss('cancel');
+		};
+	};
