@@ -10,6 +10,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 
 	$scope.reservationData = $scope.$parent.reservation;
 	$scope.roomType = $stateParams.room_type;
+	$scope.isFiltersVisible = false;
 
 	$scope.getRooms = function(){
 		var successCallbackGetRooms = function(data){
@@ -74,6 +75,9 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 		
 		$state.go("rover.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num});
 		
+	};
+	$scope.toggleFiltersView = function(){
+		$scope.isFiltersVisible = !$scope.isFiltersVisible;
 	};
 	
 }]);

@@ -1,5 +1,5 @@
 
-sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce', function($scope, $state, $stateParams, RVUpgradesSrv, $sce){
+sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', 'RVUpgradesSrv', function($scope, $state, $stateParams, RVUpgradesSrv){
 	
 	BaseCtrl.call(this, $scope);
 	
@@ -67,4 +67,6 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 				$scope.upgradesList[i].upgrade_room_description = $sce.trustAsHtml($scope.upgradesList[i].upgrade_room_description);
 			}
 	};
+	
+	
 }]);

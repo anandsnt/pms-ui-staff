@@ -1,26 +1,23 @@
 <div id="upgradesView" ng-iscroll='upgradesView' ng-iscroll-delay='50' class="upgrades scrollable">
    <div class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
       <h2 class="available-title">Upgrades available</h2>
-      <ul>
+      <ul ng-repeat="upgrade in upgradesList">
          <li>
             <div class="upgrade-title">
-               <span class="room-number ready"> 1034 </span>
-               <h2> Standard Room- King Bed </h2>
-               <a class="toggle has-arrow" >Details</a>
+               <span class="room-number ready"> {{upgrade.upgrade_room_number}} </span>
+               <h2> {{upgrade.upgrade_room_type_name}} </h2>
+               <a class="toggle has-arrow" ng-click = "toggleUpgradeDescriptionStatus($index)">Details</a>
             </div>
-            <div id="room1034-details" class="room-details hidden">
-               <ul>
-                  <li>Standard Room- King Bed</li>
-                  <li>Hair dryer</li>
-               </ul>
+            <div id="room1034-details" ng-class="{'hidden':!isDescriptionVisible($index)}" class="room-details" ng-show="isDescriptionVisible($index)" ng-bind-html="upgrade.upgrade_room_description">
+               
             </div>
-            <a id="upgrade-room-select" class="button green submit-value" href="javascript:void(0)" data-value="460" data-transition="nested-view" data-room-number="1034">
+            <a id="upgrade-room-select" class="button green submit-value"   data-transition="nested-view" ng-click="selectUpgrade($index)">
             Upgrade for only
             <sup></sup>
-            $ 75.00 per night
+            $ {{upgrade.upsell_amount}} per night
             </a>
             <figure class="room-image">
-               <img src="https://8ebd8b3dcdf6d6f8887d-4d1e022461cbaa577307930af1386d20.ssl.cf2.rackcdn.com/CHA/DOZERQA/room_types/6/images/original/image20140307033524.png?1394184926" onerror="this.src=''" alt="">
+               <img src="{{upgrade.room_type_image}}" onerror="this.src=''" alt="">
             </figure>
          </li>
       </ul>
