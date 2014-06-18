@@ -2,6 +2,7 @@
 	var checkoutRoomVerificationViewController = function($scope,$rootScope,$state,$modal) {
 
 	$scope.pageValid = false;
+	$scope.roomNumber = "";
 
 	if($rootScope.isCheckedin){
 		$state.go('checkinSuccess');
@@ -14,7 +15,7 @@
 	}	
 
 	if($scope.pageValid){
-		//setup options for modal
+		//setup options for error popup
 		$scope.opts = {
 			backdrop: true,
 			backdropClick: true,
@@ -25,14 +26,21 @@
 		$scope.continueButtonClicked = function(){
 
 		//TO DO:
-		$modal.open($scope.opts); // error modal popup
+		//
 
-		// $rootScope.isRoomVerified =  true;
-		// if($rootScope.isLateCheckoutAvailable ){
-		// 		$state.go('checkOutOptions');
-	 //    }else {
-	 //    	$state.go('checkOutConfirmation');	
-		// }
+		if($scope.roomNumber === "300"){
+			$rootScope.isRoomVerified =  true;
+			if($rootScope.isLateCheckoutAvailable ){
+					$state.go('checkOutOptions');
+		    }else {
+		    	$state.go('checkOutConfirmation');	
+			}
+		}
+		else{
+			$modal.open($scope.opts); // error modal popup
+		}
+
+	
 	};
 
 	

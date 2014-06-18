@@ -1,8 +1,12 @@
 (function() {
-	var ccVerificationViewController = function($scope,$rootScope,$state,$stateParams) {
+	var ccVerificationViewController = function($scope,$rootScope,$state,$stateParams,$modal) {
 
 	
   $scope.pageValid = false;
+  $scope.cardNumber = "";
+  $scope.ccv = "";
+  $scope.monthSelected = "";
+  $scope.yearSelected ="";
 
   if($rootScope.isCheckedin){
     $state.go('checkinSuccess');
@@ -18,6 +22,15 @@
   } 		
 
 	if($scope.pageValid){
+
+    //setup options for error popup
+
+    $scope.opts = {
+      backdrop: true,
+      backdropClick: true,
+      templateUrl: '/assets/checkoutnow/partials/ccVerificationErrorModal.html',
+      controller: ccVerificationErrorModalCtrl
+    };
 		$scope.checkoutmessage = $stateParams.message;
 		$scope.fee = $stateParams.fee;
 		$scope.currency =  $stateParams.currency;
@@ -70,13 +83,20 @@
 
           $scope.goToNextStep = function(){
 
-            if($stateParams.isFromCheckoutNow === "true"){
-              $rootScope.ccPaymentSuccessForCheckoutNow = true;
-              $state.go('checkOutStatus');
-            }else{
-               $rootScope.ccPaymentSuccessForCheckoutLater = true;
-               $state.go('checkOutLaterSuccess',{id:$scope.fee});
+            if($scope.cardNumber.toString() ==="1"){
+              if($stateParams.isFromCheckoutNow === "true"){
+                $rootScope.ccPaymentSuccessForCheckoutNow = true;
+                $state.go('checkOutStatus');
+              }else{
+                 $rootScope.ccPaymentSuccessForCheckoutLater = true;
+                 $state.go('checkOutLaterSuccess',{id:$scope.fee});
+              }
             }
+            else{
+              $modal.open($scope.opts); // error modal popup
+            }
+
+        
 
           }
 	
@@ -84,9 +104,17 @@
 }
 
 var dependencies = [
-'$scope','$rootScope','$state','$stateParams',
+'$scope','$rootScope','$state','$stateParams','$modal',
 ccVerificationViewController
 ];
 
 snt.controller('ccVerificationViewController', dependencies);
 })();
+
+// controller for the modal
+
+  var ccVerificationErrorModalCtrl = function ($scope, $modalInstance) {
+    $scope.closeDialog = function () {
+      $modalInstance.dismiss('cancel');
+    };
+  };
