@@ -66,7 +66,7 @@
                 <strong class="results-count" ng-show="guests.length > 0">{{ guests.length }} possible matches</strong>
                 <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button>
                 <div id="search-guests-content" class="search-cards scrollable">
-                    <div class="wrapper">
+                    <div class="wrapper" style="height:100%; overflow: hidden;" ng-iscroll="guestResultScroll">
                         <ul id="search-guests-results" class="search-results">
                             <li ng-repeat="guest in guests">
                                 <a ng-click="selectGuest(guest, $event)">
@@ -86,10 +86,10 @@
                                     </div>
                                     <div class="stays">
                                         <div class="count">
-                                            <span class="label">Stays</span>
+                                            <span class="label">Stays</span>{{ guest.stayCount }}
                                         </div>
                                         <div class="last-stay">
-                                            <span class="label">Last</span>{{ guest.stayCount }}
+                                            <span class="label">Last</span>
                                             {{ guest.lastStay.date }}
                                             <strong>{{ guest.lastStay.room }}</strong>
                                             <em>{{ guest.lastStay.roomType }}</em>
@@ -113,7 +113,7 @@
             <div id="company-card-content" class="card-search card-content" ng-class="UICardContentCls('company-card')">
             <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewCompany()">New Card</button>
                 <div id="search-company-content" class="search-cards scrollable">
-                    <div class="wrapper">
+                    <div class="wrapper" style="height:100%; overflow: hidden;" ng-iscroll="companyResultScroll">
                         <ul id="search-company-results" class="search-results">
                             <li ng-repeat="company in companies">
                                 <a ng-click="selectCompany(company, $event)" class="card-result">
@@ -148,7 +148,7 @@
             <div id="travel-agent-card-content" class="card-search card-content" ng-class="UICardContentCls('travel-agent-card')">
             <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewTravelAgent()">New Card</button>
                 <div id="search-travel-agent-content" class="search-cards scrollable">
-                    <div class="wrapper">
+                    <div class="wrapper" style="height:100%; overflow: hidden;" ng-iscroll="travelAgentResultScroll">
                         <ul id="search-travel-agent-results" class="search-results">
                             <li ng-repeat="travelAgent in travelAgents">
                                 <a ng-click="selectTravelAgent(travelAgent, $event)" class="card-result">
