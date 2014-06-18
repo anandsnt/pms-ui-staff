@@ -1,4 +1,4 @@
-var DEBUG_LEVEL = 5; 
+var DEBUG_LEVEL = 5;
 
 var is_level_higher = function(level){
     return true;
@@ -16,30 +16,30 @@ var app = function(){
     this.cardReader = null;
 
     this.DEBUG = true;
-    this.cardSwipePrevView = ''; 
-    this.cardSwipeCurrView = 'StayCard'; 
-    this.currentPage = ''; 
+    this.cardSwipePrevView = '';
+    this.cardSwipeCurrView = 'StayCard';
+    this.currentPage = '';
 
-   
+
     this.getViewInstance = function(viewDom){
         var viewInstance;
         var viewName = viewDom.find('div:first').attr('data-view');
 
         if(typeof viewName !== "undefined"){
             try{
-                viewInstance = new window[viewName](viewDom); 
+                viewInstance = new window[viewName](viewDom);
             }
             catch(e){
-            }         
+            }
         }
-        
+
         return viewInstance;
     };
 
     this.renderView = function(viewData, viewDom, viewParams){
         viewDom.html(viewData);
         viewDom.addClass("current");
-        
+
         var viewObject = that.getViewInstance(viewDom);
      // CR Sajith: if viewObject is undefined or nil, show a predefined error message & return.
         try{
@@ -61,35 +61,35 @@ var app = function(){
         viewObject.initialize();
         viewObject.pageshow();*/
     };
-    
+
 
     //Fetch from AJAX
     // On Success, invoke render_view
     // Show error message on failure
     this.fetchAndRenderView = function(viewURL, viewDom, params, loader, nextViewParams, async) {
-      
+
        if(typeof params === 'undefined'){
                params = {};
-       } 
+       }
        if(typeof loader === 'undefined'){
                loader = 'None';
-       }  
+       }
        if(typeof nextViewParams === 'undefined'){
                nextViewParams = {};
-       }  
+       }
        if(typeof async === 'undefined'){
                async = true;
-       }   
+       }
     /*
-    If you intent to call changeView or changePage function for animating page loading, 
-    shouldShowLoader should be true. chageView / ChangePage functions depends on loaders presence.  
+    If you intent to call changeView or changePage function for animating page loading,
+    shouldShowLoader should be true. chageView / ChangePage functions depends on loaders presence.
     */
 
     // loader options are ['None', "BLOCKER", 'NORMAL']
-        
+
         that.activityIndicator.showActivityIndicator(loader);
-     
-        
+
+
         $.ajax({
             type: "GET",
             data: params,
@@ -98,21 +98,41 @@ var app = function(){
             success: function(data) {
 
                 params.callback && params.callback();
-                
-                that.renderView(data, viewDom, nextViewParams);                 
+
+                that.renderView(data, viewDom, nextViewParams);
                 that.activityIndicator.hideActivityIndicator();
-                
+
             },
             error: function(jqxhr, status, error){
+                //Show ows connectivity error popup
+                if (jqxhr.status=="520") {
+                    sntapp.activityIndicator.hideActivityIndicator();
+                    sntapp.showOWSErrorPopup();
+                    return;
+                }
                 //checking whether a user is logged in
                 if (jqxhr.status == "401") { sntapp.logout(); return;}
+                if (jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
+                    location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
+                    return;
+                }
+
+                if(jqxhr.status=="422"){
+                    location.href = XHR_STATUS.REJECTED;
+                    return;
+                }
+
+                if(jqxhr.status=="404"){
+                    location.href = XHR_STATUS.SERVER_DOWN;
+                    return;
+                }
                 that.notification.showErrorMessage('An error has occured while fetching the view' );
                 that.activityIndicator.hideActivityIndicator();
             }
-            
+
        });
-    }; 
-    
+    };
+
     this.setBrowser = function(browser){
     	if(typeof browser === 'undefined' || browser === ''){
     		that.browser = "other";
@@ -121,16 +141,16 @@ var app = function(){
     		that.browser = browser;
     	}
     	if(browser === 'rv_native' && !that.cordovaLoaded){
-    		
+
     		var webservice = new WebServiceInterface();
     		var url = "/ui/show?haml_file=cordova/cordova_ipad_ios&json_input=cordova/cordova.json&is_hash_map=true&is_partial=true";
-    		var options = {				   
+    		var options = {
     					successCallBack: that.fetchCompletedOfCordovaPlugins,
     					failureCallBack: that.fetchFailedOfCordovaPlugins,
     					loader: 'BLOCKER',
     				};
     		webservice.getHTML(url, options);
-    	}	
+    	}
     };
 
     // DEBUG: Autofill login details
@@ -138,16 +158,16 @@ var app = function(){
         email && typeof email === 'string' && $('#email').val(email);
         pass && typeof pass === 'string' && $('#password').val(pass)
     };
-    
+
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function(data){
     	$('body').append(data);
     	that.cardReader = new CardOperation();
     	that.cordovaLoaded = true;
     };
-    
+
     // success function of coddova plugin's appending
-    this.fetchFailedOfCordovaPlugins = function(errorMessage){    	
+    this.fetchFailedOfCordovaPlugins = function(errorMessage){
     	that.cordovaLoaded = false;
     };
 
@@ -217,9 +237,14 @@ var app = function(){
         that.cardReader = new CardOperation();
     };
 
-    
+    this.showOWSErrorPopup = function() {
+        var owsConnectivityModal = new OWSConnectivityModal();
+        owsConnectivityModal.initialize();
+    };
 
-    this.ismob = (function(navigator) { 
+
+
+    this.ismob = (function(navigator) {
       if( navigator.userAgent.match(/Android/i)
          || navigator.userAgent.match(/webOS/i)
          || navigator.userAgent.match(/iPhone/i)
@@ -233,15 +258,15 @@ var app = function(){
      else {
         return false;
       }
-    })(navigator);  
+    })(navigator);
 
     //Stores the card data to process while check-in
-    this.regCardData = {}; 
-    //Flag to check if a payment done via card swipe 
+    this.regCardData = {};
+    //Flag to check if a payment done via card swipe
     this.paymentTypeSwipe = false;
 
 };
 
 sntapp = new app();
-//sntapp.enableCardSwipeDebug();
+// sntapp.enableCardSwipeDebug();
 

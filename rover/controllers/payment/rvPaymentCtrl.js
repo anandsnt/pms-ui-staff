@@ -44,7 +44,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * Success callback of save payment in guest card
 	 * updating the list payments with new data 
 	 */
-	$scope.saveSuccessGuest = function(){
+	$scope.saveSuccessGuest = function(data){
 		$scope.$emit("hideLoader");
 		ngDialog.close();
 		var cardNumber = $scope.saveData.card_number;
@@ -56,7 +56,8 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			"mli_token": cardNumber.substr(cardNumber.length - 4),
 			"card_expiry":expiryDate,
 			"card_name":cardHolderName,
-			"is_primary":false
+			"is_primary":false,
+			"id":data.id
 		};
 		$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
 	};
@@ -64,7 +65,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * Success callback of reservation payment
 	 * updating staycard with new data
 	 */
-	$scope.saveSuccess = function(){
+	$scope.saveSuccess = function(data){
 		 
 		var billIndex = parseInt($scope.passData.fromBill);
 		
@@ -85,14 +86,18 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.paymentData.bills[billIndex].credit_card_details.card_expiry = expiryDate;
 		}
 		if($scope.saveData.add_to_guest_card){ 
-			var newDataToGuest = {
-				"card_code": cardCode.toLowerCase(),
-				"mli_token": cardNumber.substr(cardNumber.length - 4),
-				"card_expiry":expiryDate,
-				"card_name":cardHolderName,
-				"is_primary":false
-			};
-			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
+			if(!data.is_already_on_guest_card){
+				var newDataToGuest = {
+					"card_code": cardCode.toLowerCase(),
+					"mli_token": cardNumber.substr(cardNumber.length - 4),
+					"card_expiry":expiryDate,
+					"card_name":cardHolderName,
+					"is_primary":false,
+					"id": data.id
+				};
+				$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', newDataToGuest);
+			}
+			
 		}
 	};
 	$scope.failureCallBack = function(errorMessage){
@@ -145,7 +150,6 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 		}
 		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card"];
 		var data = dclone($scope.saveData, unwantedKeys);
-console.log(data)
 		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
 			 $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
 		} else {

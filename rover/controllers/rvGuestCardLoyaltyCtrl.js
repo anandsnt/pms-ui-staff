@@ -17,11 +17,12 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		};
 
 		var data = {'userID':$scope.$parent.guestCardData.userId};
-		console.log("userid in guestcard--------" +data.userID);
 		$scope.invokeApi(RVGuestCardLoyaltySrv.fetchLoyalties,data , loyaltyFetchsuccessCallback, loyaltyFetchErrorCallback);
 	};
-
-	$scope.init();
+	$scope.$watch(
+        function() { return ($scope.$parent.$parent.guestCardData.userId != '')?true:false; },
+        function(gustDataReady) { if(gustDataReady)$scope.init(); }
+    );
 	
 	$scope.$parent.myScrollOptions = {		
 	    'loyaltyList': {

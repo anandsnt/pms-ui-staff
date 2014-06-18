@@ -49,13 +49,21 @@ sntRover.service('RVChargeItems',
 							if ( !!item.charge_group_value && !isNaN(parseInt(item.charge_group_value)) ) {
 								item.charge_group_value = parseInt( item.charge_group_value );
 							};
+
+							// parse string to boolean
+							item.is_favorite = item.is_favorite === 'true' ? true : false;
 						};
 
 						for (var i = 0, j = data.charge_groups.length; i < j; i++) {
 							var item = data.charge_groups[i];
 
 							// parse string to int
-							item.value = parseInt( item.value );
+							var intValue = parseInt( item.value );
+
+							// only change if it was indeed a #
+							if ( !isNaN(intValue) ) {
+								item.value = intValue;
+							};
 						};
 
 						// keep the data fetched once safe on FE

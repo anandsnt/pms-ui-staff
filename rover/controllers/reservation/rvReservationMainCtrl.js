@@ -3,8 +3,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
     $scope.initReservationData = function(){
         // intialize reservation object
         $scope.reservationData = {
-            arrivalDate: '2014-04-01',
-            departureDate: '2014-04-02',
+            arrivalDate: '',
+            departureDate: '',
             checkinTime: {
                 hh: '',
                 mm: '',
@@ -15,10 +15,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 mm: '',
                 ampm: ''
             },
-            numNights: 1, // computed value, ensure to keep it updated
+            numNights: '', // computed value, ensure to keep it updated
             roomCount: 1, // Hard coded for now,
             rooms: [{
-                numAdults: 0,
+                numAdults: 1,
                 numChildren: 0,
                 numInfants: 0,
                 roomTypeId: '',
@@ -27,16 +27,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 rateName: '',
                 rateAvg:0 ,
                 rateTotal: 0,
-                addOns: [
-                    {
-                        name: '2x Champagn and Chocolate',
-                        avgAmount: 79,
-                        totalAmount: 79
-                    }
-                ]
+                //addOns: [
+                    //{
+                       // name: '',
+                        //avgAmount: '',
+                        //totalAmount: ''
+                    //}
+               // ]
             }],
-            totalTaxAmount: 15,
-            totalStayCost: 300,
+            totalTaxAmount: '',
+            totalStayCost: '',
             guest: {
                 id: null, // if new guest, then it is null, other wise his id
                 firstName: '',
@@ -67,10 +67,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
             },
 
             demographics: {
-                market: '1',
-                source: '1',
-                reservationType: '8', 
-                origin: '0'
+                market: '',
+                source: '',
+                reservationType: '', 
+                origin: ''
             },
             promotion: {
                 promotionCode: '',

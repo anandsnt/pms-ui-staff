@@ -211,6 +211,7 @@ var RoomAssignmentView = function(viewDom){
     var includeNotReady = false;
     var includeDueout = false;
     var includePreAssigned = false;
+    var include_clean = false;
 
     if(that.myDom.find($('#filter-not-ready')).is(':checked')){
       includeNotReady = true;
@@ -223,6 +224,9 @@ var RoomAssignmentView = function(viewDom){
     if(that.myDom.find($('#filter-preassigned')).is(':checked')){
       includePreAssigned = true;
     }
+    if(that.myDom.find($('#filter-clean')).is(':checked')){
+      include_clean = true;
+    }
 
     for (var i = 0; i< roomList.length; i++){
       if(roomList[i].fo_status === "VACANT" && roomList[i].room_status === "READY" && !roomList[i].is_preassigned){
@@ -231,11 +235,15 @@ var RoomAssignmentView = function(viewDom){
       else if(includeDueout && roomList[i].fo_status === "DUEOUT"){
         filteredRoomList.push(roomList[i]);
       }
-      else if(includeNotReady && roomList[i].room_status === "NOTREADY" && roomList[i].fo_status == "VACANT"){
+      // CICO-5779 story- QA comments- avoid clean room list for NOT READY filter.
+      else if(includeNotReady && roomList[i].room_status === "NOTREADY" && roomList[i].fo_status == "VACANT" && roomList[i].room_ready_status != "CLEAN"){
         filteredRoomList.push(roomList[i]);
       }
       else if(includePreAssigned && roomList[i].is_preassigned){
         filteredRoomList.push(roomList[i]);
+      }
+      else if(include_clean && roomList[i].room_ready_status === "CLEAN"){
+      	filteredRoomList.push(roomList[i]);
       }
     }
     return filteredRoomList;
@@ -265,8 +273,12 @@ var RoomAssignmentView = function(viewDom){
           var room_status_html ="" ;
           
           // Display FO status (VACANT, DUEOUT, etc) only when room-status = NOT-READY
-          // Always show color coding ( Red / Green - for Room status)
+          // Always show color coding ( Red / Green /Orange - for Room Ready status)
+          // Display oranage for ALL PICKUP room ready status
+          // Display orange for ALL CLEAN room ready status, if admin checkinspected is on
+          // Display red for Not Ready, Due -out, Occupied Rooms
           if(filteredRoomList[i].room_status == "READY" && filteredRoomList[i].fo_status == "VACANT"){
+          
             room_status_html = "<span class='room-number ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>";
         
             if(filteredRoomList[i].is_preassigned) {
@@ -274,8 +286,14 @@ var RoomAssignmentView = function(viewDom){
             } 
           }
           else{
-              room_status_html = "<span class='room-number not-ready' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
-              "<span class='room-status not-ready' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].fo_status+" </span>";   
+          	 if (filteredRoomList[i].room_ready_status == "PICKUP"  || filteredRoomList[i].room_ready_status == "CLEAN"){
+          	 	room_status_html += "<span class='room-number room-orange' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
+              	"<span class='room-status room-orange' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].room_ready_status+" </span>";
+          	 	}
+          	 	else{
+			  		room_status_html += "<span class='room-number room-red' data-value="+filteredRoomList[i].room_number+">"+filteredRoomList[i].room_number+"</span>"+
+              		"<span class='room-status room-red' data-value='"+filteredRoomList[i].fo_status+"'> "+filteredRoomList[i].fo_status+" </span>";
+              }   
           }
   
           //Append the HTML to the UI.
@@ -478,6 +496,8 @@ var RoomAssignmentView = function(viewDom){
             failureCallBack: that.fetchFailedOfSave,
            loader: "BLOCKER"
     };
+    event.stopPropagation();
+	event.stopImmediatePropagation();
     webservice.postJSON(url, options);  
 
   };

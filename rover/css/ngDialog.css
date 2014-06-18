@@ -69,6 +69,7 @@
   -webkit-backface-visibility: hidden;
   -webkit-animation: ngdialog-fadein 0.5s;
   animation: ngdialog-fadein 0.5s;
+  z-index: -100;
 }
 
 .ngdialog.ngdialog-closing .ngdialog-overlay {

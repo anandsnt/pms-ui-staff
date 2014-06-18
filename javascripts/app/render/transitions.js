@@ -3,16 +3,16 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage, $transition, $
 
     var $newScreen = new chainedAnimation(),
         $delay = 150;
-    
+
     // Start transitioning when new page is ready
     $('#loading').fadeOut(function(){
-        
+
         // Close navigation panel if open
         if ($('.container.menu-open').length) {
-            $newScreen.add(function(){ 
-                $('.container').addClass('menu-closing'); 
+            $newScreen.add(function(){
+                $('.container').addClass('menu-closing');
                 $('.nav-toggle.active').each(function(e){
-                    $(this).removeClass('active'); 
+                    $(this).removeClass('active');
                 });
             });
 
@@ -20,7 +20,7 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage, $transition, $
         }
 
         // Bring in new page
-        $newScreen.add(function(){  
+        $newScreen.add(function(){
             $('#' + $nextPage).addClass('page-current ' + $transition);
             $('.inner-page').removeClass('page-locked').removeClass('page-current');
             $('.main-page').removeClass('prev-page-current');
@@ -28,8 +28,8 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage, $transition, $
         }, $delay);
 
         // Reset transition class & old page
-        $newScreen.add(function(){ 
-            $('#' + $nextPage).removeClass($transition); 
+        $newScreen.add(function(){
+            $('#' + $nextPage).removeClass($transition);
             $('#' + $prevPage).removeClass('page-current set-back ' + $transition);
 
             // Add additional classes
@@ -39,7 +39,7 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage, $transition, $
 
         // Empty old page
         if ($emptyPrev == true) {
-            $newScreen.add(function(){ 
+            $newScreen.add(function(){
                 $('#' + $prevPage).empty();
             }, $delay);
         }
@@ -51,9 +51,9 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage, $transition, $
 
         // Set active class in the menu
         $('#main-menu a.active').removeClass('active');
-        $('#main-menu a[data-page="' + $menuActiveItem + '"]').addClass('active'); 
+        $('#main-menu a[data-page="' + $menuActiveItem + '"]').addClass('active');
     }).remove();
-    
+
     // Reset the container class (to reset all inner toggle views)
     setTimeout(function() {
         $('.container').attr({'class': 'container'});
@@ -61,16 +61,16 @@ function changePage($type, $menuActiveItem, $prevPage, $nextPage, $transition, $
 }
 
 // Switch main page
-function switchPage($type, $menuActiveItem, $prevPage, $nextPage, $transition){    
+function switchPage($type, $menuActiveItem, $prevPage, $nextPage, $transition){
     var $switchScreen = new chainedAnimation(),
         $delay = 300;
-    
+
     // Close navigation panel if open
     if ($('.container.menu-open').length) {
-        $switchScreen.add(function(){ 
-            $('.container').addClass('menu-closing'); 
+        $switchScreen.add(function(){
+            $('.container').addClass('menu-closing');
             $('.nav-toggle.active').each(function(e){
-                $(this).removeClass('active'); 
+                $(this).removeClass('active');
             });
         });
 
@@ -78,7 +78,7 @@ function switchPage($type, $menuActiveItem, $prevPage, $nextPage, $transition){
     }
 
     // Bring in new page
-    $switchScreen.add(function(){  
+    $switchScreen.add(function(){
         $('.inner-page').addClass('set-back');
         $('#' + $nextPage).addClass('page-current ' + $transition);
         $('#' + $prevPage).addClass('set-back');
@@ -90,8 +90,8 @@ function switchPage($type, $menuActiveItem, $prevPage, $nextPage, $transition){
     }, $delay);
 
     // Reset transition class & clear old screen
-    $switchScreen.add(function(){ 
-        $('#' + $nextPage).removeClass($transition); 
+    $switchScreen.add(function(){
+        $('#' + $nextPage).removeClass($transition);
         $('#' + $prevPage).removeClass('page-current set-back ' + $transition);
 
         $('.inner-page').removeClass('page-locked').removeClass('set-back').removeClass('page-current').empty();
@@ -99,7 +99,7 @@ function switchPage($type, $menuActiveItem, $prevPage, $nextPage, $transition){
     }, $delay);
 
     // Empty old page after switch
-    $switchScreen.add(function(){ 
+    $switchScreen.add(function(){
         $('#' + $prevPage).empty();
     }, $delay);
 
@@ -126,13 +126,13 @@ function changeInnerPage($type, $menuActiveItem, $prevPage, $nextPage, $transiti
 
     // Start transitioning when new page is ready
     $('#loading').fadeOut(function(){
-        
+
         // Close navigation panel if open
         if ($('.container.menu-open').length) {
-            $newScreen.add(function(){ 
-                $('.container').addClass('menu-closing'); 
+            $newScreen.add(function(){
+                $('.container').addClass('menu-closing');
                 $('.nav-toggle.active').each(function(e){
-                    $(this).removeClass('active'); 
+                    $(this).removeClass('active');
                 });
             });
 
@@ -140,25 +140,25 @@ function changeInnerPage($type, $menuActiveItem, $prevPage, $nextPage, $transiti
         }
 
         // Bring in new page
-        $newScreen.add(function(){  
+        $newScreen.add(function(){
             $('#' + $nextPage).addClass('page-current ' + $transition);
             $('#' + $prevPage).addClass('set-back');
         }, $delay);
 
         // Reset transition class & old page
-        $newScreen.add(function(){ 
-            $('#' + $nextPage).removeClass($transition); 
+        $newScreen.add(function(){
+            $('#' + $nextPage).removeClass($transition);
             $('#' + $prevPage).removeClass('page-current set-back ' + $transition);
 
             // Add additional classes + clear main active page
-            $('.main-page.page-current').removeClass('page-current').addClass('prev-page-current'); 
+            $('.main-page.page-current').removeClass('page-current').addClass('prev-page-current');
             var $additionalClass = $type.split('inner-page ');
             $('#' + $nextPage).addClass($additionalClass[1]);
         }, $delay);
 
         // Empty old page
         if ($emptyPrev == true) {
-            $newScreen.add(function(){ 
+            $newScreen.add(function(){
                 $('#' + $prevPage).empty();
             }, $delay);
         }
@@ -172,14 +172,14 @@ function changeInnerPage($type, $menuActiveItem, $prevPage, $nextPage, $transiti
         $('#main-menu a.active').removeClass('active');
         $('#main-menu a[data-page="' + $menuActiveItem + '"]').addClass('active');
     }).remove();
-    
+
     // Reset the container class (to reset all inner toggle views)
     setTimeout(function() {
         $('.container').attr({'class': 'container'});
     }, 600);
 }
 
-// Load inner page view 
+// Load inner page view
 function changeView($type, $menuActiveItem, $prevView, $nextView, $transition, $emptyPrev){
 
     var $newView = new chainedAnimation(),
@@ -187,24 +187,24 @@ function changeView($type, $menuActiveItem, $prevView, $nextView, $transition, $
 
     // Lock the current parent view
     $('#' + $nextView).closest('.page-current').addClass('page-locked');
-    
+
     // Start transitioning when new page is ready
     $('#loading').fadeOut(function(){
         // Bring in new view
-        $newView.add(function(){  
+        $newView.add(function(){
             $('#' + $nextView).addClass('view-current ' + $transition);
             $('#' + $prevView).addClass('set-back');
         }, $delay);
 
         // Reset transition class & old page
-        $newView.add(function(){ 
-            $('#' + $nextView).removeClass($transition); 
+        $newView.add(function(){
+            $('#' + $nextView).removeClass($transition);
             $('#' + $prevView).removeClass('view-current set-back ' + $transition);
         }, $delay);
 
         // Empty old page
         if ($emptyPrev == true) {
-            $newView.add(function(){ 
+            $newView.add(function(){
                 $('#' + $prevView).empty();
             }, $delay);
         }
@@ -224,15 +224,15 @@ function goBackToPage($menuActiveItem, $prevPage, $transition){
         $delay = 150;
 
     // Bring in previous page
-    $oldScreen.add(function(){  
+    $oldScreen.add(function(){
         $('.prev-page-current').addClass('page-current ' + $transition);
         $('#' + $prevPage).addClass('set-back');
     }, $delay);
 
     // Remove transition class
-    $oldScreen.add(function(){ 
-        $('.prev-page-current').removeClass('prev-page-current ' + $transition); 
-        $('.page-locked').removeClass('page-locked ' + $transition); 
+    $oldScreen.add(function(){
+        $('.prev-page-current').removeClass('prev-page-current ' + $transition);
+        $('.page-locked').removeClass('page-locked ' + $transition);
         $('#' + $prevPage).removeClass('set-back page-current').empty();
     }, $delay);
 
@@ -254,13 +254,13 @@ function goBackToView($menuActiveItem, $prevView, $transition){
         $delay = 150;
 
     // Bring in previous page
-    $oldView.add(function(){  
+    $oldView.add(function(){
         $('.page-locked .nested-view:not(.view-current)').addClass('view-current ' + $transition);
         $('#' + $prevView).addClass('set-back');
     }, $delay);
 
     // Remove transition class
-    $oldView.add(function(){ 
+    $oldView.add(function(){
         $('.view-current').removeClass($transition);
         $('.page-locked').removeClass('page-locked ' + $transition);
         $('#' + $prevView).removeClass('set-back view-current').empty();
@@ -276,7 +276,7 @@ function goBackToView($menuActiveItem, $prevView, $transition){
 $(function($){
 
 /*  Main screens        *******************************************************/
-    
+
     // First main scren - check is it preloaded or hash from admin app exists
     $('#app-page').ready(function(){
 
@@ -296,7 +296,7 @@ $(function($){
                     $('#main-menu .active').removeClass('active');
                     $('#main-menu a[data-page="' + $pageToShow[1] + '"]').addClass('active');
 
-                    //Adding a hook, to connect the rendering code to functional view component. 
+                    //Adding a hook, to connect the rendering code to functional view component.
                     var viewInstance = sntapp.getViewInstance($('#page-main-first'));
                     if(typeof viewInstance !== "undefined"){
                             viewInstance.initialize();
@@ -310,13 +310,33 @@ $(function($){
                     });
                 },
                 error: function(jqxhr, status, error){
+                    //Show ows connectivity error popup
+                    if (jqxhr.status=="520") {
+                        sntapp.activityIndicator.hideActivityIndicator();
+                        sntapp.showOWSErrorPopup();
+                        return;
+                    }
                     //checking whether a user is logged in
                     if (jqxhr.status == "401") { sntapp.logout(); return;}
-                }
-            });    
+                    if (jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
+                        location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
+                        return;
+                    }
 
-            // Remove the hash 
-            history.pushState("", document.title, window.location.pathname);    
+                    if(jqxhr.status=="422"){
+                        location.href = XHR_STATUS.REJECTED;
+                        return;
+                    }
+
+                    if(jqxhr.status=="404"){
+                        location.href = XHR_STATUS.SERVER_DOWN;
+                        return;
+                    }
+                }
+            });
+
+            // Remove the hash
+            history.pushState("", document.title, window.location.pathname);
         }
         // Load the dashboard when no hash
         else {
@@ -334,18 +354,38 @@ $(function($){
                         dashboard.pageshow();
                     },
                     error: function(jqxhr, status, error){
+                        //Show ows connectivity error popup
+                        if (jqxhr.status=="520") {
+                            sntapp.activityIndicator.hideActivityIndicator();
+                            sntapp.showOWSErrorPopup();
+                            return;
+                        }
                         //checking whether a user is logged in
                         if (jqxhr.status == "401") { sntapp.logout(); return;}
+                        if (jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
+                            location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
+                            return;
+                        }
+
+                        if(jqxhr.status=="422"){
+                            location.href = XHR_STATUS.REJECTED;
+                            return;
+                        }
+
+                        if(jqxhr.status=="404"){
+                            location.href = XHR_STATUS.SERVER_DOWN;
+                            return;
+                        }
                     }
                 });
             }
-            
+
         }
 
         // Carry on with the animation
         var $showMaster = new chainedAnimation(),
             $delay = 300;
-  
+
         $showMaster.add(function(){ $('.container').removeClass('loading'); }, $delay);
         $showMaster.add(function(){ $('#main-menu').show(); }, $delay);
         $showMaster.start();
@@ -385,7 +425,7 @@ $(function($){
 
 
         // Do nothing for active links
-        if ($(this).hasClass('active')) 
+        if ($(this).hasClass('active'))
         {
             return false;
         }
@@ -395,7 +435,7 @@ $(function($){
         {
 
             // ONLY FOR CARD SWIPE
-            // dirty hack to find if user is switching back to 
+            // dirty hack to find if user is switching back to
             // search page and trigger its card swipe method
             var toBeCurrent = $(this).data('page');
             if('search' === toBeCurrent){
@@ -404,7 +444,7 @@ $(function($){
 
             var $next = $('#' + $activeMenuItem).closest('.main-page').attr('id');
             switchPage($transitionPage, $activeMenuItem, $previous, $next, 'move-from-left');
-            
+
         }
 
         // Load next page/view or reload previous view before going back
@@ -420,7 +460,27 @@ $(function($){
                         $('#' + $next).html(data);
                     },
                     error: function(jqxhr, status, error){
+
+                        if (jqxhr.status=="520") {
+                            sntapp.activityIndicator.hideActivityIndicator();
+                            sntapp.showOWSErrorPopup();
+                            return;
+                        }
                         if (jqxhr.status=="401") { sntapp.logout(); return;}
+                        if (jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
+                            location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
+                            return;
+                        }
+
+                        if(jqxhr.status=="422"){
+                            location.href = XHR_STATUS.REJECTED;
+                            return;
+                        }
+
+                        if(jqxhr.status=="404"){
+                            location.href = XHR_STATUS.SERVER_DOWN;
+                            return;
+                        }
                         $('#loading').remove();
                     }
                 }).done(function(data){
@@ -431,13 +491,14 @@ $(function($){
                 				sntapp.notification.showErrorMessage("Error: "+result.errors , $("#search"));
                 			});
                 			return false;
-                		} 
+                		}
                 	}
                     var viewInstance = null;
                     var instName = $('#'+$next).find('div:first').data('view');
 
                     if ( sntapp.getViewInst(instName) ) {
                         viewInstance = sntapp.getViewInst(instName);
+                        viewInstance.setDom($('#'+$next));
                     } else {
                         viewInstance = sntapp.getViewInstance($('#'+$next));
                         sntapp.setViewInst(instName, viewInstance);
@@ -453,17 +514,17 @@ $(function($){
                     }
                     else if ($transitionPage.indexOf('inner-page') >= 0)
                     {
-                       changeInnerPage($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reloadOnBack); 
+                       changeInnerPage($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reloadOnBack);
                     }
                     else if ($transitionPage.indexOf('nested-view') >= 0)
                     {
 
-                       changeView($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reloadOnBack); 
+                       changeView($transitionPage, $activeMenuItem, $previous, $next, $transitionType, $reloadOnBack);
                     }
 
                     if(typeof viewInstance !== "undefined"){
                         viewInstance.pageshow();
-                    }                   
+                    }
                 });
             });
         }
@@ -480,7 +541,7 @@ $(function($){
                goBackToView($activeMenuItem, $backView, $transitionType);
             }
 
-            //TODO: We are using a new view instance here. 
+            //TODO: We are using a new view instance here.
             //It has to be replaced by a singletone instance of the view
             var newViewInstance = sntapp.getViewInstance($('#'+$backPage));
             if(typeof newViewInstance !== "undefined"){
@@ -488,23 +549,23 @@ $(function($){
             }
 
         }
-        else 
+        else
         {
         }
     });
 
 /*  Sign In / Sign Out        *************************************************/
-    
+
     // Close drawer when clicked on content
     $(document).on('click','.page, .nested-view',function(e) {
         var $sameScreen = new chainedAnimation(),
             $delay = 150;
 
         if ($('.container.menu-open').length) {
-            $sameScreen.add(function(){ 
-                $('.container').addClass('menu-closing'); 
+            $sameScreen.add(function(){
+                $('.container').addClass('menu-closing');
                 $('.nav-toggle.active').each(function(e){
-                    $(this).removeClass('active'); 
+                    $(this).removeClass('active');
                 });
             });
             $sameScreen.add(function(){ $('.container').removeClass('menu-open menu-closing'); }, $delay);
@@ -525,7 +586,7 @@ $(function($){
         localStorage.email = $("#email").val();
         var $signingIn = new chainedAnimation(),
             $delay = 300;
-  
+
         $signingIn.add(function(){  $('.container').addClass('signing-in'); }, $delay);
         $signingIn.add(function(){ $('#login-form').submit(); }, $delay);
         $signingIn.start();
@@ -535,13 +596,13 @@ $(function($){
     $(document).on('click', 'a[data-rel="external"]', function(e) {
         e.preventDefault();
 
-        $('.nav-toggle').removeClass('active'); 
+        $('.nav-toggle').removeClass('active');
         $('.container').removeClass('menu-open');
 
         var $target = $(this).attr('href'),
             $signingOut = new chainedAnimation(),
             $delay = 300;
-  
+
         $signingOut.add(function(){ $('.container').addClass('signing-out'); }, $delay);
         $signingOut.add(function(){ window.location = $target; }, $delay);
         $signingOut.start();

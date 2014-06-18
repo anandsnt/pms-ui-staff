@@ -17,7 +17,7 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebS
 
 
         this.fetchDemographicMarketSegments = function(deferred){
-            var url = '/api/market_segments';
+            var url = '/api/market_segments?is_active=true';
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
                 that.reservationData.demographics.markets = data.markets;
             }, function(errorMessage){
@@ -26,7 +26,7 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebS
         };
 
         this.fetchDemographicSources = function(deferred){
-            var url = '/api/sources';  //TODO: Whether we need active list only or all
+            var url = '/api/sources?is_active=true';  //TODO: Whether we need active list only or all
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
                 that.reservationData.demographics.sources = data.sources;
             }, function(errorMessage){
@@ -38,15 +38,29 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebS
             var url = '/api/booking_origins';
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
                 that.reservationData.demographics.origins = data.booking_origins;
+                that.reservationData.demographics.origins = [];
+                //We need only the booking origins activated in the admin
+                for(var i in data.booking_origins){
+                    if(data.booking_origins[i].is_active){
+                        that.reservationData.demographics.origins.push(data.booking_origins[i]);
+                    }
+                }
+
             }, function(errorMessage){
                 deferred.reject(errorMessage);
             });
         };
 
         this.fetchDemographicReservationTypes = function(deferred){            
-            var url = '/api/reservation_types.json';
+            var url = '/api/reservation_types.json?is_active=true';
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                that.reservationData.demographics.reservationTypes = data.reservation_types;                
+                that.reservationData.demographics.reservationTypes = [];
+                //We need only the active reservation types
+                for(var i in data.reservation_types){
+                    if(data.reservation_types[i].is_active){
+                        that.reservationData.demographics.reservationTypes.push(data.reservation_types[i]);
+                    }
+                }
                 deferred.resolve(that.reservationData);
             }, function(errorMessage){
                 deferred.reject(errorMessage);
@@ -65,9 +79,11 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebS
         }
 
         this.saveReservation = function(data){
+            console.log("hre");
+            console.log(data);
             var deferred = $q.defer();
             var url = '/api/reservations';
-            rvBaseWebSrvV2.postJSON(url).then(function(data) {
+            rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
             },function(data){
                 deferred.reject(data);
