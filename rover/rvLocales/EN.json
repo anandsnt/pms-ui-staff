@@ -125,7 +125,9 @@
     "CONFIRM_RESERVATION": "Confirm Reservation",
     "RETURN_TO_DASHBOARD": "return to dashboard",
     "CREATE_NEW_FOR_GUEST": "create new for this guest",
-    "CANCEL_RESERVATION": "Cancel Reservation",    
+    "CANCEL_RESERVATION": "Cancel Reservation",
+    "STAY_CARD_TITLE" : "Staycard"
+,    
     
     "NEWSPAPER_LABEL" : "Newspaper",
     "NEWSPAPER_SELECT" : "Select Newspaper",
@@ -207,5 +209,6 @@
     "POST_CHARGE_TO_BILL": "Post Charge to Bill",
     "SEARCH_TERM": "Search items",
     "0_ITEM_SELECTED": "0 items selected",
-    "POST_CHARGE": "Post Charge"
+    "POST_CHARGE": "Post Charge",
+    "VIEW_BILL_TITLE": "View Bill"
 }
