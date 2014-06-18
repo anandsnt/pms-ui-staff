@@ -1,6 +1,5 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state',
-
-	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state) {
+sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$interval', '$state', '$sce',
+	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $interval, $sce, $state) {
 
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
@@ -10,9 +9,18 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.activeCriteria = "ROOM_TYPE";
 		//$scope.activeCriteria = "RATE";
 
+
 		//scroller options
 		$scope.$parent.myScrollOptions = {
 			'room_types': {
+				snap: false,
+				scrollbars: true,
+				vScroll: true,
+				vScrollbar: true,
+				hideScrollbar: false,
+				click: true
+			},
+			'rate_types': {
 				snap: false,
 				scrollbars: true,
 				vScroll: true,
@@ -24,9 +32,13 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 		var init = function() {
 			$scope.$emit('showLoader');
-			console.log("APIRETURN", roomRates);
+			//console.log("APIRETURN", roomRates);
 			$scope.heading = 'Rooms & Rates';
 			$scope.displayData.dates = [];
+			$scope.rateFilterText = '';
+			$scope.filteredRates = [];
+			$scope.isRateFilterActive = true;
+			$scope.rateFiltered = false;
 
 
 			//interim check on page reload if the page is refreshed
@@ -46,7 +58,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			//console.log("RESVOBJ", $scope.reservationData);
 
 			//defaults and hardcoded values
-			$scope.tax = roomRates.tax || 20;
+			$scope.tax = roomRates.tax || 0;
 			$scope.rooms = roomRates.rooms;
 			$scope.activeRoom = 0;
 
@@ -120,7 +132,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			// 			Packages
 			// 			Promotions
 			//The Rate order within each Rate Type should be alphabetical.
-			console.log($scope.displayData.availableRates);
+			//TODO: Sort Rooms inside the rates so that they are in asc order of avg/day
+			//console.log($scope.displayData.availableRates);
 			$scope.$emit('hideLoader');
 		};
 
@@ -213,8 +226,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			});
 			$(roomRates.results).each(function(i, d) {
 				$scope.displayData.dates.push({
-					str : d.date,
-					obj : new Date(d.date)
+					str: d.date,
+					obj: new Date(d.date)
 				});
 				var for_date = d.date;
 				//step1: check for room availability in the date range
@@ -296,15 +309,15 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 					value.averagePerNight = value.total[value.defaultRate].average;
 				}
 			}
-			console.log(rooms);
+			//console.log(rooms);
 			return rooms;
 		}
 
 		$scope.refreshScroll = function() {
 			if (typeof $scope.$parent.myScroll != 'undefined') {
-				$timeout(function() {
+				$interval(function() {
 					$scope.$parent.myScroll["room_types"].refresh();
-				}, 300);
+				}, 300, 5);
 			}
 
 		}
@@ -356,6 +369,38 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			}
 		});
 
+		$scope.selectRate = function(selectedRate) {
+			$scope.rateFilterText = selectedRate.rate.name;
+			$scope.filterRates();
+			$scope.rateFiltered = true;
+			$scope.refreshScroll();
+
+		}
+
+		$scope.hideResults = function() {
+			$timeout(function() {
+				$scope.isRateFilterActive = false;
+			}, 300);
+		}
+		$scope.filterRates = function() {
+			$scope.rateFiltered = false;
+			if ($scope.rateFilterText.length > 0) {
+				var re = new RegExp($scope.rateFilterText, "gi");
+				$scope.filteredRates = $($scope.displayData.availableRates).filter(function() {
+					return this.rate.name.match(re);
+				})
+			} else {
+				$scope.filteredRates = [];
+			}			
+			$scope.refreshScroll();
+		}
+
+		$scope.highlight = function(text, search) {
+			if (!search) {
+				return text;
+			}
+			return text.replace(new RegExp(search, 'gi'), '<span class="highlight">$&</span>');
+		};
 
 		init();
 	}
