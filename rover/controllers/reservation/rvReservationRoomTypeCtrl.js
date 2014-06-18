@@ -100,21 +100,11 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			//$scope.displayData.allRooms = roomRates.room_types;
 			$scope.displayData.roomTypes = $scope.displayData.allRooms;
 
-			//TODO: Handle the selected roomtype from the previous screen
-			$scope.preferredType = $scope.reservationData.rooms[$scope.activeRoom].roomType;
-			//$scope.preferredType = 5;
-			$scope.roomTypes = roomRates.room_types;
-			$scope.filterRooms();
 
 			//CICO-5253 > Rate Types Reservartion
 			//Get the rates for which rooms are available $scope.displayData.allRooms
 			$scope.ratesMaster = [];
 			$scope.displayData.availableRates = [];
-			rateDisplayEnabler();
-			$scope.$emit('hideLoader');
-		};
-
-		var rateDisplayEnabler = function() {
 			$($scope.displayData.allRooms).each(function(i, d) {
 				var room = $scope.roomAvailability[d.id];
 				$(room.rates).each(function(i, rateId) {
@@ -175,7 +165,14 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 				return 0;
 			});
 
-		}
+			//TODO: Handle the selected roomtype from the previous screen
+			$scope.preferredType = $scope.reservationData.rooms[$scope.activeRoom].roomType;
+			//$scope.preferredType = 5;
+			$scope.roomTypes = roomRates.room_types;
+			$scope.filterRooms();
+
+			$scope.$emit('hideLoader');
+		};
 
 		$scope.handleBooking = function(roomId, rateId, event) {
 			event.stopPropagation();
@@ -256,6 +253,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.getAvailability = function(roomRates) {
 			var roomDetails = [];
 			var rooms = [];
+			var currOccupancy = parseInt($scope.reservationData.rooms[$scope.activeRoom].numAdults) +
+				parseInt($scope.reservationData.rooms[$scope.activeRoom].numChildren);
 			$(roomRates.room_types).each(function(i, d) {
 				roomDetails[d.id] = d;
 			});
@@ -280,7 +279,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							averagePerNight: 0
 						};
 					}
-					if (d.availability < 1) {
+					if (d.availability < 1 || currOccupancy > roomDetails[d.id].max_occupancy) {
 						rooms[d.id].availability = false;
 					}
 				});

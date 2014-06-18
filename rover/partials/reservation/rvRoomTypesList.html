@@ -2,24 +2,24 @@
 <section id="rooms-and-rates" class="content reservations-inner" >
 
     <ul class="reservation-header">
-        <li ng-repeat = "room in rooms" class="load-room" ng-class="{'active': $index == activeRoom , 'hidden' : rooms.length < 2}"> ROOM {{$index + 1}}</li>
+        <li ng-repeat = "room in rooms" class="load-room" ng-class="{'active': $index == activeRoom , 'hidden' : rooms.length < 2} translate"> ROOM_LABEL {{$index + 1}}</li>
     </ul>
     <div class="reservations-content-wrapper">
         <div class="reservation-filters">
             <div class="select" ng-show="activeCriteria == 'ROOM_TYPE'">
               <select ng-model="preferredType" ng-options="roomType.id as roomType.name for roomType in roomTypes|filter:{level:'!!'}|orderBy:'level'" ng-change="filterRooms()" >
-                  <option value="">All Room Types</option>
+                  <option value="" translate>RESV_ALL_ROOMS</option>
               </select>
           </div>
           <div class="find-rates" ng-show="activeCriteria == 'RATE'">
-            <button type="submit" name="submit" class="icons icon-search">Search</button>
+            <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
             <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
             <input ng-blur="hideResults();" ng-focus="isRateFilterActive = true"  name="find-rates" type="text" placeholder="Find Rates" value="" autocomplete="off" class="ui-autocomplete-input" ng-model="rateFilterText" ng-change="filterRates();">           
         </div>
         <ul>
-            <li ng-class="{active: activeCriteria =='RECOMMENDED'}" ng-click="activeCriteria='RECOMMENDED'">Recommended</li>
-            <li ng-class="{active: activeCriteria == 'ROOM_TYPE'}" ng-click="activeCriteria='ROOM_TYPE'">Room Type</li>
-            <li ng-class="{active: activeCriteria == 'RATE'}" ng-click="activeCriteria= 'RATE'">Rate</li>
+            <li ng-class="{active: activeCriteria =='RECOMMENDED'}" ng-click="activeCriteria='RECOMMENDED'">{{'RESV_RECOMMENDED'|translate}}</li>
+            <li ng-class="{active: activeCriteria == 'ROOM_TYPE'}" ng-click="activeCriteria='ROOM_TYPE'">{{'RESV_ROOM'|translate}}</li>
+            <li ng-class="{active: activeCriteria == 'RATE'}" ng-click="activeCriteria= 'RATE'">{{'RESV_RATE'|translate}}</li>
         </ul>
     </div>
     <!-- -->
@@ -36,12 +36,12 @@
                     <a class="has-arrow toggle" ng-class="{active: selectedRoomType == room.id}" ng-click="setSelectedType(room)">
                         <div class="data">
                             <h2>{{room.name}}</h2>
-                            <span ng-show="displayData.roomTypes.length > 0 && $index > 0">For only {{currencySymbol}}{{roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight | number: 0}} more per night</span>
+                            <span ng-show="displayData.roomTypes.length > 0 && $index > 0">{{ 'RESV_FOR_ONLY' | translate}}&nbsp;{{currencySymbol}}{{roomAvailability[room.id].averagePerNight - roomAvailability[displayData.roomTypes[0].id].averagePerNight | number: 0}}&nbsp;{{'RESV_MORE'|translate}}</span>
                         </div>
                         <div class="book-rate" ng-class="{hidden: selectedRoomType == room.id}">
-                            <h4>Best Available Rate</h4>
-                            <div class="price">{{currencySymbol}}{{roomAvailability[room.id].averagePerNight  | number: 0}}<span>Avg. Rate per night</span></div>
-                            <button class="button green" ng-click="handleBooking(room.id,roomAvailability[room.id].defaultRate,$event)">Book</button>
+                            <h4 translate>RESV_BEST_RATE</h4>
+                            <div class="price">{{currencySymbol}}{{roomAvailability[room.id].averagePerNight  | number: 0}}<span translate>RESV_AVG_NIGHT</span></div>
+                            <button class="button green" ng-click="handleBooking(room.id,roomAvailability[room.id].defaultRate,$event)" translate>RESV_BOOK</button>
                         </div>
                     </a>
                     <!-- Rates list -->
@@ -52,9 +52,9 @@
                                 <h3>{{displayData.allRates[rate].name}}</h3>
                                 <div class="price">
                                     {{currencySymbol}}{{roomAvailability[room.id].total[rate].average | number: 0}}
-                                    <span>Avg. Rate per night</span>
+                                    <span translate>RESV_AVG_NIGHT</span>
                                 </div>
-                                <button class="button green" ng-click="handleBooking(room.id,rate, $event)">Book</button>
+                                <button class="button green" ng-click="handleBooking(room.id,rate, $event)" translate>RESV_BOOK</button>
                             </a>
                             <!-- Rate Details -->
                             <div class="rate-details" ng-class="{hidden: !isActive}">
@@ -67,16 +67,16 @@
                                 <table class="room-cost">
                                     <thead>
                                         <tr>
-                                            <th>Date</th>
-                                            <th>Rate</th>
-                                            <th>Tax({{tax}}%)</th>
-                                            <th>Total</th>
+                                            <th translate>DATE</th>
+                                            <th translate>RESV_RATE</th>
+                                            <th>{{'TAX'|translate}}({{tax}}%)</th>
+                                            <th translate>RESV_TOTAL</th>
                                             <th class="edit"></th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <td colspan="3" class="total-label">Total Room Cost</td>
+                                            <td colspan="3" class="total-label" translate>RESV_TOTAL_ROOM</td>
                                             <td class="total-value">{{currencySymbol}}{{roomAvailability[room.id].total[rate].total | number:2}}</td>
                                             <td class="edit" ng-hide="true">
                                                 <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
@@ -100,15 +100,14 @@
                     </ul>
                 </li>  
                 <li class="break" ng-show="showLessRooms && displayData.roomTypes.length > 2 && selectedRoomType == -1" ng-click="showLessRooms = false ; refreshScroll()">
-                    <span>See more room types</span>
+                    <span translate>RESV_SEE_MORE_ROOMS</span>
                 </li>          
             </ul> 
             <ul class="rooms-and-rates wrapper" ng-if="activeCriteria == 'RATE'">      
                 <li class="is-rate" ng-repeat="rate in rateFiltered ? filteredRates : displayData.availableRates" ng-init="isActive=false; selectedRoom = rate.rooms[0].id" ng-hide="$index > 1 && showLessRates">
                     <a class="has-arrow toggle" ng-class="{active: isActive}" ng-click="isActive = !isActive ; refreshScroll();">
                         <div class="data">
-                            <!-- |{{rate.rate.id}}|{{selectedRoom}} -->
-                            <h2>{{rate.rate.name}}, {{rate.rate.rate_type.name}}</h2>
+                            <h2>{{rate.rate.name}}</h2>
                         </div>
                         <div class="book-rate">
                             <div class="select" ng-click="$event.stopPropagation()">
@@ -117,8 +116,8 @@
                                     <option ng-repeat="room in rate.rooms" value="{{room.id}}" ng-selected="$index==0">{{room.name}}</option>
                                 </select>
                             </div>
-                            <div class="price">{{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].average | number:0}}<span>Avg. Rate per night</span></div>
-                            <button type="button" class="button green"ng-click="handleBooking(selectedRoom,rate.rate.id, $event)">Book</button>
+                            <div class="price">{{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].average | number:0}}<span translate>RESV_AVG_NIGHT</span></div>
+                            <button type="button" class="button green"ng-click="handleBooking(selectedRoom,rate.rate.id, $event)" translate>RESV_BOOK</button>
                         </div>
                     </a>
                     <ul class="rate-details" ng-class="{hidden: !isActive}">
@@ -131,16 +130,16 @@
                         <table class="room-cost">
                             <thead>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Rate</th>
-                                    <th>Tax({tax}%)</th>
-                                    <th>Total</th>
+                                    <th translate>DATE</th>
+                                    <th translate>RESV_RATE</th>
+                                    <th>{{'TAX'|translate}}({{tax}}%)</th>
+                                    <th translate>RESV_TOTAL</th>
                                     <th class="edit"></th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <td colspan="3" class="total-label">Total Room Cost</td>
+                                    <td colspan="3" class="total-label" translate>RESV_TOTAL_ROOM</td>
                                     <td class="total-value">{{currencySymbol}}{{roomAvailability[selectedRoom].total[rate.rate.id].total | number:2}}</td>
                                     <td class="edit" ng-hide="true">
                                         <a href="modals/apply-discount/" class="open-modal button with-icon only-icon purple edit">
@@ -162,7 +161,7 @@
                     </ul>
                 </li>
                 <li class="break" ng-show="showLessRates && rateFiltered == false && displayData.availableRates.length > 2 && selectedRoomType == -1" ng-click="showLessRates = false ; refreshScroll()">
-                    <span>See more rates</span>
+                    <span translate>RESV_SEE_MORE_RATES</span>
                 </li> 
             </ul>
         </div>
