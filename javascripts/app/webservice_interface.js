@@ -1,15 +1,15 @@
 var WebServiceInterface = function(){
-	
+
 	this.timeout = 80000; //80 seconds
 	this.defaultLoader = "NORMAL";
-	var that = this;	
-	
+	var that = this;
+
 	this.getJSON = function(requestUrl, options ){
 		var options = options ? options : {};
-		
+
 		var requestType = "GET";
 		var contentType='application/json';
-		var dataType = 'json'; 
+		var dataType = 'json';
 		var requestParameters = options["requestParameters"] ? options["requestParameters"] : null;
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
 		var async = options["async"] ? options["async"] : true;
@@ -17,14 +17,14 @@ var WebServiceInterface = function(){
 		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
-		
-		that.performRequest(requestUrl, requestParameters, loader, successCallBack, 
-				failureCallBack, successCallBackParameters, failureCallBackParameters, 
+
+		that.performRequest(requestUrl, requestParameters, loader, successCallBack,
+				failureCallBack, successCallBackParameters, failureCallBackParameters,
 				async, requestType, contentType, dataType);
 	};
-	
+
 	this.postJSON = function(requestUrl, options ){
-		var options = options ? options : {};		
+		var options = options ? options : {};
 		var requestType = "POST";
 		var contentType = 'application/json';
 		var dataType = 'json';
@@ -32,17 +32,17 @@ var WebServiceInterface = function(){
 		var async = options["async"] ? options["async"] : true;
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
-		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;	
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
-		
-		that.performRequest(requestUrl, requestParameters, loader, successCallBack, 
-				failureCallBack, successCallBackParameters, failureCallBackParameters, 
+
+		that.performRequest(requestUrl, requestParameters, loader, successCallBack,
+				failureCallBack, successCallBackParameters, failureCallBackParameters,
 				async, requestType, contentType, dataType);
 	};
-	
+
 	this.putJSON = function(requestUrl, options ){
-		var options = options ? options : {};		
+		var options = options ? options : {};
 		var requestType = "PUT";
 		var contentType = 'application/json';
 		var dataType = 'json';
@@ -50,13 +50,13 @@ var WebServiceInterface = function(){
 		var async = options["async"] ? options["async"] : true;
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
-		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;	
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
-		
-		that.performRequest(requestUrl, requestParameters, loader, successCallBack, 
-				failureCallBack, successCallBackParameters, failureCallBackParameters, 
-				async, requestType, contentType, dataType);			
+
+		that.performRequest(requestUrl, requestParameters, loader, successCallBack,
+				failureCallBack, successCallBackParameters, failureCallBackParameters,
+				async, requestType, contentType, dataType);
 	};
 
 	this.deleteJSON = function(requestUrl, options ){
@@ -69,13 +69,13 @@ var WebServiceInterface = function(){
 		var async = options["async"] ? options["async"] : true;
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
-		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;	
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
-		
-		that.performRequest(requestUrl, requestParameters, loader, successCallBack, 
-				failureCallBack, successCallBackParameters, failureCallBackParameters, 
-				async, requestType, contentType, dataType);			
+
+		that.performRequest(requestUrl, requestParameters, loader, successCallBack,
+				failureCallBack, successCallBackParameters, failureCallBackParameters,
+				async, requestType, contentType, dataType);
 	};
 
 	this.getHTML = function(requestUrl, options){
@@ -87,17 +87,17 @@ var WebServiceInterface = function(){
 		var async = options["async"] ? options["async"] : true;
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
-		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;	
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
-		 
-		that.performRequest(requestUrl, requestParameters, loader, successCallBack, 
-				failureCallBack, successCallBackParameters, failureCallBackParameters, 
-				async, requestType, contentType, dataType);	
+
+		that.performRequest(requestUrl, requestParameters, loader, successCallBack,
+				failureCallBack, successCallBackParameters, failureCallBackParameters,
+				async, requestType, contentType, dataType);
 	};
-	
+
 	this.postHTML = function(requestUrl, options ){
-		var options = options ? options : {};		
+		var options = options ? options : {};
 		var requestType = "POST";
 		var contentType = 'text/html';
 		var dataType = 'html';
@@ -105,23 +105,23 @@ var WebServiceInterface = function(){
 		var async = options["async"] ? options["async"] : true;
 		var loader = options["loader"] ? options["loader"] : that.defaultLoader;
 		var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
-		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;	
+		var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
 		var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
 		var failureCallBackParameters = options["failureCallBackParameters"] ? options["failureCallBackParameters"] : null;
-		
-		that.performRequest(requestUrl, requestParameters, loader, successCallBack, 
-				failureCallBack, successCallBackParameters, failureCallBackParameters, 
-				async, requestType, contentType, dataType);			
-	};	
+
+		that.performRequest(requestUrl, requestParameters, loader, successCallBack,
+				failureCallBack, successCallBackParameters, failureCallBackParameters,
+				async, requestType, contentType, dataType);
+	};
 
 	this.createErrorMessage = function(jqXHR, textStatus, errorThrown){
 		var errorMessage = '';
 		if (textStatus === 'parsererror') {
 			errorMessage = 'Requested JSON parse failed.';
-              } 
+              }
 		else if (textStatus === 'timeout') {
 			errorMessage = 'Time out error.';
-			} 
+			}
 		else if (textStatus === 'abort') {
 			errorMessage = 'Ajax request aborted.';
 			}
@@ -130,44 +130,46 @@ var WebServiceInterface = function(){
 		}else if (jqXHR.status == 404) {
 			errorMessage = 'Requested page not found. [404]';
 		}else if (jqXHR.status == 500) {
-			errorMessage = 'Internal Server Error [500].';			
+			errorMessage = 'Internal Server Error [500].';
+		}else if (jqXHR.status == 520) {
+			errorMessage = 'OWS Connectivity Error';
 		}
 		else {
 			errorMessage = 'Uncaught Error.\n [' + jqXHR.status + '] ' + errorThrown;
-		}	
+		}
 		return errorMessage;
 	};
-	
-	this.performRequest = function(requestUrl, requestParameters, loader, 
-			successCallBack, failureCallBack, successCallBackParameters, failureCallBackParameters, 
-			async, requestType, contentType, dataType){	
+
+	this.performRequest = function(requestUrl, requestParameters, loader,
+			successCallBack, failureCallBack, successCallBackParameters, failureCallBackParameters,
+			async, requestType, contentType, dataType){
        if(typeof requestParameters === 'undefined'){
                requestParameters = {};
-       } 
+       }
        if(typeof loader === 'undefined'){
                loader = 'BLOCKER';
-       }  
+       }
        if(typeof successCallBack === 'undefined'){
                successCallBack = null;
-       }       
+       }
        if(typeof failureCallBack === 'undefined'){
                failureCallBack = null;
-       } 
+       }
        if(typeof async === 'undefined'){
                async = true;
-       }       
+       }
        if(typeof requestType === 'undefined'){
                requestType = 'GET';
-       }  
+       }
        if(typeof contentType === 'undefined'){
                contentType = 'application/json';
-       }       
+       }
        if(typeof dataType === 'undefined'){
                dataType = 'json';
-       }  
-       
+       }
+
 		if(requestType == 'GET') {
-			if(requestParameters && typeof(requestParameters) !== 'object') {	
+			if(requestParameters && typeof(requestParameters) !== 'object') {
 				if(requestUrl.indexOf("?") == -1)
 					requestUrl = requestUrl + "?" + requestParameters; //Expand
 				else
@@ -176,10 +178,10 @@ var WebServiceInterface = function(){
 			else{
 
 				var parameters = "";
-				if(requestParameters && typeof(requestParameters) === 'object'){					
+				if(requestParameters && typeof(requestParameters) === 'object'){
 					for (var key in requestParameters) {
 						  if (requestParameters.hasOwnProperty(key)) {
-							  parameters += key + "=" + requestParameters[key] + "&";							    
+							  parameters += key + "=" + requestParameters[key] + "&";
 						  }
 					}
 					//removing  the last character '&'
@@ -189,7 +191,7 @@ var WebServiceInterface = function(){
 
 				}
 				if(parameters.trim() != ""){
-					if(requestUrl.indexOf("?") == -1){					
+					if(requestUrl.indexOf("?") == -1){
 						requestUrl = requestUrl + "?" + parameters;
 					}
 					else{
@@ -205,14 +207,14 @@ var WebServiceInterface = function(){
 				sntapp.notification.hideMessage();
 				sntapp.activityIndicator.showActivityIndicator(loader);
 			},
-			
+
 			url: requestUrl,
 			data: requestParameters,
 			type: requestType,
 			dataType: dataType,
 			async: async,
 			timeout: that.timeout,
-			
+
 			success: function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
 				if(dataType.toLowerCase() === 'json'){
@@ -230,8 +232,8 @@ var WebServiceInterface = function(){
 								successCallBack(data);
 							}					}
 					}
-					else{						
-						if(failureCallBack) {	
+					else{
+						if(failureCallBack) {
 							if(failureCallBackParameters){
 								failureCallBack(data.errors, failureCallBackParameters);
 							}
@@ -251,15 +253,39 @@ var WebServiceInterface = function(){
 						}
 						else{
 							successCallBack(data);
-						}						
+						}
 					}
 				}
 			},
 			error: function(jqXHR, textStatus, errorThrown){
-                if (jqXHR.status=="401") { sntapp.logout(); return;}
-				sntapp.activityIndicator.hideActivityIndicator();				
+                var urlEndsWith = requestUrl.split('/')[requestUrl.split('/').length - 1];
+                
+                if (jqXHR.status=="520" && urlEndsWith != "test_pms_connection") {
+					sntapp.activityIndicator.hideActivityIndicator();
+                	sntapp.showOWSErrorPopup();
+                	return;
+                }
 
-				if(failureCallBack) {	
+                if (jqXHR.status=="401") { sntapp.logout(); return;}
+                if (jqXHR.status=="501" || jqXHR.status=="502" || jqXHR.status=="503") {
+
+                    location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
+                    return;
+                }
+
+                if(jqXHR.status=="422"){
+                    location.href = XHR_STATUS.REJECTED;
+                    return;
+                }
+
+                if(jqXHR.status=="404"){
+                    location.href = XHR_STATUS.SERVER_DOWN;
+                    return;
+                }
+
+				sntapp.activityIndicator.hideActivityIndicator();
+
+				if(failureCallBack) {
 					var errorMessage = that.createErrorMessage(jqXHR, textStatus, errorThrown);
 					if(failureCallBackParameters){
 						failureCallBack(errorMessage, failureCallBackParameters);
@@ -273,7 +299,7 @@ var WebServiceInterface = function(){
 					sntapp.notification.showErrorMessage(that.createErrorMessage(jqXHR, textStatus, errorThrown));
 				}
 			}
-			
+
 		});
 	};
 

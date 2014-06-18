@@ -20,9 +20,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate ), 'yyyy-MM-dd');
             $scope.setDepartureDate();
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
-            $scope.otherData.maxAdults = (baseSearchData.settings.max_guests.max_adults === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_adults;
-            $scope.otherData.maxChildren = (baseSearchData.settings.max_guests.max_children === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_children;
-            $scope.otherData.maxInfants = (baseSearchData.settings.max_guests.max_infants === null) ? defaultMaxvalue : baseSearchData.settings.max_guests.max_infants;
+            var guestMaxSettings = baseSearchData.settings.max_guests;
+            $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
+            $scope.otherData.maxChildren = (guestMaxSettings.max_children === null || guestMaxSettings.max_children === '') ? defaultMaxvalue : guestMaxSettings.max_children;
+            $scope.otherData.maxInfants = (guestMaxSettings.max_infants === null || guestMaxSettings.max_infants === '') ? defaultMaxvalue : guestMaxSettings.max_infants;
             $scope.otherData.fromSearch = true;
         };
 
@@ -37,24 +38,27 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
         }
 
+        $scope.setNumberOfNights = function(){
+
+            var arrivalDate = new Date($scope.reservationData.arrivalDate);
+            arrivalDay = arrivalDate.getDate();
+            var departureDate = new Date($scope.reservationData.departureDate);
+            departureDay = departureDate.getDate();
+            var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
+            $scope.reservationData.numNights = dayDiff;
+        }
+
         $scope.arrivalDateChanged = function() {
             $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
             $scope.setDepartureDate();
+            $scope.setNumberOfNights();
         };
 
 
         $scope.departureDateChanged = function() {
             $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
-
-            var arrivalDate = new Date($scope.reservationData.arrivalDate);
-            arrivalDay = arrivalDate.getDate();
-
-            var departureDate = new Date($scope.reservationData.departureDate);
-            departureDay = departureDate.getDate();
-
-            var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
-
-            $scope.reservationData.numNights = dayDiff + 1;
+            $scope.setNumberOfNights();
+            
         };
 
         /*
@@ -79,6 +83,31 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             }, successCallBack);
         };
 
+        /**
+        *   Validation conditions
+        *
+        *   Either adults or children can be 0,
+        *   but one of them will have to have a value other than 0. 
+        *   
+        *   Infants should be excluded from this validation.
+        */
+        $scope.validateOccupant = function(room, from) {
+
+            // just in case
+            if ( !room ) {
+                return;
+            };
+
+            var numAdults   = parseInt( room.numAdults ),
+                numChildren = parseInt( room.numChildren );
+
+            if ( from === 'adult' && (numAdults === 0 && numChildren === 0) ) {
+                room.numChildren = 1;
+            } else if ( from === 'children' && (numChildren === 0 && numAdults === 0) ) {
+                room.numAdults = 1;
+            }
+        };
+
         var displayFilteredResults = function() {
             if ($scope.companySearchText != '' && $scope.companyLastSearchText != $scope.companySearchText) {
 
@@ -86,7 +115,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                     $scope.$emit("hideLoader");
 
                     angular.forEach(data.accounts, function(item) {
-                        var eachItem = {};
+                        var eachItem = {},
+                            hasItem = false;
+
                         eachItem = {
                             label: item.account_first_name + " " + item.account_last_name,
                             value: item.account_first_name + " " + item.account_last_name,
@@ -98,12 +129,21 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                             corporateid: '',
                             iataNumber: ''
                         };
-                        $scope.companyCardResults.push(eachItem);
+                        
+                        // making sure that the newly created 'eachItem'
+                        // doesnt exist in 'companyCardResults' array
+                        // so as to avoid duplicate entry
+                        hasItem = _.find($scope.companyCardResults, function(item) {
+                            return eachItem.id === item.id;
+                        });
+                        
+                        // yep we just witnessed an loop inside loop, its necessary
+                        // worst case senario - too many results and 'eachItem' is-a-new-item
+                        // will loop the entire 'companyCardResults'
+                        if ( !hasItem ) {
+                            $scope.companyCardResults.push(eachItem);
+                        };
 
-                        // remove duplicates
-                        // and woohoo it worked
-                        // thanks again underscore.js
-                        $scope.companyCardResults = _.unique($scope.companyCardResults);
                     });
                 };
                 var paramDict = {

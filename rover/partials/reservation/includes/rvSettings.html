@@ -1,6 +1,6 @@
 
 <div id="reservations-settings" class="sidebar-left" role="complementary" ng-controller="RVReservationSettingsCtrl"  ui-jq="resizable" ui-options="resizableOptions" ng-click="clickedOnReservationSettings($event)" style="width: {{reservationSettingsWidth}}px;">
-<div class="scrollable"  ng-iscroll="reservation-settings" ng-iscroll-delay="500">
+<div class="scrollable"  ng-iscroll="reservation-settings" ng-iscroll-delay="500" >
     <div class="wrapper" >
         <div ui-jq="accordion" ui-options="accordionInitiallyNotCollapsedOptions">
             <a class="settings-title toggle has-arrow active" >
@@ -31,7 +31,7 @@
                     <div class="select adults">
                         <label for="room-{{index+1}}-adults" class="label" translate>ADULTS</label>
                         <select name="room-{{index+1}}-adults" id="room-{{index+1}}-adults" ng-model="room.numAdults">
-                            <option ng-repeat="i in [1, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
+                            <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
                         </select>
                     </div>
                     <div class="select children">
@@ -147,6 +147,7 @@
                         <label for="reservation-type" translate>RESERVATION_TYPE_LABEL</label>
                         <div class="select">
                             <select name="reservation-type" id="reservation-type" class="placeholder" ng-model="reservationData.demographics.reservationType">
+                                <option value="" translate>RESERVATION_TYPE_PLACEHOLDER</option>
                                 <option ng-repeat="reservationType in otherData.reservationTypes" value="{{reservationType.value}}" ng-selected="reservationType.value==reservationData.demographics.reservationType">{{reservationType.name}}</option>
                             </select>
                         </div>
@@ -155,6 +156,7 @@
                         <label for="market" translate>MARKET_LABEL</label>
                         <div class="select">
                             <select name="market" id="market" class="placeholder" ng-model="reservationData.demographics.market">
+                                <option value="" translate>MARKET_PLACEHOLDER</option>
                                 <option ng-repeat="market in otherData.markets" value="{{market.value}}" ng-selected="market.value==reservationData.demographics.market">{{market.name}}</option>
                             </select>
                         </div>
@@ -163,6 +165,7 @@
                         <label for="source" translate>SOURCE_LABEL</label>
                         <div class="select">
                             <select name="source" id="source" class="placeholder" ng-model="reservationData.demographics.source">
+                                <option value="" translate>SOURCE_PLACEHOLDER</option>
                                 <option ng-repeat="source in otherData.sources" value="{{source.value}}" ng-selected="source.value==reservationData.demographics.source">{{source.name}}</option>
                             </select>
                         </div>
@@ -171,6 +174,7 @@
                         <label for="origin" translate>ORIGIN_BOOKING_LABEL</label>
                         <div class="select">
                             <select name="origin" id="origin" class="placeholder" ng-model="reservationData.demographics.origin">
+                                <option value="" translate>ORIGIN_BOOKING_PLACEHOLDER</option>
                                 <option ng-repeat="origin in otherData.origins" value="{{origin.value}}" ng-selected="origin.value==reservationData.demographics.origin">{{origin.name}}</option>
                             </select>
                             </select>

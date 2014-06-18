@@ -16,7 +16,15 @@ sntRover.config([
             abstract: true,
             url: '/staff',
             templateUrl: '/assets/partials/rvRover.html',
-            controller: 'roverController'
+            controller: 'roverController',
+            resolve: {
+                hotelDetails: function(RVHotelDetailsSrv) {
+                    return RVHotelDetailsSrv.fetchHotelDetails();
+                },
+                userInfoDetails: function(RVDashboardSrv) {
+                    return RVDashboardSrv.fetchUserInfo();
+                }
+            }
         });
         
         $stateProvider.state('rover.dashboard', {
@@ -164,7 +172,12 @@ sntRover.config([
         $stateProvider.state('rover.reservation.mainCard.addons', {
             url: '/addons',
             templateUrl: '/assets/partials/reservation/rvAddonsList.html',
-            controller: 'RVReservationAddonsCtrl'
+            controller: 'RVReservationAddonsCtrl',
+            resolve: {
+                addonData: function(RVReservationAddonsSrv) {
+                    return RVReservationAddonsSrv.fetchAddonData();
+                }
+            }
         });
 
         $stateProvider.state('rover.reservation.mainCard.summaryAndConfirm', {

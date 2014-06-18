@@ -34,7 +34,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	     // console.log(JSON.stringify(reservationBillData));
 		$scope.reservationBillData = reservationBillData;
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
-		$scope.incomingRoutingArrayCount = $scope.reservationBillData.routing_array.length;
+		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
 		//Variables used to calculate height of the wrapper.To do scroll refresh
 		if(reservationBillData.bills[0].total_fees.length > 0){
 			countFeesElements = parseInt(reservationBillData.bills[0].total_fees[0].fees_details.length)+parseInt(5);//1 - For heading, 2 for totl fees and balance, 2 for guest balnce and creditcard
@@ -42,7 +42,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 			countFeesElements = parseInt(5);
 		}
 		
-		var totalHeight = parseInt(countFeesElements*64)+calenderDaysHeight+billTabHeight+roomTypeDescriptionLength;
+		var totalHeight = parseInt(countFeesElements*67)+calenderDaysHeight+billTabHeight+roomTypeDescriptionLength;
 		$scope.calculatedHeight = totalHeight;
 	};
 	$scope.init(reservationBillData);
@@ -65,6 +65,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	$scope.moveToBill = 0;
 	//Variable used to show signed signature
 	$scope.showSignedSignature = false;
+	$scope.showBillingInfo = false;
+	$scope.showIncomingBillingInfo = false;
 	/*
 	 * Adding class for active bill
 	 */
@@ -75,6 +77,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 			activeBillClass = "ui-tabs-active ui-state-active";
 		}
 		return activeBillClass;
+		
 	};
 	/*
 	 * Remove class hidden for day rates
@@ -99,6 +102,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 		}
 		$scope.showAddonIndex = -1;
 		$scope.showGroupItemIndex = -1;
+		$scope.calculateHeightAndRefreshScroll();
 		
 	};
 	/*
@@ -113,6 +117,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 		$scope.$parent.myScroll['registration-content'].refresh();
 		$scope.currentActiveBill = billIndex;
 		$scope.showActiveBillFeesDetails = billIndex;
+		$scope.calculateHeightAndRefreshScroll();
 	};
 	/*
 	 * Show Addons
@@ -122,6 +127,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 		$scope.showAddonIndex = ($scope.showAddonIndex != addonIndex)?addonIndex:-1;
 		$scope.dayRates = -1;
 		$scope.showGroupItemIndex = -1;
+		$scope.calculateHeightAndRefreshScroll();
 	};
 	/*
 	 * Show Group Items
@@ -131,6 +137,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 		$scope.dayRates = -1;
 		$scope.showGroupItemIndex = ($scope.showGroupItemIndex != groupIndex)?groupIndex:-1;
 		$scope.showAddonIndex = -1;
+		$scope.calculateHeightAndRefreshScroll();
 	};
 	/*
 	 * Show Room Details 
@@ -143,6 +150,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 		} else {
 			$scope.showRoomDetailsIndex = roomDetailsIndex;
 		}
+		$scope.calculateHeightAndRefreshScroll();
 	};
 	/*
 	 * To get class of balance red/green
@@ -169,6 +177,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	 };
 	 $scope.toggleFeesDetails = function(billIndex){
 	 	 $scope.reservationBillData.bills[billIndex].isOpenFeesDetails = !$scope.reservationBillData.bills[billIndex].isOpenFeesDetails;
+	 	 $scope.calculateHeightAndRefreshScroll();
 	 };
 	 /*
 	  * Success callback of fetch - After moving fees item from one bill to another
@@ -405,6 +414,46 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 		}
 		return dayClass;
 	};
+	$scope.showBillingInfoHandle = function(){
+		$scope.showBillingInfo = !$scope.showBillingInfo;
+	};
+	$scope.showIncomingBillingInfoHandle = function(){
+		$scope.showIncomingBillingInfo = !$scope.showIncomingBillingInfo ;
+	};
+	
+	
+	
+	
+	
+	$scope.calculateHeightAndRefreshScroll = function(){
+		 
+		var height = 0;
+		if($scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails){
+			countFeesElements = parseInt(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details.length)+parseInt(7);
+			height = parseInt(height) + parseInt(countFeesElements*67);
+		}
+		if($scope.showRoomDetailsIndex!=-1){
+			height = parseInt(height) + parseInt(billTabHeight) + parseInt(roomTypeDescriptionLength);
+		}
+		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
+		
+		if($scope.routingArrayCount>0){
+			height = parseInt(height) + parseInt($scope.routingArrayCount * 25);
+		}
+		if($scope.incomingRoutingArrayCount>0){
+			height = parseInt(height) + parseInt($scope.incomingRoutingArrayCount * 25);
+		}
+		// if()
+		// var totalHeight = calenderDaysHeight+billTabHeight+roomTypeDescriptionLength;
+		$scope.calculatedHeight = height;
+		setTimeout(function(){
+			$scope.$parent.myScroll['registration-content'].refresh();
+			}, 
+		600);
+		
+	};
+	
+	
 	
 		//{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date,'active': days.date != reservationBillData.checkout_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}
 }]);

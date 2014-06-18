@@ -1,5 +1,5 @@
 
-sntRover.controller('reservationDetailsController',['$scope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv','$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', function($scope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv,$filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv){
+sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVReservationCardSrv',  '$stateParams', 'reservationListData','reservationDetails', 'ngDialog', 'RVSaveWakeupTimeSrv','$filter', 'RVNewsPaperPreferenceSrv', 'RVLoyaltyProgramSrv', function($scope, $rootScope, RVReservationCardSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv,$filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv){
 
 	BaseCtrl.call(this, $scope);
 	$scope.reservationCardSrv = RVReservationCardSrv;

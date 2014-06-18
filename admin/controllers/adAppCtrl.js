@@ -7,6 +7,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		BaseCtrl.call(this, $scope);
 		$scope.menuOpen = false;
 		$scope.hotelListOpen = '';
+		$scope.isStandAlone = false;
 
 		$scope.dragStart = false;
 		$scope.selectedIndex = 0;
@@ -59,7 +60,8 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			iconClass: "icon-frontdesk",
 			submenu: [{
 				title: "MENU_CREATE_RESERVATION",
-				action: "staff#/staff/reservation/search"
+				action: "staff#/staff/reservation/search",
+				standAlone : true
 			}, {
 				title: "MENU_ROOM_ASSIGNMENT",
 				action: ""
@@ -329,12 +331,15 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		 * @param {object} response
 		 */
 		$scope.fetchHotelDetailsSuccessCallback = function(data) {
-
 			if (data.language)
 				$translate.use(data.language.value);
 			else
 				$translate.use('EN');
+			//set flag if standalone PMS
+			if (data.pms_type === null)
+				$scope.isStandAlone = true;
 			$scope.$emit('hideLoader');
+
 		};
 		/*
 		 * Function to get the current hotel language
