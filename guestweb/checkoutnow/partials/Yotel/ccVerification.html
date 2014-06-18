@@ -1,27 +1,27 @@
-<!-- contentarea starts here-->
+	<!-- contentarea starts here-->
 
-<div class="jumbotron">
+	<div class="jumbotron">
 
-	<div class="container backgroundbg" >
-		<div class="container-fluid">
-			<div class="row headerrow">
-				<logo-image></logo-image>
+		<div class="container backgroundbg" >
+			<div class="container-fluid">
+				<div class="row headerrow">
+					<logo-image></logo-image>
+				</div>
 			</div>
-		</div>
 
 
-<!--	 show posting message 
-<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
-<p class="msg-head">Your request is being processed.</p>
-<p class="msg-body">This may take a few seconds..... please wait!</p>
-</div>
+	<!--	 show posting message 
+	<div ng-show="isPosting && !netWorkError" class="checkout-status centeralign checkout-now-status" >
+	<p class="msg-head">Your request is being processed.</p>
+	<p class="msg-body">This may take a few seconds..... please wait!</p>
+	</div>
 
-<!--	show error message 
+	<!--	show error message 
 
-<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
-<p class="msg-head">Our apologies, something went wrong, please complete your check in at our front desk.</p>
-<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
-</div>
+	<div ng-show="netWorkError" class="checkout-status centeralign checkout-now-status">
+	<p class="msg-head">Our apologies, something went wrong, please complete your check in at our front desk.</p>
+	<p class="msg-body">You can also call the hotel at <a href="tel: {{hotelPhone}}"class="white-alert-link-tag">{{hotelPhone}}.</a></p>
+	</div>
 
 -->
 
@@ -60,31 +60,33 @@
 				<div class="row" style="padding-top:5%;">
 					<div style="float:left;width:49%;">
 						<p class="cabin_number_text">Expiration Date</p>
-						<select style="width:100%;"
-						ng-model="monthSelected"
-						ng-options="month.value as month.name for month in months">
-						<option>Month</option>
-					</select> 
+
+						<div class="select-style">
+							<select style="width:100%;"
+							ng-model="monthSelected"
+							ng-options="month.value as month.name for month in months">
+							<option value="">Month</option>
+						</select>
+					</div>
 				</div>
 				<div style="float:right;width:49%;margin-left:2%">
 					<p class="cabin_number_text">&nbsp;</p>
-					<select style="width:100%;"
-					ng-model="yearSelected"
-					ng-options="year as year  for year in years">
-					<option>Year</option>
-				</select>
+					<div class="select-style">
+						<select style="width:100%;"
+						ng-model="yearSelected"
+						ng-options="year as year  for year in years">
+						<option value="">Year</option>
+					</select>
+				</div>
 			</div>
-		</div>
 
 
-		<button class="checkin-button continue-button" ng-click="goToNextStep()">
-			<span class="continue-text">Continue</span>
-		</button>
+			<button class="checkin-button continue-button" ng-click="goToNextStep()">
+				<span class="continue-text">Continue</span>
+			</button>
 
-
-
-	</form>
-</div>
+		</form>
+	</div>
 </div>
 <!-- checkinbtn section ends here-->
 </div>
