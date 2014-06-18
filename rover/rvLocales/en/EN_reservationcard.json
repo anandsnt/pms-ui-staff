@@ -34,6 +34,8 @@
     "HOTEL_LOYALTY_LABEL":"Hotel Loyalty Program",
     "HOTEL_LOYALTY_SELECT":"Select Hotel Loyalty",
     "HOTEL_LOYALTY_ADD_BUTTON":"+ Add",
+    "FREQUENT_FLYER_PROGRAM": "Frequent Flyer Program",
+    "HOTEL_LOYALTY_PROGRAM" : "Hotel Loyalty Program",
     "DEFAULT_NOTE_TOPIC":"GENERAL",
     "CLOSE": "Close",
     "PRINT_ROOM_KEY" : "Print Room Key",
