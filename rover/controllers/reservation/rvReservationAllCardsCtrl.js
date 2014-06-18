@@ -22,6 +22,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
     $scope.travelAgentCity = '';
     $scope.travelAgentIATA = '';
 
+    $scope.cardHeaderImage = '/assets/avatar-trans.png';
+
     /**
     * scroller options
     */
@@ -149,6 +151,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     guestData.id = item.id;
                     guestData.firstName = item.first_name;
                     guestData.lastName = item.last_name;
+                    guestData.image = item.image_url;
                     if ( item.address != null ){
                         guestData.address = {};
                         guestData.address.city = item.address.city;
@@ -187,6 +190,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         $scope.guestFirstName = guest.firstName;
         $scope.guestLastName = guest.lastName;
         $scope.guestCity = guest.address.city;
+        $scope.cardHeaderImage = guest.image;
         $scope.closeGuestCard();
     }
 

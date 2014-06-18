@@ -7,7 +7,7 @@
             <!-- Guest Card -->
             <div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')">
                 <figure class="guest-image" ng-click="switchCard('guest-card')">
-                    <img src="/assets/avatar-trans.png" alt="" />
+                    <img src="{{ cardHeaderImage }}" alt="" />
                     <span class="search-indicator"></span>
                 </figure>
                 <form method="get" action="" name="search-guests" id="search-guests" class="card-search-form" role="search">
