@@ -1,4 +1,5 @@
-hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', '$log', function($rootScope, $scope, $state){
+hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', '$log', 'ngDialog',
+    function($rootScope, $scope, $state, ngDialog){
     $scope.hasLoader = false;
     $scope.menuOpen = false;
     $scope.filterOpen = false;
@@ -67,7 +68,12 @@ hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', '$log', functi
     $rootScope.$on('showOWSError', function(){
         // Hide loading message
         $scope.$emit('hideLoader');
-        //TODO: ng-dialog
+        ngDialog.open({
+            template: '/assets/partials/hkOWSError.html',
+            className: popupClassName,
+            closeByDocument: true,
+            scope: $scope
+        });
     });
     
 }]);

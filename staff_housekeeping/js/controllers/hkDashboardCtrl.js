@@ -10,6 +10,10 @@ hkRover.controller('HKDashboardCtrl',['$scope', 'dashboardData',  function($scop
 			e.stopPropagation();
 		});
 
+	$scope.test = function(){
+		alert("show popup");
+	}
+
 }]);
 
     
