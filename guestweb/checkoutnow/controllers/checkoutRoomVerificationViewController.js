@@ -1,5 +1,5 @@
 (function() {
-	var checkoutRoomVerificationViewController = function($scope,$rootScope,$state,$modal) {
+	var checkoutRoomVerificationViewController = function($scope,$rootScope,$state,$modal,checkoutRoomVerificationService) {
 
 	$scope.pageValid = false;
 	$scope.roomNumber = "";
@@ -27,20 +27,26 @@
 
 		//TO DO:
 		//
+		var url = '/guest_web/verify_room.json';
+		var data = {'reservation_id':$rootScope.reservationID,"room_number":$scope.roomNumber};
 
-		if($scope.roomNumber === "300"){
-			$rootScope.isRoomVerified =  true;
-			if($rootScope.isLateCheckoutAvailable ){
-					$state.go('checkOutOptions');
-		    }else {
-		    	$state.go('checkOutConfirmation');	
+		checkoutRoomVerificationService.verifyRoom(url,data).then(function(response) {
+			if(response.status ==="success"){
+				$rootScope.isRoomVerified =  true;
+				if($rootScope.isLateCheckoutAvailable ){
+						$state.go('checkOutOptions');
+			    }else {
+			    	$state.go('checkOutConfirmation');	
+				}
 			}
-		}
-		else{
+			else{
+				$modal.open($scope.opts); // error modal popup
+			}
+			
+		},function(){
 			$modal.open($scope.opts); // error modal popup
-		}
-
-	
+			
+		});	
 	};
 
 	
@@ -48,7 +54,7 @@
 }
 
 var dependencies = [
-'$scope','$rootScope','$state','$modal',
+'$scope','$rootScope','$state','$modal','checkoutRoomVerificationService',
 checkoutRoomVerificationViewController
 ];
 
@@ -61,5 +67,12 @@ snt.controller('checkoutRoomVerificationViewController', dependencies);
 	var roomVerificationErrorModalCtrl = function ($scope, $modalInstance) {
 		$scope.closeDialog = function () {
 			$modalInstance.dismiss('cancel');
+		};
+		$scope.goToBrowserHomePage = function(){
+			if (window.home) {
+                window.home ();
+            } else {        // Internet Explorer
+                document.location.href = "about:home";
+            }
 		};
 	};
