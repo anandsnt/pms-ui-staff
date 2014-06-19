@@ -5,14 +5,14 @@
          <a id="upgrade-back-button" class="back-button" ui-sref="rover.staycard.reservationcard.reservationdetails({id:reservationData.reservation_card.reservation_id, confirmationId:reservationData.reservation_card.confirmation_num})" class="back-button"> Back </a>
       </div>
       <div class="data">
-         <span class="room" data-room-status="NOTREADY" data-reserv-status="CHECKING_IN" data-fostatus="">
+         <span class="room" >
          <span class="guest-status room">room</span>
-         <strong id="header-room-num" class="room-number room-red"> </strong>
-         <span id="room-type" data-room-type="DLT"> {{headerData.room_number}} </span>
+         <span id="header-room-num" class="room-number" ng-class="getRoomStatusClass()"> {{headerData.room_number}}</span>
+         <span id="room-type" > {{headerData.room_type_name}} </span>
          </span>
          <span class="nights">
          <span class="guest-status nights"></span>
-         {{headerData.total_nights}} nights
+         {{headerData.total_nights+" "+setNightsText()}} 
          </span>
          <span class="date">
          <span class="guest-status small-icon check-in">check-in</span>
@@ -27,8 +27,8 @@
    <div class="wrapper">
       <div id="notification-message" ng-include="'/assets/partials/common/notification_message.html'"></div>
       <div class="room-assignment-content only-upgrades">
-         <div id="room-upgrades" class="upgrades scrollable">
-            <ul  class="wrapper" style="width: 930px;" >
+         <div id="room-upgrades" class="upgrades scrollable" ng-iscroll='upgradesView' ng-iscroll-delay='50' style="width:100%;">
+            <ul id="upgradesView"  class="wrapper" style="width:{{getHorizontalScrollWidth()}}px;">
                <li ng-repeat = "upgrade in upgradesList">
                   <div class="upgrade-title">
                      <span class="room-number ready"> {{upgrade.upgrade_room_number}} </span>
@@ -48,7 +48,7 @@
                   </figure>
                </li>
                
-            </ul>
+            </ul></div>
             <div class="iScrollHorizontalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;">
                <div class="iScrollIndicator" style="transition-duration: 0ms; display: none; width: 8px; transform: translate(-8px, 0px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div>
             </div>

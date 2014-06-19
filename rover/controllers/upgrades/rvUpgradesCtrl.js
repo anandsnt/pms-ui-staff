@@ -5,6 +5,8 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 	
 	$scope.$parent.myScrollOptions = {		
 	    'upgradesView': {
+	    	scrollX:true,
+	    	scrollY:false,
 	    	scrollbars: true,
 	        snap: false,
 	        hideScrollbar: false,
@@ -23,10 +25,10 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 			$scope.headerData = data.header_details;
 			$scope.setUpgradesDescriptionInitialStatuses();
 			$scope.$emit('hideLoader');
-			// setTimeout(function(){
-			// 	$scope.$parent.myScroll['upgradesView'].refresh();
-			// 	}, 
-			// 3000);
+			setTimeout(function(){
+				$scope.$parent.myScroll['upgradesView'].refresh();
+				}, 
+			3000);
 		};
 		var errorCallbackgetAllUpgrades = function(error){
 			$scope.$emit('hideLoader');
@@ -72,6 +74,23 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 		
 		$state.go("rover.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num});
 		
+	};
+	$scope.getRoomStatusClass = function(){
+		var reservationRoomStatusClass = "";
+		if($scope.headerData.reservation_status == 'CHECKING_IN'){
+			if($scope.headerData.room_status == 'READY' && $scope.headerData.fo_status == 'VACANT'){
+				reservationRoomStatusClass = "ready";
+			} else {
+				reservationRoomStatusClass = "not-ready";
+			}
+		} 
+		return reservationRoomStatusClass;
+	};
+	$scope.setNightsText = function(){
+		return ($scope.headerData.total_nights == 1)?"night":"nights";
+	};
+	$scope.getHorizontalScrollWidth = function(){
+			return 465*$scope.upgradesList.length;
 	};
 	
 	

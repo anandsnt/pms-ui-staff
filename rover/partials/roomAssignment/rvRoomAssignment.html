@@ -9,9 +9,11 @@
 		</div>
 		<!-- Other header details -->
 		<div class="data">
-			<span data-room-status="READY" data-reserv-status="CHECKING_IN" data-fostatus="VACANT" class="room"> <span class="guest-status room">room</span> <strong id="header-room-num" class="room-number ready"> {{reservationData.reservation_card.room_number}} </strong> <span id="room-type" data-room-type="DLK"> {{reservationData.reservation_card.room_type_description}} </span> </span>
-			<span class="nights"> <span class="guest-status nights"></span> {{reservationData.reservation_card.total_nights}}
-				nights </span>
+			<span class="room"> <span class="guest-status room">room</span> 
+			<strong id="header-room-num" ng-class="getRoomStatusClass()" class="room-number"> {{reservationData.reservation_card.room_number}} </strong>
+			<span id="room-type" data-room-type="DLK"> {{reservationData.reservation_card.room_type_description}} </span> </span>
+			<span class="nights"> <span class="guest-status nights"></span> {{reservationData.reservation_card.total_nights + " " + setNightsText()}}
+				 </span>
 			<span class="date"> <span class="guest-status small-icon check-in">check-in</span> {{reservationData.reservation_card.arrival_date}} </span>
 			<span class="date"> <span class="guest-status small-icon check-out">check-out</span> {{reservationData.reservation_card.departure_date}} </span>
 		</div>

@@ -35,6 +35,18 @@ sntRover.service('RVUpgradesSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSr
 									"no_of_rooms": "130",
 									"max_adults": "",
 									"max_children": ""
+								},
+								{
+									"upsell_amount_id": "459",
+									"upgrade_room_number": "1038",
+									"upsell_amount": "50.00",
+									"upgrade_room_type": "STDK",
+									"upgrade_room_type_name": "Standard Room- King Bed",
+									"upgrade_room_description": "<ul><li>Standard Room- King Bed</li><li>Hair dryer</li></ul>",
+									"room_type_image": "https://8ebd8b3dcdf6d6f8887d-4d1e022461cbaa577307930af1386d20.ssl.cf2.rackcdn.com/CHA/DOZERQA/room_types/6/images/original/image20140307033524.png?1394184926",
+									"no_of_rooms": "130",
+									"max_adults": "",
+									"max_children": ""
 								}
 							],
 					"header_details": {
