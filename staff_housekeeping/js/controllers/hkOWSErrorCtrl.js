@@ -1,5 +1,4 @@
-hkRover.controller('HKOWSErrorCtrl', ['$scope', 'HKOWSTestSrv',
-										function($scope, HKOWSTestSrv) {
+hkRover.controller('HKOWSErrorCtrl', ['$scope', 'HKOWSTestSrv',function($scope, HKOWSTestSrv) {
 
 	/**
 	* Call API to test the OWS connection
