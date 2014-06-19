@@ -123,8 +123,12 @@ snt.controller('ccVerificationViewController', dependencies);
 
 // controller for the modal
 
-  var ccVerificationModalCtrl = function ($scope, $modalInstance) {
+  var ccVerificationModalCtrl = function ($scope, $modalInstance,$state) {
     $scope.closeDialog = function () {
       $modalInstance.dismiss('cancel');
+    };
+    $scope.cancelTransaction = function(){
+      $scope.closeDialog();
+      $state.go('checkOutOptions');
     };
   };
