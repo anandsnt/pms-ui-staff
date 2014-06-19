@@ -93,5 +93,12 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	$scope.setNightsText = function(){
 		return ($scope.reservationData.reservation_card.total_nights == 1)?"night":"nights";
 	};
+	$scope.isUpsellAvailable = function(){
+		var showUpgrade = false;
+		if(($scope.reservationData.reservation_card.isUpsellAvailable == 'true') && ($scope.reservationData.reservation_card.reservationStatus == 'RESERVED' || $scope.reservationData.reservation_card.reservationStatus == 'CHECKING_IN')){
+			showUpgrade = true;
+		}
+		return showUpgrade;
+	};
 	
 }]);

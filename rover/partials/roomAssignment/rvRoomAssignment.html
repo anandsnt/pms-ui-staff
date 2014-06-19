@@ -27,7 +27,7 @@
 			<div class="rooms-listing">
 				<!-- Room type search + reveal filters button -->
 				<div class="search float">
-					<a  class="button white with-icon only-icon toggle" ng-class="{'active':isFiltersVisible}"> <span class="icons icon-filter" ng-class="{'active':isFiltersVisible}" ng-click="toggleFiltersView()"></span> Room attributes </a>
+					<a  class="button white with-icon only-icon toggle" ng-class="{'active':isFiltersVisible}" ng-click="toggleFiltersView()"> <span class="icons icon-filter" ng-class="{'active':isFiltersVisible}" ></span> Room attributes </a>
 					<div class="select">
 						<select ng-model="roomType" ng-change="getRooms()" name="room-type" id="room-type-selectbox">
 							<!-- %option.placeholder{value: "all-types"} All room types -->
@@ -53,10 +53,10 @@
 				</div>
 			</div>
 
-			<div ng-include="'assets/partials/roomAssignment/rvUpgrades.html'" ng-show="true" ng-controller="RVUpgradesCtrl"> </div>
+			<div ng-include="'assets/partials/roomAssignment/rvUpgrades.html'" ng-show="isUpsellAvailable()" ng-controller="RVUpgradesCtrl"> </div>
 			<!-- Upgrades available -->
 			<!-- No upgrades -->
-			<div class="upgrades no-content" ng-show="false">
+			<div class="upgrades no-content" ng-show="!isUpsellAvailable()">
 				<div class="info">
 					<span class="icon-no-content icon-upgrades"></span>
 					<strong class="h1" translate>UPGRADES_NOT_AVAILABLE_LABEL</strong>
