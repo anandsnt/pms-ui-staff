@@ -102,6 +102,17 @@ sntRover.controller('reservationActionsController',
 			$scope.closeDialog = function() {
 				ngDialog.close();
 			};
+			
+			$scope.goToCheckin = function(){
+				
+				if($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null){
+					ngDialog.open({
+		        		template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
+		        		controller: 'RVValidateEmailPhoneCtrl',
+		        		scope: $scope
+		        	});
+				}
+			};
 		
 		}
 	]

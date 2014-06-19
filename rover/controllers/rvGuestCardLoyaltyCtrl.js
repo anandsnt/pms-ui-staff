@@ -17,7 +17,7 @@ sntRover.controller('RVGuestCardLoyaltyController',['$scope','RVGuestCardLoyalty
 		};
 
 		var data = {'userID':$scope.$parent.guestCardData.userId};
-		$scope.invokeApi(RVGuestCardLoyaltySrv.fetchLoyalties,data , loyaltyFetchsuccessCallback, loyaltyFetchErrorCallback);
+		$scope.invokeApi(RVGuestCardLoyaltySrv.fetchLoyalties,data , loyaltyFetchsuccessCallback, loyaltyFetchErrorCallback, 'NONE');
 	};
 	$scope.$watch(
         function() { return ($scope.$parent.$parent.guestCardData.userId != '')?true:false; },
