@@ -2,6 +2,7 @@
 (function() {
 	var checkOutConfirmationController = function($scope,$rootScope,$state) {
 
+	
 	$scope.pageValid = false;
 
 	if($rootScope.isCheckedin){
