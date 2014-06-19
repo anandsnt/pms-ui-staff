@@ -147,10 +147,8 @@
     "SEND_CONFIRM_EMAIL_TO_ADDRESS": "Send confirmation E-mail to this address", 
     "RECEIVE_CONFIRM_EMAIL_TO_ADDRESS": "Receive confirmation email on this address",
     "CREDIT_CARD": "Credit Card",
-    "CONFIRM_RESERVATION": "Confirm Reservation",
-    "RETURN_TO_DASHBOARD": "return to dashboard",
-    "CREATE_NEW_FOR_GUEST": "create new for this guest",
-    "CANCEL_RESERVATION": "Cancel Reservation",
+    "SUBMIT_RESERVATION": "Submit Reservation",
+
 
     "ALL_CHARGE_GROUPS": "All Charge Groups",
     "FAVORITE": "Favorite",

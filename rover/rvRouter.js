@@ -186,6 +186,12 @@ sntRover.config([
             controller: 'RVReservationSummaryAndConfirmCtrl'
         });
 
+        $stateProvider.state('rover.reservation.mainCard.reservationConfirm', {
+            url: '/reservationConfirm',
+            templateUrl: '/assets/partials/reservation/rvReservationConfirm.html',
+            controller: 'RVReservationConfirmCtrl'
+        });
+
         // Reservation state actions - END
         
     }

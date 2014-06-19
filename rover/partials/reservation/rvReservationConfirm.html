@@ -1,0 +1,106 @@
+<!-- Content -->
+<div ng-include="'/assets/partials/common/header.html'"></div>
+<section id="details-and-payment" class="content reservations-inner">
+    <div id="details-and-payment-content" class="reservations-content-wrapper">
+        <div class="reservation-summary scrollable" id="reservation-summary">
+            <div class="wrapper">
+                <h2>Reservation summary</h2>
+                <ul class="data">
+                    <li><span class="guest-status room">rooms</span>1 rooms</li> <!-- Should show actual number of rooms -->
+                    <li><span class="guest-status nights">nights</span>1 nights</li> <!-- Should show actual number of nights -->
+                </ul>
+                <div class="stay-dates">
+                    <div class="check-in-dates">
+                        <span class="guest-status small-icon check-in">check-in</span>
+                        Wednesday, 06-18-2014
+                        <!-- If set -->
+                        <span class="check-data-set icons icon-time time-in">
+                            11:30 AM
+                        </span>
+                        <!-- If not set 
+                        <em class="check-data-not-set icons icon-time time-in">
+                            Not Set
+                        </em>
+                        -->
+                    </div>
+                    <div class="check-out-dates">
+                        <span class="guest-status small-icon check-out">check-out</span>
+                        Thursday, 06-19-2014
+                        <!-- If set 
+                         <span class="check-data-set icons icon-time time-out">
+                            04:30 PM
+                        </span>
+                        -->
+                        <!-- If not set -->
+                        <em class="check-data-not-set icons icon-time time-out">
+                            Not Set
+                        </em>
+                    </div>
+                </div>
+                <div class="rooms" id="room-1">  <!-- This goes on repeat in multi room scenario -->
+                    <div class="title">
+                        Room 1
+                        <div class="count">
+                            <span><span class="label">Adults</span>2</span> <!-- Show actual number of adults -->
+                            <span><span class="label">Children</span>0</span> <!-- Show actual number of children -->
+                            <span><span class="label">Infants</span>0</span> <!-- Show actual number of infants -->
+                        </div>
+                    </div>
+                    <div class="room-type">
+                        <h4>Standard Room</h4> <!-- Show actual room type selected -->
+                        <div class="confirmation"> <!-- Show confirmation number -->
+                            <span class="label">Confirmation #</span>22648596
+                        </div>
+                    </div>
+                    <ul class="rate-and-enhancements"> <!-- Show actual enhancements added. If no enhancements added, this <ul> should not be included -->
+                        <li>
+                            <em>Best Available Rate</em>
+                            <span class="price">
+                                $149
+                                <span>avg/night</span>
+                                <span class="total">$149</span>
+                            </span>
+                        </li>
+                        <li>
+                            <em>2x Champange &amp; Chocolates</em>
+                            <span class="price">
+                                $79
+                                <span>each</span>
+                                <span class="total">$158</span>
+                            </span>
+                        </li>
+                    </ul>
+                    <div class="guests">
+                        <h5><em>Guest: </em> Aaron Smith</h5> <!-- Show primary guest name -->
+                        <!-- Show accompanying guests if they have been added -->
+                        <ul class="accompanying-guests">
+                            <li><span>Accompanying guest</span><em>John Smith</em></li>
+                        </ul>
+                    </div>
+                </div>
+                <ul class="total-stay-cost">
+                    <li><span class="label">Tax</span>$15</li>
+                    <li><span class="label">Total Stay Cost</span><strong>$322</strong></li>
+                </ul>
+            </div> 
+        </div>
+        <form class="form payment-info scrollable" id="payment-info" name="payment-info">
+            <div class="wrapper">
+                <div class="reservation-completed">
+                    <h2>Reservation created</h2>
+                    <div class="entry full-width">
+                        <label for="email">Confirmation will be emailed to name</label>
+                        <input name="email" id="email" value="asmith@stayntouch.com" type="email">
+                        <button type="button" id="send-confirmation" class="button blue">Send Confirmation Email</button>
+                    </div>
+                    <div class="actions">
+                        <!-- You can use regular <a href="..."> here as well -->
+                        <button type="button" id="go-to-staycard" class="button brand-colors">Go To Stay Card</button>
+                        <button type="button" id="new-reservation-for-guest" class="button green">New Reservation for Guest</button>
+                        <button type="button" id="go-to-search" class="button white blue-text">Search Reservations</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

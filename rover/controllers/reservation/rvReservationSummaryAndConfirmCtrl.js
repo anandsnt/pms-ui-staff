@@ -50,6 +50,7 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		if($scope.data.isConfirmationEmailSameAsGuestEmail) {
 			$scope.reservationData.guest.sendConfirmMailTo = $scope.reservationData.guest.email;
 		} 
+		//$scope.refreshPaymentScroller();
 	};
 
 	/**
@@ -111,13 +112,33 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 	* Click handler for confirm button - 
 	* Creates the reservation and Go back to the reservation search screen
 	*/
-	$scope.clickedConfirmAndGoToDashboard = function() {
+/*	$scope.clickedConfirmAndGoToDashboard = function() {
 		var postData = computeReservationDataToSave();
 
 		var saveSuccess = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.initReservationData();
 			goToReservationSearch();
+		};
+
+		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
+	};*/
+
+	/**
+	* Click handler for confirm button - 
+	* Creates the reservation and on success, goes to the confirmation screen
+	*/
+	$scope.submitReservation = function(){
+		var postData = computeReservationDataToSave();
+
+		var saveSuccess = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.reservationData.reservationId = data.id;
+			$scope.reservationData.confirmNum = data.confirm_no;
+
+			alert($scope.reservationData.confirmNum);
+			$state.go('rover.reservation.mainCard.reservationConfirm');
+			
 		};
 
 		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
@@ -128,7 +149,7 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 	* Creates the reservation and Go back to the reservation search screen
 	* Will retain the guest information
 	*/
-	$scope.clickedConfirmAndCreateNew = function(){
+	/*$scope.clickedConfirmAndCreateNew = function(){
 		var postData = computeReservationDataToSave();
 
 		var saveSuccess = function(data) {
@@ -136,7 +157,7 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 			goToReservationSearch();
 		};
 		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
-	};
+	};*/
 
 	/**
 	* Click handler for cancel button - Go back to the reservation search screen
@@ -149,6 +170,10 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 
 	var goToReservationSearch = function(){
 		$state.go('rover.reservation.search');
+	};
+
+	$scope.refreshPaymentScroller = function(){
+		$scope.$parent.myScroll['paymentInfo'].refresh();
 	};
 
 	$scope.init();
