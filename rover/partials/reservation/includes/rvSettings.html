@@ -30,13 +30,13 @@
                     <label for="room-{{index+1}}-adults">{{'ROOM_LABEL'|translate}} {{$index+1}}</label>
                     <div class="select adults">
                         <label for="room-{{index+1}}-adults" class="label" translate>ADULTS</label>
-                        <select name="room-{{index+1}}-adults" id="room-{{index+1}}-adults" ng-model="room.numAdults">
+                        <select name="room-{{index+1}}-adults" id="room-{{index+1}}-adults" ng-model="room.numAdults" ng-change="checkOccupancyLimit()">
                             <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
                         </select>
                     </div>
                     <div class="select children">
                         <label for="room-{{index+1}}-children" class="label" translate>CHILDREN</label>
-                        <select name="room-{{index+1}}-children" id="room-{{index+1}}-children" ng-model="room.numChildren">
+                        <select name="room-{{index+1}}-children" id="room-{{index+1}}-children" ng-model="room.numChildren" ng-change="checkOccupancyLimit()">
                             <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==room.numChildren">{{i}}</option>
                         </select>
                     </div>

@@ -17,7 +17,7 @@ sntRover.service('RVReservationBaseSearchSrv', ['$q', 'rvBaseWebSrvV2',
             };
 
             that.fetchRoomTypes = function() {
-                var url = 'api/room_types.json';
+                var url = 'api/room_types.json?is_exclude_pseudo=true';
                 RVBaseWebSrvV2.getJSON(url).then(function(data) {
                     that.reservation.roomTypes = data.results;
                     that.fetchBussinessDate();
