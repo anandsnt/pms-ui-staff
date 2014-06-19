@@ -27,7 +27,7 @@
 			<div class="rooms-listing">
 				<!-- Room type search + reveal filters button -->
 				<div class="search float">
-					<a  class="button white with-icon only-icon toggle"> <span class="icons icon-filter" ng-click="toggleFiltersView()"></span> Room attributes </a>
+					<a  class="button white with-icon only-icon toggle" ng-class="{'active':isFiltersVisible}"> <span class="icons icon-filter" ng-class="{'active':isFiltersVisible}" ng-click="toggleFiltersView()"></span> Room attributes </a>
 					<div class="select">
 						<select ng-model="roomType" ng-change="getRooms()" name="room-type" id="room-type-selectbox">
 							<!-- %option.placeholder{value: "all-types"} All room types -->
