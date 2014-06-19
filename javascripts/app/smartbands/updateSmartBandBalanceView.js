@@ -84,7 +84,7 @@ var UpdateSmartBandBalanceView = function(domRef) {
 		
 		var url = '/api/smartbands/' + that.accountID;
 	    var options = { 
-			requestParameters: dataToPost,
+			requestParameters: JSON.stringify(dataToPost),
 			successCallBack: that.successCallbackOfSaveAction,
 			successCallBackParameters: { 'data': dataToPost},
 			failureCallBack: that.failureCallbackOfSaveAction,

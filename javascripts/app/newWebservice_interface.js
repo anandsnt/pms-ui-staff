@@ -44,7 +44,7 @@ var NewWebServiceInterface = function(){
 	this.putJSON = function(requestUrl, options ){
 		var options = options ? options : {};		
 		var requestType = "PUT";
-		var contentType = 'application/json';
+		var contentType = 'application/json;charset=utf-8';
 		var dataType = 'json';
 		var requestParameters = options["requestParameters"] ? options["requestParameters"] : {};
 		var async = options["async"] ? options["async"] : true;
@@ -218,6 +218,7 @@ var NewWebServiceInterface = function(){
 			dataType: dataType,
 			async: async,
 			timeout: that.timeout,
+			contentType: contentType,
 			
 			success: function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
