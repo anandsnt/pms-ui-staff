@@ -5,7 +5,7 @@
 	<div class="reservation-header">
 		<div class="actions back">
 			<!-- %a.back-button{"data-transition" => "nested-view", href: "dashboard/staycard?confirmation=#{header_details["confirmation_num"]}"} -->
-			<a ui-sref="rover.staycard.reservationcard.reservationdetails({id:reservationData.reservation_card.reservation_id, confirmationId:reservationData.reservation_card.confirmation_num})" class="back-button"> Back </a>
+			<a ui-sref="rover.staycard.reservationcard.reservationdetails({id:reservationData.reservation_card.reservation_id, confirmationId:reservationData.reservation_card.confirmation_num})" class="back-button" translate> BACK_BUTTON_LABEL </a>
 		</div>
 		<!-- Other header details -->
 		<div class="data">
@@ -59,7 +59,7 @@
 			<div class="upgrades no-content" ng-show="false">
 				<div class="info">
 					<span class="icon-no-content icon-upgrades"></span>
-					<strong class="h1">Upgrades not available</strong>
+					<strong class="h1" translate>UPGRADES_NOT_AVAILABLE_LABEL</strong>
 				</div>
 			</div>
 
