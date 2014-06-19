@@ -1,4 +1,4 @@
-sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter', function($scope,$rootScope,$state, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter){
+sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBillCardSrv','reservationBillData', 'RVReservationCardSrv', 'RVChargeItems', 'ngDialog','$filter','$window', function($scope,$rootScope,$state, RVBillCardSrv, reservationBillData, RVReservationCardSrv, RVChargeItems, ngDialog, $filter, $window){
 	
 	BaseCtrl.call(this, $scope);
 	var countFeesElements = 0;//1 - For heading, 2 for total fees and balance, 2 for guest balance and creditcard
@@ -6,6 +6,15 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	var billTabHeight = parseInt(35);
 	var calenderDaysHeight = parseInt(35);
 	var totalHeight = 0;
+	
+	//options fo signature plugin
+	var screenWidth = angular.element($window).width(); // Calculating screen width.
+	$scope.signaturePluginOptions = {
+			height : 130,
+			width : screenWidth-60,
+			lineWidth : 1
+	};
+	
 	// $scope.heading = $filter('translate')('VIEW_BILL_TITLE');
 	$scope.$emit('HeaderChanged', $filter('translate')('VIEW_BILL_TITLE'));
 	$scope.init = function(reservationBillData){
@@ -452,8 +461,23 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 		600);
 		
 	};
-	
-	
-	
+	// To enable scroll
+	$scope.enableScroll = function(){
+		$scope.$parent.myScroll['registration-content'].enable();
+	};
+	// To disable scroll
+	$scope.disableScroll = function(){
+		$scope.$parent.myScroll['registration-content'].disable();
+	};
+	// To clear signature
+	$scope.clickedClearSignature = function(){
+		$("#signature").jSignature("clear");	// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
+	};
+	// To handle complete checkin button click
+	$scope.clickedCompleteCheckin = function(){
+		// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
+		var signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
+		console.log(signatureData);
+	};
 		//{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date,'active': days.date != reservationBillData.checkout_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}
 }]);

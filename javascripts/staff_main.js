@@ -10,6 +10,7 @@
 //=require ../shared/lib/js/angular-translate-loader-static-files.min.js
 //=require ../shared/lib/js/ui-utils.min.js
 
+//=require_tree ../shared/lib/js/signature
 //=require ../shared/lib/js/iscroll.js
 //=require ../shared/lib/js/ng-iscroll.js
 //=require ../shared/lib/js/ngDialog.min.js

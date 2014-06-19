@@ -1,10 +1,8 @@
 <form id="signature-pad" class="complete-registration form">
 	<h2>Please sign below</h2>
 	<div class="sig sigWrapper">
-		<div id="signature">
-			<div style="padding:0 !important;margin:0 !important;width: 100% !important; height: 0 !important;margin-top:-1em !important;margin-bottom:1em !important;"></div>
-			<canvas style="margin: 0px; padding: 0px; border: medium none; height: 130px; width: 1241px;" class="jSignature pad" width="1241" height="130"></canvas>
-			<div style="padding:0 !important;margin:0 !important;width: 100% !important; height: 0 !important;margin-top:-1.5em !important;margin-bottom:1.5em !important;"></div>
+		<div id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
+			
 		</div>
 	</div>
 	<div class="entry">
@@ -19,11 +17,11 @@
 	</div>
 	<div class="actions">
 		<!-- Complete checkin button disabled out until ready / vacant room is assigned -->
-		<button id="checkin-button" data-room-status="READY" data-reseravation-status="CHECKING_IN" data-required-signature="CHECKIN" data-key-settings="encode" data-fo-status="VACANT" class="button green">
+		<button id="checkin-button" ng-click="clickedCompleteCheckin()" data-room-status="READY" data-reseravation-status="CHECKING_IN" data-required-signature="CHECKIN" data-key-settings="encode" data-fo-status="VACANT" class="button green">
 			Complete checkin
 		</button>
 		<div class="clearButton">
-			<a id="clear-signature" class="button blank">Clear signature</a>
+			<a id="clear-signature" class="button blank" ng-click='clickedClearSignature()'>Clear signature</a>
 		</div>
 	</div>
 </form>
