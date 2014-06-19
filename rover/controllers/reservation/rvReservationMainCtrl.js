@@ -126,7 +126,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
             var roomPref = getMaxOccupancy(activeRoom);
 
-            if (typeof activeRoom == 'undefined' || activeRoom == null || activeRoom == "" ||roomPref.max >= currOccupancy) {
+            if (typeof activeRoom == 'undefined' || activeRoom == null || activeRoom == "" || roomPref.max >= currOccupancy) {
                 return true;
             }
 
@@ -134,12 +134,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 template: '/assets/partials/reservation/alerts/occupancy.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
+                closeByDocument : false,
+                closeByEscape : false,
                 data: JSON.stringify({
                     roomType: roomPref.name,
                     roomMax: roomPref.max
                 })
             });
-            return false;
+            return true;
         }
 
         $scope.initReservationData();

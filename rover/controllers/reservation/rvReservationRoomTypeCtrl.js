@@ -279,7 +279,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							averagePerNight: 0
 						};
 					}
-					if (d.availability < 1 || currOccupancy > roomDetails[d.id].max_occupancy) {
+					//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
+					if (d.availability < 1) {
 						rooms[d.id].availability = false;
 					}
 				});
