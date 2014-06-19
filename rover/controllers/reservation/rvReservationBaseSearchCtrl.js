@@ -1,19 +1,12 @@
-sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state',
-    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state) {
+sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state', '$timeout',
+    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout) {
         BaseCtrl.call(this, $scope);
-
-        //company card search query text
-        $scope.companySearchText = '';
-        $scope.companyLastSearchText = "";
-        $scope.companyCardResults = [];
 
         //Setting number of nights 1
         $scope.reservationData.numNights = 1;
 
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
-
-        var companyCardFetchInterval = null;
 
         var init = function() {
             $scope.businessDate =  baseSearchData.businessDate;
@@ -45,7 +38,20 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             var departureDate = new Date($scope.reservationData.departureDate);
             departureDay = departureDate.getDate();
             var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
-            $scope.reservationData.numNights = dayDiff;
+
+            // to make sure that the number of
+            // dates the guest stays must not be less than 1
+            if ( dayDiff < 1 ) {
+
+                // user tried set the departure date
+                // before the arriaval date
+                $scope.reservationData.numNights = 1;
+
+                // need delay
+                $timeout($scope.setDepartureDate, 1);
+            } else {
+                $scope.reservationData.numNights = dayDiff;
+            }
         }
 
         $scope.arrivalDateChanged = function() {
@@ -58,19 +64,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         $scope.departureDateChanged = function() {
             $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
             $scope.setNumberOfNights();
-            
-        };
-
-        /*
-         * company card search text entered
-         */
-        $scope.companySearchTextEntered = function() {
-            if ($scope.companySearchText.length === 0) {
-                $scope.companyCardResults = [];
-                $scope.companyLastSearchText = "";
-            } else if ($scope.companySearchText.length > 1) {
-                displayFilteredResults();
-            }
         };
 
         $scope.navigate = function() {
@@ -82,6 +75,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 toDate: $scope.reservationData.departureDate
             }, successCallBack);
         };
+
+
 
         /**
         *   Validation conditions
@@ -108,51 +103,91 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             }
         };
 
-        var displayFilteredResults = function() {
-            if ($scope.companySearchText != '' && $scope.companyLastSearchText != $scope.companySearchText) {
 
-                var successCallBackOfCompanySearch = function(data) {
-                    $scope.$emit("hideLoader");
 
-                    angular.forEach(data.accounts, function(item) {
-                        var eachItem = {},
-                            hasItem = false;
 
-                        eachItem = {
-                            label: item.account_first_name + " " + item.account_last_name,
-                            value: item.account_first_name + " " + item.account_last_name,
-                            image: item.company_logo,
-                            // only for our understanding
-                            // jq-ui autocomplete wont use it
-                            type: item.account_type,
-                            id: item.id,
-                            corporateid: '',
-                            iataNumber: ''
-                        };
-                        
-                        // making sure that the newly created 'eachItem'
-                        // doesnt exist in 'companyCardResults' array
-                        // so as to avoid duplicate entry
-                        hasItem = _.find($scope.companyCardResults, function(item) {
-                            return eachItem.id === item.id;
-                        });
-                        
-                        // yep we just witnessed an loop inside loop, its necessary
-                        // worst case senario - too many results and 'eachItem' is-a-new-item
-                        // will loop the entire 'companyCardResults'
-                        if ( !hasItem ) {
-                            $scope.companyCardResults.push(eachItem);
-                        };
 
+
+
+        // jquery autocomplete Souce handler
+        // get two arguments - request object and response callback function
+        var autoCompleteSourceHandler = function(request, response) {
+
+            var companyCardResults = [],
+                lastSearchText     = '',
+                eachItem           = {},
+                hasItem            = false;
+
+            // process the fetched data as per our liking
+            // add make sure to call response callback function
+            // so that jquery could show the suggestions on the UI
+            var processDisplay = function(data) {
+                $scope.$emit("hideLoader");
+
+                angular.forEach(data.accounts, function(item) {
+                    eachItem = {};
+
+                    eachItem = {
+                        label: item.account_first_name + " " + item.account_last_name,
+                        value: item.account_first_name + " " + item.account_last_name,
+                        image: item.company_logo,
+                        // only for our understanding
+                        // jq-ui autocomplete wont use it
+                        type: item.account_type,
+                        id: item.id,
+                        corporateid: '',
+                        iataNumber: ''
+                    };
+                    
+                    // making sure that the newly created 'eachItem'
+                    // doesnt exist in 'companyCardResults' array
+                    // so as to avoid duplicate entry
+                    hasItem = _.find($scope.companyCardResults, function(item) {
+                        return eachItem.id === item.id;
                     });
-                };
-                var paramDict = {
-                    'query': $scope.companySearchText.trim()
-                };
-                $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, paramDict, successCallBackOfCompanySearch);
-                // we have changed data, so we dont hit server for each keypress
-                $scope.companyLastSearchText = $scope.companySearchText;
+                    
+                    // yep we just witnessed an loop inside loop, its necessary
+                    // worst case senario - too many results and 'eachItem' is-a-new-item
+                    // will loop the entire 'companyCardResults'
+                    if ( !hasItem ) {
+                        companyCardResults.push(eachItem);
+                    };
+                });
+                
+                // call response callback function
+                // with the processed results array
+                response( companyCardResults );
+            };
+
+            // fetch data from server
+            var fetchData = function() {
+                if ( request.term != '' && lastSearchText != request.term ) {
+                    $scope.invokeApi(RVReservationBaseSearchSrv.fetchCompanyCard, { 'query': request.term }, processDisplay);
+                    lastSearchText = request.term;
+                }
             }
+
+            // quite simple to understand
+            if ( request.term.length === 0 ) {
+                companyCardResults = [];
+                lastSearchText = "";
+            } else if ( request.term.length > 1 ) {
+                fetchData();
+            }
+        }
+
+        var autoCompleteSelectHandler = function(event, ui) {
+            if ( ui.item.type === 'COMPANY' ) {
+                $scope.reservationData.company.id          = ui.item.id;
+                $scope.reservationData.company.name        = ui.item.label;
+                $scope.reservationData.company.corporateid = ui.item.corporateid;
+            } else {
+                $scope.reservationData.travelAgent.id         = ui.item.id;
+                $scope.reservationData.travelAgent.name       = ui.item.label;
+                $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
+            };
+
+            // DO NOT return false;
         };
 
         $scope.autocompleteOptions = {
@@ -162,25 +197,20 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 at: 'left top',
                 collision: 'flip'
             },
-            source: $scope.companyCardResults,
-            select: function(event, ui) {
-                if ( ui.item.type === 'COMPANY' ) {
-                    $scope.reservationData.company.id          = ui.item.id;
-                    $scope.reservationData.company.name        = ui.item.label;
-                    $scope.reservationData.company.corporateid = ui.item.corporateid;
-                } else {
-                    $scope.reservationData.travelAgent.id         = ui.item.id;
-                    $scope.reservationData.travelAgent.name       = ui.item.label;
-                    $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
-                };
-
-                // DO NOT return false;
-            }
+            source: autoCompleteSourceHandler,
+            select: autoCompleteSelectHandler
         };
+
+
+
+
+
+
+
+
 
         // init call to set data for view 
         init();
-
 
         $scope.arrivalDateOptions = {
 
@@ -224,7 +254,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 ]);
 
 // This code will be assimilated, resistance is futile
-// Code will be assimilated to become part of a better 
+// Code will be assimilated to become part of a better IMH234
 // auto complete feature
 sntRover.directive('autoComplete', ['highlightFilter',
     function(highlightFilter) {
