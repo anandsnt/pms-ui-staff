@@ -482,99 +482,6 @@ button.icons.icon-search{
 * DO NOT change the numeric values
 */
 
-/* animation for root (app) zoom in animation */
-@-webkit-keyframes root-enter {
-  0% {
-    -webkit-transform: scale(0.9);
-    opacity: 0.0;
-  }
-
-  100% {
-    -webkit-transform: scale(1);
-    opacity: 1.0;
-  }
-}
-@-moz-keyframes root-enter {
-  0% {
-    -moz-transform: scale(0.9);
-    opacity: 0.0;
-  }
-
-  100% {
-    -moz-transform: scale(1);
-    opacity: 1.0;
-  }
-}
-@keyframes root-enter {
-  0% {
-    transform: scale(0.9);
-    opacity: 0.0;
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1.0;
-  }
-}
-
-/* animation for main (sections) slide in from right */
-@-webkit-keyframes main-enter {
-  0% {
-    -webkit-transform: translate3d(200px, 0, 0);
-  }
-
-  100% {
-    -webkit-transform: translate3d(0, 0, 0);
-  }
-}
-@-moz-keyframes main-enter {
-  0% {
-    -moz-transform: translate3d(200px, 0, 0);
-  }
-
-  100% {
-    -moz-transform: translate3d(0, 0, 0);
-  }
-}
-@keyframes main-enter {
-  0% {
-    transform: translate3d(200px, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* animation for main (sections) slide out to left */
-@-webkit-keyframes main-leave {
-  0% {
-    -webkit-transform: translate3d(0, 0, 0);
-  }
-
-  100% {
-    -webkit-transform: translate3d(-200px, 0, 0);
-  }
-}
-@-moz-keyframes main-leave {
-  0% {
-    -moz-transform: translate3d(0, 0, 0);
-  }
-
-  100% {
-    -moz-transform: translate3d(-200px, 0, 0);
-  }
-}
-@keyframes main-leave {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(-200px, 0, 0);
-  }
-}
-
 /* ui-view animation hook up class for root-view */
 .root-view {
   position: absolute;
@@ -591,9 +498,7 @@ button.icons.icon-search{
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   /**/
-  -webkit-animation: root-enter 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
-  -moz-animation: root-enter 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
-  animation: root-enter 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+  #fade > .in;
 }
 
 /* ui-view animation hook up class for root-view */
@@ -626,13 +531,18 @@ button.icons.icon-search{
 }
 
 .main-view.ng-enter {
-  -webkit-animation: main-enter 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
-  -moz-animation: main-enter 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
-  animation: main-enter 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+  #move > #page > .right;
 }
 
 .main-view.ng-leave {
-  -webkit-animation: main-leave 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
-  -moz-animation: main-leave 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
-  animation: main-leave 0.3s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+  #move > #page > .right;
+}
+
+/* when returning */
+.main-view.back.ng-enter {
+  #move > #page > .left;
+}
+
+.main-view.back.ng-leave {
+  #move > #page > .left;
 }
