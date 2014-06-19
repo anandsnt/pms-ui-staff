@@ -7,7 +7,7 @@
             <!-- Guest Card -->
             <div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')">
                 <figure class="guest-image" ng-click="switchCard('guest-card')">
-                    <img src="../images/avatar.jpg" alt="" />
+                    <img src="{{ cardHeaderImage }}" alt="" />
                     <span class="search-indicator"></span>
                 </figure>
                 <form method="get" action="" name="search-guests" id="search-guests" class="card-search-form" role="search">
@@ -66,7 +66,7 @@
                 <strong class="results-count" ng-show="guests.length > 0">{{ guests.length }} possible matches</strong>
                 <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button>
                 <div id="search-guests-content" class="search-cards scrollable">
-                    <div class="wrapper">
+                    <div class="wrapper" style="height:100%; overflow: hidden;" ng-iscroll="guestResultScroll">
                         <ul id="search-guests-results" class="search-results">
                             <li ng-repeat="guest in guests">
                                 <a ng-click="selectGuest(guest, $event)">
@@ -74,17 +74,22 @@
                                         <img src="{{ guest.image }}" alt="" />
                                     </figure>
                                     <div class="data">
-                                        <h2>{{ guest.firstName }}, {{ guest.lastName }}</h2>
+                                        <h2>
+                                            <span ng-bind-html="'{{ guest.firstName }}'|highlight:guestFirstName:false">
+                                            </span>
+                                            <span ng-bind-html="'{{ guest.lastName }}'|highlight:guestLastName:false">
+                                            </span>
+                                        </h2>
                                         <span class="confirmation">{{ guest.address.postalCode}}</span>
                                         <span class="icons icon-location">{{ guest.address.city }}, {{ guest.address.state }}</span>
                                         <span class="icons icon-phone">{{ guest.phone }}</span>
                                     </div>
                                     <div class="stays">
                                         <div class="count">
-                                            <span class="label">Stays</span>
+                                            <span class="label">Stays</span>{{ guest.stayCount }}
                                         </div>
                                         <div class="last-stay">
-                                            <span class="label">Last</span>{{ guest.stayCount }}
+                                            <span class="label">Last</span>
                                             {{ guest.lastStay.date }}
                                             <strong>{{ guest.lastStay.room }}</strong>
                                             <em>{{ guest.lastStay.roomType }}</em>
@@ -108,7 +113,7 @@
             <div id="company-card-content" class="card-search card-content" ng-class="UICardContentCls('company-card')">
             <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewCompany()">New Card</button>
                 <div id="search-company-content" class="search-cards scrollable">
-                    <div class="wrapper">
+                    <div class="wrapper" style="height:100%; overflow: hidden;" ng-iscroll="companyResultScroll">
                         <ul id="search-company-results" class="search-results">
                             <li ng-repeat="company in companies">
                                 <a ng-click="selectCompany(company, $event)" class="card-result">
@@ -117,7 +122,7 @@
                                     </figure>
                                     <div class="data">
                                         <div class="info">
-                                            <h2><span class="highlight">{{ company.firstName }}</span> {{ company.lastName }}</h2>
+                                            <h2 ng-bind-html="'{{ company.firstName }} {{ company.lastName }}'|highlight:companyName:false"></h2>
                                             <div class="rate"><span class="label">Rate</span> 10% off RACK</div>
                                         </div>
                                         <span class="confirmation">{{ company.address.postalCode }}</span>
@@ -143,14 +148,14 @@
             <div id="travel-agent-card-content" class="card-search card-content" ng-class="UICardContentCls('travel-agent-card')">
             <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewTravelAgent()">New Card</button>
                 <div id="search-travel-agent-content" class="search-cards scrollable">
-                    <div class="wrapper">
+                    <div class="wrapper" style="height:100%; overflow: hidden;" ng-iscroll="travelAgentResultScroll">
                         <ul id="search-travel-agent-results" class="search-results">
                             <li ng-repeat="travelAgent in travelAgents">
                                 <a ng-click="selectTravelAgent(travelAgent, $event)" class="card-result">
                                     <div class="guest-image icons icon-travel-agent"></div>
                                     <div class="data">
                                         <div class="info">
-                                            <h2><span class="highlight">{{ travelAgent.firstName }}</span> {{ travelAgent.lastName }}</h2>
+                                            <h2 ng-bind-html="'{{ travelAgent.firstName }} {{ travelAgent.lastName }}'|highlight:companyName:false"></h2>
                                             <div class="rate"><span class="label">Rate</span> 10% off RACK</div>
                                         </div>
                                         <span class="confirmation">{{ travelAgent.address.postalCode }}</span>

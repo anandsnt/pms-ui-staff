@@ -1,3 +1,55 @@
-<div>
-addons listttttt
-</div>
+<div ng-include="'/assets/partials/common/header.html'"></div>
+<section id="enhance-stay" class="content reservations-inner">    
+    <div id="enhance-stay-content" class="reservations-content-wrapper">
+
+        <!-- Inline modal goes here: check 04.A.enhance-stay-popup.html
+        <div id="inline-modal-room-1" class="inline-modal modal-show" role="dialog">
+            ....
+        </div> -->
+        <div id="addons-content" class="reservation-content addons-content scrollable">
+            <div class="wrapper">
+                <div id="addon-items" class="addons">
+                    
+                    <!-- Skip option -->
+                    <a class="button green has-arrow skip" data-transition="nested-view" ng-click="goToSummaryAndConfirm($event)">Next Step</a>
+
+                    <!-- Categories -->
+                    <ul class="addon-categories">
+                    	<li ng-class="{'ui-state-active': addonCategory === activeAddOnCategory}">
+                    		<a ng-click="selectAddonCategory('BEST SELLERS', $event)" class="button white">BEST SELLERS</a>
+                		</li>
+                    	<li ng-repeat="addonCategory in addonCategories" ng-class="{'ui-state-active': addonCategory === activeAddOnCategory}">
+                    		<a ng-click="selectAddonCategory(addonCategory.name, $event)" class="button white">{{ addonCategory.name }}</a>
+                		</li>
+                    </ul>
+                    
+                    <!-- Items -->
+                    <div class="addon-items">
+                        <ul id="addon-best-sellers" class="addon-tab">
+                        	<li ng-repeat="addon in addons | filter: { category: activeAddonCategory }">
+                                <div class="data">
+                                    <span class="categories">
+                                        <span ng-class="{current: addon.category === activeAddonCategory}">{{addon.category}}</span>|
+                                        <span>{{addon.category_short_desc}}</span>
+                                    </span>
+                                    <h2>{{addon.title}}</h2>
+                                    <em>{{addon.desc}}</em>
+                                </div>
+                                <div class="price">{{addon.price}}</div>
+                                <div class="add-enhancement">
+                                    <button id="enhance-room-1-champagne" type="button" class="button green" ng-click="selectAddon(addon)">Add</button>
+                                    <div class="select">
+                                        <label class="label" for="room-1-champagne-quantity">Quantity</label>
+                                        <select name="room-1-champagne-quantity" id="room-1-champagne-quantity">
+				                            <option ng-repeat="i in [0, addon.quantity] | makeRange" value="{{i}}">{{i}}</option>
+				                        </select>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>   
+            </div> 
+        </div>
+    </div>
+</section>
