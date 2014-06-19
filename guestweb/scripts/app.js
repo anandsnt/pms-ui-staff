@@ -16,23 +16,22 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	$rootScope.isLateCheckoutAvailable  = ($attrs.isLateCheckoutAvailable  === 'true') ? true : false;
 	$rootScope.emailAddress  = $attrs.emailAddress;
 	$rootScope.hotelLogo     = $attrs.hotelLogo;
-	$rootScope.currencySymbol= getCurrencySign($attrs.currencySymbol);
+	$rootScope.currencySymbol= $attrs.currencySymbol;
 	$rootScope.hotelPhone    = $attrs.hotelPhone;
 	$rootScope.businessDate  = $attrs.businessDate;
 	$rootScope.isCheckedout  = ($attrs.isCheckedout === 'true') ? true : false;
 	$rootScope.isCheckin     =   ($attrs.isCheckin ==='true') ? true : false;
-
 	$rootScope.reservationStatusCheckedIn = ($attrs.reservationStatus ==='CHECKIN')? true :false;
-  
- 	$rootScope.isActiveToken = ($attrs.isActiveToken ==='true') ? true : false;
-  
+    $rootScope.isActiveToken = ($attrs.isActiveToken ==='true') ? true : false;
  	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken)
-
+ 	
+ 	//To DO: check again
+ 	//console.log(JSON.stringify($attrs));
+ 	console.log( $attrs.isCcAttached)
+ 	$rootScope.isCCOnFile = true;
+ 	
  	$rootScope.isRoomVerified =  false;
- 	 	
- 	//To Do: retrieve from server via attrs
 
- 	$rootScope.isCCOnFile =  true;
 
  	if($rootScope.isCheckedin){
  		$location.path('/checkinSuccess');
