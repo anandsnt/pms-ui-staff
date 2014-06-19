@@ -31,7 +31,7 @@ var ICareServicesView = function(domRef){
 		var webservice = new NewWebServiceInterface();
 		var url = '/api/hotel_settings/change_settings';
 	    var options = { 
-			requestParameters: dataToPost,
+			requestParameters: JSON.stringify(dataToPost),
 			successCallBack: that.successCallbackOfSaveAction,
 			loader: 'blocker',
 			async: false
