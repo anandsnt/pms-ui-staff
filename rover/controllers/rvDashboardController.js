@@ -1,6 +1,6 @@
 
-sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv','dashBoarddata','$rootScope', '$filter', 
-                  function($scope, ngDialog, RVDashboardSrv,dashBoarddata,$rootScope, $filter){
+sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardSrv','dashBoarddata','$rootScope', '$filter', '$state',  
+                  function($scope, ngDialog, RVDashboardSrv,dashBoarddata,$rootScope, $filter, $state){
 	
   //setting the heading of the screen
     $scope.heading = 'DASHBOARD_HEADING';
@@ -40,6 +40,12 @@ sntRover.controller('RVdashboardController',['$scope', 'ngDialog', 'RVDashboardS
 
    };
    $scope.init();
+   
+   $scope.gotosearch = function(){
+   	alert("kkkkkkkkkkkkkkk");
+   	$state.go("rover.search");
+   	// rover.search({type:'DUEIN'});
+   };
    
    
 	

@@ -1,5 +1,5 @@
-admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate',
-	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate) {
+admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData',
+	function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData) {
 
 		//when there is an occured while trying to access any menu details, we need to show that errors
 		$scope.errorMessage = '';
@@ -140,7 +140,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			action: "",
 			iconClass: "icon-reports",
 			submenu: []
-		}]
+		}];
 
 		$scope.$on("updateSubMenu", function(idx, item) {
 			if (item && item[1] && item[1].submenu) {
@@ -306,25 +306,32 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$scope.$on("changedSelectedMenu", function(event, menu) {
 			$scope.selectedIndex = menu;
 		});
-
-		$scope.successCallbackOfMenuLoading = function(data) {
-			//$scope.currentIndex = 0;
-			$scope.data = data;
-			$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
-			$scope.bookMarks = $scope.data.bookmarks;
-
-			$scope.bookmarkIdList = [];
-			for (var i = 0; i < $scope.data.bookmarks.length; i++) {
-				$scope.bookmarkIdList.push($scope.data.bookmarks[i].id);
-			}
-			if ($scope.isHotelAdmin) {
-				$scope.getLanguage();
-			}
-
-
+		
+		/*
+		 * Function to get the current hotel language
+		 */
+		$scope.getLanguage = function() {
+			$scope.invokeApi(ADAppSrv.fetchHotelDetails, {}, $scope.fetchHotelDetailsSuccessCallback);
 		};
 
-		$scope.invokeApi(ADAppSrv.fetch, {}, $scope.successCallbackOfMenuLoading);
+
+        /*
+         * Admin menu data
+         */
+		$scope.data = adminMenuData;
+		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
+		$scope.bookMarks = $scope.data.bookmarks;
+
+		$scope.bookmarkIdList = [];
+		for (var i = 0; i < $scope.data.bookmarks.length; i++) {
+			$scope.bookmarkIdList.push($scope.data.bookmarks[i].id);
+		}
+		if ($scope.isHotelAdmin) {
+			$scope.getLanguage();
+		}
+
+
+	
 
 		/*
 		 * Success callback of get language
@@ -341,13 +348,7 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$scope.$emit('hideLoader');
 
 		};
-		/*
-		 * Function to get the current hotel language
-		 */
-		$scope.getLanguage = function() {
-			$scope.invokeApi(ADAppSrv.fetchHotelDetails, {}, $scope.fetchHotelDetailsSuccessCallback);
-		};
-
+		
 
 		// if there is any error occured 
 		$scope.$on("showErrorMessage", function($event, errorMessage) {

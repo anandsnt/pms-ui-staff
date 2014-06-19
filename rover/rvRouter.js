@@ -5,13 +5,21 @@ sntRover.config([
     function($stateProvider, $urlRouterProvider, $translateProvider) {
         
         $translateProvider.useStaticFilesLoader({
-          prefix: '/assets/messages/',
+          prefix: '/assets/rvLocales/',
           suffix: '.json'
         });
-        //$translateProvider.preferredLanguage('en');
-        // dashboard state
-        $urlRouterProvider.otherwise('/staff/dashboard');
-
+        // default state
+        $urlRouterProvider.otherwise('/');
+		
+		/*
+		 * state added to show single url throughout the app
+		 */
+		$stateProvider.state('top', {
+       
+            url: '/',
+            controller: 'topController',
+    	});
+    
         $stateProvider.state('rover', {
             abstract: true,
             url: '/staff',
@@ -26,7 +34,6 @@ sntRover.config([
                 }
             }
         });
-        
         $stateProvider.state('rover.dashboard', {
             url: '/dashboard',
             templateUrl: '/assets/partials/dashboard/rvDashboard.html',
@@ -163,37 +170,6 @@ sntRover.config([
             }
         });
 
-        $stateProvider.state('rover.reservation.mainCard', {
-            abstract: true,
-            url: '/mainCard',
-            templateUrl: '/assets/partials/reservation/rvMainCard.html',
-            controller: 'RVReservationMainCardCtrl'
-        });
 
-        $stateProvider.state('rover.reservation.mainCard.roomType', {
-            url: '/roomType',
-            templateUrl: '/assets/partials/reservation/rvRoomTypesList.html',
-            controller: 'RVReservationRoomTypeCtrl',
-            resolve: {
-               roomRates : function(RVReservationBaseSearchSrv) {
-                    return RVReservationBaseSearchSrv.fetchRoomRates();
-                }
-            }
-        });
-
-        $stateProvider.state('rover.reservation.mainCard.addons', {
-            url: '/addons',
-            templateUrl: '/assets/partials/reservation/rvAddonsList.html',
-            controller: 'RVReservationAddonsCtrl'
-        });
-
-        $stateProvider.state('rover.reservation.mainCard.summaryAndConfirm', {
-            url: '/summaryAndConfirm',
-            templateUrl: '/assets/partials/reservation/rvSummaryAndConfirm.html',
-            controller: 'RVReservationSummaryAndConfirmCtrl'
-        });
-
-        // Reservation state actions - END
-        
     }
 ]);
