@@ -16,8 +16,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         var companyCardFetchInterval = null;
 
         var init = function() {
-            $scope.businessDate =  baseSearchData.businessDate;
-            $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate ), 'yyyy-MM-dd');
+            // console.log('baseSearchData',baseSearchData);
+            $scope.businessDate = baseSearchData.businessDate;
+            $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate), 'yyyy-MM-dd');
             $scope.setDepartureDate();
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
             var guestMaxSettings = baseSearchData.settings.max_guests;
@@ -38,7 +39,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
         }
 
-        $scope.setNumberOfNights = function(){
+        $scope.setNumberOfNights = function() {
 
             var arrivalDate = new Date($scope.reservationData.arrivalDate);
             arrivalDay = arrivalDate.getDate();
@@ -58,7 +59,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         $scope.departureDateChanged = function() {
             $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
             $scope.setNumberOfNights();
-            
+
         };
 
         /*
@@ -77,33 +78,35 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             var successCallBack = function() {
                 $state.go('rover.reservation.mainCard.roomType');
             };
-            $scope.invokeApi(RVReservationBaseSearchSrv.chosenDates, {
-                fromDate: $scope.reservationData.arrivalDate,
-                toDate: $scope.reservationData.departureDate
-            }, successCallBack);
+            if ($scope.checkOccupancyLimit()) {
+                $scope.invokeApi(RVReservationBaseSearchSrv.chosenDates, {
+                    fromDate: $scope.reservationData.arrivalDate,
+                    toDate: $scope.reservationData.departureDate
+                }, successCallBack);
+            }
         };
 
         /**
-        *   Validation conditions
-        *
-        *   Either adults or children can be 0,
-        *   but one of them will have to have a value other than 0. 
-        *   
-        *   Infants should be excluded from this validation.
-        */
+         *   Validation conditions
+         *
+         *   Either adults or children can be 0,
+         *   but one of them will have to have a value other than 0.
+         *
+         *   Infants should be excluded from this validation.
+         */
         $scope.validateOccupant = function(room, from) {
 
             // just in case
-            if ( !room ) {
+            if (!room) {
                 return;
             };
 
-            var numAdults   = parseInt( room.numAdults ),
-                numChildren = parseInt( room.numChildren );
+            var numAdults = parseInt(room.numAdults),
+                numChildren = parseInt(room.numChildren);
 
-            if ( from === 'adult' && (numAdults === 0 && numChildren === 0) ) {
+            if (from === 'adult' && (numAdults === 0 && numChildren === 0)) {
                 room.numChildren = 1;
-            } else if ( from === 'children' && (numChildren === 0 && numAdults === 0) ) {
+            } else if (from === 'children' && (numChildren === 0 && numAdults === 0)) {
                 room.numAdults = 1;
             }
         };
@@ -129,18 +132,18 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                             corporateid: '',
                             iataNumber: ''
                         };
-                        
+
                         // making sure that the newly created 'eachItem'
                         // doesnt exist in 'companyCardResults' array
                         // so as to avoid duplicate entry
                         hasItem = _.find($scope.companyCardResults, function(item) {
                             return eachItem.id === item.id;
                         });
-                        
+
                         // yep we just witnessed an loop inside loop, its necessary
                         // worst case senario - too many results and 'eachItem' is-a-new-item
                         // will loop the entire 'companyCardResults'
-                        if ( !hasItem ) {
+                        if (!hasItem) {
                             $scope.companyCardResults.push(eachItem);
                         };
 
@@ -164,13 +167,13 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             },
             source: $scope.companyCardResults,
             select: function(event, ui) {
-                if ( ui.item.type === 'COMPANY' ) {
-                    $scope.reservationData.company.id          = ui.item.id;
-                    $scope.reservationData.company.name        = ui.item.label;
+                if (ui.item.type === 'COMPANY') {
+                    $scope.reservationData.company.id = ui.item.id;
+                    $scope.reservationData.company.name = ui.item.label;
                     $scope.reservationData.company.corporateid = ui.item.corporateid;
                 } else {
-                    $scope.reservationData.travelAgent.id         = ui.item.id;
-                    $scope.reservationData.travelAgent.name       = ui.item.label;
+                    $scope.reservationData.travelAgent.id = ui.item.id;
+                    $scope.reservationData.travelAgent.name = ui.item.label;
                     $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
                 };
 
@@ -188,7 +191,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             dateFormat: 'mm-dd-yy',
             numberOfMonths: 2,
             yearRange: '-0:+0',
-            minDate:  new Date($scope.businessDate),
+            minDate: new Date($scope.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation arriving');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
@@ -207,7 +210,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             dateFormat: 'mm-dd-yy',
             numberOfMonths: 2,
             yearRange: '-0:+0',
-            minDate:  new Date($scope.businessDate),
+            minDate: new Date($scope.businessDate),
             beforeShow: function(input, inst) {
                 $('#ui-datepicker-div').addClass('reservation departing');
                 $('<div id="ui-datepicker-overlay" class="transparent" />').insertAfter('#ui-datepicker-div');
