@@ -1,6 +1,17 @@
 sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate','hotelDetails','userInfoDetails',
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate,hotelDetails,userInfoDetails) {
     //Used to add precison in amounts
+
+    $scope.$on('$stateChangeSuccess', function (event, toState, dwad, fromState, dwads) {
+      fromState.name = fromState.name ? fromState.name : 'Null'
+      console.log( 'From: "' + fromState.name + '" state \nTo: "' + toState.name + '" state' );
+
+      if ( fromState.name === 'rover.staycard.billcard' ) {
+        $rootScope.returnBack = true;
+      } else {
+        $rootScope.returnBack = false;
+      }
+    });
     
     $rootScope.precisonZero = 0;
     $rootScope.precisonTwo = 2;

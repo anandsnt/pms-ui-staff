@@ -531,18 +531,18 @@ button.icons.icon-search{
 }
 
 .main-view.ng-enter {
-  #move > #page > .right;
+  #move > #from > .right;
 }
 
 .main-view.ng-leave {
-  #move > #page > .right;
+  #move > #to > .right;
 }
 
-/* when returning */
-.main-view.back.ng-enter {
-  #move > #page > .left;
+/* when returning back */
+.return-back > .main-view.ng-enter {
+  #move > #from > .left;
 }
 
-.main-view.back.ng-leave {
-  #move > #page > .left;
+.return-back > .main-view.ng-leave {
+  #move > #to > .right;
 }
