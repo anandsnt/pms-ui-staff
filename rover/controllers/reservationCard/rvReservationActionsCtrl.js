@@ -104,7 +104,8 @@ sntRover.controller('reservationActionsController',
 			};
 			
 			$scope.goToCheckin = function(){
-				
+				$scope.guestCardData.contactInfo.email = "lllll"
+				console.log($scope.guestCardData.contactInfo.email+">>>>>>"+$scope.guestCardData.contactInfo.phone);
 				if($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null){
 					ngDialog.open({
 		        		template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
