@@ -21,7 +21,7 @@
                 <div class="stay-dates">
                     <div class="check-in-dates">
                         <span class="guest-status small-icon check-in">check-in</span>
-                        {{reservationData.arrivalDate | date:'EEEE dd-MM-yyyy'}}
+                        {{reservationData.arrivalDate | date:'EEEE, dd-MM-yyyy'}}
                         <div class="check-data icons icon-time time-in">
                             <div class="select hour">
                                 <select name="check-in" class="placeholder" ng-model="reservationData.checkinTime.hh">
@@ -61,7 +61,7 @@
                     </div>
                     <div class="check-out-dates">
                         <span class="guest-status small-icon check-out">check-out</span>
-                        {{reservationData.departureDate | date:'EEEE dd-MM-yyyy'}}
+                        {{reservationData.departureDate | date:'EEEE, dd-MM-yyyy'}}
                         <div class="check-data icons icon-time time-out">
                             <div class="select hour">
                                 <select name="check-out" class="placeholder" ng-model="reservationData.checkoutTime.hh">

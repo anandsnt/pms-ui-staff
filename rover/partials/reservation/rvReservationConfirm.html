@@ -2,80 +2,89 @@
 <div ng-include="'/assets/partials/common/header.html'"></div>
 <section id="details-and-payment" class="content reservations-inner">
     <div id="details-and-payment-content" class="reservations-content-wrapper">
+    	<!-- Left Side contents -->
         <div class="reservation-summary scrollable" id="reservation-summary">
             <div class="wrapper">
-                <h2>Reservation summary</h2>
+                <h2>Reservation Confirmation</h2>
                 <ul class="data">
-                    <li><span class="guest-status room">rooms</span>1 rooms</li> <!-- Should show actual number of rooms -->
-                    <li><span class="guest-status nights">nights</span>1 nights</li> <!-- Should show actual number of nights -->
+                    <li><span class="guest-status room" translate>ROOMS</span>
+                        <span>{{reservationData.roomCount}}</span>
+                        <span ng-if="reservationData.roomCount === 1" translate>ROOM</span>
+                        <span ng-if="reservationData.roomCount !== 1" translate>ROOMS</span>
+                    </li>
+                    <li>
+                        <span class="guest-status nights" translate>NIGHTS</span>
+                        <span>{{reservationData.numNights}}</span>
+                        <span ng-if="reservationData.numNights === 1" translate> NIGHT</span>
+                        <span ng-if="reservationData.numNights !== 1" translate> NIGHTS</span>
+                    </li>
                 </ul>
                 <div class="stay-dates">
                     <div class="check-in-dates">
                         <span class="guest-status small-icon check-in">check-in</span>
-                        Wednesday, 06-18-2014
+                        {{reservationData.arrivalDate | date:'EEEE, dd-MM-yyyy'}}
                         <!-- If set -->
-                        <span class="check-data-set icons icon-time time-in">
-                            11:30 AM
+                        <span class="check-data-set icons icon-time time-in" ng-if="isCheckoutTimeSet()">
+                           {{reservationData.checkinTime.hh}}:{{reservationData.checkinTime.mm}}&nbsp;{{reservationData.checkinTime.ampm}}
                         </span>
-                        <!-- If not set 
-                        <em class="check-data-not-set icons icon-time time-in">
+                        <!-- If not set -->
+                        <em class="check-data-not-set icons icon-time time-in" ng-if="!isCheckoutTimeSet()">
                             Not Set
                         </em>
-                        -->
                     </div>
                     <div class="check-out-dates">
                         <span class="guest-status small-icon check-out">check-out</span>
-                        Thursday, 06-19-2014
-                        <!-- If set 
-                         <span class="check-data-set icons icon-time time-out">
-                            04:30 PM
+                        {{reservationData.departureDate | date:'EEEE, dd-MM-yyyy'}}
+                         <span class="check-data-set icons icon-time time-out" ng-show="isCheckoutTimeSet()">
+                            {{reservationData.checkoutTime.hh}}:{{reservationData.checkoutTime.mm}}&nbsp;{{reservationData.checkoutTime.ampm}}
                         </span>
-                        -->
                         <!-- If not set -->
-                        <em class="check-data-not-set icons icon-time time-out">
+                        <em class="check-data-not-set icons icon-time time-out" ng-show="!isCheckoutTimeSet()">
                             Not Set
                         </em>
                     </div>
                 </div>
-                <div class="rooms" id="room-1">  <!-- This goes on repeat in multi room scenario -->
+                <!-- This here is dynamic content, depending on number of rooms booked -->
+                <div class="rooms" ng-repeat="room in reservationData.rooms">
                     <div class="title">
-                        Room 1
+                        <span translate>ROOM</span>
+                        {{$index + 1}}
                         <div class="count">
-                            <span><span class="label">Adults</span>2</span> <!-- Show actual number of adults -->
-                            <span><span class="label">Children</span>0</span> <!-- Show actual number of children -->
-                            <span><span class="label">Infants</span>0</span> <!-- Show actual number of infants -->
+                            <span><span class="label" translate>ADULTS</span>{{room.numAdults}}</span>
+                            <span><span class="label" translate>CHILDREN</span>{{room.numChildren}}</span>
+                            <span><span class="label" translate>INFANTS</span>{{room.numInfants}}</span>
                         </div>
                     </div>
                     <div class="room-type">
-                        <h4>Standard Room</h4> <!-- Show actual room type selected -->
+                        <h4>{{room.roomTypeName}}<span></span></h4>
                         <div class="confirmation"> <!-- Show confirmation number -->
                             <span class="label">Confirmation #</span>22648596
                         </div>
                     </div>
-                    <ul class="rate-and-enhancements"> <!-- Show actual enhancements added. If no enhancements added, this <ul> should not be included -->
+                    <ul class="rate-and-enhancements">
                         <li>
-                            <em>Best Available Rate</em>
+                            <em>{{room.rateName}}</em>
                             <span class="price">
-                                $149
-                                <span>avg/night</span>
-                                <span class="total">$149</span>
+                                {{currencySymbol}}{{room.rateAvg}}
+                                <span translate>AVG_NIGHT</span>
+                                <span class="total">{{currencySymbol}}{{room.rateTotal}}</span>
                             </span>
                         </li>
-                        <li>
-                            <em>2x Champange &amp; Chocolates</em>
+                        <li ng-repeat='addon in room.addOns'>
+                            <em>{{addon.name}}</em>
                             <span class="price">
-                                $79
-                                <span>each</span>
-                                <span class="total">$158</span>
+                                {{currencySymbol}}{{addon.avgAmount}}
+                                <span translate>EACH</span>
+                                <span class="total">{{currencySymbol}}{{addon.avgAmount}}</span>
                             </span>
                         </li>
                     </ul>
                     <div class="guests">
                         <h5><em>Guest: </em> Aaron Smith</h5> <!-- Show primary guest name -->
                         <!-- Show accompanying guests if they have been added -->
-                        <ul class="accompanying-guests">
+                        <!-- <ul class="accompanying-guests">
                             <li><span>Accompanying guest</span><em>John Smith</em></li>
-                        </ul>
+                        </ul> -->
                     </div>
                 </div>
                 <ul class="total-stay-cost">

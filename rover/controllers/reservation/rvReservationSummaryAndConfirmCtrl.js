@@ -54,12 +54,13 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 	};
 
 	/**
-	* Compute the reservation data from the data modal to be passed to the API
+	* Build the reservation data from the data modal to be passed to the API
 	*/
 	var computeReservationDataToSave = function() {
 		var data = {};
 		data.arrival_date = $scope.reservationData.arrivalDate;
 		data.arrival_time = '';
+		//Check if the check-in time is set by the user. If yes, format it to the 24hr format and build the API data.
 		if($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkinTime.mm != '' && $scope.reservationData.checkinTime.ampm!= '') {
 			data.arrival_time = getTimeFormated($scope.reservationData.checkinTime.hh, 
 											$scope.reservationData.checkinTime.mm, 
@@ -67,6 +68,7 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		}
 		data.departure_date = $scope.reservationData.departureDate;
 		data.departure_time = '';
+		//Check if the checkout time is set by the user. If yes, format it to the 24hr format and build the API data.
 		if($scope.reservationData.checkoutTime.hh != '' && $scope.reservationData.checkoutTime.mm != '' && $scope.reservationData.checkinTime.ampm!= '') {
 			data.arrival_time = getTimeFormated($scope.reservationData.checkoutTime.hh, 
 											$scope.reservationData.checkoutTime.mm, 
@@ -135,8 +137,6 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 			$scope.$emit('hideLoader');
 			$scope.reservationData.reservationId = data.id;
 			$scope.reservationData.confirmNum = data.confirm_no;
-
-			alert($scope.reservationData.confirmNum);
 			$state.go('rover.reservation.mainCard.reservationConfirm');
 			
 		};
