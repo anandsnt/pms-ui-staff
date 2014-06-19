@@ -1,5 +1,5 @@
 
-sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', 'RVUpgradesSrv', function($scope, $state, $stateParams, RVUpgradesSrv){
+sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce', function($scope, $state, $stateParams, RVUpgradesSrv, $sce){
 	
 	BaseCtrl.call(this, $scope);
 	
@@ -12,6 +12,7 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 	    }
 	};
 
+	$scope.reservationData = $scope.$parent.reservation;
 	$scope.upgradesList = [];
 	$scope.headerData = {};
 	$scope.upgradesDescriptionStatusArray = [];
@@ -22,10 +23,10 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 			$scope.headerData = data.header_details;
 			$scope.setUpgradesDescriptionInitialStatuses();
 			$scope.$emit('hideLoader');
-			setTimeout(function(){
-				$scope.$parent.myScroll['upgradesView'].refresh();
-				}, 
-			3000);
+			// setTimeout(function(){
+			// 	$scope.$parent.myScroll['upgradesView'].refresh();
+			// 	}, 
+			// 3000);
 		};
 		var errorCallbackgetAllUpgrades = function(error){
 			$scope.$emit('hideLoader');
@@ -36,14 +37,15 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 		$scope.invokeApi(RVUpgradesSrv.getAllUpgrades, params, successCallbackgetAllUpgrades, errorCallbackgetAllUpgrades);
 
 	};
+	$scope.getAllUpgrades();
 	$scope.selectUpgrade = function(index){
 		var successCallbackselectUpgrade = function(data){
 			$scope.$emit('hideLoader');
-			$scope.$parent.backToStayCard();
+			$scope.backToStayCard();
 		};
 		var errorCallbackselectUpgrade = function(error){
 			$scope.$emit('hideLoader');
-			$scope.$parent.errorMessage = error;
+			$scope.errorMessage = error;
 		};
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
@@ -52,7 +54,6 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 		$scope.invokeApi(RVUpgradesSrv.selectUpgrade, params, successCallbackselectUpgrade, errorCallbackselectUpgrade);
 
 	};
-	$scope.getAllUpgrades();
 	$scope.toggleUpgradeDescriptionStatus = function(index){
 		$scope.upgradesDescriptionStatusArray[index] = !$scope.upgradesDescriptionStatusArray[index];
 	};
@@ -66,6 +67,11 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 				$scope.upgradesDescriptionStatusArray[i] = false;
 				$scope.upgradesList[i].upgrade_room_description = $sce.trustAsHtml($scope.upgradesList[i].upgrade_room_description);
 			}
+	};
+	$scope.backToStayCard = function(){
+		
+		$state.go("rover.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num});
+		
 	};
 	
 	

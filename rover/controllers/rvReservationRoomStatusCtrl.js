@@ -27,7 +27,7 @@ sntRover.controller('reservationRoomStatus',[ '$rootScope','$scope','ngDialog', 
 		if((isUpsellAvailable == 'true') && (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN')){
 			showUpgrade = true;
 		}
-		return showUpgrade;
+		return true;
 	};
 	$scope.showKeysButton = function(reservationStatus){
 		var showKey = false;

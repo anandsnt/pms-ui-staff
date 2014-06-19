@@ -107,6 +107,11 @@ sntRover.config([
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
             controller: 'RVroomAssignmentController'
         });
+         $stateProvider.state('rover.staycard.upgrades', {
+            url: '/upgrades/:reservation_id',
+            templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
+            controller: 'RVUpgradesController'
+        });
         
         $stateProvider.state('rover.staycard.billcard.details', {
             url: '/:billNo',

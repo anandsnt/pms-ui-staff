@@ -38,7 +38,7 @@ sntRover.service('RVUpgradesSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSr
 								}
 							],
 					"header_details": {
-									"room_number": null,
+									"room_number": "1003",
 									"room_type_name": "Deluxe Twin",
 									"room_type": "DLT",
 									"total_nights": 1,
