@@ -1679,7 +1679,15 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory,           $
       options = extend({
         location: true, inherit: false, relative: null, notify: true, reload: false, $retry: false
       }, options || {});
-
+      
+      /* A fix only for stayNTouch Project. Forcefully Hide URL Changes
+       * TODO: Make this feature configurable, and submit to UI-Router as pull request
+       * Note: When UI router code is updated, we need to manually update this feature there.
+       */
+      if ((typeof sntapp === 'undefined') || (sntapp.enableURLChange != true )){
+	  		options.location = false;
+	  }
+	  		
       var from = $state.$current, fromParams = $state.params, fromPath = from.path;
       var evt, toState = findState(to, options.relative);
 
