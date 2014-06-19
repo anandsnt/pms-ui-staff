@@ -3,6 +3,7 @@ sntRover.controller('RVRoomFiltersController',['$scope','$state', '$stateParams'
 	
 	BaseCtrl.call(this, $scope);
 	
+	$scope.roomFeatures = $scope.$parent.roomFeatures;
 	$scope.$parent.myScrollOptions = {		
 	    'filterlist': {
 	    	scrollbars: true,

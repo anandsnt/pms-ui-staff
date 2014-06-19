@@ -17,101 +17,11 @@
 									Include Pre-Assigned </label>
 							</div>
 							<!-- if group_name = 'ROOM FEATURE', it is displayed at the bottom. -->
-							<div id="group-0" data-multiples-allowed="false" data-group-name="Building" class="entry radio-check">
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="49" name="attr-features">
-									Down </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="48" name="attr-features">
-									Tower </label>
-								<input type="hidden" value="2" id="filter-count">
-							</div>
-							<!-- Display room features -->
-							<!-- if group_name = 'ROOM FEATURE', it is displayed at the bottom. -->
-							<div id="group-1" data-multiples-allowed="false" data-group-name="Category 3" class="entry radio-check">
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="101" name="attr-features">
-									Opt 1 </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="102" name="attr-features">
-									Opt 2 </label>
-								<input type="hidden" value="2" id="filter-count">
-							</div>
-							<!-- Display room features -->
-							<!-- if group_name = 'ROOM FEATURE', it is displayed at the bottom. -->
-							<div id="group-2" data-multiples-allowed="false" data-group-name="ELEVATOR" class="entry radio-check">
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="141" name="attr-features">
-									Away From Elevator </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="140" name="attr-features">
-									Near Elevator </label>
-								<input type="hidden" value="2" id="filter-count">
-							</div>
-							<!-- Display room features -->
-							<!-- if group_name = 'ROOM FEATURE', it is displayed at the bottom. -->
-							<div id="group-3" data-multiples-allowed="false" data-group-name="FLOOR" class="entry radio-check">
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="138" name="attr-features">
-									High Floor </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="139" name="attr-features">
-									Low Floor </label>
-								<input type="hidden" value="2" id="filter-count">
-							</div>
-							<!-- Display room features -->
-							<!-- if group_name = 'ROOM FEATURE', it is displayed at the bottom. -->
-							<!-- Display room features -->
-							<!-- if group_name = 'ROOM FEATURE', it is displayed at the bottom. -->
-							<div id="group-4" data-multiples-allowed="false" data-group-name="SMOKING" class="entry radio-check">
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="11" name="attr-features">
-									Non Smoking </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="10" name="attr-features">
-									Smoking </label>
-								<input type="hidden" value="2" id="filter-count">
-							</div>
-							<!-- Display room features -->
-							<div id="group-5" data-multiples-allowed="true" data-group-name="ROOM FEATURE" class="entry radio-check">
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="203" name="attr-features">
-									Accessible </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="16" name="attr-features">
-									Balcony </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="144" name="attr-features">
-									Connecting Room </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="209" name="attr-features">
-									High Floor </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="206" name="attr-features">
-									Jacuzzi </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="207" name="attr-features">
-									Kitchenette </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="208" name="attr-features">
-									Large Room </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="204" name="attr-features">
-									Near Elevator </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="1" name="attr-features">
-									Pool View </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="205" name="attr-features">
-									Quiet Room </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="145" name="attr-features">
-									Spa </label>
-								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
-									<input type="checkbox" value="202" name="attr-features">
-									Terrace </label>
-								<input type="hidden" value="12" id="filter-count">
-							</div>
-							<input type="hidden" value="6" id="group-count">
-						</div>
-						</div>
+							<div class="entry radio-check" ng-repeat="group in roomFeatures">
+								<label class="checkbox inline" ng-class="{'checked':feature.selected}" ng-repeat="feature in group.items"> <span class="icon-form icon-checkbox" ng-class="{'checked':feature.selected}"></span>
+									<input type="checkbox" value="{{feature.id}}" >
+									{{feature.name}} </label>
+							</div>				
+							
+					</div>
+</div>
