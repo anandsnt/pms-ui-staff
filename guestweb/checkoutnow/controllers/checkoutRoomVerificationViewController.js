@@ -2,6 +2,7 @@
 	var checkoutRoomVerificationViewController = function($scope,$rootScope,$state,$modal,checkoutRoomVerificationService) {
 
 	$scope.pageValid = false;
+	$rootScope.isRoomVerified =  false;
 	$scope.roomNumber = "";
 
 	if($rootScope.isCheckedin){
