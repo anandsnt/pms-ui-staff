@@ -49,27 +49,4 @@ snt.run(function($rootScope, $location, $http){
 		function(event, toState, toParams, fromState, fromParams){ 
 		$rootScope.title =toState.title;
 	});
-
-    $rootScope.$on("$locationChangeStart", function(event, next, current) {
-		if(next === current) {
-			// if($rootScope.isCheckedin){
-			// 	$location.path('/checkinSuccess');
-			// }
-			// else if($rootScope.isCheckin){
-			// 	$location.path('/checkinConfirmation');
-			// }
-			// else if($rootScope.isCheckedout){
-			// 	$location.path('/checkOutStatus');
-			// }
-				
-			// else if($rootScope.isCheckin && !$rootScope.isCheckedout)
-			// 		$location.path('/checkinConfirmation');
-			// else if (!$rootScope.isLateCheckoutAvailable)
-			// 	    $location.path('/checkOutConfirmation');
-			// 	else{
-			// 		$location.path('/');
-
-			// 	}
-		}
-	});
 });
