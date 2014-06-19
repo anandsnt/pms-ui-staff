@@ -31,6 +31,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', function($scope){
 	        vScrollbar: true,
 	        hideScrollbar: false,
 	        click: true,
+            bounce: false,
 	        scrollbars: 'custom' 
     	}
     };

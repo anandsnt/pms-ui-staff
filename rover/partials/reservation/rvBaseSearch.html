@@ -44,14 +44,14 @@
                     <div class="select adults">
                         <label for="room-1-adults" class="label">Adults</label>
                         <!-- Max Adults -->
-                        <select name="room-1-adults" id="room-1-adults" ng-model="room.numAdults">
+                        <select name="room-1-adults" id="room-1-adults" ng-model="room.numAdults" ng-change="validateOccupant(room, 'adult')">
                             <option ng-repeat="i in [0, otherData.maxAdults] | makeRange" value="{{i}}" ng-selected="i==room.numAdults">{{i}}</option>
                         </select>
                     </div>
                     <div class="select children">
                         <label for="room-1-children" class="label">Children</label>
                         <!-- Max Children -->
-                        <select name="room-1-children" id="room-1-children" ng-model="room.numChildren">
+                        <select name="room-1-children" id="room-1-children" ng-model="room.numChildren" ng-change="validateOccupant(room, 'children')">
                             <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==room.numChildren">{{i}}</option>
                         </select>
                     </div>
