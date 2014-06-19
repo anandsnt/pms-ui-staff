@@ -4,12 +4,16 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 	$scope.showEmail = ($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.email == null) ? true : false;
 	$scope.showPhone = ($scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.phone == null) ? true : false;
 	
-	console.log("emailllll==---"+$scope.showEmail);
-	console.log("phonellll==---"+$scope.showPhone);
+	console.log("emailllll==---"+JSON.stringify($scope.guestCardData));
+
 	
 	
 	$scope.clickCancel = function(){
 		ngDialog.close();
+	};
+	
+	$scope.submitAndGoToCheckin = function(){
+		
 	};
 	
 	
