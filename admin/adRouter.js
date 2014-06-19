@@ -14,7 +14,12 @@ admin.config([
 			abstract: true,
 			url: '/admin',
 			templateUrl: '/assets/partials/adApp.html',
-			controller: 'ADAppCtrl'
+			controller: 'ADAppCtrl',
+			resolve: {
+                adminMenuData: function(ADAppSrv) {
+                    return ADAppSrv.fetch();
+                }
+            }
 		});
 
 		
