@@ -23,6 +23,59 @@
 
 	if($scope.pageValid){
 
+
+    //Set merchant ID for MLI integration
+    //HostedForm.setMerchant(data.merchantId);
+
+    /* MLI integration starts here */
+
+  HostedForm.setMerchant("TESTSTAYNTOUCH01"); //to be retrieved from server
+  
+  
+    $scope.savePaymentDetails = function(){
+      
+      var MLISessionId = "";
+
+      $scope.fetchMLISessionId = function(){
+
+       var sessionDetails = {};
+       sessionDetails.cardNumber = '6700649826438453';
+       sessionDetails.cardSecurityCode = '123';
+       sessionDetails.cardExpiryMonth = '07';
+       sessionDetails.cardExpiryYear = '15';
+      
+       // var sessionDetails = {};
+       // sessionDetails.cardNumber = $scope.saveData.card_number;
+       // sessionDetails.cardSecurityCode = $scope.saveData.ccv;
+       // sessionDetails.cardExpiryMonth = $scope.saveData.card_expiry_month;
+       // sessionDetails.cardExpiryYear = $scope.saveData.card_expiry_year;
+
+       var callback = function(response){
+          if(response.status ==="ok"){    
+          console.log(response);      
+          MLISessionId = response.session;
+          // call other WS
+        }
+        else{
+         $scope.netWorkError = false;
+        }
+        
+       }
+            alert("")
+       HostedForm.updateSession(sessionDetails, callback);
+
+      
+    }
+    $scope.fetchMLISessionId();
+
+    }
+
+    $scope.savePaymentDetails();
+
+     /* MLI integration starts here */
+
+
+
     //setup options for error popup
 
     $scope.cardErrorOpts = {
