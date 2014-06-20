@@ -1,10 +1,26 @@
-sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv', function($http, $q, RVBaseWebSrv){
+sntRover.service('RVPaymentSrv',['$http', '$q', 'RVBaseWebSrv','rvBaseWebSrvV2', function($http, $q, RVBaseWebSrv,RVBaseWebSrvV2){
    
+	this.paymentsDetails = {};
+	var that =this;
+	
 	this.renderPaymentScreen = function(){
 		var deferred = $q.defer();
+
+		this.fetchMerchantID = function(){
+			var url = '/api/merchant_id.json';
+			RVBaseWebSrvV2.getJSON(url).then(function(data) {
+				 	that.paymentsDetails.merchantId = data.merchant_id;
+				    deferred.resolve(that.paymentsDetails);
+				},function(data){
+				    deferred.reject(data);
+				});	
+			return deferred.promise;
+	    };
+
 		var url = '/staff/payments/addNewPayment.json';
 		RVBaseWebSrv.getJSON(url).then(function(data) {
-			    deferred.resolve(data);
+			    that.paymentsDetails = data;
+			    this.fetchMerchantID();
 			},function(data){
 			    deferred.reject(data);
 			});	

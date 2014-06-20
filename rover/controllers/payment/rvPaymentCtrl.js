@@ -12,10 +12,18 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	 * Render success callback
 	 * Populates API with dropdown values
 	 */
+
+	$scope.errorRender = function(data){
+		$scope.$emit("hideLoader");
+		$scope.errorMessage = data;
+	};
 	$scope.successRender = function(data){
-		
 		$scope.$emit("hideLoader");
 		$scope.data = data;
+
+		//Set merchant ID for MLI integration
+		HostedForm.setMerchant(data.merchantId);
+
 		$scope.paymentTypeValues = [];
 		if($scope.passData.is_swiped){
 			var selectedPaymentType = 0;
@@ -33,7 +41,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.card_expiry_year = $scope.passData.card_expiry.substring(0, 2);
 		}
 	};
-	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender);
+	$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.successRender,$scope.errorRender);
 	/*
 	 * On selecting payment type list corresponding payments
 	 */
@@ -174,36 +182,40 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 
 	/* MLI integration starts here */
 
-	HostedForm.setMerchant("TESTSTAYNTOUCH01"); //to be retrieved from server
+	//HostedForm.setMerchant("TESTSTAYNTOUCH01"); //to be retrieved from server
  	
- 	$scope.MLISessionId = "";
+ 	
     $scope.savePaymentDetails = function(){
+    	
+    	var MLISessionId = "";
 
     	$scope.fetchMLISessionId = function(){
 
-    // 		var getSessionDetailsFromForm = function() {
-		  //  		return {
-		  //       cardNumber: $scope.saveData.card_number,
-		  //       cardSecurityCode: $scope.saveData.ccv,
-		  //       cardExpiryMonth:$scope.saveData.card_expiry_month,
-		  //       cardExpiryYear:$scope.saveData.card_expiry_year
-		  //   	}
-		 	// }
+		
+			// var getSessionDetailsFromForm = function() {
+		 //   		return {
+		 //        cardNumber: '6700649826438453',
+		 //        cardSecurityCode:'123',
+		 //        cardExpiryMonth:'07',
+		 //        cardExpiryYear:'14'
+		 //    	}
+		 // 	}
 			
-			var getSessionDetailsFromForm = function() {
-		   		return {
-		        cardNumber: '6700649826438453',
-		         cardSecurityCode:'1wsw23',
-		        cardExpiryMonth:'07',
-		        cardExpiryYear:'14'
-		    	}
-		 	}
-			
-			 var sessionDetails = getSessionDetailsFromForm();
+			 var sessionDetails = {};
+			 sessionDetails.cardNumber = $scope.saveData.card_number;
+			 sessionDetails.cardSecurityCode = $scope.saveData.ccv;
+			 sessionDetails.cardExpiryMonth = $scope.saveData.card_expiry_month;
+			 sessionDetails.cardExpiryYear = $scope.saveData.card_expiry_year;
+
 			 var callback = function(response){
+			 	
+			 	//$scope.$emit("hideLoader");//is not working
+			 	
 			 	console.log(response);
+
 			 	if(response.status ==="ok"){
-			 		$scope.MLISessionId = response.session;
+			 		
+			 		MLISessionId = response.session;
 			 		// call other WS
 			 	}
 			 	else{
@@ -211,13 +223,15 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			 	}
 			 	
 			 }
+			 //$scope.$emit("showLoader");
 			 HostedForm.updateSession(sessionDetails, callback);
+
 			
 		}
 		$scope.fetchMLISessionId();
 
     }
-     //$scope.savePaymentDetails();
+
 
     /* MLI integration ends here */
 	
