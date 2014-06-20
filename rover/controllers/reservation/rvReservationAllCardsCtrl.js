@@ -217,6 +217,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         else{
             $scope.guestSearchIntiated = false;
             $scope.guests = [];
+            $scope.$apply();
         }
     }
 
@@ -312,6 +313,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         }
         else{
             $scope.companySearchIntiated = false;
+            $scope.companies = [];
+            $scope.$apply();
         }
     }
 
