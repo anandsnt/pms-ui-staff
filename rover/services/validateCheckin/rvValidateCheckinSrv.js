@@ -3,7 +3,12 @@ sntRover.service('RVValidateCheckinSrv',['$http', '$q', 'RVBaseWebSrv', function
 	this.saveGuestEmailPhone = function(data){
 		var deferred = $q.defer();
 		var url = '/staff/guest_cards/' + data.user_id;
-		RVBaseWebSrv.putJSON(url, data.saveData).then(function(data) {
+		var dataToPost = {
+			"email": data.email,
+			"guest_id":data.guest_id,
+			"phone":data.phone
+		};
+		RVBaseWebSrv.putJSON(url, dataToPost).then(function(data) {
 			    deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);

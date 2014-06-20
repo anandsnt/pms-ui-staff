@@ -8,13 +8,14 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 	$scope.saveData.phone = "";
 	$scope.saveData.guest_id = "";
 	$scope.saveData.user_id = "";
-	//$scope.guestCardData.contactInfo.email =  "dsddddddddddddd";
+
 	console.log($scope);
 	$scope.clickCancel = function(){
 		ngDialog.close();
 	};
 	$scope.validateEmailPhoneSuccessCallback = function(){
-		console.log($scope.guestCardData.contactInfo.email +"===="+ $scope.saveData.email);
+		console.log("-----------------------");
+		console.log($scope);
 		
 		if($scope.showEmail && $scope.showPhone){
 			$scope.guestCardData.contactInfo.phone = $scope.saveData.phone;
