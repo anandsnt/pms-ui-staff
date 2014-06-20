@@ -28,7 +28,7 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
  	//To DO: check again
  	//console.log(JSON.stringify($attrs));
  	console.log( $attrs.isCcAttached)
- 	$rootScope.isCCOnFile = true;
+ 	$rootScope.isCCOnFile = false;
  	
  	$rootScope.isRoomVerified =  false;
 

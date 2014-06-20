@@ -40,10 +40,10 @@
 
 		$scope.gotToNextStep = function(){
 			if($rootScope.isCCOnFile && $scope.billData.balance>0){
-				$state.go('ccVerification',{'fee':$scope.billData.balance,'message':"Check-out fee",'isFromCheckoutNow':true});
+				$state.go('checkOutStatus');
 			}				
 			else{
-				$state.go('checkOutStatus');
+				$state.go('ccVerification',{'fee':$scope.billData.balance,'message':"Check-out fee",'isFromCheckoutNow':true});
 			}
 				
 		}
