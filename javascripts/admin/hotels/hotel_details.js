@@ -195,9 +195,13 @@ var HotelDetailsView = function(domRef) {
 		if (that.myDom.find("#div-is-pms-tokenized").hasClass("on")) {
 			isPmsTokenized = true;
 		}
-		isUseKioskEntityId = false;
-		if (that.myDom.find("#div-kiosk-entity-id").hasClass("on")) {
-			isUseKioskEntityId = true;
+		isUseKioskEntityIdFetchBooking = false;
+		if (that.myDom.find("#div-kiosk-entity-id-fetch-booking").hasClass("on")) {
+			isUseKioskEntityIdFetchBooking = true;
+		}
+		isUseKioskEntityIdCheckinCheckout = false;
+		if (that.myDom.find("#div-kiosk-entity-id-checkin-checkout").hasClass("on")) {
+			isUseKioskEntityIdCheckinCheckout = true;
 		}
 
 		var mliHotelCode = that.myDom.find('#mli-hotel-code').val();
@@ -225,7 +229,7 @@ var HotelDetailsView = function(domRef) {
 		if ($("#checkin_to_inspected").parent("label:eq(0)").hasClass("checked")) {
 			var checkinToInspectedRoomsOnly = "true";
 		}
-		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityId);
+		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityIdFetchBooking, isUseKioskEntityIdCheckinCheckout);
 		var type = event.data[0];
 		if (type == "create") {
 			var url = '/admin/hotels';
@@ -269,7 +273,7 @@ var HotelDetailsView = function(domRef) {
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
 	};
 	//Generating post data
-	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityId) {
+	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityIdFetchBooking, isUseKioskEntityIdCheckinCheckout) {
 
 		if (that.currentView == "snt-admin-view") {
 			data = {
@@ -309,7 +313,8 @@ var HotelDetailsView = function(domRef) {
 				mli_certificate: that.fileContent,
 				hotel_from_address: hotelFromAddress,
 				is_pms_tokenized: isPmsTokenized,
-				use_kiosk_entity_id: isUseKioskEntityId
+				use_kiosk_entity_id_for_fetch_booking: isUseKioskEntityIdFetchBooking,
+				use_snt_entity_id_for_checkin_checkout: isUseKioskEntityIdCheckinCheckout
 			};
 		} else {
 			data = {
