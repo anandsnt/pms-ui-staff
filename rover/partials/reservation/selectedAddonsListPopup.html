@@ -14,20 +14,15 @@
         <!-- Initial markup -->
         <ul id="room-1-enhancements" class="enhancements-added"></ul>
 
-        <!-- Markup as you add items
+        <!-- Markup as you add items -->
         <ul id="room-1-enhancements" class="confirmed">
-            <li>
-                <span class="item">Champagne &amp; Chocolates</span>
-                <span class="count">(1)</span>
-                <button type="button" class="icons icon-trash">Remove</button>
-            </li>
-            <li>
-                <span class="item">Hot Stone Massage Package</span>
-                <span class="count">(1)</span>
+            <li ng-repeat="addon in activeRoom.addons">
+                <span class="item">{{ addon.title }}</span>
+                <span class="count">({{ addon.quantity }})</span>
                 <button type="button" class="icons icon-trash">Remove</button>
             </li>
             ...
-        </ul> -->
+        </ul>
 
         <div class="actions">
             <button type="button" id="this-room" class="button white modal-hide">Add More to This Room</button>
