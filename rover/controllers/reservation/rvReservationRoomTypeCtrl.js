@@ -190,6 +190,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			//Navigate to the next screen
 			// $state.go('rover.reservation.mainCard.summaryAndConfirm');
+			$scope.checkOccupancyLimit();
 			$state.go('rover.reservation.mainCard.addons');
 		}
 
