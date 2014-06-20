@@ -542,11 +542,32 @@
 						position: absolute;
 						left: 20px;
 						top: 80px; 
-						.calc-width(100, 20); /* %, px */
+						.calc-width(100, 25); /* %, px */
 						.calc-height(100, 100); /* %, px */
 
+						/* custom scrollbars, cant revelage on iscroll */
+						overflow: auto;
+						-webkit-overflow-scrolling: touch;
+						/**/
+						&::-webkit-scrollbar {
+						  -webkit-appearance: scrollbarthumb-vertical;
+						  width: 7px;
+						}
+						/**/
+						&::-webkit-scrollbar-track {
+						  background: transparent none;
+						}
+						/**/
+						&::-webkit-scrollbar-thumb {
+						  width: 7px;
+						  background: rgba(0, 0, 0, 0.5);
+						  box-sizing: border-box;
+						  border: 1px solid rgba(255, 255, 255, 0.9);
+						  border-radius: 3px;
+						}
+
 						li {
-							margin: 0 20px 10px 0;
+							margin: 0 10px 10px 0;
 
 							.button {
 								position: relative;
@@ -611,6 +632,27 @@
 						width: 100%;
 						height: auto;
 						max-height: 190px;
+
+						/* custom scrollbars, cant revelage on iscroll */
+						overflow: auto;
+						-webkit-overflow-scrolling: touch;
+						/**/
+						&::-webkit-scrollbar {
+						  -webkit-appearance: scrollbarthumb-vertical;
+						  width: 7px;
+						}
+						/**/
+						&::-webkit-scrollbar-track {
+						  background: transparent none;
+						}
+						/**/
+						&::-webkit-scrollbar-thumb {
+						  width: 7px;
+						  background: rgba(0, 0, 0, 0.5);
+						  box-sizing: border-box;
+						  border: 1px solid rgba(255, 255, 255, 0.9);
+						  border-radius: 3px;
+						}
 
             			> .wrapper { padding-bottom: 2px; }
 
