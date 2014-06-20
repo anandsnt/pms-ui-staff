@@ -272,10 +272,17 @@ sntRover.directive('autoComplete', ['highlightFilter',
                     .data('ui-autocomplete')
                     ._renderItem = function(ul, item) {
                         ul.addClass('find-cards');
-
+                            
                         var $content = highlightFilter(item.label, scope.ngModel),
-                            $result = $("<a></a>").html($content),
+                            $result  = $("<a></a>").html($content),
+                            defIcon  = item.type === 'COMPANY' ? 'icon-company' : 'icon-travel-agent',
+                            $image   = '';
+
+                        if ( item.image ) {
                             $image = '<img src="' + item.image + '">';
+                        } else {
+                            $image = '<span class="icons ' + defIcon + '"></span>';
+                        }
 
                         $($image).prependTo($result);
 

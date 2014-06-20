@@ -9,7 +9,7 @@
                 <!-- Styled check in date -->
 
                 <div class="entry-data">
-                    <input ui-date="arrivalDateOptions"  name="check-in-date" id="check-in-date" type="text" class="datepicker"  ui-date-format ng-model="reservationData.arrivalDate" ng-change="arrivalDateChanged()"readonly/>
+                    <input ui-date="arrivalDateOptions"  name="check-in-date" id="check-in-date" type="number" class="datepicker"  ui-date-format ng-model="reservationData.arrivalDate" ng-change="arrivalDateChanged()"readonly/>
                     
                     <strong id="check-in-day" class="day">{{reservationData.arrivalDate | date:'dd'}}</strong>
                     <span id="check-in-month" class="month">{{reservationData.arrivalDate | date:'MMMM'}}</span>
@@ -83,7 +83,7 @@
         <div id="company-agent" class="row">
             <div id="autocomplete-search" class="entry">
                 <label for="company-or-agent">Company / Travel Agent <span>(optional)</span></label>
-                <input auto-complete auto-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearchText"/>
+                <input auto-complete auto-options="autocompleteOptions" name="company-or-agent" id="company-or-agent" data-card-type="" type="text" placeholder="Name, Corporate ID or IATA #" value="" autocomplete="off" ng-model="companySearchText" />
             </div>
         </div>
         <button id="find-rooms-and-rates" type="button" class="button green" ng-click="navigate()">Find Rooms &amp; Rates</button>
