@@ -1,4 +1,4 @@
-<form id="signature-pad" class="complete-registration form">
+<form id="signature-pad" class="complete-registration form" ng-show="clickedButton == 'checkinButton'">
 	<h2>Please sign below</h2>
 	<div class="sig sigWrapper">
 		<div id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
@@ -7,12 +7,12 @@
 	</div>
 	<div class="entry">
 		<label id="terms-and-conditions" for="terms" class="checkbox inline">
-			<span class="icon-form icon-checkbox"></span>
-			<input type="checkbox" value="1" name="checkin" id="terms">
+			<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.termsAndConditions}"></span>
+			<input type="checkbox" ng-model="saveData.termsAndConditions">
 			By Checking this box you hereby agree to the Terms &amp; Conditions </label>
 		<label id="subscribe-via-email" for="subscribe" class="checkbox inline checked">
-			<span class="icon-form icon-checkbox checked"></span>
-			<input type="checkbox" value="1" name="checkin" id="subscribe" checked="">
+			<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.promotions}"></span>
+			<input type="checkbox" value="1" name="checkin" id="subscribe" checked="" ng-model="saveData.promotions">
 			Please send me promotions and news via email. </label>
 	</div>
 	<div class="actions">

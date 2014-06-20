@@ -28,6 +28,18 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 			
 		$scope.$emit('hideLoader');
 		ngDialog.close();
+		$scope.goToNextView();
+	};
+	$scope.goToNextView = function(){
+		// if($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status != 'READY' || $scope.reservationData.reservation_card.fo_status != 'VACANT')
+		// {
+			// //TO DO:Go to rrom assignemt viw
+			// $state.go("rover.staycard.roomassignment");
+		// } else if ($scope.reservationData.reservation_card.is_force_upsell && $scope.reservationData.reservation_card.is_upsell_available){
+			// //TO DO : gO TO ROOM UPGRAFED VIEW
+		// } else {
+			$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+		// }
 	};
 	$scope.submitAndGoToCheckin = function(){
 			$scope.saveData.guest_id = $scope.guestCardData.guestId;

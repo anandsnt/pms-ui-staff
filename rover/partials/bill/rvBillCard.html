@@ -32,7 +32,7 @@
 		<div ng-iscroll='registration-content' ng-iscroll-delay='50' class="registration-content bill_content">
 
 			<div class="wrapper wrapperDisplay" style="height: {{calculatedHeight}}px;">
-				<div id="notification-message" style="display: none;"></div>
+				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 				<div id="billing-information" class="billing-information notice" ng-show="showBillingInfo">
 					<table>
 						<thead>
@@ -224,8 +224,9 @@
 						</div>
 						<!-- Show Total Stay Fees and Balance -->
 
-						<div ng-include="'assets/partials/bill/rvTotalStayFees.html'"></div>
+						<div ng-include="'assets/partials/bill/rvTotalStayFees.html'" ></div>
 						<!-- Show Signature -->
+					
 						<div ng-include="'assets/partials/bill/rvSignature.html'"></div>
 						<!-- Review bill and Complete checkout -->
 						<!-- Checkin screen -->

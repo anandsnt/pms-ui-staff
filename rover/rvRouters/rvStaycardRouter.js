@@ -33,7 +33,7 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
 
                                
         $stateProvider.state('rover.staycard.billcard', {
-			 url: '/billcard/:reservationId',
+			 url: '/billcard/:reservationId/:clickedButton',
 			 templateUrl: '/assets/partials/bill/rvBillCard.html',
              controller: 'RVbillCardController',
 	         resolve: {

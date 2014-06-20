@@ -36,11 +36,11 @@
 
 		<a class="button white red-text hidden">Cancel reservation</a>
 		
-		<a ui-sref="rover.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id})" class="button yellow-btn red-text-btn" ng-show="reservationData.reservation_card.is_routing_available">
+		<a ui-sref="rover.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton})" class="button yellow-btn red-text-btn" ng-show="reservationData.reservation_card.is_routing_available">
 			View bill / Routing
 		</a>
 		
-		<a ui-sref="rover.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id})" class="button white blue-text" ng-hide="reservationData.reservation_card.is_routing_available">View bill</a>
+		<a ui-sref="rover.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: viewBillButton})" class="button white blue-text" ng-hide="reservationData.reservation_card.is_routing_available">View bill</a>
 		
 		<!-- show add charge -->
 		
