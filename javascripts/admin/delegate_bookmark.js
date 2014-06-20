@@ -26,11 +26,6 @@ var DelegateBookMark = function(){
             	    return;
             	}
 
-            	if(jqxhr.status=="422"){
-            	    location.href = XHR_STATUS.REJECTED;
-            	    return;
-            	}
-
             	if(jqxhr.status=="404"){
             	    location.href = XHR_STATUS.SERVER_DOWN;
             	    return;
@@ -62,11 +57,6 @@ var DelegateBookMark = function(){
             	if (jqxhr.status == "401") { sntapp.logout(); return;}
             	if (jqxhr.status=="501" || jqxhr.status=="502" || jqxhr.status=="503") {
             	    location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
-            	    return;
-            	}
-
-            	if(jqxhr.status=="422"){
-            	    location.href = XHR_STATUS.REJECTED;
             	    return;
             	}
 

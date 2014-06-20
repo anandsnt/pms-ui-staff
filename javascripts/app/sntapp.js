@@ -117,11 +117,6 @@ var app = function(){
                     return;
                 }
 
-                if(jqxhr.status=="422"){
-                    location.href = XHR_STATUS.REJECTED;
-                    return;
-                }
-
                 if(jqxhr.status=="404"){
                     location.href = XHR_STATUS.SERVER_DOWN;
                     return;
