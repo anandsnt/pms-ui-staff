@@ -13,7 +13,7 @@
                     <!-- Categories -->
                     <ul class="addon-categories">
                       <li ng-class="{'ui-state-active': addonCategory === activeAddOnCategory}">
-                        <a ng-click="selectAddonCategory('BEST SELLERS', $event)" class="button white">BEST SELLERS</a>
+                        <a ng-click="selectAddonCategory('BEST SELLERS', $event)" class="button white" translate>BEST_SELLERS</a>
                     </li>
                       <li ng-repeat="addonCategory in addonCategories" ng-class="{'ui-state-active': addonCategory === activeAddOnCategory}">
                         <a ng-click="selectAddonCategory(addonCategory.name, $event)" class="button white">{{ addonCategory.name }}</a>
@@ -24,9 +24,9 @@
                     <div class="addon-items">
 
                         <div class="options">
-                            <button type="button" ng-click="showEnhancementsPopup()" class="button white"><span class="label">Enhancements</span>
+                            <button type="button" ng-click="showEnhancementsPopup()" class="button white"><span class="label" translate>ENHANCEMENTS</span>
                             <span class="count">{{ activeRoom.addons.length }}</span></button>
-                            <button class="button green has-arrow skip" ng-click="goToSummaryAndConfirm()">Go to Payment</button>
+                            <button class="button green has-arrow skip" ng-click="goToSummaryAndConfirm()" translate>GO_TO_PAYMENT</button>
                         </div>
 
                         <ul id="addon-best-sellers" class="addon-tab" style="margin-top:60px; width: 100%;">
@@ -43,7 +43,7 @@
                                 <div class="add-enhancement" ng-init="addonQty=1">
                                     <button id="enhance-room-1-champagne" type="button" class="button green" ng-click="selectAddon(addon, addonQty)">Add</button>
                                     <div class="select">
-                                        <label class="label" for="room-1-champagne-quantity">Quantity</label>
+                                        <label class="label" for="room-1-champagne-quantity" translate>QUANTITY</label>
                                         <select name="room-1-champagne-quantity" ng-model="addonQty">
                                             <option ng-repeat="i in [1, addon.quantity] | makeRange" value="{{i}}">{{i}}</option>
                                         </select>
