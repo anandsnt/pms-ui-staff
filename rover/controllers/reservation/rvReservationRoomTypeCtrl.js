@@ -311,7 +311,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							}
 						}
 						rooms[d.room_type_id].total[rate_id].total = parseInt(rooms[d.room_type_id].total[rate_id].total) + $scope.calculateRate(d);
-						rooms[d.room_type_id].total[rate_id].average = rooms[d.room_type_id].total[rate_id].total / $scope.days;
+						rooms[d.room_type_id].total[rate_id].average = parseFloat(rooms[d.room_type_id].total[rate_id].total / $scope.days).toFixed(2);
 
 					})
 				})

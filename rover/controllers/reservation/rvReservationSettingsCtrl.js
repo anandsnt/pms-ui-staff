@@ -66,7 +66,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
         };
 
         $scope.editRoomRates = function(roomIdx) {
-            console.log($scope.reservationData.rooms[roomIdx]);
+            // console.log($scope.reservationData.rooms[roomIdx]);
             //TODO: Navigate back to roomtype selection screen after resetting the current room options
             $scope.reservationData.rooms[roomIdx].roomTypeId = '';
             $scope.reservationData.rooms[roomIdx].roomTypeName = '';
@@ -95,7 +95,6 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                     $scope.reservationSettingsVisible = true;
                     $scope.reservationSettingsWidth = resizableMaxWidth;
                 }
-
             }
         };
     }
