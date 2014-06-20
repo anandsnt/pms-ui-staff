@@ -1,11 +1,11 @@
 <div  class="wrapper" >
 							<div class="action">
-								<button type="button" id="clear-filters-button" class="button blank clear-selection">
+								<button type="button" id="clear-filters-button" class="button blank clear-selection" ng-click="clearAllFilters()">
 									Clear filters
 								</button>
 							</div>
 							<div id="filterlist" ng-iscroll='filterlist' ng-iscroll-delay='50'>
-							<div id="group-default" class="entry radio-check">
+							<!-- <div id="group-default" class="entry radio-check">
 								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
 									<input type="checkbox" value="include-not-ready" id="filter-not-ready">
 									Include Not Ready </label>
@@ -15,12 +15,15 @@
 								<label class="checkbox inline"> <span class="icon-form icon-checkbox"></span>
 									<input type="checkbox" value="include-pre-assigned" id="filter-preassigned">
 									Include Pre-Assigned </label>
-							</div>
+							</div> -->
 							<!-- if group_name = 'ROOM FEATURE', it is displayed at the bottom. -->
 							<div class="entry radio-check" ng-repeat="group in roomFeatures">
-								<label class="checkbox inline" ng-class="{'checked':feature.selected}" ng-repeat="feature in group.items"> <span class="icon-form icon-checkbox" ng-class="{'checked':feature.selected}"></span>
-									<input type="checkbox" value="{{feature.id}}" >
+								<label class="checkbox inline" ng-class="{'checked':feature.selected}" ng-repeat="feature in group.items"> 
+									<span class="icon-form icon-checkbox" ng-class="{'checked':feature.selected}" ></span>
+									<input type="checkbox" value="{{feature.id}}" 
+									ng-click="setSelectionForFeature($parent.$index, $index)">
 									{{feature.name}} </label>
+
 							</div>				
 							
 					</div>

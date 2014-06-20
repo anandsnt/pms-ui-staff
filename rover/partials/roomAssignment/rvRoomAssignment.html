@@ -45,10 +45,15 @@
 					<!-- Rooms list -->
 					<div id="roomlist" ng-iscroll='roomlist' ng-iscroll-delay='50' class="rooms scrollable" ng-class="{'roomListAnimation': isFiltersVisible}">
 						<ul class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
-							<li ng-repeat="room in rooms" ng-click="assignRoom($index)">
+							<li ng-repeat="room in filteredRooms" ng-click="assignRoom($index)">
 								<a data-value="" class="button white submit-value hover-hand" id="room-list-item"><span data-value="{{room.room_number}}" class="room-number ready">{{room.room_number}}</span></a>
 							</li>
 						</ul>
+						<div class="info" ng-show = "isRoomListEmpty()">
+							<span class="icon-no-content icon-room"></span>
+							<strong class="h1">Unfortunately there are no rooms ready yet.</strong>
+							<span class="h2">Try changing some of the filter criteria</span>
+						</div>
 					</div>
 				</div>
 			</div>
