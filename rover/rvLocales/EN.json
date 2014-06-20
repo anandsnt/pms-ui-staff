@@ -262,5 +262,13 @@
     "SEARCH_TERM": "Search items",
     "0_ITEM_SELECTED": "0 items selected",
     "POST_CHARGE": "Post Charge",
-    "VIEW_BILL_TITLE": "View Bill"
+    "VIEW_BILL_TITLE": "View Bill",
+    "CLEAR_FILTERS_LABEL":"Clear filters",
+    "ROOMS_NOT_READY_TEXT":"Unfortunately there are no rooms ready yet.",
+    "CHANGE_FILTER_TEXT":"Try changing some of the filter criteria",
+    "INCLUDE_NOTREADY_LABEL":"Include Not Ready",
+    "INCLUDE_DUEOUT_LABEL":"Include Due Out",
+    "INCLUDE_PREASSIGNED_LABEL":"Include Pre-Assigned",
+    "NIGHT_LABEL":"night",
+    "NIGHTS_LABEL":"nights"
 }

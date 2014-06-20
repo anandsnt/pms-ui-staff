@@ -12,6 +12,9 @@ sntRover.controller('RVRoomFiltersController',['$scope','$state', '$stateParams'
 	        preventDefault: false
 	    }
 	};
+	/**
+	* Listener to set the room filters when loaded
+	*/
 	$scope.$on('roomFeaturesLoaded', function(event, data){
 			$scope.roomFeatures = data;
 			setTimeout(function(){
@@ -19,6 +22,9 @@ sntRover.controller('RVRoomFiltersController',['$scope','$state', '$stateParams'
 				}, 
 			3000);
 	});
+	/**
+	* function to handle the filter selection
+	*/
 	$scope.setSelectionForFeature = function(group, feature){
 			if(!$scope.roomFeatures[group].multiple_allowed){
 				for(var i = 0; i < $scope.roomFeatures[group].items.length; i++){
@@ -30,6 +36,9 @@ sntRover.controller('RVRoomFiltersController',['$scope','$state', '$stateParams'
 			$scope.roomFeatures[group].items[feature].selected = !$scope.roomFeatures[group].items[feature].selected;
 			$scope.$emit('roomFeaturesUpdated', $scope.roomFeatures);
 	};
+	/**
+	* function to handle the filter clearing
+	*/
 	$scope.clearAllFilters = function(){
 			
 				for(var i = 0; i < $scope.roomFeatures.length; i++){

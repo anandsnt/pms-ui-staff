@@ -1,5 +1,5 @@
 
-sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce', function($scope, $state, $stateParams, RVUpgradesSrv, $sce){
+sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', 'RVUpgradesSrv', '$sce', '$filter', function($scope, $state, $stateParams, RVUpgradesSrv, $sce, $filter){
 	
 	BaseCtrl.call(this, $scope);
 	
@@ -18,7 +18,9 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 	$scope.upgradesList = [];
 	$scope.headerData = {};
 	$scope.upgradesDescriptionStatusArray = [];
-		
+	/**
+	* function to get all available upgrades for the reservation
+	*/
 	$scope.getAllUpgrades = function(){
 		var successCallbackgetAllUpgrades = function(data){
 			$scope.upgradesList = data.upsell_data;
@@ -40,6 +42,9 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 
 	};
 	$scope.getAllUpgrades();
+	/**
+	* function to set the upgrade option for the reservation
+	*/
 	$scope.selectUpgrade = function(index){
 		var successCallbackselectUpgrade = function(data){
 			$scope.$emit('hideLoader');
@@ -56,12 +61,19 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 		$scope.invokeApi(RVUpgradesSrv.selectUpgrade, params, successCallbackselectUpgrade, errorCallbackselectUpgrade);
 
 	};
+	/**
+	* function to show and hide the upgrades detail view
+	*/
 	$scope.toggleUpgradeDescriptionStatus = function(index){
 		$scope.upgradesDescriptionStatusArray[index] = !$scope.upgradesDescriptionStatusArray[index];
 	};
 	$scope.isDescriptionVisible = function(index){
 		return $scope.upgradesDescriptionStatusArray[index];
 	};
+	/**
+	* function to set the initial display status for the upgrade details for all the upgrades
+	  And also to set the upgrade description text as html
+	*/
 	$scope.setUpgradesDescriptionInitialStatuses = function(){
 		$scope.upgradesDescriptionStatusArray = new Array($scope.upgradesList.length);
 		for (var i = 0; i < $scope.upgradesDescriptionStatusArray.length; i++) 
@@ -70,11 +82,17 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 				$scope.upgradesList[i].upgrade_room_description = $sce.trustAsHtml($scope.upgradesList[i].upgrade_room_description);
 			}
 	};
+	/**
+	* function to go back to reservation details
+	*/
 	$scope.backToStayCard = function(){
 		
 		$state.go("rover.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num});
 		
 	};
+	/**
+	* function to set the color coding for the room number based on the room status
+	*/
 	$scope.getRoomStatusClass = function(){
 		var reservationRoomStatusClass = "";
 		if($scope.headerData.reservation_status == 'CHECKING_IN'){
@@ -86,9 +104,15 @@ sntRover.controller('RVUpgradesController',['$scope','$state', '$stateParams', '
 		} 
 		return reservationRoomStatusClass;
 	};
+	/**
+	* function to change text according to the number of nights
+	*/
 	$scope.setNightsText = function(){
-		return ($scope.headerData.total_nights == 1)?"night":"nights";
+		return ($scope.reservationData.reservation_card.total_nights == 1)?$filter('translate')('NIGHT_LABEL'):$filter('translate')('NIGHTS_LABEL');
 	};
+	/**
+	* function to calculate the width of the horizontal scroll view based on the no of upgrades
+	*/
 	$scope.getHorizontalScrollWidth = function(){
 			return 465*$scope.upgradesList.length;
 	};
