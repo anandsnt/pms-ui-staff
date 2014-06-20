@@ -1,4 +1,4 @@
-sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCardsSrv', function($scope, RVReservationAllCardsSrv){
+sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCardsSrv', '$timeout', function($scope, RVReservationAllCardsSrv, $timeout){
     
     BaseCtrl.call(this, $scope);
     var resizableMinHeight = 90;
@@ -11,16 +11,53 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
     $scope.guestLastName = $scope.reservationData.guest.lastName;
     $scope.guestCity = '';
     $scope.guestLoyaltyNumber = '';
+    $scope.guestSearchIntiated = false;
 
     // initialize company search fields
     $scope.companyName = $scope.reservationData.company.name;
     $scope.companyCity = '';
     $scope.companyCorpId = '';
+    $scope.companySearchIntiated = false;
 
     // initialize travel-agent search fields
     $scope.travelAgentName = $scope.reservationData.travelAgent.name;
     $scope.travelAgentCity = '';
     $scope.travelAgentIATA = '';
+    $scope.travelAgentSearchIntiated = false;
+
+    $scope.cardHeaderImage = '/assets/avatar-trans.png';
+
+    $scope.$parent.myScrollOptions = {
+        'guestResultScroll': {
+            snap: false,
+            scrollbars: true,
+            vScroll: true,
+            vScrollbar: true,
+            hideScrollbar: false
+        },
+        'companyResultScroll': {
+            snap: false,
+            scrollbars: true,
+            vScroll: true,
+            vScrollbar: true,
+            hideScrollbar: false
+        },
+        'travelAgentResultScroll': {
+            snap: false,
+            scrollbars: true,
+            vScroll: true,
+            vScrollbar: true,
+            hideScrollbar: false
+        }
+    };
+
+    $scope.refreshScroll = function(elemToBeRefreshed){
+        if (typeof $scope.$parent.myScroll != 'undefined') {
+            $timeout(function() {
+                $scope.$parent.myScroll[elemToBeRefreshed].refresh();
+            }, 300);
+        }
+    }
 
     /**
     * scroller options
@@ -142,6 +179,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
         var successCallBackFetchGuest = function(data){
             $scope.$emit("hideLoader");
+            $scope.refreshScroll('guestResultScroll');
+            $scope.guestSearchIntiated = true;
             $scope.guests = [];
             if(data.results.length>0){
                 angular.forEach(data.results, function(item){
@@ -149,6 +188,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                     guestData.id = item.id;
                     guestData.firstName = item.first_name;
                     guestData.lastName = item.last_name;
+                    guestData.image = item.image_url;
                     if ( item.address != null ){
                         guestData.address = {};
                         guestData.address.city = item.address.city;
@@ -165,13 +205,18 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 });
             }
         }
-        var paramDict = {
-                            'first_name': $scope.guestFirstName,
-                            'last_name': $scope.guestLastName,
-                            'city': $scope.guestCity,
-                            'membership_no': $scope.guestLoyaltyNumber
-                        };
-        $scope.invokeApi(RVReservationAllCardsSrv.fetchGuests, paramDict, successCallBackFetchGuest);
+        if( $scope.guestFirstName != '' || $scope.guestLastName != '' || $scope.guestCity != '' || $scope.guestLoyaltyNumber !== ''){
+            var paramDict = {
+                                'first_name': $scope.guestFirstName,
+                                'last_name': $scope.guestLastName,
+                                'city': $scope.guestCity,
+                                'membership_no': $scope.guestLoyaltyNumber
+                            };
+            $scope.invokeApi(RVReservationAllCardsSrv.fetchGuests, paramDict, successCallBackFetchGuest);
+        }
+        else{
+            $scope.guestSearchIntiated = false;
+        }
     }
 
     $scope.selectGuest = function(guest, $event){
@@ -187,6 +232,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         $scope.guestFirstName = guest.firstName;
         $scope.guestLastName = guest.lastName;
         $scope.guestCity = guest.address.city;
+        $scope.cardHeaderImage = guest.image;
         $scope.closeGuestCard();
     }
 
@@ -233,6 +279,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
     $scope.searchCompany = function(){
         var successCallBackFetchCompanies = function(data){
             $scope.$emit("hideLoader");
+            $scope.refreshScroll('companyResultScroll');
+            $scope.companySearchIntiated = true;
             $scope.companies = [];
             if(data.accounts.length > 0){
                 angular.forEach(data.accounts, function(item){
@@ -253,12 +301,17 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 });
             }
         }
-        var paramDict = {
-                            'name': $scope.companyName,
-                            'city': $scope.companyCity,
-                            'corporate_id': $scope.companyCorpId
-                        };
-        $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
+        if( $scope.companyName != '' || $scope.companyCity != '' || $scope.companyCorpId != ''){
+            var paramDict = {
+                                'name': $scope.companyName,
+                                'city': $scope.companyCity,
+                                'corporate_id': $scope.companyCorpId
+                            };
+            $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchCompanies);
+        }
+        else{
+            $scope.companySearchIntiated = false;
+        }
     }
 
     $scope.selectCompany = function(company, $event){
@@ -275,8 +328,10 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
     }
 
     $scope.searchTravelAgent = function(){
+        $scope.refreshScroll('travelAgentResultScroll');
         var successCallBackFetchTravelAgents = function(data){
             $scope.$emit("hideLoader");
+            $scope.travelAgentSearchIntiated = true;
             $scope.travelAgents = [];
             if(data.accounts.length > 0){
                 angular.forEach(data.accounts, function(item){
@@ -291,18 +346,26 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                         travelAgentData.address.city = item.address.city;
                         travelAgentData.address.state = item.address.state;
                     }
+                    if ( item.current_contract != null ){
+                        travelAgentData.rate = item.current_contract.name;
+                    }
                     travelAgentData.email = item.email;
                     travelAgentData.phone = item.phone;
                     $scope.travelAgents.push(travelAgentData);
                 });
             }
         }
-        var paramDict = {
-                            'name': $scope.travelAgentName,
-                            'city': $scope.travelAgentCity,
-                            'corporate_id': $scope.travelAgentIATA
-                        };
-        $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
+        if( $scope.travelAgentName != '' || $scope.travelAgentCity != '' || $scope.travelAgentIATA != ''){
+            var paramDict = {
+                                'name': $scope.travelAgentName,
+                                'city': $scope.travelAgentCity,
+                                'corporate_id': $scope.travelAgentIATA
+                            };
+            $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
+        }
+        else{
+            $scope.travelAgentSearchIntiated = false;
+        }
     }
 
     $scope.selectTravelAgent = function(travelAgent, $event){

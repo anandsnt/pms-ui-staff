@@ -44,7 +44,7 @@ var NewWebServiceInterface = function(){
 	this.putJSON = function(requestUrl, options ){
 		var options = options ? options : {};		
 		var requestType = "PUT";
-		var contentType = 'application/json';
+		var contentType = 'application/json;charset=utf-8';
 		var dataType = 'json';
 		var requestParameters = options["requestParameters"] ? options["requestParameters"] : {};
 		var async = options["async"] ? options["async"] : true;
@@ -218,6 +218,7 @@ var NewWebServiceInterface = function(){
 			dataType: dataType,
 			async: async,
 			timeout: that.timeout,
+			contentType: contentType,
 			
 			success: function(data){
 				sntapp.activityIndicator.hideActivityIndicator();
@@ -237,11 +238,6 @@ var NewWebServiceInterface = function(){
                 if (jqXHR.status=="401") { sntapp.logout(); return;}
                 if (jqXHR.status=="503" || jqXHR.status=="500") {
                     location.href = XHR_STATUS.INTERNAL_SERVER_ERROR;
-                    return;
-                }
-
-                if(jqXHR.status=="422"){
-                    location.href = XHR_STATUS.REJECTED;
                     return;
                 }
 

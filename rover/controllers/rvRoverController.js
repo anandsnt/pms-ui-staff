@@ -1,6 +1,7 @@
 sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$window', 'RVDashboardSrv', 'RVHotelDetailsSrv', 'ngDialog', '$translate','hotelDetails','userInfoDetails',
   function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv, ngDialog, $translate,hotelDetails,userInfoDetails) {
     //Used to add precison in amounts
+    
     $rootScope.precisonZero = 0;
     $rootScope.precisonTwo = 2;
     //To get currency symbol - update the value with the value from API see fetchHotelDetailsSuccessCallback
@@ -17,6 +18,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     $rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; //Wednesday, 4 June 2014
     $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; //Wednesday 06-04-2014
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
+    $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy";//Wednesday, 06-04-2014
 
       /*
      * hotel Details 
@@ -269,7 +271,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
     var options = [];
     options["successCallBack"] = $scope.successCallBackSwipe;
     options["failureCallBack"] = $scope.failureCallBackSwipe;
-    sntapp.setBrowser("rv_native");
+    
     setTimeout(function() {
       if (sntapp.cardSwipeDebug === true) {
         sntapp.cardReader.startReaderDebug(options);

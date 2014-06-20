@@ -429,7 +429,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 		 
 		var height = 0;
 		if($scope.reservationBillData.bills[$scope.currentActiveBill].isOpenFeesDetails){
-			countFeesElements = parseInt(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details.length)+parseInt(7);
+			if(reservationBillData.bills[$scope.currentActiveBill].total_fees.length > 0){
+				countFeesElements = parseInt(reservationBillData.bills[$scope.currentActiveBill].total_fees[0].fees_details.length)+parseInt(7);
+			}
+			
 			height = parseInt(height) + parseInt(countFeesElements*67);
 		}
 		if($scope.showRoomDetailsIndex!=-1){
