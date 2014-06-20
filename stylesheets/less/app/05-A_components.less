@@ -6262,15 +6262,27 @@
 					> .iScrollVerticalScrollbar { top: 20px; }
 
 					.addons {
-
-						.skip {
-							font-size: 15px;
-							margin-bottom: 10px;
-							#pixel-to-percent > .width(320,2048);
-						}
-
 						.addon-items {
-							margin-top: -50px;
+							.options {
+                                text-align: right;
+                                margin-bottom: 10px;
+
+                                .float;
+
+                                .button {
+                                    display: inline-block;
+
+                                    &.white {
+                                        margin-right: 10px;
+                                    }
+
+                                    &.green {
+                                        text-align: left;
+                                        padding-right: 40px;
+                                        line-height: 42px;
+                                    }
+                                }
+                            }
 
 							.addon-tab {
 								li {

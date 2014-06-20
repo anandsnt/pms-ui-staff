@@ -1,4 +1,5 @@
-hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', '$log', function($rootScope, $scope, $state){
+hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', '$log', 'ngDialog',
+    function($rootScope, $scope, $state, $log, ngDialog){
     $scope.hasLoader = false;
     $scope.menuOpen = false;
     $scope.filterOpen = false;
@@ -63,6 +64,21 @@ hkRover.controller('HKappCtrl',['$rootScope', '$scope', '$state', '$log', functi
     $scope.$on("showFilterScreen",function(){
         $scope.filterOpen = true;
     });
+
+    /**
+    * Handles the OWS error - Shows a popup having ows connection test option
+    */
+    $rootScope.showOWSError = function(){
+        // Hide loading message
+        $scope.$emit('hideLoader');
+        ngDialog.open({
+            template: '/assets/partials/hkOWSError.html',
+            className: 'ngdialog-theme-default modal-theme',
+            controller: 'HKOWSErrorCtrl',
+            closeByDocument: false,
+            scope: $scope
+        });
+    };
     
 }]);
 

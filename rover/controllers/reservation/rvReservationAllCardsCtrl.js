@@ -346,6 +346,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                         travelAgentData.address.city = item.address.city;
                         travelAgentData.address.state = item.address.state;
                     }
+                    if ( item.current_contract != null ){
+                        travelAgentData.rate = item.current_contract.name;
+                    }
                     travelAgentData.email = item.email;
                     travelAgentData.phone = item.phone;
                     $scope.travelAgents.push(travelAgentData);

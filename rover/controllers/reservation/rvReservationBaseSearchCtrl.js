@@ -10,6 +10,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
         var init = function() {
             // console.log('baseSearchData',baseSearchData);
+            $scope.initReservationData();
             $scope.businessDate = baseSearchData.businessDate;
             if($scope.reservationData.arrivalDate == ''){
                 $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate), 'yyyy-MM-dd');

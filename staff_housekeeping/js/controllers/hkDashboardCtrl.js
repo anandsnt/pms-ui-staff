@@ -9,7 +9,6 @@ hkRover.controller('HKDashboardCtrl',['$scope', 'dashboardData',  function($scop
 		.bind( 'ontouchmove', function(e) {
 			e.stopPropagation();
 		});
-
 }]);
 
     
