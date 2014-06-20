@@ -240,6 +240,47 @@
 		}
 	}
 
+/* Rover Angular animations			==============================*/
+	@uiViewDuration: .5s;
+	@uiViewTimingFn: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+	@uiViewFillMode: both;
+
+	#move {
+		#ui-view {
+			.enter(@animation: uiViewSlideIn, @duration: @uiViewDuration, @easing: @uiViewTimingFn, @fill-mode: @uiViewFillMode) {
+				-webkit-animation: @animation @duration @easing @fill-mode;
+				-moz-animation: @animation @duration @easing @fill-mode;
+				-ms-animation: @animation @duration @easing @fill-mode;
+				-o-animation: @animation @duration @easing @fill-mode;
+				animation: @animation @duration @easing @fill-mode;
+			}
+
+			.leave(@animation: uiViewSlideOut, @duration: @uiViewDuration, @easing: @uiViewTimingFn, @fill-mode: @uiViewFillMode) {
+				-webkit-animation: @animation @duration @easing @fill-mode;
+				-moz-animation: @animation @duration @easing @fill-mode;
+				-ms-animation: @animation @duration @easing @fill-mode;
+				-o-animation: @animation @duration @easing @fill-mode;
+				animation: @animation @duration @easing @fill-mode;
+			}
+
+			.enter-rev(@animation: uiViewSlideInRev, @duration: @uiViewDuration, @easing: @uiViewTimingFn, @fill-mode: @uiViewFillMode) {
+				-webkit-animation: @animation @duration @easing @fill-mode;
+				-moz-animation: @animation @duration @easing @fill-mode;
+				-ms-animation: @animation @duration @easing @fill-mode;
+				-o-animation: @animation @duration @easing @fill-mode;
+				animation: @animation @duration @easing @fill-mode;
+			}
+
+			.leave-rev(@animation: uiViewSlideOutRev, @duration: @uiViewDuration, @easing: @uiViewTimingFn, @fill-mode: @uiViewFillMode) {
+				-webkit-animation: @animation @duration @easing @fill-mode;
+				-moz-animation: @animation @duration @easing @fill-mode;
+				-ms-animation: @animation @duration @easing @fill-mode;
+				-o-animation: @animation @duration @easing @fill-mode;
+				animation: @animation @duration @easing @fill-mode;
+			}
+		}
+	}
+
 /* Global keyframes			=============================*/
 	
 	/* moveFromTop ***/
@@ -569,6 +610,97 @@
 		}
 		@keyframes closeRoomAttributes {
 			from { transform: translate3d(190px, 0, 0); }
+		}
+
+
+/* Rover Angular keyframes			=============================*/
+
+	/* uiViewSlideIn ***/
+		@-webkit-keyframes uiViewSlideIn {
+			from { -webkit-transform: translate3d(50%, 0, 0); }
+			to { -webkit-transform: translate3d(0, 0, 0); }
+		}
+		@-moz-keyframes uiViewSlideIn {
+			from { -moz-transform: translate3d(100px, 0, 0); }
+			to { -moz-transform: translate3d(0, 0, 0); }
+		}
+		@-ms-keyframes uiViewSlideIn {
+			from { -ms-transform: translate3d(100px, 0, 0); }
+			to { -ms-transform: translate3d(0, 0, 0); }
+		}
+		@-o-keyframes uiViewSlideIn {
+			from { -o-transform: translate3d(100px, 0, 0); }
+			to { -o-transform: translate3d(0, 0, 0); }
+		}
+		@keyframes uiViewSlideIn {
+			from { transform: translate3d(100px, 0, 0); }
+			to { transform: translate3d(0, 0, 0); }
+		}
+
+	/* uiViewSlideOut ***/
+		@-webkit-keyframes uiViewSlideOut {
+			from { -webkit-transform: translate3d(0, 0, 0); }
+			to { -webkit-transform: translate3d(-50%, 0, 0); }
+		}
+		@-moz-keyframes uiViewSlideOut {
+			from { -moz-transform: translate3d(0, 0, 0); }
+			to { -moz-transform: translate3d(-50%, 0, 0); }
+		}
+		@-ms-keyframes uiViewSlideOut {
+			from { -ms-transform: translate3d(0, 0, 0); }
+			to { -ms-transform: translate3d(-50%, 0, 0); }
+		}
+		@-o-keyframes uiViewSlideOut {
+			from { -o-transform: translate3d(0, 0, 0); }
+			to { -o-transform: translate3d(-50%, 0, 0); }
+		}
+		@keyframes uiViewSlideOut {
+			from { transform: translate3d(0, 0, 0); }
+			to { transform: translate3d(-50%, 0, 0); }
+		}
+
+	/* uiViewSlideInRev ***/
+		@-webkit-keyframes uiViewSlideInRev {
+			from { -webkit-transform: translate3d(-50%, 0, 0); }
+			to { -webkit-transform: translate3d(0, 0, 0); }
+		}
+		@-moz-keyframes uiViewSlideInRev {
+			from { -moz-transform: translate3d(-50%, 0, 0); }
+			to { -moz-transform: translate3d(0, 0, 0); }
+		}
+		@-ms-keyframes uiViewSlideInRev {
+			from { -ms-transform: translate3d(-50%, 0, 0); }
+			to { -ms-transform: translate3d(0, 0, 0); }
+		}
+		@-o-keyframes uiViewSlideInRev {
+			from { -o-transform: translate3d(-50%, 0, 0); }
+			to { -o-transform: translate3d(0, 0, 0); }
+		}
+		@keyframes uiViewSlideInRev {
+			from { transform: translate3d(-50%, 0, 0); }
+			to { transform: translate3d(0, 0, 0); }
+		}
+
+	/* uiViewSlideOutRev ***/
+		@-webkit-keyframes uiViewSlideOutRev {
+			from { -webkit-transform: translate3d(0, 0, 0); }
+			to { -webkit-transform: translate3d(50%, 0, 0); }
+		}
+		@-moz-keyframes uiViewSlideOutRev {
+			from { -moz-transform: translate3d(0, 0, 0); }
+			to { -moz-transform: translate3d(50%, 0, 0); }
+		}
+		@-ms-keyframes uiViewSlideOutRev {
+			from { -ms-transform: translate3d(0, 0, 0); }
+			to { -ms-transform: translate3d(50%, 0, 0); }
+		}
+		@-o-keyframes uiViewSlideOutRev {
+			from { -o-transform: translate3d(0, 0, 0); }
+			to { -o-transform: translate3d(50%, 0, 0); }
+		}
+		@keyframes uiViewSlideOutRev {
+			from { transform: translate3d(0, 0, 0); }
+			to { transform: translate3d(50%, 0, 0); }
 		}
 
 /* Admin keyframes			=============================*/

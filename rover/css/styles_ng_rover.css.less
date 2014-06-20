@@ -511,6 +511,7 @@ button.icons.icon-search{
   background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
 }
 
+/* making sure we are not flickering */
 .main-view.ng-enter,
 .main-view.ng-leave {
   -webkit-backface-visibility: hidden;
@@ -530,19 +531,30 @@ button.icons.icon-search{
   z-index: 30;
 }
 
+/* to remove a slight delay in applying the animations
+on a slow performaing device, keep the entering view hidden
+untill angular is ready to activate it */
 .main-view.ng-enter {
-  #move > #page > .right;
+  opacity: 0;
+}
+.main-view.ng-enter-active {
+  opacity: 1;
+}
+
+/* normal app state animations */
+.main-view.ng-enter {
+  #move > #ui-view > .enter;
 }
 
 .main-view.ng-leave {
-  #move > #page > .right;
+  #move > #ui-view > .leave;
 }
 
 /* when returning back */
 .return-back > .main-view.ng-enter {
-  #move > #page > .left;
+  #move > #ui-view > .enter-rev;
 }
 
 .return-back > .main-view.ng-leave {
-  #move > #page > .left;
+  #move > #ui-view > .leave-rev;
 }
