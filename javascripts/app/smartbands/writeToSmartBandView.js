@@ -77,7 +77,7 @@ var WriteToSmartBandView = function(domRef){
 		
 		var url = '/api/reservations/' + that.parentController.reservationID + '/smartbands';
 	    var options = { 
-			requestParameters: that.data,
+			requestParameters: JSON.stringify(that.data),
 			successCallBack: that.successCallbackOfSaveAction,
 			failureCallBack: that.failureCallbackOfSaveAction,
 			loader: 'blocker',
