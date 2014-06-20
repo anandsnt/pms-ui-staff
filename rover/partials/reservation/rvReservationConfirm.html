@@ -96,17 +96,17 @@
         <form class="form payment-info scrollable" id="payment-info" name="payment_info" ng-iscroll='paymentInfo'>
             <div class="wrapper">
                 <div class="reservation-completed">
-                    <h2>Reservation created</h2>
+                    <h2 translate>RESERVATION_CREATED</h2>
                     <div class="entry full-width">
-                        <label for="email">Confirmation will be emailed to</label>
+                        <label for="email" translate>CONFIRM_EMAIL_LABEL</label>
                         <input name="email" id="email" type="email" ng-model="reservationData.guest.sendConfirmMailTo">
-                        <button type="button" id="send-confirmation" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)">Send Confirmation Email</button>
+                        <button type="button" id="send-confirmation" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)" translate>SEND_CONFIRMATION_EMAIL</button>
                     </div>
                     <div class="actions">
                         <!-- You can use regular <a href="..."> here as well -->
-                        <button type="button" id="go-to-staycard" class="button brand-colors" ng-click="goToStaycardClicked()">Go To Stay Card</button>
-                        <button type="button" id="new-reservation-for-guest" class="button green" ng-click="clickedNewReservation()">New Reservation for Guest</button>
-                        <button type="button" id="go-to-search" class="button white blue-text" ng-click="goToSearchClicked()">Search Reservations</button>
+                        <button type="button" id="go-to-staycard" class="button brand-colors" ng-click="goToStaycardClicked()" translate>GO_TO_STAYCARD</button>
+                        <button type="button" id="new-reservation-for-guest" class="button green" ng-click="clickedNewReservation()" translate>NEW_RESERVATION_FOR_GUEST</button>
+                        <button type="button" id="go-to-search" class="button white blue-text" ng-click="goToSearchClicked()" translate>SEARCH_RESERVATIONS</button>
                     </div>
                 </div>
             </div>

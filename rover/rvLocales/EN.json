@@ -266,6 +266,12 @@
     "ADD_MORE_TO_THIS_ROOM": "Add More to This Room",
 
 
-    "SUBMIT_RESERVATION": "Submit Reservation"
+    "SUBMIT_RESERVATION": "Submit Reservation",
+    "RESERVATION_CREATED": "Reservation created",
+    "CONFIRM_EMAIL_LABEL": "Confirmation will be emailed to",
+    "SEND_CONFIRMATION_EMAIL": "Send Confirmation Email",
+    "GO_TO_STAYCARD": "Go To Stay Card",
+    "NEW_RESERVATION_FOR_GUEST": "New Reservation for Guest",
+    "SEARCH_RESERVATIONS": "Search Reservations"
     
 }

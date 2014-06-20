@@ -1,11 +1,8 @@
 sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog',
     function($scope, $rootScope, baseData, ngDialog) {
 
-        console.log("Main controller inited");
 
         $scope.initReservationData = function() {
-
-            console.log('init reservationData');
             // intialize reservation object
             $scope.reservationData = {
                 arrivalDate: '',
@@ -125,7 +122,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
             var roomPref = getMaxOccupancy(activeRoom);
 
-            if (typeof activeRoom == 'undefined' || activeRoom == null || activeRoom == "" || roomPref.max >= currOccupancy) {
+            if (typeof activeRoom == 'undefined' || activeRoom == null || activeRoom == "" || roomPref.max == null || roomPref.max >= currOccupancy) {
                 return true;
             }
 
