@@ -1,4 +1,4 @@
-<div role="dialog" id="modal" class="modal-show"><form class="modal-content form new-content" name="new-payment" id="new-payment" action="http://stayntouch.perceptiveinteractive.com/with-cards/app/modals/new-payment-method/" method="post">
+<div role="dialog" id="modal" class="modal-show"><form class="modal-content form new-content payment-popup" name="new-payment" id="new-payment" action="http://stayntouch.perceptiveinteractive.com/with-cards/app/modals/new-payment-method/" method="post">
 	<button class="dark-title modal-close" type="button" id="modal-close" ng-click="closeDialog()">
 		<span class="icons icon-close"></span>
 	</button>
@@ -30,6 +30,11 @@
 		<div class="entry">
 		    <label for="card-number-set1" translate>CARD_NUMBER</label>
 		    <input type="text" maxlength="16" value="{{saveData.card_number}}" placeholder="Enter Card number" ng-model="saveData.card_number">
+		</div>
+		<div class="entry">
+		    <label for="cvv"><span translate="" class="ng-scope">CVV</span></label>
+		    <input type="text" ng-model="saveData.cvv" placeholder="CVV" value=""  size="6" class="ng-pristine ng-valid">
+		  
 		</div>
 		<div class="entry">
 		    <label for="expiry-month" ><span translate>EXPIRATION_DATE </span>(<span>MM/YY</span>)</label>

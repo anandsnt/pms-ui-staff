@@ -170,6 +170,55 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	$scope.clickCancel = function(){
 		ngDialog.close();
 	};
-	
+
+
+	/* MLI integration starts here */
+
+	HostedForm.setMerchant("TESTSTAYNTOUCH01"); //to be retrieved from server
+ 	
+ 	$scope.MLISessionId = "";
+    $scope.savePaymentDetails = function(){
+
+    	$scope.fetchMLISessionId = function(){
+
+    // 		var getSessionDetailsFromForm = function() {
+		  //  		return {
+		  //       cardNumber: $scope.saveData.card_number,
+		  //       cardSecurityCode: $scope.saveData.ccv,
+		  //       cardExpiryMonth:$scope.saveData.card_expiry_month,
+		  //       cardExpiryYear:$scope.saveData.card_expiry_year
+		  //   	}
+		 	// }
+			
+			var getSessionDetailsFromForm = function() {
+		   		return {
+		        cardNumber: '6700649826438453',
+		         cardSecurityCode:'1wsw23',
+		        cardExpiryMonth:'07',
+		        cardExpiryYear:'14'
+		    	}
+		 	}
+			
+			 var sessionDetails = getSessionDetailsFromForm();
+			 var callback = function(response){
+			 	console.log(response);
+			 	if(response.status ==="ok"){
+			 		$scope.MLISessionId = response.session;
+			 		// call other WS
+			 	}
+			 	else{
+			 		$scope.errorMessage = ["There is a problem with your credit card"];
+			 	}
+			 	
+			 }
+			 HostedForm.updateSession(sessionDetails, callback);
+			
+		}
+		$scope.fetchMLISessionId();
+
+    }
+     //$scope.savePaymentDetails();
+
+    /* MLI integration ends here */
 	
 }]);
