@@ -11,6 +11,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.saveData = {};
 	$scope.saveData.promotions = false;
 	$scope.saveData.termsAndConditions = false;
+	$scope.reviewStatusArray = [];
+	$scope.isAllBillsReviewed = false;
 	//options fo signature plugin
 	var screenWidth = angular.element($window).width(); // Calculating screen width.
 	$scope.signaturePluginOptions = {
@@ -43,6 +45,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		     	});	
 			}
 	        
+	        var data = {};
+			data.reviewStatus = false;
+			data.billNumber = value.bill_number;
+			$scope.reviewStatusArray.push(data);
 	     });
 	     // console.log(JSON.stringify(reservationBillData));
 		$scope.reservationBillData = reservationBillData;
@@ -123,8 +129,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 * @param {int} index of bill
 	 */ 
 	$scope.setActiveBill = function(billIndex){
-		countFeesElements = parseInt(reservationBillData.bills[billIndex].total_fees[0].fees_details.length)+parseInt(5);//1 - For heading, 2 for totl fees and balance, 2 for guest balnce and creditcard
-		totalHeight = parseInt(countFeesElements*64)+calenderDaysHeight+billTabHeight+roomTypeDescriptionLength;
+		
+		if(reservationBillData.bills[billIndex].total_fees.length !== 0){
+			countFeesElements = parseInt(reservationBillData.bills[billIndex].total_fees[0].fees_details.length)+parseInt(5);//1 - For heading, 2 for totl fees and balance, 2 for guest balnce and creditcard
+			totalHeight = parseInt(countFeesElements*64)+calenderDaysHeight+billTabHeight+roomTypeDescriptionLength;
+		}
 		$scope.calculatedHeight = totalHeight;
 		
 		$scope.$parent.myScroll['registration-content'].refresh();
@@ -493,6 +502,58 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		if(signatureData == "[]" && $scope.reservationBillData.required_signature_at == "CHECKIN"){
 			$scope.errorMessage = [errorMsg];
 		}
+	};
+	
+	// To handle complete checkout button click
+	$scope.clickedCompleteCheckout = function(){
+		
+		console.log($scope.isAllBillsReviewed);
+		$scope.findNextBillToReview();
+		if(!$scope.isAllBillsReviewed){
+			return;
+		}
+		
+		// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
+		var signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
+		console.log(signatureData);
+		var errorMsg = "Signature is missing";
+		if(signatureData == "[]" && $scope.reservationBillData.required_signature_at == "CHECKOUT"){
+			$scope.errorMessage = [errorMsg];
+		}
+	};
+	
+	// To handle review button click
+	$scope.clickedReviewButton = function(index){
+		console.log("index="+index);
+		$scope.reviewStatusArray[index].reviewStatus = true;
+		console.log("$scope.currentActiveBill"+$scope.currentActiveBill);
+		// Updating current review status.
+		/*
+		for(var i=0; i < $scope.reviewStatusArray.length ; i++){
+			if($scope.reviewStatusArray[i].billNumber == $scope.currentActiveBill){
+				console.log("billNumber found")
+				$scope.reviewStatusArray[i].reviewStatus = true;
+			}
+		}*/
+		console.log($scope.reviewStatusArray);
+		$scope.findNextBillToReview();
+		
+	};
+	// To find next tab which is not reviewed before.
+	$scope.findNextBillToReview = function(){
+		console.log("findNextBillToReview");
+		for(var i=0,j=1; i < $scope.reviewStatusArray.length ; i++,j++){
+			if(!$scope.reviewStatusArray[i].reviewStatus){
+				// when all bills reviewed and reached final bill
+				console.log("LL"+$scope.reviewStatusArray.length+"III"+j);
+				if($scope.reviewStatusArray.length == (j+1)) $scope.isAllBillsReviewed = true;
+				var billNo = $scope.reviewStatusArray[i].billNumber;
+				console.log("Next bill"+billNo);
+				//next_tab = that.myDom.find("#bills-tabs-nav ul li[data-bill-number = "+that.reviewStatus[i].bill_number+"]");
+				break;
+			}
+		}
+		$scope.setActiveBill(billNo-1);
 	};
 		//{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date,'active': days.date != reservationBillData.checkout_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}
 }]);
