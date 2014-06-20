@@ -5,5 +5,6 @@
 //=require ../staff_housekeeping/lib/js/angular-ui-router.js
 //=require ../staff_housekeeping/lib/js/angular-animate.js
 //=require ../staff_housekeeping/lib/js/ng-iscroll.js
+//=require ../staff_housekeeping/lib/js/ngDialog.min.js
 //=require_tree ../staff_housekeeping/lib/js
 //= require_tree ../staff_housekeeping/js

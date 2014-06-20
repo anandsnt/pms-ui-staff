@@ -7,13 +7,17 @@ var OWSConnectivityModal = function(){
 		that.myDom.find('#try-again').on('click', that.tryAgainButtonPressed);
 	};
 
+	/**
+	* Popup should not close clicking in the overlay
+	*/
 	this.modalDidShow = function(){
-		console.log("modals");
-		console.log($("#modal-overlay"));
 		$("#modal-overlay").unbind("click");
 		$("#modal-overlay").addClass("locked");
 	};
 
+	/**
+	* Call API to test the OWS connection
+	*/
 	this.tryAgainButtonPressed = function() {
 
 		var postData = {};
