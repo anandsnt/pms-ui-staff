@@ -1,4 +1,5 @@
-sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state', 'ngDialog', function($scope, addonData, $state, ngDialog){
+sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state', 'ngDialog', 'RVReservationAddonsSrv',
+    function($scope, addonData, $state, ngDialog, RVReservationAddonsSrv){
     $scope.addons = [
                       {
                         "id":1,
@@ -205,10 +206,38 @@ sntRover.controller('RVReservationAddonsCtrl', ['$scope', 'addonData', '$state',
         }
     }
 
+    $scope.fetchAddons = function(chargeGroupId){
+        var successCallBackFetchAddons = function(data){
+            angular.forEach(data.results, function(item){
+                var addonItem = {};
+                addonItem.id = item.id;
+                addonItem.isBestSeller = item.bestseller;
+                addonItem.category = item.charge_code.name;
+                addonItem.title = item.name;
+                addonItem.description = item.description;
+                addonItem.price = item.amount;
+                $scope.addons.push(addonItem);
+            });
+
+        }
+        var is_bestseller = chargeGroupId == '' ? true : false;
+        var paramDict = {
+                            'charge_group_id': chargeGroupId,
+                            'is_bestseller': is_bestseller,
+                            'from_date': $scope.reservationData.arrivalDate,
+                            'to_date': $scope.reservationData.departureDate,
+                            'is_not_rate_only': false
+                        };
+        $scope.invokeApi(RVReservationAddonsSrv.fetchAddons, paramDict, successCallBackFetchAddons);
+    }
+
     $scope.addonCategories = addonData.addonCategories;
     $scope.bestSellerEnabled = addonData.bestSellerEnabled;
     $scope.activeAddonCategory = 'Best Sellers';
-
-
+    // TODO :: uncomment below line once API is implemented
+    // first time fetch for best seller addons
+    // for fetching best sellers - call method without params ie. no charge group id
+    // Best Sellers in not a real charge code item - just hard coded item to fetch best sell addons
+    // $scope.fetchAddons();
 
 }]);
