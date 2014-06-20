@@ -29,10 +29,12 @@
 
     /* MLI integration starts here */
 
-    //fetch merchant ID
     
     $scope.isFetching = true;
-    $scope.netWorkError = true;
+    $scope.netWorkError = false;
+
+    //fetch merchant ID
+
     ccVerificationService.fetchMerchantID().then(function(response) {
        $scope.isFetching = false;
        if(response.merchant_id){
