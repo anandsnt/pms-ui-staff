@@ -10,7 +10,7 @@
 	else if($rootScope.isCheckin){
 		$state.go('checkinConfirmation');
 	}
-	else if(!$rootScope.isRoomVerified){
+	else if(!$rootScope.isRoomVerified && !$rootScope.isCheckedout){
 		$state.go('checkoutRoomVerification');
 	}
 	else{
