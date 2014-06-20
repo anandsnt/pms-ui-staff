@@ -1,0 +1,27 @@
+<form id="signature-pad" class="complete-registration form">
+	<h2>Please sign below</h2>
+	<div class="sig sigWrapper">
+		<div id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
+			
+		</div>
+	</div>
+	<div class="entry">
+		<label id="terms-and-conditions" for="terms" class="checkbox inline">
+			<span class="icon-form icon-checkbox"></span>
+			<input type="checkbox" value="1" name="checkin" id="terms">
+			By Checking this box you hereby agree to the Terms &amp; Conditions </label>
+		<label id="subscribe-via-email" for="subscribe" class="checkbox inline checked">
+			<span class="icon-form icon-checkbox checked"></span>
+			<input type="checkbox" value="1" name="checkin" id="subscribe" checked="">
+			Please send me promotions and news via email. </label>
+	</div>
+	<div class="actions">
+		<!-- Complete checkin button disabled out until ready / vacant room is assigned -->
+		<button id="checkin-button" ng-click="clickedCompleteCheckin()" data-room-status="READY" data-reseravation-status="CHECKING_IN" data-required-signature="CHECKIN" data-key-settings="encode" data-fo-status="VACANT" class="button green">
+			Complete checkin
+		</button>
+		<div class="clearButton">
+			<a id="clear-signature" class="button blank" ng-click='clickedClearSignature()'>Clear signature</a>
+		</div>
+	</div>
+</form>
