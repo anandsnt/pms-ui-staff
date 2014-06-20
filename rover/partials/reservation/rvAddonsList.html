@@ -24,73 +24,28 @@
                     <div class="addon-items">
 
                         <div class="options">
-                            <button type="button" data-show="enhancement-confirmation" class="button white"><span class="label">Enhancements</span> <span class="count">0</span></button>
-                            <a href="reservations/details-and-payment/" class="button green has-arrow skip">Go to Payment</a>
+                            <button type="button" ng-click="showEnhancementsPopup()" class="button white"><span class="label">Enhancements</span>
+                            <span class="count">{{ activeRoom.addons.length }}</span></button>
+                            <button class="button green has-arrow skip" ng-click="goToSummaryAndConfirm()">Go to Payment</button>
                         </div>
 
-                        <ul id="addon-best-sellers" class="addon-tab">
-                            <li>
+                        <ul id="addon-best-sellers" class="addon-tab" style="margin-top:60px; width: 100%;">
+                            <li ng-repeat="addon in addons | filter: { category: activeAddonCategory }">
                                 <div class="data">
                                     <span class="categories">
-                                        <span class="current">Best Sellers</span> |
-                                        <span>Food &amp; Drink</span>
+                                        <span ng-class="{current: addon.category === activeAddonCategory}">{{ addon.category }}</span> |
+                                        <span>{{ addon.category_short_desc }}</span>
                                     </span>
-                                    <h2>Champagne &amp; Chocolates</h2>
-                                    <em>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ante nisl, porttitor et tempor eu, blandit a lectus. </em>
+                                    <h2>{{ addon.title }}</h2>
+                                    <em>{{ addon.desc }}</em>
                                 </div>
-                                <div class="price">$79</div>
-                                <div class="add-enhancement">
-                                    <button id="enhance-room-1-champagne" type="button" class="button green">Add</button>
+                                <div class="price">{{currencySymbol}}{{ addon.price }}</div>
+                                <div class="add-enhancement" ng-init="addonQty=1">
+                                    <button id="enhance-room-1-champagne" type="button" class="button green" ng-click="selectAddon(addon, addonQty)">Add</button>
                                     <div class="select">
                                         <label class="label" for="room-1-champagne-quantity">Quantity</label>
-                                        <select name="room-1-champagne-quantity" id="room-1-champagne-quantity">
-                                            <option value="1" selected>1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="data">
-                                    <span class="categories">
-                                        <span class="current">Best Sellers</span> |
-                                        <span>Spa</span>
-                                    </span>
-                                    <h2>Hot Stone Massage Package</h2>
-                                    <em>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ante nisl, porttitor et tempor eu, blandit a lectus.</em>
-                                </div>
-                                <div class="price">$150</div>
-                                <div class="add-enhancement">
-                                    <button id="enhance-room-1-hotstone" type="button" class="button green">Add</button>
-                                    <div class="select">
-                                        <label class="label" for="room-1-hotstone-quantity">Quantity</label>
-                                        <select name="room-1-hotstone-quantity" id="room-1-hotstone-quantity">
-                                            <option value="1" selected>1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="data">
-                                    <span class="categories">
-                                        <span class="current">Best Sellers</span> |
-                                        <span>Bedding</span>
-                                    </span>
-                                    <h2>Pack ‘N Play</h2>
-                                    <em>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ante nisl, porttitor et tempor eu, blandit a lectus.</em>
-                                </div>
-                                <div class="price">$11 <span>per night</span></div>
-                                <div class="add-enhancement">
-                                    <button id="enhance-room-1-packnplay" type="button" class="button green" data-button="enhance-room" data-room="1" data-addon="Pack ‘N Play">Add</button>
-                                    <div class="select">
-                                        <label class="label" for="room-1-packnplay-quantity">Quantity</label>
-                                        <select name="room-1-packnplay-quantity" id="room-1-packnplay-quantity">
-                                            <option value="1" selected>1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
+                                        <select name="room-1-champagne-quantity" ng-model="addonQty">
+                                            <option ng-repeat="i in [1, addon.quantity] | makeRange" value="{{i}}">{{i}}</option>
                                         </select>
                                     </div>
                                 </div>

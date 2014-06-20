@@ -1,13 +1,3 @@
-<!-- <div>
-    <h2>ROOM 1 ENHANCEMENTS</h2>
-    <ul>
-        <li ng-repeat="addon in reservationData.rooms[0].addons">
-            <span>{{ addon.title }}</span>({{ addon.quantity }})
-        </li>
-    </ul>
-    <button type="button" class="button white">ADD MORE TO THIS ROOM</button>
-    <button type="button" class="button green" ng-click="goToSummaryAndConfirm()">GO TO PAYMENT</button>
-</div> -->
 <div id="inline-modal-room-1" class="inline-modal modal-show" role="dialog">
     <div class="modal-content rooms-and-rates">
         <span class="h2 message">Room 1 Enhancements</span>
@@ -19,14 +9,13 @@
             <li ng-repeat="addon in activeRoom.addons">
                 <span class="item">{{ addon.title }}</span>
                 <span class="count">({{ addon.quantity }})</span>
-                <button type="button" class="icons icon-trash">Remove</button>
+                <button type="button" class="icons icon-trash" ng-click="removeSelectedAddons($index)">Remove</button>
             </li>
             ...
         </ul>
-
         <div class="actions">
-            <button type="button" id="this-room" class="button white modal-hide">Add More to This Room</button>
-            <a href="reservations/details-and-payment/" class="button green modal-remove" data-transition="nested-view">Go To Payment</a>
+            <button type="button" ng-click="closePopup()" class="button white modal-hide">Add More to This Room</button>
+            <button class="button green has-arrow skip" ng-click="goToSummaryAndConfirm()">Go to Payment</button>
         </div>
     </div>
 </div>
