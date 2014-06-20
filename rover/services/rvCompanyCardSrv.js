@@ -69,10 +69,10 @@ sntRover.service('RVCompanyCardSrv',['$q', 'rvBaseWebSrvV2', function($q, rvBase
 
 			if(data.selected_type == 'percent'){
 				data.selected_type = '%';
-				data.rate_value = parseFloat(data.rate_value).toFixed(2);
+				data.rate_value = data.rate_value != '' ? parseFloat(data.rate_value).toFixed(2): '';
 			} else if (data.selected_type == 'amount') {
 				data.selected_type = '$';
-				data.rate_value = parseInt(data.rate_value);
+				data.rate_value = data.rate_value != '' ? parseInt(data.rate_value): '';
 			} else {
 				data.selected_type = '';
 			}

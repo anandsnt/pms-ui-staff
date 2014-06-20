@@ -17,6 +17,7 @@ admin.service('ADHotelDetailsSrv', ['$http', '$q','ADBaseWebSrv', 'ADBaseWebSrvV
 		});	
 		return deferred.promise;
 	};	
+
 	that.fetchLanguages = function(deferred){
 			
 			var url = '/api/reference_values.json?type=language';	
