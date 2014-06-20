@@ -27,6 +27,17 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2', function($http,
 		return deferred.promise;
 	};
 	
+	this.completeCheckin = function(data){
+		var deferred = $q.defer();
+		var url = '/staff/checkin';
+			BaseWebSrvV2.postJSON(url, data).then(function(data) {
+			   	 deferred.resolve(data);
+			},function(data){
+			    deferred.reject(data);
+			});	
+
+		return deferred.promise;
+	};
 	
    
 }]);

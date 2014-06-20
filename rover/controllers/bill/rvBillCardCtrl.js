@@ -484,14 +484,47 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.clickedClearSignature = function(){
 		$("#signature").jSignature("clear");	// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
 	};
+	$scope.completeCheckinSuccessCallback = function(){
+		if($scope.reservationBillData.key_settings == "email"){
+			ngDialog.open({
+        		template: '/assets/partials/validateCheckin/rvKeyEmailModal.html',
+        		controller: 'RVKeyEmailCtrl',
+        		scope: $scope
+        	});
+		}
+	};
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(){
 		// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
 		var signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
-		console.log(signatureData);
-		var errorMsg = "Signature is missing";
+		
+		var errorMsg = "";
 		if(signatureData == "[]" && $scope.reservationBillData.required_signature_at == "CHECKIN"){
+			console.log("---------------");
+			errorMsg = "Signature is missing";
 			$scope.errorMessage = [errorMsg];
+		} else if(!$scope.saveData.termsAndConditions){
+			errorMsg = "Please check agree to the Terms & Conditions";
+			$scope.errorMessage = [errorMsg];
+		} else {
+			if($scope.saveData.promotions && $scope.guestCardData.contactInfo.email == ''){
+				ngDialog.open({
+	        		template: '/assets/partials/validateCheckin/rvAskEmailFromCheckin.html',
+	        		controller: 'RVValidateEmailPhoneCtrl',
+	        		scope: $scope
+	        	});
+			} else {
+				
+				
+				var data = {
+					"is_promotions_and_email_set" : $scope.saveData.promotions,
+					"signature" : signatureData,
+					"reservation_id" : $scope.reservationBillData.reservation_id	
+				};
+				
+				$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback);
+			
+			}
 		}
 	};
 		//{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date,'active': days.date != reservationBillData.checkout_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}

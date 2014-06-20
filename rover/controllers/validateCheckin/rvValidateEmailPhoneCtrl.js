@@ -14,8 +14,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 		ngDialog.close();
 	};
 	$scope.validateEmailPhoneSuccessCallback = function(){
-		console.log("-----------------------");
-		console.log($scope);
+
 		
 		if($scope.showEmail && $scope.showPhone){
 			$scope.guestCardData.contactInfo.phone = $scope.saveData.phone;
@@ -54,6 +53,18 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 				$scope.saveData = dclone($scope.saveData, unwantedKeys);
 			}
 			$scope.invokeApi(RVValidateCheckinSrv.saveGuestEmailPhone, $scope.saveData, $scope.validateEmailPhoneSuccessCallback);
+	};
+	$scope.submitAndCheckinSuccessCallback = function(){
+		$scope.guestCardData.contactInfo.email = $scope.saveData.email;
+		$scope.$emit('hideLoader');
+		ngDialog.close();
+	};
+	$scope.submitAndCheckin = function(){
+			$scope.saveData.guest_id = $scope.guestCardData.guestId;
+	        $scope.saveData.user_id = $scope.guestCardData.userId;
+			var unwantedKeys = ["phone"]; // remove unwanted keys for API
+			$scope.saveData = dclone($scope.saveData, unwantedKeys); 
+			$scope.invokeApi(RVValidateCheckinSrv.saveGuestEmailPhone, $scope.saveData, $scope.submitAndCheckinSuccessCallback);
 	};
 	
 	
