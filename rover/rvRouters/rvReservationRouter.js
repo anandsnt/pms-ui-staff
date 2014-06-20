@@ -57,7 +57,7 @@ angular.module('reservationModule', []).config(function($stateProvider, $urlRout
         $stateProvider.state('rover.reservation.mainCard.summaryAndConfirm', {
             url: '/summaryAndConfirm',
             templateUrl: '/assets/partials/reservation/rvSummaryAndConfirm.html',
-            controller: 'RVReservationSummaryAndConfirmCtrl'
+            controller: 'RVReservationSummaryCtrl'
         });
 
         $stateProvider.state('rover.reservation.mainCard.reservationConfirm', {

@@ -1,4 +1,4 @@
-sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 
+sntRover.controller('RVReservationSummaryCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 
 					function($scope, $state, RVReservationSummarySrv){
 	BaseCtrl.call(this, $scope);
 
@@ -12,14 +12,11 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		    'reservationSummary': {
 		    	scrollbars: true,
 		        snap: false,
-		        hideScrollbar: false,
-		        preventDefault: false
+		        hideScrollbar: false
 		    }, 
 		    'paymentInfo': {
 		    	scrollbars: true,
-		        snap: false,
 		        hideScrollbar: false,
-		        preventDefault: false
 		    }, 
 		};
 		fetchPaymentMethods();
@@ -50,7 +47,7 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		if($scope.data.isConfirmationEmailSameAsGuestEmail) {
 			$scope.reservationData.guest.sendConfirmMailTo = $scope.reservationData.guest.email;
 		} 
-		//$scope.refreshPaymentScroller();
+		$scope.refreshPaymentScroller();
 	};
 
 	/**
@@ -142,7 +139,8 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 	};
 
 	$scope.refreshPaymentScroller = function(){
-		$scope.$parent.myScroll['paymentInfo'].refresh();
+		setTimeout( function(){
+		$scope.$parent.myScroll['paymentInfo'].refresh();}, 0);
 	};
 
 	$scope.init();

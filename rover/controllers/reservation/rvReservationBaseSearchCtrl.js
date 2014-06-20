@@ -9,8 +9,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         var defaultMaxvalue = 5;
 
         var init = function() {
-            // console.log('baseSearchData',baseSearchData);
-            $scope.initReservationData();
             $scope.businessDate = baseSearchData.businessDate;
             if($scope.reservationData.arrivalDate == ''){
                 $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate), 'yyyy-MM-dd');
@@ -26,14 +24,20 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         };
 
         $scope.setDepartureDate = function() {
-            var dateOffset = $scope.reservationData.numNights;
-            if ($scope.reservationData.numNights == null || $scope.reservationData.numNights == '') {
-                dateOffset = 1;
-            }
-            var newDate = new Date($scope.reservationData.arrivalDate);
-            newDay = newDate.getDate() + parseInt(dateOffset);
-            newDate.setDate(newDay);
+            console.log($scope.reservationData.numNights);
+
             if($scope.reservationData.departureDate == ''){
+
+                var dateOffset = $scope.reservationData.numNights;
+                if ($scope.reservationData.numNights == null || $scope.reservationData.numNights == '') {
+                    dateOffset = 1;
+                }
+                var newDate = new Date($scope.reservationData.arrivalDate);
+                newDay = newDate.getDate() + parseInt(dateOffset);
+                newDate.setDate(newDay);
+                console.log("-----")
+                console.log($scope.reservationData.departureDate);
+                console.log('inside');
                 $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
             }
         }
