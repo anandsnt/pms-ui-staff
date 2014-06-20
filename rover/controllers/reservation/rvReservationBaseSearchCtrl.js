@@ -11,7 +11,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         var init = function() {
             // console.log('baseSearchData',baseSearchData);
             $scope.businessDate = baseSearchData.businessDate;
-            $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate), 'yyyy-MM-dd');
+            if($scope.reservationData.arrivalDate == ''){
+                $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate), 'yyyy-MM-dd');
+            }
+            
             $scope.setDepartureDate();
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
             var guestMaxSettings = baseSearchData.settings.max_guests;
@@ -29,7 +32,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             var newDate = new Date($scope.reservationData.arrivalDate);
             newDay = newDate.getDate() + parseInt(dateOffset);
             newDate.setDate(newDay);
-            $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
+            if($scope.reservationData.departureDate == ''){
+                $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
+            }
         }
 
         $scope.setNumberOfNights = function() {
