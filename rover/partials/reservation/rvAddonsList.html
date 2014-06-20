@@ -11,7 +11,7 @@
                 <div id="addon-items" class="addons">
                     
                     <!-- Skip option -->
-                    <a class="button green has-arrow skip" data-transition="nested-view" ng-click="goToSummaryAndConfirm($event)">Next Step</a>
+                    <a class="button green has-arrow skip" data-transition="nested-view" ng-click="goToNextStep($event)">Next Step</a>
 
                     <!-- Categories -->
                     <ul class="addon-categories">
@@ -36,11 +36,11 @@
                                     <em>{{addon.desc}}</em>
                                 </div>
                                 <div class="price">{{addon.price}}</div>
-                                <div class="add-enhancement">
-                                    <button id="enhance-room-1-champagne" type="button" class="button green" ng-click="selectAddon(addon)">Add</button>
+                                <div class="add-enhancement" ng-init="addonQty=0">
+                                    <button id="enhance-room-1-champagne" type="button" class="button green" ng-click="selectAddon(addon, addonQty)">Add</button>
                                     <div class="select">
                                         <label class="label" for="room-1-champagne-quantity">Quantity</label>
-                                        <select name="room-1-champagne-quantity" id="room-1-champagne-quantity">
+                                        <select name="room-1-champagne-quantity" ng-model="addonQty">
 				                            <option ng-repeat="i in [0, addon.quantity] | makeRange" value="{{i}}">{{i}}</option>
 				                        </select>
                                     </div>

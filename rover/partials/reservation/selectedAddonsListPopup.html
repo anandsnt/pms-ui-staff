@@ -1,0 +1,37 @@
+<!-- <div>
+    <h2>ROOM 1 ENHANCEMENTS</h2>
+    <ul>
+        <li ng-repeat="addon in reservationData.rooms[0].addons">
+            <span>{{ addon.title }}</span>({{ addon.quantity }})
+        </li>
+    </ul>
+    <button type="button" class="button white">ADD MORE TO THIS ROOM</button>
+    <button type="button" class="button green" ng-click="goToSummaryAndConfirm()">GO TO PAYMENT</button>
+</div> -->
+<div id="inline-modal-room-1" class="inline-modal modal-show" role="dialog">
+    <div class="modal-content rooms-and-rates">
+        <span class="h2 message">Room 1 Enhancements</span>
+        <!-- Initial markup -->
+        <ul id="room-1-enhancements" class="enhancements-added"></ul>
+
+        <!-- Markup as you add items
+        <ul id="room-1-enhancements" class="confirmed">
+            <li>
+                <span class="item">Champagne &amp; Chocolates</span>
+                <span class="count">(1)</span>
+                <button type="button" class="icons icon-trash">Remove</button>
+            </li>
+            <li>
+                <span class="item">Hot Stone Massage Package</span>
+                <span class="count">(1)</span>
+                <button type="button" class="icons icon-trash">Remove</button>
+            </li>
+            ...
+        </ul> -->
+
+        <div class="actions">
+            <button type="button" id="this-room" class="button white modal-hide">Add More to This Room</button>
+            <a href="reservations/details-and-payment/" class="button green modal-remove" data-transition="nested-view">Go To Payment</a>
+        </div>
+    </div>
+</div>
