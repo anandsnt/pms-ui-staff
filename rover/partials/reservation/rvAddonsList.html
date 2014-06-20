@@ -28,8 +28,8 @@
                             <span class="count">{{ activeRoom.addons.length }}</span></button>
                             <button class="button green has-arrow skip" ng-click="goToSummaryAndConfirm()" translate>GO_TO_PAYMENT</button>
                         </div>
-
-                        <ul id="addon-best-sellers" class="addon-tab" style="margin-top:60px; width: 100%;">
+                        <!-- FIX style="margin-top:60px; width: 100%;" -->
+                        <ul id="addon-best-sellers" class="addon-tab">
                             <li ng-repeat="addon in addons | filter: { category: activeAddonCategory }">
                                 <div class="data">
                                     <span class="categories">

@@ -61,4 +61,11 @@
     "RESV_SEE_MORE_ROOMS" : "See more room types",
     "RESV_SEE_MORE_RATES" : "See more rates",
     "RESV_FOR_ONLY" : "For only",
-    "RESV_MORE" : "more per night"
+    "RESV_MORE" : "more per night",
+
+    "BEST_SELLERS": "BEST SELLERS",
+    "ENHANCEMENTS": "Enhancements",
+    "GO_TO_PAYMENT": "Go to Payment",
+    "QUANTITY": "Quantity",
+    "REMOVE": "Remove",
+    "ADD_MORE_TO_THIS_ROOM": "Add More to This Room"

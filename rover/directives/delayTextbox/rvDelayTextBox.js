@@ -12,7 +12,7 @@ sntRover.directive('rvDelayTextbox', function($timeout) {
             if(typeof scope.delay === "undefined"){
                 scope.delay = 2000;
             }
-            element.bind('keypress', function(event){
+            element.bind('keyup', function(event){
                 if(scope.currentTimeoutFn){
                     clearTimeout(scope.currentTimeoutFn);
                     scope.currentTimeoutFn = setTimeout(function(){
