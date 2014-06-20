@@ -56,7 +56,13 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         }
 
         $scope.arrivalDateChanged = function() {
+
+            console.log( $scope.reservationData.arrivalDate );
+
             $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
+
+            console.log( $scope.reservationData.arrivalDate );
+            
             $scope.setDepartureDate();
             $scope.setNumberOfNights();
         };
@@ -134,6 +140,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                         label: item.account_first_name + " " + item.account_last_name,
                         value: item.account_first_name + " " + item.account_last_name,
                         image: item.company_logo,
+                        
                         // only for our understanding
                         // jq-ui autocomplete wont use it
                         type: item.account_type,
