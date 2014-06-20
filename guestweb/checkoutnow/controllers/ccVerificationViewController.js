@@ -1,5 +1,5 @@
 (function() {
-	var ccVerificationViewController = function($scope,$rootScope,$state,$stateParams,$modal) {
+	var ccVerificationViewController = function($scope,$rootScope,$state,$stateParams,$modal,ccVerificationService) {
 
 	
   $scope.pageValid = false;
@@ -29,8 +29,27 @@
 
     /* MLI integration starts here */
 
-  HostedForm.setMerchant("TESTSTAYNTOUCH01"); //to be retrieved from server
+    //fetch merchant ID
+    
+    $scope.isFetching = true;
+    $scope.netWorkError = true;
+    ccVerificationService.fetchMerchantID().then(function(response) {
+       $scope.isFetching = false;
+       if(response.merchant_id){
+           $scope.merchantId = response.merchant_id;
+           HostedForm.setMerchant($scope.merchantId);
+       }
+       else{
+           $scope.netWorkError = true;
+       }
+
+    },function(){
+      $scope.netWorkError = true;
+      $scope.isFetching = false;
+    });
+
   
+    HostedForm.setMerchant('TESTSTAYNTOUCH01');// to delete
   
     $scope.savePaymentDetails = function(){
       
@@ -45,10 +64,10 @@
        sessionDetails.cardExpiryYear = '15';
       
        // var sessionDetails = {};
-       // sessionDetails.cardNumber = $scope.saveData.card_number;
-       // sessionDetails.cardSecurityCode = $scope.saveData.ccv;
-       // sessionDetails.cardExpiryMonth = $scope.saveData.card_expiry_month;
-       // sessionDetails.cardExpiryYear = $scope.saveData.card_expiry_year;
+       // sessionDetails.cardNumber = $scope.cardNumber;
+       // sessionDetails.cardSecurityCode = $scope.ccv;
+       // sessionDetails.cardExpiryMonth = $scope.monthSelected;
+       // sessionDetails.cardExpiryYear = $scope.yearSelected;
 
        var callback = function(response){
           if(response.status ==="ok"){    
@@ -61,7 +80,6 @@
         }
         
        }
-            alert("")
        HostedForm.updateSession(sessionDetails, callback);
 
       
@@ -195,7 +213,7 @@
 }
 
 var dependencies = [
-'$scope','$rootScope','$state','$stateParams','$modal',
+'$scope','$rootScope','$state','$stateParams','$modal','ccVerificationService',
 ccVerificationViewController
 ];
 
