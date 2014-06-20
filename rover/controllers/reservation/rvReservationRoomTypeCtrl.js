@@ -6,7 +6,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 		$scope.expandedRoom = -1;
 		$scope.containerHeight = 300;
 		$scope.showLessRooms = true;
-		$scope.showLessRates = true;
+		$scope.showLessRates = false;
 		$scope.activeCriteria = "ROOM_TYPE";
 		//CICO-5253 Rate Types Listing
 		// 			RACK
