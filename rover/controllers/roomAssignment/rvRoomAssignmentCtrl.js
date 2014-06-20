@@ -12,6 +12,9 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	$scope.roomType = $stateParams.room_type;
 	$scope.isFiltersVisible = false;
 
+	/**
+	* function to to get the rooms based on the selected room type
+	*/
 	$scope.getRooms = function(){
 		var successCallbackGetRooms = function(data){
 			$scope.rooms = data;
@@ -31,6 +34,9 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 		$scope.invokeApi(RVRoomAssignmentSrv.getRooms, params, successCallbackGetRooms, errorCallbackGetRooms);
 
 	};
+	/**
+	* function to get the room types and room features
+	*/
 	$scope.getPreferences = function(){
 		var successCallbackGetPreferences = function(data){
 			$scope.roomTypes = data.room_types;
@@ -46,6 +52,9 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 		$scope.invokeApi(RVRoomAssignmentSrv.getPreferences, params, successCallbackGetPreferences, errorCallbackGetPreferences);
 
 	};
+	/**
+	* function to assign the new room for the reservation
+	*/
 	$scope.assignRoom = function(index){
 		var successCallbackAssignRoom = function(data){
 			$scope.backToStayCard();
@@ -63,6 +72,9 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	$scope.getPreferences();
 	$scope.getRooms();
 
+	/**
+	* setting the scroll options for the room list
+	*/
 	$scope.$parent.myScrollOptions = {		
 	    'roomlist': {
 	    	scrollbars: true,
@@ -71,14 +83,23 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	        preventDefault: false
 	    }
 	};	
+	/**
+	* function to go back to reservation details
+	*/
 	$scope.backToStayCard = function(){
 		
 		$state.go("rover.staycard.reservationcard.reservationdetails", {id:$scope.reservationData.reservation_card.reservation_id, confirmationId:$scope.reservationData.reservation_card.confirmation_num});
 		
 	};
+	/**
+	* function to show and hide the filters view
+	*/
 	$scope.toggleFiltersView = function(){
 		$scope.isFiltersVisible = !$scope.isFiltersVisible;
 	};
+	/**
+	* function to set the color coding for the room number based on the room status
+	*/
 	$scope.getRoomStatusClass = function(){
 		var reservationRoomStatusClass = "";
 		if($scope.reservationData.reservation_card.reservation_status == 'CHECKING_IN'){
@@ -90,9 +111,15 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 		} 
 		return reservationRoomStatusClass;
 	};
+	/**
+	* function to change text according to the number of nights
+	*/
 	$scope.setNightsText = function(){
 		return ($scope.reservationData.reservation_card.total_nights == 1)?"night":"nights";
 	};
+	/**
+	* function to decide whether or not to show the upgrades
+	*/
 	$scope.isUpsellAvailable = function(){
 		var showUpgrade = false;
 		if(($scope.reservationData.reservation_card.isUpsellAvailable == 'true') && ($scope.reservationData.reservation_card.reservationStatus == 'RESERVED' || $scope.reservationData.reservation_card.reservationStatus == 'CHECKING_IN')){

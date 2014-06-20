@@ -15,7 +15,9 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 	$scope.upgradesList = [];
 	$scope.headerData = {};
 	$scope.upgradesDescriptionStatusArray = [];
-		
+	/**
+	* function to get all available upgrades for the reservation
+	*/
 	$scope.getAllUpgrades = function(){
 		var successCallbackgetAllUpgrades = function(data){
 			$scope.upgradesList = data.upsell_data;
@@ -36,6 +38,9 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 		$scope.invokeApi(RVUpgradesSrv.getAllUpgrades, params, successCallbackgetAllUpgrades, errorCallbackgetAllUpgrades);
 
 	};
+	/**
+	* function to set the upgrade option for the reservation
+	*/
 	$scope.selectUpgrade = function(index){
 		var successCallbackselectUpgrade = function(data){
 			$scope.$emit('hideLoader');
@@ -53,12 +58,21 @@ sntRover.controller('RVUpgradesCtrl',['$scope','$state', '$stateParams', 'RVUpgr
 
 	};
 	$scope.getAllUpgrades();
+
+	/**
+	* function to show and hide the upgrades detail view
+	*/
 	$scope.toggleUpgradeDescriptionStatus = function(index){
 		$scope.upgradesDescriptionStatusArray[index] = !$scope.upgradesDescriptionStatusArray[index];
 	};
 	$scope.isDescriptionVisible = function(index){
 		return $scope.upgradesDescriptionStatusArray[index];
 	};
+
+	/**
+	* function to set the initial display status for the upgrade details for all the upgrades
+	  And also to set the upgrade description text as html
+	*/
 	$scope.setUpgradesDescriptionInitialStatuses = function(){
 		$scope.upgradesDescriptionStatusArray = new Array($scope.upgradesList.length);
 		for (var i = 0; i < $scope.upgradesDescriptionStatusArray.length; i++) 
