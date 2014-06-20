@@ -38,6 +38,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
 
         $scope.accordionInitiallyNotCollapsedOptions = {
             header: 'a.toggle',
+            heightStyle: 'content',
             collapsible: true,
             activate: function(event, ui) {
                 if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { //means accordion was previously collapsed, activating..
@@ -53,6 +54,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
         $scope.accordionInitiallyCollapsedOptions = {
             header: 'a.toggle',
             collapsible: true,
+            heightStyle: 'content',
             active: false,
             activate: function(event, ui) {
                 if (isEmpty(ui.newHeader) && isEmpty(ui.newPanel)) { //means accordion was previously collapsed, activating..
