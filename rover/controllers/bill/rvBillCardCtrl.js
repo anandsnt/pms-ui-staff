@@ -471,6 +471,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','RVBi
 	// To disable scroll
 	$scope.disableScroll = function(){
 		$scope.$parent.myScroll['registration-content'].disable();
+		// Adding class 'pad' for styling the cursor for signature pad on initial hover on signature pad.
+		if(!angular.element($("#signature canvas")).hasClass('pad')){
+			angular.element($("#signature canvas")).addClass('pad');
+		}
 	};
 	// To clear signature
 	$scope.clickedClearSignature = function(){
