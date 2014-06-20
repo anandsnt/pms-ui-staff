@@ -46,7 +46,7 @@ var AddNewSmartBandView = function(domRef) {
 		var payment_mode = that.myDom.find('#payment-type').is(":checked");
 		data.is_fixed = payment_mode;
 		if(payment_mode){ //means fixed, then only we need to add this attribute
-			data.amount = $.trim(that.myDom.find('#fixed-amound').val());			
+			data.amount = parseFloat($.trim(that.myDom.find('#fixed-amound').val()));			
 		}
 		//validation part
 		var blankKeys = "";
