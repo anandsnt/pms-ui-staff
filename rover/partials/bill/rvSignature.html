@@ -1,4 +1,5 @@
-<form id="signature-pad" class="complete-registration form" ng-show="clickedButton == 'checkinButton'">
+<!-- Checkin screen -->
+<form id="signature-pad" class="complete-registration form" ng-if="clickedButton == 'checkinButton'">
 	<h2>Please sign below</h2>
 	<div class="sig sigWrapper">
 		<div id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
@@ -24,4 +25,48 @@
 			<a id="clear-signature" class="button blank" ng-click='clickedClearSignature()'>Clear signature</a>
 		</div>
 	</div>
+</form>
+
+<!-- Checkout screen -->
+<form id="signature-pad" class="complete-registration form" ng-if="(clickedButton == 'checkoutButton') && (reservationBillData.reservation_status === 'CHECKING_OUT' || reservationBillData.reservation_status === 'CHECKEDIN')">
+	
+	<div>
+		
+		<div ng-show="reservationBillData.required_signature_at === 'CHECKOUT'">
+			<h2>Please sign below</h2>
+			<div class="sig sigWrapper">
+				<div id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
+					
+				</div>
+			</div>
+		</div>
+		
+		<div class="entry" ng-show="($index+1) === reservationBillData.bills.length">
+			<label id="terms-and-conditions" for="terms" class="checkbox inline">
+				<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.termsAndConditions}"></span>
+				<input type="checkbox" ng-model="saveData.termsAndConditions">
+				By checking this box you hereby Accept the Charges </label>
+		</div>
+		
+		<div class="actions" ng-show="($index+1) != reservationBillData.bills.length">
+			<button type="submit" ng-click="clickedReviewButton($index)" data-reseravation-status="CHECKEDIN" data-required-signature="CHECKIN" class="button red">
+				Review Bill
+				{{billData.bill_number}}
+				and Continue
+			</button>
+		</div>
+		
+		<div class="actions" ng-show="($index+1) === reservationBillData.bills.length">
+			<button type="submit" ng-click="clickedCompleteCheckin()" id="complete-checkout-button" data-reseravation-status="CHECKEDIN" data-required-signature="CHECKIN" class="button red">
+				Review Bill
+				{{billData.bill_number}}
+				and Complete checkout
+			</button>
+			<div class="clearButton" ng-show="reservationBillData.required_signature_at === 'CHECKOUT'">
+				<a id="clear-signature" class="button blank" ng-click='clickedClearSignature()'>Clear signature</a>
+			</div>
+		</div>
+
+	</div>
+	
 </form>

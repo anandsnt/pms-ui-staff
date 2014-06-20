@@ -9,7 +9,7 @@
 			{{reservationData.reservation_card.arrival_time}}
 		</div>
 		
-		<a class="button red" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
+		<a class="button red" ui-sref="rover.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: 'checkoutButton'})" ng-show="reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT'">
 			Check out
 		</a>
 		<div class="icons late-check-out" ng-class="getTimeColor(reservationData.reservation_card.late_checkout_time)"  ng-show="displayTime(reservationData.reservation_card.reservation_status) && reservationData.reservation_card.is_opted_late_checkout && reservationData.reservation_card.is_late_checkout_on">
