@@ -1,4 +1,4 @@
-sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2', function($http, $q, BaseWebSrvV2){
+sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2','RVBaseWebSrv', function($http, $q, BaseWebSrvV2, RVBaseWebSrv){
    
 	
 	this.fetch = function(reservationId){
@@ -29,8 +29,8 @@ sntRover.service('RVBillCardSrv',['$http', '$q', 'BaseWebSrvV2', function($http,
 	
 	this.completeCheckin = function(data){
 		var deferred = $q.defer();
-		var url = '/staff/checkin';
-			BaseWebSrvV2.postJSON(url, data).then(function(data) {
+		var url = '/staff/checkin/sdf';
+			RVBaseWebSrv.postJSON(url, data).then(function(data) {
 			   	 deferred.resolve(data);
 			},function(data){
 			    deferred.reject(data);

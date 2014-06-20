@@ -485,6 +485,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$("#signature").jSignature("clear");	// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
 	};
 	$scope.completeCheckinSuccessCallback = function(){
+		console.log("seetingss =="+$scope.reservationBillData.key_settings);
 		if($scope.reservationBillData.key_settings == "email"){
 			ngDialog.open({
         		template: '/assets/partials/validateCheckin/rvKeyEmailModal.html',
@@ -492,6 +493,9 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
         		scope: $scope
         	});
 		}
+	};
+	$scope.completeCheckinFailureCallback = function(){
+		$scope.$emit('hideLoader');
 	};
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(){
@@ -522,7 +526,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 					"reservation_id" : $scope.reservationBillData.reservation_id	
 				};
 				
-				$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback);
+				$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinSuccessCallback);
 			
 			}
 		}

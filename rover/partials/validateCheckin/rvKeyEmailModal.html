@@ -1,0 +1,21 @@
+<div role="dialog" id="modal" class="modal-show">
+	
+	<div class="modal-content key-delivery check-in">
+
+		<div id="room-status" class="scan-key">
+			<span id="status" class="h2 message">Check in Complete</span>
+			<h1 class="icon-key"> {{keyEmailModalData.user_name}}<span></span> {{keyEmailModalData.room_number}} </h1>
+			<span class="number"> Reservation
+				{{keyEmailModalData.confirmation_number}} </span>
+		</div>
+		<div id="key-status" class="scan-key">
+			<span class="h2 message">Room Key Emailed</span>
+			<div class="action">
+				<em class="info"> Email with the key QR code sent to
+				{{keyEmailModalData.email}} </em>
+				<a id="goto-staycard" class="modal-close button brand-colors" ng-click="goToStaycard()">View Stay Card</a>
+				<a id="goto-search" class="modal-close button blue" ng-click="goToSearch()">Search</a>
+			</div>
+		</div>
+	</div>
+</div>
