@@ -25,12 +25,31 @@
 
     //setup options for error popup
 
+    $scope.cardErrorOpts = {
+      backdrop: true,
+      backdropClick: true,
+      templateUrl: '/assets/checkoutnow/partials/ccVerificationErrorModal.html',
+      controller: ccVerificationModalCtrl,
+      resolve: {
+        errorMessage: function(){
+          return "There is a problem with your credit card.";
+        }
+      }
+    };
+
     $scope.errorOpts = {
       backdrop: true,
       backdropClick: true,
       templateUrl: '/assets/checkoutnow/partials/ccVerificationErrorModal.html',
-      controller: ccVerificationModalCtrl
+      controller: ccVerificationModalCtrl,
+      resolve: {
+        errorMessage:function(){
+          return "All fields are required";
+        }
+      }
     };
+
+    
 
     $scope.ccvOpts = {
       backdrop: true,
@@ -93,7 +112,16 @@
 
           $scope.goToNextStep = function(){
 
-            if($scope.cardNumber.toString() ==="1"){
+
+
+  if( $scope.cardNumber.length === 0 || 
+      $scope.ccv.length === 0 || 
+      $scope.monthSelected === null ||
+      $scope.yearSelected === null){
+          $modal.open($scope.errorOpts); // details modal popup
+      }
+          else{
+             if($scope.cardNumber.toString() ==="1"){
               if($stateParams.isFromCheckoutNow === "true"){
                 $rootScope.ccPaymentSuccessForCheckoutNow = true;
                 $state.go('checkOutStatus');
@@ -103,11 +131,11 @@
               }
             }
             else{
-              $modal.open($scope.errorOpts); // error modal popup
+              $modal.open($scope.cardErrorOpts); // card error modal popup
             }
 
-        
 
+          }     
           }
 	
 }
@@ -123,7 +151,9 @@ snt.controller('ccVerificationViewController', dependencies);
 
 // controller for the modal
 
-  var ccVerificationModalCtrl = function ($scope, $modalInstance,$state) {
+  var ccVerificationModalCtrl = function ($scope, $modalInstance,$state,errorMessage) {
+    
+    $scope.errorMessage = errorMessage;
     $scope.closeDialog = function () {
       $modalInstance.dismiss('cancel');
     };

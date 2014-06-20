@@ -1,7 +1,7 @@
 <div class="modal-content modal-vertical-centered">
 	<div class="centeralign alert-box">
 		<img src="/assets/img/alert_icon_orange.png"  alt="" width="43" height="40" class="alert-element"/>
-		<p class="cc-error">There is a problem with your credit card.</p>
+		<p class="cc-error">{{errorMessage}}</p>
 
 		<button type="button" ng-click="closeDialog()" class="btn btn-close room-error-button room-error-green-button">TRY AGAIN</button><br/>
 		<button type="button" ng-click="cancelTransaction()" class="btn btn-close room-error-button light-gray-bg">CANCEL TRANSACTION</button>
