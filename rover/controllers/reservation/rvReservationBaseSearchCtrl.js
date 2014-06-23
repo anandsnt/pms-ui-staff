@@ -15,8 +15,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
             if($scope.reservationData.arrivalDate == ''){
                 $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate), 'yyyy-MM-dd');
             }
-            
-            $scope.setDepartureDate();
+            if($scope.reservationData.departureDate == ''){
+                $scope.setDepartureDate();
+            }
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
             var guestMaxSettings = baseSearchData.settings.max_guests;
             $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
@@ -26,17 +27,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         };
 
         $scope.setDepartureDate = function() {
-            if($scope.reservationData.departureDate == ''){
 
-                var dateOffset = $scope.reservationData.numNights;
-                if ($scope.reservationData.numNights == null || $scope.reservationData.numNights == '') {
-                    dateOffset = 1;
-                }
-                var newDate = new Date($scope.reservationData.arrivalDate);
-                newDay = newDate.getDate() + parseInt(dateOffset);
-                newDate.setDate(newDay);
-                $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
+            var dateOffset = $scope.reservationData.numNights;
+            if ($scope.reservationData.numNights == null || $scope.reservationData.numNights == '') {
+                dateOffset = 1;
             }
+            var newDate = new Date($scope.reservationData.arrivalDate);
+            newDay = newDate.getDate() + parseInt(dateOffset);
+            newDate.setDate(newDay);
+            $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
         }
 
         $scope.setNumberOfNights = function() {
