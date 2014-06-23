@@ -194,6 +194,7 @@ $scope.goToNextStep = function(){
           if(response.status ==="ok"){    
           console.log(response);      
           MLISessionId = response.session;
+          $scope.goToNextStep();
           // call other WS
         }
         else{
