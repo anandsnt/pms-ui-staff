@@ -1,11 +1,11 @@
-sntRover.controller('RVCompanyCardCtrl', ['$scope',
+sntRover.controller('RVTravelAgentCardCtrl', ['$scope',
 	function($scope) {
 
 		$scope.searchMode = false;
 		$scope.currentSelectedTab = 'cc-contact-info';
 
 
-		$scope.contactInformation = $scope.companyContactInformation;
+		
 
 
 		$scope.switchTabTo = function($event, tabToSwitch) {
@@ -13,5 +13,9 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope',
 			$event.stopImmediatePropagation();
 			$scope.currentSelectedTab = tabToSwitch;
 		};
+
+		$scope.$on('final', function(){
+			$scope.contactInformation = $scope.travelAgentInformation;
+		})
 	}
 ]);

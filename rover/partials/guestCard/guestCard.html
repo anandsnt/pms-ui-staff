@@ -2,102 +2,23 @@
     <div class="cards-wrapper">
         <!-- Cards Header -->
         <header class="cards-header">
-            <div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')">
-               <figure class="guest-image" ng-click="switchCard('guest-card')"> 
-                <img ng-src="{{guestCardData.contactInfo.avatar}}">
-                <span class="vip" ng-show="guestCardData.contactInfo.vip==true">VIP</span>
-            </figure>
-            <form name="change-name" id="change-name">
-                <div class="holder">
-                    <div class="entry" ng-click="openGuestCard()">
-                        <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.first_name.length}}"  ng-model="guestCardData.contactInfo.first_name" ng-blur="updateContactInfo()" auto-grow-field>
-                        <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.last_name.length}}" ng-model="guestCardData.contactInfo.last_name" ng-blur="updateContactInfo()" auto-grow-field>
-                    </div>
-                    <!--    <strong class="status">Platinum</strong> -->
-                </div>
-                <div class="holder data">
-                    <input type="text" data-size="{{guestCardData.contactInfo.city.length}}" class="masked-input icons icon-gc-location" placeholder="" ng-model="guestCardData.contactInfo.city" ng-blur="updateContactInfo()" auto-grow-field>
-                    <input type="text" data-size="{{guestCardData.contactInfo.state.length}}" class="masked-input" ng-model="guestCardData.contactInfo.state" ng-blur="updateContactInfo()" auto-grow-field>
-                    <input type="tel" data-size="{{guestCardData.contactInfo.phone.length}}" class="masked-input icons icon-gc-phone" ng-model="guestCardData.contactInfo.phone" ng-blur="updateContactInfo()" auto-grow-field>
-                    <input type="email" data-size="{{guestCardData.contactInfo.email.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email" ng-blur="updateContactInfo()" auto-grow-field>
-                </div>
-            </form>
+            <!-- Guest Card Header -->
+            <section ng-include="'/assets/partials/cards/header/guestCardHeader.html'"></section>
+            <!-- Company Card Header-->
+            <section ng-include="'/assets/partials/cards/header/companyCardHeader.html'"></section>
+            <!-- Travel Agent Card Header-->
+            <section ng-include="'/assets/partials/cards/header/travelAgentCardHeader.html'"></section>
+        </header>
+
+        <!-- Cards Content -->
+        <div class="cards-content">       
+            <!-- Guest Card Content-->
+            <section ng-include="'/assets/partials/cards/guestCardContent.html'"></section>
+            <!-- Company Card Content-->
+            <section ng-include="'/assets/partials/cards/companyCardContent.html'"></section>
+            <!-- TA Card Content-->
+            <section ng-include="'/assets/partials/cards/travelAgentCardContent.html'"></section>
         </div>
 
-        <!-- Company Card Header-->
-        <div id="company-card-header" class="card-header" ng-class="UICardClass('company-card')">
-             <!-- ng-if="escapeNull(contactInformation.account_details.company_logo)!=''" -->
-            <figure ng-if="escapeNull(contactInformation.account_details.company_logo)!=''" class="guest-image" ng-click="switchCard('company-card')">
-                        <img ng-src="{{contactInformation.account_details.company_logo}}" alt="" />
-                    </figure>
-                    <!-- When there's no logo use this instead of <figure>  -->
-                    <!-- ng-if="escapeNull(contactInformation.account_details.company_logo)=='' && account_type == 'COMPANY'" -->
-                    <div class="guest-image icons icon-company" translate ng-click="switchCard('company-card')">
-                        COMPANY
-                    </div>                  
-                    <form method="post" name="change-company-name" id="change-company-name">
-                        <div class="holder">
-                            <div class="entry">
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_first_name}}" ng-model="contactInformation.account_details.account_first_name" type="text" class="masked-input h1" auto-grow-field />
-
-                                <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_last_name}}" ng-model="contactInformation.account_details.account_last_name" type="text" class="masked-input h1" auto-grow-field/>
-                            </div>
-                        </div>
-                        <div class="holder data">
-                            <input  name="cc-city" id="cc-city" placeholder="" value="{{contactInformation.address_details.city}}" ng-model="contactInformation.address_details.city" type="text" class="masked-input icons icon-gc-location"  data-size="{{contactInformation.address_details.city.length}}" auto-grow-field/>
-
-                            <input  name="cc-state" id="cc-state" placeholder="" value="{{contactInformation.address_details.state}}" ng-model="contactInformation.address_details.state"  type="text" class="masked-input" auto-grow-field/>
-
-                            <input name="cc-phone" id="cc-phone" placeholder="" value="{{contactInformation.address_details.phone}}" ng-model="contactInformation.address_details.phone" type="tel" class="masked-input icons icon-gc-phone" auto-grow-field />
-
-                            <input name="cc-email" id="cc-email" placeholder="" value="{{contactInformation.address_details.email_address}}" ng-model="contactInformation.address_details.email_address" type="email" class="masked-input icons icon-gc-email" auto-grow-field/>
-                        </div>
-                    </form>
-
-            <section ng-hide="true">
-            <div class="guest-image icons icon-company" ng-click="switchCard('company-card')">
-                Add <span>Company</span>
-            </div>
-            <form method="get" action="" name="search-company" id="search-company" class="card-search-form" role="search">
-                <div class="holder">
-                    <div class="entry" ng-click="openGuestCard()">
-                        <input name="cc-name" id="cc-name" placeholder="Company Name" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="companyName" delay="1000" function-to-fire="searchCompany" />
-                        <input name="cc-city" id="cc-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="companyCity" delay="1000" function-to-fire="searchCompany"/>
-                        <input name="cc-corporate-id" id="cc-corporateid" placeholder="Corporate ID" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="companyCorpId" delay="1000" function-to-fire="searchCompany" />
-                    </div>
-                </div>
-            </form>
-            <section>
-        </div> 
-
-        <!-- Travel Agent Card Header-->
-        <div id="travel-agent-card-header" class="card-header" ng-class="UICardClass('travel-agent-card')">
-            <div class="guest-image icons icon-travel-agent" ng-click="switchCard('travel-agent-card')">
-                Add <span>Travel Agent</span>
-            </div>
-            <form method="get" action="" name="search-travel-agent" id="search-travel-agent" class="card-search-form" role="search">
-                <div class="holder">
-                    <div class="entry" ng-click="openGuestCard()">
-                        <input name="tac-name" id="tac-name" placeholder="Travel Agent" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="travelAgentName" delay="1000" function-to-fire="searchTravelAgent" />
-                        <input name="tac-city" id="tac-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="travelAgentCity" delay="1000" function-to-fire="searchTravelAgent" />
-                        <input name="tac-iata" id="tac-iata" placeholder="IATA #" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="travelAgentIATA" delay="1000" function-to-fire="searchTravelAgent" />
-                    </div>
-                </div>
-            </form>
-        </div>
-    </header>
-
-    <!-- Cards Content -->
-    <div class="cards-content">       
-        <!-- Guest Card Content-->
-        <section ng-include="'/assets/partials/cards/guestCard.html'"></section>
-
-        <!-- Company Card Content-->
-        <section ng-include="'/assets/partials/cards/companyCard.html'"></section>
-
-        <!-- TA Card Content-->
-        <section ng-include="'/assets/partials/cards/travelAgentCard.html'"></section>
     </div>
-
-</div>
 </div>

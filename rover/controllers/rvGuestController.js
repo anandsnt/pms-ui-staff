@@ -1,27 +1,43 @@
 sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVContactInfoSrv', '$stateParams',
-	function($scope, $window, RVContactInfoSrv, RVCompanyCardSrv, $stateParams) {
+	function($scope, $window, RVCompanyCardSrv, RVContactInfoSrv, $stateParams) {
 
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 		$scope.cardVisible = false;
 		BaseCtrl.call(this, $scope);
 
+		// fetch reservation company card details 
+		$scope.initCompanyCard = function() {
+			var successCallbackOfInitialFetch = function(data) {
+				$scope.$emit("hideLoader");
+				$scope.companyContactInformation = data;
+			};
+			var param = {
+				'id': $scope.reservationDetails.companyCard.id
+			};
+			$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, successCallbackOfInitialFetch);
+		}
 
+		// fetch reservation travel agent card details
+		$scope.initTravelAgentCard = function() {
+			var successCallbackOfInitialFetch = function(data) {
+				$scope.$emit("hideLoader");
+				$scope.travelAgentInformation = data;
+				$scope.$broadcast('final');
+			};
+			var param = {
+				'id': $scope.reservationDetails.travelAgent.id
+			};
+			$scope.invokeApi(RVCompanyCardSrv.fetchContactInformation, param, successCallbackOfInitialFetch);
+		}
+		
 		$scope.init = function() {
 			$scope.contactInfoError = false;
 			$scope.eventTimestamp = "";
 			var preventClicking = false;
+			$scope.initCompanyCard();
+			$scope.initTravelAgentCard();
 		};
-
-
-		//if CompanyCard is not available, show search mode
-
-		//make calls to api to get the card details
-
-
-
-		$scope.init();
-
 
 		$scope.$on('reservationCardisClicked', function() {
 			$("#guest-card").css("height", $scope.resizableOptions.minHeight); //against angular js practice, sorry :(
@@ -260,17 +276,11 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.switchTabTo = function($event, tabToSwitch) {
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
-			// if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
-			// 	saveContactInformation($scope.contactInformation);
-			// 	$scope.$broadcast("ContactTabActivated");
-			// }
-			// if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
-			// 	$scope.$broadcast("saveContract");
-			// }
 			$scope.currentSelectedTab = tabToSwitch;
 		};
 
-	
+		// init staycard header
+		$scope.init();
 
 	}
 ]);
