@@ -40,6 +40,7 @@ function BaseCtrl($scope){
 
 	$scope.invokeApi = function(serviceApi, params, successCallback, failureCallback, loaderType){
 		//loaderType options are "BLOCKER", "NONE"
+		
 		if(typeof loaderType === 'undefined')
 			loaderType = 'BLOCKER';
 		if(loaderType.toUpperCase() == 'BLOCKER')
@@ -59,7 +60,7 @@ function BaseCtrl($scope){
 
  	$scope.showCurrentDragItem = function(ev, ui){ 
 		$(ev.target).show();
- 	}
+ 	};
 
     /**
     * function to get day against a date
