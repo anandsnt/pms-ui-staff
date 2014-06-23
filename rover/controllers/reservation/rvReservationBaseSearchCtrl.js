@@ -4,16 +4,20 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
         //Setting number of nights 1
         $scope.reservationData.numNights = 1;
+        $scope.$parent.hideSidebar = false;
+
 
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
 
         var init = function() {
-            // console.log('baseSearchData',baseSearchData);
-            $scope.initReservationData();
             $scope.businessDate = baseSearchData.businessDate;
-            $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate), 'yyyy-MM-dd');
-            $scope.setDepartureDate();
+            if($scope.reservationData.arrivalDate == ''){
+                $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate), 'yyyy-MM-dd');
+            }
+            if($scope.reservationData.departureDate == ''){
+                $scope.setDepartureDate();
+            }
             $scope.otherData.roomTypes = baseSearchData.roomTypes;
             var guestMaxSettings = baseSearchData.settings.max_guests;
             $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
@@ -23,6 +27,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         };
 
         $scope.setDepartureDate = function() {
+
             var dateOffset = $scope.reservationData.numNights;
             if ($scope.reservationData.numNights == null || $scope.reservationData.numNights == '') {
                 dateOffset = 1;
@@ -57,7 +62,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         }
 
         $scope.arrivalDateChanged = function() {
-            $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
+            $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');            
             $scope.setDepartureDate();
             $scope.setNumberOfNights();
         };
@@ -135,6 +140,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                         label: item.account_first_name + " " + item.account_last_name,
                         value: item.account_first_name + " " + item.account_last_name,
                         image: item.company_logo,
+                        
                         // only for our understanding
                         // jq-ui autocomplete wont use it
                         type: item.account_type,
@@ -273,10 +279,17 @@ sntRover.directive('autoComplete', ['highlightFilter',
                     .data('ui-autocomplete')
                     ._renderItem = function(ul, item) {
                         ul.addClass('find-cards');
-
+                            
                         var $content = highlightFilter(item.label, scope.ngModel),
-                            $result = $("<a></a>").html($content),
+                            $result  = $("<a></a>").html($content),
+                            defIcon  = item.type === 'COMPANY' ? 'icon-company' : 'icon-travel-agent',
+                            $image   = '';
+
+                        if ( item.image ) {
                             $image = '<img src="' + item.image + '">';
+                        } else {
+                            $image = '<span class="icons ' + defIcon + '"></span>';
+                        }
 
                         $($image).prependTo($result);
 

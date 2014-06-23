@@ -217,6 +217,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         else{
             $scope.guestSearchIntiated = false;
             $scope.guests = [];
+            $scope.$apply();
         }
     }
 
@@ -285,20 +286,25 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.companies = [];
             if(data.accounts.length > 0){
                 angular.forEach(data.accounts, function(item){
-                    var companyData = {};
-                    companyData.id = item.id;
-                    companyData.firstName = item.account_first_name;
-                    companyData.lastName = item.account_last_name;
-                    companyData.logo = item.company_logo;
-                    if ( item.address != null ){
-                        companyData.address = {};
-                        companyData.address.postalCode = item.address.postal_code;
-                        companyData.address.city = item.address.city;
-                        companyData.address.state = item.address.state;
+                    if( item.account_type === 'COMPANY' ){
+                        var companyData = {};
+                        companyData.id = item.id;
+                        companyData.firstName = item.account_first_name;
+                        companyData.lastName = item.account_last_name;
+                        companyData.logo = item.company_logo;
+                        if ( item.address != null ){
+                            companyData.address = {};
+                            companyData.address.postalCode = item.address.postal_code;
+                            companyData.address.city = item.address.city;
+                            companyData.address.state = item.address.state;
+                        }
+                        if ( item.current_contract != null ){
+                            companyData.rate = item.current_contract.name;
+                        }
+                        companyData.email = item.email;
+                        companyData.phone = item.phone;
+                        $scope.companies.push(companyData);
                     }
-                    companyData.email = item.email;
-                    companyData.phone = item.phone;
-                    $scope.companies.push(companyData);
                 });
             }
         }
@@ -312,6 +318,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         }
         else{
             $scope.companySearchIntiated = false;
+            $scope.companies = [];
+            $scope.$apply();
         }
     }
 
@@ -336,23 +344,25 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.travelAgents = [];
             if(data.accounts.length > 0){
                 angular.forEach(data.accounts, function(item){
-                    var travelAgentData = {};
-                    travelAgentData.id = item.id;
-                    travelAgentData.firstName = item.account_first_name;
-                    travelAgentData.lastName = item.account_last_name;
-                    travelAgentData.logo = item.company_logo;
-                    if ( item.address != null ){
-                        travelAgentData.address = {};
-                        travelAgentData.address.postalCode = item.address.postal_code;
-                        travelAgentData.address.city = item.address.city;
-                        travelAgentData.address.state = item.address.state;
+                    if( item.account_type === 'TRAVELAGENT' ){
+                        var travelAgentData = {};
+                        travelAgentData.id = item.id;
+                        travelAgentData.firstName = item.account_first_name;
+                        travelAgentData.lastName = item.account_last_name;
+                        travelAgentData.logo = item.company_logo;
+                        if ( item.address != null ){
+                            travelAgentData.address = {};
+                            travelAgentData.address.postalCode = item.address.postal_code;
+                            travelAgentData.address.city = item.address.city;
+                            travelAgentData.address.state = item.address.state;
+                        }
+                        if ( item.current_contract != null ){
+                            travelAgentData.rate = item.current_contract.name;
+                        }
+                        travelAgentData.email = item.email;
+                        travelAgentData.phone = item.phone;
+                        $scope.travelAgents.push(travelAgentData);
                     }
-                    if ( item.current_contract != null ){
-                        travelAgentData.rate = item.current_contract.name;
-                    }
-                    travelAgentData.email = item.email;
-                    travelAgentData.phone = item.phone;
-                    $scope.travelAgents.push(travelAgentData);
                 });
             }
         }
