@@ -25,6 +25,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.$emit('hideLoader');
 			setTimeout(function(){
 				$scope.$parent.myScroll['roomlist'].refresh();
+				$scope.$parent.myScroll['filterlist'].refresh();
 				}, 
 			3000);
 		};
@@ -84,6 +85,12 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.$parent.myScrollOptions = {		
 	    'roomlist': {
+	    	scrollbars: true,
+	        snap: false,
+	        hideScrollbar: false,
+	        preventDefault: false
+	    },
+	    'filterlist': {
 	    	scrollbars: true,
 	        snap: false,
 	        hideScrollbar: false,
