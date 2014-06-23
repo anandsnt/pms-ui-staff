@@ -76,11 +76,12 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebS
             that.fetchDemographicSources(deferred);
             that.fetchDemographicReservationTypes(deferred);
             return deferred.promise;
-        }
+        };
 
+        /**
+        * Call API to Save the reservation
+        */
         this.saveReservation = function(data){
-            console.log("hre");
-            console.log(data);
             var deferred = $q.defer();
             var url = '/api/reservations';
             rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
@@ -89,7 +90,23 @@ sntRover.service('RVReservationSummarySrv', ['$q', 'rvBaseWebSrvV2', 'RVBaseWebS
                 deferred.reject(data);
             }); 
             return deferred.promise;
-        }
+        };
+
+        /**
+        * Sends the confirmation email
+        */
+        this.sendConfirmationEmail = function(data){
+            var deferred = $q.defer();
+            var url = '/api/reservations/' + data.reservationId +'/email_confirmation';
+            delete data['reservationId'];
+
+            rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            },function(data){
+                deferred.reject(data);
+            }); 
+            return deferred.promise;
+        };
         
 
     }

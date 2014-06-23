@@ -1,4 +1,4 @@
-sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 
+sntRover.controller('RVReservationSummaryCtrl', ['$scope', '$state', 'RVReservationSummarySrv', 
 					function($scope, $state, RVReservationSummarySrv){
 	BaseCtrl.call(this, $scope);
 
@@ -12,14 +12,11 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		    'reservationSummary': {
 		    	scrollbars: true,
 		        snap: false,
-		        hideScrollbar: false,
-		        preventDefault: false
+		        hideScrollbar: false
 		    }, 
 		    'paymentInfo': {
 		    	scrollbars: true,
-		        snap: false,
 		        hideScrollbar: false,
-		        preventDefault: false
 		    }, 
 		};
 		fetchPaymentMethods();
@@ -32,7 +29,6 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 	var fetchPaymentMethods = function(){
 		var paymentFetchSuccess = function(data) {
 			$scope.data.paymentMethods = data;
-			console.log(JSON.stringify($scope.data.paymentMethods));
 			$scope.$emit('hideLoader');
 		};
 		
@@ -50,15 +46,17 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		if($scope.data.isConfirmationEmailSameAsGuestEmail) {
 			$scope.reservationData.guest.sendConfirmMailTo = $scope.reservationData.guest.email;
 		} 
+		$scope.refreshPaymentScroller();
 	};
 
 	/**
-	* Compute the reservation data from the data modal to be passed to the API
+	* Build the reservation data from the data modal to be passed to the API
 	*/
 	var computeReservationDataToSave = function() {
 		var data = {};
 		data.arrival_date = $scope.reservationData.arrivalDate;
 		data.arrival_time = '';
+		//Check if the check-in time is set by the user. If yes, format it to the 24hr format and build the API data.
 		if($scope.reservationData.checkinTime.hh != '' && $scope.reservationData.checkinTime.mm != '' && $scope.reservationData.checkinTime.ampm!= '') {
 			data.arrival_time = getTimeFormated($scope.reservationData.checkinTime.hh, 
 											$scope.reservationData.checkinTime.mm, 
@@ -66,6 +64,7 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 		}
 		data.departure_date = $scope.reservationData.departureDate;
 		data.departure_time = '';
+		//Check if the checkout time is set by the user. If yes, format it to the 24hr format and build the API data.
 		if($scope.reservationData.checkoutTime.hh != '' && $scope.reservationData.checkoutTime.mm != '' && $scope.reservationData.checkinTime.ampm!= '') {
 			data.arrival_time = getTimeFormated($scope.reservationData.checkoutTime.hh, 
 											$scope.reservationData.checkoutTime.mm, 
@@ -109,32 +108,19 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 
 	/**
 	* Click handler for confirm button - 
-	* Creates the reservation and Go back to the reservation search screen
+	* Creates the reservation and on success, goes to the confirmation screen
 	*/
-	$scope.clickedConfirmAndGoToDashboard = function() {
+	$scope.submitReservation = function(){
 		var postData = computeReservationDataToSave();
 
 		var saveSuccess = function(data) {
 			$scope.$emit('hideLoader');
-			$scope.initReservationData();
-			goToReservationSearch();
+			$scope.reservationData.reservationId = data.id;
+			$scope.reservationData.confirmNum = data.confirm_no;
+			$state.go('rover.reservation.mainCard.reservationConfirm');
+			
 		};
 
-		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
-	};
-
-	/**
-	* Click handler for confirm button - 
-	* Creates the reservation and Go back to the reservation search screen
-	* Will retain the guest information
-	*/
-	$scope.clickedConfirmAndCreateNew = function(){
-		var postData = computeReservationDataToSave();
-
-		var saveSuccess = function(data) {
-			$scope.$emit('hideLoader');
-			goToReservationSearch();
-		};
 		$scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess);
 	};
 
@@ -145,10 +131,12 @@ sntRover.controller('RVReservationSummaryAndConfirmCtrl', ['$scope', '$state', '
 	$scope.cancelButtonClicked = function(){
 		$scope.initReservationData();
 		goToReservationSearch();
-	};
-
-	var goToReservationSearch = function(){
 		$state.go('rover.reservation.search');
+	};
+	
+	$scope.refreshPaymentScroller = function(){
+		setTimeout( function(){
+		$scope.$parent.myScroll['paymentInfo'].refresh();}, 0);
 	};
 
 	$scope.init();

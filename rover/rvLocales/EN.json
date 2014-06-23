@@ -164,7 +164,14 @@
     "RESV_SEE_MORE_ROOMS" : "See more room types",
     "RESV_SEE_MORE_RATES" : "See more rates",
     "RESV_FOR_ONLY" : "For only",
-    "RESV_MORE" : "more per night",    
+    "RESV_MORE" : "more per night",
+
+    "BEST_SELLERS": "BEST SELLERS",
+    "ENHANCEMENTS": "Enhancements",
+    "GO_TO_PAYMENT": "Go to Payment",
+    "QUANTITY": "Quantity",
+    "REMOVE": "Remove",
+    "ADD_MORE_TO_THIS_ROOM": "Add More to This Room",    
     
     "NEWSPAPER_LABEL" : "Newspaper",
     "NEWSPAPER_SELECT" : "Select Newspaper",
@@ -249,5 +256,22 @@
     "SEARCH_TERM": "Search items",
     "0_ITEM_SELECTED": "0 items selected",
     "POST_CHARGE": "Post Charge",
-    "VIEW_BILL_TITLE": "View Bill"
+    "VIEW_BILL_TITLE": "View Bill",
+
+    "BEST_SELLERS": "BEST SELLERS",
+    "ENHANCEMENTS": "Enhancements",
+    "GO_TO_PAYMENT": "Go to Payment",
+    "QUANTITY": "Quantity",
+    "REMOVE": "Remove",
+    "ADD_MORE_TO_THIS_ROOM": "Add More to This Room",
+
+
+    "SUBMIT_RESERVATION": "Submit Reservation",
+    "RESERVATION_CREATED": "Reservation created",
+    "CONFIRM_EMAIL_LABEL": "Confirmation will be emailed to",
+    "SEND_CONFIRMATION_EMAIL": "Send Confirmation Email",
+    "GO_TO_STAYCARD": "Go To Stay Card",
+    "NEW_RESERVATION_FOR_GUEST": "New Reservation for Guest",
+    "SEARCH_RESERVATIONS": "Search Reservations"
+    
 }

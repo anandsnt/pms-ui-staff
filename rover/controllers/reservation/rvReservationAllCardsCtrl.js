@@ -205,7 +205,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                 });
             }
         }
-        if( $scope.guestFirstName != '' || $scope.guestLastName != '' || $scope.guestCity != '' || $scope.guestLoyaltyNumber !== ''){
+        if( $scope.guestFirstName != '' || $scope.guestLastName != '' || $scope.guestCity != '' || $scope.guestLoyaltyNumber != '' ){
             var paramDict = {
                                 'first_name': $scope.guestFirstName,
                                 'last_name': $scope.guestLastName,
@@ -216,6 +216,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         }
         else{
             $scope.guestSearchIntiated = false;
+            $scope.guests = [];
+            $scope.$apply();
         }
     }
 
@@ -311,6 +313,8 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
         }
         else{
             $scope.companySearchIntiated = false;
+            $scope.companies = [];
+            $scope.$apply();
         }
     }
 
@@ -346,6 +350,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                         travelAgentData.address.city = item.address.city;
                         travelAgentData.address.state = item.address.state;
                     }
+                    if ( item.current_contract != null ){
+                        travelAgentData.rate = item.current_contract.name;
+                    }
                     travelAgentData.email = item.email;
                     travelAgentData.phone = item.phone;
                     $scope.travelAgents.push(travelAgentData);
@@ -361,6 +368,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
             $scope.invokeApi(RVReservationAllCardsSrv.fetchCompaniesOrTravelAgents, paramDict, successCallBackFetchTravelAgents);
         }
         else{
+            $scope.travelAgents = [];
             $scope.travelAgentSearchIntiated = false;
         }
     }
