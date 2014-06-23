@@ -49,7 +49,7 @@
 		</div>
 		
 		<div class="actions" ng-show="($index+1) != reservationBillData.bills.length">
-			<button type="submit" ng-click="clickedReviewButton($index)" class="button" ng-class="{'grey':(reviewStatusArray[$index].reviewStatus),'red':(!reviewStatusArray[$index].reviewStatus)}">
+			<button type="submit" ng-click="clickedReviewButton($index)" class="button" ng-class="{'grey':(reviewStatusArray[$index].reviewStatus),'red':(!reviewStatusArray[$index].reviewStatus)}" ng-disabled="reviewStatusArray[$index].reviewStatus">
 				Review Bill
 				{{billData.bill_number}}
 				and Continue
