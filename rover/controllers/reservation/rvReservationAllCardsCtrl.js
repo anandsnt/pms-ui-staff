@@ -297,6 +297,9 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
                         companyData.address.city = item.address.city;
                         companyData.address.state = item.address.state;
                     }
+                    if ( item.current_contract != null ){
+                        companyData.rate = item.current_contract.name;
+                    }
                     companyData.email = item.email;
                     companyData.phone = item.phone;
                     $scope.companies.push(companyData);
