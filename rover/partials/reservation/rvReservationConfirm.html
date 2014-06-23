@@ -1,0 +1,115 @@
+<!-- Content -->
+<div ng-include="'/assets/partials/common/header.html'"></div>
+<section id="details-and-payment" class="content reservations-inner">
+    <div id="details-and-payment-content" class="reservations-content-wrapper">
+    	<!-- Left Side contents -->
+        <div class="reservation-summary scrollable" id="reservation-summary" ng-iscroll='reservationSummary'>
+            <div class="wrapper">
+                <h2>Reservation Confirmation</h2>
+                <ul class="data">
+                    <li><span class="guest-status room" translate>ROOMS</span>
+                        <span>{{reservationData.roomCount}}</span>
+                        <span ng-if="reservationData.roomCount === 1" translate>ROOM</span>
+                        <span ng-if="reservationData.roomCount !== 1" translate>ROOMS</span>
+                    </li>
+                    <li>
+                        <span class="guest-status nights" translate>NIGHTS</span>
+                        <span>{{reservationData.numNights}}</span>
+                        <span ng-if="reservationData.numNights === 1" translate> NIGHT</span>
+                        <span ng-if="reservationData.numNights !== 1" translate> NIGHTS</span>
+                    </li>
+                </ul>
+                <div class="stay-dates">
+                    <div class="check-in-dates">
+                        <span class="guest-status small-icon check-in">check-in</span>
+                        {{reservationData.arrivalDate | date:'EEEE, dd-MM-yyyy'}}
+                        <!-- If set -->
+                        <span class="check-data-set icons icon-time time-in" ng-if="isCheckoutTimeSet()">
+                           {{reservationData.checkinTime.hh}}:{{reservationData.checkinTime.mm}}&nbsp;{{reservationData.checkinTime.ampm}}
+                        </span>
+                        <!-- If not set -->
+                        <em class="check-data-not-set icons icon-time time-in" ng-if="!isCheckoutTimeSet()">
+                            Not Set
+                        </em>
+                    </div>
+                    <div class="check-out-dates">
+                        <span class="guest-status small-icon check-out">check-out</span>
+                        {{reservationData.departureDate | date:'EEEE, dd-MM-yyyy'}}
+                         <span class="check-data-set icons icon-time time-out" ng-show="isCheckoutTimeSet()">
+                            {{reservationData.checkoutTime.hh}}:{{reservationData.checkoutTime.mm}}&nbsp;{{reservationData.checkoutTime.ampm}}
+                        </span>
+                        <!-- If not set -->
+                        <em class="check-data-not-set icons icon-time time-out" ng-show="!isCheckoutTimeSet()">
+                            Not Set
+                        </em>
+                    </div>
+                </div>
+                <!-- This here is dynamic content, depending on number of rooms booked -->
+                <div class="rooms" ng-repeat="room in reservationData.rooms">
+                    <div class="title">
+                        <span translate>ROOM</span>
+                        {{$index + 1}}
+                        <div class="count">
+                            <span><span class="label" translate>ADULTS</span>{{room.numAdults}}</span>
+                            <span><span class="label" translate>CHILDREN</span>{{room.numChildren}}</span>
+                            <span><span class="label" translate>INFANTS</span>{{room.numInfants}}</span>
+                        </div>
+                    </div>
+                    <div class="room-type">
+                        <h4>{{room.roomTypeName}}<span></span></h4>
+                        <div class="confirmation"> <!-- Show confirmation number -->
+                            <span class="label">Confirmation #</span>{{reservationData.confirmNum}}
+                        </div>
+                    </div>
+                    <ul class="rate-and-enhancements">
+                        <li>
+                            <em>{{room.rateName}}</em>
+                            <span class="price">
+                                {{currencySymbol}}{{room.rateAvg}}
+                                <span translate>AVG_NIGHT</span>
+                                <span class="total">{{currencySymbol}}{{room.rateTotal}}</span>
+                            </span>
+                        </li>
+                        <li ng-repeat='addon in room.addOns'>
+                            <em>{{addon.name}}</em>
+                            <span class="price">
+                                {{currencySymbol}}{{addon.avgAmount}}
+                                <span translate>EACH</span>
+                                <span class="total">{{currencySymbol}}{{addon.avgAmount}}</span>
+                            </span>
+                        </li>
+                    </ul>
+                    <div class="guests">
+                        <h5><em>Guest: </em>{{reservationData.guest.firstName}}&nbsp;{{reservationData.guest.lastName}}</h5> <!-- Show primary guest name -->
+                        <!-- Show accompanying guests if they have been added -->
+                        <!-- <ul class="accompanying-guests">
+                            <li><span>Accompanying guest</span><em>John Smith</em></li>
+                        </ul> -->
+                    </div>
+                </div>
+                <ul class="total-stay-cost">
+                    <li><span class="label" translate>TAX</span>{{currencySymbol}}{{reservationData.totalTaxAmount}}</li>
+                    <li><span class="label" translate>TOTAL_STAY_COST</span><strong>{{currencySymbol}}{{reservationData.totalStayCost}}</strong></li>
+                </ul>
+            </div> 
+        </div>
+        <form class="form payment-info scrollable" id="payment-info" name="payment_info" ng-iscroll='paymentInfo'>
+            <div class="wrapper">
+                <div class="reservation-completed">
+                    <h2 translate>RESERVATION_CREATED</h2>
+                    <div class="entry full-width">
+                        <label for="email" translate>CONFIRM_EMAIL_LABEL</label>
+                        <input name="email" id="email" type="email" ng-model="reservationData.guest.sendConfirmMailTo">
+                        <button type="button" id="send-confirmation" class="button blue" ng-click="sendConfirmationClicked(payment_info.email.$valid)" translate>SEND_CONFIRMATION_EMAIL</button>
+                    </div>
+                    <div class="actions">
+                        <!-- You can use regular <a href="..."> here as well -->
+                        <button type="button" id="go-to-staycard" class="button brand-colors" ng-click="goToStaycardClicked()" translate>GO_TO_STAYCARD</button>
+                        <button type="button" id="new-reservation-for-guest" class="button green" ng-click="clickedNewReservation()" translate>NEW_RESERVATION_FOR_GUEST</button>
+                        <button type="button" id="go-to-search" class="button white blue-text" ng-click="goToSearchClicked()" translate>SEARCH_RESERVATIONS</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

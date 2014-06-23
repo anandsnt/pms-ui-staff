@@ -8,6 +8,7 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
 	 */
 	//Data fetched using resolve in router
 	$scope.reservationData = reservationDetails;
+	$scope.$parent.$parent.reservation = reservationDetails;
 	$scope.reservationnote = "";
 	$scope.currencySymbol = getCurrencySign($scope.reservationData.reservation_card.currency_code);
 	$scope.selectedLoyalty = {};
