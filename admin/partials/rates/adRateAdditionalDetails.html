@@ -2,7 +2,7 @@
 <div ng-hide="detailsMenu ==='additionalDetails'">
  <div class="form-title">
             <h3 class="rate_additional_details_heading">ADDITIONAL DETAILS </h3>
-            <div ng-click="changeDetailsMenu('additionalDetails')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-down.png"></div>
+            <div ng-click="changeDetailsMenu('additionalDetails')"  class="cursor_pointer rate_additional_details_pointers"><img src="/assets/arrow-down.png"></div>
   </div>
 </div>
 
@@ -10,13 +10,13 @@
 <div ng-show="detailsMenu ==='additionalDetails'" class="form_add_new_rate" >
   <div class="form-title">
             <h3 class="rate_additional_details_heading">ADDITIONAL DETAILS </h3>
-            <div ng-click="changeDetailsMenu('')" style="float:right" class="cursor_pointer"><img src="/assets/arrow-up.png"></div>
+            <div ng-click="changeDetailsMenu('')"  class="cursor_pointer rate_additional_details_pointers"><img src="/assets/arrow-up.png"></div>
   </div>
 	
 	 <!-- <fieldset class="holder full-width"> -->
 	 	<fieldset class="holder left">
 	 		      <div class="entry has-datepicker">
-							<label for="endDate"> end date &nbsp;<span  style="color: #9D9D9D;">(overrides date range)</span>
+							<label for="endDate"> end date &nbsp;<span  class="rate_end_date_desc">(overrides date range)</span>
                             </label>
 							<input type="text" ng-model="rateData.end_date" readonly="" maxlength="8" class="hasDatepicker"ng-click="popupCalendar()" placeholder="Set end date" >
 							<button type="button" class="ui-datepicker-trigger" ng-click="popupCalendar()">
