@@ -542,16 +542,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		if(signatureData == "[]" && $scope.reservationBillData.required_signature_at == "CHECKIN"){
 			console.log("---------------");
 			errorMsg = "Signature is missing";
-			$scope.errorMessage = [errorMsg];
-			ngDialog.open({
-        		template: '/assets/partials/validateCheckin/rvShowValidation.html',
-        		controller: 'RVValidateEmailPhoneCtrl',
-        		scope: $scope
-        	});
+			$scope.showErrorPopup(errorMsg);
+			
 			
 		} else if(!$scope.saveData.termsAndConditions){
 			errorMsg = "Please check agree to the Terms & Conditions";
-			$scope.errorMessage = [errorMsg];
+			$scope.showErrorPopup(errorMsg);
 		} else {
 			if($scope.saveData.promotions && $scope.guestCardData.contactInfo.email == ''){
 				ngDialog.open({
@@ -608,5 +604,15 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}
 		$scope.setActiveBill(billIndex);
 	};
+	
+	$scope.showErrorPopup = function(errorMessage){
+		$scope.popupErrorMessage = errorMessage;
+		ngDialog.open({
+    		template: '/assets/partials/validateCheckin/rvShowValidation.html',
+    		controller: 'RVShowValidationErrorCtrl',
+    		scope: $scope
+    	});
+	};
+			
 		//{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date,'active': days.date != reservationBillData.checkout_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}
 }]);
