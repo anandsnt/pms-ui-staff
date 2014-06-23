@@ -4,6 +4,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
         //Setting number of nights 1
         $scope.reservationData.numNights = 1;
+        $scope.$parent.hideSidebar = false;
+
 
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;
@@ -24,8 +26,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         };
 
         $scope.setDepartureDate = function() {
-            console.log($scope.reservationData.numNights);
-
             if($scope.reservationData.departureDate == ''){
 
                 var dateOffset = $scope.reservationData.numNights;
@@ -35,9 +35,6 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
                 var newDate = new Date($scope.reservationData.arrivalDate);
                 newDay = newDate.getDate() + parseInt(dateOffset);
                 newDate.setDate(newDay);
-                console.log("-----")
-                console.log($scope.reservationData.departureDate);
-                console.log('inside');
                 $scope.reservationData.departureDate = dateFilter(new Date(newDate), 'yyyy-MM-dd');
             }
         }
