@@ -1,7 +1,6 @@
 
 sntRover.controller('RVroomAssignmentController',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', '$filter', function($scope, $state, $stateParams, RVRoomAssignmentSrv, $filter){
-	console.log("room assignment");
-	// $scope.parentObj.slide = 'slide-right';
+		
 	BaseCtrl.call(this, $scope);
 	
 	$scope.rooms = [];
