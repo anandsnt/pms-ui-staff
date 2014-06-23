@@ -158,7 +158,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.pan = $scope.passData.pan;
 			$scope.saveData.mli_token = $scope.passData.token;
 		}
-		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card"];
+		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card","card_expiry","card_number","cvv"];
 		var data = dclone($scope.saveData, unwantedKeys);
 		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
 			 $scope.invokeApi(RVPaymentSrv.savePaymentDetails, data, $scope.saveSuccess, $scope.failureCallBack);
