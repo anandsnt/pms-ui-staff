@@ -60,10 +60,10 @@
 			<div class="holder">
 				<strong class="title">Floors</strong>
 				<div class="entry radio-check floors">
-					<label class="checkbox checked"> <span class="icon-form icon-checkbox"></span>
-						<input name="room-allfloors" id="room-allfloors" value="room-allfloors" type="checkbox" checked>
+					<label class="checkbox checked"> <span class="icon-form icon-checkbox" ng-class="{'checked': showAllFloors}"></span>
+						<input name="room-allfloors" id="room-allfloors" value="room-allfloors" type="checkbox" ng-click="showAllFloors = !showAllFloors">
 						Show All Floors </label>
-					<div id="filter-floors" class="entry-data">
+					<div id="filter-floors" class="entry-data hidden" ng-class="{'hidden': showAllFloors}">
 						<!-- For Single Floor Search -->
 						<div class="left">
 							<span class="h4">Single</span>

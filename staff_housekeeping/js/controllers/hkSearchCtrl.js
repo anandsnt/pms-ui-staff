@@ -6,6 +6,7 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 	$scope.showInspected = false;
 
 	$scope.showQueued = false;
+	$scope.showAllFloors = true;
 
 	// make sure any previous open filter is not showing
 	$scope.$emit('dismissFilterScreen');
