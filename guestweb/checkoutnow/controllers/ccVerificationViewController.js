@@ -50,67 +50,6 @@
       $scope.isFetching = false;
     });
 
-  
-    HostedForm.setMerchant('TESTSTAYNTOUCH01');// to delete
-
-
-    $scope.verifyCC = function(){
-
-      $scope.isFetching = true;
-      ccVerificationService.verifyCC().then(function(response) {
-         $scope.isFetching = false;
-         $state.go('checkOutStatus');
-       }
-       else{
-           $scope.netWorkError = true;
-       }
-
-    },function(){
-      $scope.netWorkError = true;
-      $scope.isFetching = false;
-    });
-    }
-  
-    $scope.savePaymentDetails = function(){
-      
-      var MLISessionId = "";
-
-      $scope.fetchMLISessionId = function(){
-
-       var sessionDetails = {};
-       sessionDetails.cardNumber = '6700649826438453';
-       sessionDetails.cardSecurityCode = '123';
-       sessionDetails.cardExpiryMonth = '07';
-       sessionDetails.cardExpiryYear = '15';
-      
-       // var sessionDetails = {};
-       // sessionDetails.cardNumber = $scope.cardNumber;
-       // sessionDetails.cardSecurityCode = $scope.ccv;
-       // sessionDetails.cardExpiryMonth = $scope.monthSelected;
-       // sessionDetails.cardExpiryYear = $scope.yearSelected;
-
-       var callback = function(response){
-          if(response.status ==="ok"){    
-          console.log(response);      
-          MLISessionId = response.session;
-          // call other WS
-        }
-        else{
-         $scope.netWorkError = false;
-        }
-        
-       }
-       HostedForm.updateSession(sessionDetails, callback);
-
-      
-    }
-    $scope.fetchMLISessionId();
-
-    }
-
-     /* MLI integration starts here */
-
-
 
     //setup options for error popup
 
@@ -199,18 +138,18 @@
             $modal.open($scope.ccvOpts); // error modal popup
           }
 
-          $scope.goToNextStep = function(){
-
-
-
-  if( $scope.cardNumber.length === 0 || 
+$scope.goToNextStep = function(){
+      if( $scope.cardNumber.length === 0 || 
       $scope.ccv.length === 0 || 
       $scope.monthSelected === null ||
       $scope.yearSelected === null){
           $modal.open($scope.errorOpts); // details modal popup
       }
-          else{
-             if($scope.cardNumber.toString() ==="1"){
+      else{
+          $scope.isFetching = true;
+          ccVerificationService.verifyCC().then(function(response) {
+          $scope.isFetching = false;
+          if(response.status ==="success"){
               if($stateParams.isFromCheckoutNow === "true"){
                 $rootScope.ccPaymentSuccessForCheckoutNow = true;
                 $state.go('checkOutStatus');
@@ -218,17 +157,64 @@
                  $rootScope.ccPaymentSuccessForCheckoutLater = true;
                  $state.go('checkOutLaterSuccess',{id:$scope.fee});
               }
-            }
-            else{
-              $modal.open($scope.cardErrorOpts); // card error modal popup
-            }
-
-
-          }     
           }
-	
+          else{
+           $modal.open($scope.cardErrorOpts);
+          };        
+      
+        },function(){
+          $scope.netWorkError = true;
+          $scope.isFetching = false;
+        });
+      }
+}     
+
+  HostedForm.setMerchant('TESTSTAYNTOUCH01');// to delete
+
+  
+    $scope.savePaymentDetails = function(){
+      
+      var MLISessionId = "";
+
+      $scope.fetchMLISessionId = function(){
+
+       var sessionDetails = {};
+       sessionDetails.cardNumber = '6700649826438453';
+       sessionDetails.cardSecurityCode = '123';
+       sessionDetails.cardExpiryMonth = '07';
+       sessionDetails.cardExpiryYear = '15';
+      
+       // var sessionDetails = {};
+       // sessionDetails.cardNumber = $scope.cardNumber;
+       // sessionDetails.cardSecurityCode = $scope.ccv;
+       // sessionDetails.cardExpiryMonth = $scope.monthSelected;
+       // sessionDetails.cardExpiryYear = $scope.yearSelected;
+
+       var callback = function(response){
+          if(response.status ==="ok"){    
+          console.log(response);      
+          MLISessionId = response.session;
+          // call other WS
+        }
+        else{
+         $scope.netWorkError = false;
+        }
+        
+       }
+       HostedForm.updateSession(sessionDetails, callback);
+
+      
+    }
+    $scope.fetchMLISessionId();
+
+    }
+
+     /* MLI integration starts here */
+
 }
 }
+
+
 
 var dependencies = [
 '$scope','$rootScope','$state','$stateParams','$modal','ccVerificationService',
