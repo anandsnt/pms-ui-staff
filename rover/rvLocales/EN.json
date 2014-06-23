@@ -209,7 +209,16 @@
     "ERROR_CONNECTING_TO_KEY_CARD_READER" : "Error connecting to Key Card Reader!",
     "TRY_AGAIN" : "Try Again",
     "HOW_MANY_KEYS" : "How many keys?",
-    "KEY_PRINTED" : "Keys printed!",    
+    "KEY_PRINTED" : "Keys printed!",	
+	"PLEASE_ASK_THE_GUEST_FOR_EMAIL" : "Please ask the guest to provide email before checkout",
+	"EMAIL" : "E-mail",
+	"SUBMIT_AND_GOTO_CHECKOUT" : "Submit and go to check out",
+	"IGNORE_AND_GOTO_CHECKOUT" : "Ignore and proceed with checkout",
+	
+	"EARLY_DEPARTURE" : "Early Departure:",
+	"EARLY_DEPARTURE_MESSAGE" : "Please note that additional charges will be applied to the guest bill",
+	"OK" : "Ok",
+	"CANCEL" : "Cancel",    
     
     "ROOM": "room",
     "NIGHTS": "nights",
