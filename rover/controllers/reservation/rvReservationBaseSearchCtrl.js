@@ -1,5 +1,5 @@
-sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state', '$timeout',
-    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout) {
+sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'baseSearchData', 'RVReservationBaseSearchSrv', 'dateFilter', 'ngDialog', '$state', '$timeout','$stateParams',
+    function($rootScope, $scope, baseSearchData, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams) {
         BaseCtrl.call(this, $scope);
 
         //Setting number of nights 1
@@ -9,6 +9,10 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         var defaultMaxvalue = 5;
 
         var init = function() {
+            
+            if($stateParams.status !== 'RETAIN_RESERVATION') {
+                $scope.initReservationData();
+            }
             $scope.businessDate = baseSearchData.businessDate;
             if($scope.reservationData.arrivalDate == ''){
                 $scope.reservationData.arrivalDate = dateFilter(new Date($scope.businessDate), 'yyyy-MM-dd');
