@@ -38,10 +38,8 @@
 				</div>
 				<div class="results">
 					<!-- Advanced search fields -->
-					<div id="room-attributes" ng-show="isFiltersVisible" class="attributes scrollable">
-						
-						<div ng-include="'assets/partials/roomAssignment/rvRoomFilters.html'"  ng-controller="RVRoomFiltersController"> </div>
-					</div>
+					<div id="filterlist" ng-iscroll='filterlist' ng-iscroll-delay='50' ng-show="isFiltersVisible" class="attributes scrollable" ng-include="'assets/partials/roomAssignment/rvRoomFilters.html'"  ng-controller="RVRoomFiltersController"> </div>
+					
 					<!-- Rooms list -->
 					<div id="roomlist" ng-iscroll='roomlist' ng-iscroll-delay='50' class="rooms scrollable" ng-class="{'roomListAnimation': isFiltersVisible}">
 						<ul class="wrapper" style="transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1); transition-duration: 0ms; transform: translate(0px, 0px) translateZ(0px);">
