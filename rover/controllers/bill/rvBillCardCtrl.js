@@ -7,7 +7,6 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	var calenderDaysHeight = parseInt(35);
 	var totalHeight = 0;
 	$scope.clickedButton = $stateParams.clickedButton;
-	console.log("butt---"+$scope.clickedButton);
 	$scope.saveData = {};
 	$scope.saveData.promotions = false;
 	$scope.saveData.termsAndConditions = false;

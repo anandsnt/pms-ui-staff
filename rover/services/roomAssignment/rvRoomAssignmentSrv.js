@@ -24,7 +24,7 @@ sntRover.service('RVRoomAssignmentSrv',['$q', 'RVBaseWebSrv', function($q, RVBas
 	};
 	this.assignRoom = function(param){
 		var deferred = $q.defer();
-		var url =  '/staff/reservation/modify_reservation';			
+		var url =  '/staff/reservation/modify_reservationfghfgjh';			
 		RVBaseWebSrv.postJSON(url, param).then(function(data) {
 			deferred.resolve(data);
 		},function(data){

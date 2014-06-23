@@ -43,7 +43,7 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
 			}
         });
          $stateProvider.state('rover.staycard.roomassignment', {
-            url: '/roomassignment/:reservation_id/:room_type',
+            url: '/roomassignment/:reservation_id/:room_type/:clickedButton',
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
             controller: 'RVroomAssignmentController'
         });
