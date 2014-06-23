@@ -3,8 +3,8 @@
 		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
 			<span class="icons icon-close invert"></span>
 		</button>
-		<span class="h3 message">{{popupErrorMessage}}</span>
-		<button id="ok" class="button red modal-close" ng-click="closeDialog()">
+		<span class="h3 message">{{popupMessage}}</span>
+		<button id="ok" class="button modal-close" ng-class="{'red':status==='error','green':status === 'success'}" ng-click="okButtonClicked()">
 			Ok
 		</button>
 	</div>

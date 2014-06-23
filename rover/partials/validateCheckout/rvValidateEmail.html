@@ -1,7 +1,7 @@
 <div role="dialog" id="modal" class="modal-show">
 	
 	<form id="validate" class="modal-content form confirmation">
-		<button id="modal-close" class="modal-close" type="button" ng-click="clickCancel()">
+		<button id="modal-close" class="modal-close" type="button" ng-click="closeDialog()">
 			<span class="icons icon-close invert"></span>
 		</button>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -12,7 +12,7 @@
 		</div>
 		<div class="actions float">
 			<a id="submit" class="button red modal-close" ng-click="submitAndGoToCheckout()">Submit and go to check out</a>
-			<a id="cancel" class="button blank modal-close" ng-click="clickCancel()">Ignore and proceed with checkout</a>
+			<a id="cancel" class="button blank modal-close" ng-click="ignoreAndGoToCheckout()">Ignore and proceed with checkout</a>
 		</div>
 	</form>
 

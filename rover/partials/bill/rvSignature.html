@@ -32,7 +32,7 @@
 	
 	<div>
 		
-		<div ng-show="reservationBillData.required_signature_at === 'CHECKOUT' && (($index+1) === reservationBillData.bills.length)">
+		<div ng-if="reservationBillData.required_signature_at === 'CHECKOUT' && (($index+1) === reservationBillData.bills.length)">
 			<h2>Please sign below</h2>
 			<div class="sig sigWrapper">
 				<div id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
@@ -62,7 +62,7 @@
 				{{billData.bill_number}}
 				and Complete checkout
 			</button>
-			<div class="clearButton" ng-show="reservationBillData.required_signature_at === 'CHECKOUT' && (($index+1) === reservationBillData.bills.length)">
+			<div class="clearButton" ng-if="reservationBillData.required_signature_at === 'CHECKOUT' && (($index+1) === reservationBillData.bills.length)">
 				<a id="clear-signature" class="button blank" ng-click='clickedClearSignature()'>Clear signature</a>
 			</div>
 		</div>
