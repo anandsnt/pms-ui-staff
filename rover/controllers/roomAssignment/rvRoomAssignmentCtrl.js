@@ -4,6 +4,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	BaseCtrl.call(this, $scope);
 	
 	$scope.rooms = [];
+	$scope.isRoomsFetched = false;
 	$scope.filteredRooms = [];
 	$scope.roomTypes = [];
 	$scope.roomFeatures = [];
@@ -22,6 +23,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.setRoomsListWithPredefinedFilters();
 			$scope.applyFilterToRooms();
 			$scope.$emit('hideLoader');
+			$scope.isRoomsFetched = true;
 			setTimeout(function(){
 				$scope.$parent.myScroll['roomlist'].refresh();
 				$scope.$parent.myScroll['filterlist'].refresh();
@@ -31,6 +33,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 		var errorCallbackGetRooms = function(error){
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = error;
+			$scope.isRoomsFetched = true;
 		};
 		var params = {};
 		params.reservation_id = $stateParams.reservation_id;
@@ -222,7 +225,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	* function to return the rooms list status
 	*/
 	$scope.isRoomListEmpty = function(){
-		return ($scope.filteredRooms.length == 0);
+		return ($scope.filteredRooms.length == 0 && $scope.isRoomsFetched);
 	}
 	/**
 	* function to add ids for predefined filters checking the corresponding status
