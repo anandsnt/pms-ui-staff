@@ -1,0 +1,19 @@
+<div role="dialog" id="modal" class="modal-show">
+	
+	<form id="validate" class="modal-content form confirmation">
+		<button id="modal-close" class="modal-close" type="button" ng-click="clickCancel()">
+			<span class="icons icon-close invert"></span>
+		</button>
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+		<span class="text">Please ask the guest to provide email before checkout</span>
+		<div id="guest-email-entry" class="entry full-width">
+			<label>E-mail</label>
+			<input ng-model="saveData.email" id="guest-email" autocomplete: "off", name: "guest-email", type: "text", value: "saveData.email"/>
+		</div>
+		<div class="actions float">
+			<a id="submit" class="button red modal-close" ng-click="submitAndGoToCheckout()">Submit and go to check out</a>
+			<a id="cancel" class="button blank modal-close" ng-click="clickCancel()">Ignore and proceed with checkout</a>
+		</div>
+	</form>
+
+</div>

@@ -588,22 +588,55 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			}
 		}
 	};
-	
+	// To handle success callback of complete checkout
+	$scope.completeCheckoutSuccessCallback = function(){
+		$scope.$emit('hideLoader');
+	};
+	// To handle failure callback of complete checkout
+	$scope.completeCheckoutFailureCallback = function(){
+		$scope.$emit('hideLoader');
+	};
 	// To handle complete checkout button click
 	$scope.clickedCompleteCheckout = function(){
-		console.log("$scope.isAllBillsReviewed"+$scope.isAllBillsReviewed);
-		$scope.findNextBillToReview();
+		
+		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
 		if(!$scope.isAllBillsReviewed){
 			return;
 		}
 		
 		// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
 		var signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
-		var errorMsg = "Signature is missing";
-		if(signatureData == "[]" && $scope.reservationBillData.required_signature_at == "CHECKOUT"){
-			$scope.errorMessage = [errorMsg];
-			console.log("err"+errorMsg);
+		var errorMsg = "";
+		
+		if(!$scope.guestCardData.contactInfo.email){
+			// Popup to accept and save email address.
+			ngDialog.open({
+	        		template: '/assets/partials/validateCheckout/rvValidateEmail.html',
+	        		controller: 'RVValidateEmailCtrl',
+	        		scope: $scope
+	        });
 		}
+		else if (signatureData == "[]" && $scope.reservationBillData.required_signature_at == "CHECKOUT"){
+			errorMsg = "Signature is missing";
+		}
+		else if (!$scope.saveData.acceptCharges){
+			errorMsg = "Please check the box to accept the charges";
+		}
+
+		if (errorMsg != "") {
+			$scope.errorMessage = [errorMsg];
+			return;
+		}
+		
+		var data = {
+			"reservation_id" : $scope.reservationBillData.reservation_id,
+			"email" : $scope.guestCardData.contactInfo.email,
+			"signature" : signatureData
+		};
+		console.log(data);
+		
+		//$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
+		
 	};
 	
 	// To handle review button click
