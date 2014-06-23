@@ -168,10 +168,11 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	* @param {int} index of the selected rate type
 	* 
 	*/
-	$scope.toggleActive = function(selectedId,checkedStatus){
+	$scope.toggleActive = function(selectedId,checkedStatus,activationAllowed){
 
-		var params = {'id': selectedId, is_active: !checkedStatus };
-		var rateToggleSuccess = function(){
+
+			var params = {'id': selectedId, is_active: !checkedStatus };
+			var rateToggleSuccess = function(){
 			$scope.$emit('hideLoader');
 				//on success 
 			angular.forEach($scope.data, function(rate, key) {
@@ -179,11 +180,12 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		      	rate.status = !rate.status;
 		      }
 		     });
-		};
-		var rateToggleFailure = function(){
-			$scope.$emit('hideLoader');
-		};
-		$scope.invokeApi(ADRatesSrv.toggleRateActivate, params, rateToggleSuccess,rateToggleFailure);
+			};
+			var rateToggleFailure = function(){
+				$scope.$emit('hideLoader');
+			};
+			if(!activationAllowed && checkedStatus)
+				$scope.invokeApi(ADRatesSrv.toggleRateActivate, params, rateToggleSuccess,rateToggleFailure);	
 	
 	};
 
