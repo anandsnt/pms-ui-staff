@@ -190,6 +190,8 @@ var HotelDetailsView = function(domRef) {
 			numberOfRooms = $.trim(that.myDom.find("#hotel-rooms").val()),
 			roverRegistration = $("#registration-for-rover input[type='radio']:checked").val(),
 			hotelTimeZone = $.trim(that.myDom.find("#hotel-time-zone").val());
+			dayImportFreq = $.trim(that.myDom.find("#day_import_freq").val());
+			nightImportFreq = $.trim(that.myDom.find("#night_import_freq").val());
 
 		isPmsTokenized = false;
 		if (that.myDom.find("#div-is-pms-tokenized").hasClass("on")) {
@@ -225,7 +227,7 @@ var HotelDetailsView = function(domRef) {
 		if ($("#checkin_to_inspected").parent("label:eq(0)").hasClass("checked")) {
 			var checkinToInspectedRoomsOnly = "true";
 		}
-		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityId);
+		var data = that.getInputData(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityId, dayImportFreq, nightImportFreq);
 		var type = event.data[0];
 		if (type == "create") {
 			var url = '/admin/hotels';
@@ -269,7 +271,7 @@ var HotelDetailsView = function(domRef) {
 		sntapp.notification.showErrorMessage("Error: " + errorMessage, that.myDom);
 	};
 	//Generating post data
-	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityId) {
+	this.getInputData = function(hotelName, hotelStreet, hotelCity, hotelState, zipcode, hotelCountry, hotelPhone, hotelBrand, hotelChain, hotelCode, numberOfRooms, hotelContactFirstName, hotelContactLastName, hotelContactEmail, hotelContactPhone, hotelCheckinHour, hotelCheckinMin, hotelCheckinPrimeTime, hotelCheckoutHour, hotelCheckoutMinutes, hotelCheckoutPrimeTime, hotelCurrency, adminEmail, adminPhone, adminFirstName, adminLastName, password, confirmPassword, hotelTimeZone, roverRegistration, hotelAutoLogoutTime, mliHotelCode, mliChainCode, hotelPmsType, hotelFromAddress, isPmsTokenized, hotel_logo, hotel_template_logo, checkinToInspectedRoomsOnly, isUseKioskEntityId, dayImportFreq, nightImportFreq) {
 
 		if (that.currentView == "snt-admin-view") {
 			data = {
@@ -309,7 +311,9 @@ var HotelDetailsView = function(domRef) {
 				mli_certificate: that.fileContent,
 				hotel_from_address: hotelFromAddress,
 				is_pms_tokenized: isPmsTokenized,
-				use_kiosk_entity_id: isUseKioskEntityId
+				use_kiosk_entity_id: isUseKioskEntityId,
+				day_import_freq: dayImportFreq,
+				night_import_freq: nightImportFreq
 			};
 		} else {
 			data = {
@@ -357,7 +361,7 @@ var HotelDetailsView = function(domRef) {
 
 
 		 function resetInput(element, eventId) {
-            var clone = element.clone(false, false);            
+            var clone = element.clone(false, false);
             clone.on('change', function() {
                 that.readCertificate(this, eventId);
             })
