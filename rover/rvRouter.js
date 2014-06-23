@@ -34,7 +34,6 @@ sntRover.config([
                 }
             }
         });
-        
 
     }
 ]);

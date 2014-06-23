@@ -46,13 +46,24 @@ angular.module('reservationModule', []).config(function($stateProvider, $urlRout
         $stateProvider.state('rover.reservation.mainCard.addons', {
             url: '/addons',
             templateUrl: '/assets/partials/reservation/rvAddonsList.html',
-            controller: 'RVReservationAddonsCtrl'
+            controller: 'RVReservationAddonsCtrl',
+            resolve: {
+                addonData: function(RVReservationAddonsSrv) {
+                    return RVReservationAddonsSrv.fetchAddonData();
+                }
+            }
         });
 
         $stateProvider.state('rover.reservation.mainCard.summaryAndConfirm', {
             url: '/summaryAndConfirm',
             templateUrl: '/assets/partials/reservation/rvSummaryAndConfirm.html',
-            controller: 'RVReservationSummaryAndConfirmCtrl'
+            controller: 'RVReservationSummaryCtrl'
+        });
+
+        $stateProvider.state('rover.reservation.mainCard.reservationConfirm', {
+            url: '/reservationConfirm',
+            templateUrl: '/assets/partials/reservation/rvReservationConfirm.html',
+            controller: 'RVReservationConfirmCtrl'
         });
 
         // Reservation state actions - END
