@@ -1,4 +1,4 @@
-sntRover.controller('reservationRoomStatus',[ '$rootScope','$scope','ngDialog',  function($rootScope, $scope, ngDialog){
+sntRover.controller('reservationRoomStatus',[ '$state','$rootScope','$scope','ngDialog',  function($state, $rootScope, $scope, ngDialog){
 	BaseCtrl.call(this, $scope);
 	
 	
@@ -24,10 +24,13 @@ sntRover.controller('reservationRoomStatus',[ '$rootScope','$scope','ngDialog', 
 	
 	$scope.showUpgradeButton = function(reservationStatus,  isUpsellAvailable){
 		var showUpgrade = false;
-		if((isUpsellAvailable == 'true') && (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN')){
+		if((isUpsellAvailable == 'true') && $scope.isFutureReservation(reservationStatus)){
 			showUpgrade = true;
 		}
 		return showUpgrade;
+	};
+	$scope.isFutureReservation = function(reservationStatus){
+		return (reservationStatus == 'RESERVED' || reservationStatus == 'CHECKING_IN');
 	};
 	$scope.showKeysButton = function(reservationStatus){
 		var showKey = false;
@@ -85,5 +88,15 @@ sntRover.controller('reservationRoomStatus',[ '$rootScope','$scope','ngDialog', 
 	$scope.closeActivityIndication = function(){
 		$scope.$emit('hideLoader');
 	};
+	/**
+	* function to trigger room assignment.
+	*/
+	$scope.goToroomAssignment = function(){
+		if($scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)){
+			$state.go("rover.staycard.roomassignment", {reservation_id:$scope.reservationData.reservation_card.reservation_id, room_type:$scope.reservationData.reservation_card.room_type_code, "clickedButton": "roomButton"});
+		}
+		
+	};
+
 	
 }]);

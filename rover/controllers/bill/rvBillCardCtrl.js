@@ -53,6 +53,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			$scope.reviewStatusArray.push(data);
 			$scope.lastBillIndex = key;
 	     });
+	     if($scope.clickedButton == "checkinButton"){
+	     	setTimeout(function(){
+	     		$scope.openPleaseSwipe();
+	        }, 200);
+	    };
 		$scope.reservationBillData = reservationBillData;
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
 		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
@@ -67,6 +72,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.calculatedHeight = totalHeight;
 	};
 	$scope.init(reservationBillData);
+	$scope.openPleaseSwipe = function(){
+		ngDialog.open({
+    		template: '/assets/partials/payment/rvPleaseSwipeModal.html',
+    		controller: 'RVPleaseSwipeCtrl',
+    		scope: $scope
+    	});
+	};
 	$scope.setNightsString = function(){
 		return (reservationBillData.number_of_nights > 1)?$filter('translate')('NIGHTS'):$filter('translate')('NIGHT');
 	};
@@ -88,6 +100,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.showSignedSignature = false;
 	$scope.showBillingInfo = false;
 	$scope.showIncomingBillingInfo = false;
+	
 	/*
 	 * Adding class for active bill
 	 */
@@ -268,6 +281,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 	 return showGuestBalance;
 	 };
 	 $scope.addNewPaymentModal = function(data){
+	 	
 	 	if(data === undefined){
   	 			var passData = {
 			 		"reservationId": $scope.reservationBillData.reservation_id,
@@ -287,6 +301,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	           };
          
          	var tokenizeSuccessCallback = function(tokenData){
+         		//Below code used for closing please swipe modal popup
+         		$scope.closeDialog();
          		data.token = tokenData;
          		var passData = {
 		  	 		"reservationId": $scope.reservationBillData.reservation_id,
@@ -391,6 +407,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.closeDialog = function() {
 		ngDialog.close();
 	};
+	/*
+	 * Used to add class with respect to different status
+	 * @param {string} reservationStatus
+	 * @param {string} room status
+	 * @param {string} fo status
+	 */
 	$scope.getRoomClass =  function(reservationStatus, roomStatus, foStatus){
 		var roomClass = "";
 		if(reservationStatus == "CHECKING_IN"){
@@ -445,7 +467,13 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.showIncomingBillingInfo = !$scope.showIncomingBillingInfo ;
 	};
 	
+
 	
+	
+	/*
+	 * calculate Height of bill screen
+	 */
+
 	$scope.calculateHeightAndRefreshScroll = function(){
 		 
 		var height = 0;
@@ -495,11 +523,14 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.clickedClearSignature = function(){
 		$("#signature").jSignature("clear");	// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
 	};
+	/*
+	 * success callback ofcomplete checkin
+	 */
 	$scope.completeCheckinSuccessCallback = function(){
-		console.log("seetingss =="+$scope.reservationBillData.key_settings);
 				
 		var keySettings = $scope.reservationBillData.key_settings;
 		$scope.fromView = "checkin";
+		//show email popup
 		if(keySettings === "email"){
 			
 			ngDialog.open({
@@ -530,10 +561,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}
 		
 		
-		
-		
 	};
+
 	$scope.completeCheckinFailureCallback = function(data){
+
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = data;
 	};
@@ -544,11 +575,8 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		
 		var errorMsg = "";
 		if(signatureData == "[]" && $scope.reservationBillData.required_signature_at == "CHECKIN"){
-			console.log("---------------");
 			errorMsg = "Signature is missing";
 			$scope.showErrorPopup(errorMsg);
-			
-			
 		} else if(!$scope.saveData.termsAndConditions){
 			errorMsg = "Please check agree to the Terms & Conditions";
 			$scope.showErrorPopup(errorMsg);
@@ -560,14 +588,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	        		scope: $scope
 	        	});
 			} else {
-				
-				
 				var data = {
 					"is_promotions_and_email_set" : $scope.saveData.promotions,
 					"signature" : signatureData,
 					"reservation_id" : $scope.reservationBillData.reservation_id	
 				};
-				
 				$scope.invokeApi(RVBillCardSrv.completeCheckin, data, $scope.completeCheckinSuccessCallback, $scope.completeCheckinSuccessCallback);
 			
 			}
@@ -585,8 +610,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 	// To handle complete checkout button click
 	$scope.clickedCompleteCheckout = function(){
+
 		
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
+
 		if(!$scope.isAllBillsReviewed){
 			return;
 		}
@@ -654,7 +681,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		}
 		$scope.setActiveBill(billIndex);
 	};
-	
+	/*
+	 * to show error message - Error message signature and T&C
+	 * @param {string} errormessage
+	 */
 	$scope.showErrorPopup = function(errorMessage){
 		$scope.status = "error";
 		$scope.popupMessage = errorMessage;
@@ -678,5 +708,4 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
     	});
 	};
 			
-		//{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date,'active': days.date != reservationBillData.checkout_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}
 }]);

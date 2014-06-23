@@ -14,7 +14,6 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 		ngDialog.close();
 	};
 	$scope.validateEmailPhoneSuccessCallback = function(){
-
 		
 		if($scope.showEmail && $scope.showPhone){
 			$scope.guestCardData.contactInfo.phone = $scope.saveData.phone;
@@ -30,16 +29,16 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 		$scope.goToNextView();
 	};
 	$scope.goToNextView = function(){
-		// if($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status != 'READY' || $scope.reservationData.reservation_card.fo_status != 'VACANT')
-		// {
-			// //TO DO:Go to rrom assignemt viw
-			// $state.go("rover.staycard.roomassignment", {"reservation_id" : $scope.reservationData.reservation_card.reservation_id, "room_type": });
-		// } else if ($scope.reservationData.reservation_card.is_force_upsell && $scope.reservationData.reservation_card.is_upsell_available){
-			// //TO DO : gO TO ROOM UPGRAFED VIEW
-			  // $state.go('rover.staycard.upgrades', {"reservation_id" : $scope.reservationData.reservation_card.reservation_id});
-		// } else {
+		if($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status != 'READY' || $scope.reservationData.reservation_card.fo_status != 'VACANT')
+		{
+			//TO DO:Go to rrom assignemt viw
+			$state.go("rover.staycard.roomassignment", {"reservation_id" : $scope.reservationData.reservation_card.reservation_id, "room_type": $scope.reservationData.reservation_card.room_type_code, "clickedButton": "checkinButton"});
+		} else if ($scope.reservationData.reservation_card.is_force_upsell=="true" && $scope.reservationData.reservation_card.is_upsell_available =="true"){
+			//TO DO : gO TO ROOM UPGRAFED VIEW
+			  $state.go('rover.staycard.upgrades', {"reservation_id" : $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+		} else {
 			$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
-		// }
+		}
 	};
 	$scope.submitAndGoToCheckin = function(){
 			$scope.saveData.guest_id = $scope.guestCardData.guestId;
@@ -67,6 +66,8 @@ sntRover.controller('RVValidateEmailPhoneCtrl',['$rootScope', '$scope', '$state'
 			$scope.saveData = dclone($scope.saveData, unwantedKeys); 
 			$scope.invokeApi(RVValidateCheckinSrv.saveGuestEmailPhone, $scope.saveData, $scope.submitAndCheckinSuccessCallback);
 	};
-	
+	$scope.ignoreAndGoToCheckin = function(){
+		$scope.goToNextView();
+	};
 	
 }]);

@@ -4,21 +4,21 @@
 			<span class="icons icon-close invert"></span>
 		</button>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<span class="h2 message" ng-show="showEmail && showPhone">Phone &amp; e-mail missing!</span>
-		<span class="h2 message" ng-show="!showEmail && showPhone">Phone missing!</span>
-		<span class="h2 message" ng-show="showEmail && !showPhone">E-mail missing!</span>
-		<span class="text">Ask the guest to provide them before check in</span>
+		<span class="h2 message" ng-show="showEmail && showPhone" translate>PHONE_EMAIL_MISSING</span>
+		<span class="h2 message" ng-show="!showEmail && showPhone" translate>PHONE_MISSING</span>
+		<span class="h2 message" ng-show="showEmail && !showPhone" translate>EMAIL_MISSING</span>
+		<span class="text" translate>PROVIDE_BEFORE_CHECKIN</span>
 		<div id="guest-phone-entry" class="entry full-width" ng-show="showPhone" >
-			<label for="guest-phone">Phone</label>
+			<label for="guest-phone" translate>PHONE</label>
 			<input type="text" value="" name="guest-phone" id="guest-phone" autocomplete="off" ng-model="saveData.phone">
 		</div>
 		<div id="guest-email-entry" class="entry full-width" ng-show="showEmail">
-			<label for="guest-email">E-mail</label>
+			<label for="guest-email" translate>EMAIL</label>
 			<input type="text" value="" name="guest-email" id="guest-email" autocomplete="off" ng-model="saveData.email">
 		</div>
 		<div class="actions float">
-			<a id="submit" class="button green modal-close" ng-click="submitAndGoToCheckin()">Submit and go to check in</a>
-			<a id="cancel" class="button blank modal-close">Ignore and go to check in</a>
+			<a id="submit" class="button green modal-close" ng-click="submitAndGoToCheckin()" translate>SUBMIT_AND_GOTO_CHECKIN</a>
+			<a id="cancel" class="button blank modal-close" ng-click="ignoreAndGoToCheckin()" translate>IGNORE_AND_GOTO_CHECKIN</a>
 		</div>
 	</form>
 </div>

@@ -1,7 +1,10 @@
 sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog',
     function($scope, $rootScope, baseData, ngDialog) {
 
+console.log('RVReservationMainCtrl');
         $scope.initReservationData = function() {
+            console.log('initReservationData');
+            $scope.hideSidebar = false;
             // intialize reservation object
             $scope.reservationData = {
                 arrivalDate: '',
@@ -16,7 +19,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                     mm: '',
                     ampm: ''
                 },
-                numNights: '', // computed value, ensure to keep it updated
+                numNights: 1, // computed value, ensure to keep it updated
                 roomCount: 1, // Hard coded for now,
                 rooms: [{
                     numAdults: 1,
@@ -69,7 +72,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
                 promotion: {
                     promotionCode: '',
                     promotionType: ''
-                }
+                },
+                reservationId : '',
+                confirmNum : ''
             }
         }
 
@@ -119,7 +124,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData'
 
             var roomPref = getMaxOccupancy(activeRoom);
 
-            if (typeof activeRoom == 'undefined' || activeRoom == null || activeRoom == "" || roomPref.max >= currOccupancy) {
+            if (typeof activeRoom == 'undefined' || activeRoom == null || activeRoom == "" || roomPref.max == null || roomPref.max >= currOccupancy) {
                 return true;
             }
 
