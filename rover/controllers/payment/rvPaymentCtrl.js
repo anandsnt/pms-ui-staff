@@ -140,7 +140,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				$scope.saveData.credit_card = $scope.passData.credit_card;
 			} else {
 				$scope.saveData.credit_card = $scope.saveData.credit_card;
-				$scope.saveData.session_id = MLISessionId;
+				
 			}
 			if($scope.passData.fromView == "billcard"){
 				$scope.saveData.bill_number = $scope.passData.fromBill;
@@ -158,6 +158,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			$scope.saveData.pan = $scope.passData.pan;
 			$scope.saveData.mli_token = $scope.passData.token;
 		}
+		$scope.saveData.session_id = MLISessionId;
 		var unwantedKeys = ["card_expiry_year","card_expiry_month", "selected_payment_type", "selected_credit_card","card_expiry","card_number","cvv"];
 		var data = dclone($scope.saveData, unwantedKeys);
 		if($scope.passData.fromView == "staycard" || $scope.passData.fromView == "billcard"){
@@ -190,12 +191,13 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 
 			 var sessionDetails = {};
 			 sessionDetails.cardNumber = $scope.saveData.card_number;
-			 sessionDetails.cardSecurityCode = $scope.saveData.ccv;
+			 sessionDetails.cardSecurityCode = $scope.saveData.cvv;
 			 sessionDetails.cardExpiryMonth = $scope.saveData.card_expiry_month;
 			 sessionDetails.cardExpiryYear = $scope.saveData.card_expiry_year;
 
+		
 			 console.log(sessionDetails);
-			 console.log($scope.saveData)
+			
 			 var callback = function(response){
 			 	
 			 	$scope.$emit("hideLoader");//is not working
@@ -211,7 +213,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 			 		$scope.errorMessage = ["There is a problem with your credit card"];
 			 	}			 	
 			 }
-			 $scope.$emit("showLoader");
+			// $scope.$emit("showLoader");
 			 HostedForm.updateSession(sessionDetails, callback);			
 		}
 		$scope.fetchMLISessionId();
