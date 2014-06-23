@@ -128,7 +128,7 @@
                             <li ng-repeat="company in companies">
                                 <a ng-click="selectCompany(company, $event)" class="card-result">
                                     <figure class="guest-image">
-                                        <img src="images/allianz-logo.jpg" alt="" />
+                                        <img src="{{ company.logo }}" alt="" />
                                     </figure>
                                     <div class="data">
                                         <div class="info">
@@ -171,7 +171,9 @@
                         <ul id="search-travel-agent-results" class="search-results">
                             <li ng-repeat="travelAgent in travelAgents">
                                 <a ng-click="selectTravelAgent(travelAgent, $event)" class="card-result">
-                                    <div class="guest-image icons icon-travel-agent"></div>
+                                    <figure class="guest-image">
+                                        <img src="{{ travelAgent.logo }}" alt="" />
+                                    </figure>
                                     <div class="data">
                                         <div class="info">
                                             <h2 ng-bind-html="'{{ travelAgent.firstName }} {{ travelAgent.lastName }}'|highlight:travelAgentName:false"></h2>
