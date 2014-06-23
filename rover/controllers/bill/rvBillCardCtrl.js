@@ -101,7 +101,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	$scope.showDayRates = function(dayIndex, clickedDate, checkoutDate, numberOfNights){
 		//In this condition show the last clicked days item 
 		//OR if checkout date clicked first do not show anything
-		if(clickedDate == checkoutDate){
+		if(clickedDate == checkoutDate){$state
 			if(numberOfNights == 0){
 				$scope.dayRates = dayIndex;
 			} else {
@@ -132,7 +132,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		$scope.showActiveBillFeesDetails = billIndex;
 		$scope.calculateHeightAndRefreshScroll();
 	};
-	/*
+	/*$state
 	 * Show Addons
 	 * @param {int} addon index
 	 */
@@ -486,13 +486,62 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 	$scope.completeCheckinSuccessCallback = function(){
 		console.log("seetingss =="+$scope.reservationBillData.key_settings);
-		if($scope.reservationBillData.key_settings == "email"){
+		// if($scope.reservationBillData.key_settings == "email"){
+			// ngDialog.open({
+        		// template: '/assets/partials/validateCheckin/rvKeyEmailModal.html',
+        		// controller: 'RVKeyEmailCtrl',
+        		// scope: $scope
+        	// });
+		// }
+		// else if ($scope.reservationBillData.key_settings == "encode"){
+			// ngDialog.open({
+        		// template: '/assets/partials/validateCheckin/rvRFIDTabletModal.html',
+        		// controller: 'RVRFIDTabletCtrl',
+        		// scope: $scope
+        	// });
+		// } else if ($scope.reservationBillData.key_settings == "qr_code_tablet"){
+			// ngDialog.open({
+        		// template: '/assets/partials/validateCheckin/rvQRCodeTabletModal.html',
+        		// controller: 'RVRFIDTabletCtrl',
+        		// scope: $scope
+        	// });
+		// }
+		
+		
+		var keySettings = $scope.reservationBillData.key_settings;
+		$scope.fromView = "checkin";
+		if(keySettings === "email"){
+			
 			ngDialog.open({
-        		template: '/assets/partials/validateCheckin/rvKeyEmailModal.html',
-        		controller: 'RVKeyEmailCtrl',
-        		scope: $scope
-        	});
+				 template: '/assets/partials/keys/rvKeyEmailPopup.html',
+				 controller: 'RVKeyEmailPopupController',
+				 className: 'ngdialog-theme-default1',
+				 scope: $scope
+			});
 		}
+		else if(keySettings === "qr_code_tablet"){
+			
+			ngDialog.open({
+				 template: '/assets/partials/keys/rvKeyQrcodePopup.html',
+				 controller: 'RVKeyQRCodePopupController',
+				 className: 'ngdialog-theme-default1',
+				 scope: $scope
+			});
+		}
+		
+		//Display the key encoder popup
+		else if(keySettings === "encode"){
+			ngDialog.open({
+			    template: '/assets/partials/keys/rvKeyEncodePopup.html',
+			    controller: 'RVKeyEncodePopupCtrl',
+			    className: 'ngdialog-theme-default1',
+			    scope: $scope
+			});
+		}
+		
+		
+		
+		
 	};
 	$scope.completeCheckinFailureCallback = function(){
 		$scope.$emit('hideLoader');
