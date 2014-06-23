@@ -26,7 +26,6 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	$scope.checkPMSConnection();
 
 	$scope.fetchTableData = function($defer, params){
- 
 		var getParams = $scope.calculateGetParams(params);
 		var fetchSuccessOfItemList = function(data){
 			$scope.$emit('hideLoader');
@@ -154,7 +153,7 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		//call service for deleting
 		var params = {'id':selectedId};
 		var rateDeleteSuccess = function(){
-			$scope.loadTable();
+			$scope.reloadTable();
 			$scope.$emit('hideLoader');
 		};
 		var rateDeleteFailure = function(){
