@@ -3,6 +3,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 	BaseCtrl.call(this, $scope);
 
 	$scope.init = function(){
+		$scope.$parent.hideSidebar = true;
 		$scope.$parent.myScrollOptions = {		
 		    'reservationSummary': {
 		    	scrollbars: true,

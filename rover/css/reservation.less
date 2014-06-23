@@ -1,7 +1,7 @@
 #createReservations{
   // override for the edit icon in the rvSettings.html partial
   .edit-room.icons.icon-edit-10{
-    background-position: 0 -2141px;
+    //background-position: 0 -2141px;
   }
 
   .reservations-inner .reservations-content-wrapper {
@@ -31,8 +31,11 @@
           position: absolute;
           top: 10px;
           left: 10px;
-          .square(30px);
-          #border-radius > .rounded();
+          width: 30px;
+          height: 30px;
+          -webkit-border-radius: 2px;
+          -moz-border-radius: 2px;
+          border-radius: 2px;
         }
 
         span.icons {
