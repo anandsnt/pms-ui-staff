@@ -1,12 +1,12 @@
-sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state',
-	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state) {
+sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomRates', 'RVReservationBaseSearchSrv', '$timeout', '$state', 'ngDialog',
+	function($rootScope, $scope, roomRates, RVReservationBaseSearchSrv, $timeout, $state, ngDialog) {
 
 		$scope.displayData = {};
 		$scope.selectedRoomType = -1;
 		$scope.expandedRoom = -1;
 		$scope.containerHeight = 300;
 		$scope.showLessRooms = true;
-		$scope.showLessRates = true;
+		$scope.showLessRates = false;
 		$scope.activeCriteria = "ROOM_TYPE";
 		//CICO-5253 Rate Types Listing
 		// 			RACK
@@ -166,7 +166,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 			// });
 
 			//TODO: Handle the selected roomtype from the previous screen
-			$scope.preferredType = $scope.reservationData.rooms[$scope.activeRoom].roomType;
+			$scope.preferredType = $scope.reservationData.rooms[$scope.activeRoom].roomTypeId;
 			//$scope.preferredType = 5;
 			$scope.roomTypes = roomRates.room_types;
 			$scope.filterRooms();
@@ -190,6 +190,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 
 			//Navigate to the next screen
 			// $state.go('rover.reservation.mainCard.summaryAndConfirm');
+			$scope.checkOccupancyLimit();
 			$state.go('rover.reservation.mainCard.addons');
 		}
 
@@ -279,7 +280,8 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							averagePerNight: 0
 						};
 					}
-					if (d.availability < 1 || currOccupancy > roomDetails[d.id].max_occupancy) {
+					//CICO-6619 || currOccupancy > roomDetails[d.id].max_occupancy
+					if (d.availability < 1) {
 						rooms[d.id].availability = false;
 					}
 				});
@@ -309,7 +311,7 @@ sntRover.controller('RVReservationRoomTypeCtrl', ['$rootScope', '$scope', 'roomR
 							}
 						}
 						rooms[d.room_type_id].total[rate_id].total = parseInt(rooms[d.room_type_id].total[rate_id].total) + $scope.calculateRate(d);
-						rooms[d.room_type_id].total[rate_id].average = rooms[d.room_type_id].total[rate_id].total / $scope.days;
+						rooms[d.room_type_id].total[rate_id].average = parseFloat(rooms[d.room_type_id].total[rate_id].total / $scope.days).toFixed(2);
 
 					})
 				})

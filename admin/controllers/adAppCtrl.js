@@ -306,33 +306,6 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 		$scope.$on("changedSelectedMenu", function(event, menu) {
 			$scope.selectedIndex = menu;
 		});
-		
-		/*
-		 * Function to get the current hotel language
-		 */
-		$scope.getLanguage = function() {
-			$scope.invokeApi(ADAppSrv.fetchHotelDetails, {}, $scope.fetchHotelDetailsSuccessCallback);
-		};
-
-
-        /*
-         * Admin menu data
-         */
-		$scope.data = adminMenuData;
-		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
-		$scope.bookMarks = $scope.data.bookmarks;
-
-		$scope.bookmarkIdList = [];
-		for (var i = 0; i < $scope.data.bookmarks.length; i++) {
-			$scope.bookmarkIdList.push($scope.data.bookmarks[i].id);
-		}
-		if ($scope.isHotelAdmin) {
-			$scope.getLanguage();
-		}
-
-
-	
-
 		/*
 		 * Success callback of get language
 		 * @param {object} response
@@ -348,6 +321,35 @@ admin.controller('ADAppCtrl', ['$state', '$scope', '$rootScope', 'ADAppSrv', '$s
 			$scope.$emit('hideLoader');
 
 		};
+		/*
+		 * Function to get the current hotel language
+		 */
+		$scope.getLanguage = function() {
+			$scope.invokeApi(ADAppSrv.fetchHotelDetails, {}, $scope.fetchHotelDetailsSuccessCallback);
+		};
+
+
+        /*
+         * Admin menu data
+         */
+        
+        
+		$scope.data = adminMenuData;
+		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
+		$scope.bookMarks = $scope.data.bookmarks;
+
+		$scope.bookmarkIdList = [];
+		for (var i = 0; i < $scope.data.bookmarks.length; i++) {
+			$scope.bookmarkIdList.push($scope.data.bookmarks[i].id);
+		}
+		
+		if ($scope.isHotelAdmin) {
+			$scope.getLanguage();
+		}
+
+	
+
+		
 		
 
 		// if there is any error occured 
