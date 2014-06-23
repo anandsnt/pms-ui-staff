@@ -9,28 +9,6 @@ sntRover.controller('RVPostChargeController',
 			// hook up the basic things
 			BaseCtrl.call( this, $scope );
 
-			// set up scroll for item listing
-			$scope.$parent.myScrollOptions = {		
-			    'fetchedItemList': {
-			    	scrollbars: true,
-			        snap: false,
-			        hideScrollbar: false,
-			        preventDefault: false
-			    },
-			};
-
-			// set up scroll for chosen items
-			$scope.$parent.myScrollOptions = {		
-			    'chargedItemsList': {
-			    	scrollbars: true,
-			        snap: false,
-			        hideScrollbar: false,
-			        preventDefault: false
-			    },
-			};
-
-			console.log( $scope.fetchedData );
-
 			// quick ref to fetched items
 			// and chosen one from the list
 			$scope.fetchedItem = $scope.fetchedData.items;
@@ -48,8 +26,6 @@ sntRover.controller('RVPostChargeController',
 				for (var i = 0, j = $scope.fetchedItem.length; i < j; i++) {
 					var item = $scope.fetchedItem[i];
 
-					console.log( $scope.chargeGroup );
-
 					if ( $scope.chargeGroup === '' ) {
 						item.show = true;
 						continue;
@@ -59,17 +35,12 @@ sntRover.controller('RVPostChargeController',
 						item.show = false;
 					}
 				}
-
-				// refresh scrolls
-				$timeout(function() {
-					$scope.$parent.myScroll['fetchedItemList'].refresh();
-				}, 1000);
 			};
 
 			// filter the items based on the search query
 			// will search on all items, discard chosen 'chargeGroup'
 			$scope.filterByQuery = function() {
-				var query = $scope.query.toLowerCase();
+				var query = $scope.query ? $scope.query.toLowerCase() : '';
 
 				if (query === '') {
 					$scope.clearQuery();
@@ -92,11 +63,6 @@ sntRover.controller('RVPostChargeController',
 						item.show = false;
 					}
 				};
-
-				// refresh scrolls
-				$timeout(function() {
-					$scope.$parent.myScroll['fetchedItemList'].refresh();
-				}, 1000);
 			};
 
 			// clear the filter query
@@ -107,18 +73,13 @@ sntRover.controller('RVPostChargeController',
 				for (var i = 0, j = $scope.fetchedItem.length; i < j; i++) {
 					$scope.fetchedItem[i].show = true;
 				};
-
-				// refresh scrolls
-				$timeout(function() {
-					$scope.$parent.myScroll['fetchedItemList'].refresh();
-				}, 1000);
 			};
 
 			// make favorite selected by default
 			// must have delay
 			$timeout(function() {
 				$scope.chargeGroup = 'FAV';
-				$scope.filterByQuery();
+				$scope.filterbyChargeGroup();
 			}, 500);
 
 
@@ -192,11 +153,6 @@ sntRover.controller('RVPostChargeController',
 
 				$scope.chargedItems.push( item );
 				$scope.chosenChargedItem = item;
-
-				// refresh scrolls
-				$timeout(function() {
-					$scope.$parent.myScroll['chargedItemsList'].refresh();
-				}, 1000);
 			};
 
 			$scope.removeItem = function() {
@@ -220,11 +176,6 @@ sntRover.controller('RVPostChargeController',
 				// reset the count and remove reference
 				$scope.chosenFetchedItem.count = 0;
 				$scope.chosenFetchedItem = null;
-
-				// refresh scrolls
-				$timeout(function() {
-					$scope.$parent.myScroll['chargedItemsList'].refresh();
-				}, 1000);
 			};
 
 			// need to keep track of the last pressed
@@ -424,8 +375,6 @@ sntRover.controller('RVPostChargeController',
 
 			$scope.postCharges = function() {
 				var items = [];
-
-				console.log( $scope.chargedItems );
 
 				for (var i = 0, j = $scope.chargedItems.length; i < j; i++) {
 					var each = {};
