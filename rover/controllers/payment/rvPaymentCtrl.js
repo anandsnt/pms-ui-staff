@@ -3,6 +3,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 	
 	$scope.saveData = {};
 	$scope.saveData.add_to_guest_card = false;
+	var MLISessionId = "";
 	
 	$scope.isFromGuestCard = false;
 	if($scope.passData.fromView == "guestcard"){
@@ -139,6 +140,7 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 				$scope.saveData.credit_card = $scope.passData.credit_card;
 			} else {
 				$scope.saveData.credit_card = $scope.saveData.credit_card;
+				$scope.saveData.session_id = MLISessionId;
 			}
 			if($scope.passData.fromView == "billcard"){
 				$scope.saveData.bill_number = $scope.passData.fromBill;
@@ -182,51 +184,35 @@ sntRover.controller('RVPaymentMethodCtrl',['$rootScope', '$scope', '$state', 'RV
 
 	/* MLI integration starts here */
 
-	//HostedForm.setMerchant("TESTSTAYNTOUCH01"); //to be retrieved from server
- 	
- 	
-    $scope.savePaymentDetails = function(){
-    	
-    	var MLISessionId = "";
+     $scope.savePaymentDetails = function(){  	
 
     	$scope.fetchMLISessionId = function(){
 
-		
-			// var getSessionDetailsFromForm = function() {
-		 //   		return {
-		 //        cardNumber: '6700649826438453',
-		 //        cardSecurityCode:'123',
-		 //        cardExpiryMonth:'07',
-		 //        cardExpiryYear:'14'
-		 //    	}
-		 // 	}
-			
 			 var sessionDetails = {};
 			 sessionDetails.cardNumber = $scope.saveData.card_number;
 			 sessionDetails.cardSecurityCode = $scope.saveData.ccv;
 			 sessionDetails.cardExpiryMonth = $scope.saveData.card_expiry_month;
 			 sessionDetails.cardExpiryYear = $scope.saveData.card_expiry_year;
 
+			 console.log(sessionDetails);
+			 console.log($scope.saveData)
 			 var callback = function(response){
 			 	
-			 	//$scope.$emit("hideLoader");//is not working
+			 	$scope.$emit("hideLoader");//is not working
 			 	
 			 	console.log(response);
-
 			 	if(response.status ==="ok"){
-			 		
+
 			 		MLISessionId = response.session;
-			 		// call other WS
+			 		$scope.savePayment();// call save payment details WS
+			 		
 			 	}
 			 	else{
 			 		$scope.errorMessage = ["There is a problem with your credit card"];
-			 	}
-			 	
+			 	}			 	
 			 }
-			 //$scope.$emit("showLoader");
-			 HostedForm.updateSession(sessionDetails, callback);
-
-			
+			 $scope.$emit("showLoader");
+			 HostedForm.updateSession(sessionDetails, callback);			
 		}
 		$scope.fetchMLISessionId();
 
