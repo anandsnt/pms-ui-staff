@@ -156,8 +156,9 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 			$scope.reloadTable();
 			$scope.$emit('hideLoader');
 		};
-		var rateDeleteFailure = function(){
+		var rateDeleteFailure = function(data){
 			$scope.$emit('hideLoader');
+			$scope.errorMessage =  data;
 		};
 		$scope.invokeApi(ADRatesSrv.deleteRate, params, rateDeleteSuccess,rateDeleteFailure);
 
@@ -181,8 +182,9 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		      }
 		     });
 			};
-			var rateToggleFailure = function(){
+			var rateToggleFailure = function(data){
 				$scope.$emit('hideLoader');
+				$scope.errorMessage =  data;
 			};
 			if(!activationAllowed && checkedStatus)
 				$scope.invokeApi(ADRatesSrv.toggleRateActivate, params, rateToggleSuccess,rateToggleFailure);	
