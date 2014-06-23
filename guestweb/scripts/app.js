@@ -23,13 +23,9 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
 	$rootScope.isCheckin     =   ($attrs.isCheckin ==='true') ? true : false;
 	$rootScope.reservationStatusCheckedIn = ($attrs.reservationStatus ==='CHECKIN')? true :false;
     $rootScope.isActiveToken = ($attrs.isActiveToken ==='true') ? true : false;
- 	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken)
- 	
- 	//To DO: check again
- 	//console.log(JSON.stringify($attrs));
- 	console.log( $attrs.isCcAttached)
- 	$rootScope.isCCOnFile = false;
- 	
+ 	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken);
+ 	$rootScope.isCCOnFile = ($attrs.isCcAttached ==='true')? true:false;
+
  	$rootScope.isRoomVerified =  false;
 
 
