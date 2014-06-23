@@ -48,7 +48,7 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
             controller: 'RVroomAssignmentController'
         });
          $stateProvider.state('rover.staycard.upgrades', {
-            url: '/upgrades/:reservation_id',
+            url: '/upgrades/:reservation_id/:clickedButton',
             templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
             controller: 'RVUpgradesController'
         });

@@ -1,6 +1,6 @@
 <!-- Checkin screen -->
 <form id="signature-pad" class="complete-registration form" ng-if="clickedButton == 'checkinButton'">
-	<h2  ng-show="reservationBillData.required_signature_at === 'CHECKIN'">Please sign below</h2>
+	<h2  ng-show="reservationBillData.required_signature_at === 'CHECKIN'" translate>PLEASE_SIGN_BELOW</h2>
 	<div class="sig sigWrapper" ng-show="reservationBillData.required_signature_at === 'CHECKIN'">
 		<div id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
 			
@@ -10,19 +10,19 @@
 		<label id="terms-and-conditions" for="terms" class="checkbox inline">
 			<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.termsAndConditions}"></span>
 			<input type="checkbox" ng-model="saveData.termsAndConditions">
-			By Checking this box you hereby agree to the Terms &amp; Conditions </label>
+			{{ 'T_AND_C_TEXT' | translate }} </label>
 		<label id="subscribe-via-email" for="subscribe" class="checkbox inline checked">
 			<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.promotions}"></span>
 			<input type="checkbox" value="1" name="checkin" id="subscribe" checked="" ng-model="saveData.promotions">
-			Please send me promotions and news via email. </label>
+			{{ 'PROMO_NEWS_BY_EMAIL_TEXT' | translate }} </label>
 	</div>
 	<div class="actions">
 		<!-- Complete checkin button disabled out until ready / vacant room is assigned -->
-		<button id="checkin-button" ng-click="clickedCompleteCheckin()" data-room-status="READY" data-reseravation-status="CHECKING_IN" data-required-signature="CHECKIN" data-key-settings="encode" data-fo-status="VACANT" class="button green">
-			Complete checkin
+		<button id="checkin-button" ng-click="clickedCompleteCheckin()" data-room-status="READY" data-reseravation-status="CHECKING_IN" data-required-signature="CHECKIN" data-key-settings="encode" data-fo-status="VACANT" class="button green" translate>
+			COMPLETE_CHECKIN
 		</button>
 		<div class="clearButton">
-			<a id="clear-signature" class="button blank" ng-click='clickedClearSignature()'>Clear signature</a>
+			<a id="clear-signature" class="button blank" ng-click='clickedClearSignature()' translate>CLEAR_SIGNATURE</a>
 		</div>
 	</div>
 </form>

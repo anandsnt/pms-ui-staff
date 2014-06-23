@@ -13,7 +13,7 @@ sntRover.service('RVUpgradesSrv',['$q', 'RVBaseWebSrv', function($q, RVBaseWebSr
 		};
 		this.selectUpgrade = function(param){
 		var deferred = $q.defer();
-		var url =  '/staff/reservations/upgrade_roomdfg.json';			
+		var url =  '/staff/reservations/upgrade_room.json';			
 		RVBaseWebSrv.postJSON(url, param).then(function(data) {
 			deferred.resolve(data);
 		},function(data){
