@@ -4,6 +4,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVContactInfoS
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 		$scope.cardVisible = false;
+		$scope.currentSelectedTab = 'cc-contact-info';
 
 		$scope.init = function() {
 			$scope.contactInfoError = false;
@@ -204,7 +205,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVContactInfoS
 		$scope.cardCls = function() {
 			// evaluate 
 			var cls = $scope.UICards[0]; //  current active card
-			console.log('in');
 			if ($scope.cardVisible) {
 				cls += " open";
 			}

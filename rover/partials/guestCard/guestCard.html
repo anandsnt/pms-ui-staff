@@ -3,7 +3,7 @@
         <!-- Cards Header -->
         <header class="cards-header">
             <div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')">
-             <figure class="guest-image" ng-click="switchCard('guest-card')"> 
+               <figure class="guest-image" ng-click="switchCard('guest-card')"> 
                 <img ng-src="{{guestCardData.contactInfo.avatar}}">
                 <span class="vip" ng-show="guestCardData.contactInfo.vip==true">VIP</span>
             </figure>
@@ -25,104 +25,49 @@
         </div>
 
         <!-- Company Card Header-->
-            <div id="company-card-header" class="card-header" ng-class="UICardClass('company-card')">
-                <div class="guest-image icons icon-company" ng-click="switchCard('company-card')">
-                    Add <span>Company</span>
-                </div>
-                <form method="get" action="" name="search-company" id="search-company" class="card-search-form" role="search">
-                    <div class="holder">
-                        <div class="entry" ng-click="openGuestCard()">
-                            <input name="cc-name" id="cc-name" placeholder="Company Name" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="companyName" delay="1000" function-to-fire="searchCompany" />
-                            <input name="cc-city" id="cc-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="companyCity" delay="1000" function-to-fire="searchCompany"/>
-                            <input name="cc-corporate-id" id="cc-corporateid" placeholder="Corporate ID" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="companyCorpId" delay="1000" function-to-fire="searchCompany" />
-                        </div>
-                    </div>
-                </form>
-            </div> 
-            
-            <!-- Travel Agent Card Header-->
-            <div id="travel-agent-card-header" class="card-header" ng-class="UICardClass('travel-agent-card')">
-                <div class="guest-image icons icon-travel-agent" ng-click="switchCard('travel-agent-card')">
-                    Add <span>Travel Agent</span>
-                </div>
-                <form method="get" action="" name="search-travel-agent" id="search-travel-agent" class="card-search-form" role="search">
-                    <div class="holder">
-                        <div class="entry" ng-click="openGuestCard()">
-                            <input name="tac-name" id="tac-name" placeholder="Travel Agent" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="travelAgentName" delay="1000" function-to-fire="searchTravelAgent" />
-                            <input name="tac-city" id="tac-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="travelAgentCity" delay="1000" function-to-fire="searchTravelAgent" />
-                            <input name="tac-iata" id="tac-iata" placeholder="IATA #" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="travelAgentIATA" delay="1000" function-to-fire="searchTravelAgent" />
-                        </div>
-                    </div>
-                </form>
+        <div id="company-card-header" class="card-header" ng-class="UICardClass('company-card')">
+            <div class="guest-image icons icon-company" ng-click="switchCard('company-card')">
+                Add <span>Company</span>
             </div>
+            <form method="get" action="" name="search-company" id="search-company" class="card-search-form" role="search">
+                <div class="holder">
+                    <div class="entry" ng-click="openGuestCard()">
+                        <input name="cc-name" id="cc-name" placeholder="Company Name" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="companyName" delay="1000" function-to-fire="searchCompany" />
+                        <input name="cc-city" id="cc-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="companyCity" delay="1000" function-to-fire="searchCompany"/>
+                        <input name="cc-corporate-id" id="cc-corporateid" placeholder="Corporate ID" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="companyCorpId" delay="1000" function-to-fire="searchCompany" />
+                    </div>
+                </div>
+            </form>
+        </div> 
+
+        <!-- Travel Agent Card Header-->
+        <div id="travel-agent-card-header" class="card-header" ng-class="UICardClass('travel-agent-card')">
+            <div class="guest-image icons icon-travel-agent" ng-click="switchCard('travel-agent-card')">
+                Add <span>Travel Agent</span>
+            </div>
+            <form method="get" action="" name="search-travel-agent" id="search-travel-agent" class="card-search-form" role="search">
+                <div class="holder">
+                    <div class="entry" ng-click="openGuestCard()">
+                        <input name="tac-name" id="tac-name" placeholder="Travel Agent" type="text" class="masked-input fixed long-name h1" rv-delay-textbox ng-model="travelAgentName" delay="1000" function-to-fire="searchTravelAgent" />
+                        <input name="tac-city" id="tac-city" placeholder="City" type="text" class="masked-input fixed city h1" rv-delay-textbox ng-model="travelAgentCity" delay="1000" function-to-fire="searchTravelAgent" />
+                        <input name="tac-iata" id="tac-iata" placeholder="IATA #" type="text" class="masked-input fixed code h1" rv-delay-textbox ng-model="travelAgentIATA" delay="1000" function-to-fire="searchTravelAgent" />
+                    </div>
+                </div>
+            </form>
+        </div>
     </header>
 
     <!-- Cards Content -->
-    <div class="cards-content">
-        <div id="guest-card-content" class="card-tabs card-content ui-tabs ui-widget ui-widget-content ui-corner-all card-tabs-nav" ng-class="UICardContentCls('guest-card')">
-
-            <!-- Guest Card tabs navigation -->
-
-            <ul role="tablist" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all card-tabs-nav" id="guest-card-tabs-nav" class="card-tabs-nav">
-                <li aria-selected="true" aria-labelledby="guest-contact" aria-controls="contact-info" tabindex="0" role="tab" class="ui-state-default ui-corner-top ui-tabs-active" ng-class="{'ui-tabs-active': current == 'guest-contact'}" ng-click="guestCardTabSwitch('guest-contact')">
-                    <a tabindex="-1" role="presentation" class="ui-tabs-anchor ng-binding" id="guest-contact" ng-class="{'error':contactInfoError}">Contact Information </a>
-                </li>
-                <li aria-selected="false" aria-labelledby="guest-like" aria-controls="likes" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-like'}" ng-click="guestCardTabSwitch('guest-like')">
-                    <a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-like">Likes</a>
-                </li>
-                <li aria-selected="false" aria-labelledby="guest-credit" aria-controls="cc-payment" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-credit'}" ng-click="guestCardTabSwitch('guest-credit')">
-                    <a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-credit">Credit Cards &amp; Payment</a>
-                </li>
-                <li aria-selected="false" aria-labelledby="guest-loyalty" aria-controls="loyalty" tabindex="-1" role="tab" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': current == 'guest-loyalty'}" ng-click="guestCardTabSwitch('guest-loyalty')">
-                    <a tabindex="-1" role="presentation" class="ui-tabs-anchor" id="guest-loyalty">Loyalty</a>
-                </li>
-            </ul>
-
-
-            <!-- Guest Card Tab 1 -->
-            <span ng-include="'/assets/partials/guestCard/guestCardContactInfo.html'"></span> 
-            <!-- Guest Card Tab 2 likes -->
-            <span ng-include="'/assets/partials/guestCard/guestCardLikes.html'"></span> 
-            <!-- Guest Card Tab 3 payment -->
-            <span ng-include="'/assets/partials/guestCard/guestCardPayment.html'"></span>
-            <!-- Guest Card Tab 4 loyalty-->
-            <span ng-include="'/assets/partials/guestCard/guestCardLoyalty.html'"></span>
-            
-        </div>
+    <div class="cards-content">       
+        <!-- Guest Card Content-->
+        <section ng-include="'/assets/partials/cards/guestCard.html'"></section>
 
         <!-- Company Card Content-->
-            <div id="company-card-content" class="card-search card-content" ng-class="UICardContentCls('company-card')">
-                <ul ng-id="{'company-card-tabs-nav': account_type == 'COMPANY', 'travel-agent-card-tabs-nav': account_type == 'TRAVELAGENT'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <section ng-include="'/assets/partials/cards/companyCard.html'"></section>
 
-                        <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contact-info'}" ng-click="switchTabTo($event, 'cc-contact-info')">
-                            <a translate>CONTACT_INFORMATION</a>
-                        </li>
-
-                        <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
-                            <a translate>CONTRACTS</a>
-                        </li>
-
-
-                        <li  ng-hide="true" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
-                            <a translate>RESERVATIONS</a>
-                        </li>
-
-                    </ul>
-                    <!-- Company Card Tab 1 Contact Information -->
-                    <div ng-include="'/assets/partials/companyCard/rvCompanyCardContactInformation.html'"></div>
-
-                    <!-- Company Card Tab 2 Contract -->
-                    <div ng-controller="companyCardContractsCtrl"  ng-include="'/assets/partials/companyCard/rvCompanyCardContract.html'"></div>
-
-                    <!-- Company Card Tab 3 Resevations -->
-                    <div ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></div>
-                
-            </div>
-
-             <div id="travel-agent-card-content" class="card-search card-content" ng-class="UICardContentCls('travel-agent-card')">
-             </div>
-
-
+        <!-- TA Card Content-->
+        <section ng-include="'/assets/partials/cards/travelAgentCard.html'"></section>
     </div>
+
 </div>
 </div>
