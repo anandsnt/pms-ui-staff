@@ -1,6 +1,23 @@
 admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2',
     function ($http, $q, ADBaseWebSrvV2) {
 
+        /*
+         * Service function to delete rate
+         * @params {object} id
+         */
+        this.deleteRate = function (param) {
+
+            var deferred = $q.defer();
+            var url = "/api/rates/" + param.id;
+
+            ADBaseWebSrvV2.deleteJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         this.fetchRates = function (data) {
             var deferred = $q.defer();
 

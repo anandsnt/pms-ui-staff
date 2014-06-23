@@ -152,9 +152,17 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 	$scope.deleteRate = function(selectedId){
 
 		//call service for deleting
+		var params = {'id':selectedId};
+		var rateDeleteSuccess = function(){
+			$scope.loadTable();
+			$scope.$emit('hideLoader');
+		};
+		var rateDeleteFailure = function(){
+			$scope.$emit('hideLoader');
+		};
+		$scope.invokeApi(ADRatesSrv.deleteRate, params, rateDeleteSuccess,rateDeleteFailure);
 
-		//on success 
-		$scope.loadTable();
+		
 	};
 	/**
 	* To activate/deactivate a rate
