@@ -3,6 +3,7 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 4);
 	$scope.currentClickedElement = -1;
+	$scope.preveousName = "";
     /*
     * To fetch Maintenance Reasons list
     */
@@ -19,6 +20,7 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
     */
 	$scope.editItem = function(index)	{
 		$scope.currentClickedElement = index;
+		$scope.preveousName = $scope.data.maintenance_reasons[index].name;
 	};
 	/*
     * To get the template of edit screen
@@ -34,6 +36,11 @@ admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv'
     * To handle cancel click
     */	
 	$scope.clickedCancel = function(){
+		if($scope.currentClickedElement != 'new'){
+			$scope.data.maintenance_reasons[$scope.currentClickedElement].name = $scope.preveousName;
+			$scope.preveousName = "";
+		}
+		$scope.data.name = "";
 		$scope.currentClickedElement = -1;
 	};
 	/*
