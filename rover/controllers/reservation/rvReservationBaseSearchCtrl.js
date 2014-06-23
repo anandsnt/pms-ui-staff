@@ -4,6 +4,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
 
         //Setting number of nights 1
         $scope.reservationData.numNights = 1;
+        $scope.$parent.hideSidebar = false;
+
 
         // default max value if max_adults, max_children, max_infants is not configured
         var defaultMaxvalue = 5;

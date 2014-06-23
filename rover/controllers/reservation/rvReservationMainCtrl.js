@@ -1,8 +1,10 @@
 sntRover.controller('RVReservationMainCtrl', ['$scope', '$rootScope', 'baseData', 'ngDialog',
     function($scope, $rootScope, baseData, ngDialog) {
 
-
+console.log('RVReservationMainCtrl');
         $scope.initReservationData = function() {
+            console.log('initReservationData');
+            $scope.hideSidebar = false;
             // intialize reservation object
             $scope.reservationData = {
                 arrivalDate: '',
