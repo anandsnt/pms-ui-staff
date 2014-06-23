@@ -494,28 +494,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	};
 	$scope.completeCheckinSuccessCallback = function(){
 		console.log("seetingss =="+$scope.reservationBillData.key_settings);
-		// if($scope.reservationBillData.key_settings == "email"){
-			// ngDialog.open({
-        		// template: '/assets/partials/validateCheckin/rvKeyEmailModal.html',
-        		// controller: 'RVKeyEmailCtrl',
-        		// scope: $scope
-        	// });
-		// }
-		// else if ($scope.reservationBillData.key_settings == "encode"){
-			// ngDialog.open({
-        		// template: '/assets/partials/validateCheckin/rvRFIDTabletModal.html',
-        		// controller: 'RVRFIDTabletCtrl',
-        		// scope: $scope
-        	// });
-		// } else if ($scope.reservationBillData.key_settings == "qr_code_tablet"){
-			// ngDialog.open({
-        		// template: '/assets/partials/validateCheckin/rvQRCodeTabletModal.html',
-        		// controller: 'RVRFIDTabletCtrl',
-        		// scope: $scope
-        	// });
-		// }
-		
-		
+				
 		var keySettings = $scope.reservationBillData.key_settings;
 		$scope.fromView = "checkin";
 		if(keySettings === "email"){
@@ -564,6 +543,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			console.log("---------------");
 			errorMsg = "Signature is missing";
 			$scope.errorMessage = [errorMsg];
+			ngDialog.open({
+        		template: '/assets/partials/validateCheckin/rvShowValidation.html',
+        		controller: 'RVValidateEmailPhoneCtrl',
+        		scope: $scope
+        	});
+			
 		} else if(!$scope.saveData.termsAndConditions){
 			errorMsg = "Please check agree to the Terms & Conditions";
 			$scope.errorMessage = [errorMsg];
