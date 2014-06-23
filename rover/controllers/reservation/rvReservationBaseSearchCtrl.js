@@ -66,13 +66,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', ['$rootScope', '$scope', 'bas
         }
 
         $scope.arrivalDateChanged = function() {
-
-            console.log( $scope.reservationData.arrivalDate );
-
-            $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
-
-            console.log( $scope.reservationData.arrivalDate );
-            
+            $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');            
             $scope.setDepartureDate();
             $scope.setNumberOfNights();
         };
