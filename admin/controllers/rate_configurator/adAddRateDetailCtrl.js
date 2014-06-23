@@ -199,6 +199,10 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', 'ADRatesAddDetailsSrv','ngDi
 
         $scope.init();
 
+        $scope.deleteEndDate =  function(){
+            $scope.rateData.end_date ="";
+        }
+
 
         $scope.popupCalendar = function(){
         ngDialog.open({
