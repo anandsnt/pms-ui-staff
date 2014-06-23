@@ -1,6 +1,10 @@
 sntRover.controller('guestCardController', ['$scope', '$window', 'RVContactInfoSrv',
 	function($scope, $window, RVContactInfoSrv) {
 
+		var resizableMinHeight = 90;
+		var resizableMaxHeight = $(window).height() - resizableMinHeight;
+		$scope.cardVisible = false;
+
 		$scope.init = function() {
 			$scope.contactInfoError = false;
 			$scope.eventTimestamp = "";
@@ -38,10 +42,12 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVContactInfoS
 			resize: function(event, ui) {
 				if ($(this).height() > 120 && !$scope.guestCardVisible) { //against angular js principle, sorry :(				
 					$scope.guestCardVisible = true;
+					$scope.cardVisible = true;
 					$scope.$emit('GUESTCARDVISIBLE', true);
 					$scope.$apply();
 				} else if ($(this).height() <= 120 && $scope.guestCardVisible) {
 					$scope.guestCardVisible = false;
+					$scope.cardVisible = false;
 					$scope.$emit('GUESTCARDVISIBLE', false);
 					$scope.$apply();
 				}
@@ -198,6 +204,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVContactInfoS
 		$scope.cardCls = function() {
 			// evaluate 
 			var cls = $scope.UICards[0]; //  current active card
+			console.log('in');
 			if ($scope.cardVisible) {
 				cls += " open";
 			}
@@ -227,6 +234,20 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVContactInfoS
 		$scope.closeGuestCard = function() {
 			$scope.guestCardHeight = resizableMinHeight;
 			$scope.cardVisible = false;
+		};
+
+		/**
+		 * function to execute click on Guest card
+		 */
+		$scope.clickedOnGuestCard = function($event) {
+			if (getParentWithSelector($event, document.getElementsByClassName("ui-resizable-s")[0])) {
+				if ($scope.cardVisible) {
+					$scope.closeGuestCard();
+				} else {
+					$scope.openGuestCard();
+				}
+
+			}
 		};
 
 
