@@ -52,6 +52,24 @@
 
   
     HostedForm.setMerchant('TESTSTAYNTOUCH01');// to delete
+
+
+    $scope.verifyCC = function(){
+
+      $scope.isFetching = true;
+      ccVerificationService.verifyCC().then(function(response) {
+         $scope.isFetching = false;
+         $state.go('checkOutStatus');
+       }
+       else{
+           $scope.netWorkError = true;
+       }
+
+    },function(){
+      $scope.netWorkError = true;
+      $scope.isFetching = false;
+    });
+    }
   
     $scope.savePaymentDetails = function(){
       
@@ -89,8 +107,6 @@
     $scope.fetchMLISessionId();
 
     }
-
-    $scope.savePaymentDetails();
 
      /* MLI integration starts here */
 
