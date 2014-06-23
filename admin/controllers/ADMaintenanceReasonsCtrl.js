@@ -1,7 +1,7 @@
 admin.controller('ADMaintenanceReasonsCtrl',['$scope', 'ADMaintenanceReasonsSrv', function($scope, ADMaintenanceReasonsSrv){
 
 	BaseCtrl.call(this, $scope);
-	$scope.$emit("changedSelectedMenu", 5);
+	$scope.$emit("changedSelectedMenu", 4);
 	$scope.currentClickedElement = -1;
     /*
     * To fetch Maintenance Reasons list
