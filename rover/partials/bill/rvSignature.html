@@ -32,7 +32,7 @@
 	
 	<div>
 		
-		<div ng-show="reservationBillData.required_signature_at === 'CHECKOUT'">
+		<div ng-show="reservationBillData.required_signature_at === 'CHECKOUT' && (($index+1) === reservationBillData.bills.length)">
 			<h2>Please sign below</h2>
 			<div class="sig sigWrapper">
 				<div id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
@@ -49,7 +49,7 @@
 		</div>
 		
 		<div class="actions" ng-show="($index+1) != reservationBillData.bills.length">
-			<button type="submit" ng-click="clickedReviewButton($index)" data-reseravation-status="CHECKEDIN" data-required-signature="CHECKIN" class="button red">
+			<button type="submit" ng-click="clickedReviewButton($index)" class="button" ng-class="{'grey':(reviewStatusArray[$index].reviewStatus),'red':(!reviewStatusArray[$index].reviewStatus)}" ng-disabled="reviewStatusArray[$index].reviewStatus">
 				Review Bill
 				{{billData.bill_number}}
 				and Continue
@@ -57,12 +57,12 @@
 		</div>
 		
 		<div class="actions" ng-show="($index+1) === reservationBillData.bills.length">
-			<button type="submit" ng-click="clickedCompleteCheckin()" id="complete-checkout-button" data-reseravation-status="CHECKEDIN" data-required-signature="CHECKIN" class="button red">
+			<button type="submit" ng-click="clickedCompleteCheckout()" id="complete-checkout-button" data-reseravation-status="CHECKEDIN" data-required-signature="CHECKIN" class="button red">
 				Review Bill
 				{{billData.bill_number}}
 				and Complete checkout
 			</button>
-			<div class="clearButton" ng-show="reservationBillData.required_signature_at === 'CHECKOUT'">
+			<div class="clearButton" ng-show="reservationBillData.required_signature_at === 'CHECKOUT' && (($index+1) === reservationBillData.bills.length)">
 				<a id="clear-signature" class="button blank" ng-click='clickedClearSignature()'>Clear signature</a>
 			</div>
 		</div>

@@ -7,10 +7,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	var calenderDaysHeight = parseInt(35);
 	var totalHeight = 0;
 	$scope.clickedButton = $stateParams.clickedButton;
-	console.log($scope.clickedButton);
 	$scope.saveData = {};
 	$scope.saveData.promotions = false;
 	$scope.saveData.termsAndConditions = false;
+	$scope.reviewStatusArray = [];
+	$scope.isAllBillsReviewed = false;
 	//options fo signature plugin
 	var screenWidth = angular.element($window).width(); // Calculating screen width.
 	$scope.signaturePluginOptions = {
@@ -43,8 +44,12 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		     	});	
 			}
 	        
+	        var data = {};
+			data.reviewStatus = false;
+			data.billNumber = value.bill_number;
+			data.billIndex = key;
+			$scope.reviewStatusArray.push(data);
 	     });
-	     // console.log(JSON.stringify(reservationBillData));
 		$scope.reservationBillData = reservationBillData;
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
 		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
@@ -123,8 +128,11 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	 * @param {int} index of bill
 	 */ 
 	$scope.setActiveBill = function(billIndex){
-		countFeesElements = parseInt(reservationBillData.bills[billIndex].total_fees[0].fees_details.length)+parseInt(5);//1 - For heading, 2 for totl fees and balance, 2 for guest balnce and creditcard
-		totalHeight = parseInt(countFeesElements*64)+calenderDaysHeight+billTabHeight+roomTypeDescriptionLength;
+		
+		if(reservationBillData.bills[billIndex].total_fees.length !== 0){
+			countFeesElements = parseInt(reservationBillData.bills[billIndex].total_fees[0].fees_details.length)+parseInt(5);//1 - For heading, 2 for totl fees and balance, 2 for guest balnce and creditcard
+			totalHeight = parseInt(countFeesElements*64)+calenderDaysHeight+billTabHeight+roomTypeDescriptionLength;
+		}
 		$scope.calculatedHeight = totalHeight;
 		
 		$scope.$parent.myScroll['registration-content'].refresh();
@@ -579,6 +587,41 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 			
 			}
 		}
+	};
+	
+	// To handle complete checkout button click
+	$scope.clickedCompleteCheckout = function(){
+		
+		$scope.findNextBillToReview();
+		if(!$scope.isAllBillsReviewed){
+			return;
+		}
+		
+		// Against angular js practice ,TODO: check proper solution using ui-jq to avoid this.
+		var signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
+		var errorMsg = "Signature is missing";
+		if(signatureData == "[]" && $scope.reservationBillData.required_signature_at == "CHECKOUT"){
+			$scope.errorMessage = [errorMsg];
+		}
+	};
+	
+	// To handle review button click
+	$scope.clickedReviewButton = function(index){
+		$scope.reviewStatusArray[index].reviewStatus = true;
+		$scope.findNextBillToReview();
+	};
+	
+	// To find next tab which is not reviewed before.
+	$scope.findNextBillToReview = function(){
+		for(var i=0,j=1; i < $scope.reviewStatusArray.length ; i++,j++){
+			if(!$scope.reviewStatusArray[i].reviewStatus){
+				// when all bills reviewed and reached final bill
+				if($scope.reviewStatusArray.length == (j+1)) $scope.isAllBillsReviewed = true;
+				var billIndex = $scope.reviewStatusArray[i].billIndex;
+				break;
+			}
+		}
+		$scope.setActiveBill(billIndex);
 	};
 		//{'hidden': $parent.$index!='0', 'check-in':days.date == reservationBillData.checkin_date,'active': days.date != reservationBillData.checkout_date, 'check-out': days.date == reservationBillData.checkout_date, 'last': days.date == reservationBillData.checkout_date}
 }]);
