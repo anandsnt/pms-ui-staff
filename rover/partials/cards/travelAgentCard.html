@@ -1,4 +1,4 @@
-<div id="travel-agent-card-content" class="card-search card-content" ng-class="UICardContentCls('travel-agent-card')">
+<div id="travel-agent-card-content" class="card-search card-tabs card-content" ng-class="UICardContentCls('travel-agent-card')">
 
 	  <ul ng-id="{'company-card-tabs-nav': account_type == 'COMPANY', 'travel-agent-card-tabs-nav': account_type == 'TRAVELAGENT'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 
@@ -20,7 +20,7 @@
     <div ng-include="'/assets/partials/companyCard/rvCompanyCardContactInformation.html'"></div>
 
     <!-- Company Card Tab 2 Contract -->
-    <div ng-controller="companyCardContractsCtrl"  ng-include="'/assets/partials/companyCard/rvCompanyCardContract.html'"></div>
+    <div ng-include="'/assets/partials/companyCard/rvCompanyCardContract.html'"></div>
 
     <!-- Company Card Tab 3 Resevations -->
     <div ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></div>

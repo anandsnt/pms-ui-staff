@@ -1,17 +1,24 @@
-sntRover.controller('guestCardController', ['$scope', '$window', 'RVContactInfoSrv',
-	function($scope, $window, RVContactInfoSrv) {
+sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardSrv', 'RVContactInfoSrv', '$stateParams',
+	function($scope, $window, RVContactInfoSrv, RVCompanyCardSrv, $stateParams) {
 
 		var resizableMinHeight = 90;
 		var resizableMaxHeight = $(window).height() - resizableMinHeight;
 		$scope.cardVisible = false;
-		$scope.currentSelectedTab = 'cc-contact-info';
+		BaseCtrl.call(this, $scope);
+
 
 		$scope.init = function() {
 			$scope.contactInfoError = false;
 			$scope.eventTimestamp = "";
-			BaseCtrl.call(this, $scope);
 			var preventClicking = false;
 		};
+
+
+		//if CompanyCard is not available, show search mode
+
+		//make calls to api to get the card details
+
+
 
 		$scope.init();
 
@@ -250,7 +257,20 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVContactInfoS
 			}
 		};
 
+		$scope.switchTabTo = function($event, tabToSwitch) {
+			$event.stopPropagation();
+			$event.stopImmediatePropagation();
+			// if ($scope.currentSelectedTab == 'cc-contact-info' && tabToSwitch !== 'cc-contact-info') {
+			// 	saveContactInformation($scope.contactInformation);
+			// 	$scope.$broadcast("ContactTabActivated");
+			// }
+			// if ($scope.currentSelectedTab == 'cc-contracts' && tabToSwitch !== 'cc-contracts') {
+			// 	$scope.$broadcast("saveContract");
+			// }
+			$scope.currentSelectedTab = tabToSwitch;
+		};
 
+	
 
 	}
 ]);

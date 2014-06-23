@@ -1,8 +1,8 @@
- <div id="company-card-content" class="card-search card-tabs card-content" ng-class="UICardContentCls('company-card')">
+ <div id="company-card-content" ng-controller="RVCompanyCardCtrl" class="card-search card-tabs card-content" ng-class="UICardContentCls('company-card')">
     <ul ng-id="{'company-card-tabs-nav': account_type == 'COMPANY', 'travel-agent-card-tabs-nav': account_type == 'TRAVELAGENT'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
 
         <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contact-info'}" ng-click="switchTabTo($event, 'cc-contact-info')">
-            <a translate>CONTACT_INFORMATION</a>
+            <a translate>CONTACT_INFORMATION{{reservationDetails}}</a>
         </li>
 
         <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
@@ -19,7 +19,7 @@
     <div ng-include="'/assets/partials/companyCard/rvCompanyCardContactInformation.html'"></div>
 
     <!-- Company Card Tab 2 Contract -->
-    <div ng-controller="companyCardContractsCtrl"  ng-include="'/assets/partials/companyCard/rvCompanyCardContract.html'"></div>
+    <div ng-include="'/assets/partials/companyCard/rvCompanyCardContract.html'"></div>
 
     <!-- Company Card Tab 3 Resevations -->
     <div ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></div>

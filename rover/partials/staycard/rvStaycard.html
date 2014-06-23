@@ -1,5 +1,5 @@
 <div id="page-inner-first" class="page page-current">
-	<div id="staycard_main" >
+	<div id="staycard_main" ng-controller="stayCardMainCtrl">
 		<!-- TO INCLUDE GUEST CARD -->
 		<div ng-include="'/assets/partials/guestCard/guestCard.html'"></div>
 
@@ -9,8 +9,6 @@
 			<!-- TO INCLUDE RESERVATION CARD WHICH INCLUDES RESERVATION LISTING AND RESERVATION DETAILS IN THE RIGHT SIDE-->
 			<div ui-view > </div>
 		</div>
-
-
 	</div>
 </div>
 
