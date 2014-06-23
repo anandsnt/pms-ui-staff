@@ -542,7 +542,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	// To handle complete checkout button click
 	$scope.clickedCompleteCheckout = function(){
-		
+		console.log("$scope.isAllBillsReviewed"+$scope.isAllBillsReviewed);
 		$scope.findNextBillToReview();
 		if(!$scope.isAllBillsReviewed){
 			return;
@@ -553,6 +553,7 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 		var errorMsg = "Signature is missing";
 		if(signatureData == "[]" && $scope.reservationBillData.required_signature_at == "CHECKOUT"){
 			$scope.errorMessage = [errorMsg];
+			console.log("err"+errorMsg);
 		}
 	};
 	
@@ -564,10 +565,10 @@ sntRover.controller('RVbillCardController',['$scope','$rootScope','$state','$sta
 	
 	// To find next tab which is not reviewed before.
 	$scope.findNextBillToReview = function(){
-		for(var i=0,j=1; i < $scope.reviewStatusArray.length ; i++,j++){
+		for(var i=0; i < $scope.reviewStatusArray.length ; i++){
 			if(!$scope.reviewStatusArray[i].reviewStatus){
 				// when all bills reviewed and reached final bill
-				if($scope.reviewStatusArray.length == (j+1)) $scope.isAllBillsReviewed = true;
+				if($scope.reviewStatusArray.length == (i+1)) $scope.isAllBillsReviewed = true;
 				var billIndex = $scope.reviewStatusArray[i].billIndex;
 				break;
 			}
