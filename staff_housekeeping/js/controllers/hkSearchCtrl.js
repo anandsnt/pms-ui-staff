@@ -270,25 +270,24 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 			}
 			
 			// Filter by Floor Number
-			// For this status, pass the test, if any condition applies.
-			singleFloorFilter = $scope.floorFilterSingle;
-			floorFilterStart = $scope.floorFilterStart;
-			floorFilterEnd = $scope.floorFilterEnd;
-			
-			
-			
-			if (singleFloorFilter=="" && floorFilterStart=="" &&floorFilterEnd=="") {
+			// Intialize all the input floors Single - Single selection
+			// Filter start --> starting from  floor number
+			// Filter End --> End of floor number
+			var singleFloorFilter = $scope.currentFilters.floorFilterSingle;
+			var floorFilterStart = $scope.currentFilters.floorFilterStart;
+			var floorFilterEnd = $scope.currentFilters.floorFilterEnd;
+			console.log($scope.currentFilters.floorFilterSingle);
+
+			if (singleFloorFilter != null && room.floor_id != singleFloorFilter) {
 				room.display_room = false;
 				continue;
 			}
 			
-			if (singleFloorFilter!="") {
-				if (room.floor_id == singleFloorFilter)
-				console.log("roooom"+room.room_no)
-				room.display_room = true;
-				continue;				
-			}
-			
+			// if (floorFilterStart!=null && floorFilterEnd!=null && room.floor_id <= floorFilterStart && room.floor_id >= floorFilterEnd) {
+			// 	room.display_room = false;
+			// 	continue;
+			// }
+
 			room.display_room = true;
 
 		}
@@ -373,7 +372,7 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 		};
 
 		return ret;
-	}
+	};
 	/**
 	 *  A method to uncheck all the filter options
 	 */
@@ -382,7 +381,19 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 			$scope.currentFilters[p] = false
 		}
 		$scope.refreshScroll();
-	}
+	};
+
+	$scope.validateFloorSelection = function(type){
+		if(type == 'SINGLE_FLOOR'){
+			$scope.currentFilters.floorFilterStart = null;
+		}
+
+		if(type == 'FROM_FLOOR'){
+			$scope.currentFilters.floorFilterSingle = null;
+		}
+		
+
+	};
 	// could be moved to a directive,
 	// but addicted by the amount of control
 	// and power it gives here

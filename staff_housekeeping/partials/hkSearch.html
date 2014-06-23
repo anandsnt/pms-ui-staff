@@ -68,9 +68,9 @@
 						<div class="left">
 							<span class="h4">Single</span>
 							<div class="select">
-								<select name="floor-filter-single" id="floor-filter-single" class="placeholder" ng-model="floorFilterSingle">
+								<select name="floor-filter-single" id="floor-filter-single" class="placeholder" ng-model="currentFilters.floorFilterSingle" ng-change="validateFloorSelection('SINGLE_FLOOR')">
 									<option value="" selected>Floor #</option>
-									<option ng-repeat="floor in floors" value="{{floor.id}}"> {{floor.floor_number}}</option>
+									<option ng-repeat="floor in floors" value="{{floor.id}}" ng-selected="floor.id==currentFilters.floorFilterSingle"> {{floor.floor_number}}</option>
 								</select>
 							</div>
 						</div>
@@ -78,16 +78,16 @@
 						<div class="right">
 							<span class="h4">Multiple</span>
 							<div class="select">
-								<select name="floor-filter-start" id="floor-filter-start" class="placeholder" ng-model="floorFilterStart">
+								<select name="floor-filter-start" id="floor-filter-start" class="placeholder" ng-model="currentFilters.floorFilterStart" ng-change="validateFloorSelection('FROM_FLOOR')">
 									<option value="" selected>From</option>
-									<option ng-repeat="floor in floors" value="{{floor.id}}"> {{floor.floor_number}}</option>
+									<option ng-repeat="floor in floors" value="{{floor.id}}" ng-selected="floor.id==currentFilters.floorFilterStart"> {{floor.floor_number}}</option>
 								</select>
 							</div>
 							<!-- Floor Search To -->
 							<div class="select">
-								<select name="floor-filter-stop" id="floor-filter-stop" class="placeholder" ng-model='floorFilterEnd'>
+								<select name="floor-filter-stop" id="floor-filter-stop" class="placeholder" ng-model='currentFilters.floorFilterEnd'>
 									<option value="" selected>To</option>
-									<option ng-repeat="floor in floors" value="{{floor.id}}"> {{floor.floor_number}}</option>
+									<option ng-repeat="floor in floors" value="{{floor.id}}" ng-selected="floor.id==currentFilters.floorFilterEnd"> {{floor.floor_number}}</option>
 								</select>
 							</div>
 						</div>
