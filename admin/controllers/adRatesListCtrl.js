@@ -143,5 +143,33 @@ admin.controller('ADRatesListCtrl',['$scope', '$state', 'ADRatesSrv', 'ADHotelSe
 		}
 	}; 
 
+	/**
+	* To delete a rate
+	* @param {int} index of the selected rate type
+	* 
+	*/
+
+	$scope.deleteRate = function(selectedId){
+
+		//call service for deleting
+
+		//on success 
+		$scope.loadTable();
+	};
+	/**
+	* To activate/deactivate a rate
+	* @param {int} index of the selected rate type
+	* 
+	*/
+	$scope.toggleActive = function(selectedId){
+
+		//on success 
+		angular.forEach($scope.data, function(rate, key) {
+	      if(rate.id === selectedId){
+	      	rate.status = !rate.status;
+	      }
+	     });
+	};
+
 }]);
 
