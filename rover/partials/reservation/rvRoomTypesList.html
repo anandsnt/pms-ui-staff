@@ -87,7 +87,7 @@
                                     </tfoot>
                                     <tbody>           
                                         <tr ng-repeat = "day in displayData.dates">
-                                            <td>{{day.obj | date: dayAndDate }}</td>
+                                            <td>{{day.obj | date: dayAndDateCS }}</td>
                                             <td>{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].rate | number: 2}}</td>
                                             <td>{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].tax | number: 2}}</td>
                                             <td>{{currencySymbol}}{{roomAvailability[room.id].ratedetails[day.str][rate].rate | number: 2}}</td> 
@@ -150,7 +150,7 @@
                             </tfoot>
                             <tbody>
                                 <tr ng-repeat = "day in displayData.dates">
-                                    <td>{{day.obj | date: dayAndDate }}</td>
+                                    <td>{{day.obj | date: dayAndDateCS }}</td>
                                     <td>{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].rate | number: 2}}</td>
                                     <td>{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].tax | number: 2}}</td>
                                     <td>{{currencySymbol}}{{roomAvailability[selectedRoom].ratedetails[day.str][rate.rate.id].rate | number: 2}}</td> 
