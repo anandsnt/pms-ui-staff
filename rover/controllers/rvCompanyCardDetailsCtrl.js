@@ -2,15 +2,18 @@ sntRover.controller('companyCardDetailsController',['$scope', 'RVCompanyCardSrv'
 	
 	console.log("$stateParams type --"+$stateParams.type);
 	console.log("$stateParams id --"+$stateParams.id);
-	//setting the heading of the screen
-	if($stateParams.type == "COMPANY"){
-		$scope.heading = "Company Card";
-	}
-	else if($stateParams.type == "TRAVELAGENT"){
-		$scope.heading = "Travel Agent Card";
-	}
 	// Flag for add new card or not
 	$scope.isAddNewCard = ($stateParams.id == "add") ? true : false ;
+	//setting the heading of the screen
+	if($stateParams.type == "COMPANY"){
+		if($scope.isAddNewCard) $scope.heading = "New Company Card";
+		else $scope.heading = "Company Card";
+	}
+	else if($stateParams.type == "TRAVELAGENT"){
+		if($scope.isAddNewCard) $scope.heading = "New Travel Agent Card";
+		else $scope.heading = "Travel Agent Card";
+	}
+	
 	$scope.isContactInformationSaved = false;
 	//inheriting some useful things
 	BaseCtrl.call(this, $scope);
