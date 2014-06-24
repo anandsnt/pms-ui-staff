@@ -151,6 +151,8 @@ sntRover.controller('reservationCardController',[ '$rootScope','$scope', 'RVRese
 			 	 			"guest_id":guestId
 			 	};
 		 	 	$scope.$emit('GUESTPAYMENTDATA', paymentData);
+		 	 	console.log("----------------ivide-------------");
+		 	 	$scope.$emit('SHOWGUESTLIKES');
 		 };
 	 	$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess,'', 'NONE');  
 	 };

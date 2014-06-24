@@ -320,10 +320,15 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       });
     };
     /*
-     *
+     * Call payment after CONTACT INFO
      */
     $scope.$on('GUESTPAYMENTDATA', function(event, paymentData) {
       $scope.$broadcast('GUESTPAYMENT', paymentData);
+    });
+    
+    $scope.$on('SHOWGUESTLIKES', function(event) {
+    	console.log("-----------------broadcast")
+         $scope.$broadcast('SHOWGUESTLIKESINFO');
     });
     /*
      * Tp close dialog box
