@@ -19,7 +19,6 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv',
 			// before save we will compare 'contactInformation' against 'presentContactInfo'
 			// to check whether data changed
 			presentContactInfo = angular.copy($scope.contactInformation);
-			// angular.copy(presentContactInfo, $scope.contactInformation);
 		});
 
 		/**
