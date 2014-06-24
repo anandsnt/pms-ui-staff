@@ -20,9 +20,10 @@ hkRover.service('HKSearchSrv',['$http', '$q', '$window', function($http, $q, $wi
 				"departed" : false,
 				"dayuse": false,
 				"queued": false,
-				"floorFilterSingle": null,
-				"floorFilterStart": null,
-				"floorFilterEnd": null
+				"floorFilterSingle": '',
+				"floorFilterStart": '',
+				"floorFilterEnd": '',
+				'showAllFloors': true
 				};
 	}
 

@@ -6,7 +6,6 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 	$scope.showInspected = false;
 
 	$scope.showQueued = false;
-	$scope.showAllFloors = true;
 
 	// make sure any previous open filter is not showing
 	$scope.$emit('dismissFilterScreen');
@@ -278,7 +277,7 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 			var floorFilterEnd = $scope.currentFilters.floorFilterEnd;
 			console.log($scope.currentFilters.floorFilterSingle);
 
-			if (singleFloorFilter != null && room.floor_id != singleFloorFilter) {
+			if (singleFloorFilter != '' && room.floor_id != singleFloorFilter) {
 				room.display_room = false;
 				continue;
 			}
@@ -382,18 +381,33 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 		}
 		$scope.refreshScroll();
 	};
-
+	/**
+	* Click handler for floor selection drop-down
+	* If we select a single floor option, the from-floor/to-floor should be initialised to none.
+	* If we select the from-floor/ to-floor option, the single-floor initialized to none.
+	*/
 	$scope.validateFloorSelection = function(type){
 		if(type == 'SINGLE_FLOOR'){
-			$scope.currentFilters.floorFilterStart = null;
+			$scope.currentFilters.floorFilterStart = '';
+			$scope.currentFilters.floorFilterEnd = '';
+
 		}
 
-		if(type == 'FROM_FLOOR'){
-			$scope.currentFilters.floorFilterSingle = null;
+		if(type == 'FROM_FLOOR' || type == 'TO_FLOOR'){
+			$scope.currentFilters.floorFilterSingle = '';
 		}
-		
-
 	};
+
+	/**
+	* Click handler for All-Floors checkbox
+	*/
+	$scope.allFloorsClicked = function(){
+		$scope.currentFilters.showAllFloors = !$scope.currentFilters.showAllFloors;
+		$scope.currentFilters.floorFilterStart = '';
+		$scope.currentFilters.floorFilterEnd = '';
+		$scope.currentFilters.floorFilterSingle = '';
+	};
+
 	// could be moved to a directive,
 	// but addicted by the amount of control
 	// and power it gives here
