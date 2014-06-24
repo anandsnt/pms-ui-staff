@@ -174,15 +174,19 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 	/**
 	 *  A method which checks the filter option status and see if the room should be displayed
 	 */
+	
 	$scope.calculateFilters = function() {
+					console.log("In side DONEE")
 
 		for (var i = 0, j = $scope.rooms.length; i < j; i++) {
 			var room = $scope.rooms[i];
 			
 			//Filter by Floors
-			
 			//Handling special case : If floor is not set up for room, and a filter is selected, dont show it.  
-			if ($scope.isAnyFilterTrue(['floorFilterStart','floorFilterEnd', 'floorFilterSingle'])){
+			
+			
+			if ($scope.currentFilters.floorFilterStart || $scope.currentFilters.floorFilterEnd || $scope.currentFilters.floorFilterSingle){
+				
 				if(room.floor.floor_number == null){
 					room.display_room = false;
 					continue;	
@@ -195,12 +199,12 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 			}
 
 
-			if ($scope.currentFilters.floorFilterStart != '' &&   room.floor.floor_number < $scope.currentFilters.floorFilterStart ) {
+			if ($scope.currentFilters.floorFilterStart != '' &&  room.floor.floor_number < $scope.currentFilters.floorFilterStart) {
 				room.display_room = false;
 				continue;
 			}
 			
-			if ($scope.currentFilters.floorFilterEnd != '' &&  room.floor.floor_number > $scope.currentFilters.floorFilterEnd) {
+			if ($scope.currentFilters.floorFilterEnd != '' && room.floor.floor_number > $scope.currentFilters.floorFilterEnd) {
 				room.display_room = false;
 				continue;
 			}
@@ -295,13 +299,12 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 
 				room.display_room = false;
 				continue;
-
 			}
 
 			
+				room.display_room = true;
 
 		}
-		room.display_room = true;
 
 	};
 
