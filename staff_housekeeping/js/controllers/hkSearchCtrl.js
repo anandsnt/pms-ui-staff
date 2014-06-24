@@ -178,6 +178,35 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 
 		for (var i = 0, j = $scope.rooms.length; i < j; i++) {
 			var room = $scope.rooms[i];
+			
+			//Filter by Floors
+			
+			//Handling special case : If floor is not set up for room, and a filter is selected, dont show it.  
+			if ($scope.isAnyFilterTrue(['floorFilterStart','floorFilterEnd', 'floorFilterSingle'])){
+				if(room.floor.floor_number == null){
+					room.display_room = false;
+					continue;	
+				}
+			}
+			
+			if ($scope.currentFilters.floorFilterSingle != '' && room.floor.floor_number != $scope.currentFilters.floorFilterSingle) {
+				room.display_room = false;
+				continue;
+			}
+
+
+			if ($scope.currentFilters.floorFilterStart != '' &&   room.floor.floor_number < $scope.currentFilters.floorFilterStart ) {
+				room.display_room = false;
+				continue;
+			}
+			
+			if ($scope.currentFilters.floorFilterEnd != '' &&  room.floor.floor_number > $scope.currentFilters.floorFilterEnd) {
+				room.display_room = false;
+				continue;
+			}
+			
+			
+			
 
 			//Filter by status in filter section, HK_STATUS
 			if ($scope.isAnyFilterTrue(['dirty', 'pickup', 'clean', 'inspected', 'out_of_order', 'out_of_service'])) {
@@ -228,6 +257,7 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 			}
 			//Filter by status in filter section, ROOM_RESERVATION_STATUS
 			// For this status, pass the test, if any condition applies.
+			// NOTE : This must be the last set of checks, as we make display_room = true and mark continue here.
 			if ($scope.isAnyFilterTrue(['stayover', 'not_reserved', 'arrival', 'arrived', 'dueout', 'departed', 'dayuse'])) {
 
 				if ($scope.currentFilters.stayover && room.room_reservation_status.indexOf("Stayover") >= 0) {
@@ -268,41 +298,11 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 
 			}
 
-			// Filter by Floor Number
-			// Intialize all the input floors Single - Single selection
-			// Filter start --> starting from  floor number
-			// Filter End --> End of floor number
-			var singleFloorFilter = $scope.currentFilters.floorFilterSingle;
-			var floorFilterStart = $scope.currentFilters.floorFilterStart;
-			var floorFilterEnd = $scope.currentFilters.floorFilterEnd;
-			console.log("floorFilterStart---   "+ floorFilterStart);
-			console.log("floorFilterEnd -----------"+ floorFilterEnd);
-			// Condition - 01 Single Floor
-			// List all rooms where Single floor = 15
-			if (singleFloorFilter != '' && room.floor.floor_number != singleFloorFilter) {
-				room.display_room = false;
-				continue;
-			}
-			// Condition - 02 Multiple Floor - Start filter only selected
-			// list all rooms where floor>= 15
-			if (floorFilterStart != '' && room.floor.floor_number < floorFilterStart) {
-				room.display_room = false;
-				console.log("Enter in Condition -02")
-				continue;
-				
-			}
-
-			// Condition - 03 Multiple Floor - End filter only selected
-			// list all rooms where floor<= 15
-			if (floorFilterEnd != '' && room.floor.floor_number != floorFilterEnd) {
-				room.display_room = false;
-				console.log("Enter in Condition -03--- "+room.room_no)
-				continue;
-			}
-
-			room.display_room = true;
+			
 
 		}
+		room.display_room = true;
+
 	};
 
 	/**
