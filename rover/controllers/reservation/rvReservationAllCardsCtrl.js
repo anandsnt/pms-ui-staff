@@ -276,8 +276,7 @@ sntRover.controller('RVReservationAllCardsCtrl', ['$scope', 'RVReservationAllCar
 
         }
     };
-
-
+    
     $scope.searchCompany = function(){
         var successCallBackFetchCompanies = function(data){
             $scope.$emit("hideLoader");

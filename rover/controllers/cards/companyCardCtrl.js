@@ -1,6 +1,5 @@
-
-sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv',
-	function($scope, RVCompanyCardSrv) {
+sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout',
+	function($scope, RVCompanyCardSrv, $timeout) {
 		$scope.searchMode = true;
 		$scope.account_type = 'COMPANY';
 		$scope.currentSelectedTab = 'cc-contact-info';
@@ -9,8 +8,17 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv',
 		$scope.companySearchIntiated = false;
 		$scope.companies = [];
 
-
 		var presentContactInfo = {};
+
+		$scope.$parent.myScrollOptions = {
+			'companyResultScroll': {
+				snap: false,
+				scrollbars: true,
+				vScroll: true,
+				vScrollbar: true,
+				hideScrollbar: false
+			}
+		};
 
 		//handle tab switching in both cards
 		$scope.switchTabTo = function($event, tabToSwitch) {
@@ -32,8 +40,13 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv',
 			// object holding copy of contact information
 			// before save we will compare 'contactInformation' against 'presentContactInfo'
 			// to check whether data changed
+			$scope.currentSelectedTab = 'cc-contact-info';
 			presentContactInfo = angular.copy($scope.contactInformation);
 			$scope.$broadcast("contactTabActive");
+			$timeout(function() {
+				$scope.$emit('hideLoader');
+			}, 1000);
+
 		});
 
 		$scope.$on("cardDetached", function() {
@@ -42,8 +55,9 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv',
 
 		$scope.$on("companySearchInitiated", function() {
 			$scope.companySearchIntiated = true;
-			// console.log($scope.searchedCompanies)
+			console.log($scope.searchedCompanies)
 			$scope.companies = $scope.searchedCompanies;
+			$scope.refreshScroll('companyResultScroll');
 		})
 
 		$scope.$on("companySearchStopped", function() {
@@ -52,6 +66,12 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv',
 			$scope.companies = $scope.searchedCompanies;
 		})
 
+		$scope.$on("newCardSelected", function(id, values) {
+			// console.log(values)
+			//set the contracts tab right
+			$scope.searchMode = false;
+			$scope.$emit('hideLoader');
+		})
 
 		/**
 		 * function to handle click operation on company card, mainly used for saving
@@ -62,7 +82,7 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv',
 				return;
 			} else if (getParentWithSelector($event, document.getElementById("cc-contracts")) && $scope.currentSelectedTab == 'cc-contracts') {
 				return;
-			} else if (getParentWithSelector($event, document.getElementById("company-card-nested-first"))) {
+			} else if (getParentWithSelector($event, document.getElementById("company-card-header"))) {
 				$scope.$emit("saveContactInformation");
 			}
 		};
@@ -137,5 +157,8 @@ sntRover.controller('RVCompanyCardCtrl', ['$scope', 'RVCompanyCardSrv',
 				$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
 			}
 		};
+
+
+
 	}
 ]);

@@ -9,6 +9,8 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 
 		BaseCtrl.call(this, $scope);
 
+
+
 		// fetch reservation company card details 
 		$scope.initCompanyCard = function() {
 			var successCallbackOfInitialFetch = function(data) {
@@ -283,10 +285,9 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			}
 		};
 
-
 		$scope.detachCard = function() {
 			console.log('detachCard');
-			$scope.$emit('cardDetached');
+			// $scope.$emit('cardDetached');
 			$scope.$broadcast('cardDetached');
 		}
 
@@ -295,7 +296,6 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		$scope.searchCompany = function() {
 			var successCallBackFetchCompanies = function(data) {
 				$scope.$emit("hideLoader");
-				// $scope.refreshScroll('companyResultScroll');
 				$scope.companySearchIntiated = true;
 				$scope.searchedCompanies = [];
 				if (data.accounts.length > 0) {
@@ -334,9 +334,21 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 		}
 
 
+		$scope.refreshScroll = function(elemToBeRefreshed) {
+			if (typeof $scope.$parent.myScroll != 'undefined') {
+				$timeout(function() {
+					$scope.$parent.myScroll[elemToBeRefreshed].refresh();
+				}, 300);
+			}
+		}
+
+		$scope.selectCompany = function(company, $event) {
+			$event.stopPropagation();
+			$scope.reservationDetails.companyCard.id = company.id;			
+			$scope.initCompanyCard();
+		}
+
 		$scope.init();
-
-
 
 	}
 ]);
