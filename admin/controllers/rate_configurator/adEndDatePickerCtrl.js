@@ -16,7 +16,6 @@ $scope.setUpData();
 $scope.$watch('date',function(oldValue,newValue){
     if(oldValue != newValue){
       $scope.rateData.end_date = $scope.date;
-      $rootScope.$broadcast('endDateSet',{'end_date':$scope.rateData.end_date});
       ngDialog.close();
   }
 });

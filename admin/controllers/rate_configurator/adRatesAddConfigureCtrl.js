@@ -11,9 +11,6 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', 'ADRatesConfigureSrv', 'A
             }
         };
 
-         $scope.$on('endDateSet',function(e,data){
-            $scope.maxDate = data.end_date;
-         });
 
         $scope.$on("needToShowDateRange", function(e, id){
             // webservice call to fetch each date range details

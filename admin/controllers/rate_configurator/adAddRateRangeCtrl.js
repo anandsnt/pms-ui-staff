@@ -21,10 +21,6 @@ admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRa
             $scope.toMonthMinDate = dateFilter(currentDate, 'yyyy-MM-dd');
         };
 
-        $scope.$on('endDateSet',function(e,data){
-            $scope.maxDate = data.end_date;
-            $scope.setUpData();
-         });
         /*
         * Reset calendar action
         */
