@@ -157,7 +157,7 @@ sntRover.controller('roverController', ['$rootScope', '$scope', '$state', '$wind
       iconClass: "icon-housekeeping",
       submenu: [{
         title: "MENU_HOUSEKEEPING",
-        action: ""
+        action: "rover.houseKeeping.dashboard"
       }, {
         title: "MENU_TASK_MANAGEMENT",
         action: ""
