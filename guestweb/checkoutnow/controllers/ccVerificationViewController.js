@@ -25,6 +25,7 @@
 
     $scope.checkoutmessage = $stateParams.message;
     $scope.fee = $stateParams.fee;
+    var MLISessionId = "";
     
         $scope.months = [{
             'name': 'January',
@@ -128,32 +129,35 @@
               $modal.open($scope.errorOpts); // details modal popup
           }
           else{
-            //   $scope.isFetching = true;
-            //   ccVerificationService.verifyCC().then(function(response) {
-            //   $scope.isFetching = false;
-            //   if(response.status ==="success"){
-            //       if($stateParams.isFromCheckoutNow === "true"){
-            //         $rootScope.ccPaymentSuccessForCheckoutNow = true;
-            //         $state.go('checkOutStatus');
-            //       }else{
-            //          $rootScope.ccPaymentSuccessForCheckoutLater = true;
-            //          $state.go('checkOutLaterSuccess',{id:$scope.fee});
-            //       }
-            //   }
-            //   else{
-            //    $modal.open($scope.cardErrorOpts);
-            //   };        
+              $scope.isFetching = true;
+              var data = {'reservation_id':$rootScope.reservationID,'mli_SessionId':MLISessionId};
+              alert("fef");
+              console.log(data);
+              ccVerificationService.verifyCC(data).then(function(response) {
+              $scope.isFetching = false;
+              if(response.status ==="success"){
+                  if($stateParams.isFromCheckoutNow === "true"){
+                    $rootScope.ccPaymentSuccessForCheckoutNow = true;
+                    $state.go('checkOutStatus');
+                  }else{
+                     $rootScope.ccPaymentSuccessForCheckoutLater = true;
+                     $state.go('checkOutLaterSuccess',{id:$scope.fee});
+                  }
+              }
+              else{
+               $modal.open($scope.cardErrorOpts);
+              };        
           
-            // },function(){
-            //   $scope.netWorkError = true;
-            //   $scope.isFetching = false;
-            // });
+            },function(){
+              $scope.netWorkError = true;
+              $scope.isFetching = false;
+            });
           }
     }     
 
     $scope.savePaymentDetails = function(){
       
-      var MLISessionId = "";
+      
 
       $scope.fetchMLISessionId = function(){
 

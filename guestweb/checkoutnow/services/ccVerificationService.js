@@ -5,6 +5,7 @@ var ccVerificationService = function($q,$http) {
 	var verifyCC = function(url,data) {
 
 			var deferred = $q.defer();
+			var url = "";
 			$http.post(url, data).success(function(response){
 				deferred.resolve(response);
 			}).error(function(){
