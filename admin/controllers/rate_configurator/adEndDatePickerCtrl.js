@@ -3,7 +3,7 @@ admin.controller('adEndDatePickerController',['$scope','dateFilter','ngDialog','
 $scope.setUpData = function(){
 
     $scope.isDateSelected = $scope.rateData.end_date ?  true:false;
-    if($scope.rateData.end_date!= null){
+    if($scope.rateData.end_date){
       $scope.date = $scope.rateData.end_date;
       $scope.isDateSelected = true;
     }
