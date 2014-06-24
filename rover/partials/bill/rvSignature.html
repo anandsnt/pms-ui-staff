@@ -33,7 +33,7 @@
 	<div>
 		
 		<div ng-if="reservationBillData.required_signature_at === 'CHECKOUT' && (($index+1) === reservationBillData.bills.length)">
-			<h2>Please sign below</h2>
+			<h2 translate>PLEASE_SIGN_BELOW</h2>
 			<div class="sig sigWrapper">
 				<div id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()">
 					
@@ -45,25 +45,25 @@
 			<label id="terms-and-conditions" for="terms" class="checkbox inline">
 				<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.acceptCharges}"></span>
 				<input type="checkbox" ng-model="saveData.acceptCharges">
-				By checking this box you hereby Accept the Charges </label>
+				{{ 'ACCEPT_CHARGE_TEXT' | translate }} </label>
 		</div>
 		
 		<div class="actions" ng-show="($index+1) != reservationBillData.bills.length">
 			<button type="submit" ng-click="clickedReviewButton($index)" class="button" ng-class="{'grey':(reviewStatusArray[$index].reviewStatus),'red':(!reviewStatusArray[$index].reviewStatus)}" ng-disabled="reviewStatusArray[$index].reviewStatus">
-				Review Bill
-				{{billData.bill_number}}
-				and Continue
+				{{ 'REVIEW_BILL' | translate }}
+				{{ billData.bill_number }}
+				{{ 'AND_CONTINUE' | translate }}
 			</button>
 		</div>
 		
 		<div class="actions" ng-show="($index+1) === reservationBillData.bills.length">
 			<button type="submit" ng-click="clickedCompleteCheckout()" id="complete-checkout-button" data-reseravation-status="CHECKEDIN" data-required-signature="CHECKIN" class="button red">
-				Review Bill
-				{{billData.bill_number}}
-				and Complete checkout
+				{{ 'REVIEW_BILL' | translate }}
+				{{ billData.bill_number }}
+				{{ 'AND_COMPLETE_CHECKOUT' | translate }}
 			</button>
 			<div class="clearButton" ng-if="reservationBillData.required_signature_at === 'CHECKOUT' && (($index+1) === reservationBillData.bills.length)">
-				<a id="clear-signature" class="button blank" ng-click='clickedClearSignature()'>Clear signature</a>
+				<a id="clear-signature" class="button blank" ng-click='clickedClearSignature()' translate>CLEAR_SIGNATURE</a>
 			</div>
 		</div>
 
