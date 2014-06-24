@@ -5,7 +5,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope',
 
 		$scope.searchData={
 			companyCard : {
-				companyName : "s",
+				companyName : "",
 				companyCity : "",
 				companyCorpId : ""
 			}
