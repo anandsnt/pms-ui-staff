@@ -1,11 +1,18 @@
-sntRover.controller('RVKeyQRCodePopupController',[ '$rootScope','$scope','ngDialog','RVKeyPopupSrv', function($rootScope, $scope, ngDialog, RVKeyPopupSrv){
+sntRover.controller('RVKeyQRCodePopupController',[ '$rootScope','$scope', '$state','ngDialog','RVKeyPopupSrv', function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv){
 	
 	// Set up data for view
 	var setupData = function(){
-		var reservationId = $scope.reservationData.reservation_card.reservation_id;
-		var reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+		var reservationId = "";
+		var reservationStatus = "";
+		if($scope.fromView == "checkin"){
+			reservationId = $scope.reservationBillData.reservation_id;
+			reservationStatus = $scope.reservationBillData.reservation_status;
+		} else {
+			reservationId = $scope.reservationData.reservation_card.reservation_id;
+			reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+		}
 		var successCallback = function(data){
-			$scope.closeActivityIndication();
+			$scope.$emit('hideLoader');
 	    	$scope.data = {};
 	    	$scope.data = data;
 	    	
@@ -29,7 +36,7 @@ sntRover.controller('RVKeyQRCodePopupController',[ '$rootScope','$scope','ngDial
 	    };
 	    
 	  	var failureCallback = function(data){
-	  		$scope.closeActivityIndication();
+	  		$scope.$emit('hideLoader');
 	    };
 		
 		$scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData,{ "reservationId": reservationId }, successCallback, failureCallback);  
@@ -38,8 +45,15 @@ sntRover.controller('RVKeyQRCodePopupController',[ '$rootScope','$scope','ngDial
 	setupData();
 	
 	// To handle close button click
-	$scope.closeButtonClick = function(){
-		ngDialog.close();
+	$scope.goToStaycard = function(){
+		$scope.closeDialog();
+		$state.go('rover.staycard.reservationcard.reservationdetails', {"id": $scope.reservationBillData.reservation_id, "confirmationId": $scope.reservationBillData.confirm_no});
+		
+	};
+	$scope.goToSearch = function(){
+		$scope.closeDialog();
+		$state.go('rover.search');
+		
 	};
 	
 }]);

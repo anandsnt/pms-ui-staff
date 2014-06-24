@@ -13,6 +13,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	$scope.reservationData = $scope.$parent.reservation;
 	$scope.roomType = $stateParams.room_type;
 	$scope.isFiltersVisible = false;
+	$scope.clickedButton = $stateParams.clickedButton;
 
 	/**
 	* function to to get the rooms based on the selected room type
@@ -68,7 +69,11 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.assignRoom = function(index){
 		var successCallbackAssignRoom = function(data){
-			$scope.backToStayCard();
+			if($scope.clickedButton == "checkinButton"){
+				$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+			} else {
+				$scope.backToStayCard();
+			}
 			$scope.$emit('hideLoader');
 		};
 		var errorCallbackAssignRoom = function(error){

@@ -33,7 +33,7 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
 
                                
         $stateProvider.state('rover.staycard.billcard', {
-			 url: '/billcard/:reservationId',
+			 url: '/billcard/:reservationId/:clickedButton',
 			 templateUrl: '/assets/partials/bill/rvBillCard.html',
              controller: 'RVbillCardController',
 	         resolve: {
@@ -43,12 +43,12 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
 			}
         });
          $stateProvider.state('rover.staycard.roomassignment', {
-            url: '/roomassignment/:reservation_id/:room_type',
+            url: '/roomassignment/:reservation_id/:room_type/:clickedButton',
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
             controller: 'RVroomAssignmentController'
         });
          $stateProvider.state('rover.staycard.upgrades', {
-            url: '/upgrades/:reservation_id',
+            url: '/upgrades/:reservation_id/:clickedButton',
             templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
             controller: 'RVUpgradesController'
         });
