@@ -4,7 +4,8 @@ sntRover.controller('reservationActionsController',
 		'$scope',
 		'ngDialog',
 		'RVChargeItems',
-		function($rootScope, $scope, ngDialog, RVChargeItems) {
+		'$state',
+		function($rootScope, $scope, ngDialog, RVChargeItems, $state) {
 			BaseCtrl.call(this, $scope);
 			
 			$scope.displayTime = function(status){
@@ -104,13 +105,24 @@ sntRover.controller('reservationActionsController',
 			};
 			
 			$scope.goToCheckin = function(){
-				
+			
 				if($scope.guestCardData.contactInfo.email == '' || $scope.guestCardData.contactInfo.phone == '' || $scope.guestCardData.contactInfo.email == null || $scope.guestCardData.contactInfo.phone == null){
 					ngDialog.open({
 		        		template: '/assets/partials/validateCheckin/rvValidateEmailPhone.html',
 		        		controller: 'RVValidateEmailPhoneCtrl',
 		        		scope: $scope
 		        	});
+				} else {
+					if($scope.reservationData.reservation_card.room_number == '' || $scope.reservationData.reservation_card.room_status != 'READY' || $scope.reservationData.reservation_card.fo_status != 'VACANT')
+					{   
+						//TO DO:Go to rrom assignemt viw
+						$state.go("rover.staycard.roomassignment", {"reservation_id" : $scope.reservationData.reservation_card.reservation_id, "room_type": $scope.reservationData.reservation_card.room_type_code, "clickedButton": "checkinButton"});
+					} else if ($scope.reservationData.reservation_card.is_force_upsell=="true" && $scope.reservationData.reservation_card.is_upsell_available == "true"){
+						//TO DO : gO TO ROOM UPGRAFED VIEW
+						$state.go('rover.staycard.upgrades', {"reservation_id" : $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+					} else {
+						$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+					}
 				}
 			};
 		

@@ -130,7 +130,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 		$scope.reservationData.reservationId = '';
 		$scope.reservationData.confirmNum = '';
 
-		$state.go('rover.reservation.search');
+		$state.go('rover.reservation.search', { status: 'RETAIN_RESERVATION'});
 	};
 
 	/**
@@ -139,10 +139,7 @@ sntRover.controller('RVReservationConfirmCtrl', ['$scope', '$state', 'RVReservat
 	$scope.goToSearchClicked = function(){
 		$scope.initReservationData();
 		$state.go('rover.reservation.search');
-
 	};
-
-
 
 	$scope.init();
 

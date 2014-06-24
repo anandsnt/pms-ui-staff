@@ -1,5 +1,5 @@
 
-sntRover.controller('RVroomAssignmentController',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', '$filter', function($scope, $state, $stateParams, RVRoomAssignmentSrv, $filter){
+sntRover.controller('RVroomAssignmentController',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', '$filter', 'RVReservationCardSrv', function($scope, $state, $stateParams, RVRoomAssignmentSrv, $filter, RVReservationCardSrv){
 		
 	BaseCtrl.call(this, $scope);
 	
@@ -10,9 +10,15 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	$scope.roomFeatures = [];
 	$scope.selectedFiltersList = [];
 
+	$scope.assignedRoom = "";
 	$scope.reservationData = $scope.$parent.reservation;
 	$scope.roomType = $stateParams.room_type;
 	$scope.isFiltersVisible = false;
+
+	$scope.clickedButton = $stateParams.clickedButton;
+
+
+	$scope.$emit('HeaderChanged', $filter('translate')('ROOM_ASSIGNMENT_TITLE'));
 
 	/**
 	* function to to get the rooms based on the selected room type
@@ -68,7 +74,13 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.assignRoom = function(index){
 		var successCallbackAssignRoom = function(data){
-			$scope.backToStayCard();
+			$scope.reservationData.reservation_card.room_number = $scope.assignedRoom;
+			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationData.reservation_card.confirmation_num, $scope.reservationData);
+			if($scope.clickedButton == "checkinButton"){
+				$state.go('rover.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+			} else {
+				$scope.backToStayCard();
+			}
 			$scope.$emit('hideLoader');
 		};
 		var errorCallbackAssignRoom = function(error){
@@ -78,6 +90,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 		var params = {};
 		params.reservation_id = parseInt($stateParams.reservation_id, 10);
 		params.room_number = parseInt($scope.rooms[index].room_number, 10);
+		$scope.assignedRoom = params.room_number;
 		$scope.invokeApi(RVRoomAssignmentSrv.assignRoom, params, successCallbackAssignRoom, errorCallbackAssignRoom);
 	};
 	$scope.getPreferences();
