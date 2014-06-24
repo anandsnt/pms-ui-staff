@@ -19,6 +19,10 @@ BaseCtrl.call(this, $scope);
         $scope.maxDate = dateDict.end_date;           
       }
 };
+  $scope.$on('endDateSet',function(e,data){
+            $scope.maxDate = data.end_date;
+            $scope.setUpData();
+         });
 
 $scope.setUpData();
 $scope.updateClicked = function(){
