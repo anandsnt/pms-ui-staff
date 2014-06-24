@@ -147,6 +147,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.market_segment_id = data.market_segment_id;
             $scope.rateData.end_date = data.end_date;
 
+            $scope.$broadcast('endDateSet',{'end_date':$scope.rateData.end_date});
 
             // addons -mark as activated for selected addons
             if($scope.rateData.addOns.length>0){
