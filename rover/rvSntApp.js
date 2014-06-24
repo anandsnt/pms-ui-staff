@@ -3,7 +3,7 @@ var GlobalApp = function(){
     this.browser = "other";
     this.cordovaLoaded = false;
     this.cardReader = null;
-    this.enableURLChange = true;
+    this.enableURLChange = false;
 
     this.DEBUG = false;
 

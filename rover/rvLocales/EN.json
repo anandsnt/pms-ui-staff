@@ -239,7 +239,8 @@
     "INCLUDE_DUEOUT_LABEL":"Include Due Out",
     "INCLUDE_PREASSIGNED_LABEL":"Include Pre-Assigned",
     "NIGHT_LABEL":"night",
-    "NIGHTS_LABEL":"nights",    
+    "NIGHTS_LABEL":"nights",
+    "ROOM_ASSIGNMENT_TITLE":"Room Assignment",    
     
     "ROOM": "room",
     "NIGHTS": "nights",

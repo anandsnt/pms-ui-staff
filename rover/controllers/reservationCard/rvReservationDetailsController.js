@@ -61,6 +61,7 @@ sntRover.controller('reservationDetailsController',['$scope', '$rootScope','RVRe
 	$scope.reservationDetailsFetchSuccessCallback = function(data){
 		
 		$scope.$emit('hideLoader');
+		$scope.$parent.$parent.reservation = data;
 		$scope.reservationData = data;
 	};
 	/*
