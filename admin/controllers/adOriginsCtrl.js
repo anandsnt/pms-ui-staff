@@ -3,6 +3,7 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv', function($scope, ADO
 	BaseCtrl.call(this, $scope);
 	$scope.$emit("changedSelectedMenu", 7);
 	$scope.currentClickedElement = -1;
+	$scope.preveousItem = "";
     /*
     * To fetch charge origins list
     */
@@ -23,6 +24,7 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv', function($scope, ADO
     */
 	$scope.editItem = function(index)	{
 		$scope.currentClickedElement = index;
+		$scope.preveousItem = $scope.data.booking_origins[index].name;
 	};
 	/*
     * To get the template of edit screen
@@ -37,6 +39,11 @@ admin.controller('ADOriginsCtrl',['$scope', 'ADOriginsSrv', function($scope, ADO
     * To handle cancel click
     */	
 	$scope.clickedCancel = function(){
+		if($scope.currentClickedElement != 'new'){
+			$scope.data.booking_origins[$scope.currentClickedElement].name = $scope.preveousItem;
+			$scope.preveousItem = "";
+		}
+		$scope.data.name = "";
 		$scope.currentClickedElement = -1;
 	};
 	/*
