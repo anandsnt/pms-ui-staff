@@ -1,9 +1,6 @@
 admin.controller('ADAddRateRangeCtrl', ['$scope', '$filter', 'dateFilter', 'ADRatesRangeSrv',
     function ($scope, $filter, dateFilter, ADRatesRangeSrv) {
         
-            
-
-
         /**
         * set up data to be displayed
         */
