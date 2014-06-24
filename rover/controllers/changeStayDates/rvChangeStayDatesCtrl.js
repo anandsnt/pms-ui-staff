@@ -1,17 +1,131 @@
-sntRover.controller('RVchangeStayDatesController',['$scope', 'stayDateDetails', function($scope, stayDateDetails){
+sntRover.controller('RVchangeStayDatesController',['$state', '$rootScope', '$scope',  'stayDateDetails', 
+                                                    'RVChangeStayDatesSrv', 
+            function($state, $rootScope, $scope, stayDateDetails, RVChangeStayDatesSrv){
 
-	$scope.stayDetails = stayDateDetails;
-	$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.stayDetails.calendarDetails.arrival_date);
-	$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.stayDetails.calendarDetails.dep_date);
-  $scope.ReservationUpdates = '';
+    //inheriting some useful things
+    BaseCtrl.call(this, $scope);
 
-	var date = new Date();
-    var d = date.getDate();
-    var m = date.getMonth();
-    var y = date.getFullYear();
-    $scope.alertEventOnClick = function(event, allDay, jsEvent, view){
+    $scope.initialise = function(){
+    	$scope.stayDetails = stayDateDetails;
+    	$scope.checkinDateInCalender = $scope.confirmedCheckinDate = getDateObj($scope.stayDetails.details.arrival_date);
+    	$scope.checkoutDateInCalender = $scope.confirmedCheckoutDate = getDateObj($scope.stayDetails.details.departure_date);
+        $scope.showReservationUpdates = false;
+        $scope.room_selected = $scope.stayDetails.details.room_number;
+        $scope.calendarNightDiff = '';
+        $scope.avgRate = '';
+        /* event source that contains custom events on the scope */
+        $scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
+
+        $scope.eventSources = [$scope.events];
         
+        //scroller options
+        $scope.$parent.myScrollOptions = {
+          'edit_reservation_content': {
+            snap: false,
+            scrollbars: true,
+            vScroll: true,
+            vScrollbar: true,
+            hideScrollbar: false,
+            click: true
+          }
+        };
+        //calender options used by full calender, related settings are done here
+        $scope.fullCalendarOptions =  {
+             height: 450,
+            editable: true,
+            header:{
+              left        : 'prev',
+              center      : 'title',
+              right       : 'next'
+            },
+            year : $scope.confirmedCheckinDate.getFullYear(),   // Check in year
+            month : $scope.confirmedCheckinDate.getMonth(),     // Check in month (month is zero based)
+            day : $scope.confirmedCheckinDate.getDate(),   // Check in day
+            editable : true,
+            disableResizing : false,
+            contentHeight : 320,
+            weekMode : 'fixed',
+            ignoreTimezone : false, // For ignoring timezone,
+
+          
+            eventClick: $scope.alertEventOnClick,
+            eventDrop: $scope.alertOnDrop,
+            eventResize: $scope.alertOnResize
+        };                
     };
+
+
+    $scope.errorCallbackCheckUpdateAvaibale = function(errorMessage){
+      $scope.$emit("hideLoader");
+      
+    };
+
+    $scope.successCallbackCheckUpdateAvaibale = function(data){
+      $scope.$emit("hideLoader");
+      $scope.showReservationUpdates = true;
+      var timeDiff = $scope.checkoutDateInCalender.getTime() - $scope.checkinDateInCalender.getTime();
+      $scope.calendarNightDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+
+      $scope.totRate = 0;
+      var checkinRate = '';
+      $($scope.stayDetails.calendarDetails.available_dates).each(function(index){
+          
+
+          if(getDateObj(this.date).getTime() >= $scope.checkinDateInCalender.getTime() &&
+           getDateObj(this.date).getTime() <= $scope.checkoutDateInCalender.getTime()){
+              $scope.totRate += parseFloat(this.rate);
+          }
+
+          if(this.date == ($scope.stayDetails.details.arrival_date)){
+              checkinRate = $scope.escapeNull(this.rate) == "" ? "" : parseInt(this.rate);
+          }
+         
+      });
+      if($scope.calendarNightDiff > 0){
+        $scope.avgRate = Math.round( ($scope.totRate / $scope.calendarNightDiff + 0.00001) );
+      }
+      else{
+        $scope.avgRate = Math.round( ($scope.totRate + 0.00001) );
+        $scope.totRate = checkinRate;
+      }      
+      
+      if(data.availability_status == "room_available"){
+
+      }
+      else if(data.availability_status == "room_type_available"){
+
+      }
+      else if(data.availability_status == "not_available"){
+
+      } 
+      $scope.refreshScroller();     
+    }; 
+
+    $scope.successCallbackConfirmUpdates = function(data){
+      $scope.$emit("hideLoader");
+      $scope.goBack();
+    };
+    $scope.failureCallbackConfirmUpdates = function(errorMessage){
+
+        $scope.$emit("hideLoader");
+        $scope.errorMessage = errorMessage;
+    };
+
+    $scope.resetDates = function(){
+        $scope.initialise();
+    }
+
+    $scope.goBack = function(){
+         $state.go($rootScope.previousState, $rootScope.previousStateParams);
+    };
+
+    $scope.confirmUpdates = function(){
+      
+      var postParams = {'room_selected': $scope.room_selected,  'arrival_date': getDateString($scope.checkinDateInCalender), 'dep_date': getDateString($scope.checkoutDateInCalender), 
+      'reservation_id': $scope.stayDetails.calendarDetails.reservation_id};
+      $scope.invokeApi(RVChangeStayDatesSrv.confirmUpdates, postParams, $scope.successCallbackConfirmUpdates, $scope.failureCallbackConfirmUpdates);      
+    }
+
     $scope.alertOnDrop = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
         var newDateSelected = event.start;
         var availableStartDate = getDateObj($scope.stayDetails.calendarDetails.available_dates[0].date);
@@ -49,37 +163,19 @@ sntRover.controller('RVchangeStayDatesController',['$scope', 'stayDateDetails', 
 
       $scope.checkinDateInCalender = finalCheckin;
       $scope.checkoutDateInCalender = finalCheckout;
-        $scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
+      $scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
 
+      var getParams = {'arrival_date': getDateString($scope.checkinDateInCalender), 'dep_date': getDateString($scope.checkoutDateInCalender), 'reservation_id': $scope.stayDetails.calendarDetails.reservation_id};
+
+      $scope.invokeApi(RVChangeStayDatesSrv.checkUpdateAvaibale, getParams, $scope.successCallbackCheckUpdateAvaibale, $scope.errorCallbackCheckUpdateAvaibale);
                 
     };  
     $scope.alertOnResize = function(){
        
     };  
 
- 	//calender options used by full calender, related settings are done here
-	$scope.fullCalendarOptions =  {
-		 height: 450,
-        editable: true,
-        header:{
-          left        : 'prev',
-          center      : 'title',
-          right       : 'next'
-        },
-        year : $scope.confirmedCheckinDate.getFullYear(),   // Check in year
-      	month : $scope.confirmedCheckinDate.getMonth(),     // Check in month (month is zero based)
-      	day : $scope.confirmedCheckinDate.getDate(),   // Check in day
-      	editable : true,
-      	disableResizing : false,
-      	contentHeight : 320,
-      	weekMode : 'fixed',
-      	ignoreTimezone : false, // For ignoring timezone,
 
-      
-        eventClick: $scope.alertEventOnClick,
-        eventDrop: $scope.alertOnDrop,
-        eventResize: $scope.alertOnResize
-    };   	
+   	
   $scope.getEventSourceObject = function(checkinDate, checkoutDate){
 
       var events = [];
@@ -149,16 +245,23 @@ sntRover.controller('RVchangeStayDatesController',['$scope', 'stayDateDetails', 
 
           events.push(calEvt);
       });
-      console.log(JSON.stringify(events));
+
       return events;
   };  
 
+	$scope.initialise();
 
-    
-	
- /* event source that contains custom events on the scope */
-    $scope.events = $scope.getEventSourceObject($scope.checkinDateInCalender, $scope.checkoutDateInCalender);
 
-    $scope.eventSources = [$scope.events];
+    $scope.refreshScroller = function(){
+      setTimeout(function(){
+        $scope.$parent.myScroll['edit_reservation_content'].refresh();
+      }, 300);      
+    }
+
+
+    $scope.$on('$viewContentLoaded', function(){
+
+      $scope.refreshScroller();
+    });
 
 }]);
