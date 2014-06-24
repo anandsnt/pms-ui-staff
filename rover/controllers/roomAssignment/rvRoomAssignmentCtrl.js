@@ -14,7 +14,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	$scope.reservationData = $scope.$parent.reservation;
 	$scope.roomType = $stateParams.room_type;
 	$scope.isFiltersVisible = false;
-
+	$scope.$emit('HeaderChanged', $filter('translate')('ROOM_ASSIGNMENT_TITLE'));
 	/**
 	* function to to get the rooms based on the selected room type
 	*/
