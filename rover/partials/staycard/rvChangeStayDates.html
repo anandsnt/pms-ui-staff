@@ -1,4 +1,5 @@
-	<div id="change-dates-main" data-view="ChangeStayDatesView">
+	<div id="change-dates-main" >
+		<!-- data-view="ChangeStayDatesView"> -->
 		<div ng-include="'/assets/partials/common/header.html'"></div>
 		<section role="complementary" id="edit-reservation" class="content stay-card-inner check-in">
 			<!-- Room assignment header -->
@@ -7,23 +8,22 @@
 					<a id="changedates-back-btn" class="back-button">Back</a>
 				</div>
 				<div class="data">
-					<span data-room-status="{{stayDetails.room_status}}" data-reserv-status="{{stayDetails.reservation_status}}" data-fostatus="{{stayDetails.fo_status}}" class="room">
+					<span data-room-status="{{stayDetails.details.room_status}}" data-reserv-status="{{stayDetails.details.reservation_status}}" data-fostatus="{{stayDetails.details.fo_status}}" class="room">
 						<span class="guest-status room">room</span>
 						<strong id="header-room-num" class="room-number room-red">
-							{{stayDetails.room_number}}
+							{{stayDetails.details.room_number}}
 						</strong>
-						<span id="room-type" data-room-type="{{stayDetails.room_type}}">
-							{{stayDetails.room_type}}
+						<span id="room-type" data-room-type="{{stayDetails.details.room_type}}">
+							{{stayDetails.details.room_type_name}}
 						</span>
 					</span>
 					<span class="nights">
 						<span class="guest-status nights">
-							<span ng-show="stayDetails.total_nights>0">
-								
-							</span>
-							<span ng-show="stayDetails.total_nights==0">
-
-							</span>
+							<ng-pluralize count="stayDetails.details.total_nights"
+							  when="{'0': 'Day Use',
+                     				'1': '1 night',
+                     				other: '{} nights'}">
+							</ng-pluralize>													
 						</span>
 						
 					</span>
@@ -46,7 +46,7 @@
 				<div id="calendar-holder" class="reservation-calendar scrollable">
 					<div class="wrapper">
 						<div id="notification-message"></div>
-						<div id="reservation-calendar" class="fc fc-ltr" ui-calendar="fullCalendarOptions" ng-model="eventSources"></div>
+						<div id="reservationcalendar" class="fc fc-ltr" ui-calendar="fullCalendarOptions" ng-model="eventSources"></div>
 						<strong id="instruction-title" class="notice">Drag &amp; drop to change stay dates</strong>
 						<ul id="reservation-calendar-legend">
 							<li><span class="check-in"></span>Arrival
@@ -61,10 +61,10 @@
 							</li>
 						</ul>
 					</div>
-					<div class="iScrollVerticalScrollbar iScrollLoneScrollbar" style="overflow: hidden; pointer-events: none;"><div class="iScrollIndicator" style="transition-duration: 0ms; display: block; height: 8px; transform: translate(0px, -6px) translateZ(0px); transition-timing-function: cubic-bezier(0.1, 0.57, 0.1, 1);"></div></div></div>
+				</div>
 					<!-- Reservation update -->
 					<div id="reservation-details" class="reservation-updates">
-						<div id="no-reservation-updates" class="updates-content no-content">
+						<div id="no-reservation-updates" class="updates-content no-content" ng-show="isEmpty(ReservationUpdates)">
 							<div class="info">
 								<strong class="h1">Change stay dates to see room and rate changes.</strong>
 							</div>
