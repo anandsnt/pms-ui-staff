@@ -4,23 +4,12 @@ sntRover.controller('RVRoomFiltersController',['$scope','$state', '$stateParams'
 	BaseCtrl.call(this, $scope);
 	
 	$scope.roomFeatures = $scope.$parent.roomFeatures;
-	$scope.$parent.myScrollOptions = {		
-	    'filterlist': {
-	    	scrollbars: true,
-	        snap: false,
-	        hideScrollbar: false,
-	        preventDefault: false
-	    }
-	};
+	
 	/**
 	* Listener to set the room filters when loaded
 	*/
 	$scope.$on('roomFeaturesLoaded', function(event, data){
 			$scope.roomFeatures = data;
-			setTimeout(function(){
-				$scope.$parent.myScroll['filterlist'].refresh();
-				}, 
-			3000);
 	});
 	/**
 	* function to handle the filter selection
