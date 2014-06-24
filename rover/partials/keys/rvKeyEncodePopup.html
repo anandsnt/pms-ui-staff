@@ -6,7 +6,7 @@
 		</button>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<!-- Left contents -->
-		<div id="room-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keysPrinted, 'not-connected' : deviceNotConnected, 'completed' : keysPrinted}">
+		<div id="room-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keysPrinted, 'not-connected' : deviceNotConnected || pressedCancelStatus, 'completed' : keysPrinted}">
 			
 			<span ng-show="data.is_late_checkout === true" class="h2 message">{{data.reservationStatusText}}<br/> {{data.late_checkout_time}}</span>
 			<span ng-show="data.is_late_checkout === false" class="h2 message">{{data.reservationStatusText}}</span>
@@ -19,7 +19,7 @@
 		<!--end-->
 
 		<!-- Right contents -->
-		<div id="key-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keysPrinted , 'not-connected' : deviceNotConnected , 'completed' : keysPrinted}">
+		<div id="key-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keysPrinted , 'not-connected' : deviceNotConnected || pressedCancelStatus, 'completed' : keysPrinted}">
 			
 			<span ng-show="deviceConnecting">
 				<span class="h2 message" translate>PRINT_ROOM_KEY</span>
