@@ -175,7 +175,7 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 	 *  A method which checks the filter option status and see if the room should be displayed
 	 */
 	$scope.calculateFilters = function() {
-		
+
 		for (var i = 0, j = $scope.rooms.length; i < j; i++) {
 			var room = $scope.rooms[i];
 
@@ -267,7 +267,7 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 				continue;
 
 			}
-			
+
 			// Filter by Floor Number
 			// Intialize all the input floors Single - Single selection
 			// Filter start --> starting from  floor number
@@ -275,17 +275,30 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 			var singleFloorFilter = $scope.currentFilters.floorFilterSingle;
 			var floorFilterStart = $scope.currentFilters.floorFilterStart;
 			var floorFilterEnd = $scope.currentFilters.floorFilterEnd;
-			console.log($scope.currentFilters.floorFilterSingle);
-
-			if (singleFloorFilter != '' && room.floor_id != singleFloorFilter) {
+			console.log("floorFilterStart---   "+ floorFilterStart);
+			console.log("floorFilterEnd -----------"+ floorFilterEnd);
+			// Condition - 01 Single Floor
+			// List all rooms where Single floor = 15
+			if (singleFloorFilter != '' && room.floor.floor_number != singleFloorFilter) {
 				room.display_room = false;
 				continue;
 			}
-			
-			// if (floorFilterStart!=null && floorFilterEnd!=null && room.floor_id <= floorFilterStart && room.floor_id >= floorFilterEnd) {
-			// 	room.display_room = false;
-			// 	continue;
-			// }
+			// Condition - 02 Multiple Floor - Start filter only selected
+			// list all rooms where floor>= 15
+			if (floorFilterStart != '' && room.floor.floor_number < floorFilterStart) {
+				room.display_room = false;
+				console.log("Enter in Condition -02")
+				continue;
+				
+			}
+
+			// Condition - 03 Multiple Floor - End filter only selected
+			// list all rooms where floor<= 15
+			if (floorFilterEnd != '' && room.floor.floor_number != floorFilterEnd) {
+				room.display_room = false;
+				console.log("Enter in Condition -03--- "+room.room_no)
+				continue;
+			}
 
 			room.display_room = true;
 
@@ -382,26 +395,26 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 		$scope.refreshScroll();
 	};
 	/**
-	* Click handler for floor selection drop-down
-	* If we select a single floor option, the from-floor/to-floor should be initialised to none.
-	* If we select the from-floor/ to-floor option, the single-floor initialized to none.
-	*/
-	$scope.validateFloorSelection = function(type){
-		if(type == 'SINGLE_FLOOR'){
+	 * Click handler for floor selection drop-down
+	 * If we select a single floor option, the from-floor/to-floor should be initialised to none.
+	 * If we select the from-floor/ to-floor option, the single-floor initialized to none.
+	 */
+	$scope.validateFloorSelection = function(type) {
+		if (type == 'SINGLE_FLOOR') {
 			$scope.currentFilters.floorFilterStart = '';
 			$scope.currentFilters.floorFilterEnd = '';
 
 		}
 
-		if(type == 'FROM_FLOOR' || type == 'TO_FLOOR'){
+		if (type == 'FROM_FLOOR' || type == 'TO_FLOOR') {
 			$scope.currentFilters.floorFilterSingle = '';
 		}
 	};
 
 	/**
-	* Click handler for All-Floors checkbox
-	*/
-	$scope.allFloorsClicked = function(){
+	 * Click handler for All-Floors checkbox
+	 */
+	$scope.allFloorsClicked = function() {
 		$scope.currentFilters.showAllFloors = !$scope.currentFilters.showAllFloors;
 		$scope.currentFilters.floorFilterStart = '';
 		$scope.currentFilters.floorFilterEnd = '';
@@ -544,4 +557,4 @@ function($scope, $rootScope, HKSearchSrv, $state, $timeout, fetchedRoomList) {
 	// DOM node will be missing
 	pullRefresh();
 
-}]); 
+}]);
