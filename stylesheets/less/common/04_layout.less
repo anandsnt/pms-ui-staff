@@ -102,7 +102,7 @@ body {
 		ul.float-bottom{
 			position: absolute;
 			bottom: 0;
-			width: 100%;
+			width: 230px;
 		}
 
 		div#submenu{
@@ -185,16 +185,21 @@ body {
 			}	
 		}
 
+		&.visible,
+		&.invisible {
+			-webkit-transition: left 0.5s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+			-moz-transition: left 0.5s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+			-ms-transition: left 0.5s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+			-o-transition: left 0.5s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+			transition: left 0.5s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+		}
+
 		&.visible{
 			left: 0px;
-			 -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
-  		transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
 		}
 
 		&.invisible{
 			left: -250px;
-			 -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
-  		transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
 		}
 
 
@@ -316,7 +321,7 @@ body {
 		left: 0;
 		.square(100%);
 		background: transparent;
-		z-index: 10000;
+		z-index: 20000;
 	}
 
 	#loading-spinner {
@@ -325,7 +330,7 @@ body {
 		left: 50%;
 		margin: -32px 0 0 -32px;
 		background: rgba(255,255,255,.7);
-		z-index: 9999;
+		z-index: 21000;
 		.square(64px);
 		#border-radius > .rounded(32px);
 

@@ -42,11 +42,15 @@ angular.module('stayCardModule', []).config(function($stateProvider, $urlRouterP
 				}
 			}
         });
-        
          $stateProvider.state('rover.staycard.roomassignment', {
-            url: '/roomassignment',
+            url: '/roomassignment/:reservation_id/:room_type',
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
             controller: 'RVroomAssignmentController'
+        });
+         $stateProvider.state('rover.staycard.upgrades', {
+            url: '/upgrades/:reservation_id',
+            templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
+            controller: 'RVUpgradesController'
         });
         
         $stateProvider.state('rover.staycard.billcard.details', {

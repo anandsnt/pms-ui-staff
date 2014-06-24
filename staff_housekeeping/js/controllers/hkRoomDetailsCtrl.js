@@ -36,30 +36,7 @@ hkRover.controller('HKRoomDetailsCtrl',
 
 	$scope.calculateColorCodes = function(){
 		$scope.initColorCodes();
-		/*if(this.roomList.checkin_inspected_only == "true"){
-			if(room.hk_status.value == 'INSPECTED' && !room.is_occupied) {
-				return 'room-clean';
-			}
-			if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-				return 'room-pickup';
-			}
-		}
-		else {
-			if((room.hk_status.value == 'CLEAN' || room.hk_status.value == 'INSPECTED') && !room.is_occupied) {
-				return 'room-clean';
-			}
-			if((room.hk_status.value == 'PICKUP') && !room.is_occupied) {
-				return 'room-pickup';
-			}
-		}
 
-		if((room.hk_status.value == 'DIRTY') && !room.is_occupied) {
-			return 'room-dirty';
-		}
-		if(room.hk_status.value == 'OO' || room.hk_status.value == 'OS'){
-			return 'room-out';
-		}
-		return '';*/
 		if($scope.data.room_details.checkin_inspected_only == "true"){
 			if($scope.data.room_details.current_hk_status == "INSPECTED" && $scope.data.room_details.is_occupied == "false"){
 				$scope.isGreen = true;
@@ -102,10 +79,7 @@ hkRover.controller('HKRoomDetailsCtrl',
 			$scope.calculateColorCodes();
 
 			HKSearchSrv.updateHKStatus( $scope.data.room_details );
-
-			console.log("update done");
 		}, function(){
-			console.log('update failed');
 			$scope.$emit('hideLoader');
 		});
 	};
