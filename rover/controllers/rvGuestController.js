@@ -23,7 +23,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var successCallbackOfInitialFetch = function(data) {
 				$scope.$emit("hideLoader");
 				$scope.travelAgentInformation = data;
-				$scope.$broadcast('final');
+				$scope.$broadcast('travelAgentFetchComplete');
 			};
 			var param = {
 				'id': $scope.reservationDetails.travelAgent.id

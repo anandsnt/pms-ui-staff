@@ -14,7 +14,7 @@ sntRover.controller('RVTravelAgentCardCtrl', ['$scope',
 			$scope.currentSelectedTab = tabToSwitch;
 		};
 
-		$scope.$on('final', function(){
+		$scope.$on('travelAgentFetchComplete', function(){
 			$scope.contactInformation = $scope.travelAgentInformation;
 		})
 	}
