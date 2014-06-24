@@ -38,6 +38,12 @@
                             <input name="cc-email" id="cc-email" placeholder="" value="{{contactInformation.address_details.email_address}}" ng-model="contactInformation.address_details.email_address" type="email" class="masked-input icons icon-gc-email" auto-grow-field/>
                         </div>
                     </form>
+                    
+                    <div class="card-actions" ng-show="isAddNewCard">
+                        <button class="button green" type="button" ng-click="clikedSaveNewCard()">Save new card</button>
+                        <button class="button blank" type="button" ng-click="clikedDiscardCard()">Discard</button>
+                    </div>
+                    
                 </div>
             </header>
 

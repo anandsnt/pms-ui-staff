@@ -1,4 +1,4 @@
-sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearchSrv', '$stateParams', function($scope, RVCompanyCardSearchSrv, $stateParams){
+sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearchSrv', '$stateParams','ngDialog', function($scope, RVCompanyCardSearchSrv, $stateParams, ngDialog){
 
 	BaseCtrl.call(this, $scope);
 	$scope.heading = "Find Cards";
@@ -98,6 +98,16 @@ sntRover.controller('searchCompanyCardController',['$scope', 'RVCompanyCardSearc
 	      // we have changed data, so we are refreshing the scrollerbar
 	      refreshScroller();                  
 	    }
+  };
+  
+  // To impelement popup to select add new - COMPANY / TRAVEL AGENT CARD
+  $scope.addNewCard = function(){
+  	ngDialog.open({
+		 template: '/assets/partials/companyCard/rvSelectCardType.html',
+		 controller: 'selectCardTypeCtrl',
+		 className: 'ngdialog-theme-default',
+		 scope: $scope
+	});
   };
 
 }]);
