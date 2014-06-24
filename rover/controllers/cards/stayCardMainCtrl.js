@@ -6,7 +6,7 @@ sntRover.controller('stayCardMainCtrl', ['$scope',
 		
 		$scope.reservationDetails={
 			companyCard:{
-				id:15
+				id:1
 			},
 			travelAgent:{
 				id:18

@@ -1,26 +1,64 @@
- <div id="company-card-content" ng-controller="RVCompanyCardCtrl" class="card-search card-tabs card-content" ng-class="UICardContentCls('company-card')">
-    <ul ng-id="{'company-card-tabs-nav': account_type == 'COMPANY', 'travel-agent-card-tabs-nav': account_type == 'TRAVELAGENT'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+<div id="company-card-content" ng-controller="RVCompanyCardCtrl" class="card-search card-tabs card-content" ng-class="UICardContentCls('company-card')">
 
-        <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contact-info'}" ng-click="switchTabTo($event, 'cc-contact-info')">
-            <a translate>CONTACT_INFORMATION</a>
-        </li>
+    <section ng-if="searchMode == false">
+        <ul ng-id="{'company-card-tabs-nav': account_type == 'COMPANY', 'travel-agent-card-tabs-nav': account_type == 'TRAVELAGENT'}" class="card-tabs-nav float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+            <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contact-info'}" ng-click="switchTabTo($event, 'cc-contact-info')">
+                <a translate>CONTACT_INFORMATION</a>
+            </li>
+            <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
+                <a translate>CONTRACTS</a>
+            </li>
+            <li  ng-hide="true" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
+                <a translate>RESERVATIONS</a>
+            </li>
+        </ul>
+        <!-- Company Card Tab 1 Contact Information -->
+        <div ng-include="'/assets/partials/companyCard/rvCompanyCardContactInformation.html'"></div>
+        <!-- Company Card Tab 2 Contract -->
+        <div ng-controller="cardContractsCtrl" ng-include="'/assets/partials/companyCard/rvCompanyCardContract.html'"></div>
+        <!-- Company Card Tab 3 Resevations -->
+        <div ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></div>
+    </section>
 
-        <li  ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-contracts'}" ng-click="switchTabTo($event, 'cc-contracts')">
-            <a translate>CONTRACTS</a>
-        </li>
-
-
-        <li  ng-hide="true" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
-            <a translate>RESERVATIONS</a>
-        </li>
-
-    </ul>
-    <!-- Company Card Tab 1 Contact Information -->
-    <div ng-include="'/assets/partials/companyCard/rvCompanyCardContactInformation.html'"></div>
-
-    <!-- Company Card Tab 2 Contract -->
-    <div ng-include="'/assets/partials/companyCard/rvCompanyCardContract.html'"></div>
-
-    <!-- Company Card Tab 3 Resevations -->
-    <div ng-hide="true" ng-include="'/assets/partials/companyCard/rvCompanyCardReservations.html'"></div>
+    <section ng-if="searchMode">
+       <button id="new-guest" type="button" class="button green has-arrow skip" ng-click="createNewCompany()">New Card</button>
+       <div id="search-company-content" class="search-cards scrollable">
+        <!-- Company Card Results listing -->
+        <div class="wrapper" ng-show="companySearchIntiated && companies.length > 0" style="height:100%; overflow: hidden;" ng-iscroll="companyResultScroll">
+            <ul id="search-company-results" class="search-results">
+                <li ng-repeat="company in companies">
+                    <a ng-click="selectCompany(company, $event)" class="card-result">
+                        <figure class="guest-image">
+                            <img src="images/allianz-logo.jpg" alt="" />
+                        </figure>
+                        <div class="data">
+                            <div class="info">
+                                <h2 ng-bind-html="'{{ company.firstName }} {{ company.lastName }}'|highlight:companyName:false"></h2>
+                                <div class="rate"><span class="label">Rate</span> 10% off RACK</div>
+                            </div>
+                            <span class="confirmation">{{ company.address.postalCode }}</span>
+                            <span class="icons icon-location">{{ company.address.city }}, {{ company.address.state }}</span>
+                            <span class="icons icon-phone">{{ company.phone }}</span>
+                            <span class="icons icon-email-grey">{{ company.email }}</span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div id="search-company-no-results" class="search-cards no-content">
+            <!-- Company Card No Results -->
+            <div class="info" ng-show="companySearchIntiated && companies.length === 0">
+                <span class="icon-no-content icon-cards"></span>
+                <strong class="h1">No Matches</strong>
+                <span class="h2">Check that you didn't mispell the <strong>Company Name</strong>, <strong>City</strong> or <strong>Corporate ID</strong>.</span>
+            </div>
+            <!-- Company Card Empty -->
+            <div class="info" ng-hide='companySearchIntiated'>
+                <span class="icon-no-content icon-cards"></span>
+                <strong class="h1">Find Company</strong>
+                <span class="h2">Search by <strong>Name</strong>, <strong>City</strong> or <strong>Loyalty No.</strong></span>
+            </div>
+        </div>
+    </div>
+</section>
 </div>

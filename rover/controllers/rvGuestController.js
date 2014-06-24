@@ -11,6 +11,7 @@ sntRover.controller('guestCardController', ['$scope', '$window', 'RVCompanyCardS
 			var successCallbackOfInitialFetch = function(data) {
 				$scope.$emit("hideLoader");
 				$scope.companyContactInformation = data;
+				$scope.$broadcast('companyCardAvailable');
 			};
 			var param = {
 				'id': $scope.reservationDetails.companyCard.id
