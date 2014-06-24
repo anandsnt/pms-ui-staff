@@ -25,10 +25,9 @@ snt.controller('rootController', ['$rootScope','$scope','$attrs', '$location','$
     $rootScope.isActiveToken = ($attrs.isActiveToken ==='true') ? true : false;
  	$rootScope.isCheckedin  =  ($rootScope.reservationStatusCheckedIn  && !$rootScope.isActiveToken);
  	$rootScope.isCCOnFile = ($attrs.isCcAttached ==='true')? true:false;
-
+ 	$rootScope.mliMerchatId = $attrs.mliMerchatId;
  	$rootScope.isRoomVerified =  false;
-
-
+ 	
  	if($rootScope.isCheckedin){
  		$location.path('/checkinSuccess');
  	}

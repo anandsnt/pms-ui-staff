@@ -13,21 +13,10 @@ var ccVerificationService = function($q,$http) {
 			return deferred.promise;
 		};
 
-	var fetchMerchantID = function() {
-			var deferred = $q.defer();
-			var url = "/api/merchant_id.json";
-			$http.get(url).success(function(response){
-				deferred.resolve(response);
-			}).error(function(){
-				deferred.reject();			
-			});
-			return deferred.promise;
-		};
 
 		return {
 			response:response,
-			verifyCC:verifyCC,
-			fetchMerchantID:fetchMerchantID
+			verifyCC:verifyCC
 
 		}
 };

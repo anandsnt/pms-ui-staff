@@ -23,72 +23,9 @@
 
 	if($scope.pageValid){
 
-
-    //Set merchant ID for MLI integration
-    //HostedForm.setMerchant(data.merchantId);
-
-    /* MLI integration starts here */
-
+    $scope.checkoutmessage = $stateParams.message;
+    $scope.fee = $stateParams.fee;
     
-    $scope.isFetching = true;
-    $scope.netWorkError = false;
-
-    //fetch merchant ID
-
-    ccVerificationService.fetchMerchantID().then(function(response) {
-       $scope.isFetching = false;
-       if(response.merchant_id){
-           $scope.merchantId = response.merchant_id;
-           HostedForm.setMerchant($scope.merchantId);
-       }
-       else{
-           $scope.netWorkError = true;
-       }
-
-    },function(){
-      $scope.netWorkError = true;
-      $scope.isFetching = false;
-    });
-
-
-    //setup options for error popup
-
-    $scope.cardErrorOpts = {
-      backdrop: true,
-      backdropClick: true,
-      templateUrl: '/assets/checkoutnow/partials/ccVerificationErrorModal.html',
-      controller: ccVerificationModalCtrl,
-      resolve: {
-        errorMessage: function(){
-          return "There is a problem with your credit card.";
-        }
-      }
-    };
-
-    $scope.errorOpts = {
-      backdrop: true,
-      backdropClick: true,
-      templateUrl: '/assets/checkoutnow/partials/ccVerificationErrorModal.html',
-      controller: ccVerificationModalCtrl,
-      resolve: {
-        errorMessage:function(){
-          return "All fields are required";
-        }
-      }
-    };
-
-    
-
-    $scope.ccvOpts = {
-      backdrop: true,
-      backdropClick: true,
-      templateUrl: '/assets/checkoutnow/partials/ccVerificationNumberModal.html',
-      controller: ccVerificationModalCtrl
-    };
-
-		$scope.checkoutmessage = $stateParams.message;
-		$scope.fee = $stateParams.fee;
-		
         $scope.months = [{
             'name': 'January',
             'value': '0'
@@ -133,45 +70,87 @@
           for (year = parseInt(startYear); year <= parseInt(endYear); year++) {
             $scope.years.push(year);
           };
+    /* MLI integration starts here */
 
-          $scope.showCcvPopup = function(){
-            $modal.open($scope.ccvOpts); // error modal popup
-          }
+    $scope.netWorkError = false;
 
-$scope.goToNextStep = function(){
-      if( $scope.cardNumber.length === 0 || 
-      $scope.ccv.length === 0 || 
-      $scope.monthSelected === null ||
-      $scope.yearSelected === null){
-          $modal.open($scope.errorOpts); // details modal popup
+    //set merchant id
+
+    HostedForm.setMerchant($rootScope.mliMerchatId);
+
+
+    //setup options for error popup
+
+    $scope.cardErrorOpts = {
+      backdrop: true,
+      backdropClick: true,
+      templateUrl: '/assets/checkoutnow/partials/ccVerificationErrorModal.html',
+      controller: ccVerificationModalCtrl,
+      resolve: {
+        errorMessage: function(){
+          return "There is a problem with your credit card.";
+        }
       }
-      else{
-          $scope.isFetching = true;
-          ccVerificationService.verifyCC().then(function(response) {
-          $scope.isFetching = false;
-          if(response.status ==="success"){
-              if($stateParams.isFromCheckoutNow === "true"){
-                $rootScope.ccPaymentSuccessForCheckoutNow = true;
-                $state.go('checkOutStatus');
-              }else{
-                 $rootScope.ccPaymentSuccessForCheckoutLater = true;
-                 $state.go('checkOutLaterSuccess',{id:$scope.fee});
-              }
+    };
+
+    $scope.errorOpts = {
+      backdrop: true,
+      backdropClick: true,
+      templateUrl: '/assets/checkoutnow/partials/ccVerificationErrorModal.html',
+      controller: ccVerificationModalCtrl,
+      resolve: {
+        errorMessage:function(){
+          return "All fields are required";
+        }
+      }
+    };
+
+    
+
+    $scope.ccvOpts = {
+      backdrop: true,
+      backdropClick: true,
+      templateUrl: '/assets/checkoutnow/partials/ccVerificationNumberModal.html',
+      controller: ccVerificationModalCtrl
+    };
+
+		
+
+    $scope.showCcvPopup = function(){
+      $modal.open($scope.ccvOpts); // error modal popup
+    }
+
+    $scope.goToNextStep = function(){
+          if( ($scope.cardNumber.length === 0) || 
+          ($scope.ccv.length === 0) || 
+          ($scope.monthSelected === null) ||
+          ($scope.yearSelected === null)){
+              $modal.open($scope.errorOpts); // details modal popup
           }
           else{
-           $modal.open($scope.cardErrorOpts);
-          };        
-      
-        },function(){
-          $scope.netWorkError = true;
-          $scope.isFetching = false;
-        });
-      }
-}     
+            //   $scope.isFetching = true;
+            //   ccVerificationService.verifyCC().then(function(response) {
+            //   $scope.isFetching = false;
+            //   if(response.status ==="success"){
+            //       if($stateParams.isFromCheckoutNow === "true"){
+            //         $rootScope.ccPaymentSuccessForCheckoutNow = true;
+            //         $state.go('checkOutStatus');
+            //       }else{
+            //          $rootScope.ccPaymentSuccessForCheckoutLater = true;
+            //          $state.go('checkOutLaterSuccess',{id:$scope.fee});
+            //       }
+            //   }
+            //   else{
+            //    $modal.open($scope.cardErrorOpts);
+            //   };        
+          
+            // },function(){
+            //   $scope.netWorkError = true;
+            //   $scope.isFetching = false;
+            // });
+          }
+    }     
 
-  HostedForm.setMerchant('TESTSTAYNTOUCH01');// to delete
-
-  
     $scope.savePaymentDetails = function(){
       
       var MLISessionId = "";
@@ -190,19 +169,21 @@ $scope.goToNextStep = function(){
        // sessionDetails.cardExpiryMonth = $scope.monthSelected;
        // sessionDetails.cardExpiryYear = $scope.yearSelected;
 
-       var callback = function(response){
-          if(response.status ==="ok"){    
-          console.log(response);      
-          MLISessionId = response.session;
-          $scope.goToNextStep();
-          // call other WS
+       $scope.callback = function(response){
+        $scope.isFetching = false;
+  
+          if(response.status ==="ok"){     
+            MLISessionId = response.session;
+            $scope.goToNextStep();
+            console.log(response);
         }
         else{
          $scope.netWorkError = false;
         }
         
        }
-       HostedForm.updateSession(sessionDetails, callback);
+       //$scope.isFetching = true;
+       HostedForm.updateSession(sessionDetails, $scope.callback);
 
       
     }
