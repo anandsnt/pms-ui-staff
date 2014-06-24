@@ -416,20 +416,20 @@ height: 410px;
 //Search page Changes : CICO-3997
 
 #search_list #search-form{
-
+height: 60px;
 background: rgba(0,0,0,0.1);
 .entry{
-	width:100%;
-	 top:-20px;
+  width:100%;
+   top:-20px;
 }
 input{
 background-color:#FCFCFC;
 }
 
 button.icons.icon-search{
-	background: @icons;
+  background: @icons;
     background-repeat: no-repeat;
-	 top:15px;
+   top:15px;
 }
 
 
@@ -492,4 +492,88 @@ button.icons.icon-search{
 #room-assignment .room-assignment-content .rooms-listing .results .rooms li .button {
     height: 50px !important;
     padding-top: 8px !important; 
+}
+
+
+/* 
+* Angular UI-States Animations      
+* ==================================
+* DO NOT change the numeric values
+*/
+
+/* ui-view animation hook up class for root-view */
+.root-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
+}
+.root-view.ng-enter {
+  -webkit-backface-visibility: hidden;
+  backface-visibility:hidden;
+  /**/
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  /**/
+  #fade > .in;
+}
+
+/* ui-view animation hook up class for main-view */
+.main-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: url("/assets/texture.png") repeat scroll 0 0 #FCFCFC;
+}
+
+/* making sure we are not flickering */
+.main-view.ng-enter,
+.main-view.ng-leave {
+  -webkit-backface-visibility: hidden;
+  backface-visibility:hidden;
+  /**/
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.main-view.ng-enter,
+.main-view.ng-enter-active {
+  z-index: 50;
+}
+
+.main-view.ng-leave,
+.main-view.ng-leave-active {
+  z-index: 30;
+}
+
+/* to remove a slight delay in applying the animations
+on a slow performaing device, keep the entering view hidden
+untill angular is ready to activate it */
+.main-view.ng-enter {
+  opacity: 0;
+}
+.main-view.ng-enter-active {
+  opacity: 1;
+}
+
+/* normal app state animations */
+.main-view.ng-enter {
+  #move > #ui-view > .enter;
+}
+
+.main-view.ng-leave {
+  #move > #ui-view > .leave;
+}
+
+/* when returning back */
+.return-back > .main-view.ng-enter {
+  #move > #ui-view > .enter-rev;
+}
+
+.return-back > .main-view.ng-leave {
+  #move > #ui-view > .leave-rev;
 }

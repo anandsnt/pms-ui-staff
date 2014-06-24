@@ -1,10 +1,10 @@
 
 sntRover.controller('RVroomAssignmentController',['$scope','$state', '$stateParams', 'RVRoomAssignmentSrv', '$filter', function($scope, $state, $stateParams, RVRoomAssignmentSrv, $filter){
-	console.log("room assignment");
-	// $scope.parentObj.slide = 'slide-right';
+		
 	BaseCtrl.call(this, $scope);
 	
 	$scope.rooms = [];
+	$scope.isRoomsFetched = false;
 	$scope.filteredRooms = [];
 	$scope.roomTypes = [];
 	$scope.roomFeatures = [];
@@ -23,14 +23,17 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 			$scope.setRoomsListWithPredefinedFilters();
 			$scope.applyFilterToRooms();
 			$scope.$emit('hideLoader');
+			$scope.isRoomsFetched = true;
 			setTimeout(function(){
 				$scope.$parent.myScroll['roomlist'].refresh();
+				$scope.$parent.myScroll['filterlist'].refresh();
 				}, 
 			3000);
 		};
 		var errorCallbackGetRooms = function(error){
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = error;
+			$scope.isRoomsFetched = true;
 		};
 		var params = {};
 		params.reservation_id = $stateParams.reservation_id;
@@ -88,6 +91,12 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	        snap: false,
 	        hideScrollbar: false,
 	        preventDefault: false
+	    },
+	    'filterlist': {
+	    	scrollbars: true,
+	        snap: false,
+	        hideScrollbar: false,
+	        preventDefault: false
 	    }
 	};	
 	/**
@@ -138,7 +147,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	*/
 	$scope.isUpsellAvailable = function(){
 		var showUpgrade = false;
-		if(($scope.reservationData.reservation_card.isUpsellAvailable == 'true') && ($scope.reservationData.reservation_card.reservationStatus == 'RESERVED' || $scope.reservationData.reservation_card.reservationStatus == 'CHECKING_IN')){
+		if(($scope.reservationData.reservation_card.is_upsell_available == 'true') && ($scope.reservationData.reservation_card.reservation_status == 'RESERVED' || $scope.reservationData.reservation_card.reservation_status == 'CHECKING_IN')){
 			showUpgrade = true;
 		}
 		return showUpgrade;
@@ -216,7 +225,7 @@ sntRover.controller('RVroomAssignmentController',['$scope','$state', '$statePara
 	* function to return the rooms list status
 	*/
 	$scope.isRoomListEmpty = function(){
-		return ($scope.filteredRooms.length == 0);
+		return ($scope.filteredRooms.length == 0 && $scope.isRoomsFetched);
 	}
 	/**
 	* function to add ids for predefined filters checking the corresponding status
