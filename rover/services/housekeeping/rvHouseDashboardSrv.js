@@ -1,4 +1,4 @@
-sntRover.service('rvHouseDashboardSrv', [
+sntRover.service('RVHkDashboardSrv', [
 	'$http',
 	'$q',
 	'$window',
